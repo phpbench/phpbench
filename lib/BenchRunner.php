@@ -29,8 +29,9 @@ class BenchRunner
         $caseCollection = $this->finder->buildCollection();
 
         foreach ($caseCollection->getCases() as $case) {
+            $this->logger->caseStart($case);
             $this->run($case);
-            $this->logger->caseComplete($case);
+            $this->logger->caseEnd($case);
         }
 
         foreach ($this->reportGenerators as $reportGenerator) {
@@ -43,8 +44,9 @@ class BenchRunner
         $subjects = $this->subjectBuilder->buildSubjects($case);
 
         foreach ($subjects as $subject) {
+            $this->logger->subjectStart($subject);
             $this->runSubject($case, $subject);
-            $this->logger->subjectComplete($case);
+            $this->logger->subjectEnd($subject);
         }
     }
 
