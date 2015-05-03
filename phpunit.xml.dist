@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- http://www.phpunit.de/manual/current/en/appendixes.configuration.html -->
+<phpunit
+    colors="true"
+    bootstrap="vendor/autoload.php"
+    >
+
+    <testsuites>
+        <testsuite name="PhpBenchTest Suite">
+            <directory>./tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist addUncoveredFilesFromWhitelist="true">
+            <directory>.</directory>
+            <exclude>
+                <directory>vendor/</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+
+</phpunit>
