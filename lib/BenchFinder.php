@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench;
 
 use Symfony\Component\Finder\Finder;
@@ -18,7 +27,7 @@ class BenchFinder
         $cases = array();
 
         foreach ($this->finder as $file) {
-            require_once($file->getRealPath());
+            require_once $file->getRealPath();
             $classFqn = static::getClassNameFromFile($file->getRealPath());
             $refl = new \ReflectionClass($classFqn);
 

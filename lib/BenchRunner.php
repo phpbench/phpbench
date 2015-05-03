@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench;
 
 class BenchRunner
@@ -12,16 +21,15 @@ class BenchRunner
     public function __construct(
         BenchFinder $finder,
         BenchSubjectBuilder $subjectBuilder,
-        BenchProgressLogger $logger, 
+        BenchProgressLogger $logger,
         array $reportGenerators,
         BenchMatrixBuilder $matrixBuilder = null
-    )
-    {
+    ) {
         $this->logger = $logger;
         $this->reportGenerators = $reportGenerators;
         $this->finder = $finder;
         $this->subjectBuilder = $subjectBuilder;
-        $this->matrixBuilder = $matrixBuilder ? : new BenchMatrixBuilder();
+        $this->matrixBuilder = $matrixBuilder ?: new BenchMatrixBuilder();
     }
 
     public function runAll()
@@ -39,9 +47,11 @@ class BenchRunner
         foreach ($this->reportGenerators as $reportGenerator) {
             $reportGenerator->generate($caseCollectionResult);
         }
+
+        return $caseCollectionResult;
     }
 
-    private function run(BenchCase $case) 
+    private function run(BenchCase $case)
     {
         $subjects = $this->subjectBuilder->buildSubjects($case);
         $results = array();

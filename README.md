@@ -15,12 +15,15 @@ Note this library is currently under development.
 Usage
 -----
 
-````php
+````bash
 ./bin/phpbench phpbench:run tests/assets/functional/BenchmarkCase.php
 Running benchmarking suite
 
 BenchmarkCase
 ...
+
+Generating reports..
+
 BenchmarkCase#benchRandom(): randomBench
 +---+--------+------------+
 | # | Params | Time       |
@@ -76,17 +79,29 @@ class BenchmarkCase implements BenchCase
        // do something time consuming
     }
 
-
     /**
      * @paramProvider provideParamsOne
      * @paramProvider provideParamsTwo
      * @beforeMethod prepareParameterized
      * @description Parameterized bench mark
-     * @iterations 1
+     * @iterations 3
      */
     public function benchParameterized(BenchIteration $iteration)
     {
          $param1 = $iteration->getParameter('length');
+
+         // ...
+    }
+
+    public function prepareParameterized(BenchIteration $iteration)
+    {
+        if ($iteration->getIndex() === 0) {
+            // do something on the first iteration
+        }
+
+        $param = $iteration->getParameter('nb_nodes');
+
+        // ...
     }
 
     public function provideParamsOne()

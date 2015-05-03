@@ -1,14 +1,20 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench;
 
-use PhpBench\BenchMatrixBuilder;
-use PhpBench\BenchCartesianParamIterator;
-
-class BenchMatrixBuilderTest extends \PHPUnit_Framework_TestCase
+class BenchCartesianIteratorTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * It should generate the cartestian product of all sets for each iteration
+     * It should generate the cartestian product of all sets for each iteration.
      *
      * @dataProvider provideIterate
      */
@@ -43,7 +49,7 @@ class BenchMatrixBuilderTest extends \PHPUnit_Framework_TestCase
                 array(
                     array(
                         'optimized' => false,
-                        'nb_foos' => 4
+                        'nb_foos' => 4,
                     ),
                     array(
                         'optimized' => true,

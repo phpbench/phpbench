@@ -1,17 +1,26 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Console\Command;
 
+use PhpBench\BenchFinder;
+use PhpBench\BenchRunner;
+use PhpBench\BenchSubjectBuilder;
+use PhpBench\ProgressLogger\PhpUnitProgressLogger;
+use PhpBench\ReportGenerator\ConsoleTableReportGenerator;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
-use PhpBench\BenchFinder;
-use PhpBench\BenchSubjectBuilder;
-use PhpBench\ProgressLogger\PhpUnitProgressLogger;
-use PhpBench\BenchRunner;
-use Symfony\Component\Console\Input\InputArgument;
-use PhpBench\ReportGenerator\ConsoleTableReportGenerator;
 
 class BenchRunCommand extends Command
 {

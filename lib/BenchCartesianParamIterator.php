@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench;
 
 class BenchCartesianParamIterator implements \Iterator
@@ -26,11 +35,10 @@ class BenchCartesianParamIterator implements \Iterator
 
     public function next()
     {
-        for($index = 0; $index <= $this->max; ++$index) {
-
+        for ($index = 0; $index <= $this->max; ++$index) {
             $this->sets[$index]->next();
 
-            if(true === $this->sets[$index]->valid()) {
+            if (true === $this->sets[$index]->valid()) {
                 break;
             }
 

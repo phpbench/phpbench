@@ -1,9 +1,15 @@
 <?php
 
-namespace PhpBench;
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
-use Prophecy\Argument;
-use PhpBench\BenchCase;
+namespace PhpBench;
 
 class BenchRunnerTest extends \PHPUnit_Framework_TestCase
 {
@@ -28,7 +34,7 @@ class BenchRunnerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should run something
+     * It should run the tests.
      */
     public function testRunner()
     {
@@ -36,10 +42,10 @@ class BenchRunnerTest extends \PHPUnit_Framework_TestCase
 
         $this->finder->buildCollection()->willReturn($this->collection);
         $this->collection->getCases()->willReturn(array(
-            $this->case
+            $this->case,
         ));
         $this->subjectBuilder->buildSubjects($this->case)->willReturn(array(
-            $this->subject->reveal()
+            $this->subject->reveal(),
         ));
         $this->subject->getNbIterations()->willReturn($iterations);
         $this->subject->getParamProviders()->willReturn(array(
@@ -48,27 +54,14 @@ class BenchRunnerTest extends \PHPUnit_Framework_TestCase
         ));
         $this->subject->getMethodName()->willReturn('benchFoo');
         $this->subject->getBeforeMethods()->willReturn(array('beforeFoo'));
-        $this->subject->addIteration(Argument::type('PhpBench\\BenchIteration'))->shouldBeCalled();
-        $this->matrixBuilder->buildMatrix(
-            array(
-                array(
-                    array('foo' => 'bar'),
-                    array('foo' => 'bar'),
-                ),
-                array(
-                    array('bar' => 'foo'),
-                ),
-            )
-        )->willReturn(
-            array(
-                'barfoo' => 'foobar',
-            )
-        );
 
-        $this->runner->runAll();
+        $result = $this->runner->runAll();
 
         $this->assertTrue($this->case->called);
         $this->assertTrue($this->case->beforeCalled);
+
+        $this->assertInstanceOf('PhpBench\\BenchCaseCollectionResult', $result);
+        $this->assertEquals(1, count($result->getCaseResults()));
     }
 }
 

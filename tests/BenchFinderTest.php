@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench;
 
 use Symfony\Component\Finder\Finder;
@@ -14,7 +23,7 @@ class BenchFinderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should return a collection of all found bench cases
+     * It should return a collection of all found bench cases.
      */
     public function testBuildCollection()
     {

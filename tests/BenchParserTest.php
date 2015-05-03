@@ -1,9 +1,18 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench;
 
-require_once(__DIR__ . '/assets/parsertest/ParserCase.php');
-require_once(__DIR__ . '/assets/parsertest/ParserCaseInvalidAnnotation.php');
+require_once __DIR__ . '/assets/parsertest/ParserCase.php';
+require_once __DIR__ . '/assets/parsertest/ParserCaseInvalidAnnotation.php';
 
 class BenchParserTest extends \PHPUnit_Framework_TestCase
 {
@@ -14,7 +23,7 @@ class BenchParserTest extends \PHPUnit_Framework_TestCase
 
     /**
      * It should parse all of the bench methods and return anarray of
-     * BenchSubject instances
+     * BenchSubject instances.
      *
      * @dataProvider provideParseMethodDoc
      */
@@ -37,7 +46,7 @@ class BenchParserTest extends \PHPUnit_Framework_TestCase
 * @iterations  3
 */
 EOT
-                , 
+                ,
                 array(
                     'description' => 'Hello',
                     'iterations' => 3,
@@ -50,7 +59,7 @@ EOT
 /**
 */
 EOT
-                , 
+                ,
                 array(
                     'description' => '',
                     'beforeMethod' => array(),
@@ -62,7 +71,7 @@ EOT
     }
 
     /**
-     * It should thow an exception if an unknown annotation is found
+     * It should thow an exception if an unknown annotation is found.
      *
      * @expectedException \PhpBench\Exception\InvalidArgumentException
      */
@@ -72,14 +81,11 @@ EOT
         $this->parser->parseMethodDoc($doc);
     }
 
-
-
-    /**
+    /*
      * It should throw an exception if more than one description annotation is present
      */
 
-    /**
+    /*
      * It should thow an exception if more than one iterations annotation is present
      */
-
 }

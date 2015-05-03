@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench;
 
 class BenchIteration
@@ -25,7 +34,7 @@ class BenchIteration
         return $this->parameters[$name];
     }
 
-    public function getParameters() 
+    public function getParameters()
     {
         return $this->parameters;
     }
@@ -35,11 +44,11 @@ class BenchIteration
         return $this->index;
     }
 
-    public function getTime() 
+    public function getTime()
     {
         return $this->time;
     }
-    
+
     public function setTime($time)
     {
         $this->time = $time;

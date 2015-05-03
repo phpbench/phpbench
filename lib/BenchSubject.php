@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench;
 
 class BenchSubject
@@ -18,8 +27,7 @@ class BenchSubject
         $paramProviders,
         $nbIterations,
         $description
-    )
-    {
+    ) {
         $this->methodName = $methodName;
         $this->beforeMethods = $beforeMethods;
         $this->paramProviders = $paramProviders;
@@ -27,22 +35,22 @@ class BenchSubject
         $this->description = $description;
     }
 
-    public function getBeforeMethods() 
+    public function getBeforeMethods()
     {
         return $this->beforeMethods;
     }
 
-    public function getParamProviders() 
+    public function getParamProviders()
     {
         return $this->paramProviders;
     }
 
-    public function getNbIterations() 
+    public function getNbIterations()
     {
         return $this->nbIterations;
     }
 
-    public function getDescription() 
+    public function getDescription()
     {
         return $this->description;
     }
