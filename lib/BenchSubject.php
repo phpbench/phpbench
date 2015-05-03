@@ -39,7 +39,7 @@ class BenchSubject
 
     public function getNbIterations() 
     {
-        return $this->iterations;
+        return $this->nbIterations;
     }
 
     public function getDescription() 

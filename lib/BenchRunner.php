@@ -28,26 +28,33 @@ class BenchRunner
     {
         $caseCollection = $this->finder->buildCollection();
 
+        $caseResults = array();
         foreach ($caseCollection->getCases() as $case) {
             $this->logger->caseStart($case);
-            $this->run($case);
+            $caseResults[] = $this->run($case);
             $this->logger->caseEnd($case);
         }
+        $caseCollectionResult = new BenchCaseCollectionResult($caseCollection, $caseResults);
 
         foreach ($this->reportGenerators as $reportGenerator) {
-            $reportGenerator->generate($caseCollection);
+            $reportGenerator->generate($caseCollectionResult);
         }
     }
 
     private function run(BenchCase $case) 
     {
         $subjects = $this->subjectBuilder->buildSubjects($case);
+        $results = array();
 
         foreach ($subjects as $subject) {
             $this->logger->subjectStart($subject);
-            $this->runSubject($case, $subject);
+            $results[] = $this->runSubject($case, $subject);
             $this->logger->subjectEnd($subject);
         }
+
+        $caseResult = new BenchCaseResult($case, $results);
+
+        return $caseResult;
     }
 
     private function runSubject(BenchCase $case, BenchSubject $subject)
@@ -67,14 +74,23 @@ class BenchRunner
         }
 
         $matrix = $this->matrixBuilder->buildMatrix($parameterSets);
+        $iterations = array();
+
+        if (!$matrix) {
+            $matrix = array(array());
+        }
 
         foreach ($matrix as $parameters) {
             for ($index = 0; $index < $subject->getNbIterations(); $index++) {
                 $iteration = new BenchIteration($index, $parameters);
                 $this->runIteration($case, $subject, $iteration);
-                $subject->addIteration($iteration);
+                $iterations[] = $iteration;
             }
         }
+
+        $subjectResult = new BenchSubjectResult($subject, $iterations);
+
+        return $subjectResult;
     }
 
     private function runIteration(BenchCase $case, BenchSubject $subject, BenchIteration $iteration)
@@ -94,10 +110,5 @@ class BenchRunner
         $end = microtime(true);
 
         $iteration->setTime($end - $start);
-    }
-
-    private function buildMatrix($bench, BenchCase $case)
-    {
-        throw new \Exception('TODO');
     }
 }

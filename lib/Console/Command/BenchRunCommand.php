@@ -11,6 +11,7 @@ use PhpBench\BenchSubjectBuilder;
 use PhpBench\ProgressLogger\PhpUnitProgressLogger;
 use PhpBench\BenchRunner;
 use Symfony\Component\Console\Input\InputArgument;
+use PhpBench\ReportGenerator\ConsoleTableReportGenerator;
 
 class BenchRunCommand extends Command
 {
@@ -43,7 +44,7 @@ class BenchRunCommand extends Command
         $benchFinder = new BenchFinder($finder);
         $subjectBuilder = new BenchSubjectBuilder();
         $progressLogger = new PhpUnitProgressLogger($output);
-        $generators = array();
+        $generators = array(new ConsoleTableReportGenerator($output));
 
         $benchRunner = new BenchRunner(
             $benchFinder,

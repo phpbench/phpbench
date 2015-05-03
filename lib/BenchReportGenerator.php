@@ -4,5 +4,5 @@ namespace PhpBench;
 
 interface BenchReportGenerator
 {
-    public function generate(BenchCaseCollection $collection);
+    public function generate(BenchCaseCollectionResult $collection);
 }

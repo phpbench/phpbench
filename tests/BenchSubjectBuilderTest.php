@@ -26,8 +26,8 @@ class BenchSubjectBuilderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(array('beforeSelectSql'), $subject->getBeforeMethods());
         $this->assertEquals(array('provideNodes', 'provideColumns'), $subject->getParamProviders());
-        $this->assertEquals(3, $subject->getIterations());
-        $this->assertInternalType('int', $subject->getIterations());
+        $this->assertEquals(3, $subject->getNbIterations());
+        $this->assertInternalType('int', $subject->getNbIterations());
         $this->assertEquals('Run a select query', $subject->getDescription());
     }
 }
