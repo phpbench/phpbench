@@ -23,6 +23,9 @@ class BenchRunCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $output->writeln('<info>Running benchmarking suite</info>');
+        $output->writeln('');
+
         $path = $input->getArgument('path');
         $finder = new Finder();
 
@@ -35,7 +38,7 @@ class BenchRunCommand extends Command
 
         if (is_dir($path)) {
             $finder->in($path);
-            $finder->name('.*Case.php');
+            $finder->name('*Case.php');
         } else {
             $finder->in(dirname($path));
             $finder->name(basename($path));

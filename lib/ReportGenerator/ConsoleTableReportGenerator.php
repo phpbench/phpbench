@@ -10,7 +10,8 @@ use PhpBench\BenchCaseCollectionResult;
 class ConsoleTableReportGenerator implements BenchReportGenerator
 {
     private $output;
-
+    private $expansion = 8;
+ 
     public function __construct(OutputInterface $output)
     {
         $this->output = $output;
@@ -21,7 +22,7 @@ class ConsoleTableReportGenerator implements BenchReportGenerator
         foreach ($collection->getCaseResults() as $case) {
             foreach ($case->getSubjectResults() as $subject) {
                 $this->output->writeln(sprintf(
-                    '<comment>%s</comment>#<comment>%s</comment>: %s', 
+                    '<comment>%s</comment><info>#</info><comment>%s()</comment>: %s', 
                     get_class($case->getCase()),
                     $subject->getSubject()->getMethodName(),
                     $subject->getSubject()->getDescription()
@@ -29,22 +30,19 @@ class ConsoleTableReportGenerator implements BenchReportGenerator
 
                 $table = new Table($this->output);;
                 $table->setHeaders(array(
-                    'I. #',
+                    '#',
                     'Params',
                     'Time',
                 ));
-                $totalTime = 0;
                 $iterations = $subject->getIterations();
                 foreach ($iterations as $iteration) {
-                    $totalTime+= $iteration->getTime();
                     $table->addRow(array(
-                        $iteration->getIndex(),
-                        json_encode(array()),
-                        number_format($iteration->getTime(), 6)
+                        $iteration->getIndex() + 1,
+                        json_encode($iteration->getParameters()),
+                        number_format($iteration->getTime(), $this->expansion)
                     ));
                 }
 
-                $averageTime = $totalTime / count($iterations);
                 $table->render();
                 $this->output->writeln('');
             }

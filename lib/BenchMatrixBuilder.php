@@ -4,8 +4,8 @@ namespace PhpBench;
 
 class BenchMatrixBuilder
 {
-    public function buildMatrix($parameterSets)
+    public function build($parameterSets)
     {
-        return array();
+
     }
 }

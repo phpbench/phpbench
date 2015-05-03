@@ -25,6 +25,11 @@ class BenchIteration
         return $this->parameters[$name];
     }
 
+    public function getParameters() 
+    {
+        return $this->parameters;
+    }
+
     public function getIndex()
     {
         return $this->index;

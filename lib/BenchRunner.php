@@ -73,12 +73,12 @@ class BenchRunner
             $parameterSets[] = $case->$paramProviderMethod();
         }
 
-        $matrix = $this->matrixBuilder->buildMatrix($parameterSets);
-        $iterations = array();
-
-        if (!$matrix) {
-            $matrix = array(array());
+        if (!$parameterSets) {
+            $parameterSets = array(array(array()));
         }
+
+        $matrix = new BenchCartesianParamIterator($parameterSets);
+        $iterations = array();
 
         foreach ($matrix as $parameters) {
             for ($index = 0; $index < $subject->getNbIterations(); $index++) {

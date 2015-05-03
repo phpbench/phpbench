@@ -19,6 +19,32 @@ class BenchmarkCase implements BenchCase
      */
     public function benchDoNothing(BenchIteration $iteration)
     {
-        echo $iteration->getIndex();
+    }
+
+
+    /**
+     * @paramProvider provideParamsOne
+     * @paramProvider provideParamsTwo
+     * @description Parameterized bench mark
+     * @iterations 1
+     */
+    public function benchParameterized(BenchIteration $iteration)
+    {
+    }
+
+    public function provideParamsOne()
+    {
+        return array(
+            array('length' => '1'),
+            array('length' => '2'),
+        );
+    }
+
+    public function provideParamsTwo()
+    {
+        return array(
+            array('strategy' => 'left'),
+            array('strategy' => 'right'),
+        );
     }
 }
