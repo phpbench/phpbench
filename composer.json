@@ -26,5 +26,10 @@
         "psr-4": {
             "PhpBench\\": "tests/"
         }
+    },
+    "extras": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
     }
 }
