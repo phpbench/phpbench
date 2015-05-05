@@ -26,7 +26,16 @@ class BenchRunCommand extends Command
 {
     public function configure()
     {
-        $this->setName('phpbench:run');
+        $this->setName('run');
+        $this->setDescription('Run benchmarks');
+        $this->setHelp(<<<EOT
+Run benchmark files at given <comment>path</comment>
+
+    $ %command.full_name% /path/to/bench
+
+All bench marks under the given path will be executed recursively.
+EOT
+        );
         $this->addArgument('path', InputArgument::REQUIRED, 'Path to benchmark(s)');
     }
 

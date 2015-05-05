@@ -16,13 +16,27 @@ function includeIfExists($file)
     }
 }
 
-if ((!includeIfExists(__DIR__.'/../vendor/autoload.php')) && (!includeIfExists(__DIR__.'/../../../autoload.php'))) {
+$autoloadPath = getcwd() . '/vendor/autoload.php';
+$configPaths = array(
+    getcwd() . '.phpbench',
+    getcwd() . '.phpbench.dist',
+);
+
+if (!file_exists($autoloadPath)) {
     fwrite(STDERR,
-        'You must set up the project dependencies, run the following commands:'.PHP_EOL.
-        'curl -s http://getcomposer.org/installer | php'.PHP_EOL.
-        'php composer.phar install'.PHP_EOL
+        'You must execute phpbench from the project root and set up the project' .
+        'dependencies.'
     );
     exit(1);
+}
+
+require_once($autoloadPath);
+
+foreach ($configPaths as $configPath) {
+    if (file_exists($configPath)) {
+        require_once($configPath);
+        break;
+    }
 }
 
 use Symfony\Component\Console\Application;

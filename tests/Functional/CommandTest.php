@@ -32,7 +32,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase
     {
         $application = new Application();
         $application->add(new BenchRunCommand());
-        $command = $application->find('phpbench:run');
+        $command = $application->find('run');
         $tester = new CommandTester($command);
         $tester->execute($arguments);
 
