@@ -11,23 +11,38 @@
 
 namespace PhpBench\ReportGenerator;
 
+use PhpBench\BenchAggregateIterationResult;
 use PhpBench\BenchCaseCollectionResult;
+use PhpBench\BenchIteration;
 use PhpBench\BenchReportGenerator;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ConsoleTableReportGenerator implements BenchReportGenerator
 {
     private $output;
-    private $expansion = 8;
+    private $precision;
 
     public function __construct(OutputInterface $output)
     {
         $this->output = $output;
     }
 
-    public function generate(BenchCaseCollectionResult $collection)
+    public function configure(OptionsResolver $options)
     {
+        $options->setDefaults(array(
+            'aggregate_iterations' => false,
+            'precision' => 8,
+        ));
+
+        $options->setAllowedTypes('aggregate_iterations', 'boolean');
+        $options->setAllowedTypes('precision', 'int');
+    }
+
+    public function generate(BenchCaseCollectionResult $collection, array $options)
+    {
+        $this->precision = $options['precision'];
         foreach ($collection->getCaseResults() as $case) {
             foreach ($case->getSubjectResults() as $subject) {
                 $this->output->writeln(sprintf(
@@ -38,23 +53,65 @@ class ConsoleTableReportGenerator implements BenchReportGenerator
                 ));
 
                 $table = new Table($this->output);
-                $table->setHeaders(array(
-                    '#',
-                    'Params',
-                    'Time',
-                ));
-                $iterations = $subject->getIterations();
-                foreach ($iterations as $iteration) {
-                    $table->addRow(array(
-                        $iteration->getIndex() + 1,
-                        json_encode($iteration->getParameters()),
-                        number_format($iteration->getTime(), $this->expansion),
+
+                if (false === $options['aggregate_iterations']) {
+                    $table->setHeaders(array(
+                        '#',
+                        'Params',
+                        'Time',
+                    ));
+                } else {
+                    $table->setHeaders(array(
+                        '# Itns.',
+                        'Params',
+                        'Av.',
+                        'Min',
+                        'Max',
+                        'Total',
                     ));
                 }
+
+                $aggregates = $subject->getAggregateIterationResults();
+
+                $rows = array();
+                foreach ($aggregates as $aggregate) {
+                    foreach ($aggregate->getIterations() as $iteration) {
+                        if (false === $options['aggregate_iterations']) {
+                            $this->addIteration($iteration, $rows);
+                        }
+                    }
+
+                    if (true === $options['aggregate_iterations']) {
+                        $this->addAggregateIteration($aggregate, $rows);
+                    }
+                }
+
+                $table->setRows($rows);
 
                 $table->render();
                 $this->output->writeln('');
             }
         }
+    }
+
+    private function addIteration(BenchIteration $iteration, &$rows)
+    {
+        $rows[] = array(
+            $iteration->getIndex() + 1,
+            json_encode($iteration->getParameters()),
+            number_format($iteration->getTime(), $this->precision),
+        );
+    }
+
+    private function addAggregateIteration(BenchAggregateIterationResult $aggregate, &$rows)
+    {
+        $rows[] = array(
+            count($aggregate->getIterations()),
+            json_encode($aggregate->getParameters()),
+            number_format($aggregate->getAverageTime(), $this->precision),
+            number_format($aggregate->getMinTime(), $this->precision),
+            number_format($aggregate->getMaxTime(), $this->precision),
+            number_format($aggregate->getTotalTime(), $this->precision),
+        );
     }
 }

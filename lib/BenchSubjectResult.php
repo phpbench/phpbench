@@ -14,12 +14,12 @@ namespace PhpBench;
 class BenchSubjectResult
 {
     private $subject;
-    private $iterations;
+    private $iterationResults;
 
-    public function __construct(BenchSubject $subject, $iterations)
+    public function __construct(BenchSubject $subject, $iterationResults)
     {
         $this->subject = $subject;
-        $this->iterations = $iterations;
+        $this->iterationResults = $iterationResults;
     }
 
     public function getSubject()
@@ -27,8 +27,8 @@ class BenchSubjectResult
         return $this->subject;
     }
 
-    public function getIterations()
+    public function getAggregateIterationResults()
     {
-        return $this->iterations;
+        return $this->iterationResults;
     }
 }
