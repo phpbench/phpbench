@@ -27,7 +27,7 @@
             "PhpBench\\": "tests/"
         }
     },
-    "extras": {
+    "extra": {
         "branch-alias": {
             "dev-master": "1.0-dev"
         }
