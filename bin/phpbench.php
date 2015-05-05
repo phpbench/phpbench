@@ -18,8 +18,8 @@ function includeIfExists($file)
 
 $autoloadPath = getcwd() . '/vendor/autoload.php';
 $configPaths = array(
-    getcwd() . '.phpbench',
-    getcwd() . '.phpbench.dist',
+    getcwd() . '/.phpbench',
+    getcwd() . '/.phpbench.dist',
 );
 
 if (!file_exists($autoloadPath)) {

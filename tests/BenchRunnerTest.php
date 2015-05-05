@@ -16,20 +16,16 @@ class BenchRunnerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->logger = $this->prophesize('PhpBench\\BenchProgressLogger');
-        $this->generator = $this->prophesize('PhpBench\\BenchReportGenerator');
         $this->finder = $this->prophesize('PhpBench\\BenchFinder');
         $this->subjectBuilder = $this->prophesize('PhpBench\\BenchSubjectBuilder');
         $this->case = new BenchRunnerTestBenchCase();
         $this->collection = $this->prophesize('PhpBench\\BenchCaseCollection');
         $this->subject = $this->prophesize('PhpBench\\BenchSubject');
-        $this->matrixBuilder = $this->prophesize('PhpBench\\BenchMatrixBuilder');
 
         $this->runner = new BenchRunner(
             $this->finder->reveal(),
             $this->subjectBuilder->reveal(),
-            $this->logger->reveal(),
-            array($this->generator),
-            $this->matrixBuilder->reveal()
+            $this->logger->reveal()
         );
     }
 

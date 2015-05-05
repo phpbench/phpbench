@@ -11,25 +11,22 @@
 
 namespace PhpBench;
 
+use PhpBench\ProgressLogger\NullProgressLogger;
+
 class BenchRunner
 {
     private $logger;
-    private $reportGenerators;
     private $finder;
     private $subjectBuilder;
 
     public function __construct(
         BenchFinder $finder,
         BenchSubjectBuilder $subjectBuilder,
-        BenchProgressLogger $logger,
-        array $reportGenerators,
-        BenchMatrixBuilder $matrixBuilder = null
+        BenchProgressLogger $logger = null
     ) {
-        $this->logger = $logger;
-        $this->reportGenerators = $reportGenerators;
+        $this->logger = $logger ? : new NullProgressLogger;
         $this->finder = $finder;
         $this->subjectBuilder = $subjectBuilder;
-        $this->matrixBuilder = $matrixBuilder ?: new BenchMatrixBuilder();
     }
 
     public function runAll()
@@ -43,10 +40,6 @@ class BenchRunner
             $this->logger->caseEnd($case);
         }
         $caseCollectionResult = new BenchCaseCollectionResult($caseCollection, $caseResults);
-
-        foreach ($this->reportGenerators as $reportGenerator) {
-            $reportGenerator->generate($caseCollectionResult);
-        }
 
         return $caseCollectionResult;
     }
@@ -88,17 +81,19 @@ class BenchRunner
         }
 
         $matrix = new BenchCartesianParamIterator($parameterSets);
-        $iterations = array();
+        $iterationResults = array();
 
         foreach ($matrix as $parameters) {
+            $iterations = array();
             for ($index = 0; $index < $subject->getNbIterations(); $index++) {
                 $iteration = new BenchIteration($index, $parameters);
                 $this->runIteration($case, $subject, $iteration);
                 $iterations[] = $iteration;
             }
+            $iterationResults[] = new BenchAggregateIterationResult($iterations, $parameters);
         }
 
-        $subjectResult = new BenchSubjectResult($subject, $iterations);
+        $subjectResult = new BenchSubjectResult($subject, $iterationResults);
 
         return $subjectResult;
     }
