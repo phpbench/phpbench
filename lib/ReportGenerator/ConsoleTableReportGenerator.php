@@ -11,13 +11,13 @@
 
 namespace PhpBench\ReportGenerator;
 
+use PhpBench\BenchAggregateIterationResult;
 use PhpBench\BenchCaseCollectionResult;
+use PhpBench\BenchIteration;
 use PhpBench\BenchReportGenerator;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use PhpBench\BenchAggregateIterationResult;
-use PhpBench\BenchIteration;
 
 class ConsoleTableReportGenerator implements BenchReportGenerator
 {
@@ -111,7 +111,7 @@ class ConsoleTableReportGenerator implements BenchReportGenerator
             number_format($aggregate->getAverageTime(), $this->precision),
             number_format($aggregate->getMinTime(), $this->precision),
             number_format($aggregate->getMaxTime(), $this->precision),
-            number_format($aggregate->getTotalTime(), $this->precision)
+            number_format($aggregate->getTotalTime(), $this->precision),
         );
     }
 }

@@ -11,6 +11,7 @@
 
 namespace PhpBench\Console\Command;
 
+use PhpBench\BenchCaseCollectionResult;
 use PhpBench\BenchFinder;
 use PhpBench\BenchRunner;
 use PhpBench\BenchSubjectBuilder;
@@ -19,12 +20,11 @@ use PhpBench\ReportGenerator\ConsoleTableReportGenerator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Console\Input\InputOption;
-use PhpBench\BenchCaseCollectionResult;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BenchRunCommand extends Command
 {
@@ -41,7 +41,7 @@ All bench marks under the given path will be executed recursively.
 EOT
         );
         $this->addArgument('path', InputArgument::REQUIRED, 'Path to benchmark(s)');
-        $this->addOption('report', array(), InputOption::VALUE_REQUIRED|InputOption::VALUE_IS_ARRAY, 'Report name or configuration in JSON format');
+        $this->addOption('report', array(), InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Report name or configuration in JSON format');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
@@ -58,7 +58,7 @@ EOT
     private function generateReports(OutputInterface $output, BenchCaseCollectionResult $results, $reportConfigs)
     {
         $generators = array(
-            'console_table' => new ConsoleTableReportGenerator($output)
+            'console_table' => new ConsoleTableReportGenerator($output),
         );
 
         foreach ($reportConfigs as $reportName => $reportConfig) {

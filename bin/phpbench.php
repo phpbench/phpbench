@@ -30,17 +30,17 @@ if (!file_exists($autoloadPath)) {
     exit(1);
 }
 
-require_once($autoloadPath);
+require_once $autoloadPath;
 
 foreach ($configPaths as $configPath) {
     if (file_exists($configPath)) {
-        require_once($configPath);
+        require_once $configPath;
         break;
     }
 }
 
-use Symfony\Component\Console\Application;
 use PhpBench\Console\Command\BenchRunCommand;
+use Symfony\Component\Console\Application;
 
 $application = new Application();
 $application->add(new BenchRunCommand());

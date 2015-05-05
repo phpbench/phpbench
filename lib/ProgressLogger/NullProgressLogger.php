@@ -14,7 +14,6 @@ namespace PhpBench\ProgressLogger;
 use PhpBench\BenchCase;
 use PhpBench\BenchProgressLogger;
 use PhpBench\BenchSubject;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class NullProgressLogger implements BenchProgressLogger
 {
@@ -34,4 +33,3 @@ class NullProgressLogger implements BenchProgressLogger
     {
     }
 }
-

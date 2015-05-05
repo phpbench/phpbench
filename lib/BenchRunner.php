@@ -24,7 +24,7 @@ class BenchRunner
         BenchSubjectBuilder $subjectBuilder,
         BenchProgressLogger $logger = null
     ) {
-        $this->logger = $logger ? : new NullProgressLogger;
+        $this->logger = $logger ?: new NullProgressLogger();
         $this->finder = $finder;
         $this->subjectBuilder = $subjectBuilder;
     }

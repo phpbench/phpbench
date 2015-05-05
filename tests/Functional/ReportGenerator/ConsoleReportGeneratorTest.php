@@ -11,22 +11,20 @@
 
 namespace PhpBench\Functional\ReportGenerator;
 
-use PhpBench\Console\Command\BenchRunCommand;
-use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\Console\Output\NullOutput;
 use PhpBench\ReportGenerator\ConsoleTableReportGenerator;
+use Symfony\Component\Console\Output\NullOutput;
 
 class ConsoleReportGeneratorTest extends BaseReportGeneratorCase
 {
     public function getReport()
     {
         $output = new NullOutput();
+
         return new ConsoleTableReportGenerator($output);
     }
 
     /**
-     * It should run without any options
+     * It should run without any options.
      */
     public function testNoOptions()
     {
@@ -34,17 +32,17 @@ class ConsoleReportGeneratorTest extends BaseReportGeneratorCase
     }
 
     /**
-     * It should change the precision
+     * It should change the precision.
      */
     public function testWithPrecision()
     {
         $this->executeReport($this->getResults(), array(
-            'precision' => 2
+            'precision' => 2,
         ));
     }
 
     /**
-     * It should change aggregate iterations
+     * It should change aggregate iterations.
      */
     public function testWithAggregateIterations()
     {
@@ -53,4 +51,3 @@ class ConsoleReportGeneratorTest extends BaseReportGeneratorCase
         ));
     }
 }
-

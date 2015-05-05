@@ -11,14 +11,13 @@
 
 namespace PhpBench\Console\Command;
 
-use PhpBench\Console\Command\BenchRunCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class RunCommandTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * It should run when given a path
+     * It should run when given a path.
      */
     public function testCommand()
     {
@@ -30,7 +29,7 @@ class RunCommandTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should run and generate a named report
+     * It should run and generate a named report.
      */
     public function testCommandWithReport()
     {
@@ -43,7 +42,7 @@ class RunCommandTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should run and generate a report configuration
+     * It should run and generate a report configuration.
      */
     public function testCommandWithReportConfiguration()
     {
@@ -56,7 +55,7 @@ class RunCommandTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should fail if an unknown report name is given
+     * It should fail if an unknown report name is given.
      *
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Unknown report generator
@@ -72,7 +71,7 @@ class RunCommandTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should fail if an invalid report configuration is given
+     * It should fail if an invalid report configuration is given.
      *
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Could not decode JSON string

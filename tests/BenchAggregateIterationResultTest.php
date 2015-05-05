@@ -11,9 +11,6 @@
 
 namespace PhpBench;
 
-use Symfony\Component\Finder\Finder;
-use PhpBench\BenchAggregateIterationResult;
-
 class BenchAggregateIterationResultTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
@@ -23,7 +20,7 @@ class BenchAggregateIterationResultTest extends \PHPUnit_Framework_TestCase
 
         $this->result = new BenchAggregateIterationResult(array(
             $this->iteration1->reveal(),
-            $this->iteration2->reveal()
+            $this->iteration2->reveal(),
         ), array('config' => 'param'));
 
         $this->iteration1->getTime()->willReturn(10);
@@ -31,18 +28,18 @@ class BenchAggregateIterationResultTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should return an array of times
+     * It should return an array of times.
      */
     public function testGetTimes()
     {
         $times = $this->result->getTimes();
         $this->assertEquals(array(
-            10, 4
+            10, 4,
         ), $times);
     }
 
     /**
-     * It should return the total time
+     * It should return the total time.
      */
     public function testGetTotalTime()
     {
@@ -51,7 +48,7 @@ class BenchAggregateIterationResultTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should return the average time
+     * It should return the average time.
      */
     public function testGetAverageTime()
     {
@@ -60,7 +57,7 @@ class BenchAggregateIterationResultTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should return the min time
+     * It should return the min time.
      */
     public function getMinTime()
     {
@@ -69,7 +66,7 @@ class BenchAggregateIterationResultTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should return the max time
+     * It should return the max time.
      */
     public function getMaxTime()
     {
@@ -77,4 +74,3 @@ class BenchAggregateIterationResultTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(10, $max);
     }
 }
-

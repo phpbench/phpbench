@@ -11,14 +11,11 @@
 
 namespace PhpBench\Functional\ReportGenerator;
 
-use PhpBench\Console\Command\BenchRunCommand;
-use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\Finder\Finder;
-use PhpBench\BenchFinder;
-use PhpBench\BenchSubjectBuilder;
-use PhpBench\BenchRunner;
 use PhpBench\BenchCaseCollectionResult;
+use PhpBench\BenchFinder;
+use PhpBench\BenchRunner;
+use PhpBench\BenchSubjectBuilder;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class BaseReportGeneratorCase extends \PHPUnit_Framework_TestCase
