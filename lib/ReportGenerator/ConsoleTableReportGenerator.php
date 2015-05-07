@@ -18,31 +18,18 @@ use PhpBench\BenchReportGenerator;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use PhpBench\BenchSubjectResult;
+use PhpBench\ReportGenerator\BaseTabularReportGenerator;
 
-class ConsoleTableReportGenerator implements BenchReportGenerator
+class ConsoleTableReportGenerator extends BaseTabularReportGenerator
 {
-    private $output;
-    private $precision;
-
     public function __construct(OutputInterface $output)
     {
         $this->output = $output;
     }
 
-    public function configure(OptionsResolver $options)
+    public function doGenerate(BenchCaseCollectionResult $collection, array $options)
     {
-        $options->setDefaults(array(
-            'aggregate_iterations' => false,
-            'precision' => 8,
-        ));
-
-        $options->setAllowedTypes('aggregate_iterations', 'boolean');
-        $options->setAllowedTypes('precision', 'int');
-    }
-
-    public function generate(BenchCaseCollectionResult $collection, array $options)
-    {
-        $this->precision = $options['precision'];
         foreach ($collection->getCaseResults() as $case) {
             foreach ($case->getSubjectResults() as $subject) {
                 $this->output->writeln(sprintf(
@@ -52,66 +39,30 @@ class ConsoleTableReportGenerator implements BenchReportGenerator
                     $subject->getSubject()->getDescription()
                 ));
 
-                $table = new Table($this->output);
+                $data = $this->prepareData($subject, $options);
+                $this->renderData($data);
 
-                if (false === $options['aggregate_iterations']) {
-                    $table->setHeaders(array(
-                        '#',
-                        'Params',
-                        'Time',
-                    ));
-                } else {
-                    $table->setHeaders(array(
-                        '# Itns.',
-                        'Params',
-                        'Av.',
-                        'Min',
-                        'Max',
-                        'Total',
-                    ));
-                }
-
-                $aggregates = $subject->getAggregateIterationResults();
-
-                $rows = array();
-                foreach ($aggregates as $aggregate) {
-                    foreach ($aggregate->getIterations() as $iteration) {
-                        if (false === $options['aggregate_iterations']) {
-                            $this->addIteration($iteration, $rows);
-                        }
-                    }
-
-                    if (true === $options['aggregate_iterations']) {
-                        $this->addAggregateIteration($aggregate, $rows);
-                    }
-                }
-
-                $table->setRows($rows);
-
-                $table->render();
                 $this->output->writeln('');
             }
         }
     }
 
-    private function addIteration(BenchIteration $iteration, &$rows)
+    private function renderData(array $data)
     {
-        $rows[] = array(
-            $iteration->getIndex() + 1,
-            json_encode($iteration->getParameters()),
-            number_format($iteration->getTime(), $this->precision),
-        );
-    }
+        $table = new Table($this->output);
 
-    private function addAggregateIteration(BenchAggregateIterationResult $aggregate, &$rows)
-    {
-        $rows[] = array(
-            count($aggregate->getIterations()),
-            json_encode($aggregate->getParameters()),
-            number_format($aggregate->getAverageTime(), $this->precision),
-            number_format($aggregate->getMinTime(), $this->precision),
-            number_format($aggregate->getMaxTime(), $this->precision),
-            number_format($aggregate->getTotalTime(), $this->precision),
-        );
+        $firstRow = reset($data);
+
+        if (!$firstRow) {
+            return;
+        }
+
+        $table->setHeaders(array_keys($firstRow));
+
+        foreach ($data as $row) {
+            $table->addRow($row);
+        }
+
+        $table->render();
     }
 }
