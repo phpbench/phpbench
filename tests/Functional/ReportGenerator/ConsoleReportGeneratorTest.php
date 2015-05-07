@@ -50,4 +50,14 @@ class ConsoleReportGeneratorTest extends BaseReportGeneratorCase
             'aggregate_iterations' => true,
         ));
     }
+
+    /**
+     * It should allow explode_param.
+     */
+    public function testWithExplodeParam()
+    {
+        $this->executeReport($this->getResults(), array(
+            'explode_param' => 'foo',
+        ));
+    }
 }

@@ -27,6 +27,11 @@ class BenchAggregateIterationResult
         return $this->iterations;
     }
 
+    public function getIterationCount()
+    {
+        return count($this->iterations);
+    }
+
     public function getParameters()
     {
         return $this->parameters;
