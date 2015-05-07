@@ -110,9 +110,11 @@ class BenchRunner
             $case->$beforeMethodName($iteration);
         }
 
+        // this is what it is all about ...
         $start = microtime(true);
         $case->{$subject->getMethodName()}($iteration);
         $end = microtime(true);
+        // end of what it is all about
 
         $iteration->setTime($end - $start);
     }
