@@ -11,15 +11,9 @@
 
 namespace PhpBench\ReportGenerator;
 
-use PhpBench\BenchAggregateIterationResult;
 use PhpBench\BenchCaseCollectionResult;
-use PhpBench\BenchIteration;
-use PhpBench\BenchReportGenerator;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use PhpBench\BenchSubjectResult;
-use PhpBench\ReportGenerator\BaseTabularReportGenerator;
 
 class ConsoleTableReportGenerator extends BaseTabularReportGenerator
 {

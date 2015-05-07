@@ -52,7 +52,7 @@ class ConsoleReportGeneratorTest extends BaseReportGeneratorCase
     }
 
     /**
-     * It should allow explode_param
+     * It should allow explode_param.
      */
     public function testWithExplodeParam()
     {

@@ -11,14 +11,10 @@
 
 namespace PhpBench\ReportGenerator;
 
-use PhpBench\BenchAggregateIterationResult;
 use PhpBench\BenchCaseCollectionResult;
-use PhpBench\BenchIteration;
 use PhpBench\BenchReportGenerator;
-use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use PhpBench\BenchSubjectResult;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class BaseTabularReportGenerator implements BenchReportGenerator
 {
@@ -38,6 +34,7 @@ abstract class BaseTabularReportGenerator implements BenchReportGenerator
     public function generate(BenchCaseCollectionResult $collection, array $options)
     {
         $this->precision = $options['precision'];
+
         return $this->doGenerate($collection, $options);
     }
 
@@ -144,7 +141,7 @@ abstract class BaseTabularReportGenerator implements BenchReportGenerator
                 if ($key === 'time') {
                     foreach ($xseries as $extractName => $extractParam) {
                         $time = $extractParam[$i];
-                        $newRow[$param . ':' .$extractName] = $time;
+                        $newRow[$param . ':' . $extractName] = $time;
                     }
                 } else {
                     $newRow[$key] = $value;
@@ -157,4 +154,3 @@ abstract class BaseTabularReportGenerator implements BenchReportGenerator
         return $data;
     }
 }
-
