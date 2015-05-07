@@ -14,10 +14,12 @@ namespace PhpBench;
 class BenchSubjectBuilder
 {
     private $parser;
+    private $filter;
 
-    public function __construct()
+    public function __construct($filter = null)
     {
         $this->parser = new BenchParser();
+        $this->filter = $filter;
     }
 
     public function buildSubjects(BenchCase $case)
@@ -28,6 +30,10 @@ class BenchSubjectBuilder
         $subjects = array();
         foreach ($methods as $method) {
             if (0 !== strpos($method->getName(), 'bench')) {
+                continue;
+            }
+
+            if ($this->filter && !preg_match('{' . $this->filter . '}', $method->getName())) {
                 continue;
             }
 

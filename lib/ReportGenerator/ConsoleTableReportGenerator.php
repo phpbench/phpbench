@@ -27,7 +27,7 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
         foreach ($collection->getCaseResults() as $case) {
             foreach ($case->getSubjectResults() as $subject) {
                 $this->output->writeln(sprintf(
-                    '<comment>%s</comment><info>#</info><comment>%s()</comment>: %s',
+                    '<comment>%s#%s()</comment>: %s',
                     get_class($case->getCase()),
                     $subject->getSubject()->getMethodName(),
                     $subject->getSubject()->getDescription()

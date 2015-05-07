@@ -141,7 +141,7 @@ abstract class BaseTabularReportGenerator implements BenchReportGenerator
                 if ($key === 'time') {
                     foreach ($xseries as $extractName => $extractParam) {
                         $time = $extractParam[$i];
-                        $newRow[$param . ':' . $extractName] = $time;
+                        $newRow[$param . '-' . $extractName] = $time;
                     }
                 } else {
                     $newRow[$key] = $value;

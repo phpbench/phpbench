@@ -25,6 +25,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use PhpBench\ReportGenerator\XmlTableReportGenerator;
 
 class BenchRunCommand extends Command
 {
@@ -42,6 +43,7 @@ EOT
         );
         $this->addArgument('path', InputArgument::REQUIRED, 'Path to benchmark(s)');
         $this->addOption('report', array(), InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Report name or configuration in JSON format');
+        $this->addOption('filter', null, InputOption::VALUE_REQUIRED, 'Filter bench methods');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
@@ -51,14 +53,22 @@ EOT
         $reportConfigs = $this->normalizeReportConfig($input->getOption('report'));
 
         $path = $input->getArgument('path');
-        $results = $this->executeBenchmarks($output, $path);
+        $filter = $input->getOption('filter');
+
+        $results = $this->executeBenchmarks($output, $path, $filter);
+        $output->writeln('');
+
         $this->generateReports($output, $results, $reportConfigs);
     }
 
     private function generateReports(OutputInterface $output, BenchCaseCollectionResult $results, $reportConfigs)
     {
+        $output->writeln('Generating reports...');
+        $output->writeln('');
+
         $generators = array(
             'console_table' => new ConsoleTableReportGenerator($output),
+            'xml_table' => new XmlTableReportGenerator($output),
         );
 
         foreach ($reportConfigs as $reportName => $reportConfig) {
@@ -75,6 +85,8 @@ EOT
             $report = $generators[$reportName];
             $report->configure($options);
 
+            $output->writeln(sprintf('>> %s >>', $reportName));
+            $output->writeln('');
             try {
                 $reportConfig = $options->resolve($reportConfig);
             } catch (UndefinedOptionsException $e) {
@@ -121,7 +133,7 @@ EOT
         return $configs;
     }
 
-    private function executeBenchmarks(OutputInterface $output, $path)
+    private function executeBenchmarks(OutputInterface $output, $path, $filter)
     {
         $finder = new Finder();
 
@@ -141,7 +153,7 @@ EOT
         }
 
         $benchFinder = new BenchFinder($finder);
-        $subjectBuilder = new BenchSubjectBuilder();
+        $subjectBuilder = new BenchSubjectBuilder($filter);
         $progressLogger = new PhpUnitProgressLogger($output);
 
         $benchRunner = new BenchRunner(
