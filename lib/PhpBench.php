@@ -11,6 +11,7 @@
 
 namespace PhpBench;
 
-interface BenchCase
+class PhpBench
 {
+    const VERSION = '0.1';
 }

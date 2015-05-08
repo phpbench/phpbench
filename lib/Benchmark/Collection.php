@@ -11,11 +11,17 @@
 
 namespace PhpBench;
 
-use Symfony\Component\OptionsResolver\OptionsResolver;
-
-interface BenchReportGenerator
+class ClassCollection
 {
-    public function configure(OptionsResolver $options);
+    private $benchmarks;
 
-    public function generate(BenchCaseCollectionResult $collection, array $config);
+    public function __construct(array $benchmarks)
+    {
+        $this->benchmarks = $benchmarks;
+    }
+
+    public function getBenchmarks()
+    {
+        return $this->benchmarks;
+    }
 }

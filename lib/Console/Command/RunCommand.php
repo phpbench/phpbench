@@ -27,7 +27,7 @@ use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use PhpBench\ReportGenerator\XmlTableReportGenerator;
 
-class BenchRunCommand extends Command
+class RunCommand extends Command
 {
     public function configure()
     {
@@ -43,12 +43,12 @@ EOT
         );
         $this->addArgument('path', InputArgument::REQUIRED, 'Path to benchmark(s)');
         $this->addOption('report', array(), InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Report name or configuration in JSON format');
-        $this->addOption('filter', null, InputOption::VALUE_REQUIRED, 'Filter bench methods');
+        $this->addOption('filter', null, InputOption::VALUE_REQUIRED, 'Filter subject(s) to run');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('<info>Running benchmarking suite</info>');
+        $output->writeln('<info>Running benchmark suite</info>');
         $output->writeln('');
         $reportConfigs = $this->normalizeReportConfig($input->getOption('report'));
 
@@ -66,7 +66,7 @@ EOT
         $output->writeln('');
     }
 
-    private function generateReports(OutputInterface $output, BenchCaseCollectionResult $results, $reportConfigs)
+    private function generateReports(OutputInterface $output, Collection $results, $reportConfigs)
     {
         $output->writeln('Generating reports...');
         $output->writeln('');

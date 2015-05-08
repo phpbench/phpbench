@@ -11,13 +11,6 @@
 
 namespace PhpBench;
 
-interface BenchProgressLogger
+interface Benchmark
 {
-    public function caseEnd(BenchCase $case);
-
-    public function caseStart(BenchCase $case);
-
-    public function subjectEnd(BenchSubject $case);
-
-    public function subjectStart(BenchSubject $case);
 }

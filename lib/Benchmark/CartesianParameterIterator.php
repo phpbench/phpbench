@@ -11,7 +11,7 @@
 
 namespace PhpBench;
 
-class BenchCartesianParamIterator implements \Iterator
+class CartesianParamIterator implements \Iterator
 {
     private $sets;
     private $index = 0;

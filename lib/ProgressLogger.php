@@ -11,7 +11,13 @@
 
 namespace PhpBench;
 
-class BenchPhp
+interface ProgressLogger
 {
-    const VERSION = '0.1';
+    public function caseEnd(BenchCase $case);
+
+    public function caseStart(BenchCase $case);
+
+    public function subjectEnd(BenchSubject $case);
+
+    public function subjectStart(BenchSubject $case);
 }

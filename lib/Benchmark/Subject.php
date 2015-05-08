@@ -11,7 +11,7 @@
 
 namespace PhpBench;
 
-class BenchSubject
+class Subject
 {
     private $methodName;
     private $beforeMethods;

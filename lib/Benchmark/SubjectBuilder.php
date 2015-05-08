@@ -11,6 +11,8 @@
 
 namespace PhpBench;
 
+use PhpBench\Benchmark;
+
 class BenchSubjectBuilder
 {
     private $parser;
@@ -22,7 +24,7 @@ class BenchSubjectBuilder
         $this->filter = $filter;
     }
 
-    public function buildSubjects(BenchCase $case)
+    public function buildSubjects(Benchmark $case)
     {
         $reflection = new \ReflectionClass(get_class($case));
         $methods = $reflection->getMethods();

@@ -11,7 +11,7 @@
 
 namespace PhpBench;
 
-class BenchParser
+class Parser
 {
     public function parseMethodDoc($methodDoc)
     {

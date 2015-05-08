@@ -13,7 +13,7 @@ namespace PhpBench;
 
 use Symfony\Component\Finder\Finder;
 
-class BenchFinder
+class BenchmarkFinder
 {
     private $finder;
 
@@ -38,7 +38,7 @@ class BenchFinder
             $cases[] = new $classFqn();
         }
 
-        return new BenchCaseCollection($cases);
+        return new Collection($cases);
     }
 
     /**
