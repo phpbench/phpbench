@@ -55,10 +55,15 @@ EOT
         $path = $input->getArgument('path');
         $filter = $input->getOption('filter');
 
+        $startTime = microtime(true);
         $results = $this->executeBenchmarks($output, $path, $filter);
+
         $output->writeln('');
 
         $this->generateReports($output, $results, $reportConfigs);
+
+        $output->writeln(sprintf('Done (%s)', number_format(microtime(true) - $startTime, 6)));
+        $output->writeln('');
     }
 
     private function generateReports(OutputInterface $output, BenchCaseCollectionResult $results, $reportConfigs)
@@ -146,7 +151,6 @@ EOT
 
         if (is_dir($path)) {
             $finder->in($path);
-            $finder->name('*Case.php');
         } else {
             $finder->in(dirname($path));
             $finder->name(basename($path));

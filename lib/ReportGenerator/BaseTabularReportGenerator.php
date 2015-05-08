@@ -24,6 +24,8 @@ abstract class BaseTabularReportGenerator implements BenchReportGenerator
             'aggregate_iterations' => false,
             'precision' => 8,
             'explode_param' => null,
+            'memory' => false,
+            'memory_inc' => false,
         ));
 
         $options->setAllowedTypes('aggregate_iterations', 'boolean');
@@ -56,6 +58,10 @@ abstract class BaseTabularReportGenerator implements BenchReportGenerator
                     $options['aggregate_iterations'] ? $aggregateResult->getAverageTime() : $iteration->getTime(),
                     $this->precision
                 );
+                $row['memory'] = number_format($iteration->getMemory());
+                $row['memory_diff'] = ($iteration->getMemoryDiff() > 0 ? '+' : '') . number_format($iteration->getMemoryDiff());
+                $row['memory_inc'] = number_format($iteration->getMemoryInclusive());
+                $row['memory_diff_inc'] = ($iteration->getMemoryDiffInclusive() > 0 ? '+' : '') . number_format($iteration->getMemoryDiffInclusive());
                 $row['min_time'] = number_format($aggregateResult->getMinTime(), $this->precision);
                 $row['max_time'] = number_format($aggregateResult->getMaxTime(), $this->precision);
                 $row['total_time'] = number_format($aggregateResult->getTotalTime(), $this->precision);
@@ -84,8 +90,22 @@ abstract class BaseTabularReportGenerator implements BenchReportGenerator
 
             if ($options['aggregate_iterations']) {
                 unset($row['iter']);
+                unset($row['memory']);
+                unset($row['memory_inc']);
+                unset($row['memory_diff']);
+                unset($row['memory_diff_inc']);
             } else {
                 unset($row['iters']);
+            }
+
+            if (false === $options['memory']) {
+                unset($row['memory']);
+                unset($row['memory_diff']);
+            }
+
+            if (false === $options['memory_inc']) {
+                unset($row['memory_inc']);
+                unset($row['memory_diff_inc']);
             }
         }
 

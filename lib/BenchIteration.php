@@ -13,9 +13,13 @@ namespace PhpBench;
 
 class BenchIteration
 {
-    protected $index;
-    protected $parameters;
-    protected $time;
+    private $index;
+    private $parameters;
+    private $time;
+    private $memory;
+    private $memoryDiff;
+    private $memoryInclusive;
+    private $memoryDiffInclusive;
 
     public function __construct($index, $parameters)
     {
@@ -52,5 +56,45 @@ class BenchIteration
     public function setTime($time)
     {
         $this->time = $time;
+    }
+
+    public function getMemory() 
+    {
+        return $this->memory;
+    }
+    
+    public function setMemory($memory)
+    {
+        $this->memory = $memory;
+    }
+
+    public function getMemoryDiff() 
+    {
+        return $this->memoryDiff;
+    }
+    
+    public function setMemoryDiff($memoryDiff)
+    {
+        $this->memoryDiff = $memoryDiff;
+    }
+
+    public function getMemoryInclusive() 
+    {
+        return $this->memoryInclusive;
+    }
+    
+    public function setMemoryInclusive($memoryInclusive)
+    {
+        $this->memoryInclusive = $memoryInclusive;
+    }
+
+    public function getMemoryDiffInclusive() 
+    {
+        return $this->memoryDiffInclusive;
+    }
+    
+    public function setMemoryDiffInclusive($memoryDiffInclusive)
+    {
+        $this->memoryDiffInclusive = $memoryDiffInclusive;
     }
 }
