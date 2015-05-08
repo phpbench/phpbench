@@ -18,6 +18,8 @@ class BenchRunner
     private $logger;
     private $finder;
     private $subjectBuilder;
+    private $subjectMemoryTotal;
+    private $subjectLastMemoryInclusive;
 
     public function __construct(
         BenchFinder $finder,
@@ -62,6 +64,9 @@ class BenchRunner
 
     private function runSubject(BenchCase $case, BenchSubject $subject)
     {
+        $this->subjectMemoryTotal = 0;
+        $this->subjectLastMemoryInclusive = memory_get_usage();
+
         $paramProviderMethods = $subject->getParamProviders();
         $parameterSets = array();
 
@@ -71,9 +76,7 @@ class BenchRunner
                     'Unknown param provider "%s" for bench case "%s"',
                     $paramProviderMethod, get_class($case)
                 ));
-            }
-
-            $parameterSets[] = $case->$paramProviderMethod();
+            } $parameterSets[] = $case->$paramProviderMethod();
         }
 
         if (!$parameterSets) {
@@ -110,12 +113,21 @@ class BenchRunner
             $case->$beforeMethodName($iteration);
         }
 
-        // this is what it is all about ...
+        $startMemory = memory_get_usage();
         $start = microtime(true);
         $case->{$subject->getMethodName()}($iteration);
         $end = microtime(true);
-        // end of what it is all about
+        $endMemory = memory_get_usage();
+
+        $memoryDiff = $endMemory - $startMemory;
+        $this->subjectMemoryTotal += $memoryDiff;
+        $memoryDiffInclusive = $endMemory - $this->subjectLastMemoryInclusive;
+        $this->subjectLastMemoryInclusive = $endMemory;
 
         $iteration->setTime($end - $start);
+        $iteration->setMemory($this->subjectMemoryTotal);
+        $iteration->setMemoryDiff($memoryDiff);
+        $iteration->setMemoryInclusive($endMemory);
+        $iteration->setMemoryDiffInclusive($memoryDiffInclusive);
     }
 }
