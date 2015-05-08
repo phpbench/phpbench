@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench;
+namespace PhpBench\Benchmark;
 
 use PhpBench\Benchmark;
 

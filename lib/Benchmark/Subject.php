@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench;
+namespace PhpBench\Benchmark;
 
 class Subject
 {
@@ -60,7 +60,7 @@ class Subject
         return $this->methodName;
     }
 
-    public function addIteration(BenchIteration $iteration)
+    public function addIteration(Iteration $iteration)
     {
         $this->iterations[] = $iteration;
     }
