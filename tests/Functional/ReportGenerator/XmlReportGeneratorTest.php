@@ -13,13 +13,14 @@ namespace PhpBench\Functional\ReportGenerator;
 
 use PhpBench\ReportGenerator\ConsoleTableReportGenerator;
 use Symfony\Component\Console\Output\NullOutput;
+use PhpBench\ReportGenerator\XmlTableReportGenerator;
 
-class ConsoleReportGeneratorTest extends BaseTabularReportGeneratorCase
+class XmlReportGeneratorTest extends BaseTabularReportGeneratorCase
 {
     public function getReport()
     {
         $output = new NullOutput();
 
-        return new ConsoleTableReportGenerator($output);
+        return new XmlTableReportGenerator($output);
     }
 }
