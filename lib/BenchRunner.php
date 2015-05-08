@@ -83,10 +83,10 @@ class BenchRunner
             $parameterSets = array(array(array()));
         }
 
-        $matrix = new BenchCartesianParamIterator($parameterSets);
+        $paramsIterator = new BenchCartesianParamIterator($parameterSets);
         $iterationResults = array();
 
-        foreach ($matrix as $parameters) {
+        foreach ($paramsIterator as $parameters) {
             $iterations = array();
             for ($index = 0; $index < $subject->getNbIterations(); $index++) {
                 $iteration = new BenchIteration($index, $parameters);
