@@ -31,7 +31,7 @@ class BenchmarkFinder
             $classFqn = static::getClassNameFromFile($file->getRealPath());
             $refl = new \ReflectionClass($classFqn);
 
-            if (!$refl->isSubclassOf('PhpBench\\BenchCase')) {
+            if (!$refl->isSubclassOf('PhpBench\\Benchmark')) {
                 continue;
             }
 

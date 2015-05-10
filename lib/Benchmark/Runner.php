@@ -12,6 +12,7 @@
 namespace PhpBench\Benchmark;
 
 use PhpBench\ProgressLogger\NullProgressLogger;
+use PhpBench\ProgressLogger;
 
 class Runner
 {
@@ -20,62 +21,54 @@ class Runner
     private $subjectBuilder;
     private $subjectMemoryTotal;
     private $subjectLastMemoryInclusive;
-    private $resultBuilder;
     private $dom;
 
     public function __construct(
         Finder $finder,
         SubjectBuilder $subjectBuilder,
-        ProgressLogger $logger = null,
-        ResultBuilder $resultBuilder = null
+        ProgressLogger $logger = null
     ) {
         $this->logger = $logger ?: new NullProgressLogger();
         $this->finder = $finder;
         $this->subjectBuilder = $subjectBuilder;
-        $this->dom = new \DOMDocument('1.0');
     }
 
     public function runAll()
     {
         $collection = $this->finder->buildCollection();
 
-        $phpbenchEl = $this->dom->createElement('phpbench');
-        $phpbenchEl->setAttribute('version', PhpBench::VERSION);
-        $phpbenchEl->setAttribute('date', date('Y-m-d H:i:s'));
-        $this->dom->addChild($phpbenchEl);
+        $benchmarkResults = array();
 
         foreach ($collection->getCases() as $benchmark) {
             $this->logger->benchmarkStart($benchmark);
-            $benchmarkEl = $this->run($benchmark);
+            $benchmarkResults[] = $this->run($benchmark);
             $this->logger->benchmarkEnd($benchmark);
-            $phpbenchEl->addChild($benchmarkEl);
         }
 
-        return $this->dom;
+        $benchmarkSuiteResult = new BenchmarkSuiteResult($benchmarkResults);
+
+        return $benchmarkSuiteResult;
     }
 
     private function run(Benchmark $benchmark)
     {
-        $benchmarkEl = $this->dom->createElement('benchmark');
-        $benchmarkEl->setAttribute('class', get_class($benchmark));
-
         $subjects = $this->subjectBuilder->buildSubjects($benchmark);
+        $subjectResults = array();
 
         foreach ($subjects as $subject) {
             $this->logger->subjectStart($subject);
-            $subjectEl = $this->runSubject($benchmark, $subject);
+            $subjectResults[] = $this->runSubject($benchmark, $subject);
             $this->logger->subjectEnd($subject);
-            $benchmarkEl->addChild($subjectEl);
         }
 
-        return $benchmarkEl;
+        $benchmarkResult = new BenchmarkResult($benchmark, $subjectResults);
+
+        return $benchmarkResult;
     }
 
     private function runSubject(Benchmark $benchmark, Subject $subject)
     {
-        $subjectEl = $this->dom->createElement('subject');
-        $subjectEl->setAttribute('method', $subject->getMethodName());
-        $subjectEl->setAttribute('description', $subject->getDescription());
+        $subjectResult = new SubjectResult($subject);
 
         $this->subjectMemoryTotal = 0;
         $this->subjectLastMemoryInclusive = memory_get_usage();
@@ -98,21 +91,23 @@ class Runner
 
         $paramsIterator = new CartesianParameterIterator($parameterSets);
 
+        $iterationResults = array();
         foreach ($paramsIterator as $parameters) {
+            $iterationResults = array();
             for ($index = 0; $index < $subject->getNbIterations(); $index++) {
                 $iteration = new Iteration($index, $parameters);
-                $iterationEl = $this->runIteration($benchmark, $subject, $iteration);
-                $subjectEl->appendChild($iterationEl);
+                $iterationResults[] = $this->runIteration($benchmark, $subject, $iteration);
             }
+            $iterationsResults[] = new IterationsResults($iterationResults);
         }
 
-        return $subjectEl;
+        $subjectResult = new SubjectResult($subject, $iterationsResults);
+
+        return $subjectResult;
     }
 
     private function runIteration(BenchCase $benchmark, BenchSubject $subject, BenchIteration $iteration)
     {
-        $iterationEl = $this->dom->createElement('iteration');
-
         foreach ($subject->getBeforeMethods() as $beforeMethodName) {
             if (!method_exists($benchmark, $beforeMethodName)) {
                 throw new Exception\InvalidArgumentException(sprintf(
@@ -134,12 +129,13 @@ class Runner
         $memoryDiffInclusive = $endMemory - $this->subjectLastMemoryInclusive;
         $this->subjectLastMemoryInclusive = $endMemory;
 
-        $iterationEl->setAttribute('time', $end - $start);
-        $iterationEl->setAttribute('subject-memory-total', $this->subjectMemoryTotal);
-        $iterationEl->setAttribute('subject-memory-diff', $memoryDiff);
-        $iterationEl->setAttribute('memory-inclusive', $endMemory);
-        $iterationEl->setAttribute('memory-diff-inclusive', $memoryDiffInclusive);
+        $statistics['time'] = $end - $start;
+        $statistics['subject_memory_total'] = $this->subjectMemoryTotal;
+        $statistics['subject_memory_diff'] = $memoryDiff;
+        $statistics['memory_inclusive'] = $endMemory;
+        $statistics['memory_diff_inclusive'] = $memoryDiffInclusive;
+        $iterationResult = new IterationResult($iteration, $statistics);
 
-        return $iterationEl;
+        return $iterationResult;
     }
 }
