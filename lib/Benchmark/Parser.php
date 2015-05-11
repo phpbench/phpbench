@@ -11,6 +11,8 @@
 
 namespace PhpBench\Benchmark;
 
+use PhpBench\Exception\InvalidArgumentException;
+
 class Parser
 {
     public function parseMethodDoc($methodDoc)
@@ -34,7 +36,7 @@ class Parser
             $annotationValue = $matches[2];
 
             if (!isset($meta[$annotationName])) {
-                throw new Exception\InvalidArgumentException(sprintf(
+                throw new InvalidArgumentException(sprintf(
                     'Unknown annotation "%s"',
                     $annotationName
                 ));
@@ -44,13 +46,13 @@ class Parser
         }
 
         if (count($meta['description']) > 1) {
-            throw new Exception\InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Method "%s" in bench case "%s" cannot have more than one description'
             );
         }
 
         if (count($meta['iterations']) > 1) {
-            throw new Exception\InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Cannot have more than one iterations declaration'
             );
         }

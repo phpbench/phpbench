@@ -11,7 +11,7 @@
 
 namespace PhpBench\Benchmark;
 
-class ClassCollection
+class Collection
 {
     private $benchmarks;
 

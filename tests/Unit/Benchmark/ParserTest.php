@@ -9,16 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench;
+namespace PhpBench\Tests\Benchmark;
 
-require_once __DIR__ . '/assets/parsertest/ParserCase.php';
-require_once __DIR__ . '/assets/parsertest/ParserCaseInvalidAnnotation.php';
+use PhpBench\Benchmark\Parser;
 
-class BenchParserTest extends \PHPUnit_Framework_TestCase
+require_once __DIR__ . '/parsertest/ParserCase.php';
+require_once __DIR__ . '/parsertest/ParserCaseInvalidAnnotation.php';
+
+class ParserTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->parser = new BenchParser();
+        $this->parser = new Parser();
     }
 
     /**
@@ -84,8 +86,18 @@ EOT
     /*
      * It should throw an exception if more than one description annotation is present
      */
+    public function testNoDescription()
+    {
+        $this->markTestIncomplete('Do this');
+    }
+
 
     /*
      * It should thow an exception if more than one iterations annotation is present
      */
+    public function testMoreThatOneIterationAnnotation()
+    {
+        $this->markTestIncomplete('Do this');
+    }
+
 }

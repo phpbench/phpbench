@@ -13,7 +13,7 @@ namespace PhpBench\Benchmark;
 
 use Symfony\Component\Finder\Finder;
 
-class BenchmarkFinder
+class CollectionBuilder
 {
     private $finder;
 

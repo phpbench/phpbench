@@ -9,8 +9,15 @@
  * file that was distributed with this source code.
  */
 
-use PhpBench\BenchCase;
+use PhpBench\BenchIteration;
+use PhpBench\Benchmark;
 
-class FooTestCase2 implements BenchCase
+class ParserCaseInvalidAnnotation implements Benchmark
 {
+    /**
+     * @inasdld beforeSelectSql
+     */
+    public function benchSelectSql(BenchIteration $iteration)
+    {
+    }
 }

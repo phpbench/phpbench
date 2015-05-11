@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-use PhpBench\BenchCase;
 use PhpBench\BenchIteration;
+use PhpBench\Benchmark;
 
-class FooTestCase implements BenchCase
+class FooTestCase implements Benchmark
 {
     public function provideNodes()
     {

@@ -9,9 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench;
+namespace PhpBench\Tests;
 
-class BenchCartesianIteratorTest extends \PHPUnit_Framework_TestCase
+use PhpBench\Benchmark\CartesianParameterIterator;
+
+class CartesianParameterIteratorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * It should generate the cartestian product of all sets for each iteration.
@@ -20,7 +22,7 @@ class BenchCartesianIteratorTest extends \PHPUnit_Framework_TestCase
      */
     public function testIterate($parameterSets, $expected)
     {
-        $iterator = new BenchCartesianParamIterator($parameterSets);
+        $iterator = new CartesianParameterIterator($parameterSets);
 
         $result = array();
         foreach ($iterator as $parameters) {

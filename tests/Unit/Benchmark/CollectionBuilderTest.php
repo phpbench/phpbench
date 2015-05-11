@@ -9,17 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench;
+namespace PhpBench\Tests\Benchmark;
 
 use Symfony\Component\Finder\Finder;
+use PhpBench\Benchmark\CollectionBuilder;
 
-class BenchFinderTest extends \PHPUnit_Framework_TestCase
+class CollectionBuilderTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
         $finder = new Finder();
-        $finder->in(__DIR__ . '/assets/findertest');
-        $this->finder = new BenchFinder($finder);
+        $finder->in(__DIR__ . '/findertest');
+        $this->finder = new CollectionBuilder($finder);
     }
 
     /**
@@ -28,9 +29,9 @@ class BenchFinderTest extends \PHPUnit_Framework_TestCase
     public function testBuildCollection()
     {
         $collection = $this->finder->buildCollection();
-        $cases = $collection->getCases();
+        $cases = $collection->getBenchmarks();
 
         $this->assertCount(2, $cases);
-        $this->assertContainsOnlyInstancesOf('PhpBench\\BenchCase', $cases);
+        $this->assertContainsOnlyInstancesOf('PhpBench\\Benchmark', $cases);
     }
 }
