@@ -4,15 +4,15 @@ namespace PhpBench\Result;
 
 class SuiteResult
 {
-    private $benchmarks;
+    private $benchmarkResults;
 
-    public function __construct(array $benchmarks)
+    public function __construct(array $benchmarkResults)
     {
-        $this->benchmarks = $benchmarks;
+        $this->benchmarkResults = $benchmarkResults;
     }
 
-    public function getBenchmarks() 
+    public function getBenchmarkResults() 
     {
-        return $this->benchmarks;
+        return $this->benchmarkResults;
     }
 }

@@ -11,13 +11,16 @@
 
 namespace PhpBench;
 
+use PhpBench\Benchmark;
+use PhpBench\Benchmark\Subject;
+
 interface ProgressLogger
 {
-    public function caseEnd(BenchCase $case);
+    public function benchmarkEnd(Benchmark $case);
 
-    public function caseStart(BenchCase $case);
+    public function benchmarkStart(Benchmark $case);
 
-    public function subjectEnd(BenchSubject $case);
+    public function subjectEnd(Subject $case);
 
-    public function subjectStart(BenchSubject $case);
+    public function subjectStart(Subject $case);
 }

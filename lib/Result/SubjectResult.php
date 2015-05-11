@@ -2,6 +2,8 @@
 
 namespace PhpBench\Result;
 
+use PhpBench\Benchmark\Subject;
+
 class SubjectResult
 {
     private $subject;

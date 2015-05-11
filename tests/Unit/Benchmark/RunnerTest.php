@@ -9,21 +9,25 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench;
+namespace PhpBench\Tests\Benchmark;
 
-class BenchRunnerTest extends \PHPUnit_Framework_TestCase
+use PhpBench\Benchmark\Runner;
+use PhpBench\Benchmark;
+use PhpBench\Benchmark\Iteration;
+
+class RunnerTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->logger = $this->prophesize('PhpBench\\BenchProgressLogger');
-        $this->finder = $this->prophesize('PhpBench\\BenchFinder');
-        $this->subjectBuilder = $this->prophesize('PhpBench\\BenchSubjectBuilder');
-        $this->case = new BenchRunnerTestBenchCase();
-        $this->collection = $this->prophesize('PhpBench\\BenchCaseCollection');
-        $this->subject = $this->prophesize('PhpBench\\BenchSubject');
+        $this->logger = $this->prophesize('PhpBench\\ProgressLogger');
+        $this->collectionBuilder = $this->prophesize('PhpBench\\Benchmark\\CollectionBuilder');
+        $this->subjectBuilder = $this->prophesize('PhpBench\\Benchmark\\SubjectBuilder');
+        $this->case = new RunnerTestBenchCase();
+        $this->collection = $this->prophesize('PhpBench\\Benchmark\\Collection');
+        $this->subject = $this->prophesize('PhpBench\\Benchmark\\Subject');
 
-        $this->runner = new BenchRunner(
-            $this->finder->reveal(),
+        $this->runner = new Runner(
+            $this->collectionBuilder->reveal(),
             $this->subjectBuilder->reveal(),
             $this->logger->reveal()
         );
@@ -36,15 +40,15 @@ class BenchRunnerTest extends \PHPUnit_Framework_TestCase
     {
         $iterations = 1;
 
-        $this->finder->buildCollection()->willReturn($this->collection);
-        $this->collection->getCases()->willReturn(array(
+        $this->collectionBuilder->buildCollection()->willReturn($this->collection);
+        $this->collection->getBenchmarks()->willReturn(array(
             $this->case,
         ));
         $this->subjectBuilder->buildSubjects($this->case)->willReturn(array(
             $this->subject->reveal(),
         ));
         $this->subject->getNbIterations()->willReturn($iterations);
-        $this->subject->getParamProviders()->willReturn(array(
+        $this->subject->getParameterProviders()->willReturn(array(
             'paramSetOne',
             'paramSetTwo',
         ));
@@ -56,12 +60,12 @@ class BenchRunnerTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->case->called);
         $this->assertTrue($this->case->beforeCalled);
 
-        $this->assertInstanceOf('PhpBench\\BenchCaseCollectionResult', $result);
-        $this->assertEquals(1, count($result->getCaseResults()));
+        $this->assertInstanceOf('PhpBench\\Result\\SuiteResult', $result);
+        $this->assertEquals(1, count($result->getBenchmarkResults()));
     }
 }
 
-class BenchRunnerTestBenchCase implements BenchCase
+class RunnerTestBenchCase implements Benchmark
 {
     public $called = false;
     public $beforeCalled = false;
@@ -74,7 +78,7 @@ class BenchRunnerTestBenchCase implements BenchCase
         );
     }
 
-    public function beforeFoo(BenchIteration $iteration)
+    public function beforeFoo(Iteration $iteration)
     {
         $this->beforeCalled = true;
     }
@@ -86,7 +90,7 @@ class BenchRunnerTestBenchCase implements BenchCase
         );
     }
 
-    public function benchFoo(BenchIteration $iteration)
+    public function benchFoo(Iteration $iteration)
     {
         $this->called = true;
     }

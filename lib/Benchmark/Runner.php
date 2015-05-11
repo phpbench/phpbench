@@ -13,6 +13,15 @@ namespace PhpBench\Benchmark;
 
 use PhpBench\ProgressLogger\NullProgressLogger;
 use PhpBench\ProgressLogger;
+use PhpBench\Benchmark\CollectionBuilder;
+use PhpBench\Benchmark;
+use PhpBench\Result\SubjectResult;
+use PhpBench\Benchmark\Subject;
+use PhpBench\Benchmark\Iteration;
+use PhpBench\Result\IterationResult;
+use PhpBench\Result\IterationsResults;
+use PhpBench\Result\BenchmarkResult;
+use PhpBench\Result\SuiteResult;
 
 class Runner
 {
@@ -24,7 +33,7 @@ class Runner
     private $dom;
 
     public function __construct(
-        Finder $finder,
+        CollectionBuilder $finder,
         SubjectBuilder $subjectBuilder,
         ProgressLogger $logger = null
     ) {
@@ -39,13 +48,13 @@ class Runner
 
         $benchmarkResults = array();
 
-        foreach ($collection->getCases() as $benchmark) {
+        foreach ($collection->getBenchmarks() as $benchmark) {
             $this->logger->benchmarkStart($benchmark);
             $benchmarkResults[] = $this->run($benchmark);
             $this->logger->benchmarkEnd($benchmark);
         }
 
-        $benchmarkSuiteResult = new BenchmarkSuiteResult($benchmarkResults);
+        $benchmarkSuiteResult = new SuiteResult($benchmarkResults);
 
         return $benchmarkSuiteResult;
     }
@@ -68,8 +77,6 @@ class Runner
 
     private function runSubject(Benchmark $benchmark, Subject $subject)
     {
-        $subjectResult = new SubjectResult($subject);
-
         $this->subjectMemoryTotal = 0;
         $this->subjectLastMemoryInclusive = memory_get_usage();
 
@@ -91,7 +98,7 @@ class Runner
 
         $paramsIterator = new CartesianParameterIterator($parameterSets);
 
-        $iterationResults = array();
+        $iterationsResults = array();
         foreach ($paramsIterator as $parameters) {
             $iterationResults = array();
             for ($index = 0; $index < $subject->getNbIterations(); $index++) {
@@ -106,7 +113,7 @@ class Runner
         return $subjectResult;
     }
 
-    private function runIteration(BenchCase $benchmark, BenchSubject $subject, BenchIteration $iteration)
+    private function runIteration(Benchmark $benchmark, Subject $subject, Iteration $iteration)
     {
         foreach ($subject->getBeforeMethods() as $beforeMethodName) {
             if (!method_exists($benchmark, $beforeMethodName)) {

@@ -15,7 +15,7 @@ class Subject
 {
     private $methodName;
     private $beforeMethods;
-    private $paramProviders;
+    private $parameterProviders;
     private $nbIterations;
     private $description;
 
@@ -24,13 +24,13 @@ class Subject
     public function __construct(
         $methodName,
         $beforeMethods,
-        $paramProviders,
+        $parameterProviders,
         $nbIterations,
         $description
     ) {
         $this->methodName = $methodName;
         $this->beforeMethods = $beforeMethods;
-        $this->paramProviders = $paramProviders;
+        $this->parameterProviders = $parameterProviders;
         $this->nbIterations = $nbIterations;
         $this->description = $description;
     }
@@ -40,9 +40,9 @@ class Subject
         return $this->beforeMethods;
     }
 
-    public function getParamProviders()
+    public function getParameterProviders()
     {
-        return $this->paramProviders;
+        return $this->parameterProviders;
     }
 
     public function getNbIterations()

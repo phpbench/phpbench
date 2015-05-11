@@ -12,7 +12,7 @@
 use PhpBench\BenchIteration;
 use PhpBench\Benchmark;
 
-class ParserCase implements Benchmark
+cClass ParserCase implements Benchmark
 {
     /**
      * @beforeMethod beforeSelectSql

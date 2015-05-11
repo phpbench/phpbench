@@ -12,15 +12,16 @@
 namespace PhpBench\Benchmark;
 
 use PhpBench\Benchmark;
+use PhpBench\Benchmark\Parser;
 
-class BenchSubjectBuilder
+class SubjectBuilder
 {
     private $parser;
     private $filter;
 
     public function __construct($filter = null)
     {
-        $this->parser = new BenchParser();
+        $this->parser = new Parser();
         $this->filter = $filter;
     }
 
