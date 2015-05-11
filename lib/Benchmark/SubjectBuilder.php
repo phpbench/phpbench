@@ -13,6 +13,7 @@ namespace PhpBench\Benchmark;
 
 use PhpBench\Benchmark;
 use PhpBench\Benchmark\Parser;
+use PhpBench\Benchmark\Subject;
 
 class SubjectBuilder
 {
@@ -42,7 +43,7 @@ class SubjectBuilder
 
             $meta = $this->parser->parseMethodDoc($method->getDocComment());
 
-            $subjects[] = new BenchSubject(
+            $subjects[] = new Subject(
                 $method->getName(),
                 $meta['beforeMethod'],
                 $meta['paramProvider'],

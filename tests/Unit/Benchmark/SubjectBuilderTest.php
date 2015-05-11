@@ -9,16 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench;
+namespace PhpBench\Tests\Benchmark;
 
-require_once __DIR__ . '/assets/parsertest/ParserCase.php';
-require_once __DIR__ . '/assets/parsertest/ParserCaseInvalidAnnotation.php';
+use PhpBench\Benchmark\SubjectBuilder;
 
-class BenchSubjectBuilderTest extends \PHPUnit_Framework_TestCase
+require_once __DIR__ . '/parsertest/ParserCase.php';
+require_once __DIR__ . '/parsertest/ParserCaseInvalidAnnotation.php';
+
+class SubjectBuilderTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->parser = new BenchSubjectBuilder();
+        $this->parser = new SubjectBuilder();
     }
 
     /**
@@ -29,12 +31,12 @@ class BenchSubjectBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $case = new \ParserCase();
         $subjects = $this->parser->buildSubjects($case);
-        $this->assertContainsOnlyInstancesOf('PhpBench\\BenchSubject', $subjects);
+        $this->assertContainsOnlyInstancesOf('PhpBench\\Benchmark\\Subject', $subjects);
         $this->assertCount(2, $subjects);
         $subject = reset($subjects);
 
         $this->assertEquals(array('beforeSelectSql'), $subject->getBeforeMethods());
-        $this->assertEquals(array('provideNodes', 'provideColumns'), $subject->getParamProviders());
+        $this->assertEquals(array('provideNodes', 'provideColumns'), $subject->getParameterProviders());
         $this->assertEquals(3, $subject->getNbIterations());
         $this->assertInternalType('int', $subject->getNbIterations());
         $this->assertEquals('Run a select query', $subject->getDescription());
