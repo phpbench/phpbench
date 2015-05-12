@@ -41,7 +41,8 @@ foreach ($configPaths as $configPath) {
 
 use PhpBench\Console\Command\BenchRunCommand;
 use Symfony\Component\Console\Application;
+use PhpBench\Console\Command\RunCommand;
 
 $application = new Application();
-$application->add(new BenchRunCommand());
+$application->add(new RunCommand());
 $application->run();

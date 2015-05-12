@@ -20,6 +20,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use PhpBench\Benchmark\SubjectBuilder;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Benchmark\CollectionBuilder;
+use PhpBench\Result\SuiteResult;
 
 abstract class BaseReportGeneratorCase extends \PHPUnit_Framework_TestCase
 {
@@ -39,7 +40,7 @@ abstract class BaseReportGeneratorCase extends \PHPUnit_Framework_TestCase
         return $benchRunner->runAll();
     }
 
-    protected function executeReport(BenchCaseCollectionResult $results, array $options)
+    protected function executeReport(SuiteResult $results, array $options)
     {
         $resolver = new OptionsResolver();
         $report = $this->getReport();

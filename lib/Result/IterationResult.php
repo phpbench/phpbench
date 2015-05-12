@@ -17,4 +17,9 @@ class IterationResult
     {
         return $this->statistics;
     }
+
+    public function get($statisticName)
+    {
+        return $this->statistics[$statisticName];
+    }
 }

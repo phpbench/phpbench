@@ -22,6 +22,7 @@ use PhpBench\Result\IterationResult;
 use PhpBench\Result\IterationsResults;
 use PhpBench\Result\BenchmarkResult;
 use PhpBench\Result\SuiteResult;
+use PhpBench\Result\IterationsResult;
 
 class Runner
 {
@@ -104,14 +105,14 @@ class Runner
                 $iteration = new Iteration($index, $parameters);
                 $iterationResults[] = $this->runIteration($benchmark, $subject, $iteration);
             }
-            $iterationsResults[] = new IterationsResults($iterationResults, $parameters);
+            $iterationsResults[] = new IterationsResult($iterationResults, $parameters);
         }
 
         $subjectResult = new SubjectResult(
             $subject->getMethodName(),
             $subject->getDescription(),
             $iterationsResults
-        )
+        );
 
         return $subjectResult;
     }

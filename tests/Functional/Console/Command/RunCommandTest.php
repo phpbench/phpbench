@@ -26,7 +26,7 @@ class RunCommandTest extends \PHPUnit_Framework_TestCase
         ));
         $this->assertEquals(0, $tester->getStatusCode());
         $display = $tester->getDisplay();
-        $this->assertContains('Running benchmarking suite', $display);
+        $this->assertContains('Running benchmark suite', $display);
     }
 
     /**
@@ -90,7 +90,7 @@ class RunCommandTest extends \PHPUnit_Framework_TestCase
     private function runCommand($arguments)
     {
         $arguments = array_merge(array(
-            'path' => __DIR__ . '/benchmarks',
+            'path' => __DIR__ . '/../../benchmarks',
         ), $arguments);
 
         $application = new Application();

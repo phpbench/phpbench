@@ -16,6 +16,8 @@ use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use PhpBench\BenchPhp;
+use PhpBench\Result\SuiteResult;
+use PhpBench\PhpBench;
 
 class XmlTableReportGenerator extends BaseTabularReportGenerator
 {
@@ -36,11 +38,11 @@ class XmlTableReportGenerator extends BaseTabularReportGenerator
         ));
     }
 
-    public function doGenerate(BenchCaseCollectionResult $collection, array $options)
+    public function doGenerate(SuiteResult $suite, array $options)
     {
         $dom = new \DOMDocument('1.0');
         $rootEl = $dom->createElement('bench');
-        $rootEl->setAttribute('version', BenchPhp::VERSION);
+        $rootEl->setAttribute('version', PhpBench::VERSION);
         $dom->appendChild($rootEl);
         $outfile = $options['outfile'];
 
@@ -48,17 +50,17 @@ class XmlTableReportGenerator extends BaseTabularReportGenerator
             $dom->formatOutput = true;
         }
 
-        foreach ($collection->getCaseResults() as $case) {
-            $caseEl = $dom->createElement('case');
-            $caseEl->setAttribute('class', get_class($case->getCase()));
-            $rootEl->appendChild($caseEl);
+        foreach ($suite->getBenchmarkResults() as $benchmark) {
+            $benchmarkEl = $dom->createElement('benchmark');
+            $benchmarkEl->setAttribute('class', $benchmark->getClass());
+            $rootEl->appendChild($benchmarkEl);
 
-            foreach ($case->getSubjectResults() as $subject) {
+            foreach ($benchmark->getSubjectResults() as $subject) {
                 $data = $this->prepareData($subject, $options);
                 $subjectEl = $dom->createElement('subject');
-                $subjectEl->setAttribute('name', $subject->getSubject()->getMethodName());
-                $subjectEl->setAttribute('description', $subject->getSubject()->getDescription());
-                $caseEl->appendChild($subjectEl);
+                $subjectEl->setAttribute('name', $subject->getName());
+                $subjectEl->setAttribute('description', $subject->getDescription());
+                $benchmarkEl->appendChild($subjectEl);
 
                 foreach ($data as $iteration) {
                     $iterationEl = $dom->createElement('iteration');

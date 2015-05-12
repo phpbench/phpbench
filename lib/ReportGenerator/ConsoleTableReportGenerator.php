@@ -14,6 +14,7 @@ namespace PhpBench\ReportGenerator;
 use PhpBench\BenchCaseCollectionResult;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
+use PhpBench\Result\SuiteResult;
 
 class ConsoleTableReportGenerator extends BaseTabularReportGenerator
 {
@@ -22,15 +23,15 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
         $this->output = $output;
     }
 
-    public function doGenerate(BenchCaseCollectionResult $collection, array $options)
+    public function doGenerate(SuiteResult $suite, array $options)
     {
-        foreach ($collection->getCaseResults() as $case) {
-            foreach ($case->getSubjectResults() as $subject) {
+        foreach ($suite->getBenchmarkResults() as $benchmark) {
+            foreach ($benchmark->getSubjectResults() as $subject) {
                 $this->output->writeln(sprintf(
                     '<comment>%s#%s()</comment>: %s',
-                    get_class($case->getCase()),
-                    $subject->getSubject()->getMethodName(),
-                    $subject->getSubject()->getDescription()
+                    $benchmark->getClass(),
+                    $subject->getName(),
+                    $subject->getDescription()
                 ));
 
                 $data = $this->prepareData($subject, $options);

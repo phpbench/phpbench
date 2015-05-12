@@ -15,8 +15,11 @@ use PhpBench\BenchCaseCollectionResult;
 use PhpBench\BenchReportGenerator;
 use PhpBench\BenchSubjectResult;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use PhpBench\Result\SuiteResult;
+use PhpBench\Result\SubjectResult;
+use PhpBench\ReportGenerator;
 
-abstract class BaseTabularReportGenerator implements BenchReportGenerator
+abstract class BaseTabularReportGenerator implements ReportGenerator
 {
     public function configure(OptionsResolver $options)
     {
@@ -33,35 +36,35 @@ abstract class BaseTabularReportGenerator implements BenchReportGenerator
         $options->setAllowedTypes('explode_param', array('null', 'string'));
     }
 
-    public function generate(BenchCaseCollectionResult $collection, array $options)
+    public function generate(SuiteResult $suite, array $options)
     {
         $this->precision = $options['precision'];
 
-        return $this->doGenerate($collection, $options);
+        return $this->doGenerate($suite, $options);
     }
 
-    protected function prepareData(BenchSubjectResult $subject, array $options)
+    protected function prepareData(SubjectResult $subject, array $options)
     {
         $data = array();
 
-        foreach ($subject->getAggregateIterationResults() as $runIndex => $aggregateResult) {
-            foreach ($aggregateResult->getIterations() as $iteration) {
+        foreach ($subject->getIterationsResults() as $runIndex => $aggregateResult) {
+            foreach ($aggregateResult->getIterationResults() as $index => $iteration) {
                 $row = array();
                 $row['run'] = $runIndex + 1;
-                $row['iter'] = $iteration->getIndex() + 1;
+                $row['iter'] = $index;
                 $row['iters'] = $aggregateResult->getIterationCount();
-                $row['parameters'] = $iteration->getParameters();
-                foreach ($iteration->getParameters() as $paramName => $paramValue) {
+                $row['parameters'] = $aggregateResult->getParameters();
+                foreach ($aggregateResult->getParameters() as $paramName => $paramValue) {
                     $row[$paramName] = $paramValue;
                 }
                 $row['time'] = number_format(
-                    $options['aggregate_iterations'] ? $aggregateResult->getAverageTime() : $iteration->getTime(),
+                    $options['aggregate_iterations'] ? $aggregateResult->getAverageTime() : $iteration->get('time'),
                     $this->precision
                 );
-                $row['memory'] = number_format($iteration->getMemory());
-                $row['memory_diff'] = ($iteration->getMemoryDiff() > 0 ? '+' : '') . number_format($iteration->getMemoryDiff());
-                $row['memory_inc'] = number_format($iteration->getMemoryInclusive());
-                $row['memory_diff_inc'] = ($iteration->getMemoryDiffInclusive() > 0 ? '+' : '') . number_format($iteration->getMemoryDiffInclusive());
+                $row['memory'] = number_format($iteration->get('subject_memory_total'));
+                $row['memory_diff'] = ($iteration->get('subject_memory_diff') > 0 ? '+' : '') . number_format($iteration->get('subject_memory_diff'));
+                $row['memory_inc'] = number_format($iteration->get('memory_inclusive'));
+                $row['memory_diff_inc'] = ($iteration->get('memory_diff_inclusive') > 0 ? '+' : '') . number_format($iteration->get('memory_diff_inclusive'));
                 $row['min_time'] = number_format($aggregateResult->getMinTime(), $this->precision);
                 $row['max_time'] = number_format($aggregateResult->getMaxTime(), $this->precision);
                 $row['total_time'] = number_format($aggregateResult->getTotalTime(), $this->precision);

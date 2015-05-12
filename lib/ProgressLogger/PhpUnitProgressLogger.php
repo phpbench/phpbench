@@ -14,6 +14,7 @@ namespace PhpBench\ProgressLogger;
 use PhpBench\Benchmark;
 use PhpBench\Benchmark\Subject;
 use PhpBench\ProgressLogger;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class PhpUnitProgressLogger implements ProgressLogger
 {

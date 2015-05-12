@@ -25,6 +25,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use PhpBench\Benchmark\CollectionBuilder;
 use PhpBench\Benchmark\SubjectBuilder;
 use PhpBench\Benchmark\Runner;
+use PhpBench\Result\SuiteResult;
 
 class RunCommand extends Command
 {
@@ -65,7 +66,7 @@ EOT
         $output->writeln('');
     }
 
-    private function generateReports(OutputInterface $output, Benchmark\Collection $results, $reportConfigs)
+    private function generateReports(OutputInterface $output, SuiteResult $results, $reportConfigs)
     {
         $output->writeln('Generating reports...');
         $output->writeln('');
