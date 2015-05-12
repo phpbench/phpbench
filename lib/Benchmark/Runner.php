@@ -13,13 +13,9 @@ namespace PhpBench\Benchmark;
 
 use PhpBench\ProgressLogger\NullProgressLogger;
 use PhpBench\ProgressLogger;
-use PhpBench\Benchmark\CollectionBuilder;
 use PhpBench\Benchmark;
 use PhpBench\Result\SubjectResult;
-use PhpBench\Benchmark\Subject;
-use PhpBench\Benchmark\Iteration;
 use PhpBench\Result\IterationResult;
-use PhpBench\Result\IterationsResults;
 use PhpBench\Result\BenchmarkResult;
 use PhpBench\Result\SuiteResult;
 use PhpBench\Result\IterationsResult;
@@ -89,7 +85,8 @@ class Runner
                     'Unknown param provider "%s" for bench benchmark "%s"',
                     $paramProviderMethod, get_class($benchmark)
                 ));
-            } $parameterSets[] = $benchmark->$paramProviderMethod();
+            }
+            $parameterSets[] = $benchmark->$paramProviderMethod();
         }
 
         if (!$parameterSets) {

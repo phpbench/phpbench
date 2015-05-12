@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Tests\Unit\Result\Dumper;
 
 use PhpBench\Result\Dumper\XmlDumper;
@@ -17,7 +26,7 @@ class XmlDumperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should serialize the suite result to an XML file
+     * It should serialize the suite result to an XML file.
      */
     public function testDump()
     {

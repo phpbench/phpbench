@@ -11,11 +11,8 @@
 
 namespace PhpBench\ReportGenerator;
 
-use PhpBench\BenchCaseCollectionResult;
-use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use PhpBench\BenchPhp;
 use PhpBench\Result\SuiteResult;
 use PhpBench\PhpBench;
 
@@ -69,7 +66,6 @@ class XmlTableReportGenerator extends BaseTabularReportGenerator
                     }
                     $subjectEl->appendChild($iterationEl);
                 }
-
             }
         }
 

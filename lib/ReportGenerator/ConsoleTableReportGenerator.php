@@ -11,7 +11,6 @@
 
 namespace PhpBench\ReportGenerator;
 
-use PhpBench\BenchCaseCollectionResult;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
 use PhpBench\Result\SuiteResult;

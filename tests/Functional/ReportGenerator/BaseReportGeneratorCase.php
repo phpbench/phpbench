@@ -11,10 +11,6 @@
 
 namespace PhpBench\Tests\Functional\ReportGenerator;
 
-use PhpBench\BenchCaseCollectionResult;
-use PhpBench\BenchFinder;
-use PhpBench\BenchRunner;
-use PhpBench\BenchSubjectBuilder;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use PhpBench\Benchmark\SubjectBuilder;

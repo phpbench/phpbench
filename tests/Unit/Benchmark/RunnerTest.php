@@ -54,6 +54,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         ));
         $this->subject->getMethodName()->willReturn('benchFoo');
         $this->subject->getBeforeMethods()->willReturn(array('beforeFoo'));
+        $this->subject->getDescription()->willReturn('Hello world');
 
         $result = $this->runner->runAll();
 

@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Result;
 
 class IterationsResult
@@ -13,12 +22,12 @@ class IterationsResult
         $this->parameters = $parameters;
     }
 
-    public function getIterationResults() 
+    public function getIterationResults()
     {
         return $this->iterationResults;
     }
 
-    public function getParameters() 
+    public function getParameters()
     {
         return $this->parameters;
     }

@@ -12,8 +12,6 @@
 namespace PhpBench\Benchmark;
 
 use PhpBench\Benchmark;
-use PhpBench\Benchmark\Parser;
-use PhpBench\Benchmark\Subject;
 
 class SubjectBuilder
 {

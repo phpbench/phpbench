@@ -11,7 +11,6 @@
 
 namespace PhpBench;
 
-use PhpBench\Benchmark;
 use PhpBench\Benchmark\Subject;
 
 interface ProgressLogger

@@ -1,11 +1,19 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Result\Dumper;
 
 use PhpBench\Result\SuiteResult;
 use PhpBench\Result\BenchmarkResult;
 use PhpBench\Result\SubjectResult;
-use PhpBench\Result\IterationsResults;
 use PhpBench\Result\IterationResult;
 use PhpBench\PhpBench;
 use PhpBench\Result\IterationsResult;
@@ -88,9 +96,7 @@ class XmlDumper
         foreach ($iterationsResults->getIterationResults() as $iterationResult) {
             $iterationResultEl = $this->dumpIteration($iterationResult, $dom);
             $iterationsEl->appendChild($iterationResultEl);
-
         }
-
 
         return $iterationsEl;
     }

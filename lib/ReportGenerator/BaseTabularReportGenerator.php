@@ -11,9 +11,6 @@
 
 namespace PhpBench\ReportGenerator;
 
-use PhpBench\BenchCaseCollectionResult;
-use PhpBench\BenchReportGenerator;
-use PhpBench\BenchSubjectResult;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use PhpBench\Result\SuiteResult;
 use PhpBench\Result\SubjectResult;
