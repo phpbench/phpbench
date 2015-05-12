@@ -6,18 +6,25 @@ use PhpBench\Benchmark\Subject;
 
 class SubjectResult
 {
-    private $subject;
+    private $name;
+    private $description;
     private $iterationsResults;
 
-    public function __construct(Subject $subject, array $iterationsResults)
+    public function __construct($name, $description, array $iterationsResults)
     {
         $this->iterationsResults = $iterationsResults;
-        $this->subject = $subject;
+        $this->name = $name;
+        $this->description = $description;
     }
 
-    public function getSubject() 
+    public function getName() 
     {
-        return $this->subject;
+        return $this->name;
+    }
+
+    public function getDescription() 
+    {
+        return $this->description;
     }
 
     public function getIterationsResults() 

@@ -7,12 +7,12 @@ use PhpBench\Benchmark;
 class BenchmarkResult
 {
     private $subjectResults;
-    private $benchmark;
+    private $class;
 
-    public function __construct(Benchmark $benchmark, array $subjectResults)
+    public function __construct($class, array $subjectResults)
     {
         $this->subjectResults = $subjectResults;
-        $this->benchmark = $benchmark;
+        $this->class = $class;
     }
 
     public function getSubjectResults()
@@ -20,8 +20,8 @@ class BenchmarkResult
         return $this->subjectResults;
     }
 
-    public function getBenchmark() 
+    public function getClass() 
     {
-        return $this->benchmark;
+        return $this->class;
     }
 }

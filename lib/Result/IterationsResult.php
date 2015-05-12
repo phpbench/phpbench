@@ -4,15 +4,22 @@ namespace PhpBench\Result;
 
 class IterationsResult
 {
-    private $iterations;
+    private $iterationResults;
+    private $parameters;
 
-    public function __construct(array $iterations)
+    public function __construct(array $iterationResults, array $parameters)
     {
-        $this->iterations = $iterations;
+        $this->iterationResults = $iterationResults;
+        $this->parameters = $parameters;
     }
 
-    public function getIterations() 
+    public function getIterationResults() 
     {
-        return $this->iterations;
+        return $this->iterationResults;
+    }
+
+    public function getParameters() 
+    {
+        return $this->parameters;
     }
 }

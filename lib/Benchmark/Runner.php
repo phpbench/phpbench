@@ -30,7 +30,6 @@ class Runner
     private $subjectBuilder;
     private $subjectMemoryTotal;
     private $subjectLastMemoryInclusive;
-    private $dom;
 
     public function __construct(
         CollectionBuilder $finder,
@@ -70,7 +69,7 @@ class Runner
             $this->logger->subjectEnd($subject);
         }
 
-        $benchmarkResult = new BenchmarkResult($benchmark, $subjectResults);
+        $benchmarkResult = new BenchmarkResult(get_class($benchmark), $subjectResults);
 
         return $benchmarkResult;
     }
@@ -105,10 +104,14 @@ class Runner
                 $iteration = new Iteration($index, $parameters);
                 $iterationResults[] = $this->runIteration($benchmark, $subject, $iteration);
             }
-            $iterationsResults[] = new IterationsResults($iterationResults);
+            $iterationsResults[] = new IterationsResults($iterationResults, $parameters);
         }
 
-        $subjectResult = new SubjectResult($subject, $iterationsResults);
+        $subjectResult = new SubjectResult(
+            $subject->getMethodName(),
+            $subject->getDescription(),
+            $iterationsResults
+        )
 
         return $subjectResult;
     }
@@ -141,7 +144,7 @@ class Runner
         $statistics['subject_memory_diff'] = $memoryDiff;
         $statistics['memory_inclusive'] = $endMemory;
         $statistics['memory_diff_inclusive'] = $memoryDiffInclusive;
-        $iterationResult = new IterationResult($iteration, $statistics);
+        $iterationResult = new IterationResult($statistics);
 
         return $iterationResult;
     }
