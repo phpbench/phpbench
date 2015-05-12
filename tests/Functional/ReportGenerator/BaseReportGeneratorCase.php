@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Functional\ReportGenerator;
+namespace PhpBench\Tests\Functional\ReportGenerator;
 
 use PhpBench\BenchCaseCollectionResult;
 use PhpBench\BenchFinder;
@@ -17,18 +17,21 @@ use PhpBench\BenchRunner;
 use PhpBench\BenchSubjectBuilder;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use PhpBench\Benchmark\SubjectBuilder;
+use PhpBench\Benchmark\Runner;
+use PhpBench\Benchmark\CollectionBuilder;
 
 abstract class BaseReportGeneratorCase extends \PHPUnit_Framework_TestCase
 {
     protected function getResults()
     {
         $finder = new Finder();
-        $finder->in(__DIR__ . '/../../assets/functional');
+        $finder->in(__DIR__ . '/../benchmarks');
 
-        $benchFinder = new BenchFinder($finder);
-        $subjectBuilder = new BenchSubjectBuilder();
+        $benchFinder = new CollectionBuilder($finder);
+        $subjectBuilder = new SubjectBuilder();
 
-        $benchRunner = new BenchRunner(
+        $benchRunner = new Runner(
             $benchFinder,
             $subjectBuilder
         );

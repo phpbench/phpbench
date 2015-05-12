@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Functional\ReportGenerator;
+namespace PhpBench\Tests\Functional\ReportGenerator;
 
 
 abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase

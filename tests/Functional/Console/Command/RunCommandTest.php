@@ -9,10 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Console\Command;
+namespace PhpBench\Tests\Console\Command;
 
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
+use PhpBench\Console\Command\RunCommand;
 
 class RunCommandTest extends \PHPUnit_Framework_TestCase
 {
@@ -89,11 +90,11 @@ class RunCommandTest extends \PHPUnit_Framework_TestCase
     private function runCommand($arguments)
     {
         $arguments = array_merge(array(
-            'path' => __DIR__ . '/../../../assets/functional',
+            'path' => __DIR__ . '/benchmarks',
         ), $arguments);
 
         $application = new Application();
-        $application->add(new BenchRunCommand());
+        $application->add(new RunCommand());
         $command = $application->find('run');
         $tester = new CommandTester($command);
         $tester->execute($arguments);

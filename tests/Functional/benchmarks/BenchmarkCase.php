@@ -10,14 +10,15 @@
  */
 
 use PhpBench\BenchCase;
-use PhpBench\BenchIteration;
+use PhpBench\Benchmark\Iteration;
+use PhpBench\Benchmark;
 
-class BenchmarkCase implements BenchCase
+class BenchmarkCase implements Benchmark
 {
     /**
      * @description randomBench
      */
-    public function benchRandom(BenchIteration $iteration)
+    public function benchRandom(Iteration $iteration)
     {
         usleep(rand(0, 50000));
     }
@@ -26,7 +27,7 @@ class BenchmarkCase implements BenchCase
      * @iterations 3
      * @description Do nothing three times
      */
-    public function benchDoNothing(BenchIteration $iteration)
+    public function benchDoNothing(Iteration $iteration)
     {
     }
 
@@ -36,7 +37,7 @@ class BenchmarkCase implements BenchCase
      * @description Parameterized bench mark
      * @iterations 1
      */
-    public function benchParameterized(BenchIteration $iteration)
+    public function benchParameterized(Iteration $iteration)
     {
     }
 

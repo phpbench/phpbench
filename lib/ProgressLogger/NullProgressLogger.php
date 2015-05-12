@@ -17,11 +17,11 @@ use PhpBench\ProgressLogger;
 
 class NullProgressLogger implements ProgressLogger
 {
-    public function caseStart(Benchmark $case)
+    public function benchmarkStart(Benchmark $benchmark)
     {
     }
 
-    public function caseEnd(Benchmark $case)
+    public function benchmarkEnd(Benchmark $benchmark)
     {
     }
 

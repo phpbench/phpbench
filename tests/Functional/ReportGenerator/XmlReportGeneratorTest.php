@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Functional\ReportGenerator;
+namespace PhpBench\Tests\Functional\ReportGenerator;
 
 use PhpBench\ReportGenerator\ConsoleTableReportGenerator;
 use Symfony\Component\Console\Output\NullOutput;

@@ -13,6 +13,7 @@ namespace PhpBench\ProgressLogger;
 
 use PhpBench\Benchmark;
 use PhpBench\Benchmark\Subject;
+use PhpBench\ProgressLogger;
 
 class PhpUnitProgressLogger implements ProgressLogger
 {
@@ -23,12 +24,12 @@ class PhpUnitProgressLogger implements ProgressLogger
         $this->output = $output;
     }
 
-    public function caseStart(Benchmark $case)
+    public function benchmarkStart(Benchmark $case)
     {
         $this->output->writeln(get_class($case));
     }
 
-    public function caseEnd(Benchmark $case)
+    public function benchmarkEnd(Benchmark $case)
     {
         $this->output->writeln('');
     }

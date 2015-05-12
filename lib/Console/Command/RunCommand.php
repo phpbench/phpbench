@@ -11,7 +11,6 @@
 
 namespace PhpBench\Console\Command;
 
-use PhpBench\Benchmark;
 use PhpBench\ProgressLogger\PhpUnitProgressLogger;
 use PhpBench\ReportGenerator\ConsoleTableReportGenerator;
 use PhpBench\ReportGenerator\XmlTableReportGenerator;
@@ -23,6 +22,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use PhpBench\Benchmark\CollectionBuilder;
+use PhpBench\Benchmark\SubjectBuilder;
+use PhpBench\Benchmark\Runner;
 
 class RunCommand extends Command
 {
@@ -153,11 +155,11 @@ EOT
             $finder->name(basename($path));
         }
 
-        $benchFinder = new Benchmark\Finder($finder);
-        $subjectBuilder = new Benchmark\SubjectBuilder($filter);
+        $benchFinder = new CollectionBuilder($finder);
+        $subjectBuilder = new SubjectBuilder($filter);
         $progressLogger = new PhpUnitProgressLogger($output);
 
-        $benchRunner = new Benchmark\Runner(
+        $benchRunner = new Runner(
             $benchFinder,
             $subjectBuilder,
             $progressLogger
