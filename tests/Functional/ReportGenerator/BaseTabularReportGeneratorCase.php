@@ -9,8 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Functional\ReportGenerator;
-
+namespace PhpBench\Tests\Functional\ReportGenerator;
 
 abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase
 {
@@ -53,7 +52,7 @@ abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase
     }
 
     /**
-     * It should allow memory
+     * It should allow memory.
      */
     public function testWithMemory()
     {
@@ -63,7 +62,7 @@ abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase
     }
 
     /**
-     * It should allow memory inclusive
+     * It should allow memory inclusive.
      */
     public function testWithMemoryInclusive()
     {

@@ -14,10 +14,11 @@ Symfony\CS\Fixer\Contrib\HeaderCommentFixer::setHeader($header);
 return Symfony\CS\Config\Config::create()
     ->fixers(array(
         'header_comment',
+        '-psr0',
+        'psr4',
         'symfony',
         'concat_with_spaces',
-        'ordered_use',
-        '-concat_without_spaces',
+        'concat_without_spaces',
         '-phpdoc_indent',
         '-phpdoc_params',
     ))

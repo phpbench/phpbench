@@ -11,12 +11,12 @@
 
 namespace PhpBench\ProgressLogger;
 
-use PhpBench\BenchCase;
-use PhpBench\BenchProgressLogger;
-use PhpBench\BenchSubject;
+use PhpBench\Benchmark;
+use PhpBench\Benchmark\Subject;
+use PhpBench\ProgressLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class PhpUnitProgressLogger implements BenchProgressLogger
+class PhpUnitProgressLogger implements ProgressLogger
 {
     private $output;
 
@@ -25,21 +25,21 @@ class PhpUnitProgressLogger implements BenchProgressLogger
         $this->output = $output;
     }
 
-    public function caseStart(BenchCase $case)
+    public function benchmarkStart(Benchmark $case)
     {
         $this->output->writeln(get_class($case));
     }
 
-    public function caseEnd(BenchCase $case)
+    public function benchmarkEnd(Benchmark $case)
     {
         $this->output->writeln('');
     }
 
-    public function subjectStart(BenchSubject $subject)
+    public function subjectStart(Subject $subject)
     {
     }
 
-    public function subjectEnd(BenchSubject $subject)
+    public function subjectEnd(Subject $subject)
     {
         $this->output->write('.');
     }

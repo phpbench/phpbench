@@ -11,25 +11,25 @@
 
 namespace PhpBench\ProgressLogger;
 
-use PhpBench\BenchCase;
-use PhpBench\BenchProgressLogger;
-use PhpBench\BenchSubject;
+use PhpBench\Benchmark\Subject;
+use PhpBench\Benchmark;
+use PhpBench\ProgressLogger;
 
-class NullProgressLogger implements BenchProgressLogger
+class NullProgressLogger implements ProgressLogger
 {
-    public function caseStart(BenchCase $case)
+    public function benchmarkStart(Benchmark $benchmark)
     {
     }
 
-    public function caseEnd(BenchCase $case)
+    public function benchmarkEnd(Benchmark $benchmark)
     {
     }
 
-    public function subjectStart(BenchSubject $subject)
+    public function subjectStart(Subject $subject)
     {
     }
 
-    public function subjectEnd(BenchSubject $subject)
+    public function subjectEnd(Subject $subject)
     {
     }
 }

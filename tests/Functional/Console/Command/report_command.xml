@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<phpbench version="0.1" date="2015-05-14T11:39:57+02:00">
+  <suite>
+    <benchmark class="BenchmarkCase">
+      <subject name="benchRandom" description="randomBench">
+        <iterations>
+          <iteration time="0.00011301040649414" subject_memory_total="208" subject_memory_diff="208" memory_inclusive="2790808" memory_diff_inclusive="27392"/>
+        </iterations>
+      </subject>
+      <subject name="benchDoNothing" description="Do nothing three times">
+        <iterations>
+          <iteration time="3.0994415283203E-6" subject_memory_total="144" subject_memory_diff="144" memory_inclusive="2817648" memory_diff_inclusive="2744"/>
+          <iteration time="3.0994415283203E-6" subject_memory_total="288" subject_memory_diff="144" memory_inclusive="2818744" memory_diff_inclusive="1096"/>
+          <iteration time="1.9073486328125E-6" subject_memory_total="432" subject_memory_diff="144" memory_inclusive="2819856" memory_diff_inclusive="1112"/>
+        </iterations>
+      </subject>
+      <subject name="benchParameterized" description="Parameterized bench mark">
+        <iterations>
+          <parameter name="length" value="1"/>
+          <parameter name="strategy" value="left"/>
+          <iteration time="3.0994415283203E-6" subject_memory_total="144" subject_memory_diff="144" memory_inclusive="2824888" memory_diff_inclusive="5640"/>
+        </iterations>
+        <iterations>
+          <parameter name="length" value="2"/>
+          <parameter name="strategy" value="left"/>
+          <iteration time="1.9073486328125E-6" subject_memory_total="288" subject_memory_diff="144" memory_inclusive="2826808" memory_diff_inclusive="1920"/>
+        </iterations>
+        <iterations>
+          <parameter name="length" value="1"/>
+          <parameter name="strategy" value="right"/>
+          <iteration time="3.0994415283203E-6" subject_memory_total="432" subject_memory_diff="144" memory_inclusive="2828744" memory_diff_inclusive="1936"/>
+        </iterations>
+        <iterations>
+          <parameter name="length" value="2"/>
+          <parameter name="strategy" value="right"/>
+          <iteration time="1.9073486328125E-6" subject_memory_total="576" subject_memory_diff="144" memory_inclusive="2830680" memory_diff_inclusive="1936"/>
+        </iterations>
+      </subject>
+    </benchmark>
+  </suite>
+</phpbench>
