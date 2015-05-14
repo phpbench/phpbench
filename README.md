@@ -1,6 +1,8 @@
 PhpBench
 ========
 
+[![Build Status](https://travis-ci.org/dantleech/phpbench.svg?branch=master)](https://travis-ci.org/dantleech/phpbench)
+
 PhpBench is a benchmarking framework for PHP.
 
 Features:
@@ -23,7 +25,7 @@ All of the existing frameworks (as far as I can see) are designed for
 benchmarking algorithms or other relatively quick scenarios. They are the
 equivalent of "unit" tests.
 
-PhpBench is designed for running BIG benchmark suites which may take serveral
+PhpBench is designed for running *BIG* benchmark suites which may take serveral
 minutes to complete, it could be seen as a *system* benchmarking framework,
 and therefore analagous to integration testing.
 
