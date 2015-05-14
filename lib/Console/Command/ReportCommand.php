@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Console\Command;
 
 use Symfony\Component\Console\Command\Command;
@@ -24,7 +33,7 @@ EOT
         );
 
         $this->addArgument('file', InputArgument::REQUIRED, 'XML file');
-        $this->addOption('report', null, InputOption::VALUE_REQUIRED|InputOption::VALUE_IS_ARRAY, 'Report(s) to generate');
+        $this->addOption('report', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Report(s) to generate');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)

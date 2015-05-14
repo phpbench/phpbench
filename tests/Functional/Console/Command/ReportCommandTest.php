@@ -1,13 +1,20 @@
 <?php
 
-namespace PhpBench\Tests\Functional\Console\Command;
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
-use PhpBench\Tests\Functional\Console\Command\BaseCommandTestCase;
+namespace PhpBench\Tests\Functional\Console\Command;
 
 class ReportCommandTest extends BaseCommandTestCase
 {
     /**
-     * It should generate a report
+     * It should generate a report.
      */
     public function testGenerateReport()
     {
@@ -21,7 +28,7 @@ class ReportCommandTest extends BaseCommandTestCase
     }
 
     /**
-     * It should throw an exception if no reports are specified
+     * It should throw an exception if no reports are specified.
      *
      * @expectedException InvalidArgumentException
      */
@@ -33,7 +40,7 @@ class ReportCommandTest extends BaseCommandTestCase
     }
 
     /**
-     * It should throw an exception if the report file does not exist
+     * It should throw an exception if the report file does not exist.
      *
      * @expectedException InvalidArgumentException
      */

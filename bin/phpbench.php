@@ -39,7 +39,6 @@ foreach ($configPaths as $configPath) {
     }
 }
 
-use PhpBench\Console\Command\RunCommand;
 use PhpBench\Console\Application;
 
 $application = new Application();

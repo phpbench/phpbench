@@ -11,8 +11,6 @@
 
 namespace PhpBench\Tests\Console\Command;
 
-use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Tester\CommandTester;
 use PhpBench\Console\Command\RunCommand;
 use PhpBench\Tests\Functional\Console\Command\BaseCommandTestCase;
 
@@ -89,12 +87,12 @@ class RunCommandTest extends BaseCommandTestCase
     }
 
     /**
-     * It should dump to an XML file
+     * It should dump to an XML file.
      */
     public function testDumpXml()
     {
         $tester = $this->runCommand('run', array(
-            '--dumpfile' => self::TEST_FNAME
+            '--dumpfile' => self::TEST_FNAME,
         ));
         $this->assertEquals(0, $tester->getStatusCode());
         $display = $tester->getDisplay();
