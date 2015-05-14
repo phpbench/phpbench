@@ -14,15 +14,16 @@ namespace PhpBench\Tests\Console\Command;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use PhpBench\Console\Command\RunCommand;
+use PhpBench\Tests\Functional\Console\Command\BaseCommandTestCase;
 
-class RunCommandTest extends \PHPUnit_Framework_TestCase
+class RunCommandTest extends BaseCommandTestCase
 {
     /**
      * It should run when given a path.
      */
     public function testCommand()
     {
-        $tester = $this->runCommand(array(
+        $tester = $this->runCommand('run', array(
         ));
         $this->assertEquals(0, $tester->getStatusCode());
         $display = $tester->getDisplay();
@@ -34,7 +35,7 @@ class RunCommandTest extends \PHPUnit_Framework_TestCase
      */
     public function testCommandWithReport()
     {
-        $tester = $this->runCommand(array(
+        $tester = $this->runCommand('run', array(
             '--report' => array('console_table'),
         ));
         $this->assertEquals(0, $tester->getStatusCode());
@@ -47,7 +48,7 @@ class RunCommandTest extends \PHPUnit_Framework_TestCase
      */
     public function testCommandWithReportConfiguration()
     {
-        $tester = $this->runCommand(array(
+        $tester = $this->runCommand('run', array(
             '--report' => array('{"name": "console_table"}'),
         ));
         $this->assertEquals(0, $tester->getStatusCode());
@@ -63,7 +64,7 @@ class RunCommandTest extends \PHPUnit_Framework_TestCase
      */
     public function testCommandWithReportConfigurationUnknown()
     {
-        $tester = $this->runCommand(array(
+        $tester = $this->runCommand('run', array(
             '--report' => array('{"name": "foo_console_table"}'),
         ));
         $this->assertEquals(0, $tester->getStatusCode());
@@ -79,7 +80,7 @@ class RunCommandTest extends \PHPUnit_Framework_TestCase
      */
     public function testCommandWithReportConfigurationInvalid()
     {
-        $tester = $this->runCommand(array(
+        $tester = $this->runCommand('run', array(
             '--report' => array('{"name": "foo_console_ta'),
         ));
         $this->assertEquals(0, $tester->getStatusCode());
@@ -87,18 +88,26 @@ class RunCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('Parameterized bench mark', $display);
     }
 
-    private function runCommand($arguments)
+    /**
+     * It should dump to an XML file
+     */
+    public function testDumpXml()
+    {
+        $tester = $this->runCommand('run', array(
+            '--dumpfile' => self::TEST_FNAME
+        ));
+        $this->assertEquals(0, $tester->getStatusCode());
+        $display = $tester->getDisplay();
+        $this->assertContains('Dumped', $display);
+        $this->assertTrue(file_exists(self::TEST_FNAME));
+    }
+
+    protected function runCommand($commandName, array $arguments)
     {
         $arguments = array_merge(array(
             'path' => __DIR__ . '/../../benchmarks',
         ), $arguments);
 
-        $application = new Application();
-        $application->add(new RunCommand());
-        $command = $application->find('run');
-        $tester = new CommandTester($command);
-        $tester->execute($arguments);
-
-        return $tester;
+        return parent::runCommand($commandName, $arguments);
     }
 }

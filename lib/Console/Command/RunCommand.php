@@ -27,8 +27,9 @@ use PhpBench\Benchmark\SubjectBuilder;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Result\SuiteResult;
 use PhpBench\Result\Dumper\XmlDumper;
+use PhpBench\Console\Command\BaseCommand;
 
-class RunCommand extends Command
+class RunCommand extends BaseCommand
 {
     public function configure()
     {
