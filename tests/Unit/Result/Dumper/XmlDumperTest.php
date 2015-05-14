@@ -35,7 +35,7 @@ class XmlDumperTest extends \PHPUnit_Framework_TestCase
     <benchmark class="Benchmark\Class">
       <subject name="mySubject" description="My Subject's description">
         <iterations>
-          <parameter foo="bar"/>
+          <parameter name="foo" value="bar"/>
           <iteration time="100"/>
         </iterations>
       </subject>
@@ -46,9 +46,11 @@ EOT;
         $suite = $this->getSuite();
         $result = $this->xmlDumper->dump($suite);
         $this->assertContains($expected, $result);
+
+        return $result;
     }
 
-    private function getSuite()
+    protected function getSuite()
     {
         $iteration1 = new IterationResult(array('time' => 100));
         $iterations = new IterationsResult(array($iteration1), array('foo' => 'bar'));

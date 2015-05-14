@@ -23,7 +23,6 @@ class CartesianParameterIteratorTest extends \PHPUnit_Framework_TestCase
     public function testIterate($parameterSets, $expected)
     {
         $iterator = new CartesianParameterIterator($parameterSets);
-
         $result = array();
         foreach ($iterator as $parameters) {
             $result[] = $parameters;

@@ -39,9 +39,8 @@ foreach ($configPaths as $configPath) {
     }
 }
 
-use Symfony\Component\Console\Application;
 use PhpBench\Console\Command\RunCommand;
+use PhpBench\Console\Application;
 
 $application = new Application();
-$application->add(new RunCommand());
 $application->run();

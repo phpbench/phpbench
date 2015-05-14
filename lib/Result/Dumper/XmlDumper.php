@@ -89,7 +89,8 @@ class XmlDumper
         $iterationsEl = $dom->createElement('iterations');
         foreach ($iterationsResults->getParameters() as $key => $value) {
             $parameterEl = $dom->createElement('parameter');
-            $parameterEl->setAttribute($key, $value);
+            $parameterEl->setAttribute('name', $key);
+            $parameterEl->setAttribute('value', $value);
             $iterationsEl->appendChild($parameterEl);
         }
 

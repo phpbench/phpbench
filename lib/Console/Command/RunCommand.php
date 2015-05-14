@@ -26,6 +26,7 @@ use PhpBench\Benchmark\CollectionBuilder;
 use PhpBench\Benchmark\SubjectBuilder;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Result\SuiteResult;
+use PhpBench\Result\Dumper\XmlDumper;
 
 class RunCommand extends Command
 {
@@ -44,6 +45,7 @@ EOT
         $this->addArgument('path', InputArgument::REQUIRED, 'Path to benchmark(s)');
         $this->addOption('report', array(), InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Report name or configuration in JSON format');
         $this->addOption('filter', null, InputOption::VALUE_REQUIRED, 'Filter subject(s) to run');
+        $this->addOption('dumpfile', 'df', InputOption::VALUE_REQUIRED, 'Dump XML to named file');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
@@ -54,88 +56,33 @@ EOT
 
         $path = $input->getArgument('path');
         $filter = $input->getOption('filter');
+        $dumpfile = $input->getOption('dumpfile');
 
         $startTime = microtime(true);
-        $results = $this->executeBenchmarks($output, $path, $filter);
+        $result = $this->executeBenchmarks($output, $path, $filter);
 
         $output->writeln('');
 
-        $this->generateReports($output, $results, $reportConfigs);
-
-        $output->writeln(sprintf('Done (%s)', number_format(microtime(true) - $startTime, 6)));
-        $output->writeln('');
-    }
-
-    private function generateReports(OutputInterface $output, SuiteResult $results, $reportConfigs)
-    {
-        $output->writeln('Generating reports...');
-        $output->writeln('');
-
-        $generators = array(
-            'console_table' => new ConsoleTableReportGenerator($output),
-            'xml_table' => new XmlTableReportGenerator($output),
-        );
-
-        foreach ($reportConfigs as $reportName => $reportConfig) {
-            if (!isset($generators[$reportName])) {
-                throw new \InvalidArgumentException(sprintf(
-                    'Unknown report generator "%s", known generators: "%s"',
-                    $reportName, implode('", "', array_keys($generators))
-                ));
-            }
-        }
-
-        foreach ($reportConfigs as $reportName => $reportConfig) {
-            $options = new OptionsResolver();
-            $report = $generators[$reportName];
-            $report->configure($options);
-
-            $output->writeln(sprintf('>> %s >>', $reportName));
+        if ($dumpfile) {
+            $this->dumpResult($result, $dumpfile);
+            $output->writeln('<info>Dumped result to </info>' . $dumpfile);
             $output->writeln('');
-            try {
-                $reportConfig = $options->resolve($reportConfig);
-            } catch (UndefinedOptionsException $e) {
-                throw new \InvalidArgumentException(sprintf(
-                    'Error generating report "%s"', $reportName
-                ), null, $e);
-            }
-
-            $report->generate($results, $reportConfig);
         }
+
+        if ($reportConfigs) {
+            $this->generateReports($output, $result, $reportConfigs);
+        }
+
+        $output->writeln(sprintf('<info>Done </info>(%s)', number_format(microtime(true) - $startTime, 6)));
+        $output->writeln('');
     }
 
-    private function normalizeReportConfig($rawConfigs)
+    private function dumpResult(SuiteResult $result, $dumpfile)
     {
-        $configs = array();
-        foreach ($rawConfigs as $rawConfig) {
-            // If it doesn't look like a JSON string, assume it is the name of a report
-            if (substr($rawConfig, 0, 1) !== '{') {
-                $configs[$rawConfig] = array();
-                continue;
-            }
+        $dumper = new XmlDumper();
+        $data = $dumper->dump($result);
 
-            $config = json_decode($rawConfig, true);
-
-            if (null === $config) {
-                throw new \InvalidArgumentException(sprintf(
-                    'Could not decode JSON string: %s', $rawConfig
-                ));
-            }
-
-            if (!isset($config['name'])) {
-                throw new \InvalidArgumentException(sprintf(
-                    'You must include the name of the report ("name") in the report configuration: %s',
-                    $rawConfig
-                ));
-            }
-
-            $name = $config['name'];
-            unset($config['name']);
-
-            $configs[$name] = $config;
-        }
-
-        return $configs;
+        file_put_contents($dumpfile, $data);
     }
 
     private function executeBenchmarks(OutputInterface $output, $path, $filter)

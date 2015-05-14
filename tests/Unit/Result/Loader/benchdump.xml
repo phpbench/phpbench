@@ -1,0 +1,10 @@
+<suite>
+<benchmark class="Benchmark\Class">
+  <subject name="mySubject" description="My Subject's description">
+    <iterations>
+      <parameter foo="bar"/>
+      <iteration time="100"/>
+    </iterations>
+  </subject>
+</benchmark>
+</suite>
