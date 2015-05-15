@@ -33,6 +33,11 @@ class Iteration
         return $this->parameters[$name];
     }
 
+    public function setParameter($name, $value)
+    {
+        $this->parameters[$name] = $value;
+    }
+
     public function getParameters()
     {
         return $this->parameters;

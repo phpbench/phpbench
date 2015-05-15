@@ -30,14 +30,14 @@ if (!file_exists($autoloadPath)) {
     exit(1);
 }
 
-require_once $autoloadPath;
-
 foreach ($configPaths as $configPath) {
     if (file_exists($configPath)) {
         require_once $configPath;
         break;
     }
 }
+
+require_once $autoloadPath;
 
 use PhpBench\Console\Application;
 

@@ -28,7 +28,7 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
             'memory_inc' => false,
         ));
 
-        $options->setAllowedTypes('aggregate_iterations', 'boolean');
+        $options->setAllowedTypes('aggregate_iterations', 'bool');
         $options->setAllowedTypes('precision', 'int');
         $options->setAllowedTypes('explode_param', array('null', 'string'));
     }
