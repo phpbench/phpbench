@@ -27,6 +27,10 @@ class CollectionBuilder
         $cases = array();
 
         foreach ($this->finder as $file) {
+            if (!is_file($file)) {
+                continue;
+            }
+
             require_once $file->getRealPath();
             $classFqn = static::getClassNameFromFile($file->getRealPath());
             $refl = new \ReflectionClass($classFqn);

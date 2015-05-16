@@ -15,6 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use PhpBench\Result\SuiteResult;
 use PhpBench\Result\SubjectResult;
 use PhpBench\ReportGenerator;
+use DTL\DataTable\Table;
 
 abstract class BaseTabularReportGenerator implements ReportGenerator
 {
@@ -42,74 +43,43 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
 
     protected function prepareData(SubjectResult $subject, array $options)
     {
-        $data = array();
+        $table = Table::createBuilder();
 
         foreach ($subject->getIterationsResults() as $runIndex => $aggregateResult) {
             foreach ($aggregateResult->getIterationResults() as $index => $iteration) {
-                $row = array();
-                $row['run'] = $runIndex + 1;
-                $row['iter'] = $index;
-                $row['iters'] = $aggregateResult->getIterationCount();
-                $row['parameters'] = $aggregateResult->getParameters();
+                $row = $table->row(array('main'));
+                $row->set('run', $runIndex + 1);
+                $row->set('iter', $index);
                 foreach ($aggregateResult->getParameters() as $paramName => $paramValue) {
-                    $row[$paramName] = $paramValue;
+                    $row->set($paramName, $paramValue, array('param'));
                 }
-                $row['time'] = number_format(
-                    $options['aggregate_iterations'] ? $aggregateResult->getAverageTime() : $iteration->get('time'),
-                    $this->precision
-                );
-                $row['memory'] = number_format($iteration->get('subject_memory_total'));
-                $row['memory_diff'] = ($iteration->get('subject_memory_diff') > 0 ? '+' : '') . number_format($iteration->get('subject_memory_diff'));
-                $row['memory_inc'] = number_format($iteration->get('memory_inclusive'));
-                $row['memory_diff_inc'] = ($iteration->get('memory_diff_inclusive') > 0 ? '+' : '') . number_format($iteration->get('memory_diff_inclusive'));
-                $row['min_time'] = number_format($aggregateResult->getMinTime(), $this->precision);
-                $row['max_time'] = number_format($aggregateResult->getMaxTime(), $this->precision);
-                $row['total_time'] = number_format($aggregateResult->getTotalTime(), $this->precision);
-
-                $data[] = $row;
+                $row->set('time', $iteration->get('time'), array('time', 'float'));
+                $row->set('memory', $iteration->get('subject_memory_total'), array('memory'));
+                $row->set('memory_diff', $iteration->get('subject_memory_diff'), array('memory'));
+                $row->set('memory_inc', $iteration->get('memory_inclusive'), array('memory'));
+                $row->set('memory_diff_inc', $iteration->get('memory_diff_inclusive'), array('memory'));
             }
         }
 
-        if ($options['aggregate_iterations']) {
-            $data = $this->aggregateIterations($data);
-        }
+        $data = $table->getTable();
+        $table = $data->builder();
 
-        if ($options['explode_param']) {
-            $data = $this->explodeParam($data, $options['explode_param']);
-        }
-
-        foreach ($data as &$row) {
-            unset($row['parameters']);
-            unset($row['run']);
-
-            if (!$options['aggregate_iterations'] || $options['explode_param']) {
-                unset($row['min_time']);
-                unset($row['max_time']);
-                unset($row['total_time']);
-            }
-
-            if ($options['aggregate_iterations']) {
-                unset($row['iter']);
-                unset($row['memory']);
-                unset($row['memory_inc']);
-                unset($row['memory_diff']);
-                unset($row['memory_diff_inc']);
-            } else {
-                unset($row['iters']);
-            }
-
-            if (false === $options['memory']) {
-                unset($row['memory']);
-                unset($row['memory_diff']);
-            }
-
-            if (false === $options['memory_inc']) {
-                unset($row['memory_inc']);
-                unset($row['memory_diff_inc']);
+        foreach (array('sum', 'avg', 'min', 'max') as $function) {
+            $row = $table->row();
+            foreach (array(
+                'time' => array('float'),
+                'memory' => array('memory'),
+                'memory_diff' => array('memory'),
+                'memory_inc' => array('memory'),
+                'memory_diff_inc' => array('memory'),
+            ) as $column => $groups) {
+                $groups[] = 'footer';
+                $row->set(' ', '<< ' . $function, array('footer'));
+                $row->set($column, $data->getColumn($column)->$function(), $groups);
             }
         }
 
-        return $data;
+        return $table->getTable();
     }
 
     private function aggregateIterations($data)
