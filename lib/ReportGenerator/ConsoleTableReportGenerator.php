@@ -14,12 +14,20 @@ namespace PhpBench\ReportGenerator;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
 use PhpBench\Result\SuiteResult;
+use Symfony\Component\Console\Formatter\OutputFormatter;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
 class ConsoleTableReportGenerator extends BaseTabularReportGenerator
 {
     public function __construct(OutputInterface $output)
     {
         $this->output = $output;
+        $this->output->getFormatter()->setStyle(
+            'total', new OutputFormatterStyle(null, null, array())
+        );
+        $this->output->getFormatter()->setStyle(
+            'blue', new OutputFormatterStyle('blue', null, array())
+        );
     }
 
     public function doGenerate(SuiteResult $suite, array $options)
@@ -41,22 +49,44 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
         }
     }
 
-    private function renderData(array $data)
+    private function renderData($data)
     {
+        $data->map(function ($cell) {
+            return number_format($cell->value(), 2);
+        }, array('revs'));
+
+        // format the float cells
+        $data->map(function ($cell) {
+            $value = $cell->value();
+            $value =  number_format($value, $this->precision);
+            $value = preg_replace('{^(0.0+)(.+)$}', '\1<blue>\2</blue>', $value);
+
+            return $value;
+        }, array('float'));
+
+        // format the memory
+        $data->map(function ($cell) {
+            $value = $cell->value();
+            $prefix = $value < 0 ? '-' : '+';
+            return $prefix . number_format($cell->value());
+        }, array('memory'));
+
+        // format the footer
+        $data->map(function ($cell) {
+            return sprintf('<total>%s</total>', $cell->value());
+        }, array('footer'));
+
         $table = new Table($this->output);
 
-        $firstRow = reset($data);
-
-        if (!$firstRow) {
-            return;
+        $table->setHeaders($data->getColumnNames());
+        foreach ($data->getRows(array('spacer')) as $spacer) {
+            $spacer->fill('--');
         }
 
-        $table->setHeaders(array_keys($firstRow));
-
-        foreach ($data as $row) {
-            $table->addRow($row);
+        foreach ($data->getRows() as $row) {
+            $table->addRow($row->toArray());
         }
 
         $table->render();
-    }
+   }
 }
