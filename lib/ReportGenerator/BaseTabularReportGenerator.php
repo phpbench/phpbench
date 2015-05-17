@@ -46,6 +46,7 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
     protected function prepareData(SubjectResult $subject, array $options)
     {
         $table = TableBuilder::create();
+        $cols = array();
 
         if ($options['time']) {
             $cols['time'] = array('float');
@@ -86,11 +87,12 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
         if (true === $options['aggregate_iterations']) {
             $data = $data->aggregate(function ($table, $row) use ($cols) {
                 foreach ($cols as $colName => $groups) {
-                    $row->set($colName, $table->getColumn($colName)->avg(), $table->getColumn($colName)->getGroups());
                     $row->set('iters', count($table->getRows()));
+                    $row->set('avg_' . $colName, $table->getColumn($colName)->avg(), $table->getColumn($colName)->getGroups());
                     $row->set('min_' . $colName, $table->getColumn($colName)->min(), $table->getColumn($colName)->getGroups()); 
                     $row->set('max_' . $colName, $table->getColumn($colName)->max(), $table->getColumn($colName)->getGroups()); 
                     $row->remove('iter');
+                    $row->remove('time');
                 }
             }, array('run'));
         }
