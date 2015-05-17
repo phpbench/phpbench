@@ -51,6 +51,10 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
 
     private function renderData($data)
     {
+        $data->map(function ($cell) {
+            return number_format($cell->value(), 2);
+        }, array('revs'));
+
         // format the float cells
         $data->map(function ($cell) {
             $value = $cell->value();
@@ -84,5 +88,5 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
         }
 
         $table->render();
-    }
+   }
 }

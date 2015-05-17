@@ -16,6 +16,7 @@ use PhpBench\Result\SuiteResult;
 use PhpBench\Result\SubjectResult;
 use PhpBench\ReportGenerator;
 use DTL\DataTable\Table;
+use DTL\DataTable\Builder\TableBuilder;
 
 abstract class BaseTabularReportGenerator implements ReportGenerator
 {
@@ -24,14 +25,15 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
         $options->setDefaults(array(
             'aggregate_iterations' => false,
             'precision' => 8,
-            'explode_param' => null,
+            'time' => true,
             'memory' => false,
             'memory_inc' => false,
+            'totals' => false,
+            'revolutions' => false,
         ));
 
         $options->setAllowedTypes('aggregate_iterations', 'bool');
         $options->setAllowedTypes('precision', 'int');
-        $options->setAllowedTypes('explode_param', array('null', 'string'));
     }
 
     public function generate(SuiteResult $suite, array $options)
@@ -43,7 +45,21 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
 
     protected function prepareData(SubjectResult $subject, array $options)
     {
-        $table = Table::createBuilder();
+        $table = TableBuilder::create();
+
+        if ($options['time']) {
+            $cols['time'] = array('float');
+        }
+
+        if ($options['memory']) {
+            $cols['memory'] = array('memory');
+            $cols['memory_diff'] = array('memory');
+        }
+
+        if ($options['memory_inc']) {
+            $cols['memory_inc'] = array('memory');
+            $cols['memory_diff_inc'] = array('memory');
+        }
 
         foreach ($subject->getIterationsResults() as $runIndex => $aggregateResult) {
             foreach ($aggregateResult->getIterationResults() as $index => $iteration) {
@@ -53,94 +69,45 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
                 foreach ($aggregateResult->getParameters() as $paramName => $paramValue) {
                     $row->set($paramName, $paramValue, array('param'));
                 }
-                $row->set('time', $iteration->get('time'), array('time', 'float'));
-                $row->set('memory', $iteration->get('subject_memory_total'), array('memory'));
-                $row->set('memory_diff', $iteration->get('subject_memory_diff'), array('memory'));
-                $row->set('memory_inc', $iteration->get('memory_inclusive'), array('memory'));
-                $row->set('memory_diff_inc', $iteration->get('memory_diff_inclusive'), array('memory'));
+
+                foreach ($cols as $colName => $groups) {
+                    $row->set($colName, $iteration->get($colName), $groups);
+                }
+
+                if ($options['revolutions']) {
+                    $row->set('revs', (1 / $iteration->get('time')), array('revs'));
+                }
             }
         }
 
+
         $data = $table->getTable();
+
+        if (true === $options['aggregate_iterations']) {
+            $data = $data->aggregate(function ($table, $row) use ($cols) {
+                foreach ($cols as $colName => $groups) {
+                    $row->set($colName, $table->getColumn($colName)->avg(), $table->getColumn($colName)->getGroups());
+                    $row->set('iters', count($table->getRows()));
+                    $row->set('min_' . $colName, $table->getColumn($colName)->min(), $table->getColumn($colName)->getGroups()); 
+                    $row->set('max_' . $colName, $table->getColumn($colName)->max(), $table->getColumn($colName)->getGroups()); 
+                    $row->remove('iter');
+                }
+            }, array('run'));
+        }
+
         $table = $data->builder();
 
-        foreach (array('sum', 'avg', 'min', 'max') as $function) {
-            $row = $table->row();
-            foreach (array(
-                'time' => array('float'),
-                'memory' => array('memory'),
-                'memory_diff' => array('memory'),
-                'memory_inc' => array('memory'),
-                'memory_diff_inc' => array('memory'),
-            ) as $column => $groups) {
-                $groups[] = 'footer';
-                $row->set(' ', '<< ' . $function, array('footer'));
-                $row->set($column, $data->getColumn($column)->$function(), $groups);
+        if (true === $options['totals']) {
+            foreach (array('sum', 'avg', 'min', 'max') as $function) {
+                $row = $table->row();
+                foreach ($cols as $colName => $groups) {
+                    $groups[] = 'footer';
+                    $row->set(' ', '<< ' . $function, array('footer'));
+                    $row->set($colName, $data->getColumn($colName)->$function(), $groups);
+                }
             }
         }
 
         return $table->getTable();
-    }
-
-    private function aggregateIterations($data)
-    {
-        $iterations = array();
-        foreach ($data as $row) {
-            $iterations[$row['run']] = $row;
-        }
-
-        return $iterations;
-    }
-
-    private function explodeParam($data, $param)
-    {
-        $xseries = array();
-        $seenParams = array();
-        foreach ($data as $index => $row) {
-            if (!isset($row[$param])) {
-                continue;
-            }
-            $paramValue = $row[$param];
-            if (!isset($xseries[$paramValue])) {
-                $xseries[$paramValue] = array();
-            }
-            $parameters = $row['parameters'];
-            unset($parameters[$param]);
-
-            $paramHash = serialize($parameters);
-            if (isset($seenParams[$paramHash])) {
-                unset($data[$index]);
-            }
-            $seenParams[$paramHash] = true;
-            $xseries[$paramValue][] = $row['time'];
-        }
-
-        $data = array_values($data);
-
-        foreach ($data as $i => $row) {
-            if (!isset($row[$param])) {
-                continue;
-            }
-
-            $paramValue = $row[$param];
-            $newRow = array();
-            foreach ($row as $key => $value) {
-                if ($key === $param) {
-                    continue;
-                }
-                if ($key === 'time') {
-                    foreach ($xseries as $extractName => $extractParam) {
-                        $time = $extractParam[$i];
-                        $newRow[$param . '-' . $extractName] = $time;
-                    }
-                } else {
-                    $newRow[$key] = $value;
-                }
-            }
-
-            $data[$i] = $newRow;
-        }
-
-        return $data;
     }
 }

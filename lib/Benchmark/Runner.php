@@ -138,10 +138,10 @@ class Runner
         $this->subjectLastMemoryInclusive = $endMemory;
 
         $statistics['time'] = $end - $start;
-        $statistics['subject_memory_total'] = $this->subjectMemoryTotal;
-        $statistics['subject_memory_diff'] = $memoryDiff;
-        $statistics['memory_inclusive'] = $endMemory;
-        $statistics['memory_diff_inclusive'] = $memoryDiffInclusive;
+        $statistics['memory'] = $this->subjectMemoryTotal;
+        $statistics['memory_diff'] = $memoryDiff;
+        $statistics['memory_inc'] = $endMemory;
+        $statistics['memory_diff_inc'] = $memoryDiffInclusive;
         $iterationResult = new IterationResult($statistics);
 
         return $iterationResult;

@@ -25,7 +25,7 @@ class BaseCommandTestCase extends \PHPUnit_Framework_TestCase
         }
     }
 
-    protected function runCommand($commandName, $arguments)
+    protected function runCommand($commandName, array $arguments)
     {
         $application = new Application();
         $command = $application->find($commandName);

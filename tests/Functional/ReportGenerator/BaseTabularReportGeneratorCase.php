@@ -42,12 +42,12 @@ abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase
     }
 
     /**
-     * It should allow explode_param.
+     * It should allow revolutions
      */
-    public function testWithExplodeParam()
+    public function testWithRevolutions()
     {
         $this->executeReport($this->getResults(), array(
-            'explode_param' => 'foo',
+            'revolutions' => true
         ));
     }
 
