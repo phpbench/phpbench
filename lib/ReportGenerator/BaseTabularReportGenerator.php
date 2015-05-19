@@ -30,6 +30,10 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
             'memory_inc' => false,
             'totals' => false,
             'revolutions' => false,
+            'footer_sum' => false,
+            'footer_avg' => false,
+            'footer_min' => false,
+            'footer_max' => false,
         ));
 
         $options->setAllowedTypes('aggregate_iterations', 'bool');
@@ -86,27 +90,29 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
 
         if (true === $options['aggregate_iterations']) {
             $data = $data->aggregate(function ($table, $row) use ($cols) {
+                $row->remove('iter');
                 foreach ($cols as $colName => $groups) {
                     $row->set('iters', count($table->getRows()));
                     $row->set('avg_' . $colName, $table->getColumn($colName)->avg(), $table->getColumn($colName)->getGroups());
                     $row->set('min_' . $colName, $table->getColumn($colName)->min(), $table->getColumn($colName)->getGroups()); 
                     $row->set('max_' . $colName, $table->getColumn($colName)->max(), $table->getColumn($colName)->getGroups()); 
-                    $row->remove('iter');
-                    $row->remove('time');
+                    $row->remove($colName);
                 }
             }, array('run'));
         }
 
         $table = $data->builder();
 
-        if (true === $options['totals']) {
-            foreach (array('sum', 'avg', 'min', 'max') as $function) {
-                $row = $table->row();
-                foreach ($cols as $colName => $groups) {
-                    $groups[] = 'footer';
-                    $row->set(' ', '<< ' . $function, array('footer'));
-                    $row->set($colName, $data->getColumn($colName)->$function(), $groups);
-                }
+        foreach (array('sum', 'avg', 'min', 'max') as $function) {
+            if (!$options['footer_' . $function]) {
+                continue;
+            }
+
+            $row = $table->row();
+            foreach ($cols as $colName => $groups) {
+                $groups[] = 'footer';
+                $row->set(' ', '<< ' . $function, array('footer'));
+                $row->set($colName, $data->getColumn($colName)->$function(), $groups);
             }
         }
 

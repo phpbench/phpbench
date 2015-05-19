@@ -28,6 +28,9 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
         $this->output->getFormatter()->setStyle(
             'blue', new OutputFormatterStyle('blue', null, array())
         );
+        $this->output->getFormatter()->setStyle(
+            'dark', new OutputFormatterStyle('black', null, array('bold'))
+        );
     }
 
     public function doGenerate(SuiteResult $suite, array $options)
@@ -59,17 +62,21 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
         $data->map(function ($cell) {
             $value = $cell->value();
             $value =  number_format($value, $this->precision);
-            $value = preg_replace('{^(0.0+)(.+)$}', '\1<blue>\2</blue>', $value);
+            $value = preg_replace('{^([0|\\.]+)(.+)$}', '<blue>\1</blue>\2', $value);
 
-            return $value;
+            return $value . '<dark>s</dark>';
         }, array('float'));
 
         // format the memory
         $data->map(function ($cell) {
             $value = $cell->value();
-            $prefix = $value < 0 ? '-' : '+';
-            return $prefix . number_format($cell->value());
+            return number_format($cell->value()) . '<dark>b</dark>';
         }, array('memory'));
+
+        // format the revolutions
+        $data->map(function ($cell) {
+            return $cell->value() . '<dark>rps</dark>';
+        }, array('revs'));
 
         // format the footer
         $data->map(function ($cell) {
