@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__ . '/../lib/Benchmark/Configuration.php');
+require_once(__DIR__ . '/../lib/Configuration.php');
 
-use PhpBench\Benchmark\Configuration;
+use PhpBench\Configuration;
 
 $configPaths = array();
 
@@ -55,7 +55,7 @@ if (null === $configuration) {
 }
 
 
-if (!$configuration instanceof PhpBench\Benchmark\Configuration) {
+if (!$configuration instanceof Configuration) {
     echo 'The configuration file did not return an instance of PhpBench\\Configuration';
     exit(1);
 }
