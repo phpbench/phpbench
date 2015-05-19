@@ -45,7 +45,7 @@ if (null === $configuration) {
     $bootstrapPath = getcwd() . '/vendor/autoload.php';
 
     if (!file_exists($bootstrapPath)) {
-        echo 'Autoload file "%s" does not exist. Maybe you need to do a composer install?' . PHP_EOL;
+        echo sprintf('Autoload file "%s" does not exist. Maybe you need to do a composer install?', $bootstrapPath) . PHP_EOL;
         exit(1);
     }
 
@@ -54,10 +54,6 @@ if (null === $configuration) {
     $configuration = new Configuration();
 }
 
-if (!$configuration) {
-    echo 'The configuration file did not return anything. It must return an instance of PhpBench\\Configuration' . PHP_EOL;
-    exit(1);
-}
 
 if (!$configuration instanceof PhpBench\Benchmark\Configuration) {
     echo 'The configuration file did not return an instance of PhpBench\\Configuration';
