@@ -38,7 +38,7 @@ Run benchmark files at given <comment>path</comment>
 All bench marks under the given path will be executed recursively.
 EOT
         );
-        $this->addArgument('path', InputArgument::REQUIRED, 'Path to benchmark(s)');
+        $this->addArgument('path', InputArgument::OPTIONAL, 'Path to benchmark(s)');
         $this->addOption('report', array(), InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Report name or configuration in JSON format');
         $this->addOption('filter', null, InputOption::VALUE_REQUIRED, 'Filter subject(s) to run');
         $this->addOption('dumpfile', 'df', InputOption::VALUE_REQUIRED, 'Dump XML to named file');
@@ -46,11 +46,22 @@ EOT
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $reports = $input->getOption('report');
+
         $output->writeln('<info>Running benchmark suite</info>');
         $output->writeln('');
-        $reportConfigs = $this->normalizeReportConfig($input->getOption('report'));
 
-        $path = $input->getArgument('path');
+        $configuration = $this->getApplication()->getConfiguration();
+
+        $this->processReportConfigs($reports);
+        $path = $input->getArgument('path') ?: $configuration->getPath();
+
+        if (null === $path) {
+            throw new \InvalidArgumentException(
+                'You must either specify or configure a path where your benchmarks can be found.'
+            );
+        }
+
         $filter = $input->getOption('filter');
         $dumpfile = $input->getOption('dumpfile');
 
@@ -65,8 +76,8 @@ EOT
             $output->writeln('');
         }
 
-        if ($reportConfigs) {
-            $this->generateReports($output, $result, $reportConfigs);
+        if ($configuration->getReports()) {
+            $this->generateReports($output, $result);
         }
 
         $output->writeln(sprintf('<info>Done </info>(%s)', number_format(microtime(true) - $startTime, 6)));

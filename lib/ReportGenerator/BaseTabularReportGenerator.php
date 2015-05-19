@@ -15,8 +15,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use PhpBench\Result\SuiteResult;
 use PhpBench\Result\SubjectResult;
 use PhpBench\ReportGenerator;
-use DTL\DataTable\Table;
 use DTL\DataTable\Builder\TableBuilder;
+use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class BaseTabularReportGenerator implements ReportGenerator
 {
@@ -40,11 +40,11 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
         $options->setAllowedTypes('precision', 'int');
     }
 
-    public function generate(SuiteResult $suite, array $options)
+    public function generate(SuiteResult $suite, OutputInterface $output, array $options)
     {
         $this->precision = $options['precision'];
 
-        return $this->doGenerate($suite, $options);
+        return $this->doGenerate($suite, $output, $options);
     }
 
     protected function prepareData(SubjectResult $subject, array $options)
@@ -85,7 +85,6 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
             }
         }
 
-
         $data = $table->getTable();
 
         if (true === $options['aggregate_iterations']) {
@@ -94,8 +93,8 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
                 foreach ($cols as $colName => $groups) {
                     $row->set('iters', count($table->getRows()));
                     $row->set('avg_' . $colName, $table->getColumn($colName)->avg(), $table->getColumn($colName)->getGroups());
-                    $row->set('min_' . $colName, $table->getColumn($colName)->min(), $table->getColumn($colName)->getGroups()); 
-                    $row->set('max_' . $colName, $table->getColumn($colName)->max(), $table->getColumn($colName)->getGroups()); 
+                    $row->set('min_' . $colName, $table->getColumn($colName)->min(), $table->getColumn($colName)->getGroups());
+                    $row->set('max_' . $colName, $table->getColumn($colName)->max(), $table->getColumn($colName)->getGroups());
                     $row->remove($colName);
                 }
             }, array('run'));

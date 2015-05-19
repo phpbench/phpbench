@@ -13,10 +13,11 @@ namespace PhpBench;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use PhpBench\Result\SuiteResult;
+use Symfony\Component\Console\Output\OutputInterface;
 
 interface ReportGenerator
 {
     public function configure(OptionsResolver $options);
 
-    public function generate(SuiteResult $collection, array $config);
+    public function generate(SuiteResult $collection, OutputInterface $output, array $config);
 }

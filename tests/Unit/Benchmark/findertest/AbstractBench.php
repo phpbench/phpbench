@@ -9,10 +9,8 @@
  * file that was distributed with this source code.
  */
 
-use PhpBench\BenchIteration;
 use PhpBench\Benchmark;
 
 abstract class AbstractBench implements Benchmark
 {
 }
-

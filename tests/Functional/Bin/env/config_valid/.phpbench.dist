@@ -1,0 +1,3 @@
+<?php
+
+throw new \Exception('This dist file should not be executed');

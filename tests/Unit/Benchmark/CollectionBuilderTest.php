@@ -25,7 +25,7 @@ class CollectionBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * It should return a collection of all found bench cases.
-     * It should not instantiate abstract classes
+     * It should not instantiate abstract classes.
      */
     public function testBuildCollection()
     {
