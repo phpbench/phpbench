@@ -16,7 +16,7 @@ use PhpBench\Console\Command\RunCommand;
 use PhpBench\PhpBench;
 use PhpBench\Console\Command\ReportCommand;
 use Symfony\Component\Console\Input\InputInterface;
-use PhpBench\Benchmark\Configuration;
+use PhpBench\Configuration;
 use Symfony\Component\Console\Output\OutputInterface;
 use PhpBench\ReportGenerator\XmlTableReportGenerator;
 use Symfony\Component\Console\Input\InputOption;

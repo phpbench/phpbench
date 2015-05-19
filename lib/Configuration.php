@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Benchmark;
+namespace PhpBench;
 
 use PhpBench\ReportGenerator;
 
