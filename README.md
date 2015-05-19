@@ -13,6 +13,8 @@ Features:
 - Dump benchmark results as XML and generate reports later
 - Nice command line interface
 - Records relative and inclusive memory statistics
+- Add custom report generators
+- Per-project configuration
 
 Note this library is currently under development.
 
@@ -253,7 +255,7 @@ $configuration = new PhpBench\Configuration();
 $configuration->setPath(__DIR__ . '/benchmarks');
 
 // add a new report generator
-$configuration->addReportGenerator('my_report_generator', new MyReportGenerator());A
+$configuration->addReportGenerator('my_report_generator', new MyReportGenerator());
 
 // add a report
 $configuration->addReport(array(k
