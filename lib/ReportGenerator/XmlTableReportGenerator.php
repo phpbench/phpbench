@@ -18,13 +18,6 @@ use PhpBench\PhpBench;
 
 class XmlTableReportGenerator extends BaseTabularReportGenerator
 {
-    private $output;
-
-    public function __construct(OutputInterface $output)
-    {
-        $this->output = $output;
-    }
-
     public function configure(OptionsResolver $options)
     {
         parent::configure($options);
@@ -35,7 +28,7 @@ class XmlTableReportGenerator extends BaseTabularReportGenerator
         ));
     }
 
-    public function doGenerate(SuiteResult $suite, array $options)
+    public function doGenerate(SuiteResult $suite, OutputInterface $output, array $options)
     {
         $dom = new \DOMDocument('1.0');
         $rootEl = $dom->createElement('bench');
@@ -69,7 +62,7 @@ class XmlTableReportGenerator extends BaseTabularReportGenerator
             }
         }
 
-        $this->output->writeln(sprintf('<info>Writing XML file to</info>: %s', $outfile));
+        $output->writeln(sprintf('<info>Writing XML file to</info>: %s', $outfile));
         file_put_contents($outfile, $dom->saveXml());
 
         if ($options['stdout']) {

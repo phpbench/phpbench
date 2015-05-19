@@ -17,6 +17,7 @@ use PhpBench\Result\SubjectResult;
 use PhpBench\ReportGenerator;
 use DTL\DataTable\Table;
 use DTL\DataTable\Builder\TableBuilder;
+use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class BaseTabularReportGenerator implements ReportGenerator
 {
@@ -40,11 +41,11 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
         $options->setAllowedTypes('precision', 'int');
     }
 
-    public function generate(SuiteResult $suite, array $options)
+    public function generate(SuiteResult $suite, OutputInterface $output, array $options)
     {
         $this->precision = $options['precision'];
 
-        return $this->doGenerate($suite, $options);
+        return $this->doGenerate($suite, $output, $options);
     }
 
     protected function prepareData(SubjectResult $subject, array $options)

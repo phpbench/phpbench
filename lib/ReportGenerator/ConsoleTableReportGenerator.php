@@ -19,25 +19,22 @@ use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
 class ConsoleTableReportGenerator extends BaseTabularReportGenerator
 {
-    public function __construct(OutputInterface $output)
+    public function doGenerate(SuiteResult $suite, OutputInterface $output, array $options)
     {
-        $this->output = $output;
-        $this->output->getFormatter()->setStyle(
+        $output = $output;
+        $output->getFormatter()->setStyle(
             'total', new OutputFormatterStyle(null, null, array())
         );
-        $this->output->getFormatter()->setStyle(
+        $output->getFormatter()->setStyle(
             'blue', new OutputFormatterStyle('blue', null, array())
         );
-        $this->output->getFormatter()->setStyle(
+        $output->getFormatter()->setStyle(
             'dark', new OutputFormatterStyle('black', null, array('bold'))
         );
-    }
 
-    public function doGenerate(SuiteResult $suite, array $options)
-    {
         foreach ($suite->getBenchmarkResults() as $benchmark) {
             foreach ($benchmark->getSubjectResults() as $subject) {
-                $this->output->writeln(sprintf(
+                $output->writeln(sprintf(
                     '<comment>%s#%s()</comment>: %s',
                     $benchmark->getClass(),
                     $subject->getName(),
@@ -45,14 +42,14 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
                 ));
 
                 $data = $this->prepareData($subject, $options);
-                $this->renderData($data);
+                $this->renderData($output, $data);
 
-                $this->output->writeln('');
+                $output->writeln('');
             }
         }
     }
 
-    private function renderData($data)
+    private function renderData(OutputInterface $output, $data)
     {
         $data->map(function ($cell) {
             return number_format($cell->value(), 2);
@@ -83,7 +80,7 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
             return sprintf('<total>%s</total>', $cell->value());
         }, array('footer'));
 
-        $table = new Table($this->output);
+        $table = new Table($output);
 
         $table->setHeaders($data->getColumnNames());
         foreach ($data->getRows(array('spacer')) as $spacer) {

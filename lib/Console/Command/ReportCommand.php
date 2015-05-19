@@ -38,12 +38,13 @@ EOT
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $reportConfigs = $this->normalizeReportConfig($input->getOption('report'));
+        $configuration = $this->getApplication()->getConfiguration();
+        $this->processReportConfigs($input->getOption('report'));
         $file = $input->getArgument('file');
 
-        if (!$reportConfigs) {
+        if (!$configuration->getReports()) {
             throw new \InvalidArgumentException(
-                'You must specify at least one report, e.g.: --report=console_table'
+                'You must specify or configure at least one report, e.g.: --report=console_table'
             );
         }
 
@@ -55,6 +56,6 @@ EOT
 
         $loader = new XmlLoader();
         $suiteResult = $loader->load(file_get_contents($file));
-        $this->generateReports($output, $suiteResult, $reportConfigs);
+        $this->generateReports($output, $suiteResult);
     }
 }
