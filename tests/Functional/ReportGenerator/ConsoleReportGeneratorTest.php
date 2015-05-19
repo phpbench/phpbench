@@ -12,7 +12,6 @@
 namespace PhpBench\Tests\Functional\ReportGenerator;
 
 use PhpBench\ReportGenerator\ConsoleTableReportGenerator;
-use Symfony\Component\Console\Output\NullOutput;
 
 class ConsoleReportGeneratorTest extends BaseTabularReportGeneratorCase
 {

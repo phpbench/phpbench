@@ -11,7 +11,6 @@
 
 namespace PhpBench\Tests\Functional\ReportGenerator;
 
-use Symfony\Component\Console\Output\NullOutput;
 use PhpBench\ReportGenerator\XmlTableReportGenerator;
 
 class XmlReportGeneratorTest extends BaseTabularReportGeneratorCase

@@ -15,9 +15,7 @@ use Symfony\Component\Console\Application as BaseApplication;
 use PhpBench\Console\Command\RunCommand;
 use PhpBench\PhpBench;
 use PhpBench\Console\Command\ReportCommand;
-use Symfony\Component\Console\Input\InputInterface;
 use PhpBench\Configuration;
-use Symfony\Component\Console\Output\OutputInterface;
 use PhpBench\ReportGenerator\XmlTableReportGenerator;
 use Symfony\Component\Console\Input\InputOption;
 use PhpBench\ReportGenerator\ConsoleTableReportGenerator;
@@ -36,7 +34,7 @@ class Application extends BaseApplication
         $this->add(new RunCommand());
         $this->add(new ReportCommand());
 
-        $this->configuration = $configuration ? : new Configuration();
+        $this->configuration = $configuration ?: new Configuration();
         $this->configuration->addReportGenerator('console_table', new ConsoleTableReportGenerator());
         $this->configuration->addReportGenerator('xml_table', new XmlTableReportGenerator());
     }
@@ -50,7 +48,7 @@ class Application extends BaseApplication
     {
         $default = parent::getDefaultInputDefinition();
         $default->addOptions(array(
-            new InputOption('--config', null, InputOption::VALUE_REQUIRED)
+            new InputOption('--config', null, InputOption::VALUE_REQUIRED),
         ));
 
         return $default;

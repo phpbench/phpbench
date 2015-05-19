@@ -54,7 +54,7 @@ EOT
         $configuration = $this->getApplication()->getConfiguration();
 
         $this->processReportConfigs($reports);
-        $path = $input->getArgument('path') ? : $configuration->getPath();
+        $path = $input->getArgument('path') ?: $configuration->getPath();
 
         if (null === $path) {
             throw new \InvalidArgumentException(

@@ -14,7 +14,6 @@ namespace PhpBench\ReportGenerator;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
 use PhpBench\Result\SuiteResult;
-use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
 class ConsoleTableReportGenerator extends BaseTabularReportGenerator
@@ -67,6 +66,7 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
         // format the memory
         $data->map(function ($cell) {
             $value = $cell->value();
+
             return number_format($cell->value()) . '<dark>b</dark>';
         }, array('memory'));
 
@@ -92,5 +92,5 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
         }
 
         $table->render();
-   }
+    }
 }

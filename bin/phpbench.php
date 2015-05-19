@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__ . '/../lib/Configuration.php');
+require_once __DIR__ . '/../lib/Configuration.php';
 
 use PhpBench\Configuration;
 
@@ -53,7 +53,6 @@ if (null === $configuration) {
 
     $configuration = new Configuration();
 }
-
 
 if (!$configuration instanceof Configuration) {
     echo 'The configuration file did not return an instance of PhpBench\\Configuration';

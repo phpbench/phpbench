@@ -14,8 +14,6 @@ namespace PhpBench\Console\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Output\OutputInterface;
 use PhpBench\Result\SuiteResult;
-use PhpBench\ReportGenerator\ConsoleTableReportGenerator;
-use PhpBench\ReportGenerator\XmlTableReportGenerator;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
 

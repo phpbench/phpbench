@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Tests\Unit;
 
 use PhpBench\Configuration;
@@ -14,7 +23,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It can have report generators added to it
+     * It can have report generators added to it.
      */
     public function testAddReportGenerator()
     {
@@ -24,7 +33,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It can have the path set on it
+     * It can have the path set on it.
      */
     public function testSetPath()
     {
@@ -33,7 +42,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It can have report (configurations) added to it
+     * It can have report (configurations) added to it.
      */
     public function testAddReport()
     {
@@ -47,13 +56,13 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             array(
             'name' => 'report',
             'foo' => 'bar',
-        )), $reports);
+        ), ), $reports);
 
         return $this->configuration;
     }
 
     /**
-     * It can have the report (configurations) set/replaced
+     * It can have the report (configurations) set/replaced.
      *
      * @depends testAddReport
      */

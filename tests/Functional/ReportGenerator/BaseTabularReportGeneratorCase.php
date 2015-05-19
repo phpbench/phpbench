@@ -42,12 +42,12 @@ abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase
     }
 
     /**
-     * It should allow revolutions
+     * It should allow revolutions.
      */
     public function testWithRevolutions()
     {
         $this->executeReport($this->getResults(), array(
-            'revolutions' => true
+            'revolutions' => true,
         ));
     }
 

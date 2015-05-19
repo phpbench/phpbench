@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Tests\Functional\Bin;
 
 class BinTest extends \PHPUnit_Framework_TestCase
@@ -14,7 +23,7 @@ class BinTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should use a speified, valid,  configuration
+     * It should use a speified, valid,  configuration.
      */
     public function testSpecifiedConfig()
     {
@@ -25,7 +34,7 @@ class BinTest extends \PHPUnit_Framework_TestCase
 
     /**
      * It should use .phpbench if present
-     * It should prioritize .phpbench over .phpbench.dist
+     * It should prioritize .phpbench over .phpbench.dist.
      */
     public function testPhpBenchConfig()
     {
@@ -35,7 +44,7 @@ class BinTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should use .phpbench.dist if present
+     * It should use .phpbench.dist if present.
      */
     public function testPhpBenchDistConfig()
     {
@@ -45,7 +54,7 @@ class BinTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should exit with an error status if no configuration is present and no autoload is available
+     * It should exit with an error status if no configuration is present and no autoload is available.
      */
     public function testNoAutoload()
     {
@@ -55,7 +64,7 @@ class BinTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should exist with an error status if the config file did not return a configuration object
+     * It should exist with an error status if the config file did not return a configuration object.
      */
     public function testConfigNoReturnConfiguration()
     {
