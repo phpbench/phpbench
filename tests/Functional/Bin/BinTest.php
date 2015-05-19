@@ -13,15 +13,6 @@ namespace PhpBench\Tests\Functional\Bin;
 
 class BinTest extends \PHPUnit_Framework_TestCase
 {
-    private function execCommand($env, $command)
-    {
-        chdir(__DIR__ . '/' . $env);
-        $command = __DIR__ . '/../../../bin/phpbench ' . $command;
-        exec($command, $result, $status);
-
-        return array($status, implode($result, PHP_EOL));
-    }
-
     /**
      * It should use a speified, valid,  configuration.
      */
@@ -71,5 +62,14 @@ class BinTest extends \PHPUnit_Framework_TestCase
         list($exitCode, $results) = $this->execCommand('env/config_no_configuration', 'run');
         $this->assertEquals(1, $exitCode);
         $this->assertContains('did not return', $results);
+    }
+
+    private function execCommand($env, $command)
+    {
+        chdir(__DIR__ . '/' . $env);
+        $command = __DIR__ . '/../../../bin/phpbench ' . $command;
+        exec($command, $result, $status);
+
+        return array($status, implode($result, PHP_EOL));
     }
 }
