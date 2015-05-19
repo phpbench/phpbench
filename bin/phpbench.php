@@ -55,7 +55,7 @@ if (null === $configuration) {
 }
 
 if (!$configuration instanceof Configuration) {
-    echo 'The configuration file did not return an instance of PhpBench\\Configuration';
+    echo 'The configuration file did not return an instance of PhpBench\\Configuration' . PHP_EOL;
     exit(1);
 }
 

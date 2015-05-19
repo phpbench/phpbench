@@ -22,6 +22,7 @@ class RunCommandTest extends BaseCommandTestCase
     public function testCommand()
     {
         $tester = $this->runCommand('run', array(
+            'path' => __DIR__ . '/../../benchmarks',
         ));
         $this->assertEquals(0, $tester->getStatusCode());
         $display = $tester->getDisplay();
@@ -34,6 +35,7 @@ class RunCommandTest extends BaseCommandTestCase
     public function testCommandWithReport()
     {
         $tester = $this->runCommand('run', array(
+            'path' => __DIR__ . '/../../benchmarks',
             '--report' => array('console_table'),
         ));
         $this->assertEquals(0, $tester->getStatusCode());
@@ -42,11 +44,25 @@ class RunCommandTest extends BaseCommandTestCase
     }
 
     /**
+     * It should throw an exception if no path is given (and no path is configured)
+     *
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage You must
+     */
+    public function testCommandWithNoPath()
+    {
+        $this->runCommand('run', array(
+            '--report' => array('console_table'),
+        ));
+    }
+
+    /**
      * It should run and generate a report configuration.
      */
     public function testCommandWithReportConfiguration()
     {
         $tester = $this->runCommand('run', array(
+            'path' => __DIR__ . '/../../benchmarks',
             '--report' => array('{"name": "console_table"}'),
         ));
         $this->assertEquals(0, $tester->getStatusCode());
@@ -64,6 +80,7 @@ class RunCommandTest extends BaseCommandTestCase
     {
         $tester = $this->runCommand('run', array(
             '--report' => array('{"name": "foo_console_table"}'),
+            'path' => __DIR__ . '/../../benchmarks',
         ));
         $this->assertEquals(0, $tester->getStatusCode());
         $display = $tester->getDisplay();
@@ -80,6 +97,7 @@ class RunCommandTest extends BaseCommandTestCase
     {
         $tester = $this->runCommand('run', array(
             '--report' => array('{"name": "foo_console_ta'),
+            'path' => __DIR__ . '/../../benchmarks',
         ));
         $this->assertEquals(0, $tester->getStatusCode());
         $display = $tester->getDisplay();
@@ -93,19 +111,11 @@ class RunCommandTest extends BaseCommandTestCase
     {
         $tester = $this->runCommand('run', array(
             '--dumpfile' => self::TEST_FNAME,
+            'path' => __DIR__ . '/../../benchmarks',
         ));
         $this->assertEquals(0, $tester->getStatusCode());
         $display = $tester->getDisplay();
         $this->assertContains('Dumped', $display);
         $this->assertTrue(file_exists(self::TEST_FNAME));
-    }
-
-    protected function runCommand($commandName, array $arguments)
-    {
-        $arguments = array_merge(array(
-            'path' => __DIR__ . '/../../benchmarks',
-        ), $arguments);
-
-        return parent::runCommand($commandName, $arguments);
     }
 }
