@@ -18,8 +18,6 @@ class ConsoleReportGeneratorTest extends BaseTabularReportGeneratorCase
 {
     public function getReport()
     {
-        $output = new NullOutput();
-
-        return new ConsoleTableReportGenerator($output);
+        return new ConsoleTableReportGenerator();
     }
 }

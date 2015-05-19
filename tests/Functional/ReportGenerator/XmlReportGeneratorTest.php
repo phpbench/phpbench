@@ -18,8 +18,6 @@ class XmlReportGeneratorTest extends BaseTabularReportGeneratorCase
 {
     public function getReport()
     {
-        $output = new NullOutput();
-
-        return new XmlTableReportGenerator($output);
+        return new XmlTableReportGenerator();
     }
 }

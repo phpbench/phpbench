@@ -17,6 +17,7 @@ use PhpBench\Benchmark\SubjectBuilder;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Benchmark\CollectionBuilder;
 use PhpBench\Result\SuiteResult;
+use Symfony\Component\Console\Output\NullOutput;
 
 abstract class BaseReportGeneratorCase extends \PHPUnit_Framework_TestCase
 {
@@ -42,6 +43,7 @@ abstract class BaseReportGeneratorCase extends \PHPUnit_Framework_TestCase
         $report = $this->getReport();
         $report->configure($resolver);
         $options = $resolver->resolve($options);
-        $report->generate($results, $options);
+        $output = new NullOutput();
+        $report->generate($results, $output, $options);
     }
 }

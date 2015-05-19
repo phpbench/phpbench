@@ -66,6 +66,5 @@ if (!$configuration instanceof PhpBench\Benchmark\Configuration) {
 
 use PhpBench\Console\Application;
 
-$application = new Application();
-$application->setConfiguration($configuration);
+$application = new Application($configuration);
 $application->run();

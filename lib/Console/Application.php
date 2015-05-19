@@ -26,7 +26,7 @@ class Application extends BaseApplication
 {
     private $configuration;
 
-    public function __construct()
+    public function __construct(Configuration $configuration = null)
     {
         parent::__construct(
             'phpbench',
@@ -35,24 +35,15 @@ class Application extends BaseApplication
 
         $this->add(new RunCommand());
         $this->add(new ReportCommand());
-    }
 
-    public function setConfiguration(Configuration $configuration)
-    {
-        $this->configuration = $configuration;
-        $this->initConfiguration();
+        $this->configuration = $configuration ? : new Configuration();
+        $this->configuration->addReportGenerator('console_table', new ConsoleTableReportGenerator());
+        $this->configuration->addReportGenerator('xml_table', new XmlTableReportGenerator());
     }
 
     public function getConfiguration()
     {
         return $this->configuration;
-    }
-
-    public function initConfiguration()
-    {
-        $configuration = $this->getConfiguration();
-        $configuration->addReportGenerator('console_table', new ConsoleTableReportGenerator());
-        $configuration->addReportGenerator('xml_table', new XmlTableReportGenerator());
     }
 
     protected function getDefaultInputDefinition()

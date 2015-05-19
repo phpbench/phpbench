@@ -87,6 +87,7 @@ abstract class BaseCommand extends Command
                 ));
             }
 
+            $configs[] = $config;
         }
 
         if (!$configs) {
