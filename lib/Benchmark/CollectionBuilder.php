@@ -39,6 +39,10 @@ class CollectionBuilder
                 continue;
             }
 
+            if ($refl->isAbstract()) {
+                continue;
+            }
+
             $cases[] = new $classFqn();
         }
 
