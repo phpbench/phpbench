@@ -50,6 +50,7 @@ EOT
         $this->addOption('nosetup', null, InputOption::VALUE_NONE, 'Do not execute setUp or tearDown methods');
         $this->addOption('processisolation', 'pi', InputOption::VALUE_REQUIRED, 'Process isolation policy, one of <comment>iteration</comment>, <comment>iterations</comment>');
         $this->addOption('progress', 'l', InputOption::VALUE_REQUIRED, 'Progress logger to use', 'dots');
+        $this->addOption('gc-enable', null, InputOption::VALUE_NONE, 'Enable garbage collection');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
@@ -83,6 +84,11 @@ EOT
         $consoleOutput->writeln('PhpBench ' . PhpBench::VERSION . '. Running benchmarks.');
 
         $configuration = $this->getApplication()->getConfiguration();
+        $enableGc = null === $input->getOption('gc-enable') ? $configuration->getEnableGcGcEnable() : $input->getOption('gc-enable');
+
+        if ($enableGc) {
+            gc_enable();
+        }
 
         if ($configuration->getConfigPath()) {
             $consoleOutput->writeln(sprintf('Using configuration file: %s', $configuration->getConfigPath()));

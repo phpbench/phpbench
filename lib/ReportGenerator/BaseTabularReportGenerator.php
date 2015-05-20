@@ -87,7 +87,6 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
             }
         }
 
-        // hack the virtual revolutions row
         if ($options['revolutions']) {
             $cols['revs'] = array('revs');
         }

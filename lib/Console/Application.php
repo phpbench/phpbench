@@ -37,6 +37,8 @@ class Application extends BaseApplication
         $this->add(new RunCommand());
         $this->add(new ReportCommand());
 
+        gc_disable();
+
         $this->configuration = $configuration ?: new Configuration();
         $this->configuration->addReportGenerator('console_table', new ConsoleTableReportGenerator());
         $this->configuration->addProgressLogger('dots', new DotsProgressLogger());
