@@ -258,7 +258,7 @@ $configuration->setPath(__DIR__ . '/benchmarks');
 $configuration->addReportGenerator('my_report_generator', new MyReportGenerator());
 
 // add a report
-$configuration->addReport(array(k
+$configuration->addReport(array(
     'name' => 'my_report_generator',
     'option_1' => 'one',
     'option_2' => 'two',
