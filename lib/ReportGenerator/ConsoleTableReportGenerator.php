@@ -50,6 +50,10 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
 
     private function renderData(OutputInterface $output, $data, $options)
     {
+        // assign prevision to locally scoped variable for use in closures
+        // in versions of PHP < 5.4
+        $precision = $this->precision;
+
         $data->map(function ($cell) {
             return number_format($cell->value(), 2);
         }, array('revs'));
@@ -67,9 +71,9 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
                 break;
             default:
                 // format the float cells
-                $data->map(function ($cell) {
+                $data->map(function ($cell) use ($precision) {
                     $value = $cell->value();
-                    $value =  number_format($value / 1000000, $this->precision);
+                    $value =  number_format($value / 1000000, $precision);
                     $value = preg_replace('{^([0|\\.]+)(.+)$}', '<blue>\1</blue>\2', $value);
 
                     return $value . '<dark>s</dark>';
