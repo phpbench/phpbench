@@ -19,8 +19,6 @@ class Subject
     private $nbIterations;
     private $description;
 
-    private $iterations;
-
     public function __construct(
         $methodName,
         $beforeMethods,
@@ -58,10 +56,5 @@ class Subject
     public function getMethodName()
     {
         return $this->methodName;
-    }
-
-    public function addIteration(Iteration $iteration)
-    {
-        $this->iterations[] = $iteration;
     }
 }
