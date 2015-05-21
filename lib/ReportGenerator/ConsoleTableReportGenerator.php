@@ -41,27 +41,40 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
                 ));
 
                 $data = $this->prepareData($subject, $options);
-                $this->renderData($output, $data);
+                $this->renderData($output, $data, $options);
 
                 $output->writeln('');
             }
         }
     }
 
-    private function renderData(OutputInterface $output, $data)
+    private function renderData(OutputInterface $output, $data, $options)
     {
         $data->map(function ($cell) {
             return number_format($cell->value(), 2);
         }, array('revs'));
 
-        // format the float cells
-        $data->map(function ($cell) {
-            $value = $cell->value();
-            $value =  number_format($value, $this->precision);
-            $value = preg_replace('{^([0|\\.]+)(.+)$}', '<blue>\1</blue>\2', $value);
 
-            return $value . '<dark>s</dark>';
-        }, array('float'));
+        switch ($options['time_format']) {
+            case 'integer':
+                // format the float cells
+                $data->map(function ($cell) {
+                    $value = $cell->value();
+                    $value =  number_format($value);
+
+                    return $value . '<dark>μs</dark>';
+                }, array('time'));
+                break;
+            default:
+                // format the float cells
+                $data->map(function ($cell) {
+                    $value = $cell->value();
+                    $value =  number_format($value / 1000000, $this->precision);
+                    $value = preg_replace('{^([0|\\.]+)(.+)$}', '<blue>\1</blue>\2', $value);
+
+                    return $value . '<dark>s</dark>';
+                }, array('time'));
+        }
 
         // format the memory
         $data->map(function ($cell) {

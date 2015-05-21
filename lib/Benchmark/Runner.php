@@ -23,6 +23,8 @@ use PhpBench\Exception\InvalidArgumentException;
 
 class Runner
 {
+    const MILLION = 1000000;
+
     private $logger;
     private $finder;
     private $subjectBuilder;
@@ -146,7 +148,7 @@ class Runner
         $memoryDiffInclusive = $endMemory - $this->subjectLastMemoryInclusive;
         $this->subjectLastMemoryInclusive = $endMemory;
 
-        $statistics['time'] = $end - $start;
+        $statistics['time'] = ($end * self::MILLION) - ($start * self::MILLION);
         $statistics['memory'] = $this->subjectMemoryTotal;
         $statistics['memory_diff'] = $memoryDiff;
         $statistics['memory_inc'] = $endMemory;

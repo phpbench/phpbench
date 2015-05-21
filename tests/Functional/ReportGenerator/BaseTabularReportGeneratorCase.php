@@ -70,4 +70,24 @@ abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase
             'memory_inc' => true,
         ));
     }
+
+    /**
+     * It should display time as a fraction of a second
+     */
+    public function testWithTimeFraction()
+    {
+        $this->executeReport($this->getResults(), array(
+            'time_format' => 'fraction',
+        ));
+    }
+
+    /**
+     * It should display time as the number of microseconds
+     */
+    public function testWithTimeInteger()
+    {
+        $this->executeReport($this->getResults(), array(
+            'time_format' => 'integer',
+        ));
+    }
 }
