@@ -24,7 +24,8 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
     {
         $options->setDefaults(array(
             'aggregate_iterations' => false,
-            'precision' => 8,
+            'precision' => 6,
+            'time_format' => 'fraction',
             'time' => true,
             'memory' => false,
             'memory_inc' => false,
@@ -36,6 +37,7 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
             'footer_max' => false,
         ));
 
+        $options->setAllowedValues('time_format', array('integer', 'fraction'));
         $options->setAllowedTypes('aggregate_iterations', 'bool');
         $options->setAllowedTypes('precision', 'int');
     }
@@ -53,7 +55,7 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
         $cols = array();
 
         if ($options['time']) {
-            $cols['time'] = array('float');
+            $cols['time'] = array('time');
         }
 
         if ($options['memory']) {
