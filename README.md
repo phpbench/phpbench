@@ -152,6 +152,8 @@ class BenchmarkCase implements Benchmark
      */
     public function benchParameterized(Iteration $iteration)
     {
+        // do something with a parameter
+        $param = $iteration->getParameter('length');
     }
 
     public function provideParamsOne()
