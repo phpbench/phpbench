@@ -14,6 +14,7 @@ namespace PhpBench\Tests\Benchmark;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Benchmark;
 use PhpBench\Benchmark\Iteration;
+use PhpBench\Exception\InvalidArgumentException;
 
 class RunnerTest extends \PHPUnit_Framework_TestCase
 {
@@ -27,8 +28,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->subject = $this->prophesize('PhpBench\\Benchmark\\Subject');
 
         $this->runner = new Runner(
-            $this->collectionBuilder->reveal(),
-            $this->subjectBuilder->reveal(),
+            $this->collectionBuilder->reveal(), $this->subjectBuilder->reveal(),
             $this->logger->reveal()
         );
     }
@@ -63,6 +63,48 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('PhpBench\\Result\\SuiteResult', $result);
         $this->assertEquals(1, count($result->getBenchmarkResults()));
+    }
+
+    /**
+     * It should throw an exception if a before method does not exist
+     *
+     * @expectedException PhpBench\Exception\InvalidArgumentException
+     * @expectedExceptionMessage Unknown bench benchmark method "beforeFooNotExisting"
+     */
+    public function testInvalidBeforeMethod()
+    {
+        $this->collectionBuilder->buildCollection()->willReturn($this->collection);
+        $this->collection->getBenchmarks()->willReturn(array(
+            $this->case,
+        ));
+        $this->subjectBuilder->buildSubjects($this->case)->willReturn(array(
+            $this->subject->reveal(),
+        ));
+        $this->subject->getNbIterations()->willReturn(1);
+        $this->subject->getParameterProviders()->willReturn(array());
+        $this->subject->getBeforeMethods()->willReturn(array('beforeFooNotExisting'));
+
+        $this->runner->runAll();
+    }
+
+    /**
+     * It should throw an exception if a parameter provider does not exist
+     *
+     * @expectedException PhpBench\Exception\InvalidArgumentException
+     * @expectedExceptionMessage Unknown param provider "notExistingParam" for bench benchmark
+     */
+    public function testInvalidParamProvider()
+    {
+        $this->collectionBuilder->buildCollection()->willReturn($this->collection);
+        $this->collection->getBenchmarks()->willReturn(array(
+            $this->case,
+        ));
+        $this->subjectBuilder->buildSubjects($this->case)->willReturn(array(
+            $this->subject->reveal(),
+        ));
+        $this->subject->getParameterProviders()->willReturn(array('notExistingParam'));
+
+        $this->runner->runAll();
     }
 }
 
