@@ -25,7 +25,7 @@ class Iteration
     public function getParameter($name)
     {
         if (!isset($this->parameters[$name])) {
-            throw new Exception\InvalidArgumentException(sprintf(
+            throw new \InvalidArgumentException(sprintf(
                 'Unknown iteration parameters "%s"', $name
             ));
         }

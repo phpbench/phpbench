@@ -95,13 +95,13 @@ class Configuration
         return $this->configPath;
     }
 
-    public function getEnableGc() 
+    public function enableGc()
+    {
+        $this->enableGc = true;
+    }
+
+    public function getGcEnabled()
     {
         return $this->enableGc;
-    }
-    
-    public function setEnableGc(bool $enableGc)
-    {
-        $this->enableGc = $enableGc;
     }
 }
