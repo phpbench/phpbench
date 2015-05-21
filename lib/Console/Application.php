@@ -16,7 +16,6 @@ use PhpBench\Console\Command\RunCommand;
 use PhpBench\PhpBench;
 use PhpBench\Console\Command\ReportCommand;
 use PhpBench\Configuration;
-use PhpBench\ReportGenerator\XmlTableReportGenerator;
 use Symfony\Component\Console\Input\InputOption;
 use PhpBench\ReportGenerator\ConsoleTableReportGenerator;
 
@@ -36,7 +35,6 @@ class Application extends BaseApplication
 
         $this->configuration = $configuration ?: new Configuration();
         $this->configuration->addReportGenerator('console_table', new ConsoleTableReportGenerator());
-        $this->configuration->addReportGenerator('xml_table', new XmlTableReportGenerator());
     }
 
     public function getConfiguration()
