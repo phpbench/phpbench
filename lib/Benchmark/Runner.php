@@ -138,9 +138,9 @@ class Runner
         }
 
         $startMemory = memory_get_usage();
-        $start = microtime(true);
+        $start = microtime(true) * 1000000;
         $benchmark->{$subject->getMethodName()}($iteration);
-        $end = microtime(true);
+        $end = microtime(true) * 1000000;
         $endMemory = memory_get_usage();
 
         $memoryDiff = $endMemory - $startMemory;
