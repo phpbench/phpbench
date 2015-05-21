@@ -19,6 +19,7 @@ use PhpBench\Result\IterationResult;
 use PhpBench\Result\BenchmarkResult;
 use PhpBench\Result\SuiteResult;
 use PhpBench\Result\IterationsResult;
+use PhpBench\Exception\InvalidArgumentException;
 
 class Runner
 {
@@ -81,7 +82,7 @@ class Runner
 
         foreach ($paramProviderMethods as $paramProviderMethod) {
             if (!method_exists($benchmark, $paramProviderMethod)) {
-                throw new Exception\InvalidArgumentException(sprintf(
+                throw new InvalidArgumentException(sprintf(
                     'Unknown param provider "%s" for bench benchmark "%s"',
                     $paramProviderMethod, get_class($benchmark)
                 ));
@@ -118,7 +119,7 @@ class Runner
     {
         foreach ($subject->getBeforeMethods() as $beforeMethodName) {
             if (!method_exists($benchmark, $beforeMethodName)) {
-                throw new Exception\InvalidArgumentException(sprintf(
+                throw new InvalidArgumentException(sprintf(
                     'Unknown bench benchmark method "%s"', $beforeMethodName
                 ));
             }
