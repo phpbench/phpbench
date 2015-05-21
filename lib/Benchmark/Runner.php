@@ -58,6 +58,10 @@ class Runner
 
     private function run(Benchmark $benchmark)
     {
+        if (method_exists($benchmark, 'setUp')) {
+            $benchmark->setUp();
+        }
+
         $subjects = $this->subjectBuilder->buildSubjects($benchmark);
         $subjectResults = array();
 
@@ -65,6 +69,10 @@ class Runner
             $this->logger->subjectStart($subject);
             $subjectResults[] = $this->runSubject($benchmark, $subject);
             $this->logger->subjectEnd($subject);
+        }
+
+        if (method_exists($benchmark, 'tearDown')) {
+            $benchmark->tearDown();
         }
 
         $benchmarkResult = new BenchmarkResult(get_class($benchmark), $subjectResults);

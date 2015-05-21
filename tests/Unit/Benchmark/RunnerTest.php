@@ -106,12 +106,48 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
 
         $this->runner->runAll();
     }
+
+    /**
+     * The magic tearDown and setUp should be called
+     */
+    public function testSetUpAndTearDown()
+    {
+        $this->collectionBuilder->buildCollection()->willReturn($this->collection);
+        $this->collection->getBenchmarks()->willReturn(array(
+            $this->case,
+        ));
+        $this->subjectBuilder->buildSubjects($this->case)->willReturn(array(
+            $this->subject->reveal(),
+        ));
+        $this->subject->getParameterProviders()->willReturn(array());
+        $this->subject->getMethodName()->willReturn('benchFoo');
+        $this->subject->getDescription()->willReturn('benchFoo');
+        $this->subject->getNbIterations()->willReturn(0);
+
+        $this->runner->runAll();
+
+        $this->assertTrue($this->case->setUpCalled);
+        $this->assertTrue($this->case->tearDownCalled);
+    }
+
 }
 
 class RunnerTestBenchCase implements Benchmark
 {
     public $called = false;
     public $beforeCalled = false;
+    public $setUpCalled = false;
+    public $tearDownCalled = false;
+
+    public function setUp()
+    {
+        $this->setUpCalled = true;
+    }
+
+    public function tearDown()
+    {
+        $this->tearDownCalled = true;
+    }
 
     public function paramSetOne()
     {
