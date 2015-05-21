@@ -69,13 +69,24 @@ Specify a method which will provide parameters which can be accessed from the
 If multiple parameter providers are specified, then the they will be combined
 in to a cartesian product.
 
+Installation
+------------
+
+Install with composer, add it to `composer.json`:
+
+````javascript
+{
+    "dantleech/phpbench": "~1.0@dev"
+}
+````
+
 Reports
 -------
 
 Reports can be specified simply as:
 
 ````bash
-$ <path to>/phpbench run benchmarks/ --report=<report name>
+$ php vendor/bin/phpbench run benchmarks/ --report=<report name>
 ````
 
 But you can also pass configuration to the report, in this case you must pass
@@ -83,7 +94,7 @@ a JSON string which should have a `name` key specifying the name of the
 report, all other keys are interpreted as options:
 
 ````bash
-$ <path to>/phpbench run benchmarks/ --report='{"name": "console_table",
+$ php vendor/bin/phpbench run benchmarks/ --report='{"name": "console_table",
 "memory": true}'
 ````
 
@@ -112,11 +123,10 @@ Example
 
 ````php
 <?php
+use PhpBench\Benchmark\Iteration;
+use PhpBench\Benchmark;
 
-use PhpBench\BenchCase;
-use PhpBench\Iteration;
-
-class BenchmarkCase implements BenchCase
+class BenchmarkCase implements Benchmark
 {
     /**
      * @description randomBench
@@ -132,32 +142,16 @@ class BenchmarkCase implements BenchCase
      */
     public function benchDoNothing(Iteration $iteration)
     {
-       // do something time consuming
     }
 
     /**
      * @paramProvider provideParamsOne
      * @paramProvider provideParamsTwo
-     * @beforeMethod prepareParameterized
      * @description Parameterized bench mark
-     * @iterations 3
+     * @iterations 1
      */
     public function benchParameterized(Iteration $iteration)
     {
-         $param1 = $iteration->getParameter('length');
-
-         // ...
-    }
-
-    public function prepareParameterized(Iteration $iteration)
-    {
-        if ($iteration->getIndex() === 0) {
-            // do something on the first iteration
-        }
-
-        $param = $iteration->getParameter('nb_nodes');
-
-        // ...
     }
 
     public function provideParamsOne()
@@ -181,39 +175,43 @@ class BenchmarkCase implements BenchCase
 You can then run the benchmark:
 
 ````bash
-$ ./<path to>/phpbench phpbench:run tests/assets/functional/BenchmarkCase.php
-Running benchmarking suite
+$ php vendor/bin/phpbench run tests/benchmark --report=console_table
+Running benchmark suite
 
 BenchmarkCase
 ...
 
-Generating reports..
+Generating reports...
+
+>> console_table >>
 
 BenchmarkCase#benchRandom(): randomBench
-+---+--------+------------+
-| # | Params | Time       |
-+---+--------+------------+
-| 1 | []     | 0.03885007 |
-+---+--------+------------+
++-----+------+-------------+
+| run | iter | time        |
++-----+------+-------------+
+| 1   | 0    | 0.00294995s |
++-----+------+-------------+
 
 BenchmarkCase#benchDoNothing(): Do nothing three times
-+---+--------+------------+
-| # | Params | Time       |
-+---+--------+------------+
-| 1 | []     | 0.00001001 |
-| 2 | []     | 0.00000691 |
-| 3 | []     | 0.00000715 |
-+---+--------+------------+
++-----+------+-------------+
+| run | iter | time        |
++-----+------+-------------+
+| 1   | 0    | 0.00000310s |
+| 1   | 1    | 0.00000310s |
+| 1   | 2    | 0.00000191s |
++-----+------+-------------+
 
 BenchmarkCase#benchParameterized(): Parameterized bench mark
-+---+-----------------------------------+------------+
-| # | Params                            | Time       |
-+---+-----------------------------------+------------+
-| 1 | {"length":"1","strategy":"left"}  | 0.00000882 |
-| 1 | {"length":"2","strategy":"left"}  | 0.00000715 |
-| 1 | {"length":"1","strategy":"right"} | 0.00000811 |
-| 1 | {"length":"2","strategy":"right"} | 0.00000787 |
-+---+-----------------------------------+------------+
++-----+------+--------+----------+-------------+
+| run | iter | length | strategy | time        |
++-----+------+--------+----------+-------------+
+| 1   | 0    | 1      | left     | 0.00000310s |
+| 2   | 0    | 2      | left     | 0.00000405s |
+| 3   | 0    | 1      | right    | 0.00000501s |
+| 4   | 0    | 2      | right    | 0.00000405s |
++-----+------+--------+----------+-------------+
+
+Done (0.029607)
 ````
 
 Configuration
