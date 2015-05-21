@@ -82,9 +82,14 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
                 }
 
                 if ($options['revolutions']) {
-                    $row->set('revs', (1 / $iteration->get('time')), array('revs'));
+                    $row->set('revs', 1000000 / $iteration->get('time'), array('revs'));
                 }
             }
+        }
+
+        // hack the virtual revolutions row
+        if ($options['revolutions']) {
+            $cols['revs'] = array('revs');
         }
 
         $data = $table->getTable();
