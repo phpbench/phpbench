@@ -88,6 +88,23 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
         }
 
         foreach ($data->getRows() as $row) {
+            $row->map(function ($cell) {
+                $value = $cell->value();
+
+                if (is_scalar($value)) {
+                    return $value;
+                }
+
+                if (is_object($value)) {
+                    if (method_exists($value, '__toString')) {
+                        return $value->__toString();
+                    }
+
+                    return 'obj:' . spl_object_hash($value);
+                }
+
+                return json_encode($value);
+            });
             $table->addRow($row->toArray());
         }
 
