@@ -26,7 +26,9 @@ class XmlDumper
         $dom->formatOutput = true;
         $rootEl = $dom->createElement('phpbench');
         $rootEl->setAttribute('version', PhpBench::VERSION);
-        $rootEl->setAttribute('date', date('c'));
+
+        // ignore timezone errors (travis)
+        $rootEl->setAttribute('date', @date('c'));
         $dom->appendChild($rootEl);
 
         $childEl = null;
