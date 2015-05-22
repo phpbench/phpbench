@@ -32,20 +32,34 @@ class Runner
     private $subjectMemoryTotal;
     private $subjectLastMemoryInclusive;
     private $separateProcess;
+    private $parameterOverride;
+    private $setUpTearDown;
 
+    /**
+     * @param CollectionBuilder $finder The collection builder
+     * @param SubjectBuilder $subjectBuilder The subject builder
+     * @param ProgressLogger $logger The progress logger
+     * @param mixed $separateProcess The separate process policy
+     * @param mixed $setUpTearDown If the setUp and tearDown methods should be called
+     * @param mixed $parameterOverride Override all parameters
+     */
     public function __construct(
         CollectionBuilder $finder,
         SubjectBuilder $subjectBuilder,
         ProgressLogger $logger = null,
-        $separateProcess = false
+        $separateProcess = false,
+        $setUpTearDown = true,
+        $parameterOverride = null
     ) {
         $this->logger = $logger ?: new NullProgressLogger();
         $this->finder = $finder;
         $this->subjectBuilder = $subjectBuilder;
         $this->separateProcess = $separateProcess;
+        $this->setUpTearDown = $setUpTearDown;
+        $this->parameterOverride = $parameterOverride;
     }
 
-    public function runAll($noSetup = false, $parameters = null)
+    public function runAll()
     {
         $collection = $this->finder->buildCollection();
 
@@ -53,7 +67,7 @@ class Runner
 
         foreach ($collection->getBenchmarks() as $benchmark) {
             $this->logger->benchmarkStart($benchmark);
-            $benchmarkResults[] = $this->run($benchmark, $noSetup, $parameters);
+            $benchmarkResults[] = $this->run($benchmark);
             $this->logger->benchmarkEnd($benchmark);
         }
 
@@ -62,9 +76,9 @@ class Runner
         return $benchmarkSuiteResult;
     }
 
-    private function run(Benchmark $benchmark, $noSetup, $parameters)
+    private function run(Benchmark $benchmark)
     {
-        if (false === $noSetup && method_exists($benchmark, 'setUp')) {
+        if (true === $this->setUpTearDown && method_exists($benchmark, 'setUp')) {
             $benchmark->setUp();
         }
 
@@ -73,11 +87,11 @@ class Runner
 
         foreach ($subjects as $subject) {
             $this->logger->subjectStart($subject);
-            $subjectResults[] = $this->runSubject($benchmark, $subject, $parameters);
+            $subjectResults[] = $this->runSubject($benchmark, $subject);
             $this->logger->subjectEnd($subject);
         }
 
-        if (false === $noSetup && method_exists($benchmark, 'tearDown')) {
+        if (true === $this->setUpTearDown && method_exists($benchmark, 'tearDown')) {
             $benchmark->tearDown();
         }
 
@@ -86,14 +100,14 @@ class Runner
         return $benchmarkResult;
     }
 
-    private function runSubject(Benchmark $benchmark, Subject $subject, $parameters)
+    private function runSubject(Benchmark $benchmark, Subject $subject)
     {
         $this->subjectMemoryTotal = 0;
         $this->subjectLastMemoryInclusive = memory_get_usage();
 
 
-        if (null !== $parameters) {
-            $parameterSets = array(array($parameters));
+        if (null !== $this->parameterOverride) {
+            $parameterSets = array(array($this->parameterOverride));
         } else {
             $parameterSets = $this->getParameterSets($benchmark, $subject);
         }

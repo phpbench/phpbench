@@ -145,9 +145,11 @@ EOT
             $benchFinder,
             $subjectBuilder,
             $progressLogger,
-            $separateProcess
+            $separateProcess,
+            !$noSetup,
+            $parameters
         );
 
-        return $benchRunner->runAll($noSetup, $parameters);
+        return $benchRunner->runAll();
     }
 }
