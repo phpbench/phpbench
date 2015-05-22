@@ -1,0 +1,12 @@
+<?php
+
+require(__DIR__ . '/../vendor/autoload.php');
+$configuration = new PhpBench\Configuration();
+$configuration->setPath(__DIR__ . '/../tests/Functional/benchmarks');
+$configuration->addReport(array(
+    'name' => 'console_table',
+    'revolutions' => true,
+    'memory' => true,
+));
+
+return $configuration;
