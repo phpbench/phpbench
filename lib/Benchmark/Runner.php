@@ -41,7 +41,7 @@ class Runner
         $this->subjectBuilder = $subjectBuilder;
     }
 
-    public function runAll($noSetup = false)
+    public function runAll($noSetup = false, $parameters = null)
     {
         $collection = $this->finder->buildCollection();
 
@@ -49,7 +49,7 @@ class Runner
 
         foreach ($collection->getBenchmarks() as $benchmark) {
             $this->logger->benchmarkStart($benchmark);
-            $benchmarkResults[] = $this->run($benchmark, $noSetup);
+            $benchmarkResults[] = $this->run($benchmark, $noSetup, $parameters);
             $this->logger->benchmarkEnd($benchmark);
         }
 
@@ -58,7 +58,7 @@ class Runner
         return $benchmarkSuiteResult;
     }
 
-    private function run(Benchmark $benchmark, $noSetup)
+    private function run(Benchmark $benchmark, $noSetup, $parameters)
     {
         if (false === $noSetup && method_exists($benchmark, 'setUp')) {
             $benchmark->setUp();
@@ -69,7 +69,7 @@ class Runner
 
         foreach ($subjects as $subject) {
             $this->logger->subjectStart($subject);
-            $subjectResults[] = $this->runSubject($benchmark, $subject);
+            $subjectResults[] = $this->runSubject($benchmark, $subject, $parameters);
             $this->logger->subjectEnd($subject);
         }
 
@@ -82,22 +82,16 @@ class Runner
         return $benchmarkResult;
     }
 
-    private function runSubject(Benchmark $benchmark, Subject $subject)
+    private function runSubject(Benchmark $benchmark, Subject $subject, $parameters)
     {
         $this->subjectMemoryTotal = 0;
         $this->subjectLastMemoryInclusive = memory_get_usage();
 
-        $paramProviderMethods = $subject->getParameterProviders();
-        $parameterSets = array();
 
-        foreach ($paramProviderMethods as $paramProviderMethod) {
-            if (!method_exists($benchmark, $paramProviderMethod)) {
-                throw new InvalidArgumentException(sprintf(
-                    'Unknown param provider "%s" for bench benchmark "%s"',
-                    $paramProviderMethod, get_class($benchmark)
-                ));
-            }
-            $parameterSets[] = $benchmark->$paramProviderMethod();
+        if (null !== $parameters) {
+            $parameterSets = array(array($parameters));
+        } else {
+            $parameterSets = $this->getParameterSets($benchmark, $subject);
         }
 
         if (!$parameterSets) {
@@ -156,5 +150,23 @@ class Runner
         $iterationResult = new IterationResult($statistics);
 
         return $iterationResult;
+    }
+
+    private function getParameterSets(Benchmark $benchmark, Subject $subject)
+    {
+        $paramProviderMethods = $subject->getParameterProviders();
+        $parameterSets = array();
+
+        foreach ($paramProviderMethods as $paramProviderMethod) {
+            if (!method_exists($benchmark, $paramProviderMethod)) {
+                throw new InvalidArgumentException(sprintf(
+                    'Unknown param provider "%s" for bench benchmark "%s"',
+                    $paramProviderMethod, get_class($benchmark)
+                ));
+            }
+            $parameterSets[] = $benchmark->$paramProviderMethod();
+        }
+
+        return $parameterSets;
     }
 }

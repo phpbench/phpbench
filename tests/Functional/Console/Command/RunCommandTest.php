@@ -136,4 +136,37 @@ class RunCommandTest extends BaseCommandTestCase
         $benchmarkEls = $xpath->query('//subject');
         $this->assertEquals(3, $benchmarkEls->length);
     }
+
+    /**
+     * It should accept explicit parameters
+     */
+    public function testExplicitParameters()
+    {
+        $tester = $this->runCommand('run', array(
+            '--dump' => true,
+            '--parameters' => '{"length": 333}',
+            'path' => __DIR__ . '/../../benchmarks',
+        ));
+        $this->assertEquals(0, $tester->getStatusCode());
+        $display = $tester->getDisplay();
+        $dom = new \DOMDocument();
+        $dom->loadXml($display);
+        $xpath = new \DOMXPath($dom);
+        $parameters = $xpath->query('//parameter[@value=333]');
+        $this->assertEquals(3, $parameters->length);
+    }
+
+    /**
+     * It should throw an exception if an invalid JSON string is provided for parameters
+     *
+     * @expectedException InvalidArgumentException
+     */
+    public function testExplicitParametersInvalidJson()
+    {
+        $this->runCommand('run', array(
+            '--dump' => true,
+            '--parameters' => '{"length: 3,',
+            'path' => __DIR__ . '/../../benchmarks',
+        ));
+    }
 }

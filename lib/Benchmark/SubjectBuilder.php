@@ -16,12 +16,12 @@ use PhpBench\Benchmark;
 class SubjectBuilder
 {
     private $parser;
-    private $filter;
+    private $subject;
 
-    public function __construct($filter = null)
+    public function __construct($subject = null)
     {
         $this->parser = new Parser();
-        $this->filter = $filter;
+        $this->subject = $subject;
     }
 
     public function buildSubjects(Benchmark $case)
@@ -35,7 +35,7 @@ class SubjectBuilder
                 continue;
             }
 
-            if ($this->filter && !preg_match('{' . $this->filter . '}', $method->getName())) {
+            if ($this->subject && $method->getName() !== $this->subject) {
                 continue;
             }
 

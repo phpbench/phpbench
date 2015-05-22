@@ -41,10 +41,11 @@ EOT
         );
         $this->addArgument('path', InputArgument::OPTIONAL, 'Path to benchmark(s)');
         $this->addOption('report', array(), InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Report name or configuration in JSON format');
-        $this->addOption('filter', null, InputOption::VALUE_REQUIRED, 'Filter subject(s) to run');
+        $this->addOption('subject', null, InputOption::VALUE_REQUIRED, 'Subject to run');
         $this->addOption('dumpfile', 'df', InputOption::VALUE_OPTIONAL, 'Dump XML result to named file');
         $this->addOption('dump', null, InputOption::VALUE_NONE, 'Dump XML result to stdout');
-        $this->addOption('nosetup', null, InputOption::VALUE_NONE, 'Do not execute setUp or tearDown methods');
+        $this->addOption('parameters', null, InputOption::VALUE_REQUIRED, 'Explicit parameters to use in benchmark');
+        $this->addOption('nosetup', null, InputOption::VALUE_REQUIRED, 'Do not execute setUp or tearDown methods');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
@@ -52,6 +53,18 @@ EOT
         $reports = $input->getOption('report');
         $consoleOutput = $output;
         $dump = $input->getOption('dump');
+        $parametersJson = $input->getOption('parameters');
+        $noSetup = $input->getOption('nosetup');
+        $parameters = null;
+
+        if ($parametersJson) {
+            $parameters = json_decode($parametersJson, true);
+            if (!$parameters) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Could not decode parameters JSON string: "%s"', $parametersJson
+                ));
+            }
+        }
 
         if ($dump) {
             $consoleOutput = new NullOutput();
@@ -71,11 +84,11 @@ EOT
             );
         }
 
-        $filter = $input->getOption('filter');
+        $subject = $input->getOption('subject');
         $dumpfile = $input->getOption('dumpfile');
 
         $startTime = microtime(true);
-        $result = $this->executeBenchmarks($consoleOutput, $path, $filter);
+        $result = $this->executeBenchmarks($consoleOutput, $path, $subject, $noSetup, $parameters);
 
         $consoleOutput->writeln('');
 
@@ -104,7 +117,7 @@ EOT
         return $dumper->dump($result);
     }
 
-    private function executeBenchmarks(OutputInterface $output, $path, $filter)
+    private function executeBenchmarks(OutputInterface $output, $path, $subject, $noSetup, $parameters)
     {
         $finder = new Finder();
 
@@ -123,7 +136,7 @@ EOT
         }
 
         $benchFinder = new CollectionBuilder($finder);
-        $subjectBuilder = new SubjectBuilder($filter);
+        $subjectBuilder = new SubjectBuilder($subject);
         $progressLogger = new PhpUnitProgressLogger($output);
 
         $benchRunner = new Runner(
@@ -132,6 +145,6 @@ EOT
             $progressLogger
         );
 
-        return $benchRunner->runAll();
+        return $benchRunner->runAll($noSetup, $parameters);
     }
 }
