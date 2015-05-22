@@ -138,7 +138,7 @@ class Runner
 
         $bin = realpath(__DIR__ . '/../..') . '/bin/phpbench';
         $command = sprintf(
-            '%s run %s --subject=%s --dump --parameters=\'%s\'',
+            '%s run %s --subject=%s --nosetup --dump --parameters=\'%s\'',
             $bin,
             $reflection->getFileName(),
             $subject->getMethodName(),

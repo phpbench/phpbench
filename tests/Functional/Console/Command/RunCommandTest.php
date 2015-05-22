@@ -169,4 +169,20 @@ class RunCommandTest extends BaseCommandTestCase
             'path' => __DIR__ . '/../../benchmarks',
         ));
     }
+
+    /**
+     * It should run iterations in separate processes
+     */
+    public function testSeparateProcess()
+    {
+        $this->markTestIncomplete();
+    }
+
+    /**
+     * It should escape paramters when running in separate process
+     */
+    public function testSeparateProcessEscape()
+    {
+        $this->markTestIncomplete();
+    }
 }

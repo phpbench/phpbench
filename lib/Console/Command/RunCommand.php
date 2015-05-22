@@ -45,7 +45,7 @@ EOT
         $this->addOption('dumpfile', 'df', InputOption::VALUE_OPTIONAL, 'Dump XML result to named file');
         $this->addOption('dump', null, InputOption::VALUE_NONE, 'Dump XML result to stdout');
         $this->addOption('parameters', null, InputOption::VALUE_REQUIRED, 'Explicit parameters to use in benchmark');
-        $this->addOption('nosetup', null, InputOption::VALUE_REQUIRED, 'Do not execute setUp or tearDown methods');
+        $this->addOption('nosetup', null, InputOption::VALUE_NONE, 'Do not execute setUp or tearDown methods');
         $this->addOption('separateprocess', null, InputOption::VALUE_NONE, 'Run iterations in separate processes');
     }
 
