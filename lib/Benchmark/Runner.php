@@ -40,12 +40,11 @@ class Runner
     /**
      * @param CollectionBuilder $finder
      * @param SubjectBuilder $subjectBuilder
-     * @param ProgressLogger $logger 
-     *
+     * @param ProgressLogger $logger
      * @param mixed $processIsolation ProcessIsolation override
      * @param mixed $setUpTearDown Enable or disable setUp and tearDown
      * @param mixed $parameterOverride Ovreride the parameters
-     * @param mixed $iterationsOverride Override the number of iterations 
+     * @param mixed $iterationsOverride Override the number of iterations
      * @param mixed $configFile Isolated proceses need to know about the config
      */
     public function __construct(
@@ -153,6 +152,7 @@ class Runner
             $iteration = new Iteration($index, $parameters);
             $iterationResults[] = $this->runIteration($benchmark, $subject, $iteration);
         }
+
         return new IterationsResult($iterationResults, $parameters);
     }
 
@@ -171,8 +171,9 @@ class Runner
                 break;
             default:
                 throw new \RuntimeException(sprintf(
-                    'Invalid process islation policy "%s". This really should not happen.'
-                , $processIsolation));
+                    'Invalid process islation policy "%s". This really should not happen.',
+                    $processIsolation
+                ));
         }
 
         $iterationsResult = array();

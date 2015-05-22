@@ -59,7 +59,7 @@ EOT
         $noSetup = $input->getOption('nosetup');
         $iterations = $input->getOption('iterations');
         $configFile = $input->getOption('config');
-        $processIsolation = $input->getOption('processisolation') ? : null;
+        $processIsolation = $input->getOption('processisolation') ?: null;
         $processIsolation = $processIsolation === 'none' ? false : $processIsolation;
         $parameters = null;
 
@@ -121,6 +121,7 @@ EOT
     private function dumpResult(SuiteResult $result)
     {
         $dumper = new XmlDumper();
+
         return $dumper->dump($result);
     }
 

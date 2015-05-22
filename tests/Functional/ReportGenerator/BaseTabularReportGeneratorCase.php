@@ -72,7 +72,7 @@ abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase
     }
 
     /**
-     * It should display time as a fraction of a second
+     * It should display time as a fraction of a second.
      */
     public function testWithTimeFraction()
     {
@@ -82,7 +82,7 @@ abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase
     }
 
     /**
-     * It should display time as the number of microseconds
+     * It should display time as the number of microseconds.
      */
     public function testWithTimeInteger()
     {

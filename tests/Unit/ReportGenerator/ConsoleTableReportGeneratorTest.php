@@ -1,9 +1,17 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Tests\Unit\ReportGenerator;
 
 use PhpBench\ReportGenerator\ConsoleTableReportGenerator;
-use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Console\Output\BufferedOutput;
 
@@ -26,16 +34,16 @@ class ConsoleTableReportGeneratorTest extends \PHPUnit_Framework_TestCase
         $this->iterationResult1 = $this->prophesize('PhpBench\Result\IterationResult');
 
         $this->suiteResult->getBenchmarkResults()->willReturn(array(
-            $this->benchmarkResult->reveal()
+            $this->benchmarkResult->reveal(),
         ));
         $this->benchmarkResult->getSubjectResults()->willReturn(array(
-            $this->subjectResult->reveal()
+            $this->subjectResult->reveal(),
         ));
         $this->subjectResult->getIterationsResults()->willReturn(array(
-            $this->iterationsResult->reveal()
+            $this->iterationsResult->reveal(),
         ));
         $this->iterationsResult->getIterationResults()->willReturn(array(
-            $this->iterationResult1
+            $this->iterationResult1,
         ));
 
         $this->benchmarkResult->getClass()->willReturn('AcmeClass');
@@ -44,7 +52,7 @@ class ConsoleTableReportGeneratorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should render non scalar parameter values
+     * It should render non scalar parameter values.
      */
     public function testNonScalarParameterValue()
     {

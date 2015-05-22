@@ -103,7 +103,7 @@ EOT
     }
 
     /**
-     * Its should throw an exception if the process isolation is not valid
+     * Its should throw an exception if the process isolation is not valid.
      *
      * @expectedException PhpBench\Exception\InvalidArgumentException
      * @expectedExceptionMessage Process isolation must be one of "iteration", "iterations"

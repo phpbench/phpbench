@@ -62,7 +62,7 @@ EOT;
     {
         $iteration1 = new IterationResult(array('time' => 100));
         $iterations = new IterationsResult(array($iteration1), array(
-            'foo' => 'bar', 
+            'foo' => 'bar',
             'array' => array('one', 'two'),
             'assoc_array' => array(
                 'one' => 'two',

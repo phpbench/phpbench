@@ -34,4 +34,3 @@ class IsolatedCase implements Benchmark
         usleep(1);
     }
 }
-

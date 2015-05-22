@@ -61,9 +61,8 @@ class Subject
         return $this->methodName;
     }
 
-    public function getProcessIsolation() 
+    public function getProcessIsolation()
     {
         return $this->processIsolation;
     }
-    
 }

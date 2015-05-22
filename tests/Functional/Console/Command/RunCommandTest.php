@@ -44,7 +44,7 @@ class RunCommandTest extends BaseCommandTestCase
     }
 
     /**
-     * It should throw an exception if no path is given (and no path is configured)
+     * It should throw an exception if no path is given (and no path is configured).
      *
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage You must
@@ -120,7 +120,7 @@ class RunCommandTest extends BaseCommandTestCase
     }
 
     /**
-     * It should dump to stdout
+     * It should dump to stdout.
      */
     public function testDumpXmlStdOut()
     {
@@ -138,7 +138,7 @@ class RunCommandTest extends BaseCommandTestCase
     }
 
     /**
-     * It should accept explicit parameters
+     * It should accept explicit parameters.
      */
     public function testOverrideParameters()
     {
@@ -157,7 +157,7 @@ class RunCommandTest extends BaseCommandTestCase
     }
 
     /**
-     * It should throw an exception if an invalid JSON string is provided for parameters
+     * It should throw an exception if an invalid JSON string is provided for parameters.
      *
      * @expectedException InvalidArgumentException
      */
@@ -171,7 +171,7 @@ class RunCommandTest extends BaseCommandTestCase
     }
 
     /**
-     * Its should allow the number of iterations to be specified
+     * Its should allow the number of iterations to be specified.
      */
     public function testOverrideIterations()
     {
@@ -193,7 +193,7 @@ class RunCommandTest extends BaseCommandTestCase
     }
 
     /**
-     * It can run each iteration in isolation
+     * It can run each iteration in isolation.
      */
     public function testProcessIsolationIteration()
     {
@@ -204,7 +204,7 @@ class RunCommandTest extends BaseCommandTestCase
     }
 
     /**
-     * It can run each set of iterations in isolation
+     * It can run each set of iterations in isolation.
      */
     public function testProcessIsolationIterations()
     {
@@ -215,7 +215,7 @@ class RunCommandTest extends BaseCommandTestCase
     }
 
     /**
-     * It should escape paramters when running in separate process
+     * It should escape paramters when running in separate process.
      */
     public function testSeparateProcessEscape()
     {

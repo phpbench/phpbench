@@ -58,7 +58,6 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
             return null !== $cell->value() ? number_format($cell->value(), 2) : '∞';
         }, array('revs'));
 
-
         switch ($options['time_format']) {
             case 'integer':
                 // format the float cells

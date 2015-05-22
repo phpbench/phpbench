@@ -23,7 +23,7 @@ class XmlLoaderTest extends XmlDumperTest
     }
 
     /**
-     * Its should load an XML document and return the suite
+     * Its should load an XML document and return the suite.
      */
     public function testLoad()
     {
@@ -36,7 +36,7 @@ class XmlLoaderTest extends XmlDumperTest
     }
 
     /**
-     * Its should thow an exception if the XML is invalid
+     * Its should thow an exception if the XML is invalid.
      *
      * @expectedException RuntimeException
      */
