@@ -15,21 +15,23 @@ use PhpBench\Benchmark;
 class IsolatedCase implements Benchmark
 {
     /**
-     * @description randomBench
+     * @description 5 iterations in isolation
      * @iterations 5
      * @processIsolation iteration
      */
-    public function benchIterationIsolation(Iteration $iteration)
+    public function benchIterationIsolation()
     {
+        usleep(1);
     }
 
     /**
-     * @description randomBench
+     * @description Set of 5 iterations in isolation
      * @iterations 5
      * @processIsolation iterations
      */
-    public function benchIterationsIsolation(Iteration $iteration)
+    public function benchIterationsIsolation()
     {
+        usleep(1);
     }
 }
 
