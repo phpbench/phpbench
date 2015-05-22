@@ -215,7 +215,7 @@ class Runner
             // randomly returns -1 on travis ..
             if (0 !== $exitCode) {
                 throw new \RuntimeException(sprintf(
-                    'Isolated process returned exit code "%s". Command: "%s". StdOut: %snStdErr: %s',
+                    'Isolated process returned exit code "%s". Command: "%s". stdout: %s stderr: %s',
                     $exitCode,
                     $command,
                     $output,
