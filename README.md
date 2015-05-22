@@ -152,6 +152,12 @@ class BenchmarkCase implements Benchmark
     }
 
     /**
+     * @description Each iteration will be in an isolated process
+     * @processIsolation iteration
+     */
+    public function benchSomethingIsolated()
+
+    /**
      * @paramProvider provideParamsOne
      * @paramProvider provideParamsTwo
      * @description Parameterized bench mark
