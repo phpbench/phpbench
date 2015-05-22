@@ -197,6 +197,7 @@ class Runner
                 2 => array('pipe', 'w'),
             );
             $process = proc_open($command, $descriptors, $pipes);
+            fclose($pipes[0]);
 
             if (!is_resource($process)) {
                 throw new \RuntimeException(
@@ -205,13 +206,19 @@ class Runner
             }
 
             $output = stream_get_contents($pipes[1]);
+            fclose($pipes[1]);
+            $stderr = stream_get_contents($pipes[2]);
+            fclose($pipes[2]);
             $status = proc_get_status($process);
 
-            if (0 !== $status['exitcode']) {
+            // randomly returns -1 on travis ..
+            if ($status['exitcode'] > 0) {
                 throw new \RuntimeException(sprintf(
-                    'Failed to execute: "%s": %s',
+                    'Isolated process returned exit code "%s". Command: "%s". StdOut: %snStdErr: %s',
+                    $status['exitcode'],
                     $command,
-                    $output
+                    $output,
+                    $stderr
                 ));
             }
 
