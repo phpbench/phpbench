@@ -20,6 +20,7 @@ use PhpBench\Result\BenchmarkResult;
 use PhpBench\Result\SuiteResult;
 use PhpBench\Result\IterationsResult;
 use PhpBench\Exception\InvalidArgumentException;
+use PhpBench\Result\Loader\XmlLoader;
 
 class Runner
 {
@@ -30,15 +31,18 @@ class Runner
     private $subjectBuilder;
     private $subjectMemoryTotal;
     private $subjectLastMemoryInclusive;
+    private $separateProcess;
 
     public function __construct(
         CollectionBuilder $finder,
         SubjectBuilder $subjectBuilder,
-        ProgressLogger $logger = null
+        ProgressLogger $logger = null,
+        $separateProcess = false
     ) {
         $this->logger = $logger ?: new NullProgressLogger();
         $this->finder = $finder;
         $this->subjectBuilder = $subjectBuilder;
+        $this->separateProcess = $separateProcess;
     }
 
     public function runAll($noSetup = false, $parameters = null)
@@ -102,12 +106,11 @@ class Runner
 
         $iterationsResults = array();
         foreach ($paramsIterator as $parameters) {
-            $iterationResults = array();
-            for ($index = 0; $index < $subject->getNbIterations(); $index++) {
-                $iteration = new Iteration($index, $parameters);
-                $iterationResults[] = $this->runIteration($benchmark, $subject, $iteration);
+            if ($this->separateProcess) {
+                $iterationsResults[] = $this->runIterationsSeparateProcess($benchmark, $subject, $parameters);
+            } else {
+                $iterationsResults[] = $this->runIterations($benchmark, $subject, $parameters);
             }
-            $iterationsResults[] = new IterationsResult($iterationResults, $parameters);
         }
 
         $subjectResult = new SubjectResult(
@@ -117,6 +120,47 @@ class Runner
         );
 
         return $subjectResult;
+    }
+
+    private function runIterations(Benchmark $benchmark, Subject $subject, $parameters)
+    {
+        $iterationResults = array();
+        for ($index = 0; $index < $subject->getNbIterations(); $index++) {
+            $iteration = new Iteration($index, $parameters);
+            $iterationResults[] = $this->runIteration($benchmark, $subject, $iteration);
+        }
+        return new IterationsResult($iterationResults, $parameters);
+    }
+
+    private function runIterationsSeparateProcess(Benchmark $benchmark, Subject $subject, $parameters)
+    {
+        $reflection = new \ReflectionClass(get_class($benchmark));
+
+        $bin = realpath(__DIR__ . '/../..') . '/bin/phpbench';
+        $command = sprintf(
+            '%s run %s --subject=%s --dump --parameters=\'%s\'',
+            $bin,
+            $reflection->getFileName(),
+            $subject->getMethodName(),
+            json_encode($parameters)
+        );
+        exec($command, $output, $exitCode);
+        $output = implode(PHP_EOL, $output);
+
+        if (0 !== $exitCode) {
+            throw new \RuntimeException(sprintf(
+                'Failed to execute: "%s": %s',
+                $command,
+                $output
+            ));
+        }
+
+        $loader = new XmlLoader();
+        $suiteResult = $loader->load($output);
+        $iterationsResults = $suiteResult->getIterationsResults();
+        $iterationsResult = reset($iterationsResults);
+
+        return $iterationsResult;
     }
 
     private function runIteration(Benchmark $benchmark, Subject $subject, Iteration $iteration)

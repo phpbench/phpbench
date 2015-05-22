@@ -46,6 +46,7 @@ EOT
         $this->addOption('dump', null, InputOption::VALUE_NONE, 'Dump XML result to stdout');
         $this->addOption('parameters', null, InputOption::VALUE_REQUIRED, 'Explicit parameters to use in benchmark');
         $this->addOption('nosetup', null, InputOption::VALUE_REQUIRED, 'Do not execute setUp or tearDown methods');
+        $this->addOption('separateprocess', null, InputOption::VALUE_NONE, 'Run iterations in separate processes');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
@@ -59,7 +60,7 @@ EOT
 
         if ($parametersJson) {
             $parameters = json_decode($parametersJson, true);
-            if (!$parameters) {
+            if (null === $parameters) {
                 throw new \InvalidArgumentException(sprintf(
                     'Could not decode parameters JSON string: "%s"', $parametersJson
                 ));
@@ -86,9 +87,10 @@ EOT
 
         $subject = $input->getOption('subject');
         $dumpfile = $input->getOption('dumpfile');
+        $separateProcess = $input->getOption('separateprocess');
 
         $startTime = microtime(true);
-        $result = $this->executeBenchmarks($consoleOutput, $path, $subject, $noSetup, $parameters);
+        $result = $this->executeBenchmarks($consoleOutput, $path, $subject, $noSetup, $parameters, $separateProcess);
 
         $consoleOutput->writeln('');
 
@@ -117,7 +119,7 @@ EOT
         return $dumper->dump($result);
     }
 
-    private function executeBenchmarks(OutputInterface $output, $path, $subject, $noSetup, $parameters)
+    private function executeBenchmarks(OutputInterface $output, $path, $subject, $noSetup, $parameters, $separateProcess)
     {
         $finder = new Finder();
 
@@ -142,7 +144,8 @@ EOT
         $benchRunner = new Runner(
             $benchFinder,
             $subjectBuilder,
-            $progressLogger
+            $progressLogger,
+            $separateProcess
         );
 
         return $benchRunner->runAll($noSetup, $parameters);
