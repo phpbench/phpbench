@@ -55,7 +55,7 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
         $precision = $this->precision;
 
         $data->map(function ($cell) {
-            return number_format($cell->value(), 2);
+            return null !== $cell->value() ? number_format($cell->value(), 2) : '∞';
         }, array('revs'));
 
 

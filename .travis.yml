@@ -11,4 +11,4 @@ before_script:
 
 script: 
   - phpunit
-  - php bin/phpbench run tests/Functional/benchmarks --config=tests/.phpbench
+  - php bin/phpbench run tests/Functional/benchmarks --config=tests/phpbench --dump
