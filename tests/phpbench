@@ -7,6 +7,7 @@ $configuration->addReport(array(
     'name' => 'console_table',
     'revolutions' => true,
     'memory' => true,
+    'memory_inc' => true,
 ));
 
 return $configuration;

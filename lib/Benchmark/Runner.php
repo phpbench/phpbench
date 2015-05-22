@@ -179,7 +179,7 @@ class Runner
 
         for ($index = 0; $index < $iterationCount; $index++) {
             $command = sprintf(
-                '%s run %s --subject=%s --nosetup --dump --parameters=%s --iterations=%d --processisolation=none',
+                'php %s run %s --subject=%s --nosetup --dump --parameters=%s --iterations=%d --processisolation=none',
                 $bin,
                 $reflection->getFileName(),
                 $subject->getMethodName(),
@@ -191,16 +191,20 @@ class Runner
                 $command .= ' --config=' . $this->configFile;
             }
 
-            exec($command, $output, $exitCode);
-            $output = implode(PHP_EOL, $output);
+            $descriptors = array(
+                0 => array('pipe', 'r'),
+                1 => array('pipe', 'w'),
+                2 => array('pipe', 'w'),
+            );
+            $process = proc_open($command, $descriptors, $pipes);
 
-            if (0 !== $exitCode) {
-                throw new \RuntimeException(sprintf(
-                    'Failed to execute: "%s": %s',
-                    $command,
-                    $output
-                ));
+            if (!is_resource($process)) {
+                throw new \RuntimeException(
+                    'Could not spawn isolated process'
+                );
             }
+
+            $output = stream_get_contents($pipes[1]);
 
             $loader = new XmlLoader();
             $subSuiteResult = $loader->load($output);
