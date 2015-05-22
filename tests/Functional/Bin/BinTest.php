@@ -55,7 +55,7 @@ class BinTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should exist with an error status if the config file did not return a configuration object.
+     * It should exit with an error status if the config file did not return a configuration object.
      */
     public function testConfigNoReturnConfiguration()
     {

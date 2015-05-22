@@ -23,6 +23,7 @@ use PhpBench\Benchmark\SubjectBuilder;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Result\SuiteResult;
 use PhpBench\Result\Dumper\XmlDumper;
+use Symfony\Component\Console\Output\NullOutput;
 
 class RunCommand extends BaseCommand
 {
@@ -41,15 +42,22 @@ EOT
         $this->addArgument('path', InputArgument::OPTIONAL, 'Path to benchmark(s)');
         $this->addOption('report', array(), InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Report name or configuration in JSON format');
         $this->addOption('filter', null, InputOption::VALUE_REQUIRED, 'Filter subject(s) to run');
-        $this->addOption('dumpfile', 'df', InputOption::VALUE_REQUIRED, 'Dump XML to named file');
+        $this->addOption('dumpfile', 'df', InputOption::VALUE_OPTIONAL, 'Dump XML result to named file');
+        $this->addOption('dump', null, InputOption::VALUE_NONE, 'Dump XML result to stdout');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $reports = $input->getOption('report');
+        $consoleOutput = $output;
+        $dump = $input->getOption('dump');
 
-        $output->writeln('<info>Running benchmark suite</info>');
-        $output->writeln('');
+        if ($dump) {
+            $consoleOutput = new NullOutput();
+        }
+
+        $consoleOutput->writeln('<info>Running benchmark suite</info>');
+        $consoleOutput->writeln('');
 
         $configuration = $this->getApplication()->getConfiguration();
 
@@ -66,30 +74,33 @@ EOT
         $dumpfile = $input->getOption('dumpfile');
 
         $startTime = microtime(true);
-        $result = $this->executeBenchmarks($output, $path, $filter);
+        $result = $this->executeBenchmarks($consoleOutput, $path, $filter);
 
-        $output->writeln('');
+        $consoleOutput->writeln('');
 
         if ($dumpfile) {
-            $this->dumpResult($result, $dumpfile);
-            $output->writeln('<info>Dumped result to </info>' . $dumpfile);
-            $output->writeln('');
+            $xml = $this->dumpResult($result);
+            file_put_contents($dumpfile, $xml);
+            $consoleOutput->writeln('<info>Dumped result to </info>' . $dumpfile);
+            $consoleOutput->writeln('');
+        }
+
+        if ($dump) {
+            $output->write($this->dumpResult($result));
         }
 
         if ($configuration->getReports()) {
-            $this->generateReports($output, $result);
+            $this->generateReports($consoleOutput, $result);
         }
 
-        $output->writeln(sprintf('<info>Done </info>(%s)', number_format(microtime(true) - $startTime, 6)));
-        $output->writeln('');
+        $consoleOutput->writeln(sprintf('<info>Done </info>(%s)', number_format(microtime(true) - $startTime, 6)));
+        $consoleOutput->writeln('');
     }
 
-    private function dumpResult(SuiteResult $result, $dumpfile)
+    private function dumpResult(SuiteResult $result)
     {
         $dumper = new XmlDumper();
-        $data = $dumper->dump($result);
-
-        file_put_contents($dumpfile, $data);
+        return $dumper->dump($result);
     }
 
     private function executeBenchmarks(OutputInterface $output, $path, $filter)

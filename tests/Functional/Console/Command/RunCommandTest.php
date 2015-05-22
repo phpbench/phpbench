@@ -118,4 +118,22 @@ class RunCommandTest extends BaseCommandTestCase
         $this->assertContains('Dumped', $display);
         $this->assertTrue(file_exists(self::TEST_FNAME));
     }
+
+    /**
+     * It should dump to stdout
+     */
+    public function testDumpXmlStdOut()
+    {
+        $tester = $this->runCommand('run', array(
+            '--dump' => true,
+            'path' => __DIR__ . '/../../benchmarks',
+        ));
+        $this->assertEquals(0, $tester->getStatusCode());
+        $display = $tester->getDisplay();
+        $dom = new \DOMDocument();
+        $dom->loadXml($display);
+        $xpath = new \DOMXPath($dom);
+        $benchmarkEls = $xpath->query('//subject');
+        $this->assertEquals(3, $benchmarkEls->length);
+    }
 }
