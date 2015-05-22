@@ -33,6 +33,7 @@ class Runner
     private $subjectLastMemoryInclusive;
     private $separateProcess;
     private $parameterOverride;
+    private $iterationsOverride;
     private $setUpTearDown;
 
     /**
@@ -49,7 +50,8 @@ class Runner
         ProgressLogger $logger = null,
         $separateProcess = false,
         $setUpTearDown = true,
-        $parameterOverride = null
+        $parameterOverride = null,
+        $iterationsOverride = null
     ) {
         $this->logger = $logger ?: new NullProgressLogger();
         $this->finder = $finder;
@@ -57,6 +59,7 @@ class Runner
         $this->separateProcess = $separateProcess;
         $this->setUpTearDown = $setUpTearDown;
         $this->parameterOverride = $parameterOverride;
+        $this->iterationsOverride = $iterationsOverride;
     }
 
     public function runAll()
@@ -104,7 +107,7 @@ class Runner
     {
         $this->subjectMemoryTotal = 0;
         $this->subjectLastMemoryInclusive = memory_get_usage();
-
+        $nbIterations = null === $this->iterationsOverride ? $subject->getNbIterations() : $this->iterationsOverride;
 
         if (null !== $this->parameterOverride) {
             $parameterSets = array(array($this->parameterOverride));
@@ -121,9 +124,9 @@ class Runner
         $iterationsResults = array();
         foreach ($paramsIterator as $parameters) {
             if ($this->separateProcess) {
-                $iterationsResults[] = $this->runIterationsSeparateProcess($benchmark, $subject, $parameters);
+                $iterationsResults[] = $this->runIterationsSeparateProcess($benchmark, $subject, $parameters, $nbIterations);
             } else {
-                $iterationsResults[] = $this->runIterations($benchmark, $subject, $parameters);
+                $iterationsResults[] = $this->runIterations($benchmark, $subject, $parameters, $nbIterations);
             }
         }
 
@@ -136,27 +139,28 @@ class Runner
         return $subjectResult;
     }
 
-    private function runIterations(Benchmark $benchmark, Subject $subject, $parameters)
+    private function runIterations(Benchmark $benchmark, Subject $subject, $parameters, $nbIterations)
     {
         $iterationResults = array();
-        for ($index = 0; $index < $subject->getNbIterations(); $index++) {
+        for ($index = 0; $index < $nbIterations; $index++) {
             $iteration = new Iteration($index, $parameters);
             $iterationResults[] = $this->runIteration($benchmark, $subject, $iteration);
         }
         return new IterationsResult($iterationResults, $parameters);
     }
 
-    private function runIterationsSeparateProcess(Benchmark $benchmark, Subject $subject, $parameters)
+    private function runIterationsSeparateProcess(Benchmark $benchmark, Subject $subject, $parameters, $nbIterations)
     {
         $reflection = new \ReflectionClass(get_class($benchmark));
 
         $bin = realpath(__DIR__ . '/../..') . '/bin/phpbench';
         $command = sprintf(
-            '%s run %s --subject=%s --nosetup --dump --parameters=\'%s\'',
+            '%s run %s --subject=%s --nosetup --dump --parameters=\'%s\' --iterations=%d',
             $bin,
             $reflection->getFileName(),
             $subject->getMethodName(),
-            json_encode($parameters)
+            json_encode($parameters),
+            $nbIterations
         );
         exec($command, $output, $exitCode);
         $output = implode(PHP_EOL, $output);

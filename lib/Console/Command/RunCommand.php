@@ -44,7 +44,8 @@ EOT
         $this->addOption('subject', null, InputOption::VALUE_REQUIRED, 'Subject to run');
         $this->addOption('dumpfile', 'df', InputOption::VALUE_OPTIONAL, 'Dump XML result to named file');
         $this->addOption('dump', null, InputOption::VALUE_NONE, 'Dump XML result to stdout');
-        $this->addOption('parameters', null, InputOption::VALUE_REQUIRED, 'Explicit parameters to use in benchmark');
+        $this->addOption('parameters', null, InputOption::VALUE_REQUIRED, 'Override parameters to use in (all) benchmarks');
+        $this->addOption('iterations', null, InputOption::VALUE_REQUIRED, 'Override number of iteratios to run in (all) benchmarks');
         $this->addOption('nosetup', null, InputOption::VALUE_NONE, 'Do not execute setUp or tearDown methods');
         $this->addOption('separateprocess', null, InputOption::VALUE_NONE, 'Run iterations in separate processes');
     }
@@ -56,6 +57,7 @@ EOT
         $dump = $input->getOption('dump');
         $parametersJson = $input->getOption('parameters');
         $noSetup = $input->getOption('nosetup');
+        $iterations = $input->getOption('iterations');
         $parameters = null;
 
         if ($parametersJson) {
@@ -90,7 +92,7 @@ EOT
         $separateProcess = $input->getOption('separateprocess');
 
         $startTime = microtime(true);
-        $result = $this->executeBenchmarks($consoleOutput, $path, $subject, $noSetup, $parameters, $separateProcess);
+        $result = $this->executeBenchmarks($consoleOutput, $path, $subject, $noSetup, $parameters, $iterations, $separateProcess);
 
         $consoleOutput->writeln('');
 
@@ -119,7 +121,7 @@ EOT
         return $dumper->dump($result);
     }
 
-    private function executeBenchmarks(OutputInterface $output, $path, $subject, $noSetup, $parameters, $separateProcess)
+    private function executeBenchmarks(OutputInterface $output, $path, $subject, $noSetup, $parameters, $iterations, $separateProcess)
     {
         $finder = new Finder();
 
@@ -147,7 +149,8 @@ EOT
             $progressLogger,
             $separateProcess,
             !$noSetup,
-            $parameters
+            $parameters,
+            $iterations
         );
 
         return $benchRunner->runAll();
