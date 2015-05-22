@@ -22,6 +22,9 @@ class XmlLoaderTest extends XmlDumperTest
         $this->loader = new XmlLoader();
     }
 
+    /**
+     * Its should load an XML document and return the suite
+     */
     public function testLoad()
     {
         $result = $this->testDump();
@@ -30,5 +33,15 @@ class XmlLoaderTest extends XmlDumperTest
             $this->getSuite(),
             $suite
         );
+    }
+
+    /**
+     * Its should thow an exception if the XML is invalid
+     *
+     * @expectedException RuntimeException
+     */
+    public function testLoadInvalid()
+    {
+        $this->loader->load('hai');
     }
 }

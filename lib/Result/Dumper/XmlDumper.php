@@ -87,12 +87,8 @@ class XmlDumper
     private function dumpIterations(IterationsResult $iterationsResults, $dom)
     {
         $iterationsEl = $dom->createElement('iterations');
-        foreach ($iterationsResults->getParameters() as $key => $value) {
-            $parameterEl = $dom->createElement('parameter');
-            $parameterEl->setAttribute('name', $key);
-            $parameterEl->setAttribute('value', $value);
-            $iterationsEl->appendChild($parameterEl);
-        }
+        $parameters = $iterationsResults->getParameters();
+        $this->appendParameters($iterationsEl, $parameters);
 
         foreach ($iterationsResults->getIterationResults() as $iterationResult) {
             $iterationResultEl = $this->dumpIteration($iterationResult, $dom);
@@ -100,6 +96,28 @@ class XmlDumper
         }
 
         return $iterationsEl;
+    }
+
+    private function appendParameters($parentNode, $parameters)
+    {
+        foreach ($parameters as $key => $value) {
+            $parameterEl = $parentNode->ownerDocument->createElement('parameter');
+            $parameterEl->setAttribute('name', $key);
+
+            if (is_array($value)) {
+                $this->appendParameters($parameterEl, $value);
+                $parameterEl->setAttribute('multiple', true);
+            } elseif (is_scalar($value)) {
+                $parameterEl->setAttribute('value', $value);
+            } else {
+                throw new \RuntimeException(sprintf(
+                    'Cannot serialize parameter of type "%s" to XML',
+                    gettype($value)
+                ));
+            }
+
+            $parentNode->appendChild($parameterEl);
+        }
     }
 
     private function dumpIteration(IterationResult $iteration, $dom)
