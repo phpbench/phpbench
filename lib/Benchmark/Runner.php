@@ -205,6 +205,15 @@ class Runner
             }
 
             $output = stream_get_contents($pipes[1]);
+            $status = proc_get_status($process);
+
+            if (0 !== $status['exitcode']) {
+                throw new \RuntimeException(sprintf(
+                    'Failed to execute: "%s": %s',
+                    $command,
+                    $output
+                ));
+            }
 
             $loader = new XmlLoader();
             $subSuiteResult = $loader->load($output);
