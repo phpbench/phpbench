@@ -41,7 +41,7 @@ class Runner
         $this->subjectBuilder = $subjectBuilder;
     }
 
-    public function runAll()
+    public function runAll($noSetup = false)
     {
         $collection = $this->finder->buildCollection();
 
@@ -49,7 +49,7 @@ class Runner
 
         foreach ($collection->getBenchmarks() as $benchmark) {
             $this->logger->benchmarkStart($benchmark);
-            $benchmarkResults[] = $this->run($benchmark);
+            $benchmarkResults[] = $this->run($benchmark, $noSetup);
             $this->logger->benchmarkEnd($benchmark);
         }
 
@@ -58,9 +58,9 @@ class Runner
         return $benchmarkSuiteResult;
     }
 
-    private function run(Benchmark $benchmark)
+    private function run(Benchmark $benchmark, $noSetup)
     {
-        if (method_exists($benchmark, 'setUp')) {
+        if (false === $noSetup && method_exists($benchmark, 'setUp')) {
             $benchmark->setUp();
         }
 
@@ -73,7 +73,7 @@ class Runner
             $this->logger->subjectEnd($subject);
         }
 
-        if (method_exists($benchmark, 'tearDown')) {
+        if (false === $noSetup && method_exists($benchmark, 'tearDown')) {
             $benchmark->tearDown();
         }
 

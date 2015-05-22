@@ -44,6 +44,7 @@ EOT
         $this->addOption('filter', null, InputOption::VALUE_REQUIRED, 'Filter subject(s) to run');
         $this->addOption('dumpfile', 'df', InputOption::VALUE_OPTIONAL, 'Dump XML result to named file');
         $this->addOption('dump', null, InputOption::VALUE_NONE, 'Dump XML result to stdout');
+        $this->addOption('nosetup', null, InputOption::VALUE_NONE, 'Do not execute setUp or tearDown methods');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
