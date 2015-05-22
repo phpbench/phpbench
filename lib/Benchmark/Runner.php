@@ -31,35 +31,41 @@ class Runner
     private $subjectBuilder;
     private $subjectMemoryTotal;
     private $subjectLastMemoryInclusive;
-    private $separateProcess;
+    private $processIsolation;
     private $parameterOverride;
     private $iterationsOverride;
     private $setUpTearDown;
+    private $configFile;
 
     /**
-     * @param CollectionBuilder $finder The collection builder
-     * @param SubjectBuilder $subjectBuilder The subject builder
-     * @param ProgressLogger $logger The progress logger
-     * @param mixed $separateProcess The separate process policy
-     * @param mixed $setUpTearDown If the setUp and tearDown methods should be called
-     * @param mixed $parameterOverride Override all parameters
+     * @param CollectionBuilder $finder
+     * @param SubjectBuilder $subjectBuilder
+     * @param ProgressLogger $logger 
+     *
+     * @param mixed $processIsolation ProcessIsolation override
+     * @param mixed $setUpTearDown Enable or disable setUp and tearDown
+     * @param mixed $parameterOverride Ovreride the parameters
+     * @param mixed $iterationsOverride Override the number of iterations 
+     * @param mixed $configFile Isolated proceses need to know about the config
      */
     public function __construct(
         CollectionBuilder $finder,
         SubjectBuilder $subjectBuilder,
         ProgressLogger $logger = null,
-        $separateProcess = false,
+        $processIsolation = null,
         $setUpTearDown = true,
         $parameterOverride = null,
-        $iterationsOverride = null
+        $iterationsOverride = null,
+        $configFile = null
     ) {
         $this->logger = $logger ?: new NullProgressLogger();
         $this->finder = $finder;
         $this->subjectBuilder = $subjectBuilder;
-        $this->separateProcess = $separateProcess;
+        $this->processIsolation = $processIsolation;
         $this->setUpTearDown = $setUpTearDown;
         $this->parameterOverride = $parameterOverride;
         $this->iterationsOverride = $iterationsOverride;
+        $this->configFile = $configFile;
     }
 
     public function runAll()
@@ -108,6 +114,7 @@ class Runner
         $this->subjectMemoryTotal = 0;
         $this->subjectLastMemoryInclusive = memory_get_usage();
         $nbIterations = null === $this->iterationsOverride ? $subject->getNbIterations() : $this->iterationsOverride;
+        $processIsolation = null !== $this->processIsolation ? $this->processIsolation : $subject->getProcessIsolation();
 
         if (null !== $this->parameterOverride) {
             $parameterSets = array(array($this->parameterOverride));
@@ -123,8 +130,8 @@ class Runner
 
         $iterationsResults = array();
         foreach ($paramsIterator as $parameters) {
-            if ($this->separateProcess) {
-                $iterationsResults[] = $this->runIterationsSeparateProcess($benchmark, $subject, $parameters, $nbIterations);
+            if (false !== $processIsolation) {
+                $iterationsResults[] = $this->runIterationsSeparateProcess($benchmark, $subject, $parameters, $nbIterations, $processIsolation);
             } else {
                 $iterationsResults[] = $this->runIterations($benchmark, $subject, $parameters, $nbIterations);
             }
@@ -149,36 +156,63 @@ class Runner
         return new IterationsResult($iterationResults, $parameters);
     }
 
-    private function runIterationsSeparateProcess(Benchmark $benchmark, Subject $subject, $parameters, $nbIterations)
+    private function runIterationsSeparateProcess(Benchmark $benchmark, Subject $subject, $parameters, $nbIterations, $processIsolation)
     {
         $reflection = new \ReflectionClass(get_class($benchmark));
-
         $bin = realpath(__DIR__ . '/../..') . '/bin/phpbench';
-        $command = sprintf(
-            '%s run %s --subject=%s --nosetup --dump --parameters=\'%s\' --iterations=%d',
-            $bin,
-            $reflection->getFileName(),
-            $subject->getMethodName(),
-            json_encode($parameters),
-            $nbIterations
-        );
-        exec($command, $output, $exitCode);
-        $output = implode(PHP_EOL, $output);
 
-        if (0 !== $exitCode) {
-            throw new \RuntimeException(sprintf(
-                'Failed to execute: "%s": %s',
-                $command,
-                $output
-            ));
+        switch ($processIsolation) {
+            case 'iteration':
+                $iterationCount = $nbIterations;
+                $nbIterations = 1;
+                break;
+            case 'iterations':
+                $iterationCount = 1;
+                break;
+            default:
+                throw new \RuntimeException(sprintf(
+                    'Invalid process islation policy "%s". This really should not happen.'
+                , $processIsolation));
         }
 
-        $loader = new XmlLoader();
-        $suiteResult = $loader->load($output);
-        $iterationsResults = $suiteResult->getIterationsResults();
-        $iterationsResult = reset($iterationsResults);
+        $iterationsResult = array();
 
-        return $iterationsResult;
+        for ($index = 0; $index < $iterationCount; $index++) {
+            $command = sprintf(
+                '%s run %s --subject=%s --nosetup --dump --parameters=\'%s\' --iterations=%d --processisolation=none',
+                $bin,
+                $reflection->getFileName(),
+                $subject->getMethodName(),
+                json_encode($parameters),
+                $nbIterations
+            );
+
+            if ($this->configFile) {
+                $command .= ' --config=' . $this->configFile;
+            }
+
+            exec($command, $output, $exitCode);
+            $output = implode(PHP_EOL, $output);
+
+            if (0 !== $exitCode) {
+                throw new \RuntimeException(sprintf(
+                    'Failed to execute: "%s": %s',
+                    $command,
+                    $output
+                ));
+            }
+
+            $loader = new XmlLoader();
+            $subSuiteResult = $loader->load($output);
+            $subIterationsResults = $subSuiteResult->getIterationsResults();
+            $subIterationsResult = reset($subIterationsResults);
+
+            foreach ($subIterationsResult->getIterationResults() as $subIterationResult) {
+                $iterationsResult[] = $subIterationResult;
+            }
+        }
+
+        return new IterationsResult($iterationsResult, $parameters);
     }
 
     private function runIteration(Benchmark $benchmark, Subject $subject, Iteration $iteration)
@@ -230,5 +264,20 @@ class Runner
         }
 
         return $parameterSets;
+    }
+
+    public static function validateProcessIsolation($processIsolation)
+    {
+        $isolationPolicies = array(false, 'iteration', 'iterations');
+        if (in_array($processIsolation, $isolationPolicies)) {
+            return;
+        }
+
+        array_shift($isolationPolicies);
+
+        throw new InvalidArgumentException(sprintf(
+            'Process isolation must be one of "%s"',
+            implode('", "', $isolationPolicies)
+        ));
     }
 }

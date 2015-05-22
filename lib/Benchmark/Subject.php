@@ -18,19 +18,22 @@ class Subject
     private $parameterProviders;
     private $nbIterations;
     private $description;
+    private $processIsolation;
 
     public function __construct(
         $methodName,
         $beforeMethods,
         $parameterProviders,
         $nbIterations,
-        $description
+        $description,
+        $processIsolation
     ) {
         $this->methodName = $methodName;
         $this->beforeMethods = $beforeMethods;
         $this->parameterProviders = $parameterProviders;
         $this->nbIterations = $nbIterations;
         $this->description = $description;
+        $this->processIsolation = $processIsolation;
     }
 
     public function getBeforeMethods()
@@ -57,4 +60,10 @@ class Subject
     {
         return $this->methodName;
     }
+
+    public function getProcessIsolation() 
+    {
+        return $this->processIsolation;
+    }
+    
 }

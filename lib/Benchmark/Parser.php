@@ -25,6 +25,7 @@ class Parser
             'paramProvider' => array(),
             'iterations' => array(),
             'description' => array(),
+            'processIsolation' => array(),
         );
 
         foreach ($lines as $line) {
@@ -57,9 +58,20 @@ class Parser
             );
         }
 
+        if (count($meta['processIsolation']) > 1) {
+            throw new InvalidArgumentException(
+                'Cannot specify more than one process isolation policy'
+            );
+        }
+
         $meta['description'] = reset($meta['description']);
+        $meta['processIsolation'] = reset($meta['processIsolation']);
         $iterations = $meta['iterations'];
         $meta['iterations'] = empty($iterations) ? 1 : (int) reset($iterations);
+
+        if ($meta['processIsolation']) {
+            Runner::validateProcessIsolation($meta['processIsolation']);
+        }
 
         return $meta;
     }

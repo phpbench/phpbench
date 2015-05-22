@@ -22,7 +22,7 @@ class RunCommandTest extends BaseCommandTestCase
     public function testCommand()
     {
         $tester = $this->runCommand('run', array(
-            'path' => __DIR__ . '/../../benchmarks',
+            'path' => __DIR__ . '/../../benchmarks/BenchmarkCase.php',
         ));
         $this->assertEquals(0, $tester->getStatusCode());
         $display = $tester->getDisplay();
@@ -35,7 +35,7 @@ class RunCommandTest extends BaseCommandTestCase
     public function testCommandWithReport()
     {
         $tester = $this->runCommand('run', array(
-            'path' => __DIR__ . '/../../benchmarks',
+            'path' => __DIR__ . '/../../benchmarks/BenchmarkCase.php',
             '--report' => array('console_table'),
         ));
         $this->assertEquals(0, $tester->getStatusCode());
@@ -62,7 +62,7 @@ class RunCommandTest extends BaseCommandTestCase
     public function testCommandWithReportConfiguration()
     {
         $tester = $this->runCommand('run', array(
-            'path' => __DIR__ . '/../../benchmarks',
+            'path' => __DIR__ . '/../../benchmarks/BenchmarkCase.php',
             '--report' => array('{"name": "console_table"}'),
         ));
         $this->assertEquals(0, $tester->getStatusCode());
@@ -80,7 +80,7 @@ class RunCommandTest extends BaseCommandTestCase
     {
         $tester = $this->runCommand('run', array(
             '--report' => array('{"name": "foo_console_table"}'),
-            'path' => __DIR__ . '/../../benchmarks',
+            'path' => __DIR__ . '/../../benchmarks/BenchmarkCase.php',
         ));
         $this->assertEquals(0, $tester->getStatusCode());
         $display = $tester->getDisplay();
@@ -97,7 +97,7 @@ class RunCommandTest extends BaseCommandTestCase
     {
         $tester = $this->runCommand('run', array(
             '--report' => array('{"name": "foo_console_ta'),
-            'path' => __DIR__ . '/../../benchmarks',
+            'path' => __DIR__ . '/../../benchmarks/BenchmarkCase.php',
         ));
         $this->assertEquals(0, $tester->getStatusCode());
         $display = $tester->getDisplay();
@@ -111,7 +111,7 @@ class RunCommandTest extends BaseCommandTestCase
     {
         $tester = $this->runCommand('run', array(
             '--dumpfile' => self::TEST_FNAME,
-            'path' => __DIR__ . '/../../benchmarks',
+            'path' => __DIR__ . '/../../benchmarks/BenchmarkCase.php',
         ));
         $this->assertEquals(0, $tester->getStatusCode());
         $display = $tester->getDisplay();
@@ -126,7 +126,7 @@ class RunCommandTest extends BaseCommandTestCase
     {
         $tester = $this->runCommand('run', array(
             '--dump' => true,
-            'path' => __DIR__ . '/../../benchmarks',
+            'path' => __DIR__ . '/../../benchmarks/BenchmarkCase.php',
         ));
         $this->assertEquals(0, $tester->getStatusCode());
         $display = $tester->getDisplay();
@@ -145,7 +145,7 @@ class RunCommandTest extends BaseCommandTestCase
         $tester = $this->runCommand('run', array(
             '--dump' => true,
             '--parameters' => '{"length": 333}',
-            'path' => __DIR__ . '/../../benchmarks',
+            'path' => __DIR__ . '/../../benchmarks/BenchmarkCase.php',
         ));
         $this->assertEquals(0, $tester->getStatusCode());
         $display = $tester->getDisplay();
@@ -166,7 +166,7 @@ class RunCommandTest extends BaseCommandTestCase
         $this->runCommand('run', array(
             '--dump' => true,
             '--parameters' => '{"length: 3,',
-            'path' => __DIR__ . '/../../benchmarks',
+            'path' => __DIR__ . '/../../benchmarks/BenchmarkCase.php',
         ));
     }
 
@@ -179,7 +179,7 @@ class RunCommandTest extends BaseCommandTestCase
             '--subject' => 'benchRandom',
             '--dump' => true,
             '--iterations' => 10,
-            'path' => __DIR__ . '/../../benchmarks',
+            'path' => __DIR__ . '/../../benchmarks/BenchmarkCase.php',
         ));
 
         $this->assertEquals(0, $tester->getStatusCode());
@@ -193,11 +193,25 @@ class RunCommandTest extends BaseCommandTestCase
     }
 
     /**
-     * It should run iterations in separate processes
+     * It can run each iteration in isolation
      */
-    public function testSeparateProcess()
+    public function testProcessIsolationIteration()
     {
-        $this->markTestIncomplete();
+        $tester = $this->runCommand('run', array(
+            '--processisolation' => 'iteration',
+            'path' => __DIR__ . '/../../benchmarks/BenchmarkCase.php',
+        ));
+    }
+
+    /**
+     * It can run each set of iterations in isolation
+     */
+    public function testProcessIsolationIterations()
+    {
+        $tester = $this->runCommand('run', array(
+            '--processisolation' => 'iterations',
+            'path' => __DIR__ . '/../../benchmarks/IsolatedCase.php',
+        ));
     }
 
     /**

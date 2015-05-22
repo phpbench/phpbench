@@ -55,6 +55,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->subject->getMethodName()->willReturn('benchFoo');
         $this->subject->getBeforeMethods()->willReturn(array('beforeFoo'));
         $this->subject->getDescription()->willReturn('Hello world');
+        $this->subject->getProcessIsolation()->willReturn(false);
 
         $result = $this->runner->runAll();
 
@@ -83,6 +84,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->subject->getNbIterations()->willReturn(1);
         $this->subject->getParameterProviders()->willReturn(array());
         $this->subject->getBeforeMethods()->willReturn(array('beforeFooNotExisting'));
+        $this->subject->getProcessIsolation()->willReturn(false);
 
         $this->runner->runAll();
     }
@@ -104,6 +106,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         ));
         $this->subject->getNbIterations()->willReturn(1);
         $this->subject->getParameterProviders()->willReturn(array('notExistingParam'));
+        $this->subject->getProcessIsolation()->willReturn(false);
 
         $this->runner->runAll();
     }
@@ -124,6 +127,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->subject->getMethodName()->willReturn('benchFoo');
         $this->subject->getDescription()->willReturn('benchFoo');
         $this->subject->getNbIterations()->willReturn(0);
+        $this->subject->getProcessIsolation()->willReturn(false);
 
         $this->runner->runAll();
 

@@ -46,6 +46,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 * @beforeMethod afterBeforeMe
 * @paramProvider provideParam
 * @iterations  3
+* @processIsolation iteration
 */
 EOT
                 ,
@@ -54,6 +55,7 @@ EOT
                     'iterations' => 3,
                     'beforeMethod' => array('beforeMe', 'afterBeforeMe'),
                     'paramProvider' => array('provideParam'),
+                    'processIsolation' => 'iteration',
                 ),
             ),
             array(
@@ -67,6 +69,7 @@ EOT
                     'beforeMethod' => array(),
                     'paramProvider' => array(),
                     'iterations' => 1,
+                    'processIsolation' => false,
                 ),
             ),
         );
@@ -97,5 +100,24 @@ EOT
     public function testMoreThatOneIterationAnnotation()
     {
         $this->markTestIncomplete('Do this');
+    }
+
+    /**
+     * Its should throw an exception if the process isolation is not valid
+     *
+     * @expectedException PhpBench\Exception\InvalidArgumentException
+     * @expectedExceptionMessage Process isolation must be one of "iteration", "iterations"
+     */
+    public function testInvalidProcessIsolation()
+    {
+        $doc = <<<EOT
+/**
+* @description Hello
+* @processIsolation iterationasd
+*/
+EOT
+        ;
+
+        $this->parser->parseMethodDoc($doc);
     }
 }

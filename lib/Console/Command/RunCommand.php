@@ -47,7 +47,7 @@ EOT
         $this->addOption('parameters', null, InputOption::VALUE_REQUIRED, 'Override parameters to use in (all) benchmarks');
         $this->addOption('iterations', null, InputOption::VALUE_REQUIRED, 'Override number of iteratios to run in (all) benchmarks');
         $this->addOption('nosetup', null, InputOption::VALUE_NONE, 'Do not execute setUp or tearDown methods');
-        $this->addOption('separateprocess', null, InputOption::VALUE_NONE, 'Run iterations in separate processes');
+        $this->addOption('processisolation', 'pi', InputOption::VALUE_REQUIRED, 'Process isolation policy, one of <comment>iteration</comment>, <comment>iterations</comment>');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
@@ -58,7 +58,12 @@ EOT
         $parametersJson = $input->getOption('parameters');
         $noSetup = $input->getOption('nosetup');
         $iterations = $input->getOption('iterations');
+        $configFile = $input->getOption('config');
+        $processIsolation = $input->getOption('processisolation') ? : null;
+        $processIsolation = $processIsolation === 'none' ? false : $processIsolation;
         $parameters = null;
+
+        Runner::validateProcessIsolation($processIsolation);
 
         if ($parametersJson) {
             $parameters = json_decode($parametersJson, true);
@@ -75,7 +80,6 @@ EOT
 
         $consoleOutput->writeln('<info>Running benchmark suite</info>');
         $consoleOutput->writeln('');
-
         $configuration = $this->getApplication()->getConfiguration();
 
         $this->processReportConfigs($reports);
@@ -89,10 +93,9 @@ EOT
 
         $subject = $input->getOption('subject');
         $dumpfile = $input->getOption('dumpfile');
-        $separateProcess = $input->getOption('separateprocess');
 
         $startTime = microtime(true);
-        $result = $this->executeBenchmarks($consoleOutput, $path, $subject, $noSetup, $parameters, $iterations, $separateProcess);
+        $result = $this->executeBenchmarks($consoleOutput, $path, $subject, $noSetup, $parameters, $iterations, $processIsolation, $configFile);
 
         $consoleOutput->writeln('');
 
@@ -121,7 +124,7 @@ EOT
         return $dumper->dump($result);
     }
 
-    private function executeBenchmarks(OutputInterface $output, $path, $subject, $noSetup, $parameters, $iterations, $separateProcess)
+    private function executeBenchmarks(OutputInterface $output, $path, $subject, $noSetup, $parameters, $iterations, $processIsolation, $configFile)
     {
         $finder = new Finder();
 
@@ -147,10 +150,11 @@ EOT
             $benchFinder,
             $subjectBuilder,
             $progressLogger,
-            $separateProcess,
+            $processIsolation,
             !$noSetup,
             $parameters,
-            $iterations
+            $iterations,
+            $configFile
         );
 
         return $benchRunner->runAll();
