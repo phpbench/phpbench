@@ -140,7 +140,7 @@ class RunCommandTest extends BaseCommandTestCase
     /**
      * It should accept explicit parameters
      */
-    public function testExplicitParameters()
+    public function testOverrideParameters()
     {
         $tester = $this->runCommand('run', array(
             '--dump' => true,
@@ -161,13 +161,35 @@ class RunCommandTest extends BaseCommandTestCase
      *
      * @expectedException InvalidArgumentException
      */
-    public function testExplicitParametersInvalidJson()
+    public function testOverrideParametersInvalidJson()
     {
         $this->runCommand('run', array(
             '--dump' => true,
             '--parameters' => '{"length: 3,',
             'path' => __DIR__ . '/../../benchmarks',
         ));
+    }
+
+    /**
+     * Its should allow the number of iterations to be specified
+     */
+    public function testOverrideIterations()
+    {
+        $tester = $this->runCommand('run', array(
+            '--subject' => 'benchRandom',
+            '--dump' => true,
+            '--iterations' => 10,
+            'path' => __DIR__ . '/../../benchmarks',
+        ));
+
+        $this->assertEquals(0, $tester->getStatusCode());
+        $display = $tester->getDisplay();
+        $dom = new \DOMDocument();
+        $dom->loadXml($display);
+        $dom->formatOutput = true;
+        $xpath = new \DOMXPath($dom);
+        $parameters = $xpath->query('//iteration');
+        $this->assertEquals(10, $parameters->length);
     }
 
     /**

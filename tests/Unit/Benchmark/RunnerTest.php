@@ -102,6 +102,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->subjectBuilder->buildSubjects($this->case)->willReturn(array(
             $this->subject->reveal(),
         ));
+        $this->subject->getNbIterations()->willReturn(1);
         $this->subject->getParameterProviders()->willReturn(array('notExistingParam'));
 
         $this->runner->runAll();
