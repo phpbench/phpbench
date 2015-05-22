@@ -209,13 +209,13 @@ class Runner
             fclose($pipes[1]);
             $stderr = stream_get_contents($pipes[2]);
             fclose($pipes[2]);
-            $status = proc_get_status($process);
+            $exitCode = proc_close($process);
 
             // randomly returns -1 on travis ..
-            if ($status['exitcode'] > 0) {
+            if (0 !== $exitCode) {
                 throw new \RuntimeException(sprintf(
                     'Isolated process returned exit code "%s". Command: "%s". StdOut: %snStdErr: %s',
-                    $status['exitcode'],
+                    $exitCode,
                     $command,
                     $output,
                     $stderr
