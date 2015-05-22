@@ -9,4 +9,6 @@ php:
 before_script:
   - composer install
 
-script: phpunit
+script: 
+  - phpunit
+  - php bin/phpbench run tests/Functional/benchmarks --report=console_table
