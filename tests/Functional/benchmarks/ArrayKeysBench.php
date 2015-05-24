@@ -13,7 +13,7 @@ namespace PhpBench\Tests\Functional\benchmarks;
 
 use PhpBench\Benchmark;
 
-class ArrayKeysCase implements Benchmark
+class ArrayKeysBench implements Benchmark
 {
     private $array;
 

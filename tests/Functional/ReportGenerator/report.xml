@@ -77,7 +77,7 @@
         </iterations>
       </subject>
     </benchmark>
-    <benchmark class="BenchmarkCase">
+    <benchmark class="BenchmarkBench">
       <subject name="benchRandom" description="randomBench">
         <iterations>
           <iteration time="44994" memory="176" memory_diff="176" memory_inc="6625128" memory_diff_inc="2760"/>

@@ -12,7 +12,7 @@
 use PhpBench\Benchmark\Iteration;
 use PhpBench\Benchmark;
 
-class IsolatedParameterCase implements Benchmark
+class IsolatedParameterBench implements Benchmark
 {
     /**
      * @description randomBench

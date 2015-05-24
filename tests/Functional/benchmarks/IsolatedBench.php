@@ -11,7 +11,7 @@
 
 use PhpBench\Benchmark;
 
-class IsolatedCase implements Benchmark
+class IsolatedBench implements Benchmark
 {
     /**
      * @description 5 iterations in isolation

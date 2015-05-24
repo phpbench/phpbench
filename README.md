@@ -196,21 +196,21 @@ You can then run the benchmark:
 $ php vendor/bin/phpbench run tests/benchmark --report=console_table
 Running benchmark suite
 
-BenchmarkCase
+BenchmarkBench
 ...
 
 Generating reports...
 
 >> console_table >>
 
-BenchmarkCase#benchRandom(): randomBench
+BenchmarkBench#benchRandom(): randomBench
 +-----+------+-------------+
 | run | iter | time        |
 +-----+------+-------------+
 | 1   | 0    | 0.00294995s |
 +-----+------+-------------+
 
-BenchmarkCase#benchDoNothing(): Do nothing three times
+BenchmarkBench#benchDoNothing(): Do nothing three times
 +-----+------+-------------+
 | run | iter | time        |
 +-----+------+-------------+
@@ -219,7 +219,7 @@ BenchmarkCase#benchDoNothing(): Do nothing three times
 | 1   | 2    | 0.00000191s |
 +-----+------+-------------+
 
-BenchmarkCase#benchParameterized(): Parameterized bench mark
+BenchmarkBench#benchParameterized(): Parameterized bench mark
 +-----+------+--------+----------+-------------+
 | run | iter | length | strategy | time        |
 +-----+------+--------+----------+-------------+

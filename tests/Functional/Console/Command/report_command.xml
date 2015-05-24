@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <phpbench version="0.1" date="2015-05-14T11:39:57+02:00">
   <suite>
-    <benchmark class="BenchmarkCase">
+    <benchmark class="BenchmarkBench">
       <subject name="benchRandom" description="randomBench">
         <iterations>
           <iteration time="0.00011301040649414" subject_memory_total="208" subject_memory_diff="208" memory_inclusive="2790808" memory_diff_inclusive="27392"/>
