@@ -11,6 +11,8 @@
 
 namespace PhpBench\Benchmark;
 
+use PhpBench\Exception\InvalidArgumentException;
+
 class Iteration
 {
     private $index;
@@ -25,8 +27,10 @@ class Iteration
     public function getParameter($name)
     {
         if (!isset($this->parameters[$name])) {
-            throw new \InvalidArgumentException(sprintf(
-                'Unknown iteration parameters "%s"', $name
+            throw new InvalidArgumentException(sprintf(
+                'Unknown iteration parameters "%s", known parameters: "%s"', 
+                $name,
+                implode('", "', array_keys($this->parameters))
             ));
         }
 

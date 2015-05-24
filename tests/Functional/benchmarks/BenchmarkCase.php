@@ -23,7 +23,7 @@ class BenchmarkCase implements Benchmark
     }
 
     /**
-     * @iterations 1000
+     * @iterations 3
      * @description Do nothing three times
      */
     public function benchDoNothing(Iteration $iteration)
