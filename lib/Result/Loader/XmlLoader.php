@@ -22,7 +22,14 @@ class XmlLoader
     public function load($xml)
     {
         $dom = new \DOMDocument('1.0');
-        $dom->loadXml($xml);
+        $success = @$dom->loadXml($xml);
+
+        if (false === $success) {
+            throw new \RuntimeException(sprintf(
+                'Could not decode XML document: %s',
+                $xml
+            ));
+        }
         $xpath = new \DOMXpath($dom);
 
         $benchmarkResults = $this->getBenchmarkResults($xpath);
@@ -62,14 +69,25 @@ class XmlLoader
         $iterationsResults = array();
         foreach ($xpath->query('./iterations', $subjectEl) as $iterationsEl) {
             $iterationResults = $this->getIterationResults($xpath, $iterationsEl);
-            $parameters = array();
-            foreach ($xpath->query('./parameter', $iterationsEl) as $parameterEl) {
-                $parameters[$parameterEl->getAttribute('name')] = $parameterEl->getAttribute('value');
-            }
+            $parameters = $this->getParametersForNode($xpath, $iterationsEl);
             $iterationsResults[] = new IterationsResult($iterationResults, $parameters);
         }
 
         return $iterationsResults;
+    }
+
+    private function getParametersForNode(\DOMXpath $xpath, \DOMNode $node)
+    {
+        $parameters = array();
+        foreach ($xpath->query('./parameter', $node) as $parameterEl) {
+            if (1 == $parameterEl->getAttribute('multiple')) {
+                $parameters[$parameterEl->getAttribute('name')] = $this->getParametersForNode($xpath, $parameterEl);
+            } else {
+                $parameters[$parameterEl->getAttribute('name')] = $parameterEl->getAttribute('value');
+            }
+        }
+
+        return $parameters;
     }
 
     private function getIterationResults(\DOMXPath $xpath, \DOMElement $iterationsEl)

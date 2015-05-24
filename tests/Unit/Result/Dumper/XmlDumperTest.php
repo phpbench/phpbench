@@ -36,6 +36,14 @@ class XmlDumperTest extends \PHPUnit_Framework_TestCase
       <subject name="mySubject" description="My Subject's description">
         <iterations>
           <parameter name="foo" value="bar"/>
+          <parameter name="array" multiple="1">
+            <parameter name="0" value="one"/>
+            <parameter name="1" value="two"/>
+          </parameter>
+          <parameter name="assoc_array" multiple="1">
+            <parameter name="one" value="two"/>
+            <parameter name="three" value="four"/>
+          </parameter>
           <iteration time="100"/>
         </iterations>
       </subject>
@@ -53,7 +61,14 @@ EOT;
     protected function getSuite()
     {
         $iteration1 = new IterationResult(array('time' => 100));
-        $iterations = new IterationsResult(array($iteration1), array('foo' => 'bar'));
+        $iterations = new IterationsResult(array($iteration1), array(
+            'foo' => 'bar',
+            'array' => array('one', 'two'),
+            'assoc_array' => array(
+                'one' => 'two',
+                'three' => 'four',
+            ),
+        ));
         $subject = new SubjectResult('mySubject', 'My Subject\'s description', array($iterations));
         $benchmark = new BenchmarkResult('Benchmark\Class', array($subject));
         $suite = new SuiteResult(array($benchmark));

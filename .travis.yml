@@ -9,4 +9,7 @@ php:
 before_script:
   - composer install
 
-script: phpunit
+script: 
+  - phpunit
+  - php bin/phpbench run tests/Functional/benchmarks --config=tests/phpbench --dumpfile=dump.xml
+  - cat dump.xml

@@ -14,7 +14,6 @@ namespace PhpBench\Tests\Benchmark;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Benchmark;
 use PhpBench\Benchmark\Iteration;
-use PhpBench\Exception\InvalidArgumentException;
 
 class RunnerTest extends \PHPUnit_Framework_TestCase
 {
@@ -55,6 +54,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->subject->getMethodName()->willReturn('benchFoo');
         $this->subject->getBeforeMethods()->willReturn(array('beforeFoo'));
         $this->subject->getDescription()->willReturn('Hello world');
+        $this->subject->getProcessIsolation()->willReturn(false);
 
         $result = $this->runner->runAll();
 
@@ -66,7 +66,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should throw an exception if a before method does not exist
+     * It should throw an exception if a before method does not exist.
      *
      * @expectedException PhpBench\Exception\InvalidArgumentException
      * @expectedExceptionMessage Unknown bench benchmark method "beforeFooNotExisting"
@@ -83,12 +83,13 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->subject->getNbIterations()->willReturn(1);
         $this->subject->getParameterProviders()->willReturn(array());
         $this->subject->getBeforeMethods()->willReturn(array('beforeFooNotExisting'));
+        $this->subject->getProcessIsolation()->willReturn(false);
 
         $this->runner->runAll();
     }
 
     /**
-     * It should throw an exception if a parameter provider does not exist
+     * It should throw an exception if a parameter provider does not exist.
      *
      * @expectedException PhpBench\Exception\InvalidArgumentException
      * @expectedExceptionMessage Unknown param provider "notExistingParam" for bench benchmark
@@ -102,13 +103,15 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->subjectBuilder->buildSubjects($this->case)->willReturn(array(
             $this->subject->reveal(),
         ));
+        $this->subject->getNbIterations()->willReturn(1);
         $this->subject->getParameterProviders()->willReturn(array('notExistingParam'));
+        $this->subject->getProcessIsolation()->willReturn(false);
 
         $this->runner->runAll();
     }
 
     /**
-     * The magic tearDown and setUp should be called
+     * The magic tearDown and setUp should be called.
      */
     public function testSetUpAndTearDown()
     {
@@ -123,6 +126,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->subject->getMethodName()->willReturn('benchFoo');
         $this->subject->getDescription()->willReturn('benchFoo');
         $this->subject->getNbIterations()->willReturn(0);
+        $this->subject->getProcessIsolation()->willReturn(false);
 
         $this->runner->runAll();
 
@@ -130,6 +134,36 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->case->tearDownCalled);
     }
 
+    /**
+     * The magic tearDown and setUp should not be called if setUpTearDown is false.
+     */
+    public function testSetUpAndTearDownDisabled()
+    {
+        $runner = new Runner(
+            $this->collectionBuilder->reveal(), $this->subjectBuilder->reveal(),
+            $this->logger->reveal(),
+            false,
+            false
+        );
+
+        $this->collectionBuilder->buildCollection()->willReturn($this->collection);
+        $this->collection->getBenchmarks()->willReturn(array(
+            $this->case,
+        ));
+        $this->subjectBuilder->buildSubjects($this->case)->willReturn(array(
+            $this->subject->reveal(),
+        ));
+        $this->subject->getParameterProviders()->willReturn(array());
+        $this->subject->getMethodName()->willReturn('benchFoo');
+        $this->subject->getDescription()->willReturn('benchFoo');
+        $this->subject->getNbIterations()->willReturn(0);
+        $this->subject->getProcessIsolation()->willReturn(false);
+
+        $runner->runAll();
+
+        $this->assertFalse($this->case->setUpCalled);
+        $this->assertFalse($this->case->tearDownCalled);
+    }
 }
 
 class RunnerTestBenchCase implements Benchmark

@@ -82,7 +82,7 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
                 }
 
                 if ($options['revolutions']) {
-                    $row->set('revs', 1000000 / $iteration->get('time'), array('revs'));
+                    $row->set('revs', $iteration->get('time') ? 1000000 / $iteration->get('time') : null, array('revs'));
                 }
             }
         }
