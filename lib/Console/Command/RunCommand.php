@@ -44,12 +44,13 @@ EOT
         $this->addOption('report', array(), InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Report name or configuration in JSON format');
         $this->addOption('subject', null, InputOption::VALUE_REQUIRED, 'Subject to run');
         $this->addOption('dumpfile', 'df', InputOption::VALUE_OPTIONAL, 'Dump XML result to named file');
-        $this->addOption('dump', null, InputOption::VALUE_NONE, 'Dump XML result to stdout');
+        $this->addOption('dump', null, InputOption::VALUE_NONE, 'Dump XML result to stdout and suppress all other output');
         $this->addOption('parameters', null, InputOption::VALUE_REQUIRED, 'Override parameters to use in (all) benchmarks');
         $this->addOption('iterations', null, InputOption::VALUE_REQUIRED, 'Override number of iteratios to run in (all) benchmarks');
+        $this->addOption('processisolation', 'pi', InputOption::VALUE_REQUIRED, 'Override rocess isolation policy, one of <comment>iteration</comment>, <comment>iterations</comment> or <comment>none</comment>');
         $this->addOption('nosetup', null, InputOption::VALUE_NONE, 'Do not execute setUp or tearDown methods');
-        $this->addOption('processisolation', 'pi', InputOption::VALUE_REQUIRED, 'Process isolation policy, one of <comment>iteration</comment>, <comment>iterations</comment>');
-        $this->addOption('progress', 'l', InputOption::VALUE_REQUIRED, 'Progress logger to use', 'dots');
+        $this->addOption('progress', 'l', InputOption::VALUE_REQUIRED, 'Progress logger to use, one of <comment>dots</comment>, <comment>benchdots</comment>', 'dots');
+        $this->addOption('gc-enable', null, InputOption::VALUE_NONE, 'Enable garbage collection');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
@@ -83,6 +84,8 @@ EOT
         $consoleOutput->writeln('PhpBench ' . PhpBench::VERSION . '. Running benchmarks.');
 
         $configuration = $this->getApplication()->getConfiguration();
+        $enableGc = $input->getOption('gc-enable');
+        $enableGc = $configuration->getGcEnabled() || $input->getOption('gc-enable');
 
         if ($configuration->getConfigPath()) {
             $consoleOutput->writeln(sprintf('Using configuration file: %s', $configuration->getConfigPath()));
@@ -105,6 +108,10 @@ EOT
 
         $subject = $input->getOption('subject');
         $dumpfile = $input->getOption('dumpfile');
+
+        if (false === $enableGc) {
+            gc_disable();
+        }
 
         $startTime = microtime(true);
         $result = $this->executeBenchmarks($path, $subject, $noSetup, $parameters, $iterations, $processIsolation, $configFile, $progressLogger);

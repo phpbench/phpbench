@@ -21,6 +21,7 @@ class Configuration
     private $reports = array();
     private $configPath = null;
     private $progress;
+    private $enableGc = false;
 
     public function addReportGenerator($name, ReportGenerator $reportGenerator)
     {
@@ -69,7 +70,7 @@ class Configuration
         return $this->path;
     }
 
-    public function addReport($config)
+    public function addReport(array $config)
     {
         $this->reports[] = $config;
     }
@@ -79,7 +80,7 @@ class Configuration
         return $this->reports;
     }
 
-    public function setReports($reports)
+    public function setReports(array $reports)
     {
         $this->reports = $reports;
     }
@@ -92,5 +93,15 @@ class Configuration
     public function getConfigPath()
     {
         return $this->configPath;
+    }
+
+    public function enableGc()
+    {
+        $this->enableGc = true;
+    }
+
+    public function getGcEnabled()
+    {
+        return $this->enableGc;
     }
 }
