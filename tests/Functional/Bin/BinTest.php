@@ -19,6 +19,9 @@ class BinTest extends \PHPUnit_Framework_TestCase
     public function testSpecifiedConfig()
     {
         list($exitCode, $results) = $this->execCommand('.', 'run --config=env/config_valid/.phpbench');
+        if ($exitCode != 0) {
+            var_dump($results);
+        }
         $this->assertEquals(0, $exitCode);
         $this->assertContains('Done', $results);
     }

@@ -25,7 +25,7 @@ class ArrayKeysCase implements Benchmark
     /**
      * @description isset
      * @beforeMethod provide
-     * @iterations 1000
+     * @iterations 10
      */
     public function benchIsset()
     {
@@ -35,7 +35,7 @@ class ArrayKeysCase implements Benchmark
     /**
      * @description in_array
      * @beforeMethod provide
-     * @iterations 1000
+     * @iterations 10
      */
     public function benchInArray()
     {
@@ -45,7 +45,7 @@ class ArrayKeysCase implements Benchmark
     /**
      * @description array_key_exists
      * @beforeMethod provide
-     * @iterations 1000
+     * @iterations 10
      */
     public function benchArrayKeyExists()
     {
