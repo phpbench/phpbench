@@ -12,6 +12,7 @@
 namespace PhpBench;
 
 use PhpBench\Benchmark\Subject;
+use Symfony\Component\Console\Output\OutputInterface;
 
 interface ProgressLogger
 {
@@ -22,4 +23,6 @@ interface ProgressLogger
     public function subjectEnd(Subject $case);
 
     public function subjectStart(Subject $case);
+
+    public function setOutput(OutputInterface $output);
 }

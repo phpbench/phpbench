@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-use PhpBench\Benchmark\Iteration;
 use PhpBench\Benchmark;
 
 class IsolatedCase implements Benchmark

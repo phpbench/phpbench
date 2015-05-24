@@ -16,23 +16,38 @@ use PhpBench\Benchmark\Subject;
 use PhpBench\ProgressLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class PhpUnitProgressLogger implements ProgressLogger
+class DotsProgressLogger implements ProgressLogger
 {
     private $output;
+    private $showBench;
 
-    public function __construct(OutputInterface $output)
+    public function __construct($showBench = false)
+    {
+        $this->showBench = $showBench;
+    }
+
+    public function setOutput(OutputInterface $output)
     {
         $this->output = $output;
     }
 
     public function benchmarkStart(Benchmark $case)
     {
-        $this->output->writeln(get_class($case));
+        static $first = true;
+
+        if ($this->showBench) {
+            // do not output a line break on the first run
+            if (false === $first) {
+                $this->output->writeln('');
+            }
+            $first = false;
+
+            $this->output->writeln(get_class($case));
+        }
     }
 
     public function benchmarkEnd(Benchmark $case)
     {
-        $this->output->writeln('');
     }
 
     public function subjectStart(Subject $subject)

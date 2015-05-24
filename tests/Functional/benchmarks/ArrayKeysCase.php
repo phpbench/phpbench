@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Tests\Functional\benchmarks;
 
 use PhpBench\Benchmark;
@@ -16,7 +25,7 @@ class ArrayKeysCase implements Benchmark
     /**
      * @description isset
      * @beforeMethod provide
-     * @iterations 1000
+     * @iterations 10
      */
     public function benchIsset()
     {
@@ -26,7 +35,7 @@ class ArrayKeysCase implements Benchmark
     /**
      * @description in_array
      * @beforeMethod provide
-     * @iterations 1000
+     * @iterations 10
      */
     public function benchInArray()
     {
@@ -36,7 +45,7 @@ class ArrayKeysCase implements Benchmark
     /**
      * @description array_key_exists
      * @beforeMethod provide
-     * @iterations 1000
+     * @iterations 10
      */
     public function benchArrayKeyExists()
     {

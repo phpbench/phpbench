@@ -33,6 +33,41 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * It can have progress loggers added to it.
+     */
+    public function testAddProgressLogger()
+    {
+        $logger = $this->prophesize('PhpBench\ProgressLogger');
+        $this->configuration->addProgressLogger('name', $logger->reveal());
+        $this->assertSame(
+            $logger->reveal(),
+            $this->configuration->getProgressLogger('name')
+        );
+    }
+
+    /**
+     * It should throw an exception if an unknown logger is requested.
+     *
+     * @expectedException PhpBench\Exception\InvalidArgumentException
+     * @expectedExceptionMessage Unknown progress logger "unknown", known progress loggers: "name"
+     */
+    public function testGetProgressLoggerUnknown()
+    {
+        $logger = $this->prophesize('PhpBench\ProgressLogger');
+        $this->configuration->addProgressLogger('name', $logger->reveal());
+        $this->configuration->getProgressLogger('unknown');
+    }
+
+    /**
+     * Its should be able to set the progress logger to use.
+     */
+    public function testSetProgress()
+    {
+        $this->configuration->setProgress('hello');
+        $this->assertEquals('hello', $this->configuration->getProgress());
+    }
+
+    /**
      * It can have the path set on it.
      */
     public function testSetPath()

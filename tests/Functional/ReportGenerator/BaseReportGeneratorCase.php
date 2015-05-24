@@ -11,11 +11,7 @@
 
 namespace PhpBench\Tests\Functional\ReportGenerator;
 
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use PhpBench\Benchmark\SubjectBuilder;
-use PhpBench\Benchmark\Runner;
-use PhpBench\Benchmark\CollectionBuilder;
 use PhpBench\Result\SuiteResult;
 use Symfony\Component\Console\Output\NullOutput;
 use PhpBench\Result\Loader\XmlLoader;
@@ -25,6 +21,7 @@ abstract class BaseReportGeneratorCase extends \PHPUnit_Framework_TestCase
     protected function getResults()
     {
         $xmlLoader = new XmlLoader();
+
         return $xmlLoader->load(file_get_contents(__DIR__ . '/report.xml'));
     }
 

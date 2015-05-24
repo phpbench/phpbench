@@ -11,11 +11,16 @@
 
 namespace PhpBench;
 
+use PhpBench\Exception\InvalidArgumentException;
+
 class Configuration
 {
     private $reportGenerators = array();
+    private $progressLoggers = array();
     private $path;
     private $reports = array();
+    private $configPath = null;
+    private $progress;
 
     public function addReportGenerator($name, ReportGenerator $reportGenerator)
     {
@@ -25,6 +30,33 @@ class Configuration
     public function getReportGenerators()
     {
         return $this->reportGenerators;
+    }
+
+    public function addProgressLogger($name, ProgressLogger $progressLogger)
+    {
+        $this->progressLoggers[$name] = $progressLogger;
+    }
+
+    public function getProgressLogger($name)
+    {
+        if (!isset($this->progressLoggers[$name])) {
+            throw new InvalidArgumentException(sprintf(
+                'Unknown progress logger "%s", known progress loggers: "%s"',
+                $name, implode('", "', array_keys($this->progressLoggers))
+            ));
+        }
+
+        return $this->progressLoggers[$name];
+    }
+
+    public function setProgress($name)
+    {
+        $this->progress = $name;
+    }
+
+    public function getProgress()
+    {
+        return $this->progress;
     }
 
     public function setPath($path)
@@ -50,5 +82,15 @@ class Configuration
     public function setReports($reports)
     {
         $this->reports = $reports;
+    }
+
+    public function setConfigPath($path)
+    {
+        $this->configPath = $path;
+    }
+
+    public function getConfigPath()
+    {
+        return $this->configPath;
     }
 }

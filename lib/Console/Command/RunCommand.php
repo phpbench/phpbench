@@ -11,7 +11,6 @@
 
 namespace PhpBench\Console\Command;
 
-use PhpBench\ProgressLogger\PhpUnitProgressLogger;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -24,6 +23,8 @@ use PhpBench\Benchmark\Runner;
 use PhpBench\Result\SuiteResult;
 use PhpBench\Result\Dumper\XmlDumper;
 use Symfony\Component\Console\Output\NullOutput;
+use PhpBench\ProgressLogger;
+use PhpBench\PhpBench;
 
 class RunCommand extends BaseCommand
 {
@@ -48,6 +49,7 @@ EOT
         $this->addOption('iterations', null, InputOption::VALUE_REQUIRED, 'Override number of iteratios to run in (all) benchmarks');
         $this->addOption('nosetup', null, InputOption::VALUE_NONE, 'Do not execute setUp or tearDown methods');
         $this->addOption('processisolation', 'pi', InputOption::VALUE_REQUIRED, 'Process isolation policy, one of <comment>iteration</comment>, <comment>iterations</comment>');
+        $this->addOption('progress', 'l', InputOption::VALUE_REQUIRED, 'Progress logger to use', 'dots');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
@@ -78,9 +80,19 @@ EOT
             $consoleOutput = new NullOutput();
         }
 
-        $consoleOutput->writeln('<info>Running benchmark suite</info>');
-        $consoleOutput->writeln('');
+        $consoleOutput->writeln('PhpBench ' . PhpBench::VERSION . '. Running benchmarks.');
+
         $configuration = $this->getApplication()->getConfiguration();
+
+        if ($configuration->getConfigPath()) {
+            $consoleOutput->writeln(sprintf('Using configuration file: %s', $configuration->getConfigPath()));
+        }
+
+        $consoleOutput->writeln('');
+
+        $progressLogger = $configuration->getProgress() ?: $input->getOption('progress');
+        $progressLogger = $configuration->getProgressLogger($progressLogger);
+        $progressLogger->setOutput($consoleOutput);
 
         $this->processReportConfigs($reports);
         $path = $input->getArgument('path') ?: $configuration->getPath();
@@ -95,16 +107,22 @@ EOT
         $dumpfile = $input->getOption('dumpfile');
 
         $startTime = microtime(true);
-        $result = $this->executeBenchmarks($consoleOutput, $path, $subject, $noSetup, $parameters, $iterations, $processIsolation, $configFile);
+        $result = $this->executeBenchmarks($path, $subject, $noSetup, $parameters, $iterations, $processIsolation, $configFile, $progressLogger);
 
         $consoleOutput->writeln('');
-
         if ($dumpfile) {
             $xml = $this->dumpResult($result);
             file_put_contents($dumpfile, $xml);
             $consoleOutput->writeln('<info>Dumped result to </info>' . $dumpfile);
             $consoleOutput->writeln('');
         }
+        $consoleOutput->writeln('');
+        $consoleOutput->writeln(sprintf(
+            '<greenbg>Done (%s subjects, %s iterations) in %ss</greenbg>',
+            count($result->getSubjectResults()),
+            count($result->getIterationResults()),
+            number_format(microtime(true) - $startTime, 2)
+        ));
 
         if ($dump) {
             $output->write($this->dumpResult($result));
@@ -113,9 +131,6 @@ EOT
         if ($configuration->getReports()) {
             $this->generateReports($consoleOutput, $result);
         }
-
-        $consoleOutput->writeln(sprintf('<info>Done </info>(%s)', number_format(microtime(true) - $startTime, 6)));
-        $consoleOutput->writeln('');
     }
 
     private function dumpResult(SuiteResult $result)
@@ -125,7 +140,7 @@ EOT
         return $dumper->dump($result);
     }
 
-    private function executeBenchmarks(OutputInterface $output, $path, $subject, $noSetup, $parameters, $iterations, $processIsolation, $configFile)
+    private function executeBenchmarks($path, $subject, $noSetup, $parameters, $iterations, $processIsolation, $configFile, ProgressLogger $progressLogger)
     {
         $finder = new Finder();
 
@@ -145,7 +160,6 @@ EOT
 
         $benchFinder = new CollectionBuilder($finder);
         $subjectBuilder = new SubjectBuilder($subject);
-        $progressLogger = new PhpUnitProgressLogger($output);
 
         $benchRunner = new Runner(
             $benchFinder,

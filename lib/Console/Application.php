@@ -18,6 +18,10 @@ use PhpBench\Console\Command\ReportCommand;
 use PhpBench\Configuration;
 use Symfony\Component\Console\Input\InputOption;
 use PhpBench\ReportGenerator\ConsoleTableReportGenerator;
+use PhpBench\ProgressLogger\DotsProgressLogger;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
 class Application extends BaseApplication
 {
@@ -35,6 +39,8 @@ class Application extends BaseApplication
 
         $this->configuration = $configuration ?: new Configuration();
         $this->configuration->addReportGenerator('console_table', new ConsoleTableReportGenerator());
+        $this->configuration->addProgressLogger('dots', new DotsProgressLogger());
+        $this->configuration->addProgressLogger('benchdots', new DotsProgressLogger(true));
     }
 
     public function getConfiguration()
@@ -50,5 +56,10 @@ class Application extends BaseApplication
         ));
 
         return $default;
+    }
+
+    protected function configureIO(InputInterface $input, OutputInterface $output)
+    {
+        $output->getFormatter()->setStyle('greenbg', new OutputFormatterStyle('black', 'green', array()));
     }
 }

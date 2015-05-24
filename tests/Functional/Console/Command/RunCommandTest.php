@@ -41,7 +41,7 @@ class RunCommandTest extends BaseCommandTestCase
         ));
         $this->assertEquals(0, $tester->getStatusCode());
         $display = $tester->getDisplay();
-        $this->assertContains('Running benchmark suite', $display);
+        $this->assertContains('Running benchmarks', $display);
     }
 
     /**
@@ -209,7 +209,7 @@ class RunCommandTest extends BaseCommandTestCase
 
     /**
      * It can run each iteration in isolation.
-     * There are 2 subjects each with 5 iterations, so there should be 10 PIDs
+     * There are 2 subjects each with 5 iterations, so there should be 10 PIDs.
      */
     public function testProcessIsolationIteration()
     {
@@ -224,7 +224,7 @@ class RunCommandTest extends BaseCommandTestCase
 
     /**
      * It can run each set of iterations in isolation.
-     * There are 2 subjects, so there should be 2 PIDs
+     * There are 2 subjects, so there should be 2 PIDs.
      */
     public function testProcessIsolationIterations()
     {
@@ -235,6 +235,19 @@ class RunCommandTest extends BaseCommandTestCase
 
         $pids = array_unique(explode(PHP_EOL, trim(file_get_contents($this->pidPath))));
         $this->assertCount(2, $pids);
+    }
+
+    /**
+     * It can have the progress logger specified.
+     */
+    public function testProgressLogger()
+    {
+        $tester = $this->runCommand('run', array(
+            '--progress' => 'benchdots',
+            'path' => __DIR__ . '/../../benchmarks/BenchmarkCase.php',
+        ));
+        $display = $tester->getDisplay();
+        $this->assertContains('BenchmarkCase', $display);
     }
 
     /**

@@ -37,6 +37,13 @@ $configuration = null;
 foreach ($configPaths as $configPath) {
     if (file_exists($configPath)) {
         $configuration = require_once $configPath;
+
+        if (!$configuration instanceof Configuration) {
+            echo 'The configuration file did not return an instance of PhpBench\\Configuration' . PHP_EOL;
+            exit(1);
+        }
+
+        $configuration->setConfigPath($configPath);
         break;
     }
 }
@@ -52,11 +59,6 @@ if (null === $configuration) {
     require_once $bootstrapPath;
 
     $configuration = new Configuration();
-}
-
-if (!$configuration instanceof Configuration) {
-    echo 'The configuration file did not return an instance of PhpBench\\Configuration' . PHP_EOL;
-    exit(1);
 }
 
 use PhpBench\Console\Application;

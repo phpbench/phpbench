@@ -67,7 +67,7 @@ class BinTest extends \PHPUnit_Framework_TestCase
     private function execCommand($env, $command)
     {
         chdir(__DIR__ . '/' . $env);
-        $command = __DIR__ . '/../../../bin/phpbench ' . $command;
+        $command = 'php ' . __DIR__ . '/../../../bin/phpbench ' . $command;
         exec($command, $result, $status);
 
         return array($status, implode($result, PHP_EOL));
