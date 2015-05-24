@@ -9,6 +9,7 @@ $configuration->addReport(array(
     'revolutions' => true,
     'memory' => true,
     'memory_inc' => true,
+    'aggregate_iterations' => true,
 ));
 $configuration->setProgress('dots');
 
