@@ -19,11 +19,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 class DotsProgressLogger implements ProgressLogger
 {
     private $output;
-    private $showCases;
+    private $showBench;
 
-    public function __construct($showCases = false)
+    public function __construct($showBench = false)
     {
-        $this->showCases = $showCases;
+        $this->showBench = $showBench;
     }
 
     public function setOutput(OutputInterface $output)
@@ -34,19 +34,20 @@ class DotsProgressLogger implements ProgressLogger
     public function benchmarkStart(Benchmark $case)
     {
         static $first = true;
-        if ($this->showCases) {
+
+        if ($this->showBench) {
+            // do not output a line break on the first run
             if (false === $first) {
                 $this->output->writeln('');
             }
             $first = false;
+
             $this->output->writeln(get_class($case));
         }
     }
 
     public function benchmarkEnd(Benchmark $case)
     {
-        if ($this->showCases) {
-        }
     }
 
     public function subjectStart(Subject $subject)

@@ -209,7 +209,7 @@ class RunCommandTest extends BaseCommandTestCase
 
     /**
      * It can run each iteration in isolation.
-     * There are 2 subjects each with 5 iterations, so there should be 10 PIDs
+     * There are 2 subjects each with 5 iterations, so there should be 10 PIDs.
      */
     public function testProcessIsolationIteration()
     {
@@ -224,7 +224,7 @@ class RunCommandTest extends BaseCommandTestCase
 
     /**
      * It can run each set of iterations in isolation.
-     * There are 2 subjects, so there should be 2 PIDs
+     * There are 2 subjects, so there should be 2 PIDs.
      */
     public function testProcessIsolationIterations()
     {
@@ -238,12 +238,12 @@ class RunCommandTest extends BaseCommandTestCase
     }
 
     /**
-     * It can have the progress logger specified
+     * It can have the progress logger specified.
      */
     public function testProgressLogger()
     {
         $tester = $this->runCommand('run', array(
-            '--progress' => 'casedots',
+            '--progress' => 'benchdots',
             'path' => __DIR__ . '/../../benchmarks/BenchmarkCase.php',
         ));
         $display = $tester->getDisplay();

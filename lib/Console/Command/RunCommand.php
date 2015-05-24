@@ -11,7 +11,6 @@
 
 namespace PhpBench\Console\Command;
 
-use PhpBench\ProgressLogger\PhpUnitProgressLogger;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -50,7 +49,7 @@ EOT
         $this->addOption('iterations', null, InputOption::VALUE_REQUIRED, 'Override number of iteratios to run in (all) benchmarks');
         $this->addOption('nosetup', null, InputOption::VALUE_NONE, 'Do not execute setUp or tearDown methods');
         $this->addOption('processisolation', 'pi', InputOption::VALUE_REQUIRED, 'Process isolation policy, one of <comment>iteration</comment>, <comment>iterations</comment>');
-        $this->addOption('progress', 'l', InputOption::VALUE_REQUIRED, 'Progress logger to use', 'casedots');
+        $this->addOption('progress', 'l', InputOption::VALUE_REQUIRED, 'Progress logger to use', 'dots');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
@@ -77,7 +76,6 @@ EOT
             }
         }
 
-
         if ($dump) {
             $consoleOutput = new NullOutput();
         }
@@ -92,7 +90,7 @@ EOT
 
         $consoleOutput->writeln('');
 
-        $progressLogger = $configuration->getProgress() ? : $input->getOption('progress');
+        $progressLogger = $configuration->getProgress() ?: $input->getOption('progress');
         $progressLogger = $configuration->getProgressLogger($progressLogger);
         $progressLogger->setOutput($consoleOutput);
 
@@ -120,7 +118,7 @@ EOT
         }
         $consoleOutput->writeln('');
         $consoleOutput->writeln(sprintf(
-            '<greenbg>Done (%s subjects, %s iterations) in %ss</greenbg>', 
+            '<greenbg>Done (%s subjects, %s iterations) in %ss</greenbg>',
             count($result->getSubjectResults()),
             count($result->getIterationResults()),
             number_format(microtime(true) - $startTime, 2)

@@ -37,7 +37,7 @@ class Configuration
         $this->progressLoggers[$name] = $progressLogger;
     }
 
-    public function getProgressLogger($name) 
+    public function getProgressLogger($name)
     {
         if (!isset($this->progressLoggers[$name])) {
             throw new InvalidArgumentException(sprintf(
@@ -54,11 +54,11 @@ class Configuration
         $this->progress = $name;
     }
 
-    public function getProgress() 
+    public function getProgress()
     {
         return $this->progress;
     }
-    
+
     public function setPath($path)
     {
         $this->path = $path;
@@ -89,7 +89,7 @@ class Configuration
         $this->configPath = $path;
     }
 
-    public function getConfigPath() 
+    public function getConfigPath()
     {
         return $this->configPath;
     }

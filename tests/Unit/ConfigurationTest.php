@@ -33,7 +33,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It can have progress loggers added to it
+     * It can have progress loggers added to it.
      */
     public function testAddProgressLogger()
     {
@@ -46,7 +46,8 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should throw an exception if an unknown logger is requested
+     * It should throw an exception if an unknown logger is requested.
+     *
      * @expectedException PhpBench\Exception\InvalidArgumentException
      * @expectedExceptionMessage Unknown progress logger "unknown", known progress loggers: "name"
      */
@@ -58,7 +59,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Its should be able to set the progress logger to use
+     * Its should be able to set the progress logger to use.
      */
     public function testSetProgress()
     {
