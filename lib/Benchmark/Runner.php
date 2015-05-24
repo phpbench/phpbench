@@ -212,7 +212,6 @@ class Runner
             fclose($pipes[2]);
             $exitCode = proc_close($process);
 
-            // randomly returns -1 on travis ..
             if (0 !== $exitCode) {
                 throw new \RuntimeException(sprintf(
                     'Isolated process returned exit code "%s". Command: "%s". stdout: %s stderr: %s',

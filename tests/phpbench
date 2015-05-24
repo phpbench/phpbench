@@ -5,6 +5,7 @@ $configuration = new PhpBench\Configuration();
 $configuration->setPath(__DIR__ . '/../tests/Functional/benchmarks');
 $configuration->addReport(array(
     'name' => 'console_table',
+    'time_format' => 'integer',
     'revolutions' => true,
     'memory' => true,
     'memory_inc' => true,

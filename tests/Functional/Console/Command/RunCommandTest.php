@@ -16,6 +16,21 @@ use PhpBench\Tests\Functional\Console\Command\BaseCommandTestCase;
 
 class RunCommandTest extends BaseCommandTestCase
 {
+    private $pidPath;
+
+    public function setUp()
+    {
+        $this->pidPath = sys_get_temp_dir() . '/phpbench_isolationtest';
+        if (file_exists($this->pidPath)) {
+            unlink($this->pidPath);
+        }
+    }
+
+    public function tearDown()
+    {
+        $this->setUp();
+    }
+
     /**
      * It should run when given a path.
      */
@@ -194,17 +209,22 @@ class RunCommandTest extends BaseCommandTestCase
 
     /**
      * It can run each iteration in isolation.
+     * There are 2 subjects each with 5 iterations, so there should be 10 PIDs
      */
     public function testProcessIsolationIteration()
     {
         $this->runCommand('run', array(
             '--processisolation' => 'iteration',
-            'path' => __DIR__ . '/../../benchmarks/BenchmarkCase.php',
+            'path' => __DIR__ . '/../../benchmarks/IsolatedCase.php',
         ));
+
+        $pids = array_unique(explode(PHP_EOL, trim(file_get_contents($this->pidPath))));
+        $this->assertCount(10, $pids);
     }
 
     /**
      * It can run each set of iterations in isolation.
+     * There are 2 subjects, so there should be 2 PIDs
      */
     public function testProcessIsolationIterations()
     {
@@ -212,6 +232,9 @@ class RunCommandTest extends BaseCommandTestCase
             '--processisolation' => 'iterations',
             'path' => __DIR__ . '/../../benchmarks/IsolatedCase.php',
         ));
+
+        $pids = array_unique(explode(PHP_EOL, trim(file_get_contents($this->pidPath))));
+        $this->assertCount(2, $pids);
     }
 
     /**

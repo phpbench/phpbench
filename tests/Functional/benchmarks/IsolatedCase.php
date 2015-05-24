@@ -17,20 +17,22 @@ class IsolatedCase implements Benchmark
     /**
      * @description 5 iterations in isolation
      * @iterations 5
-     * @processIsolation iteration
      */
     public function benchIterationIsolation()
     {
-        usleep(1);
+        $handle = fopen(sys_get_temp_dir() . '/phpbench_isolationtest', 'a');
+        fwrite($handle, getmypid() . PHP_EOL);
+        fclose($handle);
     }
 
     /**
      * @description Set of 5 iterations in isolation
      * @iterations 5
-     * @processIsolation iterations
      */
     public function benchIterationsIsolation()
     {
-        usleep(1);
+        $handle = fopen(sys_get_temp_dir() . '/phpbench_isolationtest', 'a');
+        fwrite($handle, getmypid() . PHP_EOL);
+        fclose($handle);
     }
 }

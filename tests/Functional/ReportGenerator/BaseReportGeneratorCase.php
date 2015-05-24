@@ -18,23 +18,14 @@ use PhpBench\Benchmark\Runner;
 use PhpBench\Benchmark\CollectionBuilder;
 use PhpBench\Result\SuiteResult;
 use Symfony\Component\Console\Output\NullOutput;
+use PhpBench\Result\Loader\XmlLoader;
 
 abstract class BaseReportGeneratorCase extends \PHPUnit_Framework_TestCase
 {
     protected function getResults()
     {
-        $finder = new Finder();
-        $finder->in(__DIR__ . '/../benchmarks');
-
-        $benchFinder = new CollectionBuilder($finder);
-        $subjectBuilder = new SubjectBuilder();
-
-        $benchRunner = new Runner(
-            $benchFinder,
-            $subjectBuilder
-        );
-
-        return $benchRunner->runAll();
+        $xmlLoader = new XmlLoader();
+        return $xmlLoader->load(file_get_contents(__DIR__ . '/report.xml'));
     }
 
     protected function executeReport(SuiteResult $results, array $options)
