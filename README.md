@@ -40,6 +40,9 @@ PhpBench is inspired by PhpUnit. Basically, you create a class. Each method
 which begins with `bench` is executed by the benchmark runner and the time it
 took to execute it is recorded.
 
+The class name must end with `Bench` (this is just to optimize finding
+benchmark files).
+
 The method is known as the benchmark *subject* and each method accepts an 
 `Iteration` from which can be accessed contextual information.
 
@@ -133,7 +136,7 @@ Example
 use PhpBench\Benchmark\Iteration;
 use PhpBench\Benchmark;
 
-class BenchmarkCase implements Benchmark
+class SomeBenchmarkBench implements Benchmark
 {
     /**
      * @description randomBench
