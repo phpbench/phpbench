@@ -48,4 +48,16 @@ class SuiteResult
 
         return $subjectResults;
     }
+
+    public function getIterationResults()
+    {
+        $iterationResults = array();
+        foreach ($this->getIterationsResults() as $iterationsResults) {
+            foreach ($iterationsResults->getIterationResults() as $iterationResult) {
+                $iterationResults[] = $iterationResult;
+            }
+        }
+
+        return $iterationResults;
+    }
 }

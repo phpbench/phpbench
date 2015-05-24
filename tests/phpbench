@@ -10,5 +10,6 @@ $configuration->addReport(array(
     'memory' => true,
     'memory_inc' => true,
 ));
+$configuration->setProgress('dots');
 
 return $configuration;

@@ -41,7 +41,7 @@ class RunCommandTest extends BaseCommandTestCase
         ));
         $this->assertEquals(0, $tester->getStatusCode());
         $display = $tester->getDisplay();
-        $this->assertContains('Running benchmark suite', $display);
+        $this->assertContains('Running benchmarks', $display);
     }
 
     /**
@@ -235,6 +235,19 @@ class RunCommandTest extends BaseCommandTestCase
 
         $pids = array_unique(explode(PHP_EOL, trim(file_get_contents($this->pidPath))));
         $this->assertCount(2, $pids);
+    }
+
+    /**
+     * It can have the progress logger specified
+     */
+    public function testProgressLogger()
+    {
+        $tester = $this->runCommand('run', array(
+            '--progress' => 'casedots',
+            'path' => __DIR__ . '/../../benchmarks/BenchmarkCase.php',
+        ));
+        $display = $tester->getDisplay();
+        $this->assertContains('BenchmarkCase', $display);
     }
 
     /**

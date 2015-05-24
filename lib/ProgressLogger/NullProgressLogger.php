@@ -17,6 +17,10 @@ use PhpBench\ProgressLogger;
 
 class NullProgressLogger implements ProgressLogger
 {
+    public function setOutput(OutputInterface $output)
+    {
+    }
+
     public function benchmarkStart(Benchmark $benchmark)
     {
     }

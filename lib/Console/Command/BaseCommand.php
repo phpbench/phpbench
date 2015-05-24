@@ -21,7 +21,6 @@ abstract class BaseCommand extends Command
 {
     protected function generateReports(OutputInterface $output, SuiteResult $results)
     {
-        $output->writeln('<info>Generating reports...</info>');
         $output->writeln('');
 
         $configuration = $this->getApplication()->getConfiguration();
