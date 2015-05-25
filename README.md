@@ -144,6 +144,42 @@ $ php vendor/bin/phpbench run benchmarks/ --report='{"name": "console_table",
 "memory": true}'
 ````
 
+There is a single report included by default: `console_table`.
+
+It has the following options:
+
+- `time_format`: Either "fraction" (of a second) or integer (number of microseconds).
+- `precision`: Number of decimal places to use when showing the time as a fraction.
+- `aggregate_iterations`: Aggregate multiple iterations into a single row.
+- `deviation`: Show the deviation from the average value as a percentage.
+
+Columns to display:
+
+- `time`: Time taken.
+- `memory`: Memory used by the subject (accumulative).
+- `memory_diff`: Memory used by the subject (non-accumulative).
+- `memory_inc`: Memory used globally (accumulative).
+- `memory_diff_inc`: Memory used globally (non-accumulative).
+- `revs`: Number of times the subject was repeated.
+- `rps`: Revolutions per second - number of times the subject is executed in a second.
+
+Aggregate options (only applicable when aggregate_iterations is enabled):
+
+Options are suffixed by one of the columns above and represent the value of the function
+as applied to the aggregated iterations:
+
+- `sum_*`: show the sum.
+- `avg_*`: show the avergage value.
+- `min_*`: show the minimum value.
+- `max_*`: show the max value.
+
+Footer:
+
+- `footer_sum`: Show the sum of all columns in the footer.
+- `footer_min`: Show the sum of all columns in the footer.
+- `footer_max`: Show the sum of all columns in the footer.
+- `footer_avg`: Show the average of all columns in the footer.
+
 Dumping XML and deferring reports
 ---------------------------------
 

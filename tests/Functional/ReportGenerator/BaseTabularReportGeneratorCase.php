@@ -47,7 +47,7 @@ abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase
     public function testWithRevolutions()
     {
         $this->executeReport($this->getResults(), array(
-            'revolutions' => true,
+            'rps' => true,
         ));
     }
 
@@ -88,6 +88,16 @@ abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase
     {
         $this->executeReport($this->getResults(), array(
             'time_format' => 'integer',
+        ));
+    }
+
+    /**
+     * It should display deviations
+     */
+    public function testDeviation()
+    {
+        $this->executeReport($this->getResults(), array(
+            'deviation' => true,
         ));
     }
 }
