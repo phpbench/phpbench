@@ -180,7 +180,7 @@ EOT
     }
 
     /**
-     * It should throw an exception if more than one description annotation is present
+     * It should throw an exception if more than one description annotation is present.
      */
     public function testNoDescription()
     {

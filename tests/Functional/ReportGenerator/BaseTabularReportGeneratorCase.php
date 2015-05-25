@@ -92,7 +92,7 @@ abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase
     }
 
     /**
-     * It should display deviations
+     * It should display deviations.
      */
     public function testDeviation()
     {

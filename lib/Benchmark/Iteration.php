@@ -30,7 +30,7 @@ class Iteration
     {
         if (!isset($this->parameters[$name])) {
             throw new InvalidArgumentException(sprintf(
-                'Unknown iteration parameters "%s", known parameters: "%s"', 
+                'Unknown iteration parameters "%s", known parameters: "%s"',
                 $name,
                 implode('", "', array_keys($this->parameters))
             ));
@@ -54,7 +54,7 @@ class Iteration
         return $this->index;
     }
 
-    public function getRevs() 
+    public function getRevs()
     {
         return $this->revs;
     }

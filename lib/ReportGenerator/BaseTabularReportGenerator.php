@@ -25,14 +25,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 abstract class BaseTabularReportGenerator implements ReportGenerator
 {
     /**
-     * Available aggregate functions
+     * Available aggregate functions.
      */
     private $functions = array(
         'sum', 'min', 'max', 'avg',
     );
 
     /**
-     * Columns which are available
+     * Columns which are available.
      */
     private $availableCols = array(
         'time' => array('time'),
@@ -116,7 +116,6 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
                 foreach ($cols as $colName => $groups) {
                     $row->set($colName, $stats[$colName], $groups);
                 }
-
             }
         }
 
@@ -149,7 +148,7 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
 
                     foreach ($functions as $function) {
                         if ($options[$function . '_' . $colName]) {
-                            $row->set($function .'_' . $colName, $table->getColumn($colName)->$function(), $table->getColumn($colName)->getGroups());
+                            $row->set($function . '_' . $colName, $table->getColumn($colName)->$function(), $table->getColumn($colName)->getGroups());
                             $newCols[$function . '_' . $colName] = $table->getColumn($colName)->getGroups();
                         }
                     }
@@ -170,7 +169,6 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
             $row = $table->row();
             $row->set(' ', '<< ' . $function, array('footer'));
             foreach ($newCols as $colName => $groups) {
-
                 $groups[] = 'footer';
                 $data->getColumn($colName);
                 $row->set($colName, $data->getColumn($colName)->$function(), $groups);

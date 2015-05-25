@@ -160,7 +160,6 @@ EOT
             ));
         }
 
-
         if (is_dir($path)) {
             $finder->in($path);
             $finder->name('*Bench.php');

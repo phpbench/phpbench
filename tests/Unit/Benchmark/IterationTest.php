@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Tests\Unit\Benchmark;
 
 use PhpBench\Benchmark\Iteration;
@@ -7,7 +16,7 @@ use PhpBench\Benchmark\Iteration;
 class IterationTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Its should have parameters
+     * Its should have parameters.
      */
     public function testParameters()
     {
@@ -16,7 +25,8 @@ class IterationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Its should throw an exception if an unknown parameter is requested
+     * Its should throw an exception if an unknown parameter is requested.
+     *
      * @expectedException PhpBench\Exception\InvalidArgumentException
      * @expectedExceptionMessage Unknown iteration parameters "ffff", known parameters: "foo"
      */

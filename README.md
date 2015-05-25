@@ -75,7 +75,7 @@ each iteration is recorded separately.
 This can be useful for seeing how well larger operations scale on consecutive
 calls, it is not a good way to measure things that happen at the microsecond
 level however, where you will want to perform tens of thousands of repetitions
-- the time is measured per repetition so the results will be at a lower
+as the time is measured per repetition so the results will be at a lower
 resolution.
 
 ### @beforeMethod

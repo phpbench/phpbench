@@ -74,22 +74,22 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
                 1,
                 array(1),
                 array(
-                    'paramSetOne', 'paramSetTwo'
+                    'paramSetOne', 'paramSetTwo',
                 ),
-                2
+                2,
             ),
             array(
                 1,
                 array(1, 3),
                 array(),
-                4
+                4,
             ),
             array(
                 1,
                 array(1, 3),
                 array('paramSetTwo'),
-                4
-            )
+                4,
+            ),
         );
     }
 

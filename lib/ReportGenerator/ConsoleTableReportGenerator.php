@@ -102,7 +102,8 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
             if ($cell->value() > 0) {
                 $prefix = '+';
             }
-            return sprintf('%s%s', $prefix, number_format($cell->value(), 2)). '%';
+
+            return sprintf('%s%s', $prefix, number_format($cell->value(), 2)) . '%';
         }, array('deviation'));
 
         // format the revolutions
@@ -120,6 +121,7 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
             if ($cell->value() === null) {
                 return '-';
             }
+
             return $cell->value();
         });
 

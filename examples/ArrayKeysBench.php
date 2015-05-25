@@ -14,7 +14,7 @@ namespace PhpBench\Tests\Functional\benchmarks;
 use PhpBench\Benchmark;
 
 /**
- * This example benchmarks array_key_exists vs. isset vs. in_array
+ * This example benchmarks array_key_exists vs. isset vs. in_array.
  *
  * @beforeMethod init
  * @revs 10000
