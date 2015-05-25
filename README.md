@@ -191,13 +191,13 @@ PhpBench allows you to dump an XML representation of the results from which
 reports can be generated:
 
 ````bash
-$ <path to>/phpbench run path/to/benchmarks --dumpfile=results.xml
+$ php vendor/bin/phpbench run path/to/benchmarks --dumpfile=results.xml
 ````
 
 And then you can generate the reports using:
 
 ````bash
-$ <path to>/phpbench report resuts.xml --report=console_table
+$ php vendor/bin/phpbench report resuts.xml --report=console_table
 ````
 
 Example
@@ -265,43 +265,43 @@ class SomeBenchmarkBench implements Benchmark
 You can then run the benchmark:
 
 ````bash
-$ php vendor/bin/phpbench run tests/benchmark --report=console_table
-Running benchmark suite
+$ php vendor/bin/phpbench run examples/ --report=console_table
+PhpBench 0.1. Running benchmarks.
 
-BenchmarkBench
 ...
 
-Generating reports...
+Done (3 subjects, 11 iterations) in 0.05s
 
 >> console_table >>
 
 BenchmarkBench#benchRandom(): randomBench
-+-----+------+-------------+
-| run | iter | time        |
-+-----+------+-------------+
-| 1   | 0    | 0.00294995s |
-+-----+------+-------------+
++-----+------+------+-----------+-------------+----------+-----------+
+| run | iter | revs | time      | memory_diff | rps      | deviation |
++-----+------+------+-----------+-------------+----------+-----------+
+| 1   | 1    | 1    | 0.035461s | +288b       | 28.20rps | 0.00%     |
++-----+------+------+-----------+-------------+----------+-----------+
 
 BenchmarkBench#benchDoNothing(): Do nothing three times
-+-----+------+-------------+
-| run | iter | time        |
-+-----+------+-------------+
-| 1   | 0    | 0.00000310s |
-| 1   | 1    | 0.00000310s |
-| 1   | 2    | 0.00000191s |
-+-----+------+-------------+
++-----+------+------+-----------+-------------+---------------+-----------+
+| run | iter | revs | time      | memory_diff | rps           | deviation |
++-----+------+------+-----------+-------------+---------------+-----------+
+| 1   | 1    | 1    | 0.000007s | +192b       | 142,857.14rps | -52.65%   |
+| 1   | 1    | 1000 | 0.002462s | +192b       | 406,173.84rps | +34.62%   |
+| 1   | 2    | 1    | 0.000004s | +192b       | 250,000.00rps | -17.14%   |
+| 1   | 2    | 1000 | 0.002621s | +192b       | 381,533.77rps | +26.45%   |
+| 1   | 3    | 1    | 0.000004s | +192b       | 250,000.00rps | -17.14%   |
+| 1   | 3    | 1000 | 0.002633s | +192b       | 379,794.91rps | +25.87%   |
++-----+------+------+-----------+-------------+---------------+-----------+
 
 BenchmarkBench#benchParameterized(): Parameterized bench mark
-+-----+------+--------+----------+-------------+
-| run | iter | length | strategy | time        |
-+-----+------+--------+----------+-------------+
-| 1   | 0    | 1      | left     | 0.00000310s |
-| 2   | 0    | 2      | left     | 0.00000405s |
-| 3   | 0    | 1      | right    | 0.00000501s |
-| 4   | 0    | 2      | right    | 0.00000405s |
-+-----+------+--------+----------+-------------+
-
-Done (0.029607)
++-----+------+------+--------+----------+-----------+-------------+---------------+-----------+
+| run | iter | revs | length | strategy | time      | memory_diff | rps           | deviation |
++-----+------+------+--------+----------+-----------+-------------+---------------+-----------+
+| 1   | 1    | 1    | 1      | left     | 0.000006s | +192b       | 166,666.67rps | -13.04%   |
+| 2   | 1    | 1    | 2      | left     | 0.000005s | +192b       | 200,000.00rps | +4.35%    |
+| 3   | 1    | 1    | 1      | right    | 0.000005s | +192b       | 200,000.00rps | +4.35%    |
+| 4   | 1    | 1    | 2      | right    | 0.000005s | +192b       | 200,000.00rps | +4.35%    |
++-----+------+------+--------+----------+-----------+-------------+---------------+-----------+
 ````
 
 Configuration
