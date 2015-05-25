@@ -7,14 +7,17 @@ PhpBench is a benchmarking framework for PHP.
 
 Features:
 
-- Support for parameterized benchmarking cases and matrixes
-- Run one or more (setup) parameterized methods before the benchmark
 - Generate reports
-- Dump benchmark results as XML and generate reports later
-- Nice command line interface
 - Records relative and inclusive memory statistics
-- Add custom report generators
+- Run iterations in separate processes
+- Support for parameterized benchmarking cases and matrixes
 - Per-project configuration
+- Dump benchmark results as XML and generate reports later
+- Run one or more (setup) parameterized methods before the benchmark
+- Nice command line interface
+- Add custom report generators
+- Add custom progress loggers
+- More
 
 **DISCLAIMER**: This library is in an *ALPHA* stage and should not be
 considered stable. Contributions welcome :)
