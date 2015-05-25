@@ -1,0 +1,13 @@
+<?php
+
+require_once(__DIR__ . '/../vendor/autoload.php');
+
+$config = new PhpBench\Configuration();
+$config->addReport(array(
+    'name' => 'console_table',
+    'revolutions' => true,
+    'memory' => true,
+));
+$config->setPath(__DIR__);
+
+return $config;

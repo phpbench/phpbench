@@ -22,7 +22,7 @@ abstract class BaseReportGeneratorCase extends \PHPUnit_Framework_TestCase
     {
         $xmlLoader = new XmlLoader();
 
-        return $xmlLoader->load(file_get_contents(__DIR__ . '/report.xml'));
+        return $xmlLoader->load(file_get_contents(__DIR__ . '/../report.xml'));
     }
 
     protected function executeReport(SuiteResult $results, array $options)

@@ -11,5 +11,5 @@ before_script:
 
 script: 
   - phpunit
-  - php bin/phpbench run tests/Functional/benchmarks --config=tests/phpbench --dumpfile=dump.xml
+  - php bin/phpbench run --config=examples/phpbench --dumpfile=dump.xml
   - cat dump.xml

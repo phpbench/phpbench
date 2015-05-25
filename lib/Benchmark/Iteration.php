@@ -17,11 +17,13 @@ class Iteration
 {
     private $index;
     private $parameters;
+    private $revs;
 
-    public function __construct($index, $parameters)
+    public function __construct($index, $parameters, $revs)
     {
         $this->index = $index;
         $this->parameters = $parameters;
+        $this->revs = $revs;
     }
 
     public function getParameter($name)
@@ -50,5 +52,10 @@ class Iteration
     public function getIndex()
     {
         return $this->index;
+    }
+
+    public function getRevs() 
+    {
+        return $this->revs;
     }
 }

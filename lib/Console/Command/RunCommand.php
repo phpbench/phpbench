@@ -47,6 +47,7 @@ EOT
         $this->addOption('dump', null, InputOption::VALUE_NONE, 'Dump XML result to stdout and suppress all other output');
         $this->addOption('parameters', null, InputOption::VALUE_REQUIRED, 'Override parameters to use in (all) benchmarks');
         $this->addOption('iterations', null, InputOption::VALUE_REQUIRED, 'Override number of iteratios to run in (all) benchmarks');
+        $this->addOption('revs', null, InputOption::VALUE_REQUIRED, 'Override number of revs (revolutions) on (all) benchmarks');
         $this->addOption('processisolation', 'pi', InputOption::VALUE_REQUIRED, 'Override rocess isolation policy, one of <comment>iteration</comment>, <comment>iterations</comment> or <comment>none</comment>');
         $this->addOption('nosetup', null, InputOption::VALUE_NONE, 'Do not execute setUp or tearDown methods');
         $this->addOption('progress', 'l', InputOption::VALUE_REQUIRED, 'Progress logger to use, one of <comment>dots</comment>, <comment>benchdots</comment>', 'dots');
@@ -61,6 +62,7 @@ EOT
         $parametersJson = $input->getOption('parameters');
         $noSetup = $input->getOption('nosetup');
         $iterations = $input->getOption('iterations');
+        $revs = $input->getOption('revs');
         $configFile = $input->getOption('config');
         $processIsolation = $input->getOption('processisolation') ?: null;
         $processIsolation = $processIsolation === 'none' ? false : $processIsolation;
@@ -114,7 +116,7 @@ EOT
         }
 
         $startTime = microtime(true);
-        $result = $this->executeBenchmarks($path, $subject, $noSetup, $parameters, $iterations, $processIsolation, $configFile, $progressLogger);
+        $result = $this->executeBenchmarks($path, $subject, $noSetup, $parameters, $iterations, $revs, $processIsolation, $configFile, $progressLogger);
 
         $consoleOutput->writeln('');
         if ($dumpfile) {
@@ -147,7 +149,7 @@ EOT
         return $dumper->dump($result);
     }
 
-    private function executeBenchmarks($path, $subject, $noSetup, $parameters, $iterations, $processIsolation, $configFile, ProgressLogger $progressLogger)
+    private function executeBenchmarks($path, $subject, $noSetup, $parameters, $iterations, $revs, $processIsolation, $configFile, ProgressLogger $progressLogger)
     {
         $finder = new Finder();
 
@@ -178,6 +180,7 @@ EOT
             !$noSetup,
             $parameters,
             $iterations,
+            $revs,
             $configFile
         );
 

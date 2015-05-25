@@ -34,6 +34,7 @@ class Runner
     private $processIsolation;
     private $parameterOverride;
     private $iterationsOverride;
+    private $revsOverride;
     private $setUpTearDown;
     private $configFile;
 
@@ -55,6 +56,7 @@ class Runner
         $setUpTearDown = true,
         $parameterOverride = null,
         $iterationsOverride = null,
+        $revsOverride = null,
         $configFile = null
     ) {
         $this->logger = $logger ?: new NullProgressLogger();
@@ -64,6 +66,7 @@ class Runner
         $this->setUpTearDown = $setUpTearDown;
         $this->parameterOverride = $parameterOverride;
         $this->iterationsOverride = $iterationsOverride;
+        $this->revsOverride = $revsOverride;
         $this->configFile = $configFile;
     }
 
@@ -147,10 +150,14 @@ class Runner
 
     private function runIterations(Benchmark $benchmark, Subject $subject, $parameters, $nbIterations)
     {
+        $revs = $this->revsOverride ? array($this->revsOverride) : $subject->getRevs();
+
         $iterationResults = array();
         for ($index = 0; $index < $nbIterations; $index++) {
-            $iteration = new Iteration($index, $parameters);
-            $iterationResults[] = $this->runIteration($benchmark, $subject, $iteration);
+            foreach ($revs as $nbRevs) {
+                $iteration = new Iteration($index, $parameters, $nbRevs);
+                $iterationResults[] = $this->runIteration($benchmark, $subject, $iteration);
+            }
         }
 
         return new IterationsResult($iterationResults, $parameters);
@@ -190,6 +197,10 @@ class Runner
 
             if ($this->configFile) {
                 $command .= ' --config=' . $this->configFile;
+            }
+
+            if ($this->revsOverride) {
+                $command .= ' --revs=' . $this->revsOverride;
             }
 
             $descriptors = array(
@@ -249,7 +260,9 @@ class Runner
 
         $startMemory = memory_get_usage();
         $start = microtime(true);
-        $benchmark->{$subject->getMethodName()}($iteration);
+        for ($revolution = 0; $revolution < $iteration->getRevs(); $revolution++) {
+            $benchmark->{$subject->getMethodName()}($iteration, $revolution);
+        }
         $end = microtime(true);
         $endMemory = memory_get_usage();
 
@@ -258,6 +271,8 @@ class Runner
         $memoryDiffInclusive = $endMemory - $this->subjectLastMemoryInclusive;
         $this->subjectLastMemoryInclusive = $endMemory;
 
+        $statistics['index'] = $iteration->getIndex();
+        $statistics['revs'] = $iteration->getRevs();
         $statistics['time'] = ($end * self::MILLION) - ($start * self::MILLION);
         $statistics['memory'] = $this->subjectMemoryTotal;
         $statistics['memory_diff'] = $memoryDiff;
