@@ -73,6 +73,7 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
                 $row = $table->row(array('main'));
                 $row->set('run', $runIndex + 1);
                 $row->set('iter', $index);
+                $row->set('revs', $iteration->get('revs'));
                 foreach ($aggregateResult->getParameters() as $paramName => $paramValue) {
                     $row->set($paramName, $paramValue, array('param'));
                 }
@@ -82,13 +83,13 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
                 }
 
                 if ($options['revolutions']) {
-                    $row->set('revs', $iteration->get('time') ? 1000000 / $iteration->get('time') : null, array('revs'));
+                    $row->set('rps', $iteration->get('time') ? 1000000 / $iteration->get('time') * $iteration->get('revs') : null, array('revs'));
                 }
             }
         }
 
         if ($options['revolutions']) {
-            $cols['revs'] = array('revs');
+            $cols['rps'] = array('rps');
         }
 
         $data = $table->getTable();

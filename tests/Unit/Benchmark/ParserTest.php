@@ -47,6 +47,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 * @paramProvider provideParam
 * @iterations  3
 * @processIsolation iteration
+* @revs 1000
 */
 EOT
                 ,
@@ -56,6 +57,7 @@ EOT
                     'beforeMethod' => array('beforeMe', 'afterBeforeMe'),
                     'paramProvider' => array('provideParam'),
                     'processIsolation' => 'iteration',
+                    'revs' => 1000,
                 ),
             ),
             array(
@@ -70,6 +72,7 @@ EOT
                     'paramProvider' => array(),
                     'iterations' => 1,
                     'processIsolation' => false,
+                    'revs' => 1,
                 ),
             ),
         );

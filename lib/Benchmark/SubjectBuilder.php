@@ -46,6 +46,7 @@ class SubjectBuilder
                 $meta['beforeMethod'],
                 $meta['paramProvider'],
                 $meta['iterations'],
+                $meta['revs'],
                 $meta['description'],
                 $meta['processIsolation']
             );

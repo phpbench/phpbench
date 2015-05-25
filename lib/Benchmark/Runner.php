@@ -249,7 +249,9 @@ class Runner
 
         $startMemory = memory_get_usage();
         $start = microtime(true);
-        $benchmark->{$subject->getMethodName()}($iteration);
+        for ($revolution = 0; $revolution < $subject->getRevs(); $revolution++) {
+            $benchmark->{$subject->getMethodName()}($iteration, $revolution);
+        }
         $end = microtime(true);
         $endMemory = memory_get_usage();
 
@@ -258,6 +260,7 @@ class Runner
         $memoryDiffInclusive = $endMemory - $this->subjectLastMemoryInclusive;
         $this->subjectLastMemoryInclusive = $endMemory;
 
+        $statistics['revs'] = $subject->getRevs();
         $statistics['time'] = ($end * self::MILLION) - ($start * self::MILLION);
         $statistics['memory'] = $this->subjectMemoryTotal;
         $statistics['memory_diff'] = $memoryDiff;

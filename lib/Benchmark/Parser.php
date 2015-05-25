@@ -26,6 +26,7 @@ class Parser
             'iterations' => array(),
             'description' => array(),
             'processIsolation' => array(),
+            'revs' => array(),
         );
 
         foreach ($lines as $line) {
@@ -58,6 +59,12 @@ class Parser
             );
         }
 
+        if (count($meta['revs']) > 1) {
+            throw new InvalidArgumentException(
+                'Cannot have more than one revs declaration'
+            );
+        }
+
         if (count($meta['processIsolation']) > 1) {
             throw new InvalidArgumentException(
                 'Cannot specify more than one process isolation policy'
@@ -68,6 +75,8 @@ class Parser
         $meta['processIsolation'] = reset($meta['processIsolation']);
         $iterations = $meta['iterations'];
         $meta['iterations'] = empty($iterations) ? 1 : (int) reset($iterations);
+        $revs = $meta['revs'];
+        $meta['revs'] = empty($revs) ? 1 : (int) reset($revs);
 
         if ($meta['processIsolation']) {
             Runner::validateProcessIsolation($meta['processIsolation']);
