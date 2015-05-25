@@ -61,6 +61,12 @@ class ConsoleTableReportGeneratorTest extends \PHPUnit_Framework_TestCase
             'array' => array('a', 'r', 'r', 'a', 'y'),
             'object' => new \DateTime(),
         ));
+        $this->iterationResult1->getStatistics()->willReturn(array(
+            'index' => 0,
+            'time' => 123,
+            'revs' => 123,
+            'memory_diff' => 123,
+        ));
         $this->reportGenerator->generate($this->suiteResult->reveal(), $this->output, $this->options);
         $display = $this->output->fetch();
         $this->assertContains('["a","r","r","a","y"]', $display);

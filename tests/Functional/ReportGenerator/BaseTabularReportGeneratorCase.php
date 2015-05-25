@@ -47,7 +47,7 @@ abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase
     public function testWithRevolutions()
     {
         $this->executeReport($this->getResults(), array(
-            'revolutions' => true,
+            'rps' => true,
         ));
     }
 

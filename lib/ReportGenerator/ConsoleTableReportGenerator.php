@@ -56,7 +56,7 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
 
         $data->map(function ($cell) {
             return null !== $cell->value() ? number_format($cell->value(), 2) : '∞';
-        }, array('revs'));
+        }, array('rps'));
 
         switch ($options['time_format']) {
             case 'integer':
@@ -79,22 +79,40 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
                 }, array('time'));
         }
 
-        // format the memory
         $data->map(function ($cell) {
             $value = $cell->value();
+            $groups = $cell->getGroups();
+            $prefix = '';
+            if (in_array('diff', $groups)) {
+                if ($value > 0) {
+                    $prefix = '+';
+                }
 
-            return number_format($cell->value()) . '<dark>b</dark>';
+                if ($value < 0) {
+                    $prefix = '-';
+                }
+            }
+
+            return $prefix . number_format($cell->value()) . '<dark>b</dark>';
         }, array('memory'));
 
         // format the revolutions
         $data->map(function ($cell) {
             return $cell->value() . '<dark>rps</dark>';
-        }, array('revs'));
+        }, array('rps'));
 
         // format the footer
         $data->map(function ($cell) {
             return sprintf('<total>%s</total>', $cell->value());
         }, array('footer'));
+
+        // handle null
+        $data->map(function ($cell) {
+            if ($cell->value() === null) {
+                return '-';
+            }
+            return $cell->value();
+        });
 
         $table = new Table($output);
 

@@ -60,6 +60,7 @@ class Application extends BaseApplication
 
     protected function configureIO(InputInterface $input, OutputInterface $output)
     {
+        parent::configureIO($input, $output);
         $output->getFormatter()->setStyle('greenbg', new OutputFormatterStyle('black', 'green', array()));
     }
 }
