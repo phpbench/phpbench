@@ -16,7 +16,8 @@ Features:
 - Add custom report generators
 - Per-project configuration
 
-Note this library is currently under development.
+**DISCLAIMER**: This library is in an *ALPHA* stage and should not be
+considered stable. Contributions welcome :)
 
 Why?
 ----
