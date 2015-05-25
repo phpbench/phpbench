@@ -27,6 +27,7 @@ class SubjectBuilder
     public function buildSubjects(Benchmark $case)
     {
         $reflection = new \ReflectionClass(get_class($case));
+        $defaults = $this->parser->parseDoc($reflection->getDocComment());
         $methods = $reflection->getMethods();
 
         $subjects = array();
@@ -39,7 +40,7 @@ class SubjectBuilder
                 continue;
             }
 
-            $meta = $this->parser->parseMethodDoc($method->getDocComment());
+            $meta = $this->parser->parseDoc($method->getDocComment(), $defaults);
 
             $subjects[] = new Subject(
                 $method->getName(),

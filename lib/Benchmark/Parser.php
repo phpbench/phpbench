@@ -15,10 +15,9 @@ use PhpBench\Exception\InvalidArgumentException;
 
 class Parser
 {
-    public function parseMethodDoc($methodDoc)
+    public function parseDoc($doc, array $defaults = array())
     {
-        $lines = explode(PHP_EOL, $methodDoc);
-        $meta = array();
+        $lines = explode(PHP_EOL, $doc);
 
         $meta = array(
             'beforeMethod' => array(),
@@ -28,6 +27,18 @@ class Parser
             'processIsolation' => array(),
             'revs' => array(),
         );
+
+        foreach (array('description', 'iterations', 'processIsolation') as $key) {
+            if (isset($defaults[$key]) && $defaults[$key]) {
+                $meta[$key][] = $defaults[$key];
+            }
+        }
+
+        foreach (array('beforeMethod', 'paramProvider', 'revs') as $key) {
+            if (isset($defaults[$key]) && $defaults[$key]) {
+                $meta[$key] = $defaults[$key];
+            }
+        }
 
         foreach ($lines as $line) {
             if (!preg_match('{@([a-zA-Z0-9]+)\s+(.*)$}', $line, $matches)) {
@@ -47,22 +58,19 @@ class Parser
             $meta[$annotationName][] = $annotationValue;
         }
 
-        if (count($meta['description']) > 1) {
-            throw new InvalidArgumentException(
-                'Method "%s" in bench case "%s" cannot have more than one description'
-            );
-        }
+        // Do not allow these annotations to be redelared twice in the same docblock
+        foreach (array('description', 'iterations', 'processIsolation') as $key) {
+            // allow overriding single values
+            if (count($meta[$key] == 2) && !empty($defaults[$key]) && count($defaults[$key]) == 1) {
+                $value = array_pop($meta[$key]);
+                $meta[$key] = array($value);
+            }
 
-        if (count($meta['iterations']) > 1) {
-            throw new InvalidArgumentException(
-                'Cannot have more than one iterations declaration'
-            );
-        }
-
-        if (count($meta['processIsolation']) > 1) {
-            throw new InvalidArgumentException(
-                'Cannot specify more than one process isolation policy'
-            );
+            if (count($meta[$key]) > 1) {
+                throw new InvalidArgumentException(sprintf(
+                    'Cannot have more than one "@%s" annotation', $key
+                ));
+            }
         }
 
         $meta['description'] = reset($meta['description']);
