@@ -90,4 +90,14 @@ abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase
             'time_format' => 'integer',
         ));
     }
+
+    /**
+     * It should display deviations
+     */
+    public function testDeviation()
+    {
+        $this->executeReport($this->getResults(), array(
+            'deviation' => true,
+        ));
+    }
 }

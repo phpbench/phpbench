@@ -96,6 +96,15 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
             return $prefix . number_format($cell->value()) . '<dark>b</dark>';
         }, array('memory'));
 
+        // format the deviation
+        $data->map(function ($cell) {
+            $prefix = '';
+            if ($cell->value() > 0) {
+                $prefix = '+';
+            }
+            return sprintf('%s%s', $prefix, number_format($cell->value(), 2)). '%';
+        }, array('deviation'));
+
         // format the revolutions
         $data->map(function ($cell) {
             return $cell->value() . '<dark>rps</dark>';
