@@ -46,19 +46,26 @@ benchmark files).
 The method is known as the benchmark *subject* and each method accepts an 
 `Iteration` from which can be accessed contextual information.
 
-You must annotate the method as follows:
+You can annotate **both** the class and the subject methods with any of the 
+following annotations:
 
 ### @description
+
+**singular**
 
 A description of the benchmark subject
 
 ### @revs
 
+**plural**
+
 Number of times the subject should be *consecutively* executed within a single
 iteration. Use this for measuring the speed of things at the *microsecond*
-level.
+level. You can declare this multiple times.
 
 ### @iterations
+
+**singular**
 
 Define the number of iterations that should be *measured*. The difference
 between this and `@revs` is that revs happen in a single measurement, whereas
@@ -72,13 +79,17 @@ resolution.
 
 ### @beforeMethod
 
+**plural**
+
 Specify a method which should be executed before the subject. The before
 method also accepts an `Iteration` object and has access to the iteration
 context.
 
-Zero or many before methods can be specified
+Multiple before methods can be specified.
 
 ### @paramProvider
+
+**plural**
 
 Specify a method which will provide parameters which can be accessed from the
 `Iteration` object by both the before method and the subject method.
@@ -87,6 +98,8 @@ If multiple parameter providers are specified, then the they will be combined
 in to a cartesian product.
 
 ### @processIsolation
+
+**singular**
 
 Run each iteration or each set of iterations in an isolated process. This is
 useful for seeing the initial cost of the revolution.

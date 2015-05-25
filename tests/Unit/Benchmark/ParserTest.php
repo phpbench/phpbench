@@ -31,7 +31,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
      */
     public function testParseMethodDoc($docComment, $expected)
     {
-        $result = $this->parser->parseMethodDoc($docComment);
+        $result = $this->parser->parseDoc($docComment);
         $this->assertEquals($result, $expected);
     }
 
@@ -87,10 +87,99 @@ EOT
     public function testInvalidAnnotation()
     {
         $doc = '/** @asdasd */';
-        $this->parser->parseMethodDoc($doc);
+        $this->parser->parseDoc($doc);
     }
 
-    /*
+    /**
+     * It should inherit default values
+     * (i.e. each subjet should inherit any annotations given at the class level).
+     *
+     * @dataProvider provideInheritDefaults
+     */
+    public function testInheritDefaults($defaults, $annotation, $expected)
+    {
+        $this->assertEquals($expected, $this->parser->parseDoc($annotation, $defaults));
+    }
+
+    public function provideInheritDefaults()
+    {
+        return array(
+            array(
+                array(
+                    'description' => 'Hello',
+                    'iterations' => 3,
+                    'beforeMethod' => array('beforeMe', 'afterBeforeMe'),
+                    'paramProvider' => array('provideParam'),
+                    'processIsolation' => 'iteration',
+                    'revs' => array(1000, 10),
+                ),
+                <<<EOT
+/**
+* @description Hallo
+* @beforeMethod again
+* @paramProvider notherParam
+* @iterations 3
+* @processIsolation iterations
+* @revs 5
+ */
+EOT
+                ,
+                array(
+                    'description' => 'Hallo',
+                    'iterations' => 3,
+                    'beforeMethod' => array('beforeMe', 'afterBeforeMe', 'again'),
+                    'paramProvider' => array('provideParam', 'notherParam'),
+                    'processIsolation' => 'iterations',
+                    'revs' => array(1000, 10, 5),
+                ),
+            ),
+            array(
+                array(
+                    'description' => 'Hello',
+                    'iterations' => 3,
+                    'beforeMethod' => array('beforeMe', 'afterBeforeMe'),
+                    'paramProvider' => array('provideParam'),
+                    'processIsolation' => 'iteration',
+                    'revs' => array(1000, 10),
+                ),
+                <<<EOT
+/**
+ * @iterations 4
+ */
+EOT
+                ,
+                array(
+                    'description' => 'Hello',
+                    'iterations' => 4,
+                    'beforeMethod' => array('beforeMe', 'afterBeforeMe'),
+                    'paramProvider' => array('provideParam'),
+                    'processIsolation' => 'iteration',
+                    'revs' => array(1000, 10),
+                ),
+            ),
+            array(
+                array(
+                    'description' => 'Hello',
+                    'iterations' => 3,
+                    'beforeMethod' => array('beforeMe', 'afterBeforeMe'),
+                    'paramProvider' => array('provideParam'),
+                    'processIsolation' => 'iteration',
+                    'revs' => array(1000, 10),
+                ),
+                '/** */',
+                array(
+                    'description' => 'Hello',
+                    'iterations' => 3,
+                    'beforeMethod' => array('beforeMe', 'afterBeforeMe'),
+                    'paramProvider' => array('provideParam'),
+                    'processIsolation' => 'iteration',
+                    'revs' => array(1000, 10),
+                ),
+            ),
+        );
+    }
+
+    /**
      * It should throw an exception if more than one description annotation is present
      */
     public function testNoDescription()
@@ -122,6 +211,6 @@ EOT
 EOT
         ;
 
-        $this->parser->parseMethodDoc($doc);
+        $this->parser->parseDoc($doc);
     }
 }
