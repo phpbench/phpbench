@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<phpbench version="0.1" date="2015-05-25T09:48:55+02:00">
+  <suite>
+    <benchmark class="BenchmarkBench">
+      <subject name="benchRandom" description="randomBench">
+        <iterations>
+          <iteration index="0" revs="10" time="267951" memory="288" memory_diff="288" memory_inc="3055080" memory_diff_inc="31480"/>
+        </iterations>
+      </subject>
+      <subject name="benchDoNothing" description="Do nothing three times">
+        <iterations>
+          <iteration index="0" revs="10" time="80" memory="192" memory_diff="192" memory_inc="3082192" memory_diff_inc="3088"/>
+          <iteration index="1" revs="10" time="75" memory="384" memory_diff="192" memory_inc="3083512" memory_diff_inc="1320"/>
+          <iteration index="2" revs="10" time="76" memory="576" memory_diff="192" memory_inc="3084848" memory_diff_inc="1336"/>
+        </iterations>
+      </subject>
+      <subject name="benchParameterized" description="Parameterized bench mark">
+        <iterations>
+          <parameter name="length" value="1"/>
+          <parameter name="strategy" value="left"/>
+          <iteration index="0" revs="10" time="77" memory="192" memory_diff="192" memory_inc="3090120" memory_diff_inc="6000"/>
+        </iterations>
+        <iterations>
+          <parameter name="length" value="2"/>
+          <parameter name="strategy" value="left"/>
+          <iteration index="0" revs="10" time="76" memory="384" memory_diff="192" memory_inc="3092264" memory_diff_inc="2144"/>
+        </iterations>
+        <iterations>
+          <parameter name="length" value="1"/>
+          <parameter name="strategy" value="right"/>
+          <iteration index="0" revs="10" time="75" memory="576" memory_diff="192" memory_inc="3094424" memory_diff_inc="2160"/>
+        </iterations>
+        <iterations>
+          <parameter name="length" value="2"/>
+          <parameter name="strategy" value="right"/>
+          <iteration index="0" revs="10" time="75" memory="768" memory_diff="192" memory_inc="3096584" memory_diff_inc="2160"/>
+        </iterations>
+      </subject>
+    </benchmark>
+    <benchmark class="IsolatedBench">
+      <subject name="benchIterationIsolation" description="5 iterations in isolation">
+        <iterations>
+          <iteration index="0" revs="10" time="511" memory="248" memory_diff="248" memory_inc="3100608" memory_diff_inc="3144"/>
+          <iteration index="1" revs="10" time="354" memory="440" memory_diff="192" memory_inc="3101928" memory_diff_inc="1320"/>
+          <iteration index="2" revs="10" time="410" memory="632" memory_diff="192" memory_inc="3103264" memory_diff_inc="1336"/>
+          <iteration index="3" revs="10" time="353" memory="824" memory_diff="192" memory_inc="3104600" memory_diff_inc="1336"/>
+          <iteration index="4" revs="10" time="349" memory="1016" memory_diff="192" memory_inc="3105936" memory_diff_inc="1336"/>
+        </iterations>
+      </subject>
+      <subject name="benchIterationsIsolation" description="Set of 5 iterations in isolation">
+        <iterations>
+          <iteration index="0" revs="10" time="365" memory="248" memory_diff="248" memory_inc="3108440" memory_diff_inc="3144"/>
+          <iteration index="1" revs="10" time="353" memory="440" memory_diff="192" memory_inc="3109760" memory_diff_inc="1320"/>
+          <iteration index="2" revs="10" time="352" memory="632" memory_diff="192" memory_inc="3111096" memory_diff_inc="1336"/>
+          <iteration index="3" revs="10" time="356" memory="824" memory_diff="192" memory_inc="3112448" memory_diff_inc="1352"/>
+          <iteration index="4" revs="10" time="350" memory="1016" memory_diff="192" memory_inc="3113784" memory_diff_inc="1336"/>
+        </iterations>
+      </subject>
+    </benchmark>
+    <benchmark class="IsolatedParameterBench">
+      <subject name="benchIterationIsolation" description="randomBench">
+        <iterations>
+          <parameter name="hello" value="Look &quot;I am using double quotes&quot;"/>
+          <parameter name="goodbye" value="Look 'I am use $dollars&quot;"/>
+          <iteration index="0" revs="1" time="6" memory="256" memory_diff="256" memory_inc="3043408" memory_diff_inc="31440"/>
+          <iteration index="0" revs="1" time="6" memory="256" memory_diff="256" memory_inc="3043408" memory_diff_inc="31440"/>
+          <iteration index="0" revs="1" time="6" memory="256" memory_diff="256" memory_inc="3043408" memory_diff_inc="31440"/>
+          <iteration index="0" revs="1" time="6" memory="256" memory_diff="256" memory_inc="3043408" memory_diff_inc="31440"/>
+          <iteration index="0" revs="1" time="7" memory="256" memory_diff="256" memory_inc="3043408" memory_diff_inc="31440"/>
+        </iterations>
+      </subject>
+    </benchmark>
+  </suite>
+</phpbench>

@@ -44,7 +44,7 @@ class XmlDumperTest extends \PHPUnit_Framework_TestCase
             <parameter name="one" value="two"/>
             <parameter name="three" value="four"/>
           </parameter>
-          <iteration repeats="1" time="100"/>
+          <iteration revs="1" time="100"/>
         </iterations>
       </subject>
     </benchmark>
@@ -60,7 +60,7 @@ EOT;
 
     protected function getSuite()
     {
-        $iteration1 = new IterationResult(array('repeats' => 1, 'time' => 100));
+        $iteration1 = new IterationResult(array('revs' => 1, 'time' => 100));
         $iterations = new IterationsResult(array($iteration1), array(
             'foo' => 'bar',
             'array' => array('one', 'two'),
