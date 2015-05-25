@@ -19,7 +19,7 @@ class ReportCommandTest extends BaseCommandTestCase
     public function testGenerateReport()
     {
         $tester = $this->runCommand('report', array(
-            'file' => __DIR__ . '/report_command.xml',
+            'file' => __DIR__ . '/../../report.xml',
             '--report' => array('console_table'),
         ));
         $this->assertEquals(0, $tester->getStatusCode());
@@ -35,7 +35,7 @@ class ReportCommandTest extends BaseCommandTestCase
     public function testNoReports()
     {
         $this->runCommand('report', array(
-            'file' => __DIR__ . '/report_command.xml',
+            'file' => __DIR__ . '/../../report.xml',
         ));
     }
 

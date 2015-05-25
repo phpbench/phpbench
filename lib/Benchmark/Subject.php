@@ -23,10 +23,10 @@ class Subject
 
     public function __construct(
         $methodName,
-        $beforeMethods,
-        $parameterProviders,
+        array $beforeMethods,
+        array $parameterProviders,
         $nbIterations,
-        $revs,
+        array $revs,
         $description,
         $processIsolation
     ) {

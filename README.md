@@ -52,9 +52,23 @@ You must annotate the method as follows:
 
 A description of the benchmark subject
 
+### @revs
+
+Number of times the subject should be *consecutively* executed within a single
+iteration. Use this for measuring the speed of things at the *microsecond*
+level.
+
 ### @iterations
 
-Define how many timesw the method should be executed.
+Define the number of iterations that should be *measured*. The difference
+between this and `@revs` is that revs happen in a single measurement, whereas
+each iteration is recorded separately. 
+
+This can be useful for seeing how well larger operations scale on consecutive
+calls, it is not a good way to measure things that happen at the microsecond
+level however, where you will want to perform tens of thousands of repetitions
+- the time is measured per repetition so the results will be at a lower
+resolution.
 
 ### @beforeMethod
 
@@ -78,6 +92,15 @@ Run each iteration or each set of iterations in an isolated process. This is
 useful for seeing the initial cost of the revolution.
 
 Must be one of `iteration` or `iterations`.
+
+setUp and tearDown
+------------------
+
+You can defined `setUp` and `tearDown` methods. These will be called before
+and after the subject resepectively.
+
+Be aware that these will not be called for iterations run within a separate
+process.
 
 Installation
 ------------

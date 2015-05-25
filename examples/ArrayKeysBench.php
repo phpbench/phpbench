@@ -14,11 +14,6 @@ namespace PhpBench\Tests\Functional\benchmarks;
 use PhpBench\Benchmark;
 
 /**
- * @beforeMethod init
- * @revs 10
- * @revs 100
- * @revs 1000
- * @revs 10000
  */
 class ArrayKeysBench implements Benchmark
 {
@@ -33,6 +28,12 @@ class ArrayKeysBench implements Benchmark
 
     /**
      * @description array_key_exists
+     * @beforeMethod init
+     * @revs 100000
+     * @revs 10000
+     * @revs 1000
+     * @revs 100
+     * @revs 10
      */
     public function benchArrayKeyExists($iteration, $revolution)
     {
@@ -41,6 +42,12 @@ class ArrayKeysBench implements Benchmark
 
     /**
      * @description isset
+     * @beforeMethod init
+     * @revs 10
+     * @revs 100
+     * @revs 1000
+     * @revs 10000
+     * @revs 100000
      */
     public function benchIsset($iteration, $revolution)
     {
@@ -49,6 +56,11 @@ class ArrayKeysBench implements Benchmark
 
     /**
      * @description in_array
+     * @beforeMethod init
+     * @revs 10000
+     * @revs 1000
+     * @revs 100
+     * @revs 10
      */
     public function benchInArray($iteration, $revolution)
     {

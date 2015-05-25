@@ -55,6 +55,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->subject->getBeforeMethods()->willReturn(array('beforeFoo'));
         $this->subject->getDescription()->willReturn('Hello world');
         $this->subject->getProcessIsolation()->willReturn(false);
+        $this->subject->getRevs()->willReturn(array(1));
 
         $result = $this->runner->runAll();
 
@@ -84,6 +85,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->subject->getParameterProviders()->willReturn(array());
         $this->subject->getBeforeMethods()->willReturn(array('beforeFooNotExisting'));
         $this->subject->getProcessIsolation()->willReturn(false);
+        $this->subject->getRevs()->willReturn(array(1));
 
         $this->runner->runAll();
     }

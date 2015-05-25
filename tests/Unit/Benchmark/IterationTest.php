@@ -11,7 +11,7 @@ class IterationTest extends \PHPUnit_Framework_TestCase
      */
     public function testParameters()
     {
-        $iteration = new Iteration(0, array('foo' => 'bar'));
+        $iteration = new Iteration(0, array('foo' => 'bar'), 1);
         $this->assertEquals('bar', $iteration->getParameter('foo'));
     }
 
@@ -22,7 +22,7 @@ class IterationTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetUnknownParameter()
     {
-        $iteration = new Iteration(0, array('foo' => 'bar'));
+        $iteration = new Iteration(0, array('foo' => 'bar'), 1);
         $iteration->getParameter('ffff');
     }
 }
