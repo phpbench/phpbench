@@ -55,14 +55,14 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
         $precision = $this->precision;
 
         $data->map(function ($cell) {
-            return null !== $cell->value() ? number_format($cell->value(), 2) : '∞';
+            return null !== $cell->getValue() ? number_format($cell->getValue(), 2) : '∞';
         }, array('rps'));
 
         switch ($options['time_format']) {
             case 'integer':
                 // format the float cells
                 $data->map(function ($cell) {
-                    $value = $cell->value();
+                    $value = $cell->getValue();
                     $value =  number_format($value);
 
                     return $value . '<dark>μs</dark>';
@@ -71,7 +71,7 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
             default:
                 // format the float cells
                 $data->map(function ($cell) use ($precision) {
-                    $value = $cell->value();
+                    $value = $cell->getValue();
                     $value =  number_format($value / 1000000, $precision);
                     $value = preg_replace('{^([0|\\.]+)(.+)$}', '<blue>\1</blue>\2', $value);
 
@@ -80,7 +80,7 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
         }
 
         $data->map(function ($cell) {
-            $value = $cell->value();
+            $value = $cell->getValue();
             $groups = $cell->getGroups();
             $prefix = '';
             if (in_array('diff', $groups)) {
@@ -93,36 +93,36 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
                 }
             }
 
-            return $prefix . number_format($cell->value()) . '<dark>b</dark>';
+            return $prefix . number_format($cell->getValue()) . '<dark>b</dark>';
         }, array('memory'));
 
         // format the deviation
         $data->map(function ($cell) {
             $prefix = '';
-            if ($cell->value() > 0) {
+            if ($cell->getValue() > 0) {
                 $prefix = '+';
             }
 
-            return sprintf('%s%s', $prefix, number_format($cell->value(), 2)) . '%';
+            return sprintf('%s%s', $prefix, number_format($cell->getValue(), 2)) . '%';
         }, array('deviation'));
 
         // format the revolutions
         $data->map(function ($cell) {
-            return $cell->value() . '<dark>rps</dark>';
+            return $cell->getValue() . '<dark>rps</dark>';
         }, array('rps'));
 
         // format the footer
         $data->map(function ($cell) {
-            return sprintf('<total>%s</total>', $cell->value());
+            return sprintf('<total>%s</total>', $cell->getValue());
         }, array('footer'));
 
         // handle null
         $data->map(function ($cell) {
-            if ($cell->value() === null) {
+            if ($cell->getValue() === null) {
                 return '-';
             }
 
-            return $cell->value();
+            return $cell->getValue();
         });
 
         $table = new Table($output);
@@ -134,7 +134,7 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
 
         foreach ($data->getRows() as $row) {
             $row->map(function ($cell) {
-                $value = $cell->value();
+                $value = $cell->getValue();
 
                 if (is_scalar($value)) {
                     return $value;

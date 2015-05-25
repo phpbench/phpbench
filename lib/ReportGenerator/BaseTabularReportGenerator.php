@@ -15,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use PhpBench\Result\SuiteResult;
 use PhpBench\Result\SubjectResult;
 use PhpBench\ReportGenerator;
-use DTL\DataTable\Builder\TableBuilder;
+use DTL\DataTable\Table;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -90,7 +90,7 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
 
     protected function prepareData(SubjectResult $subject, array $options)
     {
-        $table = TableBuilder::create();
+        $table = Table::create();
         $cols = array();
 
         foreach ($this->availableCols as $colName => $colGroups) {
@@ -104,7 +104,7 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
                 $stats = $iteration->getStatistics();
                 $stats['rps'] = $stats['time'] ? (1000000 / $stats['time']) * $stats['revs'] : null;
 
-                $row = $table->row(array('main'));
+                $row = $table->createAndAddRow(array(), array('main'));
                 $row->set('run', $runIndex + 1);
                 $row->set('iter', $stats['index'] + 1);
                 $row->set('revs', $stats['revs']);
@@ -119,13 +119,10 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
             }
         }
 
-        $data = $table->getTable();
-        $table = $data->builder();
-
         foreach ($table->getRows() as $row) {
             if ($options['deviation']) {
-                $avgTime = $data->getColumn('rps')->avg();
-                $row->set('deviation', 100 / $avgTime * ($row->get('rps')->value() - $avgTime), array('deviation'));
+                $avgRps = $table->getColumn('rps')->avg();
+                $row->set('deviation', 100 / $avgRps * ($row->getCell('rps')->getValue() - $avgRps), array('deviation'));
             }
 
             foreach (array_keys($this->availableCols) as $colName) {
@@ -135,12 +132,10 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
             }
         }
 
-        $data = $table->getTable();
-
         $newCols = array();
         if (true === $options['aggregate_iterations']) {
             $functions = $this->functions;
-            $data = $data->aggregate(function ($table, $row) use ($cols, &$newCols, $options, $functions) {
+            $table = $table->aggregate(function ($table, $row) use ($cols, &$newCols, $options, $functions) {
                 $row->remove('iter');
                 foreach ($cols as $colName => $groups) {
                     $row->set('iters', $table->getColumn('iter')->max() + 1);
@@ -158,15 +153,13 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
             }, array('run'));
         }
 
-        $table = $data->builder();
-
         $newCols = empty($newCols) ? $cols : $newCols;
 
         foreach ($this->functions as $function) {
             if (!$options['footer_' . $function]) {
                 continue;
             }
-            $row = $table->row();
+            $row = $table->createAndAddRow();
             $row->set(' ', '<< ' . $function, array('footer'));
             foreach ($newCols as $colName => $groups) {
                 $groups[] = 'footer';
@@ -175,6 +168,6 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
             }
         }
 
-        return $table->getTable();
+        return $table;
     }
 }
