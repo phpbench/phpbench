@@ -135,22 +135,27 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
         $newCols = array();
         if (true === $options['aggregate_iterations']) {
             $functions = $this->functions;
-            $table = $table->aggregate(function ($table, $row) use ($cols, &$newCols, $options, $functions) {
-                $row->remove('iter');
-                foreach ($cols as $colName => $groups) {
-                    $row->set('iters', $table->getColumn('iter')->max() + 1);
-                    $row->set('revs', $table->getColumn('revs')->sum());
+            $table = $table
+                ->partition(function ($row) {
+                    return $row['run']->getValue() . $row['iter']->getValue();
+                })
+                ->fork(function ($table, $newTable) use ($cols, &$newCols, $options, $functions) {
+                    foreach ($cols as $colName => $groups) {
+                        $row = clone $table->first();
+                        $row->set('run', $table->getColumn('run')->avg());
+                        $row->set('iters', $table->count() + 1);
+                        $row->set('revs', $table->getColumn('revs')->sum());
+                        unset($row['iter']);
 
-                    foreach ($functions as $function) {
-                        if ($options[$function . '_' . $colName]) {
-                            $row->set($function . '_' . $colName, $table->getColumn($colName)->$function(), $table->getColumn($colName)->getGroups());
-                            $newCols[$function . '_' . $colName] = $table->getColumn($colName)->getGroups();
+                        foreach ($functions as $function) {
+                            if ($options[$function . '_' . $colName]) {
+                                $row->set($function . '_' . $colName, $table->getColumn($colName)->$function(), $table->getColumn($colName)->getGroups());
+                                $newCols[$function . '_' . $colName] = $table->getColumn($colName)->getGroups();
+                            }
                         }
                     }
-
-                    $row->remove($colName);
-                }
-            }, array('run'));
+                    $newTable->addRow($row);
+                });
         }
 
         $newCols = empty($newCols) ? $cols : $newCols;
@@ -159,14 +164,18 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
             if (!$options['footer_' . $function]) {
                 continue;
             }
-            $row = $table->createAndAddRow();
+            $newTable = $table->duplicate();
+            $row = $newTable->createAndAddRow();
             $row->set(' ', '<< ' . $function, array('footer'));
             foreach ($newCols as $colName => $groups) {
                 $groups[] = 'footer';
-                $data->getColumn($colName);
-                $row->set($colName, $data->getColumn($colName)->$function(), $groups);
+                $row->set($colName, $table->getColumn($colName)->$function(), $groups);
             }
+
+            $table = $newTable;
         }
+
+        $table->align();
 
         return $table;
     }

@@ -54,14 +54,14 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
         // in versions of PHP < 5.4
         $precision = $this->precision;
 
-        $data->map(function ($cell) {
+        $data->mapValues(function ($cell) {
             return null !== $cell->getValue() ? number_format($cell->getValue(), 2) : '∞';
         }, array('rps'));
 
         switch ($options['time_format']) {
             case 'integer':
                 // format the float cells
-                $data->map(function ($cell) {
+                $data->mapValues(function ($cell) {
                     $value = $cell->getValue();
                     $value =  number_format($value);
 
@@ -70,7 +70,7 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
                 break;
             default:
                 // format the float cells
-                $data->map(function ($cell) use ($precision) {
+                $data->mapValues(function ($cell) use ($precision) {
                     $value = $cell->getValue();
                     $value =  number_format($value / 1000000, $precision);
                     $value = preg_replace('{^([0|\\.]+)(.+)$}', '<blue>\1</blue>\2', $value);
@@ -79,7 +79,7 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
                 }, array('time'));
         }
 
-        $data->map(function ($cell) {
+        $data->mapValues(function ($cell) {
             $value = $cell->getValue();
             $groups = $cell->getGroups();
             $prefix = '';
@@ -97,7 +97,7 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
         }, array('memory'));
 
         // format the deviation
-        $data->map(function ($cell) {
+        $data->mapValues(function ($cell) {
             $prefix = '';
             if ($cell->getValue() > 0) {
                 $prefix = '+';
@@ -107,17 +107,17 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
         }, array('deviation'));
 
         // format the revolutions
-        $data->map(function ($cell) {
+        $data->mapValues(function ($cell) {
             return $cell->getValue() . '<dark>rps</dark>';
         }, array('rps'));
 
         // format the footer
-        $data->map(function ($cell) {
+        $data->mapValues(function ($cell) {
             return sprintf('<total>%s</total>', $cell->getValue());
         }, array('footer'));
 
         // handle null
-        $data->map(function ($cell) {
+        $data->mapValues(function ($cell) {
             if ($cell->getValue() === null) {
                 return '-';
             }
@@ -133,7 +133,7 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
         }
 
         foreach ($data->getRows() as $row) {
-            $row->map(function ($cell) {
+            $row->mapValues(function ($cell) {
                 $value = $cell->getValue();
 
                 if (is_scalar($value)) {
