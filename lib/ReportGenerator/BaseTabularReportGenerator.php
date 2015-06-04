@@ -15,8 +15,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use PhpBench\Result\SuiteResult;
 use PhpBench\Result\SubjectResult;
 use PhpBench\ReportGenerator;
-use DTL\DataTable\Table;
+use DTL\Cellular\Table;
 use Symfony\Component\Console\Output\OutputInterface;
+use DTL\Cellular\Calculator;
 
 /**
  * This base class generates a table (a data table, not a UI table) with
@@ -28,19 +29,19 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
      * Available aggregate functions.
      */
     private $functions = array(
-        'sum', 'min', 'max', 'avg',
+        'sum', 'min', 'max', 'mean',
     );
 
     /**
      * Columns which are available.
      */
     private $availableCols = array(
-        'time' => array('time'),
-        'memory' => array('memory'),
-        'memory_diff' => array('memory', 'diff'),
-        'memory_inc' => array('memory'),
+        'time' => array('main', 'time'),
+        'memory' => array('main', 'memory'),
+        'memory_diff' => array('main', 'memory', 'diff'),
+        'memory_inc' => array('main', 'memory'),
         'memory_diff_inc' => array('memory', 'diff'),
-        'rps' => array('rps'),
+        'rps' => array('main', 'rps'),
         'revs' => array('revs'),
     );
 
@@ -104,7 +105,7 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
                 $stats = $iteration->getStatistics();
                 $stats['rps'] = $stats['time'] ? (1000000 / $stats['time']) * $stats['revs'] : null;
 
-                $row = $table->createAndAddRow(array(), array('main'));
+                $row = $table->createAndAddRow(array('main'));
                 $row->set('run', $runIndex + 1);
                 $row->set('iter', $stats['index'] + 1);
                 $row->set('revs', $stats['revs']);
@@ -121,8 +122,8 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
 
         foreach ($table->getRows() as $row) {
             if ($options['deviation']) {
-                $avgRps = $table->getColumn('rps')->avg();
-                $row->set('deviation', 100 / $avgRps * ($row->getCell('rps')->getValue() - $avgRps), array('deviation'));
+                $meanRps = Calculator::mean($table->getColumn('rps'));
+                $row->set('deviation', Calculator::deviation($meanRps, $row->getCell('rps')), array('deviation', 'main'));
             }
 
             foreach (array_keys($this->availableCols) as $colName) {
@@ -137,19 +138,27 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
             $functions = $this->functions;
             $table = $table
                 ->partition(function ($row) {
-                    return $row['run']->getValue() . $row['iter']->getValue();
+                    return $row['run']->getValue();
                 })
                 ->fork(function ($table, $newTable) use ($cols, &$newCols, $options, $functions) {
+                    if (!$table->first()) {
+                        continue;
+                    }
+                    $row = clone $table->first();
+                    $row->set('run', Calculator::mean($table->getColumn('run')));
+                    $row->set('iters', $table->count());
+                    $row->set('revs', Calculator::sum($table->getColumn('revs')));
+                    $row->remove('iter');
+                    $row->remove('time');
+                    $row->remove('rps');
+                    $row->remove('memory_diff');
+                    $row->set('min_deviation', Calculator::min($table->getColumn('deviation')), array('deviation'));
+                    $row->set('max_deviation', Calculator::max($table->getColumn('deviation')), array('deviation'));
+                    $row->remove('deviation');
                     foreach ($cols as $colName => $groups) {
-                        $row = clone $table->first();
-                        $row->set('run', $table->getColumn('run')->avg());
-                        $row->set('iters', $table->count() + 1);
-                        $row->set('revs', $table->getColumn('revs')->sum());
-                        unset($row['iter']);
-
                         foreach ($functions as $function) {
                             if ($options[$function . '_' . $colName]) {
-                                $row->set($function . '_' . $colName, $table->getColumn($colName)->$function(), $table->getColumn($colName)->getGroups());
+                                $row->set($function . '_' . $colName, Calculator::$function($table->getColumn($colName)), $table->getColumn($colName)->getGroups());
                                 $newCols[$function . '_' . $colName] = $table->getColumn($colName)->getGroups();
                             }
                         }
@@ -164,15 +173,16 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
             if (!$options['footer_' . $function]) {
                 continue;
             }
-            $newTable = $table->duplicate();
-            $row = $newTable->createAndAddRow();
+            $row = $table->createAndAddRow();
             $row->set(' ', '<< ' . $function, array('footer'));
             foreach ($newCols as $colName => $groups) {
                 $groups[] = 'footer';
-                $row->set($colName, $table->getColumn($colName)->$function(), $groups);
+                $row->set(
+                    $colName, 
+                    Calculator::$function($table->getColumn($colName)->getValues(array('main'))),
+                    $table->getColumn($colName)->getGroups()
+                );
             }
-
-            $table = $newTable;
         }
 
         $table->align();
