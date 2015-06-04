@@ -14,7 +14,7 @@
         "symfony/console": "~2.4",
         "symfony/finder": "~2.4",
         "symfony/options-resolver": "~2.4",
-        "dantleech/data-table": "0.1"
+        "dantleech/cellular": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.6"
