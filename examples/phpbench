@@ -6,6 +6,12 @@ $config = new PhpBench\Configuration();
 $config->addReport(array(
     'name' => 'console_table',
 ));
+$config->addReport(array(
+    'name' => 'console_table',
+    'aggregate_iterations' => true,
+    'mean_time' => true,
+    'mean_rps' => true,
+));
 $config->setPath(__DIR__);
 
 return $config;
