@@ -18,6 +18,8 @@ use PhpBench\ReportGenerator;
 use DTL\Cellular\Table;
 use Symfony\Component\Console\Output\OutputInterface;
 use DTL\Cellular\Calculator;
+use DTL\Cellular\Workspace;
+use PhpBench\Result\BenchmarkResult;
 
 /**
  * This base class generates a table (a data table, not a UI table) with
@@ -86,107 +88,121 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
     {
         $this->precision = $options['precision'];
 
-        return $this->doGenerate($suite, $output, $options);
+        $workspace = $this->prepareWorkspace($suite, $options);
+        return $this->doGenerate($workspace, $output, $options);
     }
 
-    protected function prepareData(SubjectResult $subject, array $options)
+    protected function prepareWorkspace(SuiteResult $suite, array $options)
     {
-        $table = Table::create();
-        $cols = array();
+        $workspace = Workspace::create();
 
-        foreach ($this->availableCols as $colName => $colGroups) {
-            if ($options[$colName]) {
-                $cols[$colName] = $colGroups;
-            }
+        foreach ($suite->getBenchmarkResults() as $benchmarkResult) {
+            $this->prepareTables($benchmarkResult, $workspace, $options);
         }
 
-        foreach ($subject->getIterationsResults() as $runIndex => $aggregateResult) {
-            foreach ($aggregateResult->getIterationResults() as $iteration) {
-                $stats = $iteration->getStatistics();
-                $stats['rps'] = $stats['time'] ? (1000000 / $stats['time']) * $stats['revs'] : null;
+        return $workspace;
+    }
 
-                $row = $table->createAndAddRow(array('main'));
-                $row->set('run', $runIndex + 1);
-                $row->set('iter', $stats['index'] + 1);
-                $row->set('revs', $stats['revs']);
+    private function prepareTables(BenchmarkResult $benchmarkResult, Workspace $workspace, array $options)
+    {
+        foreach ($benchmarkResult->getSubjectResults() as $subject) {
+            $table = $workspace->createAndAddTable();
+            $table->setTitle($benchmarkResult->getClass() . '->' . $subject->getName());
+            $table->setDescription($subject->getDescription());
+            $cols = array();
 
-                foreach ($aggregateResult->getParameters() as $paramName => $paramValue) {
-                    $row->set($paramName, $paramValue, array('param'));
-                }
-
-                foreach ($cols as $colName => $groups) {
-                    $row->set($colName, $stats[$colName], $groups);
+            foreach ($this->availableCols as $colName => $colGroups) {
+                if ($options[$colName]) {
+                    $cols[$colName] = $colGroups;
                 }
             }
-        }
 
-        foreach ($table->getRows() as $row) {
-            if ($options['deviation']) {
-                $meanRps = Calculator::mean($table->getColumn('rps'));
-                $row->set('deviation', Calculator::deviation($meanRps, $row->getCell('rps')), array('deviation', 'main'));
-            }
+            foreach ($subject->getIterationsResults() as $runIndex => $aggregateResult) {
+                foreach ($aggregateResult->getIterationResults() as $iteration) {
+                    $stats = $iteration->getStatistics();
+                    $stats['rps'] = $stats['time'] ? (1000000 / $stats['time']) * $stats['revs'] : null;
 
-            foreach (array_keys($this->availableCols) as $colName) {
-                if (false === $options[$colName]) {
-                    $row->remove($colName);
-                }
-            }
-        }
+                    $row = $table->createAndAddRow(array('main'));
+                    $row->set('run', $runIndex + 1);
+                    $row->set('iter', $stats['index'] + 1);
+                    $row->set('revs', $stats['revs']);
 
-        $newCols = array();
-        if (true === $options['aggregate_iterations']) {
-            $functions = $this->functions;
-            $table = $table
-                ->partition(function ($row) {
-                    return $row['run']->getValue();
-                })
-                ->fork(function ($table, $newTable) use ($cols, &$newCols, $options, $functions) {
-                    if (!$table->first()) {
-                        continue;
+                    foreach ($aggregateResult->getParameters() as $paramName => $paramValue) {
+                        $row->set($paramName, $paramValue, array('param'));
                     }
-                    $row = clone $table->first();
-                    $row->set('run', Calculator::mean($table->getColumn('run')));
-                    $row->set('iters', $table->count());
-                    $row->set('revs', Calculator::sum($table->getColumn('revs')));
-                    $row->remove('iter');
-                    $row->remove('time');
-                    $row->remove('rps');
-                    $row->remove('memory_diff');
-                    $row->set('min_deviation', Calculator::min($table->getColumn('deviation')), array('deviation'));
-                    $row->set('max_deviation', Calculator::max($table->getColumn('deviation')), array('deviation'));
-                    $row->remove('deviation');
+
                     foreach ($cols as $colName => $groups) {
-                        foreach ($functions as $function) {
-                            if ($options[$function . '_' . $colName]) {
-                                $row->set($function . '_' . $colName, Calculator::$function($table->getColumn($colName)), $table->getColumn($colName)->getGroups());
-                                $newCols[$function . '_' . $colName] = $table->getColumn($colName)->getGroups();
+                        $row->set($colName, $stats[$colName], $groups);
+                    }
+                }
+            }
+
+            foreach ($table->getRows() as $row) {
+                if ($options['deviation']) {
+                    $meanRps = Calculator::mean($table->getColumn('rps'));
+                    $row->set('deviation', Calculator::deviation($meanRps, $row->getCell('rps')), array('deviation', 'main'));
+                }
+
+                foreach (array_keys($this->availableCols) as $colName) {
+                    if (false === $options[$colName]) {
+                        $row->remove($colName);
+                    }
+                }
+            }
+
+            $newCols = array();
+            if (true === $options['aggregate_iterations']) {
+                $functions = $this->functions;
+                $table = $table
+                    ->partition(function ($row) {
+                        return $row['run']->getValue();
+                    })
+                    ->fork(function ($table, $newTable) use ($cols, &$newCols, $options, $functions) {
+                        if (!$table->first()) {
+                            continue;
+                        }
+                        $row = clone $table->first();
+                        $row->set('run', Calculator::mean($table->getColumn('run')));
+                        $row->set('iters', $table->count());
+                        $row->set('revs', Calculator::sum($table->getColumn('revs')));
+                        $row->remove('iter');
+                        $row->remove('time');
+                        $row->remove('rps');
+                        $row->remove('memory_diff');
+                        $row->set('min_deviation', Calculator::min($table->getColumn('deviation')), array('deviation'));
+                        $row->set('max_deviation', Calculator::max($table->getColumn('deviation')), array('deviation'));
+                        $row->remove('deviation');
+                        foreach ($cols as $colName => $groups) {
+                            foreach ($functions as $function) {
+                                if ($options[$function . '_' . $colName]) {
+                                    $row->set($function . '_' . $colName, Calculator::$function($table->getColumn($colName)), $table->getColumn($colName)->getGroups());
+                                    $newCols[$function . '_' . $colName] = $table->getColumn($colName)->getGroups();
+                                }
                             }
                         }
-                    }
-                    $newTable->addRow($row);
-                });
-        }
-
-        $newCols = empty($newCols) ? $cols : $newCols;
-
-        foreach ($this->functions as $function) {
-            if (!$options['footer_' . $function]) {
-                continue;
+                        $newTable->addRow($row);
+                    });
             }
-            $row = $table->createAndAddRow();
-            $row->set(' ', '<< ' . $function, array('footer'));
-            foreach ($newCols as $colName => $groups) {
-                $groups[] = 'footer';
-                $row->set(
-                    $colName, 
-                    Calculator::$function($table->getColumn($colName)->getValues(array('main'))),
-                    $table->getColumn($colName)->getGroups()
-                );
+
+            $newCols = empty($newCols) ? $cols : $newCols;
+
+            foreach ($this->functions as $function) {
+                if (!$options['footer_' . $function]) {
+                    continue;
+                }
+                $row = $table->createAndAddRow();
+                $row->set(' ', '<< ' . $function, array('footer'));
+                foreach ($newCols as $colName => $groups) {
+                    $groups[] = 'footer';
+                    $row->set(
+                        $colName, 
+                        Calculator::$function($table->getColumn($colName)->getValues(array('main'))),
+                        $table->getColumn($colName)->getGroups()
+                    );
+                }
             }
+
+            $table->align();
         }
-
-        $table->align();
-
-        return $table;
     }
 }

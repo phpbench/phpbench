@@ -15,10 +15,11 @@ use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
 use PhpBench\Result\SuiteResult;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
+use DTL\Cellular\Workspace;
 
 class ConsoleTableReportGenerator extends BaseTabularReportGenerator
 {
-    public function doGenerate(SuiteResult $suite, OutputInterface $output, array $options)
+    public function doGenerate(Workspace $workspace, OutputInterface $output, array $options)
     {
         $output = $output;
         $output->getFormatter()->setStyle(
@@ -31,20 +32,16 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
             'dark', new OutputFormatterStyle('black', null, array('bold'))
         );
 
-        foreach ($suite->getBenchmarkResults() as $benchmark) {
-            foreach ($benchmark->getSubjectResults() as $subject) {
-                $output->writeln(sprintf(
-                    '<comment>%s#%s()</comment>: %s',
-                    $benchmark->getClass(),
-                    $subject->getName(),
-                    $subject->getDescription()
-                ));
+        foreach ($workspace->getTables() as $data) {
+            $output->writeln(sprintf(
+                '<comment>%s</comment>: %s',
+                $data->getTitle(),
+                $data->getDescription()
+            ));
 
-                $data = $this->prepareData($subject, $options);
-                $this->renderData($output, $data, $options);
+            $this->renderData($output, $data, $options);
 
-                $output->writeln('');
-            }
+            $output->writeln('');
         }
     }
 
