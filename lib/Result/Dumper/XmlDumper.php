@@ -76,6 +76,12 @@ class XmlDumper
         $subjectEl->setAttribute('name', $subjectResult->getName());
         $subjectEl->setAttribute('description', $subjectResult->getDescription());
 
+        foreach ($subjectResult->getGroups() as $group) {
+            $groupEl = $dom->createElement('group');
+            $groupEl->setAttribute('name', $group);
+            $subjectEl->appendChild($groupEl);
+        }
+
         foreach ($subjectResult->getIterationsResults() as $iterationsResults) {
             $iterationsResultsEl = $this->dumpIterations($iterationsResults, $dom);
             $subjectEl->appendChild($iterationsResultsEl);

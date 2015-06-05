@@ -191,7 +191,7 @@ class RunCommandTest extends BaseCommandTestCase
     public function testOverrideIterations()
     {
         $tester = $this->runCommand('run', array(
-            '--subject' => 'benchRandom',
+            '--subject' => array('benchRandom'),
             '--dump' => true,
             '--iterations' => 10,
             'path' => __DIR__ . '/../../benchmarks/BenchmarkBench.php',
@@ -259,5 +259,26 @@ class RunCommandTest extends BaseCommandTestCase
             '--processisolation' => 'iteration',
             'path' => __DIR__ . '/../../benchmarks/IsolatedParametersBench.php',
         ));
+    }
+
+    /**
+     * It should run specified groups
+     */
+    public function testGroups()
+    {
+        $tester = $this->runCommand('run', array(
+            '--group' => array('do_nothing'),
+            '--dump' => true,
+            'path' => __DIR__ . '/../../benchmarks/BenchmarkBench.php',
+        ));
+
+        $this->assertEquals(0, $tester->getStatusCode());
+        $display = $tester->getDisplay();
+        $dom = new \DOMDocument();
+        $dom->loadXml($display);
+        $dom->formatOutput = true;
+        $xpath = new \DOMXPath($dom);
+        $parameters = $xpath->query('//subject');
+        $this->assertEquals(1, $parameters->length);
     }
 }

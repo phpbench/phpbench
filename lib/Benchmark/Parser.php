@@ -25,16 +25,19 @@ class Parser
             'iterations' => array(),
             'description' => array(),
             'processIsolation' => array(),
+            'group' => array(),
             'revs' => array(),
         );
 
+        // singular annotations
         foreach (array('description', 'iterations', 'processIsolation') as $key) {
             if (isset($defaults[$key]) && $defaults[$key]) {
                 $meta[$key][] = $defaults[$key];
             }
         }
 
-        foreach (array('beforeMethod', 'paramProvider', 'revs') as $key) {
+        // plural annotations
+        foreach (array('beforeMethod', 'paramProvider', 'revs', 'group') as $key) {
             if (isset($defaults[$key]) && $defaults[$key]) {
                 $meta[$key] = $defaults[$key];
             }

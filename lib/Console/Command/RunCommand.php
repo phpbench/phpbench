@@ -42,7 +42,8 @@ EOT
         );
         $this->addArgument('path', InputArgument::OPTIONAL, 'Path to benchmark(s)');
         $this->addOption('report', array(), InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Report name or configuration in JSON format');
-        $this->addOption('subject', null, InputOption::VALUE_REQUIRED, 'Subject to run');
+        $this->addOption('subject', array(), InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Subject to run (can be specified multiple times)');
+        $this->addOption('group', array(), InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Group to run (can be specified multiple times)');
         $this->addOption('dumpfile', 'df', InputOption::VALUE_OPTIONAL, 'Dump XML result to named file');
         $this->addOption('dump', null, InputOption::VALUE_NONE, 'Dump XML result to stdout and suppress all other output');
         $this->addOption('parameters', null, InputOption::VALUE_REQUIRED, 'Override parameters to use in (all) benchmarks');
@@ -108,7 +109,8 @@ EOT
             );
         }
 
-        $subject = $input->getOption('subject');
+        $subjects = $input->getOption('subject');
+        $groups = $input->getOption('group');
         $dumpfile = $input->getOption('dumpfile');
 
         if (false === $enableGc) {
@@ -116,7 +118,7 @@ EOT
         }
 
         $startTime = microtime(true);
-        $result = $this->executeBenchmarks($path, $subject, $noSetup, $parameters, $iterations, $revs, $processIsolation, $configFile, $progressLogger);
+        $result = $this->executeBenchmarks($path, $subjects, $groups, $noSetup, $parameters, $iterations, $revs, $processIsolation, $configFile, $progressLogger);
 
         $consoleOutput->writeln('');
         if ($dumpfile) {
@@ -149,7 +151,7 @@ EOT
         return $dumper->dump($result);
     }
 
-    private function executeBenchmarks($path, $subject, $noSetup, $parameters, $iterations, $revs, $processIsolation, $configFile, ProgressLogger $progressLogger)
+    private function executeBenchmarks($path, array $subjects, array $groups, $noSetup, $parameters, $iterations, $revs, $processIsolation, $configFile, ProgressLogger $progressLogger)
     {
         $finder = new Finder();
 
@@ -169,7 +171,7 @@ EOT
         }
 
         $benchFinder = new CollectionBuilder($finder);
-        $subjectBuilder = new SubjectBuilder($subject);
+        $subjectBuilder = new SubjectBuilder($subjects, $groups);
 
         $benchRunner = new Runner(
             $benchFinder,

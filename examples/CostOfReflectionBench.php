@@ -6,6 +6,7 @@ use PhpBench\Benchmark;
  * @beforeMethod init
  * @revs 10000
  * @iterations 4
+ * @group cost_of_reflection
  */
 class CostOfReflectionBench implements Benchmark
 {

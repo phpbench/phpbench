@@ -57,7 +57,13 @@ following annotations:
 
 **singular**
 
-A description of the benchmark subject
+A description of the benchmark subject.
+
+### @groups
+
+**plural**
+
+Assign the annotated method or class instance in the named group.
 
 ### @revs
 

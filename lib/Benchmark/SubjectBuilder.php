@@ -16,12 +16,14 @@ use PhpBench\Benchmark;
 class SubjectBuilder
 {
     private $parser;
-    private $subject;
+    private $subjects;
+    private $groups;
 
-    public function __construct($subject = null)
+    public function __construct(array $subjects = array(), array $groups = array())
     {
         $this->parser = new Parser();
-        $this->subject = $subject;
+        $this->subjects = $subjects;
+        $this->groups = $groups;
     }
 
     public function buildSubjects(Benchmark $case)
@@ -36,11 +38,15 @@ class SubjectBuilder
                 continue;
             }
 
-            if ($this->subject && $method->getName() !== $this->subject) {
+            if ($this->subjects && false === in_array($method->getName(), $this->subjects)) {
                 continue;
             }
 
             $meta = $this->parser->parseDoc($method->getDocComment(), $defaults);
+
+            if ($this->groups && 0 === count(array_intersect($this->groups, $meta['group']))) {
+                continue;
+            }
 
             $subjects[] = new Subject(
                 $method->getName(),
@@ -49,7 +55,8 @@ class SubjectBuilder
                 $meta['iterations'],
                 $meta['revs'],
                 $meta['description'],
-                $meta['processIsolation']
+                $meta['processIsolation'],
+                $meta['group']
             );
         }
 

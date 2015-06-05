@@ -20,6 +20,7 @@ class Subject
     private $description;
     private $processIsolation;
     private $revs;
+    private $groups;
 
     public function __construct(
         $methodName,
@@ -28,7 +29,8 @@ class Subject
         $nbIterations,
         array $revs,
         $description,
-        $processIsolation
+        $processIsolation,
+        array $groups
     ) {
         $this->methodName = $methodName;
         $this->beforeMethods = $beforeMethods;
@@ -37,6 +39,7 @@ class Subject
         $this->revs = $revs;
         $this->description = $description;
         $this->processIsolation = $processIsolation;
+        $this->groups = $groups;
     }
 
     public function getBeforeMethods()
@@ -72,5 +75,10 @@ class Subject
     public function getRevs()
     {
         return $this->revs;
+    }
+
+    public function getGroups() 
+    {
+        return $this->groups;
     }
 }

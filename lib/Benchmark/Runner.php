@@ -142,6 +142,7 @@ class Runner
         $subjectResult = new SubjectResult(
             $subject->getMethodName(),
             $subject->getDescription(),
+            $subject->getGroups(),
             $iterationsResults
         );
 
@@ -190,6 +191,7 @@ class Runner
                 'php %s run %s --subject=%s --nosetup --dump --parameters=%s --iterations=%d --processisolation=none',
                 $bin,
                 $reflection->getFileName(),
+                $subject->getMethodName(),
                 $subject->getMethodName(),
                 escapeshellarg(json_encode($parameters)),
                 $nbIterations
