@@ -100,4 +100,14 @@ abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase
             'deviation' => true,
         ));
     }
+
+    /**
+     * It should allow groups to be specified
+     */
+    public function testGroups()
+    {
+        $this->executeReport($this->getResults(), array(
+            'groups' => array('foo'),
+        ));
+    }
 }

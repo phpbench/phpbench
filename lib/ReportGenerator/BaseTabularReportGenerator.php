@@ -69,6 +69,7 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
             $defaults,
             array(
                 'aggregate_iterations' => false,
+                'groups' => array(),
                 'precision' => 6,
                 'time_format' => 'fraction',
                 'time' => true,
@@ -106,6 +107,12 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
     private function prepareTables(BenchmarkResult $benchmarkResult, Workspace $workspace, array $options)
     {
         foreach ($benchmarkResult->getSubjectResults() as $subject) {
+
+            // skip if groups were specified and the subject is not in any of the specified groups
+            if ($options['groups'] && 0 === count(array_intersect($options['groups'], $subject->getGroups()))) {
+                continue;
+            }
+
             $table = $workspace->createAndAddTable();
             $table->setTitle($benchmarkResult->getClass() . '->' . $subject->getName());
             $table->setDescription($subject->getDescription());
