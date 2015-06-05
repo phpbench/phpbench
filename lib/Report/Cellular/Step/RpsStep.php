@@ -14,6 +14,7 @@ namespace PhpBench\Report\Cellular\Step;
 use DTL\Cellular\Table;
 use DTL\Cellular\Row;
 use PhpBench\Report\Cellular\Step;
+use DTL\Cellular\Workspace;
 
 /**
  * Add revolutions per second to table rows.
@@ -24,7 +25,7 @@ class RpsStep implements Step
     {
         $workspace->each(function (Table $table) {
             $table->each(function (Row $row) {
-                $row->set('rps', $row->get('time') ? (1000000 / $stats['time']) * $stats['revs'] : null);
+                $row->set('rps', $row->getCell('time')->getValue() ? (1000000 / $row->getCell('time')->getValue()) * $row['revs']->getValue() : null);
             });
         });
     }

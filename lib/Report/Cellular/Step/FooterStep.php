@@ -12,6 +12,9 @@
 namespace PhpBench\Report\Cellular\Step;
 
 use DTL\Cellular\Calculator;
+use DTL\Cellular\Table;
+use PhpBench\Report\Cellular\Step;
+use DTL\Cellular\Workspace;
 
 class FooterStep implements Step
 {
@@ -26,16 +29,20 @@ class FooterStep implements Step
     {
         $workspace->each(function (Table $table) {
             foreach ($this->functions as $function) {
-                $row = $table->createAndAddRow();
-                $row->set(' ', '<< ' . $function, array('footer'));
+                $row = $table->createAndAddRow(array('footer'));
                 foreach ($table->getColumnNames(array('footer')) as $colName) {
+                    $groups = $table->getColumn($colName)->getGroups();
+                    $groups[] = 'footer';
                     $row->set(
                         $colName,
-                        Calculator::$function($table->getColumn($colName)->getValues(array('main'))),
-                        $table->getColumn($colName)->getGroups()
+                        Calculator::$function($table->getColumn($colName)),
+                        $groups
                     );
                 }
+                $row->set(' ', '<< ' . $function, array('footer'));
             }
+
+            $table->align();
         });
     }
 }
