@@ -15,13 +15,15 @@ class SubjectResult
 {
     private $name;
     private $description;
+    private $groups;
     private $iterationsResults;
 
-    public function __construct($name, $description, array $iterationsResults)
+    public function __construct($name, $description, array $groups, array $iterationsResults)
     {
         $this->iterationsResults = $iterationsResults;
         $this->name = $name;
         $this->description = $description;
+        $this->groups = $groups;
     }
 
     public function getName()
@@ -37,5 +39,10 @@ class SubjectResult
     public function getIterationsResults()
     {
         return $this->iterationsResults;
+    }
+
+    public function getGroups() 
+    {
+        return $this->groups;
     }
 }

@@ -49,6 +49,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 * @processIsolation iteration
 * @revs 1000
 * @revs 10
+* @group base
 */
 EOT
                 ,
@@ -59,6 +60,7 @@ EOT
                     'paramProvider' => array('provideParam'),
                     'processIsolation' => 'iteration',
                     'revs' => array(1000, 10),
+                    'group' => array('base'),
                 ),
             ),
             array(
@@ -74,6 +76,7 @@ EOT
                     'iterations' => 1,
                     'processIsolation' => false,
                     'revs' => array(1),
+                    'group' => array(),
                 ),
             ),
         );
@@ -112,6 +115,7 @@ EOT
                     'paramProvider' => array('provideParam'),
                     'processIsolation' => 'iteration',
                     'revs' => array(1000, 10),
+                    'group' => array('boo')
                 ),
                 <<<EOT
 /**
@@ -121,6 +125,7 @@ EOT
 * @iterations 3
 * @processIsolation iterations
 * @revs 5
+* @group five
  */
 EOT
                 ,
@@ -131,6 +136,7 @@ EOT
                     'paramProvider' => array('provideParam', 'notherParam'),
                     'processIsolation' => 'iterations',
                     'revs' => array(1000, 10, 5),
+                    'group' => array('boo', 'five'),
                 ),
             ),
             array(
@@ -141,6 +147,7 @@ EOT
                     'paramProvider' => array('provideParam'),
                     'processIsolation' => 'iteration',
                     'revs' => array(1000, 10),
+                    'group' => array('boo'),
                 ),
                 <<<EOT
 /**
@@ -155,6 +162,7 @@ EOT
                     'paramProvider' => array('provideParam'),
                     'processIsolation' => 'iteration',
                     'revs' => array(1000, 10),
+                    'group' => array('boo'),
                 ),
             ),
             array(
@@ -174,6 +182,7 @@ EOT
                     'paramProvider' => array('provideParam'),
                     'processIsolation' => 'iteration',
                     'revs' => array(1000, 10),
+                    'group' => array(),
                 ),
             ),
         );

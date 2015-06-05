@@ -58,10 +58,21 @@ class XmlLoader
             $name = $subjectEl->getAttribute('name');
             $description = $subjectEl->getAttribute('description');
             $iterationsResults = $this->getIterationsResults($xpath, $subjectEl);
-            $subjectResults[] = new SubjectResult($name, $description, $iterationsResults);
+            $groups = $this->getGroups($xpath, $subjectEl);
+            $subjectResults[] = new SubjectResult($name, $description, $groups, $iterationsResults);
         }
 
         return $subjectResults;
+    }
+
+    private function getGroups(\DOMXPath $xpath, \DOMElement $subjectEl)
+    {
+        $groups = array();
+        foreach ($xpath->query('./group', $subjectEl) as $groupEl) {
+            $groups[] = $groupEl->getAttribute('name');
+        }
+
+        return $groups;
     }
 
     private function getIterationsResults(\DOMXPath $xpath, \DOMElement $subjectEl)

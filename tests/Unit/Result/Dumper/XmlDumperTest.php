@@ -34,6 +34,8 @@ class XmlDumperTest extends \PHPUnit_Framework_TestCase
   <suite>
     <benchmark class="Benchmark\Class">
       <subject name="mySubject" description="My Subject's description">
+        <group name="one"/>
+        <group name="two"/>
         <iterations>
           <parameter name="foo" value="bar"/>
           <parameter name="array" multiple="1">
@@ -69,7 +71,7 @@ EOT;
                 'three' => 'four',
             ),
         ));
-        $subject = new SubjectResult('mySubject', 'My Subject\'s description', array($iterations));
+        $subject = new SubjectResult('mySubject', 'My Subject\'s description', array('one', 'two'), array($iterations));
         $benchmark = new BenchmarkResult('Benchmark\Class', array($subject));
         $suite = new SuiteResult(array($benchmark));
 
