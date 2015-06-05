@@ -13,13 +13,9 @@ namespace PhpBench\Report\Generator;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use PhpBench\Result\SuiteResult;
-use PhpBench\Result\SubjectResult;
 use PhpBench\ReportGenerator;
 use DTL\Cellular\Table;
 use Symfony\Component\Console\Output\OutputInterface;
-use DTL\Cellular\Calculator;
-use DTL\Cellular\Workspace;
-use PhpBench\Result\BenchmarkResult;
 
 /**
  * This base class generates a table (a data table, not a UI table) with
@@ -130,5 +126,5 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
         });
 
         return $this->doGenerate($workspace, $output, $options);
-u   }
+    }
 }

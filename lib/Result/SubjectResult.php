@@ -41,7 +41,7 @@ class SubjectResult
         return $this->iterationsResults;
     }
 
-    public function getGroups() 
+    public function getGroups()
     {
         return $this->groups;
     }

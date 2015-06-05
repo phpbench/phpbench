@@ -115,7 +115,7 @@ EOT
                     'paramProvider' => array('provideParam'),
                     'processIsolation' => 'iteration',
                     'revs' => array(1000, 10),
-                    'group' => array('boo')
+                    'group' => array('boo'),
                 ),
                 <<<EOT
 /**

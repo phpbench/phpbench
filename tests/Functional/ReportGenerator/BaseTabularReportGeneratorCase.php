@@ -102,7 +102,7 @@ abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase
     }
 
     /**
-     * It should allow groups to be specified
+     * It should allow groups to be specified.
      */
     public function testGroups()
     {

@@ -13,7 +13,6 @@ namespace PhpBench\Report\Generator;
 
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
-use PhpBench\Result\SuiteResult;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use DTL\Cellular\Workspace;
 
