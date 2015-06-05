@@ -12,6 +12,9 @@
 use PhpBench\BenchIteration;
 use PhpBench\Benchmark;
 
+/**
+ * @group group1
+ */
 class ParserCase implements Benchmark
 {
     /**

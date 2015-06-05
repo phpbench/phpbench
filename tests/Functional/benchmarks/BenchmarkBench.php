@@ -26,6 +26,7 @@ class BenchmarkBench implements Benchmark
      * @iterations 3
      * @revs 1000
      * @description Do nothing three times
+     * @group do_nothing
      */
     public function benchDoNothing(Iteration $iteration)
     {

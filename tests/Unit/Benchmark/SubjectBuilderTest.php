@@ -35,6 +35,7 @@ class SubjectBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $subjects);
         $subject = reset($subjects);
 
+        $this->assertEquals(array('group1'), $subject->getGroups());
         $this->assertEquals(array('beforeSelectSql'), $subject->getBeforeMethods());
         $this->assertEquals(array('provideNodes', 'provideColumns'), $subject->getParameterProviders());
         $this->assertEquals(3, $subject->getNbIterations());
