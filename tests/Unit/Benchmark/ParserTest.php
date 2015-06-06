@@ -205,7 +205,7 @@ EOT;
     }
 
     /**
-     * It should thow an exception if more than one iterations annotation is present
+     * It should thow an exception if more than one iterations annotation is present.
      *
      * @expectedException \InvalidArgumentException
      */

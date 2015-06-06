@@ -102,7 +102,7 @@ abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase
     }
 
     /**
-     * It should throw an exception if an invalid aggregation value is given
+     * It should throw an exception if an invalid aggregation value is given.
      *
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage The option "aggregate" with value "hahahaha" is invalid. Accepted values are: "none", "iteration"
@@ -115,7 +115,7 @@ abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase
     }
 
     /**
-     * It should throw an exception if an invalid cols are given
+     * It should throw an exception if an invalid cols are given.
      *
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Invalid columns: "foooo". Valid columns are: "run"
@@ -128,7 +128,7 @@ abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase
     }
 
     /**
-     * It should throw an exception if an invalid funcs are given
+     * It should throw an exception if an invalid funcs are given.
      *
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Invalid functions: "foooo". Valid functions are "sum", "mean", "min", "max"

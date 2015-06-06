@@ -110,6 +110,8 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
 
         $workspace = CellularConverter::suiteToWorkspace($suite);
 
+        $steps = array();
+
         if (in_array('rps', $options['cols'])) {
             $steps[] = new RpsStep();
         }
@@ -132,6 +134,7 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
             $step->step($workspace);
         }
 
+        // align all the tables (fill in missing columns)
         $workspace->each(function (Table $table) {
             $table->align();
         });
