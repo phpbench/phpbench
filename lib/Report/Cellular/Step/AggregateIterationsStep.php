@@ -49,7 +49,7 @@ class AggregateIterationsStep implements Step
 
                         foreach ($this->functions as $function) {
                             $row->set(
-                                $function . '_' . $colName, 
+                                $function . '_' . $colName,
                                 Calculator::$function($table->getColumn($colName)),
                                 $cell->getGroups()
                             );

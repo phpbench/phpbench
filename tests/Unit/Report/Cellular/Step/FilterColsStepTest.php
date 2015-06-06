@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Tests\Unit\Report\Cellular\Step;
 
 use PhpBench\Report\Cellular\Step\FilterColsStep;
@@ -9,7 +18,7 @@ class FilterColsStepTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * It should remove columns which belong to a group named after eac
-     * of the given columns prefixed with "#"
+     * of the given columns prefixed with "#".
      */
     public function testFilterCols()
     {

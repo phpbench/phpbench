@@ -16,7 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 /**
- * TODO: This is difficult to maintain
+ * TODO: This is difficult to maintain.
  */
 class ConsoleTableReportGeneratorTest extends \PHPUnit_Framework_TestCase
 {

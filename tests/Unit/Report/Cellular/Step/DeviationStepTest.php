@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Tests\Unit\Report\Cellular\Step;
 
 use DTL\Cellular\Workspace;
@@ -9,7 +18,7 @@ class DeviationStepTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * It should add a deviation from the mean as a percentage for each row for
-     * a given column value
+     * a given column value.
      */
     public function testDeviation()
     {

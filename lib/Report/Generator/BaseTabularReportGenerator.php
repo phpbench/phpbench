@@ -32,7 +32,7 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
     /**
      * Columns which are available.
      */
-    private $availableCols = array( 'time',
+    private $availableCols = array('time',
         'run',
         'iter',
         'memory',
@@ -43,7 +43,6 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
         'revs',
         'deviation',
     );
-
 
     /**
      * See the README file for a detailed description of the options.

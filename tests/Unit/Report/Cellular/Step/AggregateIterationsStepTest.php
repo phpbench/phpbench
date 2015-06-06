@@ -19,7 +19,7 @@ class AggregateIterationsStepTest extends \PHPUnit_Framework_TestCase
     /**
      * It should aggregate all rows in the group "aggregate"
      * It should add a column for each function for each aggregated field
-     * It should retain the title and description of the original tables
+     * It should retain the title and description of the original tables.
      */
     public function testAggregate()
     {
