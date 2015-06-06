@@ -31,11 +31,24 @@ All of the existing frameworks (as far as I can see) are designed for
 benchmarking algorithms or other relatively quick scenarios. They are the
 equivalent of "unit" tests.
 
-PhpBench is designed for running *BIG* benchmark suites which may take serveral
+PhpBench is designed also for running *BIG* benchmark suites which may take serveral
 minutes to complete, it could be seen as a *system* benchmarking framework,
 and therefore analagous to integration testing.
 
-Saying that, it should work equally well for testing smaller "units".
+PhpBench also provides a powerful report generation capability thanks to the
+[Cellular](https://github.com/dantleech/cellular) library.
+
+
+Installation
+------------
+
+Install with composer, add it to `composer.json`:
+
+````javascript
+{
+    "dantleech/phpbench": "~1.0@dev"
+}
+````
 
 How it works
 ------------
@@ -47,8 +60,8 @@ took to execute it is recorded.
 The class name must end with `Bench` (this is just to optimize finding
 benchmark files).
 
-The method is known as the benchmark *subject* and each method accepts an 
-`Iteration` from which can be accessed contextual information.
+The method is known as the benchmark *subject* and each method optionally
+accepts an `Iteration` from which can be accessed contextual information.
 
 You can annotate **both** the class and the subject methods with any of the 
 following annotations:
@@ -59,7 +72,7 @@ following annotations:
 
 A description of the benchmark subject.
 
-### @groups
+### @group
 
 **plural**
 
@@ -122,19 +135,11 @@ setUp and tearDown
 You can defined `setUp` and `tearDown` methods. These will be called before
 and after the subject resepectively.
 
-Be aware that these will not be called for iterations run within a separate
-process.
+These methods are useful for establishing an external state prior to running
+benchmarks.
 
-Installation
-------------
-
-Install with composer, add it to `composer.json`:
-
-````javascript
-{
-    "dantleech/phpbench": "~1.0@dev"
-}
-````
+NOTE: They cannot be used to establish "internal" state when process isolation is
+used.
 
 Reports
 -------
@@ -145,14 +150,15 @@ Reports can be specified simply as:
 $ php vendor/bin/phpbench run benchmarks/ --report=<report name>
 ````
 
-But you can also pass configuration to the report, in this case you must pass
-a JSON string which should have a `name` key specifying the name of the
-report, all other keys are interpreted as options:
+But you can also pass configuration to the report:
 
 ````bash
-$ php vendor/bin/phpbench run benchmarks/ --report='{"name": "console_table",
-"memory": true}'
+$ php vendor/bin/phpbench run benchmarks/ --report='{"name": "console_table", "cols": ["time", "memory", "deviation"]}'
 ````
+
+As you can see we pass a JSON encoded string which represents the report
+configuration. This string **MUST** contain at least the `name` key indicating
+which report to use, all other keys are interpreted as options.
 
 There is a single report included by default: `console_table`.
 
@@ -160,35 +166,26 @@ It has the following options:
 
 - `time_format`: Either "fraction" (of a second) or integer (number of microseconds).
 - `precision`: Number of decimal places to use when showing the time as a fraction.
-- `aggregate_iterations`: Aggregate multiple iterations into a single row.
-- `deviation`: Show the deviation from the average value as a percentage.
+- `cols`: Choose which columns to display (defaults to all), columns are
+  defined below.
+- `aggregate`: Aggregate the benchmark data, values: `none` or `iteration`.
+- `aggregate_funcs`: Use in association with aggregate to choose which
+  functions to apply to the columns: `min`, `max`, `mean` or `median`.
+- `footer_funcs`: Adds an additional row for each given aggregate function:
+  `min`, `max`, `mean` or `median`.
 
-Columns to display:
+The columns are:
 
-- `time`: Time taken.
+- `run`: Show the run index.
+- `iter`: Show the iteration index.
+- `time`: Time taken in microseconds.
 - `memory`: Memory used by the subject (accumulative).
 - `memory_diff`: Memory used by the subject (non-accumulative).
 - `memory_inc`: Memory used globally (accumulative).
 - `memory_diff_inc`: Memory used globally (non-accumulative).
 - `revs`: Number of times the subject was repeated.
 - `rps`: Revolutions per second - number of times the subject is executed in a second.
-
-Aggregate options (only applicable when aggregate_iterations is enabled):
-
-Options are suffixed by one of the columns above and represent the value of the function
-as applied to the aggregated iterations:
-
-- `sum_*`: show the sum.
-- `avg_*`: show the avergage value.
-- `min_*`: show the minimum value.
-- `max_*`: show the max value.
-
-Footer:
-
-- `footer_sum`: Show the sum of all columns in the footer.
-- `footer_min`: Show the sum of all columns in the footer.
-- `footer_max`: Show the sum of all columns in the footer.
-- `footer_avg`: Show the average of all columns in the footer.
+- `deviation`: Deviation from the mean as a percentage.
 
 Dumping XML and deferring reports
 ---------------------------------
