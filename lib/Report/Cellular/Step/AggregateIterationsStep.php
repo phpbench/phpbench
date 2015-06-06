@@ -26,7 +26,7 @@ class AggregateIterationsStep implements Step
     /**
      * @var string[]
      */
-    private $functions;
+    protected $functions;
 
     /**
      * @param string[] $functions
@@ -74,6 +74,7 @@ class AggregateIterationsStep implements Step
                 });
             $newTable->setTitle($table->getTitle());
             $newTable->setDescription($table->getDescription());
+            $newTable->setAttributes($table->getAttributes());
 
             return $newTable;
         });

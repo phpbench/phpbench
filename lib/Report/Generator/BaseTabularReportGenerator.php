@@ -22,6 +22,7 @@ use PhpBench\Report\Cellular\Step\DeviationStep;
 use PhpBench\Report\Cellular\Step\AggregateIterationsStep;
 use PhpBench\Report\Cellular\Step\FooterStep;
 use PhpBench\Report\Cellular\Step\FilterColsStep;
+use PhpBench\Report\Cellular\Step\AggregateSubjectStep;
 
 /**
  * This base class generates a table (a data table, not a UI table) with
@@ -94,7 +95,7 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
         };
 
         $options->setAllowedValues('time_format', array('integer', 'fraction'));
-        $options->setAllowedValues('aggregate', array('none', 'iteration'));
+        $options->setAllowedValues('aggregate', array('none', 'run', 'subject'));
         $options->setAllowedValues('aggregate_funcs', $functionsValidator);
         $options->setAllowedValues('footer_funcs', $functionsValidator);
         $options->setAllowedValues('cols', $colsValidator);
@@ -120,8 +121,12 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
             $steps[] = new DeviationStep();
         }
 
-        if ($options['aggregate'] === 'iteration') {
+        if ($options['aggregate'] === 'run') {
             $steps[] = new AggregateIterationsStep($options['aggregate_funcs']);
+        }
+
+        if ($options['aggregate'] === 'subject') {
+            $steps[] = new AggregateSubjectStep($options['aggregate_funcs']);
         }
 
         $steps[] = new FilterColsStep(array_diff($this->availableCols, $options['cols']));
