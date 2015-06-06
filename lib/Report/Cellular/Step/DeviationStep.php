@@ -43,10 +43,10 @@ class DeviationStep
     {
         $workspace->each(function (Table $table) {
             $table->each(function (Row $row) use ($table) {
-                $meanTime = Calculator::mean($table->getColumn($this->deviationColumn));
+                $meanValue = Calculator::mean($table->getColumn($this->deviationColumn));
                 $row->set(
                     'deviation',
-                    Calculator::deviation($meanTime, $row->getCell($this->deviationColumn)),
+                    Calculator::deviation($meanValue, $row->getCell($this->deviationColumn)),
                     array('#deviation', '.deviation')
                 );
             });
