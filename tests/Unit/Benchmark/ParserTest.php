@@ -190,18 +190,34 @@ EOT
 
     /**
      * It should throw an exception if more than one description annotation is present.
+     *
+     * @expectedException \InvalidArgumentException
      */
-    public function testNoDescription()
+    public function testMoreThanOneDescription()
     {
-        $this->markTestIncomplete('Do this');
+        $doc = <<<EOT
+/**
+ * @description One
+ * @description Two
+ */
+EOT;
+        $this->parser->parseDoc($doc);
     }
 
-    /*
+    /**
      * It should thow an exception if more than one iterations annotation is present
+     *
+     * @expectedException \InvalidArgumentException
      */
     public function testMoreThatOneIterationAnnotation()
     {
-        $this->markTestIncomplete('Do this');
+        $doc = <<<EOT
+/**
+ * @iterations 2
+ * @iterations 2
+ */
+EOT;
+        $this->parser->parseDoc($doc);
     }
 
     /**

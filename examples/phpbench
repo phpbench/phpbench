@@ -7,7 +7,12 @@ $config->addReport(array(
     'name' => 'console_table',
     'aggregate' => 'iteration',
     'aggregate_funcs' => array('mean', 'min', 'max'),
-    'cols' => array('run', 'iter', 'time', 'rps'),
+    'cols' => array('run', 'iter', 'params', 'time', 'rps'),
+));
+
+$config->addReport(array(
+    'name' => 'console_table',
+    'cols' => array('run', 'iter', 'params', 'time', 'rps'),
 ));
 
 $config->setPath(__DIR__);

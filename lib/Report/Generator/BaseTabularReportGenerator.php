@@ -32,9 +32,11 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
     /**
      * Columns which are available.
      */
-    private $availableCols = array('time',
+    private $availableCols = array(
         'run',
         'iter',
+        'params',
+        'time',
         'memory',
         'memory_diff',
         'memory_inc',
@@ -69,8 +71,9 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
             $intersect = array_intersect($funcs, $availableFuncs);
             if (count($intersect) !== count($funcs)) {
                 throw new \InvalidArgumentException(sprintf(
-                    'Invalid functions: "%s"',
-                    implode('", "', array_diff($funcs, $intersect))
+                    'Invalid functions: "%s". Valid functions are "%s"',
+                    implode('", "', array_diff($funcs, $intersect)),
+                    implode('", "', $availableFuncs)
                 ));
             }
 
@@ -81,8 +84,9 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
             $intersect = array_intersect($funcs, $this->availableCols);
             if (count($intersect) !== count($funcs)) {
                 throw new \InvalidArgumentException(sprintf(
-                    'Invalid columns: "%s"',
-                    implode('", "', array_diff($funcs, $intersect))
+                    'Invalid columns: "%s". Valid columns are: "%s" ',
+                    implode('", "', array_diff($funcs, $intersect)),
+                    implode('", "', $this->availableCols)
                 ));
             }
 
@@ -118,11 +122,11 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
             $steps[] = new AggregateIterationsStep($options['aggregate_funcs']);
         }
 
+        $steps[] = new FilterColsStep(array_diff($this->availableCols, $options['cols']));
+
         if (false === empty($options['footer_funcs'])) {
             $steps[] = new FooterStep($options['footer_funcs']);
         }
-
-        $steps[] = new FilterColsStep(array_diff($this->availableCols, $options['cols']));
 
         foreach ($steps as $step) {
             $step->step($workspace);

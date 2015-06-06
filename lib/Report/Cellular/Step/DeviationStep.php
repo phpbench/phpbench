@@ -17,7 +17,7 @@ use DTL\Cellular\Workspace;
 use DTL\Cellular\Calculator;
 
 /**
- * Add deviation from mean.
+ * Add deviation from mean for each row for a given deviation column defaulting to "time".
  */
 class DeviationStep
 {

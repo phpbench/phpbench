@@ -100,4 +100,43 @@ abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase
             'groups' => array('foo'),
         ));
     }
+
+    /**
+     * It should throw an exception if an invalid aggregation value is given
+     *
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage The option "aggregate" with value "hahahaha" is invalid. Accepted values are: "none", "iteration"
+     */
+    public function testInvalidAggregation()
+    {
+        $this->executeReport($this->getResults(), array(
+            'aggregate' => 'hahahaha',
+        ));
+    }
+
+    /**
+     * It should throw an exception if an invalid cols are given
+     *
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Invalid columns: "foooo". Valid columns are: "run"
+     */
+    public function testInvalidCols()
+    {
+        $this->executeReport($this->getResults(), array(
+            'cols' => array('foooo'),
+        ));
+    }
+
+    /**
+     * It should throw an exception if an invalid funcs are given
+     *
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Invalid functions: "foooo". Valid functions are "sum", "mean", "min", "max"
+     */
+    public function testInvalidFooterFuncs()
+    {
+        $this->executeReport($this->getResults(), array(
+            'footer_funcs' => array('foooo'),
+        ));
+    }
 }

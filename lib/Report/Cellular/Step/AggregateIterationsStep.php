@@ -17,15 +17,28 @@ use DTL\Cellular\Row;
 use DTL\Cellular\Table;
 use DTL\Cellular\Calculator;
 
+/**
+ * This steps aggregates cell (values) in the "#aggregate" group into a single row for each "run".
+ * The `run`, `iters` and `param` values are not aggregated as they are constant for each run.
+ */
 class AggregateIterationsStep implements Step
 {
+    /**
+     * @var string[]
+     */
     private $functions;
 
+    /**
+     * @param string[] $functions
+     */
     public function __construct(array $functions)
     {
         $this->functions = $functions;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function step(Workspace $workspace)
     {
         $workspace->map(function (Table $table) {
@@ -37,10 +50,12 @@ class AggregateIterationsStep implements Step
                     if (!$table->first()) {
                         continue;
                     }
+                    $protoRow = $table->first();
 
                     $row = Row::create();
-                    $row->set('run', Calculator::mean($table->getColumn('run')));
-                    $row->set('iters', $table->count());
+                    $row->set('run', Calculator::mean($table->getColumn('run')), $protoRow['run']->getGroups());
+                    $row->set('iters', $table->count(), array('#iter'));
+                    $row->setCell('params', clone $protoRow['params']);
 
                     foreach ($table->first()->getCells() as $colName => $cell) {
                         if (false === $cell->inGroup('aggregate')) {

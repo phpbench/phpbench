@@ -16,10 +16,20 @@ use DTL\Cellular\Table;
 use PhpBench\Report\Cellular\Step;
 use DTL\Cellular\Workspace;
 
+/**
+ * Add a "footer" row for each aggregate function name given in the constructor.
+ * Aggregate values will be given for cells in the "#aggregate" group.
+ */
 class FooterStep implements Step
 {
+    /**
+     * @var string[]
+     */
     private $functions;
 
+    /**
+     * @param string[] $functions
+     */
     public function __construct(array $functions)
     {
         $this->functions = $functions;

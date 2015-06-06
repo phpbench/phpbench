@@ -51,9 +51,7 @@ class CellularConverter
                 $row->set('run', $runIndex, array('#run'));
                 $row->set('iter', $iterationIndex, array('#iter'));
 
-                foreach ($aggregateResult->getParameters() as $paramName => $paramValue) {
-                    $row->set($paramName, $paramValue, array('param'));
-                }
+                $row->set('params', json_encode($aggregateResult->getParameters()), array('#params'));
 
                 $stat = $iteration->getStatistics();
                 $row->set('time', $stat['time'], array('#time', 'aggregate', '.time'));

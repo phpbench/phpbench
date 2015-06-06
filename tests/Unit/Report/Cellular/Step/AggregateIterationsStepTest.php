@@ -30,12 +30,14 @@ class AggregateIterationsStepTest extends \PHPUnit_Framework_TestCase
         $table->createAndAddRow()
             ->set('run', 0)
             ->set('revs', 100)
+            ->set('params', '[]')
             ->set('a', 10, array('aggregate'))
             ->set('b', 10, array('aggregate'));
 
         $table->createAndAddRow()
             ->set('run', 0)
             ->set('revs', 100)
+            ->set('params', '[]')
             ->set('a', 90, array('aggregate'))
             ->set('b', 4, array('aggregate'));
 
@@ -48,7 +50,7 @@ class AggregateIterationsStepTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('World', $table->getDescription());
         $this->assertCount(1, $table->getRows());
         $row = $table->getRow(0);
-        $this->assertCount(6, $row->getCells());
+        $this->assertCount(7, $row->getCells());
         $this->assertCount(4, $row->getCells(array('aggregate')));
         $this->assertEquals(90, $row->getCell('max_a')->getValue());
         $this->assertEquals(10, $row->getCell('min_a')->getValue());

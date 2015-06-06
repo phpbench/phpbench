@@ -21,6 +21,9 @@ use DTL\Cellular\Workspace;
  */
 class RpsStep implements Step
 {
+    /**
+     * {@inheritDoc}
+     */
     public function step(Workspace $workspace)
     {
         $workspace->each(function (Table $table) {
