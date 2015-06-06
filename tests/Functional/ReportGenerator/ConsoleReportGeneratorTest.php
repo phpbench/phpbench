@@ -11,7 +11,7 @@
 
 namespace PhpBench\Tests\Functional\ReportGenerator;
 
-use PhpBench\ReportGenerator\ConsoleTableReportGenerator;
+use PhpBench\Report\Generator\ConsoleTableReportGenerator;
 
 class ConsoleReportGeneratorTest extends BaseTabularReportGeneratorCase
 {

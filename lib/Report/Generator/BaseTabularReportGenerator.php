@@ -16,6 +16,12 @@ use PhpBench\Result\SuiteResult;
 use PhpBench\ReportGenerator;
 use DTL\Cellular\Table;
 use Symfony\Component\Console\Output\OutputInterface;
+use PhpBench\Report\Cellular\CellularConverter;
+use PhpBench\Report\Cellular\Step\RpsStep;
+use PhpBench\Report\Cellular\Step\DeviationStep;
+use PhpBench\Report\Cellular\Step\AggregateIterationsStep;
+use PhpBench\Report\Cellular\Step\FooterStep;
+use PhpBench\Report\Cellular\Step\FilterColsStep;
 
 /**
  * This base class generates a table (a data table, not a UI table) with
@@ -24,24 +30,20 @@ use Symfony\Component\Console\Output\OutputInterface;
 abstract class BaseTabularReportGenerator implements ReportGenerator
 {
     /**
-     * Available aggregate functions.
-     */
-    private $functions = array(
-        'sum', 'min', 'max', 'mean',
-    );
-
-    /**
      * Columns which are available.
      */
-    private $availableCols = array(
-        'time' => array('main', 'time'),
-        'memory' => array('main', 'memory'),
-        'memory_diff' => array('main', 'memory', 'diff'),
-        'memory_inc' => array('main', 'memory'),
-        'memory_diff_inc' => array('memory', 'diff'),
-        'rps' => array('main', 'rps'),
-        'revs' => array('revs'),
+    private $availableCols = array( 'time',
+        'run',
+        'iter',
+        'memory',
+        'memory_diff',
+        'memory_inc',
+        'memory_diff_inc',
+        'rps',
+        'revs',
+        'deviation',
     );
+
 
     /**
      * See the README file for a detailed description of the options.
@@ -50,34 +52,52 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
     {
         $defaults = array();
 
-        foreach (array_keys($this->availableCols) as $colName) {
-            $defaults[$colName] = false;
-        }
-
-        foreach ($this->functions as $function) {
-            foreach (array_keys($this->availableCols) as $colName) {
-                $defaults[$function . '_' . $colName] = false;
-            }
-            $defaults['footer_' . $function] = false;
-        }
-
         $options->setDefaults(array_merge(
             $defaults,
             array(
-                'aggregate_iterations' => false,
+                'aggregate' => 'none',
+                'aggregate_funcs' => array('mean'),
+                'footer_funcs' => array(),
+                'cols' => $this->availableCols,
                 'groups' => array(),
                 'precision' => 6,
                 'time_format' => 'fraction',
-                'time' => true,
-                'revs' => true,
-                'rps' => true,
-                'memory_diff' => true,
-                'deviation' => true,
             )
         ));
 
+        $functionsValidator = function ($funcs) {
+            $availableFuncs = array('sum', 'mean', 'min', 'max');
+            $intersect = array_intersect($funcs, $availableFuncs);
+            if (count($intersect) !== count($funcs)) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Invalid functions: "%s"',
+                    implode('", "', array_diff($funcs, $intersect))
+                ));
+            }
+
+            return true;
+        };
+
+        $colsValidator = function ($funcs) {
+            $intersect = array_intersect($funcs, $this->availableCols);
+            if (count($intersect) !== count($funcs)) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Invalid columns: "%s"',
+                    implode('", "', array_diff($funcs, $intersect))
+                ));
+            }
+
+            return true;
+        };
+
         $options->setAllowedValues('time_format', array('integer', 'fraction'));
-        $options->setAllowedTypes('aggregate_iterations', 'bool');
+        $options->setAllowedValues('aggregate', array('none', 'iteration'));
+        $options->setAllowedValues('aggregate_funcs', $functionsValidator);
+        $options->setAllowedValues('footer_funcs', $functionsValidator);
+        $options->setAllowedValues('cols', $colsValidator);
+        $options->setAllowedTypes('footer_funcs', 'array');
+        $options->setAllowedTypes('aggregate', 'string');
+        $options->setAllowedTypes('aggregate_funcs', 'array');
         $options->setAllowedTypes('precision', 'int');
     }
 
@@ -87,41 +107,29 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
 
         $workspace = CellularConverter::suiteToWorkspace($suite);
 
-        if ($options['rps']) {
+        if (in_array('rps', $options['cols'])) {
             $steps[] = new RpsStep();
         }
 
-        if ($options['deviation']) {
+        if (in_array('deviation', $options['cols'])) {
             $steps[] = new DeviationStep();
         }
 
-        $filterCols = array_map($this->availableCols, function ($col) use ($options) {
-            if ($options[$col]) {
-                return true;
-            }
-
-            return false;
-        });
-
-        if ($filterCols) {
-            $steps[] = new FilterColsStep($filterCols);
+        if ($options['aggregate'] === 'iteration') {
+            $steps[] = new AggregateIterationsStep($options['aggregate_funcs']);
         }
 
-        $filterFunctions = array_map($this->functions, function ($function) use ($options) {
-            foreach ($this->availableCols as $col) {
-                if ($options[$function . '_' . $col]) {
-                    return true;
-                }
-            }
-
-            return false;
-        });
-
-        if ($options['aggregate_iterations']) {
-            $steps[] = new AggregateIterationsStep($filterFunctions);
+        if (false === empty($options['footer_funcs'])) {
+            $steps[] = new FooterStep($options['footer_funcs']);
         }
 
-        $workspace->apply(function (Table $table) {
+        $steps[] = new FilterColsStep(array_diff($this->availableCols, $options['cols']));
+
+        foreach ($steps as $step) {
+            $step->step($workspace);
+        }
+
+        $workspace->each(function (Table $table) {
             $table->align();
         });
 

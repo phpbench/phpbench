@@ -192,7 +192,6 @@ class Runner
                 $bin,
                 $reflection->getFileName(),
                 $subject->getMethodName(),
-                $subject->getMethodName(),
                 escapeshellarg(json_encode($parameters)),
                 $nbIterations
             );

@@ -29,8 +29,8 @@ class FooterStep implements Step
     {
         $workspace->each(function (Table $table) {
             foreach ($this->functions as $function) {
-                $row = $table->createAndAddRow(array('footer'));
-                foreach ($table->getColumnNames(array('footer')) as $colName) {
+                $row = $table->createAndAddRow(array('.footer'));
+                foreach ($table->getColumnNames(array('aggregate')) as $colName) {
                     $groups = $table->getColumn($colName)->getGroups();
                     $groups[] = 'footer';
                     $row->set(
@@ -39,7 +39,7 @@ class FooterStep implements Step
                         $groups
                     );
                 }
-                $row->set(' ', '<< ' . $function, array('footer'));
+                $row->set(' ', '<< ' . $function, array('.footer'));
             }
 
             $table->align();

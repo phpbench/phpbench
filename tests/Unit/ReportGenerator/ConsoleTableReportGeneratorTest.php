@@ -11,10 +11,13 @@
 
 namespace PhpBench\Tests\Unit\ReportGenerator;
 
-use PhpBench\ReportGenerator\ConsoleTableReportGenerator;
+use PhpBench\Report\Generator\ConsoleTableReportGenerator;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Console\Output\BufferedOutput;
 
+/**
+ * TODO: This is difficult to maintain
+ */
 class ConsoleTableReportGeneratorTest extends \PHPUnit_Framework_TestCase
 {
     private $reportGenerator;
@@ -65,6 +68,9 @@ class ConsoleTableReportGeneratorTest extends \PHPUnit_Framework_TestCase
             'index' => 0,
             'time' => 123,
             'revs' => 123,
+            'memory' => 123,
+            'memory_inc' => 123,
+            'memory_diff_inc' => 123,
             'memory_diff' => 123,
         ));
         $this->reportGenerator->generate($this->suiteResult->reveal(), $this->output, $this->options);

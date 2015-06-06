@@ -62,7 +62,7 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
                     $value =  number_format($value);
 
                     return $value . '<dark>μs</dark>';
-                }, array('time'));
+                }, array('.time'));
                 break;
             default:
                 // format the float cells
@@ -72,7 +72,7 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
                     $value = preg_replace('{^([0|\\.]+)(.+)$}', '<blue>\1</blue>\2', $value);
 
                     return $value . '<dark>s</dark>';
-                }, array('time'));
+                }, array('.time'));
         }
 
         $data->mapValues(function ($cell) {
@@ -90,7 +90,7 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
             }
 
             return $prefix . number_format($cell->getValue()) . '<dark>b</dark>';
-        }, array('memory'));
+        }, array('.memory'));
 
         // format the deviation
         $data->mapValues(function ($cell) {
@@ -100,17 +100,17 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
             }
 
             return sprintf('%s%s', $prefix, number_format($cell->getValue(), 2)) . '%';
-        }, array('deviation'));
+        }, array('.deviation'));
 
         // format the revolutions
         $data->mapValues(function ($cell) {
             return $cell->getValue() . '<dark>rps</dark>';
-        }, array('rps'));
+        }, array('.rps'));
 
         // format the footer
         $data->mapValues(function ($cell) {
             return sprintf('<total>%s</total>', $cell->getValue());
-        }, array('footer'));
+        }, array('.footer'));
 
         // handle null
         $data->mapValues(function ($cell) {

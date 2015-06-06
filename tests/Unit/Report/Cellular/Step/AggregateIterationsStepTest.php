@@ -19,11 +19,14 @@ class AggregateIterationsStepTest extends \PHPUnit_Framework_TestCase
     /**
      * It should aggregate all rows in the group "aggregate"
      * It should add a column for each function for each aggregated field
+     * It should retain the title and description of the original tables
      */
     public function testAggregate()
     {
         $workspace = Workspace::create();
         $table = $workspace->createAndAddTable();
+        $table->setTitle('Hello');
+        $table->setDescription('World');
         $table->createAndAddRow()
             ->set('run', 0)
             ->set('revs', 100)
@@ -41,6 +44,8 @@ class AggregateIterationsStepTest extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(1, $workspace->getTables());
         $table = $workspace[0];
+        $this->assertEquals('Hello', $table->getTitle());
+        $this->assertEquals('World', $table->getDescription());
         $this->assertCount(1, $table->getRows());
         $row = $table->getRow(0);
         $this->assertCount(6, $row->getCells());

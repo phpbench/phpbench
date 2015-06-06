@@ -47,7 +47,7 @@ class DeviationStep
                 $row->set(
                     'deviation', 
                     Calculator::deviation($meanTime, $row->getCell($this->deviationColumn)), 
-                    array('deviation', 'main')
+                    array('#deviation', '.deviation')
                 );
             });
         });

@@ -29,7 +29,7 @@ class AggregateIterationsStep implements Step
     public function step(Workspace $workspace)
     {
         $workspace->map(function (Table $table) {
-            return $table
+            $newTable = $table
                 ->partition(function ($row) {
                     return $row['run']->getValue();
                 })
@@ -40,7 +40,7 @@ class AggregateIterationsStep implements Step
 
                     $row = Row::create();
                     $row->set('run', Calculator::mean($table->getColumn('run')));
-                    $row->set('iters', $table->count(), array('footer'));
+                    $row->set('iters', $table->count());
 
                     foreach ($table->first()->getCells() as $colName => $cell) {
                         if (false === $cell->inGroup('aggregate')) {
@@ -57,6 +57,10 @@ class AggregateIterationsStep implements Step
                     }
                     $newTable->addRow($row);
                 });
+            $newTable->setTitle($table->getTitle());
+            $newTable->setDescription($table->getDescription());
+
+            return $newTable;
         });
     }
 }
