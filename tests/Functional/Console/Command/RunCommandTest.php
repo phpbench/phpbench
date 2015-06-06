@@ -262,7 +262,7 @@ class RunCommandTest extends BaseCommandTestCase
     }
 
     /**
-     * It should run specified groups
+     * It should run specified groups.
      */
     public function testGroups()
     {

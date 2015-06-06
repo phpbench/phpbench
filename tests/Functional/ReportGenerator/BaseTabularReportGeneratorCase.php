@@ -37,7 +37,7 @@ abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase
     public function testWithAggregateIterations()
     {
         $this->executeReport($this->getResults(), array(
-            'aggregate_iterations' => true,
+            'aggregate' => 'iteration',
         ));
     }
 
@@ -47,7 +47,7 @@ abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase
     public function testWithRevolutions()
     {
         $this->executeReport($this->getResults(), array(
-            'rps' => true,
+            'cols' => array('rps'),
         ));
     }
 
@@ -57,17 +57,7 @@ abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase
     public function testWithMemory()
     {
         $this->executeReport($this->getResults(), array(
-            'memory' => true,
-        ));
-    }
-
-    /**
-     * It should allow memory inclusive.
-     */
-    public function testWithMemoryInclusive()
-    {
-        $this->executeReport($this->getResults(), array(
-            'memory_inc' => true,
+            'cols' => array('memory', 'memory_inc'),
         ));
     }
 
@@ -97,17 +87,56 @@ abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase
     public function testDeviation()
     {
         $this->executeReport($this->getResults(), array(
-            'deviation' => true,
+            'cols' => array('deviation'),
         ));
     }
 
     /**
-     * It should allow groups to be specified
+     * It should allow groups to be specified.
      */
     public function testGroups()
     {
         $this->executeReport($this->getResults(), array(
             'groups' => array('foo'),
+        ));
+    }
+
+    /**
+     * It should throw an exception if an invalid aggregation value is given.
+     *
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage The option "aggregate" with value "hahahaha" is invalid. Accepted values are: "none", "iteration"
+     */
+    public function testInvalidAggregation()
+    {
+        $this->executeReport($this->getResults(), array(
+            'aggregate' => 'hahahaha',
+        ));
+    }
+
+    /**
+     * It should throw an exception if an invalid cols are given.
+     *
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Invalid columns: "foooo". Valid columns are: "run"
+     */
+    public function testInvalidCols()
+    {
+        $this->executeReport($this->getResults(), array(
+            'cols' => array('foooo'),
+        ));
+    }
+
+    /**
+     * It should throw an exception if an invalid funcs are given.
+     *
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Invalid functions: "foooo". Valid functions are "sum", "mean", "min", "max"
+     */
+    public function testInvalidFooterFuncs()
+    {
+        $this->executeReport($this->getResults(), array(
+            'footer_funcs' => array('foooo'),
         ));
     }
 }

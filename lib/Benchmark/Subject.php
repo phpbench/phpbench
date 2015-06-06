@@ -77,7 +77,7 @@ class Subject
         return $this->revs;
     }
 
-    public function getGroups() 
+    public function getGroups()
     {
         return $this->groups;
     }
