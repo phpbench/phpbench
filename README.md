@@ -207,6 +207,8 @@ And then you can generate the reports using:
 $ php vendor/bin/phpbench report resuts.xml --report=console_table
 ````
 
+This is also a great way to compare benchmarks.
+
 Example
 -------
 
