@@ -42,7 +42,7 @@ abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase
     }
 
     /**
-     * It should aggregate subject
+     * It should aggregate subject.
      */
     public function testWithAggregateSubject()
     {
@@ -128,7 +128,7 @@ abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase
      * It should throw an exception if an invalid cols are given.
      *
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Invalid columns: "foooo". Valid columns are: 
+     * @expectedExceptionMessage Invalid columns: "foooo". Valid columns are:
      */
     public function testInvalidCols()
     {

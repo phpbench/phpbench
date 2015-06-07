@@ -12,7 +12,6 @@
 namespace PhpBench\Tests\Unit\Report\Cellular\Step;
 
 use DTL\Cellular\Workspace;
-use PhpBench\Report\Cellular\Step\RpsStep;
 use PhpBench\Report\Cellular\Step\SortStep;
 
 class SortStepTest extends \PHPUnit_Framework_TestCase
@@ -20,7 +19,7 @@ class SortStepTest extends \PHPUnit_Framework_TestCase
     /**
      * Sort the results
      * In ascending order
-     * In descending order
+     * In descending order.
      *
      * @dataProvider provideSort
      */

@@ -12,12 +12,11 @@
 namespace PhpBench\Report\Cellular\Step;
 
 use DTL\Cellular\Table;
-use DTL\Cellular\Row;
 use PhpBench\Report\Cellular\Step;
 use DTL\Cellular\Workspace;
 
 /**
- * Sort the results
+ * Sort the results.
  */
 class SortStep implements Step
 {
@@ -46,4 +45,3 @@ class SortStep implements Step
         });
     }
 }
-

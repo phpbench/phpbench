@@ -45,6 +45,8 @@ class ConsoleTableReportGeneratorTest extends \PHPUnit_Framework_TestCase
         $this->subjectResult->getIterationsResults()->willReturn(array(
             $this->iterationsResult->reveal(),
         ));
+        $this->subjectResult->getGroups()->willReturn(array(
+        ));
         $this->iterationsResult->getIterationResults()->willReturn(array(
             $this->iterationResult1,
         ));

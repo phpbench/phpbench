@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Report\Cellular\Step;
 
 use DTL\Cellular\Workspace;
@@ -39,6 +48,7 @@ class AggregateSubjectStep extends AggregateIterationsStep
         $newTable = $newWorkspace->getTable(0);
         $subjectNames = $newTable->evaluate(function ($row, $names) {
             $names[] = $row['subject']->getValue();
+
             return $names;
         }, array());
         $newTable->setTitle('Aggregation by subject');

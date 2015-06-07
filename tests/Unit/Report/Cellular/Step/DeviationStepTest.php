@@ -32,7 +32,7 @@ class DeviationStepTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should allow the specification of a function
+     * It should allow the specification of a function.
      */
     public function testDeviationFunction()
     {
