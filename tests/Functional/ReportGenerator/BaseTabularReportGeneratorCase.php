@@ -141,7 +141,7 @@ abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase
      * It should throw an exception if an invalid funcs are given.
      *
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Invalid functions: "foooo". Valid functions are "sum", "mean", "min", "max"
+     * @expectedExceptionMessage Invalid function: "foooo". Valid functions are "sum", "mean", "min", "max"
      */
     public function testInvalidFooterFuncs()
     {

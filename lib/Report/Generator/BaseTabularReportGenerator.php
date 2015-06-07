@@ -74,31 +74,53 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
             )
         ));
 
-        $functionsValidator = function ($funcs) {
-            $availableFuncs = array('sum', 'mean', 'min', 'max', 'median');
-            $intersect = array_intersect($funcs, $availableFuncs);
-            if (count($intersect) !== count($funcs)) {
+        $colsValidator = function ($cols) {
+            $intersect = array_intersect($cols, $this->availableCols);
+            if (count($intersect) !== count($cols)) {
                 throw new \InvalidArgumentException(sprintf(
-                    'Invalid functions: "%s". Valid functions are "%s"',
-                    implode('", "', array_diff($funcs, $intersect)),
-                    implode('", "', $availableFuncs)
+                    'Invalid columns: "%s". Valid columns are: "%s" ',
+                    implode('", "', array_diff($cols, $intersect)),
+                    implode('", "', $this->availableCols)
                 ));
             }
 
             return true;
         };
 
-        $colsValidator = function ($funcs) {
-            $intersect = array_intersect($funcs, $this->availableCols);
-            if (count($intersect) !== count($funcs)) {
-                throw new \InvalidArgumentException(sprintf(
-                    'Invalid columns: "%s". Valid columns are: "%s" ',
-                    implode('", "', array_diff($funcs, $intersect)),
-                    implode('", "', $this->availableCols)
-                ));
+        $functionsValidator = function ($funcs) use ($colsValidator) {
+            $availableFuncs = array('sum', 'mean', 'min', 'max', 'median');
+            foreach ($funcs as $function => $cols) {
+                if (!is_array($cols)) {
+                    $function = $cols;
+                    $cols = $this->availableCols;
+                }
+
+                $colsValidator($cols);
+
+                if (!in_array($function, $availableFuncs)) {
+                    throw new \InvalidArgumentException(sprintf(
+                        'Invalid function: "%s". Valid functions are "%s"',
+                        $function,
+                        implode('", "', $availableFuncs)
+                    ));
+                }
             }
 
             return true;
+        };
+
+        $functionsNormalizer = function ($resolver, $funcs) {
+            $normalized = array();
+            foreach ($funcs as $function => $cols) {
+                if (!is_array($cols)) {
+                    $normalized[$cols] = $this->availableCols;
+                    continue;
+                }
+
+                $normalized[$function] = $cols;
+            }
+
+            return $normalized;
         };
 
         $options->setAllowedValues('time_format', array('integer', 'fraction'));
@@ -113,6 +135,9 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
         $options->setAllowedTypes('aggregate_funcs', 'array');
         $options->setAllowedTypes('precision', 'int');
         $options->setNormalizer('sort_dir', function ($resolver, $value) { return strtolower($value); });
+        $options->setNormalizer('aggregate_funcs', $functionsNormalizer);
+        $options->setNormalizer('footer_funcs', $functionsNormalizer);
+        $options->setNormalizer('deviation_funcs', $functionsNormalizer);
     }
 
     public function generate(SuiteResult $suite, OutputInterface $output, array $options)

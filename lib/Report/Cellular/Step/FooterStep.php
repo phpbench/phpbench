@@ -30,7 +30,7 @@ class FooterStep implements Step
     /**
      * @param string[] $functions
      */
-    public function __construct(array $functions)
+    public function __construct(array $functions = array())
     {
         $this->functions = $functions;
     }
@@ -38,7 +38,7 @@ class FooterStep implements Step
     public function step(Workspace $workspace)
     {
         $workspace->each(function (Table $table) {
-            foreach ($this->functions as $function) {
+            foreach (array_keys($this->functions) as $function) {
                 $row = $table->createAndAddRow(array('.footer'));
                 foreach ($table->getColumnNames(array('aggregate')) as $colName) {
                     $groups = $table->getColumn($colName)->getGroups();

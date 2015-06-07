@@ -75,17 +75,19 @@ class AggregateRunStep implements Step
      */
     protected function applyAggregation(Table $table, Row $row)
     {
-        foreach ($table->first()->getCells() as $colName => $cell) {
-            if (false === $cell->inGroup('aggregate')) {
-                continue;
-            }
+        foreach ($this->functions as $function => $cols) {
+            foreach ($table->first()->getCells(array('aggregate')) as $colName => $cell) {
+                foreach ($cols as $col) {
+                    if (false === $cell->inGroup('#' . $col)) {
+                        continue;
+                    }
 
-            foreach ($this->functions as $function) {
-                $row->set(
-                    $function . '_' . $colName,
-                    Calculator::$function($table->getColumn($colName)),
-                    $cell->getGroups()
-                );
+                    $row->set(
+                        $function . '_' . $colName,
+                        Calculator::$function($table->getColumn($colName)),
+                        $cell->getGroups()
+                    );
+                }
             }
         }
     }
