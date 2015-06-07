@@ -36,7 +36,7 @@ class FooterStepTest extends \PHPUnit_Framework_TestCase
             ->set('rps', 5000, array('aggregate'));
         $table->align();
 
-        $step = new FooterStep(array('mean', 'max'));
+        $step = new FooterStep(array('mean' => array('time'), 'max' => 'time'));
         $step->step($workspace);
 
         $table = $workspace->getTable(0);

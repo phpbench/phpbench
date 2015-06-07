@@ -15,11 +15,12 @@ use DTL\Cellular\Table;
 use DTL\Cellular\Row;
 use DTL\Cellular\Workspace;
 use DTL\Cellular\Calculator;
+use PhpBench\Report\Cellular\Step;
 
 /**
  * Add deviation from mean for each row for a given deviation column defaulting to "time".
  */
-class DeviationStep
+class DeviationStep implements Step
 {
     /**
      * @var string
@@ -36,7 +37,7 @@ class DeviationStep
      *
      * @param string
      */
-    public function __construct($deviationColumn = 'time', array $functions = array('min'))
+    public function __construct($deviationColumn = 'time', array $functions = array('mean' => array('time')))
     {
         $this->deviationColumn = $deviationColumn;
         $this->functions = $functions;
@@ -49,7 +50,7 @@ class DeviationStep
     {
         $workspace->each(function (Table $table) {
             $table->each(function (Row $row) use ($table) {
-                foreach ($this->functions as $function) {
+                foreach (array_keys($this->functions) as $function) {
                     $deviationColumn = $table->getColumn($this->deviationColumn);
                     $meanValue = Calculator::{$function}
                     ($deviationColumn);

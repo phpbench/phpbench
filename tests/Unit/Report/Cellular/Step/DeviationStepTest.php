@@ -13,6 +13,7 @@ namespace PhpBench\Tests\Unit\Report\Cellular\Step;
 
 use DTL\Cellular\Workspace;
 use PhpBench\Report\Cellular\Step\DeviationStep;
+use PhpBench\Report\Cellular\Step;
 
 class DeviationStepTest extends \PHPUnit_Framework_TestCase
 {
@@ -22,7 +23,7 @@ class DeviationStepTest extends \PHPUnit_Framework_TestCase
      */
     public function testDeviation()
     {
-        $step = new DeviationStep('time');
+        $step = new DeviationStep('time', array('min' => array('time')));
         $rows = $this->getRows($step);
 
         $this->assertArrayHasKey('deviation_min', $rows[0]);
@@ -36,7 +37,7 @@ class DeviationStepTest extends \PHPUnit_Framework_TestCase
      */
     public function testDeviationFunction()
     {
-        $step = new DeviationStep('time', array('max'));
+        $step = new DeviationStep('time', array('max' => array('time')));
         $rows = $this->getRows($step);
 
         $this->assertArrayHasKey('deviation_max', $rows[0]);
@@ -45,7 +46,7 @@ class DeviationStepTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(-50, $rows[2]['deviation_max']->getValue());
     }
 
-    private function getRows($step)
+    private function getRows(Step $step)
     {
         $workspace = Workspace::create();
         $table = $workspace->createAndAddTable();
