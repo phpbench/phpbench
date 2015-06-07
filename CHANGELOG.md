@@ -13,3 +13,4 @@ CHANGELOG
 - [Report] Deviation: Choose the function used to determine the
 - [Report] Select which columns to use/display
 - [Report] Added `sort` and `sort_dir` options
+- [Report] Added `groups` option to run report only on specified groups
