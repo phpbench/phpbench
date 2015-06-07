@@ -23,6 +23,7 @@ use PhpBench\Report\Cellular\Step\AggregateIterationsStep;
 use PhpBench\Report\Cellular\Step\FooterStep;
 use PhpBench\Report\Cellular\Step\FilterColsStep;
 use PhpBench\Report\Cellular\Step\AggregateSubjectStep;
+use PhpBench\Report\Cellular\Step\SortStep;
 
 /**
  * This base class generates a table (a data table, not a UI table) with
@@ -68,11 +69,13 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
                 'groups' => array(),
                 'precision' => 6,
                 'time_format' => 'fraction',
+                'sort' => false,
+                'sort_dir' => 'asc',
             )
         ));
 
         $functionsValidator = function ($funcs) {
-            $availableFuncs = array('sum', 'mean', 'min', 'max');
+            $availableFuncs = array('sum', 'mean', 'min', 'max', 'median');
             $intersect = array_intersect($funcs, $availableFuncs);
             if (count($intersect) !== count($funcs)) {
                 throw new \InvalidArgumentException(sprintf(
@@ -104,10 +107,12 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
         $options->setAllowedValues('aggregate_funcs', $functionsValidator);
         $options->setAllowedValues('footer_funcs', $functionsValidator);
         $options->setAllowedValues('cols', $colsValidator);
+        $options->setAllowedValues('sort_dir', array('asc', 'desc'));
         $options->setAllowedTypes('footer_funcs', 'array');
         $options->setAllowedTypes('aggregate', 'string');
         $options->setAllowedTypes('aggregate_funcs', 'array');
         $options->setAllowedTypes('precision', 'int');
+        $options->setNormalizer('sort_dir', function ($resolver, $value) { return strtolower($value); });
     }
 
     public function generate(SuiteResult $suite, OutputInterface $output, array $options)
@@ -132,6 +137,10 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
 
         if (in_array('deviation', $options['cols'])) {
             $steps[] = new DeviationStep('time', $options['deviation_funcs']);
+        }
+
+        if ($options['sort']) {
+            $steps[] = new SortStep($options['sort'], $options['sort_dir']);
         }
 
         $steps[] = new FilterColsStep(array_diff($this->availableCols, $options['cols']));
