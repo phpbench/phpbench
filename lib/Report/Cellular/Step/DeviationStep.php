@@ -27,13 +27,19 @@ class DeviationStep
     private $deviationColumn;
 
     /**
+     * @var string
+     */
+    private $functions;
+
+    /**
      * The column that should be used to determine the deviation.
      *
      * @param string
      */
-    public function __construct($deviationColumn = 'time')
+    public function __construct($deviationColumn = 'time', array $functions = array('min'))
     {
         $this->deviationColumn = $deviationColumn;
+        $this->functions = $functions;
     }
 
     /**
@@ -43,12 +49,16 @@ class DeviationStep
     {
         $workspace->each(function (Table $table) {
             $table->each(function (Row $row) use ($table) {
-                $meanValue = Calculator::mean($table->getColumn($this->deviationColumn));
-                $row->set(
-                    'deviation',
-                    Calculator::deviation($meanValue, $row->getCell($this->deviationColumn)),
-                    array('#deviation', '.deviation')
-                );
+                foreach ($this->functions as $function) {
+                    $deviationColumn = $table->getColumn($this->deviationColumn);
+                    $meanValue = Calculator::{$function}
+                    ($deviationColumn);
+                    $row->set(
+                        'deviation_' . $function,
+                        Calculator::deviation($meanValue, $row->getCell($this->deviationColumn)),
+                        array('#deviation', '.deviation')
+                    );
+                }
             });
         });
     }

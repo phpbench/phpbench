@@ -12,9 +12,9 @@
 namespace PhpBench\Tests\Unit\Report\Cellular\Step;
 
 use DTL\Cellular\Workspace;
-use PhpBench\Report\Cellular\Step\AggregateIterationsStep;
+use PhpBench\Report\Cellular\Step\AggregateRunStep;
 
-class AggregateIterationsStepTest extends \PHPUnit_Framework_TestCase
+class AggregateRunStepTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * It should aggregate all rows in the group "aggregate"
@@ -41,7 +41,7 @@ class AggregateIterationsStepTest extends \PHPUnit_Framework_TestCase
             ->set('a', 90, array('aggregate'))
             ->set('b', 4, array('aggregate'));
 
-        $step = new AggregateIterationsStep(array('min', 'max'));
+        $step = new AggregateRunStep(array('min', 'max'));
         $step->step($workspace);
 
         $this->assertCount(1, $workspace->getTables());
@@ -50,7 +50,7 @@ class AggregateIterationsStepTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('World', $table->getDescription());
         $this->assertCount(1, $table->getRows());
         $row = $table->getRow(0);
-        $this->assertCount(7, $row->getCells());
+        $this->assertCount(8, $row->getCells());
         $this->assertCount(4, $row->getCells(array('aggregate')));
         $this->assertEquals(90, $row->getCell('max_a')->getValue());
         $this->assertEquals(10, $row->getCell('min_a')->getValue());

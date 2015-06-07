@@ -21,12 +21,12 @@ use DTL\Cellular\Calculator;
  * This steps aggregates cell (values) in the "#aggregate" group into a single row for each "run".
  * The `run`, `iters` and `param` values are not aggregated as they are constant for each run.
  */
-class AggregateIterationsStep implements Step
+class AggregateRunStep implements Step
 {
     /**
      * @var string[]
      */
-    private $functions;
+    protected $functions;
 
     /**
      * @param string[] $functions
@@ -55,27 +55,38 @@ class AggregateIterationsStep implements Step
                     $row = Row::create();
                     $row->set('run', Calculator::mean($table->getColumn('run')), $protoRow['run']->getGroups());
                     $row->set('iters', $table->count(), array('#iter'));
+                    $row->set('time', Calculator::mean($table->getColumn('time')), array('hidden'));
                     $row->setCell('params', clone $protoRow['params']);
 
-                    foreach ($table->first()->getCells() as $colName => $cell) {
-                        if (false === $cell->inGroup('aggregate')) {
-                            continue;
-                        }
-
-                        foreach ($this->functions as $function) {
-                            $row->set(
-                                $function . '_' . $colName,
-                                Calculator::$function($table->getColumn($colName)),
-                                $cell->getGroups()
-                            );
-                        }
-                    }
+                    $this->applyAggregation($table, $row);
                     $newTable->addRow($row);
                 });
             $newTable->setTitle($table->getTitle());
             $newTable->setDescription($table->getDescription());
+            $newTable->setAttributes($table->getAttributes());
 
             return $newTable;
         });
+    }
+
+    /**
+     * @param Table $table
+     * @param Row $row
+     */
+    protected function applyAggregation(Table $table, Row $row)
+    {
+        foreach ($table->first()->getCells() as $colName => $cell) {
+            if (false === $cell->inGroup('aggregate')) {
+                continue;
+            }
+
+            foreach ($this->functions as $function) {
+                $row->set(
+                    $function . '_' . $colName,
+                    Calculator::$function($table->getColumn($colName)),
+                    $cell->getGroups()
+                );
+            }
+        }
     }
 }

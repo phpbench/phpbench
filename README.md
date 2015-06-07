@@ -168,11 +168,17 @@ It has the following options:
 - `precision`: Number of decimal places to use when showing the time as a fraction.
 - `cols`: Choose which columns to display (defaults to all), columns are
   defined below.
-- `aggregate`: Aggregate the benchmark data, values: `none` or `iteration`.
+- `aggregate`: Aggregate the benchmark data, values: `none` or `run` or
+  `subject`.
 - `aggregate_funcs`: Use in association with aggregate to choose which
   functions to apply to the columns: `min`, `max`, `mean` or `median`.
 - `footer_funcs`: Adds an additional row for each given aggregate function:
   `min`, `max`, `mean` or `median`.
+- `deviation_funcs`: Which function(s) to use as the deviation base. One
+  column added per function: `sum`, `min`, `max`, `mean` or `median`.
+- `sort`: Sort the data by the given column.
+- `sort_dir`: The sort direction (one of `asc`, `desc`).
+- `group`: Only report on the specified group.
 
 The columns are:
 

@@ -67,6 +67,7 @@ class CostOfReflectionBench implements Benchmark
 
     /**
      * @description Instantiate new class
+     * @group cost_of_instantiation
      */
     public function benchNewClass()
     {
@@ -75,6 +76,7 @@ class CostOfReflectionBench implements Benchmark
 
     /**
      * @description Reflection new class
+     * @group cost_of_instantiation
      */
     public function benchReflectionNewInstance()
     {

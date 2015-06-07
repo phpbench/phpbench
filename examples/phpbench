@@ -5,14 +5,21 @@ require_once(__DIR__ . '/../vendor/autoload.php');
 $config = new PhpBench\Configuration();
 $config->addReport(array(
     'name' => 'console_table',
-    'aggregate' => 'iteration',
-    'aggregate_funcs' => array('mean', 'min', 'max'),
-    'cols' => array('run', 'iter', 'params', 'time', 'rps'),
+    'groups' => array('cost_of_reflection'),
+));
+$config->addReport(array(
+    'name' => 'console_table',
+    'aggregate' => 'subject',
+    'groups' => array('cost_of_instantiation'),
+    'cols' => array('description', 'run', 'iter', 'params', 'time', 'rps', 'deviation'),
 ));
 
 $config->addReport(array(
     'name' => 'console_table',
-    'cols' => array('run', 'iter', 'params', 'time', 'rps'),
+    'aggregate' => 'subject',
+    'groups' => array('array_keys'),
+    'sort' => 'time',
+    'cols' => array('description', 'run', 'iter', 'params', 'time', 'rps', 'deviation'),
 ));
 
 $config->setPath(__DIR__);
