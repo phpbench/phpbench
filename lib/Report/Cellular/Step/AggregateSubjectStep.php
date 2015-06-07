@@ -15,7 +15,7 @@ use DTL\Cellular\Workspace;
 use DTL\Cellular\Table;
 use DTL\Cellular\Calculator;
 
-class AggregateSubjectStep extends AggregateIterationsStep
+class AggregateSubjectStep extends AggregateRunStep
 {
     public function step(Workspace $workspace)
     {

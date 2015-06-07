@@ -19,11 +19,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 use PhpBench\Report\Cellular\CellularConverter;
 use PhpBench\Report\Cellular\Step\RpsStep;
 use PhpBench\Report\Cellular\Step\DeviationStep;
-use PhpBench\Report\Cellular\Step\AggregateIterationsStep;
 use PhpBench\Report\Cellular\Step\FooterStep;
 use PhpBench\Report\Cellular\Step\FilterColsStep;
 use PhpBench\Report\Cellular\Step\AggregateSubjectStep;
 use PhpBench\Report\Cellular\Step\SortStep;
+use PhpBench\Report\Cellular\Step\AggregateRunStep;
 
 /**
  * This base class generates a table (a data table, not a UI table) with
@@ -139,7 +139,7 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
         }
 
         if ($options['aggregate'] === 'run') {
-            $steps[] = new AggregateIterationsStep($options['aggregate_funcs']);
+            $steps[] = new AggregateRunStep($options['aggregate_funcs']);
         }
 
         if ($options['aggregate'] === 'subject') {

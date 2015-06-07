@@ -21,7 +21,7 @@ use DTL\Cellular\Calculator;
  * This steps aggregates cell (values) in the "#aggregate" group into a single row for each "run".
  * The `run`, `iters` and `param` values are not aggregated as they are constant for each run.
  */
-class AggregateIterationsStep implements Step
+class AggregateRunStep implements Step
 {
     /**
      * @var string[]
@@ -69,6 +69,10 @@ class AggregateIterationsStep implements Step
         });
     }
 
+    /**
+     * @param Table $table
+     * @param Row $row
+     */
     protected function applyAggregation(Table $table, Row $row)
     {
         foreach ($table->first()->getCells() as $colName => $cell) {

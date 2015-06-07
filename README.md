@@ -177,7 +177,8 @@ It has the following options:
 - `deviation_funcs`: Which function(s) to use as the deviation base. One
   column added per function: `sum`, `min`, `max`, `mean` or `median`.
 - `sort`: Sort the data by the given column.
-- `sort_dir`: The sort direction (one of `asc`, `desc`)
+- `sort_dir`: The sort direction (one of `asc`, `desc`).
+- `group`: Only report on the specified group.
 
 The columns are:
 
