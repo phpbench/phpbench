@@ -16,7 +16,7 @@ class AggregateSubjectStep extends AggregateIterationsStep
             })
             ->fork(function (Workspace $workspace, $newWorkspace) {
                 if (!$workspace->first()) {
-                    continue;
+                    return;
                 }
 
                 if (!isset($newWorkspace[0])) {

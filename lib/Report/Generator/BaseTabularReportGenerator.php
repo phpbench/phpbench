@@ -66,11 +66,11 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
                 'deviation_funcs' => array('min'),
                 'footer_funcs' => array(),
                 'cols' => $this->availableCols,
-                'groups' => array(),
                 'precision' => 6,
                 'time_format' => 'fraction',
-                'sort' => false,
+                'sort' => null,
                 'sort_dir' => 'asc',
+                'groups' => array(),
             )
         ));
 
@@ -120,6 +120,17 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
         $this->precision = $options['precision'];
 
         $workspace = CellularConverter::suiteToWorkspace($suite);
+
+        // TODO: Move this into a step
+        if ($options['groups']) {
+            $workspace = $workspace->filter(function ($table) use ($options) {
+                if (0 === count(array_intersect($table->getAttribute('groups'), $options['groups']))) {
+                    return false;
+                }
+
+                return true;
+            });
+        }
 
         $steps = array();
 
