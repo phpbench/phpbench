@@ -22,27 +22,48 @@ class DeviationStepTest extends \PHPUnit_Framework_TestCase
      */
     public function testDeviation()
     {
+        $step = new DeviationStep('time');
+        $rows = $this->getRows($step);
+
+        $this->assertArrayHasKey('deviation_min', $rows[0]);
+        $this->assertEquals(100, $rows[0]['deviation_min']->getValue());
+        $this->assertEquals(10, $rows[1]['deviation_min']->getValue());
+        $this->assertEquals(0, $rows[2]['deviation_min']->getValue());
+    }
+
+    /**
+     * It should allow the specification of a function
+     */
+    public function testDeviationFunction()
+    {
+        $step = new DeviationStep('time', array('max'));
+        $rows = $this->getRows($step);
+
+        $this->assertArrayHasKey('deviation_max', $rows[0]);
+        $this->assertEquals(0, $rows[0]['deviation_max']->getValue());
+        $this->assertEquals(-45, $rows[1]['deviation_max']->getValue());
+        $this->assertEquals(-50, $rows[2]['deviation_max']->getValue());
+    }
+
+    private function getRows($step)
+    {
         $workspace = Workspace::create();
         $table = $workspace->createAndAddTable();
         $table->createAndAddRow()
-            ->set('time', 100, array('deviation'))
+            ->set('time', 20, array('deviation'))
             ->set('rps', 500, array('deviation'));
         $table->createAndAddRow()
-            ->set('time', 50, array('deviation'))
+            ->set('time', 11, array('deviation'))
             ->set('rps', 500, array('deviation'));
         $table->createAndAddRow()
-            ->set('time', 0, array('deviation'))
+            ->set('time', 10, array('deviation'))
             ->set('rps', 500, array('deviation'));
 
-        $step = new DeviationStep('time');
         $step->step($workspace);
         $this->assertCount(1, $workspace->getTables());
         $table = $workspace->getTable(0);
         $this->assertCount(3, $table->getRows());
-        $rows = $table->getRows();
-        $this->assertArrayHasKey('deviation', $rows[0]);
-        $this->assertEquals(100, $rows[0]['deviation']->getValue());
-        $this->assertEquals(0, $rows[1]['deviation']->getValue());
-        $this->assertEquals(-100, $rows[2]['deviation']->getValue());
+
+        return $table->getRows();
     }
 }

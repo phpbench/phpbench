@@ -32,12 +32,22 @@ abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase
     }
 
     /**
-     * It should change aggregate iterations.
+     * It should aggregate by run.
      */
     public function testWithAggregateIterations()
     {
         $this->executeReport($this->getResults(), array(
-            'aggregate' => 'iteration',
+            'aggregate' => 'run',
+        ));
+    }
+
+    /**
+     * It should aggregate subject
+     */
+    public function testWithAggregateSubject()
+    {
+        $this->executeReport($this->getResults(), array(
+            'aggregate' => 'subject',
         ));
     }
 
@@ -105,7 +115,7 @@ abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase
      * It should throw an exception if an invalid aggregation value is given.
      *
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The option "aggregate" with value "hahahaha" is invalid. Accepted values are: "none", "iteration"
+     * @expectedExceptionMessage The option "aggregate" with value "hahahaha" is invalid. Accepted values are: "none", "run", "subject"
      */
     public function testInvalidAggregation()
     {
@@ -118,7 +128,7 @@ abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase
      * It should throw an exception if an invalid cols are given.
      *
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Invalid columns: "foooo". Valid columns are: "run"
+     * @expectedExceptionMessage Invalid columns: "foooo". Valid columns are:
      */
     public function testInvalidCols()
     {

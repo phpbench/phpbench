@@ -34,6 +34,9 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
      * Columns which are available.
      */
     private $availableCols = array(
+        'class',
+        'subject',
+        'description',
         'run',
         'iter',
         'params',
@@ -59,6 +62,7 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
             array(
                 'aggregate' => 'none',
                 'aggregate_funcs' => array('mean'),
+                'deviation_funcs' => array('min'),
                 'footer_funcs' => array(),
                 'cols' => $this->availableCols,
                 'groups' => array(),
@@ -95,6 +99,7 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
         };
 
         $options->setAllowedValues('time_format', array('integer', 'fraction'));
+        $options->setAllowedValues('deviation_funcs', $functionsValidator);
         $options->setAllowedValues('aggregate', array('none', 'run', 'subject'));
         $options->setAllowedValues('aggregate_funcs', $functionsValidator);
         $options->setAllowedValues('footer_funcs', $functionsValidator);
@@ -117,16 +122,16 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
             $steps[] = new RpsStep();
         }
 
-        if (in_array('deviation', $options['cols'])) {
-            $steps[] = new DeviationStep();
-        }
-
         if ($options['aggregate'] === 'run') {
             $steps[] = new AggregateIterationsStep($options['aggregate_funcs']);
         }
 
         if ($options['aggregate'] === 'subject') {
             $steps[] = new AggregateSubjectStep($options['aggregate_funcs']);
+        }
+
+        if (in_array('deviation', $options['cols'])) {
+            $steps[] = new DeviationStep('time', $options['deviation_funcs']);
         }
 
         $steps[] = new FilterColsStep(array_diff($this->availableCols, $options['cols']));

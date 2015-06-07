@@ -27,26 +27,26 @@ class AggregateSubjectStep extends AggregateIterationsStep
 
                 $table = $workspace->first();
                 $row = $newTable->createAndAddRow();
-                $row->set('class', $table->getAttribute('class'));
-                $row->set('subject', $table->getAttribute('subject'));
-                $row->set('description', $table->getAttribute('description'));
+                $row->set('iters', $table->count(), array('#iter'));
+                $row->set('class', $table->getAttribute('class'), array('#class'));
+                $row->set('subject', $table->getAttribute('subject'), array('#subject'));
+                $row->set('description', $table->getAttribute('description'), array('#description'));
+                $row->set('time', Calculator::mean($table->getColumn('time')), array('hidden'));
 
-                foreach ($table->first()->getCells() as $colName => $cell) {
-                    if (false === $cell->inGroup('aggregate')) {
-                        continue;
-                    }
-
-                    foreach ($this->functions as $function) {
-                        $row->set(
-                            $function . '_' . $colName,
-                            Calculator::$function($table->getColumn($colName)),
-                            $cell->getGroups()
-                        );
-                    }
-                }
+                $this->applyAggregation($table, $row);
             });
 
+        $newTable = $newWorkspace->getTable(0);
+        $subjectNames = $newTable->evaluate(function ($row, $names) {
+            $names[] = $row['subject']->getValue();
+            return $names;
+        }, array());
+        $newTable->setTitle('Aggregation by subject');
+        $newTable->setDescription(sprintf(
+            implode(', ', $subjectNames)
+        ));
+
         $workspace->clear();
-        $workspace[] = $newWorkspace->getTable(0);
+        $workspace[] = $newTable;
     }
 }
