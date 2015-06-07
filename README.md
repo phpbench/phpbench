@@ -3,6 +3,8 @@ PhpBench
 
 [![Build Status](https://travis-ci.org/dantleech/phpbench.svg?branch=master)](https://travis-ci.org/dantleech/phpbench)
 
+<div style="text-align: center"><img src="https://avatars3.githubusercontent.com/u/12785153?v=3&s=150" /></div>
+
 PhpBench is a benchmarking framework for PHP.
 
 Features:
