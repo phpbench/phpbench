@@ -31,6 +31,16 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
             'dark', new OutputFormatterStyle('black', null, array('bold'))
         );
 
+        $output->writeln(sprintf('<info>>></info> %s', $workspace->getAttribute('title')));
+        $output->writeln(sprintf('<info>>></info> %s', str_repeat('=', strlen($workspace->getAttribute('title')))));
+
+        if ($description = $workspace->getAttribute('description')) {
+            $output->writeln('');
+            $output->writeln('<comment>>></comment> ' . $description);
+        }
+
+        $output->writeln('');
+
         foreach ($workspace->getTables() as $data) {
             $output->writeln(sprintf(
                 '<comment>%s</comment>: %s',
