@@ -22,6 +22,7 @@ use PhpBench\ProgressLogger\DotsProgressLogger;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
+use PhpBench\Console\Output\IndentedConsoleOutput;
 
 class Application extends BaseApplication
 {
@@ -63,4 +64,12 @@ class Application extends BaseApplication
         parent::configureIO($input, $output);
         $output->getFormatter()->setStyle('greenbg', new OutputFormatterStyle('black', 'green', array()));
     }
+
+
+    public function run(InputInterface $input = null, OutputInterface $output = null)
+    {
+        $output = new IndentedConsoleOutput();
+        return parent::run($input, $output);
+    }
+
 }

@@ -30,28 +30,40 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
         $output->getFormatter()->setStyle(
             'dark', new OutputFormatterStyle('black', null, array('bold'))
         );
+        $output->getFormatter()->setStyle(
+            'headline', new OutputFormatterStyle('white', 'blue', array('bold'))
+        );
 
-        $output->writeln(sprintf('<info>>></info> %s', $workspace->getAttribute('title')));
-        $output->writeln(sprintf('<info>>></info> %s', str_repeat('=', strlen($workspace->getAttribute('title')))));
-
-        if ($description = $workspace->getAttribute('description')) {
+        if ($title = $workspace->getAttribute('title')) {
+            $title = '  ' . $title . '  ';
+            $output->writeln('<headline>' . str_repeat(' ', strlen($title)) . '</headline>');
+            $output->writeln('<headline>' . $title . '</headline>');
+            $output->writeln('<headline>' . str_repeat(' ', strlen($title)) . '</headline>');
+            $output->setIndentLevel(1);
             $output->writeln('');
-            $output->writeln('<comment>>></comment> ' . $description);
+
+            if ($description = $workspace->getAttribute('description')) {
+                $output->setIndentLevel(0);
+                $output->writeln($description);
+                $output->setIndentLevel(1);
+                $output->writeln('');
+            }
         }
 
-        $output->writeln('');
-
         foreach ($workspace->getTables() as $data) {
+            $output->setIndentLevel(1);
             $output->writeln(sprintf(
                 '<comment>%s</comment>: %s',
                 $data->getTitle(),
                 $data->getDescription()
             ));
+            $output->writeln('');
 
             $this->renderData($output, $data, $options);
 
             $output->writeln('');
         }
+        $output->setIndentLevel(0);
     }
 
     private function renderData(OutputInterface $output, $data, $options)

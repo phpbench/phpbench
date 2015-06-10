@@ -43,8 +43,6 @@ abstract class BaseCommand extends Command
             $report = $generators[$reportName];
             $report->configure($options);
 
-            $output->writeln(sprintf('>> %s >>', $reportName));
-            $output->writeln('');
             try {
                 $reportConfig = $options->resolve($reportConfig);
             } catch (UndefinedOptionsException $e) {
