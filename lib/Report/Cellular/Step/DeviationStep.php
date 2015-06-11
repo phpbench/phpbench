@@ -56,7 +56,7 @@ class DeviationStep implements Step
                     $row->set(
                         'deviation_' . $function,
                         Calculator::deviation($meanValue, $row->getCell($this->deviationColumn)),
-                        array('#deviation', '.deviation')
+                        array('.deviation')
                     );
                 }
             });

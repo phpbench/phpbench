@@ -18,7 +18,7 @@ use DTL\Cellular\Table;
 use DTL\Cellular\Calculator;
 
 /**
- * This steps aggregates cell (values) in the "#aggregate" group into a single row for each "run".
+ * This steps aggregates cell (values) in the "aggregate" group into a single row for each "run".
  * The `run`, `iters` and `param` values are not aggregated as they are constant for each run.
  */
 class AggregateRunStep implements Step
@@ -54,8 +54,8 @@ class AggregateRunStep implements Step
 
                     $row = Row::create();
                     $row->set('run', Calculator::mean($table->getColumn('run')), $protoRow['run']->getGroups());
-                    $row->set('iters', $table->count(), array('#iter'));
-                    $row->set('time', Calculator::mean($table->getColumn('time')), array('hidden'));
+                    $row->set('iters', $table->count());
+                    $row->set('time', Calculator::mean($table->getColumn('time')));
                     $row->setCell('params', clone $protoRow['params']);
 
                     $this->applyAggregation($table, $row);
