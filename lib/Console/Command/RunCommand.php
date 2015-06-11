@@ -44,13 +44,13 @@ EOT
         $this->addOption('report', array(), InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Report name or configuration in JSON format');
         $this->addOption('subject', array(), InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Subject to run (can be specified multiple times)');
         $this->addOption('group', array(), InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Group to run (can be specified multiple times)');
-        $this->addOption('dumpfile', 'df', InputOption::VALUE_OPTIONAL, 'Dump XML result to named file');
+        $this->addOption('dump-file', 'df', InputOption::VALUE_OPTIONAL, 'Dump XML result to named file');
         $this->addOption('dump', null, InputOption::VALUE_NONE, 'Dump XML result to stdout and suppress all other output');
         $this->addOption('parameters', null, InputOption::VALUE_REQUIRED, 'Override parameters to use in (all) benchmarks');
         $this->addOption('iterations', null, InputOption::VALUE_REQUIRED, 'Override number of iteratios to run in (all) benchmarks');
         $this->addOption('revs', null, InputOption::VALUE_REQUIRED, 'Override number of revs (revolutions) on (all) benchmarks');
-        $this->addOption('processisolation', 'pi', InputOption::VALUE_REQUIRED, 'Override rocess isolation policy, one of <comment>iteration</comment>, <comment>iterations</comment> or <comment>none</comment>');
-        $this->addOption('nosetup', null, InputOption::VALUE_NONE, 'Do not execute setUp or tearDown methods');
+        $this->addOption('process-isolation', 'pi', InputOption::VALUE_REQUIRED, 'Override rocess isolation policy, one of <comment>iteration</comment>, <comment>iterations</comment> or <comment>none</comment>');
+        $this->addOption('no-setup', null, InputOption::VALUE_NONE, 'Do not execute setUp or tearDown methods');
         $this->addOption('progress', 'l', InputOption::VALUE_REQUIRED, 'Progress logger to use, one of <comment>dots</comment>, <comment>benchdots</comment>', 'dots');
         $this->addOption('gc-enable', null, InputOption::VALUE_NONE, 'Enable garbage collection');
     }
@@ -61,11 +61,11 @@ EOT
         $consoleOutput = $output;
         $dump = $input->getOption('dump');
         $parametersJson = $input->getOption('parameters');
-        $noSetup = $input->getOption('nosetup');
+        $noSetup = $input->getOption('no-setup');
         $iterations = $input->getOption('iterations');
         $revs = $input->getOption('revs');
         $configFile = $input->getOption('config');
-        $processIsolation = $input->getOption('processisolation') ?: null;
+        $processIsolation = $input->getOption('process-isolation') ?: null;
         $processIsolation = $processIsolation === 'none' ? false : $processIsolation;
         $parameters = null;
 
@@ -111,7 +111,7 @@ EOT
 
         $subjects = $input->getOption('subject');
         $groups = $input->getOption('group');
-        $dumpfile = $input->getOption('dumpfile');
+        $dumpfile = $input->getOption('dump-file');
 
         if (false === $enableGc) {
             gc_disable();

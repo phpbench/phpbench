@@ -125,7 +125,7 @@ class RunCommandTest extends BaseCommandTestCase
     public function testDumpXml()
     {
         $tester = $this->runCommand('run', array(
-            '--dumpfile' => self::TEST_FNAME,
+            '--dump-file' => self::TEST_FNAME,
             'path' => __DIR__ . '/../../benchmarks/BenchmarkBench.php',
         ));
         $this->assertEquals(0, $tester->getStatusCode());
@@ -214,7 +214,7 @@ class RunCommandTest extends BaseCommandTestCase
     public function testProcessIsolationIteration()
     {
         $this->runCommand('run', array(
-            '--processisolation' => 'iteration',
+            '--process-isolation' => 'iteration',
             'path' => __DIR__ . '/../../benchmarks/IsolatedBench.php',
         ));
 
@@ -229,7 +229,7 @@ class RunCommandTest extends BaseCommandTestCase
     public function testProcessIsolationIterations()
     {
         $this->runCommand('run', array(
-            '--processisolation' => 'iterations',
+            '--process-isolation' => 'iterations',
             'path' => __DIR__ . '/../../benchmarks/IsolatedBench.php',
         ));
 
@@ -256,7 +256,7 @@ class RunCommandTest extends BaseCommandTestCase
     public function testSeparateProcessEscape()
     {
         $this->runCommand('run', array(
-            '--processisolation' => 'iteration',
+            '--process-isolation' => 'iteration',
             'path' => __DIR__ . '/../../benchmarks/IsolatedParametersBench.php',
         ));
     }

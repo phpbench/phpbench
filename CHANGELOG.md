@@ -8,9 +8,8 @@ CHANGELOG
 - [Report] Function `avg` renamed to `mean`
 - [Report] `aggregate_iterations` changed to `aggregate`
 - [Report] Aggregate on either runs or subjects
-- [Report] Deviation: Choose the function used to determine the
-  deviation base.
-- [Report] Deviation: Choose the function used to determine the
-- [Report] Select which columns to use/display
+- [Report] Explicit column name selection
+- [Report] Deviation step
 - [Report] Added `sort` and `sort_dir` options
 - [Report] Added `groups` option to run report only on specified groups
+- [RunCommand] Slugified option names

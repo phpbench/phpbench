@@ -188,7 +188,7 @@ class Runner
 
         for ($index = 0; $index < $iterationCount; $index++) {
             $command = sprintf(
-                'php %s run %s --subject=%s --nosetup --dump --parameters=%s --iterations=%d --processisolation=none',
+                'php %s run %s --subject=%s --no-setup --dump --parameters=%s --iterations=%d --process-isolation=none',
                 $bin,
                 $reflection->getFileName(),
                 $subject->getMethodName(),

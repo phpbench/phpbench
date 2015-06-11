@@ -211,7 +211,7 @@ PhpBench allows you to dump an XML representation of the results from which
 reports can be generated:
 
 ````bash
-$ php vendor/bin/phpbench run path/to/benchmarks --dumpfile=results.xml
+$ php vendor/bin/phpbench run path/to/benchmarks --dump-file=results.xml
 ````
 
 And then you can generate the reports using:

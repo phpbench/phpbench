@@ -28,7 +28,7 @@ class ReportCommand extends BaseCommand
 Generate a report from an existing XML file.
 
 To dump an XML file, use the <info>run</info> command with the
-<comment>dumpfile</comment option.
+<comment>dump-file</comment option.
 EOT
         );
 
