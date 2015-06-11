@@ -10,14 +10,14 @@ $config->addReport(array(
     'groups' => array('cost_of_setting'),
     'aggregate' => 'subject',
     'sort' => 'time',
+    'cols' => array('description', 'mean_time', 'min_time', 'max_time', 'mean_rps', 'deviation_min'),
 ));
 $config->addReport(array(
     'title' => 'Cost of Instantiation',
     'name' => 'console_table',
     'aggregate' => 'subject',
-    'aggregate_funcs' => array('mean' => array('time', 'rps')),
     'groups' => array('cost_of_instantiation'),
-    'cols' => array('description', 'run', 'iter', 'params', 'time', 'rps', 'deviation'),
+    'cols' => array('iters', 'description', 'mean_time', 'sum_rps', 'deviation_mean'),
 ));
 
 $config->addReport(array(
@@ -29,10 +29,9 @@ and the other half with another.
 EOT
     ,
     'aggregate' => 'subject',
-    'aggregate_funcs' => array('mean' => array('time', 'rps')),
     'groups' => array('array_keys'),
     'sort' => 'time',
-    'cols' => array('description', 'run', 'iter', 'params', 'time', 'rps', 'deviation'),
+    'cols' => array('iters', 'description', 'mean_time', 'mean_rps', 'deviation_min'),
 ));
 
 $config->setPath(__DIR__);

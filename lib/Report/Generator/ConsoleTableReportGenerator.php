@@ -16,9 +16,17 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use DTL\Cellular\Workspace;
 use PhpBench\Console\Output\OutputIndentDecorator;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ConsoleTableReportGenerator extends BaseTabularReportGenerator
 {
+    public function configure(OptionsResolver $options)
+    {
+        parent::configure($options);
+        $options->setDefault('style', 'horizontal');
+        $options->setAllowedValues('style', array('vertical', 'horizontal'));
+    }
+
     public function doGenerate(Workspace $workspace, OutputInterface $output, array $options)
     {
         $output = $output;
@@ -145,9 +153,6 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
             return $cell->getValue();
         });
 
-        $table = new Table($output);
-
-        $table->setHeaders($data->getColumnNames());
         foreach ($data->getRows(array('spacer')) as $spacer) {
             $spacer->fill('--');
         }
@@ -170,10 +175,29 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
 
                 return json_encode($value);
             });
-            $table->addRow($row->toArray());
         }
 
-        $table->render();
+        if ($options['style'] === 'horizontal') {
+            $table = new Table($output);
+            $table->setHeaders($data->getColumnNames());
+            foreach ($data->getRows() as $row) {
+                $table->addRow($row->toArray());
+            }
+
+            $table->render();
+        }
+
+        if ($options['style'] === 'vertical') {
+            foreach ($data->getRows() as $index => $row) {
+                $output->writeln(sprintf('<comment>Row %d</comment>', $index));
+                $table = new Table($output);
+                $table->setHeaders(array('column', 'value'));
+                foreach ($row as $name => $cell) {
+                    $table->addRow(array($name, $cell->getValue()));
+                }
+                $table->render();
+            }
+        }
     }
 
     private function setIndent(OutputInterface $output, $level)

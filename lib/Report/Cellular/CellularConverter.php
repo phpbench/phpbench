@@ -52,18 +52,16 @@ class CellularConverter
             foreach ($aggregateResult->getIterationResults() as $iterationIndex => $iteration) {
                 $stats = $iteration->getStatistics();
                 $row = $table->createAndAddRow(array('main'));
-                $row->set('run', $runIndex, array('#run'));
-                $row->set('iter', $iterationIndex, array('#iter'));
+                $row->set('run', $runIndex);
+                $row->set('iter', $iterationIndex);
 
-                $row->set('params', json_encode($aggregateResult->getParameters()), array('#params'));
+                $row->set('params', json_encode($aggregateResult->getParameters()));
 
                 $stat = $iteration->getStatistics();
-                $row->set('time', $stat['time'], array('#time', 'aggregate', '.time'));
-                $row->set('revs', $stats['revs'], array('#revs', 'aggregate', '.revs'));
-                $row->set('memory', $stat['memory'], array('#memory', 'aggregate', '.memory'));
-                $row->set('memory_diff', $stat['memory_diff'], array('#memory_diff', 'aggregate', '.memory', '.diff'));
-                $row->set('memory_inc', $stat['memory_inc'], array('#memory_inc', 'aggregate', '.memory', 'inc'));
-                $row->set('memory_diff_inc', $stat['memory_diff_inc'], array('#memory_diff_inc', 'aggregate', '.memory'));
+                $row->set('time', $stat['time'], array('aggregate', '.time'));
+                $row->set('revs', $stats['revs'], array('aggregate', '.revs'));
+                $row->set('memory', $stat['memory'], array('aggregate', '.memory'));
+                $row->set('memory_diff', $stat['memory_diff'], array('aggregate', '.memory', '.diff'));
             }
         }
     }

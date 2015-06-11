@@ -36,11 +36,11 @@ class AggregateSubjectStep extends AggregateRunStep
 
                 $table = $workspace->first();
                 $row = $newTable->createAndAddRow();
-                $row->set('iters', $table->count(), array('#iter'));
-                $row->set('class', $table->getAttribute('class'), array('#class'));
-                $row->set('subject', $table->getAttribute('subject'), array('#subject'));
-                $row->set('description', $table->getAttribute('description'), array('#description'));
-                $row->set('time', Calculator::mean($table->getColumn('time')), array('hidden'));
+                $row->set('iters', $table->count());
+                $row->set('class', $table->getAttribute('class'));
+                $row->set('subject', $table->getAttribute('subject'));
+                $row->set('description', $table->getAttribute('description'));
+                $row->set('time', Calculator::mean($table->getColumn('time')));
 
                 $this->applyAggregation($table, $row);
             });

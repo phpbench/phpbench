@@ -8,7 +8,7 @@ PhpBench is a benchmarking framework for PHP.
 Features:
 
 - Generate reports
-- Records relative and inclusive memory statistics
+- Records memory statistics
 - Run iterations in separate processes
 - Support for parameterized benchmarking cases and matrixes
 - Per-project configuration
@@ -33,18 +33,18 @@ equivalent of "unit" tests.
 
 PhpBench is designed also for running *BIG* benchmark suites which may take serveral
 minutes to complete, it could be seen as a *system* benchmarking framework,
-and therefore analagous to integration testing.
+        and therefore analagous to integration testing.
 
-PhpBench also provides a powerful report generation capability thanks to the
-[Cellular](https://github.com/phpbench/cellular) library.
+        PhpBench also provides a powerful report generation capability thanks to the
+        [Cellular](https://github.com/phpbench/cellular) library.
 
 
-Installation
-------------
+        Installation
+        ------------
 
-Install with composer, add it to `composer.json`:
+        Install with composer, add it to `composer.json`:
 
-````javascript
+        ````javascript
 {
     "phpbench/phpbench": "~1.0@dev"
 }
@@ -58,7 +58,7 @@ which begins with `bench` is executed by the benchmark runner and the time it
 took to execute it is recorded.
 
 The class name must end with `Bench` (this is just to optimize finding
-benchmark files).
+        benchmark files).
 
 The method is known as the benchmark *subject* and each method optionally
 accepts an `Iteration` from which can be accessed contextual information.
@@ -68,97 +68,97 @@ following annotations:
 
 ### @description
 
-**singular**
+    **singular**
 
-A description of the benchmark subject.
+    A description of the benchmark subject.
 
 ### @group
 
-**plural**
+    **plural**
 
-Assign the annotated method or class instance in the named group.
+    Assign the annotated method or class instance in the named group.
 
 ### @revs
 
-**plural**
+    **plural**
 
-Number of times the subject should be *consecutively* executed within a single
-iteration. Use this for measuring the speed of things at the *microsecond*
-level. You can declare this multiple times.
+    Number of times the subject should be *consecutively* executed within a single
+    iteration. Use this for measuring the speed of things at the *microsecond*
+    level. You can declare this multiple times.
 
 ### @iterations
 
-**singular**
+    **singular**
 
-Define the number of iterations that should be *measured*. The difference
-between this and `@revs` is that revs happen in a single measurement, whereas
-each iteration is recorded separately. 
+    Define the number of iterations that should be *measured*. The difference
+    between this and `@revs` is that revs happen in a single measurement, whereas
+    each iteration is recorded separately. 
 
-This can be useful for seeing how well larger operations scale on consecutive
-calls, it is not a good way to measure things that happen at the microsecond
-level however, where you will want to perform tens of thousands of repetitions
-as the time is measured per repetition so the results will be at a lower
-resolution.
+    This can be useful for seeing how well larger operations scale on consecutive
+    calls, it is not a good way to measure things that happen at the microsecond
+    level however, where you will want to perform tens of thousands of repetitions
+    as the time is measured per repetition so the results will be at a lower
+    resolution.
 
 ### @beforeMethod
 
-**plural**
+    **plural**
 
-Specify a method which should be executed before the subject. The before
-method also accepts an `Iteration` object and has access to the iteration
-context.
+    Specify a method which should be executed before the subject. The before
+    method also accepts an `Iteration` object and has access to the iteration
+    context.
 
-Multiple before methods can be specified.
+    Multiple before methods can be specified.
 
 ### @paramProvider
 
-**plural**
+    **plural**
 
-Specify a method which will provide parameters which can be accessed from the
-`Iteration` object by both the before method and the subject method.
+    Specify a method which will provide parameters which can be accessed from the
+    `Iteration` object by both the before method and the subject method.
 
-If multiple parameter providers are specified, then the they will be combined
-in to a cartesian product.
+    If multiple parameter providers are specified, then the they will be combined
+    in to a cartesian product.
 
 ### @processIsolation
 
-**singular**
+    **singular**
 
-Run each iteration or each set of iterations in an isolated process. This is
-useful for seeing the initial cost of the revolution.
+    Run each iteration or each set of iterations in an isolated process. This is
+    useful for seeing the initial cost of the revolution.
 
-Must be one of `iteration` or `iterations`.
+    Must be one of `iteration` or `iterations`.
 
-setUp and tearDown
-------------------
+    setUp and tearDown
+    ------------------
 
-You can defined `setUp` and `tearDown` methods. These will be called before
-and after the subject resepectively.
+    You can defined `setUp` and `tearDown` methods. These will be called before
+    and after the subject resepectively.
 
-These methods are useful for establishing an external state prior to running
-benchmarks.
+    These methods are useful for establishing an external state prior to running
+    benchmarks.
 
-NOTE: They cannot be used to establish "internal" state when process isolation is
-used.
+    NOTE: They cannot be used to establish "internal" state when process isolation is
+    used.
 
-Reports
--------
+    Reports
+    -------
 
-Reports can be specified simply as:
+    Reports can be specified simply as:
 
-````bash
-$ php vendor/bin/phpbench run benchmarks/ --report=<report name>
-````
+    ````bash
+    $ php vendor/bin/phpbench run benchmarks/ --report=<report name>
+    ````
 
-But you can also pass configuration to the report:
+    But you can also pass configuration to the report:
 
-````bash
-$ php vendor/bin/phpbench run benchmarks/ --report='{"name": "console_table", "cols": ["time", "memory", "deviation"]}'
-````
+    ````bash
+    $ php vendor/bin/phpbench run benchmarks/ --report='{"name": "console_table", "cols": ["time", "memory", "deviation"]}'
+    ````
 
-As you can see we pass a JSON encoded string which represents the report
-configuration. This string **MUST** contain at least the `name` key indicating
-which report to use, all other keys are interpreted as options.
+    As you can see we pass a JSON encoded string which represents the report
+    configuration. This string **MUST** contain at least the `name` key indicating
+    which report to use, all other keys are interpreted as options.
 
 There is a single report included by default: `console_table`.
 
@@ -170,28 +170,35 @@ It has the following options:
   defined below.
 - `aggregate`: Aggregate the benchmark data, values: `none` or `run` or
   `subject`.
-- `aggregate_funcs`: Use in association with aggregate to choose which
   functions to apply to the columns: `min`, `max`, `mean` or `median`.
-- `footer_funcs`: Adds an additional row for each given aggregate function:
   `min`, `max`, `mean` or `median`.
-- `deviation_funcs`: Which function(s) to use as the deviation base. One
   column added per function: `sum`, `min`, `max`, `mean` or `median`.
 - `sort`: Sort the data by the given column.
 - `sort_dir`: The sort direction (one of `asc`, `desc`).
 - `group`: Only report on the specified group.
+- `style`: Display one table per data group (`horizontal`) or one table per row (`vertical`) In the
+  latter case the table will have two columns, `field` and `value`. Defaults
+  to `horizontal`.
 
 The columns are:
 
 - `run`: Show the run index.
 - `iter`: Show the iteration index.
-- `time`: Time taken in microseconds.
-- `memory`: Memory used by the subject (accumulative).
-- `memory_diff`: Memory used by the subject (non-accumulative).
-- `memory_inc`: Memory used globally (accumulative).
-- `memory_diff_inc`: Memory used globally (non-accumulative).
-- `revs`: Number of times the subject was repeated.
-- `rps`: Revolutions per second - number of times the subject is executed in a second.
-- `deviation`: Deviation from the mean as a percentage.
+- `time`: Time taken in microseconds (aggregate)
+- `memory`: Memory used by the subject (aggregate)
+- `memory_diff`: Memory used by the subject (aggregate)
+- `revs`: Number of times the subject was repeated (aggregate)
+- `rps`: Revolutions per second - number of times the subject is executed in a second (aggregate)
+- `deviation_[mean|min|max]`: Deviation from the mean as a percentage.
+  Deviation value is a percentage from the result of the function sufix of the
+  option name.
+
+The `aggregate` option, when specified will make available a new set of column
+names. Each `aggregate` column above will be prefixed with a function, e.g.
+`mean_memory`, `max_rps`.
+
+To see (readable) list of all the available column names, run your report with
+the `vertical` style.
 
 Dumping XML and deferring reports
 ---------------------------------

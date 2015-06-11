@@ -13,6 +13,9 @@ namespace PhpBench\Report\Cellular\Step;
 
 use PhpBench\Report\Cellular\Step;
 use DTL\Cellular\Workspace;
+use DTL\Cellular\Cell;
+use DTL\Cellular\Row;
+use DTL\Cellular\Table;
 
 /**
  * This step removes all of the columns passed in the constructor from each row.
@@ -22,14 +25,14 @@ class FilterColsStep implements Step
     /**
      * @var string[]
      */
-    private $removeCols;
+    private $cols;
 
     /**
-     * @param string[] $removeCols
+     * @param string[] $cols
      */
-    public function __construct(array $removeCols)
+    public function __construct(array $cols)
     {
-        $this->removeCols = $removeCols;
+        $this->cols = $cols;
     }
 
     /**
@@ -37,19 +40,36 @@ class FilterColsStep implements Step
      */
     public function step(Workspace $workspace)
     {
-        foreach ($this->removeCols as $removeCol) {
-            $workspace->each(function ($table) use ($removeCol) {
-                $table->each(function ($row) use ($removeCol) {
-                    // remove by groups (col names will have changed in the aggregate iteration step)
-                    foreach ($row->getColumnNames(array('#' . $removeCol)) as $colName) {
-                        $row->remove($colName);
+        if (empty($this->cols)) {
+            return;
+        }
+
+        $workspace->each(function (Table $table) {
+            $columnNames = $table->getColumnNames();
+
+            $unknownColumns = array();
+            foreach ($this->cols as $col) {
+                if (false === in_array($col, $columnNames)) {
+                    $unknownColumns[] = $col;
+                }
+            }
+
+            if ($unknownColumns) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Specified column(s) "%s" is(are) not valid. Known columns are: "%s"',
+                    implode('", "', $unknownColumns), implode('", "', $columnNames)
+                ));
+            }
+
+            $table->each(function (Row $row) {
+                $row->filter(function (Cell $cell, $colName) {
+                    if (in_array($colName, $this->cols)) {
+                        return true;
                     }
 
-                    foreach ($row->getColumnNames(array('hidden')) as $hidden) {
-                        $row->remove($hidden);
-                    }
+                    return false;
                 });
             });
-        }
+        });
     }
 }

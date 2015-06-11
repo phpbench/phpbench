@@ -23,7 +23,7 @@ class DeviationStepTest extends \PHPUnit_Framework_TestCase
      */
     public function testDeviation()
     {
-        $step = new DeviationStep('time', array('min' => array('time')));
+        $step = new DeviationStep('time', array('min'));
         $rows = $this->getRows($step);
 
         $this->assertArrayHasKey('deviation_min', $rows[0]);
@@ -37,7 +37,7 @@ class DeviationStepTest extends \PHPUnit_Framework_TestCase
      */
     public function testDeviationFunction()
     {
-        $step = new DeviationStep('time', array('max' => array('time')));
+        $step = new DeviationStep('time', array('max'));
         $rows = $this->getRows($step);
 
         $this->assertArrayHasKey('deviation_max', $rows[0]);
