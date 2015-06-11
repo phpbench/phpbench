@@ -31,8 +31,6 @@ class CellularConverterTest extends \PHPUnit_Framework_TestCase
             'revs' => 1000,
             'memory' => 123,
             'memory_diff' => 123,
-            'memory_inc' => 200,
-            'memory_diff_inc' => 500,
         ));
         $iterations = new IterationsResult(array($iteration1), array());
         $subject1 = new SubjectResult('mySubject1', 'My Subject\'s description', array('one', 'two'), array($iterations));
@@ -51,7 +49,5 @@ class CellularConverterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1000, $row['revs']->getValue());
         $this->assertEquals(123, $row['memory']->getValue());
         $this->assertEquals(123, $row['memory_diff']->getValue());
-        $this->assertEquals(200, $row['memory_inc']->getValue());
-        $this->assertEquals(500, $row['memory_diff_inc']->getValue());
     }
 }

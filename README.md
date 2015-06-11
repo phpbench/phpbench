@@ -8,7 +8,7 @@ PhpBench is a benchmarking framework for PHP.
 Features:
 
 - Generate reports
-- Records relative and inclusive memory statistics
+- Records memory statistics
 - Run iterations in separate processes
 - Support for parameterized benchmarking cases and matrixes
 - Per-project configuration
@@ -33,18 +33,18 @@ equivalent of "unit" tests.
 
 PhpBench is designed also for running *BIG* benchmark suites which may take serveral
 minutes to complete, it could be seen as a *system* benchmarking framework,
-and therefore analagous to integration testing.
+        and therefore analagous to integration testing.
 
-PhpBench also provides a powerful report generation capability thanks to the
-[Cellular](https://github.com/phpbench/cellular) library.
+        PhpBench also provides a powerful report generation capability thanks to the
+        [Cellular](https://github.com/phpbench/cellular) library.
 
 
-Installation
-------------
+        Installation
+        ------------
 
-Install with composer, add it to `composer.json`:
+        Install with composer, add it to `composer.json`:
 
-````javascript
+        ````javascript
 {
     "phpbench/phpbench": "~1.0@dev"
 }
@@ -58,7 +58,7 @@ which begins with `bench` is executed by the benchmark runner and the time it
 took to execute it is recorded.
 
 The class name must end with `Bench` (this is just to optimize finding
-benchmark files).
+        benchmark files).
 
 The method is known as the benchmark *subject* and each method optionally
 accepts an `Iteration` from which can be accessed contextual information.
@@ -68,97 +68,97 @@ following annotations:
 
 ### @description
 
-**singular**
+    **singular**
 
-A description of the benchmark subject.
+    A description of the benchmark subject.
 
 ### @group
 
-**plural**
+    **plural**
 
-Assign the annotated method or class instance in the named group.
+    Assign the annotated method or class instance in the named group.
 
 ### @revs
 
-**plural**
+    **plural**
 
-Number of times the subject should be *consecutively* executed within a single
-iteration. Use this for measuring the speed of things at the *microsecond*
-level. You can declare this multiple times.
+    Number of times the subject should be *consecutively* executed within a single
+    iteration. Use this for measuring the speed of things at the *microsecond*
+    level. You can declare this multiple times.
 
 ### @iterations
 
-**singular**
+    **singular**
 
-Define the number of iterations that should be *measured*. The difference
-between this and `@revs` is that revs happen in a single measurement, whereas
-each iteration is recorded separately. 
+    Define the number of iterations that should be *measured*. The difference
+    between this and `@revs` is that revs happen in a single measurement, whereas
+    each iteration is recorded separately. 
 
-This can be useful for seeing how well larger operations scale on consecutive
-calls, it is not a good way to measure things that happen at the microsecond
-level however, where you will want to perform tens of thousands of repetitions
-as the time is measured per repetition so the results will be at a lower
-resolution.
+    This can be useful for seeing how well larger operations scale on consecutive
+    calls, it is not a good way to measure things that happen at the microsecond
+    level however, where you will want to perform tens of thousands of repetitions
+    as the time is measured per repetition so the results will be at a lower
+    resolution.
 
 ### @beforeMethod
 
-**plural**
+    **plural**
 
-Specify a method which should be executed before the subject. The before
-method also accepts an `Iteration` object and has access to the iteration
-context.
+    Specify a method which should be executed before the subject. The before
+    method also accepts an `Iteration` object and has access to the iteration
+    context.
 
-Multiple before methods can be specified.
+    Multiple before methods can be specified.
 
 ### @paramProvider
 
-**plural**
+    **plural**
 
-Specify a method which will provide parameters which can be accessed from the
-`Iteration` object by both the before method and the subject method.
+    Specify a method which will provide parameters which can be accessed from the
+    `Iteration` object by both the before method and the subject method.
 
-If multiple parameter providers are specified, then the they will be combined
-in to a cartesian product.
+    If multiple parameter providers are specified, then the they will be combined
+    in to a cartesian product.
 
 ### @processIsolation
 
-**singular**
+    **singular**
 
-Run each iteration or each set of iterations in an isolated process. This is
-useful for seeing the initial cost of the revolution.
+    Run each iteration or each set of iterations in an isolated process. This is
+    useful for seeing the initial cost of the revolution.
 
-Must be one of `iteration` or `iterations`.
+    Must be one of `iteration` or `iterations`.
 
-setUp and tearDown
-------------------
+    setUp and tearDown
+    ------------------
 
-You can defined `setUp` and `tearDown` methods. These will be called before
-and after the subject resepectively.
+    You can defined `setUp` and `tearDown` methods. These will be called before
+    and after the subject resepectively.
 
-These methods are useful for establishing an external state prior to running
-benchmarks.
+    These methods are useful for establishing an external state prior to running
+    benchmarks.
 
-NOTE: They cannot be used to establish "internal" state when process isolation is
-used.
+    NOTE: They cannot be used to establish "internal" state when process isolation is
+    used.
 
-Reports
--------
+    Reports
+    -------
 
-Reports can be specified simply as:
+    Reports can be specified simply as:
 
-````bash
-$ php vendor/bin/phpbench run benchmarks/ --report=<report name>
-````
+    ````bash
+    $ php vendor/bin/phpbench run benchmarks/ --report=<report name>
+    ````
 
-But you can also pass configuration to the report:
+    But you can also pass configuration to the report:
 
-````bash
-$ php vendor/bin/phpbench run benchmarks/ --report='{"name": "console_table", "cols": ["time", "memory", "deviation"]}'
-````
+    ````bash
+    $ php vendor/bin/phpbench run benchmarks/ --report='{"name": "console_table", "cols": ["time", "memory", "deviation"]}'
+    ````
 
-As you can see we pass a JSON encoded string which represents the report
-configuration. This string **MUST** contain at least the `name` key indicating
-which report to use, all other keys are interpreted as options.
+    As you can see we pass a JSON encoded string which represents the report
+    configuration. This string **MUST** contain at least the `name` key indicating
+    which report to use, all other keys are interpreted as options.
 
 There is a single report included by default: `console_table`.
 

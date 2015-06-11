@@ -67,7 +67,7 @@ abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase
     public function testWithMemory()
     {
         $this->executeReport($this->getResults(), array(
-            'cols' => array('memory', 'memory_inc'),
+            'cols' => array('memory', 'memory_diff'),
         ));
     }
 
