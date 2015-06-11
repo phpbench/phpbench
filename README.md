@@ -1,7 +1,7 @@
 PhpBench
 ========
 
-[![Build Status](https://travis-ci.org/dantleech/phpbench.svg?branch=master)](https://travis-ci.org/dantleech/phpbench)
+[![Build Status](https://travis-ci.org/phpbench/phpbench.svg?branch=master)](https://travis-ci.org/phpbench/phpbench)
 
 PhpBench is a benchmarking framework for PHP.
 
@@ -36,7 +36,7 @@ minutes to complete, it could be seen as a *system* benchmarking framework,
 and therefore analagous to integration testing.
 
 PhpBench also provides a powerful report generation capability thanks to the
-[Cellular](https://github.com/dantleech/cellular) library.
+[Cellular](https://github.com/phpbench/cellular) library.
 
 
 Installation
@@ -46,7 +46,7 @@ Install with composer, add it to `composer.json`:
 
 ````javascript
 {
-    "dantleech/phpbench": "~1.0@dev"
+    "phpbench/phpbench": "~1.0@dev"
 }
 ````
 
