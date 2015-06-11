@@ -40,6 +40,10 @@ class FilterColsStep implements Step
      */
     public function step(Workspace $workspace)
     {
+        if (empty($this->cols)) {
+            return;
+        }
+
         $workspace->each(function (Table $table) {
             $columnNames = $table->getColumnNames();
 

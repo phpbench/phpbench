@@ -99,9 +99,7 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
 
         $steps = array();
 
-        if (in_array('rps', $options['cols'])) {
-            $steps[] = new RpsStep();
-        }
+        $steps[] = new RpsStep();
 
         if ($options['aggregate'] === 'run') {
             $steps[] = new AggregateRunStep($this->availableFuncs);

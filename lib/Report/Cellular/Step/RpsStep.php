@@ -28,7 +28,11 @@ class RpsStep implements Step
     {
         $workspace->each(function (Table $table) {
             $table->each(function (Row $row) {
-                $row->set('rps', $row->getCell('time')->getValue() ? (1000000 / $row->getCell('time')->getValue()) * $row['revs']->getValue() : null, array('rps', 'aggregate'));
+                $row->set(
+                    'rps',
+                    $row->getCell('time')->getValue() ? (1000000 / $row->getCell('time')->getValue()) * $row['revs']->getValue() : null, 
+                    array('rps', 'aggregate')
+                );
             });
         });
     }
