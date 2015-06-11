@@ -38,7 +38,6 @@ and therefore analagous to integration testing.
 PhpBench also provides a powerful report generation capability thanks to the
 [Cellular](https://github.com/phpbench/cellular) library.
 
-
 Installation
 ------------
 
@@ -53,12 +52,13 @@ Install with composer, add it to `composer.json`:
 How it works
 ------------
 
-PhpBench is inspired by PhpUnit. Basically, you create a class. Each method
-which begins with `bench` is executed by the benchmark runner and the time it
-took to execute it is recorded.
+PhpBench is inspired by [PHPUnit](https://github.com/phpunit/phpunit).
+Basically, you create a class. Each method which begins with `bench` is
+executed by the benchmark runner and the time it took to execute it is
+recorded.
 
 The class name must end with `Bench` (this is just to optimize finding
-        benchmark files).
+benchmark files).
 
 The method is known as the benchmark *subject* and each method optionally
 accepts an `Iteration` from which can be accessed contextual information.
@@ -164,15 +164,12 @@ There is a single report included by default: `console_table`.
 
 It has the following options:
 
-- `time_format`: Either "fraction" (of a second) or integer (number of microseconds).
+- `time_format`: Either `fraction` (of a second) or `integer` (number of microseconds).
 - `precision`: Number of decimal places to use when showing the time as a fraction.
 - `cols`: Choose which columns to display (defaults to all), columns are
   defined below.
 - `aggregate`: Aggregate the benchmark data, values: `none` or `run` or
   `subject`.
-  functions to apply to the columns: `min`, `max`, `mean` or `median`.
-  `min`, `max`, `mean` or `median`.
-  column added per function: `sum`, `min`, `max`, `mean` or `median`.
 - `sort`: Sort the data by the given column.
 - `sort_dir`: The sort direction (one of `asc`, `desc`).
 - `group`: Only report on the specified group.
@@ -198,7 +195,8 @@ names. Each `aggregate` column above will be prefixed with a function, e.g.
 `mean_memory`, `max_rps`.
 
 To see (readable) list of all the available column names, run your report with
-the `vertical` style.
+the `vertical` style, or, you can just specify a non-existing column and an
+Exception will splurge all the available columns onto your screen.
 
 Dumping XML and deferring reports
 ---------------------------------
@@ -220,7 +218,8 @@ And then you can generate the reports using:
 $ php vendor/bin/phpbench report resuts.xml --report=console_table
 ````
 
-This is also a great way to compare benchmarks.
+This is also a great way to compare benchmarks, for example accross git
+branches.
 
 Example
 -------
@@ -230,6 +229,11 @@ Example
 use PhpBench\Benchmark\Iteration;
 use PhpBench\Benchmark;
 
+/**
+ * Annotations in the class doc are applied to each method
+ *
+ * @revs 1000
+ */
 class SomeBenchmarkBench implements Benchmark
 {
     /**
@@ -287,44 +291,37 @@ class SomeBenchmarkBench implements Benchmark
 You can then run the benchmark:
 
 ````bash
-$ php vendor/bin/phpbench run examples/ --report=console_table
-PhpBench 0.1. Running benchmarks.
+$ php bin/phpbench run tests/Functional/benchmarks --report=console_table
+PhpBench 0.2. Running benchmarks.
 
-...
+......
 
-Done (3 subjects, 11 iterations) in 0.05s
+Done (6 subjects, 26 iterations) in 0.28s
 
->> console_table >>
-
-BenchmarkBench#benchRandom(): randomBench
-+-----+------+------+-----------+-------------+----------+-----------+
-| run | iter | revs | time      | memory_diff | rps      | deviation |
-+-----+------+------+-----------+-------------+----------+-----------+
-| 1   | 1    | 1    | 0.035461s | +288b       | 28.20rps | 0.00%     |
-+-----+------+------+-----------+-------------+----------+-----------+
-
-BenchmarkBench#benchDoNothing(): Do nothing three times
-+-----+------+------+-----------+-------------+---------------+-----------+
-| run | iter | revs | time      | memory_diff | rps           | deviation |
-+-----+------+------+-----------+-------------+---------------+-----------+
-| 1   | 1    | 1    | 0.000007s | +192b       | 142,857.14rps | -52.65%   |
-| 1   | 1    | 1000 | 0.002462s | +192b       | 406,173.84rps | +34.62%   |
-| 1   | 2    | 1    | 0.000004s | +192b       | 250,000.00rps | -17.14%   |
-| 1   | 2    | 1000 | 0.002621s | +192b       | 381,533.77rps | +26.45%   |
-| 1   | 3    | 1    | 0.000004s | +192b       | 250,000.00rps | -17.14%   |
-| 1   | 3    | 1000 | 0.002633s | +192b       | 379,794.91rps | +25.87%   |
-+-----+------+------+-----------+-------------+---------------+-----------+
-
-BenchmarkBench#benchParameterized(): Parameterized bench mark
-+-----+------+------+--------+----------+-----------+-------------+---------------+-----------+
-| run | iter | revs | length | strategy | time      | memory_diff | rps           | deviation |
-+-----+------+------+--------+----------+-----------+-------------+---------------+-----------+
-| 1   | 1    | 1    | 1      | left     | 0.000006s | +192b       | 166,666.67rps | -13.04%   |
-| 2   | 1    | 1    | 2      | left     | 0.000005s | +192b       | 200,000.00rps | +4.35%    |
-| 3   | 1    | 1    | 1      | right    | 0.000005s | +192b       | 200,000.00rps | +4.35%    |
-| 4   | 1    | 1    | 2      | right    | 0.000005s | +192b       | 200,000.00rps | +4.35%    |
-+-----+------+------+--------+----------+-----------+-------------+---------------+-----------+
+  BenchmarkBench->benchRandom: randomBench
+  
+  +-----+------+--------+-----------+------+--------+-------------+-------+---------------+----------------+---------------+---------------+------------------+
+  | run | iter | params | time      | revs | memory | memory_diff | rps   | deviation_sum | deviation_mean | deviation_min | deviation_max | deviation_median |  
+  +-----+------+--------+-----------+------+--------+-------------+-------+---------------+----------------+---------------+---------------+------------------+
+  | 0   | 0    | []     | 0.028350s | 1    | 288b   | 288b        | 35.27 | 0.00%         | 0.00%          | 0.00%         | 0.00%         | 0.00%            |  
+  +-----+------+--------+-----------+------+--------+-------------+-------+---------------+----------------+---------------+---------------+------------------+
+  
+  BenchmarkBench->benchDoNothing: Do nothing three times
+  
+  +-----+------+--------+-----------+------+--------+-------------+------------+---------------+----------------+---------------+---------------+------------------+
+  | run | iter | params | time      | revs | memory | memory_diff | rps        | deviation_sum | deviation_mean | deviation_min | deviation_max | deviation_median |  
+  +-----+------+--------+-----------+------+--------+-------------+------------+---------------+----------------+---------------+---------------+------------------+
+  | 0   | 0    | []     | 0.000006s | 1    | 192b   | 192b        | 166,666.67 | -99.92%       | -99.52%        | +50.00%       | -99.76%       | -99.51%          |  
+  | 0   | 1    | []     | 0.002463s | 1000 | 384b   | 192b        | 406,008.93 | -67.05%       | +97.70%        | +61,475.00%   | -2.76%        | +99.51%          |  
+  | 0   | 2    | []     | 0.000004s | 1    | 576b   | 192b        | 250,000.00 | -99.95%       | -99.68%        | 0.00%         | -99.84%       | -99.68%          |  
+  | 0   | 3    | []     | 0.002533s | 1000 | 768b   | 192b        | 394,788.79 | -66.11%       | +103.32%       | +63,225.00%   | 0.00%         | +105.18%         |  
+  | 0   | 4    | []     | 0.000004s | 1    | 960b   | 192b        | 250,000.00 | -99.95%       | -99.68%        | 0.00%         | -99.84%       | -99.68%          |  
+  | 0   | 5    | []     | 0.002465s | 1000 | 1,152b | 192b        | 405,679.51 | -67.02%       | +97.86%        | +61,525.00%   | -2.68%        | +99.68%          |  
+  +-----+------+--------+-----------+------+--------+-------------+------------+---------------+----------------+---------------+---------------+------------------+
 ````
+
+Here we used the default configuration for `console_table`. See above for
+details on how to configure reports (and restrict the column output).
 
 Configuration
 -------------

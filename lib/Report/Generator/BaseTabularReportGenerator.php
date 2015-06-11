@@ -131,11 +131,13 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
             $table->align();
         });
 
-        $workspace->each(function (Table $table) use ($options) {
-            $table->each(function (Row $row) use ($options) {
-                $row->order($options['cols']);
+        if ($options['cols']) {
+            $workspace->each(function (Table $table) use ($options) {
+                $table->each(function (Row $row) use ($options) {
+                    $row->order($options['cols']);
+                });
             });
-        });
+        }
 
         $workspace->setAttribute('title', $options['title']);
         $workspace->setAttribute('description', $options['description']);
