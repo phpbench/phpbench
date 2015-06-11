@@ -125,7 +125,6 @@ EOT
             $xml = $this->dumpResult($result);
             file_put_contents($dumpfile, $xml);
             $consoleOutput->writeln('<info>Dumped result to </info>' . $dumpfile);
-            $consoleOutput->writeln('');
         }
         $consoleOutput->writeln('');
         $consoleOutput->writeln(sprintf(

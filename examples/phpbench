@@ -10,10 +10,11 @@ $config->addReport(array(
     'groups' => array('cost_of_setting'),
     'aggregate' => 'subject',
     'sort' => 'time',
-    'cols' => array('description', 'mean_time', 'min_time', 'max_time', 'mean_rps', 'deviation_min'),
+    'cols' => array('iters', 'sum_revs', 'description', 'mean_time', 'min_time', 'max_time', 'mean_rps', 'deviation_min'),
 ));
 $config->addReport(array(
     'title' => 'Cost of Instantiation',
+    'description' => 'Compares instantiating a class directly against instantiating via. Reflection',
     'name' => 'console_table',
     'aggregate' => 'subject',
     'groups' => array('cost_of_instantiation'),
@@ -24,8 +25,8 @@ $config->addReport(array(
     'title' => 'Comparison of Array Location Functions',
     'name' => 'console_table',
     'description' => <<<EOT
-This benchmark creates an array with 50,000 elements and populates half with one value,
-and the other half with another.
+This benchmark creates an array with 50,000 elements. Each subject checks the existence of
+the key with the index of the current revolution. (or in the case of in_arreay, for the value).
 EOT
     ,
     'aggregate' => 'subject',
