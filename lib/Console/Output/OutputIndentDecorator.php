@@ -1,24 +1,32 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Console\Output;
 
-use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 
 /**
- * This class enables the console output to be indented
+ * This class enables the console output to be indented.
  */
 class OutputIndentDecorator extends ConsoleOutput
 {
     /**
-     * @var integer
+     * @var int
      */
     private $indentLevel = 0;
 
     /**
-     * @var integer
+     * @var int
      */
     private $cursorpos = 0;
 
@@ -33,7 +41,7 @@ class OutputIndentDecorator extends ConsoleOutput
     /**
      * Number of spaces to indent output with.
      *
-     * @param integer
+     * @param int
      */
     public function setIndentLevel($level)
     {
@@ -48,7 +56,7 @@ class OutputIndentDecorator extends ConsoleOutput
         $messages = (array) $messages;
 
         if ($newline) {
-            $this->cursorpos = -1; 
+            $this->cursorpos = -1;
         }
 
         if ($this->cursorpos <= 0) {
