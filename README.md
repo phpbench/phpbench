@@ -33,18 +33,18 @@ equivalent of "unit" tests.
 
 PhpBench is designed also for running *BIG* benchmark suites which may take serveral
 minutes to complete, it could be seen as a *system* benchmarking framework,
-        and therefore analagous to integration testing.
+and therefore analagous to integration testing.
 
-        PhpBench also provides a powerful report generation capability thanks to the
-        [Cellular](https://github.com/phpbench/cellular) library.
+PhpBench also provides a powerful report generation capability thanks to the
+[Cellular](https://github.com/phpbench/cellular) library.
 
 
-        Installation
-        ------------
+Installation
+------------
 
-        Install with composer, add it to `composer.json`:
+Install with composer, add it to `composer.json`:
 
-        ````javascript
+````javascript
 {
     "phpbench/phpbench": "~1.0@dev"
 }
