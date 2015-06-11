@@ -25,6 +25,7 @@ use PhpBench\Report\Cellular\Step\AggregateSubjectStep;
 use PhpBench\Report\Cellular\Step\SortStep;
 use PhpBench\Report\Cellular\Step\AggregateRunStep;
 use PhpBench\Report\Cellular\StepChain;
+use DTL\Cellular\Row;
 
 /**
  * This base class generates a table (a data table, not a UI table) with
@@ -78,6 +79,7 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
         $options->setAllowedValues('sort_dir', array('asc', 'desc'));
         $options->setAllowedTypes('aggregate', 'string');
         $options->setAllowedTypes('precision', 'int');
+        $options->setAllowedTypes('cols', 'array');
         $options->setNormalizer('sort_dir', function ($resolver, $value) { return strtolower($value); });
     }
 
@@ -127,6 +129,12 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
         // align all the tables (fill in missing columns)
         $workspace->each(function (Table $table) {
             $table->align();
+        });
+
+        $workspace->each(function (Table $table) use ($options) {
+            $table->each(function (Row $row) use ($options) {
+                $row->order($options['cols']);
+            });
         });
 
         $workspace->setAttribute('title', $options['title']);
