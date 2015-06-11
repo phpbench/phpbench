@@ -19,11 +19,11 @@ class AggregateSubjectStep extends AggregateRunStep
 {
     public function step(Workspace $workspace)
     {
-        $newWorkspace = $workspace
+        $workspace
             ->partition(function (Table $table) {
                 return $table->getAttribute('class') . $table->getAttribute('subject');
             })
-            ->fork(function (Workspace $workspace, $newWorkspace) {
+            ->aggregate(function (Workspace $workspace, $newWorkspace) {
                 if (!$workspace->first()) {
                     return;
                 }
@@ -45,18 +45,15 @@ class AggregateSubjectStep extends AggregateRunStep
                 $this->applyAggregation($table, $row);
             });
 
-        $newTable = $newWorkspace->getTable(0);
-        $subjectNames = $newTable->evaluate(function ($row, $names) {
+        $table = $workspace->getTable(0);
+        $subjectNames = $table->evaluate(function ($row, $names) {
             $names[] = $row['subject']->getValue();
 
             return $names;
         }, array());
-        $newTable->setTitle('Aggregation by subject');
-        $newTable->setDescription(sprintf(
+        $table->setTitle('Aggregation by subject');
+        $table->setDescription(sprintf(
             implode(', ', $subjectNames)
         ));
-
-        $workspace->clear();
-        $workspace[] = $newTable;
     }
 }

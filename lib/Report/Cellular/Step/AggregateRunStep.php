@@ -41,12 +41,12 @@ class AggregateRunStep implements Step
      */
     public function step(Workspace $workspace)
     {
-        $workspace->map(function (Table $table) {
-            $newTable = $table
-                ->partition(function ($row) {
+        $workspace->each(function (Table $table) {
+            $table
+                ->partition(function (Row $row) {
                     return $row['run']->getValue();
                 })
-                ->fork(function ($table, $newTable) {
+                ->aggregate(function ($table, $newTable) {
                     if (!$table->first()) {
                         continue;
                     }
@@ -61,11 +61,9 @@ class AggregateRunStep implements Step
                     $this->applyAggregation($table, $row);
                     $newTable->addRow($row);
                 });
-            $newTable->setTitle($table->getTitle());
-            $newTable->setDescription($table->getDescription());
-            $newTable->setAttributes($table->getAttributes());
-
-            return $newTable;
+            $table->setTitle($table->getTitle());
+            $table->setDescription($table->getDescription());
+            $table->setAttributes($table->getAttributes());
         });
     }
 

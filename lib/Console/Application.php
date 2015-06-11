@@ -22,7 +22,14 @@ use PhpBench\ProgressLogger\DotsProgressLogger;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use PhpBench\Console\Output\OutputIndentDecorator;
 
+/**
+ * PhpBench application.
+ *
+ * @author Daniel Leech <daniel@dantleech.com>
+ */
 class Application extends BaseApplication
 {
     private $configuration;
@@ -43,11 +50,19 @@ class Application extends BaseApplication
         $this->configuration->addProgressLogger('benchdots', new DotsProgressLogger(true));
     }
 
+    /**
+     * Return the configuration.
+     *
+     * @return Configuration
+     */
     public function getConfiguration()
     {
         return $this->configuration;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected function getDefaultInputDefinition()
     {
         $default = parent::getDefaultInputDefinition();
@@ -58,9 +73,22 @@ class Application extends BaseApplication
         return $default;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected function configureIO(InputInterface $input, OutputInterface $output)
     {
         parent::configureIO($input, $output);
         $output->getFormatter()->setStyle('greenbg', new OutputFormatterStyle('black', 'green', array()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function run(InputInterface $input = null, OutputInterface $output = null)
+    {
+        $output = new OutputIndentDecorator(new ConsoleOutput());
+
+        return parent::run($input, $output);
     }
 }

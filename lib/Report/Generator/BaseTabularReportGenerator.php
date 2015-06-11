@@ -71,6 +71,8 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
                 'sort' => null,
                 'sort_dir' => 'asc',
                 'groups' => array(),
+                'title' => null,
+                'description' => null,
             )
         ));
 
@@ -193,6 +195,9 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
         $workspace->each(function (Table $table) {
             $table->align();
         });
+
+        $workspace->setAttribute('title', $options['title']);
+        $workspace->setAttribute('description', $options['description']);
 
         return $this->doGenerate($workspace, $output, $options);
     }

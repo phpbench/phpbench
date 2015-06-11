@@ -4,19 +4,32 @@ require_once(__DIR__ . '/../vendor/autoload.php');
 
 $config = new PhpBench\Configuration();
 $config->addReport(array(
+    'title' => 'Cost of Setting',
+    'description' => 'Comparison of different ways of setting properties',
     'name' => 'console_table',
-    'groups' => array('cost_of_reflection'),
+    'groups' => array('cost_of_setting'),
+    'aggregate' => 'subject',
+    'sort' => 'time',
 ));
 $config->addReport(array(
+    'title' => 'Cost of Instantiation',
     'name' => 'console_table',
     'aggregate' => 'subject',
+    'aggregate_funcs' => array('mean' => array('time', 'rps')),
     'groups' => array('cost_of_instantiation'),
     'cols' => array('description', 'run', 'iter', 'params', 'time', 'rps', 'deviation'),
 ));
 
 $config->addReport(array(
+    'title' => 'Comparison of Array Location Functions',
     'name' => 'console_table',
+    'description' => <<<EOT
+This benchmark creates an array with 50,000 elements and populates half with one value,
+and the other half with another.
+EOT
+    ,
     'aggregate' => 'subject',
+    'aggregate_funcs' => array('mean' => array('time', 'rps')),
     'groups' => array('array_keys'),
     'sort' => 'time',
     'cols' => array('description', 'run', 'iter', 'params', 'time', 'rps', 'deviation'),

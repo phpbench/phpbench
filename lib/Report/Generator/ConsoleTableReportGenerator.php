@@ -15,6 +15,7 @@ use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use DTL\Cellular\Workspace;
+use PhpBench\Console\Output\OutputIndentDecorator;
 
 class ConsoleTableReportGenerator extends BaseTabularReportGenerator
 {
@@ -30,18 +31,41 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
         $output->getFormatter()->setStyle(
             'dark', new OutputFormatterStyle('black', null, array('bold'))
         );
+        $output->getFormatter()->setStyle(
+            'headline', new OutputFormatterStyle('white', 'blue', array('bold'))
+        );
+
+        if ($title = $workspace->getAttribute('title')) {
+            $title = '  ' . $title . '  ';
+            $output->writeln('<headline>' . str_repeat(' ', strlen($title)) . '</headline>');
+            $output->writeln('<headline>' . $title . '</headline>');
+            $output->writeln('<headline>' . str_repeat(' ', strlen($title)) . '</headline>');
+            $this->setIndent($output, 1);
+            $output->writeln('');
+
+            if ($description = $workspace->getAttribute('description')) {
+                $this->setIndent($output, 0);
+                $output->writeln($description);
+                $this->setIndent($output, 1);
+                $output->writeln('');
+            }
+        }
 
         foreach ($workspace->getTables() as $data) {
+            $this->setIndent($output, 1);
             $output->writeln(sprintf(
                 '<comment>%s</comment>: %s',
                 $data->getTitle(),
                 $data->getDescription()
             ));
+            $output->writeln('');
 
             $this->renderData($output, $data, $options);
 
             $output->writeln('');
         }
+
+        $this->setIndent($output, 0);
     }
 
     private function renderData(OutputInterface $output, $data, $options)
@@ -150,5 +174,12 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
         }
 
         $table->render();
+    }
+
+    private function setIndent(OutputInterface $output, $level)
+    {
+        if ($output instanceof OutputIndentDecorator) {
+            $output->setIndentLevel($level);
+        }
     }
 }
