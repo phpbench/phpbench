@@ -24,6 +24,7 @@ use PhpBench\Report\Cellular\Step\FilterColsStep;
 use PhpBench\Report\Cellular\Step\AggregateSubjectStep;
 use PhpBench\Report\Cellular\Step\SortStep;
 use PhpBench\Report\Cellular\Step\AggregateRunStep;
+use PhpBench\Report\Cellular\StepChain;
 
 /**
  * This base class generates a table (a data table, not a UI table) with
@@ -97,33 +98,31 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
             });
         }
 
-        $steps = array();
+        $stepChain = new StepChain();
 
-        $steps[] = new RpsStep();
+        $stepChain->add(new RpsStep());
 
         if ($options['aggregate'] === 'run') {
-            $steps[] = new AggregateRunStep($this->availableFuncs);
+            $stepChain->add(new AggregateRunStep($this->availableFuncs));
         }
 
         if ($options['aggregate'] === 'subject') {
-            $steps[] = new AggregateSubjectStep($this->availableFuncs);
+            $stepChain->add(new AggregateSubjectStep($this->availableFuncs));
         }
 
-        $steps[] = new DeviationStep('time', $this->availableFuncs);
+        $stepChain->add(new DeviationStep('time', $this->availableFuncs));
 
         if ($options['sort']) {
-            $steps[] = new SortStep($options['sort'], $options['sort_dir']);
+            $stepChain->add(new SortStep($options['sort'], $options['sort_dir']));
         }
 
-        $steps[] = new FilterColsStep($options['cols']);
+        $stepChain->add(new FilterColsStep($options['cols']));
 
         if (false === empty($options['footer_funcs'])) {
-            $steps[] = new FooterStep($options['footer_funcs']);
+            $stepChain->add(new FooterStep($options['footer_funcs']));
         }
 
-        foreach ($steps as $step) {
-            $step->step($workspace);
-        }
+        $stepChain->run($workspace);
 
         // align all the tables (fill in missing columns)
         $workspace->each(function (Table $table) {
