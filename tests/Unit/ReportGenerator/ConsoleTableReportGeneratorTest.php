@@ -14,6 +14,7 @@ namespace PhpBench\Tests\Unit\ReportGenerator;
 use PhpBench\Report\Generator\ConsoleTableReportGenerator;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Console\Output\BufferedOutput;
+use PhpBench\Console\Output\OutputIndentDecorator;
 
 /**
  * TODO: This is difficult to maintain.
@@ -22,10 +23,12 @@ class ConsoleTableReportGeneratorTest extends \PHPUnit_Framework_TestCase
 {
     private $reportGenerator;
     private $output;
+    private $bufferedOutput;
 
     public function setUp()
     {
-        $this->output = new BufferedOutput();
+        $this->bufferedOutput = new BufferedOutput();
+        $this->output = new OutputIndentDecorator($this->bufferedOutput);
         $this->reportGenerator = new ConsoleTableReportGenerator();
         $optionsResolver = new OptionsResolver();
         $this->reportGenerator->configure($optionsResolver);
@@ -76,7 +79,7 @@ class ConsoleTableReportGeneratorTest extends \PHPUnit_Framework_TestCase
             'memory_diff' => 123,
         ));
         $this->reportGenerator->generate($this->suiteResult->reveal(), $this->output, $this->options);
-        $display = $this->output->fetch();
+        $display = $this->bufferedOutput->fetch();
         $this->assertContains('["a","r","r","a","y"]', $display);
         $this->assertContains('obj', $display);
         $this->assertContains('goodbye', $display);

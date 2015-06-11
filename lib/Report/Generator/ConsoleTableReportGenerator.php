@@ -15,6 +15,7 @@ use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use DTL\Cellular\Workspace;
+use PhpBench\Console\Output\OutputIndentDecorator;
 
 class ConsoleTableReportGenerator extends BaseTabularReportGenerator
 {
@@ -39,19 +40,19 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
             $output->writeln('<headline>' . str_repeat(' ', strlen($title)) . '</headline>');
             $output->writeln('<headline>' . $title . '</headline>');
             $output->writeln('<headline>' . str_repeat(' ', strlen($title)) . '</headline>');
-            $output->setIndentLevel(1);
+            $this->setIndent($output, 1);
             $output->writeln('');
 
             if ($description = $workspace->getAttribute('description')) {
-                $output->setIndentLevel(0);
+                $this->setIndent($output, 0);
                 $output->writeln($description);
-                $output->setIndentLevel(1);
+                $this->setIndent($output, 1);
                 $output->writeln('');
             }
         }
 
         foreach ($workspace->getTables() as $data) {
-            $output->setIndentLevel(1);
+            $this->setIndent($output, 1);
             $output->writeln(sprintf(
                 '<comment>%s</comment>: %s',
                 $data->getTitle(),
@@ -63,7 +64,8 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
 
             $output->writeln('');
         }
-        $output->setIndentLevel(0);
+
+        $this->setIndent($output, 0);
     }
 
     private function renderData(OutputInterface $output, $data, $options)
@@ -172,5 +174,12 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
         }
 
         $table->render();
+    }
+
+    private function setIndent(OutputInterface $output, $level)
+    {
+        if ($output instanceof OutputIndentDecorator) {
+            $output->setIndentLevel($level);
+        }
     }
 }

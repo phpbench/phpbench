@@ -15,7 +15,6 @@ use PhpBench\Benchmark;
  * @beforeMethod init
  * @revs 10000
  * @iterations 4
- * @group cost_of_reflection
  */
 class CostOfReflectionBench implements Benchmark
 {
@@ -35,6 +34,7 @@ class CostOfReflectionBench implements Benchmark
 
     /**
      * @description Set public class property via. a setter
+     * @group cost_of_setting
      */
     public function benchMethodSet()
     {
@@ -43,6 +43,7 @@ class CostOfReflectionBench implements Benchmark
 
     /**
      * @description Set public class property
+     * @group cost_of_setting
      */
     public function benchPublicProperty()
     {
@@ -51,6 +52,7 @@ class CostOfReflectionBench implements Benchmark
 
     /**
      * @description Set public class property via. reflection
+     * @group cost_of_setting
      */
     public function benchPublicReflection()
     {
@@ -59,6 +61,7 @@ class CostOfReflectionBench implements Benchmark
 
     /**
      * @description Set private class property via. reflection
+     * @group cost_of_setting
      */
     public function benchPrivateReflection()
     {
