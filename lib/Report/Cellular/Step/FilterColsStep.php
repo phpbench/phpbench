@@ -56,7 +56,7 @@ class FilterColsStep implements Step
 
             if ($unknownColumns) {
                 throw new \InvalidArgumentException(sprintf(
-                    'Specified column(s) "%s" is not valid. Known columns are: "%s"',
+                    'Specified column(s) "%s" is(are) not valid. Known columns are: "%s"',
                     implode('", "', $unknownColumns), implode('", "', $columnNames)
                 ));
             }

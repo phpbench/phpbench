@@ -62,8 +62,6 @@ class CellularConverter
                 $row->set('revs', $stats['revs'], array('aggregate', '.revs'));
                 $row->set('memory', $stat['memory'], array('aggregate', '.memory'));
                 $row->set('memory_diff', $stat['memory_diff'], array('aggregate', '.memory', '.diff'));
-                $row->set('memory_inc', $stat['memory_inc'], array('aggregate', '.memory', 'inc'));
-                $row->set('memory_diff_inc', $stat['memory_diff_inc'], array('aggregate', '.memory'));
             }
         }
     }
