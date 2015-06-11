@@ -136,9 +136,7 @@ EOT
 
         if ($dump) {
             $output->write($this->dumpResult($result));
-        }
-
-        if ($configuration->getReports()) {
+        } elseif ($configuration->getReports()) {
             $this->generateReports($consoleOutput, $result);
         }
     }

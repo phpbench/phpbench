@@ -91,7 +91,7 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
 
         // TODO: Move this into a step
         if ($options['groups']) {
-            $workspace = $workspace->filter(function ($table) use ($options) {
+            $workspace->filter(function (Table $table) use ($options) {
                 if (0 === count(array_intersect($table->getAttribute('groups'), $options['groups']))) {
                     return false;
                 }

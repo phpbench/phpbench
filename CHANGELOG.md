@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+dev-master
+----------
+
+- Do not execute reports if dumping to stdout
+
 0.2
 ---
 
