@@ -31,8 +31,8 @@ class AggregateRunStepTest extends \PHPUnit_Framework_TestCase
             ->set('run', 0)
             ->set('revs', 100)
             ->set('params', '[]')
-            ->set('a', 10, array('aggregate', '#a'))
-            ->set('b', 10, array('aggregate', '#b'));
+            ->set('a', 10, array('aggregate'))
+            ->set('b', 10, array('aggregate'));
 
         $table->createAndAddRow()
             ->set('run', 0)

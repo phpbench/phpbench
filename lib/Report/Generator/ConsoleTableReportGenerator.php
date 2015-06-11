@@ -198,7 +198,6 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
                 $table->render();
             }
         }
-
     }
 
     private function setIndent(OutputInterface $output, $level)

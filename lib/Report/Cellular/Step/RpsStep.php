@@ -30,7 +30,7 @@ class RpsStep implements Step
             $table->each(function (Row $row) {
                 $row->set(
                     'rps',
-                    $row->getCell('time')->getValue() ? (1000000 / $row->getCell('time')->getValue()) * $row['revs']->getValue() : null, 
+                    $row->getCell('time')->getValue() ? (1000000 / $row->getCell('time')->getValue()) * $row['revs']->getValue() : null,
                     array('rps', 'aggregate')
                 );
             });

@@ -32,7 +32,7 @@ use PhpBench\Report\Cellular\Step\AggregateRunStep;
 abstract class BaseTabularReportGenerator implements ReportGenerator
 {
     /**
-     * Available functions
+     * Available functions.
      */
     private $availableFuncs = array('sum', 'mean', 'min', 'max', 'median');
 

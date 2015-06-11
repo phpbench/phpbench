@@ -1,13 +1,20 @@
 <?php
 
-namespace PhpBench\Report\Cellular;
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
-use PhpBench\Report\Cellular\ColumnSpecification;
+namespace PhpBench\Report\Cellular;
 
 interface ColumnConfigurator
 {
     /**
-     * Add or remove columns to the column specification
+     * Add or remove columns to the column specification.
      *
      * @param ColumnSpecification
      */

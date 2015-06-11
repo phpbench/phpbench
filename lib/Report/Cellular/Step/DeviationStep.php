@@ -52,7 +52,8 @@ class DeviationStep implements Step
             $table->each(function (Row $row) use ($table) {
                 foreach ($this->functions as $function) {
                     $deviationColumn = $table->getColumn($this->deviationColumn);
-                    $meanValue = Calculator::{$function}($deviationColumn);
+                    $meanValue = Calculator::{$function}
+                    ($deviationColumn);
                     $row->set(
                         'deviation_' . $function,
                         Calculator::deviation($meanValue, $row->getCell($this->deviationColumn)),
