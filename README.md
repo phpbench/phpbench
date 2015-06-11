@@ -170,28 +170,35 @@ It has the following options:
   defined below.
 - `aggregate`: Aggregate the benchmark data, values: `none` or `run` or
   `subject`.
-- `aggregate_funcs`: Use in association with aggregate to choose which
   functions to apply to the columns: `min`, `max`, `mean` or `median`.
-- `footer_funcs`: Adds an additional row for each given aggregate function:
   `min`, `max`, `mean` or `median`.
-- `deviation_funcs`: Which function(s) to use as the deviation base. One
   column added per function: `sum`, `min`, `max`, `mean` or `median`.
 - `sort`: Sort the data by the given column.
 - `sort_dir`: The sort direction (one of `asc`, `desc`).
 - `group`: Only report on the specified group.
+- `style`: Display one table per data group (`horizontal`) or one table per row (`vertical`) In the
+  latter case the table will have two columns, `field` and `value`. Defaults
+  to `horizontal`.
 
 The columns are:
 
 - `run`: Show the run index.
 - `iter`: Show the iteration index.
-- `time`: Time taken in microseconds.
-- `memory`: Memory used by the subject (accumulative).
-- `memory_diff`: Memory used by the subject (non-accumulative).
-- `memory_inc`: Memory used globally (accumulative).
-- `memory_diff_inc`: Memory used globally (non-accumulative).
-- `revs`: Number of times the subject was repeated.
-- `rps`: Revolutions per second - number of times the subject is executed in a second.
-- `deviation`: Deviation from the mean as a percentage.
+- `time`: Time taken in microseconds (aggregate)
+- `memory`: Memory used by the subject (aggregate)
+- `memory_diff`: Memory used by the subject (aggregate)
+- `revs`: Number of times the subject was repeated (aggregate)
+- `rps`: Revolutions per second - number of times the subject is executed in a second (aggregate)
+- `deviation_[mean|min|max]`: Deviation from the mean as a percentage.
+  Deviation value is a percentage from the result of the function sufix of the
+  option name.
+
+The `aggregate` option, when specified will make available a new set of column
+names. Each `aggregate` column above will be prefixed with a function, e.g.
+`mean_memory`, `max_rps`.
+
+To see (readable) list of all the available column names, run your report with
+the `vertical` style.
 
 Dumping XML and deferring reports
 ---------------------------------
