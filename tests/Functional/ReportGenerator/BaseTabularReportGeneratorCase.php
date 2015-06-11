@@ -97,7 +97,7 @@ abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase
     public function testDeviation()
     {
         $this->executeReport($this->getResults(), array(
-            'cols' => array('deviation'),
+            'cols' => array('deviation_min'),
         ));
     }
 
@@ -128,25 +128,12 @@ abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase
      * It should throw an exception if an invalid cols are given.
      *
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Invalid columns: "foooo". Valid columns are:
+     * @expectedExceptionMessage Specified column(s) "foooo"
      */
     public function testInvalidCols()
     {
         $this->executeReport($this->getResults(), array(
             'cols' => array('foooo'),
-        ));
-    }
-
-    /**
-     * It should throw an exception if an invalid funcs are given.
-     *
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Invalid function: "foooo". Valid functions are "sum", "mean", "min", "max"
-     */
-    public function testInvalidFooterFuncs()
-    {
-        $this->executeReport($this->getResults(), array(
-            'footer_funcs' => array('foooo'),
         ));
     }
 }

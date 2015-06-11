@@ -37,9 +37,9 @@ class FilterColsStepTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $workspace->getTables());
         $this->assertCount(2, $workspace->getTable(0)->getRows());
         $rows = $workspace->getTable(0)->getRows();
-        $this->assertArrayNotHasKey('time', $rows[0]);
-        $this->assertArrayNotHasKey('time', $rows[1]);
-        $this->assertArrayHasKey('rps', $rows[0]);
-        $this->assertArrayHasKey('rps', $rows[1]);
+        $this->assertArrayHasKey('time', $rows[0]);
+        $this->assertArrayHasKey('time', $rows[1]);
+        $this->assertArrayNotHasKey('rps', $rows[0]);
+        $this->assertArrayNotHasKey('rps', $rows[1]);
     }
 }

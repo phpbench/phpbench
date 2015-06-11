@@ -18,7 +18,7 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 /**
  * This class enables the console output to be indented.
  */
-class OutputIndentDecorator extends ConsoleOutput
+class OutputIndentDecorator implements OutputInterface
 {
     /**
      * @var int

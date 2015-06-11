@@ -41,7 +41,7 @@ class AggregateRunStepTest extends \PHPUnit_Framework_TestCase
             ->set('a', 90, array('aggregate'))
             ->set('b', 4, array('aggregate'));
 
-        $step = new AggregateRunStep(array('min' => array('a'), 'max' => array('a')));
+        $step = new AggregateRunStep(array('min', 'max'));
         $step->step($workspace);
 
         $this->assertCount(1, $workspace->getTables());
@@ -50,8 +50,8 @@ class AggregateRunStepTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('World', $table->getDescription());
         $this->assertCount(1, $table->getRows());
         $row = $table->getRow(0);
-        $this->assertCount(6, $row->getCells());
-        $this->assertCount(2, $row->getCells(array('aggregate')));
+        $this->assertCount(8, $row->getCells());
+        $this->assertCount(4, $row->getCells(array('aggregate')));
         $this->assertEquals(90, $row->getCell('max_a')->getValue());
         $this->assertEquals(10, $row->getCell('min_a')->getValue());
     }

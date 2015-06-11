@@ -37,7 +37,7 @@ class DeviationStep implements Step
      *
      * @param string
      */
-    public function __construct($deviationColumn = 'time', array $functions = array('mean' => array('time')))
+    public function __construct($deviationColumn = 'time', array $functions = array('mean'))
     {
         $this->deviationColumn = $deviationColumn;
         $this->functions = $functions;
@@ -50,10 +50,9 @@ class DeviationStep implements Step
     {
         $workspace->each(function (Table $table) {
             $table->each(function (Row $row) use ($table) {
-                foreach (array_keys($this->functions) as $function) {
+                foreach ($this->functions as $function) {
                     $deviationColumn = $table->getColumn($this->deviationColumn);
-                    $meanValue = Calculator::{$function}
-                    ($deviationColumn);
+                    $meanValue = Calculator::{$function}($deviationColumn);
                     $row->set(
                         'deviation_' . $function,
                         Calculator::deviation($meanValue, $row->getCell($this->deviationColumn)),
