@@ -189,6 +189,8 @@ The columns are:
 - `deviation_[mean|min|max]`: Deviation from the mean as a percentage.
   Deviation value is a percentage from the result of the function sufix of the
   option name.
+- `variation_[col_name]`: (aggregations only) The difference between the min and max
+  values as a percentage.
 
 The `aggregate` option, when specified will make available a new set of column
 names. Each `aggregate` column above will be prefixed with a function, e.g.

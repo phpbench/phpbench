@@ -82,5 +82,18 @@ class AggregateRunStep implements Step
                 );
             }
         }
+
+        foreach ($this->functions as $function) {
+            foreach ($table->first()->getCells(array('aggregate')) as $colName => $cell) {
+                $row->set(
+                    'variance_' . $colName, 
+                    Calculator::deviation(
+                        $row['min_' . $colName]->getValue(),
+                        $row['max_' . $colName]->getValue()
+                    ),
+                    array('.variance')
+                );
+            }
+        }
     }
 }
