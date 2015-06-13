@@ -86,7 +86,7 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
             'cols' => array('array'),
         ));
 
-        $options->setNormalizers(array(
+        $options->setBCNormalizers(array(
             'sort_dir' => function ($resolver, $value) { return strtolower($value); }
         ));
     }

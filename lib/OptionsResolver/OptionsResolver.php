@@ -43,4 +43,15 @@ class OptionsResolver extends BaseOptionsResolver
             parent::setAllowedTypes($key, $values);
         }
     }
+
+    public function setBCNormalizers($normalizers)
+    {
+        if (false === $this->is26()) {
+            return parent::setNormalizers($normalizers);
+        }
+
+        foreach ($normalizers as $key => $normalizer) {
+            parent::setNormalizer($key, $normalizer);
+        }
+    }
 }
