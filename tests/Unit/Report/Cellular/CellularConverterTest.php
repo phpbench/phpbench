@@ -31,6 +31,7 @@ class CellularConverterTest extends \PHPUnit_Framework_TestCase
             'revs' => 1000,
             'memory' => 123,
             'memory_diff' => 123,
+            'pid' => 1234,
         ));
         $iterations = new IterationsResult(array($iteration1), array());
         $subject1 = new SubjectResult('mySubject1', 'My Subject\'s description', array('one', 'two'), array($iterations));

@@ -137,6 +137,10 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
             return sprintf('%s%s', $prefix, number_format($cell->getValue(), 2)) . '%';
         }, array('.deviation'));
 
+        $data->mapValues(function ($cell) {
+            return number_format($cell->getValue(), 2) . '%';
+        }, array('.variance'));
+
         // format the revolutions
         $data->mapValues(function ($cell) {
             return $cell->getValue() . '<dark>rps</dark>';

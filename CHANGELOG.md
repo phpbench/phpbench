@@ -4,6 +4,10 @@ CHANGELOG
 dev-master
 ----------
 
+### Features
+
+- Added `variance` column for aggregated results.
+
 ### Bugs
 
 - (console) report is generated when dumping to stdout with a configuration

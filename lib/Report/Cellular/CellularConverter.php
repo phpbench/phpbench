@@ -58,6 +58,7 @@ class CellularConverter
                 $row->set('params', json_encode($aggregateResult->getParameters()));
 
                 $stat = $iteration->getStatistics();
+                $row->set('pid', $stat['pid']);
                 $row->set('time', $stat['time'], array('aggregate', '.time'));
                 $row->set('revs', $stats['revs'], array('aggregate', '.revs'));
                 $row->set('memory', $stat['memory'], array('aggregate', '.memory'));

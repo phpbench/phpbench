@@ -52,6 +52,17 @@ abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase
     }
 
     /**
+     * It should allow the variance column for aggregations
+     */
+    public function testWithAggregateSubjectWithVariance()
+    {
+        $this->executeReport($this->getResults(), array(
+            'aggregate' => 'subject',
+            'cols' => array('variance_time'),
+        ));
+    }
+
+    /**
      * It should allow revolutions.
      */
     public function testWithRevolutions()

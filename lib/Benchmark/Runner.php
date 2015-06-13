@@ -269,7 +269,6 @@ class Runner
 
         $memoryDiff = $endMemory - $startMemory;
         $this->subjectMemoryTotal += $memoryDiff;
-        $memoryDiffInclusive = $endMemory - $this->subjectLastMemoryInclusive;
         $this->subjectLastMemoryInclusive = $endMemory;
 
         $statistics['index'] = $iteration->getIndex();
@@ -277,6 +276,7 @@ class Runner
         $statistics['time'] = ($end * self::MILLION) - ($start * self::MILLION);
         $statistics['memory'] = $this->subjectMemoryTotal;
         $statistics['memory_diff'] = $memoryDiff;
+        $statistics['pid'] = getmypid();
         $iterationResult = new IterationResult($statistics);
 
         return $iterationResult;
