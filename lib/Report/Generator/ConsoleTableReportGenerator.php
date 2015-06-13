@@ -64,12 +64,15 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
 
         foreach ($workspace->getTables() as $data) {
             $this->setIndent($output, 1);
-            $output->writeln(sprintf(
-                '<comment>%s</comment>: %s',
-                $data->getTitle(),
-                $data->getDescription()
-            ));
-            $output->writeln('');
+
+            if ($data->getTitle()) {
+                $output->writeln(sprintf(
+                    '<comment>%s</comment>: %s',
+                    $data->getTitle(),
+                    $data->getDescription()
+                ));
+                $output->writeln('');
+            }
 
             $this->renderData($output, $data, $options);
 
