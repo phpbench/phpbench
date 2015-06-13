@@ -50,9 +50,10 @@ class AggregateRunStepTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('World', $table->getDescription());
         $this->assertCount(1, $table->getRows());
         $row = $table->getRow(0);
-        $this->assertCount(8, $row->getCells());
+        $this->assertCount(10, $row->getCells());
         $this->assertCount(4, $row->getCells(array('aggregate')));
-        $this->assertEquals(90, $row->getCell('max_a')->getValue());
         $this->assertEquals(10, $row->getCell('min_a')->getValue());
+        $this->assertEquals(90, $row->getCell('max_a')->getValue());
+        $this->assertEquals(800, $row->getCell('variance_a')->getValue());
     }
 }
