@@ -4,10 +4,16 @@ CHANGELOG
 dev-master
 ----------
 
-- Do not execute reports if dumping to stdout
+### Bugs
+
+- (console) report is generated when dumping to stdout with a configuration
+- Options resolver dependency is too low (#59)
+- HHVM build fails
 
 0.2
 ---
+
+### Features
 
 - Bumped minimum version of PHP to 5.4
 - [Report] Function `avg` renamed to `mean`
