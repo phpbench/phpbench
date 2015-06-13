@@ -11,7 +11,7 @@ cache:
     - $HOME/.composer/cache
 
 before_script:
-  - composer install
+  - composer update {$COMPOSER_FLAGS} --prefer-dist
 
 script: 
   - phpunit
