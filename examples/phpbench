@@ -10,7 +10,7 @@ $config->addReport(array(
     'groups' => array('cost_of_setting'),
     'aggregate' => 'subject',
     'sort' => 'time',
-    'cols' => array('iters', 'sum_revs', 'description', 'mean_time', 'min_time', 'max_time', 'mean_rps', 'deviation_min'),
+    'cols' => array('description', 'iters', 'mean_revs', 'mean_time', 'variance_time', 'mean_rps', 'deviation_min'),
 ));
 $config->addReport(array(
     'title' => 'Cost of Instantiation',
@@ -18,7 +18,7 @@ $config->addReport(array(
     'name' => 'console_table',
     'aggregate' => 'subject',
     'groups' => array('cost_of_instantiation'),
-    'cols' => array('iters', 'description', 'mean_time', 'sum_rps', 'deviation_mean'),
+    'cols' => array('description', 'iters', 'mean_revs', 'mean_time', 'variance_time', 'mean_rps', 'deviation_min'),
 ));
 
 $config->addReport(array(
@@ -32,7 +32,7 @@ EOT
     'aggregate' => 'subject',
     'groups' => array('array_keys'),
     'sort' => 'time',
-    'cols' => array('iters', 'description', 'mean_time', 'mean_rps', 'deviation_min'),
+    'cols' => array('description', 'iters', 'mean_time', 'mean_rps', 'deviation_min'),
 ));
 
 $config->setPath(__DIR__);

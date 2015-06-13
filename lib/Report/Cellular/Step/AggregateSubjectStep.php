@@ -44,16 +44,5 @@ class AggregateSubjectStep extends AggregateRunStep
 
                 $this->applyAggregation($table, $row);
             });
-
-        $table = $workspace->getTable(0);
-        $subjectNames = $table->evaluate(function ($row, $names) {
-            $names[] = $row['subject']->getValue();
-
-            return $names;
-        }, array());
-        $table->setTitle('Aggregation by subject');
-        $table->setDescription(sprintf(
-            implode(', ', $subjectNames)
-        ));
     }
 }

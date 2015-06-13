@@ -6,7 +6,8 @@ dev-master
 
 ### Features
 
-- Added `variance` column for aggregated results.
+- Added `variance` column for aggregated results (#66)
+- Removed redundant title for aggregated subject (#76)
 
 ### Bugs
 
