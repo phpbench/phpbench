@@ -8,7 +8,6 @@
             "email": "daniel@dantleech.com"
         }
     ],
-    "minimum-stability": "dev",
     "require": {
         "php": "~5.4",
         "symfony/console": "~2.4",
