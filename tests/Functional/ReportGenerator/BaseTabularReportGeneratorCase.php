@@ -115,7 +115,7 @@ abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase
      * It should throw an exception if an invalid aggregation value is given.
      *
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The option "aggregate" with value "hahahaha" is invalid. Accepted values are: "none", "run", "subject"
+     * @expectedExceptionMessage The option "aggregate"
      */
     public function testInvalidAggregation()
     {

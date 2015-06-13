@@ -75,31 +75,16 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
         };
 
 
-        $allowedValues = array(
+        $options->setBCAllowedValues(array(
             'time_format' => array('integer', 'fraction'),
             'aggregate' => array('none', 'run', 'subject'),
             'sort_dir' => array('asc', 'desc'),
-        );
-        $allowedTypes = array(
+        ));
+        $options->setBCAllowedTypes(array(
             'aggregate' => array('string'),
             'precision' => array('int'),
             'cols' => array('array'),
-        );
-
-        // BC for >= 2.4 < 2.6
-        $refl = new \ReflectionClass('Symfony\Component\OptionsResolver\OptionsResolver');
-        if ($refl->hasMethod('setDefault')) {
-            foreach ($allowedValues as $key => $values) {
-                $options->setAllowedValues($key, $values);
-            }
-
-            foreach ($allowedTypes as $key => $types) {
-                $options->setAllowedTypes($key, $types);
-            }
-        } else {
-            $options->setAllowedValues($allowedValues);
-            $options->setAllowedTypes($allowedTypes);
-        }
+        ));
 
         $options->setNormalizers(array(
             'sort_dir' => function ($resolver, $value) { return strtolower($value); }

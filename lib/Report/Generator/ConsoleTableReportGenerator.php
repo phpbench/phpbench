@@ -17,14 +17,17 @@ use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use DTL\Cellular\Workspace;
 use PhpBench\Console\Output\OutputIndentDecorator;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Console\Helper\TableHelper;
 
 class ConsoleTableReportGenerator extends BaseTabularReportGenerator
 {
     public function configure(OptionsResolver $options)
     {
         parent::configure($options);
-        $options->setDefault('style', 'horizontal');
-        $options->setAllowedValues('style', array('vertical', 'horizontal'));
+        $options->setDefaults(array('style' => 'horizontal'));
+        $options->setBCAllowedValues(array(
+            'style' => array('vertical', 'horizontal')
+        ));
     }
 
     public function doGenerate(Workspace $workspace, OutputInterface $output, array $options)
@@ -178,24 +181,24 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
         }
 
         if ($options['style'] === 'horizontal') {
-            $table = new Table($output);
+            $table = $this->createTable($output);
             $table->setHeaders($data->getColumnNames());
             foreach ($data->getRows() as $row) {
                 $table->addRow($row->toArray());
             }
 
-            $table->render();
+            $this->renderTable($table, $output);
         }
 
         if ($options['style'] === 'vertical') {
             foreach ($data->getRows() as $index => $row) {
                 $output->writeln(sprintf('<comment>Row %d</comment>', $index));
-                $table = new Table($output);
+                $table = $this->createTable($output);
                 $table->setHeaders(array('column', 'value'));
                 foreach ($row as $name => $cell) {
                     $table->addRow(array($name, $cell->getValue()));
                 }
-                $table->render();
+                $this->renderTable($table, $output);
             }
         }
     }
@@ -205,5 +208,23 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
         if ($output instanceof OutputIndentDecorator) {
             $output->setIndentLevel($level);
         }
+    }
+
+    private function createTable(OutputInterface $output)
+    {
+        if (class_exists('Symfony\Component\Console\Helper\Table')) {
+            return new Table($output);
+        }
+
+        return new TableHelper();
+    }
+
+    private function renderTable($table, OutputInterface $output)
+    {
+        if (class_exists('Symfony\Component\Console\Helper\Table')) {
+            $table->render();
+        }
+
+        $table->render($output);
     }
 }

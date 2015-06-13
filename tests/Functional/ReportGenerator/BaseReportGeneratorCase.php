@@ -11,10 +11,10 @@
 
 namespace PhpBench\Tests\Functional\ReportGenerator;
 
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use PhpBench\Result\SuiteResult;
 use Symfony\Component\Console\Output\NullOutput;
 use PhpBench\Result\Loader\XmlLoader;
+use PhpBench\OptionsResolver\OptionsResolver;
 
 abstract class BaseReportGeneratorCase extends \PHPUnit_Framework_TestCase
 {
