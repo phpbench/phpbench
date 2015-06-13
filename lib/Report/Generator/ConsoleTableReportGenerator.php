@@ -223,6 +223,7 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
     {
         if (class_exists('Symfony\Component\Console\Helper\Table')) {
             $table->render();
+            return;
         }
 
         $table->render($output);
