@@ -18,6 +18,6 @@ script:
   - php bin/phpbench run --config=examples/phpbench --dump-file=dump.xml
   - cat dump.xml
 
-matrix:
+env:
     - COMPOSER_FLAGS=""
     - COMPOSER_FLAGS="--prefer-lowest"
