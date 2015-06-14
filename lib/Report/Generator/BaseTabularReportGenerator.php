@@ -60,21 +60,6 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
             )
         ));
 
-        $functionsValidator = function ($funcs) {
-            foreach ($funcs as $function) {
-                if (!in_array($function, $this->availableFuncs)) {
-                    throw new \InvalidArgumentException(sprintf(
-                        'Invalid function: "%s". Valid functions are "%s"',
-                        $function,
-                        implode('", "', $this->availableFuncs)
-                    ));
-                }
-            }
-
-            return true;
-        };
-
-
         $options->setBCAllowedValues(array(
             'time_format' => array('integer', 'fraction'),
             'aggregate' => array('none', 'run', 'subject'),
@@ -134,7 +119,6 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
 
         $stepChain->run($workspace);
 
-        // align all the tables (fill in missing columns)
         $workspace->each(function (Table $table) {
             $table->align();
         });

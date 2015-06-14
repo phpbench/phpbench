@@ -41,8 +41,8 @@ class CellularConverterTest extends \PHPUnit_Framework_TestCase
 
         $workspace = CellularConverter::suiteToWorkspace($suite);
         $this->assertCount(2, $workspace->getTables());
-        $this->assertEquals('Benchmark\Foo->mySubject1', $workspace->getTable(0)->getTitle());
-        $this->assertEquals('My Subject\'s description', $workspace->getTable(0)->getDescription());
+        $this->assertEquals('Benchmark\Foo', $workspace->getTable(0)->getAttribute('class'));
+        $this->assertEquals('My Subject\'s description', $workspace->getTable(0)->getAttribute('description'));
         $rows = $workspace->getTable(0)->getRows();
         $this->assertCount(1, $rows);
         $row = reset($rows);

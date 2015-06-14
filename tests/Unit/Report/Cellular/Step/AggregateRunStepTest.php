@@ -25,8 +25,6 @@ class AggregateRunStepTest extends \PHPUnit_Framework_TestCase
     {
         $workspace = Workspace::create();
         $table = $workspace->createAndAddTable();
-        $table->setTitle('Hello');
-        $table->setDescription('World');
         $table->createAndAddRow()
             ->set('run', 0)
             ->set('revs', 100)
@@ -46,8 +44,6 @@ class AggregateRunStepTest extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(1, $workspace->getTables());
         $table = $workspace[0];
-        $this->assertEquals('Hello', $table->getTitle());
-        $this->assertEquals('World', $table->getDescription());
         $this->assertCount(1, $table->getRows());
         $row = $table->getRow(0);
         $this->assertCount(10, $row->getCells());

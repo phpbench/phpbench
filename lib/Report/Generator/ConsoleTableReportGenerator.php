@@ -24,7 +24,10 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
     public function configure(OptionsResolver $options)
     {
         parent::configure($options);
-        $options->setDefaults(array('style' => 'horizontal'));
+        $options->setDefaults(array(
+            'style' => 'horizontal',
+            'subject_meta' => true,
+        ));
         $options->setBCAllowedValues(array(
             'style' => array('vertical', 'horizontal')
         ));
@@ -65,13 +68,32 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
         foreach ($workspace->getTables() as $data) {
             $this->setIndent($output, 1);
 
-            if ($data->getTitle()) {
-                $output->writeln(sprintf(
-                    '<comment>%s</comment>: %s',
-                    $data->getTitle(),
-                    $data->getDescription()
-                ));
-                $output->writeln('');
+            if ($options['subject_meta']) {
+                $line = array();
+                if ($data->hasAttribute('class')) {
+                    $line[] = sprintf(
+                        '[%s->%s]',
+                        $data->getAttribute('class'),
+                        $data->getAttribute('subject')
+                    );
+                }
+
+                if ($data->hasAttribute('groups') && $data->getAttribute('groups')) {
+                   $line[] = sprintf(
+                        '<blue>[%s]</blue>',
+                        implode(', ', $data->getAttribute('groups'))
+                    );
+                }
+
+                if ($line) {
+                    $output->writeln(implode(' ', $line));
+                }
+
+                $description = $data->hasAttribute('description') ? $data->getAttribute('description') : false;
+
+                if ($description) {
+                    $output->writeln($description);
+                }
             }
 
             $this->renderData($output, $data, $options);

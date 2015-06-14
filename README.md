@@ -165,6 +165,8 @@ There is a single report included by default: `console_table`.
 It has the following options:
 
 - `time_format`: Either `fraction` (of a second) or `integer` (number of microseconds).
+- `subject_meta`: Show or hide subject metadata (class, method name, groups).
+  Default **true**.
 - `precision`: Number of decimal places to use when showing the time as a fraction.
 - `cols`: Choose which columns to display (defaults to all), columns are
   defined below.

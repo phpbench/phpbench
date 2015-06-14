@@ -61,9 +61,6 @@ class AggregateRunStep implements Step
                     $this->applyAggregation($table, $row);
                     $newTable->addRow($row);
                 });
-            $table->setTitle($table->getTitle());
-            $table->setDescription($table->getDescription());
-            $table->setAttributes($table->getAttributes());
         });
     }
 
