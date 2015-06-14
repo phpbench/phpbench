@@ -14,6 +14,19 @@ use PhpBench\Benchmark;
 
 class BenchmarkBench implements Benchmark
 {
+    static $setUpCalled = false;
+    static $tearDownCalled = false;
+
+    public function setUp()
+    {
+        self::$setUpCalled = true;
+    }
+
+    public function tearDown()
+    {
+        self::$tearDownCalled = true;
+    }
+
     /**
      * @description randomBench
      */
