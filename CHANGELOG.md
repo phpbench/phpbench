@@ -4,10 +4,15 @@ CHANGELOG
 dev-master
 ----------
 
+### Enhancements
+
+- Improved formatting for console table report (#80)
+
 ### Features
 
 - Added `variance` column for aggregated results (#66)
 - Removed redundant title for aggregated subject (#76)
+- Added `subject_meta` option to console report generator.
 
 ### Bugs
 

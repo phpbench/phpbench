@@ -32,7 +32,7 @@ EOT
     'aggregate' => 'subject',
     'groups' => array('array_keys'),
     'sort' => 'time',
-    'cols' => array('description', 'iters', 'mean_time', 'mean_rps', 'deviation_min'),
+    'cols' => array('iters', 'mean_time', 'mean_rps', 'deviation_min'),
 ));
 
 $config->setPath(__DIR__);
