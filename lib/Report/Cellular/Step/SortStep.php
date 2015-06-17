@@ -20,13 +20,20 @@ use DTL\Cellular\Workspace;
  */
 class SortStep implements Step
 {
-    private $column;
-    private $direction;
+    private $sorting = array();
 
-    public function __construct($column, $direction = 'desc')
+    /**
+     * Constructor should be passed array of sortings, e.g.
+     *
+     * ````
+     * array('col1' => 'asc', 'col2' => 'desc')
+     * ````
+     *
+     * @param array $sorting
+     */
+    public function __construct(array $sorting = array())
     {
-        $this->column = $column;
-        $this->direction = $direction;
+        $this->sorting = $sorting;
     }
 
     /**
@@ -35,13 +42,29 @@ class SortStep implements Step
     public function step(Workspace $workspace)
     {
         $workspace->each(function (Table $table) {
-            $table->sort(function ($row1, $row2) {
-                if ($this->direction === 'asc') {
-                    return $row1[$this->column]->getValue() > $row2[$this->column]->getValue();
+            foreach (array_reverse($this->sorting) as $column => $direction) {
+                if (is_numeric($column)) {
+                    $column = $direction;
+                    $direction = 'asc';
                 }
 
-                return $row1[$this->column]->getValue() < $row2[$this->column]->getValue();
-            });
+                $table->sort(function ($row1, $row2) use ($column, $direction) {
+                    $row1Value = $row1[$column]->getValue();
+                    $row2Value = $row2[$column]->getValue();
+
+                    if ($row1Value == $row2Value) {
+                        return 0;
+                    }
+
+                    $greaterThan = $row1Value > $row2Value;
+
+                    if (strtolower($direction) === 'asc') {
+                        return $greaterThan ? 1 : -1;
+                    }
+
+                    return $greaterThan ? -1 : 1;
+                });
+            }
         });
     }
 }

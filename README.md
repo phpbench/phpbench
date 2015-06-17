@@ -172,8 +172,8 @@ It has the following options:
   defined below.
 - `aggregate`: Aggregate the benchmark data, values: `none` or `run` or
   `subject`.
-- `sort`: Sort the data by the given column.
-- `sort_dir`: The sort direction (one of `asc`, `desc`).
+- `sort`: Sort the data by the given columns, e.g. `array('col1' => 'asc',
+  'col2' => 'desc')`.
 - `group`: Only report on the specified group.
 - `style`: Display one table per data group (`horizontal`) or one table per row (`vertical`) In the
   latter case the table will have two columns, `field` and `value`. Defaults
