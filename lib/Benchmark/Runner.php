@@ -129,13 +129,14 @@ class Runner
         }
 
         $paramsIterator = new CartesianParameterIterator($parameterSets);
+        $revs = $this->revsOverride ? array($this->revsOverride) : $subject->getRevs();
 
         $iterationsResults = array();
         foreach ($paramsIterator as $parameters) {
             if (false !== $processIsolation) {
-                $iterationsResults[] = $this->runIterationsSeparateProcess($benchmark, $subject, $parameters, $nbIterations, $processIsolation);
+                $iterationsResults[] = $this->runIterationsSeparateProcess($benchmark, $subject, $parameters, $nbIterations, $processIsolation, $revs);
             } else {
-                $iterationsResults[] = $this->runIterations($benchmark, $subject, $parameters, $nbIterations);
+                $iterationsResults[] = $this->runIterations($benchmark, $subject, $parameters, $nbIterations, $revs);
             }
         }
 
@@ -149,10 +150,8 @@ class Runner
         return $subjectResult;
     }
 
-    private function runIterations(Benchmark $benchmark, Subject $subject, $parameters, $nbIterations)
+    private function runIterations(Benchmark $benchmark, Subject $subject, $parameters, $nbIterations, $revs)
     {
-        $revs = $this->revsOverride ? array($this->revsOverride) : $subject->getRevs();
-
         $iterationResults = array();
         for ($index = 0; $index < $nbIterations; $index++) {
             foreach ($revs as $nbRevs) {
@@ -164,11 +163,8 @@ class Runner
         return new IterationsResult($iterationResults, $parameters);
     }
 
-    private function runIterationsSeparateProcess(Benchmark $benchmark, Subject $subject, $parameters, $nbIterations, $processIsolation)
+    private function runIterationsSeparateProcess(Benchmark $benchmark, Subject $subject, $parameters, $nbIterations, $processIsolation, $revs)
     {
-        $reflection = new \ReflectionClass(get_class($benchmark));
-        $bin = realpath(__DIR__ . '/../..') . '/bin/phpbench';
-
         switch ($processIsolation) {
             case 'iteration':
                 $iterationCount = $nbIterations;
@@ -186,65 +182,77 @@ class Runner
 
         $iterationsResult = array();
 
-        for ($index = 0; $index < $iterationCount; $index++) {
-            $command = sprintf(
-                'php %s run %s --subject=%s --no-setup --dump --parameters=%s --iterations=%d --process-isolation=none',
-                $bin,
-                $reflection->getFileName(),
-                $subject->getMethodName(),
-                escapeshellarg(json_encode($parameters)),
-                $nbIterations
-            );
+        foreach ($revs as $nbRevs) {
+            for ($index = 0; $index < $iterationCount; $index++) {
+                $subIterationsResult = $this->runIterationSeparateProcess($benchmark, $subject, $parameters, $nbIterations, $nbRevs);
 
-            if ($this->configFile) {
-                $command .= ' --config=' . $this->configFile;
-            }
-
-            if ($this->revsOverride) {
-                $command .= ' --revs=' . $this->revsOverride;
-            }
-
-            $descriptors = array(
-                0 => array('pipe', 'r'),
-                1 => array('pipe', 'w'),
-                2 => array('pipe', 'w'),
-            );
-            $process = proc_open($command, $descriptors, $pipes);
-            fclose($pipes[0]);
-
-            if (!is_resource($process)) {
-                throw new \RuntimeException(
-                    'Could not spawn isolated process'
-                );
-            }
-
-            $output = stream_get_contents($pipes[1]);
-            fclose($pipes[1]);
-            $stderr = stream_get_contents($pipes[2]);
-            fclose($pipes[2]);
-            $exitCode = proc_close($process);
-
-            if (0 !== $exitCode) {
-                throw new \RuntimeException(sprintf(
-                    'Isolated process returned exit code "%s". Command: "%s". stdout: %s stderr: %s',
-                    $exitCode,
-                    $command,
-                    $output,
-                    $stderr
-                ));
-            }
-
-            $loader = new XmlLoader();
-            $subSuiteResult = $loader->load($output);
-            $subIterationsResults = $subSuiteResult->getIterationsResults();
-            $subIterationsResult = reset($subIterationsResults);
-
-            foreach ($subIterationsResult->getIterationResults() as $subIterationResult) {
-                $iterationsResult[] = $subIterationResult;
+                foreach ($subIterationsResult->getIterationResults() as $subIterationResult) {
+                    $iterationsResult[] = $subIterationResult;
+                }
             }
         }
 
         return new IterationsResult($iterationsResult, $parameters);
+    }
+
+    private function runIterationSeparateProcess(Benchmark $benchmark, Subject $subject, $parameters, $nbIterations, $nbRevs)
+    {
+        $reflection = new \ReflectionClass(get_class($benchmark));
+        $bin = realpath(__DIR__ . '/../..') . '/bin/phpbench';
+
+        $command = sprintf(
+            'php %s run %s --subject=%s --no-setup --dump --parameters=%s --iterations=%d --process-isolation=none',
+            $bin,
+            $reflection->getFileName(),
+            $subject->getMethodName(),
+            escapeshellarg(json_encode($parameters)),
+            $nbIterations
+        );
+
+        if ($this->configFile) {
+            $command .= ' --config=' . $this->configFile;
+        }
+
+        if ($nbRevs) {
+            $command .= ' --revs=' . $nbRevs;
+        }
+
+        $descriptors = array(
+            0 => array('pipe', 'r'),
+            1 => array('pipe', 'w'),
+            2 => array('pipe', 'w'),
+        );
+        $process = proc_open($command, $descriptors, $pipes);
+        fclose($pipes[0]);
+
+        if (!is_resource($process)) {
+            throw new \RuntimeException(
+                'Could not spawn isolated process'
+            );
+        }
+
+        $output = stream_get_contents($pipes[1]);
+        fclose($pipes[1]);
+        $stderr = stream_get_contents($pipes[2]);
+        fclose($pipes[2]);
+        $exitCode = proc_close($process);
+
+        if (0 !== $exitCode) {
+            throw new \RuntimeException(sprintf(
+                'Isolated process returned exit code "%s". Command: "%s". stdout: %s stderr: %s',
+                $exitCode,
+                $command,
+                $output,
+                $stderr
+            ));
+        }
+
+        $loader = new XmlLoader();
+        $subSuiteResult = $loader->load($output);
+        $subIterationsResults = $subSuiteResult->getIterationsResults();
+        $subIterationsResult = reset($subIterationsResults);
+
+        return $subIterationsResult;
     }
 
     private function runIteration(Benchmark $benchmark, Subject $subject, Iteration $iteration)

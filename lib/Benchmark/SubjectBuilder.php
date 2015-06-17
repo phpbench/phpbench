@@ -48,6 +48,10 @@ class SubjectBuilder
                 continue;
             }
 
+            if (empty($meta['revs'])) {
+                $meta['revs'] = array(1);
+            }
+
             $subjects[] = new Subject(
                 $method->getName(),
                 $meta['beforeMethod'],
