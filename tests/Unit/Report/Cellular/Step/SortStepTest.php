@@ -17,47 +17,75 @@ use PhpBench\Report\Cellular\Step\SortStep;
 class SortStepTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Sort the results
-     * In ascending order
-     * In descending order.
-     *
-     * @dataProvider provideSort
+     * Sort the results according to the given sorting array
      */
-    public function testSort($order)
+    public function testSort()
     {
         $workspace = Workspace::create();
         $table = $workspace->createAndAddTable();
         $table->createAndAddRow()
-            ->set('time', 10);
+            ->set('time', 10)
+            ->set('memory', 20);
         $table->createAndAddRow()
-            ->set('time', 50);
+            ->set('time', 50)
+            ->set('memory', 20);
         $table->createAndAddRow()
-            ->set('time', 5);
+            ->set('time', 5)
+            ->set('memory', 10);
+        $table->createAndAddRow()
+            ->set('time', 10)
+            ->set('memory', 10);
 
-        $step = new SortStep('time', $order);
+        $step = new SortStep(array('memory' => 'asc', 'time' => 'desc'));
         $step->step($workspace);
         $this->assertCount(1, $workspace->getTables());
         $table = $workspace->getTable(0);
-        $this->assertCount(3, $table->getRows());
+        $this->assertCount(4, $table->getRows());
         $rows = $table->getRows();
         $this->assertArrayHasKey('time', $rows[0]);
+        $this->assertArrayHasKey('memory', $rows[0]);
 
-        if ($order === 'asc') {
-            $this->assertEquals(5, $rows[0]['time']->getValue());
-            $this->assertEquals(10, $rows[1]['time']->getValue());
-            $this->assertEquals(50, $rows[2]['time']->getValue());
-        } else {
-            $this->assertEquals(50, $rows[0]['time']->getValue());
-            $this->assertEquals(10, $rows[1]['time']->getValue());
-            $this->assertEquals(5, $rows[2]['time']->getValue());
-        }
+        $this->assertEquals(10, $rows[0]['memory']->getValue());
+        $this->assertEquals(10, $rows[0]['time']->getValue());
+        $this->assertEquals(10, $rows[1]['memory']->getValue());
+        $this->assertEquals(5, $rows[1]['time']->getValue());
+        $this->assertEquals(20, $rows[2]['memory']->getValue());
+        $this->assertEquals(50, $rows[2]['time']->getValue());
+        $this->assertEquals(20, $rows[3]['memory']->getValue());
+        $this->assertEquals(10, $rows[3]['time']->getValue());
     }
 
-    public function provideSort()
+    /**
+     * It should accept columns only
+     */
+    public function testSortColumnsOnly()
     {
-        return array(
-            array('asc'),
-            array('desc'),
+        $workspace = Workspace::create();
+        $table = $workspace->createAndAddTable();
+        $table->createAndAddRow()
+            ->set('time', 10)
+            ->set('memory', 20);
+        $table->createAndAddRow()
+            ->set('time', 50)
+            ->set('memory', 20);
+        $table->createAndAddRow()
+            ->set('time', 5)
+            ->set('memory', 10);
+        $table->createAndAddRow()
+            ->set('time', 10)
+            ->set('memory', 10);
+
+        $step = new SortStep(array('memory', 'time'));
+        $step->step($workspace);
+        $table = $workspace->getTable(0);
+
+        $expected = array(
+            array('time' => 5, 'memory' => 10),
+            array('time' => 10, 'memory' => 10),
+            array('time' => 10, 'memory' => 20),
+            array('time' => 50, 'memory' => 20),
         );
+
+        $this->assertEquals($expected, $table->toArray());
     }
 }

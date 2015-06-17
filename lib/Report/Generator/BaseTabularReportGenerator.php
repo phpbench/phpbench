@@ -52,8 +52,7 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
                 'cols' => array(),
                 'precision' => 6,
                 'time_format' => 'fraction',
-                'sort' => null,
-                'sort_dir' => 'asc',
+                'sort' => array(),
                 'groups' => array(),
                 'title' => null,
                 'description' => null,
@@ -63,16 +62,12 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
         $options->setBCAllowedValues(array(
             'time_format' => array('integer', 'fraction'),
             'aggregate' => array('none', 'run', 'subject'),
-            'sort_dir' => array('asc', 'desc'),
         ));
         $options->setBCAllowedTypes(array(
             'aggregate' => array('string'),
             'precision' => array('int'),
             'cols' => array('array'),
-        ));
-
-        $options->setBCNormalizers(array(
-            'sort_dir' => function ($resolver, $value) { return strtolower($value); }
+            'sort' => array('array'),
         ));
     }
 
@@ -108,7 +103,7 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
         $stepChain->add(new DeviationStep('time', $this->availableFuncs));
 
         if ($options['sort']) {
-            $stepChain->add(new SortStep($options['sort'], $options['sort_dir']));
+            $stepChain->add(new SortStep($options['sort']));
         }
 
         $stepChain->add(new FilterColsStep($options['cols']));
