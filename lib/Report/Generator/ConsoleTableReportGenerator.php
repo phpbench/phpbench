@@ -35,6 +35,10 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
 
     public function doGenerate(Workspace $workspace, OutputInterface $output, array $options)
     {
+        if (count($workspace) === 0) {
+            return;
+        }
+
         $output = $output;
         $output->getFormatter()->setStyle(
             'total', new OutputFormatterStyle(null, null, array())
@@ -66,6 +70,7 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
         }
 
         foreach ($workspace->getTables() as $data) {
+
             $this->setIndent($output, 1);
 
             if ($options['subject_meta']) {
