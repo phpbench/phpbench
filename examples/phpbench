@@ -9,7 +9,7 @@ $config->addReport(array(
     'name' => 'console_table',
     'groups' => array('cost_of_setting'),
     'aggregate' => 'subject',
-    'sort' => 'time',
+    'sort' => array('time'),
     'cols' => array('description', 'iters', 'mean_revs', 'mean_time', 'variance_time', 'mean_rps', 'deviation_min'),
 ));
 $config->addReport(array(
@@ -31,7 +31,7 @@ EOT
     ,
     'aggregate' => 'subject',
     'groups' => array('array_keys'),
-    'sort' => 'time',
+    'sort' => array('time'),
     'cols' => array('iters', 'mean_time', 'mean_rps', 'deviation_min'),
 ));
 
