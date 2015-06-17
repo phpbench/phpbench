@@ -27,7 +27,14 @@ abstract class BaseCommand extends Command
         $generators = $configuration->getReportGenerators();
         $reportConfigs = $configuration->getReports();
 
-        foreach ($reportConfigs as $reportConfig) {
+        foreach ($reportConfigs as $index => $reportConfig) {
+            if (!isset($reportConfig['name'])) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Report configuration #%s has no name',
+                    $index
+                ));
+            }
+
             if (!isset($generators[$reportConfig['name']])) {
                 throw new \InvalidArgumentException(sprintf(
                     'Unknown report generator "%s", known generators: "%s"',
