@@ -80,8 +80,6 @@ class Parser
         $meta['processIsolation'] = reset($meta['processIsolation']);
         $iterations = $meta['iterations'];
         $meta['iterations'] = empty($iterations) ? 1 : (int) reset($iterations);
-        $revs = $meta['revs'];
-        $meta['revs'] = empty($revs) ? array(1) : $revs;
 
         if ($meta['processIsolation']) {
             Runner::validateProcessIsolation($meta['processIsolation']);

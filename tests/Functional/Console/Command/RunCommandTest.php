@@ -239,6 +239,20 @@ class RunCommandTest extends BaseCommandTestCase
     }
 
     /**
+     * It can run each set of revolutions in isolation.
+     */
+    public function testProcessIsolationRevs()
+    {
+        $this->runCommand('run', array(
+            '--process-isolation' => 'iteration',
+            'path' => __DIR__ . '/../../benchmarks/IsolatedRevsBench.php',
+        ));
+
+        $pids = array_unique(explode(PHP_EOL, trim(file_get_contents($this->pidPath))));
+        $this->assertCount(2, $pids);
+    }
+
+    /**
      * It can have the progress logger specified.
      */
     public function testProgressLogger()

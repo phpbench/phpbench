@@ -75,7 +75,7 @@ EOT
                     'paramProvider' => array(),
                     'iterations' => 1,
                     'processIsolation' => false,
-                    'revs' => array(1),
+                    'revs' => array(),
                     'group' => array(),
                 ),
             ),

@@ -8,6 +8,7 @@ dev-master
 
 - Improved formatting for console table report (#80)
 - Sorting on multiple columns (`console_table` report) Sort accepts an array, e.g. `array('col1' => 'asc', 'col2' => 'desc')`. (#72)
+- Separate revolution sets run in separate processes when required.
 
 ### Features
 
