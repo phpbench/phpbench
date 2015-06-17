@@ -57,7 +57,8 @@ EOT
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $reports = $input->getOption('report') ?: array('simple_table');
+        $reports = $input->getOption('report');
+
         $consoleOutput = $output;
         $dump = $input->getOption('dump');
         $parametersJson = $input->getOption('parameters');
@@ -68,6 +69,10 @@ EOT
         $processIsolation = $input->getOption('process-isolation') ?: null;
         $processIsolation = $processIsolation === 'none' ? false : $processIsolation;
         $parameters = null;
+
+        if (!$configFile && empty($reports)) {
+            $reports = array('simple_table');
+        }
 
         Runner::validateProcessIsolation($processIsolation);
 
