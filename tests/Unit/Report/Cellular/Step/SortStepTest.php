@@ -17,7 +17,7 @@ use PhpBench\Report\Cellular\Step\SortStep;
 class SortStepTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Sort the results according to the given sorting array
+     * Sort the results according to the given sorting array.
      */
     public function testSort()
     {
@@ -56,7 +56,7 @@ class SortStepTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should accept columns only
+     * It should accept columns only.
      */
     public function testSortColumnsOnly()
     {

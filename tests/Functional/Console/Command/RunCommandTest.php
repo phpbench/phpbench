@@ -34,6 +34,7 @@ class RunCommandTest extends BaseCommandTestCase
 
     /**
      * It should run when given a path.
+     * It should show the default (simple) report.
      */
     public function testCommand()
     {
@@ -43,6 +44,8 @@ class RunCommandTest extends BaseCommandTestCase
         $this->assertEquals(0, $tester->getStatusCode());
         $display = $tester->getDisplay();
         $this->assertContains('Running benchmarks', $display);
+        $this->assertContains('Do nothing three times', $display);
+        $this->assertContains('Parameterized bench mark', $display);
     }
 
     /**
@@ -298,12 +301,12 @@ class RunCommandTest extends BaseCommandTestCase
     }
 
     /**
-     * It should disable the setup and tear down methods
+     * It should disable the setup and tear down methods.
      */
     public function testDisableSetup()
     {
         $path = __DIR__ . '/../../benchmarks/BenchmarkBench.php';
-        require_once($path);
+        require_once $path;
         BenchmarkBench::$setUpCalled = false;
         BenchmarkBench::$tearDownCalled = false;
 
