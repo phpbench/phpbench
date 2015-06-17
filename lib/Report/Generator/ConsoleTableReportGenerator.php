@@ -29,7 +29,7 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
             'subject_meta' => true,
         ));
         $options->setBCAllowedValues(array(
-            'style' => array('vertical', 'horizontal')
+            'style' => array('vertical', 'horizontal'),
         ));
     }
 
@@ -70,7 +70,6 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
         }
 
         foreach ($workspace->getTables() as $data) {
-
             $this->setIndent($output, 1);
 
             if ($options['subject_meta']) {
@@ -84,7 +83,7 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
                 }
 
                 if ($data->hasAttribute('groups') && $data->getAttribute('groups')) {
-                   $line[] = sprintf(
+                    $line[] = sprintf(
                         '<blue>[%s]</blue>',
                         implode(', ', $data->getAttribute('groups'))
                     );
@@ -257,6 +256,7 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
     {
         if (class_exists('Symfony\Component\Console\Helper\Table')) {
             $table->render();
+
             return;
         }
 

@@ -57,7 +57,7 @@ EOT
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $reports = $input->getOption('report') ? : array('simple_table');
+        $reports = $input->getOption('report') ?: array('simple_table');
         $consoleOutput = $output;
         $dump = $input->getOption('dump');
         $parametersJson = $input->getOption('parameters');

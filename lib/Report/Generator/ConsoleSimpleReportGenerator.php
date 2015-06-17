@@ -11,17 +11,10 @@
 
 namespace PhpBench\Report\Generator;
 
-use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Formatter\OutputFormatterStyle;
-use DTL\Cellular\Workspace;
-use PhpBench\Console\Output\OutputIndentDecorator;
-use Symfony\Component\Console\Helper\TableHelper;
-use PhpBench\Report\Generator\ConsoleTableReportGenerator;
 use PhpBench\Result\SuiteResult;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use PhpBench\OptionsResolver\OptionsResolver as BCOptionsResolver;
-
 
 class ConsoleSimpleReportGenerator extends ConsoleTableReportGenerator
 {
@@ -32,7 +25,7 @@ class ConsoleSimpleReportGenerator extends ConsoleTableReportGenerator
             'subject_meta' => true,
         ));
         $options->setBCAllowedValues(array(
-            'style' => array('vertical', 'horizontal')
+            'style' => array('vertical', 'horizontal'),
         ));
     }
 

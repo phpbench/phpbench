@@ -14,8 +14,8 @@ use PhpBench\Benchmark;
 
 class BenchmarkBench implements Benchmark
 {
-    static $setUpCalled = false;
-    static $tearDownCalled = false;
+    public static $setUpCalled = false;
+    public static $tearDownCalled = false;
 
     public function setUp()
     {

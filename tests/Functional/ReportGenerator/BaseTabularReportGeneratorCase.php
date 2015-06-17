@@ -52,7 +52,7 @@ abstract class BaseTabularReportGeneratorCase extends BaseReportGeneratorCase
     }
 
     /**
-     * It should allow the variance column for aggregations
+     * It should allow the variance column for aggregations.
      */
     public function testWithAggregateSubjectWithVariance()
     {

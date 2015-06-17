@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\OptionsResolver;
 
 use Symfony\Component\OptionsResolver\OptionsResolver as BaseOptionsResolver;
@@ -7,9 +16,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver as BaseOptionsResolver;
 class OptionsResolver extends BaseOptionsResolver
 {
     /**
-     * Return true if this class is of the 2.6 version
+     * Return true if this class is of the 2.6 version.
      *
-     * @return boolean
+     * @return bool
      */
     private function is26()
     {
