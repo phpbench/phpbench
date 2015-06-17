@@ -24,6 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use PhpBench\Console\Output\OutputIndentDecorator;
+use PhpBench\Report\Generator\ConsoleSimpleReportGenerator;
 
 /**
  * PhpBench application.
@@ -46,6 +47,7 @@ class Application extends BaseApplication
 
         $this->configuration = $configuration ?: new Configuration();
         $this->configuration->addReportGenerator('console_table', new ConsoleTableReportGenerator());
+        $this->configuration->addReportGenerator('simple_table', new ConsoleSimpleReportGenerator());
         $this->configuration->addProgressLogger('dots', new DotsProgressLogger());
         $this->configuration->addProgressLogger('benchdots', new DotsProgressLogger(true));
     }
