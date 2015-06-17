@@ -1,8 +1,8 @@
 CHANGELOG
 =========
 
-dev-master
-----------
+0.3
+---
 
 ### Enhancements
 
@@ -11,6 +11,7 @@ dev-master
 
 ### Features
 
+- New "simple" report, with no options. Used by default.
 - Do not show empty reports on the in the `console_table` report
 - Added `variance` column for aggregated results (#66)
 - Removed redundant title for aggregated subject (#76)
