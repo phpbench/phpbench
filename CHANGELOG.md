@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+0.4
+---
+
+- Removed default report.
+- Show memory in `simple_table` report (#87).
+- `footer` option now available to show aggregate values for columns (#86)
+
 0.3
 ---
 

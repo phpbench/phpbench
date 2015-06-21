@@ -161,10 +161,8 @@ configuration. This string **MUST** contain at least the `name` key indicating
 which report to use, all other keys are interpreted as options.
 
 There is are two reports included by default: `simple_table` and
-`console_table`. `simple_table` is based on `console_table` and has no
-options, `console_table` has many options:
-
-It has the following options:
+`console_table`. `simple_table` is extends `console_table` and adds a simple
+configuration. The following options can be applied to both:
 
 - `time_format`: Either `fraction` (of a second) or `integer` (number of microseconds).
 - `subject_meta`: Show or hide subject metadata (class, method name, groups).
@@ -180,6 +178,8 @@ It has the following options:
 - `style`: Display one table per data group (`horizontal`) or one table per row (`vertical`) In the
   latter case the table will have two columns, `field` and `value`. Defaults
   to `horizontal`.
+- `footer`: Adds a "footer" row for each function name given, the aggregated
+  value according to the function is shown for each aggregatable column.
 
 The columns are:
 

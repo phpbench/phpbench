@@ -43,10 +43,7 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
      */
     public function configure(OptionsResolver $options)
     {
-        $defaults = array();
-
-        $options->setDefaults(array_merge(
-            $defaults,
+        $options->setDefaults(
             array(
                 'aggregate' => 'none',
                 'cols' => array(),
@@ -56,8 +53,9 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
                 'groups' => array(),
                 'title' => null,
                 'description' => null,
+                'footer' => array(),
             )
-        ));
+        );
 
         $options->setBCAllowedValues(array(
             'time_format' => array('integer', 'fraction'),
@@ -89,7 +87,6 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
         }
 
         $stepChain = new StepChain();
-
         $stepChain->add(new RpsStep());
 
         if ($options['aggregate'] === 'run') {
@@ -108,15 +105,13 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
 
         $stepChain->add(new FilterColsStep($options['cols']));
 
-        if (false === empty($options['footer_funcs'])) {
-            $stepChain->add(new FooterStep($options['footer_funcs']));
+        if (false === empty($options['footer'])) {
+            $stepChain->add(new FooterStep($options['footer']));
+            // Add the "label" column
+            $options['cols'][] = ' ';
         }
 
         $stepChain->run($workspace);
-
-        $workspace->each(function (Table $table) {
-            $table->align();
-        });
 
         if ($options['cols']) {
             $workspace->each(function (Table $table) use ($options) {
@@ -125,6 +120,10 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
                 });
             });
         }
+
+        $workspace->each(function (Table $table) {
+            $table->align();
+        });
 
         $workspace->setAttribute('title', $options['title']);
         $workspace->setAttribute('description', $options['description']);
