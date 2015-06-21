@@ -41,6 +41,7 @@ class CellularConverter
     private static function convertSubject(SubjectResult $subject, BenchmarkResult $benchmark, Workspace $workspace)
     {
         $table = $workspace->createAndAddTable(array('main'));
+        $table->setAttribute('identifier', $subject->getIdentifier());
         $table->setAttribute('description', $subject->getDescription());
         $table->setAttribute('class', $benchmark->getClass());
         $table->setAttribute('subject', $subject->getName());
@@ -53,7 +54,7 @@ class CellularConverter
                 $row->set('run', $runIndex);
                 $row->set('iter', $iterationIndex);
 
-                $row->set('params', json_encode($aggregateResult->getParameters()));
+                $row->set('params', json_encode($subject->getParameters()));
 
                 $stat = $iteration->getStatistics();
                 $row->set('pid', $stat['pid']);

@@ -21,7 +21,7 @@ class AggregateSubjectStep extends AggregateRunStep
     {
         $workspace
             ->partition(function (Table $table) {
-                return $table->getAttribute('class') . $table->getAttribute('subject');
+                return $table->getAttribute('identifier');
             })
             ->aggregate(function (Workspace $workspace, $newWorkspace) {
                 if (!$workspace->first()) {

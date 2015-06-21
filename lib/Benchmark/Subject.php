@@ -11,30 +11,49 @@
 
 namespace PhpBench\Benchmark;
 
+/**
+ * Represents a subject that is tested by a method
+ * in a benchmark class.
+ *
+ */
 class Subject
 {
     private $methodName;
     private $beforeMethods;
-    private $parameterProviders;
+    private $parameters;
     private $nbIterations;
     private $description;
     private $processIsolation;
     private $revs;
     private $groups;
+    private $identifier;
 
+    /**
+     * @param integer $identifier
+     * @param mixed $methodName
+     * @param array $beforeMethods
+     * @param array $parameters
+     * @param mixed $nbIterations
+     * @param array $revs
+     * @param mixed $description
+     * @param mixed $processIsolation
+     * @param array $groups
+     */
     public function __construct(
+        $identifier,
         $methodName,
         array $beforeMethods,
-        array $parameterProviders,
+        array $parameters,
         $nbIterations,
         array $revs,
         $description,
         $processIsolation,
         array $groups
     ) {
+        $this->identifier = $identifier;
         $this->methodName = $methodName;
         $this->beforeMethods = $beforeMethods;
-        $this->parameterProviders = $parameterProviders;
+        $this->parameters = $parameters;
         $this->nbIterations = $nbIterations;
         $this->revs = $revs;
         $this->description = $description;
@@ -42,43 +61,95 @@ class Subject
         $this->groups = $groups;
     }
 
+    /**
+     * Return the methods that should be executed before this subject
+     *
+     * @return string[]
+     */
     public function getBeforeMethods()
     {
         return $this->beforeMethods;
     }
 
-    public function getParameterProviders()
+    /**
+     * Return the parameter provider methods for this subject
+     *
+     * @return string[]
+     */
+    public function getParameters()
     {
-        return $this->parameterProviders;
+        return $this->parameters;
     }
 
+    /**
+     * Return the number of iterations that should be executed
+     * on the subject.
+     *
+     * @return integer
+     */
     public function getNbIterations()
     {
         return $this->nbIterations;
     }
 
+    /**
+     * Return a description of this subject
+     *
+     * @return string
+     */
     public function getDescription()
     {
         return $this->description;
     }
 
+    /**
+     * Return the method in the bechmark class which this subject
+     * represents.
+     *
+     * @return string
+     */
     public function getMethodName()
     {
         return $this->methodName;
     }
 
+    /**
+     * Return the process isolation policy for this subject
+     *
+     * @return string
+     */
     public function getProcessIsolation()
     {
         return $this->processIsolation;
     }
 
+    /**
+     * Return the number of revolutions which should be executed.
+     *
+     * @return integer
+     */
     public function getRevs()
     {
         return $this->revs;
     }
 
+    /**
+     * Return the groups to which this subject belongs
+     *
+     * @return string[]
+     */
     public function getGroups()
     {
         return $this->groups;
+    }
+
+    /**
+     * Return the identifier of this subject
+     *
+     * @return integer
+     */
+    public function getIdentifier() 
+    {
+        return $this->identifier;
     }
 }

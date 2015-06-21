@@ -13,17 +13,21 @@ namespace PhpBench\Result;
 
 class SubjectResult
 {
+    private $identifier;
     private $name;
     private $description;
     private $groups;
     private $iterationsResults;
+    private $parameters;
 
-    public function __construct($name, $description, array $groups, array $iterationsResults)
+    public function __construct($identifier, $name, $description, array $groups, array $parameters, array $iterationsResults)
     {
+        $this->identifier = $identifier;
         $this->iterationsResults = $iterationsResults;
         $this->name = $name;
         $this->description = $description;
         $this->groups = $groups;
+        $this->parameters = $parameters;
     }
 
     public function getName()
@@ -44,5 +48,15 @@ class SubjectResult
     public function getGroups()
     {
         return $this->groups;
+    }
+
+    public function getParameters() 
+    {
+        return $this->parameters;
+    }
+
+    public function getIdentifier() 
+    {
+        return $this->identifier;
     }
 }

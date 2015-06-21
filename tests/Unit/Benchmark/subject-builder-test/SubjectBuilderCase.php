@@ -15,12 +15,11 @@ use PhpBench\Benchmark;
 /**
  * @group group1
  */
-class ParserCase implements Benchmark
+class SubjectBuilderCase implements Benchmark
 {
     /**
      * @beforeMethod beforeSelectSql
-     * @paramProvider provideNodes
-     * @paramProvider provideColumns
+     * @paramProvider provideNumbers
      * @iterations 3
      * @description Run a select query
      */
@@ -30,12 +29,19 @@ class ParserCase implements Benchmark
 
     /**
      * @beforeMethod setupSelectSql
-     * @paramProvider provideNodes
-     * @paramProvider provideColumns
      * @iterations 3
      * @description Run a select query
      */
     public function benchTraverseSomething(BenchIteration $iteration)
     {
+    }
+
+    public function provideNumbers()
+    {
+        return array(
+            array(
+                'one', 'two',
+            )
+        );
     }
 }

@@ -32,7 +32,6 @@ class Runner
     private $subjectMemoryTotal;
     private $subjectLastMemoryInclusive;
     private $processIsolation;
-    private $parameterOverride;
     private $iterationsOverride;
     private $revsOverride;
     private $setUpTearDown;
@@ -44,7 +43,6 @@ class Runner
      * @param ProgressLogger $logger
      * @param mixed $processIsolation ProcessIsolation override
      * @param mixed $setUpTearDown Enable or disable setUp and tearDown
-     * @param mixed $parameterOverride Ovreride the parameters
      * @param mixed $iterationsOverride Override the number of iterations
      * @param mixed $configFile Isolated proceses need to know about the config
      */
@@ -54,7 +52,6 @@ class Runner
         ProgressLogger $logger = null,
         $processIsolation = null,
         $setUpTearDown = true,
-        $parameterOverride = null,
         $iterationsOverride = null,
         $revsOverride = null,
         $configFile = null
@@ -64,7 +61,6 @@ class Runner
         $this->subjectBuilder = $subjectBuilder;
         $this->processIsolation = $processIsolation;
         $this->setUpTearDown = $setUpTearDown;
-        $this->parameterOverride = $parameterOverride;
         $this->iterationsOverride = $iterationsOverride;
         $this->revsOverride = $revsOverride;
         $this->configFile = $configFile;
@@ -118,52 +114,42 @@ class Runner
         $nbIterations = null === $this->iterationsOverride ? $subject->getNbIterations() : $this->iterationsOverride;
         $processIsolation = null !== $this->processIsolation ? $this->processIsolation : $subject->getProcessIsolation();
 
-        if (null !== $this->parameterOverride) {
-            $parameterSets = array(array($this->parameterOverride));
-        } else {
-            $parameterSets = $this->getParameterSets($benchmark, $subject);
-        }
-
-        if (!$parameterSets) {
-            $parameterSets = array(array(array()));
-        }
-
-        $paramsIterator = new CartesianParameterIterator($parameterSets);
         $revs = $this->revsOverride ? array($this->revsOverride) : $subject->getRevs();
 
         $iterationsResults = array();
-        foreach ($paramsIterator as $parameters) {
-            if (false !== $processIsolation) {
-                $iterationsResults[] = $this->runIterationsSeparateProcess($benchmark, $subject, $parameters, $nbIterations, $processIsolation, $revs);
-            } else {
-                $iterationsResults[] = $this->runIterations($benchmark, $subject, $parameters, $nbIterations, $revs);
-            }
+
+        if (false !== $processIsolation) {
+            $iterationsResults[] = $this->runIterationsSeparateProcess($benchmark, $subject, $nbIterations, $processIsolation, $revs);
+        } else {
+            $iterationsResults[] = $this->runIterations($benchmark, $subject, $nbIterations, $revs);
         }
 
         $subjectResult = new SubjectResult(
+            $subject->getIdentifier(),
             $subject->getMethodName(),
             $subject->getDescription(),
             $subject->getGroups(),
+            $subject->getParameters(),
             $iterationsResults
         );
 
         return $subjectResult;
     }
 
-    private function runIterations(Benchmark $benchmark, Subject $subject, $parameters, $nbIterations, $revs)
+    private function runIterations(Benchmark $benchmark, Subject $subject, $nbIterations, $revs)
     {
         $iterationResults = array();
         for ($index = 0; $index < $nbIterations; $index++) {
             foreach ($revs as $nbRevs) {
-                $iteration = new Iteration($index, $parameters, $nbRevs);
+                $iteration = new Iteration($index, $subject->getParameters(), $nbRevs);
                 $iterationResults[] = $this->runIteration($benchmark, $subject, $iteration);
             }
         }
 
-        return new IterationsResult($iterationResults, $parameters);
+        return new IterationsResult($iterationResults);
     }
 
-    private function runIterationsSeparateProcess(Benchmark $benchmark, Subject $subject, $parameters, $nbIterations, $processIsolation, $revs)
+    private function runIterationsSeparateProcess(Benchmark $benchmark, Subject $subject, $nbIterations, $processIsolation, $revs)
     {
         switch ($processIsolation) {
             case 'iteration':
@@ -184,7 +170,7 @@ class Runner
 
         foreach ($revs as $nbRevs) {
             for ($index = 0; $index < $iterationCount; $index++) {
-                $subIterationsResult = $this->runIterationSeparateProcess($benchmark, $subject, $parameters, $nbIterations, $nbRevs);
+                $subIterationsResult = $this->runIterationSeparateProcess($benchmark, $subject, $nbIterations, $nbRevs);
 
                 foreach ($subIterationsResult->getIterationResults() as $subIterationResult) {
                     $iterationsResult[] = $subIterationResult;
@@ -192,10 +178,10 @@ class Runner
             }
         }
 
-        return new IterationsResult($iterationsResult, $parameters);
+        return new IterationsResult($iterationsResult, $subject->getParameters());
     }
 
-    private function runIterationSeparateProcess(Benchmark $benchmark, Subject $subject, $parameters, $nbIterations, $nbRevs)
+    private function runIterationSeparateProcess(Benchmark $benchmark, Subject $subject, $nbIterations, $nbRevs)
     {
         $reflection = new \ReflectionClass(get_class($benchmark));
         $bin = realpath(__DIR__ . '/../..') . '/bin/phpbench';
@@ -205,7 +191,7 @@ class Runner
             $bin,
             $reflection->getFileName(),
             $subject->getMethodName(),
-            escapeshellarg(json_encode($parameters)),
+            escapeshellarg(json_encode($subject->getParameters())),
             $nbIterations
         );
 
@@ -288,24 +274,6 @@ class Runner
         $iterationResult = new IterationResult($statistics);
 
         return $iterationResult;
-    }
-
-    private function getParameterSets(Benchmark $benchmark, Subject $subject)
-    {
-        $paramProviderMethods = $subject->getParameterProviders();
-        $parameterSets = array();
-
-        foreach ($paramProviderMethods as $paramProviderMethod) {
-            if (!method_exists($benchmark, $paramProviderMethod)) {
-                throw new InvalidArgumentException(sprintf(
-                    'Unknown param provider "%s" for bench benchmark "%s"',
-                    $paramProviderMethod, get_class($benchmark)
-                ));
-            }
-            $parameterSets[] = $benchmark->$paramProviderMethod();
-        }
-
-        return $parameterSets;
     }
 
     public static function validateProcessIsolation($processIsolation)

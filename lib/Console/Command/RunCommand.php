@@ -68,7 +68,7 @@ EOT
         $configFile = $input->getOption('config');
         $processIsolation = $input->getOption('process-isolation') ?: null;
         $processIsolation = $processIsolation === 'none' ? false : $processIsolation;
-        $parameters = null;
+        $parameters = array();
 
         Runner::validateProcessIsolation($processIsolation);
 
@@ -169,7 +169,7 @@ EOT
         }
 
         $benchFinder = new CollectionBuilder($finder);
-        $subjectBuilder = new SubjectBuilder($subjects, $groups);
+        $subjectBuilder = new SubjectBuilder($subjects, $parameters, $groups);
 
         $benchRunner = new Runner(
             $benchFinder,
@@ -177,7 +177,6 @@ EOT
             $progressLogger,
             $processIsolation,
             !$noSetup,
-            $parameters,
             $iterations,
             $revs,
             $configFile

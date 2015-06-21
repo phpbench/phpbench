@@ -13,14 +13,14 @@ namespace PhpBench\Tests\Benchmark;
 
 use PhpBench\Benchmark\SubjectBuilder;
 
-require_once __DIR__ . '/parsertest/ParserCase.php';
-require_once __DIR__ . '/parsertest/ParserCaseInvalidAnnotation.php';
+require_once __DIR__ . '/subject-builder-test/SubjectBuilderCase.php';
+require_once __DIR__ . '/subject-builder-test/SubjectBuilderCaseInvalidParamProvider.php';
 
 class SubjectBuilderTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->parser = new SubjectBuilder();
+        $this->subjectBuilder = new SubjectBuilder();
     }
 
     /**
@@ -29,17 +29,36 @@ class SubjectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuild()
     {
-        $case = new \ParserCase();
-        $subjects = $this->parser->buildSubjects($case);
+        $case = new \SubjectBuilderCase();
+        $subjects = $this->subjectBuilder->buildSubjects($case);
         $this->assertContainsOnlyInstancesOf('PhpBench\\Benchmark\\Subject', $subjects);
         $this->assertCount(2, $subjects);
         $subject = reset($subjects);
 
         $this->assertEquals(array('group1'), $subject->getGroups());
         $this->assertEquals(array('beforeSelectSql'), $subject->getBeforeMethods());
-        $this->assertEquals(array('provideNodes', 'provideColumns'), $subject->getParameterProviders());
+        $this->assertEquals(array('one', 'two'), $subject->getParameters());
         $this->assertEquals(3, $subject->getNbIterations());
         $this->assertInternalType('int', $subject->getNbIterations());
         $this->assertEquals('Run a select query', $subject->getDescription());
+    }
+
+    /**
+     * It should throw an exception if a parameter provider does not exist.
+     *
+     * @expectedException PhpBench\Exception\InvalidArgumentException
+     * @expectedExceptionMessage Unknown param provider "notExistingParam" for bench benchmark
+     */
+    public function testInvalidParamProvider()
+    {
+        $case = new \SubjectBuilderCaseInvalidParamProvider();
+        $this->subjectBuilder->buildSubjects($case)->willReturn(array(
+            $this->subject->reveal(),
+        ));
+        $this->subject->getNbIterations()->willReturn(1);
+        $this->subject->getParameters()->willReturn(array('notExistingParam'));
+        $this->subject->getProcessIsolation()->willReturn(false);
+
+        $this->runner->runAll();
     }
 }

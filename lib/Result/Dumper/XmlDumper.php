@@ -73,8 +73,12 @@ class XmlDumper
     private function dumpSubject(SubjectResult $subjectResult, $dom)
     {
         $subjectEl = $dom->createElement('subject');
+        $subjectEl->setAttribute('identifier', $subjectResult->getIdentifier());
         $subjectEl->setAttribute('name', $subjectResult->getName());
         $subjectEl->setAttribute('description', $subjectResult->getDescription());
+
+        $parameters = $subjectResult->getParameters();
+        $this->appendParameters($subjectEl, $parameters);
 
         foreach ($subjectResult->getGroups() as $group) {
             $groupEl = $dom->createElement('group');
@@ -93,8 +97,6 @@ class XmlDumper
     private function dumpIterations(IterationsResult $iterationsResults, $dom)
     {
         $iterationsEl = $dom->createElement('iterations');
-        $parameters = $iterationsResults->getParameters();
-        $this->appendParameters($iterationsEl, $parameters);
 
         foreach ($iterationsResults->getIterationResults() as $iterationResult) {
             $iterationResultEl = $this->dumpIteration($iterationResult, $dom);

@@ -13,9 +13,6 @@ namespace PhpBench\Tests\Benchmark;
 
 use PhpBench\Benchmark\Parser;
 
-require_once __DIR__ . '/parsertest/ParserCase.php';
-require_once __DIR__ . '/parsertest/ParserCaseInvalidAnnotation.php';
-
 class ParserTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()

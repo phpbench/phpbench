@@ -12,10 +12,10 @@
 use PhpBench\BenchIteration;
 use PhpBench\Benchmark;
 
-class ParserCaseInvalidAnnotation implements Benchmark
+class SubjectBuilderCaseInvalidParamProvider implements Benchmark
 {
     /**
-     * @inasdld beforeSelectSql
+     * @paramProvider notExistingParam
      */
     public function benchSelectSql(BenchIteration $iteration)
     {
