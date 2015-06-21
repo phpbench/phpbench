@@ -70,10 +70,6 @@ EOT
         $processIsolation = $processIsolation === 'none' ? false : $processIsolation;
         $parameters = null;
 
-        if (!$configFile && empty($reports)) {
-            $reports = array('simple_table');
-        }
-
         Runner::validateProcessIsolation($processIsolation);
 
         if ($parametersJson) {
