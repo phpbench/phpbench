@@ -46,6 +46,7 @@ class CellularConverter
         $table->setAttribute('class', $benchmark->getClass());
         $table->setAttribute('subject', $subject->getName());
         $table->setAttribute('groups', $subject->getGroups());
+        $table->setAttribute('parameters', $subject->getParameters());
 
         foreach ($subject->getIterationsResults() as $runIndex => $aggregateResult) {
             foreach ($aggregateResult->getIterationResults() as $iterationIndex => $iteration) {
@@ -53,7 +54,6 @@ class CellularConverter
                 $row = $table->createAndAddRow(array('main'));
                 $row->set('run', $runIndex);
                 $row->set('iter', $iterationIndex);
-
                 $row->set('params', json_encode($subject->getParameters()));
 
                 $stat = $iteration->getStatistics();

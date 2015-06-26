@@ -27,16 +27,20 @@ class AggregateSubjectStep extends AggregateRunStep
                 if (!$workspace->first()) {
                     return;
                 }
+                $table = $workspace->first();
 
                 if (!isset($newWorkspace[0])) {
                     $newTable = $newWorkspace->createAndAddTable();
+                    foreach (array('class', 'groups', 'subject') as $name) {
+                        $newTable->setAttribute($name, $table->getAttribute($name));
+                    }
                 } else {
                     $newTable = $newWorkspace->first();
                 }
 
-                $table = $workspace->first();
                 $row = $newTable->createAndAddRow();
                 $row->set('iters', $table->count());
+                $row->set('params', $table->getAttribute('parameters'));
                 $row->set('class', $table->getAttribute('class'));
                 $row->set('subject', $table->getAttribute('subject'));
                 $row->set('description', $table->getAttribute('description'));
