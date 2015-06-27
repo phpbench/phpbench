@@ -70,7 +70,14 @@ following annotations:
 
 **singular**
 
-A description of the benchmark subject.
+A description of the benchmark subject. If you have parameterized the subject
+you may use the parameter values in the description as follows:
+
+````php
+/**
+ * @description Do something %param_name% times with the %another_param% thing.
+ */
+````
 
 ### @group
 
