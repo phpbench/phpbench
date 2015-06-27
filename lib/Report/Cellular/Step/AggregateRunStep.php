@@ -63,34 +63,4 @@ class AggregateRunStep implements Step
                 });
         });
     }
-
-    /**
-     * @param Table $table
-     * @param Row $row
-     */
-    protected function applyAggregation(Table $table, Row $row)
-    {
-        foreach ($this->functions as $function) {
-            foreach ($table->first()->getCells(array('aggregate')) as $colName => $cell) {
-                $row->set(
-                    $function . '_' . $colName,
-                    Calculator::$function($table->getColumn($colName)),
-                    $cell->getGroups()
-                );
-            }
-        }
-
-        foreach ($this->functions as $function) {
-            foreach ($table->first()->getCells(array('aggregate')) as $colName => $cell) {
-                $row->set(
-                    'variance_' . $colName,
-                    Calculator::deviation(
-                        $row['min_' . $colName]->getValue(),
-                        $row['max_' . $colName]->getValue()
-                    ),
-                    array('.variance')
-                );
-            }
-        }
-    }
 }

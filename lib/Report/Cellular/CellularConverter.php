@@ -55,6 +55,8 @@ class CellularConverter
                 $row->set('run', $runIndex);
                 $row->set('iter', $iterationIndex);
                 $row->set('params', json_encode($subject->getParameters()));
+                $row->set('class', $benchmark->getClass());
+                $row->set('subject', $subject->getName());
 
                 $stat = $iteration->getStatistics();
                 $row->set('pid', $stat['pid']);

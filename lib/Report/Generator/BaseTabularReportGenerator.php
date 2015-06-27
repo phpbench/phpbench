@@ -27,6 +27,8 @@ use PhpBench\Report\Cellular\Step\AggregateRunStep;
 use PhpBench\Report\Cellular\StepChain;
 use DTL\Cellular\Row;
 use PhpBench\Report\Cellular\Step\ReplaceDescriptionTokensStep;
+use PhpBench\Report\Cellular\Step\AggregateStep;
+use PhpBench\Report\Cellular\Step\ExplodeStep;
 
 /**
  * This base class generates a table (a data table, not a UI table) with
@@ -46,7 +48,8 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
     {
         $options->setDefaults(
             array(
-                'aggregate' => 'none',
+                'aggregate' => '',
+                'explode' => '',
                 'cols' => array(),
                 'precision' => 6,
                 'time_format' => 'fraction',
@@ -60,7 +63,6 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
 
         $options->setBCAllowedValues(array(
             'time_format' => array('integer', 'fraction'),
-            'aggregate' => array('none', 'run', 'subject'),
         ));
         $options->setBCAllowedTypes(array(
             'aggregate' => array('string'),
@@ -91,12 +93,14 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
         $stepChain->add(new RpsStep());
         $stepChain->add(new ReplaceDescriptionTokensStep());
 
-        if ($options['aggregate'] === 'run') {
-            $stepChain->add(new AggregateRunStep($this->availableFuncs));
+        if ($options['aggregate']) {
+            $stepChain->add(new SortStep(array($options['aggregate'])));
+            $stepChain->add(new AggregateStep('mean', array($options['aggregate'])));
         }
 
-        if ($options['aggregate'] === 'subject') {
-            $stepChain->add(new AggregateSubjectStep($this->availableFuncs));
+        if ($options['explode']) {
+            $stepChain->add(new SortStep(array($options['explode'])));
+            $stepChain->add(new ExplodeStep(array($options['explode'])));
         }
 
         $stepChain->add(new DeviationStep('time', $this->availableFuncs));
