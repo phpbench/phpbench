@@ -47,6 +47,9 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
             'blue', new OutputFormatterStyle('blue', null, array())
         );
         $output->getFormatter()->setStyle(
+            'red', new OutputFormatterStyle('red', null, array())
+        );
+        $output->getFormatter()->setStyle(
             'dark', new OutputFormatterStyle('black', null, array('bold'))
         );
         $output->getFormatter()->setStyle(
@@ -88,6 +91,14 @@ class ConsoleTableReportGenerator extends BaseTabularReportGenerator
                         implode(', ', $data->getAttribute('groups'))
                     );
                 }
+
+                if ($data->hasAttribute('parameters') && $data->getAttribute('parameters')) {
+                    $line[] = sprintf(
+                        '<comment>[%s]</comment>',
+                        trim(json_encode($data->getAttribute('parameters')), '{}')
+                    );
+                }
+
 
                 if ($line) {
                     $output->writeln(implode(' ', $line));

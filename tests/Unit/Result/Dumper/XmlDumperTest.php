@@ -33,19 +33,19 @@ class XmlDumperTest extends \PHPUnit_Framework_TestCase
         $expected = <<<EOT
   <suite>
     <benchmark class="Benchmark\Class">
-      <subject name="mySubject" description="My Subject's description">
+      <subject identifier="1" name="mySubject" description="My Subject's description">
+        <parameter name="foo" value="bar"/>
+        <parameter name="array" multiple="1">
+          <parameter name="0" value="one"/>
+          <parameter name="1" value="two"/>
+        </parameter>
+        <parameter name="assoc_array" multiple="1">
+          <parameter name="one" value="two"/>
+          <parameter name="three" value="four"/>
+        </parameter>
         <group name="one"/>
         <group name="two"/>
         <iterations>
-          <parameter name="foo" value="bar"/>
-          <parameter name="array" multiple="1">
-            <parameter name="0" value="one"/>
-            <parameter name="1" value="two"/>
-          </parameter>
-          <parameter name="assoc_array" multiple="1">
-            <parameter name="one" value="two"/>
-            <parameter name="three" value="four"/>
-          </parameter>
           <iteration revs="1" time="100"/>
         </iterations>
       </subject>
@@ -63,15 +63,22 @@ EOT;
     protected function getSuite()
     {
         $iteration1 = new IterationResult(array('revs' => 1, 'time' => 100));
-        $iterations = new IterationsResult(array($iteration1), array(
-            'foo' => 'bar',
-            'array' => array('one', 'two'),
-            'assoc_array' => array(
-                'one' => 'two',
-                'three' => 'four',
+        $iterations = new IterationsResult(array($iteration1));
+        $subject = new SubjectResult(
+            1,
+            'mySubject',
+            'My Subject\'s description',
+            array('one', 'two'),
+            array(
+                'foo' => 'bar',
+                'array' => array('one', 'two'),
+                'assoc_array' => array(
+                    'one' => 'two',
+                    'three' => 'four',
+                ),
             ),
-        ));
-        $subject = new SubjectResult('mySubject', 'My Subject\'s description', array('one', 'two'), array($iterations));
+            array($iterations)
+        );
         $benchmark = new BenchmarkResult('Benchmark\Class', array($subject));
         $suite = new SuiteResult(array($benchmark));
 

@@ -26,6 +26,7 @@ use PhpBench\Report\Cellular\Step\SortStep;
 use PhpBench\Report\Cellular\Step\AggregateRunStep;
 use PhpBench\Report\Cellular\StepChain;
 use DTL\Cellular\Row;
+use PhpBench\Report\Cellular\Step\ReplaceDescriptionTokensStep;
 
 /**
  * This base class generates a table (a data table, not a UI table) with
@@ -88,6 +89,7 @@ abstract class BaseTabularReportGenerator implements ReportGenerator
 
         $stepChain = new StepChain();
         $stepChain->add(new RpsStep());
+        $stepChain->add(new ReplaceDescriptionTokensStep());
 
         if ($options['aggregate'] === 'run') {
             $stepChain->add(new AggregateRunStep($this->availableFuncs));

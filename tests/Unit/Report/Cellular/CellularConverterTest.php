@@ -33,9 +33,9 @@ class CellularConverterTest extends \PHPUnit_Framework_TestCase
             'memory_diff' => 123,
             'pid' => 1234,
         ));
-        $iterations = new IterationsResult(array($iteration1), array());
-        $subject1 = new SubjectResult('mySubject1', 'My Subject\'s description', array('one', 'two'), array($iterations));
-        $subject2 = new SubjectResult('mySubject2', 'My Subject\'s description', array('one', 'two'), array($iterations));
+        $iterations = new IterationsResult(array($iteration1));
+        $subject1 = new SubjectResult(1, 'mySubject1', 'My Subject\'s description', array('one', 'two'), array(), array($iterations));
+        $subject2 = new SubjectResult(2, 'mySubject2', 'My Subject\'s description', array('one', 'two'), array(), array($iterations));
         $benchmark1 = new BenchmarkResult('Benchmark\Foo', array($subject1, $subject2));
         $suite = new SuiteResult(array($benchmark1));
 

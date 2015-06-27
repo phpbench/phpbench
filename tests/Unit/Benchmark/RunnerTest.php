@@ -35,13 +35,12 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
     /**
      * It should run the tests.
      *
-     * - With 1 iteration, 1 revolution and with two parameter providers
-     * - With 1 iteration, 4 revolution and zero parameter providers
-     * - With 1 iteration, 4 iterations and one parameter provider
+     * - With 1 iteration, 1 revolution
+     * - With 1 iteration, 4 revolutions
      *
      * @dataProvider provideRunner
      */
-    public function testRunner($iterations, $revs, $paramProviders, $expectedNbCalls)
+    public function testRunner($iterations, $revs, $expectedNbCalls)
     {
         $this->collectionBuilder->buildCollection()->willReturn($this->collection);
         $this->collection->getBenchmarks()->willReturn(array(
@@ -51,10 +50,11 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
             $this->subject->reveal(),
         ));
         $this->subject->getNbIterations()->willReturn($iterations);
-        $this->subject->getParameterProviders()->willReturn($paramProviders);
         $this->subject->getMethodName()->willReturn('benchFoo');
         $this->subject->getBeforeMethods()->willReturn(array('beforeFoo'));
         $this->subject->getDescription()->willReturn('Hello world');
+        $this->subject->getIdentifier()->willReturn(1);
+        $this->subject->getParameters()->willReturn(array());
         $this->subject->getGroups()->willReturn(array());
         $this->subject->getProcessIsolation()->willReturn(false);
         $this->subject->getRevs()->willReturn($revs);
@@ -74,21 +74,16 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
             array(
                 1,
                 array(1),
-                array(
-                    'paramSetOne', 'paramSetTwo',
-                ),
-                2,
+                1,
             ),
             array(
                 1,
                 array(1, 3),
-                array(),
                 4,
             ),
             array(
                 1,
                 array(1, 3),
-                array('paramSetTwo'),
                 4,
             ),
         );
@@ -110,32 +105,11 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
             $this->subject->reveal(),
         ));
         $this->subject->getNbIterations()->willReturn(1);
-        $this->subject->getParameterProviders()->willReturn(array());
+        $this->subject->getIdentifier()->willReturn(1);
+        $this->subject->getParameters()->willReturn(array());
         $this->subject->getBeforeMethods()->willReturn(array('beforeFooNotExisting'));
         $this->subject->getProcessIsolation()->willReturn(false);
         $this->subject->getRevs()->willReturn(array(1));
-
-        $this->runner->runAll();
-    }
-
-    /**
-     * It should throw an exception if a parameter provider does not exist.
-     *
-     * @expectedException PhpBench\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Unknown param provider "notExistingParam" for bench benchmark
-     */
-    public function testInvalidParamProvider()
-    {
-        $this->collectionBuilder->buildCollection()->willReturn($this->collection);
-        $this->collection->getBenchmarks()->willReturn(array(
-            $this->case,
-        ));
-        $this->subjectBuilder->buildSubjects($this->case)->willReturn(array(
-            $this->subject->reveal(),
-        ));
-        $this->subject->getNbIterations()->willReturn(1);
-        $this->subject->getParameterProviders()->willReturn(array('notExistingParam'));
-        $this->subject->getProcessIsolation()->willReturn(false);
 
         $this->runner->runAll();
     }
@@ -152,7 +126,8 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->subjectBuilder->buildSubjects($this->case)->willReturn(array(
             $this->subject->reveal(),
         ));
-        $this->subject->getParameterProviders()->willReturn(array());
+        $this->subject->getIdentifier()->willReturn(1);
+        $this->subject->getParameters()->willReturn(array());
         $this->subject->getMethodName()->willReturn('benchFoo');
         $this->subject->getDescription()->willReturn('benchFoo');
         $this->subject->getGroups()->willReturn(array());
@@ -185,7 +160,8 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->subjectBuilder->buildSubjects($this->case)->willReturn(array(
             $this->subject->reveal(),
         ));
-        $this->subject->getParameterProviders()->willReturn(array());
+        $this->subject->getIdentifier()->willReturn(1);
+        $this->subject->getParameters()->willReturn(array());
         $this->subject->getMethodName()->willReturn('benchFoo');
         $this->subject->getDescription()->willReturn('benchFoo');
         $this->subject->getGroups()->willReturn(array());

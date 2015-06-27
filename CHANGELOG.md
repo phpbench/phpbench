@@ -4,6 +4,8 @@ CHANGELOG
 0.4
 ---
 
+- Ability to place parameter tokens in descriptions
+- Each parameter set now considered as a separate subject
 - Removed default report.
 - Show memory in `simple_table` report (#87).
 - `footer` option now available to show aggregate values for columns (#86)

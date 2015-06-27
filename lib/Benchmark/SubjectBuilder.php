@@ -12,23 +12,33 @@
 namespace PhpBench\Benchmark;
 
 use PhpBench\Benchmark;
+use PhpBench\Exception\InvalidArgumentException;
 
 class SubjectBuilder
 {
+    static $subjectIdCounter = 0;
+
     private $parser;
     private $subjects;
     private $groups;
+    private $parameters;
 
-    public function __construct(array $subjects = array(), array $groups = array())
+    /**
+     * @param array $subjects Subject whitelist (empty implies all subjects)
+     * @param array $parameters Parameter override (empty will use annotated parameters)
+     * @param array $groups Group whitelist (empty implies all groups)
+     */
+    public function __construct(array $subjects = array(), array $parameters = array(), array $groups = array())
     {
         $this->parser = new Parser();
         $this->subjects = $subjects;
         $this->groups = $groups;
+        $this->parameters = $parameters;
     }
 
-    public function buildSubjects(Benchmark $case)
+    public function buildSubjects(Benchmark $benchmark)
     {
-        $reflection = new \ReflectionClass(get_class($case));
+        $reflection = new \ReflectionClass(get_class($benchmark));
         $defaults = $this->parser->parseDoc($reflection->getDocComment());
         $methods = $reflection->getMethods();
 
@@ -38,6 +48,7 @@ class SubjectBuilder
                 continue;
             }
 
+            // if we have a subject whitelist, only include subjects in that whitelistd
             if ($this->subjects && false === in_array($method->getName(), $this->subjects)) {
                 continue;
             }
@@ -52,10 +63,23 @@ class SubjectBuilder
                 $meta['revs'] = array(1);
             }
 
+            $this->createSubjects($subjects, $benchmark, $method, $meta);
+        }
+
+        return $subjects;
+    }
+
+    private function createSubjects(&$subjects, Benchmark $benchmark, \ReflectionMethod $method, array $meta)
+    {
+        $parameterSets = $this->getParameterSets($benchmark, $meta['paramProvider']);
+        $paramsIterator = new CartesianParameterIterator($parameterSets);
+
+        foreach ($paramsIterator as $parameters) {
             $subjects[] = new Subject(
+                self::$subjectIdCounter++,
                 $method->getName(),
                 $meta['beforeMethod'],
-                $meta['paramProvider'],
+                $parameters,
                 $meta['iterations'],
                 $meta['revs'],
                 $meta['description'],
@@ -63,7 +87,30 @@ class SubjectBuilder
                 $meta['group']
             );
         }
+    }
 
-        return $subjects;
+    private function getParameterSets(Benchmark $benchmark, array $paramProviderMethods)
+    {
+        if ($this->parameters) {
+            return array(array($this->parameters));
+        }
+
+        $parameterSets = array();
+
+        foreach ($paramProviderMethods as $paramProviderMethod) {
+            if (!method_exists($benchmark, $paramProviderMethod)) {
+                throw new InvalidArgumentException(sprintf(
+                    'Unknown param provider "%s" for bench benchmark "%s"',
+                    $paramProviderMethod, get_class($benchmark)
+                ));
+            }
+            $parameterSets[] = $benchmark->$paramProviderMethod();
+        }
+
+        if (!$parameterSets) {
+            $parameterSets = array(array(array()));
+        }
+
+        return $parameterSets;
     }
 }
