@@ -41,7 +41,6 @@ All bench marks under the given path will be executed recursively.
 EOT
         );
         $this->addArgument('path', InputArgument::OPTIONAL, 'Path to benchmark(s)');
-        $this->addOption('report', array(), InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Report name or configuration in JSON format');
         $this->addOption('subject', array(), InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Subject to run (can be specified multiple times)');
         $this->addOption('group', array(), InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Group to run (can be specified multiple times)');
         $this->addOption('dump-file', 'df', InputOption::VALUE_OPTIONAL, 'Dump XML result to named file');
@@ -57,8 +56,6 @@ EOT
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $reports = $input->getOption('report');
-
         $consoleOutput = $output;
         $dump = $input->getOption('dump');
         $parametersJson = $input->getOption('parameters');
@@ -101,7 +98,6 @@ EOT
         $progressLogger = $configuration->getProgressLogger($progressLogger);
         $progressLogger->setOutput($consoleOutput);
 
-        $this->processReportConfigs($reports);
         $path = $input->getArgument('path') ?: $configuration->getPath();
 
         if (null === $path) {
@@ -137,8 +133,6 @@ EOT
 
         if ($dump) {
             $output->write($this->dumpResult($result));
-        } elseif ($configuration->getReports()) {
-            $this->generateReports($consoleOutput, $result);
         }
     }
 

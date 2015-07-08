@@ -27,6 +27,14 @@ class IterationResult
 
     public function get($statisticName)
     {
+        if (!isset($this->statistics[$statisticName])) {
+            throw new \InvalidArgumentException(sprintf(
+                'Unknown statistic "%s". Known statistics: "%s"',
+                $statisticName,
+                implode('", "', array_keys($this->statistics))
+            ));
+        }
+
         return $this->statistics[$statisticName];
     }
 }
