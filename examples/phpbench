@@ -2,39 +2,36 @@
 
 require_once(__DIR__ . '/../vendor/autoload.php');
 
-$config = new PhpBench\Configuration();
-$config->addReport(array(
-    'title' => 'Cost of Setting',
-    'description' => 'Comparison of different ways of setting properties',
-    'name' => 'console_table',
-    'groups' => array('cost_of_setting'),
-    'aggregate' => 'subject',
-    'sort' => array('time'),
-    'cols' => array('description', 'iters', 'mean_revs', 'mean_time', 'variance_time', 'mean_rps', 'deviation_min'),
-));
-$config->addReport(array(
-    'title' => 'Cost of Instantiation',
-    'description' => 'Compares instantiating a class directly against instantiating via. Reflection',
-    'name' => 'console_table',
-    'aggregate' => 'subject',
-    'groups' => array('cost_of_instantiation'),
-    'cols' => array('description', 'iters', 'mean_revs', 'mean_time', 'variance_time', 'mean_rps', 'deviation_min'),
+$report1 = new SqliteReport();
+$report1->setTitle('Cost of Setting');
+$report1->setDescription('Displays stuff like this');
+$report1->addNamedQuery('SELECT description, time FROM suite WHERE group = "cost_of_setting" ORDER BY time');
+$report1->addNamedQuery('SELECT param_foo AS foo, description, time FROM suite WHERE group_cost_of_setting IS NOT NULL ORDER BY time');
+$report1->setOutput(array(
+    'html' => new GoogleGraphFormatter(),
+    'console' => null,
 ));
 
-$config->addReport(array(
-    'title' => 'Comparison of Array Location Functions',
-    'name' => 'console_table',
-    'description' => <<<EOT
-This benchmark creates an array with 50,000 elements. Each subject checks the existence of
-the key with the index of the current revolution. (or in the case of in_arreay, for the value).
-EOT
-    ,
-    'aggregate' => 'subject',
-    'groups' => array('array_keys'),
-    'sort' => array('time'),
-    'cols' => array('iters', 'mean_time', 'mean_rps', 'deviation_min'),
+$report2 = new SqliteReport();
+$report2->setTitle('Cost of Setting');
+$report2->setDescription('Displays stuff like this');
+$report2->addQuery('SELECT description, time FROM suite WHERE group = "cost_of_setting" ORDER BY time', 'Query one');
+$report2->addQuery('SELECT param_foo AS foo, description, time FROM suite WHERE group_cost_of_setting IS NOT NULL ORDER BY time', 'Query two');
+$report2->setOutput(array(
+    'html' => new HtmlTableFormatter(),
+    'console' => new ConsoleTableFormatter(),
 ));
 
+$composite = new CompositeReport();
+$composite->setTitle('PHPBench Example');
+$composite->setDescription('Comparison of PHP internal functions');
+$composite->add($report);
+
+$config = PhpBench\Configuration::create();
+$config->addReport('example', $composite, array(
+    'console' => array(),
+    'html' => array('template' => '/path/to/template', 'outfile' => 'report.html')
+));
 $config->setPath(__DIR__);
 
 return $config;

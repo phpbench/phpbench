@@ -23,6 +23,7 @@ class PdoDataProvider implements DataProvider
     public function provide(SuiteResult $result)
     {
         $this->initDatabase($result);
+        $datas = array();
 
         foreach ($this->queries as $query) {
             $stmt = $this->connection->prepare($query);
@@ -35,10 +36,10 @@ class PdoDataProvider implements DataProvider
             $stmt->execute();
 
             $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-            var_dump($data);die();;
+            $datas[] = $data;
         }
 
-
+        return $datas;
     }
 
     private function initDatabase(SuiteResult $result)
