@@ -19,5 +19,5 @@ interface ReportGenerator
 {
     public function configure(OptionsResolver $options);
 
-    public function generate(SuiteResult $collection, OutputInterface $output, array $config);
+    public function generate(SuiteResult $collection, array $config);
 }

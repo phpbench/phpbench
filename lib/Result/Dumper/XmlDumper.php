@@ -20,7 +20,13 @@ use PhpBench\Result\IterationsResult;
 
 class XmlDumper
 {
-    public function dump($result)
+    /**
+     * Dump the result to an XML document and return the XML document.
+     *
+     * @param SuiteResult
+     * @return DOMDocument
+     */
+    public function dump(SuiteResult $result)
     {
         $dom = new \DOMDocument('1.0');
         $dom->formatOutput = true;
@@ -29,20 +35,10 @@ class XmlDumper
         $rootEl->setAttribute('date', date('c'));
         $dom->appendChild($rootEl);
 
-        $childEl = null;
+        $childEl = $this->dumpSuite($result, $dom);
+        $rootEl->appendChild($childEl);
 
-        if (get_class($result) === 'PhpBench\Result\SuiteResult') {
-            $childEl = $this->dumpSuite($result, $dom);
-            $rootEl->appendChild($childEl);
-        }
-
-        if (null === $rootEl) {
-            throw new InvalidArgumentException(sprintf(
-                'Do not know how to dump result of type "%s"', get_class($result)
-            ));
-        }
-
-        return $dom->saveXml();
+        return $dom;
     }
 
     private function dumpSuite(SuiteResult $suiteResult, $dom)
