@@ -14,6 +14,7 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use PhpBench\Report\Dom\PhpBenchXpath;
 use PhpBench\Report\Util;
 use PhpBench\Report\Tool\Sort;
+use PhpBench\Report\Tool\Formatter;
 
 class ConsoleTableGenerator implements OutputAware, ReportGenerator
 {
@@ -27,9 +28,15 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
      */
     private $xmlDumper;
 
-    public function __construct(XmlDumper $xmlDumper = null)
+    /**
+     * @var Formatter
+     */
+    private $formatter;
+
+    public function __construct(XmlDumper $xmlDumper = null, Formatter $formatter = null)
     {
-        $this->xmlDumper = $xmlDumper ? $xmlDumper : new XmlDumper();
+        $this->xmlDumper = $xmlDumper ? : new XmlDumper();
+        $this->formatter = $formatter ? : new Formatter();
     }
 
     public function configure(OptionsResolver $options)
@@ -38,9 +45,8 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
             'title' => null,
             'description' => null,
             'selector' => '//iteration',
-            'headers' => array('Class', 'Subject', 'Group', 'Description', 'Revs', 'Iter.', 'Time μs', 'Rps', 'Deviation'),
+            'headers' => array('Subject', 'Group', 'Description', 'Revs', 'Iter.', 'Time', 'Rps', 'Deviation'),
             'cells' => array(
-                'class' => 'string(../../../@class)',
                 'subject' => 'string(../../@name)',
                 'group' => 'string(../../group/@name)',
                 'description' => 'string(../../@description)',
@@ -48,13 +54,13 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
                 'iter' => 'number(.//@index)',
                 'time' => 'number(.//@time)',
                 'rps' => '(1000000 div number(.//@time)) * number(.//@revs)',
-                'deviation' => 'php:bench(\'deviation\', php:bench(\'avg\', ../..//@time), number(./@time))',
+                'deviation' => 'php:bench(\'deviation\', php:bench(\'min\', //iteration/@time), number(./@time))',
             ),
             'format' => array(
-                'revs' => 'number',
-                'rps' => 'number',
-                'time' => 'number',
-                'deviation' => 'percentage',
+                'revs' => '!number',
+                'rps' => array('!number', '%s<comment>rps</comment>'),
+                'time' => array('!number', '%s<comment>μs</comment>'),
+                'deviation' => array('%.2f', '!balance', '%s<comment>%%</comment>'),
             ),
             'sort' => array(),
         ));
@@ -105,7 +111,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
         foreach ($rows as &$row) {
             foreach ($row as $colName => &$value) {
                 if (isset($config['format'][$colName])) {
-                    $value = $this->formatValue($value, $config['format'][$colName]);
+                    $value = $this->formatter->format($value, $config['format'][$colName]);
                 }
             }
         }
