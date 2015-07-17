@@ -152,31 +152,19 @@ class Calculator
 
     private static function getValues($values)
     {
-        if ($values instanceof \DOMNodeList) {
-            $resolvedValues = array();
-            foreach ($values as $valueEl) {
-                $resolvedValues[] = (integer) $valueEl->nodeValue;
+        foreach ($values as &$value) {
+            if ($value instanceof \DOMNode) {
+                $value = $value->nodeValue;
             }
 
-            return $resolvedValues;
-        }
-
-        if (is_array($values)) {
-            foreach ($values as $value) {
-                if (!is_scalar($value)) {
-                    throw new \InvalidArgumentException(sprintf('Values passed as an array must be scalar, got "%s"',
-                        is_object($value) ? get_class($value) : gettype($value)
-                    ));
-                }
+            if (!is_scalar($value)) {
+                throw new \InvalidArgumentException(sprintf('Values passed as an array must be scalar, got "%s"',
+                    is_object($value) ? get_class($value) : gettype($value)
+                ));
             }
-
-            return $values;
         }
 
-        throw new \InvalidArgumentException(sprintf(
-            'Values passed to Calculator must be either an array or a DOMNodeList, got "%s"',
-            is_object($values) ? get_class($values) : gettype($values)
-        ));
+        return $values;
     }
 
     private static function getValue($value)

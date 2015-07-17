@@ -4,36 +4,45 @@ require_once(__DIR__ . '/../vendor/autoload.php');
 
 $config = new PhpBench\Configuration();
 $config->addReport(array(
+    'name' => 'console_table',
     'title' => 'Cost of Setting',
     'description' => 'Comparison of different ways of setting properties',
-    'name' => 'console_table',
-    'groups' => array('cost_of_setting'),
-    'aggregate' => 'subject',
-    'sort' => array('time'),
-    'cols' => array('description', 'iters', 'mean_revs', 'mean_time', 'variance_time', 'mean_rps', 'deviation_min'),
-));
-$config->addReport(array(
-    'title' => 'Cost of Instantiation',
-    'description' => 'Compares instantiating a class directly against instantiating via. Reflection',
-    'name' => 'console_table',
-    'aggregate' => 'subject',
-    'groups' => array('cost_of_instantiation'),
-    'cols' => array('description', 'iters', 'mean_revs', 'mean_time', 'variance_time', 'mean_rps', 'deviation_min'),
+    'selector' => '///subject[group/@name="cost_of_setting"]',
+    //'footer' => array(
+        //array(
+            //'time' => 'SUM("./iteration/@time"',
+            //'deviation' => 'AVG(php:function("deviation", "./iteration/@time"))',
+        //),
+    //),
+    //'format' => array(
+        //'time' => array('float'),
+        //'deviation' => array('percentage'),
+    //)
+    //'sort' => array('time'),
 ));
 
-$config->addReport(array(
-    'title' => 'Comparison of Array Location Functions',
-    'name' => 'console_table',
-    'description' => <<<EOT
-This benchmark creates an array with 50,000 elements. Each subject checks the existence of
-the key with the index of the current revolution. (or in the case of in_arreay, for the value).
-EOT
-    ,
-    'aggregate' => 'subject',
-    'groups' => array('array_keys'),
-    'sort' => array('time'),
-    'cols' => array('iters', 'mean_time', 'mean_rps', 'deviation_min'),
-));
+//$config->addReport(array(
+    //'title' => 'Cost of Instantiation',
+    //'description' => 'Compares instantiating a class directly against instantiating via. Reflection',
+    //'name' => 'console_table',
+    //'aggregate' => 'subject',
+    //'groups' => array('cost_of_instantiation'),
+    //'cols' => array('description', 'iters', 'mean_revs', 'mean_time', 'variance_time', 'mean_rps', 'deviation_min'),
+//));
+
+//$config->addReport(array(
+    //'title' => 'Comparison of Array Location Functions',
+    //'name' => 'console_table',
+    //'description' => <<<EOT
+//This benchmark creates an array with 50,000 elements. Each subject checks the existence of
+//the key with the index of the current revolution. (or in the case of in_arreay, for the value).
+//EOT
+    //,
+    //'aggregate' => 'subject',
+    //'groups' => array('array_keys'),
+    //'sort' => array('time'),
+    //'cols' => array('iters', 'mean_time', 'mean_rps', 'deviation_min'),
+//));
 
 $config->setPath(__DIR__);
 

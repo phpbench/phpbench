@@ -12,8 +12,10 @@ use PhpBench\Result\SuiteResult;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use PhpBench\Report\Dom\PhpBenchXpath;
+use PhpBench\Report\Util;
+use PhpBench\Report\Tool\Sort;
 
-class ConsoleTableGenerator implements OutputAware
+class ConsoleTableGenerator implements OutputAware, ReportGenerator
 {
     /**
      * @var OutputInterface
@@ -36,8 +38,25 @@ class ConsoleTableGenerator implements OutputAware
             'title' => null,
             'description' => null,
             'selector' => '//iteration',
-            'headers' => array(),
-            'cells' => array(),
+            'headers' => array('Class', 'Subject', 'Group', 'Description', 'Revs', 'Iter.', 'Time μs', 'Rps', 'Deviation'),
+            'cells' => array(
+                'class' => 'string(../../../@class)',
+                'subject' => 'string(../../@name)',
+                'group' => 'string(../../group/@name)',
+                'description' => 'string(../../@description)',
+                'revs' => 'number(.//@revs)',
+                'iter' => 'number(.//@index)',
+                'time' => 'number(.//@time)',
+                'rps' => '(1000000 div number(.//@time)) * number(.//@revs)',
+                'deviation' => 'php:bench(\'deviation\', php:bench(\'avg\', ../..//@time), number(./@time))',
+            ),
+            'format' => array(
+                'revs' => 'number',
+                'rps' => 'number',
+                'time' => 'number',
+                'deviation' => 'percentage',
+            ),
+            'sort' => array(),
         ));
     }
 
@@ -59,8 +78,7 @@ class ConsoleTableGenerator implements OutputAware
 
         $dom = $this->xmlDumper->dump($suite);
         $xpath = new PhpBenchXpath($dom);
-        $table = new Table($this->output);
-        $table->setHeaders($config['headers']);
+        $rows = array();
 
         foreach ($xpath->query($config['selector']) as $rowEl) {
             $row = array();
@@ -73,12 +91,28 @@ class ConsoleTableGenerator implements OutputAware
                         $cellExpr, is_object($value) ? get_class($value) : gettype($value)
                     ));
                 }
+
                 $row[$colName] = $value;
             }
 
-            $table->addRow($row);
+            $rows[] = $row;
         }
 
+        if (!empty($config['sort'])) {
+            Sort::sortRows($rows, $config['sort']);
+        }
+
+        foreach ($rows as &$row) {
+            foreach ($row as $colName => &$value) {
+                if (isset($config['format'][$colName])) {
+                    $value = $this->formatValue($value, $config['format'][$colName]);
+                }
+            }
+        }
+
+        $table = new Table($this->output);
+        $table->setHeaders($config['headers']);
+        $table->setRows($rows);
         $table->render();
     }
 
@@ -90,5 +124,14 @@ class ConsoleTableGenerator implements OutputAware
         $formatter->setStyle(
             'description', new OutputFormatterStyle(null, null, array())
         );
+    }
+
+    private function formatValue($value, $format)
+    {
+        if ($format === 'number') {
+            return number_format($value);
+        }
+
+        return $value;
     }
 }

@@ -17,7 +17,6 @@ use PhpBench\PhpBench;
 use PhpBench\Console\Command\ReportCommand;
 use PhpBench\Configuration;
 use Symfony\Component\Console\Input\InputOption;
-use PhpBench\Report\Generator\ConsoleTableReportGenerator;
 use PhpBench\ProgressLogger\DotsProgressLogger;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

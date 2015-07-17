@@ -16,6 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use PhpBench\Result\SuiteResult;
 use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
 use PhpBench\OptionsResolver\OptionsResolver;
+use PhpBench\Console\OutputAware;
 
 abstract class BaseCommand extends Command
 {
@@ -58,7 +59,11 @@ abstract class BaseCommand extends Command
                 ), null, $e);
             }
 
-            $report->generate($results, $output, $reportConfig);
+            if ($report instanceof OutputAware) {
+                $report->setOutput($output);
+            }
+
+            $report->generate($results, $reportConfig);
         }
     }
 

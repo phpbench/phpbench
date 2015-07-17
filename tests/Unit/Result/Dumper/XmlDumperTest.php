@@ -54,7 +54,10 @@ class XmlDumperTest extends \PHPUnit_Framework_TestCase
 EOT;
 
         $suite = $this->getSuite();
-        $result = $this->xmlDumper->dump($suite);
+        $dom = $this->xmlDumper->dump($suite);
+        $this->assertNotNull($dom);
+        $this->assertInstanceOf('DOMDocument', $dom);
+        $result = $dom->saveXml();
         $this->assertContains($expected, $result);
 
         return $result;

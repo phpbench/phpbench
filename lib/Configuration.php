@@ -12,6 +12,7 @@
 namespace PhpBench;
 
 use PhpBench\Exception\InvalidArgumentException;
+use PhpBench\ReportGenerator;
 
 class Configuration
 {

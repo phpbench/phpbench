@@ -2,18 +2,34 @@
 
 namespace PhpBench\Report\Dom;
 
+use PhpBench\Report\Calculator;
+
+require_once('xpath_functions.php');
+
 class PhpBenchXpath extends \DOMXpath
 {
     public function __construct(\DOMDocument $dom)
     {
         parent::__construct($dom);
+        $this->registerNamespace('php', 'http://php.net/xpath');
         $this->registerPhpFunctions(array(
-            'pb_deviation',
+            'PhpBench\Report\Dom\functions\sum',
+            'PhpBench\Report\Dom\functions\avg',
+            'PhpBench\Report\Dom\functions\deviation',
+            'PhpBench\Report\Dom\functions\min',
+            'PhpBench\Report\Dom\functions\max',
+            'PhpBench\Report\Dom\functions\median',
         ));
     }
-}
 
-function pb_deviation($standardValue, $value)
-{
-    return Calculator::deviation($standardValue, $value);
+    public function evaluate($expr, \DOMNode $context = null, $registerNodeNs = null)
+    {
+        $expr = preg_replace(
+            '{php:bench\(\'([a-z]+)}', 
+            'php:function(\'PhpBench\\Report\\Dom\\functions\\\$1',
+            $expr
+        );
+
+        return parent::evaluate($expr, $context, $registerNodeNs);
+    }
 }

@@ -146,7 +146,9 @@ EOT
     {
         $dumper = new XmlDumper();
 
-        return $dumper->dump($result);
+        $dom = $dumper->dump($result);
+
+        return $dom->saveXml();
     }
 
     private function executeBenchmarks($path, array $subjects, array $groups, $noSetup, $parameters, $iterations, $revs, $processIsolation, $configFile, ProgressLogger $progressLogger)
