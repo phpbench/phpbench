@@ -4,21 +4,13 @@ require_once(__DIR__ . '/../vendor/autoload.php');
 
 $config = new PhpBench\Configuration();
 $config->addReport(array(
-    'name' => 'console_table',
-    'title' => 'Cost of Setting',
-    'description' => 'Comparison of different ways of setting properties',
-    'selector' => '///subject[group/@name="cost_of_setting"]',
-    //'footer' => array(
-        //array(
-            //'time' => 'SUM("./iteration/@time"',
-            //'deviation' => 'AVG(php:function("deviation", "./iteration/@time"))',
-        //),
-    //),
-    //'format' => array(
-        //'time' => array('float'),
-        //'deviation' => array('percentage'),
-    //)
-    //'sort' => array('time'),
+    'name' => 'cost_of_setting',
+    'generator' => 'console_table',
+    'options' => array(
+        'title' => 'Cost of Setting',
+        'description' => 'Comparison of different ways of setting properties',
+        'selector' => '//subject[group/@name="cost_of_setting"]//iteration',
+    ),
 ));
 
 //$config->addReport(array(

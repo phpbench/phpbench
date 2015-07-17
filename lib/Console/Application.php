@@ -41,13 +41,7 @@ class Application extends BaseApplication
             PhpBench::VERSION
         );
 
-        $this->add(new RunCommand());
-        $this->add(new ReportCommand());
-
         $this->configuration = $configuration ?: new Configuration();
-        $this->configuration->addReportGenerator('console_table', new ConsoleTableGenerator());
-        $this->configuration->addProgressLogger('dots', new DotsProgressLogger());
-        $this->configuration->addProgressLogger('benchdots', new DotsProgressLogger(true));
     }
 
     /**

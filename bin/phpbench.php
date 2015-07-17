@@ -61,7 +61,9 @@ if (null === $configuration) {
     $configuration = new Configuration();
 }
 
-use PhpBench\Console\Application;
+use PhpBench\Container;
 
-$application = new Application($configuration);
-$application->run();
+$container = new Container();
+$container->set('configuration', $configuration);
+$container->build();
+$container->get('console.application')->run();
