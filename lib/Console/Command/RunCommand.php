@@ -25,9 +25,42 @@ use PhpBench\Result\Dumper\XmlDumper;
 use Symfony\Component\Console\Output\NullOutput;
 use PhpBench\ProgressLogger;
 use PhpBench\PhpBench;
+use PhpBench\Report\ReportManager;
+use PhpBench\ProgressLoggerRegistry;
 
-class RunCommand extends BaseCommand
+class RunCommand extends Command
 {
+    private $xmlDumper;
+    private $reportManager;
+    private $loggerRegistry;
+    private $progressLoggerName;
+    private $benchPath;
+    private $enableGc;
+    private $configPath;
+    private $runner;
+
+    public function __construct(
+        Runner $runner,
+        XmlDumper $xmlDumper,
+        ReportManager $reportManager,
+        ProgressLoggerRegistry $loggerRegistry,
+        $progressLoggerName = null,
+        $benchPath = null,
+        $enableGc = null,
+        $configPath = null
+    )
+    {
+        parent::__construct();
+        $this->xmlDumper = $xmlDumper;
+        $this->reportManager = $reportManager;
+        $this->loggerRegistry = $loggerRegistry;
+        $this->progressLoggerName = $progressLoggerName;
+        $this->benchPath = $benchPath;
+        $this->enableGc = $enableGc;
+        $this->configPath = $configPath;
+        $this->runner = $runner;
+    }
+
     public function configure()
     {
         $this->setName('run');
@@ -57,21 +90,40 @@ EOT
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $reports = $input->getOption('report');
-
         $consoleOutput = $output;
+
+        $reports = $input->getOption('report');
         $dump = $input->getOption('dump');
         $parametersJson = $input->getOption('parameters');
         $noSetup = $input->getOption('no-setup');
         $iterations = $input->getOption('iterations');
         $revs = $input->getOption('revs');
-        $configFile = $input->getOption('config');
+        $configPath = $input->getOption('config');
+        $enableGc = $input->getOption('gc-enable');
+        $enableGc = null !== $enableGc ?: $this->enableGc;
         $processIsolation = $input->getOption('process-isolation') ?: null;
-        $processIsolation = $processIsolation === 'none' ? false : $processIsolation;
-        $parameters = array();
+        $subjects = $input->getOption('subject');
+        $groups = $input->getOption('group');
+        $dumpfile = $input->getOption('dump-file');
+        $progressLoggerName = $input->getOption('progress') ?: $this->progressLoggerName;
+        $path = $input->getArgument('path') ?: $this->benchPath;
 
+        $processIsolation = $processIsolation === 'none' ? false : $processIsolation;
         Runner::validateProcessIsolation($processIsolation);
 
+        $reportNames = $this->reportManager->processCliReports($reports);
+
+        if (false === $enableGc) {
+            gc_disable();
+        }
+
+        if (null === $path) {
+            throw new \InvalidArgumentException(
+                'You must either specify or configure a path where your benchmarks can be found.'
+            );
+        }
+
+        $parameters = array();
         if ($parametersJson) {
             $parameters = json_decode($parametersJson, true);
             if (null === $parameters) {
@@ -87,103 +139,87 @@ EOT
 
         $consoleOutput->writeln('PhpBench ' . PhpBench::VERSION . '. Running benchmarks.');
 
-        $configuration = $this->getApplication()->getConfiguration();
-        $enableGc = $input->getOption('gc-enable');
-        $enableGc = $configuration->getGcEnabled() || $input->getOption('gc-enable');
-
-        if ($configuration->getConfigPath()) {
-            $consoleOutput->writeln(sprintf('Using configuration file: %s', $configuration->getConfigPath()));
+        if ($this->configPath) {
+            $consoleOutput->writeln(sprintf('Using configuration file: %s', $this->configPath));
         }
 
-        $consoleOutput->writeln('');
-
-        $progressLogger = $configuration->getProgress() ?: $input->getOption('progress');
-        $progressLogger = $configuration->getProgressLogger($progressLogger);
+        $progressLogger = $this->loggerRegistry->getProgressLogger($progressLoggerName);
         $progressLogger->setOutput($consoleOutput);
 
-        $this->processReportConfigs($reports);
-        $path = $input->getArgument('path') ?: $configuration->getPath();
-
-        if (null === $path) {
-            throw new \InvalidArgumentException(
-                'You must either specify or configure a path where your benchmarks can be found.'
-            );
-        }
-
-        $subjects = $input->getOption('subject');
-        $groups = $input->getOption('group');
-        $dumpfile = $input->getOption('dump-file');
-
-        if (false === $enableGc) {
-            gc_disable();
-        }
-
-        $startTime = microtime(true);
-        $result = $this->executeBenchmarks($path, $subjects, $groups, $noSetup, $parameters, $iterations, $revs, $processIsolation, $configFile, $progressLogger);
-
         $consoleOutput->writeln('');
+        $startTime = microtime(true);
+        $suiteResult = $this->executeBenchmarks($path, $subjects, $groups, $noSetup, $parameters, $iterations, $revs, $processIsolation, $configPath, $progressLogger);
+        $consoleOutput->writeln('');
+
         if ($dumpfile) {
-            $xml = $this->dumpResult($result);
+            $xml = $this->xmlDumper->dumpResult($result)->saveXml();
             file_put_contents($dumpfile, $xml);
             $consoleOutput->writeln('<info>Dumped result to </info>' . $dumpfile);
         }
-        $consoleOutput->writeln('');
+
         $consoleOutput->writeln(sprintf(
             '<greenbg>Done (%s subjects, %s iterations) in %ss</greenbg>',
-            count($result->getSubjectResults()),
-            count($result->getIterationResults()),
+            count($suiteResult->getSubjectResults()),
+            count($suiteResult->getIterationResults()),
             number_format(microtime(true) - $startTime, 2)
         ));
 
         if ($dump) {
             $output->write($this->dumpResult($result));
-        } elseif ($configuration->getReports()) {
-            $this->generateReports($consoleOutput, $result);
+        } elseif ($reportNames) {
+            $this->reportManager->generateReports($consoleOutput, $suiteResult, $reportNames);
         }
     }
 
-    private function dumpResult(SuiteResult $result)
+    private function executeBenchmarks(
+        $path, 
+        array $subjects, 
+        array $groups, 
+        $noSetup,
+        $parameters,
+        $iterations,
+        $revs,
+        $processIsolation,
+        $configPath,
+        ProgressLogger $progressLogger = null
+    )
     {
-        $dumper = new XmlDumper();
-
-        $dom = $dumper->dump($result);
-
-        return $dom->saveXml();
-    }
-
-    private function executeBenchmarks($path, array $subjects, array $groups, $noSetup, $parameters, $iterations, $revs, $processIsolation, $configFile, ProgressLogger $progressLogger)
-    {
-        $finder = new Finder();
-
-        if (!file_exists($path)) {
-            throw new \InvalidArgumentException(sprintf(
-                'File or directory "%s" does not exist',
-                $path
-            ));
+        if ($progressLogger) {
+            $this->runner->setProgressLogger($progressLogger);
         }
 
-        if (is_dir($path)) {
-            $finder->in($path);
-            $finder->name('*Bench.php');
-        } else {
-            $finder->in(dirname($path));
-            $finder->name(basename($path));
+        if ($processIsolation) {
+            $this->runner->setProcessIsolation($processIsolation);
         }
 
-        $benchFinder = new CollectionBuilder($finder);
-        $subjectBuilder = new SubjectBuilder($subjects, $parameters, $groups);
+        if ($configPath) {
+            $this->runner->setConfigPath($configPath);
+        }
 
-        $benchRunner = new Runner(
-            $benchFinder,
-            $subjectBuilder,
-            $progressLogger,
-            $processIsolation,
-            !$noSetup,
-            $iterations,
-            $revs,
-            $configFile
-        );
+        if ($noSetup) {
+            $this->runner->disableSetup();
+        }
 
-        return $benchRunner->runAll();
+        if ($iterations) {
+            $this->runner->overrideIterations($iterations);
+        }
+
+        if ($revs) {
+            $this->runner->overrideRevs($revs);
+        }
+
+        if ($subjects) {
+            $this->runner->overrideSubjects($subjects);
+        }
+
+        if ($parameters) {
+            $this->runner->overrideParameters($parameters);
+        }
+
+        if ($groups) {
+            $this->runner->setGroups($groups);
+        }
+
+        return $this->runner->runAll($path);
     }
 }

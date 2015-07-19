@@ -9,11 +9,12 @@
  * file that was distributed with this source code.
  */
 
-require_once __DIR__ . '/../lib/Configuration.php';
+require_once __DIR__ . '/../lib/Container.php';
 
-use PhpBench\Configuration;
+use PhpBench\Container;
 
 $configPaths = array();
+$container = new Container();
 
 foreach ($argv as $arg) {
     if (0 === strpos($arg, '--config=')) {
@@ -28,27 +29,40 @@ foreach ($argv as $arg) {
 
 if (empty($configPaths)) {
     $configPaths = array(
-        getcwd() . '/.phpbench',
-        getcwd() . '/.phpbench.dist',
+        getcwd() . '/phpbench.json',
+        getcwd() . '/.phpbench.json',
     );
 }
 
-$configuration = null;
+$hasBootstrap = false;
 foreach ($configPaths as $configPath) {
     if (file_exists($configPath)) {
-        $configuration = require_once $configPath;
+        $configDir = dirname($configPath);
+        $config = json_decode(file_get_contents($configPath), true);
 
-        if (!$configuration instanceof Configuration) {
-            echo 'The configuration file did not return an instance of PhpBench\\Configuration' . PHP_EOL;
+        if (null === $config) {
+            echo sprintf('Could not decode configuration file into JSON "%s"',
+                $configPath
+            );
             exit(1);
         }
 
-        $configuration->setConfigPath($configPath);
+        $container->mergeParameters($config);
+
+        if (isset($config['bootstrap'])) {
+            $bootstrap = $configDir . DIRECTORY_SEPARATOR . $config['bootstrap'];
+            if (!file_exists($bootstrap)) {
+                echo sprintf('Bootstrap file "%s" was not found',
+                    $bootstrap
+                );
+                exit(1);
+            }
+        }
         break;
     }
 }
 
-if (null === $configuration) {
+if (false === $hasBootstrap) {
     $bootstrapPath = getcwd() . '/vendor/autoload.php';
 
     if (!file_exists($bootstrapPath)) {
@@ -57,13 +71,7 @@ if (null === $configuration) {
     }
 
     require_once $bootstrapPath;
-
-    $configuration = new Configuration();
 }
 
-use PhpBench\Container;
-
-$container = new Container();
-$container->set('configuration', $configuration);
 $container->build();
 $container->get('console.application')->run();

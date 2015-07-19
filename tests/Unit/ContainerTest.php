@@ -52,5 +52,4 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals('hello', $attributes['name']);
         }
     }
-
 }

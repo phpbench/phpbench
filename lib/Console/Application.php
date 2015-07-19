@@ -32,26 +32,12 @@ use PhpBench\Report\Generator\ConsoleTableGenerator;
  */
 class Application extends BaseApplication
 {
-    private $configuration;
-
-    public function __construct(Configuration $configuration = null)
+    public function __construct()
     {
         parent::__construct(
             'phpbench',
             PhpBench::VERSION
         );
-
-        $this->configuration = $configuration ?: new Configuration();
-    }
-
-    /**
-     * Return the configuration.
-     *
-     * @return Configuration
-     */
-    public function getConfiguration()
-    {
-        return $this->configuration;
     }
 
     /**

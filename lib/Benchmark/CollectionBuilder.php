@@ -22,8 +22,23 @@ class CollectionBuilder
         $this->finder = $finder;
     }
 
-    public function buildCollection()
+    public function buildCollection($path)
     {
+        if (!file_exists($path)) {
+            throw new \InvalidArgumentException(sprintf(
+                'File or directory "%s" does not exist',
+                $path
+            ));
+        }
+
+        if (is_dir($path)) {
+            $this->finder->in($path)
+                ->name('*Bench.php');
+        } else {
+            $this->finder->in(dirname($path))
+                ->name(basename($path));
+        }
+
         $cases = array();
 
         foreach ($this->finder as $file) {

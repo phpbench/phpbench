@@ -339,53 +339,13 @@ reports, see the reporting section of the documentation.
 Configuration
 -------------
 
-PhpBench supports configuration files, allowing you to configure and extend
-your reports.
+Document the configuration here.
 
-Configuration files are in plain PHP and MUST return a
-`Phpbench\Configuration` object and bootstrap the autoloader.
+Extending
+---------
 
-Phpbench will first look for the file `.phpbench` and then `.phpbench.dist`.
-It is also possible to specify a configuration file with the ``--config``
-option.
+Document the extension API here.
 
-Below is the most minimal example:
-
-````php
-<?php
-// .phpbench
-
-require(__DIR__ . '/vendor/autoload.php');
-
-$configuration = new PhpBench\Configuration();
-
-return $configuraton;
-````
-
-And here is a full example:
-
-````php
-<?php
-// .phpbench
-
-require(__DIR__ . '/vendor/autoload.php');
-$configuration = new PhpBench\Configuration();
-
-// set the path in which to search for benchmarks
-$configuration->setPath(__DIR__ . '/benchmarks');
-
-// add a new report generator
-$configuration->addReportGenerator('my_report_generator', new MyReportGenerator());
-
-// add a report
-$configuration->addReport(array(
-    'name' => 'my_report_generator',
-    'option_1' => 'one',
-    'option_2' => 'two',
-));
-
-return $configuraton;
-````
 
 See also
 --------
