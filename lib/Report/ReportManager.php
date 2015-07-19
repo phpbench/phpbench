@@ -2,7 +2,6 @@
 
 namespace PhpBench\Report;
 
-use PhpBench\Configuration;
 use PhpBench\ReportGenerator;
 use Symfony\Component\Console\Output\OutputInterface;
 use PhpBench\Result\SuiteResult;

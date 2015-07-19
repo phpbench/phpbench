@@ -15,7 +15,6 @@ use Symfony\Component\Console\Application as BaseApplication;
 use PhpBench\Console\Command\RunCommand;
 use PhpBench\PhpBench;
 use PhpBench\Console\Command\ReportCommand;
-use PhpBench\Configuration;
 use Symfony\Component\Console\Input\InputOption;
 use PhpBench\ProgressLogger\DotsProgressLogger;
 use Symfony\Component\Console\Input\InputInterface;

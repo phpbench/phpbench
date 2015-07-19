@@ -152,7 +152,8 @@ class Calculator
 
     private static function getValues($values)
     {
-        foreach ($values as &$value) {
+        $newValues = array();
+        foreach ($values as $value) {
             if ($value instanceof \DOMNode) {
                 $value = $value->nodeValue;
             }
@@ -162,9 +163,11 @@ class Calculator
                     is_object($value) ? get_class($value) : gettype($value)
                 ));
             }
+
+            $newValues[] = $value;
         }
 
-        return $values;
+        return $newValues;
     }
 
     private static function getValue($value)

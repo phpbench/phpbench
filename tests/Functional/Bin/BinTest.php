@@ -14,18 +14,19 @@ namespace PhpBench\Tests\Functional\Bin;
 class BinTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * It should use a speified, valid,  configuration.
+     * It should use a speified, valid, configuration.
      */
     public function testSpecifiedConfig()
     {
-        list($exitCode, $results) = $this->execCommand('.', 'run --config=env/config_valid/.phpbench');
+        list($exitCode, $results) = $this->execCommand('.', 'run --config=env/config_valid/phpbench.json');
+        var_dump($results);die();;
         $this->assertEquals(0, $exitCode);
         $this->assertContains('Done', $results);
     }
 
     /**
-     * It should use .phpbench if present
-     * It should prioritize .phpbench over .phpbench.dist.
+     * It should use phpbench.json if present
+     * It should prioritize phpbench.json over .phpbench.dist.json
      */
     public function testPhpBenchConfig()
     {
@@ -35,7 +36,7 @@ class BinTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should use .phpbench.dist if present.
+     * It should use phpbench.json.dist if present.
      */
     public function testPhpBenchDistConfig()
     {
@@ -52,16 +53,6 @@ class BinTest extends \PHPUnit_Framework_TestCase
         list($exitCode, $results) = $this->execCommand('.', 'run');
         $this->assertEquals(1, $exitCode);
         $this->assertContains('does not exist', $results);
-    }
-
-    /**
-     * It should exit with an error status if the config file did not return a configuration object.
-     */
-    public function testConfigNoReturnConfiguration()
-    {
-        list($exitCode, $results) = $this->execCommand('env/config_no_configuration', 'run');
-        $this->assertEquals(1, $exitCode);
-        $this->assertContains('did not return', $results);
     }
 
     private function execCommand($env, $command)

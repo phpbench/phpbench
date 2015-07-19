@@ -38,7 +38,6 @@ EOT
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $configuration = $this->getApplication()->getConfiguration();
         $this->processReportConfigs($input->getOption('report'));
         $file = $input->getArgument('file');
 

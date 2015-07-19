@@ -50,13 +50,15 @@ foreach ($configPaths as $configPath) {
         $container->mergeParameters($config);
 
         if (isset($config['bootstrap'])) {
-            $bootstrap = $configDir . DIRECTORY_SEPARATOR . $config['bootstrap'];
+            $bootstrap = realpath($configDir . DIRECTORY_SEPARATOR . $config['bootstrap']);
             if (!file_exists($bootstrap)) {
                 echo sprintf('Bootstrap file "%s" was not found',
                     $bootstrap
                 );
                 exit(1);
             }
+            require_once($bootstrap);
+            $hasBootstrap = true;
         }
         break;
     }

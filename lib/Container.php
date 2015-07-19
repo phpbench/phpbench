@@ -7,7 +7,6 @@ use PhpBench\Report\Generator\ConsoleTableGenerator;
 use PhpBench\Console\Command\ReportCommand;
 use PhpBench\ProgressLogger\DotsProgressLogger;
 use PhpBench\Console\Command\RunCommand;
-use PhpBench\Configuration;
 use PhpBench\Extension;
 use PhpBench\Result\Dumper\XmlDumper;
 use PhpBench\Report\ReportManager;
