@@ -15,6 +15,7 @@ use PhpBench\Benchmark\Runner;
 use PhpBench\Benchmark\CollectionBuilder;
 use Symfony\Component\Finder\Finder;
 use PhpBench\Benchmark\SubjectBuilder;
+use PhpBench\Result\Loader\XmlLoader;
 
 class Container
 {
@@ -51,7 +52,7 @@ class Container
         $this->register('benchmark.collection_builder', function (Container $container) {
             return new CollectionBuilder($container->get('benchmark.finder'));
         });
-        $this->register('console.command.run_command', function (Container $container) {
+        $this->register('console.command.run', function (Container $container) {
             return new RunCommand(
                 $container->get('benchmark.runner'),
                 $container->get('result.dumper.xml'),
@@ -63,15 +64,22 @@ class Container
                 $container->getParameter('config_path')
             );
         }, array('console.command' => array()));
+
+        $this->register('console.command.report', function (Container $container) {
+            return new ReportCommand(
+                $container->get('result.loader.xml'),
+                $container->get('report.manager')
+            );
+        }, array('console.command' => array()));
         $this->register('result.dumper.xml', function () {
             return new XmlDumper();
+        });
+        $this->register('result.loader.xml', function () {
+            return new XmlLoader();
         });
         $this->register('report.manager', function () {
             return new ReportManager();
         });
-        $this->register('console.command.report_command', function (Container $container) {
-            return new ReportCommand();
-        }, array('console.command' => array()));
         $this->register('progress_logger.registry', function (Container $container) {
             return new ProgressLoggerRegistry();
         });
@@ -80,7 +88,7 @@ class Container
 
         $this->parameters = array(
             'enable_gc' => false,
-            'path' => __DIR__,
+            'path' => null,
             'extensions' => array(),
             'reports' => array(),
             'config_path' => null,

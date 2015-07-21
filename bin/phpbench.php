@@ -30,7 +30,7 @@ foreach ($argv as $arg) {
 if (empty($configPaths)) {
     $configPaths = array(
         getcwd() . '/phpbench.json',
-        getcwd() . '/.phpbench.json',
+        getcwd() . '/phpbench.dist.json',
     );
 }
 

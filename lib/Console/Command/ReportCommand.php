@@ -17,9 +17,23 @@ use Symfony\Component\Console\Output\OutputInterface;
 use PhpBench\Result\Loader\XmlLoader;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
+use PhpBench\Report\ReportManager;
 
-class ReportCommand extends BaseCommand
+class ReportCommand extends Command
 {
+    private $xmlLoader;
+    private $reportManager;
+
+    public function __construct(
+        XmlLoader $xmlLoader,
+        ReportManager $reportManager
+    )
+    {
+        parent::__construct();
+        $this->xmlLoader = $xmlLoader;
+        $this->reportManager = $reportManager;
+    }
+
     public function configure()
     {
         $this->setName('report');
@@ -38,10 +52,11 @@ EOT
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->processReportConfigs($input->getOption('report'));
+        $reports = $input->getOption('report');
+        $reportNames = $this->reportManager->processCliReports($reports);
         $file = $input->getArgument('file');
 
-        if (!$configuration->getReports()) {
+        if (!$reportNames) {
             throw new \InvalidArgumentException(
                 'You must specify or configure at least one report, e.g.: --report=console_table'
             );
@@ -49,12 +64,11 @@ EOT
 
         if (!file_exists($file)) {
             throw new \InvalidArgumentException(sprintf(
-                'Could not find file "%s"', $file
+                'Could not find suite result file "%s"', $file
             ));
         }
 
-        $loader = new XmlLoader();
-        $suiteResult = $loader->load(file_get_contents($file));
-        $this->generateReports($output, $suiteResult);
+        $suiteResult = $this->xmlLoader->load(file_get_contents($file));
+        $this->reportManager->generateReports($output, $suiteResult, $reportNames);
     }
 }

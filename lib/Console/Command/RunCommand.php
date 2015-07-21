@@ -152,7 +152,7 @@ EOT
         $consoleOutput->writeln('');
 
         if ($dumpfile) {
-            $xml = $this->xmlDumper->dumpResult($result)->saveXml();
+            $xml = $this->xmlDumper->dump($suiteResult)->saveXml();
             file_put_contents($dumpfile, $xml);
             $consoleOutput->writeln('<info>Dumped result to </info>' . $dumpfile);
         }
@@ -165,7 +165,8 @@ EOT
         ));
 
         if ($dump) {
-            $output->write($this->dumpResult($result));
+            $xml = $this->xmlDumper->dump($suiteResult)->saveXml();
+            $output->write($xml);
         } elseif ($reportNames) {
             $this->reportManager->generateReports($consoleOutput, $suiteResult, $reportNames);
         }
@@ -188,7 +189,7 @@ EOT
             $this->runner->setProgressLogger($progressLogger);
         }
 
-        t$this->runner->setProcessIsolation($processIsolation);
+        $this->runner->setProcessIsolation($processIsolation);
 
         if ($configPath) {
             $this->runner->setConfigPath($configPath);
