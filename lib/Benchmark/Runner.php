@@ -43,7 +43,7 @@ class Runner
     /**
      * @param CollectionBuilder $collectionBuilder
      * @param SubjectBuilder $subjectBuilder
-     * @param mixed $configPath
+     * @param string $configPath
      */
     public function __construct(
         CollectionBuilder $collectionBuilder,

@@ -188,9 +188,7 @@ EOT
             $this->runner->setProgressLogger($progressLogger);
         }
 
-        if ($processIsolation) {
-            $this->runner->setProcessIsolation($processIsolation);
-        }
+        t$this->runner->setProcessIsolation($processIsolation);
 
         if ($configPath) {
             $this->runner->setConfigPath($configPath);

@@ -47,6 +47,14 @@ foreach ($configPaths as $configPath) {
             exit(1);
         }
 
+        if (isset($config['path'])) {
+            // prepend config dir to path if it is non-relative
+            if (substr($config['path'], 0, 1) !== '/') {
+                $config['path'] = $configDir . DIRECTORY_SEPARATOR . $config['path'];
+            }
+        }
+
+        $config['config_path'] = $configPath;
         $container->mergeParameters($config);
 
         if (isset($config['bootstrap'])) {
