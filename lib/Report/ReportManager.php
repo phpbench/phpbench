@@ -39,7 +39,7 @@ class ReportManager
      * @param string $name
      * @param ReportGenerator $generator
      */
-    public function addReportGenerator($name, ReportGenerator $generator)
+    public function addGenerator($name, ReportGenerator $generator)
     {
         if (isset($this->generators[$name])) {
             throw new \InvalidArgumentException(sprintf(

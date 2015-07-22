@@ -2,6 +2,15 @@
 
 namespace PhpBench\Report\Tool;
 
+/**
+ * Handle formatting for display.
+ *
+ * The format() method accepts a value and an array of formats to apply to the
+ * value.
+ *
+ * Formats are printf strings by default, but if prefixed with "!" one of the
+ * defined formatting callbacks is used instead.
+ */
 class Formatter
 {
     private $formatters = array();
@@ -22,6 +31,14 @@ class Formatter
         );
     }
 
+    /**
+     * Format the given value using the given format(s).
+     * See the documentation for this class.
+     *
+     * @param mixed $value
+     * @param string|array $formats
+     * @return string
+     */
     public function format($value, $formats)
     {
         $formats = (array) $formats;
