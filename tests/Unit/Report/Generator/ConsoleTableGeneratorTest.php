@@ -40,12 +40,12 @@ class ConsoleTableGeneratorTest extends \PHPUnit_Framework_TestCase
 
         $this->generate($config);
         $expected = <<<EOF
-+------+------+
-| Revs | Time |
-+------+------+
-| 1    | 100  |
-| 1    | 75   |
-+------+------+
++------+-------+
+| Revs | Time  |
++------+-------+
+| 1    | 100μs |
+| 1    | 75μs  |
++------+-------+
 EOF
         ;
         $this->assertEquals(trim($expected), trim($this->output->fetch()));
@@ -70,11 +70,11 @@ EOF
 
         $this->generate($config);
         $expected = <<<EOF
-+------+------+
-| Revs | Time |
-+------+------+
-| 2    | 175  |
-+------+------+
++------+-------+
+| Revs | Time  |
++------+-------+
+| 2    | 175μs |
++------+-------+
 EOF
         ;
         $this->assertEquals(trim($expected), trim($this->output->fetch()));

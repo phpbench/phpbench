@@ -18,7 +18,7 @@ class FormatterTest extends \PHPUnit_Framework_TestCase
      */
     public function testNumbers()
     {
-        $result = $this->formatter->format(100000, 'number');
+        $result = $this->formatter->format(100000, '!number');
         $this->assertEquals('100,000', $result);
     }
 
@@ -27,7 +27,7 @@ class FormatterTest extends \PHPUnit_Framework_TestCase
      */
     public function testPercentage()
     {
-        $result = $this->formatter->format(94, 'percentage');
+        $result = $this->formatter->format(94, '%s%%');
         $this->assertEquals('94%', $result);
     }
 
@@ -36,7 +36,7 @@ class FormatterTest extends \PHPUnit_Framework_TestCase
      */
     public function testCombination()
     {
-        $result = $this->formatter->format(94000, array('number', 'percentage'));
+        $result = $this->formatter->format(94000, array('!number', '%s%%'));
         $this->assertEquals('94,000%', $result);
     }
 }

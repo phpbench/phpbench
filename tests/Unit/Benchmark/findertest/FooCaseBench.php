@@ -12,7 +12,7 @@
 use PhpBench\BenchIteration;
 use PhpBench\Benchmark;
 
-class FooTestCase implements Benchmark
+class FooTestCaseBench implements Benchmark
 {
     public function provideNodes()
     {

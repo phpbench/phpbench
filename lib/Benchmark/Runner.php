@@ -34,7 +34,7 @@ class Runner
     private $processIsolation;
     private $iterationsOverride;
     private $revsOverride;
-    private $setUpTearDown;
+    private $setUpTearDown = true;
     private $configPath;
     private $parametersOverride;
     private $subjectsOverride;

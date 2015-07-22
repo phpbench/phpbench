@@ -25,6 +25,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->case = new RunnerTestBenchCase();
         $this->collection = $this->prophesize('PhpBench\\Benchmark\\Collection');
         $this->subject = $this->prophesize('PhpBench\\Benchmark\\Subject');
+        $this->collectionBuilder->buildCollection(__DIR__)->willReturn($this->collection);
 
         $this->runner = new Runner(
             $this->collectionBuilder->reveal(), $this->subjectBuilder->reveal(),
@@ -42,11 +43,10 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
      */
     public function testRunner($iterations, $revs, $expectedNbCalls)
     {
-        $this->collectionBuilder->buildCollection()->willReturn($this->collection);
         $this->collection->getBenchmarks()->willReturn(array(
             $this->case,
         ));
-        $this->subjectBuilder->buildSubjects($this->case)->willReturn(array(
+        $this->subjectBuilder->buildSubjects($this->case, null, null, null)->willReturn(array(
             $this->subject->reveal(),
         ));
         $this->subject->getNbIterations()->willReturn($iterations);
@@ -59,7 +59,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->subject->getProcessIsolation()->willReturn(false);
         $this->subject->getRevs()->willReturn($revs);
 
-        $result = $this->runner->runAll();
+        $result = $this->runner->runAll(__DIR__);
 
         $this->assertEquals($expectedNbCalls, $this->case->called);
         $this->assertTrue($this->case->beforeCalled);
@@ -97,11 +97,10 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidBeforeMethod()
     {
-        $this->collectionBuilder->buildCollection()->willReturn($this->collection);
         $this->collection->getBenchmarks()->willReturn(array(
             $this->case,
         ));
-        $this->subjectBuilder->buildSubjects($this->case)->willReturn(array(
+        $this->subjectBuilder->buildSubjects($this->case, null, null, null)->willReturn(array(
             $this->subject->reveal(),
         ));
         $this->subject->getNbIterations()->willReturn(1);
@@ -111,7 +110,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->subject->getProcessIsolation()->willReturn(false);
         $this->subject->getRevs()->willReturn(array(1));
 
-        $this->runner->runAll();
+        $this->runner->runAll(__DIR__);
     }
 
     /**
@@ -119,11 +118,10 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetUpAndTearDown()
     {
-        $this->collectionBuilder->buildCollection()->willReturn($this->collection);
         $this->collection->getBenchmarks()->willReturn(array(
             $this->case,
         ));
-        $this->subjectBuilder->buildSubjects($this->case)->willReturn(array(
+        $this->subjectBuilder->buildSubjects($this->case, null, null, null)->willReturn(array(
             $this->subject->reveal(),
         ));
         $this->subject->getIdentifier()->willReturn(1);
@@ -135,7 +133,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->subject->getProcessIsolation()->willReturn(false);
         $this->subject->getRevs()->willReturn(array(1));
 
-        $this->runner->runAll();
+        $this->runner->runAll(__DIR__);
 
         $this->assertTrue($this->case->setUpCalled);
         $this->assertTrue($this->case->tearDownCalled);
@@ -146,18 +144,12 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetUpAndTearDownDisabled()
     {
-        $runner = new Runner(
-            $this->collectionBuilder->reveal(), $this->subjectBuilder->reveal(),
-            $this->logger->reveal(),
-            false,
-            false
-        );
+        $this->runner->disableSetup();
 
-        $this->collectionBuilder->buildCollection()->willReturn($this->collection);
         $this->collection->getBenchmarks()->willReturn(array(
             $this->case,
         ));
-        $this->subjectBuilder->buildSubjects($this->case)->willReturn(array(
+        $this->subjectBuilder->buildSubjects($this->case, null, null, null)->willReturn(array(
             $this->subject->reveal(),
         ));
         $this->subject->getIdentifier()->willReturn(1);
@@ -169,7 +161,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->subject->getProcessIsolation()->willReturn(false);
         $this->subject->getRevs()->willReturn(array(1));
 
-        $runner->runAll();
+        $this->runner->runAll(__DIR__);
 
         $this->assertFalse($this->case->setUpCalled);
         $this->assertFalse($this->case->tearDownCalled);

@@ -17,9 +17,9 @@ class CollectionBuilder
 {
     private $finder;
 
-    public function __construct(Finder $finder)
+    public function __construct(Finder $finder = null)
     {
-        $this->finder = $finder;
+        $this->finder = $finder ?: new Finder();
     }
 
     public function buildCollection($path)

@@ -18,9 +18,7 @@ class CollectionBuilderTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $finder = new Finder();
-        $finder->in(__DIR__ . '/findertest');
-        $this->finder = new CollectionBuilder($finder);
+        $this->finder = new CollectionBuilder();
     }
 
     /**
@@ -29,7 +27,7 @@ class CollectionBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuildCollection()
     {
-        $collection = $this->finder->buildCollection();
+        $collection = $this->finder->buildCollection(__DIR__ . '/findertest');
         $cases = $collection->getBenchmarks();
 
         $this->assertCount(2, $cases);

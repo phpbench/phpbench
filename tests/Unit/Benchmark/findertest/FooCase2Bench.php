@@ -11,6 +11,6 @@
 
 use PhpBench\Benchmark;
 
-class FooTestCase2 implements Benchmark
+class FooTestCase2Bench implements Benchmark
 {
 }
