@@ -29,6 +29,7 @@ class BaseCommandTestCase extends \PHPUnit_Framework_TestCase
     protected function runCommand($commandName, array $arguments)
     {
         $container = new Container();
+        $container->configure();
         $container->build();
         $application = $container->get('console.application');
         $command = $application->find($commandName);

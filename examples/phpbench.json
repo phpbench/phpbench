@@ -25,6 +25,10 @@
             "title": "Comparison of array location functions",
             "description": "This benchmark creates an array with 50,000 elements. Each subject checks the existence of the key with the index of the current revolution. (or in the case of in_arrey, for the value).",
             "selector": "//subject[group/@name='array_keys']//iteration[@revs=10000]"
+        },
+        "summary": {
+            "generator": "composite",
+            "reports": ["cost_of_setting", "cost_of_instantiation", "array_keys_10", "array_keys_10000"]
         }
     }
 }

@@ -37,39 +37,41 @@ if (empty($configPaths)) {
 $hasBootstrap = false;
 $config = array();
 foreach ($configPaths as $configPath) {
-    if (file_exists($configPath)) {
-        $configDir = dirname($configPath);
-        $config = json_decode(file_get_contents($configPath), true);
+    if (!file_exists($configPath)) {
+        continue;
+    }
 
-        if (null === $config) {
-            echo sprintf('Could not decode configuration file into JSON "%s"',
-                $configPath
+    $configDir = dirname($configPath);
+    $config = json_decode(file_get_contents($configPath), true);
+
+    if (null === $config) {
+        echo sprintf('Could not decode configuration file into JSON "%s"',
+            $configPath
+        );
+        exit(1);
+    }
+
+    if (isset($config['path'])) {
+        // prepend config dir to path if it is non-relative
+        if (substr($config['path'], 0, 1) !== '/') {
+            $config['path'] = $configDir . DIRECTORY_SEPARATOR . $config['path'];
+        }
+    }
+
+    $config['config_path'] = $configPath;
+
+    if (isset($config['bootstrap'])) {
+        $bootstrap = realpath($configDir . DIRECTORY_SEPARATOR . $config['bootstrap']);
+        if (!file_exists($bootstrap)) {
+            echo sprintf('Bootstrap file "%s" was not found',
+                $bootstrap
             );
             exit(1);
         }
-
-        if (isset($config['path'])) {
-            // prepend config dir to path if it is non-relative
-            if (substr($config['path'], 0, 1) !== '/') {
-                $config['path'] = $configDir . DIRECTORY_SEPARATOR . $config['path'];
-            }
-        }
-
-        $config['config_path'] = $configPath;
-
-        if (isset($config['bootstrap'])) {
-            $bootstrap = realpath($configDir . DIRECTORY_SEPARATOR . $config['bootstrap']);
-            if (!file_exists($bootstrap)) {
-                echo sprintf('Bootstrap file "%s" was not found',
-                    $bootstrap
-                );
-                exit(1);
-            }
-            require_once($bootstrap);
-            $hasBootstrap = true;
-        }
-        break;
+        require_once($bootstrap);
+        $hasBootstrap = true;
     }
+    break;
 }
 
 if (false === $hasBootstrap) {
@@ -83,6 +85,7 @@ if (false === $hasBootstrap) {
     require_once $bootstrapPath;
 }
 
-$container->build();
+$container->configure();
 $container->mergeParameters($config);
+$container->build($config);
 $container->get('console.application')->run();

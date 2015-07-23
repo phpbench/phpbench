@@ -29,17 +29,25 @@ class Container
     private $services = array();
     private $tags = array();
     private $parameters = array();
+    private $extensions = array();
 
     public function __construct()
     {
+        // Add the core extension by deefault
         $this->parameters['extensions'] = array(
             'PhpBench\Extension\CoreExtension',
         );
     }
 
-    public function build(array $config = array())
+    /**
+     * Configure the container. This method will call the `configure()` method
+     * on each extension. Extensions must use this opportunity to register their
+     * services and define any default parameters.
+     *
+     * This method must be called before `build()`.
+     */
+    public function configure()
     {
-        $extensions = array();
         foreach ($this->parameters['extensions'] as $extensionClass) {
             if (!class_exists($extensionClass)) {
                 throw new \InvalidArgumentException(sprintf(
@@ -57,15 +65,29 @@ class Container
                 ));
             }
 
-            $extension->configure($this, $config);
-            $extensions[] = $extension;
-        }
-
-        foreach ($extensions as $extension) {
-            $extension->build($this, $config);
+            $extension->configure($this);
+            $this->extensions[] = $extension;
         }
     }
 
+    /**
+     * Build the container. This method will call the `build()` method on each registered extension.
+     * The extensions can use this as a "compiler pass" to add tagged services to other services for example.
+     */
+    public function build()
+    {
+        foreach ($this->extensions as $extension) {
+            $extension->build($this);
+        }
+    }
+
+    /**
+     * Instantiate and return the service with the given ID.
+     * Note that this method will return the same instance on subsequent calls.
+     *
+     * @param string $serviceId
+     * @return mixed
+     */
     public function get($serviceId)
     {
         if (isset($this->services[$serviceId])) {
@@ -84,16 +106,23 @@ class Container
         return $this->services[$serviceId];
     }
 
+    /**
+     * Set a service instance
+     *
+     * @param string $serviceId
+     * @param mixed $instance
+     */
     public function set($serviceId, $instance)
     {
         $this->services[$serviceId] = $instance;
     }
 
-    public function setExtensions(array $extensions)
-    {
-        $this->extensions = $extensions;
-    }
-
+    /**
+     * Return services IDs for the given tag
+     *
+     * @param string $tag
+     * @return string[]
+     */
     public function getServiceIdsForTag($tag)
     {
         $serviceIds = array();
@@ -106,6 +135,16 @@ class Container
         return $serviceIds;
     }
 
+    /**
+     * Register a service with the given ID and instantiator.
+     *
+     * The instantiator is a closure which accepts an instance of this container and
+     * returns a new instance of the service class.
+     *
+     * @param string $serviceId
+     * @param \Closure $instantiator
+     * @param string[] $tags
+     */
     public function register($serviceId, \Closure $instantiator, array $tags = array())
     {
         if (isset($this->instantiators[$serviceId])) {
@@ -118,6 +157,11 @@ class Container
         $this->tags[$serviceId] = $tags;
     }
 
+    /**
+     * Merge an array of parameters onto the existing parameter set.
+     *
+     * @param array $parameters
+     */
     public function mergeParameters(array $parameters)
     {
         $this->parameters = array_merge(
@@ -126,6 +170,13 @@ class Container
         );
     }
 
+    /**
+     * Return the parameter with the given name.
+     *
+     * @param string $name
+     * @return mixed
+     * @throws \InvalidArgumentException
+     */
     public function getParameter($name)
     {
         if (!array_key_exists($name, $this->parameters)) {

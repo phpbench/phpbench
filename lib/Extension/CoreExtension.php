@@ -17,6 +17,7 @@ use PhpBench\Benchmark\SubjectBuilder;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Console\Application;
 use Symfony\Component\Finder\Finder;
+use PhpBench\Report\Generator\CompositeGenerator;
 
 class CoreExtension implements Extension
 {
@@ -124,5 +125,8 @@ class CoreExtension implements Extension
         $container->register('report_generator.console_table', function () {
             return new ConsoleTableGenerator();
         }, array('report_generator' => array('name' => 'console_table')));
+        $container->register('report_generator.composite', function (Container $container) {
+            return new CompositeGenerator($container->get('report.manager'));
+        }, array('report_generator' => array('name' => 'composite')));
     }
 }
