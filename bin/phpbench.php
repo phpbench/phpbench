@@ -35,6 +35,7 @@ if (empty($configPaths)) {
 }
 
 $hasBootstrap = false;
+$config = array();
 foreach ($configPaths as $configPath) {
     if (file_exists($configPath)) {
         $configDir = dirname($configPath);
@@ -55,7 +56,6 @@ foreach ($configPaths as $configPath) {
         }
 
         $config['config_path'] = $configPath;
-        $container->mergeParameters($config);
 
         if (isset($config['bootstrap'])) {
             $bootstrap = realpath($configDir . DIRECTORY_SEPARATOR . $config['bootstrap']);
@@ -84,4 +84,5 @@ if (false === $hasBootstrap) {
 }
 
 $container->build();
+$container->mergeParameters($config);
 $container->get('console.application')->run();

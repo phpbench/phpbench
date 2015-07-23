@@ -16,7 +16,13 @@ use PhpBench\Benchmark\CollectionBuilder;
 use Symfony\Component\Finder\Finder;
 use PhpBench\Benchmark\SubjectBuilder;
 use PhpBench\Result\Loader\XmlLoader;
+use PhpBench\Extension\CoreExtension;
 
+/**
+ * PHPBench Container.
+ *
+ * This is a simple, extendable, closure based dependency injection container.
+ */
 class Container
 {
     private $instantiators = array();
@@ -26,87 +32,23 @@ class Container
 
     public function __construct()
     {
-        $this->register('console.application', function (Container $container) {
-            $application = new Application();
-
-            foreach (array_keys($container->getServiceIdsForTag('console.command')) as $serviceId) {
-                $command = $container->get($serviceId);
-                $application->add($command);
-            }
-
-            return $application;
-        });
-        $this->register('benchmark.runner', function (Container $container) {
-            return new Runner(
-                $container->get('benchmark.collection_builder'),
-                $container->get('benchmark.subject_builder'),
-                $container->getParameter('config_path')
-            );
-        });
-        $this->register('benchmark.finder', function (Container $container) {
-            return new Finder();
-        });
-        $this->register('benchmark.subject_builder', function (Container $container) {
-            return new SubjectBuilder();
-        });
-        $this->register('benchmark.collection_builder', function (Container $container) {
-            return new CollectionBuilder($container->get('benchmark.finder'));
-        });
-        $this->register('console.command.run', function (Container $container) {
-            return new RunCommand(
-                $container->get('benchmark.runner'),
-                $container->get('result.dumper.xml'),
-                $container->get('report.manager'),
-                $container->get('progress_logger.registry'),
-                $container->getParameter('progress_logger_name'),
-                $container->getParameter('path'),
-                $container->getParameter('enable_gc'),
-                $container->getParameter('config_path')
-            );
-        }, array('console.command' => array()));
-
-        $this->register('console.command.report', function (Container $container) {
-            return new ReportCommand(
-                $container->get('result.loader.xml'),
-                $container->get('report.manager')
-            );
-        }, array('console.command' => array()));
-        $this->register('result.dumper.xml', function () {
-            return new XmlDumper();
-        });
-        $this->register('result.loader.xml', function () {
-            return new XmlLoader();
-        });
-        $this->register('report.manager', function () {
-            return new ReportManager();
-        });
-        $this->register('progress_logger.registry', function (Container $container) {
-            return new ProgressLoggerRegistry();
-        });
-        $this->registerProgressLoggers();
-        $this->registerReportGenerators();
-
-        $this->parameters = array(
-            'enable_gc' => false,
-            'path' => null,
-            'extensions' => array(),
-            'reports' => array(),
-            'config_path' => null,
-            'progress_logger_name' => 'benchdots'
+        $this->parameters['extensions'] = array(
+            'PhpBench\Extension\CoreExtension',
         );
     }
 
-    public function build()
+    public function build(array $config = array())
     {
+        $extensions = array();
         foreach ($this->parameters['extensions'] as $extensionClass) {
-            if (!class_exists($extension)) {
+            if (!class_exists($extensionClass)) {
                 throw new \InvalidArgumentException(sprintf(
                     'Extension class "%s" does not exist',
                     $extensionClass
                 ));
             }
 
-            $extension = new $extensionClass;
+            $extension = new $extensionClass();
 
             if (!$extension instanceof Extension) {
                 throw new \InvalidArgumentException(sprintf(
@@ -115,21 +57,12 @@ class Container
                 ));
             }
 
-            $extension->configure($this);
+            $extension->configure($this, $config);
+            $extensions[] = $extension;
         }
 
-        foreach ($this->getServiceIdsForTag('progress_logger') as $serviceId => $attributes) {
-            $progressLogger = $this->get($serviceId);
-            $this->get('progress_logger.registry')->addProgressLogger($attributes['name'], $progressLogger);
-        }
-
-        foreach ($this->getServiceIdsForTag('report_generator') as $serviceId => $attributes) {
-            $reportGenerator = $this->get($serviceId);
-            $this->get('report.manager')->addReportGenerator($attributes['name'], $reportGenerator);
-        }
-
-        foreach ($this->getParameter('reports') as $reportName => $report) {
-            $this->get('report.manager')->addReport($reportName, $report);
+        foreach ($extensions as $extension) {
+            $extension->build($this, $config);
         }
     }
 
@@ -203,23 +136,5 @@ class Container
         }
 
         return $this->parameters[$name];
-    }
-
-    private function registerProgressLoggers()
-    {
-        $this->register('progress_logger.dots', function (Container $container) {
-            return new DotsProgressLogger();
-        }, array('progress_logger' => array('name' => 'dots')));
-
-        $this->register('progress_logger.benchdots', function (Container $container) {
-            return new DotsProgressLogger(true);
-        }, array('progress_logger' => array('name' => 'benchdots')));
-    }
-
-    private function registerReportGenerators()
-    {
-        $this->register('report_generator.console_table', function () {
-            return new ConsoleTableGenerator();
-        }, array('report_generator' => array('name' => 'console_table')));
     }
 }
