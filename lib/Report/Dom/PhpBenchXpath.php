@@ -6,6 +6,11 @@ use PhpBench\Report\Calculator;
 
 require_once('xpath_functions.php');
 
+/**
+ * This class registers some PHP functions which can be used in XPath
+ * expressions.  It will also expand `php:bench` to the `php:function` call and
+ * prepend the namespace.
+ */
 class PhpBenchXpath extends \DOMXpath
 {
     public function __construct(\DOMDocument $dom)
@@ -22,6 +27,9 @@ class PhpBenchXpath extends \DOMXpath
         ));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function evaluate($expr, \DOMNode $context = null, $registerNodeNs = null)
     {
         $expr = preg_replace(

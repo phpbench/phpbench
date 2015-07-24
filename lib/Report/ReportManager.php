@@ -15,6 +15,11 @@ class ReportManager
      */
     private $reports = array();
 
+    public function __construct()
+    {
+        $this->registerDefaultReports();
+    }
+
     /**
      * Add a named report configuration.
      *
@@ -185,5 +190,34 @@ class ReportManager
         }
 
         return $reportConfig;
+    }
+
+    private function registerDefaultReports()
+    {
+        $this->addReport(
+            'console_aggregate',
+            array(
+                'extends' => 'console_table',
+                'selector' => '//iterations',
+                'headers' => array('Subject', 'Group', 'Description', 'Sum Revs.', 'Nb. Iters.', 'Av. Time', 'Av. RPS', 'Stability'),
+                'cells' => array(
+                    'subject' => 'string(../@name)',
+                    'group' => 'string(../group/@name)',
+                    'description' => 'string(../@description)',
+                    'revs' => 'number(sum(.//@revs))',
+                    'iters' => 'number(count(.//iteration))',
+                    'time' => 'number(php:bench(\'avg\', .//iteration/@time))',
+                    'rps' => '(1000000 div number(php:bench(\'avg\', .//iteration/@time)) * number(php:bench(\'avg\', (.//iteration/@revs))))',
+                    'stability' => '100 - php:bench(\'deviation\', number(php:bench(\'min\', ./iteration/@time)), number(php:bench(\'avg\', ./iteration/@time)))',
+
+                ),
+                'format' => array(
+                    'revs' => '!number',
+                    'rps' => array('!number', '%s<comment>rps</comment>'),
+                    'time' => array('!number', '%s<comment>μs</comment>'),
+                    'stability' => array('%.2f', '%s<comment>%%</comment>'),
+                ),
+            )
+        );
     }
 }

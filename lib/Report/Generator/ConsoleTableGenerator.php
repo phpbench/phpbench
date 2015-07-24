@@ -54,7 +54,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
                 'iter' => 'number(.//@index)',
                 'time' => 'number(.//@time)',
                 'rps' => '(1000000 div number(.//@time)) * number(.//@revs)',
-                'deviation' => 'php:bench(\'deviation\', php:bench(\'min\', //iteration/@time), number(./@time))',
+                'deviation' => 'php:bench(\'deviation\', php:bench(\'min\', {selector}/@time), number(./@time))',
             ),
             'format' => array(
                 'revs' => '!number',
@@ -75,7 +75,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
     public function generate(SuiteResult $suite, array $config)
     {
         if (null !== $config['title']) {
-            $this->output->writeln(sprintf('<title>%s</title>', $config['title']));
+            $this->output->writeln(sprintf('<title>%s</title> <comment>%s</comment>', $config['title'], $config['selector']));
         }
 
         if (null !== $config['description']) {
@@ -89,6 +89,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
         foreach ($xpath->query($config['selector']) as $rowEl) {
             $row = array();
             foreach ($config['cells'] as $colName => $cellExpr) {
+                $cellExpr = str_replace('{selector}', $config['selector'], $cellExpr);
                 $value = $xpath->evaluate($cellExpr, $rowEl);
 
                 if (!is_scalar($value)) {
@@ -125,19 +126,10 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
     private function configureFormatters(OutputFormatterInterface $formatter)
     {
         $formatter->setStyle(
-            'title', new OutputFormatterStyle('white', 'blue', array('bold'))
+            'title', new OutputFormatterStyle('white', null, array('bold'))
         );
         $formatter->setStyle(
             'description', new OutputFormatterStyle(null, null, array())
         );
-    }
-
-    private function formatValue($value, $format)
-    {
-        if ($format === 'number') {
-            return number_format($value);
-        }
-
-        return $value;
     }
 }
