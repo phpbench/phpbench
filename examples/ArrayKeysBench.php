@@ -21,6 +21,7 @@ use PhpBench\Benchmark;
  * @revs 1000
  * @revs 100
  * @revs 10
+ * @iterations 4
  * @group array_keys
  */
 class ArrayKeysBench implements Benchmark

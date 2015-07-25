@@ -64,6 +64,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
                 'deviation' => array('%.2f', '!balance', '%s<comment>%%</comment>'),
             ),
             'sort' => array(),
+            'exclude' => array(),
         ));
     }
 
@@ -163,7 +164,17 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
         $tableXpath = new PhpBenchXpath($tableDom);
         foreach ($tableXpath->query('//row') as $rowEl) {
             foreach ($config['post-process'] as $cellName) {
-                $cellEls = $tableXpath->query('./cell[@name="' . $cellName .'"]', $rowEl);
+                $expression = './cell[@name="' . $cellName .'"]';
+                $cellEls = $tableXpath->query($expression, $rowEl);
+
+                if (false === $cellEls) {
+                    throw new \InvalidArgumentException(sprintf(
+                        'Could not find cell with name "%s" using expression "%s" when post processing table',
+                        $cellName,
+                        $expression
+                    ));
+                }
+
                 $cellEl = $cellEls->item(0);
                 $cellExpr = $config['cells'][$cellName];
                 $value = $tableXpath->evaluate($cellExpr, $rowEl);
@@ -179,6 +190,12 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
                 $row[$cellEl->getAttribute('name')] = $cellEl->nodeValue;
             }
             $rows[] = $row;
+        }
+
+        foreach ($rows as &$row) {
+            foreach ($config['exclude'] as $exclude) {
+                unset($row[$exclude]);
+            }
         }
 
         return $rows;

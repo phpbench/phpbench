@@ -21,10 +21,10 @@
             "selector": "//subject[group/@name='array_keys']//iterations[iteration[@revs=100]]"
         },
         "array_keys_10000": {
-            "extends": "console_table",
+            "extends": "console_simple",
             "title": "Comparison of array location functions",
             "description": "This benchmark creates an array with 50,000 elements. Each subject checks the existence of the key with the index of the current revolution. (or in the case of in_arrey, for the value). 1000 revolutions",
-            "selector": "//subject[group/@name='array_keys']//iteration[@revs=10000]"
+            "selector": "//subject[group/@name='array_keys']//iterations/iteration[@revs=10000]"
         },
         "all": {
             "generator": "composite",
