@@ -151,18 +151,20 @@ EOT
         $suiteResult = $this->executeBenchmarks($path, $subjects, $groups, $noSetup, $parameters, $iterations, $revs, $processIsolation, $configPath, $progressLogger);
         $consoleOutput->writeln('');
 
-        if ($dumpfile) {
-            $xml = $this->xmlDumper->dump($suiteResult)->saveXml();
-            file_put_contents($dumpfile, $xml);
-            $consoleOutput->writeln('<info>Dumped result to </info>' . $dumpfile);
-        }
-
         $consoleOutput->writeln(sprintf(
             '<greenbg>Done (%s subjects, %s iterations) in %ss</greenbg>',
             count($suiteResult->getSubjectResults()),
             count($suiteResult->getIterationResults()),
             number_format(microtime(true) - $startTime, 2)
         ));
+
+        if ($dumpfile) {
+            $xml = $this->xmlDumper->dump($suiteResult)->saveXml();
+            file_put_contents($dumpfile, $xml);
+            $consoleOutput->writeln('Dumped result to ' . $dumpfile);
+        }
+
+        $consoleOutput->writeln('');
 
         if ($dump) {
             $xml = $this->xmlDumper->dump($suiteResult)->saveXml();

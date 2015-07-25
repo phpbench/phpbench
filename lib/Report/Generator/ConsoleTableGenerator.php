@@ -56,6 +56,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
                 'rps' => '(1000000 div number(.//@time)) * number(.//@revs)',
                 'deviation' => 'php:bench(\'deviation\', php:bench(\'min\', {selector}/@time), number(./@time))',
             ),
+            'post-process' => array(),
             'format' => array(
                 'revs' => '!number',
                 'rps' => array('!number', '%s<comment>rps</comment>'),
@@ -83,27 +84,11 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
         }
 
         $dom = $this->xmlDumper->dump($suite);
-        $xpath = new PhpBenchXpath($dom);
-        $rows = array();
 
-        foreach ($xpath->query($config['selector']) as $rowEl) {
-            $row = array();
-            foreach ($config['cells'] as $colName => $cellExpr) {
-                $cellExpr = str_replace('{selector}', $config['selector'], $cellExpr);
-                $value = $xpath->evaluate($cellExpr, $rowEl);
+        $tableDom = new \DOMDocument(1.0);
 
-                if (!is_scalar($value)) {
-                    throw new \InvalidArgumentException(sprintf(
-                        'Expected XPath expression "%s" to evaluate to a scalar, got "%s"',
-                        $cellExpr, is_object($value) ? get_class($value) : gettype($value)
-                    ));
-                }
-
-                $row[$colName] = $value;
-            }
-
-            $rows[] = $row;
-        }
+        $this->transformToTableDom($dom, $tableDom, $config);
+        $rows = $this->postProcess($tableDom, $config);
 
         if (!empty($config['sort'])) {
             Sort::sortRows($rows, $config['sort']);
@@ -121,6 +106,82 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
         $table->setHeaders($config['headers']);
         $table->setRows($rows);
         $table->render();
+        $this->output->writeln('');
+    }
+
+    /**
+     * Transform the suite result DOM into a DOM representing a table.
+     *
+     * @param \DOMDocument $resultDom
+     * @param \DOMDocument $tableDom
+     * @param array $config
+     */
+    private function transformToTableDom(\DOMDocument $resultDom, \DOMDocument $tableDom, array $config)
+    {
+        $tableEl = $tableDom->createElement('table');
+        $tableDom->appendChild($tableEl);
+
+        $xpath = new PhpBenchXpath($resultDom);
+        foreach ($xpath->query($config['selector']) as $rowEl) {
+            $tableRowEl = $tableDom->createElement('row');
+            $tableEl->appendChild($tableRowEl);
+
+            foreach ($config['cells'] as $colName => $cellExpr) {
+                $tableCellEl = $tableDom->createElement('cell');
+                $tableRowEl->appendChild($tableCellEl);
+
+                if (in_array($colName, $config['post-process'])) {
+                    $value = null;
+                } else {
+                    $cellExpr = str_replace('{selector}', $config['selector'], $cellExpr);
+                    $value = $xpath->evaluate($cellExpr, $rowEl);
+                    $this->validateXpathResult($cellExpr, $value);
+                }
+
+                $tableCellEl->setAttribute('name', $colName);
+                $tableCellEl->nodeValue = $value;
+            }
+        }
+    }
+
+    /**
+     * Evaluate XPath expressions defined in the "cells" configuration key that
+     * are nominted to be applied to the "table" DOM instead of the "suite
+     * result" DOM. This is effectively a compiler pass.
+     *
+     * NOTE: If further compiler passes are ever needed then the
+     *       ['post-process'] configuration key could accept an array instead of any
+     *       one of the cell names. The array would then contain one element per
+     *       compiler pass.
+     *
+     * @param \DOMDocument $tableDom 
+     * @param array $config
+     */
+    private function postProcess(\DOMDocument $tableDom, $config)
+    {
+        $rows = array();
+        $tableXpath = new PhpBenchXpath($tableDom);
+        foreach ($tableXpath->query('//row') as $rowEl) {
+            foreach ($config['post-process'] as $cellName) {
+                $cellEls = $tableXpath->query('./cell[@name="' . $cellName .'"]', $rowEl);
+                $cellEl = $cellEls->item(0);
+                $cellExpr = $config['cells'][$cellName];
+                $value = $tableXpath->evaluate($cellExpr, $rowEl);
+                $this->validateXpathResult($cellExpr, $value);
+                $cellEl->nodeValue = $value;
+            }
+        }
+
+        $rows = array();
+        foreach ($tableXpath->query('//row') as $rowEl) {
+            $row = array();
+            foreach ($tableXpath->query('./cell', $rowEl) as $cellEl) {
+                $row[$cellEl->getAttribute('name')] = $cellEl->nodeValue;
+            }
+            $rows[] = $row;
+        }
+
+        return $rows;
     }
 
     private function configureFormatters(OutputFormatterInterface $formatter)
@@ -131,5 +192,15 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
         $formatter->setStyle(
             'description', new OutputFormatterStyle(null, null, array())
         );
+    }
+
+    private function validateXpathResult($cellExpr, $value)
+    {
+        if (!is_scalar($value)) {
+            throw new \InvalidArgumentException(sprintf(
+                'Expected XPath expression "%s" to evaluate to a scalar, got "%s"',
+                $cellExpr, is_object($value) ? get_class($value) : gettype($value)
+            ));
+        }
     }
 }

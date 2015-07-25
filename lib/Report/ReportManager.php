@@ -199,24 +199,25 @@ class ReportManager
             array(
                 'extends' => 'console_table',
                 'selector' => '//iterations',
-                'headers' => array('Subject', 'Group', 'Description', 'Sum Revs.', 'Nb. Iters.', 'Av. Time', 'Av. RPS', 'Stability'),
+                'headers' => array('Description', 'Sum Revs.', 'Nb. Iters.', 'Av. Time', 'Av. RPS', 'Stability', 'Deviation'),
                 'cells' => array(
-                    'subject' => 'string(../@name)',
-                    'group' => 'string(../group/@name)',
                     'description' => 'string(../@description)',
                     'revs' => 'number(sum(.//@revs))',
                     'iters' => 'number(count(.//iteration))',
                     'time' => 'number(php:bench(\'avg\', .//iteration/@time))',
                     'rps' => '(1000000 div number(php:bench(\'avg\', .//iteration/@time)) * number(php:bench(\'avg\', (.//iteration/@revs))))',
                     'stability' => '100 - php:bench(\'deviation\', number(php:bench(\'min\', ./iteration/@time)), number(php:bench(\'avg\', ./iteration/@time)))',
-
+                    'deviation' => 'number(php:bench(\'deviation\', number(php:bench(\'min\', //cell[@name="time"])), number(./cell[@name="time"])))',
                 ),
+                'post-process' => array('deviation'),
                 'format' => array(
                     'revs' => '!number',
                     'rps' => array('!number', '%s<comment>rps</comment>'),
                     'time' => array('!number', '%s<comment>μs</comment>'),
                     'stability' => array('%.2f', '%s<comment>%%</comment>'),
+                    'deviation' => array('%.2f', '!balance', '%s<comment>%%</comment>'),
                 ),
+                'sort' => array('time' => 'asc'),
             )
         );
     }

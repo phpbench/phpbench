@@ -3,32 +3,32 @@
     "path": "./",
     "reports": {
         "cost_of_setting": {
-            "generator": "console_table",
+            "extends": "console_aggregate",
             "title": "Cost of Setting",
             "description": "Comparison of different ways of setting properties",
-            "selector": "//subject[group/@name='cost_of_setting']//iteration"
+            "selector": "//subject[group/@name='cost_of_setting']//iterations"
         },
         "cost_of_instantiation": {
-            "generator": "console_table",
+            "extends": "console_aggregate",
             "title": "Cost of Instantiation",
             "description": "Compares instantiating a class directly against instantiating via. Reflection",
-            "selector": "//subject[group/@name='cost_of_instantiation']//iteration"
+            "selector": "//subject[group/@name='cost_of_instantiation']//iterations"
         },
-        "array_keys_10": {
-            "generator": "console_table",
+        "array_keys_100": {
+            "extends": "console_aggregate",
             "title": "Comparison of array location functions",
-            "description": "This benchmark creates an array with 50,000 elements. Each subject checks the existence of the key with the index of the current revolution. (or in the case of in_arrey, for the value).",
-            "selector": "//subject[group/@name='array_keys']//iteration[@revs=100]"
+            "description": "This benchmark creates an array with 50,000 elements. Each subject checks the existence of the key with the index of the current revolution. (or in the case of in_arrey, for the value). 100 revolutions",
+            "selector": "//subject[group/@name='array_keys']//iterations[iteration[@revs=100]]"
         },
         "array_keys_10000": {
-            "generator": "console_table",
+            "extends": "console_table",
             "title": "Comparison of array location functions",
-            "description": "This benchmark creates an array with 50,000 elements. Each subject checks the existence of the key with the index of the current revolution. (or in the case of in_arrey, for the value).",
+            "description": "This benchmark creates an array with 50,000 elements. Each subject checks the existence of the key with the index of the current revolution. (or in the case of in_arrey, for the value). 1000 revolutions",
             "selector": "//subject[group/@name='array_keys']//iteration[@revs=10000]"
         },
-        "summary": {
+        "all": {
             "generator": "composite",
-            "reports": ["cost_of_setting", "cost_of_instantiation", "array_keys_10", "array_keys_10000"]
+            "reports": ["cost_of_setting", "cost_of_instantiation", "array_keys_100", "array_keys_10000"]
         }
     }
 }
