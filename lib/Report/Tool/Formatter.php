@@ -19,7 +19,7 @@ class Formatter
     {
         $this->formatters = array(
             'number' => function ($value) {
-                return number_format($value);
+                return number_format((double) $value);
             },
             'balance' => function ($value) {
                 if ($value > 0) {
