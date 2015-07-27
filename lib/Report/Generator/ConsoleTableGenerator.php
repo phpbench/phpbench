@@ -103,10 +103,10 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
             }
         }
 
-        $table = new Table($this->output);
+        $table = $this->createTable();
         $table->setHeaders($config['headers']);
         $table->setRows($rows);
-        $table->render();
+        $this->renderTable($table);
         $this->output->writeln('');
     }
 
@@ -231,8 +231,8 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
             ),
             'simple' => array(
                 'extends' => 'full',
-                'headers' => array('Description', 'Sum Revs.', 'Nb. Iters.', 'Av. Time', 'Av. RPS', 'Deviation'),
-                'exclude' => ["subject", "group"],
+                'headers' => array('Subject', 'Sum Revs.', 'Nb. Iters.', 'Av. Time', 'Av. RPS', 'Deviation'),
+                'exclude' => ["description", "group"],
             ),
             'full' => array(
                 'generator' => 'console_table',
@@ -258,5 +258,22 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
                 $cellExpr, is_object($value) ? get_class($value) : gettype($value)
             ));
         }
+    }
+ 
+    private function createTable()
+    {
+        if (class_exists('Symfony\Component\Console\Helper\Table')) {
+            return new Table($this->output);
+        }
+        return new \Symfony\Component\Console\Helper\TableHelper();   
+    }
+
+    private function renderTable($table)
+    {
+        if (class_exists('Symfony\Component\Console\Helper\Table')) {
+            $table->render();
+            return;
+        }
+        $table->render($this->output);
     }
 }
