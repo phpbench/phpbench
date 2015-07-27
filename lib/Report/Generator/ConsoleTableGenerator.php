@@ -201,6 +201,45 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
         return $rows;
     }
 
+    public function getDefaultReports()
+    {
+        return array(
+            'aggregate' => array(
+                'extends' => 'full',
+                'selector' => '//iterations',
+                'headers' => array('Description', 'Sum Revs.', 'Nb. Iters.', 'Av. Time', 'Av. RPS', 'Stability', 'Deviation'),
+                'cells' => array(
+                    'description' => 'string(../@description)',
+                    'revs' => 'number(sum(.//@revs))',
+                    'iters' => 'number(count({selector}))',
+                    'time' => 'number(php:bench(\'avg\', .//iteration/@time))',
+                    'rps' => '(1000000 div number(php:bench(\'avg\', .//iteration/@time)) * number(php:bench(\'avg\', (.//iteration/@revs))))',
+                    'stability' => '100 - php:bench(\'deviation\', number(php:bench(\'min\', ./iteration/@time)), number(php:bench(\'avg\', ./iteration/@time)))',
+                    'deviation' => 'number(php:bench(\'deviation\', number(php:bench(\'min\', //cell[@name="time"])), number(./cell[@name="time"])))',
+                ),
+                'post-process' => array(
+                    'deviation',
+                ),
+                'format' => array(
+                    'revs' => '!number',
+                    'rps' => array('!number', '%s<comment>rps</comment>'),
+                    'time' => array('!number', '%s<comment>μs</comment>'),
+                    'stability' => array('%.2f', '%s<comment>%%</comment>'),
+                    'deviation' => array('%.2f', '!balance', '%s<comment>%%</comment>'),
+                ),
+                'sort' => array('time' => 'asc'),
+            ),
+            'simple' => array(
+                'extends' => 'full',
+                'headers' => array('Description', 'Sum Revs.', 'Nb. Iters.', 'Av. Time', 'Av. RPS', 'Deviation'),
+                'exclude' => ["subject", "group"],
+            ),
+            'full' => array(
+                'generator' => 'console_table',
+            ),
+        );
+    }
+
     private function configureFormatters(OutputFormatterInterface $formatter)
     {
         $formatter->setStyle(

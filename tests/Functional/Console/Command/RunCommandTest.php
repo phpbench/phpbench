@@ -51,7 +51,7 @@ class RunCommandTest extends BaseCommandTestCase
     {
         $tester = $this->runCommand('run', array(
             'path' => __DIR__ . '/../../benchmarks/BenchmarkBench.php',
-            '--report' => array('console_table'),
+            '--report' => array('full'),
         ));
         $this->assertEquals(0, $tester->getStatusCode());
         $display = $tester->getDisplay();
@@ -67,7 +67,7 @@ class RunCommandTest extends BaseCommandTestCase
     public function testCommandWithNoPath()
     {
         $this->runCommand('run', array(
-            '--report' => array('console_table'),
+            '--report' => array('full'),
         ));
     }
 

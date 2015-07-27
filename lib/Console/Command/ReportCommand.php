@@ -58,7 +58,7 @@ EOT
 
         if (!$reportNames) {
             throw new \InvalidArgumentException(
-                'You must specify or configure at least one report, e.g.: --report=console_table'
+                'You must specify or configure at least one report, e.g.: --report=simple'
             );
         }
 

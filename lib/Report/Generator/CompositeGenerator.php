@@ -57,4 +57,12 @@ class CompositeGenerator implements ReportGenerator, OutputAware
     {
         $this->reportManager->generateReports($this->output, $result, $config['reports']);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDefaultReports()
+    {
+        return array();
+    }
 }

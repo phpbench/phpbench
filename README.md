@@ -159,9 +159,7 @@ $ php vendor/bin/phpbench run benchmarks/ --report=<report name>
 
 But you can also pass configuration to the report:
 
-````bash
-$ php vendor/bin/phpbench run benchmarks/ --report='{"name": "console_table", "cols": ["time", "memory", "deviation"]}'
-````
+TODO: Update this
 
 As you can see we pass a JSON encoded string which represents the report
 configuration. This string **MUST** contain at least the `name` key indicating

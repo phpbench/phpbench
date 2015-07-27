@@ -16,6 +16,7 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
     {
         $this->reportManager = new ReportManager();
         $this->generator = $this->prophesize('PhpBench\ReportGenerator');
+        $this->generator->getDefaultReports()->willReturn(array());
         $this->output = $this->prophesize('Symfony\Component\Console\Output\OutputInterface');
         $this->result = $this->prophesize('PhpBench\Result\SuiteResult');
     }
@@ -115,12 +116,31 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
     public function testGenerateOutputAware()
     {
         $generator = $this->prophesize('PhpBench\ReportGenerator')->willImplement('PhpBench\Console\OutputAware');
+        $generator->getDefaultReports()->willReturn(array());
 
         $this->reportManager->addGenerator('test', $generator->reveal());
         $this->reportManager->addReport('test_report', array('generator' => 'test'));
         $generator->generate($this->result->reveal(), array())->shouldBeCalled();
         $generator->configure(Argument::type('Symfony\Component\OptionsResolver\OptionsResolver'))->shouldBeCalled();
         $generator->setOutput($this->output->reveal())->shouldBeCalled();
+        $this->reportManager->generateReports(
+            $this->output->reveal(),
+            $this->result->reveal(),
+            array('test_report')
+        );
+    }
+
+    /**
+     * It should throw an exception if the generator does not return an array from the getDefaultReports method.
+     *
+     * @expectedException RuntimeException
+     */
+    public function testDefaultReportsNotArray()
+    {
+        $generator = $this->prophesize('PhpBench\ReportGenerator');
+        $generator->getDefaultReports()->willReturn(new \stdClass);
+        $this->reportManager->addGenerator('test', $generator->reveal());
+
         $this->reportManager->generateReports(
             $this->output->reveal(),
             $this->result->reveal(),

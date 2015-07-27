@@ -15,11 +15,6 @@ class ReportManager
      */
     private $reports = array();
 
-    public function __construct()
-    {
-        $this->registerDefaultReports();
-    }
-
     /**
      * Add a named report configuration.
      *
@@ -54,7 +49,20 @@ class ReportManager
         }
 
         $this->generators[$name] = $generator;
-        $this->reports[$name] = array('generator' => 'console_table');
+
+        $defaultReports = $generator->getDefaultReports();
+
+        if (!is_array($defaultReports)) {
+            throw new \RuntimeException(sprintf(
+                'Method getDefaultReports on report generator "%s" must return an array, it is returning: "%s"',
+                get_class($generator),
+                is_object($defaultReports) ? get_class($defaultReports) : gettype($defaultReports)
+            ));
+        }
+
+        foreach ($defaultReports as $reportName => $reportConfig) {
+            $this->addReport($reportName, $reportConfig);
+        }
     }
 
     /**
@@ -148,7 +156,7 @@ class ReportManager
             $reportConfigs[$reportName] = $this->getReport($reportName);
         }
 
-        foreach ($reportConfigs as $reportConfig) {
+        foreach ($reportConfigs as $reportName => $reportConfig) {
             $reportConfig = $this->resolveReportConfig($reportConfig);
 
             if (!isset($reportConfig['generator'])) {
@@ -190,46 +198,5 @@ class ReportManager
         }
 
         return $reportConfig;
-    }
-
-    private function registerDefaultReports()
-    {
-        $this->addReport(
-            'console_aggregate',
-            array(
-                'extends' => 'console_table',
-                'selector' => '//iterations',
-                'headers' => array('Description', 'Sum Revs.', 'Nb. Iters.', 'Av. Time', 'Av. RPS', 'Stability', 'Deviation'),
-                'cells' => array(
-                    'description' => 'string(../@description)',
-                    'revs' => 'number(sum(.//@revs))',
-                    'iters' => 'number(count({selector}))',
-                    'time' => 'number(php:bench(\'avg\', .//iteration/@time))',
-                    'rps' => '(1000000 div number(php:bench(\'avg\', .//iteration/@time)) * number(php:bench(\'avg\', (.//iteration/@revs))))',
-                    'stability' => '100 - php:bench(\'deviation\', number(php:bench(\'min\', ./iteration/@time)), number(php:bench(\'avg\', ./iteration/@time)))',
-                    'deviation' => 'number(php:bench(\'deviation\', number(php:bench(\'min\', //cell[@name="time"])), number(./cell[@name="time"])))'
-                ),
-                'post-process' => array(
-                    'deviation',
-                ),
-                'format' => array(
-                    'revs' => '!number',
-                    'rps' => array('!number', '%s<comment>rps</comment>'),
-                    'time' => array('!number', '%s<comment>μs</comment>'),
-                    'stability' => array('%.2f', '%s<comment>%%</comment>'),
-                    'deviation' => array('%.2f', '!balance', '%s<comment>%%</comment>'),
-                ),
-                'sort' => array('time' => 'asc'),
-            )
-        );
-
-        $this->addReport(
-            'console_simple',
-            array(
-                'extends' => 'console_table',
-                'headers' => array('Description', 'Sum Revs.', 'Nb. Iters.', 'Av. Time', 'Av. RPS', 'Deviation'),
-                'exclude' => ["subject", "group"],
-            )
-        );
     }
 }
