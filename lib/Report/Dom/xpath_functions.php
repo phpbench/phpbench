@@ -2,7 +2,7 @@
 
 namespace PhpBench\Report\Dom\functions;
 
-use PhpBench\Report\Calculator;
+use PhpBench\Report\Tool\Calculator;
 
 function deviation($standardValue, $value)
 {

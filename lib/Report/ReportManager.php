@@ -5,8 +5,8 @@ namespace PhpBench\Report;
 use PhpBench\ReportGenerator;
 use Symfony\Component\Console\Output\OutputInterface;
 use PhpBench\Result\SuiteResult;
-use PhpBench\OptionsResolver\OptionsResolver;
 use PhpBench\Console\OutputAware;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ReportManager
 {

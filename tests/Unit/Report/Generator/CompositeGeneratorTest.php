@@ -3,7 +3,7 @@
 namespace PhpBench\Tests\Unit\Report\Generator;
 
 use PhpBench\Report\Generator\CompositeGenerator;
-use PhpBench\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CompositeGeneratorTest extends \PHPUnit_Framework_TestCase
 {

@@ -2,7 +2,7 @@
 
 namespace PhpBench\Report\Dom;
 
-use PhpBench\Report\Calculator;
+use PhpBench\Report\Tool\Calculator;
 
 require_once('xpath_functions.php');
 

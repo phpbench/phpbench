@@ -2,7 +2,7 @@
 
 namespace PhpBench\Tests\Unit\Report;
 
-use PhpBench\Report\Calculator;
+use PhpBench\Report\Tool\Calculator;
 
 class CalculatorTest extends \PHPUnit_Framework_TestCase
 {

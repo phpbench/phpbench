@@ -9,8 +9,8 @@ use PhpBench\Result\IterationsResult;
 use PhpBench\Result\SubjectResult;
 use PhpBench\Result\BenchmarkResult;
 use PhpBench\Result\SuiteResult;
-use PhpBench\OptionsResolver\OptionsResolver;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ConsoleTableGeneratorTest extends \PHPUnit_Framework_TestCase
 {

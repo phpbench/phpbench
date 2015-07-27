@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Report;
+namespace PhpBench\Report\Tool;
 
 /**
  * Calculator.
