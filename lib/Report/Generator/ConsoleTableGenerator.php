@@ -45,11 +45,13 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
             'title' => null,
             'description' => null,
             'selector' => '//iteration',
-            'headers' => array('Subject', 'Group', 'Description', 'Revs', 'Iter.', 'Time', 'Rps', 'Deviation'),
+            'headers' => array('Subject', 'Group', 'Params', 'Description', 'PID', 'Revs', 'Iter.', 'Time', 'Rps', 'Deviation'),
             'cells' => array(
                 'subject' => 'string(../../@name)',
                 'group' => 'string(../../group/@name)',
+                'params' => 'php:bench(\'parameters_to_json\', ../../parameter)',
                 'description' => 'string(../../@description)',
+                'pid' => 'number(./@pid)',
                 'revs' => 'number(.//@revs)',
                 'iter' => 'number(.//@index)',
                 'time' => 'number(.//@time)',
@@ -207,9 +209,10 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
             'aggregate' => array(
                 'extends' => 'full',
                 'selector' => '//iterations',
-                'headers' => array('Description', 'Sum Revs.', 'Nb. Iters.', 'Av. Time', 'Av. RPS', 'Stability', 'Deviation'),
+                'headers' => array('Description', 'Params', 'Sum Revs.', 'Nb. Iters.', 'Av. Time', 'Av. RPS', 'Stability', 'Deviation'),
                 'cells' => array(
                     'description' => 'string(../@description)',
+                    'params' => 'php:bench(\'parameters_to_json\', ../parameter)',
                     'revs' => 'number(sum(.//@revs))',
                     'iters' => 'number(count({selector}))',
                     'time' => 'number(php:bench(\'avg\', .//iteration/@time))',
@@ -232,7 +235,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
             'simple' => array(
                 'extends' => 'full',
                 'headers' => array('Subject', 'Sum Revs.', 'Nb. Iters.', 'Av. Time', 'Av. RPS', 'Deviation'),
-                'exclude' => ["description", "group"],
+                'exclude' => ["description", "params", "pid", "group"],
             ),
             'full' => array(
                 'generator' => 'console_table',

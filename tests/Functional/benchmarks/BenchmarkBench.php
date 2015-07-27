@@ -48,7 +48,7 @@ class BenchmarkBench implements Benchmark
     /**
      * @paramProvider provideParamsOne
      * @paramProvider provideParamsTwo
-     * @description Parameterized bench mark strategy: {strategy}, length: {length}
+     * @description Parameterized bench mark
      * @group parameterized
      * @iterations 1
      */

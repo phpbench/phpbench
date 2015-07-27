@@ -33,3 +33,13 @@ function median($values)
 {
     return Calculator::median($values);
 }
+
+function parameters_to_json($values)
+{
+    $array = array();
+    foreach ($values as $parameterEl) {
+        $array[$parameterEl->getAttribute('name')] = $parameterEl->getAttribute('value');
+    }
+
+    return json_encode($array);
+}
