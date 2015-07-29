@@ -20,7 +20,7 @@ Features:
 - More
 
 **DISCLAIMER**: This library is in an *ALPHA* stage and should not be
-considered stable. Contributions welcome :)
+considered stable. The official documentation is a work in progress.
 
 Why?
 ----
