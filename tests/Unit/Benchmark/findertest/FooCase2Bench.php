@@ -9,9 +9,8 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench;
+use PhpBench\Benchmark;
 
-class PhpBench
+class FooTestCase2Bench implements Benchmark
 {
-    const VERSION = '0.5';
 }

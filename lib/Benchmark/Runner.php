@@ -27,49 +27,84 @@ class Runner
     const MILLION = 1000000;
 
     private $logger;
-    private $finder;
+    private $collectionBuilder;
     private $subjectBuilder;
     private $subjectMemoryTotal;
     private $subjectLastMemoryInclusive;
     private $processIsolation;
     private $iterationsOverride;
     private $revsOverride;
-    private $setUpTearDown;
-    private $configFile;
+    private $setUpTearDown = true;
+    private $configPath;
+    private $parametersOverride;
+    private $subjectsOverride;
+    private $groups;
 
     /**
-     * @param CollectionBuilder $finder
+     * @param CollectionBuilder $collectionBuilder
      * @param SubjectBuilder $subjectBuilder
-     * @param ProgressLogger $logger
-     * @param mixed $processIsolation ProcessIsolation override
-     * @param mixed $setUpTearDown Enable or disable setUp and tearDown
-     * @param mixed $iterationsOverride Override the number of iterations
-     * @param mixed $configFile Isolated proceses need to know about the config
+     * @param string $configPath
      */
     public function __construct(
-        CollectionBuilder $finder,
+        CollectionBuilder $collectionBuilder,
         SubjectBuilder $subjectBuilder,
-        ProgressLogger $logger = null,
-        $processIsolation = null,
-        $setUpTearDown = true,
-        $iterationsOverride = null,
-        $revsOverride = null,
-        $configFile = null
+        $configPath
     ) {
-        $this->logger = $logger ?: new NullProgressLogger();
-        $this->finder = $finder;
+        $this->logger = new NullProgressLogger();
+        $this->collectionBuilder = $collectionBuilder;
         $this->subjectBuilder = $subjectBuilder;
-        $this->processIsolation = $processIsolation;
-        $this->setUpTearDown = $setUpTearDown;
-        $this->iterationsOverride = $iterationsOverride;
-        $this->revsOverride = $revsOverride;
-        $this->configFile = $configFile;
+        $this->configPath = $configPath;
     }
 
-    public function runAll()
+    public function overrideSubjects($subjects)
     {
-        $collection = $this->finder->buildCollection();
+        $this->subjectsOverride = $subjects;
+    }
 
+    public function setProgressLogger(ProgressLogger $logger)
+    {
+        $this->logger = $logger;
+    }
+
+    public function setProcessIsolation($processIsolation)
+    {
+        $this->processIsolation = $processIsolation;
+    }
+
+    public function disableSetup()
+    {
+        $this->setUpTearDown = false;
+    }
+
+    public function overrideIterations($iterations)
+    {
+        $this->iterationsOverride = $iterations;
+    }
+
+    public function overrideRevs($revs)
+    {
+        $this->revsOverride = $revs;
+    }
+
+    public function overrideParameters($parameters)
+    {
+        $this->parametersOverride = $parameters;
+    }
+
+    public function setGroups(array $groups)
+    {
+        $this->groups = $groups;
+    }
+
+    public function setConfigPath($configPath)
+    {
+        $this->configPath = $configPath;
+    }
+    
+
+    public function runAll($path)
+    {
+        $collection = $this->collectionBuilder->buildCollection($path);
         $benchmarkResults = array();
 
         foreach ($collection->getBenchmarks() as $benchmark) {
@@ -89,7 +124,7 @@ class Runner
             $benchmark->setUp();
         }
 
-        $subjects = $this->subjectBuilder->buildSubjects($benchmark);
+        $subjects = $this->subjectBuilder->buildSubjects($benchmark, $this->subjectsOverride, $this->groups, $this->parametersOverride);
         $subjectResults = array();
 
         foreach ($subjects as $subject) {
@@ -195,8 +230,8 @@ class Runner
             $nbIterations
         );
 
-        if ($this->configFile) {
-            $command .= ' --config=' . $this->configFile;
+        if ($this->configPath) {
+            $command .= ' --config=' . $this->configPath;
         }
 
         if ($nbRevs) {

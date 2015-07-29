@@ -13,6 +13,7 @@ namespace PhpBench\Tests\Functional\Console\Command;
 
 use PhpBench\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
+use PhpBench\Container;
 
 class BaseCommandTestCase extends \PHPUnit_Framework_TestCase
 {
@@ -27,7 +28,10 @@ class BaseCommandTestCase extends \PHPUnit_Framework_TestCase
 
     protected function runCommand($commandName, array $arguments)
     {
-        $application = new Application();
+        $container = new Container();
+        $container->configure();
+        $container->build();
+        $application = $container->get('console.application');
         $command = $application->find($commandName);
         $tester = new CommandTester($command);
         $tester->execute($arguments);

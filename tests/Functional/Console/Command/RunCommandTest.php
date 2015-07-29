@@ -51,7 +51,7 @@ class RunCommandTest extends BaseCommandTestCase
     {
         $tester = $this->runCommand('run', array(
             'path' => __DIR__ . '/../../benchmarks/BenchmarkBench.php',
-            '--report' => array('console_table'),
+            '--report' => array('full'),
         ));
         $this->assertEquals(0, $tester->getStatusCode());
         $display = $tester->getDisplay();
@@ -67,7 +67,7 @@ class RunCommandTest extends BaseCommandTestCase
     public function testCommandWithNoPath()
     {
         $this->runCommand('run', array(
-            '--report' => array('console_table'),
+            '--report' => array('full'),
         ));
     }
 
@@ -78,7 +78,7 @@ class RunCommandTest extends BaseCommandTestCase
     {
         $tester = $this->runCommand('run', array(
             'path' => __DIR__ . '/../../benchmarks/BenchmarkBench.php',
-            '--report' => array('{"name": "console_table"}'),
+            '--report' => array('{"generator": "console_table"}'),
         ));
         $this->assertEquals(0, $tester->getStatusCode());
         $display = $tester->getDisplay();
@@ -94,7 +94,7 @@ class RunCommandTest extends BaseCommandTestCase
     public function testCommandWithReportConfigurationUnknown()
     {
         $tester = $this->runCommand('run', array(
-            '--report' => array('{"name": "foo_console_table"}'),
+            '--report' => array('{"generator": "foo_console_table"}'),
             'path' => __DIR__ . '/../../benchmarks/BenchmarkBench.php',
         ));
         $this->assertEquals(0, $tester->getStatusCode());

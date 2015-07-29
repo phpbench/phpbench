@@ -16,27 +16,32 @@ use PhpBench\Exception\InvalidArgumentException;
 
 class SubjectBuilder
 {
+    /**
+     * @var integer
+     */
     static $subjectIdCounter = 0;
 
+    /**
+     * @var Parser
+     */
     private $parser;
-    private $subjects;
-    private $groups;
-    private $parameters;
 
     /**
      * @param array $subjects Subject whitelist (empty implies all subjects)
      * @param array $parameters Parameter override (empty will use annotated parameters)
      * @param array $groups Group whitelist (empty implies all groups)
      */
-    public function __construct(array $subjects = array(), array $parameters = array(), array $groups = array())
+    public function __construct()
     {
         $this->parser = new Parser();
-        $this->subjects = $subjects;
-        $this->groups = $groups;
-        $this->parameters = $parameters;
     }
 
-    public function buildSubjects(Benchmark $benchmark)
+    public function buildSubjects(
+        Benchmark $benchmark, 
+        array $subjectsOverride = null,
+        array $groups = null,
+        array $parametersOverride = null
+    )
     {
         $reflection = new \ReflectionClass(get_class($benchmark));
         $defaults = $this->parser->parseDoc($reflection->getDocComment());
@@ -49,13 +54,13 @@ class SubjectBuilder
             }
 
             // if we have a subject whitelist, only include subjects in that whitelistd
-            if ($this->subjects && false === in_array($method->getName(), $this->subjects)) {
+            if ($subjectsOverride && false === in_array($method->getName(), $subjectsOverride)) {
                 continue;
             }
 
             $meta = $this->parser->parseDoc($method->getDocComment(), $defaults);
 
-            if ($this->groups && 0 === count(array_intersect($this->groups, $meta['group']))) {
+            if ($groups && 0 === count(array_intersect($groups, $meta['group']))) {
                 continue;
             }
 
@@ -63,15 +68,15 @@ class SubjectBuilder
                 $meta['revs'] = array(1);
             }
 
-            $this->createSubjects($subjects, $benchmark, $method, $meta);
+            $this->createSubjects($subjects, $parametersOverride, $benchmark, $method, $meta);
         }
 
         return $subjects;
     }
 
-    private function createSubjects(&$subjects, Benchmark $benchmark, \ReflectionMethod $method, array $meta)
+    private function createSubjects(&$subjects, array $parameters = null, Benchmark $benchmark, \ReflectionMethod $method, array $meta)
     {
-        $parameterSets = $this->getParameterSets($benchmark, $meta['paramProvider']);
+        $parameterSets = $this->getParameterSets($benchmark, $meta['paramProvider'], $parameters);
         $paramsIterator = new CartesianParameterIterator($parameterSets);
 
         foreach ($paramsIterator as $parameters) {
@@ -89,10 +94,10 @@ class SubjectBuilder
         }
     }
 
-    private function getParameterSets(Benchmark $benchmark, array $paramProviderMethods)
+    private function getParameterSets(Benchmark $benchmark, array $paramProviderMethods, $parameters)
     {
-        if ($this->parameters) {
-            return array(array($this->parameters));
+        if ($parameters) {
+            return array(array($parameters));
         }
 
         $parameterSets = array();

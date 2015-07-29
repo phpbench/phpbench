@@ -20,7 +20,7 @@ Features:
 - More
 
 **DISCLAIMER**: This library is in an *ALPHA* stage and should not be
-considered stable. Contributions welcome :)
+considered stable. The official documentation is a work in progress.
 
 Why?
 ----
@@ -31,12 +31,10 @@ All of the existing frameworks (as far as I can see) are designed for
 benchmarking algorithms or other relatively quick scenarios. They are the
 equivalent of "unit" tests.
 
-PhpBench is designed also for running *BIG* benchmark suites which may take serveral
+PhpBench is designed also for running larger benchmark suites which may take serveral
 minutes to complete, it could be seen as a *system* benchmarking framework,
-and therefore analagous to integration testing.
-
-PhpBench also provides a powerful report generation capability thanks to the
-[Cellular](https://github.com/phpbench/cellular) library.
+and therefore analagous to integration testing. To this end it allows
+benchmarks to be iterated in separate processes and 
 
 Installation
 ------------
@@ -160,56 +158,40 @@ $ php vendor/bin/phpbench run benchmarks/ --report=<report name>
 But you can also pass configuration to the report:
 
 ````bash
-$ php vendor/bin/phpbench run benchmarks/ --report='{"name": "console_table", "cols": ["time", "memory", "deviation"]}'
+$ php vendor/bin/phpbench run benchmarks/ --report='{"generator":
+"console_table", "sort": ["time"]}'
 ````
 
-As you can see we pass a JSON encoded string which represents the report
-configuration. This string **MUST** contain at least the `name` key indicating
-which report to use, all other keys are interpreted as options.
+Above we use the `console_table` generator, which is the generator used to
+created tabular reports in the CLI. The rest of the options are passed to the
+generator.
 
-There is are two reports included by default: `simple_table` and
-`console_table`. `simple_table` is extends `console_table` and adds a simple
-configuration. The following options can be applied to both:
+The default reports are:
 
-- `time_format`: Either `fraction` (of a second) or `integer` (number of microseconds).
-- `subject_meta`: Show or hide subject metadata (class, method name, groups).
-  Default **true**.
-- `precision`: Number of decimal places to use when showing the time as a fraction.
-- `cols`: Choose which columns to display (defaults to all), columns are
-  defined below.
-- `aggregate`: Aggregate the benchmark data, values: `none` or `run` or
-  `subject`.
-- `sort`: Sort the data by the given columns, e.g. `array('col1' => 'asc',
-  'col2' => 'desc')`.
-- `group`: Only report on the specified group.
-- `style`: Display one table per data group (`horizontal`) or one table per row (`vertical`) In the
-  latter case the table will have two columns, `field` and `value`. Defaults
-  to `horizontal`.
-- `footer`: Adds a "footer" row for each function name given, the aggregated
-  value according to the function is shown for each aggregatable column.
+- **full**: Console report using the default options of the `console_table`
+  generator.
+- **simple**: Minimal console report
+- **aggregate**: Console report which aggregates iterations and shows averages
+  and other metrics such as stability.
 
-The columns are:
+You can extend existing configurations:
 
-- `run`: Show the run index.
-- `iter`: Show the iteration index.
-- `time`: Time taken in microseconds (aggregate)
-- `memory`: Memory used by the subject (aggregate)
-- `memory_diff`: Memory used by the subject (aggregate)
-- `revs`: Number of times the subject was repeated (aggregate)
-- `rps`: Revolutions per second - number of times the subject is executed in a second (aggregate)
-- `deviation_[mean|min|max]`: Deviation from the mean as a percentage.
-  Deviation value is a percentage from the result of the function sufix of the
-  option name.
-- `variation_[col_name]`: (aggregations only) The difference between the min and max
-  values as a percentage.
+````bash
+$ php vendor/bin/phpbench run benchmarks/ --report='{"extends":
+"aggregate", "sort": ["time"]}'
+````
 
-The `aggregate` option, when specified will make available a new set of column
-names. Each `aggregate` column above will be prefixed with a function, e.g.
-`mean_memory`, `max_rps`.
+Please see the `PhpBench\Report\Generator\ConsoleTableGenerator` class to
+learn the full set of options.
 
-To see (readable) list of all the available column names, run your report with
-the `vertical` style, or, you can just specify a non-existing column and an
-Exception will splurge all the available columns onto your screen.
+Report Generators
+-----------------
+
+Report generators are the classes which generate reports.
+
+- `composite`: Report which accepts an array of reports to generate. Use this
+  to generate multiple reports at one time.
+- `console_table`: Generate tabular reports in the CLI.
 
 Dumping XML and deferring reports
 ---------------------------------
@@ -304,88 +286,35 @@ class SomeBenchmarkBench implements Benchmark
 You can then run the benchmark:
 
 ````bash
-$ ./bin/phpbench run tests/Functional/benchmarks
-PhpBench 0.3. Running benchmarks.
+./bin/phpbench run tests/Functional/benchmarks/BenchmarkBench.php --report=simple --group=parameterized
+PhpBench 0.5. Running benchmarks.
 
-......
+....
+Done (4 subjects, 4 iterations) in 0.00s
 
-Done (6 subjects, 26 iterations) in 0.26s
++--------------------+-----------+------------+----------+------------+-----------+
+| Subject            | Sum Revs. | Nb. Iters. | Av. Time | Av. RPS    | Deviation |
++--------------------+-----------+------------+----------+------------+-----------+
+| benchParameterized | 1         | 0          | 7μs      | 142,857rps | +40.00%   |
+| benchParameterized | 1         | 0          | 5μs      | 200,000rps | 0.00%     |
+| benchParameterized | 1         | 0          | 5μs      | 200,000rps | 0.00%     |
+| benchParameterized | 1         | 0          | 5μs      | 200,000rps | 0.00%     |
++--------------------+-----------+------------+----------+------------+-----------+
 
-  [BenchmarkBench->benchRandom]
-  randomBench
-  +-------+------+--------+-----------+-------+
-  | pid   | revs | params | time      | rps   |  
-  +-------+------+--------+-----------+-------+
-  | 27527 | 1    | []     | 0.010301s | 97.08 |  
-  +-------+------+--------+-----------+-------+
-  
-  [BenchmarkBench->benchDoNothing] [do_nothing]
-  Do nothing three times
-  +-------+------+--------+-----------+------------+
-  | pid   | revs | params | time      | rps        |  
-  +-------+------+--------+-----------+------------+
-  | 27527 | 1    | []     | 0.000008s | 125,000.00 |  
-  | 27527 | 1000 | []     | 0.003428s | 291,715.29 |  
-  | 27527 | 1    | []     | 0.000005s | 200,000.00 |  
-  | 27527 | 1000 | []     | 0.002667s | 374,953.13 |  
-  | 27527 | 1    | []     | 0.000005s | 200,000.00 |  
-  | 27527 | 1000 | []     | 0.002716s | 368,188.51 |  
-  +-------+------+--------+-----------+------------+
 ````
 
-The above report is generated by default, it is possible to configure complex
-reports, see the reporting section of the documentation.
+Above we use the `simple` report and specify to only run the reports from the
+group `parameterized`.
 
 Configuration
 -------------
 
-PhpBench supports configuration files, allowing you to configure and extend
-your reports.
+Document the configuration here.
 
-Configuration files are in plain PHP and MUST return a
-`Phpbench\Configuration` object and bootstrap the autoloader.
+Extending
+---------
 
-Phpbench will first look for the file `.phpbench` and then `.phpbench.dist`.
-It is also possible to specify a configuration file with the ``--config``
-option.
-
-Below is the most minimal example:
-
-````php
-<?php
-// .phpbench
-
-require(__DIR__ . '/vendor/autoload.php');
-
-$configuration = new PhpBench\Configuration();
-
-return $configuraton;
-````
-
-And here is a full example:
-
-````php
-<?php
-// .phpbench
-
-require(__DIR__ . '/vendor/autoload.php');
-$configuration = new PhpBench\Configuration();
-
-// set the path in which to search for benchmarks
-$configuration->setPath(__DIR__ . '/benchmarks');
-
-// add a new report generator
-$configuration->addReportGenerator('my_report_generator', new MyReportGenerator());
-
-// add a report
-$configuration->addReport(array(
-    'name' => 'my_report_generator',
-    'option_1' => 'one',
-    'option_2' => 'two',
-));
-
-return $configuraton;
-````
+Document the extension API here.
 
 See also
 --------

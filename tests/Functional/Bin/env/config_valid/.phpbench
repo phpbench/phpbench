@@ -1,8 +1,0 @@
-<?php
-
-require_once(__DIR__ . '/../../../../../vendor/autoload.php');
-
-$configuration = new PhpBench\Configuration();
-$configuration->setPath(__DIR__ . '/../../../benchmarks');
-
-return $configuration;

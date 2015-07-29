@@ -20,7 +20,7 @@ class ReportCommandTest extends BaseCommandTestCase
     {
         $tester = $this->runCommand('report', array(
             'file' => __DIR__ . '/../../report.xml',
-            '--report' => array('console_table'),
+            '--report' => array('full'),
         ));
         $this->assertEquals(0, $tester->getStatusCode());
         $display = $tester->getDisplay();

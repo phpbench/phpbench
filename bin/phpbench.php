@@ -9,11 +9,12 @@
  * file that was distributed with this source code.
  */
 
-require_once __DIR__ . '/../lib/Configuration.php';
+require_once __DIR__ . '/../lib/Container.php';
 
-use PhpBench\Configuration;
+use PhpBench\Container;
 
 $configPaths = array();
+$container = new Container();
 
 foreach ($argv as $arg) {
     if (0 === strpos($arg, '--config=')) {
@@ -28,27 +29,52 @@ foreach ($argv as $arg) {
 
 if (empty($configPaths)) {
     $configPaths = array(
-        getcwd() . '/.phpbench',
-        getcwd() . '/.phpbench.dist',
+        getcwd() . '/phpbench.json',
+        getcwd() . '/phpbench.dist.json',
     );
 }
 
-$configuration = null;
+$hasBootstrap = false;
+$config = array();
 foreach ($configPaths as $configPath) {
-    if (file_exists($configPath)) {
-        $configuration = require_once $configPath;
+    if (!file_exists($configPath)) {
+        continue;
+    }
 
-        if (!$configuration instanceof Configuration) {
-            echo 'The configuration file did not return an instance of PhpBench\\Configuration' . PHP_EOL;
+    $configDir = dirname($configPath);
+    $config = json_decode(file_get_contents($configPath), true);
+
+    if (null === $config) {
+        echo sprintf('Could not decode configuration file into JSON "%s"',
+            $configPath
+        );
+        exit(1);
+    }
+
+    if (isset($config['path'])) {
+        // prepend config dir to path if it is non-relative
+        if (substr($config['path'], 0, 1) !== '/') {
+            $config['path'] = $configDir . DIRECTORY_SEPARATOR . $config['path'];
+        }
+    }
+
+    $config['config_path'] = $configPath;
+
+    if (isset($config['bootstrap'])) {
+        $bootstrap = realpath($configDir . DIRECTORY_SEPARATOR . $config['bootstrap']);
+        if (!file_exists($bootstrap)) {
+            echo sprintf('Bootstrap file "%s" was not found',
+                $bootstrap
+            );
             exit(1);
         }
-
-        $configuration->setConfigPath($configPath);
-        break;
+        require_once($bootstrap);
+        $hasBootstrap = true;
     }
+    break;
 }
 
-if (null === $configuration) {
+if (false === $hasBootstrap) {
     $bootstrapPath = getcwd() . '/vendor/autoload.php';
 
     if (!file_exists($bootstrapPath)) {
@@ -57,11 +83,9 @@ if (null === $configuration) {
     }
 
     require_once $bootstrapPath;
-
-    $configuration = new Configuration();
 }
 
-use PhpBench\Console\Application;
-
-$application = new Application($configuration);
-$application->run();
+$container->configure();
+$container->mergeParameters($config);
+$container->build($config);
+$container->get('console.application')->run();
