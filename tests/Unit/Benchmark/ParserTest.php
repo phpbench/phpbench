@@ -48,7 +48,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 * @group base
 */
 EOT
-                ,
+                , array(
                     'iterations' => 3,
                     'beforeMethod' => array('beforeMe', 'afterBeforeMe'),
                     'paramProvider' => array('provideParam'),

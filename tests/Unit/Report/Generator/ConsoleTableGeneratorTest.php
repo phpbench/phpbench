@@ -132,7 +132,7 @@ class ConsoleTableGeneratorTest extends \PHPUnit_Framework_TestCase
             ),
             array($iterations)
         );
-        $benchmark = new BenchmarkResult('Benchmark\Class', 'Hallo', array($subject));
+        $benchmark = new BenchmarkResult('Benchmark\Class', array($subject));
         $suite = new SuiteResult(array($benchmark));
 
         return $suite;

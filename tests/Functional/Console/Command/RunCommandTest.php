@@ -55,7 +55,7 @@ class RunCommandTest extends BaseCommandTestCase
         ));
         $this->assertEquals(0, $tester->getStatusCode());
         $display = $tester->getDisplay();
-        $this->assertContains('Parameterized bench mark', $display);
+        $this->assertContains('bench', $display);
     }
 
     /**
@@ -82,7 +82,7 @@ class RunCommandTest extends BaseCommandTestCase
         ));
         $this->assertEquals(0, $tester->getStatusCode());
         $display = $tester->getDisplay();
-        $this->assertContains('Parameterized bench mark', $display);
+        $this->assertContains('benchParameterized', $display);
     }
 
     /**
@@ -99,7 +99,7 @@ class RunCommandTest extends BaseCommandTestCase
         ));
         $this->assertEquals(0, $tester->getStatusCode());
         $display = $tester->getDisplay();
-        $this->assertContains('Parameterized bench mark', $display);
+        $this->assertContains('benchParameterized', $display);
     }
 
     /**
@@ -116,7 +116,7 @@ class RunCommandTest extends BaseCommandTestCase
         ));
         $this->assertEquals(0, $tester->getStatusCode());
         $display = $tester->getDisplay();
-        $this->assertContains('Parameterized bench mark', $display);
+        $this->assertContains('benchParameterized', $display);
     }
 
     /**
