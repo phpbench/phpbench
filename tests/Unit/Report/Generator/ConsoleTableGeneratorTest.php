@@ -121,7 +121,6 @@ class ConsoleTableGeneratorTest extends \PHPUnit_Framework_TestCase
         $subject = new SubjectResult(
             1,
             'mySubject',
-            'My Subject\'s description',
             array('one', 'two'),
             array(
                 'foo' => 'bar',

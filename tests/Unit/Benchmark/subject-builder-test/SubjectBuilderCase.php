@@ -21,7 +21,6 @@ class SubjectBuilderCase implements Benchmark
      * @beforeMethod beforeSelectSql
      * @paramProvider provideNumbers
      * @iterations 3
-     * @description Run a select query
      */
     public function benchSelectSql(BenchIteration $iteration)
     {
@@ -30,7 +29,6 @@ class SubjectBuilderCase implements Benchmark
     /**
      * @beforeMethod setupSelectSql
      * @iterations 3
-     * @description Run a select query
      */
     public function benchTraverseSomething(BenchIteration $iteration)
     {

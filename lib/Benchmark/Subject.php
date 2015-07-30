@@ -22,7 +22,6 @@ class Subject
     private $beforeMethods;
     private $parameters;
     private $nbIterations;
-    private $description;
     private $processIsolation;
     private $revs;
     private $groups;
@@ -35,7 +34,6 @@ class Subject
      * @param array $parameters
      * @param mixed $nbIterations
      * @param array $revs
-     * @param mixed $description
      * @param mixed $processIsolation
      * @param array $groups
      */
@@ -46,7 +44,6 @@ class Subject
         array $parameters,
         $nbIterations,
         array $revs,
-        $description,
         $processIsolation,
         array $groups
     ) {
@@ -56,7 +53,6 @@ class Subject
         $this->parameters = $parameters;
         $this->nbIterations = $nbIterations;
         $this->revs = $revs;
-        $this->description = $description;
         $this->processIsolation = $processIsolation;
         $this->groups = $groups;
     }
@@ -90,16 +86,6 @@ class Subject
     public function getNbIterations()
     {
         return $this->nbIterations;
-    }
-
-    /**
-     * Return a description of this subject
-     *
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->description;
     }
 
     /**

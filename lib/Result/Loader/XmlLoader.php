@@ -57,11 +57,10 @@ class XmlLoader
         foreach ($xpath->query('./subject', $benchmarkEl) as $subjectEl) {
             $identifier = $subjectEl->getAttribute('identifier');
             $name = $subjectEl->getAttribute('name');
-            $description = $subjectEl->getAttribute('description');
             $iterationsResults = $this->getIterationsResults($xpath, $subjectEl);
             $groups = $this->getGroups($xpath, $subjectEl);
             $parameters = $this->getParametersForNode($xpath, $subjectEl);
-            $subjectResults[] = new SubjectResult($identifier, $name, $description, $groups, $parameters, $iterationsResults);
+            $subjectResults[] = new SubjectResult($identifier, $name, $groups, $parameters, $iterationsResults);
         }
 
         return $subjectResults;

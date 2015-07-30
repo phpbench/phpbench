@@ -87,7 +87,6 @@ class SubjectBuilder
                 $parameters,
                 $meta['iterations'],
                 $meta['revs'],
-                $meta['description'],
                 $meta['processIsolation'],
                 $meta['group']
             );

@@ -64,19 +64,6 @@ accepts an `Iteration` from which can be accessed contextual information.
 You can annotate **both** the class and the subject methods with any of the 
 following annotations:
 
-### @description
-
-**singular**
-
-A description of the benchmark subject. If you have parameterized the subject
-you may use the parameter values in the description as follows:
-
-````php
-/**
- * @description Do something %param_name% times with the %another_param% thing.
- */
-````
-
 ### @group
 
 **plural**
@@ -231,9 +218,6 @@ use PhpBench\Benchmark;
  */
 class SomeBenchmarkBench implements Benchmark
 {
-    /**
-     * @description randomBench
-     */
     public function benchRandom(Iteration $iteration)
     {
         usleep(rand(0, 50000));
@@ -241,14 +225,12 @@ class SomeBenchmarkBench implements Benchmark
 
     /**
      * @iterations 3
-     * @description Do nothing three times
      */
     public function benchDoNothing(Iteration $iteration)
     {
     }
 
     /**
-     * @description Each iteration will be in an isolated process
      * @processIsolation iteration
      */
     public function benchSomethingIsolated()
@@ -256,7 +238,6 @@ class SomeBenchmarkBench implements Benchmark
     /**
      * @paramProvider provideParamsOne
      * @paramProvider provideParamsTwo
-     * @description Parameterized bench mark
      * @iterations 1
      */
     public function benchParameterized(Iteration $iteration)

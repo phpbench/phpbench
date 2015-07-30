@@ -14,7 +14,6 @@ use PhpBench\Benchmark;
 class IsolatedBench implements Benchmark
 {
     /**
-     * @description 5 iterations in isolation
      * @iterations 5
      */
     public function benchIterationIsolation()
@@ -25,7 +24,6 @@ class IsolatedBench implements Benchmark
     }
 
     /**
-     * @description Set of 5 iterations in isolation
      * @iterations 5
      */
     public function benchIterationsIsolation()

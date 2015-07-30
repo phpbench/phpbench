@@ -40,7 +40,6 @@ class SubjectBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array('one', 'two'), $subject->getParameters());
         $this->assertEquals(3, $subject->getNbIterations());
         $this->assertInternalType('int', $subject->getNbIterations());
-        $this->assertEquals('Run a select query', $subject->getDescription());
     }
 
     /**

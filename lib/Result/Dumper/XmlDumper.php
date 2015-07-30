@@ -71,7 +71,6 @@ class XmlDumper
         $subjectEl = $dom->createElement('subject');
         $subjectEl->setAttribute('identifier', $subjectResult->getIdentifier());
         $subjectEl->setAttribute('name', $subjectResult->getName());
-        $subjectEl->setAttribute('description', $subjectResult->getDescription());
 
         $parameters = $subjectResult->getParameters();
         $this->appendParameters($subjectEl, $parameters);
