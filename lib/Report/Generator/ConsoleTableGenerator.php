@@ -161,23 +161,51 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
                 $contextQuery = $rowConfig['with_query'];
             }
 
-            foreach ($xpath->query($contextQuery) as $contextEl) {
-                $tableRowEl = $tableDom->createElement('row');
-                $tableEl->appendChild($tableRowEl);
+            $items = array(null);
+            if (isset($rowConfig['with_items'])) {
+                $items = $rowConfig['with_items'];
+            }
 
-                foreach ($rowConfig['cells'] as $colName => $cellExpr) {
-                    $tableCellEl = $tableDom->createElement('cell');
-                    $tableRowEl->appendChild($tableCellEl);
+            foreach ($items as $item) {
+                foreach ($xpath->query($contextQuery) as $contextEl) {
+                    $tableRowEl = $tableDom->createElement('row');
+                    $tableEl->appendChild($tableRowEl);
 
-                    if (in_array($colName, $config['post_process'])) {
-                        $value = $cellExpr;
-                    } else {
-                        $value = $xpath->evaluate($cellExpr, $contextEl);
-                        $this->validateXpathResult($cellExpr, $value);
+                    foreach ($rowConfig['cells'] as $colName => $cellExpr) {
+                        $cellItems = array(null);
+
+                        if (is_array($cellExpr)) {
+                            if (!array_key_exists('expr', $cellExpr)) {
+                                throw new \InvalidArgumentException(
+                                    'Cell configuration must have at least an "expr" key containing an XPath expression'
+                                );
+                            }
+                            if (array_key_exists('with_items', $cellExpr)) {
+                                $cellItems = $cellExpr['with_items'];
+                            }
+
+                            $cellExpr = $cellExpr['expr'];
+                        }
+
+                        foreach ($cellItems as $cellItem) {
+                            $expr = $this->replaceItem($cellExpr, $item, 'row');
+                            $expr = $this->replaceItem($expr, $cellItem, 'cell');
+                            $name = $this->replaceItem($colName, $item, 'row');
+                            $name = $this->replaceItem($name, $cellItem, 'cell');
+
+                            $tableCellEl = $tableDom->createElement('cell');
+                            $tableCellEl->setAttribute('name', $name);
+                            $tableRowEl->appendChild($tableCellEl);
+
+                            if (in_array($name, $config['post_process'])) {
+                                $value = $expr;
+                            } else {
+                                $value = $this->evaluateExpression($xpath, $expr, $contextEl);
+                            }
+
+                            $tableCellEl->nodeValue = $value;
+                        }
                     }
-
-                    $tableCellEl->setAttribute('name', $colName);
-                    $tableCellEl->nodeValue = $value;
                 }
             }
         }
@@ -215,8 +243,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
 
                 $cellEl = $cellEls->item(0);
                 $cellExpr = $cellEl->nodeValue;
-                $value = $tableXpath->evaluate($cellExpr, $rowEl);
-                $this->validateXpathResult($cellExpr, $value);
+                $value = $this->evaluateExpression($tableXpath, $cellExpr, $rowEl);
                 $cellEl->nodeValue = $value;
             }
         }
@@ -291,8 +318,10 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
         );
     }
 
-    private function validateXpathResult($cellExpr, $value)
+    private function evaluateExpression($xpath, $cellExpr, $contextEl)
     {
+        $value = $xpath->evaluate($cellExpr, $contextEl);
+
         if (!is_scalar($value)) {
             throw new \InvalidArgumentException(sprintf(
                 'Expected XPath expression "%s" to evaluate to a scalar, got "%s"',
@@ -302,10 +331,13 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
 
         if (false === $value) {
             throw new \InvalidArgumentException(sprintf(
-                'XPath expression "%s" is invalid or it evaluated to false.',
+                'XPath expression "%s" is invalid or it evaluated to false, in which case PHP doesn\'t allow us to know the difference' . 
+                ' between false and an invalid expression.',
                 $cellExpr
             ));
         }
+
+        return $value;
     }
 
     private function createTable()
@@ -323,5 +355,13 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
             return;
         }
         $table->render($this->output);
+    }
+
+    private function replaceItem($expression, $item, $context)
+    {
+        if (null === $item) {
+            return $expression;
+        }
+        return preg_replace('/{{\s*?' . $context . '\.item\s*}}/', $item, $expression);
     }
 }

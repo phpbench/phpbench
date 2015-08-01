@@ -71,6 +71,87 @@ class ConsoleTableGeneratorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * It should be able to add multiple individual rows
+     */
+    public function testGenerateMultipleRows()
+    {
+        $config = array(
+            'rows' => array(
+                array(
+                    'cells' => array(
+                        'hi' => 'string("hello")',
+                        'bye' => 'string("goodbye")',
+                    ),
+                ),
+                array(
+                    'cells' => array(
+                        'salut' => 'string("bonjour")',
+                        'ciao' => 'string("aurevoir")',
+                    ),
+                ),
+            )
+        );
+
+        $this->generate($config);
+        $output = $this->output->fetch();
+        $this->assertContains('hello', $output);
+        $this->assertContains('goodbye', $output);
+        $this->assertContains('salut', $output);
+        $this->assertContains('ciao', $output);
+    }
+
+    /**
+     * It should allow rows to be iterated with items
+     */
+    public function testIterateRowsWithParameters()
+    {
+        $config = array(
+            'rows' => array(
+                array(
+                    'cells' => array(
+                        'hi' => 'string("{{ row.item }}")',
+                        'ciao' => 'string("{{ row.item }}")',
+                    ),
+                    'with_items' => array('hello', 'bye'),
+                ),
+            )
+        );
+
+        $this->generate($config);
+        $output = $this->output->fetch();
+        $this->assertContains('hello', $output);
+        $this->assertContains('bye', $output);
+        $this->assertContains('hi', $output);
+        $this->assertContains('ciao', $output);
+    }
+
+    /**
+     * It should be able to iterate cells with items
+     */
+    public function testIterateCellsWithParameters()
+    {
+        $config = array(
+            'rows' => array(
+                array(
+                    'cells' => array(
+                        'hi' => 'string("Hello")',
+                        'ciao_{{ cell.item }}' => array(
+                            'expr' => 'string("{{ cell.item }}")',
+                            'with_items' => array('one', 'two', 'three'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->generate($config);
+        $output = $this->output->fetch();
+        $this->assertContains('ciao_one', $output);
+        $this->assertContains('ciao_two', $output);
+        $this->assertContains('ciao_three', $output);
+    }
+
+    /**
      * It should only iterate over the given selector
      */
     public function testGenerateWithSelector()
