@@ -33,7 +33,6 @@ class CostOfReflectionBench implements Benchmark
     }
 
     /**
-     * @description Set public class property via. a setter
      * @group cost_of_setting
      */
     public function benchMethodSet()
@@ -42,7 +41,6 @@ class CostOfReflectionBench implements Benchmark
     }
 
     /**
-     * @description Set public class property
      * @group cost_of_setting
      */
     public function benchPublicProperty()
@@ -51,7 +49,6 @@ class CostOfReflectionBench implements Benchmark
     }
 
     /**
-     * @description Set public class property via. reflection
      * @group cost_of_setting
      */
     public function benchPublicReflection()
@@ -60,7 +57,6 @@ class CostOfReflectionBench implements Benchmark
     }
 
     /**
-     * @description Set private class property via. reflection
      * @group cost_of_setting
      */
     public function benchPrivateReflection()
@@ -69,7 +65,6 @@ class CostOfReflectionBench implements Benchmark
     }
 
     /**
-     * @description Instantiate new class
      * @group cost_of_instantiation
      */
     public function benchNewClass()
@@ -78,7 +73,6 @@ class CostOfReflectionBench implements Benchmark
     }
 
     /**
-     * @description Reflection new class
      * @group cost_of_instantiation
      */
     public function benchReflectionNewInstance()

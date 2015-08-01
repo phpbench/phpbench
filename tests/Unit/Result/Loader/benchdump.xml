@@ -1,6 +1,6 @@
 <suite>
 <benchmark class="Benchmark\Class">
-  <subject name="mySubject" description="My Subject's description">
+  <subject name="mySubject">
     <iterations>
       <parameter foo="bar"/>
       <iteration time="100"/>

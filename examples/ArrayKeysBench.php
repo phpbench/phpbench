@@ -35,25 +35,16 @@ class ArrayKeysBench implements Benchmark
         $this->values = array_combine(array_keys($this->array), array_keys($this->array));
     }
 
-    /**
-     * @description array_key_exists
-     */
     public function benchArrayKeyExists($iteration, $revolution)
     {
         array_key_exists($revolution, $this->array);
     }
 
-    /**
-     * @description isset
-     */
     public function benchIsset($iteration, $revolution)
     {
         isset($this->array[$revolution]);
     }
 
-    /**
-     * @description in_array
-     */
     public function benchInArray($iteration, $revolution)
     {
         in_array($revolution, $this->values);

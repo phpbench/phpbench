@@ -38,7 +38,6 @@ class ParserTest extends \PHPUnit_Framework_TestCase
             array(
                 <<<EOT
 /**
-* @description Hello
 * @beforeMethod beforeMe
 * @beforeMethod afterBeforeMe
 * @paramProvider provideParam
@@ -49,9 +48,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 * @group base
 */
 EOT
-                ,
-                array(
-                    'description' => 'Hello',
+                , array(
                     'iterations' => 3,
                     'beforeMethod' => array('beforeMe', 'afterBeforeMe'),
                     'paramProvider' => array('provideParam'),
@@ -67,7 +64,6 @@ EOT
 EOT
                 ,
                 array(
-                    'description' => '',
                     'beforeMethod' => array(),
                     'paramProvider' => array(),
                     'iterations' => 1,
@@ -106,7 +102,6 @@ EOT
         return array(
             array(
                 array(
-                    'description' => 'Hello',
                     'iterations' => 3,
                     'beforeMethod' => array('beforeMe', 'afterBeforeMe'),
                     'paramProvider' => array('provideParam'),
@@ -116,7 +111,6 @@ EOT
                 ),
                 <<<EOT
 /**
-* @description Hallo
 * @beforeMethod again
 * @paramProvider notherParam
 * @iterations 3
@@ -127,7 +121,6 @@ EOT
 EOT
                 ,
                 array(
-                    'description' => 'Hallo',
                     'iterations' => 3,
                     'beforeMethod' => array('beforeMe', 'afterBeforeMe', 'again'),
                     'paramProvider' => array('provideParam', 'notherParam'),
@@ -138,7 +131,6 @@ EOT
             ),
             array(
                 array(
-                    'description' => 'Hello',
                     'iterations' => 3,
                     'beforeMethod' => array('beforeMe', 'afterBeforeMe'),
                     'paramProvider' => array('provideParam'),
@@ -153,7 +145,6 @@ EOT
 EOT
                 ,
                 array(
-                    'description' => 'Hello',
                     'iterations' => 4,
                     'beforeMethod' => array('beforeMe', 'afterBeforeMe'),
                     'paramProvider' => array('provideParam'),
@@ -164,7 +155,6 @@ EOT
             ),
             array(
                 array(
-                    'description' => 'Hello',
                     'iterations' => 3,
                     'beforeMethod' => array('beforeMe', 'afterBeforeMe'),
                     'paramProvider' => array('provideParam'),
@@ -173,7 +163,6 @@ EOT
                 ),
                 '/** */',
                 array(
-                    'description' => 'Hello',
                     'iterations' => 3,
                     'beforeMethod' => array('beforeMe', 'afterBeforeMe'),
                     'paramProvider' => array('provideParam'),
@@ -186,7 +175,7 @@ EOT
     }
 
     /**
-     * It should throw an exception if more than one description annotation is present.
+     * It should throw an exception if more than one process isolation annotation is present.
      *
      * @expectedException \InvalidArgumentException
      */
@@ -194,8 +183,8 @@ EOT
     {
         $doc = <<<EOT
 /**
- * @description One
- * @description Two
+ * @processIsolation iteration
+ * @processIsolation iterations
  */
 EOT;
         $this->parser->parseDoc($doc);
@@ -227,7 +216,6 @@ EOT;
     {
         $doc = <<<EOT
 /**
-* @description Hello
 * @processIsolation iterationasd
 */
 EOT

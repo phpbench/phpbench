@@ -43,3 +43,10 @@ function parameters_to_json($values)
 
     return json_encode($array);
 }
+
+function class_name($classFqn)
+{
+    $parts = explode('\\', $classFqn);
+    end($parts);
+    return current($parts);
+}

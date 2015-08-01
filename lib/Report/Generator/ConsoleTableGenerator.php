@@ -45,12 +45,12 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
             'title' => null,
             'description' => null,
             'selector' => '//iteration',
-            'headers' => array('Subject', 'Group', 'Params', 'Description', 'PID', 'Mem.', 'Mem. Diff', 'Revs', 'Iter.', 'Time', 'Rps', 'Deviation'),
+            'headers' => array('Benchmark', 'Subject', 'Group', 'Params', 'PID', 'Mem.', 'Mem. Diff', 'Revs', 'Iter.', 'Time', 'Rps', 'Deviation'),
             'cells' => array(
+                'benchmark' => 'string(php:bench(\'class_name\', string(ancestor-or-self::benchmark/@class)))',
                 'subject' => 'string(../../@name)',
                 'group' => 'string(../../group/@name)',
-                'params' => 'php:bench(\'parameters_to_json\', ../../parameter)',
-                'description' => 'string(../../@description)',
+                'params' => 'php:bench(\'parameters_to_json\', ancestor::subject/parameter)',
                 'pid' => 'number(./@pid)',
                 'memory' => 'number(.//@memory)',
                 'memory_diff' => 'number(.//@memory_diff)',
@@ -213,9 +213,10 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
             'aggregate' => array(
                 'extends' => 'full',
                 'selector' => '//iterations',
-                'headers' => array('Description', 'Params', 'Sum Revs.', 'Nb. Iters.', 'Av. Time', 'Av. RPS', 'Stability', 'Deviation'),
+                'headers' => array('Benchmark', 'Subject', 'Params', 'Sum Revs.', 'Nb. Iters.', 'Av. Time', 'Av. RPS', 'Stability', 'Deviation'),
                 'cells' => array(
-                    'description' => 'string(ancestor-or-self::subject/@description)',
+                    'benchmark' => 'string(php:bench(\'class_name\', string(ancestor-or-self::benchmark/@class)))',
+                    'subject' => 'string(ancestor-or-self::subject/@name)',
                     'params' => 'php:bench(\'parameters_to_json\', ancestor-or-self::subject/parameter)',
                     'revs' => 'number(sum(.//@revs))',
                     'iters' => 'number(count(descendant::iteration))',
@@ -229,7 +230,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
                 ),
                 'format' => array(
                     'revs' => '!number',
-                    'rps' => array('!number', '%s<comment>rps</comment>'),
+                    'rps' => array('%.2f', '%s<comment>rps</comment>'),
                     'time' => array('!number', '%s<comment>μs</comment>'),
                     'stability' => array('%.2f', '%s<comment>%%</comment>'),
                     'deviation' => array('%.2f', '!balance', '%s<comment>%%</comment>'),

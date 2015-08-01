@@ -162,7 +162,6 @@ class Runner
         $subjectResult = new SubjectResult(
             $subject->getIdentifier(),
             $subject->getMethodName(),
-            $subject->getDescription(),
             $subject->getGroups(),
             $subject->getParameters(),
             $iterationsResults

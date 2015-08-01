@@ -24,7 +24,7 @@ class ReportCommandTest extends BaseCommandTestCase
         ));
         $this->assertEquals(0, $tester->getStatusCode());
         $display = $tester->getDisplay();
-        $this->assertContains('Parameterized bench', $display);
+        $this->assertContains('benchParameterized', $display);
     }
 
     /**

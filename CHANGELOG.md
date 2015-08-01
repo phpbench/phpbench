@@ -1,6 +1,19 @@
 CHANGELOG
 =========
 
+0.5
+---
+
+- Configuration changed to JSON format
+- Dependency Injection Container
+- Extension API
+- Major refactoring of reports, old console report does not exist.
+- Separation of reports and generators. Reports are registered as
+  configurations, reports must be explicitly called on the CLI in order for
+  them to be generated.
+- New "composite" report for generating multiple reports at one time.
+- Removal of the "description" annotation.
+
 0.4
 ---
 

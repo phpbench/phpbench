@@ -15,7 +15,6 @@ use PhpBench\Benchmark;
 class IsolatedParameterBench implements Benchmark
 {
     /**
-     * @description This subject is executed in process isolation
      * @group process
      * @iterations 5
      * @processIsolation iteration

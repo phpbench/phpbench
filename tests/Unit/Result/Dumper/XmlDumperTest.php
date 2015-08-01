@@ -33,7 +33,7 @@ class XmlDumperTest extends \PHPUnit_Framework_TestCase
         $expected = <<<EOT
   <suite>
     <benchmark class="Benchmark\Class">
-      <subject identifier="1" name="mySubject" description="My Subject's description">
+      <subject identifier="1" name="mySubject">
         <parameter name="foo" value="bar"/>
         <parameter name="array" multiple="1">
           <parameter name="0" value="one"/>
@@ -70,7 +70,6 @@ EOT;
         $subject = new SubjectResult(
             1,
             'mySubject',
-            'My Subject\'s description',
             array('one', 'two'),
             array(
                 'foo' => 'bar',

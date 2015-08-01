@@ -14,7 +14,6 @@ use PhpBench\Benchmark;
 class IsolatedRevsBench implements Benchmark
 {
     /**
-     * @description 2 sets of revolitions
      * @revs 10
      * @revs 100
      */

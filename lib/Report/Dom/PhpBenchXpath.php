@@ -25,6 +25,7 @@ class PhpBenchXpath extends \DOMXpath
             'PhpBench\Report\Dom\functions\max',
             'PhpBench\Report\Dom\functions\median',
             'PhpBench\Report\Dom\functions\parameters_to_json',
+            'PhpBench\Report\Dom\functions\class_name',
         ));
     }
 
