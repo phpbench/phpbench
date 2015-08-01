@@ -44,7 +44,6 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
         $options->setDefaults(array(
             'title' => null,
             'description' => null,
-            'headers' => array('Benchmark', 'Subject', 'Group', 'Params', 'PID', 'Mem.', 'Mem. Diff', 'Revs', 'Iter.', 'Time', 'Rps', 'Deviation'),
             'rows' => array(
                 array(
                     'cells' => array(
@@ -114,7 +113,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
         }
 
         $table = $this->createTable();
-        $table->setHeaders($config['headers']);
+        $table->setHeaders(array_keys($row));
         $table->setRows($rows);
         $this->renderTable($table);
         $this->output->writeln('');
@@ -231,7 +230,6 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
         return array(
             'aggregate' => array(
                 'extends' => 'full',
-                'headers' => array('Benchmark', 'Subject', 'Params', 'Sum Revs.', 'Nb. Iters.', 'Av. Time', 'Av. RPS', 'Stability', 'Deviation'),
                 'rows' => array(
                     array(
                         'cells' => array(
@@ -262,7 +260,6 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
             ),
             'simple' => array(
                 'extends' => 'full',
-                'headers' => array('Subject', 'Sum Revs.', 'Iter', 'Time', 'Av. RPS', 'Deviation'),
                 'exclude' => array('benchmark', 'description"', 'memory', 'memory_diff', 'params', 'pid', 'group'),
             ),
             'full' => array(
