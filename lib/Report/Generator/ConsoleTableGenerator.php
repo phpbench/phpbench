@@ -55,19 +55,19 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
                 array(
                     'cells' => array(
                         'benchmark' => 'string(php:bench(\'class_name\', string(ancestor-or-self::benchmark/@class)))',
-                        'subject' => 'string(../../@name)',
-                        'group' => 'string(../../group/@name)',
+                        'subject' => 'string(ancestor-or-self::subject/@name)',
+                        'group' => 'string(ancestor-or-self::group/@name)',
                         'params' => 'php:bench(\'parameters_to_json\', ancestor::subject/parameter)',
-                        'pid' => 'number(./@pid)',
-                        'memory' => 'number(.//@memory)',
-                        'memory_diff' => 'number(.//@memory_diff)',
-                        'revs' => 'number(.//@revs)',
-                        'iter' => 'number(.//@index)',
-                        'time' => 'number(.//@time)',
+                        'pid' => 'number(descendant-or-self::iteration/@pid)',
+                        'memory' => 'number(descendant-or-self::iteration/@memory)',
+                        'memory_diff' => 'number(descendant-or-self::iteration/@memory_diff)',
+                        'revs' => 'number(descendant-or-self::iteration/@revs)',
+                        'iter' => 'number(descendant-or-self::iteration/@index)',
+                        'time' => 'number(descendant-or-self::iteration/@time)',
                         'rps' => '(1000000 div number(descendant-or-self::iteration//@time)) * number(descendant-or-self::iteration/@revs)',
                         'deviation' => 'php:bench(\'deviation\', php:bench(\'min\', //@time), number(./@time))',
                     ),
-                    'with_query' => '//iteration',
+                    'with_query' => '{{ param.selector }}',
                 ),
             ),
             'format' => array(
@@ -80,6 +80,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
             ),
             'sort' => array(),
             'exclude' => array(),
+            'params' => array('selector' => '//iteration'),
         ));
     }
 
@@ -140,6 +141,50 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function getDefaultReports()
+    {
+        return array(
+            'aggregate' => array(
+                'extends' => 'full',
+                'rows' => array(
+                    array(
+                        'cells' => array(
+                            'benchmark' => 'string(php:bench(\'class_name\', string(ancestor-or-self::benchmark/@class)))',
+                            'subject' => 'string(ancestor-or-self::subject/@name)',
+                            'revs' => 'number(sum(.//@revs))',
+                            'iters' => 'number(count(descendant::iteration))',
+                            'time' => 'number(php:bench(\'avg\', descendant::iteration/@time))',
+                            'rps' => '(1000000 div number(php:bench(\'avg\', descendant::iteration/@time)) * number(php:bench(\'avg\', (descendant::iteration/@revs))))',
+                            'stability' => '100 - php:bench(\'deviation\', number(php:bench(\'min\', descendant::iteration/@time)), number(php:bench(\'avg\', descendant::iteration/@time)))',
+                            'deviation' => array(
+                                'expr' => 'number(php:bench(\'deviation\', number(php:bench(\'min\', //cell[@name="time"])), number(./cell[@name="time"])))',
+                                'post_process' => true,
+                            ),
+                        ),
+                        'with_query' => '{{ param.selector }}',
+                    ),
+                ),
+                'format' => array(
+                    'revs' => '!number',
+                    'rps' => array('%.2f', '%s<comment>rps</comment>'),
+                    'time' => array('!number', '%s<comment>μs</comment>'),
+                    'stability' => array('%.2f', '%s<comment>%%</comment>'),
+                    'deviation' => array('%.2f', '!balance', '%s<comment>%%</comment>'),
+                ),
+            ),
+            'simple' => array(
+                'extends' => 'full',
+                'exclude' => array('benchmark', 'description"', 'memory', 'memory_diff', 'params', 'pid', 'group'),
+            ),
+            'full' => array(
+                'generator' => 'console_table',
+            ),
+        );
+    }
+
+    /**
      * Transform the suite result DOM into a DOM representing a table.
      *
      * @param \DOMDocument $resultDom
@@ -166,7 +211,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
             $contextQuery = '/';
 
             if (isset($rowConfig['with_query'])) {
-                $contextQuery = $rowConfig['with_query'];
+                $contextQuery = $this->replaceParameters($rowConfig['with_query'], $config['params']);
             }
 
             $items = array(null);
@@ -174,8 +219,16 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
                 $items = $rowConfig['with_items'];
             }
 
+            $contextEls = $xpath->query($contextQuery);
+
+            if (false === $contextEls) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Invalid context query "%s"', $contextQuery
+                ));
+            }
+
             foreach ($items as $item) {
-                foreach ($xpath->query($contextQuery) as $contextEl) {
+                foreach ($contextEls as $contextEl) {
                     $tableRowEl = $tableDom->createElement('row');
                     $tableEl->appendChild($tableRowEl);
 
@@ -213,7 +266,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
                                 $tableCellEl->setAttribute('post-process', 1);
                                 $value = $expr;
                             } else {
-                                $value = $this->evaluateExpression($xpath, $expr, $contextEl);
+                                $value = $this->evaluateExpression($xpath, $expr, $contextEl, $config['params']);
                             }
 
                             $tableCellEl->nodeValue = $value;
@@ -245,7 +298,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
             $cellExpr = $cellEl->nodeValue;
             $rowEls = $tableXpath->query('./ancestor::row', $cellEl);
             $rowEl = $rowEls->item(0);
-            $value = $this->evaluateExpression($tableXpath, $cellExpr, $rowEl);
+            $value = $this->evaluateExpression($tableXpath, $cellExpr, $rowEl, $config['params']);
             $cellEl->nodeValue = $value;
         }
 
@@ -293,8 +346,9 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
      *
      * @return scalar
      */
-    private function evaluateExpression(\DOMXpath $xpath, $cellExpr, \DOMNode $contextEl)
+    private function evaluateExpression(\DOMXpath $xpath, $cellExpr, \DOMNode $contextEl, array $params)
     {
+        $cellExpr = $this->replaceParameters($cellExpr, $params);
         $value = $xpath->evaluate($cellExpr, $contextEl);
 
         if (!is_scalar($value)) {
@@ -365,46 +419,19 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
     }
 
     /**
-     * {@inheritDoc}
+     * Replace any parameters in a string (f.e. an XPath query
+     *
+     * @param string $string
+     * @param array $parameters
+     *
+     * @return string
      */
-    public function getDefaultReports()
+    private function replaceParameters($string, array $parameters)
     {
-        return array(
-            'aggregate' => array(
-                'extends' => 'full',
-                'rows' => array(
-                    array(
-                        'cells' => array(
-                            'benchmark' => 'string(php:bench(\'class_name\', string(ancestor-or-self::benchmark/@class)))',
-                            'subject' => 'string(ancestor-or-self::subject/@name)',
-                            'revs' => 'number(sum(.//@revs))',
-                            'iters' => 'number(count(descendant::iteration))',
-                            'time' => 'number(php:bench(\'avg\', descendant::iteration/@time))',
-                            'rps' => '(1000000 div number(php:bench(\'avg\', descendant::iteration/@time)) * number(php:bench(\'avg\', (descendant::iteration/@revs))))',
-                            'stability' => '100 - php:bench(\'deviation\', number(php:bench(\'min\', descendant::iteration/@time)), number(php:bench(\'avg\', descendant::iteration/@time)))',
-                            'deviation' => array(
-                                'expr' => 'number(php:bench(\'deviation\', number(php:bench(\'min\', //cell[@name="time"])), number(./cell[@name="time"])))',
-                                'post_process' => true,
-                            ),
-                        ),
-                        'with_query' => '//iterations',
-                    ),
-                ),
-                'format' => array(
-                    'revs' => '!number',
-                    'rps' => array('%.2f', '%s<comment>rps</comment>'),
-                    'time' => array('!number', '%s<comment>μs</comment>'),
-                    'stability' => array('%.2f', '%s<comment>%%</comment>'),
-                    'deviation' => array('%.2f', '!balance', '%s<comment>%%</comment>'),
-                ),
-            ),
-            'simple' => array(
-                'extends' => 'full',
-                'exclude' => array('benchmark', 'description"', 'memory', 'memory_diff', 'params', 'pid', 'group'),
-            ),
-            'full' => array(
-                'generator' => 'console_table',
-            ),
-        );
+        foreach ($parameters as $key => $value) {
+            $string = preg_replace('/{{\s*?param.' . $key. '\s*}}/', $value, $string);
+        }
+
+        return $string;
     }
 }
