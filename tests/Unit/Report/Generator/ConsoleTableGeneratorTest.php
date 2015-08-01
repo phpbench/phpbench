@@ -186,11 +186,13 @@ class ConsoleTableGeneratorTest extends \PHPUnit_Framework_TestCase
                 array(
                     'cells' => array(
                         'revs' => 'string(sum(.//@revs))',
-                        'time' => 'string(sum(//cell[@name="revs"]) * 4)',
+                        'time' => array(
+                            'expr' => 'string(sum(//cell[@name="revs"]) * 4)',
+                            'post_process' => true,
+                        ),
                     ),
                 ),
             ),
-            'post_process' => array('time'),
         );
 
         $this->generate($config);
