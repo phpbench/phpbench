@@ -44,21 +44,25 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
         $options->setDefaults(array(
             'title' => null,
             'description' => null,
-            'selector' => '//iteration',
             'headers' => array('Benchmark', 'Subject', 'Group', 'Params', 'PID', 'Mem.', 'Mem. Diff', 'Revs', 'Iter.', 'Time', 'Rps', 'Deviation'),
-            'cells' => array(
-                'benchmark' => 'string(php:bench(\'class_name\', string(ancestor-or-self::benchmark/@class)))',
-                'subject' => 'string(../../@name)',
-                'group' => 'string(../../group/@name)',
-                'params' => 'php:bench(\'parameters_to_json\', ancestor::subject/parameter)',
-                'pid' => 'number(./@pid)',
-                'memory' => 'number(.//@memory)',
-                'memory_diff' => 'number(.//@memory_diff)',
-                'revs' => 'number(.//@revs)',
-                'iter' => 'number(.//@index)',
-                'time' => 'number(.//@time)',
-                'rps' => '(1000000 div number(.//@time)) * number(.//@revs)',
-                'deviation' => 'php:bench(\'deviation\', php:bench(\'min\', {selector}/@time), number(./@time))',
+            'rows' => array(
+                array(
+                    'cells' => array(
+                        'benchmark' => 'string(php:bench(\'class_name\', string(ancestor-or-self::benchmark/@class)))',
+                        'subject' => 'string(../../@name)',
+                        'group' => 'string(../../group/@name)',
+                        'params' => 'php:bench(\'parameters_to_json\', ancestor::subject/parameter)',
+                        'pid' => 'number(./@pid)',
+                        'memory' => 'number(.//@memory)',
+                        'memory_diff' => 'number(.//@memory_diff)',
+                        'revs' => 'number(.//@revs)',
+                        'iter' => 'number(.//@index)',
+                        'time' => 'number(.//@time)',
+                        'rps' => '(1000000 div number(descendant-or-self::iteration//@time)) * number(descendant-or-self::iteration/@revs)',
+                        'deviation' => 'php:bench(\'deviation\', php:bench(\'min\', //@time), number(./@time))',
+                    ),
+                    'with-query' => '//iteration',
+                ),
             ),
             'post-process' => array(),
             'format' => array(
@@ -129,24 +133,39 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
         $tableDom->appendChild($tableEl);
 
         $xpath = new PhpBenchXpath($resultDom);
-        foreach ($xpath->query($config['selector']) as $rowEl) {
-            $tableRowEl = $tableDom->createElement('row');
-            $tableEl->appendChild($tableRowEl);
 
-            foreach ($config['cells'] as $colName => $cellExpr) {
-                $tableCellEl = $tableDom->createElement('cell');
-                $tableRowEl->appendChild($tableCellEl);
+        foreach ($config['rows'] as $rowConfig) {
+            if (!isset($rowConfig['cells'])) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Row configurations must contain at least a "cells" key with an array of key to expression pairs: %s',
+                    print_r($rowConfig, true)
+                ));
+            }
 
-                if (in_array($colName, $config['post-process'])) {
-                    $value = null;
-                } else {
-                    $cellExpr = str_replace('{selector}', $config['selector'], $cellExpr);
-                    $value = $xpath->evaluate($cellExpr, $rowEl);
-                    $this->validateXpathResult($cellExpr, $value);
+            $contextQuery = '/';
+
+            if (isset($rowConfig['with-query'])) {
+                $contextQuery = $rowConfig['with-query'];
+            }
+
+            foreach ($xpath->query($contextQuery) as $contextEl) {
+                $tableRowEl = $tableDom->createElement('row');
+                $tableEl->appendChild($tableRowEl);
+
+                foreach ($rowConfig['cells'] as $colName => $cellExpr) {
+                    $tableCellEl = $tableDom->createElement('cell');
+                    $tableRowEl->appendChild($tableCellEl);
+
+                    if (in_array($colName, $config['post-process'])) {
+                        $value = $cellExpr;
+                    } else {
+                        $value = $xpath->evaluate($cellExpr, $contextEl);
+                        $this->validateXpathResult($cellExpr, $value);
+                    }
+
+                    $tableCellEl->setAttribute('name', $colName);
+                    $tableCellEl->nodeValue = $value;
                 }
-
-                $tableCellEl->setAttribute('name', $colName);
-                $tableCellEl->nodeValue = $value;
             }
         }
     }
@@ -182,7 +201,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
                 }
 
                 $cellEl = $cellEls->item(0);
-                $cellExpr = $config['cells'][$cellName];
+                $cellExpr = $cellEl->nodeValue;
                 $value = $tableXpath->evaluate($cellExpr, $rowEl);
                 $this->validateXpathResult($cellExpr, $value);
                 $cellEl->nodeValue = $value;
@@ -212,18 +231,22 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
         return array(
             'aggregate' => array(
                 'extends' => 'full',
-                'selector' => '//iterations',
                 'headers' => array('Benchmark', 'Subject', 'Params', 'Sum Revs.', 'Nb. Iters.', 'Av. Time', 'Av. RPS', 'Stability', 'Deviation'),
-                'cells' => array(
-                    'benchmark' => 'string(php:bench(\'class_name\', string(ancestor-or-self::benchmark/@class)))',
-                    'subject' => 'string(ancestor-or-self::subject/@name)',
-                    'params' => 'php:bench(\'parameters_to_json\', ancestor-or-self::subject/parameter)',
-                    'revs' => 'number(sum(.//@revs))',
-                    'iters' => 'number(count(descendant::iteration))',
-                    'time' => 'number(php:bench(\'avg\', descendant::iteration/@time))',
-                    'rps' => '(1000000 div number(php:bench(\'avg\', descendant::iteration/@time)) * number(php:bench(\'avg\', (descendant::iteration/@revs))))',
-                    'stability' => '100 - php:bench(\'deviation\', number(php:bench(\'min\', descendant::iteration/@time)), number(php:bench(\'avg\', descendant::iteration/@time)))',
-                    'deviation' => 'number(php:bench(\'deviation\', number(php:bench(\'min\', //cell[@name="time"])), number(./cell[@name="time"])))',
+                'rows' => array(
+                    array(
+                        'cells' => array(
+                            'benchmark' => 'string(php:bench(\'class_name\', string(ancestor-or-self::benchmark/@class)))',
+                            'subject' => 'string(ancestor-or-self::subject/@name)',
+                            'params' => 'php:bench(\'parameters_to_json\', ancestor-or-self::subject/parameter)',
+                            'revs' => 'number(sum(.//@revs))',
+                            'iters' => 'number(count(descendant::iteration))',
+                            'time' => 'number(php:bench(\'avg\', descendant::iteration/@time))',
+                            'rps' => '(1000000 div number(php:bench(\'avg\', descendant::iteration/@time)) * number(php:bench(\'avg\', (descendant::iteration/@revs))))',
+                            'stability' => '100 - php:bench(\'deviation\', number(php:bench(\'min\', descendant::iteration/@time)), number(php:bench(\'avg\', descendant::iteration/@time)))',
+                            'deviation' => 'number(php:bench(\'deviation\', number(php:bench(\'min\', //cell[@name="time"])), number(./cell[@name="time"])))',
+                        ),
+                        'with-query' => '//iterations',
+                    ),
                 ),
                 'post-process' => array(
                     'deviation',
@@ -239,8 +262,8 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
             ),
             'simple' => array(
                 'extends' => 'full',
-                'headers' => array('Subject', 'Sum Revs.', 'Nb. Iters.', 'Av. Time', 'Av. RPS', 'Deviation'),
-                'exclude' => ["description", "memory", "params", "pid", "group"],
+                'headers' => array('Subject', 'Sum Revs.', 'Iter', 'Time', 'Av. RPS', 'Deviation'),
+                'exclude' => array('benchmark', 'description"', 'memory', 'memory_diff', 'params', 'pid', 'group'),
             ),
             'full' => array(
                 'generator' => 'console_table',
@@ -266,8 +289,15 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
                 $cellExpr, is_object($value) ? get_class($value) : gettype($value)
             ));
         }
+
+        if (false === $value) {
+            throw new \InvalidArgumentException(sprintf(
+                'XPath expression "%s" is invalid or it evaluated to false.',
+                $cellExpr
+            ));
+        }
     }
- 
+
     private function createTable()
     {
         if (class_exists('Symfony\Component\Console\Helper\Table')) {
