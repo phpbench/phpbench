@@ -42,6 +42,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
     public function configure(OptionsResolver $options)
     {
         $options->setDefaults(array(
+            'debug' => false,
             'title' => null,
             'description' => null,
             'rows' => array(
@@ -60,10 +61,10 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
                         'rps' => '(1000000 div number(descendant-or-self::iteration//@time)) * number(descendant-or-self::iteration/@revs)',
                         'deviation' => 'php:bench(\'deviation\', php:bench(\'min\', //@time), number(./@time))',
                     ),
-                    'with-query' => '//iteration',
+                    'with_query' => '//iteration',
                 ),
             ),
-            'post-process' => array(),
+            'post_process' => array(),
             'format' => array(
                 'revs' => '!number',
                 'rps' => array('!number', '%s<comment>rps</comment>'),
@@ -86,7 +87,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
     public function generate(SuiteResult $suite, array $config)
     {
         if (null !== $config['title']) {
-            $this->output->writeln(sprintf('<title>%s</title> <comment>%s</comment>', $config['title'], $config['selector']));
+            $this->output->writeln(sprintf('<title>%s</title>', $config['title']));
         }
 
         if (null !== $config['description']) {
@@ -95,9 +96,22 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
 
         $dom = $this->xmlDumper->dump($suite);
 
+        if ($config['debug']) {
+            $dom->formatOutput = true;
+            $this->output->writeln('<info>Suite XML</info>');
+            $this->output->writeln($dom->saveXML());
+        }
+
         $tableDom = new \DOMDocument(1.0);
 
         $this->transformToTableDom($dom, $tableDom, $config);
+
+        if ($config['debug']) {
+            $tableDom->formatOutput = true;
+            $this->output->writeln('<info>Table XML</info>');
+            $this->output->writeln($tableDom->saveXML());
+        }
+
         $rows = $this->postProcess($tableDom, $config);
 
         if (!empty($config['sort'])) {
@@ -136,15 +150,15 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
         foreach ($config['rows'] as $rowConfig) {
             if (!isset($rowConfig['cells'])) {
                 throw new \InvalidArgumentException(sprintf(
-                    'Row configurations must contain at least a "cells" key with an array of key to expression pairs: %s',
+                    'The "rows" key must contain an array of row configurations,  and each configuration must contain at least a "cells" key with an array of key to expression pairs, got: %s',
                     print_r($rowConfig, true)
                 ));
             }
 
             $contextQuery = '/';
 
-            if (isset($rowConfig['with-query'])) {
-                $contextQuery = $rowConfig['with-query'];
+            if (isset($rowConfig['with_query'])) {
+                $contextQuery = $rowConfig['with_query'];
             }
 
             foreach ($xpath->query($contextQuery) as $contextEl) {
@@ -155,7 +169,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
                     $tableCellEl = $tableDom->createElement('cell');
                     $tableRowEl->appendChild($tableCellEl);
 
-                    if (in_array($colName, $config['post-process'])) {
+                    if (in_array($colName, $config['post_process'])) {
                         $value = $cellExpr;
                     } else {
                         $value = $xpath->evaluate($cellExpr, $contextEl);
@@ -175,7 +189,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
      * result" DOM. This is effectively a compiler pass.
      *
      * NOTE: If further compiler passes are ever needed then the
-     *       ['post-process'] configuration key could accept an array instead of any
+     *       ['post_process'] configuration key could accept an array instead of any
      *       one of the cell names. The array would then contain one element per
      *       compiler pass.
      *
@@ -187,7 +201,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
         $rows = array();
         $tableXpath = new PhpBenchXpath($tableDom);
         foreach ($tableXpath->query('//row') as $rowEl) {
-            foreach ($config['post-process'] as $cellName) {
+            foreach ($config['post_process'] as $cellName) {
                 $expression = './cell[@name="' . $cellName .'"]';
                 $cellEls = $tableXpath->query($expression, $rowEl);
 
@@ -243,10 +257,10 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
                             'stability' => '100 - php:bench(\'deviation\', number(php:bench(\'min\', descendant::iteration/@time)), number(php:bench(\'avg\', descendant::iteration/@time)))',
                             'deviation' => 'number(php:bench(\'deviation\', number(php:bench(\'min\', //cell[@name="time"])), number(./cell[@name="time"])))',
                         ),
-                        'with-query' => '//iterations',
+                        'with_query' => '//iterations',
                     ),
                 ),
-                'post-process' => array(
+                'post_process' => array(
                     'deviation',
                 ),
                 'format' => array(
@@ -256,7 +270,6 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
                     'stability' => array('%.2f', '%s<comment>%%</comment>'),
                     'deviation' => array('%.2f', '!balance', '%s<comment>%%</comment>'),
                 ),
-                'sort' => array('time' => 'asc'),
             ),
             'simple' => array(
                 'extends' => 'full',

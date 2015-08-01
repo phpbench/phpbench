@@ -24,26 +24,50 @@ class ConsoleTableGeneratorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * It should output a basic report
+     * It should iterate over a query
      */
     public function testGenerate()
     {
         $config = array(
-            'headers' => array(
-                'Revs',
-                'Time',
-            ),
-            'cells' => array(
-                'revs' => 'string(.//@revs)',
-                'time' => 'string(.//@time)',
-            ),
+            'rows' => array(
+                array(
+                    'cells' => array(
+                        'revs' => 'string(.//@revs)',
+                        'time' => 'string(.//@time)',
+                    ),
+                    'with_query' => '//iteration',
+                ),
+            )
         );
 
         $this->generate($config);
         $output = $this->output->fetch();
-        $this->assertContains('Revs', $output);
-        $this->assertContains('Time', $output);
+        $this->assertContains('revs', $output);
+        $this->assertContains('time', $output);
         $this->assertContains('100μs', $output);
         $this->assertContains('75μs', $output);
+    }
+
+    /**
+     * It should be able to add a row without iterations
+     */
+    public function testGenerateSingleRow()
+    {
+        $config = array(
+            'rows' => array(
+                array(
+                    'cells' => array(
+                        'hi' => 'string("hello")',
+                        'bye' => 'string("goodbye")',
+                    ),
+                ),
+            )
+        );
+
+        $this->generate($config);
+        $output = $this->output->fetch();
+        $this->assertContains('hello', $output);
+        $this->assertContains('goodbye', $output);
     }
 
     /**
@@ -52,23 +76,61 @@ class ConsoleTableGeneratorTest extends \PHPUnit_Framework_TestCase
     public function testGenerateWithSelector()
     {
         $config = array(
-            'headers' => array(
-                'Revs',
-                'Time',
-            ),
-            'selector' => '//subject',
-            'cells' => array(
-                'revs' => 'string(sum(.//@revs))',
-                'time' => 'string(sum(.//@time))',
-            ),
+            'rows' => array(
+                array(
+                    'cells' => array(
+                        'revs' => 'string(sum(.//@revs))',
+                        'time' => 'string(sum(.//@time))',
+                    ),
+                    'with_query' => '//subject',
+                ),
+            )
         );
 
         $this->generate($config);
         $output = $this->output->fetch();
-        $this->assertContains('Revs', $output);
-        $this->assertContains('Time', $output);
+        $this->assertContains('revs', $output);
+        $this->assertContains('time', $output);
         $this->assertContains('2', $output);
         $this->assertContains('175μs', $output);
+    }
+
+    /**
+     * It should be able to run cell expressions in a second pass
+     */
+    public function testPostProcess()
+    {
+        $config = array(
+            'rows' => array(
+                array(
+                    'cells' => array(
+                        'revs' => 'string(sum(.//@revs))',
+                        'time' => 'string(sum(//cell[@name="revs"]) * 4)',
+                    ),
+                ),
+            ),
+            'post_process' => array('time'),
+        );
+
+        $this->generate($config);
+        $output = $this->output->fetch();
+        $this->assertContains('8μs', $output);
+    }
+
+    /**
+     * It should output XML in debug mode
+     */
+    public function testDebugMode()
+    {
+        $config = array(
+            'debug' => true,
+        );
+
+        $this->generate($config);
+        $output = $this->output->fetch();
+        $this->assertContains('Suite XML', $output);
+        $this->assertContains('Table XML', $output);
+        $this->assertContains('phpbench version', $output);
     }
 
     /**
@@ -90,15 +152,17 @@ class ConsoleTableGeneratorTest extends \PHPUnit_Framework_TestCase
      * It should throw an exception if a non scalar value is returned by a cell XPath expression
      *
      * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Expected XPath expression "./@time" to evaluate to a scalar
      */
     public function testGenerateInvalidCellExpression()
     {
         $config = array(
-            'headers' => array(
-                'Time',
-            ),
-            'cells' => array(
-                'time' => './@time',
+            'rows' => array(
+                array(
+                    'cells' => array(
+                        'time' => './@time',
+                    ),
+                )
             ),
         );
 
