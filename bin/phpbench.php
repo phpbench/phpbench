@@ -35,6 +35,8 @@ if (empty($configPaths)) {
 }
 
 $hasBootstrap = false;
+$invalidJson = false;
+
 $config = array();
 foreach ($configPaths as $configPath) {
     if (!file_exists($configPath)) {
@@ -42,7 +44,13 @@ foreach ($configPaths as $configPath) {
     }
 
     $configDir = dirname($configPath);
-    $config = json_decode(file_get_contents($configPath), true);
+    $configBody = file_get_contents($configPath);
+    $config = json_decode($configBody, true);
+
+    if (null === $config) {
+        $invalidJson = true;
+        break;
+    }
 
     if (null === $config) {
         echo sprintf('Could not decode configuration file into JSON "%s"',
@@ -85,7 +93,19 @@ if (false === $hasBootstrap) {
     require_once $bootstrapPath;
 }
 
+if ($invalidJson) {
+    // if we failed to parse the configuration file, attempt to parse it
+    try {
+        $parser = new Seld\JsonLint\JsonParser();
+        $parser->parse($configBody);
+    } catch (Seld\JsonLint\ParsingException $e) {
+        echo 'Error parsing config file:' . PHP_EOL . PHP_EOL;
+        echo $e->getMessage();
+        exit(1);
+    }
+}
+
 $container->configure();
 $container->mergeParameters($config);
-$container->build($config);
+$container->build();
 $container->get('console.application')->run();
