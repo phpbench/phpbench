@@ -191,7 +191,7 @@ class ReportManager
         if (isset($reportConfig['extends'])) {
             $extended = $this->getReport($reportConfig['extends']);
             unset($reportConfig['extends']);
-            $reportConfig = array_merge(
+            $reportConfig = array_replace_recursive(
                 $this->resolveReportConfig($extended),
                 $reportConfig
             );
