@@ -14,8 +14,11 @@ use PhpBench\Report\Dom\PhpBenchXpath;
 use PhpBench\Report\Util;
 use PhpBench\Report\Tool\Sort;
 use PhpBench\Report\Tool\Formatter;
-use PhpBench\Report\Tool\Assert;
 
+/**
+ * Report which generates console based tabular reports
+ * using XPath as a datasource.
+ */
 class ConsoleTableGenerator implements OutputAware, ReportGenerator
 {
     /**
@@ -288,8 +291,6 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
         $xpath = new PhpBenchXpath($resultDom);
 
         foreach ($config['rows'] as $rowConfig) {
-            Assert::hasOnlyKeys(array('cells', 'with_query', 'with_items'), $rowConfig, 'report config key "rows"');
-
             if (!isset($rowConfig['cells'])) {
                 throw new \InvalidArgumentException(sprintf(
                     'The "rows" key must contain an array of row configurations,  and each configuration must contain at least a "cells" key with an array of key to expression pairs, got: %s',
@@ -327,7 +328,8 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
 
                         if (is_array($cellExpr)) {
                             $cellConfig = $cellExpr;
-                            Assert::hasOnlyKeys(array('post_process', 'expr', 'with_items'), $cellConfig, 'cell configuration');
+
+                            // todo: build this into the JSON schema
                             if (!array_key_exists('expr', $cellConfig)) {
                                 throw new \InvalidArgumentException(
                                     'Cell configuration must have at least an "expr" key containing an XPath expression'
