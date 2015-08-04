@@ -252,6 +252,19 @@ class ConsoleTableGeneratorTest extends \PHPUnit_Framework_TestCase
         $this->generate($config);
     }
 
+    /**
+     * It should "render" the table even if it has no rows
+     */
+    public function testRenderNoOutput()
+    {
+        $config = array(
+            'rows' => array(
+            ),
+        );
+
+        $this->generate($config);
+    }
+
     private function generate($config)
     {
         $this->generator->configure($this->optionsResolver);

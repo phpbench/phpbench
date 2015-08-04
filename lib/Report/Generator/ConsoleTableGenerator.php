@@ -37,7 +37,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
     /**
      * @var \DOMNode[]
      */
-    private $postProcessElements;
+    private $postProcessElements = array();
 
     public function __construct(XmlDumper $xmlDumper = null, Formatter $formatter = null)
     {
@@ -384,6 +384,8 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
 
     /**
      * Render the table. For Symfony 2.4 support.
+     *
+     * @param mixed $table
      */
     private function renderTable($table)
     {
@@ -409,6 +411,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
      * @param string $expression
      * @param string $item
      * @param string $context
+     * @return string
      */
     private function replaceItem($expression, $item, $context)
     {
@@ -423,7 +426,6 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
      *
      * @param string $string
      * @param array $parameters
-     *
      * @return string
      */
     private function replaceParameters($string, array $parameters)
