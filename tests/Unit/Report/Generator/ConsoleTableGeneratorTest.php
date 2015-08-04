@@ -10,7 +10,6 @@ use PhpBench\Result\SubjectResult;
 use PhpBench\Result\BenchmarkResult;
 use PhpBench\Result\SuiteResult;
 use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ConsoleTableGeneratorTest extends \PHPUnit_Framework_TestCase
 {
@@ -19,7 +18,6 @@ class ConsoleTableGeneratorTest extends \PHPUnit_Framework_TestCase
         $this->output = new BufferedOutput();
         $this->generator = new ConsoleTableGenerator();
         $this->generator->setOutput($this->output);
-        $this->optionsResolver = new OptionsResolver();
     }
 
     /**
@@ -267,8 +265,8 @@ class ConsoleTableGeneratorTest extends \PHPUnit_Framework_TestCase
 
     private function generate($config)
     {
-        $this->generator->configure($this->optionsResolver);
-        $config = $this->optionsResolver->resolve($config);
+        $defaults = $this->generator->getDefaultConfig();
+        $config = array_merge($defaults, $config);
         $this->generator->generate($this->getSuiteResult(), $config);
     }
 

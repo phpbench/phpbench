@@ -5,7 +5,6 @@ namespace PhpBench\Report\Generator;
 use PhpBench\Console\OutputAware;
 use PhpBench\Report\ReportManager;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use PhpBench\ReportGenerator;
 use PhpBench\Result\SuiteResult;
 
@@ -40,14 +39,23 @@ class CompositeGenerator implements ReportGenerator, OutputAware
         $this->output = $output;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function configure(OptionsResolver $options)
+    public function getSchema()
     {
-        $options->setDefaults(array(
-            'reports' => array()
-        ));
+        return array(
+            'type' => 'object',
+            'properties' => array(
+                'reports' => array(
+                    'title' => 'List of reports to use',
+                    'type' => 'array',
+                ),
+            ),
+            'required' => array('reports'),
+        );
+    }
+
+    public function getDefaultConfig()
+    {
+        return array();
     }
 
     /**

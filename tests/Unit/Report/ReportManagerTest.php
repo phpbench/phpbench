@@ -59,11 +59,10 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
                 ),
             )
         ));
-        $this->generator->configure(Argument::any())->will(function ($args) {
-            $args[0]->setDefaults(array(
-                'params' => array(),
-            ));
-        });
+        $this->generator->getDefaultConfig()->willReturn(array(
+            'params' => array(),
+        ));
+        $this->generator->getSchema()->willReturn(new \stdClass);
         $this->generator->generate(
             $this->result->reveal(),
             array(
@@ -156,7 +155,8 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
         $this->reportManager->addGenerator('test', $this->generator->reveal());
         $this->reportManager->addReport('test_report', array('generator' => 'test'));
         $this->generator->generate($this->result->reveal(), array())->shouldBeCalled();
-        $this->generator->configure(Argument::type('Symfony\Component\OptionsResolver\OptionsResolver'))->shouldBeCalled();
+        $this->generator->getDefaultConfig()->willReturn(array());
+        $this->generator->getSchema()->willReturn(new \stdClass);
         $this->reportManager->generateReports(
             $this->output->reveal(),
             $this->result->reveal(),
@@ -171,12 +171,15 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
     {
         $generator = $this->prophesize('PhpBench\ReportGenerator')->willImplement('PhpBench\Console\OutputAware');
         $generator->getDefaultReports()->willReturn(array());
+        $generator->getDefaultConfig()->willReturn(array());
+        $generator->getSchema()->willReturn(new \stdClass);
 
         $this->reportManager->addGenerator('test', $generator->reveal());
         $this->reportManager->addReport('test_report', array('generator' => 'test'));
+
         $generator->generate($this->result->reveal(), array())->shouldBeCalled();
-        $generator->configure(Argument::type('Symfony\Component\OptionsResolver\OptionsResolver'))->shouldBeCalled();
         $generator->setOutput($this->output->reveal())->shouldBeCalled();
+
         $this->reportManager->generateReports(
             $this->output->reveal(),
             $this->result->reveal(),

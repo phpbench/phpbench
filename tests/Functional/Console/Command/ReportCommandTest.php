@@ -5,7 +5,7 @@
  *
  * (c) Daniel Leech <daniel@dantleech.com>
  *
- * For the full copyright and license information, please view the LICENSE
+ * For the default copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
@@ -20,7 +20,7 @@ class ReportCommandTest extends BaseCommandTestCase
     {
         $tester = $this->runCommand('report', array(
             'file' => __DIR__ . '/../../report.xml',
-            '--report' => array('full'),
+            '--report' => array('default'),
         ));
         $this->assertEquals(0, $tester->getStatusCode());
         $display = $tester->getDisplay();

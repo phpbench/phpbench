@@ -3,7 +3,6 @@
 namespace PhpBench\Tests\Unit\Report\Generator;
 
 use PhpBench\Report\Generator\CompositeGenerator;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CompositeGeneratorTest extends \PHPUnit_Framework_TestCase
 {
@@ -25,9 +24,6 @@ class CompositeGeneratorTest extends \PHPUnit_Framework_TestCase
     public function testGenerateComposite()
     {
         $config = array('reports' => array('one', 'two'));
-        $resolver = new OptionsResolver();
-        $this->generator->configure($resolver);
-        $config = $resolver->resolve($config);
 
         $this->generator->setOutput($this->output->reveal());
         $this->generator->generate($this->result->reveal(), $config);

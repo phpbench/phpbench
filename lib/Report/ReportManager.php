@@ -6,14 +6,27 @@ use PhpBench\ReportGenerator;
 use Symfony\Component\Console\Output\OutputInterface;
 use PhpBench\Result\SuiteResult;
 use PhpBench\Console\OutputAware;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use JsonSchema\Uri\UriRetriever;
+use JsonSchema\Validator;
 
 class ReportManager
 {
     /**
-     * @param array
+     * @var array
      */
     private $reports = array();
+
+    /**
+     * @var Validator
+     */
+    private $validator;
+
+    public function __construct(
+        Validator $validator = null
+    )
+    {
+        $this->validator = $validator ?: new Validator();
+    }
 
     /**
      * Add a named report configuration.
@@ -61,6 +74,7 @@ class ReportManager
         }
 
         foreach ($defaultReports as $reportName => $reportConfig) {
+            $reportConfig['generator'] = $name;
             $this->addReport($reportName, $reportConfig);
         }
     }
@@ -78,7 +92,7 @@ class ReportManager
      * console_table
      * ````
      * Accepts an array of strings and returns the names of all reports that
-     * have been identified / processed.
+     * have been identified / processed.n
      *
      * Report configurations will be added to the report manager with a generated UUID.
      *
@@ -165,18 +179,24 @@ class ReportManager
                 );
             }
 
-            $options = new OptionsResolver();
             $generator = $this->getGenerator($reportConfig['generator']);
-            $generator->configure($options);
-            unset($reportConfig['generator']);
+            $reportConfig = array_replace_recursive($generator->getDefaultConfig(), $reportConfig);
+            $validationConfig = json_decode(json_encode($reportConfig));
+            $schema = json_decode(json_encode($generator->getSchema()));
+            $this->validator->check($validationConfig, $schema);
 
-            try {
-                $reportConfig = $options->resolve($reportConfig);
-            } catch (UndefinedOptionsException $e) {
+            if (!$this->validator->isValid()) {
+                $errorString = array();
+                foreach ($this->validator->getErrors() as $error) {
+                    $errorString[] = sprintf("[%s] %s", $error['property'], $error['message']);
+                }
                 throw new \InvalidArgumentException(sprintf(
-                    'Error generating report "%s"', $reportName
-                ), null, $e);
+                    'Invalid JSON when processing report "%s": %s%s',
+                    $reportName, PHP_EOL.PHP_EOL.PHP_EOL, implode(PHP_EOL, $errorString)
+                ));
             }
+
+            unset($reportConfig['generator']);
 
             if ($generator instanceof OutputAware) {
                 $generator->setOutput($output);

@@ -49,37 +49,23 @@ class CoreExtension implements Extension
         $container->register('benchmark.collection_builder', function (Container $container) {
             return new CollectionBuilder($container->get('benchmark.finder'));
         });
-        $container->register('console.command.run', function (Container $container) {
-            return new RunCommand(
-                $container->get('benchmark.runner'),
-                $container->get('result.dumper.xml'),
-                $container->get('report.manager'),
-                $container->get('progress_logger.registry'),
-                $container->getParameter('progress_logger_name'),
-                $container->getParameter('path'),
-                $container->getParameter('enable_gc'),
-                $container->getParameter('config_path')
-            );
-        }, array('console.command' => array()));
-
-        $container->register('console.command.report', function (Container $container) {
-            return new ReportCommand(
-                $container->get('result.loader.xml'),
-                $container->get('report.manager')
-            );
-        }, array('console.command' => array()));
         $container->register('result.dumper.xml', function () {
             return new XmlDumper();
         });
         $container->register('result.loader.xml', function () {
             return new XmlLoader();
         });
-        $container->register('report.manager', function () {
-            return new ReportManager();
+        $container->register('report.manager', function (Container $container) {
+            return new ReportManager(
+                $container->get('json_schema.validator')
+            );
         });
         $container->register('progress_logger.registry', function (Container $container) {
             return new ProgressLoggerRegistry();
         });
+
+        $this->registerJsonSchema($container);
+        $this->registerCommands($container);
         $this->registerProgressLoggers($container);
         $this->registerReportGenerators($container);
 
@@ -107,6 +93,36 @@ class CoreExtension implements Extension
         foreach ($container->getParameter('reports') as $reportName => $report) {
             $container->get('report.manager')->addReport($reportName, $report);
         }
+    }
+
+    private function registerJsonSchema(Container $container)
+    {
+        $container->register('json_schema.validator', function (Container $container) {
+            return new \JsonSchema\Validator();
+        });
+    }
+
+    private function registerCommands(Container $container)
+    {
+        $container->register('console.command.run', function (Container $container) {
+            return new RunCommand(
+                $container->get('benchmark.runner'),
+                $container->get('result.dumper.xml'),
+                $container->get('report.manager'),
+                $container->get('progress_logger.registry'),
+                $container->getParameter('progress_logger_name'),
+                $container->getParameter('path'),
+                $container->getParameter('enable_gc'),
+                $container->getParameter('config_path')
+            );
+        }, array('console.command' => array()));
+
+        $container->register('console.command.report', function (Container $container) {
+            return new ReportCommand(
+                $container->get('result.loader.xml'),
+                $container->get('report.manager')
+            );
+        }, array('console.command' => array()));
     }
 
     private function registerProgressLoggers(Container $container)

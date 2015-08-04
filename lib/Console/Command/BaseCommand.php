@@ -12,11 +12,6 @@
 namespace PhpBench\Console\Command;
 
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Output\OutputInterface;
-use PhpBench\Result\SuiteResult;
-use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
-use PhpBench\OptionsResolver\OptionsResolver;
-use PhpBench\Console\OutputAware;
 
 abstract class BaseCommand extends Command
 {

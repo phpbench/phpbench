@@ -1,0 +1,53 @@
+{
+    "type": "object",
+    "definitions": {
+        "row": {
+            "title": "Row definition",
+            "type": "object",
+            "properties": {
+                "cells": {
+                    "title": "Cell definitions",
+                    "type": "object"
+                },
+                "with_items": {
+                    "type": "string"
+                }
+        }
+    },
+    "properties": {
+        "debug": {
+            "type": "boolean"
+        },
+        "title": {
+            "description": "The title of the report",
+            "type": "string"
+        },
+        "description": {
+            "description": "The description of the report",
+            "type": "string"
+        },
+        "rows": {
+            "description": "Report rows",
+            "type": "integer",
+            "minimum": 0
+        }
+    },
+    "format": {
+        "description": "Column formats. Can be printf strings or !functions",
+        "type": "object"
+    },
+    "sort": {
+        "description": "Column sorting",
+        "type": "object"
+    },
+    "exclude": {
+        "description": "If the report extends another, the list of columns to exclude",
+        "type": "array"
+    },
+    "params": {
+        "description": "If the report is parameterized, the parameters to use",
+        "type": "object"
+    },
+    "required": ["firstName", "lastName"]
+}
+

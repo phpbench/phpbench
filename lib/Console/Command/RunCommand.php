@@ -143,6 +143,7 @@ EOT
             $consoleOutput->writeln(sprintf('Using configuration file: %s', $this->configPath));
         }
 
+
         $progressLogger = $this->loggerRegistry->getProgressLogger($progressLoggerName);
         $progressLogger->setOutput($consoleOutput);
 

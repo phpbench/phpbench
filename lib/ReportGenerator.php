@@ -18,11 +18,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 interface ReportGenerator
 {
     /**
-     * Configure the options for the report
+     * Return a JSON schema which should be used to validate the configuration.
+     * Return an empty array() if you want to allow anything.
      *
      * @param OptionsResolver $options
      */
-    public function configure(OptionsResolver $options);
+    public function getSchema();
 
     /**
      * Generate the report
@@ -39,4 +40,12 @@ interface ReportGenerator
      * @return array
      */
     public function getDefaultReports();
+
+    /***
+     * Return the default configuration. This configuration will be prepended
+     * to all subsequent reports and should be used to provide default values.
+     *
+     * @return array
+     */
+    public function getDefaultConfig();
 }

@@ -6,7 +6,6 @@ use PhpBench\Console\OutputAware;
 use PhpBench\Result\Dumper\XmlDumper;
 use Symfony\Component\Console\Helper\Table;
 use PhpBench\ReportGenerator;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Console\Output\OutputInterface;
 use PhpBench\Result\SuiteResult;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
@@ -45,31 +44,83 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
         $this->formatter = $formatter ? : new Formatter();
     }
 
-    public function configure(OptionsResolver $options)
+    /**
+     * {@inheritDoc}
+     */
+    public function getSchema()
     {
-        $options->setDefaults(array(
+        return array(
+            'type' => 'object',
+            'properties' => array(
+                'debug' => array(
+                    'description' => 'Enable to output debug information',
+                    'type' => 'boolean',
+                ),
+                'title' => array(
+                    'description' => 'Title of the report to display',
+                    'oneOf' => array(
+                        array('type' => 'string'),
+                        array('type' => 'null'),
+                    )
+                ),
+                'description' => array(
+                    'description' => 'Description of the report to display',
+                    'oneOf' => array(
+                        array('type' => 'string'),
+                        array('type' => 'null'),
+                    )
+                ),
+                'rows' => array(
+                    'type' => 'array',
+                    'items' => array(
+                        'type' => 'object',
+                        'properties' => array(
+                            'cells' => array(
+                                'type' => 'object',
+                            ),
+                            'with_items' => array(
+                                'type' => 'array'
+                            ),
+                            'with_query' => array(
+                                'type' => 'string',
+                            ),
+                        ),
+                        'additionalProperties' => false,
+                    ),
+                ),
+                'format' => array(
+                    'type' => 'object',
+                ),
+                'sort' => array(
+                    'type' => 'array',
+                ),
+                'exclude' => array(
+                    'type' => 'array',
+                ),
+                'params' => array(
+                    'oneOf' => array(
+                        array('type' => 'object'),
+                        array('type' => 'array'),
+                    )
+                ),
+                'generator' => array(
+                    'type' => 'string',
+                ),
+            ),
+            'additionalProperties' => false,
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDefaultConfig()
+    {
+        return array(
             'debug' => false,
             'title' => null,
             'description' => null,
-            'rows' => array(
-                array(
-                    'cells' => array(
-                        'benchmark' => 'string(php:bench(\'class_name\', string(ancestor-or-self::benchmark/@class)))',
-                        'subject' => 'string(ancestor-or-self::subject/@name)',
-                        'group' => 'string(ancestor-or-self::group/@name)',
-                        'params' => 'php:bench(\'parameters_to_json\', ancestor::subject/parameter)',
-                        'pid' => 'number(descendant-or-self::iteration/@pid)',
-                        'memory' => 'number(descendant-or-self::iteration/@memory)',
-                        'memory_diff' => 'number(descendant-or-self::iteration/@memory_diff)',
-                        'revs' => 'number(descendant-or-self::iteration/@revs)',
-                        'iter' => 'number(descendant-or-self::iteration/@index)',
-                        'time' => 'number(descendant-or-self::iteration/@time)',
-                        'rps' => '(1000000 div number(descendant-or-self::iteration//@time)) * number(descendant-or-self::iteration/@revs)',
-                        'deviation' => 'php:bench(\'deviation\', php:bench(\'min\', //@time), number(./@time))',
-                    ),
-                    'with_query' => '{{ param.selector }}',
-                ),
-            ),
+            'rows' => array(),
             'format' => array(
                 'revs' => '!number',
                 'rps' => array('!number', '%s<comment>rps</comment>'),
@@ -80,16 +131,22 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
             ),
             'sort' => array(),
             'exclude' => array(),
-            'params' => array('selector' => '//iteration'),
-        ));
+            'params' => array(),
+        );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function setOutput(OutputInterface $output)
     {
         $this->output = $output;
         $this->configureFormatters($output->getFormatter());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function generate(SuiteResult $suite, array $config)
     {
         if (null !== $config['title']) {
@@ -146,8 +203,43 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
     public function getDefaultReports()
     {
         return array(
+            'default' => array(
+                'debug' => false,
+                'title' => null,
+                'description' => null,
+                'rows' => array(
+                    array(
+                        'cells' => array(
+                            'benchmark' => 'string(php:bench(\'class_name\', string(ancestor-or-self::benchmark/@class)))',
+                            'subject' => 'string(ancestor-or-self::subject/@name)',
+                            'group' => 'string(ancestor-or-self::group/@name)',
+                            'params' => 'php:bench(\'parameters_to_json\', ancestor::subject/parameter)',
+                            'pid' => 'number(descendant-or-self::iteration/@pid)',
+                            'memory' => 'number(descendant-or-self::iteration/@memory)',
+                            'memory_diff' => 'number(descendant-or-self::iteration/@memory_diff)',
+                            'revs' => 'number(descendant-or-self::iteration/@revs)',
+                            'iter' => 'number(descendant-or-self::iteration/@index)',
+                            'time' => 'number(descendant-or-self::iteration/@time)',
+                            'rps' => '(1000000 div number(descendant-or-self::iteration//@time)) * number(descendant-or-self::iteration/@revs)',
+                            'deviation' => 'php:bench(\'deviation\', php:bench(\'min\', //@time), number(./@time))',
+                        ),
+                        'with_query' => '{{ param.selector }}',
+                    ),
+                ),
+                'format' => array(
+                    'revs' => '!number',
+                    'rps' => array('!number', '%s<comment>rps</comment>'),
+                    'time' => array('!number', '%s<comment>μs</comment>'),
+                    'deviation' => array('%.2f', '!balance', '%s<comment>%%</comment>'),
+                    'memory' => array('!number', '%s<comment>b</comment>'),
+                    'memory_diff' => array('!number', '!balance', '%s<comment>b</comment>'),
+                ),
+                'sort' => array(),
+                'exclude' => array(),
+                'params' => array('selector' => '//iteration'),
+            ),
             'aggregate' => array(
-                'extends' => 'full',
+                'extends' => 'default',
                 'rows' => array(
                     array(
                         'cells' => array(
@@ -163,9 +255,9 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
                                 'post_process' => true,
                             ),
                         ),
-                        'with_query' => '{{ param.selector }}',
                     ),
                 ),
+                'exclude' => array('group', 'params', 'pid', 'memory', 'memory_diff', 'iter'),
                 'format' => array(
                     'revs' => '!number',
                     'rps' => array('%.2f', '%s<comment>rps</comment>'),
@@ -175,11 +267,8 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
                 ),
             ),
             'simple' => array(
-                'extends' => 'full',
-                'exclude' => array('benchmark', 'description"', 'memory', 'memory_diff', 'params', 'pid', 'group'),
-            ),
-            'full' => array(
-                'generator' => 'console_table',
+                'extends' => 'default',
+                'exclude' => array('benchmark', 'memory', 'memory_diff', 'params', 'pid', 'group'),
             ),
         );
     }
@@ -266,7 +355,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
                                 $tableCellEl->setAttribute('post-process', 1);
                                 $value = $expr;
                             } else {
-                                $value = $this->evaluateExpression($xpath, $expr, $contextEl, $config['params']);
+                                $value = $this->evaluateExpression($xpath, $expr, $contextEl, $config['params'] ?: array());
                             }
 
                             $tableCellEl->nodeValue = $value;
@@ -298,7 +387,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
             $cellExpr = $cellEl->nodeValue;
             $rowEls = $tableXpath->query('./ancestor::row', $cellEl);
             $rowEl = $rowEls->item(0);
-            $value = $this->evaluateExpression($tableXpath, $cellExpr, $rowEl, $config['params']);
+            $value = $this->evaluateExpression($tableXpath, $cellExpr, $rowEl, $config['params'] ?: array());
             $cellEl->nodeValue = $value;
         }
 
