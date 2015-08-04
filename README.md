@@ -19,8 +19,9 @@ Features:
 - Add custom progress loggers
 - More
 
-**DISCLAIMER**: This library is in an *ALPHA* stage and should not be
-considered stable. The official documentation is a work in progress.
+**DISCLAIMER**: This library is in rapid develpomenet and it should not be
+considered stable. The official documentation is a work in progress and this
+documentation could be incorrect.
 
 Why?
 ----
