@@ -41,4 +41,14 @@ EOT
         $result = $this->xpath->evaluate('number(php:bench(\'avg\', //row/@value))');
         $this->assertEquals(3.75, $result);
     }
+
+    /**
+     * It should throw an exception if a non-scalar value is passed to evaluate
+     *
+     * @expectedException \InvalidArgumentException
+     */
+    public function testNonScalarEvaluate()
+    {
+        $this->xpath->evaluate(new \stdClass);
+    }
 }

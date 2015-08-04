@@ -15,6 +15,7 @@ use PhpBench\Report\Dom\PhpBenchXpath;
 use PhpBench\Report\Util;
 use PhpBench\Report\Tool\Sort;
 use PhpBench\Report\Tool\Formatter;
+use PhpBench\Report\Tool\Assert;
 
 class ConsoleTableGenerator implements OutputAware, ReportGenerator
 {
@@ -33,6 +34,11 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
      */
     private $formatter;
 
+    /**
+     * @var \DOMNode[]
+     */
+    private $postProcessElements = array();
+
     public function __construct(XmlDumper $xmlDumper = null, Formatter $formatter = null)
     {
         $this->xmlDumper = $xmlDumper ? : new XmlDumper();
@@ -42,25 +48,28 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
     public function configure(OptionsResolver $options)
     {
         $options->setDefaults(array(
+            'debug' => false,
             'title' => null,
             'description' => null,
-            'selector' => '//iteration',
-            'headers' => array('Benchmark', 'Subject', 'Group', 'Params', 'PID', 'Mem.', 'Mem. Diff', 'Revs', 'Iter.', 'Time', 'Rps', 'Deviation'),
-            'cells' => array(
-                'benchmark' => 'string(php:bench(\'class_name\', string(ancestor-or-self::benchmark/@class)))',
-                'subject' => 'string(../../@name)',
-                'group' => 'string(../../group/@name)',
-                'params' => 'php:bench(\'parameters_to_json\', ancestor::subject/parameter)',
-                'pid' => 'number(./@pid)',
-                'memory' => 'number(.//@memory)',
-                'memory_diff' => 'number(.//@memory_diff)',
-                'revs' => 'number(.//@revs)',
-                'iter' => 'number(.//@index)',
-                'time' => 'number(.//@time)',
-                'rps' => '(1000000 div number(.//@time)) * number(.//@revs)',
-                'deviation' => 'php:bench(\'deviation\', php:bench(\'min\', {selector}/@time), number(./@time))',
+            'rows' => array(
+                array(
+                    'cells' => array(
+                        'benchmark' => 'string(php:bench(\'class_name\', string(ancestor-or-self::benchmark/@class)))',
+                        'subject' => 'string(ancestor-or-self::subject/@name)',
+                        'group' => 'string(ancestor-or-self::group/@name)',
+                        'params' => 'php:bench(\'parameters_to_json\', ancestor::subject/parameter)',
+                        'pid' => 'number(descendant-or-self::iteration/@pid)',
+                        'memory' => 'number(descendant-or-self::iteration/@memory)',
+                        'memory_diff' => 'number(descendant-or-self::iteration/@memory_diff)',
+                        'revs' => 'number(descendant-or-self::iteration/@revs)',
+                        'iter' => 'number(descendant-or-self::iteration/@index)',
+                        'time' => 'number(descendant-or-self::iteration/@time)',
+                        'rps' => '(1000000 div number(descendant-or-self::iteration//@time)) * number(descendant-or-self::iteration/@revs)',
+                        'deviation' => 'php:bench(\'deviation\', php:bench(\'min\', //@time), number(./@time))',
+                    ),
+                    'with_query' => '{{ param.selector }}',
+                ),
             ),
-            'post-process' => array(),
             'format' => array(
                 'revs' => '!number',
                 'rps' => array('!number', '%s<comment>rps</comment>'),
@@ -71,6 +80,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
             ),
             'sort' => array(),
             'exclude' => array(),
+            'params' => array('selector' => '//iteration'),
         ));
     }
 
@@ -83,7 +93,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
     public function generate(SuiteResult $suite, array $config)
     {
         if (null !== $config['title']) {
-            $this->output->writeln(sprintf('<title>%s</title> <comment>%s</comment>', $config['title'], $config['selector']));
+            $this->output->writeln(sprintf('<title>%s</title>', $config['title']));
         }
 
         if (null !== $config['description']) {
@@ -92,15 +102,29 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
 
         $dom = $this->xmlDumper->dump($suite);
 
+        if ($config['debug']) {
+            $dom->formatOutput = true;
+            $this->output->writeln('<info>Suite XML</info>');
+            $this->output->writeln($dom->saveXML());
+        }
+
         $tableDom = new \DOMDocument(1.0);
 
         $this->transformToTableDom($dom, $tableDom, $config);
+
+        if ($config['debug']) {
+            $tableDom->formatOutput = true;
+            $this->output->writeln('<info>Table XML</info>');
+            $this->output->writeln($tableDom->saveXML());
+        }
+
         $rows = $this->postProcess($tableDom, $config);
 
         if (!empty($config['sort'])) {
             Sort::sortRows($rows, $config['sort']);
         }
 
+        $row = null;
         foreach ($rows as &$row) {
             foreach ($row as $colName => &$value) {
                 if (isset($config['format'][$colName])) {
@@ -110,10 +134,54 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
         }
 
         $table = $this->createTable();
-        $table->setHeaders($config['headers']);
+        $table->setHeaders(array_keys($row ?: array()));
         $table->setRows($rows);
         $this->renderTable($table);
         $this->output->writeln('');
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDefaultReports()
+    {
+        return array(
+            'aggregate' => array(
+                'extends' => 'full',
+                'rows' => array(
+                    array(
+                        'cells' => array(
+                            'benchmark' => 'string(php:bench(\'class_name\', string(ancestor-or-self::benchmark/@class)))',
+                            'subject' => 'string(ancestor-or-self::subject/@name)',
+                            'revs' => 'number(sum(.//@revs))',
+                            'iters' => 'number(count(descendant::iteration))',
+                            'time' => 'number(php:bench(\'avg\', descendant::iteration/@time))',
+                            'rps' => '(1000000 div number(php:bench(\'avg\', descendant::iteration/@time)) * number(php:bench(\'avg\', (descendant::iteration/@revs))))',
+                            'stability' => '100 - php:bench(\'deviation\', number(php:bench(\'min\', descendant::iteration/@time)), number(php:bench(\'avg\', descendant::iteration/@time)))',
+                            'deviation' => array(
+                                'expr' => 'number(php:bench(\'deviation\', number(php:bench(\'min\', //cell[@name="time"])), number(./cell[@name="time"])))',
+                                'post_process' => true,
+                            ),
+                        ),
+                        'with_query' => '{{ param.selector }}',
+                    ),
+                ),
+                'format' => array(
+                    'revs' => '!number',
+                    'rps' => array('%.2f', '%s<comment>rps</comment>'),
+                    'time' => array('!number', '%s<comment>μs</comment>'),
+                    'stability' => array('%.2f', '%s<comment>%%</comment>'),
+                    'deviation' => array('%.2f', '!balance', '%s<comment>%%</comment>'),
+                ),
+            ),
+            'simple' => array(
+                'extends' => 'full',
+                'exclude' => array('benchmark', 'description"', 'memory', 'memory_diff', 'params', 'pid', 'group'),
+            ),
+            'full' => array(
+                'generator' => 'console_table',
+            ),
+        );
     }
 
     /**
@@ -129,24 +197,82 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
         $tableDom->appendChild($tableEl);
 
         $xpath = new PhpBenchXpath($resultDom);
-        foreach ($xpath->query($config['selector']) as $rowEl) {
-            $tableRowEl = $tableDom->createElement('row');
-            $tableEl->appendChild($tableRowEl);
 
-            foreach ($config['cells'] as $colName => $cellExpr) {
-                $tableCellEl = $tableDom->createElement('cell');
-                $tableRowEl->appendChild($tableCellEl);
+        foreach ($config['rows'] as $rowConfig) {
+            Assert::hasOnlyKeys(array('cells', 'with_query', 'with_items'), $rowConfig, 'report config key "rows"');
 
-                if (in_array($colName, $config['post-process'])) {
-                    $value = null;
-                } else {
-                    $cellExpr = str_replace('{selector}', $config['selector'], $cellExpr);
-                    $value = $xpath->evaluate($cellExpr, $rowEl);
-                    $this->validateXpathResult($cellExpr, $value);
+            if (!isset($rowConfig['cells'])) {
+                throw new \InvalidArgumentException(sprintf(
+                    'The "rows" key must contain an array of row configurations,  and each configuration must contain at least a "cells" key with an array of key to expression pairs, got: %s',
+                    print_r($rowConfig, true)
+                ));
+            }
+
+            $contextQuery = '/';
+
+            if (isset($rowConfig['with_query'])) {
+                $contextQuery = $this->replaceParameters($rowConfig['with_query'], $config['params']);
+            }
+
+            $items = array(null);
+            if (isset($rowConfig['with_items'])) {
+                $items = $rowConfig['with_items'];
+            }
+
+            $contextEls = $xpath->query($contextQuery);
+
+            if (false === $contextEls) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Invalid context query "%s"', $contextQuery
+                ));
+            }
+
+            foreach ($items as $item) {
+                foreach ($contextEls as $contextEl) {
+                    $tableRowEl = $tableDom->createElement('row');
+                    $tableEl->appendChild($tableRowEl);
+
+                    foreach ($rowConfig['cells'] as $colName => $cellExpr) {
+                        $cellConfig = array();
+                        $cellItems = array(null);
+
+                        if (is_array($cellExpr)) {
+                            $cellConfig = $cellExpr;
+                            Assert::hasOnlyKeys(array('post_process', 'expr', 'with_items'), $cellConfig, 'cell configuration');
+                            if (!array_key_exists('expr', $cellConfig)) {
+                                throw new \InvalidArgumentException(
+                                    'Cell configuration must have at least an "expr" key containing an XPath expression'
+                                );
+                            }
+                            if (array_key_exists('with_items', $cellExpr)) {
+                                $cellItems = $cellConfig['with_items'];
+                            }
+
+                            $cellExpr = $cellConfig['expr'];
+                        }
+
+                        foreach ($cellItems as $cellItem) {
+                            $expr = $this->replaceItem($cellExpr, $item, 'row');
+                            $expr = $this->replaceItem($expr, $cellItem, 'cell');
+                            $name = $this->replaceItem($colName, $item, 'row');
+                            $name = $this->replaceItem($name, $cellItem, 'cell');
+
+                            $tableCellEl = $tableDom->createElement('cell');
+                            $tableCellEl->setAttribute('name', $name);
+                            $tableRowEl->appendChild($tableCellEl);
+
+                            if (isset($cellConfig['post_process']) && true === $cellConfig['post_process']) {
+                                $this->postProcessElements[] = $tableCellEl;
+                                $tableCellEl->setAttribute('post-process', 1);
+                                $value = $expr;
+                            } else {
+                                $value = $this->evaluateExpression($xpath, $expr, $contextEl, $config['params']);
+                            }
+
+                            $tableCellEl->nodeValue = $value;
+                        }
+                    }
                 }
-
-                $tableCellEl->setAttribute('name', $colName);
-                $tableCellEl->nodeValue = $value;
             }
         }
     }
@@ -157,7 +283,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
      * result" DOM. This is effectively a compiler pass.
      *
      * NOTE: If further compiler passes are ever needed then the
-     *       ['post-process'] configuration key could accept an array instead of any
+     *       ['post_process'] configuration key could accept an array instead of any
      *       one of the cell names. The array would then contain one element per
      *       compiler pass.
      *
@@ -168,25 +294,12 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
     {
         $rows = array();
         $tableXpath = new PhpBenchXpath($tableDom);
-        foreach ($tableXpath->query('//row') as $rowEl) {
-            foreach ($config['post-process'] as $cellName) {
-                $expression = './cell[@name="' . $cellName .'"]';
-                $cellEls = $tableXpath->query($expression, $rowEl);
-
-                if (false === $cellEls) {
-                    throw new \InvalidArgumentException(sprintf(
-                        'Could not find cell with name "%s" using expression "%s" when post processing table',
-                        $cellName,
-                        $expression
-                    ));
-                }
-
-                $cellEl = $cellEls->item(0);
-                $cellExpr = $config['cells'][$cellName];
-                $value = $tableXpath->evaluate($cellExpr, $rowEl);
-                $this->validateXpathResult($cellExpr, $value);
-                $cellEl->nodeValue = $value;
-            }
+        foreach ($tableXpath->query('//row/cell[@post-process="1"]') as $cellEl) {
+            $cellExpr = $cellEl->nodeValue;
+            $rowEls = $tableXpath->query('./ancestor::row', $cellEl);
+            $rowEl = $rowEls->item(0);
+            $value = $this->evaluateExpression($tableXpath, $cellExpr, $rowEl, $config['params']);
+            $cellEl->nodeValue = $value;
         }
 
         $rows = array();
@@ -207,47 +320,11 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
         return $rows;
     }
 
-    public function getDefaultReports()
-    {
-        return array(
-            'aggregate' => array(
-                'extends' => 'full',
-                'selector' => '//iterations',
-                'headers' => array('Benchmark', 'Subject', 'Params', 'Sum Revs.', 'Nb. Iters.', 'Av. Time', 'Av. RPS', 'Stability', 'Deviation'),
-                'cells' => array(
-                    'benchmark' => 'string(php:bench(\'class_name\', string(ancestor-or-self::benchmark/@class)))',
-                    'subject' => 'string(ancestor-or-self::subject/@name)',
-                    'params' => 'php:bench(\'parameters_to_json\', ancestor-or-self::subject/parameter)',
-                    'revs' => 'number(sum(.//@revs))',
-                    'iters' => 'number(count(descendant::iteration))',
-                    'time' => 'number(php:bench(\'avg\', descendant::iteration/@time))',
-                    'rps' => '(1000000 div number(php:bench(\'avg\', descendant::iteration/@time)) * number(php:bench(\'avg\', (descendant::iteration/@revs))))',
-                    'stability' => '100 - php:bench(\'deviation\', number(php:bench(\'min\', descendant::iteration/@time)), number(php:bench(\'avg\', descendant::iteration/@time)))',
-                    'deviation' => 'number(php:bench(\'deviation\', number(php:bench(\'min\', //cell[@name="time"])), number(./cell[@name="time"])))',
-                ),
-                'post-process' => array(
-                    'deviation',
-                ),
-                'format' => array(
-                    'revs' => '!number',
-                    'rps' => array('%.2f', '%s<comment>rps</comment>'),
-                    'time' => array('!number', '%s<comment>μs</comment>'),
-                    'stability' => array('%.2f', '%s<comment>%%</comment>'),
-                    'deviation' => array('%.2f', '!balance', '%s<comment>%%</comment>'),
-                ),
-                'sort' => array('time' => 'asc'),
-            ),
-            'simple' => array(
-                'extends' => 'full',
-                'headers' => array('Subject', 'Sum Revs.', 'Nb. Iters.', 'Av. Time', 'Av. RPS', 'Deviation'),
-                'exclude' => ["description", "memory", "params", "pid", "group"],
-            ),
-            'full' => array(
-                'generator' => 'console_table',
-            ),
-        );
-    }
-
+    /**
+     * Adds some output formatters.
+     *
+     * @param OutputFormatterInterface
+     */
     private function configureFormatters(OutputFormatterInterface $formatter)
     {
         $formatter->setStyle(
@@ -258,16 +335,45 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
         );
     }
 
-    private function validateXpathResult($cellExpr, $value)
+    /**
+     * Evaluate an XPath expression to a scalar value. If the value is FALSE then we assu,e
+     * that the XPath expression is invalid. Evaluating to `false` is not supported because that
+     * is what PHP returns if the expression is invalid.
+     *
+     * @param \DOMXpath $xpath
+     * @param string $cellExpr
+     * @param \DOMElement $contextEl
+     *
+     * @return scalar
+     */
+    private function evaluateExpression(\DOMXpath $xpath, $cellExpr, \DOMNode $contextEl, array $params)
     {
+        $cellExpr = $this->replaceParameters($cellExpr, $params);
+        $value = $xpath->evaluate($cellExpr, $contextEl);
+
         if (!is_scalar($value)) {
             throw new \InvalidArgumentException(sprintf(
                 'Expected XPath expression "%s" to evaluate to a scalar, got "%s"',
                 $cellExpr, is_object($value) ? get_class($value) : gettype($value)
             ));
         }
+
+        if (false === $value) {
+            throw new \InvalidArgumentException(sprintf(
+                'XPath expression "%s" is invalid or it evaluated to false, in which case PHP doesn\'t allow us to know the difference' . 
+                ' between false and an invalid expression.',
+                $cellExpr
+            ));
+        }
+
+        return $value;
     }
- 
+
+    /**
+     * Create the table class. For Symfony 2.4 support.
+     *
+     * @return object
+     */
     private function createTable()
     {
         if (class_exists('Symfony\Component\Console\Helper\Table')) {
@@ -276,6 +382,11 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
         return new \Symfony\Component\Console\Helper\TableHelper();   
     }
 
+    /**
+     * Render the table. For Symfony 2.4 support.
+     *
+     * @param mixed $table
+     */
     private function renderTable($table)
     {
         if (class_exists('Symfony\Component\Console\Helper\Table')) {
@@ -283,5 +394,46 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
             return;
         }
         $table->render($this->output);
+    }
+
+    /**
+     * Replace an item. Note that currently "items" must be simple
+     * string values.
+     *
+     * The "item" is the value for which should be substituted for the string "item"
+     * "context" would either be "row" or "cell".
+     *
+     * An item looks like `{{ row.item }}`.
+     *
+     * NOTE: In the future arrays could be supported, whereby the array key with dot notation
+     *       as: `{{ row.item.foobar }}`
+     *
+     * @param string $expression
+     * @param string $item
+     * @param string $context
+     * @return string
+     */
+    private function replaceItem($expression, $item, $context)
+    {
+        if (null === $item) {
+            return $expression;
+        }
+        return preg_replace('/{{\s*?' . $context . '\.item\s*}}/', $item, $expression);
+    }
+
+    /**
+     * Replace any parameters in a string (f.e. an XPath query
+     *
+     * @param string $string
+     * @param array $parameters
+     * @return string
+     */
+    private function replaceParameters($string, array $parameters)
+    {
+        foreach ($parameters as $key => $value) {
+            $string = preg_replace('/{{\s*?param.' . $key. '\s*}}/', $value, $string);
+        }
+
+        return $string;
     }
 }

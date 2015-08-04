@@ -33,6 +33,60 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * It should recursively merge report configurations when the extend each other
+     */
+    public function testMergeConfig()
+    {
+        $this->reportManager->addGenerator('generator', $this->generator->reveal());
+        $this->reportManager->addReport('one', array(
+            'generator' => 'generator',
+            'params' => array(
+                'one' => '1',
+                'three' => '3',
+                'array' => array(
+                    'bar' => 'boo',
+                    'boo' => 'bar',
+                )
+            )
+        ));
+        $this->reportManager->addReport('two', array(
+            'extends' => 'one',
+            'params' => array(
+                'two' => '2',
+                'three' => '7',
+                'array' => array(
+                    'bar' => 'baz',
+                ),
+            )
+        ));
+        $this->generator->configure(Argument::any())->will(function ($args) {
+            $args[0]->setDefaults(array(
+                'params' => array(),
+            ));
+        });
+        $this->generator->generate(
+            $this->result->reveal(),
+            array(
+                'params' => array(
+                    'one' => '1',
+                    'three' => '7',
+                    'array' => array(
+                        'bar' => 'baz',
+                        'boo' => 'bar',
+                    ),
+                    'two' => '2',
+                ),
+            )
+        )->shouldBeCalled();
+
+        $this->reportManager->generateReports(
+            $this->output->reveal(),
+            $this->result->reveal(),
+            array('two')
+        );
+    }
+
+    /**
      * It throws an exception when an attempt is made to register two reports with the same name
      *
      * @expectedException InvalidArgumentException

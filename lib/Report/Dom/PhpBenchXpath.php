@@ -34,6 +34,13 @@ class PhpBenchXpath extends \DOMXpath
      */
     public function evaluate($expr, \DOMNode $context = null, $registerNodeNs = null)
     {
+        if (!is_scalar($expr)) {
+            throw new \InvalidArgumentException(sprintf(
+                __METHOD__ . ' must be passed a scalar XPath expression, got: %s',
+                print_r($expr, true)
+            ));
+        }
+
         $expr = preg_replace(
             '{php:bench\(\'([a-z]+)}', 
             'php:function(\'PhpBench\\Report\\Dom\\functions\\\$1',
