@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Tests\Unit\Report\Tool;
 
 use PhpBench\Report\Tool\Sort;
@@ -7,7 +16,7 @@ use PhpBench\Report\Tool\Sort;
 class SortTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * It should sort and preserve order for unchanging comparisons
+     * It should sort and preserve order for unchanging comparisons.
      */
     public function testSort()
     {
@@ -35,7 +44,7 @@ class SortTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should sort a flat array using given column names
+     * It should sort a flat array using given column names.
      *
      * @dataProvider provideSortRows
      */

@@ -25,7 +25,7 @@ class BinTest extends \PHPUnit_Framework_TestCase
 
     /**
      * It should use phpbench.json if present
-     * It should prioritize phpbench.json over .phpbench.dist.json
+     * It should prioritize phpbench.json over .phpbench.dist.json.
      */
     public function testPhpBenchConfig()
     {

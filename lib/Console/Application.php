@@ -12,17 +12,13 @@
 namespace PhpBench\Console;
 
 use Symfony\Component\Console\Application as BaseApplication;
-use PhpBench\Console\Command\RunCommand;
 use PhpBench\PhpBench;
-use PhpBench\Console\Command\ReportCommand;
 use Symfony\Component\Console\Input\InputOption;
-use PhpBench\ProgressLogger\DotsProgressLogger;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use PhpBench\Console\Output\OutputIndentDecorator;
-use PhpBench\Report\Generator\ConsoleTableGenerator;
 
 /**
  * PhpBench application.

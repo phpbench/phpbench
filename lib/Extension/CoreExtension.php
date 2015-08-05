@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Extension;
 
 use PhpBench\Extension;
@@ -49,6 +58,61 @@ class CoreExtension implements Extension
         $container->register('benchmark.collection_builder', function (Container $container) {
             return new CollectionBuilder($container->get('benchmark.finder'));
         });
+        $container->register('result.dumper.xml', function () {
+            return new XmlDumper();
+        });
+        $container->register('result.loader.xml', function () {
+            return new XmlLoader();
+        });
+        $container->register('report.manager', function (Container $container) {
+            return new ReportManager(
+                $container->get('json_schema.validator')
+            );
+        });
+        $container->register('progress_logger.registry', function (Container $container) {
+            return new ProgressLoggerRegistry();
+        });
+
+        $this->registerJsonSchema($container);
+        $this->registerCommands($container);
+        $this->registerProgressLoggers($container);
+        $this->registerReportGenerators($container);
+
+        $container->mergeParameters(array(
+            'enable_gc' => false,
+            'path' => null,
+            'reports' => array(),
+            'config_path' => null,
+            'progress_logger_name' => 'benchdots',
+        ));
+    }
+
+    public function build(Container $container)
+    {
+        foreach ($container->getServiceIdsForTag('progress_logger') as $serviceId => $attributes) {
+            $progressLogger = $container->get($serviceId);
+            $container->get('progress_logger.registry')->addProgressLogger($attributes['name'], $progressLogger);
+        }
+
+        foreach ($container->getServiceIdsForTag('report_generator') as $serviceId => $attributes) {
+            $reportGenerator = $container->get($serviceId);
+            $container->get('report.manager')->addGenerator($attributes['name'], $reportGenerator);
+        }
+
+        foreach ($container->getParameter('reports') as $reportName => $report) {
+            $container->get('report.manager')->addReport($reportName, $report);
+        }
+    }
+
+    private function registerJsonSchema(Container $container)
+    {
+        $container->register('json_schema.validator', function (Container $container) {
+            return new \JsonSchema\Validator();
+        });
+    }
+
+    private function registerCommands(Container $container)
+    {
         $container->register('console.command.run', function (Container $container) {
             return new RunCommand(
                 $container->get('benchmark.runner'),
@@ -68,45 +132,6 @@ class CoreExtension implements Extension
                 $container->get('report.manager')
             );
         }, array('console.command' => array()));
-        $container->register('result.dumper.xml', function () {
-            return new XmlDumper();
-        });
-        $container->register('result.loader.xml', function () {
-            return new XmlLoader();
-        });
-        $container->register('report.manager', function () {
-            return new ReportManager();
-        });
-        $container->register('progress_logger.registry', function (Container $container) {
-            return new ProgressLoggerRegistry();
-        });
-        $this->registerProgressLoggers($container);
-        $this->registerReportGenerators($container);
-
-        $container->mergeParameters(array(
-            'enable_gc' => false,
-            'path' => null,
-            'reports' => array(),
-            'config_path' => null,
-            'progress_logger_name' => 'benchdots'
-        ));
-    }
-
-    public function build(Container $container)
-    {
-        foreach ($container->getServiceIdsForTag('progress_logger') as $serviceId => $attributes) {
-            $progressLogger = $container->get($serviceId);
-            $container->get('progress_logger.registry')->addProgressLogger($attributes['name'], $progressLogger);
-        }
-
-        foreach ($container->getServiceIdsForTag('report_generator') as $serviceId => $attributes) {
-            $reportGenerator = $container->get($serviceId);
-            $container->get('report.manager')->addGenerator($attributes['name'], $reportGenerator);
-        }
-
-        foreach ($container->getParameter('reports') as $reportName => $report) {
-            $container->get('report.manager')->addReport($reportName, $report);
-        }
     }
 
     private function registerProgressLoggers(Container $container)

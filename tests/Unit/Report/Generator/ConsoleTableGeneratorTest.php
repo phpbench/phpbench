@@ -1,8 +1,16 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Tests\Unit\Report\Generator;
 
-use Symfony\Component\Console\Output\OutputInterface;
 use PhpBench\Report\Generator\ConsoleTableGenerator;
 use PhpBench\Result\IterationResult;
 use PhpBench\Result\IterationsResult;
@@ -10,7 +18,6 @@ use PhpBench\Result\SubjectResult;
 use PhpBench\Result\BenchmarkResult;
 use PhpBench\Result\SuiteResult;
 use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ConsoleTableGeneratorTest extends \PHPUnit_Framework_TestCase
 {
@@ -19,12 +26,11 @@ class ConsoleTableGeneratorTest extends \PHPUnit_Framework_TestCase
         $this->output = new BufferedOutput();
         $this->generator = new ConsoleTableGenerator();
         $this->generator->setOutput($this->output);
-        $this->optionsResolver = new OptionsResolver();
     }
 
     /**
      * It should output a basic report
-     * It should iterate over a query
+     * It should iterate over a query.
      */
     public function testGenerate()
     {
@@ -37,7 +43,7 @@ class ConsoleTableGeneratorTest extends \PHPUnit_Framework_TestCase
                     ),
                     'with_query' => '//iteration',
                 ),
-            )
+            ),
         );
 
         $this->generate($config);
@@ -49,7 +55,7 @@ class ConsoleTableGeneratorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should be able to add a row without iterations
+     * It should be able to add a row without iterations.
      */
     public function testGenerateSingleRow()
     {
@@ -61,7 +67,7 @@ class ConsoleTableGeneratorTest extends \PHPUnit_Framework_TestCase
                         'bye' => 'string("goodbye")',
                     ),
                 ),
-            )
+            ),
         );
 
         $this->generate($config);
@@ -71,7 +77,7 @@ class ConsoleTableGeneratorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should be able to add multiple individual rows
+     * It should be able to add multiple individual rows.
      */
     public function testGenerateMultipleRows()
     {
@@ -89,7 +95,7 @@ class ConsoleTableGeneratorTest extends \PHPUnit_Framework_TestCase
                         'ciao' => 'string("aurevoir")',
                     ),
                 ),
-            )
+            ),
         );
 
         $this->generate($config);
@@ -101,7 +107,7 @@ class ConsoleTableGeneratorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should allow rows to be iterated with items
+     * It should allow rows to be iterated with items.
      */
     public function testIterateRowsWithParameters()
     {
@@ -114,7 +120,7 @@ class ConsoleTableGeneratorTest extends \PHPUnit_Framework_TestCase
                     ),
                     'with_items' => array('hello', 'bye'),
                 ),
-            )
+            ),
         );
 
         $this->generate($config);
@@ -126,7 +132,7 @@ class ConsoleTableGeneratorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should be able to iterate cells with items
+     * It should be able to iterate cells with items.
      */
     public function testIterateCellsWithParameters()
     {
@@ -141,7 +147,7 @@ class ConsoleTableGeneratorTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
-            )
+            ),
         );
 
         $this->generate($config);
@@ -152,7 +158,7 @@ class ConsoleTableGeneratorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should only iterate over the given selector
+     * It should only iterate over the given selector.
      */
     public function testGenerateWithSelector()
     {
@@ -165,7 +171,7 @@ class ConsoleTableGeneratorTest extends \PHPUnit_Framework_TestCase
                     ),
                     'with_query' => '//subject',
                 ),
-            )
+            ),
         );
 
         $this->generate($config);
@@ -177,7 +183,7 @@ class ConsoleTableGeneratorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should be able to run cell expressions in a second pass
+     * It should be able to run cell expressions in a second pass.
      */
     public function testPostProcess()
     {
@@ -201,7 +207,7 @@ class ConsoleTableGeneratorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should output XML in debug mode
+     * It should output XML in debug mode.
      */
     public function testDebugMode()
     {
@@ -217,7 +223,7 @@ class ConsoleTableGeneratorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should output the title and description
+     * It should output the title and description.
      */
     public function testGenerateTitleAndDescription()
     {
@@ -232,7 +238,7 @@ class ConsoleTableGeneratorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should throw an exception if a non scalar value is returned by a cell XPath expression
+     * It should throw an exception if a non scalar value is returned by a cell XPath expression.
      *
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage Expected XPath expression "./@time" to evaluate to a scalar
@@ -245,7 +251,7 @@ class ConsoleTableGeneratorTest extends \PHPUnit_Framework_TestCase
                     'cells' => array(
                         'time' => './@time',
                     ),
-                )
+                ),
             ),
         );
 
@@ -253,7 +259,7 @@ class ConsoleTableGeneratorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should "render" the table even if it has no rows
+     * It should "render" the table even if it has no rows.
      */
     public function testRenderNoOutput()
     {
@@ -267,11 +273,10 @@ class ConsoleTableGeneratorTest extends \PHPUnit_Framework_TestCase
 
     private function generate($config)
     {
-        $this->generator->configure($this->optionsResolver);
-        $config = $this->optionsResolver->resolve($config);
+        $defaults = $this->generator->getDefaultConfig();
+        $config = array_merge($defaults, $config);
         $this->generator->generate($this->getSuiteResult(), $config);
     }
-
 
     private function getSuiteResult()
     {

@@ -34,7 +34,7 @@ class RunCommandTest extends BaseCommandTestCase
 
     /**
      * It should run when given a path.
-     * It should show the default (simple) report
+     * It should show the default (simple) report.
      */
     public function testCommand()
     {
@@ -51,7 +51,7 @@ class RunCommandTest extends BaseCommandTestCase
     {
         $tester = $this->runCommand('run', array(
             'path' => __DIR__ . '/../../benchmarks/BenchmarkBench.php',
-            '--report' => array('full'),
+            '--report' => array('default'),
         ));
         $this->assertEquals(0, $tester->getStatusCode());
         $display = $tester->getDisplay();
@@ -67,7 +67,7 @@ class RunCommandTest extends BaseCommandTestCase
     public function testCommandWithNoPath()
     {
         $this->runCommand('run', array(
-            '--report' => array('full'),
+            '--report' => array('default'),
         ));
     }
 
@@ -78,7 +78,7 @@ class RunCommandTest extends BaseCommandTestCase
     {
         $tester = $this->runCommand('run', array(
             'path' => __DIR__ . '/../../benchmarks/BenchmarkBench.php',
-            '--report' => array('{"generator": "console_table"}'),
+            '--report' => array('{"extends": "default"}'),
         ));
         $this->assertEquals(0, $tester->getStatusCode());
         $display = $tester->getDisplay();
@@ -284,12 +284,12 @@ class RunCommandTest extends BaseCommandTestCase
     }
 
     /**
-     * It should disable the setup and tear down methods
+     * It should disable the setup and tear down methods.
      */
     public function testDisableSetup()
     {
         $path = __DIR__ . '/../../benchmarks/BenchmarkBench.php';
-        require_once($path);
+        require_once $path;
         BenchmarkBench::$setUpCalled = false;
         BenchmarkBench::$tearDownCalled = false;
 

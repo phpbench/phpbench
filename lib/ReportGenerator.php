@@ -13,19 +13,19 @@ namespace PhpBench;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use PhpBench\Result\SuiteResult;
-use Symfony\Component\Console\Output\OutputInterface;
 
 interface ReportGenerator
 {
     /**
-     * Configure the options for the report
+     * Return a JSON schema which should be used to validate the configuration.
+     * Return an empty array() if you want to allow anything.
      *
      * @param OptionsResolver $options
      */
-    public function configure(OptionsResolver $options);
+    public function getSchema();
 
     /**
-     * Generate the report
+     * Generate the report.
      *
      * @param SuiteResult $collection
      * @param array $config
@@ -34,9 +34,17 @@ interface ReportGenerator
 
     /**
      * Return an array of report configurations keyed by the report name
-     * that should be available by default
+     * that should be available by default.
      *
      * @return array
      */
     public function getDefaultReports();
+
+    /***
+     * Return the default configuration. This configuration will be prepended
+     * to all subsequent reports and should be used to provide default values.
+     *
+     * @return array
+     */
+    public function getDefaultConfig();
 }

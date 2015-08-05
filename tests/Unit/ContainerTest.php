@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Tests\Unit;
 
 use PhpBench\Container;
@@ -15,12 +24,12 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * It should register and get services
-     * It should return the same instance on consecutive calls
+     * It should return the same instance on consecutive calls.
      */
     public function testRegisterSet()
     {
         $this->container->register('stdclass', function () {
-            return new \stdClass;
+            return new \stdClass();
         });
 
         $instance = $this->container->get('stdclass');
@@ -29,19 +38,19 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should register and retrieve tagged services IDs with attributes
+     * It should register and retrieve tagged services IDs with attributes.
      */
     public function testServiceIdTags()
     {
         $this->container->register('stdclass1', function () {
-            return new \stdClass;
+            return new \stdClass();
         }, array('tag1' => array('name' => 'hello')));
         $this->container->register('stdclass2', function () {
-            return new \stdClass;
+            return new \stdClass();
         }, array('tag1' => array('name' => 'hello')));
 
         $this->container->register('stdclass3', function () {
-            return new \stdClass;
+            return new \stdClass();
         }, array('tag2' => array('name' => 'goodbye')));
 
         $serviceIds = $this->container->getServiceIdsForTag('tag1');

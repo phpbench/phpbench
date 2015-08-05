@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Tests\Unit\Report\Tool;
 
 use PhpBench\Report\Tool\Formatter;
@@ -14,7 +23,7 @@ class FormatterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should format numbers with thousand separators
+     * It should format numbers with thousand separators.
      */
     public function testNumbers()
     {
@@ -23,7 +32,7 @@ class FormatterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should format as a percentage
+     * It should format as a percentage.
      */
     public function testPercentage()
     {
@@ -32,7 +41,7 @@ class FormatterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should combine different formatters
+     * It should combine different formatters.
      */
     public function testCombination()
     {

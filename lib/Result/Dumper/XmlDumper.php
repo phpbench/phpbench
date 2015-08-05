@@ -24,6 +24,7 @@ class XmlDumper
      * Dump the result to an XML document and return the XML document.
      *
      * @param SuiteResult
+     *
      * @return DOMDocument
      */
     public function dump(SuiteResult $result)

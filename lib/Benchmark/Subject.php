@@ -14,7 +14,6 @@ namespace PhpBench\Benchmark;
 /**
  * Represents a subject that is tested by a method
  * in a benchmark class.
- *
  */
 class Subject
 {
@@ -28,7 +27,7 @@ class Subject
     private $identifier;
 
     /**
-     * @param integer $identifier
+     * @param int $identifier
      * @param mixed $methodName
      * @param array $beforeMethods
      * @param array $parameters
@@ -58,7 +57,7 @@ class Subject
     }
 
     /**
-     * Return the methods that should be executed before this subject
+     * Return the methods that should be executed before this subject.
      *
      * @return string[]
      */
@@ -68,7 +67,7 @@ class Subject
     }
 
     /**
-     * Return the parameter provider methods for this subject
+     * Return the parameter provider methods for this subject.
      *
      * @return string[]
      */
@@ -81,7 +80,7 @@ class Subject
      * Return the number of iterations that should be executed
      * on the subject.
      *
-     * @return integer
+     * @return int
      */
     public function getNbIterations()
     {
@@ -100,7 +99,7 @@ class Subject
     }
 
     /**
-     * Return the process isolation policy for this subject
+     * Return the process isolation policy for this subject.
      *
      * @return string
      */
@@ -112,7 +111,7 @@ class Subject
     /**
      * Return the number of revolutions which should be executed.
      *
-     * @return integer
+     * @return int
      */
     public function getRevs()
     {
@@ -120,7 +119,7 @@ class Subject
     }
 
     /**
-     * Return the groups to which this subject belongs
+     * Return the groups to which this subject belongs.
      *
      * @return string[]
      */
@@ -130,11 +129,11 @@ class Subject
     }
 
     /**
-     * Return the identifier of this subject
+     * Return the identifier of this subject.
      *
-     * @return integer
+     * @return int
      */
-    public function getIdentifier() 
+    public function getIdentifier()
     {
         return $this->identifier;
     }

@@ -1,9 +1,17 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Tests\Unit\Report;
 
 use PhpBench\Report\ReportManager;
-use Prophecy\Argument;
 
 class ReportManagerTest extends \PHPUnit_Framework_TestCase
 {
@@ -23,7 +31,7 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Report configurations can be added to it
-     * It can retrieve report configurations
+     * It can retrieve report configurations.
      */
     public function testAddReportConfiguration()
     {
@@ -33,7 +41,7 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should recursively merge report configurations when the extend each other
+     * It should recursively merge report configurations when the extend each other.
      */
     public function testMergeConfig()
     {
@@ -46,8 +54,8 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
                 'array' => array(
                     'bar' => 'boo',
                     'boo' => 'bar',
-                )
-            )
+                ),
+            ),
         ));
         $this->reportManager->addReport('two', array(
             'extends' => 'one',
@@ -57,13 +65,12 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
                 'array' => array(
                     'bar' => 'baz',
                 ),
-            )
+            ),
         ));
-        $this->generator->configure(Argument::any())->will(function ($args) {
-            $args[0]->setDefaults(array(
-                'params' => array(),
-            ));
-        });
+        $this->generator->getDefaultConfig()->willReturn(array(
+            'params' => array(),
+        ));
+        $this->generator->getSchema()->willReturn(new \stdClass());
         $this->generator->generate(
             $this->result->reveal(),
             array(
@@ -87,7 +94,7 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It throws an exception when an attempt is made to register two reports with the same name
+     * It throws an exception when an attempt is made to register two reports with the same name.
      *
      * @expectedException InvalidArgumentException
      */
@@ -99,7 +106,7 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Report generators can be added to it
-     * Report generators can be retrieved from it
+     * Report generators can be retrieved from it.
      */
     public function testAddReportGenerator()
     {
@@ -108,7 +115,7 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It throws an exception when an attempt is made to register to generators with the same name
+     * It throws an exception when an attempt is made to register to generators with the same name.
      *
      * @expectedException InvalidArgumentException
      */
@@ -139,7 +146,7 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should throw an exception with an invalid JSON string
+     * It should throw an exception with an invalid JSON string.
      *
      * @expectedException InvalidArgumentException
      */
@@ -149,14 +156,15 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should generate reports
+     * It should generate reports.
      */
     public function testGenerate()
     {
         $this->reportManager->addGenerator('test', $this->generator->reveal());
         $this->reportManager->addReport('test_report', array('generator' => 'test'));
         $this->generator->generate($this->result->reveal(), array())->shouldBeCalled();
-        $this->generator->configure(Argument::type('Symfony\Component\OptionsResolver\OptionsResolver'))->shouldBeCalled();
+        $this->generator->getDefaultConfig()->willReturn(array());
+        $this->generator->getSchema()->willReturn(new \stdClass());
         $this->reportManager->generateReports(
             $this->output->reveal(),
             $this->result->reveal(),
@@ -165,18 +173,52 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should inject the output to the report if it implements the OutputAware interface
+     * It should inject the output to the report if it implements the OutputAware interface.
      */
     public function testGenerateOutputAware()
     {
         $generator = $this->prophesize('PhpBench\ReportGenerator')->willImplement('PhpBench\Console\OutputAware');
         $generator->getDefaultReports()->willReturn(array());
+        $generator->getDefaultConfig()->willReturn(array());
+        $generator->getSchema()->willReturn(new \stdClass());
 
         $this->reportManager->addGenerator('test', $generator->reveal());
         $this->reportManager->addReport('test_report', array('generator' => 'test'));
+
         $generator->generate($this->result->reveal(), array())->shouldBeCalled();
-        $generator->configure(Argument::type('Symfony\Component\OptionsResolver\OptionsResolver'))->shouldBeCalled();
         $generator->setOutput($this->output->reveal())->shouldBeCalled();
+
+        $this->reportManager->generateReports(
+            $this->output->reveal(),
+            $this->result->reveal(),
+            array('test_report')
+        );
+    }
+
+    /**
+     * It should throw an exception if the configuration does not match the schema
+     *
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage is not defined and the definition does not allow additional properties
+     */
+    public function testInvalidSchema()
+    {
+        $this->generator->getDefaultReports()->willReturn(array());
+        $this->generator->getDefaultConfig()->willReturn(array());
+        $this->generator->getSchema()->willReturn(array(
+            'type' => 'object',
+            'properties' => array(
+                'foobar' => array('type'=> 'string')
+            ),
+            'additionalProperties' => false,
+        ));
+
+        $this->reportManager->addGenerator('test', $this->generator->reveal());
+        $this->reportManager->addReport('test_report', array(
+            'generator' => 'test',
+            'barbarboo' => 'tset',
+        ));
+
         $this->reportManager->generateReports(
             $this->output->reveal(),
             $this->result->reveal(),
@@ -192,7 +234,7 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
     public function testDefaultReportsNotArray()
     {
         $generator = $this->prophesize('PhpBench\ReportGenerator');
-        $generator->getDefaultReports()->willReturn(new \stdClass);
+        $generator->getDefaultReports()->willReturn(new \stdClass());
         $this->reportManager->addGenerator('test', $generator->reveal());
 
         $this->reportManager->generateReports(

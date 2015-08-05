@@ -1,22 +1,32 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Report\Generator;
 
 use PhpBench\Console\OutputAware;
 use PhpBench\Result\Dumper\XmlDumper;
 use Symfony\Component\Console\Helper\Table;
 use PhpBench\ReportGenerator;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Console\Output\OutputInterface;
 use PhpBench\Result\SuiteResult;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use PhpBench\Report\Dom\PhpBenchXpath;
-use PhpBench\Report\Util;
 use PhpBench\Report\Tool\Sort;
 use PhpBench\Report\Tool\Formatter;
-use PhpBench\Report\Tool\Assert;
 
+/**
+ * Report which generates console based tabular reports
+ * using XPath as a datasource.
+ */
 class ConsoleTableGenerator implements OutputAware, ReportGenerator
 {
     /**
@@ -39,37 +49,93 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
      */
     private $postProcessElements = array();
 
+    /**
+     * @param XmlDumper $xmlDumper
+     * @param Formatter $formatter
+     */
     public function __construct(XmlDumper $xmlDumper = null, Formatter $formatter = null)
     {
-        $this->xmlDumper = $xmlDumper ? : new XmlDumper();
-        $this->formatter = $formatter ? : new Formatter();
+        $this->xmlDumper = $xmlDumper ?: new XmlDumper();
+        $this->formatter = $formatter ?: new Formatter();
     }
 
-    public function configure(OptionsResolver $options)
+    /**
+     * {@inheritDoc}
+     */
+    public function getSchema()
     {
-        $options->setDefaults(array(
+        return array(
+            'type' => 'object',
+            'properties' => array(
+                'debug' => array(
+                    'description' => 'Enable to output debug information',
+                    'type' => 'boolean',
+                ),
+                'title' => array(
+                    'description' => 'Title of the report to display',
+                    'oneOf' => array(
+                        array('type' => 'string'),
+                        array('type' => 'null'),
+                    ),
+                ),
+                'description' => array(
+                    'description' => 'Description of the report to display',
+                    'oneOf' => array(
+                        array('type' => 'string'),
+                        array('type' => 'null'),
+                    ),
+                ),
+                'rows' => array(
+                    'type' => 'array',
+                    'items' => array(
+                        'type' => 'object',
+                        'properties' => array(
+                            'cells' => array(
+                                'type' => 'object',
+                            ),
+                            'with_items' => array(
+                                'type' => 'array',
+                            ),
+                            'with_query' => array(
+                                'type' => 'string',
+                            ),
+                        ),
+                        'additionalProperties' => false,
+                    ),
+                ),
+                'format' => array(
+                    'type' => 'object',
+                ),
+                'sort' => array(
+                    'type' => 'array',
+                ),
+                'exclude' => array(
+                    'type' => 'array',
+                ),
+                'params' => array(
+                    'oneOf' => array(
+                        array('type' => 'object'),
+                        array('type' => 'array'),
+                    ),
+                ),
+                'generator' => array(
+                    'type' => 'string',
+                ),
+            ),
+            'additionalProperties' => false,
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDefaultConfig()
+    {
+        return array(
             'debug' => false,
             'title' => null,
             'description' => null,
-            'rows' => array(
-                array(
-                    'cells' => array(
-                        'benchmark' => 'string(php:bench(\'class_name\', string(ancestor-or-self::benchmark/@class)))',
-                        'subject' => 'string(ancestor-or-self::subject/@name)',
-                        'group' => 'string(ancestor-or-self::group/@name)',
-                        'params' => 'php:bench(\'parameters_to_json\', ancestor::subject/parameter)',
-                        'pid' => 'number(descendant-or-self::iteration/@pid)',
-                        'memory' => 'number(descendant-or-self::iteration/@memory)',
-                        'memory_diff' => 'number(descendant-or-self::iteration/@memory_diff)',
-                        'revs' => 'number(descendant-or-self::iteration/@revs)',
-                        'iter' => 'number(descendant-or-self::iteration/@index)',
-                        'time' => 'number(descendant-or-self::iteration/@time)',
-                        'rps' => '(1000000 div number(descendant-or-self::iteration//@time)) * number(descendant-or-self::iteration/@revs)',
-                        'deviation' => 'php:bench(\'deviation\', php:bench(\'min\', //@time), number(./@time))',
-                    ),
-                    'with_query' => '{{ param.selector }}',
-                ),
-            ),
+            'rows' => array(),
             'format' => array(
                 'revs' => '!number',
                 'rps' => array('!number', '%s<comment>rps</comment>'),
@@ -80,16 +146,22 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
             ),
             'sort' => array(),
             'exclude' => array(),
-            'params' => array('selector' => '//iteration'),
-        ));
+            'params' => array(),
+        );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function setOutput(OutputInterface $output)
     {
         $this->output = $output;
         $this->configureFormatters($output->getFormatter());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function generate(SuiteResult $suite, array $config)
     {
         if (null !== $config['title']) {
@@ -146,8 +218,43 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
     public function getDefaultReports()
     {
         return array(
+            'default' => array(
+                'debug' => false,
+                'title' => null,
+                'description' => null,
+                'rows' => array(
+                    array(
+                        'cells' => array(
+                            'benchmark' => 'string(php:bench(\'class_name\', string(ancestor-or-self::benchmark/@class)))',
+                            'subject' => 'string(ancestor-or-self::subject/@name)',
+                            'group' => 'string(ancestor-or-self::group/@name)',
+                            'params' => 'php:bench(\'parameters_to_json\', ancestor::subject/parameter)',
+                            'pid' => 'number(descendant-or-self::iteration/@pid)',
+                            'memory' => 'number(descendant-or-self::iteration/@memory)',
+                            'memory_diff' => 'number(descendant-or-self::iteration/@memory_diff)',
+                            'revs' => 'number(descendant-or-self::iteration/@revs)',
+                            'iter' => 'number(descendant-or-self::iteration/@index)',
+                            'time' => 'number(descendant-or-self::iteration/@time)',
+                            'rps' => '(1000000 div number(descendant-or-self::iteration//@time)) * number(descendant-or-self::iteration/@revs)',
+                            'deviation' => 'php:bench(\'deviation\', php:bench(\'min\', //@time), number(./@time))',
+                        ),
+                        'with_query' => '{{ param.selector }}',
+                    ),
+                ),
+                'format' => array(
+                    'revs' => '!number',
+                    'rps' => array('!number', '%s<comment>rps</comment>'),
+                    'time' => array('!number', '%s<comment>μs</comment>'),
+                    'deviation' => array('%.2f', '!balance', '%s<comment>%%</comment>'),
+                    'memory' => array('!number', '%s<comment>b</comment>'),
+                    'memory_diff' => array('!number', '!balance', '%s<comment>b</comment>'),
+                ),
+                'sort' => array(),
+                'exclude' => array(),
+                'params' => array('selector' => '//iteration'),
+            ),
             'aggregate' => array(
-                'extends' => 'full',
+                'extends' => 'default',
                 'rows' => array(
                     array(
                         'cells' => array(
@@ -163,9 +270,9 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
                                 'post_process' => true,
                             ),
                         ),
-                        'with_query' => '{{ param.selector }}',
                     ),
                 ),
+                'exclude' => array('group', 'params', 'pid', 'memory', 'memory_diff', 'iter'),
                 'format' => array(
                     'revs' => '!number',
                     'rps' => array('%.2f', '%s<comment>rps</comment>'),
@@ -175,11 +282,8 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
                 ),
             ),
             'simple' => array(
-                'extends' => 'full',
-                'exclude' => array('benchmark', 'description"', 'memory', 'memory_diff', 'params', 'pid', 'group'),
-            ),
-            'full' => array(
-                'generator' => 'console_table',
+                'extends' => 'default',
+                'exclude' => array('benchmark', 'memory', 'memory_diff', 'params', 'pid', 'group'),
             ),
         );
     }
@@ -199,8 +303,6 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
         $xpath = new PhpBenchXpath($resultDom);
 
         foreach ($config['rows'] as $rowConfig) {
-            Assert::hasOnlyKeys(array('cells', 'with_query', 'with_items'), $rowConfig, 'report config key "rows"');
-
             if (!isset($rowConfig['cells'])) {
                 throw new \InvalidArgumentException(sprintf(
                     'The "rows" key must contain an array of row configurations,  and each configuration must contain at least a "cells" key with an array of key to expression pairs, got: %s',
@@ -238,7 +340,8 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
 
                         if (is_array($cellExpr)) {
                             $cellConfig = $cellExpr;
-                            Assert::hasOnlyKeys(array('post_process', 'expr', 'with_items'), $cellConfig, 'cell configuration');
+
+                            // todo: build this into the JSON schema
                             if (!array_key_exists('expr', $cellConfig)) {
                                 throw new \InvalidArgumentException(
                                     'Cell configuration must have at least an "expr" key containing an XPath expression'
@@ -266,7 +369,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
                                 $tableCellEl->setAttribute('post-process', 1);
                                 $value = $expr;
                             } else {
-                                $value = $this->evaluateExpression($xpath, $expr, $contextEl, $config['params']);
+                                $value = $this->evaluateExpression($xpath, $expr, $contextEl, $config['params'] ?: array());
                             }
 
                             $tableCellEl->nodeValue = $value;
@@ -287,7 +390,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
      *       one of the cell names. The array would then contain one element per
      *       compiler pass.
      *
-     * @param \DOMDocument $tableDom 
+     * @param \DOMDocument $tableDom
      * @param array $config
      */
     private function postProcess(\DOMDocument $tableDom, $config)
@@ -298,7 +401,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
             $cellExpr = $cellEl->nodeValue;
             $rowEls = $tableXpath->query('./ancestor::row', $cellEl);
             $rowEl = $rowEls->item(0);
-            $value = $this->evaluateExpression($tableXpath, $cellExpr, $rowEl, $config['params']);
+            $value = $this->evaluateExpression($tableXpath, $cellExpr, $rowEl, $config['params'] ?: array());
             $cellEl->nodeValue = $value;
         }
 
@@ -360,7 +463,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
 
         if (false === $value) {
             throw new \InvalidArgumentException(sprintf(
-                'XPath expression "%s" is invalid or it evaluated to false, in which case PHP doesn\'t allow us to know the difference' . 
+                'XPath expression "%s" is invalid or it evaluated to false, in which case PHP doesn\'t allow us to know the difference' .
                 ' between false and an invalid expression.',
                 $cellExpr
             ));
@@ -379,7 +482,8 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
         if (class_exists('Symfony\Component\Console\Helper\Table')) {
             return new Table($this->output);
         }
-        return new \Symfony\Component\Console\Helper\TableHelper();   
+
+        return new \Symfony\Component\Console\Helper\TableHelper();
     }
 
     /**
@@ -391,6 +495,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
     {
         if (class_exists('Symfony\Component\Console\Helper\Table')) {
             $table->render();
+
             return;
         }
         $table->render($this->output);
@@ -411,6 +516,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
      * @param string $expression
      * @param string $item
      * @param string $context
+     *
      * @return string
      */
     private function replaceItem($expression, $item, $context)
@@ -418,20 +524,22 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
         if (null === $item) {
             return $expression;
         }
+
         return preg_replace('/{{\s*?' . $context . '\.item\s*}}/', $item, $expression);
     }
 
     /**
-     * Replace any parameters in a string (f.e. an XPath query
+     * Replace any parameters in a string (f.e. an XPath query.
      *
      * @param string $string
      * @param array $parameters
+     *
      * @return string
      */
     private function replaceParameters($string, array $parameters)
     {
         foreach ($parameters as $key => $value) {
-            $string = preg_replace('/{{\s*?param.' . $key. '\s*}}/', $value, $string);
+            $string = preg_replace('/{{\s*?param.' . $key . '\s*}}/', $value, $string);
         }
 
         return $string;

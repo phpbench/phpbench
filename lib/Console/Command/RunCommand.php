@@ -16,11 +16,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Finder\Finder;
-use PhpBench\Benchmark\CollectionBuilder;
-use PhpBench\Benchmark\SubjectBuilder;
 use PhpBench\Benchmark\Runner;
-use PhpBench\Result\SuiteResult;
 use PhpBench\Result\Dumper\XmlDumper;
 use Symfony\Component\Console\Output\NullOutput;
 use PhpBench\ProgressLogger;
@@ -48,8 +44,7 @@ class RunCommand extends Command
         $benchPath = null,
         $enableGc = null,
         $configPath = null
-    )
-    {
+    ) {
         parent::__construct();
         $this->xmlDumper = $xmlDumper;
         $this->reportManager = $reportManager;
@@ -175,9 +170,9 @@ EOT
     }
 
     private function executeBenchmarks(
-        $path, 
-        array $subjects, 
-        array $groups, 
+        $path,
+        array $subjects,
+        array $groups,
         $noSetup,
         $parameters,
         $iterations,
@@ -185,8 +180,7 @@ EOT
         $processIsolation,
         $configPath,
         ProgressLogger $progressLogger = null
-    )
-    {
+    ) {
         if ($progressLogger) {
             $this->runner->setProgressLogger($progressLogger);
         }

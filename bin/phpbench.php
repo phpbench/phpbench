@@ -35,6 +35,8 @@ if (empty($configPaths)) {
 }
 
 $hasBootstrap = false;
+$invalidJson = false;
+
 $config = array();
 foreach ($configPaths as $configPath) {
     if (!file_exists($configPath)) {
@@ -42,7 +44,15 @@ foreach ($configPaths as $configPath) {
     }
 
     $configDir = dirname($configPath);
-    $config = json_decode(file_get_contents($configPath), true);
+    $configBody = file_get_contents($configPath);
+    $config = json_decode($configBody, true);
+
+    // if decoding the JSON data failed then we will lint it later when the autoloader
+    // has been included.
+    if (null === $config) {
+        $invalidJson = true;
+        break;
+    }
 
     if (null === $config) {
         echo sprintf('Could not decode configuration file into JSON "%s"',
@@ -68,12 +78,13 @@ foreach ($configPaths as $configPath) {
             );
             exit(1);
         }
-        require_once($bootstrap);
+        require_once $bootstrap;
         $hasBootstrap = true;
     }
     break;
 }
 
+// if no bootstrap has been found try and guess it before failing
 if (false === $hasBootstrap) {
     $bootstrapPath = getcwd() . '/vendor/autoload.php';
 
@@ -85,7 +96,19 @@ if (false === $hasBootstrap) {
     require_once $bootstrapPath;
 }
 
+// lint the invalid json and show useful error message
+if ($invalidJson) {
+    try {
+        $parser = new Seld\JsonLint\JsonParser();
+        $parser->parse($configBody);
+    } catch (Seld\JsonLint\ParsingException $e) {
+        echo 'Error parsing config file:' . PHP_EOL . PHP_EOL;
+        echo $e->getMessage();
+        exit(1);
+    }
+}
+
 $container->configure();
 $container->mergeParameters($config);
-$container->build($config);
+$container->build();
 $container->get('console.application')->run();

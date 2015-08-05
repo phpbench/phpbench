@@ -27,8 +27,7 @@ class ReportCommand extends Command
     public function __construct(
         XmlLoader $xmlLoader,
         ReportManager $reportManager
-    )
-    {
+    ) {
         parent::__construct();
         $this->xmlLoader = $xmlLoader;
         $this->reportManager = $reportManager;

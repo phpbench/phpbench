@@ -1,11 +1,19 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Report\Generator;
 
 use PhpBench\Console\OutputAware;
 use PhpBench\Report\ReportManager;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use PhpBench\ReportGenerator;
 use PhpBench\Result\SuiteResult;
 
@@ -43,11 +51,26 @@ class CompositeGenerator implements ReportGenerator, OutputAware
     /**
      * {@inheritDoc}
      */
-    public function configure(OptionsResolver $options)
+    public function getSchema()
     {
-        $options->setDefaults(array(
-            'reports' => array()
-        ));
+        return array(
+            'type' => 'object',
+            'properties' => array(
+                'reports' => array(
+                    'title' => 'List of reports to use',
+                    'type' => 'array',
+                ),
+            ),
+            'required' => array('reports'),
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDefaultConfig()
+    {
+        return array();
     }
 
     /**

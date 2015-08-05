@@ -1,19 +1,47 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Report;
 
 use PhpBench\ReportGenerator;
 use Symfony\Component\Console\Output\OutputInterface;
 use PhpBench\Result\SuiteResult;
 use PhpBench\Console\OutputAware;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use JsonSchema\Validator;
 
+/**
+ * Manage report configuration and generation.
+ */
 class ReportManager
 {
     /**
-     * @param array
+     * @var array
      */
     private $reports = array();
+
+    /**
+     * @var Validator
+     */
+    private $validator;
+
+    /**
+     * @var ReportGenerator[]
+     */
+    private $generators;
+
+    public function __construct(
+        Validator $validator = null
+    ) {
+        $this->validator = $validator ?: new Validator();
+    }
 
     /**
      * Add a named report configuration.
@@ -34,7 +62,7 @@ class ReportManager
     }
 
     /**
-     * Add a report generator
+     * Add a report generator.
      *
      * @param string $name
      * @param ReportGenerator $generator
@@ -61,13 +89,14 @@ class ReportManager
         }
 
         foreach ($defaultReports as $reportName => $reportConfig) {
+            $reportConfig['generator'] = $name;
             $this->addReport($reportName, $reportConfig);
         }
     }
 
     /**
-     * Process raw report configuration as recieved from the CLI, for example:
-     * 
+     * Process raw report configuration as recieved from the CLI, for example:.
+     *
      * ````
      * {"generator": "console_table", "sort": ["time"]}
      * ````
@@ -78,11 +107,12 @@ class ReportManager
      * console_table
      * ````
      * Accepts an array of strings and returns the names of all reports that
-     * have been identified / processed.
+     * have been identified / processed.n
      *
      * Report configurations will be added to the report manager with a generated UUID.
      *
      * @param array $rawConfigs
+     *
      * @return array
      */
     public function processCliReports($rawConfigs)
@@ -113,9 +143,10 @@ class ReportManager
     }
 
     /**
-     * Return the named report configuration
+     * Return the named report configuration.
      *
      * @param string $name
+     *
      * @return array
      */
     public function getReport($name)
@@ -130,6 +161,11 @@ class ReportManager
         return $this->reports[$name];
     }
 
+    /**
+     * Return the named generator.
+     *
+     * @return ReportGenerator
+     */
     public function getGenerator($name)
     {
         if (!isset($this->generators[$name])) {
@@ -165,18 +201,27 @@ class ReportManager
                 );
             }
 
-            $options = new OptionsResolver();
             $generator = $this->getGenerator($reportConfig['generator']);
-            $generator->configure($options);
-            unset($reportConfig['generator']);
+            $reportConfig = array_replace_recursive($generator->getDefaultConfig(), $reportConfig);
 
-            try {
-                $reportConfig = $options->resolve($reportConfig);
-            } catch (UndefinedOptionsException $e) {
+            // not sure if there is a better way to convert the schema array to objects
+            // as expected by the validator.
+            $validationConfig = json_decode(json_encode($reportConfig));
+            $schema = json_decode(json_encode($generator->getSchema()));
+            $this->validator->check($validationConfig, $schema);
+
+            if (!$this->validator->isValid()) {
+                $errorString = array();
+                foreach ($this->validator->getErrors() as $error) {
+                    $errorString[] = sprintf('[%s] %s', $error['property'], $error['message']);
+                }
                 throw new \InvalidArgumentException(sprintf(
-                    'Error generating report "%s"', $reportName
-                ), null, $e);
+                    'Invalid JSON when processing report "%s": %s%s',
+                    $reportName, PHP_EOL . PHP_EOL . PHP_EOL, implode(PHP_EOL, $errorString)
+                ));
             }
+
+            unset($reportConfig['generator']);
 
             if ($generator instanceof OutputAware) {
                 $generator->setOutput($output);

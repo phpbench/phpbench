@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Tests\Unit\Report\Dom;
 
 use PhpBench\Report\Dom\PhpBenchXpath;
@@ -25,7 +34,7 @@ EOT
     }
 
     /**
-     * It calculate the deviation
+     * It calculate the deviation.
      */
     public function testDeviation()
     {
@@ -34,7 +43,7 @@ EOT
     }
 
     /**
-     * It calculate the average
+     * It calculate the average.
      */
     public function testAverage()
     {
@@ -43,12 +52,12 @@ EOT
     }
 
     /**
-     * It should throw an exception if a non-scalar value is passed to evaluate
+     * It should throw an exception if a non-scalar value is passed to evaluate.
      *
      * @expectedException \InvalidArgumentException
      */
     public function testNonScalarEvaluate()
     {
-        $this->xpath->evaluate(new \stdClass);
+        $this->xpath->evaluate(new \stdClass());
     }
 }

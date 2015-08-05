@@ -100,7 +100,6 @@ class Runner
     {
         $this->configPath = $configPath;
     }
-    
 
     public function runAll($path)
     {
