@@ -10,9 +10,9 @@
  */
 
 use PhpBench\BenchIteration;
-use PhpBench\Benchmark;
+use PhpBench\BenchmarkInterface;
 
-class SubjectBuilderCaseInvalidParamProvider implements Benchmark
+class SubjectBuilderCaseInvalidParamProvider implements BenchmarkInterface
 {
     /**
      * @paramProvider notExistingParam

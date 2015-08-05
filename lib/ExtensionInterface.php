@@ -11,7 +11,7 @@
 
 namespace PhpBench;
 
-interface Extension
+interface ExtensionInterface
 {
     /**
      * Register services with the container.

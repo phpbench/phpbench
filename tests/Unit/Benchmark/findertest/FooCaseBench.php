@@ -10,9 +10,9 @@
  */
 
 use PhpBench\BenchIteration;
-use PhpBench\Benchmark;
+use PhpBench\BenchmarkInterface;
 
-class FooTestCaseBench implements Benchmark
+class FooTestCaseBench implements BenchmarkInterface
 {
     public function provideNodes()
     {

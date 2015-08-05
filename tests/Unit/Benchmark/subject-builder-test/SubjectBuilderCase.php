@@ -10,12 +10,12 @@
  */
 
 use PhpBench\BenchIteration;
-use PhpBench\Benchmark;
+use PhpBench\BenchmarkInterface;
 
 /**
  * @group group1
  */
-class SubjectBuilderCase implements Benchmark
+class SubjectBuilderCase implements BenchmarkInterface
 {
     /**
      * @beforeMethod beforeSelectSql

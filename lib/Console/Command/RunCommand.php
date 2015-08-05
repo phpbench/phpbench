@@ -23,6 +23,7 @@ use PhpBench\ProgressLogger;
 use PhpBench\PhpBench;
 use PhpBench\Report\ReportManager;
 use PhpBench\ProgressLoggerRegistry;
+use PhpBench\ProgressLoggerInterface;
 
 class RunCommand extends Command
 {
@@ -179,7 +180,7 @@ EOT
         $revs,
         $processIsolation,
         $configPath,
-        ProgressLogger $progressLogger = null
+        ProgressLoggerInterface $progressLogger = null
     ) {
         if ($progressLogger) {
             $this->runner->setProgressLogger($progressLogger);

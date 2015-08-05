@@ -14,7 +14,7 @@ namespace PhpBench;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use PhpBench\Result\SuiteResult;
 
-interface ReportGenerator
+interface ReportGeneratorInterface
 {
     /**
      * Return a JSON schema which should be used to validate the configuration.

@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-use PhpBench\Benchmark;
+use PhpBench\BenchmarkInterface;
 
 /**
  * @beforeMethod init
  * @revs 10000
  * @iterations 4
  */
-class CostOfReflectionBench implements Benchmark
+class CostOfReflectionBench implements BenchmarkInterface
 {
     private $class;
     private $reflection;

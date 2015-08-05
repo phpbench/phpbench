@@ -12,8 +12,8 @@
 namespace PhpBench\Tests\Benchmark;
 
 use PhpBench\Benchmark\Runner;
-use PhpBench\Benchmark;
 use PhpBench\Benchmark\Iteration;
+use PhpBench\BenchmarkInterface;
 
 class RunnerTest extends \PHPUnit_Framework_TestCase
 {
@@ -165,7 +165,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
     }
 }
 
-class RunnerTestBenchCase implements Benchmark
+class RunnerTestBenchCase implements BenchmarkInterface
 {
     public $beforeCalled = false;
     public $setUpCalled = false;

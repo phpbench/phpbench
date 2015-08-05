@@ -13,7 +13,6 @@ namespace PhpBench\Benchmark;
 
 use PhpBench\ProgressLogger\NullProgressLogger;
 use PhpBench\ProgressLogger;
-use PhpBench\Benchmark;
 use PhpBench\Result\SubjectResult;
 use PhpBench\Result\IterationResult;
 use PhpBench\Result\BenchmarkResult;
@@ -21,6 +20,8 @@ use PhpBench\Result\SuiteResult;
 use PhpBench\Result\IterationsResult;
 use PhpBench\Exception\InvalidArgumentException;
 use PhpBench\Result\Loader\XmlLoader;
+use PhpBench\BenchmarkInterface;
+use PhpBench\ProgressLoggerInterface;
 
 class Runner
 {
@@ -61,7 +62,7 @@ class Runner
         $this->subjectsOverride = $subjects;
     }
 
-    public function setProgressLogger(ProgressLogger $logger)
+    public function setProgressLogger(ProgressLoggerInterface $logger)
     {
         $this->logger = $logger;
     }
@@ -117,7 +118,7 @@ class Runner
         return $benchmarkSuiteResult;
     }
 
-    private function run(Benchmark $benchmark)
+    private function run(BenchmarkInterface $benchmark)
     {
         if (true === $this->setUpTearDown && method_exists($benchmark, 'setUp')) {
             $benchmark->setUp();
@@ -141,7 +142,7 @@ class Runner
         return $benchmarkResult;
     }
 
-    private function runSubject(Benchmark $benchmark, Subject $subject)
+    private function runSubject(BenchmarkInterface $benchmark, Subject $subject)
     {
         $this->subjectMemoryTotal = 0;
         $this->subjectLastMemoryInclusive = memory_get_usage();
@@ -169,7 +170,7 @@ class Runner
         return $subjectResult;
     }
 
-    private function runIterations(Benchmark $benchmark, Subject $subject, $nbIterations, $revs)
+    private function runIterations(BenchmarkInterface $benchmark, Subject $subject, $nbIterations, $revs)
     {
         $iterationResults = array();
         for ($index = 0; $index < $nbIterations; $index++) {
@@ -182,7 +183,7 @@ class Runner
         return new IterationsResult($iterationResults);
     }
 
-    private function runIterationsSeparateProcess(Benchmark $benchmark, Subject $subject, $nbIterations, $processIsolation, $revs)
+    private function runIterationsSeparateProcess(BenchmarkInterface $benchmark, Subject $subject, $nbIterations, $processIsolation, $revs)
     {
         switch ($processIsolation) {
             case 'iteration':
@@ -214,7 +215,7 @@ class Runner
         return new IterationsResult($iterationsResult, $subject->getParameters());
     }
 
-    private function runIterationSeparateProcess(Benchmark $benchmark, Subject $subject, $nbIterations, $nbRevs)
+    private function runIterationSeparateProcess(BenchmarkInterface $benchmark, Subject $subject, $nbIterations, $nbRevs)
     {
         $reflection = new \ReflectionClass(get_class($benchmark));
         $bin = realpath(__DIR__ . '/../..') . '/bin/phpbench';
@@ -274,7 +275,7 @@ class Runner
         return $subIterationsResult;
     }
 
-    private function runIteration(Benchmark $benchmark, Subject $subject, Iteration $iteration)
+    private function runIteration(BenchmarkInterface $benchmark, Subject $subject, Iteration $iteration)
     {
         foreach ($subject->getBeforeMethods() as $beforeMethodName) {
             if (!method_exists($benchmark, $beforeMethodName)) {

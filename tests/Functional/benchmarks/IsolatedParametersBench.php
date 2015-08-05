@@ -10,9 +10,9 @@
  */
 
 use PhpBench\Benchmark\Iteration;
-use PhpBench\Benchmark;
+use PhpBench\BenchmarkInterface;
 
-class IsolatedParameterBench implements Benchmark
+class IsolatedParameterBench implements BenchmarkInterface
 {
     /**
      * @group process

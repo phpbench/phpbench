@@ -11,7 +11,7 @@
 
 namespace PhpBench;
 
-
+use PhpBench\ExtensionInterface;
 
 /**
  * PHPBench Container.
@@ -53,7 +53,7 @@ class Container
 
             $extension = new $extensionClass();
 
-            if (!$extension instanceof Extension) {
+            if (!$extension instanceof ExtensionInterface) {
                 throw new \InvalidArgumentException(sprintf(
                     'Extensions "%s" must implement the PhpBench\\Extension interface',
                     get_class($extension)

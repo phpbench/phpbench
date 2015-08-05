@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-use PhpBench\Benchmark;
+use PhpBench\BenchmarkInterface;
 
-class IsolatedBench implements Benchmark
+class IsolatedBench implements BenchmarkInterface
 {
     /**
      * @iterations 5

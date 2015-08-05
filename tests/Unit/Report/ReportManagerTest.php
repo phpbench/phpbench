@@ -23,7 +23,7 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->reportManager = new ReportManager();
-        $this->generator = $this->prophesize('PhpBench\ReportGenerator');
+        $this->generator = $this->prophesize('PhpBench\ReportGeneratorInterface');
         $this->generator->getDefaultReports()->willReturn(array());
         $this->output = $this->prophesize('Symfony\Component\Console\Output\OutputInterface');
         $this->result = $this->prophesize('PhpBench\Result\SuiteResult');
@@ -177,7 +177,8 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGenerateOutputAware()
     {
-        $generator = $this->prophesize('PhpBench\ReportGenerator')->willImplement('PhpBench\Console\OutputAware');
+        $generator = $this->prophesize('PhpBench\ReportGeneratorInterface')
+            ->willImplement('PhpBench\Console\OutputAwareInterface');
         $generator->getDefaultReports()->willReturn(array());
         $generator->getDefaultConfig()->willReturn(array());
         $generator->getSchema()->willReturn(new \stdClass());
@@ -233,7 +234,7 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testDefaultReportsNotArray()
     {
-        $generator = $this->prophesize('PhpBench\ReportGenerator');
+        $generator = $this->prophesize('PhpBench\ReportGeneratorInterface');
         $generator->getDefaultReports()->willReturn(new \stdClass());
         $this->reportManager->addGenerator('test', $generator->reveal());
 
