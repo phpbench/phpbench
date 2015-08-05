@@ -47,6 +47,8 @@ foreach ($configPaths as $configPath) {
     $configBody = file_get_contents($configPath);
     $config = json_decode($configBody, true);
 
+    // if decoding the JSON data failed then we will lint it later when the autoloader
+    // has been included.
     if (null === $config) {
         $invalidJson = true;
         break;
@@ -82,6 +84,7 @@ foreach ($configPaths as $configPath) {
     break;
 }
 
+// if no bootstrap has been found try and guess it before failing
 if (false === $hasBootstrap) {
     $bootstrapPath = getcwd() . '/vendor/autoload.php';
 
@@ -93,8 +96,8 @@ if (false === $hasBootstrap) {
     require_once $bootstrapPath;
 }
 
+// lint the invalid json and show useful error message
 if ($invalidJson) {
-    // if json_decode failed then parse it to get a detailed error message.
     try {
         $parser = new Seld\JsonLint\JsonParser();
         $parser->parse($configBody);
