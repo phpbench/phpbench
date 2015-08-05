@@ -48,6 +48,9 @@ class CompositeGenerator implements ReportGenerator, OutputAware
         $this->output = $output;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getSchema()
     {
         return array(
@@ -62,6 +65,9 @@ class CompositeGenerator implements ReportGenerator, OutputAware
         );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getDefaultConfig()
     {
         return array();

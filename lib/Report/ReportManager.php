@@ -17,6 +17,9 @@ use PhpBench\Result\SuiteResult;
 use PhpBench\Console\OutputAware;
 use JsonSchema\Validator;
 
+/**
+ * Manage report configuration and generation.
+ */
 class ReportManager
 {
     /**
@@ -28,6 +31,11 @@ class ReportManager
      * @var Validator
      */
     private $validator;
+
+    /**
+     * @var ReportGenerator[]
+     */
+    private $generators;
 
     public function __construct(
         Validator $validator = null

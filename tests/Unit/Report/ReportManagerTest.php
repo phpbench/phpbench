@@ -196,6 +196,37 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * It should throw an exception if the configuration does not match the schema
+     *
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage The property - barbarboo - is not defined and the definition does not allow additional properties
+     */
+    public function testInvalidSchema()
+    {
+        $this->generator->getDefaultReports()->willReturn(array());
+        $this->generator->getDefaultConfig()->willReturn(array());
+        $this->generator->getSchema()->willReturn(array(
+            'type' => 'object',
+            'properties' => array(
+                'foobar' => array('type'=> 'string')
+            ),
+            'additionalProperties' => false,
+        ));
+
+        $this->reportManager->addGenerator('test', $this->generator->reveal());
+        $this->reportManager->addReport('test_report', array(
+            'generator' => 'test',
+            'barbarboo' => 'tset',
+        ));
+
+        $this->reportManager->generateReports(
+            $this->output->reveal(),
+            $this->result->reveal(),
+            array('test_report')
+        );
+    }
+
+    /**
      * It should throw an exception if the generator does not return an array from the getDefaultReports method.
      *
      * @expectedException RuntimeException

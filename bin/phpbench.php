@@ -76,7 +76,7 @@ foreach ($configPaths as $configPath) {
             );
             exit(1);
         }
-        require_once($bootstrap);
+        require_once $bootstrap;
         $hasBootstrap = true;
     }
     break;
@@ -94,7 +94,7 @@ if (false === $hasBootstrap) {
 }
 
 if ($invalidJson) {
-    // if we failed to parse the configuration file, attempt to parse it
+    // if json_decode failed then parse it to get a detailed error message.
     try {
         $parser = new Seld\JsonLint\JsonParser();
         $parser->parse($configBody);
