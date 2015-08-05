@@ -1,12 +1,20 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Report;
 
 use PhpBench\ReportGenerator;
 use Symfony\Component\Console\Output\OutputInterface;
 use PhpBench\Result\SuiteResult;
 use PhpBench\Console\OutputAware;
-use JsonSchema\Uri\UriRetriever;
 use JsonSchema\Validator;
 
 class ReportManager
@@ -23,8 +31,7 @@ class ReportManager
 
     public function __construct(
         Validator $validator = null
-    )
-    {
+    ) {
         $this->validator = $validator ?: new Validator();
     }
 
@@ -47,7 +54,7 @@ class ReportManager
     }
 
     /**
-     * Add a report generator
+     * Add a report generator.
      *
      * @param string $name
      * @param ReportGenerator $generator
@@ -80,8 +87,8 @@ class ReportManager
     }
 
     /**
-     * Process raw report configuration as recieved from the CLI, for example:
-     * 
+     * Process raw report configuration as recieved from the CLI, for example:.
+     *
      * ````
      * {"generator": "console_table", "sort": ["time"]}
      * ````
@@ -97,6 +104,7 @@ class ReportManager
      * Report configurations will be added to the report manager with a generated UUID.
      *
      * @param array $rawConfigs
+     *
      * @return array
      */
     public function processCliReports($rawConfigs)
@@ -127,9 +135,10 @@ class ReportManager
     }
 
     /**
-     * Return the named report configuration
+     * Return the named report configuration.
      *
      * @param string $name
+     *
      * @return array
      */
     public function getReport($name)
@@ -188,11 +197,11 @@ class ReportManager
             if (!$this->validator->isValid()) {
                 $errorString = array();
                 foreach ($this->validator->getErrors() as $error) {
-                    $errorString[] = sprintf("[%s] %s", $error['property'], $error['message']);
+                    $errorString[] = sprintf('[%s] %s', $error['property'], $error['message']);
                 }
                 throw new \InvalidArgumentException(sprintf(
                     'Invalid JSON when processing report "%s": %s%s',
-                    $reportName, PHP_EOL.PHP_EOL.PHP_EOL, implode(PHP_EOL, $errorString)
+                    $reportName, PHP_EOL . PHP_EOL . PHP_EOL, implode(PHP_EOL, $errorString)
                 ));
             }
 

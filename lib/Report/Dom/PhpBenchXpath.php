@@ -1,10 +1,17 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Report\Dom;
 
-use PhpBench\Report\Tool\Calculator;
-
-require_once('xpath_functions.php');
+require_once 'xpath_functions.php';
 
 /**
  * This class registers some PHP functions which can be used in XPath
@@ -42,7 +49,7 @@ class PhpBenchXpath extends \DOMXpath
         }
 
         $expr = preg_replace(
-            '{php:bench\(\'([a-z]+)}', 
+            '{php:bench\(\'([a-z]+)}',
             'php:function(\'PhpBench\\Report\\Dom\\functions\\\$1',
             $expr
         );

@@ -43,12 +43,12 @@ class SubjectResult
         return $this->groups;
     }
 
-    public function getParameters() 
+    public function getParameters()
     {
         return $this->parameters;
     }
 
-    public function getIdentifier() 
+    public function getIdentifier()
     {
         return $this->identifier;
     }

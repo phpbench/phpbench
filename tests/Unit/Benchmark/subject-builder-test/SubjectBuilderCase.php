@@ -39,7 +39,7 @@ class SubjectBuilderCase implements Benchmark
         return array(
             array(
                 'one', 'two',
-            )
+            ),
         );
     }
 }

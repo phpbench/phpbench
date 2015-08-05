@@ -17,9 +17,9 @@ use PhpBench\Exception\InvalidArgumentException;
 class SubjectBuilder
 {
     /**
-     * @var integer
+     * @var int
      */
-    static $subjectIdCounter = 0;
+    public static $subjectIdCounter = 0;
 
     /**
      * @var Parser
@@ -37,12 +37,11 @@ class SubjectBuilder
     }
 
     public function buildSubjects(
-        Benchmark $benchmark, 
+        Benchmark $benchmark,
         array $subjectsOverride = null,
         array $groups = null,
         array $parametersOverride = null
-    )
-    {
+    ) {
         $reflection = new \ReflectionClass(get_class($benchmark));
         $defaults = $this->parser->parseDoc($reflection->getDocComment());
         $methods = $reflection->getMethods();

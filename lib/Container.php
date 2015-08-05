@@ -1,22 +1,17 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench;
 
-use PhpBench\Console\Application;
-use PhpBench\Report\Generator\ConsoleTableGenerator;
-use PhpBench\Console\Command\ReportCommand;
-use PhpBench\ProgressLogger\DotsProgressLogger;
-use PhpBench\Console\Command\RunCommand;
-use PhpBench\Extension;
-use PhpBench\Result\Dumper\XmlDumper;
-use PhpBench\Report\ReportManager;
-use PhpBench\ProgressLoggerRegistry;
-use PhpBench\Benchmark\Runner;
-use PhpBench\Benchmark\CollectionBuilder;
-use Symfony\Component\Finder\Finder;
-use PhpBench\Benchmark\SubjectBuilder;
-use PhpBench\Result\Loader\XmlLoader;
-use PhpBench\Extension\CoreExtension;
+
 
 /**
  * PHPBench Container.
@@ -86,6 +81,7 @@ class Container
      * Note that this method will return the same instance on subsequent calls.
      *
      * @param string $serviceId
+     *
      * @return mixed
      */
     public function get($serviceId)
@@ -107,7 +103,7 @@ class Container
     }
 
     /**
-     * Set a service instance
+     * Set a service instance.
      *
      * @param string $serviceId
      * @param mixed $instance
@@ -118,9 +114,10 @@ class Container
     }
 
     /**
-     * Return services IDs for the given tag
+     * Return services IDs for the given tag.
      *
      * @param string $tag
+     *
      * @return string[]
      */
     public function getServiceIdsForTag($tag)
@@ -174,7 +171,9 @@ class Container
      * Return the parameter with the given name.
      *
      * @param string $name
+     *
      * @return mixed
+     *
      * @throws \InvalidArgumentException
      */
     public function getParameter($name)

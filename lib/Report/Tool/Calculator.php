@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Table Data package
+ * This file is part of the PHP Bench package
  *
  * (c) Daniel Leech <daniel@dantleech.com>
  *

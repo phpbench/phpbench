@@ -5,7 +5,7 @@
  *
  * (c) Daniel Leech <daniel@dantleech.com>
  *
- * For the default copyright and license information, please view the LICENSE
+ * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
@@ -34,7 +34,7 @@ class RunCommandTest extends BaseCommandTestCase
 
     /**
      * It should run when given a path.
-     * It should show the default (simple) report
+     * It should show the default (simple) report.
      */
     public function testCommand()
     {
@@ -284,12 +284,12 @@ class RunCommandTest extends BaseCommandTestCase
     }
 
     /**
-     * It should disable the setup and tear down methods
+     * It should disable the setup and tear down methods.
      */
     public function testDisableSetup()
     {
         $path = __DIR__ . '/../../benchmarks/BenchmarkBench.php';
-        require_once($path);
+        require_once $path;
         BenchmarkBench::$setUpCalled = false;
         BenchmarkBench::$tearDownCalled = false;
 

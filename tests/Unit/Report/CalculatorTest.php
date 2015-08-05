@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Tests\Unit\Report;
 
 use PhpBench\Report\Tool\Calculator;
@@ -73,7 +82,7 @@ EOT
     }
 
     /**
-     * Mean should return 0 if the sum of all values is zero
+     * Mean should return 0 if the sum of all values is zero.
      */
     public function testMeanAllZeros()
     {

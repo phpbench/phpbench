@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Report\Generator;
 
 use PhpBench\Console\OutputAware;
@@ -11,7 +20,6 @@ use PhpBench\Result\SuiteResult;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use PhpBench\Report\Dom\PhpBenchXpath;
-use PhpBench\Report\Util;
 use PhpBench\Report\Tool\Sort;
 use PhpBench\Report\Tool\Formatter;
 
@@ -43,8 +51,8 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
 
     public function __construct(XmlDumper $xmlDumper = null, Formatter $formatter = null)
     {
-        $this->xmlDumper = $xmlDumper ? : new XmlDumper();
-        $this->formatter = $formatter ? : new Formatter();
+        $this->xmlDumper = $xmlDumper ?: new XmlDumper();
+        $this->formatter = $formatter ?: new Formatter();
     }
 
     /**
@@ -64,14 +72,14 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
                     'oneOf' => array(
                         array('type' => 'string'),
                         array('type' => 'null'),
-                    )
+                    ),
                 ),
                 'description' => array(
                     'description' => 'Description of the report to display',
                     'oneOf' => array(
                         array('type' => 'string'),
                         array('type' => 'null'),
-                    )
+                    ),
                 ),
                 'rows' => array(
                     'type' => 'array',
@@ -82,7 +90,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
                                 'type' => 'object',
                             ),
                             'with_items' => array(
-                                'type' => 'array'
+                                'type' => 'array',
                             ),
                             'with_query' => array(
                                 'type' => 'string',
@@ -104,7 +112,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
                     'oneOf' => array(
                         array('type' => 'object'),
                         array('type' => 'array'),
-                    )
+                    ),
                 ),
                 'generator' => array(
                     'type' => 'string',
@@ -378,7 +386,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
      *       one of the cell names. The array would then contain one element per
      *       compiler pass.
      *
-     * @param \DOMDocument $tableDom 
+     * @param \DOMDocument $tableDom
      * @param array $config
      */
     private function postProcess(\DOMDocument $tableDom, $config)
@@ -451,7 +459,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
 
         if (false === $value) {
             throw new \InvalidArgumentException(sprintf(
-                'XPath expression "%s" is invalid or it evaluated to false, in which case PHP doesn\'t allow us to know the difference' . 
+                'XPath expression "%s" is invalid or it evaluated to false, in which case PHP doesn\'t allow us to know the difference' .
                 ' between false and an invalid expression.',
                 $cellExpr
             ));
@@ -470,7 +478,8 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
         if (class_exists('Symfony\Component\Console\Helper\Table')) {
             return new Table($this->output);
         }
-        return new \Symfony\Component\Console\Helper\TableHelper();   
+
+        return new \Symfony\Component\Console\Helper\TableHelper();
     }
 
     /**
@@ -482,6 +491,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
     {
         if (class_exists('Symfony\Component\Console\Helper\Table')) {
             $table->render();
+
             return;
         }
         $table->render($this->output);
@@ -502,6 +512,7 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
      * @param string $expression
      * @param string $item
      * @param string $context
+     *
      * @return string
      */
     private function replaceItem($expression, $item, $context)
@@ -509,20 +520,22 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
         if (null === $item) {
             return $expression;
         }
+
         return preg_replace('/{{\s*?' . $context . '\.item\s*}}/', $item, $expression);
     }
 
     /**
-     * Replace any parameters in a string (f.e. an XPath query
+     * Replace any parameters in a string (f.e. an XPath query.
      *
      * @param string $string
      * @param array $parameters
+     *
      * @return string
      */
     private function replaceParameters($string, array $parameters)
     {
         foreach ($parameters as $key => $value) {
-            $string = preg_replace('/{{\s*?param.' . $key. '\s*}}/', $value, $string);
+            $string = preg_replace('/{{\s*?param.' . $key . '\s*}}/', $value, $string);
         }
 
         return $string;

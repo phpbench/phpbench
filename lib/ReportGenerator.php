@@ -13,7 +13,6 @@ namespace PhpBench;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use PhpBench\Result\SuiteResult;
-use Symfony\Component\Console\Output\OutputInterface;
 
 interface ReportGenerator
 {
@@ -26,7 +25,7 @@ interface ReportGenerator
     public function getSchema();
 
     /**
-     * Generate the report
+     * Generate the report.
      *
      * @param SuiteResult $collection
      * @param array $config
@@ -35,7 +34,7 @@ interface ReportGenerator
 
     /**
      * Return an array of report configurations keyed by the report name
-     * that should be available by default
+     * that should be available by default.
      *
      * @return array
      */
