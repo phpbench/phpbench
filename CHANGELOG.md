@@ -15,6 +15,7 @@ CHANGELOG
 - Removal of the "description" annotation.
 - Removed OptionsResolver, replaced functionality with JSON schema to allow
   validation of nested report configurations.
+- All interfaces now suffixed with "Interface"
 
 0.4
 ---

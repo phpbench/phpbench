@@ -9,11 +9,8 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Console;
+namespace PhpBench;
 
-use Symfony\Component\Console\Output\OutputInterface;
-
-interface OutputAware
+interface BenchmarkInterface
 {
-    public function setOutput(OutputInterface $output);
 }

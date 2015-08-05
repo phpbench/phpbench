@@ -9,20 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench;
+namespace PhpBench\Console;
 
-use PhpBench\Benchmark\Subject;
 use Symfony\Component\Console\Output\OutputInterface;
 
-interface ProgressLogger
+interface OutputAwareInterface
 {
-    public function benchmarkEnd(Benchmark $case);
-
-    public function benchmarkStart(Benchmark $case);
-
-    public function subjectEnd(Subject $case);
-
-    public function subjectStart(Subject $case);
-
     public function setOutput(OutputInterface $output);
 }

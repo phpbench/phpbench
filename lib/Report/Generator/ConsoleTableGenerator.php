@@ -11,10 +11,8 @@
 
 namespace PhpBench\Report\Generator;
 
-use PhpBench\Console\OutputAware;
 use PhpBench\Result\Dumper\XmlDumper;
 use Symfony\Component\Console\Helper\Table;
-use PhpBench\ReportGenerator;
 use Symfony\Component\Console\Output\OutputInterface;
 use PhpBench\Result\SuiteResult;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
@@ -22,12 +20,14 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use PhpBench\Report\Dom\PhpBenchXpath;
 use PhpBench\Report\Tool\Sort;
 use PhpBench\Report\Tool\Formatter;
+use PhpBench\Console\OutputAwareInterface;
+use PhpBench\ReportGeneratorInterface;
 
 /**
  * Report which generates console based tabular reports
  * using XPath as a datasource.
  */
-class ConsoleTableGenerator implements OutputAware, ReportGenerator
+class ConsoleTableGenerator implements OutputAwareInterface, ReportGeneratorInterface
 {
     /**
      * @var OutputInterface

@@ -11,8 +11,8 @@
 
 namespace PhpBench\Benchmark;
 
-use PhpBench\Benchmark;
 use PhpBench\Exception\InvalidArgumentException;
+use PhpBench\BenchmarkInterface;
 
 class SubjectBuilder
 {
@@ -37,7 +37,7 @@ class SubjectBuilder
     }
 
     public function buildSubjects(
-        Benchmark $benchmark,
+        BenchmarkInterface $benchmark,
         array $subjectsOverride = null,
         array $groups = null,
         array $parametersOverride = null
@@ -73,7 +73,7 @@ class SubjectBuilder
         return $subjects;
     }
 
-    private function createSubjects(&$subjects, array $parameters = null, Benchmark $benchmark, \ReflectionMethod $method, array $meta)
+    private function createSubjects(&$subjects, array $parameters = null, BenchmarkInterface $benchmark, \ReflectionMethod $method, array $meta)
     {
         $parameterSets = $this->getParameterSets($benchmark, $meta['paramProvider'], $parameters);
         $paramsIterator = new CartesianParameterIterator($parameterSets);
@@ -92,7 +92,7 @@ class SubjectBuilder
         }
     }
 
-    private function getParameterSets(Benchmark $benchmark, array $paramProviderMethods, $parameters)
+    private function getParameterSets(BenchmarkInterface $benchmark, array $paramProviderMethods, $parameters)
     {
         if ($parameters) {
             return array(array($parameters));

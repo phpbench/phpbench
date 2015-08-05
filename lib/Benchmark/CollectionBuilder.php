@@ -50,7 +50,7 @@ class CollectionBuilder
             $classFqn = static::getClassNameFromFile($file->getRealPath());
             $refl = new \ReflectionClass($classFqn);
 
-            if (!$refl->isSubclassOf('PhpBench\\Benchmark')) {
+            if (!$refl->isSubclassOf('PhpBench\\BenchmarkInterface')) {
                 continue;
             }
 

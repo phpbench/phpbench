@@ -11,7 +11,7 @@
 
 namespace PhpBench\Tests\Functional\benchmarks;
 
-use PhpBench\Benchmark;
+use PhpBench\BenchmarkInterface;
 
 /**
  * This example benchmarks array_key_exists vs. isset vs. in_array.
@@ -24,7 +24,7 @@ use PhpBench\Benchmark;
  * @iterations 4
  * @group array_keys
  */
-class ArrayKeysBench implements Benchmark
+class ArrayKeysBench implements BenchmarkInterface
 {
     private $array;
     private $values;

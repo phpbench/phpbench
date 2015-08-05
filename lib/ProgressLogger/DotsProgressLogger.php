@@ -11,12 +11,12 @@
 
 namespace PhpBench\ProgressLogger;
 
-use PhpBench\Benchmark;
+use PhpBench\BenchmarkInterface;
 use PhpBench\Benchmark\Subject;
-use PhpBench\ProgressLogger;
 use Symfony\Component\Console\Output\OutputInterface;
+use PhpBench\ProgressLoggerInterface;
 
-class DotsProgressLogger implements ProgressLogger
+class DotsProgressLogger implements ProgressLoggerInterface
 {
     private $output;
     private $showBench;
@@ -31,7 +31,7 @@ class DotsProgressLogger implements ProgressLogger
         $this->output = $output;
     }
 
-    public function benchmarkStart(Benchmark $case)
+    public function benchmarkStart(BenchmarkInterface $case)
     {
         static $first = true;
 
@@ -46,7 +46,7 @@ class DotsProgressLogger implements ProgressLogger
         }
     }
 
-    public function benchmarkEnd(Benchmark $case)
+    public function benchmarkEnd(BenchmarkInterface $case)
     {
     }
 

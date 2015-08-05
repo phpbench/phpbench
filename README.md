@@ -210,14 +210,14 @@ Example
 ````php
 <?php
 use PhpBench\Benchmark\Iteration;
-use PhpBench\Benchmark;
+use PhpBench\BenchmarkInterface;
 
 /**
  * Annotations in the class doc are applied to each method
  *
  * @revs 1000
  */
-class SomeBenchmarkBench implements Benchmark
+class SomeBenchmarkBench implements BenchmarkInterface
 {
     public function benchRandom(Iteration $iteration)
     {

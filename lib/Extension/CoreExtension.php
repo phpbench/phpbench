@@ -11,7 +11,6 @@
 
 namespace PhpBench\Extension;
 
-use PhpBench\Extension;
 use PhpBench\Container;
 use PhpBench\ProgressLogger\DotsProgressLogger;
 use PhpBench\Report\Generator\ConsoleTableGenerator;
@@ -27,8 +26,9 @@ use PhpBench\Benchmark\Runner;
 use PhpBench\Console\Application;
 use Symfony\Component\Finder\Finder;
 use PhpBench\Report\Generator\CompositeGenerator;
+use PhpBench\ExtensionInterface;
 
-class CoreExtension implements Extension
+class CoreExtension implements ExtensionInterface
 {
     public function configure(Container $container)
     {

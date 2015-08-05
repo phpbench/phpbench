@@ -10,9 +10,9 @@
  */
 
 use PhpBench\Benchmark\Iteration;
-use PhpBench\Benchmark;
+use PhpBench\BenchmarkInterface;
 
-class BenchmarkBench implements Benchmark
+class BenchmarkBench implements BenchmarkInterface
 {
     public static $setUpCalled = false;
     public static $tearDownCalled = false;

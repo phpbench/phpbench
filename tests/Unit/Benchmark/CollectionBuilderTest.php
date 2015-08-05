@@ -31,6 +31,6 @@ class CollectionBuilderTest extends \PHPUnit_Framework_TestCase
         $cases = $collection->getBenchmarks();
 
         $this->assertCount(2, $cases);
-        $this->assertContainsOnlyInstancesOf('PhpBench\\Benchmark', $cases);
+        $this->assertContainsOnlyInstancesOf('PhpBench\\BenchmarkInterface', $cases);
     }
 }
