@@ -199,7 +199,7 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
      * It should throw an exception if the configuration does not match the schema
      *
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The property - barbarboo - is not defined and the definition does not allow additional properties
+     * @expectedExceptionMessage is not defined and the definition does not allow additional properties
      */
     public function testInvalidSchema()
     {
