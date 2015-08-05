@@ -161,6 +161,11 @@ class ReportManager
         return $this->reports[$name];
     }
 
+    /**
+     * Return the named generator.
+     *
+     * @return ReportGenerator
+     */
     public function getGenerator($name)
     {
         if (!isset($this->generators[$name])) {
@@ -198,6 +203,9 @@ class ReportManager
 
             $generator = $this->getGenerator($reportConfig['generator']);
             $reportConfig = array_replace_recursive($generator->getDefaultConfig(), $reportConfig);
+
+            // not sure if there is a better way to convert the schema array to objects
+            // as expected by the validator.
             $validationConfig = json_decode(json_encode($reportConfig));
             $schema = json_decode(json_encode($generator->getSchema()));
             $this->validator->check($validationConfig, $schema);

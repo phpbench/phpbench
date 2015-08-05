@@ -49,6 +49,10 @@ class ConsoleTableGenerator implements OutputAware, ReportGenerator
      */
     private $postProcessElements = array();
 
+    /**
+     * @param XmlDumper $xmlDumper
+     * @param Formatter $formatter
+     */
     public function __construct(XmlDumper $xmlDumper = null, Formatter $formatter = null)
     {
         $this->xmlDumper = $xmlDumper ?: new XmlDumper();
