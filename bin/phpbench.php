@@ -9,9 +9,12 @@
  * file that was distributed with this source code.
  */
 
-require_once __DIR__ . '/../lib/Container.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use PhpBench\Container;
+
+// refactor this entire file as all tests are now isolated and we need not
+// include the bootstrap here and can simply include the autoload.php as normal
 
 $configPaths = array();
 $container = new Container();

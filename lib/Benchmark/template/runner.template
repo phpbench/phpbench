@@ -1,0 +1,31 @@
+<?php
+
+require_once('{{ bootstrap }}');
+
+$class = '{{ class }}';
+$subject = '{{ subject }}';
+$revolutions = {{ revolutions }};
+$beforeMethods = {{ beforeMethods }};
+
+$benchmark = new $class();
+
+foreach ($beforeMethods as $beforeMethod) {
+    $benchmark->$beforeMethod();
+}
+
+$startMemory = memory_get_usage();
+$startTime = microtime(true);
+
+
+for ($i = 0; $i < $revolutions; $i++) {
+    $benchmark->$subject();
+}
+
+$endTime = microtime(true);
+$endMemory = memory_get_usage();
+
+echo json_encode(array(
+    'memory' => $endMemory - $startMemory,
+    'time' => ($endTime - $startTime) * 1000000,
+));
+exit(0);
