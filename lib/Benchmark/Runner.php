@@ -16,7 +16,7 @@ use PhpBench\ProgressLogger;
 use PhpBench\Result\SubjectResult;
 use PhpBench\Result\IterationResult;
 use PhpBench\Result\BenchmarkResult;
-use PhpBench\Result\SuiteResult;
+use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\Result\IterationsResult;
 use PhpBench\Exception\InvalidArgumentException;
 use PhpBench\Result\Loader\XmlLoader;
@@ -31,8 +31,6 @@ class Runner
     private $logger;
     private $collectionBuilder;
     private $subjectBuilder;
-    private $subjectMemoryTotal;
-    private $subjectLastMemoryInclusive;
     private $iterationsOverride;
     private $revsOverride;
     private $setUpTearDown = true;
@@ -141,7 +139,7 @@ class Runner
      */
     public function runAll($path)
     {
-        $dom = new SuiteResult();
+        $dom = new SuiteDocument();
         $suiteEl = $dom->createElement('suite');
 
         $collection = $this->collectionBuilder->buildCollection($path);
@@ -229,10 +227,6 @@ class Runner
 
         $iterationEl->setAttribute('time', $result['time']);
         $iterationEl->setAttribute('memory', $result['memory']);
-    }
-
-    private function createSubjects(&$subjects, array $parameters = null, BenchmarkInterface $benchmark, \ReflectionMethod $method, array $meta)
-    {
     }
 
     private function getParameterSets(BenchmarkInterface $benchmark, array $paramProviderMethods, $parameters)

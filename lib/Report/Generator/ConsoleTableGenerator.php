@@ -14,7 +14,7 @@ namespace PhpBench\Report\Generator;
 use PhpBench\Result\Dumper\XmlDumper;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
-use PhpBench\Result\SuiteResult;
+use PhpBench\Benchmark\SuiteDocument;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use PhpBench\Report\Dom\PhpBenchXpath;
@@ -35,11 +35,6 @@ class ConsoleTableGenerator implements OutputAwareInterface, ReportGeneratorInte
     private $output;
 
     /**
-     * @var XmlDumper
-     */
-    private $xmlDumper;
-
-    /**
      * @var Formatter
      */
     private $formatter;
@@ -53,9 +48,8 @@ class ConsoleTableGenerator implements OutputAwareInterface, ReportGeneratorInte
      * @param XmlDumper $xmlDumper
      * @param Formatter $formatter
      */
-    public function __construct(XmlDumper $xmlDumper = null, Formatter $formatter = null)
+    public function __construct(Formatter $formatter = null)
     {
-        $this->xmlDumper = $xmlDumper ?: new XmlDumper();
         $this->formatter = $formatter ?: new Formatter();
     }
 
@@ -162,7 +156,7 @@ class ConsoleTableGenerator implements OutputAwareInterface, ReportGeneratorInte
     /**
      * {@inheritDoc}
      */
-    public function generate(SuiteResult $suite, array $config)
+    public function generate(SuiteDocument $suite, array $config)
     {
         if (null !== $config['title']) {
             $this->output->writeln(sprintf('<title>%s</title>', $config['title']));
@@ -172,17 +166,14 @@ class ConsoleTableGenerator implements OutputAwareInterface, ReportGeneratorInte
             $this->output->writeln(sprintf('<description>%s</description>', $config['description']));
         }
 
-        $dom = $this->xmlDumper->dump($suite);
-
         if ($config['debug']) {
-            $dom->formatOutput = true;
             $this->output->writeln('<info>Suite XML</info>');
-            $this->output->writeln($dom->saveXML());
+            $this->output->writeln($suite->saveXML());
         }
 
         $tableDom = new \DOMDocument(1.0);
 
-        $this->transformToTableDom($dom, $tableDom, $config);
+        $this->transformToTableDom($suite, $tableDom, $config);
 
         if ($config['debug']) {
             $tableDom->formatOutput = true;

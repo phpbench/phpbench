@@ -41,23 +41,4 @@ class SubjectBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(3, $subject->getNbIterations());
         $this->assertInternalType('int', $subject->getNbIterations());
     }
-
-    /**
-     * It should throw an exception if a parameter provider does not exist.
-     *
-     * @expectedException PhpBench\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Unknown param provider "notExistingParam" for bench benchmark
-     */
-    public function testInvalidParamProvider()
-    {
-        $case = new \SubjectBuilderCaseInvalidParamProvider();
-        $this->subjectBuilder->buildSubjects($case)->willReturn(array(
-            $this->subject->reveal(),
-        ));
-        $this->subject->getNbIterations()->willReturn(1);
-        $this->subject->getParameters()->willReturn(array('notExistingParam'));
-        $this->subject->getProcessIsolation()->willReturn(false);
-
-        $this->runner->runAll();
-    }
 }

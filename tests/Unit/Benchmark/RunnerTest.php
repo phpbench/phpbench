@@ -25,11 +25,13 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->collection = $this->prophesize('PhpBench\\Benchmark\\Collection');
         $this->subject = $this->prophesize('PhpBench\\Benchmark\\Subject');
         $this->collectionBuilder->buildCollection(__DIR__)->willReturn($this->collection);
+        $this->executor = $this->prophesize('PhpBench\Benchmark\Executor');
 
         $this->runner = new Runner(
             $this->collectionBuilder->reveal(), 
             $this->subjectBuilder->reveal(),
-            $this->executor->reveal()
+            $this->executor->reveal(),
+            null
         );
     }
 
@@ -41,7 +43,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
      *
      * @dataProvider provideRunner
      */
-    public function testRunner($iterations, $revs, $expectedNbCalls)
+    public function testRunner($iterations, $revs, $expectedNbIterations)
     {
         $this->collection->getBenchmarks()->willReturn(array(
             $this->case,
@@ -53,18 +55,18 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->subject->getMethodName()->willReturn('benchFoo');
         $this->subject->getBeforeMethods()->willReturn(array('beforeFoo'));
         $this->subject->getIdentifier()->willReturn(1);
-        $this->subject->getParameters()->willReturn(array());
+        $this->subject->getParamProviders()->willReturn(array());
         $this->subject->getGroups()->willReturn(array());
-        $this->subject->getProcessIsolation()->willReturn(false);
         $this->subject->getRevs()->willReturn($revs);
+
+        foreach ($revs as $revCount) {
+            $this->executor->execute($this->case, 'benchFoo', $revCount, array('beforeFoo'), array())->shouldBeCalledTimes($iterations);
+        }
 
         $result = $this->runner->runAll(__DIR__);
 
-        $this->assertEquals($expectedNbCalls, $this->case->called);
-        $this->assertTrue($this->case->beforeCalled);
-
-        $this->assertInstanceOf('PhpBench\\Result\\SuiteResult', $result);
-        $this->assertEquals(1, count($result->getBenchmarkResults()));
+        $this->assertInstanceOf('PhpBench\Benchmark\SuiteDocument', $result);
+        $this->assertEquals($expectedNbIterations, $result->getNbIterations());
     }
 
     public function provideRunner()
@@ -73,43 +75,19 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
             array(
                 1,
                 array(1),
-                1,
+                1
             ),
             array(
                 1,
                 array(1, 3),
-                4,
+                2,
             ),
             array(
-                1,
-                array(1, 3),
                 4,
+                array(1, 3),
+                8
             ),
         );
-    }
-
-    /**
-     * It should throw an exception if a before method does not exist.
-     *
-     * @expectedException PhpBench\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Unknown bench benchmark method "beforeFooNotExisting"
-     */
-    public function testInvalidBeforeMethod()
-    {
-        $this->collection->getBenchmarks()->willReturn(array(
-            $this->case,
-        ));
-        $this->subjectBuilder->buildSubjects($this->case, null, null, null)->willReturn(array(
-            $this->subject->reveal(),
-        ));
-        $this->subject->getNbIterations()->willReturn(1);
-        $this->subject->getIdentifier()->willReturn(1);
-        $this->subject->getParameters()->willReturn(array());
-        $this->subject->getBeforeMethods()->willReturn(array('beforeFooNotExisting'));
-        $this->subject->getProcessIsolation()->willReturn(false);
-        $this->subject->getRevs()->willReturn(array(1));
-
-        $this->runner->runAll(__DIR__);
     }
 
     /**
@@ -124,11 +102,10 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
             $this->subject->reveal(),
         ));
         $this->subject->getIdentifier()->willReturn(1);
-        $this->subject->getParameters()->willReturn(array());
+        $this->subject->getParamProviders()->willReturn(array());
         $this->subject->getMethodName()->willReturn('benchFoo');
         $this->subject->getGroups()->willReturn(array());
         $this->subject->getNbIterations()->willReturn(0);
-        $this->subject->getProcessIsolation()->willReturn(false);
         $this->subject->getRevs()->willReturn(array(1));
 
         $this->runner->runAll(__DIR__);
@@ -151,11 +128,10 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
             $this->subject->reveal(),
         ));
         $this->subject->getIdentifier()->willReturn(1);
-        $this->subject->getParameters()->willReturn(array());
+        $this->subject->getParamProviders()->willReturn(array());
         $this->subject->getMethodName()->willReturn('benchFoo');
         $this->subject->getGroups()->willReturn(array());
         $this->subject->getNbIterations()->willReturn(0);
-        $this->subject->getProcessIsolation()->willReturn(false);
         $this->subject->getRevs()->willReturn(array(1));
 
         $this->runner->runAll(__DIR__);
@@ -167,43 +143,4 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
 
 class RunnerTestBenchCase implements BenchmarkInterface
 {
-    public $beforeCalled = false;
-    public $setUpCalled = false;
-    public $tearDownCalled = false;
-    public $called = 0;
-
-    public function setUp()
-    {
-        $this->setUpCalled = true;
-    }
-
-    public function tearDown()
-    {
-        $this->tearDownCalled = true;
-    }
-
-    public function paramSetOne()
-    {
-        return array(
-            array('foo' => 'bar'),
-            array('foo' => 'bar'),
-        );
-    }
-
-    public function beforeFoo(Iteration $iteration)
-    {
-        $this->beforeCalled = true;
-    }
-
-    public function paramSetTwo()
-    {
-        return array(
-            array('bar' => 'foo'),
-        );
-    }
-
-    public function benchFoo(Iteration $iteration)
-    {
-        $this->called++;
-    }
 }

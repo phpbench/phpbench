@@ -71,4 +71,28 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue(file_exists($this->beforeMethodFile));
     }
+
+    /**
+     * It should throw an exception if a before method does not exist.
+     *
+     * @expectedException PhpBench\Exception\InvalidArgumentException
+     * @expectedExceptionMessage Unknown bench benchmark method "beforeFooNotExisting"
+     */
+    public function testInvalidBeforeMethod()
+    {
+        $this->collection->getBenchmarks()->willReturn(array(
+            $this->case,
+        ));
+        $this->subjectBuilder->buildSubjects($this->case, null, null, null)->willReturn(array(
+            $this->subject->reveal(),
+        ));
+        $this->subject->getNbIterations()->willReturn(1);
+        $this->subject->getIdentifier()->willReturn(1);
+        $this->subject->getParamProviders()->willReturn(array());
+        $this->subject->getBeforeMethods()->willReturn(array('beforeFooNotExisting'));
+        $this->subject->getRevs()->willReturn(array(1));
+
+        $this->runner->runAll(__DIR__);
+    }
+
 }

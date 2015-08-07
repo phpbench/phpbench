@@ -17,7 +17,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use PhpBench\Benchmark\Runner;
-use PhpBench\Result\Dumper\XmlDumper;
 use Symfony\Component\Console\Output\NullOutput;
 use PhpBench\ProgressLogger;
 use PhpBench\PhpBench;
@@ -27,7 +26,6 @@ use PhpBench\ProgressLoggerInterface;
 
 class RunCommand extends Command
 {
-    private $xmlDumper;
     private $reportManager;
     private $loggerRegistry;
     private $progressLoggerName;
@@ -37,7 +35,6 @@ class RunCommand extends Command
 
     public function __construct(
         Runner $runner,
-        XmlDumper $xmlDumper,
         ReportManager $reportManager,
         ProgressLoggerRegistry $loggerRegistry,
         $progressLoggerName = null,
@@ -45,7 +42,6 @@ class RunCommand extends Command
         $configPath = null
     ) {
         parent::__construct();
-        $this->xmlDumper = $xmlDumper;
         $this->reportManager = $reportManager;
         $this->loggerRegistry = $loggerRegistry;
         $this->progressLoggerName = $progressLoggerName;

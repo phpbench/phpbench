@@ -12,7 +12,7 @@
 namespace PhpBench;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use PhpBench\Result\SuiteResult;
+use PhpBench\Benchmark\SuiteDocument;
 
 interface ReportGeneratorInterface
 {
@@ -27,10 +27,10 @@ interface ReportGeneratorInterface
     /**
      * Generate the report.
      *
-     * @param SuiteResult $collection
+     * @param SuiteDocument $collection
      * @param array $config
      */
-    public function generate(SuiteResult $collection, array $config);
+    public function generate(SuiteDocument $collection, array $config);
 
     /**
      * Return an array of report configurations keyed by the report name

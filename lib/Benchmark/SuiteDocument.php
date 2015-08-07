@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Result;
+namespace PhpBench\Benchmark;
 
-class SuiteResult extends \DOMDocument
+class SuiteDocument extends \DOMDocument
 {
     public function __construct()
     {
@@ -26,11 +26,11 @@ class SuiteResult extends \DOMDocument
 
     public function getNbSubjects()
     {
-        return $this->xpath()->evaluate('count(//subject)');
+        return (int) $this->xpath()->evaluate('count(//subject)');
     }
 
     public function getNbIterations()
     {
-        return $this->xpath()->evaluate('count(//iteration)');
+        return (int) $this->xpath()->evaluate('count(//iteration)');
     }
 }

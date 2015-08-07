@@ -69,12 +69,6 @@ class CoreExtension implements ExtensionInterface
                 dirname($container->getParameter('config_path'))
             );
         });
-        $container->register('result.dumper.xml', function () {
-            return new XmlDumper();
-        });
-        $container->register('result.loader.xml', function () {
-            return new XmlLoader();
-        });
         $container->register('report.manager', function (Container $container) {
             return new ReportManager(
                 $container->get('json_schema.validator')
@@ -126,7 +120,6 @@ class CoreExtension implements ExtensionInterface
         $container->register('console.command.run', function (Container $container) {
             return new RunCommand(
                 $container->get('benchmark.runner'),
-                $container->get('result.dumper.xml'),
                 $container->get('report.manager'),
                 $container->get('progress_logger.registry'),
                 $container->getParameter('progress_logger_name'),
@@ -137,7 +130,6 @@ class CoreExtension implements ExtensionInterface
 
         $container->register('console.command.report', function (Container $container) {
             return new ReportCommand(
-                $container->get('result.loader.xml'),
                 $container->get('report.manager')
             );
         }, array('console.command' => array()));
