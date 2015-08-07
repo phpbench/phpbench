@@ -78,7 +78,6 @@ EOT
         $this->addOption('parameters', null, InputOption::VALUE_REQUIRED, 'Override parameters to use in (all) benchmarks');
         $this->addOption('iterations', null, InputOption::VALUE_REQUIRED, 'Override number of iteratios to run in (all) benchmarks');
         $this->addOption('revs', null, InputOption::VALUE_REQUIRED, 'Override number of revs (revolutions) on (all) benchmarks');
-        $this->addOption('process-isolation', 'pi', InputOption::VALUE_REQUIRED, 'Override rocess isolation policy, one of <comment>iteration</comment>, <comment>iterations</comment> or <comment>none</comment>');
         $this->addOption('no-setup', null, InputOption::VALUE_NONE, 'Do not execute setUp or tearDown methods');
         $this->addOption('progress', 'l', InputOption::VALUE_REQUIRED, 'Progress logger to use, one of <comment>dots</comment>, <comment>benchdots</comment>', 'dots');
         $this->addOption('gc-enable', null, InputOption::VALUE_NONE, 'Enable garbage collection');
@@ -97,15 +96,11 @@ EOT
         $configPath = $input->getOption('config');
         $enableGc = $input->getOption('gc-enable');
         $enableGc = null !== $enableGc ?: $this->enableGc;
-        $processIsolation = $input->getOption('process-isolation') ?: null;
         $subjects = $input->getOption('subject');
         $groups = $input->getOption('group');
         $dumpfile = $input->getOption('dump-file');
         $progressLoggerName = $input->getOption('progress') ?: $this->progressLoggerName;
         $path = $input->getArgument('path') ?: $this->benchPath;
-
-        $processIsolation = $processIsolation === 'none' ? false : $processIsolation;
-        Runner::validateProcessIsolation($processIsolation);
 
         $reportNames = $this->reportManager->processCliReports($reports);
 
@@ -144,7 +139,7 @@ EOT
 
         $consoleOutput->writeln('');
         $startTime = microtime(true);
-        $suiteResult = $this->executeBenchmarks($path, $subjects, $groups, $noSetup, $parameters, $iterations, $revs, $processIsolation, $configPath, $progressLogger);
+        $suiteResult = $this->executeBenchmarks($path, $subjects, $groups, $noSetup, $parameters, $iterations, $revs, $configPath, $progressLogger);
         $consoleOutput->writeln('');
 
         $consoleOutput->writeln(sprintf(
@@ -178,15 +173,12 @@ EOT
         $parameters,
         $iterations,
         $revs,
-        $processIsolation,
         $configPath,
         ProgressLoggerInterface $progressLogger = null
     ) {
         if ($progressLogger) {
             $this->runner->setProgressLogger($progressLogger);
         }
-
-        $this->runner->setProcessIsolation($processIsolation);
 
         if ($configPath) {
             $this->runner->setConfigPath($configPath);

@@ -27,6 +27,7 @@ use PhpBench\Console\Application;
 use Symfony\Component\Finder\Finder;
 use PhpBench\Report\Generator\CompositeGenerator;
 use PhpBench\ExtensionInterface;
+use PhpBench\Benchmark\Executor;
 
 class CoreExtension implements ExtensionInterface
 {
@@ -46,7 +47,14 @@ class CoreExtension implements ExtensionInterface
             return new Runner(
                 $container->get('benchmark.collection_builder'),
                 $container->get('benchmark.subject_builder'),
+                $container->get('benchmark.executor'),
                 $container->getParameter('config_path')
+            );
+        });
+        $container->register('benchmark.executor', function (Container $container) {
+            return new Executor(
+                $container->getParameter('config_path'),
+                $container->getParameter('bootstrap')
             );
         });
         $container->register('benchmark.finder', function (Container $container) {

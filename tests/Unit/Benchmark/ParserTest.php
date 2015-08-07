@@ -42,7 +42,6 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 * @beforeMethod afterBeforeMe
 * @paramProvider provideParam
 * @iterations  3
-* @processIsolation iteration
 * @revs 1000
 * @revs 10
 * @group base
@@ -52,7 +51,6 @@ EOT
                     'iterations' => 3,
                     'beforeMethod' => array('beforeMe', 'afterBeforeMe'),
                     'paramProvider' => array('provideParam'),
-                    'processIsolation' => 'iteration',
                     'revs' => array(1000, 10),
                     'group' => array('base'),
                 ),
@@ -67,7 +65,6 @@ EOT
                     'beforeMethod' => array(),
                     'paramProvider' => array(),
                     'iterations' => 1,
-                    'processIsolation' => false,
                     'revs' => array(),
                     'group' => array(),
                 ),
@@ -105,7 +102,6 @@ EOT
                     'iterations' => 3,
                     'beforeMethod' => array('beforeMe', 'afterBeforeMe'),
                     'paramProvider' => array('provideParam'),
-                    'processIsolation' => 'iteration',
                     'revs' => array(1000, 10),
                     'group' => array('boo'),
                 ),
@@ -114,7 +110,6 @@ EOT
 * @beforeMethod again
 * @paramProvider notherParam
 * @iterations 3
-* @processIsolation iterations
 * @revs 5
 * @group five
  */
@@ -124,7 +119,6 @@ EOT
                     'iterations' => 3,
                     'beforeMethod' => array('beforeMe', 'afterBeforeMe', 'again'),
                     'paramProvider' => array('provideParam', 'notherParam'),
-                    'processIsolation' => 'iterations',
                     'revs' => array(1000, 10, 5),
                     'group' => array('boo', 'five'),
                 ),
@@ -134,7 +128,6 @@ EOT
                     'iterations' => 3,
                     'beforeMethod' => array('beforeMe', 'afterBeforeMe'),
                     'paramProvider' => array('provideParam'),
-                    'processIsolation' => 'iteration',
                     'revs' => array(1000, 10),
                     'group' => array('boo'),
                 ),
@@ -148,7 +141,6 @@ EOT
                     'iterations' => 4,
                     'beforeMethod' => array('beforeMe', 'afterBeforeMe'),
                     'paramProvider' => array('provideParam'),
-                    'processIsolation' => 'iteration',
                     'revs' => array(1000, 10),
                     'group' => array('boo'),
                 ),
@@ -158,7 +150,6 @@ EOT
                     'iterations' => 3,
                     'beforeMethod' => array('beforeMe', 'afterBeforeMe'),
                     'paramProvider' => array('provideParam'),
-                    'processIsolation' => 'iteration',
                     'revs' => array(1000, 10),
                 ),
                 '/** */',
@@ -166,28 +157,11 @@ EOT
                     'iterations' => 3,
                     'beforeMethod' => array('beforeMe', 'afterBeforeMe'),
                     'paramProvider' => array('provideParam'),
-                    'processIsolation' => 'iteration',
                     'revs' => array(1000, 10),
                     'group' => array(),
                 ),
             ),
         );
-    }
-
-    /**
-     * It should throw an exception if more than one process isolation annotation is present.
-     *
-     * @expectedException \InvalidArgumentException
-     */
-    public function testMoreThanOneDescription()
-    {
-        $doc = <<<EOT
-/**
- * @processIsolation iteration
- * @processIsolation iterations
- */
-EOT;
-        $this->parser->parseDoc($doc);
     }
 
     /**
@@ -203,24 +177,6 @@ EOT;
  * @iterations 2
  */
 EOT;
-        $this->parser->parseDoc($doc);
-    }
-
-    /**
-     * Its should throw an exception if the process isolation is not valid.
-     *
-     * @expectedException PhpBench\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Process isolation must be one of "iteration", "iterations"
-     */
-    public function testInvalidProcessIsolation()
-    {
-        $doc = <<<EOT
-/**
-* @processIsolation iterationasd
-*/
-EOT
-        ;
-
         $this->parser->parseDoc($doc);
     }
 }

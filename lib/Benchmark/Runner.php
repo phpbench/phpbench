@@ -33,7 +33,6 @@ class Runner
     private $subjectBuilder;
     private $subjectMemoryTotal;
     private $subjectLastMemoryInclusive;
-    private $processIsolation;
     private $iterationsOverride;
     private $revsOverride;
     private $setUpTearDown = true;
@@ -41,6 +40,7 @@ class Runner
     private $parametersOverride;
     private $subjectsOverride;
     private $groups;
+    private $executor;
 
     /**
      * @param CollectionBuilder $collectionBuilder
@@ -50,11 +50,13 @@ class Runner
     public function __construct(
         CollectionBuilder $collectionBuilder,
         SubjectBuilder $subjectBuilder,
+        Executor $executor,
         $configPath
     ) {
         $this->logger = new NullProgressLogger();
         $this->collectionBuilder = $collectionBuilder;
         $this->subjectBuilder = $subjectBuilder;
+        $this->executor = $executor;
         $this->configPath = $configPath;
     }
 
@@ -76,16 +78,6 @@ class Runner
     public function setProgressLogger(ProgressLoggerInterface $logger)
     {
         $this->logger = $logger;
-    }
-
-    /**
-     * Set the process isolation policy
-     *
-     * @param string $processIsolation
-     */
-    public function setProcessIsolation($processIsolation)
-    {
-        $this->processIsolation = $processIsolation;
     }
 
     /**
@@ -218,12 +210,13 @@ class Runner
 
     private function runIteration(BenchmarkInterface $benchmark, Subject $subject, $iterationCount, $revolutionCount)
     {
-        $this->executor->execute(
-            $this->bootstrap,
-            get_class($benchmark),
-            $subject->getMethodName(),
-            $subject->getRevs(),
-            $subject->getBeforeMethods()
-        );
+        foreach ($subject->getRevs() as $revolutions) {
+            $this->executor->execute(
+                $benchmark,
+                $subject->getMethodName(),
+                $revolutions,
+                $subject->getBeforeMethods()
+            );
+        }
     }
 }

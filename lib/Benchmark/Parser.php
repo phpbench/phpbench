@@ -23,13 +23,12 @@ class Parser
             'beforeMethod' => array(),
             'paramProvider' => array(),
             'iterations' => array(),
-            'processIsolation' => array(),
             'group' => array(),
             'revs' => array(),
         );
 
         // singular annotations
-        foreach (array('iterations', 'processIsolation') as $key) {
+        foreach (array('iterations') as $key) {
             if (isset($defaults[$key]) && $defaults[$key]) {
                 $meta[$key][] = $defaults[$key];
             }
@@ -61,7 +60,7 @@ class Parser
         }
 
         // Do not allow these annotations to be redelared twice in the same docblock
-        foreach (array('iterations', 'processIsolation') as $key) {
+        foreach (array('iterations') as $key) {
             // allow overriding single values
             if (count($meta[$key] == 2) && !empty($defaults[$key]) && count($defaults[$key]) == 1) {
                 $value = array_pop($meta[$key]);
@@ -75,13 +74,8 @@ class Parser
             }
         }
 
-        $meta['processIsolation'] = reset($meta['processIsolation']);
         $iterations = $meta['iterations'];
         $meta['iterations'] = empty($iterations) ? 1 : (int) reset($iterations);
-
-        if ($meta['processIsolation']) {
-            Runner::validateProcessIsolation($meta['processIsolation']);
-        }
 
         return $meta;
     }

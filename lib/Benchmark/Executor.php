@@ -3,9 +3,29 @@
 namespace PhpBench\Benchmark;
 
 use Symfony\Component\Process\Process;
+use PhpBench\BenchmarkInterface;
 
 class Executor
 {
+    /**
+     * @var string
+     */
+    private $bootstrap;
+
+    /**
+     * @var string
+     */
+    private $configDir;
+
+    /**
+     * @param mixed $bootstrap
+     */
+    public function __construct($configDir, $bootstrap)
+    {
+        $this->configDir = $configDir;
+        $this->bootstrap = $bootstrap;
+    }
+
     /**
      * @param string $bootstrap
      * @param string $class
@@ -13,13 +33,15 @@ class Executor
      * @param integer $revolutions
      * @param string[] $beforeMethods
      */
-    public function execute($bootstrap, $class, $subject, $revolutions = 0, $beforeMethods = array())
+    public function execute(BenchmarkInterface $benchmark, $subject, $revolutions = 0, $beforeMethods = array())
     {
+        $refl = new \ReflectionClass($benchmark);
         $template = file_get_contents(__DIR__ . '/template/runner.template');
 
         $tokens = array(
-            '{{ bootstrap }}' => $bootstrap,
-            '{{ class }}' => $class,
+            '{{ bootstrap }}' => $this->getBootstrapPath(),
+            '{{ class }}' => $refl->getName(),
+            '{{ file }}' => $refl->getFileName(),
             '{{ subject }}' => $subject,
             '{{ revolutions }}' => $revolutions,
             '{{ beforeMethods }}' => var_export($beforeMethods, true),
@@ -49,5 +71,15 @@ class Executor
         $result = json_decode($process->getOutput(), true);
 
         return $result;
+    }
+
+    private function getBootstrapPath()
+    {
+        // if the path is absolute, return it unmodified
+        if ('/' === substr($this->bootstrap, 0, 1)) {
+            return $this->bootstrap;
+        }
+
+        return $this->configDir . '/' . $this->bootstrap;
     }
 }

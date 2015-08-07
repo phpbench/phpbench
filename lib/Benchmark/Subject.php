@@ -21,7 +21,6 @@ class Subject
     private $beforeMethods;
     private $parameters;
     private $nbIterations;
-    private $processIsolation;
     private $revs;
     private $groups;
     private $identifier;
@@ -33,7 +32,6 @@ class Subject
      * @param array $parameters
      * @param mixed $nbIterations
      * @param array $revs
-     * @param mixed $processIsolation
      * @param array $groups
      */
     public function __construct(
@@ -43,7 +41,6 @@ class Subject
         array $parameters,
         $nbIterations,
         array $revs,
-        $processIsolation,
         array $groups
     ) {
         $this->identifier = $identifier;
@@ -52,7 +49,6 @@ class Subject
         $this->parameters = $parameters;
         $this->nbIterations = $nbIterations;
         $this->revs = $revs;
-        $this->processIsolation = $processIsolation;
         $this->groups = $groups;
     }
 
@@ -96,16 +92,6 @@ class Subject
     public function getMethodName()
     {
         return $this->methodName;
-    }
-
-    /**
-     * Return the process isolation policy for this subject.
-     *
-     * @return string
-     */
-    public function getProcessIsolation()
-    {
-        return $this->processIsolation;
     }
 
     /**

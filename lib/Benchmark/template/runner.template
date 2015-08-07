@@ -3,9 +3,12 @@
 require_once('{{ bootstrap }}');
 
 $class = '{{ class }}';
+$file = '{{ file }}';
 $subject = '{{ subject }}';
 $revolutions = {{ revolutions }};
 $beforeMethods = {{ beforeMethods }};
+
+require_once($file);
 
 $benchmark = new $class();
 

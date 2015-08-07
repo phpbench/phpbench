@@ -17,7 +17,6 @@ class IsolatedParameterBench implements BenchmarkInterface
     /**
      * @group process
      * @iterations 5
-     * @processIsolation iteration
      * @paramProvider provideParams
      */
     public function benchIterationIsolation()

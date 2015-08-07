@@ -113,15 +113,6 @@ Specify a method which will provide parameters which can be accessed from the
 If multiple parameter providers are specified, then the they will be combined
 in to a cartesian product.
 
-### @processIsolation
-
-**singular**
-
-Run each iteration or each set of iterations in an isolated process. This is
-useful for seeing the initial cost of the revolution.
-
-Must be one of `iteration` or `iterations`.
-
 setUp and tearDown
 ------------------
 
@@ -231,9 +222,6 @@ class SomeBenchmarkBench implements BenchmarkInterface
     {
     }
 
-    /**
-     * @processIsolation iteration
-     */
     public function benchSomethingIsolated()
 
     /**
