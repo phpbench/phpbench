@@ -1,12 +1,22 @@
 <?php
 
-require_once('{{ bootstrap }}');
+namespace PhpBench;
 
+gc_disable();
 $class = '{{ class }}';
 $file = '{{ file }}';
 $subject = '{{ subject }}';
 $revolutions = {{ revolutions }};
 $beforeMethods = {{ beforeMethods }};
+$bootstrap = '{{ bootstrap }}';
+
+if ($bootstrap) {
+    require_once($bootstrap);
+}
+
+if (false === interface_exists('PhpBench\BenchmarkInterface')) {
+    interface BenchmarkInterface {}
+}
 
 require_once($file);
 
@@ -19,9 +29,8 @@ foreach ($beforeMethods as $beforeMethod) {
 $startMemory = memory_get_usage();
 $startTime = microtime(true);
 
-
 for ($i = 0; $i < $revolutions; $i++) {
-    $benchmark->$subject();
+    $benchmark->$subject(null, $i);
 }
 
 $endTime = microtime(true);
@@ -29,6 +38,6 @@ $endMemory = memory_get_usage();
 
 echo json_encode(array(
     'memory' => $endMemory - $startMemory,
-    'time' => ($endTime - $startTime) * 1000000,
+    'time' => ($endTime * 1000000) - ($startTime * 1000000),
 ));
 exit(0);

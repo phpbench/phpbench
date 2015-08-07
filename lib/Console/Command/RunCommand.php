@@ -32,7 +32,6 @@ class RunCommand extends Command
     private $loggerRegistry;
     private $progressLoggerName;
     private $benchPath;
-    private $enableGc;
     private $configPath;
     private $runner;
 
@@ -43,7 +42,6 @@ class RunCommand extends Command
         ProgressLoggerRegistry $loggerRegistry,
         $progressLoggerName = null,
         $benchPath = null,
-        $enableGc = null,
         $configPath = null
     ) {
         parent::__construct();
@@ -52,7 +50,6 @@ class RunCommand extends Command
         $this->loggerRegistry = $loggerRegistry;
         $this->progressLoggerName = $progressLoggerName;
         $this->benchPath = $benchPath;
-        $this->enableGc = $enableGc;
         $this->configPath = $configPath;
         $this->runner = $runner;
     }
@@ -94,8 +91,6 @@ EOT
         $iterations = $input->getOption('iterations');
         $revs = $input->getOption('revs');
         $configPath = $input->getOption('config');
-        $enableGc = $input->getOption('gc-enable');
-        $enableGc = null !== $enableGc ?: $this->enableGc;
         $subjects = $input->getOption('subject');
         $groups = $input->getOption('group');
         $dumpfile = $input->getOption('dump-file');
@@ -103,10 +98,6 @@ EOT
         $path = $input->getArgument('path') ?: $this->benchPath;
 
         $reportNames = $this->reportManager->processCliReports($reports);
-
-        if (false === $enableGc) {
-            gc_disable();
-        }
 
         if (null === $path) {
             throw new \InvalidArgumentException(

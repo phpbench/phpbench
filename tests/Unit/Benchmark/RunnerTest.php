@@ -19,7 +19,6 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->logger = $this->prophesize('PhpBench\\ProgressLogger');
         $this->collectionBuilder = $this->prophesize('PhpBench\\Benchmark\\CollectionBuilder');
         $this->subjectBuilder = $this->prophesize('PhpBench\\Benchmark\\SubjectBuilder');
         $this->case = new RunnerTestBenchCase();
@@ -28,8 +27,9 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->collectionBuilder->buildCollection(__DIR__)->willReturn($this->collection);
 
         $this->runner = new Runner(
-            $this->collectionBuilder->reveal(), $this->subjectBuilder->reveal(),
-            $this->logger->reveal()
+            $this->collectionBuilder->reveal(), 
+            $this->subjectBuilder->reveal(),
+            $this->executor->reveal()
         );
     }
 

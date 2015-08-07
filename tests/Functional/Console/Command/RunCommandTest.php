@@ -209,36 +209,6 @@ class RunCommandTest extends BaseCommandTestCase
     }
 
     /**
-     * It can run each iteration in isolation.
-     * There are 2 subjects each with 5 iterations, so there should be 10 PIDs.
-     */
-    public function testProcessIsolationIteration()
-    {
-        $this->runCommand('run', array(
-            '--process-isolation' => 'iteration',
-            'path' => __DIR__ . '/../../benchmarks/IsolatedBench.php',
-        ));
-
-        $pids = array_unique(explode(PHP_EOL, trim(file_get_contents($this->pidPath))));
-        $this->assertCount(10, $pids);
-    }
-
-    /**
-     * It can run each set of iterations in isolation.
-     * There are 2 subjects, so there should be 2 PIDs.
-     */
-    public function testProcessIsolationIterations()
-    {
-        $this->runCommand('run', array(
-            '--process-isolation' => 'iterations',
-            'path' => __DIR__ . '/../../benchmarks/IsolatedBench.php',
-        ));
-
-        $pids = array_unique(explode(PHP_EOL, trim(file_get_contents($this->pidPath))));
-        $this->assertCount(2, $pids);
-    }
-
-    /**
      * It can have the progress logger specified.
      */
     public function testProgressLogger()
@@ -249,17 +219,6 @@ class RunCommandTest extends BaseCommandTestCase
         ));
         $display = $tester->getDisplay();
         $this->assertContains('BenchmarkBench', $display);
-    }
-
-    /**
-     * It should escape paramters when running in separate process.
-     */
-    public function testSeparateProcessEscape()
-    {
-        $this->runCommand('run', array(
-            '--process-isolation' => 'iteration',
-            'path' => __DIR__ . '/../../benchmarks/IsolatedParametersBench.php',
-        ));
     }
 
     /**

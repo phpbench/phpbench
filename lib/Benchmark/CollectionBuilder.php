@@ -16,14 +16,20 @@ use Symfony\Component\Finder\Finder;
 class CollectionBuilder
 {
     private $finder;
+    private $baseDir;
 
-    public function __construct(Finder $finder = null)
+    public function __construct(Finder $finder = null, $baseDir = null)
     {
         $this->finder = $finder ?: new Finder();
+        $this->baseDir = $baseDir;
     }
 
     public function buildCollection($path)
     {
+        if ($this->baseDir && '/' !== substr($path, 0, 1)) {
+            $path = realpath($this->baseDir . '/' . $path);
+        }
+
         if (!file_exists($path)) {
             throw new \InvalidArgumentException(sprintf(
                 'File or directory "%s" does not exist',

@@ -27,7 +27,7 @@ class BenchmarkBench implements BenchmarkInterface
         self::$tearDownCalled = true;
     }
 
-    public function benchRandom(Iteration $iteration)
+    public function benchRandom()
     {
         usleep(rand(0, 50000));
     }
@@ -37,7 +37,7 @@ class BenchmarkBench implements BenchmarkInterface
      * @revs 1000
      * @group do_nothing
      */
-    public function benchDoNothing(Iteration $iteration)
+    public function benchDoNothing()
     {
     }
 
@@ -47,7 +47,7 @@ class BenchmarkBench implements BenchmarkInterface
      * @group parameterized
      * @iterations 1
      */
-    public function benchParameterized(Iteration $iteration)
+    public function benchParameterized($params, $revs)
     {
     }
 

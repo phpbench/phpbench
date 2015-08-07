@@ -187,4 +187,15 @@ class Container
 
         return $this->parameters[$name];
     }
+
+    /**
+     * Return true if the named parameter exists
+     *
+     * @param string $name
+     * @return boolean
+     */
+    public function hasParameter($name)
+    {
+        return array_key_exists($name, $this->parameters);
+    }
 }

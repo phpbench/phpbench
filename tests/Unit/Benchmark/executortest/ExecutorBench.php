@@ -2,7 +2,9 @@
 
 namespace PhpBench\Tests\Unit\Benchmark\executortest;
 
-class ExecutorBench
+use PhpBench\BenchmarkInterface;
+
+class ExecutorBench implements BenchmarkInterface
 {
     public function beforeMethod()
     {

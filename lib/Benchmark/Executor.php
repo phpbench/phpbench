@@ -18,18 +18,18 @@ class Executor
     private $configDir;
 
     /**
-     * @param mixed $bootstrap
+     * @param string $configPath
+     * @param string $bootstrap
      */
-    public function __construct($configDir, $bootstrap)
+    public function __construct($configPath, $bootstrap)
     {
-        $this->configDir = $configDir;
+        $this->configDir = dirname($configPath);
         $this->bootstrap = $bootstrap;
     }
 
     /**
-     * @param string $bootstrap
-     * @param string $class
-     * @param string $method
+     * @param BenchmarkInterface $benchmark
+     * @param string $subject
      * @param integer $revolutions
      * @param string[] $beforeMethods
      */
@@ -62,9 +62,10 @@ class Executor
 
         if (false === $process->isSuccessful()) {
             throw new \RuntimeException(sprintf(
-                'Could not execute benchmark subject: %s %s',
+                'Could not execute benchmark subject: %s %s %s',
                 $process->getErrorOutput(),
-                $process->getOutput()
+                $process->getOutput(),
+                $script
             ));
         }
 
@@ -75,6 +76,10 @@ class Executor
 
     private function getBootstrapPath()
     {
+        if (!$this->bootstrap) {
+            return null;
+        }
+
         // if the path is absolute, return it unmodified
         if ('/' === substr($this->bootstrap, 0, 1)) {
             return $this->bootstrap;

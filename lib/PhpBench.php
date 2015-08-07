@@ -56,7 +56,6 @@ class PhpBench
                 continue;
             }
 
-            $configDir = dirname($configPath);
             $config = file_get_contents($configPath);
 
             try {
@@ -69,7 +68,8 @@ class PhpBench
             }
 
             $config = json_decode($config, true);
-            $config['config_path'] = $configDir;
+
+            $config['config_path'] = $configPath;
             $container->mergeParameters($config);
         }
     }

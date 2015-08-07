@@ -201,22 +201,25 @@ class Runner
     {
         $iterationsResult = array();
 
-        foreach ($revolutionCounts as $revolutionCount) {
-            $this->runIteration($benchmark, $subject, $iterationCount, $revolutionCount);
+        for ($index = 0; $index < $iterationCount; $index++ ) {
+            foreach ($revolutionCounts as $revolutionCount) {
+                $iterationsResult[] = $this->runIteration($benchmark, $subject, $revolutionCount);
+            }
         }
 
         return new IterationsResult($iterationsResult, $subject->getParameters());
     }
 
-    private function runIteration(BenchmarkInterface $benchmark, Subject $subject, $iterationCount, $revolutionCount)
+    private function runIteration(BenchmarkInterface $benchmark, Subject $subject, $revolutionCount)
     {
-        foreach ($subject->getRevs() as $revolutions) {
-            $this->executor->execute(
-                $benchmark,
-                $subject->getMethodName(),
-                $revolutions,
-                $subject->getBeforeMethods()
-            );
-        }
+        $result = $this->executor->execute(
+            $benchmark,
+            $subject->getMethodName(),
+            $revolutionCount,
+            $subject->getBeforeMethods()
+        );
+
+        $result['revs'] = $revolutionCount;
+        return new IterationResult($result);
     }
 }

@@ -54,7 +54,7 @@ class CoreExtension implements ExtensionInterface
         $container->register('benchmark.executor', function (Container $container) {
             return new Executor(
                 $container->getParameter('config_path'),
-                $container->getParameter('bootstrap')
+                $container->hasParameter('bootstrap') ? $container->getParameter('bootstrap') : null
             );
         });
         $container->register('benchmark.finder', function (Container $container) {
@@ -64,7 +64,10 @@ class CoreExtension implements ExtensionInterface
             return new SubjectBuilder();
         });
         $container->register('benchmark.collection_builder', function (Container $container) {
-            return new CollectionBuilder($container->get('benchmark.finder'));
+            return new CollectionBuilder(
+                $container->get('benchmark.finder'),
+                dirname($container->getParameter('config_path'))
+            );
         });
         $container->register('result.dumper.xml', function () {
             return new XmlDumper();
@@ -87,7 +90,6 @@ class CoreExtension implements ExtensionInterface
         $this->registerReportGenerators($container);
 
         $container->mergeParameters(array(
-            'enable_gc' => false,
             'path' => null,
             'reports' => array(),
             'config_path' => null,
@@ -129,7 +131,6 @@ class CoreExtension implements ExtensionInterface
                 $container->get('progress_logger.registry'),
                 $container->getParameter('progress_logger_name'),
                 $container->getParameter('path'),
-                $container->getParameter('enable_gc'),
                 $container->getParameter('config_path')
             );
         }, array('console.command' => array()));

@@ -15,7 +15,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
         $this->beforeMethodFile = __DIR__ . '/executortest/before_method.tmp';
         $this->revFile = __DIR__ . '/executortest/revs.tmp';
 
-        $this->executor = new Executor();
+        $this->executor = new Executor(null, null);
         $this->removeTemporaryFiles();
     }
 
@@ -43,8 +43,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
     public function testExecute()
     {
         $result = $this->executor->execute(
-            __DIR__ . '/../../../vendor/autoload.php',
-            'PhpBench\Tests\Unit\Benchmark\executortest\ExecutorBench',
+            new \PhpBench\Tests\Unit\Benchmark\executortest\ExecutorBench,
             'doSomething',
             10,
             array()
@@ -64,8 +63,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
     public function testExecuteBefore()
     {
         $this->executor->execute(
-            __DIR__ . '/../../../vendor/autoload.php',
-            'PhpBench\Tests\Unit\Benchmark\executortest\ExecutorBench',
+            new \PhpBench\Tests\Unit\Benchmark\executortest\ExecutorBench,
             'doSomething',
             1,
             array('beforeMethod')
