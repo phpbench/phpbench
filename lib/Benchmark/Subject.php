@@ -19,7 +19,7 @@ class Subject
 {
     private $methodName;
     private $beforeMethods;
-    private $parameters;
+    private $paramProviders;
     private $nbIterations;
     private $revs;
     private $groups;
@@ -29,7 +29,7 @@ class Subject
      * @param int $identifier
      * @param mixed $methodName
      * @param array $beforeMethods
-     * @param array $parameters
+     * @param array $paramProviders
      * @param mixed $nbIterations
      * @param array $revs
      * @param array $groups
@@ -38,7 +38,7 @@ class Subject
         $identifier,
         $methodName,
         array $beforeMethods,
-        array $parameters,
+        array $paramProviders,
         $nbIterations,
         array $revs,
         array $groups
@@ -46,7 +46,7 @@ class Subject
         $this->identifier = $identifier;
         $this->methodName = $methodName;
         $this->beforeMethods = $beforeMethods;
-        $this->parameters = $parameters;
+        $this->paramProviders = $paramProviders;
         $this->nbIterations = $nbIterations;
         $this->revs = $revs;
         $this->groups = $groups;
@@ -67,9 +67,9 @@ class Subject
      *
      * @return string[]
      */
-    public function getParameters()
+    public function getParamProviders()
     {
-        return $this->parameters;
+        return $this->paramProviders;
     }
 
     /**

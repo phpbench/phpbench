@@ -135,13 +135,13 @@ EOT
 
         $consoleOutput->writeln(sprintf(
             '<greenbg>Done (%s subjects, %s iterations) in %ss</greenbg>',
-            count($suiteResult->getSubjectResults()),
-            count($suiteResult->getIterationResults()),
+            $suiteResult->getNbSubjects(),
+            $suiteResult->getNbIterations(),
             number_format(microtime(true) - $startTime, 2)
         ));
 
         if ($dumpfile) {
-            $xml = $this->xmlDumper->dump($suiteResult)->saveXml();
+            $xml = $suiteResult->saveXml();
             file_put_contents($dumpfile, $xml);
             $consoleOutput->writeln('Dumped result to ' . $dumpfile);
         }
@@ -149,7 +149,7 @@ EOT
         $consoleOutput->writeln('');
 
         if ($dump) {
-            $xml = $this->xmlDumper->dump($suiteResult)->saveXml();
+            $xml = $suiteResult->saveXml();
             $output->write($xml);
         } elseif ($reportNames) {
             $this->reportManager->generateReports($consoleOutput, $suiteResult, $reportNames);

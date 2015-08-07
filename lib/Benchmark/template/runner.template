@@ -9,6 +9,7 @@ $subject = '{{ subject }}';
 $revolutions = {{ revolutions }};
 $beforeMethods = {{ beforeMethods }};
 $bootstrap = '{{ bootstrap }}';
+$parameters = {{ parameters }};
 
 if ($bootstrap) {
     require_once($bootstrap);
@@ -26,18 +27,34 @@ foreach ($beforeMethods as $beforeMethod) {
     $benchmark->$beforeMethod();
 }
 
-$startMemory = memory_get_usage();
-$startTime = microtime(true);
+$reflection = new \ReflectionClass(get_class($benchmark));
+$method = $reflection->getMethod($subject);
 
-for ($i = 0; $i < $revolutions; $i++) {
-    $benchmark->$subject(null, $i);
+if ($parameters) {
+    $startMemory = memory_get_usage();
+    $startTime = microtime(true);
+
+    for ($i = 0; $i < $revolutions; $i++) {
+        $benchmark->$subject($parameters);
+    }
+
+    $endTime = microtime(true);
+    $endMemory = memory_get_usage();
+} else {
+    $startMemory = memory_get_usage();
+    $startTime = microtime(true);
+
+    for ($i = 0; $i < $revolutions; $i++) {
+        $benchmark->$subject();
+    }
+
+    $endTime = microtime(true);
+    $endMemory = memory_get_usage();
 }
-
-$endTime = microtime(true);
-$endMemory = memory_get_usage();
 
 echo json_encode(array(
     'memory' => $endMemory - $startMemory,
     'time' => ($endTime * 1000000) - ($startTime * 1000000),
 ));
+
 exit(0);

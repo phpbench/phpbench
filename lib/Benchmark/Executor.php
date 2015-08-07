@@ -32,8 +32,9 @@ class Executor
      * @param string $subject
      * @param integer $revolutions
      * @param string[] $beforeMethods
+     * @param array $parameters
      */
-    public function execute(BenchmarkInterface $benchmark, $subject, $revolutions = 0, $beforeMethods = array())
+    public function execute(BenchmarkInterface $benchmark, $subject, $revolutions = 0, $beforeMethods = array(), array $parameters = array())
     {
         $refl = new \ReflectionClass($benchmark);
         $template = file_get_contents(__DIR__ . '/template/runner.template');
@@ -45,7 +46,9 @@ class Executor
             '{{ subject }}' => $subject,
             '{{ revolutions }}' => $revolutions,
             '{{ beforeMethods }}' => var_export($beforeMethods, true),
+            '{{ parameters }}' => var_export($parameters, true),
         );
+
 
         $script = str_replace(
             array_keys($tokens),
@@ -70,6 +73,13 @@ class Executor
         }
 
         $result = json_decode($process->getOutput(), true);
+
+        if (null === $result) {
+            throw new \Exception(sprintf(
+                'Could not decode executor result, got: %s',
+                $process->getOutput()
+            ));
+        }
 
         return $result;
     }

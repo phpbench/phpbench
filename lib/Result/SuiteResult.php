@@ -11,53 +11,26 @@
 
 namespace PhpBench\Result;
 
-class SuiteResult
+class SuiteResult extends \DOMDocument
 {
-    private $benchmarkResults;
-
-    public function __construct(array $benchmarkResults)
+    public function __construct()
     {
-        $this->benchmarkResults = $benchmarkResults;
+        parent::__construct('1.0');
+        $this->formatOutput = true;
     }
 
-    public function getBenchmarkResults()
+    public function xpath()
     {
-        return $this->benchmarkResults;
+        return new \DOMXpath($this);
     }
 
-    public function getIterationsResults()
+    public function getNbSubjects()
     {
-        $iterationsResults = array();
-        foreach ($this->getSubjectResults() as $subjectResult) {
-            foreach ($subjectResult->getIterationsResults() as $iterationResult) {
-                $iterationsResults[] = $iterationResult;
-            }
-        }
-
-        return $iterationsResults;
+        return $this->xpath()->evaluate('count(//subject)');
     }
 
-    public function getSubjectResults()
+    public function getNbIterations()
     {
-        $subjectResults = array();
-        foreach ($this->benchmarkResults as $benchmarkResult) {
-            foreach ($benchmarkResult->getSubjectResults() as $subjectResult) {
-                $subjectResults[] = $subjectResult;
-            }
-        }
-
-        return $subjectResults;
-    }
-
-    public function getIterationResults()
-    {
-        $iterationResults = array();
-        foreach ($this->getIterationsResults() as $iterationsResults) {
-            foreach ($iterationsResults->getIterationResults() as $iterationResult) {
-                $iterationResults[] = $iterationResult;
-            }
-        }
-
-        return $iterationResults;
+        return $this->xpath()->evaluate('count(//iteration)');
     }
 }

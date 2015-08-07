@@ -33,8 +33,8 @@ class BenchmarkBench implements BenchmarkInterface
     }
 
     /**
-     * @iterations 3
-     * @revs 1000
+     * @iterations 10
+     * @revs 10000
      * @group do_nothing
      */
     public function benchDoNothing()
@@ -47,7 +47,7 @@ class BenchmarkBench implements BenchmarkInterface
      * @group parameterized
      * @iterations 1
      */
-    public function benchParameterized($params, $revs)
+    public function benchParameterized($params)
     {
     }
 
