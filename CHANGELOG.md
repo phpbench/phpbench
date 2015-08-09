@@ -18,6 +18,8 @@ CHANGELOG
 - All interfaces now suffixed with "Interface"
 - Removed magic setUp and tearDown methods (replaced with explicit
   @beforeMethod and @afterMethod)
+- Removed process isolation options: Every iteration is now benchmarked in a
+  separate process independent of PhpBench.
 
 0.4
 ---

@@ -159,6 +159,12 @@ class Runner
             $subjectEl = $benchmarkEl->ownerDocument->createElement('subject');
             $subjectEl->setAttribute('name', $subject->getMethodName());
 
+            foreach ($subject->getGroups() as $group) {
+                $groupEl = $benchmarkEl->ownerDocument->createElement('group');
+                $groupEl->setAttribute('name', $group);
+                $subjectEl->appendChild($groupEl);
+            }
+
             $this->logger->subjectStart($subject);
             $this->runSubject($benchmark, $subject, $subjectEl);
             $this->logger->subjectEnd($subject);
