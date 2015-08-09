@@ -216,9 +216,9 @@ class SomeBenchmarkBench implements BenchmarkInterface
     {
     }
 
+    /**
     public function benchSomethingIsolated()
 
-    /**
      * @paramProvider provideParamsOne
      * @paramProvider provideParamsTwo
      * @iterations 1

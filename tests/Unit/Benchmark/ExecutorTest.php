@@ -10,6 +10,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
     private $beforeMethodFile;
     private $afterMethodFile;
     private $revFile;
+    private $paramFile;
 
     public function setUp()
     {
@@ -17,6 +18,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
         $this->afterMethodFile = __DIR__ . '/executortest/after_method.tmp';
         $this->revFile = __DIR__ . '/executortest/revs.tmp';
         $this->setupFile = __DIR__ . '/executortest/setup.tmp';
+        $this->paramFile = __DIR__ . '/executortest/param.tmp';
         $this->teardownFile = __DIR__ . '/executortest/teardown.tmp';
 
         $this->executor = new Executor(null, null);
@@ -36,6 +38,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
             $this->revFile,
             $this->setupFile,
             $this->teardownFile,
+            $this->paramFile,
         ) as $file) {
             if (file_exists($file)) {
                 unlink($file);
@@ -128,4 +131,30 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
             array('notExistingAfterMethod')
         );
     }
+
+    /**
+     * It should pass parameters to the benchmark method
+     */
+    public function testParameters()
+    {
+        $this->executor->execute(
+            new \PhpBench\Tests\Unit\Benchmark\executortest\ExecutorBench,
+            'parameterized',
+            1,
+            array(),
+            array(),
+            array(
+                'one' => 'two',
+                'three' => 'four',
+            )
+        );
+        $this->assertTrue(file_exists($this->paramFile));
+        $params = json_decode(file_get_contents($this->paramFile), true);
+        $this->assertEquals(array(
+            'one' => 'two',
+            'three' => 'four',
+        ), $params);
+
+    }
+
 }

@@ -11,6 +11,10 @@
 
 namespace PhpBench\Benchmark;
 
+/**
+ * DOMDocument implementation for containing the benchmark suite
+ * results.
+ */
 class SuiteDocument extends \DOMDocument
 {
     public function __construct()

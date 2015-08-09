@@ -26,4 +26,9 @@ class ExecutorBench implements BenchmarkInterface
         $count++;
         file_put_contents(__DIR__ . '/revs.tmp', $count);
     }
+
+    public function parameterized($params)
+    {
+        file_put_contents(__DIR__ . '/param.tmp', json_encode($params));
+    }
 }

@@ -2,7 +2,9 @@
 
 namespace PhpBench;
 
+// disable garbage collection
 gc_disable();
+
 $class = '{{ class }}';
 $file = '{{ file }}';
 $subject = '{{ subject }}';
@@ -31,6 +33,9 @@ foreach ($beforeMethods as $beforeMethod) {
 $reflection = new \ReflectionClass(get_class($benchmark));
 $method = $reflection->getMethod($subject);
 
+// run the benchmarks: note that passing arguments to the method slightly increases
+// the calltime, so we explicitly do one thing or the other depending on if parameters
+// are provided.
 if ($parameters) {
     $startMemory = memory_get_usage();
     $startTime = microtime(true);
