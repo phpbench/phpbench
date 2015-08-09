@@ -12,12 +12,13 @@
 namespace PhpBench\Tests\Unit\Report;
 
 use PhpBench\Report\ReportManager;
+use PhpBench\Benchmark\SuiteDocument;
 
 class ReportManagerTest extends \PHPUnit_Framework_TestCase
 {
     private $reportManager;
     private $generator;
-    private $result;
+    private $suiteDocument;
     private $output;
 
     public function setUp()
@@ -26,7 +27,8 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
         $this->generator = $this->prophesize('PhpBench\ReportGeneratorInterface');
         $this->generator->getDefaultReports()->willReturn(array());
         $this->output = $this->prophesize('Symfony\Component\Console\Output\OutputInterface');
-        $this->result = $this->prophesize('PhpBench\Result\SuiteResult');
+        $this->suiteDocument = new SuiteDocument();
+        $this->suiteDocument->loadXml('<?xml version="1.0"?><phpbench />');
     }
 
     /**
@@ -72,7 +74,7 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
         ));
         $this->generator->getSchema()->willReturn(new \stdClass());
         $this->generator->generate(
-            $this->result->reveal(),
+            $this->suiteDocument,
             array(
                 'params' => array(
                     'one' => '1',
@@ -88,7 +90,7 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->reportManager->generateReports(
             $this->output->reveal(),
-            $this->result->reveal(),
+            $this->suiteDocument,
             array('two')
         );
     }
@@ -162,12 +164,12 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
     {
         $this->reportManager->addGenerator('test', $this->generator->reveal());
         $this->reportManager->addReport('test_report', array('generator' => 'test'));
-        $this->generator->generate($this->result->reveal(), array())->shouldBeCalled();
+        $this->generator->generate($this->suiteDocument, array())->shouldBeCalled();
         $this->generator->getDefaultConfig()->willReturn(array());
         $this->generator->getSchema()->willReturn(new \stdClass());
         $this->reportManager->generateReports(
             $this->output->reveal(),
-            $this->result->reveal(),
+            $this->suiteDocument,
             array('test_report')
         );
     }
@@ -186,18 +188,18 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
         $this->reportManager->addGenerator('test', $generator->reveal());
         $this->reportManager->addReport('test_report', array('generator' => 'test'));
 
-        $generator->generate($this->result->reveal(), array())->shouldBeCalled();
+        $generator->generate($this->suiteDocument, array())->shouldBeCalled();
         $generator->setOutput($this->output->reveal())->shouldBeCalled();
 
         $this->reportManager->generateReports(
             $this->output->reveal(),
-            $this->result->reveal(),
+            $this->suiteDocument,
             array('test_report')
         );
     }
 
     /**
-     * It should throw an exception if the configuration does not match the schema
+     * It should throw an exception if the configuration does not match the schema.
      *
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage is not defined and the definition does not allow additional properties
@@ -209,7 +211,7 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
         $this->generator->getSchema()->willReturn(array(
             'type' => 'object',
             'properties' => array(
-                'foobar' => array('type'=> 'string')
+                'foobar' => array('type' => 'string'),
             ),
             'additionalProperties' => false,
         ));
@@ -222,7 +224,7 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->reportManager->generateReports(
             $this->output->reveal(),
-            $this->result->reveal(),
+            $this->suiteDocument,
             array('test_report')
         );
     }
@@ -240,7 +242,7 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->reportManager->generateReports(
             $this->output->reveal(),
-            $this->result->reveal(),
+            $this->suiteDocument,
             array('test_report')
         );
     }

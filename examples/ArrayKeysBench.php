@@ -28,6 +28,7 @@ class ArrayKeysBench implements BenchmarkInterface
 {
     private $array;
     private $values;
+    private $index = 0;
 
     public function init()
     {
@@ -35,18 +36,18 @@ class ArrayKeysBench implements BenchmarkInterface
         $this->values = array_combine(array_keys($this->array), array_keys($this->array));
     }
 
-    public function benchArrayKeyExists($iteration, $revolution)
+    public function benchArrayKeyExists()
     {
-        array_key_exists($revolution, $this->array);
+        array_key_exists($this->index++, $this->array);
     }
 
-    public function benchIsset($iteration, $revolution)
+    public function benchIsset()
     {
-        isset($this->array[$revolution]);
+        isset($this->array[$this->index++]);
     }
 
-    public function benchInArray($iteration, $revolution)
+    public function benchInArray()
     {
-        in_array($revolution, $this->values);
+        in_array($this->index++, $this->values);
     }
 }

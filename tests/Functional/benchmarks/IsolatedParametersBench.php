@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-use PhpBench\Benchmark\Iteration;
 use PhpBench\BenchmarkInterface;
 
 class IsolatedParameterBench implements BenchmarkInterface
@@ -17,7 +16,6 @@ class IsolatedParameterBench implements BenchmarkInterface
     /**
      * @group process
      * @iterations 5
-     * @processIsolation iteration
      * @paramProvider provideParams
      */
     public function benchIterationIsolation()

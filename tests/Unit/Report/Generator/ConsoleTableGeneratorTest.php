@@ -12,12 +12,8 @@
 namespace PhpBench\Tests\Unit\Report\Generator;
 
 use PhpBench\Report\Generator\ConsoleTableGenerator;
-use PhpBench\Result\IterationResult;
-use PhpBench\Result\IterationsResult;
-use PhpBench\Result\SubjectResult;
-use PhpBench\Result\BenchmarkResult;
-use PhpBench\Result\SuiteResult;
 use Symfony\Component\Console\Output\BufferedOutput;
+use PhpBench\Benchmark\SuiteDocument;
 
 class ConsoleTableGeneratorTest extends \PHPUnit_Framework_TestCase
 {
@@ -280,25 +276,31 @@ class ConsoleTableGeneratorTest extends \PHPUnit_Framework_TestCase
 
     private function getSuiteResult()
     {
-        $iteration1 = new IterationResult(array('revs' => 1, 'time' => 100));
-        $iteration2 = new IterationResult(array('revs' => 1, 'time' => 75));
-        $iterations = new IterationsResult(array($iteration1, $iteration2));
-        $subject = new SubjectResult(
-            1,
-            'mySubject',
-            array('one', 'two'),
-            array(
-                'foo' => 'bar',
-                'array' => array('one', 'two'),
-                'assoc_array' => array(
-                    'one' => 'two',
-                    'three' => 'four',
-                ),
-            ),
-            array($iterations)
+        $suite = new SuiteDocument();
+
+        $suite->loadXml(<<<EOT
+<?xml version="1.0"?>
+<phpbench version="0.x">
+    <benchmark class="Foobar">
+        <subject name="mySubject">
+            <variant>
+                <parameter name="foo" value="bar" />
+                <parameter name="array" type="collection">
+                    <parameter name="0" value="one" />
+                    <parameter name="1" value="two" />
+                </parameter>
+                <parameter name="assoc_array" type="collection">
+                    <parameter name="one" value="two" />
+                    <parameter name="three" value="four" />
+                </parameter>
+                <iteration time="100" memory="100" revs="1" />
+                <iteration time="75" memory="100" revs="1" />
+           </variant>
+        </subject>
+    </benchmark>
+</phpbench>
+EOT
         );
-        $benchmark = new BenchmarkResult('Benchmark\Class', array($subject));
-        $suite = new SuiteResult(array($benchmark));
 
         return $suite;
     }

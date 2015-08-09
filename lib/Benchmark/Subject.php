@@ -18,10 +18,10 @@ namespace PhpBench\Benchmark;
 class Subject
 {
     private $methodName;
-    private $beforeMethods;
-    private $parameters;
+    private $beforeMethods = array();
+    private $afterMethods = array();
+    private $paramProviders;
     private $nbIterations;
-    private $processIsolation;
     private $revs;
     private $groups;
     private $identifier;
@@ -30,29 +30,28 @@ class Subject
      * @param int $identifier
      * @param mixed $methodName
      * @param array $beforeMethods
-     * @param array $parameters
+     * @param array $afterMethods
+     * @param array $paramProviders
      * @param mixed $nbIterations
      * @param array $revs
-     * @param mixed $processIsolation
      * @param array $groups
      */
     public function __construct(
         $identifier,
         $methodName,
         array $beforeMethods,
-        array $parameters,
+        array $afterMethods,
+        array $paramProviders,
         $nbIterations,
         array $revs,
-        $processIsolation,
         array $groups
     ) {
         $this->identifier = $identifier;
         $this->methodName = $methodName;
         $this->beforeMethods = $beforeMethods;
-        $this->parameters = $parameters;
+        $this->paramProviders = $paramProviders;
         $this->nbIterations = $nbIterations;
         $this->revs = $revs;
-        $this->processIsolation = $processIsolation;
         $this->groups = $groups;
     }
 
@@ -67,13 +66,23 @@ class Subject
     }
 
     /**
+     * Return the methods that should be executed after this subject.
+     *
+     * @return string[]
+     */
+    public function getAfterMethods()
+    {
+        return $this->afterMethods;
+    }
+
+    /**
      * Return the parameter provider methods for this subject.
      *
      * @return string[]
      */
-    public function getParameters()
+    public function getParamProviders()
     {
-        return $this->parameters;
+        return $this->paramProviders;
     }
 
     /**
@@ -96,16 +105,6 @@ class Subject
     public function getMethodName()
     {
         return $this->methodName;
-    }
-
-    /**
-     * Return the process isolation policy for this subject.
-     *
-     * @return string
-     */
-    public function getProcessIsolation()
-    {
-        return $this->processIsolation;
     }
 
     /**

@@ -19,7 +19,7 @@ class BinTest extends \PHPUnit_Framework_TestCase
     public function testSpecifiedConfig()
     {
         list($exitCode, $results) = $this->execCommand('.', 'run --verbose --config=env/config_valid/phpbench.json');
-        $this->assertEquals(0, $exitCode);
+        $this->assertExitCodeZero($exitCode, $results);
         $this->assertContains('Done', $results);
     }
 
@@ -30,7 +30,7 @@ class BinTest extends \PHPUnit_Framework_TestCase
     public function testPhpBenchConfig()
     {
         list($exitCode, $results) = $this->execCommand('env/config_valid', 'run');
-        $this->assertEquals(0, $exitCode);
+        $this->assertExitCodeZero($exitCode, $results);
         $this->assertContains('Done', $results);
     }
 
@@ -40,18 +40,8 @@ class BinTest extends \PHPUnit_Framework_TestCase
     public function testPhpBenchDistConfig()
     {
         list($exitCode, $results) = $this->execCommand('env/config_dist', 'run');
-        $this->assertEquals(0, $exitCode);
+        $this->assertExitCodeZero($exitCode, $results);
         $this->assertContains('Done', $results);
-    }
-
-    /**
-     * It should exit with an error status if no configuration is present and no autoload is available.
-     */
-    public function testNoAutoload()
-    {
-        list($exitCode, $results) = $this->execCommand('.', 'run');
-        $this->assertEquals(1, $exitCode);
-        $this->assertContains('does not exist', $results);
     }
 
     private function execCommand($env, $command)
@@ -61,5 +51,15 @@ class BinTest extends \PHPUnit_Framework_TestCase
         exec($command, $result, $status);
 
         return array($status, implode($result, PHP_EOL));
+    }
+
+    private function assertExitCodeZero($exitCode, $output)
+    {
+        if ($exitCode !== 0) {
+            $this->fail(sprintf(
+                'Exit code was "%s": %s',
+                $exitCode, $output
+            ));
+        }
     }
 }

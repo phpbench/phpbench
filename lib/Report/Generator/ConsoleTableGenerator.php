@@ -14,7 +14,7 @@ namespace PhpBench\Report\Generator;
 use PhpBench\Result\Dumper\XmlDumper;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
-use PhpBench\Result\SuiteResult;
+use PhpBench\Benchmark\SuiteDocument;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use PhpBench\Report\Dom\PhpBenchXpath;
@@ -35,11 +35,6 @@ class ConsoleTableGenerator implements OutputAwareInterface, ReportGeneratorInte
     private $output;
 
     /**
-     * @var XmlDumper
-     */
-    private $xmlDumper;
-
-    /**
      * @var Formatter
      */
     private $formatter;
@@ -53,9 +48,8 @@ class ConsoleTableGenerator implements OutputAwareInterface, ReportGeneratorInte
      * @param XmlDumper $xmlDumper
      * @param Formatter $formatter
      */
-    public function __construct(XmlDumper $xmlDumper = null, Formatter $formatter = null)
+    public function __construct(Formatter $formatter = null)
     {
-        $this->xmlDumper = $xmlDumper ?: new XmlDumper();
         $this->formatter = $formatter ?: new Formatter();
     }
 
@@ -162,7 +156,7 @@ class ConsoleTableGenerator implements OutputAwareInterface, ReportGeneratorInte
     /**
      * {@inheritDoc}
      */
-    public function generate(SuiteResult $suite, array $config)
+    public function generate(SuiteDocument $suite, array $config)
     {
         if (null !== $config['title']) {
             $this->output->writeln(sprintf('<title>%s</title>', $config['title']));
@@ -172,17 +166,14 @@ class ConsoleTableGenerator implements OutputAwareInterface, ReportGeneratorInte
             $this->output->writeln(sprintf('<description>%s</description>', $config['description']));
         }
 
-        $dom = $this->xmlDumper->dump($suite);
-
         if ($config['debug']) {
-            $dom->formatOutput = true;
             $this->output->writeln('<info>Suite XML</info>');
-            $this->output->writeln($dom->saveXML());
+            $this->output->writeln($suite->saveXML());
         }
 
         $tableDom = new \DOMDocument(1.0);
 
-        $this->transformToTableDom($dom, $tableDom, $config);
+        $this->transformToTableDom($suite, $tableDom, $config);
 
         if ($config['debug']) {
             $tableDom->formatOutput = true;
@@ -229,11 +220,9 @@ class ConsoleTableGenerator implements OutputAwareInterface, ReportGeneratorInte
                             'subject' => 'string(ancestor-or-self::subject/@name)',
                             'group' => 'string(ancestor-or-self::group/@name)',
                             'params' => 'php:bench(\'parameters_to_json\', ancestor::subject/parameter)',
-                            'pid' => 'number(descendant-or-self::iteration/@pid)',
                             'memory' => 'number(descendant-or-self::iteration/@memory)',
-                            'memory_diff' => 'number(descendant-or-self::iteration/@memory_diff)',
                             'revs' => 'number(descendant-or-self::iteration/@revs)',
-                            'iter' => 'number(descendant-or-self::iteration/@index)',
+                            'iter' => 'count(descendant-or-self::iteration/preceding-sibling::*)',
                             'time' => 'number(descendant-or-self::iteration/@time)',
                             'rps' => '(1000000 div number(descendant-or-self::iteration//@time)) * number(descendant-or-self::iteration/@revs)',
                             'deviation' => 'php:bench(\'deviation\', php:bench(\'min\', //@time), number(./@time))',
@@ -262,7 +251,7 @@ class ConsoleTableGenerator implements OutputAwareInterface, ReportGeneratorInte
                             'subject' => 'string(ancestor-or-self::subject/@name)',
                             'revs' => 'number(sum(.//@revs))',
                             'iters' => 'number(count(descendant::iteration))',
-                            'time' => 'number(php:bench(\'avg\', descendant::iteration/@time))',
+                            'time' => 'number(php:bench(\'avg\', descendant::iteration/@time)) div number(sum(descendant::iteration/@revs))',
                             'rps' => '(1000000 div number(php:bench(\'avg\', descendant::iteration/@time)) * number(php:bench(\'avg\', (descendant::iteration/@revs))))',
                             'stability' => '100 - php:bench(\'deviation\', number(php:bench(\'min\', descendant::iteration/@time)), number(php:bench(\'avg\', descendant::iteration/@time)))',
                             'deviation' => array(
@@ -272,11 +261,12 @@ class ConsoleTableGenerator implements OutputAwareInterface, ReportGeneratorInte
                         ),
                     ),
                 ),
+                'params' => array('selector' => '//variant'),
                 'exclude' => array('group', 'params', 'pid', 'memory', 'memory_diff', 'iter'),
                 'format' => array(
                     'revs' => '!number',
-                    'rps' => array('%.2f', '%s<comment>rps</comment>'),
-                    'time' => array('!number', '%s<comment>μs</comment>'),
+                    'rps' => array('!number', '%s<comment>rps</comment>'),
+                    'time' => array('%s'),
                     'stability' => array('%.2f', '%s<comment>%%</comment>'),
                     'deviation' => array('%.2f', '!balance', '%s<comment>%%</comment>'),
                 ),

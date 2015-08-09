@@ -29,35 +29,16 @@ class SubjectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuild()
     {
-        $case = new \SubjectBuilderCase();
-        $subjects = $this->subjectBuilder->buildSubjects($case);
+        $bench = new \SubjectBuilderCase();
+        $subjects = $this->subjectBuilder->buildSubjects($bench);
         $this->assertContainsOnlyInstancesOf('PhpBench\\Benchmark\\Subject', $subjects);
         $this->assertCount(2, $subjects);
         $subject = reset($subjects);
 
         $this->assertEquals(array('group1'), $subject->getGroups());
         $this->assertEquals(array('beforeSelectSql'), $subject->getBeforeMethods());
-        $this->assertEquals(array('one', 'two'), $subject->getParameters());
+        $this->assertEquals(array('provideNumbers'), $subject->getParamProviders());
         $this->assertEquals(3, $subject->getNbIterations());
         $this->assertInternalType('int', $subject->getNbIterations());
-    }
-
-    /**
-     * It should throw an exception if a parameter provider does not exist.
-     *
-     * @expectedException PhpBench\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Unknown param provider "notExistingParam" for bench benchmark
-     */
-    public function testInvalidParamProvider()
-    {
-        $case = new \SubjectBuilderCaseInvalidParamProvider();
-        $this->subjectBuilder->buildSubjects($case)->willReturn(array(
-            $this->subject->reveal(),
-        ));
-        $this->subject->getNbIterations()->willReturn(1);
-        $this->subject->getParameters()->willReturn(array('notExistingParam'));
-        $this->subject->getProcessIsolation()->willReturn(false);
-
-        $this->runner->runAll();
     }
 }

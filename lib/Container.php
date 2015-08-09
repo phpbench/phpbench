@@ -11,8 +11,6 @@
 
 namespace PhpBench;
 
-use PhpBench\ExtensionInterface;
-
 /**
  * PHPBench Container.
  *
@@ -186,5 +184,17 @@ class Container
         }
 
         return $this->parameters[$name];
+    }
+
+    /**
+     * Return true if the named parameter exists.
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function hasParameter($name)
+    {
+        return array_key_exists($name, $this->parameters);
     }
 }

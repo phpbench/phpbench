@@ -1,0 +1,70 @@
+<?php
+
+namespace PhpBench;
+
+// disable garbage collection
+gc_disable();
+
+$class = '{{ class }}';
+$file = '{{ file }}';
+$subject = '{{ subject }}';
+$revolutions = {{ revolutions }};
+$beforeMethods = {{ beforeMethods }};
+$afterMethods = {{ afterMethods }};
+$bootstrap = '{{ bootstrap }}';
+$parameters = {{ parameters }};
+
+if ($bootstrap) {
+    require_once($bootstrap);
+}
+
+if (false === interface_exists('PhpBench\BenchmarkInterface')) {
+    interface BenchmarkInterface {}
+}
+
+require_once($file);
+
+$benchmark = new $class();
+
+foreach ($beforeMethods as $beforeMethod) {
+    $benchmark->$beforeMethod();
+}
+
+$reflection = new \ReflectionClass(get_class($benchmark));
+$method = $reflection->getMethod($subject);
+
+// run the benchmarks: note that passing arguments to the method slightly increases
+// the calltime, so we explicitly do one thing or the other depending on if parameters
+// are provided.
+if ($parameters) {
+    $startMemory = memory_get_usage();
+    $startTime = microtime(true);
+
+    for ($i = 0; $i < $revolutions; $i++) {
+        $benchmark->$subject($parameters);
+    }
+
+    $endTime = microtime(true);
+    $endMemory = memory_get_usage();
+} else {
+    $startMemory = memory_get_usage();
+    $startTime = microtime(true);
+
+    for ($i = 0; $i < $revolutions; $i++) {
+        $benchmark->$subject();
+    }
+
+    $endTime = microtime(true);
+    $endMemory = memory_get_usage();
+}
+
+foreach ($afterMethods as $afterMethod) {
+    $benchmark->$afterMethod();
+}
+
+echo json_encode(array(
+    'memory' => $endMemory - $startMemory,
+    'time' => ($endTime * 1000000) - ($startTime * 1000000),
+));
+
+exit(0);

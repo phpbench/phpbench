@@ -16,6 +16,11 @@ CHANGELOG
 - Removed OptionsResolver, replaced functionality with JSON schema to allow
   validation of nested report configurations.
 - All interfaces now suffixed with "Interface"
+- Removed magic setUp and tearDown methods (replaced with explicit
+  @beforeMethod and @afterMethod)
+- Removed GC option for now. GC is now always disabled in the separate process.
+- Removed process isolation options: Every iteration is now benchmarked in a
+  separate process independent of PhpBench.
 
 0.4
 ---

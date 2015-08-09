@@ -12,34 +12,26 @@
 namespace PhpBench\Benchmark;
 
 use PhpBench\ProgressLogger\NullProgressLogger;
-use PhpBench\ProgressLogger;
-use PhpBench\Result\SubjectResult;
-use PhpBench\Result\IterationResult;
-use PhpBench\Result\BenchmarkResult;
-use PhpBench\Result\SuiteResult;
-use PhpBench\Result\IterationsResult;
+
 use PhpBench\Exception\InvalidArgumentException;
-use PhpBench\Result\Loader\XmlLoader;
 use PhpBench\BenchmarkInterface;
 use PhpBench\ProgressLoggerInterface;
 
+/**
+ * The benchmark runner.
+ */
 class Runner
 {
-    const MILLION = 1000000;
-
     private $logger;
     private $collectionBuilder;
     private $subjectBuilder;
-    private $subjectMemoryTotal;
-    private $subjectLastMemoryInclusive;
-    private $processIsolation;
     private $iterationsOverride;
     private $revsOverride;
-    private $setUpTearDown = true;
     private $configPath;
     private $parametersOverride;
     private $subjectsOverride;
     private $groups;
+    private $executor;
 
     /**
      * @param CollectionBuilder $collectionBuilder
@@ -49,39 +41,51 @@ class Runner
     public function __construct(
         CollectionBuilder $collectionBuilder,
         SubjectBuilder $subjectBuilder,
+        Executor $executor,
         $configPath
     ) {
         $this->logger = new NullProgressLogger();
         $this->collectionBuilder = $collectionBuilder;
         $this->subjectBuilder = $subjectBuilder;
+        $this->executor = $executor;
         $this->configPath = $configPath;
     }
 
-    public function overrideSubjects($subjects)
+    /**
+     * Whitelist of subject method names.
+     *
+     * @param string[] $subjects
+     */
+    public function overrideSubjects(array $subjects)
     {
         $this->subjectsOverride = $subjects;
     }
 
+    /**
+     * Set the progress logger to use.
+     *
+     * @param ProgressLoggerInterface
+     */
     public function setProgressLogger(ProgressLoggerInterface $logger)
     {
         $this->logger = $logger;
     }
 
-    public function setProcessIsolation($processIsolation)
-    {
-        $this->processIsolation = $processIsolation;
-    }
-
-    public function disableSetup()
-    {
-        $this->setUpTearDown = false;
-    }
-
+    /**
+     * Override the number of iterations to execute.
+     *
+     * @param int $iterations
+     */
     public function overrideIterations($iterations)
     {
         $this->iterationsOverride = $iterations;
     }
 
+    /**
+     * Override the number of rev(olutions) to run.
+     *
+     * @param int
+     */
     public function overrideRevs($revs)
     {
         $this->revsOverride = $revs;
@@ -92,236 +96,149 @@ class Runner
         $this->parametersOverride = $parameters;
     }
 
+    /**
+     * Whitelist of groups to execute.
+     *
+     * @param string[]
+     */
     public function setGroups(array $groups)
     {
         $this->groups = $groups;
     }
 
+    /**
+     * Set the path to the configuration file.
+     * This is required when launching a new process.
+     *
+     * @param string $configPath
+     */
     public function setConfigPath($configPath)
     {
         $this->configPath = $configPath;
     }
 
+    /**
+     * Run all benchmarks (or all applicable benchmarks) in the given path.
+     *
+     * @param string
+     */
     public function runAll($path)
     {
+        $dom = new SuiteDocument();
+        $suiteEl = $dom->createElement('suite');
+
         $collection = $this->collectionBuilder->buildCollection($path);
-        $benchmarkResults = array();
 
         foreach ($collection->getBenchmarks() as $benchmark) {
+            $benchmarkEl = $dom->createElement('benchmark');
+            $benchmarkEl->setAttribute('class', get_class($benchmark));
+
             $this->logger->benchmarkStart($benchmark);
-            $benchmarkResults[] = $this->run($benchmark);
+            $this->run($benchmark, $benchmarkEl);
             $this->logger->benchmarkEnd($benchmark);
+
+            $suiteEl->appendChild($benchmarkEl);
         }
 
-        $benchmarkSuiteResult = new SuiteResult($benchmarkResults);
+        $dom->appendChild($suiteEl);
 
-        return $benchmarkSuiteResult;
+        return $dom;
     }
 
-    private function run(BenchmarkInterface $benchmark)
+    private function run(BenchmarkInterface $benchmark, \DOMElement $benchmarkEl)
     {
-        if (true === $this->setUpTearDown && method_exists($benchmark, 'setUp')) {
-            $benchmark->setUp();
-        }
-
-        $subjects = $this->subjectBuilder->buildSubjects($benchmark, $this->subjectsOverride, $this->groups, $this->parametersOverride);
-        $subjectResults = array();
+        $subjects = $this->subjectBuilder->buildSubjects($benchmark, $this->subjectsOverride, $this->groups);
 
         foreach ($subjects as $subject) {
+            $subjectEl = $benchmarkEl->ownerDocument->createElement('subject');
+            $subjectEl->setAttribute('name', $subject->getMethodName());
+
+            foreach ($subject->getGroups() as $group) {
+                $groupEl = $benchmarkEl->ownerDocument->createElement('group');
+                $groupEl->setAttribute('name', $group);
+                $subjectEl->appendChild($groupEl);
+            }
+
             $this->logger->subjectStart($subject);
-            $subjectResults[] = $this->runSubject($benchmark, $subject);
+            $this->runSubject($benchmark, $subject, $subjectEl);
             $this->logger->subjectEnd($subject);
+
+            $benchmarkEl->appendChild($subjectEl);
         }
-
-        if (true === $this->setUpTearDown && method_exists($benchmark, 'tearDown')) {
-            $benchmark->tearDown();
-        }
-
-        $benchmarkResult = new BenchmarkResult(get_class($benchmark), $subjectResults);
-
-        return $benchmarkResult;
     }
 
-    private function runSubject(BenchmarkInterface $benchmark, Subject $subject)
+    private function runSubject(BenchmarkInterface $benchmark, Subject $subject, \DOMElement $subjectEl)
     {
-        $this->subjectMemoryTotal = 0;
-        $this->subjectLastMemoryInclusive = memory_get_usage();
-        $nbIterations = null === $this->iterationsOverride ? $subject->getNbIterations() : $this->iterationsOverride;
-        $processIsolation = null !== $this->processIsolation ? $this->processIsolation : $subject->getProcessIsolation();
+        $iterationCount = null === $this->iterationsOverride ? $subject->getNbIterations() : $this->iterationsOverride;
+        $revolutionCounts = $this->revsOverride ? array($this->revsOverride) : $subject->getRevs();
+        $parameterSets = $this->getParameterSets($benchmark, $subject->getParamProviders(), $this->parametersOverride);
 
-        $revs = $this->revsOverride ? array($this->revsOverride) : $subject->getRevs();
+        $paramsIterator = new CartesianParameterIterator($parameterSets);
 
-        $iterationsResults = array();
+        foreach ($paramsIterator as $parameters) {
+            $variantEl = $subjectEl->ownerDocument->createElement('variant');
+            foreach ($parameters as $name => $value) {
+                $parameterEl = $subjectEl->ownerDocument->createElement('parameter');
+                $parameterEl->setAttribute('name', $name);
+                $parameterEl->setAttribute('value', $value);
+                $variantEl->appendChild($parameterEl);
+            }
 
-        if (false !== $processIsolation) {
-            $iterationsResults[] = $this->runIterationsSeparateProcess($benchmark, $subject, $nbIterations, $processIsolation, $revs);
-        } else {
-            $iterationsResults[] = $this->runIterations($benchmark, $subject, $nbIterations, $revs);
+            $subjectEl->appendChild($variantEl);
+            $this->runIterations($benchmark, $subject, $iterationCount, $revolutionCounts, $parameters, $variantEl);
         }
-
-        $subjectResult = new SubjectResult(
-            $subject->getIdentifier(),
-            $subject->getMethodName(),
-            $subject->getGroups(),
-            $subject->getParameters(),
-            $iterationsResults
-        );
-
-        return $subjectResult;
     }
 
-    private function runIterations(BenchmarkInterface $benchmark, Subject $subject, $nbIterations, $revs)
+    private function runIterations(BenchmarkInterface $benchmark, Subject $subject, $iterationCount, array $revolutionCounts, array $parameterSet, \DOMElement $variantEl)
     {
-        $iterationResults = array();
-        for ($index = 0; $index < $nbIterations; $index++) {
-            foreach ($revs as $nbRevs) {
-                $iteration = new Iteration($index, $subject->getParameters(), $nbRevs);
-                $iterationResults[] = $this->runIteration($benchmark, $subject, $iteration);
+        for ($index = 0; $index < $iterationCount; $index++) {
+            foreach ($revolutionCounts as $revolutionCount) {
+                $iterationEl = $variantEl->ownerDocument->createElement('iteration');
+                $variantEl->appendChild($iterationEl);
+                $iterationEl->setAttribute('index', $iterationCount);
+                $iterationEl->setAttribute('revs', $revolutionCount);
+                $this->runIteration($benchmark, $subject, $revolutionCount, $parameterSet, $iterationEl);
             }
         }
-
-        return new IterationsResult($iterationResults);
     }
 
-    private function runIterationsSeparateProcess(BenchmarkInterface $benchmark, Subject $subject, $nbIterations, $processIsolation, $revs)
+    private function runIteration(BenchmarkInterface $benchmark, Subject $subject, $revolutionCount, $parameterSet, \DOMElement $iterationEl)
     {
-        switch ($processIsolation) {
-            case 'iteration':
-                $iterationCount = $nbIterations;
-                $nbIterations = 1;
-                break;
-            case 'iterations':
-                $iterationCount = 1;
-                break;
-            default:
-                throw new \RuntimeException(sprintf(
-                    'Invalid process islation policy "%s". This really should not happen.',
-                    $processIsolation
-                ));
-        }
-
-        $iterationsResult = array();
-
-        foreach ($revs as $nbRevs) {
-            for ($index = 0; $index < $iterationCount; $index++) {
-                $subIterationsResult = $this->runIterationSeparateProcess($benchmark, $subject, $nbIterations, $nbRevs);
-
-                foreach ($subIterationsResult->getIterationResults() as $subIterationResult) {
-                    $iterationsResult[] = $subIterationResult;
-                }
-            }
-        }
-
-        return new IterationsResult($iterationsResult, $subject->getParameters());
-    }
-
-    private function runIterationSeparateProcess(BenchmarkInterface $benchmark, Subject $subject, $nbIterations, $nbRevs)
-    {
-        $reflection = new \ReflectionClass(get_class($benchmark));
-        $bin = realpath(__DIR__ . '/../..') . '/bin/phpbench';
-
-        $command = sprintf(
-            'php %s run %s --subject=%s --no-setup --dump --parameters=%s --iterations=%d --process-isolation=none',
-            $bin,
-            $reflection->getFileName(),
+        $result = $this->executor->execute(
+            $benchmark,
             $subject->getMethodName(),
-            escapeshellarg(json_encode($subject->getParameters())),
-            $nbIterations
+            $revolutionCount,
+            $subject->getBeforeMethods(),
+            $subject->getAfterMethods(),
+            $parameterSet
         );
 
-        if ($this->configPath) {
-            $command .= ' --config=' . $this->configPath;
-        }
-
-        if ($nbRevs) {
-            $command .= ' --revs=' . $nbRevs;
-        }
-
-        $descriptors = array(
-            0 => array('pipe', 'r'),
-            1 => array('pipe', 'w'),
-            2 => array('pipe', 'w'),
-        );
-        $process = proc_open($command, $descriptors, $pipes);
-        fclose($pipes[0]);
-
-        if (!is_resource($process)) {
-            throw new \RuntimeException(
-                'Could not spawn isolated process'
-            );
-        }
-
-        $output = stream_get_contents($pipes[1]);
-        fclose($pipes[1]);
-        $stderr = stream_get_contents($pipes[2]);
-        fclose($pipes[2]);
-        $exitCode = proc_close($process);
-
-        if (0 !== $exitCode) {
-            throw new \RuntimeException(sprintf(
-                'Isolated process returned exit code "%s". Command: "%s". stdout: %s stderr: %s',
-                $exitCode,
-                $command,
-                $output,
-                $stderr
-            ));
-        }
-
-        $loader = new XmlLoader();
-        $subSuiteResult = $loader->load($output);
-        $subIterationsResults = $subSuiteResult->getIterationsResults();
-        $subIterationsResult = reset($subIterationsResults);
-
-        return $subIterationsResult;
+        $iterationEl->setAttribute('time', $result['time']);
+        $iterationEl->setAttribute('memory', $result['memory']);
     }
 
-    private function runIteration(BenchmarkInterface $benchmark, Subject $subject, Iteration $iteration)
+    private function getParameterSets(BenchmarkInterface $benchmark, array $paramProviderMethods, $parameters)
     {
-        foreach ($subject->getBeforeMethods() as $beforeMethodName) {
-            if (!method_exists($benchmark, $beforeMethodName)) {
+        if ($parameters) {
+            return array(array($parameters));
+        }
+
+        $parameterSets = array();
+
+        foreach ($paramProviderMethods as $paramProviderMethod) {
+            if (!method_exists($benchmark, $paramProviderMethod)) {
                 throw new InvalidArgumentException(sprintf(
-                    'Unknown bench benchmark method "%s"', $beforeMethodName
+                    'Unknown param provider "%s" for bench benchmark "%s"',
+                    $paramProviderMethod, get_class($benchmark)
                 ));
             }
-
-            $benchmark->$beforeMethodName($iteration);
+            $parameterSets[] = $benchmark->$paramProviderMethod();
         }
 
-        $startMemory = memory_get_usage();
-        $start = microtime(true);
-        for ($revolution = 0; $revolution < $iteration->getRevs(); $revolution++) {
-            $benchmark->{$subject->getMethodName()}($iteration, $revolution);
-        }
-        $end = microtime(true);
-        $endMemory = memory_get_usage();
-
-        $memoryDiff = $endMemory - $startMemory;
-        $this->subjectMemoryTotal += $memoryDiff;
-        $this->subjectLastMemoryInclusive = $endMemory;
-
-        $statistics['index'] = $iteration->getIndex();
-        $statistics['revs'] = $iteration->getRevs();
-        $statistics['time'] = ($end * self::MILLION) - ($start * self::MILLION);
-        $statistics['memory'] = $this->subjectMemoryTotal;
-        $statistics['memory_diff'] = $memoryDiff;
-        $statistics['pid'] = getmypid();
-        $iterationResult = new IterationResult($statistics);
-
-        return $iterationResult;
-    }
-
-    public static function validateProcessIsolation($processIsolation)
-    {
-        $isolationPolicies = array(false, 'iteration', 'iterations');
-        if (in_array($processIsolation, $isolationPolicies)) {
-            return;
+        if (!$parameterSets) {
+            $parameterSets = array(array(array()));
         }
 
-        array_shift($isolationPolicies);
-
-        throw new InvalidArgumentException(sprintf(
-            'Process isolation must be one of "%s"',
-            implode('", "', $isolationPolicies)
-        ));
+        return $parameterSets;
     }
 }

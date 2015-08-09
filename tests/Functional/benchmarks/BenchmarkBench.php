@@ -9,35 +9,21 @@
  * file that was distributed with this source code.
  */
 
-use PhpBench\Benchmark\Iteration;
 use PhpBench\BenchmarkInterface;
 
 class BenchmarkBench implements BenchmarkInterface
 {
-    public static $setUpCalled = false;
-    public static $tearDownCalled = false;
-
-    public function setUp()
-    {
-        self::$setUpCalled = true;
-    }
-
-    public function tearDown()
-    {
-        self::$tearDownCalled = true;
-    }
-
-    public function benchRandom(Iteration $iteration)
+    public function benchRandom()
     {
         usleep(rand(0, 50000));
     }
 
     /**
-     * @iterations 3
-     * @revs 1000
+     * @iterations 10
+     * @revs 10000
      * @group do_nothing
      */
-    public function benchDoNothing(Iteration $iteration)
+    public function benchDoNothing()
     {
     }
 
@@ -47,7 +33,7 @@ class BenchmarkBench implements BenchmarkInterface
      * @group parameterized
      * @iterations 1
      */
-    public function benchParameterized(Iteration $iteration)
+    public function benchParameterized($params)
     {
     }
 

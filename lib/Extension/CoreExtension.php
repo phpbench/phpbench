@@ -16,8 +16,6 @@ use PhpBench\ProgressLogger\DotsProgressLogger;
 use PhpBench\Report\Generator\ConsoleTableGenerator;
 use PhpBench\ProgressLoggerRegistry;
 use PhpBench\Report\ReportManager;
-use PhpBench\Result\Loader\XmlLoader;
-use PhpBench\Result\Dumper\XmlDumper;
 use PhpBench\Console\Command\RunCommand;
 use PhpBench\Console\Command\ReportCommand;
 use PhpBench\Benchmark\CollectionBuilder;
@@ -27,6 +25,7 @@ use PhpBench\Console\Application;
 use Symfony\Component\Finder\Finder;
 use PhpBench\Report\Generator\CompositeGenerator;
 use PhpBench\ExtensionInterface;
+use PhpBench\Benchmark\Executor;
 
 class CoreExtension implements ExtensionInterface
 {
@@ -46,7 +45,14 @@ class CoreExtension implements ExtensionInterface
             return new Runner(
                 $container->get('benchmark.collection_builder'),
                 $container->get('benchmark.subject_builder'),
+                $container->get('benchmark.executor'),
                 $container->getParameter('config_path')
+            );
+        });
+        $container->register('benchmark.executor', function (Container $container) {
+            return new Executor(
+                $container->getParameter('config_path'),
+                $container->hasParameter('bootstrap') ? $container->getParameter('bootstrap') : null
             );
         });
         $container->register('benchmark.finder', function (Container $container) {
@@ -56,13 +62,10 @@ class CoreExtension implements ExtensionInterface
             return new SubjectBuilder();
         });
         $container->register('benchmark.collection_builder', function (Container $container) {
-            return new CollectionBuilder($container->get('benchmark.finder'));
-        });
-        $container->register('result.dumper.xml', function () {
-            return new XmlDumper();
-        });
-        $container->register('result.loader.xml', function () {
-            return new XmlLoader();
+            return new CollectionBuilder(
+                $container->get('benchmark.finder'),
+                dirname($container->getParameter('config_path'))
+            );
         });
         $container->register('report.manager', function (Container $container) {
             return new ReportManager(
@@ -79,7 +82,6 @@ class CoreExtension implements ExtensionInterface
         $this->registerReportGenerators($container);
 
         $container->mergeParameters(array(
-            'enable_gc' => false,
             'path' => null,
             'reports' => array(),
             'config_path' => null,
@@ -116,19 +118,16 @@ class CoreExtension implements ExtensionInterface
         $container->register('console.command.run', function (Container $container) {
             return new RunCommand(
                 $container->get('benchmark.runner'),
-                $container->get('result.dumper.xml'),
                 $container->get('report.manager'),
                 $container->get('progress_logger.registry'),
                 $container->getParameter('progress_logger_name'),
                 $container->getParameter('path'),
-                $container->getParameter('enable_gc'),
                 $container->getParameter('config_path')
             );
         }, array('console.command' => array()));
 
         $container->register('console.command.report', function (Container $container) {
             return new ReportCommand(
-                $container->get('result.loader.xml'),
                 $container->get('report.manager')
             );
         }, array('console.command' => array()));

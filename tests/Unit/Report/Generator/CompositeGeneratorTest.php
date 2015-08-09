@@ -12,6 +12,7 @@
 namespace PhpBench\Tests\Unit\Report\Generator;
 
 use PhpBench\Report\Generator\CompositeGenerator;
+use Prophecy\Argument;
 
 class CompositeGeneratorTest extends \PHPUnit_Framework_TestCase
 {
@@ -23,7 +24,7 @@ class CompositeGeneratorTest extends \PHPUnit_Framework_TestCase
     {
         $this->manager = $this->prophesize('PhpBench\Report\ReportManager');
         $this->output = $this->prophesize('Symfony\Component\Console\Output\OutputInterface');
-        $this->result = $this->prophesize('PhpBench\Result\SuiteResult');
+        $this->result = $this->prophesize('PhpBench\Benchmark\SuiteDocument');
         $this->generator = new CompositeGenerator($this->manager->reveal());
     }
 
@@ -35,7 +36,9 @@ class CompositeGeneratorTest extends \PHPUnit_Framework_TestCase
         $config = array('reports' => array('one', 'two'));
 
         $this->generator->setOutput($this->output->reveal());
+
+        // for some reason prophecy doesn't like passing the suite document here, so just do a type check
+        $this->manager->generateReports($this->output->reveal(), Argument::type('PhpBench\Benchmark\SuiteDocument'), array('one', 'two'))->shouldBeCalled();
         $this->generator->generate($this->result->reveal(), $config);
-        $this->manager->generateReports($this->output->reveal(), $this->result->reveal(), array('one', 'two'))->shouldHaveBeenCalled();
     }
 }

@@ -97,42 +97,27 @@ resolution.
 
 **plural**
 
-Specify a method which should be executed before the subject. The before
-method also accepts an `Iteration` object and has access to the iteration
-context.
+Specify a method which should be executed before the subject.
 
 Multiple before methods can be specified.
+
+### @afterMethod
+
+**plural**
+
+Specify a method which should be executed after the subject.
+
+Multiple after methods can be specified.
 
 ### @paramProvider
 
 **plural**
 
-Specify a method which will provide parameters which can be accessed from the
-`Iteration` object by both the before method and the subject method.
+Specify a method which will provide parameters. Parameters are passed as an
+argument to the benchmarking subject method.
 
 If multiple parameter providers are specified, then the they will be combined
 in to a cartesian product.
-
-### @processIsolation
-
-**singular**
-
-Run each iteration or each set of iterations in an isolated process. This is
-useful for seeing the initial cost of the revolution.
-
-Must be one of `iteration` or `iterations`.
-
-setUp and tearDown
-------------------
-
-You can defined `setUp` and `tearDown` methods. These will be called before
-and after the subject resepectively.
-
-These methods are useful for establishing an external state prior to running
-benchmarks.
-
-NOTE: They cannot be used to establish "internal" state when process isolation is
-used.
 
 Reports
 -------
@@ -232,11 +217,8 @@ class SomeBenchmarkBench implements BenchmarkInterface
     }
 
     /**
-     * @processIsolation iteration
-     */
     public function benchSomethingIsolated()
 
-    /**
      * @paramProvider provideParamsOne
      * @paramProvider provideParamsTwo
      * @iterations 1

@@ -55,22 +55,20 @@ class FooTestCaseBench implements BenchmarkInterface
     }
 
     /**
-     * @BeforeMethod setupSelectSql
-     * @DataProvider provideNodes
-     * @DataProvider provideColumns
-     * @Iterations 3
-     * @Description Run a select query
+     * @beforeMethod setupSelectSql
+     * @paramProvider provideNodes
+     * @paramProvider provideColumns
+     * @iterations 3
      */
     public function benchSelectSql(BenchIteration $iteration)
     {
     }
 
     /**
-     * @BeforeMethod setupSelectSql
-     * @DataProvider provideNodes
-     * @DataProvider provideColumns
-     * @Iterations 3
-     * @Description Run a select query
+     * @beforeMethod setupSelectSql
+     * @paramProvider provideNodes
+     * @paramProvider provideColumns
+     * @iterations 3
      */
     public function benchTraverseSomething(BenchIteration $iteration)
     {

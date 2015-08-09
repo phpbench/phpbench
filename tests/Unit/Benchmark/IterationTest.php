@@ -27,7 +27,7 @@ class IterationTest extends \PHPUnit_Framework_TestCase
     /**
      * Its should throw an exception if an unknown parameter is requested.
      *
-     * @expectedException PhpBench\Exception\InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Unknown iteration parameters "ffff", known parameters: "foo"
      */
     public function testGetUnknownParameter()

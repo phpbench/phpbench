@@ -11,10 +11,9 @@
 
 namespace PhpBench\Report\Generator;
 
-use PhpBench\Console\OutputAware;
 use PhpBench\Report\ReportManager;
 use Symfony\Component\Console\Output\OutputInterface;
-use PhpBench\Result\SuiteResult;
+use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\ReportGeneratorInterface;
 use PhpBench\Console\OutputAwareInterface;
 
@@ -77,7 +76,7 @@ class CompositeGenerator implements ReportGeneratorInterface, OutputAwareInterfa
     /**
      * {@inheritDoc}
      */
-    public function generate(SuiteResult $result, array $config)
+    public function generate(SuiteDocument $result, array $config)
     {
         $this->reportManager->generateReports($this->output, $result, $config['reports']);
     }

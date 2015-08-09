@@ -61,4 +61,17 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals('hello', $attributes['name']);
         }
     }
+
+    /**
+     * It should merge parameters
+     * It should say if a parameter exists
+     * It should retrieve parameter values.
+     */
+    public function testParameters()
+    {
+        $this->container->mergeParameters(array('hello' => 'goodbye'));
+        $this->container->mergeParameters(array('goodbye' => 'hello'));
+        $this->assertTrue($this->container->hasParameter('hello'));
+        $this->assertEquals('hello', $this->container->getParameter('goodbye'));
+    }
 }

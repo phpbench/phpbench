@@ -17,9 +17,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use PhpBench\Benchmark\Runner;
-use PhpBench\Result\Dumper\XmlDumper;
 use Symfony\Component\Console\Output\NullOutput;
-use PhpBench\ProgressLogger;
 use PhpBench\PhpBench;
 use PhpBench\Report\ReportManager;
 use PhpBench\ProgressLoggerRegistry;
@@ -27,32 +25,26 @@ use PhpBench\ProgressLoggerInterface;
 
 class RunCommand extends Command
 {
-    private $xmlDumper;
     private $reportManager;
     private $loggerRegistry;
     private $progressLoggerName;
     private $benchPath;
-    private $enableGc;
     private $configPath;
     private $runner;
 
     public function __construct(
         Runner $runner,
-        XmlDumper $xmlDumper,
         ReportManager $reportManager,
         ProgressLoggerRegistry $loggerRegistry,
         $progressLoggerName = null,
         $benchPath = null,
-        $enableGc = null,
         $configPath = null
     ) {
         parent::__construct();
-        $this->xmlDumper = $xmlDumper;
         $this->reportManager = $reportManager;
         $this->loggerRegistry = $loggerRegistry;
         $this->progressLoggerName = $progressLoggerName;
         $this->benchPath = $benchPath;
-        $this->enableGc = $enableGc;
         $this->configPath = $configPath;
         $this->runner = $runner;
     }
@@ -78,8 +70,6 @@ EOT
         $this->addOption('parameters', null, InputOption::VALUE_REQUIRED, 'Override parameters to use in (all) benchmarks');
         $this->addOption('iterations', null, InputOption::VALUE_REQUIRED, 'Override number of iteratios to run in (all) benchmarks');
         $this->addOption('revs', null, InputOption::VALUE_REQUIRED, 'Override number of revs (revolutions) on (all) benchmarks');
-        $this->addOption('process-isolation', 'pi', InputOption::VALUE_REQUIRED, 'Override rocess isolation policy, one of <comment>iteration</comment>, <comment>iterations</comment> or <comment>none</comment>');
-        $this->addOption('no-setup', null, InputOption::VALUE_NONE, 'Do not execute setUp or tearDown methods');
         $this->addOption('progress', 'l', InputOption::VALUE_REQUIRED, 'Progress logger to use, one of <comment>dots</comment>, <comment>benchdots</comment>', 'dots');
         $this->addOption('gc-enable', null, InputOption::VALUE_NONE, 'Enable garbage collection');
     }
@@ -91,27 +81,16 @@ EOT
         $reports = $input->getOption('report');
         $dump = $input->getOption('dump');
         $parametersJson = $input->getOption('parameters');
-        $noSetup = $input->getOption('no-setup');
         $iterations = $input->getOption('iterations');
         $revs = $input->getOption('revs');
         $configPath = $input->getOption('config');
-        $enableGc = $input->getOption('gc-enable');
-        $enableGc = null !== $enableGc ?: $this->enableGc;
-        $processIsolation = $input->getOption('process-isolation') ?: null;
         $subjects = $input->getOption('subject');
         $groups = $input->getOption('group');
         $dumpfile = $input->getOption('dump-file');
         $progressLoggerName = $input->getOption('progress') ?: $this->progressLoggerName;
         $path = $input->getArgument('path') ?: $this->benchPath;
 
-        $processIsolation = $processIsolation === 'none' ? false : $processIsolation;
-        Runner::validateProcessIsolation($processIsolation);
-
         $reportNames = $this->reportManager->processCliReports($reports);
-
-        if (false === $enableGc) {
-            gc_disable();
-        }
 
         if (null === $path) {
             throw new \InvalidArgumentException(
@@ -144,18 +123,18 @@ EOT
 
         $consoleOutput->writeln('');
         $startTime = microtime(true);
-        $suiteResult = $this->executeBenchmarks($path, $subjects, $groups, $noSetup, $parameters, $iterations, $revs, $processIsolation, $configPath, $progressLogger);
+        $suiteResult = $this->executeBenchmarks($path, $subjects, $groups, $parameters, $iterations, $revs, $configPath, $progressLogger);
         $consoleOutput->writeln('');
 
         $consoleOutput->writeln(sprintf(
             '<greenbg>Done (%s subjects, %s iterations) in %ss</greenbg>',
-            count($suiteResult->getSubjectResults()),
-            count($suiteResult->getIterationResults()),
+            $suiteResult->getNbSubjects(),
+            $suiteResult->getNbIterations(),
             number_format(microtime(true) - $startTime, 2)
         ));
 
         if ($dumpfile) {
-            $xml = $this->xmlDumper->dump($suiteResult)->saveXml();
+            $xml = $suiteResult->saveXml();
             file_put_contents($dumpfile, $xml);
             $consoleOutput->writeln('Dumped result to ' . $dumpfile);
         }
@@ -163,7 +142,7 @@ EOT
         $consoleOutput->writeln('');
 
         if ($dump) {
-            $xml = $this->xmlDumper->dump($suiteResult)->saveXml();
+            $xml = $suiteResult->saveXml();
             $output->write($xml);
         } elseif ($reportNames) {
             $this->reportManager->generateReports($consoleOutput, $suiteResult, $reportNames);
@@ -174,11 +153,9 @@ EOT
         $path,
         array $subjects,
         array $groups,
-        $noSetup,
         $parameters,
         $iterations,
         $revs,
-        $processIsolation,
         $configPath,
         ProgressLoggerInterface $progressLogger = null
     ) {
@@ -186,14 +163,8 @@ EOT
             $this->runner->setProgressLogger($progressLogger);
         }
 
-        $this->runner->setProcessIsolation($processIsolation);
-
         if ($configPath) {
             $this->runner->setConfigPath($configPath);
-        }
-
-        if ($noSetup) {
-            $this->runner->disableSetup();
         }
 
         if ($iterations) {

@@ -14,22 +14,19 @@ namespace PhpBench\Console\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use PhpBench\Result\Loader\XmlLoader;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use PhpBench\Report\ReportManager;
+use PhpBench\Benchmark\SuiteDocument;
 
 class ReportCommand extends Command
 {
-    private $xmlLoader;
     private $reportManager;
 
     public function __construct(
-        XmlLoader $xmlLoader,
         ReportManager $reportManager
     ) {
         parent::__construct();
-        $this->xmlLoader = $xmlLoader;
         $this->reportManager = $reportManager;
     }
 
@@ -67,7 +64,8 @@ EOT
             ));
         }
 
-        $suiteResult = $this->xmlLoader->load(file_get_contents($file));
+        $suiteResult = new SuiteDocument();
+        $suiteResult->loadXml(file_get_contents($file));
         $this->reportManager->generateReports($output, $suiteResult, $reportNames);
     }
 }

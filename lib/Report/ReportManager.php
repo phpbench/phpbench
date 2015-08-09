@@ -13,7 +13,7 @@ namespace PhpBench\Report;
 
 use PhpBench\ReportGeneratorInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use PhpBench\Result\SuiteResult;
+use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\Console\OutputAwareInterface;
 use JsonSchema\Validator;
 
@@ -182,10 +182,10 @@ class ReportManager
      * Generate the named reports.
      *
      * @param OutputInterface $output
-     * @param SuiteResult $results
+     * @param SuiteDocument $suiteDocument
      * @param array $reportNames
      */
-    public function generateReports(OutputInterface $output, SuiteResult $results, array $reportNames)
+    public function generateReports(OutputInterface $output, SuiteDocument $suiteDocument, array $reportNames)
     {
         $reportConfigs = array();
         foreach ($reportNames as $reportName) {
@@ -227,7 +227,7 @@ class ReportManager
                 $generator->setOutput($output);
             }
 
-            $generator->generate($results, $reportConfig);
+            $generator->generate($suiteDocument, $reportConfig);
         }
     }
 

@@ -11,8 +11,6 @@
 
 namespace PhpBench\Benchmark;
 
-use PhpBench\Exception\InvalidArgumentException;
-
 class Parser
 {
     public function parseDoc($doc, array $defaults = array())
@@ -21,22 +19,22 @@ class Parser
 
         $meta = array(
             'beforeMethod' => array(),
+            'afterMethod' => array(),
             'paramProvider' => array(),
             'iterations' => array(),
-            'processIsolation' => array(),
             'group' => array(),
             'revs' => array(),
         );
 
         // singular annotations
-        foreach (array('iterations', 'processIsolation') as $key) {
+        foreach (array('iterations') as $key) {
             if (isset($defaults[$key]) && $defaults[$key]) {
                 $meta[$key][] = $defaults[$key];
             }
         }
 
         // plural annotations
-        foreach (array('beforeMethod', 'paramProvider', 'revs', 'group') as $key) {
+        foreach (array('afterMethod', 'beforeMethod', 'paramProvider', 'revs', 'group') as $key) {
             if (isset($defaults[$key]) && $defaults[$key]) {
                 $meta[$key] = $defaults[$key];
             }
@@ -51,7 +49,7 @@ class Parser
             $annotationValue = $matches[2];
 
             if (!isset($meta[$annotationName])) {
-                throw new InvalidArgumentException(sprintf(
+                throw new \InvalidArgumentException(sprintf(
                     'Unknown annotation "%s"',
                     $annotationName
                 ));
@@ -61,7 +59,7 @@ class Parser
         }
 
         // Do not allow these annotations to be redelared twice in the same docblock
-        foreach (array('iterations', 'processIsolation') as $key) {
+        foreach (array('iterations') as $key) {
             // allow overriding single values
             if (count($meta[$key] == 2) && !empty($defaults[$key]) && count($defaults[$key]) == 1) {
                 $value = array_pop($meta[$key]);
@@ -69,19 +67,14 @@ class Parser
             }
 
             if (count($meta[$key]) > 1) {
-                throw new InvalidArgumentException(sprintf(
+                throw new \InvalidArgumentException(sprintf(
                     'Cannot have more than one "@%s" annotation', $key
                 ));
             }
         }
 
-        $meta['processIsolation'] = reset($meta['processIsolation']);
         $iterations = $meta['iterations'];
         $meta['iterations'] = empty($iterations) ? 1 : (int) reset($iterations);
-
-        if ($meta['processIsolation']) {
-            Runner::validateProcessIsolation($meta['processIsolation']);
-        }
 
         return $meta;
     }

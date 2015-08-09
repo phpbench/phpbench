@@ -39,10 +39,11 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                 <<<EOT
 /**
 * @beforeMethod beforeMe
+* @afterMethod afterMe
+* @afterMethod afterAfterMe
 * @beforeMethod afterBeforeMe
 * @paramProvider provideParam
 * @iterations  3
-* @processIsolation iteration
 * @revs 1000
 * @revs 10
 * @group base
@@ -51,8 +52,8 @@ EOT
                 , array(
                     'iterations' => 3,
                     'beforeMethod' => array('beforeMe', 'afterBeforeMe'),
+                    'afterMethod' => array('afterMe', 'afterAfterMe'),
                     'paramProvider' => array('provideParam'),
-                    'processIsolation' => 'iteration',
                     'revs' => array(1000, 10),
                     'group' => array('base'),
                 ),
@@ -65,9 +66,9 @@ EOT
                 ,
                 array(
                     'beforeMethod' => array(),
+                    'afterMethod' => array(),
                     'paramProvider' => array(),
                     'iterations' => 1,
-                    'processIsolation' => false,
                     'revs' => array(),
                     'group' => array(),
                 ),
@@ -78,7 +79,7 @@ EOT
     /**
      * It should thow an exception if an unknown annotation is found.
      *
-     * @expectedException \PhpBench\Exception\InvalidArgumentException
+     * @expectedException InvalidArgumentException
      */
     public function testInvalidAnnotation()
     {
@@ -104,8 +105,8 @@ EOT
                 array(
                     'iterations' => 3,
                     'beforeMethod' => array('beforeMe', 'afterBeforeMe'),
+                    'afterMethod' => array(),
                     'paramProvider' => array('provideParam'),
-                    'processIsolation' => 'iteration',
                     'revs' => array(1000, 10),
                     'group' => array('boo'),
                 ),
@@ -114,7 +115,6 @@ EOT
 * @beforeMethod again
 * @paramProvider notherParam
 * @iterations 3
-* @processIsolation iterations
 * @revs 5
 * @group five
  */
@@ -123,8 +123,8 @@ EOT
                 array(
                     'iterations' => 3,
                     'beforeMethod' => array('beforeMe', 'afterBeforeMe', 'again'),
+                    'afterMethod' => array(),
                     'paramProvider' => array('provideParam', 'notherParam'),
-                    'processIsolation' => 'iterations',
                     'revs' => array(1000, 10, 5),
                     'group' => array('boo', 'five'),
                 ),
@@ -133,8 +133,8 @@ EOT
                 array(
                     'iterations' => 3,
                     'beforeMethod' => array('beforeMe', 'afterBeforeMe'),
+                    'afterMethod' => array(),
                     'paramProvider' => array('provideParam'),
-                    'processIsolation' => 'iteration',
                     'revs' => array(1000, 10),
                     'group' => array('boo'),
                 ),
@@ -147,8 +147,8 @@ EOT
                 array(
                     'iterations' => 4,
                     'beforeMethod' => array('beforeMe', 'afterBeforeMe'),
+                    'afterMethod' => array(),
                     'paramProvider' => array('provideParam'),
-                    'processIsolation' => 'iteration',
                     'revs' => array(1000, 10),
                     'group' => array('boo'),
                 ),
@@ -157,37 +157,21 @@ EOT
                 array(
                     'iterations' => 3,
                     'beforeMethod' => array('beforeMe', 'afterBeforeMe'),
+                    'afterMethod' => array(),
                     'paramProvider' => array('provideParam'),
-                    'processIsolation' => 'iteration',
                     'revs' => array(1000, 10),
                 ),
                 '/** */',
                 array(
                     'iterations' => 3,
                     'beforeMethod' => array('beforeMe', 'afterBeforeMe'),
+                    'afterMethod' => array(),
                     'paramProvider' => array('provideParam'),
-                    'processIsolation' => 'iteration',
                     'revs' => array(1000, 10),
                     'group' => array(),
                 ),
             ),
         );
-    }
-
-    /**
-     * It should throw an exception if more than one process isolation annotation is present.
-     *
-     * @expectedException \InvalidArgumentException
-     */
-    public function testMoreThanOneDescription()
-    {
-        $doc = <<<EOT
-/**
- * @processIsolation iteration
- * @processIsolation iterations
- */
-EOT;
-        $this->parser->parseDoc($doc);
     }
 
     /**
@@ -203,24 +187,6 @@ EOT;
  * @iterations 2
  */
 EOT;
-        $this->parser->parseDoc($doc);
-    }
-
-    /**
-     * Its should throw an exception if the process isolation is not valid.
-     *
-     * @expectedException PhpBench\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Process isolation must be one of "iteration", "iterations"
-     */
-    public function testInvalidProcessIsolation()
-    {
-        $doc = <<<EOT
-/**
-* @processIsolation iterationasd
-*/
-EOT
-        ;
-
         $this->parser->parseDoc($doc);
     }
 }

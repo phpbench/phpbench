@@ -15,6 +15,10 @@ use PhpBench\Console\Command\RunCommand;
 use PhpBench\Tests\Functional\Console\Command\BaseCommandTestCase;
 use BenchmarkBench;
 
+/**
+ * @beforeMethod setUp
+ * @afterMethod setUp
+ */
 class RunCommandTest extends BaseCommandTestCase
 {
     private $pidPath;
@@ -150,7 +154,7 @@ class RunCommandTest extends BaseCommandTestCase
         $xpath = new \DOMXPath($dom);
         $dom->formatOutput = true;
         $benchmarkEls = $xpath->query('//subject');
-        $this->assertEquals(6, $benchmarkEls->length);
+        $this->assertEquals(3, $benchmarkEls->length);
     }
 
     /**
@@ -209,36 +213,6 @@ class RunCommandTest extends BaseCommandTestCase
     }
 
     /**
-     * It can run each iteration in isolation.
-     * There are 2 subjects each with 5 iterations, so there should be 10 PIDs.
-     */
-    public function testProcessIsolationIteration()
-    {
-        $this->runCommand('run', array(
-            '--process-isolation' => 'iteration',
-            'path' => __DIR__ . '/../../benchmarks/IsolatedBench.php',
-        ));
-
-        $pids = array_unique(explode(PHP_EOL, trim(file_get_contents($this->pidPath))));
-        $this->assertCount(10, $pids);
-    }
-
-    /**
-     * It can run each set of iterations in isolation.
-     * There are 2 subjects, so there should be 2 PIDs.
-     */
-    public function testProcessIsolationIterations()
-    {
-        $this->runCommand('run', array(
-            '--process-isolation' => 'iterations',
-            'path' => __DIR__ . '/../../benchmarks/IsolatedBench.php',
-        ));
-
-        $pids = array_unique(explode(PHP_EOL, trim(file_get_contents($this->pidPath))));
-        $this->assertCount(2, $pids);
-    }
-
-    /**
      * It can have the progress logger specified.
      */
     public function testProgressLogger()
@@ -249,17 +223,6 @@ class RunCommandTest extends BaseCommandTestCase
         ));
         $display = $tester->getDisplay();
         $this->assertContains('BenchmarkBench', $display);
-    }
-
-    /**
-     * It should escape paramters when running in separate process.
-     */
-    public function testSeparateProcessEscape()
-    {
-        $this->runCommand('run', array(
-            '--process-isolation' => 'iteration',
-            'path' => __DIR__ . '/../../benchmarks/IsolatedParametersBench.php',
-        ));
     }
 
     /**
@@ -281,24 +244,5 @@ class RunCommandTest extends BaseCommandTestCase
         $xpath = new \DOMXPath($dom);
         $parameters = $xpath->query('//subject');
         $this->assertEquals(1, $parameters->length);
-    }
-
-    /**
-     * It should disable the setup and tear down methods.
-     */
-    public function testDisableSetup()
-    {
-        $path = __DIR__ . '/../../benchmarks/BenchmarkBench.php';
-        require_once $path;
-        BenchmarkBench::$setUpCalled = false;
-        BenchmarkBench::$tearDownCalled = false;
-
-        $this->runCommand('run', array(
-            '--no-setup' => true,
-            'path' => $path,
-        ));
-
-        $this->assertFalse(BenchmarkBench::$setUpCalled);
-        $this->assertFalse(BenchmarkBench::$tearDownCalled);
     }
 }
