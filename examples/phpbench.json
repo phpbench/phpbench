@@ -16,6 +16,13 @@
             "sort": ["time"],
             "params": {"selector": "//subject[group/@name='cost_of_instantiation']//variant"}
         },
+        "cost_of_calling": {
+            "extends": "aggregate",
+            "title": "Cost of calling",
+            "description": "Compare calling methods with and without arguments",
+            "sort": ["time"],
+            "params": {"selector": "//subject[group/@name='cost_of_calling']//variant"}
+        },
         "array_keys": {
             "generator": "console_table",
             "title": "Comparison of array location functions",
@@ -40,7 +47,7 @@
         },
         "all": {
             "generator": "composite",
-            "reports": ["cost_of_setting", "cost_of_instantiation", "array_keys"]
+            "reports": ["cost_of_setting", "cost_of_instantiation", "cost_of_calling", "array_keys"]
         }
     }
 }
