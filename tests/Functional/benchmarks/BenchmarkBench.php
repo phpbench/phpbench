@@ -14,19 +14,6 @@ use PhpBench\BenchmarkInterface;
 
 class BenchmarkBench implements BenchmarkInterface
 {
-    public static $setUpCalled = false;
-    public static $tearDownCalled = false;
-
-    public function setUp()
-    {
-        self::$setUpCalled = true;
-    }
-
-    public function tearDown()
-    {
-        self::$tearDownCalled = true;
-    }
-
     public function benchRandom()
     {
         usleep(rand(0, 50000));

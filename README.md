@@ -113,18 +113,6 @@ Specify a method which will provide parameters which can be accessed from the
 If multiple parameter providers are specified, then the they will be combined
 in to a cartesian product.
 
-setUp and tearDown
-------------------
-
-You can defined `setUp` and `tearDown` methods. These will be called before
-and after the subject resepectively.
-
-These methods are useful for establishing an external state prior to running
-benchmarks.
-
-NOTE: They cannot be used to establish "internal" state when process isolation is
-used.
-
 Reports
 -------
 

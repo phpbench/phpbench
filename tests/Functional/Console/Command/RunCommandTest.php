@@ -15,6 +15,10 @@ use PhpBench\Console\Command\RunCommand;
 use PhpBench\Tests\Functional\Console\Command\BaseCommandTestCase;
 use BenchmarkBench;
 
+/**
+ * @beforeMethod setUp
+ * @afterMethod setUp
+ */
 class RunCommandTest extends BaseCommandTestCase
 {
     private $pidPath;
@@ -240,24 +244,5 @@ class RunCommandTest extends BaseCommandTestCase
         $xpath = new \DOMXPath($dom);
         $parameters = $xpath->query('//subject');
         $this->assertEquals(1, $parameters->length);
-    }
-
-    /**
-     * It should disable the setup and tear down methods.
-     */
-    public function testDisableSetup()
-    {
-        $path = __DIR__ . '/../../benchmarks/BenchmarkBench.php';
-        require_once $path;
-        BenchmarkBench::$setUpCalled = false;
-        BenchmarkBench::$tearDownCalled = false;
-
-        $this->runCommand('run', array(
-            '--no-setup' => true,
-            'path' => $path,
-        ));
-
-        $this->assertFalse(BenchmarkBench::$setUpCalled);
-        $this->assertFalse(BenchmarkBench::$tearDownCalled);
     }
 }

@@ -251,7 +251,7 @@ class ConsoleTableGenerator implements OutputAwareInterface, ReportGeneratorInte
                             'subject' => 'string(ancestor-or-self::subject/@name)',
                             'revs' => 'number(sum(.//@revs))',
                             'iters' => 'number(count(descendant::iteration))',
-                            'time' => 'number(php:bench(\'avg\', descendant::iteration/@time))',
+                            'time' => 'number(php:bench(\'avg\', descendant::iteration/@time)) div number(sum(descendant::iteration/@revs))',
                             'rps' => '(1000000 div number(php:bench(\'avg\', descendant::iteration/@time)) * number(php:bench(\'avg\', (descendant::iteration/@revs))))',
                             'stability' => '100 - php:bench(\'deviation\', number(php:bench(\'min\', descendant::iteration/@time)), number(php:bench(\'avg\', descendant::iteration/@time)))',
                             'deviation' => array(
@@ -261,11 +261,12 @@ class ConsoleTableGenerator implements OutputAwareInterface, ReportGeneratorInte
                         ),
                     ),
                 ),
+                'params' => array('selector' => '//variant'),
                 'exclude' => array('group', 'params', 'pid', 'memory', 'memory_diff', 'iter'),
                 'format' => array(
                     'revs' => '!number',
-                    'rps' => array('%.2f', '%s<comment>rps</comment>'),
-                    'time' => array('!number', '%s<comment>μs</comment>'),
+                    'rps' => array('!number', '%s<comment>rps</comment>'),
+                    'time' => array('%s'),
                     'stability' => array('%.2f', '%s<comment>%%</comment>'),
                     'deviation' => array('%.2f', '!balance', '%s<comment>%%</comment>'),
                 ),

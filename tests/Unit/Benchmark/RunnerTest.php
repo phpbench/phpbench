@@ -89,56 +89,6 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
             ),
         );
     }
-
-    /**
-     * The magic tearDown and setUp should be called.
-     */
-    public function testSetUpAndTearDown()
-    {
-        $this->collection->getBenchmarks()->willReturn(array(
-            $this->case,
-        ));
-        $this->subjectBuilder->buildSubjects($this->case, null, null, null)->willReturn(array(
-            $this->subject->reveal(),
-        ));
-        $this->subject->getIdentifier()->willReturn(1);
-        $this->subject->getParamProviders()->willReturn(array());
-        $this->subject->getMethodName()->willReturn('benchFoo');
-        $this->subject->getGroups()->willReturn(array());
-        $this->subject->getNbIterations()->willReturn(0);
-        $this->subject->getRevs()->willReturn(array(1));
-
-        $this->runner->runAll(__DIR__);
-
-        $this->assertTrue($this->case->setUpCalled);
-        $this->assertTrue($this->case->tearDownCalled);
-    }
-
-    /**
-     * The magic tearDown and setUp should not be called if setUpTearDown is false.
-     */
-    public function testSetUpAndTearDownDisabled()
-    {
-        $this->runner->disableSetup();
-
-        $this->collection->getBenchmarks()->willReturn(array(
-            $this->case,
-        ));
-        $this->subjectBuilder->buildSubjects($this->case, null, null, null)->willReturn(array(
-            $this->subject->reveal(),
-        ));
-        $this->subject->getIdentifier()->willReturn(1);
-        $this->subject->getParamProviders()->willReturn(array());
-        $this->subject->getMethodName()->willReturn('benchFoo');
-        $this->subject->getGroups()->willReturn(array());
-        $this->subject->getNbIterations()->willReturn(0);
-        $this->subject->getRevs()->willReturn(array(1));
-
-        $this->runner->runAll(__DIR__);
-
-        $this->assertFalse($this->case->setUpCalled);
-        $this->assertFalse($this->case->tearDownCalled);
-    }
 }
 
 class RunnerTestBenchCase implements BenchmarkInterface

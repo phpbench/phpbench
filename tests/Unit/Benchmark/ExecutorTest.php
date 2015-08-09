@@ -14,6 +14,8 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
     {
         $this->beforeMethodFile = __DIR__ . '/executortest/before_method.tmp';
         $this->revFile = __DIR__ . '/executortest/revs.tmp';
+        $this->setupFile = __DIR__ . '/executortest/setup.tmp';
+        $this->teardownFile = __DIR__ . '/executortest/teardown.tmp';
 
         $this->executor = new Executor(null, null);
         $this->removeTemporaryFiles();
@@ -28,7 +30,9 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
     {
         foreach (array(
             $this->beforeMethodFile,
-            $this->revFile
+            $this->revFile,
+            $this->setupFile,
+            $this->teardownFile,
         ) as $file) {
             if (file_exists($file)) {
                 unlink($file);
@@ -75,24 +79,16 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
     /**
      * It should throw an exception if a before method does not exist.
      *
-     * @expectedException PhpBench\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Unknown bench benchmark method "beforeFooNotExisting"
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Unknown before method "notExistingBeforeMethod" in benchmark class
      */
     public function testInvalidBeforeMethod()
     {
-        $this->collection->getBenchmarks()->willReturn(array(
-            $this->case,
-        ));
-        $this->subjectBuilder->buildSubjects($this->case, null, null, null)->willReturn(array(
-            $this->subject->reveal(),
-        ));
-        $this->subject->getNbIterations()->willReturn(1);
-        $this->subject->getIdentifier()->willReturn(1);
-        $this->subject->getParamProviders()->willReturn(array());
-        $this->subject->getBeforeMethods()->willReturn(array('beforeFooNotExisting'));
-        $this->subject->getRevs()->willReturn(array(1));
-
-        $this->runner->runAll(__DIR__);
+        $this->executor->execute(
+            new \PhpBench\Tests\Unit\Benchmark\executortest\ExecutorBench,
+            'doSomething',
+            1,
+            array('notExistingBeforeMethod')
+        );
     }
-
 }

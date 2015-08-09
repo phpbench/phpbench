@@ -33,7 +33,6 @@ class Runner
     private $subjectBuilder;
     private $iterationsOverride;
     private $revsOverride;
-    private $setUpTearDown = true;
     private $configPath;
     private $parametersOverride;
     private $subjectsOverride;
@@ -76,14 +75,6 @@ class Runner
     public function setProgressLogger(ProgressLoggerInterface $logger)
     {
         $this->logger = $logger;
-    }
-
-    /**
-     * Call to disable the setUp and tearDown methods
-     */
-    public function disableSetup()
-    {
-        $this->setUpTearDown = false;
     }
 
     /**
@@ -173,10 +164,6 @@ class Runner
             $this->logger->subjectEnd($subject);
 
             $benchmarkEl->appendChild($subjectEl);
-        }
-
-        if (true === $this->setUpTearDown && method_exists($benchmark, 'tearDown')) {
-            $benchmark->tearDown();
         }
     }
 

@@ -16,6 +16,8 @@ CHANGELOG
 - Removed OptionsResolver, replaced functionality with JSON schema to allow
   validation of nested report configurations.
 - All interfaces now suffixed with "Interface"
+- Removed magic setUp and tearDown methods (replaced with explicit
+  @beforeMethod and @afterMethod)
 
 0.4
 ---

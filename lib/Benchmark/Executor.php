@@ -37,6 +37,7 @@ class Executor
     public function execute(BenchmarkInterface $benchmark, $subject, $revolutions = 0, $beforeMethods = array(), array $parameters = array())
     {
         $refl = new \ReflectionClass($benchmark);
+
         $template = file_get_contents(__DIR__ . '/template/runner.template');
 
         $tokens = array(
@@ -46,8 +47,18 @@ class Executor
             '{{ subject }}' => $subject,
             '{{ revolutions }}' => $revolutions,
             '{{ beforeMethods }}' => var_export($beforeMethods, true),
+            '{{ beforeMethods }}' => var_export($beforeMethods, true),
             '{{ parameters }}' => var_export($parameters, true),
         );
+
+        foreach ($beforeMethods as $beforeMethod) {
+            if (!$refl->hasMethod($beforeMethod)) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Unknown before method "%s" in benchmark class "%s"',
+                    $beforeMethod, $refl->getName()
+                ));
+            }
+        }
 
 
         $script = str_replace(
