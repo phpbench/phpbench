@@ -182,10 +182,10 @@ class ReportManager
      * Generate the named reports.
      *
      * @param OutputInterface $output
-     * @param SuiteDocument $results
+     * @param SuiteDocument $suiteDocument
      * @param array $reportNames
      */
-    public function generateReports(OutputInterface $output, SuiteDocument $results, array $reportNames)
+    public function generateReports(OutputInterface $output, SuiteDocument $suiteDocument, array $reportNames)
     {
         $reportConfigs = array();
         foreach ($reportNames as $reportName) {
@@ -227,7 +227,7 @@ class ReportManager
                 $generator->setOutput($output);
             }
 
-            $generator->generate($results, $reportConfig);
+            $generator->generate($suiteDocument, $reportConfig);
         }
     }
 

@@ -82,7 +82,6 @@ EOT
         $reports = $input->getOption('report');
         $dump = $input->getOption('dump');
         $parametersJson = $input->getOption('parameters');
-        $noSetup = $input->getOption('no-setup');
         $iterations = $input->getOption('iterations');
         $revs = $input->getOption('revs');
         $configPath = $input->getOption('config');
@@ -125,7 +124,7 @@ EOT
 
         $consoleOutput->writeln('');
         $startTime = microtime(true);
-        $suiteResult = $this->executeBenchmarks($path, $subjects, $groups, $noSetup, $parameters, $iterations, $revs, $configPath, $progressLogger);
+        $suiteResult = $this->executeBenchmarks($path, $subjects, $groups, $parameters, $iterations, $revs, $configPath, $progressLogger);
         $consoleOutput->writeln('');
 
         $consoleOutput->writeln(sprintf(
@@ -155,7 +154,6 @@ EOT
         $path,
         array $subjects,
         array $groups,
-        $noSetup,
         $parameters,
         $iterations,
         $revs,
@@ -168,10 +166,6 @@ EOT
 
         if ($configPath) {
             $this->runner->setConfigPath($configPath);
-        }
-
-        if ($noSetup) {
-            $this->runner->disableSetup();
         }
 
         if ($iterations) {

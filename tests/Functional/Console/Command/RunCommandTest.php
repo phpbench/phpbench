@@ -154,7 +154,7 @@ class RunCommandTest extends BaseCommandTestCase
         $xpath = new \DOMXPath($dom);
         $dom->formatOutput = true;
         $benchmarkEls = $xpath->query('//subject');
-        $this->assertEquals(6, $benchmarkEls->length);
+        $this->assertEquals(3, $benchmarkEls->length);
     }
 
     /**

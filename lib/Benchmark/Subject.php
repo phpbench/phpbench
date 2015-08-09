@@ -18,8 +18,8 @@ namespace PhpBench\Benchmark;
 class Subject
 {
     private $methodName;
-    private $beforeMethods;
-    private $afterMethods;
+    private $beforeMethods = array();
+    private $afterMethods = array();
     private $paramProviders;
     private $nbIterations;
     private $revs;

@@ -209,6 +209,7 @@ class Runner
             $subject->getMethodName(),
             $revolutionCount,
             $subject->getBeforeMethods(),
+            $subject->getAfterMethods(),
             $parameterSet
         );
 
