@@ -20,6 +20,8 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
     private $afterMethodFile;
     private $revFile;
     private $paramFile;
+    private $paramBeforeFile;
+    private $paramAfterFile;
 
     public function setUp()
     {
@@ -28,6 +30,8 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
         $this->revFile = __DIR__ . '/executortest/revs.tmp';
         $this->setupFile = __DIR__ . '/executortest/setup.tmp';
         $this->paramFile = __DIR__ . '/executortest/param.tmp';
+        $this->paramBeforeFile = __DIR__ . '/executortest/parambefore.tmp';
+        $this->paramAfterFile = __DIR__ . '/executortest/paramafter.tmp';
         $this->teardownFile = __DIR__ . '/executortest/teardown.tmp';
 
         $this->executor = new Executor(null, null);
@@ -48,6 +52,8 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
             $this->setupFile,
             $this->teardownFile,
             $this->paramFile,
+            $this->paramBeforeFile,
+            $this->paramAfterFile,
         ) as $file) {
             if (file_exists($file)) {
                 unlink($file);
@@ -163,5 +169,33 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
             'one' => 'two',
             'three' => 'four',
         ), $params);
+    }
+
+    /**
+     * It should pass parameters to the before subject and after subject methods
+     */
+    public function testParametersBeforeSubject()
+    {
+        $expected = array(
+            'one' => 'two',
+            'three' => 'four',
+        );
+
+        $this->executor->execute(
+            new \PhpBench\Tests\Unit\Benchmark\executortest\ExecutorBench(),
+            'parameterized',
+            1,
+            array('parameterizedBefore'),
+            array('parameterizedAfter'),
+            $expected
+        );
+
+        $this->assertTrue(file_exists($this->paramBeforeFile));
+        $params = json_decode(file_get_contents($this->paramBeforeFile), true);
+        $this->assertEquals($expected, $params);
+
+        $this->assertTrue(file_exists($this->paramAfterFile));
+        $params = json_decode(file_get_contents($this->paramAfterFile), true);
+        $this->assertEquals($expected, $params);
     }
 }
