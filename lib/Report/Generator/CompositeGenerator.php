@@ -11,7 +11,6 @@
 
 namespace PhpBench\Report\Generator;
 
-use PhpBench\Console\OutputAware;
 use PhpBench\Report\ReportManager;
 use Symfony\Component\Console\Output\OutputInterface;
 use PhpBench\Benchmark\SuiteDocument;

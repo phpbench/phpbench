@@ -28,7 +28,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->executor = $this->prophesize('PhpBench\Benchmark\Executor');
 
         $this->runner = new Runner(
-            $this->collectionBuilder->reveal(), 
+            $this->collectionBuilder->reveal(),
             $this->subjectBuilder->reveal(),
             $this->executor->reveal(),
             null
@@ -76,7 +76,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
             array(
                 1,
                 array(1),
-                1
+                1,
             ),
             array(
                 1,
@@ -86,7 +86,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
             array(
                 4,
                 array(1, 3),
-                8
+                8,
             ),
         );
     }

@@ -12,11 +12,6 @@
 namespace PhpBench\Tests\Unit\Report\Generator;
 
 use PhpBench\Report\Generator\ConsoleTableGenerator;
-use PhpBench\Result\IterationResult;
-use PhpBench\Result\IterationsResult;
-use PhpBench\Result\SubjectResult;
-use PhpBench\Result\BenchmarkResult;
-use PhpBench\Result\SuiteResult;
 use Symfony\Component\Console\Output\BufferedOutput;
 use PhpBench\Benchmark\SuiteDocument;
 

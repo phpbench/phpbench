@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Tests\Unit\Benchmark;
 
 use PhpBench\Benchmark\Executor;
@@ -53,7 +62,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
     public function testExecute()
     {
         $result = $this->executor->execute(
-            new \PhpBench\Tests\Unit\Benchmark\executortest\ExecutorBench,
+            new \PhpBench\Tests\Unit\Benchmark\executortest\ExecutorBench(),
             'doSomething',
             10,
             array()
@@ -69,12 +78,12 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should execute methods before the benchmark subject
+     * It should execute methods before the benchmark subject.
      */
     public function testExecuteBefore()
     {
         $this->executor->execute(
-            new \PhpBench\Tests\Unit\Benchmark\executortest\ExecutorBench,
+            new \PhpBench\Tests\Unit\Benchmark\executortest\ExecutorBench(),
             'doSomething',
             1,
             array('beforeMethod')
@@ -92,7 +101,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
     public function testInvalidBeforeMethod()
     {
         $this->executor->execute(
-            new \PhpBench\Tests\Unit\Benchmark\executortest\ExecutorBench,
+            new \PhpBench\Tests\Unit\Benchmark\executortest\ExecutorBench(),
             'doSomething',
             1,
             array('notExistingBeforeMethod')
@@ -100,12 +109,12 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should execute methods after the benchmark subject
+     * It should execute methods after the benchmark subject.
      */
     public function testExecuteAfter()
     {
         $this->executor->execute(
-            new \PhpBench\Tests\Unit\Benchmark\executortest\ExecutorBench,
+            new \PhpBench\Tests\Unit\Benchmark\executortest\ExecutorBench(),
             'doSomething',
             1,
             array(),
@@ -124,7 +133,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
     public function testInvalidAfterMethod()
     {
         $this->executor->execute(
-            new \PhpBench\Tests\Unit\Benchmark\executortest\ExecutorBench,
+            new \PhpBench\Tests\Unit\Benchmark\executortest\ExecutorBench(),
             'doSomething',
             1,
             array(),
@@ -133,12 +142,12 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should pass parameters to the benchmark method
+     * It should pass parameters to the benchmark method.
      */
     public function testParameters()
     {
         $this->executor->execute(
-            new \PhpBench\Tests\Unit\Benchmark\executortest\ExecutorBench,
+            new \PhpBench\Tests\Unit\Benchmark\executortest\ExecutorBench(),
             'parameterized',
             1,
             array(),
@@ -154,7 +163,5 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
             'one' => 'two',
             'three' => 'four',
         ), $params);
-
     }
-
 }

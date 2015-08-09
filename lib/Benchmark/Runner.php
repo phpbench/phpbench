@@ -12,19 +12,13 @@
 namespace PhpBench\Benchmark;
 
 use PhpBench\ProgressLogger\NullProgressLogger;
-use PhpBench\ProgressLogger;
-use PhpBench\Result\SubjectResult;
-use PhpBench\Result\IterationResult;
-use PhpBench\Result\BenchmarkResult;
-use PhpBench\Benchmark\SuiteDocument;
-use PhpBench\Result\IterationsResult;
+
 use PhpBench\Exception\InvalidArgumentException;
-use PhpBench\Result\Loader\XmlLoader;
 use PhpBench\BenchmarkInterface;
 use PhpBench\ProgressLoggerInterface;
 
 /**
- * The benchmark runner
+ * The benchmark runner.
  */
 class Runner
 {
@@ -58,7 +52,7 @@ class Runner
     }
 
     /**
-     * Whitelist of subject method names
+     * Whitelist of subject method names.
      *
      * @param string[] $subjects
      */
@@ -68,7 +62,7 @@ class Runner
     }
 
     /**
-     * Set the progress logger to use
+     * Set the progress logger to use.
      *
      * @param ProgressLoggerInterface
      */
@@ -78,9 +72,9 @@ class Runner
     }
 
     /**
-     * Override the number of iterations to execute
+     * Override the number of iterations to execute.
      *
-     * @param integer $iterations
+     * @param int $iterations
      */
     public function overrideIterations($iterations)
     {
@@ -88,9 +82,9 @@ class Runner
     }
 
     /**
-     * Override the number of rev(olutions) to run
+     * Override the number of rev(olutions) to run.
      *
-     * @param integer
+     * @param int
      */
     public function overrideRevs($revs)
     {
@@ -103,7 +97,7 @@ class Runner
     }
 
     /**
-     * Whitelist of groups to execute
+     * Whitelist of groups to execute.
      *
      * @param string[]
      */
@@ -124,7 +118,7 @@ class Runner
     }
 
     /**
-     * Run all benchmarks (or all applicable benchmarks) in the given path
+     * Run all benchmarks (or all applicable benchmarks) in the given path.
      *
      * @param string
      */
@@ -197,7 +191,7 @@ class Runner
 
     private function runIterations(BenchmarkInterface $benchmark, Subject $subject, $iterationCount, array $revolutionCounts, array $parameterSet, \DOMElement $variantEl)
     {
-        for ($index = 0; $index < $iterationCount; $index++ ) {
+        for ($index = 0; $index < $iterationCount; $index++) {
             foreach ($revolutionCounts as $revolutionCount) {
                 $iterationEl = $variantEl->ownerDocument->createElement('iteration');
                 $variantEl->appendChild($iterationEl);

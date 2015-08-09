@@ -11,7 +11,6 @@
 
 namespace PhpBench\Benchmark;
 
-use PhpBench\Exception\InvalidArgumentException;
 use PhpBench\BenchmarkInterface;
 
 class SubjectBuilder

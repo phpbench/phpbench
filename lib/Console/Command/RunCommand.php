@@ -18,7 +18,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use PhpBench\Benchmark\Runner;
 use Symfony\Component\Console\Output\NullOutput;
-use PhpBench\ProgressLogger;
 use PhpBench\PhpBench;
 use PhpBench\Report\ReportManager;
 use PhpBench\ProgressLoggerRegistry;

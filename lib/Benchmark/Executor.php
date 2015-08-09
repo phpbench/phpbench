@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Benchmark;
 
 use Symfony\Component\Process\Process;
@@ -35,7 +44,7 @@ class Executor
     /**
      * @param BenchmarkInterface $benchmark
      * @param string $subject
-     * @param integer $revolutions
+     * @param int $revolutions
      * @param string[] $beforeMethods
      * @param array $parameters
      */
@@ -111,7 +120,7 @@ class Executor
     private function getBootstrapPath()
     {
         if (!$this->bootstrap) {
-            return null;
+            return;
         }
 
         // if the path is absolute, return it unmodified

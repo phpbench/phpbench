@@ -11,7 +11,6 @@
 
 namespace PhpBench;
 
-use PhpBench\Container;
 use Seld\JsonLint\JsonParser;
 use Seld\JsonLint\ParsingException;
 

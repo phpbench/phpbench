@@ -199,7 +199,7 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should throw an exception if the configuration does not match the schema
+     * It should throw an exception if the configuration does not match the schema.
      *
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage is not defined and the definition does not allow additional properties
@@ -211,7 +211,7 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
         $this->generator->getSchema()->willReturn(array(
             'type' => 'object',
             'properties' => array(
-                'foobar' => array('type'=> 'string')
+                'foobar' => array('type' => 'string'),
             ),
             'additionalProperties' => false,
         ));

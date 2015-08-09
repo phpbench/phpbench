@@ -65,7 +65,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     /**
      * It should merge parameters
      * It should say if a parameter exists
-     * It should retrieve parameter values
+     * It should retrieve parameter values.
      */
     public function testParameters()
     {

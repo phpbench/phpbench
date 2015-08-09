@@ -16,8 +16,6 @@ use PhpBench\ProgressLogger\DotsProgressLogger;
 use PhpBench\Report\Generator\ConsoleTableGenerator;
 use PhpBench\ProgressLoggerRegistry;
 use PhpBench\Report\ReportManager;
-use PhpBench\Result\Loader\XmlLoader;
-use PhpBench\Result\Dumper\XmlDumper;
 use PhpBench\Console\Command\RunCommand;
 use PhpBench\Console\Command\ReportCommand;
 use PhpBench\Benchmark\CollectionBuilder;
