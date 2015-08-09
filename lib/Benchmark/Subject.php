@@ -19,6 +19,7 @@ class Subject
 {
     private $methodName;
     private $beforeMethods;
+    private $afterMethods;
     private $paramProviders;
     private $nbIterations;
     private $revs;
@@ -29,6 +30,7 @@ class Subject
      * @param int $identifier
      * @param mixed $methodName
      * @param array $beforeMethods
+     * @param array $afterMethods
      * @param array $paramProviders
      * @param mixed $nbIterations
      * @param array $revs
@@ -38,6 +40,7 @@ class Subject
         $identifier,
         $methodName,
         array $beforeMethods,
+        array $afterMethods,
         array $paramProviders,
         $nbIterations,
         array $revs,
@@ -60,6 +63,16 @@ class Subject
     public function getBeforeMethods()
     {
         return $this->beforeMethods;
+    }
+
+    /**
+     * Return the methods that should be executed after this subject.
+     *
+     * @return string[]
+     */
+    public function getAfterMethods()
+    {
+        return $this->afterMethods;
     }
 
     /**

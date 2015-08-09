@@ -34,7 +34,7 @@ class Executor
      * @param string[] $beforeMethods
      * @param array $parameters
      */
-    public function execute(BenchmarkInterface $benchmark, $subject, $revolutions = 0, $beforeMethods = array(), array $parameters = array())
+    public function execute(BenchmarkInterface $benchmark, $subject, $revolutions = 0, $beforeMethods = array(), $afterMethods = array(), array $parameters = array())
     {
         $refl = new \ReflectionClass($benchmark);
 
@@ -47,7 +47,7 @@ class Executor
             '{{ subject }}' => $subject,
             '{{ revolutions }}' => $revolutions,
             '{{ beforeMethods }}' => var_export($beforeMethods, true),
-            '{{ beforeMethods }}' => var_export($beforeMethods, true),
+            '{{ afterMethods }}' => var_export($afterMethods, true),
             '{{ parameters }}' => var_export($parameters, true),
         );
 
@@ -60,6 +60,14 @@ class Executor
             }
         }
 
+        foreach ($afterMethods as $afterMethod) {
+            if (!$refl->hasMethod($afterMethod)) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Unknown after method "%s" in benchmark class "%s"',
+                    $afterMethod, $refl->getName()
+                ));
+            }
+        }
 
         $script = str_replace(
             array_keys($tokens),

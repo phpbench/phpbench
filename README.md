@@ -97,18 +97,24 @@ resolution.
 
 **plural**
 
-Specify a method which should be executed before the subject. The before
-method also accepts an `Iteration` object and has access to the iteration
-context.
+Specify a method which should be executed before the subject.
 
 Multiple before methods can be specified.
+
+### @afterMethod
+
+**plural**
+
+Specify a method which should be executed after the subject.
+
+Multiple after methods can be specified.
 
 ### @paramProvider
 
 **plural**
 
-Specify a method which will provide parameters which can be accessed from the
-`Iteration` object by both the before method and the subject method.
+Specify a method which will provide parameters. Parameters are passed as an
+argument to the benchmarking subject method.
 
 If multiple parameter providers are specified, then the they will be combined
 in to a cartesian product.

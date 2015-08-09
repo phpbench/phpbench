@@ -70,6 +70,7 @@ class SubjectBuilder
                 self::$subjectIdCounter++,
                 $method->getName(),
                 $meta['beforeMethod'],
+                $meta['afterMethod'],
                 $meta['paramProvider'],
                 $meta['iterations'],
                 $meta['revs'],

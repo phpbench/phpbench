@@ -11,8 +11,6 @@
 
 namespace PhpBench\Benchmark;
 
-use PhpBench\Exception\InvalidArgumentException;
-
 class Parser
 {
     public function parseDoc($doc, array $defaults = array())
@@ -21,6 +19,7 @@ class Parser
 
         $meta = array(
             'beforeMethod' => array(),
+            'afterMethod' => array(),
             'paramProvider' => array(),
             'iterations' => array(),
             'group' => array(),
@@ -35,7 +34,7 @@ class Parser
         }
 
         // plural annotations
-        foreach (array('beforeMethod', 'paramProvider', 'revs', 'group') as $key) {
+        foreach (array('afterMethod', 'beforeMethod', 'paramProvider', 'revs', 'group') as $key) {
             if (isset($defaults[$key]) && $defaults[$key]) {
                 $meta[$key] = $defaults[$key];
             }
@@ -50,7 +49,7 @@ class Parser
             $annotationValue = $matches[2];
 
             if (!isset($meta[$annotationName])) {
-                throw new InvalidArgumentException(sprintf(
+                throw new \InvalidArgumentException(sprintf(
                     'Unknown annotation "%s"',
                     $annotationName
                 ));
@@ -68,7 +67,7 @@ class Parser
             }
 
             if (count($meta[$key]) > 1) {
-                throw new InvalidArgumentException(sprintf(
+                throw new \InvalidArgumentException(sprintf(
                     'Cannot have more than one "@%s" annotation', $key
                 ));
             }

@@ -8,6 +8,7 @@ $file = '{{ file }}';
 $subject = '{{ subject }}';
 $revolutions = {{ revolutions }};
 $beforeMethods = {{ beforeMethods }};
+$afterMethods = {{ afterMethods }};
 $bootstrap = '{{ bootstrap }}';
 $parameters = {{ parameters }};
 
@@ -50,6 +51,10 @@ if ($parameters) {
 
     $endTime = microtime(true);
     $endMemory = memory_get_usage();
+}
+
+foreach ($afterMethods as $afterMethod) {
+    $benchmark->$afterMethod();
 }
 
 echo json_encode(array(

@@ -39,6 +39,8 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                 <<<EOT
 /**
 * @beforeMethod beforeMe
+* @afterMethod afterMe
+* @afterMethod afterAfterMe
 * @beforeMethod afterBeforeMe
 * @paramProvider provideParam
 * @iterations  3
@@ -50,6 +52,7 @@ EOT
                 , array(
                     'iterations' => 3,
                     'beforeMethod' => array('beforeMe', 'afterBeforeMe'),
+                    'afterMethod' => array('afterMe', 'afterAfterMe'),
                     'paramProvider' => array('provideParam'),
                     'revs' => array(1000, 10),
                     'group' => array('base'),
@@ -63,6 +66,7 @@ EOT
                 ,
                 array(
                     'beforeMethod' => array(),
+                    'afterMethod' => array(),
                     'paramProvider' => array(),
                     'iterations' => 1,
                     'revs' => array(),
@@ -75,7 +79,7 @@ EOT
     /**
      * It should thow an exception if an unknown annotation is found.
      *
-     * @expectedException \PhpBench\Exception\InvalidArgumentException
+     * @expectedException InvalidArgumentException
      */
     public function testInvalidAnnotation()
     {
@@ -101,6 +105,7 @@ EOT
                 array(
                     'iterations' => 3,
                     'beforeMethod' => array('beforeMe', 'afterBeforeMe'),
+                    'afterMethod' => array(),
                     'paramProvider' => array('provideParam'),
                     'revs' => array(1000, 10),
                     'group' => array('boo'),
@@ -118,6 +123,7 @@ EOT
                 array(
                     'iterations' => 3,
                     'beforeMethod' => array('beforeMe', 'afterBeforeMe', 'again'),
+                    'afterMethod' => array(),
                     'paramProvider' => array('provideParam', 'notherParam'),
                     'revs' => array(1000, 10, 5),
                     'group' => array('boo', 'five'),
@@ -127,6 +133,7 @@ EOT
                 array(
                     'iterations' => 3,
                     'beforeMethod' => array('beforeMe', 'afterBeforeMe'),
+                    'afterMethod' => array(),
                     'paramProvider' => array('provideParam'),
                     'revs' => array(1000, 10),
                     'group' => array('boo'),
@@ -140,6 +147,7 @@ EOT
                 array(
                     'iterations' => 4,
                     'beforeMethod' => array('beforeMe', 'afterBeforeMe'),
+                    'afterMethod' => array(),
                     'paramProvider' => array('provideParam'),
                     'revs' => array(1000, 10),
                     'group' => array('boo'),
@@ -149,6 +157,7 @@ EOT
                 array(
                     'iterations' => 3,
                     'beforeMethod' => array('beforeMe', 'afterBeforeMe'),
+                    'afterMethod' => array(),
                     'paramProvider' => array('provideParam'),
                     'revs' => array(1000, 10),
                 ),
@@ -156,6 +165,7 @@ EOT
                 array(
                     'iterations' => 3,
                     'beforeMethod' => array('beforeMe', 'afterBeforeMe'),
+                    'afterMethod' => array(),
                     'paramProvider' => array('provideParam'),
                     'revs' => array(1000, 10),
                     'group' => array(),

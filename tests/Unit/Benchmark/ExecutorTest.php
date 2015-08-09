@@ -8,11 +8,13 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
 {
     private $executor;
     private $beforeMethodFile;
+    private $afterMethodFile;
     private $revFile;
 
     public function setUp()
     {
         $this->beforeMethodFile = __DIR__ . '/executortest/before_method.tmp';
+        $this->afterMethodFile = __DIR__ . '/executortest/after_method.tmp';
         $this->revFile = __DIR__ . '/executortest/revs.tmp';
         $this->setupFile = __DIR__ . '/executortest/setup.tmp';
         $this->teardownFile = __DIR__ . '/executortest/teardown.tmp';
@@ -30,6 +32,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
     {
         foreach (array(
             $this->beforeMethodFile,
+            $this->afterMethodFile,
             $this->revFile,
             $this->setupFile,
             $this->teardownFile,
@@ -57,6 +60,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('time', $result);
         $this->assertArrayHasKey('memory', $result);
         $this->assertFalse(file_exists($this->beforeMethodFile));
+        $this->assertFalse(file_exists($this->afterMethodFile));
         $this->assertTrue(file_exists($this->revFile));
         $this->assertEquals('10', file_get_contents($this->revFile));
     }
@@ -89,6 +93,39 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
             'doSomething',
             1,
             array('notExistingBeforeMethod')
+        );
+    }
+
+    /**
+     * It should execute methods after the benchmark subject
+     */
+    public function testExecuteAfter()
+    {
+        $this->executor->execute(
+            new \PhpBench\Tests\Unit\Benchmark\executortest\ExecutorBench,
+            'doSomething',
+            1,
+            array(),
+            array('afterMethod')
+        );
+
+        $this->assertTrue(file_exists($this->afterMethodFile));
+    }
+
+    /**
+     * It should throw an exception if a after method does not exist.
+     *
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Unknown after method "notExistingAfterMethod" in benchmark class
+     */
+    public function testInvalidAfterMethod()
+    {
+        $this->executor->execute(
+            new \PhpBench\Tests\Unit\Benchmark\executortest\ExecutorBench,
+            'doSomething',
+            1,
+            array(),
+            array('notExistingAfterMethod')
         );
     }
 }

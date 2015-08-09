@@ -11,6 +11,11 @@ class ExecutorBench implements BenchmarkInterface
         file_put_contents(__DIR__ . '/before_method.tmp', 'Before method executed');
     }
 
+    public function afterMethod()
+    {
+        file_put_contents(__DIR__ . '/after_method.tmp', 'After method executed');
+    }
+
     public function doSomething()
     {
         static $count = 0;
