@@ -29,15 +29,15 @@ class SubjectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuild()
     {
-        $case = new \SubjectBuilderCase();
-        $subjects = $this->subjectBuilder->buildSubjects($case);
+        $bench = new \SubjectBuilderCase();
+        $subjects = $this->subjectBuilder->buildSubjects($bench);
         $this->assertContainsOnlyInstancesOf('PhpBench\\Benchmark\\Subject', $subjects);
         $this->assertCount(2, $subjects);
         $subject = reset($subjects);
 
         $this->assertEquals(array('group1'), $subject->getGroups());
         $this->assertEquals(array('beforeSelectSql'), $subject->getBeforeMethods());
-        $this->assertEquals(array('one', 'two'), $subject->getParameters());
+        $this->assertEquals(array('provideNumbers'), $subject->getParamProviders());
         $this->assertEquals(3, $subject->getNbIterations());
         $this->assertInternalType('int', $subject->getNbIterations());
     }
