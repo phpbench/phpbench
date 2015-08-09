@@ -40,4 +40,14 @@ class ExecutorBench implements BenchmarkInterface
     {
         file_put_contents(__DIR__ . '/param.tmp', json_encode($params));
     }
+
+    public function parameterizedBefore($params)
+    {
+        file_put_contents(__DIR__ . '/parambefore.tmp', json_encode($params));
+    }
+
+    public function parameterizedAfter($params)
+    {
+        file_put_contents(__DIR__ . '/paramafter.tmp', json_encode($params));
+    }
 }

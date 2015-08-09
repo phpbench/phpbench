@@ -27,7 +27,7 @@ require_once($file);
 $benchmark = new $class();
 
 foreach ($beforeMethods as $beforeMethod) {
-    $benchmark->$beforeMethod();
+    $benchmark->$beforeMethod($parameters);
 }
 
 $reflection = new \ReflectionClass(get_class($benchmark));
@@ -59,7 +59,7 @@ if ($parameters) {
 }
 
 foreach ($afterMethods as $afterMethod) {
-    $benchmark->$afterMethod();
+    $benchmark->$afterMethod($parameters);
 }
 
 echo json_encode(array(
