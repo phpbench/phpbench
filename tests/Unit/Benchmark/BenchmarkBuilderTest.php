@@ -33,7 +33,7 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuild()
     {
-        $this->teleflector->getClassInfo('foo.file')->willReturn(array(
+        $this->teleflector->getClassInfo('foo.file')->willReturn(array(array(
             'class' => 'MyBenchmark',
             'interfaces' => array('PhpBench\BenchmarkInterface'),
             'comment' => '/** @group group_one */',
@@ -48,7 +48,7 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
                 'beforeFoo' => array(),
                 'afterFoo' => array(),
             )
-        ));
+        )));
         $this->parser->parseDoc('/** @group group_one */')->willReturn(array(
             'group' => array('group_one'),
         ));
@@ -83,9 +83,9 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testNotImplementing()
     {
-        $this->teleflector->getClassInfo('foo.file')->willReturn(array(
+        $this->teleflector->getClassInfo('foo.file')->willReturn(array(array(
             'interfaces' => array('Foobar'),
-        ));
+        )));
 
         $result = $this->builder->build('foo.file');
         $this->assertNull($result);
@@ -96,7 +96,7 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testFilterSubjects()
     {
-        $this->teleflector->getClassInfo('foo.file')->willReturn(array(
+        $this->teleflector->getClassInfo('foo.file')->willReturn(array(array(
             'class' => 'MyBenchmark',
             'interfaces' => array('PhpBench\BenchmarkInterface'),
             'comment' => '',
@@ -108,7 +108,7 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
                     'comment' => '',
                 ),
             )
-        ));
+        )));
         $this->parser->parseDoc('')->willReturn(array(
             'group' => array(),
         ));
@@ -131,7 +131,7 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testFilterGroups()
     {
-        $this->teleflector->getClassInfo('foo.file')->willReturn(array(
+        $this->teleflector->getClassInfo('foo.file')->willReturn(array(array(
             'class' => 'MyBenchmark',
             'interfaces' => array('PhpBench\BenchmarkInterface'),
             'comment' => '',
@@ -143,7 +143,7 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
                     'comment' => '/** two */',
                 ),
             )
-        ));
+        )));
         $this->parser->parseDoc('')->willReturn(array(
             'group' => array(),
         ));
@@ -177,7 +177,7 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidAfterMethod()
     {
-        $this->teleflector->getClassInfo('foo.file')->willReturn(array(
+        $this->teleflector->getClassInfo('foo.file')->willReturn(array(array(
             'class' => 'MyBenchmark',
             'interfaces' => array('PhpBench\BenchmarkInterface'),
             'comment' => '',
@@ -189,7 +189,7 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
                     'comment' => '',
                 ),
             )
-        ));
+        )));
         $this->parser->parseDoc('')->willReturn(array(
             'group' => array(),
         ));
@@ -213,23 +213,21 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidBeforeMethod()
     {
-        $this->teleflector->getClassInfo('foo.file')->willReturn(array(
+        $this->teleflector->getClassInfo('foo.file')->willReturn(array(array(
             'class' => 'MyBenchmark',
             'interfaces' => array('PhpBench\BenchmarkInterface'),
             'comment' => '',
             'methods' => array(
-                'benchFoobar' => array(
-                    'comment' => '',
-                ),
                 'benchBarFoo' => array(
                     'comment' => '',
                 ),
             )
-        ));
+        )));
         $this->parser->parseDoc('')->willReturn(array(
             'group' => array(),
+            'paramProvider' => array(),
         ));
-        $this->parser->parseDoc('', array('group' => array()))->willReturn(array(
+        $this->parser->parseDoc('', array('group' => array(), 'paramProvider' => array()))->willReturn(array(
             'group' => array(),
             'beforeMethod' => array('notExistingBeforeMethod'),
             'afterMethod' => array(),
@@ -238,6 +236,6 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
             'revs' => array(1),
         ));
 
-        $this->builder->build('foo.file', array('benchFoobar'));
+        $this->builder->build('foo.file');
     }
 }

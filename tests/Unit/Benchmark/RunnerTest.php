@@ -53,9 +53,12 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->subject->getParameterSets()->willReturn(array());
         $this->subject->getGroups()->willReturn(array());
         $this->subject->getRevs()->willReturn($revs);
+        $this->benchmark->getSubjects()->willReturn(array(
+            $this->subject->reveal()
+        ));
 
         foreach ($revs as $revCount) {
-            $this->executor->execute($this->subject->reveal(), $revCount, array('beforeFoo'), array(), array())->shouldBeCalledTimes($iterations);
+            $this->executor->execute($this->subject->reveal(), $revCount, array())->shouldBeCalledTimes($iterations);
         }
 
         $result = $this->runner->runAll(__DIR__);

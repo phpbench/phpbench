@@ -12,7 +12,7 @@ class TelespectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testExecute()
     {
-        $teleporter = new Telespector(__DIR__ . '/../../../vendor/autoload.php');
+        $teleporter = new Telespector(__DIR__ . '/../../../vendor/autoload.php', '.');
         $result = $teleporter->execute(__DIR__ . '/template/foo.template', array(
             'foo' => 'bar'
         ));
@@ -30,7 +30,7 @@ class TelespectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidScript()
     {
-        $teleporter = new Telespector(__DIR__ . '/../../../vendor/autoload.php');
+        $teleporter = new Telespector(__DIR__ . '/../../../vendor/autoload.php', '.');
         $teleporter->execute(__DIR__ . '/template/invalid.template', array(
             'foo' => 'bar'
         ));
@@ -44,7 +44,7 @@ class TelespectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidBootstrap()
     {
-        $teleporter = new Telespector('really_does_not_exist.com');
+        $teleporter = new Telespector('really_does_not_exist.com', null);
         $teleporter->execute(__DIR__ . '/template/foo.template', array());
     }
 }

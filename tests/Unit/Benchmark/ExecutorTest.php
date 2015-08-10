@@ -38,8 +38,8 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
         $this->subject = $this->prophesize('PhpBench\Benchmark\Subject');
         $this->benchmark = $this->prophesize('PhpBench\Benchmark\Benchmark');
 
-        $telespector = new Telespector(null);
-        $this->executor = new Executor($telespector, null, null);
+        $telespector = new Telespector(null, null);
+        $this->executor = new Executor($telespector);
         $this->removeTemporaryFiles();
 
         $this->benchmark->getPath()->willReturn(__DIR__ . '/executortest/ExecutorBench.php');

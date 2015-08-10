@@ -11,7 +11,7 @@ class TeleflectorTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $telespector = new Telespector(__DIR__ . '/../../../vendor/autoload.php');
+        $telespector = new Telespector(__DIR__ . '/../../../vendor/autoload.php', null);
         $this->teleflector = new Teleflector($telespector);
     }
 
