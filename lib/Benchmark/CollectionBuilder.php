@@ -19,7 +19,7 @@ class CollectionBuilder
     private $baseDir;
     private $subjectBuilder;
 
-    public function __construct(SubjectBuilder $subjectBuilder, Finder $finder = null, $baseDir = null)
+    public function __construct(BenchmarkBuilder $benchmarkBuilder, Finder $finder = null, $baseDir = null)
     {
         $this->subjectBuilder = $subjectBuilder;
         $this->finder = $finder ?: new Finder();

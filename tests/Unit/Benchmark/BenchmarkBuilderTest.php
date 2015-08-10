@@ -133,11 +133,8 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testFilterGroups()
     {
-        $this->determinator->getClassNameFromFile('foo.file')->willReturn('MyBenchmark');
-        $this->telespector->execute(Argument::type('string'), array(
-            'file' => 'foo.file',
-            'class' => 'MyBenchmark'
-        ))->willReturn(array(
+        $this->teleflector->getClassInfo('foo.file')->willReturn(array(
+            'class' => 'MyBenchmark',
             'interfaces' => array('PhpBench\BenchmarkInterface'),
             'comment' => '',
             'methods' => array(

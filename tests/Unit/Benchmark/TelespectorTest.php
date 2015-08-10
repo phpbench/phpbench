@@ -35,4 +35,16 @@ class TelespectorTest extends \PHPUnit_Framework_TestCase
             'foo' => 'bar'
         ));
     }
+
+    /**
+     * It should throw an exception if the bootstrap file does not exist.
+     *
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Bootstrap file
+     */
+    public function testInvalidBootstrap()
+    {
+        $teleporter = new Telespector('really_does_not_exist.com');
+        $teleporter->execute(__DIR__ . '/template/foo.template', array());
+    }
 }

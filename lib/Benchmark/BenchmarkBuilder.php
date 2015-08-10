@@ -6,28 +6,21 @@ use PhpBench\Benchmark\Subject;
 
 class BenchmarkBuilder
 {
-    private $telespector;
+    private $teleflector;
     private $parser;
-    private $determinator;
 
     public function __construct(
-        Telespector $telespector,
-        Parser $parser,
-        ClassDeterminator $determinator
+        Teleflector $teleflector,
+        Parser $parser
     )
     {
-        $this->telespector = $telespector;
+        $this->teleflector = $teleflector;
         $this->parser = $parser;
-        $this->determinator = $determinator;
     }
 
     public function build($benchmarkPath, array $subjectFilter = array(), array $groupFilter = array())
     {
-        $classFqn = $this->determinator->getClassNameFromFile($benchmarkPath);
-        $classInfo = $this->telespector->execute(__DIR__ . '/template/telespector.template', array(
-            'file' => $benchmarkPath,
-            'class' => $classFqn
-        ));
+        $classInfo = $this->teleflector->getClassInfo($benchmarkPath);
 
         if (!in_array('PhpBench\BenchmarkInterface', $classInfo['interfaces'])) {
             return null;
@@ -35,7 +28,7 @@ class BenchmarkBuilder
 
         $benchmark = new Benchmark(
             $benchmarkPath, 
-            $classFqn
+            $classInfo['class']
         );
 
         $classMeta = $this->parser->parseDoc($classInfo['comment']);

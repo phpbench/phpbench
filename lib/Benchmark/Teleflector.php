@@ -2,8 +2,29 @@
 
 namespace PhpBench\Benchmark;
 
-class ClassDeterminator
+class Teleflector
 {
+    private $telespector;
+
+    public function __construct(
+        Telespector $telespector
+    )
+    {
+        $this->telespector = $telespector;
+    }
+
+    public function teleflect($file)
+    {
+        $classFqn = $this->getClassNameFromFile($file);
+
+        $classInfo = $this->telespector->execute(__DIR__ . '/template/teleflector.template', array(
+            'file' => $file,
+            'class' => $classFqn
+        ));
+
+        return $classInfo;
+    }
+
     /**
      * Return the class name from a file.
      *
@@ -13,7 +34,7 @@ class ClassDeterminator
      *
      * @return string
      */
-    public function getClassNameFromFile($file)
+    private function getClassNameFromFile($file)
     {
         $fp = fopen($file, 'r');
 

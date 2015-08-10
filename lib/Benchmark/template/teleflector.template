@@ -1,11 +1,21 @@
 <?php
 
+$bootstrap = '{{ bootstrap }}';
 $class = '{{ class }}';
-$refl = new \ReflectionClass();
+$file = '{{ file }}';
+
+if ($bootstrap) {
+    require_once($bootstrap);
+} else {
+    require_once($file);
+}
+
+$refl = new \ReflectionClass($class);
 $metadata = array(
     'class' => $class,
     'methods' => array(),
     'interfaces' => array(),
+    'comment' => $refl->getDocComment()
 );
 
 foreach ($refl->getMethods() as $methodRefl) {
@@ -20,4 +30,5 @@ foreach ($refl->getInterfaces() as $interfaceRefl) {
 }
 
 // in the future we should return also the parent classes
-return json_encode(array($metadata));
+echo json_encode(array($metadata));
+exit(0);

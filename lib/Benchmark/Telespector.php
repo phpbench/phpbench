@@ -25,6 +25,13 @@ class Telespector
 
     public function execute($template, array $parameters)
     {
+        if ($this->bootstrap && !file_exists($this->bootstrap)) {
+            throw new \InvalidArgumentException(sprintf(
+                'Bootstrap file "%s" does not exist',
+                $this->bootstrap
+            ));
+        }
+
         if (!file_exists($template)) {
             throw new \RuntimeException(sprintf(
                 'Could not find script template "%s"',
