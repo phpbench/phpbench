@@ -22,4 +22,24 @@ class ExampleClass implements BenchmarkInterface
     public function methodTwo()
     {
     }
+
+    public function provideParamsOne()
+    {
+        return array(
+            array(
+                'one' => 'two',
+                'three' => 'four',
+            ),
+        );
+    }
+
+    public function provideParamsTwo()
+    {
+        return array(
+            array(
+                'five' => 'six',
+                'seven' => 'eight',
+            ),
+        );
+    }
 }

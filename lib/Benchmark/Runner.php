@@ -16,6 +16,7 @@ use PhpBench\ProgressLogger\NullProgressLogger;
 use PhpBench\Exception\InvalidArgumentException;
 use PhpBench\BenchmarkInterface;
 use PhpBench\ProgressLoggerInterface;
+use PhpBench\Benchmark\Benchmark;
 
 /**
  * The benchmark runner.
@@ -40,13 +41,11 @@ class Runner
      */
     public function __construct(
         CollectionBuilder $collectionBuilder,
-        SubjectBuilder $subjectBuilder,
         Executor $executor,
         $configPath
     ) {
         $this->logger = new NullProgressLogger();
         $this->collectionBuilder = $collectionBuilder;
-        $this->subjectBuilder = $subjectBuilder;
         $this->executor = $executor;
         $this->configPath = $configPath;
     }
@@ -145,11 +144,9 @@ class Runner
         return $dom;
     }
 
-    private function run(BenchmarkInterface $benchmark, \DOMElement $benchmarkEl)
+    private function run(Benchmark $benchmark, \DOMElement $benchmarkEl)
     {
-        $subjects = $this->subjectBuilder->buildSubjects($benchmark, $this->subjectsOverride, $this->groups);
-
-        foreach ($subjects as $subject) {
+        foreach ($benchmark->getSubjects() as $subject) {
             $subjectEl = $benchmarkEl->ownerDocument->createElement('subject');
             $subjectEl->setAttribute('name', $subject->getMethodName());
 
@@ -160,14 +157,14 @@ class Runner
             }
 
             $this->logger->subjectStart($subject);
-            $this->runSubject($benchmark, $subject, $subjectEl);
+            $this->runSubject($subject, $subjectEl);
             $this->logger->subjectEnd($subject);
 
             $benchmarkEl->appendChild($subjectEl);
         }
     }
 
-    private function runSubject(BenchmarkInterface $benchmark, Subject $subject, \DOMElement $subjectEl)
+    private function runSubject(Subject $subject, \DOMElement $subjectEl)
     {
         $iterationCount = null === $this->iterationsOverride ? $subject->getNbIterations() : $this->iterationsOverride;
         $revolutionCounts = $this->revsOverride ? array($this->revsOverride) : $subject->getRevs();

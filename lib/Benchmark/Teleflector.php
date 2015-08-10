@@ -13,7 +13,7 @@ class Teleflector
         $this->telespector = $telespector;
     }
 
-    public function teleflect($file)
+    public function getClassInfo($file)
     {
         $classFqn = $this->getClassNameFromFile($file);
 
@@ -23,6 +23,17 @@ class Teleflector
         ));
 
         return $classInfo;
+    }
+
+    public function getParameterSets($file, $paramProviders)
+    {
+        $parameterSets = $this->telespector->execute(__DIR__ . '/template/parameter_set_extractor.template', array(
+            'file' => $file,
+            'class' => $this->getClassNameFromFile($file),
+            'paramProviders' => var_export($paramProviders, true),
+        ));
+
+        return $parameterSets;
     }
 
     /**

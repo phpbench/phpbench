@@ -19,13 +19,13 @@ use PhpBench\Report\ReportManager;
 use PhpBench\Console\Command\RunCommand;
 use PhpBench\Console\Command\ReportCommand;
 use PhpBench\Benchmark\CollectionBuilder;
-use PhpBench\Benchmark\SubjectBuilder;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Console\Application;
 use Symfony\Component\Finder\Finder;
 use PhpBench\Report\Generator\CompositeGenerator;
 use PhpBench\ExtensionInterface;
 use PhpBench\Benchmark\Executor;
+use PhpBench\Benchmark\BenchmarkBuilder;
 
 class CoreExtension implements ExtensionInterface
 {
@@ -44,7 +44,6 @@ class CoreExtension implements ExtensionInterface
         $container->register('benchmark.runner', function (Container $container) {
             return new Runner(
                 $container->get('benchmark.collection_builder'),
-                $container->get('benchmark.subject_builder'),
                 $container->get('benchmark.executor'),
                 $container->getParameter('config_path')
             );
@@ -58,11 +57,12 @@ class CoreExtension implements ExtensionInterface
         $container->register('benchmark.finder', function (Container $container) {
             return new Finder();
         });
-        $container->register('benchmark.subject_builder', function (Container $container) {
-            return new SubjectBuilder();
+        $container->register('benchmark.benchmark_builder', function (Container $container) {
+            return new BenchmarkBuilder();
         });
         $container->register('benchmark.collection_builder', function (Container $container) {
             return new CollectionBuilder(
+                $container->get('benchmark.builder'),
                 $container->get('benchmark.finder'),
                 dirname($container->getParameter('config_path'))
             );

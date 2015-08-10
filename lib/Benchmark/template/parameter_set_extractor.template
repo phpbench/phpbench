@@ -1,0 +1,23 @@
+<?php
+
+$bootstrap = '{{ bootstrap }}';
+$file = '{{ file }}';
+$class = '{{ class }}';
+
+if ($bootstrap) {
+    require_once($bootstrap);
+} else {
+    require_once($file);
+}
+
+$paramProviders = {{ paramProviders }};
+$benchmark = new $class();
+$parameterSets = array();
+
+foreach ($paramProviders as $paramProvider) {
+    $parameterSets[] = $benchmark->$paramProvider();
+}
+
+echo json_encode($parameterSets);
+exit(0);
+

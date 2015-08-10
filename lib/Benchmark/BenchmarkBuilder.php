@@ -66,12 +66,14 @@ class BenchmarkBuilder
             $subjectMeta['revs'] = array(1);
         }
 
+        $parameterSets = $this->teleflector->extractParameterSets($benchmark->getPath(), $subjectMeta['paramProvider']);
+
         $subject = new Subject(
             $benchmark,
             $methodName,
             $subjectMeta['beforeMethod'],
             $subjectMeta['afterMethod'],
-            $subjectMeta['paramProvider'],
+            $parameterSets,
             $subjectMeta['iterations'],
             $subjectMeta['revs'],
             $subjectMeta['group']
@@ -80,4 +82,3 @@ class BenchmarkBuilder
         return $subject;
     }
 }
-

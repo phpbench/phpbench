@@ -17,16 +17,16 @@ class CollectionBuilder
 {
     private $finder;
     private $baseDir;
-    private $subjectBuilder;
+    private $benchmarkBuilder;
 
     public function __construct(BenchmarkBuilder $benchmarkBuilder, Finder $finder = null, $baseDir = null)
     {
-        $this->subjectBuilder = $subjectBuilder;
+        $this->benchmarkBuilder = $benchmarkBuilder;
         $this->finder = $finder ?: new Finder();
         $this->baseDir = $baseDir;
     }
 
-    public function buildCollection($path)
+    public function buildCollection($path, array $subjectFilter = array(), array $groupFilter = array())
     {
         if ($this->baseDir && '/' !== substr($path, 0, 1)) {
             $path = realpath($this->baseDir . '/' . $path);
@@ -54,9 +54,12 @@ class CollectionBuilder
                 continue;
             }
 
-            require_once $file->getRealPath();
-            $classFqn = static::getClassNameFromFile($file->getRealPath());
-            $this->subjectBuilder->buildSubjects($benchmark);
+            $benchmark = $this->benchmarkBuilder->build($file->getPathname(), $subjectFilter, $groupFilter);
+
+            if (null === $benchmark) {
+                continue;
+            }
+
             $benchmarks[] = $benchmark;
         }
 
