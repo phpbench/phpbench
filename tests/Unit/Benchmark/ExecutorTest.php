@@ -12,6 +12,7 @@
 namespace PhpBench\Tests\Unit\Benchmark;
 
 use PhpBench\Benchmark\Executor;
+use PhpBench\Benchmark\Telespector;
 
 class ExecutorTest extends \PHPUnit_Framework_TestCase
 {
@@ -34,8 +35,16 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
         $this->paramAfterFile = __DIR__ . '/executortest/paramafter.tmp';
         $this->teardownFile = __DIR__ . '/executortest/teardown.tmp';
 
-        $this->executor = new Executor(null, null);
+        $this->subject = $this->prophesize('PhpBench\Benchmark\Subject');
+        $this->benchmark = $this->prophesize('PhpBench\Benchmark\Benchmark');
+
+        $telespector = new Telespector(null);
+        $this->executor = new Executor($telespector, null, null);
         $this->removeTemporaryFiles();
+
+        $this->benchmark->getPath()->willReturn(__DIR__ . '/executortest/ExecutorBench.php');
+        $this->benchmark->getClassFqn()->willReturn('PhpBench\Tests\Unit\Benchmark\executortest\ExecutorBench');
+        $this->subject->getBenchmark()->willReturn($this->benchmark->reveal());
     }
 
     public function tearDown()
@@ -67,9 +76,12 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
      */
     public function testExecute()
     {
+        $this->subject->getBeforeMethods()->willReturn(array());
+        $this->subject->getAfterMethods()->willReturn(array());
+        $this->subject->getMethodName()->willReturn('doSomething');
+
         $result = $this->executor->execute(
-            new \PhpBench\Tests\Unit\Benchmark\executortest\ExecutorBench(),
-            'doSomething',
+            $this->subject->reveal(),
             10,
             array()
         );
@@ -88,30 +100,17 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
      */
     public function testExecuteBefore()
     {
+        $this->subject->getBeforeMethods()->willReturn(array('beforeMethod'));
+        $this->subject->getAfterMethods()->willReturn(array());
+        $this->subject->getMethodName()->willReturn('doSomething');
+
         $this->executor->execute(
-            new \PhpBench\Tests\Unit\Benchmark\executortest\ExecutorBench(),
-            'doSomething',
+            $this->subject->reveal(),
             1,
-            array('beforeMethod')
+            array()
         );
 
         $this->assertTrue(file_exists($this->beforeMethodFile));
-    }
-
-    /**
-     * It should throw an exception if a before method does not exist.
-     *
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Unknown before method "notExistingBeforeMethod" in benchmark class
-     */
-    public function testInvalidBeforeMethod()
-    {
-        $this->executor->execute(
-            new \PhpBench\Tests\Unit\Benchmark\executortest\ExecutorBench(),
-            'doSomething',
-            1,
-            array('notExistingBeforeMethod')
-        );
     }
 
     /**
@@ -119,32 +118,17 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
      */
     public function testExecuteAfter()
     {
+        $this->subject->getBeforeMethods()->willReturn(array());
+        $this->subject->getAfterMethods()->willReturn(array('afterMethod'));
+        $this->subject->getMethodName()->willReturn('doSomething');
+
         $this->executor->execute(
-            new \PhpBench\Tests\Unit\Benchmark\executortest\ExecutorBench(),
-            'doSomething',
+            $this->subject->reveal(),
             1,
-            array(),
-            array('afterMethod')
+            array()
         );
 
         $this->assertTrue(file_exists($this->afterMethodFile));
-    }
-
-    /**
-     * It should throw an exception if a after method does not exist.
-     *
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Unknown after method "notExistingAfterMethod" in benchmark class
-     */
-    public function testInvalidAfterMethod()
-    {
-        $this->executor->execute(
-            new \PhpBench\Tests\Unit\Benchmark\executortest\ExecutorBench(),
-            'doSomething',
-            1,
-            array(),
-            array('notExistingAfterMethod')
-        );
     }
 
     /**
@@ -152,12 +136,13 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
      */
     public function testParameters()
     {
+        $this->subject->getBeforeMethods()->willReturn(array());
+        $this->subject->getAfterMethods()->willReturn(array());
+        $this->subject->getMethodName()->willReturn('parameterized');
+
         $this->executor->execute(
-            new \PhpBench\Tests\Unit\Benchmark\executortest\ExecutorBench(),
-            'parameterized',
+            $this->subject->reveal(),
             1,
-            array(),
-            array(),
             array(
                 'one' => 'two',
                 'three' => 'four',
@@ -181,12 +166,13 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
             'three' => 'four',
         );
 
+        $this->subject->getBeforeMethods()->willReturn(array('parameterizedBefore'));
+        $this->subject->getAfterMethods()->willReturn(array('parameterizedAfter'));
+        $this->subject->getMethodName()->willReturn('parameterized');
+
         $this->executor->execute(
-            new \PhpBench\Tests\Unit\Benchmark\executortest\ExecutorBench(),
-            'parameterized',
+            $this->subject->reveal(),
             1,
-            array('parameterizedBefore'),
-            array('parameterizedAfter'),
             $expected
         );
 

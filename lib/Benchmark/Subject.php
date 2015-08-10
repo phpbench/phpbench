@@ -20,7 +20,7 @@ class Subject
     private $methodName;
     private $beforeMethods = array();
     private $afterMethods = array();
-    private $paramProviders;
+    private $parameterSets;
     private $nbIterations;
     private $revs;
     private $groups;
@@ -30,7 +30,7 @@ class Subject
      * @param mixed $methodName
      * @param array $beforeMethods
      * @param array $afterMethods
-     * @param array $paramProviders
+     * @param array $parameterSets
      * @param mixed $nbIterations
      * @param array $revs
      * @param array $groups
@@ -40,7 +40,7 @@ class Subject
         $methodName,
         array $beforeMethods,
         array $afterMethods,
-        array $paramProviders,
+        array $parameterSets,
         $nbIterations,
         array $revs,
         array $groups
@@ -49,7 +49,7 @@ class Subject
         $this->methodName = $methodName;
         $this->beforeMethods = $beforeMethods;
         $this->afterMethods = $afterMethods;
-        $this->paramProviders = $paramProviders;
+        $this->parameterSets = $parameterSets;
         $this->nbIterations = $nbIterations;
         $this->revs = $revs;
         $this->groups = $groups;
@@ -80,9 +80,9 @@ class Subject
      *
      * @return string[]
      */
-    public function getParamProviders()
+    public function getParameterSets()
     {
-        return $this->paramProviders;
+        return $this->parameterSets;
     }
 
     /**

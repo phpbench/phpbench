@@ -25,7 +25,6 @@ class Runner
 {
     private $logger;
     private $collectionBuilder;
-    private $subjectBuilder;
     private $iterationsOverride;
     private $revsOverride;
     private $configPath;
@@ -168,9 +167,8 @@ class Runner
     {
         $iterationCount = null === $this->iterationsOverride ? $subject->getNbIterations() : $this->iterationsOverride;
         $revolutionCounts = $this->revsOverride ? array($this->revsOverride) : $subject->getRevs();
-        $parameterSets = $this->getParameterSets($benchmark, $subject->getParamProviders(), $this->parametersOverride);
 
-        $paramsIterator = new CartesianParameterIterator($parameterSets);
+        $paramsIterator = new CartesianParameterIterator($subject->getParameterSets());
 
         foreach ($paramsIterator as $parameters) {
             $variantEl = $subjectEl->ownerDocument->createElement('variant');
@@ -205,8 +203,6 @@ class Runner
             $benchmark,
             $subject->getMethodName(),
             $revolutionCount,
-            $subject->getBeforeMethods(),
-            $subject->getAfterMethods(),
             $parameterSet
         );
 

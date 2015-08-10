@@ -3,6 +3,7 @@
 namespace PhpBench\Benchmark;
 
 use PhpBench\Benchmark\Subject;
+use PhpBench\Benchmark\Teleflector;
 
 class BenchmarkBuilder
 {
@@ -39,6 +40,7 @@ class BenchmarkBuilder
                 continue;
             }
 
+            $this->validateSubject($classInfo, $subject);
             $benchmark->addSubject($subject);
         }
 
@@ -66,7 +68,10 @@ class BenchmarkBuilder
             $subjectMeta['revs'] = array(1);
         }
 
-        $parameterSets = $this->teleflector->extractParameterSets($benchmark->getPath(), $subjectMeta['paramProvider']);
+        $parameterSets = array();
+        if ($subjectMeta['paramProvider']) {
+            $parameterSets = $this->teleflector->getParameterSets($benchmark->getPath(), $subjectMeta['paramProvider']);
+        }
 
         $subject = new Subject(
             $benchmark,
@@ -80,5 +85,26 @@ class BenchmarkBuilder
         );
 
         return $subject;
+    }
+
+    private function validateSubject($classInfo, $subject)
+    {
+        foreach ($subject->getBeforeMethods() as $beforeMethod) {
+            if (!isset($classInfo['methods'][$beforeMethod])) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Unknown before method "%s" in benchmark class "%s"',
+                    $beforeMethod, $subject->getBenchmark()->getClassFqn()
+                ));
+            }
+        }
+
+        foreach ($subject->getAfterMethods() as $afterMethod) {
+            if (!isset($classInfo['methods'][$afterMethod])) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Unknown after method "%s" in benchmark class "%s"',
+                    $afterMethod, $subject->getBenchmark()->getClassFqn()
+                ));
+            }
+        }
     }
 }

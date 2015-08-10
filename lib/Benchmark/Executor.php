@@ -13,7 +13,8 @@ namespace PhpBench\Benchmark;
 
 use Symfony\Component\Process\Process;
 use PhpBench\BenchmarkInterface;
-use PhpBench\Benchmark\Teleporter;
+use PhpBench\Benchmark\Telespector;
+use PhpBench\Benchmark\Subject;
 
 /**
  * This class generates a benchmarking script and places it in the systems
@@ -33,92 +34,41 @@ class Executor
     private $configDir;
 
     /**
-     * @var Teleporter
+     * @var Telespector
      */
-    private $teleporter;
+    private $telespector;
 
     /**
+     * @param Telespector $telespector
      * @param string $configPath
      * @param string $bootstrap
      */
-    public function __construct(Teleporter $teleporter, $configPath, $bootstrap)
+    public function __construct(Telespector $telespector, $configPath, $bootstrap)
     {
         $this->configDir = dirname($configPath);
         $this->bootstrap = $bootstrap;
-        $this->teleporter = $teleporter;
+        $this->telespector = $telespector;
     }
 
     /**
-     * @param BenchmarkInterface $benchmark
-     * @param string $subject
+     * @param Subject $subject
      * @param int $revolutions
-     * @param string[] $beforeMethods
      * @param array $parameters
      */
-    public function execute(BenchmarkInterface $benchmark, $subject, $revolutions = 0, $beforeMethods = array(), $afterMethods = array(), array $parameters = array())
+    public function execute(Subject $subject, $revolutions = 0, array $parameters = array())
     {
         $tokens = array(
             'bootstrap' => $this->getBootstrapPath(),
-            'class' => $refl->getName(),
-            'file' => $refl->getFileName(),
-            'subject' => $subject,
+            'class' => $subject->getBenchmark()->getClassFqn(),
+            'file' => $subject->getBenchmark()->getPath(),
+            'subject' => $subject->getMethodName(),
             'revolutions' => $revolutions,
-            'beforeMethods' => var_export($beforeMethods, true),
-            'afterMethods' => var_export($afterMethods, true),
+            'beforeMethods' => var_export($subject->getBeforeMethods(), true),
+            'afterMethods' => var_export($subject->getAfterMethods(), true),
             'parameters' => var_export($parameters, true),
         );
 
-        $this->teleporter->execute(__DIR__ . '/template/runner.template', $tokens);
-
-        foreach ($beforeMethods as $beforeMethod) {
-            if (!$refl->hasMethod($beforeMethod)) {
-                throw new \InvalidArgumentException(sprintf(
-                    'Unknown before method "%s" in benchmark class "%s"',
-                    $beforeMethod, $refl->getName()
-                ));
-            }
-        }
-
-        foreach ($afterMethods as $afterMethod) {
-            if (!$refl->hasMethod($afterMethod)) {
-                throw new \InvalidArgumentException(sprintf(
-                    'Unknown after method "%s" in benchmark class "%s"',
-                    $afterMethod, $refl->getName()
-                ));
-            }
-        }
-
-        $template = file_get_contents(__DIR__ . '/template/runner.template');
-        $script = str_replace(
-            array_keys($tokens),
-            array_values($tokens),
-            $template
-        );
-
-        $scriptPath = tempnam(sys_get_temp_dir(), 'PhpBench');
-        file_put_contents($scriptPath, $script);
-
-        $process = new Process(PHP_BINARY . ' ' . $scriptPath);
-        $process->run();
-        unlink($scriptPath);
-
-        if (false === $process->isSuccessful()) {
-            throw new \RuntimeException(sprintf(
-                'Could not execute benchmark subject: %s %s %s',
-                $process->getErrorOutput(),
-                $process->getOutput(),
-                $script
-            ));
-        }
-
-        $result = json_decode($process->getOutput(), true);
-
-        if (null === $result) {
-            throw new \Exception(sprintf(
-                'Could not decode executor result, got: %s',
-                $process->getOutput()
-            ));
-        }
+        $result = $this->telespector->execute(__DIR__ . '/template/runner.template', $tokens);
 
         return $result;
     }

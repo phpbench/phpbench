@@ -7,19 +7,19 @@ use PhpBench\Benchmark\BenchmarkBuilder;
 
 class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
 {
-    private $telespector;
+    private $teleflector;
     private $parser;
     private $determinator;
     private $builder;
 
     public function setUp()
     {
-        $this->telespector = $this->prophesize('PhpBench\Benchmark\Telespector');
+        $this->teleflector = $this->prophesize('PhpBench\Benchmark\Teleflector');
         $this->parser = $this->prophesize('PhpBench\Benchmark\Parser');
         $this->determinator = $this->prophesize('PhpBench\Benchmark\ClassDeterminator');
 
         $this->builder = new BenchmarkBuilder(
-            $this->telespector->reveal(),
+            $this->teleflector->reveal(),
             $this->parser->reveal(),
             $this->determinator->reveal()
 
@@ -29,14 +29,12 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
     /**
      * It should build representations of benchmarks
      * It should ignore benchmark methods which do not begin wth "bench"
+     * It should pass parameter sets to the subject
      */
     public function testBuild()
     {
-        $this->determinator->getClassNameFromFile('foo.file')->willReturn('MyBenchmark');
-        $this->telespector->execute(Argument::type('string'), array(
-            'file' => 'foo.file',
-            'class' => 'MyBenchmark'
-        ))->willReturn(array(
+        $this->teleflector->getClassInfo('foo.file')->willReturn(array(
+            'class' => 'MyBenchmark',
             'interfaces' => array('PhpBench\BenchmarkInterface'),
             'comment' => '/** @group group_one */',
             'methods' => array(
@@ -44,9 +42,11 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
                     'comment' => '/** @revs 1000 */'
                 ),
                 'benchBarFoo' => array(
-                    'comment' => '/** @revs 1000 */'
+                    'comment' => '/** @revs 1000 */',
                 ),
                 'fooFoo' => array(),
+                'beforeFoo' => array(),
+                'afterFoo' => array(),
             )
         ));
         $this->parser->parseDoc('/** @group group_one */')->willReturn(array(
@@ -54,13 +54,15 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
         ));
         $this->parser->parseDoc('/** @revs 1000 */', array('group' => array('group_one')))->willReturn(array(
             'group' => array('group_one'),
-            'beforeMethod' => array(),
+            'beforeMethod' => array('beforeFoo'),
             'afterMethod' => array(),
-            'paramProvider' => array(),
+            'paramProvider' => array('paramProvider'),
             'iterations' => 1,
             'revs' => array(1),
         ));
-
+        $this->teleflector->getParameterSets('foo.file', array('paramProvider'))->willReturn(array(
+            'one' => 'two',
+        ));
 
         $benchmark = $this->builder->build('foo.file');
 
@@ -71,6 +73,9 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $subjects);
         $subject = $subjects[0];
         $this->assertEquals('benchFoobar', $subject->getMethodName());
+        $this->assertEquals(array(
+            'one' => 'two',
+        ), $subject->getParameterSets());
     }
 
     /**
@@ -78,11 +83,7 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testNotImplementing()
     {
-        $this->determinator->getClassNameFromFile('foo.file')->willReturn('MyBenchmark');
-        $this->telespector->execute(Argument::type('string'), array(
-            'file' => 'foo.file',
-            'class' => 'MyBenchmark'
-        ))->willReturn(array(
+        $this->teleflector->getClassInfo('foo.file')->willReturn(array(
             'interfaces' => array('Foobar'),
         ));
 
@@ -95,11 +96,8 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testFilterSubjects()
     {
-        $this->determinator->getClassNameFromFile('foo.file')->willReturn('MyBenchmark');
-        $this->telespector->execute(Argument::type('string'), array(
-            'file' => 'foo.file',
-            'class' => 'MyBenchmark'
-        ))->willReturn(array(
+        $this->teleflector->getClassInfo('foo.file')->willReturn(array(
+            'class' => 'MyBenchmark',
             'interfaces' => array('PhpBench\BenchmarkInterface'),
             'comment' => '',
             'methods' => array(
@@ -169,5 +167,77 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
         $benchmark = $this->builder->build('foo.file', array(), array('one'));
 
         $this->assertCount(1, $benchmark->getSubjects());
+    }
+
+    /**
+     * It should throw an exception if a before method does not exist.
+     *
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Unknown before method "notExistingAfterMethod" in benchmark class
+     */
+    public function testInvalidAfterMethod()
+    {
+        $this->teleflector->getClassInfo('foo.file')->willReturn(array(
+            'class' => 'MyBenchmark',
+            'interfaces' => array('PhpBench\BenchmarkInterface'),
+            'comment' => '',
+            'methods' => array(
+                'benchFoobar' => array(
+                    'comment' => '',
+                ),
+                'benchBarFoo' => array(
+                    'comment' => '',
+                ),
+            )
+        ));
+        $this->parser->parseDoc('')->willReturn(array(
+            'group' => array(),
+        ));
+        $this->parser->parseDoc('', array('group' => array()))->willReturn(array(
+            'group' => array(),
+            'beforeMethod' => array('notExistingAfterMethod'),
+            'afterMethod' => array(),
+            'paramProvider' => array(),
+            'iterations' => 1,
+            'revs' => array(1),
+        ));
+
+        $this->builder->build('foo.file', array('benchFoobar'));
+    }
+
+    /**
+     * It should throw an exception if a before method does not exist.
+     *
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Unknown before method "notExistingBeforeMethod" in benchmark class
+     */
+    public function testInvalidBeforeMethod()
+    {
+        $this->teleflector->getClassInfo('foo.file')->willReturn(array(
+            'class' => 'MyBenchmark',
+            'interfaces' => array('PhpBench\BenchmarkInterface'),
+            'comment' => '',
+            'methods' => array(
+                'benchFoobar' => array(
+                    'comment' => '',
+                ),
+                'benchBarFoo' => array(
+                    'comment' => '',
+                ),
+            )
+        ));
+        $this->parser->parseDoc('')->willReturn(array(
+            'group' => array(),
+        ));
+        $this->parser->parseDoc('', array('group' => array()))->willReturn(array(
+            'group' => array(),
+            'beforeMethod' => array('notExistingBeforeMethod'),
+            'afterMethod' => array(),
+            'paramProvider' => array(),
+            'iterations' => 1,
+            'revs' => array(1),
+        ));
+
+        $this->builder->build('foo.file', array('benchFoobar'));
     }
 }

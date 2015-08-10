@@ -20,16 +20,14 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->collectionBuilder = $this->prophesize('PhpBench\\Benchmark\\CollectionBuilder');
-        $this->subjectBuilder = $this->prophesize('PhpBench\\Benchmark\\SubjectBuilder');
-        $this->case = new RunnerTestBenchCase();
         $this->collection = $this->prophesize('PhpBench\\Benchmark\\Collection');
         $this->subject = $this->prophesize('PhpBench\\Benchmark\\Subject');
         $this->collectionBuilder->buildCollection(__DIR__)->willReturn($this->collection);
         $this->executor = $this->prophesize('PhpBench\Benchmark\Executor');
+        $this->benchmark = $this->prophesize('PhpBench\Benchmark\Benchmark');
 
         $this->runner = new Runner(
             $this->collectionBuilder->reveal(),
-            $this->subjectBuilder->reveal(),
             $this->executor->reveal(),
             null
         );
@@ -46,22 +44,18 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
     public function testRunner($iterations, $revs, $expectedNbIterations)
     {
         $this->collection->getBenchmarks()->willReturn(array(
-            $this->case,
-        ));
-        $this->subjectBuilder->buildSubjects($this->case, null, null, null)->willReturn(array(
-            $this->subject->reveal(),
+            $this->benchmark,
         ));
         $this->subject->getNbIterations()->willReturn($iterations);
         $this->subject->getMethodName()->willReturn('benchFoo');
         $this->subject->getBeforeMethods()->willReturn(array('beforeFoo'));
         $this->subject->getAfterMethods()->willReturn(array());
-        $this->subject->getIdentifier()->willReturn(1);
-        $this->subject->getParamProviders()->willReturn(array());
+        $this->subject->getParameterSets()->willReturn(array());
         $this->subject->getGroups()->willReturn(array());
         $this->subject->getRevs()->willReturn($revs);
 
         foreach ($revs as $revCount) {
-            $this->executor->execute($this->case, 'benchFoo', $revCount, array('beforeFoo'), array(), array())->shouldBeCalledTimes($iterations);
+            $this->executor->execute($this->subject->reveal(), $revCount, array('beforeFoo'), array(), array())->shouldBeCalledTimes($iterations);
         }
 
         $result = $this->runner->runAll(__DIR__);
