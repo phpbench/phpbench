@@ -27,6 +27,8 @@ use PhpBench\ExtensionInterface;
 use PhpBench\Benchmark\Executor;
 use PhpBench\Benchmark\BenchmarkBuilder;
 use PhpBench\Benchmark\Telespector;
+use PhpBench\Benchmark\Parser;
+use PhpBench\Benchmark\Teleflector;
 
 class CoreExtension implements ExtensionInterface
 {
@@ -51,21 +53,29 @@ class CoreExtension implements ExtensionInterface
         });
         $container->register('benchmark.executor', function (Container $container) {
             return new Executor(
-                $container->getParameter('config_path'),
-                $container->hasParameter('bootstrap') ? $container->getParameter('bootstrap') : null
+                $container->get('benchmark.telespector')
             );
         });
         $container->register('benchmark.finder', function (Container $container) {
             return new Finder();
         });
         $container->register('benchmark.telespector', function (Container $container) {
-            return new Telespector($container->getParameter('bootstrap'));
+            return new Telespector(
+                $container->hasParameter('bootstrap') ? $container->getParameter('bootstrap') : null,
+                $container->getParameter('config_path')
+            );
         });
         $container->register('benchmark.teleflector', function (Container $container) {
             return new Teleflector($container->get('benchmark.telespector'));
         });
         $container->register('benchmark.benchmark_builder', function (Container $container) {
-            return new BenchmarkBuilder();
+            return new BenchmarkBuilder(
+                $container->get('benchmark.teleflector'),
+                $container->get('benchmark.parser')
+            );
+        });
+        $container->register('benchmark.parser', function (Container $container) {
+            return new Parser();
         });
         $container->register('benchmark.collection_builder', function (Container $container) {
             return new CollectionBuilder(

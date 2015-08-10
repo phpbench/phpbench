@@ -21,7 +21,8 @@ class BenchmarkBuilder
 
     public function build($benchmarkPath, array $subjectFilter = array(), array $groupFilter = array())
     {
-        $classInfo = $this->teleflector->getClassInfo($benchmarkPath);
+        $classHierarchy = $this->teleflector->getClassInfo($benchmarkPath);
+        $classInfo = reset($classHierarchy);
 
         if (!in_array('PhpBench\BenchmarkInterface', $classInfo['interfaces'])) {
             return null;

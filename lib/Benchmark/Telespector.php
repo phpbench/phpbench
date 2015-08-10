@@ -31,10 +31,11 @@ class Telespector
 
     public function execute($template, array $parameters)
     {
-        if ($this->bootstrap && !file_exists($this->bootstrap)) {
+        $bootstrap = $this->getBootstrapPath();
+        if ($bootstrap && !file_exists($bootstrap)) {
             throw new \InvalidArgumentException(sprintf(
                 'Bootstrap file "%s" does not exist',
-                $this->bootstrap
+                $bootstrap
             ));
         }
 
@@ -45,18 +46,18 @@ class Telespector
             ));
         }
 
-        $parameters['bootstrap'] = $this->bootstrap;
+        $parameters['bootstrap'] = $bootstrap;
 
         $tokens = array();
         foreach ($parameters as $key => $value) {
             $tokens['{{ ' . $key . ' }}'] = $value;
         }
 
-        $template = file_get_contents($template);
+        $templateBody = file_get_contents($template);
         $script = str_replace(
             array_keys($tokens),
             array_values($tokens),
-            $template
+            $templateBody
         );
 
         $scriptPath = tempnam(sys_get_temp_dir(), 'PhpBench');
@@ -80,7 +81,8 @@ class Telespector
 
         if (null === $result) {
             throw new \RuntimeException(sprintf(
-                'Could not decode return value from script (should be a JSON encoded string): %s',
+                'Could not decode return value from script from template "%s" (should be a JSON encoded string): %s',
+                $template,
                 $output
             ));
         }

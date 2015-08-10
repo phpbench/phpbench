@@ -12,7 +12,7 @@
 namespace PhpBench\ProgressLogger;
 
 use PhpBench\Benchmark\Subject;
-use PhpBench\Benchmark;
+use PhpBench\Benchmark\Benchmark;
 use Symfony\Component\Console\Output\OutputInterface;
 use PhpBench\ProgressLoggerInterface;
 

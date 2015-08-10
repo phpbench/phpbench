@@ -167,8 +167,9 @@ class Runner
     {
         $iterationCount = null === $this->iterationsOverride ? $subject->getNbIterations() : $this->iterationsOverride;
         $revolutionCounts = $this->revsOverride ? array($this->revsOverride) : $subject->getRevs();
+        $parameterSets = $subject->getParameterSets() ?: array(array(array()));
 
-        $paramsIterator = new CartesianParameterIterator($subject->getParameterSets());
+        $paramsIterator = new CartesianParameterIterator($parameterSets);
 
         foreach ($paramsIterator as $parameters) {
             $variantEl = $subjectEl->ownerDocument->createElement('variant');
@@ -180,11 +181,11 @@ class Runner
             }
 
             $subjectEl->appendChild($variantEl);
-            $this->runIterations($benchmark, $subject, $iterationCount, $revolutionCounts, $parameters, $variantEl);
+            $this->runIterations($subject, $iterationCount, $revolutionCounts, $parameters, $variantEl);
         }
     }
 
-    private function runIterations(BenchmarkInterface $benchmark, Subject $subject, $iterationCount, array $revolutionCounts, array $parameterSet, \DOMElement $variantEl)
+    private function runIterations(Subject $subject, $iterationCount, array $revolutionCounts, array $parameterSet, \DOMElement $variantEl)
     {
         for ($index = 0; $index < $iterationCount; $index++) {
             foreach ($revolutionCounts as $revolutionCount) {
@@ -192,16 +193,15 @@ class Runner
                 $variantEl->appendChild($iterationEl);
                 $iterationEl->setAttribute('index', $iterationCount);
                 $iterationEl->setAttribute('revs', $revolutionCount);
-                $this->runIteration($benchmark, $subject, $revolutionCount, $parameterSet, $iterationEl);
+                $this->runIteration($subject, $revolutionCount, $parameterSet, $iterationEl);
             }
         }
     }
 
-    private function runIteration(BenchmarkInterface $benchmark, Subject $subject, $revolutionCount, $parameterSet, \DOMElement $iterationEl)
+    private function runIteration(Subject $subject, $revolutionCount, $parameterSet, \DOMElement $iterationEl)
     {
         $result = $this->executor->execute(
-            $benchmark,
-            $subject->getMethodName(),
+            $subject,
             $revolutionCount,
             $parameterSet
         );

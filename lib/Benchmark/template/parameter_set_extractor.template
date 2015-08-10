@@ -6,9 +6,9 @@ $class = '{{ class }}';
 
 if ($bootstrap) {
     require_once($bootstrap);
-} else {
-    require_once($file);
 }
+
+require_once($file);
 
 $paramProviders = {{ paramProviders }};
 $benchmark = new $class();

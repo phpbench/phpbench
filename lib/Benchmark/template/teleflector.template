@@ -1,14 +1,20 @@
 <?php
 
+namespace PhpBench;
+
 $bootstrap = '{{ bootstrap }}';
 $class = '{{ class }}';
 $file = '{{ file }}';
 
+if (false === interface_exists('PhpBench\BenchmarkInterface')) {
+    interface BenchmarkInterface {}
+}
+
 if ($bootstrap) {
     require_once($bootstrap);
-} else {
-    require_once($file);
 }
+
+require_once($file);
 
 $refl = new \ReflectionClass($class);
 $metadata = array(
