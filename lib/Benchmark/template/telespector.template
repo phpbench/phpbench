@@ -1,0 +1,23 @@
+<?php
+
+$class = '{{ class }}';
+$refl = new \ReflectionClass();
+$metadata = array(
+    'class' => $class,
+    'methods' => array(),
+    'interfaces' => array(),
+);
+
+foreach ($refl->getMethods() as $methodRefl) {
+    $comment = $methodRefl->getDocComment();
+    $metadata['methods'][$methodRefl->getName()] = array(
+        'comment' => $comment,
+    );
+}
+
+foreach ($refl->getInterfaces() as $interfaceRefl) {
+    $metadata['interfaces'][] = $interfaceRefl->getName();
+}
+
+// in the future we should return also the parent classes
+return json_encode(array($metadata));

@@ -24,10 +24,9 @@ class Subject
     private $nbIterations;
     private $revs;
     private $groups;
-    private $identifier;
+    private $benchmark;
 
     /**
-     * @param int $identifier
      * @param mixed $methodName
      * @param array $beforeMethods
      * @param array $afterMethods
@@ -37,7 +36,7 @@ class Subject
      * @param array $groups
      */
     public function __construct(
-        $identifier,
+        Benchmark $benchmark,
         $methodName,
         array $beforeMethods,
         array $afterMethods,
@@ -46,9 +45,10 @@ class Subject
         array $revs,
         array $groups
     ) {
-        $this->identifier = $identifier;
+        $this->benchmark = $benchmark;
         $this->methodName = $methodName;
         $this->beforeMethods = $beforeMethods;
+        $this->afterMethods = $afterMethods;
         $this->paramProviders = $paramProviders;
         $this->nbIterations = $nbIterations;
         $this->revs = $revs;
@@ -128,12 +128,12 @@ class Subject
     }
 
     /**
-     * Return the identifier of this subject.
+     * Return the benchmark to which this subject belong
      *
-     * @return int
+     * @return Benchmark
      */
-    public function getIdentifier()
+    public function getBenchmark() 
     {
-        return $this->identifier;
+        return $this->benchmark;
     }
 }

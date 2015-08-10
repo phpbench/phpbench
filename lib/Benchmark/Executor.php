@@ -13,6 +13,7 @@ namespace PhpBench\Benchmark;
 
 use Symfony\Component\Process\Process;
 use PhpBench\BenchmarkInterface;
+use PhpBench\Benchmark\Teleporter;
 
 /**
  * This class generates a benchmarking script and places it in the systems
@@ -32,13 +33,19 @@ class Executor
     private $configDir;
 
     /**
+     * @var Teleporter
+     */
+    private $teleporter;
+
+    /**
      * @param string $configPath
      * @param string $bootstrap
      */
-    public function __construct($configPath, $bootstrap)
+    public function __construct(Teleporter $teleporter, $configPath, $bootstrap)
     {
         $this->configDir = dirname($configPath);
         $this->bootstrap = $bootstrap;
+        $this->teleporter = $teleporter;
     }
 
     /**
@@ -50,20 +57,18 @@ class Executor
      */
     public function execute(BenchmarkInterface $benchmark, $subject, $revolutions = 0, $beforeMethods = array(), $afterMethods = array(), array $parameters = array())
     {
-        $refl = new \ReflectionClass($benchmark);
-
-        $template = file_get_contents(__DIR__ . '/template/runner.template');
-
         $tokens = array(
-            '{{ bootstrap }}' => $this->getBootstrapPath(),
-            '{{ class }}' => $refl->getName(),
-            '{{ file }}' => $refl->getFileName(),
-            '{{ subject }}' => $subject,
-            '{{ revolutions }}' => $revolutions,
-            '{{ beforeMethods }}' => var_export($beforeMethods, true),
-            '{{ afterMethods }}' => var_export($afterMethods, true),
-            '{{ parameters }}' => var_export($parameters, true),
+            'bootstrap' => $this->getBootstrapPath(),
+            'class' => $refl->getName(),
+            'file' => $refl->getFileName(),
+            'subject' => $subject,
+            'revolutions' => $revolutions,
+            'beforeMethods' => var_export($beforeMethods, true),
+            'afterMethods' => var_export($afterMethods, true),
+            'parameters' => var_export($parameters, true),
         );
+
+        $this->teleporter->execute(__DIR__ . '/template/runner.template', $tokens);
 
         foreach ($beforeMethods as $beforeMethod) {
             if (!$refl->hasMethod($beforeMethod)) {
@@ -83,6 +88,7 @@ class Executor
             }
         }
 
+        $template = file_get_contents(__DIR__ . '/template/runner.template');
         $script = str_replace(
             array_keys($tokens),
             array_values($tokens),
@@ -92,7 +98,7 @@ class Executor
         $scriptPath = tempnam(sys_get_temp_dir(), 'PhpBench');
         file_put_contents($scriptPath, $script);
 
-        $process = new Process('php ' . $scriptPath);
+        $process = new Process(PHP_BINARY . ' ' . $scriptPath);
         $process->run();
         unlink($scriptPath);
 
