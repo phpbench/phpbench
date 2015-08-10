@@ -16,11 +16,17 @@ class Telespector
     private $bootstrap;
 
     /**
+     * @var string
+     */
+    private $configDir;
+
+    /**
      * @param mixed string
      */
-    public function __construct($bootstrap)
+    public function __construct($bootstrap, $configPath)
     {
         $this->bootstrap = $bootstrap;
+        $this->configDir = dirname($configPath);
     }
 
     public function execute($template, array $parameters)
@@ -80,5 +86,19 @@ class Telespector
         }
 
         return $result;
+    }
+
+    private function getBootstrapPath()
+    {
+        if (!$this->bootstrap) {
+            return;
+        }
+
+        // if the path is absolute, return it unmodified
+        if ('/' === substr($this->bootstrap, 0, 1)) {
+            return $this->bootstrap;
+        }
+
+        return $this->configDir . '/' . $this->bootstrap;
     }
 }

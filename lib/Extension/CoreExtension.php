@@ -26,6 +26,7 @@ use PhpBench\Report\Generator\CompositeGenerator;
 use PhpBench\ExtensionInterface;
 use PhpBench\Benchmark\Executor;
 use PhpBench\Benchmark\BenchmarkBuilder;
+use PhpBench\Benchmark\Telespector;
 
 class CoreExtension implements ExtensionInterface
 {
@@ -57,12 +58,18 @@ class CoreExtension implements ExtensionInterface
         $container->register('benchmark.finder', function (Container $container) {
             return new Finder();
         });
+        $container->register('benchmark.telespector', function (Container $container) {
+            return new Telespector($container->getParameter('bootstrap'));
+        });
+        $container->register('benchmark.teleflector', function (Container $container) {
+            return new Teleflector($container->get('benchmark.telespector'));
+        });
         $container->register('benchmark.benchmark_builder', function (Container $container) {
             return new BenchmarkBuilder();
         });
         $container->register('benchmark.collection_builder', function (Container $container) {
             return new CollectionBuilder(
-                $container->get('benchmark.builder'),
+                $container->get('benchmark.benchmark_builder'),
                 $container->get('benchmark.finder'),
                 dirname($container->getParameter('config_path'))
             );

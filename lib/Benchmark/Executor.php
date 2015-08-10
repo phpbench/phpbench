@@ -24,16 +24,6 @@ use PhpBench\Benchmark\Subject;
 class Executor
 {
     /**
-     * @var string
-     */
-    private $bootstrap;
-
-    /**
-     * @var string
-     */
-    private $configDir;
-
-    /**
      * @var Telespector
      */
     private $telespector;
@@ -43,10 +33,8 @@ class Executor
      * @param string $configPath
      * @param string $bootstrap
      */
-    public function __construct(Telespector $telespector, $configPath, $bootstrap)
+    public function __construct(Telespector $telespector)
     {
-        $this->configDir = dirname($configPath);
-        $this->bootstrap = $bootstrap;
         $this->telespector = $telespector;
     }
 
@@ -58,7 +46,6 @@ class Executor
     public function execute(Subject $subject, $revolutions = 0, array $parameters = array())
     {
         $tokens = array(
-            'bootstrap' => $this->getBootstrapPath(),
             'class' => $subject->getBenchmark()->getClassFqn(),
             'file' => $subject->getBenchmark()->getPath(),
             'subject' => $subject->getMethodName(),
@@ -71,19 +58,5 @@ class Executor
         $result = $this->telespector->execute(__DIR__ . '/template/runner.template', $tokens);
 
         return $result;
-    }
-
-    private function getBootstrapPath()
-    {
-        if (!$this->bootstrap) {
-            return;
-        }
-
-        // if the path is absolute, return it unmodified
-        if ('/' === substr($this->bootstrap, 0, 1)) {
-            return $this->bootstrap;
-        }
-
-        return $this->configDir . '/' . $this->bootstrap;
     }
 }
