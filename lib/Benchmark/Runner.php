@@ -176,15 +176,38 @@ class Runner
         foreach ($paramsIterator as $parameters) {
             $variantEl = $subjectEl->ownerDocument->createElement('variant');
             foreach ($parameters as $name => $value) {
-                $parameterEl = $subjectEl->ownerDocument->createElement('parameter');
-                $parameterEl->setAttribute('name', $name);
-                $parameterEl->setAttribute('value', $value);
+                $parameterEl = $this->createParameter($subjectEl, $name, $value);
                 $variantEl->appendChild($parameterEl);
             }
 
             $subjectEl->appendChild($variantEl);
             $this->runIterations($subject, $iterationCount, $revolutionCounts, $parameters, $variantEl);
         }
+    }
+
+    private function createParameter($parentEl, $name, $value)
+    {
+        $parameterEl = $parentEl->ownerDocument->createElement('parameter');
+        $parameterEl->setAttribute('name', $name);
+
+        if (is_array($value)) {
+            $parameterEl->setAttribute('type', 'collection');
+            foreach ($value as $key => $element) {
+                $childEl = $this->createParameter($parameterEl, $key, $element);
+                $parameterEl->appendChild($childEl);
+            }
+            return $parameterEl;
+        }
+
+        if (is_scalar($value)) {
+            $parameterEl->setAttribute('value', $value);
+            return $parameterEl;
+        }
+
+        throw new \InvalidArgumentException(sprintf(
+            'Parameters must be either scalars or arrays, got: %s',
+            is_object($value) ? get_class($value) : gettype($value)
+        ));
     }
 
     private function runIterations(Subject $subject, $iterationCount, array $revolutionCounts, array $parameterSet, \DOMElement $variantEl)

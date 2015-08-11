@@ -42,8 +42,11 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
      *
      * @dataProvider provideRunner
      */
-    public function testRunner($iterations, $revs, $expected)
+    public function testRunner($iterations, $revs, array $parameters, $expected, $exception = null)
     {
+        if ($exception) {
+            $this->setExpectedException($exception[0], $exception[1]);
+        }
         $this->collection->getBenchmarks()->willReturn(array(
             $this->benchmark,
         ));
@@ -51,7 +54,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->subject->getMethodName()->willReturn('benchFoo');
         $this->subject->getBeforeMethods()->willReturn(array('beforeFoo'));
         $this->subject->getAfterMethods()->willReturn(array());
-        $this->subject->getParameterSets()->willReturn(array());
+        $this->subject->getParameterSets()->willReturn(array(array($parameters)));
         $this->subject->getGroups()->willReturn(array());
         $this->subject->getRevs()->willReturn($revs);
         $this->benchmark->getSubjects()->willReturn(array(
@@ -59,8 +62,10 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         ));
         $this->benchmark->getClassFqn()->willReturn('Benchmark');
 
-        foreach ($revs as $revCount) {
-            $this->executor->execute($this->subject->reveal(), $revCount, array())->shouldBeCalledTimes($iterations);
+        if (!$exception) {
+            foreach ($revs as $revCount) {
+                $this->executor->execute($this->subject->reveal(), $revCount, $parameters)->shouldBeCalledTimes($iterations);
+            }
         }
 
         $result = $this->runner->runAll(__DIR__);
@@ -84,6 +89,7 @@ EOT
             array(
                 1,
                 array(1),
+                array(),
                 <<<EOT
   <benchmark class="Benchmark">
     <subject name="benchFoo">
@@ -97,6 +103,7 @@ EOT
             array(
                 1,
                 array(1, 3),
+                array(),
                 <<<EOT
   <benchmark class="Benchmark">
     <subject name="benchFoo">
@@ -111,6 +118,7 @@ EOT
             array(
                 4,
                 array(1, 3),
+                array(),
                 <<<EOT
   <benchmark class="Benchmark">
     <subject name="benchFoo">
@@ -127,6 +135,62 @@ EOT
     </subject>
   </benchmark>
 EOT
+            ),
+            array(
+                1,
+                array(1),
+                array('one' => 'two', 'three' => 'four'),
+                <<<EOT
+  <benchmark class="Benchmark">
+    <subject name="benchFoo">
+      <variant>
+        <parameter name="one" value="two"/>
+        <parameter name="three" value="four"/>
+        <iteration revs="1" time="" memory=""/>
+      </variant>
+    </subject>
+  </benchmark>
+EOT
+            ),
+            array(
+                1,
+                array(1),
+                array('one', 'two'),
+                <<<EOT
+  <benchmark class="Benchmark">
+    <subject name="benchFoo">
+      <variant>
+        <parameter name="0" value="one"/>
+        <parameter name="1" value="two"/>
+        <iteration revs="1" time="" memory=""/>
+      </variant>
+    </subject>
+  </benchmark>
+EOT
+            ),
+            array(
+                1,
+                array(1),
+                array('one' => array('three' => 'four')),
+                <<<EOT
+  <benchmark class="Benchmark">
+    <subject name="benchFoo">
+      <variant>
+        <parameter name="one" type="collection">
+          <parameter name="three" value="four"/>
+        </parameter>
+        <iteration revs="1" time="" memory=""/>
+      </variant>
+    </subject>
+  </benchmark>
+EOT
+            ),
+            array(
+                1,
+                array(1),
+                array('one' => array('three' => new \stdClass)),
+                '',
+                array('InvalidArgumentException', 'Parameters must be either scalars or arrays, got: stdClass'),
             ),
         );
     }
