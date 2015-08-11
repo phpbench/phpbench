@@ -29,8 +29,8 @@ class Runner
     private $revsOverride;
     private $configPath;
     private $parametersOverride;
-    private $subjectsOverride;
-    private $groups;
+    private $subjectsOverride = array();
+    private $groups = array();
     private $executor;
 
     /**
@@ -125,7 +125,7 @@ class Runner
         $dom = new SuiteDocument();
         $suiteEl = $dom->createElement('suite');
 
-        $collection = $this->collectionBuilder->buildCollection($path);
+        $collection = $this->collectionBuilder->buildCollection($path, $this->subjectsOverride, $this->groups);
 
         foreach ($collection->getBenchmarks() as $benchmark) {
             $benchmarkEl = $dom->createElement('benchmark');
@@ -167,7 +167,7 @@ class Runner
     {
         $iterationCount = null === $this->iterationsOverride ? $subject->getNbIterations() : $this->iterationsOverride;
         $revolutionCounts = $this->revsOverride ? array($this->revsOverride) : $subject->getRevs();
-        $parameterSets = $subject->getParameterSets() ?: array(array(array()));
+        $parameterSets = $this->parametersOverride ? array(array($this->parametersOverride)) : $subject->getParameterSets() ?: array(array(array()));
 
         $paramsIterator = new CartesianParameterIterator($parameterSets);
 
@@ -208,30 +208,5 @@ class Runner
 
         $iterationEl->setAttribute('time', $result['time']);
         $iterationEl->setAttribute('memory', $result['memory']);
-    }
-
-    private function getParameterSets(BenchmarkInterface $benchmark, array $paramProviderMethods, $parameters)
-    {
-        if ($parameters) {
-            return array(array($parameters));
-        }
-
-        $parameterSets = array();
-
-        foreach ($paramProviderMethods as $paramProviderMethod) {
-            if (!method_exists($benchmark, $paramProviderMethod)) {
-                throw new InvalidArgumentException(sprintf(
-                    'Unknown param provider "%s" for bench benchmark "%s"',
-                    $paramProviderMethod, get_class($benchmark)
-                ));
-            }
-            $parameterSets[] = $benchmark->$paramProviderMethod();
-        }
-
-        if (!$parameterSets) {
-            $parameterSets = array(array(array()));
-        }
-
-        return $parameterSets;
     }
 }

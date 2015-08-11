@@ -22,7 +22,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->collectionBuilder = $this->prophesize('PhpBench\\Benchmark\\CollectionBuilder');
         $this->collection = $this->prophesize('PhpBench\\Benchmark\\Collection');
         $this->subject = $this->prophesize('PhpBench\\Benchmark\\Subject');
-        $this->collectionBuilder->buildCollection(__DIR__)->willReturn($this->collection);
+        $this->collectionBuilder->buildCollection(__DIR__, array(), array())->willReturn($this->collection);
         $this->executor = $this->prophesize('PhpBench\Benchmark\Executor');
         $this->benchmark = $this->prophesize('PhpBench\Benchmark\Benchmark');
 
