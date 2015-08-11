@@ -28,6 +28,10 @@ class BenchmarkBuilder
             return null;
         }
 
+        if (true === $classInfo['abstract']) {
+            return null;
+        }
+
         $benchmark = new Benchmark(
             $benchmarkPath, 
             $classInfo['class']

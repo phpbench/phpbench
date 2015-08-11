@@ -14,6 +14,7 @@ namespace PhpBench\Tests\Benchmark;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Benchmark\Iteration;
 use PhpBench\BenchmarkInterface;
+use PhpBench\PhpBench;
 
 class RunnerTest extends \PHPUnit_Framework_TestCase
 {
@@ -41,7 +42,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
      *
      * @dataProvider provideRunner
      */
-    public function testRunner($iterations, $revs, $expectedNbIterations)
+    public function testRunner($iterations, $revs, $expected)
     {
         $this->collection->getBenchmarks()->willReturn(array(
             $this->benchmark,
@@ -56,6 +57,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->benchmark->getSubjects()->willReturn(array(
             $this->subject->reveal()
         ));
+        $this->benchmark->getClassFqn()->willReturn('Benchmark');
 
         foreach ($revs as $revCount) {
             $this->executor->execute($this->subject->reveal(), $revCount, array())->shouldBeCalledTimes($iterations);
@@ -64,7 +66,16 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $result = $this->runner->runAll(__DIR__);
 
         $this->assertInstanceOf('PhpBench\Benchmark\SuiteDocument', $result);
-        $this->assertEquals($expectedNbIterations, $result->getNbIterations());
+        $this->assertEquals(
+            trim(sprintf(<<<EOT
+<?xml version="1.0"?>
+<phpbench version="%s">
+%s
+</phpbench>
+EOT
+            , PhpBench::VERSION, $expected)),
+            trim($result->saveXml())
+        );
     }
 
     public function provideRunner()
@@ -73,17 +84,49 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
             array(
                 1,
                 array(1),
-                1,
+                <<<EOT
+  <benchmark class="Benchmark">
+    <subject name="benchFoo">
+      <variant>
+        <iteration revs="1" time="" memory=""/>
+      </variant>
+    </subject>
+  </benchmark>
+EOT
             ),
             array(
                 1,
                 array(1, 3),
-                2,
+                <<<EOT
+  <benchmark class="Benchmark">
+    <subject name="benchFoo">
+      <variant>
+        <iteration revs="1" time="" memory=""/>
+        <iteration revs="3" time="" memory=""/>
+      </variant>
+    </subject>
+  </benchmark>
+EOT
             ),
             array(
                 4,
                 array(1, 3),
-                8,
+                <<<EOT
+  <benchmark class="Benchmark">
+    <subject name="benchFoo">
+      <variant>
+        <iteration revs="1" time="" memory=""/>
+        <iteration revs="3" time="" memory=""/>
+        <iteration revs="1" time="" memory=""/>
+        <iteration revs="3" time="" memory=""/>
+        <iteration revs="1" time="" memory=""/>
+        <iteration revs="3" time="" memory=""/>
+        <iteration revs="1" time="" memory=""/>
+        <iteration revs="3" time="" memory=""/>
+      </variant>
+    </subject>
+  </benchmark>
+EOT
             ),
         );
     }

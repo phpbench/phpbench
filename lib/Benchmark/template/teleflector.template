@@ -19,6 +19,7 @@ require_once($file);
 $refl = new \ReflectionClass($class);
 $metadata = array(
     'class' => $class,
+    'abstract' => $refl->isAbstract(),
     'methods' => array(),
     'interfaces' => array(),
     'comment' => $refl->getDocComment()

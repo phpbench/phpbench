@@ -35,6 +35,7 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $this->teleflector->getClassInfo('foo.file')->willReturn(array(array(
             'class' => 'MyBenchmark',
+            'abstract' => false,
             'interfaces' => array('PhpBench\BenchmarkInterface'),
             'comment' => '/** @group group_one */',
             'methods' => array(
@@ -92,12 +93,28 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * It should return NULL  if the class is abstract
+     */
+    public function testAbstract()
+    {
+        $this->teleflector->getClassInfo('foo.file')->willReturn(array(array(
+            'interfaces' => array('PhpBench\BenchmarkInterface'),
+            'abstract' => true,
+        )));
+
+        $result = $this->builder->build('foo.file');
+        $this->assertNull($result);
+    }
+
+
+    /**
      * It should filter subjects
      */
     public function testFilterSubjects()
     {
         $this->teleflector->getClassInfo('foo.file')->willReturn(array(array(
             'class' => 'MyBenchmark',
+            'abstract' => false,
             'interfaces' => array('PhpBench\BenchmarkInterface'),
             'comment' => '',
             'methods' => array(
@@ -133,6 +150,7 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $this->teleflector->getClassInfo('foo.file')->willReturn(array(array(
             'class' => 'MyBenchmark',
+            'abstract' => false,
             'interfaces' => array('PhpBench\BenchmarkInterface'),
             'comment' => '',
             'methods' => array(
@@ -179,6 +197,7 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $this->teleflector->getClassInfo('foo.file')->willReturn(array(array(
             'class' => 'MyBenchmark',
+            'abstract' => false,
             'interfaces' => array('PhpBench\BenchmarkInterface'),
             'comment' => '',
             'methods' => array(
@@ -215,6 +234,7 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $this->teleflector->getClassInfo('foo.file')->willReturn(array(array(
             'class' => 'MyBenchmark',
+            'abstract' => false,
             'interfaces' => array('PhpBench\BenchmarkInterface'),
             'comment' => '',
             'methods' => array(

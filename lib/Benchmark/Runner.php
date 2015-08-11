@@ -17,6 +17,7 @@ use PhpBench\Exception\InvalidArgumentException;
 use PhpBench\BenchmarkInterface;
 use PhpBench\ProgressLoggerInterface;
 use PhpBench\Benchmark\Benchmark;
+use PhpBench\PhpBench;
 
 /**
  * The benchmark runner.
@@ -123,13 +124,14 @@ class Runner
     public function runAll($path)
     {
         $dom = new SuiteDocument();
-        $suiteEl = $dom->createElement('suite');
+        $suiteEl = $dom->createElement('phpbench');
+        $suiteEl->setAttribute('version', PhpBench::VERSION);
 
         $collection = $this->collectionBuilder->buildCollection($path, $this->subjectsOverride, $this->groups);
 
         foreach ($collection->getBenchmarks() as $benchmark) {
             $benchmarkEl = $dom->createElement('benchmark');
-            $benchmarkEl->setAttribute('class', get_class($benchmark));
+            $benchmarkEl->setAttribute('class', $benchmark->getClassFqn());
 
             $this->logger->benchmarkStart($benchmark);
             $this->run($benchmark, $benchmarkEl);
@@ -191,7 +193,6 @@ class Runner
             foreach ($revolutionCounts as $revolutionCount) {
                 $iterationEl = $variantEl->ownerDocument->createElement('iteration');
                 $variantEl->appendChild($iterationEl);
-                $iterationEl->setAttribute('index', $iterationCount);
                 $iterationEl->setAttribute('revs', $revolutionCount);
                 $this->runIteration($subject, $revolutionCount, $parameterSet, $iterationEl);
             }
