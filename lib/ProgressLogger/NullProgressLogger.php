@@ -12,7 +12,7 @@
 namespace PhpBench\ProgressLogger;
 
 use PhpBench\Benchmark\Subject;
-use PhpBench\BenchmarkInterface;
+use PhpBench\Benchmark\Benchmark;
 use Symfony\Component\Console\Output\OutputInterface;
 use PhpBench\ProgressLoggerInterface;
 
@@ -22,11 +22,11 @@ class NullProgressLogger implements ProgressLoggerInterface
     {
     }
 
-    public function benchmarkStart(BenchmarkInterface $benchmark)
+    public function benchmarkStart(Benchmark $benchmark)
     {
     }
 
-    public function benchmarkEnd(BenchmarkInterface $benchmark)
+    public function benchmarkEnd(Benchmark $benchmark)
     {
     }
 

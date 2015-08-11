@@ -19,13 +19,16 @@ use PhpBench\Report\ReportManager;
 use PhpBench\Console\Command\RunCommand;
 use PhpBench\Console\Command\ReportCommand;
 use PhpBench\Benchmark\CollectionBuilder;
-use PhpBench\Benchmark\SubjectBuilder;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Console\Application;
 use Symfony\Component\Finder\Finder;
 use PhpBench\Report\Generator\CompositeGenerator;
 use PhpBench\ExtensionInterface;
 use PhpBench\Benchmark\Executor;
+use PhpBench\Benchmark\BenchmarkBuilder;
+use PhpBench\Benchmark\Telespector;
+use PhpBench\Benchmark\Parser;
+use PhpBench\Benchmark\Teleflector;
 
 class CoreExtension implements ExtensionInterface
 {
@@ -44,25 +47,39 @@ class CoreExtension implements ExtensionInterface
         $container->register('benchmark.runner', function (Container $container) {
             return new Runner(
                 $container->get('benchmark.collection_builder'),
-                $container->get('benchmark.subject_builder'),
                 $container->get('benchmark.executor'),
                 $container->getParameter('config_path')
             );
         });
         $container->register('benchmark.executor', function (Container $container) {
             return new Executor(
-                $container->getParameter('config_path'),
-                $container->hasParameter('bootstrap') ? $container->getParameter('bootstrap') : null
+                $container->get('benchmark.telespector')
             );
         });
         $container->register('benchmark.finder', function (Container $container) {
             return new Finder();
         });
-        $container->register('benchmark.subject_builder', function (Container $container) {
-            return new SubjectBuilder();
+        $container->register('benchmark.telespector', function (Container $container) {
+            return new Telespector(
+                $container->hasParameter('bootstrap') ? $container->getParameter('bootstrap') : null,
+                $container->getParameter('config_path')
+            );
+        });
+        $container->register('benchmark.teleflector', function (Container $container) {
+            return new Teleflector($container->get('benchmark.telespector'));
+        });
+        $container->register('benchmark.benchmark_builder', function (Container $container) {
+            return new BenchmarkBuilder(
+                $container->get('benchmark.teleflector'),
+                $container->get('benchmark.parser')
+            );
+        });
+        $container->register('benchmark.parser', function (Container $container) {
+            return new Parser();
         });
         $container->register('benchmark.collection_builder', function (Container $container) {
             return new CollectionBuilder(
+                $container->get('benchmark.benchmark_builder'),
                 $container->get('benchmark.finder'),
                 dirname($container->getParameter('config_path'))
             );

@@ -1,0 +1,41 @@
+<?php
+
+namespace PhpBench;
+
+$bootstrap = '{{ bootstrap }}';
+$class = '{{ class }}';
+$file = '{{ file }}';
+
+if (false === interface_exists('PhpBench\BenchmarkInterface')) {
+    interface BenchmarkInterface {}
+}
+
+if ($bootstrap) {
+    require_once($bootstrap);
+}
+
+require_once($file);
+
+$refl = new \ReflectionClass($class);
+$metadata = array(
+    'class' => $class,
+    'abstract' => $refl->isAbstract(),
+    'methods' => array(),
+    'interfaces' => array(),
+    'comment' => $refl->getDocComment()
+);
+
+foreach ($refl->getMethods() as $methodRefl) {
+    $comment = $methodRefl->getDocComment();
+    $metadata['methods'][$methodRefl->getName()] = array(
+        'comment' => $comment,
+    );
+}
+
+foreach ($refl->getInterfaces() as $interfaceRefl) {
+    $metadata['interfaces'][] = $interfaceRefl->getName();
+}
+
+// in the future we should return also the parent classes
+echo json_encode(array($metadata));
+exit(0);

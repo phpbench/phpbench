@@ -208,7 +208,7 @@ class RunCommandTest extends BaseCommandTestCase
         $dom->loadXml($display);
         $dom->formatOutput = true;
         $xpath = new \DOMXPath($dom);
-        $parameters = $xpath->query('//iteration');
+        $parameters = $xpath->query('//subject[@name="benchRandom"]//iteration');
         $this->assertEquals(10, $parameters->length);
     }
 

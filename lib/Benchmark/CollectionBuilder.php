@@ -17,14 +17,16 @@ class CollectionBuilder
 {
     private $finder;
     private $baseDir;
+    private $benchmarkBuilder;
 
-    public function __construct(Finder $finder = null, $baseDir = null)
+    public function __construct(BenchmarkBuilder $benchmarkBuilder, Finder $finder = null, $baseDir = null)
     {
+        $this->benchmarkBuilder = $benchmarkBuilder;
         $this->finder = $finder ?: new Finder();
         $this->baseDir = $baseDir;
     }
 
-    public function buildCollection($path)
+    public function buildCollection($path, array $subjectFilter = array(), array $groupFilter = array())
     {
         if ($this->baseDir && '/' !== substr($path, 0, 1)) {
             $path = realpath($this->baseDir . '/' . $path);
@@ -45,84 +47,22 @@ class CollectionBuilder
                 ->name(basename($path));
         }
 
-        $cases = array();
+        $benchmarks = array();
 
         foreach ($this->finder as $file) {
             if (!is_file($file)) {
                 continue;
             }
 
-            require_once $file->getRealPath();
-            $classFqn = static::getClassNameFromFile($file->getRealPath());
-            $refl = new \ReflectionClass($classFqn);
+            $benchmark = $this->benchmarkBuilder->build($file->getPathname(), $subjectFilter, $groupFilter);
 
-            if (!$refl->isSubclassOf('PhpBench\\BenchmarkInterface')) {
+            if (null === $benchmark) {
                 continue;
             }
 
-            if ($refl->isAbstract()) {
-                continue;
-            }
-
-            $cases[] = new $classFqn();
+            $benchmarks[] = $benchmark;
         }
 
-        return new Collection($cases);
-    }
-
-    /**
-     * Return the class name from a file.
-     *
-     * Taken from http://stackoverflow.com/questions/7153000/get-class-name-from-file
-     *
-     * @param string $file
-     *
-     * @return string
-     */
-    private static function getClassNameFromFile($file)
-    {
-        $fp = fopen($file, 'r');
-
-        $class = $namespace = $buffer = '';
-        $i = 0;
-
-        while (!$class) {
-            if (feof($fp)) {
-                break;
-            }
-
-            $buffer .= fread($fp, 512);
-            $tokens = @token_get_all($buffer);
-
-            if (strpos($buffer, '{') === false) {
-                continue;
-            }
-
-            for (;$i < count($tokens);$i++) {
-                if ($tokens[$i][0] === T_NAMESPACE) {
-                    for ($j = $i + 1;$j < count($tokens); $j++) {
-                        if ($tokens[$j][0] === T_STRING) {
-                            $namespace .= '\\' . $tokens[$j][1];
-                        } elseif ($tokens[$j] === '{' || $tokens[$j] === ';') {
-                            break;
-                        }
-                    }
-                }
-
-                if ($tokens[$i][0] === T_CLASS) {
-                    for ($j = $i + 1;$j < count($tokens);$j++) {
-                        if ($tokens[$j] === '{') {
-                            $class = $tokens[$i + 2][1];
-                        }
-                    }
-                }
-            }
-        };
-
-        if (!$class) {
-            return;
-        }
-
-        return $namespace . '\\' . $class;
+        return new Collection($benchmarks);
     }
 }

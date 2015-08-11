@@ -16,6 +16,8 @@ use PhpBench\ProgressLogger\NullProgressLogger;
 use PhpBench\Exception\InvalidArgumentException;
 use PhpBench\BenchmarkInterface;
 use PhpBench\ProgressLoggerInterface;
+use PhpBench\Benchmark\Benchmark;
+use PhpBench\PhpBench;
 
 /**
  * The benchmark runner.
@@ -24,13 +26,12 @@ class Runner
 {
     private $logger;
     private $collectionBuilder;
-    private $subjectBuilder;
     private $iterationsOverride;
     private $revsOverride;
     private $configPath;
     private $parametersOverride;
-    private $subjectsOverride;
-    private $groups;
+    private $subjectsOverride = array();
+    private $groups = array();
     private $executor;
 
     /**
@@ -40,13 +41,11 @@ class Runner
      */
     public function __construct(
         CollectionBuilder $collectionBuilder,
-        SubjectBuilder $subjectBuilder,
         Executor $executor,
         $configPath
     ) {
         $this->logger = new NullProgressLogger();
         $this->collectionBuilder = $collectionBuilder;
-        $this->subjectBuilder = $subjectBuilder;
         $this->executor = $executor;
         $this->configPath = $configPath;
     }
@@ -125,13 +124,14 @@ class Runner
     public function runAll($path)
     {
         $dom = new SuiteDocument();
-        $suiteEl = $dom->createElement('suite');
+        $suiteEl = $dom->createElement('phpbench');
+        $suiteEl->setAttribute('version', PhpBench::VERSION);
 
-        $collection = $this->collectionBuilder->buildCollection($path);
+        $collection = $this->collectionBuilder->buildCollection($path, $this->subjectsOverride, $this->groups);
 
         foreach ($collection->getBenchmarks() as $benchmark) {
             $benchmarkEl = $dom->createElement('benchmark');
-            $benchmarkEl->setAttribute('class', get_class($benchmark));
+            $benchmarkEl->setAttribute('class', $benchmark->getClassFqn());
 
             $this->logger->benchmarkStart($benchmark);
             $this->run($benchmark, $benchmarkEl);
@@ -145,11 +145,9 @@ class Runner
         return $dom;
     }
 
-    private function run(BenchmarkInterface $benchmark, \DOMElement $benchmarkEl)
+    private function run(Benchmark $benchmark, \DOMElement $benchmarkEl)
     {
-        $subjects = $this->subjectBuilder->buildSubjects($benchmark, $this->subjectsOverride, $this->groups);
-
-        foreach ($subjects as $subject) {
+        foreach ($benchmark->getSubjects() as $subject) {
             $subjectEl = $benchmarkEl->ownerDocument->createElement('subject');
             $subjectEl->setAttribute('name', $subject->getMethodName());
 
@@ -160,18 +158,18 @@ class Runner
             }
 
             $this->logger->subjectStart($subject);
-            $this->runSubject($benchmark, $subject, $subjectEl);
+            $this->runSubject($subject, $subjectEl);
             $this->logger->subjectEnd($subject);
 
             $benchmarkEl->appendChild($subjectEl);
         }
     }
 
-    private function runSubject(BenchmarkInterface $benchmark, Subject $subject, \DOMElement $subjectEl)
+    private function runSubject(Subject $subject, \DOMElement $subjectEl)
     {
         $iterationCount = null === $this->iterationsOverride ? $subject->getNbIterations() : $this->iterationsOverride;
         $revolutionCounts = $this->revsOverride ? array($this->revsOverride) : $subject->getRevs();
-        $parameterSets = $this->getParameterSets($benchmark, $subject->getParamProviders(), $this->parametersOverride);
+        $parameterSets = $this->parametersOverride ? array(array($this->parametersOverride)) : $subject->getParameterSets() ?: array(array(array()));
 
         $paramsIterator = new CartesianParameterIterator($parameterSets);
 
@@ -185,60 +183,31 @@ class Runner
             }
 
             $subjectEl->appendChild($variantEl);
-            $this->runIterations($benchmark, $subject, $iterationCount, $revolutionCounts, $parameters, $variantEl);
+            $this->runIterations($subject, $iterationCount, $revolutionCounts, $parameters, $variantEl);
         }
     }
 
-    private function runIterations(BenchmarkInterface $benchmark, Subject $subject, $iterationCount, array $revolutionCounts, array $parameterSet, \DOMElement $variantEl)
+    private function runIterations(Subject $subject, $iterationCount, array $revolutionCounts, array $parameterSet, \DOMElement $variantEl)
     {
         for ($index = 0; $index < $iterationCount; $index++) {
             foreach ($revolutionCounts as $revolutionCount) {
                 $iterationEl = $variantEl->ownerDocument->createElement('iteration');
                 $variantEl->appendChild($iterationEl);
-                $iterationEl->setAttribute('index', $iterationCount);
                 $iterationEl->setAttribute('revs', $revolutionCount);
-                $this->runIteration($benchmark, $subject, $revolutionCount, $parameterSet, $iterationEl);
+                $this->runIteration($subject, $revolutionCount, $parameterSet, $iterationEl);
             }
         }
     }
 
-    private function runIteration(BenchmarkInterface $benchmark, Subject $subject, $revolutionCount, $parameterSet, \DOMElement $iterationEl)
+    private function runIteration(Subject $subject, $revolutionCount, $parameterSet, \DOMElement $iterationEl)
     {
         $result = $this->executor->execute(
-            $benchmark,
-            $subject->getMethodName(),
+            $subject,
             $revolutionCount,
-            $subject->getBeforeMethods(),
-            $subject->getAfterMethods(),
             $parameterSet
         );
 
         $iterationEl->setAttribute('time', $result['time']);
         $iterationEl->setAttribute('memory', $result['memory']);
-    }
-
-    private function getParameterSets(BenchmarkInterface $benchmark, array $paramProviderMethods, $parameters)
-    {
-        if ($parameters) {
-            return array(array($parameters));
-        }
-
-        $parameterSets = array();
-
-        foreach ($paramProviderMethods as $paramProviderMethod) {
-            if (!method_exists($benchmark, $paramProviderMethod)) {
-                throw new InvalidArgumentException(sprintf(
-                    'Unknown param provider "%s" for bench benchmark "%s"',
-                    $paramProviderMethod, get_class($benchmark)
-                ));
-            }
-            $parameterSets[] = $benchmark->$paramProviderMethod();
-        }
-
-        if (!$parameterSets) {
-            $parameterSets = array(array(array()));
-        }
-
-        return $parameterSets;
     }
 }

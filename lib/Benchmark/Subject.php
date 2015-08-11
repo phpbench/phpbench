@@ -20,36 +20,36 @@ class Subject
     private $methodName;
     private $beforeMethods = array();
     private $afterMethods = array();
-    private $paramProviders;
+    private $parameterSets;
     private $nbIterations;
     private $revs;
     private $groups;
-    private $identifier;
+    private $benchmark;
 
     /**
-     * @param int $identifier
      * @param mixed $methodName
      * @param array $beforeMethods
      * @param array $afterMethods
-     * @param array $paramProviders
+     * @param array $parameterSets
      * @param mixed $nbIterations
      * @param array $revs
      * @param array $groups
      */
     public function __construct(
-        $identifier,
+        Benchmark $benchmark,
         $methodName,
         array $beforeMethods,
         array $afterMethods,
-        array $paramProviders,
+        array $parameterSets,
         $nbIterations,
         array $revs,
         array $groups
     ) {
-        $this->identifier = $identifier;
+        $this->benchmark = $benchmark;
         $this->methodName = $methodName;
         $this->beforeMethods = $beforeMethods;
-        $this->paramProviders = $paramProviders;
+        $this->afterMethods = $afterMethods;
+        $this->parameterSets = $parameterSets;
         $this->nbIterations = $nbIterations;
         $this->revs = $revs;
         $this->groups = $groups;
@@ -80,9 +80,9 @@ class Subject
      *
      * @return string[]
      */
-    public function getParamProviders()
+    public function getParameterSets()
     {
-        return $this->paramProviders;
+        return $this->parameterSets;
     }
 
     /**
@@ -128,12 +128,12 @@ class Subject
     }
 
     /**
-     * Return the identifier of this subject.
+     * Return the benchmark to which this subject belong
      *
-     * @return int
+     * @return Benchmark
      */
-    public function getIdentifier()
+    public function getBenchmark() 
     {
-        return $this->identifier;
+        return $this->benchmark;
     }
 }
