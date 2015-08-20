@@ -29,6 +29,15 @@ use PhpBench\Benchmark\BenchmarkBuilder;
 use PhpBench\Benchmark\Telespector;
 use PhpBench\Benchmark\Parser;
 use PhpBench\Benchmark\Teleflector;
+use PhpBench\Report\Generator\ConsoleTabularGenerator;
+use PhpBench\Tabular\Formatter\Registry\ArrayRegistry;
+use PhpBench\Tabular\Formatter\Format\PrintfFormat;
+use PhpBench\Tabular\Formatter\Format\BalanceFormat;
+use PhpBench\Tabular\Formatter\Format\NumberFormat;
+use PhpBench\Tabular\Formatter;
+use PhpBench\Tabular\Tabular;
+use PhpBench\Tabular\TableBuilder;
+use PhpBench\Tabular\Dom\XPathResolver;
 
 class CoreExtension implements ExtensionInterface
 {
@@ -94,6 +103,7 @@ class CoreExtension implements ExtensionInterface
         });
 
         $this->registerJsonSchema($container);
+        $this->registerTabular($container);
         $this->registerCommands($container);
         $this->registerProgressLoggers($container);
         $this->registerReportGenerators($container);
@@ -163,11 +173,53 @@ class CoreExtension implements ExtensionInterface
 
     private function registerReportGenerators(Container $container)
     {
-        $container->register('report_generator.console_table', function () {
-            return new ConsoleTableGenerator();
+        $container->register('report_generator.tabular', function (Container $container) {
+            return new ConsoleTabularGenerator($container->get('tabular'));
         }, array('report_generator' => array('name' => 'console_table')));
         $container->register('report_generator.composite', function (Container $container) {
             return new CompositeGenerator($container->get('report.manager'));
         }, array('report_generator' => array('name' => 'composite')));
+    }
+
+    private function registerTabular(Container $container)
+    {
+        $container->register('tabular.xpath_resolver', function () {
+            $resolver = new XPathResolver();
+            $resolver->registerFunction('average', 'PhpBench\Report\Dom\functions\avg');
+            $resolver->registerFunction('deviation', 'PhpBench\Report\Dom\functions\deviation');
+            $resolver->registerFunction('min', 'PhpBench\Report\Dom\functions\min');
+            $resolver->registerFunction('max', 'PhpBench\Report\Dom\functions\max');
+            $resolver->registerFunction('median', 'PhpBench\Report\Dom\functions\median');
+            $resolver->registerFunction('parameters_to_json', 'PhpBench\Report\Dom\functions\parameters_to_json');
+            $resolver->registerFunction('class_name', 'PhpBench\Report\Dom\functions\class_name');
+
+            return $resolver;
+        });
+
+        $container->register('tabular.table_builder', function (Container $container) {
+            return new TableBuilder($container->get('tabular.xpath_resolver'));
+        });
+
+        $container->register('tabular.formatter.registry', function (Container $container) {
+            $registry = new ArrayRegistry();
+            $registry->register('printf', new PrintfFormat());
+            $registry->register('balance', new BalanceFormat());
+            $registry->register('number', new NumberFormat());
+
+            return $registry;
+        });
+
+
+        $container->register('tabular.formatter', function (Container $container) {
+            return new Formatter($container->get('tabular.formatter.registry'));
+        });
+
+        $container->register('tabular', function (Container $container) {
+            return new Tabular(
+                $container->get('tabular.table_builder'),
+                $container->get('json_schema.validator'),
+                $container->get('tabular.formatter')
+            );
+        });
     }
 }

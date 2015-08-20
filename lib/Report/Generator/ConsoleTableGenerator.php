@@ -79,38 +79,14 @@ class ConsoleTableGenerator implements OutputAwareInterface, ReportGeneratorInte
                         array('type' => 'null'),
                     ),
                 ),
-                'rows' => array(
-                    'type' => 'array',
-                    'items' => array(
-                        'type' => 'object',
-                        'properties' => array(
-                            'cells' => array(
-                                'type' => 'object',
-                            ),
-                            'with_items' => array(
-                                'type' => 'array',
-                            ),
-                            'with_query' => array(
-                                'type' => 'string',
-                            ),
-                        ),
-                        'additionalProperties' => false,
-                    ),
-                ),
-                'format' => array(
-                    'type' => 'object',
+                'aggregate' => array(
+                    'type' => 'boolean',
                 ),
                 'sort' => array(
                     'type' => 'array',
                 ),
                 'exclude' => array(
                     'type' => 'array',
-                ),
-                'params' => array(
-                    'oneOf' => array(
-                        array('type' => 'object'),
-                        array('type' => 'array'),
-                    ),
                 ),
                 'generator' => array(
                     'type' => 'string',
@@ -129,18 +105,8 @@ class ConsoleTableGenerator implements OutputAwareInterface, ReportGeneratorInte
             'debug' => false,
             'title' => null,
             'description' => null,
-            'rows' => array(),
-            'format' => array(
-                'revs' => '!number',
-                'rps' => array('!number', '%s<comment>rps</comment>'),
-                'time' => array('!number', '%s<comment>μs</comment>'),
-                'deviation' => array('%.2f', '!balance', '%s<comment>%%</comment>'),
-                'memory' => array('!number', '%s<comment>b</comment>'),
-                'memory_diff' => array('!number', '!balance', '%s<comment>b</comment>'),
-            ),
             'sort' => array(),
             'exclude' => array(),
-            'params' => array(),
         );
     }
 
@@ -171,9 +137,7 @@ class ConsoleTableGenerator implements OutputAwareInterface, ReportGeneratorInte
             $this->output->writeln($suite->saveXML());
         }
 
-        $tableDom = new \DOMDocument(1.0);
 
-        $this->transformToTableDom($suite, $tableDom, $config);
 
         if ($config['debug']) {
             $tableDom->formatOutput = true;
@@ -181,16 +145,11 @@ class ConsoleTableGenerator implements OutputAwareInterface, ReportGeneratorInte
             $this->output->writeln($tableDom->saveXML());
         }
 
-        $rows = $this->postProcess($tableDom, $config);
-
-        if (!empty($config['sort'])) {
-            Sort::sortRows($rows, $config['sort']);
-        }
 
         $row = null;
         foreach ($rows as &$row) {
             foreach ($row as $colName => &$value) {
-                if (isset($config['format'][$colName])) {
+                if ($value != '' && isset($config['format'][$colName])) {
                     $value = $this->formatter->format($value, $config['format'][$colName]);
                 }
             }
@@ -214,7 +173,7 @@ class ConsoleTableGenerator implements OutputAwareInterface, ReportGeneratorInte
                 'title' => null,
                 'description' => null,
                 'rows' => array(
-                    array(
+                    'main' => array(
                         'cells' => array(
                             'benchmark' => 'string(php:bench(\'class_name\', string(ancestor-or-self::benchmark/@class)))',
                             'subject' => 'string(ancestor-or-self::subject/@name)',
@@ -223,29 +182,29 @@ class ConsoleTableGenerator implements OutputAwareInterface, ReportGeneratorInte
                             'memory' => 'number(descendant-or-self::iteration/@memory)',
                             'revs' => 'number(descendant-or-self::iteration/@revs)',
                             'iter' => 'count(descendant-or-self::iteration/preceding-sibling::*)',
-                            'time' => 'number(descendant-or-self::iteration/@time)',
+                            'time' => 'number(descendant-or-self::iteration/@time) div number(sum(descendant::iteration/@revs))',
                             'rps' => '(1000000 div number(descendant-or-self::iteration//@time)) * number(descendant-or-self::iteration/@revs)',
-                            'deviation' => 'php:bench(\'deviation\', php:bench(\'min\', {{ param.selector }}//@time), number(./@time))',
+                            'deviation' => 'php:bench(\'deviation\', min({{ param.selector }}//@time), number(./@time))',
                         ),
                         'with_query' => '{{ param.selector }}',
                     ),
                 ),
                 'format' => array(
-                    'revs' => '!number',
+                    'main#revs' => '!number',
                     'rps' => array('!number', '%s<comment>rps</comment>'),
                     'time' => array('!number', '%s<comment>μs</comment>'),
                     'deviation' => array('%.2f', '!balance', '%s<comment>%%</comment>'),
                     'memory' => array('!number', '%s<comment>b</comment>'),
                     'memory_diff' => array('!number', '!balance', '%s<comment>b</comment>'),
                 ),
-                'sort' => array(),
+                'sort' => array('main#time' => 'asc'),
                 'exclude' => array(),
                 'params' => array('selector' => '//iteration'),
             ),
             'aggregate' => array(
                 'extends' => 'default',
                 'rows' => array(
-                    array(
+                    'main' => array(
                         'cells' => array(
                             'benchmark' => 'string(php:bench(\'class_name\', string(ancestor-or-self::benchmark/@class)))',
                             'subject' => 'string(ancestor-or-self::subject/@name)',
@@ -262,7 +221,7 @@ class ConsoleTableGenerator implements OutputAwareInterface, ReportGeneratorInte
                     ),
                 ),
                 'params' => array('selector' => '//variant'),
-                'exclude' => array('group', 'memory', 'iter'),
+                'exclude' => array('iter'),
                 'format' => array(
                     'revs' => '!number',
                     'rps' => array('!number', '%s<comment>rps</comment>'),
@@ -292,14 +251,7 @@ class ConsoleTableGenerator implements OutputAwareInterface, ReportGeneratorInte
 
         $xpath = new PhpBenchXpath($resultDom);
 
-        foreach ($config['rows'] as $rowConfig) {
-            if (!isset($rowConfig['cells'])) {
-                throw new \InvalidArgumentException(sprintf(
-                    'The "rows" key must contain an array of row configurations,  and each configuration must contain at least a "cells" key with an array of key to expression pairs, got: %s',
-                    print_r($rowConfig, true)
-                ));
-            }
-
+        foreach ($config['rows'] as $rowClass => $rowConfig) {
             $contextQuery = '/';
 
             if (isset($rowConfig['with_query'])) {
@@ -322,6 +274,7 @@ class ConsoleTableGenerator implements OutputAwareInterface, ReportGeneratorInte
             foreach ($items as $item) {
                 foreach ($contextEls as $contextEl) {
                     $tableRowEl = $tableDom->createElement('row');
+                    $tableRowEl->setAttribute('class', $rowClass);
                     $tableEl->appendChild($tableRowEl);
 
                     foreach ($rowConfig['cells'] as $colName => $cellExpr) {
@@ -395,22 +348,47 @@ class ConsoleTableGenerator implements OutputAwareInterface, ReportGeneratorInte
             $cellEl->nodeValue = $value;
         }
 
-        $rows = array();
+        $rowsByClass = array();
         foreach ($tableXpath->query('//row') as $rowEl) {
             $row = array();
             foreach ($tableXpath->query('./cell', $rowEl) as $cellEl) {
                 $row[$cellEl->getAttribute('name')] = $cellEl->nodeValue;
             }
-            $rows[] = $row;
+            $rowClass = $rowEl->getAttribute('class');
+
+            if (!isset($rowsByClass[$rowClass])) {
+                $rowsByClass[$rowClass] = array();
+            }
+            $rowsByClass[$rowClass][] = $row;
         }
 
-        foreach ($rows as &$row) {
-            foreach ($config['exclude'] as $exclude) {
-                unset($row[$exclude]);
+        $cellEls = $tableXpath->query('//cell');
+        $colNames = array();
+        foreach ($cellEls as $cellEl) {
+            $colNames[$cellEl->getAttribute('name')] = $cellEl->getAttribute('name');
+        }
+
+        $orderedRows = array();
+
+        foreach ($rowsByClass as $rows) {
+            if ($config['sort']) {
+                Sort::sortRows($rows, $config['sort']);
+            }
+
+            foreach ($rows as &$row) {
+                $orderedRow = array();
+                foreach ($colNames as $colName) {
+                    $orderedRow[$colName] = array_key_exists($colName, $row) ? $row[$colName] : '';
+                }
+
+                foreach ($config['exclude'] as $exclude) {
+                    unset($orderedRow[$exclude]);
+                }
+                $orderedRows[] = $orderedRow;
             }
         }
 
-        return $rows;
+        return $orderedRows;
     }
 
     /**

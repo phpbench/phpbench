@@ -13,6 +13,7 @@
         "symfony/console": "~2.4",
         "symfony/finder": "~2.4",
         "symfony/process": "~2.1",
+        "phpbench/tabular": "~1.0@dev",
         "seld/jsonlint": "~1.0",
         "justinrainbow/json-schema": "~1.0"
     },
