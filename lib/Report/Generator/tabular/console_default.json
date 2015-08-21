@@ -63,7 +63,7 @@
         {
             "cells": {
                 "deviation": {
-                    "literal": "<info><< Average</info>"
+                    "literal": "<info><< {{ row.item }}</info>"
                 },
                 "{{ cell.item  }}": {
                     "literal": "<comment>--</comment>",
@@ -75,7 +75,7 @@
                     ]
                 },
                 "{{ cell.item }}": {
-                    "expr": "average(//group[@name=\"_default\"]//cell[@name=\"{{ cell.item }}\"])",
+                    "expr": "{{ row.item }}(//group[@name=\"_default\"]//cell[@name=\"{{ cell.item }}\"])",
                     "pass": 1,
                     "with_items": [
                         "memory",
@@ -86,36 +86,8 @@
                     ]
                 }
             },
-            "group": "footer"
-        },
-        {
-            "cells": {
-                "deviation": {
-                    "literal": "<info><< Total</info>"
-                },
-                "{{ cell.item  }}": {
-                    "literal": "<comment>--</comment>",
-                    "with_items": [
-                        "benchmark",
-                        "subject",
-                        "group",
-                        "params",
-                        "iter"
-                    ]
-                },
-                "{{ cell.item }}": {
-                    "expr": "sum(//group[@name=\"_default\"]//cell[@name=\"{{ cell.item }}\"])",
-                    "pass": 1,
-                    "with_items": [
-                        "memory",
-                        "revs",
-                        "time",
-                        "time_net",
-                        "rps"
-                    ]
-                }
-            },
-            "group": "footer"
+            "group": "footer",
+            "with_items": [ "average", "sum" ]
         }
     ]
 }
