@@ -5,7 +5,7 @@
             [ "balance" ]
         ],
         "memory": [
-            [ "printf", { "format": "%s<comment>b</comment>" }]
+            [ "printf", { "format": "%d<comment>b</comment>" }]
         ],
         "rps": [
             [ "number", { "decimal_places": 2 }],
@@ -39,7 +39,7 @@
                 },
                 "time": {
                     "class": "time",
-                    "expr": "number(descendant-or-self::iteration/@time) div number(sum(descendant-or-self::iteration/@revs))"
+                    "expr": "number(descendant-or-self::iteration/@time) div sum(descendant-or-self::iteration/@revs)"
                 },
                 "time_net": {
                     "class": "time",
@@ -71,23 +71,40 @@
                         "benchmark",
                         "subject",
                         "group",
-                        "params"
+                        "params",
+                        "iter"
                     ]
                 },
-                "{{ cell.item }}": {
-                    "expr": "{{ row.item }}(//group[@name=\"_default\"]//cell[@name=\"{{ cell.item }}\"])",
+                "{{ cell.col }}": {
+                    "expr": "{{ row.item }}(//group[@name=\"_default\"]//cell[@name=\"{{ cell.col }}\"])",
                     "pass": 1,
+                    "class": "{{ cell.class }}",
                     "with_items": [
-                        "memory",
-                        "revs",
-                        "time",
-                        "time_net",
-                        "rps"
+                        {
+                            "col": "memory", 
+                            "class": "memory"
+                        },
+                        {
+                            "col": "revs", 
+                            "class": null
+                        },
+                        {
+                            "col": "time", 
+                            "class": "time"
+                        },
+                        {
+                            "col": "time_net", 
+                            "class": "time"
+                        },
+                        {
+                            "col": "rps",
+                            "class": "rps"
+                        }
                     ]
                 }
             },
             "group": "footer",
-            "with_items": [ "average", "sum" ]
+            "with_items": [ "average" ]
         }
     ]
 }

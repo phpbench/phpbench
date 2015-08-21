@@ -13,7 +13,6 @@ namespace PhpBench\Extension;
 
 use PhpBench\Container;
 use PhpBench\ProgressLogger\DotsProgressLogger;
-use PhpBench\Report\Generator\ConsoleTableGenerator;
 use PhpBench\ProgressLoggerRegistry;
 use PhpBench\Report\ReportManager;
 use PhpBench\Console\Command\RunCommand;

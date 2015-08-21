@@ -67,7 +67,13 @@ class ConsoleTabularGenerator implements ReportGeneratorInterface, OutputAwareIn
             $this->output->writeln($document->saveXML());
         }
 
-        $definition = json_decode(file_get_contents(__DIR__ . '/tabular/console_default.json'), true);
+        if ($config['aggregate']) {
+            $report = 'console_subject';
+        } else {
+            $report = 'console_iteration';
+        }
+
+        $definition = json_decode(file_get_contents(__DIR__ . '/tabular/' . $report . '.json'), true);
         $tableDom = $this->tabular->tabulate($document, $definition);
 
         if ($config['debug']) {

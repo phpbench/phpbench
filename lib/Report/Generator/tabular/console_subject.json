@@ -1,0 +1,111 @@
+{
+    "classes": {
+        "deviation": [
+            [ "printf", { "format": "%.2f%%" } ],
+            [ "balance" ]
+        ],
+        "memory": [
+            [ "printf", { "format": "%d<comment>b</comment>" }]
+        ],
+        "rps": [
+            [ "number", { "decimal_places": 2 }],
+            [ "printf", { "format": "%s<comment>rps</comment>" }]
+        ],
+        "time": [
+            [ "number", { "decimal_places": 2 }],
+            [ "printf", { "format": "%s<comment>\u03bcs</comment>" }]
+        ]
+    },
+    "rows": [
+        {
+            "cells": {
+                "benchmark": {
+                    "expr": "class_name(string(ancestor-or-self::benchmark/@class))"
+                },
+                "subject": {
+                    "expr": "string(ancestor-or-self::subject/@name)"
+                },
+                "group": {
+                    "expr": "string(ancestor-or-self::group/@name)"
+                },
+                "params": {
+                    "expr": "parameters_to_json(ancestor-or-self::variant/parameter)"
+                },
+                "revs": {
+                    "expr": "number(descendant-or-self::iteration/@revs)"
+                },
+                "iters": {
+                    "expr": "count(descendant-or-self::iteration)"
+                },
+                "time": {
+                    "class": "time",
+                    "expr": "sum(descendant-or-self::iteration/@time) div sum(descendant-or-self::iteration/@revs)"
+                },
+                "time_net": {
+                    "class": "time",
+                    "expr": "number(descendant-or-self::iteration/@time)"
+                },
+                "memory": {
+                    "class": "memory",
+                    "expr": "number(descendant-or-self::iteration/@memory)"
+                },
+                "rps": {
+                    "class": "rps",
+                    "expr": "(1000000 div number(descendant-or-self::iteration//@time)) * number(descendant-or-self::iteration/@revs)"
+                },
+                "deviation": {
+                    "class": "deviation",
+                    "expr": "deviation(min(//cell[@name='time']), number(./cell[@name='time']))",
+                    "pass": 1
+                }
+            },
+            "with_query": "//subject"
+        },
+        {
+            "cells": {
+                "deviation": {
+                    "literal": "<info><< {{ row.item }}</info>"
+                },
+                "{{ cell.item  }}": {
+                    "literal": "<comment>--</comment>",
+                    "with_items": [
+                        "benchmark",
+                        "subject",
+                        "group",
+                        "params",
+                        "iter"
+                    ]
+                },
+                "{{ cell.col }}": {
+                    "expr": "{{ row.item }}(//group[@name=\"_default\"]//cell[@name=\"{{ cell.col }}\"])",
+                    "pass": 1,
+                    "class": "{{ cell.class }}",
+                    "with_items": [
+                        {
+                            "col": "memory", 
+                            "class": "memory"
+                        },
+                        {
+                            "col": "revs", 
+                            "class": null
+                        },
+                        {
+                            "col": "time", 
+                            "class": "time"
+                        },
+                        {
+                            "col": "time_net", 
+                            "class": "time"
+                        },
+                        {
+                            "col": "rps",
+                            "class": "rps"
+                        }
+                    ]
+                }
+            },
+            "group": "footer",
+            "with_items": [ "average" ]
+        }
+    ]
+}
