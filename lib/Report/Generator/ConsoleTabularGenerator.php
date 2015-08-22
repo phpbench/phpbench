@@ -82,17 +82,34 @@ class ConsoleTabularGenerator implements ReportGeneratorInterface, OutputAwareIn
             $this->output->writeln($tableDom->saveXML());
         }
 
+        if ($config['title']) {
+            $this->output->writeln(sprintf('<title>%s</title>', $config['title']));
+        }
+
+        if ($config['description']) {
+            $this->output->writeln(sprintf('<description>%s</description>', $config['description']));
+        }
+
+        $this->render($tableDom, $config);
+    }
+
+    private function render($tableDom, $config)
+    {
         $rows = array();
         $row = null;
         foreach ($tableDom->xpath()->query('//row') as $rowEl) {
             $row = array();
             foreach ($tableDom->xpath()->query('.//cell', $rowEl) as $cellEl) {
                 $colName = $cellEl->getAttribute('name');
+
+                // exclude cells
                 if (in_array($colName, $config['exclude'])) {
                     continue;
                 }
+
                 $row[$colName] = $cellEl->nodeValue;
             }
+
             $rows[] = $row;
         }
 

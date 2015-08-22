@@ -7,12 +7,7 @@
         "memory": [
             [ "printf", { "format": "%d<comment>b</comment>" }]
         ],
-        "rps": [
-            [ "number", { "decimal_places": 2 }],
-            [ "printf", { "format": "%s<comment>rps</comment>" }]
-        ],
         "time": [
-            [ "number", { "decimal_places": 2 }],
             [ "printf", { "format": "%s<comment>\u03bcs</comment>" }]
         ]
     },
@@ -48,10 +43,6 @@
                 "memory": {
                     "class": "memory",
                     "expr": "number(descendant-or-self::iteration/@memory)"
-                },
-                "rps": {
-                    "class": "rps",
-                    "expr": "(1000000 div number(descendant-or-self::iteration//@time)) * number(descendant-or-self::iteration/@revs)"
                 },
                 "deviation": {
                     "class": "deviation",
@@ -95,10 +86,6 @@
                         {
                             "col": "time_net", 
                             "class": "time"
-                        },
-                        {
-                            "col": "rps",
-                            "class": "rps"
                         }
                     ]
                 }

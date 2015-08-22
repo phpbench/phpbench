@@ -1,7 +1,6 @@
 {
     "classes": {
         "deviation": [
-            [ "number", { "decimal_places": 2 }],
             [ "printf", { "format": "%s%%" } ],
             [ "balance" ]
         ],
@@ -9,11 +8,9 @@
             [ "printf", { "format": "%d<comment>b</comment>" }]
         ],
         "time": [
-            [ "number", { "decimal_places": 2 }],
             [ "printf", { "format": "%s<comment>\u03bcs</comment>" }]
         ],
         "time_net": [
-            [ "number", { "decimal_places": 0 }],
             [ "printf", { "format": "%s<comment>\u03bcs</comment>" }]
         ]
     },
