@@ -8,8 +8,16 @@ use PhpBench\Benchmark\SuiteDocument;
 use Symfony\Component\Console\Helper\Table;
 use PhpBench\Console\OutputAwareInterface;
 
-class ConsoleTabularGenerator extends AbstractConsoleTabularGenerator
+class ConsoleTabularCustomGenerator extends AbstractConsoleTabularGenerator
 {
+    private $configPath;
+
+    public function __construct(Tabular $tabular, $configPath)
+    {
+        $this->tabular = $tabular;
+        $this->configPath = $configPath;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -22,29 +30,29 @@ class ConsoleTabularGenerator extends AbstractConsoleTabularGenerator
                 'title' => array(
                     'oneOf' => array(
                         array('type' => 'string'),
-                        array('type' => 'null')
+                        array('type' => 'null'),
                     )
                 ),
                 'description' => array(
                     'oneOf' => array(
                         array('type' => 'string'),
-                        array('type' => 'null')
+                        array('type' => 'null'),
                     )
                 ),
-                'aggregate' => array(
-                    'type' => 'boolean'
+                'file' => array(
+                    'oneOf' => array(
+                        array('type' => 'string'),
+                        array('type' => 'null'),
+                    )
                 ),
-                'exclude' => array(
-                    'type' => 'array',
+                'params' => array(
+                    'oneOf' => array(
+                        array('type' => 'object'),
+                        array('type' => 'array'),
+                    )
                 ),
                 'debug' => array(
                     'type' => 'boolean',
-                ),
-                'selector' => array(
-                    'oneOf' => array(
-                        array('type' => 'string'),
-                        array('type' => 'null')
-                    )
                 ),
             ),
         );
@@ -55,19 +63,20 @@ class ConsoleTabularGenerator extends AbstractConsoleTabularGenerator
      */
     public function generate(SuiteDocument $document, array $config)
     {
-        if ($config['aggregate']) {
-            $report = 'console_aggregate';
-        } else {
-            $report = 'console_iteration';
+        if (!$config['file']) {
+            throw new \InvalidArgumentException(
+                'You must provide the path to a Tabular JSON report definition with the "file" option.'
+            );
         }
 
-        $reportFile = __DIR__ . '/tabular/' . $report . '.json';
+        $reportFile = $config['file'];
 
-        $parameters = array();
-        if ($config['selector']) {
-            $parameters['selector'] = $config['selector'];
+        // if not an absolute path, make it relative to the config file
+        if (substr($reportFile, 0, 1) !== '/') {
+            $reportFile = dirname($this->configPath) . '/' . $reportFile;
         }
 
+        $parameters = $config['params'];
         $this->doGenerate($reportFile, $document, $config, $parameters);
     }
 
@@ -77,12 +86,6 @@ class ConsoleTabularGenerator extends AbstractConsoleTabularGenerator
     public function getDefaultReports()
     {
         return array(
-            'aggregate' => array(
-                'aggregate' => true,
-            ),
-            'default' => array(
-                'aggregate' => false,
-            ),
         );
     }
 
@@ -95,9 +98,8 @@ class ConsoleTabularGenerator extends AbstractConsoleTabularGenerator
             'debug' => false,
             'title' => null,
             'description' => null,
-            'exclude' => array(),
-            'aggregate' => false,
-            'selector' => null,
+            'file' => null,
+            'params' => array(),
         );
     }
 }

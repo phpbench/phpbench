@@ -21,10 +21,10 @@
             "selector": "//subject[group/@name='cost_of_calling']//variant"
         },
         "array_keys": {
-            "extends": "aggregate",
+            "generator": "console_table_custom",
             "title": "Comparison of array location functions",
             "description": "This benchmark creates an array with 50,000 elements. Each subject checks the existence of the key with the index of the current revolution. (or in the case of in_arrey, for the value). 100 revolutions",
-            "selector": "//subject[group/@name='array_keys']//variant"
+            "file": "reports/array_keys.json"
         },
         "all": {
             "generator": "composite",

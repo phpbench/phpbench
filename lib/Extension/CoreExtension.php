@@ -37,6 +37,7 @@ use PhpBench\Tabular\Formatter;
 use PhpBench\Tabular\Tabular;
 use PhpBench\Tabular\TableBuilder;
 use PhpBench\Tabular\Dom\XPathResolver;
+use PhpBench\Report\Generator\ConsoleTabularCustomGenerator;
 
 class CoreExtension implements ExtensionInterface
 {
@@ -175,6 +176,12 @@ class CoreExtension implements ExtensionInterface
         $container->register('report_generator.tabular', function (Container $container) {
             return new ConsoleTabularGenerator($container->get('tabular'));
         }, array('report_generator' => array('name' => 'console_table')));
+        $container->register('report_generator.tabular_custom', function (Container $container) {
+            return new ConsoleTabularCustomGenerator(
+                $container->get('tabular'),
+                $container->getParameter('config_path')
+            );
+        }, array('report_generator' => array('name' => 'console_table_custom')));
         $container->register('report_generator.composite', function (Container $container) {
             return new CompositeGenerator($container->get('report.manager'));
         }, array('report_generator' => array('name' => 'composite')));
