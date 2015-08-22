@@ -25,7 +25,7 @@
                 },
                 "deviation": {
                     "class": "deviation",
-                    "expr": "deviation(min(//cell[@name='time']), number(./cell[@name='time']))",
+                    "expr": "deviation(min(//cell[@name='time']), number(./cell[@name='time'])) div number(./cell[@name='elements'])",
                     "pass": 1
                 }
             },

@@ -1,12 +1,18 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Report\Generator;
 
 use PhpBench\Tabular\Tabular;
-use PhpBench\ReportGeneratorInterface;
 use PhpBench\Benchmark\SuiteDocument;
-use Symfony\Component\Console\Helper\Table;
-use PhpBench\Console\OutputAwareInterface;
 
 class ConsoleTabularCustomGenerator extends AbstractConsoleTabularGenerator
 {
@@ -31,25 +37,25 @@ class ConsoleTabularCustomGenerator extends AbstractConsoleTabularGenerator
                     'oneOf' => array(
                         array('type' => 'string'),
                         array('type' => 'null'),
-                    )
+                    ),
                 ),
                 'description' => array(
                     'oneOf' => array(
                         array('type' => 'string'),
                         array('type' => 'null'),
-                    )
+                    ),
                 ),
                 'file' => array(
                     'oneOf' => array(
                         array('type' => 'string'),
                         array('type' => 'null'),
-                    )
+                    ),
                 ),
                 'params' => array(
                     'oneOf' => array(
                         array('type' => 'object'),
                         array('type' => 'array'),
-                    )
+                    ),
                 ),
                 'debug' => array(
                     'type' => 'boolean',

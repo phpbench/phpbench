@@ -1,12 +1,18 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Report\Generator;
 
 use PhpBench\Tabular\Tabular;
-use PhpBench\ReportGeneratorInterface;
 use PhpBench\Benchmark\SuiteDocument;
-use Symfony\Component\Console\Helper\Table;
-use PhpBench\Console\OutputAwareInterface;
 
 class ConsoleTabularGenerator extends AbstractConsoleTabularGenerator
 {
@@ -22,17 +28,17 @@ class ConsoleTabularGenerator extends AbstractConsoleTabularGenerator
                 'title' => array(
                     'oneOf' => array(
                         array('type' => 'string'),
-                        array('type' => 'null')
-                    )
+                        array('type' => 'null'),
+                    ),
                 ),
                 'description' => array(
                     'oneOf' => array(
                         array('type' => 'string'),
-                        array('type' => 'null')
-                    )
+                        array('type' => 'null'),
+                    ),
                 ),
                 'aggregate' => array(
-                    'type' => 'boolean'
+                    'type' => 'boolean',
                 ),
                 'exclude' => array(
                     'type' => 'array',
@@ -43,8 +49,8 @@ class ConsoleTabularGenerator extends AbstractConsoleTabularGenerator
                 'selector' => array(
                     'oneOf' => array(
                         array('type' => 'string'),
-                        array('type' => 'null')
-                    )
+                        array('type' => 'null'),
+                    ),
                 ),
             ),
         );

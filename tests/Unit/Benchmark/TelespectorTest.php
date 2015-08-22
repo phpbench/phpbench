@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Tests\Unit\Benchmark;
 
 use PhpBench\Benchmark\Telespector;
@@ -14,16 +23,16 @@ class TelespectorTest extends \PHPUnit_Framework_TestCase
     {
         $teleporter = new Telespector(__DIR__ . '/../../../vendor/autoload.php', '.');
         $result = $teleporter->execute(__DIR__ . '/template/foo.template', array(
-            'foo' => 'bar'
+            'foo' => 'bar',
         ));
 
         $this->assertEquals(array(
-            'foo' => 'bar'
+            'foo' => 'bar',
         ), $result);
     }
 
     /**
-     * It should throw an exception if the script is invalid
+     * It should throw an exception if the script is invalid.
      *
      * @expectedException RuntimeException
      * @expectedExceptionMessage Could not execute script
@@ -32,7 +41,7 @@ class TelespectorTest extends \PHPUnit_Framework_TestCase
     {
         $teleporter = new Telespector(__DIR__ . '/../../../vendor/autoload.php', '.');
         $teleporter->execute(__DIR__ . '/template/invalid.template', array(
-            'foo' => 'bar'
+            'foo' => 'bar',
         ));
     }
 

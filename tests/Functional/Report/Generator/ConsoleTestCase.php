@@ -1,8 +1,16 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Tests\Functional\Report\Generator;
 
-use PhpBench\Container;
 use Symfony\Component\Console\Output\BufferedOutput;
 use PhpBench\Benchmark\SuiteDocument;
 
@@ -33,6 +41,4 @@ abstract class ConsoleTestCase extends GeneratorTestCase
             $this->getConfig($config)
         );
     }
-
 }
-

@@ -215,7 +215,6 @@ class CoreExtension implements ExtensionInterface
             return $registry;
         });
 
-
         $container->register('tabular.formatter', function (Container $container) {
             return new Formatter($container->get('tabular.formatter.registry'));
         });

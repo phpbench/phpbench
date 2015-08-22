@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Report\Generator;
 
 use PhpBench\Tabular\Tabular;
@@ -12,7 +21,7 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use PhpBench\Tabular\Dom\Document;
 
-require_once(__DIR__ . '/tabular/xpath_functions.php');
+require_once __DIR__ . '/tabular/xpath_functions.php';
 
 abstract class AbstractConsoleTabularGenerator implements ReportGeneratorInterface, OutputAwareInterface
 {
@@ -34,7 +43,8 @@ abstract class AbstractConsoleTabularGenerator implements ReportGeneratorInterfa
     }
 
     /**
-     * Ren
+     * Ren.
+     *
      * @param mixed $tableDom
      * @param mixed $config
      */
@@ -146,5 +156,4 @@ abstract class AbstractConsoleTabularGenerator implements ReportGeneratorInterfa
             'description', new OutputFormatterStyle(null, null, array())
         );
     }
-
 }

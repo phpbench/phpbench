@@ -11,11 +11,6 @@
 
 namespace PhpBench\Benchmark;
 
-use Symfony\Component\Process\Process;
-use PhpBench\BenchmarkInterface;
-use PhpBench\Benchmark\Telespector;
-use PhpBench\Benchmark\Subject;
-
 /**
  * This class generates a benchmarking script and places it in the systems
  * temp. directory and then executes it. The generated script then returns the

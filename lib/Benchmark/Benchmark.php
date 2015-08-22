@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Benchmark;
 
 class Benchmark
@@ -14,17 +23,17 @@ class Benchmark
         $this->classFqn = $classFqn;
     }
 
-    public function getPath() 
+    public function getPath()
     {
         return $this->path;
     }
 
-    public function getClassFqn() 
+    public function getClassFqn()
     {
         return $this->classFqn;
     }
 
-    public function getSubjects() 
+    public function getSubjects()
     {
         return $this->subjects;
     }
@@ -34,4 +43,3 @@ class Benchmark
         $this->subjects[] = $subject;
     }
 }
-

@@ -128,11 +128,11 @@ class Subject
     }
 
     /**
-     * Return the benchmark to which this subject belong
+     * Return the benchmark to which this subject belong.
      *
      * @return Benchmark
      */
-    public function getBenchmark() 
+    public function getBenchmark()
     {
         return $this->benchmark;
     }

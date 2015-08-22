@@ -1,9 +1,16 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Tests\Functional\Report\Generator;
 
-use Symfony\Component\Console\Output\BufferedOutput;
-use PhpBench\Report\Generator\ConsoleTabularGenerator;
 use PhpBench\Benchmark\SuiteDocument;
 
 class ConsoleTabularGeneratorTest extends ConsoleTestCase
@@ -17,7 +24,7 @@ class ConsoleTabularGeneratorTest extends ConsoleTestCase
     }
 
     /**
-     * It should generate an iteration report by default
+     * It should generate an iteration report by default.
      */
     public function testDefault()
     {
@@ -32,14 +39,14 @@ class ConsoleTabularGeneratorTest extends ConsoleTestCase
     }
 
     /**
-     * It should generate an aggregate report
+     * It should generate an aggregate report.
      */
     public function testAggregate()
     {
         $this->generate(
             $this->getSuiteDocument(),
             array(
-                'aggregate' => true
+                'aggregate' => true,
             )
         );
 
@@ -49,7 +56,7 @@ class ConsoleTabularGeneratorTest extends ConsoleTestCase
     }
 
     /**
-     * It should exclude columns
+     * It should exclude columns.
      */
     public function testExclude()
     {
@@ -67,10 +74,10 @@ class ConsoleTabularGeneratorTest extends ConsoleTestCase
     }
 
     /**
-     * It should show debug output
+     * It should show debug output.
      */
     public function testDebug()
-        {
+    {
         $this->generate(
             $this->getSuiteDocument(),
             array(
@@ -79,12 +86,12 @@ class ConsoleTabularGeneratorTest extends ConsoleTestCase
         );
 
         $output = $this->getOutput()->fetch();
-        $this->assertContains('Suite XML',$output);
-        $this->assertContains('Table XML',$output);
+        $this->assertContains('Suite XML', $output);
+        $this->assertContains('Table XML', $output);
     }
 
     /**
-     * It should show the title
+     * It should show the title.
      */
     public function testTitle()
     {
@@ -96,11 +103,11 @@ class ConsoleTabularGeneratorTest extends ConsoleTestCase
         );
 
         $output = $this->getOutput()->fetch();
-        $this->assertContains('Hello World',$output);
+        $this->assertContains('Hello World', $output);
     }
 
     /**
-     * It should show the description
+     * It should show the description.
      */
     public function testDescription()
     {
@@ -112,7 +119,7 @@ class ConsoleTabularGeneratorTest extends ConsoleTestCase
         );
 
         $output = $this->getOutput()->fetch();
-        $this->assertContains('Hello World',$output);
+        $this->assertContains('Hello World', $output);
     }
 
     private function getSuiteDocument()

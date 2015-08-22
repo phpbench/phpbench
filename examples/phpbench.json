@@ -6,29 +6,39 @@
             "extends": "aggregate",
             "title": "Cost of Setting",
             "description": "Comparison of different ways of setting properties",
-            "selector": "//subject[group/@name='cost_of_setting']//variant"
+            "selector": "//subject[group/@name='cost_of_setting']//variant",
+            "exclude": ["benchmark"]
         },
         "cost_of_instantiation": {
             "extends": "aggregate",
             "title": "Cost of Instantiation",
             "description": "Compares instantiating a class directly against instantiating via. Reflection",
-            "selector": "//subject[group/@name='cost_of_instantiation']//variant"
+            "selector": "//subject[group/@name='cost_of_instantiation']//variant",
+            "exclude": ["benchmark", "group", "params"]
         },
         "cost_of_calling": {
             "extends": "aggregate",
             "title": "Cost of calling",
             "description": "Compare calling methods with and without arguments",
-            "selector": "//subject[group/@name='cost_of_calling']//variant"
+            "selector": "//subject[group/@name='cost_of_calling']//variant",
+            "exclude": ["benchmark", "group", "params"]
         },
         "array_keys": {
             "generator": "console_table_custom",
             "title": "Comparison of array location functions",
-            "description": "This benchmark creates an array with 50,000 elements. Each subject checks the existence of the key with the index of the current revolution. (or in the case of in_arrey, for the value). 100 revolutions",
+            "description": "This benchmark creates an array with 50,000 elements. \nEach subject checks the existence of the key with the index of the current revolution. (or in the case of in_arrey, for the value).\nDeviation is calculated per revolution",
             "file": "reports/array_keys.json"
+        },
+        "string_splitting": {
+            "extends": "aggregate",
+            "title": "String Splitting",
+            "description": "Compare different methods of splitting#strings",
+            "selector": "//subject[group/@name='string_extraction']//variant",
+            "exclude": ["benchmark", "group", "params"]
         },
         "all": {
             "generator": "composite",
-            "reports": ["cost_of_setting", "cost_of_instantiation", "cost_of_calling", "array_keys"]
+            "reports": ["cost_of_setting", "cost_of_instantiation", "cost_of_calling", "string_splitting", "array_keys"]
         }
     }
 }

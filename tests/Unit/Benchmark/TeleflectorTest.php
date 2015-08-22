@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Tests\Unit\Benchmark;
 
 use PhpBench\Benchmark\Telespector;
@@ -16,7 +25,7 @@ class TeleflectorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should return information about a class in a different application
+     * It should return information about a class in a different application.
      */
     public function testTeleflector()
     {
@@ -35,7 +44,7 @@ class TeleflectorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should return the parameter sets from a benchmark class
+     * It should return the parameter sets from a benchmark class.
      */
     public function testGetParameterSets()
     {

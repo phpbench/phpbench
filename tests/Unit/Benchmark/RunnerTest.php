@@ -58,7 +58,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->subject->getGroups()->willReturn(array());
         $this->subject->getRevs()->willReturn($revs);
         $this->benchmark->getSubjects()->willReturn(array(
-            $this->subject->reveal()
+            $this->subject->reveal(),
         ));
         $this->benchmark->getClassFqn()->willReturn('Benchmark');
 
@@ -188,7 +188,7 @@ EOT
             array(
                 1,
                 array(1),
-                array('one' => array('three' => new \stdClass)),
+                array('one' => array('three' => new \stdClass())),
                 '',
                 array('InvalidArgumentException', 'Parameters must be either scalars or arrays, got: stdClass'),
             ),
