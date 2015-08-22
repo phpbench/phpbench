@@ -68,7 +68,7 @@ class ConsoleTabularGenerator implements ReportGeneratorInterface, OutputAwareIn
         }
 
         if ($config['aggregate']) {
-            $report = 'console_subject';
+            $report = 'console_aggregate';
         } else {
             $report = 'console_iteration';
         }
@@ -87,7 +87,11 @@ class ConsoleTabularGenerator implements ReportGeneratorInterface, OutputAwareIn
         foreach ($tableDom->xpath()->query('//row') as $rowEl) {
             $row = array();
             foreach ($tableDom->xpath()->query('.//cell', $rowEl) as $cellEl) {
-                $row[$cellEl->getAttribute('name')] = $cellEl->nodeValue;
+                $colName = $cellEl->getAttribute('name');
+                if (in_array($colName, $config['exclude'])) {
+                    continue;
+                }
+                $row[$colName] = $cellEl->nodeValue;
             }
             $rows[] = $row;
         }

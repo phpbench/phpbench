@@ -1,18 +1,19 @@
 {
     "classes": {
         "deviation": [
-            [ "printf", { "format": "%.2f%%" } ],
+            [ "number", { "decimal_places": 2 }],
+            [ "printf", { "format": "%s%%" } ],
             [ "balance" ]
         ],
         "memory": [
             [ "printf", { "format": "%d<comment>b</comment>" }]
         ],
-        "rps": [
-            [ "number", { "decimal_places": 2 }],
-            [ "printf", { "format": "%s<comment>rps</comment>" }]
-        ],
         "time": [
             [ "number", { "decimal_places": 2 }],
+            [ "printf", { "format": "%s<comment>\u03bcs</comment>" }]
+        ],
+        "time_net": [
+            [ "number", { "decimal_places": 0 }],
             [ "printf", { "format": "%s<comment>\u03bcs</comment>" }]
         ]
     },
@@ -32,7 +33,7 @@
                     "expr": "parameters_to_json(ancestor-or-self::variant/parameter)"
                 },
                 "revs": {
-                    "expr": "number(descendant-or-self::iteration/@revs)"
+                    "expr": "number(sum(descendant-or-self::iteration/@revs))"
                 },
                 "iters": {
                     "expr": "count(descendant-or-self::iteration)"
@@ -42,16 +43,12 @@
                     "expr": "sum(descendant-or-self::iteration/@time) div sum(descendant-or-self::iteration/@revs)"
                 },
                 "time_net": {
-                    "class": "time",
+                    "class": "time_net",
                     "expr": "number(descendant-or-self::iteration/@time)"
                 },
                 "memory": {
                     "class": "memory",
                     "expr": "number(descendant-or-self::iteration/@memory)"
-                },
-                "rps": {
-                    "class": "rps",
-                    "expr": "(1000000 div number(descendant-or-self::iteration//@time)) * number(descendant-or-self::iteration/@revs)"
                 },
                 "deviation": {
                     "class": "deviation",
@@ -59,7 +56,7 @@
                     "pass": 1
                 }
             },
-            "with_query": "//subject"
+            "with_query": "//subject/variant"
         },
         {
             "cells": {
@@ -72,8 +69,7 @@
                         "benchmark",
                         "subject",
                         "group",
-                        "params",
-                        "iter"
+                        "params"
                     ]
                 },
                 "{{ cell.col }}": {
@@ -96,10 +92,6 @@
                         {
                             "col": "time_net", 
                             "class": "time"
-                        },
-                        {
-                            "col": "rps",
-                            "class": "rps"
                         }
                     ]
                 }
