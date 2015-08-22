@@ -1,16 +1,23 @@
 {
+    "params": {
+        "selector": "//subject/variant"
+    },
     "classes": {
         "deviation": [
+            [ "number", { "decimal_places": 2 }],
             [ "printf", { "format": "%s%%" } ],
             [ "balance" ]
         ],
         "memory": [
+            [ "number" ],
             [ "printf", { "format": "%d<comment>b</comment>" }]
         ],
-        "time": [
+        "time_pr": [
+            [ "number", { "decimal_places": 2 }],
             [ "printf", { "format": "%s<comment>\u03bcs</comment>" }]
         ],
-        "time_net": [
+        "time": [
+            [ "number", { "decimal_places": 0 }],
             [ "printf", { "format": "%s<comment>\u03bcs</comment>" }]
         ]
     },
@@ -37,11 +44,11 @@
                 },
                 "time": {
                     "class": "time",
-                    "expr": "sum(descendant-or-self::iteration/@time) div sum(descendant-or-self::iteration/@revs)"
-                },
-                "time_net": {
-                    "class": "time_net",
                     "expr": "number(descendant-or-self::iteration/@time)"
+                },
+                "time_pr": {
+                    "class": "time_pr",
+                    "expr": "sum(descendant-or-self::iteration/@time) div sum(descendant-or-self::iteration/@revs)"
                 },
                 "memory": {
                     "class": "memory",
@@ -51,50 +58,13 @@
                     "class": "deviation",
                     "expr": "deviation(min(//cell[@name='time']), number(./cell[@name='time']))",
                     "pass": 1
+                },
+                "stability": {
+                    "class": "deviation",
+                    "expr": "100 - deviation(min(descendant::iteration/@time), average(descendant::iteration/@time))"
                 }
             },
-            "with_query": "//subject/variant"
-        },
-        {
-            "cells": {
-                "deviation": {
-                    "literal": "<info><< {{ row.item }}</info>"
-                },
-                "{{ cell.item  }}": {
-                    "literal": "<comment>--</comment>",
-                    "with_items": [
-                        "benchmark",
-                        "subject",
-                        "group",
-                        "params"
-                    ]
-                },
-                "{{ cell.col }}": {
-                    "expr": "{{ row.item }}(//group[@name=\"_default\"]//cell[@name=\"{{ cell.col }}\"])",
-                    "pass": 1,
-                    "class": "{{ cell.class }}",
-                    "with_items": [
-                        {
-                            "col": "memory", 
-                            "class": "memory"
-                        },
-                        {
-                            "col": "revs", 
-                            "class": null
-                        },
-                        {
-                            "col": "time", 
-                            "class": "time"
-                        },
-                        {
-                            "col": "time_net", 
-                            "class": "time"
-                        }
-                    ]
-                }
-            },
-            "group": "footer",
-            "with_items": [ "average" ]
+            "with_query": "{{ param.selector }}"
         }
     ]
 }

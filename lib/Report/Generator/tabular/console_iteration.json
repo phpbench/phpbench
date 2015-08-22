@@ -1,13 +1,16 @@
 {
     "classes": {
         "deviation": [
+            [ "number", { "decimal_places": 2 }],
             [ "printf", { "format": "%.2f%%" } ],
             [ "balance" ]
         ],
         "memory": [
-            [ "printf", { "format": "%d<comment>b</comment>" }]
+            [ "number" ],
+            [ "printf", { "format": "%s<comment>b</comment>" }]
         ],
         "time": [
+            [ "number", { "decimal_places": 2 }],
             [ "printf", { "format": "%s<comment>\u03bcs</comment>" }]
         ]
     },
@@ -34,11 +37,7 @@
                 },
                 "time": {
                     "class": "time",
-                    "expr": "number(descendant-or-self::iteration/@time) div sum(descendant-or-self::iteration/@revs)"
-                },
-                "time_net": {
-                    "class": "time",
-                    "expr": "number(descendant-or-self::iteration/@time)"
+                    "expr": "number(descendant-or-self::iteration/@time) div number(sum(descendant-or-self::iteration/@revs))"
                 },
                 "memory": {
                     "class": "memory",
@@ -81,10 +80,6 @@
                         },
                         {
                             "col": "time", 
-                            "class": "time"
-                        },
-                        {
-                            "col": "time_net", 
                             "class": "time"
                         }
                     ]

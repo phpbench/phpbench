@@ -10,7 +10,7 @@ class ConsoleTabularGeneratorTest extends ConsoleTestCase
 {
     protected function getGenerator()
     {
-        $generator = new ConsoleTabularGenerator($this->getContainer()->get('tabular'));
+        $generator = $this->getContainer()->get('report_generator.tabular');
         $generator->setOutput($this->getOutput());
 
         return $generator;
@@ -56,7 +56,7 @@ class ConsoleTabularGeneratorTest extends ConsoleTestCase
         $this->generate(
             $this->getSuiteDocument(),
             array(
-                'exclude' => array('benchmark', 'time_net'),
+                'exclude' => array('time_net', 'benchmark'),
             )
         );
 
@@ -70,7 +70,7 @@ class ConsoleTabularGeneratorTest extends ConsoleTestCase
      * It should show debug output
      */
     public function testDebug()
-    {
+        {
         $this->generate(
             $this->getSuiteDocument(),
             array(
@@ -141,6 +141,7 @@ class ConsoleTabularGeneratorTest extends ConsoleTestCase
 </phpbench>
 EOT
         );
+
         return $suite;
     }
 }

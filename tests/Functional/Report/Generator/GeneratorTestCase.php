@@ -6,21 +6,21 @@ use PhpBench\Container;
 
 abstract class GeneratorTestCase extends \PHPUnit_Framework_TestCase
 {
+    private $container;
+
     protected abstract function getGenerator();
 
     protected function getContainer()
     {
-        static $container;
-
-        if ($container) {
-            return $container;
+        if ($this->container) {
+            return $this->container;
         }
 
-        $container = new Container();
-        $container->configure();
-        $container->build();
+        $this->container = new Container();
+        $this->container->configure();
+        $this->container->build();
 
-        return $container;
+        return $this->container;
     }
 
     protected function getConfig(array $config)

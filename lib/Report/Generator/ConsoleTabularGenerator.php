@@ -8,6 +8,8 @@ use PhpBench\Benchmark\SuiteDocument;
 use Symfony\Component\Console\Helper\Table;
 use PhpBench\Console\OutputAwareInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Formatter\OutputFormatterInterface;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
 require_once(__DIR__ . '/tabular/xpath_functions.php');
 
@@ -27,6 +29,7 @@ class ConsoleTabularGenerator implements ReportGeneratorInterface, OutputAwareIn
     public function setOutput(OutputInterface $output)
     {
         $this->output = $output;
+        $this->configureFormatters($output->getFormatter());
     }
 
     /**
@@ -37,12 +40,18 @@ class ConsoleTabularGenerator implements ReportGeneratorInterface, OutputAwareIn
         return array(
             'type' => 'object',
             'additionalProperties' => false,
-            'peoperties' => array(
+            'properties' => array(
                 'title' => array(
-                    'type' => 'string'
+                    'oneOf' => array(
+                        array('type' => 'string'),
+                        array('type' => 'null')
+                    )
                 ),
                 'description' => array(
-                    'type' => 'string'
+                    'oneOf' => array(
+                        array('type' => 'string'),
+                        array('type' => 'null')
+                    )
                 ),
                 'aggregate' => array(
                     'type' => 'boolean'
@@ -52,6 +61,12 @@ class ConsoleTabularGenerator implements ReportGeneratorInterface, OutputAwareIn
                 ),
                 'debug' => array(
                     'type' => 'boolean',
+                ),
+                'selector' => array(
+                    'oneOf' => array(
+                        array('type' => 'string'),
+                        array('type' => 'null')
+                    )
                 ),
             ),
         );
@@ -73,8 +88,17 @@ class ConsoleTabularGenerator implements ReportGeneratorInterface, OutputAwareIn
             $report = 'console_iteration';
         }
 
+        $parameters = array();
+
+        if ($config['selector']) {
+            $parameters['selector'] = $config['selector'];
+        }
+
         $definition = json_decode(file_get_contents(__DIR__ . '/tabular/' . $report . '.json'), true);
-        $tableDom = $this->tabular->tabulate($document, $definition);
+        if (!$definition) {
+            throw new \InvalidArgumentException(sprintf('Could not decode report "%s"', $report));
+        }
+        $tableDom = $this->tabular->tabulate($document, $definition, $parameters);
 
         if ($config['debug']) {
             $tableDom->formatOutput = true;
@@ -144,9 +168,9 @@ class ConsoleTabularGenerator implements ReportGeneratorInterface, OutputAwareIn
             'debug' => false,
             'title' => null,
             'description' => null,
-            'sort' => array(),
             'exclude' => array(),
             'aggregate' => false,
+            'selector' => null,
         );
     }
 
@@ -177,5 +201,20 @@ class ConsoleTabularGenerator implements ReportGeneratorInterface, OutputAwareIn
             return;
         }
         $table->render($this->output);
+    }
+
+    /**
+     * Adds some output formatters.
+     *
+     * @param OutputFormatterInterface
+     */
+    private function configureFormatters(OutputFormatterInterface $formatter)
+    {
+        $formatter->setStyle(
+            'title', new OutputFormatterStyle('white', null, array('bold'))
+        );
+        $formatter->setStyle(
+            'description', new OutputFormatterStyle(null, null, array())
+        );
     }
 }
