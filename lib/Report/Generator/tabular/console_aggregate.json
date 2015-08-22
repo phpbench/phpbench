@@ -3,6 +3,9 @@
         "selector": "//subject/variant"
     },
     "classes": {
+        "stability": [
+            [ "printf", { "format": "%.2f%%" } ]
+        ],
         "deviation": [
             [ "number", { "decimal_places": 2 }],
             [ "printf", { "format": "%s%%" } ],
@@ -60,7 +63,7 @@
                     "pass": 1
                 },
                 "stability": {
-                    "class": "deviation",
+                    "class": "stability",
                     "expr": "100 - deviation(min(descendant::iteration/@time), average(descendant::iteration/@time))"
                 }
             },
