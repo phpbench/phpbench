@@ -12,11 +12,7 @@
 namespace PhpBench\Benchmark;
 
 use PhpBench\ProgressLogger\NullProgressLogger;
-
-use PhpBench\Exception\InvalidArgumentException;
-use PhpBench\BenchmarkInterface;
 use PhpBench\ProgressLoggerInterface;
-use PhpBench\Benchmark\Benchmark;
 use PhpBench\PhpBench;
 
 /**
@@ -196,11 +192,13 @@ class Runner
                 $childEl = $this->createParameter($parameterEl, $key, $element);
                 $parameterEl->appendChild($childEl);
             }
+
             return $parameterEl;
         }
 
         if (is_scalar($value)) {
             $parameterEl->setAttribute('value', $value);
+
             return $parameterEl;
         }
 

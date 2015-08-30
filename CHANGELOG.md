@@ -8,16 +8,17 @@ CHANGELOG
 - Dependency Injection Container.
 - Extension API.
 - Major refactoring of reports, old console report does not exist.
-- Separation of reports and generators. Reports are registered as
-  configurations, reports must be explicitly called on the CLI in order for
-  them to be generated.
-- New "composite" report for generating multiple reports at one time.
+- Separation of reports and generators.
+- Use of Tabular library for generating table data.
+- Report generator for generating simple reports.
+- Report generator for generating custom reports.
+- Report generator for compositing reports (generating multiple reports at one time).
 - Removal of the "description" annotation.
 - Removed OptionsResolver, replaced functionality with JSON schema to allow
-  validation of nested report configurations.
-- All interfaces now suffixed with "Interface"
+  Validation of nested report configurations.
+- All interfaces now suffixed with "Interface".
 - Removed magic setUp and tearDown methods (replaced with explicit
-  @beforeMethod and @afterMethod)
+  @beforeMethod and @afterMethod).
 - Removed GC option for now. GC is now always disabled in the separate process.
 - Removed process isolation options: Every iteration is now benchmarked in a
   separate process independent of PhpBench.

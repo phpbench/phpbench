@@ -1,8 +1,16 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Tests\Unit\Benchmark;
 
-use Prophecy\Argument;
 use PhpBench\Benchmark\BenchmarkBuilder;
 
 class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
@@ -29,7 +37,7 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
     /**
      * It should build representations of benchmarks
      * It should ignore benchmark methods which do not begin wth "bench"
-     * It should pass parameter sets to the subject
+     * It should pass parameter sets to the subject.
      */
     public function testBuild()
     {
@@ -40,7 +48,7 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
             'comment' => '/** @group group_one */',
             'methods' => array(
                 'benchFoobar' => array(
-                    'comment' => '/** @revs 1000 */'
+                    'comment' => '/** @revs 1000 */',
                 ),
                 'benchBarFoo' => array(
                     'comment' => '/** @revs 1000 */',
@@ -48,7 +56,7 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
                 'fooFoo' => array(),
                 'beforeFoo' => array(),
                 'afterFoo' => array(),
-            )
+            ),
         )));
         $this->parser->parseDoc('/** @group group_one */')->willReturn(array(
             'group' => array('group_one'),
@@ -80,7 +88,7 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should return NULL if a class does not implement BenchmarkInterface
+     * It should return NULL if a class does not implement BenchmarkInterface.
      */
     public function testNotImplementing()
     {
@@ -93,7 +101,7 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should return NULL  if the class is abstract
+     * It should return NULL  if the class is abstract.
      */
     public function testAbstract()
     {
@@ -106,9 +114,8 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($result);
     }
 
-
     /**
-     * It should filter subjects
+     * It should filter subjects.
      */
     public function testFilterSubjects()
     {
@@ -124,7 +131,7 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
                 'benchBarFoo' => array(
                     'comment' => '',
                 ),
-            )
+            ),
         )));
         $this->parser->parseDoc('')->willReturn(array(
             'group' => array(),
@@ -144,7 +151,7 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should filter groups
+     * It should filter groups.
      */
     public function testFilterGroups()
     {
@@ -160,7 +167,7 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
                 'benchBarFoo' => array(
                     'comment' => '/** two */',
                 ),
-            )
+            ),
         )));
         $this->parser->parseDoc('')->willReturn(array(
             'group' => array(),
@@ -207,7 +214,7 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
                 'benchBarFoo' => array(
                     'comment' => '',
                 ),
-            )
+            ),
         )));
         $this->parser->parseDoc('')->willReturn(array(
             'group' => array(),
@@ -241,7 +248,7 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
                 'benchBarFoo' => array(
                     'comment' => '',
                 ),
-            )
+            ),
         )));
         $this->parser->parseDoc('')->willReturn(array(
             'group' => array(),

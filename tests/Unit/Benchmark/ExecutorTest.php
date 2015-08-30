@@ -157,7 +157,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should pass parameters to the before subject and after subject methods
+     * It should pass parameters to the before subject and after subject methods.
      */
     public function testParametersBeforeSubject()
     {

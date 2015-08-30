@@ -1,0 +1,41 @@
+{
+    "classes": {
+        "deviation": [
+            [ "number", { "decimal_places": 2 }],
+            [ "printf", { "format": "%s%%" } ],
+            [ "balance" ]
+        ],
+        "time": [
+            [ "number", { "decimal_places": 2 }],
+            [ "printf", { "format": "%s<comment>\u03bcs</comment>" }]
+        ]
+    },
+    "rows": [
+        {
+            "cells": [
+                {
+                    "name": "subject",
+                    "expr": "string(ancestor-or-self::subject/@name)"
+                },
+                {
+                    "name": "elements",
+                    "expr": "string('{{ row.item }}')"
+                },
+                {
+                    "name": "time",
+                    "class": "time",
+                    "expr": "average(.//iteration[@revs='{{ row.item }}']/@time)"
+                },
+                {
+                    "name": "deviation",
+                    "class": "deviation",
+                    "expr": "deviation(min(//cell[@name='time']), number(./cell[@name='time'])) div number(./cell[@name='elements'])",
+                    "pass": 1
+                }
+            ],
+            "with_items": ["10", "100", "1000"],
+            "with_query": "//subject[group/@name='array_keys']"
+        }
+    ],
+    "sort": {"subject": "asc"}
+}

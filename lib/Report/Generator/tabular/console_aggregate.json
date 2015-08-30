@@ -1,0 +1,60 @@
+{
+    "params": {
+        "selector": "//subject/variant"
+    },
+    "includes": [
+        [ "console_classes.json", ["classes"] ]
+    ],
+    "rows": [
+        {
+            "cells": [
+                {
+                    "name": "benchmark",
+                    "expr": "class_name(string(ancestor-or-self::benchmark/@class))"
+                },
+                {
+                    "name": "subject",
+                    "expr": "string(ancestor-or-self::subject/@name)"
+                },
+                {
+                    "name": "group",
+                    "expr": "string(ancestor-or-self::group/@name)"
+                },
+                {
+                    "name": "params",
+                    "expr": "parameters_to_json(ancestor-or-self::variant/parameter)"
+                },
+                {
+                    "name": "revs",
+                    "expr": "number(sum(descendant-or-self::iteration/@revs))"
+                },
+                {
+                    "name": "iters",
+                    "expr": "count(descendant-or-self::iteration)"
+                },
+                {
+                    "name": "time",
+                    "class": "time",
+                    "expr": "number(sum(descendant-or-self::iteration/@time)) div number(sum(descendant-or-self::iteration/@revs))"
+                },
+                {
+                    "name": "memory",
+                    "class": "memory",
+                    "expr": "number(descendant-or-self::iteration/@memory)"
+                },
+                {
+                    "name": "deviation",
+                    "class": "deviation",
+                    "expr": "deviation(min(//cell[@name='time']), number(./cell[@name='time']))",
+                    "pass": 1
+                },
+                {
+                    "name": "stability",
+                    "class": "stability",
+                    "expr": "100 - deviation(min(descendant::iteration/@time), average(descendant::iteration/@time))"
+                }
+            ],
+            "with_query": "{{ param.selector }}"
+        }
+    ]
+}

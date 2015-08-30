@@ -202,6 +202,7 @@ class ReportManager
             }
 
             $generator = $this->getGenerator($reportConfig['generator']);
+            unset($reportConfig['generator']);
             $reportConfig = array_replace_recursive($generator->getDefaultConfig(), $reportConfig);
 
             // not sure if there is a better way to convert the schema array to objects
@@ -220,8 +221,6 @@ class ReportManager
                     $reportName, PHP_EOL . PHP_EOL . PHP_EOL, implode(PHP_EOL, $errorString)
                 ));
             }
-
-            unset($reportConfig['generator']);
 
             if ($generator instanceof OutputAwareInterface) {
                 $generator->setOutput($output);

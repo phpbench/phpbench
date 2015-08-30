@@ -1,0 +1,24 @@
+{
+    "classes": {
+        "stability": [
+            [ "printf", { "format": "%.2f%%" } ]
+        ],
+        "deviation": [
+            [ "number", { "decimal_places": 2 }],
+            [ "printf", { "format": "%s%%" } ],
+            [ "balance" ]
+        ],
+        "memory": [
+            [ "number" ],
+            [ "printf", { "format": "%d<comment>b</comment>" }]
+        ],
+        "time_pr": [
+            [ "number", { "decimal_places": 2 }],
+            [ "printf", { "format": "%s<comment>\u03bcs</comment>" }]
+        ],
+        "time": [
+            [ "number", { "decimal_places": 4 }],
+            [ "printf", { "format": "%s<comment>\u03bcs</comment>" }]
+        ]
+    }
+}

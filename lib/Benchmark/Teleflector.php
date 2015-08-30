@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Benchmark;
 
 class Teleflector
@@ -8,8 +17,7 @@ class Teleflector
 
     public function __construct(
         Telespector $telespector
-    )
-    {
+    ) {
         $this->telespector = $telespector;
     }
 
@@ -19,7 +27,7 @@ class Teleflector
 
         $classInfo = $this->telespector->execute(__DIR__ . '/template/teleflector.template', array(
             'file' => $file,
-            'class' => $classFqn
+            'class' => $classFqn,
         ));
 
         return $classInfo;

@@ -1,0 +1,82 @@
+{
+    "includes": [
+        [ "console_classes.json", ["classes"] ]
+    ],
+    "rows": [
+        {
+            "group": "body",
+            "cells": [
+                {
+                    "name": "benchmark",
+                    "expr": "class_name(string(ancestor-or-self::benchmark/@class))"
+                },
+                {
+                    "name": "subject",
+                    "expr": "string(ancestor-or-self::subject/@name)"
+                },
+                {
+                    "name": "group",
+                    "expr": "string(ancestor-or-self::group/@name)"
+                },
+                {
+                    "name": "params",
+                    "expr": "parameters_to_json(ancestor-or-self::variant/parameter)"
+                },
+                {
+                    "name": "revs",
+                    "expr": "number(descendant-or-self::iteration/@revs)"
+                },
+                {
+                    "name": "iter",
+                    "expr": "count(descendant-or-self::iteration/preceding-sibling::*)"
+                },
+                {
+                    "name": "time",
+                    "class": "time",
+                    "expr": "number(descendant-or-self::iteration/@time) div number(sum(descendant-or-self::iteration/@revs))"
+                },
+                {
+                    "name": "memory",
+                    "class": "memory",
+                    "expr": "number(descendant-or-self::iteration/@memory)"
+                },
+                {
+                    "name": "deviation",
+                    "class": "deviation",
+                    "expr": "deviation(average(//iteration/@time), number(descendant-or-self::iteration/@time))"
+                }
+            ],
+            "with_query": "//iteration"
+        },
+        {
+            "cells": {
+            }
+        },
+        {
+            "cells": [
+                {
+                    "name": "iter",
+                    "literal": "<info>{{ row.item }} >></info>"
+                },
+                {
+                    "name": "{{ cell.col }}",
+                    "expr": "{{ row.item }}(//group[@name=\"body\"]//cell[@name=\"{{ cell.col }}\"])",
+                    "pass": 1,
+                    "class": "{{ cell.class }}",
+                    "with_items": [
+                        {
+                            "col": "memory", 
+                            "class": "memory"
+                        },
+                        {
+                            "col": "time", 
+                            "class": "time"
+                        }
+                    ]
+                }
+            ],
+            "group": "footer",
+            "with_items": [ "average", "sum" ]
+        }
+    ]
+}

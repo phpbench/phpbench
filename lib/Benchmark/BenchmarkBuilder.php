@@ -1,9 +1,15 @@
 <?php
 
-namespace PhpBench\Benchmark;
+/*
+ * This file is part of the PHP Bench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
-use PhpBench\Benchmark\Subject;
-use PhpBench\Benchmark\Teleflector;
+namespace PhpBench\Benchmark;
 
 class BenchmarkBuilder
 {
@@ -13,8 +19,7 @@ class BenchmarkBuilder
     public function __construct(
         Teleflector $teleflector,
         Parser $parser
-    )
-    {
+    ) {
         $this->teleflector = $teleflector;
         $this->parser = $parser;
     }
@@ -25,15 +30,15 @@ class BenchmarkBuilder
         $classInfo = reset($classHierarchy);
 
         if (!in_array('PhpBench\BenchmarkInterface', $classInfo['interfaces'])) {
-            return null;
+            return;
         }
 
         if (true === $classInfo['abstract']) {
-            return null;
+            return;
         }
 
         $benchmark = new Benchmark(
-            $benchmarkPath, 
+            $benchmarkPath,
             $classInfo['class']
         );
 
@@ -55,18 +60,18 @@ class BenchmarkBuilder
     private function buildSubject($benchmark, $methodName, $methodInfo, $classMeta, $subjectFilter, $groupFilter)
     {
         if (0 !== strpos($methodName, 'bench')) {
-            return null;
+            return;
         }
 
         // if we have a subject whitelist, only include subjects in that whitelistd
         if ($subjectFilter && false === in_array($methodName, $subjectFilter)) {
-            return null;
+            return;
         }
 
         $subjectMeta = $this->parser->parseDoc($methodInfo['comment'], $classMeta);
 
         if ($groupFilter && 0 === count(array_intersect($groupFilter, $subjectMeta['group']))) {
-            return null;
+            return;
         }
 
         if (empty($subjectMeta['revs'])) {
