@@ -43,7 +43,7 @@
                 {
                     "name": "deviation",
                     "class": "deviation",
-                    "expr": "deviation(min(//iteration/@time), number(descendant-or-self::iteration/@time))"
+                    "expr": "deviation(average(//iteration/@time), number(descendant-or-self::iteration/@time))"
                 }
             ],
             "with_query": "//iteration"
