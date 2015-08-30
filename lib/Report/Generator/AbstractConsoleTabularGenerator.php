@@ -43,7 +43,7 @@ abstract class AbstractConsoleTabularGenerator implements ReportGeneratorInterfa
     }
 
     /**
-     * Ren.
+     * Render the table
      *
      * @param mixed $tableDom
      * @param mixed $config

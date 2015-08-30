@@ -14,6 +14,9 @@ namespace PhpBench\Report\Generator;
 use PhpBench\Tabular\Tabular;
 use PhpBench\Benchmark\SuiteDocument;
 
+/**
+ * Simple report generator using preconfigured report definitions.
+ */
 class ConsoleTabularGenerator extends AbstractConsoleTabularGenerator
 {
     /**
