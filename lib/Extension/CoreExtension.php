@@ -38,6 +38,7 @@ use PhpBench\Tabular\Tabular;
 use PhpBench\Tabular\TableBuilder;
 use PhpBench\Tabular\Dom\XPathResolver;
 use PhpBench\Report\Generator\ConsoleTabularCustomGenerator;
+use PhpBench\Tabular\Definition\Loader;
 
 class CoreExtension implements ExtensionInterface
 {
@@ -222,8 +223,14 @@ class CoreExtension implements ExtensionInterface
         $container->register('tabular', function (Container $container) {
             return new Tabular(
                 $container->get('tabular.table_builder'),
-                $container->get('json_schema.validator'),
+                $container->get('tabular.definition_loader'),
                 $container->get('tabular.formatter')
+            );
+        });
+
+        $container->register('tabular.definition_loader', function (Container $container) {
+            return new Loader(
+                $container->get('json_schema.validator')
             );
         });
     }

@@ -41,7 +41,7 @@ class ConsoleTabularCustomGeneratorTest extends ConsoleTestCase
      * It should throw an exception if the file is not found.
      *
      * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage not found
+     * @expectedExceptionMessage not exist
      */
     public function testNotFoundFile()
     {

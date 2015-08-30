@@ -1,11 +1,12 @@
 {
     "rows": [
         {
-            "cells": {
-                "one": {
+            "cells": [
+                {
+                    "name": "one",
                     "literal": "This is a test"
                 }
-            }
+            ]
         }
     ]
 }

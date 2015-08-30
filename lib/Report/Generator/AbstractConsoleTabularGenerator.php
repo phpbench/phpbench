@@ -96,19 +96,7 @@ abstract class AbstractConsoleTabularGenerator implements ReportGeneratorInterfa
             $this->output->writeln($document->saveXML());
         }
 
-        if (!file_exists($reportFile)) {
-            throw new \InvalidArgumentException(sprintf(
-                'Report file "%s" not found', $reportFile
-            ));
-        }
-
-        $definition = json_decode(file_get_contents($reportFile), true);
-
-        if (!$definition) {
-            throw new \InvalidArgumentException(sprintf('Could not decode report "%s"', $reportFile));
-        }
-
-        $tableDom = $this->tabular->tabulate($document, $definition, $parameters);
+        $tableDom = $this->tabular->tabulate($document, $reportFile, $parameters);
 
         if ($config['debug']) {
             $tableDom->formatOutput = true;

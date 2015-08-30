@@ -6,29 +6,33 @@
             [ "balance" ]
         ],
         "time": [
-            [ "number", { "decimal_places": 0 }],
+            [ "number", { "decimal_places": 2 }],
             [ "printf", { "format": "%s<comment>\u03bcs</comment>" }]
         ]
     },
     "rows": [
         {
-            "cells": {
-                "subject": {
+            "cells": [
+                {
+                    "name": "subject",
                     "expr": "string(ancestor-or-self::subject/@name)"
                 },
-                "elements": {
+                {
+                    "name": "elements",
                     "expr": "string('{{ row.item }}')"
                 },
-                "time": {
+                {
+                    "name": "time",
                     "class": "time",
                     "expr": "average(.//iteration[@revs='{{ row.item }}']/@time)"
                 },
-                "deviation": {
+                {
+                    "name": "deviation",
                     "class": "deviation",
                     "expr": "deviation(min(//cell[@name='time']), number(./cell[@name='time'])) div number(./cell[@name='elements'])",
                     "pass": 1
                 }
-            },
+            ],
             "with_items": ["10", "100", "1000"],
             "with_query": "//subject[group/@name='array_keys']"
         }

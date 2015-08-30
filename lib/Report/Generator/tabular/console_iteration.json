@@ -1,72 +1,66 @@
 {
-    "classes": {
-        "deviation": [
-            [ "number", { "decimal_places": 2 }],
-            [ "printf", { "format": "%.2f%%" } ],
-            [ "balance" ]
-        ],
-        "memory": [
-            [ "number" ],
-            [ "printf", { "format": "%s<comment>b</comment>" }]
-        ],
-        "time": [
-            [ "number", { "decimal_places": 2 }],
-            [ "printf", { "format": "%s<comment>\u03bcs</comment>" }]
-        ]
-    },
+    "includes": [
+        [ "console_classes.json", ["classes"] ]
+    ],
     "rows": [
         {
-            "cells": {
-                "benchmark": {
+            "group": "body",
+            "cells": [
+                {
+                    "name": "benchmark",
                     "expr": "class_name(string(ancestor-or-self::benchmark/@class))"
                 },
-                "subject": {
+                {
+                    "name": "subject",
                     "expr": "string(ancestor-or-self::subject/@name)"
                 },
-                "group": {
+                {
+                    "name": "group",
                     "expr": "string(ancestor-or-self::group/@name)"
                 },
-                "params": {
+                {
+                    "name": "params",
                     "expr": "parameters_to_json(ancestor-or-self::variant/parameter)"
                 },
-                "revs": {
+                {
+                    "name": "revs",
                     "expr": "number(descendant-or-self::iteration/@revs)"
                 },
-                "iter": {
+                {
+                    "name": "iter",
                     "expr": "count(descendant-or-self::iteration/preceding-sibling::*)"
                 },
-                "time": {
+                {
+                    "name": "time",
                     "class": "time",
                     "expr": "number(descendant-or-self::iteration/@time) div number(sum(descendant-or-self::iteration/@revs))"
                 },
-                "memory": {
+                {
+                    "name": "memory",
                     "class": "memory",
                     "expr": "number(descendant-or-self::iteration/@memory)"
                 },
-                "deviation": {
+                {
+                    "name": "deviation",
                     "class": "deviation",
-                    "expr": "deviation(min(//@time), number(descendant-or-self::iteration/@time))"
+                    "expr": "deviation(min(//iteration/@time), number(descendant-or-self::iteration/@time))"
                 }
-            },
+            ],
             "with_query": "//iteration"
         },
         {
             "cells": {
-                "deviation": {
-                    "literal": "<info><< {{ row.item }}</info>"
+            }
+        },
+        {
+            "cells": [
+                {
+                    "name": "iter",
+                    "literal": "<info>{{ row.item }} >></info>"
                 },
-                "{{ cell.item  }}": {
-                    "literal": "<comment>--</comment>",
-                    "with_items": [
-                        "benchmark",
-                        "subject",
-                        "group",
-                        "params",
-                        "iter"
-                    ]
-                },
-                "{{ cell.col }}": {
-                    "expr": "{{ row.item }}(//group[@name=\"_default\"]//cell[@name=\"{{ cell.col }}\"])",
+                {
+                    "name": "{{ cell.col }}",
+                    "expr": "{{ row.item }}(//group[@name=\"body\"]//cell[@name=\"{{ cell.col }}\"])",
                     "pass": 1,
                     "class": "{{ cell.class }}",
                     "with_items": [
@@ -75,18 +69,14 @@
                             "class": "memory"
                         },
                         {
-                            "col": "revs", 
-                            "class": null
-                        },
-                        {
                             "col": "time", 
                             "class": "time"
                         }
                     ]
                 }
-            },
+            ],
             "group": "footer",
-            "with_items": [ "average" ]
+            "with_items": [ "average", "sum" ]
         }
     ]
 }
