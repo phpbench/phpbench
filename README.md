@@ -7,21 +7,24 @@ PhpBench is a benchmarking framework for PHP.
 
 Features:
 
-- Generate reports
-- Records memory statistics
-- Run iterations in separate processes
-- Support for parameterized benchmarking cases and matrixes
-- Per-project configuration
+- Generate reports.
+- Benchmarks are executed in a separate process, effectively with no overhead.
+- Memory usage statistics in addition to time.
+- Support for parameterized benchmarking cases.
+- Per-project configuration.
 - Dump benchmark results as XML and generate reports later
 - Run one or more (setup) parameterized methods before the benchmark
 - Nice command line interface
-- Add custom report generators
-- Add custom progress loggers
+- Implement your own Report Generators
+- Implement your own Progress Loggers
+- Utilize [Tabular](https://github.com/phpbench/Tabular) for creating custom
+  reports.
 - More
 
-**DISCLAIMER**: This library is in rapid develpomenet and it should not be
-considered stable. The official documentation is a work in progress and this
-documentation could be incorrect.
+**DISCLAIMER**: **2015-09-07**: This library is in rapid develpomenet and it should not be
+considered stable and the below documnetation may not be accurate. However,
+the application should generally retain its current form in the stable
+release.
 
 Why?
 ----
@@ -32,10 +35,11 @@ All of the existing frameworks (as far as I can see) are designed for
 benchmarking algorithms or other relatively quick scenarios. They are the
 equivalent of "unit" tests.
 
-PhpBench is designed also for running larger benchmark suites which may take serveral
+PhpBench is capable of running larger benchmark suites which may take serveral
 minutes to complete, it could be seen as a *system* benchmarking framework,
 and therefore analagous to integration testing. To this end it allows
-benchmarks to be iterated in separate processes and 
+benchmarks results to be saved as a file and reports to be subsequently
+generated from the static data.
 
 Installation
 ------------
@@ -165,6 +169,9 @@ Report generators are the classes which generate reports.
 - `composite`: Report which accepts an array of reports to generate. Use this
   to generate multiple reports at one time.
 - `console_table`: Generate tabular reports in the CLI.
+- `console_table_custom`: Generate a custom report, by specifying a
+  [Tabular](https://github.com/phpbench/Tabular) definition to use to generate
+  the report.
 
 Dumping XML and deferring reports
 ---------------------------------
