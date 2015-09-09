@@ -2,6 +2,7 @@ PhpBench
 ========
 
 [![Build Status](https://travis-ci.org/phpbench/phpbench.svg?branch=master)](https://travis-ci.org/phpbench/phpbench)
+[![StyleCI](https://styleci.io/repos/40823691/shield)](https://styleci.io/repos/34982189)
 
 PhpBench is a benchmarking framework for PHP.
 
