@@ -11,8 +11,8 @@
 
 namespace PhpBench\Tests\Functional\Report\Generator;
 
-use Symfony\Component\Console\Output\BufferedOutput;
 use PhpBench\Benchmark\SuiteDocument;
+use Symfony\Component\Console\Output\BufferedOutput;
 
 abstract class ConsoleTestCase extends GeneratorTestCase
 {

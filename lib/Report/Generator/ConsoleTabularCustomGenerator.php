@@ -11,11 +11,11 @@
 
 namespace PhpBench\Report\Generator;
 
-use PhpBench\Tabular\Tabular;
 use PhpBench\Benchmark\SuiteDocument;
+use PhpBench\Tabular\Tabular;
 
 /**
- * Report generator which uses custom report definitions
+ * Report generator which uses custom report definitions.
  */
 class ConsoleTabularCustomGenerator extends AbstractConsoleTabularGenerator
 {
@@ -28,7 +28,7 @@ class ConsoleTabularCustomGenerator extends AbstractConsoleTabularGenerator
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getSchema()
     {
@@ -68,7 +68,7 @@ class ConsoleTabularCustomGenerator extends AbstractConsoleTabularGenerator
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function generate(SuiteDocument $document, array $config)
     {
@@ -90,7 +90,7 @@ class ConsoleTabularCustomGenerator extends AbstractConsoleTabularGenerator
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getDefaultReports()
     {
@@ -101,6 +101,7 @@ class ConsoleTabularCustomGenerator extends AbstractConsoleTabularGenerator
     /***
      * {@inheritDoc}
      */
+
     public function getDefaultConfig()
     {
         return array(

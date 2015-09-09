@@ -11,8 +11,8 @@
 
 namespace PhpBench\Console\Output;
 
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * This class enables the console output to be indented.
@@ -48,7 +48,7 @@ class OutputIndentDecorator implements OutputInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function write($messages, $newline = false, $type = OutputInterface::OUTPUT_NORMAL)
     {
@@ -70,7 +70,7 @@ class OutputIndentDecorator implements OutputInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function writeln($messages, $type = OutputInterface::OUTPUT_NORMAL)
     {
@@ -78,7 +78,7 @@ class OutputIndentDecorator implements OutputInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setVerbosity($level)
     {
@@ -86,7 +86,7 @@ class OutputIndentDecorator implements OutputInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getVerbosity()
     {
@@ -94,7 +94,7 @@ class OutputIndentDecorator implements OutputInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setDecorated($decorated)
     {
@@ -102,7 +102,7 @@ class OutputIndentDecorator implements OutputInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function isDecorated()
     {
@@ -110,7 +110,7 @@ class OutputIndentDecorator implements OutputInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setFormatter(OutputFormatterInterface $formatter)
     {
@@ -118,7 +118,7 @@ class OutputIndentDecorator implements OutputInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getFormatter()
     {

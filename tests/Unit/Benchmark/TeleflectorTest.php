@@ -11,8 +11,8 @@
 
 namespace PhpBench\Tests\Unit\Benchmark;
 
-use PhpBench\Benchmark\Telespector;
 use PhpBench\Benchmark\Teleflector;
+use PhpBench\Benchmark\Telespector;
 
 class TeleflectorTest extends \PHPUnit_Framework_TestCase
 {

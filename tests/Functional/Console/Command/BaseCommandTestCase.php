@@ -12,8 +12,8 @@
 namespace PhpBench\Tests\Functional\Console\Command;
 
 use PhpBench\Console\Application;
-use Symfony\Component\Console\Tester\CommandTester;
 use PhpBench\Container;
+use Symfony\Component\Console\Tester\CommandTester;
 
 class BaseCommandTestCase extends \PHPUnit_Framework_TestCase
 {

@@ -11,8 +11,8 @@
 
 namespace PhpBench\Tests\Benchmark;
 
-use Symfony\Component\Finder\Finder;
 use PhpBench\Benchmark\CollectionBuilder;
+use Symfony\Component\Finder\Finder;
 
 class CollectionBuilderTest extends \PHPUnit_Framework_TestCase
 {

@@ -11,15 +11,15 @@
 
 namespace PhpBench\Report\Generator;
 
-use PhpBench\Tabular\Tabular;
-use PhpBench\ReportGeneratorInterface;
 use PhpBench\Benchmark\SuiteDocument;
-use Symfony\Component\Console\Helper\Table;
 use PhpBench\Console\OutputAwareInterface;
-use Symfony\Component\Console\Output\OutputInterface;
+use PhpBench\ReportGeneratorInterface;
+use PhpBench\Tabular\Dom\TableDom;
+use PhpBench\Tabular\Tabular;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
-use PhpBench\Tabular\Dom\TableDom;
+use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Output\OutputInterface;
 
 require_once __DIR__ . '/tabular/xpath_functions.php';
 
@@ -34,7 +34,7 @@ abstract class AbstractConsoleTabularGenerator implements ReportGeneratorInterfa
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setOutput(OutputInterface $output)
     {
@@ -43,7 +43,7 @@ abstract class AbstractConsoleTabularGenerator implements ReportGeneratorInterfa
     }
 
     /**
-     * Render the table
+     * Render the table.
      *
      * @param mixed $tableDom
      * @param mixed $config

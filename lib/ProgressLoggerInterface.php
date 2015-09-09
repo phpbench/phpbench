@@ -11,9 +11,9 @@
 
 namespace PhpBench;
 
+use PhpBench\Benchmark\Benchmark;
 use PhpBench\Benchmark\Subject;
 use Symfony\Component\Console\Output\OutputInterface;
-use PhpBench\Benchmark\Benchmark;
 
 interface ProgressLoggerInterface
 {
