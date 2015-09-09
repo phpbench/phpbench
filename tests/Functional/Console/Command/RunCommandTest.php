@@ -11,9 +11,9 @@
 
 namespace PhpBench\Tests\Console\Command;
 
+use BenchmarkBench;
 use PhpBench\Console\Command\RunCommand;
 use PhpBench\Tests\Functional\Console\Command\BaseCommandTestCase;
-use BenchmarkBench;
 
 /**
  * @beforeMethod setUp

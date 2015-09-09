@@ -11,8 +11,8 @@
 
 namespace PhpBench;
 
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use PhpBench\Benchmark\SuiteDocument;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 interface ReportGeneratorInterface
 {
@@ -46,5 +46,6 @@ interface ReportGeneratorInterface
      *
      * @return array
      */
+
     public function getDefaultConfig();
 }

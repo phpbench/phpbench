@@ -11,35 +11,35 @@
 
 namespace PhpBench\Extension;
 
+use PhpBench\Benchmark\BenchmarkBuilder;
+use PhpBench\Benchmark\CollectionBuilder;
+use PhpBench\Benchmark\Executor;
+use PhpBench\Benchmark\Parser;
+use PhpBench\Benchmark\Runner;
+use PhpBench\Benchmark\Teleflector;
+use PhpBench\Benchmark\Telespector;
+use PhpBench\Console\Application;
+use PhpBench\Console\Command\ReportCommand;
+use PhpBench\Console\Command\RunCommand;
 use PhpBench\Container;
+use PhpBench\ExtensionInterface;
 use PhpBench\ProgressLogger\DotsProgressLogger;
 use PhpBench\ProgressLoggerRegistry;
-use PhpBench\Report\ReportManager;
-use PhpBench\Console\Command\RunCommand;
-use PhpBench\Console\Command\ReportCommand;
-use PhpBench\Benchmark\CollectionBuilder;
-use PhpBench\Benchmark\Runner;
-use PhpBench\Console\Application;
-use Symfony\Component\Finder\Finder;
 use PhpBench\Report\Generator\CompositeGenerator;
-use PhpBench\ExtensionInterface;
-use PhpBench\Benchmark\Executor;
-use PhpBench\Benchmark\BenchmarkBuilder;
-use PhpBench\Benchmark\Telespector;
-use PhpBench\Benchmark\Parser;
-use PhpBench\Benchmark\Teleflector;
+use PhpBench\Report\Generator\ConsoleTabularCustomGenerator;
 use PhpBench\Report\Generator\ConsoleTabularGenerator;
-use PhpBench\Tabular\Formatter\Registry\ArrayRegistry;
-use PhpBench\Tabular\Formatter\Format\PrintfFormat;
+use PhpBench\Report\ReportManager;
+use PhpBench\Tabular\Definition\Expander;
+use PhpBench\Tabular\Definition\Loader;
+use PhpBench\Tabular\Dom\XPathResolver;
+use PhpBench\Tabular\Formatter;
 use PhpBench\Tabular\Formatter\Format\BalanceFormat;
 use PhpBench\Tabular\Formatter\Format\NumberFormat;
-use PhpBench\Tabular\Formatter;
-use PhpBench\Tabular\Tabular;
+use PhpBench\Tabular\Formatter\Format\PrintfFormat;
+use PhpBench\Tabular\Formatter\Registry\ArrayRegistry;
 use PhpBench\Tabular\TableBuilder;
-use PhpBench\Tabular\Dom\XPathResolver;
-use PhpBench\Report\Generator\ConsoleTabularCustomGenerator;
-use PhpBench\Tabular\Definition\Loader;
-use PhpBench\Tabular\Definition\Expander;
+use PhpBench\Tabular\Tabular;
+use Symfony\Component\Finder\Finder;
 
 class CoreExtension implements ExtensionInterface
 {

@@ -11,9 +11,9 @@
 
 namespace PhpBench\Benchmark;
 
+use PhpBench\PhpBench;
 use PhpBench\ProgressLogger\NullProgressLogger;
 use PhpBench\ProgressLoggerInterface;
-use PhpBench\PhpBench;
 
 /**
  * The benchmark runner.

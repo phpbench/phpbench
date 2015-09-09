@@ -11,8 +11,8 @@
 
 namespace PhpBench\Tests\Unit\Report;
 
-use PhpBench\Report\ReportManager;
 use PhpBench\Benchmark\SuiteDocument;
+use PhpBench\Report\ReportManager;
 
 class ReportManagerTest extends \PHPUnit_Framework_TestCase
 {

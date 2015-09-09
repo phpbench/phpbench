@@ -13,8 +13,8 @@ namespace PhpBench\ProgressLogger;
 
 use PhpBench\Benchmark\Benchmark;
 use PhpBench\Benchmark\Subject;
-use Symfony\Component\Console\Output\OutputInterface;
 use PhpBench\ProgressLoggerInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class DotsProgressLogger implements ProgressLoggerInterface
 {

@@ -11,11 +11,11 @@
 
 namespace PhpBench\Report;
 
-use PhpBench\ReportGeneratorInterface;
-use Symfony\Component\Console\Output\OutputInterface;
+use JsonSchema\Validator;
 use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\Console\OutputAwareInterface;
-use JsonSchema\Validator;
+use PhpBench\ReportGeneratorInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Manage report configuration and generation.

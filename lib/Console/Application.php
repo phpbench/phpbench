@@ -11,14 +11,14 @@
 
 namespace PhpBench\Console;
 
-use Symfony\Component\Console\Application as BaseApplication;
-use PhpBench\PhpBench;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Formatter\OutputFormatterStyle;
-use Symfony\Component\Console\Output\ConsoleOutput;
 use PhpBench\Console\Output\OutputIndentDecorator;
+use PhpBench\PhpBench;
+use Symfony\Component\Console\Application as BaseApplication;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * PhpBench application.
@@ -36,7 +36,7 @@ class Application extends BaseApplication
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getDefaultInputDefinition()
     {
@@ -49,7 +49,7 @@ class Application extends BaseApplication
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function configureIO(InputInterface $input, OutputInterface $output)
     {
@@ -58,7 +58,7 @@ class Application extends BaseApplication
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function run(InputInterface $input = null, OutputInterface $output = null)
     {

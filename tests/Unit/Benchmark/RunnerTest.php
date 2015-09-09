@@ -11,8 +11,8 @@
 
 namespace PhpBench\Tests\Benchmark;
 
-use PhpBench\Benchmark\Runner;
 use PhpBench\Benchmark\Iteration;
+use PhpBench\Benchmark\Runner;
 use PhpBench\BenchmarkInterface;
 use PhpBench\PhpBench;
 

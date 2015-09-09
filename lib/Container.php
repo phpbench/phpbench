@@ -170,9 +170,9 @@ class Container
      *
      * @param string $name
      *
-     * @return mixed
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return mixed
      */
     public function getParameter($name)
     {
