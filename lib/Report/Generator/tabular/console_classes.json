@@ -10,7 +10,7 @@
         ],
         "memory": [
             [ "number" ],
-            [ "printf", { "format": "%d<comment>b</comment>" }]
+            [ "printf", { "format": "%s<comment>b</comment>" }]
         ],
         "time_pr": [
             [ "number", { "decimal_places": 2 }],
