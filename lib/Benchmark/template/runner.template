@@ -30,9 +30,6 @@ foreach ($beforeMethods as $beforeMethod) {
     $benchmark->$beforeMethod($parameters);
 }
 
-$reflection = new \ReflectionClass(get_class($benchmark));
-$method = $reflection->getMethod($subject);
-
 // run the benchmarks: note that passing arguments to the method slightly increases
 // the calltime, so we explicitly do one thing or the other depending on if parameters
 // are provided.
