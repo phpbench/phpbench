@@ -208,7 +208,19 @@ class ReportManager
             // not sure if there is a better way to convert the schema array to objects
             // as expected by the validator.
             $validationConfig = json_decode(json_encode($reportConfig));
-            $schema = json_decode(json_encode($generator->getSchema()));
+
+            $schema = $generator->getSchema();
+            if (!is_array($schema)) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Generator "%s" must return the schema as an array'
+                , get_class($generator)));
+            }
+
+            $schema = json_decode(json_encode($schema));
+
+            if (empty($schema)) {
+                $schema = new \stdClass;
+            }
             $this->validator->check($validationConfig, $schema);
 
             if (!$this->validator->isValid()) {

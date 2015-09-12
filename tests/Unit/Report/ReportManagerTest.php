@@ -72,7 +72,12 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
         $this->generator->getDefaultConfig()->willReturn(array(
             'params' => array(),
         ));
-        $this->generator->getSchema()->willReturn(new \stdClass());
+        $this->generator->getSchema()->willReturn(array(
+            'type' => 'object',
+            'properties' => array(
+                'params' => array('type' => 'object'),
+            )
+        ));
         $this->generator->generate(
             $this->suiteDocument,
             array(
@@ -166,7 +171,26 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
         $this->reportManager->addReport('test_report', array('generator' => 'test'));
         $this->generator->generate($this->suiteDocument, array())->shouldBeCalled();
         $this->generator->getDefaultConfig()->willReturn(array());
-        $this->generator->getSchema()->willReturn(new \stdClass());
+        $this->generator->getSchema()->willReturn(array());
+        $this->reportManager->generateReports(
+            $this->output->reveal(),
+            $this->suiteDocument,
+            array('test_report')
+        );
+    }
+
+    /**
+     * It should throw an exception if the generator returns a non-array schema
+     *
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage must return the schema as an array
+     */
+    public function testSchemaIsNotAnArray()
+    {
+        $this->reportManager->addGenerator('test', $this->generator->reveal());
+        $this->reportManager->addReport('test_report', array('generator' => 'test'));
+        $this->generator->getDefaultConfig()->willReturn(array());
+        $this->generator->getSchema()->willReturn(new \stdClass);
         $this->reportManager->generateReports(
             $this->output->reveal(),
             $this->suiteDocument,
@@ -183,7 +207,7 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
             ->willImplement('PhpBench\Console\OutputAwareInterface');
         $generator->getDefaultReports()->willReturn(array());
         $generator->getDefaultConfig()->willReturn(array());
-        $generator->getSchema()->willReturn(new \stdClass());
+        $generator->getSchema()->willReturn(array());
 
         $this->reportManager->addGenerator('test', $generator->reveal());
         $this->reportManager->addReport('test_report', array('generator' => 'test'));
@@ -237,7 +261,7 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
     public function testDefaultReportsNotArray()
     {
         $generator = $this->prophesize('PhpBench\ReportGeneratorInterface');
-        $generator->getDefaultReports()->willReturn(new \stdClass());
+        $generator->getDefaultReports()->willReturn(new \stdClass);
         $this->reportManager->addGenerator('test', $generator->reveal());
 
         $this->reportManager->generateReports(
