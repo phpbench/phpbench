@@ -11,12 +11,10 @@
 
 namespace PhpBench\Tests\Unit\Benchmark\teleflector;
 
-use PhpBench\BenchmarkInterface;
-
 /**
  * Some doc comment.
  */
-class ExampleClass implements BenchmarkInterface
+class ExampleClass
 {
     /**
      * Method One Comment.

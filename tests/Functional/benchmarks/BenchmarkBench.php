@@ -9,9 +9,7 @@
  * file that was distributed with this source code.
  */
 
-use PhpBench\BenchmarkInterface;
-
-class BenchmarkBench implements BenchmarkInterface
+class BenchmarkBench
 {
     public function benchRandom()
     {

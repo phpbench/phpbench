@@ -44,7 +44,6 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
         $this->teleflector->getClassInfo('foo.file')->willReturn(array(array(
             'class' => 'MyBenchmark',
             'abstract' => false,
-            'interfaces' => array('PhpBench\BenchmarkInterface'),
             'comment' => '/** @group group_one */',
             'methods' => array(
                 'benchFoobar' => array(
@@ -88,25 +87,11 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should return NULL if a class does not implement BenchmarkInterface.
-     */
-    public function testNotImplementing()
-    {
-        $this->teleflector->getClassInfo('foo.file')->willReturn(array(array(
-            'interfaces' => array('Foobar'),
-        )));
-
-        $result = $this->builder->build('foo.file');
-        $this->assertNull($result);
-    }
-
-    /**
      * It should return NULL  if the class is abstract.
      */
     public function testAbstract()
     {
         $this->teleflector->getClassInfo('foo.file')->willReturn(array(array(
-            'interfaces' => array('PhpBench\BenchmarkInterface'),
             'abstract' => true,
         )));
 
@@ -122,7 +107,6 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
         $this->teleflector->getClassInfo('foo.file')->willReturn(array(array(
             'class' => 'MyBenchmark',
             'abstract' => false,
-            'interfaces' => array('PhpBench\BenchmarkInterface'),
             'comment' => '',
             'methods' => array(
                 'benchFoobar' => array(
@@ -158,7 +142,6 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
         $this->teleflector->getClassInfo('foo.file')->willReturn(array(array(
             'class' => 'MyBenchmark',
             'abstract' => false,
-            'interfaces' => array('PhpBench\BenchmarkInterface'),
             'comment' => '',
             'methods' => array(
                 'benchFoobar' => array(
@@ -205,7 +188,6 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
         $this->teleflector->getClassInfo('foo.file')->willReturn(array(array(
             'class' => 'MyBenchmark',
             'abstract' => false,
-            'interfaces' => array('PhpBench\BenchmarkInterface'),
             'comment' => '',
             'methods' => array(
                 'benchFoobar' => array(
@@ -242,7 +224,6 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
         $this->teleflector->getClassInfo('foo.file')->willReturn(array(array(
             'class' => 'MyBenchmark',
             'abstract' => false,
-            'interfaces' => array('PhpBench\BenchmarkInterface'),
             'comment' => '',
             'methods' => array(
                 'benchBarFoo' => array(

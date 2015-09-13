@@ -13,7 +13,6 @@ namespace PhpBench\Tests\Benchmark;
 
 use PhpBench\Benchmark\Iteration;
 use PhpBench\Benchmark\Runner;
-use PhpBench\BenchmarkInterface;
 use PhpBench\PhpBench;
 
 class RunnerTest extends \PHPUnit_Framework_TestCase
@@ -196,6 +195,6 @@ EOT
     }
 }
 
-class RunnerTestBenchCase implements BenchmarkInterface
+class RunnerTestBenchCase
 {
 }

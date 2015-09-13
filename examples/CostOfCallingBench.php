@@ -9,14 +9,12 @@
  * file that was distributed with this source code.
  */
 
-use PhpBench\BenchmarkInterface;
-
 /**
  * @group cost_of_calling
  * @revs 10000
  * @iterations 10
  */
-class CostOfCalling implements BenchmarkInterface
+class CostOfCalling
 {
     public function benchCallWithoutParams()
     {

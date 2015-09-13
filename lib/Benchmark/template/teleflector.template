@@ -6,10 +6,6 @@ $bootstrap = '{{ bootstrap }}';
 $class = '{{ class }}';
 $file = '{{ file }}';
 
-if (false === interface_exists('PhpBench\BenchmarkInterface')) {
-    interface BenchmarkInterface {}
-}
-
 if ($bootstrap) {
     require_once($bootstrap);
 }
