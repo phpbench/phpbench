@@ -71,7 +71,6 @@ EOT
         $this->addOption('iterations', null, InputOption::VALUE_REQUIRED, 'Override number of iteratios to run in (all) benchmarks');
         $this->addOption('revs', null, InputOption::VALUE_REQUIRED, 'Override number of revs (revolutions) on (all) benchmarks');
         $this->addOption('progress', 'l', InputOption::VALUE_REQUIRED, 'Progress logger to use, one of <comment>dots</comment>, <comment>benchdots</comment>', 'dots');
-        $this->addOption('gc-enable', null, InputOption::VALUE_NONE, 'Enable garbage collection');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
