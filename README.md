@@ -203,14 +203,13 @@ Example
 ````php
 <?php
 use PhpBench\Benchmark\Iteration;
-use PhpBench\BenchmarkInterface;
 
 /**
  * Annotations in the class doc are applied to each method
  *
  * @revs 1000
  */
-class SomeBenchmarkBench implements BenchmarkInterface
+class SomeBenchmarkBench
 {
     public function benchRandom(Iteration $iteration)
     {

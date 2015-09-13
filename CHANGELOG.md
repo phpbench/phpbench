@@ -4,6 +4,7 @@ CHANGELOG
 0.5
 ---
 
+- Removed requirement to implement BenchmarkInterface
 - Configuration changed to JSON format.
 - Dependency Injection Container.
 - Extension API.

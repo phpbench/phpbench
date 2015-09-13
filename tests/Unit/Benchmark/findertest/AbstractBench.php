@@ -9,8 +9,6 @@
  * file that was distributed with this source code.
  */
 
-use PhpBench\BenchmarkInterface;
-
-abstract class AbstractBench implements BenchmarkInterface
+abstract class AbstractBench
 {
 }

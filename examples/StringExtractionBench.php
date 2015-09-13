@@ -9,14 +9,12 @@
  * file that was distributed with this source code.
  */
 
-use PhpBench\BenchmarkInterface;
-
 /**
  * @revs 1000
  * @iterations 8
  * @group string_extraction
  */
-class StringSplitting implements BenchmarkInterface
+class StringSplitting
 {
     const SUBJECT = 'group#foobar';
 

@@ -26,12 +26,11 @@ class BenchmarkBuilder
 
     public function build($benchmarkPath, array $subjectFilter = array(), array $groupFilter = array())
     {
+        // we cannot instantiate the class as it may have non-existing classes.
+        // (benchmarks have their own autoloading environment and are executed
+        // in separate processes).
         $classHierarchy = $this->teleflector->getClassInfo($benchmarkPath);
         $classInfo = reset($classHierarchy);
-
-        if (!in_array('PhpBench\BenchmarkInterface', $classInfo['interfaces'])) {
-            return;
-        }
 
         if (true === $classInfo['abstract']) {
             return;

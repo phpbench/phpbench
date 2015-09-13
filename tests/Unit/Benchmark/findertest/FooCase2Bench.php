@@ -9,8 +9,6 @@
  * file that was distributed with this source code.
  */
 
-use PhpBench\BenchmarkInterface;
-
-class FooTestCase2Bench implements BenchmarkInterface
+class FooTestCase2Bench
 {
 }

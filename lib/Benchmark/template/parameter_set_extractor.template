@@ -10,10 +10,6 @@ if ($bootstrap) {
     require_once($bootstrap);
 }
 
-if (false === interface_exists('PhpBench\BenchmarkInterface')) {
-    interface BenchmarkInterface {}
-}
-
 require_once($file);
 
 $paramProviders = {{ paramProviders }};
