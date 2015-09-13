@@ -78,10 +78,9 @@ class Telespector
 
         if (false === $process->isSuccessful()) {
             throw new \RuntimeException(sprintf(
-                'Could not execute script: %s %s %s',
+                'Could not execute script: %s %s',
                 $process->getErrorOutput(),
-                $process->getOutput(),
-                $script
+                $process->getOutput()
             ));
         }
 
