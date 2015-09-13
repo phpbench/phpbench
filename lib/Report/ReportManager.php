@@ -212,15 +212,18 @@ class ReportManager
             $schema = $generator->getSchema();
             if (!is_array($schema)) {
                 throw new \InvalidArgumentException(sprintf(
-                    'Generator "%s" must return the schema as an array'
-                , get_class($generator)));
+                    'Generator "%s" must return the schema as an array', get_class($generator)));
             }
 
+            // convert the schema to a \stdClass
             $schema = json_decode(json_encode($schema));
 
+            // json_encode encodes an array instead of an object if the schema
+            // is empty. JSON schema requires an object.
             if (empty($schema)) {
-                $schema = new \stdClass;
+                $schema = new \stdClass();
             }
+
             $this->validator->check($validationConfig, $schema);
 
             if (!$this->validator->isValid()) {
