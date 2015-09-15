@@ -218,7 +218,7 @@ class RunCommandTest extends BaseCommandTestCase
     public function testProgressLogger()
     {
         $tester = $this->runCommand('run', array(
-            '--progress' => 'benchdots',
+            '--progress' => 'classdots',
             'path' => __DIR__ . '/../../benchmarks/BenchmarkBench.php',
         ));
         $display = $tester->getDisplay();

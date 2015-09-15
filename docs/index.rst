@@ -14,8 +14,12 @@ Contents:
    :maxdepth: 2
 
    introduction
+   installing
    quick-start
    writing-benchmarks
+   benchmark-runner
+   reporting
+   configuration
 
 Indices and tables
 ==================
