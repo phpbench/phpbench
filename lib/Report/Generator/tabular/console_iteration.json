@@ -76,7 +76,20 @@
                 }
             ],
             "group": "footer",
-            "with_items": [ "average", "sum" ]
+            "with_items": [ "average" ]
+        },
+        {
+            "cells": [
+                {
+                    "name": "iter",
+                    "literal": "<info>stability >></info>"
+                },
+                {
+                    "class": "stability",
+                    "name": "time",
+                    "expr": "100 - deviation(min(//iteration/@time), max(//iteration/@time))"
+                }
+            ]
         }
     ]
 }
