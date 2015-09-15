@@ -50,8 +50,8 @@ of times the benchamark is executed consecutively within a single time
 measurement.
 
 We can arrive at a more accurate measurement by determining the average time
-from multiple revolutions (i.e. *time / revolutions*) than by a single time
-reading. In other words, more revolutions means more precision.
+from multiple revolutions (i.e. *time / revolutions*) than we could with a
+single revolution. In other words, more revolutions means more precision.
 
 Revolutions can be specified using the ``@revs`` annotation:
 
@@ -166,7 +166,7 @@ Parameter sets can be provided to benchmark subjects. For example:
         }
     }
 
-The MD5 hash will now be benchmarked with each parameter set.
+The ``benchMd5`` subject will now be benchmarked with each parameter set.
 
 Multiple parameter providers can be used, in which case the data sets will be
 combined into a `cartesian product`_ - all possible combinations of the

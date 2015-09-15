@@ -94,8 +94,5 @@ specified using the ``--progress`` option:
 Configuration File
 ------------------
 
-Unless a configuration file is specified using the ``--config`` option,
-PHPBench will look in the current working directory for a file named, firstly
-``phpbench.json.dist`` and then ``phpbench.json``.
-
-See the :doc:`configuration` chapter for more information.
+A custom configuration file can be specified with the ``--config`` option.  See
+the :doc:`configuration` chapter for more information on configuration.

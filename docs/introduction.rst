@@ -28,7 +28,7 @@ scenarios independently of the application context, and to run these scenarios
 multiple times in order to obtain a degree of *confidence* about the stability
 of the results.
 
-As a tool it is highly analogous to the test framework `PHPUnit`_, but instead of *tests* we run
+As a tool it is analogous to the test framework `PHPUnit`_, but instead of *tests* we run
 *benchmarks* and generate reports.
 
 Are There Other Benchmarking Frameworks?
