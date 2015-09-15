@@ -2,19 +2,19 @@ Introduction
 ============
 
 PHPBench is a benchmark runner for PHP. It enables you to write standard
-benchmarks for your application and helps you to make smart decisions based on
-*comparative* benchmark results.
+benchmarks for your application and classes and helps you to make smart
+decisions based on *comparative* results.
 
 Features at a glance:
 
+- **Revolutions and Iterations**: Spin and repeat.
 - **Process Isolation**: Benchmarks are run in separate processes with no
   significant overhead from the runner.
 - **Reporting**: Powerful and extensible reports thanks to the `Tabular`_ library.
-- **Revolutions and Iterations**: Spin and repeat.
-- **Memory Usage**: Keep an eye on the amount of memory used by benchmarking
-  subjects.
 - **Deferred Reporting**: Dump benchmarking results to an XML file and report
   on them later.
+- **Memory Usage**: Keep an eye on the amount of memory used by benchmarking
+  subjects.
 
 Why PHPBench?
 -------------
@@ -23,20 +23,23 @@ Performance can be monitored and measured in a number of ways: profiling (via.
 `XDebug`_ or `Blackfire`_), injecting timing classes (e.g. `Symfony Stopwatch`_, `Hoa
 Bench`_) or with server tools such as `NewRelic_`.
 
-All of these methods can be useful, and some, essential, but they are not
-ideally suited to comparative benchmarking or algorithm optimisation.
-
-What PHPBench offers is the ability to benchmark *parts* of your
-code and obtain a degree of *confidence* about the results by running multiple
-iterations of the benchmark to determine if the result is stable.
+PHPBench differs from these tools in that it allows you to benchmark explicit
+scenarios independently of the application context, and to run these scenarios
+multiple times in order to obtain a degree of *confidence* about the stability
+of the results.
 
 As a tool it is highly analogous to the test framework `PHPUnit_`, but instead of *tests* we run
 *benchmarks* and generate reports.
 
-I Don't Like PHPBench
----------------------
+Are There Other Benchmarking Frameworks?
+----------------------------------------
 
-Use `Athletic`_ .
+You can try `Athletic`_ .
 
+.. _Symfony Stopwatch: http://symfony.com/doc/current/components/stopwatch.html
+.. _Tabular: https://github.com/phpbench/tabular
+.. _XDebug: http://xdebug.org
+.. _Blackfire: https://blackfire.io/
+.. _NewRelic: http://newrelic.com
 .. _Athletic: https://github.com/polyfractal/athletic
 .. _HOA Bench: http://hoa-project.net/En/Literature/Hack/Bench.html

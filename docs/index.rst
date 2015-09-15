@@ -13,6 +13,10 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   introduction
+   quick-start
+   writing-benchmarks
+
 Indices and tables
 ==================
 
