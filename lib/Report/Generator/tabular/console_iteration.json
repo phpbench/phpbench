@@ -56,6 +56,19 @@
             "cells": [
                 {
                     "name": "iter",
+                    "literal": "<info>stability >></info>"
+                },
+                {
+                    "class": "stability",
+                    "name": "time",
+                    "expr": "100 - deviation(min(//iteration/@time), max(//iteration/@time))"
+                }
+            ]
+        },
+        {
+            "cells": [
+                {
+                    "name": "iter",
                     "literal": "<info>{{ row.item }} >></info>"
                 },
                 {
