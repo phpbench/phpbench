@@ -29,8 +29,10 @@ You may install `PHPBench globally`_ using composer:
 
     $ composer global require phpbench/phpbench @dev
 
-You will need to add Composer's global ``bin`` directory to your systems
-``PATH`` variable (on linux). See the above link.
+.. note::
+
+    You will need to add Composer's global ``bin`` directory to your systems
+    ``PATH`` variable (on linux). See the above link.
 
 You may now run PHPBench simply as:
 

@@ -40,6 +40,8 @@ And it can be executed as follows:
 PHPBench reads docblock annotations in the benchmark class. Annotations can be
 placed in the class docblock, or on individual methods docblocks.
 
+.. _revolutions:
+
 Improving Precision: Revolutions
 --------------------------------
 
@@ -67,7 +69,9 @@ Revolutions can be specified using the ``@revs`` annotation:
         // ...
     }
 
-Revolutions can also be overridden from the command line.
+Revolutions can also be overridden from the :ref:`command line <overriding>`.
+
+.. _iterations:
 
 Improving Stability: Iterations
 -------------------------------
@@ -99,7 +103,7 @@ Iterations can be specified using the ``@iterations`` annotation:
         // ...
     }
 
-Iterations can also be overridden from the command line.
+Iterations can also be overridden from the :ref:`command line <overriding>`.
 
 Estabilishing State: Before and After
 -------------------------------------

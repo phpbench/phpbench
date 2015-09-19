@@ -37,6 +37,18 @@ Groups can be specified using the ``--group`` option:
     Both ``--subject`` and ``--group`` options may be specified multiple
     times.
 
+.. _overriding:
+
+Overriding
+----------
+
+The benchmark runner can also override the number of :ref:`revolutions` and
+:ref:`iterations` which will be executed:
+
+.. code-block:: bash
+
+    $ phpbench run /path/to/HashBench.php --iterations=10 --revs=1000
+
 Generating Reports
 ------------------
 
