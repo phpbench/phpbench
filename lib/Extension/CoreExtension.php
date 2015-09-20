@@ -114,7 +114,7 @@ class CoreExtension implements ExtensionInterface
             'path' => null,
             'reports' => array(),
             'config_path' => null,
-            'progress_logger_name' => 'benchdots',
+            'progress_logger_name' => 'dots',
         ));
     }
 
@@ -168,9 +168,9 @@ class CoreExtension implements ExtensionInterface
             return new DotsProgressLogger();
         }, array('progress_logger' => array('name' => 'dots')));
 
-        $container->register('progress_logger.benchdots', function (Container $container) {
+        $container->register('progress_logger.classdots', function (Container $container) {
             return new DotsProgressLogger(true);
-        }, array('progress_logger' => array('name' => 'benchdots')));
+        }, array('progress_logger' => array('name' => 'classdots')));
     }
 
     private function registerReportGenerators(Container $container)

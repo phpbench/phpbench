@@ -1,0 +1,259 @@
+Quick Start
+===========
+
+This tutorial will walk you through creating a typical, simple, project that
+uses PHPBench as a dependency. You may also install PHPBench globally, see the
+:doc:`installing` chapter for more information.
+
+You may skip various sections according to your needs and use this as a general
+reference.
+
+Create your project
+-------------------
+
+Create a directory for the tutorial:
+
+.. code-block:: bash
+
+    $ mkdir phpbench-tutorial
+
+And create the following Composer_ file within it:
+
+.. code-block:: javascript
+
+    {
+        "name": "acme/phpbench-test",
+        "require-dev": {
+            "phpbench/phpbench": "^1.0@dev"
+        },
+        "autoload": {
+            "psr-4": {
+                "Acme\\": "lib"
+            }
+        }
+    }
+
+Now perform a Composer install:
+
+.. code-block:: bash
+
+    $ composer install
+
+.. note::
+
+    You may also install PHPBench globally, see the :doc:`installing`
+    chapter for more information.
+
+PHPBench should now be installed. Now create two directories, ``benchmarks``
+and ``lib`` which we will need futher on:
+
+.. code-block:: bash
+
+    $ mkdir benchmarks
+    $ mkdir lib
+
+PHPBench configuration
+----------------------
+
+In order for PHPBench to be able to autoload files from your library, you
+should specify the path to your bootstrap file (i.e. ``vendor/autoload.php``).
+This can be done in the PHPBench :doc:`configuration <configuration>`.
+
+Create the file ``phpbench.json`` in the projects root directory:
+
+.. code-block:: javascript
+
+    {
+        "bootstrap": "vendor/autoload.php"
+    }
+
+.. note::
+
+    PHPBench does not **require** a bootstrap (or a configuration file for
+    that matter). You may ommit it if you do not need autoloading, or you want
+    to include files manually.
+
+Creating and running a benchmark
+--------------------------------
+
+You will need some code to benchmark, create a simple class in ``lib`` which
+consumes *time itself*:
+
+.. code-block:: php
+
+    <?php
+
+    namespace Acme;
+
+    class TimeConsumer
+    {
+        public function consume()
+        {
+            usleep(100);
+        }
+    }
+
+
+In order to benchmark your code you will need to execute that code within
+a method of a benchmarking class. Benchmarking classes MUST have the ``Bench``
+suffix and each benchmarking method must be prefixed with ``bench``. 
+
+Create the following class in the ``benchmarks`` direcctory:
+
+.. code-block:: php
+
+    <?php
+
+    use Acme\TimeConsumer;
+
+    class TimeConsumerBench
+    {
+        public function benchConsume()
+        {
+           $consumer = new TimeConsumer();
+           $consumer->consume();
+        }
+    }
+
+Now you can execute the benchmark as follows:
+
+.. code-block:: bash
+
+    $ ./vendor/bin/phpbench run benchmarks/TimeConsumerBench.php --report=default
+
+And you should see some output similar to the following:
+
+.. code-block:: bash
+
+    PhpBench 0.5. Running benchmarks.
+    Using configuration file: /home/daniel/www/phpbench-tutorial/phpbench.json
+
+    .
+    Done (1 subjects, 1 iterations) in 0.22s
+
+    +-------------------+--------------+-------+--------+------+--------------+----------+--------+-----------+
+    | benchmark         | subject      | group | params | revs | iter         | time     | memory | deviation |
+    +-------------------+--------------+-------+--------+------+--------------+----------+--------+-----------+
+    | TimeConsumerBench | benchConsume |       | []     | 1    | 0            | 226.00μs | 3,416b | 0.00%     |
+    |                   |              |       |        |      |              |          |        |           |
+    |                   |              |       |        |      | stability >> | 100.00%  |        |           |
+    |                   |              |       |        |      | average >>   | 226.00μs | 3,416b |           |
+    +-------------------+--------------+-------+--------+------+--------------+----------+--------+-----------+
+
+You may have guessed that the code was only executed once (as indicated by the
+``revs`` column). To achieve a better measurement we should increase the
+number of times that the code is consecutively executed.  
+
+.. code-block:: php
+
+    <?php
+
+    // ...
+
+    class TimeConsumerBench implements Benchmark
+    {
+        /**
+         * @revs 1000
+         */
+        public function benchConsume()
+        {
+            // ...
+        }
+    }
+
+Run the benchmark again and you should notice that the report states that 1000
+revolutions were performed. :ref:`Revolutions <revolutions>` in PHPBench
+represent the number of times that the code is executed consecutively within a
+single measurement.
+
+Currently we only execute the benchmark subject a single time, to verify the
+result you should increase the number of :ref:`iterations <iterations>` using
+the ``@iterations`` annotation (either as a replacement or in addition to
+``@revs``:
+
+.. code-block:: php
+
+    <?php
+
+    // ...
+
+    class TimeConsumerBench implements Benchmark
+    {
+        /**
+         * @revs 1000
+           @iterations 5
+         */
+        public function benchConsume()
+        {
+            // ...
+        }
+    }
+
+Now when you run the report you should see that it contains 5 rows. One
+measurement for each iteration, and each iteration executed the code 1000
+times.
+
+.. note::
+
+    You can override the number of iterations and revolutions on the CLI using
+    the ``--iterations`` and ``--revs`` options.
+
+At this point it would be better for you to use the ``aggregate`` report
+rather than ``default``:
+
+.. code-block:: bash
+
+    $ php vendor/bin/phpbench run benchmarks/TimeConsumerBench.php --report=aggregate
+
+PHPBench also allows you to customize reports on the command line, try the
+following:
+
+.. code-block:: bash
+
+    $ ./vendor/bin/phpbench run benchmarks/TimeConsumerBench.php --report='{"extends": "default", "exclude": ["benchmark", "subject"]}'
+
+Above we configure a new report which extends the ``default`` report that we
+have already used, but we exclude the ``benchmark`` and ``subject`` columns.
+A full list of all the options for the default reports can be found in the
+:doc:`report_generators` chapter.
+
+Now to finish off, lets add the path and new report to the configuration file:
+
+.. code-block:: javascript
+
+    {
+        ...
+        "path": "benchmarks",
+        "reports": {
+            "consumation_of_time": {
+                "extends": "default",
+                "title": "The Consumation of Time",
+                "description": "Benchmark how long it takes to consume time",
+                "exclude": ["benchmark", "subject", "group", "params", "revs"]
+            }
+        }
+    }
+
+.. warning::
+
+    JSON files are very strict - be sure not to have commas after the final
+    elements in arrays or objects!
+
+Above you tell PHPBench where the benchmarks are located and you define a new
+report, ``consumation_of_time`` with a title, description and sort order.
+
+We can now run the new report:
+
+.. code-block:: bash
+
+    $ php vendor/bin/phpbench run --report=consumation_of_time
+
+.. note::
+
+    Note that we did not specify the path to the benchmark file, by default all
+    benchmarks under the given or configured path will be executed.
+
+This quick start demonstrated some of the features of PHPBench, but there is
+more to discover everything can be found in this manual. Happy benchmarking.
+
+.. _composer: http://getcomposer.org
