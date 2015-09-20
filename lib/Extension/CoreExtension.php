@@ -193,11 +193,6 @@ class CoreExtension implements ExtensionInterface
     {
         $container->register('tabular.xpath_resolver', function () {
             $resolver = new XPathResolver();
-            $resolver->registerFunction('average', 'PhpBench\Report\Dom\functions\avg');
-            $resolver->registerFunction('deviation', 'PhpBench\Report\Dom\functions\deviation');
-            $resolver->registerFunction('min', 'PhpBench\Report\Dom\functions\min');
-            $resolver->registerFunction('max', 'PhpBench\Report\Dom\functions\max');
-            $resolver->registerFunction('median', 'PhpBench\Report\Dom\functions\median');
             $resolver->registerFunction('parameters_to_json', 'PhpBench\Report\Dom\functions\parameters_to_json');
             $resolver->registerFunction('class_name', 'PhpBench\Report\Dom\functions\class_name');
 
