@@ -42,4 +42,17 @@ class CollectionBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $benchmarks);
         $this->assertContainsOnlyInstancesOf('PhpBench\Benchmark\Benchmark', $benchmarks);
     }
+
+    /**
+     * It should run a specified benchmark
+     * It should not run other benchmarks
+     */
+    public function testSpecificBenchmark()
+    {
+        $this->benchmarkBuilder->build(__DIR__ . '/findertestnested/MyBench.php', array(), array())->willReturn($this->benchmark1->reveal());
+        $collection = $this->finder->buildCollection(__DIR__ . '/findertestnested/MyBench.php');
+        $benchmarks = $collection->getBenchmarks();
+
+        $this->assertCount(1, $benchmarks);
+    }
 }
