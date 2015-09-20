@@ -18,7 +18,8 @@ Contents:
    quick-start
    writing-benchmarks
    benchmark-runner
-   reporting
+   reports
+   report_generators
    configuration
 
 Indices and tables

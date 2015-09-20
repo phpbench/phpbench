@@ -1,19 +1,19 @@
-Reporting
-=========
+Report Generators
+=================
 
-PHPBench supports report generation. Reports are generated using "report
-generators", and reports themselves are just configurations for the report
-generators.
-
-When this documentation talks about *reports* we are referring to the report
-configuration, not the generators.
+PHPBench generates reports using report generators. These are classes which
+implement the ``PhpBench\ReportGeneratorInterface``.
 
 This chapter will describe the default report generators.
+
+.. _generator_console_table:
 
 ``console_table``
 -----------------
 
 Generates a tabular report directly on the console.
+
+Class: ``PhpBench\Report\Generator\ConsoleTabularGenerator``.
 
 Options:
 
@@ -28,11 +28,15 @@ The ``selector`` option is important and can be used to target specific
 results, for example ``//subject[group/@name="my_group"]`` would only report
 subjects in the group ``my_group``.
 
+.. _generator_console_table_custom:
+
 ``console_table_custom``
 ------------------------
 
 Also generates a tabular console report but allows you to specify a `Tabular
 definition`_ file in order to have complete control over the generated report.
+
+Class: ``PhpBench\Report\Generator\ConsoleTabularCustomGenerator``.
 
 Options:
 
@@ -46,6 +50,8 @@ Options:
 -------------
 
 This report generates multiple reports.
+
+Class: ``PhpBench\Report\Generator\CompositeGenerator``.
 
 Options:
 

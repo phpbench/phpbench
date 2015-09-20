@@ -35,7 +35,17 @@ And it can be executed as follows:
 
 .. code-block:: bash
 
-    // EXAMPLE HERE
+    $ phpbench run HashBench.php
+    PhpBench 0.5. Running benchmarks.
+    Using configuration file: /home/daniel/www/phpbench-tutorial/phpbench.json
+
+    ..
+    Done (2 subjects, 2 iterations) in 0.07s
+
+.. note::
+
+    The above command does not generate a report, add ``--report=default`` to
+    view something useful.
 
 PHPBench reads docblock annotations in the benchmark class. Annotations can be
 placed in the class docblock, or on individual methods docblocks.
@@ -142,6 +152,8 @@ Multiple before and after methods can be specified.
     If before and after methods are used when the ``@paramProvider``
     annotations are used, then they will also be passed the parameters.
 
+.. _parameters:
+
 Parameterized Benchmarks
 ------------------------
 
@@ -225,6 +237,8 @@ Will result in the following parameter benchmark scenarios:
 
     // #3
     array('string' => 'Goodbye Cruel World!', 'algorithm' => 'sha1');
+
+.. _groups:
 
 Groups
 ------

@@ -1,8 +1,12 @@
 Installing
 ==========
 
-PHPBench can be installed either as a standalone application, or as a
-dependency for your project.
+PHPBench can be installed either as dependency for your project or as a global
+package.
+
+.. note::
+
+    In the future there may be a PHAR version.
 
 Composer Install
 ----------------

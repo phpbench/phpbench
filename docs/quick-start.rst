@@ -57,7 +57,7 @@ PHPBench configuration
 
 In order for PHPBench to be able to autoload files from your library, you
 should specify the path to your bootstrap file (i.e. ``vendor/autoload.php``).
-This can be done in the PHPBench configuration.
+This can be done in the PHPBench :doc:`configuration <configuration>`.
 
 Create the file ``phpbench.json`` in the projects root directory:
 
@@ -131,18 +131,18 @@ And you should see some output similar to the following:
     .
     Done (1 subjects, 1 iterations) in 0.22s
 
-    +-------------------+--------------+-------+--------+------+--------------+------------+--------+-----------+
-    | benchmark         | subject      | group | params | revs | iter         | time       | memory | deviation |
-    +-------------------+--------------+-------+--------+------+--------------+------------+--------+-----------+
-    | TimeConsumerBench | benchConsume |       | []     | 1000 | 0            | 163.0610μs | 3,432b | 0.00%     |
-    |                   |              |       |        |      |              |            |        |           |
-    |                   |              |       |        |      | stability >> | 100.00%    |        |           |
-    |                   |              |       |        |      | average >>   | 163.0610μs | 3,432b |           |
-    +-------------------+--------------+-------+--------+------+--------------+------------+--------+-----------+
+    +-------------------+--------------+-------+--------+------+--------------+----------+--------+-----------+
+    | benchmark         | subject      | group | params | revs | iter         | time     | memory | deviation |
+    +-------------------+--------------+-------+--------+------+--------------+----------+--------+-----------+
+    | TimeConsumerBench | benchConsume |       | []     | 1    | 0            | 226.00μs | 3,416b | 0.00%     |
+    |                   |              |       |        |      |              |          |        |           |
+    |                   |              |       |        |      | stability >> | 100.00%  |        |           |
+    |                   |              |       |        |      | average >>   | 226.00μs | 3,416b |           |
+    +-------------------+--------------+-------+--------+------+--------------+----------+--------+-----------+
 
-You may have guessed that the code was only executed once. To achieve a better
-measurement we should increase the amount of times that the code is executed.
-So lets add the ``@revs`` annotation:
+You may have guessed that the code was only executed once (as indicated by the
+``revs`` column). To achieve a better measurement we should increase the
+number of times that the code is consecutively executed.  
 
 .. code-block:: php
 

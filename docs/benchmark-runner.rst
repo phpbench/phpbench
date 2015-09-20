@@ -42,8 +42,9 @@ Groups can be specified using the ``--group`` option:
 Overriding
 ----------
 
-The benchmark runner can also override the number of :ref:`revolutions` and
-:ref:`iterations` which will be executed:
+The benchmark runner can also override the number of :ref:`revolutions
+<revolutions>` and
+:ref:`iterations <iterations>` which will be executed:
 
 .. code-block:: bash
 
@@ -70,7 +71,8 @@ JSON encoded string with the generator options instead of the report name:
 
     $ phpbench run /path/to/HashBench.php --report='{"extends": "default", "exclude": ["benchmark", "subject"]}'
 
-See the :doc:`reporting` chapter for more information on reports.
+See the :doc:`report_generators` chapter for more information on how you can
+configure reports.
 
 The ``--report`` option can be specified multiple times.
 
@@ -101,7 +103,7 @@ specified using the ``--progress`` option:
 
 .. code-block:: bash
 
-    $ phpbench run /path/to/HashBench.php --progress=classdots
+    $ phpbench run /path/to/HashBench.php --progress=benchdots
 
 Configuration File
 ------------------

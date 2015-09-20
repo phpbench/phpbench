@@ -78,4 +78,10 @@ List of report definitions:
         }
     }
 
-See the :doc:`reporting` chapter for more information.
+The key is the name of the report that you are defining, and the object
+properties are the options for the report. Eeach report must specify either
+the ``generator`` or ``extends`` key, specifying the :doc:`generator
+<report_generators>` or report to extend respectively.
+
+See the :doc:`report_generators` chapter for more information on report
+configuration.
