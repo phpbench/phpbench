@@ -44,8 +44,8 @@ class CollectionBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should run a specified benchmark
-     * It should not run other benchmarks
+     * It should run a specified benchmark.
+     * It should not run other benchmarks.
      */
     public function testSpecificBenchmark()
     {
