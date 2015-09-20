@@ -43,7 +43,9 @@ class CollectionBuilder
             $this->finder->in($path)
                 ->name('*Bench.php');
         } else {
+            // the path is already a file, just restrict the finder to that.
             $this->finder->in(dirname($path))
+                ->depth(0)
                 ->name(basename($path));
         }
 
