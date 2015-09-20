@@ -215,7 +215,7 @@ following:
 Above we configure a new report which extends the ``default`` report that we
 have already used, but we exclude the ``benchmark`` and ``subject`` columns.
 A full list of all the options for the default reports can be found in the
-:doc:`reporting` chapter.
+:doc:`report_generators` chapter.
 
 Now to finish off, lets add the path and new report to the configuration file:
 

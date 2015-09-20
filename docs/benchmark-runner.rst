@@ -103,7 +103,7 @@ specified using the ``--progress`` option:
 
 .. code-block:: bash
 
-    $ phpbench run /path/to/HashBench.php --progress=benchdots
+    $ phpbench run /path/to/HashBench.php --progress=classdots
 
 Configuration File
 ------------------

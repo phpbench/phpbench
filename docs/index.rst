@@ -6,7 +6,7 @@
 Welcome to PHPBench's documentation!
 ====================================
 
-PHPBench is a benchmarking framework for PHP.
+PHPBench is a benchmarking framework for PHP. Find it on Github_.
 
 Contents:
 
@@ -29,3 +29,5 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
+
+.. _Github: https://github.com/phpbench/phpbench
