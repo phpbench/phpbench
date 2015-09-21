@@ -6,21 +6,21 @@
             "extends": "aggregate",
             "title": "Cost of Setting",
             "description": "Comparison of different ways of setting properties",
-            "selector": "//subject[group/@name='cost_of_setting']//variant",
+            "groups": ["cost_of_setting"],
             "exclude": ["benchmark"]
         },
         "cost_of_instantiation": {
             "extends": "aggregate",
             "title": "Cost of Instantiation",
             "description": "Compares instantiating a class directly against instantiating via. Reflection",
-            "selector": "//subject[group/@name='cost_of_instantiation']//variant",
+            "groups": ["cost_of_instantiation"],
             "exclude": ["benchmark", "group", "params"]
         },
         "cost_of_calling": {
             "extends": "aggregate",
             "title": "Cost of calling",
             "description": "Compare calling methods with and without arguments",
-            "selector": "//subject[group/@name='cost_of_calling']//variant",
+            "groups": ["cost_of_calling"],
             "exclude": ["benchmark", "group", "params"]
         },
         "array_keys": {
