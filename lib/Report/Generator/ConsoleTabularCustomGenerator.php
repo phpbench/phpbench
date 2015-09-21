@@ -23,7 +23,7 @@ class ConsoleTabularCustomGenerator extends AbstractConsoleTabularGenerator
 
     public function __construct(Tabular $tabular, $configPath)
     {
-        $this->tabular = $tabular;
+        parent::__construct($tabular);
         $this->configPath = $configPath;
     }
 

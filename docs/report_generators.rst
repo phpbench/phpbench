@@ -22,6 +22,8 @@ Options:
 - **aggregate**: *(boolean)* Aggregate iterations into a single row.
 - **exclude**: *(array)* List of columns to exclude.
 - **debug**: *(boolean)* Show XML.
+- **sort**: *(assoc array)* Associative array of columns to directions for
+  sorting, e.g. `{"subject": "asc", "time": "asc"}`.
 - **selector**: *(string)* XPath selector to use when selecting the benchmark results.
 
 The ``selector`` option is important and can be used to target specific

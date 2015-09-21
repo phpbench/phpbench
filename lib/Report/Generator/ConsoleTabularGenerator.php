@@ -12,6 +12,7 @@
 namespace PhpBench\Report\Generator;
 
 use PhpBench\Benchmark\SuiteDocument;
+use PhpBench\Tabular\Definition\Loader;
 use PhpBench\Tabular\Tabular;
 
 /**
@@ -19,6 +20,21 @@ use PhpBench\Tabular\Tabular;
  */
 class ConsoleTabularGenerator extends AbstractConsoleTabularGenerator
 {
+    /**
+     * @var Loader
+     */
+    private $definitionLoader;
+
+    /**
+     * @param Tabular $tabular
+     * @param Loader $loader
+     */
+    public function __construct(Tabular $tabular, Loader $loader)
+    {
+        parent::__construct($tabular);
+        $this->definitionLoader = $loader;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -49,6 +65,12 @@ class ConsoleTabularGenerator extends AbstractConsoleTabularGenerator
                 'debug' => array(
                     'type' => 'boolean',
                 ),
+                'sort' => array(
+                    'oneOf' => array(
+                        array('type' => 'object'),
+                        array('type' => 'array'),
+                    ),
+                ),
                 'selector' => array(
                     'oneOf' => array(
                         array('type' => 'string'),
@@ -71,13 +93,23 @@ class ConsoleTabularGenerator extends AbstractConsoleTabularGenerator
         }
 
         $reportFile = __DIR__ . '/tabular/' . $report . '.json';
+        $definition = $this->definitionLoader->load($reportFile);
+
+        if ($config['sort']) {
+            $sort = array();
+            // we need to prefix the group name
+            foreach ($config['sort'] as $colSpec => $direction) {
+                $sort['body#' . $colSpec] = $direction;
+            }
+            $definition['sort'] = $sort;
+        }
 
         $parameters = array();
         if ($config['selector']) {
             $parameters['selector'] = $config['selector'];
         }
 
-        $this->doGenerate($reportFile, $document, $config, $parameters);
+        $this->doGenerate($definition, $document, $config, $parameters);
     }
 
     /**
@@ -108,6 +140,7 @@ class ConsoleTabularGenerator extends AbstractConsoleTabularGenerator
             'exclude' => array(),
             'aggregate' => false,
             'selector' => null,
+            'sort' => array(),
         );
     }
 }

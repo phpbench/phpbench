@@ -176,7 +176,10 @@ class CoreExtension implements ExtensionInterface
     private function registerReportGenerators(Container $container)
     {
         $container->register('report_generator.tabular', function (Container $container) {
-            return new ConsoleTabularGenerator($container->get('tabular'));
+            return new ConsoleTabularGenerator(
+                $container->get('tabular'),
+                $container->get('tabular.definition_loader')
+            );
         }, array('report_generator' => array('name' => 'console_table')));
         $container->register('report_generator.tabular_custom', function (Container $container) {
             return new ConsoleTabularCustomGenerator(

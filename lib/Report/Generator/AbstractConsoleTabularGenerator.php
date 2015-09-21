@@ -89,14 +89,14 @@ abstract class AbstractConsoleTabularGenerator implements ReportGeneratorInterfa
         return new \Symfony\Component\Console\Helper\TableHelper();
     }
 
-    protected function doGenerate($reportFile, SuiteDocument $document, array $config, array $parameters = array())
+    protected function doGenerate($definition, SuiteDocument $document, array $config, array $parameters = array())
     {
         if ($config['debug']) {
             $this->output->writeln('<info>Suite XML</info>');
             $this->output->writeln($document->saveXML());
         }
 
-        $tableDom = $this->tabular->tabulate($document, $reportFile, $parameters);
+        $tableDom = $this->tabular->tabulate($document, $definition, $parameters);
 
         if ($config['debug']) {
             $tableDom->formatOutput = true;
