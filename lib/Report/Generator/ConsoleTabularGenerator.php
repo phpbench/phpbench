@@ -65,6 +65,9 @@ class ConsoleTabularGenerator extends AbstractConsoleTabularGenerator
                 'debug' => array(
                     'type' => 'boolean',
                 ),
+                'groups' => array(
+                    'type' => 'array',
+                ),
                 'sort' => array(
                     'oneOf' => array(
                         array('type' => 'object'),
@@ -94,6 +97,10 @@ class ConsoleTabularGenerator extends AbstractConsoleTabularGenerator
 
         $reportFile = __DIR__ . '/tabular/' . $report . '.json';
         $definition = $this->definitionLoader->load($reportFile);
+
+        if ($config['groups']) {
+            $document = $this->filterGroups($document, $config['groups']);
+        }
 
         if ($config['sort']) {
             $sort = array();
@@ -135,6 +142,7 @@ class ConsoleTabularGenerator extends AbstractConsoleTabularGenerator
     {
         return array(
             'debug' => false,
+            'groups' => array(),
             'title' => null,
             'description' => null,
             'exclude' => array(),
@@ -142,5 +150,22 @@ class ConsoleTabularGenerator extends AbstractConsoleTabularGenerator
             'selector' => null,
             'sort' => array(),
         );
+    }
+
+    private function filterGroups(SuiteDocument $document, $groups)
+    {
+        $document = clone $document;
+        $exprs = array();
+        foreach ($groups as $groupName) {
+            $exprs[] = "group/@name!='" . $groupName . "'";
+        }
+        $groupExpr = implode(' and ', $exprs);
+        $expr = '//subject[not(group/@name) or ' . $groupExpr . ']';
+        $nodes = $document->xpath()->query($expr);
+        foreach ($nodes as $node) {
+            $node->parentNode->removeChild($node);
+        }
+
+        return $document;
     }
 }

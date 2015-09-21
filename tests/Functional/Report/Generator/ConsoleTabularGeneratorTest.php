@@ -39,6 +39,32 @@ class ConsoleTabularGeneratorTest extends ConsoleTestCase
     }
 
     /**
+     * It should filter based on group.
+     */
+    public function testGroupFilter()
+    {
+        $this->generate(
+            $this->getSuiteDocument(),
+            array(
+                'groups' => array('notexisting'),
+            )
+        );
+
+        $output = $this->getOutput()->fetch();
+        $this->assertStringCount(0, 'Foobar', $output);
+
+        $this->generate(
+            $this->getSuiteDocument(),
+            array(
+                'groups' => array('one'),
+            )
+        );
+
+        $output = $this->getOutput()->fetch();
+        $this->assertStringCount(2, 'Foobar', $output);
+    }
+
+    /**
      * It should generate an aggregate report.
      */
     public function testAggregate()
@@ -168,6 +194,7 @@ class ConsoleTabularGeneratorTest extends ConsoleTestCase
 <phpbench version="0.x">
     <benchmark class="Foobar">
         <subject name="mySubject">
+            <group name="one" />
             <variant>
                 <parameter name="foo" value="bar" />
                 <parameter name="array" type="collection">

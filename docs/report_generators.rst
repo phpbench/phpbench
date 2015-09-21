@@ -25,6 +25,7 @@ Options:
 - **sort**: *(assoc array)* Associative array of columns to directions for
   sorting, e.g. `{"subject": "asc", "time": "asc"}`.
 - **selector**: *(string)* XPath selector to use when selecting the benchmark results.
+- **groups**: *(array)* Only include the named groups.
 
 The ``selector`` option is important and can be used to target specific
 results, for example ``//subject[group/@name="my_group"]`` would only report
