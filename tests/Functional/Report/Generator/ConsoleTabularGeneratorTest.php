@@ -122,6 +122,43 @@ class ConsoleTabularGeneratorTest extends ConsoleTestCase
         $this->assertContains('Hello World', $output);
     }
 
+    /**
+     * It should sort ASC
+     */
+    public function testSortAsc()
+    {
+        $this->generate(
+            $this->getSuiteDocument(),
+            array(
+                'sort' => array('time' => 'asc'),
+            )
+        );
+
+        $output = $this->getOutput()->fetch();
+        preg_match_all('/75\.00|100\.00/m', $output, $matches);
+        $this->assertEquals(array(array(
+            '75.00', '100.00'
+        )), $matches);
+    }
+
+    /**
+     * It should sort DESC
+     */
+    public function testSortDesc()
+    {
+        $this->generate(
+            $this->getSuiteDocument(),
+            array(
+                'sort' => array('time' => 'desc'),
+            )
+        );
+
+        $output = $this->getOutput()->fetch();
+        preg_match_all('/75\.00|100\.00/m', $output, $matches);
+        $this->assertEquals(array(array(
+            '100.00', '75.00',
+        )), $matches);
+    }
     private function getSuiteDocument()
     {
         $suite = new SuiteDocument();

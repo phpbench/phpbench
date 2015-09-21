@@ -13,6 +13,7 @@ namespace PhpBench\Report\Generator;
 
 use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\Tabular\Tabular;
+use PhpBench\Tabular\Definition\Loader;
 
 /**
  * Report generator which uses custom report definitions.
@@ -23,7 +24,7 @@ class ConsoleTabularCustomGenerator extends AbstractConsoleTabularGenerator
 
     public function __construct(Tabular $tabular, $configPath)
     {
-        $this->tabular = $tabular;
+        parent::__construct($tabular);
         $this->configPath = $configPath;
     }
 
@@ -62,7 +63,7 @@ class ConsoleTabularCustomGenerator extends AbstractConsoleTabularGenerator
                 ),
                 'debug' => array(
                     'type' => 'boolean',
-                ),
+                )
             ),
         );
     }

@@ -2,6 +2,9 @@
     "includes": [
         [ "console_classes.json", ["classes"] ]
     ],
+    "params": {
+        "selector": "//iteration"
+    },
     "rows": [
         {
             "group": "body",
@@ -46,7 +49,7 @@
                     "expr": "deviation(average(//iteration/@time), number(descendant-or-self::iteration/@time))"
                 }
             ],
-            "with_query": "//iteration"
+            "with_query": "{{ param.selector }}"
         },
         {
             "cells": {

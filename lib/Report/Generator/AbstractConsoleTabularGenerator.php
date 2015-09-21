@@ -20,6 +20,7 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
+use PhpBench\Tabular\Definition\Loader;
 
 require_once __DIR__ . '/tabular/xpath_functions.php';
 
@@ -89,14 +90,14 @@ abstract class AbstractConsoleTabularGenerator implements ReportGeneratorInterfa
         return new \Symfony\Component\Console\Helper\TableHelper();
     }
 
-    protected function doGenerate($reportFile, SuiteDocument $document, array $config, array $parameters = array())
+    protected function doGenerate($definition, SuiteDocument $document, array $config, array $parameters = array())
     {
         if ($config['debug']) {
             $this->output->writeln('<info>Suite XML</info>');
             $this->output->writeln($document->saveXML());
         }
 
-        $tableDom = $this->tabular->tabulate($document, $reportFile, $parameters);
+        $tableDom = $this->tabular->tabulate($document, $definition, $parameters);
 
         if ($config['debug']) {
             $tableDom->formatOutput = true;
