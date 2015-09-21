@@ -226,6 +226,19 @@ class RunCommandTest extends BaseCommandTestCase
     }
 
     /**
+     * It can have the verbose progress logger specified.
+     */
+    public function testVerboseProgressLogger()
+    {
+        $tester = $this->runCommand('run', array(
+            '--progress' => 'verbose',
+            'path' => __DIR__ . '/../../benchmarks/BenchmarkBench.php',
+        ));
+        $display = $tester->getDisplay();
+        $this->assertContains('BenchmarkBench', $display);
+    }
+
+    /**
      * It should run specified groups.
      */
     public function testGroups()

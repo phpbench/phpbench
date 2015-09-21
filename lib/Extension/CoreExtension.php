@@ -24,6 +24,7 @@ use PhpBench\Console\Command\RunCommand;
 use PhpBench\Container;
 use PhpBench\ExtensionInterface;
 use PhpBench\ProgressLogger\DotsProgressLogger;
+use PhpBench\ProgressLogger\VerboseProgressLogger;
 use PhpBench\ProgressLoggerRegistry;
 use PhpBench\Report\Generator\CompositeGenerator;
 use PhpBench\Report\Generator\ConsoleTabularCustomGenerator;
@@ -171,6 +172,10 @@ class CoreExtension implements ExtensionInterface
         $container->register('progress_logger.classdots', function (Container $container) {
             return new DotsProgressLogger(true);
         }, array('progress_logger' => array('name' => 'classdots')));
+
+        $container->register('progress_logger.verbose', function (Container $container) {
+            return new VerboseProgressLogger(true);
+        }, array('progress_logger' => array('name' => 'verbose')));
     }
 
     private function registerReportGenerators(Container $container)
