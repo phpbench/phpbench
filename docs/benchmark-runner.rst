@@ -105,6 +105,12 @@ specified using the ``--progress`` option:
 
     $ phpbench run /path/to/HashBench.php --progress=classdots
 
+The built-in progress loggers are:
+
+- ``dots``: The default logger, shows one dot per subject (like PHPUnit).
+- ``classdots``: Shows the benchmark class, and then a dot for each subject.
+- ``verbose``: Verbose output.
+
 Configuration File
 ------------------
 
