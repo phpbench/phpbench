@@ -123,7 +123,7 @@ class ConsoleTabularGeneratorTest extends ConsoleTestCase
     }
 
     /**
-     * It should sort ASC
+     * It should sort ASC.
      */
     public function testSortAsc()
     {
@@ -137,12 +137,12 @@ class ConsoleTabularGeneratorTest extends ConsoleTestCase
         $output = $this->getOutput()->fetch();
         preg_match_all('/75\.00|100\.00/m', $output, $matches);
         $this->assertEquals(array(array(
-            '75.00', '100.00'
+            '75.00', '100.00',
         )), $matches);
     }
 
     /**
-     * It should sort DESC
+     * It should sort DESC.
      */
     public function testSortDesc()
     {
@@ -159,6 +159,7 @@ class ConsoleTabularGeneratorTest extends ConsoleTestCase
             '100.00', '75.00',
         )), $matches);
     }
+
     private function getSuiteDocument()
     {
         $suite = new SuiteDocument();

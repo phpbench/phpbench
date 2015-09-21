@@ -12,16 +12,23 @@
 namespace PhpBench\Report\Generator;
 
 use PhpBench\Benchmark\SuiteDocument;
-use PhpBench\Tabular\Tabular;
 use PhpBench\Tabular\Definition\Loader;
+use PhpBench\Tabular\Tabular;
 
 /**
  * Simple report generator using preconfigured report definitions.
  */
 class ConsoleTabularGenerator extends AbstractConsoleTabularGenerator
 {
+    /**
+     * @var Loader
+     */
     private $definitionLoader;
 
+    /**
+     * @param Tabular $tabular
+     * @param Loader $loader
+     */
     public function __construct(Tabular $tabular, Loader $loader)
     {
         parent::__construct($tabular);
@@ -90,6 +97,7 @@ class ConsoleTabularGenerator extends AbstractConsoleTabularGenerator
 
         if ($config['sort']) {
             $sort = array();
+            // we need to prefix the group name
             foreach ($config['sort'] as $colSpec => $direction) {
                 $sort['body#' . $colSpec] = $direction;
             }

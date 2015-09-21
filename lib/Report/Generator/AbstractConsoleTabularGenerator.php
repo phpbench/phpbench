@@ -20,7 +20,6 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
-use PhpBench\Tabular\Definition\Loader;
 
 require_once __DIR__ . '/tabular/xpath_functions.php';
 
