@@ -12,26 +12,32 @@ if ($bootstrap) {
 
 require_once($file);
 
-$refl = new \ReflectionClass($class);
-$metadata = array(
-    'class' => $class,
-    'abstract' => $refl->isAbstract(),
-    'methods' => array(),
-    'interfaces' => array(),
-    'comment' => $refl->getDocComment()
-);
+$classHierarchy = class_parents($class);
+array_unshift($classHierarchy, $class);
 
-foreach ($refl->getMethods() as $methodRefl) {
-    $comment = $methodRefl->getDocComment();
-    $metadata['methods'][$methodRefl->getName()] = array(
-        'comment' => $comment,
+foreach ($classHierarchy as $class) {
+    $refl = new \ReflectionClass($class);
+    $metadata = array(
+        'class' => $class,
+        'abstract' => $refl->isAbstract(),
+        'methods' => array(),
+        'interfaces' => array(),
+        'comment' => $refl->getDocComment()
     );
-}
 
-foreach ($refl->getInterfaces() as $interfaceRefl) {
-    $metadata['interfaces'][] = $interfaceRefl->getName();
+    foreach ($refl->getMethods() as $methodRefl) {
+        $comment = $methodRefl->getDocComment();
+        $metadata['methods'][$methodRefl->getName()] = array(
+            'comment' => $comment,
+        );
+    }
+
+    foreach ($refl->getInterfaces() as $interfaceRefl) {
+        $metadata['interfaces'][] = $interfaceRefl->getName();
+    }
+    $metadatas[] = $metadata;
 }
 
 // in the future we should return also the parent classes
-echo json_encode(array($metadata));
+echo json_encode($metadatas);
 exit(0);

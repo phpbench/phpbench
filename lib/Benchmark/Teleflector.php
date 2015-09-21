@@ -25,12 +25,12 @@ class Teleflector
     {
         $classFqn = $this->getClassNameFromFile($file);
 
-        $classInfo = $this->telespector->execute(__DIR__ . '/template/teleflector.template', array(
+        $classHierarchy = $this->telespector->execute(__DIR__ . '/template/teleflector.template', array(
             'file' => $file,
             'class' => $classFqn,
         ));
 
-        return $classInfo;
+        return $this->mergeClassHierarchy($classHierarchy);
     }
 
     public function getParameterSets($file, $paramProviders)
@@ -98,5 +98,15 @@ class Teleflector
         }
 
         return $namespace . '\\' . $class;
+    }
+
+    private function mergeClassHierarchy(array $classHierarchy)
+    {
+        $classInfo = array();
+        foreach (array_reverse($classHierarchy) as $classMeta) {
+            $classInfo = array_replace_recursive($classInfo, $classMeta);
+        }
+
+        return $classInfo;
     }
 }
