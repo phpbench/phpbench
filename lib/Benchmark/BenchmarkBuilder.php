@@ -29,8 +29,7 @@ class BenchmarkBuilder
         // we cannot instantiate the class as it may have non-existing classes.
         // (benchmarks have their own autoloading environment and are executed
         // in separate processes).
-        $classHierarchy = $this->teleflector->getClassInfo($benchmarkPath);
-        $classInfo = reset($classHierarchy);
+        $classInfo = $this->teleflector->getClassInfo($benchmarkPath);
 
         if (true === $classInfo['abstract']) {
             return;
