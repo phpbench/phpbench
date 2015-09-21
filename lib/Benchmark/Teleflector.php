@@ -102,9 +102,15 @@ class Teleflector
 
     private function mergeClassHierarchy(array $classHierarchy)
     {
-        $classInfo = array();
+        $classInfo = array(
+            'methods' => array(),
+            'comment' => '',
+        );
         foreach (array_reverse($classHierarchy) as $classMeta) {
-            $classInfo = array_replace_recursive($classInfo, $classMeta);
+            $classInfo['class'] = $classMeta['class'];
+            $classInfo['abstract'] = $classMeta['abstract'];
+            $classInfo['comment'] .= $classMeta['comment'];
+            $classInfo['methods'] = array_replace_recursive($classInfo['methods'], $classMeta['methods']);
         }
 
         return $classInfo;

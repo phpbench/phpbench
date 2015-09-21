@@ -30,7 +30,7 @@ class TeleflectorTest extends \PHPUnit_Framework_TestCase
     public function testTeleflector()
     {
         $classInfo = $this->teleflector->getClassInfo(__DIR__ . '/teleflector/ExampleClass.php');
-        $this->assertCount(5, $classInfo);
+        $this->assertCount(4, $classInfo);
         $this->assertEquals('\PhpBench\Tests\Unit\Benchmark\teleflector\ExampleClass', $classInfo['class']);
         $this->assertContains('Some doc comment', $classInfo['comment']);
         $this->assertEquals(array(
@@ -48,7 +48,7 @@ class TeleflectorTest extends \PHPUnit_Framework_TestCase
     public function testHierarchy()
     {
         $classInfo = $this->teleflector->getClassInfo(__DIR__ . '/teleflector/Class3.php');
-        $this->assertCount(5, $classInfo);
+        $this->assertCount(4, $classInfo);
         $this->assertCount(3, $classInfo['methods']);
         $this->assertEquals('\PhpBench\Tests\Unit\Benchmark\teleflector\Class3', $classInfo['class']);
         $this->assertContains('foobar', $classInfo['methods']['two']['comment']);
