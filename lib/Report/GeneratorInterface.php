@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench;
+namespace PhpBench\Report;
 
 use PhpBench\Benchmark\SuiteDocument;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-interface ReportGeneratorInterface
+interface GeneratorInterface
 {
     /**
      * Return a JSON schema which should be used to validate the configuration.

@@ -9,16 +9,22 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\ProgressLogger;
+namespace PhpBench\Progress\Logger;
 
 use PhpBench\Benchmark\Benchmark;
 use PhpBench\Benchmark\Subject;
-use PhpBench\ProgressLoggerInterface;
+use PhpBench\Progress\LoggerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class VerboseProgressLogger implements ProgressLoggerInterface
+class DotsLogger implements LoggerInterface
 {
     private $output;
+    private $showBench;
+
+    public function __construct($showBench = false)
+    {
+        $this->showBench = $showBench;
+    }
 
     public function setOutput(OutputInterface $output)
     {
@@ -27,7 +33,17 @@ class VerboseProgressLogger implements ProgressLoggerInterface
 
     public function benchmarkStart(Benchmark $benchmark)
     {
-        $this->output->writeln(sprintf('<comment>%s</comment>', $benchmark->getClassFqn()));
+        static $first = true;
+
+        if ($this->showBench) {
+            // do not output a line break on the first run
+            if (false === $first) {
+                $this->output->writeln('');
+            }
+            $first = false;
+
+            $this->output->writeln($benchmark->getClassFqn());
+        }
     }
 
     public function benchmarkEnd(Benchmark $benchmark)
@@ -36,11 +52,10 @@ class VerboseProgressLogger implements ProgressLoggerInterface
 
     public function subjectStart(Subject $subject)
     {
-        $this->output->write('  <info>>> </info>' . $subject->getMethodName());
     }
 
     public function subjectEnd(Subject $subject)
     {
-        $this->output->writeln(' [<info>OK</info>]');
+        $this->output->write('.');
     }
 }

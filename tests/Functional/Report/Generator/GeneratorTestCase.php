@@ -11,7 +11,7 @@
 
 namespace PhpBench\Tests\Functional\Report\Generator;
 
-use PhpBench\Container;
+use PhpBench\DependencyInjection\Container;
 
 abstract class GeneratorTestCase extends \PHPUnit_Framework_TestCase
 {

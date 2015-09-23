@@ -12,8 +12,8 @@
 namespace PhpBench\Benchmark;
 
 use PhpBench\PhpBench;
-use PhpBench\ProgressLogger\NullProgressLogger;
-use PhpBench\ProgressLoggerInterface;
+use PhpBench\Progress\Logger\NullLogger;
+use PhpBench\Progress\LoggerInterface;
 
 /**
  * The benchmark runner.
@@ -40,7 +40,7 @@ class Runner
         Executor $executor,
         $configPath
     ) {
-        $this->logger = new NullProgressLogger();
+        $this->logger = new NullLogger();
         $this->collectionBuilder = $collectionBuilder;
         $this->executor = $executor;
         $this->configPath = $configPath;
@@ -59,9 +59,9 @@ class Runner
     /**
      * Set the progress logger to use.
      *
-     * @param ProgressLoggerInterface
+     * @param LoggerInterface
      */
-    public function setProgressLogger(ProgressLoggerInterface $logger)
+    public function setProgressLogger(LoggerInterface $logger)
     {
         $this->logger = $logger;
     }

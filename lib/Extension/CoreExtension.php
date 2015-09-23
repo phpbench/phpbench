@@ -21,11 +21,11 @@ use PhpBench\Benchmark\Telespector;
 use PhpBench\Console\Application;
 use PhpBench\Console\Command\ReportCommand;
 use PhpBench\Console\Command\RunCommand;
-use PhpBench\Container;
-use PhpBench\ExtensionInterface;
-use PhpBench\ProgressLogger\DotsProgressLogger;
-use PhpBench\ProgressLogger\VerboseProgressLogger;
-use PhpBench\ProgressLoggerRegistry;
+use PhpBench\DependencyInjection\Container;
+use PhpBench\DependencyInjection\ExtensionInterface;
+use PhpBench\Progress\Logger\DotsLogger;
+use PhpBench\Progress\Logger\VerboseLogger;
+use PhpBench\Progress\LoggerRegistry;
 use PhpBench\Report\Generator\CompositeGenerator;
 use PhpBench\Report\Generator\ConsoleTabularCustomGenerator;
 use PhpBench\Report\Generator\ConsoleTabularGenerator;
@@ -102,7 +102,7 @@ class CoreExtension implements ExtensionInterface
             );
         });
         $container->register('progress_logger.registry', function (Container $container) {
-            return new ProgressLoggerRegistry();
+            return new LoggerRegistry();
         });
 
         $this->registerJsonSchema($container);
@@ -166,15 +166,15 @@ class CoreExtension implements ExtensionInterface
     private function registerProgressLoggers(Container $container)
     {
         $container->register('progress_logger.dots', function (Container $container) {
-            return new DotsProgressLogger();
+            return new DotsLogger();
         }, array('progress_logger' => array('name' => 'dots')));
 
         $container->register('progress_logger.classdots', function (Container $container) {
-            return new DotsProgressLogger(true);
+            return new DotsLogger(true);
         }, array('progress_logger' => array('name' => 'classdots')));
 
         $container->register('progress_logger.verbose', function (Container $container) {
-            return new VerboseProgressLogger(true);
+            return new VerboseLogger();
         }, array('progress_logger' => array('name' => 'verbose')));
     }
 

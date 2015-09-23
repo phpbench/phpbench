@@ -9,41 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\ProgressLogger;
+namespace PhpBench\Progress\Logger;
 
 use PhpBench\Benchmark\Benchmark;
 use PhpBench\Benchmark\Subject;
-use PhpBench\ProgressLoggerInterface;
+use PhpBench\Progress\LoggerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class DotsProgressLogger implements ProgressLoggerInterface
+class NullLogger implements LoggerInterface
 {
-    private $output;
-    private $showBench;
-
-    public function __construct($showBench = false)
-    {
-        $this->showBench = $showBench;
-    }
-
     public function setOutput(OutputInterface $output)
     {
-        $this->output = $output;
     }
 
     public function benchmarkStart(Benchmark $benchmark)
     {
-        static $first = true;
-
-        if ($this->showBench) {
-            // do not output a line break on the first run
-            if (false === $first) {
-                $this->output->writeln('');
-            }
-            $first = false;
-
-            $this->output->writeln($benchmark->getClassFqn());
-        }
     }
 
     public function benchmarkEnd(Benchmark $benchmark)
@@ -56,6 +36,5 @@ class DotsProgressLogger implements ProgressLoggerInterface
 
     public function subjectEnd(Subject $subject)
     {
-        $this->output->write('.');
     }
 }

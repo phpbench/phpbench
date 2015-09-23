@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Tests\Unit;
+namespace PhpBench\Tests\Unit\DependencyInjection;
 
-use PhpBench\Container;
+use PhpBench\DependencyInjection\Container;
 
 class ContainerTest extends \PHPUnit_Framework_TestCase
 {
