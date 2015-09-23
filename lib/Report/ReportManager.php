@@ -14,7 +14,7 @@ namespace PhpBench\Report;
 use JsonSchema\Validator;
 use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\Console\OutputAwareInterface;
-use PhpBench\ReportGeneratorInterface;
+use PhpBench\Report\GeneratorInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -67,7 +67,7 @@ class ReportManager
      * @param string $name
      * @param ReportGenerator $generator
      */
-    public function addGenerator($name, ReportGeneratorInterface $generator)
+    public function addGenerator($name, GeneratorInterface $generator)
     {
         if (isset($this->generators[$name])) {
             throw new \InvalidArgumentException(sprintf(

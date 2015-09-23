@@ -13,8 +13,8 @@ namespace PhpBench\Console\Command;
 
 use PhpBench\Benchmark\Runner;
 use PhpBench\PhpBench;
-use PhpBench\ProgressLoggerInterface;
-use PhpBench\ProgressLoggerRegistry;
+use PhpBench\Progress\LoggerInterface;
+use PhpBench\Progress\LoggerRegistry;
 use PhpBench\Report\ReportManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -35,7 +35,7 @@ class RunCommand extends Command
     public function __construct(
         Runner $runner,
         ReportManager $reportManager,
-        ProgressLoggerRegistry $loggerRegistry,
+        LoggerRegistry $loggerRegistry,
         $progressLoggerName = null,
         $benchPath = null,
         $configPath = null
@@ -156,7 +156,7 @@ EOT
         $iterations,
         $revs,
         $configPath,
-        ProgressLoggerInterface $progressLogger = null
+        LoggerInterface $progressLogger = null
     ) {
         if ($progressLogger) {
             $this->runner->setProgressLogger($progressLogger);

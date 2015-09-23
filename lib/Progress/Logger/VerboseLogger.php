@@ -9,21 +9,25 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\ProgressLogger;
+namespace PhpBench\Progress\Logger;
 
 use PhpBench\Benchmark\Benchmark;
 use PhpBench\Benchmark\Subject;
-use PhpBench\ProgressLoggerInterface;
+use PhpBench\Progress\LoggerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class NullProgressLogger implements ProgressLoggerInterface
+class VerboseLogger implements LoggerInterface
 {
+    private $output;
+
     public function setOutput(OutputInterface $output)
     {
+        $this->output = $output;
     }
 
     public function benchmarkStart(Benchmark $benchmark)
     {
+        $this->output->writeln(sprintf('<comment>%s</comment>', $benchmark->getClassFqn()));
     }
 
     public function benchmarkEnd(Benchmark $benchmark)
@@ -32,9 +36,11 @@ class NullProgressLogger implements ProgressLoggerInterface
 
     public function subjectStart(Subject $subject)
     {
+        $this->output->write('  <info>>> </info>' . $subject->getMethodName());
     }
 
     public function subjectEnd(Subject $subject)
     {
+        $this->output->writeln(' [<info>OK</info>]');
     }
 }

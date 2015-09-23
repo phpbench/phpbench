@@ -14,13 +14,13 @@ namespace PhpBench\Report\Generator;
 use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Report\ReportManager;
-use PhpBench\ReportGeneratorInterface;
+use PhpBench\Report\GeneratorInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Report generator which is a composite of other named reports.
  */
-class CompositeGenerator implements ReportGeneratorInterface, OutputAwareInterface
+class CompositeGenerator implements GeneratorInterface, OutputAwareInterface
 {
     /**
      * @var ReportManager

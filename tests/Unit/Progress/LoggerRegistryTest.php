@@ -2,7 +2,7 @@
 
 namespace PhpBench\Tests\Unit;
 
-use PhpBench\ProgressLoggerRegistry;
+use PhpBench\Progress\LoggerRegistry;
 
 class ProgressLoggerRegistryTest extends \PHPUnit_Framework_TestCase
 {
@@ -10,8 +10,8 @@ class ProgressLoggerRegistryTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->registry = new ProgressLoggerRegistry();
-        $this->progressLogger = $this->prophesize('PhpBench\ProgressLoggerInterface');
+        $this->registry = new LoggerRegistry();
+        $this->progressLogger = $this->prophesize('PhpBench\Progress\LoggerInterface');
     }
 
     /**

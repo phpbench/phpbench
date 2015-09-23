@@ -9,13 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench;
+namespace PhpBench\Progress;
 
-class ProgressLoggerRegistry
+use PhpBench\Progress\LoggerInterface;
+
+class LoggerRegistry
 {
     private $progressLoggers;
 
-    public function addProgressLogger($name, ProgressLoggerInterface $progressLogger)
+    public function addProgressLogger($name, LoggerInterface $progressLogger)
     {
         $this->progressLoggers[$name] = $progressLogger;
     }

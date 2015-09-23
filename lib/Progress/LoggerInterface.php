@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench;
+namespace PhpBench\Progress;
 
 use PhpBench\Benchmark\Benchmark;
 use PhpBench\Benchmark\Subject;
 use Symfony\Component\Console\Output\OutputInterface;
 
-interface ProgressLoggerInterface
+interface LoggerInterface
 {
     public function benchmarkEnd(Benchmark $benchmark);
 

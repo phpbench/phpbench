@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\ProgressLogger;
+namespace PhpBench\Progress\Logger;
 
 use PhpBench\Benchmark\Benchmark;
 use PhpBench\Benchmark\Subject;
-use PhpBench\ProgressLoggerInterface;
+use PhpBench\Progress\LoggerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class DotsProgressLogger implements ProgressLoggerInterface
+class DotsLogger implements LoggerInterface
 {
     private $output;
     private $showBench;
