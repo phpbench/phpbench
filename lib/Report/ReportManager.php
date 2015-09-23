@@ -14,7 +14,6 @@ namespace PhpBench\Report;
 use JsonSchema\Validator;
 use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\Console\OutputAwareInterface;
-use PhpBench\Report\GeneratorInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**

@@ -13,8 +13,8 @@ namespace PhpBench\Report\Generator;
 
 use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\Console\OutputAwareInterface;
-use PhpBench\Report\ReportManager;
 use PhpBench\Report\GeneratorInterface;
+use PhpBench\Report\ReportManager;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**

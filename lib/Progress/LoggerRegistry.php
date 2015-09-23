@@ -11,8 +11,6 @@
 
 namespace PhpBench\Progress;
 
-use PhpBench\Progress\LoggerInterface;
-
 class LoggerRegistry
 {
     private $progressLoggers;

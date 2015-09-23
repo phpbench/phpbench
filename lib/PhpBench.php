@@ -11,9 +11,9 @@
 
 namespace PhpBench;
 
+use PhpBench\DependencyInjection\Container;
 use Seld\JsonLint\JsonParser;
 use Seld\JsonLint\ParsingException;
-use PhpBench\DependencyInjection\Container;
 
 class PhpBench
 {
