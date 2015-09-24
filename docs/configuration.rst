@@ -11,6 +11,13 @@ that order and use one if it exists.
     {
         "bootstrap": "vendor/autoload.php",
         "path": "path/to/benchmarks",
+        "outputs": {
+             "my_output": {
+                 "extends": "html",
+                 "file": "my_report.html",
+                 "title": "Hello World"
+             }
+        },
         "reports": {
             "my_report": {
                 "extends": "aggregate",
@@ -81,7 +88,31 @@ List of report definitions:
 The key is the name of the report that you are defining, and the object
 properties are the options for the report. Eeach report must specify either
 the ``generator`` or ``extends`` key, specifying the :doc:`generator
-<report_generators>` or report to extend respectively.
+<report-generators>` or report to extend respectively.
 
-See the :doc:`report_generators` chapter for more information on report
+See the :doc:`report-generators` chapter for more information on report
 configuration.
+
+Outputs
+-------
+
+Custom output definitions:
+
+.. code-block:: javascript
+
+        "outputs": {
+             "my_output": {
+                 "extends": "html",
+                 "file": "my_report.html",
+                 "title": "Hello World"
+             }
+        }
+
+Note that:
+
+- The key of each definition is the output name.
+- As with reports, each definition *MUST* include either the ``renderer`` or
+  ``extends`` key.
+- All other options are passed to the renderer as options.
+
+See the :doc:`report-renderers` chapter for more information.

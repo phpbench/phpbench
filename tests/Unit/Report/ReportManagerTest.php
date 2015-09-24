@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the PHP Bench package
+ * This file is part of the PHPBench package
  *
  * (c) Daniel Leech <daniel@dantleech.com>
  *
@@ -12,6 +12,7 @@
 namespace PhpBench\Tests\Unit\Report;
 
 use PhpBench\Benchmark\SuiteDocument;
+use PhpBench\Dom\Document;
 use PhpBench\Report\ReportManager;
 
 class ReportManagerTest extends \PHPUnit_Framework_TestCase
@@ -26,9 +27,14 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
         $this->reportManager = new ReportManager();
         $this->generator = $this->prophesize('PhpBench\Report\GeneratorInterface');
         $this->generator->getDefaultReports()->willReturn(array());
+        $this->renderer = $this->prophesize('PhpBench\Report\RendererInterface');
         $this->output = $this->prophesize('Symfony\Component\Console\Output\OutputInterface');
         $this->suiteDocument = new SuiteDocument();
         $this->suiteDocument->loadXml('<?xml version="1.0"?><phpbench />');
+        $this->reportsDocument = new Document();
+        $reportsEl = $this->reportsDocument->createRoot('reports');
+        $reportEl = $reportsEl->appendElement('report');
+        $reportEl->appendElement('description');
     }
 
     /**
@@ -40,6 +46,29 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
         $this->reportManager->addReport('hello', array('goodbye' => 'byegood'));
         $report = $this->reportManager->getReport('hello');
         $this->assertEquals(array('goodbye' => 'byegood'), $report);
+    }
+
+    /**
+     * Outut configurations can be added to it
+     * It can retrieve output configurations.
+     */
+    public function testAddOutputConfiguration()
+    {
+        $this->reportManager->addOutput('hello', array('goodbye' => 'byegood'));
+        $output = $this->reportManager->getOutput('hello');
+        $this->assertEquals(array('goodbye' => 'byegood'), $output);
+    }
+
+    /**
+     * It should throw an exception if adding an already existing output configuration.
+     * 
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Output with name
+     */
+    public function testAddExistingOutputConfiguration()
+    {
+        $this->reportManager->addOutput('hello', array('goodbye' => 'byegood'));
+        $this->reportManager->addOutput('hello', array('goodbye' => 'byegood'));
     }
 
     /**
@@ -91,10 +120,9 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
                     'two' => '2',
                 ),
             )
-        )->shouldBeCalled();
+        )->willReturn($this->reportsDocument);
 
         $this->reportManager->generateReports(
-            $this->output->reveal(),
             $this->suiteDocument,
             array('two')
         );
@@ -130,6 +158,104 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
     {
         $this->reportManager->addGenerator('gen', $this->generator->reveal());
         $this->reportManager->addGenerator('gen', $this->generator->reveal());
+    }
+
+    /**
+     * It can have renderers added to it
+     * It can retrieve renderers.
+     */
+    public function testAddRenderer()
+    {
+        $this->renderer->getDefaultOutputs()->willReturn(array());
+        $this->reportManager->addRenderer('html', $this->renderer->reveal());
+        $this->assertSame($this->renderer->reveal(), $this->reportManager->getRenderer('html'));
+    }
+
+    /**
+     * It should add the renderers default reports.
+     */
+    public function testAddRendererDefaultReports()
+    {
+        $this->renderer->getDefaultOutputs()->willReturn(array(
+            'html' => array(),
+            'foobar' => array(),
+        ));
+        $this->reportManager->addRenderer('html', $this->renderer->reveal());
+        $output = $this->reportManager->getOutput('html');
+        $this->assertInternalType('array', $output);
+        $this->assertArrayHasKey('renderer', $output);
+        $this->assertEquals('html', $output['renderer']);
+    }
+
+    /**
+     * It should throw an exception if an unknown renderer is requested.
+     *
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage renderer
+     */
+    public function testGetRendererUnknown()
+    {
+        $this->reportManager->getRenderer('unknown');
+    }
+
+    /**
+     * It should throw an exception if a renderer with the same name already exists.
+     *
+     * @expectedException InvalidArgumentException
+     */
+    public function testAddRendererTwice()
+    {
+        $this->renderer->getDefaultOutputs()->willReturn(array());
+        $this->reportManager->addRenderer('html', $this->renderer->reveal());
+        $this->reportManager->addRenderer('html', $this->renderer->reveal());
+    }
+
+    /**
+     * It should render a report.
+     */
+    public function testRender()
+    {
+        $this->renderer->getDefaultOutputs()->willReturn(array());
+        $this->reportManager->addRenderer('console', $this->renderer->reveal());
+        $this->reportManager->addGenerator('test', $this->generator->reveal());
+        $this->reportManager->addOutput('console_output', array('renderer' => 'console'));
+        $this->reportManager->addReport('test_report', array('generator' => 'test'));
+
+        $this->generator->generate($this->suiteDocument, array())->willReturn($this->reportsDocument);
+        $this->generator->getDefaultConfig()->willReturn(array());
+        $this->generator->getSchema()->willReturn(array());
+
+        $this->renderer->getDefaultConfig()->willReturn(array());
+        $this->renderer->getSchema()->willReturn(array());
+        $this->renderer->render($this->reportsDocument, array())->shouldBeCalled();
+
+        $this->reportManager->renderReports(
+            $this->output->reveal(),
+            $this->suiteDocument,
+            array('test_report'),
+            array('console_output')
+        );
+
+        return $this->reportManager;
+    }
+
+    /**
+     * It should throw an exception if the output config does not contain the generator key.
+     *
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage include a "renderer"
+     * @depends testRender
+     */
+    public function testRendererNoRendererKey($reportManager)
+    {
+        $reportManager->addOutput('invalid', array());
+
+        $reportManager->renderReports(
+            $this->output->reveal(),
+            $this->suiteDocument,
+            array('test_report'),
+            array('console_output', 'invalid')
+        );
     }
 
     /**
@@ -169,11 +295,10 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
     {
         $this->reportManager->addGenerator('test', $this->generator->reveal());
         $this->reportManager->addReport('test_report', array('generator' => 'test'));
-        $this->generator->generate($this->suiteDocument, array())->shouldBeCalled();
+        $this->generator->generate($this->suiteDocument, array())->willReturn($this->reportsDocument);
         $this->generator->getDefaultConfig()->willReturn(array());
         $this->generator->getSchema()->willReturn(array());
         $this->reportManager->generateReports(
-            $this->output->reveal(),
             $this->suiteDocument,
             array('test_report')
         );
@@ -183,7 +308,7 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
      * It should throw an exception if the generator returns a non-array schema.
      *
      * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage must return the schema as an array
+     * @expectedExceptionMessage must return the JSON schema as an array
      */
     public function testSchemaIsNotAnArray()
     {
@@ -192,7 +317,6 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
         $this->generator->getDefaultConfig()->willReturn(array());
         $this->generator->getSchema()->willReturn(new \stdClass());
         $this->reportManager->generateReports(
-            $this->output->reveal(),
             $this->suiteDocument,
             array('test_report')
         );
@@ -212,11 +336,9 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
         $this->reportManager->addGenerator('test', $generator->reveal());
         $this->reportManager->addReport('test_report', array('generator' => 'test'));
 
-        $generator->generate($this->suiteDocument, array())->shouldBeCalled();
-        $generator->setOutput($this->output->reveal())->shouldBeCalled();
+        $generator->generate($this->suiteDocument, array())->willReturn($this->reportsDocument);
 
         $this->reportManager->generateReports(
-            $this->output->reveal(),
             $this->suiteDocument,
             array('test_report')
         );
@@ -247,7 +369,6 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
         ));
 
         $this->reportManager->generateReports(
-            $this->output->reveal(),
             $this->suiteDocument,
             array('test_report')
         );
@@ -266,7 +387,6 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
         $this->reportManager->addGenerator('test', $generator->reveal());
 
         $this->reportManager->generateReports(
-            $this->output->reveal(),
             $this->suiteDocument,
             array('test_report')
         );

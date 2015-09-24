@@ -20,7 +20,7 @@ in the form of a table:
     |                   |              |       |        |      | average >>   | 226.00μs | 3,416b |           |
     +-------------------+--------------+-------+--------+------+--------------+----------+--------+-----------+
 
-Generator: :ref:`generator_console_table`.
+Generator: :ref:`generator_table`.
 
 Columns:
 
@@ -55,7 +55,7 @@ row for each subject:
     | TimeConsumerBench | benchConsume |       | []     | 1    | 1     | 227.0000μs | 3,416b | 0.00%     | 100.00%   |
     +-------------------+--------------+-------+--------+------+-------+------------+--------+-----------+-----------+
 
-Generator: :ref:`generator_console_table`.
+Generator: :ref:`generator_table`.
 
 Columns:
 

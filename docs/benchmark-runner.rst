@@ -71,10 +71,27 @@ JSON encoded string with the generator options instead of the report name:
 
     $ phpbench run /path/to/HashBench.php --report='{"extends": "default", "exclude": ["benchmark", "subject"]}'
 
-See the :doc:`report_generators` chapter for more information on how you can
+See the :doc:`report-generators` chapter for more information on how you can
 configure reports.
 
 The ``--report`` option can be specified multiple times.
+
+Changing the Output Medium
+--------------------------
+
+By default PHPBench will output the reports to the console using the
+``console`` output. The output can be changed using the ``--output`` option.
+For example, to render a HTML document:
+
+.. code-block:: bash
+
+    $ phpbench run /path/to/HashBench.php --report=default --output=html
+
+Example of HTML output:
+
+.. image:: images/html.png
+
+See the :doc:`report-renderers` chapter for more information.
 
 Deffering Report Generation
 ---------------------------

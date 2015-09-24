@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the PHP Bench package
+ * This file is part of the PHPBench package
  *
  * (c) Daniel Leech <daniel@dantleech.com>
  *
@@ -17,7 +17,7 @@ use PhpBench\Tabular\Tabular;
 /**
  * Report generator which uses custom report definitions.
  */
-class ConsoleTabularCustomGenerator extends AbstractConsoleTabularGenerator
+class TabularCustomGenerator extends AbstractTabularGenerator
 {
     private $configPath;
 
@@ -63,6 +63,9 @@ class ConsoleTabularCustomGenerator extends AbstractConsoleTabularGenerator
                 'debug' => array(
                     'type' => 'boolean',
                 ),
+                'exclude' => array(
+                    'type' => 'array',
+                ),
             ),
         );
     }
@@ -86,7 +89,8 @@ class ConsoleTabularCustomGenerator extends AbstractConsoleTabularGenerator
         }
 
         $parameters = $config['params'];
-        $this->doGenerate($reportFile, $document, $config, $parameters);
+
+        return $this->doGenerate($reportFile, $document, $config, $parameters);
     }
 
     /**
@@ -110,6 +114,7 @@ class ConsoleTabularCustomGenerator extends AbstractConsoleTabularGenerator
             'description' => null,
             'file' => null,
             'params' => array(),
+            'exclude' => array(),
         );
     }
 }

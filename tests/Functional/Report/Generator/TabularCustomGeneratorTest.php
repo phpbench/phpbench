@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the PHP Bench package
+ * This file is part of the PHPBench package
  *
  * (c) Daniel Leech <daniel@dantleech.com>
  *
@@ -13,28 +13,20 @@ namespace PhpBench\Tests\Functional\Report\Generator;
 
 use PhpBench\Benchmark\SuiteDocument;
 
-class ConsoleTabularCustomGeneratorTest extends ConsoleTestCase
+class TabularCustomGeneratorTest extends GeneratorTestCase
 {
-    protected function getGenerator()
-    {
-        $generator = $this->getContainer()->get('report_generator.tabular_custom');
-        $generator->setOutput($this->getOutput());
-
-        return $generator;
-    }
-
     /**
      * It should generate a report from a Tabular JSON file.
      */
     public function testDefault()
     {
-        $this->generate(
+        $dom = $this->generate(
             $this->getSuiteDocument(),
             array('file' => __DIR__ . '/reports/test.json')
         );
 
-        $output = $this->getOutput()->fetch();
-        $this->assertContains('This is a test', $output);
+        $this->assertInstanceOf('PhpBench\Dom\Document', $dom);
+        $this->assertContains('This is a test', $dom->xpath()->evaluate('string(//cell)'));
     }
 
     /**
@@ -93,5 +85,12 @@ EOT
         );
 
         return $suite;
+    }
+
+    protected function getGenerator()
+    {
+        $generator = $this->getContainer()->get('report_generator.tabular_custom');
+
+        return $generator;
     }
 }

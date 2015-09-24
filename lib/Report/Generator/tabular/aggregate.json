@@ -3,7 +3,7 @@
         "selector": "//subject/variant"
     },
     "includes": [
-        [ "console_classes.json", ["classes"] ]
+        [ "classes.json", ["classes"] ]
     ],
     "rows": [
         {

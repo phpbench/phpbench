@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the PHP Bench package
+ * This file is part of the PHPBench package
  *
  * (c) Daniel Leech <daniel@dantleech.com>
  *
@@ -11,28 +11,43 @@
 
 namespace PhpBench\Benchmark;
 
+use PhpBench\Dom\Document;
+
 /**
  * DOMDocument implementation for containing the benchmark suite
  * results.
  */
-class SuiteDocument extends \DOMDocument
+class SuiteDocument extends Document
 {
-    public function __construct()
+    /**
+     * Return a clone of the document>.
+     *
+     * @return SuiteDocument
+     */
+    public function duplicate()
     {
-        parent::__construct('1.0');
-        $this->formatOutput = true;
+        $document = new self();
+        $node = $document->importNode($this->firstChild, true);
+        $document->appendChild($node);
+
+        return $document;
     }
 
-    public function xpath()
-    {
-        return new \DOMXpath($this);
-    }
-
+    /**
+     * Return the number of subjects.
+     *
+     * @return int
+     */
     public function getNbSubjects()
     {
         return (int) $this->xpath()->evaluate('count(//subject)');
     }
 
+    /**
+     * Return the number of iterations.
+     *
+     * @return int
+     */
     public function getNbIterations()
     {
         return (int) $this->xpath()->evaluate('count(//iteration)');

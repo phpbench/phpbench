@@ -1,6 +1,17 @@
 {
     "bootstrap": "../vendor/autoload.php",
     "path": "./",
+    "outputs": {
+        "console_example": {
+            "renderer": "console",
+            "table_style": "symfony-style-guide"
+        },
+        "html_example": {
+            "title": "PHPBench Examples",
+            "renderer": "xslt",
+            "file": "example.html"
+        }
+    },
     "reports": {
         "cost_of_setting": {
             "extends": "aggregate",
@@ -24,7 +35,7 @@
             "exclude": ["benchmark", "group", "params"]
         },
         "array_keys": {
-            "generator": "console_table_custom",
+            "generator": "table_custom",
             "title": "Comparison of array location functions",
             "description": "This benchmark creates an array with 50,000 elements. \nEach subject checks the existence of the key with the index of the current revolution. (or in the case of in_arrey, for the value).\nDeviation is calculated per revolution",
             "file": "reports/array_keys.json"
