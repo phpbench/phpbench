@@ -15,6 +15,7 @@ use JsonSchema\Validator;
 use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\Console\OutputAwareInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use PhpBench\Report\GeneratorInterface;
 
 /**
  * Manage report configuration and generation.
@@ -32,7 +33,7 @@ class ReportManager
     private $validator;
 
     /**
-     * @var ReportGeneratorInterface[]
+     * @var GeneratorInterface[]
      */
     private $generators;
 
@@ -64,7 +65,7 @@ class ReportManager
      * Add a report generator.
      *
      * @param string $name
-     * @param ReportGenerator $generator
+     * @param GeneratorInterface $generator
      */
     public function addGenerator($name, GeneratorInterface $generator)
     {
@@ -163,7 +164,7 @@ class ReportManager
     /**
      * Return the named generator.
      *
-     * @return ReportGenerator
+     * @return GeneratorInterface
      */
     public function getGenerator($name)
     {

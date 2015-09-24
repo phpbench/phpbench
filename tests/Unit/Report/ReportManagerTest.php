@@ -257,10 +257,11 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
      * It should throw an exception if the generator does not return an array from the getDefaultReports method.
      *
      * @expectedException RuntimeException
+     * @expectedExceptionMessage must return an array
      */
     public function testDefaultReportsNotArray()
     {
-        $generator = $this->prophesize('PhpBench\ReportGeneratorInterface');
+        $generator = $this->prophesize('PhpBench\Report\GeneratorInterface');
         $generator->getDefaultReports()->willReturn(new \stdClass());
         $this->reportManager->addGenerator('test', $generator->reveal());
 

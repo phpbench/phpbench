@@ -2,7 +2,7 @@ Report Generators
 =================
 
 PHPBench generates reports using report generators. These are classes which
-implement the ``PhpBench\ReportGeneratorInterface``.
+implement the ``PhpBench\Report\GeneratorInterface``.
 
 This chapter will describe the default report generators.
 
