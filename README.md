@@ -4,13 +4,14 @@ PhpBench
 ![PHPBench Logo](https://avatars3.githubusercontent.com/u/12785153?v=3&s=200)
 
 [![Build Status](https://travis-ci.org/phpbench/phpbench.svg?branch=master)](https://travis-ci.org/phpbench/phpbench)
-[![StyleCI](https://styleci.io/repos/40823691/shield)](https://styleci.io/repos/34982189)
+[![StyleCI](https://styleci.io/repos/34982189/shield)](https://styleci.io/repos/34982189)
 
 PhpBench is a benchmarking framework for PHP.
 
 Features:
 
-- Generate reports and render them to different mediums.
+- Generate reports and render them to different mediums (Console, HTML,
+  Markdown, etc).
 - Benchmarks are executed in a separate process, effectively with no overhead.
 - Memory usage statistics in addition to time.
 - Support for parameterized benchmarking cases.
