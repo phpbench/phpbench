@@ -1,7 +1,7 @@
-![PHPBench Logo](https://avatars3.githubusercontent.com/u/12785153?v=3&s=100)
-
 PhpBench
 ========
+
+![PHPBench Logo](https://avatars3.githubusercontent.com/u/12785153?v=3&s=100)
 
 [![Build Status](https://travis-ci.org/phpbench/phpbench.svg?branch=master)](https://travis-ci.org/phpbench/phpbench)
 [![StyleCI](https://styleci.io/repos/34982189/shield)](https://styleci.io/repos/34982189)
