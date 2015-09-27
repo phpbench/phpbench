@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the PHP Bench package
+ * This file is part of the PHPBench package
  *
  * (c) Daniel Leech <daniel@dantleech.com>
  *
@@ -16,10 +16,9 @@ use PhpBench\Report\ReportManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ReportCommand extends Command
+class ReportCommand extends BaseReportCommand
 {
     private $reportManager;
 
@@ -32,6 +31,7 @@ class ReportCommand extends Command
 
     public function configure()
     {
+        parent::configure();
         $this->setName('report');
         $this->setDescription('Generate a report from an XML file');
         $this->setHelp(<<<EOT
@@ -43,7 +43,6 @@ EOT
         );
 
         $this->addArgument('file', InputArgument::REQUIRED, 'XML file');
-        $this->addOption('report', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Report(s) to generate');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
@@ -51,10 +50,12 @@ EOT
         $reports = $input->getOption('report');
         $reportNames = $this->reportManager->processCliReports($reports);
         $file = $input->getArgument('file');
+        $outputs = $input->getOption('output');
+        $outputNames = $this->reportManager->processCliOutputs($outputs);
 
         if (!$reportNames) {
             throw new \InvalidArgumentException(
-                'You must specify or configure at least one report, e.g.: --report=simple'
+                'You must specify or configure at least one report, e.g.: --report=default'
             );
         }
 
@@ -66,6 +67,6 @@ EOT
 
         $suiteResult = new SuiteDocument();
         $suiteResult->loadXml(file_get_contents($file));
-        $this->reportManager->generateReports($output, $suiteResult, $reportNames);
+        $this->reportManager->renderReports($output, $suiteResult, $reportNames, $outputNames);
     }
 }

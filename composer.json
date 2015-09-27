@@ -15,7 +15,12 @@
         "symfony/process": "^2.1",
         "phpbench/tabular": "^0.2",
         "seld/jsonlint": "^1.0",
-        "justinrainbow/json-schema": "^1.0"
+        "justinrainbow/json-schema": "^1.0",
+        "ext-dom": "*",
+        "ext-json": "*",
+        "ext-pcre": "*",
+        "ext-reflection": "*",
+        "ext-spl": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "^4.6"

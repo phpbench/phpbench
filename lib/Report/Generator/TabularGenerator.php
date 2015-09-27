@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the PHP Bench package
+ * This file is part of the PHPBench package
  *
  * (c) Daniel Leech <daniel@dantleech.com>
  *
@@ -18,7 +18,7 @@ use PhpBench\Tabular\Tabular;
 /**
  * Simple report generator using preconfigured report definitions.
  */
-class ConsoleTabularGenerator extends AbstractConsoleTabularGenerator
+class TabularGenerator extends AbstractTabularGenerator
 {
     /**
      * @var Loader
@@ -90,9 +90,9 @@ class ConsoleTabularGenerator extends AbstractConsoleTabularGenerator
     public function generate(SuiteDocument $document, array $config)
     {
         if ($config['aggregate']) {
-            $report = 'console_aggregate';
+            $report = 'aggregate';
         } else {
-            $report = 'console_iteration';
+            $report = 'iteration';
         }
 
         $reportFile = __DIR__ . '/tabular/' . $report . '.json';
@@ -116,7 +116,7 @@ class ConsoleTabularGenerator extends AbstractConsoleTabularGenerator
             $parameters['selector'] = $config['selector'];
         }
 
-        $this->doGenerate($definition, $document, $config, $parameters);
+        return $this->doGenerate($definition, $document, $config, $parameters);
     }
 
     /**
@@ -154,7 +154,8 @@ class ConsoleTabularGenerator extends AbstractConsoleTabularGenerator
 
     private function filterGroups(SuiteDocument $document, $groups)
     {
-        $document = clone $document;
+        $document = $document->duplicate();
+
         $exprs = array();
         foreach ($groups as $groupName) {
             $exprs[] = "group/@name!='" . $groupName . "'";

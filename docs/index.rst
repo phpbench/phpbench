@@ -19,7 +19,8 @@ Contents:
    writing-benchmarks
    benchmark-runner
    reports
-   report_generators
+   report-generators
+   report-renderers
    configuration
 
 Indices and tables

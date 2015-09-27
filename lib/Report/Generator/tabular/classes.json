@@ -10,15 +10,15 @@
         ],
         "memory": [
             [ "number" ],
-            [ "printf", { "format": "%s<comment>b</comment>" }]
+            [ "printf", { "format": "%sb" }]
         ],
         "time_pr": [
             [ "number", { "decimal_places": 2 }],
-            [ "printf", { "format": "%s<comment>\u03bcs</comment>" }]
+            [ "printf", { "format": "%s\u03bcs" }]
         ],
         "time": [
             [ "number", { "decimal_places": 4 }],
-            [ "printf", { "format": "%s<comment>\u03bcs</comment>" }]
+            [ "printf", { "format": "%s\u03bcs" }]
         ]
     }
 }

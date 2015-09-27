@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the PHP Bench package
+ * This file is part of the PHPBench package
  *
  * (c) Daniel Leech <daniel@dantleech.com>
  *
@@ -13,6 +13,7 @@ namespace PhpBench\Report\Generator;
 
 use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\Console\OutputAwareInterface;
+use PhpBench\Dom\Document;
 use PhpBench\Report\GeneratorInterface;
 use PhpBench\Report\ReportManager;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -78,7 +79,18 @@ class CompositeGenerator implements GeneratorInterface, OutputAwareInterface
      */
     public function generate(SuiteDocument $result, array $config)
     {
-        $this->reportManager->generateReports($this->output, $result, $config['reports']);
+        $reportDoms = $this->reportManager->generateReports($result, $config['reports']);
+        $compositeDom = new Document();
+        $compositeEl = $compositeDom->createRoot('reports');
+
+        foreach ($reportDoms as $reportsDom) {
+            foreach ($reportsDom->xpath()->query('./report') as $reportDom) {
+                $reportEl = $compositeDom->importNode($reportDom, true);
+                $compositeEl->appendChild($reportEl);
+            }
+        }
+
+        return $compositeDom;
     }
 
     /**

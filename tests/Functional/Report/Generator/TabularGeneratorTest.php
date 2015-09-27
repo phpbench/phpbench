@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the PHP Bench package
+ * This file is part of the PHPBench package
  *
  * (c) Daniel Leech <daniel@dantleech.com>
  *
@@ -13,12 +13,11 @@ namespace PhpBench\Tests\Functional\Report\Generator;
 
 use PhpBench\Benchmark\SuiteDocument;
 
-class ConsoleTabularGeneratorTest extends ConsoleTestCase
+class TabularGeneratorTest extends GeneratorTestCase
 {
     protected function getGenerator()
     {
         $generator = $this->getContainer()->get('report_generator.tabular');
-        $generator->setOutput($this->getOutput());
 
         return $generator;
     }
@@ -28,14 +27,13 @@ class ConsoleTabularGeneratorTest extends ConsoleTestCase
      */
     public function testDefault()
     {
-        $this->generate(
+        $dom = $this->generate(
             $this->getSuiteDocument(),
             array()
         );
 
-        $output = $this->getOutput()->fetch();
-        $this->assertStringCount(2, 'Foobar', $output);
-        $this->assertStringCount(2, 'mySubject', $output);
+        $this->assertInstanceOf('PhpBench\Dom\Document', $dom);
+        $this->assertEquals(2, $dom->xpath()->evaluate('count(//cell[text() = "Foobar"])'));
     }
 
     /**
@@ -43,25 +41,24 @@ class ConsoleTabularGeneratorTest extends ConsoleTestCase
      */
     public function testGroupFilter()
     {
-        $this->generate(
+        $dom = $this->generate(
             $this->getSuiteDocument(),
             array(
                 'groups' => array('notexisting'),
             )
         );
 
-        $output = $this->getOutput()->fetch();
-        $this->assertStringCount(0, 'Foobar', $output);
+        $this->assertInstanceOf('PhpBench\Dom\Document', $dom);
+        $this->assertEquals(0, $dom->xpath()->evaluate('count(//cell[text() = "Foobar"])'));
 
-        $this->generate(
+        $dom = $this->generate(
             $this->getSuiteDocument(),
             array(
                 'groups' => array('one'),
             )
         );
 
-        $output = $this->getOutput()->fetch();
-        $this->assertStringCount(2, 'Foobar', $output);
+        $this->assertEquals(2, $dom->xpath()->evaluate('count(//cell[text() = "Foobar"])'));
     }
 
     /**
@@ -69,16 +66,16 @@ class ConsoleTabularGeneratorTest extends ConsoleTestCase
      */
     public function testAggregate()
     {
-        $this->generate(
+        $dom = $this->generate(
             $this->getSuiteDocument(),
             array(
                 'aggregate' => true,
             )
         );
 
-        $output = $this->getOutput()->fetch();
-        $this->assertStringCount(1, 'Foobar', $output);
-        $this->assertStringCount(1, 'mySubject', $output);
+        $this->assertInstanceOf('PhpBench\Dom\Document', $dom);
+        $this->assertEquals(1, $dom->xpath()->evaluate('count(//cell[text() = "Foobar"])'));
+        $this->assertEquals(1, $dom->xpath()->evaluate('count(//cell[text() = "mySubject"])'));
     }
 
     /**
@@ -86,34 +83,17 @@ class ConsoleTabularGeneratorTest extends ConsoleTestCase
      */
     public function testExclude()
     {
-        $this->generate(
+        $dom = $this->generate(
             $this->getSuiteDocument(),
             array(
                 'exclude' => array('time_net', 'benchmark'),
             )
         );
 
-        $output = $this->getOutput()->fetch();
-        $this->assertStringCount(0, 'Foobar', $output);
-        $this->assertStringCount(2, 'mySubject', $output);
-        $this->assertStringCount(0, 'time_net', $output);
-    }
-
-    /**
-     * It should show debug output.
-     */
-    public function testDebug()
-    {
-        $this->generate(
-            $this->getSuiteDocument(),
-            array(
-                'debug' => true,
-            )
-        );
-
-        $output = $this->getOutput()->fetch();
-        $this->assertContains('Suite XML', $output);
-        $this->assertContains('Table XML', $output);
+        $this->assertInstanceOf('PhpBench\Dom\Document', $dom);
+        $this->assertEquals(0, $dom->xpath()->evaluate('count(//group[@name="body"]//cell[@name="time_net"])'));
+        $this->assertEquals(2, $dom->xpath()->evaluate('count(//group[@name="body"]//cell[@name="time"])'));
+        $this->assertEquals(0, $dom->xpath()->evaluate('count(//group[@name="body"]//cell[@name="benchmark"])'));
     }
 
     /**
@@ -121,15 +101,14 @@ class ConsoleTabularGeneratorTest extends ConsoleTestCase
      */
     public function testTitle()
     {
-        $this->generate(
+        $dom = $this->generate(
             $this->getSuiteDocument(),
             array(
                 'title' => 'Hello World',
             )
         );
 
-        $output = $this->getOutput()->fetch();
-        $this->assertContains('Hello World', $output);
+        $this->assertEquals(1.0, $dom->xpath()->evaluate('count(//report[@title = "Hello World"])'));
     }
 
     /**
@@ -137,15 +116,14 @@ class ConsoleTabularGeneratorTest extends ConsoleTestCase
      */
     public function testDescription()
     {
-        $this->generate(
+        $dom = $this->generate(
             $this->getSuiteDocument(),
             array(
                 'description' => 'Hello World',
             )
         );
 
-        $output = $this->getOutput()->fetch();
-        $this->assertContains('Hello World', $output);
+        $this->assertEquals(1.0, $dom->xpath()->evaluate('count(//description[text() = "Hello World"])'));
     }
 
     /**
@@ -153,18 +131,20 @@ class ConsoleTabularGeneratorTest extends ConsoleTestCase
      */
     public function testSortAsc()
     {
-        $this->generate(
+        $dom = $this->generate(
             $this->getSuiteDocument(),
             array(
                 'sort' => array('time' => 'asc'),
             )
         );
 
-        $output = $this->getOutput()->fetch();
-        preg_match_all('/75\.00|100\.00/m', $output, $matches);
-        $this->assertEquals(array(array(
-            '75.00', '100.00',
-        )), $matches);
+        $values = array();
+        foreach ($dom->xpath()->query('//group[@name="body"]//cell[@name="time"]') as $cellEl) {
+            $values[] = $cellEl->nodeValue;
+        }
+        $this->assertEquals(array(
+            '75.0000μs', '100.0000μs',
+        ), $values);
     }
 
     /**
@@ -172,18 +152,20 @@ class ConsoleTabularGeneratorTest extends ConsoleTestCase
      */
     public function testSortDesc()
     {
-        $this->generate(
+        $dom = $this->generate(
             $this->getSuiteDocument(),
             array(
                 'sort' => array('time' => 'desc'),
             )
         );
 
-        $output = $this->getOutput()->fetch();
-        preg_match_all('/75\.00|100\.00/m', $output, $matches);
-        $this->assertEquals(array(array(
-            '100.00', '75.00',
-        )), $matches);
+        $values = array();
+        foreach ($dom->xpath()->query('//group[@name="body"]//cell[@name="time"]') as $cellEl) {
+            $values[] = $cellEl->nodeValue;
+        }
+        $this->assertEquals(array(
+            '100.0000μs', '75.0000μs',
+        ), $values);
     }
 
     private function getSuiteDocument()

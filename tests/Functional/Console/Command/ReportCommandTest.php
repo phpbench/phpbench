@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the PHP Bench package
+ * This file is part of the PHPBench package
  *
  * (c) Daniel Leech <daniel@dantleech.com>
  *
@@ -49,5 +49,24 @@ class ReportCommandTest extends BaseCommandTestCase
         $this->runCommand('report', array(
             'file' => __DIR__ . '/no_exist.xml',
         ));
+    }
+
+    /**
+     * It should generate a HTML report.
+     */
+    public function testRendererHtml()
+    {
+        $tester = $this->runCommand('run', array(
+            '--output' => array('html'),
+            '--report' => array('default'),
+            'path' => __DIR__ . '/../../benchmarks/BenchmarkBench.php',
+        ));
+
+        $this->assertEquals(0, $tester->getStatusCode());
+        $display = $tester->getDisplay();
+        $lines = explode("\n", $display);
+        array_pop($lines);
+        $generatedFilename = array_pop($lines);
+        $this->assertFileExists($generatedFilename);
     }
 }

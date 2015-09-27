@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the PHP Bench package
+ * This file is part of the PHPBench package
  *
  * (c) Daniel Leech <daniel@dantleech.com>
  *
@@ -12,25 +12,19 @@
 namespace PhpBench\Report;
 
 use PhpBench\Benchmark\SuiteDocument;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use PhpBench\Dom\Document;
 
-interface GeneratorInterface
+interface GeneratorInterface extends ConfigurableInterface
 {
     /**
-     * Return a JSON schema which should be used to validate the configuration.
-     * Return an empty array() if you want to allow anything.
+     * Generate the report document from the suite result document.
      *
-     * @param OptionsResolver $options
-     */
-    public function getSchema();
-
-    /**
-     * Generate the report.
-     *
-     * @param SuiteDocument $collection
+     * @param SuiteDocument $suiteDocument
      * @param array $config
+     *
+     * @return Document
      */
-    public function generate(SuiteDocument $collection, array $config);
+    public function generate(SuiteDocument $suiteResult, array $config);
 
     /**
      * Return an array of report configurations keyed by the report name
@@ -39,13 +33,4 @@ interface GeneratorInterface
      * @return array
      */
     public function getDefaultReports();
-
-    /***
-     * Return the default configuration. This configuration will be prepended
-     * to all subsequent reports and should be used to provide default values.
-     *
-     * @return array
-     */
-
-    public function getDefaultConfig();
 }

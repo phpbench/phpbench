@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the PHP Bench package
+ * This file is part of the PHPBench package
  *
  * (c) Daniel Leech <daniel@dantleech.com>
  *
@@ -27,8 +27,11 @@ use PhpBench\Progress\Logger\DotsLogger;
 use PhpBench\Progress\Logger\VerboseLogger;
 use PhpBench\Progress\LoggerRegistry;
 use PhpBench\Report\Generator\CompositeGenerator;
-use PhpBench\Report\Generator\ConsoleTabularCustomGenerator;
-use PhpBench\Report\Generator\ConsoleTabularGenerator;
+use PhpBench\Report\Generator\TabularCustomGenerator;
+use PhpBench\Report\Generator\TabularGenerator;
+use PhpBench\Report\Renderer\ConsoleRenderer;
+use PhpBench\Report\Renderer\DebugRenderer;
+use PhpBench\Report\Renderer\XsltRenderer;
 use PhpBench\Report\ReportManager;
 use PhpBench\Tabular\Definition\Expander;
 use PhpBench\Tabular\Definition\Loader;
@@ -110,10 +113,12 @@ class CoreExtension implements ExtensionInterface
         $this->registerCommands($container);
         $this->registerProgressLoggers($container);
         $this->registerReportGenerators($container);
+        $this->registerReportRenderers($container);
 
         $container->mergeParameters(array(
             'path' => null,
             'reports' => array(),
+            'outputs' => array(),
             'config_path' => null,
             'progress_logger_name' => 'dots',
         ));
@@ -131,8 +136,17 @@ class CoreExtension implements ExtensionInterface
             $container->get('report.manager')->addGenerator($attributes['name'], $reportGenerator);
         }
 
+        foreach ($container->getServiceIdsForTag('report_renderer') as $serviceId => $attributes) {
+            $reportRenderer = $container->get($serviceId);
+            $container->get('report.manager')->addRenderer($attributes['name'], $reportRenderer);
+        }
+
         foreach ($container->getParameter('reports') as $reportName => $report) {
             $container->get('report.manager')->addReport($reportName, $report);
+        }
+
+        foreach ($container->getParameter('outputs') as $outputName => $output) {
+            $container->get('report.manager')->addOutput($outputName, $output);
         }
     }
 
@@ -181,20 +195,33 @@ class CoreExtension implements ExtensionInterface
     private function registerReportGenerators(Container $container)
     {
         $container->register('report_generator.tabular', function (Container $container) {
-            return new ConsoleTabularGenerator(
+            return new TabularGenerator(
                 $container->get('tabular'),
                 $container->get('tabular.definition_loader')
             );
-        }, array('report_generator' => array('name' => 'console_table')));
+        }, array('report_generator' => array('name' => 'table')));
         $container->register('report_generator.tabular_custom', function (Container $container) {
-            return new ConsoleTabularCustomGenerator(
+            return new TabularCustomGenerator(
                 $container->get('tabular'),
                 $container->getParameter('config_path')
             );
-        }, array('report_generator' => array('name' => 'console_table_custom')));
+        }, array('report_generator' => array('name' => 'table_custom')));
         $container->register('report_generator.composite', function (Container $container) {
             return new CompositeGenerator($container->get('report.manager'));
         }, array('report_generator' => array('name' => 'composite')));
+    }
+
+    private function registerReportRenderers(Container $container)
+    {
+        $container->register('report_renderer.console', function (Container $container) {
+            return new ConsoleRenderer();
+        }, array('report_renderer' => array('name' => 'console')));
+        $container->register('report_renderer.html', function (Container $container) {
+            return new XsltRenderer();
+        }, array('report_renderer' => array('name' => 'xslt')));
+        $container->register('report_renderer.debug', function (Container $container) {
+            return new DebugRenderer();
+        }, array('report_renderer' => array('name' => 'debug')));
     }
 
     private function registerTabular(Container $container)

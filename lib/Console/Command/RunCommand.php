@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the PHP Bench package
+ * This file is part of the PHPBench package
  *
  * (c) Daniel Leech <daniel@dantleech.com>
  *
@@ -23,7 +23,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class RunCommand extends Command
+class RunCommand extends BaseReportCommand
 {
     private $reportManager;
     private $loggerRegistry;
@@ -51,6 +51,7 @@ class RunCommand extends Command
 
     public function configure()
     {
+        parent::configure();
         $this->setName('run');
         $this->setDescription('Run benchmarks');
         $this->setHelp(<<<EOT
@@ -62,7 +63,6 @@ All bench marks under the given path will be executed recursively.
 EOT
         );
         $this->addArgument('path', InputArgument::OPTIONAL, 'Path to benchmark(s)');
-        $this->addOption('report', array(), InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Report name or configuration in JSON format');
         $this->addOption('subject', array(), InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Subject to run (can be specified multiple times)');
         $this->addOption('group', array(), InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Group to run (can be specified multiple times)');
         $this->addOption('dump-file', 'df', InputOption::VALUE_OPTIONAL, 'Dump XML result to named file');
@@ -78,6 +78,7 @@ EOT
         $consoleOutput = $output;
 
         $reports = $input->getOption('report');
+        $outputs = $input->getOption('output');
         $dump = $input->getOption('dump');
         $parametersJson = $input->getOption('parameters');
         $iterations = $input->getOption('iterations');
@@ -90,6 +91,7 @@ EOT
         $path = $input->getArgument('path') ?: $this->benchPath;
 
         $reportNames = $this->reportManager->processCliReports($reports);
+        $outputNames = $this->reportManager->processCliOutputs($outputs);
 
         if (null === $path) {
             throw new \InvalidArgumentException(
@@ -144,7 +146,7 @@ EOT
             $xml = $suiteResult->saveXml();
             $output->write($xml);
         } elseif ($reportNames) {
-            $this->reportManager->generateReports($consoleOutput, $suiteResult, $reportNames);
+            $this->reportManager->renderReports($consoleOutput, $suiteResult, $reportNames, $outputNames);
         }
     }
 

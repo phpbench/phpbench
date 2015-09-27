@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the PHP Bench package
+ * This file is part of the PHPBench package
  *
  * (c) Daniel Leech <daniel@dantleech.com>
  *
@@ -98,7 +98,7 @@ class RunCommandTest extends BaseCommandTestCase
     public function testCommandWithReportConfigurationUnknown()
     {
         $tester = $this->runCommand('run', array(
-            '--report' => array('{"generator": "foo_console_table"}'),
+            '--report' => array('{"generator": "foo_table"}'),
             'path' => __DIR__ . '/../../benchmarks/BenchmarkBench.php',
         ));
         $this->assertEquals(0, $tester->getStatusCode());
@@ -115,7 +115,7 @@ class RunCommandTest extends BaseCommandTestCase
     public function testCommandWithReportConfigurationInvalid()
     {
         $tester = $this->runCommand('run', array(
-            '--report' => array('{"name": "foo_console_ta'),
+            '--report' => array('{"name": "foo_ta'),
             'path' => __DIR__ . '/../../benchmarks/BenchmarkBench.php',
         ));
         $this->assertEquals(0, $tester->getStatusCode());
@@ -257,5 +257,45 @@ class RunCommandTest extends BaseCommandTestCase
         $xpath = new \DOMXPath($dom);
         $parameters = $xpath->query('//subject');
         $this->assertEquals(1, $parameters->length);
+    }
+
+    /**
+     * It should generate a HTML report.
+     */
+    public function testOutputHtml()
+    {
+        $tester = $this->runCommand('run', array(
+            '--group' => array('do_nothing'),
+            '--output' => array('html'),
+            '--report' => array('default'),
+            'path' => __DIR__ . '/../../benchmarks/BenchmarkBench.php',
+        ));
+
+        $this->assertEquals(0, $tester->getStatusCode());
+        $display = $tester->getDisplay();
+        $lines = explode("\n", $display);
+        array_pop($lines);
+        $generatedFilename = array_pop($lines);
+        $this->assertFileExists($generatedFilename);
+    }
+
+    /**
+     * It should generate a markdown report.
+     */
+    public function testOutputMarkdown()
+    {
+        $tester = $this->runCommand('run', array(
+            '--group' => array('do_nothing'),
+            '--output' => array('markdown'),
+            '--report' => array('default'),
+            'path' => __DIR__ . '/../../benchmarks/BenchmarkBench.php',
+        ));
+
+        $this->assertEquals(0, $tester->getStatusCode());
+        $display = $tester->getDisplay();
+        $lines = explode("\n", $display);
+        array_pop($lines);
+        $generatedFilename = array_pop($lines);
+        $this->assertFileExists($generatedFilename);
     }
 }

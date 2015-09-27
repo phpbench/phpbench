@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the PHP Bench package
+ * This file is part of the PHPBench package
  *
  * (c) Daniel Leech <daniel@dantleech.com>
  *
@@ -13,7 +13,7 @@ namespace PhpBench\Tests;
 
 use PhpBench\Benchmark\CartesianParameterIterator;
 
-class CartesianParameterIteratorTest extends \PHPUnit_Framework_TestCase
+class CartesianIteratorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * It should generate the cartestian product of all sets for each iteration.

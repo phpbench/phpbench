@@ -1,6 +1,6 @@
 {
     "includes": [
-        [ "console_classes.json", ["classes"] ]
+        [ "classes.json", ["classes"] ]
     ],
     "params": {
         "selector": "//iteration"
@@ -59,7 +59,7 @@
             "cells": [
                 {
                     "name": "iter",
-                    "literal": "<info>{{ row.item }} >></info>"
+                    "literal": "{{ row.item }}"
                 },
                 {
                     "name": "{{ cell.col }}",
@@ -85,7 +85,7 @@
             "cells": [
                 {
                     "name": "iter",
-                    "literal": "<info>stability >></info>"
+                    "literal": "stability"
                 },
                 {
                     "class": "stability",

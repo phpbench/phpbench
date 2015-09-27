@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the PHP Bench package
+ * This file is part of the PHPBench package
  *
  * (c) Daniel Leech <daniel@dantleech.com>
  *
@@ -11,6 +11,7 @@
 
 namespace PhpBench\Tests\Functional\Report\Generator;
 
+use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\DependencyInjection\Container;
 
 abstract class GeneratorTestCase extends \PHPUnit_Framework_TestCase
@@ -37,6 +38,14 @@ abstract class GeneratorTestCase extends \PHPUnit_Framework_TestCase
         return array_merge(
             $this->getGenerator()->getDefaultConfig(),
             $config
+        );
+    }
+
+    protected function generate(SuiteDocument $document, $config)
+    {
+        return $this->getGenerator()->generate(
+            $document,
+            $this->getConfig($config)
         );
     }
 }
