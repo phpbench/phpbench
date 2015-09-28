@@ -41,6 +41,7 @@ class BenchmarkBuilder
         );
 
         $classMeta = $this->parser->parseDoc($classInfo['comment']);
+        var_dump($classInfo['methods']);
         foreach ($classInfo['methods'] as $methodName => $methodInfo) {
             $subject = $this->buildSubject($benchmark, $methodName, $methodInfo, $classMeta, $subjectFilter, $groupFilter);
 
@@ -67,6 +68,10 @@ class BenchmarkBuilder
         }
 
         $subjectMeta = $this->parser->parseDoc($methodInfo['comment'], $classMeta);
+
+        if ($subjectMeta['skip'] == true) {
+            return;
+        }
 
         if ($groupFilter && 0 === count(array_intersect($groupFilter, $subjectMeta['group']))) {
             return;

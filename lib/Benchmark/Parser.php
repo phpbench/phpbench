@@ -24,6 +24,7 @@ class Parser
             'iterations' => array(),
             'group' => array(),
             'revs' => array(),
+            'skip' => false,
         );
 
         // singular annotations
@@ -41,6 +42,11 @@ class Parser
         }
 
         foreach ($lines as $line) {
+            if (preg_match('{@skip.*$}', $line)) {
+                $meta['skip'] = true;
+                continue;
+            }
+
             if (!preg_match('{@([a-zA-Z0-9]+)\s+(.*)$}', $line, $matches)) {
                 continue;
             }

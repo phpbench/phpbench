@@ -12,7 +12,11 @@
 namespace PhpBench\Tests\Unit\Benchmark;
 
 use PhpBench\Benchmark\BenchmarkBuilder;
+use Prophecy\Argument;
 
+/**
+ * NOTE: This test case is horrible. It and the code should be refactored.
+ */
 class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
 {
     private $teleflector;
@@ -60,14 +64,13 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
         $this->parser->parseDoc('/** @group group_one */')->willReturn(array(
             'group' => array('group_one'),
         ));
-        $this->parser->parseDoc('/** @revs 1000 */', array('group' => array('group_one')))->willReturn(array(
-            'group' => array('group_one'),
-            'beforeMethod' => array('beforeFoo'),
-            'afterMethod' => array(),
-            'paramProvider' => array('paramProvider'),
-            'iterations' => 1,
-            'revs' => array(1),
-        ));
+        $this->parser->parseDoc('/** @revs 1000 */', array('group' => array('group_one')))->willReturn(
+            $this->getSubjectMetadata(array(
+                'group' => array('group_one'),
+                'beforeMethod' => array('beforeFoo'),
+                'paramProvider' => array('paramProvider'),
+            ))
+        );
         $this->teleflector->getParameterSets('foo.file', array('paramProvider'))->willReturn(array(
             'one' => 'two',
         ));
@@ -120,16 +123,44 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
         $this->parser->parseDoc('')->willReturn(array(
             'group' => array(),
         ));
-        $this->parser->parseDoc('', array('group' => array()))->willReturn(array(
-            'group' => array(),
-            'beforeMethod' => array(),
-            'afterMethod' => array(),
-            'paramProvider' => array(),
-            'iterations' => 1,
-            'revs' => array(1),
-        ));
+        $this->parser->parseDoc('', array('group' => array()))->willReturn($this->getSubjectMetadata(array()));
 
         $benchmark = $this->builder->build('foo.file', array('benchFoobar'));
+
+        $this->assertCount(1, $benchmark->getSubjects());
+    }
+
+    /**
+     * It should ignore subjects with the "skip" metadata
+     */
+    public function testSkip()
+    {
+        $this->teleflector->getClassInfo('foo.file')->willReturn(array(
+            'class' => 'MyBenchmark',
+            'abstract' => false,
+            'comment' => '',
+            'methods' => array(
+                'benchFoobar' => array(
+                    'comment' => 'method one',
+                ),
+                'benchBarFoo' => array(
+                    'comment' => '',
+                ),
+            ),
+        ));
+        $this->parser->parseDoc('', Argument::type('array'))->willReturn(
+            $this->getSubjectMetadata(array())
+        );
+        $this->parser->parseDoc('method one', Argument::type('array'))->willReturn(
+            $this->getSubjectMetadata(array(
+                'skip' => true,
+            ))
+        );
+        $this->parser->parseDoc('')->willReturn(
+            $this->getSubjectMetadata(array())
+        );
+
+        $benchmark = $this->builder->build('foo.file');
 
         $this->assertCount(1, $benchmark->getSubjects());
     }
@@ -155,22 +186,16 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
         $this->parser->parseDoc('')->willReturn(array(
             'group' => array(),
         ));
-        $this->parser->parseDoc('/** one */', array('group' => array()))->willReturn(array(
-            'group' => array('one'),
-            'beforeMethod' => array(),
-            'afterMethod' => array(),
-            'paramProvider' => array(),
-            'iterations' => 1,
-            'revs' => array(1),
-        ));
-        $this->parser->parseDoc('/** two */', array('group' => array()))->willReturn(array(
-            'group' => array('two'),
-            'beforeMethod' => array(),
-            'afterMethod' => array(),
-            'paramProvider' => array(),
-            'iterations' => 1,
-            'revs' => array(1),
-        ));
+        $this->parser->parseDoc('/** one */', array('group' => array()))->willReturn(
+            $this->getSubjectMetadata(array(
+                'group' => array('one'),
+            ))
+        );
+        $this->parser->parseDoc('/** two */', array('group' => array()))->willReturn(
+            $this->getSubjectMetadata(array(
+                'group' => array('two'),
+            ))
+        );
 
         $benchmark = $this->builder->build('foo.file', array(), array('one'));
 
@@ -201,14 +226,12 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
         $this->parser->parseDoc('')->willReturn(array(
             'group' => array(),
         ));
-        $this->parser->parseDoc('', array('group' => array()))->willReturn(array(
-            'group' => array(),
-            'beforeMethod' => array('notExistingAfterMethod'),
-            'afterMethod' => array(),
-            'paramProvider' => array(),
-            'iterations' => 1,
-            'revs' => array(1),
-        ));
+        $this->parser->parseDoc('', array('group' => array()))->willReturn(
+            $this->getSubjectMetadata(array(
+                'group' => array(),
+                'beforeMethod' => array('notExistingAfterMethod'),
+            ))
+        );
 
         $this->builder->build('foo.file', array('benchFoobar'));
     }
@@ -235,15 +258,25 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
             'group' => array(),
             'paramProvider' => array(),
         ));
-        $this->parser->parseDoc('', array('group' => array(), 'paramProvider' => array()))->willReturn(array(
+        $this->parser->parseDoc('', array('group' => array(), 'paramProvider' => array()))->willReturn(
+            $this->getSubjectMetadata(array(
+                'beforeMethod' => array('notExistingBeforeMethod'),
+            ))
+        );
+
+        $this->builder->build('foo.file');
+    }
+
+    private function getSubjectMetadata($metadata)
+    {
+        return array_merge(array(
             'group' => array(),
-            'beforeMethod' => array('notExistingBeforeMethod'),
+            'beforeMethod' => array(),
             'afterMethod' => array(),
             'paramProvider' => array(),
             'iterations' => 1,
             'revs' => array(1),
-        ));
-
-        $this->builder->build('foo.file');
+            'skip' => false
+        ), $metadata);
     }
 }

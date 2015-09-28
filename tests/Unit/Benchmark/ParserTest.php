@@ -29,7 +29,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     public function testParseMethodDoc($docComment, $expected)
     {
         $result = $this->parser->parseDoc($docComment);
-        $this->assertEquals($result, $expected);
+        $this->assertEquals($expected, $result);
     }
 
     public function provideParseMethodDoc()
@@ -47,6 +47,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 * @revs 1000
 * @revs 10
 * @group base
+* @skip
 */
 EOT
                 , array(
@@ -56,6 +57,23 @@ EOT
                     'paramProvider' => array('provideParam'),
                     'revs' => array(1000, 10),
                     'group' => array('base'),
+                    'skip' => true,
+                ),
+            ),
+            array(
+                <<<EOT
+/**
+* @skip Not implemented
+*/
+EOT
+                , array(
+                    'iterations' => 1,
+                    'beforeMethod' => array(),
+                    'afterMethod' => array(),
+                    'paramProvider' => array(),
+                    'revs' => array(),
+                    'group' => array(),
+                    'skip' => true,
                 ),
             ),
             array(
@@ -71,6 +89,7 @@ EOT
                     'iterations' => 1,
                     'revs' => array(),
                     'group' => array(),
+                    'skip' => false,
                 ),
             ),
         );
@@ -109,6 +128,7 @@ EOT
                     'paramProvider' => array('provideParam'),
                     'revs' => array(1000, 10),
                     'group' => array('boo'),
+                    'skip' => false,
                 ),
                 <<<EOT
 /**
@@ -127,6 +147,7 @@ EOT
                     'paramProvider' => array('provideParam', 'notherParam'),
                     'revs' => array(1000, 10, 5),
                     'group' => array('boo', 'five'),
+                    'skip' => false,
                 ),
             ),
             array(
@@ -137,6 +158,7 @@ EOT
                     'paramProvider' => array('provideParam'),
                     'revs' => array(1000, 10),
                     'group' => array('boo'),
+                    'skip' => false,
                 ),
                 <<<EOT
 /**
@@ -151,6 +173,7 @@ EOT
                     'paramProvider' => array('provideParam'),
                     'revs' => array(1000, 10),
                     'group' => array('boo'),
+                    'skip' => false,
                 ),
             ),
             array(
@@ -160,6 +183,7 @@ EOT
                     'afterMethod' => array(),
                     'paramProvider' => array('provideParam'),
                     'revs' => array(1000, 10),
+                    'skip' => false,
                 ),
                 '/** */',
                 array(
@@ -169,6 +193,7 @@ EOT
                     'paramProvider' => array('provideParam'),
                     'revs' => array(1000, 10),
                     'group' => array(),
+                    'skip' => false,
                 ),
             ),
         );
