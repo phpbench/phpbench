@@ -259,4 +259,30 @@ You can assign benchmark subjects to groups using the ``@group`` annotation.
 
 The group can then be targetted using the command line interface.
 
+Skipping Subjects
+-----------------
+
+Sometimes it may be desirable to skip a subject. This may happen if you are
+overriding a method which does not apply to the subject you are benchmarking.
+
+To skip a subject add the ``@skip`` annotation:
+
+.. code-block:: php
+
+    <?php
+
+    class HashBench extends FooBench
+    {
+        // ... 
+
+        /**
+         * @skip
+         */
+        public function benchSomething()
+        {
+        }
+
+        // ... 
+    }
+
 .. _cartesian product: https://en.wikipedia.org/wiki/Cartesian_product

@@ -68,6 +68,10 @@ class BenchmarkBuilder
 
         $subjectMeta = $this->parser->parseDoc($methodInfo['comment'], $classMeta);
 
+        if ($subjectMeta['skip'] == true) {
+            return;
+        }
+
         if ($groupFilter && 0 === count(array_intersect($groupFilter, $subjectMeta['group']))) {
             return;
         }
