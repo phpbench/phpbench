@@ -15,7 +15,8 @@ use PhpBench\Benchmark\BenchmarkBuilder;
 use Prophecy\Argument;
 
 /**
- * NOTE: This test case is horrible. It and the code should be refactored.
+ * NOTE: This test case (and probably the code it tests) is sub-optimal and
+ * could be refactored.
  */
 class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
 {
@@ -131,7 +132,7 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should ignore subjects with the "skip" metadata
+     * It should ignore subjects with the "skip" metadata.
      */
     public function testSkip()
     {
@@ -276,7 +277,7 @@ class BenchmarkBuilderTest extends \PHPUnit_Framework_TestCase
             'paramProvider' => array(),
             'iterations' => 1,
             'revs' => array(1),
-            'skip' => false
+            'skip' => false,
         ), $metadata);
     }
 }

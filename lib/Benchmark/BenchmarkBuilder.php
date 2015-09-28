@@ -41,7 +41,6 @@ class BenchmarkBuilder
         );
 
         $classMeta = $this->parser->parseDoc($classInfo['comment']);
-        var_dump($classInfo['methods']);
         foreach ($classInfo['methods'] as $methodName => $methodInfo) {
             $subject = $this->buildSubject($benchmark, $methodName, $methodInfo, $classMeta, $subjectFilter, $groupFilter);
 

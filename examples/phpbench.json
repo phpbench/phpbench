@@ -1,7 +1,6 @@
 {
     "bootstrap": "../vendor/autoload.php",
     "path": "./",
-    "progress_logger_name": "verbose",
     "outputs": {
         "console_example": {
             "renderer": "console",
