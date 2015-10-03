@@ -12,7 +12,7 @@
 class IsolatedBench
 {
     /**
-     * @iterations 5
+     * @Iterations(5)
      */
     public function benchIterationIsolation()
     {
@@ -22,7 +22,7 @@ class IsolatedBench
     }
 
     /**
-     * @iterations 5
+     * @Iterations(5)
      */
     public function benchIterationsIsolation()
     {

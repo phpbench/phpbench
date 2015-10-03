@@ -28,6 +28,8 @@ foreach ($classHierarchy as $class) {
     foreach ($refl->getMethods() as $methodRefl) {
         $comment = $methodRefl->getDocComment();
         $metadata['methods'][$methodRefl->getName()] = array(
+            'class' => $class,
+            'name' => $methodRefl->getName(),
             'comment' => $comment,
         );
     }

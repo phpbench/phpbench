@@ -11,6 +11,8 @@
 
 namespace PhpBench\Benchmark;
 
+use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
+use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\PhpBench;
 use PhpBench\Progress\Logger\NullLogger;
 use PhpBench\Progress\LoggerInterface;
@@ -127,7 +129,7 @@ class Runner
 
         foreach ($collection->getBenchmarks() as $benchmark) {
             $benchmarkEl = $dom->createElement('benchmark');
-            $benchmarkEl->setAttribute('class', $benchmark->getClassFqn());
+            $benchmarkEl->setAttribute('class', $benchmark->getClass());
 
             $this->logger->benchmarkStart($benchmark);
             $this->run($benchmark, $benchmarkEl);
@@ -141,11 +143,11 @@ class Runner
         return $dom;
     }
 
-    private function run(Benchmark $benchmark, \DOMElement $benchmarkEl)
+    private function run(BenchmarkMetadata $benchmark, \DOMElement $benchmarkEl)
     {
-        foreach ($benchmark->getSubjects() as $subject) {
+        foreach ($benchmark->getSubjectMetadatas() as $subject) {
             $subjectEl = $benchmarkEl->ownerDocument->createElement('subject');
-            $subjectEl->setAttribute('name', $subject->getMethodName());
+            $subjectEl->setAttribute('name', $subject->getName());
 
             foreach ($subject->getGroups() as $group) {
                 $groupEl = $benchmarkEl->ownerDocument->createElement('group');
@@ -161,9 +163,9 @@ class Runner
         }
     }
 
-    private function runSubject(Subject $subject, \DOMElement $subjectEl)
+    private function runSubject(SubjectMetadata $subject, \DOMElement $subjectEl)
     {
-        $iterationCount = null === $this->iterationsOverride ? $subject->getNbIterations() : $this->iterationsOverride;
+        $iterationCount = null === $this->iterationsOverride ? $subject->getIterations() : $this->iterationsOverride;
         $revolutionCounts = $this->revsOverride ? array($this->revsOverride) : $subject->getRevs();
         $parameterSets = $this->parametersOverride ? array(array($this->parametersOverride)) : $subject->getParameterSets() ?: array(array(array()));
 
@@ -177,7 +179,7 @@ class Runner
             }
 
             $subjectEl->appendChild($variantEl);
-            $this->runIterations($subject, $iterationCount, $revolutionCounts, $parameters, $variantEl);
+            $this->runIterations($subject, $iterationCount, (array) $revolutionCounts, $parameters, $variantEl);
         }
     }
 
@@ -208,7 +210,7 @@ class Runner
         ));
     }
 
-    private function runIterations(Subject $subject, $iterationCount, array $revolutionCounts, array $parameterSet, \DOMElement $variantEl)
+    private function runIterations(SubjectMetadata $subject, $iterationCount, array $revolutionCounts, array $parameterSet, \DOMElement $variantEl)
     {
         for ($index = 0; $index < $iterationCount; $index++) {
             foreach ($revolutionCounts as $revolutionCount) {
@@ -220,7 +222,7 @@ class Runner
         }
     }
 
-    private function runIteration(Subject $subject, $revolutionCount, $parameterSet, \DOMElement $iterationEl)
+    private function runIteration(SubjectMetadata $subject, $revolutionCount, $parameterSet, \DOMElement $iterationEl)
     {
         $result = $this->executor->execute(
             $subject,

@@ -153,7 +153,7 @@ number of times that the code is consecutively executed.
     class TimeConsumerBench implements Benchmark
     {
         /**
-         * @revs 1000
+         * @Revs(1000)
          */
         public function benchConsume()
         {
@@ -168,8 +168,8 @@ single measurement.
 
 Currently we only execute the benchmark subject a single time, to verify the
 result you should increase the number of :ref:`iterations <iterations>` using
-the ``@iterations`` annotation (either as a replacement or in addition to
-``@revs``:
+the ``@Iterations`` annotation (either as a replacement or in addition to
+``@Revs``:
 
 .. code-block:: php
 
@@ -180,8 +180,8 @@ the ``@iterations`` annotation (either as a replacement or in addition to
     class TimeConsumerBench implements Benchmark
     {
         /**
-         * @revs 1000
-           @iterations 5
+         * @Revs(1000)
+           @Iterations(5)
          */
         public function benchConsume()
         {

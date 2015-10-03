@@ -11,8 +11,8 @@
 
 namespace PhpBench\Progress\Logger;
 
-use PhpBench\Benchmark\Benchmark;
-use PhpBench\Benchmark\Subject;
+use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
+use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Progress\LoggerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -25,21 +25,21 @@ class VerboseLogger implements LoggerInterface
         $this->output = $output;
     }
 
-    public function benchmarkStart(Benchmark $benchmark)
+    public function benchmarkStart(BenchmarkMetadata $benchmark)
     {
-        $this->output->writeln(sprintf('<comment>%s</comment>', $benchmark->getClassFqn()));
+        $this->output->writeln(sprintf('<comment>%s</comment>', $benchmark->getClass()));
     }
 
-    public function benchmarkEnd(Benchmark $benchmark)
+    public function benchmarkEnd(BenchmarkMetadata $benchmark)
     {
     }
 
-    public function subjectStart(Subject $subject)
+    public function subjectStart(SubjectMetadata $subject)
     {
-        $this->output->write('  <info>>> </info>' . $subject->getMethodName());
+        $this->output->write('  <info>>> </info>' . $subject->getName());
     }
 
-    public function subjectEnd(Subject $subject)
+    public function subjectEnd(SubjectMetadata $subject)
     {
         $this->output->writeln(' [<info>OK</info>]');
     }

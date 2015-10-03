@@ -11,19 +11,19 @@
 
 namespace PhpBench\Progress;
 
-use PhpBench\Benchmark\Benchmark;
-use PhpBench\Benchmark\Subject;
+use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
+use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use Symfony\Component\Console\Output\OutputInterface;
 
 interface LoggerInterface
 {
-    public function benchmarkEnd(Benchmark $benchmark);
+    public function benchmarkEnd(BenchmarkMetadata $benchmark);
 
-    public function benchmarkStart(Benchmark $benchmark);
+    public function benchmarkStart(BenchmarkMetadata $benchmark);
 
-    public function subjectEnd(Subject $case);
+    public function subjectEnd(SubjectMetadata $case);
 
-    public function subjectStart(Subject $case);
+    public function subjectStart(SubjectMetadata $case);
 
     public function setOutput(OutputInterface $output);
 }

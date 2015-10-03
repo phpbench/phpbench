@@ -11,13 +11,13 @@
 
 namespace PhpBench\Extension;
 
-use PhpBench\Benchmark\BenchmarkBuilder;
 use PhpBench\Benchmark\CollectionBuilder;
 use PhpBench\Benchmark\Executor;
-use PhpBench\Benchmark\Parser;
+use PhpBench\Benchmark\Metadata\Driver\AnnotationDriver;
+use PhpBench\Benchmark\Metadata\Factory;
+use PhpBench\Benchmark\Remote\Launcher;
+use PhpBench\Benchmark\Remote\Reflector;
 use PhpBench\Benchmark\Runner;
-use PhpBench\Benchmark\Teleflector;
-use PhpBench\Benchmark\Telespector;
 use PhpBench\Console\Application;
 use PhpBench\Console\Command\ReportCommand;
 use PhpBench\Console\Command\RunCommand;
@@ -59,55 +59,13 @@ class CoreExtension implements ExtensionInterface
 
             return $application;
         });
-        $container->register('benchmark.runner', function (Container $container) {
-            return new Runner(
-                $container->get('benchmark.collection_builder'),
-                $container->get('benchmark.executor'),
-                $container->getParameter('config_path')
-            );
-        });
-        $container->register('benchmark.executor', function (Container $container) {
-            return new Executor(
-                $container->get('benchmark.telespector')
-            );
-        });
-        $container->register('benchmark.finder', function (Container $container) {
-            return new Finder();
-        });
-        $container->register('benchmark.telespector', function (Container $container) {
-            return new Telespector(
-                $container->hasParameter('bootstrap') ? $container->getParameter('bootstrap') : null,
-                $container->getParameter('config_path')
-            );
-        });
-        $container->register('benchmark.teleflector', function (Container $container) {
-            return new Teleflector($container->get('benchmark.telespector'));
-        });
-        $container->register('benchmark.benchmark_builder', function (Container $container) {
-            return new BenchmarkBuilder(
-                $container->get('benchmark.teleflector'),
-                $container->get('benchmark.parser')
-            );
-        });
-        $container->register('benchmark.parser', function (Container $container) {
-            return new Parser();
-        });
-        $container->register('benchmark.collection_builder', function (Container $container) {
-            return new CollectionBuilder(
-                $container->get('benchmark.benchmark_builder'),
-                $container->get('benchmark.finder'),
-                dirname($container->getParameter('config_path'))
-            );
-        });
         $container->register('report.manager', function (Container $container) {
             return new ReportManager(
                 $container->get('json_schema.validator')
             );
         });
-        $container->register('progress_logger.registry', function (Container $container) {
-            return new LoggerRegistry();
-        });
 
+        $this->registerBenchmark($container);
         $this->registerJsonSchema($container);
         $this->registerTabular($container);
         $this->registerCommands($container);
@@ -150,6 +108,59 @@ class CoreExtension implements ExtensionInterface
         }
     }
 
+    private function registerBenchmark(Container $container)
+    {
+        $container->register('benchmark.runner', function (Container $container) {
+            return new Runner(
+                $container->get('benchmark.collection_builder'),
+                $container->get('benchmark.executor'),
+                $container->getParameter('config_path')
+            );
+        });
+
+        $container->register('benchmark.executor', function (Container $container) {
+            return new Executor(
+                $container->get('benchmark.remote.launcher')
+            );
+        });
+
+        $container->register('benchmark.finder', function (Container $container) {
+            return new Finder();
+        });
+
+        $container->register('benchmark.remote.launcher', function (Container $container) {
+            return new Launcher(
+                $container->hasParameter('bootstrap') ? $container->getParameter('bootstrap') : null,
+                $container->getParameter('config_path')
+            );
+        });
+
+        $container->register('benchmark.remote.reflector', function (Container $container) {
+            return new Reflector($container->get('benchmark.remote.launcher'));
+        });
+
+        $container->register('benchmark.metadata.driver.annotation', function (Container $container) {
+            return new AnnotationDriver(
+                $container->get('benchmark.remote.reflector')
+            );
+        });
+
+        $container->register('benchmark.metadata_factory', function (Container $container) {
+            return new Factory(
+                $container->get('benchmark.remote.reflector'),
+                $container->get('benchmark.metadata.driver.annotation')
+            );
+        });
+
+        $container->register('benchmark.collection_builder', function (Container $container) {
+            return new CollectionBuilder(
+                $container->get('benchmark.metadata_factory'),
+                $container->get('benchmark.finder'),
+                dirname($container->getParameter('config_path'))
+            );
+        });
+    }
+
     private function registerJsonSchema(Container $container)
     {
         $container->register('json_schema.validator', function (Container $container) {
@@ -179,6 +190,10 @@ class CoreExtension implements ExtensionInterface
 
     private function registerProgressLoggers(Container $container)
     {
+        $container->register('progress_logger.registry', function (Container $container) {
+            return new LoggerRegistry();
+        });
+
         $container->register('progress_logger.dots', function (Container $container) {
             return new DotsLogger();
         }, array('progress_logger' => array('name' => 'dots')));

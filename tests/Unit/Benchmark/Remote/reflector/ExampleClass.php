@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Tests\Unit\Benchmark\teleflector;
+namespace PhpBench\Tests\Unit\Benchmark\reflector;
 
 /**
  * Some doc comment.

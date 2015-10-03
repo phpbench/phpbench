@@ -10,9 +10,9 @@
  */
 
 /**
- * @revs 1000
- * @iterations 8
- * @group string_extraction
+ * @Revs(1000)
+ * @Iterations(8)
+ * @Groups({"string_extraction"})
  */
 class StringSplitting
 {

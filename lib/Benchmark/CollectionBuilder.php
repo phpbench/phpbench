@@ -11,21 +11,49 @@
 
 namespace PhpBench\Benchmark;
 
+use PhpBench\Benchmark\Metadata\Factory;
 use Symfony\Component\Finder\Finder;
 
+/**
+ * This class finds a benchmark (or benchmarks depending on the path), loads
+ * their metadata and builds a collection of BenchmarkMetadata instances.
+ */
 class CollectionBuilder
 {
+    /**
+     * @var Finder
+     */
     private $finder;
-    private $baseDir;
-    private $benchmarkBuilder;
 
-    public function __construct(BenchmarkBuilder $benchmarkBuilder, Finder $finder = null, $baseDir = null)
+    /**
+     * @var string
+     */
+    private $baseDir;
+
+    /**
+     * @var Factory
+     */
+    private $factory;
+
+    /**
+     * @param Factory $factory
+     * @param Finder $finder
+     * @param mixed $baseDir
+     */
+    public function __construct(Factory $factory, Finder $finder = null, $baseDir = null)
     {
-        $this->benchmarkBuilder = $benchmarkBuilder;
+        $this->factory = $factory;
         $this->finder = $finder ?: new Finder();
         $this->baseDir = $baseDir;
     }
 
+    /**
+     * Build the BenchmarkMetadata collection.
+     *
+     * @param string $path
+     * @param array $subjectFilter
+     * @param array $groupFilter
+     */
     public function buildCollection($path, array $subjectFilter = array(), array $groupFilter = array())
     {
         if ($this->baseDir && '/' !== substr($path, 0, 1)) {
@@ -56,13 +84,25 @@ class CollectionBuilder
                 continue;
             }
 
-            $benchmark = $this->benchmarkBuilder->build($file->getPathname(), $subjectFilter, $groupFilter);
+            $benchmarkMetadata = $this->factory->getMetadataForFile($file->getPathname());
 
-            if (null === $benchmark) {
+            if (null === $benchmarkMetadata) {
                 continue;
             }
 
-            $benchmarks[] = $benchmark;
+            if ($groupFilter) {
+                $benchmarkMetadata->filterSubjectGroups($groupFilter);
+            }
+
+            if ($subjectFilter) {
+                $benchmarkMetadata->filterSubjectNames($subjectFilter);
+            }
+
+            if (false === $benchmarkMetadata->hasSubjects()) {
+                continue;
+            }
+
+            $benchmarks[] = $benchmarkMetadata;
         }
 
         return new Collection($benchmarks);

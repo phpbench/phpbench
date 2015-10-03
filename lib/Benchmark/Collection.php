@@ -11,7 +11,7 @@
 
 namespace PhpBench\Benchmark;
 
-class Collection
+class Collection implements \IteratorAggregate
 {
     private $benchmarks;
 
@@ -23,5 +23,10 @@ class Collection
     public function getBenchmarks()
     {
         return $this->benchmarks;
+    }
+
+    public function getIterator()
+    {
+        return new \ArrayObject($this->benchmarks);
     }
 }

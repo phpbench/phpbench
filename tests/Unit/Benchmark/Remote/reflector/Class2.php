@@ -9,21 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Tests\Unit\Benchmark\teleflector;
+namespace PhpBench\Tests\Unit\Benchmark\Remote\reflector;
 
-class Class3 extends Class2
+class Class2 extends Class1
 {
     /**
-     * foobar.
+     * two.
      */
     public function two()
-    {
-    }
-
-    /**
-     * three.
-     */
-    public function three()
     {
     }
 }

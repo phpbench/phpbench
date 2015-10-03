@@ -10,9 +10,9 @@
  */
 
 /**
- * @revs 1000
- * @iterations 10
- * @group hashing
+ * @Revs(1000)
+ * @Iterations(10)
+ * @Groups({"hashing"})
  */
 class HashingBenchmark
 {

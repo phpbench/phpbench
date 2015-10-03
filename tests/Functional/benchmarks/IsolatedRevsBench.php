@@ -12,8 +12,8 @@
 class IsolatedRevsBench
 {
     /**
-     * @revs 10
-     * @revs 100
+     * @Revs(10)
+     * @Revs(100)
      */
     public function benchIterationIsolation()
     {

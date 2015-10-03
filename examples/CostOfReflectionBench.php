@@ -10,9 +10,9 @@
  */
 
 /**
- * @beforeMethod init
- * @revs 10000
- * @iterations 4
+ * @BeforeMethods({"init"})
+ * @Revs(10000)
+ * @Iterations(4)
  */
 class CostOfReflectionBench
 {
@@ -31,7 +31,7 @@ class CostOfReflectionBench
     }
 
     /**
-     * @group cost_of_setting
+     * @Groups({"cost_of_setting"})
      */
     public function benchMethodSet()
     {
@@ -39,7 +39,7 @@ class CostOfReflectionBench
     }
 
     /**
-     * @group cost_of_setting
+     * @Groups({"cost_of_setting"})
      */
     public function benchPublicProperty()
     {
@@ -47,7 +47,7 @@ class CostOfReflectionBench
     }
 
     /**
-     * @group cost_of_setting
+     * @Groups({"cost_of_setting"})
      */
     public function benchPublicReflection()
     {
@@ -55,7 +55,7 @@ class CostOfReflectionBench
     }
 
     /**
-     * @group cost_of_setting
+     * @Groups({"cost_of_setting"})
      */
     public function benchPrivateReflection()
     {
@@ -63,7 +63,7 @@ class CostOfReflectionBench
     }
 
     /**
-     * @group cost_of_instantiation
+     * @Groups({"cost_of_instantiation"})
      */
     public function benchNewClass()
     {
@@ -71,7 +71,7 @@ class CostOfReflectionBench
     }
 
     /**
-     * @group cost_of_instantiation
+     * @Groups({"cost_of_instantiation"})
      */
     public function benchReflectionNewInstance()
     {

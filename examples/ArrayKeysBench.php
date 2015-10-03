@@ -14,13 +14,10 @@ namespace PhpBench\Tests\Functional\benchmarks;
 /**
  * This example benchmarks array_key_exists vs. isset vs. in_array.
  *
- * @beforeMethod init
- * @revs 10000
- * @revs 1000
- * @revs 100
- * @revs 10
- * @iterations 4
- * @group array_keys
+ * @BeforeMethods({"init"})
+ * @Revs(10000)
+ * @Iterations(4)
+ * @Groups({"array_keys"})
  */
 class ArrayKeysBench
 {

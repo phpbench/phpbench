@@ -19,12 +19,12 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->collectionBuilder = $this->prophesize('PhpBench\\Benchmark\\CollectionBuilder');
-        $this->collection = $this->prophesize('PhpBench\\Benchmark\\Collection');
-        $this->subject = $this->prophesize('PhpBench\\Benchmark\\Subject');
+        $this->collectionBuilder = $this->prophesize('PhpBench\Benchmark\CollectionBuilder');
+        $this->collection = $this->prophesize('PhpBench\Benchmark\Collection');
+        $this->subject = $this->prophesize('PhpBench\Benchmark\Metadata\SubjectMetadata');
         $this->collectionBuilder->buildCollection(__DIR__, array(), array())->willReturn($this->collection);
         $this->executor = $this->prophesize('PhpBench\Benchmark\Executor');
-        $this->benchmark = $this->prophesize('PhpBench\Benchmark\Benchmark');
+        $this->benchmark = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');
 
         $this->runner = new Runner(
             $this->collectionBuilder->reveal(),
@@ -49,17 +49,17 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->collection->getBenchmarks()->willReturn(array(
             $this->benchmark,
         ));
-        $this->subject->getNbIterations()->willReturn($iterations);
-        $this->subject->getMethodName()->willReturn('benchFoo');
+        $this->subject->getIterations()->willReturn($iterations);
+        $this->subject->getName()->willReturn('benchFoo');
         $this->subject->getBeforeMethods()->willReturn(array('beforeFoo'));
         $this->subject->getAfterMethods()->willReturn(array());
         $this->subject->getParameterSets()->willReturn(array(array($parameters)));
         $this->subject->getGroups()->willReturn(array());
         $this->subject->getRevs()->willReturn($revs);
-        $this->benchmark->getSubjects()->willReturn(array(
+        $this->benchmark->getSubjectMetadatas()->willReturn(array(
             $this->subject->reveal(),
         ));
-        $this->benchmark->getClassFqn()->willReturn('Benchmark');
+        $this->benchmark->getClass()->willReturn('Benchmark');
 
         if (!$exception) {
             foreach ($revs as $revCount) {
