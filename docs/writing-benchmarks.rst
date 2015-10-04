@@ -252,7 +252,7 @@ Will result in the following parameter benchmark scenarios:
 Groups
 ------
 
-You can assign benchmark subjects to groups using the ``@Group`` annotation.
+You can assign benchmark subjects to groups using the ``@Groups`` annotation.
 
 .. code-block:: php
 

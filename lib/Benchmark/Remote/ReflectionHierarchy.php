@@ -75,6 +75,11 @@ class ReflectionHierarchy implements \IteratorAggregate
         return false;
     }
 
+    /**
+     * Return true if thare are no reflection classes here.
+     *
+     * @return boolean
+     */
     public function isEmpty()
     {
         return 0 === count($this->reflectionClasses);

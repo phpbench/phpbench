@@ -38,7 +38,7 @@ class CollectionBuilder
     /**
      * @param Factory $factory
      * @param Finder $finder
-     * @param mixed $baseDir
+     * @param string $baseDir
      */
     public function __construct(Factory $factory, Finder $finder = null, $baseDir = null)
     {

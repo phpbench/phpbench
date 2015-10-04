@@ -17,7 +17,7 @@ namespace PhpBench\Benchmark\Metadata;
 class SubjectMetadata extends AbstractMetadata
 {
     /**
-     * @Var string
+     * @var string
      */
     private $name;
 
@@ -33,7 +33,7 @@ class SubjectMetadata extends AbstractMetadata
 
     /**
      * @param BenchmarkMetadata $benchmarkMetadata
-     * @param mixed $name
+     * @param string $name
      */
     public function __construct(BenchmarkMetadata $benchmarkMetadata, $name)
     {
