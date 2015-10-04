@@ -52,7 +52,7 @@
                 {
                     "name": "stability",
                     "class": "stability",
-                    "expr": "100 - deviation(min(descendant::iteration/@time), average(descendant::iteration/@time))"
+                    "expr": "100 - deviation(min(descendant::iteration/@time), max(descendant::iteration/@time))"
                 }
             ],
             "with_query": "{{ param.selector }}"

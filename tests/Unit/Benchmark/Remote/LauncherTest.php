@@ -9,20 +9,20 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Tests\Unit\Benchmark;
+namespace PhpBench\Tests\Unit\Benchmark\Remote;
 
-use PhpBench\Benchmark\Telespector;
+use PhpBench\Benchmark\Remote\Launcher;
 
-class TelespectorTest extends \PHPUnit_Framework_TestCase
+class LauncherTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * It should generate a script from a given template, execute it
+     * It should generate a script from a given template, launch it
      * and return the results.
      */
     public function testExecute()
     {
-        $teleporter = new Telespector(__DIR__ . '/../../../vendor/autoload.php', '.');
-        $result = $teleporter->execute(__DIR__ . '/template/foo.template', array(
+        $launcher = new Launcher(__DIR__ . '/../../../../vendor/autoload.php', '.');
+        $result = $launcher->launch(__DIR__ . '/template/foo.template', array(
             'foo' => 'bar',
         ));
 
@@ -35,12 +35,12 @@ class TelespectorTest extends \PHPUnit_Framework_TestCase
      * It should throw an exception if the script is invalid.
      *
      * @expectedException RuntimeException
-     * @expectedExceptionMessage Could not execute script
+     * @expectedExceptionMessage Could not launch script
      */
     public function testInvalidScript()
     {
-        $teleporter = new Telespector(__DIR__ . '/../../../vendor/autoload.php', '.');
-        $teleporter->execute(__DIR__ . '/template/invalid.template', array(
+        $launcher = new Launcher(__DIR__ . '/../../../../vendor/autoload.php', '.');
+        $launcher->launch(__DIR__ . '/template/invalid.template', array(
             'foo' => 'bar',
         ));
     }
@@ -53,7 +53,7 @@ class TelespectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidBootstrap()
     {
-        $teleporter = new Telespector('really_does_not_exist.com', null);
-        $teleporter->execute(__DIR__ . '/template/foo.template', array());
+        $launcher = new Launcher('really_does_not_exist.com', null);
+        $launcher->launch(__DIR__ . '/template/foo.template', array());
     }
 }

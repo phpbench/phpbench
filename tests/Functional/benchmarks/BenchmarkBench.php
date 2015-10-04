@@ -17,19 +17,18 @@ class BenchmarkBench
     }
 
     /**
-     * @iterations 10
-     * @revs 10000
-     * @group do_nothing
+     * @Iterations(10)
+     * @Revs(10000)
+     * @Groups({"do_nothing"})
      */
     public function benchDoNothing()
     {
     }
 
     /**
-     * @paramProvider provideParamsOne
-     * @paramProvider provideParamsTwo
-     * @group parameterized
-     * @iterations 1
+     * @ParamProviders({"provideParamsOne", "provideParamsTwo"})
+     * @Groups({"parameterized"})
+     * @Iterations(1)
      */
     public function benchParameterized($params)
     {

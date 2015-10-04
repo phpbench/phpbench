@@ -10,9 +10,9 @@
  */
 
 /**
- * @group cost_of_calling
- * @revs 10000
- * @iterations 10
+ * @Groups({"cost_of_calling"})
+ * @Revs(10000)
+ * @Iterations(10)
  */
 class CostOfCalling
 {

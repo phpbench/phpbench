@@ -65,14 +65,14 @@ We can arrive at a more accurate measurement by determining the average time
 from multiple revolutions (i.e. *time / revolutions*) than we could with a
 single revolution. In other words, more revolutions means more precision.
 
-Revolutions can be specified using the ``@revs`` annotation:
+Revolutions can be specified using the ``@Revs`` annotation:
 
 .. code-block:: php
 
     <?php
 
     /**
-     * @revs 1000
+     * @Revs(1000)
      */
     class HashBench
     {
@@ -99,14 +99,14 @@ other, the more stable the benchmark is, and the more you can trust the results.
     In a *perfect* environment the readings would all be *exactly* the same -
     but such an environment is unlikely to exist 
 
-Iterations can be specified using the ``@iterations`` annotation:
+Iterations can be specified using the ``@Iterations`` annotation:
 
 .. code-block:: php
 
     <?php
 
     /**
-     * @iterations 5
+     * @Iterations(5)
      */
     class HashBench
     {
@@ -119,8 +119,8 @@ Estabilishing State: Before and After
 -------------------------------------
 
 Any number of methods can be executed both before and after each benchmark
-subject using the ``@beforeMethod`` and
-``@afterMethod`` annotations. Before methods are usefulessential for bootstrapping
+subject using the ``@BeforeMethods`` and
+``@AfterMethods`` annotations. Before methods are useful for bootstrapping
 your environment, for example:
 
 .. code-block:: php
@@ -128,7 +128,7 @@ your environment, for example:
     <?php
 
     /**
-     * @beforeMethod init
+     * @BeforeMethods({"init"})
      */
     class HashBench
     {
@@ -149,7 +149,7 @@ Multiple before and after methods can be specified.
 
 .. note::
 
-    If before and after methods are used when the ``@paramProvider``
+    If before and after methods are used when the ``@ParamProviders``
     annotations are used, then they will also be passed the parameters.
 
 .. _parameters:
@@ -168,13 +168,15 @@ Parameter sets can be provided to benchmark subjects. For example:
         public function provideStrings()
         {
             return array(
-                'string' => 'Hello World!',
-                'string' =>> 'Goodbye Cruel World!',
+                array(
+                    'hello' => 'Hello World!',
+                    'goodbye' => 'Goodbye Cruel World!',
+                )
             );
         }
 
         /**
-         * @paramProvider provideStrings
+         * @ParamProviders({"provideStrings"})
          */
         public function benchMd5($params)
         {
@@ -197,22 +199,29 @@ parameters will be generated, for example:
         public function provideStrings()
         {
             return array(
-                'string' => 'Hello World!',
-                'string' =>> 'Goodbye Cruel World!',
+                array(
+                    'string' => 'Hello World!',
+                ),
+                array(
+                    'string' => 'Goodbye Cruel World!',
+                ),
             );
         }
 
         public function provideNumbers()
         {
             return array(
-                'algorithm' => 'md5',
-                'algorithm' =>> 'sha1',
+                array(
+                    'algorithm' => 'md5',
+                ),
+                array(
+                    'algorithm' => 'sha1',
+                ),
             );
         }
 
         /**
-         * @paramProvider provideStrings
-         * @paramProvider provideNumbers
+         * @ParamProviders({"provideStrings", "provideNumbers"})
          */
         public function benchHash($params)
         {
@@ -243,14 +252,14 @@ Will result in the following parameter benchmark scenarios:
 Groups
 ------
 
-You can assign benchmark subjects to groups using the ``@group`` annotation.
+You can assign benchmark subjects to groups using the ``@Groups`` annotation.
 
 .. code-block:: php
 
     <?php
 
     /**
-     * @group hash
+     * @Groups({"hash"})
      */
     class HashBench
     {

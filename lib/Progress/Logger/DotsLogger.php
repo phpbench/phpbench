@@ -11,8 +11,8 @@
 
 namespace PhpBench\Progress\Logger;
 
-use PhpBench\Benchmark\Benchmark;
-use PhpBench\Benchmark\Subject;
+use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
+use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Progress\LoggerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -31,7 +31,7 @@ class DotsLogger implements LoggerInterface
         $this->output = $output;
     }
 
-    public function benchmarkStart(Benchmark $benchmark)
+    public function benchmarkStart(BenchmarkMetadata $benchmark)
     {
         static $first = true;
 
@@ -42,19 +42,19 @@ class DotsLogger implements LoggerInterface
             }
             $first = false;
 
-            $this->output->writeln($benchmark->getClassFqn());
+            $this->output->writeln($benchmark->getClass());
         }
     }
 
-    public function benchmarkEnd(Benchmark $benchmark)
+    public function benchmarkEnd(BenchmarkMetadata $benchmark)
     {
     }
 
-    public function subjectStart(Subject $subject)
+    public function subjectStart(SubjectMetadata $subject)
     {
     }
 
-    public function subjectEnd(Subject $subject)
+    public function subjectEnd(SubjectMetadata $subject)
     {
         $this->output->write('.');
     }

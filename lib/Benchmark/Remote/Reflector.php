@@ -9,33 +9,86 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Benchmark;
+namespace PhpBench\Benchmark\Remote;
 
-class Teleflector
+/**
+ * Reflector for remote classes.
+ */
+class Reflector
 {
-    private $telespector;
+    /**
+     * @param Launcher
+     */
+    private $launcher;
 
+    /**
+     * @param Launcher $launcher
+     */
     public function __construct(
-        Telespector $telespector
+        Launcher $launcher
     ) {
-        $this->telespector = $telespector;
+        $this->launcher = $launcher;
     }
 
-    public function getClassInfo($file)
+    /**
+     * Return an array of ReflectionClass instances for the given file. The
+     * first ReflectionClass is the class contained in the given file (there
+     * may be only one) additional ReflectionClass instances are the ancestors
+     * of this first class.
+     *
+     * @param string $file
+     *
+     * @return ReflectionHierarchy
+     */
+    public function reflect($file)
     {
         $classFqn = $this->getClassNameFromFile($file);
 
-        $classHierarchy = $this->telespector->execute(__DIR__ . '/template/teleflector.template', array(
+        if (null === $classFqn) {
+            throw new \InvalidArgumentException(sprintf(
+                'Could not find class in file "%s"', $file
+            ));
+        }
+
+        $classHierarchy = $this->launcher->launch(__DIR__ . '/template/reflector.template', array(
             'file' => $file,
             'class' => $classFqn,
         ));
 
-        return $this->mergeClassHierarchy($classHierarchy);
+        $hierarchy = new ReflectionHierarchy();
+
+        foreach ($classHierarchy as $classInfo) {
+            $reflectionClass = new ReflectionClass();
+            $reflectionClass->class = $classInfo['class'];
+            $reflectionClass->abstract = $classInfo['abstract'];
+            $reflectionClass->comment = $classInfo['comment'];
+            $reflectionClass->interfaces = $classInfo['interfaces'];
+            $reflectionClass->path = $file;
+
+            foreach ($classInfo['methods'] as $methodInfo) {
+                $reflectionMethod = new ReflectionMethod();
+                $reflectionMethod->class = $classInfo['class'];
+                $reflectionMethod->name = $methodInfo['name'];
+                $reflectionMethod->comment = $methodInfo['comment'];
+                $reflectionClass->methods[$reflectionMethod->name] = $reflectionMethod;
+            }
+            $hierarchy->addReflectionClass($reflectionClass);
+        }
+
+        return $hierarchy;
     }
 
+    /**
+     * Return the parameter sets for the benchmark container in the given file.
+     *
+     * @param string $file
+     * @param string[] $paramProviders
+     *
+     * @return array
+     */
     public function getParameterSets($file, $paramProviders)
     {
-        $parameterSets = $this->telespector->execute(__DIR__ . '/template/parameter_set_extractor.template', array(
+        $parameterSets = $this->launcher->launch(__DIR__ . '/template/parameter_set_extractor.template', array(
             'file' => $file,
             'class' => $this->getClassNameFromFile($file),
             'paramProviders' => var_export($paramProviders, true),
@@ -98,21 +151,5 @@ class Teleflector
         }
 
         return $namespace . '\\' . $class;
-    }
-
-    private function mergeClassHierarchy(array $classHierarchy)
-    {
-        $classInfo = array(
-            'methods' => array(),
-            'comment' => '',
-        );
-        foreach (array_reverse($classHierarchy) as $classMeta) {
-            $classInfo['class'] = $classMeta['class'];
-            $classInfo['abstract'] = $classMeta['abstract'];
-            $classInfo['comment'] .= $classMeta['comment'];
-            $classInfo['methods'] = array_replace_recursive($classInfo['methods'], $classMeta['methods']);
-        }
-
-        return $classInfo;
     }
 }

@@ -12,19 +12,21 @@
 namespace PhpBench\Tests\Benchmark;
 
 use PhpBench\Benchmark\CollectionBuilder;
-use Symfony\Component\Finder\Finder;
 
 class CollectionBuilderTest extends \PHPUnit_Framework_TestCase
 {
-    private $benchmarkBuilder;
-    private $finder;
+    private $builder;
+    private $factory;
+    private $benchmark1;
+    private $benchmark2;
 
     public function setUp()
     {
-        $this->benchmarkBuilder = $this->prophesize('PhpBench\Benchmark\BenchmarkBuilder');
-        $this->benchmark1 = $this->prophesize('PhpBench\Benchmark\Benchmark');
-        $this->benchmark2 = $this->prophesize('PhpBench\Benchmark\Benchmark');
-        $this->finder = new CollectionBuilder($this->benchmarkBuilder->reveal());
+        $this->factory = $this->prophesize('PhpBench\Benchmark\Metadata\Factory');
+        $this->benchmark1 = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');
+        $this->benchmark2 = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');
+        $this->subject = $this->prophesize('PhpBench\Benchmark\Metadata\SubjectMetadata');
+        $this->builder = new CollectionBuilder($this->factory->reveal());
     }
 
     /**
@@ -33,14 +35,14 @@ class CollectionBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuildCollection()
     {
-        $this->benchmarkBuilder->build(__DIR__ . '/findertest/FooCaseBench.php', array(), array())->willReturn($this->benchmark1->reveal());
-        $this->benchmarkBuilder->build(__DIR__ . '/findertest/FooCase2Bench.php', array(), array())->willReturn($this->benchmark1->reveal());
-        $this->benchmarkBuilder->build(__DIR__ . '/findertest/AbstractBench.php', array(), array())->willReturn(null);
-        $collection = $this->finder->buildCollection(__DIR__ . '/findertest');
-        $benchmarks = $collection->getBenchmarks();
+        $this->factory->getMetadataForFile(__DIR__ . '/buildertest/FooCaseBench.php')->willReturn($this->benchmark1->reveal());
+        $this->factory->getMetadataForFile(__DIR__ . '/buildertest/FooCase2Bench.php')->willReturn($this->benchmark2->reveal());
+        $this->factory->getMetadataForFile(__DIR__ . '/buildertest/AbstractBench.php')->willReturn(null);
+        $collection = $this->builder->buildCollection(__DIR__ . '/buildertest');
 
+        $benchmarks = $collection->getBenchmarks();
         $this->assertCount(2, $benchmarks);
-        $this->assertContainsOnlyInstancesOf('PhpBench\Benchmark\Benchmark', $benchmarks);
+        $this->assertContainsOnlyInstancesOf('PhpBench\Benchmark\Metadata\BenchmarkMetadata', $benchmarks);
     }
 
     /**
@@ -49,10 +51,25 @@ class CollectionBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testSpecificBenchmark()
     {
-        $this->benchmarkBuilder->build(__DIR__ . '/findertestnested/MyBench.php', array(), array())->willReturn($this->benchmark1->reveal());
-        $collection = $this->finder->buildCollection(__DIR__ . '/findertestnested/MyBench.php');
+        $this->factory->getMetadataForFile(__DIR__ . '/buildertestnested/MyBench.php')->willReturn($this->benchmark1->reveal());
+
+        $collection = $this->builder->buildCollection(__DIR__ . '/buildertestnested/MyBench.php');
         $benchmarks = $collection->getBenchmarks();
 
         $this->assertCount(1, $benchmarks);
+    }
+
+    /**
+     * It should skip benchmarks that have no subjects.
+     */
+    public function testNoSubjects()
+    {
+        $this->factory->getMetadataForFile(__DIR__ . '/buildertestnested/MyBench.php')->willReturn($this->benchmark1->reveal());
+        $this->benchmark1->hasSubjects()->willReturn(false);
+
+        $collection = $this->builder->buildCollection(__DIR__ . '/buildertestnested/MyBench.php');
+        $benchmarks = $collection->getBenchmarks();
+
+        $this->assertCount(0, $benchmarks);
     }
 }

@@ -12,7 +12,7 @@
 namespace PhpBench\Tests\Unit\Benchmark;
 
 use PhpBench\Benchmark\Executor;
-use PhpBench\Benchmark\Telespector;
+use PhpBench\Benchmark\Remote\Launcher;
 
 class ExecutorTest extends \PHPUnit_Framework_TestCase
 {
@@ -35,16 +35,16 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
         $this->paramAfterFile = __DIR__ . '/executortest/paramafter.tmp';
         $this->teardownFile = __DIR__ . '/executortest/teardown.tmp';
 
-        $this->subject = $this->prophesize('PhpBench\Benchmark\Subject');
-        $this->benchmark = $this->prophesize('PhpBench\Benchmark\Benchmark');
+        $this->subject = $this->prophesize('PhpBench\Benchmark\Metadata\SubjectMetadata');
+        $this->benchmark = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');
 
-        $telespector = new Telespector(null, null);
-        $this->executor = new Executor($telespector);
+        $launcher = new Launcher(null, null);
+        $this->executor = new Executor($launcher);
         $this->removeTemporaryFiles();
 
         $this->benchmark->getPath()->willReturn(__DIR__ . '/executortest/ExecutorBench.php');
-        $this->benchmark->getClassFqn()->willReturn('PhpBench\Tests\Unit\Benchmark\executortest\ExecutorBench');
-        $this->subject->getBenchmark()->willReturn($this->benchmark->reveal());
+        $this->benchmark->getClass()->willReturn('PhpBench\Tests\Unit\Benchmark\executortest\ExecutorBench');
+        $this->subject->getBenchmarkMetadata()->willReturn($this->benchmark->reveal());
     }
 
     public function tearDown()
@@ -78,7 +78,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
     {
         $this->subject->getBeforeMethods()->willReturn(array());
         $this->subject->getAfterMethods()->willReturn(array());
-        $this->subject->getMethodName()->willReturn('doSomething');
+        $this->subject->getName()->willReturn('doSomething');
 
         $result = $this->executor->execute(
             $this->subject->reveal(),
@@ -102,7 +102,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
     {
         $this->subject->getBeforeMethods()->willReturn(array('beforeMethod'));
         $this->subject->getAfterMethods()->willReturn(array());
-        $this->subject->getMethodName()->willReturn('doSomething');
+        $this->subject->getName()->willReturn('doSomething');
 
         $this->executor->execute(
             $this->subject->reveal(),
@@ -120,7 +120,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
     {
         $this->subject->getBeforeMethods()->willReturn(array());
         $this->subject->getAfterMethods()->willReturn(array('afterMethod'));
-        $this->subject->getMethodName()->willReturn('doSomething');
+        $this->subject->getName()->willReturn('doSomething');
 
         $this->executor->execute(
             $this->subject->reveal(),
@@ -138,7 +138,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
     {
         $this->subject->getBeforeMethods()->willReturn(array());
         $this->subject->getAfterMethods()->willReturn(array());
-        $this->subject->getMethodName()->willReturn('parameterized');
+        $this->subject->getName()->willReturn('parameterized');
 
         $this->executor->execute(
             $this->subject->reveal(),
@@ -168,7 +168,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
 
         $this->subject->getBeforeMethods()->willReturn(array('parameterizedBefore'));
         $this->subject->getAfterMethods()->willReturn(array('parameterizedAfter'));
-        $this->subject->getMethodName()->willReturn('parameterized');
+        $this->subject->getName()->willReturn('parameterized');
 
         $this->executor->execute(
             $this->subject->reveal(),

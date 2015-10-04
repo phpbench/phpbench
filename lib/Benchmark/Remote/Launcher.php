@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Benchmark;
+namespace PhpBench\Benchmark\Remote;
 
 use Symfony\Component\Process\Process;
 
@@ -17,7 +17,7 @@ use Symfony\Component\Process\Process;
  * Build and execute parameterized scripts in separate processes.
  * The scripts should return a JSON encoded string.
  */
-class Telespector
+class Launcher
 {
     /**
      * @var string
@@ -38,7 +38,7 @@ class Telespector
         $this->configDir = dirname($configPath);
     }
 
-    public function execute($template, array $parameters)
+    public function launch($template, array $parameters)
     {
         $bootstrap = $this->getBootstrapPath();
         if ($bootstrap && !file_exists($bootstrap)) {
@@ -78,7 +78,7 @@ class Telespector
 
         if (false === $process->isSuccessful()) {
             throw new \RuntimeException(sprintf(
-                'Could not execute script: %s %s',
+                'Could not launch script: %s %s',
                 $process->getErrorOutput(),
                 $process->getOutput()
             ));

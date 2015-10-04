@@ -11,6 +11,9 @@
 
 namespace PhpBench\Benchmark;
 
+use PhpBench\Benchmark\Metadata\SubjectMetadata;
+use PhpBench\Benchmark\Remote\Launcher;
+
 /**
  * This class generates a benchmarking script and places it in the systems
  * temp. directory and then executes it. The generated script then returns the
@@ -19,18 +22,18 @@ namespace PhpBench\Benchmark;
 class Executor
 {
     /**
-     * @var Telespector
+     * @var Launcher
      */
-    private $telespector;
+    private $launcher;
 
     /**
-     * @param Telespector $telespector
+     * @param Launcher $launcher
      * @param string $configPath
      * @param string $bootstrap
      */
-    public function __construct(Telespector $telespector)
+    public function __construct(Launcher $launcher)
     {
-        $this->telespector = $telespector;
+        $this->launcher = $launcher;
     }
 
     /**
@@ -38,19 +41,19 @@ class Executor
      * @param int $revolutions
      * @param array $parameters
      */
-    public function execute(Subject $subject, $revolutions = 0, array $parameters = array())
+    public function execute(SubjectMetadata $subject, $revolutions = 0, array $parameters = array())
     {
         $tokens = array(
-            'class' => $subject->getBenchmark()->getClassFqn(),
-            'file' => $subject->getBenchmark()->getPath(),
-            'subject' => $subject->getMethodName(),
+            'class' => $subject->getBenchmarkMetadata()->getClass(),
+            'file' => $subject->getBenchmarkMetadata()->getPath(),
+            'subject' => $subject->getName(),
             'revolutions' => $revolutions,
             'beforeMethods' => var_export($subject->getBeforeMethods(), true),
             'afterMethods' => var_export($subject->getAfterMethods(), true),
             'parameters' => var_export($parameters, true),
         );
 
-        $result = $this->telespector->execute(__DIR__ . '/template/runner.template', $tokens);
+        $result = $this->launcher->launch(__DIR__ . '/Remote/template/runner.template', $tokens);
 
         return $result;
     }
