@@ -52,6 +52,11 @@ abstract class AbstractMetadata
     private $class;
 
     /**
+     * @var bool
+     */
+    private $skip;
+
+    /**
      * @param mixed $class
      */
     public function __construct($class)
@@ -129,5 +134,15 @@ abstract class AbstractMetadata
     public function setRevs($revs)
     {
         $this->revs = $revs;
+    }
+
+    public function getSkip()
+    {
+        return $this->skip;
+    }
+
+    public function setSkip($skip)
+    {
+        $this->skip = $skip;
     }
 }

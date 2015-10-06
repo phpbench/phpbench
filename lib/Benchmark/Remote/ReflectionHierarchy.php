@@ -78,7 +78,7 @@ class ReflectionHierarchy implements \IteratorAggregate
     /**
      * Return true if thare are no reflection classes here.
      *
-     * @return boolean
+     * @return bool
      */
     public function isEmpty()
     {

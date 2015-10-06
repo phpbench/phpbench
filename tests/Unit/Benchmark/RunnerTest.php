@@ -49,13 +49,15 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->collection->getBenchmarks()->willReturn(array(
             $this->benchmark,
         ));
-        $this->subject->getIterations()->willReturn($iterations);
-        $this->subject->getName()->willReturn('benchFoo');
-        $this->subject->getBeforeMethods()->willReturn(array('beforeFoo'));
-        $this->subject->getAfterMethods()->willReturn(array());
-        $this->subject->getParameterSets()->willReturn(array(array($parameters)));
-        $this->subject->getGroups()->willReturn(array());
-        $this->subject->getRevs()->willReturn($revs);
+        $this->configureSubject($this->subject, array(
+            'iterations' => $iterations,
+            'beforeMethods' => array('beforeFoo'),
+            'afterMethods' => array(),
+            'parameterSets' => array(array($parameters)),
+            'groups ' => array(),
+            'revs' => $revs,
+        ));
+
         $this->benchmark->getSubjectMetadatas()->willReturn(array(
             $this->subject->reveal(),
         ));
@@ -192,6 +194,62 @@ EOT
                 array('InvalidArgumentException', 'Parameters must be either scalars or arrays, got: stdClass'),
             ),
         );
+    }
+
+    /**
+     * It should skip subjects that should be skipped.
+     */
+    public function testSkip()
+    {
+        $this->collection->getBenchmarks()->willReturn(array(
+            $this->benchmark,
+        ));
+        $this->configureSubject($this->subject, array(
+            'skip' => true,
+        ));
+        $this->benchmark->getSubjectMetadatas()->willReturn(array(
+            $this->subject->reveal(),
+        ));
+        $this->benchmark->getClass()->willReturn('Benchmark');
+        $result = $this->runner->runAll(__DIR__);
+
+        $this->assertInstanceOf('PhpBench\Benchmark\SuiteDocument', $result);
+        $this->assertEquals(
+            trim(sprintf(<<<EOT
+<?xml version="1.0"?>
+<phpbench version="%s">
+  <benchmark class="Benchmark">
+    <subject name="benchFoo"/>
+  </benchmark>
+</phpbench>
+EOT
+            , PhpBench::VERSION)),
+            trim($result->saveXml())
+        );
+    }
+
+    private function configureSubject($subject, array $options)
+    {
+        $options = array_merge(array(
+            'iterations' => 1,
+            'name' => 'benchFoo',
+            'beforeMethods' => array(),
+            'afterMethods' => array(),
+            'parameterSets' => array(array(array())),
+            'groups' => array(),
+            'revs' => 1,
+            'notApplicable' => false,
+            'skip' => false,
+        ), $options);
+
+        $subject->getIterations()->willReturn($options['iterations']);
+        $subject->getName()->willReturn($options['name']);
+        $subject->getBeforeMethods()->willReturn($options['beforeMethods']);
+        $subject->getAfterMethods()->willReturn($options['afterMethods']);
+        $subject->getParameterSets()->willReturn($options['parameterSets']);
+        $subject->getGroups()->willReturn($options['groups']);
+        $subject->getRevs()->willReturn($options['revs']);
+        $subject->getSkip()->willReturn($options['skip']);
     }
 }
 
