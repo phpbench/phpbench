@@ -12,24 +12,23 @@
 namespace PhpBench\Benchmark\Metadata\Annotations;
 
 /**
- * @Annotation
- * @Taget({"METHOD", "CLASS"})
  * @Attributes({
- *    @Attribute("value", required = true, type="array"),
+ *    @Attribute("extend", required = true, type="boolean"),
  * })
  */
-class Groups extends ArrayAnnotation
+class ArrayAnnotation
 {
-    private $groups;
+    private $extend = false;
 
     public function __construct($params)
     {
-        parent::__construct($params);
-        $this->groups = (array) $params['value'];
+        if (isset($params['extend'])) {
+            $this->extend = $params['extend'];
+        }
     }
 
-    public function getGroups()
+    public function getExtend()
     {
-        return $this->groups;
+        return $this->extend;
     }
 }

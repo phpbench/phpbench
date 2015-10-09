@@ -18,13 +18,14 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
  *    @Attribute("value", required = true,  type = "array"),
  * })
  */
-class AfterMethods
+class AfterMethods extends ArrayAnnotation
 {
     private $methods;
 
-    public function __construct($methods)
+    public function __construct($params)
     {
-        $this->methods = (array) $methods['value'];
+        parent::__construct($params);
+        $this->methods = (array) $params['value'];
     }
 
     public function getMethods()

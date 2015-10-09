@@ -287,4 +287,39 @@ You can skip subjects by using the ``@Skip`` annotation:
         }
     }
 
+Extending Existing Array Values
+-------------------------------
+
+When working with annotations which accept an array value, you may wish to
+extend the values of the same annotation from ancestor classes. This can be
+accomplished using the ``extend`` option.
+
+.. code-block:: php
+
+    <?php
+
+    abstract class AbstractHash
+    {
+        /**
+         * @Groups({"md5"})
+         */
+        abstract public function benchMd5();
+    }
+
+    /**
+     * @Groups({"my_hash_implementation"}, extend=true)
+     */
+    class HashBench extends AbstractHash
+    {
+        public function benchMd5()
+        {
+            // ...
+        }
+    }
+
+The ``benchHash`` subject will now be in both the ``md5`` and
+``my_hash_implementation`` groups.
+
+This option is available on all array valued (plural) annotations.
+
 .. _cartesian product: https://en.wikipedia.org/wiki/Cartesian_product
