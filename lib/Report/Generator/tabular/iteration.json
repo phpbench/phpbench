@@ -19,7 +19,7 @@
                 },
                 {
                     "name": "group",
-                    "expr": "string(ancestor-or-self::subject/group/@name)"
+                    "expr": "string(join_node_values(',', ancestor-or-self::subject/group/@name))"
                 },
                 {
                     "name": "params",

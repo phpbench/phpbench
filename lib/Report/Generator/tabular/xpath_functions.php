@@ -28,3 +28,16 @@ function class_name($classFqn)
 
     return current($parts);
 }
+
+function join_node_values($delimiter, $list)
+{
+    $els = array();
+    foreach ($list as $el) {
+        if (!$el instanceof \DOMNode) {
+            continue;
+        }
+        $els[] = $el->nodeValue;
+    }
+
+    return implode($delimiter, $els);
+}
