@@ -146,20 +146,21 @@ class Runner
     private function run(BenchmarkMetadata $benchmark, \DOMElement $benchmarkEl)
     {
         foreach ($benchmark->getSubjectMetadatas() as $subject) {
-            $subjectEl = $benchmarkEl->ownerDocument->createElement('subject');
+            $subjectEl = $benchmarkEl->appendElement('subject');
             $subjectEl->setAttribute('name', $subject->getName());
 
+            if (true === $subject->getSkip()) {
+                continue;
+            }
+
             foreach ($subject->getGroups() as $group) {
-                $groupEl = $benchmarkEl->ownerDocument->createElement('group');
+                $groupEl = $subjectEl->appendElement('group');
                 $groupEl->setAttribute('name', $group);
-                $subjectEl->appendChild($groupEl);
             }
 
             $this->logger->subjectStart($subject);
             $this->runSubject($subject, $subjectEl);
             $this->logger->subjectEnd($subject);
-
-            $benchmarkEl->appendChild($subjectEl);
         }
     }
 

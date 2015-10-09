@@ -118,5 +118,9 @@ class AnnotationDriver implements DriverInterface
         if ($annotation instanceof Annotations\Revs) {
             $metadata->setRevs($annotation->getRevs());
         }
+
+        if ($annotation instanceof Annotations\Skip) {
+            $metadata->setSkip(true);
+        }
     }
 }

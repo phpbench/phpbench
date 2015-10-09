@@ -37,7 +37,7 @@
         "array_keys": {
             "generator": "table_custom",
             "title": "Comparison of array location functions",
-            "description": "This benchmark creates an array with 50,000 elements. \nEach subject checks the existence of the key with the index of the current revolution. (or in the case of in_arrey, for the value).\nDeviation is calculated per revolution",
+            "description": "This benchmark creates an array with checks the performance of array location functions with variable numbers of elements. Deviation is relative to the number of elements.",
             "file": "reports/array_keys.json"
         },
         "string_splitting": {

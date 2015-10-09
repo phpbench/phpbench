@@ -118,7 +118,10 @@ class Reflector
                 break;
             }
 
-            $buffer .= fread($fp, 512);
+            // Read entire lines to prevent keyword truncation
+            for ($line = 0; $line <= 10; $line++) {
+                $buffer .= fgets($fp);
+            }
             $tokens = @token_get_all($buffer);
 
             if (strpos($buffer, '{') === false) {

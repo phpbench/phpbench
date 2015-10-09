@@ -268,4 +268,23 @@ You can assign benchmark subjects to groups using the ``@Groups`` annotation.
 
 The group can then be targetted using the command line interface.
 
+Skiping Subjects
+-----------------
+
+You can skip subjects by using the ``@Skip`` annotation:
+
+.. code-block:: php
+
+    <?php
+
+    class HashBench extends Foobar
+    {
+        /**
+         * @Skip()
+         */
+        public function testFoobar()
+        {
+        }
+    }
+
 .. _cartesian product: https://en.wikipedia.org/wiki/Cartesian_product
