@@ -18,13 +18,14 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
  *    @Attribute("value", required = true, type="array"),
  * })
  */
-class ParamProviders
+class ParamProviders extends ArrayAnnotation
 {
     private $providers;
 
-    public function __construct($providers)
+    public function __construct($params)
     {
-        $this->providers = (array) $providers['value'];
+        parent::__construct($params);
+        $this->providers = (array) $params['value'];
     }
 
     public function getProviders()

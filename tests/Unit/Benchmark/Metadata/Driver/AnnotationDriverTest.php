@@ -210,6 +210,40 @@ EOT;
     }
 
     /**
+     * It should extend values of previous annotations when the "extend" option is true.
+     */
+    public function testMetadataExtend()
+    {
+        $reflection = new ReflectionClass();
+        $reflection->class = 'TestChild';
+        $reflection->comment = <<<EOT
+    /**
+     * @Groups({"group1"})
+     */
+EOT;
+        $hierarchy = new ReflectionHierarchy();
+        $hierarchy->addReflectionClass($reflection);
+
+        $method = new ReflectionMethod();
+        $method->class = 'Test';
+        $method->name = 'benchFoo';
+        $method->comment = <<<EOT
+    /**
+     * @Groups({"group2", "group3"}, extend=true)
+     */
+EOT;
+        $reflection->methods[$method->name] = $method;
+        $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
+
+        $this->assertEquals(array('group1'), $metadata->getGroups());
+        $subjectMetadatas = $metadata->getSubjectMetadatas();
+        $this->assertCount(1, $subjectMetadatas);
+        $subjectOne = array_shift($subjectMetadatas);
+
+        $this->assertEquals(array('group1', 'group2', 'group3'), $subjectOne->getGroups());
+    }
+
+    /**
      * It should throw a helpful exception when an annotation is not recognized.
      *
      * @expectedException InvalidArgumentException

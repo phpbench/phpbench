@@ -14,6 +14,7 @@ namespace PhpBench\Benchmark\Metadata\Driver;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use PhpBench\Benchmark\Metadata\AbstractMetadata;
 use PhpBench\Benchmark\Metadata\Annotations;
+use PhpBench\Benchmark\Metadata\Annotations\ArrayAnnotation;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\DocParser;
 use PhpBench\Benchmark\Metadata\DriverInterface;
@@ -96,15 +97,33 @@ class AnnotationDriver implements DriverInterface
     private function processAbstractMetadata(AbstractMetadata $metadata, $annotation)
     {
         if ($annotation instanceof Annotations\BeforeMethods) {
-            $metadata->setBeforeMethods($annotation->getMethods());
+            $metadata->setBeforeMethods(
+                $this->resolveValue(
+                    $annotation,
+                    $metadata->getBeforeMethods(),
+                    $annotation->getMethods()
+                )
+            );
         }
 
         if ($annotation instanceof Annotations\AfterMethods) {
-            $metadata->setAfterMethods($annotation->getMethods());
+            $metadata->setAfterMethods(
+                $this->resolveValue(
+                    $annotation,
+                    $metadata->getAfterMethods(),
+                    $annotation->getMethods()
+                )
+            );
         }
 
         if ($annotation instanceof Annotations\ParamProviders) {
-            $metadata->setParamProviders($annotation->getProviders());
+            $metadata->setParamProviders(
+                $this->resolveValue(
+                    $annotation,
+                    $metadata->getParamProviders(),
+                    $annotation->getProviders()
+                )
+            );
         }
 
         if ($annotation instanceof Annotations\Iterations) {
@@ -112,7 +131,13 @@ class AnnotationDriver implements DriverInterface
         }
 
         if ($annotation instanceof Annotations\Groups) {
-            $metadata->setGroups($annotation->getGroups());
+            $metadata->setGroups(
+                $this->resolveValue(
+                    $annotation,
+                    $metadata->getGroups(),
+                    $annotation->getGroups()
+                )
+            );
         }
 
         if ($annotation instanceof Annotations\Revs) {
@@ -122,5 +147,13 @@ class AnnotationDriver implements DriverInterface
         if ($annotation instanceof Annotations\Skip) {
             $metadata->setSkip(true);
         }
+    }
+
+    private function resolveValue(ArrayAnnotation $annotation, array $currentValues, array $annotationValues)
+    {
+        $values = $annotation->getExtend() === true ? $currentValues : array();
+        $values = array_merge($values, $annotationValues);
+
+        return $values;
     }
 }
