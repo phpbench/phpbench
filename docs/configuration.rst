@@ -66,7 +66,7 @@ Specify which progress logger to use:
 .. code-block:: javascript
 
     {
-        "progress_logger_name": "dots"
+        "progress": "dots"
     }
 
 Reports
