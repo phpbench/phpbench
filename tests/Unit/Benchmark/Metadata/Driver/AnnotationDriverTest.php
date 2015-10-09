@@ -62,6 +62,25 @@ EOT;
     }
 
     /**
+     * It should ignore common annotations.
+     */
+    public function testIgnoreCommonAnnotations()
+    {
+        $reflection = new ReflectionClass();
+        $reflection->class = 'Test';
+        $reflection->comment = <<<EOT
+/**
+ * @since Foo
+ * @author Daniel Leech
+ */
+EOT;
+        $hierarchy = new ReflectionHierarchy();
+        $hierarchy->addReflectionClass($reflection);
+
+        $this->driver->getMetadataForHierarchy($hierarchy);
+    }
+
+    /**
      * It should return method metadata according to annotations.
      */
     public function testLoadSubjectMetadata()
