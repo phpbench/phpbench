@@ -16,7 +16,7 @@
         "phpbench/tabular": "^0.2",
         "seld/jsonlint": "^1.0",
         "justinrainbow/json-schema": "^1.0",
-        "doctrine/annotations": "^1.2.0",
+        "doctrine/annotations": "^1.2.7",
         "ext-dom": "*",
         "ext-json": "*",
         "ext-pcre": "*",
