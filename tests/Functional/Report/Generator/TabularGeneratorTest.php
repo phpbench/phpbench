@@ -54,7 +54,7 @@ class TabularGeneratorTest extends GeneratorTestCase
         $dom = $this->generate(
             $this->getSuiteDocument(),
             array(
-                'groups' => array('one'),
+                'groups' => array('two'),
             )
         );
 
@@ -177,6 +177,8 @@ class TabularGeneratorTest extends GeneratorTestCase
     <benchmark class="Foobar">
         <subject name="mySubject">
             <group name="one" />
+            <group name="two" />
+            <group name="three" />
             <variant>
                 <parameter name="foo" value="bar" />
                 <parameter name="array" type="collection">

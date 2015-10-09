@@ -158,10 +158,10 @@ class TabularGenerator extends AbstractTabularGenerator
 
         $exprs = array();
         foreach ($groups as $groupName) {
-            $exprs[] = "group/@name!='" . $groupName . "'";
+            $exprs[] = "not(group/@name='" . $groupName . "')";
         }
         $groupExpr = implode(' and ', $exprs);
-        $expr = '//subject[not(group/@name) or ' . $groupExpr . ']';
+        $expr = '//subject[' . $groupExpr . ']';
         $nodes = $document->xpath()->query($expr);
         foreach ($nodes as $node) {
             $node->parentNode->removeChild($node);
