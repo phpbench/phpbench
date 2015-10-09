@@ -130,4 +130,27 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $metadata = $this->factory->getMetadataForFile(self::FNAME);
         $this->assertNull($metadata);
     }
+
+    /**
+     * It should throw an exception if the parameters are not in a valid format.
+     *
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Each parameter set must be an array, got "string" for TestBench::benchTest
+     */
+    public function testInvalidParameters()
+    {
+        $this->hierarchy->isEmpty()->willReturn(false);
+        $this->metadata->getSubjectMetadatas()->willReturn(array(
+            $this->subjectMetadata->reveal(),
+        ));
+        $this->subjectMetadata->getBeforeMethods()->willReturn(array());
+        $this->subjectMetadata->getAfterMethods()->willReturn(array());
+        $this->subjectMetadata->getParamProviders()->willReturn(array());
+        $this->metadata->getClass()->willReturn('TestBench');
+        $this->metadata->getPath()->willReturn(self::PATH);
+        $this->subjectMetadata->getName()->willReturn('benchTest');
+        $this->reflector->getParameterSets(self::PATH, array())->willReturn(array('asd' => 'bar'));
+
+        $this->factory->getMetadataForFile(self::FNAME);
+    }
 }

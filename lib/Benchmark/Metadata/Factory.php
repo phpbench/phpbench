@@ -67,6 +67,17 @@ class Factory
             $this->validateSubject($hierarchy, $subjectMetadata);
             $paramProviders = $subjectMetadata->getParamProviders();
             $parameterSets = $this->reflector->getParameterSets($metadata->getPath(), $paramProviders);
+
+            foreach ($parameterSets as $parameterSet) {
+                if (!is_array($parameterSet)) {
+                    throw new \InvalidArgumentException(sprintf(
+                        'Each parameter set must be an array, got "%s" for %s::%s',
+                        gettype($parameterSet),
+                        $metadata->getClass(),
+                        $subjectMetadata->getName()
+                    ));
+                }
+            }
             $subjectMetadata->setParameterSets($parameterSets);
         }
 
