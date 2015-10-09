@@ -154,7 +154,7 @@ class Runner
             }
 
             foreach ($subject->getGroups() as $group) {
-                $groupEl = $benchmarkEl->appendElement('group');
+                $groupEl = $subjectEl->appendElement('group');
                 $groupEl->setAttribute('name', $group);
             }
 

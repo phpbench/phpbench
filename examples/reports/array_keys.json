@@ -24,12 +24,12 @@
                 {
                     "name": "time",
                     "class": "time",
-                    "expr": "average(.//iteration[@revs='{{ row.item }}']/@time)"
+                    "expr": "sum(./variant[parameter[@name='nb_elements']/@value = {{ row.item }}]/iteration/@time) div sum(./variant[parameter[@name='nb_elements']/@value = {{ row.item }}]/iteration/@revs)"
                 },
                 {
                     "name": "deviation",
                     "class": "deviation",
-                    "expr": "deviation(min(//cell[@name='time']), number(./cell[@name='time'])) div number(./cell[@name='elements'])",
+                    "expr": "deviation(min(//row[cell[@name='elements'] = {{ row.item }}]/cell[@name='time']), number(./cell[@name='time']))",
                     "pass": 1
                 }
             ],

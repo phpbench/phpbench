@@ -15,9 +15,10 @@ namespace PhpBench\Tests\Functional\benchmarks;
  * This example benchmarks array_key_exists vs. isset vs. in_array.
  *
  * @BeforeMethods({"init"})
- * @Revs(10000)
+ * @Revs(1000)
  * @Iterations(4)
  * @Groups({"array_keys"})
+ * @ParamProviders({"provideNbElements"})
  */
 class ArrayKeysBench
 {
@@ -25,9 +26,9 @@ class ArrayKeysBench
     private $values;
     private $index = 0;
 
-    public function init()
+    public function init($params)
     {
-        $this->array = array_fill(0, 50000, 'this is a test');
+        $this->array = array_fill(0, $params['nb_elements'], 'this is a test');
         $this->values = array_combine(array_keys($this->array), array_keys($this->array));
     }
 
@@ -44,5 +45,23 @@ class ArrayKeysBench
     public function benchInArray()
     {
         in_array($this->index++, $this->values);
+    }
+
+    public function provideNbElements()
+    {
+        return array(
+            array(
+                'nb_elements' => 10,
+            ),
+            array(
+                'nb_elements' => 100,
+            ),
+            array(
+                'nb_elements' => 1000,
+            ),
+            array(
+                'nb_elements' => 10000,
+            ),
+        );
     }
 }
