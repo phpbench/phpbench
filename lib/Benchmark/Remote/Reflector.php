@@ -119,7 +119,7 @@ class Reflector
             }
 
             // Read entire lines to prevent keyword truncation
-            for ($line = 0; $line <= 10; $line++) {
+            for ($line = 0; $line <= 20; $line++) {
                 $buffer .= fgets($fp);
             }
             $tokens = @token_get_all($buffer);

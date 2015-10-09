@@ -27,6 +27,7 @@ class DocParser
         'Groups' => 'PhpBench\Benchmark\Metadata\Annotations\Groups',
         'Iterations' => 'PhpBench\Benchmark\Metadata\Annotations\Iterations',
         'Revs' => 'PhpBench\Benchmark\Metadata\Annotations\Revs',
+        'Skip' => 'PhpBench\Benchmark\Metadata\Annotations\Skip',
     );
 
     public function __construct()

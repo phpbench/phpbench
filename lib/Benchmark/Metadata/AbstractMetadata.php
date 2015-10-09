@@ -54,7 +54,7 @@ abstract class AbstractMetadata
     /**
      * @var bool
      */
-    private $skip;
+    private $skip = false;
 
     /**
      * @param mixed $class

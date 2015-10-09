@@ -45,6 +45,7 @@ class AnnotationDriverTest extends \PHPUnit_Framework_TestCase
  * @Iterations(50)
  * @ParamProviders({"ONE", "TWO"})
  * @Revs(1000)
+ * @Skip()
  */
 EOT;
         $hierarchy = new ReflectionHierarchy();
@@ -57,6 +58,7 @@ EOT;
         $this->assertEquals(50, $metadata->getIterations());
         $this->assertEquals(array('ONE', 'TWO'), $metadata->getParamProviders());
         $this->assertEquals(1000, $metadata->getRevs());
+        $this->assertTrue($metadata->getSkip());
     }
 
     /**
@@ -94,6 +96,7 @@ EOT;
         $this->assertEquals(50, $metadata->getIterations());
         $this->assertEquals(array('ONE', 'TWO'), $metadata->getParamProviders());
         $this->assertEquals(1000, $metadata->getRevs());
+        $this->assertFalse($metadata->getSkip());
     }
 
     /**
