@@ -78,7 +78,7 @@ class CoreExtension implements ExtensionInterface
             'reports' => array(),
             'outputs' => array(),
             'config_path' => null,
-            'progress_logger_name' => 'dots',
+            'progress' => 'dots',
         ));
     }
 
@@ -175,7 +175,7 @@ class CoreExtension implements ExtensionInterface
                 $container->get('benchmark.runner'),
                 $container->get('report.manager'),
                 $container->get('progress_logger.registry'),
-                $container->getParameter('progress_logger_name'),
+                $container->getParameter('progress'),
                 $container->getParameter('path'),
                 $container->getParameter('config_path')
             );
