@@ -10,7 +10,7 @@
  */
 
 /**
- * @Groups({"cost_of_calling"})
+ * @Groups({"cost_of_calling", "group_two"})
  * @Revs(10000)
  * @Iterations(10)
  */

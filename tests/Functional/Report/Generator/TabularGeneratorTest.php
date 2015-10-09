@@ -37,6 +37,30 @@ class TabularGeneratorTest extends GeneratorTestCase
     }
 
     /**
+     * It should show groups.
+     */
+    public function testGroupDisplay()
+    {
+        $dom = $this->generate(
+            $this->getSuiteDocument(),
+            array()
+        );
+
+        $this->assertInstanceOf('PhpBench\Dom\Document', $dom);
+        $this->assertEquals(2, $dom->xpath()->evaluate('count(//cell[text() = "one,two,three"])'));
+
+        $dom = $this->generate(
+            $this->getSuiteDocument(),
+            array(
+                'aggregate' => true,
+            )
+        );
+
+        $this->assertInstanceOf('PhpBench\Dom\Document', $dom);
+        $this->assertEquals(1, $dom->xpath()->evaluate('count(//cell[text() = "one,two,three"])'));
+    }
+
+    /**
      * It should filter based on group.
      */
     public function testGroupFilter()
