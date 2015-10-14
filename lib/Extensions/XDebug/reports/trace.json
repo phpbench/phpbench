@@ -1,0 +1,46 @@
+{
+    "params": {
+        "basepath": "",
+        "bench_subject": ""
+    },
+    "classes": {
+        "time": [
+            [ "number", { "decimal_places": 0 }],
+            [ "printf", { "format": "%s\u03bcs" }]
+        ],
+        "memory": [
+            [ "number" ],
+            [ "printf", { "format": "%sb" }]
+        ]
+    },
+    "rows": [
+        {
+            "group": "body",
+            "cells": [
+                {
+                    "name": "level",
+                    "expr": "string(./@level)"
+                },
+                {
+                    "class": "time",
+                    "name": "time",
+                    "expr": "(number(./@end-time) - number(./@time)) * 1000000"
+                },
+                {
+                    "class": "memory",
+                    "name": "memory",
+                    "expr": "number(./@memory)"
+                },
+                {
+                    "name": "filename",
+                    "expr": "concat(str_replace('{{ param.basepath }}', '', string(./@filename)), ':', string(./@line))"
+                },
+                {
+                    "name": "function",
+                    "expr": "concat(str_repeat(' ', number(./@level) - 1), string(./@function))"
+                }
+            ],
+            "with_query": "//entry[contains(string(@function), '{{ param.bench_subject }}')]//entry"
+        }
+    ]
+}

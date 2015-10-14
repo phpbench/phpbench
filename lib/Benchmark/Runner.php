@@ -256,19 +256,4 @@ class Runner
             $errorEl->setAttribute('line', $exception->getLine());
         } while ($exception = $exception->getPrevious());
     }
-
-    /**
-     * Utility function to return the correct sleep interval
-     * in case that the sleep interval has been overridden.
-     *
-     * TODO: Use this and TEST it.
-     *
-     * @param int $sleep
-     *
-     * @return int
-     */
-    private function getSleepInterval($sleep)
-    {
-        return null !== $this->sleepOverride ? $this->sleepOverride : $sleep;
-    }
 }

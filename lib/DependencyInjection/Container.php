@@ -29,6 +29,7 @@ class Container
         // Add the core extension by deefault
         $this->parameters['extensions'] = array(
             'PhpBench\Extension\CoreExtension',
+            'PhpBench\Extensions\XDebug\XDebugExtension',
         );
     }
 

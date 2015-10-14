@@ -2,4 +2,6 @@
 
 $foo = '{{ foo }}';
 
+$stdClass = new \stdClass;
+
 echo json_encode(array('foo' => $foo));
