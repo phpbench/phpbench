@@ -1,0 +1,62 @@
+Version: 2.3.2
+File format: 4
+TRACE START [2015-10-14 12:51:28]
+1	0	0	0.000173	238400	{main}	1		/tmp/daniel/PhpBenchOHbWgo	0	0
+2	1	0	0.000218	238448	gc_disable	0		/tmp/daniel/PhpBenchOHbWgo	6	0
+2	1	1	0.000241	238776
+2	2	0	0.000357	250752	require_once	1	/home/daniel/www/phpbench/phpbench/examples/StringExtractionBench.php	/tmp/daniel/PhpBenchOHbWgo	24	0
+2	2	1	0.000385	250800
+2	3	0	0.000400	250432	memory_get_usage	0		/tmp/daniel/PhpBenchOHbWgo	46	0
+2	3	1	0.000422	250432
+2	4	0	0.000430	250616	microtime	0		/tmp/daniel/PhpBenchOHbWgo	47	1	TRUE
+2	4	1	0.000454	250616
+2	5	0	0.000462	250880	StringSplitting->benchStrStrSubstr	1		/tmp/daniel/PhpBenchOHbWgo	50	0
+3	6	0	0.000483	251104	strstr	0		/home/daniel/www/phpbench/phpbench/examples/StringExtractionBench.php	23	3	'group#foobar'	'#'	TRUE
+3	6	1	0.000512	251136
+3	7	0	0.000519	251088	strlen	0		/home/daniel/www/phpbench/phpbench/examples/StringExtractionBench.php	24	1	'group'
+3	7	1	0.000541	251088
+3	8	0	0.000548	251136	substr	0		/home/daniel/www/phpbench/phpbench/examples/StringExtractionBench.php	24	2	'group#foobar'	6
+3	8	1	0.000573	251168
+3	9	0	0.000580	251072	StringSplitting->checkExpected	1		/home/daniel/www/phpbench/phpbench/examples/StringExtractionBench.php	26	2	'group'	'foobar'
+3	9	1	0.000608	251120
+2	5	1	0.000618	250960
+2	10	0	0.000625	251008	microtime	0		/tmp/daniel/PhpBenchOHbWgo	53	1	TRUE
+2	10	1	0.000647	251008
+2	11	0	0.000653	251096	memory_get_usage	0		/tmp/daniel/PhpBenchOHbWgo	54	0
+2	11	1	0.000673	251096
+2	12	0	0.000681	251736	json_encode	0		/tmp/daniel/PhpBenchOHbWgo	64	1	array ('memory' => 664, 'time' => 193)
+2	12	1	0.000713	251784
+			0.000763	20072
+TRACE END   [2015-10-14 12:51:28]
+
+Version: 2.3.2
+File format: 4
+TRACE START [2015-10-14 12:51:28]
+1	0	0	0.000173	238400	{main}	1		/tmp/daniel/PhpBenchOHbWgo	0	0
+2	1	0	0.000218	238448	gc_disable	0		/tmp/daniel/PhpBenchOHbWgo	6	0
+2	1	1	0.000241	238776
+2	2	0	0.000357	250752	require_once	1	/home/daniel/www/phpbench/phpbench/examples/StringExtractionBench.php	/tmp/daniel/PhpBenchOHbWgo	24	0
+2	2	1	0.000385	250800
+2	3	0	0.000400	250432	memory_get_usage	0		/tmp/daniel/PhpBenchOHbWgo	46	0
+2	3	1	0.000422	250432
+2	4	0	0.000430	250616	microtime	0		/tmp/daniel/PhpBenchOHbWgo	47	1	TRUE
+2	4	1	0.000454	250616
+2	5	0	0.000462	250880	StringSplitting->benchStrStrSubstr	1		/tmp/daniel/PhpBenchOHbWgo	50	0
+3	6	0	0.000483	251104	strstr	0		/home/daniel/www/phpbench/phpbench/examples/StringExtractionBench.php	23	3	'group#foobar'	'#'	TRUE
+3	6	1	0.000512	251136
+3	7	0	0.000519	251088	strlen	0		/home/daniel/www/phpbench/phpbench/examples/StringExtractionBench.php	24	1	'group'
+3	7	1	0.000541	251088
+3	8	0	0.000548	251136	substr	0		/home/daniel/www/phpbench/phpbench/examples/StringExtractionBench.php	24	2	'group#foobar'	6
+3	8	1	0.000573	251168
+3	9	0	0.000580	251072	StringSplitting->checkExpected	1		/home/daniel/www/phpbench/phpbench/examples/StringExtractionBench.php	26	2	'group'	'foobar'
+3	9	1	0.000608	251120
+2	5	1	0.000618	250960
+2	10	0	0.000625	251008	microtime	0		/tmp/daniel/PhpBenchOHbWgo	53	1	TRUE
+2	10	1	0.000647	251008
+2	11	0	0.000653	251096	memory_get_usage	0		/tmp/daniel/PhpBenchOHbWgo	54	0
+2	11	1	0.000673	251096
+2	12	0	0.000681	251736	json_encode	0		/tmp/daniel/PhpBenchOHbWgo	64	1	array ('memory' => 664, 'time' => 193)
+2	12	1	0.000713	251784
+			0.000763	20072
+TRACE END   [2015-10-14 12:51:28]
+

@@ -16,7 +16,11 @@ use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\PhpBench;
 use PhpBench\Progress\Logger\NullLogger;
 use PhpBench\Progress\LoggerInterface;
+<<<<<<< HEAD
 use PhpBench\Util\TimeUnit;
+=======
+use PhpBench\Benchmark\ExecutorFactory;
+>>>>>>> Refactoring for Executors
 
 /**
  * The benchmark runner.
@@ -26,7 +30,14 @@ class Runner
     private $logger;
     private $collectionBuilder;
     private $configPath;
+<<<<<<< HEAD
     private $retryThreshold = null;
+=======
+    private $parametersOverride;
+    private $subjectsOverride = array();
+    private $groups = array();
+    private $executorFactory;
+>>>>>>> Refactoring for Executors
 
     /**
      * @param CollectionBuilder $collectionBuilder
@@ -35,13 +46,17 @@ class Runner
      */
     public function __construct(
         CollectionBuilder $collectionBuilder,
+<<<<<<< HEAD
         ExecutorInterface $executor,
         $retryThreshold,
+=======
+        ExecutorFactory $executorFactory,
+>>>>>>> Refactoring for Executors
         $configPath
     ) {
         $this->logger = new NullLogger();
         $this->collectionBuilder = $collectionBuilder;
-        $this->executor = $executor;
+        $this->executorFactory = $executorFactory;
         $this->configPath = $configPath;
         $this->retryThreshold = $retryThreshold;
     }
@@ -234,7 +249,11 @@ class Runner
     public function runIteration(Iteration $iteration, $sleep)
     {
         $this->logger->iterationStart($iteration);
-        $result = $this->executor->execute($iteration);
+        $result = $this->executorFactory->getExecutor($subject->getExecutor())->execute(
+            $subject,
+            $revolutionCount,
+            $parameterSet
+        );
 
         if ($sleep) {
             usleep($sleep);

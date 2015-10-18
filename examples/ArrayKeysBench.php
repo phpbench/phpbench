@@ -19,6 +19,7 @@ namespace PhpBench\Tests\Functional\benchmarks;
  * @Iterations(4)
  * @Groups({"array_keys"})
  * @ParamProviders({"provideNbElements"})
+ * @Executor("xdebug")
  */
 class ArrayKeysBench
 {
