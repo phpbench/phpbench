@@ -82,6 +82,7 @@ EOT
         $this->addOption('bootstrap', 'b', InputOption::VALUE_REQUIRED, 'Set or override the bootstrap file.');
         $this->addOption('sleep', null, InputOption::VALUE_REQUIRED, 'Number of microseconds to sleep between iterations');
         $this->addOption('context', null, InputOption::VALUE_REQUIRED, 'Context label to apply to the suite result (useful when comparing reports)');
+        $this->addOption('executor', 'x', InputOption::VALUE_REQUIRED, 'Executor to use');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
@@ -91,6 +92,7 @@ EOT
         $outputs = $input->getOption('output');
         $progressLoggerName = $input->getOption('progress') ?: $this->progressLoggerName;
         $dump = $input->getOption('dump');
+        $executor = $input->getOption('executor');
         $dumpfile = $input->getOption('dump-file');
         $timeUnit = $input->getOption('time-unit');
         $mode = $input->getOption('mode');

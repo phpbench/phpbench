@@ -45,9 +45,8 @@ class TraceToXmlConverter
             // '0' is entry, '1' is exit, 'R' is return
             if ($parts[2] == '1') {
                 $scopeEl = $tree[$level];
-                $scopeEl->setAttribute('end', 'hello');
                 $scopeEl->setAttribute('end-time', $parts[3]);
-                $scopeEl->setAttribute('end-memory', $parts[4]);
+                $scopeEl->setAttribute('end-memory', trim($parts[4]));
                 $scopeEl = $scopeEl->parentNode;
                 continue;
             } elseif ($parts[2] == 'R') {
@@ -61,14 +60,17 @@ class TraceToXmlConverter
             $entryEl = $scopeEl->appendElement('entry');
             $entryEl->setAttribute('level', $parts[0]);
             $entryEl->setAttribute('func_nb', $parts[1]);
-            $entryEl->setAttribute('time', $parts[3]);
-            $entryEl->setAttribute('memory', $parts[4]);
+            $entryEl->setAttribute('start-time', $parts[3]);
+            $entryEl->setAttribute('start-memory', $parts[4]);
             $entryEl->setAttribute('function', $parts[5]);
             $entryEl->setAttribute('is_user', $parts[6]);
             $entryEl->setAttribute('include', $parts[7]);
             $entryEl->setAttribute('filename', $parts[8]);
             $entryEl->setAttribute('line', $parts[9]);
-            $entryEl->setAttribute('nb_params', $parts[10]);
+
+            if (isset($parts[10])) {
+                $entryEl->setAttribute('nb_params', $parts[10]);
+            }
 
             $tree[$level] = $entryEl;
             $scopeEl = $entryEl;

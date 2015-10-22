@@ -9,21 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Extensions\XDebug;
+namespace PhpBench\Extensions\Blackfire;
 
 use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\DependencyInjection\Container;
-use PhpBench\Extensions\XDebug\Executor\XDebugTraceExecutor;
+use PhpBench\Extensions\Blackfire\Executor\BlackfireExecutor;
 
-class XDebugExtension implements ExtensionInterface
+class BlackfireExtension implements ExtensionInterface
 {
     public function configure(Container $container)
     {
-        $container->register('benchmark.executor.xdebug_trace', function (Container $container) {
-            return new XDebugTraceExecutor(
+        $container->register('benchmark.executor.blackfire', function (Container $container) {
+            return new BlackfireExecutor(
                 $container->get('benchmark.remote.launcher')
             );
-        },array('executor' => array('name' => 'xdebug-trace')));
+        },array('executor' => array('name' => 'blackfire')));
     }
 
     public function build(Container $container)

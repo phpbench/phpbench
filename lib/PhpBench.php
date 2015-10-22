@@ -22,10 +22,23 @@ class PhpBench
     public static function run()
     {
         $container = new Container();
+        $config = self::loadConfig($container);
+        self::registerExtensions($container, $config);
         $container->configure();
-        self::loadConfig($container);
+        $container->mergeParameters($config);
         $container->build();
         $container->get('console.application')->run();
+    }
+
+    public static function registerExtensions(Container $container, array $config)
+    {
+        if (!isset($config['extensions'])) {
+            return;
+        }
+
+        foreach ($config['extensions'] as $extensionClass) {
+            $container->registerExtension($extensionClass);
+        }
     }
 
     private static function loadConfig(Container $container)

@@ -22,15 +22,20 @@ class Container
     private $services = array();
     private $tags = array();
     private $parameters = array();
+    private $extensionInstances = array();
     private $extensions = array();
 
     public function __construct()
     {
         // Add the core extension by deefault
-        $this->parameters['extensions'] = array(
+        $this->extensions = array(
             'PhpBench\Extension\CoreExtension',
-            'PhpBench\Extensions\XDebug\XDebugExtension',
         );
+    }
+
+    public function registerExtension($class)
+    {
+        $this->extensions[] = $class;
     }
 
     /**
@@ -42,7 +47,7 @@ class Container
      */
     public function configure()
     {
-        foreach ($this->parameters['extensions'] as $extensionClass) {
+        foreach ($this->extensions as $extensionClass) {
             if (!class_exists($extensionClass)) {
                 throw new \InvalidArgumentException(sprintf(
                     'Extension class "%s" does not exist',
@@ -60,7 +65,7 @@ class Container
             }
 
             $extension->configure($this);
-            $this->extensions[] = $extension;
+            $this->extensionInstances[] = $extension;
         }
     }
 
@@ -70,7 +75,7 @@ class Container
      */
     public function build()
     {
-        foreach ($this->extensions as $extension) {
+        foreach ($this->extensionInstances as $extension) {
             $extension->build($this);
         }
     }

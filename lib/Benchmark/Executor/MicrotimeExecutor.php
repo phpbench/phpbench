@@ -38,11 +38,9 @@ class MicrotimeExecutor implements ExecutorInterface
     }
 
     /**
-     * @param Subject $subject
-     * @param int $revolutions
-     * @param array $parameters
+     * {@inheritDoc}
      */
-    public function execute(SubjectMetadata $subject, $revolutions = 1, array $parameters = array())
+    public function execute(SubjectMetadata $subject, $revolutions = 1, array $parameters = array(), $options = array())
     {
         $tokens = array(
             'class' => $subject->getBenchmarkMetadata()->getClass(),
@@ -55,7 +53,24 @@ class MicrotimeExecutor implements ExecutorInterface
         );
 
         $result = $this->launcher->launch(__DIR__ . '/template/microtime.template', $tokens);
+        $result['calls'] = null;
 
         return $result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSchema()
+    {
+        return array();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDefaultConfig()
+    {
+        return array();
     }
 }

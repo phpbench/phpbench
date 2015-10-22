@@ -13,6 +13,7 @@ namespace PhpBench\Report;
 
 use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\Dom\Document;
+use PhpBench\Config\ConfigurableInterface;
 
 interface GeneratorInterface extends ConfigurableInterface
 {

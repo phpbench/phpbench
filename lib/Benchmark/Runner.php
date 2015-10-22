@@ -29,6 +29,12 @@ class Runner
 {
     private $logger;
     private $collectionBuilder;
+<<<<<<< HEAD
+=======
+    private $iterationsOverride;
+    private $revsOverride;
+    private $executorOverride;
+>>>>>>> Ideas
     private $configPath;
 <<<<<<< HEAD
     private $retryThreshold = null;
@@ -81,10 +87,36 @@ class Runner
      */
     public function run(RunnerContext $context)
     {
+<<<<<<< HEAD
         $dom = new SuiteDocument();
         $rootEl = $dom->createElement('phpbench');
         $rootEl->setAttribute('version', PhpBench::VERSION);
         $dom->appendChild($rootEl);
+=======
+        $this->parametersOverride = $parameters;
+    }
+
+    /**
+     * Override the executor to use
+     *
+     * @param string $executor
+     */
+    public function overrideExecutor($executor)
+    {
+        $this->executorOverride = $executor;
+    }
+    
+
+    /**
+     * Whitelist of groups to execute.
+     *
+     * @param string[]
+     */
+    public function setGroups(array $groups)
+    {
+        $this->groups = $groups;
+    }
+>>>>>>> Ideas
 
         $suiteEl = $rootEl->appendElement('suite');
         $suiteEl->setAttribute('context', $context->getContextName());
@@ -248,13 +280,21 @@ class Runner
 
     public function runIteration(Iteration $iteration, $sleep)
     {
+<<<<<<< HEAD
         $this->logger->iterationStart($iteration);
         $result = $this->executorFactory->getExecutor($subject->getExecutor())->execute(
+=======
+        $executor = $this->executorOverride ?: $subject->getExecutor();
+        $executor = $this->executorFactory->getExecutor($executor);
+        $result = $executor->execute(
+>>>>>>> Ideas
             $subject,
             $revolutionCount,
-            $parameterSet
+            $parameterSet,
+            $executor->getDefaultConfig()
         );
 
+<<<<<<< HEAD
         if ($sleep) {
             usleep($sleep);
         }
@@ -274,5 +314,10 @@ class Runner
             $errorEl->setAttribute('file', $exception->getFile());
             $errorEl->setAttribute('line', $exception->getLine());
         } while ($exception = $exception->getPrevious());
+=======
+        $iterationEl->setAttribute('time', $result['time']);
+        $iterationEl->setAttribute('memory', $result['memory']);
+        $iterationEl->setAttribute('calls', $result['calls']);
+>>>>>>> Ideas
     }
 }

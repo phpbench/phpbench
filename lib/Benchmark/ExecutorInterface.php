@@ -1,6 +1,5 @@
 <?php
 
-<<<<<<< HEAD
 /*
  * This file is part of the PHPBench package
  *
@@ -14,18 +13,12 @@ namespace PhpBench\Benchmark;
 
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Config\ConfigurableInterface;
-=======
-namespace PhpBench\Benchmark;
-
-use PhpBench\Benchmark\Metadata\SubjectMetadata;
->>>>>>> Refactoring for Executors
 
 /**
  * Executors are responsible for executing the benchmark class
  * and returning the timing metrics, and optionally the memory and profling
  * data.
  */
-<<<<<<< HEAD
 interface ExecutorInterface extends ConfigurableInterface
 {
     /**
@@ -49,14 +42,4 @@ interface ExecutorInterface extends ConfigurableInterface
      * @param string[]
      */
     public function executeMethods(BenchmarkMetadata $benchmark, array $methods);
-=======
-interface ExecutorInterface
-{
-    /**
-     * Execute the benchmark and return metrics.
-     *
-     * @return \DOMDocument
-     */
-    public function execute(SubjectMetadata $subject, $revolutions = 1, array $parameters = array());
->>>>>>> Refactoring for Executors
 }

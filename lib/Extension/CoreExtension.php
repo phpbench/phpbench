@@ -53,6 +53,7 @@ use PhpBench\Util\TimeUnit;
 use Symfony\Component\Finder\Finder;
 use PhpBench\Benchmark\ExecutorFactory;
 use PhpBench\Benchmark\Executor\MicrotimeExecutor;
+use PhpBench\Extensions\XDebug\Executor\XDebugTraceExecutor;
 
 class CoreExtension implements ExtensionInterface
 {
