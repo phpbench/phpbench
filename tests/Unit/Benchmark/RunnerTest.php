@@ -12,8 +12,10 @@
 namespace PhpBench\Tests\Benchmark;
 
 use PhpBench\Benchmark\Iteration;
+use PhpBench\Benchmark\IterationResult;
 use PhpBench\Benchmark\Runner;
 use PhpBench\PhpBench;
+use Prophecy\Argument;
 
 class RunnerTest extends \PHPUnit_Framework_TestCase
 {
@@ -23,7 +25,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->collection = $this->prophesize('PhpBench\Benchmark\Collection');
         $this->subject = $this->prophesize('PhpBench\Benchmark\Metadata\SubjectMetadata');
         $this->collectionBuilder->buildCollection(__DIR__, array(), array())->willReturn($this->collection);
-        $this->executor = $this->prophesize('PhpBench\Benchmark\Executor');
+        $this->executor = $this->prophesize('PhpBench\Benchmark\ExecutorInterface');
         $this->benchmark = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');
 
         $this->runner = new Runner(
@@ -46,6 +48,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         if ($exception) {
             $this->setExpectedException($exception[0], $exception[1]);
         }
+
         $this->collection->getBenchmarks()->willReturn(array(
             $this->benchmark,
         ));
@@ -64,9 +67,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->benchmark->getClass()->willReturn('Benchmark');
 
         if (!$exception) {
-            foreach ($revs as $revCount) {
-                $this->executor->execute($this->subject->reveal(), $revCount, $parameters)->shouldBeCalledTimes($iterations);
-            }
+            $this->executor->execute(Argument::type('PhpBench\Benchmark\Iteration'))->shouldBeCalledTimes(count($revs) * $iterations)->willReturn(new IterationResult(10, 10));
         }
 
         $result = $this->runner->runAll(__DIR__);
@@ -95,7 +96,7 @@ EOT
   <benchmark class="Benchmark">
     <subject name="benchFoo">
       <variant>
-        <iteration revs="1" time="" memory=""/>
+        <iteration revs="1" time="10" memory="10"/>
       </variant>
     </subject>
   </benchmark>
@@ -109,8 +110,8 @@ EOT
   <benchmark class="Benchmark">
     <subject name="benchFoo">
       <variant>
-        <iteration revs="1" time="" memory=""/>
-        <iteration revs="3" time="" memory=""/>
+        <iteration revs="1" time="10" memory="10"/>
+        <iteration revs="3" time="10" memory="10"/>
       </variant>
     </subject>
   </benchmark>
@@ -124,14 +125,14 @@ EOT
   <benchmark class="Benchmark">
     <subject name="benchFoo">
       <variant>
-        <iteration revs="1" time="" memory=""/>
-        <iteration revs="3" time="" memory=""/>
-        <iteration revs="1" time="" memory=""/>
-        <iteration revs="3" time="" memory=""/>
-        <iteration revs="1" time="" memory=""/>
-        <iteration revs="3" time="" memory=""/>
-        <iteration revs="1" time="" memory=""/>
-        <iteration revs="3" time="" memory=""/>
+        <iteration revs="1" time="10" memory="10"/>
+        <iteration revs="3" time="10" memory="10"/>
+        <iteration revs="1" time="10" memory="10"/>
+        <iteration revs="3" time="10" memory="10"/>
+        <iteration revs="1" time="10" memory="10"/>
+        <iteration revs="3" time="10" memory="10"/>
+        <iteration revs="1" time="10" memory="10"/>
+        <iteration revs="3" time="10" memory="10"/>
       </variant>
     </subject>
   </benchmark>
@@ -147,7 +148,7 @@ EOT
       <variant>
         <parameter name="one" value="two"/>
         <parameter name="three" value="four"/>
-        <iteration revs="1" time="" memory=""/>
+        <iteration revs="1" time="10" memory="10"/>
       </variant>
     </subject>
   </benchmark>
@@ -163,7 +164,7 @@ EOT
       <variant>
         <parameter name="0" value="one"/>
         <parameter name="1" value="two"/>
-        <iteration revs="1" time="" memory=""/>
+        <iteration revs="1" time="10" memory="10"/>
       </variant>
     </subject>
   </benchmark>
@@ -180,7 +181,7 @@ EOT
         <parameter name="one" type="collection">
           <parameter name="three" value="four"/>
         </parameter>
-        <iteration revs="1" time="" memory=""/>
+        <iteration revs="1" time="10" memory="10"/>
       </variant>
     </subject>
   </benchmark>

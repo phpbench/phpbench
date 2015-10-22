@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Tests\Unit\Benchmark\executortest;
+namespace PhpBench\Tests\Unit\Benchmark\Executor\microtimetest;
 
 class ExecutorBench
 {
