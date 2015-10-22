@@ -9,12 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Tests\Unit\Benchmark;
+namespace PhpBench\Tests\Unit\Benchmark\Executor;
 
 use PhpBench\Benchmark\Executor;
+use PhpBench\Benchmark\Executor\MicrotimeExecutor;
 use PhpBench\Benchmark\Remote\Launcher;
 
-class ExecutorTest extends \PHPUnit_Framework_TestCase
+class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
 {
     private $executor;
     private $beforeMethodFile;
@@ -26,24 +27,25 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->beforeMethodFile = __DIR__ . '/executortest/before_method.tmp';
-        $this->afterMethodFile = __DIR__ . '/executortest/after_method.tmp';
-        $this->revFile = __DIR__ . '/executortest/revs.tmp';
-        $this->setupFile = __DIR__ . '/executortest/setup.tmp';
-        $this->paramFile = __DIR__ . '/executortest/param.tmp';
-        $this->paramBeforeFile = __DIR__ . '/executortest/parambefore.tmp';
-        $this->paramAfterFile = __DIR__ . '/executortest/paramafter.tmp';
-        $this->teardownFile = __DIR__ . '/executortest/teardown.tmp';
+        $this->beforeMethodFile = __DIR__ . '/microtimetest/before_method.tmp';
+        $this->afterMethodFile = __DIR__ . '/microtimetest/after_method.tmp';
+        $this->revFile = __DIR__ . '/microtimetest/revs.tmp';
+        $this->setupFile = __DIR__ . '/microtimetest/setup.tmp';
+        $this->paramFile = __DIR__ . '/microtimetest/param.tmp';
+        $this->paramBeforeFile = __DIR__ . '/microtimetest/parambefore.tmp';
+        $this->paramAfterFile = __DIR__ . '/microtimetest/paramafter.tmp';
+        $this->teardownFile = __DIR__ . '/microtimetest/teardown.tmp';
 
         $this->subject = $this->prophesize('PhpBench\Benchmark\Metadata\SubjectMetadata');
         $this->benchmark = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');
 
         $launcher = new Launcher(null, null);
-        $this->executor = new Executor($launcher);
+        $this->executor = new MicrotimeExecutor($launcher);
         $this->removeTemporaryFiles();
 
-        $this->benchmark->getPath()->willReturn(__DIR__ . '/executortest/ExecutorBench.php');
-        $this->benchmark->getClass()->willReturn('PhpBench\Tests\Unit\Benchmark\executortest\ExecutorBench');
+        $this->benchmark->getPath()->willReturn(__DIR__ . '/microtimetest/ExecutorBench.php');
+        $this->benchmark->getClass()->willReturn('PhpBench\Tests\Unit\Benchmark\Executor\microtimetest\ExecutorBench');
+        $this->iteration = $this->prophesize('PhpBench\Benchmark\Iteration');
         $this->subject->getBenchmarkMetadata()->willReturn($this->benchmark->reveal());
     }
 
@@ -79,16 +81,15 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
         $this->subject->getBeforeMethods()->willReturn(array());
         $this->subject->getAfterMethods()->willReturn(array());
         $this->subject->getName()->willReturn('doSomething');
+        $this->iteration->getSubject()->willReturn($this->subject);
+        $this->iteration->getRevolutions()->willReturn(10);
+        $this->iteration->getParameters()->willReturn(array());
 
-        $result = $this->executor->execute(
-            $this->subject->reveal(),
-            10,
-            array()
-        );
+        $result = $this->executor->execute($this->iteration->reveal());
 
-        $this->assertInternalType('array', $result);
-        $this->assertArrayHasKey('time', $result);
-        $this->assertArrayHasKey('memory', $result);
+        $this->assertInstanceOf('PhpBench\Benchmark\IterationResult', $result);
+        $this->assertInternalType('int', $result->getTime());
+        $this->assertInternalType('int', $result->getMemory());
         $this->assertFalse(file_exists($this->beforeMethodFile));
         $this->assertFalse(file_exists($this->afterMethodFile));
         $this->assertTrue(file_exists($this->revFile));
@@ -103,12 +104,11 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
         $this->subject->getBeforeMethods()->willReturn(array('beforeMethod'));
         $this->subject->getAfterMethods()->willReturn(array());
         $this->subject->getName()->willReturn('doSomething');
+        $this->iteration->getSubject()->willReturn($this->subject);
+        $this->iteration->getRevolutions()->willReturn(1);
+        $this->iteration->getParameters()->willReturn(array());
 
-        $this->executor->execute(
-            $this->subject->reveal(),
-            1,
-            array()
-        );
+        $this->executor->execute($this->iteration->reveal());
 
         $this->assertTrue(file_exists($this->beforeMethodFile));
     }
@@ -121,12 +121,11 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
         $this->subject->getBeforeMethods()->willReturn(array());
         $this->subject->getAfterMethods()->willReturn(array('afterMethod'));
         $this->subject->getName()->willReturn('doSomething');
+        $this->iteration->getSubject()->willReturn($this->subject);
+        $this->iteration->getRevolutions()->willReturn(1);
+        $this->iteration->getParameters()->willReturn(array());
 
-        $this->executor->execute(
-            $this->subject->reveal(),
-            1,
-            array()
-        );
+        $this->executor->execute($this->iteration->reveal());
 
         $this->assertTrue(file_exists($this->afterMethodFile));
     }
@@ -140,14 +139,14 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
         $this->subject->getAfterMethods()->willReturn(array());
         $this->subject->getName()->willReturn('parameterized');
 
-        $this->executor->execute(
-            $this->subject->reveal(),
-            1,
-            array(
-                'one' => 'two',
-                'three' => 'four',
-            )
-        );
+        $this->iteration->getSubject()->willReturn($this->subject);
+        $this->iteration->getRevolutions()->willReturn(1);
+        $this->iteration->getParameters()->willReturn(array(
+            'one' => 'two',
+            'three' => 'four',
+        ));
+
+        $this->executor->execute($this->iteration->reveal());
         $this->assertTrue(file_exists($this->paramFile));
         $params = json_decode(file_get_contents($this->paramFile), true);
         $this->assertEquals(array(
@@ -170,11 +169,11 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
         $this->subject->getAfterMethods()->willReturn(array('parameterizedAfter'));
         $this->subject->getName()->willReturn('parameterized');
 
-        $this->executor->execute(
-            $this->subject->reveal(),
-            1,
-            $expected
-        );
+        $this->iteration->getSubject()->willReturn($this->subject);
+        $this->iteration->getRevolutions()->willReturn(1);
+        $this->iteration->getParameters()->willReturn($expected);
+
+        $this->executor->execute($this->iteration->reveal());
 
         $this->assertTrue(file_exists($this->paramBeforeFile));
         $params = json_decode(file_get_contents($this->paramBeforeFile), true);

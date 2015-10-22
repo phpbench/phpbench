@@ -26,6 +26,7 @@ class Runner
     private $collectionBuilder;
     private $iterationsOverride;
     private $revsOverride;
+    private $executorOverride;
     private $configPath;
     private $parametersOverride;
     private $subjectsOverride = array();
@@ -39,7 +40,7 @@ class Runner
      */
     public function __construct(
         CollectionBuilder $collectionBuilder,
-        Executor $executor,
+        ExecutorInterface $executor,
         $configPath
     ) {
         $this->logger = new NullLogger();
@@ -91,6 +92,16 @@ class Runner
     public function overrideParameters($parameters)
     {
         $this->parametersOverride = $parameters;
+    }
+
+    /**
+     * Override the executor to use.
+     *
+     * @param string $executor
+     */
+    public function overrideExecutor($executor)
+    {
+        $this->executorOverride = $executor;
     }
 
     /**
@@ -169,7 +180,6 @@ class Runner
         $iterationCount = null === $this->iterationsOverride ? $subject->getIterations() : $this->iterationsOverride;
         $revolutionCounts = $this->revsOverride ? array($this->revsOverride) : $subject->getRevs();
         $parameterSets = $this->parametersOverride ? array(array($this->parametersOverride)) : $subject->getParameterSets() ?: array(array(array()));
-
         $paramsIterator = new CartesianParameterIterator($parameterSets);
 
         foreach ($paramsIterator as $parameters) {
@@ -215,23 +225,20 @@ class Runner
     {
         for ($index = 0; $index < $iterationCount; $index++) {
             foreach ($revolutionCounts as $revolutionCount) {
+                $iteration = new Iteration($index, $subject, $revolutionCount, $parameterSet);
                 $iterationEl = $variantEl->ownerDocument->createElement('iteration');
                 $variantEl->appendChild($iterationEl);
                 $iterationEl->setAttribute('revs', $revolutionCount);
-                $this->runIteration($subject, $revolutionCount, $parameterSet, $iterationEl);
+                $this->runIteration($iteration, $iterationEl);
             }
         }
     }
 
-    private function runIteration(SubjectMetadata $subject, $revolutionCount, $parameterSet, \DOMElement $iterationEl)
+    private function runIteration(Iteration $iteration, \DOMElement $iterationEl)
     {
-        $result = $this->executor->execute(
-            $subject,
-            $revolutionCount,
-            $parameterSet
-        );
+        $result = $this->executor->execute($iteration);
 
-        $iterationEl->setAttribute('time', $result['time']);
-        $iterationEl->setAttribute('memory', $result['memory']);
+        $iterationEl->setAttribute('time', $result->getTime());
+        $iterationEl->setAttribute('memory', $result->getMemory());
     }
 }

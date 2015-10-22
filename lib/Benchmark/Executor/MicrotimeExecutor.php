@@ -9,9 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Benchmark;
+namespace PhpBench\Benchmark\Executor;
 
-use PhpBench\Benchmark\Metadata\SubjectMetadata;
+use PhpBench\Benchmark\ExecutorInterface;
+use PhpBench\Benchmark\Iteration;
+use PhpBench\Benchmark\IterationResult;
 use PhpBench\Benchmark\Remote\Launcher;
 
 /**
@@ -19,7 +21,7 @@ use PhpBench\Benchmark\Remote\Launcher;
  * temp. directory and then executes it. The generated script then returns the
  * time taken to execute the benchmark and the memory consumed.
  */
-class Executor
+class MicrotimeExecutor implements ExecutorInterface
 {
     /**
      * @var Launcher
@@ -37,24 +39,39 @@ class Executor
     }
 
     /**
-     * @param Subject $subject
-     * @param int $revolutions
-     * @param array $parameters
+     * {@inheritdoc}
      */
-    public function execute(SubjectMetadata $subject, $revolutions = 0, array $parameters = array())
+    public function execute(Iteration $iteration, array $options = array())
     {
+        $subject = $iteration->getSubject();
         $tokens = array(
             'class' => $subject->getBenchmarkMetadata()->getClass(),
             'file' => $subject->getBenchmarkMetadata()->getPath(),
             'subject' => $subject->getName(),
-            'revolutions' => $revolutions,
+            'revolutions' => $iteration->getRevolutions(),
             'beforeMethods' => var_export($subject->getBeforeMethods(), true),
             'afterMethods' => var_export($subject->getAfterMethods(), true),
-            'parameters' => var_export($parameters, true),
+            'parameters' => var_export($iteration->getParameters(), true),
         );
 
-        $result = $this->launcher->launch(__DIR__ . '/Remote/template/runner.template', $tokens);
+        $result = $this->launcher->launch(__DIR__ . '/template/microtime.template', $tokens);
 
-        return $result;
+        return new IterationResult($result['time'], $result['memory']);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSchema()
+    {
+        return array();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefaultConfig()
+    {
+        return array();
     }
 }

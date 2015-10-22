@@ -12,7 +12,7 @@
 namespace PhpBench\Extension;
 
 use PhpBench\Benchmark\CollectionBuilder;
-use PhpBench\Benchmark\Executor;
+use PhpBench\Benchmark\Executor\MicrotimeExecutor;
 use PhpBench\Benchmark\Metadata\Driver\AnnotationDriver;
 use PhpBench\Benchmark\Metadata\Factory;
 use PhpBench\Benchmark\Remote\Launcher;
@@ -119,7 +119,7 @@ class CoreExtension implements ExtensionInterface
         });
 
         $container->register('benchmark.executor', function (Container $container) {
-            return new Executor(
+            return new MicrotimeExecutor(
                 $container->get('benchmark.remote.launcher')
             );
         });
