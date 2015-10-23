@@ -54,7 +54,8 @@ class MicrotimeExecutor implements ExecutorInterface
             'parameters' => var_export($iteration->getParameters(), true),
         );
 
-        $result = $this->launcher->launch(__DIR__ . '/template/microtime.template', $tokens);
+        $payload = $this->launcher->payload(__DIR__ . '/template/microtime.template', $tokens);
+        $result = $payload->launch();
 
         return new IterationResult($result['time'], $result['memory']);
     }
