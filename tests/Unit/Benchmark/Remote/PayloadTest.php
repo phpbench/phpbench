@@ -11,8 +11,6 @@
 
 namespace PhpBench\Tests\Unit\Benchmark\Remote;
 
-use PhpBench\Benchmark\Remote\Launcher;
-use Symfony\Component\Process\ProcessBuilder;
 use PhpBench\Benchmark\Remote\Payload;
 use Prophecy\Argument;
 
@@ -47,7 +45,7 @@ class PayloadTest extends \PHPUnit_Framework_TestCase
 
     /**
      * It should throw an exception if the script is invalid.
-     *un
+     *
      * @expectedException RuntimeException
      * @expectedExceptionMessage Could not launch script
      */
@@ -61,7 +59,7 @@ class PayloadTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should customize the PHP binary path
+     * It should customize the PHP binary path.
      */
     public function testBinaryPath()
     {
@@ -81,7 +79,7 @@ class PayloadTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should pass PHP ini settings to the PHP executable
+     * It should pass PHP ini settings to the PHP executable.
      */
     public function testPhpConfig()
     {
@@ -105,7 +103,7 @@ class PayloadTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should allow the PHP executable to be wrapped with a different executable
+     * It should allow the PHP executable to be wrapped with a different executable.
      */
     public function testWrap()
     {

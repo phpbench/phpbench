@@ -12,7 +12,6 @@
 namespace PhpBench\Tests\Unit\Benchmark\Remote;
 
 use PhpBench\Benchmark\Remote\Launcher;
-use Symfony\Component\Process\ProcessBuilder;
 
 class LauncherTest extends \PHPUnit_Framework_TestCase
 {
@@ -26,7 +25,7 @@ class LauncherTest extends \PHPUnit_Framework_TestCase
         $result = $launcher->payload(
             __DIR__ . '/template/foo.template',
             array(
-                'foo' => 'bar'
+                'foo' => 'bar',
             )
         )->launch();
 
@@ -47,13 +46,13 @@ class LauncherTest extends \PHPUnit_Framework_TestCase
         $launcher->payload(
             __DIR__ . '/template/foo.template',
             array(
-                'foo' => 'bar'
+                'foo' => 'bar',
             )
         );
     }
 
     /**
-     * It should return the bootstrap path relative to the base path
+     * It should return the bootstrap path relative to the base path.
      *
      * @dataProvider provideBootstrapRelativity
      */
@@ -63,7 +62,7 @@ class LauncherTest extends \PHPUnit_Framework_TestCase
         $payload = $launcher->payload(
             __DIR__ . '/template/foo.template',
             array(
-                'foo' => 'bar'
+                'foo' => 'bar',
             )
         );
 
@@ -86,6 +85,5 @@ class LauncherTest extends \PHPUnit_Framework_TestCase
                 __DIR__ . '/launcher/autoload.php',
             ),
         );
-
     }
 }

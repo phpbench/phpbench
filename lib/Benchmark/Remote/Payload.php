@@ -1,9 +1,17 @@
 <?php
 
+/*
+ * This file is part of the PHPBench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Benchmark\Remote;
 
 use Symfony\Component\Process\Process;
-use PhpBench\Benchmark\Remote\Payload;
 
 /**
  * Class representing the context from which a script can be generated and executed by a PHP binary.
@@ -11,27 +19,27 @@ use PhpBench\Benchmark\Remote\Payload;
 class Payload
 {
     /**
-     * Path to script template
+     * Path to script template.
      */
     private $template;
 
     /**
-     * Wrapper for PHP binary, e.g. "blackfire"
+     * Wrapper for PHP binary, e.g. "blackfire".
      */
     private $wrapper;
 
     /**
-     * Associative array of PHP INI settings
+     * Associative array of PHP INI settings.
      */
     private $phpConfig = array();
 
     /**
-     * Path to PHP binary
+     * Path to PHP binary.
      */
     private $phpPath = PHP_BINARY;
 
     /**
-     * Tokens to substitute in the script template
+     * Tokens to substitute in the script template.
      */
     private $tokens = array();
 

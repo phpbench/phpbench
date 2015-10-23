@@ -11,8 +11,6 @@
 
 namespace PhpBench\Benchmark\Remote;
 
-use Symfony\Component\Process\Process;
-
 /**
  * Build and execute tokenized scripts in separate processes.
  * The scripts should return a JSON encoded string.
@@ -27,7 +25,7 @@ class Launcher
     /**
      * @var string
      */
-    private $configDir;
+    private $basePath;
 
     /**
      * @param mixed string
@@ -35,7 +33,7 @@ class Launcher
     public function __construct($bootstrap, $basePath)
     {
         $this->bootstrap = $bootstrap;
-        $this->configDir = $basePath;
+        $this->basePath = $basePath;
     }
 
     public function payload($template, array $tokens)
@@ -53,7 +51,6 @@ class Launcher
             $tokens['bootstrap'] = $bootstrap;
         }
 
-
         return new Payload($template, $tokens);
     }
 
@@ -68,6 +65,6 @@ class Launcher
             return $this->bootstrap;
         }
 
-        return $this->configDir . '/' . $this->bootstrap;
+        return $this->basePath . '/' . $this->bootstrap;
     }
 }
