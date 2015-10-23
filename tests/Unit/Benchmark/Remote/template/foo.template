@@ -1,6 +1,5 @@
 <?php
 
-require_once('{{ bootstrap }}');
 $foo = '{{ foo }}';
 
 echo json_encode(array('foo' => $foo));

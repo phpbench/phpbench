@@ -131,7 +131,7 @@ class CoreExtension implements ExtensionInterface
         $container->register('benchmark.remote.launcher', function (Container $container) {
             return new Launcher(
                 $container->hasParameter('bootstrap') ? $container->getParameter('bootstrap') : null,
-                $container->getParameter('config_path')
+                dirname($container->getParameter('config_path'))
             );
         });
 

@@ -22,27 +22,16 @@ class LauncherTest extends \PHPUnit_Framework_TestCase
     public function testExecute()
     {
         $launcher = new Launcher(__DIR__ . '/../../../../vendor/autoload.php', '.');
-        $result = $launcher->launch(__DIR__ . '/template/foo.template', array(
-            'foo' => 'bar',
-        ));
+        $result = $launcher->payload(
+            __DIR__ . '/template/foo.template',
+            array(
+                'foo' => 'bar',
+            )
+        )->launch();
 
         $this->assertEquals(array(
             'foo' => 'bar',
         ), $result);
-    }
-
-    /**
-     * It should throw an exception if the script is invalid.
-     *
-     * @expectedException RuntimeException
-     * @expectedExceptionMessage Could not launch script
-     */
-    public function testInvalidScript()
-    {
-        $launcher = new Launcher(__DIR__ . '/../../../../vendor/autoload.php', '.');
-        $launcher->launch(__DIR__ . '/template/invalid.template', array(
-            'foo' => 'bar',
-        ));
     }
 
     /**
@@ -53,7 +42,48 @@ class LauncherTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidBootstrap()
     {
-        $launcher = new Launcher('really_does_not_exist.com', null);
-        $launcher->launch(__DIR__ . '/template/foo.template', array());
+        $launcher = new Launcher(__DIR__ . '/../../../../vendor/notexisting.php', '.');
+        $launcher->payload(
+            __DIR__ . '/template/foo.template',
+            array(
+                'foo' => 'bar',
+            )
+        );
+    }
+
+    /**
+     * It should return the bootstrap path relative to the base path.
+     *
+     * @dataProvider provideBootstrapRelativity
+     */
+    public function testBootstrapRelativity($bootstrap, $expected)
+    {
+        $launcher = new Launcher($bootstrap, __DIR__ . '/launcher');
+        $payload = $launcher->payload(
+            __DIR__ . '/template/foo.template',
+            array(
+                'foo' => 'bar',
+            )
+        );
+
+        $refl = new \ReflectionClass($payload);
+        $tokens = $refl->getProperty('tokens');
+        $tokens->setAccessible(true);
+        $tokens = $tokens->getValue($payload);
+        $this->assertEquals($expected, $tokens['bootstrap']);
+    }
+
+    public function provideBootstrapRelativity()
+    {
+        return array(
+            array(
+                'autoload.php',
+                __DIR__ . '/launcher/autoload.php',
+            ),
+            array(
+                __DIR__ . '/launcher/autoload.php',
+                __DIR__ . '/launcher/autoload.php',
+            ),
+        );
     }
 }

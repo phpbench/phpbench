@@ -11,10 +11,8 @@
 
 namespace PhpBench\Benchmark\Remote;
 
-use Symfony\Component\Process\Process;
-
 /**
- * Build and execute parameterized scripts in separate processes.
+ * Build and execute tokenized scripts in separate processes.
  * The scripts should return a JSON encoded string.
  */
 class Launcher
@@ -27,75 +25,33 @@ class Launcher
     /**
      * @var string
      */
-    private $configDir;
+    private $basePath;
 
     /**
      * @param mixed string
      */
-    public function __construct($bootstrap, $configPath)
+    public function __construct($bootstrap, $basePath)
     {
         $this->bootstrap = $bootstrap;
-        $this->configDir = dirname($configPath);
+        $this->basePath = $basePath;
     }
 
-    public function launch($template, array $parameters)
+    public function payload($template, array $tokens)
     {
         $bootstrap = $this->getBootstrapPath();
-        if ($bootstrap && !file_exists($bootstrap)) {
-            throw new \InvalidArgumentException(sprintf(
-                'Bootstrap file "%s" does not exist',
-                $bootstrap
-            ));
+
+        $tokens['bootstrap'] = '';
+        if (null !== $bootstrap) {
+            if (!file_exists($bootstrap)) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Bootstrap file "%s" does not exist.',
+                    $bootstrap
+                ));
+            }
+            $tokens['bootstrap'] = $bootstrap;
         }
 
-        if (!file_exists($template)) {
-            throw new \RuntimeException(sprintf(
-                'Could not find script template "%s"',
-                $template
-            ));
-        }
-
-        $parameters['bootstrap'] = $bootstrap;
-
-        $tokens = array();
-        foreach ($parameters as $key => $value) {
-            $tokens['{{ ' . $key . ' }}'] = $value;
-        }
-
-        $templateBody = file_get_contents($template);
-        $script = str_replace(
-            array_keys($tokens),
-            array_values($tokens),
-            $templateBody
-        );
-
-        $scriptPath = tempnam(sys_get_temp_dir(), 'PhpBench');
-        file_put_contents($scriptPath, $script);
-
-        $process = new Process(PHP_BINARY . ' ' . $scriptPath);
-        $process->run();
-        unlink($scriptPath);
-
-        if (false === $process->isSuccessful()) {
-            throw new \RuntimeException(sprintf(
-                'Could not launch script: %s %s',
-                $process->getErrorOutput(),
-                $process->getOutput()
-            ));
-        }
-
-        $output = $process->getOutput();
-        $result = json_decode($output, true);
-
-        if (null === $result) {
-            throw new \RuntimeException(sprintf(
-                'Could not decode return value from script from template "%s" (should be a JSON encoded string): %s',
-                $template,
-                $output
-            ));
-        }
-
-        return $result;
+        return new Payload($template, $tokens);
     }
 
     private function getBootstrapPath()
@@ -109,6 +65,6 @@ class Launcher
             return $this->bootstrap;
         }
 
-        return $this->configDir . '/' . $this->bootstrap;
+        return $this->basePath . '/' . $this->bootstrap;
     }
 }
