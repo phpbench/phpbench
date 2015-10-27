@@ -243,10 +243,12 @@ class CoreExtension implements ExtensionInterface
     private function registerTabular(Container $container)
     {
         $container->register('tabular.xpath_resolver', function () {
+            require_once __DIR__ . '/../Dom/xpath_functions.php';
+
             $resolver = new XPathResolver();
-            $resolver->registerFunction('parameters_to_json', 'PhpBench\Report\Dom\functions\parameters_to_json');
-            $resolver->registerFunction('class_name', 'PhpBench\Report\Dom\functions\class_name');
-            $resolver->registerFunction('join_node_values', 'PhpBench\Report\Dom\functions\join_node_values');
+            $resolver->registerFunction('parameters_to_json', 'PhpBench\Dom\functions\parameters_to_json');
+            $resolver->registerFunction('class_name', 'PhpBench\Dom\functions\class_name');
+            $resolver->registerFunction('join_node_values', 'PhpBench\Dom\functions\join_node_values');
 
             return $resolver;
         });
