@@ -298,19 +298,4 @@ class RunCommandTest extends BaseCommandTestCase
         $generatedFilename = array_pop($lines);
         $this->assertFileExists($generatedFilename);
     }
-
-    /**
-     * It should throw an exception if both a configured path and a path argument are given.
-     *
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage You cannot specify both a path in the configuration and a path on the command line
-     */
-    public function testPathConfigAndPathArgument()
-    {
-        $this->runCommand('run', array(
-            'path' => __DIR__ . '/../../benchmarks/BenchmarkBench.php',
-        ), array(
-            'path' => './../../benchmarks',
-        ));
-    }
 }
