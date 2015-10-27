@@ -138,6 +138,7 @@ class Runner
 
         $collection = $this->collectionBuilder->buildCollection($path, $this->subjectsOverride, $this->groups);
 
+        /* @var BenchmarkMetadata */
         foreach ($collection->getBenchmarks() as $benchmark) {
             $benchmarkEl = $dom->createElement('benchmark');
             $benchmarkEl->setAttribute('class', $benchmark->getClass());

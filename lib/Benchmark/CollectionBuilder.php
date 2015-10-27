@@ -11,6 +11,7 @@
 
 namespace PhpBench\Benchmark;
 
+use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\Factory;
 use Symfony\Component\Finder\Finder;
 

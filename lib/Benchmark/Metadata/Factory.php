@@ -61,10 +61,11 @@ class Factory
         }
 
         $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
+        $this->validateAbstractMetadata($hierarchy, $metadata);
 
         // validate the subject and load the parameter sets
         foreach ($metadata->getSubjectMetadatas() as $subjectMetadata) {
-            $this->validateSubject($hierarchy, $subjectMetadata);
+            $this->validateAbstractMetadata($hierarchy, $subjectMetadata);
             $paramProviders = $subjectMetadata->getParamProviders();
             $parameterSets = $this->reflector->getParameterSets($metadata->getPath(), $paramProviders);
 
@@ -84,7 +85,7 @@ class Factory
         return $metadata;
     }
 
-    private function validateSubject(ReflectionHierarchy $benchmarkReflection, SubjectMetadata $subject)
+    private function validateAbstractMetadata(ReflectionHierarchy $benchmarkReflection, AbstractMetadata $subject)
     {
         foreach ($subject->getBeforeMethods() as $beforeMethod) {
             if (false === $benchmarkReflection->hasMethod($beforeMethod)) {
