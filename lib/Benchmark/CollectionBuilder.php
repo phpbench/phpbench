@@ -26,11 +26,6 @@ class CollectionBuilder
     private $finder;
 
     /**
-     * @var string
-     */
-    private $baseDir;
-
-    /**
      * @var Factory
      */
     private $factory;
@@ -38,13 +33,11 @@ class CollectionBuilder
     /**
      * @param Factory $factory
      * @param Finder $finder
-     * @param string $baseDir
      */
-    public function __construct(Factory $factory, Finder $finder = null, $baseDir = null)
+    public function __construct(Factory $factory, Finder $finder = null)
     {
         $this->factory = $factory;
         $this->finder = $finder ?: new Finder();
-        $this->baseDir = $baseDir;
     }
 
     /**
@@ -56,10 +49,6 @@ class CollectionBuilder
      */
     public function buildCollection($path, array $subjectFilter = array(), array $groupFilter = array())
     {
-        if ($this->baseDir && '/' !== substr($path, 0, 1)) {
-            $path = realpath($this->baseDir . '/' . $path);
-        }
-
         if (!file_exists($path)) {
             throw new \InvalidArgumentException(sprintf(
                 'File or directory "%s" does not exist',

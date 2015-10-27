@@ -106,6 +106,8 @@ class CoreExtension implements ExtensionInterface
         foreach ($container->getParameter('outputs') as $outputName => $output) {
             $container->get('report.manager')->addOutput($outputName, $output);
         }
+
+        $this->relativizeConfigPath($container);
     }
 
     private function registerBenchmark(Container $container)
@@ -155,8 +157,7 @@ class CoreExtension implements ExtensionInterface
         $container->register('benchmark.collection_builder', function (Container $container) {
             return new CollectionBuilder(
                 $container->get('benchmark.metadata_factory'),
-                $container->get('benchmark.finder'),
-                dirname($container->getParameter('config_path'))
+                $container->get('benchmark.finder')
             );
         });
     }
@@ -285,5 +286,18 @@ class CoreExtension implements ExtensionInterface
         $container->register('tabular.expander', function (Container $container) {
             return new Expander();
         });
+    }
+
+    private function relativizeConfigPath(Container $container)
+    {
+        if (null === $path = $container->getParameter('path')) {
+            return;
+        }
+
+        if (substr($path, 0, 1) === '/') {
+            return;
+        }
+
+        $container->setParameter('path', sprintf('%s/%s', dirname($container->getParameter('config_path')), $path));
     }
 }

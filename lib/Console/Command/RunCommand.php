@@ -90,11 +90,6 @@ EOT
         $progressLoggerName = $input->getOption('progress') ?: $this->progressLoggerName;
         $inputPath = $input->getArgument('path');
 
-        if ($this->benchPath && $inputPath) {
-            throw new \InvalidArgumentException(
-                'You cannot specify both a path in the configuration and a path on the command line.'
-            );
-        }
         $path = $inputPath ?: $this->benchPath;
 
         $reportNames = $this->reportManager->processCliReports($reports);

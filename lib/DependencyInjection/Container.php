@@ -166,6 +166,17 @@ class Container
     }
 
     /**
+     * Set the value of the parameter with the given name.
+     *
+     * @param string $name
+     * @param mixed $value
+     */
+    public function setParameter($name, $value)
+    {
+        $this->parameters[$name] = $value;
+    }
+
+    /**
      * Return the parameter with the given name.
      *
      * @param string $name
