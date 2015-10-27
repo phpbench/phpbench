@@ -47,6 +47,8 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->hierarchy->isEmpty()->willReturn(false);
         $this->metadata->getSubjectMetadatas()->willReturn(array());
+        $this->metadata->getBeforeMethods()->willReturn(array());
+        $this->metadata->getAfterMethods()->willReturn(array());
         $metadata = $this->factory->getMetadataForFile(self::FNAME);
         $this->assertInstanceOf('PhpBench\Benchmark\Metadata\BenchmarkMetadata', $metadata);
     }
@@ -60,6 +62,8 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $this->metadata->getSubjectMetadatas()->willReturn(array(
             $this->subjectMetadata->reveal(),
         ));
+        $this->metadata->getBeforeMethods()->willReturn(array());
+        $this->metadata->getAfterMethods()->willReturn(array());
         $this->subjectMetadata->getBeforeMethods()->willReturn(array());
         $this->subjectMetadata->getAfterMethods()->willReturn(array());
         $this->subjectMetadata->getParamProviders()->willReturn(array());
@@ -74,17 +78,40 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should throw an exception if a before method does not exist.
+     * It should throw an exception if a before/after method does not exist on the benchmark.
      *
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage Unknown before
      */
-    public function testValidationBeforeMethods()
+    public function testValidationBeforeMethodsBenchmark()
+    {
+        $this->hierarchy->isEmpty()->willReturn(false);
+        $this->metadata->getSubjectMetadatas()->willReturn(array());
+        $this->metadata->getBeforeMethods()->willReturn(array(
+            'beforeMe',
+        ));
+        $this->metadata->getAfterMethods()->willReturn(array());
+        $this->metadata->getPath()->willReturn(self::PATH);
+        $this->metadata->getClass()->willReturn('Test');
+        $this->hierarchy->hasMethod('beforeMe')->willReturn(false);
+
+        $this->factory->getMetadataForFile(self::FNAME);
+    }
+
+    /**
+     * It should throw an exception if a before/after method does not exist on the subject.
+     *
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Unknown before
+     */
+    public function testValidationBeforeMethodsSubject()
     {
         $this->hierarchy->isEmpty()->willReturn(false);
         $this->metadata->getSubjectMetadatas()->willReturn(array(
             $this->subjectMetadata->reveal(),
         ));
+        $this->metadata->getBeforeMethods()->willReturn(array());
+        $this->metadata->getAfterMethods()->willReturn(array());
         $this->subjectMetadata->getBeforeMethods()->willReturn(array(
             'beforeMe',
         ));
@@ -106,6 +133,8 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     public function testValidationAfterMethods()
     {
         $this->hierarchy->isEmpty()->willReturn(false);
+        $this->metadata->getBeforeMethods()->willReturn(array());
+        $this->metadata->getAfterMethods()->willReturn(array());
         $this->metadata->getSubjectMetadatas()->willReturn(array(
             $this->subjectMetadata->reveal(),
         ));
@@ -143,6 +172,8 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $this->metadata->getSubjectMetadatas()->willReturn(array(
             $this->subjectMetadata->reveal(),
         ));
+        $this->metadata->getBeforeMethods()->willReturn(array());
+        $this->metadata->getAfterMethods()->willReturn(array());
         $this->subjectMetadata->getBeforeMethods()->willReturn(array());
         $this->subjectMetadata->getAfterMethods()->willReturn(array());
         $this->subjectMetadata->getParamProviders()->willReturn(array());
