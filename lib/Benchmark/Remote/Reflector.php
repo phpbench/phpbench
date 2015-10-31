@@ -143,13 +143,16 @@ class Reflector
                     for ($j = $i + 1;$j < count($tokens);$j++) {
                         if ($tokens[$j] === '{') {
                             $class = $tokens[$i + 2][1];
+
+                            // only parse the first class token
+                            break 2;
                         }
                     }
                 }
             }
         };
 
-        if (!$class) {
+        if (!trim($class)) {
             return;
         }
 

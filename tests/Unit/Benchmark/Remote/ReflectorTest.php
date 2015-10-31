@@ -87,4 +87,16 @@ class ReflectorTest extends \PHPUnit_Framework_TestCase
             ),
         ), $parameterSets);
     }
+
+    /**
+     * It should parse a class which has multiple class keywords and return the first
+     * declared class.
+     */
+    public function testMultipleClassKeywords()
+    {
+        $fname = __DIR__ . '/reflector/ClassWithClassKeywords.php';
+        $classHierarchy = $this->reflector->reflect($fname);
+        $reflection = $classHierarchy->getTop();
+        $this->assertEquals('\Test\ClassWithClassKeywords', $reflection->class);
+    }
 }
