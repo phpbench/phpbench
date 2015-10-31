@@ -94,6 +94,10 @@ class ReflectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testMultipleClassKeywords()
     {
+        if (version_compare(phpversion(), '5.5', '<')) {
+            $this->markTestSkipped();
+        }
+
         $fname = __DIR__ . '/reflector/ClassWithClassKeywords.php';
         $classHierarchy = $this->reflector->reflect($fname);
         $reflection = $classHierarchy->getTop();
