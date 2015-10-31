@@ -123,7 +123,7 @@ class Payload
         if (null === $result) {
             throw new \RuntimeException(sprintf(
                 'Could not decode return value from script from template "%s" (should be a JSON encoded string): %s',
-                $template,
+                $this->template,
                 $output
             ));
         }
