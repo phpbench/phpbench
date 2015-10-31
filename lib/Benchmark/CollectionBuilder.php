@@ -52,8 +52,9 @@ class CollectionBuilder
     {
         if (!file_exists($path)) {
             throw new \InvalidArgumentException(sprintf(
-                'File or directory "%s" does not exist',
-                $path
+                'File or directory "%s" does not exist (cwd: %s)',
+                $path,
+                getcwd()
             ));
         }
 
