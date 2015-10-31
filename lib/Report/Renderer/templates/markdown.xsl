@@ -17,25 +17,29 @@
     </xsl:template>
 
     <xsl:template match="report">
-        <xsl:value-of select="@title"/><xsl:call-template name="newline" /><xsl:call-template name="repeat">
-            <xsl:with-param name="output" select="string('-')" />
-            <xsl:with-param name="count" select="string-length(@title)" />
-        </xsl:call-template>
-        <xsl:call-template name="newline" />
-        <xsl:call-template name="newline" />
-        <xsl:value-of select="description" />
-        <xsl:call-template name="newline" />
-        <xsl:call-template name="newline" />
+        <xsl:if test="title != ''">
+            <xsl:value-of select="@title"/><xsl:call-template name="newline" /><xsl:call-template name="repeat">
+                <xsl:with-param name="output" select="string('-')" />
+                <xsl:with-param name="count" select="string-length(@title)" />
+            </xsl:call-template>
+            <xsl:call-template name="newline" />
+            <xsl:call-template name="newline" />
+        </xsl:if>
+        <xsl:if test="description != ''">
+            <xsl:value-of select="description" />
+            <xsl:call-template name="newline" />
+            <xsl:call-template name="newline" />
+        </xsl:if>
         <xsl:apply-templates select="table" />
     </xsl:template>
 
     <xsl:template match="table">
-            <xsl:for-each select=".//row[1]/cell">
+            <xsl:for-each select="./group[1]/row[1]/cell">
                 <xsl:if test="position()!=1" xml:space="preserve"> | </xsl:if>
                 <xsl:value-of select="@name" />
             </xsl:for-each>
             <xsl:call-template name="newline" />
-            <xsl:for-each select=".//row[1]/cell"><xsl:if test="position()!=1" xml:space="preserve">|</xsl:if> --- </xsl:for-each>
+            <xsl:for-each select="./group[1]/row[1]/cell"><xsl:if test="position()!=1" xml:space="preserve">|</xsl:if> --- </xsl:for-each>
             <xsl:call-template name="newline" />
             <xsl:for-each select=".//row">
                 <xsl:for-each select=".//cell">

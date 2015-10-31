@@ -61,7 +61,7 @@ EOT
 
         if (!file_exists($file)) {
             throw new \InvalidArgumentException(sprintf(
-                'Could not find suite result file "%s"', $file
+                'Could not find suite result file "%s" (cwd: %s)', $file, getcwd()
             ));
         }
 
