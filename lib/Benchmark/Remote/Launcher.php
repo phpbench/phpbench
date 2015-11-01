@@ -23,48 +23,26 @@ class Launcher
     private $bootstrap;
 
     /**
-     * @var string
-     */
-    private $basePath;
-
-    /**
      * @param mixed string
      */
-    public function __construct($bootstrap, $basePath)
+    public function __construct($bootstrap)
     {
         $this->bootstrap = $bootstrap;
-        $this->basePath = $basePath;
     }
 
     public function payload($template, array $tokens)
     {
-        $bootstrap = $this->getBootstrapPath();
-
         $tokens['bootstrap'] = '';
-        if (null !== $bootstrap) {
-            if (!file_exists($bootstrap)) {
+        if (null !== $this->bootstrap) {
+            if (!file_exists($this->bootstrap)) {
                 throw new \InvalidArgumentException(sprintf(
                     'Bootstrap file "%s" does not exist.',
-                    $bootstrap
+                    $this->bootstrap
                 ));
             }
-            $tokens['bootstrap'] = $bootstrap;
+            $tokens['bootstrap'] = $this->bootstrap;
         }
 
         return new Payload($template, $tokens);
-    }
-
-    private function getBootstrapPath()
-    {
-        if (!$this->bootstrap) {
-            return;
-        }
-
-        // if the path is absolute, return it unmodified
-        if ('/' === substr($this->bootstrap, 0, 1)) {
-            return $this->bootstrap;
-        }
-
-        return $this->basePath . '/' . $this->bootstrap;
     }
 }

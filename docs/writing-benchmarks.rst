@@ -79,7 +79,8 @@ Revolutions can be specified using the ``@Revs`` annotation:
         // ...
     }
 
-Revolutions can also be overridden from the :ref:`command line <overriding>`.
+Revolutions can also be overridden from the :ref:`command line
+<overriding_iterations_and_revolutions>`.
 
 .. _iterations:
 
@@ -113,7 +114,8 @@ Iterations can be specified using the ``@Iterations`` annotation:
         // ...
     }
 
-Iterations can also be overridden from the :ref:`command line <overriding>`.
+Iterations can also be overridden from the :ref:`command line
+<overriding_iterations_and_revolutions>`.
 
 Estabilishing State: Before and After
 -------------------------------------

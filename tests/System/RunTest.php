@@ -50,7 +50,7 @@ class RunTest extends SystemTestCase
      */
     public function testCommand()
     {
-        $process = $this->phpbench('run benchmarks/BenchmarkBench.php');
+        $process = $this->phpbench('run benchmarks/set1/BenchmarkBench.php');
         $this->assertExitCode(0, $process);
     }
 
@@ -59,7 +59,7 @@ class RunTest extends SystemTestCase
      */
     public function testCommandWithReport()
     {
-        $process = $this->phpbench('run benchmarks/BenchmarkBench.php --report=default');
+        $process = $this->phpbench('run benchmarks/set1/BenchmarkBench.php --report=default');
         $this->assertExitCode(0, $process);
         $output = $process->getOutput();
         $this->assertContains('bench', $output);
@@ -81,7 +81,7 @@ class RunTest extends SystemTestCase
     public function testCommandWithReportConfiguration()
     {
         $process = $this->phpbench(
-            'run benchmarks/BenchmarkBench.php --report=\'{"extends": "default"}\''
+            'run benchmarks/set1/BenchmarkBench.php --report=\'{"extends": "default"}\''
         );
         $this->assertExitCode(0, $process);
         $output = $process->getOutput();
@@ -94,7 +94,7 @@ class RunTest extends SystemTestCase
     public function testCommandWithReportConfigurationUnknown()
     {
         $process = $this->phpbench(
-            'run --report=\'{"generator": "foo_table"}\' benchmarks/BenchmarkBench.php'
+            'run --report=\'{"generator": "foo_table"}\' benchmarks/set1/BenchmarkBench.php'
         );
         $this->assertExitCode(1, $process);
         $this->assertContains('Unknown report generator', $process->getOutput());
@@ -106,7 +106,7 @@ class RunTest extends SystemTestCase
     public function testCommandWithReportConfigurationInvalid()
     {
         $process = $this->phpbench(
-            'run --report=\'{"name": "foo_ta\' benchmarks/BenchmarkBench.php'
+            'run --report=\'{"name": "foo_ta\' benchmarks/set1/BenchmarkBench.php'
         );
         $this->assertExitCode(1, $process);
         $this->assertContains('Could not decode', $process->getOutput());
@@ -118,7 +118,7 @@ class RunTest extends SystemTestCase
     public function testDumpXml()
     {
         $process = $this->phpbench(
-            'run --dump-file=' . self::TEST_FNAME . ' benchmarks/BenchmarkBench.php'
+            'run --dump-file=' . self::TEST_FNAME . ' benchmarks/set1/BenchmarkBench.php'
         );
         $this->assertExitCode(0, $process);
         $output = $process->getOutput();
@@ -132,7 +132,7 @@ class RunTest extends SystemTestCase
     public function testDumpXmlStdOut()
     {
         $process = $this->phpbench(
-            'run --dump benchmarks/BenchmarkBench.php'
+            'run --dump benchmarks/set1/BenchmarkBench.php'
         );
         $this->assertExitCode(0, $process);
         $output = $process->getOutput();
@@ -145,7 +145,7 @@ class RunTest extends SystemTestCase
     public function testOverrideParameters()
     {
         $process = $this->phpbench(
-            'run --dump --parameters=\'{"length": 333}\' benchmarks/BenchmarkBench.php'
+            'run --dump --parameters=\'{"length": 333}\' benchmarks/set1/BenchmarkBench.php'
         );
         $this->assertExitCode(0, $process);
         $output = $process->getOutput();
@@ -158,7 +158,7 @@ class RunTest extends SystemTestCase
     public function testOverrideParametersInvalidJson()
     {
         $process = $this->phpbench(
-            'run --dump --parameters=\'{"length": 333\' benchmarks/BenchmarkBench.php'
+            'run --dump --parameters=\'{"length": 333\' benchmarks/set1/BenchmarkBench.php'
         );
 
         $this->assertExitCode(1, $process);
@@ -171,12 +171,66 @@ class RunTest extends SystemTestCase
     public function testOverrideIterations()
     {
         $process = $this->phpbench(
-            'run --subject=benchRandom --dump --iterations=10 benchmarks/BenchmarkBench.php'
+            'run --subject=benchRandom --dump --iterations=10 benchmarks/set1/BenchmarkBench.php'
         );
 
         $this->assertExitCode(0, $process);
         $output = $process->getOutput();
         $this->assertXPathCount(10, $output, '//subject[@name="benchRandom"]//iteration');
+    }
+
+    /**
+     * It should set the bootstrap file.
+     */
+    public function testSetBootstrap()
+    {
+        // The foobar_bootstrap defines a single class which is used by FoobarBench
+        $process = $this->phpbench(
+            'run --bootstrap=bootstrap/foobar.bootstrap benchmarks/set2/FoobarBench.php'
+        );
+
+        $this->assertExitCode(0, $process);
+    }
+
+    /**
+     * It should set the bootstrap using the short option.
+     */
+    public function testSetBootstrapShort()
+    {
+        // The foobar_bootstrap defines a single class which is used by FoobarBench
+        $process = $this->phpbench(
+            'run -b=bootstrap/foobar.bootstrap benchmarks/set2/FoobarBench.php'
+        );
+
+        $this->assertExitCode(0, $process);
+    }
+
+    /**
+     * It should override the bootstrap file.
+     */
+    public function testOverrideBootstrap()
+    {
+        // The foobar_bootstrap defines a single class which is used by FoobarBench
+        $process = $this->phpbench(
+            'run --bootstrap=bootstrap/foobar.bootstrap benchmarks/set2/FoobarBench.php --config=env/config_valid/phpbench.json'
+        );
+
+        $this->assertExitCode(0, $process);
+        $output = $process->getOutput();
+        $this->assertContains('Done', $output);
+    }
+
+    /**
+     * It should load the configured bootstrap relative to the config file.
+     */
+    public function testConfigBootstrapRelativity()
+    {
+        // The foobar.bootstrap defines a single class which is used by FoobarBench
+        $process = $this->phpbench(
+            'run benchmarks/set2/FoobarBench.php --config=env/config_set2/phpbench.json'
+        );
+
+        $this->assertExitCode(0, $process);
     }
 
     /**
@@ -188,7 +242,7 @@ class RunTest extends SystemTestCase
     public function testProgressLogger($progress)
     {
         $process = $this->phpbench(
-            'run --progress=' . $progress . ' benchmarks/BenchmarkBench.php'
+            'run --progress=' . $progress . ' benchmarks/set1/BenchmarkBench.php'
         );
         $output = $process->getOutput();
         $this->assertContains('Done', $output);
@@ -209,7 +263,7 @@ class RunTest extends SystemTestCase
     public function testGroups()
     {
         $process = $this->phpbench(
-            'run --group=do_nothing --dump benchmarks/BenchmarkBench.php'
+            'run --group=do_nothing --dump benchmarks/set1/BenchmarkBench.php'
         );
 
         $this->assertExitCode(0, $process);
@@ -225,7 +279,7 @@ class RunTest extends SystemTestCase
     public function testOutputs($output)
     {
         $process = $this->phpbench(
-            'run --output=' . $output . ' --report=default benchmarks/BenchmarkBench.php'
+            'run --output=' . $output . ' --report=default benchmarks/set1/BenchmarkBench.php'
         );
 
         $this->assertExitCode(0, $process);
