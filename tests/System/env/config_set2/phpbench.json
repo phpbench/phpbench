@@ -1,0 +1,4 @@
+{
+    "bootstrap": "../../bootstrap/foobar.bootstrap",
+    "path": "../../benchmarks/set2"
+}

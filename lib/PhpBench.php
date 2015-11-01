@@ -33,14 +33,18 @@ class PhpBench
         global $argv;
 
         $configPaths = array();
+        $bootstrapOverride = null;
         foreach ($argv as $arg) {
-            if (0 === strpos($arg, '--config=')) {
-                $configFile = substr($arg, 9);
+            if ($configFile = self::parseOption($arg, 'config')) {
                 if (!file_exists($configFile)) {
                     echo sprintf('Config file "%s" does not exist', $configFile) . PHP_EOL;
                     exit(1);
                 }
                 $configPaths = array($configFile);
+            }
+
+            if ($value = self::parseOption($arg, 'bootstrap', 'b')) {
+                $bootstrapOverride = $value;
             }
         }
 
@@ -70,7 +74,48 @@ class PhpBench
             $config = json_decode($config, true);
 
             $config['config_path'] = $configPath;
+
+            if ($config['bootstrap']) {
+                $config['bootstrap'] = self::getBootstrapPath(
+                    dirname($configPath), $config['bootstrap']
+                );
+            }
+
             $container->mergeParameters($config);
         }
+
+        if ($bootstrapOverride) {
+            $container->setParameter('bootstrap', self::getBootstrapPath(getcwd(), $bootstrapOverride));
+        }
+    }
+
+    private static function getBootstrapPath($configDir, $bootstrap)
+    {
+        if (!$bootstrap) {
+            return;
+        }
+
+        // if the path is absolute, return it unmodified
+        if ('/' === substr($bootstrap, 0, 1)) {
+            return $bootstrap;
+        }
+
+        return $configDir . '/' . $bootstrap;
+    }
+
+    private static function parseOption($arg, $longName, $shortName = null)
+    {
+        $longOption = '--' . $longName . '=';
+        $shortOption = '-' . $shortName .'=';
+
+        foreach (array($longOption, $shortOption) as $option) {
+            if (0 !== strpos($arg, $option)) {
+                continue;
+            }
+
+            return substr($arg, strlen($option));
+        }
+
+        return;
     }
 }

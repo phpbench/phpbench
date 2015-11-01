@@ -37,18 +37,28 @@ Groups can be specified using the ``--group`` option:
     Both ``--subject`` and ``--group`` options may be specified multiple
     times.
 
-.. _overriding:
+.. _overriding_iterations_and_revolutions:
 
-Overriding
-----------
+Overriding Iterations and Revolutions
+-------------------------------------
 
-The benchmark runner can also override the number of :ref:`revolutions
+The benchmark runner can override the number of :ref:`revolutions
 <revolutions>` and
 :ref:`iterations <iterations>` which will be executed:
 
 .. code-block:: bash
 
     $ phpbench run /path/to/HashBench.php --iterations=10 --revs=1000
+
+Overriding the Bootstrap
+------------------------
+
+You can override or set the :ref:`configuration_bootstrap` using the
+``--bootstrap`` option:
+
+.. code-block:: bash
+
+    $ phpbench run /path/to/HashBench.php --bootstrap=vendor/autoload.php
 
 Generating Reports
 ------------------

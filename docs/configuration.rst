@@ -32,6 +32,8 @@ that order and use one if it exists.
     allows the end-user of your library to override your configuration by creating
     ``phpbench.json``.
 
+.. _configuration_bootstrap:
+
 Bootstrap
 ---------
 
@@ -46,6 +48,11 @@ It is specified with the ``bootstrap`` key:
     {
         "bootstrap": "vendor/autoload.php",
     }
+
+.. note::
+
+    You can override (or initially set) the bootstrap using the
+    ``--bootstrap`` CLI option.
 
 Path
 ----

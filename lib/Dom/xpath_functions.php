@@ -12,7 +12,6 @@
 /**
  * This file contains functions which are to be used in XPath expressions.
  */
-
 namespace PhpBench\Dom\functions;
 
 /**
