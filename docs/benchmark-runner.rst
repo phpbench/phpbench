@@ -86,6 +86,30 @@ configure reports.
 
 The ``--report`` option can be specified multiple times.
 
+.. _retry_threshold:
+
+Retry Threshold
+---------------
+
+PHPBench is able to dramatically improve the stability of your benchmarks by
+retrying the iteration set until all the deviations in time between iterations
+fit within a given margin of error.
+
+You can set this as follows:
+
+.. code-block:: bash
+
+    $ phpbench run /path/to/HashBench.php --retry-threshold=5
+
+The retry threshold is the margin of error as a percentage which is allowed
+between deviations.  Generally the lower this value, the higher the stability,
+but the longer it will take for a set of iterations to be resolved.
+
+By default the retry threshold is disabled.
+
+You may also set the retry threshold in the
+:ref:`configuration <configuration_retry_threshold>`.
+
 Changing the Output Medium
 --------------------------
 

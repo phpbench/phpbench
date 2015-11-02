@@ -31,6 +31,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->runner = new Runner(
             $this->collectionBuilder->reveal(),
             $this->executor->reveal(),
+            null,
             null
         );
     }
@@ -67,7 +68,9 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->benchmark->getClass()->willReturn('Benchmark');
 
         if (!$exception) {
-            $this->executor->execute(Argument::type('PhpBench\Benchmark\Iteration'))->shouldBeCalledTimes(count($revs) * $iterations)->willReturn(new IterationResult(10, 10));
+            $this->executor->execute(Argument::type('PhpBench\Benchmark\Iteration'))
+                ->shouldBeCalledTimes(count($revs) * $iterations)
+                ->willReturn(new IterationResult(10, 10));
         }
 
         $result = $this->runner->runAll(__DIR__);
@@ -96,7 +99,7 @@ EOT
   <benchmark class="Benchmark">
     <subject name="benchFoo">
       <variant>
-        <iteration revs="1" time="10" memory="10"/>
+        <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
       </variant>
     </subject>
   </benchmark>
@@ -110,8 +113,8 @@ EOT
   <benchmark class="Benchmark">
     <subject name="benchFoo">
       <variant>
-        <iteration revs="1" time="10" memory="10"/>
-        <iteration revs="3" time="10" memory="10"/>
+        <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
+        <iteration revs="3" time="10" memory="10" deviation="0" rejection-count="0"/>
       </variant>
     </subject>
   </benchmark>
@@ -125,14 +128,14 @@ EOT
   <benchmark class="Benchmark">
     <subject name="benchFoo">
       <variant>
-        <iteration revs="1" time="10" memory="10"/>
-        <iteration revs="3" time="10" memory="10"/>
-        <iteration revs="1" time="10" memory="10"/>
-        <iteration revs="3" time="10" memory="10"/>
-        <iteration revs="1" time="10" memory="10"/>
-        <iteration revs="3" time="10" memory="10"/>
-        <iteration revs="1" time="10" memory="10"/>
-        <iteration revs="3" time="10" memory="10"/>
+        <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
+        <iteration revs="3" time="10" memory="10" deviation="0" rejection-count="0"/>
+        <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
+        <iteration revs="3" time="10" memory="10" deviation="0" rejection-count="0"/>
+        <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
+        <iteration revs="3" time="10" memory="10" deviation="0" rejection-count="0"/>
+        <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
+        <iteration revs="3" time="10" memory="10" deviation="0" rejection-count="0"/>
       </variant>
     </subject>
   </benchmark>
@@ -148,7 +151,7 @@ EOT
       <variant>
         <parameter name="one" value="two"/>
         <parameter name="three" value="four"/>
-        <iteration revs="1" time="10" memory="10"/>
+        <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
       </variant>
     </subject>
   </benchmark>
@@ -164,7 +167,7 @@ EOT
       <variant>
         <parameter name="0" value="one"/>
         <parameter name="1" value="two"/>
-        <iteration revs="1" time="10" memory="10"/>
+        <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
       </variant>
     </subject>
   </benchmark>
@@ -181,7 +184,7 @@ EOT
         <parameter name="one" type="collection">
           <parameter name="three" value="four"/>
         </parameter>
-        <iteration revs="1" time="10" memory="10"/>
+        <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
       </variant>
     </subject>
   </benchmark>
@@ -227,6 +230,17 @@ EOT
             , PhpBench::VERSION)),
             trim($result->saveXml())
         );
+    }
+
+    /**
+     * It should throw an exception if the retry threshold is not numeric.
+     *
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage numeric
+     */
+    public function testRetryNotNumeric()
+    {
+        $this->runner->setRetryThreshold('asd');
     }
 
     private function configureSubject($subject, array $options)

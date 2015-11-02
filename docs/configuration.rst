@@ -76,6 +76,19 @@ Specify which progress logger to use:
         "progress": "dots"
     }
 
+.. _configuration_retry_threshold:
+
+Retry Threshold
+---------------
+
+Set the :ref:`retry_threshold`:
+
+.. code-block:: javascript
+
+    {
+        "retry_threshold": 5
+    }
+
 Reports
 -------
 

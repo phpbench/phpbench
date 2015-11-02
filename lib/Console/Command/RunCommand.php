@@ -65,12 +65,13 @@ EOT
         $this->addArgument('path', InputArgument::OPTIONAL, 'Path to benchmark(s)');
         $this->addOption('subject', array(), InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Subject to run (can be specified multiple times)');
         $this->addOption('group', array(), InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Group to run (can be specified multiple times)');
-        $this->addOption('dump-file', 'df', InputOption::VALUE_OPTIONAL, 'Dump XML result to named file');
+        $this->addOption('dump-file', 'd', InputOption::VALUE_OPTIONAL, 'Dump XML result to named file');
         $this->addOption('dump', null, InputOption::VALUE_NONE, 'Dump XML result to stdout and suppress all other output');
         $this->addOption('parameters', null, InputOption::VALUE_REQUIRED, 'Override parameters to use in (all) benchmarks');
         $this->addOption('iterations', null, InputOption::VALUE_REQUIRED, 'Override number of iteratios to run in (all) benchmarks');
         $this->addOption('revs', null, InputOption::VALUE_REQUIRED, 'Override number of revs (revolutions) on (all) benchmarks');
         $this->addOption('progress', 'l', InputOption::VALUE_REQUIRED, 'Progress logger to use, one of <comment>dots</comment>, <comment>classdots</comment>');
+        $this->addOption('retry-threshold', 'r', InputOption::VALUE_REQUIRED, 'Set target allowable deviation', null);
 
         // this option is parsed before the container is compiled.
         $this->addOption('bootstrap', 'b', InputOption::VALUE_REQUIRED, 'Set or override the bootstrap file.');
@@ -92,6 +93,7 @@ EOT
         $dumpfile = $input->getOption('dump-file');
         $progressLoggerName = $input->getOption('progress') ?: $this->progressLoggerName;
         $inputPath = $input->getArgument('path');
+        $retryThreshold = $input->getOption('retry-threshold');
 
         $path = $inputPath ?: $this->benchPath;
 
@@ -129,7 +131,7 @@ EOT
 
         $consoleOutput->writeln('');
         $startTime = microtime(true);
-        $suiteResult = $this->executeBenchmarks($path, $subjects, $groups, $parameters, $iterations, $revs, $configPath, $progressLogger);
+        $suiteResult = $this->executeBenchmarks($path, $subjects, $groups, $parameters, $iterations, $revs, $configPath, $retryThreshold, $progressLogger);
         $consoleOutput->writeln('');
 
         $consoleOutput->writeln(sprintf(
@@ -163,6 +165,7 @@ EOT
         $iterations,
         $revs,
         $configPath,
+        $retryThreshold,
         LoggerInterface $progressLogger = null
     ) {
         if ($progressLogger) {
@@ -191,6 +194,10 @@ EOT
 
         if ($groups) {
             $this->runner->setGroups($groups);
+        }
+
+        if ($retryThreshold) {
+            $this->runner->setRetryThreshold($retryThreshold);
         }
 
         return $this->runner->runAll($path);

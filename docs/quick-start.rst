@@ -131,14 +131,14 @@ And you should see some output similar to the following:
     .
     Done (1 subjects, 1 iterations) in 0.22s
 
-    +-------------------+--------------+-------+--------+------+--------------+----------+--------+-----------+
-    | benchmark         | subject      | group | params | revs | iter         | time     | memory | deviation |
-    +-------------------+--------------+-------+--------+------+--------------+----------+--------+-----------+
-    | TimeConsumerBench | benchConsume |       | []     | 1    | 0            | 226.00μs | 3,416b | 0.00%     |
-    |                   |              |       |        |      |              |          |        |           |
-    |                   |              |       |        |      | stability >> | 100.00%  |        |           |
-    |                   |              |       |        |      | average >>   | 226.00μs | 3,416b |           |
-    +-------------------+--------------+-------+--------+------+--------------+----------+--------+-----------+
+    +-------------------+--------------+-------+--------+------+--------------+------+----------+--------+-----------+
+    | benchmark         | subject      | group | params | revs | iter         | rej  | time     | memory | deviation |
+    +-------------------+--------------+-------+--------+------+--------------+------+----------+--------+-----------+
+    | TimeConsumerBench | benchConsume |       | []     | 1    | 0            | 0    | 226.00μs | 3,416b | 0.00%     |
+    |                   |              |       |        |      |              |      |          |        |           |
+    |                   |              |       |        |      | stability >> |      | 100.00%  |        |           |
+    |                   |              |       |        |      | average >>   | 0.00 | 226.00μs | 3,416b |           |
+    +-------------------+--------------+-------+--------+------+--------------+------+----------+--------+-----------+
 
 You may have guessed that the code was only executed once (as indicated by the
 ``revs`` column). To achieve a better measurement we should increase the
@@ -205,6 +205,36 @@ rather than ``default``:
 
     $ php vendor/bin/phpbench run benchmarks/TimeConsumerBench.php --report=aggregate
 
+Increase Stability
+------------------
+
+You will be able to see the column "stability" in the aggregate report. This
+is a percentage where 100% means that all the iterations had exactly the same
+time, the lower the percentage the less you can trust the results.
+
+To increase stability you can use the ``--retry-threshold`` to automatically
+:ref:`repeat the iterations <retry_threshold>` until they fit within a given
+margin of error:
+
+.. code-block:: bash
+
+    $ php vendor/bin/phpbench run benchmarks/TimeConsumerBench.php --report=aggregate --retry-threshold=5
+
+.. warning::
+
+    Lower values for ``retry-threshold``, depending on the stability of your
+    system,  generally lead to increased total benchmarking time.
+
+You may get a better view of what is going on by using the ``verbose``
+progress logger:
+
+.. code-block:: bash
+
+    $ php vendor/bin/phpbench run benchmarks/TimeConsumerBench.php --report=aggregate --retry-threshold=5 --progress=verbose
+
+Customize Reports
+-----------------
+
 PHPBench also allows you to customize reports on the command line, try the
 following:
 
@@ -216,6 +246,9 @@ Above we configure a new report which extends the ``default`` report that we
 have already used, but we exclude the ``benchmark`` and ``subject`` columns.
 A full list of all the options for the default reports can be found in the
 :doc:`report-generators` chapter.
+
+Configuration
+-------------
 
 Now to finish off, lets add the path and new report to the configuration file:
 

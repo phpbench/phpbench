@@ -11,6 +11,7 @@
 
 namespace PhpBench\Progress\Logger;
 
+use PhpBench\Benchmark\Iteration;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Progress\LoggerInterface;
@@ -35,6 +36,18 @@ class NullLogger implements LoggerInterface
     }
 
     public function subjectEnd(SubjectMetadata $subject)
+    {
+    }
+
+    public function iterationStart(Iteration $iteration)
+    {
+    }
+
+    public function iterationEnd(Iteration $iteration)
+    {
+    }
+
+    public function retryStart($rejectionCount)
     {
     }
 }

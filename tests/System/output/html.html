@@ -1,9 +1,3 @@
-      <div class="header">
-        <h1>PHPBench Benchmark Results</h1>
-      </div>
-      <div class="body">
-        <h2/>
-        <p/>
         <table>
           <thead>
             <tr>
@@ -13,6 +7,7 @@
               <th>params</th>
               <th>revs</th>
               <th>iter</th>
+              <th>rej</th>
               <th>time</th>
               <th>memory</th>
               <th>deviation</th>
@@ -26,253 +21,373 @@
               <td>[]</td>
               <td>1</td>
               <td>0</td>
-              <td>19,253.0000μs</td>
-              <td>288b</td>
-              <td>+2,145.65%</td>
-            </tr>
-            <tr>
-              <td>BenchmarkBench</td>
-              <td>benchDoNothing</td>
-              <td/>
-              <td>[]</td>
-              <td>1</td>
               <td>0</td>
-              <td>12.0000μs</td>
-              <td>192b</td>
-              <td>-98.6</td>
-            </tr>
-            <tr>
-              <td>BenchmarkBench</td>
-              <td>benchDoNothing</td>
-              <td/>
-              <td>[]</td>
-              <td>1</td>
-              <td>1</td>
-              <td>8.0000μs</td>
-              <td>384b</td>
-              <td>-99.07</td>
-            </tr>
-            <tr>
-              <td>BenchmarkBench</td>
-              <td>benchDoNothing</td>
-              <td/>
-              <td>[]</td>
-              <td>1</td>
-              <td>2</td>
-              <td>8.0000μs</td>
+              <td>41,634.0000μs</td>
               <td>576b</td>
-              <td>-99.07</td>
+              <td>0.00%</td>
             </tr>
             <tr>
               <td>BenchmarkBench</td>
-              <td>benchParameterized</td>
-              <td/>
+              <td>benchDoNothing</td>
+              <td>do_nothing</td>
               <td>[]</td>
-              <td>1</td>
-              <td>2</td>
-              <td>9.0000μs</td>
-              <td>192b</td>
-              <td>-98.95</td>
+              <td>10000</td>
+              <td>0</td>
+              <td>0</td>
+              <td>1.7757μs</td>
+              <td>560b</td>
+              <td>70.67%</td>
             </tr>
             <tr>
               <td>BenchmarkBench</td>
-              <td>benchParameterized</td>
-              <td/>
+              <td>benchDoNothing</td>
+              <td>do_nothing</td>
               <td>[]</td>
-              <td>1</td>
-              <td>2</td>
-              <td>8.0000μs</td>
-              <td>384b</td>
-              <td>-99.07</td>
-            </tr>
-            <tr>
-              <td>BenchmarkBench</td>
-              <td>benchParameterized</td>
-              <td/>
-              <td>[]</td>
-              <td>1</td>
-              <td>2</td>
-              <td>8.0000μs</td>
-              <td>576b</td>
-              <td>-99.07</td>
-            </tr>
-            <tr>
-              <td>BenchmarkBench</td>
-              <td>benchParameterized</td>
-              <td/>
-              <td>[]</td>
-              <td>1</td>
-              <td>2</td>
-              <td>8.0000μs</td>
-              <td>768b</td>
-              <td>-99.07</td>
-            </tr>
-            <tr>
-              <td>IsolatedBench</td>
-              <td>benchIterationIsolation</td>
-              <td/>
-              <td>[]</td>
+              <td>10000</td>
               <td>1</td>
               <td>0</td>
-              <td>91.0000μs</td>
-              <td>248b</td>
-              <td>-89.39</td>
+              <td>1.3282μs</td>
+              <td>560b</td>
+              <td>27.66%</td>
             </tr>
             <tr>
-              <td>IsolatedBench</td>
-              <td>benchIterationIsolation</td>
-              <td/>
+              <td>BenchmarkBench</td>
+              <td>benchDoNothing</td>
+              <td>do_nothing</td>
               <td>[]</td>
-              <td>1</td>
-              <td>1</td>
-              <td>37.0000μs</td>
-              <td>440b</td>
-              <td>-95.68</td>
-            </tr>
-            <tr>
-              <td>IsolatedBench</td>
-              <td>benchIterationIsolation</td>
-              <td/>
-              <td>[]</td>
-              <td>1</td>
+              <td>10000</td>
               <td>2</td>
-              <td>31.0000μs</td>
-              <td>632b</td>
-              <td>-96.38</td>
-            </tr>
-            <tr>
-              <td>IsolatedBench</td>
-              <td>benchIterationIsolation</td>
-              <td/>
-              <td>[]</td>
-              <td>1</td>
-              <td>3</td>
-              <td>29.0000μs</td>
-              <td>824b</td>
-              <td>-96.62</td>
-            </tr>
-            <tr>
-              <td>IsolatedBench</td>
-              <td>benchIterationIsolation</td>
-              <td/>
-              <td>[]</td>
-              <td>1</td>
-              <td>4</td>
-              <td>29.0000μs</td>
-              <td>1,016b</td>
-              <td>-96.62</td>
-            </tr>
-            <tr>
-              <td>IsolatedBench</td>
-              <td>benchIterationsIsolation</td>
-              <td/>
-              <td>[]</td>
-              <td>1</td>
               <td>0</td>
-              <td>34.0000μs</td>
-              <td>248b</td>
-              <td>-96.03</td>
+              <td>1.2570μs</td>
+              <td>560b</td>
+              <td>20.82%</td>
             </tr>
             <tr>
-              <td>IsolatedBench</td>
-              <td>benchIterationsIsolation</td>
-              <td/>
+              <td>BenchmarkBench</td>
+              <td>benchDoNothing</td>
+              <td>do_nothing</td>
               <td>[]</td>
-              <td>1</td>
-              <td>1</td>
-              <td>30.0000μs</td>
-              <td>440b</td>
-              <td>-96.5</td>
+              <td>10000</td>
+              <td>3</td>
+              <td>0</td>
+              <td>0.9412μs</td>
+              <td>560b</td>
+              <td>9.54%</td>
             </tr>
             <tr>
-              <td>IsolatedBench</td>
-              <td>benchIterationsIsolation</td>
-              <td/>
+              <td>BenchmarkBench</td>
+              <td>benchDoNothing</td>
+              <td>do_nothing</td>
               <td>[]</td>
+              <td>10000</td>
+              <td>4</td>
+              <td>0</td>
+              <td>0.8391μs</td>
+              <td>560b</td>
+              <td>19.35%</td>
+            </tr>
+            <tr>
+              <td>BenchmarkBench</td>
+              <td>benchDoNothing</td>
+              <td>do_nothing</td>
+              <td>[]</td>
+              <td>10000</td>
+              <td>5</td>
+              <td>0</td>
+              <td>0.8895μs</td>
+              <td>560b</td>
+              <td>14.51%</td>
+            </tr>
+            <tr>
+              <td>BenchmarkBench</td>
+              <td>benchDoNothing</td>
+              <td>do_nothing</td>
+              <td>[]</td>
+              <td>10000</td>
+              <td>6</td>
+              <td>0</td>
+              <td>0.8493μs</td>
+              <td>560b</td>
+              <td>18.37%</td>
+            </tr>
+            <tr>
+              <td>BenchmarkBench</td>
+              <td>benchDoNothing</td>
+              <td>do_nothing</td>
+              <td>[]</td>
+              <td>10000</td>
+              <td>7</td>
+              <td>0</td>
+              <td>0.8270μs</td>
+              <td>560b</td>
+              <td>20.51%</td>
+            </tr>
+            <tr>
+              <td>BenchmarkBench</td>
+              <td>benchDoNothing</td>
+              <td>do_nothing</td>
+              <td>[]</td>
+              <td>10000</td>
+              <td>8</td>
+              <td>0</td>
+              <td>0.8271μs</td>
+              <td>560b</td>
+              <td>20.50%</td>
+            </tr>
+            <tr>
+              <td>BenchmarkBench</td>
+              <td>benchDoNothing</td>
+              <td>do_nothing</td>
+              <td>[]</td>
+              <td>10000</td>
+              <td>9</td>
+              <td>0</td>
+              <td>0.8701μs</td>
+              <td>560b</td>
+              <td>16.37%</td>
+            </tr>
+            <tr>
+              <td>BenchmarkBench</td>
+              <td>benchParameterized</td>
+              <td>parameterized</td>
+              <td>{"length":"1","strategy":"left"}</td>
               <td>1</td>
               <td>2</td>
-              <td>29.0000μs</td>
-              <td>632b</td>
-              <td>-96.62</td>
+              <td>0</td>
+              <td>6.0000μs</td>
+              <td>552b</td>
+              <td>0.00%</td>
             </tr>
             <tr>
-              <td>IsolatedBench</td>
-              <td>benchIterationsIsolation</td>
-              <td/>
-              <td>[]</td>
-              <td>1</td>
-              <td>3</td>
-              <td>28.0000μs</td>
-              <td>824b</td>
-              <td>-96.73</td>
-            </tr>
-            <tr>
-              <td>IsolatedBench</td>
-              <td>benchIterationsIsolation</td>
-              <td/>
-              <td>[]</td>
-              <td>1</td>
-              <td>4</td>
-              <td>29.0000μs</td>
-              <td>1,016b</td>
-              <td>-96.62</td>
-            </tr>
-            <tr>
-              <td>IsolatedParameterBench</td>
-              <td>benchIterationIsolation</td>
-              <td/>
-              <td>[]</td>
+              <td>BenchmarkBench</td>
+              <td>benchParameterized</td>
+              <td>parameterized</td>
+              <td>{"length":"2","strategy":"left"}</td>
               <td>1</td>
               <td>2</td>
-              <td>10.0000μs</td>
-              <td>256b</td>
-              <td>-98.83</td>
+              <td>0</td>
+              <td>6.0000μs</td>
+              <td>552b</td>
+              <td>0.00%</td>
             </tr>
             <tr>
-              <td>IsolatedParameterBench</td>
-              <td>benchIterationIsolation</td>
-              <td/>
-              <td>[]</td>
+              <td>BenchmarkBench</td>
+              <td>benchParameterized</td>
+              <td>parameterized</td>
+              <td>{"length":"1","strategy":"right"}</td>
               <td>1</td>
-              <td>3</td>
-              <td>8.0000μs</td>
-              <td>256b</td>
-              <td>-99.07</td>
+              <td>2</td>
+              <td>0</td>
+              <td>6.0000μs</td>
+              <td>552b</td>
+              <td>0.00%</td>
             </tr>
             <tr>
-              <td>IsolatedParameterBench</td>
-              <td>benchIterationIsolation</td>
-              <td/>
-              <td>[]</td>
+              <td>BenchmarkBench</td>
+              <td>benchParameterized</td>
+              <td>parameterized</td>
+              <td>{"length":"2","strategy":"right"}</td>
               <td>1</td>
-              <td>4</td>
+              <td>2</td>
+              <td>0</td>
               <td>7.0000μs</td>
-              <td>256b</td>
-              <td>-99.18</td>
+              <td>552b</td>
+              <td>0.00%</td>
+            </tr>
+            <tr>
+              <td>IsolatedBench</td>
+              <td>benchIterationIsolation</td>
+              <td/>
+              <td>[]</td>
+              <td>1</td>
+              <td>0</td>
+              <td>0</td>
+              <td>45.0000μs</td>
+              <td>896b</td>
+              <td>2.74%</td>
+            </tr>
+            <tr>
+              <td>IsolatedBench</td>
+              <td>benchIterationIsolation</td>
+              <td/>
+              <td>[]</td>
+              <td>1</td>
+              <td>1</td>
+              <td>0</td>
+              <td>45.0000μs</td>
+              <td>896b</td>
+              <td>2.74%</td>
+            </tr>
+            <tr>
+              <td>IsolatedBench</td>
+              <td>benchIterationIsolation</td>
+              <td/>
+              <td>[]</td>
+              <td>1</td>
+              <td>2</td>
+              <td>0</td>
+              <td>42.0000μs</td>
+              <td>896b</td>
+              <td>4.11%</td>
+            </tr>
+            <tr>
+              <td>IsolatedBench</td>
+              <td>benchIterationIsolation</td>
+              <td/>
+              <td>[]</td>
+              <td>1</td>
+              <td>3</td>
+              <td>0</td>
+              <td>45.0000μs</td>
+              <td>896b</td>
+              <td>2.74%</td>
+            </tr>
+            <tr>
+              <td>IsolatedBench</td>
+              <td>benchIterationIsolation</td>
+              <td/>
+              <td>[]</td>
+              <td>1</td>
+              <td>4</td>
+              <td>0</td>
+              <td>42.0000μs</td>
+              <td>896b</td>
+              <td>4.11%</td>
+            </tr>
+            <tr>
+              <td>IsolatedBench</td>
+              <td>benchIterationsIsolation</td>
+              <td/>
+              <td>[]</td>
+              <td>1</td>
+              <td>0</td>
+              <td>0</td>
+              <td>43.0000μs</td>
+              <td>896b</td>
+              <td>0.46%</td>
+            </tr>
+            <tr>
+              <td>IsolatedBench</td>
+              <td>benchIterationsIsolation</td>
+              <td/>
+              <td>[]</td>
+              <td>1</td>
+              <td>1</td>
+              <td>0</td>
+              <td>45.0000μs</td>
+              <td>896b</td>
+              <td>4.17%</td>
+            </tr>
+            <tr>
+              <td>IsolatedBench</td>
+              <td>benchIterationsIsolation</td>
+              <td/>
+              <td>[]</td>
+              <td>1</td>
+              <td>2</td>
+              <td>0</td>
+              <td>43.0000μs</td>
+              <td>896b</td>
+              <td>0.46%</td>
+            </tr>
+            <tr>
+              <td>IsolatedBench</td>
+              <td>benchIterationsIsolation</td>
+              <td/>
+              <td>[]</td>
+              <td>1</td>
+              <td>3</td>
+              <td>0</td>
+              <td>43.0000μs</td>
+              <td>896b</td>
+              <td>0.46%</td>
+            </tr>
+            <tr>
+              <td>IsolatedBench</td>
+              <td>benchIterationsIsolation</td>
+              <td/>
+              <td>[]</td>
+              <td>1</td>
+              <td>4</td>
+              <td>0</td>
+              <td>42.0000μs</td>
+              <td>896b</td>
+              <td>2.78%</td>
             </tr>
             <tr>
               <td>IsolatedParameterBench</td>
               <td>benchIterationIsolation</td>
-              <td/>
-              <td>[]</td>
+              <td>process</td>
+              <td>{"hello":"Look \"I am using double quotes\"","goodbye":"Look 'I am use $dollars\""}</td>
+              <td>1</td>
+              <td>2</td>
+              <td>0</td>
+              <td>7.0000μs</td>
+              <td>544b</td>
+              <td>9.38%</td>
+            </tr>
+            <tr>
+              <td>IsolatedParameterBench</td>
+              <td>benchIterationIsolation</td>
+              <td>process</td>
+              <td>{"hello":"Look \"I am using double quotes\"","goodbye":"Look 'I am use $dollars\""}</td>
+              <td>1</td>
+              <td>3</td>
+              <td>0</td>
+              <td>6.0000μs</td>
+              <td>544b</td>
+              <td>6.25%</td>
+            </tr>
+            <tr>
+              <td>IsolatedParameterBench</td>
+              <td>benchIterationIsolation</td>
+              <td>process</td>
+              <td>{"hello":"Look \"I am using double quotes\"","goodbye":"Look 'I am use $dollars\""}</td>
+              <td>1</td>
+              <td>4</td>
+              <td>0</td>
+              <td>6.0000μs</td>
+              <td>544b</td>
+              <td>6.25%</td>
+            </tr>
+            <tr>
+              <td>IsolatedParameterBench</td>
+              <td>benchIterationIsolation</td>
+              <td>process</td>
+              <td>{"hello":"Look \"I am using double quotes\"","goodbye":"Look 'I am use $dollars\""}</td>
               <td>1</td>
               <td>5</td>
-              <td>7.0000μs</td>
-              <td>256b</td>
-              <td>-99.18</td>
+              <td>0</td>
+              <td>6.0000μs</td>
+              <td>544b</td>
+              <td>6.25%</td>
             </tr>
             <tr>
               <td>IsolatedParameterBench</td>
               <td>benchIterationIsolation</td>
-              <td/>
-              <td>[]</td>
+              <td>process</td>
+              <td>{"hello":"Look \"I am using double quotes\"","goodbye":"Look 'I am use $dollars\""}</td>
               <td>1</td>
               <td>6</td>
-              <td>6.0000μs</td>
-              <td>256b</td>
-              <td>-99.3</td>
+              <td>0</td>
+              <td>7.0000μs</td>
+              <td>544b</td>
+              <td>9.38%</td>
             </tr>
             <tr>
+              <td>IsolatedRevsBench</td>
+              <td>benchIterationIsolation</td>
+              <td/>
+              <td>[]</td>
+              <td>100</td>
+              <td>0</td>
+              <td>0</td>
+              <td>10.8500μs</td>
+              <td>896b</td>
+              <td>0.00%</td>
+            </tr>
+            <tr>
+              <td/>
               <td/>
               <td/>
               <td/>
@@ -290,7 +405,8 @@
               <td/>
               <td/>
               <td>stability</td>
-              <td>-320683.33%</td>
+              <td/>
+              <td>-693700.00%</td>
               <td/>
               <td/>
             </tr>
@@ -301,10 +417,22 @@
               <td/>
               <td/>
               <td>average</td>
-              <td>857.3478μs</td>
-              <td>477b</td>
+              <td>0.00</td>
+              <td>1,359.5888μs</td>
+              <td>676b</td>
+              <td/>
+            </tr>
+            <tr>
+              <td/>
+              <td/>
+              <td/>
+              <td/>
+              <td/>
+              <td>sum</td>
+              <td>0.00</td>
+              <td>42,147.2542μs</td>
+              <td>20,960b</td>
               <td/>
             </tr>
           </tbody>
         </table>
-      </div>
