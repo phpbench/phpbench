@@ -5,8 +5,7 @@
         ],
         "deviation": [
             [ "number", { "decimal_places": 2 }],
-            [ "printf", { "format": "%s%%" } ],
-            [ "balance" ]
+            [ "printf", { "format": "%s%%" } ]
         ],
         "memory": [
             [ "number" ],
@@ -19,6 +18,9 @@
         "time": [
             [ "number", { "decimal_places": 4 }],
             [ "printf", { "format": "%s\u03bcs" }]
+        ],
+        "number": [
+            [ "number", { "decimal_places": 2 }]
         ]
     }
 }

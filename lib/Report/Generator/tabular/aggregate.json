@@ -30,8 +30,12 @@
                     "expr": "sum(descendant-or-self::iteration/@revs)"
                 },
                 {
-                    "name": "iters",
+                    "name": "its",
                     "expr": "count(descendant-or-self::iteration)"
+                },
+                {
+                    "name": "rej",
+                    "expr": "sum(descendant-or-self::iteration/@rejection-count)"
                 },
                 {
                     "name": "time",

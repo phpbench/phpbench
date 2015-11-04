@@ -11,14 +11,14 @@ in the form of a table:
 
 .. code-block:: bash
 
-    +-------------------+--------------+-------+--------+------+--------------+----------+--------+-----------+
-    | benchmark         | subject      | group | params | revs | iter         | time     | memory | deviation |
-    +-------------------+--------------+-------+--------+------+--------------+----------+--------+-----------+
-    | TimeConsumerBench | benchConsume |       | []     | 1    | 0            | 226.00μs | 3,416b | 0.00%     |
-    |                   |              |       |        |      |              |          |        |           |
-    |                   |              |       |        |      | stability >> | 100.00%  |        |           |
-    |                   |              |       |        |      | average >>   | 226.00μs | 3,416b |           |
-    +-------------------+--------------+-------+--------+------+--------------+----------+--------+-----------+
+    +-------------------+--------------+-------+--------+------+--------------+------+----------+--------+-----------+
+    | benchmark         | subject      | group | params | revs | iter         | rej  | time     | memory | deviation |
+    +-------------------+--------------+-------+--------+------+--------------+------+----------+--------+-----------+
+    | TimeConsumerBench | benchConsume |       | []     | 1    | 0            | 0    | 226.00μs | 3,416b | 0.00%     |
+    |                   |              |       |        |      |              |      |          |        |           |
+    |                   |              |       |        |      | stability >> |      | 100.00%  |        |           |
+    |                   |              |       |        |      | average >>   | 0.00 | 226.00μs | 3,416b |           |
+    +-------------------+--------------+-------+--------+------+--------------+------+----------+--------+-----------+
 
 Generator: :ref:`generator_table`.
 
@@ -30,6 +30,7 @@ Columns:
 - **params**: Any :ref:`parameters` which were passed to the benchmark.
 - **revs**: Number of :ref:`revolutions`.
 - **iter**: The :ref:`iteration <iterations>` index.
+- **rej**: Number of rejected iterations (see :ref:`retry_threshold`).
 - **time**: Time taken to execute a single iteration in microseconds_
 - **memory**: Memory used, in bytes.
 - **deviation**: Deviation from the mean as a percentage (when multiple
@@ -49,11 +50,11 @@ row for each subject:
 
 .. code-block:: bash
 
-    +-------------------+--------------+-------+--------+------+-------+------------+--------+-----------+-----------+
-    | benchmark         | subject      | group | params | revs | iters | time       | memory | deviation | stability |
-    +-------------------+--------------+-------+--------+------+-------+------------+--------+-----------+-----------+
-    | TimeConsumerBench | benchConsume |       | []     | 1    | 1     | 227.0000μs | 3,416b | 0.00%     | 100.00%   |
-    +-------------------+--------------+-------+--------+------+-------+------------+--------+-----------+-----------+
+    +-------------------+--------------+-------+--------+------+-------+-----+------------+--------+-----------+-----------+
+    | benchmark         | subject      | group | params | revs | iters | rej | time       | memory | deviation | stability |
+    +-------------------+--------------+-------+--------+------+-------+-----+------------+--------+-----------+-----------+
+    | TimeConsumerBench | benchConsume |       | []     | 1    | 1     | 0   | 227.0000μs | 3,416b | 0.00%     | 100.00%   |
+    +-------------------+--------------+-------+--------+------+-------+-----+-------+--------+-----------+-----------+
 
 Generator: :ref:`generator_table`.
 
@@ -65,6 +66,7 @@ Columns:
 - **params**: Any :ref:`parameters` which were passed to the benchmark.
 - **revs**: Sum of the number of :ref:`revolutions` for all iterations.
 - **iters**: Number of :ref:`iterations <iterations>` performed.
+- **rej**: Number of rejected iterations (see :ref:`retry_threshold`).
 - **time**: Average time taken for each iteration.
 - **memory**: Average memory used.
 - **deviation**: Deviation from the mean as a percentage (when multiple

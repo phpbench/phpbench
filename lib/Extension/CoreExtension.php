@@ -79,6 +79,7 @@ class CoreExtension implements ExtensionInterface
             'outputs' => array(),
             'config_path' => null,
             'progress' => 'dots',
+            'retry_threshold' => null,
         ));
     }
 
@@ -116,6 +117,7 @@ class CoreExtension implements ExtensionInterface
             return new Runner(
                 $container->get('benchmark.collection_builder'),
                 $container->get('benchmark.executor'),
+                $container->getParameter('retry_threshold'),
                 $container->getParameter('config_path')
             );
         });

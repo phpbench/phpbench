@@ -34,6 +34,10 @@
                     "expr": "count(descendant-or-self::iteration/preceding-sibling::*)"
                 },
                 {
+                    "name": "rej",
+                    "expr": "string(descendant-or-self::iteration/@rejection-count)"
+                },
+                {
                     "name": "time",
                     "class": "time",
                     "expr": "number(descendant-or-self::iteration/@time) div number(sum(descendant-or-self::iteration/@revs))"
@@ -46,7 +50,7 @@
                 {
                     "name": "deviation",
                     "class": "deviation",
-                    "expr": "deviation(average(//iteration/@time), number(descendant-or-self::iteration/@time))"
+                    "expr": "number(descendant-or-self::iteration/@deviation)"
                 }
             ],
             "with_query": "{{ param.selector }}"
@@ -74,12 +78,16 @@
                         {
                             "col": "time", 
                             "class": "time"
+                        },
+                        {
+                            "col": "rej", 
+                            "class": "number"
                         }
                     ]
                 }
             ],
             "group": "footer",
-            "with_items": [ "average" ]
+            "with_items": [ "average", "sum" ]
         },
         {
             "cells": [

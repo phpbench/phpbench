@@ -298,4 +298,16 @@ class RunTest extends SystemTestCase
             array('markdown'),
         );
     }
+
+    /**
+     * It should set the retry threshold.
+     */
+    public function testRetryThreshold()
+    {
+        $process = $this->phpbench(
+            'run benchmarks/set1/BenchmarkBench.php --retry-threshold=50'
+        );
+
+        $this->assertExitCode(0, $process);
+    }
 }

@@ -21,7 +21,7 @@ use PhpBench\Config\ConfigurableInterface;
 interface ExecutorInterface extends ConfigurableInterface
 {
     /**
-     * Execute the benchmark and return metrics.
+     * Execute the benchmark and return the result.
      *
      * @param Iteration $iteration
      * @param array $options

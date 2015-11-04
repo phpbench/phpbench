@@ -32,6 +32,7 @@ class Runner
     private $subjectsOverride = array();
     private $groups = array();
     private $executor;
+    private $retryThreshold = null;
 
     /**
      * @param CollectionBuilder $collectionBuilder
@@ -41,12 +42,14 @@ class Runner
     public function __construct(
         CollectionBuilder $collectionBuilder,
         ExecutorInterface $executor,
+        $retryThreshold,
         $configPath
     ) {
         $this->logger = new NullLogger();
         $this->collectionBuilder = $collectionBuilder;
         $this->executor = $executor;
         $this->configPath = $configPath;
+        $this->retryThreshold = $retryThreshold;
     }
 
     /**
@@ -123,6 +126,26 @@ class Runner
     public function setConfigPath($configPath)
     {
         $this->configPath = $configPath;
+    }
+
+    /**
+     * Set the deviation threshold beyond which the iteration should
+     * be retried.
+     *
+     * A value of NULL will disable retry.
+     *
+     * @param float $retryThreshold
+     */
+    public function setRetryThreshold($retryThreshold)
+    {
+        if (!is_numeric($retryThreshold)) {
+            throw new \InvalidArgumentException(sprintf(
+                'Retry threshold must be numeric, got "%s"',
+                $retryThreshold
+            ));
+        }
+
+        $this->retryThreshold = $retryThreshold;
     }
 
     /**
@@ -224,22 +247,42 @@ class Runner
 
     private function runIterations(SubjectMetadata $subject, $iterationCount, array $revolutionCounts, array $parameterSet, \DOMElement $variantEl)
     {
+        $iterationCollection = new IterationCollection($this->retryThreshold);
         for ($index = 0; $index < $iterationCount; $index++) {
             foreach ($revolutionCounts as $revolutionCount) {
                 $iteration = new Iteration($index, $subject, $revolutionCount, $parameterSet);
-                $iterationEl = $variantEl->ownerDocument->createElement('iteration');
-                $variantEl->appendChild($iterationEl);
-                $iterationEl->setAttribute('revs', $revolutionCount);
-                $this->runIteration($iteration, $iterationEl);
+                $this->runIteration($iteration);
+                $iterationCollection->add($iteration);
             }
+        }
+
+        $iterationCollection->computeDeviations();
+
+        while ($iterationCollection->getRejectCount() > 0) {
+            $this->logger->retryStart($iterationCollection->getRejectCount());
+            foreach ($iterationCollection->getRejects() as $reject) {
+                $reject->incrementRejectionCount();
+                $this->runIteration($reject);
+            }
+            $iterationCollection->computeDeviations();
+        }
+
+        foreach ($iterationCollection as $iteration) {
+            $iterationEl = $variantEl->ownerDocument->createElement('iteration');
+            $iterationEl->setAttribute('revs', $iteration->getRevolutions());
+            $iterationEl->setAttribute('time', $iteration->getResult()->getTime());
+            $iterationEl->setAttribute('memory', $iteration->getResult()->getMemory());
+            $iterationEl->setAttribute('deviation', $iteration->getDeviation());
+            $iterationEl->setAttribute('rejection-count', $iteration->getRejectionCount());
+            $variantEl->appendChild($iterationEl);
         }
     }
 
-    private function runIteration(Iteration $iteration, \DOMElement $iterationEl)
+    public function runIteration(Iteration $iteration)
     {
+        $this->logger->iterationStart($iteration);
         $result = $this->executor->execute($iteration);
-
-        $iterationEl->setAttribute('time', $result->getTime());
-        $iterationEl->setAttribute('memory', $result->getMemory());
+        $iteration->setResult($result);
+        $this->logger->iterationEnd($iteration);
     }
 }

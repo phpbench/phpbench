@@ -11,6 +11,7 @@
 
 namespace PhpBench\Progress\Logger;
 
+use PhpBench\Benchmark\Iteration;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Progress\LoggerInterface;
@@ -19,6 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class VerboseLogger implements LoggerInterface
 {
     private $output;
+    private $lastSubject;
 
     public function setOutput(OutputInterface $output)
     {
@@ -36,11 +38,36 @@ class VerboseLogger implements LoggerInterface
 
     public function subjectStart(SubjectMetadata $subject)
     {
-        $this->output->write('  <info>>> </info>' . $subject->getName());
+        $this->lastSubject = $this->lastRetry = sprintf('  <info>>> </info>%s:', $subject->getName());
+        $this->output->write($this->lastSubject);
     }
 
     public function subjectEnd(SubjectMetadata $subject)
     {
         $this->output->writeln(' [<info>OK</info>]');
+    }
+
+    public function iterationStart(Iteration $iteration)
+    {
+        static $count;
+        $this->output->write($this->lastIteration = sprintf(
+            "\x0D%s I%s ",
+            $this->lastRetry,
+            $iteration->getIndex()
+        ));
+        $count++;
+    }
+
+    public function iterationEnd(Iteration $iteration)
+    {
+    }
+
+    public function retryStart($rejectionCount)
+    {
+        $this->output->write($this->lastRetry = sprintf(
+            "\x0D%s %dR",
+            $this->lastSubject,
+            $rejectionCount
+        ));
     }
 }

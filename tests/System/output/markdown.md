@@ -1,33 +1,42 @@
 PHPBench Benchmark Results
 ==========================
 
-benchmark | subject | group | params | revs | iter | time | memory | deviation
- --- | --- | --- | --- | --- | --- | --- | --- | --- 
-BenchmarkBench | benchRandom |  | [] | 1 | 0 | 19,253.0000μs | 288b | +2,145.65%
-BenchmarkBench | benchDoNothing |  | [] | 1 | 0 | 12.0000μs | 192b | -98.6
-BenchmarkBench | benchDoNothing |  | [] | 1 | 1 | 8.0000μs | 384b | -99.07
-BenchmarkBench | benchDoNothing |  | [] | 1 | 2 | 8.0000μs | 576b | -99.07
-BenchmarkBench | benchParameterized |  | [] | 1 | 2 | 9.0000μs | 192b | -98.95
-BenchmarkBench | benchParameterized |  | [] | 1 | 2 | 8.0000μs | 384b | -99.07
-BenchmarkBench | benchParameterized |  | [] | 1 | 2 | 8.0000μs | 576b | -99.07
-BenchmarkBench | benchParameterized |  | [] | 1 | 2 | 8.0000μs | 768b | -99.07
-IsolatedBench | benchIterationIsolation |  | [] | 1 | 0 | 91.0000μs | 248b | -89.39
-IsolatedBench | benchIterationIsolation |  | [] | 1 | 1 | 37.0000μs | 440b | -95.68
-IsolatedBench | benchIterationIsolation |  | [] | 1 | 2 | 31.0000μs | 632b | -96.38
-IsolatedBench | benchIterationIsolation |  | [] | 1 | 3 | 29.0000μs | 824b | -96.62
-IsolatedBench | benchIterationIsolation |  | [] | 1 | 4 | 29.0000μs | 1,016b | -96.62
-IsolatedBench | benchIterationsIsolation |  | [] | 1 | 0 | 34.0000μs | 248b | -96.03
-IsolatedBench | benchIterationsIsolation |  | [] | 1 | 1 | 30.0000μs | 440b | -96.5
-IsolatedBench | benchIterationsIsolation |  | [] | 1 | 2 | 29.0000μs | 632b | -96.62
-IsolatedBench | benchIterationsIsolation |  | [] | 1 | 3 | 28.0000μs | 824b | -96.73
-IsolatedBench | benchIterationsIsolation |  | [] | 1 | 4 | 29.0000μs | 1,016b | -96.62
-IsolatedParameterBench | benchIterationIsolation |  | [] | 1 | 2 | 10.0000μs | 256b | -98.83
-IsolatedParameterBench | benchIterationIsolation |  | [] | 1 | 3 | 8.0000μs | 256b | -99.07
-IsolatedParameterBench | benchIterationIsolation |  | [] | 1 | 4 | 7.0000μs | 256b | -99.18
-IsolatedParameterBench | benchIterationIsolation |  | [] | 1 | 5 | 7.0000μs | 256b | -99.18
-IsolatedParameterBench | benchIterationIsolation |  | [] | 1 | 6 | 6.0000μs | 256b | -99.3
- |  |  |  |  |  |  |  | 
- |  |  |  |  | stability | -320683.33% |  | 
- |  |  |  |  | average | 857.3478μs | 477b | 
+benchmark | subject | group | params | revs | iter | rej | time | memory | deviation
+ --- | --- | --- | --- | --- | --- | --- | --- | --- | --- 
+BenchmarkBench | benchRandom |  | [] | 1 | 0 | 0 | 41,634.0000μs | 576b | 0.00%
+BenchmarkBench | benchDoNothing | do_nothing | [] | 10000 | 0 | 0 | 1.7757μs | 560b | 70.67%
+BenchmarkBench | benchDoNothing | do_nothing | [] | 10000 | 1 | 0 | 1.3282μs | 560b | 27.66%
+BenchmarkBench | benchDoNothing | do_nothing | [] | 10000 | 2 | 0 | 1.2570μs | 560b | 20.82%
+BenchmarkBench | benchDoNothing | do_nothing | [] | 10000 | 3 | 0 | 0.9412μs | 560b | 9.54%
+BenchmarkBench | benchDoNothing | do_nothing | [] | 10000 | 4 | 0 | 0.8391μs | 560b | 19.35%
+BenchmarkBench | benchDoNothing | do_nothing | [] | 10000 | 5 | 0 | 0.8895μs | 560b | 14.51%
+BenchmarkBench | benchDoNothing | do_nothing | [] | 10000 | 6 | 0 | 0.8493μs | 560b | 18.37%
+BenchmarkBench | benchDoNothing | do_nothing | [] | 10000 | 7 | 0 | 0.8270μs | 560b | 20.51%
+BenchmarkBench | benchDoNothing | do_nothing | [] | 10000 | 8 | 0 | 0.8271μs | 560b | 20.50%
+BenchmarkBench | benchDoNothing | do_nothing | [] | 10000 | 9 | 0 | 0.8701μs | 560b | 16.37%
+BenchmarkBench | benchParameterized | parameterized | {"length":"1","strategy":"left"} | 1 | 2 | 0 | 6.0000μs | 552b | 0.00%
+BenchmarkBench | benchParameterized | parameterized | {"length":"2","strategy":"left"} | 1 | 2 | 0 | 6.0000μs | 552b | 0.00%
+BenchmarkBench | benchParameterized | parameterized | {"length":"1","strategy":"right"} | 1 | 2 | 0 | 6.0000μs | 552b | 0.00%
+BenchmarkBench | benchParameterized | parameterized | {"length":"2","strategy":"right"} | 1 | 2 | 0 | 7.0000μs | 552b | 0.00%
+IsolatedBench | benchIterationIsolation |  | [] | 1 | 0 | 0 | 45.0000μs | 896b | 2.74%
+IsolatedBench | benchIterationIsolation |  | [] | 1 | 1 | 0 | 45.0000μs | 896b | 2.74%
+IsolatedBench | benchIterationIsolation |  | [] | 1 | 2 | 0 | 42.0000μs | 896b | 4.11%
+IsolatedBench | benchIterationIsolation |  | [] | 1 | 3 | 0 | 45.0000μs | 896b | 2.74%
+IsolatedBench | benchIterationIsolation |  | [] | 1 | 4 | 0 | 42.0000μs | 896b | 4.11%
+IsolatedBench | benchIterationsIsolation |  | [] | 1 | 0 | 0 | 43.0000μs | 896b | 0.46%
+IsolatedBench | benchIterationsIsolation |  | [] | 1 | 1 | 0 | 45.0000μs | 896b | 4.17%
+IsolatedBench | benchIterationsIsolation |  | [] | 1 | 2 | 0 | 43.0000μs | 896b | 0.46%
+IsolatedBench | benchIterationsIsolation |  | [] | 1 | 3 | 0 | 43.0000μs | 896b | 0.46%
+IsolatedBench | benchIterationsIsolation |  | [] | 1 | 4 | 0 | 42.0000μs | 896b | 2.78%
+IsolatedParameterBench | benchIterationIsolation | process | {"hello":"Look \"I am using double quotes\"","goodbye":"Look 'I am use $dollars\""} | 1 | 2 | 0 | 7.0000μs | 544b | 9.38%
+IsolatedParameterBench | benchIterationIsolation | process | {"hello":"Look \"I am using double quotes\"","goodbye":"Look 'I am use $dollars\""} | 1 | 3 | 0 | 6.0000μs | 544b | 6.25%
+IsolatedParameterBench | benchIterationIsolation | process | {"hello":"Look \"I am using double quotes\"","goodbye":"Look 'I am use $dollars\""} | 1 | 4 | 0 | 6.0000μs | 544b | 6.25%
+IsolatedParameterBench | benchIterationIsolation | process | {"hello":"Look \"I am using double quotes\"","goodbye":"Look 'I am use $dollars\""} | 1 | 5 | 0 | 6.0000μs | 544b | 6.25%
+IsolatedParameterBench | benchIterationIsolation | process | {"hello":"Look \"I am using double quotes\"","goodbye":"Look 'I am use $dollars\""} | 1 | 6 | 0 | 7.0000μs | 544b | 9.38%
+IsolatedRevsBench | benchIterationIsolation |  | [] | 100 | 0 | 0 | 10.8500μs | 896b | 0.00%
+ |  |  |  |  |  |  |  |  | 
+ |  |  |  |  | stability |  | -693700.00% |  | 
+ |  |  |  |  | average | 0.00 | 1,359.5888μs | 676b | 
+ |  |  |  |  | sum | 0.00 | 42,147.2542μs | 20,960b | 
 
 

@@ -84,8 +84,8 @@ Revolutions can also be overridden from the :ref:`command line
 
 .. _iterations:
 
-Improving Stability: Iterations
--------------------------------
+Verifying and Improving Stability: Iterations
+---------------------------------------------
 
 Iterations represent the number of times we will perform the benchmark
 (including all the revolutions). Contrary to revolutions, a time reading will
@@ -116,6 +116,10 @@ Iterations can be specified using the ``@Iterations`` annotation:
 
 Iterations can also be overridden from the :ref:`command line
 <overriding_iterations_and_revolutions>`.
+
+You can instruct PHPBench to continuously run the iterations until the
+deviation of each iteration fits within a given margin of error by using the
+``--retry-threshold``. See :ref:`retry_threshold` for more information.
 
 Estabilishing State: Before and After
 -------------------------------------

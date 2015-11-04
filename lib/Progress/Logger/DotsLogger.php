@@ -11,6 +11,7 @@
 
 namespace PhpBench\Progress\Logger;
 
+use PhpBench\Benchmark\Iteration;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Progress\LoggerInterface;
@@ -20,6 +21,8 @@ class DotsLogger implements LoggerInterface
 {
     private $output;
     private $showBench;
+
+    private $buffer;
 
     public function __construct($showBench = false)
     {
@@ -56,6 +59,35 @@ class DotsLogger implements LoggerInterface
 
     public function subjectEnd(SubjectMetadata $subject)
     {
-        $this->output->write('.');
+        $this->buffer .= '.';
+        $this->output->write(sprintf(
+            "\x0D%s ",
+            $this->buffer
+        ));
+    }
+
+    public function iterationStart(Iteration $iteration)
+    {
+        $state = $iteration->getIndex() % 4;
+        $states = array(
+            0 => '|',
+            1 => '/',
+            2 => '-',
+            3 => '\\',
+        );
+
+        $this->output->write(sprintf(
+            "\x0D%s%s",
+            $this->buffer,
+            $states[$state]
+        ));
+    }
+
+    public function iterationEnd(Iteration $iteration)
+    {
+    }
+
+    public function retryStart($rejectionCount)
+    {
     }
 }

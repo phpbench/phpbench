@@ -213,8 +213,8 @@ class TabularGeneratorTest extends GeneratorTestCase
                     <parameter name="one" value="two" />
                     <parameter name="three" value="four" />
                 </parameter>
-                <iteration time="100" memory="100" revs="1" />
-                <iteration time="75" memory="100" revs="1" />
+                <iteration time="100" memory="100" revs="1" deviation="1" rejection-count="0"/>
+                <iteration time="75" memory="100" revs="1" deviation="2" rejection-count="0"/>
            </variant>
         </subject>
     </benchmark>
