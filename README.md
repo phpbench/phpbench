@@ -11,13 +11,14 @@ Features:
 
 - Generate reports and render them to different mediums (Console, HTML,
   Markdown, etc).
-- Benchmarks are executed in a separate process, no effective overhead,
+- Benchmarks executed in a separate process, no effective overhead,
   no autoloader polution.
+- Control stability of results with multiple iterations and retry threshold.
 - Memory usage statistics in addition to time.
 - Parameterized benchmarking cases.
 - Per-project configuration.
 - Serialize results as XML and generate reports later.
-- Setup / Teardown.
+- Before and After method specification.
 - Nice command line interface.
 - Fully extendable.
 - Utilizes [Tabular](https://github.com/phpbench/Tabular) for creating custom
