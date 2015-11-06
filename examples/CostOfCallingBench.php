@@ -16,6 +16,8 @@
  */
 class CostOfCalling
 {
+    private $reflectionMethod;
+
     public function benchCallWithoutParams()
     {
         $this->doSomething();
@@ -26,11 +28,49 @@ class CostOfCalling
         $this->doSomethingWithParams(1, 2, 3, 4);
     }
 
-    private function doSomething()
+    public function benchUserFuncWithoutParams()
+    {
+        call_user_func(array($this, 'doSomething'));
+    }
+
+    public function benchUserFuncParams()
+    {
+        call_user_func(array($this, 'doSomething'), 1, 2, 3, 4);
+    }
+
+    /**
+     * @BeforeMethods({"initReflection"})
+     */
+    public function benchReflectionCall()
+    {
+        $this->reflectionMethod->invoke($this);
+    }
+
+    public function initReflection()
+    {
+        $reflection = new ReflectionClass($this);
+        $this->reflectionMethod = $reflection->getMethod('doSomething');
+    }
+
+    /**
+     * @BeforeMethods({"initReflectionWithParams"})
+     */
+    public function benchReflectionCallWithParams()
+    {
+        $this->reflectionMethod->invokeArgs($this, array(1, 2, 3, 4));
+    }
+
+    public function initReflectionWithParams()
+    {
+        $reflection = new ReflectionClass($this);
+        $this->reflectionMethod = $reflection->getMethod('doSomethingWithParams');
+    }
+
+    public function doSomething()
     {
     }
 
-    private function doSomethingWithParams($one, $two, $three, $four)
+    public function doSomethingWithParams($one, $two, $three, $four)
     {
     }
 }

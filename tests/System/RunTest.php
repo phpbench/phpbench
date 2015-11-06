@@ -171,7 +171,7 @@ class RunTest extends SystemTestCase
     public function testOverrideIterations()
     {
         $process = $this->phpbench(
-            'run --subject=benchRandom --dump --iterations=10 benchmarks/set1/BenchmarkBench.php'
+            'run --filter=benchRandom --dump --iterations=10 benchmarks/set1/BenchmarkBench.php'
         );
 
         $this->assertExitCode(0, $process);

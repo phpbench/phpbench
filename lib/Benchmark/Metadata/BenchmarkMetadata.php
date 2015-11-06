@@ -88,10 +88,22 @@ class BenchmarkMetadata extends AbstractMetadata
      *
      * @param array $subjectNames
      */
-    public function filterSubjectNames(array $subjectNames)
+    public function filterSubjectNames(array $filters)
     {
         foreach (array_keys($this->subjectMetadatas) as $subjectName) {
-            if (!in_array($subjectName, $subjectNames)) {
+            $unset = true;
+
+            foreach ($filters as $filter) {
+                if (preg_match(
+                    sprintf('{^.*?%s.*?$}', $filter),
+                    sprintf('%s::%s', $this->getClass(), $subjectName)
+                )) {
+                    $unset = false;
+                    break;
+                }
+            }
+
+            if (true === $unset) {
                 unset($this->subjectMetadatas[$subjectName]);
             }
         }

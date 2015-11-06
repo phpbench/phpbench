@@ -48,7 +48,7 @@ class CollectionBuilder
      * @param array $subjectFilter
      * @param array $groupFilter
      */
-    public function buildCollection($path, array $subjectFilter = array(), array $groupFilter = array())
+    public function buildCollection($path, array $filters = array(), array $groupFilter = array())
     {
         if (!file_exists($path)) {
             throw new \InvalidArgumentException(sprintf(
@@ -85,8 +85,8 @@ class CollectionBuilder
                 $benchmarkMetadata->filterSubjectGroups($groupFilter);
             }
 
-            if ($subjectFilter) {
-                $benchmarkMetadata->filterSubjectNames($subjectFilter);
+            if ($filters) {
+                $benchmarkMetadata->filterSubjectNames($filters);
             }
 
             if (false === $benchmarkMetadata->hasSubjects()) {

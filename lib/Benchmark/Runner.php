@@ -29,7 +29,7 @@ class Runner
     private $executorOverride;
     private $configPath;
     private $parametersOverride;
-    private $subjectsOverride = array();
+    private $filters = array();
     private $groups = array();
     private $executor;
     private $retryThreshold = null;
@@ -57,9 +57,9 @@ class Runner
      *
      * @param string[] $subjects
      */
-    public function overrideSubjects(array $subjects)
+    public function setFilters(array $filters)
     {
-        $this->subjectsOverride = $subjects;
+        $this->filters = $filters;
     }
 
     /**
@@ -159,7 +159,7 @@ class Runner
         $suiteEl = $dom->createElement('phpbench');
         $suiteEl->setAttribute('version', PhpBench::VERSION);
 
-        $collection = $this->collectionBuilder->buildCollection($path, $this->subjectsOverride, $this->groups);
+        $collection = $this->collectionBuilder->buildCollection($path, $this->filters, $this->groups);
 
         /* @var BenchmarkMetadata */
         foreach ($collection->getBenchmarks() as $benchmark) {
