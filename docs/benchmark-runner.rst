@@ -19,12 +19,12 @@ To run a single benchmark class, specify a specific file:
 
     $ phpbench run /path/to/HashBench.php
 
-To run a single method of a single benchmark class, add the ``--subject``
+To run a single method of a single benchmark class, use the ``--filter``
 option:
 
 .. code-block:: bash
 
-    $ phpbench run /path/to/HashBench.php --subject=benchMd5
+    $ phpbench run /path/to/HashBench.php --filter=benchMd5
 
 Groups can be specified using the ``--group`` option:
 
@@ -36,6 +36,21 @@ Groups can be specified using the ``--group`` option:
 
     Both ``--subject`` and ``--group`` options may be specified multiple
     times.
+
+.. _filtering:
+
+Filtering
+---------
+
+The ``--filter`` option accepts a regex without the delimiters and matches
+against a string such as ``HashBench::benchMd5``, so all of the following are
+valid:
+
+.. code-block:: bash
+
+    $ phpbench run /path/to --filter=benchFoo
+    $ phpbench run /path/to --filter=HashBench::benchFoo
+    $ phpbench run /path/to --filter=Hash.*
 
 .. _overriding_iterations_and_revolutions:
 

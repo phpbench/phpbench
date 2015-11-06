@@ -45,7 +45,7 @@ class BenchmarkMetadataTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should filter subjects based on a given whitelist.
+     * It should filter subjects based on a given filter.
      */
     public function testFilter()
     {
@@ -54,6 +54,24 @@ class BenchmarkMetadataTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $this->metadata->getSubjectMetadatas());
         $this->metadata->filterSubjectNames(array('subjectSeventySeven'));
         $this->assertCount(0, $this->metadata->getSubjectMetadatas());
+    }
+
+    /**
+     * It should filter on the class name.
+     */
+    public function testFilterClassName()
+    {
+        $this->metadata->filterSubjectNames(array('Class::subjectOne*'));
+        $this->assertCount(1, $this->metadata->getSubjectMetadatas());
+    }
+
+    /**
+     * It should filter using a regex.
+     */
+    public function testFilterRegex()
+    {
+        $this->metadata->filterSubjectNames(array('.*One*'));
+        $this->assertCount(1, $this->metadata->getSubjectMetadatas());
     }
 
     /**

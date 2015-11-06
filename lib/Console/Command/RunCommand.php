@@ -63,7 +63,7 @@ All bench marks under the given path will be executed recursively.
 EOT
         );
         $this->addArgument('path', InputArgument::OPTIONAL, 'Path to benchmark(s)');
-        $this->addOption('subject', array(), InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Subject to run (can be specified multiple times)');
+        $this->addOption('filter', array(), InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Ignore all benchmarks not matching this filter (can be a regex)');
         $this->addOption('group', array(), InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Group to run (can be specified multiple times)');
         $this->addOption('dump-file', 'd', InputOption::VALUE_OPTIONAL, 'Dump XML result to named file');
         $this->addOption('dump', null, InputOption::VALUE_NONE, 'Dump XML result to stdout and suppress all other output');
@@ -88,7 +88,7 @@ EOT
         $iterations = $input->getOption('iterations');
         $revs = $input->getOption('revs');
         $configPath = $input->getOption('config');
-        $subjects = $input->getOption('subject');
+        $filters = $input->getOption('filter');
         $groups = $input->getOption('group');
         $dumpfile = $input->getOption('dump-file');
         $progressLoggerName = $input->getOption('progress') ?: $this->progressLoggerName;
@@ -131,7 +131,7 @@ EOT
 
         $consoleOutput->writeln('');
         $startTime = microtime(true);
-        $suiteResult = $this->executeBenchmarks($path, $subjects, $groups, $parameters, $iterations, $revs, $configPath, $retryThreshold, $progressLogger);
+        $suiteResult = $this->executeBenchmarks($path, $filters, $groups, $parameters, $iterations, $revs, $configPath, $retryThreshold, $progressLogger);
         $consoleOutput->writeln('');
 
         $consoleOutput->writeln(sprintf(
@@ -159,7 +159,7 @@ EOT
 
     private function executeBenchmarks(
         $path,
-        array $subjects,
+        array $filters,
         array $groups,
         $parameters,
         $iterations,
@@ -184,8 +184,8 @@ EOT
             $this->runner->overrideRevs($revs);
         }
 
-        if ($subjects) {
-            $this->runner->overrideSubjects($subjects);
+        if ($filters) {
+            $this->runner->setFilters($filters);
         }
 
         if ($parameters) {
