@@ -19,7 +19,6 @@ use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\DocParser;
 use PhpBench\Benchmark\Metadata\DriverInterface;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
-use PhpBench\Benchmark\Remote\ReflectionClass;
 use PhpBench\Benchmark\Remote\ReflectionHierarchy;
 use PhpBench\Benchmark\Remote\ReflectionMethod;
 use PhpBench\Benchmark\Remote\Reflector;
@@ -47,38 +46,44 @@ class AnnotationDriver implements DriverInterface
         $primaryReflection = $hierarchy->getTop();
         $classMetadata = new BenchmarkMetadata($primaryReflection->path, $primaryReflection->class);
 
-        foreach (array_reverse(iterator_to_array($hierarchy)) as $reflection) {
-            $this->buildBenchmarkMetadata($classMetadata, $reflection);
-        }
+        $this->buildBenchmarkMetadata($classMetadata, $hierarchy);
 
         return $classMetadata;
     }
 
-    private function buildBenchmarkMetadata(BenchmarkMetadata $classMetadata, ReflectionClass $reflection)
+    private function buildBenchmarkMetadata(BenchmarkMetadata $classMetadata, ReflectionHierarchy $hierarchy)
     {
-        $annotations = $this->docParser->parse(
-            $reflection->comment,
-            sprintf('benchmark %s', $reflection->class)
-        );
+        $annotations = array();
+        $reflectionHierarchy = array_reverse(iterator_to_array($hierarchy));
 
-        foreach ($annotations as $annotation) {
-            $this->processAbstractMetadata($classMetadata, $annotation);
+        foreach ($reflectionHierarchy as $reflection) {
+            $benchAnnotations = $this->docParser->parse(
+                $reflection->comment,
+                sprintf('benchmark %s', $reflection->class)
+            );
+            $annotations = array_merge($annotations, $benchAnnotations);
+
+            foreach ($benchAnnotations as $annotation) {
+                $this->processAbstractMetadata($classMetadata, $annotation);
+            }
         }
 
-        foreach ($reflection->methods as $reflectionMethod) {
-            if ('bench' !== substr($reflectionMethod->name, 0, 5)) {
-                continue;
+        foreach ($reflectionHierarchy as $reflection) {
+            foreach ($reflection->methods as $reflectionMethod) {
+                if ('bench' !== substr($reflectionMethod->name, 0, 5)) {
+                    continue;
+                }
+
+                $subjectMetadata = $classMetadata->getOrCreateSubjectMetadata($reflectionMethod->name);
+
+                // apply the benchmark annotations to the subject
+                foreach ($annotations as $annotation) {
+                    $this->processAbstractMetadata($subjectMetadata, $annotation);
+                }
+
+                $this->buildSubjectMetadata($subjectMetadata, $reflectionMethod);
+                $classMetadata->setSubjectMetadata($subjectMetadata);
             }
-
-            $subjectMetadata = $classMetadata->getOrCreateSubjectMetadata($reflectionMethod->name);
-
-            // apply the benchmark annotations to the subject
-            foreach ($annotations as $annotation) {
-                $this->processAbstractMetadata($subjectMetadata, $annotation);
-            }
-
-            $this->buildSubjectMetadata($subjectMetadata, $reflectionMethod);
-            $classMetadata->setSubjectMetadata($subjectMetadata);
         }
     }
 

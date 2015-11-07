@@ -188,7 +188,7 @@ EOT;
         $reflection->class = 'Test';
         $reflection->comment = <<<EOT
     /**
-     * @BeforeMethods({"class1"})
+     * @AfterMethods({"after"})
      * @Iterations(50)
      */
 EOT;
@@ -210,15 +210,22 @@ EOT;
      */
 EOT;
         $reflection->methods[$method->name] = $method;
+
+        $method = new ReflectionMethod();
+        $method->class = 'Test';
+        $method->name = 'benchNoAnnotations';
+        $method->comment = null;
+        $reflection->methods[$method->name] = $method;
         $hierarchy->addReflectionClass($reflection);
 
         $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
 
         $this->assertEquals(array('class2'), $metadata->getBeforeMethods());
         $subjectMetadatas = $metadata->getSubjectMetadatas();
-        $this->assertCount(2, $subjectMetadatas);
+        $this->assertCount(3, $subjectMetadatas);
         $subjectOne = array_shift($subjectMetadatas);
         $subjectTwo = array_shift($subjectMetadatas);
+        $subjectThree = array_shift($subjectMetadatas);
 
         $this->assertEquals('benchFoo', $subjectOne->getName());
         $this->assertEquals(2000, $subjectOne->getRevs());
@@ -226,6 +233,10 @@ EOT;
         $this->assertEquals('benchBar', $subjectTwo->getName());
         $this->assertEquals(99, $subjectTwo->getIterations());
         $this->assertEquals(50, $subjectTwo->getRevs());
+        $this->assertEquals(array('class2'), $subjectTwo->getBeforeMethods());
+        $this->assertEquals(array('after'), $subjectTwo->getAfterMethods());
+        $this->assertEquals(array('class2'), $subjectThree->getBeforeMethods());
+        $this->assertEquals(array('after'), $subjectThree->getAfterMethods());
     }
 
     /**
