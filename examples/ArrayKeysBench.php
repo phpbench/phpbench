@@ -11,6 +11,8 @@
 
 namespace PhpBench\Tests\Functional\benchmarks;
 
+require_once __DIR__ . '/BaseBench.php';
+
 /**
  * This example benchmarks array_key_exists vs. isset vs. in_array.
  *

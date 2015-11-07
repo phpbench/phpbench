@@ -192,6 +192,38 @@ class TabularGeneratorTest extends GeneratorTestCase
         ), $values);
     }
 
+    /**
+     * It should pretty print parameters.
+     */
+    public function testPrettyParams()
+    {
+        $dom = $this->generate(
+            $this->getSuiteDocument(),
+            array(
+                'pretty_params' => true,
+            )
+        );
+
+        $value = null;
+        foreach ($dom->xpath()->query('//group[@name="body"]/row[1]/cell[@name="params"]') as $cellEl) {
+            $value = $cellEl->nodeValue;
+        }
+        $this->assertEquals(<<<EOT
+{
+    "foo": "bar",
+    "array": [
+        "one",
+        "two"
+    ],
+    "assoc_array": {
+        "one": "two",
+        "three": "four"
+    }
+}
+EOT
+        , $value);
+    }
+
     private function getSuiteDocument()
     {
         $suite = new SuiteDocument();

@@ -44,6 +44,12 @@ abstract class AbstractTabularGenerator implements GeneratorInterface, OutputAwa
             $this->output->writeln($document->saveXML());
         }
 
+        if (isset($config['pretty_params']) && true === $config['pretty_params']) {
+            $definition['classes']['params'] = array(
+                array('json_format', array()),
+            );
+        }
+
         $tableDom = $this->tabular->tabulate($document, $definition, $parameters);
 
         if ($config['exclude']) {
