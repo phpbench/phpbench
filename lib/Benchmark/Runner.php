@@ -33,6 +33,7 @@ class Runner
     private $groups = array();
     private $executor;
     private $retryThreshold = null;
+    protected $concurrency = 1;
 
     /**
      * @param CollectionBuilder $collectionBuilder
@@ -95,6 +96,11 @@ class Runner
     public function overrideParameters($parameters)
     {
         $this->parametersOverride = $parameters;
+    }
+
+    public function overrideConcurrency($concurrency)
+    {
+        $this->concurrency = $concurrency;
     }
 
     /**
@@ -208,6 +214,7 @@ class Runner
 
         foreach ($paramsIterator as $parameters) {
             $variantEl = $subjectEl->ownerDocument->createElement('variant');
+            $variantEl->setAttribute('concurrency', $this->concurrency);
             foreach ($parameters as $name => $value) {
                 $parameterEl = $this->createParameter($subjectEl, $name, $value);
                 $variantEl->appendChild($parameterEl);
@@ -278,7 +285,7 @@ class Runner
         }
     }
 
-    public function runIteration(Iteration $iteration)
+    private function runIteration(Iteration $iteration)
     {
         $this->logger->iterationStart($iteration);
         $result = $this->executor->execute($iteration);
