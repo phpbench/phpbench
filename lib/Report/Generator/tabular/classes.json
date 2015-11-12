@@ -21,6 +21,8 @@
         ],
         "number": [
             [ "number", { "decimal_places": 2 }]
+        ],
+        "params": [
         ]
     }
 }

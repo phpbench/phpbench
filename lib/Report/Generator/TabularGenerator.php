@@ -56,6 +56,9 @@ class TabularGenerator extends AbstractTabularGenerator
                         array('type' => 'null'),
                     ),
                 ),
+                'pretty_params' => array(
+                    'type' => 'boolean',
+                ),
                 'aggregate' => array(
                     'type' => 'boolean',
                 ),

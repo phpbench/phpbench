@@ -38,8 +38,10 @@ use PhpBench\Tabular\Definition\Loader;
 use PhpBench\Tabular\Dom\XPathResolver;
 use PhpBench\Tabular\Formatter;
 use PhpBench\Tabular\Formatter\Format\BalanceFormat;
+use PhpBench\Tabular\Formatter\Format\JSONFormat;
 use PhpBench\Tabular\Formatter\Format\NumberFormat;
 use PhpBench\Tabular\Formatter\Format\PrintfFormat;
+use PhpBench\Tabular\Formatter\Format\TruncateFormat;
 use PhpBench\Tabular\Formatter\Registry\ArrayRegistry;
 use PhpBench\Tabular\TableBuilder;
 use PhpBench\Tabular\Tabular;
@@ -263,6 +265,8 @@ class CoreExtension implements ExtensionInterface
             $registry->register('printf', new PrintfFormat());
             $registry->register('balance', new BalanceFormat());
             $registry->register('number', new NumberFormat());
+            $registry->register('truncate', new TruncateFormat());
+            $registry->register('json_format', new JSONFormat());
 
             return $registry;
         });
