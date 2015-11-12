@@ -11,11 +11,18 @@
 
 namespace PhpBench\Benchmark;
 
+use PhpBench\Benchmark\Remote\Payload;
+
 /**
  * Represents the result of a single iteration executed by an executor.
  */
 class IterationResult
 {
+    /**
+     * @var Payload
+     */
+    private $payload;
+
     /**
      * @var int
      */
@@ -27,22 +34,44 @@ class IterationResult
     private $memory;
 
     /**
-     * @param mixed $time Time taken to execute the iteration in microseconds.
-     * @param mixed $memory Memory used by iteration in bytes.
+     * @param /Callable
      */
-    public function __construct($time, $memory)
+    public function __construct(Payload $payload)
     {
-        $this->time = $time;
-        $this->memory = $memory;
+        $this->payload = $payload;
     }
 
     public function getTime()
     {
+        $this->evaluate();
         return $this->time;
     }
 
     public function getMemory()
     {
+        $this->evaluate();
         return $this->memory;
+    }
+
+    public function isRunning()
+    {
+        return $this->payload->isRunning();
+    }
+
+    public function wait()
+    {
+        $this->payload->wait();
+    }
+
+    private function evaluate()
+    {
+        if (null !== $this->time) {
+            return;
+        }
+
+        $result = $this->payload->getResult();
+
+        $this->time = $result['time'];
+        $this->memory = $result['memory'];
     }
 }

@@ -48,6 +48,8 @@ class Payload
      */
     private $process;
 
+    private $scriptPath;
+
     /**
      * Create a new Payload object with the given script template.
      * The template must be the path to a script template.
@@ -81,7 +83,7 @@ class Payload
         if (!file_exists($this->template)) {
             throw new \RuntimeException(sprintf(
                 'Could not find script template "%s"',
-                $template
+                $this->template
             ));
         }
 
@@ -97,18 +99,24 @@ class Payload
             $templateBody
         );
 
-        $scriptPath = tempnam(sys_get_temp_dir(), 'PhpBench');
-        file_put_contents($scriptPath, $script);
+        $this->scriptPath = tempnam(sys_get_temp_dir(), 'PhpBench');
+        file_put_contents($this->scriptPath, $script);
 
         $wrapper = '';
         if ($this->wrapper) {
             $wrapper = $this->wrapper . ' ';
         }
 
-        $this->process->setCommandLine($wrapper . $this->phpPath . $this->getIniString() . ' ' . $scriptPath);
-        $this->process->run();
-        unlink($scriptPath);
+        $this->process->setCommandLine($wrapper . $this->phpPath . $this->getIniString() . ' ' . $this->scriptPath);
+        $this->process->start();
 
+        return $this;
+    }
+
+    public function getResult()
+    {
+        $this->process->wait();
+        unlink($this->scriptPath);
         if (false === $this->process->isSuccessful()) {
             throw new \RuntimeException(sprintf(
                 'Could not launch script: %s %s',
@@ -129,6 +137,16 @@ class Payload
         }
 
         return $result;
+    }
+
+    public function isRunning()
+    {
+        return $this->process->isRunning();
+    }
+
+    public function wait()
+    {
+        $this->process->wait();
     }
 
     private function getIniString()

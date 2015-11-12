@@ -55,9 +55,9 @@ class MicrotimeExecutor implements ExecutorInterface
         );
 
         $payload = $this->launcher->payload(__DIR__ . '/template/microtime.template', $tokens);
-        $result = $payload->launch();
+        $payload->launch();
 
-        return new IterationResult($result['time'], $result['memory']);
+        return new IterationResult($payload);
     }
 
     /**

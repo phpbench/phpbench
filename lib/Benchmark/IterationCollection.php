@@ -33,11 +33,17 @@ class IterationCollection implements \IteratorAggregate
     private $rejectionThreshold;
 
     /**
+     * @var integer
+     */
+    private $concurrency;
+
+    /**
      * @param float $rejectionThreshold
      */
-    public function __construct($rejectionThreshold = null)
+    public function __construct($rejectionThreshold = null, $concurrency = 1)
     {
         $this->rejectionThreshold = $rejectionThreshold;
+        $this->concurrency = $concurrency;
     }
 
     /**
@@ -100,6 +106,27 @@ class IterationCollection implements \IteratorAggregate
             }
         }
     }
+
+    public function getRunningProcessesCount()
+    {
+        $nbRunning = 0;
+
+        foreach ($this->iterations as $iteration) {
+            $nbRunning += $iteration->getResult()->isRunning() ? 1 : 0;
+        }
+
+        return $nbRunning;
+    }
+
+    public function wait()
+    {
+        while ($this->getRunningProcessesCount() >= $this->concurrency) {
+            foreach ($this->iterations as $iteration) {
+                $iteration->getResult()->wait();
+            }
+        }
+    }
+
 
     /**
      * Return the number of rejected iterations.

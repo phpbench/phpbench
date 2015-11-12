@@ -208,7 +208,7 @@ class Runner
     private function runSubject(SubjectMetadata $subject, \DOMElement $subjectEl)
     {
         $iterationCount = null === $this->iterationsOverride ? $subject->getIterations() : $this->iterationsOverride;
-        $revolutionCounts = $this->revsOverride ? array($this->revsOverride) : $subject->getRevs();
+        $revolutions = $this->revsOverride ? array($this->revsOverride) : $subject->getRevs();
         $parameterSets = $this->parametersOverride ? array(array($this->parametersOverride)) : $subject->getParameterSets() ?: array(array(array()));
         $paramsIterator = new CartesianParameterIterator($parameterSets);
 
@@ -221,7 +221,7 @@ class Runner
             }
 
             $subjectEl->appendChild($variantEl);
-            $this->runIterations($subject, $iterationCount, (array) $revolutionCounts, $parameters, $variantEl);
+            $this->runIterations($subject, $iterationCount, $revolutions, $parameters, $variantEl);
         }
     }
 
@@ -252,15 +252,15 @@ class Runner
         ));
     }
 
-    private function runIterations(SubjectMetadata $subject, $iterationCount, array $revolutionCounts, array $parameterSet, \DOMElement $variantEl)
+    private function runIterations(SubjectMetadata $subject, $iterationCount, $revolutions, array $parameterSet, \DOMElement $variantEl)
     {
-        $iterationCollection = new IterationCollection($this->retryThreshold);
+        $iterationCollection = new IterationCollection($this->retryThreshold, $this->concurrency);
+
         for ($index = 0; $index < $iterationCount; $index++) {
-            foreach ($revolutionCounts as $revolutionCount) {
-                $iteration = new Iteration($index, $subject, $revolutionCount, $parameterSet);
-                $this->runIteration($iteration);
-                $iterationCollection->add($iteration);
-            }
+            $iterationCollection->wait();
+            $iteration = new Iteration($index, $subject, $revolutions, $parameterSet);
+            $this->runIteration($iteration);
+            $iterationCollection->add($iteration);
         }
 
         $iterationCollection->computeDeviations();
@@ -268,6 +268,7 @@ class Runner
         while ($iterationCollection->getRejectCount() > 0) {
             $this->logger->retryStart($iterationCollection->getRejectCount());
             foreach ($iterationCollection->getRejects() as $reject) {
+                $iterationCollection->wait();
                 $reject->incrementRejectionCount();
                 $this->runIteration($reject);
             }

@@ -53,7 +53,7 @@ class Reflector
         $classHierarchy = $this->launcher->payload(__DIR__ . '/template/reflector.template', array(
             'file' => $file,
             'class' => $classFqn,
-        ))->launch();
+        ))->launch()->getResult();
 
         $hierarchy = new ReflectionHierarchy();
 
@@ -92,7 +92,7 @@ class Reflector
             'file' => $file,
             'class' => $this->getClassNameFromFile($file),
             'paramProviders' => var_export($paramProviders, true),
-        ))->launch();
+        ))->launch()->getResult();
 
         return $parameterSets;
     }

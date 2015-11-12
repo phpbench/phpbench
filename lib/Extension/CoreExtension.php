@@ -17,7 +17,7 @@ use PhpBench\Benchmark\Metadata\Driver\AnnotationDriver;
 use PhpBench\Benchmark\Metadata\Factory;
 use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Benchmark\Remote\Reflector;
-use PhpBench\Benchmark\ConcurrentRunner;
+use PhpBench\Benchmark\Runner;
 use PhpBench\Console\Application;
 use PhpBench\Console\Command\ReportCommand;
 use PhpBench\Console\Command\RunCommand;
@@ -116,7 +116,7 @@ class CoreExtension implements ExtensionInterface
     private function registerBenchmark(Container $container)
     {
         $container->register('benchmark.runner', function (Container $container) {
-            return new ConcurrentRunner(
+            return new Runner(
                 $container->get('benchmark.collection_builder'),
                 $container->get('benchmark.executor'),
                 $container->getParameter('retry_threshold'),
