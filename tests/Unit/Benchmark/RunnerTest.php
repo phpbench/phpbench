@@ -39,53 +39,57 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
     /**
      * It should run the tests.
      *
-     * - With 1 iteration, 1 revolution
-     * - With 1 iteration, 4 revolutions
-     *
      * @dataProvider provideRunner
      */
     public function testRunner($iterations, $revs, array $parameters, $expected, $exception = null)
     {
-        if ($exception) {
-            $this->setExpectedException($exception[0], $exception[1]);
-        }
+        try {
+            $this->collection->getBenchmarks()->willReturn(array(
+                $this->benchmark,
+            ));
+            $this->configureSubject($this->subject, array(
+                'iterations' => $iterations,
+                'beforeMethods' => array('beforeFoo'),
+                'afterMethods' => array(),
+                'parameterSets' => array(array($parameters)),
+                'groups ' => array(),
+                'revs' => $revs,
+            ));
 
-        $this->collection->getBenchmarks()->willReturn(array(
-            $this->benchmark,
-        ));
-        $this->configureSubject($this->subject, array(
-            'iterations' => $iterations,
-            'beforeMethods' => array('beforeFoo'),
-            'afterMethods' => array(),
-            'parameterSets' => array(array($parameters)),
-            'groups ' => array(),
-            'revs' => $revs,
-        ));
+            $this->benchmark->getSubjectMetadatas()->willReturn(array(
+                $this->subject->reveal(),
+            ));
+            $this->benchmark->getClass()->willReturn('Benchmark');
 
-        $this->benchmark->getSubjectMetadatas()->willReturn(array(
-            $this->subject->reveal(),
-        ));
-        $this->benchmark->getClass()->willReturn('Benchmark');
+            if (!$exception) {
+                $this->executor->execute(Argument::type('PhpBench\Benchmark\Iteration'))
+                    ->shouldBeCalledTimes(count($revs) * $iterations)
+                    ->willReturn(new IterationResult(10, 10));
+            }
 
-        if (!$exception) {
-            $this->executor->execute(Argument::type('PhpBench\Benchmark\Iteration'))
-                ->shouldBeCalledTimes(count($revs) * $iterations)
-                ->willReturn(new IterationResult(10, 10));
-        }
+            $result = $this->runner->runAll(__DIR__);
 
-        $result = $this->runner->runAll(__DIR__);
-
-        $this->assertInstanceOf('PhpBench\Benchmark\SuiteDocument', $result);
-        $this->assertEquals(
-            trim(sprintf(<<<EOT
+            $this->assertInstanceOf('PhpBench\Benchmark\SuiteDocument', $result);
+            $this->assertEquals(
+                trim(sprintf(<<<EOT
 <?xml version="1.0"?>
 <phpbench version="%s">
 %s
 </phpbench>
 EOT
-            , PhpBench::VERSION, $expected)),
-            trim($result->saveXml())
-        );
+                , PhpBench::VERSION, $expected)),
+                trim($result->saveXml())
+            );
+        } catch (\Exception $e) {
+            if (null !== $exception) {
+                $previous = $e->getPrevious();
+                $this->assertInstanceOf($exception[0], $previous);
+                $this->assertContains($exception[1], $previous->getMessage());
+                return;
+            }
+
+            throw $e;
+        }
     }
 
     public function provideRunner()

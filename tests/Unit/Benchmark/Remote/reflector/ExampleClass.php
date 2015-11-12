@@ -19,14 +19,14 @@ class ExampleClass
     /**
      * Method One Comment.
      */
-    public function methodOne()
+    public function methodOne($one)
     {
     }
 
     /**
      * Method Two Comment.
      */
-    public function methodTwo()
+    public function methodTwo($one, $two)
     {
     }
 

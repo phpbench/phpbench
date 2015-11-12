@@ -25,7 +25,7 @@ class ReflectorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should return information about a class in a different application.
+     * It should return information about a class in a different process.
      */
     public function testReflector()
     {
@@ -44,6 +44,7 @@ class ReflectorTest extends \PHPUnit_Framework_TestCase
             'provideParamsTwo',
         ), array_keys($reflection->methods));
         $this->assertContains('Method One Comment', $reflection->methods['methodOne']->comment);
+        $this->assertEquals(array('one', 'two'), $reflection->methods['methodTwo']->args);
     }
 
     /**

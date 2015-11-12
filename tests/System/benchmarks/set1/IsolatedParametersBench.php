@@ -16,7 +16,7 @@ class IsolatedParameterBench
      * @Iterations(5)
      * @ParamProviders({"provideParams"})
      */
-    public function benchIterationIsolation()
+    public function benchIterationIsolation($hello, $goodbye, $goodbye1)
     {
     }
 
@@ -26,7 +26,7 @@ class IsolatedParameterBench
             array(
                 'hello' => 'Look "I am using double quotes"',
                 'goodbye' => 'Look \'I am using single quotes\'"',
-                'goodbye' => 'Look \'I am use $dollars"',
+                'goodbye1' => 'Look \'I am use $dollars"',
             ),
         );
     }

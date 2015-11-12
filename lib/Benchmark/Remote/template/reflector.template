@@ -27,10 +27,17 @@ foreach ($classHierarchy as $class) {
 
     foreach ($refl->getMethods() as $methodRefl) {
         $comment = $methodRefl->getDocComment();
+
+        $args = array();
+        foreach ($methodRefl->getParameters() as $reflParam) {
+            $args[] = $reflParam->name;
+        }
+
         $metadata['methods'][$methodRefl->getName()] = array(
             'class' => $class,
             'name' => $methodRefl->getName(),
             'comment' => $comment,
+            'args' => $args,
         );
     }
 

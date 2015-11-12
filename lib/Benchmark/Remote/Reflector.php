@@ -70,6 +70,7 @@ class Reflector
                 $reflectionMethod->class = $classInfo['class'];
                 $reflectionMethod->name = $methodInfo['name'];
                 $reflectionMethod->comment = $methodInfo['comment'];
+                $reflectionMethod->args = $methodInfo['args'];
                 $reflectionClass->methods[$reflectionMethod->name] = $reflectionMethod;
             }
             $hierarchy->addReflectionClass($reflectionClass);

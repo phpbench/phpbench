@@ -350,13 +350,12 @@ class ReportManager
 
             try {
                 $reportConfig = $this->mergeAndValidateConfig($generator, $reportConfig);
+                $reportDom = $generator->generate($suiteDocument, $reportConfig);
             } catch (\Exception $e) {
                 throw new \InvalidArgumentException(sprintf(
-                    'Could not generate report "%s": %s', $reportName, $e->getMessage()
-                ));
+                    'Could not generate report "%s"', $reportName
+                ), null, $e);
             }
-
-            $reportDom = $generator->generate($suiteDocument, $reportConfig);
 
             if (!$reportDom instanceof Document) {
                 throw new \RuntimeException(sprintf(

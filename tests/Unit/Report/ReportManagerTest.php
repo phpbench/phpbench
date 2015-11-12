@@ -306,20 +306,26 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * It should throw an exception if the generator returns a non-array schema.
-     *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage must return the JSON schema as an array
      */
     public function testSchemaIsNotAnArray()
     {
-        $this->reportManager->addGenerator('test', $this->generator->reveal());
-        $this->reportManager->addReport('test_report', array('generator' => 'test'));
-        $this->generator->getDefaultConfig()->willReturn(array());
-        $this->generator->getSchema()->willReturn(new \stdClass());
-        $this->reportManager->generateReports(
-            $this->suiteDocument,
-            array('test_report')
-        );
+        try {
+            $this->reportManager->addGenerator('test', $this->generator->reveal());
+            $this->reportManager->addReport('test_report', array('generator' => 'test'));
+            $this->generator->getDefaultConfig()->willReturn(array());
+            $this->generator->getSchema()->willReturn(new \stdClass());
+            $this->reportManager->generateReports(
+                $this->suiteDocument,
+                array('test_report')
+            );
+        } catch (\Exception $e) {
+            $this->assertContains('Could not generate report "test_report"', $e->getMessage());
+            $this->assertInstanceOf('InvalidArgumentException', $e->getPrevious());
+            $this->assertContains('must return the JSON schema', $e->getPrevious()->getMessage());
+            return;
+        }
+
+        $this->fail('Did not throw exception');
     }
 
     /**
@@ -346,32 +352,38 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * It should throw an exception if the configuration does not match the schema.
-     *
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage is not defined and the definition does not allow additional properties
      */
     public function testInvalidSchema()
     {
-        $this->generator->getDefaultReports()->willReturn(array());
-        $this->generator->getDefaultConfig()->willReturn(array());
-        $this->generator->getSchema()->willReturn(array(
-            'type' => 'object',
-            'properties' => array(
-                'foobar' => array('type' => 'string'),
-            ),
-            'additionalProperties' => false,
-        ));
+        try {
+            $this->generator->getDefaultReports()->willReturn(array());
+            $this->generator->getDefaultConfig()->willReturn(array());
+            $this->generator->getSchema()->willReturn(array(
+                'type' => 'object',
+                'properties' => array(
+                    'foobar' => array('type' => 'string'),
+                ),
+                'additionalProperties' => false,
+            ));
 
-        $this->reportManager->addGenerator('test', $this->generator->reveal());
-        $this->reportManager->addReport('test_report', array(
-            'generator' => 'test',
-            'barbarboo' => 'tset',
-        ));
+            $this->reportManager->addGenerator('test', $this->generator->reveal());
+            $this->reportManager->addReport('test_report', array(
+                'generator' => 'test',
+                'barbarboo' => 'tset',
+            ));
 
-        $this->reportManager->generateReports(
-            $this->suiteDocument,
-            array('test_report')
-        );
+            $this->reportManager->generateReports(
+                $this->suiteDocument,
+                array('test_report')
+            );
+        } catch (\Exception $e) {
+            $this->assertContains('Could not generate report "test_report"', $e->getMessage());
+            $this->assertInstanceOf('InvalidArgumentException', $e->getPrevious());
+            $this->assertContains('is not defined and the definition does not allow additional properties', $e->getPrevious()->getMessage());
+            return;
+        }
+
+        $this->fail('Did not throw exception');
     }
 
     /**

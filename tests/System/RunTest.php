@@ -145,7 +145,7 @@ class RunTest extends SystemTestCase
     public function testOverrideParameters()
     {
         $process = $this->phpbench(
-            'run --dump --parameters=\'{"length": 333}\' benchmarks/set1/BenchmarkBench.php'
+            'run --dump --parameters=\'{"length": 333, "strategy": "left"}\' benchmarks/set1/BenchmarkBench.php'
         );
         $this->assertExitCode(0, $process);
         $output = $process->getOutput();

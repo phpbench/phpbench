@@ -32,6 +32,11 @@ class SubjectMetadata extends AbstractMetadata
     private $benchmarkMetadata;
 
     /**
+     * @var string[]
+     */
+    private $arguments = array();
+
+    /**
      * @param BenchmarkMetadata $benchmarkMetadata
      * @param string $name
      */
@@ -72,6 +77,17 @@ class SubjectMetadata extends AbstractMetadata
         return $this->parameterSets;
     }
 
+    public function getArguments() 
+    {
+        return $this->arguments;
+    }
+    
+    public function setArguments($arguments)
+    {
+        $this->arguments = $arguments;
+    }
+    
+    
     /**
      * Return the (containing) benchmark for this subject.
      *

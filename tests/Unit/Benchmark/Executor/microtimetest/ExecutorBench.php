@@ -34,18 +34,18 @@ class ExecutorBench
         file_put_contents(__DIR__ . '/revs.tmp', $count);
     }
 
-    public function parameterized($params)
+    public function parameterized($one, $three)
     {
-        file_put_contents(__DIR__ . '/param.tmp', json_encode($params));
+        file_put_contents(__DIR__ . '/param.tmp', json_encode(array($one, $three)));
     }
 
-    public function parameterizedBefore($params)
+    public function parameterizedBefore($one, $three)
     {
-        file_put_contents(__DIR__ . '/parambefore.tmp', json_encode($params));
+        file_put_contents(__DIR__ . '/parambefore.tmp', json_encode(array($one, $three)));
     }
 
-    public function parameterizedAfter($params)
+    public function parameterizedAfter($one, $three)
     {
-        file_put_contents(__DIR__ . '/paramafter.tmp', json_encode($params));
+        file_put_contents(__DIR__ . '/paramafter.tmp', json_encode(array($one, $three)));
     }
 }

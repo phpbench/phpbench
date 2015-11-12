@@ -19,6 +19,7 @@ use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\DocParser;
 use PhpBench\Benchmark\Metadata\DriverInterface;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
+use PhpBench\Benchmark\Remote\ReflectionClass;
 use PhpBench\Benchmark\Remote\ReflectionHierarchy;
 use PhpBench\Benchmark\Remote\ReflectionMethod;
 use PhpBench\Benchmark\Remote\Reflector;
@@ -89,6 +90,8 @@ class AnnotationDriver implements DriverInterface
 
     private function buildSubjectMetadata(SubjectMetadata $subjectMetadata, ReflectionMethod $reflectionMethod)
     {
+        $subjectMetadata->setArguments($reflectionMethod->args);
+
         $annotations = $this->docParser->parse(
             $reflectionMethod->comment,
             sprintf('subject %s::%s', $reflectionMethod->class, $reflectionMethod->name

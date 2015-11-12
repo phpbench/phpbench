@@ -26,23 +26,23 @@ class ArrayKeysBench
     private $values;
     private $index = 0;
 
-    public function init($params)
+    public function init($nbElements)
     {
-        $this->array = array_fill(0, $params['nb_elements'], 'this is a test');
+        $this->array = array_fill(0, $nbElements, 'this is a test');
         $this->values = array_combine(array_keys($this->array), array_keys($this->array));
     }
 
-    public function benchArrayKeyExists()
+    public function benchArrayKeyExists($nbElements)
     {
         array_key_exists($this->index++, $this->array);
     }
 
-    public function benchIsset()
+    public function benchIsset($nbElements)
     {
         isset($this->array[$this->index++]);
     }
 
-    public function benchInArray()
+    public function benchInArray($nbElements)
     {
         in_array($this->index++, $this->values);
     }
@@ -51,16 +51,16 @@ class ArrayKeysBench
     {
         return array(
             array(
-                'nb_elements' => 10,
+                'nbElements' => 10,
             ),
             array(
-                'nb_elements' => 100,
+                'nbElements' => 100,
             ),
             array(
-                'nb_elements' => 1000,
+                'nbElements' => 1000,
             ),
             array(
-                'nb_elements' => 10000,
+                'nbElements' => 10000,
             ),
         );
     }

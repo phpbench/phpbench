@@ -30,7 +30,7 @@ class BenchmarkBench
      * @Groups({"parameterized"})
      * @Iterations(1)
      */
-    public function benchParameterized($params)
+    public function benchParameterized($length, $strategy)
     {
     }
 

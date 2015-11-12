@@ -167,7 +167,15 @@ class Runner
             $benchmarkEl->setAttribute('class', $benchmark->getClass());
 
             $this->logger->benchmarkStart($benchmark);
-            $this->run($benchmark, $benchmarkEl);
+
+            try {
+                $this->run($benchmark, $benchmarkEl);
+            } catch (\Exception $e) {
+                throw new \Exception(sprintf(
+                    'Error encountered running benchmark class "%s"',
+                    $benchmark->getClass()
+                ), null, $e);
+            }
             $this->logger->benchmarkEnd($benchmark);
 
             $suiteEl->appendChild($benchmarkEl);

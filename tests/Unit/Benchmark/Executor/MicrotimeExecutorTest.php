@@ -81,6 +81,7 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
         $this->subject->getBeforeMethods()->willReturn(array());
         $this->subject->getAfterMethods()->willReturn(array());
         $this->subject->getName()->willReturn('doSomething');
+        $this->subject->getArguments()->willReturn(array());
         $this->iteration->getSubject()->willReturn($this->subject);
         $this->iteration->getRevolutions()->willReturn(10);
         $this->iteration->getParameters()->willReturn(array());
@@ -104,6 +105,7 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
         $this->subject->getBeforeMethods()->willReturn(array('beforeMethod'));
         $this->subject->getAfterMethods()->willReturn(array());
         $this->subject->getName()->willReturn('doSomething');
+        $this->subject->getArguments()->willReturn(array());
         $this->iteration->getSubject()->willReturn($this->subject);
         $this->iteration->getRevolutions()->willReturn(1);
         $this->iteration->getParameters()->willReturn(array());
@@ -121,6 +123,7 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
         $this->subject->getBeforeMethods()->willReturn(array());
         $this->subject->getAfterMethods()->willReturn(array('afterMethod'));
         $this->subject->getName()->willReturn('doSomething');
+        $this->subject->getArguments()->willReturn(array());
         $this->iteration->getSubject()->willReturn($this->subject);
         $this->iteration->getRevolutions()->willReturn(1);
         $this->iteration->getParameters()->willReturn(array());
@@ -138,6 +141,7 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
         $this->subject->getBeforeMethods()->willReturn(array());
         $this->subject->getAfterMethods()->willReturn(array());
         $this->subject->getName()->willReturn('parameterized');
+        $this->subject->getArguments()->willReturn(array('one', 'three'));
 
         $this->iteration->getSubject()->willReturn($this->subject);
         $this->iteration->getRevolutions()->willReturn(1);
@@ -150,8 +154,8 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(file_exists($this->paramFile));
         $params = json_decode(file_get_contents($this->paramFile), true);
         $this->assertEquals(array(
-            'one' => 'two',
-            'three' => 'four',
+            'two',
+            'four',
         ), $params);
     }
 
@@ -161,13 +165,14 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
     public function testParametersBeforeSubject()
     {
         $expected = array(
-            'one' => 'two',
-            'three' => 'four',
+            'two',
+            'four',
         );
 
         $this->subject->getBeforeMethods()->willReturn(array('parameterizedBefore'));
         $this->subject->getAfterMethods()->willReturn(array('parameterizedAfter'));
         $this->subject->getName()->willReturn('parameterized');
+        $this->subject->getArguments()->willReturn(array('one', 'three'));
 
         $this->iteration->getSubject()->willReturn($this->subject);
         $this->iteration->getRevolutions()->willReturn(1);
@@ -182,5 +187,87 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(file_exists($this->paramAfterFile));
         $params = json_decode(file_get_contents($this->paramAfterFile), true);
         $this->assertEquals($expected, $params);
+    }
+
+    /**
+     * It should map non-associative parameters to arguments
+     */
+    public function testAssocArgs()
+    {
+        $this->subject->getBeforeMethods()->willReturn(array());
+        $this->subject->getAfterMethods()->willReturn(array());
+        $this->subject->getName()->willReturn('parameterized');
+        $this->subject->getArguments()->willReturn(array('hello', 'goodbye'));
+
+        $this->iteration->getSubject()->willReturn($this->subject);
+        $this->iteration->getRevolutions()->willReturn(1);
+        $this->iteration->getParameters()->willReturn(array(
+            'two',
+            'four',
+        ));
+
+        $this->executor->execute($this->iteration->reveal());
+        $this->assertTrue(file_exists($this->paramFile));
+        $params = json_decode(file_get_contents($this->paramFile), true);
+        $this->assertEquals(array(
+            'two',
+            'four',
+        ), $params);
+    }
+
+    /**
+     * It should throw an exception if the parameters mix associative and numerical indexes.
+     *
+     * @expectedException RuntimeException
+     * @expectedExceptionMessage Cannot mix numeric and string
+     */
+    public function testMixedParameterKeyTypes()
+    {
+        $this->subject->getArguments()->willReturn(array('hello', 'goodbye'));
+        $this->subject->getName()->willReturn('doSomething');
+        $this->iteration->getSubject()->willReturn($this->subject);
+        $this->iteration->getParameters()->willReturn(array(
+            'string' => 'two',
+            'four',
+        ));
+
+        $this->executor->execute($this->iteration->reveal());
+    }
+
+    /**
+     * It should throw an exception if the argument names for the subject do not match the array keys of an associative array based parameter set.
+     *
+     * @expectedException RuntimeException
+     * @expectedExceptionMessage Should be: "arg1", "arg2", current argument names: "hello", "goodbye"
+     */
+    public function testNonMatchingArguments()
+    {
+        $this->subject->getArguments()->willReturn(array('hello', 'goodbye'));
+        $this->subject->getName()->willReturn('doSomething');
+        $this->iteration->getSubject()->willReturn($this->subject);
+        $this->iteration->getParameters()->willReturn(array(
+            'arg1' => 'two',
+            'arg2' => 'four',
+        ));
+
+        $this->executor->execute($this->iteration->reveal());
+    }
+
+    /**
+     * It should throw an exception if the benchmark subject expects non-provided parameters
+     *
+     * @expectedException RuntimeException
+     * @expectedExceptionMessage Subject "doSomething" expects parameters: "arg1", "arg3", but did not get them.
+     */
+    public function testNonProvidedParameters()
+    {
+        $this->subject->getArguments()->willReturn(array('arg1', 'arg2', 'arg3'));
+        $this->subject->getName()->willReturn('doSomething');
+        $this->iteration->getSubject()->willReturn($this->subject);
+        $this->iteration->getParameters()->willReturn(array(
+            'arg2' => 'four',
+        ));
+
+        $this->executor->execute($this->iteration->reveal());
     }
 }
