@@ -12,7 +12,6 @@
 namespace PhpBench\Tests\Benchmark;
 
 use PhpBench\Benchmark\Iteration;
-use PhpBench\Benchmark\IterationResult;
 use PhpBench\Benchmark\Runner;
 use PhpBench\PhpBench;
 use Prophecy\Argument;
@@ -28,7 +27,6 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->executor = $this->prophesize('PhpBench\Benchmark\ExecutorInterface');
         $this->benchmark = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');
         $this->result = $this->prophesize('PhpBench\Benchmark\IterationResult');
-
 
         $this->runner = new Runner(
             $this->collectionBuilder->reveal(),

@@ -11,14 +11,14 @@ in the form of a table:
 
 .. code-block:: bash
 
-    +-------------------+--------------+-------+--------+------+--------------+------+----------+--------+-----------+
-    | benchmark         | subject      | group | params | revs | iter         | rej  | time     | memory | deviation |
-    +-------------------+--------------+-------+--------+------+--------------+------+----------+--------+-----------+
-    | TimeConsumerBench | benchConsume |       | []     | 1    | 0            | 0    | 226.00μs | 3,416b | 0.00%     |
-    |                   |              |       |        |      |              |      |          |        |           |
-    |                   |              |       |        |      | stability >> |      | 100.00%  |        |           |
-    |                   |              |       |        |      | average >>   | 0.00 | 226.00μs | 3,416b |           |
-    +-------------------+--------------+-------+--------+------+--------------+------+----------+--------+-----------+
+    +-------------------+--------------+-------+--------+------+------+--------------+------+----------+--------+-----------+
+    | benchmark         | subject      | group | params | revs | con  | iter         | rej  | time     | memory | deviation |
+    +-------------------+--------------+-------+--------+------+------+--------------+------+----------+--------+-----------+
+    | TimeConsumerBench | benchConsume |       | []     | 1    | 1    | 0            | 0    | 226.00μs | 3,416b | 0.00%     |
+    |                   |              |       |        |      |      |              |      |          |        |           |
+    |                   |              |       |        |      |      | stability >> |      | 100.00%  |        |           |
+    |                   |              |       |        |      |      | average >>   | 0.00 | 226.00μs | 3,416b |           |
+    +-------------------+--------------+-------+--------+------+------+--------------+------+----------+--------+-----------+
 
 Generator: :ref:`generator_table`.
 
@@ -29,6 +29,7 @@ Columns:
 - **group**: The :ref:`group <groups>` the benchmark is in.
 - **params**: Any :ref:`parameters` which were passed to the benchmark.
 - **revs**: Number of :ref:`revolutions`.
+- **con**: Number of :ref:`concurrent iterations <concurrency>` that were permitted.
 - **iter**: The :ref:`iteration <iterations>` index.
 - **rej**: Number of rejected iterations (see :ref:`retry_threshold`).
 - **time**: Time taken to execute a single iteration in microseconds_
@@ -50,11 +51,11 @@ row for each subject:
 
 .. code-block:: bash
 
-    +-------------------+--------------+-------+--------+------+-------+-----+------------+--------+-----------+-----------+
-    | benchmark         | subject      | group | params | revs | iters | rej | time       | memory | deviation | stability |
-    +-------------------+--------------+-------+--------+------+-------+-----+------------+--------+-----------+-----------+
-    | TimeConsumerBench | benchConsume |       | []     | 1    | 1     | 0   | 227.0000μs | 3,416b | 0.00%     | 100.00%   |
-    +-------------------+--------------+-------+--------+------+-------+-----+-------+--------+-----------+-----------+
+    +-------------------+--------------+-------+--------+------+------+-------+-----+------------+--------+-----------+-----------+
+    | benchmark         | subject      | group | params | revs | con  | iters | rej | time       | memory | deviation | stability |
+    +-------------------+--------------+-------+--------+------+------+-------+-----+------------+--------+-----------+-----------+
+    | TimeConsumerBench | benchConsume |       | []     | 1    | 1    | 1     | 0   | 227.0000μs | 3,416b | 0.00%     | 100.00%   |
+    +-------------------+--------------+-------+--------+------+------+-------+-----+-------+--------+-----------+-----------+
 
 Generator: :ref:`generator_table`.
 
@@ -65,6 +66,7 @@ Columns:
 - **group**: The :ref:`group <groups>` the benchmark is in.
 - **params**: Any :ref:`parameters` which were passed to the benchmark.
 - **revs**: Sum of the number of :ref:`revolutions` for all iterations.
+- **con**: Number of :ref:`concurrent iterations <concurrency>` that were permitted.
 - **iters**: Number of :ref:`iterations <iterations>` performed.
 - **rej**: Number of rejected iterations (see :ref:`retry_threshold`).
 - **time**: Average time taken for each iteration.

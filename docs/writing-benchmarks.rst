@@ -264,22 +264,17 @@ subject.
 
 .. code-block:: php
 
+    <?php
+
     class HashBench
     {
-        private $hasher;
-
-        public function init()
-        {
-            $this->hasher = new Hasher();
-        }
-
         /**
          * @Iterations(10)
          * @Concurrencies({1, 5, 10})
          */
         public function benchMd5()
         {
-            $this->hasher->md5('Hello World!');
+            md5('Hello World');
         }
     }
 

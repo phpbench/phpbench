@@ -42,31 +42,33 @@ class IterationResult
     }
 
     /**
-     * Return the iteration time in microseconds
+     * Return the iteration time in microseconds.
      *
-     * @return integer
+     * @return int
      */
     public function getTime()
     {
         $this->evaluate();
+
         return $this->time;
     }
 
     /**
-     * Return the iteration memory usage in bytes
+     * Return the iteration memory usage in bytes.
      *
-     * @return integer
+     * @return int
      */
     public function getMemory()
     {
         $this->evaluate();
+
         return $this->memory;
     }
 
     /**
-     * Return true if the result is ready
+     * Return true if the result is ready.
      *
-     * @return boolean
+     * @return bool
      */
     public function isReady()
     {
@@ -74,7 +76,7 @@ class IterationResult
     }
 
     /**
-     * Wait until the result is ready
+     * Wait until the result is ready.
      */
     public function wait()
     {
@@ -82,7 +84,7 @@ class IterationResult
     }
 
     /**
-     * Lazily evaluate the result
+     * Lazily evaluate the result.
      */
     private function evaluate()
     {

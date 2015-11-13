@@ -57,7 +57,7 @@ abstract class AbstractMetadata
     private $skip = false;
 
     /**
-     * @var integer[]
+     * @var int[]
      */
     private $concurrencies = array();
 
@@ -151,11 +151,11 @@ abstract class AbstractMetadata
         $this->skip = $skip;
     }
 
-    public function getConcurrencies() 
+    public function getConcurrencies()
     {
         return $this->concurrencies;
     }
-    
+
     public function setConcurrencies(array $concurrencies)
     {
         $this->concurrencies = $concurrencies;

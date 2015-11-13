@@ -12,7 +12,6 @@
 namespace PhpBench\Tests\Unit\Benchmark;
 
 use PhpBench\Benchmark\IterationCollection;
-use PhpBench\Benchmark\IterationResult;
 
 class IterationCollectionTest extends \PHPUnit_Framework_TestCase
 {

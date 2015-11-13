@@ -33,7 +33,7 @@ class IterationCollection implements \IteratorAggregate
     private $rejectionThreshold;
 
     /**
-     * @var integer
+     * @var int
      */
     private $concurrency;
 
@@ -108,7 +108,7 @@ class IterationCollection implements \IteratorAggregate
     }
 
     /**
-     * Wait, if the number of running processes equal to or more than the allowed concurrency
+     * Wait, if the number of running processes equal to or more than the allowed concurrency.
      */
     public function wait()
     {
@@ -124,9 +124,9 @@ class IterationCollection implements \IteratorAggregate
     }
 
     /**
-     * Return the number of iterations that are currently running
+     * Return the number of iterations that are currently running.
      *
-     * @return integer
+     * @return int
      */
     private function getRunningCount()
     {
