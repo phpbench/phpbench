@@ -122,4 +122,23 @@ class PayloadTest extends \PHPUnit_Framework_TestCase
 
         $payload->launch($payload);
     }
+
+    /**
+     * It should unlink the temporary file on destruction.
+     */
+    public function testDestruct()
+    {
+        $payload = new Payload(
+            __DIR__ . '/template/foo.template',
+            array(
+                'foo' => 'bar',
+            )
+        );
+
+        $payload = $payload->launch($payload);
+        $scriptPath = $payload->getScriptPath();
+        $this->assertFileExists($scriptPath);
+        unset($payload);
+        $this->assertFileNotExists($scriptPath);
+    }
 }

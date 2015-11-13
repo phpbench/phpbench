@@ -23,9 +23,6 @@ class CostOfCalling
         $this->doSomething();
     }
 
-    /**
-     * @Concurrencies({1, 2, 5})
-     */
     public function benchCallWithParams()
     {
         $this->doSomethingWithParams(1, 2, 3, 4);

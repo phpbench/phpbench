@@ -336,7 +336,10 @@ class RunTest extends SystemTestCase
         $this->assertExitCode(0, $process);
         $this->assertFileExists($this->pidFile);
         $result = file_get_contents($this->pidFile);
-        $this->assertEquals('IN IN IN IN IN OUT OUT OUT OUT OUT ', $result);
+
+        // this could be flaky - basically we check ensure that the execution is
+        // not sequential (in contrast to the testNonConcurrent with a concurrency of 1)
+        $this->assertNotEquals('IN OUT IN OUT IN OUT IN OUT IN OUT ', $result);
     }
 
     /**

@@ -117,6 +117,8 @@ class Payload
     {
         $this->process->wait();
         unlink($this->scriptPath);
+        $this->scriptPath = null;
+
         if (false === $this->process->isSuccessful()) {
             throw new \RuntimeException(sprintf(
                 'Could not launch script: %s %s',
@@ -147,6 +149,18 @@ class Payload
     public function wait()
     {
         $this->process->wait();
+    }
+
+    public function getScriptPath()
+    {
+        return $this->scriptPath;
+    }
+
+    public function __destruct()
+    {
+        if ($this->scriptPath && file_exists($this->scriptPath)) {
+            unlink($this->scriptPath);
+        }
     }
 
     private function getIniString()

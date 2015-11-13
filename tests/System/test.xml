@@ -3,22 +3,22 @@
   <benchmark class="\BenchmarkBench">
     <subject name="benchRandom">
       <variant concurrency="1">
-        <iteration revs="1" time="10950" memory="576" deviation="0" rejection-count="0"/>
+        <iteration revs="1" time="1337" memory="576" deviation="0" rejection-count="0"/>
       </variant>
     </subject>
     <subject name="benchDoNothing">
       <group name="do_nothing"/>
       <variant concurrency="1">
-        <iteration revs="10000" time="7231" memory="560" deviation="9.6091103416378" rejection-count="0"/>
-        <iteration revs="10000" time="8138" memory="560" deviation="1.7288148305561" rejection-count="0"/>
-        <iteration revs="10000" time="7903" memory="560" deviation="1.2087953298249" rejection-count="0"/>
-        <iteration revs="10000" time="8727" memory="560" deviation="9.0915909346601" rejection-count="0"/>
-        <iteration revs="10000" time="8607" memory="560" deviation="7.5915346825506" rejection-count="0"/>
-        <iteration revs="10000" time="7699" memory="560" deviation="3.7588909584109" rejection-count="0"/>
-        <iteration revs="10000" time="7715" memory="560" deviation="3.5588834581297" rejection-count="0"/>
-        <iteration revs="10000" time="8249" memory="560" deviation="3.1163668637574" rejection-count="0"/>
-        <iteration revs="10000" time="8011" memory="560" deviation="0.14125529707364" rejection-count="0"/>
-        <iteration revs="10000" time="7717" memory="560" deviation="3.5338825205945" rejection-count="0"/>
+        <iteration revs="10000" time="8077" memory="560" deviation="12.997113188849" rejection-count="0"/>
+        <iteration revs="10000" time="7428" memory="560" deviation="19.987935714593" rejection-count="0"/>
+        <iteration revs="10000" time="7597" memory="560" deviation="18.167521220216" rejection-count="0"/>
+        <iteration revs="10000" time="7699" memory="560" deviation="17.068809513551" rejection-count="0"/>
+        <iteration revs="10000" time="8850" memory="560" deviation="4.6706019216683" rejection-count="0"/>
+        <iteration revs="10000" time="8823" memory="560" deviation="4.9614373734327" rejection-count="0"/>
+        <iteration revs="10000" time="12131" memory="560" deviation="30.671291309406" rejection-count="0"/>
+        <iteration revs="10000" time="10577" memory="560" deviation="13.932095307855" rejection-count="0"/>
+        <iteration revs="10000" time="13310" memory="560" deviation="43.371106036451" rejection-count="0"/>
+        <iteration revs="10000" time="8344" memory="560" deviation="10.121073721401" rejection-count="0"/>
       </variant>
     </subject>
     <subject name="benchParameterized">
@@ -26,7 +26,7 @@
       <variant concurrency="1">
         <parameter name="length" value="1"/>
         <parameter name="strategy" value="left"/>
-        <iteration revs="1" time="7" memory="552" deviation="0" rejection-count="0"/>
+        <iteration revs="1" time="8" memory="552" deviation="0" rejection-count="0"/>
       </variant>
       <variant concurrency="1">
         <parameter name="length" value="2"/>
@@ -36,7 +36,7 @@
       <variant concurrency="1">
         <parameter name="length" value="1"/>
         <parameter name="strategy" value="right"/>
-        <iteration revs="1" time="6" memory="552" deviation="0" rejection-count="0"/>
+        <iteration revs="1" time="9" memory="552" deviation="0" rejection-count="0"/>
       </variant>
       <variant concurrency="1">
         <parameter name="length" value="2"/>

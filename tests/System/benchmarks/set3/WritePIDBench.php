@@ -23,7 +23,7 @@ class WritePIDBench
 
         $handle = fopen(__DIR__ . '/pids', 'a');
         fwrite($handle, 'IN ');
-        usleep(50000);
+        usleep(250000);
         fwrite($handle, 'OUT ');
         fclose($handle);
     }
