@@ -13,6 +13,19 @@ namespace PhpBench\Tests\System;
 
 class RunTest extends SystemTestCase
 {
+    public function setUp()
+    {
+        $this->pidFile = __DIR__ . '/benchmarks/set3/pids';
+        if (file_exists($this->pidFile)) {
+            unlink($this->pidFile);
+        }
+    }
+
+    public function tearDown()
+    {
+        $this->setUp();
+    }
+
     /**
      * It should use a speified, valid, configuration.
      */
@@ -310,4 +323,35 @@ class RunTest extends SystemTestCase
 
         $this->assertExitCode(0, $process);
     }
+
+    /**
+     * It should run concurrent benchmarks
+     */
+    public function testConcurrent()
+    {
+        $process = $this->phpbench(
+            'run benchmarks/set3/WritePIDBench.php --concurrency=5 --iterations=5'
+        );
+
+        $this->assertExitCode(0, $process);
+        $this->assertFileExists($this->pidFile);
+        $result = file_get_contents($this->pidFile);
+        $this->assertEquals('IN IN IN IN IN OUT OUT OUT OUT OUT ', $result);
+    }
+
+    /**
+     * It should run sequential benchmarks
+     */
+    public function testNonConcurrent()
+    {
+        $process = $this->phpbench(
+            'run benchmarks/set3/WritePIDBench.php --concurrency=1 --iterations=5'
+        );
+
+        $this->assertExitCode(0, $process);
+        $this->assertFileExists($this->pidFile);
+        $result = file_get_contents($this->pidFile);
+        $this->assertEquals('IN OUT IN OUT IN OUT IN OUT IN OUT ', $result);
+    }
 }
+

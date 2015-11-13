@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<phpbench version="0.6">
+  <benchmark class="\BenchmarkBench">
+    <subject name="benchRandom">
+      <variant concurrency="1">
+        <iteration revs="1" time="10950" memory="576" deviation="0" rejection-count="0"/>
+      </variant>
+    </subject>
+    <subject name="benchDoNothing">
+      <group name="do_nothing"/>
+      <variant concurrency="1">
+        <iteration revs="10000" time="7231" memory="560" deviation="9.6091103416378" rejection-count="0"/>
+        <iteration revs="10000" time="8138" memory="560" deviation="1.7288148305561" rejection-count="0"/>
+        <iteration revs="10000" time="7903" memory="560" deviation="1.2087953298249" rejection-count="0"/>
+        <iteration revs="10000" time="8727" memory="560" deviation="9.0915909346601" rejection-count="0"/>
+        <iteration revs="10000" time="8607" memory="560" deviation="7.5915346825506" rejection-count="0"/>
+        <iteration revs="10000" time="7699" memory="560" deviation="3.7588909584109" rejection-count="0"/>
+        <iteration revs="10000" time="7715" memory="560" deviation="3.5588834581297" rejection-count="0"/>
+        <iteration revs="10000" time="8249" memory="560" deviation="3.1163668637574" rejection-count="0"/>
+        <iteration revs="10000" time="8011" memory="560" deviation="0.14125529707364" rejection-count="0"/>
+        <iteration revs="10000" time="7717" memory="560" deviation="3.5338825205945" rejection-count="0"/>
+      </variant>
+    </subject>
+    <subject name="benchParameterized">
+      <group name="parameterized"/>
+      <variant concurrency="1">
+        <parameter name="length" value="1"/>
+        <parameter name="strategy" value="left"/>
+        <iteration revs="1" time="7" memory="552" deviation="0" rejection-count="0"/>
+      </variant>
+      <variant concurrency="1">
+        <parameter name="length" value="2"/>
+        <parameter name="strategy" value="left"/>
+        <iteration revs="1" time="6" memory="552" deviation="0" rejection-count="0"/>
+      </variant>
+      <variant concurrency="1">
+        <parameter name="length" value="1"/>
+        <parameter name="strategy" value="right"/>
+        <iteration revs="1" time="6" memory="552" deviation="0" rejection-count="0"/>
+      </variant>
+      <variant concurrency="1">
+        <parameter name="length" value="2"/>
+        <parameter name="strategy" value="right"/>
+        <iteration revs="1" time="6" memory="552" deviation="0" rejection-count="0"/>
+      </variant>
+    </subject>
+  </benchmark>
+</phpbench>
