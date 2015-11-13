@@ -325,7 +325,7 @@ class RunTest extends SystemTestCase
     }
 
     /**
-     * It should run concurrent benchmarks
+     * It should run concurrent benchmarks.
      */
     public function testConcurrent()
     {
@@ -340,7 +340,7 @@ class RunTest extends SystemTestCase
     }
 
     /**
-     * It should run sequential benchmarks
+     * It should run sequential benchmarks.
      */
     public function testNonConcurrent()
     {
@@ -354,4 +354,3 @@ class RunTest extends SystemTestCase
         $this->assertEquals('IN OUT IN OUT IN OUT IN OUT IN OUT ', $result);
     }
 }
-
