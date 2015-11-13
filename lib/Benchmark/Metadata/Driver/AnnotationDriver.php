@@ -152,6 +152,10 @@ class AnnotationDriver implements DriverInterface
         if ($annotation instanceof Annotations\Skip) {
             $metadata->setSkip(true);
         }
+
+        if ($annotation instanceof Annotations\Concurrencies) {
+            $metadata->setConcurrencies($annotation->getConcurrencies());
+        }
     }
 
     private function resolveValue(ArrayAnnotation $annotation, array $currentValues, array $annotationValues)

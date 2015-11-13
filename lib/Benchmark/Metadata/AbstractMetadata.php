@@ -57,6 +57,11 @@ abstract class AbstractMetadata
     private $skip = false;
 
     /**
+     * @var integer[]
+     */
+    private $concurrencies = array();
+
+    /**
      * @param mixed $class
      */
     public function __construct($class)
@@ -144,5 +149,15 @@ abstract class AbstractMetadata
     public function setSkip($skip)
     {
         $this->skip = $skip;
+    }
+
+    public function getConcurrencies() 
+    {
+        return $this->concurrencies;
+    }
+    
+    public function setConcurrencies(array $concurrencies)
+    {
+        $this->concurrencies = $concurrencies;
     }
 }

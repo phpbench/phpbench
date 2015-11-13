@@ -84,10 +84,40 @@ class IterationCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertNotContains($iter2, $iterations->getRejects());
     }
 
+    /**
+     * It should not wait if the number of running processes is less than the concurrnecy.
+     */
+    public function testWait()
+    {
+        $iteration1 = $this->prophesize('PhpBench\Benchmark\Iteration');
+        $result1 = $this->prophesize('PhpBench\Benchmark\IterationResult');
+        $iteration2 = $this->prophesize('PhpBench\Benchmark\Iteration');
+        $result2 = $this->prophesize('PhpBench\Benchmark\IterationResult');
+
+        $iteration1->getResult()->willReturn($result1);
+        $result1->isReady()->willReturn(false);
+        $result1->wait()->shouldNotBeCalled();
+
+        $iteration2->getResult()->willReturn($result2);
+        $result2->isReady()->willReturn(true);
+        $result2->wait()->shouldNotBeCalled();
+
+        $iterations = new IterationCollection(50, 2);
+        $iterations->replace(array(
+            $iteration1->reveal(),
+            $iteration2->reveal(),
+        ));
+
+        $iterations->wait();
+    }
+
     private function createIteration($time, $expectedDeviation = null)
     {
         $iteration = $this->prophesize('PhpBench\Benchmark\Iteration');
-        $iteration->getResult()->willReturn(new IterationResult($time, null));
+        $result = $this->prophesize('PhpBench\Benchmark\IterationResult');
+        $result->getTime()->willReturn($time);
+        $result->getMemory()->willReturn(null);
+        $iteration->getResult()->willReturn($result);
 
         if (null !== $expectedDeviation) {
             $iteration->setDeviation($expectedDeviation)->shouldBeCalled();

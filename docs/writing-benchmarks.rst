@@ -253,6 +253,45 @@ Will result in the following parameter benchmark scenarios:
     // #3
     array('string' => 'Goodbye Cruel World!', 'algorithm' => 'sha1');
 
+.. _concurrency:
+
+Concurrency
+-----------
+
+You can specify that iterations be run concurrently. This is useful, for
+example, for seeing what effect a heavy load would have on your benchmarking
+subject.
+
+.. code-block:: php
+
+    class HashBench
+    {
+        private $hasher;
+
+        public function init()
+        {
+            $this->hasher = new Hasher();
+        }
+
+        /**
+         * @Iterations(10)
+         * @Concurrencies({1, 5, 10})
+         */
+        public function benchMd5()
+        {
+            $this->hasher->md5('Hello World!');
+        }
+    }
+
+Things to note:
+
+- You specify multiple concurrency values - one variant will be created for
+  each value.
+- The number of iterations is absolute - if you have a concurrency of 5 and
+  only 3 iterations, only 3 iterations will be executed concurrently.
+- Concurrency severely affects stability, you will probably want to disable
+  the :ref:`retry_threshold`.
+
 .. _groups:
 
 Groups

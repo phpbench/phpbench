@@ -14,6 +14,7 @@ Features:
 - Benchmarks executed in a separate process, no effective overhead,
   no autoloader polution.
 - Control stability of results with multiple iterations and retry threshold.
+- Support for running iterations concurrently.
 - Memory usage statistics in addition to time.
 - Parameterized benchmarking cases.
 - Per-project configuration.

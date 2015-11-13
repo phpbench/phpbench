@@ -107,26 +107,37 @@ class IterationCollection implements \IteratorAggregate
         }
     }
 
-    public function getRunningProcessesCount()
-    {
-        $nbRunning = 0;
-
-        foreach ($this->iterations as $iteration) {
-            $nbRunning += $iteration->getResult()->isRunning() ? 1 : 0;
-        }
-
-        return $nbRunning;
-    }
-
+    /**
+     * Wait, if the number of running processes equal to or more than the allowed concurrency
+     */
     public function wait()
     {
-        while ($this->getRunningProcessesCount() >= $this->concurrency) {
+        while ($this->getRunningCount() >= $this->concurrency) {
             foreach ($this->iterations as $iteration) {
+                // this is not ideal as it means that we always wait for the end of a specific,
+                // arbitrary, iteration before we can start a new one if we fall below the concurrency
+                // limit.
                 $iteration->getResult()->wait();
+                // todo: use callbacks?
             }
         }
     }
 
+    /**
+     * Return the number of iterations that are currently running
+     *
+     * @return integer
+     */
+    private function getRunningCount()
+    {
+        $nbRunning = 0;
+
+        foreach ($this->iterations as $iteration) {
+            $nbRunning += $iteration->getResult()->isReady() ? 0 : 1;
+        }
+
+        return $nbRunning;
+    }
 
     /**
      * Return the number of rejected iterations.

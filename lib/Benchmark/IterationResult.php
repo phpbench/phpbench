@@ -41,28 +41,49 @@ class IterationResult
         $this->payload = $payload;
     }
 
+    /**
+     * Return the iteration time in microseconds
+     *
+     * @return integer
+     */
     public function getTime()
     {
         $this->evaluate();
         return $this->time;
     }
 
+    /**
+     * Return the iteration memory usage in bytes
+     *
+     * @return integer
+     */
     public function getMemory()
     {
         $this->evaluate();
         return $this->memory;
     }
 
-    public function isRunning()
+    /**
+     * Return true if the result is ready
+     *
+     * @return boolean
+     */
+    public function isReady()
     {
-        return $this->payload->isRunning();
+        return false === $this->payload->isRunning();
     }
 
+    /**
+     * Wait until the result is ready
+     */
     public function wait()
     {
         $this->payload->wait();
     }
 
+    /**
+     * Lazily evaluate the result
+     */
     private function evaluate()
     {
         if (null !== $this->time) {

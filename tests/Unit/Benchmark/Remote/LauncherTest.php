@@ -22,7 +22,7 @@ class LauncherTest extends \PHPUnit_Framework_TestCase
     public function testExecute()
     {
         $launcher = new Launcher(__DIR__ . '/../../../../vendor/autoload.php');
-        $result = $launcher->payload(
+        $payload = $launcher->payload(
             __DIR__ . '/template/foo.template',
             array(
                 'foo' => 'bar',
@@ -31,7 +31,7 @@ class LauncherTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(array(
             'foo' => 'bar',
-        ), $result);
+        ), $payload->getResult());
     }
 
     /**

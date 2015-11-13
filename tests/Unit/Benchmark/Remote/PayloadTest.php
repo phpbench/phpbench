@@ -36,11 +36,11 @@ class PayloadTest extends \PHPUnit_Framework_TestCase
             )
         );
 
-        $result = $payload->launch($payload);
+        $payload = $payload->launch($payload);
 
         $this->assertEquals(array(
             'foo' => 'bar',
-        ), $result);
+        ), $payload->getResult());
     }
 
     /**
@@ -55,7 +55,7 @@ class PayloadTest extends \PHPUnit_Framework_TestCase
             __DIR__ . '/template/invalid.template'
         );
 
-        $payload->launch($payload);
+        $payload->launch()->getResult();
     }
 
     /**
@@ -71,7 +71,7 @@ class PayloadTest extends \PHPUnit_Framework_TestCase
         );
         $payload->setPhpPath('/foo/bar');
         $process->setCommandLine(Argument::containingString('/foo/bar'))->shouldBeCalled();
-        $process->run()->shouldBeCalled();
+        $process->start()->shouldBeCalled();
         $process->isSuccessful()->willReturn(true);
         $process->getOutput()->willReturn('{"foo": "bar"}');
 
@@ -95,7 +95,7 @@ class PayloadTest extends \PHPUnit_Framework_TestCase
         ));
         $process->setCommandLine(Argument::containingString('-dfoo=bar'))->shouldBeCalled();
         $process->setCommandLine(Argument::containingString('-dbar=foo'))->shouldBeCalled();
-        $process->run()->shouldBeCalled();
+        $process->start()->shouldBeCalled();
         $process->isSuccessful()->willReturn(true);
         $process->getOutput()->willReturn('{"foo": "bar"}');
 
@@ -116,7 +116,7 @@ class PayloadTest extends \PHPUnit_Framework_TestCase
         $payload->setWrapper('bockfire');
         $payload->setPhpPath('/boo/bar/php');
         $process->setCommandLine(Argument::containingString('bockfire /boo/bar/php'))->shouldBeCalled();
-        $process->run()->shouldBeCalled();
+        $process->start()->shouldBeCalled();
         $process->isSuccessful()->willReturn(true);
         $process->getOutput()->willReturn('{"foo": "bar"}');
 

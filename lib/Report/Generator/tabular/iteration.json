@@ -27,6 +27,10 @@
                     "expr": "parameters_to_json(ancestor-or-self::variant/parameter)"
                 },
                 {
+                    "name": "con",
+                    "expr": "number(ancestor-or-self::variant/@concurrency)"
+                },
+                {
                     "name": "revs",
                     "expr": "number(descendant-or-self::iteration/@revs)"
                 },

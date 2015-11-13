@@ -28,6 +28,7 @@ class DocParser
         'Iterations' => 'PhpBench\Benchmark\Metadata\Annotations\Iterations',
         'Revs' => 'PhpBench\Benchmark\Metadata\Annotations\Revs',
         'Skip' => 'PhpBench\Benchmark\Metadata\Annotations\Skip',
+        'Concurrencies' => 'PhpBench\Benchmark\Metadata\Annotations\Concurrencies',
     );
     private static $globalIgnoredNames = array(
         // Annotation tags

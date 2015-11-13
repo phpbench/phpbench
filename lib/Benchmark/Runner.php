@@ -33,7 +33,7 @@ class Runner
     private $groups = array();
     private $executor;
     private $retryThreshold = null;
-    protected $concurrency = 1;
+    private $concurrenciesOverride = null;
 
     /**
      * @param CollectionBuilder $collectionBuilder
@@ -98,9 +98,9 @@ class Runner
         $this->parametersOverride = $parameters;
     }
 
-    public function overrideConcurrency($concurrency)
+    public function overrideConcurrencies($concurrencies)
     {
-        $this->concurrency = $concurrency;
+        $this->concurrenciesOverride = $concurrencies;
     }
 
     /**
@@ -208,20 +208,23 @@ class Runner
     private function runSubject(SubjectMetadata $subject, \DOMElement $subjectEl)
     {
         $iterationCount = null === $this->iterationsOverride ? $subject->getIterations() : $this->iterationsOverride;
-        $revolutions = $this->revsOverride ? array($this->revsOverride) : $subject->getRevs();
+        $revolutions = $this->revsOverride ? $this->revsOverride : $subject->getRevs();
         $parameterSets = $this->parametersOverride ? array(array($this->parametersOverride)) : $subject->getParameterSets() ?: array(array(array()));
+        $concurrencies = $this->concurrenciesOverride ? $this->concurrenciesOverride : $subject->getConcurrencies() ?: array(1);
         $paramsIterator = new CartesianParameterIterator($parameterSets);
 
         foreach ($paramsIterator as $parameters) {
-            $variantEl = $subjectEl->ownerDocument->createElement('variant');
-            $variantEl->setAttribute('concurrency', $this->concurrency);
-            foreach ($parameters as $name => $value) {
-                $parameterEl = $this->createParameter($subjectEl, $name, $value);
-                $variantEl->appendChild($parameterEl);
-            }
+            foreach ($concurrencies as $concurrency) {
+                $variantEl = $subjectEl->ownerDocument->createElement('variant');
+                $variantEl->setAttribute('concurrency', $concurrency);
+                foreach ($parameters as $name => $value) {
+                    $parameterEl = $this->createParameter($subjectEl, $name, $value);
+                    $variantEl->appendChild($parameterEl);
+                }
 
-            $subjectEl->appendChild($variantEl);
-            $this->runIterations($subject, $iterationCount, $revolutions, $parameters, $variantEl);
+                $subjectEl->appendChild($variantEl);
+                $this->runIterations($subject, $iterationCount, $revolutions, $concurrency, $parameters, $variantEl);
+            }
         }
     }
 
@@ -252,9 +255,9 @@ class Runner
         ));
     }
 
-    private function runIterations(SubjectMetadata $subject, $iterationCount, $revolutions, array $parameterSet, \DOMElement $variantEl)
+    private function runIterations(SubjectMetadata $subject, $iterationCount, $revolutions, $concurrency, array $parameterSet, \DOMElement $variantEl)
     {
-        $iterationCollection = new IterationCollection($this->retryThreshold, $this->concurrency);
+        $iterationCollection = new IterationCollection($this->retryThreshold, $concurrency);
 
         for ($index = 0; $index < $iterationCount; $index++) {
             $iterationCollection->wait();

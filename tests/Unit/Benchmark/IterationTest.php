@@ -46,9 +46,9 @@ class IterationTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetResult()
     {
-        $result = new IterationResult(10, 10);
-        $this->iteration->setResult($result);
-        $this->iteration->setResult($result);
-        $this->assertSame($result, $this->iteration->getResult());
+        $result = $this->prophesize('PhpBench\Benchmark\IterationResult');
+        $this->iteration->setResult($result->reveal());
+        $this->iteration->setResult($result->reveal());
+        $this->assertSame($result->reveal(), $this->iteration->getResult());
     }
 }

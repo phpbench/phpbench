@@ -27,6 +27,8 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->collectionBuilder->buildCollection(__DIR__, array(), array())->willReturn($this->collection);
         $this->executor = $this->prophesize('PhpBench\Benchmark\ExecutorInterface');
         $this->benchmark = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');
+        $this->result = $this->prophesize('PhpBench\Benchmark\IterationResult');
+
 
         $this->runner = new Runner(
             $this->collectionBuilder->reveal(),
@@ -39,8 +41,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
     /**
      * It should run the tests.
      *
-     * - With 1 iteration, 1 revolution
-     * - With 1 iteration, 4 revolutions
+     * TODO: This test does tests too much
      *
      * @dataProvider provideRunner
      */
@@ -70,7 +71,10 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         if (!$exception) {
             $this->executor->execute(Argument::type('PhpBench\Benchmark\Iteration'))
                 ->shouldBeCalledTimes(count($revs) * $iterations)
-                ->willReturn(new IterationResult(10, 10));
+                ->willReturn($this->result->reveal());
+            $this->result->getTime()->willReturn(10);
+            $this->result->getMemory()->willReturn(10);
+            $this->result->isReady()->willReturn(true);
         }
 
         $result = $this->runner->runAll(__DIR__);
@@ -93,12 +97,12 @@ EOT
         return array(
             array(
                 1,
-                array(1),
+                1,
                 array(),
                 <<<EOT
   <benchmark class="Benchmark">
     <subject name="benchFoo">
-      <variant>
+      <variant concurrency="1">
         <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
       </variant>
     </subject>
@@ -107,13 +111,12 @@ EOT
             ),
             array(
                 1,
-                array(1, 3),
+                3,
                 array(),
                 <<<EOT
   <benchmark class="Benchmark">
     <subject name="benchFoo">
-      <variant>
-        <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
+      <variant concurrency="1">
         <iteration revs="3" time="10" memory="10" deviation="0" rejection-count="0"/>
       </variant>
     </subject>
@@ -122,19 +125,15 @@ EOT
             ),
             array(
                 4,
-                array(1, 3),
+                3,
                 array(),
                 <<<EOT
   <benchmark class="Benchmark">
     <subject name="benchFoo">
-      <variant>
-        <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
+      <variant concurrency="1">
         <iteration revs="3" time="10" memory="10" deviation="0" rejection-count="0"/>
-        <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
         <iteration revs="3" time="10" memory="10" deviation="0" rejection-count="0"/>
-        <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
         <iteration revs="3" time="10" memory="10" deviation="0" rejection-count="0"/>
-        <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
         <iteration revs="3" time="10" memory="10" deviation="0" rejection-count="0"/>
       </variant>
     </subject>
@@ -143,12 +142,12 @@ EOT
             ),
             array(
                 1,
-                array(1),
+                1,
                 array('one' => 'two', 'three' => 'four'),
                 <<<EOT
   <benchmark class="Benchmark">
     <subject name="benchFoo">
-      <variant>
+      <variant concurrency="1">
         <parameter name="one" value="two"/>
         <parameter name="three" value="four"/>
         <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
@@ -159,12 +158,12 @@ EOT
             ),
             array(
                 1,
-                array(1),
+                1,
                 array('one', 'two'),
                 <<<EOT
   <benchmark class="Benchmark">
     <subject name="benchFoo">
-      <variant>
+      <variant concurrency="1">
         <parameter name="0" value="one"/>
         <parameter name="1" value="two"/>
         <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
@@ -175,12 +174,12 @@ EOT
             ),
             array(
                 1,
-                array(1),
+                1,
                 array('one' => array('three' => 'four')),
                 <<<EOT
   <benchmark class="Benchmark">
     <subject name="benchFoo">
-      <variant>
+      <variant concurrency="1">
         <parameter name="one" type="collection">
           <parameter name="three" value="four"/>
         </parameter>
@@ -192,7 +191,7 @@ EOT
             ),
             array(
                 1,
-                array(1),
+                1,
                 array('one' => array('three' => new \stdClass())),
                 '',
                 array('InvalidArgumentException', 'Parameters must be either scalars or arrays, got: stdClass'),
@@ -255,6 +254,7 @@ EOT
             'revs' => 1,
             'notApplicable' => false,
             'skip' => false,
+            'concurrencies' => array(1),
         ), $options);
 
         $subject->getIterations()->willReturn($options['iterations']);
@@ -265,6 +265,7 @@ EOT
         $subject->getGroups()->willReturn($options['groups']);
         $subject->getRevs()->willReturn($options['revs']);
         $subject->getSkip()->willReturn($options['skip']);
+        $subject->getConcurrencies()->willReturn($options['concurrencies']);
     }
 }
 

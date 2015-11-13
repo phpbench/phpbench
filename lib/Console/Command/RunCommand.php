@@ -72,7 +72,7 @@ EOT
         $this->addOption('revs', null, InputOption::VALUE_REQUIRED, 'Override number of revs (revolutions) on (all) benchmarks');
         $this->addOption('progress', 'l', InputOption::VALUE_REQUIRED, 'Progress logger to use, one of <comment>dots</comment>, <comment>classdots</comment>');
         $this->addOption('retry-threshold', 'r', InputOption::VALUE_REQUIRED, 'Set target allowable deviation', null);
-        $this->addOption('concurrency', null, InputOption::VALUE_REQUIRED, 'Number of concurrent processes', null);
+        $this->addOption('concurrency', 'c', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Number of concurrent processes', null);
 
         // this option is parsed before the container is compiled.
         $this->addOption('bootstrap', 'b', InputOption::VALUE_REQUIRED, 'Set or override the bootstrap file.');
@@ -95,7 +95,7 @@ EOT
         $progressLoggerName = $input->getOption('progress') ?: $this->progressLoggerName;
         $inputPath = $input->getArgument('path');
         $retryThreshold = $input->getOption('retry-threshold');
-        $concurrency = $input->getOption('concurrency');
+        $concurrencies = $input->getOption('concurrency');
 
         $path = $inputPath ?: $this->benchPath;
 
@@ -135,7 +135,7 @@ EOT
         $startTime = microtime(true);
 
         // TODO: Just pass the InputInterface instance..
-        $suiteResult = $this->executeBenchmarks($path, $filters, $groups, $parameters, $iterations, $revs, $configPath, $retryThreshold, $concurrency, $progressLogger);
+        $suiteResult = $this->executeBenchmarks($path, $filters, $groups, $parameters, $iterations, $revs, $configPath, $retryThreshold, $concurrencies, $progressLogger);
         $consoleOutput->writeln('');
 
         $consoleOutput->writeln(sprintf(
@@ -170,7 +170,7 @@ EOT
         $revs,
         $configPath,
         $retryThreshold,
-        $concurrency,
+        $concurrencies,
         LoggerInterface $progressLogger = null
     ) {
         if ($progressLogger) {
@@ -189,8 +189,8 @@ EOT
             $this->runner->overrideRevs($revs);
         }
 
-        if ($concurrency) {
-            $this->runner->overrideConcurrency($concurrency);
+        if ($concurrencies) {
+            $this->runner->overrideConcurrencies($concurrencies);
         }
 
         if ($filters) {
