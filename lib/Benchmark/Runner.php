@@ -162,13 +162,21 @@ class Runner
     /**
      * Run all benchmarks (or all applicable benchmarks) in the given path.
      *
-     * @param string
+     * The $name argument will set the "name" attribute on the "suite" element.
+     *
+     * @param string $contextName
+     * @param string $path
      */
-    public function runAll($path)
+    public function runAll($contextName, $path)
     {
         $dom = new SuiteDocument();
-        $suiteEl = $dom->createElement('phpbench');
-        $suiteEl->setAttribute('version', PhpBench::VERSION);
+        $rootEl = $dom->createElement('phpbench');
+        $rootEl->setAttribute('version', PhpBench::VERSION);
+        $suiteEl = $rootEl->appendElement('suite');
+
+        $suiteEl->setAttribute('context', $contextName);
+
+        $suiteEl->setAttribute('date', date('c'));
 
         if ($this->retryThreshold) {
             $suiteEl->setAttribute('retry-threshold', $this->retryThreshold);
@@ -188,7 +196,7 @@ class Runner
             $suiteEl->appendChild($benchmarkEl);
         }
 
-        $dom->appendChild($suiteEl);
+        $dom->appendChild($rootEl);
 
         return $dom;
     }

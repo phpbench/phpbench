@@ -76,6 +76,7 @@ EOT
         // this option is parsed before the container is compiled.
         $this->addOption('bootstrap', 'b', InputOption::VALUE_REQUIRED, 'Set or override the bootstrap file.');
         $this->addOption('sleep', null, InputOption::VALUE_REQUIRED, 'Number of microseconds to sleep between iterations');
+        $this->addOption('context', null, InputOption::VALUE_REQUIRED, 'Context label to apply to the suite result (useful when comparing reports)');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
@@ -109,6 +110,8 @@ EOT
             );
         }
 
+        $contextName = $input->getOption('context');
+
         $parameters = array();
         if ($parametersJson) {
             $parameters = json_decode($parametersJson, true);
@@ -135,7 +138,7 @@ EOT
 
         $consoleOutput->writeln('');
         $startTime = microtime(true);
-        $suiteResult = $this->executeBenchmarks($path, $filters, $groups, $parameters, $iterations, $revs, $configPath, $retryThreshold, $sleep, $progressLogger);
+        $suiteResult = $this->executeBenchmarks($contextName, $path, $filters, $groups, $parameters, $iterations, $revs, $configPath, $retryThreshold, $sleep, $progressLogger);
         $consoleOutput->writeln('');
 
         $consoleOutput->writeln(sprintf(
@@ -147,7 +150,7 @@ EOT
         ));
 
         if ($dumpfile) {
-            $xml = $suiteResult->saveXml();
+            $xml = $suiteResult->dump();
             file_put_contents($dumpfile, $xml);
             $consoleOutput->writeln('Dumped result to ' . $dumpfile);
         }
@@ -155,7 +158,7 @@ EOT
         $consoleOutput->writeln('');
 
         if ($dump) {
-            $xml = $suiteResult->saveXml();
+            $xml = $suiteResult->dump();
             $output->write($xml);
         } elseif ($reportNames) {
             $this->reportManager->renderReports($output, $suiteResult, $reportNames, $outputNames);
@@ -163,6 +166,7 @@ EOT
     }
 
     private function executeBenchmarks(
+        $contextName,
         $path,
         array $filters,
         array $groups,
@@ -210,6 +214,6 @@ EOT
             $this->runner->setRetryThreshold($retryThreshold);
         }
 
-        return $this->runner->runAll($path);
+        return $this->runner->runAll($contextName, $path);
     }
 }

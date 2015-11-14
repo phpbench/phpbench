@@ -11,6 +11,11 @@
 
 namespace PhpBench\Tests\System;
 
+/**
+ * Result set generated with:.
+ *
+ * ./bin/phpbench run examples/HashBench.php --filter=benchMd5 --report=aggregate --dump-file=tests/System/results/report2.xml --iterations=2
+ */
 class ReportOutputTest extends SystemTestCase
 {
     /**
@@ -19,7 +24,7 @@ class ReportOutputTest extends SystemTestCase
     public function testOutputHtml()
     {
         $process = $this->phpbench(
-            'report report.xml --report=default --output=\'{"extends": "html", "file": "report.html"}\''
+            'report --file=results/report1.xml --report=default --output=\'{"extends": "html", "file": "report.html"}\''
         );
 
         $this->assertExitCode(0, $process);
@@ -33,7 +38,7 @@ class ReportOutputTest extends SystemTestCase
     public function testOutputMarkdown()
     {
         $process = $this->phpbench(
-            'report report.xml --report=default --output=\'{"extends": "markdown", "file": "markdown.md"}\''
+            'report --file=results/report1.xml --report=default --output=\'{"extends": "markdown", "file": "markdown.md"}\''
         );
 
         $this->assertExitCode(0, $process);
@@ -47,7 +52,7 @@ class ReportOutputTest extends SystemTestCase
     public function testOutputDelimited()
     {
         $process = $this->phpbench(
-            'report report.xml --output=\'{"extends": "delimited", "file": "delimited"}\' --report=plain'
+            'report --file=results/report1.xml --output=\'{"extends": "delimited", "file": "delimited"}\' --report=plain'
         );
 
         $this->assertExitCode(0, $process);

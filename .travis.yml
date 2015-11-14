@@ -15,10 +15,12 @@ cache:
 
 before_script:
   - composer update ${COMPOSER_FLAGS} --prefer-dist
+  # avoid timezone warnings
+  - export TZ=Europe/Paris
 
 script: 
   - phpunit
-  - php bin/phpbench run --config=examples/phpbench.json --dump-file=dump.xml --report=all --output=console --output=html_example --output=markdown
+  - php bin/phpbench run --config=examples/phpbench.json
 
 matrix:
     include:

@@ -89,3 +89,65 @@ function join_node_values($delimiter, $list)
 
     return implode($delimiter, $els);
 }
+
+/**
+ * Return a list of nodes which correspond to the given node list in the suite
+ * with the given context name.
+ *
+ * @param \DOMNodeList $nodeList
+ * @param string $suiteContext
+ */
+function suite($nodeList, $suiteContext)
+{
+    if (!$nodeList) {
+        return;
+    }
+
+    $nodeList = _nodelist_to_array($nodeList);
+    $ownerDocument = $nodeList[0]->ownerDocument;
+
+    $xpath = new \DOMXPath($ownerDocument);
+    $fragment = $ownerDocument->createDocumentFragment();
+
+    foreach ($nodeList as $node) {
+        $path = $node->getNodePath();
+
+        $parts = explode('/', $path);
+        $path = implode('/', array_slice($parts, 3, count($parts)));
+
+        $path = '//suite[@context="' . $suiteContext .'"]/' . $path;
+        $items = $xpath->query($path);
+
+        if ($items->length === 0) {
+            continue;
+        }
+
+        $fragment->appendChild($items->item(0)->cloneNode(true));
+    }
+
+    return $fragment;
+}
+
+/**
+ * Convert a node list object into an array of nodes.
+ */
+function _nodelist_to_array($nodeList)
+{
+    if (is_array($nodeList)) {
+        return $nodeList;
+    }
+
+    if (!$nodeList instanceof \DOMNodeList) {
+        throw new \InvalidArgumentException(sprintf(
+            'Expected array or \DOMNodeList, got "%s"',
+            is_object($nodeList) ? get_class($nodeList) : gettype($nodeList)
+        ));
+    }
+
+    $nodes = array();
+    foreach ($nodeList as $node) {
+        $nodes[] = $node;
+    }
+
+    return $nodes;
+}

@@ -54,7 +54,14 @@ class SystemTestCase extends \PHPUnit_Framework_TestCase
     protected function assertXPathCount($count, $xmlString, $query)
     {
         $dom = new \DOMDocument();
-        $dom->loadXml($xmlString);
+        $result = @$dom->loadXml($xmlString);
+
+        if (false === $result) {
+            throw new \RuntimeException(sprintf(
+                'Could not load XML "%s"', $xmlString
+            ));
+        }
+
         $xpath = new \DOMXPath($dom);
         $dom->formatOutput = true;
         $nodeList = $xpath->query($query);

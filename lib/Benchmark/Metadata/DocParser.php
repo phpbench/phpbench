@@ -39,7 +39,7 @@ class DocParser
         'Required' => true,
         'Target' => true,
         // Widely used tags (but not existent in phpdoc)
-        'fix' => true , 'fixme' => true,
+        'fix' => true, 'fixme' => true,
         'override' => true,
         // PHPDocumentor 1 tags
         'abstract' => true, 'access' => true,

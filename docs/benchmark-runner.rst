@@ -164,7 +164,37 @@ You can then generate reports using the ``report`` command:
 
 .. code-block:: bash
 
-    $ phpbench report report.xml --report=default
+    $ phpbench report --file=report.xml --report=default
+
+Comparing Results
+-----------------
+
+You can compare the results of two or more sets of results using the `compare`
+report.
+
+First you should generate a suite result document for each separate
+implementation and specify a *context*:
+
+.. code-block:: bash
+
+    $ # .. configure for implementation A
+    $ phpbench run --context="Impl. A" --dump-file=impl-a.xml
+    $ # .. configure for implementation B
+    $ phpbench run --context="Impl. B" --dump-file=impl-b.xml
+    $ # .. configure for implementation C
+    $ phpbench run --context="Impl. C" --dump-file=impl-c.xml
+
+Now you can use the `report` command and specify the `compare` report to
+compare the results for each implementation side-by-side:
+
+.. code-block:: bash
+
+    $ phpbench report --file=impl-a.xml --file=impl-b.xml --file=impl-c.xml --report=compare
+    +---------+------------------+----------+---------+--------+-----------+-----------+-----------+
+    | context | benchmark        | subject  | group   | params | t:Impl. A | t:Impl. C | t:Impl. B |
+    +---------+------------------+----------+---------+--------+-----------+-----------+-----------+
+    | Impl. A | HashingBenchmark | benchMd5 | hashing | []     | 2.4448μs  | 4.3039μs  | 1.5003μs  |
+    +---------+------------------+----------+---------+--------+-----------+-----------+-----------+
 
 Progress Reporters
 ------------------

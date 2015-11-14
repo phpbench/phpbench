@@ -19,11 +19,11 @@ class ReportTest extends SystemTestCase
     public function testGenerateReport()
     {
         $process = $this->phpbench(
-            'report report.xml --report=default'
+            'report --file=results/report1.xml --report=default'
         );
         $this->assertEquals(0, $process->getExitCode());
         $output = $process->getOutput();
-        $this->assertContains('benchParameterized', $output);
+        $this->assertContains('benchMd5', $output);
     }
 
     /**
@@ -31,7 +31,7 @@ class ReportTest extends SystemTestCase
      */
     public function testNoReports()
     {
-        $process = $this->phpbench('report report.xml');
+        $process = $this->phpbench('report --file=results/report1.xml');
         $this->assertExitCode(1, $process);
         $this->assertContains('You must specify or con', $process->getOutput());
     }
@@ -53,7 +53,7 @@ class ReportTest extends SystemTestCase
     public function testOutputs($output)
     {
         $process = $this->phpbench(
-            'report report.xml --output=' . $output . ' --report=default'
+            'report --file=results/report1.xml --output=' . $output . ' --report=default'
         );
 
         $this->assertExitCode(0, $process);
