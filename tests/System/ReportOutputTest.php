@@ -19,20 +19,12 @@ class ReportOutputTest extends SystemTestCase
     public function testOutputHtml()
     {
         $process = $this->phpbench(
-            'report report.xml --report=default --output=html'
+            'report report.xml --report=default --output=\'{"extends": "html", "file": "report.html"}\''
         );
 
         $this->assertExitCode(0, $process);
         $output = $process->getOutput();
-        $lines = explode("\n", $output);
-        array_pop($lines);
-        $generatedFilename = array_pop($lines);
-        $this->assertFileExists($generatedFilename);
-        $this->assertContains(
-            file_get_contents(__DIR__ . '/output/html.html'),
-            file_get_contents($generatedFilename)
-        );
-        unlink($generatedFilename);
+        $this->assertGeneratedContents($output, 'html.html');
     }
 
     /**
@@ -41,17 +33,36 @@ class ReportOutputTest extends SystemTestCase
     public function testOutputMarkdown()
     {
         $process = $this->phpbench(
-            'report report.xml --output=markdown --report=default'
+            'report report.xml --report=default --output=\'{"extends": "markdown", "file": "markdown.md"}\''
         );
 
         $this->assertExitCode(0, $process);
         $output = $process->getOutput();
+        $this->assertGeneratedContents($output, 'markdown.md');
+    }
+
+    /**
+     * It should generate a delimited tab output.
+     */
+    public function testOutputDelimited()
+    {
+        $process = $this->phpbench(
+            'report report.xml --output=\'{"extends": "delimited", "file": "delimited"}\' --report=plain'
+        );
+
+        $this->assertExitCode(0, $process);
+        $output = $process->getOutput();
+        $this->assertGeneratedContents($output, 'delimited');
+    }
+
+    private function assertGeneratedContents($output, $name)
+    {
         $lines = explode("\n", $output);
         array_pop($lines);
         $generatedFilename = array_pop($lines);
         $this->assertFileExists($generatedFilename);
-        $this->assertEquals(
-            file_get_contents(trim(__DIR__ . '/output/markdown.md')),
+        $this->assertContains(
+            file_get_contents(trim(__DIR__ . '/output/' . $name)),
             file_get_contents(trim($generatedFilename))
         );
         unlink($generatedFilename);

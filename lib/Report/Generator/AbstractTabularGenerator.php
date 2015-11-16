@@ -50,6 +50,12 @@ abstract class AbstractTabularGenerator implements GeneratorInterface, OutputAwa
             );
         }
 
+        if (array_key_exists('formatting', $config) && $config['formatting'] === false) {
+            foreach ($definition['classes'] as &$class) {
+                $class = array();
+            }
+        }
+
         $tableDom = $this->tabular->tabulate($document, $definition, $parameters);
 
         if ($config['exclude']) {

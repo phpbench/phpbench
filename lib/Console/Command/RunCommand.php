@@ -96,6 +96,7 @@ EOT
         $inputPath = $input->getArgument('path');
         $retryThreshold = $input->getOption('retry-threshold');
         $sleep = $input->getOption('sleep');
+        $quiet = $input->getOption('quiet');
 
         $path = $inputPath ?: $this->benchPath;
 
@@ -118,8 +119,9 @@ EOT
             }
         }
 
-        if ($dump) {
+        if ($dump || $quiet) {
             $consoleOutput = new NullOutput();
+            $output->setVerbosity(OutputInterface::VERBOSITY_NORMAL);
         }
 
         $consoleOutput->writeln('PhpBench ' . PhpBench::VERSION . '. Running benchmarks.');
@@ -156,7 +158,7 @@ EOT
             $xml = $suiteResult->saveXml();
             $output->write($xml);
         } elseif ($reportNames) {
-            $this->reportManager->renderReports($consoleOutput, $suiteResult, $reportNames, $outputNames);
+            $this->reportManager->renderReports($output, $suiteResult, $reportNames, $outputNames);
         }
     }
 

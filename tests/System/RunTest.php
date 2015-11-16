@@ -132,7 +132,7 @@ class RunTest extends SystemTestCase
     public function testDumpXmlStdOut()
     {
         $process = $this->phpbench(
-            'run --dump benchmarks/set1/BenchmarkBench.php'
+            'run --dump --quiet benchmarks/set1/BenchmarkBench.php'
         );
         $this->assertExitCode(0, $process);
         $output = $process->getOutput();
@@ -283,12 +283,6 @@ class RunTest extends SystemTestCase
         );
 
         $this->assertExitCode(0, $process);
-        $output = $process->getOutput();
-        $lines = explode("\n", $output);
-        array_pop($lines);
-        $generatedFilename = array_pop($lines);
-        $this->assertFileExists($generatedFilename);
-        unlink($generatedFilename);
     }
 
     public function provideOutputs()

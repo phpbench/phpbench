@@ -49,6 +49,24 @@ Default outputs:
 - ``html``: Render the report as a single HTML page.
 - ``markdown``: Render the report as a `GitHub Flavored Markdown`_ document.
 
+``delimited``
+-------------
+
+The delimited renderer outputs the report as a delimited value list (for
+example a tab seperated list of values). Such data can be easily imported into
+applications such as GNUPlot_.
+
+Class: ``PhpBench\Report\Renderer\DelimitedRenderer``.
+
+Options:
+
+- **delimiter**: *(string)*: Path to the output file (existing files will be
+  overwritten).
+
+Default outputs:
+
+- ``delimiter``: The delimiter to use.
+
 ``debug``
 ---------
 
@@ -63,3 +81,4 @@ Default outputs:
 - ``debug``: Outputs the report document's XML.
 
 .. _GitHub Flavored Markdown: https://help.github.com/articles/github-flavored-markdown: 
+.. _GNUPlot: http://www.gnuplot.info/

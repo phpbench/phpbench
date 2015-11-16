@@ -101,6 +101,12 @@ configure reports.
 
 The ``--report`` option can be specified multiple times.
 
+.. note::
+
+    If you want to suppress all other output and only show the output from the
+    reports you can use the ``--quiet`` option. This is especially useful when
+    piping a report to another program.
+
 .. _retry_threshold:
 
 Retry Threshold

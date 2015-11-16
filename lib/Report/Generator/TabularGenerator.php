@@ -83,6 +83,12 @@ class TabularGenerator extends AbstractTabularGenerator
                         array('type' => 'null'),
                     ),
                 ),
+                'formatting' => array(
+                    'type' => 'boolean',
+                ),
+                'body_only' => array(
+                    'type' => 'boolean',
+                ),
             ),
         );
     }
@@ -119,7 +125,15 @@ class TabularGenerator extends AbstractTabularGenerator
             $parameters['selector'] = $config['selector'];
         }
 
-        return $this->doGenerate($definition, $document, $config, $parameters);
+        $result = $this->doGenerate($definition, $document, $config, $parameters);
+
+        if (true === $config['body_only']) {
+            foreach ($result->xpath()->query('//group[@name!="body"]') as $group) {
+                $group->parentNode->removeChild($group);
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -133,6 +147,11 @@ class TabularGenerator extends AbstractTabularGenerator
             ),
             'default' => array(
                 'aggregate' => false,
+            ),
+            'plain' => array(
+                'aggregate' => false,
+                'formatting' => false,
+                'body_only' => true,
             ),
         );
     }
@@ -152,6 +171,7 @@ class TabularGenerator extends AbstractTabularGenerator
             'aggregate' => false,
             'selector' => null,
             'sort' => array(),
+            'body_only' => false,
         );
     }
 
