@@ -75,6 +75,7 @@ EOT
 
         // this option is parsed before the container is compiled.
         $this->addOption('bootstrap', 'b', InputOption::VALUE_REQUIRED, 'Set or override the bootstrap file.');
+        $this->addOption('sleep', null, InputOption::VALUE_REQUIRED, 'Number of microseconds to sleep between iterations');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
@@ -94,6 +95,7 @@ EOT
         $progressLoggerName = $input->getOption('progress') ?: $this->progressLoggerName;
         $inputPath = $input->getArgument('path');
         $retryThreshold = $input->getOption('retry-threshold');
+        $sleep = $input->getOption('sleep');
 
         $path = $inputPath ?: $this->benchPath;
 
@@ -131,13 +133,14 @@ EOT
 
         $consoleOutput->writeln('');
         $startTime = microtime(true);
-        $suiteResult = $this->executeBenchmarks($path, $filters, $groups, $parameters, $iterations, $revs, $configPath, $retryThreshold, $progressLogger);
+        $suiteResult = $this->executeBenchmarks($path, $filters, $groups, $parameters, $iterations, $revs, $configPath, $retryThreshold, $sleep, $progressLogger);
         $consoleOutput->writeln('');
 
         $consoleOutput->writeln(sprintf(
-            '<greenbg>Done (%s subjects, %s iterations) in %ss</greenbg>',
+            '<greenbg>Done (%s subjects, %s iterations, %s rejects) in %ss</greenbg>',
             $suiteResult->getNbSubjects(),
             $suiteResult->getNbIterations(),
+            $suiteResult->getNbRejects(),
             number_format(microtime(true) - $startTime, 2)
         ));
 
@@ -166,6 +169,7 @@ EOT
         $revs,
         $configPath,
         $retryThreshold,
+        $sleep,
         LoggerInterface $progressLogger = null
     ) {
         if ($progressLogger) {
@@ -190,6 +194,10 @@ EOT
 
         if ($parameters) {
             $this->runner->overrideParameters($parameters);
+        }
+
+        if (null !== $sleep) {
+            $this->runner->overrideSleep($sleep);
         }
 
         if ($groups) {

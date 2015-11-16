@@ -29,6 +29,7 @@ class Runner
     private $executorOverride;
     private $configPath;
     private $parametersOverride;
+    private $sleepOverride;
     private $filters = array();
     private $groups = array();
     private $executor;
@@ -105,6 +106,16 @@ class Runner
     public function overrideExecutor($executor)
     {
         $this->executorOverride = $executor;
+    }
+
+    /**
+     * Override the sleep interval (in microseconds).
+     *
+     * @param int $sleep
+     */
+    public function overrideSleep($sleep)
+    {
+        return $this->sleepOverride = $sleep;
     }
 
     /**
@@ -208,6 +219,7 @@ class Runner
 
         foreach ($paramsIterator as $parameters) {
             $variantEl = $subjectEl->ownerDocument->createElement('variant');
+            $variantEl->setAttribute('sleep', $subject->getSleep());
             foreach ($parameters as $name => $value) {
                 $parameterEl = $this->createParameter($subjectEl, $name, $value);
                 $variantEl->appendChild($parameterEl);
@@ -251,7 +263,8 @@ class Runner
         for ($index = 0; $index < $iterationCount; $index++) {
             foreach ($revolutionCounts as $revolutionCount) {
                 $iteration = new Iteration($index, $subject, $revolutionCount, $parameterSet);
-                $this->runIteration($iteration);
+                $this->runIteration($iteration, $subject->getSleep());
+
                 $iterationCollection->add($iteration);
             }
         }
@@ -262,7 +275,7 @@ class Runner
             $this->logger->retryStart($iterationCollection->getRejectCount());
             foreach ($iterationCollection->getRejects() as $reject) {
                 $reject->incrementRejectionCount();
-                $this->runIteration($reject);
+                $this->runIteration($reject, $subject->getSleep());
             }
             $iterationCollection->computeDeviations();
         }
@@ -278,10 +291,17 @@ class Runner
         }
     }
 
-    public function runIteration(Iteration $iteration)
+    public function runIteration(Iteration $iteration, $sleep)
     {
         $this->logger->iterationStart($iteration);
         $result = $this->executor->execute($iteration);
+
+        $sleep = null !== $this->sleepOverride ? $this->sleepOverride : $sleep;
+
+        if ($sleep) {
+            usleep($sleep);
+        }
+
         $iteration->setResult($result);
         $this->logger->iterationEnd($iteration);
     }

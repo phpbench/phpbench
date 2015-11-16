@@ -98,7 +98,7 @@ EOT
                 <<<EOT
   <benchmark class="Benchmark">
     <subject name="benchFoo">
-      <variant>
+      <variant sleep="0">
         <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
       </variant>
     </subject>
@@ -112,7 +112,7 @@ EOT
                 <<<EOT
   <benchmark class="Benchmark">
     <subject name="benchFoo">
-      <variant>
+      <variant sleep="0">
         <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
         <iteration revs="3" time="10" memory="10" deviation="0" rejection-count="0"/>
       </variant>
@@ -127,7 +127,7 @@ EOT
                 <<<EOT
   <benchmark class="Benchmark">
     <subject name="benchFoo">
-      <variant>
+      <variant sleep="0">
         <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
         <iteration revs="3" time="10" memory="10" deviation="0" rejection-count="0"/>
         <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
@@ -148,7 +148,7 @@ EOT
                 <<<EOT
   <benchmark class="Benchmark">
     <subject name="benchFoo">
-      <variant>
+      <variant sleep="0">
         <parameter name="one" value="two"/>
         <parameter name="three" value="four"/>
         <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
@@ -164,7 +164,7 @@ EOT
                 <<<EOT
   <benchmark class="Benchmark">
     <subject name="benchFoo">
-      <variant>
+      <variant sleep="0">
         <parameter name="0" value="one"/>
         <parameter name="1" value="two"/>
         <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
@@ -180,7 +180,7 @@ EOT
                 <<<EOT
   <benchmark class="Benchmark">
     <subject name="benchFoo">
-      <variant>
+      <variant sleep="0">
         <parameter name="one" type="collection">
           <parameter name="three" value="four"/>
         </parameter>
@@ -243,6 +243,46 @@ EOT
         $this->runner->setRetryThreshold('asd');
     }
 
+    /**
+     * It should set the sleep attribute in the DOM.
+     */
+    public function testSleep()
+    {
+        $this->collection->getBenchmarks()->willReturn(array(
+            $this->benchmark,
+        ));
+        $this->configureSubject($this->subject, array(
+            'sleep' => 50,
+        ));
+        $this->benchmark->getSubjectMetadatas()->willReturn(array(
+            $this->subject->reveal(),
+        ));
+        $this->benchmark->getClass()->willReturn('Benchmark');
+        $this->executor->execute(Argument::type('PhpBench\Benchmark\Iteration'))
+            ->shouldBeCalledTimes(1)
+            ->willReturn(new IterationResult(10, 10));
+
+        $result = $this->runner->runAll(__DIR__);
+
+        $this->assertInstanceOf('PhpBench\Benchmark\SuiteDocument', $result);
+        $this->assertEquals(
+            trim(sprintf(<<<EOT
+<?xml version="1.0"?>
+<phpbench version="%s">
+  <benchmark class="Benchmark">
+    <subject name="benchFoo">
+      <variant sleep="50">
+        <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
+      </variant>
+    </subject>
+  </benchmark>
+</phpbench>
+EOT
+            , PhpBench::VERSION)),
+            trim($result->saveXml())
+        );
+    }
+
     private function configureSubject($subject, array $options)
     {
         $options = array_merge(array(
@@ -255,9 +295,11 @@ EOT
             'revs' => 1,
             'notApplicable' => false,
             'skip' => false,
+            'sleep' => 0,
         ), $options);
 
         $subject->getIterations()->willReturn($options['iterations']);
+        $subject->getSleep()->willReturn($options['sleep']);
         $subject->getName()->willReturn($options['name']);
         $subject->getBeforeMethods()->willReturn($options['beforeMethods']);
         $subject->getAfterMethods()->willReturn($options['afterMethods']);
