@@ -283,6 +283,47 @@ EOT
         );
     }
 
+    /**
+     * It should serialize the retry threshold.
+     */
+    public function testRetryThreshold()
+    {
+        $this->collection->getBenchmarks()->willReturn(array(
+            $this->benchmark,
+        ));
+        $this->configureSubject($this->subject, array(
+            'sleep' => 50,
+        ));
+        $this->benchmark->getSubjectMetadatas()->willReturn(array(
+            $this->subject->reveal(),
+        ));
+        $this->benchmark->getClass()->willReturn('Benchmark');
+        $this->executor->execute(Argument::type('PhpBench\Benchmark\Iteration'))
+            ->shouldBeCalledTimes(1)
+            ->willReturn(new IterationResult(10, 10));
+
+        $this->runner->setRetryThreshold(10);
+        $result = $this->runner->runAll(__DIR__);
+
+        $this->assertInstanceOf('PhpBench\Benchmark\SuiteDocument', $result);
+        $this->assertEquals(
+            trim(sprintf(<<<EOT
+<?xml version="1.0"?>
+<phpbench version="%s" retry-threshold="10">
+  <benchmark class="Benchmark">
+    <subject name="benchFoo">
+      <variant sleep="50">
+        <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
+      </variant>
+    </subject>
+  </benchmark>
+</phpbench>
+EOT
+            , PhpBench::VERSION)),
+            trim($result->saveXml())
+        );
+    }
+
     private function configureSubject($subject, array $options)
     {
         $options = array_merge(array(
