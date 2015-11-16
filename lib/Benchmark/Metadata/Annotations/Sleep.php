@@ -18,17 +18,17 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
  *    @Attribute("value", required = true, type="integer")
  * })
  */
-class Iterations
+class Sleep
 {
-    private $iterations;
+    private $sleep;
 
     public function __construct($params)
     {
-        $this->iterations = (int) $params['value'];
+        $this->sleep = (int) $params['value'];
     }
 
-    public function getIterations()
+    public function getSleep()
     {
-        return $this->iterations;
+        return $this->sleep;
     }
 }

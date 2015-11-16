@@ -310,4 +310,16 @@ class RunTest extends SystemTestCase
 
         $this->assertExitCode(0, $process);
     }
+
+    /**
+     * It should set the sleep option.
+     */
+    public function testSleep()
+    {
+        $process = $this->phpbench(
+            'run benchmarks/set1/BenchmarkBench.php --sleep=5000'
+        );
+
+        $this->assertExitCode(0, $process);
+    }
 }

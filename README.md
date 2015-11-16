@@ -19,6 +19,7 @@ Features:
 - Per-project configuration.
 - Serialize results as XML and generate reports later.
 - Before and After method specification.
+- Pause (recover) between iterations
 - Nice command line interface.
 - Fully extendable.
 - Utilizes [Tabular](https://github.com/phpbench/Tabular) for creating custom

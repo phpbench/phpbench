@@ -57,6 +57,11 @@ abstract class AbstractMetadata
     private $skip = false;
 
     /**
+     * @var int
+     */
+    private $sleep = 0;
+
+    /**
      * @param mixed $class
      */
     public function __construct($class)
@@ -144,5 +149,15 @@ abstract class AbstractMetadata
     public function setSkip($skip)
     {
         $this->skip = $skip;
+    }
+
+    public function getSleep()
+    {
+        return $this->sleep;
+    }
+
+    public function setSleep($sleep)
+    {
+        $this->sleep = $sleep;
     }
 }

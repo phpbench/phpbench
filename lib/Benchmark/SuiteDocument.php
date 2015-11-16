@@ -52,4 +52,14 @@ class SuiteDocument extends Document
     {
         return (int) $this->xpath()->evaluate('count(//iteration)');
     }
+
+    /**
+     * Return the number of rejected iterations.
+     *
+     * @return int
+     */
+    public function getNbRejects()
+    {
+        return (int) $this->xpath()->evaluate('sum(//iteration/@rejection-count)');
+    }
 }

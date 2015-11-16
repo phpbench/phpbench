@@ -135,6 +135,10 @@ class AnnotationDriver implements DriverInterface
             $metadata->setIterations($annotation->getIterations());
         }
 
+        if ($annotation instanceof Annotations\Sleep) {
+            $metadata->setSleep($annotation->getSleep());
+        }
+
         if ($annotation instanceof Annotations\Groups) {
             $metadata->setGroups(
                 $this->resolveValue(
