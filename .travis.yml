@@ -18,7 +18,7 @@ before_script:
 
 script: 
   - phpunit
-  - php bin/phpbench run --config=examples/phpbench.json --dump-file=dump.xml --report=all --output=console --output=html --output=markdown
+  - php bin/phpbench run --config=examples/phpbench.json --dump-file=dump.xml --report=all --output=console --output=html_example --output=markdown
 
 matrix:
     include:

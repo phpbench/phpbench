@@ -69,9 +69,13 @@ class XsltRenderer implements RendererInterface, OutputAwareInterface
             ));
         }
 
-        file_put_contents($out, $output);
-        $this->output->writeln('Dumped XSLT report:');
-        $this->output->writeln($out);
+        if (null !== $out) {
+            file_put_contents($out, $output);
+            $this->output->writeln('Dumped XSLT report:');
+            $this->output->writeln($out);
+        } else {
+            $this->output->write($output);
+        }
     }
 
     /**
@@ -101,7 +105,7 @@ class XsltRenderer implements RendererInterface, OutputAwareInterface
                     'type' => 'string',
                 ),
                 'file' => array(
-                    'type' => 'string',
+                    'type' => ['string', 'null'],
                 ),
             ),
             'additionalProperties' => false,
@@ -116,11 +120,11 @@ class XsltRenderer implements RendererInterface, OutputAwareInterface
         return array(
             'html' => array(
                 'template' => __DIR__ . '/templates/html.xsl',
-                'file' => 'report.html',
+                'file' => null,
             ),
             'markdown' => array(
                 'template' => __DIR__ . '/templates/markdown.xsl',
-                'file' => 'report.md',
+                'file' => null,
             ),
         );
     }

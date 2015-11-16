@@ -66,6 +66,9 @@ class TabularCustomGenerator extends AbstractTabularGenerator
                 'exclude' => array(
                     'type' => 'array',
                 ),
+                'formatting' => array(
+                    'type' => 'boolean',
+                ),
             ),
         );
     }

@@ -57,12 +57,6 @@ class ReportTest extends SystemTestCase
         );
 
         $this->assertExitCode(0, $process);
-        $output = $process->getOutput();
-        $lines = explode("\n", $output);
-        array_pop($lines);
-        $generatedFilename = array_pop($lines);
-        $this->assertFileExists($generatedFilename);
-        unlink($generatedFilename);
     }
 
     public function provideOutputs()

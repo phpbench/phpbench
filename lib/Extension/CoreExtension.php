@@ -31,6 +31,7 @@ use PhpBench\Report\Generator\TabularCustomGenerator;
 use PhpBench\Report\Generator\TabularGenerator;
 use PhpBench\Report\Renderer\ConsoleRenderer;
 use PhpBench\Report\Renderer\DebugRenderer;
+use PhpBench\Report\Renderer\DelimitedRenderer;
 use PhpBench\Report\Renderer\XsltRenderer;
 use PhpBench\Report\ReportManager;
 use PhpBench\Tabular\Definition\Expander;
@@ -241,6 +242,9 @@ class CoreExtension implements ExtensionInterface
         $container->register('report_renderer.debug', function (Container $container) {
             return new DebugRenderer();
         }, array('report_renderer' => array('name' => 'debug')));
+        $container->register('report_renderer.delimited', function (Container $container) {
+            return new DelimitedRenderer();
+        }, array('report_renderer' => array('name' => 'delimited')));
     }
 
     private function registerTabular(Container $container)
