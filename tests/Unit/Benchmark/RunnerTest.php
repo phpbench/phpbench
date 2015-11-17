@@ -245,6 +245,7 @@ EOT
 
     /**
      * It should set the sleep attribute in the DOM.
+     * It should allow the sleep value to be overridden
      */
     public function testSleep()
     {
@@ -259,7 +260,7 @@ EOT
         ));
         $this->benchmark->getClass()->willReturn('Benchmark');
         $this->executor->execute(Argument::type('PhpBench\Benchmark\Iteration'))
-            ->shouldBeCalledTimes(1)
+            ->shouldBeCalledTimes(2)
             ->willReturn(new IterationResult(10, 10));
 
         $result = $this->runner->runAll(__DIR__);
@@ -272,6 +273,25 @@ EOT
   <benchmark class="Benchmark">
     <subject name="benchFoo">
       <variant sleep="50">
+        <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
+      </variant>
+    </subject>
+  </benchmark>
+</phpbench>
+EOT
+            , PhpBench::VERSION)),
+            trim($result->saveXml())
+        );
+
+        $this->runner->overrideSleep(100);
+        $result = $this->runner->runAll(__DIR__);
+        $this->assertEquals(
+            trim(sprintf(<<<EOT
+<?xml version="1.0"?>
+<phpbench version="%s">
+  <benchmark class="Benchmark">
+    <subject name="benchFoo">
+      <variant sleep="100">
         <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
       </variant>
     </subject>

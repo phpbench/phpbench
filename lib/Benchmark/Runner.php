@@ -223,7 +223,7 @@ class Runner
 
         foreach ($paramsIterator as $parameters) {
             $variantEl = $subjectEl->ownerDocument->createElement('variant');
-            $variantEl->setAttribute('sleep', $subject->getSleep());
+            $variantEl->setAttribute('sleep', $this->getSleepInterval($subject->getSleep()));
             foreach ($parameters as $name => $value) {
                 $parameterEl = $this->createParameter($subjectEl, $name, $value);
                 $variantEl->appendChild($parameterEl);
@@ -299,8 +299,7 @@ class Runner
     {
         $this->logger->iterationStart($iteration);
         $result = $this->executor->execute($iteration);
-
-        $sleep = null !== $this->sleepOverride ? $this->sleepOverride : $sleep;
+        $sleep = $this->getSleepInterval($sleep);
 
         if ($sleep) {
             usleep($sleep);
@@ -308,5 +307,17 @@ class Runner
 
         $iteration->setResult($result);
         $this->logger->iterationEnd($iteration);
+    }
+
+    /**
+     * Utility function to return the correct sleep interval
+     * in case that the sleep interval has been overridden.
+     *
+     * @param integer $sleep
+     * @return integer
+     */
+    private function getSleepInterval($sleep)
+    {
+        return null !== $this->sleepOverride ? $this->sleepOverride : $sleep;
     }
 }
