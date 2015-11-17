@@ -170,6 +170,10 @@ class Runner
         $suiteEl = $dom->createElement('phpbench');
         $suiteEl->setAttribute('version', PhpBench::VERSION);
 
+        if ($this->retryThreshold) {
+            $suiteEl->setAttribute('retry-threshold', $this->retryThreshold);
+        }
+
         $collection = $this->collectionBuilder->buildCollection($path, $this->filters, $this->groups);
 
         /* @var BenchmarkMetadata */
