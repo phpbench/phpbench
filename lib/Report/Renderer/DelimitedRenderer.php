@@ -77,8 +77,11 @@ class DelimitedRenderer implements RendererInterface, OutputAwareInterface
         rewind($pointer);
         $this->output->write(stream_get_contents($pointer));
         fclose($pointer);
-        $this->output->writeln('Dumped delimited file:');
-        $this->output->writeln($config['file']);
+
+        if ($config['file']) {
+            $this->output->writeln('Dumped delimited file:');
+            $this->output->writeln($config['file']);
+        }
     }
 
     /**
