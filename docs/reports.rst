@@ -32,7 +32,7 @@ Columns:
 - **iter**: The :ref:`iteration <iterations>` index.
 - **rej**: Number of rejected iterations (see :ref:`retry_threshold`).
 - **time**: Time taken to execute a single iteration in microseconds_
-- **memory**: Memory used, in bytes.
+- **memory**: Memory used by iteration (as reported by memory_get_peak_usage_, in bytes.
 - **deviation**: Deviation from the mean as a percentage (when multiple
   benchmarks / iterations are displayed).
 
@@ -68,9 +68,10 @@ Columns:
 - **iters**: Number of :ref:`iterations <iterations>` performed.
 - **rej**: Number of rejected iterations (see :ref:`retry_threshold`).
 - **time**: Average time taken for each iteration.
-- **memory**: Average memory used.
+- **memory**: Average memory used by iteration.
 - **deviation**: Deviation from the mean as a percentage (when multiple
   benchmarks).
 - **stability**: How much the time of the individual iterations differed.
 
 .. _microseconds: https://en.wikipedia.org/wiki/Microseconds
+.. _memory_get_peak_usage: http://php.net/manual/en/function.memory-get-peak-usage.php

@@ -245,7 +245,7 @@ EOT
 
     /**
      * It should set the sleep attribute in the DOM.
-     * It should allow the sleep value to be overridden
+     * It should allow the sleep value to be overridden.
      */
     public function testSleep()
     {

@@ -30,7 +30,6 @@ foreach ($beforeMethods as $beforeMethod) {
 // the calltime, so we explicitly do one thing or the other depending on if parameters
 // are provided.
 if ($parameters) {
-    $startMemory = memory_get_usage();
     $startTime = microtime(true);
 
     for ($i = 0; $i < $revolutions; $i++) {
@@ -38,9 +37,7 @@ if ($parameters) {
     }
 
     $endTime = microtime(true);
-    $endMemory = memory_get_usage();
 } else {
-    $startMemory = memory_get_usage();
     $startTime = microtime(true);
 
     for ($i = 0; $i < $revolutions; $i++) {
@@ -48,7 +45,6 @@ if ($parameters) {
     }
 
     $endTime = microtime(true);
-    $endMemory = memory_get_usage();
 }
 
 foreach ($afterMethods as $afterMethod) {
@@ -56,7 +52,7 @@ foreach ($afterMethods as $afterMethod) {
 }
 
 echo json_encode(array(
-    'memory' => $endMemory - $startMemory,
+    'memory' => memory_get_peak_usage(),
     'time' => ($endTime * 1000000) - ($startTime * 1000000),
 ));
 
