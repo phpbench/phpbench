@@ -57,6 +57,13 @@ class MicrotimeExecutor implements ExecutorInterface
         $payload = $this->launcher->payload(__DIR__ . '/template/microtime.template', $tokens);
         $result = $payload->launch();
 
+        if (isset($result['buffer']) && $result['buffer']) {
+            throw new \RuntimeException(sprintf(
+                'Benchmark made some noise: %s',
+                $result['buffer']
+            ));
+        }
+
         return new IterationResult($result['time'], $result['memory']);
     }
 

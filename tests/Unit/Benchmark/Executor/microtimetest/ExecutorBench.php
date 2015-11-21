@@ -23,6 +23,12 @@ class ExecutorBench
         file_put_contents(__DIR__ . '/after_method.tmp', 'After method executed');
     }
 
+    public function benchOutput()
+    {
+        // PHPBench should not crash if the user outputs something in their benchmark.
+        echo 'Hello World';
+    }
+
     public function doSomething()
     {
         static $count = 0;

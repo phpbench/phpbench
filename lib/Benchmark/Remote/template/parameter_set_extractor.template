@@ -16,9 +16,14 @@ $paramProviders = {{ paramProviders }};
 $benchmark = new $class();
 $parameterSets = array();
 
+// don't let the user benchmark output anything
+ob_start();
+
 foreach ($paramProviders as $paramProvider) {
     $parameterSets[] = $benchmark->$paramProvider();
 }
+
+ob_end_clean();
 
 echo json_encode($parameterSets);
 exit(0);

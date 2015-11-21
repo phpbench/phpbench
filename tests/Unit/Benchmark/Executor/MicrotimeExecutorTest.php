@@ -98,6 +98,26 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * It should prevent output from the benchmarking class.
+     *
+     * @expectedException RuntimeException
+     * @expectedException Benchmark made some noise
+     */
+    public function testRepressOutput()
+    {
+        $this->subject->getBeforeMethods()->willReturn(array());
+        $this->subject->getAfterMethods()->willReturn(array());
+        $this->subject->getName()->willReturn('benchOutput');
+        $this->iteration->getSubject()->willReturn($this->subject);
+        $this->iteration->getRevolutions()->willReturn(10);
+        $this->iteration->getParameters()->willReturn(new ParameterSet());
+
+        $result = $this->executor->execute($this->iteration->reveal());
+
+        $this->assertInstanceOf('PhpBench\Benchmark\IterationResult', $result);
+    }
+
+    /**
      * It should execute methods before the benchmark subject.
      */
     public function testExecuteBefore()
