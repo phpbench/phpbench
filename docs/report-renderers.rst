@@ -62,6 +62,7 @@ Options:
 
 - **delimiter**: *(string)*: Path to the output file (existing files will be
   overwritten).
+- **header**: *(boolean)*: If a header should be included in the output.
 
 Default outputs:
 

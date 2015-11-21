@@ -26,3 +26,5 @@ matrix:
     include:
         - php: 5.4
           env: COMPOSER_FLAGS="--prefer-lowest"
+    allow_failures:
+        - php: 7.0

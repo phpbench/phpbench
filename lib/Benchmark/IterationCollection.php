@@ -11,6 +11,8 @@
 
 namespace PhpBench\Benchmark;
 
+use PhpBench\Math\Statistics;
+
 /**
  * Stores Iterations and calculates the deviations and rejection
  * status for each based on the given rejection threshold.
@@ -31,6 +33,27 @@ class IterationCollection implements \IteratorAggregate
      * @var float
      */
     private $rejectionThreshold;
+
+    /**
+     * Array of statistics:.
+     *
+     *   mean      float Mean sample time
+     *   stdev     float The standard deviation
+     *   rstdev    float Relative standard deviation
+     *   variance  float Variance
+     *   min       float Minimum sample value
+     *   max       float Maximum sample value
+     *
+     * @var array
+     */
+    private $stats = array(
+        'mean' => null,
+        'stdev' => null,
+        'rstdev' => null,
+        'variance' => null,
+        'min' => null,
+        'max' => null,
+    );
 
     /**
      * @param float $rejectionThreshold
@@ -73,28 +96,48 @@ class IterationCollection implements \IteratorAggregate
      * the deviation is greater than the rejection threshold, then mark the iteration as
      * rejected.
      */
-    public function computeDeviations()
+    public function computeStats()
     {
         $this->rejects = array();
-        $average = $total = null;
 
         if (0 === count($this->iterations)) {
             return;
         }
 
+        $times = array();
         foreach ($this->iterations as $iteration) {
-            $total += $iteration->getResult()->getTime();
+            $times[] = $iteration->getResult()->getTime() / $iteration->getRevolutions();
         }
-        $average = $total / count($this->iterations);
+
+        // standard deviation for T Distribution
+        $this->stats['stdev'] = Statistics::stdev($times);
+
+        // mean of the times
+        $this->stats['mean'] = Statistics::mean($times);
+
+        // standard error
+        $this->stats['rstdev'] = $this->stats['stdev'] / $this->stats['mean'] * 100;
+
+        // variance
+        $this->stats['variance'] = Statistics::variance($times);
+
+        // min and max
+        $this->stats['min'] = min($times);
+        $this->stats['max'] = max($times);
 
         foreach ($this->iterations as $iteration) {
-            // deviation is the percentage different of the value from the average of the set. We
-            // use abs() to always obtain a positive number.
-            $deviation = abs(100 / $average * ($iteration->getResult()->getTime() - $average));
+            // deviation is the percentage different of the value from the mean of the set.
+            $deviation = 100 / $this->stats['mean'] * (($iteration->getResult()->getTime() / $iteration->getRevolutions()) - $this->stats['mean']);
             $iteration->setDeviation($deviation);
 
+            // the Z-Value repreents the number of standard deviations this
+            // value is away from the mean.
+            $revTime = $iteration->getResult()->getTime() / $iteration->getRevolutions();
+            $zValue = $this->stats['stdev'] ? ($revTime - $this->stats['mean']) / $this->stats['stdev'] : 0;
+            $iteration->setZValue($zValue);
+
             if (null !== $this->rejectionThreshold) {
-                if ($deviation >= $this->rejectionThreshold) {
+                if (abs($deviation) >= $this->rejectionThreshold) {
                     $this->rejects[] = $iteration;
                 }
             }
@@ -119,5 +162,17 @@ class IterationCollection implements \IteratorAggregate
     public function getRejects()
     {
         return $this->rejects;
+    }
+
+    /**
+     * Return statistics about this iteration collection.
+     *
+     * See self::$stats.
+     *
+     * @return array
+     */
+    public function getStats()
+    {
+        return $this->stats;
     }
 }

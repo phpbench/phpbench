@@ -74,4 +74,20 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->container->hasParameter('hello'));
         $this->assertEquals('hello', $this->container->getParameter('goodbye'));
     }
+
+    /**
+     * Its should throw an exception if a service is already registered.
+     *
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessge Service with ID "stdclass"
+     */
+    public function testServiceAlreadyRegistered()
+    {
+        $this->container->register('stdclass', function () {
+            return new \stdClass();
+        });
+        $this->container->register('stdclass', function () {
+            return new \stdClass();
+        });
+    }
 }

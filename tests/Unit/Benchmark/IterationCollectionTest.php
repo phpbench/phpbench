@@ -13,6 +13,7 @@ namespace PhpBench\Tests\Unit\Benchmark;
 
 use PhpBench\Benchmark\IterationCollection;
 use PhpBench\Benchmark\IterationResult;
+use Prophecy\Argument;
 
 class IterationCollectionTest extends \PHPUnit_Framework_TestCase
 {
@@ -38,19 +39,19 @@ class IterationCollectionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should calculate the deviation of each iteration from the average.
+     * It should calculate the stats of each iteration from the mean.
      */
-    public function testComputeDeviation()
+    public function testComputeStats()
     {
         $iterations = new IterationCollection();
         $iterations->replace(array(
-            $this->createIteration(4, 50),
-            $this->createIteration(8, 0),
-            $this->createIteration(4, 50),
+            $this->createIteration(4, -50, -0.70710678118655),
+            $this->createIteration(8, 0, 1E-12),
+            $this->createIteration(4, -50),
             $this->createIteration(16, 100),
         ));
 
-        $iterations->computeDeviations();
+        $iterations->computeStats();
     }
 
     /**
@@ -59,7 +60,7 @@ class IterationCollectionTest extends \PHPUnit_Framework_TestCase
     public function testComputeDeviationZeroIterations()
     {
         $iterations = new IterationCollection();
-        $iterations->computeDeviations();
+        $iterations->computeStats();
     }
 
     /**
@@ -69,13 +70,13 @@ class IterationCollectionTest extends \PHPUnit_Framework_TestCase
     {
         $iterations = new IterationCollection(50);
         $iterations->replace(array(
-            $iter1 = $this->createIteration(4, 50),
+            $iter1 = $this->createIteration(4, -50),
             $iter2 = $this->createIteration(8, 0),
-            $iter3 = $this->createIteration(4, 50),
+            $iter3 = $this->createIteration(4, -50),
             $iter4 = $this->createIteration(16, 100),
         ));
 
-        $iterations->computeDeviations();
+        $iterations->computeStats();
 
         $this->assertCount(3, $iterations->getRejects());
         $this->assertContains($iter1, $iterations->getRejects());
@@ -84,13 +85,21 @@ class IterationCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertNotContains($iter2, $iterations->getRejects());
     }
 
-    private function createIteration($time, $expectedDeviation = null)
+    private function createIteration($time, $expectedDeviation = null, $expectedZValue = null)
     {
         $iteration = $this->prophesize('PhpBench\Benchmark\Iteration');
+        $iteration->getRevolutions()->willReturn(1);
         $iteration->getResult()->willReturn(new IterationResult($time, null));
 
         if (null !== $expectedDeviation) {
             $iteration->setDeviation($expectedDeviation)->shouldBeCalled();
+            if (null === $expectedZValue) {
+                $iteration->setZValue(Argument::that(function ($args) use ($expectedZValue) {
+                    return round($args[0], 4) == round($expectedZValue, 4);
+                }))->shouldBeCalled();
+            } else {
+                $iteration->setZValue(Argument::any())->shouldBeCalled();
+            }
         }
 
         return $iteration->reveal();

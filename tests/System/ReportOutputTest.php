@@ -14,7 +14,7 @@ namespace PhpBench\Tests\System;
 /**
  * Result set generated with:.
  *
- * ./bin/phpbench run examples/HashBench.php --filter=benchMd5 --report=aggregate --dump-file=tests/System/results/report2.xml --iterations=2
+ * ./bin/phpbench run examples/HashBench.php --filter=benchMd5 --report=aggregate --dump-file=tests/System/results/report1.xml --iterations=1
  */
 class ReportOutputTest extends SystemTestCase
 {

@@ -289,7 +289,7 @@ class Runner
             }
         }
 
-        $iterationCollection->computeDeviations();
+        $iterationCollection->computeStats();
 
         while ($iterationCollection->getRejectCount() > 0) {
             $this->logger->retryStart($iterationCollection->getRejectCount());
@@ -297,17 +297,27 @@ class Runner
                 $reject->incrementRejectionCount();
                 $this->runIteration($reject, $subject->getSleep());
             }
-            $iterationCollection->computeDeviations();
+            $iterationCollection->computeStats();
         }
+
+        $stats = $iterationCollection->getStats();
 
         foreach ($iterationCollection as $iteration) {
             $iterationEl = $variantEl->ownerDocument->createElement('iteration');
             $iterationEl->setAttribute('revs', $iteration->getRevolutions());
-            $iterationEl->setAttribute('time', $iteration->getResult()->getTime());
+            $iterationEl->setAttribute('time-net', $iteration->getResult()->getTime());
+            $iterationEl->setAttribute('time', $iteration->getResult()->getTime() / $iteration->getRevolutions());
+            $iterationEl->setAttribute('z-value', $iteration->getZValue());
             $iterationEl->setAttribute('memory', $iteration->getResult()->getMemory());
             $iterationEl->setAttribute('deviation', $iteration->getDeviation());
             $iterationEl->setAttribute('rejection-count', $iteration->getRejectionCount());
+
             $variantEl->appendChild($iterationEl);
+        }
+
+        $statsEl = $variantEl->appendElement('stats');
+        foreach ($stats as $statName => $statValue) {
+            $statsEl->setAttribute($statName, $statValue);
         }
     }
 

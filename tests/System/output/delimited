@@ -1,2 +1,1 @@
-HashingBenchmark	benchMd5	hashing	[]	1000	0	0	2.466	271784	1.7956656346749
-HashingBenchmark	benchMd5	hashing	[]	1000	1	0	2.379	271784	1.7956656346749
+HashingBenchmark	benchMd5	hashing	[]	1000	0	0	268160	0.816	0	0

@@ -223,6 +223,7 @@ class CoreExtension implements ExtensionInterface
         $container->register('report_generator.tabular_custom', function (Container $container) {
             return new TabularCustomGenerator(
                 $container->get('tabular'),
+                $container->get('tabular.definition_loader'),
                 $container->getParameter('config_path')
             );
         }, array('report_generator' => array('name' => 'table_custom')));

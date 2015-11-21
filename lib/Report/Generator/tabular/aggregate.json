@@ -39,25 +39,29 @@
                     "expr": "sum(descendant-or-self::iteration/@rejection-count)"
                 },
                 {
-                    "name": "time",
-                    "class": "time",
-                    "expr": "sum(descendant-or-self::iteration/@time) div sum(descendant-or-self::iteration/@revs)"
-                },
-                {
-                    "name": "memory",
-                    "class": "memory",
+                    "name": "mem",
+                    "class": "mem",
                     "expr": "average(descendant-or-self::iteration/@memory)"
                 },
                 {
-                    "name": "deviation",
-                    "class": "deviation",
-                    "expr": "deviation(min(//cell[@name='time']), number(./cell[@name='time']))",
-                    "pass": 1
+                    "name": "time",
+                    "class": "time",
+                    "expr": "number(./stats/@mean)"
                 },
                 {
-                    "name": "stability",
-                    "class": "stability",
-                    "expr": "100 - deviation(min(descendant::iteration/@time), max(descendant::iteration/@time))"
+                    "name": "range",
+                    "class": "time",
+                    "expr": "number(./stats/@max) - number(./stats/@min)"
+                },
+                {
+                    "name": "stdev",
+                    "class": "stdevtime",
+                    "expr": "number(./stats/@stdev)"
+                },
+                {
+                    "name": "rstdev",
+                    "class": "percent",
+                    "expr": "number(./stats/@rstdev)"
                 }
             ],
             "with_query": "{{ param.selector }}"
