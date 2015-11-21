@@ -5,6 +5,9 @@ namespace PhpBench;
 // disable garbage collection
 gc_disable();
 
+// repress any output from the user scripts
+ob_start();
+
 $class = '{{ class }}';
 $file = '{{ file }}';
 $subject = '{{ subject }}';
@@ -55,9 +58,13 @@ foreach ($afterMethods as $afterMethod) {
     $benchmark->$afterMethod($parameters);
 }
 
+$buffer = ob_get_contents();
+ob_end_clean();
+
 echo json_encode(array(
     'memory' => $endMemory - $startMemory,
     'time' => ($endTime * 1000000) - ($startTime * 1000000),
+    'buffer' => $buffer,
 ));
 
 exit(0);
