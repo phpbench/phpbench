@@ -30,7 +30,7 @@ class CartesianParameterIterator implements \Iterator
 
     public function current()
     {
-        return $this->current;
+        return $this->getParameterSet();
     }
 
     public function next()
@@ -53,7 +53,7 @@ class CartesianParameterIterator implements \Iterator
         $this->index++;
         $this->update();
 
-        return $this->current;
+        return $this->getParameterSet();
     }
 
     public function key()
@@ -83,5 +83,10 @@ class CartesianParameterIterator implements \Iterator
         foreach ($this->sets as $set) {
             $this->current = array_merge($this->current, $set->current());
         }
+    }
+
+    private function getParameterSet()
+    {
+        return new ParameterSet($this->index, $this->current);
     }
 }

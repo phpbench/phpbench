@@ -181,7 +181,8 @@ The built-in progress loggers are:
 
 - ``dots``: The default logger, shows one dot per subject (like PHPUnit).
 - ``classdots``: Shows the benchmark class, and then a dot for each subject.
-- ``verbose``: Verbose output.
+- ``verbose``: Verbose output (format `R<retry nb.> I<iter nb.> #<parameter set
+  nb.>`).
 
 Configuration File
 ------------------

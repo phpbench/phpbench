@@ -37,7 +37,7 @@ class Iteration
         $index,
         SubjectMetadata $subject,
         $revolutions,
-        array $parameters
+        ParameterSet $parameters
     ) {
         $this->index = $index;
         $this->subject = $subject;
@@ -78,7 +78,7 @@ class Iteration
     /**
      * Get the parameter set for this iteration.
      *
-     * @return array
+     * @return ParameterSet
      */
     public function getParameters()
     {

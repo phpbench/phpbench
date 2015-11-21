@@ -13,6 +13,7 @@ namespace PhpBench\Tests\Unit\Benchmark\Executor;
 
 use PhpBench\Benchmark\Executor;
 use PhpBench\Benchmark\Executor\MicrotimeExecutor;
+use PhpBench\Benchmark\ParameterSet;
 use PhpBench\Benchmark\Remote\Launcher;
 
 class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
@@ -83,7 +84,7 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
         $this->subject->getName()->willReturn('doSomething');
         $this->iteration->getSubject()->willReturn($this->subject);
         $this->iteration->getRevolutions()->willReturn(10);
-        $this->iteration->getParameters()->willReturn(array());
+        $this->iteration->getParameters()->willReturn(new ParameterSet());
 
         $result = $this->executor->execute($this->iteration->reveal());
 
@@ -106,7 +107,7 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
         $this->subject->getName()->willReturn('doSomething');
         $this->iteration->getSubject()->willReturn($this->subject);
         $this->iteration->getRevolutions()->willReturn(1);
-        $this->iteration->getParameters()->willReturn(array());
+        $this->iteration->getParameters()->willReturn(new ParameterSet());
 
         $this->executor->execute($this->iteration->reveal());
 
@@ -123,7 +124,7 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
         $this->subject->getName()->willReturn('doSomething');
         $this->iteration->getSubject()->willReturn($this->subject);
         $this->iteration->getRevolutions()->willReturn(1);
-        $this->iteration->getParameters()->willReturn(array());
+        $this->iteration->getParameters()->willReturn(new ParameterSet());
 
         $this->executor->execute($this->iteration->reveal());
 
@@ -141,10 +142,10 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
 
         $this->iteration->getSubject()->willReturn($this->subject);
         $this->iteration->getRevolutions()->willReturn(1);
-        $this->iteration->getParameters()->willReturn(array(
+        $this->iteration->getParameters()->willReturn(new ParameterSet(0, array(
             'one' => 'two',
             'three' => 'four',
-        ));
+        )));
 
         $this->executor->execute($this->iteration->reveal());
         $this->assertTrue(file_exists($this->paramFile));
@@ -160,10 +161,10 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
      */
     public function testParametersBeforeSubject()
     {
-        $expected = array(
+        $expected = new ParameterSet(0, array(
             'one' => 'two',
             'three' => 'four',
-        );
+        ));
 
         $this->subject->getBeforeMethods()->willReturn(array('parameterizedBefore'));
         $this->subject->getAfterMethods()->willReturn(array('parameterizedAfter'));
@@ -177,10 +178,10 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue(file_exists($this->paramBeforeFile));
         $params = json_decode(file_get_contents($this->paramBeforeFile), true);
-        $this->assertEquals($expected, $params);
+        $this->assertEquals($expected->getArrayCopy(), $params);
 
         $this->assertTrue(file_exists($this->paramAfterFile));
         $params = json_decode(file_get_contents($this->paramAfterFile), true);
-        $this->assertEquals($expected, $params);
+        $this->assertEquals($expected->getArrayCopy(), $params);
     }
 }

@@ -13,6 +13,7 @@ namespace PhpBench\Tests\Unit\Benchmark;
 
 use PhpBench\Benchmark\Iteration;
 use PhpBench\Benchmark\IterationResult;
+use PhpBench\Benchmark\ParameterSet;
 
 class IterationTest extends \PHPUnit_Framework_TestCase
 {
@@ -26,7 +27,7 @@ class IterationTest extends \PHPUnit_Framework_TestCase
             0,
             $this->subject->reveal(),
             5,
-            array()
+            new ParameterSet()
         );
     }
 

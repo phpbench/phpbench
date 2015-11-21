@@ -51,7 +51,7 @@ class MicrotimeExecutor implements ExecutorInterface
             'revolutions' => $iteration->getRevolutions(),
             'beforeMethods' => var_export($subject->getBeforeMethods(), true),
             'afterMethods' => var_export($subject->getAfterMethods(), true),
-            'parameters' => var_export($iteration->getParameters(), true),
+            'parameters' => var_export($iteration->getParameters()->getArrayCopy(), true),
         );
 
         $payload = $this->launcher->payload(__DIR__ . '/template/microtime.template', $tokens);
