@@ -21,6 +21,7 @@ class VerboseLogger implements LoggerInterface
 {
     private $output;
     private $lastSubject;
+    private $lastRetry;
 
     public function setOutput(OutputInterface $output)
     {
@@ -38,6 +39,7 @@ class VerboseLogger implements LoggerInterface
 
     public function subjectStart(SubjectMetadata $subject)
     {
+        $this->lastRetry = null;
         $this->lastSubject = $this->lastRetry = sprintf('  <info>>> </info>%s:', $subject->getName());
         $this->output->write($this->lastSubject);
     }
@@ -51,9 +53,10 @@ class VerboseLogger implements LoggerInterface
     {
         static $count;
         $this->output->write($this->lastIteration = sprintf(
-            "\x0D%s I%s ",
+            "\x0D%s I%s #%s ",
             $this->lastRetry,
-            $iteration->getIndex()
+            $iteration->getIndex(),
+            $iteration->getParameters()->getIndex()
         ));
         $count++;
     }
@@ -65,7 +68,7 @@ class VerboseLogger implements LoggerInterface
     public function retryStart($rejectionCount)
     {
         $this->output->write($this->lastRetry = sprintf(
-            "\x0D%s %dR",
+            "\x0D%s R%d",
             $this->lastSubject,
             $rejectionCount
         ));

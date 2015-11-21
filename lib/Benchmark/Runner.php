@@ -261,7 +261,7 @@ class Runner
         ));
     }
 
-    private function runIterations(SubjectMetadata $subject, $iterationCount, array $revolutionCounts, array $parameterSet, \DOMElement $variantEl)
+    private function runIterations(SubjectMetadata $subject, $iterationCount, array $revolutionCounts, ParameterSet $parameterSet, \DOMElement $variantEl)
     {
         $iterationCollection = new IterationCollection($this->retryThreshold);
         for ($index = 0; $index < $iterationCount; $index++) {
@@ -313,8 +313,9 @@ class Runner
      * Utility function to return the correct sleep interval
      * in case that the sleep interval has been overridden.
      *
-     * @param integer $sleep
-     * @return integer
+     * @param int $sleep
+     *
+     * @return int
      */
     private function getSleepInterval($sleep)
     {

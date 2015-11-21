@@ -25,7 +25,7 @@ class CartesianIteratorTest extends \PHPUnit_Framework_TestCase
         $iterator = new CartesianParameterIterator($parameterSets);
         $result = array();
         foreach ($iterator as $parameters) {
-            $result[] = $parameters;
+            $result[] = $parameters->getArrayCopy();
         }
 
         $this->assertEquals($expected, $result);
