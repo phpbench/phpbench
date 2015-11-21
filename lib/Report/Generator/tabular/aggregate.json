@@ -46,7 +46,7 @@
                 {
                     "name": "memory",
                     "class": "memory",
-                    "expr": "number(descendant-or-self::iteration/@memory)"
+                    "expr": "average(descendant-or-self::iteration/@memory)"
                 },
                 {
                     "name": "deviation",
