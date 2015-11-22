@@ -14,7 +14,9 @@ namespace PhpBench\Benchmark\Metadata\Driver;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use PhpBench\Benchmark\Metadata\AbstractMetadata;
 use PhpBench\Benchmark\Metadata\Annotations;
-use PhpBench\Benchmark\Metadata\Annotations\ArrayAnnotation;
+use PhpBench\Benchmark\Metadata\Annotations\AbstractArrayAnnotation;
+use PhpBench\Benchmark\Metadata\Annotations\AfterClassMethods;
+use PhpBench\Benchmark\Metadata\Annotations\BeforeClassMethods;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\DocParser;
 use PhpBench\Benchmark\Metadata\DriverInterface;
@@ -64,6 +66,13 @@ class AnnotationDriver implements DriverInterface
             $annotations = array_merge($annotations, $benchAnnotations);
 
             foreach ($benchAnnotations as $annotation) {
+                if ($annotation instanceof BeforeClassMethods) {
+                    $classMetadata->setBeforeClassMethods($annotation->getMethods());
+                }
+                if ($annotation instanceof AfterClassMethods) {
+                    $classMetadata->setAfterClassMethods($annotation->getMethods());
+                }
+
                 $this->processAbstractMetadata($classMetadata, $annotation);
             }
         }
@@ -158,7 +167,7 @@ class AnnotationDriver implements DriverInterface
         }
     }
 
-    private function resolveValue(ArrayAnnotation $annotation, array $currentValues, array $annotationValues)
+    private function resolveValue(AbstractArrayAnnotation $annotation, array $currentValues, array $annotationValues)
     {
         $values = $annotation->getExtend() === true ? $currentValues : array();
         $values = array_merge($values, $annotationValues);

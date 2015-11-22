@@ -11,6 +11,7 @@
 
 namespace PhpBench\Benchmark;
 
+use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Config\ConfigurableInterface;
 
 /**
@@ -29,4 +30,16 @@ interface ExecutorInterface extends ConfigurableInterface
      * @return IterationResult
      */
     public function execute(Iteration $iteration, array $options = array());
+
+    /**
+     * Execute arbitrary methods.
+     *
+     * This should be called based on the value of `@BeforeClassMethods` and `@AfterClassMethods`
+     * and used to establish some persistent state.
+     *
+     * Methods called here cannot establish a runtime state.
+     *
+     * @param string[]
+     */
+    public function executeMethods(BenchmarkMetadata $benchmark, array $methods);
 }

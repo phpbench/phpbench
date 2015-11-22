@@ -18,7 +18,7 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
  *    @Attribute("value", required = true, type="array"),
  * })
  */
-class Groups extends ArrayAnnotation
+class Groups extends AbstractArrayAnnotation
 {
     private $groups;
 

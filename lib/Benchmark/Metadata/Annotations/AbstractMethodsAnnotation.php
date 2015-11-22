@@ -12,24 +12,23 @@
 namespace PhpBench\Benchmark\Metadata\Annotations;
 
 /**
- * @Annotation
  * @Taget({"METHOD", "CLASS"})
  * @Attributes({
- *    @Attribute("value", required = true, type="array"),
+ *    @Attribute("value", required = true,  type = "array"),
  * })
  */
-class ParamProviders extends AbstractArrayAnnotation
+abstract class AbstractMethodsAnnotation extends AbstractArrayAnnotation
 {
-    private $providers;
+    private $methods;
 
     public function __construct($params)
     {
         parent::__construct($params);
-        $this->providers = (array) $params['value'];
+        $this->methods = (array) $params['value'];
     }
 
-    public function getProviders()
+    public function getMethods()
     {
-        return $this->providers;
+        return $this->methods;
     }
 }

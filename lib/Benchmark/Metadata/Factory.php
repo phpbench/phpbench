@@ -63,6 +63,12 @@ class Factory
         $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
         $this->validateAbstractMetadata($hierarchy, $metadata);
 
+        foreach (array('getBeforeClassMethods', 'getAfterClassMethods') as $methodName) {
+            foreach ($metadata->$methodName() as $method) {
+                $this->validateMethodExists($hierarchy, $method, true);
+            }
+        }
+
         // validate the subject and load the parameter sets
         foreach ($metadata->getSubjectMetadatas() as $subjectMetadata) {
             $this->validateAbstractMetadata($hierarchy, $subjectMetadata);
@@ -87,21 +93,27 @@ class Factory
 
     private function validateAbstractMetadata(ReflectionHierarchy $benchmarkReflection, AbstractMetadata $subject)
     {
-        foreach ($subject->getBeforeMethods() as $beforeMethod) {
-            if (false === $benchmarkReflection->hasMethod($beforeMethod)) {
-                throw new \InvalidArgumentException(sprintf(
-                    'Unknown before method "%s" in benchmark class "%s"',
-                    $beforeMethod, $subject->getClass()));
+        foreach (array('getBeforeMethods', 'getAfterMethods') as $methodName) {
+            foreach ($subject->$methodName() as $method) {
+                $this->validateMethodExists($benchmarkReflection, $method);
             }
         }
+    }
 
-        foreach ($subject->getAfterMethods() as $afterMethod) {
-            if (false === $benchmarkReflection->hasMethod($afterMethod)) {
-                throw new \InvalidArgumentException(sprintf(
-                    'Unknown after method "%s" in benchmark class "%s"',
-                    $afterMethod, $subject->getClass()
-                ));
-            }
+    private function validateMethodExists(ReflectionHierarchy $benchmarkReflection, $method, $isStatic = false)
+    {
+        if (false === $benchmarkReflection->hasMethod($method)) {
+            throw new \InvalidArgumentException(sprintf(
+                'Unknown %s method "%s" in benchmark class "%s"',
+                lcfirst($method), $method, $benchmarkReflection->class
+            ));
+        }
+
+        if ($isStatic !== $benchmarkReflection->hasStaticMethod($method)) {
+            throw new \InvalidArgumentException(sprintf(
+                '%s method "%s" must be static in benchmark class "%s"',
+                lcfirst($method), $method, $benchmarkReflection->class
+            ));
         }
     }
 }

@@ -30,6 +30,7 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
     {
         $this->beforeMethodFile = __DIR__ . '/microtimetest/before_method.tmp';
         $this->afterMethodFile = __DIR__ . '/microtimetest/after_method.tmp';
+        $this->staticMethodFile = __DIR__ . '/microtimetest/static_method.tmp';
         $this->revFile = __DIR__ . '/microtimetest/revs.tmp';
         $this->setupFile = __DIR__ . '/microtimetest/setup.tmp';
         $this->paramFile = __DIR__ . '/microtimetest/param.tmp';
@@ -66,6 +67,7 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
             $this->paramFile,
             $this->paramBeforeFile,
             $this->paramAfterFile,
+            $this->staticMethodFile,
         ) as $file) {
             if (file_exists($file)) {
                 unlink($file);
@@ -203,5 +205,14 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(file_exists($this->paramAfterFile));
         $params = json_decode(file_get_contents($this->paramAfterFile), true);
         $this->assertEquals($expected->getArrayCopy(), $params);
+    }
+
+    /**
+     * It should execute arbitrary methods on the benchmark class.
+     */
+    public function testExecuteMethods()
+    {
+        $this->executor->executeMethods($this->benchmark->reveal(), array('initDatabase'));
+        $this->assertTrue(file_exists($this->staticMethodFile));
     }
 }

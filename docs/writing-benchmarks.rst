@@ -121,11 +121,11 @@ You can instruct PHPBench to continuously run the iterations until the
 deviation of each iteration fits within a given margin of error by using the
 ``--retry-threshold``. See :ref:`retry_threshold` for more information.
 
-Estabilishing State: Before and After
--------------------------------------
+Subject (runtime) State: Before and After
+-----------------------------------------
 
 Any number of methods can be executed both before and after each benchmark
-subject using the ``@BeforeMethods`` and
+**subject** using the ``@BeforeMethods`` and
 ``@AfterMethods`` annotations. Before methods are useful for bootstrapping
 your environment, for example:
 
@@ -157,6 +157,40 @@ Multiple before and after methods can be specified.
 
     If before and after methods are used when the ``@ParamProviders``
     annotations are used, then they will also be passed the parameters.
+
+Benchmark (external) State: Before and After
+--------------------------------------------
+
+Sometimes you will want to perform actions which establish an *external*
+state. For example, creating or populating a database, creating files, etc.
+
+This can be achieved by creating **static** methods within your benchmark
+class and adding the ``@BeforeClassMethods`` and ``@AfterClassMethods``:
+
+These methods will be executed by the runner once per benchmark class.
+
+.. code-block:: php
+
+    <?php
+
+    /**
+     * @BeforeClassMethods({"initDatabase"})
+     */
+    class DatabaseBench
+    {
+        public static function initDatabase()
+        {
+            // init database here.
+        }
+
+        // ...
+    }
+
+.. note::
+
+    These methods are static and are executed in a process that is separate
+    from that from which your iterations will be executed. Therefore **state
+    will not be carried over to your iterations!**.
 
 .. _parameters:
 

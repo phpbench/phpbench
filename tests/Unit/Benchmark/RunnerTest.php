@@ -15,6 +15,7 @@ use PhpBench\Benchmark\Iteration;
 use PhpBench\Benchmark\IterationResult;
 use PhpBench\Benchmark\Runner;
 use PhpBench\PhpBench;
+use PhpBench\Tests\Util\TestUtil;
 use Prophecy\Argument;
 
 class RunnerTest extends \PHPUnit_Framework_TestCase
@@ -53,7 +54,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->collection->getBenchmarks()->willReturn(array(
             $this->benchmark,
         ));
-        $this->configureSubject($this->subject, array(
+        TestUtil::configureSubject($this->subject, array(
             'iterations' => $iterations,
             'beforeMethods' => array('beforeFoo'),
             'afterMethods' => array(),
@@ -62,10 +63,10 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
             'revs' => $revs,
         ));
 
+        TestUtil::configureBenchmark($this->benchmark);
         $this->benchmark->getSubjectMetadatas()->willReturn(array(
             $this->subject->reveal(),
         ));
-        $this->benchmark->getClass()->willReturn('Benchmark');
 
         if (!$exception) {
             $this->executor->execute(Argument::type('PhpBench\Benchmark\Iteration'))
@@ -208,13 +209,13 @@ EOT
         $this->collection->getBenchmarks()->willReturn(array(
             $this->benchmark,
         ));
-        $this->configureSubject($this->subject, array(
+        TestUtil::configureSubject($this->subject, array(
             'skip' => true,
         ));
         $this->benchmark->getSubjectMetadatas()->willReturn(array(
             $this->subject->reveal(),
         ));
-        $this->benchmark->getClass()->willReturn('Benchmark');
+        TestUtil::configureBenchmark($this->benchmark);
         $result = $this->runner->runAll(__DIR__);
 
         $this->assertInstanceOf('PhpBench\Benchmark\SuiteDocument', $result);
@@ -252,13 +253,13 @@ EOT
         $this->collection->getBenchmarks()->willReturn(array(
             $this->benchmark,
         ));
-        $this->configureSubject($this->subject, array(
+        TestUtil::configureSubject($this->subject, array(
             'sleep' => 50,
         ));
         $this->benchmark->getSubjectMetadatas()->willReturn(array(
             $this->subject->reveal(),
         ));
-        $this->benchmark->getClass()->willReturn('Benchmark');
+        TestUtil::configureBenchmark($this->benchmark);
         $this->executor->execute(Argument::type('PhpBench\Benchmark\Iteration'))
             ->shouldBeCalledTimes(2)
             ->willReturn(new IterationResult(10, 10));
@@ -311,13 +312,13 @@ EOT
         $this->collection->getBenchmarks()->willReturn(array(
             $this->benchmark,
         ));
-        $this->configureSubject($this->subject, array(
+        TestUtil::configureSubject($this->subject, array(
             'sleep' => 50,
         ));
         $this->benchmark->getSubjectMetadatas()->willReturn(array(
             $this->subject->reveal(),
         ));
-        $this->benchmark->getClass()->willReturn('Benchmark');
+        TestUtil::configureBenchmark($this->benchmark);
         $this->executor->execute(Argument::type('PhpBench\Benchmark\Iteration'))
             ->shouldBeCalledTimes(1)
             ->willReturn(new IterationResult(10, 10));
@@ -344,6 +345,26 @@ EOT
         );
     }
 
+    /**
+     * It should call the before and after class methods.
+     */
+    public function testBeforeAndAfterClass()
+    {
+        TestUtil::configureBenchmark($this->benchmark, array(
+            'beforeClassMethods' => array('afterClass'),
+            'afterClassMethods' => array('beforeClass'),
+        ));
+
+        $this->executor->executeMethods($this->benchmark->reveal(), array('beforeClass'))->shouldBeCalled();
+        $this->executor->executeMethods($this->benchmark->reveal(), array('afterClass'))->shouldBeCalled();
+        $this->benchmark->getSubjectMetadatas()->willReturn(array());
+        $this->collection->getBenchmarks()->willReturn(array(
+            $this->benchmark,
+        ));
+
+        $this->runner->runAll(__DIR__);
+    }
+
     private function configureSubject($subject, array $options)
     {
         $options = array_merge(array(
@@ -368,6 +389,19 @@ EOT
         $subject->getGroups()->willReturn($options['groups']);
         $subject->getRevs()->willReturn($options['revs']);
         $subject->getSkip()->willReturn($options['skip']);
+    }
+
+    private function configureBenchmark($benchmark, array $options = array())
+    {
+        $options = array_merge(array(
+            'class' => 'Benchmark',
+            'beforeClassMethods' => array(),
+            'afterClassMethods' => array(),
+        ), $options);
+
+        $benchmark->getClass()->willReturn($options['class']);
+        $benchmark->getBeforeClassMethods()->willReturn($options['beforeClassMethods']);
+        $benchmark->getAfterClassMethods()->willReturn($options['afterClassMethods']);
     }
 }
 

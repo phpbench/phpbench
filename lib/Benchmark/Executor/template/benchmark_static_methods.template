@@ -1,0 +1,20 @@
+<?php
+
+$class = '{{ class }}';
+$file = '{{ file }}';
+$methods = {{ methods }};
+$bootstrap = '{{ bootstrap }}';
+
+if ($bootstrap) {
+    require_once($bootstrap);
+}
+
+require_once($file);
+
+foreach ($methods as $method) {
+    $class::$method();
+}
+
+echo json_encode(array());
+
+exit(0);

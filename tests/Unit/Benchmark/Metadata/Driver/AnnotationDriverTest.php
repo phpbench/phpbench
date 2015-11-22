@@ -40,6 +40,8 @@ class AnnotationDriverTest extends \PHPUnit_Framework_TestCase
         $reflection->comment = <<<EOT
 /**
  * @BeforeMethods({"beforeOne", "beforeTwo"})
+ * @BeforeClassMethods({"beforeClass"})
+ * @AfterClassMethods({"afterClass"})
  * @AfterMethods({"afterOne", "afterTwo"})
  * @Groups({"groupOne", "groupTwo"})
  * @Iterations(50)
@@ -56,6 +58,8 @@ EOT;
         $this->assertEquals(array('beforeOne', 'beforeTwo'), $metadata->getBeforeMethods());
         $this->assertEquals(array('afterOne', 'afterTwo'), $metadata->getAfterMethods());
         $this->assertEquals(array('groupOne', 'groupTwo'), $metadata->getGroups());
+        $this->assertEquals(array('beforeClass'), $metadata->getBeforeClassMethods());
+        $this->assertEquals(array('afterClass'), $metadata->getAfterClassMethods());
         $this->assertEquals(50, $metadata->getIterations());
         $this->assertEquals(array('ONE', 'TWO'), $metadata->getParamProviders());
         $this->assertEquals(1000, $metadata->getRevs());
@@ -279,7 +283,7 @@ EOT;
      * It should throw a helpful exception when an annotation is not recognized.
      *
      * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Unrecognized annotation @Foobar, valid PHPBench annotations: @BeforeMethods, @Aft
+     * @expectedExceptionMessage Unrecognized annotation @Foobar, valid PHPBench annotations: @BeforeMethods,
      */
     public function testUsefulException()
     {

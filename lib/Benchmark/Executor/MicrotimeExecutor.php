@@ -14,6 +14,7 @@ namespace PhpBench\Benchmark\Executor;
 use PhpBench\Benchmark\ExecutorInterface;
 use PhpBench\Benchmark\Iteration;
 use PhpBench\Benchmark\IterationResult;
+use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Remote\Launcher;
 
 /**
@@ -65,6 +66,21 @@ class MicrotimeExecutor implements ExecutorInterface
         }
 
         return new IterationResult($result['time'], $result['memory']);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function executeMethods(BenchmarkMetadata $benchmark, array $methods)
+    {
+        $tokens = array(
+            'class' => $benchmark->getClass(),
+            'file' => $benchmark->getPath(),
+            'methods' => var_export($methods, true),
+        );
+
+        $payload = $this->launcher->payload(__DIR__ . '/template/benchmark_static_methods.template', $tokens);
+        $payload->launch();
     }
 
     /**
