@@ -22,7 +22,9 @@ class DocParser
     private $docParser;
     private $imports = array(
         'BeforeMethods' => 'PhpBench\Benchmark\Metadata\Annotations\BeforeMethods',
+        'BeforeClassMethods' => 'PhpBench\Benchmark\Metadata\Annotations\BeforeClassMethods',
         'AfterMethods' => 'PhpBench\Benchmark\Metadata\Annotations\AfterMethods',
+        'AfterClassMethods' => 'PhpBench\Benchmark\Metadata\Annotations\AfterClassMethods',
         'ParamProviders' => 'PhpBench\Benchmark\Metadata\Annotations\ParamProviders',
         'Groups' => 'PhpBench\Benchmark\Metadata\Annotations\Groups',
         'Iterations' => 'PhpBench\Benchmark\Metadata\Annotations\Iterations',

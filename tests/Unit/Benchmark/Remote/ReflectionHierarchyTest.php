@@ -13,6 +13,7 @@ namespace PhpBench\Tests\Unit\Benchmark\Remote;
 
 use PhpBench\Benchmark\Remote\ReflectionClass;
 use PhpBench\Benchmark\Remote\ReflectionHierarchy;
+use PhpBench\Benchmark\Remote\ReflectionMethod;
 
 class ReflectionHierarchyTest extends \PHPUnit_Framework_TestCase
 {
@@ -72,5 +73,23 @@ class ReflectionHierarchyTest extends \PHPUnit_Framework_TestCase
 
         $this->reflection2->methods['barfoo'] = true;
         $this->assertTrue($this->hierarchy->hasMethod('barfoo'));
+    }
+
+    /**
+     * It can determine if a method is static.
+     */
+    public function testHasStaticMethod()
+    {
+        $this->reflection1->methods['foobar'] = new ReflectionMethod();
+        $this->reflection1->methods['foobar']->isStatic = true;
+        $this->hierarchy->addReflectionClass($this->reflection1);
+        $this->hierarchy->addReflectionClass($this->reflection2);
+
+        $this->assertTrue($this->hierarchy->hasStaticMethod('foobar'));
+        $this->assertFalse($this->hierarchy->hasStaticMethod('barfoo'));
+
+        $this->reflection1->methods['barfoo'] = new ReflectionMethod();
+        $this->reflection1->methods['barfoo']->isStatic = true;
+        $this->assertTrue($this->hierarchy->hasStaticMethod('barfoo'));
     }
 }

@@ -195,6 +195,10 @@ class Runner
 
     private function run(BenchmarkMetadata $benchmark, \DOMElement $benchmarkEl)
     {
+        if ($benchmark->getBeforeClassMethods()) {
+            $this->executor->executeMethods($benchmark, $benchmark->getBeforeClassMethods());
+        }
+
         foreach ($benchmark->getSubjectMetadatas() as $subject) {
             $subjectEl = $benchmarkEl->appendElement('subject');
             $subjectEl->setAttribute('name', $subject->getName());
@@ -211,6 +215,10 @@ class Runner
             $this->logger->subjectStart($subject);
             $this->runSubject($subject, $subjectEl);
             $this->logger->subjectEnd($subject);
+        }
+
+        if ($benchmark->getAfterClassMethods()) {
+            $this->executor->executeMethods($benchmark, $benchmark->getAfterClassMethods());
         }
     }
 

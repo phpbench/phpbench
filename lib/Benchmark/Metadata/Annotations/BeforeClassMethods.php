@@ -12,8 +12,12 @@
 namespace PhpBench\Benchmark\Metadata\Annotations;
 
 /**
- * @Annotation()
+ * @Annotation
+ * @Taget({"METHOD", "CLASS"})
+ * @Attributes({
+ *    @Attribute("value", required = true,  type = "array"),
+ * })
  */
-class BeforeMethods extends AbstractMethodsAnnotation
+class BeforeClassMethods extends AbstractMethodsAnnotation
 {
 }

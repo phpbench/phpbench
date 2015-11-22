@@ -1,7 +1,5 @@
 <?php
 
-namespace PhpBench;
-
 // disable garbage collection
 gc_disable();
 

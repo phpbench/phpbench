@@ -122,4 +122,22 @@ class PayloadTest extends \PHPUnit_Framework_TestCase
 
         $payload->launch($payload);
     }
+
+    /**
+     * It should throw an execption if a template is not found.
+     *
+     * @expectedException RuntimeException
+     * @expectedExceptionMessage Could not find script template
+     */
+    public function testTemplateNotFound()
+    {
+        $process = $this->prophesize('Symfony\Component\Process\Process');
+        $payload = new Payload(
+            __DIR__ . '/template/not-existing-filename.template',
+            array(),
+            $process->reveal()
+        );
+
+        $payload->launch($payload);
+    }
 }

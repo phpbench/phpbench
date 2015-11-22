@@ -69,6 +69,7 @@ class Reflector
                 $reflectionMethod = new ReflectionMethod();
                 $reflectionMethod->class = $classInfo['class'];
                 $reflectionMethod->name = $methodInfo['name'];
+                $reflectionMethod->isStatic = $methodInfo['static'];
                 $reflectionMethod->comment = $methodInfo['comment'];
                 $reflectionClass->methods[$reflectionMethod->name] = $reflectionMethod;
             }

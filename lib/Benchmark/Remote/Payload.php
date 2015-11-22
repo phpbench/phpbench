@@ -81,7 +81,7 @@ class Payload
         if (!file_exists($this->template)) {
             throw new \RuntimeException(sprintf(
                 'Could not find script template "%s"',
-                $template
+                $this->template
             ));
         }
 

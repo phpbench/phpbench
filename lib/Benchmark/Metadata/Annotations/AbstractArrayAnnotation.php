@@ -16,7 +16,7 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
  *    @Attribute("extend", required = true, type="boolean"),
  * })
  */
-class ArrayAnnotation
+abstract class AbstractArrayAnnotation
 {
     private $extend = false;
 

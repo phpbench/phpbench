@@ -13,6 +13,11 @@ namespace PhpBench\Tests\Unit\Benchmark\Executor\microtimetest;
 
 class ExecutorBench
 {
+    public static function initDatabase()
+    {
+        file_put_contents(__DIR__ . '/static_method.tmp', 'Static method method executed');
+    }
+
     public function beforeMethod()
     {
         file_put_contents(__DIR__ . '/before_method.tmp', 'Before method executed');

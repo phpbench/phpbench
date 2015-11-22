@@ -14,6 +14,6 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
 /**
  * @Annotation()
  */
-class BeforeMethods extends AbstractMethodsAnnotation
+class AfterClassMethods extends AbstractMethodsAnnotation
 {
 }

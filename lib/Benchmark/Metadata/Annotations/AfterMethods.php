@@ -12,24 +12,8 @@
 namespace PhpBench\Benchmark\Metadata\Annotations;
 
 /**
- * @Annotation
- * @Taget({"METHOD", "CLASS"})
- * @Attributes({
- *    @Attribute("value", required = true,  type = "array"),
- * })
+ * @Annotation()
  */
-class AfterMethods extends ArrayAnnotation
+class AfterMethods extends AbstractMethodsAnnotation
 {
-    private $methods;
-
-    public function __construct($params)
-    {
-        parent::__construct($params);
-        $this->methods = (array) $params['value'];
-    }
-
-    public function getMethods()
-    {
-        return $this->methods;
-    }
 }

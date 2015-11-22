@@ -27,6 +27,16 @@ class BenchmarkMetadata extends AbstractMetadata
     private $subjectMetadatas = array();
 
     /**
+     * @var string[]
+     */
+    private $beforeClassMethods = array();
+
+    /**
+     * @var string[]
+     */
+    private $afterClassMethods = array();
+
+    /**
      * @param mixed $path
      * @param mixed $class
      */
@@ -131,5 +141,41 @@ class BenchmarkMetadata extends AbstractMetadata
     public function hasSubjects()
     {
         return 0 !== count($this->subjectMetadatas);
+    }
+
+    /**
+     * Return any methods that should be called before the benchmark class is executed.
+     */
+    public function getBeforeClassMethods()
+    {
+        return $this->beforeClassMethods;
+    }
+
+    /**
+     * Set any methods that should be called before the benchmark class is executed.
+     *
+     * @param array $beforeClassMethods
+     */
+    public function setBeforeClassMethods(array $beforeClassMethods)
+    {
+        $this->beforeClassMethods = $beforeClassMethods;
+    }
+
+    /**
+     * Return any methods that should be called after the benchmark class is executed.
+     */
+    public function getAfterClassMethods()
+    {
+        return $this->afterClassMethods;
+    }
+
+    /**
+     * Set any methods that should be called after the benchmark class is executed.
+     *
+     * @param array $afterClassMethods
+     */
+    public function setAfterClassMethods(array $afterClassMethods)
+    {
+        $this->afterClassMethods = $afterClassMethods;
     }
 }

@@ -12,6 +12,7 @@
 namespace PhpBench\Tests\Unit\Benchmark\Metadata;
 
 use PhpBench\Benchmark\Metadata\Factory;
+use PhpBench\Tests\Util\TestUtil;
 
 class FactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -30,6 +31,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->hierarchy = $this->prophesize('PhpBench\Benchmark\Remote\ReflectionHierarchy');
+        $this->hierarchy->reveal()->class = 'Class';
         $this->reflection = $this->prophesize('PhpBench\Benchmark\Remote\ReflectionClass');
         $this->metadata = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');
         $this->subjectMetadata = $this->prophesize('PhpBench\Benchmark\Metadata\SubjectMetadata');
@@ -47,8 +49,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->hierarchy->isEmpty()->willReturn(false);
         $this->metadata->getSubjectMetadatas()->willReturn(array());
-        $this->metadata->getBeforeMethods()->willReturn(array());
-        $this->metadata->getAfterMethods()->willReturn(array());
+        TestUtil::configureBenchmark($this->metadata);
         $metadata = $this->factory->getMetadataForFile(self::FNAME);
         $this->assertInstanceOf('PhpBench\Benchmark\Metadata\BenchmarkMetadata', $metadata);
     }
@@ -62,12 +63,10 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $this->metadata->getSubjectMetadatas()->willReturn(array(
             $this->subjectMetadata->reveal(),
         ));
-        $this->metadata->getBeforeMethods()->willReturn(array());
-        $this->metadata->getAfterMethods()->willReturn(array());
-        $this->subjectMetadata->getBeforeMethods()->willReturn(array());
-        $this->subjectMetadata->getAfterMethods()->willReturn(array());
-        $this->subjectMetadata->getParamProviders()->willReturn(array());
-        $this->metadata->getPath()->willReturn(self::PATH);
+        TestUtil::configureBenchmark($this->metadata, array(
+            'path' => self::PATH,
+        ));
+        TestUtil::configureSubject($this->subjectMetadata);
         $this->reflector->getParameterSets(self::PATH, array())->willReturn(array());
         $this->subjectMetadata->setParameterSets(array())->shouldBeCalled();
 
@@ -86,14 +85,29 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     public function testValidationBeforeMethodsBenchmark()
     {
         $this->hierarchy->isEmpty()->willReturn(false);
-        $this->metadata->getSubjectMetadatas()->willReturn(array());
-        $this->metadata->getBeforeMethods()->willReturn(array(
-            'beforeMe',
+        TestUtil::configureBenchmark($this->metadata, array(
+            'beforeClassMethods' => array('beforeMe'),
         ));
-        $this->metadata->getAfterMethods()->willReturn(array());
-        $this->metadata->getPath()->willReturn(self::PATH);
-        $this->metadata->getClass()->willReturn('Test');
         $this->hierarchy->hasMethod('beforeMe')->willReturn(false);
+        $this->hierarchy->hasStaticMethod('beforeMe')->willReturn(true);
+
+        $this->factory->getMetadataForFile(self::FNAME);
+    }
+
+    /**
+     * It should throw an exception if a before class method is not static.
+     *
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage must be static
+     */
+    public function testValidationBeforeMethodsBenchmarkNotStatic()
+    {
+        $this->hierarchy->isEmpty()->willReturn(false);
+        TestUtil::configureBenchmark($this->metadata, array(
+            'beforeClassMethods' => array('beforeMe'),
+        ));
+        $this->hierarchy->hasMethod('beforeMe')->willReturn(true);
+        $this->hierarchy->hasStaticMethod('beforeMe')->willReturn(false);
 
         $this->factory->getMetadataForFile(self::FNAME);
     }
@@ -107,18 +121,13 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     public function testValidationBeforeMethodsSubject()
     {
         $this->hierarchy->isEmpty()->willReturn(false);
+        TestUtil::configureBenchmark($this->metadata, array());
         $this->metadata->getSubjectMetadatas()->willReturn(array(
             $this->subjectMetadata->reveal(),
         ));
-        $this->metadata->getBeforeMethods()->willReturn(array());
-        $this->metadata->getAfterMethods()->willReturn(array());
-        $this->subjectMetadata->getBeforeMethods()->willReturn(array(
-            'beforeMe',
+        TestUtil::configureSubject($this->subjectMetadata, array(
+            'beforeMethods' => array('beforeMe'),
         ));
-        $this->subjectMetadata->getAfterMethods()->willReturn(array());
-        $this->subjectMetadata->getParamProviders()->willReturn(array());
-        $this->subjectMetadata->getClass()->willReturn('Test');
-        $this->metadata->getPath()->willReturn(self::PATH);
         $this->hierarchy->hasMethod('beforeMe')->willReturn(false);
 
         $this->factory->getMetadataForFile(self::FNAME);
@@ -133,18 +142,14 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     public function testValidationAfterMethods()
     {
         $this->hierarchy->isEmpty()->willReturn(false);
-        $this->metadata->getBeforeMethods()->willReturn(array());
-        $this->metadata->getAfterMethods()->willReturn(array());
+        TestUtil::configureBenchmark($this->metadata, array(
+        ));
         $this->metadata->getSubjectMetadatas()->willReturn(array(
             $this->subjectMetadata->reveal(),
         ));
-        $this->subjectMetadata->getAfterMethods()->willReturn(array(
-            'afterMe',
+        TestUtil::configureSubject($this->subjectMetadata, array(
+            'afterMethods' => array('afterMe'),
         ));
-        $this->subjectMetadata->getBeforeMethods()->willReturn(array());
-        $this->subjectMetadata->getParamProviders()->willReturn(array());
-        $this->subjectMetadata->getClass()->willReturn('Test');
-        $this->metadata->getPath()->willReturn(self::PATH);
         $this->hierarchy->hasMethod('afterMe')->willReturn(false);
 
         $this->factory->getMetadataForFile(self::FNAME);
@@ -172,14 +177,13 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $this->metadata->getSubjectMetadatas()->willReturn(array(
             $this->subjectMetadata->reveal(),
         ));
-        $this->metadata->getBeforeMethods()->willReturn(array());
-        $this->metadata->getAfterMethods()->willReturn(array());
-        $this->subjectMetadata->getBeforeMethods()->willReturn(array());
-        $this->subjectMetadata->getAfterMethods()->willReturn(array());
-        $this->subjectMetadata->getParamProviders()->willReturn(array());
-        $this->metadata->getClass()->willReturn('TestBench');
-        $this->metadata->getPath()->willReturn(self::PATH);
-        $this->subjectMetadata->getName()->willReturn('benchTest');
+        TestUtil::configureBenchmark($this->metadata, array(
+            'class' => 'TestBench',
+            'path' => self::PATH,
+        ));
+        TestUtil::configureSubject($this->subjectMetadata, array(
+            'name' => 'benchTest',
+        ));
         $this->reflector->getParameterSets(self::PATH, array())->willReturn(array('asd' => 'bar'));
 
         $this->factory->getMetadataForFile(self::FNAME);

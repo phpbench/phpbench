@@ -16,4 +16,5 @@ class ReflectionMethod
     public $class;
     public $name;
     public $comment;
+    public $isStatic;
 }

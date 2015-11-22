@@ -76,6 +76,29 @@ class ReflectionHierarchy implements \IteratorAggregate
     }
 
     /**
+     * Return true if the class hierarchy contains the named static method.
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function hasStaticMethod($name)
+    {
+        foreach ($this->reflectionClasses as $reflectionClass) {
+            if (isset($reflectionClass->methods[$name])) {
+                $method = $reflectionClass->methods[$name];
+
+                if ($method->isStatic) {
+                    return true;
+                }
+                break;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Return true if thare are no reflection classes here.
      *
      * @return bool

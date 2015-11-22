@@ -18,7 +18,7 @@ Features:
 - Parameterized benchmarking cases.
 - Per-project configuration.
 - Serialize results as XML and generate reports later.
-- Before and After method specification.
+- Before and After method / class specification.
 - Pause (recover) between iterations
 - Nice command line interface.
 - Fully extendable.
