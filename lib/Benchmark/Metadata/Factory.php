@@ -63,9 +63,9 @@ class Factory
         $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
         $this->validateAbstractMetadata($hierarchy, $metadata);
 
-        foreach (array('getBeforeClassMethods', 'getAfterClassMethods') as $methodName) {
+        foreach (array('getBeforeClassMethods' => 'before class', 'getAfterClassMethods' => 'after class') as $methodName => $context) {
             foreach ($metadata->$methodName() as $method) {
-                $this->validateMethodExists($hierarchy, $method, true);
+                $this->validateMethodExists($context, $hierarchy, $method, true);
             }
         }
 
@@ -93,26 +93,26 @@ class Factory
 
     private function validateAbstractMetadata(ReflectionHierarchy $benchmarkReflection, AbstractMetadata $subject)
     {
-        foreach (array('getBeforeMethods', 'getAfterMethods') as $methodName) {
+        foreach (array('getBeforeMethods' => 'before', 'getAfterMethods' => 'after') as $methodName => $context) {
             foreach ($subject->$methodName() as $method) {
-                $this->validateMethodExists($benchmarkReflection, $method);
+                $this->validateMethodExists($context, $benchmarkReflection, $method);
             }
         }
     }
 
-    private function validateMethodExists(ReflectionHierarchy $benchmarkReflection, $method, $isStatic = false)
+    private function validateMethodExists($context, ReflectionHierarchy $benchmarkReflection, $method, $isStatic = false)
     {
         if (false === $benchmarkReflection->hasMethod($method)) {
             throw new \InvalidArgumentException(sprintf(
                 'Unknown %s method "%s" in benchmark class "%s"',
-                lcfirst($method), $method, $benchmarkReflection->class
+                $context, $method, $benchmarkReflection->getTop()->class
             ));
         }
 
         if ($isStatic !== $benchmarkReflection->hasStaticMethod($method)) {
             throw new \InvalidArgumentException(sprintf(
                 '%s method "%s" must be static in benchmark class "%s"',
-                lcfirst($method), $method, $benchmarkReflection->class
+                $context, $method, $benchmarkReflection->getTop()->class
             ));
         }
     }

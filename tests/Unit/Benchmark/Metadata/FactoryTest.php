@@ -98,11 +98,12 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
      * It should throw an exception if a before class method is not static.
      *
      * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage must be static
+     * @expectedExceptionMessage must be static in benchmark class "TestClass"
      */
     public function testValidationBeforeMethodsBenchmarkNotStatic()
     {
         $this->hierarchy->isEmpty()->willReturn(false);
+        $this->reflection->class = 'TestClass';
         TestUtil::configureBenchmark($this->metadata, array(
             'beforeClassMethods' => array('beforeMe'),
         ));
@@ -116,11 +117,12 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
      * It should throw an exception if a before/after method does not exist on the subject.
      *
      * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Unknown before
+     * @expectedExceptionMessage Unknown before method "beforeMe" in benchmark class "TestClass"
      */
     public function testValidationBeforeMethodsSubject()
     {
         $this->hierarchy->isEmpty()->willReturn(false);
+        $this->reflection->class = 'TestClass';
         TestUtil::configureBenchmark($this->metadata, array());
         $this->metadata->getSubjectMetadatas()->willReturn(array(
             $this->subjectMetadata->reveal(),
