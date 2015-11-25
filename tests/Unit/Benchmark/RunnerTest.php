@@ -85,7 +85,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
 </phpbench>
 EOT
             , PhpBench::VERSION, $expected)),
-            trim($result->saveXml())
+            trim($result->dump())
         );
     }
 
@@ -229,7 +229,7 @@ EOT
 </phpbench>
 EOT
             , PhpBench::VERSION)),
-            trim($result->saveXml())
+            trim($result->dump())
         );
     }
 
@@ -281,7 +281,7 @@ EOT
 </phpbench>
 EOT
             , PhpBench::VERSION)),
-            trim($result->saveXml())
+            trim($result->dump())
         );
 
         $this->runner->overrideSleep(100);
@@ -300,7 +300,7 @@ EOT
 </phpbench>
 EOT
             , PhpBench::VERSION)),
-            trim($result->saveXml())
+            trim($result->dump())
         );
     }
 
@@ -341,7 +341,7 @@ EOT
 </phpbench>
 EOT
             , PhpBench::VERSION)),
-            trim($result->saveXml())
+            trim($result->dump())
         );
     }
 
