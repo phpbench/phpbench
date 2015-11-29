@@ -59,8 +59,14 @@ class TabularGenerator extends AbstractTabularGenerator
                 'pretty_params' => array(
                     'type' => 'boolean',
                 ),
-                'aggregate' => array(
-                    'type' => 'boolean',
+                'type' => array(
+                    'type' => array(
+                        'enum' => array(
+                            'default',
+                            'aggregate',
+                            'compare',
+                        ),
+                    ),
                 ),
                 'exclude' => array(
                     'type' => 'array',
@@ -98,14 +104,8 @@ class TabularGenerator extends AbstractTabularGenerator
      */
     public function generate(SuiteDocument $document, array $config)
     {
-        if ($config['aggregate']) {
-            $report = 'aggregate';
-        } else {
-            $report = 'iteration';
-        }
-
-        $reportFile = __DIR__ . '/tabular/' . $report . '.json';
-        $definition = $this->definitionLoader->load($reportFile);
+        $reportFile = __DIR__ . '/tabular/' . $config['type'] . '.json';
+        $definition = $this->definitionLoader->load($reportFile, $document);
 
         if ($config['groups']) {
             $document = $this->filterGroups($document, $config['groups']);
@@ -143,13 +143,16 @@ class TabularGenerator extends AbstractTabularGenerator
     {
         return array(
             'aggregate' => array(
-                'aggregate' => true,
+                'type' => 'aggregate',
             ),
             'default' => array(
-                'aggregate' => false,
+                'type' => 'default',
+            ),
+            'compare' => array(
+                'type' => 'compare',
             ),
             'plain' => array(
-                'aggregate' => false,
+                'type' => 'default',
                 'formatting' => false,
                 'body_only' => true,
             ),
@@ -168,7 +171,7 @@ class TabularGenerator extends AbstractTabularGenerator
             'title' => null,
             'description' => null,
             'exclude' => array(),
-            'aggregate' => false,
+            'type' => 'default',
             'selector' => null,
             'sort' => array(),
             'body_only' => false,

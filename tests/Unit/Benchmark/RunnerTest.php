@@ -74,19 +74,10 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
                 ->willReturn(new IterationResult(10, 10));
         }
 
-        $result = $this->runner->runAll(__DIR__);
+        $result = $this->runner->runAll('context', __DIR__);
 
         $this->assertInstanceOf('PhpBench\Benchmark\SuiteDocument', $result);
-        $this->assertEquals(
-            trim(sprintf(<<<EOT
-<?xml version="1.0"?>
-<phpbench version="%s">
-%s
-</phpbench>
-EOT
-            , PhpBench::VERSION, $expected)),
-            trim($result->dump())
-        );
+        $this->assertBenchmarkResult($expected, $result);
     }
 
     public function provideRunner()
@@ -216,20 +207,15 @@ EOT
             $this->subject->reveal(),
         ));
         TestUtil::configureBenchmark($this->benchmark);
-        $result = $this->runner->runAll(__DIR__);
+        $result = $this->runner->runAll('context', __DIR__);
 
         $this->assertInstanceOf('PhpBench\Benchmark\SuiteDocument', $result);
-        $this->assertEquals(
-            trim(sprintf(<<<EOT
-<?xml version="1.0"?>
-<phpbench version="%s">
-  <benchmark class="Benchmark">
-    <subject name="benchFoo"/>
-  </benchmark>
-</phpbench>
+        $this->assertBenchmarkResult(<<<EOT
+      <benchmark class="Benchmark">
+        <subject name="benchFoo"/>
+      </benchmark>
 EOT
-            , PhpBench::VERSION)),
-            trim($result->dump())
+            , $result
         );
     }
 
@@ -264,13 +250,10 @@ EOT
             ->shouldBeCalledTimes(2)
             ->willReturn(new IterationResult(10, 10));
 
-        $result = $this->runner->runAll(__DIR__);
+        $result = $this->runner->runAll('context', __DIR__);
 
         $this->assertInstanceOf('PhpBench\Benchmark\SuiteDocument', $result);
-        $this->assertEquals(
-            trim(sprintf(<<<EOT
-<?xml version="1.0"?>
-<phpbench version="%s">
+        $this->assertBenchmarkResult(<<<EOT
   <benchmark class="Benchmark">
     <subject name="benchFoo">
       <variant sleep="50">
@@ -278,18 +261,13 @@ EOT
       </variant>
     </subject>
   </benchmark>
-</phpbench>
 EOT
-            , PhpBench::VERSION)),
-            trim($result->dump())
+            , $result
         );
 
         $this->runner->overrideSleep(100);
-        $result = $this->runner->runAll(__DIR__);
-        $this->assertEquals(
-            trim(sprintf(<<<EOT
-<?xml version="1.0"?>
-<phpbench version="%s">
+        $result = $this->runner->runAll('context', __DIR__);
+        $this->assertBenchmarkResult(<<<EOT
   <benchmark class="Benchmark">
     <subject name="benchFoo">
       <variant sleep="100">
@@ -297,10 +275,8 @@ EOT
       </variant>
     </subject>
   </benchmark>
-</phpbench>
 EOT
-            , PhpBench::VERSION)),
-            trim($result->dump())
+            , $result
         );
     }
 
@@ -324,25 +300,10 @@ EOT
             ->willReturn(new IterationResult(10, 10));
 
         $this->runner->setRetryThreshold(10);
-        $result = $this->runner->runAll(__DIR__);
+        $result = $this->runner->runAll('context', __DIR__);
 
         $this->assertInstanceOf('PhpBench\Benchmark\SuiteDocument', $result);
-        $this->assertEquals(
-            trim(sprintf(<<<EOT
-<?xml version="1.0"?>
-<phpbench version="%s" retry-threshold="10">
-  <benchmark class="Benchmark">
-    <subject name="benchFoo">
-      <variant sleep="50">
-        <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
-      </variant>
-    </subject>
-  </benchmark>
-</phpbench>
-EOT
-            , PhpBench::VERSION)),
-            trim($result->dump())
-        );
+        $this->assertContains('retry-threshold="10"', $result->dump());
     }
 
     /**
@@ -362,7 +323,7 @@ EOT
             $this->benchmark,
         ));
 
-        $this->runner->runAll(__DIR__);
+        $this->runner->runAll('context', __DIR__);
     }
 
     private function configureSubject($subject, array $options)
@@ -402,6 +363,26 @@ EOT
         $benchmark->getClass()->willReturn($options['class']);
         $benchmark->getBeforeClassMethods()->willReturn($options['beforeClassMethods']);
         $benchmark->getAfterClassMethods()->willReturn($options['afterClassMethods']);
+    }
+
+    private function assertBenchmarkResult($expected, $result)
+    {
+        foreach ($result->xpath()->query('//suite') as $suite) {
+            $suite->setAttribute('date', '');
+        }
+
+        $this->assertEquals(
+            str_replace(' ', '', (sprintf(<<<EOT
+<?xml version="1.0"?>
+<phpbench version="%s">
+  <suite context="context" date="">
+%s
+  </suite>
+</phpbench>
+EOT
+            , PhpBench::VERSION, $expected))),
+            trim(str_replace(' ', '', $result->dump()))
+        );
     }
 }
 

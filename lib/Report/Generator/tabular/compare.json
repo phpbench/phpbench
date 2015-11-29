@@ -1,0 +1,46 @@
+{
+    "params": {
+        "selector": "//suite[1]//subject/variant"
+    },
+    "includes": [
+        [ "classes.json", ["classes"] ]
+    ],
+    "rows": [
+        {
+            "group": "body",
+            "cells": [
+                {
+                    "name": "context",
+                    "expr": "string(ancestor-or-self::suite/@context)"
+                },
+                {
+                    "name": "benchmark",
+                    "expr": "class_name(string(ancestor-or-self::benchmark/@class))"
+                },
+                {
+                    "name": "subject",
+                    "expr": "string(ancestor-or-self::subject/@name)"
+                },
+                {
+                    "name": "group",
+                    "expr": "string(join_node_values(',', ancestor-or-self::subject/group/@name))"
+                },
+                {
+                    "class": "params",
+                    "name": "params",
+                    "expr": "parameters_to_json(ancestor-or-self::variant/parameter)"
+                },
+                {
+                    "name": "t:{{ cell.item }}",
+                    "expr": "sum(suite(descendant-or-self::iteration, '{{ cell.item }}')//@time) div sum(suite(descendant-or-self::iteration, '{{ cell.item }}')//@revs)",
+                    "class": "time",
+                    "with_items": {
+                        "selector": "//suite",
+                        "value": "string(./@context)"
+                    }
+                }
+            ],
+            "with_query": "{{ param.selector }}"
+        }
+    ]
+}

@@ -52,7 +52,7 @@ class TabularGeneratorTest extends GeneratorTestCase
         $dom = $this->generate(
             $this->getSuiteDocument(),
             array(
-                'aggregate' => true,
+                'type' => 'aggregate',
             )
         );
 
@@ -93,7 +93,7 @@ class TabularGeneratorTest extends GeneratorTestCase
         $dom = $this->generate(
             $this->getSuiteDocument(),
             array(
-                'aggregate' => true,
+                'type' => 'aggregate',
             )
         );
 
@@ -224,32 +224,84 @@ EOT
         , $value);
     }
 
+    /**
+     * It should generate a comparitive report.
+     */
+    public function testCompare()
+    {
+        $dom = $this->generate(
+            $this->getMultipleSuiteDocument(),
+            array(
+                'type' => 'compare',
+            )
+        );
+
+        $this->assertEquals(1, $dom->xpath()->evaluate('count(//group[@name="body"]/row)'));
+        $this->assertEquals(1, $dom->xpath()->evaluate('count(//group[@name="body"]/row/cell[@name="t:foobar"])'));
+        $this->assertEquals(1, $dom->xpath()->evaluate('count(//group[@name="body"]/row/cell[@name="t:barfoo"])'));
+    }
+
     private function getSuiteDocument()
     {
         $suite = new SuiteDocument();
         $suite->loadXml(<<<EOT
 <?xml version="1.0"?>
 <phpbench version="0.x">
-    <benchmark class="Foobar">
-        <subject name="mySubject">
-            <group name="one" />
-            <group name="two" />
-            <group name="three" />
-            <variant>
-                <parameter name="foo" value="bar" />
-                <parameter name="array" type="collection">
-                    <parameter name="0" value="one" />
-                    <parameter name="1" value="two" />
-                </parameter>
-                <parameter name="assoc_array" type="collection">
-                    <parameter name="one" value="two" />
-                    <parameter name="three" value="four" />
-                </parameter>
-                <iteration time="100" memory="100" revs="1" deviation="1" rejection-count="0"/>
-                <iteration time="75" memory="100" revs="1" deviation="2" rejection-count="0"/>
-           </variant>
-        </subject>
-    </benchmark>
+    <suite context="foobar">
+        <benchmark class="Foobar">
+            <subject name="mySubject">
+                <group name="one" />
+                <group name="two" />
+                <group name="three" />
+                <variant>
+                    <parameter name="foo" value="bar" />
+                    <parameter name="array" type="collection">
+                        <parameter name="0" value="one" />
+                        <parameter name="1" value="two" />
+                    </parameter>
+                    <parameter name="assoc_array" type="collection">
+                        <parameter name="one" value="two" />
+                        <parameter name="three" value="four" />
+                    </parameter>
+                    <iteration time="100" memory="100" revs="1" deviation="1" rejection-count="0"/>
+                    <iteration time="75" memory="100" revs="1" deviation="2" rejection-count="0"/>
+               </variant>
+            </subject>
+        </benchmark>
+    </suite>
+</phpbench>
+EOT
+        );
+
+        return $suite;
+    }
+
+    private function getMultipleSuiteDocument()
+    {
+        $suite = new SuiteDocument();
+        $suite->loadXml(<<<EOT
+<?xml version="1.0"?>
+<phpbench version="0.x">
+    <suite context="foobar">
+        <benchmark class="Foobar">
+            <subject name="mySubject">
+                <variant>
+                    <iteration time="100" memory="100" revs="1" deviation="1" rejection-count="0"/>
+                    <iteration time="75" memory="100" revs="1" deviation="2" rejection-count="0"/>
+               </variant>
+            </subject>
+        </benchmark>
+    </suite>
+    <suite context="barfoo">
+        <benchmark class="Foobar">
+            <subject name="mySubject">
+                <variant>
+                    <iteration time="100" memory="100" revs="1" deviation="1" rejection-count="0"/>
+                    <iteration time="75" memory="100" revs="1" deviation="2" rejection-count="0"/>
+               </variant>
+            </subject>
+        </benchmark>
+    </suite>
 </phpbench>
 EOT
         );
