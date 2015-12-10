@@ -263,8 +263,9 @@ EOT
                         <parameter name="one" value="two" />
                         <parameter name="three" value="four" />
                     </parameter>
-                    <iteration time="100" memory="100" revs="1" deviation="1" rejection-count="0"/>
-                    <iteration time="75" memory="100" revs="1" deviation="2" rejection-count="0"/>
+                    <iteration time="100" memory="100" revs="1" deviation="1" rejection-count="0" z-value="-1"/>
+                    <iteration time="75" memory="100" revs="1" deviation="2" rejection-count="0" z-value="1"/>
+                    <stats mean="0.9923" stdev="0.12724232786302" rstdev="12.822969652627" variance="0.01619061" min="0.891" max="1.349"/>
                </variant>
             </subject>
         </benchmark>

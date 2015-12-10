@@ -1,13 +1,27 @@
 {
     "classes": {
-        "stability": [
+        "sigma": [
+            [ "number", { "decimal_places": 2 } ],
+            [ "printf", { "format": "%sσ" } ]
+        ],
+        "stdev": [
+            [ "number", { "decimal_places": 2 } ],
+            [ "balance", { } ],
+            [ "printf", { "format": "%sσ" } ]
+        ],
+        "stdevtime": [
+            [ "number", { "decimal_places": 2 } ],
+            [ "printf", { "format": "%s\u03bcs" }]
+        ],
+        "percent": [
             [ "printf", { "format": "%.2f%%" } ]
         ],
-        "deviation": [
+        "diff": [
             [ "number", { "decimal_places": 2 }],
+            [ "balance", {} ],
             [ "printf", { "format": "%s%%" } ]
         ],
-        "memory": [
+        "mem": [
             [ "number" ],
             [ "printf", { "format": "%sb" }]
         ],

@@ -35,12 +35,14 @@ And it can be executed as follows:
 
 .. code-block:: bash
 
-    $ phpbench run HashBench.php
-    PhpBench 0.5. Running benchmarks.
-    Using configuration file: /home/daniel/www/phpbench-tutorial/phpbench.json
+    $ phpbench run examples/HashBench.php
+    PhpBench 0.8.0-dev. Running benchmarks.
 
-    ..
-    Done (2 subjects, 2 iterations) in 0.07s
+    ... 
+
+    3 subjects, 30 samples, 30000 revs, 0 rejects
+    ⅀T: 30543μs μSD/r 0.05μs μRSD/r: 4.83%
+    min mean max: 0.78 1.02 1.47 (μs/r)
 
 .. note::
 
@@ -61,7 +63,7 @@ benchmark runner. The term "revolutions" (invented here) refers to the number
 of times the benchamark is executed consecutively within a single time
 measurement.
 
-We can arrive at a more accurate measurement by determining the average time
+We can arrive at a more accurate measurement by determining the mean time
 from multiple revolutions (i.e. *time / revolutions*) than we could with a
 single revolution. In other words, more revolutions means more precision.
 
@@ -392,3 +394,4 @@ The above example will pause (sleep) for 1 second *after* each iteration.
     This can be overridden using the ``--sleep`` option from the CLI.
 
 .. _cartesian product: https://en.wikipedia.org/wiki/Cartesian_product
+.. _Relative standard deviation: https://en.wikipedia.org/wiki/Coefficient_of_variation

@@ -15,6 +15,7 @@ use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Dom\Document;
 use PhpBench\Report\GeneratorInterface;
+use PhpBench\Tabular\Definition\Loader;
 use PhpBench\Tabular\Tabular;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -23,10 +24,12 @@ abstract class AbstractTabularGenerator implements GeneratorInterface, OutputAwa
 {
     protected $tabular;
     protected $output;
+    protected $definitionLoader;
 
-    public function __construct(Tabular $tabular)
+    public function __construct(Tabular $tabular, Loader $definitionLoader)
     {
         $this->tabular = $tabular;
+        $this->definitionLoader = $definitionLoader;
     }
 
     /**
@@ -44,6 +47,7 @@ abstract class AbstractTabularGenerator implements GeneratorInterface, OutputAwa
             $this->output->writeln($document->saveXML());
         }
 
+        $definition = $this->definitionLoader->load($definition);
         if (isset($config['pretty_params']) && true === $config['pretty_params']) {
             $definition['classes']['params'] = array(
                 array('json_format', array()),

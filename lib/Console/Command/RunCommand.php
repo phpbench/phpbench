@@ -137,16 +137,28 @@ EOT
         $progressLogger->setOutput($consoleOutput);
 
         $consoleOutput->writeln('');
-        $startTime = microtime(true);
         $suiteResult = $this->executeBenchmarks($contextName, $path, $filters, $groups, $parameters, $iterations, $revs, $configPath, $retryThreshold, $sleep, $progressLogger);
+        $consoleOutput->writeln('');
         $consoleOutput->writeln('');
 
         $consoleOutput->writeln(sprintf(
-            '<greenbg>Done (%s subjects, %s iterations, %s rejects) in %ss</greenbg>',
+            '%s subjects, %s samples, %s revs, %s rejects',
             $suiteResult->getNbSubjects(),
             $suiteResult->getNbIterations(),
-            $suiteResult->getNbRejects(),
-            number_format(microtime(true) - $startTime, 2)
+            $suiteResult->getNbRevolutions(),
+            $suiteResult->getNbRejects()
+        ));
+        $consoleOutput->writeln(sprintf(
+            '⅀T: %sμs μSD/r %sμs μRSD/r: %s%%',
+            $suiteResult->getTotalTime(),
+            number_format($suiteResult->getMeanStDev(), 2),
+            number_format($suiteResult->getMeanRelStDev(), 2)
+        ));
+        $consoleOutput->writeln(sprintf(
+            'min mean max: %s %s %s (μs/r)',
+            number_format($suiteResult->getMin(), 2),
+            number_format($suiteResult->getMeanTime(), 2),
+            number_format($suiteResult->getMax(), 2)
         ));
 
         if ($dumpfile) {
@@ -154,8 +166,6 @@ EOT
             file_put_contents($dumpfile, $xml);
             $consoleOutput->writeln('Dumped result to ' . $dumpfile);
         }
-
-        $consoleOutput->writeln('');
 
         if ($dump) {
             $xml = $suiteResult->dump();

@@ -144,8 +144,7 @@ class Container
     {
         if (isset($this->instantiators[$serviceId])) {
             throw new \InvalidArgumentException(sprintf(
-                'Service with ID "%s" has already been registered'
-            ));
+                'Service with ID "%s" has already been registered', $serviceId));
         }
 
         $this->instantiators[$serviceId] = $instantiator;

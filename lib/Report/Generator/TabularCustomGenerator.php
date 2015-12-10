@@ -12,6 +12,7 @@
 namespace PhpBench\Report\Generator;
 
 use PhpBench\Benchmark\SuiteDocument;
+use PhpBench\Tabular\Definition\Loader;
 use PhpBench\Tabular\Tabular;
 
 /**
@@ -21,9 +22,9 @@ class TabularCustomGenerator extends AbstractTabularGenerator
 {
     private $configPath;
 
-    public function __construct(Tabular $tabular, $configPath)
+    public function __construct(Tabular $tabular, Loader $loader, $configPath)
     {
-        parent::__construct($tabular);
+        parent::__construct($tabular, $loader);
         $this->configPath = $configPath;
     }
 

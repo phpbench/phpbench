@@ -11,14 +11,16 @@ in the form of a table:
 
 .. code-block:: bash
 
-    +-------------------+--------------+-------+--------+------+--------------+------+----------+--------+-----------+
-    | benchmark         | subject      | group | params | revs | iter         | rej  | time     | memory | deviation |
-    +-------------------+--------------+-------+--------+------+--------------+------+----------+--------+-----------+
-    | TimeConsumerBench | benchConsume |       | []     | 1    | 0            | 0    | 226.00μs | 3,416b | 0.00%     |
-    |                   |              |       |        |      |              |      |          |        |           |
-    |                   |              |       |        |      | stability >> |      | 100.00%  |        |           |
-    |                   |              |       |        |      | average >>   | 0.00 | 226.00μs | 3,416b |           |
-    +-------------------+--------------+-------+--------+------+--------------+------+----------+--------+-----------+
+    +------------------+-------------+---------+--------+------+------+-----+----------+----------+---------+--------+
+    | benchmark        | subject     | group   | params | revs | iter | rej | mem      | time     | z-score | diff   |
+    +------------------+-------------+---------+--------+------+------+-----+----------+----------+---------+--------+
+    | HashingBenchmark | benchMd5    | hashing | []     | 1000 | 0    | 0   | 268,160b | 0.8040μs | -1σ     | -3.48% |
+    | HashingBenchmark | benchMd5    | hashing | []     | 1000 | 1    | 0   | 268,160b | 0.8620μs | +1.00σ  | +3.48% |
+    | HashingBenchmark | benchSha256 | hashing | []     | 1000 | 0    | 0   | 268,160b | 1.2880μs | +1.00σ  | +1.98% |
+    | HashingBenchmark | benchSha256 | hashing | []     | 1000 | 1    | 0   | 268,160b | 1.2380μs | -1σ     | -1.98% |
+    | HashingBenchmark | benchSha1   | hashing | []     | 1000 | 0    | 0   | 268,160b | 0.9030μs | -1σ     | -4.7%  |
+    | HashingBenchmark | benchSha1   | hashing | []     | 1000 | 1    | 0   | 268,160b | 0.9920μs | +1.00σ  | +4.70% |
+    +------------------+-------------+---------+--------+------+------+-----+----------+----------+---------+--------+
 
 Generator: :ref:`generator_table`.
 
@@ -31,16 +33,11 @@ Columns:
 - **revs**: Number of :ref:`revolutions`.
 - **iter**: The :ref:`iteration <iterations>` index.
 - **rej**: Number of rejected iterations (see :ref:`retry_threshold`).
+- **mem**: Average amount of memory used by the iteration.
 - **time**: Time taken to execute a single iteration in microseconds_
-- **memory**: Memory used by iteration (as reported by memory_get_peak_usage_, in bytes.
-- **deviation**: Deviation from the mean as a percentage (when multiple
+- **z-score**: `Number of standard deviations`_ this value is away from the mean.
+- **diff**: Deviation from the mean as a percentage (when multiple
   benchmarks / iterations are displayed).
-
-Footers:
-
-- **stability**: 100% stability is obtained when all of the rows have the same
-  time.
-- **average**: Average time and memory for all rows.
 
 ``aggregate``
 -------------
@@ -48,13 +45,14 @@ Footers:
 The aggregate report is similar to the ``default`` report, but shows only one
 row for each subject:
 
-.. code-block:: bash
 
-    +-------------------+--------------+-------+--------+------+-------+-----+------------+--------+-----------+-----------+
-    | benchmark         | subject      | group | params | revs | iters | rej | time       | memory | deviation | stability |
-    +-------------------+--------------+-------+--------+------+-------+-----+------------+--------+-----------+-----------+
-    | TimeConsumerBench | benchConsume |       | []     | 1    | 1     | 0   | 227.0000μs | 3,416b | 0.00%     | 100.00%   |
-    +-------------------+--------------+-------+--------+------+-------+-----+-------+--------+-----------+-----------+
+    +------------------+-------------+---------+--------+-------+-----+-----+----------+----------+----------+--------+--------+
+    | benchmark        | subject     | group   | params | revs  | its | rej | mem      | time     | range    | stdev  | rstdev |
+    +------------------+-------------+---------+--------+-------+-----+-----+----------+----------+----------+--------+--------+
+    | HashingBenchmark | benchMd5    | hashing | []     | 10000 | 10  | 0   | 268,160b | 0.9998μs | 0.8660μs | 0.27μs | 27.01% |
+    | HashingBenchmark | benchSha256 | hashing | []     | 10000 | 10  | 0   | 268,160b | 1.2835μs | 0.1850μs | 0.06μs | 4.75%  |
+    | HashingBenchmark | benchSha1   | hashing | []     | 10000 | 10  | 0   | 268,160b | 0.9597μs | 0.1310μs | 0.04μs | 4.35%  |
+    +------------------+-------------+---------+--------+-------+-----+-----+----------+----------+----------+--------+--------+
 
 Generator: :ref:`generator_table`.
 
@@ -65,13 +63,18 @@ Columns:
 - **group**: The :ref:`group <groups>` the benchmark is in.
 - **params**: Any :ref:`parameters` which were passed to the benchmark.
 - **revs**: Sum of the number of :ref:`revolutions` for all iterations.
-- **iters**: Number of :ref:`iterations <iterations>` performed.
+- **its**: Number of :ref:`iterations <iterations>` performed.
 - **rej**: Number of rejected iterations (see :ref:`retry_threshold`).
-- **time**: Average time taken for each iteration.
-- **memory**: Average memory used by iteration.
-- **deviation**: Deviation from the mean as a percentage (when multiple
+- **mem**: Average memory used by iteration.
+- **time**: Average time.
+- **range**: Difference between the slowest and fastest times.
+- **stdev**: The `standard deviation`_.
   benchmarks).
-- **stability**: How much the time of the individual iterations differed.
+- **rstdev**: `Relative standard deviation`_ as a percentage (standardized
+  measure).
 
 .. _microseconds: https://en.wikipedia.org/wiki/Microseconds
 .. _memory_get_peak_usage: http://php.net/manual/en/function.memory-get-peak-usage.php
+.. _standard deviation: https://en.wikipedia.org/wiki/Standard_deviation
+.. _Relative standard deviation: https://en.wikipedia.org/wiki/Coefficient_of_variation
+.. _Number of standard deviations: https://en.wikipedia.org/wiki/Z-score

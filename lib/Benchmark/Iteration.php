@@ -26,6 +26,7 @@ class Iteration
     private $result;
     private $deviation;
     private $rejectionCount = 0;
+    private $zValue;
 
     /**
      * @param int $index
@@ -126,7 +127,7 @@ class Iteration
     }
 
     /**
-     * Set the deviation of this iteration from other iterations in the same
+     * Set the computed deviation of this iteration from other iterations in the same
      * set.
      *
      * NOTE: Should be called by the IterationCollection
@@ -136,6 +137,26 @@ class Iteration
     public function setDeviation($deviation)
     {
         $this->deviation = $deviation;
+    }
+
+    /**
+     * Get the computed ZValue for this iteration.
+     *
+     * @return float
+     */
+    public function getZValue()
+    {
+        return $this->zValue;
+    }
+
+    /**
+     * Set the computed Z-Value for this iteration.
+     *
+     * @param float $zValue
+     */
+    public function setZValue($zValue)
+    {
+        $this->zValue = $zValue;
     }
 
     /**

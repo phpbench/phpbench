@@ -45,7 +45,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
      *
      * @dataProvider provideRunner
      */
-    public function testRunner($iterations, $revs, array $parameters, $expected, $exception = null)
+    public function testRunner($iterations, $revs, array $parameters, $xpathAssertions, $exception = null)
     {
         if ($exception) {
             $this->setExpectedException($exception[0], $exception[1]);
@@ -77,7 +77,10 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $result = $this->runner->runAll('context', __DIR__);
 
         $this->assertInstanceOf('PhpBench\Benchmark\SuiteDocument', $result);
-        $this->assertBenchmarkResult($expected, $result);
+
+        foreach ($xpathAssertions as $xpathAssertion) {
+            $this->assertTrue($result->evaluate($xpathAssertion), $xpathAssertion);
+        }
     }
 
     public function provideRunner()
@@ -87,108 +90,67 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
                 1,
                 array(1),
                 array(),
-                <<<EOT
-  <benchmark class="Benchmark">
-    <subject name="benchFoo">
-      <variant sleep="0">
-        <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
-      </variant>
-    </subject>
-  </benchmark>
-EOT
+                array(
+                    'count(//iteration) = 1',
+                ),
             ),
             array(
                 1,
                 array(1, 3),
                 array(),
-                <<<EOT
-  <benchmark class="Benchmark">
-    <subject name="benchFoo">
-      <variant sleep="0">
-        <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
-        <iteration revs="3" time="10" memory="10" deviation="0" rejection-count="0"/>
-      </variant>
-    </subject>
-  </benchmark>
-EOT
+                array(
+                    'count(//iteration[@revs=3]) = 1',
+                    'count(//iteration[@revs=1]) = 1',
+                ),
             ),
             array(
                 4,
                 array(1, 3),
+                array(
+                    'count(//iteration[@revs=1]) = 4',
+                    'count(//iteration[@revs=3]) = 4',
+                ),
                 array(),
-                <<<EOT
-  <benchmark class="Benchmark">
-    <subject name="benchFoo">
-      <variant sleep="0">
-        <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
-        <iteration revs="3" time="10" memory="10" deviation="0" rejection-count="0"/>
-        <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
-        <iteration revs="3" time="10" memory="10" deviation="0" rejection-count="0"/>
-        <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
-        <iteration revs="3" time="10" memory="10" deviation="0" rejection-count="0"/>
-        <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
-        <iteration revs="3" time="10" memory="10" deviation="0" rejection-count="0"/>
-      </variant>
-    </subject>
-  </benchmark>
-EOT
             ),
             array(
                 1,
                 array(1),
                 array('one' => 'two', 'three' => 'four'),
-                <<<EOT
-  <benchmark class="Benchmark">
-    <subject name="benchFoo">
-      <variant sleep="0">
-        <parameter name="one" value="two"/>
-        <parameter name="three" value="four"/>
-        <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
-      </variant>
-    </subject>
-  </benchmark>
-EOT
+                array(
+                    'count(//parameter[@name="one"]) = 1',
+                    'count(//parameter[@name="three"]) = 1',
+                ),
             ),
             array(
                 1,
                 array(1),
                 array('one', 'two'),
-                <<<EOT
-  <benchmark class="Benchmark">
-    <subject name="benchFoo">
-      <variant sleep="0">
-        <parameter name="0" value="one"/>
-        <parameter name="1" value="two"/>
-        <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
-      </variant>
-    </subject>
-  </benchmark>
-EOT
+                array(
+                    'count(//parameter[@name="0"]) = 1',
+                    'count(//parameter[@name="1"]) = 1',
+                ),
             ),
             array(
                 1,
                 array(1),
                 array('one' => array('three' => 'four')),
-                <<<EOT
-  <benchmark class="Benchmark">
-    <subject name="benchFoo">
-      <variant sleep="0">
-        <parameter name="one" type="collection">
-          <parameter name="three" value="four"/>
-        </parameter>
-        <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
-      </variant>
-    </subject>
-  </benchmark>
-EOT
+                array(
+                    'count(//parameter[@name="one"]/parameter[@name="three"]) = 1',
+                ),
             ),
             array(
                 1,
                 array(1),
                 array('one' => array('three' => new \stdClass())),
-                '',
+                array(),
                 array('InvalidArgumentException', 'Parameters must be either scalars or arrays, got: stdClass'),
             ),
+        );
+    }
+
+    public function nothing()
+    {
+        array(
         );
     }
 
@@ -210,13 +172,8 @@ EOT
         $result = $this->runner->runAll('context', __DIR__);
 
         $this->assertInstanceOf('PhpBench\Benchmark\SuiteDocument', $result);
-        $this->assertBenchmarkResult(<<<EOT
-      <benchmark class="Benchmark">
-        <subject name="benchFoo"/>
-      </benchmark>
-EOT
-            , $result
-        );
+        $this->assertTrue($result->evaluate('count(//subject) = 1'));
+        $this->assertTrue($result->evaluate('count(//subject/*) = 0'));
     }
 
     /**
@@ -253,31 +210,11 @@ EOT
         $result = $this->runner->runAll('context', __DIR__);
 
         $this->assertInstanceOf('PhpBench\Benchmark\SuiteDocument', $result);
-        $this->assertBenchmarkResult(<<<EOT
-  <benchmark class="Benchmark">
-    <subject name="benchFoo">
-      <variant sleep="50">
-        <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
-      </variant>
-    </subject>
-  </benchmark>
-EOT
-            , $result
-        );
+        $this->assertTrue($result->evaluate('count(//variant[@sleep="50"]) = 1'), true);
 
         $this->runner->overrideSleep(100);
         $result = $this->runner->runAll('context', __DIR__);
-        $this->assertBenchmarkResult(<<<EOT
-  <benchmark class="Benchmark">
-    <subject name="benchFoo">
-      <variant sleep="100">
-        <iteration revs="1" time="10" memory="10" deviation="0" rejection-count="0"/>
-      </variant>
-    </subject>
-  </benchmark>
-EOT
-            , $result
-        );
+        $this->assertTrue($result->evaluate('count(//variant[@sleep="100"]) = 1'), true);
     }
 
     /**
@@ -350,39 +287,6 @@ EOT
         $subject->getGroups()->willReturn($options['groups']);
         $subject->getRevs()->willReturn($options['revs']);
         $subject->getSkip()->willReturn($options['skip']);
-    }
-
-    private function configureBenchmark($benchmark, array $options = array())
-    {
-        $options = array_merge(array(
-            'class' => 'Benchmark',
-            'beforeClassMethods' => array(),
-            'afterClassMethods' => array(),
-        ), $options);
-
-        $benchmark->getClass()->willReturn($options['class']);
-        $benchmark->getBeforeClassMethods()->willReturn($options['beforeClassMethods']);
-        $benchmark->getAfterClassMethods()->willReturn($options['afterClassMethods']);
-    }
-
-    private function assertBenchmarkResult($expected, $result)
-    {
-        foreach ($result->xpath()->query('//suite') as $suite) {
-            $suite->setAttribute('date', '');
-        }
-
-        $this->assertEquals(
-            str_replace(' ', '', (sprintf(<<<EOT
-<?xml version="1.0"?>
-<phpbench version="%s">
-  <suite context="context" date="">
-%s
-  </suite>
-</phpbench>
-EOT
-            , PhpBench::VERSION, $expected))),
-            trim(str_replace(' ', '', $result->dump()))
-        );
     }
 }
 

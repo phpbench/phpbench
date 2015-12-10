@@ -55,6 +55,17 @@ class DelimitedRenderer implements RendererInterface, OutputAwareInterface
     {
         $rows = array();
 
+        if (true === $config['header']) {
+            $header = array();
+            foreach ($tableEl->query('.//row') as $rowEl) {
+                foreach ($rowEl->query('.//cell') as $cellEl) {
+                    $colName = $cellEl->getAttribute('name');
+                    $header[$colName] = $colName;
+                }
+            }
+            $rows[] = $header;
+        }
+
         foreach ($tableEl->query('.//row') as $rowEl) {
             $row = array();
             foreach ($rowEl->query('.//cell') as $cellEl) {
@@ -92,6 +103,7 @@ class DelimitedRenderer implements RendererInterface, OutputAwareInterface
         return array(
             'delimiter' => "\t",
             'file' => null,
+            'header' => false,
         );
     }
 
@@ -108,6 +120,9 @@ class DelimitedRenderer implements RendererInterface, OutputAwareInterface
                 ),
                 'file' => array(
                     'type' => array('string', 'null'),
+                ),
+                'header' => array(
+                    'type' => 'boolean',
                 ),
             ),
             'additionalProperties' => false,

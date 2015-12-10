@@ -125,20 +125,19 @@ And you should see some output similar to the following:
 
 .. code-block:: bash
 
-    PhpBench 0.5. Running benchmarks.
-    Using configuration file: /home/daniel/www/phpbench-tutorial/phpbench.json
+    PhpBench 0.8.0-dev. Running benchmarks.
 
-    .
-    Done (1 subjects, 1 iterations) in 0.22s
+    . 
 
-    +-------------------+--------------+-------+--------+------+--------------+------+----------+--------+-----------+
-    | benchmark         | subject      | group | params | revs | iter         | rej  | time     | memory | deviation |
-    +-------------------+--------------+-------+--------+------+--------------+------+----------+--------+-----------+
-    | TimeConsumerBench | benchConsume |       | []     | 1    | 0            | 0    | 226.00μs | 3,416b | 0.00%     |
-    |                   |              |       |        |      |              |      |          |        |           |
-    |                   |              |       |        |      | stability >> |      | 100.00%  |        |           |
-    |                   |              |       |        |      | average >>   | 0.00 | 226.00μs | 3,416b |           |
-    +-------------------+--------------+-------+--------+------+--------------+------+----------+--------+-----------+
+    1 subjects, 1 samples, 1 revs, 0 rejects
+    ⅀T: 173μs μSD/r 0.00μs μRSD/r: 0.00%
+    min mean max: 173.00 173.00 173.00 (μs/r)
+
+    +-------------------+---------------+-------+--------+------+------+-----+----------+------------+---------+-------+
+    | benchmark         | subject       | group | params | revs | iter | rej | mem      | time       | z-score | diff  |
+    +-------------------+---------------+-------+--------+------+------+-----+----------+------------+---------+-------+
+    | TimeConsumerBench | benchConsumee |       | []     | 1    | 0    | 0   | 265,936b | 173.0000μs | 0.00σ   | 0.00% |
+    +-------------------+---------------+-------+--------+------+------+-----+----------+------------+---------+-------+
 
 You may have guessed that the code was only executed once (as indicated by the
 ``revs`` column). To achieve a better measurement we should increase the
@@ -208,13 +207,21 @@ rather than ``default``:
 Increase Stability
 ------------------
 
-You will be able to see the column "stability" in the aggregate report. This
-is a percentage where 100% means that all the iterations had exactly the same
-time, the lower the percentage the less you can trust the results.
+You will see the columns `stdev` and `rstdev`. `stdev` is the `Standard
+Deviation` of the set of iterations and `rstdev` is `Relative Standard
+Deviation`_.
+
+Stability can be inferred from `rstdev`, with 0% being the best and anything
+about 2% should be treated as suspicious.
 
 To increase stability you can use the ``--retry-threshold`` to automatically
-:ref:`repeat the iterations <retry_threshold>` until they fit within a given
-margin of error:
+:ref:`repeat the iterations <retry_threshold>` until the `diff` (the
+percentage difference from the lowest measuremnt) fits within a given
+threshold:
+
+.. note:
+
+    You can see the `diff` value for each iteration in the `default` report.
 
 .. code-block:: bash
 

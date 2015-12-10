@@ -39,69 +39,27 @@
                     "expr": "string(descendant-or-self::iteration/@rejection-count)"
                 },
                 {
-                    "name": "time",
-                    "class": "time",
-                    "expr": "number(descendant-or-self::iteration/@time) div number(sum(descendant-or-self::iteration/@revs))"
-                },
-                {
-                    "name": "memory",
-                    "class": "memory",
+                    "name": "mem",
+                    "class": "mem",
                     "expr": "number(descendant-or-self::iteration/@memory)"
                 },
                 {
-                    "name": "deviation",
-                    "class": "deviation",
+                    "name": "time",
+                    "class": "time",
+                    "expr": "number(descendant-or-self::iteration/@time)"
+                },
+                {
+                    "name": "z-score",
+                    "class": "stdev",
+                    "expr": "number(descendant-or-self::iteration/@z-value)"
+                },
+                {
+                    "name": "diff",
+                    "class": "diff",
                     "expr": "number(descendant-or-self::iteration/@deviation)"
                 }
             ],
             "with_query": "{{ param.selector }}"
-        },
-        {
-            "cells": {
-            }
-        },
-        {
-            "cells": [
-                {
-                    "name": "iter",
-                    "literal": "{{ row.item }}"
-                },
-                {
-                    "name": "{{ cell.col }}",
-                    "expr": "{{ row.item }}(//group[@name=\"body\"]//cell[@name=\"{{ cell.col }}\"])",
-                    "pass": 1,
-                    "class": "{{ cell.class }}",
-                    "with_items": [
-                        {
-                            "col": "memory", 
-                            "class": "memory"
-                        },
-                        {
-                            "col": "time", 
-                            "class": "time"
-                        },
-                        {
-                            "col": "rej", 
-                            "class": "number"
-                        }
-                    ]
-                }
-            ],
-            "group": "footer",
-            "with_items": [ "average", "sum" ]
-        },
-        {
-            "cells": [
-                {
-                    "name": "iter",
-                    "literal": "stability"
-                },
-                {
-                    "class": "stability",
-                    "name": "time",
-                    "expr": "100 - deviation(min(//iteration/@time), max(//iteration/@time))"
-                }
-            ]
         }
     ]
 }

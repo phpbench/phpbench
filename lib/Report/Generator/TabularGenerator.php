@@ -12,7 +12,6 @@
 namespace PhpBench\Report\Generator;
 
 use PhpBench\Benchmark\SuiteDocument;
-use PhpBench\Tabular\Definition\Loader;
 use PhpBench\Tabular\Tabular;
 
 /**
@@ -20,21 +19,6 @@ use PhpBench\Tabular\Tabular;
  */
 class TabularGenerator extends AbstractTabularGenerator
 {
-    /**
-     * @var Loader
-     */
-    private $definitionLoader;
-
-    /**
-     * @param Tabular $tabular
-     * @param Loader $loader
-     */
-    public function __construct(Tabular $tabular, Loader $loader)
-    {
-        parent::__construct($tabular);
-        $this->definitionLoader = $loader;
-    }
-
     /**
      * {@inheritdoc}
      */
