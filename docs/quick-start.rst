@@ -127,9 +127,11 @@ And you should see some output similar to the following:
 
     PhpBench 0.8.0-dev. Running benchmarks.
 
-    . 
+    \TimeConsumerBench
 
-    1 subjects, 1 samples, 1 revs, 0 rejects
+        benchConsume                  I0 P0         μ/r: 173.00μs   μSD/r 0.00μs    μRSD/r: 0.00%
+
+    1 subjects, 1 iterations, 1 revs, 0 rejects
     ⅀T: 173μs μSD/r 0.00μs μRSD/r: 0.00%
     min mean max: 173.00 173.00 173.00 (μs/r)
 
@@ -207,9 +209,9 @@ rather than ``default``:
 Increase Stability
 ------------------
 
-You will see the columns `stdev` and `rstdev`. `stdev` is the `Standard
-Deviation` of the set of iterations and `rstdev` is `Relative Standard
-Deviation`_.
+You will see the columns `stdev` and `rstdev`. `stdev` is the `standard
+deviation`_ of the set of iterations and `rstdev` is `relative standard
+deviation`_.
 
 Stability can be inferred from `rstdev`, with 0% being the best and anything
 about 2% should be treated as suspicious.
@@ -231,13 +233,6 @@ threshold:
 
     Lower values for ``retry-threshold``, depending on the stability of your
     system,  generally lead to increased total benchmarking time.
-
-You may get a better view of what is going on by using the ``verbose``
-progress logger:
-
-.. code-block:: bash
-
-    $ php vendor/bin/phpbench run benchmarks/TimeConsumerBench.php --report=aggregate --retry-threshold=5 --progress=verbose
 
 Customize Reports
 -----------------
@@ -297,3 +292,5 @@ This quick start demonstrated some of the features of PHPBench, but there is
 more to discover everything can be found in this manual. Happy benchmarking.
 
 .. _composer: http://getcomposer.org
+.. _Relative standard deviation: https://en.wikipedia.org/wiki/Coefficient_of_variation
+.. _standard deviation: https://en.wikipedia.org/wiki/Standard_deviation

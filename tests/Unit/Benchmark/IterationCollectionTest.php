@@ -17,13 +17,22 @@ use Prophecy\Argument;
 
 class IterationCollectionTest extends \PHPUnit_Framework_TestCase
 {
+    private $subject;
+    private $parameterSet;
+
+    public function setUp()
+    {
+        $this->subject = $this->prophesize('PhpBench\Benchmark\Metadata\SubjectMetadata');
+        $this->parameterSet = $this->prophesize('PhpBench\Benchmark\ParameterSet');
+    }
+
     /**
      * It should be iterable
      * It sohuld be countable.
      */
     public function testIteration()
     {
-        $iterations = new IterationCollection();
+        $iterations = new IterationCollection($this->subject->reveal(), $this->parameterSet->reveal());
         $iterations->replace(array(
             $this->createIteration(4),
             $this->createIteration(4),
@@ -43,7 +52,7 @@ class IterationCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testComputeStats()
     {
-        $iterations = new IterationCollection();
+        $iterations = new IterationCollection($this->subject->reveal(), $this->parameterSet->reveal());
         $iterations->replace(array(
             $this->createIteration(4, -50, -0.70710678118655),
             $this->createIteration(8, 0, 1E-12),
@@ -59,7 +68,7 @@ class IterationCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testComputeDeviationZeroIterations()
     {
-        $iterations = new IterationCollection();
+        $iterations = new IterationCollection($this->subject->reveal(), $this->parameterSet->reveal());
         $iterations->computeStats();
     }
 
@@ -68,7 +77,7 @@ class IterationCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testReject()
     {
-        $iterations = new IterationCollection(50);
+        $iterations = new IterationCollection($this->subject->reveal(), $this->parameterSet->reveal(), 50);
         $iterations->replace(array(
             $iter1 = $this->createIteration(4, -50),
             $iter2 = $this->createIteration(8, 0),

@@ -35,12 +35,12 @@ And it can be executed as follows:
 
 .. code-block:: bash
 
-    $ phpbench run examples/HashBench.php
+    $ phpbench run examples/HashBench.php --progress=dots
     PhpBench 0.8.0-dev. Running benchmarks.
 
     ... 
 
-    3 subjects, 30 samples, 30000 revs, 0 rejects
+    3 subjects, 30 iterations, 30000 revs, 0 rejects
     ⅀T: 30543μs μSD/r 0.05μs μRSD/r: 4.83%
     min mean max: 0.78 1.02 1.47 (μs/r)
 

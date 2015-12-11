@@ -88,7 +88,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 1,
-                array(1),
+                1,
                 array(),
                 array(
                     'count(//iteration) = 1',
@@ -96,25 +96,23 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 1,
-                array(1, 3),
+                3,
                 array(),
                 array(
                     'count(//iteration[@revs=3]) = 1',
-                    'count(//iteration[@revs=1]) = 1',
                 ),
             ),
             array(
                 4,
-                array(1, 3),
+                3,
                 array(
-                    'count(//iteration[@revs=1]) = 4',
                     'count(//iteration[@revs=3]) = 4',
                 ),
                 array(),
             ),
             array(
                 1,
-                array(1),
+                1,
                 array('one' => 'two', 'three' => 'four'),
                 array(
                     'count(//parameter[@name="one"]) = 1',
@@ -123,7 +121,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 1,
-                array(1),
+                1,
                 array('one', 'two'),
                 array(
                     'count(//parameter[@name="0"]) = 1',
@@ -132,7 +130,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 1,
-                array(1),
+                1,
                 array('one' => array('three' => 'four')),
                 array(
                     'count(//parameter[@name="one"]/parameter[@name="three"]) = 1',
@@ -140,7 +138,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 1,
-                array(1),
+                1,
                 array('one' => array('three' => new \stdClass())),
                 array(),
                 array('InvalidArgumentException', 'Parameters must be either scalars or arrays, got: stdClass'),
@@ -261,32 +259,6 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         ));
 
         $this->runner->runAll('context', __DIR__);
-    }
-
-    private function configureSubject($subject, array $options)
-    {
-        $options = array_merge(array(
-            'iterations' => 1,
-            'name' => 'benchFoo',
-            'beforeMethods' => array(),
-            'afterMethods' => array(),
-            'parameterSets' => array(array(array())),
-            'groups' => array(),
-            'revs' => 1,
-            'notApplicable' => false,
-            'skip' => false,
-            'sleep' => 0,
-        ), $options);
-
-        $subject->getIterations()->willReturn($options['iterations']);
-        $subject->getSleep()->willReturn($options['sleep']);
-        $subject->getName()->willReturn($options['name']);
-        $subject->getBeforeMethods()->willReturn($options['beforeMethods']);
-        $subject->getAfterMethods()->willReturn($options['afterMethods']);
-        $subject->getParameterSets()->willReturn($options['parameterSets']);
-        $subject->getGroups()->willReturn($options['groups']);
-        $subject->getRevs()->willReturn($options['revs']);
-        $subject->getSkip()->willReturn($options['skip']);
     }
 }
 

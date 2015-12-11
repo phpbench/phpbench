@@ -104,7 +104,7 @@ The ``--report`` option can be specified multiple times.
 .. note::
 
     If you want to suppress all other output and only show the output from the
-    reports you can use the ``--quiet`` option. This is especially useful when
+    reports you can use the ``--progress=none`` option. This is especially useful when
     piping a report to another program.
 
 .. _retry_threshold:
@@ -209,10 +209,26 @@ specified using the ``--progress`` option:
 
 The built-in progress loggers are:
 
-- ``dots``: The default logger, shows one dot per subject (like PHPUnit).
+- ``verbose``: The default logger, format: `[R<retry nb.>] I<iter nb.> P<parameter set nb.> <mean per rev.> <standard deviation per rev.> <relative standard deviation per rev.>` ).
+- ``dots``: Shows one dot per subject (like PHPUnit).
 - ``classdots``: Shows the benchmark class, and then a dot for each subject.
-- ``verbose``: Verbose output (format `R<retry nb.> I<iter nb.> #<parameter set
-  nb.>`).
+
+All of the progress reports contain the following footer:
+
+.. code-block:: bash
+
+    3 subjects, 30 iterations, 30000 revs, 0 rejects
+    min mean max: 0.84 1.13 1.66 (μs/r)
+    ⅀T: 33987μs μSD/r 0.16μs μRSD/r: 14.92%
+
+It provides a summary of the minimum, mean, and maximum subject times, given
+microseconds per revolution. ⅀T is the aggregate total time, μSD/r is the mean
+standard deviation, and μRSD/r is the mean relative standard deviation.
+
+.. warning::
+
+    These summary statistics can be misleading. You should always verify the
+    individual subject statistics before drawing any conclusions.
 
 Configuration File
 ------------------

@@ -12,6 +12,7 @@
 namespace PhpBench\Benchmark;
 
 use PhpBench\Dom\Document;
+use PhpBench\Math\Statistics;
 
 /**
  * DOMDocument implementation for containing the benchmark suite
@@ -100,14 +101,12 @@ class SuiteDocument extends Document
      */
     public function getMeanRelStDev()
     {
-        $rStDevs = 0;
-        foreach ($this->query('//stats') as $i => $stats) {
-            $rStDevs += $stats->getAttribute('stdev') / $stats->getAttribute('mean');
+        $rStDevs = array();
+        foreach ($this->query('//stats') as $stats) {
+            $rStDevs[] = $stats->getAttribute('rstdev');
         }
 
-        $mean = ($rStDevs / ($i + 1)) * 100;
-
-        return $mean;
+        return Statistics::mean($rStDevs);
     }
 
     /**

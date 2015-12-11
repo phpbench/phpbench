@@ -12,65 +12,98 @@
 namespace PhpBench\Progress\Logger;
 
 use PhpBench\Benchmark\Iteration;
+use PhpBench\Benchmark\IterationCollection;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
-use PhpBench\Progress\LoggerInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
-class VerboseLogger implements LoggerInterface
+class VerboseLogger extends PhpBenchLogger
 {
-    private $output;
-    private $lastSubject;
-    private $lastRetry;
+    /**
+     * @var int
+     */
+    private $rejectionCount = 0;
 
-    public function setOutput(OutputInterface $output)
-    {
-        $this->output = $output;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function benchmarkStart(BenchmarkMetadata $benchmark)
     {
         $this->output->writeln(sprintf('<comment>%s</comment>', $benchmark->getClass()));
+        $this->output->write(PHP_EOL);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function benchmarkEnd(BenchmarkMetadata $benchmark)
     {
+        $this->output->write(PHP_EOL);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function subjectStart(SubjectMetadata $subject)
     {
-        $this->lastRetry = null;
-        $this->lastSubject = $this->lastRetry = sprintf('  <info>>> </info>%s:', $subject->getName());
-        $this->output->write($this->lastSubject);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function subjectEnd(SubjectMetadata $subject)
     {
-        $this->output->writeln(' [<info>OK</info>]');
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function iterationStart(Iteration $iteration)
     {
-        static $count;
-        $this->output->write($this->lastIteration = sprintf(
-            "\x0D%s I%s #%s ",
-            $this->lastRetry,
+        $this->output->write(sprintf(
+            "\x1B[0G    %-30s%sI%s P%s ",
+            $iteration->getSubject()->getName(),
+            $this->rejectionCount ? 'R' . $this->rejectionCount . ' ' : '',
             $iteration->getIndex(),
             $iteration->getParameters()->getIndex()
         ));
-        $count++;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function iterationEnd(Iteration $iteration)
     {
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function iterationsStart(IterationCollection $iterations)
+    {
+        $this->paramSetIndex = $iterations->getParameterSet()->getIndex();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function iterationsEnd(IterationCollection $iterations)
+    {
+        $stats = $iterations->getStats();
+        $this->output->write(sprintf(
+            "\tμ/r: %sμs\tμSD/r %sμs\tμRSD/r: %s%%",
+            number_format($stats['mean'], 2),
+            number_format($stats['stdev'], 2),
+            number_format($stats['rstdev'], 2)
+        ));
+        $this->output->write(PHP_EOL);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function retryStart($rejectionCount)
     {
-        $this->output->write($this->lastRetry = sprintf(
-            "\x0D%s R%d",
-            $this->lastSubject,
-            $rejectionCount
-        ));
+        $this->rejectionCount = $rejectionCount;
+        $this->output->write("\x1B[1F\x1B[0K");
     }
 }

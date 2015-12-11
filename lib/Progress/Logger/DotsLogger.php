@@ -14,12 +14,10 @@ namespace PhpBench\Progress\Logger;
 use PhpBench\Benchmark\Iteration;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
-use PhpBench\Progress\LoggerInterface;
-use Symfony\Component\Console\Output\OutputInterface;
+use PhpBench\Benchmark\SuiteDocument;
 
-class DotsLogger implements LoggerInterface
+class DotsLogger extends PhpBenchLogger
 {
-    private $output;
     private $showBench;
 
     private $buffer;
@@ -27,11 +25,6 @@ class DotsLogger implements LoggerInterface
     public function __construct($showBench = false)
     {
         $this->showBench = $showBench;
-    }
-
-    public function setOutput(OutputInterface $output)
-    {
-        $this->output = $output;
     }
 
     public function benchmarkStart(BenchmarkMetadata $benchmark)
@@ -47,14 +40,6 @@ class DotsLogger implements LoggerInterface
 
             $this->output->writeln($benchmark->getClass());
         }
-    }
-
-    public function benchmarkEnd(BenchmarkMetadata $benchmark)
-    {
-    }
-
-    public function subjectStart(SubjectMetadata $subject)
-    {
     }
 
     public function subjectEnd(SubjectMetadata $subject)
@@ -83,11 +68,9 @@ class DotsLogger implements LoggerInterface
         ));
     }
 
-    public function iterationEnd(Iteration $iteration)
+    public function endSuite(SuiteDocument $suiteDocument)
     {
-    }
-
-    public function retryStart($rejectionCount)
-    {
+        $this->output->write(PHP_EOL . PHP_EOL);
+        parent::endSuite($suiteDocument);
     }
 }
