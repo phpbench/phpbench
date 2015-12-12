@@ -20,7 +20,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class RunCommand extends BaseReportCommand
@@ -97,7 +96,6 @@ EOT
         $inputPath = $input->getArgument('path');
         $retryThreshold = $input->getOption('retry-threshold');
         $sleep = $input->getOption('sleep');
-        $quiet = $input->getOption('quiet');
 
         $path = $inputPath ?: $this->benchPath;
 
@@ -122,45 +120,10 @@ EOT
             }
         }
 
-        if ($dump || $quiet) {
-            $consoleOutput = new NullOutput();
-            $output->setVerbosity(OutputInterface::VERBOSITY_NORMAL);
-        }
-
-        $consoleOutput->writeln('PhpBench ' . PhpBench::VERSION . '. Running benchmarks.');
-
-        if ($this->configPath) {
-            $consoleOutput->writeln(sprintf('Using configuration file: %s', $this->configPath));
-        }
-
         $progressLogger = $this->loggerRegistry->getProgressLogger($progressLoggerName);
         $progressLogger->setOutput($consoleOutput);
 
-        $consoleOutput->writeln('');
         $suiteResult = $this->executeBenchmarks($contextName, $path, $filters, $groups, $parameters, $iterations, $revs, $configPath, $retryThreshold, $sleep, $progressLogger);
-        $consoleOutput->writeln('');
-        $consoleOutput->writeln('');
-
-        $consoleOutput->writeln(sprintf(
-            '%s subjects, %s samples, %s revs, %s rejects',
-            $suiteResult->getNbSubjects(),
-            $suiteResult->getNbIterations(),
-            $suiteResult->getNbRevolutions(),
-            $suiteResult->getNbRejects()
-        ));
-        $consoleOutput->writeln(sprintf(
-            '⅀T: %sμs μSD/r %sμs μRSD/r: %s%%',
-            $suiteResult->getTotalTime(),
-            number_format($suiteResult->getMeanStDev(), 2),
-            number_format($suiteResult->getMeanRelStDev(), 2)
-        ));
-        $consoleOutput->writeln(sprintf(
-            'min mean max: %s %s %s (μs/r)',
-            number_format($suiteResult->getMin(), 2),
-            number_format($suiteResult->getMeanTime(), 2),
-            number_format($suiteResult->getMax(), 2)
-        ));
-
         if ($dumpfile) {
             $xml = $suiteResult->dump();
             file_put_contents($dumpfile, $xml);

@@ -11,6 +11,7 @@
 
 namespace PhpBench\Benchmark;
 
+use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Math\Statistics;
 
 /**
@@ -19,6 +20,16 @@ use PhpBench\Math\Statistics;
  */
 class IterationCollection implements \IteratorAggregate
 {
+    /**
+     * @var SubjectMetadata
+     */
+    private $subject;
+
+    /**
+     * @var ParameterSet
+     */
+    private $parameterSet;
+
     /**
      * @var Iteration[]
      */
@@ -58,8 +69,10 @@ class IterationCollection implements \IteratorAggregate
     /**
      * @param float $rejectionThreshold
      */
-    public function __construct($rejectionThreshold = null)
+    public function __construct(SubjectMetadata $subject, ParameterSet $parameterSet, $rejectionThreshold = null)
     {
+        $this->subject = $subject;
+        $this->parameterSet = $parameterSet;
         $this->rejectionThreshold = $rejectionThreshold;
     }
 
@@ -174,5 +187,29 @@ class IterationCollection implements \IteratorAggregate
     public function getStats()
     {
         return $this->stats;
+    }
+
+    /**
+     * Spawn a given number of iterations with a given number of revolutions each.
+     *
+     * @param int $count
+     * @param int $revolutionCount
+     *
+     * @return Iteration[]
+     */
+    public function spawnIterations($count, $revolutionCount)
+    {
+        $iterations = array();
+
+        for ($index = 0; $index < $count; $index++) {
+            $iterations[] = new Iteration($index, $this->subject, $revolutionCount, $this->parameterSet);
+        }
+
+        return $iterations;
+    }
+
+    public function getParameterSet()
+    {
+        return $this->parameterSet;
     }
 }

@@ -35,23 +35,24 @@
                     "expr": "count(descendant-or-self::iteration)"
                 },
                 {
-                    "name": "rej",
-                    "expr": "sum(descendant-or-self::iteration/@rejection-count)"
-                },
-                {
                     "name": "mem",
                     "class": "mem",
                     "expr": "average(descendant-or-self::iteration/@memory)"
                 },
                 {
-                    "name": "time",
+                    "name": "min",
+                    "class": "time",
+                    "expr": "number(./stats/@min)"
+                },
+                {
+                    "name": "mean",
                     "class": "time",
                     "expr": "number(./stats/@mean)"
                 },
                 {
-                    "name": "range",
+                    "name": "max",
                     "class": "time",
-                    "expr": "number(./stats/@max) - number(./stats/@min)"
+                    "expr": "number(./stats/@max)"
                 },
                 {
                     "name": "stdev",

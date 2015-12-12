@@ -172,17 +172,20 @@ class Runner
         $dom = new SuiteDocument();
         $rootEl = $dom->createElement('phpbench');
         $rootEl->setAttribute('version', PhpBench::VERSION);
+        $dom->appendChild($rootEl);
+
         $suiteEl = $rootEl->appendElement('suite');
-
         $suiteEl->setAttribute('context', $contextName);
-
         $suiteEl->setAttribute('date', date('c'));
+        $suiteEl->setAttribute('config-path', $this->configPath);
 
         if ($this->retryThreshold) {
             $suiteEl->setAttribute('retry-threshold', $this->retryThreshold);
         }
 
         $collection = $this->collectionBuilder->buildCollection($path, $this->filters, $this->groups);
+
+        $this->logger->startSuite($dom);
 
         /* @var BenchmarkMetadata */
         foreach ($collection->getBenchmarks() as $benchmark) {
@@ -196,7 +199,7 @@ class Runner
             $suiteEl->appendChild($benchmarkEl);
         }
 
-        $dom->appendChild($rootEl);
+        $this->logger->endSuite($dom);
 
         return $dom;
     }
@@ -233,7 +236,7 @@ class Runner
     private function runSubject(SubjectMetadata $subject, \DOMElement $subjectEl)
     {
         $iterationCount = null === $this->iterationsOverride ? $subject->getIterations() : $this->iterationsOverride;
-        $revolutionCounts = $this->revsOverride ? array($this->revsOverride) : $subject->getRevs();
+        $revolutionCount = $this->revsOverride ?: $subject->getRevs();
         $parameterSets = $this->parametersOverride ? array(array($this->parametersOverride)) : $subject->getParameterSets() ?: array(array(array()));
         $paramsIterator = new CartesianParameterIterator($parameterSets);
 
@@ -246,7 +249,7 @@ class Runner
             }
 
             $subjectEl->appendChild($variantEl);
-            $this->runIterations($subject, $iterationCount, (array) $revolutionCounts, $parameters, $variantEl);
+            $this->runIterations($subject, $iterationCount, $revolutionCount, $parameters, $variantEl);
         }
     }
 
@@ -277,27 +280,30 @@ class Runner
         ));
     }
 
-    private function runIterations(SubjectMetadata $subject, $iterationCount, array $revolutionCounts, ParameterSet $parameterSet, \DOMElement $variantEl)
+    private function runIterations(SubjectMetadata $subject, $iterationCount, $revolutionCount, ParameterSet $parameterSet, \DOMElement $variantEl)
     {
-        $iterationCollection = new IterationCollection($this->retryThreshold);
-        for ($index = 0; $index < $iterationCount; $index++) {
-            foreach ($revolutionCounts as $revolutionCount) {
-                $iteration = new Iteration($index, $subject, $revolutionCount, $parameterSet);
-                $this->runIteration($iteration, $subject->getSleep());
+        $iterationCollection = new IterationCollection($subject, $parameterSet, $this->retryThreshold);
 
-                $iterationCollection->add($iteration);
-            }
+        $this->logger->iterationsStart($iterationCollection);
+
+        $iterations = $iterationCollection->spawnIterations($iterationCount, $revolutionCount);
+        foreach ($iterations as $iteration) {
+            $this->runIteration($iteration, $subject->getSleep());
+            $iterationCollection->add($iteration);
         }
 
         $iterationCollection->computeStats();
+        $this->logger->iterationsEnd($iterationCollection);
 
         while ($iterationCollection->getRejectCount() > 0) {
             $this->logger->retryStart($iterationCollection->getRejectCount());
+            $this->logger->iterationsStart($iterationCollection);
             foreach ($iterationCollection->getRejects() as $reject) {
                 $reject->incrementRejectionCount();
                 $this->runIteration($reject, $subject->getSleep());
             }
             $iterationCollection->computeStats();
+            $this->logger->iterationsEnd($iterationCollection);
         }
 
         $stats = $iterationCollection->getStats();

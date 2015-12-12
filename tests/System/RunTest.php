@@ -113,7 +113,7 @@ class RunTest extends SystemTestCase
     }
 
     /**
-     * It should dump to an XML file.
+     * It should dump none to an XML file.
      */
     public function testDumpXml()
     {
@@ -132,7 +132,7 @@ class RunTest extends SystemTestCase
     public function testDumpXmlStdOut()
     {
         $process = $this->phpbench(
-            'run --dump --quiet benchmarks/set1/BenchmarkBench.php'
+            'run --dump --progress=none benchmarks/set1/BenchmarkBench.php'
         );
         $this->assertExitCode(0, $process);
         $output = $process->getOutput();
@@ -145,7 +145,7 @@ class RunTest extends SystemTestCase
     public function testOverrideParameters()
     {
         $process = $this->phpbench(
-            'run --dump --parameters=\'{"length": 333}\' benchmarks/set1/BenchmarkBench.php'
+            'run --dump --progress=none --parameters=\'{"length": 333}\' benchmarks/set1/BenchmarkBench.php'
         );
         $this->assertExitCode(0, $process);
         $output = $process->getOutput();
@@ -158,7 +158,7 @@ class RunTest extends SystemTestCase
     public function testOverrideParametersInvalidJson()
     {
         $process = $this->phpbench(
-            'run --dump --parameters=\'{"length": 333\' benchmarks/set1/BenchmarkBench.php'
+            'run --dump --progress=none --parameters=\'{"length": 333\' benchmarks/set1/BenchmarkBench.php'
         );
 
         $this->assertExitCode(1, $process);
@@ -171,7 +171,7 @@ class RunTest extends SystemTestCase
     public function testOverrideIterations()
     {
         $process = $this->phpbench(
-            'run --filter=benchRandom --dump --iterations=10 benchmarks/set1/BenchmarkBench.php'
+            'run --filter=benchRandom --progress=none --dump --iterations=10 benchmarks/set1/BenchmarkBench.php'
         );
 
         $this->assertExitCode(0, $process);
@@ -263,7 +263,7 @@ class RunTest extends SystemTestCase
     public function testGroups()
     {
         $process = $this->phpbench(
-            'run --group=do_nothing --dump benchmarks/set1/BenchmarkBench.php'
+            'run --group=do_nothing --dump --progress=none benchmarks/set1/BenchmarkBench.php'
         );
 
         $this->assertExitCode(0, $process);

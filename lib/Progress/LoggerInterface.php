@@ -12,8 +12,10 @@
 namespace PhpBench\Progress;
 
 use PhpBench\Benchmark\Iteration;
+use PhpBench\Benchmark\IterationCollection;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
+use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\Console\OutputAwareInterface;
 
 interface LoggerInterface extends OutputAwareInterface
@@ -47,6 +49,20 @@ interface LoggerInterface extends OutputAwareInterface
     public function subjectStart(SubjectMetadata $subject);
 
     /**
+     * Log the end of an an iteration run>.
+     *
+     * @param Iteration $iterations
+     */
+    public function iterationsEnd(IterationCollection $iterations);
+
+    /**
+     * Log the start of an iteration run.
+     *
+     * @param Iteration $iterations
+     */
+    public function iterationsStart(IterationCollection $iterations);
+
+    /**
      * Log the end of an iteration.
      *
      * @param Iteration $iteration
@@ -66,4 +82,18 @@ interface LoggerInterface extends OutputAwareInterface
      * @param int $rejectionCount
      */
     public function retryStart($rejectionCount);
+
+    /**
+     * Called at the start of the suite run.
+     *
+     * @param SuiteDocument $suiteDocument
+     */
+    public function startSuite(SuiteDocument $suiteDocument);
+
+    /**
+     * Called at the end of the suite run.
+     *
+     * @param SuiteDocument $suiteDocument
+     */
+    public function endSuite(SuiteDocument $suiteDocument);
 }
