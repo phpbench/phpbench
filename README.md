@@ -34,13 +34,13 @@ See the [official documentation](http://phpbench.readthedocs.org)
 Screenshots
 -----------
 
-Aggregate reporte:
+Default output:
 
-![Screenshot](https://cloud.githubusercontent.com/assets/530801/10666674/68546546-78d3-11e5-98be-14ebda9eefa3.png)
+![Default](https://cloud.githubusercontent.com/assets/530801/11761843/b1013108-a0d2-11e5-8749-d853eccefdd4.png)
 
-Verbose logging with customized report:
+Aggregate report with "dots" logger:
 
-![Screenshot](https://cloud.githubusercontent.com/assets/530801/10666797/1c55583e-78d4-11e5-844d-a9acbeb4ae6d.png)
+![Aggregate](https://cloud.githubusercontent.com/assets/530801/11761844/b10a0c06-a0d2-11e5-9486-226deb9c96e2.png)
 
 HTML report:
 
