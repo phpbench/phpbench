@@ -13,6 +13,7 @@
         <xsd:choice maxOccurs="unbounded">
             <xsd:element name="description" type="xsd:string"/>
             <xsd:element name="table" type="subject"/>
+            <xsd:element name="script" type="xsd:string"/>
         </xsd:choice>
         <xsd:attribute name="title" type="xsd:string"/>
     </xsd:complexType>

@@ -27,6 +27,5 @@ interface ConfigurableInterface
      *
      * @return array
      */
-
     public function getDefaultConfig();
 }

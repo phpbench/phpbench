@@ -54,6 +54,10 @@ class ConsoleRenderer implements RendererInterface, OutputAwareInterface
                 $this->renderTableElement($tableEl, $config);
             }
         }
+
+        foreach ($reportDom->query('//script') as $script) {
+            $this->output->write($script->nodeValue);
+        }
     }
 
     protected function renderTableElement(Element $tableEl, $config)
