@@ -29,8 +29,17 @@ class IterationTest extends \PHPUnit_Framework_TestCase
             0,
             $this->collection->reveal(),
             5,
+            4,
             new ParameterSet()
         );
+    }
+
+    /**
+     * It should have getters that return its values.
+     */
+    public function testGetters()
+    {
+        $this->assertEquals(4, $this->iteration->getWarmup());
     }
 
     /**

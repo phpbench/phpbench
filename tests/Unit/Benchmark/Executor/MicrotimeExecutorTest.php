@@ -87,6 +87,7 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
         $this->subject->getName()->willReturn('doSomething');
         $this->iteration->getSubject()->willReturn($this->subject);
         $this->iteration->getRevolutions()->willReturn(10);
+        $this->iteration->getWarmup()->willReturn(1);
         $this->iteration->getParameters()->willReturn(new ParameterSet());
 
         $result = $this->executor->execute($this->iteration->reveal(), new Config('test', array()));
@@ -97,7 +98,9 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(file_exists($this->beforeMethodFile));
         $this->assertFalse(file_exists($this->afterMethodFile));
         $this->assertTrue(file_exists($this->revFile));
-        $this->assertEquals('10', file_get_contents($this->revFile));
+
+        // 10 revolutions + 1 warmup
+        $this->assertEquals('11', file_get_contents($this->revFile));
     }
 
     /**
@@ -113,6 +116,7 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
         $this->subject->getName()->willReturn('benchOutput');
         $this->iteration->getSubject()->willReturn($this->subject);
         $this->iteration->getRevolutions()->willReturn(10);
+        $this->iteration->getWarmup()->willReturn(0);
         $this->iteration->getParameters()->willReturn(new ParameterSet());
 
         $result = $this->executor->execute($this->iteration->reveal(), new Config('test', array()));
@@ -130,6 +134,7 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
         $this->subject->getName()->willReturn('doSomething');
         $this->iteration->getSubject()->willReturn($this->subject);
         $this->iteration->getRevolutions()->willReturn(1);
+        $this->iteration->getWarmup()->willReturn(0);
         $this->iteration->getParameters()->willReturn(new ParameterSet());
 
         $this->executor->execute($this->iteration->reveal(), new Config('test', array()));
@@ -147,6 +152,7 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
         $this->subject->getName()->willReturn('doSomething');
         $this->iteration->getSubject()->willReturn($this->subject);
         $this->iteration->getRevolutions()->willReturn(1);
+        $this->iteration->getWarmup()->willReturn(0);
         $this->iteration->getParameters()->willReturn(new ParameterSet());
 
         $this->executor->execute($this->iteration->reveal(), new Config('test', array()));
@@ -165,6 +171,7 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
 
         $this->iteration->getSubject()->willReturn($this->subject);
         $this->iteration->getRevolutions()->willReturn(1);
+        $this->iteration->getWarmup()->willReturn(0);
         $this->iteration->getParameters()->willReturn(new ParameterSet(0, array(
             'one' => 'two',
             'three' => 'four',
@@ -195,6 +202,7 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
 
         $this->iteration->getSubject()->willReturn($this->subject);
         $this->iteration->getRevolutions()->willReturn(1);
+        $this->iteration->getWarmup()->willReturn(0);
         $this->iteration->getParameters()->willReturn($expected);
 
         $this->executor->execute($this->iteration->reveal(), new Config('test', array()));

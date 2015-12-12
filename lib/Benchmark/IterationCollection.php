@@ -91,6 +91,7 @@ class IterationCollection implements \IteratorAggregate, \ArrayAccess, \Countabl
         ParameterSet $parameterSet,
         $iterationCount,
         $revolutionCount,
+        $warmupCount = 0,
         $rejectionThreshold = null
     ) {
         $this->subject = $subject;
@@ -100,7 +101,7 @@ class IterationCollection implements \IteratorAggregate, \ArrayAccess, \Countabl
         $this->revolutionCount = $revolutionCount;
 
         for ($index = 0; $index < $this->iterationCount; $index++) {
-            $this->add(new Iteration($index, $this, $revolutionCount, $parameterSet));
+            $this->add(new Iteration($index, $this, $revolutionCount, $warmupCount, $parameterSet));
         }
     }
 

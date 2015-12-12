@@ -162,6 +162,10 @@ class AnnotationDriver implements DriverInterface
             $metadata->setRevs($annotation->getRevs());
         }
 
+        if ($annotation instanceof Annotations\Warmup) {
+            $metadata->setWarmup($annotation->getRevs());
+        }
+
         if ($annotation instanceof Annotations\Skip) {
             $metadata->setSkip(true);
         }

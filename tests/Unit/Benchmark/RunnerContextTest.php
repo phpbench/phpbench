@@ -66,7 +66,7 @@ class RunnerContextTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should throw an exception if the iterations is not numeric.
+     * It should throw an exception if the revolutions are not numeric.
      *
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage Revolutions must be a number
@@ -75,6 +75,19 @@ class RunnerContextTest extends \PHPUnit_Framework_TestCase
     {
         new RunnerContext(__DIR__, array(
             'revolutions' => 'asd',
+        ));
+    }
+
+    /**
+     * It should throw an exception if the warmup is not numeric.
+     *
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Warmup must be a number
+     */
+    public function testWarmupNotNumeric()
+    {
+        new RunnerContext(__DIR__, array(
+            'warmup' => 'asd',
         ));
     }
 

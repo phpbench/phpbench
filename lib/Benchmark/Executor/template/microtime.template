@@ -14,6 +14,7 @@ $beforeMethods = {{ beforeMethods }};
 $afterMethods = {{ afterMethods }};
 $bootstrap = '{{ bootstrap }}';
 $parameters = {{ parameters }};
+$warmup = {{ warmup }};
 
 if ($bootstrap) {
     require_once($bootstrap);
@@ -27,26 +28,10 @@ foreach ($beforeMethods as $beforeMethod) {
     $benchmark->$beforeMethod($parameters);
 }
 
-// run the benchmarks: note that passing arguments to the method slightly increases
-// the calltime, so we explicitly do one thing or the other depending on if parameters
-// are provided.
-if ($parameters) {
-    $startTime = microtime(true);
+// warmup if required
+benchmark($benchmark, $subject, $warmup, $parameters);
 
-    for ($i = 0; $i < $revolutions; $i++) {
-        $benchmark->$subject($parameters);
-    }
-
-    $endTime = microtime(true);
-} else {
-    $startTime = microtime(true);
-
-    for ($i = 0; $i < $revolutions; $i++) {
-        $benchmark->$subject();
-    }
-
-    $endTime = microtime(true);
-}
+$time = benchmark($benchmark, $subject, $revolutions, $parameters);
 
 foreach ($afterMethods as $afterMethod) {
     $benchmark->$afterMethod($parameters);
@@ -57,8 +42,34 @@ ob_end_clean();
 
 echo json_encode(array(
     'memory' => memory_get_peak_usage(),
-    'time' => ($endTime * 1000000) - ($startTime * 1000000),
+    'time' => $time,
     'buffer' => $buffer,
 ));
+
+function benchmark($benchmark, $subject, $revolutions, $parameters)
+{
+    // run the benchmarks: note that passing arguments to the method slightly increases
+    // the calltime, so we explicitly do one thing or the other depending on if parameters
+    // are provided.
+    if ($parameters) {
+        $startTime = microtime(true);
+
+        for ($i = 0; $i < $revolutions; $i++) {
+            $benchmark->$subject($parameters);
+        }
+
+        $endTime = microtime(true);
+    } else {
+        $startTime = microtime(true);
+
+        for ($i = 0; $i < $revolutions; $i++) {
+            $benchmark->$subject();
+        }
+
+        $endTime = microtime(true);
+    }
+
+    return ($endTime * 1000000) - ($startTime * 1000000);
+}
 
 exit(0);

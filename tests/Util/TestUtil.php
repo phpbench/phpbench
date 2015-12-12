@@ -28,6 +28,7 @@ class TestUtil
             'parameterSets' => array(array(array())),
             'groups' => array(),
             'revs' => 1,
+            'warmup' => 0,
             'notApplicable' => false,
             'skip' => false,
             'sleep' => 0,
@@ -45,6 +46,7 @@ class TestUtil
         $subject->getGroups()->willReturn($options['groups']);
         $subject->getRevs()->willReturn($options['revs']);
         $subject->getSkip()->willReturn($options['skip']);
+        $subject->getWarmup()->willReturn($options['warmup']);
         $subject->getParamProviders()->willReturn($options['paramProviders']);
         $subject->getOutputTimeUnit()->willReturn($options['outputTimeUnit']);
         $subject->getOutputMode()->willReturn($options['outputMode']);

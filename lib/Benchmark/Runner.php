@@ -157,6 +157,7 @@ class Runner
             $variantEl->setAttribute('output-time-unit', $subject->getOutputTimeUnit() ?: TimeUnit::MICROSECONDS);
             $variantEl->setAttribute('output-mode', $subject->getOutputMode() ?: TimeUnit::MODE_TIME);
             $variantEl->setAttribute('revs', $context->getRevolutions($subject->getRevs()));
+            $variantEl->setAttribute('warmup', $context->getWarmup($subject->getWarmup()));
             foreach ($parameterSet as $name => $value) {
                 $parameterEl = $this->createParameter($subjectEl, $name, $value);
                 $variantEl->appendChild($parameterEl);
@@ -198,6 +199,7 @@ class Runner
     {
         $iterationCount = $context->getIterations($subject->getIterations());
         $revolutionCount = $context->getRevolutions($subject->getRevs());
+        $warmupCount = $context->getWarmup($subject->getWarmUp());
         $executorConfig = $this->executorRegistry->getConfig($context->getExecutor());
 
         $iterationCollection = new IterationCollection(
@@ -205,6 +207,7 @@ class Runner
             $parameterSet,
             $iterationCount,
             $revolutionCount,
+            $warmupCount,
             $context->getRetryThreshold($this->retryThreshold)
         );
 
