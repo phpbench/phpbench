@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Extensions\RProject\Report\Renderer;
+namespace PhpBench\Extensions\GNUPlot\Report\Renderer;
 
 
 use PhpBench\Dom\Document;
@@ -17,7 +17,7 @@ use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Report\RendererInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class RProjectRenderer implements RendererInterface, OutputAwareInterface
+class GNUPlotRenderer implements RendererInterface, OutputAwareInterface
 {
     private $output;
 

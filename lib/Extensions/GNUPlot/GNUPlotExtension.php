@@ -1,13 +1,13 @@
 <?php
 
-namespace PhpBench\Extensions\RProject;
+namespace PhpBench\Extensions\GNUPlot;
 
 use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\DependencyInjection\Container;
-use PhpBench\Extensions\RProject\Report\Renderer\RProjectRenderer;
-use PhpBench\Extensions\RProject\Report\Generator\RScriptGenerator;
+use PhpBench\Extensions\GNUPlot\Report\Renderer\GNUPlotRenderer;
+use PhpBench\Extensions\GNUPlot\Report\Generator\GNUPlotGenerator;
 
-class RProjectExtension implements ExtensionInterface
+class GNUPlotExtension implements ExtensionInterface
 {
     /**
      * {@inheritDoc}
@@ -15,8 +15,8 @@ class RProjectExtension implements ExtensionInterface
     public function configure(Container $container)
     {
         $container->register('rpoject.report.generator', function (Container $container) {
-            return new RScriptGenerator();
-        }, array('report_generator' => array('name' => 'rscript')));
+            return new GNUPlotGenerator();
+        }, array('report_generator' => array('name' => 'gnuplot')));
     }
 
     /**
