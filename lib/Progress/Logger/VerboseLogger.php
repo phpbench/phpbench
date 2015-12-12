@@ -15,6 +15,7 @@ use PhpBench\Benchmark\Iteration;
 use PhpBench\Benchmark\IterationCollection;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
+use PhpBench\Util\TimeUnit;
 
 class VerboseLogger extends PhpBenchLogger
 {
@@ -89,10 +90,19 @@ class VerboseLogger extends PhpBenchLogger
     public function iterationsEnd(IterationCollection $iterations)
     {
         $stats = $iterations->getStats();
+        $timeUnit = $iterations->getSubject()->getOutputTimeUnit();
+
+        if (null === $timeUnit || $this->timeUnit->isOverridden()) {
+            $timeUnit = $this->timeUnit->getDestUnit();
+        }
+
+        $suffix = TimeUnit::getSuffix($timeUnit);
         $this->output->write(sprintf(
-            "\tμ/r: %sμs\tμSD/r %sμs\tμRSD/r: %s%%",
-            number_format($stats['mean'], 2),
-            number_format($stats['stdev'], 2),
+            "\tμ/r: %s%s\tμSD/r %s%s\tμRSD/r: %s%%",
+            number_format(TimeUnit::convert($stats['mean'], TimeUnit::MICROSECONDS, $timeUnit), 3),
+            $suffix,
+            number_format(TimeUnit::convert($stats['stdev'], TimeUnit::MICROSECONDS, $timeUnit), 3),
+            $suffix,
             number_format($stats['rstdev'], 2)
         ));
         $this->output->write(PHP_EOL);

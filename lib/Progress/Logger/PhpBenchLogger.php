@@ -14,11 +14,18 @@ namespace PhpBench\Progress\Logger;
 use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\Console\OutputAwareInterface;
 use PhpBench\PhpBench;
+use PhpBench\Util\TimeUnit;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class PhpBenchLogger extends NullLogger implements OutputAwareInterface
 {
     protected $output;
+    protected $timeUnit;
+
+    public function __construct(TimeUnit $timeUnit = null)
+    {
+        $this->timeUnit = $timeUnit;
+    }
 
     public function setOutput(OutputInterface $output)
     {
@@ -46,16 +53,19 @@ class PhpBenchLogger extends NullLogger implements OutputAwareInterface
             $suiteDocument->getNbRejects()
         ));
         $this->output->writeln(sprintf(
-            'min mean max: %s %s %s (μs/r)',
-            number_format($suiteDocument->getMin(), 2),
-            number_format($suiteDocument->getMeanTime(), 2),
-            number_format($suiteDocument->getMax(), 2)
+            'min mean max: %s %s %s (%s/r)',
+            number_format($this->timeUnit->value($suiteDocument->getMin()), 3),
+            number_format($this->timeUnit->value($suiteDocument->getMeanTime()), 3),
+            number_format($this->timeUnit->value($suiteDocument->getMax()), 3),
+            $this->timeUnit->getDestSuffix()
         ));
         $this->output->writeln(sprintf(
-            '⅀T: %sμs μSD/r %sμs μRSD/r: %s%%',
-            $suiteDocument->getTotalTime(),
-            number_format($suiteDocument->getMeanStDev(), 2),
-            number_format($suiteDocument->getMeanRelStDev(), 2)
+            '⅀T: %s%s μSD/r %s%s μRSD/r: %s%%',
+            number_format($this->timeUnit->value($suiteDocument->getTotalTime()), 3),
+            $this->timeUnit->getDestSuffix(),
+            number_format($this->timeUnit->value($suiteDocument->getMeanStDev()), 3),
+            $this->timeUnit->getDestSuffix(),
+            number_format($suiteDocument->getMeanRelStDev(), 3)
         ));
     }
 }

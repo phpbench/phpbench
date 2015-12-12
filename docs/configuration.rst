@@ -136,3 +136,16 @@ Note that:
 - All other options are passed to the renderer as options.
 
 See the :doc:`report-renderers` chapter for more information.
+
+Time Unit
+---------
+
+Specify the *default* :ref:`time unit <time_unit>`. Note that this will be overridden by
+individual benchmark/subjects and when the ``time-unit`` option is passed to
+the CLI.
+
+.. code-block:: javascript
+
+    {
+        "time_unit": "milliseconds"
+    }

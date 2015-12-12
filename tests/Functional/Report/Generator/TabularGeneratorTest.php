@@ -253,7 +253,7 @@ EOT
                 <group name="one" />
                 <group name="two" />
                 <group name="three" />
-                <variant>
+                <variant output-time-unit="microseconds">
                     <parameter name="foo" value="bar" />
                     <parameter name="array" type="collection">
                         <parameter name="0" value="one" />
@@ -286,7 +286,7 @@ EOT
     <suite context="foobar">
         <benchmark class="Foobar">
             <subject name="mySubject">
-                <variant>
+                <variant output-time-unit="microseconds">
                     <iteration time="100" memory="100" revs="1" deviation="1" rejection-count="0"/>
                     <iteration time="75" memory="100" revs="1" deviation="2" rejection-count="0"/>
                </variant>
@@ -296,7 +296,7 @@ EOT
     <suite context="barfoo">
         <benchmark class="Foobar">
             <subject name="mySubject">
-                <variant>
+                <variant output-time-unit="microseconds">
                     <iteration time="100" memory="100" revs="1" deviation="1" rejection-count="0"/>
                     <iteration time="75" memory="100" revs="1" deviation="2" rejection-count="0"/>
                </variant>

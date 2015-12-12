@@ -16,6 +16,7 @@ use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\PhpBench;
 use PhpBench\Progress\Logger\NullLogger;
 use PhpBench\Progress\LoggerInterface;
+use PhpBench\Util\TimeUnit;
 
 /**
  * The benchmark runner.
@@ -243,6 +244,7 @@ class Runner
         foreach ($paramsIterator as $parameters) {
             $variantEl = $subjectEl->ownerDocument->createElement('variant');
             $variantEl->setAttribute('sleep', $this->getSleepInterval($subject->getSleep()));
+            $variantEl->setAttribute('output-time-unit', $subject->getOutputTimeUnit() ?: TimeUnit::MICROSECONDS);
             foreach ($parameters as $name => $value) {
                 $parameterEl = $this->createParameter($subjectEl, $name, $value);
                 $variantEl->appendChild($parameterEl);

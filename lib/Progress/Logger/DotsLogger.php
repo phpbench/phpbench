@@ -15,6 +15,7 @@ use PhpBench\Benchmark\Iteration;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\SuiteDocument;
+use PhpBench\Util\TimeUnit;
 
 class DotsLogger extends PhpBenchLogger
 {
@@ -22,8 +23,9 @@ class DotsLogger extends PhpBenchLogger
 
     private $buffer;
 
-    public function __construct($showBench = false)
+    public function __construct(TimeUnit $timeUnit, $showBench = false)
     {
+        parent::__construct($timeUnit);
         $this->showBench = $showBench;
     }
 

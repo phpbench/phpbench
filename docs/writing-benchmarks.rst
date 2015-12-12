@@ -389,6 +389,43 @@ the system recover. Use the ``@Sleep`` annotation, specifying the number of
 
 The above example will pause (sleep) for 1 second *after* each iteration.
 
+.. _time_unit:
+
+Microseconds to Minutes: Time Units
+-----------------------------------
+
+If you have benchmarks which take seconds or even minutes to execute then the
+default time unit, microseconds, is going to be far more visual precision than you
+need and will only serve to make the results more difficult to interpret.
+
+You can specify *output* time units usising the ``@OutputTimeUnit``
+annotation:
+
+.. code-block:: php
+
+    <?php
+
+    class HashBench
+    {
+        /**
+         * @Iterations(10)
+           @OutputTimeUnit("seconds")
+         */
+        public function benchSleep()
+        {
+            sleep(2);
+        }
+    }
+
+The following time units are available:
+
+- ``microseconds``
+- ``milliseconds``
+- ``seconds``
+- ``minutes``
+- ``hours``
+- ``days``
+
 .. note::
 
     This can be overridden using the ``--sleep`` option from the CLI.

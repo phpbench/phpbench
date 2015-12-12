@@ -4,7 +4,7 @@
     <benchmark class="\HashingBenchmark">
       <subject name="benchMd5">
         <group name="hashing"/>
-        <variant sleep="0">
+        <variant sleep="0" output-time-unit="microseconds">
           <iteration revs="1000" time-net="816" time="0.816" z-value="0" memory="268160" deviation="0" rejection-count="0"/>
           <stats mean="0.816" stdev="0" rstdev="0" variance="0" min="0.816" max="0.816"/>
         </variant>

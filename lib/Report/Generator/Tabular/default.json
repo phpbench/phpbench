@@ -7,6 +7,9 @@
     },
     "rows": [
         {
+            "param_exprs": {
+                "output-time-unit": "string(ancestor::variant/@output-time-unit)"
+            },
             "group": "body",
             "cells": [
                 {
@@ -45,7 +48,7 @@
                 },
                 {
                     "name": "time",
-                    "class": "time",
+                    "class": "time-{{ param.output-time-unit }}",
                     "expr": "number(descendant-or-self::iteration/@time)"
                 },
                 {

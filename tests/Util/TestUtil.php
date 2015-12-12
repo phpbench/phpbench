@@ -32,6 +32,7 @@ class TestUtil
             'skip' => false,
             'sleep' => 0,
             'paramProviders' => array(),
+            'outputTimeUnit' => 'microseconds',
         ), $options);
 
         $subject->getIterations()->willReturn($options['iterations']);
@@ -44,6 +45,7 @@ class TestUtil
         $subject->getRevs()->willReturn($options['revs']);
         $subject->getSkip()->willReturn($options['skip']);
         $subject->getParamProviders()->willReturn($options['paramProviders']);
+        $subject->getOutputTimeUnit()->willReturn($options['outputTimeUnit']);
     }
 
     public static function configureBenchmark(ObjectProphecy $benchmark, array $options = array())
