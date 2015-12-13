@@ -56,6 +56,9 @@ class MicrotimeExecutor implements ExecutorInterface
         );
 
         $payload = $this->launcher->payload(__DIR__ . '/template/microtime.template', $tokens);
+        $payload->setPhpConfig(array(
+            'max_execution_time' => 0
+        ));
         $result = $payload->launch();
 
         if (isset($result['buffer']) && $result['buffer']) {

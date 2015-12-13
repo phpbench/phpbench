@@ -142,6 +142,6 @@ class Payload
             $string[] = sprintf('-d%s=%s', $key, $value);
         }
 
-        return implode(' ', $string) . ' ';
+        return ' ' . implode(' ', $string) . ' ';
     }
 }
