@@ -7,6 +7,9 @@
     ],
     "rows": [
         {
+            "param_exprs": {
+                "output-time-unit": "string(./@output-time-unit)"
+            },
             "group": "body",
             "cells": [
                 {
@@ -33,7 +36,7 @@
                 {
                     "name": "t:{{ cell.item }}",
                     "expr": "sum(suite(descendant-or-self::iteration, '{{ cell.item }}')//@time) div sum(suite(descendant-or-self::iteration, '{{ cell.item }}')//@revs)",
-                    "class": "time",
+                    "class": "time-{{ param.output-time-unit }}",
                     "with_items": {
                         "selector": "//suite",
                         "value": "string(./@context)"

@@ -16,6 +16,7 @@ use PhpBench\PhpBench;
 use PhpBench\Progress\LoggerInterface;
 use PhpBench\Progress\LoggerRegistry;
 use PhpBench\Report\ReportManager;
+use PhpBench\Util\TimeUnit;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -30,11 +31,13 @@ class RunCommand extends BaseReportCommand
     private $benchPath;
     private $configPath;
     private $runner;
+    private $timeUnit;
 
     public function __construct(
         Runner $runner,
         ReportManager $reportManager,
         LoggerRegistry $loggerRegistry,
+        TimeUnit $timeUnit,
         $progressLoggerName = null,
         $benchPath = null,
         $configPath = null
@@ -42,6 +45,7 @@ class RunCommand extends BaseReportCommand
         parent::__construct();
         $this->reportManager = $reportManager;
         $this->loggerRegistry = $loggerRegistry;
+        $this->timeUnit = $timeUnit;
         $this->progressLoggerName = $progressLoggerName;
         $this->benchPath = $benchPath;
         $this->configPath = $configPath;
@@ -69,6 +73,7 @@ EOT
         $this->addOption('parameters', null, InputOption::VALUE_REQUIRED, 'Override parameters to use in (all) benchmarks');
         $this->addOption('iterations', null, InputOption::VALUE_REQUIRED, 'Override number of iteratios to run in (all) benchmarks');
         $this->addOption('revs', null, InputOption::VALUE_REQUIRED, 'Override number of revs (revolutions) on (all) benchmarks');
+        $this->addOption('time-unit', null, InputOption::VALUE_REQUIRED, 'Override the time unit');
         $this->addOption('progress', 'l', InputOption::VALUE_REQUIRED, 'Progress logger to use, one of <comment>dots</comment>, <comment>classdots</comment>');
         $this->addOption('retry-threshold', 'r', InputOption::VALUE_REQUIRED, 'Set target allowable deviation', null);
 
@@ -96,6 +101,11 @@ EOT
         $inputPath = $input->getArgument('path');
         $retryThreshold = $input->getOption('retry-threshold');
         $sleep = $input->getOption('sleep');
+        $timeUnit = $input->getOption('time-unit');
+
+        if ($timeUnit) {
+            $this->timeUnit->overrideDestUnit($timeUnit);
+        }
 
         $path = $inputPath ?: $this->benchPath;
 

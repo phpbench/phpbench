@@ -88,7 +88,7 @@ class TabularGenerator extends AbstractTabularGenerator
      */
     public function generate(SuiteDocument $document, array $config)
     {
-        $reportFile = __DIR__ . '/tabular/' . $config['type'] . '.json';
+        $reportFile = __DIR__ . '/Tabular/' . $config['type'] . '.json';
         $definition = $this->definitionLoader->load($reportFile, $document);
 
         if ($config['groups']) {

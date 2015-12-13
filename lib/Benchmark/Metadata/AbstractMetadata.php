@@ -62,6 +62,11 @@ abstract class AbstractMetadata
     private $sleep = 0;
 
     /**
+     * @var string
+     */
+    private $outputTimeUnit = null;
+
+    /**
      * @param mixed $class
      */
     public function __construct($class)
@@ -159,5 +164,15 @@ abstract class AbstractMetadata
     public function setSleep($sleep)
     {
         $this->sleep = $sleep;
+    }
+
+    public function getOutputTimeUnit()
+    {
+        return $this->outputTimeUnit;
+    }
+
+    public function setOutputTimeUnit($outputTimeUnit)
+    {
+        $this->outputTimeUnit = $outputTimeUnit;
     }
 }

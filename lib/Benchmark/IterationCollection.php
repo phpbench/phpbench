@@ -208,8 +208,23 @@ class IterationCollection implements \IteratorAggregate
         return $iterations;
     }
 
+    /**
+     * Return the parameter set.
+     *
+     * @return ParameterSet
+     */
     public function getParameterSet()
     {
         return $this->parameterSet;
+    }
+
+    /**
+     * Return the subject metadata.
+     *
+     * @return SubjectMetadata
+     */
+    public function getSubject()
+    {
+        return $this->subject;
     }
 }

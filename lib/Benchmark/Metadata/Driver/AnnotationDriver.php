@@ -165,6 +165,10 @@ class AnnotationDriver implements DriverInterface
         if ($annotation instanceof Annotations\Skip) {
             $metadata->setSkip(true);
         }
+
+        if ($annotation instanceof Annotations\OutputTimeUnit) {
+            $metadata->setOutputTimeUnit($annotation->getOutputTimeUnit());
+        }
     }
 
     private function resolveValue(AbstractArrayAnnotation $annotation, array $currentValues, array $annotationValues)

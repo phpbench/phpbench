@@ -7,6 +7,9 @@
     ],
     "rows": [
         {
+            "param_exprs": {
+                "output-time-unit": "string(./@output-time-unit)"
+            },
             "group": "body",
             "cells": [
                 {
@@ -41,22 +44,22 @@
                 },
                 {
                     "name": "min",
-                    "class": "time",
+                    "class": "time-{{ param.output-time-unit }}",
                     "expr": "number(./stats/@min)"
                 },
                 {
                     "name": "mean",
-                    "class": "time",
+                    "class": "time-{{ param.output-time-unit }}",
                     "expr": "number(./stats/@mean)"
                 },
                 {
                     "name": "max",
-                    "class": "time",
+                    "class": "time-{{ param.output-time-unit }}",
                     "expr": "number(./stats/@max)"
                 },
                 {
                     "name": "stdev",
-                    "class": "stdevtime",
+                    "class": "time-{{ param.output-time-unit }}",
                     "expr": "number(./stats/@stdev)"
                 },
                 {

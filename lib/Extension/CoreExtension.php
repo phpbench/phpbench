@@ -28,6 +28,7 @@ use PhpBench\Progress\Logger\NullLogger;
 use PhpBench\Progress\Logger\VerboseLogger;
 use PhpBench\Progress\LoggerRegistry;
 use PhpBench\Report\Generator\CompositeGenerator;
+use PhpBench\Report\Generator\Tabular\Format\TimeFormat;
 use PhpBench\Report\Generator\TabularCustomGenerator;
 use PhpBench\Report\Generator\TabularGenerator;
 use PhpBench\Report\Renderer\ConsoleRenderer;
@@ -47,6 +48,7 @@ use PhpBench\Tabular\Formatter\Format\TruncateFormat;
 use PhpBench\Tabular\Formatter\Registry\ArrayRegistry;
 use PhpBench\Tabular\TableBuilder;
 use PhpBench\Tabular\Tabular;
+use PhpBench\Util\TimeUnit;
 use Symfony\Component\Finder\Finder;
 
 class CoreExtension implements ExtensionInterface
@@ -84,6 +86,7 @@ class CoreExtension implements ExtensionInterface
             'config_path' => null,
             'progress' => 'verbose',
             'retry_threshold' => null,
+            'time_unit' => TimeUnit::MICROSECONDS,
         ));
     }
 
@@ -165,6 +168,10 @@ class CoreExtension implements ExtensionInterface
                 $container->get('benchmark.finder')
             );
         });
+
+        $container->register('benchmark.time_unit', function (Container $container) {
+            return new TimeUnit(TimeUnit::MICROSECONDS, $container->getParameter('time_unit'));
+        });
     }
 
     private function registerJsonSchema(Container $container)
@@ -181,6 +188,7 @@ class CoreExtension implements ExtensionInterface
                 $container->get('benchmark.runner'),
                 $container->get('report.manager'),
                 $container->get('progress_logger.registry'),
+                $container->get('benchmark.time_unit'),
                 $container->getParameter('progress'),
                 $container->getParameter('path'),
                 $container->getParameter('config_path')
@@ -201,15 +209,15 @@ class CoreExtension implements ExtensionInterface
         });
 
         $container->register('progress_logger.dots', function (Container $container) {
-            return new DotsLogger();
+            return new DotsLogger($container->get('benchmark.time_unit'));
         }, array('progress_logger' => array('name' => 'dots')));
 
         $container->register('progress_logger.classdots', function (Container $container) {
-            return new DotsLogger(true);
+            return new DotsLogger($container->get('benchmark.time_unit'), true);
         }, array('progress_logger' => array('name' => 'classdots')));
 
         $container->register('progress_logger.verbose', function (Container $container) {
-            return new VerboseLogger();
+            return new VerboseLogger($container->get('benchmark.time_unit'));
         }, array('progress_logger' => array('name' => 'verbose')));
 
         $container->register('progress_logger.null', function (Container $container) {
@@ -278,6 +286,7 @@ class CoreExtension implements ExtensionInterface
             $registry->register('number', new NumberFormat());
             $registry->register('truncate', new TruncateFormat());
             $registry->register('json_format', new JSONFormat());
+            $registry->register('time', new TimeFormat());
 
             return $registry;
         });
