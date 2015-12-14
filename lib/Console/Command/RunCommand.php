@@ -12,8 +12,8 @@
 namespace PhpBench\Console\Command;
 
 use PhpBench\Benchmark\Runner;
+use PhpBench\Benchmark\RunnerContext;
 use PhpBench\PhpBench;
-use PhpBench\Progress\LoggerInterface;
 use PhpBench\Progress\LoggerRegistry;
 use PhpBench\Report\ReportManager;
 use PhpBench\Util\TimeUnit;
@@ -86,54 +86,41 @@ EOT
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $consoleOutput = $output;
-
         $reports = $input->getOption('report');
         $outputs = $input->getOption('output');
-        $dump = $input->getOption('dump');
-        $parametersJson = $input->getOption('parameters');
-        $iterations = $input->getOption('iterations');
-        $revs = $input->getOption('revs');
-        $configPath = $input->getOption('config');
-        $filters = $input->getOption('filter');
-        $groups = $input->getOption('group');
-        $dumpfile = $input->getOption('dump-file');
         $progressLoggerName = $input->getOption('progress') ?: $this->progressLoggerName;
-        $inputPath = $input->getArgument('path');
-        $retryThreshold = $input->getOption('retry-threshold');
-        $sleep = $input->getOption('sleep');
+        $dump = $input->getOption('dump');
+        $dumpfile = $input->getOption('dump-file');
         $timeUnit = $input->getOption('time-unit');
 
         if ($timeUnit) {
             $this->timeUnit->overrideDestUnit($timeUnit);
         }
 
-        $path = $inputPath ?: $this->benchPath;
+        $context = new RunnerContext(
+            $input->getArgument('path') ?: $this->benchPath,
+            array(
+                'context_name' => $input->getOption('context'),
+                'parameters' => $this->getParameters($input->getOption('parameters')),
+                'iterations' => $input->getOption('iterations'),
+                'revolutions' => $input->getOption('revs'),
+                'filters' => $input->getOption('filter'),
+                'groups' => $input->getOption('group'),
+                'retry_threshold' => $input->getOption('retry-threshold'),
+                'sleep' => $input->getOption('sleep'),
+            )
+        );
 
         $reportNames = $this->reportManager->processCliReports($reports);
         $outputNames = $this->reportManager->processCliOutputs($outputs);
 
-        if (null === $path) {
-            throw new \InvalidArgumentException(
-                'You must either specify or configure a path where your benchmarks can be found.'
-            );
-        }
-
-        $contextName = $input->getOption('context');
-
-        $parameters = array();
-        if ($parametersJson) {
-            $parameters = json_decode($parametersJson, true);
-            if (null === $parameters) {
-                throw new \InvalidArgumentException(sprintf(
-                    'Could not decode parameters JSON string: "%s"', $parametersJson
-                ));
-            }
-        }
-
+        // TODO: move setOutput to logger registry?
         $progressLogger = $this->loggerRegistry->getProgressLogger($progressLoggerName);
         $progressLogger->setOutput($consoleOutput);
+        $this->runner->setProgressLogger($progressLogger);
 
-        $suiteResult = $this->executeBenchmarks($contextName, $path, $filters, $groups, $parameters, $iterations, $revs, $configPath, $retryThreshold, $sleep, $progressLogger);
+        $suiteResult = $this->runner->run($context);
+
         if ($dumpfile) {
             $xml = $suiteResult->dump();
             file_put_contents($dumpfile, $xml);
@@ -148,55 +135,22 @@ EOT
         }
     }
 
-    private function executeBenchmarks(
-        $contextName,
-        $path,
-        array $filters,
-        array $groups,
-        $parameters,
-        $iterations,
-        $revs,
-        $configPath,
-        $retryThreshold,
-        $sleep,
-        LoggerInterface $progressLogger = null
-    ) {
-        if ($progressLogger) {
-            $this->runner->setProgressLogger($progressLogger);
+    private function getParameters($parametersJson)
+    {
+        if (null === $parametersJson) {
+            return;
         }
 
-        if ($configPath) {
-            $this->runner->setConfigPath($configPath);
+        $parameters = array();
+        if ($parametersJson) {
+            $parameters = json_decode($parametersJson, true);
+            if (null === $parameters) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Could not decode parameters JSON string: "%s"', $parametersJson
+                ));
+            }
         }
 
-        if ($iterations) {
-            $this->runner->overrideIterations($iterations);
-        }
-
-        if ($revs) {
-            $this->runner->overrideRevs($revs);
-        }
-
-        if ($filters) {
-            $this->runner->setFilters($filters);
-        }
-
-        if ($parameters) {
-            $this->runner->overrideParameters($parameters);
-        }
-
-        if (null !== $sleep) {
-            $this->runner->overrideSleep($sleep);
-        }
-
-        if ($groups) {
-            $this->runner->setGroups($groups);
-        }
-
-        if ($retryThreshold) {
-            $this->runner->setRetryThreshold($retryThreshold);
-        }
-
-        return $this->runner->runAll($contextName, $path);
+        return $parameters;
     }
 }

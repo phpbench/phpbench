@@ -25,15 +25,7 @@ class Runner
 {
     private $logger;
     private $collectionBuilder;
-    private $iterationsOverride;
-    private $revsOverride;
-    private $executorOverride;
     private $configPath;
-    private $parametersOverride;
-    private $sleepOverride;
-    private $filters = array();
-    private $groups = array();
-    private $executor;
     private $retryThreshold = null;
 
     /**
@@ -55,16 +47,6 @@ class Runner
     }
 
     /**
-     * Whitelist of subject method names.
-     *
-     * @param string[] $subjects
-     */
-    public function setFilters(array $filters)
-    {
-        $this->filters = $filters;
-    }
-
-    /**
      * Set the progress logger to use.
      *
      * @param LoggerInterface
@@ -75,92 +57,6 @@ class Runner
     }
 
     /**
-     * Override the number of iterations to execute.
-     *
-     * @param int $iterations
-     */
-    public function overrideIterations($iterations)
-    {
-        $this->iterationsOverride = $iterations;
-    }
-
-    /**
-     * Override the number of rev(olutions) to run.
-     *
-     * @param int
-     */
-    public function overrideRevs($revs)
-    {
-        $this->revsOverride = $revs;
-    }
-
-    public function overrideParameters($parameters)
-    {
-        $this->parametersOverride = $parameters;
-    }
-
-    /**
-     * Override the executor to use.
-     *
-     * @param string $executor
-     */
-    public function overrideExecutor($executor)
-    {
-        $this->executorOverride = $executor;
-    }
-
-    /**
-     * Override the sleep interval (in microseconds).
-     *
-     * @param int $sleep
-     */
-    public function overrideSleep($sleep)
-    {
-        return $this->sleepOverride = $sleep;
-    }
-
-    /**
-     * Whitelist of groups to execute.
-     *
-     * @param string[]
-     */
-    public function setGroups(array $groups)
-    {
-        $this->groups = $groups;
-    }
-
-    /**
-     * Set the path to the configuration file.
-     * This is required when launching a new process.
-     *
-     * @param string $configPath
-     */
-    public function setConfigPath($configPath)
-    {
-        $this->configPath = $configPath;
-    }
-
-    /**
-     * Set the deviation threshold beyond which the iteration should
-     * be retried.
-     *
-     * A value of NULL will disable retry.
-     *
-     * @param float $retryThreshold
-     */
-    public function setRetryThreshold($retryThreshold)
-    {
-        if (!is_numeric($retryThreshold)) {
-            throw new \InvalidArgumentException(sprintf(
-                'Retry threshold must be numeric, got "%s"',
-                $retryThreshold
-            ));
-        }
-
-        $this->retryThreshold = $retryThreshold;
-    }
-
-    /**
      * Run all benchmarks (or all applicable benchmarks) in the given path.
      *
      * The $name argument will set the "name" attribute on the "suite" element.
@@ -168,7 +64,7 @@ class Runner
      * @param string $contextName
      * @param string $path
      */
-    public function runAll($contextName, $path)
+    public function run(RunnerContext $context)
     {
         $dom = new SuiteDocument();
         $rootEl = $dom->createElement('phpbench');
@@ -176,15 +72,12 @@ class Runner
         $dom->appendChild($rootEl);
 
         $suiteEl = $rootEl->appendElement('suite');
-        $suiteEl->setAttribute('context', $contextName);
+        $suiteEl->setAttribute('context', $context->getContextName());
         $suiteEl->setAttribute('date', date('c'));
         $suiteEl->setAttribute('config-path', $this->configPath);
+        $suiteEl->setAttribute('retry-threshold', $context->getRetryThreshold($this->retryThreshold));
 
-        if ($this->retryThreshold) {
-            $suiteEl->setAttribute('retry-threshold', $this->retryThreshold);
-        }
-
-        $collection = $this->collectionBuilder->buildCollection($path, $this->filters, $this->groups);
+        $collection = $this->collectionBuilder->buildCollection($context->getPath(), $context->getFilters(), $context->getGroups());
 
         $this->logger->startSuite($dom);
 
@@ -194,7 +87,7 @@ class Runner
             $benchmarkEl->setAttribute('class', $benchmark->getClass());
 
             $this->logger->benchmarkStart($benchmark);
-            $this->run($benchmark, $benchmarkEl);
+            $this->runBenchmark($context, $benchmark, $benchmarkEl);
             $this->logger->benchmarkEnd($benchmark);
 
             $suiteEl->appendChild($benchmarkEl);
@@ -205,7 +98,7 @@ class Runner
         return $dom;
     }
 
-    private function run(BenchmarkMetadata $benchmark, \DOMElement $benchmarkEl)
+    private function runBenchmark(RunnerContext $context, BenchmarkMetadata $benchmark, \DOMElement $benchmarkEl)
     {
         if ($benchmark->getBeforeClassMethods()) {
             $this->executor->executeMethods($benchmark, $benchmark->getBeforeClassMethods());
@@ -225,7 +118,7 @@ class Runner
             }
 
             $this->logger->subjectStart($subject);
-            $this->runSubject($subject, $subjectEl);
+            $this->runSubject($context, $subject, $subjectEl);
             $this->logger->subjectEnd($subject);
         }
 
@@ -234,24 +127,22 @@ class Runner
         }
     }
 
-    private function runSubject(SubjectMetadata $subject, \DOMElement $subjectEl)
+    private function runSubject(RunnerContext $context, SubjectMetadata $subject, \DOMElement $subjectEl)
     {
-        $iterationCount = null === $this->iterationsOverride ? $subject->getIterations() : $this->iterationsOverride;
-        $revolutionCount = $this->revsOverride ?: $subject->getRevs();
-        $parameterSets = $this->parametersOverride ? array(array($this->parametersOverride)) : $subject->getParameterSets() ?: array(array(array()));
+        $parameterSets = $context->getParameterSets($subject->getParameterSets());
         $paramsIterator = new CartesianParameterIterator($parameterSets);
 
-        foreach ($paramsIterator as $parameters) {
+        foreach ($paramsIterator as $parameterSet) {
             $variantEl = $subjectEl->ownerDocument->createElement('variant');
-            $variantEl->setAttribute('sleep', $this->getSleepInterval($subject->getSleep()));
+            $variantEl->setAttribute('sleep', $context->getSleep($subject->getSleep()));
             $variantEl->setAttribute('output-time-unit', $subject->getOutputTimeUnit() ?: TimeUnit::MICROSECONDS);
-            foreach ($parameters as $name => $value) {
+            foreach ($parameterSet as $name => $value) {
                 $parameterEl = $this->createParameter($subjectEl, $name, $value);
                 $variantEl->appendChild($parameterEl);
             }
 
             $subjectEl->appendChild($variantEl);
-            $this->runIterations($subject, $iterationCount, $revolutionCount, $parameters, $variantEl);
+            $this->runIterations($context, $subject, $parameterSet, $variantEl);
         }
     }
 
@@ -282,10 +173,12 @@ class Runner
         ));
     }
 
-    private function runIterations(SubjectMetadata $subject, $iterationCount, $revolutionCount, ParameterSet $parameterSet, \DOMElement $variantEl)
+    private function runIterations(RunnerContext $context, SubjectMetadata $subject, ParameterSet $parameterSet, \DOMElement $variantEl)
     {
-        $iterationCollection = new IterationCollection($subject, $parameterSet, $this->retryThreshold);
+        $iterationCount = $context->getIterations($subject->getIterations());
+        $revolutionCount = $context->getRevolutions($subject->getRevs());
 
+        $iterationCollection = new IterationCollection($subject, $parameterSet, $this->retryThreshold);
         $this->logger->iterationsStart($iterationCollection);
 
         $iterations = $iterationCollection->spawnIterations($iterationCount, $revolutionCount);
@@ -302,7 +195,7 @@ class Runner
             $this->logger->iterationsStart($iterationCollection);
             foreach ($iterationCollection->getRejects() as $reject) {
                 $reject->incrementRejectionCount();
-                $this->runIteration($reject, $subject->getSleep());
+                $this->runIteration($reject, $context->getSleep($subject->getSleep()));
             }
             $iterationCollection->computeStats();
             $this->logger->iterationsEnd($iterationCollection);
@@ -333,7 +226,6 @@ class Runner
     {
         $this->logger->iterationStart($iteration);
         $result = $this->executor->execute($iteration);
-        $sleep = $this->getSleepInterval($sleep);
 
         if ($sleep) {
             usleep($sleep);
