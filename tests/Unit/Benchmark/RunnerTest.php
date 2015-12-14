@@ -14,6 +14,7 @@ namespace PhpBench\Tests\Benchmark;
 use PhpBench\Benchmark\Iteration;
 use PhpBench\Benchmark\IterationResult;
 use PhpBench\Benchmark\Runner;
+use PhpBench\Benchmark\RunnerContext;
 use PhpBench\PhpBench;
 use PhpBench\Tests\Util\TestUtil;
 use Prophecy\Argument;
@@ -74,7 +75,9 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
                 ->willReturn(new IterationResult(10, 10));
         }
 
-        $result = $this->runner->runAll('context', __DIR__);
+        $result = $this->runner->run(new RunnerContext(__DIR__, array(
+            'context_name' => 'context',
+        )));
 
         $this->assertInstanceOf('PhpBench\Benchmark\SuiteDocument', $result);
 
@@ -167,22 +170,11 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
             $this->subject->reveal(),
         ));
         TestUtil::configureBenchmark($this->benchmark);
-        $result = $this->runner->runAll('context', __DIR__);
+        $result = $this->runner->run(new RunnerContext(__DIR__));
 
         $this->assertInstanceOf('PhpBench\Benchmark\SuiteDocument', $result);
         $this->assertTrue($result->evaluate('count(//subject) = 1'));
         $this->assertTrue($result->evaluate('count(//subject/*) = 0'));
-    }
-
-    /**
-     * It should throw an exception if the retry threshold is not numeric.
-     *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage numeric
-     */
-    public function testRetryNotNumeric()
-    {
-        $this->runner->setRetryThreshold('asd');
     }
 
     /**
@@ -205,13 +197,17 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
             ->shouldBeCalledTimes(2)
             ->willReturn(new IterationResult(10, 10));
 
-        $result = $this->runner->runAll('context', __DIR__);
+        $result = $this->runner->run(new RunnerContext(__DIR__));
 
         $this->assertInstanceOf('PhpBench\Benchmark\SuiteDocument', $result);
         $this->assertTrue($result->evaluate('count(//variant[@sleep="50"]) = 1'), true);
 
-        $this->runner->overrideSleep(100);
-        $result = $this->runner->runAll('context', __DIR__);
+        $result = $this->runner->run(new RunnerContext(
+            __DIR__,
+            array(
+                'sleep' => 100,
+            )
+        ));
         $this->assertTrue($result->evaluate('count(//variant[@sleep="100"]) = 1'), true);
     }
 
@@ -234,8 +230,12 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
             ->shouldBeCalledTimes(1)
             ->willReturn(new IterationResult(10, 10));
 
-        $this->runner->setRetryThreshold(10);
-        $result = $this->runner->runAll('context', __DIR__);
+        $result = $this->runner->run(new RunnerContext(
+            __DIR__,
+            array(
+                'retry_threshold' => 10,
+            )
+        ));
 
         $this->assertInstanceOf('PhpBench\Benchmark\SuiteDocument', $result);
         $this->assertContains('retry-threshold="10"', $result->dump());
@@ -258,7 +258,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
             $this->benchmark,
         ));
 
-        $this->runner->runAll('context', __DIR__);
+        $this->runner->run(new RunnerContext(__DIR__));
     }
 }
 
