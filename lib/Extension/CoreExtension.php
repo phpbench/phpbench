@@ -25,6 +25,7 @@ use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Progress\Logger\DotsLogger;
 use PhpBench\Progress\Logger\NullLogger;
+use PhpBench\Progress\Logger\TravisLogger;
 use PhpBench\Progress\Logger\VerboseLogger;
 use PhpBench\Progress\LoggerRegistry;
 use PhpBench\Report\Generator\CompositeGenerator;
@@ -84,7 +85,7 @@ class CoreExtension implements ExtensionInterface
             'reports' => array(),
             'outputs' => array(),
             'config_path' => null,
-            'progress' => 'verbose',
+            'progress' => getenv('CONTINUOUS_INTEGRATION') ? 'travis' : 'verbose',
             'retry_threshold' => null,
             'time_unit' => TimeUnit::MICROSECONDS,
         ));
@@ -219,6 +220,10 @@ class CoreExtension implements ExtensionInterface
         $container->register('progress_logger.verbose', function (Container $container) {
             return new VerboseLogger($container->get('benchmark.time_unit'));
         }, array('progress_logger' => array('name' => 'verbose')));
+
+        $container->register('progress_logger.travis', function (Container $container) {
+            return new TravisLogger($container->get('benchmark.time_unit'));
+        }, array('progress_logger' => array('name' => 'travis')));
 
         $container->register('progress_logger.null', function (Container $container) {
             return new NullLogger();

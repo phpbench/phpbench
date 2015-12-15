@@ -178,7 +178,7 @@ class Runner
         $iterationCount = $context->getIterations($subject->getIterations());
         $revolutionCount = $context->getRevolutions($subject->getRevs());
 
-        $iterationCollection = new IterationCollection($subject, $parameterSet, $this->retryThreshold);
+        $iterationCollection = new IterationCollection($subject, $parameterSet, $context->getRetryThreshold($this->retryThreshold));
         $this->logger->iterationsStart($iterationCollection);
 
         $iterations = $iterationCollection->spawnIterations($iterationCount, $revolutionCount);
