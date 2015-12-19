@@ -14,7 +14,7 @@
         "symfony/console": "^2.4",
         "symfony/finder": "^2.4",
         "symfony/process": "^2.1",
-        "phpbench/tabular": "dev-master",
+        "phpbench/tabular": "^0.4.0",
         "seld/jsonlint": "^1.0",
         "justinrainbow/json-schema": "^1.0",
         "doctrine/annotations": "^1.2.7",
