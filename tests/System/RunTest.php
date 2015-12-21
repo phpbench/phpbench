@@ -72,7 +72,7 @@ class RunTest extends SystemTestCase
     {
         $process = $this->phpbench('run');
         $this->assertExitCode(1, $process);
-        $this->assertContains('You must either specify', $process->getOutput());
+        $this->assertContains('You must either specify', $process->getErrorOutput());
     }
 
     /**
@@ -97,7 +97,7 @@ class RunTest extends SystemTestCase
             'run --report=\'{"generator": "foo_table"}\' benchmarks/set1/BenchmarkBench.php'
         );
         $this->assertExitCode(1, $process);
-        $this->assertContains('Unknown report generator', $process->getOutput());
+        $this->assertContains('Unknown report generator', $process->getErrorOutput());
     }
 
     /**
@@ -109,7 +109,7 @@ class RunTest extends SystemTestCase
             'run --report=\'{"name": "foo_ta\' benchmarks/set1/BenchmarkBench.php'
         );
         $this->assertExitCode(1, $process);
-        $this->assertContains('Could not decode', $process->getOutput());
+        $this->assertContains('Could not decode', $process->getErrorOutput());
     }
 
     /**
@@ -162,7 +162,7 @@ class RunTest extends SystemTestCase
         );
 
         $this->assertExitCode(1, $process);
-        $this->assertContains('Could not decode', $process->getOutput());
+        $this->assertContains('Could not decode', $process->getErrorOutput());
     }
 
     /**

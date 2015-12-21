@@ -33,7 +33,7 @@ class ReportTest extends SystemTestCase
     {
         $process = $this->phpbench('report --file=results/report1.xml');
         $this->assertExitCode(1, $process);
-        $this->assertContains('You must specify or con', $process->getOutput());
+        $this->assertContains('You must specify or con', $process->getErrorOutput());
     }
 
     /**
