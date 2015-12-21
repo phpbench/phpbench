@@ -364,7 +364,7 @@ The ``benchHash`` subject will now be in both the ``md5`` and
 
 This option is available on all array valued (plural) annotations.
 
-Revovery Period: Sleeping
+Recovery Period: Sleeping
 --------------------------
 
 Sometimes it may be necessary to pause between iterations in order to let
@@ -388,6 +388,10 @@ the system recover. Use the ``@Sleep`` annotation, specifying the number of
     }
 
 The above example will pause (sleep) for 1 second *after* each iteration.
+
+.. note::
+
+    This can be overridden using the ``--sleep`` option from the CLI.
 
 .. _time_unit:
 
@@ -425,10 +429,6 @@ The following time units are available:
 - ``minutes``
 - ``hours``
 - ``days``
-
-.. note::
-
-    This can be overridden using the ``--sleep`` option from the CLI.
 
 .. _cartesian product: https://en.wikipedia.org/wiki/Cartesian_product
 .. _Relative standard deviation: https://en.wikipedia.org/wiki/Coefficient_of_variation
