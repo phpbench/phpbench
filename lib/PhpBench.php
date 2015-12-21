@@ -75,7 +75,7 @@ class PhpBench
 
             $config['config_path'] = $configPath;
 
-            if ($config['bootstrap']) {
+            if (isset($config['bootstrap'])) {
                 $config['bootstrap'] = self::getBootstrapPath(
                     dirname($configPath), $config['bootstrap']
                 );
