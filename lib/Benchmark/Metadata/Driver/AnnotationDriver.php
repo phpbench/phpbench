@@ -169,6 +169,10 @@ class AnnotationDriver implements DriverInterface
         if ($annotation instanceof Annotations\OutputTimeUnit) {
             $metadata->setOutputTimeUnit($annotation->getOutputTimeUnit());
         }
+
+        if ($annotation instanceof Annotations\OutputMode) {
+            $metadata->setOutputMode($annotation->getMode());
+        }
     }
 
     private function resolveValue(AbstractArrayAnnotation $annotation, array $currentValues, array $annotationValues)

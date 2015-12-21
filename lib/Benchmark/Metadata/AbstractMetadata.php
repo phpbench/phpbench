@@ -67,6 +67,11 @@ abstract class AbstractMetadata
     private $outputTimeUnit = null;
 
     /**
+     * @var string
+     */
+    private $outputMode = 'time';
+
+    /**
      * @param mixed $class
      */
     public function __construct($class)
@@ -174,5 +179,15 @@ abstract class AbstractMetadata
     public function setOutputTimeUnit($outputTimeUnit)
     {
         $this->outputTimeUnit = $outputTimeUnit;
+    }
+
+    public function getOutputMode() 
+    {
+        return $this->outputMode;
+    }
+    
+    public function setOutputMode($outputMode)
+    {
+        $this->outputMode = $outputMode;
     }
 }

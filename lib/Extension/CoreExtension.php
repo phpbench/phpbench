@@ -51,6 +51,7 @@ use PhpBench\Tabular\TableBuilder;
 use PhpBench\Tabular\Tabular;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Finder\Finder;
+use PhpBench\Util\TimeFormatter;
 
 class CoreExtension implements ExtensionInterface
 {
@@ -88,6 +89,7 @@ class CoreExtension implements ExtensionInterface
             'progress' => getenv('CONTINUOUS_INTEGRATION') ? 'travis' : 'verbose',
             'retry_threshold' => null,
             'time_unit' => TimeUnit::MICROSECONDS,
+            'output_mode' => TimeFormatter::MODE_TIME
         ));
     }
 
@@ -173,6 +175,13 @@ class CoreExtension implements ExtensionInterface
         $container->register('benchmark.time_unit', function (Container $container) {
             return new TimeUnit(TimeUnit::MICROSECONDS, $container->getParameter('time_unit'));
         });
+
+        $container->register('benchmark.time_formatter', function (Container $container) {
+            return new TimeFormatter(
+                $container->get('benchmark.time_unit'),
+                $container->getParameter('output_mode')
+            );
+        });
     }
 
     private function registerJsonSchema(Container $container)
@@ -210,19 +219,19 @@ class CoreExtension implements ExtensionInterface
         });
 
         $container->register('progress_logger.dots', function (Container $container) {
-            return new DotsLogger($container->get('benchmark.time_unit'));
+            return new DotsLogger($container->get('benchmark.time_formatter'));
         }, array('progress_logger' => array('name' => 'dots')));
 
         $container->register('progress_logger.classdots', function (Container $container) {
-            return new DotsLogger($container->get('benchmark.time_unit'), true);
+            return new DotsLogger($container->get('benchmark.time_formatter'), true);
         }, array('progress_logger' => array('name' => 'classdots')));
 
         $container->register('progress_logger.verbose', function (Container $container) {
-            return new VerboseLogger($container->get('benchmark.time_unit'));
+            return new VerboseLogger($container->get('benchmark.time_formatter'));
         }, array('progress_logger' => array('name' => 'verbose')));
 
         $container->register('progress_logger.travis', function (Container $container) {
-            return new TravisLogger($container->get('benchmark.time_unit'));
+            return new TravisLogger($container->get('benchmark.time_formatter'));
         }, array('progress_logger' => array('name' => 'travis')));
 
         $container->register('progress_logger.null', function (Container $container) {

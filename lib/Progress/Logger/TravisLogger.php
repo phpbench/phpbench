@@ -15,6 +15,7 @@ use PhpBench\Benchmark\IterationCollection;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\Util\TimeUnit;
+use PhpBench\Util\TimeFormatter;
 
 class TravisLogger extends PhpBenchLogger
 {
@@ -47,20 +48,14 @@ class TravisLogger extends PhpBenchLogger
         $stats = $iterations->getStats();
         $subject = $iterations->getSubject();
         $timeUnit = $subject->getOutputTimeUnit();
+        $outputMode = $subject->getOutputMode();
 
-        if (null === $timeUnit || $this->timeUnit->isOverridden()) {
-            $timeUnit = $this->timeUnit->getDestUnit();
-        }
-
-        $suffix = TimeUnit::getSuffix($timeUnit);
         $this->output->writeln(sprintf(
-            "\t%-30s P%s\tμ/r: %s%s\tμSD/r %s%s\tμRSD/r: %s%%",
+            "\t%-30s P%s\tμ/r: %s\tμSD/r %s\tμRSD/r: %s%%",
             $subject->getName(),
             $iterations->getParameterSet()->getIndex(),
-            number_format(TimeUnit::convert($stats['mean'], TimeUnit::MICROSECONDS, $timeUnit), 3),
-            $suffix,
-            number_format(TimeUnit::convert($stats['stdev'], TimeUnit::MICROSECONDS, $timeUnit), 3),
-            $suffix,
+            $this->timeFormatter->format($stats['mean'], $outputMode, $timeUnit),
+            $this->timeFormatter->format($stats['stdev'], TimeFormatter::MODE_TIME, $timeUnit),
             number_format($stats['rstdev'], 2)
         ));
     }

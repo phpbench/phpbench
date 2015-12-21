@@ -16,14 +16,14 @@ use PhpBench\Util\TimeUnit;
 class TimeUnitTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * It should convert one time unit to another.
+     * It should convertTo one time unit to another.
      *
      * @dataProvider provideConvert
      */
     public function testConvert($time, $unit, $destUnit, $expectedTime)
     {
         $unit = new TimeUnit($unit, $destUnit);
-        $result = $unit->value($time);
+        $result = $unit->toDestUnit($time);
         $this->assertEquals($expectedTime, $result);
     }
 
@@ -70,12 +70,54 @@ class TimeUnitTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * It should convertTo one time unit to another.
+     *
+     * @dataProvider provideConvertHertz
+     */
+    public function testConvertHertz($time, $unit, $destUnit, $expectedHertz)
+    {
+        $unit = new TimeUnit($unit, $destUnit);
+        $result = $unit->intoDestUnit($time);
+        $this->assertEquals($expectedHertz, $result);
+    }
+
+    public function provideConvertHertz()
+    {
+        return array(
+            array(
+                1,
+                TimeUnit::SECONDS,
+                TimeUnit::MINUTES,
+                60,
+            ),
+            array(
+                60,
+                TimeUnit::SECONDS,
+                TimeUnit::MINUTES,
+                1,
+            ),
+            array(
+                1,
+                TimeUnit::SECONDS,
+                TimeUnit::MILLISECONDS,
+                0.001,
+            ),
+            array(
+                2,
+                TimeUnit::MILLISECONDS,
+                TimeUnit::SECONDS,
+                500,
+            ),
+        );
+    }
+
+    /**
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage Invalid time unit "arf"
      */
     public function testInvalidSourceFormat()
     {
-        TimeUnit::convert(1000, 'arf', TimeUnit::MICROSECONDS);
+        TimeUnit::convertTo(1000, 'arf', TimeUnit::MICROSECONDS);
     }
 
     /**
@@ -84,7 +126,7 @@ class TimeUnitTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidDestFormat()
     {
-        TimeUnit::convert(1000, TimeUnit::MICROSECONDS, 'arf');
+        TimeUnit::convertTo(1000, TimeUnit::MICROSECONDS, 'arf');
     }
 
     /**
@@ -93,6 +135,6 @@ class TimeUnitTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidUnitType()
     {
-        TimeUnit::convert(100, new \stdClass(), TimeUnit::MINUTES);
+        TimeUnit::convertTo(100, new \stdClass(), TimeUnit::MINUTES);
     }
 }

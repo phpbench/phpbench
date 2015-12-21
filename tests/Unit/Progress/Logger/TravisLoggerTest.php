@@ -13,6 +13,7 @@ namespace PhpBench\Tests\Unit\Progress\Logger;
 
 use PhpBench\Progress\Logger\TravisLogger;
 use PhpBench\Util\TimeUnit;
+use PhpBench\Util\TimeFormatter;
 use Prophecy\Argument;
 
 class TravisLoggerTest extends \PHPUnit_Framework_TestCase
@@ -20,8 +21,8 @@ class TravisLoggerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->output = $this->prophesize('Symfony\Component\Console\Output\OutputInterface');
-        $timeUnit = new TimeUnit(TimeUnit::MICROSECONDS, TimeUnit::MILLISECONDS);
-        $this->logger = new TravisLogger($timeUnit);
+        $timeFormatter = new TimeFormatter(new TimeUnit(TimeUnit::MICROSECONDS, TimeUnit::MILLISECONDS));
+        $this->logger = new TravisLogger($timeFormatter);
         $this->logger->setOutput($this->output->reveal());
 
         $this->benchmark = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');

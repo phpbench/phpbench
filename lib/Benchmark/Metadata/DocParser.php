@@ -32,6 +32,7 @@ class DocParser
         'Skip' => 'PhpBench\Benchmark\Metadata\Annotations\Skip',
         'Sleep' => 'PhpBench\Benchmark\Metadata\Annotations\Sleep',
         'OutputTimeUnit' => 'PhpBench\Benchmark\Metadata\Annotations\OutputTimeUnit',
+        'OutputMode' => 'PhpBench\Benchmark\Metadata\Annotations\OutputMode',
     );
     private static $globalIgnoredNames = array(
         // Annotation tags

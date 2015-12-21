@@ -69,12 +69,22 @@ class TimeUnit
      * Convert instance value to given unit.
      *
      * @param string
-     *
      * @return int
      */
-    public function value($time)
+    public function toDestUnit($time, $destUnit = null)
     {
-        return self::convert($time, $this->sourceUnit, $this->destUnit);
+        return self::convertTo($time, $this->sourceUnit, $destUnit ?: $this->destUnit);
+    }
+
+    /**
+     * Convert time to number of source units per destination unit
+     *
+     * @param integer
+     * @return int
+     */
+    public function intoDestUnit($time, $destUnit = null)
+    {
+        return self::convertInto($time, $this->sourceUnit, $destUnit ?: $this->destUnit);
     }
 
     /**
@@ -117,10 +127,31 @@ class TimeUnit
      * @param int
      * @param string
      * @param string
-     *
      * @return int
      */
-    public static function convert($time, $unit, $destUnit)
+    public static function convertInto($time, $unit, $destUnit)
+    {
+        self::validateUnit($unit);
+        self::validateUnit($destUnit);
+
+        $destM = self::$map[$destUnit];
+        $sourceM = self::$map[$unit];
+
+        $time = $destM / ($time * $sourceM); 
+
+        return $time;
+    }
+
+    /**
+     *
+     * @static
+     *
+     * @param int
+     * @param string
+     * @param string
+     * @return int
+     */
+    public static function convertTo($time, $unit, $destUnit)
     {
         self::validateUnit($unit);
         self::validateUnit($destUnit);
@@ -139,7 +170,6 @@ class TimeUnit
      * @static
      *
      * @param string
-     *
      * @return string
      */
     public static function getSuffix($unit)

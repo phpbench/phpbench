@@ -24,7 +24,7 @@ class TimeFormat implements FormatInterface
      */
     public function format($subject, array $options)
     {
-        return TimeUnit::convert($subject, $options['from'], $options['to']);
+        return TimeUnit::convertTo($subject, $options['from'], $options['to']);
     }
 
     /**

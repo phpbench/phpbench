@@ -13,6 +13,8 @@
  * @Revs(1000)
  * @Iterations(10)
  * @Groups({"hashing"})
+ * @OutputMode("time")
+ * @OutputTimeUnit("microseconds")
  */
 class HashingBenchmark
 {

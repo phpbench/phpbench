@@ -99,9 +99,9 @@ class VerboseLogger extends PhpBenchLogger
         $suffix = TimeUnit::getSuffix($timeUnit);
         $this->output->write(sprintf(
             "\tμ/r: %s%s\tμSD/r %s%s\tμRSD/r: %s%%",
-            number_format(TimeUnit::convert($stats['mean'], TimeUnit::MICROSECONDS, $timeUnit), 3),
+            number_format(TimeUnit::convertTo($stats['mean'], TimeUnit::MICROSECONDS, $timeUnit), 3),
             $suffix,
-            number_format(TimeUnit::convert($stats['stdev'], TimeUnit::MICROSECONDS, $timeUnit), 3),
+            number_format(TimeUnit::convertTo($stats['stdev'], TimeUnit::MICROSECONDS, $timeUnit), 3),
             $suffix,
             number_format($stats['rstdev'], 2)
         ));

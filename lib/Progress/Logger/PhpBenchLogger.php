@@ -14,17 +14,17 @@ namespace PhpBench\Progress\Logger;
 use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\Console\OutputAwareInterface;
 use PhpBench\PhpBench;
-use PhpBench\Util\TimeUnit;
+use PhpBench\Util\TimeFormatter;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class PhpBenchLogger extends NullLogger implements OutputAwareInterface
 {
     protected $output;
-    protected $timeUnit;
+    protected $timeFormatter;
 
-    public function __construct(TimeUnit $timeUnit = null)
+    public function __construct(TimeFormatter $timeFormatter = null)
     {
-        $this->timeUnit = $timeUnit;
+        $this->timeFormatter = $timeFormatter;
     }
 
     public function setOutput(OutputInterface $output)
@@ -54,17 +54,16 @@ class PhpBenchLogger extends NullLogger implements OutputAwareInterface
         ));
         $this->output->writeln(sprintf(
             'min mean max: %s %s %s (%s/r)',
-            number_format($this->timeUnit->value($suiteDocument->getMin()), 3),
-            number_format($this->timeUnit->value($suiteDocument->getMeanTime()), 3),
-            number_format($this->timeUnit->value($suiteDocument->getMax()), 3),
-            $this->timeUnit->getDestSuffix()
+            number_format($this->timeFormatter->convert($suiteDocument->getMin()), 3),
+            number_format($this->timeFormatter->convert($suiteDocument->getMeanTime()), 3),
+            number_format($this->timeFormatter->convert($suiteDocument->getMax()), 3),
+            $this->timeFormatter->getDestSuffix()
         ));
         $this->output->writeln(sprintf(
-            '⅀T: %s%s μSD/r %s%s μRSD/r: %s%%',
-            number_format($this->timeUnit->value($suiteDocument->getTotalTime()), 3),
-            $this->timeUnit->getDestSuffix(),
-            number_format($this->timeUnit->value($suiteDocument->getMeanStDev()), 3),
-            $this->timeUnit->getDestSuffix(),
+            '⅀T: %s μSD/r %s%s μRSD/r: %s%%',
+            $this->timeFormatter->format($suiteDocument->getTotalTime()),
+            $this->timeFormatter->format($suiteDocument->getMeanStDev(), TimeFormatter::MODE_TIME),
+            $this->timeFormatter->getDestSuffix(),
             number_format($suiteDocument->getMeanRelStDev(), 3)
         ));
     }
