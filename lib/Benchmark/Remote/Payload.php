@@ -59,6 +59,9 @@ class Payload
         $this->template = $template;
         $this->process = $process ?: new Process($this->phpPath);
         $this->tokens = $tokens;
+
+        // disable timeout.
+        $this->process->setTimeout(null);
     }
 
     public function setWrapper($wrapper)
