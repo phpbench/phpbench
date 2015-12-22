@@ -17,7 +17,7 @@ use Seld\JsonLint\ParsingException;
 
 class PhpBench
 {
-    const VERSION = '0.8.0-dev';
+    const VERSION = '0.9.0-dev';
 
     public static function run()
     {
