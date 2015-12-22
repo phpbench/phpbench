@@ -91,18 +91,12 @@ class VerboseLogger extends PhpBenchLogger
     {
         $stats = $iterations->getStats();
         $timeUnit = $iterations->getSubject()->getOutputTimeUnit();
+        $mode = $iterations->getSubject()->getOutputMode();
 
-        if (null === $timeUnit || $this->timeUnit->isOverridden()) {
-            $timeUnit = $this->timeUnit->getDestUnit();
-        }
-
-        $suffix = TimeUnit::getSuffix($timeUnit);
         $this->output->write(sprintf(
-            "\tμ/r: %s%s\tμSD/r %s%s\tμRSD/r: %s%%",
-            number_format(TimeUnit::convertTo($stats['mean'], TimeUnit::MICROSECONDS, $timeUnit), 3),
-            $suffix,
-            number_format(TimeUnit::convertTo($stats['stdev'], TimeUnit::MICROSECONDS, $timeUnit), 3),
-            $suffix,
+            "\tμ/r: %s\tμSD/r %s\tμRSD/r: %s%%",
+            $this->timeUnit->format($stats['mean'], $this->timeUnit->resolveDestUnit($timeUnit), $this->timeUnit->resolveMode($mode)),
+            $this->timeUnit->format($stats['stdev'], $timeUnit, TimeUnit::MODE_TIME),
             number_format($stats['rstdev'], 2)
         ));
         $this->output->write(PHP_EOL);

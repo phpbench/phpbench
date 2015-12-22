@@ -74,6 +74,7 @@ EOT
         $this->addOption('iterations', null, InputOption::VALUE_REQUIRED, 'Override number of iteratios to run in (all) benchmarks');
         $this->addOption('revs', null, InputOption::VALUE_REQUIRED, 'Override number of revs (revolutions) on (all) benchmarks');
         $this->addOption('time-unit', null, InputOption::VALUE_REQUIRED, 'Override the time unit');
+        $this->addOption('mode', null, InputOption::VALUE_REQUIRED, 'Override the unit display mode ("throughput", "time")');
         $this->addOption('progress', 'l', InputOption::VALUE_REQUIRED, 'Progress logger to use, one of <comment>dots</comment>, <comment>classdots</comment>');
         $this->addOption('retry-threshold', 'r', InputOption::VALUE_REQUIRED, 'Set target allowable deviation', null);
 
@@ -92,9 +93,14 @@ EOT
         $dump = $input->getOption('dump');
         $dumpfile = $input->getOption('dump-file');
         $timeUnit = $input->getOption('time-unit');
+        $mode = $input->getOption('mode');
 
         if ($timeUnit) {
             $this->timeUnit->overrideDestUnit($timeUnit);
+        }
+
+        if ($mode) {
+            $this->timeUnit->overrideMode($mode);
         }
 
         $context = new RunnerContext(

@@ -14,17 +14,17 @@ namespace PhpBench\Progress\Logger;
 use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\Console\OutputAwareInterface;
 use PhpBench\PhpBench;
-use PhpBench\Util\TimeFormatter;
+use PhpBench\Util\TimeUnit;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class PhpBenchLogger extends NullLogger implements OutputAwareInterface
 {
     protected $output;
-    protected $timeFormatter;
+    protected $timeUnit;
 
-    public function __construct(TimeFormatter $timeFormatter = null)
+    public function __construct(TimeUnit $timeUnit = null)
     {
-        $this->timeFormatter = $timeFormatter;
+        $this->timeUnit = $timeUnit;
     }
 
     public function setOutput(OutputInterface $output)
@@ -53,17 +53,17 @@ class PhpBenchLogger extends NullLogger implements OutputAwareInterface
             $suiteDocument->getNbRejects()
         ));
         $this->output->writeln(sprintf(
-            'min mean max: %s %s %s (%s/r)',
-            number_format($this->timeFormatter->convert($suiteDocument->getMin()), 3),
-            number_format($this->timeFormatter->convert($suiteDocument->getMeanTime()), 3),
-            number_format($this->timeFormatter->convert($suiteDocument->getMax()), 3),
-            $this->timeFormatter->getDestSuffix()
+            '(%s) = %s %s %s (%s)',
+            $this->timeUnit->getMode() == TimeUnit::MODE_TIME ? 'min mean max' : 'max mean min',
+            number_format($this->timeUnit->toDestUnit($suiteDocument->getMin()), 3),
+            number_format($this->timeUnit->toDestUnit($suiteDocument->getMeanTime()), 3),
+            number_format($this->timeUnit->toDestUnit($suiteDocument->getMax()), 3),
+            $this->timeUnit->getDestSuffix()
         ));
         $this->output->writeln(sprintf(
-            '⅀T: %s μSD/r %s%s μRSD/r: %s%%',
-            $this->timeFormatter->format($suiteDocument->getTotalTime()),
-            $this->timeFormatter->format($suiteDocument->getMeanStDev(), TimeFormatter::MODE_TIME),
-            $this->timeFormatter->getDestSuffix(),
+            '⅀T: %s μSD/r %s μRSD/r: %s%%',
+            $this->timeUnit->format($suiteDocument->getTotalTime(), null, TimeUnit::MODE_TIME, true),
+            $this->timeUnit->format($suiteDocument->getMeanStDev(), null, TimeUnit::MODE_TIME, true),
             number_format($suiteDocument->getMeanRelStDev(), 3)
         ));
     }

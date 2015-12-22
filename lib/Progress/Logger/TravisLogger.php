@@ -15,12 +15,9 @@ use PhpBench\Benchmark\IterationCollection;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\Util\TimeUnit;
-use PhpBench\Util\TimeFormatter;
 
 class TravisLogger extends PhpBenchLogger
 {
-    private $currentIterationCollection;
-
     /**
      * {@inheritdoc}
      */
@@ -54,8 +51,8 @@ class TravisLogger extends PhpBenchLogger
             "\t%-30s P%s\tμ/r: %s\tμSD/r %s\tμRSD/r: %s%%",
             $subject->getName(),
             $iterations->getParameterSet()->getIndex(),
-            $this->timeFormatter->format($stats['mean'], $outputMode, $timeUnit),
-            $this->timeFormatter->format($stats['stdev'], TimeFormatter::MODE_TIME, $timeUnit),
+            $this->timeUnit->format($stats['mean'], $timeUnit, $outputMode),
+            $this->timeUnit->format($stats['stdev'], $timeUnit, TimeUnit::MODE_TIME),
             number_format($stats['rstdev'], 2)
         ));
     }

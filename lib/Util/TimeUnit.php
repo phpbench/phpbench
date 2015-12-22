@@ -23,6 +23,9 @@ class TimeUnit
     const HOURS = 'hours';
     const DAYS = 'days';
 
+    const MODE_THROUGHPUT = 'throughput';
+    const MODE_TIME = 'time';
+
     /**
      * @var array
      */
@@ -35,6 +38,9 @@ class TimeUnit
         self::DAYS         => 86400000000,
     );
 
+    /**
+     * @var array
+     */
     private static $suffixes = array(
         self::MICROSECONDS => 'μs',
         self::MILLISECONDS => 'ms',
@@ -57,12 +63,23 @@ class TimeUnit
     /**
      * @var bool
      */
-    private $overridden = false;
+    private $overriddenDestUnit = false;
 
-    public function __construct($sourceUnit, $destUnit)
+    /**
+     * @var bool
+     */
+    private $overriddenMode = false;
+
+    /**
+     * @var string
+     */
+    private $mode;
+
+    public function __construct($sourceUnit, $destUnit, $mode = self::MODE_TIME)
     {
         $this->sourceUnit = $sourceUnit;
         $this->destUnit = $destUnit;
+        $this->mode = $mode;
     }
 
     /**
@@ -71,20 +88,9 @@ class TimeUnit
      * @param string
      * @return int
      */
-    public function toDestUnit($time, $destUnit = null)
+    public function toDestUnit($time, $destUnit = null, $mode = null)
     {
-        return self::convertTo($time, $this->sourceUnit, $destUnit ?: $this->destUnit);
-    }
-
-    /**
-     * Convert time to number of source units per destination unit
-     *
-     * @param integer
-     * @return int
-     */
-    public function intoDestUnit($time, $destUnit = null)
-    {
-        return self::convertInto($time, $this->sourceUnit, $destUnit ?: $this->destUnit);
+        return self::convert($time, $this->sourceUnit, $this->getDestUnit($destUnit), $this->getMode($mode));
     }
 
     /**
@@ -96,34 +102,138 @@ class TimeUnit
     {
         self::validateUnit($destUnit);
         $this->destUnit = $destUnit;
-        $this->overridden = true;
+        $this->overriddenDestUnit = true;
     }
 
     /**
-     * Return true if the destination unit has been overridden.
+     * Override the mode.
      *
-     * @return bool
+     * @param string $mode
      */
-    public function isOverridden()
+    public function overrideMode($mode)
     {
-        return $this->overridden;
+        self::validateMode($mode);
+        $this->mode = $mode;
+        $this->overriddenMode = true;
     }
 
     /**
      * Return the destination unit.
      *
+     * @param string $unit
      * @return string
      */
-    public function getDestUnit()
+    public function getDestUnit($unit = null)
     {
+        // if a unit is given, use that
+        if ($unit) {
+            return $unit;
+        }
+
+        // otherwise return the default
         return $this->destUnit;
     }
 
     /**
-     * Static conversion method.
+     * Utility method, if the dest unit is overridden, return the overriden
+     * value.
+     *
+     * @return string
+     */
+    public function resolveDestUnit($unit)
+    {
+        if ($this->overriddenDestUnit) {
+            return $this->destUnit;
+        }
+
+        return $unit;
+    }
+
+    /**
+     * Utility method, if the mode is overridden, return the overriden
+     * value.
+     *
+     * @return string
+     */
+    public function resolveMode($mode)
+    {
+        if ($this->overriddenMode) {
+            return $this->mode;
+        }
+
+        return $mode;
+    }
+
+    /**
+     * Return the destination mode.
+     *
+     * @param string $unit
+     * @return string
+     */
+    public function getMode($mode = null)
+    {
+        // if a mode is given, use that
+        if ($mode) {
+            return $mode;
+        }
+
+        // otherwise return the default
+        return $this->mode;
+    }
+
+    /**
+     * Return the destination unit suffix.
+     *
+     * @param string $unit
+     * @return string
+     */
+    public function getDestSuffix($unit = null, $mode = null)
+    {
+        return self::getSuffix($this->getDestUnit($unit), $this->getMode($mode));
+    }
+
+    /**
+     * Return a human readable representation of the unit including the suffix.
+     *
+     * @param int
+     * @param string
+     * @param string
+     */
+    public function format($time, $unit = null, $mode = null)
+    {
+        $value = number_format($this->toDestUnit($time, $unit, $mode), 3);
+        $suffix = $this->getDestSuffix($unit, $mode);
+
+        return $value . $suffix;
+    }
+
+    /**
+     * Convert given time in given unit to given destination unit in given mode.
      *
      * @static
+     * @param int $time
+     * @param string $unit
+     * @param string $destUnit
+     * @param string $mode
      *
+     * @return int
+     */
+    public static function convert($time, $unit, $destUnit, $mode)
+    {
+        self::validateMode($mode);
+
+        if ($mode === self::MODE_TIME) {
+            return self::convertTo($time, $unit, $destUnit);
+        }
+
+        return self::convertInto($time, $unit, $destUnit);
+    }
+
+    /**
+     * Convert a given time INTO the given unit. That is, how many times the
+     * given time will fit into the the destination unit. i.e. `x` per unit.
+     *
+     * @static
      * @param int
      * @param string
      * @param string
@@ -143,9 +253,10 @@ class TimeUnit
     }
 
     /**
+     * Convert the given time from the given unit to the given destination
+     * unit.
      *
      * @static
-     *
      * @param int
      * @param string
      * @param string
@@ -168,25 +279,20 @@ class TimeUnit
      * Return the suffix for a given unit.
      *
      * @static
-     *
      * @param string
      * @return string
      */
-    public static function getSuffix($unit)
+    public static function getSuffix($unit, $mode = null)
     {
         self::validateUnit($unit);
 
-        return self::$suffixes[$unit];
-    }
+        $suffix = self::$suffixes[$unit];
 
-    /**
-     * Return the destination unit suffix.
-     *
-     * @return string
-     */
-    public function getDestSuffix()
-    {
-        return self::getSuffix($this->destUnit);
+        if ($mode === self::MODE_THROUGHPUT) {
+            return sprintf('ops/%s', $suffix);
+        }
+
+        return $suffix;
     }
 
     private static function validateUnit($unit)
@@ -197,10 +303,23 @@ class TimeUnit
                 is_object($unit) ? get_class($unit) : gettype($unit)
             ));
         }
+
         if (!isset(self::$map[$unit])) {
             throw new \InvalidArgumentException(sprintf(
                 'Invalid time unit "%s", available units: "%s"',
                 $unit, implode('", "', array_keys(self::$map))
+            ));
+        }
+    }
+
+    private static function validateMode($mode)
+    {
+        $validModes = array(self::MODE_THROUGHPUT, self::MODE_TIME);
+
+        if (!in_array($mode, $validModes)) {
+            throw new \InvalidArgumentException(sprintf(
+                'Time mode must be one of "%s", got "%s"',
+                implode('", "', $validModes), $mode
             ));
         }
     }

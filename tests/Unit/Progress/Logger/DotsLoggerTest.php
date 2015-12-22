@@ -12,7 +12,6 @@
 namespace PhpBench\Tests\Unit\Progress\Logger;
 
 use PhpBench\Progress\Logger\DotsLogger;
-use PhpBench\Util\TimeFormatter;
 use PhpBench\Util\TimeUnit;
 use Prophecy\Argument;
 
@@ -23,7 +22,7 @@ class DotsLoggerTest extends \PHPUnit_Framework_TestCase
         $this->tearDown();
 
         $this->output = $this->prophesize('Symfony\Component\Console\Output\OutputInterface');
-        $this->timeFormatter = new TimeFormatter(new TimeUnit(TimeUnit::MICROSECONDS, TimeUnit::MILLISECONDS));
+        $this->timeUnit = new TimeUnit(TimeUnit::MICROSECONDS, TimeUnit::MILLISECONDS);
         $this->benchmark = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');
         $this->subject = $this->prophesize('PhpBench\Benchmark\Metadata\SubjectMetadata');
         $this->iteration = $this->prophesize('PhpBench\Benchmark\Iteration');
@@ -89,7 +88,7 @@ class DotsLoggerTest extends \PHPUnit_Framework_TestCase
     private function createLogger($ci = false)
     {
         putenv('CONTINUOUS_INTEGRATION' . ($ci ? '=1' : '=0'));
-        $logger = new DotsLogger($this->timeFormatter);
+        $logger = new DotsLogger($this->timeUnit);
         $logger->setOutput($this->output->reveal());
 
         return $logger;

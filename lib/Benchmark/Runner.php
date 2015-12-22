@@ -136,7 +136,7 @@ class Runner
             $variantEl = $subjectEl->ownerDocument->createElement('variant');
             $variantEl->setAttribute('sleep', $context->getSleep($subject->getSleep()));
             $variantEl->setAttribute('output-time-unit', $subject->getOutputTimeUnit() ?: TimeUnit::MICROSECONDS);
-            $variantEl->setAttribute('output-mode', $subject->getOutputMode() ?: TimeFormatter::MODE_TIME);
+            $variantEl->setAttribute('output-mode', $subject->getOutputMode() ?: TimeUnit::MODE_TIME);
             foreach ($parameterSet as $name => $value) {
                 $parameterEl = $this->createParameter($subjectEl, $name, $value);
                 $variantEl->appendChild($parameterEl);
