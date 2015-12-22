@@ -11,13 +11,11 @@
 
 namespace PhpBench\Console;
 
-use PhpBench\Console\Output\OutputIndentDecorator;
 use PhpBench\PhpBench;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -55,15 +53,5 @@ class Application extends BaseApplication
     {
         parent::configureIO($input, $output);
         $output->getFormatter()->setStyle('greenbg', new OutputFormatterStyle('black', 'green', array()));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function run(InputInterface $input = null, OutputInterface $output = null)
-    {
-        $output = new OutputIndentDecorator(new ConsoleOutput());
-
-        return parent::run($input, $output);
     }
 }

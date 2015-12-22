@@ -1,7 +1,6 @@
 {
     "bootstrap": "../vendor/autoload.php",
     "path": "./",
-    "progress": "verbose",
     "retry_threshold": 10,
     "outputs": {
         "console_example": {
