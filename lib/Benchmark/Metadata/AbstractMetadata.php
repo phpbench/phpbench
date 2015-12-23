@@ -11,6 +11,8 @@
 
 namespace PhpBench\Benchmark\Metadata;
 
+use PhpBench\Util\TimeUnit;
+
 /**
  * Abstract metadata class for benchmarks and subjects.
  */
@@ -69,7 +71,7 @@ abstract class AbstractMetadata
     /**
      * @var string
      */
-    private $outputMode = 'time';
+    private $outputMode = TimeUnit::MODE_TIME;
 
     /**
      * @param mixed $class
@@ -181,11 +183,11 @@ abstract class AbstractMetadata
         $this->outputTimeUnit = $outputTimeUnit;
     }
 
-    public function getOutputMode() 
+    public function getOutputMode()
     {
         return $this->outputMode;
     }
-    
+
     public function setOutputMode($outputMode)
     {
         $this->outputMode = $outputMode;

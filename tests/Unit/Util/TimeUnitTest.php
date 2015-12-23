@@ -76,7 +76,7 @@ class TimeUnitTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should convert one time unit to another in throughput mode
+     * It should convert one time unit to another in throughput mode.
      *
      * @dataProvider provideConvertThroughput
      */
@@ -124,7 +124,7 @@ class TimeUnitTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should use the given values for getDestUnit and getMode
+     * It should use the given values for getDestUnit and getMode.
      */
     public function testGivenValuesModeAndDestUnit()
     {
@@ -145,7 +145,7 @@ class TimeUnitTest extends \PHPUnit_Framework_TestCase
 
     /**
      * It should resolve given values to the overridden values in the case that
-     * the values are overridden (dest unit and mode)
+     * the values are overridden (dest unit and mode).
      */
     public function testResolveDestUnitAndMode()
     {
@@ -173,7 +173,7 @@ class TimeUnitTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should return the destination suffix for a given state
+     * It should return the destination suffix for a given state.
      */
     public function testDestSuffixGivenState()
     {

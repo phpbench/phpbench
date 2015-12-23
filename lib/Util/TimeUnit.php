@@ -86,6 +86,7 @@ class TimeUnit
      * Convert instance value to given unit.
      *
      * @param string
+     *
      * @return int
      */
     public function toDestUnit($time, $destUnit = null, $mode = null)
@@ -121,6 +122,7 @@ class TimeUnit
      * Return the destination unit.
      *
      * @param string $unit
+     *
      * @return string
      */
     public function getDestUnit($unit = null)
@@ -168,6 +170,7 @@ class TimeUnit
      * Return the destination mode.
      *
      * @param string $unit
+     *
      * @return string
      */
     public function getMode($mode = null)
@@ -185,6 +188,7 @@ class TimeUnit
      * Return the destination unit suffix.
      *
      * @param string $unit
+     *
      * @return string
      */
     public function getDestSuffix($unit = null, $mode = null)
@@ -211,6 +215,7 @@ class TimeUnit
      * Convert given time in given unit to given destination unit in given mode.
      *
      * @static
+     *
      * @param int $time
      * @param string $unit
      * @param string $destUnit
@@ -234,9 +239,11 @@ class TimeUnit
      * given time will fit into the the destination unit. i.e. `x` per unit.
      *
      * @static
+     *
      * @param int
      * @param string
      * @param string
+     *
      * @return int
      */
     public static function convertInto($time, $unit, $destUnit)
@@ -251,7 +258,7 @@ class TimeUnit
         $destM = self::$map[$destUnit];
         $sourceM = self::$map[$unit];
 
-        $time = $destM / ($time * $sourceM); 
+        $time = $destM / ($time * $sourceM);
 
         return $time;
     }
@@ -261,9 +268,11 @@ class TimeUnit
      * unit.
      *
      * @static
+     *
      * @param int
      * @param string
      * @param string
+     *
      * @return int
      */
     public static function convertTo($time, $unit, $destUnit)
@@ -283,7 +292,9 @@ class TimeUnit
      * Return the suffix for a given unit.
      *
      * @static
+     *
      * @param string
+     *
      * @return string
      */
     public static function getSuffix($unit, $mode = null)

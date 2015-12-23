@@ -62,8 +62,8 @@ class PhpBenchLogger extends NullLogger implements OutputAwareInterface
         ));
         $this->output->writeln(sprintf(
             '⅀T: %s μSD/r %s μRSD/r: %s%%',
-            $this->timeUnit->format($suiteDocument->getTotalTime(), null, TimeUnit::MODE_TIME, true),
-            $this->timeUnit->format($suiteDocument->getMeanStDev(), null, TimeUnit::MODE_TIME, true),
+            $this->timeUnit->format($suiteDocument->getTotalTime(), null, TimeUnit::MODE_TIME),
+            $this->timeUnit->format($suiteDocument->getMeanStDev(), null, TimeUnit::MODE_TIME),
             number_format($suiteDocument->getMeanRelStDev(), 3)
         ));
     }

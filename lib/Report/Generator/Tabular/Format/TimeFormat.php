@@ -48,7 +48,7 @@ class TimeFormat implements FormatInterface
     {
         return array(
             'unit' => TimeUnit::MICROSECONDS,
-            'mode' => TimeUnit::MODE_TIME
+            'mode' => TimeUnit::MODE_TIME,
         );
     }
 }

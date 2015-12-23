@@ -180,7 +180,7 @@ class RunTest extends SystemTestCase
     }
 
     /**
-     * Its should allow the time unit to be specified
+     * Its should allow the time unit to be specified.
      */
     public function testOverrideTimeUnit()
     {
@@ -193,7 +193,7 @@ class RunTest extends SystemTestCase
     }
 
     /**
-     * Its should allow the mode to be specified
+     * Its should allow the mode to be specified.
      */
     public function testOverrideMode()
     {

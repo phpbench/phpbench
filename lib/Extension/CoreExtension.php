@@ -88,7 +88,7 @@ class CoreExtension implements ExtensionInterface
             'progress' => getenv('CONTINUOUS_INTEGRATION') ? 'travis' : 'verbose',
             'retry_threshold' => null,
             'time_unit' => TimeUnit::MICROSECONDS,
-            'output_mode' => TimeUnit::MODE_TIME
+            'output_mode' => TimeUnit::MODE_TIME,
         ));
     }
 
