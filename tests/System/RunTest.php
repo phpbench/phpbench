@@ -171,12 +171,38 @@ class RunTest extends SystemTestCase
     public function testOverrideIterations()
     {
         $process = $this->phpbench(
-            'run --filter=benchRandom --progress=none --dump --iterations=10 benchmarks/set1/BenchmarkBench.php'
+            'run --filter=benchDoNothing --progress=none --dump --iterations=10 benchmarks/set1/BenchmarkBench.php'
         );
 
         $this->assertExitCode(0, $process);
         $output = $process->getOutput();
-        $this->assertXPathCount(10, $output, '//subject[@name="benchRandom"]//iteration');
+        $this->assertXPathCount(10, $output, '//subject[@name="benchDoNothing"]//iteration');
+    }
+
+    /**
+     * Its should allow the time unit to be specified.
+     */
+    public function testOverrideTimeUnit()
+    {
+        $process = $this->phpbench(
+            'run --filter=benchDoNothing --time-unit=milliseconds --iterations=10 benchmarks/set1/BenchmarkBench.php'
+        );
+
+        $this->assertExitCode(0, $process);
+        $this->assertContains('(ms)', $process->getOutput());
+    }
+
+    /**
+     * Its should allow the mode to be specified.
+     */
+    public function testOverrideMode()
+    {
+        $process = $this->phpbench(
+            'run --filter=benchDoNothing --mode=throughput --iterations=10 benchmarks/set1/BenchmarkBench.php'
+        );
+
+        $this->assertExitCode(0, $process);
+        $this->assertContains('(ops/μs)', $process->getOutput());
     }
 
     /**

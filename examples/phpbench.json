@@ -2,6 +2,8 @@
     "bootstrap": "../vendor/autoload.php",
     "path": "./",
     "retry_threshold": 10,
+    "output_mode": "throughput",
+    "time_unit": "seconds",
     "outputs": {
         "console_example": {
             "renderer": "console",

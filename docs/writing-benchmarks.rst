@@ -430,5 +430,35 @@ The following time units are available:
 - ``hours``
 - ``days``
 
+.. _throughput:
+.. _mode:
+
+Mode: Throughput Representation
+--------------------------------
+
+The output mode determines how the measurements are presented, either `time`
+or `throughput`. `time` mode is the default and shows the average execution
+time of a single :ref:`revolution <revolutions>`. `throughput` shows how many *operations*
+are executed within a single time unit:
+
+.. code-block:: php
+
+    <?php
+
+    class HashBench
+    {
+        /**
+         * @OutputTimeUnit("seconds")
+         * @OutputMode("throughput")
+         */
+        public function benchMd5()
+        {
+            hash('md5', 'Hello World!');
+        }
+    }
+
+PHPBench will then render all measurements for `benchMd5` similar to
+`363,874.536ops/s`.
+
 .. _cartesian product: https://en.wikipedia.org/wiki/Cartesian_product
 .. _Relative standard deviation: https://en.wikipedia.org/wiki/Coefficient_of_variation

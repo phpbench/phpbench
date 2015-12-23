@@ -137,8 +137,8 @@ Note that:
 
 See the :doc:`report-renderers` chapter for more information.
 
-Time Unit
----------
+Time Unit and Mode
+------------------
 
 Specify the *default* :ref:`time unit <time_unit>`. Note that this will be overridden by
 individual benchmark/subjects and when the ``time-unit`` option is passed to
@@ -148,4 +148,12 @@ the CLI.
 
     {
         "time_unit": "milliseconds"
+    }
+
+Similarily the :ref:`mode` can be set using the `output_mode` key:
+
+.. code-block:: javascript
+
+    {
+        "output_mode": "throughput"
     }

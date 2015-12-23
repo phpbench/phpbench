@@ -18,8 +18,6 @@ use PhpBench\Util\TimeUnit;
 
 class TravisLogger extends PhpBenchLogger
 {
-    private $currentIterationCollection;
-
     /**
      * {@inheritdoc}
      */
@@ -47,20 +45,14 @@ class TravisLogger extends PhpBenchLogger
         $stats = $iterations->getStats();
         $subject = $iterations->getSubject();
         $timeUnit = $subject->getOutputTimeUnit();
+        $outputMode = $subject->getOutputMode();
 
-        if (null === $timeUnit || $this->timeUnit->isOverridden()) {
-            $timeUnit = $this->timeUnit->getDestUnit();
-        }
-
-        $suffix = TimeUnit::getSuffix($timeUnit);
         $this->output->writeln(sprintf(
-            "\t%-30s P%s\tμ/r: %s%s\tμSD/r %s%s\tμRSD/r: %s%%",
+            "\t%-30s P%s\tμ/r: %s\tμSD/r %s\tμRSD/r: %s%%",
             $subject->getName(),
             $iterations->getParameterSet()->getIndex(),
-            number_format(TimeUnit::convert($stats['mean'], TimeUnit::MICROSECONDS, $timeUnit), 3),
-            $suffix,
-            number_format(TimeUnit::convert($stats['stdev'], TimeUnit::MICROSECONDS, $timeUnit), 3),
-            $suffix,
+            $this->timeUnit->format($stats['mean'], $timeUnit, $outputMode),
+            $this->timeUnit->format($stats['stdev'], $timeUnit, TimeUnit::MODE_TIME),
             number_format($stats['rstdev'], 2)
         ));
     }

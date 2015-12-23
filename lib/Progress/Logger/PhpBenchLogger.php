@@ -53,18 +53,17 @@ class PhpBenchLogger extends NullLogger implements OutputAwareInterface
             $suiteDocument->getNbRejects()
         ));
         $this->output->writeln(sprintf(
-            'min mean max: %s %s %s (%s/r)',
-            number_format($this->timeUnit->value($suiteDocument->getMin()), 3),
-            number_format($this->timeUnit->value($suiteDocument->getMeanTime()), 3),
-            number_format($this->timeUnit->value($suiteDocument->getMax()), 3),
+            '(%s) = %s %s %s (%s)',
+            $this->timeUnit->getMode() == TimeUnit::MODE_TIME ? 'min mean max' : 'max mean min',
+            number_format($this->timeUnit->toDestUnit($suiteDocument->getMin()), 3),
+            number_format($this->timeUnit->toDestUnit($suiteDocument->getMeanTime()), 3),
+            number_format($this->timeUnit->toDestUnit($suiteDocument->getMax()), 3),
             $this->timeUnit->getDestSuffix()
         ));
         $this->output->writeln(sprintf(
-            '⅀T: %s%s μSD/r %s%s μRSD/r: %s%%',
-            number_format($this->timeUnit->value($suiteDocument->getTotalTime()), 3),
-            $this->timeUnit->getDestSuffix(),
-            number_format($this->timeUnit->value($suiteDocument->getMeanStDev()), 3),
-            $this->timeUnit->getDestSuffix(),
+            '⅀T: %s μSD/r %s μRSD/r: %s%%',
+            $this->timeUnit->format($suiteDocument->getTotalTime(), null, TimeUnit::MODE_TIME),
+            $this->timeUnit->format($suiteDocument->getMeanStDev(), null, TimeUnit::MODE_TIME),
             number_format($suiteDocument->getMeanRelStDev(), 3)
         ));
     }

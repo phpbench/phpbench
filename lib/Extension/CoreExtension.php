@@ -88,6 +88,7 @@ class CoreExtension implements ExtensionInterface
             'progress' => getenv('CONTINUOUS_INTEGRATION') ? 'travis' : 'verbose',
             'retry_threshold' => null,
             'time_unit' => TimeUnit::MICROSECONDS,
+            'output_mode' => TimeUnit::MODE_TIME,
         ));
     }
 
@@ -291,7 +292,7 @@ class CoreExtension implements ExtensionInterface
             $registry->register('number', new NumberFormat());
             $registry->register('truncate', new TruncateFormat());
             $registry->register('json_format', new JSONFormat());
-            $registry->register('time', new TimeFormat());
+            $registry->register('time', new TimeFormat($container->get('benchmark.time_unit')));
 
             return $registry;
         });

@@ -34,7 +34,7 @@ class DebugRenderer implements RendererInterface, OutputAwareInterface
     public function render(Document $reportsDocument, array $config)
     {
         $this->output->writeln('Report XML (debug):');
-        $this->output->writeln($reportsDocument->saveXml());
+        $this->output->writeln($reportsDocument->dump());
     }
 
     public function getSchema()

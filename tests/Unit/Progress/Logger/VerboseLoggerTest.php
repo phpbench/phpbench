@@ -11,17 +11,17 @@
 
 namespace PhpBench\Tests\Unit\Progress\Logger;
 
-use PhpBench\Progress\Logger\TravisLogger;
+use PhpBench\Progress\Logger\VerboseLogger;
 use PhpBench\Util\TimeUnit;
 use Prophecy\Argument;
 
-class TravisLoggerTest extends \PHPUnit_Framework_TestCase
+class VerboseLoggerTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
         $this->output = $this->prophesize('Symfony\Component\Console\Output\OutputInterface');
         $timeUnit = new TimeUnit(TimeUnit::MICROSECONDS, TimeUnit::MILLISECONDS);
-        $this->logger = new TravisLogger($timeUnit);
+        $this->logger = new VerboseLogger($timeUnit);
         $this->logger->setOutput($this->output->reveal());
 
         $this->benchmark = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');
@@ -60,7 +60,8 @@ class TravisLoggerTest extends \PHPUnit_Framework_TestCase
         $this->subject->getName()->willReturn('benchFoo');
         $this->parameterSet->getIndex()->willReturn(0);
 
-        $this->output->writeln(Argument::containingString('0.001ms'))->shouldBeCalled();
+        $this->output->write(Argument::containingString('0.001ms'))->shouldBeCalled();
+        $this->output->write(PHP_EOL)->shouldBeCalled();
         $this->logger->iterationsEnd($this->iterations->reveal());
     }
 
@@ -68,7 +69,7 @@ class TravisLoggerTest extends \PHPUnit_Framework_TestCase
      * It should use the subject time unit.
      * It should use the subject mode.
      */
-    public function testUseSubjectTimeUnit()
+    public function testUseSubjectTimeUnitAndMode()
     {
         $this->iterations->getRejectCount()->willReturn(0);
         $this->iterations->getStats()->willReturn(array(
@@ -83,17 +84,8 @@ class TravisLoggerTest extends \PHPUnit_Framework_TestCase
         $this->subject->getName()->willReturn('benchFoo');
         $this->parameterSet->getIndex()->willReturn(0);
 
-        $this->output->writeln(Argument::containingString('1.000ops/μs'))->shouldBeCalled();
-        $this->logger->iterationsEnd($this->iterations->reveal());
-    }
-
-    /**
-     * It should output an empty line at the end of the suite.
-     */
-    public function testEndSuite()
-    {
+        $this->output->write(Argument::containingString('1.000ops/μs'))->shouldBeCalled();
         $this->output->write(PHP_EOL)->shouldBeCalled();
-        $this->output->writeln(Argument::any())->shouldBeCalled();
-        $this->logger->endSuite($this->document->reveal());
+        $this->logger->iterationsEnd($this->iterations->reveal());
     }
 }
