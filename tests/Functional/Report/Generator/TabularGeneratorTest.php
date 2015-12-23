@@ -167,7 +167,7 @@ class TabularGeneratorTest extends GeneratorTestCase
             $values[] = $cellEl->nodeValue;
         }
         $this->assertEquals(array(
-            '75.0000μs', '100.0000μs',
+            '75.000μs', '100.000μs',
         ), $values);
     }
 
@@ -188,7 +188,7 @@ class TabularGeneratorTest extends GeneratorTestCase
             $values[] = $cellEl->nodeValue;
         }
         $this->assertEquals(array(
-            '100.0000μs', '75.0000μs',
+            '100.000μs', '75.000μs',
         ), $values);
     }
 

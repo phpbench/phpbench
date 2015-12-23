@@ -20,11 +20,25 @@ use PhpBench\Util\TimeUnit;
 class TimeFormat implements FormatInterface
 {
     /**
+     * @var TimeUnit
+     */
+    private $timeUnit;
+
+    public function __construct(TimeUnit $timeUnit)
+    {
+        $this->timeUnit = $timeUnit;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function format($subject, array $options)
     {
-        return TimeUnit::convertTo($subject, $options['from'], $options['to']);
+        return $this->timeUnit->format(
+            $subject,
+            $this->timeUnit->resolveDestUnit($options['unit']),
+            $this->timeUnit->resolveMode($options['mode'])
+        );
     }
 
     /**
@@ -33,8 +47,8 @@ class TimeFormat implements FormatInterface
     public function getDefaultOptions()
     {
         return array(
-            'from' => 'microseconds',
-            'to' => 'microseconds',
+            'unit' => TimeUnit::MICROSECONDS,
+            'mode' => TimeUnit::MODE_TIME
         );
     }
 }

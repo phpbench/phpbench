@@ -8,7 +8,8 @@
     "rows": [
         {
             "param_exprs": {
-                "output-time-unit": "string(./@output-time-unit)"
+                "output-time-unit": "string(./@output-time-unit)",
+                "output-mode": "string(./@output-mode)"
             },
             "group": "body",
             "cells": [
@@ -43,23 +44,23 @@
                     "expr": "average(descendant-or-self::iteration/@memory)"
                 },
                 {
-                    "name": "min",
-                    "class": "time-{{ param.output-time-unit }}",
+                    "name": "best",
+                    "class": "time",
                     "expr": "number(./stats/@min)"
                 },
                 {
                     "name": "mean",
-                    "class": "time-{{ param.output-time-unit }}",
+                    "class": "time",
                     "expr": "number(./stats/@mean)"
                 },
                 {
-                    "name": "max",
-                    "class": "time-{{ param.output-time-unit }}",
+                    "name": "worst",
+                    "class": "time",
                     "expr": "number(./stats/@max)"
                 },
                 {
                     "name": "stdev",
-                    "class": "time-{{ param.output-time-unit }}",
+                    "class": "time",
                     "expr": "number(./stats/@stdev)"
                 },
                 {

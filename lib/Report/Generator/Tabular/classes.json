@@ -29,34 +29,8 @@
             [ "number", { "decimal_places": 2 }],
             [ "printf", { "format": "%s\u03bcs" }]
         ],
-        "time-microseconds": [
-            [ "number", { "decimal_places": 4 }],
-            [ "printf", { "format": "%s\u03bcs" }]
-        ],
-        "time-milliseconds": [
-            [ "time", { "from": "microseconds", "to": "milliseconds" } ],
-            [ "number", { "decimal_places": 4 }],
-            [ "printf", { "format": "%sms" }]
-        ],
-        "time-seconds": [
-            [ "time", { "from": "microseconds", "to": "seconds" } ],
-            [ "number", { "decimal_places": 4 }],
-            [ "printf", { "format": "%ss" }]
-        ],
-        "time-minutes": [
-            [ "time", { "from": "microseconds", "to": "minutes" } ],
-            [ "number", { "decimal_places": 4 }],
-            [ "printf", { "format": "%sm" }]
-        ],
-        "time-hours": [
-            [ "time", { "from": "microseconds", "to": "hours" } ],
-            [ "number", { "decimal_places": 4 }],
-            [ "printf", { "format": "%sh" }]
-        ],
-        "time-days": [
-            [ "time", { "from": "microseconds", "to": "days" } ],
-            [ "number", { "decimal_places": 4 }],
-            [ "printf", { "format": "%sd" }]
+        "time": [
+            [ "time", { "mode": "{{ param.output-mode }}", "unit": "{{ param.output-time-unit }}" }]
         ],
         "number": [
             [ "number", { "decimal_places": 2 }]

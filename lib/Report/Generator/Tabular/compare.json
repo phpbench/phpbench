@@ -8,7 +8,8 @@
     "rows": [
         {
             "param_exprs": {
-                "output-time-unit": "string(./@output-time-unit)"
+                "output-time-unit": "string(./@output-time-unit)",
+                "output-mode": "string(./@output-mode)"
             },
             "group": "body",
             "cells": [
@@ -36,7 +37,7 @@
                 {
                     "name": "t:{{ cell.item }}",
                     "expr": "sum(suite(descendant-or-self::iteration, '{{ cell.item }}')//@time) div sum(suite(descendant-or-self::iteration, '{{ cell.item }}')//@revs)",
-                    "class": "time-{{ param.output-time-unit }}",
+                    "class": "time",
                     "with_items": {
                         "selector": "//suite",
                         "value": "string(./@context)"

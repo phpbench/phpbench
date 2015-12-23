@@ -75,7 +75,7 @@ class TimeUnit
      */
     private $mode;
 
-    public function __construct($sourceUnit, $destUnit, $mode = self::MODE_TIME)
+    public function __construct($sourceUnit = self::MICROSECONDS, $destUnit = self::MICROSECONDS, $mode = self::MODE_TIME)
     {
         $this->sourceUnit = $sourceUnit;
         $this->destUnit = $destUnit;
@@ -241,6 +241,10 @@ class TimeUnit
      */
     public static function convertInto($time, $unit, $destUnit)
     {
+        if (!$time) {
+            return 0;
+        }
+
         self::validateUnit($unit);
         self::validateUnit($destUnit);
 

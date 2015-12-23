@@ -31,6 +31,12 @@ class TimeUnitTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
+                0,
+                TimeUnit::SECONDS,
+                TimeUnit::MINUTES,
+                0,
+            ),
+            array(
                 60,
                 TimeUnit::SECONDS,
                 TimeUnit::MINUTES,
@@ -84,6 +90,12 @@ class TimeUnitTest extends \PHPUnit_Framework_TestCase
     public function provideConvertThroughput()
     {
         return array(
+            array(
+                0,
+                TimeUnit::SECONDS,
+                TimeUnit::MINUTES,
+                0,
+            ),
             array(
                 1,
                 TimeUnit::SECONDS,
