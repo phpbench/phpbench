@@ -41,7 +41,7 @@ class SuiteDocument extends Document
      */
     public function getNbSubjects()
     {
-        return (int) $this->xpath()->evaluate('count(//subject)');
+        return (int) $this->evaluate('count(//subject)');
     }
 
     /**
@@ -51,7 +51,7 @@ class SuiteDocument extends Document
      */
     public function getNbIterations()
     {
-        return (int) $this->xpath()->evaluate('count(//iteration)');
+        return (int) $this->evaluate('count(//iteration)');
     }
 
     /**
@@ -61,7 +61,7 @@ class SuiteDocument extends Document
      */
     public function getNbRevolutions()
     {
-        return (int) $this->xpath()->evaluate('sum(//iteration/@revs)');
+        return (int) $this->evaluate('sum(//iteration/@revs)');
     }
 
     /**
@@ -71,7 +71,7 @@ class SuiteDocument extends Document
      */
     public function getNbRejects()
     {
-        return (int) $this->xpath()->evaluate('sum(//iteration/@rejection-count)');
+        return (int) $this->evaluate('sum(//iteration/@rejection-count)');
     }
 
     /**
@@ -81,7 +81,7 @@ class SuiteDocument extends Document
      */
     public function getTotalTime()
     {
-        return (float) $this->xpath()->evaluate('sum(//iteration/@time-net)');
+        return (float) $this->evaluate('sum(//iteration/@time-net)');
     }
 
     /**
@@ -91,7 +91,7 @@ class SuiteDocument extends Document
      */
     public function getMeanStDev()
     {
-        return (float) $this->xpath()->evaluate('sum(//stats/@stdev) div count(//stats)');
+        return (float) $this->evaluate('sum(//stats/@stdev) div count(//stats)');
     }
 
     /**
@@ -147,11 +147,22 @@ class SuiteDocument extends Document
     public function getTimes()
     {
         $times = array();
-        $nodes = $this->xpath()->evaluate('.//iteration/@time');
+        $nodes = $this->evaluate('.//iteration/@time');
         foreach ($nodes as $node) {
             $times[] = $node->nodeValue;
         }
 
         return $times;
     }
+
+    /**
+     * Return true if the suite contains errors.
+     *
+     * @return boolean
+     */
+    public function hasErrors()
+    {
+        return (boolean) $this->evaluate('count(//error)');
+    }
+
 }

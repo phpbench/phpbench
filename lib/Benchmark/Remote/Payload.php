@@ -12,6 +12,7 @@
 namespace PhpBench\Benchmark\Remote;
 
 use Symfony\Component\Process\Process;
+use PhpBench\Benchmark\Remote\Exception\ScriptErrorException;
 
 /**
  * Class representing the context from which a script can be generated and executed by a PHP binary.
@@ -113,8 +114,8 @@ class Payload
         unlink($scriptPath);
 
         if (false === $this->process->isSuccessful()) {
-            throw new \RuntimeException(sprintf(
-                'Could not launch script: %s %s',
+            throw new ScriptErrorException(sprintf(
+                '%s%s',
                 $this->process->getErrorOutput(),
                 $this->process->getOutput()
             ));

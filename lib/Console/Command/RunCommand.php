@@ -139,6 +139,12 @@ EOT
         } elseif ($reportNames) {
             $this->reportManager->renderReports($output, $suiteResult, $reportNames, $outputNames);
         }
+
+        if ($suiteResult->hasErrors()) {
+            return 1;
+        }
+
+        return 0;
     }
 
     private function getParameters($parametersJson)

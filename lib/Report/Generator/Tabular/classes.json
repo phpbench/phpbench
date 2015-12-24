@@ -26,7 +26,7 @@
             [ "printf", { "format": "%sb" }]
         ],
         "time_sd": [
-            [ "time", { "mode": "time", "unit": "{{ param.output-time-unit }}" }]
+            [ "time", { "mode": "timtimee", "unit": "{{ param.output-time-unit }}" }]
         ],
         "time": [
             [ "time", { "mode": "{{ param.output-mode }}", "unit": "{{ param.output-time-unit }}" }]

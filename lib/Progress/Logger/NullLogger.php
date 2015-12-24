@@ -104,4 +104,11 @@ class NullLogger implements LoggerInterface
     public function endSuite(SuiteDocument $suiteDocument)
     {
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function exception(IterationCollection $iterations, \Exception $exception)
+    {
+    }
 }

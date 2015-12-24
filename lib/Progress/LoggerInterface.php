@@ -96,4 +96,12 @@ interface LoggerInterface extends OutputAwareInterface
      * @param SuiteDocument $suiteDocument
      */
     public function endSuite(SuiteDocument $suiteDocument);
+
+    /**
+     * Called if an exception is encountered.
+     *
+     * @param IterationCollection
+     * @param \Exception
+     */
+    public function exception(IterationCollection $iterationCollection, \Exception $exception);
 }

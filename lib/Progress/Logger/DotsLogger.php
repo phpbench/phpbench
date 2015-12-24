@@ -16,6 +16,7 @@ use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\Util\TimeUnit;
+use PhpBench\Benchmark\IterationCollection;
 
 class DotsLogger extends PhpBenchLogger
 {
@@ -47,7 +48,7 @@ class DotsLogger extends PhpBenchLogger
         }
     }
 
-    public function subjectEnd(SubjectMetadata $subject)
+    public function iterationsEnd(IterationCollection $subject)
     {
         if ($this->isCi) {
             $this->output->write('.');
@@ -87,5 +88,19 @@ class DotsLogger extends PhpBenchLogger
     {
         $this->output->write(PHP_EOL . PHP_EOL);
         parent::endSuite($suiteDocument);
+    }
+
+    public function exception(IterationCollection $iterations, \Exception $exception)
+    {
+        if ($this->isCi) {
+            $this->output->write('<error>E</error>');
+
+            return;
+        }
+        $this->buffer .= '<error>E</error>';
+        $this->output->write(sprintf(
+            "\x0D%s",
+            $this->buffer
+        ));
     }
 }

@@ -57,6 +57,17 @@ class TravisLogger extends PhpBenchLogger
         ));
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function exception(IterationCollection $iterations, \Exception $exception)
+    {
+        $this->output->writeln(sprintf(
+            "\t%-30s <error>ERROR</error>",
+            $iterations->getSubject()->getName()
+        ));
+    }
+
     public function endSuite(SuiteDocument $suiteDocument)
     {
         $this->output->write(PHP_EOL);

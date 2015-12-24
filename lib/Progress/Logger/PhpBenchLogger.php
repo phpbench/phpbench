@@ -45,6 +45,25 @@ class PhpBenchLogger extends NullLogger implements OutputAwareInterface
 
     public function endSuite(SuiteDocument $suiteDocument)
     {
+        $errorsEls = $suiteDocument->query('//errors');
+
+        if ($errorsEls->length) {
+            $this->output->write(PHP_EOL);
+            $this->output->writeln(sprintf('%d subjects encountered errors:', $errorsEls->length));
+            $this->output->write(PHP_EOL);
+            foreach ($errorsEls as $errorsEl) {
+                $name = $errorsEl->evaluate('concat(ancestor::benchmark/@class, "::", ancestor::subject/@name)');
+                $this->output->writeln(sprintf('<error>%s</error>', $name));
+                $this->output->write(PHP_EOL);
+                foreach ($errorsEl->query('./error') as $errorEl) {
+                    $this->output->writeln(sprintf(
+                        "    %s %s",
+                        $errorEl->getAttribute('exception-class'),
+                        str_replace("\n", "\n    ", $errorEl->nodeValue)
+                    ));
+                }
+            }
+        }
         $this->output->writeln(sprintf(
             '%s subjects, %s iterations, %s revs, %s rejects',
             $suiteDocument->getNbSubjects(),
