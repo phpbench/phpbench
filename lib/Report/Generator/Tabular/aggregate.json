@@ -60,7 +60,7 @@
                 },
                 {
                     "name": "stdev",
-                    "class": "time",
+                    "class": "time_sd",
                     "expr": "number(./stats/@stdev)"
                 },
                 {
