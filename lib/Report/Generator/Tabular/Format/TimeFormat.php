@@ -34,10 +34,11 @@ class TimeFormat implements FormatInterface
      */
     public function format($subject, array $options)
     {
+
         return $this->timeUnit->format(
             $subject,
-            $this->timeUnit->resolveDestUnit($options['unit']),
-            $this->timeUnit->resolveMode($options['mode'])
+            in_array('unit', $options['resolve']) ?$this->timeUnit->resolveDestUnit($options['unit']) : $options['unit'],
+            in_array('mode', $options['resolve']) ?$this->timeUnit->resolveMode($options['mode']) : $options['mode']
         );
     }
 
@@ -49,6 +50,7 @@ class TimeFormat implements FormatInterface
         return array(
             'unit' => TimeUnit::MICROSECONDS,
             'mode' => TimeUnit::MODE_TIME,
+            'resolve' => array()
         );
     }
 }
