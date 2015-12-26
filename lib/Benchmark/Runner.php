@@ -191,6 +191,7 @@ class Runner
         } catch (\Exception $e) {
             $this->logger->exception($iterationCollection, $e);
             $this->appendException($variantEl, $e);
+
             return;
         }
 

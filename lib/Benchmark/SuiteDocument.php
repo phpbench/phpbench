@@ -158,7 +158,7 @@ class SuiteDocument extends Document
     /**
      * Return true if the suite contains errors.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasErrors()
     {
@@ -171,7 +171,7 @@ class SuiteDocument extends Document
         foreach ($this->query('//errors') as $errorsEl) {
             $stack = array(
                 'subject' => $errorsEl->evaluate('concat(ancestor::benchmark/@class, "::", ancestor::subject/@name)'),
-                'exceptions' => array()
+                'exceptions' => array(),
             );
             foreach ($errorsEl->query('//error') as $errorEl) {
                 $stack['exceptions'][] = array(

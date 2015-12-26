@@ -11,8 +11,8 @@
 
 namespace PhpBench\Benchmark\Remote;
 
-use Symfony\Component\Process\Process;
 use PhpBench\Benchmark\Remote\Exception\ScriptErrorException;
+use Symfony\Component\Process\Process;
 
 /**
  * Class representing the context from which a script can be generated and executed by a PHP binary.

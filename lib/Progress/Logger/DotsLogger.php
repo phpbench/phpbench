@@ -12,11 +12,10 @@
 namespace PhpBench\Progress\Logger;
 
 use PhpBench\Benchmark\Iteration;
+use PhpBench\Benchmark\IterationCollection;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
-use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\Util\TimeUnit;
-use PhpBench\Benchmark\IterationCollection;
 
 class DotsLogger extends PhpBenchLogger
 {

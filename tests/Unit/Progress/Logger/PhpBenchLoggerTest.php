@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the PHPBench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Tests\Unit\Progress\Logger;
 
 use PhpBench\Console\OutputAwareInterface;
@@ -35,12 +44,11 @@ abstract class PhpBenchLoggerTest extends \PHPUnit_Framework_TestCase
     abstract public function getLogger();
 
     /**
-     * It should show the PHPBench version
+     * It should show the PHPBench version.
      */
     public function testStart()
     {
     }
-
 
     /**
      * It should show a summary at the end of the suite.
@@ -54,7 +62,7 @@ abstract class PhpBenchLoggerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should show errors
+     * It should show errors.
      */
     public function testEndSuiteErrors()
     {

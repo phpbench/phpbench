@@ -14,9 +14,8 @@ namespace PhpBench\Progress\Logger;
 use PhpBench\Benchmark\Iteration;
 use PhpBench\Benchmark\IterationCollection;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
-use PhpBench\Benchmark\Metadata\SubjectMetadata;
-use PhpBench\Util\TimeUnit;
 use PhpBench\Util\Format;
+use PhpBench\Util\TimeUnit;
 
 class VerboseLogger extends PhpBenchLogger
 {

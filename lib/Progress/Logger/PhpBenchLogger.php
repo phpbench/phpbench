@@ -55,7 +55,7 @@ class PhpBenchLogger extends NullLogger implements OutputAwareInterface
                 $this->output->write(PHP_EOL);
                 foreach ($errorStack['exceptions'] as $exception) {
                     $this->output->writeln(sprintf(
-                        "    %s %s",
+                        '    %s %s',
                         $exception['exception_class'],
                         str_replace("\n", "\n    ", $exception['message'])
                     ));

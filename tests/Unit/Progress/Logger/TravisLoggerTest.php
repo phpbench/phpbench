@@ -20,6 +20,7 @@ class TravisLoggerTest extends PhpBenchLoggerTest
     public function getLogger()
     {
         $timeUnit = new TimeUnit(TimeUnit::MICROSECONDS, TimeUnit::MILLISECONDS);
+
         return new TravisLogger($timeUnit);
     }
 
