@@ -15,20 +15,12 @@ use PhpBench\Progress\Logger\TravisLogger;
 use PhpBench\Util\TimeUnit;
 use Prophecy\Argument;
 
-class TravisLoggerTest extends \PHPUnit_Framework_TestCase
+class TravisLoggerTest extends PhpBenchLoggerTest
 {
-    public function setUp()
+    public function getLogger()
     {
-        $this->output = $this->prophesize('Symfony\Component\Console\Output\OutputInterface');
         $timeUnit = new TimeUnit(TimeUnit::MICROSECONDS, TimeUnit::MILLISECONDS);
-        $this->logger = new TravisLogger($timeUnit);
-        $this->logger->setOutput($this->output->reveal());
-
-        $this->benchmark = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');
-        $this->iterations = $this->prophesize('PhpBench\Benchmark\IterationCollection');
-        $this->subject = $this->prophesize('PhpBench\Benchmark\Metadata\SubjectMetadata');
-        $this->parameterSet = $this->prophesize('PhpBench\Benchmark\ParameterSet');
-        $this->document = $this->prophesize('PhpBench\Benchmark\SuiteDocument');
+        return new TravisLogger($timeUnit);
     }
 
     /**
@@ -93,7 +85,15 @@ class TravisLoggerTest extends \PHPUnit_Framework_TestCase
     public function testEndSuite()
     {
         $this->output->write(PHP_EOL)->shouldBeCalled();
-        $this->output->writeln(Argument::any())->shouldBeCalled();
-        $this->logger->endSuite($this->document->reveal());
+        parent::testEndSuite();
+    }
+
+    /**
+     * It should output an empty line at the end of the suite.
+     */
+    public function testEndSuiteErrors()
+    {
+        $this->output->write(PHP_EOL)->shouldBeCalled();
+        parent::testEndSuiteErrors();
     }
 }

@@ -165,4 +165,23 @@ class SuiteDocument extends Document
         return (boolean) $this->evaluate('count(//error)');
     }
 
+    public function getErrorStacks()
+    {
+        $errors = array();
+        foreach ($this->query('//errors') as $errorsEl) {
+            $stack = array(
+                'subject' => $errorsEl->evaluate('concat(ancestor::benchmark/@class, "::", ancestor::subject/@name)'),
+                'exceptions' => array()
+            );
+            foreach ($errorsEl->query('//error') as $errorEl) {
+                $stack['exceptions'][] = array(
+                    'exception_class' => $errorEl->getAttribute('exception-class'),
+                    'message' => $errorEl->nodeValue,
+                );
+            }
+            $errors[] = $stack;
+        }
+
+        return $errors;
+    }
 }

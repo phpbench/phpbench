@@ -45,25 +45,24 @@ class PhpBenchLogger extends NullLogger implements OutputAwareInterface
 
     public function endSuite(SuiteDocument $suiteDocument)
     {
-        $errorsEls = $suiteDocument->query('//errors');
-
-        if ($errorsEls->length) {
+        if ($suiteDocument->hasErrors()) {
+            $errorStacks = $suiteDocument->getErrorStacks();
             $this->output->write(PHP_EOL);
-            $this->output->writeln(sprintf('%d subjects encountered errors:', $errorsEls->length));
+            $this->output->writeln(sprintf('%d subjects encountered errors:', count($errorStacks)));
             $this->output->write(PHP_EOL);
-            foreach ($errorsEls as $errorsEl) {
-                $name = $errorsEl->evaluate('concat(ancestor::benchmark/@class, "::", ancestor::subject/@name)');
-                $this->output->writeln(sprintf('<error>%s</error>', $name));
+            foreach ($errorStacks as $errorStack) {
+                $this->output->writeln(sprintf('<error>%s</error>', $errorStack['subject']));
                 $this->output->write(PHP_EOL);
-                foreach ($errorsEl->query('./error') as $errorEl) {
+                foreach ($errorStack['exceptions'] as $exception) {
                     $this->output->writeln(sprintf(
                         "    %s %s",
-                        $errorEl->getAttribute('exception-class'),
-                        str_replace("\n", "\n    ", $errorEl->nodeValue)
+                        $exception['exception_class'],
+                        str_replace("\n", "\n    ", $exception['message'])
                     ));
                 }
             }
         }
+
         $this->output->writeln(sprintf(
             '%s subjects, %s iterations, %s revs, %s rejects',
             $suiteDocument->getNbSubjects(),
@@ -71,6 +70,7 @@ class PhpBenchLogger extends NullLogger implements OutputAwareInterface
             $suiteDocument->getNbRevolutions(),
             $suiteDocument->getNbRejects()
         ));
+
         $this->output->writeln(sprintf(
             '(%s) = %s %s %s (%s)',
             $this->timeUnit->getMode() == TimeUnit::MODE_TIME ? 'min mean max' : 'max mean min',
@@ -79,6 +79,7 @@ class PhpBenchLogger extends NullLogger implements OutputAwareInterface
             number_format($this->timeUnit->toDestUnit($suiteDocument->getMax()), 3),
             $this->timeUnit->getDestSuffix()
         ));
+
         $this->output->writeln(sprintf(
             '⅀T: %s μSD/r %s μRSD/r: %s%%',
             $this->timeUnit->format($suiteDocument->getTotalTime(), null, TimeUnit::MODE_TIME),

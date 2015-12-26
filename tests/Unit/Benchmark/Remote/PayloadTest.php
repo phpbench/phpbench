@@ -47,7 +47,7 @@ class PayloadTest extends \PHPUnit_Framework_TestCase
      * It should throw an exception if the script is invalid.
      *
      * @expectedException RuntimeException
-     * @expectedExceptionMessage Could not launch script
+     * @expectedExceptionMessage syntax error
      */
     public function testInvalidScript()
     {

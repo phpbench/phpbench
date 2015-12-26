@@ -45,20 +45,6 @@ class VerboseLogger extends PhpBenchLogger
     /**
      * {@inheritdoc}
      */
-    public function subjectStart(SubjectMetadata $subject)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function subjectEnd(SubjectMetadata $subject)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function iterationStart(Iteration $iteration)
     {
         $this->output->write(sprintf(
@@ -68,13 +54,6 @@ class VerboseLogger extends PhpBenchLogger
             $iteration->getIndex(),
             $iteration->getParameters()->getIndex()
         ));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function iterationEnd(Iteration $iteration)
-    {
     }
 
     /**
@@ -121,5 +100,6 @@ class VerboseLogger extends PhpBenchLogger
             "\x1B[0G    %-30s<error>ERROR</error>",
             $iterations->getSubject()->getName()
         ));
+        $this->output->write(PHP_EOL);
     }
 }

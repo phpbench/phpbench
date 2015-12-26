@@ -342,4 +342,18 @@ class RunTest extends SystemTestCase
 
         $this->assertExitCode(0, $process);
     }
+
+    /**
+     * It should exit with code "1" if an exception is encountered while running
+     * the iterations.
+     */
+    public function testIterationErrorExitCode()
+    {
+        $process = $this->phpbench(
+            'run benchmarks/set3/ErrorBench.php'
+        );
+
+        $this->assertExitCode(1, $process);
+        $this->assertContains('1 subjects encountered errors', $process->getOutput());
+    }
 }
