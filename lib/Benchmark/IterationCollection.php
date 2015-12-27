@@ -72,7 +72,7 @@ class IterationCollection implements \IteratorAggregate
     );
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $computed = false;
 
@@ -258,7 +258,7 @@ class IterationCollection implements \IteratorAggregate
      * Return true if any of the iterations in this set encountered
      * an error.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasException()
     {
@@ -283,6 +283,7 @@ class IterationCollection implements \IteratorAggregate
      * Return an exception if it has been set.
      *
      * @throws \RuntimeException if no exception is set.
+     *
      * @return \Exception
      */
     public function getException()

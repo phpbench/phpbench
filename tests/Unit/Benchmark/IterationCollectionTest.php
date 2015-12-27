@@ -151,7 +151,6 @@ class IterationCollectionTest extends \PHPUnit_Framework_TestCase
         $iterations->getStats();
     }
 
-
     /**
      * It should throw an exception if getStats is called when an exception has been set.
      *

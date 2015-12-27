@@ -74,6 +74,7 @@ class VerboseLogger extends PhpBenchLogger
                 $iterations->getSubject()->getName()
             ));
             $this->output->write(PHP_EOL);
+
             return;
         }
 

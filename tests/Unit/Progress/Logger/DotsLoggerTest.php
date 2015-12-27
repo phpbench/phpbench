@@ -55,7 +55,7 @@ class DotsLoggerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should log an error
+     * It should log an error.
      */
     public function testIterationsEndException()
     {
@@ -67,7 +67,7 @@ class DotsLoggerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should return early if the rejection count > 0
+     * It should return early if the rejection count > 0.
      */
     public function testIterationsEndRejectionsReturnEarly()
     {

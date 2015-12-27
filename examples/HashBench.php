@@ -23,7 +23,6 @@ class HashingBenchmark
 
     public function benchSha1()
     {
-        throw new \Exception('asd');
         hash('sha1', rand(0, 100000));
     }
 

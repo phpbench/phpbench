@@ -59,7 +59,7 @@ class TravisLoggerTest extends PhpBenchLoggerTest
     }
 
     /**
-     * It should log errors
+     * It should log errors.
      */
     public function testIterationsEndException()
     {

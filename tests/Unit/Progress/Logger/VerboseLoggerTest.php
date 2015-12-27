@@ -92,7 +92,7 @@ class VerboseLoggerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should log exceptions as ERROR
+     * It should log exceptions as ERROR.
      */
     public function testLogError()
     {

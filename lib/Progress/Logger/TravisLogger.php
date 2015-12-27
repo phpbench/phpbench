@@ -49,8 +49,9 @@ class TravisLogger extends PhpBenchLogger
                 "\t%-30s <error>ERROR</error>",
                 $subject->getName()
             ));
-                return;
-            }
+
+            return;
+        }
 
         $stats = $iterations->getStats();
         $timeUnit = $subject->getOutputTimeUnit();
