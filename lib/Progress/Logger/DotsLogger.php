@@ -47,15 +47,22 @@ class DotsLogger extends PhpBenchLogger
         }
     }
 
-    public function iterationsEnd(IterationCollection $subject)
+    public function iterationsEnd(IterationCollection $iterations)
     {
+        // do not show reject runs
+        if ($iterations->getRejectCount() > 0) {
+            return;
+        }
+
+        $dot = $iterations->hasException() ? '<error>E</error>' : '.';
+
         if ($this->isCi) {
-            $this->output->write('.');
+            $this->output->write($dot);
 
             return;
         }
 
-        $this->buffer .= '.';
+        $this->buffer .= $dot;
         $this->output->write(sprintf(
             "\x0D%s ",
             $this->buffer
@@ -87,19 +94,5 @@ class DotsLogger extends PhpBenchLogger
     {
         $this->output->write(PHP_EOL . PHP_EOL);
         parent::endSuite($suiteDocument);
-    }
-
-    public function exception(IterationCollection $iterations, \Exception $exception)
-    {
-        if ($this->isCi) {
-            $this->output->write('<error>E</error>');
-
-            return;
-        }
-        $this->buffer .= '<error>E</error>';
-        $this->output->write(sprintf(
-            "\x0D%s",
-            $this->buffer
-        ));
     }
 }

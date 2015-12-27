@@ -189,7 +189,8 @@ class Runner
                 $iterationCollection->add($iteration);
             }
         } catch (\Exception $e) {
-            $this->logger->exception($iterationCollection, $e);
+            $iterationCollection->setException($e);
+            $this->logger->iterationsEnd($iterationCollection);
             $this->appendException($variantEl, $e);
 
             return;
@@ -254,5 +255,20 @@ class Runner
             $errorEl->setAttribute('file', $exception->getFile());
             $errorEl->setAttribute('line', $exception->getLine());
         } while ($exception = $exception->getPrevious());
+    }
+
+    /**
+     * Utility function to return the correct sleep interval
+     * in case that the sleep interval has been overridden.
+     *
+     * TODO: Use this and TEST it.
+     *
+     * @param int $sleep
+     *
+     * @return int
+     */
+    private function getSleepInterval($sleep)
+    {
+        return null !== $this->sleepOverride ? $this->sleepOverride : $sleep;
     }
 }

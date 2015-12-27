@@ -55,6 +55,29 @@ class DotsLoggerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * It should log an error
+     */
+    public function testIterationsEndException()
+    {
+        $logger = $this->createLogger(false);
+        $this->collection->hasException()->willReturn(true);
+        $this->collection->getRejectCount()->willReturn(0);
+        $this->output->write("\x0D<error>E</error> ")->shouldBeCalled();
+        $logger->iterationsEnd($this->collection->reveal());
+    }
+
+    /**
+     * It should return early if the rejection count > 0
+     */
+    public function testIterationsEndRejectionsReturnEarly()
+    {
+        $logger = $this->createLogger(false);
+        $this->collection->getRejectCount()->willReturn(5);
+        $this->output->write(Argument::any())->shouldNotBeCalled();
+        $logger->iterationsEnd($this->collection->reveal());
+    }
+
+    /**
      * It should do nothing in CI mode at the end of an iteration.
      */
     public function testDoNothingCiIterations()

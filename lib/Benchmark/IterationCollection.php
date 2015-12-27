@@ -46,6 +46,11 @@ class IterationCollection implements \IteratorAggregate
     private $rejectionThreshold;
 
     /**
+     * @var \Exception
+     */
+    private $exception;
+
+    /**
      * Array of statistics:.
      *
      *   mean      float Mean sample time
@@ -65,6 +70,11 @@ class IterationCollection implements \IteratorAggregate
         'min' => null,
         'max' => null,
     );
+
+    /**
+     * @var boolean
+     */
+    private $computed = false;
 
     /**
      * @param float $rejectionThreshold
@@ -155,6 +165,8 @@ class IterationCollection implements \IteratorAggregate
                 }
             }
         }
+
+        $this->computed = true;
     }
 
     /**
@@ -186,6 +198,20 @@ class IterationCollection implements \IteratorAggregate
      */
     public function getStats()
     {
+        if (false === $this->computed) {
+            throw new \RuntimeException(
+                'No statistics have yet been computed for this iteration set (::computeStats should be called)'
+            );
+        }
+
+        if (null !== $this->exception) {
+            throw new \RuntimeException(sprintf(
+                'Cannot retrieve stats when an exception was encountered ([%s] %s)',
+                get_class($this->exception),
+                $this->exception->getMessage()
+            ));
+        }
+
         return $this->stats;
     }
 
@@ -226,5 +252,47 @@ class IterationCollection implements \IteratorAggregate
     public function getSubject()
     {
         return $this->subject;
+    }
+
+    /**
+     * Return true if any of the iterations in this set encountered
+     * an error.
+     *
+     * @return boolean
+     */
+    public function hasException()
+    {
+        return null !== $this->exception;
+    }
+
+    /**
+     * Should be called when an Exception is encountered during
+     * the excecution of any of the iteration processes.
+     *
+     * After an exception is encountered the results from this iteration
+     * set are invalid.
+     *
+     * @param \Exception $e
+     */
+    public function setException(\Exception $exception)
+    {
+        $this->exception = $exception;
+    }
+
+    /**
+     * Return an exception if it has been set.
+     *
+     * @throws \RuntimeException if no exception is set.
+     * @return \Exception
+     */
+    public function getException()
+    {
+        if (null === $this->exception) {
+            throw new \RuntimeException(
+                'No exception has been set on this iteration collection'
+            );
+        }
+
+        return $this->exception;
     }
 }

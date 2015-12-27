@@ -68,6 +68,15 @@ class VerboseLogger extends PhpBenchLogger
      */
     public function iterationsEnd(IterationCollection $iterations)
     {
+        if ($iterations->hasException()) {
+            $this->output->write(sprintf(
+                "\x1B[0G    %-30s<error>ERROR</error>",
+                $iterations->getSubject()->getName()
+            ));
+            $this->output->write(PHP_EOL);
+            return;
+        }
+
         $stats = $iterations->getStats();
         $timeUnit = $iterations->getSubject()->getOutputTimeUnit();
         $mode = $iterations->getSubject()->getOutputMode();
@@ -88,17 +97,5 @@ class VerboseLogger extends PhpBenchLogger
     {
         $this->rejectionCount = $rejectionCount;
         $this->output->write("\x1B[1F\x1B[0K");
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function exception(IterationCollection $iterations, \Exception $exception)
-    {
-        $this->output->write(sprintf(
-            "\x1B[0G    %-30s<error>ERROR</error>",
-            $iterations->getSubject()->getName()
-        ));
-        $this->output->write(PHP_EOL);
     }
 }

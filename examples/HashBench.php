@@ -21,13 +21,14 @@ class HashingBenchmark
         hash('md5', rand(0, 100000));
     }
 
+    public function benchSha1()
+    {
+        throw new \Exception('asd');
+        hash('sha1', rand(0, 100000));
+    }
+
     public function benchSha256()
     {
         hash('sha256', rand(0, 100000));
-    }
-
-    public function benchSha1()
-    {
-        hash('sha1', rand(0, 100000));
     }
 }
