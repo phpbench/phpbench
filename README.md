@@ -9,21 +9,22 @@ PhpBench is a benchmarking framework for PHP.
 
 Features:
 
+- Nice command line interface.
 - Generate reports and render them to different mediums (Console, HTML,
   Markdown, etc).
 - Benchmarks executed in a separate process, no effective overhead,
   no autoloader polution.
 - Control stability of results with multiple iterations and retry threshold.
-- Memory usage statistics in addition to time.
+- Memory usage statistics.
+- Standard deviation and Z-Scores.
+- Time unit specification.
+- Output mode specification (throughput, average time).
 - Parameterized benchmarking cases.
 - Per-project configuration.
 - Serialize results as XML and generate reports later.
 - Before and After method / class specification.
-- Pause (recover) between iterations
-- Nice command line interface.
-- Fully extendable.
-- Utilizes [Tabular](https://github.com/phpbench/Tabular) for creating custom
-  reports.
+- Pause (recover) between iterations.
+- Extendable.
 - More..
 
 Documentation and Installation Instructions
