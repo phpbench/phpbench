@@ -41,6 +41,7 @@ class TravisLoggerTest extends PhpBenchLoggerTest
     public function testIterationsEnd()
     {
         $this->iterations->getRejectCount()->willReturn(0);
+        $this->iterations->hasException()->willReturn(false);
         $this->iterations->getStats()->willReturn(array(
             'mean' => 1.0,
             'stdev' => 2.0,
@@ -58,12 +59,27 @@ class TravisLoggerTest extends PhpBenchLoggerTest
     }
 
     /**
+     * It should log errors
+     */
+    public function testIterationsEndException()
+    {
+        $this->iterations->hasException()->willReturn(true);
+        $this->iterations->getRejectCount()->willReturn(0);
+        $this->iterations->getSubject()->willReturn($this->subject->reveal());
+        $this->subject->getName()->willReturn('benchFoo');
+
+        $this->output->writeln(Argument::containingString('ERROR'))->shouldBeCalled();
+        $this->logger->iterationsEnd($this->iterations->reveal());
+    }
+
+    /**
      * It should use the subject time unit.
      * It should use the subject mode.
      */
     public function testUseSubjectTimeUnit()
     {
         $this->iterations->getRejectCount()->willReturn(0);
+        $this->iterations->hasException()->willReturn(false);
         $this->iterations->getStats()->willReturn(array(
             'mean' => 1.0,
             'stdev' => 2.0,

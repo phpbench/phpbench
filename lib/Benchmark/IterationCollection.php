@@ -198,18 +198,18 @@ class IterationCollection implements \IteratorAggregate
      */
     public function getStats()
     {
-        if (false === $this->computed) {
-            throw new \RuntimeException(
-                'No statistics have yet been computed for this iteration set (::computeStats should be called)'
-            );
-        }
-
         if (null !== $this->exception) {
             throw new \RuntimeException(sprintf(
                 'Cannot retrieve stats when an exception was encountered ([%s] %s)',
                 get_class($this->exception),
                 $this->exception->getMessage()
             ));
+        }
+
+        if (false === $this->computed) {
+            throw new \RuntimeException(
+                'No statistics have yet been computed for this iteration set (::computeStats should be called)'
+            );
         }
 
         return $this->stats;

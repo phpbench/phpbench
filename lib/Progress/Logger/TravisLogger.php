@@ -42,8 +42,17 @@ class TravisLogger extends PhpBenchLogger
             return;
         }
 
-        $stats = $iterations->getStats();
         $subject = $iterations->getSubject();
+
+        if ($iterations->hasException()) {
+            $this->output->writeln(sprintf(
+                "\t%-30s <error>ERROR</error>",
+                $subject->getName()
+            ));
+                return;
+            }
+
+        $stats = $iterations->getStats();
         $timeUnit = $subject->getOutputTimeUnit();
         $outputMode = $subject->getOutputMode();
 
@@ -54,17 +63,6 @@ class TravisLogger extends PhpBenchLogger
             $this->timeUnit->format($stats['mean'], $timeUnit, $outputMode),
             $this->timeUnit->format($stats['stdev'], $timeUnit, TimeUnit::MODE_TIME),
             number_format($stats['rstdev'], 2)
-        ));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function exception(IterationCollection $iterations, \Exception $exception)
-    {
-        $this->output->writeln(sprintf(
-            "\t%-30s <error>ERROR</error>",
-            $iterations->getSubject()->getName()
         ));
     }
 
