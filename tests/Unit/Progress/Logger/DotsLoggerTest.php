@@ -26,6 +26,7 @@ class DotsLoggerTest extends \PHPUnit_Framework_TestCase
         $this->benchmark = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');
         $this->subject = $this->prophesize('PhpBench\Benchmark\Metadata\SubjectMetadata');
         $this->iteration = $this->prophesize('PhpBench\Benchmark\Iteration');
+        $this->collection = $this->prophesize('PhpBench\Benchmark\IterationCollection');
     }
 
     public function tearDown()
@@ -36,21 +37,44 @@ class DotsLoggerTest extends \PHPUnit_Framework_TestCase
     /**
      * It should output a simple . at the end of a subject in CI mode.
      */
-    public function testSubjectEndWithCI()
+    public function testIterationsEndWithCI()
     {
         $logger = $this->createLogger(true);
         $this->output->write('.')->shouldBeCalled();
-        $logger->subjectEnd($this->subject->reveal());
+        $logger->iterationsEnd($this->collection->reveal());
     }
 
     /**
      * It should reset the line and dump the buffer when NOT in CI mode.
      */
-    public function testSubjectEnd()
+    public function testIterationsEnd()
     {
         $logger = $this->createLogger(false);
         $this->output->write("\x0D. ")->shouldBeCalled();
-        $logger->subjectEnd($this->subject->reveal());
+        $logger->iterationsEnd($this->collection->reveal());
+    }
+
+    /**
+     * It should log an error.
+     */
+    public function testIterationsEndException()
+    {
+        $logger = $this->createLogger(false);
+        $this->collection->hasException()->willReturn(true);
+        $this->collection->getRejectCount()->willReturn(0);
+        $this->output->write("\x0D<error>E</error> ")->shouldBeCalled();
+        $logger->iterationsEnd($this->collection->reveal());
+    }
+
+    /**
+     * It should return early if the rejection count > 0.
+     */
+    public function testIterationsEndRejectionsReturnEarly()
+    {
+        $logger = $this->createLogger(false);
+        $this->collection->getRejectCount()->willReturn(5);
+        $this->output->write(Argument::any())->shouldNotBeCalled();
+        $logger->iterationsEnd($this->collection->reveal());
     }
 
     /**

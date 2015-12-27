@@ -47,6 +47,7 @@ class VerboseLoggerTest extends \PHPUnit_Framework_TestCase
      */
     public function testIterationsEnd()
     {
+        $this->iterations->hasException()->willReturn(false);
         $this->iterations->getRejectCount()->willReturn(0);
         $this->iterations->getStats()->willReturn(array(
             'mean' => 1.0,
@@ -71,6 +72,7 @@ class VerboseLoggerTest extends \PHPUnit_Framework_TestCase
      */
     public function testUseSubjectTimeUnitAndMode()
     {
+        $this->iterations->hasException()->willReturn(false);
         $this->iterations->getRejectCount()->willReturn(0);
         $this->iterations->getStats()->willReturn(array(
             'mean' => 1.0,
@@ -85,6 +87,19 @@ class VerboseLoggerTest extends \PHPUnit_Framework_TestCase
         $this->parameterSet->getIndex()->willReturn(0);
 
         $this->output->write(Argument::containingString('1.000ops/μs'))->shouldBeCalled();
+        $this->output->write(PHP_EOL)->shouldBeCalled();
+        $this->logger->iterationsEnd($this->iterations->reveal());
+    }
+
+    /**
+     * It should log exceptions as ERROR.
+     */
+    public function testLogError()
+    {
+        $this->iterations->hasException()->willReturn(true);
+        $this->iterations->getSubject()->willReturn($this->subject->reveal());
+        $this->subject->getName()->willReturn('benchFoo');
+        $this->output->write(Argument::containingString('ERROR'))->shouldBeCalled();
         $this->output->write(PHP_EOL)->shouldBeCalled();
         $this->logger->iterationsEnd($this->iterations->reveal());
     }

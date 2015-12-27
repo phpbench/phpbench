@@ -49,7 +49,9 @@ interface LoggerInterface extends OutputAwareInterface
     public function subjectStart(SubjectMetadata $subject);
 
     /**
-     * Log the end of an an iteration run>.
+     * Log the end of an an iteration run.
+     *
+     * Errors should be checked using IterationCollection->hasException()
      *
      * @param Iteration $iterations
      */

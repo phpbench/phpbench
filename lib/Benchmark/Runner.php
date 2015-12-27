@@ -182,10 +182,18 @@ class Runner
         $iterationCollection = new IterationCollection($subject, $parameterSet, $context->getRetryThreshold($this->retryThreshold));
         $this->logger->iterationsStart($iterationCollection);
 
-        $iterations = $iterationCollection->spawnIterations($iterationCount, $revolutionCount);
-        foreach ($iterations as $iteration) {
-            $this->runIteration($iteration, $subject->getSleep());
-            $iterationCollection->add($iteration);
+        try {
+            $iterations = $iterationCollection->spawnIterations($iterationCount, $revolutionCount);
+            foreach ($iterations as $iteration) {
+                $this->runIteration($iteration, $context->getSleep($subject->getSleep()));
+                $iterationCollection->add($iteration);
+            }
+        } catch (\Exception $e) {
+            $iterationCollection->setException($e);
+            $this->logger->iterationsEnd($iterationCollection);
+            $this->appendException($variantEl, $e);
+
+            return;
         }
 
         $iterationCollection->computeStats();
@@ -236,9 +244,24 @@ class Runner
         $this->logger->iterationEnd($iteration);
     }
 
+    private function appendException(\DOMElement $node, \Exception $exception)
+    {
+        $errorsEl = $node->appendElement('errors');
+
+        do {
+            $errorEl = $errorsEl->appendElement('error', $exception->getMessage());
+            $errorEl->setAttribute('exception-class', get_class($exception));
+            $errorEl->setAttribute('code', $exception->getCode());
+            $errorEl->setAttribute('file', $exception->getFile());
+            $errorEl->setAttribute('line', $exception->getLine());
+        } while ($exception = $exception->getPrevious());
+    }
+
     /**
      * Utility function to return the correct sleep interval
      * in case that the sleep interval has been overridden.
+     *
+     * TODO: Use this and TEST it.
      *
      * @param int $sleep
      *

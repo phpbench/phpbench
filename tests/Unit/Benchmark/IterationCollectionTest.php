@@ -113,4 +113,58 @@ class IterationCollectionTest extends \PHPUnit_Framework_TestCase
 
         return $iteration->reveal();
     }
+
+    /**
+     * It should be aware of exceptions.
+     */
+    public function testExceptionAwareness()
+    {
+        $iterations = new IterationCollection($this->subject->reveal(), $this->parameterSet->reveal());
+        $exception = new \Exception('Test');
+
+        $this->assertFalse($iterations->hasException());
+        $iterations->setException($exception);
+        $this->assertTrue($iterations->hasException());
+        $this->assertSame($exception, $iterations->getException());
+    }
+
+    /**
+     * It should throw an exception if it is attempted to get an exception when none has been set.
+     *
+     * @expectedException RuntimeException
+     */
+    public function testExceptionNoneGet()
+    {
+        $iterations = new IterationCollection($this->subject->reveal(), $this->parameterSet->reveal());
+        $iterations->getException();
+    }
+
+    /**
+     * It should throw an exception if getStats is called when no computation has taken place.
+     *
+     * @expectedException RuntimeException
+     * @expectedExceptionMessage No statistics have yet
+     */
+    public function testGetStatsNoComputeException()
+    {
+        $iterations = new IterationCollection($this->subject->reveal(), $this->parameterSet->reveal());
+        $iterations->getStats();
+    }
+
+    /**
+     * It should throw an exception if getStats is called when an exception has been set.
+     *
+     * @expectedException RuntimeException
+     * @expectedExceptionMessage Cannot retrieve stats when an exception
+     */
+    public function testGetStatsWithExceptionException()
+    {
+        $iterations = new IterationCollection($this->subject->reveal(), $this->parameterSet->reveal());
+        $iterations->replace(array(
+            $this->createIteration(4, 0),
+        ));
+        $iterations->computeStats();
+        $iterations->setException(new \Exception('Test'));
+        $iterations->getStats();
+    }
 }

@@ -35,6 +35,7 @@ class TimeFormatTest extends \PHPUnit_Framework_TestCase
         $result = $format->format(2000, array(
             'unit' => 'seconds',
             'mode' => 'throughput',
+            'resolve' => array(),
         ));
         $this->assertEquals('500.000ops/s', $result);
     }

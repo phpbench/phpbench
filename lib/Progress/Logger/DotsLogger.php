@@ -12,8 +12,8 @@
 namespace PhpBench\Progress\Logger;
 
 use PhpBench\Benchmark\Iteration;
+use PhpBench\Benchmark\IterationCollection;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
-use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\Util\TimeUnit;
 
@@ -47,15 +47,22 @@ class DotsLogger extends PhpBenchLogger
         }
     }
 
-    public function subjectEnd(SubjectMetadata $subject)
+    public function iterationsEnd(IterationCollection $iterations)
     {
+        // do not show reject runs
+        if ($iterations->getRejectCount() > 0) {
+            return;
+        }
+
+        $dot = $iterations->hasException() ? '<error>E</error>' : '.';
+
         if ($this->isCi) {
-            $this->output->write('.');
+            $this->output->write($dot);
 
             return;
         }
 
-        $this->buffer .= '.';
+        $this->buffer .= $dot;
         $this->output->write(sprintf(
             "\x0D%s ",
             $this->buffer

@@ -36,6 +36,10 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
             null,
             null
         );
+
+        $this->collection->getBenchmarks()->willReturn(array(
+            $this->benchmark,
+        ));
     }
 
     /**
@@ -52,9 +56,6 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
             $this->setExpectedException($exception[0], $exception[1]);
         }
 
-        $this->collection->getBenchmarks()->willReturn(array(
-            $this->benchmark,
-        ));
         TestUtil::configureSubject($this->subject, array(
             'iterations' => $iterations,
             'beforeMethods' => array('beforeFoo'),
@@ -160,9 +161,6 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSkip()
     {
-        $this->collection->getBenchmarks()->willReturn(array(
-            $this->benchmark,
-        ));
         TestUtil::configureSubject($this->subject, array(
             'skip' => true,
         ));
@@ -183,9 +181,6 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSleep()
     {
-        $this->collection->getBenchmarks()->willReturn(array(
-            $this->benchmark,
-        ));
         TestUtil::configureSubject($this->subject, array(
             'sleep' => 50,
         ));
@@ -216,9 +211,6 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
      */
     public function testRetryThreshold()
     {
-        $this->collection->getBenchmarks()->willReturn(array(
-            $this->benchmark,
-        ));
         TestUtil::configureSubject($this->subject, array(
             'sleep' => 50,
         ));
@@ -254,11 +246,38 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->executor->executeMethods($this->benchmark->reveal(), array('beforeClass'))->shouldBeCalled();
         $this->executor->executeMethods($this->benchmark->reveal(), array('afterClass'))->shouldBeCalled();
         $this->benchmark->getSubjectMetadatas()->willReturn(array());
-        $this->collection->getBenchmarks()->willReturn(array(
-            $this->benchmark,
-        ));
 
         $this->runner->run(new RunnerContext(__DIR__));
+    }
+
+    /**
+     * It should handle exceptions thrown by the executor.
+     * It should handle nested exceptions.
+     */
+    public function testHandleExceptions()
+    {
+        TestUtil::configureSubject($this->subject, array(
+            'sleep' => 50,
+        ));
+        $this->benchmark->getSubjectMetadatas()->willReturn(array(
+            $this->subject->reveal(),
+        ));
+        TestUtil::configureBenchmark($this->benchmark);
+        $this->executor->execute(Argument::type('PhpBench\Benchmark\Iteration'))
+            ->shouldBeCalledTimes(1)
+            ->willThrow(new \Exception('Foobar', null, new \InvalidArgumentException('Barfoo')));
+
+        $result = $this->runner->run(new RunnerContext(
+            __DIR__
+        ));
+
+        $this->assertTrue($result->hasErrors());
+        $this->assertTrue($result->evaluate('count(//error) = 2'));
+        $this->assertEquals(1, $result->evaluate('count(//error[@exception-class="Exception"])'));
+        $this->assertEquals(1, $result->evaluate('count(//error[@exception-class="InvalidArgumentException"])'));
+        $nodes = $result->query('//error');
+        $this->assertEquals('Foobar', $nodes->item(0)->nodeValue);
+        $this->assertEquals('Barfoo', $nodes->item(1)->nodeValue);
     }
 }
 

@@ -14,7 +14,7 @@ namespace PhpBench\Progress\Logger;
 use PhpBench\Benchmark\Iteration;
 use PhpBench\Benchmark\IterationCollection;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
-use PhpBench\Benchmark\Metadata\SubjectMetadata;
+use PhpBench\Util\Format;
 use PhpBench\Util\TimeUnit;
 
 class VerboseLogger extends PhpBenchLogger
@@ -44,20 +44,6 @@ class VerboseLogger extends PhpBenchLogger
     /**
      * {@inheritdoc}
      */
-    public function subjectStart(SubjectMetadata $subject)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function subjectEnd(SubjectMetadata $subject)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function iterationStart(Iteration $iteration)
     {
         $this->output->write(sprintf(
@@ -67,13 +53,6 @@ class VerboseLogger extends PhpBenchLogger
             $iteration->getIndex(),
             $iteration->getParameters()->getIndex()
         ));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function iterationEnd(Iteration $iteration)
-    {
     }
 
     /**
@@ -89,6 +68,16 @@ class VerboseLogger extends PhpBenchLogger
      */
     public function iterationsEnd(IterationCollection $iterations)
     {
+        if ($iterations->hasException()) {
+            $this->output->write(sprintf(
+                "\x1B[0G    %-30s<error>ERROR</error>",
+                $iterations->getSubject()->getName()
+            ));
+            $this->output->write(PHP_EOL);
+
+            return;
+        }
+
         $stats = $iterations->getStats();
         $timeUnit = $iterations->getSubject()->getOutputTimeUnit();
         $mode = $iterations->getSubject()->getOutputMode();

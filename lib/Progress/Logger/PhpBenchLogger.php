@@ -45,6 +45,24 @@ class PhpBenchLogger extends NullLogger implements OutputAwareInterface
 
     public function endSuite(SuiteDocument $suiteDocument)
     {
+        if ($suiteDocument->hasErrors()) {
+            $errorStacks = $suiteDocument->getErrorStacks();
+            $this->output->write(PHP_EOL);
+            $this->output->writeln(sprintf('%d subjects encountered errors:', count($errorStacks)));
+            $this->output->write(PHP_EOL);
+            foreach ($errorStacks as $errorStack) {
+                $this->output->writeln(sprintf('<error>%s</error>', $errorStack['subject']));
+                $this->output->write(PHP_EOL);
+                foreach ($errorStack['exceptions'] as $exception) {
+                    $this->output->writeln(sprintf(
+                        '    %s %s',
+                        $exception['exception_class'],
+                        str_replace("\n", "\n    ", $exception['message'])
+                    ));
+                }
+            }
+        }
+
         $this->output->writeln(sprintf(
             '%s subjects, %s iterations, %s revs, %s rejects',
             $suiteDocument->getNbSubjects(),
@@ -52,6 +70,7 @@ class PhpBenchLogger extends NullLogger implements OutputAwareInterface
             $suiteDocument->getNbRevolutions(),
             $suiteDocument->getNbRejects()
         ));
+
         $this->output->writeln(sprintf(
             '(%s) = %s %s %s (%s)',
             $this->timeUnit->getMode() == TimeUnit::MODE_TIME ? 'min mean max' : 'max mean min',
@@ -60,6 +79,7 @@ class PhpBenchLogger extends NullLogger implements OutputAwareInterface
             number_format($this->timeUnit->toDestUnit($suiteDocument->getMax()), 3),
             $this->timeUnit->getDestSuffix()
         ));
+
         $this->output->writeln(sprintf(
             '⅀T: %s μSD/r %s μRSD/r: %s%%',
             $this->timeUnit->format($suiteDocument->getTotalTime(), null, TimeUnit::MODE_TIME),

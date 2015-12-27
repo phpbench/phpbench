@@ -29,7 +29,7 @@
             [ "time", { "mode": "time", "unit": "{{ param.output-time-unit }}" }]
         ],
         "time": [
-            [ "time", { "mode": "{{ param.output-mode }}", "unit": "{{ param.output-time-unit }}" }]
+            [ "time", { "mode": "{{ param.output-mode }}", "unit": "{{ param.output-time-unit }}", "resolve": ["mode", "unit"] }]
         ],
         "number": [
             [ "number", { "decimal_places": 2 }]
