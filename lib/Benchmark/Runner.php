@@ -185,7 +185,7 @@ class Runner
         try {
             $iterations = $iterationCollection->spawnIterations($iterationCount, $revolutionCount);
             foreach ($iterations as $iteration) {
-                $this->runIteration($iteration, $subject->getSleep());
+                $this->runIteration($iteration, $context->getSleep($subject->getSleep()));
                 $iterationCollection->add($iteration);
             }
         } catch (\Exception $e) {
