@@ -18,7 +18,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ReportCommand extends BaseReportCommand
+class ReportCommand extends Command
 {
     private $reportManager;
 
@@ -31,7 +31,6 @@ class ReportCommand extends BaseReportCommand
 
     public function configure()
     {
-        parent::configure();
         $this->setName('report');
         $this->setDescription('Generate a report from an XML file');
         $this->setHelp(<<<EOT
@@ -41,6 +40,7 @@ To dump an XML file, use the <info>run</info> command with the
 <comment>dump-file</comment option.
 EOT
         );
+        Configure\Report::configure($this);
 
         $this->addOption('file', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Report XML file');
     }

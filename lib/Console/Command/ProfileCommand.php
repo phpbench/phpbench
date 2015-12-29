@@ -23,9 +23,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class RunCommand extends Command
+class ProfileCommand extends Command
 {
-    private $reportManager;
     private $loggerRegistry;
     private $progressLoggerName;
     private $benchPath;
@@ -35,7 +34,6 @@ class RunCommand extends Command
 
     public function __construct(
         Runner $runner,
-        ReportManager $reportManager,
         LoggerRegistry $loggerRegistry,
         TimeUnit $timeUnit,
         $progressLoggerName = null,
@@ -60,30 +58,20 @@ class RunCommand extends Command
         $this->setName('run');
         $this->setDescription('Run benchmarks');
         $this->setHelp(<<<EOT
-Run benchmark files at given <comment>path</comment>
+Profile benchmark files at given <comment>path</comment>
 
     $ %command.full_name% /path/to/bench
 
-All bench marks under the given path will be executed recursively.
+All bench marks under the given path will be executed recursively using the
+named profiler (XDebug by default).
 EOT
         );
-        $this->addOption('group', array(), InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Group to run (can be specified multiple times)');
-        $this->addOption('dump-file', 'd', InputOption::VALUE_OPTIONAL, 'Dump XML result to named file');
-        $this->addOption('dump', null, InputOption::VALUE_NONE, 'Dump XML result to stdout and suppress all other output');
-        $this->addOption('iterations', null, InputOption::VALUE_REQUIRED, 'Override number of iteratios to run in (all) benchmarks');
-        $this->addOption('retry-threshold', 'r', InputOption::VALUE_REQUIRED, 'Set target allowable deviation', null);
-        $this->addOption('sleep', null, InputOption::VALUE_REQUIRED, 'Number of microseconds to sleep between iterations');
-        $this->addOption('context', null, InputOption::VALUE_REQUIRED, 'Context label to apply to the suite result (useful when comparing reports)');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $consoleOutput = $output;
-        $reports = $input->getOption('report');
-        $outputs = $input->getOption('output');
         $progressLoggerName = $input->getOption('progress') ?: $this->progressLoggerName;
-        $dump = $input->getOption('dump');
-        $dumpfile = $input->getOption('dump-file');
         $timeUnit = $input->getOption('time-unit');
         $mode = $input->getOption('mode');
 
@@ -100,7 +88,7 @@ EOT
             array(
                 'context_name' => $input->getOption('context'),
                 'parameters' => $this->getParameters($input->getOption('parameters')),
-                'iterations' => $input->getOption('iterations'),
+                'iterations' => 1,
                 'revolutions' => $input->getOption('revs'),
                 'filters' => $input->getOption('filter'),
                 'groups' => $input->getOption('group'),

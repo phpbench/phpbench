@@ -12,9 +12,8 @@
 namespace PhpBench\Extension;
 
 use PhpBench\Benchmark\CollectionBuilder;
-use PhpBench\Benchmark\Executor\MicrotimeExecutor;
-use PhpBench\Benchmark\Metadata\Driver\AnnotationDriver;
-use PhpBench\Benchmark\Metadata\Factory;
+use PhpBench\Benchmark\Executor;
+use PhpBench\Benchmark\Metadata;
 use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Benchmark\Remote\Reflector;
 use PhpBench\Benchmark\Runner;
@@ -109,6 +108,10 @@ class CoreExtension implements ExtensionInterface
             $container->get('report.manager')->addRenderer($attributes['name'], $reportRenderer);
         }
 
+        foreach ($container->getServiceIdsForTag('executor') as $serviceId => $attributes) {
+            $container->get('benchmark.executor_factory')->register($attributes['name'], $serviceId);
+        }
+
         foreach ($container->getParameter('reports') as $reportName => $report) {
             $container->get('report.manager')->addReport($reportName, $report);
         }
@@ -125,16 +128,20 @@ class CoreExtension implements ExtensionInterface
         $container->register('benchmark.runner', function (Container $container) {
             return new Runner(
                 $container->get('benchmark.collection_builder'),
-                $container->get('benchmark.executor'),
+                $container->get('benchmark.executor_factory'),
                 $container->getParameter('retry_threshold'),
                 $container->getParameter('config_path')
             );
         });
 
-        $container->register('benchmark.executor', function (Container $container) {
-            return new MicrotimeExecutor(
+        $container->register('benchmark.executor.microtime', function (Container $container) {
+            return new Executor\MicrotimeExecutor(
                 $container->get('benchmark.remote.launcher')
             );
+        }, array('executor' => array('name' => 'microtime')));
+
+        $container->register('benchmark.executor_factory', function (Container $container) {
+            return new Executor\Factory($container);
         });
 
         $container->register('benchmark.finder', function (Container $container) {
@@ -152,13 +159,13 @@ class CoreExtension implements ExtensionInterface
         });
 
         $container->register('benchmark.metadata.driver.annotation', function (Container $container) {
-            return new AnnotationDriver(
+            return new Metadata\Driver\AnnotationDriver(
                 $container->get('benchmark.remote.reflector')
             );
         });
 
         $container->register('benchmark.metadata_factory', function (Container $container) {
-            return new Factory(
+            return new Metadata\Factory(
                 $container->get('benchmark.remote.reflector'),
                 $container->get('benchmark.metadata.driver.annotation')
             );
