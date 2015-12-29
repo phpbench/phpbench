@@ -17,16 +17,17 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use PhpBench\Console\Command\Handler\ReportHandler;
 
 class ReportCommand extends Command
 {
-    private $reportManager;
+    private $reportHandler;
 
     public function __construct(
-        ReportManager $reportManager
+        ReportHandler $reportHandler
     ) {
         parent::__construct();
-        $this->reportManager = $reportManager;
+        $this->reportHandler = $reportHandler;
     }
 
     public function configure()
@@ -40,19 +41,14 @@ To dump an XML file, use the <info>run</info> command with the
 <comment>dump-file</comment option.
 EOT
         );
-        Configure\Report::configure($this);
+        ReportHandler::configure($this);
 
         $this->addOption('file', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Report XML file');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $reports = $input->getOption('report');
-        $reportNames = $this->reportManager->processCliReports($reports);
         $files = $input->getOption('file');
-
-        $outputs = $input->getOption('output');
-        $outputNames = $this->reportManager->processCliOutputs($outputs);
 
         if (!$files) {
             throw new \InvalidArgumentException(
@@ -60,7 +56,7 @@ EOT
             );
         }
 
-        if (!$reportNames) {
+        if (!$input->getOption('report')) {
             throw new \InvalidArgumentException(
                 'You must specify or configure at least one report, e.g.: --report=default'
             );
@@ -90,6 +86,6 @@ EOT
             }
         }
 
-        $this->reportManager->renderReports($output, $aggregateDom, $reportNames, $outputNames);
+        $this->reportHandler->reportsFromInput($input, $output, $aggregateDom);
     }
 }

@@ -50,6 +50,8 @@ use PhpBench\Tabular\TableBuilder;
 use PhpBench\Tabular\Tabular;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Finder\Finder;
+use PhpBench\Console\Command\Handler\RunnerHandler;
+use PhpBench\Console\Command\Handler\ReportHandler;
 
 class CoreExtension implements ExtensionInterface
 {
@@ -74,7 +76,7 @@ class CoreExtension implements ExtensionInterface
         $this->registerBenchmark($container);
         $this->registerJsonSchema($container);
         $this->registerTabular($container);
-        $this->registerCommands($container);
+        $this->registerConsole($container);
         $this->registerProgressLoggers($container);
         $this->registerReportGenerators($container);
         $this->registerReportRenderers($container);
@@ -109,7 +111,8 @@ class CoreExtension implements ExtensionInterface
         }
 
         foreach ($container->getServiceIdsForTag('executor') as $serviceId => $attributes) {
-            $container->get('benchmark.executor_factory')->register($attributes['name'], $serviceId);
+            $executor = $container->get($serviceId);
+            $container->get('benchmark.executor_factory')->register($attributes['name'], $executor);
         }
 
         foreach ($container->getParameter('reports') as $reportName => $report) {
@@ -141,7 +144,7 @@ class CoreExtension implements ExtensionInterface
         }, array('executor' => array('name' => 'microtime')));
 
         $container->register('benchmark.executor_factory', function (Container $container) {
-            return new Executor\Factory($container);
+            return new Executor\Registry($container);
         });
 
         $container->register('benchmark.finder', function (Container $container) {
@@ -190,23 +193,34 @@ class CoreExtension implements ExtensionInterface
         });
     }
 
-    private function registerCommands(Container $container)
+    private function registerConsole(Container $container)
     {
-        $container->register('console.command.run', function (Container $container) {
-            return new RunCommand(
+        $container->register('console.command.handler.runner', function (Container $container) {
+            return new RunnerHandler(
                 $container->get('benchmark.runner'),
-                $container->get('report.manager'),
                 $container->get('progress_logger.registry'),
                 $container->get('benchmark.time_unit'),
                 $container->getParameter('progress'),
-                $container->getParameter('path'),
-                $container->getParameter('config_path')
+                $container->getParameter('path')
+            );
+        });
+
+        $container->register('console.command.handler.report', function (Container $container) {
+            return new ReportHandler(
+                $container->get('report.manager')
+            );
+        });
+
+        $container->register('console.command.run', function (Container $container) {
+            return new RunCommand(
+                $container->get('console.command.handler.runner'),
+                $container->get('console.command.handler.report')
             );
         }, array('console.command' => array()));
 
         $container->register('console.command.report', function (Container $container) {
             return new ReportCommand(
-                $container->get('report.manager')
+                $container->get('console.command.handler.report')
             );
         }, array('console.command' => array()));
     }

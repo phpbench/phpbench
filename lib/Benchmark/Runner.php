@@ -17,7 +17,7 @@ use PhpBench\PhpBench;
 use PhpBench\Progress\Logger\NullLogger;
 use PhpBench\Progress\LoggerInterface;
 use PhpBench\Util\TimeUnit;
-use PhpBench\Benchmark\Executor\Factory;
+use PhpBench\Benchmark\Executor\Registry;
 use PhpBench\Benchmark\ExecutorInterface;
 
 /**
@@ -29,7 +29,7 @@ class Runner
     private $collectionBuilder;
     private $configPath;
     private $retryThreshold = null;
-    private $executorFactory;
+    private $executorRegistry;
 
     /**
      * @param CollectionBuilder $collectionBuilder
@@ -38,13 +38,13 @@ class Runner
      */
     public function __construct(
         CollectionBuilder $collectionBuilder,
-        Factory $executorFactory,
+        Registry $executorRegistry,
         $retryThreshold,
         $configPath
     ) {
         $this->logger = new NullLogger();
         $this->collectionBuilder = $collectionBuilder;
-        $this->executorFactory = $executorFactory;
+        $this->executorRegistry = $executorRegistry;
         $this->configPath = $configPath;
         $this->retryThreshold = $retryThreshold;
     }
@@ -103,7 +103,7 @@ class Runner
 
     private function runBenchmark(RunnerContext $context, BenchmarkMetadata $benchmark, \DOMElement $benchmarkEl)
     {
-        $executor = $this->executorFactory->getExecutor($context->getExecutorName());
+        $executor = $this->executorRegistry->getExecutor($context->getExecutorName());
 
         if ($benchmark->getBeforeClassMethods()) {
             $executor->executeMethods($benchmark, $benchmark->getBeforeClassMethods());

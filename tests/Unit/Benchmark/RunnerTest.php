@@ -28,11 +28,12 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->subject = $this->prophesize('PhpBench\Benchmark\Metadata\SubjectMetadata');
         $this->collectionBuilder->buildCollection(__DIR__, array(), array())->willReturn($this->collection);
         $this->executor = $this->prophesize('PhpBench\Benchmark\ExecutorInterface');
+        $this->registry = $this->prophesize('PhpBench\Benchmark\Executor\Registry');
         $this->benchmark = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');
 
         $this->runner = new Runner(
             $this->collectionBuilder->reveal(),
-            $this->executor->reveal(),
+            $this->registry->reveal(),
             null,
             null
         );
@@ -40,6 +41,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->collection->getBenchmarks()->willReturn(array(
             $this->benchmark,
         ));
+        $this->registry->getExecutor('microtime')->willReturn($this->executor->reveal());
     }
 
     /**
