@@ -33,6 +33,7 @@ class DocParser
         'Sleep' => 'PhpBench\Benchmark\Metadata\Annotations\Sleep',
         'OutputTimeUnit' => 'PhpBench\Benchmark\Metadata\Annotations\OutputTimeUnit',
         'OutputMode' => 'PhpBench\Benchmark\Metadata\Annotations\OutputMode',
+        'Executor' => 'PhpBench\Benchmark\Metadata\Annotations\Executor',
     );
     private static $globalIgnoredNames = array(
         // Annotation tags

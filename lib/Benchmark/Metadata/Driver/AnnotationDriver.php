@@ -173,6 +173,10 @@ class AnnotationDriver implements DriverInterface
         if ($annotation instanceof Annotations\OutputMode) {
             $metadata->setOutputMode($annotation->getMode());
         }
+
+        if ($annotation instanceof Annotations\Executor) {
+            $metadata->setExecutor($annotation->getExecutor());
+        }
     }
 
     private function resolveValue(AbstractArrayAnnotation $annotation, array $currentValues, array $annotationValues)

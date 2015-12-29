@@ -1,0 +1,45 @@
+<?php
+
+namespace PhpBench;
+
+$class = '{{ class }}';
+$file = '{{ file }}';
+$subject = '{{ subject }}';
+$revolutions = {{ revolutions }};
+$beforeMethods = {{ beforeMethods }};
+$afterMethods = {{ afterMethods }};
+$bootstrap = '{{ bootstrap }}';
+$parameters = {{ parameters }};
+
+if ($bootstrap) {
+    require_once($bootstrap);
+}
+
+require_once($file);
+
+$benchmark = new $class();
+
+foreach ($beforeMethods as $beforeMethod) {
+    $benchmark->$beforeMethod($parameters);
+}
+
+// run the benchmarks: note that passing arguments to the method slightly increases
+// the calltime, so we explicitly do one thing or the other depending on if parameters
+// are provided.
+if ($parameters) {
+    for ($i = 0; $i < $revolutions; $i++) {
+        $benchmark->$subject($parameters);
+    }
+} else {
+    for ($i = 0; $i < $revolutions; $i++) {
+        $benchmark->$subject();
+    }
+}
+
+foreach ($afterMethods as $afterMethod) {
+    $benchmark->$afterMethod($parameters);
+}
+
+echo json_encode(array());
+
+exit(0);

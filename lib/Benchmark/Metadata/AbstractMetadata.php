@@ -74,6 +74,11 @@ abstract class AbstractMetadata
     private $outputMode = TimeUnit::MODE_TIME;
 
     /**
+     * @var string
+     */
+    private $executor = 'microtime';
+
+    /**
      * @param mixed $class
      */
     public function __construct($class)
@@ -191,5 +196,15 @@ abstract class AbstractMetadata
     public function setOutputMode($outputMode)
     {
         $this->outputMode = $outputMode;
+    }
+
+    public function getExecutor() 
+    {
+        return $this->executor;
+    }
+    
+    public function setExecutor($executor)
+    {
+        $this->executor = $executor;
     }
 }

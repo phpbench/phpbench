@@ -11,11 +11,9 @@
 
 namespace PhpBench\Benchmark\Executor;
 
-use PhpBench\Benchmark\ExecutorInterface;
-use PhpBench\Benchmark\Iteration;
-use PhpBench\Benchmark\IterationResult;
-use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
+use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\Launcher;
+use PhpBench\Benchmark\ExecutorInterface;
 
 /**
  * This class generates a benchmarking script and places it in the systems
@@ -40,54 +38,28 @@ class MicrotimeExecutor implements ExecutorInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function execute(Iteration $iteration, array $options = array())
+    public function execute(SubjectMetadata $subject, $revolutions = 1, array $parameters = array(), $options = array())
     {
-        $subject = $iteration->getSubject();
         $tokens = array(
             'class' => $subject->getBenchmarkMetadata()->getClass(),
             'file' => $subject->getBenchmarkMetadata()->getPath(),
             'subject' => $subject->getName(),
-            'revolutions' => $iteration->getRevolutions(),
+            'revolutions' => $revolutions,
             'beforeMethods' => var_export($subject->getBeforeMethods(), true),
             'afterMethods' => var_export($subject->getAfterMethods(), true),
-            'parameters' => var_export($iteration->getParameters()->getArrayCopy(), true),
+            'parameters' => var_export($parameters, true),
         );
 
-        $payload = $this->launcher->payload(__DIR__ . '/template/microtime.template', $tokens);
-        $payload->setPhpConfig(array(
-            'max_execution_time' => 0,
-        ));
-        $result = $payload->launch();
+        $result = $this->launcher->launch(__DIR__ . '/template/microtime.template', $tokens);
+        $result['calls'] = null;
 
-        if (isset($result['buffer']) && $result['buffer']) {
-            throw new \RuntimeException(sprintf(
-                'Benchmark made some noise: %s',
-                $result['buffer']
-            ));
-        }
-
-        return new IterationResult($result['time'], $result['memory']);
+        return $result;
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function executeMethods(BenchmarkMetadata $benchmark, array $methods)
-    {
-        $tokens = array(
-            'class' => $benchmark->getClass(),
-            'file' => $benchmark->getPath(),
-            'methods' => var_export($methods, true),
-        );
-
-        $payload = $this->launcher->payload(__DIR__ . '/template/benchmark_static_methods.template', $tokens);
-        $payload->launch();
-    }
-
-    /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getSchema()
     {
@@ -95,7 +67,7 @@ class MicrotimeExecutor implements ExecutorInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getDefaultConfig()
     {

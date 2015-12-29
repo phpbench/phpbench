@@ -51,6 +51,9 @@ use PhpBench\Tabular\TableBuilder;
 use PhpBench\Tabular\Tabular;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Finder\Finder;
+use PhpBench\Benchmark\ExecutorFactory;
+use PhpBench\Benchmark\Executor\MicrotimeExecutor;
+use PhpBench\Extensions\XDebug\Executor\XDebugTraceExecutor;
 
 class CoreExtension implements ExtensionInterface
 {
@@ -73,6 +76,7 @@ class CoreExtension implements ExtensionInterface
         });
 
         $this->registerBenchmark($container);
+        $this->registerExecutors($container);
         $this->registerJsonSchema($container);
         $this->registerTabular($container);
         $this->registerCommands($container);
@@ -109,6 +113,12 @@ class CoreExtension implements ExtensionInterface
             $container->get('report.manager')->addRenderer($attributes['name'], $reportRenderer);
         }
 
+        foreach ($container->getServiceIdsForTag('executor') as $serviceId => $attributes) {
+            $container->get('benchmark.executor_factory')->addExecutor(
+                $attributes['name'], $container->get($serviceId)
+            );
+        }
+
         foreach ($container->getParameter('reports') as $reportName => $report) {
             $container->get('report.manager')->addReport($reportName, $report);
         }
@@ -125,15 +135,9 @@ class CoreExtension implements ExtensionInterface
         $container->register('benchmark.runner', function (Container $container) {
             return new Runner(
                 $container->get('benchmark.collection_builder'),
-                $container->get('benchmark.executor'),
+                $container->get('benchmark.executor_factory'),
                 $container->getParameter('retry_threshold'),
                 $container->getParameter('config_path')
-            );
-        });
-
-        $container->register('benchmark.executor', function (Container $container) {
-            return new MicrotimeExecutor(
-                $container->get('benchmark.remote.launcher')
             );
         });
 
@@ -174,6 +178,15 @@ class CoreExtension implements ExtensionInterface
         $container->register('benchmark.time_unit', function (Container $container) {
             return new TimeUnit(TimeUnit::MICROSECONDS, $container->getParameter('time_unit'));
         });
+    }
+
+    private function registerExecutors(Container $container)
+    {
+        $container->register('benchmark.executor.microtime', function (Container $container) {
+            return new MicrotimeExecutor(
+                $container->get('benchmark.remote.launcher')
+            );
+        },array('executor' => array('name' => 'microtime')));
     }
 
     private function registerJsonSchema(Container $container)

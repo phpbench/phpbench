@@ -4,6 +4,7 @@
     "retry_threshold": 10,
     "output_mode": "throughput",
     "time_unit": "seconds",
+    "progress": "verbose",
     "outputs": {
         "console_example": {
             "renderer": "console",

@@ -16,6 +16,7 @@ use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Dom\Document;
 use Symfony\Component\Console\Output\OutputInterface;
+use PhpBench\Config\ConfigurableInterface;
 
 /**
  * Manage report configuration and generation.
