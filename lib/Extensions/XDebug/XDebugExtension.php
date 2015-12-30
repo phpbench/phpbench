@@ -13,29 +13,24 @@ namespace PhpBench\Extensions\XDebug;
 
 use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\DependencyInjection\Container;
-use PhpBench\Extensions\XDebug\Executor\XDebugTraceExecutor;
-use PhpBench\Extensions\XDebug\Command\XDebugCommand;
+use PhpBench\Extensions\XDebug\Command\ProfileCommand;
+use PhpBench\Extensions\XDebug\Executor\XDebugExecutor;
 
 class XDebugExtension implements ExtensionInterface
 {
     public function configure(Container $container)
     {
-        $container->register('benchmark.executor.xdebug_trace', function (Container $container) {
-            return new XDebugTraceExecutor(
+        $container->register('xdebug.command.profile', function (Container $container) {
+            return new ProfileCommand(
+                $container->get('console.command.handler.runner')
+            );
+        }, array('console.command' => array()));
+
+        $container->register('benchmark.executor.xdebug', function (Container $container) {
+            return new XDebugExecutor(
                 $container->get('benchmark.remote.launcher')
             );
-        },array('executor' => array('name' => 'xdebug-trace')));
-
-        $container->register('xdebug.command.profile', function (Container $container) {
-            return new XDebugProfileCommand(
-                $container->get('benchmark.runner'),
-                $container->get('progress_logger.registry'),
-                $container->get('benchmark.time_unit'),
-                $container->getParameter('progress'),
-                $container->getParameter('path'),
-                $container->getParameter('config_path')
-            );
-        },array('executor' => array('name' => 'xdebug-trace')));
+        }, array('executor' => array('name' => 'xdebug')));
     }
 
     public function build(Container $container)

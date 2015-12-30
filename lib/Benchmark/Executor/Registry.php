@@ -27,26 +27,4 @@ class Registry
 
         return $this->executors[$name];
     }
-
-    public function getProfiler($name)
-    {
-        $executor = $this->getExecutor($name);
-
-        if (!$executor instanceof ProfilerInterface) {
-            $profilers = array_filter($this->executors, function ($executor) {
-                if ($executor instanceof ProfilerInterface) {
-                    return true;
-                }
-
-                return false;
-            });
-
-            throw new \InvalidArgumentException(sprintf(
-                'Executor "%s" is not a profiler, registered profilers: "%s"',
-                $name, implode('", "', array_keys($profilers))
-            ));
-        }
-
-        return $executor;
-    }
 }

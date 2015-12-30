@@ -241,7 +241,7 @@ class Runner
         $sleep = $context->getSleep($subject->getSleep());
 
         $this->logger->iterationStart($iteration);
-        $result = $executor->execute($iteration);
+        $result = $executor->execute($iteration, array_merge($executor->getDefaultConfig(), $context->getExecutorConfig()));
 
         if ($sleep) {
             usleep($sleep);
