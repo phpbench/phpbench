@@ -1,5 +1,8 @@
 {
     "bootstrap": "../vendor/autoload.php",
+    "extensions": [
+        "PhpBench\\Extensions\\XDebug\\XDebugExtension"
+    ],
     "path": "./",
     "retry_threshold": 10,
     "output_mode": "throughput",

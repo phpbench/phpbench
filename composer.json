@@ -30,7 +30,8 @@
     },
     "autoload": {
         "psr-4": {
-            "PhpBench\\": "lib/"
+            "PhpBench\\": "lib/",
+            "PhpBench\\Extensions\\": "extensions/"
         }
     },
     "autoload-dev": {

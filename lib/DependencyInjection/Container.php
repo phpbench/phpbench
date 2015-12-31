@@ -24,13 +24,12 @@ class Container
     private $parameters = array();
     private $extensions = array();
 
-    public function __construct()
+    public function __construct(array $extensions = array())
     {
+        $this->parameters['extensions'] = $extensions;
+
         // Add the core extension by deefault
-        $this->parameters['extensions'] = array(
-            'PhpBench\Extension\CoreExtension',
-            'PhpBench\Extensions\XDebug\XDebugExtension',
-        );
+        $this->parameters['extensions'][] = 'PhpBench\Extension\CoreExtension';
     }
 
     /**

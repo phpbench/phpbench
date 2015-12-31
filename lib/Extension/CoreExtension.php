@@ -82,8 +82,8 @@ class CoreExtension implements ExtensionInterface
         $this->registerReportRenderers($container);
 
         $container->mergeParameters(array(
-            'path' => null,
             'reports' => array(),
+            'path' => null,
             'outputs' => array(),
             'config_path' => null,
             'progress' => getenv('CONTINUOUS_INTEGRATION') ? 'travis' : 'verbose',
