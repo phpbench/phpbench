@@ -1,17 +1,24 @@
 <?php
 
+/*
+ * This file is part of the PHPBench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Extensions\XDebug\Command;
 
 use PhpBench\Console\Command\Configure\Executor;
 use PhpBench\Console\Command\Handler\RunnerHandler;
+use PhpBench\Extensions\XDebug\XDebugUtil;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use PhpBench\Benchmark\Iteration;
-use PhpBench\Benchmark\IterationResult;
-use PhpBench\Extensions\XDebug\XDebugUtil;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
 
@@ -24,8 +31,7 @@ class ProfileCommand extends Command
     public function __construct(
         RunnerHandler $runnerHandler,
         Filesystem $filesystem = null
-    )
-    {
+    ) {
         parent::__construct();
         $this->runnerHandler = $runnerHandler;
         $this->filesystem = $filesystem ?: new Filesystem();

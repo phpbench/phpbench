@@ -11,8 +11,8 @@
 
 namespace PhpBench\Extensions\XDebug;
 
-use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\DependencyInjection\Container;
+use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Extensions\XDebug\Command\ProfileCommand;
 use PhpBench\Extensions\XDebug\Executor\XDebugExecutor;
 

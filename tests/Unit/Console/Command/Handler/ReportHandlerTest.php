@@ -1,9 +1,18 @@
 <?php
 
+/*
+ * This file is part of the PHPBench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Tests\Unit\Console\Command\Handler;
 
-use PhpBench\Console\Command\Handler\ReportHandler;
 use PhpBench\Benchmark\SuiteDocument;
+use PhpBench\Console\Command\Handler\ReportHandler;
 use Prophecy\Argument;
 
 class ReportHandlerTest extends \PHPUnit_Framework_TestCase
@@ -34,7 +43,7 @@ class ReportHandlerTest extends \PHPUnit_Framework_TestCase
                 '{"param": "one"}',
             ),
             'output' => array(
-                'console'
+                'console',
             ),
         ));
 
@@ -65,7 +74,7 @@ class ReportHandlerTest extends \PHPUnit_Framework_TestCase
                 '{"param": "one}',
             ),
             'output' => array(
-                'console'
+                'console',
             ),
         ));
 

@@ -18,6 +18,8 @@ use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Benchmark\Remote\Reflector;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Console\Application;
+use PhpBench\Console\Command\Handler\ReportHandler;
+use PhpBench\Console\Command\Handler\RunnerHandler;
 use PhpBench\Console\Command\ReportCommand;
 use PhpBench\Console\Command\RunCommand;
 use PhpBench\DependencyInjection\Container;
@@ -50,8 +52,6 @@ use PhpBench\Tabular\TableBuilder;
 use PhpBench\Tabular\Tabular;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Finder\Finder;
-use PhpBench\Console\Command\Handler\RunnerHandler;
-use PhpBench\Console\Command\Handler\ReportHandler;
 
 class CoreExtension implements ExtensionInterface
 {

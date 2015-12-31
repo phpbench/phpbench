@@ -11,14 +11,13 @@
 
 namespace PhpBench\Benchmark;
 
+use PhpBench\Benchmark\Executor\Registry;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\PhpBench;
 use PhpBench\Progress\Logger\NullLogger;
 use PhpBench\Progress\LoggerInterface;
 use PhpBench\Util\TimeUnit;
-use PhpBench\Benchmark\Executor\Registry;
-use PhpBench\Benchmark\ExecutorInterface;
 
 /**
  * The benchmark runner.

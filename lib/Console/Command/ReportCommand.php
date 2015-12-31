@@ -12,12 +12,11 @@
 namespace PhpBench\Console\Command;
 
 use PhpBench\Benchmark\SuiteDocument;
-use PhpBench\Report\ReportManager;
+use PhpBench\Console\Command\Handler\ReportHandler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use PhpBench\Console\Command\Handler\ReportHandler;
 
 class ReportCommand extends Command
 {

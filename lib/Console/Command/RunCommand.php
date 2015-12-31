@@ -11,19 +11,13 @@
 
 namespace PhpBench\Console\Command;
 
-use PhpBench\Benchmark\Runner;
-use PhpBench\Benchmark\RunnerContext;
+use PhpBench\Console\Command\Handler\ReportHandler;
+use PhpBench\Console\Command\Handler\RunnerHandler;
 use PhpBench\PhpBench;
-use PhpBench\Progress\LoggerRegistry;
-use PhpBench\Report\ReportManager;
-use PhpBench\Util\TimeUnit;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use PhpBench\Console\Command\Handler\ReportHandler;
-use PhpBench\Console\Command\Handler\RunnerHandler;
 
 class RunCommand extends Command
 {

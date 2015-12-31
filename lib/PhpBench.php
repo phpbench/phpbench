@@ -28,7 +28,6 @@ class PhpBench
         $container->mergeParameters($config);
         $container->build();
         $container->get('console.application')->run();
-
     }
 
     private static function loadConfig()

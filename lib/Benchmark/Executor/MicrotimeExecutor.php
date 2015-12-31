@@ -11,11 +11,8 @@
 
 namespace PhpBench\Benchmark\Executor;
 
-use PhpBench\Benchmark\ExecutorInterface;
 use PhpBench\Benchmark\Iteration;
 use PhpBench\Benchmark\IterationResult;
-use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
-use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Benchmark\Remote\Payload;
 
 /**
@@ -31,7 +28,7 @@ class MicrotimeExecutor extends BaseExecutor
     public function launch(Payload $payload, Iteration $iteration, array $options = array())
     {
         $phpConfig = array(
-            'max_execution_time' => 0
+            'max_execution_time' => 0,
         );
 
         $payload->setPhpConfig($phpConfig);

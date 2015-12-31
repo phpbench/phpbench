@@ -157,7 +157,6 @@ class ReportManager
         }
     }
 
-
     /**
      * Return the named report configuration.
      *

@@ -60,7 +60,7 @@ abstract class BaseExecutor implements ExecutorInterface
      *
      * @return IterationResult
      */
-    abstract protected function launch(Payload $payload, Iteration $iteration, array $options  = array());
+    abstract protected function launch(Payload $payload, Iteration $iteration, array $options = array());
 
     /**
      * {@inheritdoc}
@@ -84,4 +84,3 @@ abstract class BaseExecutor implements ExecutorInterface
     {
     }
 }
-
