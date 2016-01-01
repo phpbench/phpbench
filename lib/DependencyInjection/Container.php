@@ -24,12 +24,12 @@ class Container
     private $parameters = array();
     private $extensions = array();
 
-    public function __construct()
+    public function __construct(array $extensions = array())
     {
+        $this->parameters['extensions'] = $extensions;
+
         // Add the core extension by deefault
-        $this->parameters['extensions'] = array(
-            'PhpBench\Extension\CoreExtension',
-        );
+        $this->parameters['extensions'][] = 'PhpBench\Extension\CoreExtension';
     }
 
     /**
@@ -53,6 +53,7 @@ class Container
 
             if (!$extension instanceof ExtensionInterface) {
                 throw new \InvalidArgumentException(sprintf(
+                    // add any manually specified extensions
                     'Extensions "%s" must implement the PhpBench\\Extension interface',
                     get_class($extension)
                 ));

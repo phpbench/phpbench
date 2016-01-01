@@ -24,9 +24,16 @@ class SystemTestCase extends \PHPUnit_Framework_TestCase
         }
     }
 
+    protected function getWorkingDir($workingDir = '.')
+    {
+        $dir = __DIR__ . '/' . $workingDir;
+
+        return $dir;
+    }
+
     public function phpbench($command, $workingDir = '.')
     {
-        chdir(__DIR__ . '/' . $workingDir);
+        chdir($this->getWorkingDir($workingDir));
         $bin = __DIR__ . '/../../bin/phpbench --verbose';
         $process = new Process($bin . ' ' . $command);
         $process->run();

@@ -30,9 +30,9 @@ use PhpBench\DependencyInjection\Container;
  */
 class Registry
 {
-    private $serviceMap;
+    private $serviceMap = array();
     private $container;
-    private $configs;
+    private $configs = array();
     private $services = array();
     private $validator;
     private $serviceType;
@@ -102,6 +102,12 @@ class Registry
      */
     public function getConfig($name)
     {
+        if (is_array($name)) {
+            $config = $name;
+            $name = uniqid();
+            $this->setConfig($name, $config);
+        }
+
         $name = $this->processRawCliConfig($name);
 
         if (!isset($this->configs[$name])) {

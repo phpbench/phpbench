@@ -12,24 +12,25 @@
 namespace PhpBench\Benchmark;
 
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
-use PhpBench\Config\ConfigurableInterface;
+use PhpBench\Registry\Config;
+use PhpBench\Registry\RegistrableInterface;
 
 /**
  * Executors are responsible for executing the benchmark class
  * and returning the timing metrics, and optionally the memory and profling
  * data.
  */
-interface ExecutorInterface extends ConfigurableInterface
+interface ExecutorInterface extends RegistrableInterface
 {
     /**
      * Execute the benchmark and return the result.
      *
      * @param Iteration $iteration
-     * @param array $options
+     * @param array $config
      *
      * @return IterationResult
      */
-    public function execute(Iteration $iteration, array $options = array());
+    public function execute(Iteration $iteration, Config $config);
 
     /**
      * Execute arbitrary methods.

@@ -16,6 +16,7 @@ use PhpBench\Benchmark\IterationResult;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Benchmark\RunnerContext;
 use PhpBench\PhpBench;
+use PhpBench\Registry\Config;
 use PhpBench\Tests\Util\TestUtil;
 use Prophecy\Argument;
 
@@ -29,10 +30,12 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->collectionBuilder->buildCollection(__DIR__, array(), array())->willReturn($this->collection);
         $this->executor = $this->prophesize('PhpBench\Benchmark\ExecutorInterface');
         $this->benchmark = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');
+        $this->executorRegistry = $this->prophesize('PhpBench\Registry\Registry');
+        $this->executorConfig = new Config(array('executor' => 'microtime'));
 
         $this->runner = new Runner(
             $this->collectionBuilder->reveal(),
-            $this->executor->reveal(),
+            $this->executorRegistry->reveal(),
             null,
             null
         );
@@ -40,6 +43,13 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->collection->getBenchmarks()->willReturn(array(
             $this->benchmark,
         ));
+
+        $this->executorRegistry->getService('microtime')->willReturn(
+            $this->executor->reveal()
+        );
+        $this->executorRegistry->getConfig('microtime')->willReturn(
+            $this->executorConfig
+        );
     }
 
     /**
@@ -71,7 +81,12 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         ));
 
         if (!$exception) {
-            $this->executor->execute(Argument::type('PhpBench\Benchmark\Iteration'))
+            $this->executor->execute(
+                Argument::type('PhpBench\Benchmark\Iteration'),
+                new Config(array(
+                    'executor' => 'microtime',
+                ))
+            )
                 ->shouldBeCalledTimes(count($revs) * $iterations)
                 ->willReturn(new IterationResult(10, 10));
         }
@@ -81,6 +96,10 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         )));
 
         $this->assertInstanceOf('PhpBench\Benchmark\SuiteDocument', $result);
+
+        foreach ($result->query('//error') as $errorEl) {
+            $this->fail($errorEl->nodeValue);
+        }
 
         foreach ($xpathAssertions as $xpathAssertion) {
             $this->assertTrue($result->evaluate($xpathAssertion), $xpathAssertion);
@@ -188,7 +207,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
             $this->subject->reveal(),
         ));
         TestUtil::configureBenchmark($this->benchmark);
-        $this->executor->execute(Argument::type('PhpBench\Benchmark\Iteration'))
+        $this->executor->execute(Argument::type('PhpBench\Benchmark\Iteration'), $this->executorConfig)
             ->shouldBeCalledTimes(2)
             ->willReturn(new IterationResult(10, 10));
 
@@ -218,7 +237,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
             $this->subject->reveal(),
         ));
         TestUtil::configureBenchmark($this->benchmark);
-        $this->executor->execute(Argument::type('PhpBench\Benchmark\Iteration'))
+        $this->executor->execute(Argument::type('PhpBench\Benchmark\Iteration'), $this->executorConfig)
             ->shouldBeCalledTimes(1)
             ->willReturn(new IterationResult(10, 10));
 
@@ -263,7 +282,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
             $this->subject->reveal(),
         ));
         TestUtil::configureBenchmark($this->benchmark);
-        $this->executor->execute(Argument::type('PhpBench\Benchmark\Iteration'))
+        $this->executor->execute(Argument::type('PhpBench\Benchmark\Iteration'), $this->executorConfig)
             ->shouldBeCalledTimes(1)
             ->willThrow(new \Exception('Foobar', null, new \InvalidArgumentException('Barfoo')));
 

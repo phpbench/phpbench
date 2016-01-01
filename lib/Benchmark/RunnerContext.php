@@ -34,6 +34,7 @@ class RunnerContext
         $this->path = $path;
 
         $defaultOptions = array(
+            'executor' => 'microtime',
             'context_name' => null,
             'filters' => array(),
             'groups' => array(),
@@ -220,5 +221,15 @@ class RunnerContext
     public function getRetryThreshold($default = null)
     {
         return $this->options['retry_threshold'] ?: $default;
+    }
+
+    /**
+     * Return either an executor configuration name or an actual configuration.
+     *
+     * @return string|array
+     */
+    public function getExecutor()
+    {
+        return $this->options['executor'];
     }
 }
