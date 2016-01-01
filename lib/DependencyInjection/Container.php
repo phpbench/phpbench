@@ -24,12 +24,12 @@ class Container
     private $parameters = array();
     private $extensions = array();
 
-    public function __construct()
+    public function __construct(array $extensions = array())
     {
+        $this->parameters['extensions'] = $extensions;
+
         // Add the core extension by deefault
-        $this->parameters['extensions'] = array(
-            'PhpBench\Extension\CoreExtension',
-        );
+        $this->parameters['extensions'][] = 'PhpBench\Extension\CoreExtension';
     }
 
     /**
@@ -88,9 +88,16 @@ class Container
             return $this->services[$serviceId];
         }
 
+        if (isset($this->factoryServices[$serviceId])) {
+            throw new \InvalidArgumentException(sprintf(
+                'Service "%s" is a factory service. Use "produce" instead.',
+                $serviceId
+            ));
+        }
+
         if (!isset($this->instantiators[$serviceId])) {
             throw new \InvalidArgumentException(sprintf(
-                'No instantiator has been registered for requested service "%s"',
+                'No instantiator callback has been registered for requested service "%s"',
                 $serviceId
             ));
         }
@@ -98,6 +105,33 @@ class Container
         $this->services[$serviceId] = $this->instantiators[$serviceId]($this);
 
         return $this->services[$serviceId];
+    }
+
+    /**
+     * DOCUMENT AND TEST ME
+     */
+    public function produce($serviceId, array $options = array())
+    {
+        if (!isset($this->instantiators[$serviceId])) {
+            throw new \InvalidArgumentException(sprintf(
+                'No factory instantiator callback has been registered for requested service "%s"',
+                $serviceId
+            ));
+        }
+
+        if (!isset($this->factoryServices[$serviceId])) {
+            throw new \InvalidArgumentException(sprintf(
+                'Service "%s" is NOT a factory service. Use "get" instead.',
+                $serviceId
+            ));
+        }
+
+        $options = array_merge(
+            $this->factoryDefaults[$serviceId],
+            $options
+        );
+
+        return $this->instantiators[$serviceId]($this, $options);
     }
 
     /**
@@ -149,6 +183,16 @@ class Container
 
         $this->instantiators[$serviceId] = $instantiator;
         $this->tags[$serviceId] = $tags;
+    }
+
+    /**
+     * DOCUMENT AND TEST ME
+     */
+    public function registerFactory($serviceId, \Closure $factory, array $tags = array(), array $defaults = array())
+    {
+        $this->register($serviceId, $factory, $tags);
+        $this->factoryServices[$serviceId] = $serviceId;
+        $this->factoryDefaults[$serviceId] = $defaults;
     }
 
     /**

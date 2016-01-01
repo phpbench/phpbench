@@ -42,6 +42,8 @@ class RunnerContext
             'parameters' => null,
             'retry_threshold' => null,
             'sleep' => null,
+            'executor' => 'microtime',
+            'executor_config' => array(),
         );
 
         $options = array_merge(
@@ -220,5 +222,25 @@ class RunnerContext
     public function getRetryThreshold($default = null)
     {
         return $this->options['retry_threshold'] ?: $default;
+    }
+
+    /**
+     * Return the executor name.
+     *
+     * @return string
+     */
+    public function getExecutorName()
+    {
+        return $this->options['executor'];
+    }
+
+    /**
+     * Return any options for the executor.
+     *
+     * @return array
+     */
+    public function getExecutorConfig()
+    {
+        return $this->options['executor_config'];
     }
 }

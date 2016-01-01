@@ -11,6 +11,7 @@
 
 namespace PhpBench\Benchmark;
 
+use PhpBench\Benchmark\Executor\Registry;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\PhpBench;
@@ -27,6 +28,7 @@ class Runner
     private $collectionBuilder;
     private $configPath;
     private $retryThreshold = null;
+    private $executorRegistry;
 
     /**
      * @param CollectionBuilder $collectionBuilder
@@ -35,13 +37,13 @@ class Runner
      */
     public function __construct(
         CollectionBuilder $collectionBuilder,
-        ExecutorInterface $executor,
+        Registry $executorRegistry,
         $retryThreshold,
         $configPath
     ) {
         $this->logger = new NullLogger();
         $this->collectionBuilder = $collectionBuilder;
-        $this->executor = $executor;
+        $this->executorRegistry = $executorRegistry;
         $this->configPath = $configPath;
         $this->retryThreshold = $retryThreshold;
     }
@@ -100,8 +102,10 @@ class Runner
 
     private function runBenchmark(RunnerContext $context, BenchmarkMetadata $benchmark, \DOMElement $benchmarkEl)
     {
+        $executor = $this->executorRegistry->getExecutor($context->getExecutorName());
+
         if ($benchmark->getBeforeClassMethods()) {
-            $this->executor->executeMethods($benchmark, $benchmark->getBeforeClassMethods());
+            $executor->executeMethods($benchmark, $benchmark->getBeforeClassMethods());
         }
 
         foreach ($benchmark->getSubjectMetadatas() as $subject) {
@@ -118,16 +122,16 @@ class Runner
             }
 
             $this->logger->subjectStart($subject);
-            $this->runSubject($context, $subject, $subjectEl);
+            $this->runSubject($context, $executor, $subject, $subjectEl);
             $this->logger->subjectEnd($subject);
         }
 
         if ($benchmark->getAfterClassMethods()) {
-            $this->executor->executeMethods($benchmark, $benchmark->getAfterClassMethods());
+            $executor->executeMethods($benchmark, $benchmark->getAfterClassMethods());
         }
     }
 
-    private function runSubject(RunnerContext $context, SubjectMetadata $subject, \DOMElement $subjectEl)
+    private function runSubject(RunnerContext $context, ExecutorInterface $executor, SubjectMetadata $subject, \DOMElement $subjectEl)
     {
         $parameterSets = $context->getParameterSets($subject->getParameterSets());
         $paramsIterator = new CartesianParameterIterator($parameterSets);
@@ -143,7 +147,7 @@ class Runner
             }
 
             $subjectEl->appendChild($variantEl);
-            $this->runIterations($context, $subject, $parameterSet, $variantEl);
+            $this->runIterations($context, $executor, $subject, $parameterSet, $variantEl);
         }
     }
 
@@ -174,7 +178,7 @@ class Runner
         ));
     }
 
-    private function runIterations(RunnerContext $context, SubjectMetadata $subject, ParameterSet $parameterSet, \DOMElement $variantEl)
+    private function runIterations(RunnerContext $context, ExecutorInterface $executor, SubjectMetadata $subject, ParameterSet $parameterSet, \DOMElement $variantEl)
     {
         $iterationCount = $context->getIterations($subject->getIterations());
         $revolutionCount = $context->getRevolutions($subject->getRevs());
@@ -185,7 +189,7 @@ class Runner
         try {
             $iterations = $iterationCollection->spawnIterations($iterationCount, $revolutionCount);
             foreach ($iterations as $iteration) {
-                $this->runIteration($iteration, $context->getSleep($subject->getSleep()));
+                $this->runIteration($executor, $iteration, $context, $subject);
                 $iterationCollection->add($iteration);
             }
         } catch (\Exception $e) {
@@ -204,7 +208,7 @@ class Runner
             $this->logger->iterationsStart($iterationCollection);
             foreach ($iterationCollection->getRejects() as $reject) {
                 $reject->incrementRejectionCount();
-                $this->runIteration($reject, $context->getSleep($subject->getSleep()));
+                $this->runIteration($executor, $reject, $context, $subject);
             }
             $iterationCollection->computeStats();
             $this->logger->iterationsEnd($iterationCollection);
@@ -231,10 +235,12 @@ class Runner
         }
     }
 
-    public function runIteration(Iteration $iteration, $sleep)
+    public function runIteration(ExecutorInterface $executor, Iteration $iteration, RunnerContext $context, SubjectMetadata $subject)
     {
+        $sleep = $context->getSleep($subject->getSleep());
+
         $this->logger->iterationStart($iteration);
-        $result = $this->executor->execute($iteration);
+        $result = $executor->execute($iteration, array_merge($executor->getDefaultConfig(), $context->getExecutorConfig()));
 
         if ($sleep) {
             usleep($sleep);
@@ -255,20 +261,5 @@ class Runner
             $errorEl->setAttribute('file', $exception->getFile());
             $errorEl->setAttribute('line', $exception->getLine());
         } while ($exception = $exception->getPrevious());
-    }
-
-    /**
-     * Utility function to return the correct sleep interval
-     * in case that the sleep interval has been overridden.
-     *
-     * TODO: Use this and TEST it.
-     *
-     * @param int $sleep
-     *
-     * @return int
-     */
-    private function getSleepInterval($sleep)
-    {
-        return null !== $this->sleepOverride ? $this->sleepOverride : $sleep;
     }
 }

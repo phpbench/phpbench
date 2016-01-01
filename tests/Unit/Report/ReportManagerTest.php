@@ -259,36 +259,6 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should accept an array of raw JSON strings representing report configurations OR a string representing a generator name, the report configurations should be added and it will return the names of all the reports.
-     */
-    public function testProcessCliReports()
-    {
-        $reports = array(
-            'foobar',
-            '{"param": "one"}',
-        );
-
-        $names = $this->reportManager->processCliReports($reports);
-        $this->assertCount(2, $names);
-        $this->assertEquals('foobar', $names[0]);
-        $this->assertNotNull($names[1]);
-
-        $report = $this->reportManager->getReport($names[1]);
-        $this->assertNotNull($report);
-        $this->assertEquals(array('param' => 'one'), $report);
-    }
-
-    /**
-     * It should throw an exception with an invalid JSON string.
-     *
-     * @expectedException InvalidArgumentException
-     */
-    public function testInvalidJson()
-    {
-        $this->reportManager->processCliReports(array('{asdasd""'));
-    }
-
-    /**
      * It should generate reports.
      */
     public function testGenerate()

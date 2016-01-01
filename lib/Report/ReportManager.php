@@ -51,8 +51,11 @@ class ReportManager
 
     public function __construct(
         Validator $validator = null
+        Registry $generatorRegistry,
+        Registry $outputRegistry
     ) {
         $this->validator = $validator ?: new Validator();
+        $
     }
 
     /**
@@ -71,24 +74,6 @@ class ReportManager
         }
 
         $this->reports[$name] = $config;
-    }
-
-    /**
-     * Add a named output configuration.
-     *
-     * @param string $name
-     * @param array $config
-     */
-    public function addOutput($name, array $config)
-    {
-        if (isset($this->outputs[$name])) {
-            throw new \InvalidArgumentException(sprintf(
-                'Output with name "%s" has already been registered',
-                $name
-            ));
-        }
-
-        $this->outputs[$name] = $config;
     }
 
     /**
@@ -155,93 +140,6 @@ class ReportManager
             $reportConfig['generator'] = $name;
             $this->addReport($reportName, $reportConfig);
         }
-    }
-
-    /**
-     * Process - decode and add - the raw CLI reports.
-     *
-     * @see self::processRawCliConfigs
-     *
-     * @param array $rawConfigs
-     *
-     * @return string[]
-     */
-    public function processCliReports($rawConfigs)
-    {
-        list($configNames, $configs) = $this->processRawCliConfigs($rawConfigs);
-        foreach ($configs as $configName => $config) {
-            $this->addReport($configName, $config);
-        }
-
-        return $configNames;
-    }
-
-    /**
-     * Process - decode and add - the raw CLI outputs.
-     *
-     * @see self::processRawCliConfigs
-     *
-     * @param array $rawConfigs
-     *
-     * @return string[]
-     */
-    public function processCliOutputs(array $rawConfigs)
-    {
-        list($configNames, $configs) = $this->processRawCliConfigs($rawConfigs);
-        foreach ($configs as $configName => $config) {
-            $this->addOutput($configName, $config);
-        }
-
-        return $configNames;
-    }
-
-    /**
-     * Process raw configuration as recieved from the CLI, for example:.
-     *
-     * ````
-     * {"generator": "table", "sort": ["time"]}
-     * ````
-     *
-     * Or simply the name of a pre-configured report to use:
-     *
-     * ````
-     * table
-     * ````
-     * Accepts an array of strings and returns the names of all reports that
-     * have been identified / processed.n
-     *
-     * Report configurations will be added to the report manager with a generated UUID.
-     *
-     * @param array $rawConfigs
-     *
-     * @return array
-     */
-    private function processRawCliConfigs(array $rawConfigs)
-    {
-        $configNames = array();
-        $configs = array();
-        foreach ($rawConfigs as $rawConfig) {
-            // If it doesn't look like a JSON string, assume it is the name of a config
-            if (substr($rawConfig, 0, 1) !== '{') {
-                $configNames[] = $rawConfig;
-                continue;
-            }
-
-            $config = json_decode($rawConfig, true);
-
-            if (null === $config) {
-                throw new \InvalidArgumentException(sprintf(
-                    'Could not decode JSON string: %s', $rawConfig
-                ));
-            }
-
-            $configName = uniqid();
-            $configNames[] = $configName;
-
-            $configs[$configName] = $config;
-        }
-
-        return array($configNames, $configs);
     }
 
     /**
@@ -332,7 +230,7 @@ class ReportManager
         $reportDoms = array();
         $reportConfigs = array();
         foreach ($reportNames as $reportName) {
-            $reportConfigs[$reportName] = $this->getReport($reportName);
+            $reportConfigs[$reportName] = $this->reportRegistry->getConfig($reportName);
         }
 
         foreach ($reportConfigs as $reportName => $reportConfig) {
@@ -422,29 +320,6 @@ class ReportManager
                 $renderer->render($reportDom, $outputConfig);
             }
         }
-    }
-
-    /**
-     * Recursively merge configs (having the "extends" key) which extend
-     * another report.
-     *
-     * @param array $config
-     * @param string $getMethod
-     *
-     * @return array
-     */
-    private function resolveConfig(array $config, $getMethod)
-    {
-        if (isset($config['extends'])) {
-            $extended = $this->$getMethod($config['extends']);
-            unset($config['extends']);
-            $config = array_replace_recursive(
-                $this->resolveConfig($extended, $getMethod),
-                $config
-            );
-        }
-
-        return $config;
     }
 
     /**

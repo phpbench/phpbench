@@ -14,6 +14,7 @@
         "symfony/console": "^2.4|^3.0",
         "symfony/finder": "^2.4|^3.0",
         "symfony/process": "^2.1|^3.0",
+        "symfony/filesystem": "^2.4|^3.0",
         "phpbench/tabular": "dev-master",
         "seld/jsonlint": "^1.0",
         "justinrainbow/json-schema": "^1.0",
@@ -29,7 +30,8 @@
     },
     "autoload": {
         "psr-4": {
-            "PhpBench\\": "lib/"
+            "PhpBench\\": "lib/",
+            "PhpBench\\Extensions\\": "extensions/"
         }
     },
     "autoload-dev": {

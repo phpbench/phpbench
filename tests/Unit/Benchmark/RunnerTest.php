@@ -28,11 +28,12 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->subject = $this->prophesize('PhpBench\Benchmark\Metadata\SubjectMetadata');
         $this->collectionBuilder->buildCollection(__DIR__, array(), array())->willReturn($this->collection);
         $this->executor = $this->prophesize('PhpBench\Benchmark\ExecutorInterface');
+        $this->registry = $this->prophesize('PhpBench\Benchmark\Executor\Registry');
         $this->benchmark = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');
 
         $this->runner = new Runner(
             $this->collectionBuilder->reveal(),
-            $this->executor->reveal(),
+            $this->registry->reveal(),
             null,
             null
         );
@@ -40,6 +41,8 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->collection->getBenchmarks()->willReturn(array(
             $this->benchmark,
         ));
+        $this->registry->getExecutor('microtime')->willReturn($this->executor->reveal());
+        $this->executor->getDefaultConfig()->willReturn(array());
     }
 
     /**
@@ -71,7 +74,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         ));
 
         if (!$exception) {
-            $this->executor->execute(Argument::type('PhpBench\Benchmark\Iteration'))
+            $this->executor->execute(Argument::type('PhpBench\Benchmark\Iteration'), array())
                 ->shouldBeCalledTimes(count($revs) * $iterations)
                 ->willReturn(new IterationResult(10, 10));
         }
@@ -81,6 +84,10 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         )));
 
         $this->assertInstanceOf('PhpBench\Benchmark\SuiteDocument', $result);
+
+        foreach ($result->query('//error') as $errorEl) {
+            $this->fail('Error in suite result: ' . $errorEl->nodeValue);
+        }
 
         foreach ($xpathAssertions as $xpathAssertion) {
             $this->assertTrue($result->evaluate($xpathAssertion), $xpathAssertion);
@@ -188,7 +195,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
             $this->subject->reveal(),
         ));
         TestUtil::configureBenchmark($this->benchmark);
-        $this->executor->execute(Argument::type('PhpBench\Benchmark\Iteration'))
+        $this->executor->execute(Argument::type('PhpBench\Benchmark\Iteration'), array())
             ->shouldBeCalledTimes(2)
             ->willReturn(new IterationResult(10, 10));
 
@@ -218,7 +225,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
             $this->subject->reveal(),
         ));
         TestUtil::configureBenchmark($this->benchmark);
-        $this->executor->execute(Argument::type('PhpBench\Benchmark\Iteration'))
+        $this->executor->execute(Argument::type('PhpBench\Benchmark\Iteration'), array())
             ->shouldBeCalledTimes(1)
             ->willReturn(new IterationResult(10, 10));
 
@@ -263,7 +270,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
             $this->subject->reveal(),
         ));
         TestUtil::configureBenchmark($this->benchmark);
-        $this->executor->execute(Argument::type('PhpBench\Benchmark\Iteration'))
+        $this->executor->execute(Argument::type('PhpBench\Benchmark\Iteration'), array())
             ->shouldBeCalledTimes(1)
             ->willThrow(new \Exception('Foobar', null, new \InvalidArgumentException('Barfoo')));
 

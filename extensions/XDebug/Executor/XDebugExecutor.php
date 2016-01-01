@@ -9,26 +9,29 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Benchmark\Executor;
+namespace PhpBench\Extensions\XDebug\Executor;
 
+use PhpBench\Benchmark\Executor\BaseExecutor;
 use PhpBench\Benchmark\Iteration;
 use PhpBench\Benchmark\IterationResult;
 use PhpBench\Benchmark\Remote\Payload;
+use PhpBench\Extensions\XDebug\XDebugUtil;
 
-/**
- * This class generates a benchmarking script and places it in the systems
- * temp. directory and then executes it. The generated script then returns the
- * time taken to execute the benchmark and the memory consumed.
- */
-class MicrotimeExecutor extends BaseExecutor
+class XDebugExecutor extends BaseExecutor
 {
     /**
      * {@inheritdoc}
      */
     public function launch(Payload $payload, Iteration $iteration, array $options = array())
     {
+        $outputDir = $options['output_dir'];
+        $callback = $options['callback'];
+        $name = XDebugUtil::filenameFromIteration($iteration);
+
         $phpConfig = array(
-            'max_execution_time' => 0,
+            'xdebug.profiler_enable' => 1,
+            'xdebug.profiler_output_dir' => $outputDir,
+            'xdebug.profiler_output_name' => $name,
         );
 
         $payload->setPhpConfig($phpConfig);
@@ -41,7 +44,10 @@ class MicrotimeExecutor extends BaseExecutor
             ));
         }
 
-        return new IterationResult($result['time'], $result['memory']);
+        $result = new IterationResult($result['time'], $result['memory']);
+        $callback($iteration, $result);
+
+        return $result;
     }
 
     /**
@@ -50,7 +56,7 @@ class MicrotimeExecutor extends BaseExecutor
     public function getDefaultConfig()
     {
         return array(
-            'php_config' => array(),
+            'callback' => array(),
         );
     }
 }

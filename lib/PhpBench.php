@@ -21,14 +21,16 @@ class PhpBench
 
     public static function run()
     {
-        $container = new Container();
+        $config = self::loadConfig();
+        $container = new Container($config['extensions']);
+        unset($config['extensions']);
         $container->configure();
-        self::loadConfig($container);
+        $container->mergeParameters($config);
         $container->build();
         $container->get('console.application')->run();
     }
 
-    private static function loadConfig(Container $container)
+    private static function loadConfig()
     {
         global $argv;
 
@@ -55,38 +57,47 @@ class PhpBench
             );
         }
 
+        $config = array(
+            'extensions' => array(),
+            'bootstrap' => null,
+        );
+
         foreach ($configPaths as $configPath) {
             if (!file_exists($configPath)) {
                 continue;
             }
 
-            $config = file_get_contents($configPath);
+            $configRaw = file_get_contents($configPath);
 
             try {
                 $parser = new JsonParser();
-                $parser->parse($config);
+                $parser->parse($configRaw);
             } catch (ParsingException $e) {
                 echo 'Error parsing config file:' . PHP_EOL . PHP_EOL;
                 echo $e->getMessage();
                 exit(1);
             }
 
-            $config = json_decode($config, true);
-
+            $config = array_merge(
+                $config,
+                json_decode($configRaw, true)
+            );
             $config['config_path'] = $configPath;
 
-            if (isset($config['bootstrap'])) {
+            if ($config['bootstrap']) {
                 $config['bootstrap'] = self::getBootstrapPath(
                     dirname($configPath), $config['bootstrap']
                 );
             }
 
-            $container->mergeParameters($config);
+            break;
         }
 
         if ($bootstrapOverride) {
-            $container->setParameter('bootstrap', self::getBootstrapPath(getcwd(), $bootstrapOverride));
+            $config['bootstrap'] = self::getBootstrapPath(getcwd(), $bootstrapOverride);
         }
+
+        return $config;
     }
 
     private static function getBootstrapPath($configDir, $bootstrap)
