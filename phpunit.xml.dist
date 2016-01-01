@@ -7,8 +7,11 @@
     >
 
     <testsuites>
-        <testsuite name="PhpBenchTest Suite">
+        <testsuite name="PhpBench">
             <directory>./tests</directory>
+        </testsuite>
+            <testsuite name="PhpBench XDebug Extension">
+            <directory>./extensions/xdebug/tests</directory>
         </testsuite>
     </testsuites>
 

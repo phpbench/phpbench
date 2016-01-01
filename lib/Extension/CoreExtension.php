@@ -19,6 +19,8 @@ use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Benchmark\Remote\Reflector;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Console\Application;
+use PhpBench\Console\Command\Handler\ReportHandler;
+use PhpBench\Console\Command\Handler\RunnerHandler;
 use PhpBench\Console\Command\ReportCommand;
 use PhpBench\Console\Command\RunCommand;
 use PhpBench\DependencyInjection\Container;
@@ -87,6 +89,7 @@ class CoreExtension implements ExtensionInterface
             'path' => null,
             'reports' => array(),
             'outputs' => array(),
+            'executors' => array(),
             'config_path' => null,
             'progress' => getenv('CONTINUOUS_INTEGRATION') ? 'travis' : 'verbose',
             'retry_threshold' => null,
@@ -110,6 +113,10 @@ class CoreExtension implements ExtensionInterface
             $container->get('report.registry.renderer')->registerService($attributes['name'], $serviceId);
         }
 
+        foreach ($container->getServiceIdsForTag('benchmark_executor') as $serviceId => $attributes) {
+            $container->get('benchmark.registry.executor')->registerService($attributes['name'], $serviceId);
+        }
+
         $generatorConfigs = array_merge(
             require(__DIR__ . '/config/report/generators.php'),
             $container->getParameter('reports')
@@ -125,6 +132,13 @@ class CoreExtension implements ExtensionInterface
         foreach ($rendererConfigs as $name => $config) {
             $container->get('report.registry.renderer')->setConfig($name, $config);
         }
+        $executorConfigs = array_merge(
+            require(__DIR__ . '/config/benchmark/executors.php'),
+            $container->getParameter('executors')
+        );
+        foreach ($executorConfigs as $name => $config) {
+            $container->get('benchmark.registry.executor')->setConfig($name, $config);
+        }
 
         $this->relativizeConfigPath($container);
     }
@@ -134,7 +148,7 @@ class CoreExtension implements ExtensionInterface
         $container->register('benchmark.runner', function (Container $container) {
             return new Runner(
                 $container->get('benchmark.collection_builder'),
-                $container->get('benchmark.executor'),
+                $container->get('benchmark.registry.executor'),
                 $container->getParameter('retry_threshold'),
                 $container->getParameter('config_path')
             );
@@ -144,7 +158,7 @@ class CoreExtension implements ExtensionInterface
             return new MicrotimeExecutor(
                 $container->get('benchmark.remote.launcher')
             );
-        });
+        }, array('benchmark_executor' => array('name' => 'microtime')));
 
         $container->register('benchmark.finder', function (Container $container) {
             return new Finder();
@@ -194,21 +208,32 @@ class CoreExtension implements ExtensionInterface
 
     private function registerCommands(Container $container)
     {
-        $container->register('console.command.run', function (Container $container) {
-            return new RunCommand(
+        $container->register('console.command.handler.runner', function (Container $container) {
+            return new RunnerHandler(
                 $container->get('benchmark.runner'),
-                $container->get('report.manager'),
                 $container->get('progress_logger.registry'),
                 $container->get('benchmark.time_unit'),
                 $container->getParameter('progress'),
-                $container->getParameter('path'),
-                $container->getParameter('config_path')
+                $container->getParameter('path')
+            );
+        });
+
+        $container->register('console.command.handler.report', function (Container $container) {
+            return new ReportHandler(
+                $container->get('report.manager')
+            );
+        });
+
+        $container->register('console.command.run', function (Container $container) {
+            return new RunCommand(
+                $container->get('console.command.handler.runner'),
+                $container->get('console.command.handler.report')
             );
         }, array('console.command' => array()));
 
         $container->register('console.command.report', function (Container $container) {
             return new ReportCommand(
-                $container->get('report.manager')
+                $container->get('console.command.handler.report')
             );
         }, array('console.command' => array()));
     }
@@ -341,6 +366,14 @@ class CoreExtension implements ExtensionInterface
                 );
             });
         }
+
+        $container->register('benchmark.registry.executor', function (Container $container) {
+            return new Registry(
+                'executor',
+                $container,
+                $container->get('json_schema.validator')
+            );
+        });
     }
 
     private function relativizeConfigPath(Container $container)

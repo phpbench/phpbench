@@ -12,26 +12,25 @@
 namespace PhpBench\Console\Command;
 
 use PhpBench\Benchmark\SuiteDocument;
-use PhpBench\Report\ReportManager;
+use PhpBench\Console\Command\Handler\ReportHandler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ReportCommand extends BaseReportCommand
+class ReportCommand extends Command
 {
-    private $reportManager;
+    private $reportHandler;
 
     public function __construct(
-        ReportManager $reportManager
+        ReportHandler $reportHandler
     ) {
         parent::__construct();
-        $this->reportManager = $reportManager;
+        $this->reportHandler = $reportHandler;
     }
 
     public function configure()
     {
-        parent::configure();
         $this->setName('report');
         $this->setDescription('Generate a report from an XML file');
         $this->setHelp(<<<EOT
@@ -41,16 +40,14 @@ To dump an XML file, use the <info>run</info> command with the
 <comment>dump-file</comment option.
 EOT
         );
+        ReportHandler::configure($this);
 
         $this->addOption('file', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Report XML file');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $reportNames = $input->getOption('report');
         $files = $input->getOption('file');
-
-        $outputNames = $input->getOption('output');
 
         if (!$files) {
             throw new \InvalidArgumentException(
@@ -58,7 +55,7 @@ EOT
             );
         }
 
-        if (!$reportNames) {
+        if (!$input->getOption('report')) {
             throw new \InvalidArgumentException(
                 'You must specify or configure at least one report, e.g.: --report=default'
             );
@@ -88,6 +85,6 @@ EOT
             }
         }
 
-        $this->reportManager->renderReports($output, $aggregateDom, $reportNames, $outputNames);
+        $this->reportHandler->reportsFromInput($input, $output, $aggregateDom);
     }
 }

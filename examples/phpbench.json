@@ -4,6 +4,9 @@
     "retry_threshold": 10,
     "output_mode": "throughput",
     "time_unit": "seconds",
+    "extensions": [
+        "PhpBench\\Extensions\\XDebug\\XDebugExtension"
+    ],
     "outputs": {
         "console_example": {
             "renderer": "console",
