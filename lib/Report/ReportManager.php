@@ -51,8 +51,11 @@ class ReportManager
 
     public function __construct(
         Validator $validator = null
+        Registry $generatorRegistry,
+        Registry $outputRegistry
     ) {
         $this->validator = $validator ?: new Validator();
+        $
     }
 
     /**
@@ -71,24 +74,6 @@ class ReportManager
         }
 
         $this->reports[$name] = $config;
-    }
-
-    /**
-     * Add a named output configuration.
-     *
-     * @param string $name
-     * @param array $config
-     */
-    public function addOutput($name, array $config)
-    {
-        if (isset($this->outputs[$name])) {
-            throw new \InvalidArgumentException(sprintf(
-                'Output with name "%s" has already been registered',
-                $name
-            ));
-        }
-
-        $this->outputs[$name] = $config;
     }
 
     /**
@@ -245,7 +230,7 @@ class ReportManager
         $reportDoms = array();
         $reportConfigs = array();
         foreach ($reportNames as $reportName) {
-            $reportConfigs[$reportName] = $this->getReport($reportName);
+            $reportConfigs[$reportName] = $this->reportRegistry->getConfig($reportName);
         }
 
         foreach ($reportConfigs as $reportName => $reportConfig) {
@@ -335,29 +320,6 @@ class ReportManager
                 $renderer->render($reportDom, $outputConfig);
             }
         }
-    }
-
-    /**
-     * Recursively merge configs (having the "extends" key) which extend
-     * another report.
-     *
-     * @param array $config
-     * @param string $getMethod
-     *
-     * @return array
-     */
-    private function resolveConfig(array $config, $getMethod)
-    {
-        if (isset($config['extends'])) {
-            $extended = $this->$getMethod($config['extends']);
-            unset($config['extends']);
-            $config = array_replace_recursive(
-                $this->resolveConfig($extended, $getMethod),
-                $config
-            );
-        }
-
-        return $config;
     }
 
     /**

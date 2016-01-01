@@ -26,11 +26,21 @@ class XDebugExtension implements ExtensionInterface
             );
         }, array('console.command' => array()));
 
-        $container->register('benchmark.executor.xdebug', function (Container $container) {
-            return new XDebugExecutor(
-                $container->get('benchmark.remote.launcher')
-            );
-        }, array('executor' => array('name' => 'xdebug')));
+        $container->registerFactory('benchmark.executor.xdebug', 
+            function (Container $container, $options) {
+                return new XDebugExecutor(
+                    $container->get('benchmark.remote.launcher'),
+                    $options['output_dir'],
+                    $options['callback']
+                );
+            },
+            array('executor' => array('name' => 'xdebug'),
+            array(
+                'output_dir' => 'profile',
+                'callback' => function() {},
+            ),
+            __DIR__ . '/schema/xdebug_executor.json'
+        ));
     }
 
     public function build(Container $container)
