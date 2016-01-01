@@ -14,6 +14,7 @@ namespace PhpBench\Report\Generator;
 use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Dom\Document;
+use PhpBench\Registry\Config;
 use PhpBench\Report\GeneratorInterface;
 use PhpBench\Tabular\Definition\Loader;
 use PhpBench\Tabular\Tabular;
@@ -40,7 +41,7 @@ abstract class AbstractTabularGenerator implements GeneratorInterface, OutputAwa
         $this->output = $output;
     }
 
-    protected function doGenerate($definition, SuiteDocument $document, array $config, array $parameters = array())
+    protected function doGenerate($definition, SuiteDocument $document, Config $config, array $parameters = array())
     {
         if ($config['debug']) {
             $this->output->writeln('<info>Suite XML</info>');

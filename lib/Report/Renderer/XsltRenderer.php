@@ -14,6 +14,7 @@ namespace PhpBench\Report\Renderer;
 use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Dom\Document;
 use PhpBench\PhpBench;
+use PhpBench\Registry\Config;
 use PhpBench\Report\RendererInterface;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -41,7 +42,7 @@ class XsltRenderer implements RendererInterface, OutputAwareInterface
      * @param mixed $tableDom
      * @param mixed $config
      */
-    public function render(Document $reportDom, array $config)
+    public function render(Document $reportDom, Config $config)
     {
         $template = $config['template'];
         $out = $config['file'];
@@ -109,23 +110,6 @@ class XsltRenderer implements RendererInterface, OutputAwareInterface
                 ),
             ),
             'additionalProperties' => false,
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefaultOutputs()
-    {
-        return array(
-            'html' => array(
-                'template' => __DIR__ . '/templates/html.xsl',
-                'file' => null,
-            ),
-            'markdown' => array(
-                'template' => __DIR__ . '/templates/markdown.xsl',
-                'file' => null,
-            ),
         );
     }
 }

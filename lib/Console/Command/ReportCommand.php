@@ -47,12 +47,10 @@ EOT
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $reports = $input->getOption('report');
-        $reportNames = $this->reportManager->processCliReports($reports);
+        $reportNames = $input->getOption('report');
         $files = $input->getOption('file');
 
-        $outputs = $input->getOption('output');
-        $outputNames = $this->reportManager->processCliOutputs($outputs);
+        $outputNames = $input->getOption('output');
 
         if (!$files) {
             throw new \InvalidArgumentException(

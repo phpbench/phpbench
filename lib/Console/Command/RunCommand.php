@@ -117,9 +117,6 @@ EOT
             )
         );
 
-        $reportNames = $this->reportManager->processCliReports($reports);
-        $outputNames = $this->reportManager->processCliOutputs($outputs);
-
         // TODO: move setOutput to logger registry?
         $progressLogger = $this->loggerRegistry->getProgressLogger($progressLoggerName);
         $progressLogger->setOutput($consoleOutput);
@@ -136,8 +133,8 @@ EOT
         if ($dump) {
             $xml = $suiteResult->dump();
             $output->write($xml);
-        } elseif ($reportNames) {
-            $this->reportManager->renderReports($output, $suiteResult, $reportNames, $outputNames);
+        } elseif ($reports) {
+            $this->reportManager->renderReports($output, $suiteResult, $reports, $outputs);
         }
 
         if ($suiteResult->hasErrors()) {

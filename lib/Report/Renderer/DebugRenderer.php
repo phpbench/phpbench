@@ -13,6 +13,7 @@ namespace PhpBench\Report\Renderer;
 
 use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Dom\Document;
+use PhpBench\Registry\Config;
 use PhpBench\Report\RendererInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -31,7 +32,7 @@ class DebugRenderer implements RendererInterface, OutputAwareInterface
         $this->output = $output;
     }
 
-    public function render(Document $reportsDocument, array $config)
+    public function render(Document $reportsDocument, Config $config)
     {
         $this->output->writeln('Report XML (debug):');
         $this->output->writeln($reportsDocument->dump());
@@ -45,10 +46,5 @@ class DebugRenderer implements RendererInterface, OutputAwareInterface
     public function getDefaultConfig()
     {
         return array();
-    }
-
-    public function getDefaultOutputs()
-    {
-        return array('debug' => array());
     }
 }

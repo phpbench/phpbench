@@ -12,9 +12,10 @@
 namespace PhpBench\Report;
 
 use PhpBench\Benchmark\SuiteDocument;
-use PhpBench\Dom\Document;
+use PhpBench\Registry\Config;
+use PhpBench\Registry\RegistrableInterface;
 
-interface GeneratorInterface extends ConfigurableInterface
+interface GeneratorInterface extends RegistrableInterface
 {
     /**
      * Generate the report document from the suite result document.
@@ -24,13 +25,5 @@ interface GeneratorInterface extends ConfigurableInterface
      *
      * @return Document
      */
-    public function generate(SuiteDocument $suiteResult, array $config);
-
-    /**
-     * Return an array of report configurations keyed by the report name
-     * that should be available by default.
-     *
-     * @return array
-     */
-    public function getDefaultReports();
+    public function generate(SuiteDocument $suiteResult, Config $config);
 }
