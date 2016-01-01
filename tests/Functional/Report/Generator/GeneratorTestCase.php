@@ -13,6 +13,7 @@ namespace PhpBench\Tests\Functional\Report\Generator;
 
 use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\DependencyInjection\Container;
+use PhpBench\Registry\Config;
 
 abstract class GeneratorTestCase extends \PHPUnit_Framework_TestCase
 {
@@ -35,10 +36,10 @@ abstract class GeneratorTestCase extends \PHPUnit_Framework_TestCase
 
     protected function getConfig(array $config)
     {
-        return array_merge(
+        return new Config(array_merge(
             $this->getGenerator()->getDefaultConfig(),
             $config
-        );
+        ));
     }
 
     protected function generate(SuiteDocument $document, $config)

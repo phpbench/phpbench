@@ -11,6 +11,7 @@
 
 namespace PhpBench\Tests\Unit\Report\Renderer;
 
+use PhpBench\Registry\Config;
 use PhpBench\Report\Renderer\XsltRenderer;
 use Symfony\Component\Console\Output\BufferedOutput;
 
@@ -45,7 +46,7 @@ class XsltRendererTest extends AbstractRendererCase
     public function testRender()
     {
         $reports = $this->getReportsDocument();
-        $this->renderer->render($reports, $this->renderer->getDefaultConfig());
+        $this->renderer->render($reports, new Config($this->renderer->getDefaultConfig()));
         $this->assertFileExists($this->defaultReport);
     }
 
@@ -55,12 +56,12 @@ class XsltRendererTest extends AbstractRendererCase
     public function testRenderTemplate()
     {
         $reports = $this->getReportsDocument();
-        $this->renderer->render($reports, array_merge(
+        $this->renderer->render($reports, new Config(array_merge(
             $this->renderer->getDefaultConfig(),
             array(
                 'template' => __DIR__ . '/templates/test.xsl',
             )
-        ));
+        )));
         $this->assertFileExists($this->defaultReport);
         $this->assertContains('zeeSa8ju', file_get_contents($this->defaultReport));
     }
@@ -71,12 +72,12 @@ class XsltRendererTest extends AbstractRendererCase
     public function testOutputSpecific()
     {
         $reports = $this->getReportsDocument();
-        $this->renderer->render($reports, array_merge(
+        $this->renderer->render($reports, new Config(array_merge(
             $this->renderer->getDefaultConfig(),
             array(
                 'file' => $this->specificReport,
             )
-        ));
+        )));
         $this->assertFileExists($this->specificReport);
     }
 
@@ -89,9 +90,9 @@ class XsltRendererTest extends AbstractRendererCase
     public function testRenderNotExistingTemplate()
     {
         $reports = $this->getReportsDocument();
-        $this->renderer->render($reports, array_merge(
+        $this->renderer->render($reports, new Config(array_merge(
             $this->renderer->getDefaultConfig(),
             array('template' => 'not_existing.xsl')
-        ));
+        )));
     }
 }

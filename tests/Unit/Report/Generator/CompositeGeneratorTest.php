@@ -12,6 +12,7 @@
 namespace PhpBench\Tests\Unit\Report\Generator;
 
 use PhpBench\Dom\Document;
+use PhpBench\Registry\Config;
 use PhpBench\Report\Generator\CompositeGenerator;
 use Prophecy\Argument;
 
@@ -39,7 +40,7 @@ class CompositeGeneratorTest extends \PHPUnit_Framework_TestCase
             $this->getReportsDocument(),
             $this->getReportsDocument(),
         ));
-        $compositeDom = $this->generator->generate($this->result->reveal(), $config);
+        $compositeDom = $this->generator->generate($this->result->reveal(), new Config($config));
 
         $this->assertEquals(4, $compositeDom->xpath()->evaluate('count(//report)'));
     }

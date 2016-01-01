@@ -14,6 +14,7 @@ namespace PhpBench\Report\Renderer;
 use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Dom\Document;
 use PhpBench\Dom\Element;
+use PhpBench\Registry\Config;
 use PhpBench\Report\RendererInterface;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -42,7 +43,7 @@ class DelimitedRenderer implements RendererInterface, OutputAwareInterface
      * @param mixed $tableDom
      * @param mixed $config
      */
-    public function render(Document $reportDom, array $config)
+    public function render(Document $reportDom, Config $config)
     {
         foreach ($reportDom->firstChild->query('./report') as $reportEl) {
             foreach ($reportEl->query('.//table') as $tableEl) {
@@ -126,17 +127,6 @@ class DelimitedRenderer implements RendererInterface, OutputAwareInterface
                 ),
             ),
             'additionalProperties' => false,
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefaultOutputs()
-    {
-        return array(
-            'delimited' => array(),
-            'file' => null,
         );
     }
 }

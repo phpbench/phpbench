@@ -14,6 +14,7 @@ namespace PhpBench\Report\Renderer;
 use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Dom\Document;
 use PhpBench\Dom\Element;
+use PhpBench\Registry\Config;
 use PhpBench\Report\RendererInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
@@ -42,7 +43,7 @@ class ConsoleRenderer implements RendererInterface, OutputAwareInterface
      * @param mixed $tableDom
      * @param mixed $config
      */
-    public function render(Document $reportDom, array $config)
+    public function render(Document $reportDom, Config $config)
     {
         foreach ($reportDom->firstChild->query('./report') as $reportEl) {
             $this->output->writeln(sprintf('<title>%s</title>', $reportEl->getAttribute('title')));
@@ -152,16 +153,6 @@ class ConsoleRenderer implements RendererInterface, OutputAwareInterface
                 ),
             ),
             'additionalProperties' => false,
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefaultOutputs()
-    {
-        return array(
-            'console' => array(),
         );
     }
 }

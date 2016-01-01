@@ -14,6 +14,7 @@ namespace PhpBench\Report\Generator;
 use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Dom\Document;
+use PhpBench\Registry\Config;
 use PhpBench\Report\GeneratorInterface;
 use PhpBench\Report\ReportManager;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -77,7 +78,7 @@ class CompositeGenerator implements GeneratorInterface, OutputAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function generate(SuiteDocument $result, array $config)
+    public function generate(SuiteDocument $result, Config $config)
     {
         $reportDoms = $this->reportManager->generateReports($result, $config['reports']);
         $compositeDom = new Document();
@@ -91,13 +92,5 @@ class CompositeGenerator implements GeneratorInterface, OutputAwareInterface
         }
 
         return $compositeDom;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefaultReports()
-    {
-        return array();
     }
 }

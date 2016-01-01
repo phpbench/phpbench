@@ -97,7 +97,7 @@ class RunTest extends SystemTestCase
             'run --report=\'{"generator": "foo_table"}\' benchmarks/set1/BenchmarkBench.php'
         );
         $this->assertExitCode(1, $process);
-        $this->assertContains('Unknown report generator', $process->getErrorOutput());
+        $this->assertContains('generator service "foo_table" does not exist', $process->getErrorOutput());
     }
 
     /**

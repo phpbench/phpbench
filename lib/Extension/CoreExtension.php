@@ -28,6 +28,7 @@ use PhpBench\Progress\Logger\NullLogger;
 use PhpBench\Progress\Logger\TravisLogger;
 use PhpBench\Progress\Logger\VerboseLogger;
 use PhpBench\Progress\LoggerRegistry;
+use PhpBench\Registry\Registry;
 use PhpBench\Report\Generator\CompositeGenerator;
 use PhpBench\Report\Generator\Tabular\Format\TimeFormat;
 use PhpBench\Report\Generator\TabularCustomGenerator;
@@ -68,7 +69,8 @@ class CoreExtension implements ExtensionInterface
         });
         $container->register('report.manager', function (Container $container) {
             return new ReportManager(
-                $container->get('json_schema.validator')
+                $container->get('report.registry.generator'),
+                $container->get('report.registry.renderer')
             );
         });
 
@@ -76,6 +78,7 @@ class CoreExtension implements ExtensionInterface
         $this->registerJsonSchema($container);
         $this->registerTabular($container);
         $this->registerCommands($container);
+        $this->registerRegistries($container);
         $this->registerProgressLoggers($container);
         $this->registerReportGenerators($container);
         $this->registerReportRenderers($container);
@@ -100,21 +103,27 @@ class CoreExtension implements ExtensionInterface
         }
 
         foreach ($container->getServiceIdsForTag('report_generator') as $serviceId => $attributes) {
-            $reportGenerator = $container->get($serviceId);
-            $container->get('report.manager')->addGenerator($attributes['name'], $reportGenerator);
+            $container->get('report.registry.generator')->registerService($attributes['name'], $serviceId);
         }
 
         foreach ($container->getServiceIdsForTag('report_renderer') as $serviceId => $attributes) {
-            $reportRenderer = $container->get($serviceId);
-            $container->get('report.manager')->addRenderer($attributes['name'], $reportRenderer);
+            $container->get('report.registry.renderer')->registerService($attributes['name'], $serviceId);
         }
 
-        foreach ($container->getParameter('reports') as $reportName => $report) {
-            $container->get('report.manager')->addReport($reportName, $report);
+        $generatorConfigs = array_merge(
+            require(__DIR__ . '/config/report/generators.php'),
+            $container->getParameter('reports')
+        );
+        foreach ($generatorConfigs as $name => $config) {
+            $container->get('report.registry.generator')->setConfig($name, $config);
         }
 
-        foreach ($container->getParameter('outputs') as $outputName => $output) {
-            $container->get('report.manager')->addOutput($outputName, $output);
+        $rendererConfigs = array_merge(
+            require(__DIR__ . '/config/report/renderers.php'),
+            $container->getParameter('outputs')
+        );
+        foreach ($rendererConfigs as $name => $config) {
+            $container->get('report.registry.renderer')->setConfig($name, $config);
         }
 
         $this->relativizeConfigPath($container);
@@ -319,6 +328,19 @@ class CoreExtension implements ExtensionInterface
         $container->register('tabular.expander', function (Container $container) {
             return new Expander();
         });
+    }
+
+    private function registerRegistries(Container $container)
+    {
+        foreach (array('generator', 'renderer') as $registryType) {
+            $container->register('report.registry.' . $registryType, function (Container $container) use ($registryType) {
+                return new Registry(
+                    $registryType,
+                    $container,
+                    $container->get('json_schema.validator')
+                );
+            });
+        }
     }
 
     private function relativizeConfigPath(Container $container)
