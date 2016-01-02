@@ -23,9 +23,11 @@ class IterationTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->subject = $this->prophesize('PhpBench\Benchmark\Metadata\SubjectMetadata');
+        $this->collection = $this->prophesize('PhpBench\Benchmark\IterationCollection');
+        $this->collection->getSubject()->willReturn($this->subject->reveal());
         $this->iteration = new Iteration(
             0,
-            $this->subject->reveal(),
+            $this->collection->reveal(),
             5,
             new ParameterSet()
         );

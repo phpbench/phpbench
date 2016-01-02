@@ -32,14 +32,20 @@ class SubjectMetadata extends AbstractMetadata
     private $benchmarkMetadata;
 
     /**
+     * @var int
+     */
+    private $index;
+
+    /**
      * @param BenchmarkMetadata $benchmarkMetadata
      * @param string $name
      */
-    public function __construct(BenchmarkMetadata $benchmarkMetadata, $name)
+    public function __construct(BenchmarkMetadata $benchmarkMetadata, $name, $index)
     {
         parent::__construct($benchmarkMetadata->getClass());
         $this->name = $name;
         $this->benchmarkMetadata = $benchmarkMetadata;
+        $this->index = $index;
     }
 
     /**
@@ -80,5 +86,10 @@ class SubjectMetadata extends AbstractMetadata
     public function getBenchmarkMetadata()
     {
         return $this->benchmarkMetadata;
+    }
+
+    public function getIndex()
+    {
+        return $this->index;
     }
 }

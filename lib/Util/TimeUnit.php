@@ -71,15 +71,26 @@ class TimeUnit
     private $overriddenMode = false;
 
     /**
+     * @var bool
+     */
+    private $overriddenPrecision = false;
+
+    /**
      * @var string
      */
     private $mode;
 
-    public function __construct($sourceUnit = self::MICROSECONDS, $destUnit = self::MICROSECONDS, $mode = self::MODE_TIME)
+    /**
+     * @var int
+     */
+    private $precision;
+
+    public function __construct($sourceUnit = self::MICROSECONDS, $destUnit = self::MICROSECONDS, $mode = self::MODE_TIME, $precision = 3)
     {
         $this->sourceUnit = $sourceUnit;
         $this->destUnit = $destUnit;
         $this->mode = $mode;
+        $this->precision = $precision;
     }
 
     /**
@@ -116,6 +127,17 @@ class TimeUnit
         self::validateMode($mode);
         $this->mode = $mode;
         $this->overriddenMode = true;
+    }
+
+    /**
+     * Override the precision.
+     *
+     * @param int $precision
+     */
+    public function overridePrecision($precision)
+    {
+        $this->precision = $precision;
+        $this->overriddenPrecision = true;
     }
 
     /**
@@ -167,6 +189,21 @@ class TimeUnit
     }
 
     /**
+     * Utility method, if the precision is overridden, return the overriden
+     * value.
+     *
+     * @return string
+     */
+    public function resolvePrecision($precision)
+    {
+        if ($this->overriddenPrecision) {
+            return $this->precision;
+        }
+
+        return $precision;
+    }
+
+    /**
      * Return the destination mode.
      *
      * @param string $unit
@@ -182,6 +219,14 @@ class TimeUnit
 
         // otherwise return the default
         return $this->mode;
+    }
+
+    /**
+     * Return the precision.
+     */
+    public function getPrecision()
+    {
+        return $this->precision;
     }
 
     /**
@@ -203,9 +248,9 @@ class TimeUnit
      * @param string
      * @param string
      */
-    public function format($time, $unit = null, $mode = null)
+    public function format($time, $unit = null, $mode = null, $precision = null)
     {
-        $value = number_format($this->toDestUnit($time, $unit, $mode), 3);
+        $value = number_format($this->toDestUnit($time, $unit, $mode), $precision ?: $this->precision);
         $suffix = $this->getDestSuffix($unit, $mode);
 
         return $value . $suffix;

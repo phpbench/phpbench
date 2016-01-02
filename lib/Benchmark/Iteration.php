@@ -18,7 +18,7 @@ use PhpBench\Benchmark\Metadata\SubjectMetadata;
  */
 class Iteration
 {
-    private $subject;
+    private $collection;
     private $revolutions;
     private $parameters = array();
     private $index;
@@ -30,20 +30,24 @@ class Iteration
 
     /**
      * @param int $index
-     * @param SubjectMetadata $subject
      * @param int $revolutions
      * @param array $parameters
      */
     public function __construct(
         $index,
-        SubjectMetadata $subject,
+        IterationCollection $collection,
         $revolutions,
         ParameterSet $parameters
     ) {
         $this->index = $index;
-        $this->subject = $subject;
         $this->revolutions = $revolutions;
         $this->parameters = $parameters;
+        $this->collection = $collection;
+    }
+
+    public function getCollection()
+    {
+        return $this->collection;
     }
 
     /**
@@ -63,7 +67,7 @@ class Iteration
      */
     public function getSubject()
     {
-        return $this->subject;
+        return $this->collection->getSubject();
     }
 
     /**
@@ -114,6 +118,16 @@ class Iteration
         }
 
         return $this->result;
+    }
+
+    /**
+     * Return true if this iteration has a result.
+     *
+     * @return bool
+     */
+    public function hasResult()
+    {
+        return null !== $this->result;
     }
 
     /**

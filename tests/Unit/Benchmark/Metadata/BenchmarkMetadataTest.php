@@ -21,8 +21,8 @@ class BenchmarkMetadataTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->metadata = new BenchmarkMetadata('/path/to', 'Class');
-        $this->subject1 = new SubjectMetadata($this->metadata, 'subjectOne');
-        $this->subject2 = new SubjectMetadata($this->metadata, 'subjectTwo');
+        $this->subject1 = new SubjectMetadata($this->metadata, 'subjectOne', 0);
+        $this->subject2 = new SubjectMetadata($this->metadata, 'subjectTwo', 1);
 
         $this->metadata->setSubjectMetadata($this->subject1);
         $this->metadata->setSubjectMetadata($this->subject2);
