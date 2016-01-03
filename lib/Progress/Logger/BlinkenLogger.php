@@ -60,7 +60,7 @@ class BlinkenLogger extends PhpBenchLogger
         $this->output->write("\x1B[0J"); // clear the line
         $this->output->write(PHP_EOL);
         $this->output->write(sprintf(
-            '<info>subject</info> %s<info>< with </info>%s<info> iteration(s) of </info>%s<info> rev(s),</info>',
+            '<info>subject</info> %s<info> with </info>%s<info> iteration(s) of </info>%s<info> rev(s),</info>',
             sprintf('%s', $iteration->getCollection()->getSubject()->getName()),
             $iteration->getCollection()->count(),
             $iteration->getRevolutions()
@@ -96,7 +96,9 @@ class BlinkenLogger extends PhpBenchLogger
         }
 
         if ($iterations->getRejectCount() > 0) {
-            $this->output->write("\x1B[". ($this->depth) . 'A'); // put the cursor back to the line with the measurements
+            if ($this->depth) {
+                $this->output->write("\x1B[". ($this->depth) . 'A'); // put the cursor back to the line with the measurements
+            }
             $this->output->write("\x1B[0G"); // put the cursor back at col 0
             return;
         }
