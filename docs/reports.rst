@@ -26,7 +26,7 @@ Generator: :ref:`generator_table`.
 
 Columns:
 
-- **benchmark**: The name of the class contianing the benchmarks
+- **benchmark**: The name of the class containing the benchmarks
 - **subject**: The method which executes the code being benchmarked.
 - **group**: The :ref:`group <groups>` the benchmark is in.
 - **params**: Any :ref:`parameters` which were passed to the benchmark.
@@ -58,7 +58,7 @@ Generator: :ref:`generator_table`.
 
 Columns:
 
-- **benchmark**: The name of the class contianing the benchmarks
+- **benchmark**: The name of the class containing the benchmarks
 - **subject**: The method which executes the code being benchmarked.
 - **group**: The :ref:`group <groups>` the benchmark is in.
 - **params**: Any :ref:`parameters` which were passed to the benchmark.

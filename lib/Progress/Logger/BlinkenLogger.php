@@ -146,7 +146,7 @@ class BlinkenLogger extends PhpBenchLogger
             $output = sprintf('%' . ($padding + 2) . 's', $displayTime);
 
             if ($current === $index) {
-                $output = sprintf('<bg=green>%s</>', $output);
+                $output = sprintf('<bg=green>%s</bg>', $output);
             } elseif (isset($specials[$otherIteration->getIndex()])) {
                 $output = sprintf('<%s>%s</%s>', $tag, $output, $tag);
             }

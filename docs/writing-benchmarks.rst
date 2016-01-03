@@ -60,7 +60,7 @@ Improving Precision: Revolutions
 When testing units of code where microsecond accuracy is important, it is
 necessary to increase the number of *revolutions* performed by the
 benchmark runner. The term "revolutions" (invented here) refers to the number
-of times the benchamark is executed consecutively within a single time
+of times the benchmark is executed consecutively within a single time
 measurement.
 
 We can arrive at a more accurate measurement by determining the mean time
@@ -308,9 +308,9 @@ You can assign benchmark subjects to groups using the ``@Groups`` annotation.
         // ...
     }
 
-The group can then be targetted using the command line interface.
+The group can then be targeted using the command line interface.
 
-Skiping Subjects
+Skipping Subjects
 -----------------
 
 You can skip subjects by using the ``@Skip`` annotation:
@@ -402,7 +402,7 @@ If you have benchmarks which take seconds or even minutes to execute then the
 default time unit, microseconds, is going to be far more visual precision than you
 need and will only serve to make the results more difficult to interpret.
 
-You can specify *output* time units usising the ``@OutputTimeUnit``
+You can specify *output* time units using the ``@OutputTimeUnit``
 annotation:
 
 .. code-block:: php

@@ -148,7 +148,7 @@ Example of HTML output:
 
 See the :doc:`report-renderers` chapter for more information.
 
-Deffering Report Generation
+Deferring Report Generation
 ---------------------------
 
 You can dump the benchmarking results as an XML file and generate reports

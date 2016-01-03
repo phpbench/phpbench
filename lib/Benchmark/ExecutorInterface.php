@@ -17,7 +17,7 @@ use PhpBench\Registry\RegistrableInterface;
 
 /**
  * Executors are responsible for executing the benchmark class
- * and returning the timing metrics, and optionally the memory and profling
+ * and returning the timing metrics, and optionally the memory and profiling
  * data.
  */
 interface ExecutorInterface extends RegistrableInterface

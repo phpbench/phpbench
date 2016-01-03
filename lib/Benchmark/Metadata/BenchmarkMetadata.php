@@ -125,7 +125,7 @@ class BenchmarkMetadata extends AbstractMetadata
     }
 
     /**
-     * Remve all the subjects which are not contained in the given list of groups.
+     * Remove all the subjects which are not contained in the given list of groups.
      *
      * @param string[]
      */
