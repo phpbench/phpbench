@@ -42,6 +42,7 @@ class TravisLoggerTest extends PhpBenchLoggerTest
     {
         $this->iterations->getRejectCount()->willReturn(0);
         $this->iterations->hasException()->willReturn(false);
+        $this->iterations->count()->willReturn(10);
         $this->iterations->getStats()->willReturn(array(
             'mean' => 1.0,
             'stdev' => 2.0,
@@ -66,6 +67,7 @@ class TravisLoggerTest extends PhpBenchLoggerTest
         $this->iterations->hasException()->willReturn(true);
         $this->iterations->getRejectCount()->willReturn(0);
         $this->iterations->getSubject()->willReturn($this->subject->reveal());
+        $this->iterations->count()->willReturn(10);
         $this->subject->getName()->willReturn('benchFoo');
 
         $this->output->writeln(Argument::containingString('ERROR'))->shouldBeCalled();
@@ -86,6 +88,7 @@ class TravisLoggerTest extends PhpBenchLoggerTest
             'rstdev' => 20.0,
         ));
         $this->iterations->getSubject()->willReturn($this->subject->reveal());
+        $this->iterations->count()->willReturn(10);
         $this->iterations->getParameterSet()->willReturn($this->parameterSet->reveal());
         $this->subject->getOutputTimeUnit()->willReturn(TimeUnit::MICROSECONDS);
         $this->subject->getOutputMode()->willReturn(TimeUnit::MODE_THROUGHPUT);

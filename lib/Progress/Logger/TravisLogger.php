@@ -58,8 +58,9 @@ class TravisLogger extends PhpBenchLogger
         $outputMode = $subject->getOutputMode();
 
         $this->output->writeln(sprintf(
-            "\t%-30s P%s\tμ/r: %s\tμSD/r %s\tμRSD/r: %s%%",
+            "\t%-30s I%s P%s\tμ/r: %s\tμSD/r %s\tμRSD/r: %s%%",
             $subject->getName(),
+            $iterations->count(),
             $iterations->getParameterSet()->getIndex(),
             $this->timeUnit->format($stats['mean'], $timeUnit, $outputMode),
             $this->timeUnit->format($stats['stdev'], $timeUnit, TimeUnit::MODE_TIME),
