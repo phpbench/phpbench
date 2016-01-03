@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<phpbench version="0.8.0-dev">
+  <suite context="" date="2015-12-10T14:53:48+01:00">
+    <benchmark class="\HashingBenchmark">
+      <subject name="benchMd5">
+        <group name="hashing"/>
+        <variant sleep="0" output-time-unit="microseconds">
+          <stats mean="0" stdev="0" rstdev="0" variance="0" min="0" max="0"/>
+        </variant>
+      </subject>
+    </benchmark>
+  </suite>
+</phpbench>
+

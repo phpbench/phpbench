@@ -116,7 +116,7 @@ class SuiteDocument extends Document
      */
     public function getMin()
     {
-        return min($this->getTimes());
+        return $this->getTimes() ? min($this->getTimes()) : 0;
     }
 
     /**
@@ -126,7 +126,7 @@ class SuiteDocument extends Document
      */
     public function getMeanTime()
     {
-        return $this->getTotalTime() / $this->getNbRevolutions();
+        return $this->getTotalTime() ? $this->getTotalTime() / $this->getNbRevolutions() : 0;
     }
 
     /**
@@ -136,7 +136,7 @@ class SuiteDocument extends Document
      */
     public function getMax()
     {
-        return max($this->getTimes());
+        return $this->getTimes() ? max($this->getTimes()) : 0;
     }
 
     /**
