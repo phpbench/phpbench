@@ -37,6 +37,11 @@ class BenchmarkMetadata extends AbstractMetadata
     private $afterClassMethods = array();
 
     /**
+     * @var int
+     */
+    private $subjectCounter = 0;
+
+    /**
      * @param mixed $path
      * @param mixed $class
      */
@@ -80,7 +85,7 @@ class BenchmarkMetadata extends AbstractMetadata
             return $this->subjectMetadatas[$name];
         }
 
-        return new SubjectMetadata($this, $name);
+        return new SubjectMetadata($this, $name, $this->subjectCounter++);
     }
 
     /**

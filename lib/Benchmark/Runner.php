@@ -190,14 +190,19 @@ class Runner
         $revolutionCount = $context->getRevolutions($subject->getRevs());
         $executorConfig = $this->executorRegistry->getConfig($context->getExecutor());
 
-        $iterationCollection = new IterationCollection($subject, $parameterSet, $context->getRetryThreshold($this->retryThreshold));
+        $iterationCollection = new IterationCollection(
+            $subject,
+            $parameterSet,
+            $iterationCount,
+            $revolutionCount,
+            $context->getRetryThreshold($this->retryThreshold)
+        );
+
         $this->logger->iterationsStart($iterationCollection);
 
         try {
-            $iterations = $iterationCollection->spawnIterations($iterationCount, $revolutionCount);
-            foreach ($iterations as $iteration) {
+            foreach ($iterationCollection as $iteration) {
                 $this->runIteration($executor, $executorConfig, $iteration, $context->getSleep($subject->getSleep()));
-                $iterationCollection->add($iteration);
             }
         } catch (\Exception $e) {
             $iterationCollection->setException($e);

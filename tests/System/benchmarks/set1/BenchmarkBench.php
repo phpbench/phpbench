@@ -13,7 +13,7 @@ class BenchmarkBench
 {
     public function benchRandom()
     {
-        usleep(rand(0, 10000));
+        usleep(rand(0, 1000));
     }
 
     /**

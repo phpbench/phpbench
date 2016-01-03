@@ -203,6 +203,10 @@ By default PHPBench issues a single ``.`` for each benchmark subject executed.
 This is the ``dots`` progress reporter. Different progress reporters can be
 specified using the ``--progress`` option:
 
+.. figure:: images/blinken.gif
+
+   blinken progress logger.
+
 .. code-block:: bash
 
     $ phpbench run /path/to/HashBench.php --progress=classdots
@@ -213,6 +217,7 @@ The built-in progress loggers are:
 - ``travis``: Similar to verbose, but with no fancy console manipulation. Perfect for travis.
 - ``dots``: Shows one dot per subject (like PHPUnit).
 - ``classdots``: Shows the benchmark class, and then a dot for each subject.
+- ``blinken``: Highly visual progress logger.
 
 .. note::
 

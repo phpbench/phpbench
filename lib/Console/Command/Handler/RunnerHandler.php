@@ -51,6 +51,7 @@ class RunnerHandler
         $command->addOption('parameters', null, InputOption::VALUE_REQUIRED, 'Override parameters to use in (all) benchmarks');
         $command->addOption('revs', null, InputOption::VALUE_REQUIRED, 'Override number of revs (revolutions) on (all) benchmarks');
         $command->addOption('time-unit', null, InputOption::VALUE_REQUIRED, 'Override the time unit');
+        $command->addOption('precision', null, InputOption::VALUE_REQUIRED, 'Override the measurement precision');
         $command->addOption('mode', null, InputOption::VALUE_REQUIRED, 'Override the unit display mode ("throughput", "time")');
         $command->addOption('progress', 'l', InputOption::VALUE_REQUIRED, 'Progress logger to use, one of <comment>dots</comment>, <comment>classdots</comment>');
 
@@ -77,6 +78,7 @@ class RunnerHandler
         $progressLoggerName = $input->getOption('progress') ?: $this->defaultProgress;
         $timeUnit = $input->getOption('time-unit');
         $mode = $input->getOption('mode');
+        $precision = $input->getOption('precision');
 
         if ($timeUnit) {
             $this->timeUnit->overrideDestUnit($timeUnit);
@@ -84,6 +86,10 @@ class RunnerHandler
 
         if ($mode) {
             $this->timeUnit->overrideMode($mode);
+        }
+
+        if (null !== $precision) {
+            $this->timeUnit->overridePrecision($precision);
         }
 
         $progressLogger = $this->loggerRegistry->getProgressLogger($progressLoggerName);

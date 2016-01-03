@@ -147,17 +147,20 @@ class TimeUnitTest extends \PHPUnit_Framework_TestCase
      * It should resolve given values to the overridden values in the case that
      * the values are overridden (dest unit and mode).
      */
-    public function testResolveDestUnitAndMode()
+    public function testResolveDestUnitAndModeAndPrecision()
     {
-        $unit = new TimeUnit(TimeUnit::SECONDS, TimeUnit::MINUTES, TimeUnit::MODE_THROUGHPUT);
+        $unit = new TimeUnit(TimeUnit::SECONDS, TimeUnit::MINUTES, TimeUnit::MODE_THROUGHPUT, 10);
         $this->assertEquals(TimeUnit::MILLISECONDS, $unit->resolveDestUnit(TimeUnit::MILLISECONDS));
         $this->assertEquals(TimeUnit::MODE_TIME, $unit->getMode(TimeUnit::MODE_TIME));
+        $this->assertEquals(5, $unit->resolvePrecision(5));
 
         $unit->overrideDestUnit(TimeUnit::DAYS);
         $unit->overrideMode(TimeUnit::MODE_TIME);
+        $unit->overridePrecision(15);
 
         $this->assertEquals(TimeUnit::DAYS, $unit->resolveDestUnit(TimeUnit::MINUTES));
         $this->assertEquals(TimeUnit::MODE_TIME, $unit->resolveMode(TimeUnit::MODE_THROUGHPUT));
+        $this->assertEquals(15, $unit->resolvePrecision(5));
     }
 
     /**
@@ -209,6 +212,29 @@ class TimeUnitTest extends \PHPUnit_Framework_TestCase
         $result = $unit->format(1800, TimeUnit::HOURS, TimeUnit::MODE_TIME);
         $this->assertEquals(
             '0.500h',
+            $result
+        );
+
+        $result = $unit->format(1800, TimeUnit::HOURS, TimeUnit::MODE_TIME, 7);
+        $this->assertEquals(
+            '0.5000000h',
+            $result
+        );
+    }
+
+    /**
+     * It should allow the precision to be overriden.
+     */
+    public function testOverridePrecision()
+    {
+        $unit = new TimeUnit(
+            TimeUnit::SECONDS, TimeUnit::MINUTES, TimeUnit::MODE_THROUGHPUT, 7
+        );
+
+        $unit->overridePrecision(5);
+        $result = $unit->format(1800, TimeUnit::HOURS, TimeUnit::MODE_TIME);
+        $this->assertEquals(
+            '0.50000h',
             $result
         );
     }

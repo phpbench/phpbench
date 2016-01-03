@@ -18,7 +18,7 @@ use PhpBench\Math\Statistics;
  * Stores Iterations and calculates the deviations and rejection
  * status for each based on the given rejection threshold.
  */
-class IterationCollection implements \IteratorAggregate
+class IterationCollection implements \IteratorAggregate, \ArrayAccess, \Countable
 {
     /**
      * @var SubjectMetadata
@@ -77,23 +77,41 @@ class IterationCollection implements \IteratorAggregate
     private $computed = false;
 
     /**
-     * @param float $rejectionThreshold
+     * @var int
      */
-    public function __construct(SubjectMetadata $subject, ParameterSet $parameterSet, $rejectionThreshold = null)
-    {
+    private $iterationCount;
+
+    /**
+     * @var int
+     */
+    private $revolutionCount;
+
+    public function __construct(
+        SubjectMetadata $subject,
+        ParameterSet $parameterSet,
+        $iterationCount,
+        $revolutionCount,
+        $rejectionThreshold = null
+    ) {
         $this->subject = $subject;
         $this->parameterSet = $parameterSet;
         $this->rejectionThreshold = $rejectionThreshold;
+        $this->iterationCount = $iterationCount;
+        $this->revolutionCount = $revolutionCount;
+
+        for ($index = 0; $index < $this->iterationCount; $index++) {
+            $this->add(new Iteration($index, $this, $revolutionCount, $parameterSet));
+        }
     }
 
     /**
-     * Replace the iterations in the collection with the given iterations.
+     * Return the iteration at the given index.
      *
-     * @param Iteration[] $iterations
+     * @return Iteration
      */
-    public function replace(array $iterations)
+    public function getIteration($index)
     {
-        $this->iterations = $iterations;
+        return $this->iterations[$index];
     }
 
     /**
@@ -216,25 +234,6 @@ class IterationCollection implements \IteratorAggregate
     }
 
     /**
-     * Spawn a given number of iterations with a given number of revolutions each.
-     *
-     * @param int $count
-     * @param int $revolutionCount
-     *
-     * @return Iteration[]
-     */
-    public function spawnIterations($count, $revolutionCount)
-    {
-        $iterations = array();
-
-        for ($index = 0; $index < $count; $index++) {
-            $iterations[] = new Iteration($index, $this->subject, $revolutionCount, $this->parameterSet);
-        }
-
-        return $iterations;
-    }
-
-    /**
      * Return the parameter set.
      *
      * @return ParameterSet
@@ -295,5 +294,51 @@ class IterationCollection implements \IteratorAggregate
         }
 
         return $this->exception;
+    }
+
+    /**
+     * Return number of iterations.
+     *
+     * {@inheritdoc}
+     */
+    public function count()
+    {
+        return $this->iterationCount;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function offsetGet($offset)
+    {
+        return $this->getIteration($offset);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function offsetSet($offset, $value)
+    {
+        throw new \InvalidArgumentException(
+            'Iteration colletions are immutable'
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function offsetUnset($offset)
+    {
+        throw new \InvalidArgumentException(
+            'Iteration colletions are immutable'
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function offsetExists($offset)
+    {
+        return array_key_exists($offset, $this - iterations);
     }
 }

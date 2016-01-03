@@ -50,7 +50,7 @@ class RunTest extends SystemTestCase
      */
     public function testCommand()
     {
-        $process = $this->phpbench('run benchmarks/set1/BenchmarkBench.php');
+        $process = $this->phpbench('run benchmarks/set4/NothingBench.php');
         $this->assertExitCode(0, $process);
     }
 
@@ -59,7 +59,7 @@ class RunTest extends SystemTestCase
      */
     public function testCommandWithReport()
     {
-        $process = $this->phpbench('run benchmarks/set1/BenchmarkBench.php --report=default');
+        $process = $this->phpbench('run benchmarks/set4/NothingBench.php --report=default');
         $this->assertExitCode(0, $process);
         $output = $process->getOutput();
         $this->assertContains('bench', $output);
@@ -81,11 +81,11 @@ class RunTest extends SystemTestCase
     public function testCommandWithReportConfiguration()
     {
         $process = $this->phpbench(
-            'run benchmarks/set1/BenchmarkBench.php --report=\'{"extends": "default"}\''
+            'run benchmarks/set4/NothingBench.php --report=\'{"extends": "default"}\''
         );
         $this->assertExitCode(0, $process);
         $output = $process->getOutput();
-        $this->assertContains('benchParameterized', $output);
+        $this->assertContains('benchNothing', $output);
     }
 
     /**
@@ -94,7 +94,7 @@ class RunTest extends SystemTestCase
     public function testCommandWithReportConfigurationUnknown()
     {
         $process = $this->phpbench(
-            'run --report=\'{"generator": "foo_table"}\' benchmarks/set1/BenchmarkBench.php'
+            'run --report=\'{"generator": "foo_table"}\' benchmarks/set4/NothingBench.php'
         );
         $this->assertExitCode(1, $process);
         $this->assertContains('generator service "foo_table" does not exist', $process->getErrorOutput());
@@ -106,7 +106,7 @@ class RunTest extends SystemTestCase
     public function testCommandWithReportConfigurationInvalid()
     {
         $process = $this->phpbench(
-            'run --report=\'{"name": "foo_ta\' benchmarks/set1/BenchmarkBench.php'
+            'run --report=\'{"name": "foo_ta\' benchmarks/set4/NothingBench.php'
         );
         $this->assertExitCode(1, $process);
         $this->assertContains('Could not decode', $process->getErrorOutput());
@@ -118,7 +118,7 @@ class RunTest extends SystemTestCase
     public function testDumpXml()
     {
         $process = $this->phpbench(
-            'run --dump-file=' . self::TEST_FNAME . ' benchmarks/set1/BenchmarkBench.php'
+            'run --dump-file=' . self::TEST_FNAME . ' benchmarks/set4/NothingBench.php'
         );
         $this->assertExitCode(0, $process);
         $output = $process->getOutput();
@@ -325,7 +325,7 @@ class RunTest extends SystemTestCase
     public function testRetryThreshold()
     {
         $process = $this->phpbench(
-            'run benchmarks/set1/BenchmarkBench.php --retry-threshold=50'
+            'run benchmarks/set4/NothingBench.php --retry-threshold=50'
         );
 
         $this->assertExitCode(0, $process);
@@ -337,7 +337,7 @@ class RunTest extends SystemTestCase
     public function testSleep()
     {
         $process = $this->phpbench(
-            'run benchmarks/set1/BenchmarkBench.php --sleep=5000'
+            'run benchmarks/set4/NothingBench.php --sleep=5000'
         );
 
         $this->assertExitCode(0, $process);
@@ -355,5 +355,20 @@ class RunTest extends SystemTestCase
 
         $this->assertExitCode(1, $process);
         $this->assertContains('1 subjects encountered errors', $process->getOutput());
+    }
+
+    /**
+     * It should allow the precision to be set.
+     */
+    public function testPrecision()
+    {
+        $process = $this->phpbench(
+            'run benchmarks/set4/NothingBench.php --precision=6'
+        );
+
+        $this->assertExitCode(0, $process);
+        $success = preg_match('{[0-9]\.([0-9]+)μs}', $process->getOutput(), $matches);
+        $this->assertEquals(1, $success);
+        $this->assertEquals(6, strlen($matches[1]));
     }
 }
