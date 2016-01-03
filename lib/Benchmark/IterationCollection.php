@@ -171,7 +171,7 @@ class IterationCollection implements \IteratorAggregate, \ArrayAccess, \Countabl
             $deviation = 100 / $this->stats['mean'] * (($iteration->getResult()->getTime() / $iteration->getRevolutions()) - $this->stats['mean']);
             $iteration->setDeviation($deviation);
 
-            // the Z-Value repreents the number of standard deviations this
+            // the Z-Value represents the number of standard deviations this
             // value is away from the mean.
             $revTime = $iteration->getResult()->getTime() / $iteration->getRevolutions();
             $zValue = $this->stats['stdev'] ? ($revTime - $this->stats['mean']) / $this->stats['stdev'] : 0;
@@ -266,7 +266,7 @@ class IterationCollection implements \IteratorAggregate, \ArrayAccess, \Countabl
 
     /**
      * Should be called when an Exception is encountered during
-     * the excecution of any of the iteration processes.
+     * the execution of any of the iteration processes.
      *
      * After an exception is encountered the results from this iteration
      * set are invalid.
@@ -320,7 +320,7 @@ class IterationCollection implements \IteratorAggregate, \ArrayAccess, \Countabl
     public function offsetSet($offset, $value)
     {
         throw new \InvalidArgumentException(
-            'Iteration colletions are immutable'
+            'Iteration collections are immutable'
         );
     }
 
@@ -330,7 +330,7 @@ class IterationCollection implements \IteratorAggregate, \ArrayAccess, \Countabl
     public function offsetUnset($offset)
     {
         throw new \InvalidArgumentException(
-            'Iteration colletions are immutable'
+            'Iteration collections are immutable'
         );
     }
 
@@ -339,6 +339,6 @@ class IterationCollection implements \IteratorAggregate, \ArrayAccess, \Countabl
      */
     public function offsetExists($offset)
     {
-        return array_key_exists($offset, $this - iterations);
+        return array_key_exists($offset, $this->iterations);
     }
 }

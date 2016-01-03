@@ -91,7 +91,7 @@ class Iteration
     }
 
     /**
-     * Assosciate the result of the iteration with the iteration.
+     * Associate the result of the iteration with the iteration.
      *
      * @param int
      */

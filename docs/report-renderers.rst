@@ -53,7 +53,7 @@ Default outputs:
 -------------
 
 The delimited renderer outputs the report as a delimited value list (for
-example a tab seperated list of values). Such data can be easily imported into
+example a tab separated list of values). Such data can be easily imported into
 applications such as GNUPlot_.
 
 Class: ``PhpBench\Report\Renderer\DelimitedRenderer``.

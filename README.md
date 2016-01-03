@@ -13,7 +13,7 @@ Features:
 - Generate reports and render them to different mediums (Console, HTML,
   Markdown, etc).
 - Benchmarks executed in a separate process, no effective overhead,
-  no autoloader polution.
+  no autoloader pollution.
 - Control stability of results with multiple iterations and retry threshold.
 - Memory usage statistics.
 - Standard deviation and Z-Scores.

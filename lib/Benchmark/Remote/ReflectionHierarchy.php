@@ -99,7 +99,7 @@ class ReflectionHierarchy implements \IteratorAggregate
     }
 
     /**
-     * Return true if thare are no reflection classes here.
+     * Return true if there are no reflection classes here.
      *
      * @return bool
      */
