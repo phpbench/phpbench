@@ -96,6 +96,8 @@ class BlinkenLogger extends PhpBenchLogger
         }
 
         if ($iterations->getRejectCount() > 0) {
+            $this->output->write("\x1B[". ($this->depth) . 'A'); // put the cursor back to the line with the measurements
+            $this->output->write("\x1B[0G"); // put the cursor back at col 0
             return;
         }
 
