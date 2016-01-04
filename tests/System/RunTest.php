@@ -118,12 +118,12 @@ class RunTest extends SystemTestCase
     public function testDumpXml()
     {
         $process = $this->phpbench(
-            'run --dump-file=' . self::TEST_FNAME . ' benchmarks/set4/NothingBench.php'
+            'run --dump-file=' . $this->fname . ' benchmarks/set4/NothingBench.php'
         );
         $this->assertExitCode(0, $process);
         $output = $process->getOutput();
         $this->assertContains('Dumped', $output);
-        $this->assertTrue(file_exists(self::TEST_FNAME));
+        $this->assertTrue(file_exists($this->fname));
     }
 
     /**

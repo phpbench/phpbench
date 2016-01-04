@@ -11,8 +11,6 @@
 
 namespace PhpBench\Tests\Functional\Report\Generator;
 
-use PhpBench\Benchmark\SuiteDocument;
-
 class TabularCustomGeneratorTest extends GeneratorTestCase
 {
     /**
@@ -55,36 +53,6 @@ class TabularCustomGeneratorTest extends GeneratorTestCase
             $this->getSuiteDocument(),
             array()
         );
-    }
-
-    private function getSuiteDocument()
-    {
-        $suite = new SuiteDocument();
-        $suite->loadXml(<<<EOT
-<?xml version="1.0"?>
-<phpbench version="0.x">
-    <benchmark class="Foobar">
-        <subject name="mySubject">
-            <variant>
-                <parameter name="foo" value="bar" />
-                <parameter name="array" type="collection">
-                    <parameter name="0" value="one" />
-                    <parameter name="1" value="two" />
-                </parameter>
-                <parameter name="assoc_array" type="collection">
-                    <parameter name="one" value="two" />
-                    <parameter name="three" value="four" />
-                </parameter>
-                <iteration time="100" memory="100" revs="1" />
-                <iteration time="75" memory="100" revs="1" />
-           </variant>
-        </subject>
-    </benchmark>
-</phpbench>
-EOT
-        );
-
-        return $suite;
     }
 
     protected function getGenerator()

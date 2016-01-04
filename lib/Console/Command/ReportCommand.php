@@ -73,16 +73,7 @@ EOT
 
             $suiteResult = new SuiteDocument();
             $suiteResult->loadXml(file_get_contents($file));
-
-            foreach ($suiteResult->xpath()->query('//suite') as $suiteEl) {
-                $suiteEl = $aggregateDom->importNode($suiteEl, true);
-
-                if (!$suiteEl->getAttribute('name')) {
-                    $suiteEl->setAttribute('name', basename($file));
-                }
-
-                $aggregateEl->appendChild($suiteEl);
-            }
+            $aggregateDom->appendSuiteDocument($suiteResult, basename($file));
         }
 
         $this->reportHandler->reportsFromInput($input, $output, $aggregateDom);

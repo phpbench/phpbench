@@ -11,8 +11,6 @@
 
 namespace PhpBench\Tests\Functional\Report\Generator;
 
-use PhpBench\Benchmark\SuiteDocument;
-
 class TabularGeneratorTest extends GeneratorTestCase
 {
     protected function getGenerator()
@@ -33,31 +31,41 @@ class TabularGeneratorTest extends GeneratorTestCase
         );
 
         $this->assertInstanceOf('PhpBench\Dom\Document', $dom);
-        $this->assertEquals(2, $dom->xpath()->evaluate('count(//cell[text() = "Foobar"])'));
+        $this->assertXPathEvaluation($dom, 3, 'count(//cell[text() = "FooBench"])');
+        $this->assertXPathEvaluation($dom, 2, 'count(//cell[text() = "benchMySubject"])');
+        $this->assertXPathEvaluation($dom, 'one,two,three', 'string(//cell[@name="group"])');
+        $this->assertXPathEvaluation(
+            $dom,
+            '{"foo":"bar","array":["one","two"],"assoc_array":{"one":"two","three":"four"}}',
+            'string(//cell[@name="params"])'
+            );
+        $this->assertXPathEvaluation($dom, '5', 'string(//cell[@name="revs"])');
+        $this->assertXPathEvaluation($dom, 2, 'count(//cell[@name="iter"][text() = 0])');
+        $this->assertXPathEvaluation($dom, 1, 'count(//cell[@name="iter"][text() = 1])');
+        $this->assertXPathEvaluation($dom, 0, 'count(//cell[@name="iter"][text() = 2])');
+        $this->assertXPathEvaluation($dom, '0', 'string(//cell[@name="rej"])');
+        $this->assertXPathEvaluation($dom, '100b', 'string(//cell[@name="mem"])');
+        $this->assertXPathEvaluation($dom, '2.000μs', 'string(//row[position()=1]//cell[@name="time"])');
+        $this->assertXPathEvaluation($dom, '2.200μs', 'string(//row[position()=2]//cell[@name="time"])');
+        $this->assertXPathEvaluation($dom, '-1σ', 'string(//row[position()=1]//cell[@name="z-score"])');
+        $this->assertXPathEvaluation($dom, '+1.00σ', 'string(//row[position()=2]//cell[@name="z-score"])');
+        $this->assertXPathEvaluation($dom, '-4.76%', 'string(//cell[@name="diff"])');
     }
 
     /**
-     * It should show groups.
+     * It should filter based on group.
      */
-    public function testGroupDisplay()
+    public function testGroupFilterNonExisting()
     {
         $dom = $this->generate(
             $this->getSuiteDocument(),
-            array()
-        );
-
-        $this->assertInstanceOf('PhpBench\Dom\Document', $dom);
-        $this->assertEquals(2, $dom->xpath()->evaluate('count(//cell[text() = "one,two,three"])'));
-
-        $dom = $this->generate(
-            $this->getSuiteDocument(),
             array(
-                'type' => 'aggregate',
+                'groups' => array('notexisting'),
             )
         );
 
         $this->assertInstanceOf('PhpBench\Dom\Document', $dom);
-        $this->assertEquals(1, $dom->xpath()->evaluate('count(//cell[text() = "one,two,three"])'));
+        $this->assertEquals(0, $dom->xpath()->evaluate('count(//cell[text() = "FooBench"])'));
     }
 
     /**
@@ -68,21 +76,11 @@ class TabularGeneratorTest extends GeneratorTestCase
         $dom = $this->generate(
             $this->getSuiteDocument(),
             array(
-                'groups' => array('notexisting'),
-            )
-        );
-
-        $this->assertInstanceOf('PhpBench\Dom\Document', $dom);
-        $this->assertEquals(0, $dom->xpath()->evaluate('count(//cell[text() = "Foobar"])'));
-
-        $dom = $this->generate(
-            $this->getSuiteDocument(),
-            array(
                 'groups' => array('two'),
             )
         );
 
-        $this->assertEquals(2, $dom->xpath()->evaluate('count(//cell[text() = "Foobar"])'));
+        $this->assertEquals(2, $dom->xpath()->evaluate('count(//cell[text() = "FooBench"])'));
     }
 
     /**
@@ -98,8 +96,22 @@ class TabularGeneratorTest extends GeneratorTestCase
         );
 
         $this->assertInstanceOf('PhpBench\Dom\Document', $dom);
-        $this->assertEquals(1, $dom->xpath()->evaluate('count(//cell[text() = "Foobar"])'));
-        $this->assertEquals(1, $dom->xpath()->evaluate('count(//cell[text() = "mySubject"])'));
+        $this->assertXPathEvaluation($dom, 2, 'count(//cell[text() = "FooBench"])');
+        $this->assertXPathEvaluation($dom, 1, 'count(//cell[text() = "benchMySubject"])');
+        $this->assertXPathEvaluation($dom, 'one,two,three', 'string(//cell[@name="group"])');
+        $this->assertXPathEvaluation(
+            $dom,
+            '{"foo":"bar","array":["one","two"],"assoc_array":{"one":"two","three":"four"}}',
+            'string(//cell[@name="params"])'
+        );
+        $this->assertXPathEvaluation($dom, 5, 'string(//cell[@name="revs"])');
+        $this->assertXPathEvaluation($dom, 2, 'string(//cell[@name="its"])');
+        $this->assertXPathEvaluation($dom, '100b', 'string(//cell[@name="mem"])');
+        $this->assertXPathEvaluation($dom, '2.000μs', 'string(//cell[@name="best"])');
+        $this->assertXPathEvaluation($dom, '2.100μs', 'string(//cell[@name="mean"])');
+        $this->assertXPathEvaluation($dom, '2.200μs', 'string(//cell[@name="worst"])');
+        $this->assertXPathEvaluation($dom, '0.100μs', 'string(//cell[@name="stdev"])');
+        $this->assertXPathEvaluation($dom, '4.76%', 'string(//cell[@name="rstdev"])');
     }
 
     /**
@@ -116,7 +128,7 @@ class TabularGeneratorTest extends GeneratorTestCase
 
         $this->assertInstanceOf('PhpBench\Dom\Document', $dom);
         $this->assertEquals(0, $dom->xpath()->evaluate('count(//group[@name="body"]//cell[@name="time_net"])'));
-        $this->assertEquals(2, $dom->xpath()->evaluate('count(//group[@name="body"]//cell[@name="time"])'));
+        $this->assertEquals(3, $dom->xpath()->evaluate('count(//group[@name="body"]//cell[@name="time"])'));
         $this->assertEquals(0, $dom->xpath()->evaluate('count(//group[@name="body"]//cell[@name="benchmark"])'));
     }
 
@@ -167,7 +179,7 @@ class TabularGeneratorTest extends GeneratorTestCase
             $values[] = $cellEl->nodeValue;
         }
         $this->assertEquals(array(
-            '75.000μs', '100.000μs',
+            '2.000μs', '2.200μs', '20.000μs',
         ), $values);
     }
 
@@ -188,7 +200,7 @@ class TabularGeneratorTest extends GeneratorTestCase
             $values[] = $cellEl->nodeValue;
         }
         $this->assertEquals(array(
-            '100.000μs', '75.000μs',
+          '20.000μs', '2.200μs', '2.000μs',
         ), $values);
     }
 
@@ -236,77 +248,20 @@ EOT
             )
         );
 
-        $this->assertEquals(1, $dom->xpath()->evaluate('count(//group[@name="body"]/row)'));
-        $this->assertEquals(1, $dom->xpath()->evaluate('count(//group[@name="body"]/row/cell[@name="t:foobar"])'));
-        $this->assertEquals(1, $dom->xpath()->evaluate('count(//group[@name="body"]/row/cell[@name="t:barfoo"])'));
-    }
-
-    private function getSuiteDocument()
-    {
-        $suite = new SuiteDocument();
-        $suite->loadXml(<<<EOT
-<?xml version="1.0"?>
-<phpbench version="0.x">
-    <suite context="foobar">
-        <benchmark class="Foobar">
-            <subject name="mySubject">
-                <group name="one" />
-                <group name="two" />
-                <group name="three" />
-                <variant output-time-unit="microseconds">
-                    <parameter name="foo" value="bar" />
-                    <parameter name="array" type="collection">
-                        <parameter name="0" value="one" />
-                        <parameter name="1" value="two" />
-                    </parameter>
-                    <parameter name="assoc_array" type="collection">
-                        <parameter name="one" value="two" />
-                        <parameter name="three" value="four" />
-                    </parameter>
-                    <iteration time="100" memory="100" revs="1" deviation="1" rejection-count="0" z-value="-1"/>
-                    <iteration time="75" memory="100" revs="1" deviation="2" rejection-count="0" z-value="1"/>
-                    <stats mean="0.9923" stdev="0.12724232786302" rstdev="12.822969652627" variance="0.01619061" min="0.891" max="1.349"/>
-               </variant>
-            </subject>
-        </benchmark>
-    </suite>
-</phpbench>
-EOT
+        $this->assertXPathEvaluation($dom, 2, 'count(//group[@name="body"]/row)');
+        $this->assertXPathEvaluation($dom, 2, 'count(//group[@name="body"]/row/cell[@name="t:foobar"])');
+        $this->assertXPathEvaluation($dom, 2, 'count(//group[@name="body"]/row/cell[@name="t:barfoo"])');
+        $this->assertXPathEvaluation($dom, 'one,two,three', 'string(//group[@name="body"]//cell[@name="group"])');
+        $this->assertXPathEvaluation(
+            $dom,
+            '{"foo":"bar","array":["one","two"],"assoc_array":{"one":"two","three":"four"}}',
+            'string(//cell[@name="params"])'
         );
-
-        return $suite;
-    }
-
-    private function getMultipleSuiteDocument()
-    {
-        $suite = new SuiteDocument();
-        $suite->loadXml(<<<EOT
-<?xml version="1.0"?>
-<phpbench version="0.x">
-    <suite context="foobar">
-        <benchmark class="Foobar">
-            <subject name="mySubject">
-                <variant output-time-unit="microseconds">
-                    <iteration time="100" memory="100" revs="1" deviation="1" rejection-count="0"/>
-                    <iteration time="75" memory="100" revs="1" deviation="2" rejection-count="0"/>
-               </variant>
-            </subject>
-        </benchmark>
-    </suite>
-    <suite context="barfoo">
-        <benchmark class="Foobar">
-            <subject name="mySubject">
-                <variant output-time-unit="microseconds">
-                    <iteration time="100" memory="100" revs="1" deviation="1" rejection-count="0"/>
-                    <iteration time="75" memory="100" revs="1" deviation="2" rejection-count="0"/>
-               </variant>
-            </subject>
-        </benchmark>
-    </suite>
-</phpbench>
-EOT
-        );
-
-        return $suite;
+        $this->assertXPathEvaluation($dom, 1, 'count(//cell[text() = "benchMySubject"])');
+        $this->assertXPathEvaluation($dom, 1, 'count(//cell[text() = "benchOtherSubject"])');
+        $this->assertXPathEvaluation($dom, '2.100μs', 'string(//group[@name="body"]/row[position()=1]/cell[@name="t:foobar"])');
+        $this->assertXPathEvaluation($dom, '4.200μs', 'string(//group[@name="body"]/row[position()=1]/cell[@name="t:barfoo"])');
+        $this->assertXPathEvaluation($dom, '20.000μs', 'string(//group[@name="body"]/row[position()=2]/cell[@name="t:foobar"])');
+        $this->assertXPathEvaluation($dom, '41.000μs', 'string(//group[@name="body"]/row[position()=2]/cell[@name="t:barfoo"])');
     }
 }

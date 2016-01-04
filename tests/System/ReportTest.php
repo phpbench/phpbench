@@ -18,12 +18,13 @@ class ReportTest extends SystemTestCase
      */
     public function testGenerateReport()
     {
+        $this->createResult();
         $process = $this->phpbench(
-            'report --file=results/report1.xml --report=default'
+            'report --file=' . $this->fname . ' --report=default'
         );
         $this->assertEquals(0, $process->getExitCode());
         $output = $process->getOutput();
-        $this->assertContains('benchMd5', $output);
+        $this->assertContains('benchNothing', $output);
     }
 
     /**
@@ -52,8 +53,9 @@ class ReportTest extends SystemTestCase
      */
     public function testOutputs($output)
     {
+        $this->createResult();
         $process = $this->phpbench(
-            'report --file=results/report1.xml --output=' . $output . ' --report=default'
+            'report --file=' . $this->fname .' --output=' . $output . ' --report=default'
         );
 
         $this->assertExitCode(0, $process);

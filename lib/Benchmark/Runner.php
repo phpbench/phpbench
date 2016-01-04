@@ -147,6 +147,7 @@ class Runner
             $variantEl->setAttribute('sleep', $context->getSleep($subject->getSleep()));
             $variantEl->setAttribute('output-time-unit', $subject->getOutputTimeUnit() ?: TimeUnit::MICROSECONDS);
             $variantEl->setAttribute('output-mode', $subject->getOutputMode() ?: TimeUnit::MODE_TIME);
+            $variantEl->setAttribute('revs', $subject->getRevs());
             foreach ($parameterSet as $name => $value) {
                 $parameterEl = $this->createParameter($subjectEl, $name, $value);
                 $variantEl->appendChild($parameterEl);
@@ -230,9 +231,8 @@ class Runner
 
         foreach ($iterationCollection as $iteration) {
             $iterationEl = $variantEl->ownerDocument->createElement('iteration');
-            $iterationEl->setAttribute('revs', $iteration->getRevolutions());
-            $iterationEl->setAttribute('time-net', $iteration->getResult()->getTime());
-            $iterationEl->setAttribute('time', $iteration->getResult()->getTime() / $iteration->getRevolutions());
+            $iterationEl->setAttribute('net-time', $iteration->getResult()->getTime());
+            $iterationEl->setAttribute('rev-time', $iteration->getResult()->getTime() / $iteration->getRevolutions());
             $iterationEl->setAttribute('z-value', $iteration->getZValue());
             $iterationEl->setAttribute('memory', $iteration->getResult()->getMemory());
             $iterationEl->setAttribute('deviation', $iteration->getDeviation());

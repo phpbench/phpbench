@@ -122,14 +122,14 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
                 3,
                 array(),
                 array(
-                    'count(//iteration[@revs=3]) = 1',
+                    'count(//variant[@revs=3]//iteration) = 1',
                 ),
             ),
             array(
                 4,
                 3,
                 array(
-                    'count(//iteration[@revs=3]) = 4',
+                    'count(//variant[@revs=3]//iteration) = 4',
                 ),
                 array(),
             ),

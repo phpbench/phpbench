@@ -189,4 +189,31 @@ class SuiteDocument extends Document
 
         return $errors;
     }
+
+    /**
+     * Append the suites container in another document to this document.
+     *
+     * @param SuiteDocument $suiteDocument
+     * @param string $defaultName
+     */
+    public function appendSuiteDocument(SuiteDocument $suiteDocument, $defaultName = null)
+    {
+        $aggregateEl = $this->evaluate('/phpbench')->item(0);
+
+        if (null === $aggregateEl) {
+            throw new \InvalidArgumentException(
+                'Suite document must have root element "phpbench" before appending other suites'
+            );
+        }
+
+        foreach ($suiteDocument->xpath()->query('//suite') as $suiteEl) {
+            $suiteEl = $this->importNode($suiteEl, true);
+
+            if (!$suiteEl->getAttribute('name')) {
+                $suiteEl->setAttribute('name', $defaultName);
+            }
+
+            $aggregateEl->appendChild($suiteEl);
+        }
+    }
 }
