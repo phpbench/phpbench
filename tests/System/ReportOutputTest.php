@@ -18,13 +18,19 @@ namespace PhpBench\Tests\System;
  */
 class ReportOutputTest extends SystemTestCase
 {
+    public function setUp()
+    {
+        parent::setUp();
+        $this->createResult();
+    }
+
     /**
      * It should generate a HTML report.
      */
     public function testOutputHtml()
     {
         $process = $this->phpbench(
-            'report --file=results/report1.xml --report=default --output=\'{"extends": "html", "file": "report.html"}\''
+            'report --file=' . $this->fname . ' --report=default --output=\'{"extends": "html", "file": "report.html"}\''
         );
 
         $this->assertExitCode(0, $process);
@@ -38,7 +44,7 @@ class ReportOutputTest extends SystemTestCase
     public function testOutputMarkdown()
     {
         $process = $this->phpbench(
-            'report --file=results/report1.xml --report=default --output=\'{"extends": "markdown", "file": "markdown.md"}\''
+            'report --file=' . $this->fname . ' --report=default --output=\'{"extends": "markdown", "file": "markdown.md"}\''
         );
 
         $this->assertExitCode(0, $process);
@@ -52,7 +58,7 @@ class ReportOutputTest extends SystemTestCase
     public function testOutputDelimited()
     {
         $process = $this->phpbench(
-            'report --file=results/report1.xml --output=\'{"extends": "delimited", "file": "delimited"}\' --report=plain'
+            'report --file=' . $this->fname . ' --report=default --output=\'{"extends": "delimited", "file": "delimited"}\''
         );
 
         $this->assertExitCode(0, $process);

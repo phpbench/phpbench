@@ -15,13 +15,27 @@ use Symfony\Component\Process\Process;
 
 class SystemTestCase extends \PHPUnit_Framework_TestCase
 {
-    const TEST_FNAME = 'test.xml';
+    protected $fname;
+
+    public function setUp()
+    {
+        $this->fname = tempnam(sys_get_temp_dir(), 'phpbench_report_output_test');
+    }
+
+    public function createResult($benchmark = 'benchmarks/set4')
+    {
+        $process = $this->phpbench(
+            'run ' . $benchmark . ' --executor=debug --dump-file=' . $this->fname
+        );
+
+        if ($process->getExitCode() !== 0) {
+            throw new \Exception('Could not generate test data:' . $process->getErrorOutput());
+        }
+    }
 
     public function tearDown()
     {
-        if (file_exists(self::TEST_FNAME)) {
-            unlink(self::TEST_FNAME);
-        }
+        unlink($this->fname);
     }
 
     protected function getWorkingDir($workingDir = '.')

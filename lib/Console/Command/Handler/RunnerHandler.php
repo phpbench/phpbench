@@ -58,6 +58,7 @@ class RunnerHandler
         // command option is parsed before the container is compiled.
         $command->addOption('bootstrap', 'b', InputOption::VALUE_REQUIRED, 'Set or override the bootstrap file.');
         $command->addOption('group', array(), InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Group to run (can be specified multiple times)');
+        $command->addOption('executor', array(), InputOption::VALUE_REQUIRED, 'Executor to use', 'microtime');
     }
 
     public function runFromInput(InputInterface $input, OutputInterface $output, array $options = array())
@@ -70,6 +71,7 @@ class RunnerHandler
                     'revolutions' => $input->getOption('revs'),
                     'filters' => $input->getOption('filter'),
                     'groups' => $input->getOption('group'),
+                    'executor' => $input->getOption('executor'),
                 ),
                 $options
             )

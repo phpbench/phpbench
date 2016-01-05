@@ -34,6 +34,33 @@ class SuiteDocumentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * It should append documents.
+     */
+    public function testAppendSuiteDocument()
+    {
+        $this->suiteDocument->load(__DIR__ . '/document/document.xml');
+        $this->assertEquals(1, $this->suiteDocument->evaluate('count(//benchmark)'));
+        $newSuiteDocument = new SuiteDocument();
+        $newSuiteDocument->load(__DIR__ . '/document/document.xml');
+        $this->suiteDocument->appendSuiteDocument($newSuiteDocument, 'foo');
+        $this->assertEquals(2, $this->suiteDocument->evaluate('count(//benchmark)'));
+        $this->assertEquals('foo', $this->suiteDocument->evaluate('string(/phpbench/suite[position()=2]/@name)'));
+    }
+
+    /**
+     * It should throw an exception if the append target has no phpbench root element.
+     *
+     * @expectedException InvalidArgumentException
+     */
+    public function testAppendSuiteDocumentException()
+    {
+        $suiteDocument = new SuiteDocument();
+        $newSuiteDocument = new SuiteDocument();
+        $newSuiteDocument->load(__DIR__ . '/document/document.xml');
+        $suiteDocument->appendSuiteDocument($newSuiteDocument, 'foo');
+    }
+
+    /**
      * It should not evaluate things to 0 when no iterations are present.
      */
     public function testMinMaxMeanNoIterations()

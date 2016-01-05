@@ -13,4 +13,7 @@ return array(
     'microtime' => array(
         'executor' => 'microtime',
     ),
+    'debug' => array(
+        'executor' => 'debug',
+    ),
 );

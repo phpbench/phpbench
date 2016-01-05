@@ -12,6 +12,7 @@
 namespace PhpBench\Extension;
 
 use PhpBench\Benchmark\CollectionBuilder;
+use PhpBench\Benchmark\Executor\DebugExecutor;
 use PhpBench\Benchmark\Executor\MicrotimeExecutor;
 use PhpBench\Benchmark\Metadata\Driver\AnnotationDriver;
 use PhpBench\Benchmark\Metadata\Factory;
@@ -155,11 +156,17 @@ class CoreExtension implements ExtensionInterface
             );
         });
 
-        $container->register('benchmark.executor', function (Container $container) {
+        $container->register('benchmark.executor.microtime', function (Container $container) {
             return new MicrotimeExecutor(
                 $container->get('benchmark.remote.launcher')
             );
         }, array('benchmark_executor' => array('name' => 'microtime')));
+
+        $container->register('benchmark.executor.debug', function (Container $container) {
+            return new DebugExecutor(
+                $container->get('benchmark.remote.launcher')
+            );
+        }, array('benchmark_executor' => array('name' => 'debug')));
 
         $container->register('benchmark.finder', function (Container $container) {
             return new Finder();

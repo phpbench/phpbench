@@ -1,1 +1,1 @@
-HashingBenchmark	benchMd5	hashing	[]	1000	0	0	268160	0.816	0	0
+NothingBench	benchNothing		[]	1	0	0	100b	10.000μs	0.00σ	0.00%

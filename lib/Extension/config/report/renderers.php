@@ -26,4 +26,7 @@ return array(
     'delimited' => array(
         'renderer' => 'delimited',
     ),
+    'debug' => array(
+        'renderer' => 'debug',
+    ),
 );

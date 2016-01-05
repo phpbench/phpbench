@@ -14,10 +14,6 @@
             "group": "body",
             "cells": [
                 {
-                    "name": "context",
-                    "expr": "string(ancestor-or-self::suite/@context)"
-                },
-                {
                     "name": "benchmark",
                     "expr": "class_name(string(ancestor-or-self::benchmark/@class))"
                 },
@@ -36,7 +32,7 @@
                 },
                 {
                     "name": "t:{{ cell.item }}",
-                    "expr": "sum(suite(descendant-or-self::iteration, '{{ cell.item }}')//@time) div sum(suite(descendant-or-self::iteration, '{{ cell.item }}')//@revs)",
+                    "expr": "number(suite(descendant-or-self::stats, '{{ cell.item }}')//@mean)",
                     "class": "time",
                     "with_items": {
                         "selector": "//suite",

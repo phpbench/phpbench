@@ -32,7 +32,7 @@
                 },
                 {
                     "name": "revs",
-                    "expr": "sum(descendant-or-self::iteration/@revs)"
+                    "expr": "sum(ancestor-or-self::variant/@revs)"
                 },
                 {
                     "name": "its",

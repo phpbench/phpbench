@@ -32,11 +32,11 @@
                 },
                 {
                     "name": "revs",
-                    "expr": "number(descendant-or-self::iteration/@revs)"
+                    "expr": "number(ancestor-or-self::variant/@revs)"
                 },
                 {
                     "name": "iter",
-                    "expr": "count(descendant-or-self::iteration/preceding-sibling::*)"
+                    "expr": "count(descendant-or-self::iteration/preceding-sibling::iteration)"
                 },
                 {
                     "name": "rej",
@@ -50,7 +50,7 @@
                 {
                     "name": "time",
                     "class": "time",
-                    "expr": "number(descendant-or-self::iteration/@time)"
+                    "expr": "number(descendant-or-self::iteration/@rev-time)"
                 },
                 {
                     "name": "z-score",
