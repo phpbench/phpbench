@@ -134,6 +134,36 @@ class IterationCollection implements \IteratorAggregate, \ArrayAccess, \Countabl
     }
 
     /**
+     * Return the iteration times.
+     *
+     * @return array
+     */
+    public function getTimes()
+    {
+        $times = array();
+        foreach ($this->iterations as $iteration) {
+            $times[] = $iteration->getResult()->getTime() / $iteration->getRevolutions();
+        }
+
+        return $times;
+    }
+
+    /**
+     * Return the Z-Values.
+     *
+     * @return float[]
+     */
+    public function getZValues()
+    {
+        $zValues = array();
+        foreach ($this->iterations as $iteration) {
+            $zValues[] = $iteration->getZValue();
+        }
+
+        return $zValues;
+    }
+
+    /**
      * Calculate and set the deviation from the mean time for each iteration. If
      * the deviation is greater than the rejection threshold, then mark the iteration as
      * rejected.
@@ -146,10 +176,7 @@ class IterationCollection implements \IteratorAggregate, \ArrayAccess, \Countabl
             return;
         }
 
-        $times = array();
-        foreach ($this->iterations as $iteration) {
-            $times[] = $iteration->getResult()->getTime() / $iteration->getRevolutions();
-        }
+        $times = $this->getTimes();
 
         $this->stats = array(
             'stdev' => 0,
@@ -255,6 +282,17 @@ class IterationCollection implements \IteratorAggregate, \ArrayAccess, \Countabl
         }
 
         return $this->stats;
+    }
+
+    /**
+     * Return true if the collection has been computed (i.e. stats have been s
+     * set and rejects identified).
+     *
+     * @return bool
+     */
+    public function isComputed()
+    {
+        return $this->computed;
     }
 
     /**
