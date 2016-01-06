@@ -261,7 +261,7 @@ class Registry
     }
 
     /**
-     * Process raw configuration as recieved from the CLI, for example:.
+     * Process raw configuration as received from the CLI, for example:.
      *
      * ````
      * {"generator": "table", "sort": ["time"]}

@@ -106,7 +106,7 @@ List of report definitions:
     }
 
 The key is the name of the report that you are defining, and the object
-properties are the options for the report. Eeach report must specify either
+properties are the options for the report. Each report must specify either
 the ``generator`` or ``extends`` key, specifying the :doc:`generator
 <report-generators>` or report to extend respectively.
 
@@ -150,7 +150,7 @@ the CLI.
         "time_unit": "milliseconds"
     }
 
-Similarily the :ref:`mode` can be set using the `output_mode` key:
+Similarly the :ref:`mode` can be set using the `output_mode` key:
 
 .. code-block:: javascript
 

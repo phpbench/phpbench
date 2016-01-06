@@ -25,7 +25,7 @@ use PhpBench\Registry\Config;
  * The executor bundles both the methods for executing before and after and the
  * benchmark iteration executor.
  *
- * The standard use case for an Excecutor is to execute or obtain the iteration
+ * The standard use case for an Executor is to execute or obtain the iteration
  * measurements in a different way (e.g. xdebug, blackfire), the executeMethods logic
  * has nothing to do with this and so this awkward base class is required.
  *

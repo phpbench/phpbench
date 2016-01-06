@@ -45,7 +45,7 @@ Now perform a Composer install:
     chapter for more information.
 
 PHPBench should now be installed. Now create two directories, ``benchmarks``
-and ``lib`` which we will need futher on:
+and ``lib`` which we will need further on:
 
 .. code-block:: bash
 
@@ -70,7 +70,7 @@ Create the file ``phpbench.json`` in the projects root directory:
 .. note::
 
     PHPBench does not **require** a bootstrap (or a configuration file for
-    that matter). You may ommit it if you do not need autoloading, or you want
+    that matter). You may omit it if you do not need autoloading, or you want
     to include files manually.
 
 Creating and running a benchmark
@@ -98,7 +98,7 @@ In order to benchmark your code you will need to execute that code within
 a method of a benchmarking class. Benchmarking classes MUST have the ``Bench``
 suffix and each benchmarking method must be prefixed with ``bench``. 
 
-Create the following class in the ``benchmarks`` direcctory:
+Create the following class in the ``benchmarks`` directory:
 
 .. code-block:: php
 
@@ -138,7 +138,7 @@ And you should see some output similar to the following:
     +-------------------+---------------+-------+--------+------+------+-----+----------+------------+---------+-------+
     | benchmark         | subject       | group | params | revs | iter | rej | mem      | time       | z-score | diff  |
     +-------------------+---------------+-------+--------+------+------+-----+----------+------------+---------+-------+
-    | TimeConsumerBench | benchConsumee |       | []     | 1    | 0    | 0   | 265,936b | 173.0000μs | 0.00σ   | 0.00% |
+    | TimeConsumerBench | benchConsume  |       | []     | 1    | 0    | 0   | 265,936b | 173.0000μs | 0.00σ   | 0.00% |
     +-------------------+---------------+-------+--------+------+------+-----+----------+------------+---------+-------+
 
 You may have guessed that the code was only executed once (as indicated by the
@@ -218,7 +218,7 @@ about 2% should be treated as suspicious.
 
 To increase stability you can use the ``--retry-threshold`` to automatically
 :ref:`repeat the iterations <retry_threshold>` until the `diff` (the
-percentage difference from the lowest measuremnt) fits within a given
+percentage difference from the lowest measurement) fits within a given
 threshold:
 
 .. note:

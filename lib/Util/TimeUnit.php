@@ -159,7 +159,7 @@ class TimeUnit
     }
 
     /**
-     * Utility method, if the dest unit is overridden, return the overriden
+     * Utility method, if the dest unit is overridden, return the overridden
      * value.
      *
      * @return string
@@ -174,7 +174,7 @@ class TimeUnit
     }
 
     /**
-     * Utility method, if the mode is overridden, return the overriden
+     * Utility method, if the mode is overridden, return the overridden
      * value.
      *
      * @return string
@@ -189,7 +189,7 @@ class TimeUnit
     }
 
     /**
-     * Utility method, if the precision is overridden, return the overriden
+     * Utility method, if the precision is overridden, return the overridden
      * value.
      *
      * @return string
