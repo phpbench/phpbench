@@ -74,9 +74,9 @@ class PhpBenchLogger extends NullLogger implements OutputAwareInterface
         $this->output->writeln(sprintf(
             '(%s) = %s %s %s (%s)',
             $this->timeUnit->getMode() == TimeUnit::MODE_TIME ? 'min mean max' : 'max mean min',
-            number_format($this->timeUnit->toDestUnit($suiteDocument->getMin()), 3),
+            number_format($this->timeUnit->toDestUnit($suiteDocument->getMinTime()), 3),
             number_format($this->timeUnit->toDestUnit($suiteDocument->getMeanTime()), 3),
-            number_format($this->timeUnit->toDestUnit($suiteDocument->getMax()), 3),
+            number_format($this->timeUnit->toDestUnit($suiteDocument->getMaxTime()), 3),
             $this->timeUnit->getDestSuffix()
         ));
 

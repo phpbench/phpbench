@@ -61,7 +61,7 @@ class SuiteDocument extends Document
      */
     public function getNbRevolutions()
     {
-        return (int) $this->evaluate('sum(//iteration/@revs)');
+        return (int) $this->evaluate('number(//variant/@revs) * count(//iteration)');
     }
 
     /**
@@ -81,7 +81,7 @@ class SuiteDocument extends Document
      */
     public function getTotalTime()
     {
-        return (float) $this->evaluate('sum(//iteration/@time-net)');
+        return (float) $this->evaluate('sum(//iteration/@net-time)');
     }
 
     /**
@@ -114,7 +114,7 @@ class SuiteDocument extends Document
      *
      * @return float
      */
-    public function getMin()
+    public function getMinTime()
     {
         return $this->getTimes() ? min($this->getTimes()) : 0;
     }
@@ -134,7 +134,7 @@ class SuiteDocument extends Document
      *
      * @return float
      */
-    public function getMax()
+    public function getMaxTime()
     {
         return $this->getTimes() ? max($this->getTimes()) : 0;
     }
@@ -147,7 +147,7 @@ class SuiteDocument extends Document
     public function getTimes()
     {
         $times = array();
-        $nodes = $this->evaluate('.//iteration/@time');
+        $nodes = $this->evaluate('.//iteration/@rev-time');
         foreach ($nodes as $node) {
             $times[] = $node->nodeValue;
         }

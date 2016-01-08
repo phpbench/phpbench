@@ -112,9 +112,9 @@ abstract class PhpBenchLoggerTest extends \PHPUnit_Framework_TestCase
         $this->document->getNbIterations()->willReturn($nbIterations);
         $this->document->getNbRevolutions()->willReturn($nbRevolutions);
         $this->document->getNbRejects()->willReturn($nbRejects);
-        $this->document->getMin()->willReturn($min);
+        $this->document->getMinTime()->willReturn($min);
         $this->document->getMeanTime()->willReturn($mean);
-        $this->document->getMax()->willReturn($max);
+        $this->document->getMaxTime()->willReturn($max);
         $this->document->getTotalTime()->willReturn($totalTime);
         $this->document->getMeanStDev()->willReturn($meanStDev);
         $this->document->getMeanRelStDev()->willReturn($meanRelStDev);
