@@ -104,6 +104,7 @@ abstract class PhpBenchLoggerTest extends \PHPUnit_Framework_TestCase
         $min = 10;
         $max = 12;
         $mean = 11;
+        $mode = 10;
         $totalTime = 123;
         $meanStDev = 321;
         $meanRelStDev = 231;
@@ -114,6 +115,7 @@ abstract class PhpBenchLoggerTest extends \PHPUnit_Framework_TestCase
         $this->document->getNbRejects()->willReturn($nbRejects);
         $this->document->getMinTime()->willReturn($min);
         $this->document->getMeanTime()->willReturn($mean);
+        $this->document->getModeTime()->willReturn($mode);
         $this->document->getMaxTime()->willReturn($max);
         $this->document->getTotalTime()->willReturn($totalTime);
         $this->document->getMeanStDev()->willReturn($meanStDev);

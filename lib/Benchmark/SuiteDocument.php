@@ -130,6 +130,16 @@ class SuiteDocument extends Document
     }
 
     /**
+     * Return the mode time.
+     *
+     * @return float
+     */
+    public function getModeTime()
+    {
+        return Statistics::kdeMode($this->getTimes());
+    }
+
+    /**
      * Return the maximum time.
      *
      * @return float

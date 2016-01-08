@@ -17,6 +17,7 @@ Features:
 - Control stability of results with multiple iterations and retry threshold.
 - Memory usage statistics.
 - Standard deviation and Z-Scores.
+- Kernel density estimate used to estimate the mode.
 - Time unit specification.
 - Output mode specification (throughput, average time).
 - Parameterized benchmarking cases.

@@ -51,6 +51,7 @@ class VerboseLoggerTest extends \PHPUnit_Framework_TestCase
         $this->iterations->getRejectCount()->willReturn(0);
         $this->iterations->getStats()->willReturn(array(
             'mean' => 1.0,
+            'mode' => 1.0,
             'stdev' => 2.0,
             'rstdev' => 20.0,
         ));
@@ -61,7 +62,7 @@ class VerboseLoggerTest extends \PHPUnit_Framework_TestCase
         $this->subject->getName()->willReturn('benchFoo');
         $this->parameterSet->getIndex()->willReturn(0);
 
-        $this->output->write(Argument::containingString('0.001ms'))->shouldBeCalled();
+        $this->output->write(Argument::containingString('0.001 (ms)'))->shouldBeCalled();
         $this->output->write(PHP_EOL)->shouldBeCalled();
         $this->logger->iterationsEnd($this->iterations->reveal());
     }
@@ -76,6 +77,7 @@ class VerboseLoggerTest extends \PHPUnit_Framework_TestCase
         $this->iterations->getRejectCount()->willReturn(0);
         $this->iterations->getStats()->willReturn(array(
             'mean' => 1.0,
+            'mode' => 1.0,
             'stdev' => 2.0,
             'rstdev' => 20.0,
         ));
@@ -86,7 +88,7 @@ class VerboseLoggerTest extends \PHPUnit_Framework_TestCase
         $this->subject->getName()->willReturn('benchFoo');
         $this->parameterSet->getIndex()->willReturn(0);
 
-        $this->output->write(Argument::containingString('1.000ops/μs'))->shouldBeCalled();
+        $this->output->write(Argument::containingString('1.000 (ops/μs)'))->shouldBeCalled();
         $this->output->write(PHP_EOL)->shouldBeCalled();
         $this->logger->iterationsEnd($this->iterations->reveal());
     }

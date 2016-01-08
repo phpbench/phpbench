@@ -45,14 +45,15 @@ Columns:
 The aggregate report is similar to the ``default`` report, but shows only one
 row for each subject:
 
+.. code-block:: bash
 
-    +------------------+-------------+---------+--------+-------+-----+-----+----------+----------+----------+--------+--------+
-    | benchmark        | subject     | group   | params | revs  | its | rej | mem      | time     | range    | stdev  | rstdev |
-    +------------------+-------------+---------+--------+-------+-----+-----+----------+----------+----------+--------+--------+
-    | HashingBenchmark | benchMd5    | hashing | []     | 10000 | 10  | 0   | 268,160b | 0.9998μs | 0.8660μs | 0.27μs | 27.01% |
-    | HashingBenchmark | benchSha256 | hashing | []     | 10000 | 10  | 0   | 268,160b | 1.2835μs | 0.1850μs | 0.06μs | 4.75%  |
-    | HashingBenchmark | benchSha1   | hashing | []     | 10000 | 10  | 0   | 268,160b | 0.9597μs | 0.1310μs | 0.04μs | 4.35%  |
-    +------------------+-------------+---------+--------+-------+-----+-----+----------+----------+----------+--------+--------+
+    +------------------+-------------+---------+--------+------+-----+----------+---------+---------+---------+---------+---------+--------+
+    | benchmark        | subject     | group   | params | revs | its | mem      | best    | mean    | mode    | worst   | stdev   | rstdev |
+    +------------------+-------------+---------+--------+------+-----+----------+---------+---------+---------+---------+---------+--------+
+    | HashingBenchmark | benchMd5    | hashing | []     | 1000 | 10  | 272,616b | 2.470μs | 2.636μs | 2.621μs | 2.805μs | 0.093μs | 3.55%  |
+    | HashingBenchmark | benchSha1   | hashing | []     | 1000 | 10  | 272,616b | 2.640μs | 2.837μs | 2.903μs | 2.937μs | 0.097μs | 3.43%  |
+    | HashingBenchmark | benchSha256 | hashing | []     | 1000 | 10  | 272,616b | 2.735μs | 3.021μs | 2.988μs | 3.247μs | 0.159μs | 5.26%  |
+    +------------------+-------------+---------+--------+------+-----+----------+---------+---------+---------+---------+---------+--------+
 
 Generator: :ref:`generator_table`.
 
@@ -64,10 +65,12 @@ Columns:
 - **params**: Any :ref:`parameters` which were passed to the benchmark.
 - **revs**: Sum of the number of :ref:`revolutions` for all iterations.
 - **its**: Number of :ref:`iterations <iterations>` performed.
-- **rej**: Number of rejected iterations (see :ref:`retry_threshold`).
 - **mem**: Average memory used by iteration.
-- **time**: Average time.
-- **range**: Difference between the slowest and fastest times.
+- **best**: Best time; either min (time) or max (throughput)
+- **mean**: Average time.
+- **mode**: Mode time, the most frequent time according to a kernel density
+  estimate.
+- **worst**: Worst time; either max (time) or min (throughput)
 - **stdev**: The `standard deviation`_.
   benchmarks).
 - **rstdev**: `Relative standard deviation`_ as a percentage (standardized

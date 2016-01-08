@@ -35,4 +35,111 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
         $expected = 33 / 7;
         $this->assertEquals($expected, Statistics::mean(array(2, 2, 2, 2, 2, 20, 3)));
     }
+
+    /**
+     * It should generate a linear space.
+     *
+     * @dataProvider provideLinearSpace
+     */
+    public function testLinearSpace($min, $max, $steps, $endpoint, $expected)
+    {
+        $result = Statistics::linspace($min, $max, $steps, $endpoint);
+        $this->assertEquals($expected, $result);
+    }
+
+    public function provideLinearSpace()
+    {
+        return array(
+            array(
+                2, 3, 5,
+                true,
+                array(2, 2.25, 2.5, 2.75, 3),
+            ),
+            array(
+                2, 10, 5,
+                true,
+                array(2, 4, 6, 8, 10),
+            ),
+            array(
+                2, 10, 5,
+                false,
+                array(
+                    2,
+                    3.6000000000000001,
+                    5.2000000000000002,
+                    6.8000000000000007,
+                    8.4000000000000004,
+                ),
+            ),
+        );
+    }
+
+    /**
+     * It should throw an exception if the linspace min and max are the same number.
+     *
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Min and max cannot be the same number: 4
+     */
+    public function testLinspaceMinMaxSame()
+    {
+        Statistics::linspace(4, 4, 10);
+    }
+
+    /**
+     * @dataProvider provideKdeMode
+     */
+    public function testKdeMode($population, $space, $bandwidth, $expected)
+    {
+        $result = Statistics::kdeMode($population, $space, $bandwidth);
+        $this->assertEquals($expected, round($result, 2));
+    }
+
+    public function provideKdeMode()
+    {
+        return array(
+            array(
+                array(
+                    10, 20, 15, 5,
+                ),
+                10,
+                'silverman',
+                13.33,
+            ),
+            array(
+                array(
+                    10, 20,
+                ),
+                10,
+                'silverman',
+                15.56,
+            ),
+            array(
+                // custom bandwidth, multimodal
+                array(
+                    10, 20, 15, 5,
+                ),
+                10,
+                0.2,
+                12.5,
+            ),
+            array(
+                // only one element
+                array(
+                    10,
+                ),
+                10,
+                0.1,
+                10,
+            ),
+            array(
+                // min and max the same
+                array(
+                    10, 10, 10,
+                ),
+                10,
+                0.1,
+                10,
+            ),
+        );
+    }
 }

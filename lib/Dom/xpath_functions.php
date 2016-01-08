@@ -14,6 +14,8 @@
  */
 namespace PhpBench\Dom\functions;
 
+use PhpBench\Tabular\Tabular\Dom\values;
+
 /**
  * Convert a DOMNodeList of parameter elements to a JSON encoded string.
  *
@@ -150,4 +152,11 @@ function _nodelist_to_array($nodeList)
     }
 
     return $nodes;
+}
+
+function kde_mode($nodeList)
+{
+    $values = values($nodeList);
+
+    return Statistics::kdeMode($values);
 }

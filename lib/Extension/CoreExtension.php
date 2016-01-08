@@ -322,6 +322,7 @@ class CoreExtension implements ExtensionInterface
             $resolver->registerFunction('parameters_to_json', 'PhpBench\Dom\functions\parameters_to_json');
             $resolver->registerFunction('class_name', 'PhpBench\Dom\functions\class_name');
             $resolver->registerFunction('join_node_values', 'PhpBench\Dom\functions\join_node_values');
+            $resolver->registerFunction('kde_mode', 'PhpBench\Dom\functions\join_node_values');
             $resolver->registerFunction('suite', 'PhpBench\Dom\functions\suite');
 
             return $resolver;

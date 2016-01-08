@@ -156,7 +156,10 @@ class IterationCollection implements \IteratorAggregate, \ArrayAccess, \Countabl
         // mean of the times
         $this->stats['mean'] = Statistics::mean($times);
 
-        // standard error
+        // mode based on the kernel distribution function
+        $this->stats['mode'] = Statistics::kdeMode($times);
+
+        // relative standard error
         $this->stats['rstdev'] = $this->stats['stdev'] / $this->stats['mean'] * 100;
 
         // variance

@@ -248,9 +248,14 @@ class TimeUnit
      * @param string
      * @param string
      */
-    public function format($time, $unit = null, $mode = null, $precision = null)
+    public function format($time, $unit = null, $mode = null, $precision = null, $suffix = true)
     {
         $value = number_format($this->toDestUnit($time, $unit, $mode), $precision ?: $this->precision);
+
+        if (false === $suffix) {
+            return $value;
+        }
+
         $suffix = $this->getDestSuffix($unit, $mode);
 
         return $value . $suffix;
@@ -344,7 +349,11 @@ class TimeUnit
      */
     public static function getSuffix($unit, $mode = null)
     {
-        self::validateUnit($unit);
+        if (null !== $unit) {
+            self::validateUnit($unit);
+        } else {
+            $unit = $this->destUnit;
+        }
 
         $suffix = self::$suffixes[$unit];
 

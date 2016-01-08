@@ -80,4 +80,89 @@ class Statistics
 
         return $sum / $count;
     }
+
+    /**
+     * Return the mode using the kernel density estimator using the normal
+     * distribution.
+     *
+     * The mode is the point in the kernel density estimate with the highest
+     * frequency, i.e. the time which correlates with the highest peak.
+     *
+     * If there are two or more modes (i.e. bimodal, trimodal, etc) then we
+     * could take the average of these modes.
+     *
+     * NOTE: If the kde estimate of the population is multi-modal (it has two
+     * points with exactly the same value) then the mean mode is returned. This
+     * is potentially misleading, but When benchmarking this should be a very
+     * rare occurance.
+     *
+     * @param array $population
+     * @param int $space
+     * @param float $bandwidth
+     *
+     * @return float[]
+     */
+    public static function kdeMode(array $population, $space = 512, $bandwidth = null)
+    {
+        if (count($population) === 1) {
+            return current($population);
+        }
+
+        if (count($population) === 0) {
+            return 0;
+        }
+
+        if (min($population) == max($population)) {
+            return min($population);
+        }
+
+        $kde = new Kde($population, $bandwidth);
+        $space = self::linspace(min($population), max($population), $space, true);
+        $dist = $kde->evaluate($space);
+
+        $maxKeys = array_keys($dist, max($dist));
+        $modes = array();
+
+        foreach ($maxKeys as $maxKey) {
+            $modes[] = $space[$maxKey];
+        }
+
+        $mode = array_sum($modes) / count($modes);
+
+        return $mode;
+    }
+
+    /**
+     * Return an array populated with $num numbers from $min to $max.
+     *
+     * @param float $min
+     * @param float $max
+     * @param int $num
+     * @param bool $endpoint
+     *
+     * @return float[]
+     */
+    public static function linspace($min, $max, $num = 50, $endpoint = true)
+    {
+        $range = $max - $min;
+
+        if ($max == $min) {
+            throw new \InvalidArgumentException(sprintf(
+                'Min and max cannot be the same number: %s', $max
+            ));
+        }
+
+        $unit = $range / ($endpoint ? $num - 1 : $num);
+        $space = array();
+
+        for ($value = $min; $value <= $max; $value += $unit) {
+            $space[] = $value;
+        }
+
+        if ($endpoint === false) {
+            array_pop($space);
+        }
+
+        return $space;
+    }
 }
