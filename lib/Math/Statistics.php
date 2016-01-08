@@ -146,12 +146,40 @@ class Statistics
      * Calculate the kernel desensity using the normal probability
      * density function.
      *
+     * TODO: This does not correlate with R for some reason.
+     *
+     *
+     * R gives the mode as follows:
+     *
+     *       dens <- density(c(1.0, 4.0, 3.0, 2.0, 2.0, 3.0, 4.0, 1.0, 0.5))
+     *       dens$y[which.max(dens$y)]
+     *       [1] 0.230067 
+     *
+     * We get max Y value of  0.15912348212862
+     *
+     * Our last value: 0.15912348212862
+     * Rs last value: 0.1699336
+     *
+     * Making the sample SD instead of the population SD improves this marginally, but
+     * we are still quite a far way out.
+     *
+     * TODO: Check for less than zero values in population.
+     * TODO: Bandwidth determination.
+     * TODO: This is really slow.
      */
-    public static function kdeNormal(array $population, $bandwidth = 0.5)
+    public static function kdeNormal(array $population, $bandwidth = 0.5, $space = 128)
     {
         $xMin = min($population);
         $xMax = max($population);
-        $xValues = self::linspace($xMin, $xMax, 100);
+
+        if ($xMin == $xMax) {
+            throw new \InvalidArgumentException(sprintf(
+                'Population must have different values for min and max, both are: "%s"',
+                $xMin
+            ));
+        }
+
+        $xValues = self::linspace($xMin, $xMax, $space, false);
         $yValues = array_fill(0, count($xValues), 0);
 
         $counter = 0;
@@ -162,7 +190,7 @@ class Statistics
                 $sum += self::pdfNormal(
                     ($xValue - $sample) / $bandwidth,
                     0,
-                    Statistics::stdev($population)
+                    Statistics::stdev($population, true)
                 );
             }
             $yValues[$counter] = $sum / (count($population) * $bandwidth);
@@ -172,17 +200,62 @@ class Statistics
         return array_combine($xValues, $yValues);
     }
 
-    public static function kdeNormalMedian(array $population, $bandwidth)
+    /**
+     * Return the mode using the kernel density estimator using the normal
+     * distribution.
+     *
+     * The mode is the point in the kernel density estimate with the highest
+     * frequency, i.e. the time which correlates with the highest peak.
+     *
+     * If there are two or more modes (i.e. bimodal, trimodal, etc) then we
+     * could take the average of these modes.
+     *
+     * TODO: Handle multi-modal populations.
+     *
+     * @param array $population
+     * @param float $bandwidth
+     * @return float
+     */
+    public static function kdeNormalMode(array $population, $bandwidth)
     {
+        if (count($population) === 1) {
+            return current($population);
+        }
+
+        if (count($population) === 0) {
+            return 0;
+        }
+
+        if (min($population) == max($population)) {
+            return min($population);
+        }
+
         $kde = self::kdeNormal($population, $bandwidth);
         $keys = array_keys($kde, max($kde));
 
         return reset($keys);
     }
 
+    /**
+     * Return an array populated with $num numbers from $min to $max.
+     *
+     * @param float $min
+     * @param float $max
+     * @param int $num
+     * @param boolean $endpoint
+     *
+     * @return float[]
+     */
     public static function linspace($min, $max, $num = 50, $endpoint = true)
     {
         $range = $max - $min;
+
+        if ($max == $min) {
+            throw new \InvalidArgumentException(sprintf(
+                'Min and max cannot be the same number: "%s"', $max
+            ));
+        }
+
         $unit = $range / ($endpoint ? $num - 1 : $num);
         $space = array();
 

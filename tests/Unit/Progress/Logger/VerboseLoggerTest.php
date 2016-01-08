@@ -51,6 +51,7 @@ class VerboseLoggerTest extends \PHPUnit_Framework_TestCase
         $this->iterations->getRejectCount()->willReturn(0);
         $this->iterations->getStats()->willReturn(array(
             'mean' => 1.0,
+            'mode' => 1.0,
             'stdev' => 2.0,
             'rstdev' => 20.0,
         ));
@@ -76,6 +77,7 @@ class VerboseLoggerTest extends \PHPUnit_Framework_TestCase
         $this->iterations->getRejectCount()->willReturn(0);
         $this->iterations->getStats()->willReturn(array(
             'mean' => 1.0,
+            'mode' => 1.0,
             'stdev' => 2.0,
             'rstdev' => 20.0,
         ));

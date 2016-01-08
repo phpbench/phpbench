@@ -143,9 +143,9 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
      *
      * @dataProvider provideKdeNormal
      */
-    public function testKdeNormalMedian(array $population, $bandwidth, $expected)
+    public function testKdeNormalMode(array $population, $bandwidth, $expected)
     {
-        $result = Statistics::kdeNormalMedian($population, $bandwidth);
+        $result = Statistics::kdeNormalMode($population, $bandwidth);
         $this->assertEquals($expected, $result);
     }
 
@@ -155,8 +155,18 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
             array(
                 array(1.0, 4.0, 3.0, 2.0, 2.0, 3.0, 4.0, 1.0, 0.5),
                 0.7549,
-                2.
-            )
+                2.05859375 // this does not match up with R
+            ),
+            array(
+                array(4),
+                123,
+                4
+            ),
+            array(
+                array(10, 10, 10),
+                123,
+                10
+            ),
         );
     }
 }

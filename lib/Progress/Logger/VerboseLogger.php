@@ -83,8 +83,10 @@ class VerboseLogger extends PhpBenchLogger
         $mode = $iterations->getSubject()->getOutputMode();
 
         $this->output->write(sprintf(
-            "\tμ/r: %s\tμSD/r %s\tμRSD/r: %s%%",
+            "\tμ/r: %s\tθ/r: %s \tμSD/r: %s\tμRSD/r: %s%%",
+
             $this->timeUnit->format($stats['mean'], $this->timeUnit->resolveDestUnit($timeUnit), $this->timeUnit->resolveMode($mode)),
+            $this->timeUnit->format($stats['mode'], $this->timeUnit->resolveDestUnit($timeUnit), $this->timeUnit->resolveMode($mode)),
             $this->timeUnit->format($stats['stdev'], $this->timeUnit->resolveDestUnit($timeUnit), TimeUnit::MODE_TIME),
             number_format($stats['rstdev'], 2)
         ));
