@@ -35,4 +35,128 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
         $expected = 33 / 7;
         $this->assertEquals($expected, Statistics::mean(array(2, 2, 2, 2, 2, 20, 3)));
     }
+
+    /**
+     * It should return histogram data.
+     *
+     * @dataProvider provideHistogram
+     */
+    public function testHistogram(array $data, $steps, $lower, $upper, array $expected)
+    {
+        $result = Statistics::histogram($data, $steps, $lower, $upper);
+        $this->assertEquals($expected, $result);
+    }
+
+    public function provideHistogram()
+    {
+        return array(
+            array(
+                array(10, 10, 2, 2),
+                10,
+                null, null,
+                array(
+                    2 => 2,
+                    '2.8' => 0,
+                    '3.6' => 0,
+                    '4.4' => 0,
+                    '5.2' => 0,
+                    '6' => 0,
+                    '6.8' => 0,
+                    '7.6' => 0,
+                    '8.4' => 0,
+                    '9.2' => 0,
+                    10 => 2,
+                ),
+            ),
+            array(
+                array(1, 10, 2, 2, 2, 3, 2, 4),
+                9,
+                null, null,
+                array(
+                    1 => 1,
+                    2 => 4,
+                    3 => 1,
+                    4 => 1,
+                    5 => 0,
+                    6 => 0,
+                    7 => 0,
+                    8 => 0,
+                    9 => 0,
+                    10 => 1,
+                ),
+            )
+        );
+    }
+
+
+    /**
+     * It should calculate the normal probability density function.
+     *
+     * @dataProvider providePdfNormal
+     */
+    public function testPdfNormal($xValue, $mean, $stDev, $expected)
+    {
+        $result = Statistics::pdfNormal($xValue, $mean, $stDev);
+        $this->assertEquals($expected, round($result, 8));
+    }
+
+    public function providePdfNormal()
+    {
+        return array(
+            array(
+                10,
+                5,
+                2,
+                0.00876415,
+            )
+        );
+    }
+
+    /**
+     * It should generate a linear space.
+     *
+     * @dataProvider provideLinearSpace
+     */
+    public function testLinearSpace($min, $max, $steps, $expected)
+    {
+        $result = Statistics::linspace($min, $max, $steps);
+        $this->assertEquals($expected, $result);
+    }
+
+    public function provideLinearSpace()
+    {
+        return array(
+            array(
+                2, 3, 5,
+                array(2, 2.25, 2.5, 2.75, 3)
+            ),
+            array(
+                2, 10, 5,
+                array(2, 4, 6, 8, 10)
+            ),
+        );
+    }
+
+    /**
+     * It should generate a kernel density estimate (kde) using
+     * a normal kernel.
+     *
+     * @dataProvider provideKdeNormal
+     */
+    public function testKdeNormalMedian(array $population, $bandwidth, $expected)
+    {
+        $result = Statistics::kdeNormalMedian($population, $bandwidth);
+        $this->assertEquals($expected, $result);
+    }
+
+    public function provideKdeNormal()
+    {
+        return array(
+            array(
+                array(1.0, 4.0, 3.0, 2.0, 2.0, 3.0, 4.0, 1.0, 0.5),
+                0.7549,
+                2.
+            )
+        );
+    }
 }
