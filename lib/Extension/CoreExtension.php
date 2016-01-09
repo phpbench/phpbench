@@ -56,6 +56,7 @@ use PhpBench\Tabular\TableBuilder;
 use PhpBench\Tabular\Tabular;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Finder\Finder;
+use PhpBench\Report\Generator\HistogramGenerator;
 
 class CoreExtension implements ExtensionInterface
 {
@@ -292,6 +293,9 @@ class CoreExtension implements ExtensionInterface
                 $container->getParameter('config_path')
             );
         }, array('report_generator' => array('name' => 'table_custom')));
+        $container->register('report_generator.histogram', function (Container $container) {
+            return new HistogramGenerator();
+        }, array('report_generator' => array('name' => 'histogram')));
         $container->register('report_generator.composite', function (Container $container) {
             return new CompositeGenerator($container->get('report.manager'));
         }, array('report_generator' => array('name' => 'composite')));

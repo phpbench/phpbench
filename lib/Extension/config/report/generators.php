@@ -28,4 +28,7 @@ return array(
         'formatting' => false,
         'body_only' => true,
     ),
+    'histogram' => array(
+        'generator' => 'histogram',
+    ),
 );
