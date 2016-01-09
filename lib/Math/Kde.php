@@ -92,17 +92,17 @@ class Kde
      *          Chapman and Hall, London, 1986.
      *
      * @param array $dataset Array of univariate data points.
-     * @param string $bw_method : Either "scott" or "silverman"
+     * @param string $bwMethod : Either "scott" or "silverman"
      *
      */
-    public function __construct(array $dataset, $bw_method = null)
+    public function __construct(array $dataset, $bwMethod = null)
     {
         $this->dataset = $dataset;
         if (count($this->dataset) <= 1) {
             throw new \OutOfBoundsException('`dataset` input should have multiple elements.');
         }
 
-        $this->setBandwidth($bw_method);
+        $this->setBandwidth($bwMethod);
     }
 
     /**
@@ -177,22 +177,26 @@ class Kde
      * The new bandwidth calculated after a call to `setBandwidth` is used
      * for subsequent evaluations of the estimated density.
      *
-     * @param string $bw_method Either "scott" or "silverman"
+     * @param string $bwMethod Either "scott" or "silverman"
      */
-    public function setBandwidth($bw_method = null)
+    public function setBandwidth($bwMethod = null)
     {
-        if ($bw_method == 'scott' || null === $bw_method) {
+        if ($bwMethod == 'scott' || null === $bwMethod) {
             $this->coVarianceFactor = function () {
                 return pow(count($this->dataset), -1. / (5));
             };
-        } elseif ($bw_method == 'silverman') {
+        } elseif ($bwMethod == 'silverman') {
             $this->coVarianceFactor = function () {
                 return pow(count($this->dataset) * (3.0) /4.0, -1. / (5));
+            };
+        } elseif (is_scalar($bwMethod)) {
+            $this->coVarianceFactor = function () use ($bwMethod) {
+                return $bwMethod;
             };
         } else {
             throw new \InvalidArgumentException(sprintf(
                 'Unknown bandwidth method "%s"',
-                $bw_method
+                $bwMethod
             ));
         }
 

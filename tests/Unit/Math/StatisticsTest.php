@@ -155,7 +155,7 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
             array(
                 array(1.0, 4.0, 3.0, 2.0, 2.0, 3.0, 4.0, 1.0, 0.5),
                 0.7549,
-                2.05859375 // this does not match up with R
+                2.0517578125
             ),
             array(
                 array(4),

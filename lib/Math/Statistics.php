@@ -143,64 +143,6 @@ class Statistics
     }
 
     /**
-     * Calculate the kernel desensity using the normal probability
-     * density function.
-     *
-     * TODO: This does not correlate with R for some reason.
-     *
-     *
-     * R gives the mode as follows:
-     *
-     *       dens <- density(c(1.0, 4.0, 3.0, 2.0, 2.0, 3.0, 4.0, 1.0, 0.5))
-     *       dens$y[which.max(dens$y)]
-     *       [1] 0.230067 
-     *
-     * We get max Y value of  0.15912348212862
-     *
-     * Our last value: 0.15912348212862
-     * Rs last value: 0.1699336
-     *
-     * Making the sample SD instead of the population SD improves this marginally, but
-     * we are still quite a far way out.
-     *
-     * TODO: Check for less than zero values in population.
-     * TODO: Bandwidth determination.
-     * TODO: This is really slow.
-     */
-    public static function kdeNormal(array $population, $bandwidth = 0.5, $space = 128)
-    {
-        $xMin = min($population);
-        $xMax = max($population);
-
-        if ($xMin == $xMax) {
-            throw new \InvalidArgumentException(sprintf(
-                'Population must have different values for min and max, both are: "%s"',
-                $xMin
-            ));
-        }
-
-        $xValues = self::linspace($xMin, $xMax, $space, false);
-        $yValues = array_fill(0, count($xValues), 0);
-
-        $counter = 0;
-        foreach ($xValues as $xValue) {
-
-            $sum = 0;
-            foreach ($population as $sample) {
-                $sum += self::pdfNormal(
-                    ($xValue - $sample) / $bandwidth,
-                    0,
-                    Statistics::stdev($population, true)
-                );
-            }
-            $yValues[$counter] = $sum / (count($population) * $bandwidth);
-            $counter++;
-        }
-
-        return array_combine($xValues, $yValues);
-    }
-
-    /**
      * Return the mode using the kernel density estimator using the normal
      * distribution.
      *
@@ -216,7 +158,7 @@ class Statistics
      * @param float $bandwidth
      * @return float
      */
-    public static function kdeNormalMode(array $population, $bandwidth)
+    public static function kdeNormalMode(array $population, $bandwidth = null)
     {
         if (count($population) === 1) {
             return current($population);
@@ -230,10 +172,14 @@ class Statistics
             return min($population);
         }
 
-        $kde = self::kdeNormal($population, $bandwidth);
-        $keys = array_keys($kde, max($kde));
+        $kde = new Kde($population, $bandwidth);
+        $space = self::linspace(min($population), max($population), 512, false);
+        $dist = $kde->evaluate($space);
 
-        return reset($keys);
+        $keys = array_keys($dist, max($dist));
+        $index = reset($keys);
+
+        return $space[$index];
     }
 
     /**
