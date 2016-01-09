@@ -169,26 +169,4 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
             ),
         );
     }
-
-    /**
-     * It should provide the covariance of two populations.
-     *
-     * @dataProvider provideCovariance
-     */
-    public function testCovariance($xValues, $expected)
-    {
-        $covariance = Statistics::covariance($xValues);
-        $this->assertEquals($expected, $covariance);
-    }
-
-    public function provideCovariance()
-    {
-        return array(
-            array(
-                array(10, 20, 15, 5),
-                12
-            ),
-        );
-    }
-
 }

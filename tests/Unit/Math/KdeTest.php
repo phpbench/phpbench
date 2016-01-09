@@ -31,6 +31,16 @@ class KdeTest extends \PHPUnit_Framework_TestCase
                 array(
                     10, 20, 15, 5
                 ),
+                Statistics::linspace(0, 9, 10),
+                'silverman',
+                array(
+                    0.01537595, 0.0190706, 0.02299592, 0.02700068, 0.03092369, 0.0346125, 0.03794007, 0.0408159, 0.04318983, 0.04504829
+                ),
+            ),
+            array(
+                array(
+                    10, 20, 15, 5
+                ),
                 Statistics::linspace(0, 3, 4),
                 'scott',
                 array(
@@ -45,16 +55,6 @@ class KdeTest extends \PHPUnit_Framework_TestCase
                 'silverman',
                 array(
                     0.01537595, 0.0190706, 0.02299592, 0.02700068,
-                ),
-            ),
-            array(
-                array(
-                    10, 20, 15, 5
-                ),
-                Statistics::linspace(0, 3, 10),
-                'scott',
-                array(
-                    0.01537595, 0.0190706, 0.02299592, 0.02700068, 0.03092369, 0.0346125, 0.03794007, 0.0408159, 0.04318983, 0.04504829,0.01537595, 0.0190706, 0.02299592, 0.02700068
                 ),
             ),
         );
