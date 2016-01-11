@@ -213,7 +213,7 @@ specified using the ``--progress`` option:
 
 The built-in progress loggers are:
 
-- ``verbose``: The default logger, format: `[R<retry nb.>] I<iter nb.> P<parameter set nb.> <mean per rev.> <standard deviation per rev.> <relative standard deviation per rev.>` ).
+- ``verbose``: The default logger, format: `[R<retry nb.>] I<iter nb.> P<parameter set nb.> <mean|mode per rev.> <standard deviation per rev.> <relative standard deviation per rev.>` ).
 - ``travis``: Similar to verbose, but with no fancy console manipulation. Perfect for travis.
 - ``dots``: Shows one dot per subject (like PHPUnit).
 - ``classdots``: Shows the benchmark class, and then a dot for each subject.
@@ -231,10 +231,10 @@ All of the progress reports contain the following footer:
 .. code-block:: bash
 
     3 subjects, 30 iterations, 30000 revs, 0 rejects
-    min mean max: 0.84 1.13 1.66 (μs/r)
+    min [mean mode] max: 0.84 [1.13 1.12] 1.66 (μs/r)
     ⅀T: 33987μs μSD/r 0.16μs μRSD/r: 14.92%
 
-It provides a summary of the minimum, mean, and maximum subject times, given
+It provides a summary of the minimum, mean, mode, and maximum subject times, given
 microseconds per revolution. ⅀T is the aggregate total time, μSD/r is the mean
 standard deviation, and μRSD/r is the mean relative standard deviation.
 

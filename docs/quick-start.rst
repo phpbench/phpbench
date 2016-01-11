@@ -129,11 +129,11 @@ And you should see some output similar to the following:
 
     \TimeConsumerBench
 
-        benchConsume                  I0 P0         μ/r: 173.00μs   μSD/r 0.00μs    μRSD/r: 0.00%
+        benchConsume                  I0 P0         [μ Mo]/r: 173.00μs   [μSD μRSD]/r: 0.00μs 0.00%
 
     1 subjects, 1 iterations, 1 revs, 0 rejects
     ⅀T: 173μs μSD/r 0.00μs μRSD/r: 0.00%
-    min mean max: 173.00 173.00 173.00 (μs/r)
+    min [mean mode] max: 173.00 [173.00 1732.00] 173.00 (μs/r)
 
     +-------------------+---------------+-------+--------+------+------+-----+----------+------------+---------+-------+
     | benchmark         | subject       | group | params | revs | iter | rej | mem      | time       | z-score | diff  |
