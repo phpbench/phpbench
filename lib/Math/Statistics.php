@@ -82,42 +82,6 @@ class Statistics
     }
 
     /**
-     * Generate a histogram
-     */
-    public static function histogram(array $values, $bins = 10, $lowerBound = null, $upperBound = null)
-    {
-        $min = $lowerBound ?: min($values);
-        $max = $upperBound ?: max($values);
-
-        $range = $max - $min;
-
-        $step = $range / $bins;
-        $bins++; // add one extra step to catch the max value
-
-        $histogram = array();
-
-        $floor = $min;
-        for ($i = 0; $i < $bins; $i++) {
-            $ceil = $floor + $step;
-
-            if (!isset($histogram[(string) $floor])) {
-                $histogram[(string) $floor] = 0;
-            }
-
-            foreach ($values as $value) {
-                if ($value >= $floor - ($step / 2) && $value < $ceil - ($step / 2)) {
-                    $histogram[(string) $floor]++;
-                }
-            }
-
-            $floor += $step;
-            $ceil += $step;
-        }
-
-        return $histogram;
-    }
-
-    /**
      * Return the mode using the kernel density estimator using the normal
      * distribution.
      *
