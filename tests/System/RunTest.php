@@ -20,7 +20,7 @@ class RunTest extends SystemTestCase
     {
         $process = $this->phpbench('run --verbose --config=env/config_valid/phpbench.json');
         $this->assertExitCode(0, $process);
-        $this->assertContains('min mean max', $process->getOutput());
+        $this->assertContains('best [mean mode] worst', $process->getOutput());
     }
 
     /**
@@ -31,7 +31,7 @@ class RunTest extends SystemTestCase
     {
         $process = $this->phpbench('run', 'env/config_valid');
         $this->assertExitCode(0, $process);
-        $this->assertContains('min mean max', $process->getOutput());
+        $this->assertContains('best [mean mode] worst', $process->getOutput());
     }
 
     /**
@@ -41,7 +41,7 @@ class RunTest extends SystemTestCase
     {
         $process = $this->phpbench('run', 'env/config_dist');
         $this->assertExitCode(0, $process);
-        $this->assertContains('min mean max', $process->getOutput());
+        $this->assertContains('best [mean mode] worst', $process->getOutput());
     }
 
     /**
@@ -243,7 +243,7 @@ class RunTest extends SystemTestCase
 
         $this->assertExitCode(0, $process);
         $output = $process->getOutput();
-        $this->assertContains('min mean max', $output);
+        $this->assertContains('best [mean mode] worst', $output);
     }
 
     /**
@@ -271,7 +271,7 @@ class RunTest extends SystemTestCase
             'run --progress=' . $progress . ' benchmarks/set1/BenchmarkBench.php'
         );
         $output = $process->getOutput();
-        $this->assertContains('min mean max', $output);
+        $this->assertContains('best [mean mode] worst', $output);
     }
 
     public function provideProgressLoggers()

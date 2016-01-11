@@ -107,9 +107,10 @@ class BlinkenLogger extends PhpBenchLogger
         $timeUnit = $iterations->getSubject()->getOutputTimeUnit();
         $stats = $iterations->getStats();
         $this->output->write(sprintf(
-            '<comment> μ/r: %s μRSD/r: %s%%</comment>',
-            $this->timeUnit->format($stats['mean'], $this->timeUnit->resolveDestUnit($timeUnit), $this->timeUnit->resolveMode($mode)),
-            //$this->timeUnit->format($stats['stdev'], $this->timeUnit->resolveDestUnit($timeUnit), TimeUnit::MODE_TIME),
+            '<comment> [μ Mo]/r: %s %s (%s) μRSD/r: %s%%</comment>',
+            $this->timeUnit->format($stats['mean'], $this->timeUnit->resolveDestUnit($timeUnit), $this->timeUnit->resolveMode($mode), null, false),
+            $this->timeUnit->format($stats['mode'], $this->timeUnit->resolveDestUnit($timeUnit), $this->timeUnit->resolveMode($mode), null, false),
+            $this->timeUnit->getDestSuffix($this->timeUnit->resolveDestUnit($timeUnit)),
             number_format($stats['rstdev'], 2)
         ));
 

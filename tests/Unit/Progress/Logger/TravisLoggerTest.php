@@ -45,6 +45,7 @@ class TravisLoggerTest extends PhpBenchLoggerTest
         $this->iterations->count()->willReturn(10);
         $this->iterations->getStats()->willReturn(array(
             'mean' => 1.0,
+            'mode' => 1.0,
             'stdev' => 2.0,
             'rstdev' => 20.0,
         ));
@@ -84,6 +85,7 @@ class TravisLoggerTest extends PhpBenchLoggerTest
         $this->iterations->hasException()->willReturn(false);
         $this->iterations->getStats()->willReturn(array(
             'mean' => 1.0,
+            'mode' => 1.0,
             'stdev' => 2.0,
             'rstdev' => 20.0,
         ));

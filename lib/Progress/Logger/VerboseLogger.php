@@ -79,15 +79,16 @@ class VerboseLogger extends PhpBenchLogger
         }
 
         $stats = $iterations->getStats();
-        $timeUnit = $iterations->getSubject()->getOutputTimeUnit();
-        $mode = $iterations->getSubject()->getOutputMode();
+        $timeUnit = $this->timeUnit->resolveDestUnit($iterations->getSubject()->getOutputTimeUnit());
+        $mode = $this->timeUnit->resolveMode($iterations->getSubject()->getOutputMode());
 
         $this->output->write(sprintf(
-            "\tμ/r: %s\tθ/r: %s \tμSD/r: %s\tμRSD/r: %s%%",
+            "\t[μ Mo]/r: %s %s (%s) \t[μSD μRSD]/r: %s %s%%",
 
-            $this->timeUnit->format($stats['mean'], $this->timeUnit->resolveDestUnit($timeUnit), $this->timeUnit->resolveMode($mode)),
-            $this->timeUnit->format($stats['mode'], $this->timeUnit->resolveDestUnit($timeUnit), $this->timeUnit->resolveMode($mode)),
-            $this->timeUnit->format($stats['stdev'], $this->timeUnit->resolveDestUnit($timeUnit), TimeUnit::MODE_TIME),
+            $this->timeUnit->format($stats['mean'], $timeUnit, $mode, null, false),
+            $this->timeUnit->format($stats['mode'], $timeUnit, $mode, null, false),
+            $this->timeUnit->getDestSuffix($timeUnit, $mode),
+            $this->timeUnit->format($stats['stdev'], $timeUnit, TimeUnit::MODE_TIME),
             number_format($stats['rstdev'], 2)
         ));
         $this->output->write(PHP_EOL);
