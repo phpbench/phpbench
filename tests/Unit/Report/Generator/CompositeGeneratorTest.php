@@ -40,7 +40,7 @@ class CompositeGeneratorTest extends \PHPUnit_Framework_TestCase
             $this->getReportsDocument(),
             $this->getReportsDocument(),
         ));
-        $compositeDom = $this->generator->generate($this->result->reveal(), new Config($config));
+        $compositeDom = $this->generator->generate($this->result->reveal(), new Config('test', $config));
 
         $this->assertEquals(4, $compositeDom->xpath()->evaluate('count(//report)'));
     }

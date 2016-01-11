@@ -83,6 +83,7 @@ class CompositeGenerator implements GeneratorInterface, OutputAwareInterface
         $reportDoms = $this->reportManager->generateReports($result, $config['reports']);
         $compositeDom = new Document();
         $compositeEl = $compositeDom->createRoot('reports');
+        $compositeEl->setAttribute('name', $config->getName());
 
         foreach ($reportDoms as $reportsDom) {
             foreach ($reportsDom->xpath()->query('./report') as $reportDom) {

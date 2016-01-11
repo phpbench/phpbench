@@ -20,8 +20,8 @@ abstract class AbstractRendererCase extends \PHPUnit_Framework_TestCase
         $document = new Document();
         $report = <<<EOT
 <?xml version="1.0"?>
-<reports>
-    <report title="Report Title">
+<reports name="test_report">
+    <report name="test_report" title="Report Title">
         <description>Report Description</description>
         <table>
             <group name="body">

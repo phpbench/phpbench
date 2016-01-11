@@ -20,6 +20,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->config = new Config(
+            'test',
             array(
             'foo' => 'bar',
             'bar' => array(

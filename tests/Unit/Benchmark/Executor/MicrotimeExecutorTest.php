@@ -89,7 +89,7 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
         $this->iteration->getRevolutions()->willReturn(10);
         $this->iteration->getParameters()->willReturn(new ParameterSet());
 
-        $result = $this->executor->execute($this->iteration->reveal(), new Config(array()));
+        $result = $this->executor->execute($this->iteration->reveal(), new Config('test', array()));
 
         $this->assertInstanceOf('PhpBench\Benchmark\IterationResult', $result);
         $this->assertInternalType('int', $result->getTime());
@@ -115,7 +115,7 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
         $this->iteration->getRevolutions()->willReturn(10);
         $this->iteration->getParameters()->willReturn(new ParameterSet());
 
-        $result = $this->executor->execute($this->iteration->reveal(), new Config(array()));
+        $result = $this->executor->execute($this->iteration->reveal(), new Config('test', array()));
 
         $this->assertInstanceOf('PhpBench\Benchmark\IterationResult', $result);
     }
@@ -132,7 +132,7 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
         $this->iteration->getRevolutions()->willReturn(1);
         $this->iteration->getParameters()->willReturn(new ParameterSet());
 
-        $this->executor->execute($this->iteration->reveal(), new Config(array()));
+        $this->executor->execute($this->iteration->reveal(), new Config('test', array()));
 
         $this->assertTrue(file_exists($this->beforeMethodFile));
     }
@@ -149,7 +149,7 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
         $this->iteration->getRevolutions()->willReturn(1);
         $this->iteration->getParameters()->willReturn(new ParameterSet());
 
-        $this->executor->execute($this->iteration->reveal(), new Config(array()));
+        $this->executor->execute($this->iteration->reveal(), new Config('test', array()));
 
         $this->assertTrue(file_exists($this->afterMethodFile));
     }
@@ -170,7 +170,7 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
             'three' => 'four',
         )));
 
-        $this->executor->execute($this->iteration->reveal(), new Config(array()));
+        $this->executor->execute($this->iteration->reveal(), new Config('test', array()));
         $this->assertTrue(file_exists($this->paramFile));
         $params = json_decode(file_get_contents($this->paramFile), true);
         $this->assertEquals(array(
@@ -197,7 +197,7 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
         $this->iteration->getRevolutions()->willReturn(1);
         $this->iteration->getParameters()->willReturn($expected);
 
-        $this->executor->execute($this->iteration->reveal(), new Config(array()));
+        $this->executor->execute($this->iteration->reveal(), new Config('test', array()));
 
         $this->assertTrue(file_exists($this->paramBeforeFile));
         $params = json_decode(file_get_contents($this->paramBeforeFile), true);

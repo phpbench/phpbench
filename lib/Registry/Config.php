@@ -17,6 +17,14 @@ namespace PhpBench\Registry;
  */
 class Config extends \ArrayObject
 {
+    private $name;
+
+    public function __construct($name, array $config)
+    {
+        $this->name = $name;
+        parent::__construct($config);
+    }
+
     public function offsetGet($offset)
     {
         if (!$this->offsetExists($offset)) {
@@ -28,5 +36,10 @@ class Config extends \ArrayObject
         }
 
         return parent::offsetGet($offset);
+    }
+
+    public function getName()
+    {
+        return $this->name;
     }
 }

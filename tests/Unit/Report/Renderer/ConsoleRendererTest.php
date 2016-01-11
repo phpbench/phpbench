@@ -32,7 +32,7 @@ class ConsoleRendererTest extends AbstractRendererCase
      */
     public function testRender()
     {
-        $this->renderer->render($this->getReportsDocument(), new Config($this->renderer->getDefaultConfig()));
+        $this->renderer->render($this->getReportsDocument(), new Config('test', $this->renderer->getDefaultConfig()));
 
         $output = $this->output->fetch();
         $this->assertContains('Report Title', $output);
@@ -46,7 +46,7 @@ class ConsoleRendererTest extends AbstractRendererCase
      */
     public function testTableStyle()
     {
-        $this->renderer->render($this->getReportsDocument(), new Config(array_merge(
+        $this->renderer->render($this->getReportsDocument(), new Config('test', array_merge(
             $this->renderer->getDefaultConfig(),
             array(
                 'table_style' => 'compact',

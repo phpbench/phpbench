@@ -74,6 +74,7 @@ abstract class AbstractTabularGenerator implements GeneratorInterface, OutputAwa
 
         $reportDom = new Document();
         $reportEl = $reportDom->createRoot('reports');
+        $reportEl->setAttribute('name', $config->getName());
         $reportEl = $reportEl->appendElement('report');
 
         if ($config['debug']) {

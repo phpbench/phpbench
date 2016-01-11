@@ -31,7 +31,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->executor = $this->prophesize('PhpBench\Benchmark\ExecutorInterface');
         $this->benchmark = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');
         $this->executorRegistry = $this->prophesize('PhpBench\Registry\Registry');
-        $this->executorConfig = new Config(array('executor' => 'microtime'));
+        $this->executorConfig = new Config('test', array('executor' => 'microtime'));
 
         $this->runner = new Runner(
             $this->collectionBuilder->reveal(),
@@ -83,7 +83,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         if (!$exception) {
             $this->executor->execute(
                 Argument::type('PhpBench\Benchmark\Iteration'),
-                new Config(array(
+                new Config('test', array(
                     'executor' => 'microtime',
                 ))
             )

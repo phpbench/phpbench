@@ -42,7 +42,8 @@ Options:
 - **title**: *(string)*: Title to use for the document (where applicable).
 - **template**: *(string)*: Path to the XSL template.
 - **file**: *(string)*: Path to the output file (existing files will be
-  overwritten).
+  overwritten). You can use the ``%report_name%`` token, it will be replaced
+  with the name of the report.
 
 Default outputs:
 
