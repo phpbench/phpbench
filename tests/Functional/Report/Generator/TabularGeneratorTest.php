@@ -49,7 +49,9 @@ class TabularGeneratorTest extends GeneratorTestCase
         $this->assertXPathEvaluation($dom, '2.200μs', 'string(//row[position()=2]//cell[@name="time"])');
         $this->assertXPathEvaluation($dom, '-1σ', 'string(//row[position()=1]//cell[@name="z-score"])');
         $this->assertXPathEvaluation($dom, '+1.00σ', 'string(//row[position()=2]//cell[@name="z-score"])');
-        $this->assertXPathEvaluation($dom, '-4.76%', 'string(//cell[@name="diff"])');
+
+        $this->assertXPathEvaluation($dom, '-4.76%', 'string(//row[1]//cell[@name="diff"])');
+        $this->assertXPathEvaluation($dom, '+4.76%', 'string(//row[2]//cell[@name="diff"])');
     }
 
     /**
@@ -89,15 +91,15 @@ class TabularGeneratorTest extends GeneratorTestCase
     public function testAggregate()
     {
         $dom = $this->generate(
-            $this->getSuiteDocument(),
+            $this->getMultipleSuiteDocument(),
             array(
                 'type' => 'aggregate',
             )
         );
 
         $this->assertInstanceOf('PhpBench\Dom\Document', $dom);
-        $this->assertXPathEvaluation($dom, 2, 'count(//cell[text() = "FooBench"])');
-        $this->assertXPathEvaluation($dom, 1, 'count(//cell[text() = "benchMySubject"])');
+        $this->assertXPathEvaluation($dom, 4, 'count(//cell[text() = "FooBench"])');
+        $this->assertXPathEvaluation($dom, 2, 'count(//cell[text() = "benchMySubject"])');
         $this->assertXPathEvaluation($dom, 'one,two,three', 'string(//cell[@name="group"])');
         $this->assertXPathEvaluation(
             $dom,
@@ -109,9 +111,13 @@ class TabularGeneratorTest extends GeneratorTestCase
         $this->assertXPathEvaluation($dom, '100b', 'string(//cell[@name="mem"])');
         $this->assertXPathEvaluation($dom, '2.000μs', 'string(//cell[@name="best"])');
         $this->assertXPathEvaluation($dom, '2.100μs', 'string(//cell[@name="mean"])');
+        $this->assertXPathEvaluation($dom, '20.000μs', 'string(//row[2]//cell[@name="mean"])');
         $this->assertXPathEvaluation($dom, '2.200μs', 'string(//cell[@name="worst"])');
         $this->assertXPathEvaluation($dom, '0.100μs', 'string(//cell[@name="stdev"])');
         $this->assertXPathEvaluation($dom, '4.76%', 'string(//cell[@name="rstdev"])');
+
+        $this->assertXPathEvaluation($dom, '0.00%', 'string(//cell[@name="diff"])');
+        $this->assertXPathEvaluation($dom, '+852.38%', 'string(//row[2]//cell[@name="diff"])');
     }
 
     /**
