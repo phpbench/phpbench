@@ -22,7 +22,7 @@ namespace PhpBench\Math;
  *
  * Currently, only Gaussian kernels are implemented.
  *
- * Written by: Robert Kern
+ * Original Python version by: Robert Kern
  *
  * Date: 2004-08-09
  *
@@ -32,6 +32,8 @@ namespace PhpBench\Math;
  *             Some fixes to match the new scipy_core
  *
  * Copyright 2004-2005 by Enthought, Inc.
+ * Copyright 2003-2013 SciPy Developers.
+ *   All rights reserved.
  */
 class Kde
 {
@@ -101,7 +103,7 @@ class Kde
      *          Chapman and Hall, London, 1986.
      *
      * @param array $dataset Array of univariate data points.
-     * @param string $bwMethod : Either "scott" or "silverman"
+     * @param string $bwMethod : Either "scott", "silverman" or an explicit (float) value.
      */
     public function __construct(array $dataset, $bwMethod = null)
     {
