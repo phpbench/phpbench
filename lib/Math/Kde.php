@@ -189,7 +189,7 @@ class Kde
             $this->coVarianceFactor = function () {
                 return pow(count($this->dataset) * (3.0) /4.0, -1. / (5));
             };
-        } elseif (is_scalar($bwMethod)) {
+        } elseif (is_numeric($bwMethod)) {
             $this->coVarianceFactor = function () use ($bwMethod) {
                 return $bwMethod;
             };

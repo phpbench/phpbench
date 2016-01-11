@@ -88,38 +88,14 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-
-    /**
-     * It should calculate the normal probability density function.
-     *
-     * @dataProvider providePdfNormal
-     */
-    public function testPdfNormal($xValue, $mean, $stDev, $expected)
-    {
-        $result = Statistics::pdfNormal($xValue, $mean, $stDev);
-        $this->assertEquals($expected, round($result, 8));
-    }
-
-    public function providePdfNormal()
-    {
-        return array(
-            array(
-                10,
-                5,
-                2,
-                0.00876415,
-            )
-        );
-    }
-
     /**
      * It should generate a linear space.
      *
      * @dataProvider provideLinearSpace
      */
-    public function testLinearSpace($min, $max, $steps, $expected)
+    public function testLinearSpace($min, $max, $steps, $endpoint, $expected)
     {
-        $result = Statistics::linspace($min, $max, $steps);
+        $result = Statistics::linspace($min, $max, $steps, $endpoint);
         $this->assertEquals($expected, $result);
     }
 
@@ -128,43 +104,92 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 2, 3, 5,
+                true,
                 array(2, 2.25, 2.5, 2.75, 3)
             ),
             array(
                 2, 10, 5,
+                true,
                 array(2, 4, 6, 8, 10)
+            ),
+            array(
+                2, 10, 5,
+                false,
+                array(
+                    2,
+                    3.6000000000000001,
+                    5.2000000000000002,
+                    6.8000000000000007,
+                    8.4000000000000004,
+                ),
             ),
         );
     }
 
     /**
-     * It should generate a kernel density estimate (kde) using
-     * a normal kernel.
+     * It should throw an exception if the linspace min and max are the same number.
      *
-     * @dataProvider provideKdeNormal
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Min and max cannot be the same number: 4
      */
-    public function testKdeNormalMode(array $population, $bandwidth, $expected)
+    public function testLinspaceMinMaxSame()
     {
-        $result = Statistics::kdeNormalMode($population, $bandwidth);
-        $this->assertEquals($expected, $result);
+        Statistics::linspace(4, 4, 10);
     }
 
-    public function provideKdeNormal()
+    /**
+     * @dataProvider provideKdeMode
+     */
+    public function testKdeMode($population, $space, $bandwidth, $expected)
+    {
+        $result = Statistics::kdeMode($population, $space, $bandwidth);
+        $this->assertEquals($expected, round($result, 2));
+    }
+
+    public function provideKdeMode()
     {
         return array(
             array(
-                array(1.0, 4.0, 3.0, 2.0, 2.0, 3.0, 4.0, 1.0, 0.5),
-                0.7549,
-                2.0517578125
+                array(
+                    10, 20, 15, 5
+                ),
+                10,
+                'silverman',
+                13.33,
             ),
             array(
-                array(4),
-                123,
-                4
+                array(
+                    10, 20
+                ),
+                10,
+                'silverman',
+                15.56,
             ),
             array(
-                array(10, 10, 10),
-                123,
+                // custom bandwidth, multimodal
+                array(
+                    10, 20, 15, 5
+                ),
+                10,
+                0.2,
+                12.5,
+            ),
+            array(
+                // only one element
+                array(
+                    10
+                ),
+                10,
+                0.1,
+                10,
+            ),
+            array(
+                // min and max the same
+                array(
+                    10, 10, 10
+                ),
+                10,
+                0.1,
                 10
             ),
         );

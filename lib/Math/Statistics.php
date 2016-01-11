@@ -118,31 +118,6 @@ class Statistics
     }
 
     /**
-     * Calculate the normal probability density function.
-     *
-     * f(x, μ, σ) = 1 / (σ * sqrt(2 * 𝚷 ) * exp(-((x - μ) ^ 2) / (2 * (σ ^ 2)))
-     *
-     * https://en.wikipedia.org/wiki/Standard_normal
-     *
-     * @param float $xValue
-     * @param float $mean
-     * @param float $standardDeviation
-     *
-     * @return float
-     */
-    public static function pdfNormal($xValue, $mean, $stDev) 
-    {
-        return 
-            1 / ($stDev * sqrt(2 * M_PI))
-            * 
-            exp(
-                -(
-                    pow($xValue - $mean, 2) /  (2 * pow($stDev, 2))
-                )
-            );
-    }
-
-    /**
      * Return the mode using the kernel density estimator using the normal
      * distribution.
      *
@@ -152,13 +127,17 @@ class Statistics
      * If there are two or more modes (i.e. bimodal, trimodal, etc) then we
      * could take the average of these modes.
      *
-     * TODO: Handle multi-modal populations.
+     * NOTE: If the kde estimate of the population is multi-modal (it has two
+     * points with exactly the same value) then the mean mode is returned. This
+     * is potentially misleading, but When benchmarking this should be a very
+     * rare occurance.
      *
      * @param array $population
+     * @param int $space
      * @param float $bandwidth
-     * @return float
+     * @return float[]
      */
-    public static function kdeNormalMode(array $population, $bandwidth = null)
+    public static function kdeMode(array $population, $space = 512, $bandwidth = null)
     {
         if (count($population) === 1) {
             return current($population);
@@ -173,13 +152,19 @@ class Statistics
         }
 
         $kde = new Kde($population, $bandwidth);
-        $space = self::linspace(min($population), max($population), 512, false);
+        $space = self::linspace(min($population), max($population), $space, true);
         $dist = $kde->evaluate($space);
 
-        $keys = array_keys($dist, max($dist));
-        $index = reset($keys);
+        $maxKeys = array_keys($dist, max($dist));
+        $modes = array();
 
-        return $space[$index];
+        foreach ($maxKeys as $maxKey) {
+            $modes[] = $space[$maxKey];
+        }
+
+        $mode = array_sum($modes) / count($modes);
+
+        return $mode;
     }
 
     /**
@@ -198,7 +183,7 @@ class Statistics
 
         if ($max == $min) {
             throw new \InvalidArgumentException(sprintf(
-                'Min and max cannot be the same number: "%s"', $max
+                'Min and max cannot be the same number: %s', $max
             ));
         }
 
@@ -207,6 +192,10 @@ class Statistics
 
         for ($value = $min; $value <= $max; $value += $unit) {
             $space[] = $value;
+        }
+
+        if ($endpoint === false) {
+            array_pop($space);
         }
 
         return $space;
