@@ -157,5 +157,6 @@ function _nodelist_to_array($nodeList)
 function kde_mode($nodeList)
 {
     $values = values($nodeList);
+
     return Statistics::kdeMode($values);
 }

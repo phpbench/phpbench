@@ -1,10 +1,18 @@
 <?php
 
+/*
+ * This file is part of the PHPBench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Tests\Tests\Unit\Unit\Math;
 
-use PhpBench\Math\SciPyKde;
-use PhpBench\Math\Statistics;
 use PhpBench\Math\Kde;
+use PhpBench\Math\Statistics;
 
 class KdeTest extends \PHPUnit_Framework_TestCase
 {
@@ -29,27 +37,27 @@ class KdeTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
-                    10, 20, 15, 5
+                    10, 20, 15, 5,
                 ),
                 Statistics::linspace(0, 9, 10),
                 'silverman',
                 array(
-                    0.01537595, 0.0190706, 0.02299592, 0.02700068, 0.03092369, 0.0346125, 0.03794007, 0.0408159, 0.04318983, 0.04504829
+                    0.01537595, 0.0190706, 0.02299592, 0.02700068, 0.03092369, 0.0346125, 0.03794007, 0.0408159, 0.04318983, 0.04504829,
                 ),
             ),
             array(
                 array(
-                    10, 20, 15, 5
+                    10, 20, 15, 5,
                 ),
                 Statistics::linspace(0, 3, 4),
                 'scott',
                 array(
-                    0.01480612,  0.01869787,  0.02286675,  0.02713209
+                    0.01480612,  0.01869787,  0.02286675,  0.02713209,
                 ),
             ),
             array(
                 array(
-                    10, 20, 15, 5
+                    10, 20, 15, 5,
                 ),
                 Statistics::linspace(0, 3, 4),
                 'silverman',
@@ -67,7 +75,7 @@ class KdeTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidBandwidth()
     {
-        new Kde(array(1,2), 'foo');
+        new Kde(array(1, 2), 'foo');
     }
 
     /**

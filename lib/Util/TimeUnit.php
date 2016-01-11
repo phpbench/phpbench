@@ -257,6 +257,7 @@ class TimeUnit
         }
 
         $suffix = $this->getDestSuffix($unit, $mode);
+
         return $value . $suffix;
     }
 

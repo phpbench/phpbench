@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the PHPBench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Math;
 
 /**
@@ -93,7 +102,6 @@ class Kde
      *
      * @param array $dataset Array of univariate data points.
      * @param string $bwMethod : Either "scott" or "silverman"
-     *
      */
     public function __construct(array $dataset, $bwMethod = null)
     {
@@ -109,6 +117,7 @@ class Kde
      * Evaluate the estimated pdf on a set of points.
      *
      * @param array $points 1-D array of points on to which we will map the kde
+     *
      * @return array
      */
     public function evaluate(array $points)
@@ -125,8 +134,8 @@ class Kde
 
         $result = array_fill(0, count($points), 0);
 
-        # loop over points
-        foreach(range(0, $range) as $i) {
+        // loop over points
+        foreach (range(0, $range) as $i) {
             if ($bigger) {
                 $dataValue = $this->dataset[$i];
                 $diff = array_map(function ($point) use ($dataValue) {
@@ -148,7 +157,7 @@ class Kde
             $multiplied = array();
 
             foreach ($diff as $index => $value) {
-               $multiplied[$index] = $diff[$index] * $tDiff[$index];
+                $multiplied[$index] = $diff[$index] * $tDiff[$index];
             }
 
             // numpy sum does nothing with our 2d array in PHP
@@ -187,7 +196,7 @@ class Kde
             };
         } elseif ($bwMethod == 'silverman') {
             $this->coVarianceFactor = function () {
-                return pow(count($this->dataset) * (3.0) /4.0, -1. / (5));
+                return pow(count($this->dataset) * (3.0) / 4.0, -1. / (5));
             };
         } elseif (is_numeric($bwMethod)) {
             $this->coVarianceFactor = function () use ($bwMethod) {
@@ -212,7 +221,7 @@ class Kde
         $factorCallable = $this->coVarianceFactor;
         $this->factor = $factorCallable();
 
-        # Cache covariance and inverse covariance of the data
+        // Cache covariance and inverse covariance of the data
         if (null === $this->_dataInvCov) {
             // original used the numpy.cov function.
             $this->_dataCovariance = pow(Statistics::stdev($this->dataset, true), 2);
@@ -223,6 +232,6 @@ class Kde
 
         $this->covariance = $this->_dataCovariance * $this->factor ** 2;
         $this->invCov = $this->_dataInvCov / $this->factor ** 2;
-        $this->normFactor = sqrt(2* M_PI * $this->covariance) * count($this->dataset);
+        $this->normFactor = sqrt(2 * M_PI * $this->covariance) * count($this->dataset);
     }
 }

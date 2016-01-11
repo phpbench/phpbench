@@ -99,6 +99,7 @@ class Statistics
      * @param array $population
      * @param int $space
      * @param float $bandwidth
+     *
      * @return float[]
      */
     public static function kdeMode(array $population, $space = 512, $bandwidth = null)
@@ -137,7 +138,7 @@ class Statistics
      * @param float $min
      * @param float $max
      * @param int $num
-     * @param boolean $endpoint
+     * @param bool $endpoint
      *
      * @return float[]
      */

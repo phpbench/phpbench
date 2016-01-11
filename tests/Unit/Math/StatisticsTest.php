@@ -53,12 +53,12 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
             array(
                 2, 3, 5,
                 true,
-                array(2, 2.25, 2.5, 2.75, 3)
+                array(2, 2.25, 2.5, 2.75, 3),
             ),
             array(
                 2, 10, 5,
                 true,
-                array(2, 4, 6, 8, 10)
+                array(2, 4, 6, 8, 10),
             ),
             array(
                 2, 10, 5,
@@ -99,7 +99,7 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
-                    10, 20, 15, 5
+                    10, 20, 15, 5,
                 ),
                 10,
                 'silverman',
@@ -107,7 +107,7 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    10, 20
+                    10, 20,
                 ),
                 10,
                 'silverman',
@@ -116,7 +116,7 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
             array(
                 // custom bandwidth, multimodal
                 array(
-                    10, 20, 15, 5
+                    10, 20, 15, 5,
                 ),
                 10,
                 0.2,
@@ -125,7 +125,7 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
             array(
                 // only one element
                 array(
-                    10
+                    10,
                 ),
                 10,
                 0.1,
@@ -134,11 +134,11 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
             array(
                 // min and max the same
                 array(
-                    10, 10, 10
+                    10, 10, 10,
                 ),
                 10,
                 0.1,
-                10
+                10,
             ),
         );
     }
