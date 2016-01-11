@@ -7,6 +7,7 @@ use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\Registry\Config;
 use PhpBench\Dom\Document;
 use PhpBench\Math\Statistics;
+use PhpBench\Math\Kde;
 
 class HistogramGenerator implements GeneratorInterface
 {
@@ -18,20 +19,33 @@ class HistogramGenerator implements GeneratorInterface
 
         foreach ($results->query('//subject') as $subjectEl) {
             foreach ($subjectEl->query('.//variant') as $variantEl) {
+                $times = array();
                 $tableEl = $reportEl->appendElement('table');
                 foreach ($variantEl->query('.//iteration') as $iterationEl) {
                     $times[] = $iterationEl->getAttribute('rev-time');
                 }
-                $histogram = Statistics::histogram($times, $config['bins']);
 
+                $histogram = Statistics::histogram($times, $config['bins']);
+                $kde = new Kde($times);
+                $kdeX = Statistics::linspace(min($times), max($times), $config['bins'] + 1);
+                $kdeY = $kde->evaluate($kdeX);
+
+                $counter = 0;
                 foreach ($histogram as $xValue => $frequency) {
+                    $kdeVal = $kdeY[$counter++];
                     $rowEl = $tableEl->appendElement('row');
+                    $cellEl = $rowEl->appendElement('cell');
+                    $cellEl->setAttribute('name', 'index');
+                    $cellEl->nodeValue = $counter;
                     $cellEl = $rowEl->appendElement('cell');
                     $cellEl->setAttribute('name', 'time');
                     $cellEl->nodeValue = $xValue;
                     $cellEl = $rowEl->appendElement('cell');
                     $cellEl->setAttribute('name', 'freq');
                     $cellEl->nodeValue = $frequency;
+                    $cellEl = $rowEl->appendElement('cell');
+                    $cellEl->setAttribute('name', 'kde');
+                    $cellEl->nodeValue = $kdeVal;
                 }
             }
         }

@@ -105,7 +105,7 @@ class Statistics
             }
 
             foreach ($values as $value) {
-                if ($value >= $floor && $value < $ceil) {
+                if ($value >= $floor - ($step / 2) && $value < $ceil - ($step / 2)) {
                     $histogram[(string) $floor]++;
                 }
             }

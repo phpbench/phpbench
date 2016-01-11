@@ -54,6 +54,11 @@
                     "expr": "number(./stats/@mean)"
                 },
                 {
+                    "name": "mode",
+                    "class": "time",
+                    "expr": "number(./stats/@mode)"
+                },
+                {
                     "name": "worst",
                     "class": "time",
                     "expr": "number(./stats/@max)"
