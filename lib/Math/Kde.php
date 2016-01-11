@@ -232,8 +232,8 @@ class Kde
             $this->_dataInvCov = 1 / $this->_dataCovariance;
         }
 
-        $this->covariance = $this->_dataCovariance * $this->factor ** 2;
-        $this->invCov = $this->_dataInvCov / $this->factor ** 2;
+        $this->covariance = $this->_dataCovariance * pow($this->factor, 2);
+        $this->invCov = $this->_dataInvCov / pow($this->factor, 2);
         $this->normFactor = sqrt(2 * M_PI * $this->covariance) * count($this->dataset);
     }
 }
