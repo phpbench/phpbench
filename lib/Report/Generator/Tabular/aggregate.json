@@ -72,6 +72,12 @@
                     "name": "rstdev",
                     "class": "percent",
                     "expr": "number(./stats/@rstdev)"
+                },
+                {
+                    "name": "diff",
+                    "class": "diff",
+                    "pass": 1,
+                    "expr": "deviation(min(//cell[@name='mean']), number(./cell[@name='mean']))"
                 }
             ],
             "with_query": "{{ param.selector }}"
