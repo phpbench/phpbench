@@ -28,6 +28,20 @@ class ReportTest extends SystemTestCase
     }
 
     /**
+     * It should allow the mode, precision and time-unit to be specified.
+     */
+    public function testTimeUnitOverride()
+    {
+        $this->createResult();
+        $process = $this->phpbench(
+            'report --file=' . $this->fname . ' --report=default --time-unit=seconds --mode=throughput --precision=6'
+        );
+        $output = $process->getOutput();
+        $this->assertExitCode(0, $process);
+        $this->assertContains('100,000.000000ops/s', $output);
+    }
+
+    /**
      * It should throw an exception if no reports are specified.
      */
     public function testNoReports()
