@@ -55,12 +55,17 @@ class XsltRendererTest extends AbstractRendererCase
     }
 
     /**
-     * It should render an XSLT report.
+     * It should render an XSLT report to a file.
      */
     public function testRender()
     {
         $reports = $this->getReportsDocument();
-        $this->renderer->render($reports, new Config('test', $this->renderer->getDefaultConfig()));
+        $this->renderer->render($reports, new Config('test', array_merge(
+            $this->renderer->getDefaultConfig(),
+            array(
+                'file' => $this->defaultReport,
+            )
+        )));
         $this->assertFileExists($this->defaultReport);
     }
 
@@ -74,10 +79,28 @@ class XsltRendererTest extends AbstractRendererCase
             $this->renderer->getDefaultConfig(),
             array(
                 'template' => __DIR__ . '/templates/test.xsl',
+                'file' => $this->defaultReport,
             )
         )));
         $this->assertFileExists($this->defaultReport);
         $this->assertContains('zeeSa8ju', file_get_contents($this->defaultReport));
+    }
+
+    /**
+     * It should echo to STDOUT if no filename is provided.
+     */
+    public function testRenderTemplateEmptyFilename()
+    {
+        $reports = $this->getReportsDocument();
+        $this->renderer->render($reports, new Config('test', array_merge(
+            $this->renderer->getDefaultConfig(),
+            array(
+                'template' => __DIR__ . '/templates/test.xsl',
+                'file' => null,
+            )
+        )));
+        $output = $this->output->fetch();
+        $this->assertContains('zeeSa8ju', $output);
     }
 
     /**
