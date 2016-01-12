@@ -180,6 +180,20 @@ class RunTest extends SystemTestCase
     }
 
     /**
+     * It should override revolutions.
+     */
+    public function testOverrideRevolutions()
+    {
+        $process = $this->phpbench(
+            'run --filter=benchDoNothing --progress=none --dump --revs=666 benchmarks/set1/BenchmarkBench.php'
+        );
+
+        $this->assertExitCode(0, $process);
+        $output = $process->getOutput();
+        $this->assertXPathExpression(666, $output, 'number(//subject[@name="benchDoNothing"]//variant/@revs)');
+    }
+
+    /**
      * Its should allow the time unit to be specified.
      */
     public function testOverrideTimeUnit()
