@@ -45,7 +45,12 @@ class XsltRenderer implements RendererInterface, OutputAwareInterface
     public function render(Document $reportDom, Config $config)
     {
         $template = $config['template'];
-        $out = $config['file'];
+        $out = strtr(
+            $config['file'],
+            array(
+                '%report_name%' => $reportDom->firstChild->getAttribute('name'),
+            )
+        );
 
         if (!file_exists($template)) {
             throw new \RuntimeException(sprintf(

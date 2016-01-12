@@ -6,6 +6,7 @@
             <xsd:choice maxOccurs="unbounded">
                 <xsd:element name="report" type="report"/>
             </xsd:choice>
+            <xsd:attribute name="name" type="xsd:string" use="required"/>
         </xsd:complexType>
     </xsd:element>
 

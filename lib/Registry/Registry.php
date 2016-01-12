@@ -156,7 +156,7 @@ class Registry
 
         // eagerly validate
         $config = $this->mergeAndValidateConfig($service, $config);
-        $this->configs[$name] = new Config($config);
+        $this->configs[$name] = new Config($name, $config);
     }
 
     /**
@@ -220,6 +220,7 @@ class Registry
         }
 
         $schema['properties'][$this->serviceType] = array('type' => 'string');
+        $schema['properties']['_name'] = array('type' => 'string');
 
         // convert the schema to a \stdClass
         $schema = json_decode(json_encode($schema));

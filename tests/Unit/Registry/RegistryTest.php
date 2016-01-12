@@ -262,7 +262,7 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
         $this->service1->getSchema()->willReturn(array());
 
         $result = $this->registry->getConfig('{"test": "service"}');
-        $this->assertEquals(new Config(array(
+        $this->assertEquals(new Config('test', array(
             'test' => 'service',
         )), $result);
     }
@@ -280,7 +280,7 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
         $this->service1->getSchema()->willReturn(array());
 
         $result = $this->registry->getConfig('{test": "service"}');
-        $this->assertEquals(new Config(array(
+        $this->assertEquals(new Config('test', array(
             'test' => 'service',
         )), $result);
     }

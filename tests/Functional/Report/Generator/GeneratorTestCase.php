@@ -22,7 +22,7 @@ abstract class GeneratorTestCase extends FunctionalTestCase
 
     protected function getConfig(array $config)
     {
-        return new Config(array_merge(
+        return new Config('test', array_merge(
             $this->getGenerator()->getDefaultConfig(),
             $config
         ));

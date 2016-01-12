@@ -40,11 +40,11 @@ class DebugExecutorTest extends \PHPUnit_Framework_TestCase
                 $iteration->getIndex()->willReturn($ii);
                 $results[] = $this->executor->execute(
                     $iteration->reveal(),
-                    new Config(array(
+                    new Config('test', array(
                         'times' => $times,
                         'spread' => $spread,
-                    )
-                ));
+                    ))
+                );
             }
         }
 

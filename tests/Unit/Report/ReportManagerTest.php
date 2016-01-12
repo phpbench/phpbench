@@ -44,6 +44,7 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
         $this->reportsDocument = new Document();
 
         $reportsEl = $this->reportsDocument->createRoot('reports');
+        $reportsEl->setAttribute('name', 'test_report');
         $reportEl = $reportsEl->appendElement('report');
         $reportEl->appendElement('description');
     }
@@ -53,11 +54,11 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testRender()
     {
-        $config = new Config(array(
+        $config = new Config('test', array(
             'generator' => 'service',
             'one' => 'two',
         ));
-        $outputConfig = new Config(array(
+        $outputConfig = new Config('test', array(
             'renderer' => 'renderer',
             'three' => 'four',
         ));
@@ -89,7 +90,7 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGeneratorNotReturnDocument()
     {
-        $config = new Config(array(
+        $config = new Config('test', array(
             'generator' => 'service',
             'one' => 'two',
         ));
@@ -112,11 +113,11 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testRenderOutputAware()
     {
-        $config = new Config(array(
+        $config = new Config('test', array(
             'generator' => 'service',
             'one' => 'two',
         ));
-        $outputConfig = new Config(array(
+        $outputConfig = new Config('test', array(
             'renderer' => 'renderer',
             'three' => 'four',
         ));
