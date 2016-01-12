@@ -74,6 +74,11 @@ class SystemTestCase extends \PHPUnit_Framework_TestCase
 
     protected function assertXPathCount($count, $xmlString, $query)
     {
+        $this->assertXPathExpression($count, $xmlString, sprintf('count(%s)', $query));
+    }
+
+    protected function assertXPathExpression($expected, $xmlString, $expression)
+    {
         $dom = new \DOMDocument();
         $result = @$dom->loadXml($xmlString);
 
@@ -85,7 +90,7 @@ class SystemTestCase extends \PHPUnit_Framework_TestCase
 
         $xpath = new \DOMXPath($dom);
         $dom->formatOutput = true;
-        $nodeList = $xpath->query($query);
-        $this->assertEquals($count, $nodeList->length);
+        $result = $xpath->evaluate($expression);
+        $this->assertEquals($expected, $result);
     }
 }
