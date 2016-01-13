@@ -13,6 +13,7 @@ namespace PhpBench\Console\Command;
 
 use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\Console\Command\Handler\ReportHandler;
+use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -21,12 +22,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ReportCommand extends Command
 {
     private $reportHandler;
+    private $timeUnitHandler;
 
     public function __construct(
-        ReportHandler $reportHandler
+        ReportHandler $reportHandler,
+        TimeUnitHandler $timeUnitHandler
     ) {
         parent::__construct();
         $this->reportHandler = $reportHandler;
+        $this->timeUnitHandler = $timeUnitHandler;
     }
 
     public function configure()
@@ -41,6 +45,7 @@ To dump an XML file, use the <info>run</info> command with the
 EOT
         );
         ReportHandler::configure($this);
+        TimeUnitHandler::configure($this);
 
         $this->addOption('file', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Report XML file');
     }
@@ -61,8 +66,10 @@ EOT
             );
         }
 
+        $this->timeUnitHandler->timeUnitFromInput($input);
+
         $aggregateDom = new SuiteDocument();
-        $aggregateEl = $aggregateDom->createRoot('phpbench');
+        $aggregateDom->createRoot('phpbench');
 
         foreach ($files as $file) {
             if (!file_exists($file)) {

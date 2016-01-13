@@ -22,6 +22,7 @@ use PhpBench\Benchmark\Runner;
 use PhpBench\Console\Application;
 use PhpBench\Console\Command\Handler\ReportHandler;
 use PhpBench\Console\Command\Handler\RunnerHandler;
+use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use PhpBench\Console\Command\ReportCommand;
 use PhpBench\Console\Command\RunCommand;
 use PhpBench\DependencyInjection\Container;
@@ -220,7 +221,6 @@ class CoreExtension implements ExtensionInterface
             return new RunnerHandler(
                 $container->get('benchmark.runner'),
                 $container->get('progress_logger.registry'),
-                $container->get('benchmark.time_unit'),
                 $container->getParameter('progress'),
                 $container->getParameter('path')
             );
@@ -232,16 +232,24 @@ class CoreExtension implements ExtensionInterface
             );
         });
 
+        $container->register('console.command.handler.time_unit', function (Container $container) {
+            return new TimeUnitHandler(
+                $container->get('benchmark.time_unit')
+            );
+        });
+
         $container->register('console.command.run', function (Container $container) {
             return new RunCommand(
                 $container->get('console.command.handler.runner'),
-                $container->get('console.command.handler.report')
+                $container->get('console.command.handler.report'),
+                $container->get('console.command.handler.time_unit')
             );
         }, array('console.command' => array()));
 
         $container->register('console.command.report', function (Container $container) {
             return new ReportCommand(
-                $container->get('console.command.handler.report')
+                $container->get('console.command.handler.report'),
+                $container->get('console.command.handler.time_unit')
             );
         }, array('console.command' => array()));
     }

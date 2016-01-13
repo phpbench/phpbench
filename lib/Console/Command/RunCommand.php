@@ -13,6 +13,7 @@ namespace PhpBench\Console\Command;
 
 use PhpBench\Console\Command\Handler\ReportHandler;
 use PhpBench\Console\Command\Handler\RunnerHandler;
+use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use PhpBench\PhpBench;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,20 +24,24 @@ class RunCommand extends Command
 {
     private $runnerHandler;
     private $reportHandler;
+    private $timeUnitHandler;
 
     public function __construct(
         RunnerHandler $runnerHandler,
-        ReportHandler $reportHandler
+        ReportHandler $reportHandler,
+        TimeUnitHandler $timeUnitHandler
     ) {
         parent::__construct();
         $this->runnerHandler = $runnerHandler;
         $this->reportHandler = $reportHandler;
+        $this->timeUnitHandler = $timeUnitHandler;
     }
 
     public function configure()
     {
         RunnerHandler::configure($this);
         ReportHandler::configure($this);
+        TimeUnitHandler::configure($this);
 
         $this->setName('run');
         $this->setDescription('Run benchmarks');
@@ -58,6 +63,7 @@ EOT
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->timeUnitHandler->timeUnitFromInput($input);
         $suiteResult = $this->runnerHandler->runFromInput($input, $output, array(
             'context_name' => $input->getOption('context'),
             'retry_threshold' => $input->getOption('retry-threshold'),
