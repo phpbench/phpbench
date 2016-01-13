@@ -145,7 +145,7 @@ class Registry
 
         if (!isset($config[$this->serviceType])) {
             throw new \InvalidArgumentException(sprintf(
-                '%s configuration must indicate its target %s service with the "%s" key.',
+                '%s configuration must EITHER indicate its target %s service with the "%s" key or extend an existing configuration with the "extends" key.',
                 $this->serviceType,
                 $this->serviceType,
                 $this->serviceType
