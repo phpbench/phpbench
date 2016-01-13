@@ -16,12 +16,10 @@ return array(
     'html' => array(
         'renderer' => 'xslt',
         'template' => __DIR__ . '/../../../Report/Renderer/templates/html.xsl',
-        'file' => null,
     ),
     'markdown' => array(
         'renderer' => 'xslt',
         'template' => __DIR__ . '/../../../Report/Renderer/templates/markdown.xsl',
-        'file' => null,
     ),
     'delimited' => array(
         'renderer' => 'delimited',

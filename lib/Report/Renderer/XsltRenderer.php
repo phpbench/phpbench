@@ -75,7 +75,7 @@ class XsltRenderer implements RendererInterface, OutputAwareInterface
             ));
         }
 
-        if (null !== $out) {
+        if ($out) {
             file_put_contents($out, $output);
             $this->output->writeln('Dumped XSLT report:');
             $this->output->writeln($out);
@@ -92,7 +92,7 @@ class XsltRenderer implements RendererInterface, OutputAwareInterface
         return array(
             'title' => 'PHPBench Benchmark Results',
             'template' => __DIR__ . '/templates/html.xsl',
-            'file' => self::DEFAULT_FILENAME,
+            'file' => null,
         );
     }
 
