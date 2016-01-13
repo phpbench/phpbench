@@ -104,7 +104,7 @@ class DelimitedRenderer implements RendererInterface, OutputAwareInterface
         return array(
             'delimiter' => "\t",
             'file' => null,
-            'header' => false,
+            'header' => true,
         );
     }
 
