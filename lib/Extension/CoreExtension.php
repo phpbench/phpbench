@@ -27,6 +27,8 @@ use PhpBench\Console\Command\ReportCommand;
 use PhpBench\Console\Command\RunCommand;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
+use PhpBench\Environment\Provider;
+use PhpBench\Environment\Supplier;
 use PhpBench\Progress\Logger\BlinkenLogger;
 use PhpBench\Progress\Logger\DotsLogger;
 use PhpBench\Progress\Logger\NullLogger;
@@ -87,6 +89,7 @@ class CoreExtension implements ExtensionInterface
         $this->registerProgressLoggers($container);
         $this->registerReportGenerators($container);
         $this->registerReportRenderers($container);
+        $this->registerEnvironment($container);
 
         $container->mergeParameters(array(
             'path' => null,
@@ -118,6 +121,11 @@ class CoreExtension implements ExtensionInterface
 
         foreach ($container->getServiceIdsForTag('benchmark_executor') as $serviceId => $attributes) {
             $container->get('benchmark.registry.executor')->registerService($attributes['name'], $serviceId);
+        }
+
+        foreach ($container->getServiceIdsForTag('environment_provider') as $serviceId => $attributes) {
+            $provider = $container->get($serviceId);
+            $container->get('environment.supplier')->addProvider($provider);
         }
 
         $generatorConfigs = array_merge(
@@ -152,6 +160,7 @@ class CoreExtension implements ExtensionInterface
             return new Runner(
                 $container->get('benchmark.collection_builder'),
                 $container->get('benchmark.registry.executor'),
+                $container->get('environment.supplier'),
                 $container->getParameter('retry_threshold'),
                 $container->getParameter('config_path')
             );
@@ -394,6 +403,29 @@ class CoreExtension implements ExtensionInterface
                 $container,
                 $container->get('json_schema.validator')
             );
+        });
+    }
+
+    public function registerEnvironment(Container $container)
+    {
+        $container->register('environment.provider.uname', function (Container $container) {
+            return new Provider\Uname();
+        }, array('environment_provider' => array()));
+
+        $container->register('environment.provider.php', function (Container $container) {
+            return new Provider\Php();
+        }, array('environment_provider' => array()));
+
+        $container->register('environment.provider.unix_sysload', function (Container $container) {
+            return new Provider\UnixSysload();
+        }, array('environment_provider' => array()));
+
+        $container->register('environment.provider.git', function (Container $container) {
+            return new Provider\Git();
+        }, array('environment_provider' => array()));
+
+        $container->register('environment.supplier', function (Container $container) {
+            return new Supplier();
         });
     }
 

@@ -16,6 +16,7 @@ Features:
   no autoloader pollution.
 - Control stability of results with multiple iterations and retry threshold.
 - Memory usage statistics.
+- Records environment (e.g. VCS info, OS info, etc.)
 - Standard deviation and Z-Scores.
 - Kernel density estimate used to estimate the mode.
 - Time unit specification.
