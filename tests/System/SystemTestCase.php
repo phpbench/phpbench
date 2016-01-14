@@ -25,7 +25,7 @@ class SystemTestCase extends \PHPUnit_Framework_TestCase
     public function createResult($benchmark = 'benchmarks/set4')
     {
         $process = $this->phpbench(
-            'run ' . $benchmark . ' --executor=debug --dump-file=' . $this->fname
+            'run ' . $benchmark . ' --executor=debug --dump-file=' . escapeshellarg($this->fname)
         );
 
         if ($process->getExitCode() !== 0) {
@@ -49,6 +49,7 @@ class SystemTestCase extends \PHPUnit_Framework_TestCase
     {
         chdir($this->getWorkingDir($workingDir));
         $bin = __DIR__ . '/../../bin/phpbench --verbose';
+        $bin = str_replace('/', DIRECTORY_SEPARATOR, $bin);
         $process = new Process($bin . ' ' . $command);
         $process->run();
 
