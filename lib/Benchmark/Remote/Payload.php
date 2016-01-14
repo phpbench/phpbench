@@ -109,7 +109,7 @@ class Payload
             $wrapper = $this->wrapper . ' ';
         }
 
-        $this->process->setCommandLine($wrapper . $this->phpPath . $this->getIniString() . ' ' . $scriptPath);
+        $this->process->setCommandLine($wrapper . $this->phpPath . $this->getIniString() . ' ' . escapeshellarg($scriptPath));
         $this->process->run();
         unlink($scriptPath);
 
