@@ -150,28 +150,48 @@ class IterationCollection implements \IteratorAggregate, \ArrayAccess, \Countabl
             $times[] = $iteration->getResult()->getTime() / $iteration->getRevolutions();
         }
 
-        // standard deviation for T Distribution
-        $this->stats['stdev'] = Statistics::stdev($times);
-
-        // mean of the times
-        $this->stats['mean'] = Statistics::mean($times);
-
-        // mode based on the kernel distribution function
-        $this->stats['mode'] = Statistics::kdeMode($times);
-
-        // relative standard error
-        $this->stats['rstdev'] = $this->stats['stdev'] / $this->stats['mean'] * 100;
-
-        // variance
-        $this->stats['variance'] = Statistics::variance($times);
+        $this->stats = array(
+            'stdev' => 0,
+            'mean' => 0,
+            'mode' => 0,
+            'rstdev' => 0,
+            'variance' => 0,
+            'min' => 0,
+            'max' => 0,
+        );
 
         // min and max
         $this->stats['min'] = min($times);
         $this->stats['max'] = max($times);
 
+        if ($this->stats['min'] > 0 && $this->stats['max'] > 0) {
+            // standard deviation for T Distribution
+            $this->stats['stdev'] = Statistics::stdev($times);
+
+            // mean of the times
+            $this->stats['mean'] = Statistics::mean($times);
+
+            // mode based on the kernel distribution function
+            $this->stats['mode'] = Statistics::kdeMode($times);
+
+            // relative standard error
+            $this->stats['rstdev'] = $this->stats['stdev'] / $this->stats['mean'] * 100;
+
+            // variance
+            $this->stats['variance'] = Statistics::variance($times);
+        }
+
         foreach ($this->iterations as $iteration) {
             // deviation is the percentage different of the value from the mean of the set.
-            $deviation = 100 / $this->stats['mean'] * (($iteration->getResult()->getTime() / $iteration->getRevolutions()) - $this->stats['mean']);
+            if ($this->stats['mean'] > 0) {
+                $deviation = 100 / $this->stats['mean'] * (
+                    (
+                        $iteration->getResult()->getTime() / $iteration->getRevolutions()
+                    ) - $this->stats['mean']
+                );
+            } else {
+                $deviation = 0;
+            }
             $iteration->setDeviation($deviation);
 
             // the Z-Value represents the number of standard deviations this

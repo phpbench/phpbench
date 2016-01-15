@@ -14,6 +14,7 @@ namespace PhpBench;
 use PhpBench\DependencyInjection\Container;
 use Seld\JsonLint\JsonParser;
 use Seld\JsonLint\ParsingException;
+use Symfony\Component\Debug\ErrorHandler;
 
 class PhpBench
 {
@@ -21,6 +22,9 @@ class PhpBench
 
     public static function run()
     {
+        // Converts warnings to exceptions
+        ErrorHandler::register();
+
         $config = self::loadConfig();
         $container = new Container($config['extensions']);
         unset($config['extensions']);

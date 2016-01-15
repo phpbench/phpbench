@@ -385,4 +385,15 @@ class RunTest extends SystemTestCase
         $this->assertEquals(1, $success);
         $this->assertEquals(6, strlen($matches[1]));
     }
+
+    /**
+     * It should not crash when zeros are reported as times.
+     */
+    public function testZeroTimedIterations()
+    {
+        $process = $this->phpbench(
+            'run benchmarks/set1 --executor=\'{"executor": "debug", "times": [0]}\''
+        );
+        $this->assertExitCode(0, $process);
+    }
 }
