@@ -460,5 +460,38 @@ are executed within a single time unit:
 PHPBench will then render all measurements for `benchMd5` similar to
 `363,874.536ops/s`.
 
+Warming Up: Getting ready for the show
+--------------------------------------
+
+In some cases, it might be a good idea to execute a revolution or two before
+performing the revolutions time measurement. 
+
+For example, when benchmarking something that uses an class autoloader, the
+first revolution will always be slower because the autoloader will not to be
+called again.
+
+Use the ``@Warmup`` annotation to execute any number of revolutions before
+actually measuring the revolutions time.
+
+
+.. code-block:: php
+
+    <?php
+
+    // ...
+    class ReportBench
+    {
+        // ...
+
+        /**
+         * @Warmup(2)
+         * @Revs(10)
+         */
+        public function benchGenerateReport()
+        {
+            $this->generator->generateMyComplexReport();
+        }
+    }
+
 .. _cartesian product: https://en.wikipedia.org/wiki/Cartesian_product
 .. _Relative standard deviation: https://en.wikipedia.org/wiki/Coefficient_of_variation

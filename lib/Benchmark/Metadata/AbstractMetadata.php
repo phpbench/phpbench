@@ -49,6 +49,11 @@ abstract class AbstractMetadata
     private $revs = 1;
 
     /**
+     * @var int
+     */
+    private $warmup = 0;
+
+    /**
      * @var string
      */
     private $class;
@@ -191,5 +196,15 @@ abstract class AbstractMetadata
     public function setOutputMode($outputMode)
     {
         $this->outputMode = $outputMode;
+    }
+
+    public function getWarmup()
+    {
+        return $this->warmup;
+    }
+
+    public function setwarmup($warmup)
+    {
+        $this->warmup = $warmup;
     }
 }

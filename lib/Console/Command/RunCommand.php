@@ -56,6 +56,7 @@ EOT
         $this->addOption('dump-file', 'd', InputOption::VALUE_OPTIONAL, 'Dump XML result to named file');
         $this->addOption('dump', null, InputOption::VALUE_NONE, 'Dump XML result to stdout and suppress all other output');
         $this->addOption('iterations', null, InputOption::VALUE_REQUIRED, 'Override number of iteratios to run in (all) benchmarks');
+        $this->addOption('warmup', null, InputOption::VALUE_REQUIRED, 'Override number of warmup revolutions on all benchmarks');
         $this->addOption('retry-threshold', 'r', InputOption::VALUE_REQUIRED, 'Set target allowable deviation', null);
         $this->addOption('sleep', null, InputOption::VALUE_REQUIRED, 'Number of microseconds to sleep between iterations');
         $this->addOption('context', null, InputOption::VALUE_REQUIRED, 'Context label to apply to the suite result (useful when comparing reports)');
@@ -69,6 +70,7 @@ EOT
             'retry_threshold' => $input->getOption('retry-threshold'),
             'sleep' => $input->getOption('sleep'),
             'iterations' => $input->getOption('iterations'),
+            'warmup' => $input->getOption('warmup'),
         ));
 
         if ($dumpFile = $input->getOption('dump-file')) {

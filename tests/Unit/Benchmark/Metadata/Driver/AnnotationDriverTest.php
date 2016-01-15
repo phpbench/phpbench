@@ -51,6 +51,7 @@ class AnnotationDriverTest extends \PHPUnit_Framework_TestCase
  * @Sleep(500)
  * @OutputTimeUnit("seconds")
  * @OutputMode("throughput")
+ * @Warmup(501)
  */
 EOT;
         $hierarchy = new ReflectionHierarchy();
@@ -68,6 +69,7 @@ EOT;
         $this->assertEquals(500, $metadata->getSleep());
         $this->assertEquals('seconds', $metadata->getOutputTimeUnit());
         $this->assertEquals('throughput', $metadata->getOutputMode());
+        $this->assertEquals(501, $metadata->getWarmup());
         $this->assertTrue($metadata->getSkip());
     }
 

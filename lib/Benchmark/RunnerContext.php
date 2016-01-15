@@ -43,6 +43,7 @@ class RunnerContext
             'parameters' => null,
             'retry_threshold' => null,
             'sleep' => null,
+            'warmup' => null,
         );
 
         $options = array_merge(
@@ -107,6 +108,13 @@ class RunnerContext
 
                 $numericValidator('Revolutions', $v);
             },
+            'warmup' => function ($v) use ($numericValidator) {
+                if (null === $v) {
+                    return;
+                }
+
+                $numericValidator('Warmup', $v);
+            },
         );
 
         foreach ($validators as $optionName => $validator) {
@@ -161,13 +169,23 @@ class RunnerContext
     }
 
     /**
-     * Override the number of rev(olutions) to run.
+     * Get the number of rev(olutions) to run.
      *
-     * @param int
+     * @param int $default
      */
     public function getRevolutions($default = null)
     {
         return $this->options['revolutions'] ?: $default;
+    }
+
+    /**
+     * Return the number of warmup revolutions that should be exectuted.
+     *
+     * @param int $default
+     */
+    public function getWarmup($default = null)
+    {
+        return $this->options['warmup'] ?: $default;
     }
 
     /**

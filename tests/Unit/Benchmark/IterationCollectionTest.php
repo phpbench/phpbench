@@ -32,7 +32,7 @@ class IterationCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testIteration()
     {
-        $iterations = new IterationCollection($this->subject->reveal(), $this->parameterSet->reveal(), 4, 10);
+        $iterations = new IterationCollection($this->subject->reveal(), $this->parameterSet->reveal(), 4, 10, 0);
 
         $this->assertCount(4, $iterations);
 
@@ -46,7 +46,7 @@ class IterationCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testComputeStats()
     {
-        $iterations = new IterationCollection($this->subject->reveal(), $this->parameterSet->reveal(), 4, 1);
+        $iterations = new IterationCollection($this->subject->reveal(), $this->parameterSet->reveal(), 4, 1, 0);
 
         $iterations[0]->setResult(new IterationResult(4, null));
         $iterations[1]->setResult(new IterationResult(8, null));
@@ -73,7 +73,7 @@ class IterationCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testComputeDeviationZeroIterations()
     {
-        $iterations = new IterationCollection($this->subject->reveal(), $this->parameterSet->reveal(), 0, 1);
+        $iterations = new IterationCollection($this->subject->reveal(), $this->parameterSet->reveal(), 0, 1, 0);
         $iterations->computeStats();
     }
 
@@ -82,7 +82,7 @@ class IterationCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testReject()
     {
-        $iterations = new IterationCollection($this->subject->reveal(), $this->parameterSet->reveal(), 4, 1, 50);
+        $iterations = new IterationCollection($this->subject->reveal(), $this->parameterSet->reveal(), 4, 1, 0, 50);
 
         $iterations[0]->setResult(new IterationResult(4, null));
         $iterations[1]->setResult(new IterationResult(8, null));
@@ -121,7 +121,7 @@ class IterationCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testExceptionAwareness()
     {
-        $iterations = new IterationCollection($this->subject->reveal(), $this->parameterSet->reveal(), 4, 1);
+        $iterations = new IterationCollection($this->subject->reveal(), $this->parameterSet->reveal(), 4, 1, 0);
         $exception = new \Exception('Test');
 
         $this->assertFalse($iterations->hasException());
@@ -137,7 +137,7 @@ class IterationCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testExceptionNoneGet()
     {
-        $iterations = new IterationCollection($this->subject->reveal(), $this->parameterSet->reveal(), 4, 1);
+        $iterations = new IterationCollection($this->subject->reveal(), $this->parameterSet->reveal(), 4, 1, 0);
         $iterations->getException();
     }
 
@@ -149,7 +149,7 @@ class IterationCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetStatsNoComputeException()
     {
-        $iterations = new IterationCollection($this->subject->reveal(), $this->parameterSet->reveal(), 4, 1);
+        $iterations = new IterationCollection($this->subject->reveal(), $this->parameterSet->reveal(), 4, 1, 0);
         $iterations->getStats();
     }
 
@@ -161,7 +161,7 @@ class IterationCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetStatsWithExceptionException()
     {
-        $iterations = new IterationCollection($this->subject->reveal(), $this->parameterSet->reveal(), 1, 1);
+        $iterations = new IterationCollection($this->subject->reveal(), $this->parameterSet->reveal(), 1, 1, 0);
         $iterations[0]->setResult(new IterationResult(4, null));
         $iterations->computeStats();
         $iterations->setException(new \Exception('Test'));
