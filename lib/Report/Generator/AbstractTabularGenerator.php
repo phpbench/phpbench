@@ -48,7 +48,7 @@ abstract class AbstractTabularGenerator implements GeneratorInterface, OutputAwa
             $this->output->writeln($document->saveXML());
         }
 
-        $definition = $this->definitionLoader->load($definition);
+        $definition = $this->definitionLoader->load($definition, $document);
         if (isset($config['pretty_params']) && true === $config['pretty_params']) {
             $definition['classes']['params'] = array(
                 array('json_format', array()),

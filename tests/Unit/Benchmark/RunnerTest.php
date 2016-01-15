@@ -15,6 +15,7 @@ use PhpBench\Benchmark\Iteration;
 use PhpBench\Benchmark\IterationResult;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Benchmark\RunnerContext;
+use PhpBench\Environment\Information;
 use PhpBench\PhpBench;
 use PhpBench\Registry\Config;
 use PhpBench\Tests\Util\TestUtil;
@@ -32,10 +33,14 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->benchmark = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');
         $this->executorRegistry = $this->prophesize('PhpBench\Registry\Registry');
         $this->executorConfig = new Config('test', array('executor' => 'microtime'));
+        $this->envSupplier = $this->prophesize('PhpBench\Environment\Supplier');
+        $this->informations = new \ArrayObject();
+        $this->envSupplier->getInformations()->willReturn($this->informations);
 
         $this->runner = new Runner(
             $this->collectionBuilder->reveal(),
             $this->executorRegistry->reveal(),
+            $this->envSupplier->reveal(),
             null,
             null
         );
@@ -297,6 +302,30 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $nodes = $result->query('//error');
         $this->assertEquals('Foobar', $nodes->item(0)->nodeValue);
         $this->assertEquals('Barfoo', $nodes->item(1)->nodeValue);
+    }
+
+    /**
+     * It should add environmental information to the DOM.
+     */
+    public function testEnvironment()
+    {
+        $this->informations[] = new Information('hello', array('say' => 'goodbye'));
+
+        TestUtil::configureSubject($this->subject, array(
+            'sleep' => 50,
+        ));
+        $this->benchmark->getSubjectMetadatas()->willReturn(array(
+            $this->subject->reveal(),
+        ));
+        TestUtil::configureBenchmark($this->benchmark);
+        $this->executor->execute(Argument::type('PhpBench\Benchmark\Iteration'), $this->executorConfig)
+            ->shouldBeCalledTimes(1)
+            ->willReturn(new IterationResult(10, 10));
+        $result = $this->runner->run(new RunnerContext(
+            __DIR__
+        ));
+        $this->assertEquals(1, $result->evaluate('count(//env)'));
+        $this->assertEquals('goodbye', $result->evaluate('string(//env/hello/@say)'));
     }
 }
 

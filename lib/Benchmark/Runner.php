@@ -13,6 +13,7 @@ namespace PhpBench\Benchmark;
 
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
+use PhpBench\Environment\Supplier;
 use PhpBench\PhpBench;
 use PhpBench\Progress\Logger\NullLogger;
 use PhpBench\Progress\LoggerInterface;
@@ -30,6 +31,7 @@ class Runner
     private $configPath;
     private $retryThreshold = null;
     private $executorRegistry;
+    private $envSupplier;
 
     /**
      * @param CollectionBuilder $collectionBuilder
@@ -39,12 +41,14 @@ class Runner
     public function __construct(
         CollectionBuilder $collectionBuilder,
         Registry $executorRegistry,
+        Supplier $envSupplier,
         $retryThreshold,
         $configPath
     ) {
         $this->logger = new NullLogger();
         $this->collectionBuilder = $collectionBuilder;
         $this->executorRegistry = $executorRegistry;
+        $this->envSupplier = $envSupplier;
         $this->configPath = $configPath;
         $this->retryThreshold = $retryThreshold;
     }
@@ -83,8 +87,13 @@ class Runner
         $suiteEl->setAttribute('config-path', $this->configPath);
         $suiteEl->setAttribute('retry-threshold', $context->getRetryThreshold($this->retryThreshold));
 
+        // add environmental information.
+        $this->appendEnvironment($suiteEl);
+
+        // build the collection of benchmarks to be executed.
         $collection = $this->collectionBuilder->buildCollection($context->getPath(), $context->getFilters(), $context->getGroups());
 
+        // log the start of the suite run.
         $this->logger->startSuite($dom);
 
         /* @var BenchmarkMetadata */
@@ -271,5 +280,17 @@ class Runner
             $errorEl->setAttribute('file', $exception->getFile());
             $errorEl->setAttribute('line', $exception->getLine());
         } while ($exception = $exception->getPrevious());
+    }
+
+    private function appendEnvironment(\DOMElement $suiteEl)
+    {
+        $envEl = $suiteEl->appendElement('env');
+        $informations = $this->envSupplier->getInformations();
+        foreach ($informations as $information) {
+            $infoEl = $envEl->appendElement($information->getName());
+            foreach ($information as $key => $value) {
+                $infoEl->setAttribute($key, $value);
+            }
+        }
     }
 }

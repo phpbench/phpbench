@@ -76,6 +76,53 @@ Columns:
 - **rstdev**: `Relative standard deviation`_ as a percentage (standardized
   measure).
 
+.. _report_env:
+
+``env``
+-------
+
+This report shows information about the environment that the benchmarks were
+executed in.
+
+.. code-block:: bash
+
+    +------------+--------------+---------+------------------------------------------+
+    | context    | provider     | key     | value                                    |
+    +------------+--------------+---------+------------------------------------------+
+    | my_context | uname        | os      | Linux                                    |
+    | my_context | uname        | host    | dtlt410                                  |
+    | my_context | uname        | release | 4.2.0-1-amd64                            |
+    | my_context | uname        | version | #1 SMP Debian 4.2.6-1 (2015-11-10)       |
+    | my_context | uname        | machine | x86_64                                   |
+    | my_context | php          | version | 5.6.15-1                                 |
+    | my_context | unix-sysload | l1      | 0.52                                     |
+    | my_context | unix-sysload | l5      | 0.64                                     |
+    | my_context | unix-sysload | l15     | 0.57                                     |
+    | my_context | vcs          | system  | git                                      |
+    | my_context | vcs          | branch  | env_info                                 |
+    | my_context | vcs          | version | edde9dc7542cfa8e3ef4da459f0aaa5dfb095109 |
+    +------------+--------------+---------+------------------------------------------+
+
+Generator: :ref:`generator_table`.
+
+Columns:
+
+- **context**: Context of the suite (as provided by the ``--context`` option
+  of the ``run`` command).
+- **provider**: Name of the environment provider (see
+  ``PhpBench\\Environment\\Provider`` in the code for more information).
+- **key**: Information key.
+- **key**: Information value.
+
+See the :doc:`environment` chapter for more information.
+
+.. note::
+
+    The information available will differ depending on platform. For example,
+    ``unit-sysload`` is unsurprisingly only available on UNIX platforms, where
+    as the VCS field will appear only when a *supported* VCS system is being
+    used.
+
 .. _microseconds: https://en.wikipedia.org/wiki/Microseconds
 .. _memory_get_peak_usage: http://php.net/manual/en/function.memory-get-peak-usage.php
 .. _standard deviation: https://en.wikipedia.org/wiki/Standard_deviation

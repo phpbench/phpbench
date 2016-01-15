@@ -20,6 +20,7 @@ Book
    writing-benchmarks
    benchmark-runner
    reports
+   environment
    report-generators
    report-renderers
    configuration
