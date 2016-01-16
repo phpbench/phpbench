@@ -14,8 +14,6 @@ namespace PhpBench\Progress\Logger;
 use PhpBench\Benchmark\Iteration;
 use PhpBench\Benchmark\IterationCollection;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
-use PhpBench\Util\Format;
-use PhpBench\Util\TimeUnit;
 
 class VerboseLogger extends PhpBenchLogger
 {
@@ -78,19 +76,7 @@ class VerboseLogger extends PhpBenchLogger
             return;
         }
 
-        $stats = $iterations->getStats();
-        $timeUnit = $this->timeUnit->resolveDestUnit($iterations->getSubject()->getOutputTimeUnit());
-        $mode = $this->timeUnit->resolveMode($iterations->getSubject()->getOutputMode());
-
-        $this->output->write(sprintf(
-            "\t[μ Mo]/r: %s %s (%s) \t[μSD μRSD]/r: %s %s%%",
-
-            $this->timeUnit->format($stats['mean'], $timeUnit, $mode, null, false),
-            $this->timeUnit->format($stats['mode'], $timeUnit, $mode, null, false),
-            $this->timeUnit->getDestSuffix($timeUnit, $mode),
-            $this->timeUnit->format($stats['stdev'], $timeUnit, TimeUnit::MODE_TIME),
-            number_format($stats['rstdev'], 2)
-        ));
+        $this->output->write(sprintf("\t%s", $this->formatIterationsFullSummary($iterations)));
         $this->output->write(PHP_EOL);
     }
 

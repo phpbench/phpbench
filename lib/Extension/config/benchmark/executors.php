@@ -16,4 +16,9 @@ return array(
     'debug' => array(
         'executor' => 'debug',
     ),
+    'debug_macro' => array(
+        'executor' => 'debug',
+        'times' => array(1000000, 200000),
+        'spread' => array(50000, -12345, 1000),
+    ),
 );

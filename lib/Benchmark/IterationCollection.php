@@ -321,6 +321,17 @@ class IterationCollection implements \IteratorAggregate, \ArrayAccess, \Countabl
     }
 
     /**
+     * Return the number of revolutions that iterations in this
+     * collection will perform.
+     *
+     * @return int
+     */
+    public function getRevolutions()
+    {
+        return $this->revolutionCount;
+    }
+
+    /**
      * Return number of iterations.
      *
      * {@inheritdoc}

@@ -56,7 +56,7 @@ class TravisLoggerTest extends PhpBenchLoggerTest
         $this->subject->getName()->willReturn('benchFoo');
         $this->parameterSet->getIndex()->willReturn(0);
 
-        $this->output->writeln(Argument::containingString('0.001ms'))->shouldBeCalled();
+        $this->output->writeln(Argument::containingString('0.001 (ms)'))->shouldBeCalled();
         $this->logger->iterationsEnd($this->iterations->reveal());
     }
 
@@ -97,7 +97,7 @@ class TravisLoggerTest extends PhpBenchLoggerTest
         $this->subject->getName()->willReturn('benchFoo');
         $this->parameterSet->getIndex()->willReturn(0);
 
-        $this->output->writeln(Argument::containingString('1.000ops/μs'))->shouldBeCalled();
+        $this->output->writeln(Argument::containingString('1.000 (ops/μs)'))->shouldBeCalled();
         $this->logger->iterationsEnd($this->iterations->reveal());
     }
 
