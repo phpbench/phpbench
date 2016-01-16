@@ -37,13 +37,18 @@ See the [official documentation](http://phpbench.readthedocs.org)
 Screenshots
 -----------
 
+
 Default output:
 
-![Default](https://cloud.githubusercontent.com/assets/530801/11761843/b1013108-a0d2-11e5-8749-d853eccefdd4.png)
+![phpbench-standard](https://cloud.githubusercontent.com/assets/530801/12371974/b89f3e7a-bc46-11e5-9712-40eebbd87940.png)
 
 Aggregate report with "dots" logger:
 
-![Aggregate](https://cloud.githubusercontent.com/assets/530801/11761844/b10a0c06-a0d2-11e5-9486-226deb9c96e2.png)
+![phpbench-aggregate](https://cloud.githubusercontent.com/assets/530801/12371973/b89c0598-bc46-11e5-93c5-882b8497fbc2.png)
+
+Blinken logger:
+
+![phpbench-blinken](https://cloud.githubusercontent.com/assets/530801/12371975/b8c806fc-bc46-11e5-8e05-904f1928e783.png)
 
 HTML report:
 
