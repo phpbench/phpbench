@@ -65,9 +65,18 @@ class BlinkenLoggerTest extends \PHPUnit_Framework_TestCase
         $this->logger->iterationStart($this->collection[0]);
         $display = $this->output->fetch();
         $this->assertContains(
-            '1   0.000  0.000  0.000  0.000 (ms)',
+            '0.000',
             $display
         );
+    }
+
+    /**
+     * It should show information at the start of the iterations.
+     */
+    public function testIterationsStart()
+    {
+        $this->logger->iterationsStart($this->collection);
+        $display = $this->output->fetch();
         $this->assertContains(
             'benchSubject',
             $display

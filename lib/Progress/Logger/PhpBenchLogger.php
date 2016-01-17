@@ -11,13 +11,15 @@
 
 namespace PhpBench\Progress\Logger;
 
+use PhpBench\Benchmark\Iteration;
+use PhpBench\Benchmark\IterationCollection;
 use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\Console\OutputAwareInterface;
 use PhpBench\PhpBench;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class PhpBenchLogger extends NullLogger implements OutputAwareInterface
+abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
 {
     protected $output;
     protected $timeUnit;
@@ -86,5 +88,58 @@ class PhpBenchLogger extends NullLogger implements OutputAwareInterface
             $this->timeUnit->format($suiteDocument->getMeanStDev(), null, TimeUnit::MODE_TIME),
             number_format($suiteDocument->getMeanRelStDev(), 3)
         ));
+    }
+
+    public function formatIterationsFullSummary(IterationCollection $iterations)
+    {
+        $stats = $iterations->getStats();
+        $timeUnit = $this->timeUnit->resolveDestUnit($iterations->getSubject()->getOutputTimeUnit());
+        $mode = $this->timeUnit->resolveMode($iterations->getSubject()->getOutputMode());
+
+        return sprintf(
+            "[μ Mo]/r: %s %s (%s) \t[μSD μRSD]/r: %s %s%%",
+
+            $this->timeUnit->format($stats['mean'], $timeUnit, $mode, null, false),
+            $this->timeUnit->format($stats['mode'], $timeUnit, $mode, null, false),
+            $this->timeUnit->getDestSuffix($timeUnit, $mode),
+            $this->timeUnit->format($stats['stdev'], $timeUnit, TimeUnit::MODE_TIME),
+            number_format($stats['rstdev'], 2)
+        );
+    }
+
+    public function formatIterationsShortSummary(IterationCollection $iterations)
+    {
+        $stats = $iterations->getStats();
+        $timeUnit = $this->timeUnit->resolveDestUnit($iterations->getSubject()->getOutputTimeUnit());
+        $mode = $this->timeUnit->resolveMode($iterations->getSubject()->getOutputMode());
+
+        return sprintf(
+            '[μ Mo]/r: %s %s μRSD/r: %s%%',
+
+            $this->timeUnit->format($stats['mean'], $timeUnit, $mode, null, false),
+            $this->timeUnit->format($stats['mode'], $timeUnit, $mode, null, false),
+            number_format($stats['rstdev'], 2)
+        );
+    }
+
+    protected function formatIterationTime(Iteration $iteration)
+    {
+        $subject = $iteration->getSubject();
+        $timeUnit = $subject->getOutputTimeUnit();
+        $outputMode = $subject->getOutputMode();
+
+        $time = 0;
+        if ($iteration->hasResult()) {
+            $time = $iteration->getResult()->getTime() / $iteration->getRevolutions();
+        }
+
+        return number_format(
+            $this->timeUnit->toDestUnit(
+                $time,
+                $this->timeUnit->resolveDestUnit($timeUnit),
+                $this->timeUnit->resolveMode($outputMode)
+            ),
+            $this->timeUnit->getPrecision()
+        );
     }
 }
