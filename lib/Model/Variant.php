@@ -17,6 +17,8 @@ use PhpBench\Math\Statistics;
 /**
  * Stores Iterations and calculates the deviations and rejection
  * status for each based on the given rejection threshold.
+ *
+ * TODO: Remove array access?
  */
 class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
 {
@@ -100,6 +102,16 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
     public function getIteration($index)
     {
         return $this->iterations[$index];
+    }
+
+    /**
+     * Add an iteration.
+     *
+     * @param Iteration $iteration
+     */
+    public function addIteration(Iteration $iteration)
+    {
+        $this->iterations[] = $iteration;
     }
 
     /**

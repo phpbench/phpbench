@@ -72,7 +72,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $subject->setParameterSets(array(array($parameters)));
         $subject->setRevs($revs);
 
-        TestUtil::configureBenchmark($this->benchmark);
+        TestUtil::configureBenchmarkMetadata($this->benchmark);
 
         $this->benchmark->getSubjects()->willReturn(array(
             $subject,
@@ -179,7 +179,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->benchmark->getSubjects()->willReturn(array(
             $subject,
         ));
-        TestUtil::configureBenchmark($this->benchmark);
+        TestUtil::configureBenchmarkMetadata($this->benchmark);
         $suite = $this->runner->run(new RunnerContext(__DIR__));
 
         $this->assertInstanceOf('PhpBench\Model\Suite', $suite);
@@ -197,7 +197,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->benchmark->getSubjects()->willReturn(array(
             $subject,
         ));
-        TestUtil::configureBenchmark($this->benchmark);
+        TestUtil::configureBenchmarkMetadata($this->benchmark);
 
         $test = $this;
         $this->executor->execute(Argument::type('PhpBench\Benchmark\Metadata\SubjectMetadata'), Argument::type('PhpBench\Model\Iteration'), $this->executorConfig)
@@ -222,7 +222,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->benchmark->getSubjects()->willReturn(array(
             $subject,
         ));
-        TestUtil::configureBenchmark($this->benchmark);
+        TestUtil::configureBenchmarkMetadata($this->benchmark);
 
         $test = $this;
         $this->executor->execute(Argument::type('PhpBench\Benchmark\Metadata\SubjectMetadata'), Argument::type('PhpBench\Model\Iteration'), $this->executorConfig)
@@ -249,7 +249,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->benchmark->getSubjects()->willReturn(array(
             $subject,
         ));
-        TestUtil::configureBenchmark($this->benchmark);
+        TestUtil::configureBenchmarkMetadata($this->benchmark);
 
         $test = $this;
         $this->executor->execute(Argument::type('PhpBench\Benchmark\Metadata\SubjectMetadata'), Argument::type('PhpBench\Model\Iteration'), $this->executorConfig)
@@ -275,7 +275,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->benchmark->getSubjects()->willReturn(array(
             $subject,
         ));
-        TestUtil::configureBenchmark($this->benchmark);
+        TestUtil::configureBenchmarkMetadata($this->benchmark);
 
         $test = $this;
         $this->executor->execute(Argument::type('PhpBench\Benchmark\Metadata\SubjectMetadata'), Argument::type('PhpBench\Model\Iteration'), $this->executorConfig)
@@ -301,7 +301,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
      */
     public function testBeforeAndAfterClass()
     {
-        TestUtil::configureBenchmark($this->benchmark, array(
+        TestUtil::configureBenchmarkMetadata($this->benchmark, array(
             'beforeClassMethods' => array('afterClass'),
             'afterClassMethods' => array('beforeClass'),
         ));
@@ -323,7 +323,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->benchmark->getSubjects()->willReturn(array(
             $subject,
         ));
-        TestUtil::configureBenchmark($this->benchmark);
+        TestUtil::configureBenchmarkMetadata($this->benchmark);
 
         $this->executor->execute(Argument::type('PhpBench\Benchmark\Metadata\SubjectMetadata'), Argument::type('PhpBench\Model\Iteration'), $this->executorConfig)
             ->shouldBeCalledTimes(1)
@@ -355,7 +355,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
             $subject,
         ));
 
-        TestUtil::configureBenchmark($this->benchmark);
+        TestUtil::configureBenchmarkMetadata($this->benchmark);
         $this->executor->execute(Argument::type('PhpBench\Benchmark\Metadata\SubjectMetadata'), Argument::type('PhpBench\Model\Iteration'), $this->executorConfig)
             ->shouldBeCalledTimes(1)
             ->willReturn(new IterationResult(10, 10));

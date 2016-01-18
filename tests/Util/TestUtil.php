@@ -11,6 +11,7 @@
 
 namespace PhpBench\Tests\Util;
 
+use PhpBench\Environment\Information;
 use PhpBench\Model\ParameterSet;
 use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
@@ -21,7 +22,7 @@ use Prophecy\Prophecy\ObjectProphecy;
  */
 class TestUtil
 {
-    public static function configureSubject(ObjectProphecy $subject, array $options = array())
+    public static function configureSubjectMetadata(ObjectProphecy $subject, array $options = array())
     {
         $options = array_merge(array(
             'iterations' => 1,
@@ -55,7 +56,7 @@ class TestUtil
         $subject->getOutputMode()->willReturn($options['outputMode']);
     }
 
-    public static function configureBenchmark(ObjectProphecy $benchmark, array $options = array())
+    public static function configureBenchmarkMetadata(ObjectProphecy $benchmark, array $options = array())
     {
         $options = array_merge(array(
             'class' => 'Benchmark',
@@ -73,38 +74,57 @@ class TestUtil
     public static function createSuite(array $options = array())
     {
         $options = array_merge(array(
+            'date' => '2016-02-06',
+            'revs' => 5,
+            'warmup' => 10,
+            'sleep' => 1,
             'basetime' => 10,
             'groups' => array(),
             'name' => 'test',
+            'benchmarks' => array('TestBench'),
             'parameters' => array(),
             'groups' => array('one', 'two', 'three'),
             'parameters' => array(
                 'param1' => 'value1',
             ),
             'subjects' => array('benchOne'),
+            'env' => array(),
+            'output_time_unit' => 'microseconds',
+            'output_mode' => 'time',
         ), $options);
 
-        $dateTime = new \DateTime('2016-02-03');
+        $dateTime = new \DateTime($options['date']);
         $suite = new Suite(
             $options['name'],
             $dateTime,
             null
         );
-        $benchmark = $suite->createBenchmark(
-            'TestBench'
-        );
 
-        $baseTime = $options['basetime'];
-        foreach ($options['subjects'] as $subjectName) {
-            $subject = $benchmark->createSubject($subjectName);
-            $subject->setRevs(5);
-            $subject->setGroups($options['groups']);
-            $variant = $subject->createVariant(new ParameterSet(0, $options['parameters']));
-            $variant->createIteration($baseTime, 200, 0);
-            $variant->createIteration($baseTime + 10, 200, 0);
-            $variant->computeStats();
-            $baseTime++;
+        foreach ($options['benchmarks'] as $benchmarkClass) {
+            $benchmark = $suite->createBenchmark($benchmarkClass);
+
+            $baseTime = $options['basetime'];
+            foreach ($options['subjects'] as $subjectName) {
+                $subject = $benchmark->createSubject($subjectName);
+                $subject->setRevs($options['revs']);
+                $subject->setWarmup($options['warmup']);
+                $subject->setSleep($options['sleep']);
+                $subject->setGroups($options['groups']);
+                $subject->setOutputTimeUnit($options['output_time_unit']);
+                $subject->setOutputMode($options['output_mode']);
+                $variant = $subject->createVariant(new ParameterSet(0, $options['parameters']));
+                $variant->createIteration($baseTime, 200, 0);
+                $variant->createIteration($baseTime + 10, 200, 0);
+                $variant->computeStats();
+                $baseTime++;
+            }
         }
+
+        $informations = array();
+        foreach ($options['env'] as $name => $information) {
+            $informations[] = new Information($name, $information);
+        }
+        $suite->setEnvInformations($informations);
 
         return $suite;
     }

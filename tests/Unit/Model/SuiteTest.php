@@ -45,7 +45,7 @@ class SuiteTest extends \PHPUnit_Framework_TestCase
     {
         $this->bench1->getSubjects()->willReturn(array($this->subject1->reveal()));
         $this->subject1->getVariants()->willReturn(array($this->variant1->reveal()));
-        $this->variant1->getIterations()->willReturn(array($this->iteration1->reveal()));
+        $this->variant1->getIterator()->willReturn(new \ArrayIterator(array($this->iteration1->reveal())));
 
         $suite = $this->createSuite(array(
             $this->bench1->reveal(),
@@ -115,7 +115,7 @@ class SuiteTest extends \PHPUnit_Framework_TestCase
         return new Suite(
             'context',
             new \DateTime('2016-01-25'),
-            'path/to/config.json',
+            'path/to/config',
             $benchmarks,
             $informations
         );

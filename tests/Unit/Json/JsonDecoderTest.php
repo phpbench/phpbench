@@ -80,10 +80,24 @@ class JsonDecoderTest extends \PHPUnit_Framework_TestCase
                 ),
             ),
             array(
+                'foo.revs: 1000',
+                array(
+                    'foo.revs' => 1000,
+                ),
+            ),
+            array(
                 '10: 10',
                 array(
                     10 => 10,
                 ),
+            ),
+            array(
+                'foobar[barfoo]: 5',
+                array('foobar[barfoo]' => 5),
+            ),
+            array(
+                'foo_bar: 5',
+                array('foo_bar' => 5),
             ),
         );
     }

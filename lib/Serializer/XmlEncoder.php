@@ -11,7 +11,7 @@
 
 namespace PhpBench\Serializer;
 
-use PhpBench\Dom\SuiteDocument;
+use PhpBench\Dom\Document;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
@@ -30,11 +30,11 @@ class XmlEncoder
      *
      * @param SuiteCollection $suiteCollection
      *
-     * @return SuiteDocumnet
+     * @return Document
      */
     public function encode(SuiteCollection $suiteCollection)
     {
-        $dom = new SuiteDocument();
+        $dom = new Document();
         $rootEl = $dom->createRoot('phpbench');
         $rootEl->setAttribute('version', PhpBench::VERSION);
 

@@ -23,7 +23,7 @@ Features:
 - Output mode specification (throughput, average time).
 - Parameterized benchmarking cases.
 - Per-project configuration.
-- Serialize results as XML and generate reports later.
+- Store and query results.
 - Before and After method / class specification.
 - Pause (recover) between iterations.
 - Extendable.

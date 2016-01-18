@@ -11,12 +11,13 @@
 
 namespace PhpBench\Console\Command;
 
+use PhpBench\Console\Command\Handler\DumpHandler;
 use PhpBench\Console\Command\Handler\ReportHandler;
 use PhpBench\Console\Command\Handler\RunnerHandler;
 use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\PhpBench;
-use PhpBench\Serializer\XmlEncoder;
+use PhpBench\Storage\DriverFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -27,19 +28,22 @@ class RunCommand extends Command
     private $runnerHandler;
     private $reportHandler;
     private $timeUnitHandler;
-    private $xmlEncoder;
+    private $dumpHandler;
+    private $storage;
 
     public function __construct(
         RunnerHandler $runnerHandler,
         ReportHandler $reportHandler,
         TimeUnitHandler $timeUnitHandler,
-        XmlEncoder $xmlEncoder
+        DumpHandler $dumpHandler,
+        DriverFactory $storage
     ) {
         parent::__construct();
         $this->runnerHandler = $runnerHandler;
         $this->reportHandler = $reportHandler;
         $this->timeUnitHandler = $timeUnitHandler;
-        $this->xmlEncoder = $xmlEncoder;
+        $this->dumpHandler = $dumpHandler;
+        $this->storage = $storage;
     }
 
     public function configure()
@@ -47,6 +51,7 @@ class RunCommand extends Command
         RunnerHandler::configure($this);
         ReportHandler::configure($this);
         TimeUnitHandler::configure($this);
+        DumpHandler::configure($this);
 
         $this->setName('run');
         $this->setDescription('Run benchmarks');
@@ -58,13 +63,12 @@ Run benchmark files at given <comment>path</comment>
 All bench marks under the given path will be executed recursively.
 EOT
         );
-        $this->addOption('dump-file', 'd', InputOption::VALUE_OPTIONAL, 'Dump XML result to named file');
-        $this->addOption('dump', null, InputOption::VALUE_NONE, 'Dump XML result to stdout and suppress all other output');
         $this->addOption('iterations', null, InputOption::VALUE_REQUIRED, 'Override number of iteratios to run in (all) benchmarks');
         $this->addOption('warmup', null, InputOption::VALUE_REQUIRED, 'Override number of warmup revolutions on all benchmarks');
         $this->addOption('retry-threshold', 'r', InputOption::VALUE_REQUIRED, 'Set target allowable deviation', null);
         $this->addOption('sleep', null, InputOption::VALUE_REQUIRED, 'Number of microseconds to sleep between iterations');
         $this->addOption('context', null, InputOption::VALUE_REQUIRED, 'Context label to apply to the suite result (useful when comparing reports)');
+        $this->addOption('store', null, InputOption::VALUE_NONE, 'Persist the results.');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
@@ -80,22 +84,15 @@ EOT
 
         $collection = new SuiteCollection(array($suite));
 
-        if ($input->getOption('dump-file') || $input->getOption('dump')) {
-            $dom = $this->xmlEncoder->encode($collection);
-        }
+        $this->dumpHandler->dumpFromInput($input, $output, $collection);
 
-        if ($dumpFile = $input->getOption('dump-file')) {
-            $xml = $dom->dump();
-            file_put_contents($dumpFile, $xml);
-            $output->writeln('Dumped result to ' . $dumpFile);
+        if (true === $input->getOption('store')) {
+            $output->write('Storing results ... ');
+            $this->storage->getDriver()->store($collection);
+            $output->writeln('OK');
         }
 
         $this->reportHandler->reportsFromInput($input, $output, $collection);
-
-        if ($input->getOption('dump')) {
-            $xml = $dom->dump();
-            $output->write($xml);
-        }
 
         if ($suite->getErrorStacks()) {
             return 1;

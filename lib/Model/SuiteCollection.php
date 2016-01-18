@@ -47,6 +47,18 @@ class SuiteCollection implements \IteratorAggregate
     }
 
     /**
+     * Merge another collection into this one.
+     *
+     * @param SuiteCollection $collection
+     */
+    public function mergeCollection(SuiteCollection $collection)
+    {
+        foreach ($collection->getSuites() as $suite) {
+            $this->addSuite($suite);
+        }
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getIterator()

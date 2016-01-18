@@ -1,4 +1,9 @@
 {
     "bootstrap": "vendor/autoload.php",
-    "path": "benchmarks"
+    "path": "benchmarks",
+    "storage": "sqlite",
+    "extensions": [
+        "PhpBench\\Extensions\\XDebug\\XDebugExtension",
+        "PhpBench\\Extensions\\Sqlite\\SqliteExtension"
+    ]
 }

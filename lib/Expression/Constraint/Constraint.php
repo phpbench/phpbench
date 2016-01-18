@@ -9,8 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Tests\Util;
+namespace PhpBench\Expression\Constraint;
 
-class SuitePrototypes
+/**
+ * Base Constraint class.
+ */
+abstract class Constraint
 {
 }

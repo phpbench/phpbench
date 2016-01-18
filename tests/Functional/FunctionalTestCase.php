@@ -12,6 +12,7 @@
 namespace PhpBench\Tests\Functional;
 
 use PhpBench\DependencyInjection\Container;
+use Symfony\Component\Filesystem\Filesystem;
 
 class FunctionalTestCase extends \PHPUnit_Framework_TestCase
 {
@@ -21,7 +22,7 @@ class FunctionalTestCase extends \PHPUnit_Framework_TestCase
      * TODO: option to disable the cache is here because there is a bug
      * in the Runner/Builder which aggregates benchmarks on multiple runs.
      */
-    protected function getContainer($cache = true)
+    protected function getContainer($cache = true, $config = array())
     {
         if ($cache && $this->container) {
             return $this->container;
@@ -29,9 +30,32 @@ class FunctionalTestCase extends \PHPUnit_Framework_TestCase
 
         $this->container = new Container(array(
             'PhpBench\Extension\CoreExtension',
-        ));
+        ), $config);
         $this->container->init();
 
         return $this->container;
+    }
+
+    protected function getWorkspacePath()
+    {
+        $path = sys_get_temp_dir() . '/phpbench_test_workspace';
+
+        return $path;
+    }
+
+    protected function cleanWorkspace()
+    {
+        $filesystem = new Filesystem();
+        $path = $this->getWorkspacePath();
+        if (file_exists($path)) {
+            $filesystem->remove($path);
+        }
+    }
+
+    protected function initWorkspace()
+    {
+        $this->cleanWorkspace();
+        $filesystem = new Filesystem();
+        $filesystem->mkdir($this->getWorkspacePath());
     }
 }

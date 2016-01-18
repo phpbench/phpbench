@@ -151,10 +151,12 @@ See the :doc:`report-renderers` chapter for more information.
 Deferring Report Generation
 ---------------------------
 
-You can dump the benchmarking results as an XML file and generate reports
-separately.
+You can store benchmark results which can then later be used later to generate reports.
 
-Dump the benchmark results using the ``--dump-file`` option
+There are two ways to do this: Firstly you may dump the results to an XML
+file, secondly you can use a storage driver to persist them.
+
+To dump the benchmark results to an XML file use the ``--dump-file`` option:
 
 .. code-block:: bash
 
@@ -165,6 +167,21 @@ You can then generate reports using the ``report`` command:
 .. code-block:: bash
 
     $ phpbench report --file=report.xml --report=default
+
+Alternatively (or in a addition) you may use the storage driver as follows:
+
+.. code-block:: bash
+
+    $ phpbench run /path/to/HashBench.php --store
+
+Then generate reports using a *query*:
+
+.. code-block:: bash
+
+    $ phpbench report --query='benchmark: "MyBench"' --report=aggregate
+
+This method is highly mighty. See the :doc:`storage <storage>` chapter for
+more information.
 
 Comparing Results
 -----------------

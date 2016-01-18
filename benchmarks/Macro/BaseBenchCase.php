@@ -23,12 +23,19 @@ use Symfony\Component\Filesystem\Filesystem;
  *
  * @OutputTimeUnit("seconds")
  * @Iterations(10)
+ * @Warmup(1)
  * @BeforeClassMethods({"createWorkspace"}, extend=true)
  * @AfterClassMethods({"removeWorkspace"})
  */
 class BaseBenchCase
 {
     private $container;
+
+    private $extensions = array(
+        'PhpBench\Extension\CoreExtension',
+    );
+
+    private $config = array();
 
     /**
      * The constructor can be used as a quick way to setup the
@@ -65,9 +72,7 @@ class BaseBenchCase
 
     protected function getContainer()
     {
-        $container = new Container(array(
-            'PhpBench\Extension\CoreExtension',
-        ));
+        $container = new Container($this->extensions, $this->config);
         $container->init();
 
         return $container;
@@ -98,5 +103,15 @@ class BaseBenchCase
     protected static function getWorkspacePath()
     {
         return __DIR__ . '/_workspace';
+    }
+
+    protected function addContainerExtensionClass($extensionClass)
+    {
+        $this->extensions[] = $extensionClass;
+    }
+
+    protected function setContainerConfig(array $containerConfig)
+    {
+        $this->config = $containerConfig;
     }
 }

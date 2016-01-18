@@ -80,7 +80,7 @@ class Benchmark implements \IteratorAggregate
     public function createSubject($name)
     {
         $subject = new Subject($this, $name);
-        $this->subjects[] = $subject;
+        $this->subjects[$name] = $subject;
 
         return $subject;
     }

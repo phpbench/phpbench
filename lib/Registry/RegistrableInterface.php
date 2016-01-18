@@ -25,8 +25,6 @@ interface RegistrableInterface
     /**
      * Return a JSON schema which should be used to validate the configuration.
      * Return an empty array() if you want to allow anything.
-     *
-     * @param OptionsResolver $options
      */
     public function getSchema();
 }

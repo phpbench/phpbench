@@ -38,7 +38,7 @@ class Suite implements \IteratorAggregate
     public function __construct(
         $contextName,
         \DateTime $date,
-        $configPath,
+        $configPath = null,
         array $benchmarks = array(),
         array $envInformations = array()
     ) {
@@ -99,7 +99,7 @@ class Suite implements \IteratorAggregate
         $iterations = array();
 
         foreach ($this->getVariants() as $variant) {
-            foreach ($variant->getIterations() as $iteration) {
+            foreach ($variant as $iteration) {
                 $iterations[] = $iteration;
             }
         }

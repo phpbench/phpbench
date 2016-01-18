@@ -20,6 +20,7 @@ Book
    writing-benchmarks
    benchmark-runner
    reports
+   storage
    environment
    report-generators
    report-renderers
@@ -32,6 +33,7 @@ Extensions
    :maxdepth: 1
 
    extensions/xdebug
+   extensions/sqlite
 
 Indices and tables
 ==================

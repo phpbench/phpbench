@@ -10,8 +10,11 @@
         <testsuite name="PhpBench">
             <directory>./tests</directory>
         </testsuite>
-            <testsuite name="PhpBench XDebug Extension">
+        <testsuite name="PhpBench XDebug Extension">
             <directory>./extensions/xdebug/tests</directory>
+        </testsuite>
+        <testsuite name="PhpBench Sqlite Extension">
+            <directory>./extensions/sqlite/tests</directory>
         </testsuite>
     </testsuites>
 
