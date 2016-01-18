@@ -218,6 +218,8 @@ The built-in progress loggers are:
 - ``dots``: Shows one dot per subject (like PHPUnit).
 - ``classdots``: Shows the benchmark class, and then a dot for each subject.
 - ``blinken``: Highly visual progress logger.
+- ``histogram``: Shows a histogram with 8 vertical levels and 16 bins for each
+  iteration set.
 
 .. note::
 

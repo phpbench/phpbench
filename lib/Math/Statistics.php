@@ -165,4 +165,53 @@ class Statistics
 
         return $space;
     }
+
+    /**
+     * Generate a histogram.
+     *
+     * Note this is not a great function, and should not be relied upon
+     * for serious use.
+     *
+     * For a better implementation copy:
+     *   http://docs.scipy.org/doc/numpy-1.10.1/reference/generated/numpy.histogram.html
+     *
+     * @param array $values
+     * @param int $steps
+     * @param float $lowerBound
+     * @param float $upperBound
+     *
+     * @return array
+     */
+    public static function histogram(array $values, $steps = 10, $lowerBound = null, $upperBound = null)
+    {
+        $min = $lowerBound ?: min($values);
+        $max = $upperBound ?: max($values);
+
+        $range = $max - $min;
+
+        $step = $range / $steps;
+        $steps++; // add one extra step to catch the max value
+
+        $histogram = array();
+
+        $floor = $min;
+        for ($i = 0; $i < $steps; $i++) {
+            $ceil = $floor + $step;
+
+            if (!isset($histogram[(string) $floor])) {
+                $histogram[(string) $floor] = 0;
+            }
+
+            foreach ($values as $value) {
+                if ($value >= $floor && $value < $ceil) {
+                    $histogram[(string) $floor]++;
+                }
+            }
+
+            $floor += $step;
+            $ceil += $step;
+        }
+
+        return $histogram;
+    }
 }

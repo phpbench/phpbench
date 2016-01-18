@@ -31,12 +31,14 @@ use PhpBench\Environment\Provider;
 use PhpBench\Environment\Supplier;
 use PhpBench\Progress\Logger\BlinkenLogger;
 use PhpBench\Progress\Logger\DotsLogger;
+use PhpBench\Progress\Logger\HistogramLogger;
 use PhpBench\Progress\Logger\NullLogger;
 use PhpBench\Progress\Logger\TravisLogger;
 use PhpBench\Progress\Logger\VerboseLogger;
 use PhpBench\Progress\LoggerRegistry;
 use PhpBench\Registry\Registry;
 use PhpBench\Report\Generator\CompositeGenerator;
+use PhpBench\Report\Generator\HistogramGenerator;
 use PhpBench\Report\Generator\Tabular\Format\TimeFormat;
 use PhpBench\Report\Generator\TabularCustomGenerator;
 use PhpBench\Report\Generator\TabularGenerator;
@@ -292,6 +294,10 @@ class CoreExtension implements ExtensionInterface
         $container->register('progress_logger.blinken', function (Container $container) {
             return new BlinkenLogger($container->get('benchmark.time_unit'));
         }, array('progress_logger' => array('name' => 'blinken')));
+
+        $container->register('progress_logger.histogram', function (Container $container) {
+            return new HistogramLogger($container->get('benchmark.time_unit'));
+        }, array('progress_logger' => array('name' => 'histogram')));
     }
 
     private function registerReportGenerators(Container $container)
@@ -312,6 +318,9 @@ class CoreExtension implements ExtensionInterface
         $container->register('report_generator.composite', function (Container $container) {
             return new CompositeGenerator($container->get('report.manager'));
         }, array('report_generator' => array('name' => 'composite')));
+        $container->register('report_generator.histogram', function (Container $container) {
+            return new HistogramGenerator();
+        }, array('report_generator' => array('name' => 'histogram')));
     }
 
     private function registerReportRenderers(Container $container)

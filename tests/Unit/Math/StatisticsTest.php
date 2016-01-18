@@ -142,4 +142,83 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
             ),
         );
     }
+
+    /**
+     * It should return histogram data.
+     *
+     * @dataProvider provideHistogram
+     */
+    public function testHistogram(array $data, $steps, $lower, $upper, array $expected)
+    {
+        $result = Statistics::histogram($data, $steps, $lower, $upper);
+        $this->assertEquals($expected, $result);
+    }
+
+    public function provideHistogram()
+    {
+        return array(
+            array(
+                array(10, 10, 2, 2),
+                10,
+                null, null,
+                array(
+                    2 => 2,
+                    '2.8' => 0,
+                    '3.6' => 0,
+                    '4.4' => 0,
+                    '5.2' => 0,
+                    '6' => 0,
+                    '6.8' => 0,
+                    '7.6' => 0,
+                    '8.4' => 0,
+                    '9.2' => 0,
+                    10 => 2,
+                ),
+            ),
+            array(
+                array(1, 10, 2, 2, 2, 3, 2, 4),
+                9,
+                null, null,
+                array(
+                    1 => 1,
+                    2 => 4,
+                    3 => 1,
+                    4 => 1,
+                    5 => 0,
+                    6 => 0,
+                    7 => 0,
+                    8 => 0,
+                    9 => 0,
+                    10 => 1,
+                ),
+            ),
+            array(
+                array(
+                    -3,
+                    -2,
+                    -1,
+                    0,
+                    1,
+                    2,
+                    3,
+                ),
+                10,
+                -3,
+                3,
+                array(
+                    -3 => 1,
+                    '-2.4' => 1,
+                    '-1.8' => 0,
+                    '-1.2' => 1,
+                    '-0.6' => 1,
+                    '2.2204460492503E-16' => 0,
+                    '0.6' => 1,
+                    '1.2' => 0,
+                    '1.8' => 1,
+                    '2.4' => 1,
+                    3 => 0,
+                ),
+            ),
+        );
+    }
 }
