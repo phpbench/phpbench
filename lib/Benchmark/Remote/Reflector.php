@@ -95,6 +95,18 @@ class Reflector
             'paramProviders' => var_export($paramProviders, true),
         ))->launch();
 
+        // validate parameters
+        $parameters = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($parameterSets));
+        iterator_apply($parameters, function (\Iterator $iterator) {
+            $parameter = $iterator->current();
+            if (!is_scalar($parameter)) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Parameter values must be scalar. Got "%s"',
+                    is_object($parameter) ? get_class($parameter) : gettype($parameter)
+                ));
+            }
+        }, array($parameters));
+
         return $parameterSets;
     }
 

@@ -42,6 +42,7 @@ class ReflectorTest extends \PHPUnit_Framework_TestCase
             'methodTwo',
             'provideParamsOne',
             'provideParamsTwo',
+            'provideParamsNonScalar',
         ), array_keys($reflection->methods));
         $this->assertContains('Method One Comment', $reflection->methods['methodOne']->comment);
     }
@@ -86,6 +87,16 @@ class ReflectorTest extends \PHPUnit_Framework_TestCase
                 ),
             ),
         ), $parameterSets);
+    }
+
+    /**
+     * It should throw an exception if the parameter set contains non-scalar values.
+     */
+    public function testGetParameterSetsNonScalar()
+    {
+        $parameterSets = $this->reflector->getParameterSets(__DIR__ . '/reflector/ExampleClass.php', array(
+            'provideParamsNonScalar',
+        ));
     }
 
     /**

@@ -11,9 +11,9 @@
 
 namespace PhpBench\Tests\Unit\Progress\Logger;
 
-use PhpBench\Benchmark\IterationCollection;
-use PhpBench\Benchmark\IterationResult;
-use PhpBench\Benchmark\ParameterSet;
+use PhpBench\Model\IterationResult;
+use PhpBench\Model\ParameterSet;
+use PhpBench\Model\Variant;
 use PhpBench\Progress\Logger\HistogramLogger;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -27,15 +27,16 @@ class HistogramLoggerTest extends \PHPUnit_Framework_TestCase
 
         $this->logger = new HistogramLogger($this->timeUnit);
         $this->logger->setOutput($this->output);
-        $this->benchmark = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');
-        $this->subject = $this->prophesize('PhpBench\Benchmark\Metadata\SubjectMetadata');
-        $this->collection = new IterationCollection(
+        $this->benchmark = $this->prophesize('PhpBench\Model\Benchmark');
+        $this->subject = $this->prophesize('PhpBench\Model\Subject');
+        $this->iteration = $this->prophesize('PhpBench\Model\Iteration');
+        $this->variant = new Variant(
             $this->subject->reveal(),
             new ParameterSet(),
             4,
             1
         );
-        $this->benchmark->getSubjectMetadatas()->willReturn(array(
+        $this->benchmark->getSubjects()->willReturn(array(
             $this->subject->reveal(),
         ));
         $this->benchmark->getClass()->willReturn('BenchmarkTest');
@@ -58,11 +59,23 @@ class HistogramLoggerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should show information at the start of the iterations.
+     * Test iteration start.
+     */
+    public function testIterationStart()
+    {
+        $this->iteration->getIndex()->willReturn(1);
+        $this->iteration->getVariant()->willReturn($this->variant);
+        $this->logger->iterationStart($this->iteration->reveal());
+        $display = $this->output->fetch();
+        $this->assertContains('it  1/4', $display);
+    }
+
+    /**
+     * It should show information at the start of the variant.
      */
     public function testIterationsStart()
     {
-        $this->logger->iterationsStart($this->collection);
+        $this->logger->variantStart($this->variant);
         $display = $this->output->fetch();
         $this->assertContains(
             '1  (σ = 0.000ms ) -2σ [                 ] +2σ',
@@ -83,8 +96,8 @@ class HistogramLoggerTest extends \PHPUnit_Framework_TestCase
      */
     public function testIterationException()
     {
-        $this->collection->setException(new \Exception('foo'));
-        $this->logger->iterationsEnd($this->collection);
+        $this->variant->setException(new \Exception('foo'));
+        $this->logger->variantEnd($this->variant);
         $this->assertContains('ERROR', $this->output->fetch());
     }
 
@@ -94,12 +107,12 @@ class HistogramLoggerTest extends \PHPUnit_Framework_TestCase
      */
     public function testIterationEnd()
     {
-        foreach ($this->collection as $iteration) {
+        foreach ($this->variant as $iteration) {
             $iteration->setResult(new IterationResult(10, 10));
         }
-        $this->collection->computeStats();
+        $this->variant->computeStats();
 
-        $this->logger->iterationsEnd($this->collection);
+        $this->logger->variantEnd($this->variant);
         $this->assertContains(
             '1  (σ = 0.000ms ) -2σ [        █        ] +2σ [μ Mo]/r: 0.010 0.010 μRSD/r: 0.00%',
             $this->output->fetch()

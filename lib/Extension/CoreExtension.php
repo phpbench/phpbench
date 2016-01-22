@@ -11,7 +11,7 @@
 
 namespace PhpBench\Extension;
 
-use PhpBench\Benchmark\CollectionBuilder;
+use PhpBench\Benchmark\BenchmarkFinder;
 use PhpBench\Benchmark\Executor\DebugExecutor;
 use PhpBench\Benchmark\Executor\MicrotimeExecutor;
 use PhpBench\Benchmark\Metadata\Driver\AnnotationDriver;
@@ -47,6 +47,7 @@ use PhpBench\Report\Renderer\DebugRenderer;
 use PhpBench\Report\Renderer\DelimitedRenderer;
 use PhpBench\Report\Renderer\XsltRenderer;
 use PhpBench\Report\ReportManager;
+use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Tabular\Definition\Expander;
 use PhpBench\Tabular\Definition\Loader;
 use PhpBench\Tabular\Dom\XPathResolver;
@@ -92,6 +93,7 @@ class CoreExtension implements ExtensionInterface
         $this->registerReportGenerators($container);
         $this->registerReportRenderers($container);
         $this->registerEnvironment($container);
+        $this->registerSerializer($container);
 
         $container->mergeParameters(array(
             'path' => null,
@@ -160,7 +162,7 @@ class CoreExtension implements ExtensionInterface
     {
         $container->register('benchmark.runner', function (Container $container) {
             return new Runner(
-                $container->get('benchmark.collection_builder'),
+                $container->get('benchmark.benchmark_finder'),
                 $container->get('benchmark.registry.executor'),
                 $container->get('environment.supplier'),
                 $container->getParameter('retry_threshold'),
@@ -207,8 +209,8 @@ class CoreExtension implements ExtensionInterface
             );
         });
 
-        $container->register('benchmark.collection_builder', function (Container $container) {
-            return new CollectionBuilder(
+        $container->register('benchmark.benchmark_finder', function (Container $container) {
+            return new BenchmarkFinder(
                 $container->get('benchmark.metadata_factory'),
                 $container->get('benchmark.finder')
             );
@@ -253,7 +255,8 @@ class CoreExtension implements ExtensionInterface
             return new RunCommand(
                 $container->get('console.command.handler.runner'),
                 $container->get('console.command.handler.report'),
-                $container->get('console.command.handler.time_unit')
+                $container->get('console.command.handler.time_unit'),
+                $container->get('serializer.encoder.xml')
             );
         }, array('console.command' => array()));
 
@@ -435,6 +438,13 @@ class CoreExtension implements ExtensionInterface
 
         $container->register('environment.supplier', function (Container $container) {
             return new Supplier();
+        });
+    }
+
+    private function registerSerializer(Container $container)
+    {
+        $container->register('serializer.encoder.xml', function (Container $container) {
+            return new XmlEncoder();
         });
     }
 

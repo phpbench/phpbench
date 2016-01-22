@@ -11,7 +11,7 @@
 
 namespace PhpBench\Extensions\XDebug;
 
-use PhpBench\Benchmark\Iteration;
+use PhpBench\Model\Iteration;
 
 class XDebugUtil
 {
@@ -19,7 +19,7 @@ class XDebugUtil
     {
         $name = sprintf(
             '%s::%s.P%s.cachegrind',
-            $iteration->getSubject()->getBenchmarkMetadata()->getClass(),
+            $iteration->getSubject()->getBenchmark()->getClass(),
             $iteration->getSubject()->getName(),
             $iteration->getParameters()->getIndex()
         );

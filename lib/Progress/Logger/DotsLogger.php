@@ -11,10 +11,10 @@
 
 namespace PhpBench\Progress\Logger;
 
-use PhpBench\Benchmark\Iteration;
-use PhpBench\Benchmark\IterationCollection;
-use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
-use PhpBench\Benchmark\SuiteDocument;
+use PhpBench\Model\Benchmark;
+use PhpBench\Model\Iteration;
+use PhpBench\Model\Suite;
+use PhpBench\Model\Variant;
 use PhpBench\Util\TimeUnit;
 
 class DotsLogger extends PhpBenchLogger
@@ -32,7 +32,7 @@ class DotsLogger extends PhpBenchLogger
         $this->isCi = getenv('CONTINUOUS_INTEGRATION') ? true : false;
     }
 
-    public function benchmarkStart(BenchmarkMetadata $benchmark)
+    public function benchmarkStart(Benchmark $benchmark)
     {
         static $first = true;
 
@@ -47,14 +47,14 @@ class DotsLogger extends PhpBenchLogger
         }
     }
 
-    public function iterationsEnd(IterationCollection $iterations)
+    public function variantEnd(Variant $variant)
     {
         // do not show reject runs
-        if ($iterations->getRejectCount() > 0) {
+        if ($variant->getRejectCount() > 0) {
             return;
         }
 
-        $dot = $iterations->hasException() ? '<error>E</error>' : '.';
+        $dot = $variant->hasErrorStack() ? '<error>E</error>' : '.';
 
         if ($this->isCi) {
             $this->output->write($dot);
@@ -90,9 +90,9 @@ class DotsLogger extends PhpBenchLogger
         ));
     }
 
-    public function endSuite(SuiteDocument $suiteDocument)
+    public function endSuite(Suite $suite)
     {
         $this->output->write(PHP_EOL . PHP_EOL);
-        parent::endSuite($suiteDocument);
+        parent::endSuite($suite);
     }
 }

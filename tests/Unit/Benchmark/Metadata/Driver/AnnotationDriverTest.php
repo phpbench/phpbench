@@ -37,40 +37,19 @@ class AnnotationDriverTest extends \PHPUnit_Framework_TestCase
     {
         $reflection = new ReflectionClass();
         $reflection->class = 'Test';
-        $reflection->comment = <<<EOT
+        $reflection->comment = <<<'EOT'
 /**
- * @BeforeMethods({"beforeOne", "beforeTwo"})
  * @BeforeClassMethods({"beforeClass"})
  * @AfterClassMethods({"afterClass"})
- * @AfterMethods({"afterOne", "afterTwo"})
- * @Groups({"groupOne", "groupTwo"})
- * @Iterations(50)
- * @ParamProviders({"ONE", "TWO"})
- * @Revs(1000)
- * @Skip()
- * @Sleep(500)
- * @OutputTimeUnit("seconds")
- * @OutputMode("throughput")
- * @Warmup(501)
  */
 EOT;
         $hierarchy = new ReflectionHierarchy();
         $hierarchy->addReflectionClass($reflection);
 
         $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
-        $this->assertEquals(array('beforeOne', 'beforeTwo'), $metadata->getBeforeMethods());
-        $this->assertEquals(array('afterOne', 'afterTwo'), $metadata->getAfterMethods());
-        $this->assertEquals(array('groupOne', 'groupTwo'), $metadata->getGroups());
         $this->assertEquals(array('beforeClass'), $metadata->getBeforeClassMethods());
         $this->assertEquals(array('afterClass'), $metadata->getAfterClassMethods());
-        $this->assertEquals(50, $metadata->getIterations());
-        $this->assertEquals(array('ONE', 'TWO'), $metadata->getParamProviders());
-        $this->assertEquals(1000, $metadata->getRevs());
-        $this->assertEquals(500, $metadata->getSleep());
-        $this->assertEquals('seconds', $metadata->getOutputTimeUnit());
-        $this->assertEquals('throughput', $metadata->getOutputMode());
-        $this->assertEquals(501, $metadata->getWarmup());
-        $this->assertTrue($metadata->getSkip());
+        $this->assertEquals('Test', $metadata->getClass());
     }
 
     /**
@@ -80,7 +59,7 @@ EOT;
     {
         $reflection = new ReflectionClass();
         $reflection->class = 'Test';
-        $reflection->comment = <<<EOT
+        $reflection->comment = <<<'EOT'
 /**
  * @since Foo
  * @author Daniel Leech
@@ -95,7 +74,7 @@ EOT;
     /**
      * It should return method metadata according to annotations.
      */
-    public function testLoadSubjectMetadata()
+    public function testLoadSubject()
     {
         $reflection = new ReflectionClass();
         $reflection->class = 'Test';
@@ -105,7 +84,7 @@ EOT;
         $method = new ReflectionMethod();
         $method->class = 'Test';
         $method->name = 'benchFoo';
-        $method->comment = <<<EOT
+        $method->comment = <<<'EOT'
     /**
      * @BeforeMethods({"beforeOne", "beforeTwo"})
      * @AfterMethods({"afterOne", "afterTwo"})
@@ -113,31 +92,40 @@ EOT;
      * @Iterations(50)
      * @ParamProviders({"ONE", "TWO"})
      * @Revs(1000)
+     * @Skip()
+     * @Sleep(500)
+     * @OutputTimeUnit("seconds")
+     * @OutputMode("throughput")
+     * @Warmup(501)
      */
 EOT;
         $reflection->methods[$method->name] = $method;
 
         $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
-        $subjectMetadatas = $metadata->getSubjectMetadatas();
-        $this->assertCount(1, $subjectMetadatas);
-        $metadata = reset($subjectMetadatas);
+        $subjects = $metadata->getSubjects();
+        $this->assertCount(1, $subjects);
+        $metadata = reset($subjects);
         $this->assertEquals(array('beforeOne', 'beforeTwo'), $metadata->getBeforeMethods());
         $this->assertEquals(array('afterOne', 'afterTwo'), $metadata->getAfterMethods());
         $this->assertEquals(array('groupOne', 'groupTwo'), $metadata->getGroups());
         $this->assertEquals(50, $metadata->getIterations());
         $this->assertEquals(array('ONE', 'TWO'), $metadata->getParamProviders());
         $this->assertEquals(1000, $metadata->getRevs());
-        $this->assertFalse($metadata->getSkip());
+        $this->assertEquals(500, $metadata->getSleep());
+        $this->assertEquals('seconds', $metadata->getOutputTimeUnit());
+        $this->assertEquals('throughput', $metadata->getOutputMode());
+        $this->assertEquals(501, $metadata->getWarmup());
+        $this->assertTrue($metadata->getSkip());
     }
 
     /**
      * Subject metadata should override class metadata.
      */
-    public function testLoadSubjectMetadataOverride()
+    public function testLoadSubjectOverride()
     {
         $reflection = new ReflectionClass();
         $reflection->class = 'Test';
-        $reflection->comment = <<<EOT
+        $reflection->comment = <<<'EOT'
     /**
      * @BeforeMethods({"beforeOne", "beforeTwo"})
      */
@@ -148,7 +136,7 @@ EOT;
         $method = new ReflectionMethod();
         $method->class = 'Test';
         $method->name = 'benchFoo';
-        $method->comment = <<<EOT
+        $method->comment = <<<'EOT'
     /**
      * @BeforeMethods({"beforeFive"})
      */
@@ -156,20 +144,20 @@ EOT;
         $reflection->methods[$method->name] = $method;
 
         $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
-        $subjectMetadatas = $metadata->getSubjectMetadatas();
-        $this->assertCount(1, $subjectMetadatas);
-        $metadata = reset($subjectMetadatas);
+        $subjects = $metadata->getSubjects();
+        $this->assertCount(1, $subjects);
+        $metadata = reset($subjects);
         $this->assertEquals(array('beforeFive'), $metadata->getBeforeMethods());
     }
 
     /**
      * It should merge class parent classes.
      */
-    public function testLoadSubjectMetadataMerge()
+    public function testLoadSubjectMerge()
     {
         $reflection = new ReflectionClass();
         $reflection->class = 'TestChild';
-        $reflection->comment = <<<EOT
+        $reflection->comment = <<<'EOT'
     /**
      * @BeforeMethods({"class2"})
      */
@@ -179,7 +167,7 @@ EOT;
         $method = new ReflectionMethod();
         $method->class = 'Test';
         $method->name = 'benchFoo';
-        $method->comment = <<<EOT
+        $method->comment = <<<'EOT'
     /**
      * @Revs(2000)
      */
@@ -188,7 +176,7 @@ EOT;
         $method = new ReflectionMethod();
         $method->class = 'Test';
         $method->name = 'benchBar';
-        $method->comment = <<<EOT
+        $method->comment = <<<'EOT'
     /**
      * @Iterations(99)
      */
@@ -198,7 +186,7 @@ EOT;
 
         $reflection = new ReflectionClass();
         $reflection->class = 'Test';
-        $reflection->comment = <<<EOT
+        $reflection->comment = <<<'EOT'
     /**
      * @AfterMethods({"after"})
      * @Iterations(50)
@@ -207,7 +195,7 @@ EOT;
         $method = new ReflectionMethod();
         $method->class = 'Test';
         $method->name = 'benchFoo';
-        $method->comment = <<<EOT
+        $method->comment = <<<'EOT'
     /**
      * @Revs(1000)
      */
@@ -216,7 +204,7 @@ EOT;
         $method = new ReflectionMethod();
         $method->class = 'Test';
         $method->name = 'benchBar';
-        $method->comment = <<<EOT
+        $method->comment = <<<'EOT'
     /**
      * @Revs(50)
      */
@@ -232,12 +220,11 @@ EOT;
 
         $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
 
-        $this->assertEquals(array('class2'), $metadata->getBeforeMethods());
-        $subjectMetadatas = $metadata->getSubjectMetadatas();
-        $this->assertCount(3, $subjectMetadatas);
-        $subjectOne = array_shift($subjectMetadatas);
-        $subjectTwo = array_shift($subjectMetadatas);
-        $subjectThree = array_shift($subjectMetadatas);
+        $subjects = $metadata->getSubjects();
+        $this->assertCount(3, $subjects);
+        $subjectOne = array_shift($subjects);
+        $subjectTwo = array_shift($subjects);
+        $subjectThree = array_shift($subjects);
 
         $this->assertEquals('benchFoo', $subjectOne->getName());
         $this->assertEquals(2000, $subjectOne->getRevs());
@@ -258,7 +245,7 @@ EOT;
     {
         $reflection = new ReflectionClass();
         $reflection->class = 'TestChild';
-        $reflection->comment = <<<EOT
+        $reflection->comment = <<<'EOT'
     /**
      * @Groups({"group1"})
      */
@@ -269,7 +256,7 @@ EOT;
         $method = new ReflectionMethod();
         $method->class = 'Test';
         $method->name = 'benchFoo';
-        $method->comment = <<<EOT
+        $method->comment = <<<'EOT'
     /**
      * @Groups({"group2", "group3"}, extend=true)
      */
@@ -277,10 +264,9 @@ EOT;
         $reflection->methods[$method->name] = $method;
         $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
 
-        $this->assertEquals(array('group1'), $metadata->getGroups());
-        $subjectMetadatas = $metadata->getSubjectMetadatas();
-        $this->assertCount(1, $subjectMetadatas);
-        $subjectOne = array_shift($subjectMetadatas);
+        $subjects = $metadata->getSubjects();
+        $this->assertCount(1, $subjects);
+        $subjectOne = array_shift($subjects);
 
         $this->assertEquals(array('group1', 'group2', 'group3'), $subjectOne->getGroups());
     }
@@ -297,7 +283,7 @@ EOT;
 
         $reflection = new ReflectionClass();
         $reflection->class = 'TestChild';
-        $reflection->comment = <<<EOT
+        $reflection->comment = <<<'EOT'
     /**
      * @Foobar("foo")
      */

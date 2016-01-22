@@ -11,58 +11,58 @@
 
 namespace PhpBench\Progress;
 
-use PhpBench\Benchmark\Iteration;
-use PhpBench\Benchmark\IterationCollection;
-use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
-use PhpBench\Benchmark\Metadata\SubjectMetadata;
-use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\Console\OutputAwareInterface;
+use PhpBench\Model\Benchmark;
+use PhpBench\Model\Iteration;
+use PhpBench\Model\Subject;
+use PhpBench\Model\Suite;
+use PhpBench\Model\Variant;
 
 interface LoggerInterface extends OutputAwareInterface
 {
     /**
      * Log the end of a benchmark.
      *
-     * @param BenchmarkMetadata $benchmark
+     * @param Benchmark $benchmark
      */
-    public function benchmarkEnd(BenchmarkMetadata $benchmark);
+    public function benchmarkEnd(Benchmark $benchmark);
 
     /**
      * Log the start of a benchmark.
      *
-     * @param BenchmarkMetadata $benchmark
+     * @param Benchmark $benchmark
      */
-    public function benchmarkStart(BenchmarkMetadata $benchmark);
+    public function benchmarkStart(Benchmark $benchmark);
 
     /**
      * Log the end of a benchmarking subject.
      *
-     * @param SubjectMetadata $case
+     * @param Subject $case
      */
-    public function subjectEnd(SubjectMetadata $subject);
+    public function subjectEnd(Subject $subject);
 
     /**
      * Log the end of a benchmarking subject.
      *
-     * @param SubjectMetadata $case
+     * @param Subject $case
      */
-    public function subjectStart(SubjectMetadata $subject);
+    public function subjectStart(Subject $subject);
 
     /**
      * Log the end of an an iteration run.
      *
-     * Errors should be checked using IterationCollection->hasException()
+     * Errors should be checked using Variant->hasException()
      *
-     * @param Iteration $iterations
+     * @param Variant $variant
      */
-    public function iterationsEnd(IterationCollection $iterations);
+    public function variantEnd(Variant $variant);
 
     /**
      * Log the start of an iteration run.
      *
-     * @param Iteration $iterations
+     * @param Variant $variant
      */
-    public function iterationsStart(IterationCollection $iterations);
+    public function variantStart(Variant $variant);
 
     /**
      * Log the end of an iteration.
@@ -88,14 +88,14 @@ interface LoggerInterface extends OutputAwareInterface
     /**
      * Called at the start of the suite run.
      *
-     * @param SuiteDocument $suiteDocument
+     * @param Suite $suite
      */
-    public function startSuite(SuiteDocument $suiteDocument);
+    public function startSuite(Suite $suite);
 
     /**
      * Called at the end of the suite run.
      *
-     * @param SuiteDocument $suiteDocument
+     * @param Suite $suite
      */
-    public function endSuite(SuiteDocument $suiteDocument);
+    public function endSuite(Suite $suite);
 }

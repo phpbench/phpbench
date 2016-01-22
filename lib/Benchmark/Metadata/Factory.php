@@ -13,6 +13,8 @@ namespace PhpBench\Benchmark\Metadata;
 
 use PhpBench\Benchmark\Remote\ReflectionHierarchy;
 use PhpBench\Benchmark\Remote\Reflector;
+use PhpBench\Model\Benchmark;
+use PhpBench\Model\Subject;
 
 /**
  * Benchmark Metadata Factory.
@@ -40,13 +42,13 @@ class Factory
     }
 
     /**
-     * Return a BenchmarkMetadata instance for the given file or NULL if the
+     * Return a Benchmark instance for the given file or NULL if the
      * given file contains no classes, or the class in the given file is
      * abstract.
      *
      * @param string $file
      *
-     * @return BenchmarkMetadata
+     * @return Benchmark
      */
     public function getMetadataForFile($file)
     {
@@ -61,18 +63,12 @@ class Factory
         }
 
         $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
-        $this->validateAbstractMetadata($hierarchy, $metadata);
-
-        foreach (array('getBeforeClassMethods' => 'before class', 'getAfterClassMethods' => 'after class') as $methodName => $context) {
-            foreach ($metadata->$methodName() as $method) {
-                $this->validateMethodExists($context, $hierarchy, $method, true);
-            }
-        }
+        $this->validateBenchmark($hierarchy, $metadata);
 
         // validate the subject and load the parameter sets
-        foreach ($metadata->getSubjectMetadatas() as $subjectMetadata) {
-            $this->validateAbstractMetadata($hierarchy, $subjectMetadata);
-            $paramProviders = $subjectMetadata->getParamProviders();
+        foreach ($metadata->getSubjects() as $subject) {
+            $this->validateSubject($hierarchy, $subject);
+            $paramProviders = $subject->getParamProviders();
             $parameterSets = $this->reflector->getParameterSets($metadata->getPath(), $paramProviders);
 
             foreach ($parameterSets as $parameterSet) {
@@ -81,21 +77,30 @@ class Factory
                         'Each parameter set must be an array, got "%s" for %s::%s',
                         gettype($parameterSet),
                         $metadata->getClass(),
-                        $subjectMetadata->getName()
+                        $subject->getName()
                     ));
                 }
             }
-            $subjectMetadata->setParameterSets($parameterSets);
+            $subject->setParameterSets($parameterSets);
         }
 
         return $metadata;
     }
 
-    private function validateAbstractMetadata(ReflectionHierarchy $benchmarkReflection, AbstractMetadata $subject)
+    private function validateSubject(ReflectionHierarchy $benchmarkReflection, Subject $subject)
     {
         foreach (array('getBeforeMethods' => 'before', 'getAfterMethods' => 'after') as $methodName => $context) {
             foreach ($subject->$methodName() as $method) {
                 $this->validateMethodExists($context, $benchmarkReflection, $method);
+            }
+        }
+    }
+
+    private function validateBenchmark(ReflectionHierarchy $hierarchy, Benchmark $benchmark)
+    {
+        foreach (array('getBeforeClassMethods' => 'before class', 'getAfterClassMethods' => 'after class') as $methodName => $context) {
+            foreach ($benchmark->$methodName() as $method) {
+                $this->validateMethodExists($context, $hierarchy, $method, true);
             }
         }
     }

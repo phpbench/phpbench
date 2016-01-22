@@ -11,19 +11,19 @@
 
 namespace PhpBench\Tests\Unit\Benchmark;
 
-use PhpBench\Benchmark\IterationCollection;
-use PhpBench\Benchmark\IterationResult;
+use PhpBench\Model\IterationResult;
+use PhpBench\Model\Variant;
 use Prophecy\Argument;
 
-class IterationCollectionTest extends \PHPUnit_Framework_TestCase
+class VariantTest extends \PHPUnit_Framework_TestCase
 {
     private $subject;
     private $parameterSet;
 
     public function setUp()
     {
-        $this->subject = $this->prophesize('PhpBench\Benchmark\Metadata\SubjectMetadata');
-        $this->parameterSet = $this->prophesize('PhpBench\Benchmark\ParameterSet');
+        $this->subject = $this->prophesize('PhpBench\Model\Subject');
+        $this->parameterSet = $this->prophesize('PhpBench\Model\ParameterSet');
     }
 
     /**
@@ -32,12 +32,12 @@ class IterationCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testIteration()
     {
-        $iterations = new IterationCollection($this->subject->reveal(), $this->parameterSet->reveal(), 4, 10, 0);
+        $iterations = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 4, 10, 0);
 
         $this->assertCount(4, $iterations);
 
         foreach ($iterations as $iteration) {
-            $this->assertInstanceOf('PhpBench\Benchmark\Iteration', $iteration);
+            $this->assertInstanceOf('PhpBench\Model\Iteration', $iteration);
         }
     }
 
@@ -46,7 +46,7 @@ class IterationCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testComputeStats()
     {
-        $iterations = new IterationCollection($this->subject->reveal(), $this->parameterSet->reveal(), 4, 1, 0);
+        $iterations = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 4, 1, 0);
 
         $iterations[0]->setResult(new IterationResult(4, null));
         $iterations[1]->setResult(new IterationResult(8, null));
@@ -73,7 +73,7 @@ class IterationCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testComputeDeviationZeroIterations()
     {
-        $iterations = new IterationCollection($this->subject->reveal(), $this->parameterSet->reveal(), 0, 1, 0);
+        $iterations = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 0, 1, 0);
         $iterations->computeStats();
     }
 
@@ -82,7 +82,7 @@ class IterationCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testReject()
     {
-        $iterations = new IterationCollection($this->subject->reveal(), $this->parameterSet->reveal(), 4, 1, 0, 50);
+        $iterations = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 4, 1, 0, 50);
 
         $iterations[0]->setResult(new IterationResult(4, null));
         $iterations[1]->setResult(new IterationResult(8, null));
@@ -98,9 +98,10 @@ class IterationCollectionTest extends \PHPUnit_Framework_TestCase
 
     private function createIteration($time, $expectedDeviation = null, $expectedZValue = null)
     {
-        $iteration = $this->prophesize('PhpBench\Benchmark\Iteration');
+        $iteration = $this->prophesize('PhpBench\Model\Iteration');
         $iteration->getRevolutions()->willReturn(1);
-        $iteration->getResult()->willReturn(new IterationResult($time, null));
+        $iteration->getTime()->willReturn($time);
+        $iteration->getMemory()->willReturn(null);
 
         if (null !== $expectedDeviation) {
             $iteration->setDeviation($expectedDeviation)->shouldBeCalled();
@@ -121,24 +122,23 @@ class IterationCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testExceptionAwareness()
     {
-        $iterations = new IterationCollection($this->subject->reveal(), $this->parameterSet->reveal(), 4, 1, 0);
-        $exception = new \Exception('Test');
+        $iterations = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 4, 1, 0);
+        $error = new \Exception('Test');
 
-        $this->assertFalse($iterations->hasException());
-        $iterations->setException($exception);
-        $this->assertTrue($iterations->hasException());
-        $this->assertSame($exception, $iterations->getException());
+        $this->assertFalse($iterations->hasErrorStack());
+        $iterations->setException($error);
+        $this->assertTrue($iterations->hasErrorStack());
+        $this->assertEquals('Test', $iterations->getErrorStack()->getTop()->getMessage());
     }
 
     /**
-     * It should throw an exception if it is attempted to get an exception when none has been set.
-     *
-     * @expectedException RuntimeException
+     * It should return a new ErrorStack if none has not been set.
      */
     public function testExceptionNoneGet()
     {
-        $iterations = new IterationCollection($this->subject->reveal(), $this->parameterSet->reveal(), 4, 1, 0);
-        $iterations->getException();
+        $iterations = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 4, 1, 0);
+        $errorStack = $iterations->getErrorStack();
+        $this->assertInstanceOf('PhpBench\Model\ErrorStack', $errorStack);
     }
 
     /**
@@ -149,7 +149,7 @@ class IterationCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetStatsNoComputeException()
     {
-        $iterations = new IterationCollection($this->subject->reveal(), $this->parameterSet->reveal(), 4, 1, 0);
+        $iterations = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 4, 1, 0);
         $iterations->getStats();
     }
 
@@ -161,7 +161,7 @@ class IterationCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetStatsWithExceptionException()
     {
-        $iterations = new IterationCollection($this->subject->reveal(), $this->parameterSet->reveal(), 1, 1, 0);
+        $iterations = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 1, 1, 0);
         $iterations[0]->setResult(new IterationResult(4, null));
         $iterations->computeStats();
         $iterations->setException(new \Exception('Test'));

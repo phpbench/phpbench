@@ -11,9 +11,9 @@
 
 namespace PhpBench\Tests\Unit\Progress\Logger;
 
-use PhpBench\Benchmark\IterationCollection;
-use PhpBench\Benchmark\IterationResult;
-use PhpBench\Benchmark\ParameterSet;
+use PhpBench\Model\IterationResult;
+use PhpBench\Model\ParameterSet;
+use PhpBench\Model\Variant;
 use PhpBench\Progress\Logger\BlinkenLogger;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -27,15 +27,15 @@ class BlinkenLoggerTest extends \PHPUnit_Framework_TestCase
 
         $this->logger = new BlinkenLogger($this->timeUnit);
         $this->logger->setOutput($this->output);
-        $this->benchmark = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');
-        $this->subject = $this->prophesize('PhpBench\Benchmark\Metadata\SubjectMetadata');
-        $this->collection = new IterationCollection(
+        $this->benchmark = $this->prophesize('PhpBench\Model\Benchmark');
+        $this->subject = $this->prophesize('PhpBench\Model\Subject');
+        $this->collection = new Variant(
             $this->subject->reveal(),
             new ParameterSet(),
             4,
             1
         );
-        $this->benchmark->getSubjectMetadatas()->willReturn(array(
+        $this->benchmark->getSubjects()->willReturn(array(
             $this->subject->reveal(),
         ));
         $this->benchmark->getClass()->willReturn('BenchmarkTest');
@@ -71,11 +71,11 @@ class BlinkenLoggerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should show information at the start of the iterations.
+     * It should show information at the start of the variant.
      */
     public function testIterationsStart()
     {
-        $this->logger->iterationsStart($this->collection);
+        $this->logger->variantStart($this->collection);
         $display = $this->output->fetch();
         $this->assertContains(
             'benchSubject',
@@ -93,7 +93,7 @@ class BlinkenLoggerTest extends \PHPUnit_Framework_TestCase
     public function testIterationException()
     {
         $this->collection->setException(new \Exception('foo'));
-        $this->logger->iterationsEnd($this->collection);
+        $this->logger->variantEnd($this->collection);
         $this->assertContains('ERROR', $this->output->fetch());
     }
 
@@ -108,7 +108,7 @@ class BlinkenLoggerTest extends \PHPUnit_Framework_TestCase
         }
         $this->collection->computeStats();
 
-        $this->logger->iterationsEnd($this->collection);
+        $this->logger->variantEnd($this->collection);
         $this->assertContains('RSD/r: 0.00%', $this->output->fetch());
     }
 }

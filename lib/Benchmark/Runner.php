@@ -11,15 +11,17 @@
 
 namespace PhpBench\Benchmark;
 
-use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
-use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Environment\Supplier;
+use PhpBench\Model\Benchmark;
+use PhpBench\Model\Iteration;
+use PhpBench\Model\ParameterSet;
+use PhpBench\Model\Subject;
+use PhpBench\Model\Suite;
 use PhpBench\PhpBench;
 use PhpBench\Progress\Logger\NullLogger;
 use PhpBench\Progress\LoggerInterface;
 use PhpBench\Registry\Config;
 use PhpBench\Registry\Registry;
-use PhpBench\Util\TimeUnit;
 
 /**
  * The benchmark runner.
@@ -27,26 +29,26 @@ use PhpBench\Util\TimeUnit;
 class Runner
 {
     private $logger;
-    private $collectionBuilder;
+    private $benchmarkFinder;
     private $configPath;
     private $retryThreshold = null;
     private $executorRegistry;
     private $envSupplier;
 
     /**
-     * @param CollectionBuilder $collectionBuilder
+     * @param BenchmarkFinder $benchmarkFinder
      * @param SubjectBuilder $subjectBuilder
      * @param string $configPath
      */
     public function __construct(
-        CollectionBuilder $collectionBuilder,
+        BenchmarkFinder $benchmarkFinder,
         Registry $executorRegistry,
         Supplier $envSupplier,
         $retryThreshold,
         $configPath
     ) {
         $this->logger = new NullLogger();
-        $this->collectionBuilder = $collectionBuilder;
+        $this->benchmarkFinder = $benchmarkFinder;
         $this->executorRegistry = $executorRegistry;
         $this->envSupplier = $envSupplier;
         $this->configPath = $configPath;
@@ -76,68 +78,48 @@ class Runner
         $executorConfig = $this->executorRegistry->getConfig($context->getExecutor());
         $executor = $this->executorRegistry->getService($executorConfig['executor']);
 
-        $dom = new SuiteDocument();
-        $rootEl = $dom->createElement('phpbench');
-        $rootEl->setAttribute('version', PhpBench::VERSION);
-        $dom->appendChild($rootEl);
-
-        $suiteEl = $rootEl->appendElement('suite');
-        $suiteEl->setAttribute('context', $context->getContextName());
-        $suiteEl->setAttribute('date', date('c'));
-        $suiteEl->setAttribute('config-path', $this->configPath);
-        $suiteEl->setAttribute('retry-threshold', $context->getRetryThreshold($this->retryThreshold));
-
-        // add environmental information.
-        $this->appendEnvironment($suiteEl);
-
         // build the collection of benchmarks to be executed.
-        $collection = $this->collectionBuilder->buildCollection($context->getPath(), $context->getFilters(), $context->getGroups());
+        $benchmarks = $this->benchmarkFinder->findBenchmarks($context->getPath(), $context->getFilters(), $context->getGroups());
+        $suite = new Suite(
+            $benchmarks,
+            $context->getContextName(),
+            new \DateTime(),
+            $this->configPath,
+            $context->getRetryThreshold($this->retryThreshold),
+            $this->envSupplier->getInformations()
+        );
 
         // log the start of the suite run.
-        $this->logger->startSuite($dom);
+        $this->logger->startSuite($suite);
 
-        /* @var BenchmarkMetadata */
-        foreach ($collection->getBenchmarks() as $benchmark) {
-            $benchmarkEl = $dom->createElement('benchmark');
-            $benchmarkEl->setAttribute('class', $benchmark->getClass());
-
+        /* @var Benchmark */
+        foreach ($suite->getBenchmarks() as $benchmark) {
             $this->logger->benchmarkStart($benchmark);
-            $this->runBenchmark($executor, $context, $benchmark, $benchmarkEl);
+            $this->runBenchmark($executor, $context, $benchmark);
             $this->logger->benchmarkEnd($benchmark);
-
-            $suiteEl->appendChild($benchmarkEl);
         }
 
-        $this->logger->endSuite($dom);
+        $this->logger->endSuite($suite);
 
-        return $dom;
+        return $suite;
     }
 
     private function runBenchmark(
         ExecutorInterface $executor,
         RunnerContext $context,
-        BenchmarkMetadata $benchmark,
-        \DOMElement $benchmarkEl
+        Benchmark $benchmark
     ) {
         if ($benchmark->getBeforeClassMethods()) {
             $executor->executeMethods($benchmark, $benchmark->getBeforeClassMethods());
         }
 
-        foreach ($benchmark->getSubjectMetadatas() as $subject) {
-            $subjectEl = $benchmarkEl->appendElement('subject');
-            $subjectEl->setAttribute('name', $subject->getName());
-
+        foreach ($benchmark->getSubjects() as $subject) {
             if (true === $subject->getSkip()) {
                 continue;
             }
 
-            foreach ($subject->getGroups() as $group) {
-                $groupEl = $subjectEl->appendElement('group');
-                $groupEl->setAttribute('name', $group);
-            }
-
             $this->logger->subjectStart($subject);
-            $this->runSubject($executor, $context, $subject, $subjectEl);
+            $this->runSubject($executor, $context, $subject);
             $this->logger->subjectEnd($subject);
         }
 
@@ -146,116 +128,61 @@ class Runner
         }
     }
 
-    private function runSubject(ExecutorInterface $executor, RunnerContext $context, SubjectMetadata $subject, \DOMElement $subjectEl)
+    private function runSubject(ExecutorInterface $executor, RunnerContext $context, Subject $subject)
     {
         $parameterSets = $context->getParameterSets($subject->getParameterSets());
+
         $paramsIterator = new CartesianParameterIterator($parameterSets);
 
+        // override parameters
+        $subject->setIterations($context->getIterations($subject->getIterations()));
+        $subject->setRevs($context->getRevolutions($subject->getRevs()));
+        $subject->setWarmup($context->getWarmup($subject->getWarmUp()));
+        $subject->setSleep($context->getSleep($subject->getSleep()));
+
         foreach ($paramsIterator as $parameterSet) {
-            $variantEl = $subjectEl->ownerDocument->createElement('variant');
-            $variantEl->setAttribute('sleep', $context->getSleep($subject->getSleep()));
-            $variantEl->setAttribute('output-time-unit', $subject->getOutputTimeUnit() ?: TimeUnit::MICROSECONDS);
-            $variantEl->setAttribute('output-mode', $subject->getOutputMode() ?: TimeUnit::MODE_TIME);
-            $variantEl->setAttribute('revs', $context->getRevolutions($subject->getRevs()));
-            $variantEl->setAttribute('warmup', $context->getWarmup($subject->getWarmup()));
-            foreach ($parameterSet as $name => $value) {
-                $parameterEl = $this->createParameter($subjectEl, $name, $value);
-                $variantEl->appendChild($parameterEl);
-            }
-
-            $subjectEl->appendChild($variantEl);
-            $this->runIterations($executor, $context, $subject, $parameterSet, $variantEl);
+            $this->runIterations($executor, $context, $subject, $parameterSet);
         }
     }
 
-    private function createParameter($parentEl, $name, $value)
+    private function runIterations(ExecutorInterface $executor, RunnerContext $context, Subject $subject, ParameterSet $parameterSet)
     {
-        $parameterEl = $parentEl->ownerDocument->createElement('parameter');
-        $parameterEl->setAttribute('name', $name);
-
-        if (is_array($value)) {
-            $parameterEl->setAttribute('type', 'collection');
-            foreach ($value as $key => $element) {
-                $childEl = $this->createParameter($parameterEl, $key, $element);
-                $parameterEl->appendChild($childEl);
-            }
-
-            return $parameterEl;
-        }
-
-        if (is_scalar($value)) {
-            $parameterEl->setAttribute('value', $value);
-
-            return $parameterEl;
-        }
-
-        throw new \InvalidArgumentException(sprintf(
-            'Parameters must be either scalars or arrays, got: %s',
-            is_object($value) ? get_class($value) : gettype($value)
-        ));
-    }
-
-    private function runIterations(ExecutorInterface $executor, RunnerContext $context, SubjectMetadata $subject, ParameterSet $parameterSet, \DOMElement $variantEl)
-    {
-        $iterationCount = $context->getIterations($subject->getIterations());
-        $revolutionCount = $context->getRevolutions($subject->getRevs());
-        $warmupCount = $context->getWarmup($subject->getWarmUp());
         $executorConfig = $this->executorRegistry->getConfig($context->getExecutor());
 
-        $iterationCollection = new IterationCollection(
-            $subject,
+        // TODO: Move construction of variants to Factory?
+        $variant = $subject->createVariant(
             $parameterSet,
-            $iterationCount,
-            $revolutionCount,
-            $warmupCount,
+            $subject->getIterations(),
+            $subject->getRevs(),
+            $subject->getWarmup(),
             $context->getRetryThreshold($this->retryThreshold)
         );
 
-        $this->logger->iterationsStart($iterationCollection);
+        $this->logger->variantStart($variant);
 
         try {
-            foreach ($iterationCollection as $iteration) {
-                $this->runIteration($executor, $executorConfig, $iteration, $context->getSleep($subject->getSleep()));
+            foreach ($variant as $iteration) {
+                $this->runIteration($executor, $executorConfig, $iteration, $subject->getSleep());
             }
         } catch (\Exception $e) {
-            $iterationCollection->setException($e);
-            $this->logger->iterationsEnd($iterationCollection);
-            $this->appendException($variantEl, $e);
+            $variant->setException($e);
+            $this->logger->variantEnd($variant);
 
             return;
         }
 
-        $iterationCollection->computeStats();
-        $this->logger->iterationsEnd($iterationCollection);
+        $variant->computeStats();
+        $this->logger->variantEnd($variant);
 
-        while ($iterationCollection->getRejectCount() > 0) {
-            $this->logger->retryStart($iterationCollection->getRejectCount());
-            $this->logger->iterationsStart($iterationCollection);
-            foreach ($iterationCollection->getRejects() as $reject) {
+        while ($variant->getRejectCount() > 0) {
+            $this->logger->retryStart($variant->getRejectCount());
+            $this->logger->variantStart($variant);
+            foreach ($variant->getRejects() as $reject) {
                 $reject->incrementRejectionCount();
                 $this->runIteration($executor, $executorConfig, $reject, $context->getSleep($subject->getSleep()));
             }
-            $iterationCollection->computeStats();
-            $this->logger->iterationsEnd($iterationCollection);
-        }
-
-        $stats = $iterationCollection->getStats();
-
-        foreach ($iterationCollection as $iteration) {
-            $iterationEl = $variantEl->ownerDocument->createElement('iteration');
-            $iterationEl->setAttribute('net-time', $iteration->getResult()->getTime());
-            $iterationEl->setAttribute('rev-time', $iteration->getResult()->getTime() / $iteration->getRevolutions());
-            $iterationEl->setAttribute('z-value', $iteration->getZValue());
-            $iterationEl->setAttribute('memory', $iteration->getResult()->getMemory());
-            $iterationEl->setAttribute('deviation', $iteration->getDeviation());
-            $iterationEl->setAttribute('rejection-count', $iteration->getRejectionCount());
-
-            $variantEl->appendChild($iterationEl);
-        }
-
-        $statsEl = $variantEl->appendElement('stats');
-        foreach ($stats as $statName => $statValue) {
-            $statsEl->setAttribute($statName, $statValue);
+            $variant->computeStats();
+            $this->logger->variantEnd($variant);
         }
     }
 
@@ -270,30 +197,5 @@ class Runner
 
         $iteration->setResult($result);
         $this->logger->iterationEnd($iteration);
-    }
-
-    private function appendException(\DOMElement $node, \Exception $exception)
-    {
-        $errorsEl = $node->appendElement('errors');
-
-        do {
-            $errorEl = $errorsEl->appendElement('error', $exception->getMessage());
-            $errorEl->setAttribute('exception-class', get_class($exception));
-            $errorEl->setAttribute('code', $exception->getCode());
-            $errorEl->setAttribute('file', $exception->getFile());
-            $errorEl->setAttribute('line', $exception->getLine());
-        } while ($exception = $exception->getPrevious());
-    }
-
-    private function appendEnvironment(\DOMElement $suiteEl)
-    {
-        $envEl = $suiteEl->appendElement('env');
-        $informations = $this->envSupplier->getInformations();
-        foreach ($informations as $information) {
-            $infoEl = $envEl->appendElement($information->getName());
-            foreach ($information as $key => $value) {
-                $infoEl->setAttribute($key, $value);
-            }
-        }
     }
 }

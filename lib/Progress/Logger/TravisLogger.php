@@ -11,16 +11,16 @@
 
 namespace PhpBench\Progress\Logger;
 
-use PhpBench\Benchmark\IterationCollection;
-use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
-use PhpBench\Benchmark\SuiteDocument;
+use PhpBench\Model\Benchmark;
+use PhpBench\Model\Suite;
+use PhpBench\Model\Variant;
 
 class TravisLogger extends PhpBenchLogger
 {
     /**
      * {@inheritdoc}
      */
-    public function benchmarkStart(BenchmarkMetadata $benchmark)
+    public function benchmarkStart(Benchmark $benchmark)
     {
         static $first = true;
 
@@ -35,15 +35,15 @@ class TravisLogger extends PhpBenchLogger
     /**
      * {@inheritdoc}
      */
-    public function iterationsEnd(IterationCollection $iterations)
+    public function variantEnd(Variant $variant)
     {
-        if ($iterations->getRejectCount() > 0) {
+        if ($variant->getRejectCount() > 0) {
             return;
         }
 
-        $subject = $iterations->getSubject();
+        $subject = $variant->getSubject();
 
-        if ($iterations->hasException()) {
+        if ($variant->hasErrorStack()) {
             $this->output->writeln(sprintf(
                 '    t%-30s <error>ERROR</error>',
                 $subject->getName()
@@ -55,15 +55,15 @@ class TravisLogger extends PhpBenchLogger
         $this->output->writeln(sprintf(
             "    %-30s I%s P%s\t%s",
             $subject->getName(),
-            $iterations->count(),
-            $iterations->getParameterSet()->getIndex(),
-            $this->formatIterationsFullSummary($iterations)
+            $variant->count(),
+            $variant->getParameterSet()->getIndex(),
+            $this->formatIterationsFullSummary($variant)
         ));
     }
 
-    public function endSuite(SuiteDocument $suiteDocument)
+    public function endSuite(Suite $suite)
     {
         $this->output->write(PHP_EOL);
-        parent::endSuite($suiteDocument);
+        parent::endSuite($suite);
     }
 }

@@ -11,7 +11,7 @@
 
 namespace PhpBench\Report\Generator;
 
-use PhpBench\Benchmark\SuiteDocument;
+use PhpBench\Dom\Document;
 use PhpBench\Registry\Config;
 use PhpBench\Tabular\Definition\Loader;
 use PhpBench\Tabular\Tabular;
@@ -78,7 +78,7 @@ class TabularCustomGenerator extends AbstractTabularGenerator
     /**
      * {@inheritdoc}
      */
-    public function generate(SuiteDocument $document, Config $config)
+    public function generate(Document $document, Config $config)
     {
         if (!$config['file']) {
             throw new \InvalidArgumentException(

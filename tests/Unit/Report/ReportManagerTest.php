@@ -11,7 +11,6 @@
 
 namespace PhpBench\Tests\Unit\Report;
 
-use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\Dom\Document;
 use PhpBench\Registry\Config;
 use PhpBench\Report\ReportManager;
@@ -39,7 +38,7 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
             ->willImplement('PhpBench\Console\OutputAwareInterface');
         $this->output = $this->prophesize('Symfony\Component\Console\Output\OutputInterface');
 
-        $this->suiteDocument = new SuiteDocument();
+        $this->suiteDocument = new Document();
         $this->suiteDocument->loadXml('<?xml version="1.0"?><phpbench />');
         $this->reportsDocument = new Document();
 

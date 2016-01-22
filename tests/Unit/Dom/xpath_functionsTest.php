@@ -11,7 +11,7 @@
 
 namespace PhpBench\Tests\Unit\Dom;
 
-use PhpBench\Benchmark\SuiteDocument;
+use PhpBench\Dom\Document;
 use PhpBench\Dom\functions as functions;
 
 require_once __DIR__ . '/../../../lib/Dom/xpath_functions.php';
@@ -58,8 +58,8 @@ class xpath_functionsTest extends \PHPUnit_Framework_TestCase
 
     private function getSuiteDocument()
     {
-        $suite = new SuiteDocument();
-        $suite->loadXml(<<<EOT
+        $suite = new Document();
+        $suite->loadXml(<<<'EOT'
 <?xml version="1.0"?>
 <phpbench version="0.x">
     <suite context="Implementation 1">

@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Benchmark\Metadata;
+namespace PhpBench\Model;
 
 /**
  * Benchmark metadata class.
  */
-class BenchmarkMetadata extends AbstractMetadata
+class Benchmark implements \IteratorAggregate
 {
     /**
      * @var string
@@ -22,9 +22,19 @@ class BenchmarkMetadata extends AbstractMetadata
     private $path;
 
     /**
+     * @var string
+     */
+    private $class;
+
+    /**
      * @var SubjectMetadata[]
      */
-    private $subjectMetadatas = array();
+    private $subjects = array();
+
+    /**
+     * @var int
+     */
+    private $subjectCounter = 0;
 
     /**
      * @var string[]
@@ -37,18 +47,14 @@ class BenchmarkMetadata extends AbstractMetadata
     private $afterClassMethods = array();
 
     /**
-     * @var int
-     */
-    private $subjectCounter = 0;
-
-    /**
      * @param mixed $path
      * @param mixed $class
+     * @param Subject[] $subjects
      */
     public function __construct($path, $class)
     {
         $this->path = $path;
-        parent::__construct($class);
+        $this->class = $class;
     }
 
     /**
@@ -62,30 +68,21 @@ class BenchmarkMetadata extends AbstractMetadata
     }
 
     /**
-     * Set the metadata for the given subject. Will replace
-     * any subject with the same name.
-     *
-     * @param SubjectMetadata $subjectMetadata
-     */
-    public function setSubjectMetadata(SubjectMetadata $subjectMetadata)
-    {
-        $this->subjectMetadatas[$subjectMetadata->getName()] = $subjectMetadata;
-    }
-
-    /**
      * Get or create a new SubjectMetadata instance with the given name.
      *
      * @param string $name
      *
      * @return SubjectMetadata
      */
-    public function getOrCreateSubjectMetadata($name)
+    public function getOrCreateSubject($name)
     {
-        if (isset($this->subjectMetadatas[$name])) {
-            return $this->subjectMetadatas[$name];
+        if (isset($this->subjects[$name])) {
+            return $this->subjects[$name];
         }
 
-        return new SubjectMetadata($this, $name, $this->subjectCounter++);
+        $this->subjects[$name] = new Subject($this, $name, $this->subjectCounter++);
+
+        return $this->subjects[$name];
     }
 
     /**
@@ -93,9 +90,9 @@ class BenchmarkMetadata extends AbstractMetadata
      *
      * @return SubjectMetadata[]
      */
-    public function getSubjectMetadatas()
+    public function getSubjects()
     {
-        return $this->subjectMetadatas;
+        return $this->subjects;
     }
 
     /**
@@ -105,7 +102,7 @@ class BenchmarkMetadata extends AbstractMetadata
      */
     public function filterSubjectNames(array $filters)
     {
-        foreach (array_keys($this->subjectMetadatas) as $subjectName) {
+        foreach (array_keys($this->subjects) as $subjectName) {
             $unset = true;
 
             foreach ($filters as $filter) {
@@ -119,7 +116,7 @@ class BenchmarkMetadata extends AbstractMetadata
             }
 
             if (true === $unset) {
-                unset($this->subjectMetadatas[$subjectName]);
+                unset($this->subjects[$subjectName]);
             }
         }
     }
@@ -131,9 +128,9 @@ class BenchmarkMetadata extends AbstractMetadata
      */
     public function filterSubjectGroups(array $groups)
     {
-        foreach ($this->subjectMetadatas as $subjectName => $subjectMetadata) {
-            if (0 === count(array_intersect($subjectMetadata->getGroups(), $groups))) {
-                unset($this->subjectMetadatas[$subjectName]);
+        foreach ($this->subjects as $subjectName => $subject) {
+            if (0 === count(array_intersect($subject->getGroups(), $groups))) {
+                unset($this->subjects[$subjectName]);
             }
         }
     }
@@ -145,7 +142,17 @@ class BenchmarkMetadata extends AbstractMetadata
      */
     public function hasSubjects()
     {
-        return 0 !== count($this->subjectMetadatas);
+        return 0 !== count($this->subjects);
+    }
+
+    /**
+     * Return the benchmark class.
+     *
+     * @return string
+     */
+    public function getClass()
+    {
+        return $this->class;
     }
 
     /**
@@ -182,5 +189,13 @@ class BenchmarkMetadata extends AbstractMetadata
     public function setAfterClassMethods(array $afterClassMethods)
     {
         $this->afterClassMethods = $afterClassMethods;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIterator()
+    {
+        return $this->subjects;
     }
 }

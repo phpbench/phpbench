@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Benchmark;
+namespace PhpBench\Model;
 
 /**
  * Represents the result of a single iteration executed by an executor.

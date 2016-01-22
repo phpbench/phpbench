@@ -12,10 +12,10 @@
 namespace PhpBench\Extensions\XDebug\Executor;
 
 use PhpBench\Benchmark\Executor\BaseExecutor;
-use PhpBench\Benchmark\Iteration;
-use PhpBench\Benchmark\IterationResult;
 use PhpBench\Benchmark\Remote\Payload;
 use PhpBench\Extensions\XDebug\XDebugUtil;
+use PhpBench\Model\Iteration;
+use PhpBench\Model\IterationResult;
 use PhpBench\Registry\Config;
 
 class XDebugExecutor extends BaseExecutor

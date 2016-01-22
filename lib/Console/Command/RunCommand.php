@@ -15,6 +15,7 @@ use PhpBench\Console\Command\Handler\ReportHandler;
 use PhpBench\Console\Command\Handler\RunnerHandler;
 use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use PhpBench\PhpBench;
+use PhpBench\Serializer\XmlEncoder;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -25,16 +26,19 @@ class RunCommand extends Command
     private $runnerHandler;
     private $reportHandler;
     private $timeUnitHandler;
+    private $xmlEncoder;
 
     public function __construct(
         RunnerHandler $runnerHandler,
         ReportHandler $reportHandler,
-        TimeUnitHandler $timeUnitHandler
+        TimeUnitHandler $timeUnitHandler,
+        XmlEncoder $xmlEncoder
     ) {
         parent::__construct();
         $this->runnerHandler = $runnerHandler;
         $this->reportHandler = $reportHandler;
         $this->timeUnitHandler = $timeUnitHandler;
+        $this->xmlEncoder = $xmlEncoder;
     }
 
     public function configure()
@@ -45,7 +49,7 @@ class RunCommand extends Command
 
         $this->setName('run');
         $this->setDescription('Run benchmarks');
-        $this->setHelp(<<<EOT
+        $this->setHelp(<<<'EOT'
 Run benchmark files at given <comment>path</comment>
 
     $ %command.full_name% /path/to/bench
@@ -65,7 +69,7 @@ EOT
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $this->timeUnitHandler->timeUnitFromInput($input);
-        $suiteResult = $this->runnerHandler->runFromInput($input, $output, array(
+        $suite = $this->runnerHandler->runFromInput($input, $output, array(
             'context_name' => $input->getOption('context'),
             'retry_threshold' => $input->getOption('retry-threshold'),
             'sleep' => $input->getOption('sleep'),
@@ -73,6 +77,7 @@ EOT
             'warmup' => $input->getOption('warmup'),
         ));
 
+        $suiteResult = $this->xmlEncoder->encode($suite);
         if ($dumpFile = $input->getOption('dump-file')) {
             $xml = $suiteResult->dump();
             file_put_contents($dumpFile, $xml);
@@ -86,7 +91,7 @@ EOT
             $output->write($xml);
         }
 
-        if ($suiteResult->hasErrors()) {
+        if ($suite->getErrorStacks()) {
             return 1;
         }
 

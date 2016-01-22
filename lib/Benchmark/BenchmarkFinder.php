@@ -19,7 +19,7 @@ use Symfony\Component\Finder\Finder;
  * This class finds a benchmark (or benchmarks depending on the path), loads
  * their metadata and builds a collection of BenchmarkMetadata instances.
  */
-class CollectionBuilder
+class BenchmarkFinder
 {
     /**
      * @var Finder
@@ -48,7 +48,7 @@ class CollectionBuilder
      * @param array $subjectFilter
      * @param array $groupFilter
      */
-    public function buildCollection($path, array $filters = array(), array $groupFilter = array())
+    public function findBenchmarks($path, array $filters = array(), array $groupFilter = array())
     {
         if (!file_exists($path)) {
             throw new \InvalidArgumentException(sprintf(
@@ -75,27 +75,27 @@ class CollectionBuilder
                 continue;
             }
 
-            $benchmarkMetadata = $this->factory->getMetadataForFile($file->getPathname());
+            $benchmark = $this->factory->getMetadataForFile($file->getPathname());
 
-            if (null === $benchmarkMetadata) {
+            if (null === $benchmark) {
                 continue;
             }
 
             if ($groupFilter) {
-                $benchmarkMetadata->filterSubjectGroups($groupFilter);
+                $benchmark->filterSubjectGroups($groupFilter);
             }
 
             if ($filters) {
-                $benchmarkMetadata->filterSubjectNames($filters);
+                $benchmark->filterSubjectNames($filters);
             }
 
-            if (false === $benchmarkMetadata->hasSubjects()) {
+            if (false === $benchmark->hasSubjects()) {
                 continue;
             }
 
-            $benchmarks[] = $benchmarkMetadata;
+            $benchmarks[] = $benchmark;
         }
 
-        return new Collection($benchmarks);
+        return $benchmarks;
     }
 }

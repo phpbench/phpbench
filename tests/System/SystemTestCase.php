@@ -29,7 +29,7 @@ class SystemTestCase extends \PHPUnit_Framework_TestCase
         );
 
         if ($process->getExitCode() !== 0) {
-            throw new \Exception('Could not generate test data:' . $process->getErrorOutput());
+            throw new \Exception('Could not generate test data:' . $process->getErrorOutput() . $process->getOutput());
         }
     }
 

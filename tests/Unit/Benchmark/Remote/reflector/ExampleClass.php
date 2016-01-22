@@ -49,4 +49,14 @@ class ExampleClass
             ),
         );
     }
+
+    public function provideParamsNonScalar()
+    {
+        return array(
+            array(
+                'five' => 'six',
+                'seven' => new \stdClass(),
+            ),
+        );
+    }
 }

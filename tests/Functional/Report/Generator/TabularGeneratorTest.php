@@ -226,7 +226,7 @@ class TabularGeneratorTest extends GeneratorTestCase
         foreach ($dom->xpath()->query('//group[@name="body"]/row[1]/cell[@name="params"]') as $cellEl) {
             $value = $cellEl->nodeValue;
         }
-        $this->assertEquals(<<<EOT
+        $this->assertEquals(<<<'EOT'
 {
     "foo": "bar",
     "array": [
