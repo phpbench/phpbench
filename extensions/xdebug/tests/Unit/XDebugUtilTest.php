@@ -22,10 +22,10 @@ class XDebugUtilTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->iteration = $this->prophesize('PhpBench\Benchmark\Iteration');
-        $this->subject = $this->prophesize('PhpBench\Benchmark\Metadata\SubjectMetadata');
-        $this->benchmark = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');
-        $this->parameters = $this->prophesize('PhpBench\Benchmark\ParameterSet');
+        $this->iteration = $this->prophesize('PhpBench\Model\Iteration');
+        $this->subject = $this->prophesize('PhpBench\Model\Subject');
+        $this->benchmark = $this->prophesize('PhpBench\Model\Benchmark');
+        $this->parameters = $this->prophesize('PhpBench\Model\ParameterSet');
     }
 
     /**
@@ -40,7 +40,7 @@ class XDebugUtilTest extends \PHPUnit_Framework_TestCase
 
         $this->parameters->getIndex()->willReturn(7);
         $this->iteration->getParameters()->willReturn($this->parameters->reveal());
-        $this->subject->getBenchmarkMetadata()->willReturn($this->benchmark->reveal());
+        $this->subject->getBenchmark()->willReturn($this->benchmark->reveal());
         $this->iteration->getSubject()->willReturn($this->subject->reveal());
         $result = XDebugUtil::filenameFromIteration($this->iteration->reveal());
         $this->assertEquals(

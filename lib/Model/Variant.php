@@ -9,19 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Benchmark;
+namespace PhpBench\Model;
 
-use PhpBench\Benchmark\Metadata\SubjectMetadata;
+use PhpBench\Math\Distribution;
 use PhpBench\Math\Statistics;
 
 /**
  * Stores Iterations and calculates the deviations and rejection
  * status for each based on the given rejection threshold.
  */
-class IterationCollection implements \IteratorAggregate, \ArrayAccess, \Countable
+class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
 {
     /**
-     * @var SubjectMetadata
+     * @var Subject
      */
     private $subject;
 
@@ -43,33 +43,17 @@ class IterationCollection implements \IteratorAggregate, \ArrayAccess, \Countabl
     /**
      * @var float
      */
-    private $rejectionThreshold;
+    private $retryThreshold;
 
     /**
-     * @var \Exception
+     * @var ErrorStack
      */
-    private $exception;
+    private $errorStack;
 
     /**
-     * Array of statistics:.
-     *
-     *   mean      float Mean sample time
-     *   stdev     float The standard deviation
-     *   rstdev    float Relative standard deviation
-     *   variance  float Variance
-     *   min       float Minimum sample value
-     *   max       float Maximum sample value
-     *
-     * @var array
+     * @var Distribution
      */
-    private $stats = array(
-        'mean' => null,
-        'stdev' => null,
-        'rstdev' => null,
-        'variance' => null,
-        'min' => null,
-        'max' => null,
-    );
+    private $stats;
 
     /**
      * @var bool
@@ -86,22 +70,28 @@ class IterationCollection implements \IteratorAggregate, \ArrayAccess, \Countabl
      */
     private $revolutionCount;
 
+    /**
+     * @var int
+     */
+    private $warmupCount;
+
     public function __construct(
-        SubjectMetadata $subject,
+        Subject $subject,
         ParameterSet $parameterSet,
         $iterationCount,
         $revolutionCount,
         $warmupCount = 0,
-        $rejectionThreshold = null
+        $retryThreshold = null
     ) {
         $this->subject = $subject;
         $this->parameterSet = $parameterSet;
-        $this->rejectionThreshold = $rejectionThreshold;
+        $this->retryThreshold = $retryThreshold;
         $this->iterationCount = $iterationCount;
         $this->revolutionCount = $revolutionCount;
+        $this->warmupCount = $warmupCount;
 
         for ($index = 0; $index < $this->iterationCount; $index++) {
-            $this->add(new Iteration($index, $this, $revolutionCount, $warmupCount, $parameterSet));
+            $this->iterations[] = new Iteration($index, $this);
         }
     }
 
@@ -113,16 +103,6 @@ class IterationCollection implements \IteratorAggregate, \ArrayAccess, \Countabl
     public function getIteration($index)
     {
         return $this->iterations[$index];
-    }
-
-    /**
-     * Add an iteration.
-     *
-     * @param Iteration $iteration
-     */
-    public function add(Iteration $iteration)
-    {
-        $this->iterations[] = $iteration;
     }
 
     /**
@@ -142,7 +122,7 @@ class IterationCollection implements \IteratorAggregate, \ArrayAccess, \Countabl
     {
         $times = array();
         foreach ($this->iterations as $iteration) {
-            $times[] = $iteration->getResult()->getTime() / $iteration->getRevolutions();
+            $times[] = $iteration->getRevTime();
         }
 
         return $times;
@@ -178,44 +158,15 @@ class IterationCollection implements \IteratorAggregate, \ArrayAccess, \Countabl
 
         $times = $this->getTimes();
 
-        $this->stats = array(
-            'stdev' => 0,
-            'mean' => 0,
-            'mode' => 0,
-            'rstdev' => 0,
-            'variance' => 0,
-            'min' => 0,
-            'max' => 0,
-        );
-
-        // min and max
-        $this->stats['min'] = min($times);
-        $this->stats['max'] = max($times);
-
-        if ($this->stats['min'] > 0 && $this->stats['max'] > 0) {
-            // standard deviation for T Distribution
-            $this->stats['stdev'] = Statistics::stdev($times);
-
-            // mean of the times
-            $this->stats['mean'] = Statistics::mean($times);
-
-            // mode based on the kernel distribution function
-            $this->stats['mode'] = Statistics::kdeMode($times);
-
-            // relative standard error
-            $this->stats['rstdev'] = $this->stats['stdev'] / $this->stats['mean'] * 100;
-
-            // variance
-            $this->stats['variance'] = Statistics::variance($times);
-        }
+        $this->stats = new Distribution($times);
 
         foreach ($this->iterations as $iteration) {
             // deviation is the percentage different of the value from the mean of the set.
-            if ($this->stats['mean'] > 0) {
-                $deviation = 100 / $this->stats['mean'] * (
+            if ($this->stats->getMean() > 0) {
+                $deviation = 100 / $this->stats->getMean() * (
                     (
-                        $iteration->getResult()->getTime() / $iteration->getRevolutions()
-                    ) - $this->stats['mean']
+                        $iteration->getRevTime()
+                    ) - $this->stats->getMean()
                 );
             } else {
                 $deviation = 0;
@@ -224,12 +175,12 @@ class IterationCollection implements \IteratorAggregate, \ArrayAccess, \Countabl
 
             // the Z-Value represents the number of standard deviations this
             // value is away from the mean.
-            $revTime = $iteration->getResult()->getTime() / $iteration->getRevolutions();
-            $zValue = $this->stats['stdev'] ? ($revTime - $this->stats['mean']) / $this->stats['stdev'] : 0;
+            $revTime = $iteration->getTime() / $iteration->getRevolutions();
+            $zValue = $this->stats->getStdev() ? ($revTime - $this->stats->getMean()) / $this->stats->getStdev() : 0;
             $iteration->setZValue($zValue);
 
-            if (null !== $this->rejectionThreshold) {
-                if (abs($deviation) >= $this->rejectionThreshold) {
+            if (null !== $this->retryThreshold) {
+                if (abs($deviation) >= $this->retryThreshold) {
                     $this->rejects[] = $iteration;
                 }
             }
@@ -267,11 +218,11 @@ class IterationCollection implements \IteratorAggregate, \ArrayAccess, \Countabl
      */
     public function getStats()
     {
-        if (null !== $this->exception) {
+        if (null !== $this->errorStack) {
             throw new \RuntimeException(sprintf(
                 'Cannot retrieve stats when an exception was encountered ([%s] %s)',
-                get_class($this->exception),
-                $this->exception->getMessage()
+                $this->errorStack->getTop()->getClass(),
+                $this->errorStack->getTop()->getMessage()
             ));
         }
 
@@ -308,7 +259,7 @@ class IterationCollection implements \IteratorAggregate, \ArrayAccess, \Countabl
     /**
      * Return the subject metadata.
      *
-     * @return SubjectMetadata
+     * @return Subject
      */
     public function getSubject()
     {
@@ -321,9 +272,23 @@ class IterationCollection implements \IteratorAggregate, \ArrayAccess, \Countabl
      *
      * @return bool
      */
-    public function hasException()
+    public function hasErrorStack()
     {
-        return null !== $this->exception;
+        return null !== $this->errorStack;
+    }
+
+    /**
+     * Should be called when rebuiling the object graph.
+     *
+     * @return ErrorStack
+     */
+    public function getErrorStack()
+    {
+        if (null === $this->errorStack) {
+            return new ErrorStack($this, array());
+        }
+
+        return $this->errorStack;
     }
 
     /**
@@ -337,25 +302,23 @@ class IterationCollection implements \IteratorAggregate, \ArrayAccess, \Countabl
      */
     public function setException(\Exception $exception)
     {
-        $this->exception = $exception;
+        $errors = array();
+
+        do {
+            $errors[] = Error::fromException($exception);
+        } while ($exception = $exception->getPrevious());
+
+        $this->errorStack = new ErrorStack($this, $errors);
     }
 
     /**
-     * Return an exception if it has been set.
+     * Return the retry threshold.
      *
-     * @throws \RuntimeException if no exception is set.
-     *
-     * @return \Exception
+     * @return float
      */
-    public function getException()
+    public function getRetryThreshold()
     {
-        if (null === $this->exception) {
-            throw new \RuntimeException(
-                'No exception has been set on this iteration collection'
-            );
-        }
-
-        return $this->exception;
+        return $this->retryThreshold;
     }
 
     /**
@@ -367,6 +330,28 @@ class IterationCollection implements \IteratorAggregate, \ArrayAccess, \Countabl
     public function getRevolutions()
     {
         return $this->revolutionCount;
+    }
+
+    /**
+     * Return the number of iterations that iterations should perform
+     * in this variant.
+     *
+     * @return int
+     */
+    public function getIterations()
+    {
+        return $this->iterationCount;
+    }
+
+    /**
+     * Return the number of warmup revolutions that iterations should
+     * perform in this variant.
+     *
+     * @return int
+     */
+    public function getWarmup()
+    {
+        return $this->warmupCount;
     }
 
     /**

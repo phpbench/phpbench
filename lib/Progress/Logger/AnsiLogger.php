@@ -11,12 +11,12 @@
 
 namespace PhpBench\Progress\Logger;
 
-use PhpBench\Benchmark\Iteration;
-use PhpBench\Benchmark\IterationCollection;
+use PhpBench\Model\Iteration;
+use PhpBench\Model\Variant;
 
 abstract class AnsiLogger extends PhpBenchLogger
 {
-    protected function renderCollectionStatus(IterationCollection $collection)
+    protected function renderCollectionStatus(Variant $collection)
     {
         $this->output->write(PHP_EOL);
         $this->output->write("\x1B[0J"); // clear the line

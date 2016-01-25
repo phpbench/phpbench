@@ -17,6 +17,11 @@ use Prophecy\Argument;
 
 class TravisLoggerTest extends PhpBenchLoggerTest
 {
+    public function setUp()
+    {
+        parent::setUp();
+    }
+
     public function getLogger()
     {
         $timeUnit = new TimeUnit(TimeUnit::MICROSECONDS, TimeUnit::MILLISECONDS);
@@ -40,24 +45,19 @@ class TravisLoggerTest extends PhpBenchLoggerTest
      */
     public function testIterationsEnd()
     {
-        $this->iterations->getRejectCount()->willReturn(0);
-        $this->iterations->hasException()->willReturn(false);
-        $this->iterations->count()->willReturn(10);
-        $this->iterations->getStats()->willReturn(array(
-            'mean' => 1.0,
-            'mode' => 1.0,
-            'stdev' => 2.0,
-            'rstdev' => 20.0,
-        ));
-        $this->iterations->getSubject()->willReturn($this->subject->reveal());
-        $this->iterations->getParameterSet()->willReturn($this->parameterSet->reveal());
+        $this->variant->getRejectCount()->willReturn(0);
+        $this->variant->hasErrorStack()->willReturn(false);
+        $this->variant->count()->willReturn(10);
+        $this->variant->getStats()->willReturn($this->stats->reveal());
+        $this->variant->getSubject()->willReturn($this->subject->reveal());
+        $this->variant->getParameterSet()->willReturn($this->parameterSet->reveal());
         $this->subject->getOutputTimeUnit()->willReturn(null);
         $this->subject->getOutputMode()->willReturn(null);
         $this->subject->getName()->willReturn('benchFoo');
         $this->parameterSet->getIndex()->willReturn(0);
 
         $this->output->writeln(Argument::containingString('0.001 (ms)'))->shouldBeCalled();
-        $this->logger->iterationsEnd($this->iterations->reveal());
+        $this->logger->variantEnd($this->variant->reveal());
     }
 
     /**
@@ -65,14 +65,14 @@ class TravisLoggerTest extends PhpBenchLoggerTest
      */
     public function testIterationsEndException()
     {
-        $this->iterations->hasException()->willReturn(true);
-        $this->iterations->getRejectCount()->willReturn(0);
-        $this->iterations->getSubject()->willReturn($this->subject->reveal());
-        $this->iterations->count()->willReturn(10);
+        $this->variant->hasErrorStack()->willReturn(true);
+        $this->variant->getRejectCount()->willReturn(0);
+        $this->variant->getSubject()->willReturn($this->subject->reveal());
+        $this->variant->count()->willReturn(10);
         $this->subject->getName()->willReturn('benchFoo');
 
         $this->output->writeln(Argument::containingString('ERROR'))->shouldBeCalled();
-        $this->logger->iterationsEnd($this->iterations->reveal());
+        $this->logger->variantEnd($this->variant->reveal());
     }
 
     /**
@@ -81,24 +81,19 @@ class TravisLoggerTest extends PhpBenchLoggerTest
      */
     public function testUseSubjectTimeUnit()
     {
-        $this->iterations->getRejectCount()->willReturn(0);
-        $this->iterations->hasException()->willReturn(false);
-        $this->iterations->getStats()->willReturn(array(
-            'mean' => 1.0,
-            'mode' => 1.0,
-            'stdev' => 2.0,
-            'rstdev' => 20.0,
-        ));
-        $this->iterations->getSubject()->willReturn($this->subject->reveal());
-        $this->iterations->count()->willReturn(10);
-        $this->iterations->getParameterSet()->willReturn($this->parameterSet->reveal());
+        $this->variant->getRejectCount()->willReturn(0);
+        $this->variant->hasErrorStack()->willReturn(false);
+        $this->variant->getStats()->willReturn($this->stats->reveal());
+        $this->variant->getSubject()->willReturn($this->subject->reveal());
+        $this->variant->count()->willReturn(10);
+        $this->variant->getParameterSet()->willReturn($this->parameterSet->reveal());
         $this->subject->getOutputTimeUnit()->willReturn(TimeUnit::MICROSECONDS);
         $this->subject->getOutputMode()->willReturn(TimeUnit::MODE_THROUGHPUT);
         $this->subject->getName()->willReturn('benchFoo');
         $this->parameterSet->getIndex()->willReturn(0);
 
         $this->output->writeln(Argument::containingString('1.000 (ops/μs)'))->shouldBeCalled();
-        $this->logger->iterationsEnd($this->iterations->reveal());
+        $this->logger->variantEnd($this->variant->reveal());
     }
 
     /**

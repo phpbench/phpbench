@@ -11,7 +11,6 @@
 
 namespace PhpBench\Report\Generator;
 
-use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\Dom\Document;
 use PhpBench\Dom\functions;
 use PhpBench\Math\Kde;
@@ -28,14 +27,14 @@ use PhpBench\Report\GeneratorInterface;
  */
 class HistogramGenerator implements GeneratorInterface
 {
-    public function generate(SuiteDocument $results, Config $config)
+    public function generate(Document $results, Config $config)
     {
         $document = new Document();
         $reportEl = $document->createRoot('reports');
         $reportEl->setAttribute('name', $config->getName());
         $reportEl = $reportEl->appendElement('report');
         $descriptionEl = $reportEl->appendElement('description');
-        $descriptionEl->nodeValue = <<<EOT
+        $descriptionEl->nodeValue = <<<'EOT'
 Warning: The histogram report is experimental, it may change or be removed without warning in
 future versions of PHPBench.
 EOT;

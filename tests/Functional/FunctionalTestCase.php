@@ -13,6 +13,7 @@ namespace PhpBench\Tests\Functional;
 
 use PhpBench\Benchmark\RunnerContext;
 use PhpBench\DependencyInjection\Container;
+use PhpBench\Serializer\XmlEncoder;
 
 class FunctionalTestCase extends \PHPUnit_Framework_TestCase
 {
@@ -45,13 +46,15 @@ class FunctionalTestCase extends \PHPUnit_Framework_TestCase
                 'spread' => array(0, 1),
             ),
         ));
-        $dom = $runner->run($context);
+        $suite = $runner->run($context);
+        $encoder = new XmlEncoder();
 
-        return $dom;
+        return $encoder->encode($suite);
     }
 
     protected function getMultipleSuiteDocument()
     {
+        $encoder = new XmlEncoder();
         $context = new RunnerContext(__DIR__ . '/benchmarks/FooBench.php', array(
             'executor' => array(
                 'executor' => 'debug',
@@ -60,7 +63,9 @@ class FunctionalTestCase extends \PHPUnit_Framework_TestCase
             ),
             'context_name' => 'foobar',
         ));
-        $document1 = $this->getContainer(false)->get('benchmark.runner')->run($context);
+        $suite = $this->getContainer(false)->get('benchmark.runner')->run($context);
+        $document1 = $encoder->encode($suite);
+
         $context = new RunnerContext(__DIR__ . '/benchmarks/FooBench.php', array(
             'executor' => array(
                 'executor' => 'debug',
@@ -69,7 +74,8 @@ class FunctionalTestCase extends \PHPUnit_Framework_TestCase
             ),
             'context_name' => 'barfoo',
         ));
-        $document2 = $this->getContainer(false)->get('benchmark.runner')->run($context);
+        $suite = $this->getContainer(false)->get('benchmark.runner')->run($context);
+        $document2 = $encoder->encode($suite);
 
         $document1->appendSuiteDocument($document2, 'two');
 

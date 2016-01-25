@@ -11,9 +11,9 @@
 
 namespace PhpBench\Progress\Logger;
 
-use PhpBench\Benchmark\Iteration;
-use PhpBench\Benchmark\IterationCollection;
-use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
+use PhpBench\Model\Benchmark;
+use PhpBench\Model\Iteration;
+use PhpBench\Model\Variant;
 
 class VerboseLogger extends PhpBenchLogger
 {
@@ -25,7 +25,7 @@ class VerboseLogger extends PhpBenchLogger
     /**
      * {@inheritdoc}
      */
-    public function benchmarkStart(BenchmarkMetadata $benchmark)
+    public function benchmarkStart(Benchmark $benchmark)
     {
         $this->output->writeln(sprintf('<comment>%s</comment>', $benchmark->getClass()));
         $this->output->write(PHP_EOL);
@@ -34,7 +34,7 @@ class VerboseLogger extends PhpBenchLogger
     /**
      * {@inheritdoc}
      */
-    public function benchmarkEnd(BenchmarkMetadata $benchmark)
+    public function benchmarkEnd(Benchmark $benchmark)
     {
         $this->output->write(PHP_EOL);
     }
@@ -46,7 +46,7 @@ class VerboseLogger extends PhpBenchLogger
     {
         $this->output->write(sprintf(
             "\x1B[0G    %-30s%sI%s P%s ",
-            $iteration->getSubject()->getName(),
+            $iteration->getVariant()->getSubject()->getName(),
             $this->rejectionCount ? 'R' . $this->rejectionCount . ' ' : '',
             $iteration->getIndex(),
             $iteration->getParameters()->getIndex()
@@ -56,27 +56,27 @@ class VerboseLogger extends PhpBenchLogger
     /**
      * {@inheritdoc}
      */
-    public function iterationsStart(IterationCollection $iterations)
+    public function variantStart(Variant $variant)
     {
-        $this->paramSetIndex = $iterations->getParameterSet()->getIndex();
+        $this->paramSetIndex = $variant->getParameterSet()->getIndex();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function iterationsEnd(IterationCollection $iterations)
+    public function variantEnd(Variant $variant)
     {
-        if ($iterations->hasException()) {
+        if ($variant->hasErrorStack()) {
             $this->output->write(sprintf(
                 "\x1B[0G    %-30s<error>ERROR</error>",
-                $iterations->getSubject()->getName()
+                $variant->getSubject()->getName()
             ));
             $this->output->write(PHP_EOL);
 
             return;
         }
 
-        $this->output->write(sprintf("\t%s", $this->formatIterationsFullSummary($iterations)));
+        $this->output->write(sprintf("\t%s", $this->formatIterationsFullSummary($variant)));
         $this->output->write(PHP_EOL);
     }
 

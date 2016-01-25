@@ -11,9 +11,9 @@
 
 namespace PhpBench\Benchmark\Executor;
 
-use PhpBench\Benchmark\Iteration;
-use PhpBench\Benchmark\IterationResult;
 use PhpBench\Benchmark\Remote\Payload;
+use PhpBench\Model\Iteration;
+use PhpBench\Model\IterationResult;
 use PhpBench\Registry\Config;
 
 /**
@@ -30,7 +30,7 @@ class DebugExecutor extends BaseExecutor
     public function execute(Iteration $iteration, Config $config)
     {
         $memory = 100;
-        $collectionHash = spl_object_hash($iteration->getCollection());
+        $collectionHash = spl_object_hash($iteration->getVariant());
 
         if (!$config['times']) {
             return new IterationResult(0, $memory);

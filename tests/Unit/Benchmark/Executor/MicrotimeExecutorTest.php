@@ -13,8 +13,8 @@ namespace PhpBench\Tests\Unit\Benchmark\Executor;
 
 use PhpBench\Benchmark\Executor;
 use PhpBench\Benchmark\Executor\MicrotimeExecutor;
-use PhpBench\Benchmark\ParameterSet;
 use PhpBench\Benchmark\Remote\Launcher;
+use PhpBench\Model\ParameterSet;
 use PhpBench\Registry\Config;
 
 class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
@@ -39,8 +39,8 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
         $this->paramAfterFile = __DIR__ . '/microtimetest/paramafter.tmp';
         $this->teardownFile = __DIR__ . '/microtimetest/teardown.tmp';
 
-        $this->subject = $this->prophesize('PhpBench\Benchmark\Metadata\SubjectMetadata');
-        $this->benchmark = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');
+        $this->subject = $this->prophesize('PhpBench\Model\Subject');
+        $this->benchmark = $this->prophesize('PhpBench\Model\Benchmark');
 
         $launcher = new Launcher(null, null);
         $this->executor = new MicrotimeExecutor($launcher);
@@ -48,8 +48,8 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
 
         $this->benchmark->getPath()->willReturn(__DIR__ . '/microtimetest/ExecutorBench.php');
         $this->benchmark->getClass()->willReturn('PhpBench\Tests\Unit\Benchmark\Executor\microtimetest\ExecutorBench');
-        $this->iteration = $this->prophesize('PhpBench\Benchmark\Iteration');
-        $this->subject->getBenchmarkMetadata()->willReturn($this->benchmark->reveal());
+        $this->iteration = $this->prophesize('PhpBench\Model\Iteration');
+        $this->subject->getBenchmark()->willReturn($this->benchmark->reveal());
     }
 
     public function tearDown()
@@ -92,7 +92,7 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
 
         $result = $this->executor->execute($this->iteration->reveal(), new Config('test', array()));
 
-        $this->assertInstanceOf('PhpBench\Benchmark\IterationResult', $result);
+        $this->assertInstanceOf('PhpBench\Model\IterationResult', $result);
         $this->assertInternalType('int', $result->getTime());
         $this->assertInternalType('int', $result->getMemory());
         $this->assertFalse(file_exists($this->beforeMethodFile));
@@ -121,7 +121,7 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
 
         $result = $this->executor->execute($this->iteration->reveal(), new Config('test', array()));
 
-        $this->assertInstanceOf('PhpBench\Benchmark\IterationResult', $result);
+        $this->assertInstanceOf('PhpBench\Model\IterationResult', $result);
     }
 
     /**

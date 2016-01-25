@@ -9,15 +9,35 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Benchmark\Metadata;
+namespace PhpBench\Model;
 
 use PhpBench\Util\TimeUnit;
 
 /**
- * Abstract metadata class for benchmarks and subjects.
+ * Metadata for benchmark subjects.
  */
-abstract class AbstractMetadata
+class Subject
 {
+    /**
+     * @var string
+     */
+    private $name;
+
+    /**
+     * @var array[]
+     */
+    private $parameterSets = array();
+
+    /**
+     * @var BenchmarkMetadata
+     */
+    private $benchmark;
+
+    /**
+     * @var int
+     */
+    private $index;
+
     /**
      * @var string[]
      */
@@ -54,11 +74,6 @@ abstract class AbstractMetadata
     private $warmup = 0;
 
     /**
-     * @var string
-     */
-    private $class;
-
-    /**
      * @var bool
      */
     private $skip = false;
@@ -79,16 +94,100 @@ abstract class AbstractMetadata
     private $outputMode = TimeUnit::MODE_TIME;
 
     /**
-     * @param mixed $class
+     * @var Variant[]
      */
-    public function __construct($class)
+    private $variants = array();
+
+    /**
+     * @param BenchmarkMetadata $benchmark
+     * @param string $name
+     */
+    public function __construct(Benchmark $benchmark, $name, $index)
     {
-        $this->class = $class;
+        $this->name = $name;
+        $this->benchmark = $benchmark;
+        $this->index = $index;
     }
 
-    public function getClass()
+    /**
+     * Return the method name of this subject.
+     *
+     * @return string
+     */
+    public function getName()
     {
-        return $this->class;
+        return $this->name;
+    }
+
+    /**
+     * Create and add a new variant based on this subject.
+     *
+     * @param ParameterSet $parameterSet
+     * @param int $iterationCount
+     * @param int $revolutionCount
+     * @param int $warmupCount
+     * @param int $rejectionThreshold
+     *
+     * @return Variant.
+     */
+    public function createVariant(ParameterSet $parameterSet, $iterationCount, $revolutionCount, $warmupCount, $rejectionThreshold)
+    {
+        $variant = new Variant(
+            $this,
+            $parameterSet,
+            $iterationCount,
+            $revolutionCount,
+            $warmupCount,
+            $rejectionThreshold
+        );
+        $this->variants[] = $variant;
+
+        return $variant;
+    }
+
+    public function getVariants()
+    {
+        return $this->variants;
+    }
+
+    /**
+     * Set the parameter sets for this subject.
+     *
+     * @param array[] $parameterSets
+     */
+    public function setParameterSets(array $parameterSets)
+    {
+        $this->parameterSets = $parameterSets;
+    }
+
+    /**
+     * Return the parameter sets for this subject.
+     *
+     * @return array[]
+     */
+    public function getParameterSets()
+    {
+        return $this->parameterSets;
+    }
+
+    /**
+     * Return the (containing) benchmark for this subject.
+     *
+     * @return BenchmarkMetadata
+     */
+    public function getBenchmark()
+    {
+        return $this->benchmark;
+    }
+
+    /**
+     * Return the index of the subject.
+     *
+     * @return int
+     */
+    public function getIndex()
+    {
+        return $this->index;
     }
 
     public function getGroups()
@@ -98,7 +197,7 @@ abstract class AbstractMetadata
 
     public function inGroups(array $groups)
     {
-        return (boolean) count(array_intersect($this->groups, $groups));
+        return (bool) count(array_intersect($this->groups, $groups));
     }
 
     public function setGroups($groups)

@@ -12,18 +12,17 @@
 namespace PhpBench\Benchmark\Metadata\Driver;
 
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use PhpBench\Benchmark\Metadata\AbstractMetadata;
 use PhpBench\Benchmark\Metadata\Annotations;
 use PhpBench\Benchmark\Metadata\Annotations\AbstractArrayAnnotation;
 use PhpBench\Benchmark\Metadata\Annotations\AfterClassMethods;
 use PhpBench\Benchmark\Metadata\Annotations\BeforeClassMethods;
-use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\DocParser;
 use PhpBench\Benchmark\Metadata\DriverInterface;
-use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\ReflectionHierarchy;
 use PhpBench\Benchmark\Remote\ReflectionMethod;
 use PhpBench\Benchmark\Remote\Reflector;
+use PhpBench\Model\Benchmark;
+use PhpBench\Model\Subject;
 
 class AnnotationDriver implements DriverInterface
 {
@@ -46,14 +45,14 @@ class AnnotationDriver implements DriverInterface
     public function getMetadataForHierarchy(ReflectionHierarchy $hierarchy)
     {
         $primaryReflection = $hierarchy->getTop();
-        $classMetadata = new BenchmarkMetadata($primaryReflection->path, $primaryReflection->class);
+        $benchmark = new Benchmark($primaryReflection->path, $primaryReflection->class);
 
-        $this->buildBenchmarkMetadata($classMetadata, $hierarchy);
+        $this->buildBenchmark($benchmark, $hierarchy);
 
-        return $classMetadata;
+        return $benchmark;
     }
 
-    private function buildBenchmarkMetadata(BenchmarkMetadata $classMetadata, ReflectionHierarchy $hierarchy)
+    private function buildBenchmark(Benchmark $benchmark, ReflectionHierarchy $hierarchy)
     {
         $annotations = array();
         $reflectionHierarchy = array_reverse(iterator_to_array($hierarchy));
@@ -63,17 +62,11 @@ class AnnotationDriver implements DriverInterface
                 $reflection->comment,
                 sprintf('benchmark %s', $reflection->class)
             );
+
             $annotations = array_merge($annotations, $benchAnnotations);
 
-            foreach ($benchAnnotations as $annotation) {
-                if ($annotation instanceof BeforeClassMethods) {
-                    $classMetadata->setBeforeClassMethods($annotation->getMethods());
-                }
-                if ($annotation instanceof AfterClassMethods) {
-                    $classMetadata->setAfterClassMethods($annotation->getMethods());
-                }
-
-                $this->processAbstractMetadata($classMetadata, $annotation);
+            foreach ($annotations as $annotation) {
+                $this->processBenchmark($benchmark, $annotation);
             }
         }
 
@@ -83,20 +76,19 @@ class AnnotationDriver implements DriverInterface
                     continue;
                 }
 
-                $subjectMetadata = $classMetadata->getOrCreateSubjectMetadata($reflectionMethod->name);
+                $subject = $benchmark->getOrCreateSubject($reflectionMethod->name);
 
                 // apply the benchmark annotations to the subject
                 foreach ($annotations as $annotation) {
-                    $this->processAbstractMetadata($subjectMetadata, $annotation);
+                    $this->processSubject($subject, $annotation);
                 }
 
-                $this->buildSubjectMetadata($subjectMetadata, $reflectionMethod);
-                $classMetadata->setSubjectMetadata($subjectMetadata);
+                $this->buildSubject($subject, $reflectionMethod);
             }
         }
     }
 
-    private function buildSubjectMetadata(SubjectMetadata $subjectMetadata, ReflectionMethod $reflectionMethod)
+    private function buildSubject(Subject $subject, ReflectionMethod $reflectionMethod)
     {
         $annotations = $this->docParser->parse(
             $reflectionMethod->comment,
@@ -104,78 +96,89 @@ class AnnotationDriver implements DriverInterface
         ));
 
         foreach ($annotations as $annotation) {
-            $this->processAbstractMetadata($subjectMetadata, $annotation);
+            $this->processSubject($subject, $annotation);
         }
     }
 
-    private function processAbstractMetadata(AbstractMetadata $metadata, $annotation)
+    private function processSubject(Subject $subject, $annotation)
     {
         if ($annotation instanceof Annotations\BeforeMethods) {
-            $metadata->setBeforeMethods(
+            $subject->setBeforeMethods(
                 $this->resolveValue(
                     $annotation,
-                    $metadata->getBeforeMethods(),
+                    $subject->getBeforeMethods(),
                     $annotation->getMethods()
                 )
             );
         }
 
         if ($annotation instanceof Annotations\AfterMethods) {
-            $metadata->setAfterMethods(
+            $subject->setAfterMethods(
                 $this->resolveValue(
                     $annotation,
-                    $metadata->getAfterMethods(),
+                    $subject->getAfterMethods(),
                     $annotation->getMethods()
                 )
             );
         }
 
         if ($annotation instanceof Annotations\ParamProviders) {
-            $metadata->setParamProviders(
+            $subject->setParamProviders(
                 $this->resolveValue(
                     $annotation,
-                    $metadata->getParamProviders(),
+                    $subject->getParamProviders(),
                     $annotation->getProviders()
                 )
             );
         }
 
         if ($annotation instanceof Annotations\Iterations) {
-            $metadata->setIterations($annotation->getIterations());
+            $subject->setIterations($annotation->getIterations());
         }
 
         if ($annotation instanceof Annotations\Sleep) {
-            $metadata->setSleep($annotation->getSleep());
+            $subject->setSleep($annotation->getSleep());
         }
 
         if ($annotation instanceof Annotations\Groups) {
-            $metadata->setGroups(
+            $subject->setGroups(
                 $this->resolveValue(
                     $annotation,
-                    $metadata->getGroups(),
+                    $subject->getGroups(),
                     $annotation->getGroups()
                 )
             );
         }
 
         if ($annotation instanceof Annotations\Revs) {
-            $metadata->setRevs($annotation->getRevs());
+            $subject->setRevs($annotation->getRevs());
         }
 
         if ($annotation instanceof Annotations\Warmup) {
-            $metadata->setWarmup($annotation->getRevs());
+            $subject->setWarmup($annotation->getRevs());
         }
 
         if ($annotation instanceof Annotations\Skip) {
-            $metadata->setSkip(true);
+            $subject->setSkip(true);
         }
 
         if ($annotation instanceof Annotations\OutputTimeUnit) {
-            $metadata->setOutputTimeUnit($annotation->getOutputTimeUnit());
+            $subject->setOutputTimeUnit($annotation->getOutputTimeUnit());
         }
 
         if ($annotation instanceof Annotations\OutputMode) {
-            $metadata->setOutputMode($annotation->getMode());
+            $subject->setOutputMode($annotation->getMode());
+        }
+    }
+
+    public function processBenchmark(Benchmark $benchmark, $annotation)
+    {
+        if ($annotation instanceof BeforeClassMethods) {
+            $benchmark->setBeforeClassMethods($annotation->getMethods());
+        }
+
+        if ($annotation instanceof AfterClassMethods) {
+            $benchmark->setAfterClassMethods($annotation->getMethods());
         }
     }
 

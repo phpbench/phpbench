@@ -12,11 +12,11 @@
 namespace PhpBench\Benchmark\Executor;
 
 use PhpBench\Benchmark\ExecutorInterface;
-use PhpBench\Benchmark\Iteration;
-use PhpBench\Benchmark\IterationResult;
-use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Benchmark\Remote\Payload;
+use PhpBench\Model\Benchmark;
+use PhpBench\Model\Iteration;
+use PhpBench\Model\IterationResult;
 use PhpBench\Registry\Config;
 
 /**
@@ -55,8 +55,8 @@ abstract class BaseExecutor implements ExecutorInterface
     {
         $subject = $iteration->getSubject();
         $tokens = array(
-            'class' => $subject->getBenchmarkMetadata()->getClass(),
-            'file' => $subject->getBenchmarkMetadata()->getPath(),
+            'class' => $subject->getBenchmark()->getClass(),
+            'file' => $subject->getBenchmark()->getPath(),
             'subject' => $subject->getName(),
             'revolutions' => $iteration->getRevolutions(),
             'beforeMethods' => var_export($subject->getBeforeMethods(), true),
@@ -79,7 +79,7 @@ abstract class BaseExecutor implements ExecutorInterface
     /**
      * {@inheritdoc}
      */
-    public function executeMethods(BenchmarkMetadata $benchmark, array $methods)
+    public function executeMethods(Benchmark $benchmark, array $methods)
     {
         $tokens = array(
             'class' => $benchmark->getClass(),

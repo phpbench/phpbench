@@ -33,10 +33,10 @@ class DebugExecutorTest extends \PHPUnit_Framework_TestCase
     {
         $results = array();
         for ($i = 0; $i < $nbCollections; $i++) {
-            $collection = $this->prophesize('PhpBench\Benchmark\IterationCollection');
+            $collection = $this->prophesize('PhpBench\Model\Variant');
             for ($ii = 0; $ii < $nbIterations; $ii++) {
-                $iteration = $this->prophesize('PhpBench\Benchmark\Iteration');
-                $iteration->getCollection()->willReturn($collection->reveal());
+                $iteration = $this->prophesize('PhpBench\Model\Iteration');
+                $iteration->getVariant()->willReturn($collection->reveal());
                 $iteration->getIndex()->willReturn($ii);
                 $results[] = $this->executor->execute(
                     $iteration->reveal(),

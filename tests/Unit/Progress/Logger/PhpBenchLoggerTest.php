@@ -20,25 +20,34 @@ abstract class PhpBenchLoggerTest extends \PHPUnit_Framework_TestCase
     protected $output;
     protected $document;
     protected $benchmark;
-    protected $iterations;
+    protected $variant;
     protected $subject;
     protected $parameterSet;
+    protected $stats;
 
     public function setUp()
     {
-        $this->benchmark = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');
-        $this->iterations = $this->prophesize('PhpBench\Benchmark\IterationCollection');
-        $this->subject = $this->prophesize('PhpBench\Benchmark\Metadata\SubjectMetadata');
-        $this->parameterSet = $this->prophesize('PhpBench\Benchmark\ParameterSet');
-        $this->document = $this->prophesize('PhpBench\Benchmark\SuiteDocument');
+        $this->suite = $this->prophesize('PhpBench\Model\Suite');
+        $this->summary = $this->prophesize('PhpBench\Model\Summary');
+        $this->benchmark = $this->prophesize('PhpBench\Model\Benchmark');
+        $this->variant = $this->prophesize('PhpBench\Model\Variant');
+        $this->subject = $this->prophesize('PhpBench\Model\Subject');
+        $this->parameterSet = $this->prophesize('PhpBench\Model\ParameterSet');
         $this->output = $this->prophesize('Symfony\Component\Console\Output\OutputInterface');
-        $this->subject = $this->prophesize('PhpBench\Benchmark\Metadata\SubjectMetadata');
+        $this->stats = $this->prophesize('PhpBench\Math\Distribution');
 
         $this->logger = $this->getLogger();
 
         if ($this->logger instanceof OutputAwareInterface) {
             $this->logger->setOutput($this->output->reveal());
         }
+
+        $this->suite->getSummary()->willReturn($this->summary->reveal());
+
+        $this->stats->getMean()->willReturn(1.0);
+        $this->stats->getMode()->willReturn(1.0);
+        $this->stats->getStdev()->willReturn(2.0);
+        $this->stats->getRstdev()->willReturn(20);
     }
 
     abstract public function getLogger();
@@ -56,9 +65,9 @@ abstract class PhpBenchLoggerTest extends \PHPUnit_Framework_TestCase
     public function testEndSuite()
     {
         $this->setUpSummary();
-        $this->document->hasErrors()->willReturn(false);
+        $this->suite->getErrorStacks()->willReturn(array());
         $this->output->writeln(Argument::any())->shouldBeCalled();
-        $this->logger->endSuite($this->document->reveal());
+        $this->logger->endSuite($this->suite->reveal());
     }
 
     /**
@@ -66,23 +75,23 @@ abstract class PhpBenchLoggerTest extends \PHPUnit_Framework_TestCase
      */
     public function testEndSuiteErrors()
     {
+        $error1 = $this->prophesize('PhpBench\Model\Error');
+        $error1->getMessage()->willReturn('MessageOne');
+        $error1->getClass()->willReturn('ExceptionOne');
+        $error2 = $this->prophesize('PhpBench\Model\Error');
+        $error2->getMessage()->willReturn('MessageTwo');
+        $error2->getClass()->willReturn('ExceptionTwo');
+        $errorStack = $this->prophesize('PhpBench\Model\ErrorStack');
+        $errorStack->getVariant()->willReturn($this->variant->reveal());
+        $errorStack->getIterator()->willReturn(new \ArrayIterator(array($error1->reveal(), $error2->reveal())));
+
         $this->setUpSummary();
-        $this->document->hasErrors()->willReturn(true);
-        $this->document->getErrorStacks()->willReturn(array(
-            array(
-                'subject' => 'Namespace\Foo::bar',
-                'exceptions' => array(
-                    array(
-                        'exception_class' => 'ExceptionOne',
-                        'message' => 'MessageOne',
-                    ),
-                    array(
-                        'exception_class' => 'ExceptionTwo',
-                        'message' => 'MessageTwo',
-                    ),
-                ),
-            ),
-        ));
+        $this->suite->getErrorStacks()->willReturn(array($errorStack));
+        $errorStack->getVariant()->willReturn($this->variant->reveal());
+        $this->variant->getSubject()->willReturn($this->subject->reveal());
+        $this->subject->getBenchmark()->willReturn($this->benchmark->reveal());
+        $this->subject->getName()->willReturn('bar');
+        $this->benchmark->getClass()->willReturn('Namespace\Foo');
 
         $this->output->writeln(Argument::containingString('1 subjects encountered errors'))->shouldBeCalled();
         $this->output->writeln(Argument::containingString('Namespace\Foo::bar'))->shouldBeCalled();
@@ -92,7 +101,7 @@ abstract class PhpBenchLoggerTest extends \PHPUnit_Framework_TestCase
         $this->output->writeln(Argument::containingString('Two'))->shouldBeCalled();
         $this->output->writeln(Argument::any())->shouldBeCalled();
 
-        $this->logger->endSuite($this->document->reveal());
+        $this->logger->endSuite($this->suite->reveal());
     }
 
     private function setUpSummary()
@@ -109,16 +118,16 @@ abstract class PhpBenchLoggerTest extends \PHPUnit_Framework_TestCase
         $meanStDev = 321;
         $meanRelStDev = 231;
 
-        $this->document->getNbSubjects()->willReturn($nbSubjects);
-        $this->document->getNbIterations()->willReturn($nbIterations);
-        $this->document->getNbRevolutions()->willReturn($nbRevolutions);
-        $this->document->getNbRejects()->willReturn($nbRejects);
-        $this->document->getMinTime()->willReturn($min);
-        $this->document->getMeanTime()->willReturn($mean);
-        $this->document->getModeTime()->willReturn($mode);
-        $this->document->getMaxTime()->willReturn($max);
-        $this->document->getTotalTime()->willReturn($totalTime);
-        $this->document->getMeanStDev()->willReturn($meanStDev);
-        $this->document->getMeanRelStDev()->willReturn($meanRelStDev);
+        $this->summary->getNbSubjects()->willReturn($nbSubjects);
+        $this->summary->getNbIterations()->willReturn($nbIterations);
+        $this->summary->getNbRevolutions()->willReturn($nbRevolutions);
+        $this->summary->getNbRejects()->willReturn($nbRejects);
+        $this->summary->getMinTime()->willReturn($min);
+        $this->summary->getMeanTime()->willReturn($mean);
+        $this->summary->getModeTime()->willReturn($mode);
+        $this->summary->getMaxTime()->willReturn($max);
+        $this->summary->getTotalTime()->willReturn($totalTime);
+        $this->summary->getMeanStDev()->willReturn($meanStDev);
+        $this->summary->getMeanRelStDev()->willReturn($meanRelStDev);
     }
 }

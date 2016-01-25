@@ -24,7 +24,7 @@ interface DriverInterface
      *
      * @param ReflectionClass[] $reflections
      *
-     * @return BenchmarkMetadata
+     * @return Benchmark
      */
     public function getMetadataForHierarchy(ReflectionHierarchy $classHierarchy);
 }

@@ -11,9 +11,9 @@
 
 namespace PhpBench\Console\Command;
 
-use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\Console\Command\Handler\ReportHandler;
 use PhpBench\Console\Command\Handler\TimeUnitHandler;
+use PhpBench\Dom\SuiteDocument;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -37,7 +37,7 @@ class ReportCommand extends Command
     {
         $this->setName('report');
         $this->setDescription('Generate a report from an XML file');
-        $this->setHelp(<<<EOT
+        $this->setHelp(<<<'EOT'
 Generate a report from an existing XML file.
 
 To dump an XML file, use the <info>run</info> command with the

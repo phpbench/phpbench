@@ -11,7 +11,6 @@
 
 namespace PhpBench\Report;
 
-use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Dom\Document;
 use PhpBench\Registry\Registry;
@@ -39,10 +38,10 @@ class ReportManager
      * Generate the named reports.
      *
      * @param OutputInterface $output
-     * @param SuiteDocument $suiteDocument
+     * @param Document $suiteDocument
      * @param array $reportNames
      */
-    public function generateReports(SuiteDocument $suiteDocument, array $reportNames)
+    public function generateReports(Document $suiteDocument, array $reportNames)
     {
         $reportDoms = array();
         $reportConfigs = array();
@@ -76,11 +75,11 @@ class ReportManager
      * Render reports (as opposed to just generating the report XML documents via. generateReports).
      *
      * @param OutputInterface $output
-     * @param SuiteDocument $suiteDocument
+     * @param Document $suiteDocument
      * @param array $reportNames
      * @param array $outputNames
      */
-    public function renderReports(OutputInterface $output, SuiteDocument $suiteDocument, array $reportNames, array $outputNames)
+    public function renderReports(OutputInterface $output, Document $suiteDocument, array $reportNames, array $outputNames)
     {
         $reportDoms = $this->generateReports($suiteDocument, $reportNames);
 

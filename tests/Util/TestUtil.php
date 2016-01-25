@@ -58,16 +58,12 @@ class TestUtil
             'class' => 'Benchmark',
             'beforeClassMethods' => array(),
             'afterClassMethods' => array(),
-            'beforeMethods' => array(),
-            'afterMethods' => array(),
             'path' => null,
         ), $options);
 
         $benchmark->getClass()->willReturn($options['class']);
         $benchmark->getBeforeClassMethods()->willReturn($options['beforeClassMethods']);
         $benchmark->getAfterClassMethods()->willReturn($options['afterClassMethods']);
-        $benchmark->getBeforeMethods()->willReturn($options['beforeMethods']);
-        $benchmark->getAfterMethods()->willReturn($options['afterMethods']);
         $benchmark->getPath()->willReturn($options['path']);
     }
 }

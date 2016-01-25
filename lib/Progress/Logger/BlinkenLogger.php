@@ -11,10 +11,10 @@
 
 namespace PhpBench\Progress\Logger;
 
-use PhpBench\Benchmark\Iteration;
-use PhpBench\Benchmark\IterationCollection;
-use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
-use PhpBench\Benchmark\SuiteDocument;
+use PhpBench\Model\Benchmark;
+use PhpBench\Model\Iteration;
+use PhpBench\Model\Suite;
+use PhpBench\Model\Variant;
 use PhpBench\Util\TimeUnit;
 
 class BlinkenLogger extends AnsiLogger
@@ -50,16 +50,16 @@ class BlinkenLogger extends AnsiLogger
     /**
      * {@inheritdoc}
      */
-    public function endSuite(SuiteDocument $suiteDocument)
+    public function endSuite(Suite $suite)
     {
         $this->output->write(PHP_EOL);
-        parent::endSuite($suiteDocument);
+        parent::endSuite($suite);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function benchmarkStart(BenchmarkMetadata $benchmark)
+    public function benchmarkStart(Benchmark $benchmark)
     {
         static $first = true;
 
@@ -70,7 +70,7 @@ class BlinkenLogger extends AnsiLogger
         $this->output->write(sprintf('<comment>%s</comment>', $benchmark->getClass()));
 
         $subjectNames = array();
-        foreach ($benchmark->getSubjectMetadatas() as $subject) {
+        foreach ($benchmark->getSubjects() as $subject) {
             $subjectNames[] = sprintf('#%s %s', $subject->getIndex(), $subject->getName());
         }
 
@@ -82,22 +82,22 @@ class BlinkenLogger extends AnsiLogger
     /**
      * {@inheritdoc}
      */
-    public function iterationsStart(IterationCollection $collection)
+    public function variantStart(Variant $variant)
     {
-        $this->drawIterations($collection, $this->rejects, 'error');
-        $this->renderCollectionStatus($collection);
+        $this->drawIterations($variant, $this->rejects, 'error');
+        $this->renderCollectionStatus($variant);
         $this->resetLinePosition(); // put cursor at starting ypos ready for iteration times
     }
 
     /**
      * {@inheritdoc}
      */
-    public function iterationsEnd(IterationCollection $collection)
+    public function variantEnd(Variant $variant)
     {
         $this->resetLinePosition();
-        $this->drawIterations($collection, array(), null);
+        $this->drawIterations($variant, array(), null);
 
-        if ($collection->hasException()) {
+        if ($variant->hasErrorStack()) {
             $this->output->write(' <error>ERROR</error>');
             $this->output->write("\x1B[0J"); // clear the rest of the line
             $this->output->write(PHP_EOL);
@@ -107,7 +107,7 @@ class BlinkenLogger extends AnsiLogger
 
         $this->rejects = array();
 
-        foreach ($collection->getRejects() as $reject) {
+        foreach ($variant->getRejects() as $reject) {
             $this->rejects[$reject->getIndex()] = true;
         }
 
@@ -119,7 +119,7 @@ class BlinkenLogger extends AnsiLogger
 
         $this->output->write(sprintf(
             ' <comment>%s</comment>',
-            $this->formatIterationsShortSummary($collection)
+            $this->formatIterationsShortSummary($variant)
         ));
         $this->output->write(PHP_EOL);
     }
@@ -162,24 +162,24 @@ class BlinkenLogger extends AnsiLogger
         if (strlen($time) > $this->colWidth) {
             // add one to allow a single space between columns
             $this->colWidth = strlen($time) + 1;
-            $this->drawIterations($iteration->getCollection(), array(), null);
+            $this->drawIterations($iteration->getVariant(), array(), null);
             $this->resetLinePosition();
         }
 
         return $time;
     }
 
-    private function drawIterations(IterationCollection $collection, array $specials, $tag)
+    private function drawIterations(Variant $variant, array $specials, $tag)
     {
         $this->output->write("\x1B[0G"); // put cursor at column 0
 
-        $timeUnit = $collection->getSubject()->getOutputTimeUnit();
-        $outputMode = $collection->getSubject()->getOutputMode();
+        $timeUnit = $variant->getSubject()->getOutputTimeUnit();
+        $outputMode = $variant->getSubject()->getOutputMode();
         $lines = array();
-        $line = sprintf('%-' . self::INDENT . 's', '#' . $collection->getSubject()->getIndex());
+        $line = sprintf('%-' . self::INDENT . 's', '#' . $variant->getSubject()->getIndex());
 
-        for ($index = 0; $index < $collection->count(); $index++) {
-            $iteration = $collection->getIteration($index);
+        for ($index = 0; $index < $variant->count(); $index++) {
+            $iteration = $variant->getIteration($index);
 
             $displayTime = $this->formatIterationTime($iteration);
 

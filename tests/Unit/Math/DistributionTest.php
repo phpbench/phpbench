@@ -1,0 +1,90 @@
+<?php
+
+/*
+ * This file is part of the PHPBench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace PhpBench\Tests\Unit\Math;
+
+use PhpBench\Math\Distribution;
+
+class DistributionTest extends \PHPUnit_Framework_TestCase
+{
+    /**
+     * It should return stats.
+     */
+    public function testStats()
+    {
+        $distribution = new Distribution(array(
+            -50,
+            0,
+            50,
+            100,
+        ));
+
+        $this->assertEquals(100, $distribution->getSum());
+        $this->assertEquals(25, $distribution->getMean());
+        $this->assertEquals(-50, $distribution->getMin());
+        $this->assertEquals(100, $distribution->getMax());
+        $this->assertEquals(56, round($distribution->getStdev()));
+        $this->assertEquals(3125, $distribution->getVariance());
+        $this->assertEquals(25, round($distribution->getMode()));
+    }
+
+    /**
+     * It should be iterable.
+     */
+    public function testIterator()
+    {
+        $distribution = new Distribution(array(
+            10,
+            20,
+            30,
+        ));
+        $stats = iterator_to_array($distribution);
+        $this->assertEquals(array(
+            'min' => 10,
+            'max' => 30,
+            'sum' => 60,
+            'stdev' => 8.1649658092773,
+            'mean' => 20,
+            'mode' => 20,
+            'variance' => 66.666666666667,
+            'rstdev' => 40.824829046386,
+        ), $stats);
+    }
+
+    /**
+     * It should throw an exception if zero samples are given.
+     *
+     * @expectedException LogicException
+     * @expectedExceptionMessage zero
+     */
+    public function testDistributionZero()
+    {
+        new Distribution(array());
+    }
+
+    /**
+     * It should allow "distributions" of 1 sample.
+     */
+    public function testDistributionOne()
+    {
+        $distribution = new Distribution(array(10));
+        iterator_to_array($distribution);
+    }
+
+    /**
+     * It should allow distributions with 0 values.
+     */
+    public function testDistributionZeroValues()
+    {
+        $distribution = new Distribution(array(0, 0));
+        iterator_to_array($distribution);
+    }
+}

@@ -11,11 +11,11 @@
 
 namespace PhpBench\Progress\Logger;
 
-use PhpBench\Benchmark\Iteration;
-use PhpBench\Benchmark\IterationCollection;
-use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
-use PhpBench\Benchmark\Metadata\SubjectMetadata;
-use PhpBench\Benchmark\SuiteDocument;
+use PhpBench\Model\Benchmark;
+use PhpBench\Model\Iteration;
+use PhpBench\Model\Subject;
+use PhpBench\Model\Suite;
+use PhpBench\Model\Variant;
 use PhpBench\Progress\LoggerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -31,28 +31,28 @@ class NullLogger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function benchmarkStart(BenchmarkMetadata $benchmark)
+    public function benchmarkStart(Benchmark $benchmark)
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function benchmarkEnd(BenchmarkMetadata $benchmark)
+    public function benchmarkEnd(Benchmark $benchmark)
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function subjectStart(SubjectMetadata $subject)
+    public function subjectStart(Subject $subject)
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function subjectEnd(SubjectMetadata $subject)
+    public function subjectEnd(Subject $subject)
     {
     }
 
@@ -73,14 +73,14 @@ class NullLogger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function iterationsStart(IterationCollection $iterations)
+    public function variantStart(Variant $variant)
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function iterationsEnd(IterationCollection $iterations)
+    public function variantEnd(Variant $variant)
     {
     }
 
@@ -94,14 +94,14 @@ class NullLogger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function startSuite(SuiteDocument $suiteDocument)
+    public function startSuite(Suite $suite)
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function endSuite(SuiteDocument $suiteDocument)
+    public function endSuite(Suite $suite)
     {
     }
 }

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Benchmark;
+namespace PhpBench\Model;
 
 /**
  * Represents a parameter set for an Iteration.

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Tests\Unit\Benchmark\Metadata;
+namespace PhpBench\Tests\Unit\Model;
 
 use PhpBench\Benchmark\Metadata\Factory;
 use PhpBench\Tests\Util\TestUtil;
@@ -33,8 +33,8 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $this->hierarchy = $this->prophesize('PhpBench\Benchmark\Remote\ReflectionHierarchy');
         $this->hierarchy->reveal()->class = 'Class';
         $this->reflection = $this->prophesize('PhpBench\Benchmark\Remote\ReflectionClass');
-        $this->metadata = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');
-        $this->subjectMetadata = $this->prophesize('PhpBench\Benchmark\Metadata\SubjectMetadata');
+        $this->metadata = $this->prophesize('PhpBench\Model\Benchmark');
+        $this->subjectMetadata = $this->prophesize('PhpBench\Model\Subject');
 
         $this->reflector->reflect(self::FNAME)->willReturn($this->hierarchy->reveal());
         $this->driver->getMetadataForHierarchy($this->hierarchy->reveal())->willReturn($this->metadata->reveal());
@@ -48,10 +48,10 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     public function testGetMetadataForFile()
     {
         $this->hierarchy->isEmpty()->willReturn(false);
-        $this->metadata->getSubjectMetadatas()->willReturn(array());
+        $this->metadata->getSubjects()->willReturn(array());
         TestUtil::configureBenchmark($this->metadata);
         $metadata = $this->factory->getMetadataForFile(self::FNAME);
-        $this->assertInstanceOf('PhpBench\Benchmark\Metadata\BenchmarkMetadata', $metadata);
+        $this->assertInstanceOf('PhpBench\Model\Benchmark', $metadata);
     }
 
     /**
@@ -60,7 +60,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     public function testWithSubjects()
     {
         $this->hierarchy->isEmpty()->willReturn(false);
-        $this->metadata->getSubjectMetadatas()->willReturn(array(
+        $this->metadata->getSubjects()->willReturn(array(
             $this->subjectMetadata->reveal(),
         ));
         TestUtil::configureBenchmark($this->metadata, array(
@@ -71,9 +71,9 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $this->subjectMetadata->setParameterSets(array())->shouldBeCalled();
 
         $metadata = $this->factory->getMetadataForFile(self::FNAME);
-        $this->assertInstanceOf('PhpBench\Benchmark\Metadata\BenchmarkMetadata', $metadata);
-        $this->assertInternalType('array', $metadata->getSubjectMetadatas());
-        $this->assertCount(1, $metadata->getSubjectMetadatas());
+        $this->assertInstanceOf('PhpBench\Model\Benchmark', $metadata);
+        $this->assertInternalType('array', $metadata->getSubjects());
+        $this->assertCount(1, $metadata->getSubjects());
     }
 
     /**
@@ -124,7 +124,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $this->hierarchy->isEmpty()->willReturn(false);
         $this->reflection->class = 'TestClass';
         TestUtil::configureBenchmark($this->metadata, array());
-        $this->metadata->getSubjectMetadatas()->willReturn(array(
+        $this->metadata->getSubjects()->willReturn(array(
             $this->subjectMetadata->reveal(),
         ));
         TestUtil::configureSubject($this->subjectMetadata, array(
@@ -146,7 +146,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $this->hierarchy->isEmpty()->willReturn(false);
         TestUtil::configureBenchmark($this->metadata, array(
         ));
-        $this->metadata->getSubjectMetadatas()->willReturn(array(
+        $this->metadata->getSubjects()->willReturn(array(
             $this->subjectMetadata->reveal(),
         ));
         TestUtil::configureSubject($this->subjectMetadata, array(
@@ -176,7 +176,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     public function testInvalidParameters()
     {
         $this->hierarchy->isEmpty()->willReturn(false);
-        $this->metadata->getSubjectMetadatas()->willReturn(array(
+        $this->metadata->getSubjects()->willReturn(array(
             $this->subjectMetadata->reveal(),
         ));
         TestUtil::configureBenchmark($this->metadata, array(

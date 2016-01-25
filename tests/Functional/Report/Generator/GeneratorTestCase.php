@@ -11,7 +11,6 @@
 
 namespace PhpBench\Tests\Functional\Report\Generator;
 
-use PhpBench\Benchmark\SuiteDocument;
 use PhpBench\Dom\Document;
 use PhpBench\Registry\Config;
 use PhpBench\Tests\Functional\FunctionalTestCase;
@@ -28,7 +27,7 @@ abstract class GeneratorTestCase extends FunctionalTestCase
         ));
     }
 
-    protected function generate(SuiteDocument $document, $config)
+    protected function generate(Document $document, $config)
     {
         return $this->getGenerator()->generate(
             $document,

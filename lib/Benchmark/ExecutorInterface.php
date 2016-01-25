@@ -11,7 +11,8 @@
 
 namespace PhpBench\Benchmark;
 
-use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
+use PhpBench\Model\Benchmark;
+use PhpBench\Model\Iteration;
 use PhpBench\Registry\Config;
 use PhpBench\Registry\RegistrableInterface;
 
@@ -42,5 +43,5 @@ interface ExecutorInterface extends RegistrableInterface
      *
      * @param string[]
      */
-    public function executeMethods(BenchmarkMetadata $benchmark, array $methods);
+    public function executeMethods(Benchmark $benchmark, array $methods);
 }

@@ -23,10 +23,10 @@ class DotsLoggerTest extends \PHPUnit_Framework_TestCase
 
         $this->output = $this->prophesize('Symfony\Component\Console\Output\OutputInterface');
         $this->timeUnit = new TimeUnit(TimeUnit::MICROSECONDS, TimeUnit::MILLISECONDS);
-        $this->benchmark = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');
-        $this->subject = $this->prophesize('PhpBench\Benchmark\Metadata\SubjectMetadata');
-        $this->iteration = $this->prophesize('PhpBench\Benchmark\Iteration');
-        $this->collection = $this->prophesize('PhpBench\Benchmark\IterationCollection');
+        $this->benchmark = $this->prophesize('PhpBench\Model\Benchmark');
+        $this->subject = $this->prophesize('PhpBench\Model\Subject');
+        $this->iteration = $this->prophesize('PhpBench\Model\Iteration');
+        $this->variant = $this->prophesize('PhpBench\Model\Variant');
     }
 
     public function tearDown()
@@ -41,7 +41,7 @@ class DotsLoggerTest extends \PHPUnit_Framework_TestCase
     {
         $logger = $this->createLogger(true);
         $this->output->write('.')->shouldBeCalled();
-        $logger->iterationsEnd($this->collection->reveal());
+        $logger->variantEnd($this->variant->reveal());
     }
 
     /**
@@ -51,7 +51,7 @@ class DotsLoggerTest extends \PHPUnit_Framework_TestCase
     {
         $logger = $this->createLogger(false);
         $this->output->write("\x0D. ")->shouldBeCalled();
-        $logger->iterationsEnd($this->collection->reveal());
+        $logger->variantEnd($this->variant->reveal());
     }
 
     /**
@@ -60,10 +60,10 @@ class DotsLoggerTest extends \PHPUnit_Framework_TestCase
     public function testIterationsEndException()
     {
         $logger = $this->createLogger(false);
-        $this->collection->hasException()->willReturn(true);
-        $this->collection->getRejectCount()->willReturn(0);
+        $this->variant->hasErrorStack()->willReturn(true);
+        $this->variant->getRejectCount()->willReturn(0);
         $this->output->write("\x0D<error>E</error> ")->shouldBeCalled();
-        $logger->iterationsEnd($this->collection->reveal());
+        $logger->variantEnd($this->variant->reveal());
     }
 
     /**
@@ -72,9 +72,9 @@ class DotsLoggerTest extends \PHPUnit_Framework_TestCase
     public function testIterationsEndRejectionsReturnEarly()
     {
         $logger = $this->createLogger(false);
-        $this->collection->getRejectCount()->willReturn(5);
+        $this->variant->getRejectCount()->willReturn(5);
         $this->output->write(Argument::any())->shouldNotBeCalled();
-        $logger->iterationsEnd($this->collection->reveal());
+        $logger->variantEnd($this->variant->reveal());
     }
 
     /**

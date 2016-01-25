@@ -11,7 +11,7 @@
 
 namespace PhpBench\Report;
 
-use PhpBench\Benchmark\SuiteDocument;
+use PhpBench\Dom\Document;
 use PhpBench\Registry\Config;
 use PhpBench\Registry\RegistrableInterface;
 
@@ -25,5 +25,5 @@ interface GeneratorInterface extends RegistrableInterface
      *
      * @return Document
      */
-    public function generate(SuiteDocument $suiteResult, Config $config);
+    public function generate(Document $suiteResult, Config $config);
 }

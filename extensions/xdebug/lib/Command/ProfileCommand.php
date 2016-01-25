@@ -40,7 +40,7 @@ class ProfileCommand extends Command
     public function configure()
     {
         $this->setName('xdebug:profile');
-        $this->setDescription(<<<EOT
+        $this->setDescription(<<<'EOT'
 Generate and optionally visulaize profiles with XDebug
 EOT
         );

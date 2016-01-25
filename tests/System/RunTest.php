@@ -284,8 +284,7 @@ class RunTest extends SystemTestCase
         $process = $this->phpbench(
             'run --progress=' . $progress . ' benchmarks/set1/BenchmarkBench.php'
         );
-        $output = $process->getOutput();
-        $this->assertContains('best [mean mode] worst', $output);
+        $this->assertExitCode(0, $process);
     }
 
     public function provideProgressLoggers()
@@ -294,6 +293,10 @@ class RunTest extends SystemTestCase
             array('classdots'),
             array('dots'),
             array('verbose'),
+            array('histogram'),
+            array('blinken'),
+            array('travis'),
+            array('none'),
         );
     }
 

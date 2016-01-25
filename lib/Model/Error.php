@@ -1,0 +1,75 @@
+<?php
+
+/*
+ * This file is part of the PHPBench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace PhpBench\Model;
+
+/**
+ * Represents an Error. Typically this is
+ * a serializable representation of an Exception.
+ */
+class Error
+{
+    private $message;
+    private $code;
+    private $line;
+    private $file;
+    private $class;
+
+    public function __construct(
+        $message,
+        $class,
+        $code,
+        $file,
+        $line
+    ) {
+        $this->message = $message;
+        $this->class = $class;
+        $this->line = $line;
+        $this->file = $file;
+        $this->code = $code;
+    }
+
+    public static function fromException(\Exception $exception)
+    {
+        return new self(
+            $exception->getMessage(),
+            get_class($exception),
+            $exception->getCode(),
+            $exception->getFile(),
+            $exception->getLine()
+        );
+    }
+
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    public function getLine()
+    {
+        return $this->line;
+    }
+
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    public function getMessage()
+    {
+        return $this->message;
+    }
+
+    public function getClass()
+    {
+        return $this->class;
+    }
+}

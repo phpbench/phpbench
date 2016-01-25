@@ -24,7 +24,7 @@ class CompositeGeneratorTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->manager = $this->prophesize('PhpBench\Report\ReportManager');
-        $this->result = $this->prophesize('PhpBench\Benchmark\SuiteDocument');
+        $this->result = $this->prophesize('PhpBench\Dom\Document');
         $this->generator = new CompositeGenerator($this->manager->reveal());
     }
 
@@ -36,7 +36,7 @@ class CompositeGeneratorTest extends \PHPUnit_Framework_TestCase
         $config = array('reports' => array('one', 'two'));
 
         // for some reason prophecy doesn't like passing the suite document here, so just do a type check
-        $this->manager->generateReports(Argument::type('PhpBench\Benchmark\SuiteDocument'), array('one', 'two'))->willReturn(array(
+        $this->manager->generateReports(Argument::type('PhpBench\Dom\Document'), array('one', 'two'))->willReturn(array(
             $this->getReportsDocument(),
             $this->getReportsDocument(),
         ));

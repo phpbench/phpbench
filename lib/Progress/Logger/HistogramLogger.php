@@ -11,11 +11,12 @@
 
 namespace PhpBench\Progress\Logger;
 
-use PhpBench\Benchmark\Iteration;
-use PhpBench\Benchmark\IterationCollection;
-use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
-use PhpBench\Benchmark\SuiteDocument;
+use PhpBench\Math\Distribution;
 use PhpBench\Math\Statistics;
+use PhpBench\Model\Benchmark;
+use PhpBench\Model\Iteration;
+use PhpBench\Model\Suite;
+use PhpBench\Model\Variant;
 use PhpBench\Util\TimeUnit;
 
 class HistogramLogger extends AnsiLogger
@@ -26,16 +27,16 @@ class HistogramLogger extends AnsiLogger
     /**
      * {@inheritdoc}
      */
-    public function endSuite(SuiteDocument $suiteDocument)
+    public function endSuite(Suite $suite)
     {
         $this->output->write(PHP_EOL);
-        parent::endSuite($suiteDocument);
+        parent::endSuite($suite);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function benchmarkStart(BenchmarkMetadata $benchmark)
+    public function benchmarkStart(Benchmark $benchmark)
     {
         static $first = true;
 
@@ -45,7 +46,7 @@ class HistogramLogger extends AnsiLogger
         $first = false;
         $this->output->write(sprintf('<comment>%s</comment>', $benchmark->getClass()));
         $subjectNames = array();
-        foreach ($benchmark->getSubjectMetadatas() as $subject) {
+        foreach ($benchmark->getSubjects() as $subject) {
             $subjectNames[] = sprintf('#%s %s', $subject->getIndex(), $subject->getName());
         }
 
@@ -58,23 +59,23 @@ class HistogramLogger extends AnsiLogger
     /**
      * {@inheritdoc}
      */
-    public function iterationsStart(IterationCollection $iterations)
+    public function variantStart(Variant $variant)
     {
-        $this->drawIterations($iterations);
+        $this->drawIterations($variant);
         $this->output->write("\x1B[1A"); // move cursor up
         $this->output->write(PHP_EOL);
-        $this->renderCollectionStatus($iterations);
+        $this->renderCollectionStatus($variant);
         $this->output->write("\x1B[1A"); // move cursor up
     }
 
     /**
      * {@inheritdoc}
      */
-    public function iterationsEnd(IterationCollection $iterations)
+    public function variantEnd(Variant $variant)
     {
-        $this->drawIterations($iterations);
+        $this->drawIterations($variant);
 
-        if ($iterations->hasException()) {
+        if ($variant->hasErrorStack()) {
             $this->output->write(' <error>ERROR</error>');
             $this->output->write("\x1B[0J"); // clear the rest of the line
             $this->output->write(PHP_EOL);
@@ -82,7 +83,7 @@ class HistogramLogger extends AnsiLogger
             return;
         }
 
-        if ($iterations->getRejectCount() > 0) {
+        if ($variant->getRejectCount() > 0) {
             $this->output->write("\x1B[1A"); // move cursor up
             $this->output->write("\x1B[0G");
 
@@ -100,8 +101,8 @@ class HistogramLogger extends AnsiLogger
         $this->output->write(sprintf(
             '<info>it</info>%3d/%-3d<info> (rej </info>%s<info>)</info>',
             $iteration->getIndex(),
-            $iteration->getCollection()->count(),
-            $iteration->getCollection()->getRejectCount()
+            $iteration->getVariant()->count(),
+            $iteration->getVariant()->getRejectCount()
         ));
         $this->output->write("\x1B[2A");
         $this->output->write("\x1B[0G");
@@ -154,9 +155,9 @@ class HistogramLogger extends AnsiLogger
         $this->output->write($output);
     }
 
-    private function drawIterations(IterationCollection $iterations)
+    private function drawIterations(Variant $variant)
     {
-        $subject = $iterations->getSubject();
+        $subject = $variant->getSubject();
         $this->output->write("\x1B[2K"); // clear the whole line
         $this->output->write(PHP_EOL);
         $this->output->write("\x1B[2K"); // clear the whole line
@@ -165,19 +166,19 @@ class HistogramLogger extends AnsiLogger
         $sigma = 2;
         $bins = 16;
 
-        if ($iterations->isComputed()) {
-            $times = $iterations->getZValues();
-            $stats = $iterations->getStats();
+        if ($variant->isComputed()) {
+            $times = $variant->getZValues();
+            $stats = $variant->getStats();
             $freqs = Statistics::histogram($times, $bins, -$sigma, $sigma);
         } else {
-            $stats = array('stdev' => 0, 'mean' => 0, 'max' => 0);
+            $stats = new Distribution(array(0));
             $freqs = array_fill(0, $bins + 1, null);
         }
 
         $this->output->write(sprintf(
             '#%-2d (σ = %s ) -%sσ [',
             $subject->getIndex(),
-            $this->timeUnit->format($stats['stdev']),
+            $this->timeUnit->format($stats->getStdev()),
             $sigma
         ));
         $this->drawBlocks($freqs, $stats);
@@ -185,7 +186,7 @@ class HistogramLogger extends AnsiLogger
         $this->output->write(sprintf(
             '] +%sσ <comment>%s</comment>',
             $sigma,
-            $iterations->isComputed() ? $this->formatIterationsShortSummary($iterations) : ''
+            $variant->isComputed() ? $this->formatIterationsShortSummary($variant) : ''
         ));
 
         $this->output->write(PHP_EOL);

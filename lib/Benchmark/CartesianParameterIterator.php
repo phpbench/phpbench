@@ -11,6 +11,8 @@
 
 namespace PhpBench\Benchmark;
 
+use PhpBench\Model\ParameterSet;
+
 class CartesianParameterIterator implements \Iterator
 {
     private $sets;
