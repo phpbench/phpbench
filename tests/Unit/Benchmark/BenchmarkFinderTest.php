@@ -23,8 +23,8 @@ class BenchmarkFinderTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->factory = $this->prophesize('PhpBench\Benchmark\Metadata\Factory');
-        $this->benchmark1 = $this->prophesize('PhpBench\Model\Benchmark');
-        $this->benchmark2 = $this->prophesize('PhpBench\Model\Benchmark');
+        $this->benchmark1 = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');
+        $this->benchmark2 = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');
         $this->subject = $this->prophesize('PhpBench\Model\Subject');
         $this->finder = new BenchmarkFinder($this->factory->reveal());
     }
@@ -41,7 +41,7 @@ class BenchmarkFinderTest extends \PHPUnit_Framework_TestCase
         $benchmarks = $this->finder->findBenchmarks(__DIR__ . '/findertest');
 
         $this->assertCount(2, $benchmarks);
-        $this->assertContainsOnlyInstancesOf('PhpBench\Model\Benchmark', $benchmarks);
+        $this->assertContainsOnlyInstancesOf('PhpBench\Benchmark\Metadata\BenchmarkMetadata', $benchmarks);
     }
 
     /**

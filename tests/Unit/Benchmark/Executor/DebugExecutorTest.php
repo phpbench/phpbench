@@ -22,6 +22,7 @@ class DebugExecutorTest extends \PHPUnit_Framework_TestCase
     {
         $launcher = $this->prophesize('PhpBench\Benchmark\Remote\Launcher');
         $this->executor = new DebugExecutor($launcher->reveal());
+        $this->subjectMetadata = $this->prophesize('PhpBench\Benchmark\Metadata\SubjectMetadata');
     }
 
     /**
@@ -39,6 +40,7 @@ class DebugExecutorTest extends \PHPUnit_Framework_TestCase
                 $iteration->getVariant()->willReturn($collection->reveal());
                 $iteration->getIndex()->willReturn($ii);
                 $results[] = $this->executor->execute(
+                    $this->subjectMetadata->reveal(),
                     $iteration->reveal(),
                     new Config('test', array(
                         'times' => $times,

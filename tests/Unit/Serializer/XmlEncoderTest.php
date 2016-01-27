@@ -45,7 +45,6 @@ class XmlEncoderTest extends \PHPUnit_Framework_TestCase
         $this->suite->getDate()->willReturn(new \DateTime('2015-01-01'));
         $this->suite->getContextName()->willReturn('test');
         $this->suite->getConfigPath()->willReturn('/path/to/config.json');
-        $this->suite->getRetryThreshold()->willReturn(10);
         $this->suite->getEnvInformations()->willReturn(array(
             $this->env1,
         ));
@@ -69,6 +68,7 @@ class XmlEncoderTest extends \PHPUnit_Framework_TestCase
         $this->subject1->getOutputTimeUnit()->willReturn('milliseconds');
         $this->subject1->getOutputMode()->willReturn('throughput');
         $this->subject1->getRevs()->willReturn(100);
+        $this->subject1->getRetryThreshold()->willReturn(10);
         $this->subject1->getWarmup()->willReturn(50);
         $this->variant1->getParameterSet()->willReturn(new ParameterSet(1, $params['params']));
         $this->variant1->hasErrorStack()->willReturn($params['error']);
@@ -81,7 +81,8 @@ class XmlEncoderTest extends \PHPUnit_Framework_TestCase
                         new Error(
                             'This is an error',
                             'ErrorClass',
-                            0, 1, 2
+                            0, 1, 2,
+                            '-- trace --'
                         ),
                     )
                 )
@@ -117,7 +118,7 @@ class XmlEncoderTest extends \PHPUnit_Framework_TestCase
                 <<<'EOT'
 <?xml version="1.0"?>
 <phpbench version="0.10.0-dev">
-  <suite context="test" date="2015-01-01 00:00:00" config-path="/path/to/config.json" retry-threshold="10">
+  <suite context="test" date="2015-01-01 00:00:00" config-path="/path/to/config.json">
     <env>
       <info1 foo="bar"/>
     </env>
@@ -125,7 +126,7 @@ class XmlEncoderTest extends \PHPUnit_Framework_TestCase
       <subject name="subjectName">
         <group name="group1"/>
         <group name="group2"/>
-        <variant sleep="5" output-time-unit="milliseconds" output-mode="throughput" revs="100" warmup="50">
+        <variant sleep="5" output-time-unit="milliseconds" output-mode="throughput" revs="100" warmup="50" retry-threshold="10">
           <parameter name="foo" value="bar"/>
           <parameter name="bar" type="collection">
             <parameter name="baz" value="bon"/>
@@ -145,13 +146,13 @@ EOT
                 <<<'EOT'
 <?xml version="1.0"?>
 <phpbench version="0.10.0-dev">
-  <suite context="test" date="2015-01-01 00:00:00" config-path="/path/to/config.json" retry-threshold="10">
+  <suite context="test" date="2015-01-01 00:00:00" config-path="/path/to/config.json">
     <env>
       <info1 foo="bar"/>
     </env>
     <benchmark class="Bench1">
       <subject name="subjectName">
-        <variant sleep="5" output-time-unit="milliseconds" output-mode="throughput" revs="100" warmup="50">
+        <variant sleep="5" output-time-unit="milliseconds" output-mode="throughput" revs="100" warmup="50" retry-threshold="10">
           <errors>
             <error exception-class="ErrorClass" code="0" file="1" line="2">This is an error</error>
           </errors>

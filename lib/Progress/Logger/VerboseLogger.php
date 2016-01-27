@@ -49,7 +49,7 @@ class VerboseLogger extends PhpBenchLogger
             $iteration->getVariant()->getSubject()->getName(),
             $this->rejectionCount ? 'R' . $this->rejectionCount . ' ' : '',
             $iteration->getIndex(),
-            $iteration->getParameters()->getIndex()
+            $iteration->getVariant()->getParameterSet()->getIndex()
         ));
     }
 

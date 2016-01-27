@@ -141,47 +141,6 @@ class Iteration
     }
 
     /**
-     * Return the subject this iteration is related to.
-     * Proxy-method.
-     *
-     * @return Subject
-     */
-    public function getSubject()
-    {
-        return $this->getVariant()->getSubject();
-    }
-
-    /**
-     * Return the parameter set for this iteration.
-     *
-     * @return ParameterSet
-     */
-    public function getParameters()
-    {
-        return $this->variant->getParameterSet();
-    }
-
-    /**
-     * Return the number of warmup revolutions.
-     *
-     * @return int
-     */
-    public function getWarmup()
-    {
-        return $this->variant->getWarmup();
-    }
-
-    /**
-     * Return the number of revolutions.
-     *
-     * @return int
-     */
-    public function getRevolutions()
-    {
-        return $this->variant->getRevolutions();
-    }
-
-    /**
      * Return the time taken (in microseconds) to perform this iteration (or
      * NULL if not yet performed.
      *
@@ -210,6 +169,6 @@ class Iteration
      */
     public function getRevTime()
     {
-        return $this->time / $this->getRevolutions();
+        return $this->time / $this->getVariant()->getSubject()->getRevs();
     }
 }

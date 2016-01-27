@@ -9,32 +9,54 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Model;
+namespace PhpBench\Benchmark\Metadata;
 
 use PhpBench\Util\TimeUnit;
 
 /**
- * Subject representation.
- *
- * It represents the result rather than the details of
- * how to create that result.
+ * Metadata for benchmarkMetadata subjects.
  */
-class Subject
+class SubjectMetadata
 {
-    /**
-     * @var BenchmarkMetadata
-     */
-    private $benchmark;
-
     /**
      * @var string
      */
     private $name;
 
     /**
+     * @var array[]
+     */
+    private $parameterSets = array();
+
+    /**
      * @var string[]
      */
     private $groups = array();
+
+    /**
+     * @var string[]
+     */
+    private $beforeMethods = array();
+
+    /**
+     * @var string[]
+     */
+    private $afterMethods = array();
+
+    /**
+     * @var string[]
+     */
+    private $paramProviders = array();
+
+    /**
+     * @var float
+     */
+    private $retryThreshold;
+
+    /**
+     * @var int
+     */
+    private $iterations = 1;
 
     /**
      * @var int
@@ -47,14 +69,14 @@ class Subject
     private $warmup = 0;
 
     /**
+     * @var bool
+     */
+    private $skip = false;
+
+    /**
      * @var int
      */
     private $sleep = 0;
-
-    /**
-     * @var float
-     */
-    private $retryThreshold;
 
     /**
      * @var string
@@ -67,25 +89,17 @@ class Subject
     private $outputMode = TimeUnit::MODE_TIME;
 
     /**
-     * @var Variant[]
+     * @var BenchmarkMetadata
      */
-    private $variants = array();
+    private $benchmarkMetadata;
 
     /**
-     * @var int
-     */
-    private $index = 0;
-
-    /**
-     * @param BenchmarkMetadata $benchmark
      * @param string $name
      */
-    public function __construct(Benchmark $benchmark, $name)
+    public function __construct(BenchmarkMetadata $benchmarkMetadata, $name)
     {
-        $this->benchmark = $benchmark;
         $this->name = $name;
-
-        $this->index = count($benchmark->getSubjects());
+        $this->benchmarkMetadata = $benchmarkMetadata;
     }
 
     /**
@@ -99,36 +113,33 @@ class Subject
     }
 
     /**
-     * Create and add a new variant based on this subject.
+     * Set the parameter sets for this subject.
      *
-     * @param ParameterSet $parameterSet
-     *
-     * @return Variant.
+     * @param array[] $parameterSets
      */
-    public function createVariant(ParameterSet $parameterSet)
+    public function setParameterSets(array $parameterSets)
     {
-        $variant = new Variant(
-            $this,
-            $parameterSet
-        );
-        $this->variants[] = $variant;
-
-        return $variant;
-    }
-
-    public function getVariants()
-    {
-        return $this->variants;
+        $this->parameterSets = $parameterSets;
     }
 
     /**
-     * Return the (containing) benchmark for this subject.
+     * Return the parameter sets for this subject.
+     *
+     * @return array[]
+     */
+    public function getParameterSets()
+    {
+        return $this->parameterSets;
+    }
+
+    /**
+     * Return the benchmarkMetadata metadata for this subject.
      *
      * @return BenchmarkMetadata
      */
     public function getBenchmark()
     {
-        return $this->benchmark;
+        return $this->benchmarkMetadata;
     }
 
     public function getGroups()
@@ -146,6 +157,48 @@ class Subject
         $this->groups = $groups;
     }
 
+    public function getBeforeMethods()
+    {
+        return $this->beforeMethods;
+    }
+
+    public function setBeforeMethods($beforeMethods)
+    {
+        $this->beforeMethods = $beforeMethods;
+    }
+
+    public function getAfterMethods()
+    {
+        return $this->afterMethods;
+    }
+
+    public function setAfterMethods($afterMethods)
+    {
+        $this->afterMethods = $afterMethods;
+    }
+
+    public function getParamProviders()
+    {
+        return $this->paramProviders;
+    }
+
+    public function setParamProviders($paramProviders)
+    {
+        $this->paramProviders = $paramProviders;
+
+        return $this;
+    }
+
+    public function getIterations()
+    {
+        return $this->iterations;
+    }
+
+    public function setIterations($iterations)
+    {
+        $this->iterations = $iterations;
+    }
+
     public function getRevs()
     {
         return $this->revs;
@@ -154,6 +207,16 @@ class Subject
     public function setRevs($revs)
     {
         $this->revs = $revs;
+    }
+
+    public function getSkip()
+    {
+        return $this->skip;
+    }
+
+    public function setSkip($skip)
+    {
+        $this->skip = $skip;
     }
 
     public function getSleep()
@@ -191,7 +254,7 @@ class Subject
         return $this->warmup;
     }
 
-    public function setwarmup($warmup)
+    public function setWarmup($warmup)
     {
         $this->warmup = $warmup;
     }
@@ -204,10 +267,5 @@ class Subject
     public function setRetryThreshold($retryThreshold)
     {
         $this->retryThreshold = $retryThreshold;
-    }
-
-    public function getIndex()
-    {
-        return $this->index;
     }
 }

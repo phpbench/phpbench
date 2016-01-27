@@ -11,16 +11,13 @@
 
 namespace PhpBench\Model;
 
+use PhpBench\Benchmark\Metadata\SubjectMetadata;
+
 /**
  * Benchmark metadata class.
  */
 class Benchmark implements \IteratorAggregate
 {
-    /**
-     * @var string
-     */
-    private $path;
-
     /**
      * @var string
      */
@@ -32,28 +29,18 @@ class Benchmark implements \IteratorAggregate
     private $subjects = array();
 
     /**
-     * @var int
+     * @var Suite
      */
-    private $subjectCounter = 0;
-
-    /**
-     * @var string[]
-     */
-    private $beforeClassMethods = array();
-
-    /**
-     * @var string[]
-     */
-    private $afterClassMethods = array();
+    private $suite;
 
     /**
      * @param mixed $path
      * @param mixed $class
      * @param Subject[] $subjects
      */
-    public function __construct($path, $class)
+    public function __construct(Suite $suite, $class)
     {
-        $this->path = $path;
+        $this->suite = $suite;
         $this->class = $class;
     }
 
@@ -67,22 +54,20 @@ class Benchmark implements \IteratorAggregate
         return $this->path;
     }
 
-    /**
-     * Get or create a new SubjectMetadata instance with the given name.
-     *
-     * @param string $name
-     *
-     * @return SubjectMetadata
-     */
-    public function getOrCreateSubject($name)
+    public function createSubjectFromMetadata(SubjectMetadata $metadata)
     {
-        if (isset($this->subjects[$name])) {
-            return $this->subjects[$name];
-        }
+        $subject = new Subject($this, $metadata->getName());
+        $subject->setGroups($metadata->getGroups());
+        $subject->setRevs($metadata->getRevs());
+        $subject->setWarmup($metadata->getWarmup());
+        $subject->setSleep($metadata->getSleep());
+        $subject->setRetryThreshold($metadata->getRetryThreshold());
+        $subject->setOutputTimeUnit($metadata->getOutputTimeUnit());
+        $subject->setOutputMode($metadata->getOutputMode());
 
-        $this->subjects[$name] = new Subject($this, $name, $this->subjectCounter++);
+        $this->subjects[] = $subject;
 
-        return $this->subjects[$name];
+        return $subject;
     }
 
     /**
@@ -96,56 +81,6 @@ class Benchmark implements \IteratorAggregate
     }
 
     /**
-     * Remove all subjects whose name is not in the given list.
-     *
-     * @param array $subjectNames
-     */
-    public function filterSubjectNames(array $filters)
-    {
-        foreach (array_keys($this->subjects) as $subjectName) {
-            $unset = true;
-
-            foreach ($filters as $filter) {
-                if (preg_match(
-                    sprintf('{^.*?%s.*?$}', $filter),
-                    sprintf('%s::%s', $this->getClass(), $subjectName)
-                )) {
-                    $unset = false;
-                    break;
-                }
-            }
-
-            if (true === $unset) {
-                unset($this->subjects[$subjectName]);
-            }
-        }
-    }
-
-    /**
-     * Remove all the subjects which are not contained in the given list of groups.
-     *
-     * @param string[]
-     */
-    public function filterSubjectGroups(array $groups)
-    {
-        foreach ($this->subjects as $subjectName => $subject) {
-            if (0 === count(array_intersect($subject->getGroups(), $groups))) {
-                unset($this->subjects[$subjectName]);
-            }
-        }
-    }
-
-    /**
-     * Return true if there are subjects in this benchmark metadata, false if not.
-     *
-     * @return bool
-     */
-    public function hasSubjects()
-    {
-        return 0 !== count($this->subjects);
-    }
-
-    /**
      * Return the benchmark class.
      *
      * @return string
@@ -156,39 +91,13 @@ class Benchmark implements \IteratorAggregate
     }
 
     /**
-     * Return any methods that should be called before the benchmark class is executed.
-     */
-    public function getBeforeClassMethods()
-    {
-        return $this->beforeClassMethods;
-    }
-
-    /**
-     * Set any methods that should be called before the benchmark class is executed.
+     * Return the suite to which this benchmark belongs.
      *
-     * @param array $beforeClassMethods
+     * @return Suite
      */
-    public function setBeforeClassMethods(array $beforeClassMethods)
+    public function getSuite()
     {
-        $this->beforeClassMethods = $beforeClassMethods;
-    }
-
-    /**
-     * Return any methods that should be called after the benchmark class is executed.
-     */
-    public function getAfterClassMethods()
-    {
-        return $this->afterClassMethods;
-    }
-
-    /**
-     * Set any methods that should be called after the benchmark class is executed.
-     *
-     * @param array $afterClassMethods
-     */
-    public function setAfterClassMethods(array $afterClassMethods)
-    {
-        $this->afterClassMethods = $afterClassMethods;
+        return $this->suite;
     }
 
     /**

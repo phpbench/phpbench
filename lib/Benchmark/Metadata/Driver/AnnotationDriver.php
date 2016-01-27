@@ -16,13 +16,13 @@ use PhpBench\Benchmark\Metadata\Annotations;
 use PhpBench\Benchmark\Metadata\Annotations\AbstractArrayAnnotation;
 use PhpBench\Benchmark\Metadata\Annotations\AfterClassMethods;
 use PhpBench\Benchmark\Metadata\Annotations\BeforeClassMethods;
+use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\DocParser;
 use PhpBench\Benchmark\Metadata\DriverInterface;
+use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\ReflectionHierarchy;
 use PhpBench\Benchmark\Remote\ReflectionMethod;
 use PhpBench\Benchmark\Remote\Reflector;
-use PhpBench\Model\Benchmark;
-use PhpBench\Model\Subject;
 
 class AnnotationDriver implements DriverInterface
 {
@@ -45,14 +45,14 @@ class AnnotationDriver implements DriverInterface
     public function getMetadataForHierarchy(ReflectionHierarchy $hierarchy)
     {
         $primaryReflection = $hierarchy->getTop();
-        $benchmark = new Benchmark($primaryReflection->path, $primaryReflection->class);
+        $benchmark = new BenchmarkMetadata($primaryReflection->path, $primaryReflection->class);
 
         $this->buildBenchmark($benchmark, $hierarchy);
 
         return $benchmark;
     }
 
-    private function buildBenchmark(Benchmark $benchmark, ReflectionHierarchy $hierarchy)
+    private function buildBenchmark(BenchmarkMetadata $benchmark, ReflectionHierarchy $hierarchy)
     {
         $annotations = array();
         $reflectionHierarchy = array_reverse(iterator_to_array($hierarchy));
@@ -88,7 +88,7 @@ class AnnotationDriver implements DriverInterface
         }
     }
 
-    private function buildSubject(Subject $subject, ReflectionMethod $reflectionMethod)
+    private function buildSubject(SubjectMetadata $subject, ReflectionMethod $reflectionMethod)
     {
         $annotations = $this->docParser->parse(
             $reflectionMethod->comment,
@@ -100,7 +100,7 @@ class AnnotationDriver implements DriverInterface
         }
     }
 
-    private function processSubject(Subject $subject, $annotation)
+    private function processSubject(SubjectMetadata $subject, $annotation)
     {
         if ($annotation instanceof Annotations\BeforeMethods) {
             $subject->setBeforeMethods(
@@ -171,7 +171,7 @@ class AnnotationDriver implements DriverInterface
         }
     }
 
-    public function processBenchmark(Benchmark $benchmark, $annotation)
+    public function processBenchmark(BenchmarkMetadata $benchmark, $annotation)
     {
         if ($annotation instanceof BeforeClassMethods) {
             $benchmark->setBeforeClassMethods($annotation->getMethods());

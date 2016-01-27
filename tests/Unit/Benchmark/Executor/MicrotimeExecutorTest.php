@@ -39,17 +39,20 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
         $this->paramAfterFile = __DIR__ . '/microtimetest/paramafter.tmp';
         $this->teardownFile = __DIR__ . '/microtimetest/teardown.tmp';
 
-        $this->subject = $this->prophesize('PhpBench\Model\Subject');
+        $this->metadata = $this->prophesize('PhpBench\Benchmark\Metadata\SubjectMetadata');
         $this->benchmark = $this->prophesize('PhpBench\Model\Benchmark');
+        $this->benchmarkMetadata = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');
+        $this->variant = $this->prophesize('PhpBench\Model\Variant');
 
         $launcher = new Launcher(null, null);
         $this->executor = new MicrotimeExecutor($launcher);
         $this->removeTemporaryFiles();
 
-        $this->benchmark->getPath()->willReturn(__DIR__ . '/microtimetest/ExecutorBench.php');
-        $this->benchmark->getClass()->willReturn('PhpBench\Tests\Unit\Benchmark\Executor\microtimetest\ExecutorBench');
+        $this->benchmarkMetadata->getPath()->willReturn(__DIR__ . '/microtimetest/ExecutorBench.php');
+        $this->benchmarkMetadata->getClass()->willReturn('PhpBench\Tests\Unit\Benchmark\Executor\microtimetest\ExecutorBench');
         $this->iteration = $this->prophesize('PhpBench\Model\Iteration');
-        $this->subject->getBenchmark()->willReturn($this->benchmark->reveal());
+        $this->metadata->getBenchmark()->willReturn($this->benchmarkMetadata->reveal());
+        $this->iteration->getVariant()->willReturn($this->variant->reveal());
     }
 
     public function tearDown()
@@ -82,15 +85,18 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
      */
     public function testExecute()
     {
-        $this->subject->getBeforeMethods()->willReturn(array());
-        $this->subject->getAfterMethods()->willReturn(array());
-        $this->subject->getName()->willReturn('doSomething');
-        $this->iteration->getSubject()->willReturn($this->subject);
-        $this->iteration->getRevolutions()->willReturn(10);
-        $this->iteration->getWarmup()->willReturn(1);
-        $this->iteration->getParameters()->willReturn(new ParameterSet());
+        $this->metadata->getBeforeMethods()->willReturn(array());
+        $this->metadata->getAfterMethods()->willReturn(array());
+        $this->metadata->getName()->willReturn('doSomething');
+        $this->metadata->getRevs()->willReturn(10);
+        $this->metadata->getWarmup()->willReturn(1);
+        $this->variant->getParameterSet()->willReturn(new ParameterSet());
 
-        $result = $this->executor->execute($this->iteration->reveal(), new Config('test', array()));
+        $result = $this->executor->execute(
+            $this->metadata->reveal(),
+            $this->iteration->reveal(),
+            new Config('test', array())
+        );
 
         $this->assertInstanceOf('PhpBench\Model\IterationResult', $result);
         $this->assertInternalType('int', $result->getTime());
@@ -111,15 +117,14 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
      */
     public function testRepressOutput()
     {
-        $this->subject->getBeforeMethods()->willReturn(array());
-        $this->subject->getAfterMethods()->willReturn(array());
-        $this->subject->getName()->willReturn('benchOutput');
-        $this->iteration->getSubject()->willReturn($this->subject);
-        $this->iteration->getRevolutions()->willReturn(10);
-        $this->iteration->getWarmup()->willReturn(0);
-        $this->iteration->getParameters()->willReturn(new ParameterSet());
+        $this->metadata->getBeforeMethods()->willReturn(array());
+        $this->metadata->getAfterMethods()->willReturn(array());
+        $this->metadata->getName()->willReturn('benchOutput');
+        $this->metadata->getRevs()->willReturn(10);
+        $this->metadata->getWarmup()->willReturn(0);
+        $this->variant->getParameterSet()->willReturn(new ParameterSet());
 
-        $result = $this->executor->execute($this->iteration->reveal(), new Config('test', array()));
+        $result = $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', array()));
 
         $this->assertInstanceOf('PhpBench\Model\IterationResult', $result);
     }
@@ -129,15 +134,14 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
      */
     public function testExecuteBefore()
     {
-        $this->subject->getBeforeMethods()->willReturn(array('beforeMethod'));
-        $this->subject->getAfterMethods()->willReturn(array());
-        $this->subject->getName()->willReturn('doSomething');
-        $this->iteration->getSubject()->willReturn($this->subject);
-        $this->iteration->getRevolutions()->willReturn(1);
-        $this->iteration->getWarmup()->willReturn(0);
-        $this->iteration->getParameters()->willReturn(new ParameterSet());
+        $this->metadata->getBeforeMethods()->willReturn(array('beforeMethod'));
+        $this->metadata->getAfterMethods()->willReturn(array());
+        $this->metadata->getName()->willReturn('doSomething');
+        $this->metadata->getRevs()->willReturn(1);
+        $this->metadata->getWarmup()->willReturn(0);
+        $this->variant->getParameterSet()->willReturn(new ParameterSet());
 
-        $this->executor->execute($this->iteration->reveal(), new Config('test', array()));
+        $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', array()));
 
         $this->assertTrue(file_exists($this->beforeMethodFile));
     }
@@ -147,15 +151,14 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
      */
     public function testExecuteAfter()
     {
-        $this->subject->getBeforeMethods()->willReturn(array());
-        $this->subject->getAfterMethods()->willReturn(array('afterMethod'));
-        $this->subject->getName()->willReturn('doSomething');
-        $this->iteration->getSubject()->willReturn($this->subject);
-        $this->iteration->getRevolutions()->willReturn(1);
-        $this->iteration->getWarmup()->willReturn(0);
-        $this->iteration->getParameters()->willReturn(new ParameterSet());
+        $this->metadata->getBeforeMethods()->willReturn(array());
+        $this->metadata->getAfterMethods()->willReturn(array('afterMethod'));
+        $this->metadata->getName()->willReturn('doSomething');
+        $this->metadata->getRevs()->willReturn(1);
+        $this->metadata->getWarmup()->willReturn(0);
+        $this->variant->getParameterSet()->willReturn(new ParameterSet());
 
-        $this->executor->execute($this->iteration->reveal(), new Config('test', array()));
+        $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', array()));
 
         $this->assertTrue(file_exists($this->afterMethodFile));
     }
@@ -165,19 +168,18 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
      */
     public function testParameters()
     {
-        $this->subject->getBeforeMethods()->willReturn(array());
-        $this->subject->getAfterMethods()->willReturn(array());
-        $this->subject->getName()->willReturn('parameterized');
+        $this->metadata->getBeforeMethods()->willReturn(array());
+        $this->metadata->getAfterMethods()->willReturn(array());
+        $this->metadata->getName()->willReturn('parameterized');
 
-        $this->iteration->getSubject()->willReturn($this->subject);
-        $this->iteration->getRevolutions()->willReturn(1);
-        $this->iteration->getWarmup()->willReturn(0);
-        $this->iteration->getParameters()->willReturn(new ParameterSet(0, array(
+        $this->metadata->getRevs()->willReturn(1);
+        $this->metadata->getWarmup()->willReturn(0);
+        $this->variant->getParameterSet()->willReturn(new ParameterSet(0, array(
             'one' => 'two',
             'three' => 'four',
         )));
 
-        $this->executor->execute($this->iteration->reveal(), new Config('test', array()));
+        $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', array()));
         $this->assertTrue(file_exists($this->paramFile));
         $params = json_decode(file_get_contents($this->paramFile), true);
         $this->assertEquals(array(
@@ -187,7 +189,7 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should pass parameters to the before subject and after subject methods.
+     * It should pass parameters to the before metadata and after metadata methods.
      */
     public function testParametersBeforeSubject()
     {
@@ -196,16 +198,15 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
             'three' => 'four',
         ));
 
-        $this->subject->getBeforeMethods()->willReturn(array('parameterizedBefore'));
-        $this->subject->getAfterMethods()->willReturn(array('parameterizedAfter'));
-        $this->subject->getName()->willReturn('parameterized');
+        $this->metadata->getBeforeMethods()->willReturn(array('parameterizedBefore'));
+        $this->metadata->getAfterMethods()->willReturn(array('parameterizedAfter'));
+        $this->metadata->getName()->willReturn('parameterized');
 
-        $this->iteration->getSubject()->willReturn($this->subject);
-        $this->iteration->getRevolutions()->willReturn(1);
-        $this->iteration->getWarmup()->willReturn(0);
-        $this->iteration->getParameters()->willReturn($expected);
+        $this->metadata->getRevs()->willReturn(1);
+        $this->metadata->getWarmup()->willReturn(0);
+        $this->variant->getParameterSet()->willReturn($expected);
 
-        $this->executor->execute($this->iteration->reveal(), new Config('test', array()));
+        $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', array()));
 
         $this->assertTrue(file_exists($this->paramBeforeFile));
         $params = json_decode(file_get_contents($this->paramBeforeFile), true);
@@ -221,7 +222,7 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
      */
     public function testExecuteMethods()
     {
-        $this->executor->executeMethods($this->benchmark->reveal(), array('initDatabase'));
+        $this->executor->executeMethods($this->benchmarkMetadata->reveal(), array('initDatabase'));
         $this->assertTrue(file_exists($this->staticMethodFile));
     }
 }

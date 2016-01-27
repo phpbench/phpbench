@@ -32,10 +32,9 @@ class HistogramLoggerTest extends \PHPUnit_Framework_TestCase
         $this->iteration = $this->prophesize('PhpBench\Model\Iteration');
         $this->variant = new Variant(
             $this->subject->reveal(),
-            new ParameterSet(),
-            4,
-            1
+            new ParameterSet()
         );
+        $this->variant->spawnIterations(4);
         $this->benchmark->getSubjects()->willReturn(array(
             $this->subject->reveal(),
         ));
@@ -45,6 +44,8 @@ class HistogramLoggerTest extends \PHPUnit_Framework_TestCase
         $this->subject->getIndex()->willReturn(1);
         $this->subject->getOutputTimeUnit()->willReturn('milliseconds');
         $this->subject->getOutputMode()->willReturn('time');
+        $this->subject->getRevs()->willReturn(1);
+        $this->subject->getRetryThreshold()->willReturn(10);
     }
 
     /**
@@ -113,9 +114,10 @@ class HistogramLoggerTest extends \PHPUnit_Framework_TestCase
         $this->variant->computeStats();
 
         $this->logger->variantEnd($this->variant);
+        $display = $this->output->fetch();
         $this->assertContains(
             '1  (σ = 0.000ms ) -2σ [        █        ] +2σ [μ Mo]/r: 0.010 0.010 μRSD/r: 0.00%',
-            $this->output->fetch()
+            $display
         );
     }
 }

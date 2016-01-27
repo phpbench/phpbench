@@ -78,9 +78,12 @@ abstract class PhpBenchLoggerTest extends \PHPUnit_Framework_TestCase
         $error1 = $this->prophesize('PhpBench\Model\Error');
         $error1->getMessage()->willReturn('MessageOne');
         $error1->getClass()->willReturn('ExceptionOne');
+        $error1->getTrace()->willReturn('-- trace --');
+
         $error2 = $this->prophesize('PhpBench\Model\Error');
         $error2->getMessage()->willReturn('MessageTwo');
         $error2->getClass()->willReturn('ExceptionTwo');
+        $error2->getTrace()->willReturn('-- trace --');
         $errorStack = $this->prophesize('PhpBench\Model\ErrorStack');
         $errorStack->getVariant()->willReturn($this->variant->reveal());
         $errorStack->getIterator()->willReturn(new \ArrayIterator(array($error1->reveal(), $error2->reveal())));

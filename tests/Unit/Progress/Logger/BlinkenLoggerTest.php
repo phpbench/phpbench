@@ -29,12 +29,11 @@ class BlinkenLoggerTest extends \PHPUnit_Framework_TestCase
         $this->logger->setOutput($this->output);
         $this->benchmark = $this->prophesize('PhpBench\Model\Benchmark');
         $this->subject = $this->prophesize('PhpBench\Model\Subject');
-        $this->collection = new Variant(
+        $this->variant = new Variant(
             $this->subject->reveal(),
-            new ParameterSet(),
-            4,
-            1
+            new ParameterSet()
         );
+        $this->variant->spawnIterations(4);
         $this->benchmark->getSubjects()->willReturn(array(
             $this->subject->reveal(),
         ));
@@ -44,6 +43,8 @@ class BlinkenLoggerTest extends \PHPUnit_Framework_TestCase
         $this->subject->getIndex()->willReturn(1);
         $this->subject->getOutputTimeUnit()->willReturn('milliseconds');
         $this->subject->getOutputMode()->willReturn('time');
+        $this->subject->getRevs()->willReturn(10);
+        $this->subject->getRetryThreshold()->willReturn(10);
     }
 
     /**
@@ -54,7 +55,7 @@ class BlinkenLoggerTest extends \PHPUnit_Framework_TestCase
         $this->logger->benchmarkStart($this->benchmark->reveal());
         $display = $this->output->fetch();
         $this->assertContains('BenchmarkTest', $display);
-        $this->assertContains('#1 benchSubject', $display);
+        $this->assertContains('#0 benchSubject', $display);
     }
 
     /**
@@ -62,7 +63,7 @@ class BlinkenLoggerTest extends \PHPUnit_Framework_TestCase
      */
     public function testIterationStart()
     {
-        $this->logger->iterationStart($this->collection[0]);
+        $this->logger->iterationStart($this->variant[0]);
         $display = $this->output->fetch();
         $this->assertContains(
             '0.000',
@@ -75,7 +76,7 @@ class BlinkenLoggerTest extends \PHPUnit_Framework_TestCase
      */
     public function testIterationsStart()
     {
-        $this->logger->variantStart($this->collection);
+        $this->logger->variantStart($this->variant);
         $display = $this->output->fetch();
         $this->assertContains(
             'benchSubject',
@@ -92,8 +93,8 @@ class BlinkenLoggerTest extends \PHPUnit_Framework_TestCase
      */
     public function testIterationException()
     {
-        $this->collection->setException(new \Exception('foo'));
-        $this->logger->variantEnd($this->collection);
+        $this->variant->setException(new \Exception('foo'));
+        $this->logger->variantEnd($this->variant);
         $this->assertContains('ERROR', $this->output->fetch());
     }
 
@@ -103,12 +104,12 @@ class BlinkenLoggerTest extends \PHPUnit_Framework_TestCase
      */
     public function testIterationEndStats()
     {
-        foreach ($this->collection as $iteration) {
+        foreach ($this->variant as $iteration) {
             $iteration->setResult(new IterationResult(10, 10));
         }
-        $this->collection->computeStats();
+        $this->variant->computeStats();
 
-        $this->logger->variantEnd($this->collection);
+        $this->logger->variantEnd($this->variant);
         $this->assertContains('RSD/r: 0.00%', $this->output->fetch());
     }
 }

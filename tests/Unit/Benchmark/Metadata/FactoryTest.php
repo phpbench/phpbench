@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Tests\Unit\Model;
+namespace PhpBench\Tests\Unit\Benchmark\Metadata;
 
 use PhpBench\Benchmark\Metadata\Factory;
 use PhpBench\Tests\Util\TestUtil;
@@ -33,8 +33,8 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $this->hierarchy = $this->prophesize('PhpBench\Benchmark\Remote\ReflectionHierarchy');
         $this->hierarchy->reveal()->class = 'Class';
         $this->reflection = $this->prophesize('PhpBench\Benchmark\Remote\ReflectionClass');
-        $this->metadata = $this->prophesize('PhpBench\Model\Benchmark');
-        $this->subjectMetadata = $this->prophesize('PhpBench\Model\Subject');
+        $this->metadata = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');
+        $this->subjectMetadata = $this->prophesize('PhpBench\Benchmark\Metadata\SubjectMetadata');
 
         $this->reflector->reflect(self::FNAME)->willReturn($this->hierarchy->reveal());
         $this->driver->getMetadataForHierarchy($this->hierarchy->reveal())->willReturn($this->metadata->reveal());
@@ -51,7 +51,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $this->metadata->getSubjects()->willReturn(array());
         TestUtil::configureBenchmark($this->metadata);
         $metadata = $this->factory->getMetadataForFile(self::FNAME);
-        $this->assertInstanceOf('PhpBench\Model\Benchmark', $metadata);
+        $this->assertInstanceOf('PhpBench\Benchmark\Metadata\BenchmarkMetadata', $metadata);
     }
 
     /**
@@ -71,7 +71,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $this->subjectMetadata->setParameterSets(array())->shouldBeCalled();
 
         $metadata = $this->factory->getMetadataForFile(self::FNAME);
-        $this->assertInstanceOf('PhpBench\Model\Benchmark', $metadata);
+        $this->assertInstanceOf('PhpBench\Benchmark\Metadata\BenchmarkMetadata', $metadata);
         $this->assertInternalType('array', $metadata->getSubjects());
         $this->assertCount(1, $metadata->getSubjects());
     }

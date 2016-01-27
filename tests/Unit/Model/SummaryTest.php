@@ -31,12 +31,12 @@ class SummaryTest extends \PHPUnit_Framework_TestCase
     {
         $this->bench1->getSubjects()->willReturn(array($this->subject1->reveal()));
         $this->subject1->getVariants()->willReturn(array($this->variant1->reveal()));
-        $this->subject1->getSkip()->willReturn(false);
         $this->variant1->getStats()->willReturn($this->stats->reveal());
         $this->variant1->count()->wilLReturn(4);
         $this->variant1->getRejectCount()->wilLReturn(11);
         $this->variant1->hasErrorStack()->wilLReturn(false);
-        $this->variant1->getRevolutions()->willReturn(10);
+        $this->subject1->getRevs()->willReturn(10);
+        $this->variant1->getSubject()->willReturn($this->subject1->reveal());
         $this->stats->getIterator()->willReturn(new \ArrayIterator(array(
             'min' => '1',
             'max' => '2',

@@ -19,9 +19,9 @@ class XDebugUtil
     {
         $name = sprintf(
             '%s::%s.P%s.cachegrind',
-            $iteration->getSubject()->getBenchmark()->getClass(),
-            $iteration->getSubject()->getName(),
-            $iteration->getParameters()->getIndex()
+            $iteration->getVariant()->getSubject()->getBenchmark()->getClass(),
+            $iteration->getVariant()->getSubject()->getName(),
+            $iteration->getVariant()->getParameterSet()->getIndex()
         );
 
         $name = str_replace('\\', '_', $name);

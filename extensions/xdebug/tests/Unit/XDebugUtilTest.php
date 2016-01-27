@@ -26,6 +26,7 @@ class XDebugUtilTest extends \PHPUnit_Framework_TestCase
         $this->subject = $this->prophesize('PhpBench\Model\Subject');
         $this->benchmark = $this->prophesize('PhpBench\Model\Benchmark');
         $this->parameters = $this->prophesize('PhpBench\Model\ParameterSet');
+        $this->variant = $this->prophesize('PhpBench\Model\Variant');
     }
 
     /**
@@ -39,9 +40,10 @@ class XDebugUtilTest extends \PHPUnit_Framework_TestCase
         $this->subject->getName()->willReturn($subject);
 
         $this->parameters->getIndex()->willReturn(7);
-        $this->iteration->getParameters()->willReturn($this->parameters->reveal());
+        $this->variant->getParameterSet()->willReturn($this->parameters->reveal());
         $this->subject->getBenchmark()->willReturn($this->benchmark->reveal());
-        $this->iteration->getSubject()->willReturn($this->subject->reveal());
+        $this->variant->getSubject()->willReturn($this->subject->reveal());
+        $this->iteration->getVariant()->willReturn($this->variant->reveal());
         $result = XDebugUtil::filenameFromIteration($this->iteration->reveal());
         $this->assertEquals(
             $expected,
