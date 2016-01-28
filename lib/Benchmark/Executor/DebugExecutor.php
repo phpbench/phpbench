@@ -11,6 +11,7 @@
 
 namespace PhpBench\Benchmark\Executor;
 
+use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\Payload;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\IterationResult;
@@ -27,7 +28,7 @@ class DebugExecutor extends BaseExecutor
     /**
      * {@inheritdoc}
      */
-    public function execute(Iteration $iteration, Config $config)
+    public function execute(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config)
     {
         $memory = 100;
         $collectionHash = spl_object_hash($iteration->getVariant());

@@ -24,7 +24,6 @@ class IterationTest extends \PHPUnit_Framework_TestCase
         $this->subject = $this->prophesize('PhpBench\Model\Subject');
         $this->variant = $this->prophesize('PhpBench\Model\Variant');
         $this->variant->getSubject()->willReturn($this->subject->reveal());
-        $this->variant->getWarmup()->willReturn(4);
         $this->iteration = new Iteration(
             0,
             $this->variant->reveal()
@@ -36,7 +35,7 @@ class IterationTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetters()
     {
-        $this->assertEquals(4, $this->iteration->getWarmup());
+        $this->assertEquals($this->variant->reveal(), $this->iteration->getVariant());
     }
 
     /**
@@ -57,7 +56,7 @@ class IterationTest extends \PHPUnit_Framework_TestCase
     public function testGetRevTime()
     {
         $iteration = new Iteration(1, $this->variant->reveal(), 100);
-        $this->variant->getRevolutions()->willReturn(100);
+        $this->subject->getRevs()->willReturn(100);
         $this->assertEquals(1, $iteration->getRevTime());
     }
 }

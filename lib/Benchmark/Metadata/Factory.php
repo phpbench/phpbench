@@ -13,7 +13,6 @@ namespace PhpBench\Benchmark\Metadata;
 
 use PhpBench\Benchmark\Remote\ReflectionHierarchy;
 use PhpBench\Benchmark\Remote\Reflector;
-use PhpBench\Model\Benchmark;
 use PhpBench\Model\Subject;
 
 /**
@@ -87,7 +86,7 @@ class Factory
         return $metadata;
     }
 
-    private function validateSubject(ReflectionHierarchy $benchmarkReflection, Subject $subject)
+    private function validateSubject(ReflectionHierarchy $benchmarkReflection, SubjectMetadata $subject)
     {
         foreach (array('getBeforeMethods' => 'before', 'getAfterMethods' => 'after') as $methodName => $context) {
             foreach ($subject->$methodName() as $method) {
@@ -96,7 +95,7 @@ class Factory
         }
     }
 
-    private function validateBenchmark(ReflectionHierarchy $hierarchy, Benchmark $benchmark)
+    private function validateBenchmark(ReflectionHierarchy $hierarchy, BenchmarkMetadata $benchmark)
     {
         foreach (array('getBeforeClassMethods' => 'before class', 'getAfterClassMethods' => 'after class') as $methodName => $context) {
             foreach ($benchmark->$methodName() as $method) {

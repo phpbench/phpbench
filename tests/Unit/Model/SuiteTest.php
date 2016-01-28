@@ -28,6 +28,15 @@ class SuiteTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * It should add a benchmark.
+     */
+    public function testCreateBenchmark()
+    {
+        $benchmark = $this->createSuite(array())->createBenchmark('FooBench');
+        $this->assertInstanceOf('PhpBench\Model\Benchmark', $benchmark);
+    }
+
+    /**
      * It should return all of the iterations in the suite.
      * It should return all of the subjects
      * It should return all of the variants.
@@ -80,10 +89,16 @@ class SuiteTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSummary()
     {
+        $errorStack = $this->prophesize('PhpBench\Model\ErrorStack');
         $this->bench1->getSubjects()->willReturn(array($this->subject1->reveal()));
         $this->subject1->getVariants()->willReturn(array($this->variant1->reveal()));
-        $this->subject1->getSkip()->willReturn(true);
         $this->variant1->hasErrorStack()->willReturn(true);
+        $this->variant1->count()->willReturn(1);
+        $this->variant1->getSubject()->wilLReturn($this->subject1->reveal());
+        $this->subject1->getRevs()->willReturn(10);
+        $this->variant1->getRejectCount()->willReturn(0);
+        $this->variant1->getRejectCount()->willReturn(0);
+        $this->variant1->getErrorStack()->willReturn($errorStack->reveal());
 
         $suite = $this->createSuite(array(
             $this->bench1->reveal(),
@@ -95,14 +110,13 @@ class SuiteTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpBench\Model\Summary', $summary);
     }
 
-    private function createSuite(array $benchmarks, array $informations)
+    private function createSuite(array $benchmarks = array(), array $informations = array())
     {
         return new Suite(
-            $benchmarks,
             'context',
             new \DateTime('2016-01-25'),
             'path/to/config.json',
-            1,
+            $benchmarks,
             $informations
         );
     }

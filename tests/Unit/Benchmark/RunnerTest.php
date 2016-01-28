@@ -11,12 +11,12 @@
 
 namespace PhpBench\Tests\Benchmark;
 
+use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Benchmark\RunnerContext;
 use PhpBench\Environment\Information;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\IterationResult;
-use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
 use PhpBench\PhpBench;
 use PhpBench\Registry\Config;
@@ -29,8 +29,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
     {
         $this->benchmarkFinder = $this->prophesize('PhpBench\Benchmark\BenchmarkFinder');
         $this->suite = $this->prophesize('PhpBench\Model\Suite');
-        $this->subject = $this->prophesize('PhpBench\Model\Subject');
-        $this->benchmark = $this->prophesize('PhpBench\Model\Benchmark');
+        $this->benchmark = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');
         $this->benchmarkFinder->findBenchmarks(__DIR__, array(), array())->willReturn(array(
             $this->benchmark->reveal(),
         ));
@@ -67,7 +66,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
      */
     public function testRunner($iterations, $revs, array $parameters, $assertionCallbacks)
     {
-        $subject = new Subject($this->benchmark->reveal(), 'name', 0);
+        $subject = new SubjectMetadata($this->benchmark->reveal(), 'name', 0);
         $subject->setIterations($iterations);
         $subject->setBeforeMethods(array('beforeFoo'));
         $subject->setParameterSets(array(array($parameters)));
@@ -80,6 +79,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         ));
 
         $this->executor->execute(
+            Argument::type('PhpBench\Benchmark\Metadata\SubjectMetadata'),
             Argument::type('PhpBench\Model\Iteration'),
             new Config('test', array(
                 'executor' => 'microtime',
@@ -174,7 +174,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSkip()
     {
-        $subject = new Subject($this->benchmark->reveal(), 'name', 0);
+        $subject = new SubjectMetadata($this->benchmark->reveal(), 'name', 0);
         $subject->setSkip(true);
         $this->benchmark->getSubjects()->willReturn(array(
             $subject,
@@ -192,7 +192,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSleep()
     {
-        $subject = new Subject($this->benchmark->reveal(), 'name', 0);
+        $subject = new SubjectMetadata($this->benchmark->reveal(), 'name', 0);
         $subject->setSleep(50);
         $this->benchmark->getSubjects()->willReturn(array(
             $subject,
@@ -200,9 +200,9 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         TestUtil::configureBenchmark($this->benchmark);
 
         $test = $this;
-        $this->executor->execute(Argument::type('PhpBench\Model\Iteration'), $this->executorConfig)
+        $this->executor->execute(Argument::type('PhpBench\Benchmark\Metadata\SubjectMetadata'), Argument::type('PhpBench\Model\Iteration'), $this->executorConfig)
             ->will(function ($args) use ($test) {
-                $iteration = $args[0];
+                $iteration = $args[1];
                 $test->assertEquals(50, $iteration->getVariant()->getSubject()->getSleep());
 
                 return new IterationResult(10, 10);
@@ -217,7 +217,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSleepOverride()
     {
-        $subject = new Subject($this->benchmark->reveal(), 'name', 0);
+        $subject = new SubjectMetadata($this->benchmark->reveal(), 'name', 0);
         $subject->setSleep(50);
         $this->benchmark->getSubjects()->willReturn(array(
             $subject,
@@ -225,9 +225,9 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         TestUtil::configureBenchmark($this->benchmark);
 
         $test = $this;
-        $this->executor->execute(Argument::type('PhpBench\Model\Iteration'), $this->executorConfig)
+        $this->executor->execute(Argument::type('PhpBench\Benchmark\Metadata\SubjectMetadata'), Argument::type('PhpBench\Model\Iteration'), $this->executorConfig)
             ->will(function ($args) use ($test) {
-                $iteration = $args[0];
+                $iteration = $args[1];
                 $test->assertEquals(100, $iteration->getVariant()->getSubject()->getSleep());
 
                 return new IterationResult(10, 10);
@@ -244,7 +244,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
      */
     public function testWarmup()
     {
-        $subject = new Subject($this->benchmark->reveal(), 'name', 0);
+        $subject = new SubjectMetadata($this->benchmark->reveal(), 'name', 0);
         $subject->setWarmup(50);
         $this->benchmark->getSubjects()->willReturn(array(
             $subject,
@@ -252,9 +252,9 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         TestUtil::configureBenchmark($this->benchmark);
 
         $test = $this;
-        $this->executor->execute(Argument::type('PhpBench\Model\Iteration'), $this->executorConfig)
+        $this->executor->execute(Argument::type('PhpBench\Benchmark\Metadata\SubjectMetadata'), Argument::type('PhpBench\Model\Iteration'), $this->executorConfig)
             ->will(function ($args) use ($test) {
-                $iteration = $args[0];
+                $iteration = $args[1];
                 $test->assertEquals(50, $iteration->getVariant()->getSubject()->getWarmup());
 
                 return new IterationResult(10, 10);
@@ -271,17 +271,17 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
      */
     public function testRetryThreshold()
     {
-        $subject = new Subject($this->benchmark->reveal(), 'name', 0);
+        $subject = new SubjectMetadata($this->benchmark->reveal(), 'name', 0);
         $this->benchmark->getSubjects()->willReturn(array(
             $subject,
         ));
         TestUtil::configureBenchmark($this->benchmark);
 
         $test = $this;
-        $this->executor->execute(Argument::type('PhpBench\Model\Iteration'), $this->executorConfig)
+        $this->executor->execute(Argument::type('PhpBench\Benchmark\Metadata\SubjectMetadata'), Argument::type('PhpBench\Model\Iteration'), $this->executorConfig)
             ->will(function ($args) use ($test) {
-                $iteration = $args[0];
-                $test->assertEquals(10, $iteration->getVariant()->getRetryThreshold());
+                $iteration = $args[1];
+                $test->assertEquals(10, $iteration->getVariant()->getSubject()->getRetryThreshold());
 
                 return new IterationResult(10, 10);
             });
@@ -319,13 +319,13 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
      */
     public function testHandleExceptions()
     {
-        $subject = new Subject($this->benchmark->reveal(), 'name', 0);
+        $subject = new SubjectMetadata($this->benchmark->reveal(), 'name', 0);
         $this->benchmark->getSubjects()->willReturn(array(
             $subject,
         ));
         TestUtil::configureBenchmark($this->benchmark);
 
-        $this->executor->execute(Argument::type('PhpBench\Model\Iteration'), $this->executorConfig)
+        $this->executor->execute(Argument::type('PhpBench\Benchmark\Metadata\SubjectMetadata'), Argument::type('PhpBench\Model\Iteration'), $this->executorConfig)
             ->shouldBeCalledTimes(1)
             ->willThrow(new \Exception('Foobar', null, new \InvalidArgumentException('Barfoo')));
 
@@ -350,20 +350,20 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
     {
         $this->informations[] = new Information('hello', array('say' => 'goodbye'));
 
-        $subject = new Subject($this->benchmark->reveal(), 'name', 0);
+        $subject = new SubjectMetadata($this->benchmark->reveal(), 'name', 0);
         $this->benchmark->getSubjects()->willReturn(array(
             $subject,
         ));
 
         TestUtil::configureBenchmark($this->benchmark);
-        $this->executor->execute(Argument::type('PhpBench\Model\Iteration'), $this->executorConfig)
+        $this->executor->execute(Argument::type('PhpBench\Benchmark\Metadata\SubjectMetadata'), Argument::type('PhpBench\Model\Iteration'), $this->executorConfig)
             ->shouldBeCalledTimes(1)
             ->willReturn(new IterationResult(10, 10));
         $suite = $this->runner->run(new RunnerContext(
             __DIR__
         ));
         $envInformations = $suite->getEnvInformations();
-        $this->assertSame($this->informations, $envInformations);
+        $this->assertSame((array) $this->informations, (array) $envInformations);
     }
 
     private function assertNoErrors(Suite $suite)

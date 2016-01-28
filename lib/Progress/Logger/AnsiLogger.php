@@ -16,21 +16,21 @@ use PhpBench\Model\Variant;
 
 abstract class AnsiLogger extends PhpBenchLogger
 {
-    protected function renderCollectionStatus(Variant $collection)
+    protected function renderCollectionStatus(Variant $variant)
     {
         $this->output->write(PHP_EOL);
         $this->output->write("\x1B[0J"); // clear the line
         $this->output->write(PHP_EOL);
         $this->output->write(sprintf(
             '<info>subject</info> %s<info> with </info>%s<info> iteration(s) of </info>%s<info> rev(s),</info>',
-            sprintf('%s', $collection->getSubject()->getName()),
-            count($collection),
-            $collection->getRevolutions()
+            sprintf('%s', $variant->getSubject()->getName()),
+            count($variant),
+            $variant->getSubject()->getRevs()
         ));
         $this->output->write(PHP_EOL);
         $this->output->write(sprintf(
             '<info>parameters</info> %s',
-            json_encode($collection->getParameterSet()->getArrayCopy(), true)
+            json_encode($variant->getParameterSet()->getArrayCopy(), true)
         ));
         $this->output->write(PHP_EOL);
         $this->output->write("\x1B[". 4 . 'A'); // put the cursor back to the line with the measurements

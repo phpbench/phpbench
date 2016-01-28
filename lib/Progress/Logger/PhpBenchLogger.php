@@ -62,16 +62,17 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
                 $this->output->write(PHP_EOL);
                 foreach ($errorStack as $error) {
                     $this->output->writeln(sprintf(
-                        '    %s %s',
+                        "    %s %s\n\n    <comment>%s</comment>\n",
                         $error->getClass(),
-                        str_replace("\n", "\n    ", $error->getMessage())
+                        str_replace("\n", "\n    ", $error->getMessage()),
+                        str_replace("\n", "\n    ", $error->getTrace())
                     ));
                 }
             }
         }
 
         $this->output->writeln(sprintf(
-            '%s subjects, %s iterations, %s revs, %s rejects',
+            '%s subjects, %s variant, %s revs, %s rejects',
             $summary->getNbSubjects(),
             $summary->getNbIterations(),
             $summary->getNbRevolutions(),
@@ -95,11 +96,11 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
         ));
     }
 
-    public function formatIterationsFullSummary(Variant $iterations)
+    public function formatIterationsFullSummary(Variant $variant)
     {
-        $stats = $iterations->getStats();
-        $timeUnit = $this->timeUnit->resolveDestUnit($iterations->getSubject()->getOutputTimeUnit());
-        $mode = $this->timeUnit->resolveMode($iterations->getSubject()->getOutputMode());
+        $stats = $variant->getStats();
+        $timeUnit = $this->timeUnit->resolveDestUnit($variant->getSubject()->getOutputTimeUnit());
+        $mode = $this->timeUnit->resolveMode($variant->getSubject()->getOutputMode());
 
         return sprintf(
             "[μ Mo]/r: %s %s (%s) \t[μSD μRSD]/r: %s %s%%",
@@ -112,11 +113,11 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
         );
     }
 
-    public function formatIterationsShortSummary(Variant $iterations)
+    public function formatIterationsShortSummary(Variant $variant)
     {
-        $stats = $iterations->getStats();
-        $timeUnit = $this->timeUnit->resolveDestUnit($iterations->getSubject()->getOutputTimeUnit());
-        $mode = $this->timeUnit->resolveMode($iterations->getSubject()->getOutputMode());
+        $stats = $variant->getStats();
+        $timeUnit = $this->timeUnit->resolveDestUnit($variant->getSubject()->getOutputTimeUnit());
+        $mode = $this->timeUnit->resolveMode($variant->getSubject()->getOutputMode());
 
         return sprintf(
             '[μ Mo]/r: %s %s μRSD/r: %s%%',
@@ -129,13 +130,13 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
 
     protected function formatIterationTime(Iteration $iteration)
     {
-        $subject = $iteration->getSubject();
+        $subject = $iteration->getVariant()->getSubject();
         $timeUnit = $subject->getOutputTimeUnit();
         $outputMode = $subject->getOutputMode();
 
         $time = 0;
         if (null !== $iteration->getTime()) {
-            $time = $iteration->getTime() / $iteration->getRevolutions();
+            $time = $iteration->getRevTime();
         }
 
         return number_format(

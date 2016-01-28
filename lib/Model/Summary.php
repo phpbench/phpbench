@@ -41,15 +41,11 @@ class Summary
     {
         foreach ($suite->getBenchmarks() as $benchmark) {
             foreach ($benchmark->getSubjects() as $subject) {
-                if (true === $subject->getSkip()) {
-                    continue;
-                }
-
                 $this->nbSubjects++;
 
                 foreach ($subject->getVariants() as $variant) {
                     $this->nbIterations += count($variant);
-                    $this->nbRevolutions += $variant->getRevolutions();
+                    $this->nbRevolutions += $variant->getSubject()->getRevs();
                     $this->nbRejects += $variant->getRejectCount();
 
                     if ($variant->hasErrorStack()) {

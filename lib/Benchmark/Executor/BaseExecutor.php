@@ -12,9 +12,10 @@
 namespace PhpBench\Benchmark\Executor;
 
 use PhpBench\Benchmark\ExecutorInterface;
+use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
+use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Benchmark\Remote\Payload;
-use PhpBench\Model\Benchmark;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\IterationResult;
 use PhpBench\Registry\Config;
@@ -51,18 +52,17 @@ abstract class BaseExecutor implements ExecutorInterface
     /**
      * {@inheritdoc}
      */
-    public function execute(Iteration $iteration, Config $config)
+    public function execute(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config)
     {
-        $subject = $iteration->getSubject();
         $tokens = array(
-            'class' => $subject->getBenchmark()->getClass(),
-            'file' => $subject->getBenchmark()->getPath(),
-            'subject' => $subject->getName(),
-            'revolutions' => $iteration->getRevolutions(),
-            'beforeMethods' => var_export($subject->getBeforeMethods(), true),
-            'afterMethods' => var_export($subject->getAfterMethods(), true),
-            'parameters' => var_export($iteration->getParameters()->getArrayCopy(), true),
-            'warmup' => $iteration->getWarmup() ?: 0,
+            'class' => $subjectMetadata->getBenchmark()->getClass(),
+            'file' => $subjectMetadata->getBenchmark()->getPath(),
+            'subject' => $subjectMetadata->getName(),
+            'revolutions' => $subjectMetadata->getRevs(),
+            'beforeMethods' => var_export($subjectMetadata->getBeforeMethods(), true),
+            'afterMethods' => var_export($subjectMetadata->getAfterMethods(), true),
+            'parameters' => var_export($iteration->getVariant()->getParameterSet()->getArrayCopy(), true),
+            'warmup' => $subjectMetadata->getWarmup() ?: 0,
         );
         $payload = $this->launcher->payload(__DIR__ . '/template/microtime.template', $tokens);
 
@@ -79,7 +79,7 @@ abstract class BaseExecutor implements ExecutorInterface
     /**
      * {@inheritdoc}
      */
-    public function executeMethods(Benchmark $benchmark, array $methods)
+    public function executeMethods(BenchmarkMetadata $benchmark, array $methods)
     {
         $tokens = array(
             'class' => $benchmark->getClass(),

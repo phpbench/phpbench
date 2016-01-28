@@ -11,7 +11,8 @@
 
 namespace PhpBench\Benchmark;
 
-use PhpBench\Model\Benchmark;
+use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
+use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Model\Iteration;
 use PhpBench\Registry\Config;
 use PhpBench\Registry\RegistrableInterface;
@@ -26,12 +27,19 @@ interface ExecutorInterface extends RegistrableInterface
     /**
      * Execute the benchmark and return the result.
      *
+     * NOTE: It is currently not, and probably never will be entirely necessary
+     *       to pass the Iteration, as it contains no information other than a
+     *       reference to the Variant that could be useful here. The Variant in
+     *       its turn is only currently used to get the ParameterSet, but is
+     *       likely more useful that the Iteration.
+     *
+     * @param SubjectMetadata $subjectMetadata
      * @param Iteration $iteration
      * @param array $config
      *
      * @return IterationResult
      */
-    public function execute(Iteration $iteration, Config $config);
+    public function execute(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config);
 
     /**
      * Execute arbitrary methods.
@@ -43,5 +51,5 @@ interface ExecutorInterface extends RegistrableInterface
      *
      * @param string[]
      */
-    public function executeMethods(Benchmark $benchmark, array $methods);
+    public function executeMethods(BenchmarkMetadata $benchmark, array $methods);
 }

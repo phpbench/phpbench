@@ -15,54 +15,53 @@ use PhpBench\Model\Benchmark;
 
 class BenchmarkTest extends \PHPUnit_Framework_TestCase
 {
-    private $metadata;
+    private $benchmark;
+    private $suite;
 
     public function setUp()
     {
-        $this->metadata = new Benchmark('/path/to', 'Class');
-        $this->subject1 = $this->metadata->getOrCreateSubject('subjectOne');
-        $this->subject2 = $this->metadata->getOrCreateSubject('subjectTwo');
+        $this->suite = $this->prophesize('PhpBench\Model\Suite');
+        $this->benchmark = new Benchmark($this->suite->reveal(), '/path/to', 'Class');
     }
 
     /**
-     * It should filter subjects based on a given filter.
+     * It should get and set .. things.
      */
-    public function testFilter()
+    public function testGetSet()
     {
-        $this->assertCount(2, $this->metadata->getSubjects());
-        $this->metadata->filterSubjectNames(array('subjectOne'));
-        $this->assertCount(1, $this->metadata->getSubjects());
-        $this->metadata->filterSubjectNames(array('subjectSeventySeven'));
-        $this->assertCount(0, $this->metadata->getSubjects());
+        $this->assertSame($this->suite->reveal(), $this->benchmark->getSuite());
     }
 
     /**
-     * It should filter on the class name.
+     * It should create and add a subject from some metadata.
      */
-    public function testFilterClassName()
+    public function testCreateSubjectFromMetadata()
     {
-        $this->metadata->filterSubjectNames(array('Class::subjectOne*'));
-        $this->assertCount(1, $this->metadata->getSubjects());
-    }
+        $metadata = $this->prophesize('PhpBench\Benchmark\Metadata\SubjectMetadata');
+        $metadata->getName()->willReturn('hello');
+        $metadata->getGroups()->willReturn(array('one', 'two'));
+        $metadata->getRevs()->willReturn(10);
+        $metadata->getWarmup()->willReturn(20);
+        $metadata->getSleep()->willReturn(30);
+        $metadata->getRetryThreshold()->willReturn(10);
+        $metadata->getOutputTimeUnit()->willReturn(50);
+        $metadata->getOutputMode()->willReturn(60);
 
-    /**
-     * It should filter using a regex.
-     */
-    public function testFilterRegex()
-    {
-        $this->metadata->filterSubjectNames(array('.*One*'));
-        $this->assertCount(1, $this->metadata->getSubjects());
-    }
+        $subject = $this->benchmark->createSubjectFromMetadata($metadata->reveal());
+        $this->assertInstanceOf('PhpBench\Model\Subject', $subject);
+        $this->assertEquals('hello', $subject->getName());
+        $this->assertEquals(array('one', 'two'), $subject->getGroups());
+        $this->assertEquals(10, $subject->getRevs());
+        $this->assertEquals(20, $subject->getWarmup());
+        $this->assertEquals(30, $subject->getSleep());
+        $this->assertEquals(10, $subject->getRetryThreshold());
+        $this->assertEquals(50, $subject->getOutputTimeUnit());
+        $this->assertEquals(60, $subject->getOutputMode());
 
-    /**
-     * It should say if it has subjects or not.
-     *
-     * @depends testFilter
-     */
-    public function testHasSubjects()
-    {
-        $this->assertTrue($this->metadata->hasSubjects());
-        $this->metadata->filterSubjectNames(array('subjectSeventySeven'));
-        $this->assertFalse($this->metadata->hasSubjects());
+        $subjects = $this->benchmark->getSubjects();
+        $this->assertCount(1, $subjects);
+        $bSubject = current($subjects);
+        $this->assertInstanceOf('PhpBench\Model\Subject', $bSubject);
+        $this->assertSame($subject, $bSubject);
     }
 }

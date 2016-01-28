@@ -3,7 +3,7 @@
     "path": "./",
     "retry_threshold": 10,
     "output_mode": "throughput",
-    "time_unit": "seconds",
+    "time_unit": "milliseconds",
     "extensions": [
         "PhpBench\\Extensions\\XDebug\\XDebugExtension"
     ],

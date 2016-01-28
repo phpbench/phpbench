@@ -24,7 +24,7 @@
                 {
                     "name": "time",
                     "class": "time",
-                    "expr": "sum(./variant[parameter[@name='nb_elements']/@value = {{ row.item }}]/iteration/@time) div sum(./variant[parameter[@name='nb_elements']/@value = {{ row.item }}]/iteration/@revs)"
+                    "expr": "sum(./variant[parameter[@name='nb_elements']/@value = {{ row.item }}]/stats/@mean)"
                 },
                 {
                     "name": "deviation",

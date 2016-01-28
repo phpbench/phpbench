@@ -11,12 +11,14 @@
 
 namespace PhpBench\Benchmark;
 
+use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
+use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Environment\Supplier;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Iteration;
-use PhpBench\Model\ParameterSet;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
+use PhpBench\Model\Variant;
 use PhpBench\PhpBench;
 use PhpBench\Progress\Logger\NullLogger;
 use PhpBench\Progress\LoggerInterface;
@@ -79,24 +81,21 @@ class Runner
         $executor = $this->executorRegistry->getService($executorConfig['executor']);
 
         // build the collection of benchmarks to be executed.
-        $benchmarks = $this->benchmarkFinder->findBenchmarks($context->getPath(), $context->getFilters(), $context->getGroups());
+        $benchmarkMetadatas = $this->benchmarkFinder->findBenchmarks($context->getPath(), $context->getFilters(), $context->getGroups());
         $suite = new Suite(
-            $benchmarks,
             $context->getContextName(),
             new \DateTime(),
-            $this->configPath,
-            $context->getRetryThreshold($this->retryThreshold),
-            $this->envSupplier->getInformations()
+            $this->configPath
         );
+        $suite->setEnvInformations((array) $this->envSupplier->getInformations());
 
         // log the start of the suite run.
         $this->logger->startSuite($suite);
 
-        /* @var Benchmark */
-        foreach ($suite->getBenchmarks() as $benchmark) {
-            $this->logger->benchmarkStart($benchmark);
-            $this->runBenchmark($executor, $context, $benchmark);
-            $this->logger->benchmarkEnd($benchmark);
+        /* @var BenchmarkMetadata */
+        foreach ($benchmarkMetadatas as $benchmarkMetadata) {
+            $benchmark = $suite->createBenchmark($benchmarkMetadata->getClass());
+            $this->runBenchmark($executor, $context, $benchmark, $benchmarkMetadata);
         }
 
         $this->logger->endSuite($suite);
@@ -107,62 +106,76 @@ class Runner
     private function runBenchmark(
         ExecutorInterface $executor,
         RunnerContext $context,
-        Benchmark $benchmark
+        Benchmark $benchmark,
+        BenchmarkMetadata $benchmarkMetadata
     ) {
-        if ($benchmark->getBeforeClassMethods()) {
-            $executor->executeMethods($benchmark, $benchmark->getBeforeClassMethods());
+        if ($benchmarkMetadata->getBeforeClassMethods()) {
+            $executor->executeMethods($benchmarkMetadata, $benchmarkMetadata->getBeforeClassMethods());
         }
 
-        foreach ($benchmark->getSubjects() as $subject) {
-            if (true === $subject->getSkip()) {
+        // the keys are subject names, convert them to numerical indexes.
+        $subjectMetadatas = array_values($benchmarkMetadata->getSubjects());
+        foreach ($subjectMetadatas as $subjectMetadata) {
+            if (true === $subjectMetadata->getSkip()) {
                 continue;
             }
 
+            // override parameters
+            $subjectMetadata->setIterations($context->getIterations($subjectMetadata->getIterations()));
+            $subjectMetadata->setRevs($context->getRevolutions($subjectMetadata->getRevs()));
+            $subjectMetadata->setWarmup($context->getWarmup($subjectMetadata->getWarmUp()));
+            $subjectMetadata->setSleep($context->getSleep($subjectMetadata->getSleep()));
+            $subjectMetadata->setRetryThreshold($this->retryThreshold);
+
+            $benchmark->createSubjectFromMetadata($subjectMetadata);
+        }
+
+        $this->logger->benchmarkStart($benchmark);
+        foreach ($benchmark->getSubjects() as $index => $subject) {
+            $subjectMetadata = $subjectMetadatas[$index];
             $this->logger->subjectStart($subject);
-            $this->runSubject($executor, $context, $subject);
+            $this->runSubject($executor, $context, $subject, $subjectMetadata);
             $this->logger->subjectEnd($subject);
         }
+        $this->logger->benchmarkEnd($benchmark);
 
-        if ($benchmark->getAfterClassMethods()) {
-            $executor->executeMethods($benchmark, $benchmark->getAfterClassMethods());
+        if ($benchmarkMetadata->getAfterClassMethods()) {
+            $executor->executeMethods($benchmarkMetadata, $benchmarkMetadata->getAfterClassMethods());
         }
     }
 
-    private function runSubject(ExecutorInterface $executor, RunnerContext $context, Subject $subject)
+    private function runSubject(ExecutorInterface $executor, RunnerContext $context, Subject $subject, SubjectMetadata $subjectMetadata)
     {
-        $parameterSets = $context->getParameterSets($subject->getParameterSets());
-
+        $parameterSets = $context->getParameterSets($subjectMetadata->getParameterSets());
         $paramsIterator = new CartesianParameterIterator($parameterSets);
 
-        // override parameters
-        $subject->setIterations($context->getIterations($subject->getIterations()));
-        $subject->setRevs($context->getRevolutions($subject->getRevs()));
-        $subject->setWarmup($context->getWarmup($subject->getWarmUp()));
-        $subject->setSleep($context->getSleep($subject->getSleep()));
-
+        // create the variants.
         foreach ($paramsIterator as $parameterSet) {
-            $this->runIterations($executor, $context, $subject, $parameterSet);
+            $subject->createVariant($parameterSet);
         }
+
+        // run the variants.
+        foreach ($subject->getVariants() as $variant) {
+            $this->runVariant($executor, $context, $subjectMetadata, $variant);
+        }
+
+        return $subject;
     }
 
-    private function runIterations(ExecutorInterface $executor, RunnerContext $context, Subject $subject, ParameterSet $parameterSet)
-    {
+    private function runVariant(
+        ExecutorInterface $executor,
+        RunnerContext $context,
+        SubjectMetadata $subjectMetadata,
+        Variant $variant
+    ) {
         $executorConfig = $this->executorRegistry->getConfig($context->getExecutor());
-
-        // TODO: Move construction of variants to Factory?
-        $variant = $subject->createVariant(
-            $parameterSet,
-            $subject->getIterations(),
-            $subject->getRevs(),
-            $subject->getWarmup(),
-            $context->getRetryThreshold($this->retryThreshold)
-        );
-
+        $nbIterations = $subjectMetadata->getIterations();
+        $variant->spawnIterations($nbIterations);
         $this->logger->variantStart($variant);
 
         try {
-            foreach ($variant as $iteration) {
-                $this->runIteration($executor, $executorConfig, $iteration, $subject->getSleep());
+            foreach ($variant->getIterations() as $iteration) {
+                $this->runIteration($executor, $executorConfig, $iteration, $subjectMetadata);
             }
         } catch (\Exception $e) {
             $variant->setException($e);
@@ -179,18 +192,19 @@ class Runner
             $this->logger->variantStart($variant);
             foreach ($variant->getRejects() as $reject) {
                 $reject->incrementRejectionCount();
-                $this->runIteration($executor, $executorConfig, $reject, $context->getSleep($subject->getSleep()));
+                $this->runIteration($executor, $executorConfig, $reject, $subjectMetadata);
             }
             $variant->computeStats();
             $this->logger->variantEnd($variant);
         }
     }
 
-    public function runIteration(ExecutorInterface $executor, Config $executorConfig, Iteration $iteration, $sleep)
+    public function runIteration(ExecutorInterface $executor, Config $executorConfig, Iteration $iteration, SubjectMetadata $subjectMetadata)
     {
         $this->logger->iterationStart($iteration);
-        $result = $executor->execute($iteration, $executorConfig);
+        $result = $executor->execute($subjectMetadata, $iteration, $executorConfig);
 
+        $sleep = $subjectMetadata->getSleep();
         if ($sleep) {
             usleep($sleep);
         }

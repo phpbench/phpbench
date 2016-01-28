@@ -27,16 +27,18 @@ class VariantTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * It should spawn variant.
      * It should be iterable
      * It sohuld be countable.
      */
-    public function testIteration()
+    public function testIterationSpawn()
     {
-        $iterations = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 4, 10, 0);
+        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal());
+        $variant->spawnIterations(4);
 
-        $this->assertCount(4, $iterations);
+        $this->assertCount(4, $variant);
 
-        foreach ($iterations as $iteration) {
+        foreach ($variant as $iteration) {
             $this->assertInstanceOf('PhpBench\Model\Iteration', $iteration);
         }
     }
@@ -46,54 +48,60 @@ class VariantTest extends \PHPUnit_Framework_TestCase
      */
     public function testComputeStats()
     {
-        $iterations = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 4, 1, 0);
+        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal());
+        $variant->spawnIterations(4);
+        $this->subject->getRevs()->willReturn(4);
+        $this->subject->getRetryThreshold()->willReturn(10);
 
-        $iterations[0]->setResult(new IterationResult(4, null));
-        $iterations[1]->setResult(new IterationResult(8, null));
-        $iterations[2]->setResult(new IterationResult(4, null));
-        $iterations[3]->setResult(new IterationResult(16, null));
+        $variant[0]->setResult(new IterationResult(4, null));
+        $variant[1]->setResult(new IterationResult(8, null));
+        $variant[2]->setResult(new IterationResult(4, null));
+        $variant[3]->setResult(new IterationResult(16, null));
 
-        $iterations->computeStats();
+        $variant->computeStats();
 
-        $this->assertEquals(-50, $iterations[0]->getDeviation());
-        $this->assertEquals(-0.81649658092772615, $iterations[0]->getZValue());
+        $this->assertEquals(-50, $variant[0]->getDeviation());
+        $this->assertEquals(-0.81649658092772615, $variant[0]->getZValue());
 
-        $this->assertEquals(0, $iterations[1]->getDeviation());
-        $this->assertEquals(0, $iterations[1]->getZValue());
+        $this->assertEquals(0, $variant[1]->getDeviation());
+        $this->assertEquals(0, $variant[1]->getZValue());
 
-        $this->assertEquals(-50, $iterations[2]->getDeviation());
-        $this->assertEquals(-0.81649658092772615, $iterations[2]->getZValue());
+        $this->assertEquals(-50, $variant[2]->getDeviation());
+        $this->assertEquals(-0.81649658092772615, $variant[2]->getZValue());
 
-        $this->assertEquals(100, $iterations[3]->getDeviation());
-        $this->assertEquals(1.6329931618554523, $iterations[3]->getZValue());
+        $this->assertEquals(100, $variant[3]->getDeviation());
+        $this->assertEquals(1.6329931618554523, $variant[3]->getZValue());
     }
 
     /**
-     * It should not crash if compute deviations is called with zero iterations in the collection.
+     * It should not crash if compute deviations is called with zero variant in the collection.
      */
     public function testComputeDeviationZeroIterations()
     {
-        $iterations = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 0, 1, 0);
-        $iterations->computeStats();
+        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal());
+        $variant->computeStats();
     }
 
     /**
-     * It should mark iterations as rejected if they deviate too far from the mean.
+     * It should mark variant as rejected if they deviate too far from the mean.
      */
     public function testReject()
     {
-        $iterations = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 4, 1, 0, 50);
+        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal());
+        $variant->spawnIterations(4);
+        $this->subject->getRevs()->willReturn(4);
+        $this->subject->getRetryThreshold()->willReturn(10);
 
-        $iterations[0]->setResult(new IterationResult(4, null));
-        $iterations[1]->setResult(new IterationResult(8, null));
-        $iterations[2]->setResult(new IterationResult(4, null));
-        $iterations[3]->setResult(new IterationResult(16, null));
-        $iterations->computeStats();
+        $variant[0]->setResult(new IterationResult(4, null));
+        $variant[1]->setResult(new IterationResult(8, null));
+        $variant[2]->setResult(new IterationResult(4, null));
+        $variant[3]->setResult(new IterationResult(16, null));
+        $variant->computeStats();
 
-        $this->assertCount(3, $iterations->getRejects());
-        $this->assertContains($iterations[2], $iterations->getRejects());
-        $this->assertContains($iterations[3], $iterations->getRejects());
-        $this->assertNotContains($iterations[1], $iterations->getRejects());
+        $this->assertCount(3, $variant->getRejects());
+        $this->assertContains($variant[2], $variant->getRejects());
+        $this->assertContains($variant[3], $variant->getRejects());
+        $this->assertNotContains($variant[1], $variant->getRejects());
     }
 
     private function createIteration($time, $expectedDeviation = null, $expectedZValue = null)
@@ -122,13 +130,13 @@ class VariantTest extends \PHPUnit_Framework_TestCase
      */
     public function testExceptionAwareness()
     {
-        $iterations = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 4, 1, 0);
+        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal());
         $error = new \Exception('Test');
 
-        $this->assertFalse($iterations->hasErrorStack());
-        $iterations->setException($error);
-        $this->assertTrue($iterations->hasErrorStack());
-        $this->assertEquals('Test', $iterations->getErrorStack()->getTop()->getMessage());
+        $this->assertFalse($variant->hasErrorStack());
+        $variant->setException($error);
+        $this->assertTrue($variant->hasErrorStack());
+        $this->assertEquals('Test', $variant->getErrorStack()->getTop()->getMessage());
     }
 
     /**
@@ -136,8 +144,8 @@ class VariantTest extends \PHPUnit_Framework_TestCase
      */
     public function testExceptionNoneGet()
     {
-        $iterations = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 4, 1, 0);
-        $errorStack = $iterations->getErrorStack();
+        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal());
+        $errorStack = $variant->getErrorStack();
         $this->assertInstanceOf('PhpBench\Model\ErrorStack', $errorStack);
     }
 
@@ -149,8 +157,8 @@ class VariantTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetStatsNoComputeException()
     {
-        $iterations = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 4, 1, 0);
-        $iterations->getStats();
+        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal());
+        $variant->getStats();
     }
 
     /**
@@ -161,10 +169,13 @@ class VariantTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetStatsWithExceptionException()
     {
-        $iterations = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 1, 1, 0);
-        $iterations[0]->setResult(new IterationResult(4, null));
-        $iterations->computeStats();
-        $iterations->setException(new \Exception('Test'));
-        $iterations->getStats();
+        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal());
+        $variant->spawnIterations(4);
+        $this->subject->getRevs()->willReturn(4);
+        $this->subject->getRetryThreshold()->willReturn(10);
+        $variant[0]->setResult(new IterationResult(4, null));
+        $variant->computeStats();
+        $variant->setException(new \Exception('Test'));
+        $variant->getStats();
     }
 }

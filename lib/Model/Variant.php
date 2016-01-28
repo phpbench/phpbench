@@ -41,11 +41,6 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
     private $rejects = array();
 
     /**
-     * @var float
-     */
-    private $retryThreshold;
-
-    /**
      * @var ErrorStack
      */
     private $errorStack;
@@ -60,37 +55,22 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
      */
     private $computed = false;
 
-    /**
-     * @var int
-     */
-    private $iterationCount;
-
-    /**
-     * @var int
-     */
-    private $revolutionCount;
-
-    /**
-     * @var int
-     */
-    private $warmupCount;
-
     public function __construct(
         Subject $subject,
-        ParameterSet $parameterSet,
-        $iterationCount,
-        $revolutionCount,
-        $warmupCount = 0,
-        $retryThreshold = null
+        ParameterSet $parameterSet
     ) {
         $this->subject = $subject;
         $this->parameterSet = $parameterSet;
-        $this->retryThreshold = $retryThreshold;
-        $this->iterationCount = $iterationCount;
-        $this->revolutionCount = $revolutionCount;
-        $this->warmupCount = $warmupCount;
+    }
 
-        for ($index = 0; $index < $this->iterationCount; $index++) {
+    /**
+     * Generate $nbIterations and add them to the variant.
+     *
+     * @param int $nbIterations
+     */
+    public function spawnIterations($nbIterations)
+    {
+        for ($index = 0; $index < $nbIterations; $index++) {
             $this->iterations[] = new Iteration($index, $this);
         }
     }
@@ -151,12 +131,14 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
     public function computeStats()
     {
         $this->rejects = array();
+        $revs = $this->getSubject()->getRevs();
 
         if (0 === count($this->iterations)) {
             return;
         }
 
         $times = $this->getTimes();
+        $retryThreshold = $this->getSubject()->getRetryThreshold();
 
         $this->stats = new Distribution($times);
 
@@ -175,12 +157,12 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
 
             // the Z-Value represents the number of standard deviations this
             // value is away from the mean.
-            $revTime = $iteration->getTime() / $iteration->getRevolutions();
+            $revTime = $iteration->getTime() / $revs;
             $zValue = $this->stats->getStdev() ? ($revTime - $this->stats->getMean()) / $this->stats->getStdev() : 0;
             $iteration->setZValue($zValue);
 
-            if (null !== $this->retryThreshold) {
-                if (abs($deviation) >= $this->retryThreshold) {
+            if (null !== $retryThreshold) {
+                if (abs($deviation) >= $retryThreshold) {
                     $this->rejects[] = $iteration;
                 }
             }
@@ -312,46 +294,13 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
     }
 
     /**
-     * Return the retry threshold.
+     * Return all the iterations.
      *
-     * @return float
-     */
-    public function getRetryThreshold()
-    {
-        return $this->retryThreshold;
-    }
-
-    /**
-     * Return the number of revolutions that iterations in this
-     * collection will perform.
-     *
-     * @return int
-     */
-    public function getRevolutions()
-    {
-        return $this->revolutionCount;
-    }
-
-    /**
-     * Return the number of iterations that iterations should perform
-     * in this variant.
-     *
-     * @return int
+     * @return Iteration[]
      */
     public function getIterations()
     {
-        return $this->iterationCount;
-    }
-
-    /**
-     * Return the number of warmup revolutions that iterations should
-     * perform in this variant.
-     *
-     * @return int
-     */
-    public function getWarmup()
-    {
-        return $this->warmupCount;
+        return $this->iterations;
     }
 
     /**
@@ -361,7 +310,7 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
      */
     public function count()
     {
-        return $this->iterationCount;
+        return count($this->iterations);
     }
 
     /**

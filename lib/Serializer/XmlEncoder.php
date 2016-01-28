@@ -41,7 +41,6 @@ class XmlEncoder
         $suiteEl->setAttribute('context', $suite->getContextName());
         $suiteEl->setAttribute('date', $suite->getDate()->format('Y-m-d H:i:s'));
         $suiteEl->setAttribute('config-path', $suite->getConfigPath());
-        $suiteEl->setAttribute('retry-threshold', $suite->getRetryThreshold());
 
         $envEl = $suiteEl->appendElement('env');
 
@@ -94,6 +93,7 @@ class XmlEncoder
         $variantEl->setAttribute('output-mode', $subject->getOutputMode() ?: TimeUnit::MODE_TIME);
         $variantEl->setAttribute('revs', $subject->getRevs());
         $variantEl->setAttribute('warmup', $subject->getWarmup());
+        $variantEl->setAttribute('retry-threshold', $subject->getRetryThreshold());
 
         foreach ($variant->getParameterSet() as $name => $value) {
             $this->createParameter($variantEl, $name, $value);

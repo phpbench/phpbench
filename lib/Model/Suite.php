@@ -20,12 +20,11 @@ use PhpBench\Environment\Information;
  */
 class Suite implements \IteratorAggregate
 {
-    private $benchmarks;
     private $contextName;
     private $date;
     private $configPath;
-    private $retryThreshold;
-    private $envInformations;
+    private $envInformations = array();
+    private $benchmarks = array();
 
     /**
      * __construct.
@@ -34,28 +33,40 @@ class Suite implements \IteratorAggregate
      * @param string $contextName
      * @param \DateTime $date
      * @param string $configPath
-     * @param int $retryThreshold
      * @param Information[] $envInformations
      */
     public function __construct(
-        array $benchmarks,
         $contextName,
         \DateTime $date,
         $configPath,
-        $retryThreshold,
-        $envInformations
+        array $benchmarks = array(),
+        array $envInformations = array()
     ) {
-        $this->benchmarks = $benchmarks;
         $this->contextName = $contextName;
         $this->date = $date;
         $this->configPath = $configPath;
-        $this->retryThreshold = $retryThreshold;
         $this->envInformations = $envInformations;
+        $this->benchmarks = $benchmarks;
     }
 
     public function getBenchmarks()
     {
         return $this->benchmarks;
+    }
+
+    /**
+     * Create and add a benchmark.
+     *
+     * @param string $class
+     *
+     * @return Benchmark
+     */
+    public function createBenchmark($class)
+    {
+        $benchmark = new Benchmark($this, $class);
+        $this->benchmarks[] = $benchmark;
+
+        return $benchmark;
     }
 
     public function getIterator()
@@ -76,16 +87,6 @@ class Suite implements \IteratorAggregate
     public function getConfigPath()
     {
         return $this->configPath;
-    }
-
-    public function getRetryThreshold()
-    {
-        return $this->retryThreshold;
-    }
-
-    public function getEnvInformations()
-    {
-        return $this->envInformations;
     }
 
     public function getSummary()
@@ -136,7 +137,7 @@ class Suite implements \IteratorAggregate
         $errorStacks = array();
 
         foreach ($this->getVariants() as $variant) {
-            if (!$variant->hasErrorStack()) {
+            if (false === $variant->hasErrorStack()) {
                 continue;
             }
 
@@ -144,5 +145,21 @@ class Suite implements \IteratorAggregate
         }
 
         return $errorStacks;
+    }
+
+    /**
+     * @param Information[]
+     */
+    public function setEnvInformations(array $envInformations)
+    {
+        $this->envInformations = $envInformations;
+    }
+
+    /**
+     * @return Information[]
+     */
+    public function getEnvInformations()
+    {
+        return $this->envInformations;
     }
 }

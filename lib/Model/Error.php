@@ -22,19 +22,22 @@ class Error
     private $line;
     private $file;
     private $class;
+    private $trace;
 
     public function __construct(
         $message,
         $class,
         $code,
         $file,
-        $line
+        $line,
+        $trace
     ) {
         $this->message = $message;
         $this->class = $class;
         $this->line = $line;
         $this->file = $file;
         $this->code = $code;
+        $this->trace = $trace;
     }
 
     public static function fromException(\Exception $exception)
@@ -44,7 +47,8 @@ class Error
             get_class($exception),
             $exception->getCode(),
             $exception->getFile(),
-            $exception->getLine()
+            $exception->getLine(),
+            $exception->getTraceAsString()
         );
     }
 
@@ -71,5 +75,10 @@ class Error
     public function getClass()
     {
         return $this->class;
+    }
+
+    public function getTrace()
+    {
+        return $this->trace;
     }
 }

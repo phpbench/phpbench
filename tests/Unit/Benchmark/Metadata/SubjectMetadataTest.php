@@ -9,19 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Tests\Unit\Subject\Metadata;
+namespace PhpBench\Tests\Unit\Benchmark\Metadata;
 
-use PhpBench\Model\Subject;
+use PhpBench\Benchmark\Metadata\SubjectMetadata;
 
-class SubjectTest extends \PHPUnit_Framework_TestCase
+class SubjectMetadataTest extends \PHPUnit_Framework_TestCase
 {
     private $subject;
     private $benchmark;
 
     public function setUp()
     {
-        $this->benchmark = $this->prophesize('PhpBench\Model\Benchmark');
-        $this->subject = new Subject($this->benchmark->reveal(), 'subjectOne', 0);
+        $this->benchmark = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');
+        $this->subject = new SubjectMetadata($this->benchmark->reveal(), 'subjectOne', 0);
     }
 
     /**
@@ -38,20 +38,5 @@ class SubjectTest extends \PHPUnit_Framework_TestCase
 
         $result = $this->subject->inGroups(array());
         $this->assertFalse($result);
-    }
-
-    /**
-     * It should create variants.
-     */
-    public function testCreateVariant()
-    {
-        $parameterSet = $this->prophesize('PhpBench\Model\ParameterSet');
-        $variant = $this->subject->createVariant(
-            $parameterSet->reveal()
-        );
-
-        $this->assertEquals($this->subject, $variant->getSubject());
-        $this->assertEquals($parameterSet->reveal(), $variant->getParameterSet());
-        $this->assertEquals(0, $variant->count());
     }
 }
