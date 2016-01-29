@@ -72,7 +72,7 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
         }
 
         $this->output->writeln(sprintf(
-            '%s subjects, %s variant, %s revs, %s rejects',
+            '%s subjects, %s iterations, %s revs, %s rejects',
             $summary->getNbSubjects(),
             $summary->getNbIterations(),
             $summary->getNbRevolutions(),
