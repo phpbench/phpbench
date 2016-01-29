@@ -13,7 +13,6 @@ namespace PhpBench\Tests\Functional;
 
 use PhpBench\Benchmark\RunnerContext;
 use PhpBench\DependencyInjection\Container;
-use PhpBench\Serializer\XmlEncoder;
 
 class FunctionalTestCase extends \PHPUnit_Framework_TestCase
 {
@@ -36,7 +35,7 @@ class FunctionalTestCase extends \PHPUnit_Framework_TestCase
         return $this->container;
     }
 
-    protected function getSuiteDocument($bench = 'FooBench.php')
+    protected function getSuite($bench = 'FooBench.php')
     {
         $runner = $this->getContainer(false)->get('benchmark.runner');
         $context = new RunnerContext(__DIR__ . '/benchmarks/' . $bench, array(
@@ -46,15 +45,12 @@ class FunctionalTestCase extends \PHPUnit_Framework_TestCase
                 'spread' => array(0, 1),
             ),
         ));
-        $suite = $runner->run($context);
-        $encoder = new XmlEncoder();
 
-        return $encoder->encode($suite);
+        return $runner->run($context);
     }
 
-    protected function getMultipleSuiteDocument()
+    protected function getMultipleSuites()
     {
-        $encoder = new XmlEncoder();
         $context = new RunnerContext(__DIR__ . '/benchmarks/FooBench.php', array(
             'executor' => array(
                 'executor' => 'debug',
@@ -63,8 +59,7 @@ class FunctionalTestCase extends \PHPUnit_Framework_TestCase
             ),
             'context_name' => 'foobar',
         ));
-        $suite = $this->getContainer(false)->get('benchmark.runner')->run($context);
-        $document1 = $encoder->encode($suite);
+        $suite1 = $this->getContainer(false)->get('benchmark.runner')->run($context);
 
         $context = new RunnerContext(__DIR__ . '/benchmarks/FooBench.php', array(
             'executor' => array(
@@ -74,11 +69,8 @@ class FunctionalTestCase extends \PHPUnit_Framework_TestCase
             ),
             'context_name' => 'barfoo',
         ));
-        $suite = $this->getContainer(false)->get('benchmark.runner')->run($context);
-        $document2 = $encoder->encode($suite);
+        $suite2 = $this->getContainer(false)->get('benchmark.runner')->run($context);
 
-        $document1->appendSuiteDocument($document2, 'two');
-
-        return $document1;
+        return array($suite1, $suite2);
     }
 }

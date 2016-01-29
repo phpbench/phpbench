@@ -44,6 +44,25 @@ class VariantTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * It should create new iterations with the correct indexes.
+     */
+    public function testCreateIteration()
+    {
+        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal());
+        $iteration = $variant->createIteration(10, 20);
+        $this->assertInstanceOf('PhpBench\Model\Iteration', $iteration);
+        $this->assertEquals(10, $iteration->getTime());
+        $this->assertEquals(20, $iteration->getMemory());
+        $this->assertEquals(0, $iteration->getIndex());
+
+        $iteration = $variant->createIteration(10, 20);
+        $this->assertEquals(1, $iteration->getIndex());
+
+        $iteration = $variant->createIteration(10, 20);
+        $this->assertEquals(2, $iteration->getIndex());
+    }
+
+    /**
      * It should calculate the stats of each iteration from the mean.
      */
     public function testComputeStats()

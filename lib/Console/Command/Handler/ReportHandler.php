@@ -11,7 +11,7 @@
 
 namespace PhpBench\Console\Command\Handler;
 
-use PhpBench\Dom\Document;
+use PhpBench\Model\SuiteCollection;
 use PhpBench\Report\ReportManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -33,10 +33,10 @@ class ReportHandler
         $command->addOption('output', 'o', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Specify output', array('console'));
     }
 
-    public function reportsFromInput(InputInterface $input, OutputInterface $output, Document $suiteDocument)
+    public function reportsFromInput(InputInterface $input, OutputInterface $output, SuiteCollection $collection)
     {
         $reports = $input->getOption('report');
         $outputs = $input->getOption('output');
-        $this->reportManager->renderReports($output, $suiteDocument, $reports, $outputs);
+        $this->reportManager->renderReports($output, $collection, $reports, $outputs);
     }
 }

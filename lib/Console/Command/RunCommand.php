@@ -14,6 +14,7 @@ namespace PhpBench\Console\Command;
 use PhpBench\Console\Command\Handler\ReportHandler;
 use PhpBench\Console\Command\Handler\RunnerHandler;
 use PhpBench\Console\Command\Handler\TimeUnitHandler;
+use PhpBench\Model\SuiteCollection;
 use PhpBench\PhpBench;
 use PhpBench\Serializer\XmlEncoder;
 use Symfony\Component\Console\Command\Command;
@@ -77,17 +78,22 @@ EOT
             'warmup' => $input->getOption('warmup'),
         ));
 
-        $suiteResult = $this->xmlEncoder->encode($suite);
+        $collection = new SuiteCollection(array($suite));
+
+        if ($input->getOption('dump-file') || $input->getOption('dump')) {
+            $dom = $this->xmlEncoder->encode($collection);
+        }
+
         if ($dumpFile = $input->getOption('dump-file')) {
-            $xml = $suiteResult->dump();
+            $xml = $dom->dump();
             file_put_contents($dumpFile, $xml);
             $output->writeln('Dumped result to ' . $dumpFile);
         }
 
-        $this->reportHandler->reportsFromInput($input, $output, $suiteResult);
+        $this->reportHandler->reportsFromInput($input, $output, $collection);
 
         if ($input->getOption('dump')) {
-            $xml = $suiteResult->dump();
+            $xml = $dom->dump();
             $output->write($xml);
         }
 

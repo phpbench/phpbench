@@ -76,6 +76,23 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
     }
 
     /**
+     * Create and add a new iteration.
+     *
+     * @param int $time
+     * @param int $memory
+     *
+     * @return Iteration
+     */
+    public function createIteration($time, $memory, $rejectionCount = 0)
+    {
+        $index = count($this->iterations);
+        $iteration = $iteration = new Iteration($index, $this, $time, $memory, $rejectionCount);
+        $this->iterations[] = $iteration;
+
+        return $iteration;
+    }
+
+    /**
      * Return the iteration at the given index.
      *
      * @return Iteration
@@ -290,6 +307,11 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
             $errors[] = Error::fromException($exception);
         } while ($exception = $exception->getPrevious());
 
+        $this->errorStack = new ErrorStack($this, $errors);
+    }
+
+    public function createErrorStack(array $errors)
+    {
         $this->errorStack = new ErrorStack($this, $errors);
     }
 

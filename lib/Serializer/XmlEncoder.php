@@ -15,6 +15,7 @@ use PhpBench\Dom\SuiteDocument;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
+use PhpBench\Model\SuiteCollection;
 use PhpBench\Model\Variant;
 use PhpBench\PhpBench;
 use PhpBench\Util\TimeUnit;
@@ -27,32 +28,34 @@ class XmlEncoder
     /**
      * Encode a Suite object into a XML document.
      *
-     * @param Suite $suite
+     * @param SuiteCollection $suiteCollection
      *
      * @return SuiteDocumnet
      */
-    public function encode(Suite $suite)
+    public function encode(SuiteCollection $suiteCollection)
     {
         $dom = new SuiteDocument();
         $rootEl = $dom->createRoot('phpbench');
         $rootEl->setAttribute('version', PhpBench::VERSION);
 
-        $suiteEl = $rootEl->appendElement('suite');
-        $suiteEl->setAttribute('context', $suite->getContextName());
-        $suiteEl->setAttribute('date', $suite->getDate()->format('Y-m-d H:i:s'));
-        $suiteEl->setAttribute('config-path', $suite->getConfigPath());
+        foreach ($suiteCollection->getSuites() as $suite) {
+            $suiteEl = $rootEl->appendElement('suite');
+            $suiteEl->setAttribute('context', $suite->getContextName());
+            $suiteEl->setAttribute('date', $suite->getDate()->format('Y-m-d H:i:s'));
+            $suiteEl->setAttribute('config-path', $suite->getConfigPath());
 
-        $envEl = $suiteEl->appendElement('env');
+            $envEl = $suiteEl->appendElement('env');
 
-        foreach ($suite->getEnvInformations() as $information) {
-            $infoEl = $envEl->appendElement($information->getName());
-            foreach ($information as $key => $value) {
-                $infoEl->setAttribute($key, $value);
+            foreach ($suite->getEnvInformations() as $information) {
+                $infoEl = $envEl->appendElement($information->getName());
+                foreach ($information as $key => $value) {
+                    $infoEl->setAttribute($key, $value);
+                }
             }
-        }
 
-        foreach ($suite->getBenchmarks() as $benchmark) {
-            $this->processBenchmark($benchmark, $suiteEl);
+            foreach ($suite->getBenchmarks() as $benchmark) {
+                $this->processBenchmark($benchmark, $suiteEl);
+            }
         }
 
         return $dom;
@@ -113,6 +116,10 @@ class XmlEncoder
         }
 
         $stats = $variant->getStats();
+        $stats = iterator_to_array($stats);
+
+        // ensure same order (for testing)
+        ksort($stats);
 
         foreach ($variant as $iteration) {
             $iterationEl = $variantEl->appendElement('iteration');

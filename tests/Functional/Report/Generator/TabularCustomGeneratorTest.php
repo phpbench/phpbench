@@ -11,6 +11,8 @@
 
 namespace PhpBench\Tests\Functional\Report\Generator;
 
+use PhpBench\Model\SuiteCollection;
+
 class TabularCustomGeneratorTest extends GeneratorTestCase
 {
     /**
@@ -19,7 +21,7 @@ class TabularCustomGeneratorTest extends GeneratorTestCase
     public function testDefault()
     {
         $dom = $this->generate(
-            $this->getSuiteDocument(),
+            new SuiteCollection(array($this->getSuite())),
             array('file' => __DIR__ . '/reports/test.json')
         );
 
@@ -36,7 +38,7 @@ class TabularCustomGeneratorTest extends GeneratorTestCase
     public function testNotFoundFile()
     {
         $this->generate(
-            $this->getSuiteDocument(),
+            new SuiteCollection(array($this->getSuite())),
             array('file' => __DIR__ . '/reports/not_existing_test.json')
         );
     }
@@ -50,7 +52,7 @@ class TabularCustomGeneratorTest extends GeneratorTestCase
     public function testNoPathGiven()
     {
         $this->generate(
-            $this->getSuiteDocument(),
+            new SuiteCollection(array($this->getSuite())),
             array()
         );
     }

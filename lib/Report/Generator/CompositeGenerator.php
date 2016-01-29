@@ -13,6 +13,7 @@ namespace PhpBench\Report\Generator;
 
 use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Dom\Document;
+use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Report\GeneratorInterface;
 use PhpBench\Report\ReportManager;
@@ -77,9 +78,9 @@ class CompositeGenerator implements GeneratorInterface, OutputAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function generate(Document $result, Config $config)
+    public function generate(SuiteCollection $collection, Config $config)
     {
-        $reportDoms = $this->reportManager->generateReports($result, $config['reports']);
+        $reportDoms = $this->reportManager->generateReports($collection, $config['reports']);
         $compositeDom = new Document();
         $compositeEl = $compositeDom->createRoot('reports');
         $compositeEl->setAttribute('name', $config->getName());

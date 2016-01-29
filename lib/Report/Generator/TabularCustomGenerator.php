@@ -11,8 +11,9 @@
 
 namespace PhpBench\Report\Generator;
 
-use PhpBench\Dom\Document;
+use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
+use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Tabular\Definition\Loader;
 use PhpBench\Tabular\Tabular;
 
@@ -23,9 +24,9 @@ class TabularCustomGenerator extends AbstractTabularGenerator
 {
     private $configPath;
 
-    public function __construct(Tabular $tabular, Loader $loader, $configPath)
+    public function __construct(Tabular $tabular, Loader $loader, XmlEncoder $xmlEncoder, $configPath)
     {
-        parent::__construct($tabular, $loader);
+        parent::__construct($tabular, $loader, $xmlEncoder);
         $this->configPath = $configPath;
     }
 
@@ -78,8 +79,10 @@ class TabularCustomGenerator extends AbstractTabularGenerator
     /**
      * {@inheritdoc}
      */
-    public function generate(Document $document, Config $config)
+    public function generate(SuiteCollection $collection, Config $config)
     {
+        $document = $this->toXml($collection);
+
         if (!$config['file']) {
             throw new \InvalidArgumentException(
                 'You must provide the path to a Tabular JSON report definition with the "file" option.'

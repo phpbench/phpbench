@@ -13,6 +13,7 @@ namespace PhpBench\Report;
 
 use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Dom\Document;
+use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Registry;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -41,7 +42,7 @@ class ReportManager
      * @param Document $suiteDocument
      * @param array $reportNames
      */
-    public function generateReports(Document $suiteDocument, array $reportNames)
+    public function generateReports(SuiteCollection $collection, array $reportNames)
     {
         $reportDoms = array();
         $reportConfigs = array();
@@ -53,7 +54,7 @@ class ReportManager
             $generatorName = $reportConfig['generator'];
             $generator = $this->generatorRegistry->getService($generatorName);
 
-            $reportDom = $generator->generate($suiteDocument, $reportConfig);
+            $reportDom = $generator->generate($collection, $reportConfig);
 
             if (!$reportDom instanceof Document) {
                 throw new \RuntimeException(sprintf(
@@ -79,9 +80,9 @@ class ReportManager
      * @param array $reportNames
      * @param array $outputNames
      */
-    public function renderReports(OutputInterface $output, Document $suiteDocument, array $reportNames, array $outputNames)
+    public function renderReports(OutputInterface $output, SuiteCollection $collection, array $reportNames, array $outputNames)
     {
-        $reportDoms = $this->generateReports($suiteDocument, $reportNames);
+        $reportDoms = $this->generateReports($collection, $reportNames);
 
         foreach ($outputNames as $outputName) {
             $outputConfig = $this->rendererRegistry->getConfig($outputName);

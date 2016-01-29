@@ -71,6 +71,21 @@ class Benchmark implements \IteratorAggregate
     }
 
     /**
+     * Create and add a subject.
+     *
+     * @param string $name
+     *
+     * @return Subject
+     */
+    public function createSubject($name)
+    {
+        $subject = new Subject($this, $name);
+        $this->subjects[] = $subject;
+
+        return $subject;
+    }
+
+    /**
      * Get the subject metadata instances for this benchmark metadata.
      *
      * @return SubjectMetadata[]

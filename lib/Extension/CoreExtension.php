@@ -38,7 +38,6 @@ use PhpBench\Progress\Logger\VerboseLogger;
 use PhpBench\Progress\LoggerRegistry;
 use PhpBench\Registry\Registry;
 use PhpBench\Report\Generator\CompositeGenerator;
-use PhpBench\Report\Generator\HistogramGenerator;
 use PhpBench\Report\Generator\Tabular\Format\TimeFormat;
 use PhpBench\Report\Generator\TabularCustomGenerator;
 use PhpBench\Report\Generator\TabularGenerator;
@@ -47,6 +46,7 @@ use PhpBench\Report\Renderer\DebugRenderer;
 use PhpBench\Report\Renderer\DelimitedRenderer;
 use PhpBench\Report\Renderer\XsltRenderer;
 use PhpBench\Report\ReportManager;
+use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Tabular\Definition\Expander;
 use PhpBench\Tabular\Definition\Loader;
@@ -263,7 +263,8 @@ class CoreExtension implements ExtensionInterface
         $container->register('console.command.report', function (Container $container) {
             return new ReportCommand(
                 $container->get('console.command.handler.report'),
-                $container->get('console.command.handler.time_unit')
+                $container->get('console.command.handler.time_unit'),
+                $container->get('serializer.decoder.xml')
             );
         }, array('console.command' => array()));
     }
@@ -308,22 +309,21 @@ class CoreExtension implements ExtensionInterface
         $container->register('report_generator.tabular', function (Container $container) {
             return new TabularGenerator(
                 $container->get('tabular'),
-                $container->get('tabular.definition_loader')
+                $container->get('tabular.definition_loader'),
+                $container->get('serializer.encoder.xml')
             );
         }, array('report_generator' => array('name' => 'table')));
         $container->register('report_generator.tabular_custom', function (Container $container) {
             return new TabularCustomGenerator(
                 $container->get('tabular'),
                 $container->get('tabular.definition_loader'),
+                $container->get('serializer.encoder.xml'),
                 $container->getParameter('config_path')
             );
         }, array('report_generator' => array('name' => 'table_custom')));
         $container->register('report_generator.composite', function (Container $container) {
             return new CompositeGenerator($container->get('report.manager'));
         }, array('report_generator' => array('name' => 'composite')));
-        $container->register('report_generator.histogram', function (Container $container) {
-            return new HistogramGenerator();
-        }, array('report_generator' => array('name' => 'histogram')));
     }
 
     private function registerReportRenderers(Container $container)
@@ -445,6 +445,9 @@ class CoreExtension implements ExtensionInterface
     {
         $container->register('serializer.encoder.xml', function (Container $container) {
             return new XmlEncoder();
+        });
+        $container->register('serializer.decoder.xml', function (Container $container) {
+            return new XmlDecoder();
         });
     }
 

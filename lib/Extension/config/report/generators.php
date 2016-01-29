@@ -32,7 +32,4 @@ return array(
         'generator' => 'table_custom',
         'file' => __DIR__ . '/../../../Report/Generator/Tabular/env.json',
     ),
-    'histogram' => array(
-        'generator' => 'histogram',
-    ),
 );

@@ -12,6 +12,7 @@
 namespace PhpBench\Tests\Unit\Report;
 
 use PhpBench\Dom\Document;
+use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Report\ReportManager;
 
@@ -19,7 +20,7 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
 {
     private $reportManager;
     private $generator;
-    private $suiteDocument;
+    private $suiteCollection;
     private $output;
 
     public function setUp()
@@ -38,8 +39,7 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
             ->willImplement('PhpBench\Console\OutputAwareInterface');
         $this->output = $this->prophesize('Symfony\Component\Console\Output\OutputInterface');
 
-        $this->suiteDocument = new Document();
-        $this->suiteDocument->loadXml('<?xml version="1.0"?><phpbench />');
+        $this->suiteCollection = new SuiteCollection();
         $this->reportsDocument = new Document();
 
         $reportsEl = $this->reportsDocument->createRoot('reports');
@@ -65,7 +65,7 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
         $this->generatorRegistry->getService('service')->willReturn(
             $this->generator->reveal()
         );
-        $this->generator->generate($this->suiteDocument, $config)->willReturn($this->reportsDocument);
+        $this->generator->generate($this->suiteCollection, $config)->willReturn($this->reportsDocument);
 
         $this->rendererRegistry->getConfig('console_output')->willReturn($outputConfig);
         $this->rendererRegistry->getService('renderer')->willReturn(
@@ -75,7 +75,7 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->reportManager->renderReports(
             $this->output->reveal(),
-            $this->suiteDocument,
+            $this->suiteCollection,
             array('test_report'),
             array('console_output')
         );
@@ -97,11 +97,11 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
         $this->generatorRegistry->getService('service')->willReturn(
             $this->generator->reveal()
         );
-        $this->generator->generate($this->suiteDocument, $config)->willReturn(null);
+        $this->generator->generate($this->suiteCollection, $config)->willReturn(null);
 
         $this->reportManager->renderReports(
             $this->output->reveal(),
-            $this->suiteDocument,
+            $this->suiteCollection,
             array('test_report'),
             array('console_output')
         );
@@ -124,7 +124,7 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
         $this->generatorRegistry->getService('service')->willReturn(
             $this->generator->reveal()
         );
-        $this->generator->generate($this->suiteDocument, $config)->willReturn($this->reportsDocument);
+        $this->generator->generate($this->suiteCollection, $config)->willReturn($this->reportsDocument);
 
         $this->rendererRegistry->getService('renderer')->willReturn(
             $this->outputRenderer->reveal()
@@ -136,7 +136,7 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->reportManager->renderReports(
             $this->output->reveal(),
-            $this->suiteDocument,
+            $this->suiteCollection,
             array('test_report'),
             array('console_output')
         );
