@@ -21,7 +21,7 @@ before_script:
 
 script: 
   - phpunit
-  - php bin/phpbench run --config=examples/phpbench.json
+  - php bin/phpbench run
 
 matrix:
     include:
