@@ -11,6 +11,8 @@
 
 namespace PhpBench\Tests\Functional\Report\Generator;
 
+use PhpBench\Model\SuiteCollection;
+
 class TabularGeneratorTest extends GeneratorTestCase
 {
     protected function getGenerator()
@@ -26,7 +28,7 @@ class TabularGeneratorTest extends GeneratorTestCase
     public function testDefault()
     {
         $dom = $this->generate(
-            $this->getSuiteDocument(),
+            new SuiteCollection(array($this->getSuite())),
             array()
         );
 
@@ -60,7 +62,7 @@ class TabularGeneratorTest extends GeneratorTestCase
     public function testGroupFilterNonExisting()
     {
         $dom = $this->generate(
-            $this->getSuiteDocument(),
+            new SuiteCollection(array($this->getSuite())),
             array(
                 'groups' => array('notexisting'),
             )
@@ -76,7 +78,7 @@ class TabularGeneratorTest extends GeneratorTestCase
     public function testGroupFilter()
     {
         $dom = $this->generate(
-            $this->getSuiteDocument(),
+            new SuiteCollection(array($this->getSuite())),
             array(
                 'groups' => array('two'),
             )
@@ -91,7 +93,7 @@ class TabularGeneratorTest extends GeneratorTestCase
     public function testAggregate()
     {
         $dom = $this->generate(
-            $this->getMultipleSuiteDocument(),
+            new SuiteCollection($this->getMultipleSuites()),
             array(
                 'type' => 'aggregate',
             )
@@ -126,7 +128,7 @@ class TabularGeneratorTest extends GeneratorTestCase
     public function testExclude()
     {
         $dom = $this->generate(
-            $this->getSuiteDocument(),
+            new SuiteCollection(array($this->getSuite())),
             array(
                 'exclude' => array('time_net', 'benchmark'),
             )
@@ -144,7 +146,7 @@ class TabularGeneratorTest extends GeneratorTestCase
     public function testTitle()
     {
         $dom = $this->generate(
-            $this->getSuiteDocument(),
+            new SuiteCollection(array($this->getSuite())),
             array(
                 'title' => 'Hello World',
             )
@@ -159,7 +161,7 @@ class TabularGeneratorTest extends GeneratorTestCase
     public function testDescription()
     {
         $dom = $this->generate(
-            $this->getSuiteDocument(),
+            new SuiteCollection(array($this->getSuite())),
             array(
                 'description' => 'Hello World',
             )
@@ -174,7 +176,7 @@ class TabularGeneratorTest extends GeneratorTestCase
     public function testSortAsc()
     {
         $dom = $this->generate(
-            $this->getSuiteDocument(),
+            new SuiteCollection(array($this->getSuite())),
             array(
                 'sort' => array('time' => 'asc'),
             )
@@ -195,7 +197,7 @@ class TabularGeneratorTest extends GeneratorTestCase
     public function testSortDesc()
     {
         $dom = $this->generate(
-            $this->getSuiteDocument(),
+            new SuiteCollection(array($this->getSuite())),
             array(
                 'sort' => array('time' => 'desc'),
             )
@@ -216,7 +218,7 @@ class TabularGeneratorTest extends GeneratorTestCase
     public function testPrettyParams()
     {
         $dom = $this->generate(
-            $this->getSuiteDocument(),
+            new SuiteCollection(array($this->getSuite())),
             array(
                 'pretty_params' => true,
             )
@@ -248,7 +250,7 @@ EOT
     public function testCompare()
     {
         $dom = $this->generate(
-            $this->getMultipleSuiteDocument(),
+            new SuiteCollection($this->getMultipleSuites()),
             array(
                 'type' => 'compare',
             )

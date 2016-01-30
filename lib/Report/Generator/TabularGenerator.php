@@ -12,6 +12,7 @@
 namespace PhpBench\Report\Generator;
 
 use PhpBench\Dom\Document;
+use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Tabular\Tabular;
 
@@ -87,8 +88,9 @@ class TabularGenerator extends AbstractTabularGenerator
     /**
      * {@inheritdoc}
      */
-    public function generate(Document $document, Config $config)
+    public function generate(SuiteCollection $collection, Config $config)
     {
+        $document = $this->toXml($collection);
         $reportFile = __DIR__ . '/Tabular/' . $config['type'] . '.json';
         $definition = $this->definitionLoader->load($reportFile, $document);
 

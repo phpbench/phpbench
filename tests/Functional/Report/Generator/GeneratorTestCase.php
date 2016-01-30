@@ -12,6 +12,7 @@
 namespace PhpBench\Tests\Functional\Report\Generator;
 
 use PhpBench\Dom\Document;
+use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Tests\Functional\FunctionalTestCase;
 
@@ -27,10 +28,10 @@ abstract class GeneratorTestCase extends FunctionalTestCase
         ));
     }
 
-    protected function generate(Document $document, $config)
+    protected function generate(SuiteCollection $collection, $config)
     {
         return $this->getGenerator()->generate(
-            $document,
+            $collection,
             $this->getConfig($config)
         );
     }

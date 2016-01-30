@@ -34,17 +34,17 @@ class Iteration
         Variant $variant,
         $time = null,
         $memory = null,
+        $rejectionCount = 0,
         $deviation = null,
-        $zValue = null,
-        $rejectionCount = 0
+        $zValue = null
     ) {
         $this->index = $index;
         $this->variant = $variant;
         $this->time = $time;
         $this->memory = $memory;
+        $this->rejectionCount = $rejectionCount;
         $this->deviation = $deviation;
         $this->zValue = $zValue;
-        $this->rejectionCount = $rejectionCount;
     }
 
     /**

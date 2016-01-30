@@ -11,21 +11,38 @@
 
 namespace PhpBench\Tests\Unit\Serializer;
 
+use PhpBench\Model\SuiteCollection;
+use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Serializer\XmlEncoder;
 
-class XmlEncoderTest extends XmlTestCase
+class XmlDecoderTest extends XmlTestCase
 {
     /**
      * It should encode the suite to an XML document.
      *
      * @dataProvider provideEncode
      */
-    public function testEncode(array $params, $expected)
+    public function testDecoder(array $params, $expected)
     {
         $collection = $this->getSuiteCollection($params);
+        $dom = $this->encode($collection);
+
+        $decoder = new XmlDecoder();
+        $collection = $decoder->decode($dom);
+
+        $decodedDom = $this->encode($collection);
+
+        $this->assertEquals(
+            $dom->dump(),
+            $decodedDom->dump()
+        );
+    }
+
+    private function encode(SuiteCollection $collection)
+    {
         $xmlEncoder = new XmlEncoder();
         $dom = $xmlEncoder->encode($collection);
-        $this->assertInstanceOf('PhpBench\Dom\SuiteDocument', $dom);
-        $this->assertEquals($expected, $dom->dump());
+
+        return $dom;
     }
 }

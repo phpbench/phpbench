@@ -13,7 +13,7 @@ namespace PhpBench\Console\Command;
 
 use PhpBench\Console\Command\Handler\ReportHandler;
 use PhpBench\Console\Command\Handler\TimeUnitHandler;
-use PhpBench\Dom\SuiteDocument;
+use PhpBench\Serializer\XmlDecoder;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -26,11 +26,13 @@ class ReportCommand extends Command
 
     public function __construct(
         ReportHandler $reportHandler,
-        TimeUnitHandler $timeUnitHandler
+        TimeUnitHandler $timeUnitHandler,
+        XmlDecoder $xmlDecoder
     ) {
         parent::__construct();
         $this->reportHandler = $reportHandler;
         $this->timeUnitHandler = $timeUnitHandler;
+        $this->xmlDecoder = $xmlDecoder;
     }
 
     public function configure()
@@ -68,21 +70,7 @@ EOT
 
         $this->timeUnitHandler->timeUnitFromInput($input);
 
-        $aggregateDom = new SuiteDocument();
-        $aggregateDom->createRoot('phpbench');
-
-        foreach ($files as $file) {
-            if (!file_exists($file)) {
-                throw new \InvalidArgumentException(sprintf(
-                    'Could not find suite result file "%s" (cwd: %s)', $file, getcwd()
-                ));
-            }
-
-            $suiteResult = new SuiteDocument();
-            $suiteResult->loadXml(file_get_contents($file));
-            $aggregateDom->appendSuiteDocument($suiteResult, basename($file));
-        }
-
-        $this->reportHandler->reportsFromInput($input, $output, $aggregateDom);
+        $collection = $this->xmlDecoder->decodeFiles($files);
+        $this->reportHandler->reportsFromInput($input, $output, $collection);
     }
 }

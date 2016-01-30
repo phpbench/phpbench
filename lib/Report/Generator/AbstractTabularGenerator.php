@@ -13,8 +13,10 @@ namespace PhpBench\Report\Generator;
 
 use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Dom\Document;
+use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Report\GeneratorInterface;
+use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Tabular\Definition\Loader;
 use PhpBench\Tabular\Tabular;
 use Symfony\Component\Console\Helper\Table;
@@ -22,14 +24,16 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class AbstractTabularGenerator implements GeneratorInterface, OutputAwareInterface
 {
+    private $xmlEncoder;
     protected $tabular;
     protected $output;
     protected $definitionLoader;
 
-    public function __construct(Tabular $tabular, Loader $definitionLoader)
+    public function __construct(Tabular $tabular, Loader $definitionLoader, XmlEncoder $xmlEncoder)
     {
         $this->tabular = $tabular;
         $this->definitionLoader = $definitionLoader;
+        $this->xmlEncoder = $xmlEncoder;
     }
 
     /**
@@ -38,6 +42,11 @@ abstract class AbstractTabularGenerator implements GeneratorInterface, OutputAwa
     public function setOutput(OutputInterface $output)
     {
         $this->output = $output;
+    }
+
+    protected function toXml(SuiteCollection $collection)
+    {
+        return $this->xmlEncoder->encode($collection);
     }
 
     protected function doGenerate($definition, Document $document, Config $config, array $parameters = array())
