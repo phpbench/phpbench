@@ -19,15 +19,6 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->config = new Config(
-            'test',
-            array(
-            'foo' => 'bar',
-            'bar' => array(
-                'one' => 1,
-                'two' => 2,
-            ),
-        ));
     }
 
     /**
@@ -38,6 +29,56 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
      */
     public function testExceptionOffsetNotExist()
     {
-        $this->config['offset_not_exist'];
+        $config = new Config(
+            'test',
+            array(
+            'foo' => 'bar',
+            'bar' => array(
+                'one' => 1,
+                'two' => 2,
+            ),
+        ));
+        $config['offset_not_exist'];
+    }
+
+    /**
+     * It should throw an exception if an invalid name is given.
+     *
+     * @expectedException InvalidArgumentException
+     * @dataProvider provideInvalidName
+     */
+    public function testInvalidName($name)
+    {
+        new Config($name, array());
+    }
+
+    public function provideInvalidName()
+    {
+        return array(
+            array('he lo'),
+            array('foo&'),
+            array(':'),
+            array(''),
+        );
+    }
+
+    /**
+     * It should allow good names.
+     *
+     * @dataProvider provideGoodName
+     */
+    public function testGoodName($name)
+    {
+        $config = new Config($name, array());
+        $this->assertEquals($name, $config->getName());
+    }
+
+    public function provideGoodName()
+    {
+        return array(
+            array('helo'),
+            array('foo-bar'),
+            array('foo_bar'),
+        );
     }
 }

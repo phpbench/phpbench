@@ -13,6 +13,7 @@ namespace PhpBench\Registry;
 
 use JsonSchema\Validator;
 use PhpBench\DependencyInjection\Container;
+use PhpBench\Json\JsonDecoder;
 
 /**
  * Service and configuration registry.
@@ -36,12 +37,18 @@ class Registry
     private $services = array();
     private $validator;
     private $serviceType;
+    private $jsonDecoder;
 
-    public function __construct($serviceType, Container $container, Validator $validator)
-    {
+    public function __construct(
+        $serviceType,
+        Container $container,
+        Validator $validator,
+        JsonDecoder $jsonDecoder
+    ) {
         $this->serviceType = $serviceType;
         $this->container = $container;
         $this->validator = $validator ?: new Validator();
+        $this->jsonDecoder = $jsonDecoder;
     }
 
     /**
@@ -108,6 +115,7 @@ class Registry
             $this->setConfig($name, $config);
         }
 
+        $name = trim($name);
         $name = $this->processRawCliConfig($name);
 
         if (!isset($this->configs[$name])) {
@@ -280,19 +288,11 @@ class Registry
      */
     private function processRawCliConfig($rawConfig)
     {
-        // If it doesn't look like a JSON string, assume it is the name of a config
-        if (substr($rawConfig, 0, 1) !== '{') {
+        if (preg_match(Config::NAME_REGEX, $rawConfig)) {
             return $rawConfig;
         }
 
-        $config = json_decode($rawConfig, true);
-
-        if (null === $config) {
-            throw new \InvalidArgumentException(sprintf(
-                'Could not decode JSON string: %s', $rawConfig
-            ));
-        }
-
+        $config = $this->jsonDecoder->decode($rawConfig);
         $configName = uniqid();
         $this->setConfig($configName, $config);
 

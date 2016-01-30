@@ -12,6 +12,7 @@
 namespace PhpBench\Tests\Unit\Registry;
 
 use JsonSchema\Validator;
+use PhpBench\Json\JsonDecoder;
 use PhpBench\Registry\Config;
 use PhpBench\Registry\Registry;
 
@@ -33,7 +34,8 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
         $this->registry = new Registry(
             'test',
             $this->container->reveal(),
-            $this->validator
+            $this->validator,
+            new JsonDecoder()
         );
     }
 
@@ -270,8 +272,7 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
     /**
      * If a invalid JSON encoded string is passed to getConfig, then it should throw an exception.
      *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Could not decode
+     * @expectedException Seld\JsonLint\ParsingException
      */
     public function testGetConfigJsonStringInvalid()
     {
@@ -279,7 +280,7 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
         $this->service1->getDefaultConfig()->willReturn(array());
         $this->service1->getSchema()->willReturn(array());
 
-        $result = $this->registry->getConfig('{test": "service"}');
+        $result = $this->registry->getConfig('{test": service}');
         $this->assertEquals(new Config('test', array(
             'test' => 'service',
         )), $result);

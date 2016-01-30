@@ -109,7 +109,7 @@ class RunTest extends SystemTestCase
             'run --report=\'{"name": "foo_ta\' benchmarks/set4/NothingBench.php'
         );
         $this->assertExitCode(1, $process);
-        $this->assertContains('Could not decode', $process->getErrorOutput());
+        $this->assertContains('Parse error', $process->getErrorOutput());
     }
 
     /**
