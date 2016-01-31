@@ -17,10 +17,21 @@ namespace PhpBench\Registry;
  */
 class Config extends \ArrayObject
 {
+    /**
+     * All names must satisfy this regex.
+     */
+    const NAME_REGEX = '{^[0-9a-zA-Z_-]+$}';
+
     private $name;
 
     public function __construct($name, array $config)
     {
+        if (!preg_match(self::NAME_REGEX, $name)) {
+            throw new \InvalidArgumentException(sprintf(
+                'Configuration names may only contain alpha-numeric characters, _ and -. Got "%s"',
+                $name
+            ));
+        }
         $this->name = $name;
         parent::__construct($config);
     }

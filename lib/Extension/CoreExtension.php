@@ -29,6 +29,7 @@ use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Environment\Provider;
 use PhpBench\Environment\Supplier;
+use PhpBench\Json\JsonDecoder;
 use PhpBench\Progress\Logger\BlinkenLogger;
 use PhpBench\Progress\Logger\DotsLogger;
 use PhpBench\Progress\Logger\HistogramLogger;
@@ -223,6 +224,9 @@ class CoreExtension implements ExtensionInterface
 
     private function registerJsonSchema(Container $container)
     {
+        $container->register('json.decoder', function (Container $container) {
+            return new JsonDecoder();
+        });
         $container->register('json_schema.validator', function (Container $container) {
             return new \JsonSchema\Validator();
         });
@@ -404,7 +408,8 @@ class CoreExtension implements ExtensionInterface
                 return new Registry(
                     $registryType,
                     $container,
-                    $container->get('json_schema.validator')
+                    $container->get('json_schema.validator'),
+                    $container->get('json.decoder')
                 );
             });
         }
@@ -413,7 +418,8 @@ class CoreExtension implements ExtensionInterface
             return new Registry(
                 'executor',
                 $container,
-                $container->get('json_schema.validator')
+                $container->get('json_schema.validator'),
+                $container->get('json.decoder')
             );
         });
     }
