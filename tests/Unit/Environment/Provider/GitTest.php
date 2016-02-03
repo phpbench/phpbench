@@ -97,6 +97,19 @@ class GitTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('foobar', $info['branch']);
     }
 
+    /**
+     * It should not be applicable if GIT is not available.
+     */
+    public function testNotApplicableIfGitNotFound()
+    {
+        $exeFinder = $this->prophesize('Symfony\Component\Process\ExecutableFinder');
+        $exeFinder->find('git', false)->willReturn(false);
+
+        $provider = new Provider\Git($exeFinder->reveal());
+
+        $this->assertFalse($provider->isApplicable());
+    }
+
     private function clean()
     {
         if (file_exists($this->testRepoDir)) {

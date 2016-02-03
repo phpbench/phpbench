@@ -13,25 +13,35 @@ namespace PhpBench\Environment\Provider;
 
 use PhpBench\Environment\ProviderInterface;
 use PhpBench\Environment\VcsInformation;
+use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
 
 /**
  * Return information about the git environment.
- *
- * NOTE: This class returns a VcsInformation class to ensure that
- *       all VCS providers provide the same keys. VCS providers
- *       should be mutually exlusive and "polymorphic".
  */
 class Git implements ProviderInterface
 {
-    const SYSTEM = 'git';
+    private $exeFinder;
+    private $exeName;
+    private $exePath;
+
+    public function __construct(ExecutableFinder $exeFinder = null, $exeName = 'git')
+    {
+        $this->exeFinder = $exeFinder ?: new ExecutableFinder();
+        $this->exeName = $exeName;
+    }
 
     /**
      * {@inheritdoc}
      */
     public function isApplicable()
     {
+        if (false === $this->getGitPath()) {
+            return false;
+        }
+
         $index = sprintf('%s/.git', getcwd());
+
         if (file_exists($index)) {
             return true;
         }
@@ -44,8 +54,7 @@ class Git implements ProviderInterface
      */
     public function getInformation()
     {
-        $cmd = 'git symbolic-ref HEAD';
-        $process = $this->exec($cmd);
+        $process = $this->exec('symbolic-ref HEAD');
 
         if (0 !== $process->getExitCode() && stristr($process->getErrorOutput(), 'ref HEAD is not')) {
             $branchName = '(unnamed branch)';
@@ -73,14 +82,26 @@ class Git implements ProviderInterface
             $version = trim(file_get_contents($commitshRef));
         }
 
-        return new VcsInformation(self::SYSTEM, $branchName, $version);
+        return new VcsInformation('git', $branchName, $version);
     }
 
     private function exec($cmd)
     {
+        $cmd = sprintf('%s %s', $this->getGitPath(), $cmd);
         $process = new Process($cmd);
         $process->run();
 
         return $process;
+    }
+
+    private function getGitPath()
+    {
+        if (null !== $this->exePath) {
+            return $this->exePath;
+        }
+
+        $this->exePath = $this->exeFinder->find($this->exeName, false);
+
+        return $this->exePath;
     }
 }
