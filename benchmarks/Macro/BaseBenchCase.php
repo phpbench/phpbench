@@ -92,7 +92,7 @@ class BaseBenchCase
 
     protected static function getFunctionalBenchmarkPath()
     {
-        return __DIR__ . '/../../tests/Functional/benchmarks';
+        return __DIR__ . '/benchmarks';
     }
 
     protected static function getWorkspacePath()

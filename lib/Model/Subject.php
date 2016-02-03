@@ -59,7 +59,7 @@ class Subject
     /**
      * @var string
      */
-    private $outputTimeUnit = null;
+    private $outputTimeUnit = TimeUnit::MICROSECONDS;
 
     /**
      * @var string
