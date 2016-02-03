@@ -28,9 +28,10 @@ class FunctionalTestCase extends \PHPUnit_Framework_TestCase
             return $this->container;
         }
 
-        $this->container = new Container();
-        $this->container->configure();
-        $this->container->build();
+        $this->container = new Container(array(
+            'PhpBench\Extension\CoreExtension',
+        ));
+        $this->container->init();
 
         return $this->container;
     }

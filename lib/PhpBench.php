@@ -26,11 +26,11 @@ class PhpBench
         ErrorHandler::register();
 
         $config = self::loadConfig();
-        $container = new Container($config['extensions']);
+        $extensions = $config['extensions'];
+        $extensions[] = 'PhpBench\Extension\CoreExtension';
         unset($config['extensions']);
-        $container->configure();
-        $container->mergeParameters($config);
-        $container->build();
+        $container = new Container($extensions, $config);
+        $container->init();
         $container->get('console.application')->run();
     }
 

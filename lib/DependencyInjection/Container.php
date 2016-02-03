@@ -21,27 +21,28 @@ class Container
     private $instantiators = array();
     private $services = array();
     private $tags = array();
-    private $parameters = array();
-    private $extensions = array();
+    private $config = array();
+    private $userConfig = array();
 
-    public function __construct(array $extensions = array())
+    private $extensionClasses = array();
+
+    public function __construct(array $extensionClasses = array(), array $userConfig = array())
     {
-        $this->parameters['extensions'] = $extensions;
-
-        // Add the core extension by deefault
-        $this->parameters['extensions'][] = 'PhpBench\Extension\CoreExtension';
+        $this->extensionClasses = $extensionClasses;
+        $this->userConfig = $userConfig;
     }
 
     /**
      * Configure the container. This method will call the `configure()` method
      * on each extension. Extensions must use this opportunity to register their
-     * services and define any default parameters.
+     * services and define any default config.
      *
      * This method must be called before `build()`.
      */
-    public function configure()
+    public function init()
     {
-        foreach ($this->parameters['extensions'] as $extensionClass) {
+        $extensions = array();
+        foreach ($this->extensionClasses as $extensionClass) {
             if (!class_exists($extensionClass)) {
                 throw new \InvalidArgumentException(sprintf(
                     'Extension class "%s" does not exist',
@@ -54,23 +55,38 @@ class Container
             if (!$extension instanceof ExtensionInterface) {
                 throw new \InvalidArgumentException(sprintf(
                     // add any manually specified extensions
-                    'Extensions "%s" must implement the PhpBench\\Extension interface',
+                    'Extension "%s" must implement the PhpBench\\Extension interface',
                     get_class($extension)
                 ));
             }
 
-            $extension->configure($this);
-            $this->extensions[] = $extension;
-        }
-    }
+            $extensions[] = $extension;
 
-    /**
-     * Build the container. This method will call the `build()` method on each registered extension.
-     * The extensions can use this as a "compiler pass" to add tagged services to other services for example.
-     */
-    public function build()
-    {
-        foreach ($this->extensions as $extension) {
+            $this->config = array_merge(
+                $this->config,
+                $extension->getDefaultConfig()
+            );
+        }
+
+        $diff = array_diff(array_keys($this->userConfig), array_keys($this->config));
+
+        if ($diff) {
+            throw new \InvalidArgumentException(sprintf(
+                'Unknown configuration keys: "%s". Permitted keys: "%s"',
+                implode('", "', $diff), implode('", "', array_keys($this->config))
+            ));
+        }
+
+        $this->config = array_merge(
+            $this->config,
+            $this->userConfig
+        );
+
+        foreach ($extensions as $extension) {
+            $extension->load($this);
+        }
+
+        foreach ($extensions as $extension) {
             $extension->build($this);
         }
     }
@@ -153,19 +169,6 @@ class Container
     }
 
     /**
-     * Merge an array of parameters onto the existing parameter set.
-     *
-     * @param array $parameters
-     */
-    public function mergeParameters(array $parameters)
-    {
-        $this->parameters = array_merge(
-            $this->parameters,
-            $parameters
-        );
-    }
-
-    /**
      * Set the value of the parameter with the given name.
      *
      * @param string $name
@@ -173,7 +176,7 @@ class Container
      */
     public function setParameter($name, $value)
     {
-        $this->parameters[$name] = $value;
+        $this->config[$name] = $value;
     }
 
     /**
@@ -187,14 +190,14 @@ class Container
      */
     public function getParameter($name)
     {
-        if (!array_key_exists($name, $this->parameters)) {
+        if (!array_key_exists($name, $this->config)) {
             throw new \InvalidArgumentException(sprintf(
                 'Parameter "%s" has not been registered',
                 $name
             ));
         }
 
-        return $this->parameters[$name];
+        return $this->config[$name];
     }
 
     /**
@@ -206,6 +209,6 @@ class Container
      */
     public function hasParameter($name)
     {
-        return array_key_exists($name, $this->parameters);
+        return array_key_exists($name, $this->config);
     }
 }

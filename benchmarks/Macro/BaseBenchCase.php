@@ -65,9 +65,10 @@ class BaseBenchCase
 
     protected function getContainer()
     {
-        $container = new Container();
-        $container->configure();
-        $container->build();
+        $container = new Container(array(
+            'PhpBench\Extension\CoreExtension',
+        ));
+        $container->init();
 
         return $container;
     }
