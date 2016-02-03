@@ -12,19 +12,9 @@
 namespace PhpBench\Tests\Unit\Extension;
 
 use PhpBench\DependencyInjection\Container;
-use PhpBench\Extension\CoreExtension;
 
 class CoreExtensionTest extends \PHPUnit_Framework_TestCase
 {
-    private $container;
-    private $extension;
-
-    public function setUp()
-    {
-        $this->container = new Container();
-        $this->extension = new CoreExtension();
-    }
-
     public function tearDown()
     {
         putenv('CONTINUOUS_INTEGRATION=0');
@@ -35,13 +25,12 @@ class CoreExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testRelativizePath()
     {
-        $this->extension->configure($this->container);
-        $this->container->mergeParameters(array(
+        $container = new Container(array('PhpBench\Extension\CoreExtension'), array(
             'path' => 'hello',
             'config_path' => '/path/to/phpbench.json',
         ));
-        $this->extension->build($this->container);
-        $this->assertEquals('/path/to/hello', $this->container->getParameter('path'));
+        $container->init();
+        $this->assertEquals('/path/to/hello', $container->getParameter('path'));
     }
 
     /**
@@ -52,7 +41,11 @@ class CoreExtensionTest extends \PHPUnit_Framework_TestCase
     {
         putenv('CONTINUOUS_INTEGRATION=1');
 
-        $this->extension->configure($this->container);
-        $this->assertEquals('travis', $this->container->getParameter('progress'));
+        $container = new Container(array('PhpBench\Extension\CoreExtension'), array(
+            'path' => 'hello',
+            'config_path' => '/path/to/phpbench.json',
+        ));
+        $container->init();
+        $this->assertEquals('travis', $container->getParameter('progress'));
     }
 }

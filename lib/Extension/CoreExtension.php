@@ -66,7 +66,23 @@ use Symfony\Component\Finder\Finder;
 
 class CoreExtension implements ExtensionInterface
 {
-    public function configure(Container $container)
+    public function getDefaultConfig()
+    {
+        return array(
+            'bootstrap' => null,
+            'path' => null,
+            'reports' => array(),
+            'outputs' => array(),
+            'executors' => array(),
+            'config_path' => null,
+            'progress' => getenv('CONTINUOUS_INTEGRATION') ? 'travis' : 'verbose',
+            'retry_threshold' => null,
+            'time_unit' => TimeUnit::MICROSECONDS,
+            'output_mode' => TimeUnit::MODE_TIME,
+        );
+    }
+
+    public function load(Container $container)
     {
         $container->register('console.application', function (Container $container) {
             $application = new Application();
@@ -95,22 +111,11 @@ class CoreExtension implements ExtensionInterface
         $this->registerReportRenderers($container);
         $this->registerEnvironment($container);
         $this->registerSerializer($container);
-
-        $container->mergeParameters(array(
-            'path' => null,
-            'reports' => array(),
-            'outputs' => array(),
-            'executors' => array(),
-            'config_path' => null,
-            'progress' => getenv('CONTINUOUS_INTEGRATION') ? 'travis' : 'verbose',
-            'retry_threshold' => null,
-            'time_unit' => TimeUnit::MICROSECONDS,
-            'output_mode' => TimeUnit::MODE_TIME,
-        ));
     }
 
     public function build(Container $container)
     {
+        // build
         foreach ($container->getServiceIdsForTag('progress_logger') as $serviceId => $attributes) {
             $progressLogger = $container->get($serviceId);
             $container->get('progress_logger.registry')->addProgressLogger($attributes['name'], $progressLogger);

@@ -18,7 +18,12 @@ use PhpBench\Extensions\XDebug\Executor\XDebugExecutor;
 
 class XDebugExtension implements ExtensionInterface
 {
-    public function configure(Container $container)
+    public function getDefaultConfig()
+    {
+        return array();
+    }
+
+    public function load(Container $container)
     {
         $container->register('xdebug.command.profile', function (Container $container) {
             return new ProfileCommand(

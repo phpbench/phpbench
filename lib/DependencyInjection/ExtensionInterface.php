@@ -18,7 +18,14 @@ interface ExtensionInterface
      *
      * @param Container $container
      */
-    public function configure(Container $container);
+    public function load(Container $container);
+
+    /**
+     * Return the default parameters for the container.
+     *
+     * @return array
+     */
+    public function getDefaultConfig();
 
     /**
      * Called after all services in all extensions have been registered.
