@@ -9,8 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Tests\Functional\benchmarks;
+namespace PhpBench\Benchmarks\Macro\benchmarks;
 
-class EmptyBench
+class NothingBench
 {
+    public function benchNothing()
+    {
+    }
 }

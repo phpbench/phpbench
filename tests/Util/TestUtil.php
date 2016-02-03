@@ -11,6 +11,9 @@
 
 namespace PhpBench\Tests\Util;
 
+use PhpBench\Model\ParameterSet;
+use PhpBench\Model\Suite;
+use PhpBench\Model\SuiteCollection;
 use Prophecy\Prophecy\ObjectProphecy;
 
 /**
@@ -65,5 +68,54 @@ class TestUtil
         $benchmark->getBeforeClassMethods()->willReturn($options['beforeClassMethods']);
         $benchmark->getAfterClassMethods()->willReturn($options['afterClassMethods']);
         $benchmark->getPath()->willReturn($options['path']);
+    }
+
+    public static function createSuite(array $options = array())
+    {
+        $options = array_merge(array(
+            'basetime' => 10,
+            'groups' => array(),
+            'name' => 'test',
+            'parameters' => array(),
+            'groups' => array('one', 'two', 'three'),
+            'parameters' => array(
+                'param1' => 'value1',
+            ),
+            'subjects' => array('benchOne'),
+        ), $options);
+
+        $dateTime = new \DateTime('2016-02-03');
+        $suite = new Suite(
+            $options['name'],
+            $dateTime,
+            null
+        );
+        $benchmark = $suite->createBenchmark(
+            'TestBench'
+        );
+
+        $baseTime = $options['basetime'];
+        foreach ($options['subjects'] as $subjectName) {
+            $subject = $benchmark->createSubject($subjectName);
+            $subject->setRevs(5);
+            $subject->setGroups($options['groups']);
+            $variant = $subject->createVariant(new ParameterSet(0, $options['parameters']));
+            $variant->createIteration($baseTime, 200, 0);
+            $variant->createIteration($baseTime + 10, 200, 0);
+            $variant->computeStats();
+            $baseTime++;
+        }
+
+        return $suite;
+    }
+
+    public static function createCollection(array $suiteConfigs = array())
+    {
+        $suites = array();
+        foreach ($suiteConfigs as $suiteConfig) {
+            $suites[] = self::createSuite($suiteConfig);
+        }
+
+        return new SuiteCollection($suites);
     }
 }

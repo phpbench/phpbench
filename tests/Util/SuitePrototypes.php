@@ -9,9 +9,8 @@
  * file that was distributed with this source code.
  */
 
-class BarBench
+namespace PhpBench\Tests\Util;
+
+class SuitePrototypes
 {
-    public function benchMyBar()
-    {
-    }
 }

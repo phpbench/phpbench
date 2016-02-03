@@ -11,7 +11,6 @@
 
 namespace PhpBench\Tests\Functional;
 
-use PhpBench\Benchmark\RunnerContext;
 use PhpBench\DependencyInjection\Container;
 
 class FunctionalTestCase extends \PHPUnit_Framework_TestCase
@@ -34,44 +33,5 @@ class FunctionalTestCase extends \PHPUnit_Framework_TestCase
         $this->container->init();
 
         return $this->container;
-    }
-
-    protected function getSuite($bench = 'FooBench.php')
-    {
-        $runner = $this->getContainer(false)->get('benchmark.runner');
-        $context = new RunnerContext(__DIR__ . '/benchmarks/' . $bench, array(
-            'executor' => array(
-                'executor' => 'debug',
-                'times' => array(10, 20),
-                'spread' => array(0, 1),
-            ),
-        ));
-
-        return $runner->run($context);
-    }
-
-    protected function getMultipleSuites()
-    {
-        $context = new RunnerContext(__DIR__ . '/benchmarks/FooBench.php', array(
-            'executor' => array(
-                'executor' => 'debug',
-                'times' => array(10, 20),
-                'spread' => array(0, 1),
-            ),
-            'context_name' => 'foobar',
-        ));
-        $suite1 = $this->getContainer(false)->get('benchmark.runner')->run($context);
-
-        $context = new RunnerContext(__DIR__ . '/benchmarks/FooBench.php', array(
-            'executor' => array(
-                'executor' => 'debug',
-                'times' => array(20, 40),
-                'spread' => array(1, 1),
-            ),
-            'context_name' => 'barfoo',
-        ));
-        $suite2 = $this->getContainer(false)->get('benchmark.runner')->run($context);
-
-        return array($suite1, $suite2);
     }
 }

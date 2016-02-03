@@ -22,23 +22,16 @@ use Symfony\Component\Finder\Finder;
 class BenchmarkFinder
 {
     /**
-     * @var Finder
-     */
-    private $finder;
-
-    /**
      * @var Factory
      */
     private $factory;
 
     /**
      * @param Factory $factory
-     * @param Finder $finder
      */
-    public function __construct(Factory $factory, Finder $finder = null)
+    public function __construct(Factory $factory)
     {
         $this->factory = $factory;
-        $this->finder = $finder ?: new Finder();
     }
 
     /**
@@ -50,6 +43,7 @@ class BenchmarkFinder
      */
     public function findBenchmarks($path, array $filters = array(), array $groupFilter = array())
     {
+        $finder = new Finder();
         if (!file_exists($path)) {
             throw new \InvalidArgumentException(sprintf(
                 'File or directory "%s" does not exist (cwd: %s)',
@@ -59,18 +53,18 @@ class BenchmarkFinder
         }
 
         if (is_dir($path)) {
-            $this->finder->in($path)
+            $finder->in($path)
                 ->name('*Bench.php');
         } else {
             // the path is already a file, just restrict the finder to that.
-            $this->finder->in(dirname($path))
+            $finder->in(dirname($path))
                 ->depth(0)
                 ->name(basename($path));
         }
 
         $benchmarks = array();
 
-        foreach ($this->finder as $file) {
+        foreach ($finder as $file) {
             if (!is_file($file)) {
                 continue;
             }
