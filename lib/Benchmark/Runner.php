@@ -125,7 +125,7 @@ class Runner
             $subjectMetadata->setRevs($context->getRevolutions($subjectMetadata->getRevs()));
             $subjectMetadata->setWarmup($context->getWarmup($subjectMetadata->getWarmUp()));
             $subjectMetadata->setSleep($context->getSleep($subjectMetadata->getSleep()));
-            $subjectMetadata->setRetryThreshold($this->retryThreshold);
+            $subjectMetadata->setRetryThreshold($context->getRetryThreshold($this->retryThreshold));
 
             $benchmark->createSubjectFromMetadata($subjectMetadata);
         }

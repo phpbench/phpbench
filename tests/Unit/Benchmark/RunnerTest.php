@@ -214,8 +214,11 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * It should allow the sleep value to be overridden.
+     * It should allow the warmup value to be overridden.
+     * It should allow the revs value to be overridden.
+     * It should allow the retry threshold value to be overridden.
      */
-    public function testSleepOverride()
+    public function testOverrideThings()
     {
         $subject = new SubjectMetadata($this->benchmark->reveal(), 'name', 0);
         $subject->setSleep(50);
@@ -229,12 +232,18 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
             ->will(function ($args) use ($test) {
                 $iteration = $args[1];
                 $test->assertEquals(100, $iteration->getVariant()->getSubject()->getSleep());
+                $test->assertEquals(12, $iteration->getVariant()->getSubject()->getRetryThreshold());
+                $test->assertEquals(66, $iteration->getVariant()->getSubject()->getWarmup());
+                $test->assertEquals(88, $iteration->getVariant()->getSubject()->getRevs());
 
                 return new IterationResult(10, 10);
             });
 
         $suite = $this->runner->run(new RunnerContext(__DIR__, array(
             'sleep' => 100,
+            'retry_threshold' => 12,
+            'warmup' => 66,
+            'revolutions' => 88,
         )));
         $this->assertNoErrors($suite);
     }
