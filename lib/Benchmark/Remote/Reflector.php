@@ -154,10 +154,8 @@ class Reflector
 
                 if ($tokens[$i][0] === T_CLASS) {
                     for ($j = $i + 1; $j < count($tokens); $j++) {
-                        if ($tokens[$j] === '{') {
+                        if ($tokens[$j][0] === T_STRING) {
                             $class = $tokens[$i + 2][1];
-
-                            // only parse the first class token
                             break 2;
                         }
                     }

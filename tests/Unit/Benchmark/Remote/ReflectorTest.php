@@ -48,6 +48,16 @@ class ReflectorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * It should parse a file whose class declaration is on the 20th line.
+     * See: https://github.com/phpbench/phpbench/issues/325.
+     */
+    public function testReflector20LineFile()
+    {
+        $fname = __DIR__ . '/reflector/ExampleClass2.php';
+        $this->reflector->reflect($fname);
+    }
+
+    /**
      * It should inherit metadata from parent classes.
      */
     public function testHierarchy()
