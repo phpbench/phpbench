@@ -115,7 +115,7 @@ class XmlTestCase extends \PHPUnit_Framework_TestCase
                 ),
                 <<<'EOT'
 <?xml version="1.0"?>
-<phpbench version="0.10.0-dev">
+<phpbench version="PHPBENCH_VERSION">
   <suite context="test" date="2015-01-01 00:00:00" config-path="/path/to/config.json">
     <env>
       <info1 foo="bar"/>
@@ -143,7 +143,7 @@ EOT
                 array('error' => true),
                 <<<'EOT'
 <?xml version="1.0"?>
-<phpbench version="0.10.0-dev">
+<phpbench version="PHPBENCH_VERSION">
   <suite context="test" date="2015-01-01 00:00:00" config-path="/path/to/config.json">
     <env>
       <info1 foo="bar"/>

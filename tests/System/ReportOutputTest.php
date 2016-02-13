@@ -55,15 +55,31 @@ class ReportOutputTest extends SystemTestCase
     /**
      * It should generate a delimited tab output.
      */
-    public function testOutputDelimited()
+
+    /**
+     * @dataProvider provideOutputDelimited
+     */
+    public function testOutputDelimited($reportName)
     {
         $process = $this->phpbench(
-            'report --file=' . $this->fname . ' --report=default --output=\'{"extends": "delimited", "file": "delimited"}\''
+            'report --file=' . $this->fname . ' --report=default --output=\'{"extends": "' . $reportName . '", "file": "delimited"}\''
         );
 
         $this->assertExitCode(0, $process);
         $output = $process->getOutput();
-        $this->assertGeneratedContents($output, 'delimited');
+        $this->assertGeneratedContents($output, $reportName);
+    }
+
+    public function provideOutputDelimited()
+    {
+        return array(
+            array(
+                'delimited',
+            ),
+            array(
+                'csv',
+            ),
+        );
     }
 
     private function assertGeneratedContents($output, $name)

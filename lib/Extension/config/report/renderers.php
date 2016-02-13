@@ -24,6 +24,10 @@ return array(
     'delimited' => array(
         'renderer' => 'delimited',
     ),
+    'csv' => array(
+        'renderer' => 'delimited',
+        'delimiter' => ',',
+    ),
     'debug' => array(
         'renderer' => 'debug',
     ),

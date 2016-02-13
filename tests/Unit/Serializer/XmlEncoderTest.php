@@ -11,6 +11,7 @@
 
 namespace PhpBench\Tests\Unit\Serializer;
 
+use PhpBench\PhpBench;
 use PhpBench\Serializer\XmlEncoder;
 
 class XmlEncoderTest extends XmlTestCase
@@ -33,6 +34,7 @@ class XmlEncoderTest extends XmlTestCase
      */
     public function testEncode(array $params, $expected)
     {
+        $expected = str_replace('PHPBENCH_VERSION', PhpBench::VERSION, $expected);
         $collection = $this->getSuiteCollection($params);
         $xmlEncoder = new XmlEncoder();
         $dom = $xmlEncoder->encode($collection);
