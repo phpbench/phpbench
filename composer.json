@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "php": "^5.4|^7.0",
+        "php": "^5.5|^7.0",
         "phpbench/dom": "^0.1",
         "symfony/console": "^2.4|^3.0",
         "symfony/finder": "^2.4|^3.0",
@@ -32,6 +32,7 @@
     "autoload": {
         "psr-4": {
             "PhpBench\\": "lib/",
+            "PhpBench\\Extensions\\Sqlite\\": "extensions/sqlite/lib/",
             "PhpBench\\Extensions\\XDebug\\": "extensions/xdebug/lib/"
         }
     },
@@ -42,7 +43,9 @@
         "psr-4": {
             "PhpBench\\Tests\\": "tests/",
             "PhpBench\\Benchmarks\\": "benchmarks/",
-            "PhpBench\\Extensions\\XDebug\\Tests\\": "extensions/xdebug/tests/"
+            "PhpBench\\Extensions\\XDebug\\Tests\\": "extensions/xdebug/tests/",
+            "PhpBench\\Extensions\\Sqlite\\Tests\\": "extensions/sqlite/tests/",
+            "PhpBench\\Extensions\\Sqlite\\Benchmarks\\": "extensions/sqlite/benchmarks/"
         }
     },
     "extra": {

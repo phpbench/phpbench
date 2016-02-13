@@ -20,15 +20,19 @@ use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Benchmark\Remote\Reflector;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Console\Application;
+use PhpBench\Console\Command\Handler\DumpHandler;
 use PhpBench\Console\Command\Handler\ReportHandler;
 use PhpBench\Console\Command\Handler\RunnerHandler;
+use PhpBench\Console\Command\Handler\SuiteCollectionHandler;
 use PhpBench\Console\Command\Handler\TimeUnitHandler;
+use PhpBench\Console\Command\HistoryCommand;
 use PhpBench\Console\Command\ReportCommand;
 use PhpBench\Console\Command\RunCommand;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Environment\Provider;
 use PhpBench\Environment\Supplier;
+use PhpBench\Expression\Parser;
 use PhpBench\Json\JsonDecoder;
 use PhpBench\Progress\Logger\BlinkenLogger;
 use PhpBench\Progress\Logger\DotsLogger;
@@ -49,6 +53,7 @@ use PhpBench\Report\Renderer\XsltRenderer;
 use PhpBench\Report\ReportManager;
 use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Serializer\XmlEncoder;
+use PhpBench\Storage;
 use PhpBench\Tabular\Definition\Expander;
 use PhpBench\Tabular\Definition\Loader;
 use PhpBench\Tabular\Dom\XPathResolver;
@@ -79,6 +84,7 @@ class CoreExtension implements ExtensionInterface
             'retry_threshold' => null,
             'time_unit' => TimeUnit::MICROSECONDS,
             'output_mode' => TimeUnit::MODE_TIME,
+            'storage' => null,
         );
     }
 
@@ -111,6 +117,8 @@ class CoreExtension implements ExtensionInterface
         $this->registerReportRenderers($container);
         $this->registerEnvironment($container);
         $this->registerSerializer($container);
+        $this->registerStorage($container);
+        $this->registerExpression($container);
     }
 
     public function build(Container $container)
@@ -131,6 +139,10 @@ class CoreExtension implements ExtensionInterface
 
         foreach ($container->getServiceIdsForTag('benchmark_executor') as $serviceId => $attributes) {
             $container->get('benchmark.registry.executor')->registerService($attributes['name'], $serviceId);
+        }
+
+        foreach ($container->getServiceIdsForTag('storage_driver') as $serviceId => $attributes) {
+            $container->get('storage.driver_factory')->registerDriver($attributes['name'], $serviceId);
         }
 
         foreach ($container->getServiceIdsForTag('environment_provider') as $serviceId => $attributes) {
@@ -260,12 +272,27 @@ class CoreExtension implements ExtensionInterface
             );
         });
 
+        $container->register('console.command.handler.suite_collection', function (Container $container) {
+            return new SuiteCollectionHandler(
+                $container->get('serializer.decoder.xml'),
+                $container->get('expression.parser'),
+                $container->get('storage.driver_factory')
+            );
+        });
+
+        $container->register('console.command.handler.dump', function (Container $container) {
+            return new DumpHandler(
+                $container->get('serializer.encoder.xml')
+            );
+        });
+
         $container->register('console.command.run', function (Container $container) {
             return new RunCommand(
                 $container->get('console.command.handler.runner'),
                 $container->get('console.command.handler.report'),
                 $container->get('console.command.handler.time_unit'),
-                $container->get('serializer.encoder.xml')
+                $container->get('console.command.handler.dump'),
+                $container->get('storage.driver_factory')
             );
         }, array('console.command' => array()));
 
@@ -273,7 +300,14 @@ class CoreExtension implements ExtensionInterface
             return new ReportCommand(
                 $container->get('console.command.handler.report'),
                 $container->get('console.command.handler.time_unit'),
-                $container->get('serializer.decoder.xml')
+                $container->get('console.command.handler.suite_collection'),
+                $container->get('console.command.handler.dump')
+            );
+        }, array('console.command' => array()));
+
+        $container->register('console.command.history', function (Container $container) {
+            return new HistoryCommand(
+                $container->get('storage.driver_factory')
             );
         }, array('console.command' => array()));
     }
@@ -459,6 +493,20 @@ class CoreExtension implements ExtensionInterface
         });
         $container->register('serializer.decoder.xml', function (Container $container) {
             return new XmlDecoder();
+        });
+    }
+
+    private function registerStorage(Container $container)
+    {
+        $container->register('storage.driver_factory', function (Container $container) {
+            return new Storage\DriverFactory($container, $container->getParameter('storage'));
+        });
+    }
+
+    private function registerExpression(Container $container)
+    {
+        $container->register('expression.parser', function (Container $container) {
+            return new Parser();
         });
     }
 

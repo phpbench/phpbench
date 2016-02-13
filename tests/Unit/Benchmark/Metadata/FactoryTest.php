@@ -49,7 +49,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->hierarchy->isEmpty()->willReturn(false);
         $this->metadata->getSubjects()->willReturn(array());
-        TestUtil::configureBenchmark($this->metadata);
+        TestUtil::configureBenchmarkMetadata($this->metadata);
         $metadata = $this->factory->getMetadataForFile(self::FNAME);
         $this->assertInstanceOf('PhpBench\Benchmark\Metadata\BenchmarkMetadata', $metadata);
     }
@@ -63,10 +63,10 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $this->metadata->getSubjects()->willReturn(array(
             $this->subjectMetadata->reveal(),
         ));
-        TestUtil::configureBenchmark($this->metadata, array(
+        TestUtil::configureBenchmarkMetadata($this->metadata, array(
             'path' => self::PATH,
         ));
-        TestUtil::configureSubject($this->subjectMetadata);
+        TestUtil::configureSubjectMetadata($this->subjectMetadata);
         $this->reflector->getParameterSets(self::PATH, array())->willReturn(array());
         $this->subjectMetadata->setParameterSets(array())->shouldBeCalled();
 
@@ -85,7 +85,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     public function testValidationBeforeMethodsBenchmark()
     {
         $this->hierarchy->isEmpty()->willReturn(false);
-        TestUtil::configureBenchmark($this->metadata, array(
+        TestUtil::configureBenchmarkMetadata($this->metadata, array(
             'beforeClassMethods' => array('beforeMe'),
         ));
         $this->hierarchy->hasMethod('beforeMe')->willReturn(false);
@@ -104,7 +104,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->hierarchy->isEmpty()->willReturn(false);
         $this->reflection->class = 'TestClass';
-        TestUtil::configureBenchmark($this->metadata, array(
+        TestUtil::configureBenchmarkMetadata($this->metadata, array(
             'beforeClassMethods' => array('beforeMe'),
         ));
         $this->hierarchy->hasMethod('beforeMe')->willReturn(true);
@@ -123,11 +123,11 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->hierarchy->isEmpty()->willReturn(false);
         $this->reflection->class = 'TestClass';
-        TestUtil::configureBenchmark($this->metadata, array());
+        TestUtil::configureBenchmarkMetadata($this->metadata, array());
         $this->metadata->getSubjects()->willReturn(array(
             $this->subjectMetadata->reveal(),
         ));
-        TestUtil::configureSubject($this->subjectMetadata, array(
+        TestUtil::configureSubjectMetadata($this->subjectMetadata, array(
             'beforeMethods' => array('beforeMe'),
         ));
         $this->hierarchy->hasMethod('beforeMe')->willReturn(false);
@@ -144,12 +144,12 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     public function testValidationAfterMethods()
     {
         $this->hierarchy->isEmpty()->willReturn(false);
-        TestUtil::configureBenchmark($this->metadata, array(
+        TestUtil::configureBenchmarkMetadata($this->metadata, array(
         ));
         $this->metadata->getSubjects()->willReturn(array(
             $this->subjectMetadata->reveal(),
         ));
-        TestUtil::configureSubject($this->subjectMetadata, array(
+        TestUtil::configureSubjectMetadata($this->subjectMetadata, array(
             'afterMethods' => array('afterMe'),
         ));
         $this->hierarchy->hasMethod('afterMe')->willReturn(false);
@@ -179,11 +179,11 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $this->metadata->getSubjects()->willReturn(array(
             $this->subjectMetadata->reveal(),
         ));
-        TestUtil::configureBenchmark($this->metadata, array(
+        TestUtil::configureBenchmarkMetadata($this->metadata, array(
             'class' => 'TestBench',
             'path' => self::PATH,
         ));
-        TestUtil::configureSubject($this->subjectMetadata, array(
+        TestUtil::configureSubjectMetadata($this->subjectMetadata, array(
             'name' => 'benchTest',
         ));
         $this->reflector->getParameterSets(self::PATH, array())->willReturn(array('asd' => 'bar'));

@@ -390,6 +390,20 @@ class RunTest extends SystemTestCase
     }
 
     /**
+     * It should request that the suite result to be stored.
+     */
+    public function testStore()
+    {
+        $process = $this->phpbench(
+            'run benchmarks/set4/NothingBench.php --store'
+        );
+
+        // because there is no storage driver by default the factory will throw an exception.
+        $this->assertExitCode(1, $process);
+        $this->assertContains('You have not configured a storage driver.', $process->getErrorOutput());
+    }
+
+    /**
      * It should not crash when zeros are reported as times.
      */
     public function testZeroTimedIterations()

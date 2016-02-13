@@ -60,14 +60,11 @@ class JsonDecoder
 
         if (substr($jsonString, 0, 1) !== '{') {
             $jsonString = '{' . $jsonString;
-        }
-
-        if (substr($jsonString, -1) !== '}') {
             $jsonString = $jsonString . '}';
         }
 
         $jsonString = preg_replace(
-            '{(\s*?\{\s*?|\s*?,\s*?)([\'"])?([\$a-zA-Z0-9]+)([\'"])?:}',
+            '{(\s*?\{\s*?|\s*?,\s*?)([\'"])?([\$\.a-zA-Z0-9\[\]\_]+)([\'"])?:}',
             '\1"\3":',
             $jsonString
         );
