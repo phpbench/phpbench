@@ -63,8 +63,8 @@ Run benchmark files at given <comment>path</comment>
 All bench marks under the given path will be executed recursively.
 EOT
         );
-        $this->addOption('iterations', null, InputOption::VALUE_REQUIRED|InputOption::VALUE_IS_ARRAY, 'Override number of iteratios to run in (all) benchmarks');
-        $this->addOption('warmup', null, InputOption::VALUE_REQUIRED|InputOption::VALUE_IS_ARRAY, 'Override number of warmup revolutions on all benchmarks');
+        $this->addOption('iterations', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Override number of iteratios to run in (all) benchmarks');
+        $this->addOption('warmup', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Override number of warmup revolutions on all benchmarks');
         $this->addOption('retry-threshold', 'r', InputOption::VALUE_REQUIRED, 'Set target allowable deviation', null);
         $this->addOption('sleep', null, InputOption::VALUE_REQUIRED, 'Number of microseconds to sleep between iterations');
         $this->addOption('context', null, InputOption::VALUE_REQUIRED, 'Context label to apply to the suite result (useful when comparing reports)');

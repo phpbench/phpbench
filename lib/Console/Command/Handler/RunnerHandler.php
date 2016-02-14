@@ -45,7 +45,7 @@ class RunnerHandler
         $command->addOption('filter', array(), InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Ignore all benchmarks not matching command filter (can be a regex)');
         $command->addOption('group', array(), InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Group to run (can be specified multiple times)');
         $command->addOption('parameters', null, InputOption::VALUE_REQUIRED, 'Override parameters to use in (all) benchmarks');
-        $command->addOption('revs', null, InputOption::VALUE_REQUIRED|InputOption::VALUE_IS_ARRAY, 'Override number of revs (revolutions) on (all) benchmarks');
+        $command->addOption('revs', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Override number of revs (revolutions) on (all) benchmarks');
         $command->addOption('progress', 'l', InputOption::VALUE_REQUIRED, 'Progress logger to use, one of <comment>dots</comment>, <comment>classdots</comment>');
 
         // command option is parsed before the container is compiled.

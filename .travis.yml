@@ -20,7 +20,8 @@ before_script:
 
 script: 
   - phpunit
-  - php bin/phpbench run
+  # run the benchmarks in order to test them
+  - php bin/phpbench run --iterations=1 --revs=1
 
 matrix:
     include:

@@ -81,6 +81,20 @@ Revolutions can be specified using the ``@Revs`` annotation:
         // ...
     }
 
+You may also specify an array:
+
+.. code-block:: php
+
+    <?php
+
+    /**
+     * @Revs({1, 8, 64, 4096})
+     */
+    class HashBench
+    {
+        // ...
+    }
+
 Revolutions can also be overridden from the :ref:`command line
 <overriding_iterations_and_revolutions>`.
 
@@ -115,6 +129,8 @@ Iterations can be specified using the ``@Iterations`` annotation:
     {
         // ...
     }
+
+As with :ref:`revolutions <revolutions>`, you may also specify an array.
 
 Iterations can also be overridden from the :ref:`command line
 <overriding_iterations_and_revolutions>`.
@@ -492,6 +508,9 @@ actually measuring the revolutions time.
             $this->generator->generateMyComplexReport();
         }
     }
+
+As with :ref:`revolutions <revolutions>`, you may also specify an array.
+
 
 .. _cartesian product: https://en.wikipedia.org/wiki/Cartesian_product
 .. _Relative standard deviation: https://en.wikipedia.org/wiki/Coefficient_of_variation
