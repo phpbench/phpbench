@@ -57,12 +57,26 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
      */
     private $computed = false;
 
+    /**
+     * @var int
+     */
+    private $revolutions;
+
+    /**
+     * @var int
+     */
+    private $warmup;
+
     public function __construct(
         Subject $subject,
-        ParameterSet $parameterSet
+        ParameterSet $parameterSet,
+        $revolutions,
+        $warmup
     ) {
         $this->subject = $subject;
         $this->parameterSet = $parameterSet;
+        $this->revolutions = $revolutions;
+        $this->warmup = $warmup;
     }
 
     /**
@@ -160,7 +174,7 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
     public function computeStats()
     {
         $this->rejects = array();
-        $revs = $this->getSubject()->getRevs();
+        $revs = $this->getRevolutions();
 
         if (0 === count($this->iterations)) {
             return;
@@ -325,6 +339,26 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
     public function createErrorStack(array $errors)
     {
         $this->errorStack = new ErrorStack($this, $errors);
+    }
+
+    /**
+     * Return the number of revolutions for this variant.
+     *
+     * @return int
+     */
+    public function getRevolutions()
+    {
+        return $this->revolutions;
+    }
+
+    /**
+     * Return the number of warmup revolutions.
+     *
+     * @return int
+     */
+    public function getWarmup()
+    {
+        return $this->warmup;
     }
 
     /**

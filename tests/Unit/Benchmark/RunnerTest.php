@@ -85,7 +85,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
                 'executor' => 'microtime',
             ))
         )
-            ->shouldBeCalledTimes(count($revs) * $iterations)
+            ->shouldBeCalledTimes(count($revs) * array_sum($iterations))
             ->willReturn(new IterationResult(10, 10));
 
         $suite = $this->runner->run(new RunnerContext(__DIR__, array(
@@ -104,16 +104,16 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                1,
-                1,
+                array(1),
+                array(1),
                 array(),
                 function ($test, $suite) {
                     $test->assertEquals(1, $suite->getSummary()->getNbIterations());
                 },
             ),
             array(
-                1,
-                3,
+                array(1),
+                array(3),
                 array(),
                 function ($test, $suite) {
                     $test->assertEquals(1, $iterations = $suite->getIterations());
@@ -122,8 +122,8 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
                 },
             ),
             array(
-                4,
-                3,
+                array(4),
+                array(3),
                 array(),
                 function ($test, $suite) {
                     $test->assertEquals(4, $iterations = $suite->getIterations());
@@ -132,8 +132,8 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
                 },
             ),
             array(
-                1,
-                1,
+                array(1),
+                array(1),
                 array('one' => 'two', 'three' => 'four'),
                 function ($test, $suite) {
                     $test->assertEquals(1, $iterations = $suite->getIterations());
@@ -144,8 +144,8 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
                 },
             ),
             array(
-                1,
-                1,
+                array(1),
+                array(1),
                 array('one', 'two'),
                 function ($test, $suite) {
                     $test->assertEquals(1, $iterations = $suite->getIterations());
@@ -156,8 +156,8 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
                 },
             ),
             array(
-                1,
-                1,
+                array(1),
+                array(1),
                 array('one' => array('three' => 'four')),
                 function ($test, $suite) {
                     $test->assertEquals(1, $iterations = $suite->getIterations());
@@ -233,8 +233,8 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
                 $iteration = $args[1];
                 $test->assertEquals(100, $iteration->getVariant()->getSubject()->getSleep());
                 $test->assertEquals(12, $iteration->getVariant()->getSubject()->getRetryThreshold());
-                $test->assertEquals(66, $iteration->getVariant()->getSubject()->getWarmup());
-                $test->assertEquals(88, $iteration->getVariant()->getSubject()->getRevs());
+                $test->assertEquals(66, $iteration->getVariant()->getWarmup());
+                $test->assertEquals(88, $iteration->getVariant()->getRevolutions());
 
                 return new IterationResult(10, 10);
             });
@@ -242,8 +242,8 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $suite = $this->runner->run(new RunnerContext(__DIR__, array(
             'sleep' => 100,
             'retry_threshold' => 12,
-            'warmup' => 66,
-            'revolutions' => 88,
+            'warmup' => array(66),
+            'revolutions' => array(88),
         )));
         $this->assertNoErrors($suite);
     }
@@ -254,7 +254,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
     public function testWarmup()
     {
         $subject = new SubjectMetadata($this->benchmark->reveal(), 'name', 0);
-        $subject->setWarmup(50);
+        $subject->setWarmup(array(50));
         $this->benchmark->getSubjects()->willReturn(array(
             $subject,
         ));
@@ -264,7 +264,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->executor->execute(Argument::type('PhpBench\Benchmark\Metadata\SubjectMetadata'), Argument::type('PhpBench\Model\Iteration'), $this->executorConfig)
             ->will(function ($args) use ($test) {
                 $iteration = $args[1];
-                $test->assertEquals(50, $iteration->getVariant()->getSubject()->getWarmup());
+                $test->assertEquals(50, $iteration->getVariant()->getWarmup());
 
                 return new IterationResult(10, 10);
             });

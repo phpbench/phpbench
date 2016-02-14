@@ -125,8 +125,6 @@ class XmlDecoder
             $subject->setSleep($variantEl->getAttribute('sleep'));
             $subject->setOutputTimeUnit($variantEl->getAttribute('output-time-unit'));
             $subject->setOutputMode($variantEl->getAttribute('output-mode'));
-            $subject->setRevs($variantEl->getAttribute('revs'));
-            $subject->setWarmup($variantEl->getAttribute('warmup'));
             $subject->setRetryThreshold($variantEl->getAttribute('retry-threshold'));
             break;
         }
@@ -134,7 +132,7 @@ class XmlDecoder
         foreach ($subjectEl->query('./variant') as $index => $variantEl) {
             $parameters = $this->getParameters($variantEl);
             $parameterSet = new ParameterSet($index, $parameters);
-            $variant = $subject->createVariant($parameterSet);
+            $variant = $subject->createVariant($parameterSet, $variantEl->getAttribute('revs'), $variantEl->getAttribute('warmup'));
             $this->processVariant($variant, $variantEl);
         }
     }

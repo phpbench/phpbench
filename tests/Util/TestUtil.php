@@ -106,13 +106,11 @@ class TestUtil
             $baseTime = $options['basetime'];
             foreach ($options['subjects'] as $subjectName) {
                 $subject = $benchmark->createSubject($subjectName);
-                $subject->setRevs($options['revs']);
-                $subject->setWarmup($options['warmup']);
                 $subject->setSleep($options['sleep']);
                 $subject->setGroups($options['groups']);
                 $subject->setOutputTimeUnit($options['output_time_unit']);
                 $subject->setOutputMode($options['output_mode']);
-                $variant = $subject->createVariant(new ParameterSet(0, $options['parameters']));
+                $variant = $subject->createVariant(new ParameterSet(0, $options['parameters']), $options['revs'], $options['warmup']);
                 $variant->createIteration($baseTime, 200, 0);
                 $variant->createIteration($baseTime + 10, 200, 0);
                 $variant->computeStats();

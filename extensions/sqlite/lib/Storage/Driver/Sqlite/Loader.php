@@ -102,8 +102,6 @@ class Loader
         $subject->setSleep($row['variant.sleep']);
         $subject->setOutputTimeUnit($row['variant.output_time_unit']);
         $subject->setOutputMode($row['variant.output_mode']);
-        $subject->setRevs($row['variant.revolutions']);
-        $subject->setWarmup($row['variant.warmup']);
 
         $context[self::SUBJECTS][$key] = $subject;
 
@@ -122,7 +120,9 @@ class Loader
         }
 
         $variant = $subject->createVariant(
-            new ParameterSet(0, $this->repository->getParameters($row['variant.id']))
+            new ParameterSet(0, $this->repository->getParameters($row['variant.id'])),
+            $row['variant.revolutions'],
+            $row['variant.warmup']
         );
 
         $context[self::VARIANTS][$key] = $variant;

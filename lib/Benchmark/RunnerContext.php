@@ -71,6 +71,16 @@ class RunnerContext
                 ));
             }
         };
+        $isArrayValidator = function ($context, $v) {
+            if (!is_array($v)) {
+                throw new \InvalidArgumentException(sprintf(
+                    sprintf(
+                        '%s must be an array, "%s" given',
+                        $context, is_object($v) ? get_class($v) : gettype($v)
+                    )
+                ));
+            }
+        };
 
         $validators = array(
             'retry_threshold' => function ($v) use ($numericValidator) {
@@ -94,26 +104,37 @@ class RunnerContext
 
                 $numericValidator('Retry threshold', $v);
             },
-            'iterations' => function ($v) use ($numericValidator) {
+            'iterations' => function ($v) use ($numericValidator, $isArrayValidator) {
                 if (null === $v) {
                     return;
                 }
 
-                $numericValidator('Iterations', $v);
+                $isArrayValidator('Iterations', $v);
+                foreach ($v as $iterations) {
+                    $numericValidator('Iterations', $iterations);
+                }
             },
-            'revolutions' => function ($v) use ($numericValidator) {
+            'revolutions' => function ($v) use ($numericValidator, $isArrayValidator) {
                 if (null === $v) {
                     return;
                 }
 
-                $numericValidator('Revolutions', $v);
+                $isArrayValidator('Revolutions', $v);
+
+                foreach ($v as $revs) {
+                    $numericValidator('Revolutions', $revs);
+                }
             },
-            'warmup' => function ($v) use ($numericValidator) {
+            'warmup' => function ($v) use ($numericValidator, $isArrayValidator) {
                 if (null === $v) {
                     return;
                 }
 
-                $numericValidator('Warmup', $v);
+                $isArrayValidator('Warmup', $v);
+
+                foreach ($v as $warmup) {
+                    $numericValidator('Warmup', $warmup);
+                }
             },
         );
 

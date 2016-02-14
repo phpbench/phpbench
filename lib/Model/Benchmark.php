@@ -58,8 +58,6 @@ class Benchmark implements \IteratorAggregate
     {
         $subject = new Subject($this, $metadata->getName());
         $subject->setGroups($metadata->getGroups());
-        $subject->setRevs($metadata->getRevs());
-        $subject->setWarmup($metadata->getWarmup());
         $subject->setSleep($metadata->getSleep());
         $subject->setRetryThreshold($metadata->getRetryThreshold());
         $subject->setOutputTimeUnit($metadata->getOutputTimeUnit());

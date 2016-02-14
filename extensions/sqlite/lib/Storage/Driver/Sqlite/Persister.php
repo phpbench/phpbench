@@ -58,12 +58,12 @@ class Persister
 
                     foreach ($subject->getVariants() as $variant) {
                         $data = array(
-                            'revolutions' => $subject->getRevs(),
+                            'revolutions' => $variant->getRevolutions(),
                             'retry_threshold' => $subject->getRetryThreshold(),
                             'output_time_unit' => $subject->getOutputTimeUnit(),
                             'output_mode' => $subject->getOutputMode(),
                             'sleep' => $subject->getSleep(),
-                            'warmup' => $subject->getWarmup(),
+                            'warmup' => $variant->getWarmup(),
                             'subject_id' => $subjectId,
                             'run_id' => $runId,
                         );

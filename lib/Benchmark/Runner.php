@@ -151,7 +151,14 @@ class Runner
 
         // create the variants.
         foreach ($paramsIterator as $parameterSet) {
-            $subject->createVariant($parameterSet);
+            foreach ($subjectMetadata->getIterations() as $nbIterations) {
+                foreach ($subjectMetadata->getRevs() as $revolutions) {
+                    foreach ($subjectMetadata->getWarmup() as $warmup) {
+                        $variant = $subject->createVariant($parameterSet, $revolutions, $warmup);
+                        $variant->spawnIterations($nbIterations);
+                    }
+                }
+            }
         }
 
         // run the variants.
@@ -169,8 +176,6 @@ class Runner
         Variant $variant
     ) {
         $executorConfig = $this->executorRegistry->getConfig($context->getExecutor());
-        $nbIterations = $subjectMetadata->getIterations();
-        $variant->spawnIterations($nbIterations);
         $this->logger->variantStart($variant);
 
         try {

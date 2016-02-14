@@ -95,7 +95,7 @@ class SuiteTest extends \PHPUnit_Framework_TestCase
         $this->variant1->hasErrorStack()->willReturn(true);
         $this->variant1->count()->willReturn(1);
         $this->variant1->getSubject()->wilLReturn($this->subject1->reveal());
-        $this->subject1->getRevs()->willReturn(10);
+        $this->variant1->getRevolutions()->willReturn(10);
         $this->variant1->getRejectCount()->willReturn(0);
         $this->variant1->getRejectCount()->willReturn(0);
         $this->variant1->getErrorStack()->willReturn($errorStack->reveal());

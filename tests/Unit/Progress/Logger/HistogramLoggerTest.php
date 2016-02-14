@@ -32,7 +32,9 @@ class HistogramLoggerTest extends \PHPUnit_Framework_TestCase
         $this->iteration = $this->prophesize('PhpBench\Model\Iteration');
         $this->variant = new Variant(
             $this->subject->reveal(),
-            new ParameterSet()
+            new ParameterSet(),
+            1,
+            0
         );
         $this->variant->spawnIterations(4);
         $this->benchmark->getSubjects()->willReturn(array(
@@ -44,7 +46,6 @@ class HistogramLoggerTest extends \PHPUnit_Framework_TestCase
         $this->subject->getIndex()->willReturn(1);
         $this->subject->getOutputTimeUnit()->willReturn('milliseconds');
         $this->subject->getOutputMode()->willReturn('time');
-        $this->subject->getRevs()->willReturn(1);
         $this->subject->getRetryThreshold()->willReturn(10);
     }
 

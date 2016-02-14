@@ -58,11 +58,11 @@ abstract class BaseExecutor implements ExecutorInterface
             'class' => $subjectMetadata->getBenchmark()->getClass(),
             'file' => $subjectMetadata->getBenchmark()->getPath(),
             'subject' => $subjectMetadata->getName(),
-            'revolutions' => $subjectMetadata->getRevs(),
+            'revolutions' => $iteration->getVariant()->getRevolutions(),
             'beforeMethods' => var_export($subjectMetadata->getBeforeMethods(), true),
             'afterMethods' => var_export($subjectMetadata->getAfterMethods(), true),
             'parameters' => var_export($iteration->getVariant()->getParameterSet()->getArrayCopy(), true),
-            'warmup' => $subjectMetadata->getWarmup() ?: 0,
+            'warmup' => $iteration->getVariant()->getWarmup() ?: 0,
         );
         $payload = $this->launcher->payload(__DIR__ . '/template/microtime.template', $tokens);
 

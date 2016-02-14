@@ -17,13 +17,10 @@ use PhpBench\Model\IterationResult;
 class IterationTest extends \PHPUnit_Framework_TestCase
 {
     private $iteration;
-    private $subject;
 
     public function setUp()
     {
-        $this->subject = $this->prophesize('PhpBench\Model\Subject');
         $this->variant = $this->prophesize('PhpBench\Model\Variant');
-        $this->variant->getSubject()->willReturn($this->subject->reveal());
         $this->iteration = new Iteration(
             0,
             $this->variant->reveal()
@@ -56,7 +53,7 @@ class IterationTest extends \PHPUnit_Framework_TestCase
     public function testGetRevTime()
     {
         $iteration = new Iteration(1, $this->variant->reveal(), 100);
-        $this->subject->getRevs()->willReturn(100);
+        $this->variant->getRevolutions()->willReturn(100);
         $this->assertEquals(1, $iteration->getRevTime());
     }
 }

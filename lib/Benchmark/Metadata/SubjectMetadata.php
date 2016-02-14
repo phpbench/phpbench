@@ -56,17 +56,17 @@ class SubjectMetadata
     /**
      * @var int
      */
-    private $iterations = 1;
+    private $iterations = array(1);
+
+    /**
+     * @var int[]
+     */
+    private $revs = array(1);
 
     /**
      * @var int
      */
-    private $revs = 1;
-
-    /**
-     * @var int
-     */
-    private $warmup = 0;
+    private $warmup = array(0);
 
     /**
      * @var bool
