@@ -63,12 +63,12 @@ class XmlTestCase extends \PHPUnit_Framework_TestCase
         $this->subject1->getSleep()->willReturn(5);
         $this->subject1->getOutputTimeUnit()->willReturn('milliseconds');
         $this->subject1->getOutputMode()->willReturn('throughput');
-        $this->subject1->getRevs()->willReturn(100);
         $this->subject1->getRetryThreshold()->willReturn(10);
-        $this->subject1->getWarmup()->willReturn(50);
+        $this->variant1->getWarmup()->willReturn(50);
         $this->variant1->getParameterSet()->willReturn(new ParameterSet(1, $params['params']));
         $this->variant1->hasErrorStack()->willReturn($params['error']);
         $this->variant1->isComputed()->willReturn(true);
+        $this->variant1->getRevolutions()->willReturn(100);
 
         if ($params['error']) {
             $this->variant1->getErrorStack()->willReturn(

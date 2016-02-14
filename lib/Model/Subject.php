@@ -102,14 +102,18 @@ class Subject
      * Create and add a new variant based on this subject.
      *
      * @param ParameterSet $parameterSet
+     * @param int $revolutions
+     * @param int $warmup
      *
      * @return Variant.
      */
-    public function createVariant(ParameterSet $parameterSet)
+    public function createVariant(ParameterSet $parameterSet, $revolutions, $warmup)
     {
         $variant = new Variant(
             $this,
-            $parameterSet
+            $parameterSet,
+            $revolutions,
+            $warmup
         );
         $this->variants[] = $variant;
 
@@ -146,16 +150,6 @@ class Subject
         $this->groups = $groups;
     }
 
-    public function getRevs()
-    {
-        return $this->revs;
-    }
-
-    public function setRevs($revs)
-    {
-        $this->revs = $revs;
-    }
-
     public function getSleep()
     {
         return $this->sleep;
@@ -184,16 +178,6 @@ class Subject
     public function setOutputMode($outputMode)
     {
         $this->outputMode = $outputMode;
-    }
-
-    public function getWarmup()
-    {
-        return $this->warmup;
-    }
-
-    public function setwarmup($warmup)
-    {
-        $this->warmup = $warmup;
     }
 
     public function getRetryThreshold()

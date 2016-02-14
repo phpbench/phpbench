@@ -33,7 +33,7 @@ class VariantTest extends \PHPUnit_Framework_TestCase
      */
     public function testIterationSpawn()
     {
-        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal());
+        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 10, 20);
         $variant->spawnIterations(4);
 
         $this->assertCount(4, $variant);
@@ -48,7 +48,7 @@ class VariantTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateIteration()
     {
-        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal());
+        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 10, 20);
         $iteration = $variant->createIteration(10, 20);
         $this->assertInstanceOf('PhpBench\Model\Iteration', $iteration);
         $this->assertEquals(10, $iteration->getTime());
@@ -67,9 +67,8 @@ class VariantTest extends \PHPUnit_Framework_TestCase
      */
     public function testComputeStats()
     {
-        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal());
+        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 4, 0);
         $variant->spawnIterations(4);
-        $this->subject->getRevs()->willReturn(4);
         $this->subject->getRetryThreshold()->willReturn(10);
 
         $variant[0]->setResult(new IterationResult(4, null));
@@ -97,7 +96,7 @@ class VariantTest extends \PHPUnit_Framework_TestCase
      */
     public function testComputeDeviationZeroIterations()
     {
-        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal());
+        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 10, 20);
         $variant->computeStats();
     }
 
@@ -106,9 +105,8 @@ class VariantTest extends \PHPUnit_Framework_TestCase
      */
     public function testReject()
     {
-        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal());
+        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 4, 20);
         $variant->spawnIterations(4);
-        $this->subject->getRevs()->willReturn(4);
         $this->subject->getRetryThreshold()->willReturn(10);
 
         $variant[0]->setResult(new IterationResult(4, null));
@@ -149,7 +147,7 @@ class VariantTest extends \PHPUnit_Framework_TestCase
      */
     public function testExceptionAwareness()
     {
-        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal());
+        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 10, 20);
         $error = new \Exception('Test');
 
         $this->assertFalse($variant->hasErrorStack());
@@ -163,7 +161,7 @@ class VariantTest extends \PHPUnit_Framework_TestCase
      */
     public function testExceptionNoneGet()
     {
-        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal());
+        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 10, 20);
         $errorStack = $variant->getErrorStack();
         $this->assertInstanceOf('PhpBench\Model\ErrorStack', $errorStack);
     }
@@ -176,7 +174,7 @@ class VariantTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetStatsNoComputeException()
     {
-        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal());
+        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 10, 20);
         $variant->getStats();
     }
 
@@ -188,9 +186,8 @@ class VariantTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetStatsWithExceptionException()
     {
-        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal());
+        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 4, 20);
         $variant->spawnIterations(4);
-        $this->subject->getRevs()->willReturn(4);
         $this->subject->getRetryThreshold()->willReturn(10);
         $variant[0]->setResult(new IterationResult(4, null));
         $variant->computeStats();

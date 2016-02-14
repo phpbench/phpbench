@@ -108,13 +108,13 @@ EOT;
         $this->assertEquals(array('beforeOne', 'beforeTwo'), $metadata->getBeforeMethods());
         $this->assertEquals(array('afterOne', 'afterTwo'), $metadata->getAfterMethods());
         $this->assertEquals(array('groupOne', 'groupTwo'), $metadata->getGroups());
-        $this->assertEquals(50, $metadata->getIterations());
+        $this->assertEquals(array(50), $metadata->getIterations());
         $this->assertEquals(array('ONE', 'TWO'), $metadata->getParamProviders());
-        $this->assertEquals(1000, $metadata->getRevs());
+        $this->assertEquals(array(1000), $metadata->getRevs());
         $this->assertEquals(500, $metadata->getSleep());
         $this->assertEquals('seconds', $metadata->getOutputTimeUnit());
         $this->assertEquals('throughput', $metadata->getOutputMode());
-        $this->assertEquals(501, $metadata->getWarmup());
+        $this->assertEquals(array(501), $metadata->getWarmup());
         $this->assertTrue($metadata->getSkip());
     }
 
@@ -227,11 +227,11 @@ EOT;
         $subjectThree = array_shift($subjects);
 
         $this->assertEquals('benchFoo', $subjectOne->getName());
-        $this->assertEquals(2000, $subjectOne->getRevs());
+        $this->assertEquals(array(2000), $subjectOne->getRevs());
 
         $this->assertEquals('benchBar', $subjectTwo->getName());
-        $this->assertEquals(99, $subjectTwo->getIterations());
-        $this->assertEquals(50, $subjectTwo->getRevs());
+        $this->assertEquals(array(99), $subjectTwo->getIterations());
+        $this->assertEquals(array(50), $subjectTwo->getRevs());
         $this->assertEquals(array('class2'), $subjectTwo->getBeforeMethods());
         $this->assertEquals(array('after'), $subjectTwo->getAfterMethods());
         $this->assertEquals(array('class2'), $subjectThree->getBeforeMethods());
@@ -269,6 +269,36 @@ EOT;
         $subjectOne = array_shift($subjects);
 
         $this->assertEquals(array('group1', 'group2', 'group3'), $subjectOne->getGroups());
+    }
+
+    /**
+     * It should allow multiple array elements for warmup, iterations and revolutions.
+     */
+    public function testArrayElements()
+    {
+        $reflection = new ReflectionClass();
+        $reflection->class = 'Test';
+
+        $method = new ReflectionMethod();
+        $method->class = 'Test';
+        $method->name = 'benchFoo';
+        $method->comment = <<<'EOT'
+/**
+ * @Iterations({10, 20, 30})
+ * @Revs({1, 2, 3})
+ * @Warmup({5, 15, 115})
+ */
+EOT;
+        $reflection->methods[$method->name] = $method;
+        $hierarchy = new ReflectionHierarchy();
+        $hierarchy->addReflectionClass($reflection);
+
+        $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
+        $subject = $metadata->getSubjects();
+        $subject = current($subject);
+        $this->assertEquals(array(10, 20, 30), $subject->getIterations());
+        $this->assertEquals(array(1, 2, 3), $subject->getRevs());
+        $this->assertEquals(array(5, 15, 115), $subject->getWarmup());
     }
 
     /**

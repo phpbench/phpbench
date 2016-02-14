@@ -40,8 +40,6 @@ class BenchmarkTest extends \PHPUnit_Framework_TestCase
         $metadata = $this->prophesize('PhpBench\Benchmark\Metadata\SubjectMetadata');
         $metadata->getName()->willReturn('hello');
         $metadata->getGroups()->willReturn(array('one', 'two'));
-        $metadata->getRevs()->willReturn(10);
-        $metadata->getWarmup()->willReturn(20);
         $metadata->getSleep()->willReturn(30);
         $metadata->getRetryThreshold()->willReturn(10);
         $metadata->getOutputTimeUnit()->willReturn(50);
@@ -51,8 +49,6 @@ class BenchmarkTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpBench\Model\Subject', $subject);
         $this->assertEquals('hello', $subject->getName());
         $this->assertEquals(array('one', 'two'), $subject->getGroups());
-        $this->assertEquals(10, $subject->getRevs());
-        $this->assertEquals(20, $subject->getWarmup());
         $this->assertEquals(30, $subject->getSleep());
         $this->assertEquals(10, $subject->getRetryThreshold());
         $this->assertEquals(50, $subject->getOutputTimeUnit());

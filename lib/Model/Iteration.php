@@ -169,6 +169,6 @@ class Iteration
      */
     public function getRevTime()
     {
-        return $this->time / $this->getVariant()->getSubject()->getRevs();
+        return $this->time / $this->getVariant()->getRevolutions();
     }
 }

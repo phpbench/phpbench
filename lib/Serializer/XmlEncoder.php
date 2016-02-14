@@ -94,8 +94,8 @@ class XmlEncoder
         $variantEl->setAttribute('sleep', $subject->getSleep());
         $variantEl->setAttribute('output-time-unit', $subject->getOutputTimeUnit() ?: TimeUnit::MICROSECONDS);
         $variantEl->setAttribute('output-mode', $subject->getOutputMode() ?: TimeUnit::MODE_TIME);
-        $variantEl->setAttribute('revs', $subject->getRevs());
-        $variantEl->setAttribute('warmup', $subject->getWarmup());
+        $variantEl->setAttribute('revs', $variant->getRevolutions());
+        $variantEl->setAttribute('warmup', $variant->getWarmup());
         $variantEl->setAttribute('retry-threshold', $subject->getRetryThreshold());
 
         foreach ($variant->getParameterSet() as $name => $value) {

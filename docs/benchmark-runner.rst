@@ -65,6 +65,8 @@ The benchmark runner can override the number of :ref:`revolutions
 
     $ phpbench run /path/to/HashBench.php --iterations=10 --revs=1000
 
+You may specify these options multiple times.
+
 Overriding the Bootstrap
 ------------------------
 

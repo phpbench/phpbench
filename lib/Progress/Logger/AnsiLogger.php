@@ -25,7 +25,7 @@ abstract class AnsiLogger extends PhpBenchLogger
             '<info>subject</info> %s<info> with </info>%s<info> iteration(s) of </info>%s<info> rev(s),</info>',
             sprintf('%s', $variant->getSubject()->getName()),
             count($variant),
-            $variant->getSubject()->getRevs()
+            $variant->getRevolutions()
         ));
         $this->output->write(PHP_EOL);
         $this->output->write(sprintf(

@@ -47,11 +47,15 @@ class SubjectTest extends \PHPUnit_Framework_TestCase
     {
         $parameterSet = $this->prophesize('PhpBench\Model\ParameterSet');
         $variant = $this->subject->createVariant(
-            $parameterSet->reveal()
+            $parameterSet->reveal(),
+            10,
+            20
         );
 
         $this->assertEquals($this->subject, $variant->getSubject());
         $this->assertEquals($parameterSet->reveal(), $variant->getParameterSet());
         $this->assertEquals(0, $variant->count());
+        $this->assertEquals(10, $variant->getRevolutions());
+        $this->assertEquals(20, $variant->getWarmup());
     }
 }

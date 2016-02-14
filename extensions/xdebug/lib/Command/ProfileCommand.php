@@ -92,7 +92,7 @@ EOT
                     }
                 },
             ),
-            'iterations' => 1,
+            'iterations' => array(1),
         ));
 
         $output->write(PHP_EOL);

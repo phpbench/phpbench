@@ -45,7 +45,7 @@ class Summary
 
                 foreach ($subject->getVariants() as $variant) {
                     $this->nbIterations += count($variant);
-                    $this->nbRevolutions += $variant->getSubject()->getRevs();
+                    $this->nbRevolutions += $variant->getRevolutions();
                     $this->nbRejects += $variant->getRejectCount();
 
                     if ($variant->hasErrorStack()) {

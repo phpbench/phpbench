@@ -61,7 +61,7 @@ class RunnerContextTest extends \PHPUnit_Framework_TestCase
     public function testIterationsNotNumeric()
     {
         new RunnerContext(__DIR__, array(
-            'iterations' => 'asd',
+            'iterations' => array('asd'),
         ));
     }
 
@@ -74,7 +74,7 @@ class RunnerContextTest extends \PHPUnit_Framework_TestCase
     public function testRevolutionsNotNumeric()
     {
         new RunnerContext(__DIR__, array(
-            'revolutions' => 'asd',
+            'revolutions' => array('asd'),
         ));
     }
 
@@ -87,7 +87,7 @@ class RunnerContextTest extends \PHPUnit_Framework_TestCase
     public function testWarmupNotNumeric()
     {
         new RunnerContext(__DIR__, array(
-            'warmup' => 'asd',
+            'warmup' => array('asd'),
         ));
     }
 
@@ -113,8 +113,8 @@ class RunnerContextTest extends \PHPUnit_Framework_TestCase
         $options = array(
             'context_name' => 'my_context',
             'filters' => array('filter_one', 'filter_two'),
-            'iterations' => 5,
-            'revolutions' => 6,
+            'iterations' => array(5),
+            'revolutions' => array(6),
             'parameters' => array('one' => 2),
             'sleep' => 100,
             'retry_threshold' => 10,
@@ -141,8 +141,8 @@ class RunnerContextTest extends \PHPUnit_Framework_TestCase
     public function testDefaults()
     {
         $context = new RunnerContext(__DIR__);
-        $this->assertEquals(10, $context->getIterations(10));
-        $this->assertEquals(10, $context->getRevolutions(10));
+        $this->assertEquals(array(10), $context->getIterations(array(10)));
+        $this->assertEquals(array(10), $context->getRevolutions(array(10)));
         $this->assertEquals(10, $context->getRetryThreshold(10));
     }
 
@@ -154,13 +154,13 @@ class RunnerContextTest extends \PHPUnit_Framework_TestCase
         $context = new RunnerContext(
             __DIR__,
             array(
-                'iterations' => 20,
-                'revolutions' => 30,
+                'iterations' => array(20),
+                'revolutions' => array(30),
                 'retry_threshold' => 40,
             )
         );
-        $this->assertEquals(20, $context->getIterations(10));
-        $this->assertEquals(30, $context->getRevolutions(10));
+        $this->assertEquals(array(20), $context->getIterations(array(10)));
+        $this->assertEquals(array(30), $context->getRevolutions(array(10)));
         $this->assertEquals(40, $context->getRetryThreshold(10));
     }
 

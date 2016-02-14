@@ -105,8 +105,6 @@ class LoaderTest extends FunctionalTestCase
         $this->assertEquals('benchTwo', $subjects[1]->getName());
         $subject = $subjects[0];
         $this->assertEquals(array('one', 'two'), $subject->getGroups());
-        $this->assertEquals(5, $subject->getRevs());
-        $this->assertEquals(2, $subject->getWarmup());
         $this->assertEquals(9, $subject->getSleep());
         $this->assertEquals('milliseconds', $subject->getOutputTimeUnit());
         $this->assertEquals('throughput', $subject->getOutputMode());
@@ -120,6 +118,8 @@ class LoaderTest extends FunctionalTestCase
             'foo' => 'bar',
             'bar' => array(1, 2),
         ), $parameters->getArrayCopy());
+        $this->assertEquals(5, $variant->getRevolutions());
+        $this->assertEquals(2, $variant->getWarmup());
 
         $variant = current($variants);
 
