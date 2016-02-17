@@ -53,7 +53,7 @@ class ConstraintVisitor
     private $fieldMap = array(
         'benchmark' => 'subject.benchmark',
         'subject' => 'subject.name',
-        'revs' => 'subject.revolutions',
+        'revs' => 'variant.revolutions',
         'date' => 'run.date',
         'run' => 'run.id',
         'group' => 'sgroup.name',
@@ -102,8 +102,8 @@ class ConstraintVisitor
         $fieldNames = $this->getFieldNames($constraint);
 
         if (in_array('group', $fieldNames)) {
-            $extraJoins[] = 'LEFT JOIN sgroup ON sgroup.id = sgroup_subject.group_id';
             $extraJoins[] = 'LEFT JOIN sgroup_subject ON sgroup_subject.subject_id = subject.id';
+            $extraJoins[] = 'LEFT JOIN sgroup ON sgroup.id = sgroup_subject.sgroup_id';
             $select[] = 'sgroup.name';
         }
 
@@ -138,6 +138,21 @@ EOT;
         $return[0] = $selectSql . $return[0];
 
         return $return;
+    }
+
+    /**
+     * Return the field names which can be used in queries.
+     *
+     * NOTE: This is used for testing and can potentially be removed later with
+     *       better tests etc.
+     *
+     * @see PhpBench\Tests\Functional\Storage\Driver\Sqlite\LoaderTest
+     *
+     * @return string[]
+     */
+    public function getValidFieldNames()
+    {
+        return array_keys($this->fieldMap);
     }
 
     private function doVisit(Constraint $constraint)
@@ -197,7 +212,12 @@ EOT;
 
     private function visitParam(Comparison $comparison)
     {
-        preg_match('{param\[(.+?)\]}', $comparison->getField(), $matches);
+        if (!preg_match('{param\[(.+?)\]}', $comparison->getField(), $matches)) {
+            throw new \InvalidArgumentException(sprintf(
+                'Parameter field "%s" must be of form "param[param_name]"', $comparison->getField()
+            ));
+        }
+
         $paramName = $matches[1];
 
         return sprintf(

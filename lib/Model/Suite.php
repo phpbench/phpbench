@@ -71,7 +71,7 @@ class Suite implements \IteratorAggregate
 
     public function getIterator()
     {
-        return new \ArrayObject($this->benchmarks);
+        return new \ArrayIterator($this->benchmarks);
     }
 
     public function getContextName()
