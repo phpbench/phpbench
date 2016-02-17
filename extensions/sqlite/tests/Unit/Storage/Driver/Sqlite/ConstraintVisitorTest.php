@@ -70,7 +70,7 @@ class ConstraintVisitorTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 'revs: 1000',
-                'subject.revolutions = :param0',
+                'variant.revolutions = :param0',
                 array(
                     'param0' => 1000,
                 ),
@@ -168,6 +168,21 @@ class ConstraintVisitorTest extends \PHPUnit_Framework_TestCase
         $constraint = $this->prophesize('PhpBench\Expression\Constraint\Comparison');
         $constraint->getComparator()->willReturn('$eq');
         $constraint->getField()->willReturn('boobar');
+
+        $this->visitor->visit($constraint->reveal());
+    }
+
+    /**
+     * It should throw an exception if "param" is used without a key.
+     *
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage must be of form
+     */
+    public function testInvalidParam()
+    {
+        $constraint = $this->prophesize('PhpBench\Expression\Constraint\Comparison');
+        $constraint->getComparator()->willReturn('$eq');
+        $constraint->getField()->willReturn('param');
 
         $this->visitor->visit($constraint->reveal());
     }
