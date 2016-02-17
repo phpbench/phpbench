@@ -13,42 +13,80 @@ This chapter will describe the default report generators.
 ``table``
 ---------
 
-Generates a tabular report.
+The table generator is the main report generator - it is the generator that allows you to analyze your
+benchmarking results.
 
-Class: ``PhpBench\Report\Generator\ConsoleTabularGenerator``.
-
-Options:
-
-- **title**: *(string)* Display this title.
-- **description**: *(string)* Display this description.
-- **aggregate**: *(boolean)* Aggregate iterations into a single row.
-- **exclude**: *(array)* List of columns to exclude.
-- **sort**: *(assoc array)* Associative array of columns to directions for
-  sorting, e.g. `{"subject": "asc", "time": "asc"}`.
-- **selector**: *(string)* XPath selector to use when selecting the benchmark results.
-- **groups**: *(array)* Only include the named groups.
-
-The ``selector`` option is important and can be used to target specific
-results, for example ``//subject[group/@name="my_group"]`` would only report
-subjects in the group ``my_group``.
-
-.. _generator_table_custom:
-
-``table_custom``
-----------------
-
-Also generates a tabular report but allows you to specify a `Tabular
-definition`_ file in order to have complete control over the generated report.
-
-Class: ``PhpBench\Report\Generator\ConsoleTabularCustomGenerator``.
+Class: ``PhpBench\Report\Generator\TableGenerator``.
 
 Options:
 
-- **title**: *(string)* Display this title.
-- **description**: *(string)* Display this description.
-- **file**: *(string)* Name of tabular definition file.
-- **params**: *(object)* Associative array of parameters to pass to Tabular.
-- **exclude**: *(array)* List of columns to exclude.
+- **title**: *(string)* Title of the report.
+- **description**: *(string)* Description of the report.
+- **cols**: *(array)* List of columns to display, see below.
+- **break**: *(array)* List of columns; break into multiple tables based on
+  specified columns.
+- **compare**: *(string)* Isolate and compare values (default ``mean`` time)
+  based for the given column.
+- **compare_fields**: *(array)* List of fields to compare based on the column
+  specified with **compare**.
+- **diff_col**: *(string)* If the ``diff`` column is given in ``cols``, use
+  this column as the value on which to determine the ``diff`` (default
+  ``mean``).
+- **sort**: *(assoc_array)* Sort specification, can specify multiple columns;
+  e.g. ``{ mean: "asc", benchmark: "desc" }``.
+- **pretty_params**: *(boolean)* Pretty print the ``params`` field.
+- **iterations**: *(boolean)* Include the results of every individual
+  iteration (default ``false``).
+
+.. _generator_table_columns:
+
+Columns
+~~~~~~~
+
+Here we divide the columns into three sets, *conditions* are those columns
+which determine the execution context, *variant statistics* are aggregate
+statistics relating to a set of iterations and *iteration statistcs* relate to
+single iterations (as provided when ``iterations`` option is set to ``true``).
+
+Conditions:
+
+- **suite**: Identifier of the suite.
+- **date**: Date the suite was generated,
+- **stime**: Time the suite was generated 
+- **benchmark**: Short name of the benchmark class (i.e. no namespace).
+- **benchmark_full**: Fully expanded name of benchmark class.
+- **subject**: Name of the subject method.
+- **groups**: Comma separated list of groups.
+- **params**: Parameters (represented as JSON).
+- **revs**: Number of revolutions.
+- **its**: Number of iterations.
+
+Variant Statistics:
+
+- **mem**: Memory used by iteration as retrieved by memory_get_peak_usage_ (mean for variant).
+- **min**: Minimum time of all iterations in variant.
+- **max**: Maximum time of all iterations in variant.
+- **worst**: Synonym for ``max``.
+- **best**: Synonym for ``min``.
+- **sum**: Total time taken by all iterations in variant,
+- **stdev**: `Standard deviation`_
+- **mean**: Mean time taken by all iterations in variant.
+- **mode**: Mode_ of all iterations in variant.
+- **variance**: The variance_ of the variant.
+- **rstdev**: The `relative standard deviation`_.
+
+Iteration Statistics:
+
+- **iter**: Index of iteration.
+- **rej**: Number of rejections the iteration went through (see
+  :ref:`retry_threshold`.
+- **time**: Time in (microseconds_) it took for the iteration to complete.
+- **z-vaue**: The `number of standard deviations`_ away from the mean of the
+  iteration set (the variant).
+
+In addition any number of environment columns are added in the form of
+``<provider_name>_<key>``, so for example the column for the VCS branch would
+be ``vcs_branch``.
 
 ``composite``
 -------------
@@ -61,4 +99,23 @@ Options:
 
 - **reports**: *(array)*: List of report names.
 
-.. _Tabular definition: http://tabular.readthedocs.org/en/master/definition.html
+``env``
+-------
+
+This is a simple generator which generates a report listing all of the
+environmental factors for each suite.
+
+Class: ``PhpBench\Report\Generator\EnvGenerator``.
+
+Options:
+
+- **title**: *(string)* Title of the report.
+- **description**: *(string)* Description of the report.
+
+.. _Standard deviation: https://en.wikipedia.org/wiki/Standard_deviation
+.. _variance: https://en.wikipedia.org/wiki/Variance
+.. _relative standard deviation: https://en.wikipedia.org/wiki/Coefficient_of_variation
+.. _number of standard deviations: https://en.wikipedia.org/wiki/Z-score
+.. _Mode: https://en.wikipedia.org/wiki/Mode_(statistics)
+.. _microseconds: https://en.wikipedia.org/wiki/Microseconds
+.. _memory_get_peak_usage: http://php.net/manual/en/function.memory-get-peak-usage.php

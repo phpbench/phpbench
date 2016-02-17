@@ -89,6 +89,8 @@ Set the :ref:`retry_threshold`:
         "retry_threshold": 5
     }
 
+.. _configuration_reports:
+
 Reports
 -------
 

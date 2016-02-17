@@ -2,7 +2,6 @@
     "bootstrap": "vendor/autoload.php",
     "path": "benchmarks",
     "storage": "sqlite",
-    "progress": "blinken",
     "extensions": [
         "PhpBench\\Extensions\\XDebug\\XDebugExtension",
         "PhpBench\\Extensions\\Sqlite\\SqliteExtension"

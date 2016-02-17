@@ -11,6 +11,7 @@
 
 namespace PhpBench\Tests\Unit\Report\Renderer;
 
+use PhpBench\Formatter\Formatter;
 use PhpBench\Registry\Config;
 use PhpBench\Report\Renderer\XsltRenderer;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -22,10 +23,12 @@ class XsltRendererTest extends AbstractRendererCase
     private $defaultReport;
     private $specificReport;
     private $tokenReport;
+    private $formatter;
 
     public function setUp()
     {
-        $this->renderer = new XsltRenderer();
+        $this->formatter = $this->prophesize(Formatter::class);
+        $this->renderer = new XsltRenderer($this->formatter->reveal());
         $this->output = new BufferedOutput();
         $this->renderer->setOutput($this->output);
         $this->specificReport = 'report_specific.html';

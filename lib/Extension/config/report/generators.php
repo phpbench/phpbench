@@ -12,24 +12,21 @@
 return array(
     'aggregate' => array(
         'generator' => 'table',
-        'type' => 'aggregate',
+        'cols' => array('benchmark', 'subject', 'groups', 'params', 'revs', 'its', 'mem', 'best', 'mean', 'mode', 'worst', 'stdev', 'rstdev', 'diff'),
     ),
     'default' => array(
         'generator' => 'table',
-        'type' => 'default',
+        'iterations' => true,
+        'cols' => array('benchmark', 'subject', 'groups', 'params', 'revs', 'iter', 'rej', 'mem', 'iter', 'time', 'z-value', 'diff'),
+        'diff_col' => 'time',
     ),
     'compare' => array(
         'generator' => 'table',
-        'type' => 'compare',
-    ),
-    'plain' => array(
-        'generator' => 'table',
-        'type' => 'default',
-        'formatting' => false,
-        'body_only' => true,
+        'cols' => array('benchmark', 'subject', 'groups', 'params', 'revs'),
+        'compare' => 'vcs_branch',
+        'break' => array('benchmark', 'subject'),
     ),
     'env' => array(
-        'generator' => 'table_custom',
-        'file' => __DIR__ . '/../../../Report/Generator/Tabular/env.json',
+        'generator' => 'env',
     ),
 );

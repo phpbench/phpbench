@@ -9,15 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Report\Generator\Tabular\Format;
+namespace PhpBench\Formatter\Format;
 
-use PhpBench\Tabular\Formatter\FormatInterface;
+use PhpBench\Formatter\FormatInterface;
 use PhpBench\Util\TimeUnit;
 
 /**
  * Formater which converts one time unit to another,.
  */
-class TimeFormat implements FormatInterface
+class TimeUnitFormat implements FormatInterface
 {
     /**
      * @var TimeUnit
@@ -37,7 +37,8 @@ class TimeFormat implements FormatInterface
         return $this->timeUnit->format(
             $subject,
             in_array('unit', $options['resolve']) ? $this->timeUnit->resolveDestUnit($options['unit']) : $options['unit'],
-            in_array('mode', $options['resolve']) ? $this->timeUnit->resolveMode($options['mode']) : $options['mode']
+            in_array('mode', $options['resolve']) ? $this->timeUnit->resolveMode($options['mode']) : $options['mode'],
+            $this->timeUnit->resolvePrecision($options['precision'])
         );
     }
 
@@ -49,6 +50,7 @@ class TimeFormat implements FormatInterface
         return array(
             'unit' => TimeUnit::MICROSECONDS,
             'mode' => TimeUnit::MODE_TIME,
+            'precision' => 3,
             'resolve' => array(),
         );
     }

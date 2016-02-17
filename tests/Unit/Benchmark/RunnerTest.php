@@ -357,7 +357,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
      */
     public function testEnvironment()
     {
-        $this->informations[] = new Information('hello', array('say' => 'goodbye'));
+        $this->informations['hello'] = new Information('hello', array('say' => 'goodbye'));
 
         $subject = new SubjectMetadata($this->benchmark->reveal(), 'name', 0);
         $this->benchmark->getSubjects()->willReturn(array(

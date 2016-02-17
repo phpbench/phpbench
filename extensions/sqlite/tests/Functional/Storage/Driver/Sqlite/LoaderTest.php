@@ -89,13 +89,15 @@ class LoaderTest extends FunctionalTestCase
         // assert env information
         $envInformations = $suite->getEnvInformations();
         $this->assertCount(2, $envInformations);
-        $this->assertEquals('system', $envInformations[0]->getName());
+        $this->assertArrayHasKey('system', $envInformations);
+        $this->assertEquals('system', $envInformations['system']->getName());
         $this->assertEquals(array(
             'os' => 'linux',
             'memory' => 8096,
             'distribution' => 'debian',
-        ), iterator_to_array($envInformations[0]));
-        $this->assertEquals('vcs', $envInformations[1]->getName());
+        ), iterator_to_array($envInformations['system']));
+        $this->assertArrayHasKey('vcs', $envInformations);
+        $this->assertEquals('vcs', $envInformations['vcs']->getName());
 
         // assert benchmarks
         $benchmarks = $suite->getBenchmarks();

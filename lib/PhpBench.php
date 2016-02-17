@@ -140,7 +140,5 @@ class PhpBench
 
             return substr($arg, strlen($option));
         }
-
-        return;
     }
 }

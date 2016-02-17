@@ -95,6 +95,16 @@ class Distribution implements \IteratorAggregate
         return new \ArrayIterator($this->stats);
     }
 
+    public function getStats()
+    {
+        $stats = array();
+        foreach (array_keys($this->closures) as $name) {
+            $stats[$name] = $this->getStat($name);
+        }
+
+        return $stats;
+    }
+
     private function getStat($name)
     {
         if (isset($this->stats[$name])) {

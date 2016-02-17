@@ -10,7 +10,7 @@ Features at a glance:
 - **Revolutions and Iterations**: Spin and repeat.
 - **Process Isolation**: Benchmarks are run in separate processes with no
   significant overhead from the runner.
-- **Reporting**: Powerful and extensible reports thanks to the `Tabular`_ library.
+- **Reporting**: Powerful and extensible reports.
 - **Deferred Reporting**: Dump benchmarking results to an XML file and report
   on them later.
 - **Memory Usage**: Keep an eye on the amount of memory used by benchmarking
@@ -37,7 +37,6 @@ Are There Other Benchmarking Frameworks?
 You can try `Athletic`_ .
 
 .. _Symfony Stopwatch: http://symfony.com/doc/current/components/stopwatch.html
-.. _Tabular: https://github.com/phpbench/tabular
 .. _XDebug: http://xdebug.org
 .. _Blackfire: https://blackfire.io/
 .. _NewRelic: http://newrelic.com

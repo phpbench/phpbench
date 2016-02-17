@@ -50,12 +50,19 @@
     </xsl:template>
 
     <xsl:template match="report">
-        <h2><xsl:value-of select="@title"/></h2>
-        <p><xsl:value-of select="description" /></p>
+        <xsl:if test="@title != ''">
+            <h2><xsl:value-of select="@title"/></h2>
+        </xsl:if>
+        <xsl:if test="@description != ''">
+            <p><xsl:value-of select="description" /></p>
+        </xsl:if>
         <xsl:apply-templates select="./table" />
     </xsl:template>
 
     <xsl:template match="table">
+        <xsl:if test="@title != ''">
+            <h3><xsl:value-of select="@title"/></h3>
+        </xsl:if>
         <table>
             <thead>
                 <tr>

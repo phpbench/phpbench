@@ -17,7 +17,7 @@
     </xsl:template>
 
     <xsl:template match="report">
-        <xsl:if test="title != ''">
+        <xsl:if test="@title != ''">
             <xsl:value-of select="@title"/><xsl:call-template name="newline" /><xsl:call-template name="repeat">
                 <xsl:with-param name="output" select="string('-')" />
                 <xsl:with-param name="count" select="string-length(@title)" />
@@ -25,7 +25,7 @@
             <xsl:call-template name="newline" />
             <xsl:call-template name="newline" />
         </xsl:if>
-        <xsl:if test="description != ''">
+        <xsl:if test="@description != ''">
             <xsl:value-of select="description" />
             <xsl:call-template name="newline" />
             <xsl:call-template name="newline" />
@@ -34,6 +34,11 @@
     </xsl:template>
 
     <xsl:template match="table">
+            <xsl:if test="@title != ''">### <xsl:value-of select="@title"/><xsl:call-template name="newline" /><xsl:call-template name="repeat">
+                    <xsl:with-param name="count" select="string-length(@title)" />
+                </xsl:call-template>
+                <xsl:call-template name="newline" />
+            </xsl:if>
             <xsl:for-each select="./group[1]/row[1]/cell">
                 <xsl:if test="position()!=1" xml:space="preserve"> | </xsl:if>
                 <xsl:value-of select="@name" />
@@ -48,7 +53,6 @@
                 </xsl:for-each>
                 <xsl:call-template name="newline" />
             </xsl:for-each>
-            <xsl:call-template name="newline" />
             <xsl:call-template name="newline" />
     </xsl:template>
 

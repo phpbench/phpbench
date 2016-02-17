@@ -1,0 +1,26 @@
+{
+    "z-value": [
+        [ "number", { "decimal_places": 2 } ],
+        [ "balance", { } ],
+        [ "printf", { "format": "%sσ" } ]
+    ],
+    "percentage": [
+        [ "printf", { "format": "%.2f%%" } ]
+    ],
+    "diff": [
+        [ "number", { "decimal_places": 2 }],
+        [ "balance", {} ],
+        [ "printf", { "format": "%s%%" } ]
+    ],
+    "mem": [
+        [ "number" ],
+        [ "printf", { "format": "%sb" }]
+    ],
+    "time_sd": [
+        [ "time", { "mode": "time", "unit": "{{ output_time_unit }}" }]
+    ],
+    "timeunit": [
+        [ "time", { "precision": "{{ output_time_precision }}", "unit": "{{ output_time_unit }}", "mode": "{{ output_mode }}", "resolve": ["mode", "unit"] }]
+    ]
+}
+

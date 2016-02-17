@@ -25,6 +25,7 @@ class Suite implements \IteratorAggregate
     private $configPath;
     private $envInformations = array();
     private $benchmarks = array();
+    private $identifier;
 
     /**
      * __construct.
@@ -40,13 +41,15 @@ class Suite implements \IteratorAggregate
         \DateTime $date,
         $configPath = null,
         array $benchmarks = array(),
-        array $envInformations = array()
+        array $envInformations = array(),
+        $identifier = null
     ) {
         $this->contextName = $contextName;
         $this->date = $date;
         $this->configPath = $configPath;
         $this->envInformations = $envInformations;
         $this->benchmarks = $benchmarks;
+        $this->identifier = $identifier;
     }
 
     public function getBenchmarks()
@@ -152,7 +155,14 @@ class Suite implements \IteratorAggregate
      */
     public function setEnvInformations(array $envInformations)
     {
-        $this->envInformations = $envInformations;
+        foreach ($envInformations as $envInformation) {
+            $this->addEnvInformation($envInformation);
+        }
+    }
+
+    public function addEnvInformation(Information $information)
+    {
+        $this->envInformations[$information->getName()] = $information;
     }
 
     /**
@@ -161,5 +171,18 @@ class Suite implements \IteratorAggregate
     public function getEnvInformations()
     {
         return $this->envInformations;
+    }
+
+    /**
+     * The identifier uniquely identifies this suite.
+     *
+     * The identifier is determined by the storage driver, and may be empty
+     * only when dynamically generating reports on-the-fly.
+     *
+     * @return mixed
+     */
+    public function getIdentifier()
+    {
+        return $this->identifier;
     }
 }

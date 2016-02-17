@@ -13,6 +13,7 @@ namespace PhpBench\Report\Renderer;
 
 use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Dom\Document;
+use PhpBench\Formatter\Formatter;
 use PhpBench\PhpBench;
 use PhpBench\Registry\Config;
 use PhpBench\Report\RendererInterface;
@@ -27,6 +28,16 @@ class XsltRenderer implements RendererInterface, OutputAwareInterface
      * @var OutputAwareInterface
      */
     private $output;
+
+    /**
+     * @var Formatter
+     */
+    private $formatter;
+
+    public function __construct(Formatter $formatter)
+    {
+        $this->formatter = $formatter;
+    }
 
     /**
      * {@inheritdoc}
@@ -57,6 +68,22 @@ class XsltRenderer implements RendererInterface, OutputAwareInterface
                 'XSLT template file "%s" does not exist',
                 $template
             ));
+        }
+
+        foreach ($reportDom->query('.//row') as $rowEl) {
+            $formatterParams = array();
+            foreach ($rowEl->query('./formatter-param') as $paramEl) {
+                $formatterParams[$paramEl->getAttribute('name')] = $paramEl->nodeValue;
+            }
+
+            foreach ($rowEl->query('./cell') as $cellEl) {
+                $value = $cellEl->nodeValue;
+                if ('' !== $value && $cellEl->hasAttribute('class')) {
+                    $classes = explode(' ', $cellEl->getAttribute('class'));
+                    $value = $this->formatter->applyClasses($classes, $value, $formatterParams);
+                    $cellEl->nodeValue = $value;
+                }
+            }
         }
 
         $stylesheetDom = new \DOMDocument('1.0');

@@ -87,4 +87,20 @@ class DistributionTest extends \PHPUnit_Framework_TestCase
         $distribution = new Distribution(array(0, 0));
         iterator_to_array($distribution);
     }
+
+    /**
+     * It should return all the stats.
+     */
+    public function testReturnStats()
+    {
+        $distribution = new Distribution(array(10, 20));
+        $stats = $distribution->getStats();
+        foreach (array(
+            'min', 'max', 'sum', 'stdev', 'mean', 'mode', 'variance', 'rstdev',
+        ) as $key) {
+            $this->assertArrayHasKey($key, $stats);
+        }
+        $this->assertEquals(10, $stats['min']);
+        $this->assertEquals(20, $stats['max']);
+    }
 }
