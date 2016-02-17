@@ -46,6 +46,7 @@ class BenchmarkTest extends \PHPUnit_Framework_TestCase
         $metadata->getRetryThreshold()->willReturn(10);
         $metadata->getOutputTimeUnit()->willReturn(50);
         $metadata->getOutputMode()->willReturn(60);
+        $metadata->getOutputTimePrecision()->willReturn(3);
 
         $subject = $this->benchmark->createSubjectFromMetadata($metadata->reveal());
         $this->assertInstanceOf('PhpBench\Model\Subject', $subject);
@@ -57,6 +58,7 @@ class BenchmarkTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(10, $subject->getRetryThreshold());
         $this->assertEquals(50, $subject->getOutputTimeUnit());
         $this->assertEquals(60, $subject->getOutputMode());
+        $this->assertEquals(3, $subject->getOutputTimePrecision());
 
         $subjects = $this->benchmark->getSubjects();
         $this->assertCount(1, $subjects);

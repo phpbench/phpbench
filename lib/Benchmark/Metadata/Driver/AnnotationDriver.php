@@ -163,7 +163,8 @@ class AnnotationDriver implements DriverInterface
         }
 
         if ($annotation instanceof Annotations\OutputTimeUnit) {
-            $subject->setOutputTimeUnit($annotation->getOutputTimeUnit());
+            $subject->setOutputTimeUnit($annotation->getTimeUnit());
+            $subject->setOutputTimePrecision($annotation->getPrecision());
         }
 
         if ($annotation instanceof Annotations\OutputMode) {

@@ -53,6 +53,7 @@ class LoaderTest extends FunctionalTestCase
                 'benchmarks' => array('BenchOne', 'BenchTwo'),
                 'groups' => array('one', 'two'),
                 'output_time_unit' => 'milliseconds',
+                'output_time_precision' => 7,
                 'output_mode' => 'throughput',
                 'revs' => 5,
                 'warmup' => 2,
@@ -109,6 +110,7 @@ class LoaderTest extends FunctionalTestCase
         $this->assertEquals(2, $subject->getWarmup());
         $this->assertEquals(9, $subject->getSleep());
         $this->assertEquals('milliseconds', $subject->getOutputTimeUnit());
+        $this->assertEquals(7, $subject->getOutputTimePrecision());
         $this->assertEquals('throughput', $subject->getOutputMode());
 
         // assert variants

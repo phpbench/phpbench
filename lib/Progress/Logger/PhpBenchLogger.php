@@ -98,15 +98,17 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
 
     public function formatIterationsFullSummary(Variant $variant)
     {
+        $subject = $variant->getSubject();
         $stats = $variant->getStats();
         $timeUnit = $this->timeUnit->resolveDestUnit($variant->getSubject()->getOutputTimeUnit());
-        $mode = $this->timeUnit->resolveMode($variant->getSubject()->getOutputMode());
+        $mode = $this->timeUnit->resolveMode($subject->getOutputMode());
+        $precision = $this->timeUnit->resolvePrecision($subject->getOutputTimePrecision());
 
         return sprintf(
             "[μ Mo]/r: %s %s (%s) \t[μSD μRSD]/r: %s %s%%",
 
-            $this->timeUnit->format($stats->getMean(), $timeUnit, $mode, null, false),
-            $this->timeUnit->format($stats->getMode(), $timeUnit, $mode, null, false),
+            $this->timeUnit->format($stats->getMean(), $timeUnit, $mode, $precision, false),
+            $this->timeUnit->format($stats->getMode(), $timeUnit, $mode, $precision, false),
             $this->timeUnit->getDestSuffix($timeUnit, $mode),
             $this->timeUnit->format($stats->getStdev(), $timeUnit, TimeUnit::MODE_TIME),
             number_format($stats->getRstdev(), 2)
@@ -115,15 +117,17 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
 
     public function formatIterationsShortSummary(Variant $variant)
     {
+        $subject = $variant->getSubject();
         $stats = $variant->getStats();
         $timeUnit = $this->timeUnit->resolveDestUnit($variant->getSubject()->getOutputTimeUnit());
-        $mode = $this->timeUnit->resolveMode($variant->getSubject()->getOutputMode());
+        $mode = $this->timeUnit->resolveMode($subject->getOutputMode());
+        $precision = $this->timeUnit->resolvePrecision($subject->getOutputTimePrecision());
 
         return sprintf(
             '[μ Mo]/r: %s %s μRSD/r: %s%%',
 
-            $this->timeUnit->format($stats->getMean(), $timeUnit, $mode, null, false),
-            $this->timeUnit->format($stats->getMode(), $timeUnit, $mode, null, false),
+            $this->timeUnit->format($stats->getMean(), $timeUnit, $mode, $precision, false),
+            $this->timeUnit->format($stats->getMode(), $timeUnit, $mode, $precision, false),
             number_format($stats->getRstdev(), 2)
         );
     }
@@ -145,7 +149,7 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
                 $this->timeUnit->resolveDestUnit($timeUnit),
                 $this->timeUnit->resolveMode($outputMode)
             ),
-            $this->timeUnit->getPrecision()
+            $this->timeUnit->resolvePrecision($subject->getOutputTimePrecision())
         );
     }
 }

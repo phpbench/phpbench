@@ -222,14 +222,6 @@ class TimeUnit
     }
 
     /**
-     * Return the precision.
-     */
-    public function getPrecision()
-    {
-        return $this->precision;
-    }
-
-    /**
      * Return the destination unit suffix.
      *
      * @param string $unit

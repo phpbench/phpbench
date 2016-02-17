@@ -15,20 +15,31 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
  * @Annotation
  * @Taget({"METHOD", "CLASS"})
  * @Attributes({
- *    @Attribute("value", required = true, type="string")
+ *    @Attribute("value", required = true, type="string"),
+ *    @Attribute("precision", required = false, type="integer")
  * })
  */
 class OutputTimeUnit
 {
-    private $revs;
+    private $timeUnit;
+    private $precision;
 
-    public function __construct($revs)
+    public function __construct($timeUnit)
     {
-        $this->revs = $revs['value'];
+        $this->timeUnit = $timeUnit['value'];
+
+        if (isset($timeUnit['precision'])) {
+            $this->precision = $timeUnit['precision'];
+        }
     }
 
-    public function getOutputTimeUnit()
+    public function getTimeUnit()
     {
-        return $this->revs;
+        return $this->timeUnit;
+    }
+
+    public function getPrecision()
+    {
+        return $this->precision;
     }
 }

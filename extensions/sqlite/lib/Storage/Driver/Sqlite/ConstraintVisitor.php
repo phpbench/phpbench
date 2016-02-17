@@ -89,6 +89,7 @@ class ConstraintVisitor
             'variant.id',
             'variant.sleep',
             'variant.output_time_unit',
+            'variant.output_time_precision',
             'variant.output_mode',
             'variant.revolutions',
             'variant.retry_threshold',

@@ -403,7 +403,7 @@ default time unit, microseconds, is going to be far more visual precision than y
 need and will only serve to make the results more difficult to interpret.
 
 You can specify *output* time units using the ``@OutputTimeUnit``
-annotation:
+annotation (`precision` is optional):
 
 .. code-block:: php
 
@@ -413,7 +413,7 @@ annotation:
     {
         /**
          * @Iterations(10)
-           @OutputTimeUnit("seconds")
+           @OutputTimeUnit("seconds", precision=3)
          */
         public function benchSleep()
         {

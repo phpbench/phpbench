@@ -62,6 +62,11 @@ class Subject
     private $outputTimeUnit = TimeUnit::MICROSECONDS;
 
     /**
+     * @var int
+     */
+    private $outputTimePrecision = null;
+
+    /**
      * @var string
      */
     private $outputMode = TimeUnit::MODE_TIME;
@@ -174,6 +179,16 @@ class Subject
     public function setOutputTimeUnit($outputTimeUnit)
     {
         $this->outputTimeUnit = $outputTimeUnit;
+    }
+
+    public function getOutputTimePrecision()
+    {
+        return $this->outputTimePrecision;
+    }
+
+    public function setOutputTimePrecision($outputTimePrecision)
+    {
+        $this->outputTimePrecision = $outputTimePrecision;
     }
 
     public function getOutputMode()

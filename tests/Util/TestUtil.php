@@ -90,6 +90,7 @@ class TestUtil
             'subjects' => array('benchOne'),
             'env' => array(),
             'output_time_unit' => 'microseconds',
+            'output_time_precision' => 7,
             'output_mode' => 'time',
         ), $options);
 
@@ -111,6 +112,7 @@ class TestUtil
                 $subject->setSleep($options['sleep']);
                 $subject->setGroups($options['groups']);
                 $subject->setOutputTimeUnit($options['output_time_unit']);
+                $subject->setOutputTimePrecision($options['output_time_precision']);
                 $subject->setOutputMode($options['output_mode']);
                 $variant = $subject->createVariant(new ParameterSet(0, $options['parameters']));
                 $variant->createIteration($baseTime, 200, 0);

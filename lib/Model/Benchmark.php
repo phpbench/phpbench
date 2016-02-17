@@ -63,6 +63,7 @@ class Benchmark implements \IteratorAggregate
         $subject->setSleep($metadata->getSleep());
         $subject->setRetryThreshold($metadata->getRetryThreshold());
         $subject->setOutputTimeUnit($metadata->getOutputTimeUnit());
+        $subject->setOutputTimePrecision($metadata->getOutputTimePrecision());
         $subject->setOutputMode($metadata->getOutputMode());
 
         $this->subjects[] = $subject;
