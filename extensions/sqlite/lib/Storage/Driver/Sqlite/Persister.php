@@ -61,6 +61,7 @@ class Persister
                             'revolutions' => $variant->getRevolutions(),
                             'retry_threshold' => $subject->getRetryThreshold(),
                             'output_time_unit' => $subject->getOutputTimeUnit(),
+                            'output_time_precision' => $subject->getOutputTimePrecision(),
                             'output_mode' => $subject->getOutputMode(),
                             'sleep' => $subject->getSleep(),
                             'warmup' => $variant->getWarmup(),

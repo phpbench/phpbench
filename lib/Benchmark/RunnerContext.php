@@ -44,6 +44,8 @@ class RunnerContext
             'retry_threshold' => null,
             'sleep' => null,
             'warmup' => null,
+            'output_time_precision' => null,
+            'output_time_unit' => null,
         );
 
         $options = array_merge(
@@ -260,6 +262,26 @@ class RunnerContext
     public function getRetryThreshold($default = null)
     {
         return $this->options['retry_threshold'] ?: $default;
+    }
+
+    /**
+     * Return the output time unit.
+     *
+     * @return string
+     */
+    public function getOutputTimeUnit($default = null)
+    {
+        return $this->options['output_time_unit'] ?: $default;
+    }
+
+    /**
+     * Return the output time precision.
+     *
+     * @return string
+     */
+    public function getOutputTimePrecision($default = null)
+    {
+        return $this->options['output_time_precision'] ?: $default;
     }
 
     /**

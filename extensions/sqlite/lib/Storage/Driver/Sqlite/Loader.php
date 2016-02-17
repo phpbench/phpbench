@@ -101,6 +101,7 @@ class Loader
         $subject = $benchmark->createSubject($row['subject.name']);
         $subject->setSleep($row['variant.sleep']);
         $subject->setOutputTimeUnit($row['variant.output_time_unit']);
+        $subject->setOutputTimePrecision($row['variant.output_time_precision']);
         $subject->setOutputMode($row['variant.output_mode']);
 
         $context[self::SUBJECTS][$key] = $subject;

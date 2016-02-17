@@ -44,6 +44,7 @@ class BlinkenLoggerTest extends \PHPUnit_Framework_TestCase
         $this->subject->getName()->willReturn('benchSubject');
         $this->subject->getIndex()->willReturn(1);
         $this->subject->getOutputTimeUnit()->willReturn('milliseconds');
+        $this->subject->getOutputTimePrecision()->willReturn(5);
         $this->subject->getOutputMode()->willReturn('time');
         $this->subject->getRetryThreshold()->willReturn(10);
     }

@@ -18,6 +18,7 @@ CREATE TABLE variant (
     subject_id INTEGER,
     sleep INTEGER,
     output_time_unit VARCHAR(20),
+    output_time_precision INTEGER,
     output_mode VARCHAR(10),
     revolutions INTEGER,
     warmup INTEGER,

@@ -119,6 +119,34 @@ EOT;
     }
 
     /**
+     * Test optional values.
+     */
+    public function testSubjectOptionalValues()
+    {
+        $reflection = new ReflectionClass();
+        $reflection->class = 'Test';
+        $hierarchy = new ReflectionHierarchy();
+        $hierarchy->addReflectionClass($reflection);
+
+        $method = new ReflectionMethod();
+        $method->class = 'Test';
+        $method->name = 'benchFoo';
+        $method->comment = <<<'EOT'
+    /**
+     * @OutputTimeUnit("seconds", precision=3)
+     */
+EOT;
+        $reflection->methods[$method->name] = $method;
+
+        $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
+        $subjects = $metadata->getSubjects();
+        $this->assertCount(1, $subjects);
+        $metadata = reset($subjects);
+
+        $this->assertEquals(3, $metadata->getOutputTimePrecision());
+    }
+
+    /**
      * Subject metadata should override class metadata.
      */
     public function testLoadSubjectOverride()

@@ -47,6 +47,7 @@ class HistogramLoggerTest extends \PHPUnit_Framework_TestCase
         $this->subject->getOutputTimeUnit()->willReturn('milliseconds');
         $this->subject->getOutputMode()->willReturn('time');
         $this->subject->getRetryThreshold()->willReturn(10);
+        $this->subject->getOutputTimePrecision()->willReturn(3);
     }
 
     /**

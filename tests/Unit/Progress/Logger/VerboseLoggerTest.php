@@ -47,6 +47,7 @@ class VerboseLoggerTest extends PhpBenchLoggerTest
         $this->variant->getParameterSet()->willReturn($this->parameterSet->reveal());
         $this->subject->getOutputTimeUnit()->willReturn(null);
         $this->subject->getOutputMode()->willReturn(null);
+        $this->subject->getOutputTimePrecision()->willReturn(null);
         $this->subject->getName()->willReturn('benchFoo');
         $this->parameterSet->getIndex()->willReturn(0);
 
@@ -68,6 +69,7 @@ class VerboseLoggerTest extends PhpBenchLoggerTest
         $this->variant->getParameterSet()->willReturn($this->parameterSet->reveal());
         $this->subject->getOutputTimeUnit()->willReturn(TimeUnit::MICROSECONDS);
         $this->subject->getOutputMode()->willReturn(TimeUnit::MODE_THROUGHPUT);
+        $this->subject->getOutputTimePrecision()->willReturn(null);
         $this->subject->getName()->willReturn('benchFoo');
         $this->parameterSet->getIndex()->willReturn(0);
 

@@ -19,7 +19,7 @@ use PhpBench\Math\Statistics;
  * @ParamProviders({"providePoints"})
  * @Revs(100)
  * @Iterations(10)
- * @OutputTimeUnit("milliseconds")
+ * @OutputTimeUnit("milliseconds", precision=4)
  */
 class KdeBench
 {

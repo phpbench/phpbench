@@ -124,6 +124,7 @@ class XmlDecoder
         foreach ($subjectEl->query('./variant') as $variantEl) {
             $subject->setSleep($variantEl->getAttribute('sleep'));
             $subject->setOutputTimeUnit($variantEl->getAttribute('output-time-unit'));
+            $subject->setOutputTimePrecision($variantEl->getAttribute('output-time-precision'));
             $subject->setOutputMode($variantEl->getAttribute('output-mode'));
             $subject->setRetryThreshold($variantEl->getAttribute('retry-threshold'));
             break;

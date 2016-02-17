@@ -86,6 +86,11 @@ class SubjectMetadata
     /**
      * @var string
      */
+    private $outputTimePrecision = null;
+
+    /**
+     * @var string
+     */
     private $outputMode = TimeUnit::MODE_TIME;
 
     /**
@@ -237,6 +242,16 @@ class SubjectMetadata
     public function setOutputTimeUnit($outputTimeUnit)
     {
         $this->outputTimeUnit = $outputTimeUnit;
+    }
+
+    public function getOutputTimePrecision()
+    {
+        return $this->outputTimePrecision;
+    }
+
+    public function setOutputTimePrecision($outputTimePrecision)
+    {
+        $this->outputTimePrecision = $outputTimePrecision;
     }
 
     public function getOutputMode()

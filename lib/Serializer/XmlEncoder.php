@@ -93,6 +93,7 @@ class XmlEncoder
         // https://github.com/phpbench/phpbench/issues/307
         $variantEl->setAttribute('sleep', $subject->getSleep());
         $variantEl->setAttribute('output-time-unit', $subject->getOutputTimeUnit() ?: TimeUnit::MICROSECONDS);
+        $variantEl->setAttribute('output-time-precision', $subject->getOutputTimePrecision());
         $variantEl->setAttribute('output-mode', $subject->getOutputMode() ?: TimeUnit::MODE_TIME);
         $variantEl->setAttribute('revs', $variant->getRevolutions());
         $variantEl->setAttribute('warmup', $variant->getWarmup());
