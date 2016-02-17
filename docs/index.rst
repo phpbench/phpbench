@@ -25,6 +25,7 @@ Book
    report-generators
    report-renderers
    configuration
+   faq
 
 Extensions
 ----------
