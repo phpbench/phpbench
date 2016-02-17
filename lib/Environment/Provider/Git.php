@@ -87,7 +87,7 @@ class Git implements ProviderInterface
 
     private function exec($cmd)
     {
-        $cmd = sprintf('%s %s', $this->getGitPath(), $cmd);
+        $cmd = sprintf('%s %s', escapeshellarg($this->getGitPath()), $cmd);
         $process = new Process($cmd);
         $process->run();
 
