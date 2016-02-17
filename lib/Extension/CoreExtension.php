@@ -68,6 +68,7 @@ use PhpBench\Tabular\TableBuilder;
 use PhpBench\Tabular\Tabular;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Finder\Finder;
+use PhpBench\Progress\Logger\SimpleLogger;
 
 class CoreExtension implements ExtensionInterface
 {
@@ -345,6 +346,10 @@ class CoreExtension implements ExtensionInterface
         $container->register('progress_logger.histogram', function (Container $container) {
             return new HistogramLogger($container->get('benchmark.time_unit'));
         }, array('progress_logger' => array('name' => 'histogram')));
+
+        $container->register('progress_logger.simple', function (Container $container) {
+            return new SimpleLogger($container->get('benchmark.time_unit'));
+        }, array('progress_logger' => array('name' => 'simple')));
     }
 
     private function registerReportGenerators(Container $container)
