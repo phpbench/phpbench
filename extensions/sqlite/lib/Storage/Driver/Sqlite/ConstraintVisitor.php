@@ -102,8 +102,8 @@ class ConstraintVisitor
         $fieldNames = $this->getFieldNames($constraint);
 
         if (in_array('group', $fieldNames)) {
-            $extraJoins[] = 'LEFT JOIN sgroup ON sgroup.id = sgroup_subject.sgroup_id';
             $extraJoins[] = 'LEFT JOIN sgroup_subject ON sgroup_subject.subject_id = subject.id';
+            $extraJoins[] = 'LEFT JOIN sgroup ON sgroup.id = sgroup_subject.sgroup_id';
             $select[] = 'sgroup.name';
         }
 

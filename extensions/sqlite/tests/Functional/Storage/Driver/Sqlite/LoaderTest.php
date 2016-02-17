@@ -76,8 +76,8 @@ class LoaderTest extends FunctionalTestCase
             )),
             TestUtil::createSuite(),
         ));
-
         $this->persister->persist($suiteCollection);
+
         $suiteCollection = $this->loader->load(new Comparison('$in', 'run', array(1, 2)));
 
         $suites = $suiteCollection->getSuites();
@@ -140,34 +140,6 @@ class LoaderTest extends FunctionalTestCase
      */
     public function testVisitorFields()
     {
-        $suiteCollection = new SuiteCollection(array(
-            TestUtil::createSuite(array(
-                'subjects' => array('benchOne', 'benchTwo'),
-                'benchmarks' => array('BenchOne', 'BenchTwo'),
-                'groups' => array('one', 'two'),
-                'output_time_unit' => 'milliseconds',
-                'output_mode' => 'throughput',
-                'revs' => 5,
-                'warmup' => 2,
-                'sleep' => 9,
-                'parameters' => array('foo' => 'bar', 'bar' => array(1, 2)),
-                'env' => array(
-                    'system' => array(
-                        'os' => 'linux',
-                        'memory' => 8096,
-                        'distribution' => 'debian',
-                    ),
-                    'vcs' => array(
-                        'system' => 'git',
-                        'branch' => 'foo',
-                    ),
-                ),
-            )),
-            TestUtil::createSuite(),
-        ));
-
-        $this->persister->persist($suiteCollection);
-
         $fieldNames = $this->visitor->getValidFieldNames();
 
         foreach ($fieldNames as $fieldName) {
@@ -179,5 +151,38 @@ class LoaderTest extends FunctionalTestCase
             $constraint = new Comparison('$eq', $fieldName, 'foo');
             $this->loader->load($constraint);
         }
+    }
+
+    /**
+     * It should filer by groups.
+     */
+    public function testFilterGroups()
+    {
+        $suiteCollection = new SuiteCollection(array(
+            TestUtil::createSuite(array(
+                'benchmark' => array('benchOne'),
+                'subjects' => array('benchOne'),
+                'groups' => array('one', 'two'),
+            )),
+            TestUtil::createSuite(array(
+                'benchmark' => array('benchOne'),
+                'subjects' => array('benchTwo', 'benchThree'),
+                'groups' => array('foobar'),
+            )),
+        ));
+
+        $this->persister->persist($suiteCollection);
+
+        $suiteCollection = $this->loader->load(new Comparison('$eq', 'group', 'one'));
+        $suite = $suiteCollection->getIterator()->current();
+        $this->assertCount(1, $suite->getSubjects());
+
+        $suiteCollection = $this->loader->load(new Comparison('$eq', 'group', 'two'));
+        $suite = $suiteCollection->getIterator()->current();
+        $this->assertCount(1, $suite->getSubjects());
+
+        $suiteCollection = $this->loader->load(new Comparison('$eq', 'group', 'foobar'));
+        $suite = $suiteCollection->getIterator()->current();
+        $this->assertCount(2, $suite->getSubjects());
     }
 }
