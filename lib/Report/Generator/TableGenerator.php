@@ -42,6 +42,8 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
         'mem' => ['mem'],
         'diff' => ['diff'],
         'z-value' => ['z-value'],
+        'baseline_nothing' => array('timeunit'),
+        'baseline_md5' => array('timeunit'),
     ];
 
     /**

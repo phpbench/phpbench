@@ -439,6 +439,10 @@ class CoreExtension implements ExtensionInterface
             return new Provider\Git();
         }, ['environment_provider' => []]);
 
+        $container->register('environment.provider.baseline', function (Container $container) {
+            return new Provider\Baseline();
+        }, array('environment_provider' => array()));
+
         $container->register('environment.supplier', function (Container $container) {
             return new Supplier();
         });
