@@ -11,6 +11,7 @@
 
 namespace PhpBench\Extension;
 
+use PhpBench\Benchmark\BaselineManager;
 use PhpBench\Benchmark\BenchmarkFinder;
 use PhpBench\Benchmark\Executor\DebugExecutor;
 use PhpBench\Benchmark\Executor\MicrotimeExecutor;
@@ -82,6 +83,8 @@ class CoreExtension implements ExtensionInterface
             'storage' => null,
             'archiver' => 'xml',
             'archive_path' => '_archive',
+            'env_baselines' => ['nothing', 'md5', 'file_rw'],
+            'env_baseline_callables' => [],
         ];
     }
 
@@ -233,6 +236,21 @@ class CoreExtension implements ExtensionInterface
                 $container->get('benchmark.metadata_factory'),
                 $container->get('benchmark.finder')
             );
+        });
+
+        $container->register('benchmark.baseline_manager', function (Container $container) {
+            $manager = new BaselineManager();
+            $callables = array_merge([
+                'nothing' => '\PhpBench\Benchmark\Baseline\Baselines::nothing',
+                'md5' => '\PhpBench\Benchmark\Baseline\Baselines::md5',
+                'file_rw' => '\PhpBench\Benchmark\Baseline\Baselines::fwriteFread',
+            ], $container->getParameter('env_baseline_callables'));
+
+            foreach ($callables as $name => $callable) {
+                $manager->addBaselineCallable($name, $callable);
+            }
+
+            return $manager;
         });
 
         $container->register('benchmark.time_unit', function (Container $container) {
@@ -437,6 +455,13 @@ class CoreExtension implements ExtensionInterface
 
         $container->register('environment.provider.git', function (Container $container) {
             return new Provider\Git();
+        }, ['environment_provider' => []]);
+
+        $container->register('environment.provider.baseline', function (Container $container) {
+            return new Provider\Baseline(
+                $container->get('benchmark.baseline_manager'),
+                $container->getParameter('env_baselines')
+            );
         }, ['environment_provider' => []]);
 
         $container->register('environment.supplier', function (Container $container) {

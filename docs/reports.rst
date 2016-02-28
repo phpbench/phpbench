@@ -227,8 +227,6 @@ Shows aggregate details of each each set of iterations:
 
 It is uses the ``table`` generator, see :ref:`generator_table` for more information.
 
-.. _report_env:
-
 
 ``default``
 ~~~~~~~~~~~
@@ -249,6 +247,8 @@ The default report presents the result of *each iteration*:
     +------------------+-------------+---------+--------+------+------+-----+----------+----------+---------+--------+
 
 It is uses the ``table`` generator, see :ref:`generator_table` for more information.
+
+.. _report_env:
 
 ``env``
 ~~~~~~~

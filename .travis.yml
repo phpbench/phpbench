@@ -21,7 +21,7 @@ before_script:
 script: 
   - phpunit
   # run the benchmarks in order to test them
-  - php bin/phpbench run --iterations=1 --revs=1
+  - php bin/phpbench run --iterations=1 --revs=1 --report=env
   - php bin/phpbench run --iterations=1 --revs=1 --config=extensions/dbal/benchmarks/phpbench.json
 
 matrix:
