@@ -133,7 +133,6 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
             'test' => 'service',
             'one' => array(
                 'foo' => 'bar',
-                'bar' => 'foo',
             ),
             'two' => 2,
             'hello' => 'goodbye',

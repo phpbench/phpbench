@@ -71,7 +71,7 @@ class TestUtil
         $benchmark->getPath()->willReturn($options['path']);
     }
 
-    public static function createSuite(array $options = array())
+    public static function createSuite(array $options = array(), $suiteIndex = 0)
     {
         $options = array_merge(array(
             'date' => '2016-02-06',
@@ -92,13 +92,17 @@ class TestUtil
             'output_time_unit' => 'microseconds',
             'output_time_precision' => 7,
             'output_mode' => 'time',
+            'iterations' => array(0, 10),
         ), $options);
 
         $dateTime = new \DateTime($options['date']);
         $suite = new Suite(
             $options['name'],
             $dateTime,
-            null
+            null,
+            array(),
+            array(),
+            $suiteIndex
         );
 
         foreach ($options['benchmarks'] as $benchmarkClass) {
@@ -113,8 +117,12 @@ class TestUtil
                 $subject->setOutputTimePrecision($options['output_time_precision']);
                 $subject->setOutputMode($options['output_mode']);
                 $variant = $subject->createVariant(new ParameterSet(0, $options['parameters']), $options['revs'], $options['warmup']);
-                $variant->createIteration($baseTime, 200, 0);
-                $variant->createIteration($baseTime + 10, 200, 0);
+
+                $time = $baseTime;
+                foreach ($options['iterations'] as $time) {
+                    $variant->createIteration($baseTime  + $time, 200, 0);
+                }
+
                 $variant->computeStats();
                 $baseTime++;
             }
@@ -132,8 +140,8 @@ class TestUtil
     public static function createCollection(array $suiteConfigs = array())
     {
         $suites = array();
-        foreach ($suiteConfigs as $suiteConfig) {
-            $suites[] = self::createSuite($suiteConfig);
+        foreach ($suiteConfigs as $suiteIndex => $suiteConfig) {
+            $suites[] = self::createSuite($suiteConfig, $suiteIndex);
         }
 
         return new SuiteCollection($suites);

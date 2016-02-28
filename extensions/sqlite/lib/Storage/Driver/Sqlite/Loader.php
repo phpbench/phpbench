@@ -140,7 +140,11 @@ class Loader
 
         $suite = new Suite(
             $row['run.context'],
-            new \DateTime($row['run.date'])
+            new \DateTime($row['run.date']),
+            null,
+            array(),
+            array(),
+            $row['run.id']
         );
 
         $context[self::SUITES][$key] = $suite;

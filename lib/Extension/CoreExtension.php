@@ -33,6 +33,13 @@ use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Environment\Provider;
 use PhpBench\Environment\Supplier;
 use PhpBench\Expression\Parser;
+use PhpBench\Formatter\Format\BalanceFormat;
+use PhpBench\Formatter\Format\NumberFormat;
+use PhpBench\Formatter\Format\PrintfFormat;
+use PhpBench\Formatter\Format\TimeUnitFormat;
+use PhpBench\Formatter\Format\TruncateFormat;
+use PhpBench\Formatter\FormatRegistry;
+use PhpBench\Formatter\Formatter;
 use PhpBench\Json\JsonDecoder;
 use PhpBench\Progress\Logger\BlinkenLogger;
 use PhpBench\Progress\Logger\DotsLogger;
@@ -42,10 +49,8 @@ use PhpBench\Progress\Logger\TravisLogger;
 use PhpBench\Progress\Logger\VerboseLogger;
 use PhpBench\Progress\LoggerRegistry;
 use PhpBench\Registry\Registry;
-use PhpBench\Report\Generator\CompositeGenerator;
-use PhpBench\Report\Generator\Tabular\Format\TimeFormat;
-use PhpBench\Report\Generator\TabularCustomGenerator;
-use PhpBench\Report\Generator\TabularGenerator;
+use PhpBench\Report\Generator\EnvGenerator;
+use PhpBench\Report\Generator\TableGenerator;
 use PhpBench\Report\Renderer\ConsoleRenderer;
 use PhpBench\Report\Renderer\DebugRenderer;
 use PhpBench\Report\Renderer\DelimitedRenderer;
@@ -54,18 +59,6 @@ use PhpBench\Report\ReportManager;
 use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Storage;
-use PhpBench\Tabular\Definition\Expander;
-use PhpBench\Tabular\Definition\Loader;
-use PhpBench\Tabular\Dom\XPathResolver;
-use PhpBench\Tabular\Formatter;
-use PhpBench\Tabular\Formatter\Format\BalanceFormat;
-use PhpBench\Tabular\Formatter\Format\JSONFormat;
-use PhpBench\Tabular\Formatter\Format\NumberFormat;
-use PhpBench\Tabular\Formatter\Format\PrintfFormat;
-use PhpBench\Tabular\Formatter\Format\TruncateFormat;
-use PhpBench\Tabular\Formatter\Registry\ArrayRegistry;
-use PhpBench\Tabular\TableBuilder;
-use PhpBench\Tabular\Tabular;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Finder\Finder;
 
@@ -109,7 +102,6 @@ class CoreExtension implements ExtensionInterface
 
         $this->registerBenchmark($container);
         $this->registerJsonSchema($container);
-        $this->registerTabular($container);
         $this->registerCommands($container);
         $this->registerRegistries($container);
         $this->registerProgressLoggers($container);
@@ -119,6 +111,7 @@ class CoreExtension implements ExtensionInterface
         $this->registerSerializer($container);
         $this->registerStorage($container);
         $this->registerExpression($container);
+        $this->registerFormatter($container);
     }
 
     public function build(Container $container)
@@ -349,33 +342,21 @@ class CoreExtension implements ExtensionInterface
 
     private function registerReportGenerators(Container $container)
     {
-        $container->register('report_generator.tabular', function (Container $container) {
-            return new TabularGenerator(
-                $container->get('tabular'),
-                $container->get('tabular.definition_loader'),
-                $container->get('serializer.encoder.xml')
-            );
+        $container->register('report_generator.table', function (Container $container) {
+            return new TableGenerator();
         }, array('report_generator' => array('name' => 'table')));
-        $container->register('report_generator.tabular_custom', function (Container $container) {
-            return new TabularCustomGenerator(
-                $container->get('tabular'),
-                $container->get('tabular.definition_loader'),
-                $container->get('serializer.encoder.xml'),
-                $container->getParameter('config_path')
-            );
-        }, array('report_generator' => array('name' => 'table_custom')));
-        $container->register('report_generator.composite', function (Container $container) {
-            return new CompositeGenerator($container->get('report.manager'));
-        }, array('report_generator' => array('name' => 'composite')));
+        $container->register('report_generator.env', function (Container $container) {
+            return new EnvGenerator();
+        }, array('report_generator' => array('name' => 'env')));
     }
 
     private function registerReportRenderers(Container $container)
     {
         $container->register('report_renderer.console', function (Container $container) {
-            return new ConsoleRenderer();
+            return new ConsoleRenderer($container->get('phpbench.formatter'));
         }, array('report_renderer' => array('name' => 'console')));
         $container->register('report_renderer.html', function (Container $container) {
-            return new XsltRenderer();
+            return new XsltRenderer($container->get('phpbench.formatter'));
         }, array('report_renderer' => array('name' => 'xslt')));
         $container->register('report_renderer.debug', function (Container $container) {
             return new DebugRenderer();
@@ -385,58 +366,21 @@ class CoreExtension implements ExtensionInterface
         }, array('report_renderer' => array('name' => 'delimited')));
     }
 
-    private function registerTabular(Container $container)
+    private function registerFormatter(Container $container)
     {
-        $container->register('tabular.xpath_resolver', function () {
-            require_once __DIR__ . '/../Dom/xpath_functions.php';
-
-            $resolver = new XPathResolver();
-            $resolver->registerFunction('parameters_to_json', 'PhpBench\Dom\functions\parameters_to_json');
-            $resolver->registerFunction('class_name', 'PhpBench\Dom\functions\class_name');
-            $resolver->registerFunction('join_node_values', 'PhpBench\Dom\functions\join_node_values');
-            $resolver->registerFunction('kde_mode', 'PhpBench\Dom\functions\join_node_values');
-            $resolver->registerFunction('suite', 'PhpBench\Dom\functions\suite');
-
-            return $resolver;
-        });
-
-        $container->register('tabular.table_builder', function (Container $container) {
-            return new TableBuilder($container->get('tabular.xpath_resolver'));
-        });
-
-        $container->register('tabular.formatter.registry', function (Container $container) {
-            $registry = new ArrayRegistry();
+        $container->register('phpbench.formatter.registry', function (Container $container) {
+            $registry = new FormatRegistry();
             $registry->register('printf', new PrintfFormat());
             $registry->register('balance', new BalanceFormat());
             $registry->register('number', new NumberFormat());
             $registry->register('truncate', new TruncateFormat());
-            $registry->register('json_format', new JSONFormat());
-            $registry->register('time', new TimeFormat($container->get('benchmark.time_unit')));
+            $registry->register('time', new TimeUnitFormat($container->get('benchmark.time_unit')));
 
             return $registry;
         });
 
-        $container->register('tabular.formatter', function (Container $container) {
-            return new Formatter($container->get('tabular.formatter.registry'));
-        });
-
-        $container->register('tabular', function (Container $container) {
-            return new Tabular(
-                $container->get('tabular.table_builder'),
-                $container->get('tabular.definition_loader'),
-                $container->get('tabular.formatter'),
-                $container->get('tabular.expander')
-            );
-        });
-
-        $container->register('tabular.definition_loader', function (Container $container) {
-            return new Loader(
-                $container->get('json_schema.validator')
-            );
-        });
-
-        $container->register('tabular.expander', function (Container $container) {
-            return new Expander();
+        $container->register('phpbench.formatter', function (Container $container) {
+            return new Formatter($container->get('phpbench.formatter.registry'));
         });
     }
 

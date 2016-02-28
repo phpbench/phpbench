@@ -11,8 +11,6 @@
 
 namespace PhpBench\Benchmark\Metadata;
 
-use PhpBench\Util\TimeUnit;
-
 /**
  * Metadata for benchmarkMetadata subjects.
  */
@@ -91,7 +89,7 @@ class SubjectMetadata
     /**
      * @var string
      */
-    private $outputMode = TimeUnit::MODE_TIME;
+    private $outputMode = null;
 
     /**
      * @var BenchmarkMetadata

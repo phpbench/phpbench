@@ -11,6 +11,7 @@
 
 namespace PhpBench\Tests\Unit\Report\Renderer;
 
+use PhpBench\Formatter\Formatter;
 use PhpBench\Registry\Config;
 use PhpBench\Report\Renderer\ConsoleRenderer;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -19,10 +20,12 @@ class ConsoleRendererTest extends AbstractRendererCase
 {
     private $renderer;
     private $output;
+    private $formatter;
 
     public function setUp()
     {
-        $this->renderer = new ConsoleRenderer();
+        $this->formatter = $this->prophesize(Formatter::class);
+        $this->renderer = new ConsoleRenderer($this->formatter->reveal());
         $this->output = new BufferedOutput();
         $this->renderer->setOutput($this->output);
     }

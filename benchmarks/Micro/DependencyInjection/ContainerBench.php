@@ -16,7 +16,7 @@ use PhpBench\DependencyInjection\Container;
 /**
  * @Iterations(10)
  * @Revs(10)
- * @OutputTimeUnit("milliseconds", precision=6)
+ * @OutputTimeUnit("seconds", precision=6)
  */
 class ContainerBench
 {

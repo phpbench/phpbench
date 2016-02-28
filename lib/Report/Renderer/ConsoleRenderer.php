@@ -14,6 +14,7 @@ namespace PhpBench\Report\Renderer;
 use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Dom\Document;
 use PhpBench\Dom\Element;
+use PhpBench\Formatter\Formatter;
 use PhpBench\Registry\Config;
 use PhpBench\Report\RendererInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
@@ -27,6 +28,17 @@ class ConsoleRenderer implements RendererInterface, OutputAwareInterface
      * @var OutputInterface
      */
     private $output;
+
+    /**
+     * @var Formatter
+     */
+    private $formatter;
+
+    public function __construct(Formatter $formatter)
+    {
+        $this->formatter = $formatter;
+        $formatter->classesFromFile(__DIR__ . '/classes/main.json');
+    }
 
     /**
      * {@inheritdoc}
@@ -46,12 +58,21 @@ class ConsoleRenderer implements RendererInterface, OutputAwareInterface
     public function render(Document $reportDom, Config $config)
     {
         foreach ($reportDom->firstChild->query('./report') as $reportEl) {
-            $this->output->writeln(sprintf('<title>%s</title>', $reportEl->getAttribute('title')));
+            $title = $reportEl->getAttribute('title');
+
+            if ($title) {
+                $this->output->writeln(sprintf('<title>%s</title>', $title));
+                $this->output->writeln(sprintf('<title>%s</title>', str_repeat('=', strlen($title))));
+                $this->output->write(PHP_EOL);
+            }
+
             foreach ($reportEl->query('./description') as $descriptionEl) {
                 $this->output->writeln(sprintf('<description>%s</description>', $descriptionEl->nodeValue));
                 $this->output->writeln('');
             }
+
             foreach ($reportEl->query('.//table') as $tableEl) {
+                $this->output->writeln(sprintf('<subtitle>%s</subtitle>', $tableEl->getAttribute('title')));
                 $this->renderTableElement($tableEl, $config);
             }
         }
@@ -64,9 +85,22 @@ class ConsoleRenderer implements RendererInterface, OutputAwareInterface
 
         foreach ($tableEl->query('.//row') as $rowEl) {
             $row = array();
+            $formatterParams = array();
+
+            foreach ($rowEl->query('./formatter-param') as $paramEl) {
+                $formatterParams[$paramEl->getAttribute('name')] = $paramEl->nodeValue;
+            }
+
             foreach ($rowEl->query('.//cell') as $cellEl) {
                 $colName = $cellEl->getAttribute('name');
-                $row[$colName] = $cellEl->nodeValue;
+                $value = $cellEl->nodeValue;
+
+                if ('' !== $value && $cellEl->hasAttribute('class')) {
+                    $classes = explode(' ', $cellEl->getAttribute('class'));
+                    $value = $this->formatter->applyClasses($classes, $value, $formatterParams);
+                }
+
+                $row[$colName] = $value;
             }
 
             $rows[] = $row;
@@ -123,6 +157,9 @@ class ConsoleRenderer implements RendererInterface, OutputAwareInterface
     {
         $formatter->setStyle(
             'title', new OutputFormatterStyle('white', null, array('bold'))
+        );
+        $formatter->setStyle(
+            'subtitle', new OutputFormatterStyle('white', null, array())
         );
         $formatter->setStyle(
             'description', new OutputFormatterStyle(null, null, array())

@@ -22,6 +22,7 @@
         <xsd:choice minOccurs="0" maxOccurs="unbounded">
             <xsd:any processContents="skip"/>
         </xsd:choice>
+        <xsd:attribute name="title" type="xsd:string"/>
     </xsd:complexType>
 
 </xsd:schema>

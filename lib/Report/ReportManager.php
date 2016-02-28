@@ -94,7 +94,7 @@ class ReportManager
             }
 
             foreach ($reportDoms as $reportDom) {
-                $renderer->render($reportDom, $outputConfig);
+                $renderer->render($reportDom->duplicate(), $outputConfig);
             }
         }
     }

@@ -95,7 +95,7 @@ class RunnerContextTest extends \PHPUnit_Framework_TestCase
      * It should throw an exception if unrecognized options are given.
      *
      * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Invalid options "abar", "baar" 
+     * @expectedExceptionMessage Invalid options "abar", "baar"
      */
     public function testUnknownOptions()
     {

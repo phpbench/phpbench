@@ -152,6 +152,21 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
     }
 
     /**
+     * Return the iteration memory measurements.
+     *
+     * @return array
+     */
+    public function getMemories()
+    {
+        $memories = array();
+        foreach ($this->iterations as $iteration) {
+            $memories[] = $iteration->getMemory();
+        }
+
+        return $memories;
+    }
+
+    /**
      * Return the Z-Values.
      *
      * @return float[]

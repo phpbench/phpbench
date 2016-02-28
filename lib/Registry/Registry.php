@@ -191,7 +191,7 @@ class Registry
             }
 
             unset($config['extends']);
-            $config = array_replace_recursive(
+            $config = array_merge(
                 $this->resolveConfig($extended->getArrayCopy()),
                 $config
             );
@@ -212,7 +212,7 @@ class Registry
      */
     private function mergeAndValidateConfig(RegistrableInterface $configurable, array $config)
     {
-        $config = array_replace_recursive($configurable->getDefaultConfig(), $config);
+        $config = array_merge($configurable->getDefaultConfig(), $config);
 
         // not sure if there is a better way to convert the schema array to objects
         // as expected by the validator.

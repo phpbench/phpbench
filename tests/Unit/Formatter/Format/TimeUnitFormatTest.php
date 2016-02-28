@@ -11,17 +11,17 @@
 
 namespace PhpBench\Tests\Unit\Report\Generator\Tabular\Format;
 
-use PhpBench\Report\Generator\Tabular\Format\TimeFormat;
+use PhpBench\Formatter\Format\TimeUnitFormat;
 use PhpBench\Util\TimeUnit;
 
-class TimeFormatTest extends \PHPUnit_Framework_TestCase
+class TimeUnitFormatTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * It should work with the default options.
      */
     public function testTimeFormatDefault()
     {
-        $format = new TimeFormat(new TimeUnit());
+        $format = new TimeUnitFormat(new TimeUnit());
         $result = $format->format('1234', $format->getDefaultOptions());
         $this->assertEquals('1,234.000μs', $result);
     }
@@ -31,12 +31,13 @@ class TimeFormatTest extends \PHPUnit_Framework_TestCase
      */
     public function testTimeFormatConvert()
     {
-        $format = new TimeFormat(new TimeUnit());
+        $format = new TimeUnitFormat(new TimeUnit());
         $result = $format->format(2000, array(
             'unit' => 'seconds',
             'mode' => 'throughput',
+            'precision' => 6,
             'resolve' => array(),
         ));
-        $this->assertEquals('500.000ops/s', $result);
+        $this->assertEquals('500.000000ops/s', $result);
     }
 }

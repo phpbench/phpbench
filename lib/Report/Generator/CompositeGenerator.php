@@ -57,6 +57,7 @@ class CompositeGenerator implements GeneratorInterface, OutputAwareInterface
     {
         return array(
             'type' => 'object',
+            'additionalProperties' => false,
             'properties' => array(
                 'reports' => array(
                     'title' => 'List of reports to use',

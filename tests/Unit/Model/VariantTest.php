@@ -194,4 +194,22 @@ class VariantTest extends \PHPUnit_Framework_TestCase
         $variant->setException(new \Exception('Test'));
         $variant->getStats();
     }
+
+    /**
+     * It should return times and memories.
+     */
+    public function testTimesAndMemories()
+    {
+        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 1, 0);
+        $variant->spawnIterations(2);
+
+        $variant[0]->setResult(new IterationResult(4, 100));
+        $variant[1]->setResult(new IterationResult(8, 200));
+
+        $times = $variant->getTimes();
+        $memories = $variant->getMemories();
+
+        $this->assertEquals(array(4, 8), $variant->getTimes());
+        $this->assertEquals(array(100, 200), $variant->getMemories());
+    }
 }

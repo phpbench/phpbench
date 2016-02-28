@@ -91,17 +91,8 @@ be specified directly using the ``--report`` option:
 
     $ phpbench run /path/to/HashBench.php --report=default
 
-If you want to experiment with a new report configuration, you can also pass a
-JSON encoded string with the generator options instead of the report name:
-
-.. code-block:: bash
-
-    $ phpbench run /path/to/HashBench.php --report='{"extends": "default", "exclude": ["benchmark", "subject"]}'
-
-See the :doc:`report-generators` chapter for more information on how you can
+See the :doc:`reports` chapter for more information on how you can
 configure reports.
-
-The ``--report`` option can be specified multiple times.
 
 .. note::
 
