@@ -443,7 +443,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
                             $row = clone $row;
                             $row['iter'] = $index;
                             $row['rej'] = $iteration->getRejectionCount();
-                            $row['time'] = $iteration->getTime();
+                            $row['time'] = $iteration->getRevTime();
                             $row['z-value'] = $iteration->getZValue();
                             $table[] = $row;
                         }
