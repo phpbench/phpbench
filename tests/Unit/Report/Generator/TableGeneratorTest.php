@@ -75,6 +75,40 @@ class TableGeneratorTest extends GeneratorTestCase
     }
 
     /**
+     * It should generate iteration rows.
+     */
+    public function testIterationRows()
+    {
+        $collection = TestUtil::createCollection([
+            [
+                'benchmarks' => ['oneBench', 'twoBench'],
+                'subjects' => ['subjectOne', 'subjectTwo'],
+                'output_time_unit' => 'milliseconds',
+                'output_time_precision' => 7,
+                'output_mode' => 'throughput',
+                'groups' => ['one', 'two', 'three'],
+                'break' => [],
+            ],
+        ]);
+
+        $report = $this->generate($collection, [
+            'iterations' => true,
+            'cols' => ['time', 'z-value', 'rej', 'iter', 'revs'],
+        ]);
+        $this->assertXPathCount($report, 1, '//table');
+        $this->assertXPathCount($report, 8, '//row');
+        $this->assertXPathEval($report, 2, 'number(//row[1]//cell[@name="time"])');
+        $this->assertXPathEval($report, -1, 'number(//row[1]//cell[@name="z-value"])');
+        $this->assertXPathEval($report, 0, 'number(//row[1]//cell[@name="rej"])');
+        $this->assertXPathEval($report, 0, 'number(//row[1]//cell[@name="iter"])');
+
+        $this->assertXPathEval($report, 4, 'number(//row[2]//cell[@name="time"])');
+        $this->assertXPathEval($report, 1, 'number(//row[2]//cell[@name="z-value"])');
+        $this->assertXPathEval($report, 0, 'number(//row[2]//cell[@name="rej"])');
+        $this->assertXPathEval($report, 1, 'number(//row[2]//cell[@name="iter"])');
+    }
+
+    /**
      * It should allow selection of env columns.
      */
     public function testEnvCols()
