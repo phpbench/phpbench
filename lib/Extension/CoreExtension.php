@@ -445,6 +445,20 @@ class CoreExtension implements ExtensionInterface
         $container->register('storage.driver_factory', function (Container $container) {
             return new Storage\DriverFactory($container, $container->getParameter('storage'));
         });
+
+        $container->register('storage.driver.xml.persister', function (Container $container) {
+            return new Storage\Driver\Xml\Persister(
+                $container->get('serializer.encoder.xml'),
+                'foo'
+            );
+        });
+
+        $container->register('storage.driver.xml', function (Container $container) {
+            return new Storage\Driver\XmlDriver(
+                $container->get('storage.driver.xml.persister'),
+                'foo'
+            );
+        }, ['storage_driver' => ['name' => 'xml']]);
     }
 
     private function registerExpression(Container $container)
