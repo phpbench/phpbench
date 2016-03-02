@@ -159,13 +159,6 @@ class BlinkenLogger extends AnsiLogger
     {
         $time = sprintf('%-' . $this->colWidth . 's', parent::formatIterationTime($iteration));
 
-        if (strlen($time) > $this->colWidth) {
-            // add one to allow a single space between columns
-            $this->colWidth = strlen($time) + 1;
-            $this->drawIterations($iteration->getVariant(), [], null);
-            $this->resetLinePosition();
-        }
-
         return $time;
     }
 
@@ -177,11 +170,21 @@ class BlinkenLogger extends AnsiLogger
         $outputMode = $variant->getSubject()->getOutputMode();
         $lines = [];
         $line = sprintf('%-' . self::INDENT . 's', '#' . $variant->getSubject()->getIndex());
+        $nbIterations = $variant->count();
 
-        for ($index = 0; $index < $variant->count(); $index++) {
+        for ($index = 0; $index < $nbIterations; $index++) {
             $iteration = $variant->getIteration($index);
 
             $displayTime = $this->formatIterationTime($iteration);
+
+            if (strlen($displayTime) > $this->colWidth) {
+                // add one to allow a single space between columns
+                $this->colWidth = strlen($displayTime) + 1;
+                $this->resetLinePosition();
+
+                // redraw with the new spacing
+                return $this->drawIterations($variant, $specials, $tag);
+            }
 
             if (isset($specials[$iteration->getIndex()])) {
                 $displayTime = sprintf('<%s>%' . $this->colWidth . 's</%s>', $tag, $displayTime, $tag);
@@ -189,7 +192,7 @@ class BlinkenLogger extends AnsiLogger
 
             $line .= $displayTime;
 
-            if ($index > 0 && ($index + 1) % self::NUMBER_COLS == 0) {
+            if ($index > 0 && $index < $nbIterations - 1 && ($index + 1) % self::NUMBER_COLS == 0) {
                 $lines[] = $line;
                 $line = str_repeat(' ', self::INDENT);
             }
