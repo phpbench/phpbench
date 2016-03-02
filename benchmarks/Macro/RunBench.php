@@ -19,16 +19,16 @@ class RunBench extends BaseBenchCase
 {
     public function benchRun()
     {
-        $this->runCommand('console.command.run', array(
+        $this->runCommand('console.command.run', [
             'path' => $this->getFunctionalBenchmarkPath(),
-        ));
+        ]);
     }
 
     public function benchRunAndReport()
     {
-        $this->runCommand('console.command.run', array(
+        $this->runCommand('console.command.run', [
             'path' => $this->getFunctionalBenchmarkPath(),
-            '--report' => array('aggregate'),
-        ));
+            '--report' => ['aggregate'],
+        ]);
     }
 }

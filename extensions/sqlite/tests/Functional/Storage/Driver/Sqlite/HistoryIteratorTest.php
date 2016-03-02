@@ -44,28 +44,28 @@ class HistoryIteratorTest extends FunctionalTestCase
      */
     public function testHistoryStatement()
     {
-        $suiteCollection = new SuiteCollection(array(
-            TestUtil::createSuite(array(
-                'env' => array(
-                    'vcs' => array(
+        $suiteCollection = new SuiteCollection([
+            TestUtil::createSuite([
+                'env' => [
+                    'vcs' => [
                         'system' => 'git',
                         'branch' => 'branch_1',
-                    ),
-                ),
+                    ],
+                ],
                 'name' => 'one',
                 'date' => '2016-01-01',
-            )),
-            TestUtil::createSuite(array(
+            ]),
+            TestUtil::createSuite([
                 'date' => '2015-01-01',
-                'env' => array(
-                    'vcs' => array(
+                'env' => [
+                    'vcs' => [
                         'system' => 'git',
                         'branch' => 'branch_2',
-                    ),
-                ),
+                    ],
+                ],
                 'name' => 'two',
-            )),
-        ));
+            ]),
+        ]);
 
         $this->persister->persist($suiteCollection);
 

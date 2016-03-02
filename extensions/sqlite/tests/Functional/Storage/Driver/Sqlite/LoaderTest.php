@@ -51,35 +51,35 @@ class LoaderTest extends FunctionalTestCase
      */
     public function testLoader()
     {
-        $suiteCollection = new SuiteCollection(array(
-            TestUtil::createSuite(array(
-                'subjects' => array('benchOne', 'benchTwo'),
-                'benchmarks' => array('BenchOne', 'BenchTwo'),
-                'groups' => array('one', 'two'),
+        $suiteCollection = new SuiteCollection([
+            TestUtil::createSuite([
+                'subjects' => ['benchOne', 'benchTwo'],
+                'benchmarks' => ['BenchOne', 'BenchTwo'],
+                'groups' => ['one', 'two'],
                 'output_time_unit' => 'milliseconds',
                 'output_time_precision' => 7,
                 'output_mode' => 'throughput',
                 'revs' => 5,
                 'warmup' => 2,
                 'sleep' => 9,
-                'parameters' => array('foo' => 'bar', 'bar' => array(1, 2)),
-                'env' => array(
-                    'system' => array(
+                'parameters' => ['foo' => 'bar', 'bar' => [1, 2]],
+                'env' => [
+                    'system' => [
                         'os' => 'linux',
                         'memory' => 8096,
                         'distribution' => 'debian',
-                    ),
-                    'vcs' => array(
+                    ],
+                    'vcs' => [
                         'system' => 'git',
                         'branch' => 'foo',
-                    ),
-                ),
-            )),
+                    ],
+                ],
+            ]),
             TestUtil::createSuite(),
-        ));
+        ]);
         $this->persister->persist($suiteCollection);
 
-        $suiteCollection = $this->loader->load(new Comparison('$in', 'run', array(1, 2)));
+        $suiteCollection = $this->loader->load(new Comparison('$in', 'run', [1, 2]));
 
         $suites = $suiteCollection->getSuites();
         $this->assertCount(2, $suites);
@@ -91,11 +91,11 @@ class LoaderTest extends FunctionalTestCase
         $this->assertCount(2, $envInformations);
         $this->assertArrayHasKey('system', $envInformations);
         $this->assertEquals('system', $envInformations['system']->getName());
-        $this->assertEquals(array(
+        $this->assertEquals([
             'os' => 'linux',
             'memory' => 8096,
             'distribution' => 'debian',
-        ), iterator_to_array($envInformations['system']));
+        ], iterator_to_array($envInformations['system']));
         $this->assertArrayHasKey('vcs', $envInformations);
         $this->assertEquals('vcs', $envInformations['vcs']->getName());
 
@@ -111,7 +111,7 @@ class LoaderTest extends FunctionalTestCase
         $this->assertEquals('benchOne', $subjects[0]->getName());
         $this->assertEquals('benchTwo', $subjects[1]->getName());
         $subject = $subjects[0];
-        $this->assertEquals(array('one', 'two'), $subject->getGroups());
+        $this->assertEquals(['one', 'two'], $subject->getGroups());
         $this->assertEquals(9, $subject->getSleep());
         $this->assertEquals('milliseconds', $subject->getOutputTimeUnit());
         $this->assertEquals(7, $subject->getOutputTimePrecision());
@@ -122,10 +122,10 @@ class LoaderTest extends FunctionalTestCase
         $this->assertCount(1, $variants);
         $variant = current($variants);
         $parameters = $variant->getParameterSet();
-        $this->assertEquals(array(
+        $this->assertEquals([
             'foo' => 'bar',
-            'bar' => array(1, 2),
-        ), $parameters->getArrayCopy());
+            'bar' => [1, 2],
+        ], $parameters->getArrayCopy());
         $this->assertEquals(5, $variant->getRevolutions());
         $this->assertEquals(2, $variant->getWarmup());
 
@@ -162,18 +162,18 @@ class LoaderTest extends FunctionalTestCase
      */
     public function testFilterGroups()
     {
-        $suiteCollection = new SuiteCollection(array(
-            TestUtil::createSuite(array(
-                'benchmark' => array('benchOne'),
-                'subjects' => array('benchOne'),
-                'groups' => array('one', 'two'),
-            )),
-            TestUtil::createSuite(array(
-                'benchmark' => array('benchOne'),
-                'subjects' => array('benchTwo', 'benchThree'),
-                'groups' => array('foobar'),
-            )),
-        ));
+        $suiteCollection = new SuiteCollection([
+            TestUtil::createSuite([
+                'benchmark' => ['benchOne'],
+                'subjects' => ['benchOne'],
+                'groups' => ['one', 'two'],
+            ]),
+            TestUtil::createSuite([
+                'benchmark' => ['benchOne'],
+                'subjects' => ['benchTwo', 'benchThree'],
+                'groups' => ['foobar'],
+            ]),
+        ]);
 
         $this->persister->persist($suiteCollection);
 

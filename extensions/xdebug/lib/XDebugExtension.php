@@ -20,7 +20,7 @@ class XDebugExtension implements ExtensionInterface
 {
     public function getDefaultConfig()
     {
-        return array();
+        return [];
     }
 
     public function load(Container $container)
@@ -29,7 +29,7 @@ class XDebugExtension implements ExtensionInterface
             return new ProfileCommand(
                 $container->get('console.command.handler.runner')
             );
-        }, array('console.command' => array()));
+        }, ['console.command' => []]);
 
         $container->register('benchmark.executor.xdebug',
             function (Container $container) {
@@ -37,8 +37,8 @@ class XDebugExtension implements ExtensionInterface
                     $container->get('benchmark.remote.launcher')
                 );
             },
-            array('benchmark_executor' => array('name' => 'xdebug'),
-        ));
+            ['benchmark_executor' => ['name' => 'xdebug'],
+        ]);
     }
 
     public function build(Container $container)

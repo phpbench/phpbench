@@ -39,7 +39,7 @@ class TruncateFormat implements FormatInterface
             default:
                 throw new \Exception(sprintf(
                     'Truncation position must be one of "%s", got "%s"',
-                    implode('", "', array('left', 'right')), $options['position']
+                    implode('", "', ['left', 'right']), $options['position']
                 ));
         }
 
@@ -48,10 +48,10 @@ class TruncateFormat implements FormatInterface
 
     public function getDefaultOptions()
     {
-        return array(
+        return [
             'length' => 50,
             'position' => 'left',
             'pad' => '...',
-        );
+        ];
     }
 }

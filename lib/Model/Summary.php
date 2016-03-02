@@ -22,17 +22,17 @@ class Summary
     private $nbIterations = 0;
     private $nbRejects = 0;
     private $nbRevolutions = 0;
-    private $stats = array(
-        'stdev' => array(),
-        'mean' => array(),
-        'mode' => array(),
-        'rstdev' => array(),
-        'variance' => array(),
-        'min' => array(),
-        'max' => array(),
-        'sum' => array(),
-    );
-    private $errorStacks = array();
+    private $stats = [
+        'stdev' => [],
+        'mean' => [],
+        'mode' => [],
+        'rstdev' => [],
+        'variance' => [],
+        'min' => [],
+        'max' => [],
+        'sum' => [],
+    ];
+    private $errorStacks = [];
 
     /**
      * @param Suite $suite

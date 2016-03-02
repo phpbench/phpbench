@@ -51,9 +51,9 @@ class ConsoleRendererTest extends AbstractRendererCase
     {
         $this->renderer->render($this->getReportsDocument(), new Config('test', array_merge(
             $this->renderer->getDefaultConfig(),
-            array(
+            [
                 'table_style' => 'compact',
-            )
+            ]
         )));
     }
 }

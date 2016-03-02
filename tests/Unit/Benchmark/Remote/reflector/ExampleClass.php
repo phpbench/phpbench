@@ -32,31 +32,31 @@ class ExampleClass
 
     public function provideParamsOne()
     {
-        return array(
-            array(
+        return [
+            [
                 'one' => 'two',
                 'three' => 'four',
-            ),
-        );
+            ],
+        ];
     }
 
     public function provideParamsTwo()
     {
-        return array(
-            array(
+        return [
+            [
                 'five' => 'six',
                 'seven' => 'eight',
-            ),
-        );
+            ],
+        ];
     }
 
     public function provideParamsNonScalar()
     {
-        return array(
-            array(
+        return [
+            [
                 'five' => 'six',
                 'seven' => new \stdClass(),
-            ),
-        );
+            ],
+        ];
     }
 }

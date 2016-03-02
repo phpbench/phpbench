@@ -34,38 +34,38 @@ class KdeTest extends \PHPUnit_Framework_TestCase
 
     public function provideEvaluate()
     {
-        return array(
-            array(
-                array(
+        return [
+            [
+                [
                     10, 20, 15, 5,
-                ),
+                ],
                 Statistics::linspace(0, 9, 10),
                 'silverman',
-                array(
+                [
                     0.01537595, 0.0190706, 0.02299592, 0.02700068, 0.03092369, 0.0346125, 0.03794007, 0.0408159, 0.04318983, 0.04504829,
-                ),
-            ),
-            array(
-                array(
+                ],
+            ],
+            [
+                [
                     10, 20, 15, 5,
-                ),
+                ],
                 Statistics::linspace(0, 3, 4),
                 'scott',
-                array(
+                [
                     0.01480612,  0.01869787,  0.02286675,  0.02713209,
-                ),
-            ),
-            array(
-                array(
+                ],
+            ],
+            [
+                [
                     10, 20, 15, 5,
-                ),
+                ],
                 Statistics::linspace(0, 3, 4),
                 'silverman',
-                array(
+                [
                     0.01537595, 0.0190706, 0.02299592, 0.02700068,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**
@@ -75,7 +75,7 @@ class KdeTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidBandwidth()
     {
-        new Kde(array(1, 2), 'foo');
+        new Kde([1, 2], 'foo');
     }
 
     /**
@@ -85,7 +85,7 @@ class KdeTest extends \PHPUnit_Framework_TestCase
      */
     public function testNoElements()
     {
-        new Kde(array());
+        new Kde([]);
     }
 
     /**
@@ -95,6 +95,6 @@ class KdeTest extends \PHPUnit_Framework_TestCase
      */
     public function testOneElement()
     {
-        new Kde(array(1));
+        new Kde([1]);
     }
 }

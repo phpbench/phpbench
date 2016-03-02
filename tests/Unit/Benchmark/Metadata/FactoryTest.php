@@ -11,7 +11,13 @@
 
 namespace PhpBench\Tests\Unit\Benchmark\Metadata;
 
+use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
+use PhpBench\Benchmark\Metadata\DriverInterface;
 use PhpBench\Benchmark\Metadata\Factory;
+use PhpBench\Benchmark\Metadata\SubjectMetadata;
+use PhpBench\Benchmark\Remote\ReflectionClass;
+use PhpBench\Benchmark\Remote\ReflectionHierarchy;
+use PhpBench\Benchmark\Remote\Reflector;
 use PhpBench\Tests\Util\TestUtil;
 
 class FactoryTest extends \PHPUnit_Framework_TestCase
@@ -23,18 +29,18 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->reflector = $this->prophesize('PhpBench\Benchmark\Remote\Reflector');
-        $this->driver = $this->prophesize('PhpBench\Benchmark\Metadata\DriverInterface');
+        $this->reflector = $this->prophesize(Reflector::class);
+        $this->driver = $this->prophesize(DriverInterface::class);
         $this->factory = new Factory(
             $this->reflector->reveal(),
             $this->driver->reveal()
         );
 
-        $this->hierarchy = $this->prophesize('PhpBench\Benchmark\Remote\ReflectionHierarchy');
+        $this->hierarchy = $this->prophesize(ReflectionHierarchy::class);
         $this->hierarchy->reveal()->class = 'Class';
-        $this->reflection = $this->prophesize('PhpBench\Benchmark\Remote\ReflectionClass');
-        $this->metadata = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');
-        $this->subjectMetadata = $this->prophesize('PhpBench\Benchmark\Metadata\SubjectMetadata');
+        $this->reflection = $this->prophesize(ReflectionClass::class);
+        $this->metadata = $this->prophesize(BenchmarkMetadata::class);
+        $this->subjectMetadata = $this->prophesize(SubjectMetadata::class);
 
         $this->reflector->reflect(self::FNAME)->willReturn($this->hierarchy->reveal());
         $this->driver->getMetadataForHierarchy($this->hierarchy->reveal())->willReturn($this->metadata->reveal());
@@ -48,7 +54,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     public function testGetMetadataForFile()
     {
         $this->hierarchy->isEmpty()->willReturn(false);
-        $this->metadata->getSubjects()->willReturn(array());
+        $this->metadata->getSubjects()->willReturn([]);
         TestUtil::configureBenchmarkMetadata($this->metadata);
         $metadata = $this->factory->getMetadataForFile(self::FNAME);
         $this->assertInstanceOf('PhpBench\Benchmark\Metadata\BenchmarkMetadata', $metadata);
@@ -60,15 +66,15 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     public function testWithSubjects()
     {
         $this->hierarchy->isEmpty()->willReturn(false);
-        $this->metadata->getSubjects()->willReturn(array(
+        $this->metadata->getSubjects()->willReturn([
             $this->subjectMetadata->reveal(),
-        ));
-        TestUtil::configureBenchmarkMetadata($this->metadata, array(
+        ]);
+        TestUtil::configureBenchmarkMetadata($this->metadata, [
             'path' => self::PATH,
-        ));
+        ]);
         TestUtil::configureSubjectMetadata($this->subjectMetadata);
-        $this->reflector->getParameterSets(self::PATH, array())->willReturn(array());
-        $this->subjectMetadata->setParameterSets(array())->shouldBeCalled();
+        $this->reflector->getParameterSets(self::PATH, [])->willReturn([]);
+        $this->subjectMetadata->setParameterSets([])->shouldBeCalled();
 
         $metadata = $this->factory->getMetadataForFile(self::FNAME);
         $this->assertInstanceOf('PhpBench\Benchmark\Metadata\BenchmarkMetadata', $metadata);
@@ -85,9 +91,9 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     public function testValidationBeforeMethodsBenchmark()
     {
         $this->hierarchy->isEmpty()->willReturn(false);
-        TestUtil::configureBenchmarkMetadata($this->metadata, array(
-            'beforeClassMethods' => array('beforeMe'),
-        ));
+        TestUtil::configureBenchmarkMetadata($this->metadata, [
+            'beforeClassMethods' => ['beforeMe'],
+        ]);
         $this->hierarchy->hasMethod('beforeMe')->willReturn(false);
         $this->hierarchy->hasStaticMethod('beforeMe')->willReturn(true);
 
@@ -104,9 +110,9 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->hierarchy->isEmpty()->willReturn(false);
         $this->reflection->class = 'TestClass';
-        TestUtil::configureBenchmarkMetadata($this->metadata, array(
-            'beforeClassMethods' => array('beforeMe'),
-        ));
+        TestUtil::configureBenchmarkMetadata($this->metadata, [
+            'beforeClassMethods' => ['beforeMe'],
+        ]);
         $this->hierarchy->hasMethod('beforeMe')->willReturn(true);
         $this->hierarchy->hasStaticMethod('beforeMe')->willReturn(false);
 
@@ -123,13 +129,13 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->hierarchy->isEmpty()->willReturn(false);
         $this->reflection->class = 'TestClass';
-        TestUtil::configureBenchmarkMetadata($this->metadata, array());
-        $this->metadata->getSubjects()->willReturn(array(
+        TestUtil::configureBenchmarkMetadata($this->metadata, []);
+        $this->metadata->getSubjects()->willReturn([
             $this->subjectMetadata->reveal(),
-        ));
-        TestUtil::configureSubjectMetadata($this->subjectMetadata, array(
-            'beforeMethods' => array('beforeMe'),
-        ));
+        ]);
+        TestUtil::configureSubjectMetadata($this->subjectMetadata, [
+            'beforeMethods' => ['beforeMe'],
+        ]);
         $this->hierarchy->hasMethod('beforeMe')->willReturn(false);
 
         $this->factory->getMetadataForFile(self::FNAME);
@@ -144,14 +150,14 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     public function testValidationAfterMethods()
     {
         $this->hierarchy->isEmpty()->willReturn(false);
-        TestUtil::configureBenchmarkMetadata($this->metadata, array(
-        ));
-        $this->metadata->getSubjects()->willReturn(array(
+        TestUtil::configureBenchmarkMetadata($this->metadata, [
+        ]);
+        $this->metadata->getSubjects()->willReturn([
             $this->subjectMetadata->reveal(),
-        ));
-        TestUtil::configureSubjectMetadata($this->subjectMetadata, array(
-            'afterMethods' => array('afterMe'),
-        ));
+        ]);
+        TestUtil::configureSubjectMetadata($this->subjectMetadata, [
+            'afterMethods' => ['afterMe'],
+        ]);
         $this->hierarchy->hasMethod('afterMe')->willReturn(false);
 
         $this->factory->getMetadataForFile(self::FNAME);
@@ -176,17 +182,17 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     public function testInvalidParameters()
     {
         $this->hierarchy->isEmpty()->willReturn(false);
-        $this->metadata->getSubjects()->willReturn(array(
+        $this->metadata->getSubjects()->willReturn([
             $this->subjectMetadata->reveal(),
-        ));
-        TestUtil::configureBenchmarkMetadata($this->metadata, array(
+        ]);
+        TestUtil::configureBenchmarkMetadata($this->metadata, [
             'class' => 'TestBench',
             'path' => self::PATH,
-        ));
-        TestUtil::configureSubjectMetadata($this->subjectMetadata, array(
+        ]);
+        TestUtil::configureSubjectMetadata($this->subjectMetadata, [
             'name' => 'benchTest',
-        ));
-        $this->reflector->getParameterSets(self::PATH, array())->willReturn(array('asd' => 'bar'));
+        ]);
+        $this->reflector->getParameterSets(self::PATH, [])->willReturn(['asd' => 'bar']);
 
         $this->factory->getMetadataForFile(self::FNAME);
     }

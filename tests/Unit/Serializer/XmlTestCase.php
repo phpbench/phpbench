@@ -11,53 +11,60 @@
 
 namespace PhpBench\Tests\Unit\Serializer;
 
+use PhpBench\Environment\Information;
 use PhpBench\Math\Distribution;
+use PhpBench\Model\Benchmark;
 use PhpBench\Model\Error;
 use PhpBench\Model\ErrorStack;
+use PhpBench\Model\Iteration;
 use PhpBench\Model\ParameterSet;
+use PhpBench\Model\Subject;
+use PhpBench\Model\Suite;
+use PhpBench\Model\SuiteCollection;
+use PhpBench\Model\Variant;
 
 class XmlTestCase extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->suiteCollection = $this->prophesize('PhpBench\Model\SuiteCollection');
-        $this->suite = $this->prophesize('PhpBench\Model\Suite');
-        $this->env1 = $this->prophesize('PhpBench\Environment\Information');
-        $this->bench1 = $this->prophesize('PhpBench\Model\Benchmark');
-        $this->subject1 = $this->prophesize('PhpBench\Model\Subject');
-        $this->variant1 = $this->prophesize('PhpBench\Model\Variant');
-        $this->iteration1 = $this->prophesize('PhpBench\Model\Iteration');
+        $this->suiteCollection = $this->prophesize(SuiteCollection::class);
+        $this->suite = $this->prophesize(Suite::class);
+        $this->env1 = $this->prophesize(Information::class);
+        $this->bench1 = $this->prophesize(Benchmark::class);
+        $this->subject1 = $this->prophesize(Subject::class);
+        $this->variant1 = $this->prophesize(Variant::class);
+        $this->iteration1 = $this->prophesize(Iteration::class);
     }
 
     public function getSuiteCollection($params)
     {
-        $params = array_merge(array(
+        $params = array_merge([
             'error' => false,
-            'groups' => array(),
-            'params' => array(),
-        ), $params);
+            'groups' => [],
+            'params' => [],
+        ], $params);
 
-        $this->suiteCollection->getSuites()->willReturn(array($this->suite->reveal()));
+        $this->suiteCollection->getSuites()->willReturn([$this->suite->reveal()]);
         $this->suite->getDate()->willReturn(new \DateTime('2015-01-01'));
         $this->suite->getContextName()->willReturn('test');
         $this->suite->getConfigPath()->willReturn('/path/to/config.json');
-        $this->suite->getEnvInformations()->willReturn(array(
+        $this->suite->getEnvInformations()->willReturn([
             $this->env1,
-        ));
+        ]);
         $this->env1->getName()->willReturn('info1');
-        $this->env1->getIterator()->willReturn(new \ArrayIterator(array(
+        $this->env1->getIterator()->willReturn(new \ArrayIterator([
             'foo' => 'bar',
-        )));
-        $this->suite->getBenchmarks()->willReturn(array(
+        ]));
+        $this->suite->getBenchmarks()->willReturn([
             $this->bench1->reveal(),
-        ));
-        $this->bench1->getSubjects()->willReturn(array(
+        ]);
+        $this->bench1->getSubjects()->willReturn([
             $this->subject1->reveal(),
-        ));
+        ]);
         $this->bench1->getClass()->willReturn('Bench1');
-        $this->subject1->getVariants()->willReturn(array(
+        $this->subject1->getVariants()->willReturn([
             $this->variant1->reveal(),
-        ));
+        ]);
         $this->subject1->getName()->willReturn('subjectName');
         $this->subject1->getGroups()->willReturn($params['groups']);
         $this->subject1->getSleep()->willReturn(5);
@@ -75,22 +82,22 @@ class XmlTestCase extends \PHPUnit_Framework_TestCase
             $this->variant1->getErrorStack()->willReturn(
                 new ErrorStack(
                     $this->variant1->reveal(),
-                    array(
+                    [
                         new Error(
                             'This is an error',
                             'ErrorClass',
                             0, 1, 2,
                             '-- trace --'
                         ),
-                    )
+                    ]
                 )
             );
         }
 
-        $this->variant1->getStats()->willReturn(new Distribution(array(0.1)));
-        $this->variant1->getIterator()->willReturn(new \ArrayIterator(array(
+        $this->variant1->getStats()->willReturn(new Distribution([0.1]));
+        $this->variant1->getIterator()->willReturn(new \ArrayIterator([
             $this->iteration1->reveal(),
-        )));
+        ]));
         $this->iteration1->getTime()->willReturn(10);
         $this->iteration1->getRevTime()->willReturn(0.1);
         $this->iteration1->getMemory()->willReturn(100);
@@ -103,17 +110,17 @@ class XmlTestCase extends \PHPUnit_Framework_TestCase
 
     public function provideEncode()
     {
-        return array(
-            array(
-                array(
-                    'groups' => array('group1', 'group2'),
-                    'params' => array(
+        return [
+            [
+                [
+                    'groups' => ['group1', 'group2'],
+                    'params' => [
                         'foo' => 'bar',
-                        'bar' => array(
+                        'bar' => [
                             'baz' => 'bon',
-                        ),
-                    ),
-                ),
+                        ],
+                    ],
+                ],
                 <<<'EOT'
 <?xml version="1.0"?>
 <phpbench version="PHPBENCH_VERSION">
@@ -139,9 +146,9 @@ class XmlTestCase extends \PHPUnit_Framework_TestCase
 </phpbench>
 
 EOT
-            ),
-            array(
-                array('error' => true),
+            ],
+            [
+                ['error' => true],
                 <<<'EOT'
 <?xml version="1.0"?>
 <phpbench version="PHPBENCH_VERSION">
@@ -162,8 +169,8 @@ EOT
 </phpbench>
 
 EOT
-            ),
+            ],
 
-        );
+        ];
     }
 }

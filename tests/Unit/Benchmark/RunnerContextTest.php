@@ -34,9 +34,9 @@ class RunnerContextTest extends \PHPUnit_Framework_TestCase
      */
     public function testRetryNotNumeric()
     {
-        new RunnerContext(__DIR__, array(
+        new RunnerContext(__DIR__, [
             'retry_threshold' => 'asd',
-        ));
+        ]);
     }
 
     /**
@@ -47,9 +47,9 @@ class RunnerContextTest extends \PHPUnit_Framework_TestCase
      */
     public function testRetryLessThanZetro()
     {
-        new RunnerContext(__DIR__, array(
+        new RunnerContext(__DIR__, [
             'retry_threshold' => -1,
-        ));
+        ]);
     }
 
     /**
@@ -60,9 +60,9 @@ class RunnerContextTest extends \PHPUnit_Framework_TestCase
      */
     public function testIterationsNotNumeric()
     {
-        new RunnerContext(__DIR__, array(
-            'iterations' => array('asd'),
-        ));
+        new RunnerContext(__DIR__, [
+            'iterations' => ['asd'],
+        ]);
     }
 
     /**
@@ -73,9 +73,9 @@ class RunnerContextTest extends \PHPUnit_Framework_TestCase
      */
     public function testRevolutionsNotNumeric()
     {
-        new RunnerContext(__DIR__, array(
-            'revolutions' => array('asd'),
-        ));
+        new RunnerContext(__DIR__, [
+            'revolutions' => ['asd'],
+        ]);
     }
 
     /**
@@ -86,9 +86,9 @@ class RunnerContextTest extends \PHPUnit_Framework_TestCase
      */
     public function testWarmupNotNumeric()
     {
-        new RunnerContext(__DIR__, array(
-            'warmup' => array('asd'),
-        ));
+        new RunnerContext(__DIR__, [
+            'warmup' => ['asd'],
+        ]);
     }
 
     /**
@@ -99,10 +99,10 @@ class RunnerContextTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnknownOptions()
     {
-        new RunnerContext(__DIR__, array(
+        new RunnerContext(__DIR__, [
             'abar' => 'invalid',
             'baar' => 'dilavni',
-        ));
+        ]);
     }
 
     /**
@@ -110,15 +110,15 @@ class RunnerContextTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetters()
     {
-        $options = array(
+        $options = [
             'context_name' => 'my_context',
-            'filters' => array('filter_one', 'filter_two'),
-            'iterations' => array(5),
-            'revolutions' => array(6),
-            'parameters' => array('one' => 2),
+            'filters' => ['filter_one', 'filter_two'],
+            'iterations' => [5],
+            'revolutions' => [6],
+            'parameters' => ['one' => 2],
             'sleep' => 100,
             'retry_threshold' => 10,
-        );
+        ];
 
         $context = new RunnerContext(
             '/path/to',
@@ -130,7 +130,7 @@ class RunnerContextTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($options['filters'], $context->getFilters());
         $this->assertEquals($options['iterations'], $context->getIterations());
         $this->assertEquals($options['revolutions'], $context->getRevolutions());
-        $this->assertEquals(array(array($options['parameters'])), $context->getParameterSets());
+        $this->assertEquals([[$options['parameters']]], $context->getParameterSets());
         $this->assertEquals($options['sleep'], $context->getSleep());
         $this->assertEquals(10, $context->getRetryThreshold());
     }
@@ -141,8 +141,8 @@ class RunnerContextTest extends \PHPUnit_Framework_TestCase
     public function testDefaults()
     {
         $context = new RunnerContext(__DIR__);
-        $this->assertEquals(array(10), $context->getIterations(array(10)));
-        $this->assertEquals(array(10), $context->getRevolutions(array(10)));
+        $this->assertEquals([10], $context->getIterations([10]));
+        $this->assertEquals([10], $context->getRevolutions([10]));
         $this->assertEquals(10, $context->getRetryThreshold(10));
     }
 
@@ -153,14 +153,14 @@ class RunnerContextTest extends \PHPUnit_Framework_TestCase
     {
         $context = new RunnerContext(
             __DIR__,
-            array(
-                'iterations' => array(20),
-                'revolutions' => array(30),
+            [
+                'iterations' => [20],
+                'revolutions' => [30],
                 'retry_threshold' => 40,
-            )
+            ]
         );
-        $this->assertEquals(array(20), $context->getIterations(array(10)));
-        $this->assertEquals(array(30), $context->getRevolutions(array(10)));
+        $this->assertEquals([20], $context->getIterations([10]));
+        $this->assertEquals([30], $context->getRevolutions([10]));
         $this->assertEquals(40, $context->getRetryThreshold(10));
     }
 
@@ -171,27 +171,27 @@ class RunnerContextTest extends \PHPUnit_Framework_TestCase
     {
         $context = new RunnerContext(
             __DIR__,
-            array(
-                'parameters' => array(
+            [
+                'parameters' => [
                     'nb_elements' => 10,
-                ),
-            )
+                ],
+            ]
         );
 
         $this->assertEquals(
-            array(
-                array(
-                    array(
+            [
+                [
+                    [
                         'nb_elements' => 10,
-                    ),
-                ),
-            ),
+                    ],
+                ],
+            ],
             $context->getParameterSets(
-                array(
-                    array(
+                [
+                    [
                         'nb_elements' => 100,
-                    ),
-                )
+                    ],
+                ]
             )
         );
     }

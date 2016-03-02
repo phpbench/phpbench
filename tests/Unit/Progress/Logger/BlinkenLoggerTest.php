@@ -11,8 +11,10 @@
 
 namespace PhpBench\Tests\Unit\Progress\Logger;
 
+use PhpBench\Model\Benchmark;
 use PhpBench\Model\IterationResult;
 use PhpBench\Model\ParameterSet;
+use PhpBench\Model\Subject;
 use PhpBench\Model\Variant;
 use PhpBench\Progress\Logger\BlinkenLogger;
 use PhpBench\Util\TimeUnit;
@@ -27,8 +29,8 @@ class BlinkenLoggerTest extends \PHPUnit_Framework_TestCase
 
         $this->logger = new BlinkenLogger($this->timeUnit);
         $this->logger->setOutput($this->output);
-        $this->benchmark = $this->prophesize('PhpBench\Model\Benchmark');
-        $this->subject = $this->prophesize('PhpBench\Model\Subject');
+        $this->benchmark = $this->prophesize(Benchmark::class);
+        $this->subject = $this->prophesize(Subject::class);
         $this->variant = new Variant(
             $this->subject->reveal(),
             new ParameterSet(),
@@ -36,9 +38,9 @@ class BlinkenLoggerTest extends \PHPUnit_Framework_TestCase
             0
         );
         $this->variant->spawnIterations(4);
-        $this->benchmark->getSubjects()->willReturn(array(
+        $this->benchmark->getSubjects()->willReturn([
             $this->subject->reveal(),
-        ));
+        ]);
         $this->benchmark->getClass()->willReturn('BenchmarkTest');
 
         $this->subject->getName()->willReturn('benchSubject');

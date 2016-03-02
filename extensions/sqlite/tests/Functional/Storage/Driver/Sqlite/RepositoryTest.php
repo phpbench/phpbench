@@ -42,47 +42,47 @@ class RepositoryTest extends FunctionalTestCase
      */
     public function testHistoryStatement()
     {
-        $suiteCollection = new SuiteCollection(array(
-            TestUtil::createSuite(array(
-                'env' => array(
-                    'vcs' => array(
+        $suiteCollection = new SuiteCollection([
+            TestUtil::createSuite([
+                'env' => [
+                    'vcs' => [
                         'system' => 'git',
                         'branch' => 'branch_1',
-                    ),
-                ),
+                    ],
+                ],
                 'name' => 'one',
                 'date' => '2016-01-01',
-            )),
-            TestUtil::createSuite(array(
+            ]),
+            TestUtil::createSuite([
                 'date' => '2015-01-01',
-                'env' => array(
-                    'vcs' => array(
+                'env' => [
+                    'vcs' => [
                         'system' => 'git',
                         'branch' => 'branch_2',
-                    ),
-                ),
+                    ],
+                ],
                 'name' => 'two',
-            )),
-        ));
+            ]),
+        ]);
 
         $this->persister->persist($suiteCollection);
         $statement = $this->repository->getHistoryStatement();
         $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);
 
-        $this->assertEquals(array(
-            array(
+        $this->assertEquals([
+            [
                 'run_date' => '2015-01-01 00:00:00',
                 'context' => 'two',
                 'vcs_branch' => 'branch_2',
                 'run_id' => 2,
-            ),
-            array(
+            ],
+            [
                 'run_date' => '2016-01-01 00:00:00',
                 'context' => 'one',
                 'vcs_branch' => 'branch_1',
                 'run_id' => 1,
-            ),
-        ), $rows);
+            ],
+        ], $rows);
     }
 
     /**
@@ -90,16 +90,16 @@ class RepositoryTest extends FunctionalTestCase
      */
     public function testParameters()
     {
-        $parameters = array(
+        $parameters = [
             'one' => 'two',
-            'two' => array('three', 'four'),
-        );
+            'two' => ['three', 'four'],
+        ];
 
-        $suiteCollection = new SuiteCollection(array(
-            TestUtil::createSuite(array(
+        $suiteCollection = new SuiteCollection([
+            TestUtil::createSuite([
                 'parameters' => $parameters,
-            )),
-        ));
+            ]),
+        ]);
 
         $this->persister->persist($suiteCollection);
         $params = $this->repository->getParameters(1);

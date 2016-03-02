@@ -21,7 +21,7 @@ class SuiteCollection implements \IteratorAggregate
     /**
      * @param Suite[] $suites
      */
-    public function __construct(array $suites = array())
+    public function __construct(array $suites = [])
     {
         $this->suites = $suites;
     }

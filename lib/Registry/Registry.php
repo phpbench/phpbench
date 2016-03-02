@@ -31,10 +31,10 @@ use PhpBench\Json\JsonDecoder;
  */
 class Registry
 {
-    private $serviceMap = array();
+    private $serviceMap = [];
     private $container;
-    private $configs = array();
-    private $services = array();
+    private $configs = [];
+    private $services = [];
     private $validator;
     private $serviceType;
     private $jsonDecoder;
@@ -227,8 +227,8 @@ class Registry
             ));
         }
 
-        $schema['properties'][$this->serviceType] = array('type' => 'string');
-        $schema['properties']['_name'] = array('type' => 'string');
+        $schema['properties'][$this->serviceType] = ['type' => 'string'];
+        $schema['properties']['_name'] = ['type' => 'string'];
 
         // convert the schema to a \stdClass
         $schema = json_decode(json_encode($schema));
@@ -242,7 +242,7 @@ class Registry
         $this->validator->check($validationConfig, $schema);
 
         if (!$this->validator->isValid()) {
-            $errorString = array();
+            $errorString = [];
             foreach ($this->validator->getErrors() as $error) {
                 $errorString[] = sprintf('[%s] %s', $error['property'], $error['message']);
             }

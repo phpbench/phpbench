@@ -72,14 +72,14 @@ class ReportOutputTest extends SystemTestCase
 
     public function provideOutputDelimited()
     {
-        return array(
-            array(
+        return [
+            [
                 'delimited',
-            ),
-            array(
+            ],
+            [
                 'csv',
-            ),
-        );
+            ],
+        ];
     }
 
     private function assertGeneratedContents($output, $name)

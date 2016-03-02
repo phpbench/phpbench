@@ -22,8 +22,8 @@ class PrintfFormat implements FormatInterface
 
     public function getDefaultOptions()
     {
-        return array(
+        return [
             'format' => '%s',
-        );
+        ];
     }
 }

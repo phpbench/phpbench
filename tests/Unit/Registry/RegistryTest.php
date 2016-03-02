@@ -12,8 +12,10 @@
 namespace PhpBench\Tests\Unit\Registry;
 
 use JsonSchema\Validator;
+use PhpBench\DependencyInjection\Container;
 use PhpBench\Json\JsonDecoder;
 use PhpBench\Registry\Config;
+use PhpBench\Registry\RegistrableInterface;
 use PhpBench\Registry\Registry;
 
 class RegistryTest extends \PHPUnit_Framework_TestCase
@@ -26,10 +28,10 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->container = $this->prophesize('PhpBench\DependencyInjection\Container');
+        $this->container = $this->prophesize(Container::class);
         $this->validator = new Validator();
-        $this->service1 = $this->prophesize('PhpBench\Registry\RegistrableInterface');
-        $this->service2 = $this->prophesize('PhpBench\Registry\RegistrableInterface');
+        $this->service1 = $this->prophesize(RegistrableInterface::class);
+        $this->service2 = $this->prophesize(RegistrableInterface::class);
 
         $this->registry = new Registry(
             'test',
@@ -88,15 +90,15 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetConfig()
     {
-        $config = array(
+        $config = [
             'test' => 'service',
             'one' => 1,
             'two' => 2,
-        );
+        ];
 
         $this->registry->setService('service', $this->service1->reveal());
-        $this->service1->getDefaultConfig()->willReturn(array());
-        $this->service1->getSchema()->willReturn(array());
+        $this->service1->getDefaultConfig()->willReturn([]);
+        $this->service1->getSchema()->willReturn([]);
 
         $this->registry->setConfig('one', $config);
 
@@ -109,34 +111,34 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
      */
     public function testMergeDefaultConfig()
     {
-        $config = array(
+        $config = [
             'test' => 'service',
-            'one' => array(
+            'one' => [
                 'foo' => 'bar',
-            ),
+            ],
             'two' => 2,
-        );
+        ];
 
         $this->registry->setService('service', $this->service1->reveal());
-        $this->service1->getDefaultConfig()->willReturn(array(
+        $this->service1->getDefaultConfig()->willReturn([
             'hello' => 'goodbye',
-            'one' => array(
+            'one' => [
                 'bar' => 'foo',
-            ),
-        ));
-        $this->service1->getSchema()->willReturn(array());
+            ],
+        ]);
+        $this->service1->getSchema()->willReturn([]);
 
         $this->registry->setConfig('one', $config);
         $result = $this->registry->getConfig('one');
 
-        $this->assertEquals(array(
+        $this->assertEquals([
             'test' => 'service',
-            'one' => array(
+            'one' => [
                 'foo' => 'bar',
-            ),
+            ],
             'two' => 2,
             'hello' => 'goodbye',
-        ), $result->getArrayCopy());
+        ], $result->getArrayCopy());
     }
 
     /**
@@ -144,32 +146,32 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
      */
     public function testResolveExtended()
     {
-        $config1 = array(
+        $config1 = [
             'test' => 'service',
             'one' => 'two',
             'three' => 'four',
-        );
-        $config2 = array(
+        ];
+        $config2 = [
             'extends' => 'config1',
             'two' => 'three',
             'four' => 'five',
-        );
+        ];
 
         $this->registry->setService('service', $this->service1->reveal());
-        $this->service1->getDefaultConfig()->willReturn(array());
-        $this->service1->getSchema()->willReturn(array());
+        $this->service1->getDefaultConfig()->willReturn([]);
+        $this->service1->getSchema()->willReturn([]);
 
         $this->registry->setConfig('config1', $config1);
         $this->registry->setConfig('config2', $config2);
 
         $result = $this->registry->getConfig('config2');
-        $this->assertEquals(array(
+        $this->assertEquals([
             'test' => 'service',
             'one' => 'two',
             'three' => 'four',
             'two' => 'three',
             'four' => 'five',
-        ), $result->getarraycopy());
+        ], $result->getarraycopy());
     }
 
     /**
@@ -180,22 +182,22 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
      */
     public function testExtendsDifferentServiceException()
     {
-        $config1 = array(
+        $config1 = [
             'test' => 'service1',
             'one' => 'two',
-        );
-        $config2 = array(
+        ];
+        $config2 = [
             'test' => 'service2',
             'extends' => 'config1',
-        );
+        ];
 
         $this->registry->setService('service1', $this->service1->reveal());
         $this->registry->setService('service2', $this->service2->reveal());
 
-        $this->service1->getDefaultConfig()->willReturn(array());
-        $this->service1->getSchema()->willReturn(array());
-        $this->service2->getDefaultConfig()->willReturn(array());
-        $this->service2->getSchema()->willReturn(array());
+        $this->service1->getDefaultConfig()->willReturn([]);
+        $this->service1->getSchema()->willReturn([]);
+        $this->service2->getDefaultConfig()->willReturn([]);
+        $this->service2->getSchema()->willReturn([]);
 
         $this->registry->setConfig('config1', $config1);
         $this->registry->setConfig('config2', $config2);
@@ -211,23 +213,23 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidate()
     {
-        $config = array(
+        $config = [
             'test' => 'service',
             'one' => 1,
             'two' => 2,
-        );
+        ];
 
         $this->registry->setService('service', $this->service1->reveal());
-        $this->service1->getDefaultConfig()->willReturn(array());
-        $this->service1->getSchema()->willReturn(array(
+        $this->service1->getDefaultConfig()->willReturn([]);
+        $this->service1->getSchema()->willReturn([
             'type' => 'object',
             'additionalProperties' => false,
-            'properties' => array(
-                'title' => array(
+            'properties' => [
+                'title' => [
                     'type' => 'string',
-                ),
-            ),
-        ));
+                ],
+            ],
+        ]);
 
         $this->registry->setConfig('one', $config);
 
@@ -244,11 +246,11 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
     public function testJsonSchemaAsArrayException()
     {
         $this->registry->setService('service', $this->service1->reveal());
-        $this->service1->getDefaultConfig()->willReturn(array());
+        $this->service1->getDefaultConfig()->willReturn([]);
         $this->service1->getSchema()->willReturn(new \stdClass());
-        $this->registry->setConfig('one', array(
+        $this->registry->setConfig('one', [
             'test' => 'service',
-        ));
+        ]);
 
         $this->registry->getConfig('one');
     }
@@ -259,13 +261,13 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
     public function testGetConfigJsonString()
     {
         $this->registry->setService('service', $this->service1->reveal());
-        $this->service1->getDefaultConfig()->willReturn(array());
-        $this->service1->getSchema()->willReturn(array());
+        $this->service1->getDefaultConfig()->willReturn([]);
+        $this->service1->getSchema()->willReturn([]);
 
         $result = $this->registry->getConfig('{"test": "service"}');
-        $this->assertEquals(new Config('test', array(
+        $this->assertEquals(new Config('test', [
             'test' => 'service',
-        )), $result);
+        ]), $result);
     }
 
     /**
@@ -276,12 +278,12 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
     public function testGetConfigJsonStringInvalid()
     {
         $this->registry->setService('service', $this->service1->reveal());
-        $this->service1->getDefaultConfig()->willReturn(array());
-        $this->service1->getSchema()->willReturn(array());
+        $this->service1->getDefaultConfig()->willReturn([]);
+        $this->service1->getSchema()->willReturn([]);
 
         $result = $this->registry->getConfig('{test": service}');
-        $this->assertEquals(new Config('test', array(
+        $this->assertEquals(new Config('test', [
             'test' => 'service',
-        )), $result);
+        ]), $result);
     }
 }

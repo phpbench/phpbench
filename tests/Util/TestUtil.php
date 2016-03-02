@@ -22,24 +22,24 @@ use Prophecy\Prophecy\ObjectProphecy;
  */
 class TestUtil
 {
-    public static function configureSubjectMetadata(ObjectProphecy $subject, array $options = array())
+    public static function configureSubjectMetadata(ObjectProphecy $subject, array $options = [])
     {
-        $options = array_merge(array(
+        $options = array_merge([
             'iterations' => 1,
             'name' => 'benchFoo',
-            'beforeMethods' => array(),
-            'afterMethods' => array(),
-            'parameterSets' => array(array(array())),
-            'groups' => array(),
+            'beforeMethods' => [],
+            'afterMethods' => [],
+            'parameterSets' => [[[]]],
+            'groups' => [],
             'revs' => 1,
             'warmup' => 0,
             'notApplicable' => false,
             'skip' => false,
             'sleep' => 0,
-            'paramProviders' => array(),
+            'paramProviders' => [],
             'outputTimeUnit' => 'microseconds',
             'outputMode' => 'time',
-        ), $options);
+        ], $options);
 
         $subject->getIterations()->willReturn($options['iterations']);
         $subject->getSleep()->willReturn($options['sleep']);
@@ -56,14 +56,14 @@ class TestUtil
         $subject->getOutputMode()->willReturn($options['outputMode']);
     }
 
-    public static function configureBenchmarkMetadata(ObjectProphecy $benchmark, array $options = array())
+    public static function configureBenchmarkMetadata(ObjectProphecy $benchmark, array $options = [])
     {
-        $options = array_merge(array(
+        $options = array_merge([
             'class' => 'Benchmark',
-            'beforeClassMethods' => array(),
-            'afterClassMethods' => array(),
+            'beforeClassMethods' => [],
+            'afterClassMethods' => [],
             'path' => null,
-        ), $options);
+        ], $options);
 
         $benchmark->getClass()->willReturn($options['class']);
         $benchmark->getBeforeClassMethods()->willReturn($options['beforeClassMethods']);
@@ -71,37 +71,37 @@ class TestUtil
         $benchmark->getPath()->willReturn($options['path']);
     }
 
-    public static function createSuite(array $options = array(), $suiteIndex = 0)
+    public static function createSuite(array $options = [], $suiteIndex = 0)
     {
-        $options = array_merge(array(
+        $options = array_merge([
             'date' => '2016-02-06',
             'revs' => 5,
             'warmup' => 10,
             'sleep' => 1,
             'basetime' => 10,
-            'groups' => array(),
+            'groups' => [],
             'name' => 'test',
-            'benchmarks' => array('TestBench'),
-            'parameters' => array(),
-            'groups' => array('one', 'two', 'three'),
-            'parameters' => array(
+            'benchmarks' => ['TestBench'],
+            'parameters' => [],
+            'groups' => ['one', 'two', 'three'],
+            'parameters' => [
                 'param1' => 'value1',
-            ),
-            'subjects' => array('benchOne'),
-            'env' => array(),
+            ],
+            'subjects' => ['benchOne'],
+            'env' => [],
             'output_time_unit' => 'microseconds',
             'output_time_precision' => 7,
             'output_mode' => 'time',
-            'iterations' => array(0, 10),
-        ), $options);
+            'iterations' => [0, 10],
+        ], $options);
 
         $dateTime = new \DateTime($options['date']);
         $suite = new Suite(
             $options['name'],
             $dateTime,
             null,
-            array(),
-            array(),
+            [],
+            [],
             $suiteIndex
         );
 
@@ -128,7 +128,7 @@ class TestUtil
             }
         }
 
-        $informations = array();
+        $informations = [];
         foreach ($options['env'] as $name => $information) {
             $informations[] = new Information($name, $information);
         }
@@ -137,9 +137,9 @@ class TestUtil
         return $suite;
     }
 
-    public static function createCollection(array $suiteConfigs = array())
+    public static function createCollection(array $suiteConfigs = [])
     {
-        $suites = array();
+        $suites = [];
         foreach ($suiteConfigs as $suiteIndex => $suiteConfig) {
             $suites[] = self::createSuite($suiteConfig, $suiteIndex);
         }

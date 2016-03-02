@@ -36,7 +36,7 @@ class XmlDecoder
      */
     public function decode(Document $document)
     {
-        $suites = array();
+        $suites = [];
         foreach ($document->query('//suite') as $suiteEl) {
             $suites[] = $this->processSuite($suiteEl);
         }
@@ -79,10 +79,10 @@ class XmlDecoder
             $suiteEl->getAttribute('config-path')
         );
 
-        $informations = array();
+        $informations = [];
         foreach ($suiteEl->query('./env/*') as $envEl) {
             $name = $envEl->nodeName;
-            $info = array();
+            $info = [];
             foreach ($envEl->attributes as $iName => $valueAttr) {
                 $info[$iName] = $valueAttr->nodeValue;
             }
@@ -113,7 +113,7 @@ class XmlDecoder
 
     private function processSubject(Subject $subject, \DOMElement $subjectEl)
     {
-        $groups = array();
+        $groups = [];
         foreach ($subjectEl->query('./group') as $groupEl) {
             $groups[] = $groupEl->getAttribute('name');
         }
@@ -140,7 +140,7 @@ class XmlDecoder
 
     private function getParameters(\DOMElement $element)
     {
-        $parameters = array();
+        $parameters = [];
         foreach ($element->query('./parameter') as $parameterEl) {
             $name = $parameterEl->getAttribute('name');
 
@@ -159,7 +159,7 @@ class XmlDecoder
     {
         $errorEls = $variantEl->query('.//error');
         if ($errorEls->length) {
-            $errors = array();
+            $errors = [];
             foreach ($errorEls as $errorEl) {
                 $error = new Error(
                     $errorEl->nodeValue,

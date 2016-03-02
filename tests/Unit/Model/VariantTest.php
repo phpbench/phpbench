@@ -11,7 +11,10 @@
 
 namespace PhpBench\Tests\Unit\Benchmark;
 
+use PhpBench\Model\Iteration;
 use PhpBench\Model\IterationResult;
+use PhpBench\Model\ParameterSet;
+use PhpBench\Model\Subject;
 use PhpBench\Model\Variant;
 use Prophecy\Argument;
 
@@ -22,8 +25,8 @@ class VariantTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->subject = $this->prophesize('PhpBench\Model\Subject');
-        $this->parameterSet = $this->prophesize('PhpBench\Model\ParameterSet');
+        $this->subject = $this->prophesize(Subject::class);
+        $this->parameterSet = $this->prophesize(ParameterSet::class);
     }
 
     /**
@@ -123,7 +126,7 @@ class VariantTest extends \PHPUnit_Framework_TestCase
 
     private function createIteration($time, $expectedDeviation = null, $expectedZValue = null)
     {
-        $iteration = $this->prophesize('PhpBench\Model\Iteration');
+        $iteration = $this->prophesize(Iteration::class);
         $iteration->getRevolutions()->willReturn(1);
         $iteration->getTime()->willReturn($time);
         $iteration->getMemory()->willReturn(null);
@@ -209,7 +212,7 @@ class VariantTest extends \PHPUnit_Framework_TestCase
         $times = $variant->getTimes();
         $memories = $variant->getMemories();
 
-        $this->assertEquals(array(4, 8), $variant->getTimes());
-        $this->assertEquals(array(100, 200), $variant->getMemories());
+        $this->assertEquals([4, 8], $variant->getTimes());
+        $this->assertEquals([100, 200], $variant->getMemories());
     }
 }

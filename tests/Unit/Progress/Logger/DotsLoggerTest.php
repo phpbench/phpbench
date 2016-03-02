@@ -11,9 +11,14 @@
 
 namespace PhpBench\Tests\Unit\Progress\Logger;
 
+use PhpBench\Model\Benchmark;
+use PhpBench\Model\Iteration;
+use PhpBench\Model\Subject;
+use PhpBench\Model\Variant;
 use PhpBench\Progress\Logger\DotsLogger;
 use PhpBench\Util\TimeUnit;
 use Prophecy\Argument;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class DotsLoggerTest extends \PHPUnit_Framework_TestCase
 {
@@ -21,12 +26,12 @@ class DotsLoggerTest extends \PHPUnit_Framework_TestCase
     {
         $this->tearDown();
 
-        $this->output = $this->prophesize('Symfony\Component\Console\Output\OutputInterface');
+        $this->output = $this->prophesize(OutputInterface::class);
         $this->timeUnit = new TimeUnit(TimeUnit::MICROSECONDS, TimeUnit::MILLISECONDS);
-        $this->benchmark = $this->prophesize('PhpBench\Model\Benchmark');
-        $this->subject = $this->prophesize('PhpBench\Model\Subject');
-        $this->iteration = $this->prophesize('PhpBench\Model\Iteration');
-        $this->variant = $this->prophesize('PhpBench\Model\Variant');
+        $this->benchmark = $this->prophesize(Benchmark::class);
+        $this->subject = $this->prophesize(Subject::class);
+        $this->iteration = $this->prophesize(Iteration::class);
+        $this->variant = $this->prophesize(Variant::class);
     }
 
     public function tearDown()

@@ -12,6 +12,10 @@
 namespace PhpBench\Tests\Unit\Benchmark\Executor;
 
 use PhpBench\Benchmark\Executor\DebugExecutor;
+use PhpBench\Benchmark\Metadata\SubjectMetadata;
+use PhpBench\Benchmark\Remote\Launcher;
+use PhpBench\Model\Iteration;
+use PhpBench\Model\Variant;
 use PhpBench\Registry\Config;
 
 class DebugExecutorTest extends \PHPUnit_Framework_TestCase
@@ -20,9 +24,9 @@ class DebugExecutorTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $launcher = $this->prophesize('PhpBench\Benchmark\Remote\Launcher');
+        $launcher = $this->prophesize(Launcher::class);
         $this->executor = new DebugExecutor($launcher->reveal());
-        $this->subjectMetadata = $this->prophesize('PhpBench\Benchmark\Metadata\SubjectMetadata');
+        $this->subjectMetadata = $this->prophesize(SubjectMetadata::class);
     }
 
     /**
@@ -32,20 +36,20 @@ class DebugExecutorTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstantTimes(array $times, array $spread, $nbCollections, $nbIterations, $expectedTimes)
     {
-        $results = array();
+        $results = [];
         for ($i = 0; $i < $nbCollections; $i++) {
-            $collection = $this->prophesize('PhpBench\Model\Variant');
+            $collection = $this->prophesize(Variant::class);
             for ($ii = 0; $ii < $nbIterations; $ii++) {
-                $iteration = $this->prophesize('PhpBench\Model\Iteration');
+                $iteration = $this->prophesize(Iteration::class);
                 $iteration->getVariant()->willReturn($collection->reveal());
                 $iteration->getIndex()->willReturn($ii);
                 $results[] = $this->executor->execute(
                     $this->subjectMetadata->reveal(),
                     $iteration->reveal(),
-                    new Config('test', array(
+                    new Config('test', [
                         'times' => $times,
                         'spread' => $spread,
-                    ))
+                    ])
                 );
             }
         }
@@ -57,49 +61,49 @@ class DebugExecutorTest extends \PHPUnit_Framework_TestCase
 
     public function provideConstantTimes()
     {
-        return array(
-            array(
-                array(),
-                array(),
+        return [
+            [
+                [],
+                [],
                 2,
                 2,
-                array(0, 0, 0, 0),
-            ),
-            array(
-                array(10),
-                array(),
-                2,
-                4,
-                array(10, 10, 10, 10, 10, 10, 10, 10),
-            ),
-            array(
-                array(10, 20, 30, 40),
-                array(),
+                [0, 0, 0, 0],
+            ],
+            [
+                [10],
+                [],
                 2,
                 4,
-                array(10, 10, 10, 10, 20, 20, 20, 20),
-            ),
-            array(
-                array(1, 2),
-                array(),
+                [10, 10, 10, 10, 10, 10, 10, 10],
+            ],
+            [
+                [10, 20, 30, 40],
+                [],
+                2,
+                4,
+                [10, 10, 10, 10, 20, 20, 20, 20],
+            ],
+            [
+                [1, 2],
+                [],
                 4,
                 2,
-                array(1, 1, 2, 2, 1, 1, 2, 2),
-            ),
-            array(
-                array(1, 2),
-                array(0, 1),
+                [1, 1, 2, 2, 1, 1, 2, 2],
+            ],
+            [
+                [1, 2],
+                [0, 1],
                 4,
                 2,
-                array(1, 2, 2, 3, 1, 2, 2, 3),
-            ),
-            array(
-                array(1, 2),
-                array(0, 1),
+                [1, 2, 2, 3, 1, 2, 2, 3],
+            ],
+            [
+                [1, 2],
+                [0, 1],
                 4,
                 2,
-                array(1, 2, 2, 3, 1, 2, 2, 3),
-            ),
-        );
+                [1, 2, 2, 3, 1, 2, 2, 3],
+            ],
+        ];
     }
 }

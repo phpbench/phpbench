@@ -11,6 +11,8 @@
 
 namespace PhpBench\Tests\Unit\Storage;
 
+use PhpBench\Benchmark\Metadata\DriverInterface;
+use PhpBench\DependencyInjection\Container;
 use PhpBench\Storage\DriverFactory;
 
 class DriverFactoryTest extends \PHPUnit_Framework_TestCase
@@ -20,8 +22,8 @@ class DriverFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->container = $this->prophesize('PhpBench\DependencyInjection\Container');
-        $this->driver1 = $this->prophesize('PhpBench\Storage\DriverInterface');
+        $this->container = $this->prophesize(Container::class);
+        $this->driver1 = $this->prophesize(DriverInterface::class);
     }
 
     /**

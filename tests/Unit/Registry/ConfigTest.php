@@ -31,13 +31,13 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     {
         $config = new Config(
             'test',
-            array(
+            [
             'foo' => 'bar',
-            'bar' => array(
+            'bar' => [
                 'one' => 1,
                 'two' => 2,
-            ),
-        ));
+            ],
+        ]);
         $config['offset_not_exist'];
     }
 
@@ -49,17 +49,17 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidName($name)
     {
-        new Config($name, array());
+        new Config($name, []);
     }
 
     public function provideInvalidName()
     {
-        return array(
-            array('he lo'),
-            array('foo&'),
-            array(':'),
-            array(''),
-        );
+        return [
+            ['he lo'],
+            ['foo&'],
+            [':'],
+            [''],
+        ];
     }
 
     /**
@@ -69,16 +69,16 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
      */
     public function testGoodName($name)
     {
-        $config = new Config($name, array());
+        $config = new Config($name, []);
         $this->assertEquals($name, $config->getName());
     }
 
     public function provideGoodName()
     {
-        return array(
-            array('helo'),
-            array('foo-bar'),
-            array('foo_bar'),
-        );
+        return [
+            ['helo'],
+            ['foo-bar'],
+            ['foo_bar'],
+        ];
     }
 }

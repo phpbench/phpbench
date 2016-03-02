@@ -22,10 +22,10 @@ class InformationTest extends \PHPUnit_Framework_TestCase
     {
         $information = new Information(
             'hello',
-            array(
+            [
                 'one' => 'two',
                 'three' => 'four',
-            )
+            ]
         );
 
         $this->assertEquals('two', $information['one']);
@@ -39,7 +39,7 @@ class InformationTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnset()
     {
-        $information = new Information('hello', array());
+        $information = new Information('hello', []);
         unset($information['foo']);
     }
 
@@ -50,7 +50,7 @@ class InformationTest extends \PHPUnit_Framework_TestCase
      */
     public function testSet()
     {
-        $information = new Information('hello', array());
+        $information = new Information('hello', []);
         $information['foo'] = 'bar';
     }
 
@@ -59,7 +59,7 @@ class InformationTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetName()
     {
-        $information = new Information('foo', array());
+        $information = new Information('foo', []);
         $this->assertEquals('foo', $information->getName());
     }
 
@@ -68,19 +68,19 @@ class InformationTest extends \PHPUnit_Framework_TestCase
      */
     public function testIterable()
     {
-        $information = new Information('foo', array(
+        $information = new Information('foo', [
             'bar' => 'bar',
             'boo' => 'boo',
-        ));
+        ]);
 
-        $result = array();
+        $result = [];
         foreach ($information as $key => $value) {
             $result[$key] = $value;
         }
 
-        $this->assertEquals(array(
+        $this->assertEquals([
             'bar' => 'bar',
             'boo' => 'boo',
-        ), $result);
+        ], $result);
     }
 }

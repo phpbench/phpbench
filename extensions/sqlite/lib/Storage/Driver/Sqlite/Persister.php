@@ -27,28 +27,28 @@ class Persister
         $conn = $this->manager->getConnection();
 
         foreach ($collection->getSuites() as $suite) {
-            $runId = $this->insertUpdate($conn, 'run', array(
+            $runId = $this->insertUpdate($conn, 'run', [
                 'context' => $suite->getContextName(),
                 'date' => $suite->getDate()->format('Y-m-d H:i:s'),
-            ));
+            ]);
 
             foreach ($suite->getEnvInformations() as $information) {
                 foreach ($information as $key => $value) {
-                    $this->insertUpdate($conn, 'environment', array(
+                    $this->insertUpdate($conn, 'environment', [
                         'run_id' => $runId,
                         'provider' => $information->getName(),
                         'key' => $key,
                         'value' => $value,
-                    ));
+                    ]);
                 }
             }
 
             foreach ($suite->getBenchmarks() as $benchmark) {
                 foreach ($benchmark->getSubjects() as $subject) {
-                    $data = array(
+                    $data = [
                         'benchmark' => $benchmark->getClass(),
                         'name' => $subject->getName(),
-                    );
+                    ];
                     $subjectId = $this->getSubjectId($conn, $data['benchmark'], $data['name']);
                     $subjectId = $this->insertUpdate($conn, 'subject', $data, $subjectId);
 
@@ -57,7 +57,7 @@ class Persister
                     }
 
                     foreach ($subject->getVariants() as $variant) {
-                        $data = array(
+                        $data = [
                             'revolutions' => $variant->getRevolutions(),
                             'retry_threshold' => $subject->getRetryThreshold(),
                             'output_time_unit' => $subject->getOutputTimeUnit(),
@@ -67,26 +67,26 @@ class Persister
                             'warmup' => $variant->getWarmup(),
                             'subject_id' => $subjectId,
                             'run_id' => $runId,
-                        );
+                        ];
                         $variantId = $this->insertUpdate($conn, 'variant', $data);
 
                         foreach ($variant->getParameterSet() as $key => $value) {
                             $value = json_encode($value);
                             $parameterId = $this->getOrCreateParameter($conn, $key, $value);
-                            $this->insertUpdate($conn, 'variant_parameter', array(
+                            $this->insertUpdate($conn, 'variant_parameter', [
                                 'variant_id' => $variantId,
                                 'parameter_id' => $parameterId,
-                            ));
+                            ]);
                         }
 
-                        $datas = array();
+                        $datas = [];
                         foreach ($variant as $iteration) {
-                            $datas[] = array(
+                            $datas[] = [
                                 'time' => $iteration->getTime(),
                                 'memory' => $iteration->getMemory(),
                                 'reject_count' => $iteration->getRejectionCount(),
                                 'variant_id' => $variantId,
-                            );
+                            ];
                         }
 
                         $this->insertMultiple($conn, 'iteration', $datas);
@@ -99,7 +99,7 @@ class Persister
     private function getSubjectId(\PDO $conn, $benchmarkClass, $subjectName)
     {
         $stmt = $conn->prepare('SELECT id FROM subject WHERE benchmark = ? AND name = ?');
-        $stmt->execute(array($benchmarkClass, $subjectName));
+        $stmt->execute([$benchmarkClass, $subjectName]);
 
         return $stmt->fetchColumn();
     }
@@ -107,7 +107,7 @@ class Persister
     private function getOrCreateParameter(\PDO $conn, $key, $value)
     {
         $stmt = $conn->prepare('SELECT id FROM parameter WHERE key = ? AND value = ?');
-        $stmt->execute(array($key, $value));
+        $stmt->execute([$key, $value]);
         $identifier = $stmt->fetchColumn();
 
         if (false !== $identifier) {
@@ -115,7 +115,7 @@ class Persister
         }
 
         $stmt = $conn->prepare('INSERT INTO parameter (key, value) VALUES (?, ?)');
-        $stmt->execute(array($key, $value));
+        $stmt->execute([$key, $value]);
 
         return $conn->lastInsertId();
     }
@@ -123,30 +123,30 @@ class Persister
     private function associateGroup(\PDO $conn, $subjectId, $groupName)
     {
         $stmt = $conn->prepare('SELECT id FROM sgroup WHERE name = ?');
-        $stmt->execute(array($groupName));
+        $stmt->execute([$groupName]);
         $groupId = $stmt->fetchColumn();
 
         if (!$groupId) {
-            $groupId = $this->insertUpdate($conn, 'sgroup', array(
+            $groupId = $this->insertUpdate($conn, 'sgroup', [
                 'name' => $groupName,
-            ));
+            ]);
         }
 
         $stmt = $conn->prepare('SELECT subject_id FROM sgroup_subject WHERE subject_id = ? AND sgroup_id = ?');
-        $stmt->execute(array($subjectId, $groupId));
+        $stmt->execute([$subjectId, $groupId]);
 
         if (!$stmt->fetchColumn()) {
-            $this->insertUpdate($conn, 'sgroup_subject', array(
+            $this->insertUpdate($conn, 'sgroup_subject', [
                 'subject_id' => $subjectId,
                 'sgroup_id' => $groupId,
-            ));
+            ]);
         }
     }
 
     private function insertUpdate(\PDO $conn, $tableName, array $data, $identifier = null)
     {
         if (is_numeric($identifier)) {
-            $identifier = array('id', $identifier);
+            $identifier = ['id', $identifier];
         }
 
         $columnNames = array_keys($data);
@@ -193,7 +193,7 @@ class Persister
         $columnNames = array_keys($firstData);
 
         $placeholders = sprintf('(%s)', implode(', ', array_fill(0, count($columnNames), '?')));
-        $values = array();
+        $values = [];
 
         foreach ($dataSets as $dataSet) {
             $values = array_merge($values, array_values($dataSet));

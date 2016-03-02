@@ -22,15 +22,15 @@ class FunctionalTestCase extends \PHPUnit_Framework_TestCase
      * TODO: option to disable the cache is here because there is a bug
      * in the Runner/Builder which aggregates benchmarks on multiple runs.
      */
-    protected function getContainer($cache = true, $config = array())
+    protected function getContainer($cache = true, $config = [])
     {
         if ($cache && $this->container) {
             return $this->container;
         }
 
-        $this->container = new Container(array(
+        $this->container = new Container([
             'PhpBench\Extension\CoreExtension',
-        ), $config);
+        ], $config);
         $this->container->init();
 
         return $this->container;

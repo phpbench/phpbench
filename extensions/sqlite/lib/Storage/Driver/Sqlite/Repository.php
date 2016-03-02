@@ -44,7 +44,7 @@ class Repository
 
         $conn = $this->manager->getConnection();
         $stmt = $conn->prepare($sql);
-        $stmt->execute(array($runId));
+        $stmt->execute([$runId]);
 
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
@@ -61,7 +61,7 @@ EOT;
 
         $conn = $this->manager->getConnection();
         $stmt = $conn->prepare($sql);
-        $stmt->execute(array($subjectId));
+        $stmt->execute([$subjectId]);
 
         $groups = array_map(function ($value) {
             return $value[0];
@@ -83,9 +83,9 @@ EOT;
 
         $conn = $this->manager->getConnection();
         $stmt = $conn->prepare($sql);
-        $stmt->execute(array($variantId));
+        $stmt->execute([$variantId]);
 
-        $parameters = array();
+        $parameters = [];
         foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $data) {
             $parameters[$data['key']] = json_decode($data['value']);
         }

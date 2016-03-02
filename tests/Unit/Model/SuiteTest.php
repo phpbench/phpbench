@@ -11,7 +11,13 @@
 
 namespace PhpBench\Tests\Unit\Model;
 
+use PhpBench\Environment\Information;
+use PhpBench\Model\Benchmark;
+use PhpBench\Model\ErrorStack;
+use PhpBench\Model\Iteration;
+use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
+use PhpBench\Model\Variant;
 
 class SuiteTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,11 +26,11 @@ class SuiteTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->env1 = $this->prophesize('PhpBench\Environment\Information');
-        $this->bench1 = $this->prophesize('PhpBench\Model\Benchmark');
-        $this->subject1 = $this->prophesize('PhpBench\Model\Subject');
-        $this->variant1 = $this->prophesize('PhpBench\Model\Variant');
-        $this->iteration1 = $this->prophesize('PhpBench\Model\Iteration');
+        $this->env1 = $this->prophesize(Information::class);
+        $this->bench1 = $this->prophesize(Benchmark::class);
+        $this->subject1 = $this->prophesize(Subject::class);
+        $this->variant1 = $this->prophesize(Variant::class);
+        $this->iteration1 = $this->prophesize(Iteration::class);
     }
 
     /**
@@ -32,7 +38,7 @@ class SuiteTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateBenchmark()
     {
-        $benchmark = $this->createSuite(array())->createBenchmark('FooBench');
+        $benchmark = $this->createSuite([])->createBenchmark('FooBench');
         $this->assertInstanceOf('PhpBench\Model\Benchmark', $benchmark);
     }
 
@@ -43,23 +49,23 @@ class SuiteTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetIterations()
     {
-        $this->bench1->getSubjects()->willReturn(array($this->subject1->reveal()));
-        $this->subject1->getVariants()->willReturn(array($this->variant1->reveal()));
-        $this->variant1->getIterator()->willReturn(new \ArrayIterator(array($this->iteration1->reveal())));
+        $this->bench1->getSubjects()->willReturn([$this->subject1->reveal()]);
+        $this->subject1->getVariants()->willReturn([$this->variant1->reveal()]);
+        $this->variant1->getIterator()->willReturn(new \ArrayIterator([$this->iteration1->reveal()]));
 
-        $suite = $this->createSuite(array(
+        $suite = $this->createSuite([
             $this->bench1->reveal(),
-        ), array(
+        ], [
             $this->env1->reveal(),
-        ));
+        ]);
 
-        $this->assertSame(array($this->iteration1->reveal()), $suite->getIterations());
-        $this->assertSame(array(
+        $this->assertSame([$this->iteration1->reveal()], $suite->getIterations());
+        $this->assertSame([
             $this->variant1->reveal(),
-        ), $suite->getVariants());
-        $this->assertSame(array(
+        ], $suite->getVariants());
+        $this->assertSame([
             $this->subject1->reveal(),
-        ), $suite->getSubjects());
+        ], $suite->getSubjects());
     }
 
     /**
@@ -67,21 +73,21 @@ class SuiteTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetErrorStacks()
     {
-        $errorStack = $this->prophesize('PhpBench\Model\ErrorStack');
-        $this->bench1->getSubjects()->willReturn(array($this->subject1->reveal()));
-        $this->subject1->getVariants()->willReturn(array($this->variant1->reveal()));
+        $errorStack = $this->prophesize(ErrorStack::class);
+        $this->bench1->getSubjects()->willReturn([$this->subject1->reveal()]);
+        $this->subject1->getVariants()->willReturn([$this->variant1->reveal()]);
         $this->variant1->hasErrorStack()->willReturn(true);
         $this->variant1->getErrorStack()->willReturn($errorStack->reveal());
 
-        $suite = $this->createSuite(array(
+        $suite = $this->createSuite([
             $this->bench1->reveal(),
-        ), array(
+        ], [
             $this->env1->reveal(),
-        ));
+        ]);
 
-        $this->assertSame(array(
+        $this->assertSame([
             $errorStack->reveal(),
-        ), $suite->getErrorStacks());
+        ], $suite->getErrorStacks());
     }
 
     /**
@@ -89,9 +95,9 @@ class SuiteTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSummary()
     {
-        $errorStack = $this->prophesize('PhpBench\Model\ErrorStack');
-        $this->bench1->getSubjects()->willReturn(array($this->subject1->reveal()));
-        $this->subject1->getVariants()->willReturn(array($this->variant1->reveal()));
+        $errorStack = $this->prophesize(ErrorStack::class);
+        $this->bench1->getSubjects()->willReturn([$this->subject1->reveal()]);
+        $this->subject1->getVariants()->willReturn([$this->variant1->reveal()]);
         $this->variant1->hasErrorStack()->willReturn(true);
         $this->variant1->count()->willReturn(1);
         $this->variant1->getSubject()->wilLReturn($this->subject1->reveal());
@@ -100,17 +106,17 @@ class SuiteTest extends \PHPUnit_Framework_TestCase
         $this->variant1->getRejectCount()->willReturn(0);
         $this->variant1->getErrorStack()->willReturn($errorStack->reveal());
 
-        $suite = $this->createSuite(array(
+        $suite = $this->createSuite([
             $this->bench1->reveal(),
-        ), array(
+        ], [
             $this->env1->reveal(),
-        ));
+        ]);
 
         $summary = $suite->getSummary();
         $this->assertInstanceOf('PhpBench\Model\Summary', $summary);
     }
 
-    private function createSuite(array $benchmarks = array(), array $informations = array())
+    private function createSuite(array $benchmarks = [], array $informations = [])
     {
         return new Suite(
             'context',

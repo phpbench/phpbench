@@ -23,7 +23,7 @@ use PhpBench\Math\Statistics;
  */
 class KdeBench
 {
-    private $points = array();
+    private $points = [];
 
     public function generatePoints($params)
     {
@@ -32,25 +32,25 @@ class KdeBench
 
     public function benchKde()
     {
-        $kde = new Kde(array(
+        $kde = new Kde([
             50, 40, 55, 52, 60, 55, 43, 45, 34, 22,
-        ));
+        ]);
 
         $kde->evaluate($this->points);
     }
 
     public function providePoints()
     {
-        return array(
-            array(
+        return [
+            [
                 'points' => 10,
-            ),
-            array(
+            ],
+            [
                 'points' => 20,
-            ),
-            array(
+            ],
+            [
                 'points' => 40,
-            ),
-        );
+            ],
+        ];
     }
 }

@@ -23,7 +23,7 @@ class CartesianIteratorTest extends \PHPUnit_Framework_TestCase
     public function testIterate($parameterSets, $expected)
     {
         $iterator = new CartesianParameterIterator($parameterSets);
-        $result = array();
+        $result = [];
         foreach ($iterator as $parameters) {
             $result[] = $parameters->getArrayCopy();
         }
@@ -33,39 +33,39 @@ class CartesianIteratorTest extends \PHPUnit_Framework_TestCase
 
     public function provideIterate()
     {
-        return array(
-            array(
+        return [
+            [
                 // parameter sets
-                array(
-                    array(
-                        array('optimized' => false),
-                        array('optimized' => true),
-                    ),
-                    array(
-                        array('nb_foos' => 4),
-                        array('nb_foos' => 5),
-                    ),
-                ),
+                [
+                    [
+                        ['optimized' => false],
+                        ['optimized' => true],
+                    ],
+                    [
+                        ['nb_foos' => 4],
+                        ['nb_foos' => 5],
+                    ],
+                ],
                 // expected result
-                array(
-                    array(
+                [
+                    [
                         'optimized' => false,
                         'nb_foos' => 4,
-                    ),
-                    array(
+                    ],
+                    [
                         'optimized' => true,
                         'nb_foos' => 4,
-                    ),
-                    array(
+                    ],
+                    [
                         'optimized' => false,
                         'nb_foos' => 5,
-                    ),
-                    array(
+                    ],
+                    [
                         'optimized' => true,
                         'nb_foos' => 5,
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
     }
 }

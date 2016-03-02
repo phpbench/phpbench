@@ -31,7 +31,7 @@ class BlinkenLogger extends AnsiLogger
      *
      * @var int[]
      */
-    private $rejects = array();
+    private $rejects = [];
 
     /**
      * Current number of rows in the time display.
@@ -69,7 +69,7 @@ class BlinkenLogger extends AnsiLogger
         $first = false;
         $this->output->write(sprintf('<comment>%s</comment>', $benchmark->getClass()));
 
-        $subjectNames = array();
+        $subjectNames = [];
         foreach ($benchmark->getSubjects() as $index => $subject) {
             $subjectNames[] = sprintf('#%s %s', $index, $subject->getName());
         }
@@ -95,7 +95,7 @@ class BlinkenLogger extends AnsiLogger
     public function variantEnd(Variant $variant)
     {
         $this->resetLinePosition();
-        $this->drawIterations($variant, array(), null);
+        $this->drawIterations($variant, [], null);
 
         if ($variant->hasErrorStack()) {
             $this->output->write(' <error>ERROR</error>');
@@ -105,7 +105,7 @@ class BlinkenLogger extends AnsiLogger
             return;
         }
 
-        $this->rejects = array();
+        $this->rejects = [];
 
         foreach ($variant->getRejects() as $reject) {
             $this->rejects[$reject->getIndex()] = true;
@@ -162,7 +162,7 @@ class BlinkenLogger extends AnsiLogger
         if (strlen($time) > $this->colWidth) {
             // add one to allow a single space between columns
             $this->colWidth = strlen($time) + 1;
-            $this->drawIterations($iteration->getVariant(), array(), null);
+            $this->drawIterations($iteration->getVariant(), [], null);
             $this->resetLinePosition();
         }
 
@@ -175,7 +175,7 @@ class BlinkenLogger extends AnsiLogger
 
         $timeUnit = $variant->getSubject()->getOutputTimeUnit();
         $outputMode = $variant->getSubject()->getOutputMode();
-        $lines = array();
+        $lines = [];
         $line = sprintf('%-' . self::INDENT . 's', '#' . $variant->getSubject()->getIndex());
 
         for ($index = 0; $index < $variant->count(); $index++) {

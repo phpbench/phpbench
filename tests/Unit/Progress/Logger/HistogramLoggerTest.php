@@ -11,8 +11,11 @@
 
 namespace PhpBench\Tests\Unit\Progress\Logger;
 
+use PhpBench\Model\Benchmark;
+use PhpBench\Model\Iteration;
 use PhpBench\Model\IterationResult;
 use PhpBench\Model\ParameterSet;
+use PhpBench\Model\Subject;
 use PhpBench\Model\Variant;
 use PhpBench\Progress\Logger\HistogramLogger;
 use PhpBench\Util\TimeUnit;
@@ -27,9 +30,9 @@ class HistogramLoggerTest extends \PHPUnit_Framework_TestCase
 
         $this->logger = new HistogramLogger($this->timeUnit);
         $this->logger->setOutput($this->output);
-        $this->benchmark = $this->prophesize('PhpBench\Model\Benchmark');
-        $this->subject = $this->prophesize('PhpBench\Model\Subject');
-        $this->iteration = $this->prophesize('PhpBench\Model\Iteration');
+        $this->benchmark = $this->prophesize(Benchmark::class);
+        $this->subject = $this->prophesize(Subject::class);
+        $this->iteration = $this->prophesize(Iteration::class);
         $this->variant = new Variant(
             $this->subject->reveal(),
             new ParameterSet(),
@@ -37,9 +40,9 @@ class HistogramLoggerTest extends \PHPUnit_Framework_TestCase
             0
         );
         $this->variant->spawnIterations(4);
-        $this->benchmark->getSubjects()->willReturn(array(
+        $this->benchmark->getSubjects()->willReturn([
             $this->subject->reveal(),
-        ));
+        ]);
         $this->benchmark->getClass()->willReturn('BenchmarkTest');
 
         $this->subject->getName()->willReturn('benchSubject');

@@ -37,13 +37,13 @@ class UnameTest extends \PHPUnit_Framework_TestCase
     {
         $info = $this->provider->getInformation();
 
-        foreach (array(
+        foreach ([
             'os' => 's',
             'host' => 'n',
             'release' => 'r',
             'version' => 'v',
             'machine' => 'm',
-        ) as $key => $mode) {
+        ] as $key => $mode) {
             $this->assertEquals(php_uname($mode), $info[$key]);
         }
     }

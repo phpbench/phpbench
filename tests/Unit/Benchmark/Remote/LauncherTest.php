@@ -24,14 +24,14 @@ class LauncherTest extends \PHPUnit_Framework_TestCase
         $launcher = new Launcher(__DIR__ . '/../../../../vendor/autoload.php');
         $result = $launcher->payload(
             __DIR__ . '/template/foo.template',
-            array(
+            [
                 'foo' => 'bar',
-            )
+            ]
         )->launch();
 
-        $this->assertEquals(array(
+        $this->assertEquals([
             'foo' => 'bar',
-        ), $result);
+        ], $result);
     }
 
     /**
@@ -45,9 +45,9 @@ class LauncherTest extends \PHPUnit_Framework_TestCase
         $launcher = new Launcher(__DIR__ . '/../../../../vendor/notexisting.php');
         $launcher->payload(
             __DIR__ . '/template/foo.template',
-            array(
+            [
                 'foo' => 'bar',
-            )
+            ]
         );
     }
 }

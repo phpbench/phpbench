@@ -20,7 +20,7 @@ use Doctrine\Common\Annotations\DocParser as DoctrineDocParser;
 class DocParser
 {
     private $docParser;
-    private $imports = array(
+    private $imports = [
         'BeforeMethods' => 'PhpBench\Benchmark\Metadata\Annotations\BeforeMethods',
         'BeforeClassMethods' => 'PhpBench\Benchmark\Metadata\Annotations\BeforeClassMethods',
         'AfterMethods' => 'PhpBench\Benchmark\Metadata\Annotations\AfterMethods',
@@ -34,8 +34,8 @@ class DocParser
         'OutputTimeUnit' => 'PhpBench\Benchmark\Metadata\Annotations\OutputTimeUnit',
         'OutputMode' => 'PhpBench\Benchmark\Metadata\Annotations\OutputMode',
         'Warmup' => 'PhpBench\Benchmark\Metadata\Annotations\Warmup',
-    );
-    private static $globalIgnoredNames = array(
+    ];
+    private static $globalIgnoredNames = [
         // Annotation tags
         'Annotation' => true, 'Attribute' => true, 'Attributes' => true,
         /* Can we enable this? 'Enum' => true, */
@@ -83,13 +83,13 @@ class DocParser
         'package_version' => true,
         // PlantUML
         'startuml' => true, 'enduml' => true,
-    );
+    ];
 
     public function __construct()
     {
         $this->docParser = new DoctrineDocParser();
         $this->docParser->setIgnoredAnnotationNames(self::$globalIgnoredNames);
-        $imports = array();
+        $imports = [];
         foreach ($this->imports as $key => $value) {
             $imports[strtolower($key)] = $value;
         }

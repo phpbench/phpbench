@@ -76,12 +76,12 @@ class DotsLogger extends PhpBenchLogger
         }
 
         $state = $iteration->getIndex() % 4;
-        $states = array(
+        $states = [
             0 => '|',
             1 => '/',
             2 => '-',
             3 => '\\',
-        );
+        ];
 
         $this->output->write(sprintf(
             "\x0D%s%s",

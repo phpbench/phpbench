@@ -41,7 +41,7 @@ class BenchmarkFinder
      * @param array $subjectFilter
      * @param array $groupFilter
      */
-    public function findBenchmarks($path, array $filters = array(), array $groupFilter = array())
+    public function findBenchmarks($path, array $filters = [], array $groupFilter = [])
     {
         $finder = new Finder();
         if (!file_exists($path)) {
@@ -62,7 +62,7 @@ class BenchmarkFinder
                 ->name(basename($path));
         }
 
-        $benchmarks = array();
+        $benchmarks = [];
 
         foreach ($finder as $file) {
             if (!is_file($file)) {

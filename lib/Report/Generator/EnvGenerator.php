@@ -42,10 +42,10 @@ class EnvGenerator implements GeneratorInterface, OutputAwareInterface
      */
     public function getDefaultConfig()
     {
-        return array(
+        return [
             'title' => null,
             'description' => null,
-        );
+        ];
     }
 
     /**
@@ -53,18 +53,18 @@ class EnvGenerator implements GeneratorInterface, OutputAwareInterface
      */
     public function getSchema()
     {
-        return array(
+        return [
             'type' => 'object',
             'additionalProperties' => false,
-            'properties' => array(
-                'title' => array(
-                    'type' => array('string', 'null'),
-                ),
-                'description' => array(
-                    'type' => array('string', 'null'),
-                ),
-            ),
-        );
+            'properties' => [
+                'title' => [
+                    'type' => ['string', 'null'],
+                ],
+                'description' => [
+                    'type' => ['string', 'null'],
+                ],
+            ],
+        ];
     }
 
     /**

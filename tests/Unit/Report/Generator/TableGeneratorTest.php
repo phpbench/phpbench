@@ -33,17 +33,17 @@ class TableGeneratorTest extends GeneratorTestCase
      */
     public function testAggregate()
     {
-        $collection = TestUtil::createCollection(array(
-            array(
-                'benchmarks' => array('oneBench', 'twoBench'),
-                'subjects' => array('subjectOne', 'subjectTwo'),
+        $collection = TestUtil::createCollection([
+            [
+                'benchmarks' => ['oneBench', 'twoBench'],
+                'subjects' => ['subjectOne', 'subjectTwo'],
                 'output_time_unit' => 'milliseconds',
                 'output_time_precision' => 7,
                 'output_mode' => 'throughput',
-                'groups' => array('one', 'two', 'three'),
-                'break' => array(),
-            ),
-        ));
+                'groups' => ['one', 'two', 'three'],
+                'break' => [],
+            ],
+        ]);
 
         $report = $this->generate($collection);
         $this->assertXPathCount($report, 1, '//table');
@@ -79,20 +79,20 @@ class TableGeneratorTest extends GeneratorTestCase
      */
     public function testEnvCols()
     {
-        $collection = TestUtil::createCollection(array(
-            array(
-                'env' => array(
-                    'uname' => array(
+        $collection = TestUtil::createCollection([
+            [
+                'env' => [
+                    'uname' => [
                         'os' => 'linux',
                         'type' => 'penguin',
-                    ),
-                ),
-            ),
-        ));
+                    ],
+                ],
+            ],
+        ]);
 
-        $report = $this->generate($collection, array(
-            'cols' => array('uname_type', 'uname_os'),
-        ));
+        $report = $this->generate($collection, [
+            'cols' => ['uname_type', 'uname_os'],
+        ]);
         $this->assertXPathCount($report, 1, '//cell[@name="uname_type" = "penguin"]');
         $this->assertXPathCount($report, 1, '//cell[@name="uname_os" = "linux"]');
     }
@@ -104,27 +104,27 @@ class TableGeneratorTest extends GeneratorTestCase
      */
     public function testBreak(array $breaks, array $assertions)
     {
-        $prototype = array(
-            'benchmarks' => array('oneBench', 'twoBench'),
-            'subjects' => array('subjectOne', 'subjectTwo'),
+        $prototype = [
+            'benchmarks' => ['oneBench', 'twoBench'],
+            'subjects' => ['subjectOne', 'subjectTwo'],
             'output_time_unit' => 'milliseconds',
             'output_time_precision' => 7,
             'output_mode' => 'throughput',
-            'env' => array(
-                'uname' => array(
+            'env' => [
+                'uname' => [
                     'os' => 'linux',
                     'type' => 'penguin',
-                ),
-            ),
-        );
-        $collection = TestUtil::createCollection(array(
+                ],
+            ],
+        ];
+        $collection = TestUtil::createCollection([
             $prototype,
             $prototype,
-        ));
+        ]);
 
-        $report = $this->generate($collection, array(
+        $report = $this->generate($collection, [
             'break' => $breaks,
-        ));
+        ]);
 
         foreach ($assertions as $expression => $count) {
             $this->assertXPathCount($report, $count, $expression);
@@ -133,26 +133,26 @@ class TableGeneratorTest extends GeneratorTestCase
 
     public function provideBreak()
     {
-        return array(
-            array(
-                array('benchmark'),
-                array(
+        return [
+            [
+                ['benchmark'],
+                [
                     '//table' => 2,
-                ),
-            ),
-            array(
-                array('benchmark', 'subject'),
-                array(
+                ],
+            ],
+            [
+                ['benchmark', 'subject'],
+                [
                     '//table' => 4,
-                ),
-            ),
-            array(
-                array('benchmark', 'subject', 'uname_os'),
-                array(
+                ],
+            ],
+            [
+                ['benchmark', 'subject', 'uname_os'],
+                [
                     '//table' => 4,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**
@@ -160,13 +160,13 @@ class TableGeneratorTest extends GeneratorTestCase
      */
     public function testColumns()
     {
-        $collection = TestUtil::createCollection(array(
-            array(),
-        ));
+        $collection = TestUtil::createCollection([
+            [],
+        ]);
 
-        $report = $this->generate($collection, array(
-            'cols' => array('mean', 'mode', 'benchmark', 'subject'),
-        ));
+        $report = $this->generate($collection, [
+            'cols' => ['mean', 'mode', 'benchmark', 'subject'],
+        ]);
 
         $this->assertXPathCount($report, 4, '//cell');
         $this->assertXPathCount($report, 0, '//cell[@name="mean"]/preceding-sibling::cell');
@@ -180,32 +180,32 @@ class TableGeneratorTest extends GeneratorTestCase
      */
     public function testCompare()
     {
-        $collection = TestUtil::createCollection(array(
-            array(
-                'benchmarks' => array('oneBench', 'twoBench'),
-                'subjects' => array('subjectOne', 'subjectTwo'),
-                'env' => array(
-                    'git' => array(
+        $collection = TestUtil::createCollection([
+            [
+                'benchmarks' => ['oneBench', 'twoBench'],
+                'subjects' => ['subjectOne', 'subjectTwo'],
+                'env' => [
+                    'git' => [
                         'branch' => 'foobar',
-                    ),
-                ),
-            ),
-            array(
-                'benchmarks' => array('oneBench', 'twoBench'),
-                'subjects' => array('subjectOne', 'subjectTwo'),
-                'env' => array(
-                    'git' => array(
+                    ],
+                ],
+            ],
+            [
+                'benchmarks' => ['oneBench', 'twoBench'],
+                'subjects' => ['subjectOne', 'subjectTwo'],
+                'env' => [
+                    'git' => [
                         'branch' => 'barfoo',
-                    ),
-                ),
-            ),
-        ));
+                    ],
+                ],
+            ],
+        ]);
 
-        $report = $this->generate($collection, array(
+        $report = $this->generate($collection, [
             'compare' => 'git_branch',
-            'compare_fields' => array('mode', 'mean'),
-            'break' => array(),
-        ));
+            'compare_fields' => ['mode', 'mean'],
+            'break' => [],
+        ]);
 
         $this->assertXPathCount($report, 11, '//row[1]/cell');
         $this->assertXPathCount($report, 1, '//table');
@@ -221,26 +221,26 @@ class TableGeneratorTest extends GeneratorTestCase
      */
     public function testCompareExpandDuplicate()
     {
-        $collection = TestUtil::createCollection(array(
-            array(
-                'benchmarks' => array('oneBench'),
-                'subjects' => array('subjectOne'),
-            ),
-            array(
-                'benchmarks' => array('oneBench'),
-                'subjects' => array('subjectOne'),
-            ),
-            array(
-                'benchmarks' => array('oneBench'),
-                'subjects' => array('subjectOne'),
-            ),
-        ));
+        $collection = TestUtil::createCollection([
+            [
+                'benchmarks' => ['oneBench'],
+                'subjects' => ['subjectOne'],
+            ],
+            [
+                'benchmarks' => ['oneBench'],
+                'subjects' => ['subjectOne'],
+            ],
+            [
+                'benchmarks' => ['oneBench'],
+                'subjects' => ['subjectOne'],
+            ],
+        ]);
 
-        $report = $this->generate($collection, array(
+        $report = $this->generate($collection, [
             'compare' => 'revs',
-            'compare_fields' => array('mean'),
-            'break' => array(),
-        ));
+            'compare_fields' => ['mean'],
+            'break' => [],
+        ]);
 
         $this->assertXPathCount($report, 9, '//row[1]/cell');
         $this->assertXPathCount($report, 1, '//cell[@name="revs:5:mean"]');
@@ -253,14 +253,14 @@ class TableGeneratorTest extends GeneratorTestCase
      */
     public function testTitles()
     {
-        $collection = TestUtil::createCollection(array(
-            array(),
-        ));
+        $collection = TestUtil::createCollection([
+            [],
+        ]);
 
-        $report = $this->generate($collection, array(
+        $report = $this->generate($collection, [
             'title' => 'Hello World',
             'description' => 'The world said hello back.',
-        ));
+        ]);
 
         $this->assertXPathCount($report, 1, '//report[@title="Hello World"]');
         $this->assertXPathCount($report, 1, '//report[description="The world said hello back."]');
@@ -274,23 +274,23 @@ class TableGeneratorTest extends GeneratorTestCase
      */
     public function testSortAsc()
     {
-        $collection = TestUtil::createCollection(array(
-            array(
-                'benchmarks' => array('oneBench', 'twoBench'),
-                'subjects' => array('subjectOne', 'subjectTwo'),
-            ),
-        ));
-        $report = $this->generate($collection, array(
-            'sort' => array('mean' => 'asc'),
-        ));
+        $collection = TestUtil::createCollection([
+            [
+                'benchmarks' => ['oneBench', 'twoBench'],
+                'subjects' => ['subjectOne', 'subjectTwo'],
+            ],
+        ]);
+        $report = $this->generate($collection, [
+            'sort' => ['mean' => 'asc'],
+        ]);
 
-        $values = array();
+        $values = [];
         foreach ($report->query('//group[@name="body"]//cell[@name="mean"]') as $cellEl) {
             $values[] = $cellEl->nodeValue;
         }
-        $this->assertEquals(array(
+        $this->assertEquals([
             '3', '3', '3.2', '3.2',
-        ), $values);
+        ], $values);
     }
 
     /**
@@ -298,23 +298,23 @@ class TableGeneratorTest extends GeneratorTestCase
      */
     public function testSortDesc()
     {
-        $collection = TestUtil::createCollection(array(
-            array(
-                'benchmarks' => array('oneBench', 'twoBench'),
-                'subjects' => array('subjectOne', 'subjectTwo'),
-            ),
-        ));
-        $report = $this->generate($collection, array(
-            'sort' => array('mean' => 'desc'),
-        ));
+        $collection = TestUtil::createCollection([
+            [
+                'benchmarks' => ['oneBench', 'twoBench'],
+                'subjects' => ['subjectOne', 'subjectTwo'],
+            ],
+        ]);
+        $report = $this->generate($collection, [
+            'sort' => ['mean' => 'desc'],
+        ]);
 
-        $values = array();
+        $values = [];
         foreach ($report->query('//group[@name="body"]//cell[@name="mean"]') as $cellEl) {
             $values[] = $cellEl->nodeValue;
         }
-        $this->assertEquals(array(
+        $this->assertEquals([
             '3.2', '3.2', '3', '3',
-        ), $values);
+        ], $values);
     }
 
     /**
@@ -322,34 +322,34 @@ class TableGeneratorTest extends GeneratorTestCase
      */
     public function testSortMultiple()
     {
-        $collection = TestUtil::createCollection(array(
-            array(
-                'benchmarks' => array('oneBench', 'twoBench'),
-                'subjects' => array('subjectOne', 'subjectTwo'),
-                'iterations' => array(8),
-            ),
-            array(
-                'benchmarks' => array('oneBench', 'twoBench'),
-                'subjects' => array('subjectOne'),
-                'iterations' => array(3),
-            ),
-        ));
-        $report = $this->generate($collection, array(
-            'sort' => array('subject' => 'asc', 'mean' => 'desc'),
-            'break' => array(),
-        ));
+        $collection = TestUtil::createCollection([
+            [
+                'benchmarks' => ['oneBench', 'twoBench'],
+                'subjects' => ['subjectOne', 'subjectTwo'],
+                'iterations' => [8],
+            ],
+            [
+                'benchmarks' => ['oneBench', 'twoBench'],
+                'subjects' => ['subjectOne'],
+                'iterations' => [3],
+            ],
+        ]);
+        $report = $this->generate($collection, [
+            'sort' => ['subject' => 'asc', 'mean' => 'desc'],
+            'break' => [],
+        ]);
 
-        $subjects = array();
+        $subjects = [];
         foreach ($report->query('//group[@name="body"]//row') as $cellEl) {
             $subjects[] = $cellEl->evaluate('string(cell[@name="subject"])');
             $values[] = $cellEl->evaluate('string(./cell[@name="mean"])');
         }
-        $this->assertEquals(array(
+        $this->assertEquals([
             'subjectOne', 'subjectOne', 'subjectOne', 'subjectOne', 'subjectTwo', 'subjectTwo',
-        ), $subjects);
-        $this->assertEquals(array(
+        ], $subjects);
+        $this->assertEquals([
             '3.6', '3.6', '2.6', '2.6', '3.8', '3.8',
-        ), $values);
+        ], $values);
     }
 
     /**
@@ -358,21 +358,21 @@ class TableGeneratorTest extends GeneratorTestCase
     public function testPrettyParams()
     {
         $dom = $this->generate(
-            TestUtil::createCollection(array(
-                array(
-                    'parameters' => array(
+            TestUtil::createCollection([
+                [
+                    'parameters' => [
                         'foo' => 'bar',
-                        'array' => array('one', 'two'),
-                        'assoc_array' => array(
+                        'array' => ['one', 'two'],
+                        'assoc_array' => [
                             'one' => 'two',
                             'three' => 'four',
-                        ),
-                    ),
-                ),
-            )),
-            array(
+                        ],
+                    ],
+                ],
+            ]),
+            [
                 'pretty_params' => true,
-            )
+            ]
         );
 
         $value = null;
@@ -395,7 +395,7 @@ EOT
         , $value);
     }
 
-    private function generate(SuiteCollection $collection, array $config = array())
+    private function generate(SuiteCollection $collection, array $config = [])
     {
         $config = new Config('test', array_merge(
             $this->generator->getDefaultConfig(),

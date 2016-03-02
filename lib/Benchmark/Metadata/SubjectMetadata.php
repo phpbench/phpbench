@@ -24,27 +24,27 @@ class SubjectMetadata
     /**
      * @var array[]
      */
-    private $parameterSets = array();
+    private $parameterSets = [];
 
     /**
      * @var string[]
      */
-    private $groups = array();
+    private $groups = [];
 
     /**
      * @var string[]
      */
-    private $beforeMethods = array();
+    private $beforeMethods = [];
 
     /**
      * @var string[]
      */
-    private $afterMethods = array();
+    private $afterMethods = [];
 
     /**
      * @var string[]
      */
-    private $paramProviders = array();
+    private $paramProviders = [];
 
     /**
      * @var float
@@ -54,17 +54,17 @@ class SubjectMetadata
     /**
      * @var int
      */
-    private $iterations = array(1);
+    private $iterations = [1];
 
     /**
      * @var int[]
      */
-    private $revs = array(1);
+    private $revs = [1];
 
     /**
      * @var int
      */
-    private $warmup = array(0);
+    private $warmup = [0];
 
     /**
      * @var bool

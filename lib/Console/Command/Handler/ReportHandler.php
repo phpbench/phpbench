@@ -30,7 +30,7 @@ class ReportHandler
     public static function configure(Command $command)
     {
         $command->addOption('report', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Report name or configuration in JSON format');
-        $command->addOption('output', 'o', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Specify output', array('console'));
+        $command->addOption('output', 'o', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Specify output', ['console']);
     }
 
     public function reportsFromInput(InputInterface $input, OutputInterface $output, SuiteCollection $collection)

@@ -22,7 +22,7 @@ use PhpBench\DependencyInjection\Container;
  */
 class DriverFactory
 {
-    private $serviceIds = array();
+    private $serviceIds = [];
     private $driverName;
     private $container;
 

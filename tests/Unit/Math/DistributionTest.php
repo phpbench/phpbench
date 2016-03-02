@@ -20,12 +20,12 @@ class DistributionTest extends \PHPUnit_Framework_TestCase
      */
     public function testStats()
     {
-        $distribution = new Distribution(array(
+        $distribution = new Distribution([
             -50,
             0,
             50,
             100,
-        ));
+        ]);
 
         $this->assertEquals(100, $distribution->getSum());
         $this->assertEquals(25, $distribution->getMean());
@@ -41,13 +41,13 @@ class DistributionTest extends \PHPUnit_Framework_TestCase
      */
     public function testIterator()
     {
-        $distribution = new Distribution(array(
+        $distribution = new Distribution([
             10,
             20,
             30,
-        ));
+        ]);
         $stats = iterator_to_array($distribution);
-        $this->assertEquals(array(
+        $this->assertEquals([
             'min' => 10,
             'max' => 30,
             'sum' => 60,
@@ -56,7 +56,7 @@ class DistributionTest extends \PHPUnit_Framework_TestCase
             'mode' => 20,
             'variance' => 66.666666666667,
             'rstdev' => 40.824829046386,
-        ), $stats);
+        ], $stats);
     }
 
     /**
@@ -67,7 +67,7 @@ class DistributionTest extends \PHPUnit_Framework_TestCase
      */
     public function testDistributionZero()
     {
-        new Distribution(array());
+        new Distribution([]);
     }
 
     /**
@@ -75,7 +75,7 @@ class DistributionTest extends \PHPUnit_Framework_TestCase
      */
     public function testDistributionOne()
     {
-        $distribution = new Distribution(array(10));
+        $distribution = new Distribution([10]);
         iterator_to_array($distribution);
     }
 
@@ -84,7 +84,7 @@ class DistributionTest extends \PHPUnit_Framework_TestCase
      */
     public function testDistributionZeroValues()
     {
-        $distribution = new Distribution(array(0, 0));
+        $distribution = new Distribution([0, 0]);
         iterator_to_array($distribution);
     }
 
@@ -93,11 +93,11 @@ class DistributionTest extends \PHPUnit_Framework_TestCase
      */
     public function testReturnStats()
     {
-        $distribution = new Distribution(array(10, 20));
+        $distribution = new Distribution([10, 20]);
         $stats = $distribution->getStats();
-        foreach (array(
+        foreach ([
             'min', 'max', 'sum', 'stdev', 'mean', 'mode', 'variance', 'rstdev',
-        ) as $key) {
+        ] as $key) {
             $this->assertArrayHasKey($key, $stats);
         }
         $this->assertEquals(10, $stats['min']);

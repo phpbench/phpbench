@@ -24,7 +24,7 @@ class Supplier
     /**
      * @var ProviderInterface[]
      */
-    private $providers = array();
+    private $providers = [];
 
     /**
      * Add a provider.
@@ -43,7 +43,7 @@ class Supplier
      */
     public function getInformations()
     {
-        $informations = array();
+        $informations = [];
         foreach ($this->providers as $provider) {
             if (false === $provider->isApplicable()) {
                 continue;

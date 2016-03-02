@@ -66,19 +66,19 @@ class CoreExtension implements ExtensionInterface
 {
     public function getDefaultConfig()
     {
-        return array(
+        return [
             'bootstrap' => null,
             'path' => null,
-            'reports' => array(),
-            'outputs' => array(),
-            'executors' => array(),
+            'reports' => [],
+            'outputs' => [],
+            'executors' => [],
             'config_path' => null,
             'progress' => getenv('CONTINUOUS_INTEGRATION') ? 'travis' : 'verbose',
             'retry_threshold' => null,
             'time_unit' => TimeUnit::MICROSECONDS,
             'output_mode' => TimeUnit::MODE_TIME,
             'storage' => null,
-        );
+        ];
     }
 
     public function load(Container $container)
@@ -185,13 +185,13 @@ class CoreExtension implements ExtensionInterface
             return new MicrotimeExecutor(
                 $container->get('benchmark.remote.launcher')
             );
-        }, array('benchmark_executor' => array('name' => 'microtime')));
+        }, ['benchmark_executor' => ['name' => 'microtime']]);
 
         $container->register('benchmark.executor.debug', function (Container $container) {
             return new DebugExecutor(
                 $container->get('benchmark.remote.launcher')
             );
-        }, array('benchmark_executor' => array('name' => 'debug')));
+        }, ['benchmark_executor' => ['name' => 'debug']]);
 
         $container->register('benchmark.finder', function (Container $container) {
             return new Finder();
@@ -287,7 +287,7 @@ class CoreExtension implements ExtensionInterface
                 $container->get('console.command.handler.dump'),
                 $container->get('storage.driver_factory')
             );
-        }, array('console.command' => array()));
+        }, ['console.command' => []]);
 
         $container->register('console.command.report', function (Container $container) {
             return new ReportCommand(
@@ -296,13 +296,13 @@ class CoreExtension implements ExtensionInterface
                 $container->get('console.command.handler.suite_collection'),
                 $container->get('console.command.handler.dump')
             );
-        }, array('console.command' => array()));
+        }, ['console.command' => []]);
 
         $container->register('console.command.history', function (Container $container) {
             return new HistoryCommand(
                 $container->get('storage.driver_factory')
             );
-        }, array('console.command' => array()));
+        }, ['console.command' => []]);
     }
 
     private function registerProgressLoggers(Container $container)
@@ -313,57 +313,57 @@ class CoreExtension implements ExtensionInterface
 
         $container->register('progress_logger.dots', function (Container $container) {
             return new DotsLogger($container->get('benchmark.time_unit'));
-        }, array('progress_logger' => array('name' => 'dots')));
+        }, ['progress_logger' => ['name' => 'dots']]);
 
         $container->register('progress_logger.classdots', function (Container $container) {
             return new DotsLogger($container->get('benchmark.time_unit'), true);
-        }, array('progress_logger' => array('name' => 'classdots')));
+        }, ['progress_logger' => ['name' => 'classdots']]);
 
         $container->register('progress_logger.verbose', function (Container $container) {
             return new VerboseLogger($container->get('benchmark.time_unit'));
-        }, array('progress_logger' => array('name' => 'verbose')));
+        }, ['progress_logger' => ['name' => 'verbose']]);
 
         $container->register('progress_logger.travis', function (Container $container) {
             return new TravisLogger($container->get('benchmark.time_unit'));
-        }, array('progress_logger' => array('name' => 'travis')));
+        }, ['progress_logger' => ['name' => 'travis']]);
 
         $container->register('progress_logger.null', function (Container $container) {
             return new NullLogger();
-        }, array('progress_logger' => array('name' => 'none')));
+        }, ['progress_logger' => ['name' => 'none']]);
 
         $container->register('progress_logger.blinken', function (Container $container) {
             return new BlinkenLogger($container->get('benchmark.time_unit'));
-        }, array('progress_logger' => array('name' => 'blinken')));
+        }, ['progress_logger' => ['name' => 'blinken']]);
 
         $container->register('progress_logger.histogram', function (Container $container) {
             return new HistogramLogger($container->get('benchmark.time_unit'));
-        }, array('progress_logger' => array('name' => 'histogram')));
+        }, ['progress_logger' => ['name' => 'histogram']]);
     }
 
     private function registerReportGenerators(Container $container)
     {
         $container->register('report_generator.table', function (Container $container) {
             return new TableGenerator();
-        }, array('report_generator' => array('name' => 'table')));
+        }, ['report_generator' => ['name' => 'table']]);
         $container->register('report_generator.env', function (Container $container) {
             return new EnvGenerator();
-        }, array('report_generator' => array('name' => 'env')));
+        }, ['report_generator' => ['name' => 'env']]);
     }
 
     private function registerReportRenderers(Container $container)
     {
         $container->register('report_renderer.console', function (Container $container) {
             return new ConsoleRenderer($container->get('phpbench.formatter'));
-        }, array('report_renderer' => array('name' => 'console')));
+        }, ['report_renderer' => ['name' => 'console']]);
         $container->register('report_renderer.html', function (Container $container) {
             return new XsltRenderer($container->get('phpbench.formatter'));
-        }, array('report_renderer' => array('name' => 'xslt')));
+        }, ['report_renderer' => ['name' => 'xslt']]);
         $container->register('report_renderer.debug', function (Container $container) {
             return new DebugRenderer();
-        }, array('report_renderer' => array('name' => 'debug')));
+        }, ['report_renderer' => ['name' => 'debug']]);
         $container->register('report_renderer.delimited', function (Container $container) {
             return new DelimitedRenderer();
-        }, array('report_renderer' => array('name' => 'delimited')));
+        }, ['report_renderer' => ['name' => 'delimited']]);
     }
 
     private function registerFormatter(Container $container)
@@ -386,7 +386,7 @@ class CoreExtension implements ExtensionInterface
 
     private function registerRegistries(Container $container)
     {
-        foreach (array('generator', 'renderer') as $registryType) {
+        foreach (['generator', 'renderer'] as $registryType) {
             $container->register('report.registry.' . $registryType, function (Container $container) use ($registryType) {
                 return new Registry(
                     $registryType,
@@ -411,19 +411,19 @@ class CoreExtension implements ExtensionInterface
     {
         $container->register('environment.provider.uname', function (Container $container) {
             return new Provider\Uname();
-        }, array('environment_provider' => array()));
+        }, ['environment_provider' => []]);
 
         $container->register('environment.provider.php', function (Container $container) {
             return new Provider\Php();
-        }, array('environment_provider' => array()));
+        }, ['environment_provider' => []]);
 
         $container->register('environment.provider.unix_sysload', function (Container $container) {
             return new Provider\UnixSysload();
-        }, array('environment_provider' => array()));
+        }, ['environment_provider' => []]);
 
         $container->register('environment.provider.git', function (Container $container) {
             return new Provider\Git();
-        }, array('environment_provider' => array()));
+        }, ['environment_provider' => []]);
 
         $container->register('environment.supplier', function (Container $container) {
             return new Supplier();

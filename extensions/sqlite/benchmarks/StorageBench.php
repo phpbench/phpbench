@@ -18,10 +18,10 @@ class StorageBench extends BaseBenchCase
     public function __construct()
     {
         $this->addContainerExtensionClass('PhpBench\\Extensions\\Sqlite\\SqliteExtension');
-        $this->setContainerConfig(array(
+        $this->setContainerConfig([
             'storage' => 'sqlite',
             'storage.sqlite.db_path' => $this->getWorkspacePath() . '/test.sqlite',
-        ));
+        ]);
     }
 
     /**
@@ -29,19 +29,19 @@ class StorageBench extends BaseBenchCase
      */
     public function benchStore($params)
     {
-        $this->runCommand('console.command.run', array(
+        $this->runCommand('console.command.run', [
             'path' => $this->getFunctionalBenchmarkPath(),
             '--store' => true,
             '--iterations' => $params['nb_iterations'],
-        ));
+        ]);
     }
 
     public function provideIterations()
     {
-        return array(
-            array('nb_iterations' => 1),
-            array('nb_iterations' => 10),
-            array('nb_iterations' => 100),
-        );
+        return [
+            ['nb_iterations' => 1],
+            ['nb_iterations' => 10],
+            ['nb_iterations' => 100],
+        ];
     }
 }

@@ -80,12 +80,12 @@ class ConsoleRenderer implements RendererInterface, OutputAwareInterface
 
     protected function renderTableElement(Element $tableEl, $config)
     {
-        $rows = array();
+        $rows = [];
         $row = null;
 
         foreach ($tableEl->query('.//row') as $rowEl) {
-            $row = array();
-            $formatterParams = array();
+            $row = [];
+            $formatterParams = [];
 
             foreach ($rowEl->query('./formatter-param') as $paramEl) {
                 $formatterParams[$paramEl->getAttribute('name')] = $paramEl->nodeValue;
@@ -113,7 +113,7 @@ class ConsoleRenderer implements RendererInterface, OutputAwareInterface
             $table->setStyle($config['table_style']);
         }
 
-        $table->setHeaders(array_keys($row ?: array()));
+        $table->setHeaders(array_keys($row ?: []));
         $table->setRows($rows);
         $this->renderTable($table);
         $this->output->writeln('');
@@ -156,13 +156,13 @@ class ConsoleRenderer implements RendererInterface, OutputAwareInterface
     private function configureFormatters(OutputFormatterInterface $formatter)
     {
         $formatter->setStyle(
-            'title', new OutputFormatterStyle('white', null, array('bold'))
+            'title', new OutputFormatterStyle('white', null, ['bold'])
         );
         $formatter->setStyle(
-            'subtitle', new OutputFormatterStyle('white', null, array())
+            'subtitle', new OutputFormatterStyle('white', null, [])
         );
         $formatter->setStyle(
-            'description', new OutputFormatterStyle(null, null, array())
+            'description', new OutputFormatterStyle(null, null, [])
         );
     }
 
@@ -171,9 +171,9 @@ class ConsoleRenderer implements RendererInterface, OutputAwareInterface
      */
     public function getDefaultConfig()
     {
-        return array(
+        return [
             'table_style' => 'default',
-        );
+        ];
     }
 
     /**
@@ -181,15 +181,15 @@ class ConsoleRenderer implements RendererInterface, OutputAwareInterface
      */
     public function getSchema()
     {
-        return array(
+        return [
             'type' => 'object',
-            'properties' => array(
-                'table_style' => array(
+            'properties' => [
+                'table_style' => [
                     'title' => 'Style of the table',
-                    'enum' => array('default', 'borderless', 'compact', 'symfony-style-guide'),
-                ),
-            ),
+                    'enum' => ['default', 'borderless', 'compact', 'symfony-style-guide'],
+                ],
+            ],
             'additionalProperties' => false,
-        );
+        ];
     }
 }

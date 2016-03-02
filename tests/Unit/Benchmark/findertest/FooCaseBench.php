@@ -15,38 +15,38 @@ class FooCaseBench
 {
     public function provideNodes()
     {
-        return array(
-            array(
+        return [
+            [
                 'nb_nodes' => 10,
                 'template' => 'arg',
-            ),
-            array(
+            ],
+            [
                 'nb_nodes' => 100,
                 'template2' => 'arg',
-            ),
-            array(
+            ],
+            [
                 'nb_nodes' => 1000,
                 'template3' => 'arg',
-            ),
-        );
+            ],
+        ];
     }
 
     public function provideColumns()
     {
-        return array(
-            array(
+        return [
+            [
                 'columns' => '*',
-            ),
-            array(
+            ],
+            [
                 'columns' => 'title',
-            ),
-            array(
+            ],
+            [
                 'columns' => 'title, body',
-            ),
-            array(
+            ],
+            [
                 'columns' => 'title, body, foobar, title, body, foobar',
-            ),
-        );
+            ],
+        ];
     }
 
     public function beforeSelectSql(BenchIteration $iteration)

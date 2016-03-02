@@ -29,11 +29,11 @@ class XDebugExecutor extends BaseExecutor
         $callback = $config['callback'];
         $name = XDebugUtil::filenameFromIteration($iteration);
 
-        $phpConfig = array(
+        $phpConfig = [
             'xdebug.profiler_enable' => 1,
             'xdebug.profiler_output_dir' => $outputDir,
             'xdebug.profiler_output_name' => $name,
-        );
+        ];
 
         if (!extension_loaded('xdebug')) {
             $phpConfig['zend_extension'] = 'xdebug.so';
@@ -60,10 +60,10 @@ class XDebugExecutor extends BaseExecutor
      */
     public function getDefaultConfig()
     {
-        return array(
+        return [
             'callback' => function () {},
             'output_dir' => 'profile',
-        );
+        ];
     }
 
     /**
@@ -71,17 +71,17 @@ class XDebugExecutor extends BaseExecutor
      */
     public function getSchema()
     {
-        return array(
+        return [
             'type' => 'object',
             'additionalProperties' => false,
-            'properties' => array(
-                'callback' => array(
+            'properties' => [
+                'callback' => [
                     'type' => null,
-                ),
-                'output_dir' => array(
+                ],
+                'output_dir' => [
                     'type' => 'string',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 }

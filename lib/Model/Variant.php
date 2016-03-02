@@ -35,12 +35,12 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
     /**
      * @var Iteration[]
      */
-    private $iterations = array();
+    private $iterations = [];
 
     /**
      * @var Iteration[]
      */
-    private $rejects = array();
+    private $rejects = [];
 
     /**
      * @var ErrorStack
@@ -143,7 +143,7 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
      */
     public function getTimes()
     {
-        $times = array();
+        $times = [];
         foreach ($this->iterations as $iteration) {
             $times[] = $iteration->getRevTime();
         }
@@ -158,7 +158,7 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
      */
     public function getMemories()
     {
-        $memories = array();
+        $memories = [];
         foreach ($this->iterations as $iteration) {
             $memories[] = $iteration->getMemory();
         }
@@ -173,7 +173,7 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
      */
     public function getZValues()
     {
-        $zValues = array();
+        $zValues = [];
         foreach ($this->iterations as $iteration) {
             $zValues[] = $iteration->getZValue();
         }
@@ -188,7 +188,7 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
      */
     public function computeStats()
     {
-        $this->rejects = array();
+        $this->rejects = [];
         $revs = $this->getRevolutions();
 
         if (0 === count($this->iterations)) {
@@ -325,7 +325,7 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
     public function getErrorStack()
     {
         if (null === $this->errorStack) {
-            return new ErrorStack($this, array());
+            return new ErrorStack($this, []);
         }
 
         return $this->errorStack;
@@ -342,7 +342,7 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
      */
     public function setException(\Exception $exception)
     {
-        $errors = array();
+        $errors = [];
 
         do {
             $errors[] = Error::fromException($exception);

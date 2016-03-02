@@ -26,14 +26,14 @@ class Uname implements ProviderInterface
 
     public function getInformation()
     {
-        $uname = array();
-        foreach (array(
+        $uname = [];
+        foreach ([
             'os' => 's',
             'host' => 'n',
             'release' => 'r',
             'version' => 'v',
             'machine' => 'm',
-        ) as $key => $mode) {
+        ] as $key => $mode) {
             $uname[$key] = php_uname($mode);
         }
 

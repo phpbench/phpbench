@@ -36,17 +36,17 @@ class BenchmarkBench
 
     public function provideParamsOne()
     {
-        return array(
-            array('length' => '1'),
-            array('length' => '2'),
-        );
+        return [
+            ['length' => '1'],
+            ['length' => '2'],
+        ];
     }
 
     public function provideParamsTwo()
     {
-        return array(
-            array('strategy' => 'left'),
-            array('strategy' => 'right'),
-        );
+        return [
+            ['strategy' => 'left'],
+            ['strategy' => 'right'],
+        ];
     }
 }

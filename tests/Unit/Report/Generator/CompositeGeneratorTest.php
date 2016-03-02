@@ -12,8 +12,10 @@
 namespace PhpBench\Tests\Unit\Report\Generator;
 
 use PhpBench\Dom\Document;
+use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Report\Generator\CompositeGenerator;
+use PhpBench\Report\ReportManager;
 use Prophecy\Argument;
 
 class CompositeGeneratorTest extends \PHPUnit_Framework_TestCase
@@ -23,8 +25,8 @@ class CompositeGeneratorTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->manager = $this->prophesize('PhpBench\Report\ReportManager');
-        $this->collection = $this->prophesize('PhpBench\Model\SuiteCollection');
+        $this->manager = $this->prophesize(ReportManager::class);
+        $this->collection = $this->prophesize(SuiteCollection::class);
         $this->generator = new CompositeGenerator($this->manager->reveal());
     }
 
@@ -33,13 +35,13 @@ class CompositeGeneratorTest extends \PHPUnit_Framework_TestCase
      */
     public function testGenerateComposite()
     {
-        $config = array('reports' => array('one', 'two'));
+        $config = ['reports' => ['one', 'two']];
 
         // for some reason prophecy doesn't like passing the suite document here, so just do a type check
-        $this->manager->generateReports(Argument::type('PhpBench\Model\SuiteCollection'), array('one', 'two'))->willReturn(array(
+        $this->manager->generateReports(Argument::type(SuiteCollection::class), ['one', 'two'])->willReturn([
             $this->getReportsDocument(),
             $this->getReportsDocument(),
-        ));
+        ]);
         $compositeDom = $this->generator->generate($this->collection->reveal(), new Config('test', $config));
 
         $this->assertEquals(4, $compositeDom->xpath()->evaluate('count(//report)'));

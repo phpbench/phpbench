@@ -11,6 +11,8 @@
 
 namespace PhpBench\Tests\Unit\Vcs\Detector;
 
+use PhpBench\Environment\Information;
+use PhpBench\Environment\ProviderInterface;
 use PhpBench\Environment\Supplier;
 
 class SupplierTest extends \PHPUnit_Framework_TestCase
@@ -20,10 +22,10 @@ class SupplierTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->supplier = new Supplier();
-        $this->provider1 = $this->prophesize('PhpBench\Environment\ProviderInterface');
-        $this->provider2 = $this->prophesize('PhpBench\Environment\ProviderInterface');
-        $this->information1 = $this->prophesize('PhpBench\Environment\Information');
-        $this->information2 = $this->prophesize('PhpBench\Environment\Information');
+        $this->provider1 = $this->prophesize(ProviderInterface::class);
+        $this->provider2 = $this->prophesize(ProviderInterface::class);
+        $this->information1 = $this->prophesize(Information::class);
+        $this->information2 = $this->prophesize(Information::class);
     }
 
     /**
@@ -38,7 +40,7 @@ class SupplierTest extends \PHPUnit_Framework_TestCase
 
         $result = $this->supplier->getInformations();
 
-        $this->assertEquals(array(), $result);
+        $this->assertEquals([], $result);
     }
 
     /**
@@ -55,9 +57,9 @@ class SupplierTest extends \PHPUnit_Framework_TestCase
 
         $result = $this->supplier->getInformations();
 
-        $this->assertSame(array(
+        $this->assertSame([
             $this->information1->reveal(),
             $this->information2->reveal(),
-        ), $result);
+        ], $result);
     }
 }

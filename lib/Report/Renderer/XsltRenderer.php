@@ -58,9 +58,9 @@ class XsltRenderer implements RendererInterface, OutputAwareInterface
         $template = $config['template'];
         $out = strtr(
             $config['file'],
-            array(
+            [
                 '%report_name%' => $reportDom->firstChild->getAttribute('name'),
-            )
+            ]
         );
 
         if (!file_exists($template)) {
@@ -71,7 +71,7 @@ class XsltRenderer implements RendererInterface, OutputAwareInterface
         }
 
         foreach ($reportDom->query('.//row') as $rowEl) {
-            $formatterParams = array();
+            $formatterParams = [];
             foreach ($rowEl->query('./formatter-param') as $paramEl) {
                 $formatterParams[$paramEl->getAttribute('name')] = $paramEl->nodeValue;
             }
@@ -116,11 +116,11 @@ class XsltRenderer implements RendererInterface, OutputAwareInterface
      */
     public function getDefaultConfig()
     {
-        return array(
+        return [
             'title' => 'PHPBench Benchmark Results',
             'template' => __DIR__ . '/templates/html.xsl',
             'file' => null,
-        );
+        ];
     }
 
     /**
@@ -128,20 +128,20 @@ class XsltRenderer implements RendererInterface, OutputAwareInterface
      */
     public function getSchema()
     {
-        return array(
+        return [
             'type' => 'object',
-            'properties' => array(
-                'title' => array(
+            'properties' => [
+                'title' => [
                     'type' => 'string',
-                ),
-                'template' => array(
+                ],
+                'template' => [
                     'type' => 'string',
-                ),
-                'file' => array(
+                ],
+                'file' => [
                     'type' => ['string', 'null'],
-                ),
-            ),
+                ],
+            ],
             'additionalProperties' => false,
-        );
+        ];
     }
 }

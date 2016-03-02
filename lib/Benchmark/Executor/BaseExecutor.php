@@ -54,7 +54,7 @@ abstract class BaseExecutor implements ExecutorInterface
      */
     public function execute(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config)
     {
-        $tokens = array(
+        $tokens = [
             'class' => $subjectMetadata->getBenchmark()->getClass(),
             'file' => $subjectMetadata->getBenchmark()->getPath(),
             'subject' => $subjectMetadata->getName(),
@@ -63,7 +63,7 @@ abstract class BaseExecutor implements ExecutorInterface
             'afterMethods' => var_export($subjectMetadata->getAfterMethods(), true),
             'parameters' => var_export($iteration->getVariant()->getParameterSet()->getArrayCopy(), true),
             'warmup' => $iteration->getVariant()->getWarmup() ?: 0,
-        );
+        ];
         $payload = $this->launcher->payload(__DIR__ . '/template/microtime.template', $tokens);
 
         return $this->launch($payload, $iteration, $config);
@@ -81,11 +81,11 @@ abstract class BaseExecutor implements ExecutorInterface
      */
     public function executeMethods(BenchmarkMetadata $benchmark, array $methods)
     {
-        $tokens = array(
+        $tokens = [
             'class' => $benchmark->getClass(),
             'file' => $benchmark->getPath(),
             'methods' => var_export($methods, true),
-        );
+        ];
 
         $payload = $this->launcher->payload(__DIR__ . '/template/benchmark_static_methods.template', $tokens);
         $payload->launch();
@@ -96,6 +96,6 @@ abstract class BaseExecutor implements ExecutorInterface
      */
     public function getSchema()
     {
-        return array();
+        return [];
     }
 }

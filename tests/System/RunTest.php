@@ -289,15 +289,15 @@ class RunTest extends SystemTestCase
 
     public function provideProgressLoggers()
     {
-        return array(
-            array('classdots'),
-            array('dots'),
-            array('verbose'),
-            array('histogram'),
-            array('blinken'),
-            array('travis'),
-            array('none'),
-        );
+        return [
+            ['classdots'],
+            ['dots'],
+            ['verbose'],
+            ['histogram'],
+            ['blinken'],
+            ['travis'],
+            ['none'],
+        ];
     }
 
     /**
@@ -330,10 +330,10 @@ class RunTest extends SystemTestCase
 
     public function provideOutputs()
     {
-        return array(
-            array('html'),
-            array('markdown'),
-        );
+        return [
+            ['html'],
+            ['markdown'],
+        ];
     }
 
     /**

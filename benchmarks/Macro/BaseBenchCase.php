@@ -31,11 +31,11 @@ class BaseBenchCase
 {
     private $container;
 
-    private $extensions = array(
+    private $extensions = [
         'PhpBench\Extension\CoreExtension',
-    );
+    ];
 
-    private $config = array();
+    private $config = [];
 
     /**
      * The constructor can be used as a quick way to setup the

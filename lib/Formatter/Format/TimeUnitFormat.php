@@ -47,11 +47,11 @@ class TimeUnitFormat implements FormatInterface
      */
     public function getDefaultOptions()
     {
-        return array(
+        return [
             'unit' => TimeUnit::MICROSECONDS,
             'mode' => TimeUnit::MODE_TIME,
             'precision' => 3,
-            'resolve' => array(),
-        );
+            'resolve' => [],
+        ];
     }
 }
