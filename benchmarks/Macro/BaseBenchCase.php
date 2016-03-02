@@ -21,7 +21,7 @@ use Symfony\Component\Filesystem\Filesystem;
  *
  * These benchmarks use seconds as the time unit.
  *
- * @OutputTimeUnit("seconds")
+ * @OutputTimeUnit("seconds", precision=3)
  * @Iterations(10)
  * @Warmup(1)
  * @BeforeClassMethods({"createWorkspace"}, extend=true)
