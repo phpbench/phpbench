@@ -173,6 +173,15 @@ class Suite implements \IteratorAggregate
         return $this->envInformations;
     }
 
+    public function getVcsBranch()
+    {
+        if (isset($this->envInformations['vcs']['branch'])) {
+            return $this->envInformations['vcs']['branch'];
+        }
+
+        return null;
+    }
+
     /**
      * The identifier uniquely identifies this suite.
      *
