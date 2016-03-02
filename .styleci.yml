@@ -3,6 +3,5 @@ enabled:
 disabled:
   - align_double_arrow
   - concat_without_spaces
-  - short_array_syntax
   - phpdoc_indent
   - phpdoc_params

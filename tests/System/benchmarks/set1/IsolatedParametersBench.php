@@ -22,12 +22,12 @@ class IsolatedParameterBench
 
     public function provideParams()
     {
-        return array(
-            array(
+        return [
+            [
                 'hello' => 'Look "I am using double quotes"',
                 'goodbye' => 'Look \'I am using single quotes\'"',
                 'goodbye' => 'Look \'I am use $dollars"',
-            ),
-        );
+            ],
+        ];
     }
 }

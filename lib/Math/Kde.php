@@ -156,7 +156,7 @@ class Kde
             }, $diff);
 
             // multiply the two arrays
-            $multiplied = array();
+            $multiplied = [];
 
             foreach ($diff as $index => $value) {
                 $multiplied[$index] = $diff[$index] * $tDiff[$index];

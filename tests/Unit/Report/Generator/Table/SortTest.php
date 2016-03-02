@@ -20,21 +20,21 @@ class SortTest extends \PHPUnit_Framework_TestCase
      */
     public function testSort()
     {
-        $array = array(
-            array('col1' => 20, 'col2' => 20),
-            array('col1' => 20, 'col2' => 10),
-            array('col1' => 10, 'col2' => 50),
-            array('col1' => 10, 'col2' => 10),
-            array('col1' => 10, 'col2' => 20),
-        );
+        $array = [
+            ['col1' => 20, 'col2' => 20],
+            ['col1' => 20, 'col2' => 10],
+            ['col1' => 10, 'col2' => 50],
+            ['col1' => 10, 'col2' => 10],
+            ['col1' => 10, 'col2' => 20],
+        ];
 
-        $expected = array(
-            array('col1' => 10, 'col2' => 50),
-            array('col1' => 10, 'col2' => 10),
-            array('col1' => 10, 'col2' => 20),
-            array('col1' => 20, 'col2' => 20),
-            array('col1' => 20, 'col2' => 10),
-        );
+        $expected = [
+            ['col1' => 10, 'col2' => 50],
+            ['col1' => 10, 'col2' => 10],
+            ['col1' => 10, 'col2' => 20],
+            ['col1' => 20, 'col2' => 20],
+            ['col1' => 20, 'col2' => 10],
+        ];
 
         Sort::mergesort($array, function ($row1, $row2) {
             return strcmp($row1['col1'], $row2['col1']);

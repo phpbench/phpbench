@@ -16,6 +16,7 @@ use PhpBench\Benchmark\Metadata\Driver\AnnotationDriver;
 use PhpBench\Benchmark\Remote\ReflectionClass;
 use PhpBench\Benchmark\Remote\ReflectionHierarchy;
 use PhpBench\Benchmark\Remote\ReflectionMethod;
+use PhpBench\Benchmark\Remote\Reflector;
 
 class AnnotationDriverTest extends \PHPUnit_Framework_TestCase
 {
@@ -24,7 +25,7 @@ class AnnotationDriverTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->reflector = $this->prophesize('PhpBench\Benchmark\Remote\Reflector');
+        $this->reflector = $this->prophesize(Reflector::class);
         $this->driver = new AnnotationDriver(
             $this->reflector->reveal()
         );
@@ -47,8 +48,8 @@ EOT;
         $hierarchy->addReflectionClass($reflection);
 
         $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
-        $this->assertEquals(array('beforeClass'), $metadata->getBeforeClassMethods());
-        $this->assertEquals(array('afterClass'), $metadata->getAfterClassMethods());
+        $this->assertEquals(['beforeClass'], $metadata->getBeforeClassMethods());
+        $this->assertEquals(['afterClass'], $metadata->getAfterClassMethods());
         $this->assertEquals('Test', $metadata->getClass());
     }
 
@@ -105,16 +106,16 @@ EOT;
         $subjects = $metadata->getSubjects();
         $this->assertCount(1, $subjects);
         $metadata = reset($subjects);
-        $this->assertEquals(array('beforeOne', 'beforeTwo'), $metadata->getBeforeMethods());
-        $this->assertEquals(array('afterOne', 'afterTwo'), $metadata->getAfterMethods());
-        $this->assertEquals(array('groupOne', 'groupTwo'), $metadata->getGroups());
-        $this->assertEquals(array(50), $metadata->getIterations());
-        $this->assertEquals(array('ONE', 'TWO'), $metadata->getParamProviders());
-        $this->assertEquals(array(1000), $metadata->getRevs());
+        $this->assertEquals(['beforeOne', 'beforeTwo'], $metadata->getBeforeMethods());
+        $this->assertEquals(['afterOne', 'afterTwo'], $metadata->getAfterMethods());
+        $this->assertEquals(['groupOne', 'groupTwo'], $metadata->getGroups());
+        $this->assertEquals([50], $metadata->getIterations());
+        $this->assertEquals(['ONE', 'TWO'], $metadata->getParamProviders());
+        $this->assertEquals([1000], $metadata->getRevs());
         $this->assertEquals(500, $metadata->getSleep());
         $this->assertEquals('seconds', $metadata->getOutputTimeUnit());
         $this->assertEquals('throughput', $metadata->getOutputMode());
-        $this->assertEquals(array(501), $metadata->getWarmup());
+        $this->assertEquals([501], $metadata->getWarmup());
         $this->assertTrue($metadata->getSkip());
     }
 
@@ -175,7 +176,7 @@ EOT;
         $subjects = $metadata->getSubjects();
         $this->assertCount(1, $subjects);
         $metadata = reset($subjects);
-        $this->assertEquals(array('beforeFive'), $metadata->getBeforeMethods());
+        $this->assertEquals(['beforeFive'], $metadata->getBeforeMethods());
     }
 
     /**
@@ -255,15 +256,15 @@ EOT;
         $subjectThree = array_shift($subjects);
 
         $this->assertEquals('benchFoo', $subjectOne->getName());
-        $this->assertEquals(array(2000), $subjectOne->getRevs());
+        $this->assertEquals([2000], $subjectOne->getRevs());
 
         $this->assertEquals('benchBar', $subjectTwo->getName());
-        $this->assertEquals(array(99), $subjectTwo->getIterations());
-        $this->assertEquals(array(50), $subjectTwo->getRevs());
-        $this->assertEquals(array('class2'), $subjectTwo->getBeforeMethods());
-        $this->assertEquals(array('after'), $subjectTwo->getAfterMethods());
-        $this->assertEquals(array('class2'), $subjectThree->getBeforeMethods());
-        $this->assertEquals(array('after'), $subjectThree->getAfterMethods());
+        $this->assertEquals([99], $subjectTwo->getIterations());
+        $this->assertEquals([50], $subjectTwo->getRevs());
+        $this->assertEquals(['class2'], $subjectTwo->getBeforeMethods());
+        $this->assertEquals(['after'], $subjectTwo->getAfterMethods());
+        $this->assertEquals(['class2'], $subjectThree->getBeforeMethods());
+        $this->assertEquals(['after'], $subjectThree->getAfterMethods());
     }
 
     /**
@@ -296,7 +297,7 @@ EOT;
         $this->assertCount(1, $subjects);
         $subjectOne = array_shift($subjects);
 
-        $this->assertEquals(array('group1', 'group2', 'group3'), $subjectOne->getGroups());
+        $this->assertEquals(['group1', 'group2', 'group3'], $subjectOne->getGroups());
     }
 
     /**
@@ -324,9 +325,9 @@ EOT;
         $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
         $subject = $metadata->getSubjects();
         $subject = current($subject);
-        $this->assertEquals(array(10, 20, 30), $subject->getIterations());
-        $this->assertEquals(array(1, 2, 3), $subject->getRevs());
-        $this->assertEquals(array(5, 15, 115), $subject->getWarmup());
+        $this->assertEquals([10, 20, 30], $subject->getIterations());
+        $this->assertEquals([1, 2, 3], $subject->getRevs());
+        $this->assertEquals([5, 15, 115], $subject->getWarmup());
     }
 
     /**

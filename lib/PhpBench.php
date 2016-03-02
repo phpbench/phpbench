@@ -38,16 +38,16 @@ class PhpBench
     {
         global $argv;
 
-        $configPaths = array();
+        $configPaths = [];
         $bootstrapOverride = null;
-        $extensions = array();
+        $extensions = [];
         foreach ($argv as $arg) {
             if ($configFile = self::parseOption($arg, 'config')) {
                 if (!file_exists($configFile)) {
                     echo sprintf('Config file "%s" does not exist', $configFile) . PHP_EOL;
                     exit(1);
                 }
-                $configPaths = array($configFile);
+                $configPaths = [$configFile];
             }
 
             if ($value = self::parseOption($arg, 'bootstrap', 'b')) {
@@ -60,16 +60,16 @@ class PhpBench
         }
 
         if (empty($configPaths)) {
-            $configPaths = array(
+            $configPaths = [
                 getcwd() . '/phpbench.json',
                 getcwd() . '/phpbench.json.dist',
-            );
+            ];
         }
 
-        $config = array(
-            'extensions' => array(),
+        $config = [
+            'extensions' => [],
             'bootstrap' => null,
-        );
+        ];
 
         foreach ($configPaths as $configPath) {
             if (!file_exists($configPath)) {
@@ -133,7 +133,7 @@ class PhpBench
         $longOption = '--' . $longName . '=';
         $shortOption = '-' . $shortName .'=';
 
-        foreach (array($longOption, $shortOption) as $option) {
+        foreach ([$longOption, $shortOption] as $option) {
             if (0 !== strpos($arg, $option)) {
                 continue;
             }

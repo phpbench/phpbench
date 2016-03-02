@@ -52,32 +52,32 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 
     public function provideComparison()
     {
-        return array(
-            array(
+        return [
+            [
                 '$gt',
-            ),
-            array(
+            ],
+            [
                 '$lt',
-            ),
-            array(
+            ],
+            [
                 '$eq',
-            ),
-            array(
+            ],
+            [
                 '$neq',
-            ),
-            array(
+            ],
+            [
                 '$gte',
-            ),
-            array(
+            ],
+            [
                 '$lte',
-            ),
-            array(
+            ],
+            [
                 '$in',
-            ),
-            array(
+            ],
+            [
                 '$nin',
-            ),
-        );
+            ],
+        ];
     }
 
     /**

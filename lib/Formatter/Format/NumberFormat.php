@@ -29,10 +29,10 @@ class NumberFormat implements FormatInterface
 
     public function getDefaultOptions()
     {
-        return array(
+        return [
             'decimal_places' => 0,
             'decimal_point' => '.',
             'thousands_separator' => ',',
-        );
+        ];
     }
 }

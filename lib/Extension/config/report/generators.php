@@ -9,24 +9,24 @@
  * file that was distributed with this source code.
  */
 
-return array(
-    'aggregate' => array(
+return [
+    'aggregate' => [
         'generator' => 'table',
-        'cols' => array('benchmark', 'subject', 'groups', 'params', 'revs', 'its', 'mem', 'best', 'mean', 'mode', 'worst', 'stdev', 'rstdev', 'diff'),
-    ),
-    'default' => array(
+        'cols' => ['benchmark', 'subject', 'groups', 'params', 'revs', 'its', 'mem', 'best', 'mean', 'mode', 'worst', 'stdev', 'rstdev', 'diff'],
+    ],
+    'default' => [
         'generator' => 'table',
         'iterations' => true,
-        'cols' => array('benchmark', 'subject', 'groups', 'params', 'revs', 'iter', 'rej', 'mem', 'iter', 'time', 'z-value', 'diff'),
+        'cols' => ['benchmark', 'subject', 'groups', 'params', 'revs', 'iter', 'rej', 'mem', 'iter', 'time', 'z-value', 'diff'],
         'diff_col' => 'time',
-    ),
-    'compare' => array(
+    ],
+    'compare' => [
         'generator' => 'table',
-        'cols' => array('benchmark', 'subject', 'groups', 'params', 'revs'),
+        'cols' => ['benchmark', 'subject', 'groups', 'params', 'revs'],
         'compare' => 'vcs_branch',
-        'break' => array('benchmark', 'subject'),
-    ),
-    'env' => array(
+        'break' => ['benchmark', 'subject'],
+    ],
+    'env' => [
         'generator' => 'env',
-    ),
-);
+    ],
+];

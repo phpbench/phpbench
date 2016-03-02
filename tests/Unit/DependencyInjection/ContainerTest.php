@@ -45,14 +45,14 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     {
         $this->container->register('stdclass1', function () {
             return new \stdClass();
-        }, array('tag1' => array('name' => 'hello')));
+        }, ['tag1' => ['name' => 'hello']]);
         $this->container->register('stdclass2', function () {
             return new \stdClass();
-        }, array('tag1' => array('name' => 'hello')));
+        }, ['tag1' => ['name' => 'hello']]);
 
         $this->container->register('stdclass3', function () {
             return new \stdClass();
-        }, array('tag2' => array('name' => 'goodbye')));
+        }, ['tag2' => ['name' => 'goodbye']]);
 
         $serviceIds = $this->container->getServiceIdsForTag('tag1');
         $this->assertNotNull($serviceIds);
@@ -86,9 +86,9 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function testRegisterExtension()
     {
-        $container = new Container(array(
+        $container = new Container([
             __NAMESPACE__ . '\\TestExtension',
-        ));
+        ]);
 
         $container->init();
         $object = $container->get('foobar');
@@ -103,12 +103,12 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     public function testRegisterExtensionWithUserConfig()
     {
         $container = new Container(
-            array(
+            [
                 __NAMESPACE__ . '\\TestExtension',
-            ),
-            array(
+            ],
+            [
                 'foo' => 'bazz',
-            )
+            ]
         );
 
         $container->init();
@@ -125,7 +125,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function testRegisterNotExistingExtension()
     {
-        $container = new Container(array('NotExistingExtension'));
+        $container = new Container(['NotExistingExtension']);
         $container->init();
     }
 
@@ -138,7 +138,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function testRegisterNotImplementingExtension()
     {
-        $container = new Container(array('stdClass'));
+        $container = new Container(['stdClass']);
         $container->init();
     }
 
@@ -150,9 +150,9 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnknownUserConfig()
     {
-        $container = new Container(array(), array(
+        $container = new Container([], [
             'not' => 'existing',
-        ));
+        ]);
         $container->init();
     }
 
@@ -173,9 +173,9 @@ class TestExtension implements ExtensionInterface
 {
     public function getDefaultConfig()
     {
-        return array(
+        return [
             'foo' => 'bar',
-        );
+        ];
     }
 
     public function load(Container $container)

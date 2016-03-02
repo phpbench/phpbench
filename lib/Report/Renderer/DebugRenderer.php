@@ -40,11 +40,11 @@ class DebugRenderer implements RendererInterface, OutputAwareInterface
 
     public function getSchema()
     {
-        return array();
+        return [];
     }
 
     public function getDefaultConfig()
     {
-        return array();
+        return [];
     }
 }

@@ -18,9 +18,9 @@ class SqliteExtension implements ExtensionInterface
 {
     public function getDefaultConfig()
     {
-        return array(
+        return [
             'storage.sqlite.db_path' => '.phpbench.sqlite',
-        );
+        ];
     }
 
     public function load(Container $container)
@@ -31,7 +31,7 @@ class SqliteExtension implements ExtensionInterface
                 $container->get('storage.driver.sqlite.persister'),
                 $container->get('storage.driver.sqlite.repository')
             );
-        }, array('storage_driver' => array('name' => 'sqlite')));
+        }, ['storage_driver' => ['name' => 'sqlite']]);
         $container->register('storage.driver.sqlite.connection_manager', function (Container $container) {
             return new Storage\Driver\Sqlite\ConnectionManager($container->getParameter('storage.sqlite.db_path'));
         });

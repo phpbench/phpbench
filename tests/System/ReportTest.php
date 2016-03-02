@@ -77,9 +77,9 @@ class ReportTest extends SystemTestCase
 
     public function provideOutputs()
     {
-        return array(
-            array('html'),
-            array('markdown'),
-        );
+        return [
+            ['html'],
+            ['markdown'],
+        ];
     }
 }

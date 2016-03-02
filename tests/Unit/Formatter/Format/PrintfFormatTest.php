@@ -25,7 +25,7 @@ class PrintfFormatTest extends \PHPUnit_Framework_TestCase
      */
     public function testNumberFormat()
     {
-        $result = $this->format->format('hai', array('format' => '%s bye'));
+        $result = $this->format->format('hai', ['format' => '%s bye']);
         $this->assertEquals('hai bye', $result);
     }
 }

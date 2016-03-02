@@ -11,17 +11,22 @@
 
 namespace PhpBench\Tests\Unit\Model;
 
+use PhpBench\Math\Distribution;
+use PhpBench\Model\Benchmark;
+use PhpBench\Model\Subject;
+use PhpBench\Model\Suite;
 use PhpBench\Model\Summary;
+use PhpBench\Model\Variant;
 
 class SummaryTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->suite = $this->prophesize('PhpBench\Model\Suite');
-        $this->bench1 = $this->prophesize('PhpBench\Model\Benchmark');
-        $this->subject1 = $this->prophesize('PhpBench\Model\Subject');
-        $this->variant1 = $this->prophesize('PhpBench\Model\Variant');
-        $this->stats = $this->prophesize('PhpBench\Math\Distribution');
+        $this->suite = $this->prophesize(Suite::class);
+        $this->bench1 = $this->prophesize(Benchmark::class);
+        $this->subject1 = $this->prophesize(Subject::class);
+        $this->variant1 = $this->prophesize(Variant::class);
+        $this->stats = $this->prophesize(Distribution::class);
     }
 
     /**
@@ -29,15 +34,15 @@ class SummaryTest extends \PHPUnit_Framework_TestCase
      */
     public function testSummary()
     {
-        $this->bench1->getSubjects()->willReturn(array($this->subject1->reveal()));
-        $this->subject1->getVariants()->willReturn(array($this->variant1->reveal()));
+        $this->bench1->getSubjects()->willReturn([$this->subject1->reveal()]);
+        $this->subject1->getVariants()->willReturn([$this->variant1->reveal()]);
         $this->variant1->getStats()->willReturn($this->stats->reveal());
         $this->variant1->count()->wilLReturn(4);
         $this->variant1->getRejectCount()->wilLReturn(11);
         $this->variant1->hasErrorStack()->wilLReturn(false);
         $this->variant1->getRevolutions()->willReturn(10);
         $this->variant1->getSubject()->willReturn($this->subject1->reveal());
-        $this->stats->getIterator()->willReturn(new \ArrayIterator(array(
+        $this->stats->getIterator()->willReturn(new \ArrayIterator([
             'min' => '1',
             'max' => '2',
             'mean' => 5,
@@ -46,8 +51,8 @@ class SummaryTest extends \PHPUnit_Framework_TestCase
             'stdev' => 8,
             'rstdev' => 9,
 
-        )));
-        $this->suite->getBenchmarks()->willReturn(array($this->bench1));
+        ]));
+        $this->suite->getBenchmarks()->willReturn([$this->bench1]);
 
         $summary = new Summary($this->suite->reveal());
 

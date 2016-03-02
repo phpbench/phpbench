@@ -32,7 +32,7 @@ class Payload
     /**
      * Associative array of PHP INI settings.
      */
-    private $phpConfig = array();
+    private $phpConfig = [];
 
     /**
      * Path to PHP binary.
@@ -42,7 +42,7 @@ class Payload
     /**
      * Tokens to substitute in the script template.
      */
-    private $tokens = array();
+    private $tokens = [];
 
     /**
      * Symfony Process instance.
@@ -55,7 +55,7 @@ class Payload
      *
      * @param string $template
      */
-    public function __construct($template, array $tokens = array(), Process $process = null)
+    public function __construct($template, array $tokens = [], Process $process = null)
     {
         $this->template = $template;
         $this->process = $process ?: new Process($this->phpPath);
@@ -89,7 +89,7 @@ class Payload
             ));
         }
 
-        $tokenSubs = array();
+        $tokenSubs = [];
         foreach ($this->tokens as $key => $value) {
             $tokenSubs['{{ ' . $key . ' }}'] = $value;
         }
@@ -141,7 +141,7 @@ class Payload
             return '';
         }
 
-        $string = array();
+        $string = [];
         foreach ($this->phpConfig as $key => $value) {
             $string[] = sprintf('-d%s=%s', $key, $value);
         }

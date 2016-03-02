@@ -11,6 +11,7 @@
 
 namespace PhpBench\Tests\Unit\Formatter;
 
+use PhpBench\Formatter\FormatInterface;
 use PhpBench\Formatter\FormatRegistry;
 
 class FormatRegistryTest extends \PHPUnit_Framework_TestCase
@@ -21,7 +22,7 @@ class FormatRegistryTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->registry = new FormatRegistry();
-        $this->format = $this->prophesize('PhpBench\Formatter\FormatInterface');
+        $this->format = $this->prophesize(FormatInterface::class);
     }
 
     /**

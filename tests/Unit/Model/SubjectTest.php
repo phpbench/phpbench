@@ -11,6 +11,8 @@
 
 namespace PhpBench\Tests\Unit\Subject\Metadata;
 
+use PhpBench\Model\Benchmark;
+use PhpBench\Model\ParameterSet;
 use PhpBench\Model\Subject;
 
 class SubjectTest extends \PHPUnit_Framework_TestCase
@@ -20,7 +22,7 @@ class SubjectTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->benchmark = $this->prophesize('PhpBench\Model\Benchmark');
+        $this->benchmark = $this->prophesize(Benchmark::class);
         $this->subject = new Subject($this->benchmark->reveal(), 'subjectOne', 0);
     }
 
@@ -29,14 +31,14 @@ class SubjectTest extends \PHPUnit_Framework_TestCase
      */
     public function testInGroups()
     {
-        $this->subject->setGroups(array('one', 'two', 'three'));
-        $result = $this->subject->inGroups(array('five', 'two', 'six'));
+        $this->subject->setGroups(['one', 'two', 'three']);
+        $result = $this->subject->inGroups(['five', 'two', 'six']);
         $this->assertTrue($result);
 
-        $result = $this->subject->inGroups(array('eight', 'seven'));
+        $result = $this->subject->inGroups(['eight', 'seven']);
         $this->assertFalse($result);
 
-        $result = $this->subject->inGroups(array());
+        $result = $this->subject->inGroups([]);
         $this->assertFalse($result);
     }
 
@@ -45,7 +47,7 @@ class SubjectTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateVariant()
     {
-        $parameterSet = $this->prophesize('PhpBench\Model\ParameterSet');
+        $parameterSet = $this->prophesize(ParameterSet::class);
         $variant = $this->subject->createVariant(
             $parameterSet->reveal(),
             10,

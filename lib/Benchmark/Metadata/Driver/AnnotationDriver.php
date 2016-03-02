@@ -54,7 +54,7 @@ class AnnotationDriver implements DriverInterface
 
     private function buildBenchmark(BenchmarkMetadata $benchmark, ReflectionHierarchy $hierarchy)
     {
-        $annotations = array();
+        $annotations = [];
         $reflectionHierarchy = array_reverse(iterator_to_array($hierarchy));
 
         foreach ($reflectionHierarchy as $reflection) {
@@ -185,7 +185,7 @@ class AnnotationDriver implements DriverInterface
 
     private function resolveValue(AbstractArrayAnnotation $annotation, array $currentValues, array $annotationValues)
     {
-        $values = $annotation->getExtend() === true ? $currentValues : array();
+        $values = $annotation->getExtend() === true ? $currentValues : [];
         $values = array_merge($values, $annotationValues);
 
         return $values;

@@ -20,11 +20,11 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
      */
     public function testStdev()
     {
-        $this->assertEquals(1.4142, round(Statistics::stdev(array(1, 2, 3, 4, 5)), 4));
-        $this->assertEquals(17.2116, round(Statistics::stdev(array(13, 23, 12, 44, 55)), 4));
-        $this->assertEquals(0, round(Statistics::stdev(array(1)), 4));
-        $this->assertEquals(0, round(Statistics::stdev(array(1, 1, 1)), 4));
-        $this->assertEquals(2.47, round(Statistics::stdev(array(2, 6, 4, 1, 7, 3, 6, 1, 7, 1, 6, 5, 1, 1), true), 2));
+        $this->assertEquals(1.4142, round(Statistics::stdev([1, 2, 3, 4, 5]), 4));
+        $this->assertEquals(17.2116, round(Statistics::stdev([13, 23, 12, 44, 55]), 4));
+        $this->assertEquals(0, round(Statistics::stdev([1]), 4));
+        $this->assertEquals(0, round(Statistics::stdev([1, 1, 1]), 4));
+        $this->assertEquals(2.47, round(Statistics::stdev([2, 6, 4, 1, 7, 3, 6, 1, 7, 1, 6, 5, 1, 1], true), 2));
     }
 
     /**
@@ -33,7 +33,7 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
     public function testMean()
     {
         $expected = 33 / 7;
-        $this->assertEquals($expected, Statistics::mean(array(2, 2, 2, 2, 2, 20, 3)));
+        $this->assertEquals($expected, Statistics::mean([2, 2, 2, 2, 2, 20, 3]));
     }
 
     /**
@@ -49,29 +49,29 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
 
     public function provideLinearSpace()
     {
-        return array(
-            array(
+        return [
+            [
                 2, 3, 5,
                 true,
-                array(2, 2.25, 2.5, 2.75, 3),
-            ),
-            array(
+                [2, 2.25, 2.5, 2.75, 3],
+            ],
+            [
                 2, 10, 5,
                 true,
-                array(2, 4, 6, 8, 10),
-            ),
-            array(
+                [2, 4, 6, 8, 10],
+            ],
+            [
                 2, 10, 5,
                 false,
-                array(
+                [
                     2,
                     3.6000000000000001,
                     5.2000000000000002,
                     6.8000000000000007,
                     8.4000000000000004,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**
@@ -96,51 +96,51 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
 
     public function provideKdeMode()
     {
-        return array(
-            array(
-                array(
+        return [
+            [
+                [
                     10, 20, 15, 5,
-                ),
+                ],
                 10,
                 'silverman',
                 13.33,
-            ),
-            array(
-                array(
+            ],
+            [
+                [
                     10, 20,
-                ),
+                ],
                 10,
                 'silverman',
                 15.56,
-            ),
-            array(
+            ],
+            [
                 // custom bandwidth, multimodal
-                array(
+                [
                     10, 20, 15, 5,
-                ),
+                ],
                 10,
                 0.2,
                 12.5,
-            ),
-            array(
+            ],
+            [
                 // only one element
-                array(
+                [
                     10,
-                ),
+                ],
                 10,
                 0.1,
                 10,
-            ),
-            array(
+            ],
+            [
                 // min and max the same
-                array(
+                [
                     10, 10, 10,
-                ),
+                ],
                 10,
                 0.1,
                 10,
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -156,12 +156,12 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
 
     public function provideHistogram()
     {
-        return array(
-            array(
-                array(10, 10, 2, 2),
+        return [
+            [
+                [10, 10, 2, 2],
                 10,
                 null, null,
-                array(
+                [
                     2 => 2,
                     '2.8' => 0,
                     '3.6' => 0,
@@ -173,13 +173,13 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
                     '8.4' => 0,
                     '9.2' => 0,
                     10 => 2,
-                ),
-            ),
-            array(
-                array(1, 10, 2, 2, 2, 3, 2, 4),
+                ],
+            ],
+            [
+                [1, 10, 2, 2, 2, 3, 2, 4],
                 9,
                 null, null,
-                array(
+                [
                     1 => 1,
                     2 => 4,
                     3 => 1,
@@ -190,10 +190,10 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
                     8 => 0,
                     9 => 0,
                     10 => 1,
-                ),
-            ),
-            array(
-                array(
+                ],
+            ],
+            [
+                [
                     -3,
                     -2,
                     -1,
@@ -201,11 +201,11 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
                     1,
                     2,
                     3,
-                ),
+                ],
                 10,
                 -3,
                 3,
-                array(
+                [
                     -3 => 1,
                     '-2.4' => 1,
                     '-1.8' => 0,
@@ -217,8 +217,8 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
                     '1.8' => 1,
                     '2.4' => 1,
                     3 => 0,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 }

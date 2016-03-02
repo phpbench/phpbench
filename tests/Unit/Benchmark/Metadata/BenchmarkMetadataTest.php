@@ -30,9 +30,9 @@ class BenchmarkMetadataTest extends \PHPUnit_Framework_TestCase
     public function testFilter()
     {
         $this->assertCount(2, $this->metadata->getSubjects());
-        $this->metadata->filterSubjectNames(array('subjectOne'));
+        $this->metadata->filterSubjectNames(['subjectOne']);
         $this->assertCount(1, $this->metadata->getSubjects());
-        $this->metadata->filterSubjectNames(array('subjectSeventySeven'));
+        $this->metadata->filterSubjectNames(['subjectSeventySeven']);
         $this->assertCount(0, $this->metadata->getSubjects());
     }
 
@@ -41,7 +41,7 @@ class BenchmarkMetadataTest extends \PHPUnit_Framework_TestCase
      */
     public function testFilterClassName()
     {
-        $this->metadata->filterSubjectNames(array('Class::subjectOne*'));
+        $this->metadata->filterSubjectNames(['Class::subjectOne*']);
         $this->assertCount(1, $this->metadata->getSubjects());
     }
 
@@ -50,7 +50,7 @@ class BenchmarkMetadataTest extends \PHPUnit_Framework_TestCase
      */
     public function testFilterRegex()
     {
-        $this->metadata->filterSubjectNames(array('.*One*'));
+        $this->metadata->filterSubjectNames(['.*One*']);
         $this->assertCount(1, $this->metadata->getSubjects());
     }
 
@@ -62,7 +62,7 @@ class BenchmarkMetadataTest extends \PHPUnit_Framework_TestCase
     public function testHasSubjects()
     {
         $this->assertTrue($this->metadata->hasSubjects());
-        $this->metadata->filterSubjectNames(array('subjectSeventySeven'));
+        $this->metadata->filterSubjectNames(['subjectSeventySeven']);
         $this->assertFalse($this->metadata->hasSubjects());
     }
 }

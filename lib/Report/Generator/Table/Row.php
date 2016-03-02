@@ -19,7 +19,7 @@ class Row extends \ArrayObject
     /**
      * @var array
      */
-    private $formatParams = array();
+    private $formatParams = [];
 
     /**
      * Return the given offset.

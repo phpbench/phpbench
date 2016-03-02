@@ -32,12 +32,12 @@ class TimeUnitFormatTest extends \PHPUnit_Framework_TestCase
     public function testTimeFormatConvert()
     {
         $format = new TimeUnitFormat(new TimeUnit());
-        $result = $format->format(2000, array(
+        $result = $format->format(2000, [
             'unit' => 'seconds',
             'mode' => 'throughput',
             'precision' => 6,
-            'resolve' => array(),
-        ));
+            'resolve' => [],
+        ]);
         $this->assertEquals('500.000000ops/s', $result);
     }
 }

@@ -29,50 +29,50 @@ class TimeUnitTest extends \PHPUnit_Framework_TestCase
 
     public function provideConvert()
     {
-        return array(
-            array(
+        return [
+            [
                 0,
                 TimeUnit::SECONDS,
                 TimeUnit::MINUTES,
                 0,
-            ),
-            array(
+            ],
+            [
                 60,
                 TimeUnit::SECONDS,
                 TimeUnit::MINUTES,
                 1,
-            ),
-            array(
+            ],
+            [
                 1,
                 TimeUnit::SECONDS,
                 TimeUnit::MICROSECONDS,
                 1000000,
-            ),
-            array(
+            ],
+            [
                 1,
                 TimeUnit::SECONDS,
                 TimeUnit::MILLISECONDS,
                 1000,
-            ),
-            array(
+            ],
+            [
                 24,
                 TimeUnit::HOURS,
                 TimeUnit::DAYS,
                 1,
-            ),
-            array(
+            ],
+            [
                 2.592e+8,
                 TimeUnit::MILLISECONDS,
                 TimeUnit::DAYS,
                 3,
-            ),
-            array(
+            ],
+            [
                 24,
                 TimeUnit::HOURS,
                 TimeUnit::DAYS,
                 1,
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -89,38 +89,38 @@ class TimeUnitTest extends \PHPUnit_Framework_TestCase
 
     public function provideConvertThroughput()
     {
-        return array(
-            array(
+        return [
+            [
                 0,
                 TimeUnit::SECONDS,
                 TimeUnit::MINUTES,
                 0,
-            ),
-            array(
+            ],
+            [
                 1,
                 TimeUnit::SECONDS,
                 TimeUnit::MINUTES,
                 60,
-            ),
-            array(
+            ],
+            [
                 60,
                 TimeUnit::SECONDS,
                 TimeUnit::MINUTES,
                 1,
-            ),
-            array(
+            ],
+            [
                 1,
                 TimeUnit::SECONDS,
                 TimeUnit::MILLISECONDS,
                 0.001,
-            ),
-            array(
+            ],
+            [
                 2,
                 TimeUnit::MILLISECONDS,
                 TimeUnit::SECONDS,
                 500,
-            ),
-        );
+            ],
+        ];
     }
 
     /**

@@ -11,7 +11,12 @@
 
 namespace PhpBench\Tests\Unit\Storage\Driver;
 
+use PhpBench\Expression\Constraint\Constraint;
+use PhpBench\Extensions\Sqlite\Storage\Driver\Sqlite\Loader;
+use PhpBench\Extensions\Sqlite\Storage\Driver\Sqlite\Persister;
+use PhpBench\Extensions\Sqlite\Storage\Driver\Sqlite\Repository;
 use PhpBench\Extensions\Sqlite\Storage\Driver\SqliteDriver;
+use PhpBench\Model\SuiteCollection;
 
 class SqliteDriverTest extends \PHPUnit_Framework_TestCase
 {
@@ -23,12 +28,12 @@ class SqliteDriverTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->loader = $this->prophesize('PhpBench\Extensions\Sqlite\Storage\Driver\Sqlite\Loader');
-        $this->persister = $this->prophesize('PhpBench\Extensions\Sqlite\Storage\Driver\Sqlite\Persister');
-        $this->repository = $this->prophesize('PhpBench\Extensions\Sqlite\Storage\Driver\Sqlite\Repository');
+        $this->loader = $this->prophesize(Loader::class);
+        $this->persister = $this->prophesize(Persister::class);
+        $this->repository = $this->prophesize(Repository::class);
 
-        $this->constraint = $this->prophesize('PhpBench\Expression\Constraint\Constraint');
-        $this->suiteCollection = $this->prophesize('PhpBench\Model\SuiteCollection');
+        $this->constraint = $this->prophesize(Constraint::class);
+        $this->suiteCollection = $this->prophesize(SuiteCollection::class);
 
         $this->driver = new SqliteDriver(
             $this->loader->reveal(),

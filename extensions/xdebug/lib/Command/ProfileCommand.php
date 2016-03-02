@@ -76,9 +76,9 @@ EOT
             $this->filesystem->mkdir($outputDir);
         }
 
-        $generatedFiles = array();
-        $this->runnerHandler->runFromInput($input, $output, array(
-            'executor' => array(
+        $generatedFiles = [];
+        $this->runnerHandler->runFromInput($input, $output, [
+            'executor' => [
                 'executor' => 'xdebug',
                 'output_dir' => $outputDir,
                 'callback' => function ($iteration) use ($outputDir, $guiBin, &$generatedFiles) {
@@ -91,9 +91,9 @@ EOT
                         $process->run();
                     }
                 },
-            ),
-            'iterations' => array(1),
-        ));
+            ],
+            'iterations' => [1],
+        ]);
 
         $output->write(PHP_EOL);
         $output->writeln(sprintf(

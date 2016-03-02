@@ -46,11 +46,11 @@ class XsltRendererTest extends AbstractRendererCase
 
     public function clean()
     {
-        foreach (array(
+        foreach ([
             $this->defaultReport,
             $this->specificReport,
             $this->tokenReport,
-        ) as $filename) {
+        ] as $filename) {
             if (file_exists($filename)) {
                 unlink($filename);
             }
@@ -65,9 +65,9 @@ class XsltRendererTest extends AbstractRendererCase
         $reports = $this->getReportsDocument();
         $this->renderer->render($reports, new Config('test', array_merge(
             $this->renderer->getDefaultConfig(),
-            array(
+            [
                 'file' => $this->defaultReport,
-            )
+            ]
         )));
         $this->assertFileExists($this->defaultReport);
     }
@@ -80,10 +80,10 @@ class XsltRendererTest extends AbstractRendererCase
         $reports = $this->getReportsDocument();
         $this->renderer->render($reports, new Config('test', array_merge(
             $this->renderer->getDefaultConfig(),
-            array(
+            [
                 'template' => __DIR__ . '/templates/test.xsl',
                 'file' => $this->defaultReport,
-            )
+            ]
         )));
         $this->assertFileExists($this->defaultReport);
         $this->assertContains('zeeSa8ju', file_get_contents($this->defaultReport));
@@ -97,10 +97,10 @@ class XsltRendererTest extends AbstractRendererCase
         $reports = $this->getReportsDocument();
         $this->renderer->render($reports, new Config('test', array_merge(
             $this->renderer->getDefaultConfig(),
-            array(
+            [
                 'template' => __DIR__ . '/templates/test.xsl',
                 'file' => null,
-            )
+            ]
         )));
         $output = $this->output->fetch();
         $this->assertContains('zeeSa8ju', $output);
@@ -114,10 +114,10 @@ class XsltRendererTest extends AbstractRendererCase
         $reports = $this->getReportsDocument();
         $this->renderer->render($reports, new Config('test', array_merge(
             $this->renderer->getDefaultConfig(),
-            array(
+            [
                 'template' => __DIR__ . '/templates/test.xsl',
                 'file' => 'foobar_%report_name%.html',
-            )
+            ]
         )));
         $this->assertFileExists($this->tokenReport);
         $this->assertContains('zeeSa8ju', file_get_contents($this->tokenReport));
@@ -131,9 +131,9 @@ class XsltRendererTest extends AbstractRendererCase
         $reports = $this->getReportsDocument();
         $this->renderer->render($reports, new Config('test', array_merge(
             $this->renderer->getDefaultConfig(),
-            array(
+            [
                 'file' => $this->specificReport,
-            )
+            ]
         )));
         $this->assertFileExists($this->specificReport);
     }
@@ -149,7 +149,7 @@ class XsltRendererTest extends AbstractRendererCase
         $reports = $this->getReportsDocument();
         $this->renderer->render($reports, new Config('test', array_merge(
             $this->renderer->getDefaultConfig(),
-            array('template' => 'not_existing.xsl')
+            ['template' => 'not_existing.xsl']
         )));
     }
 }

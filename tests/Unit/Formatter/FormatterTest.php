@@ -11,6 +11,8 @@
 
 namespace PhpBench\Tests\Unit\Formatter;
 
+use PhpBench\Formatter\FormatInterface;
+use PhpBench\Formatter\FormatRegistry;
 use PhpBench\Formatter\Formatter;
 
 class FormatterTest extends \PHPUnit_Framework_TestCase
@@ -21,9 +23,9 @@ class FormatterTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->registry = $this->prophesize('PhpBench\Formatter\FormatRegistry');
+        $this->registry = $this->prophesize(FormatRegistry::class);
         $this->formatter = new Formatter($this->registry->reveal());
-        $this->format = $this->prophesize('PhpBench\Formatter\FormatInterface');
+        $this->format = $this->prophesize(FormatInterface::class);
     }
 
     /**
@@ -33,18 +35,18 @@ class FormatterTest extends \PHPUnit_Framework_TestCase
     public function testApplyClasses()
     {
         $this->registry->get('formatter_1')->willReturn($this->format->reveal());
-        $this->formatter->registerClasses(array(
-            'one' => array(
-                array('formatter_1', array('option_1' => 'value_1')),
-            ),
-        ));
-        $this->format->getDefaultOptions()->willReturn(array(
+        $this->formatter->registerClasses([
+            'one' => [
+                ['formatter_1', ['option_1' => 'value_1']],
+            ],
+        ]);
+        $this->format->getDefaultOptions()->willReturn([
             'option_1' => 'value_x',
-        ));
+        ]);
 
-        $this->format->format('hello world', array('option_1' => 'value_1'))->willReturn('hai!');
+        $this->format->format('hello world', ['option_1' => 'value_1'])->willReturn('hai!');
 
-        $value = $this->formatter->applyClasses(array('one'), 'hello world');
+        $value = $this->formatter->applyClasses(['one'], 'hello world');
         $this->assertEquals('hai!', $value);
     }
 
@@ -56,80 +58,80 @@ class FormatterTest extends \PHPUnit_Framework_TestCase
     public function testApplyClassesSubstituteTokens($classParams, $params, $expectedParams)
     {
         $this->registry->get('formatter_1')->willReturn($this->format->reveal());
-        $this->formatter->registerClasses(array(
-            'one' => array(
-                array('formatter_1', $classParams),
-            ),
-        ));
-        $this->format->getDefaultOptions()->willReturn(array(
+        $this->formatter->registerClasses([
+            'one' => [
+                ['formatter_1', $classParams],
+            ],
+        ]);
+        $this->format->getDefaultOptions()->willReturn([
             'option_1' => 'value_x',
             'option_2' => 'arg',
-        ));
+        ]);
 
         $this->format->format('hello world', $expectedParams)->willReturn('hai!');
-        $this->formatter->applyClasses(array('one'), 'hello world', $params);
+        $this->formatter->applyClasses(['one'], 'hello world', $params);
     }
 
     public function provideApplyClassesSubstituteTokens()
     {
-        return array(
+        return [
             // replace token.
-            array(
-                array(
+            [
+                [
                     'option_1' => '{{ hello }}',
-                ),
-                array(
+                ],
+                [
                     'hello' => 'foobar',
-                ),
-                array(
+                ],
+                [
                     'option_1' => 'foobar',
                     'option_2' => 'arg',
-                ),
-            ),
+                ],
+            ],
 
             // replace token without spaces.
-            array(
-                array(
+            [
+                [
                     'option_1' => '{{hello}}',
-                ),
-                array(
+                ],
+                [
                     'hello' => 'foobar',
-                ),
-                array(
+                ],
+                [
                     'option_1' => 'foobar',
                     'option_2' => 'arg',
-                ),
-            ),
+                ],
+            ],
 
             // replace token with parameters.
-            array(
-                array(
+            [
+                [
                     'option_1' => '{{hello}}',
                     'option_2' => 'barbar',
-                ),
-                array(
+                ],
+                [
                     'hello' => 'foobar',
-                ),
-                array(
+                ],
+                [
                     'option_1' => 'foobar',
                     'option_2' => 'barbar',
-                ),
-            ),
+                ],
+            ],
 
             // use default value for not-given token.
-            array(
-                array(
+            [
+                [
                     'option_1' => '{{ not-given }}',
                     'option_2' => 'barbar',
-                ),
-                array(
-                ),
-                array(
+                ],
+                [
+                ],
+                [
                     'option_1' => 'value_x',
                     'option_2' => 'barbar',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**
@@ -138,17 +140,17 @@ class FormatterTest extends \PHPUnit_Framework_TestCase
     public function testInvalidFormatOptions()
     {
         $this->registry->get('formatter_1')->willReturn($this->format->reveal());
-        $this->formatter->registerClasses(array(
-            'one' => array(
-                array('formatter_1', array('not_known' => 'value_1')),
-            ),
-        ));
-        $this->format->getDefaultOptions()->willReturn(array(
+        $this->formatter->registerClasses([
+            'one' => [
+                ['formatter_1', ['not_known' => 'value_1']],
+            ],
+        ]);
+        $this->format->getDefaultOptions()->willReturn([
             'foobar' => 'barfoo',
-        ));
+        ]);
 
         try {
-            $this->formatter->applyClasses(array('one'), 'hello world');
+            $this->formatter->applyClasses(['one'], 'hello world');
         } catch (\InvalidArgumentException $e) {
             $this->assertNotNull($e->getPrevious());
             $this->assertEquals(

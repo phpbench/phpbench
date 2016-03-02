@@ -26,7 +26,7 @@ class Benchmark implements \IteratorAggregate
     /**
      * @var SubjectMetadata[]
      */
-    private $subjects = array();
+    private $subjects = [];
 
     /**
      * @var Suite

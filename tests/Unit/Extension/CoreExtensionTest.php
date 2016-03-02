@@ -25,10 +25,10 @@ class CoreExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testRelativizePath()
     {
-        $container = new Container(array('PhpBench\Extension\CoreExtension'), array(
+        $container = new Container(['PhpBench\Extension\CoreExtension'], [
             'path' => 'hello',
             'config_path' => '/path/to/phpbench.json',
-        ));
+        ]);
         $container->init();
         $this->assertEquals('/path/to/hello', $container->getParameter('path'));
     }
@@ -41,10 +41,10 @@ class CoreExtensionTest extends \PHPUnit_Framework_TestCase
     {
         putenv('CONTINUOUS_INTEGRATION=1');
 
-        $container = new Container(array('PhpBench\Extension\CoreExtension'), array(
+        $container = new Container(['PhpBench\Extension\CoreExtension'], [
             'path' => 'hello',
             'config_path' => '/path/to/phpbench.json',
-        ));
+        ]);
         $container->init();
         $this->assertEquals('travis', $container->getParameter('progress'));
     }

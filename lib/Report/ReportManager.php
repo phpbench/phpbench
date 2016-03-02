@@ -44,8 +44,8 @@ class ReportManager
      */
     public function generateReports(SuiteCollection $collection, array $reportNames)
     {
-        $reportDoms = array();
-        $reportConfigs = array();
+        $reportDoms = [];
+        $reportConfigs = [];
         foreach ($reportNames as $reportName) {
             $reportConfigs[$reportName] = $this->generatorRegistry->getConfig($reportName);
         }

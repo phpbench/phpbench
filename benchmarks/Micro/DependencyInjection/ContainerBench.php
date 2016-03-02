@@ -28,9 +28,9 @@ class ContainerBench
 
     public function benchInitCoreExtension()
     {
-        $container = new Container(array(
+        $container = new Container([
             'PhpBench\Extension\CoreExtension',
-        ));
+        ]);
         $container->init();
     }
 }

@@ -45,7 +45,7 @@ class Sort
         }
 
         // Merge the two sorted arrays into a single sorted array
-        $array = array();
+        $array = [];
         $ptr1 = $ptr2 = 0;
         while ($ptr1 < count($array1) && $ptr2 < count($array2)) {
             if ($callback($array1[$ptr1], $array2[$ptr2]) < 1) {

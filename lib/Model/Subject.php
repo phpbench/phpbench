@@ -34,7 +34,7 @@ class Subject
     /**
      * @var string[]
      */
-    private $groups = array();
+    private $groups = [];
 
     /**
      * @var int
@@ -74,7 +74,7 @@ class Subject
     /**
      * @var Variant[]
      */
-    private $variants = array();
+    private $variants = [];
 
     /**
      * @var int

@@ -88,7 +88,7 @@ class Factory
 
     private function validateSubject(ReflectionHierarchy $benchmarkReflection, SubjectMetadata $subject)
     {
-        foreach (array('getBeforeMethods' => 'before', 'getAfterMethods' => 'after') as $methodName => $context) {
+        foreach (['getBeforeMethods' => 'before', 'getAfterMethods' => 'after'] as $methodName => $context) {
             foreach ($subject->$methodName() as $method) {
                 $this->validateMethodExists($context, $benchmarkReflection, $method);
             }
@@ -97,7 +97,7 @@ class Factory
 
     private function validateBenchmark(ReflectionHierarchy $hierarchy, BenchmarkMetadata $benchmark)
     {
-        foreach (array('getBeforeClassMethods' => 'before class', 'getAfterClassMethods' => 'after class') as $methodName => $context) {
+        foreach (['getBeforeClassMethods' => 'before class', 'getAfterClassMethods' => 'after class'] as $methodName => $context) {
             foreach ($benchmark->$methodName() as $method) {
                 $this->validateMethodExists($context, $hierarchy, $method, true);
             }

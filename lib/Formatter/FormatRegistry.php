@@ -16,7 +16,7 @@ namespace PhpBench\Formatter;
  */
 class FormatRegistry
 {
-    private $formats = array();
+    private $formats = [];
 
     /**
      * Register a format class.

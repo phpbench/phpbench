@@ -23,7 +23,7 @@ class RowTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetNotExisting()
     {
-        $row = new Row(array('bar' => 'boo'));
+        $row = new Row(['bar' => 'boo']);
         $row['foo'];
     }
 
@@ -32,7 +32,7 @@ class RowTest extends \PHPUnit_Framework_TestCase
      */
     public function testGet()
     {
-        $row = new Row(array('bar' => 'boo'));
+        $row = new Row(['bar' => 'boo']);
         $value = $row['bar'];
 
         $this->assertEquals('boo', $value);
@@ -44,16 +44,16 @@ class RowTest extends \PHPUnit_Framework_TestCase
      */
     public function testMerge()
     {
-        $row = new Row(array('bar' => 'bar'));
-        $row->setFormatParams(array('of' => 'fo'));
-        $new = $row->merge(array('foo' => 'foo'));
+        $row = new Row(['bar' => 'bar']);
+        $row->setFormatParams(['of' => 'fo']);
+        $new = $row->merge(['foo' => 'foo']);
 
         $this->assertNotSame($row, $new);
-        $this->assertEquals(array('of' => 'fo'), $new->getFormatParams());
-        $this->assertEquals(array(
+        $this->assertEquals(['of' => 'fo'], $new->getFormatParams());
+        $this->assertEquals([
             'bar' => 'bar',
             'foo' => 'foo',
-        ), $new->getArrayCopy());
+        ], $new->getArrayCopy());
     }
 
     /**
@@ -61,7 +61,7 @@ class RowTest extends \PHPUnit_Framework_TestCase
      */
     public function testNames()
     {
-        $row = new Row(array('one' => 1, 'two' => 2));
-        $this->assertEquals(array('one', 'two'), $row->getNames());
+        $row = new Row(['one' => 1, 'two' => 2]);
+        $this->assertEquals(['one', 'two'], $row->getNames());
     }
 }

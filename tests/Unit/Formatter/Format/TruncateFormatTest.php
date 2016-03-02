@@ -29,68 +29,68 @@ class TruncateFormatTest extends \PHPUnit_Framework_TestCase
      */
     public function testTruncate($expected, $value, $length, $position = 'left', $pad = '...')
     {
-        $result = $this->format->format($value, array(
+        $result = $this->format->format($value, [
             'length' => $length,
             'position' => $position,
             'pad' => $pad,
-        ));
+        ]);
         $this->assertEquals($expected, $result);
     }
 
     public function provideTruncate()
     {
-        return array(
-            array(
+        return [
+            [
                 'this is not too long',
                 'this is not too long',
                 225,
-            ),
-            array(
+            ],
+            [
                 '...ng',
                 'this is too long',
                 5,
-            ),
-            array(
+            ],
+            [
                 'th...',
                 'this is too long',
                 5,
                 'right',
-            ),
-            array(
+            ],
+            [
                 'this.',
                 'this is too long',
                 5,
                 'right',
                 '.',
-            ),
-            array(
+            ],
+            [
                 't...g',
                 'this is too long',
                 5,
                 'middle',
                 '...',
-            ),
-            array(
+            ],
+            [
                 't...ng',
                 'this is too long',
                 6,
                 'middle',
                 '...',
-            ),
-            array(
+            ],
+            [
                 'th..ng',
                 'this is too long',
                 6,
                 'middle',
                 '..',
-            ),
-            array(
+            ],
+            [
                 '..g',
                 'this is too long',
                 3,
                 'middle',
                 '..',
-            ),
-        );
+            ],
+        ];
     }
 }

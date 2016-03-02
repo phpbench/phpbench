@@ -28,9 +28,9 @@ class MicrotimeExecutor extends BaseExecutor
      */
     public function launch(Payload $payload, Iteration $iteration, Config $options)
     {
-        $phpConfig = array(
+        $phpConfig = [
             'max_execution_time' => 0,
-        );
+        ];
 
         $payload->setPhpConfig($phpConfig);
         $result = $payload->launch();
@@ -50,8 +50,8 @@ class MicrotimeExecutor extends BaseExecutor
      */
     public function getDefaultConfig()
     {
-        return array(
-            'php_config' => array(),
-        );
+        return [
+            'php_config' => [],
+        ];
     }
 }

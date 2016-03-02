@@ -51,12 +51,12 @@ class Loader
     {
         $rows = $this->repository->getIterationRows($constraint);
 
-        $context = new \ArrayObject(array(
-            self::BENCHMARKS => array(),
-            self::SUBJECTS => array(),
-            self::VARIANTS => array(),
-            self::SUITES => array(),
-        ));
+        $context = new \ArrayObject([
+            self::BENCHMARKS => [],
+            self::SUBJECTS => [],
+            self::VARIANTS => [],
+            self::SUITES => [],
+        ]);
 
         foreach ($rows as $row) {
             $suite = $this->getSuite($context, $row);
@@ -142,8 +142,8 @@ class Loader
             $row['run.context'],
             new \DateTime($row['run.date']),
             null,
-            array(),
-            array(),
+            [],
+            [],
             $row['run.id']
         );
 
@@ -151,16 +151,16 @@ class Loader
 
         $envRows = $this->repository->getRunEnvInformationRows($row['run.id']);
 
-        $providerData = array();
+        $providerData = [];
         foreach ($envRows as $row) {
             if (!isset($providerData[$row['provider']])) {
-                $providerData[$row['provider']] = array();
+                $providerData[$row['provider']] = [];
             }
 
             $providerData[$row['provider']][$row['key']] = $row['value'];
         }
 
-        $informations = array();
+        $informations = [];
         foreach ($providerData as $name => $data) {
             $informations[] = new Information($name, $data);
         }

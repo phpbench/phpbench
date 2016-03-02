@@ -12,6 +12,9 @@
 namespace PhpBench\Tests\Benchmark;
 
 use PhpBench\Benchmark\BenchmarkFinder;
+use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
+use PhpBench\Benchmark\Metadata\Factory;
+use PhpBench\Model\Subject;
 
 class BenchmarkFinderTest extends \PHPUnit_Framework_TestCase
 {
@@ -22,10 +25,10 @@ class BenchmarkFinderTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->factory = $this->prophesize('PhpBench\Benchmark\Metadata\Factory');
-        $this->benchmark1 = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');
-        $this->benchmark2 = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');
-        $this->subject = $this->prophesize('PhpBench\Model\Subject');
+        $this->factory = $this->prophesize(Factory::class);
+        $this->benchmark1 = $this->prophesize(BenchmarkMetadata::class);
+        $this->benchmark2 = $this->prophesize(BenchmarkMetadata::class);
+        $this->subject = $this->prophesize(Subject::class);
         $this->finder = new BenchmarkFinder($this->factory->reveal());
     }
 

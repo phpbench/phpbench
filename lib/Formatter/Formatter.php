@@ -16,7 +16,7 @@ namespace PhpBench\Formatter;
  */
 class Formatter
 {
-    private $classes = array();
+    private $classes = [];
     private $formatRegistry;
     private $loader;
 
@@ -80,7 +80,7 @@ class Formatter
      *
      * @return string
      */
-    public function applyClasses(array $classNames, $value, $params = array())
+    public function applyClasses(array $classNames, $value, $params = [])
     {
         if (!is_scalar($value)) {
             throw new \InvalidArgumentException(sprintf(
@@ -102,7 +102,7 @@ class Formatter
             try {
                 foreach ($classDefinition as $formatDefinition) {
                     if (!isset($formatDefinition[1])) {
-                        $formatDefinition[1] = array();
+                        $formatDefinition[1] = [];
                     }
                     list($formatName, $formatConfig) = $formatDefinition;
                     $formatConfig = $this->substituteTokens($formatConfig, $params);
@@ -153,7 +153,7 @@ class Formatter
                 continue;
             }
 
-            $tokens = array();
+            $tokens = [];
             foreach ($tokenNames as $tokenName) {
                 $realTokenName = trim($tokenName);
 

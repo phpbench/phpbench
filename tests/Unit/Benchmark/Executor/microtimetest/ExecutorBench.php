@@ -37,7 +37,7 @@ class ExecutorBench
     public function doSomething()
     {
         static $count = 0;
-        $data = array();
+        $data = [];
         for ($i = 0; $i < 10000; $i++) {
             $data[] = 'hallo';
         }

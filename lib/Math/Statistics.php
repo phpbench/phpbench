@@ -121,7 +121,7 @@ class Statistics
         $dist = $kde->evaluate($space);
 
         $maxKeys = array_keys($dist, max($dist));
-        $modes = array();
+        $modes = [];
 
         foreach ($maxKeys as $maxKey) {
             $modes[] = $space[$maxKey];
@@ -153,7 +153,7 @@ class Statistics
         }
 
         $unit = $range / ($endpoint ? $num - 1 : $num);
-        $space = array();
+        $space = [];
 
         for ($value = $min; $value <= $max; $value += $unit) {
             $space[] = $value;
@@ -192,7 +192,7 @@ class Statistics
         $step = $range / $steps;
         $steps++; // add one extra step to catch the max value
 
-        $histogram = array();
+        $histogram = [];
 
         $floor = $min;
         for ($i = 0; $i < $steps; $i++) {

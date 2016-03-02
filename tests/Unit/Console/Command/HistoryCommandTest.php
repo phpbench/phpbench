@@ -12,7 +12,10 @@
 namespace PhpBench\Tests\Unit\Console\Command;
 
 use PhpBench\Console\Command\HistoryCommand;
+use PhpBench\Storage\DriverFactory;
+use PhpBench\Storage\DriverInterface;
 use PhpBench\Storage\HistoryEntry;
+use PhpBench\Storage\HistoryIteratorInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
@@ -20,15 +23,15 @@ class HistoryCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->storage = $this->prophesize('PhpBench\Storage\DriverFactory');
+        $this->storage = $this->prophesize(DriverFactory::class);
         $this->command = new HistoryCommand(
             $this->storage->reveal()
         );
-        $this->driver = $this->prophesize('PhpBench\Storage\DriverInterface');
+        $this->driver = $this->prophesize(DriverInterface::class);
         $this->storage->getDriver()->willReturn($this->driver->reveal());
         $this->output = new BufferedOutput();
 
-        $this->history = $this->prophesize('PhpBench\Storage\HistoryIteratorInterface');
+        $this->history = $this->prophesize(HistoryIteratorInterface::class);
     }
 
     /**
@@ -44,9 +47,9 @@ class HistoryCommandTest extends \PHPUnit_Framework_TestCase
      */
     public function testHistory()
     {
-        $input = new ArrayInput(array(
+        $input = new ArrayInput([
             '--limit' => 10,
-        ), $this->command->getDefinition());
+        ], $this->command->getDefinition());
 
         $this->driver->history()->willReturn($this->history->reveal());
         $this->history->rewind()->shouldBeCalled();
@@ -76,6 +79,6 @@ EOT;
 
     private function squash($string)
     {
-        return str_replace(array(' ', "\n", "\t"), '', $string);
+        return str_replace([' ', "\n", "\t"], '', $string);
     }
 }

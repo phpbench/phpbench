@@ -35,71 +35,71 @@ class JsonDecoderTest extends \PHPUnit_Framework_TestCase
 
     public function provideNormalizer()
     {
-        return array(
-            array(
+        return [
+            [
                 '{$eq: "barfoo"}',
-                array('$eq' => 'barfoo'),
-            ),
-            array(
+                ['$eq' => 'barfoo'],
+            ],
+            [
                 '{foobar: "barfoo"}',
-                array('foobar' => 'barfoo'),
-            ),
-            array(
+                ['foobar' => 'barfoo'],
+            ],
+            [
                 'foobar: "barfoo"',
-                array('foobar' => 'barfoo'),
-            ),
-            array(
+                ['foobar' => 'barfoo'],
+            ],
+            [
                 'foobar: "barfoo"',
-                array('foobar' => 'barfoo'),
-            ),
-            array(
+                ['foobar' => 'barfoo'],
+            ],
+            [
                 'foobar": "barfoo"',
-                array('foobar' => 'barfoo'),
-            ),
-            array(
+                ['foobar' => 'barfoo'],
+            ],
+            [
                 '$and: [ {$gt: {date: "2016-01-30 09:27"}}, {$eq: {subject: "benchMySubject"}}]',
-                array(
-                    '$and' => array(
-                        array(
-                            '$gt' => array(
+                [
+                    '$and' => [
+                        [
+                            '$gt' => [
                                 'date' => '2016-01-30 09:27',
-                            ),
-                        ),
-                        array(
-                            '$eq' => array(
+                            ],
+                        ],
+                        [
+                            '$eq' => [
                                 'subject' => 'benchMySubject',
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-            array(
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            [
                 'foo: 10',
-                array(
+                [
                     'foo' => 10,
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 'foo.revs: 1000',
-                array(
+                [
                     'foo.revs' => 1000,
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 '10: 10',
-                array(
+                [
                     10 => 10,
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 'foobar[barfoo]: 5',
-                array('foobar[barfoo]' => 5),
-            ),
-            array(
+                ['foobar[barfoo]' => 5],
+            ],
+            [
                 'foo_bar: 5',
-                array('foo_bar' => 5),
-            ),
-        );
+                ['foo_bar' => 5],
+            ],
+        ];
     }
 
     /**

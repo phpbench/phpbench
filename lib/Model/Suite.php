@@ -23,8 +23,8 @@ class Suite implements \IteratorAggregate
     private $contextName;
     private $date;
     private $configPath;
-    private $envInformations = array();
-    private $benchmarks = array();
+    private $envInformations = [];
+    private $benchmarks = [];
     private $identifier;
 
     /**
@@ -40,8 +40,8 @@ class Suite implements \IteratorAggregate
         $contextName,
         \DateTime $date,
         $configPath = null,
-        array $benchmarks = array(),
-        array $envInformations = array(),
+        array $benchmarks = [],
+        array $envInformations = [],
         $identifier = null
     ) {
         $this->contextName = $contextName;
@@ -99,7 +99,7 @@ class Suite implements \IteratorAggregate
 
     public function getIterations()
     {
-        $iterations = array();
+        $iterations = [];
 
         foreach ($this->getVariants() as $variant) {
             foreach ($variant as $iteration) {
@@ -112,7 +112,7 @@ class Suite implements \IteratorAggregate
 
     public function getSubjects()
     {
-        $subjects = array();
+        $subjects = [];
 
         foreach ($this->getBenchmarks() as $benchmark) {
             foreach ($benchmark->getSubjects() as $subject) {
@@ -125,7 +125,7 @@ class Suite implements \IteratorAggregate
 
     public function getVariants()
     {
-        $variants = array();
+        $variants = [];
         foreach ($this->getSubjects() as $subject) {
             foreach ($subject->getVariants() as $variant) {
                 $variants[] = $variant;
@@ -137,7 +137,7 @@ class Suite implements \IteratorAggregate
 
     public function getErrorStacks()
     {
-        $errorStacks = array();
+        $errorStacks = [];
 
         foreach ($this->getVariants() as $variant) {
             if (false === $variant->hasErrorStack()) {

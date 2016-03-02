@@ -31,18 +31,18 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
 {
     private $output;
     private $statKeys;
-    private $classMap = array(
-        'best' => array('timeunit'),
-        'worst' => array('timeunit'),
-        'mean' => array('timeunit'),
-        'mode' => array('timeunit'),
-        'stdev' => array('timeunit'),
-        'time' => array('timeunit'),
-        'rstdev' => array('percentage'),
-        'mem' => array('mem'),
-        'diff' => array('diff'),
-        'z-value' => array('z-value'),
-    );
+    private $classMap = [
+        'best' => ['timeunit'],
+        'worst' => ['timeunit'],
+        'mean' => ['timeunit'],
+        'mode' => ['timeunit'],
+        'stdev' => ['timeunit'],
+        'time' => ['timeunit'],
+        'rstdev' => ['percentage'],
+        'mem' => ['mem'],
+        'diff' => ['diff'],
+        'z-value' => ['z-value'],
+    ];
 
     /**
      * {@inheritdoc}
@@ -57,18 +57,18 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
      */
     public function getDefaultConfig()
     {
-        return array(
+        return [
             'title' => null,
             'description' => null,
-            'cols' => array('benchmark', 'subject', 'groups', 'params', 'revs', 'its', 'mem', 'best', 'mean', 'mode', 'worst', 'stdev', 'rstdev', 'diff'),
-            'break' => array('suite'),
+            'cols' => ['benchmark', 'subject', 'groups', 'params', 'revs', 'its', 'mem', 'best', 'mean', 'mode', 'worst', 'stdev', 'rstdev', 'diff'],
+            'break' => ['suite'],
             'compare' => null,
-            'compare_fields' => array('mean'),
+            'compare_fields' => ['mean'],
             'diff_col' => 'mean',
-            'sort' => array(),
+            'sort' => [],
             'pretty_params' => false,
             'iterations' => false,
-        );
+        ];
     }
 
     /**
@@ -76,42 +76,42 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
      */
     public function getSchema()
     {
-        return array(
+        return [
             'type' => 'object',
             'additionalProperties' => false,
-            'properties' => array(
-                'title' => array(
-                    'type' => array('string', 'null'),
-                ),
-                'description' => array(
-                    'type' => array('string', 'null'),
-                ),
-                'cols' => array(
+            'properties' => [
+                'title' => [
+                    'type' => ['string', 'null'],
+                ],
+                'description' => [
+                    'type' => ['string', 'null'],
+                ],
+                'cols' => [
                     'type' => 'array',
-                ),
-                'break' => array(
+                ],
+                'break' => [
                     'type' => 'array',
-                ),
-                'compare' => array(
-                    'type' => array('string', 'null'),
-                ),
-                'compare_fields' => array(
+                ],
+                'compare' => [
+                    'type' => ['string', 'null'],
+                ],
+                'compare_fields' => [
                     'type' => 'array',
-                ),
-                'diff_col' => array(
-                    'type' => array('string', 'null'),
-                ),
-                'sort' => array(
-                    'type' => array('array', 'object'),
-                ),
-                'pretty_params' => array(
+                ],
+                'diff_col' => [
+                    'type' => ['string', 'null'],
+                ],
+                'sort' => [
+                    'type' => ['array', 'object'],
+                ],
+                'pretty_params' => [
                     'type' => 'boolean',
-                ),
-                'iterations' => array(
+                ],
+                'iterations' => [
                     'type' => 'boolean',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**
@@ -224,7 +224,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
     private function processBreak(array $table, Config $config)
     {
         if (!$config['break']) {
-            return array($table);
+            return [$table];
         }
 
         $break = $config['break'];
@@ -239,7 +239,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
         }
 
         return F\group($table, function ($row) use ($break) {
-            $breakHash = array();
+            $breakHash = [];
             foreach ($break as $breakKey) {
                 $breakHash[] = $breakKey. ': ' .$row[$breakKey];
                 unset($row[$breakKey]);
@@ -267,7 +267,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
             }
             $tables = F\map($tables, function ($table) use ($cols) {
                 return F\map($table, function ($row) use ($cols) {
-                    $newRow = $row->newInstance(array());
+                    $newRow = $row->newInstance([]);
                     foreach ($cols as $col) {
                         if ($col === 'diff') {
                             continue;
@@ -297,7 +297,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
             return $tables;
         }
 
-        $conditions = array_diff($config['cols'], $this->statKeys, array($config['compare']));
+        $conditions = array_diff($config['cols'], $this->statKeys, [$config['compare']]);
         $compare = $config['compare'];
         $compareFields = $config['compare_fields'];
 
@@ -310,7 +310,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
                 });
             });
 
-            $table = array();
+            $table = [];
             $colNames = null;
             foreach ($groups as $group) {
                 $firstRow = null;
@@ -343,7 +343,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
             }
 
             $table = F\map($table, function ($row) use ($colNames) {
-                $newRow = $row->newInstance(array());
+                $newRow = $row->newInstance([]);
                 foreach ($colNames as $colName) {
                     $newRow[$colName] = isset($row[$colName]) ? $row[$colName] : null;
                 }
@@ -372,14 +372,14 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
             $paramJsonFlags = JSON_PRETTY_PRINT;
         }
 
-        $table = array();
+        $table = [];
         foreach ($suiteCollection->getSuites() as $suiteIndex => $suite) {
             $env = $suite->getEnvInformations();
 
             foreach ($suite->getBenchmarks() as $benchmark) {
                 foreach ($benchmark->getSubjects() as $subject) {
                     foreach ($subject->getVariants() as $variant) {
-                        $row = new Row(array(
+                        $row = new Row([
                             'suite' => $suite->getIdentifier(),
                             'date' => $suite->getDate()->format('Y-m-d'),
                             'stime' => $suite->getDate()->format('H:i:s'),
@@ -391,13 +391,13 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
                             'revs' => $variant->getRevolutions(),
                             'its' => count($variant->getIterations()),
                             'mem' => Statistics::mean($variant->getMemories()),
-                        ));
+                        ]);
 
                         // the formatter params are passed to the Formatter and
                         // allow the formatter configurations to use tokens --
                         // in other words we can override formatting on a
                         // per-row basis.
-                        $formatParams = array();
+                        $formatParams = [];
                         if ($timeUnit = $subject->getOutputTimeUnit()) {
                             $formatParams['output_time_unit'] = $timeUnit;
                         }

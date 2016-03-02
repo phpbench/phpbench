@@ -18,15 +18,15 @@ namespace PhpBench\DependencyInjection;
  */
 class Container
 {
-    private $instantiators = array();
-    private $services = array();
-    private $tags = array();
-    private $config = array();
-    private $userConfig = array();
+    private $instantiators = [];
+    private $services = [];
+    private $tags = [];
+    private $config = [];
+    private $userConfig = [];
 
-    private $extensionClasses = array();
+    private $extensionClasses = [];
 
-    public function __construct(array $extensionClasses = array(), array $userConfig = array())
+    public function __construct(array $extensionClasses = [], array $userConfig = [])
     {
         $this->extensionClasses = $extensionClasses;
         $this->userConfig = $userConfig;
@@ -41,7 +41,7 @@ class Container
      */
     public function init()
     {
-        $extensions = array();
+        $extensions = [];
         foreach ($this->extensionClasses as $extensionClass) {
             if (!class_exists($extensionClass)) {
                 throw new \InvalidArgumentException(sprintf(
@@ -137,7 +137,7 @@ class Container
      */
     public function getServiceIdsForTag($tag)
     {
-        $serviceIds = array();
+        $serviceIds = [];
         foreach ($this->tags as $serviceId => $tags) {
             if (isset($tags[$tag])) {
                 $serviceIds[$serviceId] = $tags[$tag];
@@ -157,7 +157,7 @@ class Container
      * @param \Closure $instantiator
      * @param string[] $tags
      */
-    public function register($serviceId, \Closure $instantiator, array $tags = array())
+    public function register($serviceId, \Closure $instantiator, array $tags = [])
     {
         if (isset($this->instantiators[$serviceId])) {
             throw new \InvalidArgumentException(sprintf(

@@ -11,6 +11,7 @@
 
 namespace PhpBench\Tests\Unit\Benchmark\Metadata;
 
+use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 
 class SubjectMetadataTest extends \PHPUnit_Framework_TestCase
@@ -20,7 +21,7 @@ class SubjectMetadataTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->benchmark = $this->prophesize('PhpBench\Benchmark\Metadata\BenchmarkMetadata');
+        $this->benchmark = $this->prophesize(BenchmarkMetadata::class);
         $this->subject = new SubjectMetadata($this->benchmark->reveal(), 'subjectOne', 0);
     }
 
@@ -29,14 +30,14 @@ class SubjectMetadataTest extends \PHPUnit_Framework_TestCase
      */
     public function testInGroups()
     {
-        $this->subject->setGroups(array('one', 'two', 'three'));
-        $result = $this->subject->inGroups(array('five', 'two', 'six'));
+        $this->subject->setGroups(['one', 'two', 'three']);
+        $result = $this->subject->inGroups(['five', 'two', 'six']);
         $this->assertTrue($result);
 
-        $result = $this->subject->inGroups(array('eight', 'seven'));
+        $result = $this->subject->inGroups(['eight', 'seven']);
         $this->assertFalse($result);
 
-        $result = $this->subject->inGroups(array());
+        $result = $this->subject->inGroups([]);
         $this->assertFalse($result);
     }
 }

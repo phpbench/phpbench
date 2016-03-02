@@ -11,6 +11,9 @@
 
 namespace PhpBench\Tests\Unit\Storage\Driver\Sqlite;
 
+use PhpBench\Expression\Constraint\Comparison;
+use PhpBench\Expression\Constraint\Composite;
+use PhpBench\Expression\Constraint\Constraint;
 use PhpBench\Expression\Parser;
 use PhpBench\Extensions\Sqlite\Storage\Driver\Sqlite\ConstraintVisitor;
 
@@ -40,77 +43,77 @@ class ConstraintVisitorTest extends \PHPUnit_Framework_TestCase
 
     public function provideVisit()
     {
-        return array(
-            array(
-                'param[nb_foobars]: 5', 'parameter.key = :param0 AND parameter.value = :param1', array('param0' => 'nb_foobars', 'param1' => 5),
-            ),
-            array(
+        return [
+            [
+                'param[nb_foobars]: 5', 'parameter.key = :param0 AND parameter.value = :param1', ['param0' => 'nb_foobars', 'param1' => 5],
+            ],
+            [
                 '$or: [ { benchmark: "foobar" }, { subject: "benchFoo" }]',
                 '(subject.benchmark = :param0 OR subject.name = :param1)',
-                array(
+                [
                     'param0' => 'foobar',
                     'param1' => 'benchFoo',
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 '$or: [ { benchmark: "foobar", date: "2015-10-10" }, { subject: "benchFoo" }]',
                 '((subject.benchmark = :param0 AND run.date = :param1) OR subject.name = :param2)',
-                array(
+                [
                     'param0' => 'foobar',
                     'param1' => '2015-10-10',
                     'param2' => 'benchFoo',
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 'benchmark: "foobar"',
                 'subject.benchmark = :param0',
-                array(
+                [
                     'param0' => 'foobar',
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 'revs: 1000',
                 'variant.revolutions = :param0',
-                array(
+                [
                     'param0' => 1000,
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 'date: { $gt: "2016-01-31" }',
                 'run.date > :param0',
-                array(
+                [
                     'param0' => '2016-01-31',
-                ),
-            ),
+                ],
+            ],
 
-            array(
-                'run: { $eq: 1 }', 'run.id = :param0', array('param0' => '1'),
-            ),
-            array(
-                'run: { $neq: 1 }', 'run.id != :param0', array('param0' => '1'),
-            ),
-            array(
-                'run: { $gt: 1 }', 'run.id > :param0', array('param0' => '1'),
-            ),
-            array(
-                'run: { $lt: 1 }', 'run.id < :param0', array('param0' => '1'),
-            ),
-            array(
-                'run: { $gte: 1 }', 'run.id >= :param0', array('param0' => '1'),
-            ),
-            array(
-                'run: { $lte: 1 }', 'run.id <= :param0', array('param0' => '1'),
-            ),
-            array(
-                'run: { $in: [1, 2]}', 'run.id IN (:param0, :param1)', array(
+            [
+                'run: { $eq: 1 }', 'run.id = :param0', ['param0' => '1'],
+            ],
+            [
+                'run: { $neq: 1 }', 'run.id != :param0', ['param0' => '1'],
+            ],
+            [
+                'run: { $gt: 1 }', 'run.id > :param0', ['param0' => '1'],
+            ],
+            [
+                'run: { $lt: 1 }', 'run.id < :param0', ['param0' => '1'],
+            ],
+            [
+                'run: { $gte: 1 }', 'run.id >= :param0', ['param0' => '1'],
+            ],
+            [
+                'run: { $lte: 1 }', 'run.id <= :param0', ['param0' => '1'],
+            ],
+            [
+                'run: { $in: [1, 2]}', 'run.id IN (:param0, :param1)', [
                     'param0' => '1',
                     'param1' => '2',
-                ),
-            ),
-            array(
-                'benchmark: { $regex: "hello" }', 'subject.benchmark REGEXP :param0', array('param0' => 'hello'),
-            ),
-        );
+                ],
+            ],
+            [
+                'benchmark: { $regex: "hello" }', 'subject.benchmark REGEXP :param0', ['param0' => 'hello'],
+            ],
+        ];
     }
 
     /**
@@ -121,7 +124,7 @@ class ConstraintVisitorTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidCompositeOperator()
     {
-        $composite = $this->prophesize('PhpBench\Expression\Constraint\Composite');
+        $composite = $this->prophesize(Composite::class);
         $composite->getOperator()->willReturn('$boobar');
 
         $this->visitor->visit($composite->reveal());
@@ -132,7 +135,7 @@ class ConstraintVisitorTest extends \PHPUnit_Framework_TestCase
      */
     public function testGroupJoin()
     {
-        $constraint = $this->prophesize('PhpBench\Expression\Constraint\Comparison');
+        $constraint = $this->prophesize(Comparison::class);
         $constraint->getComparator()->willReturn('$eq');
         $constraint->getField()->willReturn('group');
         $constraint->getValue()->willReturn('one');
@@ -147,7 +150,7 @@ class ConstraintVisitorTest extends \PHPUnit_Framework_TestCase
      */
     public function testParamJoin()
     {
-        $constraint = $this->prophesize('PhpBench\Expression\Constraint\Comparison');
+        $constraint = $this->prophesize(Comparison::class);
         $constraint->getComparator()->willReturn('$eq');
         $constraint->getField()->willReturn('param[foo]');
         $constraint->getValue()->willReturn('one');
@@ -165,7 +168,7 @@ class ConstraintVisitorTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnknownField()
     {
-        $constraint = $this->prophesize('PhpBench\Expression\Constraint\Comparison');
+        $constraint = $this->prophesize(Comparison::class);
         $constraint->getComparator()->willReturn('$eq');
         $constraint->getField()->willReturn('boobar');
 
@@ -180,7 +183,7 @@ class ConstraintVisitorTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidParam()
     {
-        $constraint = $this->prophesize('PhpBench\Expression\Constraint\Comparison');
+        $constraint = $this->prophesize(Comparison::class);
         $constraint->getComparator()->willReturn('$eq');
         $constraint->getField()->willReturn('param');
 
@@ -195,7 +198,7 @@ class ConstraintVisitorTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnknownComparator()
     {
-        $constraint = $this->prophesize('PhpBench\Expression\Constraint\Comparison');
+        $constraint = $this->prophesize(Comparison::class);
         $constraint->getComparator()->willReturn('narf');
         $constraint->getField()->willReturn('subject');
 
@@ -210,7 +213,7 @@ class ConstraintVisitorTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnsupportedConstraintClass()
     {
-        $constraint = $this->prophesize('PhpBench\Expression\Constraint\Constraint');
+        $constraint = $this->prophesize(Constraint::class);
         $this->visitor->visit($constraint->reveal());
     }
 
@@ -222,7 +225,7 @@ class ConstraintVisitorTest extends \PHPUnit_Framework_TestCase
      */
     public function testNonArrayIn()
     {
-        $constraint = $this->prophesize('PhpBench\Expression\Constraint\Comparison');
+        $constraint = $this->prophesize(Comparison::class);
         $constraint->getComparator()->willReturn('$in');
         $constraint->getValue()->willReturn('hei');
         $constraint->getField()->willReturn('benchmark');

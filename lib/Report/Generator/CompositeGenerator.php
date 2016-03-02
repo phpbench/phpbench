@@ -55,17 +55,17 @@ class CompositeGenerator implements GeneratorInterface, OutputAwareInterface
      */
     public function getSchema()
     {
-        return array(
+        return [
             'type' => 'object',
             'additionalProperties' => false,
-            'properties' => array(
-                'reports' => array(
+            'properties' => [
+                'reports' => [
                     'title' => 'List of reports to use',
                     'type' => 'array',
-                ),
-            ),
-            'required' => array('reports'),
-        );
+                ],
+            ],
+            'required' => ['reports'],
+        ];
     }
 
     /**
@@ -73,7 +73,7 @@ class CompositeGenerator implements GeneratorInterface, OutputAwareInterface
      */
     public function getDefaultConfig()
     {
-        return array();
+        return [];
     }
 
     /**

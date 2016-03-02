@@ -81,7 +81,7 @@ class CartesianParameterIterator implements \Iterator
 
     private function update()
     {
-        $this->current = array();
+        $this->current = [];
         foreach ($this->sets as $set) {
             $this->current = array_merge($this->current, $set->current());
         }

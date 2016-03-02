@@ -46,31 +46,31 @@ class PeristerTest extends FunctionalTestCase
      */
     public function testPersist()
     {
-        $suiteCollection = new SuiteCollection(array(
-            TestUtil::createSuite(array(
-                'subjects' => array('benchOne', 'benchTwo'),
-                'groups' => array('one', 'two'),
-                'parameters' => array(
+        $suiteCollection = new SuiteCollection([
+            TestUtil::createSuite([
+                'subjects' => ['benchOne', 'benchTwo'],
+                'groups' => ['one', 'two'],
+                'parameters' => [
                     'one' => 'two',
-                    'three' => array('one', 'two'),
-                ),
-                'env' => array(
-                    'system' => array(
+                    'three' => ['one', 'two'],
+                ],
+                'env' => [
+                    'system' => [
                         'os' => 'linux',
                         'memory' => 8096,
                         'distribution' => 'debian',
-                    ),
-                    'vcs' => array(
+                    ],
+                    'vcs' => [
                         'system' => 'git',
                         'branch' => 'foo',
-                    ),
-                ),
-            )),
-            TestUtil::createSuite(array(
-                'subjects' => array('benchThree'),
-                'groups' => array('five'),
-            )),
-        ));
+                    ],
+                ],
+            ]),
+            TestUtil::createSuite([
+                'subjects' => ['benchThree'],
+                'groups' => ['five'],
+            ]),
+        ]);
 
         $this->persister->persist($suiteCollection);
 
@@ -89,9 +89,9 @@ class PeristerTest extends FunctionalTestCase
      */
     public function testPhpBenchVersion()
     {
-        $suiteCollection = new SuiteCollection(array(
-            TestUtil::createSuite(array()),
-        ));
+        $suiteCollection = new SuiteCollection([
+            TestUtil::createSuite([]),
+        ]);
 
         $this->persister->persist($suiteCollection);
         $rows = $this->sqlQuery('SELECT * FROM version');

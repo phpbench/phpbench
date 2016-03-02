@@ -11,7 +11,9 @@
 
 namespace PhpBench\Tests\Unit\Model;
 
+use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Model\Benchmark;
+use PhpBench\Model\Suite;
 
 class BenchmarkTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,7 +22,7 @@ class BenchmarkTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->suite = $this->prophesize('PhpBench\Model\Suite');
+        $this->suite = $this->prophesize(Suite::class);
         $this->benchmark = new Benchmark($this->suite->reveal(), '/path/to', 'Class');
     }
 
@@ -37,9 +39,9 @@ class BenchmarkTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateSubjectFromMetadata()
     {
-        $metadata = $this->prophesize('PhpBench\Benchmark\Metadata\SubjectMetadata');
+        $metadata = $this->prophesize(SubjectMetadata::class);
         $metadata->getName()->willReturn('hello');
-        $metadata->getGroups()->willReturn(array('one', 'two'));
+        $metadata->getGroups()->willReturn(['one', 'two']);
         $metadata->getSleep()->willReturn(30);
         $metadata->getRetryThreshold()->willReturn(10);
         $metadata->getOutputTimeUnit()->willReturn(50);
@@ -49,7 +51,7 @@ class BenchmarkTest extends \PHPUnit_Framework_TestCase
         $subject = $this->benchmark->createSubjectFromMetadata($metadata->reveal());
         $this->assertInstanceOf('PhpBench\Model\Subject', $subject);
         $this->assertEquals('hello', $subject->getName());
-        $this->assertEquals(array('one', 'two'), $subject->getGroups());
+        $this->assertEquals(['one', 'two'], $subject->getGroups());
         $this->assertEquals(30, $subject->getSleep());
         $this->assertEquals(10, $subject->getRetryThreshold());
         $this->assertEquals(50, $subject->getOutputTimeUnit());

@@ -14,9 +14,9 @@ namespace PhpBench\Benchmark\Remote;
 class ReflectionClass
 {
     public $path;
-    public $interfaces = array();
+    public $interfaces = [];
     public $class;
     public $abstract = false;
     public $comment;
-    public $methods = array();
+    public $methods = [];
 }

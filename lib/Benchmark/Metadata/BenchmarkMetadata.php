@@ -29,17 +29,17 @@ class BenchmarkMetadata
     /**
      * @var SubjectMetadata[]
      */
-    private $subjects = array();
+    private $subjects = [];
 
     /**
      * @var string[]
      */
-    private $beforeClassMethods = array();
+    private $beforeClassMethods = [];
 
     /**
      * @var string[]
      */
-    private $afterClassMethods = array();
+    private $afterClassMethods = [];
 
     /**
      * @param mixed $path

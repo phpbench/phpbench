@@ -54,10 +54,10 @@ class DelimitedRenderer implements RendererInterface, OutputAwareInterface
 
     protected function renderTableElement(Element $tableEl, $config)
     {
-        $rows = array();
+        $rows = [];
 
         if (true === $config['header']) {
-            $header = array();
+            $header = [];
             foreach ($tableEl->query('.//row') as $rowEl) {
                 foreach ($rowEl->query('.//cell') as $cellEl) {
                     $colName = $cellEl->getAttribute('name');
@@ -68,7 +68,7 @@ class DelimitedRenderer implements RendererInterface, OutputAwareInterface
         }
 
         foreach ($tableEl->query('.//row') as $rowEl) {
-            $row = array();
+            $row = [];
             foreach ($rowEl->query('.//cell') as $cellEl) {
                 $colName = $cellEl->getAttribute('name');
                 $row[$colName] = $cellEl->nodeValue;
@@ -101,11 +101,11 @@ class DelimitedRenderer implements RendererInterface, OutputAwareInterface
      */
     public function getDefaultConfig()
     {
-        return array(
+        return [
             'delimiter' => "\t",
             'file' => null,
             'header' => true,
-        );
+        ];
     }
 
     /**
@@ -113,20 +113,20 @@ class DelimitedRenderer implements RendererInterface, OutputAwareInterface
      */
     public function getSchema()
     {
-        return array(
+        return [
             'type' => 'object',
-            'properties' => array(
-                'delimiter' => array(
+            'properties' => [
+                'delimiter' => [
                     'type' => 'string',
-                ),
-                'file' => array(
-                    'type' => array('string', 'null'),
-                ),
-                'header' => array(
+                ],
+                'file' => [
+                    'type' => ['string', 'null'],
+                ],
+                'header' => [
                     'type' => 'boolean',
-                ),
-            ),
+                ],
+            ],
             'additionalProperties' => false,
-        );
+        ];
     }
 }

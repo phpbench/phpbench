@@ -11,6 +11,13 @@
 
 namespace PhpBench\Tests\Unit\Serializer;
 
+use PhpBench\Environment\Information;
+use PhpBench\Model\Benchmark;
+use PhpBench\Model\Iteration;
+use PhpBench\Model\Subject;
+use PhpBench\Model\Suite;
+use PhpBench\Model\SuiteCollection;
+use PhpBench\Model\Variant;
 use PhpBench\PhpBench;
 use PhpBench\Serializer\XmlEncoder;
 
@@ -18,13 +25,13 @@ class XmlEncoderTest extends XmlTestCase
 {
     public function setUp()
     {
-        $this->suiteCollection = $this->prophesize('PhpBench\Model\SuiteCollection');
-        $this->suite = $this->prophesize('PhpBench\Model\Suite');
-        $this->env1 = $this->prophesize('PhpBench\Environment\Information');
-        $this->bench1 = $this->prophesize('PhpBench\Model\Benchmark');
-        $this->subject1 = $this->prophesize('PhpBench\Model\Subject');
-        $this->variant1 = $this->prophesize('PhpBench\Model\Variant');
-        $this->iteration1 = $this->prophesize('PhpBench\Model\Iteration');
+        $this->suiteCollection = $this->prophesize(SuiteCollection::class);
+        $this->suite = $this->prophesize(Suite::class);
+        $this->env1 = $this->prophesize(Information::class);
+        $this->bench1 = $this->prophesize(Benchmark::class);
+        $this->subject1 = $this->prophesize(Subject::class);
+        $this->variant1 = $this->prophesize(Variant::class);
+        $this->iteration1 = $this->prophesize(Iteration::class);
     }
 
     /**

@@ -13,6 +13,7 @@ namespace PhpBench\Tests\Unit\Environment\Provider;
 
 use PhpBench\Environment\Provider;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
 
 class GitTest extends \PHPUnit_Framework_TestCase
@@ -102,7 +103,7 @@ class GitTest extends \PHPUnit_Framework_TestCase
      */
     public function testNotApplicableIfGitNotFound()
     {
-        $exeFinder = $this->prophesize('Symfony\Component\Process\ExecutableFinder');
+        $exeFinder = $this->prophesize(ExecutableFinder::class);
         $exeFinder->find('git', false)->willReturn(false);
 
         $provider = new Provider\Git($exeFinder->reveal());

@@ -22,7 +22,7 @@ class ParameterSet extends \ArrayObject
      */
     private $index;
 
-    public function __construct($index = 0, array $parameters = array())
+    public function __construct($index = 0, array $parameters = [])
     {
         $this->index = $index;
         parent::__construct($parameters);

@@ -23,7 +23,7 @@ use PhpBench\Registry\Config;
  */
 class DebugExecutor extends BaseExecutor
 {
-    private $collectionTimes = array();
+    private $collectionTimes = [];
 
     /**
      * {@inheritdoc}
@@ -67,10 +67,10 @@ class DebugExecutor extends BaseExecutor
      */
     public function getDefaultConfig()
     {
-        return array(
-            'times' => array(10),
-            'spread' => array(0),
-        );
+        return [
+            'times' => [10],
+            'spread' => [0],
+        ];
     }
 
     /**
@@ -78,20 +78,20 @@ class DebugExecutor extends BaseExecutor
      */
     public function getSchema()
     {
-        return array(
+        return [
             'type' => 'object',
             'additionalProperties' => false,
-            'properties' => array(
-                'times' => array(
+            'properties' => [
+                'times' => [
                     'type' => 'array',
-                ),
-                'spread' => array(
+                ],
+                'spread' => [
                     'type' => 'array',
-                ),
-                'memories' => array(
+                ],
+                'memories' => [
                     'type' => 'array',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 }

@@ -27,33 +27,33 @@ class ReportBench extends BaseBenchCase
         // instantiate the benchmark class (this) so that we can
         // run a command.
         $case = new self();
-        $case->runCommand('console.command.run', array(
+        $case->runCommand('console.command.run', [
             'path' => self::getFunctionalBenchmarkPath(),
             '--dump-file' => self::getWorkspacePath() . '/dump.xml',
-        ));
+        ]);
     }
 
     public function benchAggregate()
     {
-        $this->runCommand('console.command.report', array(
-            '--file' => array($this->getWorkspacePath() . '/dump.xml'),
-            '--report' => array('aggregate'),
-        ));
+        $this->runCommand('console.command.report', [
+            '--file' => [$this->getWorkspacePath() . '/dump.xml'],
+            '--report' => ['aggregate'],
+        ]);
     }
 
     public function benchDefault()
     {
-        $this->runCommand('console.command.report', array(
-            '--file' => array($this->getWorkspacePath() . '/dump.xml'),
-            '--report' => array('default'),
-        ));
+        $this->runCommand('console.command.report', [
+            '--file' => [$this->getWorkspacePath() . '/dump.xml'],
+            '--report' => ['default'],
+        ]);
     }
 
     public function benchEnv()
     {
-        $this->runCommand('console.command.report', array(
-            '--file' => array($this->getWorkspacePath() . '/dump.xml'),
-            '--report' => array('env'),
-        ));
+        $this->runCommand('console.command.report', [
+            '--file' => [$this->getWorkspacePath() . '/dump.xml'],
+            '--report' => ['env'],
+        ]);
     }
 }

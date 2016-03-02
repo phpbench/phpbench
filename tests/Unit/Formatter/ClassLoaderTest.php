@@ -28,14 +28,14 @@ class ClassLoaderTest extends \PHPUnit_Framework_TestCase
     public function testLoadClassFile()
     {
         $classes = $this->loader->load(__DIR__ . '/class/valid.json');
-        $this->assertEquals(array(
-            'foo' => array(
-                array('printf', array('option_1' => 'value_1')),
-            ),
-            'bar' => array(
-                array('printf', array('option_1' => 'value_1')),
-            ),
-        ), $classes);
+        $this->assertEquals([
+            'foo' => [
+                ['printf', ['option_1' => 'value_1']],
+            ],
+            'bar' => [
+                ['printf', ['option_1' => 'value_1']],
+            ],
+        ], $classes);
     }
 
     /**

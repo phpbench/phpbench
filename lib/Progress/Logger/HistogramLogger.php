@@ -22,7 +22,7 @@ use PhpBench\Util\TimeUnit;
 class HistogramLogger extends AnsiLogger
 {
     private $rows = 1;
-    private $blocks = array('▁',  '▂',  '▃',  '▄',  '▅',  '▆', '▇', '█');
+    private $blocks = ['▁',  '▂',  '▃',  '▄',  '▅',  '▆', '▇', '█'];
 
     /**
      * {@inheritdoc}
@@ -45,7 +45,7 @@ class HistogramLogger extends AnsiLogger
         }
         $first = false;
         $this->output->write(sprintf('<comment>%s</comment>', $benchmark->getClass()));
-        $subjectNames = array();
+        $subjectNames = [];
         foreach ($benchmark->getSubjects() as $subject) {
             $subjectNames[] = sprintf('#%s %s', $subject->getIndex(), $subject->getName());
         }
@@ -113,10 +113,10 @@ class HistogramLogger extends AnsiLogger
         $steps = 7;
         $resolution = $this->rows * $steps;
         $max = max($freqs);
-        $blocks = array();
+        $blocks = [];
 
         for ($row = 1; $row <= $this->rows; $row++) {
-            $blocks[$row] = array();
+            $blocks[$row] = [];
 
             foreach ($freqs as &$freq) {
                 if (null === $freq || 0 === $freq) {
@@ -142,7 +142,7 @@ class HistogramLogger extends AnsiLogger
             }
         }
 
-        $output = array();
+        $output = [];
         foreach ($blocks as $blockRow) {
             $output[] = implode('', $blockRow);
         }
@@ -171,7 +171,7 @@ class HistogramLogger extends AnsiLogger
             $stats = $variant->getStats();
             $freqs = Statistics::histogram($times, $bins, -$sigma, $sigma);
         } else {
-            $stats = new Distribution(array(0));
+            $stats = new Distribution([0]);
             $freqs = array_fill(0, $bins + 1, null);
         }
 

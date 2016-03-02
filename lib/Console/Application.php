@@ -39,10 +39,10 @@ class Application extends BaseApplication
     protected function getDefaultInputDefinition()
     {
         $default = parent::getDefaultInputDefinition();
-        $default->addOptions(array(
+        $default->addOptions([
             new InputOption('--config', null, InputOption::VALUE_REQUIRED, 'Configuration file'),
             new InputOption('--extension', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Enable an extension'),
-        ));
+        ]);
 
         return $default;
     }
@@ -53,6 +53,6 @@ class Application extends BaseApplication
     protected function configureIO(InputInterface $input, OutputInterface $output)
     {
         parent::configureIO($input, $output);
-        $output->getFormatter()->setStyle('greenbg', new OutputFormatterStyle('black', 'green', array()));
+        $output->getFormatter()->setStyle('greenbg', new OutputFormatterStyle('black', 'green', []));
     }
 }

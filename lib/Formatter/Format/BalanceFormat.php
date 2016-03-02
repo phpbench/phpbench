@@ -33,10 +33,10 @@ class BalanceFormat implements FormatInterface
 
     public function getDefaultOptions()
     {
-        return array(
+        return [
             'zero_format' => '%s',
             'negative_format' => '-%s',
             'positive_format' => '+%s',
-        );
+        ];
     }
 }

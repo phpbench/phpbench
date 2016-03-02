@@ -19,7 +19,7 @@ class ReflectionHierarchy implements \IteratorAggregate
     /**
      * @var ReflectionClass[]
      */
-    private $reflectionClasses = array();
+    private $reflectionClasses = [];
 
     /**
      * Add a reflection class.

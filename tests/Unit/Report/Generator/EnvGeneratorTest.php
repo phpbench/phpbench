@@ -33,22 +33,22 @@ class EnvGeneratorTest extends GeneratorTestCase
      */
     public function testEnv()
     {
-        $collection = TestUtil::createCollection(array(
-            array(
-                'env' => array(
-                    'vcs' => array(
+        $collection = TestUtil::createCollection([
+            [
+                'env' => [
+                    'vcs' => [
                         'branch' => 'my_branch',
                         'version' => 'a1b2c3d4',
-                    ),
-                    'uname' => array(
+                    ],
+                    'uname' => [
                         'os' => 'Linux',
                         'version' => '4.2.0',
-                    ),
-                ),
-            ),
-        ));
+                    ],
+                ],
+            ],
+        ]);
 
-        $report = $this->generator->generate($collection, new Config('foo', array()));
+        $report = $this->generator->generate($collection, new Config('foo', []));
         $this->assertXPathCount($report, 1, '//table[contains(@title, "Suite #0")]');
         $this->assertXPathCount($report, 4, '//row');
         $this->assertXPathCount($report, 12, '//cell');
@@ -62,24 +62,24 @@ class EnvGeneratorTest extends GeneratorTestCase
      */
     public function testEnvEachSuite()
     {
-        $collection = TestUtil::createCollection(array(
-            array(
-                'env' => array(
-                    'vcs' => array(
+        $collection = TestUtil::createCollection([
+            [
+                'env' => [
+                    'vcs' => [
                         'branch' => 'my_branch',
-                    ),
-                ),
-            ),
-            array(
-                'env' => array(
-                    'vcs' => array(
+                    ],
+                ],
+            ],
+            [
+                'env' => [
+                    'vcs' => [
                         'branch' => 'my_branch',
-                    ),
-                ),
-            ),
-        ));
+                    ],
+                ],
+            ],
+        ]);
 
-        $report = $this->generator->generate($collection, new Config('foo', array()));
+        $report = $this->generator->generate($collection, new Config('foo', []));
         $this->assertXPathCount($report, 1, '//table[contains(@title, "Suite #0")]');
         $this->assertXPathCount($report, 1, '//table[contains(@title, "Suite #1")]');
     }

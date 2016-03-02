@@ -13,6 +13,7 @@ namespace PhpBench\Tests\Unit\Benchmark\Remote;
 
 use PhpBench\Benchmark\Remote\Payload;
 use Prophecy\Argument;
+use Symfony\Component\Process\Process;
 
 class PayloadTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,7 +21,7 @@ class PayloadTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->process = $this->prophesize('Symfony\Component\Process\Process');
+        $this->process = $this->prophesize(Process::class);
     }
 
     /**
@@ -31,16 +32,16 @@ class PayloadTest extends \PHPUnit_Framework_TestCase
     {
         $payload = new Payload(
             __DIR__ . '/template/foo.template',
-            array(
+            [
                 'foo' => 'bar',
-            )
+            ]
         );
 
         $result = $payload->launch($payload);
 
-        $this->assertEquals(array(
+        $this->assertEquals([
             'foo' => 'bar',
-        ), $result);
+        ], $result);
     }
 
     /**
@@ -63,10 +64,10 @@ class PayloadTest extends \PHPUnit_Framework_TestCase
      */
     public function testBinaryPath()
     {
-        $process = $this->prophesize('Symfony\Component\Process\Process');
+        $process = $this->prophesize(Process::class);
         $payload = new Payload(
             __DIR__ . '/template/foo.template',
-            array(),
+            [],
             $process->reveal()
         );
         $payload->setPhpPath('/foo/bar');
@@ -83,16 +84,16 @@ class PayloadTest extends \PHPUnit_Framework_TestCase
      */
     public function testPhpConfig()
     {
-        $process = $this->prophesize('Symfony\Component\Process\Process');
+        $process = $this->prophesize(Process::class);
         $payload = new Payload(
             __DIR__ . '/template/foo.template',
-            array(),
+            [],
             $process->reveal()
         );
-        $payload->setPhpConfig(array(
+        $payload->setPhpConfig([
             'foo' => 'bar',
             'bar' => 'foo',
-        ));
+        ]);
         $process->setCommandLine(Argument::containingString('-dfoo=bar'))->shouldBeCalled();
         $process->setCommandLine(Argument::containingString('-dbar=foo'))->shouldBeCalled();
         $process->run()->shouldBeCalled();
@@ -107,10 +108,10 @@ class PayloadTest extends \PHPUnit_Framework_TestCase
      */
     public function testWrap()
     {
-        $process = $this->prophesize('Symfony\Component\Process\Process');
+        $process = $this->prophesize(Process::class);
         $payload = new Payload(
             __DIR__ . '/template/foo.template',
-            array(),
+            [],
             $process->reveal()
         );
         $payload->setWrapper('bockfire');
@@ -131,10 +132,10 @@ class PayloadTest extends \PHPUnit_Framework_TestCase
      */
     public function testTemplateNotFound()
     {
-        $process = $this->prophesize('Symfony\Component\Process\Process');
+        $process = $this->prophesize(Process::class);
         $payload = new Payload(
             __DIR__ . '/template/not-existing-filename.template',
-            array(),
+            [],
             $process->reveal()
         );
 

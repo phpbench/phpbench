@@ -30,13 +30,13 @@ class Parser
      */
     private $decoder;
 
-    private $comparisons = array(
+    private $comparisons = [
         '$gt', '$lt', '$eq', '$neq', '$gte', '$lte', '$in', '$nin', '$regex',
-    );
+    ];
 
-    private $composites = array(
+    private $composites = [
         '$or', '$and',
-    );
+    ];
 
     public function __construct()
     {
@@ -53,11 +53,11 @@ class Parser
     private function processExpr(array $expr)
     {
         if (count($expr) != 1) {
-            $newExpr = array();
+            $newExpr = [];
             foreach ($expr as $key => $value) {
-                $newExpr[] = array($key => $value);
+                $newExpr[] = [$key => $value];
             }
-            $expr = array('$and' => $newExpr);
+            $expr = ['$and' => $newExpr];
         }
 
         $left = key($expr);
@@ -73,7 +73,7 @@ class Parser
     private function parseComparison($field, $args)
     {
         if (!is_array($args)) {
-            $args = array('$eq' => $args);
+            $args = ['$eq' => $args];
         }
 
         if (count($args) != 1) {

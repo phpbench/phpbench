@@ -37,13 +37,13 @@ class ReflectorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('\PhpBench\Tests\Unit\Benchmark\reflector\ExampleClass', $reflection->class);
         $this->assertContains('Some doc comment', $reflection->comment);
         $this->assertEquals($fname, $reflection->path);
-        $this->assertEquals(array(
+        $this->assertEquals([
             'methodOne',
             'methodTwo',
             'provideParamsOne',
             'provideParamsTwo',
             'provideParamsNonScalar',
-        ), array_keys($reflection->methods));
+        ], array_keys($reflection->methods));
         $this->assertContains('Method One Comment', $reflection->methods['methodOne']->comment);
     }
 
@@ -78,25 +78,25 @@ class ReflectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetParameterSets()
     {
-        $parameterSets = $this->reflector->getParameterSets(__DIR__ . '/reflector/ExampleClass.php', array(
+        $parameterSets = $this->reflector->getParameterSets(__DIR__ . '/reflector/ExampleClass.php', [
             'provideParamsOne',
             'provideParamsTwo',
-        ));
+        ]);
 
-        $this->assertEquals(array(
-            array(
-                array(
+        $this->assertEquals([
+            [
+                [
                     'one' => 'two',
                     'three' => 'four',
-                ),
-            ),
-            array(
-                array(
+                ],
+            ],
+            [
+                [
                     'five' => 'six',
                     'seven' => 'eight',
-                ),
-            ),
-        ), $parameterSets);
+                ],
+            ],
+        ], $parameterSets);
     }
 
     /**
@@ -104,9 +104,9 @@ class ReflectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetParameterSetsNonScalar()
     {
-        $parameterSets = $this->reflector->getParameterSets(__DIR__ . '/reflector/ExampleClass.php', array(
+        $parameterSets = $this->reflector->getParameterSets(__DIR__ . '/reflector/ExampleClass.php', [
             'provideParamsNonScalar',
-        ));
+        ]);
     }
 
     /**

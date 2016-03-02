@@ -27,9 +27,9 @@ class UnixSysload implements ProviderInterface
     public function getInformation()
     {
         $load = sys_getloadavg();
-        $load = array_combine(array(
+        $load = array_combine([
             'l1', 'l5', 'l15',
-        ), $load);
+        ], $load);
 
         return new Information('unix-sysload', $load);
     }

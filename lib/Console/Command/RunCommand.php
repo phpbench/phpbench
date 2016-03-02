@@ -74,15 +74,15 @@ EOT
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $this->timeUnitHandler->timeUnitFromInput($input);
-        $suite = $this->runnerHandler->runFromInput($input, $output, array(
+        $suite = $this->runnerHandler->runFromInput($input, $output, [
             'context_name' => $input->getOption('context'),
             'retry_threshold' => $input->getOption('retry-threshold'),
             'sleep' => $input->getOption('sleep'),
             'iterations' => $input->getOption('iterations'),
             'warmup' => $input->getOption('warmup'),
-        ));
+        ]);
 
-        $collection = new SuiteCollection(array($suite));
+        $collection = new SuiteCollection([$suite]);
 
         $this->dumpHandler->dumpFromInput($input, $output, $collection);
 

@@ -12,7 +12,17 @@
 namespace PhpBench\Tests\Unit\Progress\Logger;
 
 use PhpBench\Console\OutputAwareInterface;
+use PhpBench\Math\Distribution;
+use PhpBench\Model\Benchmark;
+use PhpBench\Model\Error;
+use PhpBench\Model\ErrorStack;
+use PhpBench\Model\ParameterSet;
+use PhpBench\Model\Subject;
+use PhpBench\Model\Suite;
+use PhpBench\Model\Summary;
+use PhpBench\Model\Variant;
 use Prophecy\Argument;
+use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class PhpBenchLoggerTest extends \PHPUnit_Framework_TestCase
 {
@@ -27,14 +37,14 @@ abstract class PhpBenchLoggerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->suite = $this->prophesize('PhpBench\Model\Suite');
-        $this->summary = $this->prophesize('PhpBench\Model\Summary');
-        $this->benchmark = $this->prophesize('PhpBench\Model\Benchmark');
-        $this->variant = $this->prophesize('PhpBench\Model\Variant');
-        $this->subject = $this->prophesize('PhpBench\Model\Subject');
-        $this->parameterSet = $this->prophesize('PhpBench\Model\ParameterSet');
-        $this->output = $this->prophesize('Symfony\Component\Console\Output\OutputInterface');
-        $this->stats = $this->prophesize('PhpBench\Math\Distribution');
+        $this->suite = $this->prophesize(Suite::class);
+        $this->summary = $this->prophesize(Summary::class);
+        $this->benchmark = $this->prophesize(Benchmark::class);
+        $this->variant = $this->prophesize(Variant::class);
+        $this->subject = $this->prophesize(Subject::class);
+        $this->parameterSet = $this->prophesize(ParameterSet::class);
+        $this->output = $this->prophesize(OutputInterface::class);
+        $this->stats = $this->prophesize(Distribution::class);
 
         $this->logger = $this->getLogger();
 
@@ -65,7 +75,7 @@ abstract class PhpBenchLoggerTest extends \PHPUnit_Framework_TestCase
     public function testEndSuite()
     {
         $this->setUpSummary();
-        $this->suite->getErrorStacks()->willReturn(array());
+        $this->suite->getErrorStacks()->willReturn([]);
         $this->output->writeln(Argument::any())->shouldBeCalled();
         $this->logger->endSuite($this->suite->reveal());
     }
@@ -75,21 +85,21 @@ abstract class PhpBenchLoggerTest extends \PHPUnit_Framework_TestCase
      */
     public function testEndSuiteErrors()
     {
-        $error1 = $this->prophesize('PhpBench\Model\Error');
+        $error1 = $this->prophesize(Error::class);
         $error1->getMessage()->willReturn('MessageOne');
         $error1->getClass()->willReturn('ExceptionOne');
         $error1->getTrace()->willReturn('-- trace --');
 
-        $error2 = $this->prophesize('PhpBench\Model\Error');
+        $error2 = $this->prophesize(Error::class);
         $error2->getMessage()->willReturn('MessageTwo');
         $error2->getClass()->willReturn('ExceptionTwo');
         $error2->getTrace()->willReturn('-- trace --');
-        $errorStack = $this->prophesize('PhpBench\Model\ErrorStack');
+        $errorStack = $this->prophesize(ErrorStack::class);
         $errorStack->getVariant()->willReturn($this->variant->reveal());
-        $errorStack->getIterator()->willReturn(new \ArrayIterator(array($error1->reveal(), $error2->reveal())));
+        $errorStack->getIterator()->willReturn(new \ArrayIterator([$error1->reveal(), $error2->reveal()]));
 
         $this->setUpSummary();
-        $this->suite->getErrorStacks()->willReturn(array($errorStack));
+        $this->suite->getErrorStacks()->willReturn([$errorStack]);
         $errorStack->getVariant()->willReturn($this->variant->reveal());
         $this->variant->getSubject()->willReturn($this->subject->reveal());
         $this->subject->getBenchmark()->willReturn($this->benchmark->reveal());

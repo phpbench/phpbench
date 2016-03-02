@@ -11,15 +11,16 @@
 
 namespace PhpBench\Tests\Unit\Model;
 
+use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
 
 class SuiteCollectionTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->suite1 = $this->prophesize('PhpBench\Model\Suite');
-        $this->suite2 = $this->prophesize('PhpBench\Model\Suite');
-        $this->suite3 = $this->prophesize('PhpBench\Model\Suite');
+        $this->suite1 = $this->prophesize(Suite::class);
+        $this->suite2 = $this->prophesize(Suite::class);
+        $this->suite3 = $this->prophesize(Suite::class);
     }
 
     /**
@@ -29,9 +30,9 @@ class SuiteCollectionTest extends \PHPUnit_Framework_TestCase
     {
         $collection = new SuiteCollection();
         $collection->addSuite($this->suite1->reveal());
-        $this->assertSame(array(
+        $this->assertSame([
             $this->suite1->reveal(),
-        ), $collection->getSuites());
+        ], $collection->getSuites());
     }
 
     /**
@@ -39,20 +40,20 @@ class SuiteCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testMergeCollection()
     {
-        $collection = new SuiteCollection(array(
+        $collection = new SuiteCollection([
             $this->suite1->reveal(),
-        ));
-        $newCollection = new SuiteCollection(array(
+        ]);
+        $newCollection = new SuiteCollection([
             $this->suite2->reveal(),
             $this->suite3->reveal(),
-        ));
+        ]);
 
         $collection->mergeCollection($newCollection);
 
-        $this->assertEquals(array(
+        $this->assertEquals([
             $this->suite1->reveal(),
             $this->suite2->reveal(),
             $this->suite3->reveal(),
-        ), $collection->getSuites());
+        ], $collection->getSuites());
     }
 }

@@ -18,9 +18,9 @@ namespace PhpBench\Math;
  */
 class Distribution implements \IteratorAggregate
 {
-    private $samples = array();
-    private $stats = array();
-    private $closures = array();
+    private $samples = [];
+    private $stats = [];
+    private $closures = [];
 
     public function __construct(array $samples)
     {
@@ -30,7 +30,7 @@ class Distribution implements \IteratorAggregate
             );
         }
         $this->samples = $samples;
-        $this->closures = array(
+        $this->closures = [
             'min' => function () { return min($this->samples); },
             'max' => function () { return max($this->samples); },
             'sum' => function () { return array_sum($this->samples); },
@@ -43,7 +43,7 @@ class Distribution implements \IteratorAggregate
 
                 return $mean ? $this->getStdev() / $mean * 100 : 0;
             },
-        );
+        ];
     }
 
     public function getMin()
@@ -97,7 +97,7 @@ class Distribution implements \IteratorAggregate
 
     public function getStats()
     {
-        $stats = array();
+        $stats = [];
         foreach (array_keys($this->closures) as $name) {
             $stats[$name] = $this->getStat($name);
         }

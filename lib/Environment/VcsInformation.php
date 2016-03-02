@@ -20,10 +20,10 @@ class VcsInformation extends Information
 {
     public function __construct($system, $branch, $version)
     {
-        parent::__construct('vcs', array(
+        parent::__construct('vcs', [
             'system' => $system,
             'branch' => $branch,
             'version' => $version,
-        ));
+        ]);
     }
 }

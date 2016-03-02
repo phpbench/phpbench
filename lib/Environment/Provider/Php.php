@@ -28,9 +28,9 @@ class Php implements ProviderInterface
     {
         return new Information(
             'php',
-            array(
+            [
                 'version' => PHP_VERSION,
-            )
+            ]
         );
     }
 }

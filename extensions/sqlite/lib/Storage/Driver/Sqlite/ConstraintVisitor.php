@@ -28,15 +28,15 @@ class ConstraintVisitor
     /**
      * @var array
      */
-    private $compositeMap = array(
+    private $compositeMap = [
         '$and' => 'AND',
         '$or' => 'OR',
-    );
+    ];
 
     /**
      * @var array
      */
-    private $comparatorMap = array(
+    private $comparatorMap = [
         '$eq' => '=',
         '$neq' => '!=',
         '$gt' => '>',
@@ -45,12 +45,12 @@ class ConstraintVisitor
         '$lte' => '<=',
         '$in' => null,
         '$regex' => 'REGEXP',
-    );
+    ];
 
     /**
      * @var array
      */
-    private $fieldMap = array(
+    private $fieldMap = [
         'benchmark' => 'subject.benchmark',
         'subject' => 'subject.name',
         'revs' => 'variant.revolutions',
@@ -58,7 +58,7 @@ class ConstraintVisitor
         'run' => 'run.id',
         'group' => 'sgroup.name',
         'param' => 'param',
-    );
+    ];
 
     /**
      * @var array
@@ -76,10 +76,10 @@ class ConstraintVisitor
     {
         $sql = $this->doVisit($constraint);
 
-        $return = array($sql, $this->values);
-        $this->value = array();
+        $return = [$sql, $this->values];
+        $this->value = [];
         $this->paramCounter = 0;
-        $select = array(
+        $select = [
             'run.id',
             'run.context',
             'run.date',
@@ -97,9 +97,9 @@ class ConstraintVisitor
             'iteration.time',
             'iteration.memory',
             'iteration.reject_count',
-        );
+        ];
 
-        $extraJoins = array();
+        $extraJoins = [];
         $fieldNames = $this->getFieldNames($constraint);
 
         if (in_array('group', $fieldNames)) {
@@ -240,7 +240,7 @@ EOT;
             ));
         }
 
-        $paramNames = array();
+        $paramNames = [];
         foreach ($values as $value) {
             $paramNames[] = $this->registerParamValue($value);
         }
@@ -267,7 +267,7 @@ EOT;
 
     private function getFieldNames(Constraint $constraint)
     {
-        $fieldNames = array();
+        $fieldNames = [];
 
         if ($constraint instanceof Composite) {
             $fieldNames = array_merge($fieldNames, $this->getFieldNames($constraint->getConstraint1()));
@@ -282,7 +282,7 @@ EOT;
             $field = 'param';
         }
 
-        return array($field);
+        return [$field];
     }
 
     private function registerParamValue($value)

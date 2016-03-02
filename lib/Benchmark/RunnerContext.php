@@ -23,7 +23,7 @@ class RunnerContext
      * @param string $path
      * @param mixed[] $options
      */
-    public function __construct($path, array $options = array())
+    public function __construct($path, array $options = [])
     {
         if (null === $path) {
             throw new \InvalidArgumentException(
@@ -33,11 +33,11 @@ class RunnerContext
 
         $this->path = $path;
 
-        $defaultOptions = array(
+        $defaultOptions = [
             'executor' => 'microtime',
             'context_name' => null,
-            'filters' => array(),
-            'groups' => array(),
+            'filters' => [],
+            'groups' => [],
             'iterations' => null,
             'revolutions' => null,
             'parameters' => null,
@@ -46,7 +46,7 @@ class RunnerContext
             'warmup' => null,
             'output_time_precision' => null,
             'output_time_unit' => null,
-        );
+        ];
 
         $options = array_merge(
             $defaultOptions,
@@ -84,7 +84,7 @@ class RunnerContext
             }
         };
 
-        $validators = array(
+        $validators = [
             'retry_threshold' => function ($v) use ($numericValidator) {
                 if (null === $v) {
                     return;
@@ -138,7 +138,7 @@ class RunnerContext
                     $numericValidator('Warmup', $warmup);
                 }
             },
-        );
+        ];
 
         foreach ($validators as $optionName => $validator) {
             $validator($options[$optionName]);
@@ -218,10 +218,10 @@ class RunnerContext
      */
     public function getParameterSets($default = null)
     {
-        $parameters = $this->options['parameters'] ? array(array($this->options['parameters'])) : $default;
+        $parameters = $this->options['parameters'] ? [[$this->options['parameters']]] : $default;
 
         if (!$parameters) {
-            return array(array(array()));
+            return [[[]]];
         }
 
         return $parameters;

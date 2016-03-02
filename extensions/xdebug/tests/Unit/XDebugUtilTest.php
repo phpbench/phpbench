@@ -12,6 +12,11 @@
 namespace PhpBench\Extensions\XDebug\Tests\Unit;
 
 use PhpBench\Extensions\XDebug\XDebugUtil;
+use PhpBench\Model\Benchmark;
+use PhpBench\Model\Iteration;
+use PhpBench\Model\ParameterSet;
+use PhpBench\Model\Subject;
+use PhpBench\Model\Variant;
 
 class XDebugUtilTest extends \PHPUnit_Framework_TestCase
 {
@@ -22,11 +27,11 @@ class XDebugUtilTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->iteration = $this->prophesize('PhpBench\Model\Iteration');
-        $this->subject = $this->prophesize('PhpBench\Model\Subject');
-        $this->benchmark = $this->prophesize('PhpBench\Model\Benchmark');
-        $this->parameters = $this->prophesize('PhpBench\Model\ParameterSet');
-        $this->variant = $this->prophesize('PhpBench\Model\Variant');
+        $this->iteration = $this->prophesize(Iteration::class);
+        $this->subject = $this->prophesize(Subject::class);
+        $this->benchmark = $this->prophesize(Benchmark::class);
+        $this->parameters = $this->prophesize(ParameterSet::class);
+        $this->variant = $this->prophesize(Variant::class);
     }
 
     /**
@@ -53,17 +58,17 @@ class XDebugUtilTest extends \PHPUnit_Framework_TestCase
 
     public function provideGenerate()
     {
-        return array(
-            array(
+        return [
+            [
                 'Benchmark',
                 'Subject',
                 'Benchmark::Subject.P7.cachegrind',
-            ),
-            array(
+            ],
+            [
                 'Benchmark\\Foo',
                 'Subject\\//asd',
                 'Benchmark_Foo::Subject___asd.P7.cachegrind',
-            ),
-        );
+            ],
+        ];
     }
 }

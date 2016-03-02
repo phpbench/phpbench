@@ -9,26 +9,26 @@
  * file that was distributed with this source code.
  */
 
-return array(
-    'console' => array(
+return [
+    'console' => [
         'renderer' => 'console',
-    ),
-    'html' => array(
+    ],
+    'html' => [
         'renderer' => 'xslt',
         'template' => __DIR__ . '/../../../Report/Renderer/templates/html.xsl',
-    ),
-    'markdown' => array(
+    ],
+    'markdown' => [
         'renderer' => 'xslt',
         'template' => __DIR__ . '/../../../Report/Renderer/templates/markdown.xsl',
-    ),
-    'delimited' => array(
+    ],
+    'delimited' => [
         'renderer' => 'delimited',
-    ),
-    'csv' => array(
+    ],
+    'csv' => [
         'renderer' => 'delimited',
         'delimiter' => ',',
-    ),
-    'debug' => array(
+    ],
+    'debug' => [
         'renderer' => 'debug',
-    ),
-);
+    ],
+];

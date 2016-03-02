@@ -13,6 +13,7 @@ namespace PhpBench\Tests\Unit\Benchmark;
 
 use PhpBench\Model\Iteration;
 use PhpBench\Model\IterationResult;
+use PhpBench\Model\Variant;
 
 class IterationTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,7 +21,7 @@ class IterationTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->variant = $this->prophesize('PhpBench\Model\Variant');
+        $this->variant = $this->prophesize(Variant::class);
         $this->iteration = new Iteration(
             0,
             $this->variant->reveal()
