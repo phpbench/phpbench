@@ -43,6 +43,7 @@ class XmlEncoder
             $suiteEl->setAttribute('context', $suite->getContextName());
             $suiteEl->setAttribute('date', $suite->getDate()->format('Y-m-d H:i:s'));
             $suiteEl->setAttribute('config-path', $suite->getConfigPath());
+            $suiteEl->setAttribute('uuid', $suite->getUuid());
 
             $envEl = $suiteEl->appendElement('env');
 

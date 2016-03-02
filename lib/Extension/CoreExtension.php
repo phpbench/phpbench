@@ -20,6 +20,7 @@ use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Benchmark\Remote\Reflector;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Console\Application;
+use PhpBench\Console\Command\ArchiveCommand;
 use PhpBench\Console\Command\Handler\DumpHandler;
 use PhpBench\Console\Command\Handler\ReportHandler;
 use PhpBench\Console\Command\Handler\RunnerHandler;
@@ -79,6 +80,8 @@ class CoreExtension implements ExtensionInterface
             'time_unit' => TimeUnit::MICROSECONDS,
             'output_mode' => TimeUnit::MODE_TIME,
             'storage' => null,
+            'archiver' => 'xml',
+            'archive_path' => '_archive',
         ];
     }
 
@@ -136,7 +139,11 @@ class CoreExtension implements ExtensionInterface
         }
 
         foreach ($container->getServiceIdsForTag('storage_driver') as $serviceId => $attributes) {
-            $container->get('storage.driver_factory')->registerService($attributes['name'], $serviceId);
+            $container->get('storage.driver_registry')->registerService($attributes['name'], $serviceId);
+        }
+
+        foreach ($container->getServiceIdsForTag('storage_archiver') as $serviceId => $attributes) {
+            $container->get('storage.archiver_registry')->registerService($attributes['name'], $serviceId);
         }
 
         foreach ($container->getServiceIdsForTag('environment_provider') as $serviceId => $attributes) {
@@ -270,7 +277,7 @@ class CoreExtension implements ExtensionInterface
             return new SuiteCollectionHandler(
                 $container->get('serializer.decoder.xml'),
                 $container->get('expression.parser'),
-                $container->get('storage.driver_factory')
+                $container->get('storage.driver_registry')
             );
         });
 
@@ -286,7 +293,7 @@ class CoreExtension implements ExtensionInterface
                 $container->get('console.command.handler.report'),
                 $container->get('console.command.handler.time_unit'),
                 $container->get('console.command.handler.dump'),
-                $container->get('storage.driver_factory')
+                $container->get('storage.driver_registry')
             );
         }, ['console.command' => []]);
 
@@ -301,7 +308,13 @@ class CoreExtension implements ExtensionInterface
 
         $container->register('console.command.history', function (Container $container) {
             return new HistoryCommand(
-                $container->get('storage.driver_factory')
+                $container->get('storage.driver_registry')
+            );
+        }, ['console.command' => []]);
+
+        $container->register('console.command.archive', function (Container $container) {
+            return new ArchiveCommand(
+                $container->get('storage.archiver_registry')
             );
         }, ['console.command' => []]);
     }
@@ -443,9 +456,21 @@ class CoreExtension implements ExtensionInterface
 
     private function registerStorage(Container $container)
     {
-        $container->register('storage.driver_factory', function (Container $container) {
+        $container->register('storage.driver_registry', function (Container $container) {
             return new Registry('storage', $container, $container->getParameter('storage'));
         });
+        $container->register('storage.archiver_registry', function (Container $container) {
+            return new Registry('archiver', $container, $container->getParameter('archiver'));
+        });
+
+        $container->register('storage.archiver.xml', function (Container $container) {
+            return new Storage\Archiver\XmlArchiver(
+                $container->get('storage.driver_registry'),
+                $container->get('serializer.encoder.xml'),
+                $container->get('serializer.decoder.xml'),
+                $container->getParameter('archive_path')
+            );
+        }, ['storage_archiver' => ['name' => 'xml']]);
     }
 
     private function registerExpression(Container $container)

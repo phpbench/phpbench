@@ -35,7 +35,9 @@ class Repository
         $stmt = $conn->prepare($sql);
         $stmt->execute($values);
 
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        return $rows;
     }
 
     public function getRunEnvInformationRows($runId)
@@ -93,6 +95,15 @@ EOT;
         return $parameters;
     }
 
+    public function hasRun($runId)
+    {
+        $conn = $this->manager->getConnection();
+        $stmt = $conn->prepare('SELECT id FROM run WHERE id = ?');
+        $stmt->execute([$runId]);
+
+        return $stmt->fetch() ? true : false;
+    }
+
     public function getHistoryStatement()
     {
         $sql = <<<'EOT'
@@ -103,7 +114,7 @@ SELECT
     environment.value AS vcs_branch
     FROM run
     LEFT OUTER JOIN environment ON environment.provider = "vcs" AND environment.run_id = run.id AND environment.key = "branch"
-    ORDER BY run.id DESC
+    ORDER BY run.date DESC
 EOT;
 
         $conn = $this->manager->getConnection();

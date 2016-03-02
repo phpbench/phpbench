@@ -76,7 +76,10 @@ class XmlDecoder
         $suite = new Suite(
             $suiteEl->getAttribute('context'),
             new \DateTime($suiteEl->getAttribute('date')),
-            $suiteEl->getAttribute('config-path')
+            $suiteEl->getAttribute('config-path'),
+            [],
+            [],
+            $suiteEl->getAttribute('uuid')
         );
 
         $informations = [];

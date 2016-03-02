@@ -27,20 +27,23 @@ class Persister
         $conn = $this->manager->getConnection();
 
         foreach ($collection->getSuites() as $suite) {
-            $runId = $this->insertUpdate($conn, 'run', [
+            $this->insertUpdate($conn, 'run', [
+                'id' => $suite->getUuid(),
                 'context' => $suite->getContextName(),
                 'date' => $suite->getDate()->format('Y-m-d H:i:s'),
             ]);
 
             foreach ($suite->getEnvInformations() as $information) {
+                $envData = [];
                 foreach ($information as $key => $value) {
-                    $this->insertUpdate($conn, 'environment', [
-                        'run_id' => $runId,
+                    $envData[] = [
+                        'run_id' => $suite->getUuid(),
                         'provider' => $information->getName(),
                         'key' => $key,
                         'value' => $value,
-                    ]);
+                    ];
                 }
+                $this->insertMultiple($conn, 'environment', $envData);
             }
 
             foreach ($suite->getBenchmarks() as $benchmark) {
@@ -66,7 +69,7 @@ class Persister
                             'sleep' => $subject->getSleep(),
                             'warmup' => $variant->getWarmup(),
                             'subject_id' => $subjectId,
-                            'run_id' => $runId,
+                            'run_id' => $suite->getUuid(),
                         ];
                         $variantId = $this->insertUpdate($conn, 'variant', $data);
 

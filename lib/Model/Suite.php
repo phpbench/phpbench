@@ -25,7 +25,7 @@ class Suite implements \IteratorAggregate
     private $configPath;
     private $envInformations = [];
     private $benchmarks = [];
-    private $identifier;
+    private $uuid;
 
     /**
      * __construct.
@@ -42,14 +42,14 @@ class Suite implements \IteratorAggregate
         $configPath = null,
         array $benchmarks = [],
         array $envInformations = [],
-        $identifier = null
+        $uuid = null
     ) {
         $this->contextName = $contextName;
         $this->date = $date;
         $this->configPath = $configPath;
         $this->envInformations = $envInformations;
         $this->benchmarks = $benchmarks;
-        $this->identifier = $identifier;
+        $this->uuid = $uuid;
     }
 
     public function getBenchmarks()
@@ -174,15 +174,34 @@ class Suite implements \IteratorAggregate
     }
 
     /**
-     * The identifier uniquely identifies this suite.
+     * The uuid uniquely identifies this suite.
      *
-     * The identifier is determined by the storage driver, and may be empty
+     * The uuid is determined by the storage driver, and may be empty
      * only when dynamically generating reports on-the-fly.
      *
      * @return mixed
      */
-    public function getIdentifier()
+    public function getUuid()
     {
-        return $this->identifier;
+        return $this->uuid;
+    }
+
+    /**
+     * Generate a universally unique identifier.
+     *
+     * Based on the GIT hashing detailed here:
+     *     http://alblue.bandlem.com/2011/08/git-tip-of-week-objects.html
+     */
+    public function generateUuid()
+    {
+        $serialized = serialize($this->envInformations);
+
+        $this->uuid = sha1(implode([
+            'suite',
+            strlen($serialized),
+            microtime(),
+            $serialized,
+            $this->configPath,
+        ]));
     }
 }
