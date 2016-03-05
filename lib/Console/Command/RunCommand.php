@@ -17,7 +17,7 @@ use PhpBench\Console\Command\Handler\RunnerHandler;
 use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\PhpBench;
-use PhpBench\Storage\DriverFactory;
+use PhpBench\Registry\Registry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -36,7 +36,7 @@ class RunCommand extends Command
         ReportHandler $reportHandler,
         TimeUnitHandler $timeUnitHandler,
         DumpHandler $dumpHandler,
-        DriverFactory $storage
+        Registry $storage
     ) {
         parent::__construct();
         $this->runnerHandler = $runnerHandler;
@@ -88,7 +88,7 @@ EOT
 
         if (true === $input->getOption('store')) {
             $output->write('Storing results ... ');
-            $this->storage->getDriver()->store($collection);
+            $this->storage->getService()->store($collection);
             $output->writeln('OK');
         }
 

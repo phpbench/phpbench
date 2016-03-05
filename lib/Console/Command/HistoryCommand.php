@@ -11,7 +11,7 @@
 
 namespace PhpBench\Console\Command;
 
-use PhpBench\Storage\DriverFactory;
+use PhpBench\Registry\Registry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -22,7 +22,7 @@ class HistoryCommand extends Command
     private $storage;
 
     public function __construct(
-        DriverFactory $storage
+        Registry $storage
     ) {
         parent::__construct();
         $this->storage = $storage;
@@ -52,7 +52,7 @@ EOT
         if ($limit) {
             $output->writeln(sprintf('<comment>Limit set to %s</comment>', $limit));
         }
-        $entries = $this->storage->getDriver()->history();
+        $entries = $this->storage->getService()->history();
         $output->writeln(sprintf(
             "%s\t%s\t\t\t%s\t%s\n",
             'Run',

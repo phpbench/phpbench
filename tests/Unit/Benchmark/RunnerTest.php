@@ -24,7 +24,7 @@ use PhpBench\Model\IterationResult;
 use PhpBench\Model\Suite;
 use PhpBench\PhpBench;
 use PhpBench\Registry\Config;
-use PhpBench\Registry\Registry;
+use PhpBench\Registry\ConfigurableRegistry;
 use PhpBench\Tests\Util\TestUtil;
 use Prophecy\Argument;
 
@@ -39,7 +39,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
             $this->benchmark->reveal(),
         ]);
         $this->executor = $this->prophesize(ExecutorInterface::class);
-        $this->executorRegistry = $this->prophesize(Registry::class);
+        $this->executorRegistry = $this->prophesize(ConfigurableRegistry::class);
         $this->executorConfig = new Config('test', ['executor' => 'microtime']);
         $this->envSupplier = $this->prophesize(Supplier::class);
         $this->informations = new \ArrayObject();

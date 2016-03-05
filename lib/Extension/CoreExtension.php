@@ -48,6 +48,7 @@ use PhpBench\Progress\Logger\NullLogger;
 use PhpBench\Progress\Logger\TravisLogger;
 use PhpBench\Progress\Logger\VerboseLogger;
 use PhpBench\Progress\LoggerRegistry;
+use PhpBench\Registry\ConfigurableRegistry;
 use PhpBench\Registry\Registry;
 use PhpBench\Report\Generator\EnvGenerator;
 use PhpBench\Report\Generator\TableGenerator;
@@ -135,7 +136,7 @@ class CoreExtension implements ExtensionInterface
         }
 
         foreach ($container->getServiceIdsForTag('storage_driver') as $serviceId => $attributes) {
-            $container->get('storage.driver_factory')->registerDriver($attributes['name'], $serviceId);
+            $container->get('storage.driver_factory')->registerService($attributes['name'], $serviceId);
         }
 
         foreach ($container->getServiceIdsForTag('environment_provider') as $serviceId => $attributes) {
@@ -388,7 +389,7 @@ class CoreExtension implements ExtensionInterface
     {
         foreach (['generator', 'renderer'] as $registryType) {
             $container->register('report.registry.' . $registryType, function (Container $container) use ($registryType) {
-                return new Registry(
+                return new ConfigurableRegistry(
                     $registryType,
                     $container,
                     $container->get('json_schema.validator'),
@@ -398,7 +399,7 @@ class CoreExtension implements ExtensionInterface
         }
 
         $container->register('benchmark.registry.executor', function (Container $container) {
-            return new Registry(
+            return new ConfigurableRegistry(
                 'executor',
                 $container,
                 $container->get('json_schema.validator'),
@@ -443,7 +444,7 @@ class CoreExtension implements ExtensionInterface
     private function registerStorage(Container $container)
     {
         $container->register('storage.driver_factory', function (Container $container) {
-            return new Storage\DriverFactory($container, $container->getParameter('storage'));
+            return new Registry('storage', $container, $container->getParameter('storage'));
         });
     }
 
