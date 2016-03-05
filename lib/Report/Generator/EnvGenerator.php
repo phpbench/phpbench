@@ -88,7 +88,7 @@ class EnvGenerator implements GeneratorInterface, OutputAwareInterface
         foreach ($suiteCollection as $suite) {
             $tableEl = $reportEl->appendElement('table');
             $tableEl->setAttribute('title', sprintf(
-                'Suite #%s %s', $suite->getIdentifier(), $suite->getDate()->format('Y-m-d H:i:s')
+                'Suite #%s %s', $suite->getUuid(), $suite->getDate()->format('Y-m-d H:i:s')
             ));
 
             $groupEl = $tableEl->appendElement('group');

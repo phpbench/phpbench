@@ -44,6 +44,7 @@ class RepositoryTest extends FunctionalTestCase
     {
         $suiteCollection = new SuiteCollection([
             TestUtil::createSuite([
+                'uuid' => 1,
                 'env' => [
                     'vcs' => [
                         'system' => 'git',
@@ -54,6 +55,7 @@ class RepositoryTest extends FunctionalTestCase
                 'date' => '2016-01-01',
             ]),
             TestUtil::createSuite([
+                'uuid' => 2,
                 'date' => '2015-01-01',
                 'env' => [
                     'vcs' => [
@@ -71,16 +73,16 @@ class RepositoryTest extends FunctionalTestCase
 
         $this->assertEquals([
             [
-                'run_date' => '2015-01-01 00:00:00',
-                'context' => 'two',
-                'vcs_branch' => 'branch_2',
-                'run_id' => 2,
-            ],
-            [
                 'run_date' => '2016-01-01 00:00:00',
                 'context' => 'one',
                 'vcs_branch' => 'branch_1',
                 'run_id' => 1,
+            ],
+            [
+                'run_date' => '2015-01-01 00:00:00',
+                'context' => 'two',
+                'vcs_branch' => 'branch_2',
+                'run_id' => 2,
             ],
         ], $rows);
     }

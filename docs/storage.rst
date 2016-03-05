@@ -78,9 +78,6 @@ existing :doc:`reports`:
 
     $ phpbench report --query='run: 239' --report=aggregate
 
-Query Language
---------------
-
 PHPBench uses a query language very similar to that of MongoDB. A simple
 example:
 
@@ -172,7 +169,7 @@ queries::
     benchmark: { $regex: "Foo.*Bench" }
 
 Fields
-------
+~~~~~~
 
 The following fields are currently available for querying:
 
@@ -190,3 +187,39 @@ be enclosed in square brackets as follows::
     param[nb_elements]: 10
 
     param[points]: { $gt: 50 }
+
+Archiving
+---------
+
+Archiving provides a way to export and reimport data from and to the
+configured storage. This allows you to:
+
+- Backup your results (for example to a GIT repository).
+- Migrate to other storage drivers.
+
+By default PHPBench is configured to use an ``XML`` archiver, which will dump
+results to a directory in the current working directory, ``_archive``.
+
+.. note::
+
+    In the future it will be possible to select GIT as an archiving
+    mechanism, so that your benchmarks are always stored in your codes GIT
+    repository.
+
+To archive::
+
+    $ phpbench archive
+
+To restore::
+
+    $ phpbench archive --restore 
+
+Both operations are idempotent - they will skip any existing records.
+
+You may configure a different archiver in the configuration:
+
+.. code-block:: javascript
+
+    {
+        "archiver": "xml"
+    }

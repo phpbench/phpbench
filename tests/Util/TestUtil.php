@@ -71,9 +71,10 @@ class TestUtil
         $benchmark->getPath()->willReturn($options['path']);
     }
 
-    public static function createSuite(array $options = [], $suiteIndex = 0)
+    public static function createSuite(array $options = [], $suiteIndex = null)
     {
         $options = array_merge([
+            'uuid' => $suiteIndex,
             'date' => '2016-02-06',
             'revs' => 5,
             'warmup' => 10,
@@ -102,7 +103,7 @@ class TestUtil
             null,
             [],
             [],
-            $suiteIndex
+            $options['uuid']
         );
 
         foreach ($options['benchmarks'] as $benchmarkClass) {

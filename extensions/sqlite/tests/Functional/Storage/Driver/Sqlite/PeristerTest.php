@@ -48,6 +48,7 @@ class PeristerTest extends FunctionalTestCase
     {
         $suiteCollection = new SuiteCollection([
             TestUtil::createSuite([
+                'uuid' => '1',
                 'subjects' => ['benchOne', 'benchTwo'],
                 'groups' => ['one', 'two'],
                 'parameters' => [
@@ -67,6 +68,7 @@ class PeristerTest extends FunctionalTestCase
                 ],
             ]),
             TestUtil::createSuite([
+                'uuid' => '2',
                 'subjects' => ['benchThree'],
                 'groups' => ['five'],
             ]),
@@ -90,7 +92,9 @@ class PeristerTest extends FunctionalTestCase
     public function testPhpBenchVersion()
     {
         $suiteCollection = new SuiteCollection([
-            TestUtil::createSuite([]),
+            TestUtil::createSuite([
+                'uuid' => 1,
+            ]),
         ]);
 
         $this->persister->persist($suiteCollection);
@@ -99,6 +103,11 @@ class PeristerTest extends FunctionalTestCase
         $row = current($rows);
         $this->assertEquals(PhpBench::VERSION, $row['phpbench_version']);
 
+        $suiteCollection = new SuiteCollection([
+            TestUtil::createSuite([
+                'uuid' => 2,
+            ]),
+        ]);
         $this->persister->persist($suiteCollection);
         $this->assertEquals(1, $this->sqlCount('SELECT * FROM version'));
     }

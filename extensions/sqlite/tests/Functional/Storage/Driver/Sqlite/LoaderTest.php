@@ -53,6 +53,7 @@ class LoaderTest extends FunctionalTestCase
     {
         $suiteCollection = new SuiteCollection([
             TestUtil::createSuite([
+                'uuid' => '1',
                 'subjects' => ['benchOne', 'benchTwo'],
                 'benchmarks' => ['BenchOne', 'BenchTwo'],
                 'groups' => ['one', 'two'],
@@ -75,7 +76,9 @@ class LoaderTest extends FunctionalTestCase
                     ],
                 ],
             ]),
-            TestUtil::createSuite(),
+            TestUtil::createSuite([
+                'uuid' => '2',
+            ]),
         ]);
         $this->persister->persist($suiteCollection);
 
@@ -164,11 +167,13 @@ class LoaderTest extends FunctionalTestCase
     {
         $suiteCollection = new SuiteCollection([
             TestUtil::createSuite([
+                'uuid' => '1',
                 'benchmark' => ['benchOne'],
                 'subjects' => ['benchOne'],
                 'groups' => ['one', 'two'],
             ]),
             TestUtil::createSuite([
+                'uuid' => '2',
                 'benchmark' => ['benchOne'],
                 'subjects' => ['benchTwo', 'benchThree'],
                 'groups' => ['foobar'],

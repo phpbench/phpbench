@@ -1,5 +1,5 @@
 CREATE TABLE run (
-    id INTEGER PRIMARY KEY,
+    id VARCHAR PRIMARY KEY,
     context VARCHAR,
     date DATE
 );

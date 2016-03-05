@@ -68,7 +68,7 @@ class HistoryCommandTest extends \PHPUnit_Framework_TestCase
 
         $expected = <<<'EOT'
 Limit set to 10
-Run     Date                    VCS Branch      Context
+[ Run UUID | Date | VCS Branch | Context ]
 
 1       2016-01-01 00:00:00     branch1 foo
 2       2016-01-01 00:00:00     branch2 foo

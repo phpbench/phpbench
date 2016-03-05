@@ -52,14 +52,19 @@ EOT
         if ($limit) {
             $output->writeln(sprintf('<comment>Limit set to %s</comment>', $limit));
         }
-        $entries = $this->storage->getService()->history();
+
         $output->writeln(sprintf(
-            "%s\t%s\t\t\t%s\t%s\n",
-            'Run',
-            'Date',
-            'VCS Branch',
-            'Context'
+            '<info>[</> %s<info> ]</>',
+            implode(' <info>|</> ', [
+                'Run UUID',
+                'Date',
+                'VCS Branch',
+                'Context',
+            ])
         ));
+        $output->write(PHP_EOL);
+
+        $entries = $this->storage->getService()->history();
         foreach ($entries as $index => $entry) {
             $output->write(sprintf(
                 "%s\t%s\t%s\t%s\n",

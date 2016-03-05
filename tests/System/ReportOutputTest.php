@@ -85,13 +85,18 @@ class ReportOutputTest extends SystemTestCase
     private function assertGeneratedContents($output, $name)
     {
         $lines = explode("\n", $output);
+
         array_pop($lines);
         $generatedFilename = array_pop($lines);
         $this->assertFileExists($generatedFilename);
-        $this->assertContains(
-            file_get_contents(trim(__DIR__ . '/output/' . $name)),
-            file_get_contents(trim($generatedFilename))
-        );
+
+        $expected = file_get_contents(trim(__DIR__ . '/output/' . $name));
+        $actual = file_get_contents(trim($generatedFilename));
+
+        // replace the unique suite hash with %run_id%
+        $actual = preg_replace('{([0-9a-f]{40})}', '%run_id%', $actual);
+
+        $this->assertContains($expected, $actual);
         unlink($generatedFilename);
     }
 }

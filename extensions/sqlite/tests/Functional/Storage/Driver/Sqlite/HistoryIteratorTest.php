@@ -46,6 +46,7 @@ class HistoryIteratorTest extends FunctionalTestCase
     {
         $suiteCollection = new SuiteCollection([
             TestUtil::createSuite([
+                'uuid' => 1,
                 'env' => [
                     'vcs' => [
                         'system' => 'git',
@@ -56,6 +57,7 @@ class HistoryIteratorTest extends FunctionalTestCase
                 'date' => '2016-01-01',
             ]),
             TestUtil::createSuite([
+                'uuid' => 2,
                 'date' => '2015-01-01',
                 'env' => [
                     'vcs' => [
@@ -71,17 +73,17 @@ class HistoryIteratorTest extends FunctionalTestCase
 
         $current = $this->iterator->current();
         $this->assertInstanceOf('PhpBench\Storage\HistoryEntry', $current);
-        $this->assertEquals('2015-01-01', $current->getDate()->format('Y-m-d'));
-        $this->assertEquals('branch_2', $current->getVcsBranch());
-        $this->assertEquals('two', $current->getContext());
-        $this->assertEquals(2, $current->getRunId());
-
-        $this->iterator->next();
-        $current = $this->iterator->current();
-        $this->assertInstanceOf('PhpBench\Storage\HistoryEntry', $current);
         $this->assertEquals('2016-01-01', $current->getDate()->format('Y-m-d'));
         $this->assertEquals('branch_1', $current->getVcsBranch());
         $this->assertEquals('one', $current->getContext());
         $this->assertEquals(1, $current->getRunId());
+
+        $this->iterator->next();
+        $current = $this->iterator->current();
+        $this->assertInstanceOf('PhpBench\Storage\HistoryEntry', $current);
+        $this->assertEquals('2015-01-01', $current->getDate()->format('Y-m-d'));
+        $this->assertEquals('branch_2', $current->getVcsBranch());
+        $this->assertEquals('two', $current->getContext());
+        $this->assertEquals(2, $current->getRunId());
     }
 }

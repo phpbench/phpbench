@@ -12,9 +12,16 @@
 namespace PhpBench\Extensions\Sqlite\Benchmarks;
 
 use PhpBench\Benchmarks\Macro\BaseBenchCase;
+use PhpBench\Tests\Util\TestUtil;
 
+/**
+ * @OutputTimeUnit("milliseconds", precision=2)
+ * @Revs(1)
+ */
 class StorageBench extends BaseBenchCase
 {
+    private $driver;
+
     public function __construct()
     {
         $this->addContainerExtensionClass('PhpBench\\Extensions\\Sqlite\\SqliteExtension');
@@ -22,26 +29,28 @@ class StorageBench extends BaseBenchCase
             'storage' => 'sqlite',
             'storage.sqlite.db_path' => $this->getWorkspacePath() . '/test.sqlite',
         ]);
+        $this->driver = $this->getContainer()->get('storage.driver.sqlite');
     }
 
-    /**
-     * @ParamProviders({"provideIterations"})
-     */
-    public function benchStore($params)
+    public function benchStore()
     {
-        $this->runCommand('console.command.run', [
-            'path' => $this->getFunctionalBenchmarkPath(),
-            '--store' => true,
-            '--iterations' => $params['nb_iterations'],
+        static $index = 0;
+
+        $collection = TestUtil::createCollection([
+            [
+                'uuid' => $index . 'a',
+                'env' => [
+                    'foo' => ['foo' => 'bar', 'bar' => 'foo'],
+                    'bar' => ['foo' => 'bar', 'bar' => 'foo'],
+                    'baz' => ['foo' => 'bar', 'bar' => 'foo'],
+                    'bog' => ['foo' => 'bar', 'bar' => 'foo'],
+                ],
+            ],
+            ['uuid' => $index . 'b'],
+            ['uuid' => $index . 'c'],
+            ['uuid' => $index . 'd'],
         ]);
-    }
-
-    public function provideIterations()
-    {
-        return [
-            ['nb_iterations' => 1],
-            ['nb_iterations' => 10],
-            ['nb_iterations' => 100],
-        ];
+        $this->driver->store($collection);
+        $index++;
     }
 }

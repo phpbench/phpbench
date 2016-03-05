@@ -22,6 +22,7 @@ script:
   - phpunit
   # run the benchmarks in order to test them
   - php bin/phpbench run --iterations=1 --revs=1
+  - php bin/phpbench run --iterations=1 --revs=1 --config=extensions/sqlite/benchmarks/phpbench.json
 
 matrix:
     include:

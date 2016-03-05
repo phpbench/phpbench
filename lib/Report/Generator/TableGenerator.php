@@ -380,7 +380,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
                 foreach ($benchmark->getSubjects() as $subject) {
                     foreach ($subject->getVariants() as $variant) {
                         $row = new Row([
-                            'suite' => $suite->getIdentifier(),
+                            'suite' => $suite->getUuid(),
                             'date' => $suite->getDate()->format('Y-m-d'),
                             'stime' => $suite->getDate()->format('H:i:s'),
                             'benchmark' => $this->getClassShortName($benchmark->getClass()),

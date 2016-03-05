@@ -97,6 +97,7 @@ class Runner
             $benchmark = $suite->createBenchmark($benchmarkMetadata->getClass());
             $this->runBenchmark($executor, $context, $benchmark, $benchmarkMetadata);
         }
+        $suite->generateUuid();
 
         $this->logger->endSuite($suite);
 
