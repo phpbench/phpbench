@@ -23,7 +23,7 @@ use PhpBench\PhpBench;
 use PhpBench\Progress\Logger\NullLogger;
 use PhpBench\Progress\LoggerInterface;
 use PhpBench\Registry\Config;
-use PhpBench\Registry\Registry;
+use PhpBench\Registry\ConfigurableRegistry;
 
 /**
  * The benchmark runner.
@@ -44,7 +44,7 @@ class Runner
      */
     public function __construct(
         BenchmarkFinder $benchmarkFinder,
-        Registry $executorRegistry,
+        ConfigurableRegistry $executorRegistry,
         Supplier $envSupplier,
         $retryThreshold,
         $configPath

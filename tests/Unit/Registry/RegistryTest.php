@@ -11,33 +11,26 @@
 
 namespace PhpBench\Tests\Unit\Registry;
 
-use JsonSchema\Validator;
 use PhpBench\DependencyInjection\Container;
-use PhpBench\Json\JsonDecoder;
-use PhpBench\Registry\Config;
 use PhpBench\Registry\RegistrableInterface;
 use PhpBench\Registry\Registry;
 
 class RegistryTest extends \PHPUnit_Framework_TestCase
 {
-    private $registry;
-    private $container;
-    private $validator;
-    private $service1;
-    private $service2;
+    protected $registry;
+    protected $container;
+    protected $service1;
+    protected $service2;
 
     public function setUp()
     {
         $this->container = $this->prophesize(Container::class);
-        $this->validator = new Validator();
         $this->service1 = $this->prophesize(RegistrableInterface::class);
         $this->service2 = $this->prophesize(RegistrableInterface::class);
 
         $this->registry = new Registry(
             'test',
-            $this->container->reveal(),
-            $this->validator,
-            new JsonDecoder()
+            $this->container->reveal()
         );
     }
 
@@ -73,6 +66,36 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * It should return a default service if no argument is given to get().
+     */
+    public function testDefaultGet()
+    {
+        $registry = new Registry(
+            'test',
+            $this->container->reveal(),
+            'foo'
+        );
+        $registry->setService('foo', 'bar');
+        $this->assertEquals($registry->getService(), 'bar');
+    }
+
+    /**
+     * It should throw an exception if no argument given to get() and no default is defined.
+     *
+     * @expectedException RuntimeException
+     * @expectedExceptionMessage You must configure a default test service, registered test services: "foo"
+     */
+    public function testDefaultGetNoDefault()
+    {
+        $registry = new Registry(
+            'test',
+            $this->container->reveal()
+        );
+        $registry->setService('foo', 'bar');
+        $this->assertEquals($registry->getService(), 'bar');
+    }
+
+    /**
      * It should throw an exception if a service does not exist.
      *
      * @expectedException InvalidArgumentException
@@ -85,205 +108,14 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should set configuration for a registered service
-     * It should retrieve configurations.
-     */
-    public function testGetSetConfig()
-    {
-        $config = [
-            'test' => 'service',
-            'one' => 1,
-            'two' => 2,
-        ];
-
-        $this->registry->setService('service', $this->service1->reveal());
-        $this->service1->getDefaultConfig()->willReturn([]);
-        $this->service1->getSchema()->willReturn([]);
-
-        $this->registry->setConfig('one', $config);
-
-        $result = $this->registry->getConfig('one');
-        $this->assertEquals($config, $result->getArrayCopy());
-    }
-
-    /**
-     * It should merge the default config.
-     */
-    public function testMergeDefaultConfig()
-    {
-        $config = [
-            'test' => 'service',
-            'one' => [
-                'foo' => 'bar',
-            ],
-            'two' => 2,
-        ];
-
-        $this->registry->setService('service', $this->service1->reveal());
-        $this->service1->getDefaultConfig()->willReturn([
-            'hello' => 'goodbye',
-            'one' => [
-                'bar' => 'foo',
-            ],
-        ]);
-        $this->service1->getSchema()->willReturn([]);
-
-        $this->registry->setConfig('one', $config);
-        $result = $this->registry->getConfig('one');
-
-        $this->assertEquals([
-            'test' => 'service',
-            'one' => [
-                'foo' => 'bar',
-            ],
-            'two' => 2,
-            'hello' => 'goodbye',
-        ], $result->getArrayCopy());
-    }
-
-    /**
-     * It should resolve configs that exend other configs.
-     */
-    public function testResolveExtended()
-    {
-        $config1 = [
-            'test' => 'service',
-            'one' => 'two',
-            'three' => 'four',
-        ];
-        $config2 = [
-            'extends' => 'config1',
-            'two' => 'three',
-            'four' => 'five',
-        ];
-
-        $this->registry->setService('service', $this->service1->reveal());
-        $this->service1->getDefaultConfig()->willReturn([]);
-        $this->service1->getSchema()->willReturn([]);
-
-        $this->registry->setConfig('config1', $config1);
-        $this->registry->setConfig('config2', $config2);
-
-        $result = $this->registry->getConfig('config2');
-        $this->assertEquals([
-            'test' => 'service',
-            'one' => 'two',
-            'three' => 'four',
-            'two' => 'three',
-            'four' => 'five',
-        ], $result->getarraycopy());
-    }
-
-    /**
-     * It should throw an exception if a config extends a config from a different service.
+     * It should throw an exception if setting an already set service.
      *
      * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage test configuration for service "service2" cannot extend configuration for different service "service1"
+     * @expectedException test service "bar" is already registered.
      */
-    public function testExtendsDifferentServiceException()
+    public function testRegisterAlreadyRegistered()
     {
-        $config1 = [
-            'test' => 'service1',
-            'one' => 'two',
-        ];
-        $config2 = [
-            'test' => 'service2',
-            'extends' => 'config1',
-        ];
-
-        $this->registry->setService('service1', $this->service1->reveal());
-        $this->registry->setService('service2', $this->service2->reveal());
-
-        $this->service1->getDefaultConfig()->willReturn([]);
-        $this->service1->getSchema()->willReturn([]);
-        $this->service2->getDefaultConfig()->willReturn([]);
-        $this->service2->getSchema()->willReturn([]);
-
-        $this->registry->setConfig('config1', $config1);
-        $this->registry->setConfig('config2', $config2);
-
-        $this->registry->getConfig('config2');
-    }
-
-    /**
-     * It should validate configuration.
-     *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Invalid JSON
-     */
-    public function testValidate()
-    {
-        $config = [
-            'test' => 'service',
-            'one' => 1,
-            'two' => 2,
-        ];
-
-        $this->registry->setService('service', $this->service1->reveal());
-        $this->service1->getDefaultConfig()->willReturn([]);
-        $this->service1->getSchema()->willReturn([
-            'type' => 'object',
-            'additionalProperties' => false,
-            'properties' => [
-                'title' => [
-                    'type' => 'string',
-                ],
-            ],
-        ]);
-
-        $this->registry->setConfig('one', $config);
-
-        $result = $this->registry->getConfig('one');
-        $this->assertEquals($config, $result->getArrayCopy());
-    }
-
-    /**
-     * It should throw an exception if the registrable class does not return an array as a schema.
-     *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage must return the JSON schema as an array
-     */
-    public function testJsonSchemaAsArrayException()
-    {
-        $this->registry->setService('service', $this->service1->reveal());
-        $this->service1->getDefaultConfig()->willReturn([]);
-        $this->service1->getSchema()->willReturn(new \stdClass());
-        $this->registry->setConfig('one', [
-            'test' => 'service',
-        ]);
-
-        $this->registry->getConfig('one');
-    }
-
-    /**
-     * If a JSON encoded string is passed to getConfig, then it should be processed.
-     */
-    public function testGetConfigJsonString()
-    {
-        $this->registry->setService('service', $this->service1->reveal());
-        $this->service1->getDefaultConfig()->willReturn([]);
-        $this->service1->getSchema()->willReturn([]);
-
-        $result = $this->registry->getConfig('{"test": "service"}');
-        $this->assertEquals(new Config('test', [
-            'test' => 'service',
-        ]), $result);
-    }
-
-    /**
-     * If a invalid JSON encoded string is passed to getConfig, then it should throw an exception.
-     *
-     * @expectedException Seld\JsonLint\ParsingException
-     */
-    public function testGetConfigJsonStringInvalid()
-    {
-        $this->registry->setService('service', $this->service1->reveal());
-        $this->service1->getDefaultConfig()->willReturn([]);
-        $this->service1->getSchema()->willReturn([]);
-
-        $result = $this->registry->getConfig('{test": service}');
-        $this->assertEquals(new Config('test', [
-            'test' => 'service',
-        ]), $result);
+        $this->registry->setService('one', $this->service1->reveal());
+        $this->registry->setService('one', $this->service1->reveal());
     }
 }

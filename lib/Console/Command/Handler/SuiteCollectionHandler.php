@@ -13,8 +13,8 @@ namespace PhpBench\Console\Command\Handler;
 
 use PhpBench\Expression\Parser;
 use PhpBench\Model\SuiteCollection;
+use PhpBench\Registry\Registry;
 use PhpBench\Serializer\XmlDecoder;
-use PhpBench\Storage\DriverFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -28,7 +28,7 @@ class SuiteCollectionHandler
     public function __construct(
         XmlDecoder $xmlDecoder,
         Parser $parser,
-        DriverFactory $storage
+        Registry $storage
     ) {
         $this->xmlDecoder = $xmlDecoder;
         $this->parser = $parser;
@@ -64,7 +64,7 @@ class SuiteCollectionHandler
             foreach ($queries as $query) {
                 $constraint = $this->parser->parse($query);
                 $collection->mergeCollection(
-                    $this->storage->getDriver()->query($constraint)
+                    $this->storage->getService()->query($constraint)
                 );
             }
         }

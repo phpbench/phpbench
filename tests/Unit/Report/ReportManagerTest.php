@@ -15,7 +15,7 @@ use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Dom\Document;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
-use PhpBench\Registry\Registry;
+use PhpBench\Registry\ConfigurableRegistry;
 use PhpBench\Report\GeneratorInterface;
 use PhpBench\Report\RendererInterface;
 use PhpBench\Report\ReportManager;
@@ -30,8 +30,8 @@ class ReportManagerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->rendererRegistry = $this->prophesize(Registry::class);
-        $this->generatorRegistry = $this->prophesize(Registry::class);
+        $this->rendererRegistry = $this->prophesize(ConfigurableRegistry::class);
+        $this->generatorRegistry = $this->prophesize(ConfigurableRegistry::class);
 
         $this->reportManager = new ReportManager(
             $this->generatorRegistry->reveal(),

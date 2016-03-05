@@ -12,7 +12,7 @@
 namespace PhpBench\Tests\Unit\Console\Command;
 
 use PhpBench\Console\Command\HistoryCommand;
-use PhpBench\Storage\DriverFactory;
+use PhpBench\Registry\Registry;
 use PhpBench\Storage\DriverInterface;
 use PhpBench\Storage\HistoryEntry;
 use PhpBench\Storage\HistoryIteratorInterface;
@@ -23,12 +23,12 @@ class HistoryCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->storage = $this->prophesize(DriverFactory::class);
+        $this->storage = $this->prophesize(Registry::class);
         $this->command = new HistoryCommand(
             $this->storage->reveal()
         );
         $this->driver = $this->prophesize(DriverInterface::class);
-        $this->storage->getDriver()->willReturn($this->driver->reveal());
+        $this->storage->getService()->willReturn($this->driver->reveal());
         $this->output = new BufferedOutput();
 
         $this->history = $this->prophesize(HistoryIteratorInterface::class);
