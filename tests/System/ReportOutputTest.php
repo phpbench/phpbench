@@ -93,8 +93,8 @@ class ReportOutputTest extends SystemTestCase
         $expected = file_get_contents(trim(__DIR__ . '/output/' . $name));
         $actual = file_get_contents(trim($generatedFilename));
 
-        // replace the unique suite hash with %run_id%
-        $actual = preg_replace('{([0-9a-f]{40})}', '%run_id%', $actual);
+        // replace the unique suite hash with %run.uuid%
+        $actual = preg_replace('{([0-9a-f]{40})}', '%run.uuid%', $actual);
 
         $this->assertContains($expected, $actual);
         unlink($generatedFilename);

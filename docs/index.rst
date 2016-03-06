@@ -34,7 +34,7 @@ Extensions
    :maxdepth: 1
 
    extensions/xdebug
-   extensions/sqlite
+   extensions/dbal
 
 Indices and tables
 ==================

@@ -1,0 +1,8 @@
+{
+    "bootstrap": "../../../vendor/autoload.php",
+    "path": ".",
+    "extensions": [
+        "PhpBench\\Extensions\\Dbal\\DbalExtension"
+    ],
+    "storage": "dbal"
+}

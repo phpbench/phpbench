@@ -27,12 +27,13 @@
         "lstrojny/functional-php": "^1.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^4.6"
+        "phpunit/phpunit": "^4.6",
+        "doctrine/dbal": "^2.4"
     },
     "autoload": {
         "psr-4": {
             "PhpBench\\": "lib/",
-            "PhpBench\\Extensions\\Sqlite\\": "extensions/sqlite/lib/",
+            "PhpBench\\Extensions\\Dbal\\": "extensions/dbal/lib/",
             "PhpBench\\Extensions\\XDebug\\": "extensions/xdebug/lib/"
         }
     },
@@ -44,8 +45,8 @@
             "PhpBench\\Tests\\": "tests/",
             "PhpBench\\Benchmarks\\": "benchmarks/",
             "PhpBench\\Extensions\\XDebug\\Tests\\": "extensions/xdebug/tests/",
-            "PhpBench\\Extensions\\Sqlite\\Tests\\": "extensions/sqlite/tests/",
-            "PhpBench\\Extensions\\Sqlite\\Benchmarks\\": "extensions/sqlite/benchmarks/"
+            "PhpBench\\Extensions\\Dbal\\Tests\\": "extensions/dbal/tests/",
+            "PhpBench\\Extensions\\Dbal\\Benchmarks\\": "extensions/dbal/benchmarks/"
         }
     },
     "extra": {

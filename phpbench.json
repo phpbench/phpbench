@@ -1,9 +1,14 @@
 {
     "bootstrap": "vendor/autoload.php",
     "path": "benchmarks",
-    "storage": "sqlite",
+    "storage": "dbal",
+    "storage.dbal.connection": {
+        "driver": "pdo_mysql",
+        "dbname": "phpbench_benchmarks",
+        "user": "root"
+    },
     "extensions": [
         "PhpBench\\Extensions\\XDebug\\XDebugExtension",
-        "PhpBench\\Extensions\\Sqlite\\SqliteExtension"
+        "PhpBench\\Extensions\\Dbal\\DbalExtension"
     ]
 }
