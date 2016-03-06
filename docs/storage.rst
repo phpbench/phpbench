@@ -9,21 +9,21 @@ Configuring a Storage Driver
 ----------------------------
 
 By default PHPBench does not have any storage drivers enabled. You can however
-easily enable the bundled :doc:`sqlite extension <extensions/sqlite>` in your configuration file:
+easily enable the bundled :doc:`dbal extension <extensions/dbal>` in your configuration file:
 
 .. code-block:: javascript
 
     {
         "storage": "sqlite",
         "extensions": [
-            "PhpBench\\Extensions\\Sqlite\\SqliteExtension"
+            "PhpBench\\Extensions\\Dbal\\DbalExtension"
         ]
     }
 
-Above you register the Sqlite extension and select it as the storage driver
+Above you register the DBAL extension and select it as the storage driver
 for your project.
 
-By default it will create an Sqlite database in `.phpbench.sqlite` in the
+By default it is configured with an sqlite database in `.phpbench.sqlite` in the
 current working directory. It is recommended that you add this to your git
 ignore file:
 
@@ -33,12 +33,7 @@ ignore file:
     # ...
     .phpbench.sqlite
 
-For more details see the documentation :doc:`documentation <extensions/sqlite>`
-
-.. warning::
-
-    The Sqlite storage implementation is experimental and may change significantly or even
-    be replaced (for example by a general SQL storage driver) in later versions.
+For more details see the documentation :doc:`documentation <extensions/dbal>`
 
 Storing Results
 ---------------
@@ -188,6 +183,8 @@ be enclosed in square brackets as follows::
 
     param[points]: { $gt: 50 }
 
+.. _archive:
+
 Archiving
 ---------
 
@@ -199,12 +196,6 @@ configured storage. This allows you to:
 
 By default PHPBench is configured to use an ``XML`` archiver, which will dump
 results to a directory in the current working directory, ``_archive``.
-
-.. note::
-
-    In the future it will be possible to select GIT as an archiving
-    mechanism, so that your benchmarks are always stored in your codes GIT
-    repository.
 
 To archive::
 
