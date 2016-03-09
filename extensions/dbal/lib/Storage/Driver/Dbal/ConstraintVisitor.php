@@ -120,7 +120,7 @@ SELECT
     FROM iteration
     LEFT JOIN variant ON iteration.variant_id = variant.id
     LEFT JOIN subject ON variant.subject_id = subject.id
-    LEFT JOIN run ON variant.run_uuid = run.uuid
+    LEFT JOIN run ON variant.run_id = run.id
     %s
 WHERE
 

@@ -28,25 +28,27 @@ class Persister
         $conn = $this->manager->getConnection();
 
         foreach ($collection->getSuites() as $suite) {
-            $this->insertUpdate($conn, 'run', [
+            $id = $this->insertUpdate($conn, 'run', [
                 'uuid' => $suite->getUuid(),
                 'context' => $suite->getContextName(),
                 'date' => $suite->getDate()->format('Y-m-d H:i:s'),
             ]);
 
+            $envData = [];
             foreach ($suite->getEnvInformations() as $information) {
-                $envData = [];
                 foreach ($information as $key => $value) {
                     $envData[] = [
-                        'run_uuid' => $suite->getUuid(),
+                        'run_id' => $id,
                         'provider' => $information->getName(),
                         'ekey' => $key,
                         'value' => $value,
                     ];
                 }
-                $this->insertMultiple($conn, 'environment', $envData);
             }
+            $this->insertMultiple($conn, 'environment', $envData);
 
+            $iterationDatas = [];
+            $parameterAssocs = [];
             foreach ($suite->getBenchmarks() as $benchmark) {
                 foreach ($benchmark->getSubjects() as $subject) {
                     $data = [
@@ -70,33 +72,34 @@ class Persister
                             'sleep' => $subject->getSleep(),
                             'warmup' => $variant->getWarmup(),
                             'subject_id' => $subjectId,
-                            'run_uuid' => $suite->getUuid(),
+                            'run_id' => $id,
                         ];
                         $variantId = $this->insertUpdate($conn, 'variant', $data);
 
                         foreach ($variant->getParameterSet() as $key => $value) {
                             $value = json_encode($value);
                             $parameterId = $this->getOrCreateParameter($conn, $key, $value);
-                            $this->insertUpdate($conn, 'variant_parameter', [
+                            $parameterAssocs[] = [
                                 'variant_id' => $variantId,
                                 'parameter_id' => $parameterId,
-                            ]);
+                            ];
                         }
 
-                        $datas = [];
                         foreach ($variant as $iteration) {
-                            $datas[] = [
+                            $iterationDatas[] = [
                                 'time' => $iteration->getTime(),
                                 'memory' => $iteration->getMemory(),
                                 'reject_count' => $iteration->getRejectionCount(),
                                 'variant_id' => $variantId,
                             ];
                         }
-
-                        $this->insertMultiple($conn, 'iteration', $datas);
                     }
                 }
             }
+
+            // insert the iterations and variant parameter relations in batch
+            $this->insertMultiple($conn, 'iteration', $iterationDatas);
+            $this->insertMultiple($conn, 'variant_parameter', $parameterAssocs);
         }
     }
 

@@ -42,7 +42,7 @@ class Repository
 
     public function getRunEnvInformationRows($runId)
     {
-        $sql = 'SELECT * FROM environment WHERE run_uuid = ?';
+        $sql = 'SELECT * FROM environment WHERE run_id = ?';
 
         $conn = $this->manager->getConnection();
         $stmt = $conn->prepare($sql);
@@ -112,7 +112,7 @@ SELECT
     run.context AS context,
     environment.value AS vcs_branch
     FROM run
-    LEFT OUTER JOIN environment ON environment.provider = "vcs" AND environment.run_uuid = run.uuid AND environment.ekey = "branch"
+    LEFT OUTER JOIN environment ON environment.provider = "vcs" AND environment.run_id = run.id AND environment.ekey = "branch"
     ORDER BY run.date DESC
 EOT;
 
