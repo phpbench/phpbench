@@ -129,9 +129,10 @@ class BlinkenLogger extends AnsiLogger
      */
     public function iterationEnd(Iteration $iteration)
     {
+        $time = $this->formatIterationTime($iteration);
         $this->output->write(sprintf(
             "\x1B[" . $this->getXPos($iteration) . 'G%s',
-            $this->formatIterationTime($iteration)
+            $time
         ));
     }
 
@@ -146,9 +147,11 @@ class BlinkenLogger extends AnsiLogger
             $this->currentLine = $yPos;
         }
 
+        $time = $this->formatIterationTime($iteration);
+
         $this->output->write(sprintf(
             "\x1B[" . $this->getXPos($iteration) . 'G<bg=green>%s</>',
-            $this->formatIterationTime($iteration)
+            $time
         ));
     }
 
@@ -159,12 +162,19 @@ class BlinkenLogger extends AnsiLogger
     {
         $time = sprintf('%-' . $this->colWidth . 's', parent::formatIterationTime($iteration));
 
+        if (strlen(trim($time)) >= $this->colWidth) {
+            $this->colWidth += 2;
+            $this->resetLinePosition();
+            $this->drawIterations($iteration->getVariant(), $this->rejects, 'error');
+            $this->resetLinePosition();
+        }
+
         return $time;
     }
 
     private function drawIterations(Variant $variant, array $specials, $tag)
     {
-        $this->output->write("\x1B[0G"); // put cursor at column 0
+        $this->output->write("\x1B[2K"); // clear line
 
         $timeUnit = $variant->getSubject()->getOutputTimeUnit();
         $outputMode = $variant->getSubject()->getOutputMode();
@@ -176,15 +186,6 @@ class BlinkenLogger extends AnsiLogger
             $iteration = $variant->getIteration($index);
 
             $displayTime = $this->formatIterationTime($iteration);
-
-            if (strlen($displayTime) > $this->colWidth) {
-                // add one to allow a single space between columns
-                $this->colWidth = strlen($displayTime) + 1;
-                $this->resetLinePosition();
-
-                // redraw with the new spacing
-                return $this->drawIterations($variant, $specials, $tag);
-            }
 
             if (isset($specials[$iteration->getIndex()])) {
                 $displayTime = sprintf('<%s>%' . $this->colWidth . 's</%s>', $tag, $displayTime, $tag);
@@ -229,5 +230,8 @@ class BlinkenLogger extends AnsiLogger
             $this->output->write("\x1B[" . $this->currentLine . 'A'); // reset cursor Y pos
         }
         $this->currentLine = 0;
+
+        $xPos = 0;
+        $this->output->write("\x1B[" . $xPos . 'G');
     }
 }
