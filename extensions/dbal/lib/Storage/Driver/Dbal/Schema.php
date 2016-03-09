@@ -37,10 +37,12 @@ class Schema extends BaseSchema
     private function createRun()
     {
         $table = $this->createTable('run');
+        $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('uuid', 'string');
         $table->addColumn('context', 'string', ['notnull' => false]);
-        $table->addColumn('date', 'date');
-        $table->setPrimaryKey(['uuid']);
+        $table->addColumn('date', 'datetime');
+        $table->setPrimaryKey(['id']);
+        $table->addIndex(['uuid']);
         $this->runTable = $table;
     }
 
@@ -59,7 +61,7 @@ class Schema extends BaseSchema
     {
         $table = $this->createTable('variant');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
-        $table->addColumn('run_uuid', 'string');
+        $table->addColumn('run_id', 'integer');
         $table->addColumn('subject_id', 'integer');
         $table->addColumn('sleep', 'integer', ['notnull' => false]);
         $table->addColumn('output_time_unit', 'string', ['notnull' => false]);
@@ -70,7 +72,7 @@ class Schema extends BaseSchema
         $table->addColumn('retry_threshold', 'float', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addForeignKeyConstraint(
-            $this->runTable, ['run_uuid'], ['uuid']
+            $this->runTable, ['run_id'], ['id']
         );
         $table->addForeignKeyConstraint(
             $this->subjectTable, ['subject_id'], ['id']
@@ -105,12 +107,12 @@ class Schema extends BaseSchema
     {
         $table = $this->createTable('environment');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
-        $table->addColumn('run_uuid', 'string');
+        $table->addColumn('run_id', 'integer');
         $table->addColumn('provider', 'string');
         $table->addColumn('ekey', 'string');
         $table->addColumn('value', 'string');
         $table->addForeignKeyConstraint(
-            $this->runTable, ['run_uuid'], ['uuid']
+            $this->runTable, ['run_id'], ['id']
         );
         $table->setPrimaryKey(['id']);
     }
@@ -142,6 +144,6 @@ class Schema extends BaseSchema
     {
         $table = $this->createTable('version');
         $table->addColumn('phpbench_version', 'string');
-        $table->addColumn('date', 'date');
+        $table->addColumn('date', 'datetime');
     }
 }

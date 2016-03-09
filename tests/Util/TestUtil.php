@@ -83,7 +83,6 @@ class TestUtil
             'groups' => [],
             'name' => 'test',
             'benchmarks' => ['TestBench'],
-            'parameters' => [],
             'groups' => ['one', 'two', 'three'],
             'parameters' => [
                 'param1' => 'value1',

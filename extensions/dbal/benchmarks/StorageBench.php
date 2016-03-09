@@ -52,4 +52,31 @@ class StorageBench extends BaseBenchCase
         $this->driver->store($collection);
         $uuid++;
     }
+
+    public function benchStoreParams()
+    {
+        $uuid = uniqid();
+        $collection = TestUtil::createCollection([
+            [
+                'uuid' => $uuid . 'a',
+                'parameters' => [
+                    'one' => 'two',
+                    'three' => 'four',
+                    'two' => 'five',
+                    '7' => 'eight',
+                ],
+                'env' => [
+                    'foo' => ['foo' => 'bar', 'bar' => 'foo'],
+                    'bar' => ['foo' => 'bar', 'bar' => 'foo'],
+                    'baz' => ['foo' => 'bar', 'bar' => 'foo'],
+                    'bog' => ['foo' => 'bar', 'bar' => 'foo'],
+                ],
+            ],
+            ['uuid' => $uuid . 'b'],
+            ['uuid' => $uuid . 'c'],
+            ['uuid' => $uuid . 'd'],
+        ]);
+        $this->driver->store($collection);
+        $uuid++;
+    }
 }
