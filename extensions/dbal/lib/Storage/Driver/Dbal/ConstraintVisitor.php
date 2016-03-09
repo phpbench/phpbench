@@ -80,6 +80,7 @@ class ConstraintVisitor
         $this->value = [];
         $this->paramCounter = 0;
         $select = [
+            'run.id',
             'run.uuid',
             'run.context',
             'run.date',

@@ -149,7 +149,7 @@ class Loader
 
         $context[self::SUITES][$key] = $suite;
 
-        $envRows = $this->repository->getRunEnvInformationRows($row['run.uuid']);
+        $envRows = $this->repository->getRunEnvInformationRows($row['run.id']);
 
         $providerData = [];
         foreach ($envRows as $row) {
