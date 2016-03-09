@@ -12,10 +12,10 @@
 namespace PhpBench\Extensions\Dbal\Tests\Functional\Storage\Driver\Dbal;
 
 use PhpBench\Expression\Constraint\Comparison;
-use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\ConstraintVisitor;
 use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\Loader;
 use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\Persister;
 use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\Repository;
+use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\Visitor\SqlVisitor;
 use PhpBench\Extensions\Dbal\Tests\Functional\DbalTestCase;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Tests\Util\TestUtil;
@@ -34,7 +34,7 @@ class LoaderTest extends DbalTestCase
         // instantiate persister
         $this->persister = new Persister($this->manager);
 
-        $this->visitor = new ConstraintVisitor();
+        $this->visitor = new SqlVisitor();
         $repository = new Repository($this->manager, $this->visitor);
         $this->loader = new Loader($repository);
     }

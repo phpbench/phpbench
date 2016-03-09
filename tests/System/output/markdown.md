@@ -1,7 +1,7 @@
 PHPBench Benchmark Results
 ==========================
 
-### suite: %run.uuid%
+### suite: %run.uuid%, date: %date%, stime: %time%
 
 benchmark | subject | groups | params | revs | iter | rej | mem | time | z-value | diff
  --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- 

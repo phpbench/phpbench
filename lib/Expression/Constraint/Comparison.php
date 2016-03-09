@@ -72,4 +72,9 @@ class Comparison extends Constraint
     {
         return $this->value;
     }
+
+    public function replaceValue($newValue)
+    {
+        $this->value = $newValue;
+    }
 }

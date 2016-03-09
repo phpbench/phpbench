@@ -242,10 +242,10 @@ following:
 
 .. code-block:: bash
 
-    $ ./vendor/bin/phpbench run benchmarks/TimeConsumerBench.php --report='{"extends": "default", "exclude": ["benchmark", "subject"]}'
+    $ ./vendor/bin/phpbench run benchmarks/TimeConsumerBench.php --report='{"extends": "aggregate", "cols": ["subject", "mode""]}'
 
 Above we configure a new report which extends the ``default`` report that we
-have already used, but we exclude the ``benchmark`` and ``subject`` columns.
+have already used, but we use only the ``subject`` and ``mode`` columns.
 A full list of all the options for the default reports can be found in the
 :doc:`report-generators` chapter.
 
@@ -264,7 +264,7 @@ Now to finish off, lets add the path and new report to the configuration file:
                 "extends": "default",
                 "title": "The Consumation of Time",
                 "description": "Benchmark how long it takes to consume time",
-                "exclude": ["benchmark", "subject", "group", "params", "revs"]
+                "cols": [ "subject", "mode" ]
             }
         }
     }

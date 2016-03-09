@@ -90,6 +90,7 @@ EOT
             $output->write('Storing results ... ');
             $this->storage->getService()->store($collection);
             $output->writeln('OK');
+            $output->writeln(sprintf('Run: %s', $suite->getUuid()));
         }
 
         $this->reportHandler->reportsFromInput($input, $output, $collection);
