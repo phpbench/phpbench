@@ -77,7 +77,7 @@ class SqlVisitor
         $sql = $this->doVisit($constraint);
 
         $return = [$sql, $this->values];
-        $this->value = [];
+        $this->values = [];
         $this->paramCounter = 0;
         $select = [
             'run.id',

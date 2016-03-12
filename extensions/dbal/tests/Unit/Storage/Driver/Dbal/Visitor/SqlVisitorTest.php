@@ -232,4 +232,22 @@ class SqlVisitorTest extends \PHPUnit_Framework_TestCase
 
         $this->visitor->visit($constraint->reveal());
     }
+
+    /**
+     * It should reset the values on each call.
+     */
+    public function testResetState()
+    {
+        $constraint = $this->parser->parse('run: { $in: ["foo", "bar"]}');
+        $query = $this->visitor->visit($constraint);
+        $this->assertEquals([
+            'param0' => 'foo', 'param1' => 'bar',
+        ], $query[1]);
+
+        $constraint = $this->parser->parse('run: "vat"');
+        $query = $this->visitor->visit($constraint);
+        $this->assertEquals([
+            'param0' => 'vat',
+        ], $query[1]);
+    }
 }
