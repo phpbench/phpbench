@@ -12,6 +12,7 @@
 namespace PhpBench\Extensions\Dbal\Storage\Driver\Dbal;
 
 use Doctrine\DBAL\Connection;
+use PhpBench\Model\Iteration;
 use PhpBench\Model\SuiteCollection;
 
 class Persister
@@ -28,10 +29,19 @@ class Persister
         $conn = $this->manager->getConnection();
 
         foreach ($collection->getSuites() as $suite) {
+            $summary = $suite->getSummary();
             $id = $this->insertUpdate($conn, 'run', [
                 'uuid' => $suite->getUuid(),
                 'context' => $suite->getContextName(),
                 'date' => $suite->getDate()->format('Y-m-d H:i:s'),
+                'nb_subjects' => $summary->getNbSubjects(),
+                'nb_iterations' => $summary->getNbIterations(),
+                'nb_revolutions' => $summary->getNbRevolutions(),
+                'min_time' => $summary->getMinTime(),
+                'max_time' => $summary->getMaxTime(),
+                'mean_time' => $summary->getMeanTime(),
+                'mean_rstdev' => $summary->getMeanRelStDev(),
+                'total_time' => $summary->getTotalTime(),
             ]);
 
             $envData = [];

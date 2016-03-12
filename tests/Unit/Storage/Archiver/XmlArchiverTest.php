@@ -121,7 +121,20 @@ class XmlArchiverTest extends \PHPUnit_Framework_TestCase
 
     private function createHistoryEntry($identifier)
     {
-        return new HistoryEntry($identifier, new \DateTime(), 'foo', 'branch');
+        return new HistoryEntry(
+            $identifier,
+            new \DateTime(),
+            'foo',
+            'branch',
+            10,
+            20,
+            40,
+            0.5,
+            2,
+            1.25,
+            0.75,
+            100
+        );
     }
 
     private function createFileInfo($path)
