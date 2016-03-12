@@ -373,6 +373,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
         }
 
         $table = [];
+        $columnNames = [];
         foreach ($suiteCollection->getSuites() as $suiteIndex => $suite) {
             $env = $suite->getEnvInformations();
 
@@ -432,6 +433,12 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
                             }
                         }
 
+                        foreach ($row->getNames() as $columnName) {
+                            if (!isset($columnNames[$columnName])) {
+                                $columnNames[$columnName] = true;
+                            }
+                        }
+
                         // if the iterations option is specified then we add a row for each iteration, otherwise
                         // we continue.
                         if (false === $config['iterations']) {
@@ -448,6 +455,18 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
                             $table[] = $row;
                         }
                     }
+                }
+            }
+        }
+
+        // multiple suites may have different column names, for example the
+        // number of environment columns may differ. here we iterate over all
+        // the rows to ensure they all have all of the columns which have been
+        // defined.
+        foreach ($table as $row) {
+            foreach (array_keys($columnNames) as $columnName) {
+                if (!isset($row[$columnName])) {
+                    $row[$columnName] = null;
                 }
             }
         }

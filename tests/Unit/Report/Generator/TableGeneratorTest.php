@@ -430,6 +430,38 @@ EOT
         , $value);
     }
 
+    /**
+     * It should normalize the column names for each row.
+     */
+    public function testNormalizeColumnNames()
+    {
+        $report = $this->generate(
+            TestUtil::createCollection([
+                [
+                    'env' => [
+                        'uname' => [
+                            'os' => 'linux',
+                        ],
+                    ],
+                ],
+                [
+                    'env' => [
+                        'foobar' => [
+                            'os' => 'linux',
+                        ],
+                    ],
+                ],
+            ]),
+            [
+                'cols' => ['uname_os', 'foobar_os'],
+            ]
+        );
+
+        $this->assertXPathCount($report, 2, '//cell[@name="uname_os"]');
+        $this->assertXPathCount($report, 1, '//cell[@name="uname_os" and text() = "linux"]');
+        $this->assertXPathCount($report, 2, '//cell[@name="foobar_os"]');
+    }
+
     private function generate(SuiteCollection $collection, array $config = [])
     {
         $config = new Config('test', array_merge(
