@@ -53,15 +53,13 @@ see what you have got:
 
 .. code-block:: bash
 
-    $ phpbench history
-    Limit set to 10
-    Run     Date                    VCS Branch      Context
+    $ phpbench history --limit=4
+    [ Run UUID | Date | VCS Branch ]
 
-    239     2016-02-10 12:10:35     storage
-    238     2016-02-10 12:09:10     storage
-    237     2016-02-10 12:08:54     storage
-    236     2016-02-10 12:08:45     storage
-    235     2016-02-10 12:08:01     storage
+    f2ac33a104dec862826b6b70b1a9f1bf47bb4d57        2016-03-09 11:46:58     master
+    d114cec2f5b470613779a1eb9b61d4db47dc6818        2016-03-09 11:45:49     special_value
+    60120e501e7fa4f0f800db4a8955006247244542        2016-03-09 11:38:03     special_value
+    ef5a6a31dacc2543037eb9dcfd092ec7a034fc2f        2016-03-09 11:37:39     special_value
 
 Querying and Report Generation
 ------------------------------
@@ -91,6 +89,19 @@ A more complex example:
 
 This would generate a suite collection containing all the ``benchMd5``
 subjects created after ``2016-02-09``.
+
+Special Values
+~~~~~~~~~~~~~~
+
+Some fields can accept special token values which will be replaced dynamically
+before the query is executed.
+
+Currently you can specify the token ``latest`` as the value of ``run`` which
+will resolve to the UUID of the latest suite in storage.
+
+.. code-block:: bash
+
+    $ phpbench report --report=aggregate --query='run: "latest"'
 
 Logical Operators
 ~~~~~~~~~~~~~~~~~

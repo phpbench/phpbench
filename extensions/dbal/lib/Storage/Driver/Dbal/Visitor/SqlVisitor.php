@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Extensions\Dbal\Storage\Driver\Dbal;
+namespace PhpBench\Extensions\Dbal\Storage\Driver\Dbal\Visitor;
 
 use PhpBench\Expression\Constraint\Comparison;
 use PhpBench\Expression\Constraint\Composite;
@@ -18,7 +18,7 @@ use PhpBench\Expression\Constraint\Constraint;
 /**
  * Converts a Constraint object graph into an SQL query.
  */
-class ConstraintVisitor
+class SqlVisitor
 {
     /**
      * @var int

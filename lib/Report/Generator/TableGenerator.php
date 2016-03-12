@@ -61,7 +61,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
             'title' => null,
             'description' => null,
             'cols' => ['benchmark', 'subject', 'groups', 'params', 'revs', 'its', 'mem', 'best', 'mean', 'mode', 'worst', 'stdev', 'rstdev', 'diff'],
-            'break' => ['suite'],
+            'break' => ['suite', 'date', 'stime'],
             'compare' => null,
             'compare_fields' => ['mean'],
             'diff_col' => 'mean',

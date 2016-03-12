@@ -95,6 +95,8 @@ class ReportOutputTest extends SystemTestCase
 
         // replace the unique suite hash with %run.uuid%
         $actual = preg_replace('{([0-9a-f]{40})}', '%run.uuid%', $actual);
+        $actual = preg_replace('{([0-9]{4}-[0-9]{2}-[0-9]{2})}', '%date%', $actual);
+        $actual = preg_replace('{([0-9]{2}:[0-9]{2}:[0-9]{2})}', '%time%', $actual);
 
         $this->assertContains($expected, $actual);
         unlink($generatedFilename);

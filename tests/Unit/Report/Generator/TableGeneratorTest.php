@@ -288,7 +288,8 @@ class TableGeneratorTest extends GeneratorTestCase
     public function testTitles()
     {
         $collection = TestUtil::createCollection([
-            [],
+            [
+            ],
         ]);
 
         $report = $this->generate($collection, [
@@ -300,7 +301,7 @@ class TableGeneratorTest extends GeneratorTestCase
         $this->assertXPathCount($report, 1, '//report[description="The world said hello back."]');
 
         // the table title is the break criteria, in this case the suite index.
-        $this->assertXPathCount($report, 1, '//table[@title="suite: 0"]');
+        $this->assertXPathCount($report, 1, '//table[@title="suite: 0, date: 2016-02-06, stime: 00:00:00"]');
     }
 
     /**

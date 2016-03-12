@@ -9,21 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Tests\Unit\Storage\Driver\Dbal;
+namespace PhpBench\Tests\Unit\Storage\Driver\Dbal\Visitor;
 
 use PhpBench\Expression\Constraint\Comparison;
 use PhpBench\Expression\Constraint\Composite;
 use PhpBench\Expression\Constraint\Constraint;
 use PhpBench\Expression\Parser;
-use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\ConstraintVisitor;
+use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\Visitor\SqlVisitor;
 
-class ConstraintVisitorTest extends \PHPUnit_Framework_TestCase
+class SqlVisitorTest extends \PHPUnit_Framework_TestCase
 {
     private $visitor;
 
     public function setUp()
     {
-        $this->visitor = new ConstraintVisitor();
+        $this->visitor = new SqlVisitor();
         $this->parser = new Parser();
     }
 

@@ -66,16 +66,16 @@ class RepositoryTest extends DbalTestCase
 
         $this->assertEquals([
             [
-                'run_date' => '2016-01-01 00:00:00',
-                'context' => 'one',
-                'vcs_branch' => 'branch_1',
-                'run_uuid' => 1,
-            ],
-            [
                 'run_date' => '2015-01-01 00:00:00',
                 'context' => 'two',
                 'vcs_branch' => 'branch_2',
                 'run_uuid' => 2,
+            ],
+            [
+                'run_date' => '2016-01-01 00:00:00',
+                'context' => 'one',
+                'vcs_branch' => 'branch_1',
+                'run_uuid' => 1,
             ],
         ], $rows);
     }
@@ -101,5 +101,31 @@ class RepositoryTest extends DbalTestCase
         $params = $this->repository->getParameters(1);
 
         $this->assertEquals($parameters, $params);
+    }
+
+    /**
+     * It should retrieve the latest suite UUID.
+     */
+    public function testLastestSuiteUuid()
+    {
+        $suiteCollection = new SuiteCollection([
+            TestUtil::createSuite([
+                'uuid' => 50,
+            ]),
+            TestUtil::createSuite([
+                'uuid' => 5,
+            ]),
+            TestUtil::createSuite([
+                'uuid' => 500,
+            ]),
+            TestUtil::createSuite([
+                'uuid' => 7,
+            ]),
+        ]);
+
+        $this->persister->persist($suiteCollection);
+        $latestUuid = $this->repository->getLatestRunUuid();
+
+        $this->assertEquals(7, $latestUuid);
     }
 }

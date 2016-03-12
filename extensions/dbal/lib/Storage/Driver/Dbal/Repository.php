@@ -12,6 +12,7 @@
 namespace PhpBench\Extensions\Dbal\Storage\Driver\Dbal;
 
 use PhpBench\Expression\Constraint\Constraint;
+use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\Visitor\SqlVisitor;
 
 /**
  * Class for retrieving data from the database.
@@ -19,17 +20,20 @@ use PhpBench\Expression\Constraint\Constraint;
 class Repository
 {
     private $manager;
-    private $visitor;
+    private $sqlVisitor;
+    private $tokenVisitor;
 
-    public function __construct(ConnectionManager $manager, ConstraintVisitor $visitor = null)
+    public function __construct(ConnectionManager $manager, SqlVisitor $visitor = null)
     {
         $this->manager = $manager;
-        $this->visitor = $visitor ?: new ConstraintVisitor();
+        $this->sqlVisitor = $visitor ?: new Visitor\SqlVisitor();
+        $this->tokenVisitor = $visitor ?: new Visitor\TokenValueVisitor($this);
     }
 
     public function getIterationRows(Constraint $constraint)
     {
-        list($sql, $values) = $this->visitor->visit($constraint);
+        $this->tokenVisitor->visit($constraint);
+        list($sql, $values) = $this->sqlVisitor->visit($constraint);
 
         $conn = $this->manager->getConnection();
         $stmt = $conn->prepare($sql);
@@ -103,6 +107,15 @@ EOT;
         return $stmt->fetch() ? true : false;
     }
 
+    public function getLatestRunUuid()
+    {
+        $conn = $this->manager->getConnection();
+        $stmt = $conn->prepare('SELECT uuid FROM run ORDER BY id DESC LIMIT 1');
+        $stmt->execute();
+
+        return $stmt->fetchColumn();
+    }
+
     public function getHistoryStatement()
     {
         $sql = <<<'EOT'
@@ -113,7 +126,7 @@ SELECT
     environment.value AS vcs_branch
     FROM run
     LEFT OUTER JOIN environment ON environment.provider = "vcs" AND environment.run_id = run.id AND environment.ekey = "branch"
-    ORDER BY run.date DESC
+    ORDER BY run.id DESC
 EOT;
 
         $conn = $this->manager->getConnection();
