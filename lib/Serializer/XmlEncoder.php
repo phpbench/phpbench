@@ -131,12 +131,21 @@ class XmlEncoder
             $iterationEl->setAttribute('memory', $iteration->getMemory());
             $iterationEl->setAttribute('deviation', $iteration->getDeviation());
             $iterationEl->setAttribute('rejection-count', $iteration->getRejectionCount());
+            $iterationEl->setAttribute('baseline', $iteration->getBaseline());
         }
 
         $statsEl = $variantEl->appendElement('stats');
         foreach ($stats as $statName => $statValue) {
             $statsEl->setAttribute($statName, $statValue);
         }
+
+        $stats = $variant->getBaselineStats();
+        $statsEl = $variantEl->appendElement('blstats');
+        $statsEl->setAttribute('stdev', $stats->getStdev());
+        $statsEl->setAttribute('rstdev', $stats->getRstdev());
+        $statsEl->setAttribute('mean', $stats->getMean());
+        $statsEl->setAttribute('min', $stats->getMin());
+        $statsEl->setAttribute('max', $stats->getMax());
     }
 
     private function createParameter($parentEl, $name, $value)

@@ -42,8 +42,8 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
         'mem' => ['mem'],
         'diff' => ['diff'],
         'z-value' => ['z-value'],
-        'baseline_nothing' => array('timeunit'),
-        'baseline_md5' => array('timeunit'),
+        'baseline_nothing' => array('microseconds'),
+        'baseline_md5' => array('microseconds'),
     ];
 
     /**
@@ -416,6 +416,10 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
                         $stats = $variant->getStats()->getStats();
                         $stats['best'] = $stats['min'];
                         $stats['worst'] = $stats['max'];
+
+                        foreach ($variant->getBaselineStats()->getStats() as $blKey => $blValue) {
+                            $stats['bl_' . $blKey] = $blValue;
+                        }
 
                         // save on duplication and lazily evaluate the
                         // available statistics.

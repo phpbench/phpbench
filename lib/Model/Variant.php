@@ -99,10 +99,10 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
      *
      * @return Iteration
      */
-    public function createIteration($time, $memory, $rejectionCount = 0)
+    public function createIteration($time, $memory, $rejectionCount = 0, $baseline = null)
     {
         $index = count($this->iterations);
-        $iteration = $iteration = new Iteration($index, $this, $time, $memory, $rejectionCount);
+        $iteration = $iteration = new Iteration($index, $this, $time, $memory, $rejectionCount, null, null, $baseline);
         $this->iterations[] = $iteration;
 
         return $iteration;
@@ -146,6 +146,16 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
         $times = [];
         foreach ($this->iterations as $iteration) {
             $times[] = $iteration->getRevTime();
+        }
+
+        return $times;
+    }
+
+    public function getBaselines()
+    {
+        $times = [];
+        foreach ($this->iterations as $iteration) {
+            $times[] = $iteration->getBaseline();
         }
 
         return $times;
@@ -199,6 +209,7 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
         $retryThreshold = $this->getSubject()->getRetryThreshold();
 
         $this->stats = new Distribution($times);
+        $this->baselineStats = new Distribution($this->getBaselines());
 
         foreach ($this->iterations as $iteration) {
             // deviation is the percentage different of the value from the mean of the set.
@@ -273,6 +284,24 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
         }
 
         return $this->stats;
+    }
+
+    public function getBaselineStats()
+    {
+        if (null !== $this->errorStack) {
+            throw new \RuntimeException(sprintf(
+                'Cannot retrieve stats when an exception was encountered ([%s] %s)',
+                $this->errorStack->getTop()->getClass(),
+                $this->errorStack->getTop()->getMessage()
+            ));
+        }
+
+        if (false === $this->computed) {
+            throw new \RuntimeException(
+                'No statistics have yet been computed for this iteration set (::computeStats should be called)'
+            );
+        }
+        return $this->baselineStats;
     }
 
     /**

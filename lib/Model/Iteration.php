@@ -24,6 +24,7 @@ class Iteration
     private $deviation;
     private $rejectionCount = 0;
     private $zValue;
+    private $baseline;
 
     /**
      * @param int $index
@@ -36,7 +37,8 @@ class Iteration
         $memory = null,
         $rejectionCount = 0,
         $deviation = null,
-        $zValue = null
+        $zValue = null,
+        $baseline = null
     ) {
         $this->index = $index;
         $this->variant = $variant;
@@ -45,6 +47,7 @@ class Iteration
         $this->rejectionCount = $rejectionCount;
         $this->deviation = $deviation;
         $this->zValue = $zValue;
+        $this->baseline = $baseline;
     }
 
     /**
@@ -170,5 +173,15 @@ class Iteration
     public function getRevTime()
     {
         return $this->time / $this->getVariant()->getRevolutions();
+    }
+
+    public function setBaseline($baseline)
+    {
+        $this->baseline = $baseline;
+    }
+
+    public function getBaseline()
+    {
+        return $this->baseline;
     }
 }

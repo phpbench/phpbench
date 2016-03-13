@@ -216,6 +216,18 @@ class Runner
         }
 
         $iteration->setResult($result);
+        $iteration->setBaseline($this->measure(function () {  }));
         $this->logger->iterationEnd($iteration);
+    }
+
+    private function measure(\Closure $callback)
+    {
+        $start = microtime(true);
+        $revs = 5E4;
+        for ($i = 0; $i <= $revs; $i++) {
+            $callback();
+        }
+
+        return (microtime(true) - $start) / $revs * 1E6;
     }
 }

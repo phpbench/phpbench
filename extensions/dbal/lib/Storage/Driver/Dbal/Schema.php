@@ -135,6 +135,7 @@ class Schema extends BaseSchema
         $table->addColumn('time', 'integer');
         $table->addColumn('memory', 'integer');
         $table->addColumn('reject_count', 'integer');
+        $table->addColumn('baseline', 'float');
         $table->addForeignKeyConstraint(
             $this->variantTable, ['variant_id'], ['id']
         );

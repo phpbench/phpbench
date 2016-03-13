@@ -96,6 +96,7 @@ class SqlVisitor
             'variant.retry_threshold',
             'variant.warmup',
             'iteration.time',
+            'iteration.baseline',
             'iteration.memory',
             'iteration.reject_count',
         ];

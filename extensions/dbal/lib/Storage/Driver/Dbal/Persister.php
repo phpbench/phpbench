@@ -88,6 +88,7 @@ class Persister
                         foreach ($variant as $iteration) {
                             $iterationDatas[] = [
                                 'time' => $iteration->getTime(),
+                                'baseline' => $iteration->getBaseline(),
                                 'memory' => $iteration->getMemory(),
                                 'reject_count' => $iteration->getRejectionCount(),
                                 'variant_id' => $variantId,

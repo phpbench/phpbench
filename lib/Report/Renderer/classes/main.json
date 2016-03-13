@@ -21,6 +21,9 @@
     ],
     "timeunit": [
         [ "time", { "precision": "{{ output_time_precision }}", "unit": "{{ output_time_unit }}", "mode": "{{ output_mode }}", "resolve": ["mode", "unit"] }]
+    ],
+    "microseconds": [
+        [ "time", { "precision": "3", "unit": "microseconds", "resolve": ["mode", "unit"] }]
     ]
 }
 

@@ -63,7 +63,7 @@ class Loader
             $benchmark = $this->getBenchmark($context, $suite, $row);
             $subject = $this->getSubject($context, $benchmark, $row);
             $variant = $this->getVariant($context, $subject, $row);
-            $iteration = new Iteration(0, $variant, $row['iteration.time'], $row['iteration.memory']);
+            $iteration = new Iteration(0, $variant, $row['iteration.time'], $row['iteration.memory'], null, null, null, $row['iteration.baseline']);
             $variant->addIteration($iteration);
         }
 

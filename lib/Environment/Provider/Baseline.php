@@ -38,10 +38,11 @@ class Baseline implements ProviderInterface
     private function measure(\Closure $callback)
     {
         $start = microtime(true);
-        for ($i = 0; $i <= 1E5; $i++) {
+        $revs = 5E4;
+        for ($i = 0; $i <= $revs; $i++) {
             $callback();
         }
 
-        return (microtime(true) - $start) / 1E5 * 1E6;
+        return (microtime(true) - $start) / $revs * 1E6;
     }
 }

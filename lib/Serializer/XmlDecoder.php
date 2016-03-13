@@ -183,7 +183,8 @@ class XmlDecoder
             $variant->createIteration(
                 $iterationEl->getAttribute('net-time'),
                 $iterationEl->getAttribute('memory'),
-                $iterationEl->getAttribute('rejection-count')
+                $iterationEl->getAttribute('rejection-count'),
+                $iterationEl->getAttribute('baseline')
             );
         }
 
