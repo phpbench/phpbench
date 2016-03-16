@@ -2,11 +2,6 @@
     "bootstrap": "vendor/autoload.php",
     "path": "benchmarks",
     "storage": "dbal",
-    "storage.dbal.connection": {
-        "driver": "pdo_mysql",
-        "dbname": "phpbench_benchmarks",
-        "user": "root"
-    },
     "extensions": [
         "PhpBench\\Extensions\\XDebug\\XDebugExtension",
         "PhpBench\\Extensions\\Dbal\\DbalExtension"

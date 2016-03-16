@@ -17,8 +17,8 @@ This information is recorded in the XML document:
       <vcs system="git" branch="env_info" version="edde9dc7542cfa8e3ef4da459f0aaa5dfb095109"/>
     </env>
 
-It can be readily viewed using the :ref:`report_env` report.
-
+This information can be readily viewed with the :ref:`report_env` report and can also be
+displayed when using the :ref:`table report generator <generator_table>`.
 
 GIT
 ---
@@ -55,6 +55,22 @@ Unix Sysload
 
 Provides the `CPU load`_ for the following time periods: 1 minute, 5 minutes and
 15 minutes.
+
+Baseline
+--------
+
+**Class**: ``PhpBench\Environment\Provider\Baseline``
+**Available**: Always
+
+Provides baseline measurements, by default it will provide mean times for
+executing the following micro-benchmarks (1000 revolutions):
+
+- ``nothing``: An empty method.
+- ``md5``: Calculation of an MD5 hash.
+- ``file_rw``: File read and write.
+
+These measurements can help determine the relative speed of the system under
+test compared to other systems.
 
 .. _CPU load: https://en.wikipedia.org/wiki/Load_(computing)
 .. _php_uname: http://php.net/manual/en/function.php-uname.php
