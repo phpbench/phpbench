@@ -21,16 +21,42 @@ class HistoryEntry
     private $context;
     private $branch;
 
+    private $nbSubjects;
+    private $nbIterations;
+    private $nbRevolutions;
+
+    private $minTime;
+    private $maxTime;
+    private $meanTime;
+    private $meanRelStDev;
+    private $totalTime;
+
     public function __construct(
         $runId,
         \DateTime $date,
         $context,
-        $branch
+        $branch,
+        $nbSubjects,
+        $nbIterations,
+        $nbRevolutions,
+        $minTime,
+        $maxTime,
+        $meanTime,
+        $meanRelStDev,
+        $totalTime
     ) {
         $this->runId = $runId;
         $this->date = $date;
         $this->context = $context;
         $this->branch = $branch;
+        $this->nbSubjects = $nbSubjects;
+        $this->nbIterations = $nbIterations;
+        $this->nbRevolutions = $nbRevolutions;
+        $this->minTime = $minTime;
+        $this->maxTime = $maxTime;
+        $this->meanTime = $meanTime;
+        $this->meanRelStDev = $meanRelStDev;
+        $this->totalTime = $totalTime;
     }
 
     public function getRunId()
@@ -48,8 +74,48 @@ class HistoryEntry
         return $this->context;
     }
 
+    public function getNbSubjects()
+    {
+        return $this->nbSubjects;
+    }
+
+    public function getNbIterations()
+    {
+        return $this->nbIterations;
+    }
+
+    public function getNbRevolutions()
+    {
+        return $this->nbRevolutions;
+    }
+
     public function getVcsBranch()
     {
         return $this->branch;
+    }
+
+    public function getMinTime()
+    {
+        return $this->minTime;
+    }
+
+    public function getMaxTime()
+    {
+        return $this->maxTime;
+    }
+
+    public function getMeanTime()
+    {
+        return $this->meanTime;
+    }
+
+    public function getMeanRelStDev()
+    {
+        return $this->meanRelStDev;
+    }
+
+    public function getTotalTime()
+    {
+        return $this->totalTime;
     }
 }

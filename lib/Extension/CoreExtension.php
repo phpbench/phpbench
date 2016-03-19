@@ -27,7 +27,7 @@ use PhpBench\Console\Command\Handler\ReportHandler;
 use PhpBench\Console\Command\Handler\RunnerHandler;
 use PhpBench\Console\Command\Handler\SuiteCollectionHandler;
 use PhpBench\Console\Command\Handler\TimeUnitHandler;
-use PhpBench\Console\Command\HistoryCommand;
+use PhpBench\Console\Command\LogCommand;
 use PhpBench\Console\Command\ReportCommand;
 use PhpBench\Console\Command\RunCommand;
 use PhpBench\DependencyInjection\Container;
@@ -324,9 +324,11 @@ class CoreExtension implements ExtensionInterface
             );
         }, ['console.command' => []]);
 
-        $container->register('console.command.history', function (Container $container) {
-            return new HistoryCommand(
-                $container->get('storage.driver_registry')
+        $container->register('console.command.log', function (Container $container) {
+            return new LogCommand(
+                $container->get('storage.driver_registry'),
+                $container->get('benchmark.time_unit'),
+                $container->get('console.command.handler.time_unit')
             );
         }, ['console.command' => []]);
 

@@ -41,6 +41,14 @@ class Schema extends BaseSchema
         $table->addColumn('uuid', 'string');
         $table->addColumn('context', 'string', ['notnull' => false]);
         $table->addColumn('date', 'datetime');
+        $table->addColumn('nb_subjects', 'integer');
+        $table->addColumn('nb_iterations', 'integer');
+        $table->addColumn('nb_revolutions', 'integer');
+        $table->addColumn('min_time', 'float');
+        $table->addColumn('max_time', 'float');
+        $table->addColumn('mean_time', 'float');
+        $table->addColumn('mean_rstdev', 'float');
+        $table->addColumn('total_time', 'float');
         $table->setPrimaryKey(['id']);
         $table->addIndex(['uuid']);
         $this->runTable = $table;

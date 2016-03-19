@@ -44,7 +44,15 @@ class HistoryIterator implements HistoryIteratorInterface
             $current['run_uuid'],
             new \DateTime($current['run_date']),
             $current['context'],
-            $current['vcs_branch']
+            $current['vcs_branch'],
+            $current['nb_subjects'],
+            $current['nb_iterations'],
+            $current['nb_revolutions'],
+            $current['min_time'],
+            $current['max_time'],
+            $current['mean_time'],
+            $current['mean_rstdev'],
+            $current['total_time']
         );
 
         return $entry;

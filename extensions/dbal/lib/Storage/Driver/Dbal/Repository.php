@@ -123,7 +123,15 @@ SELECT
     run.uuid AS run_uuid, 
     run.date AS run_date,
     run.context AS context,
-    environment.value AS vcs_branch
+    environment.value AS vcs_branch,
+    run.nb_subjects AS nb_subjects,
+    run.nb_iterations AS nb_iterations,
+    run.nb_revolutions AS nb_revolutions,
+    run.min_time AS min_time,
+    run.max_time AS max_time,
+    run.mean_time AS mean_time,
+    run.mean_rstdev AS mean_rstdev,
+    run.total_time AS total_time
     FROM run
     LEFT OUTER JOIN environment ON environment.provider = "vcs" AND environment.run_id = run.id AND environment.ekey = "branch"
     ORDER BY run.id DESC
