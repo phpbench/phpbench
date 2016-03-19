@@ -54,6 +54,10 @@ HTML report:
 
 ![phpbench2](https://cloud.githubusercontent.com/assets/530801/10666918/bb61e438-78d4-11e5-8add-454c51261aa8.png)
 
+Storage log:
+
+![storage_log](https://cloud.githubusercontent.com/assets/530801/13897608/e9774d7e-edad-11e5-9d39-750a394e9fbf.png)
+
 See also
 --------
 
