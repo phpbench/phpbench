@@ -11,6 +11,8 @@
 
 namespace PhpBench\Tests\System;
 
+use PhpBench\Dom\Document;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
 class SystemTestCase extends \PHPUnit_Framework_TestCase
@@ -20,22 +22,48 @@ class SystemTestCase extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->fname = tempnam(sys_get_temp_dir(), 'phpbench_report_output_test');
-    }
-
-    public function createResult($benchmark = 'benchmarks/set4')
-    {
-        $process = $this->phpbench(
-            'run ' . $benchmark . ' --executor=debug --dump-file=' . $this->fname
-        );
-
-        if ($process->getExitCode() !== 0) {
-            throw new \Exception('Could not generate test data:' . $process->getErrorOutput() . $process->getOutput());
-        }
+        $this->clearStorage();
     }
 
     public function tearDown()
     {
         unlink($this->fname);
+        $this->clearStorage();
+    }
+
+    public function createResult($benchmark = null, $extraCmd = '')
+    {
+        $benchmark = $benchmark ?: 'benchmarks/set4';
+
+        $process = $this->phpbench(
+            'run ' . $benchmark . ' --executor=debug --dump-file=' . $this->fname . ' ' . $extraCmd
+        );
+
+        if ($process->getExitCode() !== 0) {
+            throw new \Exception('Could not generate test data:' . $process->getErrorOutput() . $process->getOutput());
+        }
+
+        $document = new Document();
+        $document->load($this->fname);
+
+        return $document;
+    }
+
+    /**
+     * TODO: We should be using a generic temporary environment here
+     *       as provided by PhpBench\Tests\Util\Workspace however this
+     *       requires futher refactoring of the tests.
+     */
+    public function clearStorage()
+    {
+        $filesystem = new Filesystem();
+        $filesystem = new Filesystem();
+        foreach (['_storage', '_archive'] as $dirname) {
+            $storageDir = __DIR__ . '/' . $dirname;
+            if ($filesystem->exists($storageDir)) {
+                $filesystem->remove($storageDir);
+            }
+        }
     }
 
     protected function getWorkingDir($workingDir = '.')

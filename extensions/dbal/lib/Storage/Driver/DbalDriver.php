@@ -68,14 +68,14 @@ class DbalDriver implements DriverInterface
      */
     public function fetch($runId)
     {
-        $comparison = new Comparison('$eq', 'run', $runId);
-        $collection = $this->query($comparison);
-
-        if (count($collection->getSuites()) === 0) {
+        if (!$this->repository->hasRun($runId)) {
             throw new \InvalidArgumentException(sprintf(
                 'Could not find suite with run ID "%s"', $runId
             ));
         }
+
+        $comparison = new Comparison('$eq', 'run', $runId);
+        $collection = $this->query($comparison);
 
         return $collection;
     }

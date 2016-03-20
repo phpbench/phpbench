@@ -103,4 +103,15 @@ class DistributionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(10, $stats['min']);
         $this->assertEquals(20, $stats['max']);
     }
+
+    /**
+     * It should throw an exception if a non-recognized pre-computed statistic is passed.
+     *
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage Unknown pre-computed stat(s) encountered: "bar_stat", "boo_stat"
+     */
+    public function testNonRecognizedPreComputed()
+    {
+        new Distribution([10, 20], ['bar_stat' => 1, 'boo_stat' => 2]);
+    }
 }

@@ -189,19 +189,17 @@ class Suite implements \IteratorAggregate
     /**
      * Generate a universally unique identifier.
      *
-     * Based on the GIT hashing detailed here:
-     *     http://alblue.bandlem.com/2011/08/git-tip-of-week-objects.html
+     * The first 7 characters are the year month and in hex, the rest is a
+     * truncated sha1 string encoding the environmental information, the
+     * microtime and the configuration path.
      */
     public function generateUuid()
     {
         $serialized = serialize($this->envInformations);
-
-        $this->uuid = sha1(implode([
-            'suite',
-            strlen($serialized),
+        $this->uuid = dechex($this->getDate()->format('Ymd')) . substr(sha1(implode([
             microtime(),
             $serialized,
             $this->configPath,
-        ]));
+        ])), 0, -7);
     }
 }

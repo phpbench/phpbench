@@ -12,9 +12,9 @@
 namespace PhpBench\Benchmarks\Macro;
 
 use PhpBench\DependencyInjection\Container;
+use PhpBench\Tests\Util\Workspace;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Base class for PHPBench macro benchmarks.
@@ -53,9 +53,7 @@ class BaseBenchCase
      */
     public static function createWorkspace()
     {
-        if (!file_exists(self::getWorkspacePath())) {
-            mkdir(self::getWorkspacePath());
-        }
+        Workspace::initWorkspace();
     }
 
     /**
@@ -64,10 +62,7 @@ class BaseBenchCase
      */
     public static function removeWorkspace()
     {
-        $filesystem = new Filesystem();
-        if (file_exists(self::getWorkspacePath())) {
-            $filesystem->remove(self::getWorkspacePath());
-        }
+        Workspace::cleanWorkspace();
     }
 
     protected function getContainer()
@@ -80,6 +75,7 @@ class BaseBenchCase
 
     public function runCommand($serviceId, $args)
     {
+        chdir(Workspace::getWorkspacePath());
         $input = new ArrayInput($args);
         $output = new BufferedOutput();
         $command = $this->getContainer()->get($serviceId);
@@ -102,7 +98,7 @@ class BaseBenchCase
 
     protected static function getWorkspacePath()
     {
-        return __DIR__ . '/_workspace';
+        return Workspace::getWorkspacePath();
     }
 
     protected function addContainerExtensionClass($extensionClass)

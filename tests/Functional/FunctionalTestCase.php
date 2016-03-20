@@ -14,6 +14,9 @@ namespace PhpBench\Tests\Functional;
 use PhpBench\DependencyInjection\Container;
 use Symfony\Component\Filesystem\Filesystem;
 
+/**
+ * NOTE: This is currently used only be the DBAL functional tests.
+ */
 class FunctionalTestCase extends \PHPUnit_Framework_TestCase
 {
     private $container;

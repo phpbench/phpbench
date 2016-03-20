@@ -112,13 +112,14 @@ class Subject
      *
      * @return Variant.
      */
-    public function createVariant(ParameterSet $parameterSet, $revolutions, $warmup)
+    public function createVariant(ParameterSet $parameterSet, $revolutions, $warmup, array $computedStats = [])
     {
         $variant = new Variant(
             $this,
             $parameterSet,
             $revolutions,
-            $warmup
+            $warmup,
+            $computedStats
         );
         $this->variants[] = $variant;
 

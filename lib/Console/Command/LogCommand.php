@@ -11,11 +11,11 @@
 
 namespace PhpBench\Console\Command;
 
+use PhpBench\Console\CharacterReader;
 use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use PhpBench\Registry\Registry;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -24,26 +24,21 @@ use Symfony\Component\Console\Question\Question;
 class LogCommand extends Command
 {
     private $storage;
-    private $questionHelper;
     private $timeUnit;
     private $timeUnitHandler;
+    private $characterReader;
 
     public function __construct(
         Registry $storage,
         TimeUnit $timeUnit,
         TimeUnitHandler $timeUnitHandler,
-        QuestionHelper $questionHelper = null
+        CharacterReader $characterReader = null
     ) {
         parent::__construct();
         $this->storage = $storage;
-
-        // maintaining compatibility with some older versions of Symfony (< 2.7)
-        if (class_exists(QuestionHelper::class)) {
-            $this->questionHelper = $questionHelper ?: new QuestionHelper();
-        }
-
         $this->timeUnitHandler = $timeUnitHandler;
         $this->timeUnit = $timeUnit;
+        $this->characterReader = $characterReader ?: new CharacterReader();
     }
 
     public function configure()
@@ -68,7 +63,15 @@ EOT
     {
         $this->timeUnitHandler->timeUnitFromInput($input);
         $paginate = false === $input->getOption('no-pagination');
-        list($width, $height) = $this->getApplication()->getTerminalDimensions();
+
+        // if we have an application, get the terminal dimensions, if the
+        // terminal dimensions are null then set the height to the arbitrary
+        // value of 100.
+        $height = 100;
+        if ($application = $this->getApplication()) {
+            list($width, $height) = $application->getTerminalDimensions();
+            $height = $height ?: 100;
+        }
 
         $height -= 1; // reduce height by one to accomodate the pagination prompt
         $nbRows = 0;
@@ -88,7 +91,6 @@ EOT
                 number_format($this->timeUnit->toDestUnit($entry->getMeanTime()), 3),
                 number_format($this->timeUnit->toDestUnit($entry->getMaxTime()), 3),
                 $this->timeUnit->getDestSuffix()
-
             );
 
             $lines[] = sprintf(
@@ -102,20 +104,20 @@ EOT
 
             // if pagination is diabled, then just pretend that the console height
             // is always greater than the number of rows.
-            if (null === $this->questionHelper || false === $paginate) {
+            if (false === $paginate) {
                 $height += $nbRows;
             }
 
-            if ($nbRows + 1 >= $height) {
-                $response = $this->questionHelper->ask($input, $output, new Question(sprintf(
-                    '<question>lines %s-%s <return> to continue, <q> to quit</question>',
+            if ($paginate && $nbRows >= $height) {
+                $output->write(sprintf(
+                    '<question>lines %s-%s any key to continue, <q> to quit</question>',
                     $totalRows, $totalRows + $nbRows
-                )));
-
-                // assume that any input other than return is an intention to quit.
-                if (strtolower($response) !== '') {
+                ));
+                $character = $this->characterReader->read();
+                if ($character == 'q') {
                     break;
                 }
+                $output->write(PHP_EOL);
 
                 $totalRows += $nbRows;
                 $nbRows = 0;

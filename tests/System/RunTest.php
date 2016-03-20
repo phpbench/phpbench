@@ -399,8 +399,7 @@ class RunTest extends SystemTestCase
         );
 
         // because there is no storage driver by default the factory will throw an exception.
-        $this->assertExitCode(1, $process);
-        $this->assertContains('You must configure a default storage service,', $process->getErrorOutput());
+        $this->assertExitCode(0, $process);
     }
 
     /**

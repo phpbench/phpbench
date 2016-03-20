@@ -19,6 +19,7 @@ use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Storage\Archiver\XmlArchiver;
 use PhpBench\Storage\DriverInterface;
 use PhpBench\Storage\HistoryEntry;
+use PhpBench\Tests\Util\Workspace;
 use Prophecy\Argument;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Filesystem\Filesystem;
@@ -33,7 +34,17 @@ class XmlArchiverTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->archivePath = __DIR__ . '/archive';
+        Workspace::initWorkspace();
+
+        $this->archivePath = Workspace::getWorkspacePath();
+
+        // create some files
+        $dom = new Document();
+        $dom->createRoot('hello');
+        $dom->save($this->archivePath . '/' . '1.xml');
+        $dom->save($this->archivePath . '/' . '2.txt');
+        $dom->save($this->archivePath . '/' . '2.xml');
+
         $this->registry = $this->prophesize(Registry::class);
         $this->xmlEncoder = $this->prophesize(XmlEncoder::class);
         $this->xmlDecoder = $this->prophesize(XmlDecoder::class);
@@ -55,6 +66,11 @@ class XmlArchiverTest extends \PHPUnit_Framework_TestCase
         $this->collection2 = $this->prophesize(SuiteCollection::class);
 
         $this->registry->getService()->willReturn($this->storage->reveal());
+    }
+
+    public function tearDown()
+    {
+        Workspace::cleanWorkspace();
     }
 
     /**

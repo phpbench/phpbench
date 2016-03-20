@@ -14,24 +14,16 @@ namespace PhpBench\Tests\System;
 class LogTest extends SystemTestCase
 {
     /**
-     * It should show an error when no storage engine is configured.
-     */
-    public function testExceptionWhenNoStorageConfigured()
-    {
-        $this->createResult();
-        $process = $this->phpbench(
-            'log --no-pagination'
-        );
-        $this->assertEquals(1, $process->getExitCode());
-        $output = $process->getErrorOutput();
-        $this->assertContains('You must configure a default storage service, registered storage services', $output);
-    }
-
-    /**
-     * It should show the history.
+     * It should show the log.
      */
     public function testLog()
     {
-        $this->markTestSkipped('Cannot functionaly test the log command until a default storage implementation is available.');
+        $this->createResult(null, ' --store');
+        $process = $this->phpbench(
+            'log'
+        );
+        $this->assertEquals(0, $process->getExitCode());
+        $output = $process->getOutput();
+        $this->assertCount(9, explode("\n", $output));
     }
 }
