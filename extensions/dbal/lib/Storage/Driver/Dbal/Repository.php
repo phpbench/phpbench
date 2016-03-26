@@ -100,11 +100,14 @@ EOT;
 
     public function hasRun($runId)
     {
-        $conn = $this->manager->getConnection();
-        $stmt = $conn->prepare('SELECT id FROM run WHERE uuid = ?');
-        $stmt->execute([$runId]);
+        return $this->getRunId($runId) ? true : false;
+    }
 
-        return $stmt->fetch() ? true : false;
+    public function deleteRun($runId)
+    {
+        $conn = $this->manager->getConnection();
+        $stmt = $conn->prepare('DELETE FROM run WHERE uuid = ?');
+        $stmt->execute([$runId]);
     }
 
     public function getLatestRunUuid()
@@ -141,5 +144,14 @@ EOT;
         $stmt = $conn->query($sql);
 
         return $stmt;
+    }
+
+    private function getRunId($runUuid)
+    {
+        $conn = $this->manager->getConnection();
+        $stmt = $conn->prepare('SELECT id FROM run WHERE uuid = ?');
+        $stmt->execute([$runUuid]);
+
+        return $stmt->fetch();
     }
 }

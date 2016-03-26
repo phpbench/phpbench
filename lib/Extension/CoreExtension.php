@@ -66,6 +66,7 @@ use PhpBench\Storage;
 use PhpBench\Storage\Driver\Xml\XmlDriver;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Finder\Finder;
+use PhpBench\Console\Command\DeleteCommand;
 
 class CoreExtension implements ExtensionInterface
 {
@@ -347,6 +348,13 @@ class CoreExtension implements ExtensionInterface
         $container->register('console.command.archive', function (Container $container) {
             return new ArchiveCommand(
                 $container->get('storage.archiver_registry')
+            );
+        }, ['console.command' => []]);
+
+        $container->register('console.command.delete', function (Container $container) {
+            return new DeleteCommand(
+                $container->get('console.command.handler.suite_collection'),
+                $container->get('storage.driver_registry')
             );
         }, ['console.command' => []]);
     }
