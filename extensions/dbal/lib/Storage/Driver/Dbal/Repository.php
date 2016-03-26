@@ -101,7 +101,7 @@ EOT;
     public function hasRun($runId)
     {
         $conn = $this->manager->getConnection();
-        $stmt = $conn->prepare('SELECT id FROM run WHERE id = ?');
+        $stmt = $conn->prepare('SELECT id FROM run WHERE uuid = ?');
         $stmt->execute([$runId]);
 
         return $stmt->fetch() ? true : false;
@@ -134,7 +134,7 @@ SELECT
     run.total_time AS total_time
     FROM run
     LEFT OUTER JOIN environment ON environment.provider = "vcs" AND environment.run_id = run.id AND environment.ekey = "branch"
-    ORDER BY run.id DESC
+    ORDER BY run.date DESC
 EOT;
 
         $conn = $this->manager->getConnection();

@@ -11,6 +11,7 @@
 
 namespace PhpBench\Tests\Unit\Console\Command;
 
+use PhpBench\Console\CharacterReader;
 use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use PhpBench\Console\Command\LogCommand;
 use PhpBench\Registry\Registry;
@@ -41,13 +42,13 @@ class LogCommandTest extends \PHPUnit_Framework_TestCase
         $this->storage = $this->prophesize(Registry::class);
         $this->timeUnit = $this->prophesize(TimeUnit::class);
         $this->timeUnitHandler = $this->prophesize(TimeUnitHandler::class);
-        $this->questionHelper = $this->prophesize(QuestionHelper::class);
+        $this->characterReader = $this->prophesize(CharacterReader::class);
 
         $this->command = new LogCommand(
             $this->storage->reveal(),
             $this->timeUnit->reveal(),
             $this->timeUnitHandler->reveal(),
-            $this->questionHelper->reveal()
+            $this->characterReader->reveal()
         );
 
         $this->application = new Application();
@@ -86,7 +87,7 @@ class LogCommandTest extends \PHPUnit_Framework_TestCase
         ], $this->command->getDefinition());
 
         $this->application->setTerminalDimensions(100, 10);
-        $this->questionHelper->ask(Argument::cetera())->shouldNotBeCalled();
+        $this->characterReader->read()->shouldNotBeCalled();
 
         $this->driver->history()->willReturn($this->history->reveal());
         $this->history->rewind()->shouldBeCalled();
@@ -143,11 +144,7 @@ EOT;
         $output = $this->output;
 
         $this->application->setTerminalDimensions(100, 14);
-        $this->questionHelper->ask(Argument::cetera())->shouldBeCalledTimes(1)->will(function () use ($output) {
-            $output->writeln('paginate..');
-
-            return '';
-        });
+        $this->characterReader->read()->willReturn('')->shouldBeCalledTimes(1);
 
         $this->driver->history()->willReturn($this->history->reveal());
         $this->history->rewind()->shouldBeCalled();
@@ -178,7 +175,7 @@ Date:    2016-01-01T00:00:00+01:00
 Branch:  branch2
 Context: foo
 Scale:   10 subjects, 20 iterations, 40 revolutions
-paginate..
+lines 0-13 any key to continue, <q> to quit
 run 3
 Date:    2016-01-01T00:00:00+01:00
 Branch:  branch3
@@ -188,6 +185,52 @@ Summary: (best [mean] worst) = 0.500 [1.250] 2.000 (s)
          ⅀T: 100 μRSD/r: 0.750%
 
 
+EOT;
+
+        $this->assertEquals($this->replaceDate($expected), $this->replaceDate($output));
+    }
+
+    /**
+     * It should quit pagination.
+     */
+    public function testQuitPagination()
+    {
+        $input = new ArrayInput([], $this->command->getDefinition());
+        $output = $this->output;
+
+        $this->application->setTerminalDimensions(100, 14);
+        $this->characterReader->read()->willReturn('q')->shouldBeCalledTimes(1);
+
+        $this->driver->history()->willReturn($this->history->reveal());
+        $this->history->rewind()->shouldBeCalled();
+        $this->history->valid()->willReturn(true, true);
+        $this->history->key()->willReturn(0, 1);
+        $this->history->next()->shouldBeCalled();
+        $this->history->current()->willReturn(
+            $this->createHistoryEntry(1),
+            $this->createHistoryEntry(2),
+            $this->createHistoryEntry(3)
+        );
+
+        $this->command->execute($input, $this->output);
+
+        $output = $this->output->fetch();
+
+        $expected = <<<'EOT'
+run 1
+Date:    2016-01-01T00:00:00+01:00
+Branch:  branch1
+Context: foo
+Scale:   10 subjects, 20 iterations, 40 revolutions
+Summary: (best [mean] worst) = 0.500 [1.250] 2.000 (s)
+         ⅀T: 100 μRSD/r: 0.750%
+
+run 2
+Date:    2016-01-01T00:00:00+01:00
+Branch:  branch2
+Context: foo
+Scale:   10 subjects, 20 iterations, 40 revolutions
+lines 0-13 any key to continue, <q> to quit
 EOT;
 
         $this->assertEquals($this->replaceDate($expected), $this->replaceDate($output));

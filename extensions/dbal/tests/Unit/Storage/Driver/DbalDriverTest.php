@@ -65,6 +65,18 @@ class DbalDriverTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * It should throw an exception if getting a non-existant run.
+     *
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Could not find suite with run
+     */
+    public function testFetchNonExisting()
+    {
+        $this->repository->hasRun('1234')->willReturn(false);
+        $this->driver->fetch('1234');
+    }
+
+    /**
      * It should return a history iterator.
      */
     public function testHistory()

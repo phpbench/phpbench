@@ -22,13 +22,14 @@ class Distribution implements \IteratorAggregate
     private $stats = [];
     private $closures = [];
 
-    public function __construct(array $samples)
+    public function __construct(array $samples, array $stats = [])
     {
         if (count($samples) < 1) {
             throw new \LogicException(
                 'Cannot create a distribution with zero samples.'
             );
         }
+
         $this->samples = $samples;
         $this->closures = [
             'min' => function () { return min($this->samples); },
@@ -44,6 +45,15 @@ class Distribution implements \IteratorAggregate
                 return $mean ? $this->getStdev() / $mean * 100 : 0;
             },
         ];
+
+        if ($diff = array_diff(array_keys($stats), array_keys($this->closures))) {
+            throw new \RuntimeException(sprintf(
+                'Unknown pre-computed stat(s) encountered: "%s"',
+                implode('", "', $diff)
+            ));
+        }
+
+        $this->stats = $stats;
     }
 
     public function getMin()
@@ -89,7 +99,9 @@ class Distribution implements \IteratorAggregate
     public function getIterator()
     {
         foreach ($this->closures as $name => $callback) {
-            $this->stats[$name] = $callback();
+            if (!array_key_exists($name, $this->stats)) {
+                $this->stats[$name] = $callback();
+            }
         }
 
         return new \ArrayIterator($this->stats);

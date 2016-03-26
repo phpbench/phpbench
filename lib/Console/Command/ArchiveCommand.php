@@ -64,6 +64,6 @@ EOT
             return;
         }
 
-        $this->archiver->archive($output);
+        $this->archiver->getService()->archive($output);
     }
 }

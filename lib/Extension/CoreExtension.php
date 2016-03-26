@@ -30,6 +30,7 @@ use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use PhpBench\Console\Command\LogCommand;
 use PhpBench\Console\Command\ReportCommand;
 use PhpBench\Console\Command\RunCommand;
+use PhpBench\Console\Command\ShowCommand;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Environment\Provider;
@@ -62,6 +63,7 @@ use PhpBench\Report\ReportManager;
 use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Storage;
+use PhpBench\Storage\Driver\Xml\XmlDriver;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Finder\Finder;
 
@@ -80,11 +82,12 @@ class CoreExtension implements ExtensionInterface
             'retry_threshold' => null,
             'time_unit' => TimeUnit::MICROSECONDS,
             'output_mode' => TimeUnit::MODE_TIME,
-            'storage' => null,
+            'storage' => 'xml',
             'archiver' => 'xml',
             'archive_path' => '_archive',
             'env_baselines' => ['nothing', 'md5', 'file_rw'],
             'env_baseline_callables' => [],
+            'xml_storage_path' => '_storage',
         ];
     }
 
@@ -332,6 +335,15 @@ class CoreExtension implements ExtensionInterface
             );
         }, ['console.command' => []]);
 
+        $container->register('console.command.show', function (Container $container) {
+            return new ShowCommand(
+                $container->get('storage.driver_registry'),
+                $container->get('console.command.handler.report'),
+                $container->get('console.command.handler.time_unit'),
+                $container->get('console.command.handler.dump')
+            );
+        }, ['console.command' => []]);
+
         $container->register('console.command.archive', function (Container $container) {
             return new ArchiveCommand(
                 $container->get('storage.archiver_registry')
@@ -489,6 +501,13 @@ class CoreExtension implements ExtensionInterface
         $container->register('storage.archiver_registry', function (Container $container) {
             return new Registry('archiver', $container, $container->getParameter('archiver'));
         });
+        $container->register('storage.driver.xml', function (Container $container) {
+            return new XmlDriver(
+                $container->getParameter('xml_storage_path'),
+                $container->get('serializer.encoder.xml'),
+                $container->get('serializer.decoder.xml')
+            );
+        }, ['storage_driver' => ['name' => 'xml']]);
 
         $container->register('storage.archiver.xml', function (Container $container) {
             return new Storage\Archiver\XmlArchiver(

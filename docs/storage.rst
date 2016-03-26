@@ -2,38 +2,24 @@ Storage and Querying
 ====================
 
 PHPBench allows benchmarking results to be persisted using a configured
-storage driver. Persisted results can later be against using the ``report``
-command.
+storage driver. You can inspect the results with either the ``show`` or
+``report`` commands.
 
 Configuring a Storage Driver
 ----------------------------
 
-By default PHPBench does not have any storage drivers enabled. You can however
-easily enable the bundled :doc:`dbal extension <extensions/dbal>` in your configuration file:
+PHPBench will use XML storage by default, which is fine for most purposes. If
+you want advanced functionality (e.g. the ability to query benchmarks) then
+you can install the :doc:`Doctrine DBAL extrension<extensions/dbal>`.
+
+The XML storage driver will place benchmarks in a folder called ``_storage``
+by default, this can be changed in the configuration as follows:
 
 .. code-block:: javascript
 
     {
-        "storage": "sqlite",
-        "extensions": [
-            "PhpBench\\Extensions\\Dbal\\DbalExtension"
-        ]
+        'xml_storage_path' => '_storage'
     }
-
-Above you register the DBAL extension and select it as the storage driver
-for your project.
-
-By default it is configured with an sqlite database in `.phpbench.sqlite` in the
-current working directory. It is recommended that you add this to your git
-ignore file:
-
-.. code-block:: bash
-
-    # .gitignore
-    # ...
-    .phpbench.sqlite
-
-For more details see the documentation :doc:`documentation <extensions/dbal>`
 
 Storing Results
 ---------------
@@ -72,15 +58,26 @@ see what you have got:
 
     ...
 
-Querying and Report Generation
-------------------------------
+Report Generation
+-----------------
 
-You can query the benchmarking history of the project and use any of the
-existing :doc:`reports`:
+You can report on a single given run ID using the ``show`` command:
 
 .. code-block:: bash
 
-    $ phpbench report --query='run: 239' --report=aggregate
+    $ phpbench show 9d38a760e6ebec0a466c80f148264a7a4bb7a203
+
+You may also specify a different report with the ``--report`` option. In order
+to compare two or more reports, you should use the ``report`` command as
+detailed in the following section.
+
+Querying
+--------
+
+.. important::
+
+    The XML storage driver does not support querying, if you require this
+    functionality install the :doc:`Doctrine DBAL extrension<extensions/dbal>`.
 
 PHPBench uses a query language very similar to that of MongoDB. A simple
 example:

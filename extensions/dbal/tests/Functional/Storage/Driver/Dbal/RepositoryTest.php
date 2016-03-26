@@ -66,10 +66,10 @@ class RepositoryTest extends DbalTestCase
 
         $this->assertEquals([
             [
-                'run_date' => '2015-01-01 00:00:00',
-                'context' => 'two',
-                'vcs_branch' => 'branch_2',
-                'run_uuid' => 2,
+                'run_date' => '2016-01-01 00:00:00',
+                'context' => 'one',
+                'vcs_branch' => 'branch_1',
+                'run_uuid' => 1,
                 'nb_subjects' => '1',
                 'nb_iterations' => '2',
                 'nb_revolutions' => '5',
@@ -80,10 +80,10 @@ class RepositoryTest extends DbalTestCase
                 'total_time' => '6.0',
             ],
             [
-                'run_date' => '2016-01-01 00:00:00',
-                'context' => 'one',
-                'vcs_branch' => 'branch_1',
-                'run_uuid' => 1,
+                'run_date' => '2015-01-01 00:00:00',
+                'context' => 'two',
+                'vcs_branch' => 'branch_2',
+                'run_uuid' => 2,
                 'nb_subjects' => '1',
                 'nb_iterations' => '2',
                 'nb_revolutions' => '5',
@@ -143,5 +143,22 @@ class RepositoryTest extends DbalTestCase
         $latestUuid = $this->repository->getLatestRunUuid();
 
         $this->assertEquals(7, $latestUuid);
+    }
+
+    /**
+     * It can determine if run exists.
+     */
+    public function testHasRun()
+    {
+        $suiteCollection = new SuiteCollection([
+            TestUtil::createSuite([
+                'uuid' => 1234,
+            ]),
+        ]);
+
+        $this->persister->persist($suiteCollection);
+
+        $this->assertTrue($this->repository->hasRun(1234));
+        $this->assertFalse($this->repository->hasRun(4321));
     }
 }

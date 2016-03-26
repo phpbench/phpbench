@@ -27,7 +27,7 @@ class XmlArchiver implements ArchiverInterface
     /**
      * @var DriverFactory
      */
-    private $registry;
+    private $storageRegistry;
 
     /**
      * @var string
@@ -50,13 +50,13 @@ class XmlArchiver implements ArchiverInterface
     private $xmlDecoder;
 
     public function __construct(
-        Registry $registry,
+        Registry $storageRegistry,
         XmlEncoder $xmlEncoder,
         XmlDecoder $xmlDecoder,
         $archivePath,
         Filesystem $filesystem = null
     ) {
-        $this->registry = $registry;
+        $this->storageRegistry = $storageRegistry;
         $this->xmlEncoder = $xmlEncoder;
         $this->xmlDecoder = $xmlDecoder;
         $this->archivePath = $archivePath;
@@ -68,7 +68,7 @@ class XmlArchiver implements ArchiverInterface
      */
     public function archive(OutputInterface $output)
     {
-        $driver = $this->registry->getService();
+        $driver = $this->storageRegistry->getService();
 
         if (!$this->filesystem->exists($this->archivePath)) {
             $this->filesystem->mkdir($this->archivePath);
@@ -105,7 +105,7 @@ class XmlArchiver implements ArchiverInterface
      */
     public function restore(OutputInterface $output)
     {
-        $driver = $this->registry->getService();
+        $driver = $this->storageRegistry->getService();
 
         $iterator = new \DirectoryIterator($this->archivePath);
         $files = $this->filterFiles($iterator);

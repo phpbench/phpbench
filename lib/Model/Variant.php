@@ -53,6 +53,11 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
     private $stats;
 
     /**
+     * @var array
+     */
+    private $computedStats;
+
+    /**
      * @var bool
      */
     private $computed = false;
@@ -71,12 +76,14 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
         Subject $subject,
         ParameterSet $parameterSet,
         $revolutions,
-        $warmup
+        $warmup,
+        array $computedStats = []
     ) {
         $this->subject = $subject;
         $this->parameterSet = $parameterSet;
         $this->revolutions = $revolutions;
         $this->warmup = $warmup;
+        $this->computedStats = $computedStats;
     }
 
     /**
@@ -198,7 +205,7 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
         $times = $this->getTimes();
         $retryThreshold = $this->getSubject()->getRetryThreshold();
 
-        $this->stats = new Distribution($times);
+        $this->stats = new Distribution($times, $this->computedStats);
 
         foreach ($this->iterations as $iteration) {
             // deviation is the percentage different of the value from the mean of the set.

@@ -136,9 +136,22 @@ class XmlDecoder
         foreach ($subjectEl->query('./variant') as $index => $variantEl) {
             $parameters = $this->getParameters($variantEl);
             $parameterSet = new ParameterSet($index, $parameters);
-            $variant = $subject->createVariant($parameterSet, $variantEl->getAttribute('revs'), $variantEl->getAttribute('warmup'));
+            $stats = $this->getComputedStats($variantEl);
+            $variant = $subject->createVariant($parameterSet, $variantEl->getAttribute('revs'), $variantEl->getAttribute('warmup'), $stats);
             $this->processVariant($variant, $variantEl);
         }
+    }
+
+    private function getComputedStats(\DOMElement $element)
+    {
+        $stats = [];
+        foreach ($element->query('./stats') as $statsEl) {
+            foreach ($statsEl->attributes as $key => $attribute) {
+                $stats[$key] = $attribute->nodeValue;
+            }
+        }
+
+        return $stats;
     }
 
     private function getParameters(\DOMElement $element)
