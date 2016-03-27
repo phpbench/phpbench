@@ -259,7 +259,7 @@ class HistoryIterator implements HistoryIteratorInterface
                 continue;
             }
 
-            $dirs[$dir->getFilename()] = $dir->getPathname();
+            $dirs[hexdec($dir->getFilename())] = $dir->getPathname();
         }
 
         krsort($dirs);

@@ -14,6 +14,7 @@ namespace PhpBench\Extensions\Dbal\Tests\Functional\Storage\Driver\Dbal;
 use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\HistoryIterator;
 use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\Persister;
 use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\Repository;
+use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\Visitor\TokenValueVisitor;
 use PhpBench\Extensions\Dbal\Tests\Functional\DbalTestCase;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Tests\Util\TestUtil;
@@ -26,7 +27,8 @@ class HistoryIteratorTest extends DbalTestCase
     public function setUp()
     {
         $manager = $this->getManager();
-        $repository = new Repository($manager);
+        $tokenVisitor = $this->prophesize(TokenValueVisitor::class);
+        $repository = new Repository($manager, $tokenVisitor->reveal());
         $this->persister = new Persister($manager);
 
         $this->iterator = new HistoryIterator($repository);

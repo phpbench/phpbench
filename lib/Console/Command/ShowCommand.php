@@ -15,6 +15,7 @@ use PhpBench\Console\Command\Handler\DumpHandler;
 use PhpBench\Console\Command\Handler\ReportHandler;
 use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use PhpBench\Registry\Registry;
+use PhpBench\Storage\UuidResolver;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -29,18 +30,21 @@ class ShowCommand extends Command
     private $reportHandler;
     private $timeUnitHandler;
     private $dumpHandler;
+    private $uuidResolver;
 
     public function __construct(
         Registry $storage,
         ReportHandler $reportHandler,
         TimeUnitHandler $timeUnitHandler,
-        DumpHandler $dumpHandler
+        DumpHandler $dumpHandler,
+        UuidResolver $uuidResolver
     ) {
         parent::__construct();
         $this->storage = $storage;
         $this->reportHandler = $reportHandler;
         $this->timeUnitHandler = $timeUnitHandler;
         $this->dumpHandler = $dumpHandler;
+        $this->uuidResolver = $uuidResolver;
     }
 
     /**
@@ -77,7 +81,7 @@ EOT
         }
 
         $storage = $this->storage->getService();
-        $collection = $storage->fetch($input->getArgument('run_id'));
+        $collection = $storage->fetch($this->uuidResolver->resolve($input->getArgument('run_id')));
         $this->timeUnitHandler->timeUnitFromInput($input);
         $this->reportHandler->reportsFromInput($input, $output, $collection);
     }

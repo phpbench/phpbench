@@ -65,6 +65,7 @@ use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Storage;
 use PhpBench\Storage\Driver\Xml\XmlDriver;
+use PhpBench\Storage\UuidResolver;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Finder\Finder;
 
@@ -299,7 +300,8 @@ class CoreExtension implements ExtensionInterface
             return new SuiteCollectionHandler(
                 $container->get('serializer.decoder.xml'),
                 $container->get('expression.parser'),
-                $container->get('storage.driver_registry')
+                $container->get('storage.driver_registry'),
+                $container->get('storage.uuid_resolver')
             );
         });
 
@@ -341,7 +343,8 @@ class CoreExtension implements ExtensionInterface
                 $container->get('storage.driver_registry'),
                 $container->get('console.command.handler.report'),
                 $container->get('console.command.handler.time_unit'),
-                $container->get('console.command.handler.dump')
+                $container->get('console.command.handler.dump'),
+                $container->get('storage.uuid_resolver')
             );
         }, ['console.command' => []]);
 
@@ -516,6 +519,12 @@ class CoreExtension implements ExtensionInterface
                 $container->get('serializer.decoder.xml')
             );
         }, ['storage_driver' => ['name' => 'xml']]);
+
+        $container->register('storage.uuid_resolver', function (Container $container) {
+            return new UuidResolver(
+                $container->get('storage.driver_registry')
+            );
+        });
 
         $container->register('storage.archiver.xml', function (Container $container) {
             return new Storage\Archiver\XmlArchiver(
