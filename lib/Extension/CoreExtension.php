@@ -22,6 +22,7 @@ use PhpBench\Benchmark\Remote\Reflector;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Console\Application;
 use PhpBench\Console\Command\ArchiveCommand;
+use PhpBench\Console\Command\DeleteCommand;
 use PhpBench\Console\Command\Handler\DumpHandler;
 use PhpBench\Console\Command\Handler\ReportHandler;
 use PhpBench\Console\Command\Handler\RunnerHandler;
@@ -66,7 +67,6 @@ use PhpBench\Storage;
 use PhpBench\Storage\Driver\Xml\XmlDriver;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Finder\Finder;
-use PhpBench\Console\Command\DeleteCommand;
 
 class CoreExtension implements ExtensionInterface
 {

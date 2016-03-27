@@ -12,10 +12,10 @@
 namespace PhpBench\Console\Command;
 
 use PhpBench\Console\Command\Handler\SuiteCollectionHandler;
+use PhpBench\Registry\Registry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use PhpBench\Registry\Registry;
 
 class DeleteCommand extends Command
 {
@@ -60,4 +60,3 @@ EOT
         }
     }
 }
-

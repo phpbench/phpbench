@@ -25,7 +25,7 @@ class DbalTestCase extends FunctionalTestCase
         if ($this->connection) {
             return $this->connection;
         }
-       
+
         $this->connection = DriverManager::getConnection([
             'driver' => 'pdo_sqlite',
             'memory' => true,

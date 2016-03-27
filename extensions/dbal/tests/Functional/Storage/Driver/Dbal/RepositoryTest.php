@@ -13,10 +13,10 @@ namespace PhpBench\Extensions\Dbal\Tests\Functional\Storage\Driver\Dbal;
 
 use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\Persister;
 use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\Repository;
+use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\Schema;
 use PhpBench\Extensions\Dbal\Tests\Functional\DbalTestCase;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Tests\Util\TestUtil;
-use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\Schema;
 
 class RepositoryTest extends DbalTestCase
 {
@@ -210,8 +210,6 @@ class RepositoryTest extends DbalTestCase
             'iteration' => 0,
             'version' => 1,
         ], $counts);
-
-
     }
 
     private function getTableCounts()

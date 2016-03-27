@@ -88,7 +88,7 @@ class XmlDriverTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should delete a given run ID
+     * It should delete a given run ID.
      */
     public function testDelete()
     {
@@ -100,7 +100,7 @@ class XmlDriverTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should throw an exception if trying to delete non-existing UUID
+     * It should throw an exception if trying to delete non-existing UUID.
      *
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Cannot find run with UUID "1339f38b191b77e1185f9729eb25a2aa4e262b01"
@@ -138,7 +138,7 @@ class XmlDriverTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should return false for `has` given an invalid UUID
+     * It should return false for `has` given an invalid UUID.
      */
     public function testHasInvalidUuid()
     {

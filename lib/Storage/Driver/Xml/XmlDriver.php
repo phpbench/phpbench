@@ -58,7 +58,6 @@ class XmlDriver implements DriverInterface
         }
     }
 
-
     /**
      * {@inheritdoc}
      */
