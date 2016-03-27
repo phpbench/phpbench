@@ -12,17 +12,18 @@
 namespace PhpBench\Tests\Unit\Storage\Driver\Dbal\Visitor;
 
 use PhpBench\Expression\Parser;
-use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\Repository;
 use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\Visitor\TokenValueVisitor;
+use PhpBench\Storage\UuidResolver;
 
 class TokenValueVisitorTest extends \PHPUnit_Framework_TestCase
 {
     private $visitor;
+    private $uuidResolver;
 
     public function setUp()
     {
-        $this->repository = $this->prophesize(Repository::class);
-        $this->visitor = new TokenValueVisitor($this->repository->reveal());
+        $this->uuidResolver = $this->prophesize(UuidResolver::class);
+        $this->visitor = new TokenValueVisitor($this->uuidResolver->reveal());
         $this->parser = new Parser();
     }
 
@@ -32,7 +33,7 @@ class TokenValueVisitorTest extends \PHPUnit_Framework_TestCase
     public function testLatest()
     {
         $constraint = $this->parser->parse('run: "latest"');
-        $this->repository->getLatestRunUuid()->willReturn(42);
+        $this->uuidResolver->resolve('latest')->willReturn(42);
         $this->visitor->visit($constraint);
 
         $this->assertEquals(42, $constraint->getValue());
@@ -44,7 +45,8 @@ class TokenValueVisitorTest extends \PHPUnit_Framework_TestCase
     public function testLatestNotReplaceOtherValues()
     {
         $constraint = $this->parser->parse('$and: [ { run: "latest" }, { "run": "foo" } ]');
-        $this->repository->getLatestRunUuid()->willReturn(42);
+        $this->uuidResolver->resolve('latest')->willReturn(42);
+        $this->uuidResolver->resolve('foo')->willReturn('foo');
         $this->visitor->visit($constraint);
 
         $constraint1 = $constraint->getConstraint1();

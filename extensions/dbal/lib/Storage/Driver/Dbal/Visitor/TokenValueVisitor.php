@@ -15,6 +15,7 @@ use PhpBench\Expression\Constraint\Comparison;
 use PhpBench\Expression\Constraint\Composite;
 use PhpBench\Expression\Constraint\Constraint;
 use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\Repository;
+use PhpBench\Storage\UuidResolver;
 
 /**
  * Resolves token values, for example "latest" will be resolved to the latest
@@ -25,11 +26,11 @@ class TokenValueVisitor
     /**
      * @var Repository
      */
-    private $repository;
+    private $uuidResolver;
 
-    public function __construct(Repository $repository)
+    public function __construct(UuidResolver $uuidResolver)
     {
-        $this->repository = $repository;
+        $this->uuidResolver = $uuidResolver;
     }
 
     /**
@@ -57,7 +58,7 @@ class TokenValueVisitor
     private function visitComparison(Comparison $comparison)
     {
         if ($comparison->getField() === 'run') {
-            $this->replaceValue($comparison, 'latest', $this->repository->getLatestRunUuid());
+            $this->replaceValue($comparison);
         }
     }
 
@@ -67,23 +68,14 @@ class TokenValueVisitor
         $this->doVisit($composite->getConstraint2());
     }
 
-    private function replaceValue(Comparison $comparison, $token, $tokenValue)
+    private function replaceValue(Comparison $comparison)
     {
         $value = $comparison->getValue();
         $isArray = is_array($value);
         $values = (array) $value;
 
-        $found = false;
         foreach ($values as &$value) {
-            $value = trim($value);
-            if ($value === $token) {
-                $found = true;
-                $value = $tokenValue;
-            }
-        }
-
-        if (false === $found) {
-            return;
+            $value = $this->uuidResolver->resolve($value);
         }
 
         if (false === $isArray) {

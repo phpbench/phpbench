@@ -14,6 +14,7 @@ namespace PhpBench\Extensions\Dbal\Tests\Functional\Storage\Driver\Dbal;
 use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\Persister;
 use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\Repository;
 use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\Schema;
+use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\Visitor\TokenValueVisitor;
 use PhpBench\Extensions\Dbal\Tests\Functional\DbalTestCase;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Tests\Util\TestUtil;
@@ -28,7 +29,8 @@ class RepositoryTest extends DbalTestCase
         $manager = $this->getManager();
 
         $this->persister = new Persister($manager);
-        $this->repository = new Repository($manager);
+        $tokenVisitor = $this->prophesize(TokenValueVisitor::class);
+        $this->repository = new Repository($manager, $tokenVisitor->reveal());
     }
 
     /**

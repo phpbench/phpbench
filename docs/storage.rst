@@ -71,6 +71,25 @@ You may also specify a different report with the ``--report`` option. In order
 to compare two or more reports, you should use the ``report`` command as
 detailed in the following section.
 
+Meta UUIDs
+----------
+
+It is possible to specify "meta" UUIDs, such as ``latest``:
+
+.. code-block:: bash
+
+    $ phpbench show latest
+
+And also you may use the ``-<n>`` suffix to view the "nth" entry in
+the history from the latest:
+
+.. code-block:: bash
+
+    $ phpbench show latest-1
+
+Would show the second latest entry. Meta UUIDs can be used anywhere where you
+would normally specify a UUID, including queries.
+
 Querying
 --------
 
@@ -97,19 +116,6 @@ A more complex example:
 
 This would generate a suite collection containing all the ``benchMd5``
 subjects created after ``2016-02-09``.
-
-Special Values
-~~~~~~~~~~~~~~
-
-Some fields can accept special token values which will be replaced dynamically
-before the query is executed.
-
-Currently you can specify the token ``latest`` as the value of ``run`` which
-will resolve to the UUID of the latest suite in storage.
-
-.. code-block:: bash
-
-    $ phpbench report --report=aggregate --query='run: "latest"'
 
 Logical Operators
 ~~~~~~~~~~~~~~~~~

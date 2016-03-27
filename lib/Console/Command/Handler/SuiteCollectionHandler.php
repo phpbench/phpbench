@@ -15,6 +15,7 @@ use PhpBench\Expression\Parser;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Registry;
 use PhpBench\Serializer\XmlDecoder;
+use PhpBench\Storage\UuidResolver;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -24,15 +25,18 @@ class SuiteCollectionHandler
     private $xmlDecoder;
     private $parser;
     private $storage;
+    private $uuidResolver;
 
     public function __construct(
         XmlDecoder $xmlDecoder,
         Parser $parser,
-        Registry $storage
+        Registry $storage,
+        UuidResolver $uuidResolver
     ) {
         $this->xmlDecoder = $xmlDecoder;
         $this->parser = $parser;
         $this->storage = $storage;
+        $this->uuidResolver = $uuidResolver;
     }
 
     public static function configure(Command $command)
@@ -73,6 +77,7 @@ class SuiteCollectionHandler
 
         if ($uuids) {
             foreach ($uuids as $uuid) {
+                $uuid = $this->uuidResolver->resolve($uuid);
                 $collection->mergeCollection(
                     $this->storage->getService()->fetch($uuid)
                 );

@@ -13,6 +13,7 @@ namespace PhpBench\Extensions\Dbal\Storage\Driver\Dbal;
 
 use PhpBench\Expression\Constraint\Constraint;
 use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\Visitor\SqlVisitor;
+use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\Visitor\TokenValueVisitor;
 
 /**
  * Class for retrieving data from the database.
@@ -23,11 +24,11 @@ class Repository
     private $sqlVisitor;
     private $tokenVisitor;
 
-    public function __construct(ConnectionManager $manager, SqlVisitor $visitor = null)
+    public function __construct(ConnectionManager $manager, TokenValueVisitor $tokenVisitor, SqlVisitor $sqlVisitor = null)
     {
         $this->manager = $manager;
-        $this->sqlVisitor = $visitor ?: new Visitor\SqlVisitor();
-        $this->tokenVisitor = $visitor ?: new Visitor\TokenValueVisitor($this);
+        $this->tokenVisitor = $tokenVisitor;
+        $this->sqlVisitor = $sqlVisitor ?: new Visitor\SqlVisitor();
     }
 
     public function getIterationRows(Constraint $constraint)

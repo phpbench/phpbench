@@ -73,9 +73,16 @@ class DbalExtension implements ExtensionInterface
             );
         });
 
+        $container->register('storage.driver.dbal.visitor.token_value', function (Container $container) {
+            return new Storage\Driver\Dbal\Visitor\TokenValueVisitor(
+                $container->get('storage.uuid_resolver')
+            );
+        });
+
         $container->register('storage.driver.dbal.repository', function (Container $container) {
             return new Storage\Driver\Dbal\Repository(
-                $container->get('storage.driver.dbal.connection_manager')
+                $container->get('storage.driver.dbal.connection_manager'),
+                $container->get('storage.driver.dbal.visitor.token_value')
             );
         });
 
