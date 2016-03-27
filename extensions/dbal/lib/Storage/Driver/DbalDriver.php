@@ -66,6 +66,14 @@ class DbalDriver implements DriverInterface
     /**
      * {@inheritdoc}
      */
+    public function delete($runId)
+    {
+        $this->repository->deleteRun($runId);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function fetch($runId)
     {
         if (!$this->repository->hasRun($runId)) {

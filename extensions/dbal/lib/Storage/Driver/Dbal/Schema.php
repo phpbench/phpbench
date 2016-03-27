@@ -80,10 +80,10 @@ class Schema extends BaseSchema
         $table->addColumn('retry_threshold', 'float', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addForeignKeyConstraint(
-            $this->runTable, ['run_id'], ['id']
+            $this->runTable, ['run_id'], ['id'], ['onDelete' => 'CASCADE']
         );
         $table->addForeignKeyConstraint(
-            $this->subjectTable, ['subject_id'], ['id']
+            $this->subjectTable, ['subject_id'], ['id'], ['onDelete' => 'CASCADE']
         );
         $this->variantTable = $table;
     }
@@ -94,10 +94,10 @@ class Schema extends BaseSchema
         $table->addColumn('variant_id', 'integer');
         $table->addColumn('parameter_id', 'integer');
         $table->addForeignKeyConstraint(
-            $this->variantTable, ['variant_id'], ['id']
+            $this->variantTable, ['variant_id'], ['id'], ['onDelete' => 'CASCADE']
         );
         $table->addForeignKeyConstraint(
-            $this->parameterTable, ['parameter_id'], ['id']
+            $this->parameterTable, ['parameter_id'], ['id'], ['onDelete' => 'CASCADE']
         );
     }
 
@@ -107,7 +107,7 @@ class Schema extends BaseSchema
         $table->addColumn('sgroup', 'string');
         $table->addColumn('subject_id', 'integer');
         $table->addForeignKeyConstraint(
-            $this->subjectTable, ['subject_id'], ['id']
+            $this->subjectTable, ['subject_id'], ['id'], ['onDelete' => 'CASCADE']
         );
     }
 
@@ -120,7 +120,7 @@ class Schema extends BaseSchema
         $table->addColumn('ekey', 'string');
         $table->addColumn('value', 'string');
         $table->addForeignKeyConstraint(
-            $this->runTable, ['run_id'], ['id']
+            $this->runTable, ['run_id'], ['id'], ['onDelete' => 'CASCADE']
         );
         $table->setPrimaryKey(['id']);
     }
@@ -144,7 +144,7 @@ class Schema extends BaseSchema
         $table->addColumn('memory', 'integer');
         $table->addColumn('reject_count', 'integer');
         $table->addForeignKeyConstraint(
-            $this->variantTable, ['variant_id'], ['id']
+            $this->variantTable, ['variant_id'], ['id'], ['onDelete' => 'CASCADE']
         );
     }
 

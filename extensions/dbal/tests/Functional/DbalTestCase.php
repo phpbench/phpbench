@@ -17,19 +17,44 @@ use PhpBench\Tests\Functional\FunctionalTestCase;
 
 class DbalTestCase extends FunctionalTestCase
 {
+    private $connection;
+    private $manager;
+
     protected function getConnection()
     {
-        return DriverManager::getConnection([
+        if ($this->connection) {
+            return $this->connection;
+        }
+
+        $this->connection = DriverManager::getConnection([
             'driver' => 'pdo_sqlite',
             'memory' => true,
         ]);
+
+        return $this->connection;
     }
 
     protected function getManager()
     {
-        $manager = new ConnectionManager($this->getConnection());
-        $manager->initializeSchema();
+        if ($this->manager) {
+            return $this->manager;
+        }
 
-        return $manager;
+        $this->manager = new ConnectionManager($this->getConnection());
+        $this->manager->initializeSchema();
+
+        return $this->manager;
+    }
+
+    protected function sqlQuery($sql)
+    {
+        $conn = $this->getManager()->getConnection();
+
+        return $conn->query($sql)->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    protected function sqlCount($sql)
+    {
+        return count($this->sqlQuery($sql));
     }
 }

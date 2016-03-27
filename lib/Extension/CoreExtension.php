@@ -22,6 +22,7 @@ use PhpBench\Benchmark\Remote\Reflector;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Console\Application;
 use PhpBench\Console\Command\ArchiveCommand;
+use PhpBench\Console\Command\DeleteCommand;
 use PhpBench\Console\Command\Handler\DumpHandler;
 use PhpBench\Console\Command\Handler\ReportHandler;
 use PhpBench\Console\Command\Handler\RunnerHandler;
@@ -347,6 +348,13 @@ class CoreExtension implements ExtensionInterface
         $container->register('console.command.archive', function (Container $container) {
             return new ArchiveCommand(
                 $container->get('storage.archiver_registry')
+            );
+        }, ['console.command' => []]);
+
+        $container->register('console.command.delete', function (Container $container) {
+            return new DeleteCommand(
+                $container->get('console.command.handler.suite_collection'),
+                $container->get('storage.driver_registry')
             );
         }, ['console.command' => []]);
     }

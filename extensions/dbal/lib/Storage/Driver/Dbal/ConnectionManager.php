@@ -32,14 +32,17 @@ class ConnectionManager
                 $this->initializeSchema();
             }
 
-            $this->initDbal();
+            $this->initSqlite();
         }
 
         return $this->connection;
     }
 
-    private function initDbal()
+    private function initSqlite()
     {
+        // enable foreign key support
+        $this->connection->exec('PRAGMA foreign_keys = ON');
+
         $params = $this->connection->getParams();
 
         if (!isset($params['path'])) {

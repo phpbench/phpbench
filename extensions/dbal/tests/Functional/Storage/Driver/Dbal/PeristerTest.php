@@ -107,16 +107,4 @@ class PeristerTest extends DbalTestCase
         $this->persister->persist($suiteCollection);
         $this->assertEquals(1, $this->sqlCount('SELECT * FROM version'));
     }
-
-    private function sqlQuery($sql)
-    {
-        $conn = $this->manager->getConnection();
-
-        return $conn->query($sql)->fetchAll(\PDO::FETCH_ASSOC);
-    }
-
-    private function sqlCount($sql)
-    {
-        return count($this->sqlQuery($sql));
-    }
 }

@@ -13,6 +13,7 @@ namespace PhpBench\Extensions\Dbal\Tests\Functional\Storage\Driver\Dbal;
 
 use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\Persister;
 use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\Repository;
+use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\Schema;
 use PhpBench\Extensions\Dbal\Tests\Functional\DbalTestCase;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Tests\Util\TestUtil;
@@ -160,5 +161,68 @@ class RepositoryTest extends DbalTestCase
 
         $this->assertTrue($this->repository->hasRun(1234));
         $this->assertFalse($this->repository->hasRun(4321));
+    }
+
+    /**
+     * It should delete a specified run and all of its relations.
+     */
+    public function testDelete()
+    {
+        $suiteCollection = new SuiteCollection([
+            TestUtil::createSuite([
+                'uuid' => 1234,
+                'subjects' => ['one', 'two'],
+                'env' => [
+                    'system' => [
+                        'os' => 'linux',
+                        'distribution' => 'debian',
+                    ],
+                ],
+            ]),
+        ]);
+
+        $this->persister->persist($suiteCollection);
+
+        $counts = $this->getTableCounts();
+        $this->assertEquals([
+            'run' => 1,
+            'subject' => 2,
+            'variant' => 2,
+            'parameter' => 1,
+            'variant_parameter' => 2,
+            'sgroup_subject' => 6,
+            'environment' => 2,
+            'iteration' => 4,
+            'version' => 1,
+        ], $counts);
+
+        $this->repository->deleteRun(1234);
+
+        $counts = $this->getTableCounts();
+        $this->assertEquals([
+            'run' => 0,
+            'subject' => 2,
+            'variant' => 0,
+            'parameter' => 1,
+            'variant_parameter' => 0,
+            'sgroup_subject' => 6,
+            'environment' => 0,
+            'iteration' => 0,
+            'version' => 1,
+        ], $counts);
+    }
+
+    private function getTableCounts()
+    {
+        $schema = new Schema();
+        $counts = [];
+        $conn = $this->getConnection();
+        foreach ($schema->getTables() as $table) {
+            $count = $conn->query('SELECT COUNT(*) FROM ' . $table->getName());
+            $count = (int) $count->fetchColumn(0);
+            $counts[$table->getName()] = $count;
+        }
+
+        return $counts;
     }
 }

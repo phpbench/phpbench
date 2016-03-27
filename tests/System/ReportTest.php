@@ -28,6 +28,21 @@ class ReportTest extends SystemTestCase
     }
 
     /**
+     * It should generate a report when given the --uuid option.
+     */
+    public function testGenerateReportFromUuid()
+    {
+        $dom = $this->createResult(null, ' --store');
+        $uuid = $dom->evaluate('string(./suite/@uuid)');
+        $process = $this->phpbench(
+            'report --uuid=' . $uuid . ' --report=default'
+        );
+        $this->assertEquals(0, $process->getExitCode());
+        $output = $process->getOutput();
+        $this->assertContains('benchNothing', $output);
+    }
+
+    /**
      * It should allow the mode, precision and time-unit to be specified.
      */
     public function testTimeUnitOverride()

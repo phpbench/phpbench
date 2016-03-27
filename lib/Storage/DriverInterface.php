@@ -53,6 +53,11 @@ interface DriverInterface
     public function has($runId);
 
     /**
+     * Delete the run with the given UUID.
+     */
+    public function delete($runId);
+
+    /**
      * Return a history iterator of HistoryEntries in descending
      * chronological order.
      *

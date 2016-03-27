@@ -61,6 +61,20 @@ class XmlDriver implements DriverInterface
     /**
      * {@inheritdoc}
      */
+    public function delete($uuid)
+    {
+        if (!$this->has($uuid)) {
+            throw new \InvalidArgumentException(sprintf(
+                'Cannot find run with UUID "%s"', $uuid
+            ));
+        }
+
+        $this->filesystem->remove($this->getPath($uuid));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function query(Constraint $constraint)
     {
         // TODO: Make this a separate interface?
@@ -96,6 +110,10 @@ class XmlDriver implements DriverInterface
     {
         $path = $this->getPath($runId);
 
+        if (false === $path) {
+            return false;
+        }
+
         return $this->filesystem->exists($path);
     }
 
@@ -109,7 +127,11 @@ class XmlDriver implements DriverInterface
 
     private function getPath($uuid)
     {
-        $date = new \DateTime(hexdec(substr($uuid, 0, 7)));
+        try {
+            $date = new \DateTime(hexdec(substr($uuid, 0, 7)));
+        } catch (\Exception $e) {
+            return false;
+        }
 
         return sprintf(
             '%s/%s/%s/%s/%s.xml',
