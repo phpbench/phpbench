@@ -16,7 +16,7 @@ namespace PhpBench\Storage;
  */
 class HistoryEntry
 {
-    private $runId;
+    private $uuid;
     private $date;
     private $context;
     private $branch;
@@ -32,7 +32,7 @@ class HistoryEntry
     private $totalTime;
 
     public function __construct(
-        $runId,
+        $uuid,
         \DateTime $date,
         $context,
         $branch,
@@ -45,7 +45,7 @@ class HistoryEntry
         $meanRelStDev,
         $totalTime
     ) {
-        $this->runId = $runId;
+        $this->uuid = $uuid;
         $this->date = $date;
         $this->context = $context;
         $this->branch = $branch;
@@ -59,9 +59,9 @@ class HistoryEntry
         $this->totalTime = $totalTime;
     }
 
-    public function getRunId()
+    public function getUuid()
     {
-        return $this->runId;
+        return $this->uuid;
     }
 
     public function getDate()

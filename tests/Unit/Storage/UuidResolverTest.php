@@ -46,7 +46,7 @@ class UuidResolverTest extends \PHPUnit_Framework_TestCase
     {
         $this->storage->history()->willReturn($this->history->reveal());
         $this->history->current()->willReturn($this->historyEntry->reveal());
-        $this->historyEntry->getRunId()->willReturn(1234);
+        $this->historyEntry->getUuid()->willReturn(1234);
 
         $uuid = $this->resolver->resolve('latest');
         $this->assertEquals(1234, $uuid);
@@ -74,8 +74,8 @@ class UuidResolverTest extends \PHPUnit_Framework_TestCase
             $this->historyEntry->reveal(),
             $this->historyEntry1->reveal()
         );
-        $this->historyEntry->getRunId()->willReturn(1234);
-        $this->historyEntry1->getRunId()->willReturn(4321);
+        $this->historyEntry->getUuid()->willReturn(1234);
+        $this->historyEntry1->getUuid()->willReturn(4321);
 
         $this->history->next()->shouldBeCalledTimes(3);
 

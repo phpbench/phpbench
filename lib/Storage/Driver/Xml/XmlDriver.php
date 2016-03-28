@@ -86,15 +86,15 @@ class XmlDriver implements DriverInterface
     /**
      * {@inheritdoc}
      */
-    public function fetch($runId)
+    public function fetch($uuid)
     {
-        if (!$this->has($runId)) {
+        if (!$this->has($uuid)) {
             throw new \InvalidArgumentException(sprintf(
-                'Cannot find run with UUID "%s"', $runId
+                'Cannot find run with UUID "%s"', $uuid
             ));
         }
 
-        $path = $this->getPath($runId);
+        $path = $this->getPath($uuid);
 
         $dom = new Document();
         $dom->load($path);
@@ -106,9 +106,9 @@ class XmlDriver implements DriverInterface
     /**
      * {@inheritdoc}
      */
-    public function has($runId)
+    public function has($uuid)
     {
-        $path = $this->getPath($runId);
+        $path = $this->getPath($uuid);
 
         if (false === $path) {
             return false;

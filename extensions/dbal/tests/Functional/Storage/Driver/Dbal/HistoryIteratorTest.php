@@ -76,7 +76,7 @@ class HistoryIteratorTest extends DbalTestCase
         $this->assertEquals('2016-01-01', $current->getDate()->format('Y-m-d'));
         $this->assertEquals('branch_1', $current->getVcsBranch());
         $this->assertEquals('one', $current->getContext());
-        $this->assertEquals(1, $current->getRunId());
+        $this->assertEquals(1, $current->getUuid());
 
         $this->iterator->next();
         $current = $this->iterator->current();
@@ -84,6 +84,6 @@ class HistoryIteratorTest extends DbalTestCase
         $this->assertEquals('2015-01-01', $current->getDate()->format('Y-m-d'));
         $this->assertEquals('branch_2', $current->getVcsBranch());
         $this->assertEquals('two', $current->getContext());
-        $this->assertEquals(2, $current->getRunId());
+        $this->assertEquals(2, $current->getUuid());
     }
 }

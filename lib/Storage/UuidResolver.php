@@ -39,7 +39,7 @@ class UuidResolver
     {
         $history = $this->driver->getService()->history();
 
-        return $history->current()->getRunId();
+        return $history->current()->getUuid();
     }
 
     private function getNthUuid($nth)
@@ -51,6 +51,6 @@ class UuidResolver
             $history->next();
         }
 
-        return $entry->getRunId();
+        return $entry->getUuid();
     }
 }

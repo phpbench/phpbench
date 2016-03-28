@@ -58,31 +58,31 @@ class DbalDriver implements DriverInterface
     /**
      * {@inheritdoc}
      */
-    public function has($runId)
+    public function has($uuid)
     {
-        return $this->repository->hasRun($runId);
+        return $this->repository->hasRun($uuid);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function delete($runId)
+    public function delete($uuid)
     {
-        $this->repository->deleteRun($runId);
+        $this->repository->deleteRun($uuid);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function fetch($runId)
+    public function fetch($uuid)
     {
-        if (!$this->repository->hasRun($runId)) {
+        if (!$this->repository->hasRun($uuid)) {
             throw new \InvalidArgumentException(sprintf(
-                'Could not find suite with run ID "%s"', $runId
+                'Could not find suite with run ID "%s"', $uuid
             ));
         }
 
-        $comparison = new Comparison('$eq', 'run', $runId);
+        $comparison = new Comparison('$eq', 'run', $uuid);
         $collection = $this->query($comparison);
 
         return $collection;

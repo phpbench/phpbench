@@ -79,7 +79,7 @@ EOT
 
         foreach ($this->storage->getService()->history() as $entry) {
             $lines = [];
-            $lines[] = sprintf('<comment>run %s</>', $entry->getRunId());
+            $lines[] = sprintf('<comment>run %s</>', $entry->getUuid());
             $lines[] = sprintf('Date:    ' . $entry->getDate()->format('c'));
             $lines[] = sprintf('Branch:  ' . $entry->getVcsBranch());
             $lines[] = sprintf('Context: ' . ($entry->getContext() ?: '<none>'));

@@ -36,26 +36,26 @@ interface DriverInterface
     public function query(Constraint $constraint);
 
     /**
-     * Return the suite collection with the given run ID.
+     * Return the suite collection with the given run UUID.
      * If no suite is found an exception will be thrown.
      *
-     * @param int $runId
+     * @param int $uuid
      *
      * @throws InvalidArgumentException
      *
      * @return SuiteCollection
      */
-    public function fetch($runId);
+    public function fetch($uuid);
 
     /**
-     * Return true if the driver has the given run ID.
+     * Return true if the driver has the given run UUID.
      */
-    public function has($runId);
+    public function has($uuid);
 
     /**
-     * Delete the run with the given UUID.
+     * Delete the run with the given run UUID.
      */
-    public function delete($runId);
+    public function delete($uuid);
 
     /**
      * Return a history iterator of HistoryEntries in descending

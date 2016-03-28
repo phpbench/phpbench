@@ -74,25 +74,25 @@ class XmlArchiver implements ArchiverInterface
             $this->filesystem->mkdir($this->archivePath);
         }
 
-        $runIds = [];
+        $uuids = [];
         foreach ($driver->history() as $entry) {
-            $runIds[] = $entry->getRunId();
+            $uuids[] = $entry->getUuid();
         }
 
-        $output->writeln(sprintf('Archiving "%s" suites', count($runIds)));
+        $output->writeln(sprintf('Archiving "%s" suites', count($uuids)));
 
-        foreach ($runIds as $index => $runId) {
-            $filename = $runId . '.xml';
+        foreach ($uuids as $index => $uuid) {
+            $filename = $uuid . '.xml';
             $path = sprintf('%s/%s', $this->archivePath, $filename);
 
             if ($this->filesystem->exists($path)) {
-                $this->writeProgress($output, $index, count($runIds), 'S');
+                $this->writeProgress($output, $index, count($uuids), 'S');
                 continue;
             }
 
-            $this->writeProgress($output, $index, count($runIds), '.');
+            $this->writeProgress($output, $index, count($uuids), '.');
 
-            $collection = $driver->fetch($runId);
+            $collection = $driver->fetch($uuid);
             $document = $this->xmlEncoder->encode($collection);
             $document->save($path);
         }
