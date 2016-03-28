@@ -10,23 +10,34 @@ sudo: false
 
 cache:
   directories:
-    - $HOME/.composer/cache
+    - "$HOME/.composer/cache"
 
 before_script:
+  - if [[ $TRAVIS_PHP_VERSION != 'hhvm' ]]; then phpenv config-rm xdebug.ini; fi
   - if [ -n "${SYMFONY_VERSION}" ]; then composer require symfony/symfony:${SYMFONY_VERSION} --no-update; fi;
+  - if [[ $EXECUTE_DEPLOYMENT == 'true' ]]; then composer require doctrine/dbal --no-update; fi;
   - composer update ${COMPOSER_FLAGS} --prefer-dist
-  # avoid timezone warnings
   - export TZ=Europe/Paris
 
-script: 
+script:
   - phpunit
-  # run the benchmarks in order to test them
-  - php bin/phpbench run --iterations=1 --revs=1 --report=env
-  - php bin/phpbench run --iterations=1 --revs=1 --config=extensions/dbal/benchmarks/phpbench.json
+  - php bin/phpbench run --iterations=1 --revs=1 --report=env --progress=dots
+  - php bin/phpbench run --iterations=1 --revs=1 --config=extensions/dbal/benchmarks/phpbench.json --progress=dots
 
 matrix:
-    include:
-        - php: 5.5
-          env: COMPOSER_FLAGS="--prefer-lowest"
-        - php: 7.0
-          env: SYMFONY_VERSION=^3.0
+  include:
+    - php: 5.5
+      env:
+      - COMPOSER_FLAGS="--prefer-lowest"
+    - php: 7.0
+      env: 
+      - SYMFONY_VERSION=^3.0
+      - EXECUTE_DEPLOYMENT=true
+
+before_install:
+  - openssl aes-256-cbc -K $encrypted_d58d55177063_key -iv $encrypted_d58d55177063_iv
+    -in .travis/secrets.tar.enc -out .travis/secrets.tar -d
+
+after_success:
+    - if [[ $EXECUTE_DEPLOYMENT == 'true' && $TRAVIS_BRANCH == 'master' && $TRAVIS_PULL_REQUEST == 'false' ]]; then composer install --no-dev ; fi
+    - if [[ $EXECUTE_DEPLOYMENT == 'true' && $TRAVIS_BRANCH == 'master' && $TRAVIS_PULL_REQUEST == 'false' ]]; then ./.travis/deploy.sh ; fi

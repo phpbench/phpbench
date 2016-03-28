@@ -17,14 +17,15 @@
         "symfony/filesystem": "^2.4|^3.0",
         "symfony/debug": "^2.4|^3.0",
         "seld/jsonlint": "^1.0",
-        "justinrainbow/json-schema": "^1.0",
+        "justinrainbow/json-schema": "^1.6",
         "doctrine/annotations": "^1.2.7",
         "ext-dom": "*",
         "ext-json": "*",
         "ext-pcre": "*",
         "ext-reflection": "*",
         "ext-spl": "*",
-        "lstrojny/functional-php": "^1.0"
+        "lstrojny/functional-php": "^1.0",
+        "padraic/phar-updater": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^4.6",

@@ -29,14 +29,26 @@ Features:
 - Extendable.
 - More..
 
-Documentation and Installation Instructions
--------------------------------------------
+Installation Instructions
+-------------------------
 
-See the [official documentation](http://phpbench.readthedocs.org)
+You can install PHPBench either as as [a
+PHAR](http://phpbench.readthedocs.org/en/latest/installing.html#install-as-a-phar-package)
+or as a project dependency.
+
+Installing as sa PHAR allows you to easily self-update to the latest versions,
+but as PHPBench is unstable, you will be *living on the edge*.
+
+See the [installation instructions](http://phpbench.readthedocs.org/en/latest/installing.html#install-as-a-phar-package) for
+information on both methods of installation.
+
+Documentation
+-------------
+
+See the [official documentation](http://phpbench.readthedocs.org).
 
 Screenshots
 -----------
-
 
 Default output:
 

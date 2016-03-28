@@ -14,6 +14,7 @@ namespace PhpBench\Benchmark;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\Factory;
 use Symfony\Component\Finder\Finder;
+use PhpBench\PhpBench;
 
 /**
  * This class finds a benchmark (or benchmarks depending on the path), loads
@@ -44,6 +45,8 @@ class BenchmarkFinder
     public function findBenchmarks($path, array $filters = [], array $groupFilter = [])
     {
         $finder = new Finder();
+        $path = PhpBench::normalizePath($path);
+
         if (!file_exists($path)) {
             throw new \InvalidArgumentException(sprintf(
                 'File or directory "%s" does not exist (cwd: %s)',

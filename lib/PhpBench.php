@@ -18,7 +18,12 @@ use Symfony\Component\Debug\ErrorHandler;
 
 class PhpBench
 {
-    const VERSION = '%version%';
+    // PHPBench version: @git_sha@ will be replaced by box.
+    const VERSION = '0.11-dev (@git_sha@)';
+
+    // URL to phar and version file for self-updating
+    const PHAR_URL = 'https://phpbench.github.io/phpbench/phpbench.phar';
+    const PHAR_VERSION_URL = 'https://phpbench.github.io/phpbench/phpbench.phar.version';
 
     public static function run()
     {
@@ -32,6 +37,23 @@ class PhpBench
         $container = new Container($extensions, $config);
         $container->init();
         $container->get('console.application')->run();
+    }
+
+    /**
+     * If the path is relative we need to use the current working path
+     * because otherwise it will be the script path, which is wrong in the
+     * context of a PHAR.
+     *
+     * @param string $path
+     * @return string
+     */
+    public static function normalizePath($path)
+    {
+        if (substr($path, 0, 1) == DIRECTORY_SEPARATOR) {
+            return $path;
+        }
+
+        return getcwd() . DIRECTORY_SEPARATOR . $path;
     }
 
     private static function loadConfig()

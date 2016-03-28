@@ -3,3 +3,9 @@ vendor
 docs/build
 .phpbench.sqlite
 phpunit.xml
+.travis/phpbench-phar-private.pem
+phpbench.phar
+phpbench.phar.pubkey
+phpbench.phar.version
+.travis/build-key.pem
+.travis/secrets.tar

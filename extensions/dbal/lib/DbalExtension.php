@@ -16,6 +16,7 @@ use Doctrine\DBAL\Version;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Extensions\Dbal\Command\MigrateCommand;
+use PhpBench\PhpBench;
 
 class DbalExtension implements ExtensionInterface
 {
@@ -44,7 +45,13 @@ class DbalExtension implements ExtensionInterface
                 return $connection;
             }
 
-            $connection = DriverManager::getConnection($container->getParameter('storage.dbal.connection'));
+            $params = $container->getParameter('storage.dbal.connection');
+
+            if (isset($params['path'])) {
+                $params['path'] = PhpBench::normalizePath($params['path']);
+            }
+
+            $connection = DriverManager::getConnection($params);
 
             return $connection;
         });

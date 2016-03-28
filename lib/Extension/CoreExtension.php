@@ -31,6 +31,7 @@ use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use PhpBench\Console\Command\LogCommand;
 use PhpBench\Console\Command\ReportCommand;
 use PhpBench\Console\Command\RunCommand;
+use PhpBench\Console\Command\SelfUpdateCommand;
 use PhpBench\Console\Command\ShowCommand;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
@@ -110,6 +111,9 @@ class CoreExtension implements ExtensionInterface
                 $container->get('report.registry.generator'),
                 $container->get('report.registry.renderer')
             );
+        });
+        $container->register('phar_updater', function (Container $container) {
+            return $updater;
         });
 
         $this->registerBenchmark($container);
@@ -360,6 +364,12 @@ class CoreExtension implements ExtensionInterface
                 $container->get('storage.driver_registry')
             );
         }, ['console.command' => []]);
+
+        if (\Phar::running()) {
+            $container->register('console.command.self_update', function (Container $container) {
+                return new SelfUpdateCommand();
+            }, ['console.command' => []]);
+        }
     }
 
     private function registerProgressLoggers(Container $container)
