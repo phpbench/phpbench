@@ -13,8 +13,8 @@ namespace PhpBench\Benchmark;
 
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\Factory;
-use Symfony\Component\Finder\Finder;
 use PhpBench\PhpBench;
+use Symfony\Component\Finder\Finder;
 
 /**
  * This class finds a benchmark (or benchmarks depending on the path), loads

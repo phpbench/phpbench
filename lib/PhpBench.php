@@ -45,6 +45,7 @@ class PhpBench
      * context of a PHAR.
      *
      * @param string $path
+     *
      * @return string
      */
     public static function normalizePath($path)
