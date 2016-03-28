@@ -1,11 +1,10 @@
-
 VERSION 0  DORNBIRN
 ===================
 
    Version 0.11 - Dornbirn
-      28/03/2016 10:25  0.11.0  initial release
-         85053f6 Release of new version 0.11.0
-         9369203 Use RMT
+         ac82b48 Release of new version 0.11.0
+         d04c927 Box and automated PHAR build + deployment
+         0dd3e93 Use RMT (Release Management Tool)
          ff86f45 Meta UUIDs via. the UUIDResolver
          e59c5c4 test
          e29ac63 Delete functional test DBAL
