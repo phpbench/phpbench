@@ -19,7 +19,7 @@
       "in": "vendor"
     }
   ],
-  "git-commit-short": "git_sha",
+  "git-commit-short": "git_version",
   "intercept": true,
   "key": ".travis/phpbench-phar-private.pem",
   "main": "bin/phpbench.php",
