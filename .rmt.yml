@@ -1,0 +1,42 @@
+_default:
+
+    # VCS CONFIG
+    vcs: git
+
+    # PREREQUISITES
+    #  Actions executed before any questions get asked to the user.
+    #  Custom action can be added by provided a relative path the the php script. Example:
+    #   - relative/path/to/your-own-sript.php
+    prerequisites:
+     - working-copy-check
+     - display-last-changes
+     - composer-stability-check
+
+    # GENERAL CONFIG
+    #  Apply to all branches except the one from the 'branch-specific' section
+    #  Like prerequisites, you can add your own script. Example:
+    #   - relative/path/to/your-own-sript.php
+    version-generator: simple              # Simple versionning
+    version-persister:
+        vcs-tag:                           # Release with VCS tag
+            tag-prefix: "{branch-name}_"   # Prefix any tag with the VCS branch name
+    post-release-actions:
+        vcs-publish:                       # Publish the release to the VCS
+            ask-confirmation: true
+
+# BRANCH SPECIFIC CONFIG
+#  On master, we override the general config
+master:
+    version-generator: semantic # More complex versionning (semantic)
+    version-persister:
+        vcs-tag:
+            tag-prefix: ''         # No more prefix for tags
+    pre-release-actions:
+        changelog-update:          # Update a CHANGELOG file before the release
+            format: semantic
+            dump-commits: true
+            exclude-merge-commits: true
+            update-version-class:
+                class: PhpBench\PhpBench
+                pattern: %version%
+        vcs-commit: ~              # Commit the CHANGELOG

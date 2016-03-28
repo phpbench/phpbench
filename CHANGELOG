@@ -1,0 +1,57 @@
+
+VERSION 0  DORNBIRN
+===================
+
+   Version 0.11 - Dornbirn
+      28/03/2016 10:25  0.11.0  initial release
+         85053f6 Release of new version 0.11.0
+         9369203 Use RMT
+         ff86f45 Meta UUIDs via. the UUIDResolver
+         e59c5c4 test
+         e29ac63 Delete functional test DBAL
+         96649fe Support for deleting runs
+         0cc27af Updated docs
+         413d767 Xml Storage Driver
+         2af5a78 Update README.md
+         3ff5c35 log command improvements
+         6eb3dca Added baseline env provider
+         7401376 Normalize row columns
+         3a92476 Reset state of visitor
+         76cd999 Query token replacement.
+         60fbc5d Fixed bliken logger spacing issue.
+         d526cc9 (quickfix) Fixed envrionment
+         beeb127 Database optimizations
+         aa7e90d Doctrine DBAL
+         f5da83e Archive and restore.
+         6345693 Use generic registry for storage driver
+         f01fc59 Fixed rendering issues with % NUMBER_OF_COLS = 0 iterations
+         67715aa Fixed "time" column for iter report and added test.
+         97c4bc5 CS upgrade for 5.5
+         bd9ff1c Short array syntax
+         dc68155 Report refactoring
+         ef22f79 Updated docs
+         035b003 Added FAQ
+         b29f3ea Escape git cmd
+         eccf7e8 Precision annotation
+         984f0c6 Fixed group query
+         bb2a72d Fixed wrong SQL field mapping
+         569aa8a Turned down the revs and iters for travis benchmarks
+         d8971a2 Allow multiple iterations, revs and warmups
+         ac029ff Delete .phpbench.sqlite.1
+         c672ce2 Added CSV output config
+         e34c6e1 Bumped version
+         b497087 Storage
+         e137ec4 Fix class name detection
+         855fb04 Fixed overrides and added tests
+         da644f2 Use Suite Graph for functional tests
+         c25c00e BC BREAK Improved container initialization (fixes #309)
+         8f07434 Git: Check to see if GIT exe is available.
+         b3fef14 Non-strict "JSON" support.
+         124135f Number format summary statistics
+         6275bfa Decoupled Report framework from XML
+         974f670 PHPBench benchmarks + removed examples
+         adde35d Separating metadata nad model
+         72a97a8 Refactoring: Runner does not compose XML document.
+         b022135 Histogram
+         c72e81a Progress logger refactorings.
+         c559ec8 Updated screenshots

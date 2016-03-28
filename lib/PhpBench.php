@@ -18,7 +18,7 @@ use Symfony\Component\Debug\ErrorHandler;
 
 class PhpBench
 {
-    const VERSION = '0.11.0-dev';
+    const VERSION = '%version%';
 
     public static function run()
     {
