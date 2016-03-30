@@ -19,18 +19,18 @@
         "seld/jsonlint": "^1.0",
         "justinrainbow/json-schema": "^1.6",
         "doctrine/annotations": "^1.2.7",
+        "lstrojny/functional-php": "^1.0",
         "ext-dom": "*",
         "ext-json": "*",
         "ext-pcre": "*",
         "ext-reflection": "*",
-        "ext-spl": "*",
-        "lstrojny/functional-php": "^1.0",
-        "padraic/phar-updater": "^1.0"
+        "ext-spl": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "^4.6",
         "doctrine/dbal": "^2.4",
-        "liip/rmt": "^1.2"
+        "liip/rmt": "^1.2",
+        "padraic/phar-updater": "^1.0"
     },
     "autoload": {
         "psr-4": {
