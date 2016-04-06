@@ -161,7 +161,7 @@ class Reflector
                     }
                 }
             }
-        };
+        }
 
         if (!trim($class)) {
             return;
