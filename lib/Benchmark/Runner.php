@@ -115,11 +115,15 @@ class Runner
         }
 
         // the keys are subject names, convert them to numerical indexes.
-        $subjectMetadatas = array_values($benchmarkMetadata->getSubjects());
-        foreach ($subjectMetadatas as $subjectMetadata) {
-            if (true === $subjectMetadata->getSkip()) {
-                continue;
+        $subjectMetadatas = array_filter($benchmarkMetadata->getSubjects(), function ($subjectMetadata) {
+            if ($subjectMetadata->getSkip()) {
+                return false;
             }
+
+            return true;
+        });
+        $subjectMetadatas = array_values($subjectMetadatas);
+        foreach ($subjectMetadatas as $subjectMetadata) {
 
             // override parameters
             $subjectMetadata->setIterations($context->getIterations($subjectMetadata->getIterations()));
@@ -134,6 +138,7 @@ class Runner
         $this->logger->benchmarkStart($benchmark);
         foreach ($benchmark->getSubjects() as $index => $subject) {
             $subjectMetadata = $subjectMetadatas[$index];
+
             $this->logger->subjectStart($subject);
             $this->runSubject($executor, $context, $subject, $subjectMetadata);
             $this->logger->subjectEnd($subject);
