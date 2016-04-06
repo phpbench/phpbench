@@ -142,7 +142,7 @@ class XmlArchiver implements ArchiverInterface
             }
 
             $newFiles[] = $file;
-        };
+        }
 
         return $newFiles;
     }
