@@ -52,7 +52,7 @@ class ReflectionHierarchy implements \IteratorAggregate
             throw new \InvalidArgumentException(
                 'Cannot get top reflection class, reflection hierarchy is empty.'
             );
-        };
+        }
 
         return $this->reflectionClasses[0];
     }

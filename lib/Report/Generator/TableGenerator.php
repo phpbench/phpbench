@@ -405,11 +405,11 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
 
                         if ($mode = $subject->getOutputMode()) {
                             $formatParams['output_mode'] = $mode;
-                        };
+                        }
 
                         if ($precision = $subject->getOutputTimePrecision()) {
                             $formatParams['output_time_precision'] = $precision;
-                        };
+                        }
                         $row->setFormatParams($formatParams);
 
                         $stats = $variant->getStats()->getStats();
