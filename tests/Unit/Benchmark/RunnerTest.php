@@ -179,17 +179,31 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSkip()
     {
-        $subject = new SubjectMetadata($this->benchmark->reveal(), 'name', 0);
-        $subject->setSkip(true);
+        $subject1 = new SubjectMetadata($this->benchmark->reveal(), 'one', 0);
+        $subject2 = new SubjectMetadata($this->benchmark->reveal(), 'two', 0);
+        $subject3 = new SubjectMetadata($this->benchmark->reveal(), 'three', 0);
+
+        $subject2->setSkip(true);
         $this->benchmark->getSubjects()->willReturn([
-            $subject,
+            $subject1,
+            $subject2,
+            $subject3,
         ]);
         TestUtil::configureBenchmarkMetadata($this->benchmark);
+
+        $this->executor->execute($subject1, Argument::cetera())->willReturn(new IterationResult(10, 10));
+        $this->executor->execute($subject2, Argument::cetera())->willReturn(new IterationResult(10, 10));
+        $this->executor->execute($subject3, Argument::cetera())->willReturn(new IterationResult(10, 10));
+
         $suite = $this->runner->run(new RunnerContext(__DIR__));
 
         $this->assertInstanceOf('PhpBench\Model\Suite', $suite);
         $this->assertNoErrors($suite);
-        $this->assertEquals(0, $suite->getSummary()->getNbSubjects());
+        $this->assertEquals(2, $suite->getSummary()->getNbSubjects());
+        $subjects = $suite->getSubjects();
+        $this->assertEquals('one', $subjects[0]->getName());
+        $this->assertEquals('three', $subjects[1]->getName());
+        $this->executor->execute($subject2, Argument::cetera())->shouldNotHaveBeenCalled();
     }
 
     /**
