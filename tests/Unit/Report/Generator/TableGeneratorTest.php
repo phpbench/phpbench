@@ -211,8 +211,10 @@ class TableGeneratorTest extends GeneratorTestCase
 
     /**
      * It should isolate a factor and compare statistics horizontally.
+     *
+     * @dataProvider provideCompare
      */
-    public function testCompare()
+    public function testCompare($config, $assertions)
     {
         $collection = TestUtil::createCollection([
             [
@@ -235,18 +237,47 @@ class TableGeneratorTest extends GeneratorTestCase
             ],
         ]);
 
-        $report = $this->generate($collection, [
-            'compare' => 'git_branch',
-            'compare_fields' => ['mode', 'mean'],
-            'break' => [],
-        ]);
+        $report = $this->generate($collection, $config);
 
-        $this->assertXPathCount($report, 11, '//row[1]/cell');
-        $this->assertXPathCount($report, 1, '//table');
-        $this->assertXPathCount($report, 4, '//cell[@name="git_branch:foobar:mode"]');
-        $this->assertXPathCount($report, 4, '//cell[@name="git_branch:foobar:mean"]');
-        $this->assertXPathCount($report, 4, '//cell[@name="git_branch:barfoo:mode"]');
-        $this->assertXPathCount($report, 4, '//cell[@name="git_branch:barfoo:mean"]');
+        foreach ($assertions as $expectedCount => $xpath) {
+            $this->assertXPathCount($report, $expectedCount, $xpath);
+        }
+    }
+
+    public function provideCompare()
+    {
+        return [
+            [
+                [
+                    'compare' => 'git_branch',
+                    'compare_fields' => ['mode', 'mean'],
+                    'break' => [],
+                ],
+                [
+                    11 => '//row[1]/cell',
+                    1 => '//table',
+                    4 => '//cell[@name="git_branch:foobar:mem"]',
+                    4 => '//cell[@name="git_branch:foobar:mean"]',
+                    4 => '//cell[@name="git_branch:barfoo:mem"]',
+                    4 => '//cell[@name="git_branch:barfoo:mean"]',
+                ],
+            ],
+            [
+                [
+                    'compare' => 'git_branch',
+                    'compare_fields' => ['mem'],
+                    'break' => ['benchmark'],
+                    'cols' => ['subject'],
+                ],
+                [
+                    6 => '//row[1]/cell',
+                    2 => '//table',
+                    0 => '//cell[@name="mem"]',
+                    4 => '//cell[@name="git_branch:foobar:mem"]',
+                    4 => '//cell[@name="git_branch:barfoo:mem"]',
+                ],
+            ],
+        ];
     }
 
     /**
