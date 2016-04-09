@@ -317,7 +317,14 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
                 foreach ($group as $row) {
                     if (null === $firstRow) {
                         $firstRow = $row->newInstance(array_diff_key($row->getArrayCopy(), array_flip($this->statKeys)));
-                        unset($firstRow[$compare]);
+                        if (isset($firstRow[$compare])) {
+                            unset($firstRow[$compare]);
+                        }
+                        foreach ($compareFields as $compareField) {
+                            if (isset($firstRow[$compareField])) {
+                                unset($firstRow[$compareField]);
+                            }
+                        }
                     }
 
                     if (null === $colNames) {
