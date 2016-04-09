@@ -37,6 +37,8 @@ Options:
 - **pretty_params**: *(boolean)* Pretty print the ``params`` field.
 - **iterations**: *(boolean)* Include the results of every individual
   iteration (default ``false``).
+- **col_labels**: *(array)* Override the default column names, either as a
+  numerical array or as a `colName => label` hash.
 
 .. _generator_table_columns:
 

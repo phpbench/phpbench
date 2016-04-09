@@ -68,6 +68,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
             'sort' => [],
             'pretty_params' => false,
             'iterations' => false,
+            'col_labels' => [],
         ];
     }
 
@@ -88,6 +89,9 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
                 ],
                 'cols' => [
                     'type' => 'array',
+                ],
+                'col_labels' => [
+                    'type' => ['object', 'array'],
                 ],
                 'break' => [
                     'type' => 'array',
@@ -506,6 +510,27 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
 
         foreach ($tables as $breakHash => $table) {
             $tableEl = $reportEl->appendElement('table');
+
+            // Build the col(umn) definitions.
+            foreach ($table as $row) {
+                $colsEl = $tableEl->appendElement('cols');
+                foreach ($row->getNames() as $cellIndex => $colName) {
+                    $colEl = $colsEl->appendElement('col');
+                    $colEl->setAttribute('name', $colName);
+
+                    // column labels are the column names by default.
+                    // the user may override by column name or column index.
+                    $colLabel = $colName;
+                    if (isset($config['col_labels'][$colName])) {
+                        $colLabel = $config['col_labels'][$colName];
+                    } elseif (isset($config['col_labels'][$cellIndex])) {
+                        $colLabel = $config['col_labels'][$cellIndex];
+                    }
+
+                    $colEl->setAttribute('label', $colLabel);
+                }
+                break;
+            }
 
             if ($breakHash) {
                 $tableEl->setAttribute('title', $breakHash);

@@ -13,12 +13,12 @@
     <xsd:complexType name="report">
         <xsd:choice maxOccurs="unbounded" minOccurs="0">
             <xsd:element name="description" type="xsd:string"/>
-            <xsd:element name="table" type="subject"/>
+            <xsd:element name="table" type="table"/>
         </xsd:choice>
         <xsd:attribute name="title" type="xsd:string"/>
     </xsd:complexType>
 
-    <xsd:complexType name="subject">
+    <xsd:complexType name="table">
         <xsd:choice minOccurs="0" maxOccurs="unbounded">
             <xsd:any processContents="skip"/>
         </xsd:choice>

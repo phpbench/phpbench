@@ -66,8 +66,8 @@
         <table>
             <thead>
                 <tr>
-                    <xsl:for-each select="./group[1]/row[1]/cell">
-                        <th><xsl:value-of select="@name" /></th>
+                    <xsl:for-each select=".//col">
+                        <th><xsl:value-of select="@label" /></th>
                     </xsl:for-each>
                 </tr>
             </thead>

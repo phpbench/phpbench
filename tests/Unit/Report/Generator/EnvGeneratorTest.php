@@ -49,6 +49,7 @@ class EnvGeneratorTest extends GeneratorTestCase
         ]);
 
         $report = $this->generator->generate($collection, new Config('foo', []));
+        $this->assertXPathCount($report, 3, '//col');
         $this->assertXPathCount($report, 1, '//table[contains(@title, "Suite #0")]');
         $this->assertXPathCount($report, 4, '//row');
         $this->assertXPathCount($report, 12, '//cell');

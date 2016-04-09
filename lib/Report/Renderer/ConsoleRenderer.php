@@ -81,7 +81,11 @@ class ConsoleRenderer implements RendererInterface, OutputAwareInterface
     protected function renderTableElement(Element $tableEl, $config)
     {
         $rows = [];
-        $row = null;
+        $colNames = [];
+
+        foreach ($tableEl->query('.//col') as $colEl) {
+            $colNames[] = $colEl->getAttribute('label');
+        }
 
         foreach ($tableEl->query('.//row') as $rowEl) {
             $row = [];
@@ -113,7 +117,7 @@ class ConsoleRenderer implements RendererInterface, OutputAwareInterface
             $table->setStyle($config['table_style']);
         }
 
-        $table->setHeaders(array_keys($row ?: []));
+        $table->setHeaders($colNames);
         $table->setRows($rows);
         $this->renderTable($table);
         $this->output->writeln('');
