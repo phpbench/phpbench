@@ -97,4 +97,28 @@ class ReportTest extends SystemTestCase
             ['markdown'],
         ];
     }
+
+    /**
+     * The core report generators should execute.
+     *
+     * @dataProvider provideGenerators
+     */
+    public function testGenerators($config)
+    {
+        $this->createResult();
+        $process = $this->phpbench(
+            'report --file=' . $this->fname .' --report=\'' . json_encode($config) . '\''
+        );
+
+        $this->assertExitCode(0, $process);
+    }
+
+    public function provideGenerators()
+    {
+        return [
+            [['generator' => 'table']],
+            [['generator' => 'env']],
+            [['generator' => 'composite', 'reports' => ['default']]],
+        ];
+    }
 }

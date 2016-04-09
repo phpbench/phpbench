@@ -55,6 +55,7 @@ use PhpBench\Progress\Logger\VerboseLogger;
 use PhpBench\Progress\LoggerRegistry;
 use PhpBench\Registry\ConfigurableRegistry;
 use PhpBench\Registry\Registry;
+use PhpBench\Report\Generator\CompositeGenerator;
 use PhpBench\Report\Generator\EnvGenerator;
 use PhpBench\Report\Generator\TableGenerator;
 use PhpBench\Report\Renderer\ConsoleRenderer;
@@ -415,6 +416,11 @@ class CoreExtension implements ExtensionInterface
         $container->register('report_generator.env', function (Container $container) {
             return new EnvGenerator();
         }, ['report_generator' => ['name' => 'env']]);
+        $container->register('report_generator.composite', function (Container $container) {
+            return new CompositeGenerator(
+                $container->get('report.manager')
+            );
+        }, ['report_generator' => ['name' => 'composite']]);
     }
 
     private function registerReportRenderers(Container $container)
