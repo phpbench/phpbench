@@ -2,29 +2,30 @@
 
 namespace PhpBench;
 
-$bootstrap = '{{ bootstrap }}';
-$file = '{{ file }}';
-$class = '{{ class }}';
+call_user_func(function() {
+    $bootstrap = '{{ bootstrap }}';
+    $file = '{{ file }}';
+    $class = '{{ class }}';
 
-if ($bootstrap) {
-    require_once($bootstrap);
-}
+    if ($bootstrap) {
+        require_once($bootstrap);
+    }
 
-require_once($file);
+    require_once($file);
 
-$paramProviders = {{ paramProviders }};
-$benchmark = new $class();
-$parameterSets = array();
+    $paramProviders = {{ paramProviders }};
+    $benchmark = new $class();
+    $parameterSets = array();
 
-// don't let the user benchmark output anything
-ob_start();
+    // don't let the user benchmark output anything
+    ob_start();
 
-foreach ($paramProviders as $paramProvider) {
-    $parameterSets[] = $benchmark->$paramProvider();
-}
+    foreach ($paramProviders as $paramProvider) {
+        $parameterSets[] = $benchmark->$paramProvider();
+    }
 
-ob_end_clean();
+    ob_end_clean();
 
-echo json_encode($parameterSets);
-exit(0);
-
+    echo json_encode($parameterSets);
+    exit(0);
+});

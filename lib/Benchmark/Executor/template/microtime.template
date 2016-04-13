@@ -1,50 +1,52 @@
 <?php
 
-// disable garbage collection
-gc_disable();
+call_user_func(function() {
+    // disable garbage collection
+    gc_disable();
 
-// repress any output from the user scripts
-ob_start();
+    // repress any output from the user scripts
+    ob_start();
 
-$class = '{{ class }}';
-$file = '{{ file }}';
-$subject = '{{ subject }}';
-$revolutions = {{ revolutions }};
-$beforeMethods = {{ beforeMethods }};
-$afterMethods = {{ afterMethods }};
-$bootstrap = '{{ bootstrap }}';
-$parameters = {{ parameters }};
-$warmup = {{ warmup }};
+    $class = '{{ class }}';
+    $file = '{{ file }}';
+    $subject = '{{ subject }}';
+    $revolutions = {{ revolutions }};
+    $beforeMethods = {{ beforeMethods }};
+    $afterMethods = {{ afterMethods }};
+    $bootstrap = '{{ bootstrap }}';
+    $parameters = {{ parameters }};
+    $warmup = {{ warmup }};
 
-if ($bootstrap) {
-    require_once($bootstrap);
-}
+    if ($bootstrap) {
+        require_once($bootstrap);
+    }
 
-require_once($file);
+    require_once($file);
 
-$benchmark = new $class();
+    $benchmark = new $class();
 
-foreach ($beforeMethods as $beforeMethod) {
-    $benchmark->$beforeMethod($parameters);
-}
+    foreach ($beforeMethods as $beforeMethod) {
+        $benchmark->$beforeMethod($parameters);
+    }
 
-// warmup if required
-benchmark($benchmark, $subject, $warmup, $parameters);
+    // warmup if required
+    benchmark($benchmark, $subject, $warmup, $parameters);
 
-$time = benchmark($benchmark, $subject, $revolutions, $parameters);
+    $time = benchmark($benchmark, $subject, $revolutions, $parameters);
 
-foreach ($afterMethods as $afterMethod) {
-    $benchmark->$afterMethod($parameters);
-}
+    foreach ($afterMethods as $afterMethod) {
+        $benchmark->$afterMethod($parameters);
+    }
 
-$buffer = ob_get_contents();
-ob_end_clean();
+    $buffer = ob_get_contents();
+    ob_end_clean();
 
-echo json_encode(array(
-    'memory' => memory_get_peak_usage(),
-    'time' => $time,
-    'buffer' => $buffer,
-));
+    echo json_encode(array(
+        'memory' => memory_get_peak_usage(),
+        'time' => $time,
+        'buffer' => $buffer,
+    ));
+});
 
 function benchmark($benchmark, $subject, $revolutions, $parameters)
 {

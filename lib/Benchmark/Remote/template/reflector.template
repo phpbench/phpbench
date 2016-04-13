@@ -2,45 +2,47 @@
 
 namespace PhpBench;
 
-$bootstrap = '{{ bootstrap }}';
-$class = '{{ class }}';
-$file = '{{ file }}';
+call_user_func(function() {
+    $bootstrap = '{{ bootstrap }}';
+    $class = '{{ class }}';
+    $file = '{{ file }}';
 
-if ($bootstrap) {
-    require_once($bootstrap);
-}
+    if ($bootstrap) {
+        require_once($bootstrap);
+    }
 
-require_once($file);
+    require_once($file);
 
-$classHierarchy = class_parents($class);
-array_unshift($classHierarchy, $class);
+    $classHierarchy = class_parents($class);
+    array_unshift($classHierarchy, $class);
 
-foreach ($classHierarchy as $class) {
-    $refl = new \ReflectionClass($class);
-    $metadata = array(
-        'class' => $class,
-        'abstract' => $refl->isAbstract(),
-        'methods' => array(),
-        'interfaces' => array(),
-        'comment' => $refl->getDocComment()
-    );
-
-    foreach ($refl->getMethods() as $methodRefl) {
-        $comment = $methodRefl->getDocComment();
-        $metadata['methods'][$methodRefl->getName()] = array(
+    foreach ($classHierarchy as $class) {
+        $refl = new \ReflectionClass($class);
+        $metadata = array(
             'class' => $class,
-            'name' => $methodRefl->getName(),
-            'comment' => $comment,
-            'static' => $methodRefl->isStatic(),
+            'abstract' => $refl->isAbstract(),
+            'methods' => array(),
+            'interfaces' => array(),
+            'comment' => $refl->getDocComment()
         );
+
+        foreach ($refl->getMethods() as $methodRefl) {
+            $comment = $methodRefl->getDocComment();
+            $metadata['methods'][$methodRefl->getName()] = array(
+                'class' => $class,
+                'name' => $methodRefl->getName(),
+                'comment' => $comment,
+                'static' => $methodRefl->isStatic(),
+            );
+        }
+
+        foreach ($refl->getInterfaces() as $interfaceRefl) {
+            $metadata['interfaces'][] = $interfaceRefl->getName();
+        }
+        $metadatas[] = $metadata;
     }
 
-    foreach ($refl->getInterfaces() as $interfaceRefl) {
-        $metadata['interfaces'][] = $interfaceRefl->getName();
-    }
-    $metadatas[] = $metadata;
-}
-
-// in the future we should return also the parent classes
-echo json_encode($metadatas);
-exit(0);
+    // in the future we should return also the parent classes
+    echo json_encode($metadatas);
+    exit(0);
+});
