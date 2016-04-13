@@ -17,7 +17,9 @@ $parameters = {{ parameters }};
 $warmup = {{ warmup }};
 
 if ($bootstrap) {
-    require_once($bootstrap);
+    call_user_func(function () use ($bootstrap) {
+        require_once($bootstrap);
+    });
 }
 
 require_once($file);
