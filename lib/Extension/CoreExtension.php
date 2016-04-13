@@ -91,7 +91,7 @@ class CoreExtension implements ExtensionInterface
             'archive_path' => '_archive',
             'env_baselines' => ['nothing', 'md5', 'file_rw'],
             'env_baseline_callables' => [],
-            'xml_storage_path' => '_storage',
+            'xml_storage_path' => getcwd() . '/_storage', // use cwd because PHARs
         ];
     }
 
