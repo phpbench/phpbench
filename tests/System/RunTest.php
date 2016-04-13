@@ -233,6 +233,20 @@ class RunTest extends SystemTestCase
     }
 
     /**
+     * It should set the bootstrap file which contains variables that conflict with the
+     * script templates.
+     */
+    public function testSetConflictBootstrap()
+    {
+        // The foobar_bootstrap defines a single class which is used by FoobarBench
+        $process = $this->phpbench(
+            'run --bootstrap=bootstrap/conflicting.bootstrap benchmarks/set2/FoobarBench.php'
+        );
+
+        $this->assertExitCode(0, $process);
+    }
+
+    /**
      * It should set the bootstrap using the short option.
      */
     public function testSetBootstrapShort()
