@@ -39,12 +39,12 @@
                 </xsl:call-template>
                 <xsl:call-template name="newline" />
             </xsl:if>
-            <xsl:for-each select="./group[1]/row[1]/cell">
+            <xsl:for-each select=".//col">
                 <xsl:if test="position()!=1" xml:space="preserve"> | </xsl:if>
-                <xsl:value-of select="@name" />
+                <xsl:value-of select="@label" />
             </xsl:for-each>
             <xsl:call-template name="newline" />
-            <xsl:for-each select="./group[1]/row[1]/cell"><xsl:if test="position()!=1" xml:space="preserve">|</xsl:if> --- </xsl:for-each>
+            <xsl:for-each select=".//col"><xsl:if test="position()!=1" xml:space="preserve">|</xsl:if> --- </xsl:for-each>
             <xsl:call-template name="newline" />
             <xsl:for-each select=".//row">
                 <xsl:for-each select=".//cell">

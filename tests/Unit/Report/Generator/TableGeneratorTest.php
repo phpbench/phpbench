@@ -493,6 +493,25 @@ EOT
         $this->assertXPathCount($report, 2, '//cell[@name="foobar_os"]');
     }
 
+    /**
+     * It should customize the column names by column index.
+     */
+    public function testCustomizeColumnLabelsIndex()
+    {
+        $report = $this->generate(
+            TestUtil::createCollection([[]]),
+            [
+                'col_labels' => ['Column one', 'Column two', 'params' => 'Parameters'],
+            ]
+        );
+
+        $this->assertXPathCount($report, 14, '//col');
+        $this->assertXPathEval($report, 'Column one', 'string(//table/cols/col[1]/@label)');
+        $this->assertXPathEval($report, 'Column two', 'string(//table/cols/col[2]/@label)');
+        $this->assertXPathEval($report, 'groups', 'string(//table/cols/col[3]/@label)');
+        $this->assertXPathEval($report, 'Parameters', 'string(//table/cols/col[4]/@label)');
+    }
+
     private function generate(SuiteCollection $collection, array $config = [])
     {
         $config = new Config('test', array_merge(

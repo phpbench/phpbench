@@ -87,6 +87,14 @@ class EnvGenerator implements GeneratorInterface, OutputAwareInterface
 
         foreach ($suiteCollection as $suite) {
             $tableEl = $reportEl->appendElement('table');
+            $colsEl = $tableEl->appendElement('cols');
+
+            foreach (['provider', 'key', 'value'] as $colName) {
+                $col = $colsEl->appendElement('col');
+                $col->setAttribute('name', $colName);
+                $col->setAttribute('label', $colName);
+            }
+
             $tableEl->setAttribute('title', sprintf(
                 'Suite #%s %s', $suite->getUuid(), $suite->getDate()->format('Y-m-d H:i:s')
             ));

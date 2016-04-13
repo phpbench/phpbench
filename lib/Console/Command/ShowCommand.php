@@ -83,6 +83,7 @@ EOT
         $storage = $this->storage->getService();
         $collection = $storage->fetch($this->uuidResolver->resolve($input->getArgument('run_id')));
         $this->timeUnitHandler->timeUnitFromInput($input);
+        $this->dumpHandler->dumpFromInput($input, $output, $collection);
         $this->reportHandler->reportsFromInput($input, $output, $collection);
     }
 }
