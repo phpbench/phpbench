@@ -386,6 +386,21 @@ class RunTest extends SystemTestCase
 
         $this->assertExitCode(1, $process);
         $this->assertContains('1 subjects encountered errors', $process->getOutput());
+        $this->assertContains('benchNothingElse', $process->getOutput());
+    }
+
+    /**
+     * It should stop on the first exception if an exceptio is encountered.
+     */
+    public function testIterationStopOnError()
+    {
+        $process = $this->phpbench(
+            'run benchmarks/set3/ErrorBench.php --stop-on-error'
+        );
+
+        $this->assertExitCode(1, $process);
+        $this->assertContains('1 subjects encountered errors', $process->getOutput());
+        $this->assertNotContains('benchNothingElse', $process->getOutput());
     }
 
     /**

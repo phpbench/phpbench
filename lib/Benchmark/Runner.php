@@ -11,6 +11,7 @@
 
 namespace PhpBench\Benchmark;
 
+use PhpBench\Benchmark\Exception\StopOnErrorException;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Environment\Supplier;
@@ -92,11 +93,15 @@ class Runner
         // log the start of the suite run.
         $this->logger->startSuite($suite);
 
-        /* @var BenchmarkMetadata */
-        foreach ($benchmarkMetadatas as $benchmarkMetadata) {
-            $benchmark = $suite->createBenchmark($benchmarkMetadata->getClass());
-            $this->runBenchmark($executor, $context, $benchmark, $benchmarkMetadata);
+        try {
+            /* @var BenchmarkMetadata */
+            foreach ($benchmarkMetadatas as $benchmarkMetadata) {
+                $benchmark = $suite->createBenchmark($benchmarkMetadata->getClass());
+                $this->runBenchmark($executor, $context, $benchmark, $benchmarkMetadata);
+            }
+        } catch (StopOnErrorException $e) {
         }
+
         $suite->generateUuid();
 
         $this->logger->endSuite($suite);
@@ -191,6 +196,10 @@ class Runner
         } catch (\Exception $e) {
             $variant->setException($e);
             $this->logger->variantEnd($variant);
+
+            if ($context->getStopOnError()) {
+                throw new StopOnErrorException();
+            }
 
             return;
         }
