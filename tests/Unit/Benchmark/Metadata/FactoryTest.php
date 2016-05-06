@@ -106,7 +106,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage must be static in benchmark class "TestClass"
      */
-    public function testValidationBeforeMethodsBenchmarkNotStatic()
+    public function testValidationBeforeClassMethodsBenchmarkNotStatic()
     {
         $this->hierarchy->isEmpty()->willReturn(false);
         $this->reflection->class = 'TestClass';
@@ -115,6 +115,29 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         ]);
         $this->hierarchy->hasMethod('beforeMe')->willReturn(true);
         $this->hierarchy->hasStaticMethod('beforeMe')->willReturn(false);
+
+        $this->factory->getMetadataForFile(self::FNAME);
+    }
+
+    /**
+     * It should throw an exception if a before method IS static.
+     *
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage before method "beforeMe" must not be static in benchmark class "TestClass"
+     */
+    public function testValidationBeforeMethodsBenchmarkIsStatic()
+    {
+        $this->hierarchy->isEmpty()->willReturn(false);
+        $this->reflection->class = 'TestClass';
+        TestUtil::configureBenchmarkMetadata($this->metadata, []);
+        $this->metadata->getSubjects()->willReturn([
+            $this->subjectMetadata->reveal(),
+        ]);
+        TestUtil::configureSubjectMetadata($this->subjectMetadata, [
+            'beforeMethods' => ['beforeMe'],
+        ]);
+        $this->hierarchy->hasMethod('beforeMe')->willReturn(true);
+        $this->hierarchy->hasStaticMethod('beforeMe')->willReturn(true);
 
         $this->factory->getMetadataForFile(self::FNAME);
     }

@@ -115,8 +115,10 @@ class Factory
 
         if ($isStatic !== $benchmarkReflection->hasStaticMethod($method)) {
             throw new \InvalidArgumentException(sprintf(
-                '%s method "%s" must be static in benchmark class "%s"',
-                $context, $method, $benchmarkReflection->getTop()->class
+                '%s method "%s" must %s static in benchmark class "%s"',
+                $context, $method,
+                $isStatic ? 'be' : 'not be',
+                $benchmarkReflection->getTop()->class
             ));
         }
     }
