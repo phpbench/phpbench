@@ -16,6 +16,7 @@ use PhpBench\Benchmark\Remote\Payload;
 use PhpBench\Extensions\XDebug\XDebugUtil;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\IterationResult;
+use PhpBench\PhpBench;
 use PhpBench\Registry\Config;
 
 class XDebugExecutor extends BaseExecutor
@@ -31,7 +32,7 @@ class XDebugExecutor extends BaseExecutor
 
         $phpConfig = [
             'xdebug.profiler_enable' => 1,
-            'xdebug.profiler_output_dir' => $outputDir,
+            'xdebug.profiler_output_dir' => PhpBench::normalizePath($outputDir),
             'xdebug.profiler_output_name' => $name,
         ];
 
