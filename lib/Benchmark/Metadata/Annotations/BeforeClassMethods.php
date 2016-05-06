@@ -13,7 +13,7 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
 
 /**
  * @Annotation
- * @Taget({"METHOD", "CLASS"})
+ * @Taget({"CLASS"})
  * @Attributes({
  *    @Attribute("value", required = true,  type = "array"),
  * })
