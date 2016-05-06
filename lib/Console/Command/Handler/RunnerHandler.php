@@ -52,6 +52,7 @@ class RunnerHandler
         $command->addOption('bootstrap', 'b', InputOption::VALUE_REQUIRED, 'Set or override the bootstrap file.');
         $command->addOption('group', [], InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Group to run (can be specified multiple times)');
         $command->addOption('executor', [], InputOption::VALUE_REQUIRED, 'Executor to use', 'microtime');
+        $command->addOption('stop-on-error', [], InputOption::VALUE_NONE, 'Stop on the first error encountered.');
     }
 
     public function runFromInput(InputInterface $input, OutputInterface $output, array $options = [])
@@ -65,6 +66,7 @@ class RunnerHandler
                     'filters' => $input->getOption('filter'),
                     'groups' => $input->getOption('group'),
                     'executor' => $input->getOption('executor'),
+                    'stop_on_error' => $input->getOption('stop-on-error'),
                 ],
                 $options
             )

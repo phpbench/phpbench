@@ -46,6 +46,7 @@ class RunnerContext
             'warmup' => null,
             'output_time_precision' => null,
             'output_time_unit' => null,
+            'stop_on_error' => null,
         ];
 
         $options = array_merge(
@@ -292,5 +293,15 @@ class RunnerContext
     public function getExecutor()
     {
         return $this->options['executor'];
+    }
+
+    /**
+     * Return true if the runner should exit on the first exception encountered.
+     *
+     * @retrun bool
+     */
+    public function getStopOnError()
+    {
+        return $this->options['stop_on_error'];
     }
 }
