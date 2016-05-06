@@ -37,8 +37,24 @@ class JsonDecoderTest extends \PHPUnit_Framework_TestCase
     {
         return [
             [
-                '{$eq: "barfoo"}',
-                ['$eq' => 'barfoo'],
+                'foo: false, bar: true, baz: [ 10, "10", true]',
+                [
+                    'foo' => false,
+                    'bar' => true,
+                    'baz' => [10, '10', true],
+                ],
+            ],
+            [
+                '{"extends": "aggregate", "foo": ["bar"]}',
+                ['extends' => 'aggregate', 'foo' => ['bar']],
+            ],
+            [
+                '{extends: aggregate, foo: ["bar"]}',
+                ['extends' => 'aggregate', 'foo' => ['bar']],
+            ],
+            [
+                '{$eq: "bar\"foo"}',
+                ['$eq' => 'bar"foo'],
             ],
             [
                 '{foobar: "barfoo"}',
@@ -98,6 +114,17 @@ class JsonDecoderTest extends \PHPUnit_Framework_TestCase
             [
                 'foo_bar: 5',
                 ['foo_bar' => 5],
+            ],
+            [
+                'generator: "table", compare: "subject", compare_fields:[ "mode"], break: ["revs"], cols: ["benchmark"], sort: {"subject:benchGetOptimized:mode": "asc"}',
+                [
+                    'generator' => 'table',
+                    'compare' => 'subject',
+                    'compare_fields' => ['mode'],
+                    'break' => ['revs'],
+                    'cols' => ['benchmark'],
+                    'sort' => ['subject:benchGetOptimized:mode' => 'asc'],
+                ],
             ],
         ];
     }

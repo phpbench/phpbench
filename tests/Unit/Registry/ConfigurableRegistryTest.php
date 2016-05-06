@@ -232,7 +232,7 @@ class ConfigurableRegistryTest extends RegistryTest
         $this->service1->getDefaultConfig()->willReturn([]);
         $this->service1->getSchema()->willReturn([]);
 
-        $result = $this->registry->getConfig('{test": service}');
+        $result = $this->registry->getConfig('{tes  t: se  rvice');
         $this->assertEquals(new Config('test', [
             'test' => 'service',
         ]), $result);
