@@ -92,6 +92,7 @@ class CoreExtension implements ExtensionInterface
             'env_baselines' => ['nothing', 'md5', 'file_rw'],
             'env_baseline_callables' => [],
             'xml_storage_path' => getcwd() . '/_storage', // use cwd because PHARs
+            'extension_autoloader' => null,
         ];
     }
 
@@ -112,9 +113,6 @@ class CoreExtension implements ExtensionInterface
                 $container->get('report.registry.generator'),
                 $container->get('report.registry.renderer')
             );
-        });
-        $container->register('phar_updater', function (Container $container) {
-            return $updater;
         });
 
         $this->registerBenchmark($container);

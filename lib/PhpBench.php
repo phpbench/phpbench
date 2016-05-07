@@ -15,6 +15,7 @@ use PhpBench\DependencyInjection\Container;
 use Seld\JsonLint\JsonParser;
 use Seld\JsonLint\ParsingException;
 use Symfony\Component\Debug\ErrorHandler;
+use Composer\Autoload\ClassLoader;
 
 class PhpBench
 {
@@ -25,12 +26,28 @@ class PhpBench
     const PHAR_URL = 'https://phpbench.github.io/phpbench/phpbench.phar';
     const PHAR_VERSION_URL = 'https://phpbench.github.io/phpbench/phpbench.phar.version';
 
-    public static function run()
+    public static function run(ClassLoader $autoloader)
     {
         // Converts warnings to exceptions
         ErrorHandler::register();
 
         $config = self::loadConfig();
+
+        if (isset($config['extension_autoloader']) && $config['extension_autoloader']) {
+            $autoloadFile = $config['extension_autoloader'];
+
+            if (!file_exists($autoloadFile)) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Could not find extension autoload file "%s"',
+                    $autoloadFile
+                ));
+            }
+
+            $autoloader->unregister();
+            include($autoloadFile);
+            $autoloader->register(true);
+        }
+
         $extensions = $config['extensions'];
         $extensions[] = 'PhpBench\Extension\CoreExtension';
         unset($config['extensions']);
