@@ -96,6 +96,20 @@ class AnnotationDriver implements DriverInterface
         ));
 
         foreach ($annotations as $annotation) {
+            if ($annotation instanceof BeforeClassMethods) {
+                throw new \InvalidArgumentException(sprintf(
+                    '@BeforeClassMethods annotation can only be applied at the class level (%s)',
+                    $subject->getBenchmark()->getClass() . '::' . $subject->getName()
+                ));
+            }
+
+            if ($annotation instanceof AfterClassMethods) {
+                throw new \InvalidArgumentException(sprintf(
+                    '@AfterClassMethods annotation can only be applied at the class level (%s)',
+                    $subject->getBenchmark()->getClass() . '::' . $subject->getName()
+                ));
+            }
+
             $this->processSubject($subject, $annotation);
         }
     }

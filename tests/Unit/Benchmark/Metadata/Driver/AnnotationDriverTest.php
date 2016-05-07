@@ -120,6 +120,42 @@ EOT;
     }
 
     /**
+     * It should raise an exception if either before or after class methods
+     * are specified at the method level rather than the class level.
+     *
+     * @dataProvider provideClassMethodsOnMethodException
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage annotation can only be applied
+     */
+    public function testClassMethodsOnException($annotation)
+    {
+        $reflection = new ReflectionClass();
+        $reflection->class = 'Test';
+        $hierarchy = new ReflectionHierarchy();
+        $hierarchy->addReflectionClass($reflection);
+
+        $method = new ReflectionMethod();
+        $method->class = 'Test';
+        $method->name = 'benchFoo';
+        $method->comment = sprintf('/** %s */', $annotation);
+        $reflection->methods[$method->name] = $method;
+
+        $this->driver->getMetadataForHierarchy($hierarchy);
+    }
+
+    public function provideClassMethodsOnMethodException()
+    {
+        return [
+            [
+                '@beforeClassMethods({"foo"})',
+            ],
+            [
+                '@afterClassMethods({"foo"})',
+            ],
+        ];
+    }
+
+    /**
      * Test optional values.
      */
     public function testSubjectOptionalValues()
