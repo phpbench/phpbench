@@ -75,6 +75,10 @@ class ConsoleRenderer implements RendererInterface, OutputAwareInterface
                 $this->output->writeln(sprintf('<subtitle>%s</subtitle>', $tableEl->getAttribute('title')));
                 $this->renderTableElement($tableEl, $config);
             }
+
+            foreach ($reportEl->query('.//image') as $imageEl) {
+                $this->output->writeln($imageEl->getAttribute('path'));
+            }
         }
     }
 

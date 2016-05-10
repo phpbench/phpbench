@@ -56,7 +56,16 @@
         <xsl:if test="@description != ''">
             <p><xsl:value-of select="description" /></p>
         </xsl:if>
+        <xsl:apply-templates select="./image" />
         <xsl:apply-templates select="./table" />
+    </xsl:template>
+
+    <xsl:template match="image">
+        <img>
+            <xsl:attribute name="src">
+                <xsl:value-of select="@path" />
+            </xsl:attribute>
+        </img>
     </xsl:template>
 
     <xsl:template match="table">

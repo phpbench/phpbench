@@ -31,13 +31,15 @@
         "phpunit/phpunit": "^4.6",
         "doctrine/dbal": "^2.4",
         "liip/rmt": "^1.2",
-        "padraic/phar-updater": "^1.0"
+        "padraic/phar-updater": "^1.0",
+        "szymach/c-pchart": "^2.0"
     },
     "autoload": {
         "psr-4": {
             "PhpBench\\": "lib/",
             "PhpBench\\Extensions\\Dbal\\": "extensions/dbal/lib/",
-            "PhpBench\\Extensions\\XDebug\\": "extensions/xdebug/lib/"
+            "PhpBench\\Extensions\\XDebug\\": "extensions/xdebug/lib/",
+            "PhpBench\\Extensions\\PChart\\": "extensions/pchart/lib/"
         }
     },
     "suggests": {
