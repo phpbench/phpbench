@@ -37,6 +37,12 @@ class JsonDecoderTest extends \PHPUnit_Framework_TestCase
     {
         return [
             [
+                'iterations: false',
+                [
+                    'iterations' => false,
+                ],
+            ],
+            [
                 'foo: false, bar: true, baz: [ 10, "10", true]',
                 [
                     'foo' => false,

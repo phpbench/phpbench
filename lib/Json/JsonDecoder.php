@@ -61,7 +61,6 @@ class JsonDecoder
         $chars = str_split($jsonString);
         $inRight = $inQuote = $inFakeQuote = false;
         $fakeQuoteStart = null;
-        $addedStartBracket = false;
 
         if (empty($chars)) {
             return;
@@ -69,7 +68,7 @@ class JsonDecoder
 
         if ($chars[0] !== '{') {
             array_unshift($chars, '{');
-            $addedStartBracket = true;
+            $chars[] = '}';
         }
 
         for ($index = 0; $index < count($chars); $index++) {
@@ -95,6 +94,7 @@ class JsonDecoder
 
             // if we added a "fake" quote, look for the end of the unquoted string
             if ($inFakeQuote && preg_match('{[\s:\}\],]}', $char)) {
+
                 // if we are on the left side, then "]" is OK.
                 if (!$inRight && $char === ']') {
                     continue;
@@ -151,11 +151,6 @@ class JsonDecoder
         }
 
         $normalized = implode('', $chars);
-
-        // if we added a bracket at the begining, then add one to the end if required
-        if ($addedStartBracket) {
-            $normalized .= '}';
-        }
 
         return $normalized;
     }
