@@ -13,6 +13,7 @@ namespace PhpBench\Benchmark\Metadata;
 
 use Doctrine\Common\Annotations\AnnotationException;
 use Doctrine\Common\Annotations\DocParser as DoctrineDocParser;
+use Doctrine\Common\Annotations\PhpParser;
 
 /**
  * PHPBench doc parser, uses the Doctrine DocParser.
@@ -20,6 +21,8 @@ use Doctrine\Common\Annotations\DocParser as DoctrineDocParser;
 class DocParser
 {
     private $docParser;
+    private $phpParser;
+
     private $imports = [
         'BeforeMethods' => 'PhpBench\Benchmark\Metadata\Annotations\BeforeMethods',
         'BeforeClassMethods' => 'PhpBench\Benchmark\Metadata\Annotations\BeforeClassMethods',
@@ -34,6 +37,7 @@ class DocParser
         'OutputTimeUnit' => 'PhpBench\Benchmark\Metadata\Annotations\OutputTimeUnit',
         'OutputMode' => 'PhpBench\Benchmark\Metadata\Annotations\OutputMode',
         'Warmup' => 'PhpBench\Benchmark\Metadata\Annotations\Warmup',
+        'Subject' => 'PhpBench\Benchmark\Metadata\Annotations\Subject',
     ];
     private static $globalIgnoredNames = [
         // Annotation tags
@@ -75,6 +79,7 @@ class DocParser
         'var' => true, 'version' => true,
         // PHPUnit tags
         'codeCoverageIgnore' => true, 'codeCoverageIgnoreStart' => true, 'codeCoverageIgnoreEnd' => true,
+        'expectedException' => true, 'expectedExceptionMessage' => true,
         // PHPCheckStyle
         'SuppressWarnings' => true,
         // PHPStorm
@@ -85,16 +90,21 @@ class DocParser
         'startuml' => true, 'enduml' => true,
     ];
 
-    public function __construct()
+    public function __construct($import = false)
     {
         $this->docParser = new DoctrineDocParser();
+        $this->phpParser = new PhpParser();
         $this->docParser->setIgnoredAnnotationNames(self::$globalIgnoredNames);
-        $imports = [];
-        foreach ($this->imports as $key => $value) {
-            $imports[strtolower($key)] = $value;
-        }
 
-        $this->docParser->setImports($imports);
+        if ($import) {
+            $imports = [];
+            foreach ($this->imports as $key => $value) {
+                $imports[strtolower($key)] = $value;
+            }
+
+            $this->docParser->setImports($imports);
+        } else {
+        }
     }
 
     /**

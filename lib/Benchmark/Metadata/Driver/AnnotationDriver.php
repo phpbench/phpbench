@@ -14,8 +14,6 @@ namespace PhpBench\Benchmark\Metadata\Driver;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use PhpBench\Benchmark\Metadata\Annotations;
 use PhpBench\Benchmark\Metadata\Annotations\AbstractArrayAnnotation;
-use PhpBench\Benchmark\Metadata\Annotations\AfterClassMethods;
-use PhpBench\Benchmark\Metadata\Annotations\BeforeClassMethods;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\DocParser;
 use PhpBench\Benchmark\Metadata\DriverInterface;
@@ -72,7 +70,7 @@ class AnnotationDriver implements DriverInterface
 
         foreach ($reflectionHierarchy as $reflection) {
             foreach ($reflection->methods as $reflectionMethod) {
-                if ('bench' !== substr($reflectionMethod->name, 0, 5)) {
+                if ('bench' !== substr($reflectionMethod->name, 0, 5) && false === strpos($reflectionMethod->comment, 'Subject')) {
                     continue;
                 }
 
@@ -188,11 +186,11 @@ class AnnotationDriver implements DriverInterface
 
     public function processBenchmark(BenchmarkMetadata $benchmark, $annotation)
     {
-        if ($annotation instanceof BeforeClassMethods) {
+        if ($annotation instanceof Annotations\BeforeClassMethods) {
             $benchmark->setBeforeClassMethods($annotation->getMethods());
         }
 
-        if ($annotation instanceof AfterClassMethods) {
+        if ($annotation instanceof Annotations\AfterClassMethods) {
             $benchmark->setAfterClassMethods($annotation->getMethods());
         }
     }

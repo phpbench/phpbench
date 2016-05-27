@@ -42,7 +42,7 @@ class BenchmarkFinder
      * @param array $subjectFilter
      * @param array $groupFilter
      */
-    public function findBenchmarks($path, array $filters = [], array $groupFilter = [])
+    public function findBenchmarks($path, array $subjectFilter = [], array $groupFilter = [])
     {
         $finder = new Finder();
         $path = PhpBench::normalizePath($path);
@@ -57,7 +57,7 @@ class BenchmarkFinder
 
         if (is_dir($path)) {
             $finder->in($path)
-                ->name('*Bench.php');
+                ->name('*.php');
         } else {
             // the path is already a file, just restrict the finder to that.
             $finder->in(dirname($path))
@@ -82,8 +82,8 @@ class BenchmarkFinder
                 $benchmark->filterSubjectGroups($groupFilter);
             }
 
-            if ($filters) {
-                $benchmark->filterSubjectNames($filters);
+            if ($subjectFilter) {
+                $benchmark->filterSubjectNames($subjectFilter);
             }
 
             if (false === $benchmark->hasSubjects()) {
