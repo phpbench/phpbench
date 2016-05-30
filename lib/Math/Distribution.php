@@ -32,13 +32,27 @@ class Distribution implements \IteratorAggregate
 
         $this->samples = $samples;
         $this->closures = [
-            'min' => function () { return min($this->samples); },
-            'max' => function () { return max($this->samples); },
-            'sum' => function () { return array_sum($this->samples); },
-            'stdev' => function () { return Statistics::stdev($this->samples); },
-            'mean' => function () { return Statistics::mean($this->samples); },
-            'mode' => function () { return Statistics::kdeMode($this->samples); },
-            'variance' => function () { return Statistics::variance($this->samples); },
+            'min' => function () {
+                return min($this->samples);
+            },
+            'max' => function () {
+                return max($this->samples);
+            },
+            'sum' => function () {
+                return array_sum($this->samples);
+            },
+            'stdev' => function () {
+                return Statistics::stdev($this->samples);
+            },
+            'mean' => function () {
+                return Statistics::mean($this->samples);
+            },
+            'mode' => function () {
+                return Statistics::kdeMode($this->samples);
+            },
+            'variance' => function () {
+                return Statistics::variance($this->samples);
+            },
             'rstdev' => function () {
                 $mean = $this->getMean();
 

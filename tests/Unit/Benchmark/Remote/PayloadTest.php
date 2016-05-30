@@ -68,6 +68,7 @@ class PayloadTest extends \PHPUnit_Framework_TestCase
         $payload = new Payload(
             __DIR__ . '/template/foo.template',
             [],
+            null,
             $process->reveal()
         );
         $payload->setPhpPath('/foo/bar');
@@ -88,6 +89,7 @@ class PayloadTest extends \PHPUnit_Framework_TestCase
         $payload = new Payload(
             __DIR__ . '/template/foo.template',
             [],
+            null,
             $process->reveal()
         );
         $payload->setPhpConfig([
@@ -112,6 +114,7 @@ class PayloadTest extends \PHPUnit_Framework_TestCase
         $payload = new Payload(
             __DIR__ . '/template/foo.template',
             [],
+            null,
             $process->reveal()
         );
         $payload->setWrapper('bockfire');
@@ -136,6 +139,7 @@ class PayloadTest extends \PHPUnit_Framework_TestCase
         $payload = new Payload(
             __DIR__ . '/template/not-existing-filename.template',
             [],
+            null,
             $process->reveal()
         );
 

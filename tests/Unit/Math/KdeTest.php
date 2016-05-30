@@ -27,7 +27,9 @@ class KdeTest extends \PHPUnit_Framework_TestCase
         $result = $kde->evaluate($space);
 
         // round result
-        $result = array_map(function ($v) { return round($v, 8); }, $result);
+        $result = array_map(function ($v) {
+            return round($v, 8);
+        }, $result);
 
         $this->assertEquals($expected, $result);
     }

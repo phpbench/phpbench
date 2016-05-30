@@ -18,6 +18,7 @@ use PhpBench\Benchmark\Executor\MicrotimeExecutor;
 use PhpBench\Benchmark\Metadata\Driver\AnnotationDriver;
 use PhpBench\Benchmark\Metadata\Factory;
 use PhpBench\Benchmark\Remote\Launcher;
+use PhpBench\Benchmark\Remote\PayloadFactory;
 use PhpBench\Benchmark\Remote\Reflector;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Console\Application;
@@ -70,6 +71,7 @@ use PhpBench\Storage\Driver\Xml\XmlDriver;
 use PhpBench\Storage\UuidResolver;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Process\ExecutableFinder;
 
 class CoreExtension implements ExtensionInterface
 {
@@ -93,6 +95,9 @@ class CoreExtension implements ExtensionInterface
             'env_baseline_callables' => [],
             'xml_storage_path' => getcwd() . '/_storage', // use cwd because PHARs
             'extension_autoloader' => null,
+            'php_config' => [],
+            'php_binary' => null,
+            'php_wrapper' => null,
         ];
     }
 
@@ -218,7 +223,12 @@ class CoreExtension implements ExtensionInterface
 
         $container->register('benchmark.remote.launcher', function (Container $container) {
             return new Launcher(
-                $container->hasParameter('bootstrap') ? $container->getParameter('bootstrap') : null
+                new PayloadFactory(),
+                new ExecutableFinder(),
+                $container->hasParameter('bootstrap') ? $container->getParameter('bootstrap') : null,
+                $container->hasParameter('php_binary') ? $container->getParameter('php_binary') : null,
+                $container->hasParameter('php_config') ? $container->getParameter('php_config') : null,
+                $container->hasParameter('php_wrapper') ? $container->getParameter('php_wrapper') : null
             );
         });
 
@@ -485,7 +495,10 @@ class CoreExtension implements ExtensionInterface
         }, ['environment_provider' => []]);
 
         $container->register('environment.provider.php', function (Container $container) {
-            return new Provider\Php();
+            return new Provider\Php(
+                $container->get('benchmark.remote.launcher'),
+                $container->getParameter('php_binary') !== PHP_BINARY && $container->getParameter('php_binary') !== null
+            );
         }, ['environment_provider' => []]);
 
         $container->register('environment.provider.unix_sysload', function (Container $container) {

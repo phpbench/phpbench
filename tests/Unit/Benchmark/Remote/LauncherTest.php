@@ -12,16 +12,30 @@
 namespace PhpBench\Tests\Unit\Benchmark\Remote;
 
 use PhpBench\Benchmark\Remote\Launcher;
+use PhpBench\Benchmark\Remote\Payload;
+use PhpBench\Benchmark\Remote\PayloadFactory;
+use Symfony\Component\Process\ExecutableFinder;
 
 class LauncherTest extends \PHPUnit_Framework_TestCase
 {
+    private $factory;
+    private $payload;
+    private $finder;
+
+    public function setUp()
+    {
+        $this->factory = $this->prophesize(PayloadFactory::class);
+        $this->payload = $this->prophesize(Payload::class);
+        $this->finder = $this->prophesize(ExecutableFinder::class);
+    }
+
     /**
      * It should generate a script from a given template, launch it
      * and return the results.
      */
-    public function testExecute()
+    public function testLiveExecute()
     {
-        $launcher = new Launcher(__DIR__ . '/../../../../vendor/autoload.php');
+        $launcher = $this->createLiveLauncher();
         $result = $launcher->payload(
             __DIR__ . '/template/foo.template',
             [
@@ -35,6 +49,32 @@ class LauncherTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * It should pass the wrapper, ini settings and php-binary to the payload.
+     */
+    public function testPassSettingsToPayload()
+    {
+        $launcher = new Launcher(
+            $this->factory->reveal(),
+            $this->finder->reveal(),
+            $bootstrap = __DIR__ . '/../../../../vendor/autoload.php',
+            '/path/to/php',
+            $phpConfig = ['setting_1' => 'value_1', 'setting_2' => 'value_2'],
+            'wrapper'
+        );
+
+        $this->factory->create(
+            __FILE__,
+            ['bootstrap' => $bootstrap],
+            '/path/to/php'
+        )->willReturn($this->payload->reveal());
+
+        $this->payload->setWrapper('wrapper')->shouldBeCalled();
+        $this->payload->setPhpConfig($phpConfig)->shouldBeCalled();
+
+        $launcher->payload(__FILE__, []);
+    }
+
+    /**
      * It should throw an exception if the bootstrap file does not exist.
      *
      * @expectedException InvalidArgumentException
@@ -42,12 +82,25 @@ class LauncherTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidBootstrap()
     {
-        $launcher = new Launcher(__DIR__ . '/../../../../vendor/notexisting.php');
+        $launcher = new Launcher(
+            $this->factory->reveal(),
+            $this->finder->reveal(),
+            __DIR__ . '/../../../../vendor/notexisting.php'
+        );
         $launcher->payload(
             __DIR__ . '/template/foo.template',
             [
                 'foo' => 'bar',
             ]
+        );
+    }
+
+    private function createLiveLauncher()
+    {
+        return new Launcher(
+            new PayloadFactory(),
+            new ExecutableFinder(),
+            __DIR__ . '/../../../../vendor/autoload.php'
         );
     }
 }

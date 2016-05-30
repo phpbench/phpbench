@@ -22,7 +22,8 @@ class CharacterReader
         // we could use extension_loaded but HHVM returns true and
         // still doesn't have this function..
         if (function_exists('readline_callback_handler_install')) {
-            readline_callback_handler_install('', function () { });
+            readline_callback_handler_install('', function () {
+            });
         }
     }
 

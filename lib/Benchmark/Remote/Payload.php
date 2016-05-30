@@ -37,7 +37,7 @@ class Payload
     /**
      * Path to PHP binary.
      */
-    private $phpPath = PHP_BINARY;
+    private $phpBinary;
 
     /**
      * Tokens to substitute in the script template.
@@ -55,14 +55,15 @@ class Payload
      *
      * @param string $template
      */
-    public function __construct($template, array $tokens = [], Process $process = null)
+    public function __construct($template, array $tokens = [], $phpBinary = PHP_BINARY, Process $process = null)
     {
         $this->template = $template;
-        $this->process = $process ?: new Process($this->phpPath);
+        $this->process = $process ?: new Process($phpBinary);
         $this->tokens = $tokens;
 
         // disable timeout.
         $this->process->setTimeout(null);
+        $this->phpBinary = $phpBinary;
     }
 
     public function setWrapper($wrapper)
@@ -75,9 +76,9 @@ class Payload
         $this->phpConfig = $phpConfig;
     }
 
-    public function setPhpPath($phpPath)
+    public function setPhpPath($phpBinary)
     {
-        $this->phpPath = $phpPath;
+        $this->phpBinary = $phpBinary;
     }
 
     public function launch()
@@ -109,7 +110,7 @@ class Payload
             $wrapper = $this->wrapper . ' ';
         }
 
-        $this->process->setCommandLine($wrapper . $this->phpPath . $this->getIniString() . ' ' . escapeshellarg($scriptPath));
+        $this->process->setCommandLine($wrapper . $this->phpBinary . $this->getIniString() . ' ' . escapeshellarg($scriptPath));
         $this->process->run();
         unlink($scriptPath);
 

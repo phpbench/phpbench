@@ -159,3 +159,33 @@ Similarly the :ref:`mode` can be set using the `output_mode` key:
     {
         "output_mode": "throughput"
     }
+
+PHP Binary and INI settings
+---------------------------
+
+You can change the PHP binary and INI settings used to execute the benchmarks:
+
+.. code-block:: javascript
+
+    {
+        "php_binary": "hhvm",
+        "php_config": {
+            "memory_limit": "10M"
+        }
+    }
+
+Prefixing the Benchmarking Process
+----------------------------------
+
+You can prefix the benchmarking command line using the ``php_wrapper`` option:
+
+.. code-block:: javascript
+
+    {
+        "php_wrapper": "blackfire run"
+    }
+
+.. note::
+
+    This can also be set using the ``--php-wrapper`` CLI option.
+

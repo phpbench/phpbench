@@ -20,7 +20,7 @@ class ReflectorTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $executor = new Launcher(__DIR__ . '/../../../../vendor/autoload.php', null);
+        $executor = new Launcher(null, null, __DIR__ . '/../../../../vendor/autoload.php', null);
         $this->reflector = new Reflector($executor);
     }
 
