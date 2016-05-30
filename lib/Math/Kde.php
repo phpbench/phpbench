@@ -164,7 +164,9 @@ class Kde
 
             // numpy sum does nothing with our 2d array in PHP
             // $energy = array_sum(diff * tdiff, axis=0) / 2.0
-            $energy = array_map(function ($v) { return exp(-($v / 2)); }, $multiplied);
+            $energy = array_map(function ($v) {
+                return exp(-($v / 2));
+            }, $multiplied);
 
             if ($bigger) {
                 $sum = $result;
@@ -177,7 +179,9 @@ class Kde
             }
         }
 
-        $result = array_map(function ($v) { return $v / $this->normFactor; }, $result);
+        $result = array_map(function ($v) {
+            return $v / $this->normFactor;
+        }, $result);
 
         return $result;
     }

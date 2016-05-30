@@ -54,7 +54,9 @@ class DebugExecutorTest extends \PHPUnit_Framework_TestCase
             }
         }
 
-        $times = array_map(function ($result) { return $result->getTime(); }, $results);
+        $times = array_map(function ($result) {
+            return $result->getTime();
+        }, $results);
 
         $this->assertEquals($expectedTimes, $times);
     }

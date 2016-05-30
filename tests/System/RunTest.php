@@ -441,4 +441,15 @@ class RunTest extends SystemTestCase
         );
         $this->assertExitCode(0, $process);
     }
+
+    /**
+     * It should set the PHP binary, wrapper and config.
+     */
+    public function testPhpEnvOptions()
+    {
+        $process = $this->phpbench(
+            'run benchmarks/set4/NothingBench.php --php-binary=php --php-config="memory_limit: 10M" --php-wrapper="env"'
+        );
+        $this->assertExitCode(0, $process);
+    }
 }

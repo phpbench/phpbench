@@ -11,15 +11,20 @@
 
 namespace PhpBench\Tests\Unit\Environment\Provider;
 
+use PhpBench\Benchmark\Remote\Launcher;
+use PhpBench\Benchmark\Remote\Payload;
 use PhpBench\Environment\Provider;
+use Prophecy\Argument;
 
 class PhpTest extends \PHPUnit_Framework_TestCase
 {
-    private $provider;
+    private $launcher;
+    private $payload;
 
     public function setUp()
     {
-        $this->provider = new Provider\Php();
+        $this->launcher = $this->prophesize(Launcher::class);
+        $this->payload = $this->prophesize(Payload::class);
     }
 
     /**
@@ -27,7 +32,7 @@ class PhpTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsApplicable()
     {
-        $this->assertTrue($this->provider->isApplicable());
+        $this->assertTrue($this->createProvider()->isApplicable());
     }
 
     /**
@@ -35,7 +40,27 @@ class PhpTest extends \PHPUnit_Framework_TestCase
      */
     public function testPhpVersion()
     {
-        $info = $this->provider->getInformation();
+        $info = $this->createProvider()->getInformation();
         $this->assertEquals(PHP_VERSION, $info['version']);
+    }
+
+    /**
+     * It should get the version from the remote process if the configured
+     * PHP binary is different from the one being used to execute PhpBench.
+     */
+    public function testRemote()
+    {
+        $this->launcher->payload(Argument::type('string'), [])->willReturn($this->payload->reveal());
+        $this->payload->launch()->willReturn(['version' => 'success']);
+        $info = $this->createProvider(true)->getInformation();
+        $this->assertEquals('success', $info['version']);
+    }
+
+    private function createProvider($remote = false)
+    {
+        return new Provider\Php(
+            $this->launcher->reveal(),
+            $remote
+        );
     }
 }

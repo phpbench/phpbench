@@ -1,0 +1,7 @@
+<?php
+
+echo json_encode([
+    'version' => phpversion()
+]);
+
+exit(0);

@@ -62,7 +62,8 @@ class XDebugExecutor extends BaseExecutor
     public function getDefaultConfig()
     {
         return [
-            'callback' => function () {},
+            'callback' => function () {
+            },
             'output_dir' => 'profile',
         ];
     }

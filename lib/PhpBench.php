@@ -13,6 +13,7 @@ namespace PhpBench;
 
 use Composer\Autoload\ClassLoader;
 use PhpBench\DependencyInjection\Container;
+use PhpBench\Json\JsonDecoder;
 use Seld\JsonLint\JsonParser;
 use Seld\JsonLint\ParsingException;
 use Symfony\Component\Debug\ErrorHandler;
@@ -81,6 +82,7 @@ class PhpBench
         $configPaths = [];
         $bootstrapOverride = null;
         $extensions = [];
+        $configOverride = [];
         foreach ($argv as $arg) {
             if ($configFile = self::parseOption($arg, 'config')) {
                 if (!file_exists($configFile)) {
@@ -91,11 +93,25 @@ class PhpBench
             }
 
             if ($value = self::parseOption($arg, 'bootstrap', 'b')) {
-                $bootstrapOverride = $value;
+                $configOverride['bootstrap'] = self::getBootstrapPath(getcwd(), $value);
             }
 
             if ($value = self::parseOption($arg, 'extension')) {
                 $extensions[] = $value;
+            }
+
+            if ($value = self::parseOption($arg, 'php-binary')) {
+                $configOverride['php_binary'] = $value;
+            }
+
+            if ($value = self::parseOption($arg, 'php-wrapper')) {
+                $configOverride['php_wrapper'] = $value;
+            }
+
+            if ($value = self::parseOption($arg, 'php-config')) {
+                $jsonParser = new JsonDecoder();
+                $value = $jsonParser->decode($value);
+                $configOverride['php_config'] = $value;
             }
         }
 
@@ -142,9 +158,10 @@ class PhpBench
             break;
         }
 
-        if ($bootstrapOverride) {
-            $config['bootstrap'] = self::getBootstrapPath(getcwd(), $bootstrapOverride);
-        }
+        $config = array_merge(
+            $config,
+            $configOverride
+        );
 
         // add any manually specified extensions
         foreach ($extensions as $extension) {

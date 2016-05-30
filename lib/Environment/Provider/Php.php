@@ -11,6 +11,7 @@
 
 namespace PhpBench\Environment\Provider;
 
+use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Environment\Information;
 use PhpBench\Environment\ProviderInterface;
 
@@ -19,6 +20,15 @@ use PhpBench\Environment\ProviderInterface;
  */
 class Php implements ProviderInterface
 {
+    private $launcher;
+    private $remoteVersion;
+
+    public function __construct(Launcher $launcher, $remoteVersion = false)
+    {
+        $this->launcher = $launcher;
+        $this->remoteVersion = $remoteVersion;
+    }
+
     public function isApplicable()
     {
         return true;
@@ -28,9 +38,19 @@ class Php implements ProviderInterface
     {
         return new Information(
             'php',
-            [
-                'version' => PHP_VERSION,
-            ]
+            $this->getData()
         );
+    }
+
+    private function getData()
+    {
+        if (false === $this->remoteVersion) {
+            return ['version' => phpversion()];
+        }
+
+        return $this->launcher->payload(
+            __DIR__ . '/template/php.template',
+            []
+        )->launch();
     }
 }

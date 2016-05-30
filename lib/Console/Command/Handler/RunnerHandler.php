@@ -53,6 +53,11 @@ class RunnerHandler
         $command->addOption('group', [], InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Group to run (can be specified multiple times)');
         $command->addOption('executor', [], InputOption::VALUE_REQUIRED, 'Executor to use', 'microtime');
         $command->addOption('stop-on-error', [], InputOption::VALUE_NONE, 'Stop on the first error encountered.');
+
+        // Launcher options (processed in PhpBench.php before the container is initialized).
+        $command->addOption('php-binary', null, InputOption::VALUE_REQUIRED, 'Alternative PHP binary to use');
+        $command->addOption('php-config', null, InputOption::VALUE_REQUIRED, 'JSON-like object of PHP INI settings');
+        $command->addOption('php-wrapper', null, InputOption::VALUE_REQUIRED, 'Prefix process launch command with this string');
     }
 
     public function runFromInput(InputInterface $input, OutputInterface $output, array $options = [])
