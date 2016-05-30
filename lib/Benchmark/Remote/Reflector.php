@@ -64,9 +64,11 @@ class Reflector
             $reflectionClass->comment = $classInfo['comment'];
             $reflectionClass->interfaces = $classInfo['interfaces'];
             $reflectionClass->path = $file;
+            $reflectionClass->namespace = $classInfo['namespace'];
 
             foreach ($classInfo['methods'] as $methodInfo) {
                 $reflectionMethod = new ReflectionMethod();
+                $reflectionMethod->reflectionClass = $reflectionClass;
                 $reflectionMethod->class = $classInfo['class'];
                 $reflectionMethod->name = $methodInfo['name'];
                 $reflectionMethod->isStatic = $methodInfo['static'];

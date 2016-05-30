@@ -14,30 +14,26 @@ namespace PhpBench\Benchmark\Metadata\Driver;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use PhpBench\Benchmark\Metadata\Annotations;
 use PhpBench\Benchmark\Metadata\Annotations\AbstractArrayAnnotation;
+use PhpBench\Benchmark\Metadata\Annotations\AfterClassMethods;
+use PhpBench\Benchmark\Metadata\Annotations\BeforeClassMethods;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
-use PhpBench\Benchmark\Metadata\DocParser;
 use PhpBench\Benchmark\Metadata\DriverInterface;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\ReflectionHierarchy;
 use PhpBench\Benchmark\Remote\ReflectionMethod;
 use PhpBench\Benchmark\Remote\Reflector;
+use PhpBench\Benchmark\Metadata\AnnotationReader;
+use PhpBench\Benchmark\Metadata\Annotations\Subject;
 
 class AnnotationDriver implements DriverInterface
 {
     private $reflector;
-    private $docParser;
+    private $reader;
 
-    public function __construct(Reflector $reflector)
+    public function __construct(Reflector $reflector, AnnotationReader $reader = null)
     {
-        AnnotationRegistry::registerLoader(function ($classFqn) {
-            if (class_exists($classFqn)) {
-                return true;
-            }
-        });
         $this->reflector = $reflector;
-
-        // doc parser is final, can't mock it, no point in injecting it.
-        $this->docParser = new DocParser();
+        $this->reader = $reader ?: new AnnotationReader();
     }
 
     public function getMetadataForHierarchy(ReflectionHierarchy $hierarchy)
@@ -56,9 +52,8 @@ class AnnotationDriver implements DriverInterface
         $reflectionHierarchy = array_reverse(iterator_to_array($hierarchy));
 
         foreach ($reflectionHierarchy as $reflection) {
-            $benchAnnotations = $this->docParser->parse(
-                $reflection->comment,
-                sprintf('benchmark %s', $reflection->class)
+            $benchAnnotations = $this->reader->getClassAnnotations(
+                $reflection
             );
 
             $annotations = array_merge($annotations, $benchAnnotations);
@@ -70,8 +65,31 @@ class AnnotationDriver implements DriverInterface
 
         foreach ($reflectionHierarchy as $reflection) {
             foreach ($reflection->methods as $reflectionMethod) {
-                if ('bench' !== substr($reflectionMethod->name, 0, 5) && false === strpos($reflectionMethod->comment, 'Subject')) {
+                $hasPrefix = 'bench' === substr($reflectionMethod->name, 0, 5);
+                $hasAnnotation = false;
+                $subjectAnnotations = null;
+
+                // if the prefix is false check to see if it has a `@Subject` annotation
+                if (false === $hasPrefix) {
+                    $subjectAnnotations = $this->reader->getMethodAnnotations(
+                        $reflectionMethod
+                    );
+
+                    foreach ($subjectAnnotations as $annotation) {
+                        if ($annotation instanceof Subject) {
+                            $hasAnnotation = true;
+                        }
+                    }
+                }
+
+                if (false === $hasPrefix && false === $hasAnnotation) {
                     continue;
+                }
+
+                if (null === $subjectAnnotations) {
+                    $subjectAnnotations = $this->reader->getMethodAnnotations(
+                        $reflectionMethod
+                    );
                 }
 
                 $subject = $benchmark->getOrCreateSubject($reflectionMethod->name);
@@ -81,18 +99,13 @@ class AnnotationDriver implements DriverInterface
                     $this->processSubject($subject, $annotation);
                 }
 
-                $this->buildSubject($subject, $reflectionMethod);
+                $this->buildSubject($subject, $subjectAnnotations);
             }
         }
     }
 
-    private function buildSubject(SubjectMetadata $subject, ReflectionMethod $reflectionMethod)
+    private function buildSubject(SubjectMetadata $subject, $annotations)
     {
-        $annotations = $this->docParser->parse(
-            $reflectionMethod->comment,
-            sprintf('subject %s::%s', $reflectionMethod->class, $reflectionMethod->name
-        ));
-
         foreach ($annotations as $annotation) {
             if ($annotation instanceof BeforeClassMethods) {
                 throw new \InvalidArgumentException(sprintf(
@@ -186,11 +199,11 @@ class AnnotationDriver implements DriverInterface
 
     public function processBenchmark(BenchmarkMetadata $benchmark, $annotation)
     {
-        if ($annotation instanceof Annotations\BeforeClassMethods) {
+        if ($annotation instanceof BeforeClassMethods) {
             $benchmark->setBeforeClassMethods($annotation->getMethods());
         }
 
-        if ($annotation instanceof Annotations\AfterClassMethods) {
+        if ($annotation instanceof AfterClassMethods) {
             $benchmark->setAfterClassMethods($annotation->getMethods());
         }
     }

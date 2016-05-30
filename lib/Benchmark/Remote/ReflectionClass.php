@@ -16,6 +16,7 @@ class ReflectionClass
     public $path;
     public $interfaces = [];
     public $class;
+    public $namespace;
     public $abstract = false;
     public $comment;
     public $methods = [];

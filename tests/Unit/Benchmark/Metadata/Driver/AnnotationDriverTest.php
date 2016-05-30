@@ -83,6 +83,7 @@ EOT;
         $hierarchy->addReflectionClass($reflection);
 
         $method = new ReflectionMethod();
+        $method->reflectionClass = $reflection;
         $method->class = 'Test';
         $method->name = 'benchFoo';
         $method->comment = <<<'EOT'
@@ -120,6 +121,59 @@ EOT;
     }
 
     /**
+     * It should return method metadata for non-prefixed methods with the
+     * Subject annotation.
+     */
+    public function testLoadSubjectNonPrefixed()
+    {
+        $reflection = new ReflectionClass();
+        $reflection->class = 'Test';
+        $hierarchy = new ReflectionHierarchy();
+        $hierarchy->addReflectionClass($reflection);
+
+        $method = new ReflectionMethod();
+        $method->reflectionClass = $reflection;
+        $method->class = 'Test';
+        $method->name = 'foo';
+        $method->comment = <<<'EOT'
+/**
+ * @Subject()
+ */
+EOT;
+        $reflection->methods[$method->name] = $method;
+
+        $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
+        $subjects = $metadata->getSubjects();
+        $this->assertCount(1, $subjects);
+    }
+
+    /**
+     * It should ignore non-prefixed subjects without the Subject annotation
+     */
+    public function testLoadIgnoreNonPrefixed()
+    {
+        $reflection = new ReflectionClass();
+        $reflection->class = 'Test';
+        $hierarchy = new ReflectionHierarchy();
+        $hierarchy->addReflectionClass($reflection);
+
+        $method = new ReflectionMethod();
+        $method->reflectionClass = $reflection;
+        $method->class = 'Test';
+        $method->name = 'foo';
+        $method->comment = <<<'EOT'
+/**
+ * @Iterations(10)
+ */
+EOT;
+        $reflection->methods[$method->name] = $method;
+
+        $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
+        $subjects = $metadata->getSubjects();
+        $this->assertCount(0, $subjects);
+    }
+
+    /**
      * It should raise an exception if either before or after class methods
      * are specified at the method level rather than the class level.
      *
@@ -135,6 +189,7 @@ EOT;
         $hierarchy->addReflectionClass($reflection);
 
         $method = new ReflectionMethod();
+        $method->reflectionClass = $reflection;
         $method->class = 'Test';
         $method->name = 'benchFoo';
         $method->comment = sprintf('/** %s */', $annotation);
@@ -166,6 +221,7 @@ EOT;
         $hierarchy->addReflectionClass($reflection);
 
         $method = new ReflectionMethod();
+        $method->reflectionClass = $reflection;
         $method->class = 'Test';
         $method->name = 'benchFoo';
         $method->comment = <<<'EOT'
@@ -199,6 +255,7 @@ EOT;
         $hierarchy->addReflectionClass($reflection);
 
         $method = new ReflectionMethod();
+        $method->reflectionClass = $reflection;
         $method->class = 'Test';
         $method->name = 'benchFoo';
         $method->comment = <<<'EOT'
@@ -230,6 +287,7 @@ EOT;
         $hierarchy = new ReflectionHierarchy();
 
         $method = new ReflectionMethod();
+        $method->reflectionClass = $reflection;
         $method->class = 'Test';
         $method->name = 'benchFoo';
         $method->comment = <<<'EOT'
@@ -239,6 +297,7 @@ EOT;
 EOT;
         $reflection->methods[$method->name] = $method;
         $method = new ReflectionMethod();
+        $method->reflectionClass = $reflection;
         $method->class = 'Test';
         $method->name = 'benchBar';
         $method->comment = <<<'EOT'
@@ -258,6 +317,7 @@ EOT;
      */
 EOT;
         $method = new ReflectionMethod();
+        $method->reflectionClass = $reflection;
         $method->class = 'Test';
         $method->name = 'benchFoo';
         $method->comment = <<<'EOT'
@@ -267,6 +327,7 @@ EOT;
 EOT;
         $reflection->methods[$method->name] = $method;
         $method = new ReflectionMethod();
+        $method->reflectionClass = $reflection;
         $method->class = 'Test';
         $method->name = 'benchBar';
         $method->comment = <<<'EOT'
@@ -277,6 +338,7 @@ EOT;
         $reflection->methods[$method->name] = $method;
 
         $method = new ReflectionMethod();
+        $method->reflectionClass = $reflection;
         $method->class = 'Test';
         $method->name = 'benchNoAnnotations';
         $method->comment = null;
@@ -319,6 +381,7 @@ EOT;
         $hierarchy->addReflectionClass($reflection);
 
         $method = new ReflectionMethod();
+        $method->reflectionClass = $reflection;
         $method->class = 'Test';
         $method->name = 'benchFoo';
         $method->comment = <<<'EOT'
@@ -345,6 +408,7 @@ EOT;
         $reflection->class = 'Test';
 
         $method = new ReflectionMethod();
+        $method->reflectionClass = $reflection;
         $method->class = 'Test';
         $method->name = 'benchFoo';
         $method->comment = <<<'EOT'

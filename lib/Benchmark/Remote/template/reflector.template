@@ -21,6 +21,7 @@ foreach ($classHierarchy as $class) {
     $refl = new \ReflectionClass($class);
     $metadata = array(
         'class' => $class,
+        'namespace' => $refl->getNamespaceName(),
         'abstract' => $refl->isAbstract(),
         'methods' => array(),
         'interfaces' => array(),
