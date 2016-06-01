@@ -15,6 +15,7 @@ use PhpBench\Benchmark\BaselineManager;
 use PhpBench\Benchmark\BenchmarkFinder;
 use PhpBench\Benchmark\Executor\DebugExecutor;
 use PhpBench\Benchmark\Executor\MicrotimeExecutor;
+use PhpBench\Benchmark\Metadata\AnnotationReader;
 use PhpBench\Benchmark\Metadata\Driver\AnnotationDriver;
 use PhpBench\Benchmark\Metadata\Factory;
 use PhpBench\Benchmark\Remote\Launcher;
@@ -98,6 +99,7 @@ class CoreExtension implements ExtensionInterface
             'php_config' => [],
             'php_binary' => null,
             'php_wrapper' => null,
+            'annotation_import_use' => false,
         ];
     }
 
@@ -236,9 +238,14 @@ class CoreExtension implements ExtensionInterface
             return new Reflector($container->get('benchmark.remote.launcher'));
         });
 
+        $container->register('benchmark.annotation_reader', function (Container $container) {
+            return new AnnotationReader($container->getParameter('annotation_import_use'));
+        });
+
         $container->register('benchmark.metadata.driver.annotation', function (Container $container) {
             return new AnnotationDriver(
-                $container->get('benchmark.remote.reflector')
+                $container->get('benchmark.remote.reflector'),
+                $container->get('benchmark.annotation_reader')
             );
         });
 

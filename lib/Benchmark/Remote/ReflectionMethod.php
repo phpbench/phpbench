@@ -13,8 +13,28 @@ namespace PhpBench\Benchmark\Remote;
 
 class ReflectionMethod
 {
+    /**
+     * @var string
+     */
     public $class;
+
+    /**
+     * @var string
+     */
     public $name;
+
+    /**
+     * @var string
+     */
     public $comment;
+
+    /**
+     * @var bool
+     */
     public $isStatic;
+
+    /**
+     * @var ReflectionClass
+     */
+    public $reflectionClass;
 }

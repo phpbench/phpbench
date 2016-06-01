@@ -9,15 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Benchmark\Remote;
+namespace PhpBench\Benchmark\Metadata\Annotations;
 
-class ReflectionClass
+/**
+ * @Annotation
+ * @Taget({"METHOD"})
+ */
+class Subject
 {
-    public $path;
-    public $interfaces = [];
-    public $class;
-    public $namespace;
-    public $abstract = false;
-    public $comment;
-    public $methods = [];
 }
