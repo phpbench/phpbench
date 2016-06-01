@@ -11,19 +11,17 @@
 
 namespace PhpBench\Benchmark\Metadata\Driver;
 
-use Doctrine\Common\Annotations\AnnotationRegistry;
+use PhpBench\Benchmark\Metadata\AnnotationReader;
 use PhpBench\Benchmark\Metadata\Annotations;
 use PhpBench\Benchmark\Metadata\Annotations\AbstractArrayAnnotation;
 use PhpBench\Benchmark\Metadata\Annotations\AfterClassMethods;
 use PhpBench\Benchmark\Metadata\Annotations\BeforeClassMethods;
+use PhpBench\Benchmark\Metadata\Annotations\Subject;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\DriverInterface;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\ReflectionHierarchy;
-use PhpBench\Benchmark\Remote\ReflectionMethod;
 use PhpBench\Benchmark\Remote\Reflector;
-use PhpBench\Benchmark\Metadata\AnnotationReader;
-use PhpBench\Benchmark\Metadata\Annotations\Subject;
 
 class AnnotationDriver implements DriverInterface
 {

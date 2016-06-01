@@ -11,12 +11,10 @@
 
 namespace PhpBench\Tests\Unit\Benchmark\Metadata;
 
+use PhpBench\Benchmark\Metadata\AnnotationReader;
 use PhpBench\Benchmark\Metadata\Annotations;
 use PhpBench\Benchmark\Remote\ReflectionClass;
-use PhpBench\Benchmark\Remote\ReflectionHierarchy;
 use PhpBench\Benchmark\Remote\ReflectionMethod;
-use PhpBench\Benchmark\Remote\Reflector;
-use PhpBench\Benchmark\Metadata\AnnotationReader;
 
 class AnnotationReaderTest extends \PHPUnit_Framework_TestCase
 {
@@ -52,8 +50,7 @@ EOT;
  * @Subject()
  * @Iterations(10)
  */
-EOT
-        ;
+EOT;
 
         $annotations = $this->createReader()->getMethodAnnotations($reflectionMethod);
         $this->assertCount(2, $annotations);
@@ -74,8 +71,7 @@ EOT
  * @PhpBench\Subject()
  * @PhpBench\Iterations(10)
  */
-EOT
-        ;
+EOT;
 
         $annotations = $this->createReader(true)->getMethodAnnotations($reflectionMethod);
         $this->assertCount(2, $annotations);

@@ -42,11 +42,6 @@ class BenchmarkMetadata
     private $afterClassMethods = [];
 
     /**
-     * @var bool
-     */
-    private $isBenchmark = false;
-
-    /**
      * @param mixed $path
      * @param mixed $class
      * @param Subject[] $subjects
@@ -198,5 +193,4 @@ class BenchmarkMetadata
     {
         return $this->subjects;
     }
-    
 }

@@ -15,6 +15,7 @@ use PhpBench\Benchmark\BaselineManager;
 use PhpBench\Benchmark\BenchmarkFinder;
 use PhpBench\Benchmark\Executor\DebugExecutor;
 use PhpBench\Benchmark\Executor\MicrotimeExecutor;
+use PhpBench\Benchmark\Metadata\AnnotationReader;
 use PhpBench\Benchmark\Metadata\Driver\AnnotationDriver;
 use PhpBench\Benchmark\Metadata\Factory;
 use PhpBench\Benchmark\Remote\Launcher;
@@ -72,7 +73,6 @@ use PhpBench\Storage\UuidResolver;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\ExecutableFinder;
-use PhpBench\Benchmark\Metadata\AnnotationReader;
 
 class CoreExtension implements ExtensionInterface
 {

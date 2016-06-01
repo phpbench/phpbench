@@ -1,18 +1,25 @@
 <?php
 
+/*
+ * This file is part of the PHPBench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Benchmark\Metadata;
 
-use PhpBench\Benchmark\Metadata\Annotations;
-use PhpBench\Benchmark\Remote\ReflectionClass;
-use Doctrine\Common\Annotations\PhpParser;
-use Doctrine\Common\Annotations\DocParser;
-use Doctrine\Common\Annotations\TokenParser;
-use PhpBench\Benchmark\Remote\ReflectionMethod;
 use Doctrine\Common\Annotations\AnnotationException;
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use Doctrine\Common\Annotations\DocParser;
+use Doctrine\Common\Annotations\TokenParser;
+use PhpBench\Benchmark\Remote\ReflectionClass;
+use PhpBench\Benchmark\Remote\ReflectionMethod;
 
 /**
- * Annotation reader
+ * Annotation reader.
  */
 class AnnotationReader
 {
@@ -75,10 +82,35 @@ class AnnotationReader
         'usedby' => true, 'uses' => true,
         'var' => true, 'version' => true,
         // PHPUnit tags
-        'codeCoverageIgnore' => true, 'codeCoverageIgnoreStart' => true, 'codeCoverageIgnoreEnd' => true,
-        'expectedException' => true, 'expectedExceptionMessage' => true,
+        'author' => true,
+        'after' => true,
+        'afterClass' => true,
+        'backupGlobals' => true,
+        'backupStaticAttributes' => true,
+        'before' => true,
+        'beforeClass' => true,
+        'codeCoverageIgnore' => true,
+        'covers' => true,
+        'coversDefaultClass' => true,
+        'coversNothing' => true,
         'dataProvider' => true,
-        // TODO: Add all PHPUnit annotations here ...
+        'depends' => true,
+        'expectedException' => true,
+        'expectedExceptionCode' => true,
+        'expectedExceptionMessage' => true,
+        'expectedExceptionMessageRegExp' => true,
+        'group' => true,
+        'large' => true,
+        'medium' => true,
+        'preserveGlobalState' => true,
+        'requires' => true,
+        'runTestsInSeparateProcesses' => true,
+        'runInSeparateProcess' => true,
+        'small' => true,
+        'test' => true,
+        'testdox' => true,
+        'ticket' => true,
+        'uses' => true,
         // PHPCheckStyle
         'SuppressWarnings' => true,
         // PHPStorm
@@ -114,12 +146,14 @@ class AnnotationReader
     public function getClassAnnotations(ReflectionClass $class)
     {
         $this->collectImports($class);
+
         return $this->parse($class->comment, sprintf('benchmark: %s', $class->class));
     }
 
     public function getMethodAnnotations(ReflectionMethod $method)
     {
         $this->collectImports($method->reflectionClass);
+
         return $this->parse($method->comment, sprintf('subject %s::%s', $method->class, $method->name));
     }
 
@@ -142,7 +176,6 @@ class AnnotationReader
         }
 
         return $phpBenchImports;
-
     }
 
     private function getUseImports(ReflectionClass $class)

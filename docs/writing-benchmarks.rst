@@ -4,7 +4,6 @@ Writing Benchmarks
 Benchmark classes have the following characteristics:
 
 - The class and filename must be the same.
-- The class name must end with ``Bench``.
 - Class methods that start with ``bench`` will be executed by the benchrunner
   and timed.
 
@@ -51,6 +50,11 @@ And it can be executed as follows:
 
 PHPBench reads docblock annotations in the benchmark class. Annotations can be
 placed in the class docblock, or on individual methods docblocks.
+
+.. note::
+
+    Instead of prefixing a method with ``bench`` you can use the
+    ``@Subject`` annotation.
 
 .. _revolutions:
 
@@ -510,7 +514,6 @@ actually measuring the revolutions time.
     }
 
 As with :ref:`revolutions <revolutions>`, you may also specify an array.
-
 
 .. _cartesian product: https://en.wikipedia.org/wiki/Cartesian_product
 .. _Relative standard deviation: https://en.wikipedia.org/wiki/Coefficient_of_variation

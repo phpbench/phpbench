@@ -148,7 +148,7 @@ EOT;
     }
 
     /**
-     * It should ignore non-prefixed subjects without the Subject annotation
+     * It should ignore non-prefixed subjects without the Subject annotation.
      */
     public function testLoadIgnoreNonPrefixed()
     {
