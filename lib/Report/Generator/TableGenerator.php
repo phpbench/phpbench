@@ -68,7 +68,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
             'sort' => [],
             'pretty_params' => false,
             'iterations' => false,
-            'col_labels' => [],
+            'labels' => [],
         ];
     }
 
@@ -90,7 +90,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
                 'cols' => [
                     'type' => 'array',
                 ],
-                'col_labels' => [
+                'labels' => [
                     'type' => ['object', 'array'],
                 ],
                 'break' => [
@@ -521,10 +521,10 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
                     // column labels are the column names by default.
                     // the user may override by column name or column index.
                     $colLabel = $colName;
-                    if (isset($config['col_labels'][$colName])) {
-                        $colLabel = $config['col_labels'][$colName];
-                    } elseif (isset($config['col_labels'][$cellIndex])) {
-                        $colLabel = $config['col_labels'][$cellIndex];
+                    if (isset($config['labels'][$colName])) {
+                        $colLabel = $config['labels'][$colName];
+                    } elseif (isset($config['labels'][$cellIndex])) {
+                        $colLabel = $config['labels'][$cellIndex];
                     }
 
                     $colEl->setAttribute('label', $colLabel);

@@ -501,7 +501,7 @@ EOT
         $report = $this->generate(
             TestUtil::createCollection([[]]),
             [
-                'col_labels' => ['Column one', 'Column two', 'params' => 'Parameters'],
+                'labels' => ['Column one', 'Column two', 'params' => 'Parameters'],
             ]
         );
 
