@@ -34,7 +34,7 @@ class LogBench extends BaseBenchCase
         }
     }
 
-    public function benchLog()
+    public function benchLogCommand()
     {
         $this->runCommand('console.command.log', [
             '--no-pagination' => true,

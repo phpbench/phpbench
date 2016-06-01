@@ -12,6 +12,7 @@
 namespace PhpBench\Model;
 
 use PhpBench\Util\TimeUnit;
+use Doctrine\Common\Util\Inflector;
 
 /**
  * Subject representation.
@@ -30,6 +31,11 @@ class Subject
      * @var string
      */
     private $name;
+
+    /**
+     * @var string
+     */
+    private $label;
 
     /**
      * @var string[]
@@ -209,5 +215,29 @@ class Subject
     public function getIndex()
     {
         return $this->index;
+    }
+
+    public function getLabel() 
+    {
+        return $this->label;
+    }
+    
+    public function setLabel($label)
+    {
+        $this->label = $label;
+    }
+
+    public function getDisplayName()
+    {
+        if ($this->label) {
+            return $this->label;
+        }
+
+        if ('bench' === $a = substr(strtolower($this->name), 0, 5)) {
+            $label = trim(preg_replace('{([A-Z])}', ' \1', substr($this->name, 5)));
+            return ucfirst(strtolower($label));
+        }
+
+        return $this->name;
     }
 }

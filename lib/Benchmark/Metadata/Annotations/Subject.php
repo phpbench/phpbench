@@ -17,4 +17,17 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
  */
 class Subject
 {
+    private $label;
+
+    public function __construct($params)
+    {
+        if (isset($params['label'])) {
+            $this->label = $params['label'];
+        }
+    }
+
+    public function getLabel()
+    {
+        return $this->label;
+    }
 }

@@ -12,17 +12,17 @@
 return [
     'aggregate' => [
         'generator' => 'table',
-        'cols' => ['benchmark', 'subject', 'groups', 'params', 'revs', 'its', 'mem', 'best', 'mean', 'mode', 'worst', 'stdev', 'rstdev', 'diff'],
+        'cols' => ['benchmark', 'subject', 'params', 'revs', 'its', 'mem', 'best', 'mean', 'mode', 'worst', 'stdev', 'rstdev', 'diff'],
     ],
     'default' => [
         'generator' => 'table',
         'iterations' => true,
-        'cols' => ['benchmark', 'subject', 'groups', 'params', 'revs', 'iter', 'rej', 'mem', 'iter', 'time', 'z-value', 'diff'],
+        'cols' => ['benchmark', 'subject', 'params', 'revs', 'iter', 'rej', 'mem', 'iter', 'time', 'z-value', 'diff'],
         'diff_col' => 'time',
     ],
     'compare' => [
         'generator' => 'table',
-        'cols' => ['benchmark', 'subject', 'groups', 'params', 'revs'],
+        'cols' => ['benchmark', 'subject', 'params', 'revs'],
         'compare' => 'vcs_branch',
         'break' => ['benchmark', 'subject'],
     ],

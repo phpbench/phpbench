@@ -75,6 +75,7 @@ class XmlEncoder
     {
         $subjectEl = $benchmarkEl->appendElement('subject');
         $subjectEl->setAttribute('name', $subject->getName());
+        $subjectEl->setAttribute('label', $subject->getLabel());
 
         foreach ($subject->getGroups() as $group) {
             $groupEl = $subjectEl->appendElement('group');

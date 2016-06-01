@@ -46,7 +46,7 @@ class VerboseLogger extends PhpBenchLogger
     {
         $this->output->write(sprintf(
             "\x1B[0G    %-30s%sI%s P%s ",
-            $iteration->getVariant()->getSubject()->getName(),
+            $iteration->getVariant()->getSubject()->getDisplayName(),
             $this->rejectionCount ? 'R' . $this->rejectionCount . ' ' : '',
             $iteration->getIndex(),
             $iteration->getVariant()->getParameterSet()->getIndex()

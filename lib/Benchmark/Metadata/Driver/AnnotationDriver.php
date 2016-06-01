@@ -125,6 +125,9 @@ class AnnotationDriver implements DriverInterface
 
     private function processSubject(SubjectMetadata $subject, $annotation)
     {
+        if ($annotation instanceof Annotations\Subject) {
+            $subject->setLabel($annotation->getLabel());
+        }
         if ($annotation instanceof Annotations\BeforeMethods) {
             $subject->setBeforeMethods(
                 $this->resolveValue(

@@ -22,6 +22,11 @@ class SubjectMetadata
     private $name;
 
     /**
+     * @var string
+     */
+    private $label;
+
+    /**
      * @var array[]
      */
     private $parameterSets = [];
@@ -280,5 +285,15 @@ class SubjectMetadata
     public function setRetryThreshold($retryThreshold)
     {
         $this->retryThreshold = $retryThreshold;
+    }
+
+    public function getLabel() 
+    {
+        return $this->label;
+    }
+    
+    public function setLabel($label)
+    {
+        $this->label = $label;
     }
 }
