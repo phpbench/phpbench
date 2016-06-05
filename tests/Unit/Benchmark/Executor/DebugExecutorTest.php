@@ -15,8 +15,11 @@ use PhpBench\Benchmark\Executor\DebugExecutor;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Model\Iteration;
+use PhpBench\Model\Result\MemoryResult;
+use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Variant;
 use PhpBench\Registry\Config;
+use Prophecy\Argument;
 
 class DebugExecutorTest extends \PHPUnit_Framework_TestCase
 {
@@ -36,14 +39,19 @@ class DebugExecutorTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstantTimes(array $times, array $spread, $nbCollections, $nbIterations, $expectedTimes)
     {
-        $results = [];
+        $actualTimes = [];
         for ($i = 0; $i < $nbCollections; $i++) {
             $collection = $this->prophesize(Variant::class);
             for ($ii = 0; $ii < $nbIterations; $ii++) {
                 $iteration = $this->prophesize(Iteration::class);
                 $iteration->getVariant()->willReturn($collection->reveal());
                 $iteration->getIndex()->willReturn($ii);
-                $results[] = $this->executor->execute(
+                $iteration->addResult(Argument::type(TimeResult::class))->will(function ($args) use (&$actualTimes) {
+                    $actualTimes[] = $args[0]->getNet();
+                });
+                $iteration->addResult(Argument::type(MemoryResult::class))->shouldBeCalled();
+
+                $this->executor->execute(
                     $this->subjectMetadata->reveal(),
                     $iteration->reveal(),
                     new Config('test', [
@@ -54,11 +62,7 @@ class DebugExecutorTest extends \PHPUnit_Framework_TestCase
             }
         }
 
-        $times = array_map(function ($result) {
-            return $result->getTime();
-        }, $results);
-
-        $this->assertEquals($expectedTimes, $times);
+        $this->assertEquals($expectedTimes, $actualTimes);
     }
 
     public function provideConstantTimes()

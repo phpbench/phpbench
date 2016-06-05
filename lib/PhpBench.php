@@ -80,7 +80,6 @@ class PhpBench
         global $argv;
 
         $configPaths = [];
-        $bootstrapOverride = null;
         $extensions = [];
         $configOverride = [];
         foreach ($argv as $arg) {

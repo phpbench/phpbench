@@ -13,11 +13,11 @@ namespace PhpBench\Tests\Unit\Progress\Logger;
 
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Iteration;
-use PhpBench\Model\IterationResult;
 use PhpBench\Model\ParameterSet;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Variant;
 use PhpBench\Progress\Logger\HistogramLogger;
+use PhpBench\Tests\Util\TestUtil;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Console\Output\BufferedOutput;
 
@@ -114,7 +114,9 @@ class HistogramLoggerTest extends \PHPUnit_Framework_TestCase
     public function testIterationEnd()
     {
         foreach ($this->variant as $iteration) {
-            $iteration->setResult(new IterationResult(10, 10));
+            foreach (TestUtil::createResults(10, 10) as $result) {
+                $iteration->addResult($result);
+            }
         }
         $this->variant->computeStats();
 

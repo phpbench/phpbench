@@ -13,6 +13,9 @@ namespace PhpBench\Extensions\Dbal\Storage\Driver\Dbal;
 
 use Doctrine\DBAL\Connection;
 use PhpBench\Model\Iteration;
+use PhpBench\Model\Result\MemoryResult;
+use PhpBench\Model\Result\RejectionCountResult;
+use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\SuiteCollection;
 
 class Persister
@@ -97,9 +100,9 @@ class Persister
 
                         foreach ($variant as $iteration) {
                             $iterationDatas[] = [
-                                'time' => $iteration->getTime(),
-                                'memory' => $iteration->getMemory(),
-                                'reject_count' => $iteration->getRejectionCount(),
+                                'time' => $iteration->getMetric(TimeResult::class, 'net', null),
+                                'memory' => $iteration->getMetricOrDefault(MemoryResult::class, 'peak', -1),
+                                'reject_count' => $iteration->getMetricOrDefault(RejectionCountResult::class, 'rejection_count', 0),
                                 'variant_id' => $variantId,
                             ];
                         }

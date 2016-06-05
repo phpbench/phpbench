@@ -6,6 +6,15 @@ database supported by `doctrine dbal`_. By default it will use a file-based sqli
 database which will be created in your current working directory and named
 ``.phpbench.sqlite``.
 
+Currently it will only store basic metrics for each iteration, `time`,
+`memory` (peak), `z-value`, `deviation` and the summary statistics.
+
+.. warning::
+
+    The DBAL extension does not provide an advanced storage capability and may
+    be dropped from the core before the 1.0 release. In this case it will be
+    available as an officially unsupported extension in a separate repository.
+
 Installation
 ------------
 

@@ -18,6 +18,9 @@ use PhpBench\Model\Error;
 use PhpBench\Model\ErrorStack;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\ParameterSet;
+use PhpBench\Model\Result\ComputedResult;
+use PhpBench\Model\Result\MemoryResult;
+use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
@@ -99,12 +102,11 @@ class XmlTestCase extends \PHPUnit_Framework_TestCase
         $this->variant1->getIterator()->willReturn(new \ArrayIterator([
             $this->iteration1->reveal(),
         ]));
-        $this->iteration1->getTime()->willReturn(10);
-        $this->iteration1->getRevTime()->willReturn(0.1);
-        $this->iteration1->getMemory()->willReturn(100);
-        $this->iteration1->getZValue()->willReturn(0);
-        $this->iteration1->getDeviation()->willReturn(0);
-        $this->iteration1->getRejectionCount()->willReturn(5);
+        $this->iteration1->getResults()->willReturn([
+            new TimeResult(10),
+            new MemoryResult(100, 110, 109),
+            new ComputedResult(0, 0, 5),
+        ]);
 
         return $this->suiteCollection->reveal();
     }
@@ -138,11 +140,14 @@ class XmlTestCase extends \PHPUnit_Framework_TestCase
           <parameter name="bar" type="collection">
             <parameter name="baz" value="bon"/>
           </parameter>
-          <iteration net-time="10" rev-time="0.1" z-value="0" memory="100" deviation="0" rejection-count="5"/>
+          <iteration time-net="10" mem-peak="100" mem-real="110" mem-final="109" comp-z-value="0" comp-deviation="0"/>
           <stats max="0.1" mean="0.1" min="0.1" mode="0.1" rstdev="0" stdev="0" sum="0.1" variance="0"/>
         </variant>
       </subject>
     </benchmark>
+    <result key="time" class="PhpBench\Model\Result\TimeResult"/>
+    <result key="mem" class="PhpBench\Model\Result\MemoryResult"/>
+    <result key="comp" class="PhpBench\Model\Result\ComputedResult"/>
   </suite>
 </phpbench>
 

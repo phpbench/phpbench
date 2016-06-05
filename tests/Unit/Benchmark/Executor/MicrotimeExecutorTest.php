@@ -19,8 +19,11 @@ use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\ParameterSet;
+use PhpBench\Model\Result\MemoryResult;
+use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Variant;
 use PhpBench\Registry\Config;
+use Prophecy\Argument;
 
 class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
 {
@@ -97,15 +100,15 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
         $this->variant->getRevolutions()->willReturn(10);
         $this->variant->getWarmup()->willReturn(1);
 
-        $result = $this->executor->execute(
+        $this->iteration->addResult(Argument::type(TimeResult::class))->shouldBeCalled();
+        $this->iteration->addResult(Argument::type(MemoryResult::class))->shouldBeCalled();
+
+        $this->executor->execute(
             $this->metadata->reveal(),
             $this->iteration->reveal(),
             new Config('test', [])
         );
 
-        $this->assertInstanceOf('PhpBench\Model\IterationResult', $result);
-        $this->assertInternalType('int', $result->getTime());
-        $this->assertInternalType('int', $result->getMemory());
         $this->assertFalse(file_exists($this->beforeMethodFile));
         $this->assertFalse(file_exists($this->afterMethodFile));
         $this->assertTrue(file_exists($this->revFile));
@@ -129,9 +132,9 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
         $this->metadata->getWarmup()->willReturn(0);
         $this->variant->getParameterSet()->willReturn(new ParameterSet());
 
-        $result = $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', []));
+        $results = $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', []));
 
-        $this->assertInstanceOf('PhpBench\Model\IterationResult', $result);
+        $this->assertInstanceOf('PhpBench\Model\ResultCollection', $results);
     }
 
     /**
@@ -145,6 +148,9 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
         $this->variant->getParameterSet()->willReturn(new ParameterSet());
         $this->variant->getRevolutions()->willReturn(1);
         $this->variant->getWarmup()->willReturn(0);
+
+        $this->iteration->addResult(Argument::type(TimeResult::class))->shouldBeCalled();
+        $this->iteration->addResult(Argument::type(MemoryResult::class))->shouldBeCalled();
 
         $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', []));
 
@@ -162,6 +168,9 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
         $this->variant->getParameterSet()->willReturn(new ParameterSet());
         $this->variant->getRevolutions()->willReturn(1);
         $this->variant->getWarmup()->willReturn(0);
+
+        $this->iteration->addResult(Argument::type(TimeResult::class))->shouldBeCalled();
+        $this->iteration->addResult(Argument::type(MemoryResult::class))->shouldBeCalled();
 
         $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', []));
 
@@ -183,6 +192,9 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
         ]));
         $this->variant->getRevolutions()->willReturn(1);
         $this->variant->getWarmup()->willReturn(0);
+
+        $this->iteration->addResult(Argument::type(TimeResult::class))->shouldBeCalled();
+        $this->iteration->addResult(Argument::type(MemoryResult::class))->shouldBeCalled();
 
         $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', []));
         $this->assertTrue(file_exists($this->paramFile));
@@ -209,6 +221,9 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
         $this->variant->getParameterSet()->willReturn($expected);
         $this->variant->getRevolutions()->willReturn(1);
         $this->variant->getWarmup()->willReturn(0);
+
+        $this->iteration->addResult(Argument::type(TimeResult::class))->shouldBeCalled();
+        $this->iteration->addResult(Argument::type(MemoryResult::class))->shouldBeCalled();
 
         $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', []));
 

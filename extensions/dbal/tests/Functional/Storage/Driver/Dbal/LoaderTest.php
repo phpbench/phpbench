@@ -18,6 +18,8 @@ use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\Repository;
 use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\Visitor\SqlVisitor;
 use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\Visitor\TokenValueVisitor;
 use PhpBench\Extensions\Dbal\Tests\Functional\DbalTestCase;
+use PhpBench\Model\Result\MemoryResult;
+use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Tests\Util\TestUtil;
 
@@ -138,8 +140,8 @@ class LoaderTest extends DbalTestCase
         $iterations = $variant->getIterations();
         $this->assertCount(2, $iterations);
         $iteration = current($iterations);
-        $this->assertEquals(10, $iteration->getTime());
-        $this->assertEquals(200, $iteration->getMemory());
+        $this->assertEquals(10, $iteration->getResult(TimeResult::class)->getNet());
+        $this->assertEquals(200, $iteration->getResult(MemoryResult::class)->getPeak());
     }
 
     /**

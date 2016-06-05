@@ -164,7 +164,7 @@ Difference Between Rows
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 You can show the percentage of difference from the lowest column value in the table by specifying the ``diff`` column. By
-default this will use the ``mean``, you can specify a different value using the ``diff_col`` option, e.g. ``diff_col: "mode"``.
+default this will use the ``mean``, you can specify a different value using the ``deviation_col`` option, e.g. ``deviation_col: "mode"``.
 
 .. code-block:: bash
 
@@ -218,7 +218,7 @@ Shows aggregate details of each each set of iterations:
 .. code-block:: bash
 
     +------------------+-------------+---------+--------+------+-----+----------+---------+---------+---------+---------+---------+--------+
-    | benchmark        | subject     | groups  | params | revs | its | mem      | best    | mean    | mode    | worst   | stdev   | rstdev |
+    | benchmark        | subject     | groups  | params | revs | its | mem_peak | best    | mean    | mode    | worst   | stdev   | rstdev |
     +------------------+-------------+---------+--------+------+-----+----------+---------+---------+---------+---------+---------+--------+
     | HashingBenchmark | benchMd5    | hashing | []     | 1000 | 10  | 272,616b | 2.470μs | 2.636μs | 2.621μs | 2.805μs | 0.093μs | 3.55%  |
     | HashingBenchmark | benchSha1   | hashing | []     | 1000 | 10  | 272,616b | 2.640μs | 2.837μs | 2.903μs | 2.937μs | 0.097μs | 3.43%  |
@@ -236,7 +236,7 @@ The default report presents the result of *each iteration*:
 .. code-block:: bash
 
     +------------------+-------------+---------+--------+------+------+-----+----------+----------+---------+--------+
-    | benchmark        | subject     | groups  | params | revs | iter | rej | mem      | time     | z-score | diff   |
+    | benchmark        | subject     | groups  | params | revs | iter | rej | mem_peak | time     | z-score | diff   |
     +------------------+-------------+---------+--------+------+------+-----+----------+----------+---------+--------+
     | HashingBenchmark | benchMd5    | hashing | []     | 1000 | 0    | 0   | 268,160b | 0.8040μs | -1σ     | -3.48% |
     | HashingBenchmark | benchMd5    | hashing | []     | 1000 | 1    | 0   | 268,160b | 0.8620μs | +1.00σ  | +3.48% |

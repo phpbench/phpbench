@@ -29,7 +29,7 @@ Options:
   based for the given column.
 - **compare_fields**: *(array)* List of fields to compare based on the column
   specified with **compare**.
-- **diff_col**: *(string)* If the ``diff`` column is given in ``cols``, use
+- **deviation_col**: *(string)* If the ``diff`` column is given in ``cols``, use
   this column as the value on which to determine the ``diff`` (default
   ``mean``).
 - **sort**: *(assoc_array)* Sort specification, can specify multiple columns;
@@ -65,7 +65,10 @@ Conditions:
 
 Variant Statistics:
 
-- **mem**: Memory used by iteration as retrieved by memory_get_peak_usage_ (mean for variant).
+- **mem_peak**: (mean) Peak memory used by each iteration as retrieved by memory_get_peak_usage_.
+- **mem_final**: (mean) Memory allocated to PHP at the end of the benchmark
+  (`memory_get_usage`).
+- **mem_real**: (mean) Memory allocated by the system for PHP at the end of the benchmark (`memory_get_usage(true)`).
 - **min**: Minimum time of all iterations in variant.
 - **max**: Maximum time of all iterations in variant.
 - **worst**: Synonym for ``max``.
@@ -79,10 +82,15 @@ Variant Statistics:
 
 Iteration Statistics:
 
+- **mem_peak**: Peak memory used by each iteration as retrieved by memory_get_peak_usage_.
+- **mem_final**: Memory allocated to PHP at the end of the benchmark
+  (`memory_get_usage`).
+- **mem_real**: Memory allocated by the system for PHP at the end of the benchmark (`memory_get_usage(true)`).
 - **iter**: Index of iteration.
 - **rej**: Number of rejections the iteration went through (see
   :ref:`retry_threshold`.
-- **time**: Time in (microseconds_) it took for the iteration to complete.
+- **time_net**: Time in (microseconds_) it took for the iteration to complete.
+- **time_rev**: Time per revolution (``time_net / nb revs``).
 - **z-vaue**: The `number of standard deviations`_ away from the mean of the
   iteration set (the variant).
 

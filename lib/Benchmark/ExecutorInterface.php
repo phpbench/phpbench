@@ -37,7 +37,7 @@ interface ExecutorInterface extends RegistrableInterface
      * @param Iteration $iteration
      * @param array $config
      *
-     * @return IterationResult
+     * @return ResultCollection
      */
     public function execute(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config);
 

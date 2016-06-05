@@ -16,6 +16,8 @@ use PhpBench\Expression\Constraint\Constraint;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\ParameterSet;
+use PhpBench\Model\Result\MemoryResult;
+use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
@@ -63,7 +65,10 @@ class Loader
             $benchmark = $this->getBenchmark($context, $suite, $row);
             $subject = $this->getSubject($context, $benchmark, $row);
             $variant = $this->getVariant($context, $subject, $row);
-            $iteration = new Iteration(0, $variant, $row['iteration.time'], $row['iteration.memory']);
+            $iteration = new Iteration(0, $variant, [
+                new TimeResult((int) $row['iteration.time']),
+                new MemoryResult((int) $row['iteration.memory'], 0, 0),
+            ]);
             $variant->addIteration($iteration);
         }
 

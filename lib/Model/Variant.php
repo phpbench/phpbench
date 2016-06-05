@@ -13,6 +13,8 @@ namespace PhpBench\Model;
 
 use PhpBench\Math\Distribution;
 use PhpBench\Math\Statistics;
+use PhpBench\Model\Result\ComputedResult;
+use PhpBench\Model\Result\TimeResult;
 
 /**
  * Stores Iterations and calculates the deviations and rejection
@@ -106,10 +108,10 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
      *
      * @return Iteration
      */
-    public function createIteration($time, $memory, $rejectionCount = 0)
+    public function createIteration(array $results = [])
     {
         $index = count($this->iterations);
-        $iteration = $iteration = new Iteration($index, $this, $time, $memory, $rejectionCount);
+        $iteration = $iteration = new Iteration($index, $this, $results);
         $this->iterations[] = $iteration;
 
         return $iteration;
@@ -144,48 +146,38 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
     }
 
     /**
-     * Return the iteration times.
+     * Return result values by class and metric name.
      *
-     * @return array
+     * e.g.
+     *
+     * ```
+     * $variant->getMetricValues(ComputedResult::class, 'z_value');
+     * ```
+     *
+     * @return mixed[]
      */
-    public function getTimes()
+    public function getMetricValues($resultClass, $metricName)
     {
-        $times = [];
+        $values = [];
         foreach ($this->iterations as $iteration) {
-            $times[] = $iteration->getRevTime();
+            if ($iteration->hasResult($resultClass)) {
+                $values[] = $iteration->getMetric($resultClass, $metricName);
+            }
         }
 
-        return $times;
+        return $values;
     }
 
     /**
-     * Return the iteration memory measurements.
+     * Return the average metric values by revolution.
      *
-     * @return array
+     * @return mixed[]
      */
-    public function getMemories()
+    public function getMetricValuesByRev($resultClass, $metric)
     {
-        $memories = [];
-        foreach ($this->iterations as $iteration) {
-            $memories[] = $iteration->getMemory();
-        }
-
-        return $memories;
-    }
-
-    /**
-     * Return the Z-Values.
-     *
-     * @return float[]
-     */
-    public function getZValues()
-    {
-        $zValues = [];
-        foreach ($this->iterations as $iteration) {
-            $zValues[] = $iteration->getZValue();
-        }
-
-        return $zValues;
+        return array_map(function ($value) {
+            return $value / $this->getRevolutions();
+        }, $this->getMetricValues($resultClass, $metric));
     }
 
     /**
@@ -202,7 +194,7 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
             return;
         }
 
-        $times = $this->getTimes();
+        $times = $this->getMetricValuesByRev(TimeResult::class, 'net');
         $retryThreshold = $this->getSubject()->getRetryThreshold();
 
         $this->stats = new Distribution($times, $this->computedStats);
@@ -212,25 +204,25 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
             if ($this->stats->getMean() > 0) {
                 $deviation = 100 / $this->stats->getMean() * (
                     (
-                        $iteration->getRevTime()
+                        $iteration->getResult(TimeResult::class)->getRevTime($iteration->getVariant()->getRevolutions())
                     ) - $this->stats->getMean()
                 );
             } else {
                 $deviation = 0;
             }
-            $iteration->setDeviation($deviation);
 
             // the Z-Value represents the number of standard deviations this
             // value is away from the mean.
-            $revTime = $iteration->getTime() / $revs;
+            $revTime = $iteration->getResult(TimeResult::class)->getRevTime($revs);
             $zValue = $this->stats->getStdev() ? ($revTime - $this->stats->getMean()) / $this->stats->getStdev() : 0;
-            $iteration->setZValue($zValue);
 
             if (null !== $retryThreshold) {
                 if (abs($deviation) >= $retryThreshold) {
                     $this->rejects[] = $iteration;
                 }
             }
+
+            $iteration->replaceResult(new ComputedResult($zValue, $deviation));
         }
 
         $this->computed = true;
@@ -261,7 +253,9 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
      *
      * See self::$stats.
      *
-     * @return array
+     * TODO: Rename to getDistribution
+     *
+     * @return Distribution
      */
     public function getStats()
     {
@@ -339,6 +333,8 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
     }
 
     /**
+     * Create an error stack from an Exception.
+     *
      * Should be called when an Exception is encountered during
      * the execution of any of the iteration processes.
      *
@@ -358,6 +354,11 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
         $this->errorStack = new ErrorStack($this, $errors);
     }
 
+    /**
+     * Create and set the error stack from a list of Error instances.
+     *
+     * @param Error[]
+     */
     public function createErrorStack(array $errors)
     {
         $this->errorStack = new ErrorStack($this, $errors);

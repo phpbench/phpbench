@@ -17,6 +17,7 @@ use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Environment\Supplier;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Iteration;
+use PhpBench\Model\Result\RejectionCountResult;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
 use PhpBench\Model\Variant;
@@ -188,9 +189,11 @@ class Runner
     ) {
         $executorConfig = $this->executorRegistry->getConfig($context->getExecutor());
         $this->logger->variantStart($variant);
+        $rejectCount = [];
 
         try {
             foreach ($variant->getIterations() as $iteration) {
+                $rejectCount[spl_object_hash($iteration)] = 0;
                 $this->runIteration($executor, $executorConfig, $iteration, $subjectMetadata);
             }
         } catch (\Exception $e) {
@@ -211,25 +214,25 @@ class Runner
             $this->logger->retryStart($variant->getRejectCount());
             $this->logger->variantStart($variant);
             foreach ($variant->getRejects() as $reject) {
-                $reject->incrementRejectionCount();
+                $rejectCount[spl_object_hash($reject)]++;
                 $this->runIteration($executor, $executorConfig, $reject, $subjectMetadata);
             }
             $variant->computeStats();
             $this->logger->variantEnd($variant);
+            $reject->replaceResult(new RejectionCountResult($rejectCount[spl_object_hash($reject)]));
         }
     }
 
     public function runIteration(ExecutorInterface $executor, Config $executorConfig, Iteration $iteration, SubjectMetadata $subjectMetadata)
     {
         $this->logger->iterationStart($iteration);
-        $result = $executor->execute($subjectMetadata, $iteration, $executorConfig);
+        $executor->execute($subjectMetadata, $iteration, $executorConfig);
 
         $sleep = $subjectMetadata->getSleep();
         if ($sleep) {
             usleep($sleep);
         }
 
-        $iteration->setResult($result);
         $this->logger->iterationEnd($iteration);
     }
 }
