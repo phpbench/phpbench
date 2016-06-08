@@ -20,7 +20,7 @@ of these escape sequences.
 You may also consider using `Cgywin`, `emuCon` or `ansiCon` programs to
 enhance your console. You may also switch to Linux.
 
-Why do ``setUp` and ``tearDown`` methods not automatically get called?
+Why do `setUp` and `tearDown` methods not automatically get called?
 ----------------------------------------------------------------------
 
 PHPBench supports the annotations ``BeforeMethods`` and ``AfterMethods`` which
