@@ -10,7 +10,7 @@ Configuring a Storage Driver
 
 PHPBench will use XML storage by default, which is fine for most purposes. If
 you want advanced functionality (e.g. the ability to query benchmarks) then
-you can install the :doc:`Doctrine DBAL extrension<extensions/dbal>`.
+you can install the :doc:`Doctrine DBAL extension<extensions/dbal>`.
 
 The XML storage driver will place benchmarks in a folder called ``_storage``
 by default, this can be changed in the configuration as follows:
