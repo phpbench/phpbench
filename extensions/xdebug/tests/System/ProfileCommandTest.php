@@ -11,45 +11,8 @@
 
 namespace PhpBench\Extensions\XDebug\Tests\System;
 
-use PhpBench\Tests\System\SystemTestCase;
-use Symfony\Component\Filesystem\Filesystem;
-
-class XDebugProfileTest extends SystemTestCase
+class ProfileCommandTest extends XDebugTestCase
 {
-    public function setUp()
-    {
-        if (!extension_loaded('xdebug')) {
-            $this->markTestSkipped('XDebug not enabled.');
-        }
-
-        $this->clean();
-    }
-
-    public function tearDown()
-    {
-        $this->clean();
-    }
-
-    private function clean()
-    {
-        if (file_exists($profileDir = $this->getWorkingDir('profile'))) {
-            $filesystem = new Filesystem();
-            $filesystem->remove($profileDir);
-        }
-
-        if (file_exists($profileDir = $this->getWorkingDir('profilenew'))) {
-            $filesystem = new Filesystem();
-            $filesystem->remove($profileDir);
-        }
-    }
-
-    public function phpbench($command, $workingDir = '.')
-    {
-        $command .= ' --extension="PhpBench\\Extensions\\XDebug\\XDebugExtension"';
-
-        return parent::phpbench($command, $workingDir);
-    }
-
     /**
      * It should run when given a path.
      * It should show the default (simple) report.

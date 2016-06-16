@@ -1,6 +1,7 @@
 <?php
 
 echo json_encode([
+    'xdebug' => in_array('xdebug', get_loaded_extensions()),
     'version' => phpversion()
 ]);
 

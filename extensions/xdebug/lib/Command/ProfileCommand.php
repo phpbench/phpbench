@@ -13,6 +13,7 @@ namespace PhpBench\Extensions\XDebug\Command;
 
 use PhpBench\Console\Command\Configure\Executor;
 use PhpBench\Console\Command\Handler\RunnerHandler;
+use PhpBench\Extensions\XDebug\Command\Handler\OutputDirHandler;
 use PhpBench\Extensions\XDebug\XDebugUtil;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,15 +27,17 @@ class ProfileCommand extends Command
 {
     private $runnerHandler;
     private $filesystem;
-    private $output;
+    private $outputDirHandler;
 
     public function __construct(
         RunnerHandler $runnerHandler,
+        OutputDirHandler $outputDirHandler,
         Filesystem $filesystem = null
     ) {
         parent::__construct();
         $this->runnerHandler = $runnerHandler;
         $this->filesystem = $filesystem ?: new Filesystem();
+        $this->outputDirHandler = $outputDirHandler;
     }
 
     public function configure()
@@ -45,16 +48,14 @@ Generate and optionally visulaize profiles with XDebug
 EOT
         );
         RunnerHandler::configure($this);
-        $this->addOption('outdir', null, InputOption::VALUE_REQUIRED, 'Output directory for profiles', 'profile');
+        OutputDirHandler::configure($this);
         $this->addOption('gui', null, InputOption::VALUE_NONE);
         $this->addOption('gui-bin', null, InputOption::VALUE_REQUIRED, 'Bin to use to display cachegrind output', 'kcachegrind');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->output = $output;
-        $outputDir = $input->getOption('outdir');
-
+        $outputDir = $this->outputDirHandler->handleOutputDir($input, $output);
         $guiBin = null;
 
         if ($input->getOption('gui')) {
@@ -68,21 +69,13 @@ EOT
             }
         }
 
-        if (!$this->filesystem->exists($outputDir)) {
-            $output->writeln(sprintf(
-                '<comment>// creating non-existing directory %s</comment>',
-                $outputDir
-            ));
-            $this->filesystem->mkdir($outputDir);
-        }
-
         $generatedFiles = [];
         $this->runnerHandler->runFromInput($input, $output, [
             'executor' => [
-                'executor' => 'xdebug',
+                'executor' => 'xdebug_profile',
                 'output_dir' => $outputDir,
                 'callback' => function ($iteration) use ($outputDir, $guiBin, &$generatedFiles) {
-                    $generatedFiles[] = $generatedFile = $outputDir . DIRECTORY_SEPARATOR . XDebugUtil::filenameFromIteration($iteration);
+                    $generatedFiles[] = $generatedFile = $outputDir . DIRECTORY_SEPARATOR . XDebugUtil::filenameFromIteration($iteration, '.cachegrind');
 
                     if ($guiBin) {
                         $process = new Process(sprintf(
@@ -110,7 +103,7 @@ EOT
                 ));
             }
 
-            $this->output->writeln(sprintf('    %s', $generatedFile));
+            $output->writeln(sprintf('    %s', $generatedFile));
         }
     }
 }

@@ -110,7 +110,7 @@ class EnvGenerator implements GeneratorInterface, OutputAwareInterface
                     $cellEl->setAttribute('name', 'provider');
                     $cellEl = $rowEl->appendElement('cell', $key);
                     $cellEl->setAttribute('name', 'key');
-                    $cellEl = $rowEl->appendElement('cell', $value);
+                    $cellEl = $rowEl->appendElement('cell', is_bool($value) ? $value ? 'yes' : 'no' : $value);
                     $cellEl->setAttribute('name', 'value');
                 }
             }

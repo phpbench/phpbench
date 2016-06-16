@@ -20,7 +20,7 @@ use PhpBench\Model\Result\TimeResult;
 use PhpBench\PhpBench;
 use PhpBench\Registry\Config;
 
-class XDebugExecutor extends BaseExecutor
+class ProfileExecutor extends BaseExecutor
 {
     /**
      * {@inheritdoc}
@@ -29,17 +29,13 @@ class XDebugExecutor extends BaseExecutor
     {
         $outputDir = $config['output_dir'];
         $callback = $config['callback'];
-        $name = XDebugUtil::filenameFromIteration($iteration);
+        $name = XDebugUtil::filenameFromIteration($iteration, '.cachegrind');
 
         $phpConfig = [
             'xdebug.profiler_enable' => 1,
             'xdebug.profiler_output_dir' => PhpBench::normalizePath($outputDir),
             'xdebug.profiler_output_name' => $name,
         ];
-
-        if (!extension_loaded('xdebug')) {
-            $phpConfig['zend_extension'] = 'xdebug.so';
-        }
 
         $payload->setPhpConfig($phpConfig);
         $result = $payload->launch();
@@ -67,7 +63,7 @@ class XDebugExecutor extends BaseExecutor
         return [
             'callback' => function () {
             },
-            'output_dir' => 'profile',
+            'output_dir' => 'xdebug',
         ];
     }
 

@@ -62,12 +62,12 @@ class XDebugUtilTest extends \PHPUnit_Framework_TestCase
             [
                 'Benchmark',
                 'Subject',
-                'Benchmark::Subject.P7.cachegrind',
+                'Benchmark::Subject.P7',
             ],
             [
                 'Benchmark\\Foo',
                 'Subject\\//asd',
-                'Benchmark_Foo::Subject___asd.P7.cachegrind',
+                'Benchmark_Foo::Subject___asd.P7',
             ],
         ];
     }
