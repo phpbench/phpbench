@@ -62,7 +62,7 @@ class TableGeneratorTest extends GeneratorTestCase
         $this->assertXPathEval($report, '{"param1":"value1"}', 'string(//cell[@name="params"])');
         $this->assertXPathEval($report, 5, 'string(//cell[@name="revs"])');
         $this->assertXPathEval($report, 2, 'string(//cell[@name="its"])');
-        $this->assertXPathEval($report, '200', 'string(//cell[@name="mem"])');
+        $this->assertXPathEval($report, '200', 'string(//cell[@name="mem_peak"])');
         $this->assertXPathEval($report, '2.000', 'string(//cell[@name="best"])');
         $this->assertXPathEval($report, '3.000', 'string(//cell[@name="mean"])');
         $this->assertXPathEval($report, '3.200', 'string(//row[2]//cell[@name="mean"])');
@@ -93,18 +93,16 @@ class TableGeneratorTest extends GeneratorTestCase
 
         $report = $this->generate($collection, [
             'iterations' => true,
-            'cols' => ['time', 'z-value', 'rej', 'iter', 'revs'],
+            'cols' => ['time_rev', 'comp_z_value', 'iter', 'revs'],
         ]);
         $this->assertXPathCount($report, 1, '//table');
         $this->assertXPathCount($report, 8, '//row');
-        $this->assertXPathEval($report, 2, 'number(//row[1]//cell[@name="time"])');
-        $this->assertXPathEval($report, -1, 'number(//row[1]//cell[@name="z-value"])');
-        $this->assertXPathEval($report, 0, 'number(//row[1]//cell[@name="rej"])');
+        $this->assertXPathEval($report, 2, 'number(//row[1]//cell[@name="time_rev"])');
+        $this->assertXPathEval($report, -1, 'number(//row[1]//cell[@name="comp_z_value"])');
         $this->assertXPathEval($report, 0, 'number(//row[1]//cell[@name="iter"])');
 
-        $this->assertXPathEval($report, 4, 'number(//row[2]//cell[@name="time"])');
-        $this->assertXPathEval($report, 1, 'number(//row[2]//cell[@name="z-value"])');
-        $this->assertXPathEval($report, 0, 'number(//row[2]//cell[@name="rej"])');
+        $this->assertXPathEval($report, 4, 'number(//row[2]//cell[@name="time_rev"])');
+        $this->assertXPathEval($report, 1, 'number(//row[2]//cell[@name="comp_z_value"])');
         $this->assertXPathEval($report, 1, 'number(//row[2]//cell[@name="iter"])');
     }
 
@@ -256,16 +254,16 @@ class TableGeneratorTest extends GeneratorTestCase
                 [
                     11 => '//row[1]/cell',
                     1 => '//table',
-                    4 => '//cell[@name="git_branch:foobar:mem"]',
+                    4 => '//cell[@name="git_branch:foobar:mem_peak"]',
                     4 => '//cell[@name="git_branch:foobar:mean"]',
-                    4 => '//cell[@name="git_branch:barfoo:mem"]',
+                    4 => '//cell[@name="git_branch:barfoo:mem_peak"]',
                     4 => '//cell[@name="git_branch:barfoo:mean"]',
                 ],
             ],
             [
                 [
                     'compare' => 'git_branch',
-                    'compare_fields' => ['mem'],
+                    'compare_fields' => ['mem_peak'],
                     'break' => ['benchmark'],
                     'cols' => ['subject'],
                 ],
@@ -273,8 +271,8 @@ class TableGeneratorTest extends GeneratorTestCase
                     6 => '//row[1]/cell',
                     2 => '//table',
                     0 => '//cell[@name="mem"]',
-                    4 => '//cell[@name="git_branch:foobar:mem"]',
-                    4 => '//cell[@name="git_branch:barfoo:mem"]',
+                    4 => '//cell[@name="git_branch:foobar:mem_peak"]',
+                    4 => '//cell[@name="git_branch:barfoo:mem_peak"]',
                 ],
             ],
         ];

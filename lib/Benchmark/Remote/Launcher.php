@@ -28,7 +28,7 @@ class Launcher
     /**
      * @var PayloadFactory
      */
-    private $factory;
+    private $payloadFactory;
 
     /**
      * @var string

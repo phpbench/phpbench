@@ -13,7 +13,8 @@ namespace PhpBench\Benchmark\Executor;
 
 use PhpBench\Benchmark\Remote\Payload;
 use PhpBench\Model\Iteration;
-use PhpBench\Model\IterationResult;
+use PhpBench\Model\Result\MemoryResult;
+use PhpBench\Model\Result\TimeResult;
 use PhpBench\Registry\Config;
 
 /**
@@ -42,7 +43,8 @@ class MicrotimeExecutor extends BaseExecutor
             ));
         }
 
-        return new IterationResult($result['time'], $result['memory']);
+        $iteration->addResult(new TimeResult($result['time']));
+        $iteration->addResult(MemoryResult::fromArray($result['mem']));
     }
 
     /**

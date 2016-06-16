@@ -15,6 +15,8 @@ use Functional as F;
 use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Dom\Document;
 use PhpBench\Math\Statistics;
+use PhpBench\Model\Result\MemoryResult;
+use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Report\Generator\Table\Row;
@@ -37,11 +39,15 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
         'mean' => ['timeunit'],
         'mode' => ['timeunit'],
         'stdev' => ['timeunit'],
-        'time' => ['timeunit'],
+        'time_rev' => ['timeunit'],
+        'time_net' => ['timeunit'],
         'rstdev' => ['percentage'],
-        'mem' => ['mem'],
+        'mem_peak' => ['mem'],
+        'mem_real' => ['mem'],
+        'mem_final' => ['mem'],
         'diff' => ['diff'],
-        'z-value' => ['z-value'],
+        'comp_deviation' => ['diff'],
+        'comp_z_value' => ['z-value'],
     ];
 
     /**
@@ -60,7 +66,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
         return [
             'title' => null,
             'description' => null,
-            'cols' => ['benchmark', 'subject', 'groups', 'params', 'revs', 'its', 'mem', 'best', 'mean', 'mode', 'worst', 'stdev', 'rstdev', 'diff'],
+            'cols' => ['benchmark', 'subject', 'groups', 'params', 'revs', 'its', 'mem_peak', 'best', 'mean', 'mode', 'worst', 'stdev', 'rstdev', 'diff'],
             'break' => ['suite', 'date', 'stime'],
             'compare' => null,
             'compare_fields' => ['mean'],
@@ -385,7 +391,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
 
         $table = [];
         $columnNames = [];
-        foreach ($suiteCollection->getSuites() as $suiteIndex => $suite) {
+        foreach ($suiteCollection->getSuites() as $suite) {
             $env = $suite->getEnvInformations();
 
             foreach ($suite->getBenchmarks() as $benchmark) {
@@ -402,7 +408,9 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
                             'params' => json_encode($variant->getParameterSet()->getArrayCopy(), $paramJsonFlags),
                             'revs' => $variant->getRevolutions(),
                             'its' => count($variant->getIterations()),
-                            'mem' => Statistics::mean($variant->getMemories()),
+                            'mem_real' => Statistics::mean($variant->getMetricValues(MemoryResult::class, 'real')),
+                            'mem_final' => Statistics::mean($variant->getMetricValues(MemoryResult::class, 'final')),
+                            'mem_peak' => Statistics::mean($variant->getMetricValues(MemoryResult::class, 'peak')),
                         ]);
 
                         // the formatter params are passed to the Formatter and
@@ -460,9 +468,20 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
                         foreach ($variant->getIterations() as $index => $iteration) {
                             $row = clone $row;
                             $row['iter'] = $index;
-                            $row['rej'] = $iteration->getRejectionCount();
-                            $row['time'] = $iteration->getRevTime();
-                            $row['z-value'] = $iteration->getZValue();
+                            foreach ($iteration->getResults() as $result) {
+                                $metrics = $result->getMetrics();
+
+                                // otherwise prefix the metric key with the result key.
+                                foreach ($metrics as $key => $value) {
+
+                                    // TODO: this is a hack to add the rev time to the report.
+                                    if ($result instanceof TimeResult && $key === 'net') {
+                                        $row[$result->getKey() . '_rev'] = $result->getRevTime($iteration->getVariant()->getRevolutions());
+                                    }
+
+                                    $row[$result->getKey() . '_' . $key] = $value;
+                                }
+                            }
                             $table[] = $row;
                         }
                     }

@@ -15,6 +15,7 @@ use PhpBench\Math\Distribution;
 use PhpBench\Math\Statistics;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Iteration;
+use PhpBench\Model\Result\ComputedResult;
 use PhpBench\Model\Suite;
 use PhpBench\Model\Variant;
 use PhpBench\Util\TimeUnit;
@@ -167,7 +168,7 @@ class HistogramLogger extends AnsiLogger
         $bins = 16;
 
         if ($variant->isComputed()) {
-            $times = $variant->getZValues();
+            $times = $variant->getMetricValues(ComputedResult::class, 'z_value');
             $stats = $variant->getStats();
             $freqs = Statistics::histogram($times, $bins, -$sigma, $sigma);
         } else {

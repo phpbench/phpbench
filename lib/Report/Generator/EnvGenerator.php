@@ -119,14 +119,6 @@ class EnvGenerator implements GeneratorInterface, OutputAwareInterface
         return $document;
     }
 
-    private function getClassShortName($fullName)
-    {
-        $parts = explode('\\', $fullName);
-        end($parts);
-
-        return current($parts);
-    }
-
     private function resolveCompareColumnName(Row $row, $name, $index = 1)
     {
         if (!isset($row[$name])) {

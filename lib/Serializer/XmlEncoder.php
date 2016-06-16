@@ -119,23 +119,47 @@ class XmlEncoder
 
         $stats = $variant->getStats();
         $stats = iterator_to_array($stats);
+        $resultClasses = [];
 
         // ensure same order (for testing)
         ksort($stats);
 
         foreach ($variant as $iteration) {
             $iterationEl = $variantEl->appendElement('iteration');
-            $iterationEl->setAttribute('net-time', $iteration->getTime());
-            $iterationEl->setAttribute('rev-time', $iteration->getRevTime());
-            $iterationEl->setAttribute('z-value', $iteration->getZValue());
-            $iterationEl->setAttribute('memory', $iteration->getMemory());
-            $iterationEl->setAttribute('deviation', $iteration->getDeviation());
-            $iterationEl->setAttribute('rejection-count', $iteration->getRejectionCount());
+
+            foreach ($iteration->getResults() as $result) {
+
+                // we need to store the class FQNs of the results for deserialization later.
+                if (!isset($resultClasses[$result->getKey()])) {
+                    $resultClasses[$result->getKey()] = get_class($result);
+                }
+
+                $prefix = $result->getKey();
+                $metrics = $result->getMetrics();
+
+                foreach ($metrics as $key => $value) {
+                    $iterationEl->setAttribute(sprintf(
+                        '%s-%s',
+                        $prefix,
+                        str_replace('_', '-', $key)
+                    ), $value);
+                }
+            }
         }
 
         $statsEl = $variantEl->appendElement('stats');
         foreach ($stats as $statName => $statValue) {
             $statsEl->setAttribute($statName, $statValue);
+        }
+
+        foreach ($resultClasses as $resultKey => $classFqn) {
+            if ($subjectEl->queryOne('ancestor::suite/result[@key="' . $resultKey . '"]')) {
+                continue;
+            }
+
+            $resultEl = $subjectEl->queryOne('ancestor::suite')->appendElement('result');
+            $resultEl->setAttribute('key', $resultKey);
+            $resultEl->setAttribute('class', $classFqn);
         }
     }
 

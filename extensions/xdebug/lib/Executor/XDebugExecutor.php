@@ -15,7 +15,9 @@ use PhpBench\Benchmark\Executor\BaseExecutor;
 use PhpBench\Benchmark\Remote\Payload;
 use PhpBench\Extensions\XDebug\XDebugUtil;
 use PhpBench\Model\Iteration;
-use PhpBench\Model\IterationResult;
+use PhpBench\Model\Result\MemoryResult;
+use PhpBench\Model\Result\TimeResult;
+use PhpBench\Model\ResultCollection;
 use PhpBench\PhpBench;
 use PhpBench\Registry\Config;
 
@@ -50,7 +52,10 @@ class XDebugExecutor extends BaseExecutor
             ));
         }
 
-        $result = new IterationResult($result['time'], $result['memory']);
+        $result = new ResultCollection([
+            new TimeResult($result['time']),
+            new MemoryResult($result['memory']),
+        ]);
         $callback($iteration, $result);
 
         return $result;

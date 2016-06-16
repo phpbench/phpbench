@@ -14,7 +14,8 @@ namespace PhpBench\Benchmark\Executor;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\Payload;
 use PhpBench\Model\Iteration;
-use PhpBench\Model\IterationResult;
+use PhpBench\Model\Result\MemoryResult;
+use PhpBench\Model\Result\TimeResult;
 use PhpBench\Registry\Config;
 
 /**
@@ -30,12 +31,17 @@ class DebugExecutor extends BaseExecutor
      */
     public function execute(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config)
     {
+        // add 100 bytes of memory.
         $memory = 100;
-        $collectionHash = spl_object_hash($iteration->getVariant());
+        $iteration->addResult(new MemoryResult($memory, $memory, $memory));
 
         if (!$config['times']) {
-            return new IterationResult(0, $memory);
+            $iteration->addResult(new TimeResult(0));
+
+            return;
         }
+
+        $collectionHash = spl_object_hash($iteration->getVariant());
 
         if (isset($this->collectionTimes[$collectionHash])) {
             $time = $this->collectionTimes[$collectionHash];
@@ -51,7 +57,7 @@ class DebugExecutor extends BaseExecutor
             $time = $time + $spreadDiff;
         }
 
-        return new IterationResult($time, $memory);
+        $iteration->addResult(new TimeResult($time));
     }
 
     /**

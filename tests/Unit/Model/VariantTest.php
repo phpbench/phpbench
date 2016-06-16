@@ -12,10 +12,13 @@
 namespace PhpBench\Tests\Unit\Benchmark;
 
 use PhpBench\Model\Iteration;
-use PhpBench\Model\IterationResult;
 use PhpBench\Model\ParameterSet;
+use PhpBench\Model\Result\ComputedResult;
+use PhpBench\Model\Result\MemoryResult;
+use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Variant;
+use PhpBench\Tests\Util\TestUtil;
 use Prophecy\Argument;
 
 class VariantTest extends \PHPUnit_Framework_TestCase
@@ -52,16 +55,16 @@ class VariantTest extends \PHPUnit_Framework_TestCase
     public function testCreateIteration()
     {
         $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 10, 20);
-        $iteration = $variant->createIteration(10, 20);
+        $iteration = $variant->createIteration(TestUtil::createResults(10, 20));
         $this->assertInstanceOf('PhpBench\Model\Iteration', $iteration);
-        $this->assertEquals(10, $iteration->getTime());
-        $this->assertEquals(20, $iteration->getMemory());
+        $this->assertEquals(10, $iteration->getResult(TimeResult::class)->getNet());
+        $this->assertEquals(20, $iteration->getResult(MemoryResult::class)->getPeak());
         $this->assertEquals(0, $iteration->getIndex());
 
-        $iteration = $variant->createIteration(10, 20);
+        $iteration = $variant->createIteration(TestUtil::createResults(10, 20));
         $this->assertEquals(1, $iteration->getIndex());
 
-        $iteration = $variant->createIteration(10, 20);
+        $iteration = $variant->createIteration(TestUtil::createResults(10, 20));
         $this->assertEquals(2, $iteration->getIndex());
     }
 
@@ -71,27 +74,26 @@ class VariantTest extends \PHPUnit_Framework_TestCase
     public function testComputeStats()
     {
         $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 4, 0);
-        $variant->spawnIterations(4);
         $this->subject->getRetryThreshold()->willReturn(10);
 
-        $variant[0]->setResult(new IterationResult(4, null));
-        $variant[1]->setResult(new IterationResult(8, null));
-        $variant[2]->setResult(new IterationResult(4, null));
-        $variant[3]->setResult(new IterationResult(16, null));
+        $variant->createIteration(TestUtil::createResults(4));
+        $variant->createIteration(TestUtil::createResults(8));
+        $variant->createIteration(TestUtil::createResults(4));
+        $variant->createIteration(TestUtil::createResults(16));
 
         $variant->computeStats();
 
-        $this->assertEquals(-50, $variant[0]->getDeviation());
-        $this->assertEquals(-0.81649658092772615, $variant[0]->getZValue());
+        $this->assertEquals(-50, $variant[0]->getResult(ComputedResult::class)->getDeviation());
+        $this->assertEquals(-0.81649658092772615, $variant[0]->getResult(ComputedResult::class)->getZValue());
 
-        $this->assertEquals(0, $variant[1]->getDeviation());
-        $this->assertEquals(0, $variant[1]->getZValue());
+        $this->assertEquals(0, $variant[1]->getResult(ComputedResult::class)->getDeviation());
+        $this->assertEquals(0, $variant[1]->getResult(ComputedResult::class)->getZValue());
 
-        $this->assertEquals(-50, $variant[2]->getDeviation());
-        $this->assertEquals(-0.81649658092772615, $variant[2]->getZValue());
+        $this->assertEquals(-50, $variant[2]->getResult(ComputedResult::class)->getDeviation());
+        $this->assertEquals(-0.81649658092772615, $variant[2]->getResult(ComputedResult::class)->getZValue());
 
-        $this->assertEquals(100, $variant[3]->getDeviation());
-        $this->assertEquals(1.6329931618554523, $variant[3]->getZValue());
+        $this->assertEquals(100, $variant[3]->getResult(ComputedResult::class)->getDeviation());
+        $this->assertEquals(1.6329931618554523, $variant[3]->getResult(ComputedResult::class)->getZValue());
     }
 
     /**
@@ -109,13 +111,12 @@ class VariantTest extends \PHPUnit_Framework_TestCase
     public function testReject()
     {
         $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 4, 20);
-        $variant->spawnIterations(4);
         $this->subject->getRetryThreshold()->willReturn(10);
 
-        $variant[0]->setResult(new IterationResult(4, null));
-        $variant[1]->setResult(new IterationResult(8, null));
-        $variant[2]->setResult(new IterationResult(4, null));
-        $variant[3]->setResult(new IterationResult(16, null));
+        $variant->createIteration(TestUtil::createResults(4));
+        $variant->createIteration(TestUtil::createResults(8));
+        $variant->createIteration(TestUtil::createResults(4));
+        $variant->createIteration(TestUtil::createResults(16));
         $variant->computeStats();
 
         $this->assertCount(3, $variant->getRejects());
@@ -128,8 +129,8 @@ class VariantTest extends \PHPUnit_Framework_TestCase
     {
         $iteration = $this->prophesize(Iteration::class);
         $iteration->getRevolutions()->willReturn(1);
-        $iteration->getTime()->willReturn($time);
-        $iteration->getMemory()->willReturn(null);
+        $iteration->getResult(TimeResult::class)->willReturn(new TimeResult($time));
+        $iteration->getResult(MemoryResult::class)->willReturn(new MemoryResult($time));
 
         if (null !== $expectedDeviation) {
             $iteration->setDeviation($expectedDeviation)->shouldBeCalled();
@@ -190,9 +191,11 @@ class VariantTest extends \PHPUnit_Framework_TestCase
     public function testGetStatsWithExceptionException()
     {
         $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 4, 20);
-        $variant->spawnIterations(4);
         $this->subject->getRetryThreshold()->willReturn(10);
-        $variant[0]->setResult(new IterationResult(4, null));
+        $variant->createIteration(TestUtil::createResults(4, 10));
+        $variant->createIteration(TestUtil::createResults(4, 10));
+        $variant->createIteration(TestUtil::createResults(4, 10));
+        $variant->createIteration(TestUtil::createResults(4, 10));
         $variant->computeStats();
         $variant->setException(new \Exception('Test'));
         $variant->getStats();
@@ -201,18 +204,17 @@ class VariantTest extends \PHPUnit_Framework_TestCase
     /**
      * It should return times and memories.
      */
-    public function testTimesAndMemories()
+    public function testGetMetricValues()
     {
         $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 1, 0);
-        $variant->spawnIterations(2);
 
-        $variant[0]->setResult(new IterationResult(4, 100));
-        $variant[1]->setResult(new IterationResult(8, 200));
+        $variant->createIteration(TestUtil::createResults(4, 100));
+        $variant->createIteration(TestUtil::createResults(8, 200));
 
-        $times = $variant->getTimes();
-        $memories = $variant->getMemories();
+        $times = $variant->getMetricValuesByRev(TimeResult::class, 'net');
+        $memories = $variant->getMetricValues(MemoryResult::class, 'peak');
 
-        $this->assertEquals([4, 8], $variant->getTimes());
-        $this->assertEquals([100, 200], $variant->getMemories());
+        $this->assertEquals([4, 8], $times);
+        $this->assertEquals([100, 200], $memories);
     }
 }

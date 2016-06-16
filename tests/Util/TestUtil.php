@@ -13,6 +13,9 @@ namespace PhpBench\Tests\Util;
 
 use PhpBench\Environment\Information;
 use PhpBench\Model\ParameterSet;
+use PhpBench\Model\Result\MemoryResult;
+use PhpBench\Model\Result\RejectionCountResult;
+use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -120,7 +123,7 @@ class TestUtil
 
                 $time = $baseTime;
                 foreach ($options['iterations'] as $time) {
-                    $variant->createIteration($baseTime  + $time, 200, 0);
+                    $variant->createIteration(self::createResults($baseTime  + $time, 200, 0));
                 }
 
                 $variant->computeStats();
@@ -145,5 +148,14 @@ class TestUtil
         }
 
         return new SuiteCollection($suites);
+    }
+
+    public static function createResults($time, $memory = 0)
+    {
+        return [
+            new TimeResult($time),
+            new MemoryResult($memory, $memory, $memory),
+            new RejectionCountResult(0),
+        ];
     }
 }

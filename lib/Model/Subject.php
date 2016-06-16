@@ -39,16 +39,6 @@ class Subject
     /**
      * @var int
      */
-    private $revs = 1;
-
-    /**
-     * @var int
-     */
-    private $warmup = 0;
-
-    /**
-     * @var int
-     */
     private $sleep = 0;
 
     /**

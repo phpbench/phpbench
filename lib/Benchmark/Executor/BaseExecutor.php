@@ -17,7 +17,6 @@ use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Benchmark\Remote\Payload;
 use PhpBench\Model\Iteration;
-use PhpBench\Model\IterationResult;
 use PhpBench\Registry\Config;
 
 /**
@@ -70,9 +69,9 @@ abstract class BaseExecutor implements ExecutorInterface
     }
 
     /**
-     * Launch the payload. This method has to return the IterationResult.
+     * Launch the payload. This method has to return the ResultCollection.
      *
-     * @return IterationResult
+     * @return ResultCollection
      */
     abstract protected function launch(Payload $payload, Iteration $iteration, Config $config);
 

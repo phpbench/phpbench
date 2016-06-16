@@ -11,19 +11,15 @@
 
 namespace PhpBench\Model;
 
+use PhpBench\Model\Result\ComputedResult;
+
 /**
  * Represents the data required to execute a single iteration.
  */
-class Iteration
+class Iteration extends ResultCollection
 {
     private $variant;
     private $index;
-
-    private $time;
-    private $memory;
-    private $deviation;
-    private $rejectionCount = 0;
-    private $zValue;
 
     /**
      * @param int $index
@@ -32,19 +28,11 @@ class Iteration
     public function __construct(
         $index,
         Variant $variant,
-        $time = null,
-        $memory = null,
-        $rejectionCount = 0,
-        $deviation = null,
-        $zValue = null
+        array $results = []
     ) {
         $this->index = $index;
         $this->variant = $variant;
-        $this->time = $time;
-        $this->memory = $memory;
-        $this->rejectionCount = $rejectionCount;
-        $this->deviation = $deviation;
-        $this->zValue = $zValue;
+        parent::__construct($results);
     }
 
     /**
@@ -69,106 +57,12 @@ class Iteration
     }
 
     /**
-     * Associate the result of the iteration with the iteration.
-     *
-     * @param int
-     */
-    public function setResult(IterationResult $result)
-    {
-        $this->time = $result->getTime();
-        $this->memory = $result->getMemory();
-    }
-
-    /**
-     * Return the deviation from the mean for this iteration.
-     *
-     * @return float
-     */
-    public function getDeviation()
-    {
-        return $this->deviation;
-    }
-
-    /**
-     * Set the computed deviation of this iteration from other iterations in the same
-     * set.
-     *
-     * NOTE: Should be called by the IterationCollection
-     *
-     * @param int
-     */
-    public function setDeviation($deviation)
-    {
-        $this->deviation = $deviation;
-    }
-
-    /**
-     * Get the computed ZValue for this iteration.
-     *
-     * @return float
-     */
-    public function getZValue()
-    {
-        return $this->zValue;
-    }
-
-    /**
-     * Set the computed Z-Value for this iteration.
-     *
-     * @param float $zValue
-     */
-    public function setZValue($zValue)
-    {
-        $this->zValue = $zValue;
-    }
-
-    /**
-     * Increase the reject count.
-     */
-    public function incrementRejectionCount()
-    {
-        $this->rejectionCount++;
-    }
-
-    /**
      * Return the number of times that this iteration was rejected.
      *
      * @return int
      */
     public function getRejectionCount()
     {
-        return $this->rejectionCount;
-    }
-
-    /**
-     * Return the time taken (in microseconds) to perform this iteration (or
-     * NULL if not yet performed.
-     *
-     * @return int
-     */
-    public function getTime()
-    {
-        return $this->time;
-    }
-
-    /**
-     * Return the memory (in bytes) taken to perform this iteration (or
-     * NULL if not yet performed.
-     *
-     * @return int
-     */
-    public function getMemory()
-    {
-        return $this->memory;
-    }
-
-    /**
-     * Return the revolution time.
-     *
-     * @return float
-     */
-    public function getRevTime()
-    {
-        return $this->time / $this->getVariant()->getRevolutions();
+        return $this->results->getMetricOrDefault(ComputedResult::class, 'reject_count', 0);
     }
 }
