@@ -52,11 +52,10 @@ class XDebugExecutor extends BaseExecutor
             ));
         }
 
-        $result = new ResultCollection([
-            new TimeResult($result['time']),
-            new MemoryResult($result['memory']),
-        ]);
+
         $callback($iteration, $result);
+        $iteration->addResult(new TimeResult($result['time']));
+        $iteration->addResult(MemoryResult::fromArray($result['mem']));
 
         return $result;
     }
