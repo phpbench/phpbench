@@ -43,8 +43,8 @@ class MicrotimeExecutor extends BaseExecutor
             ));
         }
 
-        $iteration->addResult(new TimeResult($result['time']));
-        $iteration->addResult(MemoryResult::fromArray($result['mem']));
+        $iteration->setResult(new TimeResult($result['time']));
+        $iteration->setResult(MemoryResult::fromArray($result['mem']));
     }
 
     /**

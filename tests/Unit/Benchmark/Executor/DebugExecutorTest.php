@@ -41,15 +41,15 @@ class DebugExecutorTest extends \PHPUnit_Framework_TestCase
     {
         $actualTimes = [];
         for ($i = 0; $i < $nbCollections; $i++) {
-            $collection = $this->prophesize(Variant::class);
+            $variant = $this->prophesize(Variant::class);
             for ($ii = 0; $ii < $nbIterations; $ii++) {
                 $iteration = $this->prophesize(Iteration::class);
-                $iteration->getVariant()->willReturn($collection->reveal());
+                $iteration->getVariant()->willReturn($variant->reveal());
                 $iteration->getIndex()->willReturn($ii);
-                $iteration->addResult(Argument::type(TimeResult::class))->will(function ($args) use (&$actualTimes) {
+                $iteration->setResult(Argument::type(TimeResult::class))->will(function ($args) use (&$actualTimes) {
                     $actualTimes[] = $args[0]->getNet();
                 });
-                $iteration->addResult(Argument::type(MemoryResult::class))->shouldBeCalled();
+                $iteration->setResult(Argument::type(MemoryResult::class))->shouldBeCalled();
 
                 $this->executor->execute(
                     $this->subjectMetadata->reveal(),
@@ -87,28 +87,28 @@ class DebugExecutorTest extends \PHPUnit_Framework_TestCase
                 [],
                 2,
                 4,
-                [10, 10, 10, 10, 20, 20, 20, 20],
+                [10, 20, 30, 40, 10, 20, 30, 40],
             ],
             [
                 [1, 2],
                 [],
                 4,
                 2,
-                [1, 1, 2, 2, 1, 1, 2, 2],
+                [1, 2, 1, 2, 1, 2, 1, 2],
             ],
             [
                 [1, 2],
                 [0, 1],
                 4,
                 2,
-                [1, 2, 2, 3, 1, 2, 2, 3],
+                [1, 3, 1, 3, 1, 3, 1, 3],
             ],
             [
                 [1, 2],
                 [0, 1],
                 4,
                 2,
-                [1, 2, 2, 3, 1, 2, 2, 3],
+                [1, 3, 1, 3, 1, 3, 1, 3],
             ],
         ];
     }

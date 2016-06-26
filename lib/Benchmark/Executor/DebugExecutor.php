@@ -24,7 +24,8 @@ use PhpBench\Registry\Config;
  */
 class DebugExecutor extends BaseExecutor
 {
-    private $collectionTimes = [];
+    private $variantTimes = [];
+    private $index = 0;
 
     /**
      * {@inheritdoc}
@@ -33,23 +34,26 @@ class DebugExecutor extends BaseExecutor
     {
         // add 100 bytes of memory.
         $memory = 100;
-        $iteration->addResult(new MemoryResult($memory, $memory, $memory));
+        $iteration->setResult(new MemoryResult($memory, $memory, $memory));
 
         if (!$config['times']) {
-            $iteration->addResult(new TimeResult(0));
+            $iteration->setResult(new TimeResult(0));
 
             return;
         }
 
-        $collectionHash = spl_object_hash($iteration->getVariant());
+        $variantHash = spl_object_hash($iteration->getVariant());
 
-        if (isset($this->collectionTimes[$collectionHash])) {
-            $time = $this->collectionTimes[$collectionHash];
-        } else {
-            $index = count($this->collectionTimes) % count($config['times']);
-            $time = $config['times'][$index];
-            $this->collectionTimes[$collectionHash] = $time;
+        if (!isset($this->variantTimes[$variantHash])) {
+            $this->variantTimes[$variantHash] = $config['times'];
         }
+
+        if (!isset($this->variantTimes[$variantHash][$this->index])) {
+            $this->index = 0;
+        }
+
+        $time = $this->variantTimes[$variantHash][$this->index];
+        $this->index++;
 
         if ($config['spread']) {
             $index = $iteration->getIndex() % count($config['spread']);
@@ -57,7 +61,7 @@ class DebugExecutor extends BaseExecutor
             $time = $time + $spreadDiff;
         }
 
-        $iteration->addResult(new TimeResult($time));
+        $iteration->setResult(new TimeResult($time));
     }
 
     /**

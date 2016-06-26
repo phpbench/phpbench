@@ -222,7 +222,7 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
                 }
             }
 
-            $iteration->replaceResult(new ComputedResult($zValue, $deviation));
+            $iteration->setResult(new ComputedResult($zValue, $deviation));
         }
 
         $this->computed = true;

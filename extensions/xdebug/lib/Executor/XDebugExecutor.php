@@ -17,7 +17,6 @@ use PhpBench\Extensions\XDebug\XDebugUtil;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;
-use PhpBench\Model\ResultCollection;
 use PhpBench\PhpBench;
 use PhpBench\Registry\Config;
 
@@ -54,8 +53,8 @@ class XDebugExecutor extends BaseExecutor
 
 
         $callback($iteration, $result);
-        $iteration->addResult(new TimeResult($result['time']));
-        $iteration->addResult(MemoryResult::fromArray($result['mem']));
+        $iteration->setResult(new TimeResult($result['time']));
+        $iteration->setResult(MemoryResult::fromArray($result['mem']));
 
         return $result;
     }

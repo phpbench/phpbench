@@ -115,7 +115,7 @@ class HistogramLoggerTest extends \PHPUnit_Framework_TestCase
     {
         foreach ($this->variant as $iteration) {
             foreach (TestUtil::createResults(10, 10) as $result) {
-                $iteration->addResult($result);
+                $iteration->setResult($result);
             }
         }
         $this->variant->computeStats();

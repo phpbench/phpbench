@@ -100,8 +100,8 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
         $this->variant->getRevolutions()->willReturn(10);
         $this->variant->getWarmup()->willReturn(1);
 
-        $this->iteration->addResult(Argument::type(TimeResult::class))->shouldBeCalled();
-        $this->iteration->addResult(Argument::type(MemoryResult::class))->shouldBeCalled();
+        $this->iteration->setResult(Argument::type(TimeResult::class))->shouldBeCalled();
+        $this->iteration->setResult(Argument::type(MemoryResult::class))->shouldBeCalled();
 
         $this->executor->execute(
             $this->metadata->reveal(),
@@ -149,8 +149,8 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
         $this->variant->getRevolutions()->willReturn(1);
         $this->variant->getWarmup()->willReturn(0);
 
-        $this->iteration->addResult(Argument::type(TimeResult::class))->shouldBeCalled();
-        $this->iteration->addResult(Argument::type(MemoryResult::class))->shouldBeCalled();
+        $this->iteration->setResult(Argument::type(TimeResult::class))->shouldBeCalled();
+        $this->iteration->setResult(Argument::type(MemoryResult::class))->shouldBeCalled();
 
         $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', []));
 
@@ -169,8 +169,8 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
         $this->variant->getRevolutions()->willReturn(1);
         $this->variant->getWarmup()->willReturn(0);
 
-        $this->iteration->addResult(Argument::type(TimeResult::class))->shouldBeCalled();
-        $this->iteration->addResult(Argument::type(MemoryResult::class))->shouldBeCalled();
+        $this->iteration->setResult(Argument::type(TimeResult::class))->shouldBeCalled();
+        $this->iteration->setResult(Argument::type(MemoryResult::class))->shouldBeCalled();
 
         $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', []));
 
@@ -193,8 +193,8 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
         $this->variant->getRevolutions()->willReturn(1);
         $this->variant->getWarmup()->willReturn(0);
 
-        $this->iteration->addResult(Argument::type(TimeResult::class))->shouldBeCalled();
-        $this->iteration->addResult(Argument::type(MemoryResult::class))->shouldBeCalled();
+        $this->iteration->setResult(Argument::type(TimeResult::class))->shouldBeCalled();
+        $this->iteration->setResult(Argument::type(MemoryResult::class))->shouldBeCalled();
 
         $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', []));
         $this->assertTrue(file_exists($this->paramFile));
@@ -222,8 +222,8 @@ class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
         $this->variant->getRevolutions()->willReturn(1);
         $this->variant->getWarmup()->willReturn(0);
 
-        $this->iteration->addResult(Argument::type(TimeResult::class))->shouldBeCalled();
-        $this->iteration->addResult(Argument::type(MemoryResult::class))->shouldBeCalled();
+        $this->iteration->setResult(Argument::type(TimeResult::class))->shouldBeCalled();
+        $this->iteration->setResult(Argument::type(MemoryResult::class))->shouldBeCalled();
 
         $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', []));
 

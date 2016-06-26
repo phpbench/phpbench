@@ -46,23 +46,11 @@ class ResultCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddResult()
     {
-        $this->collection->addResult($this->timeResult);
+        $this->collection->setResult($this->timeResult);
         $this->assertEquals(
             $this->timeResult,
             $this->collection->getResult(TimeResult::class)
         );
-    }
-
-    /**
-     * It should throw an exception if two results of the same class are added.
-     *
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Result of class "PhpBench\Model\Result\TimeResult" has already been set.
-     */
-    public function testAddTwoResultsSameClass()
-    {
-        $this->collection->addResult($this->timeResult);
-        $this->collection->addResult($this->timeResult);
     }
 
     /**
@@ -81,7 +69,7 @@ class ResultCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetNamedMetric()
     {
-        $this->collection->addResult($this->timeResult);
+        $this->collection->setResult($this->timeResult);
         $this->assertEquals(1, $this->collection->getMetric(TimeResult::class, 'net'));
     }
 
@@ -93,7 +81,7 @@ class ResultCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testNamedMetricDoesNotExist()
     {
-        $this->collection->addResult($this->timeResult);
+        $this->collection->setResult($this->timeResult);
         $this->assertEquals(1, $this->collection->getMetric(TimeResult::class, 'foobar'));
     }
 
@@ -103,7 +91,7 @@ class ResultCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMetricOrDefault()
     {
-        $this->collection->addResult($this->timeResult);
+        $this->collection->setResult($this->timeResult);
         $this->assertEquals(100, $this->collection->getMetricOrDefault('UnknownClass', 'barbar', 100));
     }
 }

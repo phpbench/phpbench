@@ -102,7 +102,7 @@ class Persister
                             $iterationDatas[] = [
                                 'time' => $iteration->getMetric(TimeResult::class, 'net', null),
                                 'memory' => $iteration->getMetricOrDefault(MemoryResult::class, 'peak', -1),
-                                'reject_count' => $iteration->getMetricOrDefault(RejectionCountResult::class, 'rejection_count', 0),
+                                'reject_count' => $iteration->getMetricOrDefault(RejectionCountResult::class, 'count', 0),
                                 'variant_id' => $variantId,
                             ];
                         }

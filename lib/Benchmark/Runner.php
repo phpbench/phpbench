@@ -219,7 +219,7 @@ class Runner
             }
             $variant->computeStats();
             $this->logger->variantEnd($variant);
-            $reject->replaceResult(new RejectionCountResult($rejectCount[spl_object_hash($reject)]));
+            $reject->setResult(new RejectionCountResult($rejectCount[spl_object_hash($reject)]));
         }
     }
 
