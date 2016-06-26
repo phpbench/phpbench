@@ -355,11 +355,17 @@ class RunTest extends SystemTestCase
      */
     public function testRetryThreshold()
     {
+        // use the debug executor, providing 3 groups of 4 iterations. the
+        // first two are out of bounds the third is constant.
         $process = $this->phpbench(
-            'run benchmarks/set4/NothingBench.php --retry-threshold=50'
+            'run benchmarks/set4/NothingBench.php ' .
+            '--executor=\'{"executor": "debug", "times": [10, 100, 10, 100, 50, 500, 50, 500, 1, 1, 1, 1]}\' '.
+            '--retry-threshold=1 --iterations=2 '.
+            '--dump'
         );
-
         $this->assertExitCode(0, $process);
+        $output = $process->getOutput();
+        $this->assertContains(' reject-count="4"', $output);
     }
 
     /**

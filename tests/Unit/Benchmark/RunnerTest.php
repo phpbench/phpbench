@@ -411,11 +411,11 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    private function loadIterationResultCallback()
+    private function loadIterationResultCallback(array $times = ['10'])
     {
         return function ($args) {
-            $args[1]->addResult(new TimeResult(10));
-            $args[1]->addResult(new MemoryResult(10, 10, 10));
+            $args[1]->setResult(new TimeResult(10));
+            $args[1]->setResult(new MemoryResult(10, 10, 10));
         };
     }
 }

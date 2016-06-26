@@ -24,7 +24,7 @@ class RejectionCountResult implements ResultInterface
     public static function fromArray(array $values)
     {
         return new self(
-            (int) $values['rejection_count']
+            (int) $values['count']
         );
     }
 
@@ -46,12 +46,12 @@ class RejectionCountResult implements ResultInterface
     public function getMetrics()
     {
         return [
-            'rejection_count' => $this->rejectCount,
+            'count' => $this->rejectCount,
         ];
     }
 
     public function getKey()
     {
-        return 'rejection_count';
+        return 'reject';
     }
 }

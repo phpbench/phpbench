@@ -235,7 +235,7 @@ class XmlDecoder
 
             $iteration = $variant->createIteration();
             foreach ($results as $resultKey => $resultData) {
-                $iteration->addResult(call_user_func_array([
+                $iteration->setResult(call_user_func_array([
                     $resultClasses[$resultKey],
                     'fromArray',
                 ], [$resultData]));

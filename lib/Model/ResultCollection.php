@@ -24,7 +24,7 @@ class ResultCollection
     public function __construct(array $results = [])
     {
         foreach ($results as $result) {
-            $this->addResult($result);
+            $this->setResult($result);
         }
     }
 
@@ -35,29 +35,10 @@ class ResultCollection
      *
      * @param ResultInterface
      */
-    public function addResult(ResultInterface $result)
+    public function setResult(ResultInterface $result)
     {
         $class = get_class($result);
-
-        if (isset($this->results[$class])) {
-            throw new \InvalidArgumentException(sprintf(
-                'Result of class "%s" has already been set.',
-                $class
-            ));
-        }
-
         $this->results[$class] = $result;
-    }
-
-    /**
-     * Replace any result of the class of the given object with the given
-     * object.
-     *
-     * @param ResultInterface $result
-     */
-    public function replaceResult(ResultInterface $result)
-    {
-        $this->results[get_class($result)] = $result;
     }
 
     /**
