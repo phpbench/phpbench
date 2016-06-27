@@ -16,6 +16,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use PhpBench\PhpBench;
 
 class OutputDirHandler
 {
@@ -35,7 +36,7 @@ class OutputDirHandler
 
     public function handleOutputDir(InputInterface $input, OutputInterface $output)
     {
-        $outputDir = $input->getOption('outdir') ?: $this->outputDir;
+        $outputDir = PhpBench::normalizePath($input->getOption('outdir') ?: $this->outputDir);
 
         if (!$this->filesystem->exists($outputDir)) {
             $output->writeln(sprintf(
