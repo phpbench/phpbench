@@ -24,9 +24,9 @@ class TimeUnitFormat implements FormatInterface
      */
     private $timeUnit;
 
-    public function __construct(TimeUnit $timeUnit)
+    public function __construct(TimeUnit $timeUnit = null)
     {
-        $this->timeUnit = $timeUnit;
+        $this->timeUnit = $timeUnit ?: new TimeUnit();
     }
 
     /**

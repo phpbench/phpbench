@@ -15,13 +15,14 @@ use PhpBench\Model\Iteration;
 
 class XDebugUtil
 {
-    public static function filenameFromIteration(Iteration $iteration)
+    public static function filenameFromIteration(Iteration $iteration, $extension = '')
     {
         $name = sprintf(
-            '%s::%s.P%s.cachegrind',
+            '%s::%s.P%s%s',
             $iteration->getVariant()->getSubject()->getBenchmark()->getClass(),
             $iteration->getVariant()->getSubject()->getName(),
-            $iteration->getVariant()->getParameterSet()->getIndex()
+            $iteration->getVariant()->getParameterSet()->getIndex(),
+            $extension
         );
 
         $name = str_replace('\\', '_', $name);

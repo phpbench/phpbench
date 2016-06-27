@@ -1,0 +1,1593 @@
+Version: 2.3.3
+File format: 4
+TRACE START [2016-06-18 16:12:57]
+1	0	0	0.000201	243848	{main}	1		/tmp/daniel/PhpBenchypQVRT	0	0
+2	1	0	0.000228	243896	gc_disable	0		/tmp/daniel/PhpBenchypQVRT	4	0
+2	1	1	0.000236	244200
+2	2	0	0.000240	244200	ob_start	0		/tmp/daniel/PhpBenchypQVRT	7	0
+2	2	1	0.000249	261312
+2	3	0	0.000260	263432	call_user_func:{/tmp/daniel/PhpBenchypQVRT:25}	0		/tmp/daniel/PhpBenchypQVRT	25	1	class Closure { public $static = array ('bootstrap' => '/home/daniel/www/phpbench/phpbench/vendor/autoload.php') }
+3	4	0	0.000278	264016	{closure:/tmp/daniel/PhpBenchypQVRT:23-25}	1		/tmp/daniel/PhpBenchypQVRT	25	0
+4	5	0	0.000367	265936	require_once	1	/home/daniel/www/phpbench/phpbench/vendor/autoload.php	/tmp/daniel/PhpBenchypQVRT	24	0
+5	6	0	0.000502	279216	require_once	1	/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	/home/daniel/www/phpbench/phpbench/vendor/autoload.php	5	0
+5	6	1	0.000511	279264
+5	7	0	0.000516	278688	ComposerAutoloaderInit9bed9e1f915d0ebcff3af38e17fc302a::getLoader	1		/home/daniel/www/phpbench/phpbench/vendor/autoload.php	7	0
+6	8	0	0.000525	279336	spl_autoload_register	0		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	22	3	array (0 => 'ComposerAutoloaderInit9bed9e1f915d0ebcff3af38e17fc302a', 1 => 'loadClassLoader')	TRUE	TRUE
+6	8	1	0.000542	279712
+6	9	0	0.000551	279496	spl_autoload_call	0		/home/daniel/www/phpbench/phpbench/vendor/autoload.php	23	1	'Composer\\Autoload\\ClassLoader'
+7	10	0	0.000564	279544	ComposerAutoloaderInit9bed9e1f915d0ebcff3af38e17fc302a::loadClassLoader	1		/home/daniel/www/phpbench/phpbench/vendor/autoload.php	23	1	'Composer\\Autoload\\ClassLoader'
+8	11	0	0.000972	344256	require	1	/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	12	0
+8	11	1	0.000982	344304
+7	10	1	0.000987	343568
+6	9	1	0.000991	343384
+6	12	0	0.001001	343768	spl_autoload_unregister	0		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	24	1	array (0 => 'ComposerAutoloaderInit9bed9e1f915d0ebcff3af38e17fc302a', 1 => 'loadClassLoader')
+6	12	1	0.001012	343560
+6	13	0	0.001064	347824	require	1	/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_namespaces.php	/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	26	0
+7	14	0	0.001072	347920	dirname	0		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_namespaces.php	5	1	'/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_namespaces.php'
+7	14	1	0.001093	348016
+7	15	0	0.001097	348016	dirname	0		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_namespaces.php	5	1	'/home/daniel/www/phpbench/phpbench/vendor/composer'
+7	15	1	0.001104	348088
+7	16	0	0.001108	348080	dirname	0		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_namespaces.php	6	1	'/home/daniel/www/phpbench/phpbench/vendor'
+7	16	1	0.001127	348144
+6	13	1	0.001136	354808
+6	17	0	0.001142	350952	Composer\Autoload\ClassLoader->set	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	28	2	'vierbergenlars\\SemVer\\'	array (0 => '/home/daniel/www/phpbench/phpbench/vendor/vierbergenlars/php-semver/src')
+6	17	1	0.001161	351920
+6	18	0	0.001166	351872	Composer\Autoload\ClassLoader->set	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	28	2	'vierbergenlars\\LibJs\\'	array (0 => '/home/daniel/www/phpbench/phpbench/vendor/vierbergenlars/php-semver/src')
+6	18	1	0.001176	352328
+6	19	0	0.001180	352264	Composer\Autoload\ClassLoader->set	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	28	2	'SensioLabs\\Security'	array (0 => '/home/daniel/www/phpbench/phpbench/vendor/sensiolabs/security-checker')
+6	19	1	0.001190	353016
+6	20	0	0.001194	352968	Composer\Autoload\ClassLoader->set	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	28	2	'Psr\\Log\\'	array (0 => '/home/daniel/www/phpbench/phpbench/vendor/psr/log')
+6	20	1	0.001203	353720
+6	21	0	0.001210	353672	Composer\Autoload\ClassLoader->set	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	28	2	'Prophecy\\'	array (0 => '/home/daniel/www/phpbench/phpbench/vendor/phpspec/prophecy/src')
+6	21	1	0.001229	354112
+6	22	0	0.001236	354064	Composer\Autoload\ClassLoader->set	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	28	2	'Liip'	array (0 => '/home/daniel/www/phpbench/phpbench/vendor/liip/rmt/src')
+6	22	1	0.001249	354816
+6	23	0	0.001255	354768	Composer\Autoload\ClassLoader->set	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	28	2	'Doctrine\\DBAL\\'	array (0 => '/home/daniel/www/phpbench/phpbench/vendor/doctrine/dbal/lib')
+6	23	1	0.001268	355520
+6	24	0	0.001274	355472	Composer\Autoload\ClassLoader->set	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	28	2	'Doctrine\\Common\\Lexer\\'	array (0 => '/home/daniel/www/phpbench/phpbench/vendor/doctrine/lexer/lib')
+6	24	1	0.001287	355920
+6	25	0	0.001293	355872	Composer\Autoload\ClassLoader->set	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	28	2	'Doctrine\\Common\\Inflector\\'	array (0 => '/home/daniel/www/phpbench/phpbench/vendor/doctrine/inflector/lib')
+6	25	1	0.001305	356312
+6	26	0	0.001311	356264	Composer\Autoload\ClassLoader->set	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	28	2	'Doctrine\\Common\\Collections\\'	array (0 => '/home/daniel/www/phpbench/phpbench/vendor/doctrine/collections/lib')
+6	26	1	0.001324	356712
+6	27	0	0.001330	356664	Composer\Autoload\ClassLoader->set	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	28	2	'Doctrine\\Common\\Annotations\\'	array (0 => '/home/daniel/www/phpbench/phpbench/vendor/doctrine/annotations/lib')
+6	27	1	0.001344	357104
+6	28	0	0.001349	357056	Composer\Autoload\ClassLoader->set	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	28	2	'Assert'	array (0 => '/home/daniel/www/phpbench/phpbench/vendor/beberlei/assert/lib')
+6	28	1	0.001378	357808
+6	29	0	0.001501	366064	require	1	/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_psr4.php	/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	31	0
+7	30	0	0.001513	366160	dirname	0		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_psr4.php	5	1	'/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_psr4.php'
+7	30	1	0.001525	366248
+7	31	0	0.001529	366248	dirname	0		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_psr4.php	5	1	'/home/daniel/www/phpbench/phpbench/vendor/composer'
+7	31	1	0.001540	366320
+7	32	0	0.001545	366112	dirname	0		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_psr4.php	6	1	'/home/daniel/www/phpbench/phpbench/vendor'
+7	32	1	0.001555	366176
+6	29	1	0.001577	381152
+6	33	0	0.001588	368360	Composer\Autoload\ClassLoader->setPsr4	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	33	2	'phpDocumentor\\Reflection\\'	array (0 => '/home/daniel/www/phpbench/phpbench/vendor/phpdocumentor/reflection-common/src', 1 => '/home/daniel/www/phpbench/phpbench/vendor/phpdocumentor/type-resolver/src', 2 => '/home/daniel/www/phpbench/phpbench/vendor/phpdocumentor/reflection-docblock/src')
+7	34	0	0.001606	368408	strlen	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	223	1	'phpDocumentor\\Reflection\\'
+7	34	1	0.001617	368408
+6	33	1	0.001627	369856
+6	35	0	0.001634	369808	Composer\Autoload\ClassLoader->setPsr4	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	33	2	'Webmozart\\Assert\\'	array (0 => '/home/daniel/www/phpbench/phpbench/vendor/webmozart/assert/src')
+7	36	0	0.001647	369856	strlen	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	223	1	'Webmozart\\Assert\\'
+7	36	1	0.001657	369856
+6	35	1	0.001666	370696
+6	37	0	0.001672	370648	Composer\Autoload\ClassLoader->setPsr4	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	33	2	'Symfony\\Polyfill\\Mbstring\\'	array (0 => '/home/daniel/www/phpbench/phpbench/vendor/symfony/polyfill-mbstring')
+7	38	0	0.001686	370696	strlen	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	223	1	'Symfony\\Polyfill\\Mbstring\\'
+7	38	1	0.001706	370696
+6	37	1	0.001715	371536
+6	39	0	0.001721	371488	Composer\Autoload\ClassLoader->setPsr4	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	33	2	'Symfony\\Component\\Yaml\\'	array (0 => '/home/daniel/www/phpbench/phpbench/vendor/symfony/yaml')
+7	40	0	0.001734	371536	strlen	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	223	1	'Symfony\\Component\\Yaml\\'
+7	40	1	0.001744	371536
+6	39	1	0.001753	372064
+6	41	0	0.001759	372016	Composer\Autoload\ClassLoader->setPsr4	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	33	2	'Symfony\\Component\\Process\\'	array (0 => '/home/daniel/www/phpbench/phpbench/vendor/symfony/process')
+7	42	0	0.001772	372064	strlen	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	223	1	'Symfony\\Component\\Process\\'
+7	42	1	0.001782	372064
+6	41	1	0.001790	372592
+6	43	0	0.001796	372544	Composer\Autoload\ClassLoader->setPsr4	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	33	2	'Symfony\\Component\\Finder\\'	array (0 => '/home/daniel/www/phpbench/phpbench/vendor/symfony/finder')
+7	44	0	0.001808	372592	strlen	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	223	1	'Symfony\\Component\\Finder\\'
+7	44	1	0.001819	372592
+6	43	1	0.001827	373120
+6	45	0	0.001833	373072	Composer\Autoload\ClassLoader->setPsr4	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	33	2	'Symfony\\Component\\Filesystem\\'	array (0 => '/home/daniel/www/phpbench/phpbench/vendor/symfony/filesystem')
+7	46	0	0.001846	373120	strlen	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	223	1	'Symfony\\Component\\Filesystem\\'
+7	46	1	0.001856	373120
+6	45	1	0.001865	373648
+6	47	0	0.001871	373600	Composer\Autoload\ClassLoader->setPsr4	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	33	2	'Symfony\\Component\\Debug\\'	array (0 => '/home/daniel/www/phpbench/phpbench/vendor/symfony/debug')
+7	48	0	0.001883	373648	strlen	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	223	1	'Symfony\\Component\\Debug\\'
+7	48	1	0.001894	373648
+6	47	1	0.001903	374176
+6	49	0	0.001910	374128	Composer\Autoload\ClassLoader->setPsr4	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	33	2	'Symfony\\Component\\Console\\'	array (0 => '/home/daniel/www/phpbench/phpbench/vendor/symfony/console')
+7	50	0	0.001924	374176	strlen	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	223	1	'Symfony\\Component\\Console\\'
+7	50	1	0.001934	374176
+6	49	1	0.001943	374768
+6	51	0	0.001950	374720	Composer\Autoload\ClassLoader->setPsr4	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	33	2	'Seld\\JsonLint\\'	array (0 => '/home/daniel/www/phpbench/phpbench/vendor/seld/jsonlint/src/Seld/JsonLint')
+7	52	0	0.001963	374768	strlen	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	223	1	'Seld\\JsonLint\\'
+7	52	1	0.001973	374768
+6	51	1	0.001982	375296
+6	53	0	0.001988	375248	Composer\Autoload\ClassLoader->setPsr4	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	33	2	'PhpBench\\Tests\\'	array (0 => '/home/daniel/www/phpbench/phpbench/tests')
+7	54	0	0.002002	375296	strlen	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	223	1	'PhpBench\\Tests\\'
+7	54	1	0.002012	375296
+6	53	1	0.002021	376136
+6	55	0	0.002028	376088	Composer\Autoload\ClassLoader->setPsr4	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	33	2	'PhpBench\\Extensions\\XDebug\\Tests\\'	array (0 => '/home/daniel/www/phpbench/phpbench/extensions/xdebug/tests')
+7	56	0	0.002041	376136	strlen	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	223	1	'PhpBench\\Extensions\\XDebug\\Tests\\'
+7	56	1	0.002050	376136
+6	55	1	0.002059	376664
+6	57	0	0.002065	376616	Composer\Autoload\ClassLoader->setPsr4	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	33	2	'PhpBench\\Extensions\\XDebug\\'	array (0 => '/home/daniel/www/phpbench/phpbench/extensions/xdebug/lib')
+7	58	0	0.002083	376664	strlen	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	223	1	'PhpBench\\Extensions\\XDebug\\'
+7	58	1	0.002093	376664
+6	57	1	0.002102	377192
+6	59	0	0.002109	377144	Composer\Autoload\ClassLoader->setPsr4	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	33	2	'PhpBench\\Extensions\\Dbal\\Tests\\'	array (0 => '/home/daniel/www/phpbench/phpbench/extensions/dbal/tests')
+7	60	0	0.002122	377192	strlen	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	223	1	'PhpBench\\Extensions\\Dbal\\Tests\\'
+7	60	1	0.002131	377192
+6	59	1	0.002140	377720
+6	61	0	0.002146	377672	Composer\Autoload\ClassLoader->setPsr4	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	33	2	'PhpBench\\Extensions\\Dbal\\Benchmarks\\'	array (0 => '/home/daniel/www/phpbench/phpbench/extensions/dbal/benchmarks')
+7	62	0	0.002159	377720	strlen	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	223	1	'PhpBench\\Extensions\\Dbal\\Benchmarks\\'
+7	62	1	0.002170	377720
+6	61	1	0.002179	378248
+6	63	0	0.002186	378200	Composer\Autoload\ClassLoader->setPsr4	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	33	2	'PhpBench\\Extensions\\Dbal\\'	array (0 => '/home/daniel/www/phpbench/phpbench/extensions/dbal/lib')
+7	64	0	0.002200	378248	strlen	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	223	1	'PhpBench\\Extensions\\Dbal\\'
+7	64	1	0.002211	378248
+6	63	1	0.002218	378776
+6	65	0	0.002222	378728	Composer\Autoload\ClassLoader->setPsr4	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	33	2	'PhpBench\\Dom\\'	array (0 => '/home/daniel/www/phpbench/phpbench/vendor/phpbench/dom/lib')
+7	66	0	0.002230	378776	strlen	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	223	1	'PhpBench\\Dom\\'
+7	66	1	0.002236	378776
+6	65	1	0.002242	379432
+6	67	0	0.002246	379384	Composer\Autoload\ClassLoader->setPsr4	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	33	2	'PhpBench\\DependencyInjection\\'	array (0 => '/home/daniel/www/phpbench/phpbench/vendor/phpbench/container/lib')
+7	68	0	0.002254	379432	strlen	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	223	1	'PhpBench\\DependencyInjection\\'
+7	68	1	0.002260	379432
+6	67	1	0.002266	379976
+6	69	0	0.002270	379928	Composer\Autoload\ClassLoader->setPsr4	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	33	2	'PhpBench\\Benchmarks\\'	array (0 => '/home/daniel/www/phpbench/phpbench/benchmarks')
+7	70	0	0.002277	379976	strlen	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	223	1	'PhpBench\\Benchmarks\\'
+7	70	1	0.002283	379976
+6	69	1	0.002289	380568
+6	71	0	0.002293	380520	Composer\Autoload\ClassLoader->setPsr4	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	33	2	'PhpBench\\'	array (0 => '/home/daniel/www/phpbench/phpbench/lib')
+7	72	0	0.002303	380568	strlen	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	223	1	'PhpBench\\'
+7	72	1	0.002309	380568
+6	71	1	0.002314	381096
+6	73	0	0.002318	381048	Composer\Autoload\ClassLoader->setPsr4	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	33	2	'JsonSchema\\'	array (0 => '/home/daniel/www/phpbench/phpbench/vendor/justinrainbow/json-schema/src/JsonSchema')
+7	74	0	0.002326	381096	strlen	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	223	1	'JsonSchema\\'
+7	74	1	0.002332	381096
+6	73	1	0.002337	381936
+6	75	0	0.002341	381888	Composer\Autoload\ClassLoader->setPsr4	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	33	2	'Interop\\Container\\'	array (0 => '/home/daniel/www/phpbench/phpbench/vendor/container-interop/container-interop/src/Interop/Container')
+7	76	0	0.002350	381936	strlen	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	223	1	'Interop\\Container\\'
+7	76	1	0.002356	381936
+6	75	1	0.002361	382776
+6	77	0	0.002365	382728	Composer\Autoload\ClassLoader->setPsr4	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	33	2	'Humbug\\SelfUpdate\\'	array (0 => '/home/daniel/www/phpbench/phpbench/vendor/padraic/phar-updater/src')
+7	78	0	0.002377	382776	strlen	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	223	1	'Humbug\\SelfUpdate\\'
+7	78	1	0.002384	382776
+6	77	1	0.002390	383616
+6	79	0	0.002394	383568	Composer\Autoload\ClassLoader->setPsr4	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	33	2	'Humbug\\'	array (0 => '/home/daniel/www/phpbench/phpbench/vendor/padraic/humbug_get_contents/src/Humbug')
+7	80	0	0.002402	383616	strlen	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	223	1	'Humbug\\'
+7	80	1	0.002408	383616
+6	79	1	0.002413	384144
+6	81	0	0.002417	384096	Composer\Autoload\ClassLoader->setPsr4	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	33	2	'Doctrine\\Instantiator\\'	array (0 => '/home/daniel/www/phpbench/phpbench/vendor/doctrine/instantiator/src/Doctrine/Instantiator')
+7	82	0	0.002426	384144	strlen	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	223	1	'Doctrine\\Instantiator\\'
+7	82	1	0.002433	384144
+6	81	1	0.002438	384984
+6	83	0	0.002442	384936	Composer\Autoload\ClassLoader->setPsr4	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	33	2	'Doctrine\\Common\\Cache\\'	array (0 => '/home/daniel/www/phpbench/phpbench/vendor/doctrine/cache/lib/Doctrine/Common/Cache')
+7	84	0	0.002450	384984	strlen	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	223	1	'Doctrine\\Common\\Cache\\'
+7	84	1	0.002456	384984
+6	83	1	0.002461	385512
+6	85	0	0.002465	385464	Composer\Autoload\ClassLoader->setPsr4	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	33	2	'Doctrine\\Common\\'	array (0 => '/home/daniel/www/phpbench/phpbench/vendor/doctrine/common/lib/Doctrine/Common')
+7	86	0	0.002472	385512	strlen	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	223	1	'Doctrine\\Common\\'
+7	86	1	0.002478	385512
+6	85	1	0.002483	386040
+6	87	0	0.003243	465440	require	1	/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_classmap.php	/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	36	0
+7	88	0	0.003273	465536	dirname	0		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_classmap.php	5	1	'/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_classmap.php'
+7	88	1	0.003292	465632
+7	89	0	0.003300	465632	dirname	0		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_classmap.php	5	1	'/home/daniel/www/phpbench/phpbench/vendor/composer'
+7	89	1	0.003314	465704
+7	90	0	0.003323	465488	dirname	0		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_classmap.php	6	1	'/home/daniel/www/phpbench/phpbench/vendor'
+7	90	1	0.003337	465552
+6	87	1	0.003467	578616
+6	91	0	0.003484	499808	Composer\Autoload\ClassLoader->addClassMap	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	38	1	array ('File_Iterator' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/php-file-iterator/src/Iterator.php', 'File_Iterator_Facade' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/php-file-iterator/src/Facade.php', 'File_Iterator_Factory' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/php-file-iterator/src/Factory.php', 'PHPUnit_Exception' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Exception.php', 'PHPUnit_Extensions_GroupTestSuite' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Extensions/GroupTestSuite.php', 'PHPUnit_Extensions_PhptTestCase' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Extensions/PhptTestCase.php', 'PHPUnit_Extensions_PhptTestSuite' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Extensions/PhptTestSuite.php', 'PHPUnit_Extensions_RepeatedTest' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Extensions/RepeatedTest.php', 'PHPUnit_Extensions_TestDecorator' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Extensions/TestDecorator.php', 'PHPUnit_Extensions_TicketListener' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Extensions/TicketListener.php', 'PHPUnit_Framework_Assert' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Assert.php', 'PHPUnit_Framework_AssertionFailedError' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/AssertionFailedError.php', 'PHPUnit_Framework_BaseTestListener' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/BaseTestListener.php', 'PHPUnit_Framework_CodeCoverageException' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/CodeCoverageException.php', 'PHPUnit_Framework_Constraint' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint.php', 'PHPUnit_Framework_Constraint_And' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/And.php', 'PHPUnit_Framework_Constraint_ArrayHasKey' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/ArrayHasKey.php', 'PHPUnit_Framework_Constraint_ArraySubset' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/ArraySubset.php', 'PHPUnit_Framework_Constraint_Attribute' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/Attribute.php', 'PHPUnit_Framework_Constraint_Callback' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/Callback.php', 'PHPUnit_Framework_Constraint_ClassHasAttribute' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/ClassHasAttribute.php', 'PHPUnit_Framework_Constraint_ClassHasStaticAttribute' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/ClassHasStaticAttribute.php', 'PHPUnit_Framework_Constraint_Composite' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/Composite.php', 'PHPUnit_Framework_Constraint_Count' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/Count.php', 'PHPUnit_Framework_Constraint_Exception' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/Exception.php', 'PHPUnit_Framework_Constraint_ExceptionCode' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/ExceptionCode.php', 'PHPUnit_Framework_Constraint_ExceptionMessage' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/ExceptionMessage.php', 'PHPUnit_Framework_Constraint_ExceptionMessageRegExp' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/ExceptionMessageRegExp.php', 'PHPUnit_Framework_Constraint_FileExists' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/FileExists.php', 'PHPUnit_Framework_Constraint_GreaterThan' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/GreaterThan.php', 'PHPUnit_Framework_Constraint_IsAnything' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/IsAnything.php', 'PHPUnit_Framework_Constraint_IsEmpty' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/IsEmpty.php', 'PHPUnit_Framework_Constraint_IsEqual' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/IsEqual.php', 'PHPUnit_Framework_Constraint_IsFalse' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/IsFalse.php', 'PHPUnit_Framework_Constraint_IsIdentical' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/IsIdentical.php', 'PHPUnit_Framework_Constraint_IsInstanceOf' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/IsInstanceOf.php', 'PHPUnit_Framework_Constraint_IsJson' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/IsJson.php', 'PHPUnit_Framework_Constraint_IsNull' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/IsNull.php', 'PHPUnit_Framework_Constraint_IsTrue' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/IsTrue.php', 'PHPUnit_Framework_Constraint_IsType' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/IsType.php', 'PHPUnit_Framework_Constraint_JsonMatches' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/JsonMatches.php', 'PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/JsonMatches/ErrorMessageProvider.php', 'PHPUnit_Framework_Constraint_LessThan' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/LessThan.php', 'PHPUnit_Framework_Constraint_Not' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/Not.php', 'PHPUnit_Framework_Constraint_ObjectHasAttribute' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/ObjectHasAttribute.php', 'PHPUnit_Framework_Constraint_Or' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/Or.php', 'PHPUnit_Framework_Constraint_PCREMatch' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/PCREMatch.php', 'PHPUnit_Framework_Constraint_SameSize' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/SameSize.php', 'PHPUnit_Framework_Constraint_StringContains' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/StringContains.php', 'PHPUnit_Framework_Constraint_StringEndsWith' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/StringEndsWith.php', 'PHPUnit_Framework_Constraint_StringMatches' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/StringMatches.php', 'PHPUnit_Framework_Constraint_StringStartsWith' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/StringStartsWith.php', 'PHPUnit_Framework_Constraint_TraversableContains' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/TraversableContains.php', 'PHPUnit_Framework_Constraint_TraversableContainsOnly' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/TraversableContainsOnly.php', 'PHPUnit_Framework_Constraint_Xor' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/Xor.php', 'PHPUnit_Framework_Error' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Error.php', 'PHPUnit_Framework_Error_Deprecated' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Error/Deprecated.php', 'PHPUnit_Framework_Error_Notice' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Error/Notice.php', 'PHPUnit_Framework_Error_Warning' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Error/Warning.php', 'PHPUnit_Framework_Exception' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Exception.php', 'PHPUnit_Framework_ExceptionWrapper' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/ExceptionWrapper.php', 'PHPUnit_Framework_ExpectationFailedException' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/ExpectationFailedException.php', 'PHPUnit_Framework_IncompleteTest' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/IncompleteTest.php', 'PHPUnit_Framework_IncompleteTestCase' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/IncompleteTestCase.php', 'PHPUnit_Framework_IncompleteTestError' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/IncompleteTestError.php', 'PHPUnit_Framework_InvalidCoversTargetError' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/InvalidCoversTargetError.php', 'PHPUnit_Framework_InvalidCoversTargetException' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/InvalidCoversTargetException.php', 'PHPUnit_Framework_MockObject_BadMethodCallException' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Exception/BadMethodCallException.php', 'PHPUnit_Framework_MockObject_Builder_Identity' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Builder/Identity.php', 'PHPUnit_Framework_MockObject_Builder_InvocationMocker' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Builder/InvocationMocker.php', 'PHPUnit_Framework_MockObject_Builder_Match' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Builder/Match.php', 'PHPUnit_Framework_MockObject_Builder_MethodNameMatch' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Builder/MethodNameMatch.php', 'PHPUnit_Framework_MockObject_Builder_Namespace' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Builder/Namespace.php', 'PHPUnit_Framework_MockObject_Builder_ParametersMatch' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Builder/ParametersMatch.php', 'PHPUnit_Framework_MockObject_Builder_Stub' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Builder/Stub.php', 'PHPUnit_Framework_MockObject_Exception' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Exception/Exception.php', 'PHPUnit_Framework_MockObject_Generator' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Generator.php', 'PHPUnit_Framework_MockObject_Invocation' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Invocation.php', 'PHPUnit_Framework_MockObject_InvocationMocker' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/InvocationMocker.php', 'PHPUnit_Framework_MockObject_Invocation_Object' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Invocation/Object.php', 'PHPUnit_Framework_MockObject_Invocation_Static' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Invocation/Static.php', 'PHPUnit_Framework_MockObject_Invokable' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Invokable.php', 'PHPUnit_Framework_MockObject_Matcher' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Matcher.php', 'PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Matcher/AnyInvokedCount.php', 'PHPUnit_Framework_MockObject_Matcher_AnyParameters' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Matcher/AnyParameters.php', 'PHPUnit_Framework_MockObject_Matcher_ConsecutiveParameters' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Matcher/ConsecutiveParameters.php', 'PHPUnit_Framework_MockObject_Matcher_Invocation' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Matcher/Invocation.php', 'PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Matcher/InvokedAtIndex.php', 'PHPUnit_Framework_MockObject_Matcher_InvokedAtLeastCount' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Matcher/InvokedAtLeastCount.php', 'PHPUnit_Framework_MockObject_Matcher_InvokedAtLeastOnce' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Matcher/InvokedAtLeastOnce.php', 'PHPUnit_Framework_MockObject_Matcher_InvokedAtMostCount' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Matcher/InvokedAtMostCount.php', 'PHPUnit_Framework_MockObject_Matcher_InvokedCount' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Matcher/InvokedCount.php', 'PHPUnit_Framework_MockObject_Matcher_InvokedRecorder' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Matcher/InvokedRecorder.php', 'PHPUnit_Framework_MockObject_Matcher_MethodName' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Matcher/MethodName.php', 'PHPUnit_Framework_MockObject_Matcher_Parameters' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Matcher/Parameters.php', 'PHPUnit_Framework_MockObject_Matcher_StatelessInvocation' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Matcher/StatelessInvocation.php', 'PHPUnit_Framework_MockObject_MockBuilder' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/MockBuilder.php', 'PHPUnit_Framework_MockObject_MockObject' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/MockObject.php', 'PHPUnit_Framework_MockObject_RuntimeException' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Exception/RuntimeException.php', 'PHPUnit_Framework_MockObject_Stub' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Stub.php', 'PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Stub/ConsecutiveCalls.php', 'PHPUnit_Framework_MockObject_Stub_Exception' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Stub/Exception.php', 'PHPUnit_Framework_MockObject_Stub_MatcherCollection' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Stub/MatcherCollection.php', 'PHPUnit_Framework_MockObject_Stub_Return' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Stub/Return.php', 'PHPUnit_Framework_MockObject_Stub_ReturnArgument' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Stub/ReturnArgument.php', 'PHPUnit_Framework_MockObject_Stub_ReturnCallback' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Stub/ReturnCallback.php', 'PHPUnit_Framework_MockObject_Stub_ReturnSelf' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Stub/ReturnSelf.php', 'PHPUnit_Framework_MockObject_Stub_ReturnValueMap' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Stub/ReturnValueMap.php', 'PHPUnit_Framework_MockObject_Verifiable' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Verifiable.php', 'PHPUnit_Framework_OutputError' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/OutputError.php', 'PHPUnit_Framework_RiskyTest' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/RiskyTest.php', 'PHPUnit_Framework_RiskyTestError' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/RiskyTestError.php', 'PHPUnit_Framework_SelfDescribing' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/SelfDescribing.php', 'PHPUnit_Framework_SkippedTest' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/SkippedTest.php', 'PHPUnit_Framework_SkippedTestCase' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/SkippedTestCase.php', 'PHPUnit_Framework_SkippedTestError' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/SkippedTestError.php', 'PHPUnit_Framework_SkippedTestSuiteError' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/SkippedTestSuiteError.php', 'PHPUnit_Framework_SyntheticError' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/SyntheticError.php', 'PHPUnit_Framework_Test' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Test.php', 'PHPUnit_Framework_TestCase' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/TestCase.php', 'PHPUnit_Framework_TestFailure' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/TestFailure.php', 'PHPUnit_Framework_TestListener' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/TestListener.php', 'PHPUnit_Framework_TestResult' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/TestResult.php', 'PHPUnit_Framework_TestSuite' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/TestSuite.php', 'PHPUnit_Framework_TestSuite_DataProvider' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/TestSuite/DataProvider.php', 'PHPUnit_Framework_UnintentionallyCoveredCodeError' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/UnintentionallyCoveredCodeError.php', 'PHPUnit_Framework_Warning' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Warning.php', 'PHPUnit_Runner_BaseTestRunner' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Runner/BaseTestRunner.php', ...)
+6	91	1	0.003664	499856
+6	92	0	0.003670	499888	Composer\Autoload\ClassLoader->register	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	41	1	TRUE
+7	93	0	0.003681	500440	spl_autoload_register	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	281	3	array (0 => class Composer\Autoload\ClassLoader { private $prefixLengthsPsr4 = array ('p' => array (...), 'W' => array (...), 'S' => array (...), 'P' => array (...), 'J' => array (...), 'I' => array (...), 'H' => array (...), 'D' => array (...)); private $prefixDirsPsr4 = array ('phpDocumentor\Reflection\' => array (...), 'Webmozart\Assert\' => array (...), 'Symfony\Polyfill\Mbstring\' => array (...), 'Symfony\Component\Yaml\' => array (...), 'Symfony\Component\Process\' => array (...), 'Symfony\Component\Finder\' => array (...), 'Symfony\Component\Filesystem\' => array (...), 'Symfony\Component\Debug\' => array (...), 'Symfony\Component\Console\' => array (...), 'Seld\JsonLint\' => array (...), 'PhpBench\Tests\' => array (...), 'PhpBench\Extensions\XDebug\Tests\' => array (...), 'PhpBench\Extensions\XDebug\' => array (...), 'PhpBench\Extensions\Dbal\Tests\' => array (...), 'PhpBench\Extensions\Dbal\Benchmarks\' => array (...), 'PhpBench\Extensions\Dbal\' => array (...), 'PhpBench\Dom\' => array (...), 'PhpBench\DependencyInjection\' => array (...), 'PhpBench\Benchmarks\' => array (...), 'PhpBench\' => array (...), 'JsonSchema\' => array (...), 'Interop\Container\' => array (...), 'Humbug\SelfUpdate\' => array (...), 'Humbug\' => array (...), 'Doctrine\Instantiator\' => array (...), 'Doctrine\Common\Cache\' => array (...), 'Doctrine\Common\' => array (...)); private $fallbackDirsPsr4 = array (); private $prefixesPsr0 = array ('v' => array (...), 'S' => array (...), 'P' => array (...), 'L' => array (...), 'D' => array (...), 'A' => array (...)); private $fallbackDirsPsr0 = array (); private $useIncludePath = FALSE; private $classMap = array ('File_Iterator' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/php-file-iterator/src/Iterator.php', 'File_Iterator_Facade' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/php-file-iterator/src/Facade.php', 'File_Iterator_Factory' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/php-file-iterator/src/Factory.php', 'PHPUnit_Exception' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Exception.php', 'PHPUnit_Extensions_GroupTestSuite' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Extensions/GroupTestSuite.php', 'PHPUnit_Extensions_PhptTestCase' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Extensions/PhptTestCase.php', 'PHPUnit_Extensions_PhptTestSuite' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Extensions/PhptTestSuite.php', 'PHPUnit_Extensions_RepeatedTest' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Extensions/RepeatedTest.php', 'PHPUnit_Extensions_TestDecorator' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Extensions/TestDecorator.php', 'PHPUnit_Extensions_TicketListener' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Extensions/TicketListener.php', 'PHPUnit_Framework_Assert' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Assert.php', 'PHPUnit_Framework_AssertionFailedError' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/AssertionFailedError.php', 'PHPUnit_Framework_BaseTestListener' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/BaseTestListener.php', 'PHPUnit_Framework_CodeCoverageException' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/CodeCoverageException.php', 'PHPUnit_Framework_Constraint' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint.php', 'PHPUnit_Framework_Constraint_And' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/And.php', 'PHPUnit_Framework_Constraint_ArrayHasKey' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/ArrayHasKey.php', 'PHPUnit_Framework_Constraint_ArraySubset' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/ArraySubset.php', 'PHPUnit_Framework_Constraint_Attribute' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/Attribute.php', 'PHPUnit_Framework_Constraint_Callback' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/Callback.php', 'PHPUnit_Framework_Constraint_ClassHasAttribute' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/ClassHasAttribute.php', 'PHPUnit_Framework_Constraint_ClassHasStaticAttribute' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/ClassHasStaticAttribute.php', 'PHPUnit_Framework_Constraint_Composite' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/Composite.php', 'PHPUnit_Framework_Constraint_Count' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/Count.php', 'PHPUnit_Framework_Constraint_Exception' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/Exception.php', 'PHPUnit_Framework_Constraint_ExceptionCode' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/ExceptionCode.php', 'PHPUnit_Framework_Constraint_ExceptionMessage' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/ExceptionMessage.php', 'PHPUnit_Framework_Constraint_ExceptionMessageRegExp' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/ExceptionMessageRegExp.php', 'PHPUnit_Framework_Constraint_FileExists' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/FileExists.php', 'PHPUnit_Framework_Constraint_GreaterThan' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/GreaterThan.php', 'PHPUnit_Framework_Constraint_IsAnything' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/IsAnything.php', 'PHPUnit_Framework_Constraint_IsEmpty' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/IsEmpty.php', 'PHPUnit_Framework_Constraint_IsEqual' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/IsEqual.php', 'PHPUnit_Framework_Constraint_IsFalse' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/IsFalse.php', 'PHPUnit_Framework_Constraint_IsIdentical' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/IsIdentical.php', 'PHPUnit_Framework_Constraint_IsInstanceOf' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/IsInstanceOf.php', 'PHPUnit_Framework_Constraint_IsJson' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/IsJson.php', 'PHPUnit_Framework_Constraint_IsNull' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/IsNull.php', 'PHPUnit_Framework_Constraint_IsTrue' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/IsTrue.php', 'PHPUnit_Framework_Constraint_IsType' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/IsType.php', 'PHPUnit_Framework_Constraint_JsonMatches' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/JsonMatches.php', 'PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/JsonMatches/ErrorMessageProvider.php', 'PHPUnit_Framework_Constraint_LessThan' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/LessThan.php', 'PHPUnit_Framework_Constraint_Not' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/Not.php', 'PHPUnit_Framework_Constraint_ObjectHasAttribute' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/ObjectHasAttribute.php', 'PHPUnit_Framework_Constraint_Or' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/Or.php', 'PHPUnit_Framework_Constraint_PCREMatch' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/PCREMatch.php', 'PHPUnit_Framework_Constraint_SameSize' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/SameSize.php', 'PHPUnit_Framework_Constraint_StringContains' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/StringContains.php', 'PHPUnit_Framework_Constraint_StringEndsWith' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/StringEndsWith.php', 'PHPUnit_Framework_Constraint_StringMatches' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/StringMatches.php', 'PHPUnit_Framework_Constraint_StringStartsWith' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/StringStartsWith.php', 'PHPUnit_Framework_Constraint_TraversableContains' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/TraversableContains.php', 'PHPUnit_Framework_Constraint_TraversableContainsOnly' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/TraversableContainsOnly.php', 'PHPUnit_Framework_Constraint_Xor' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Constraint/Xor.php', 'PHPUnit_Framework_Error' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Error.php', 'PHPUnit_Framework_Error_Deprecated' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Error/Deprecated.php', 'PHPUnit_Framework_Error_Notice' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Error/Notice.php', 'PHPUnit_Framework_Error_Warning' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Error/Warning.php', 'PHPUnit_Framework_Exception' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Exception.php', 'PHPUnit_Framework_ExceptionWrapper' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/ExceptionWrapper.php', 'PHPUnit_Framework_ExpectationFailedException' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/ExpectationFailedException.php', 'PHPUnit_Framework_IncompleteTest' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/IncompleteTest.php', 'PHPUnit_Framework_IncompleteTestCase' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/IncompleteTestCase.php', 'PHPUnit_Framework_IncompleteTestError' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/IncompleteTestError.php', 'PHPUnit_Framework_InvalidCoversTargetError' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/InvalidCoversTargetError.php', 'PHPUnit_Framework_InvalidCoversTargetException' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/InvalidCoversTargetException.php', 'PHPUnit_Framework_MockObject_BadMethodCallException' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Exception/BadMethodCallException.php', 'PHPUnit_Framework_MockObject_Builder_Identity' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Builder/Identity.php', 'PHPUnit_Framework_MockObject_Builder_InvocationMocker' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Builder/InvocationMocker.php', 'PHPUnit_Framework_MockObject_Builder_Match' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Builder/Match.php', 'PHPUnit_Framework_MockObject_Builder_MethodNameMatch' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Builder/MethodNameMatch.php', 'PHPUnit_Framework_MockObject_Builder_Namespace' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Builder/Namespace.php', 'PHPUnit_Framework_MockObject_Builder_ParametersMatch' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Builder/ParametersMatch.php', 'PHPUnit_Framework_MockObject_Builder_Stub' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Builder/Stub.php', 'PHPUnit_Framework_MockObject_Exception' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Exception/Exception.php', 'PHPUnit_Framework_MockObject_Generator' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Generator.php', 'PHPUnit_Framework_MockObject_Invocation' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Invocation.php', 'PHPUnit_Framework_MockObject_InvocationMocker' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/InvocationMocker.php', 'PHPUnit_Framework_MockObject_Invocation_Object' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Invocation/Object.php', 'PHPUnit_Framework_MockObject_Invocation_Static' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Invocation/Static.php', 'PHPUnit_Framework_MockObject_Invokable' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Invokable.php', 'PHPUnit_Framework_MockObject_Matcher' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Matcher.php', 'PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Matcher/AnyInvokedCount.php', 'PHPUnit_Framework_MockObject_Matcher_AnyParameters' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Matcher/AnyParameters.php', 'PHPUnit_Framework_MockObject_Matcher_ConsecutiveParameters' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Matcher/ConsecutiveParameters.php', 'PHPUnit_Framework_MockObject_Matcher_Invocation' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Matcher/Invocation.php', 'PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Matcher/InvokedAtIndex.php', 'PHPUnit_Framework_MockObject_Matcher_InvokedAtLeastCount' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Matcher/InvokedAtLeastCount.php', 'PHPUnit_Framework_MockObject_Matcher_InvokedAtLeastOnce' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Matcher/InvokedAtLeastOnce.php', 'PHPUnit_Framework_MockObject_Matcher_InvokedAtMostCount' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Matcher/InvokedAtMostCount.php', 'PHPUnit_Framework_MockObject_Matcher_InvokedCount' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Matcher/InvokedCount.php', 'PHPUnit_Framework_MockObject_Matcher_InvokedRecorder' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Matcher/InvokedRecorder.php', 'PHPUnit_Framework_MockObject_Matcher_MethodName' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Matcher/MethodName.php', 'PHPUnit_Framework_MockObject_Matcher_Parameters' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Matcher/Parameters.php', 'PHPUnit_Framework_MockObject_Matcher_StatelessInvocation' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Matcher/StatelessInvocation.php', 'PHPUnit_Framework_MockObject_MockBuilder' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/MockBuilder.php', 'PHPUnit_Framework_MockObject_MockObject' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/MockObject.php', 'PHPUnit_Framework_MockObject_RuntimeException' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Exception/RuntimeException.php', 'PHPUnit_Framework_MockObject_Stub' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Stub.php', 'PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Stub/ConsecutiveCalls.php', 'PHPUnit_Framework_MockObject_Stub_Exception' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Stub/Exception.php', 'PHPUnit_Framework_MockObject_Stub_MatcherCollection' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Stub/MatcherCollection.php', 'PHPUnit_Framework_MockObject_Stub_Return' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Stub/Return.php', 'PHPUnit_Framework_MockObject_Stub_ReturnArgument' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Stub/ReturnArgument.php', 'PHPUnit_Framework_MockObject_Stub_ReturnCallback' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Stub/ReturnCallback.php', 'PHPUnit_Framework_MockObject_Stub_ReturnSelf' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Stub/ReturnSelf.php', 'PHPUnit_Framework_MockObject_Stub_ReturnValueMap' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Stub/ReturnValueMap.php', 'PHPUnit_Framework_MockObject_Verifiable' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit-mock-objects/src/Framework/MockObject/Verifiable.php', 'PHPUnit_Framework_OutputError' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/OutputError.php', 'PHPUnit_Framework_RiskyTest' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/RiskyTest.php', 'PHPUnit_Framework_RiskyTestError' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/RiskyTestError.php', 'PHPUnit_Framework_SelfDescribing' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/SelfDescribing.php', 'PHPUnit_Framework_SkippedTest' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/SkippedTest.php', 'PHPUnit_Framework_SkippedTestCase' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/SkippedTestCase.php', 'PHPUnit_Framework_SkippedTestError' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/SkippedTestError.php', 'PHPUnit_Framework_SkippedTestSuiteError' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/SkippedTestSuiteError.php', 'PHPUnit_Framework_SyntheticError' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/SyntheticError.php', 'PHPUnit_Framework_Test' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Test.php', 'PHPUnit_Framework_TestCase' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/TestCase.php', 'PHPUnit_Framework_TestFailure' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/TestFailure.php', 'PHPUnit_Framework_TestListener' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/TestListener.php', 'PHPUnit_Framework_TestResult' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/TestResult.php', 'PHPUnit_Framework_TestSuite' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/TestSuite.php', 'PHPUnit_Framework_TestSuite_DataProvider' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/TestSuite/DataProvider.php', 'PHPUnit_Framework_UnintentionallyCoveredCodeError' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/UnintentionallyCoveredCodeError.php', 'PHPUnit_Framework_Warning' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Framework/Warning.php', 'PHPUnit_Runner_BaseTestRunner' => '/home/daniel/www/phpbench/phpbench/vendor/phpunit/phpunit/src/Runner/BaseTestRunner.php', ...); private $classMapAuthoritative = FALSE }, 1 => 'loadClass')	TRUE	TRUE
+7	93	1	0.003859	501496
+6	92	1	0.003865	500992
+6	94	0	0.003925	503584	require	1	/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_files.php	/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	43	0
+7	95	0	0.003934	503680	dirname	0		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_files.php	5	1	'/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_files.php'
+7	95	1	0.003942	503768
+7	96	0	0.003945	503768	dirname	0		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_files.php	5	1	'/home/daniel/www/phpbench/phpbench/vendor/composer'
+7	96	1	0.003952	503840
+7	97	0	0.003956	503632	dirname	0		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_files.php	6	1	'/home/daniel/www/phpbench/phpbench/vendor'
+7	97	1	0.003962	503696
+6	94	1	0.003967	504768
+6	98	0	0.003973	502896	composerRequire9bed9e1f915d0ebcff3af38e17fc302a	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	45	2	'0e6d7bf4a5811bfa5cf40c5ccd6fae6a'	'/home/daniel/www/phpbench/phpbench/vendor/symfony/polyfill-mbstring/bootstrap.php'
+7	99	0	0.004278	550656	require	1	/home/daniel/www/phpbench/phpbench/vendor/symfony/polyfill-mbstring/bootstrap.php	/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	55	0
+8	100	0	0.004288	550752	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/symfony/polyfill-mbstring/bootstrap.php	14	1	'mb_strlen'
+8	100	1	0.004324	550752
+7	99	1	0.004343	550704
+6	98	1	0.004354	543336
+6	101	0	0.004364	543112	composerRequire9bed9e1f915d0ebcff3af38e17fc302a	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	45	2	'd9d39f82a605ebe5918f683dd402334c'	'/home/daniel/www/phpbench/phpbench/vendor/padraic/humbug_get_contents/src/function.php'
+7	102	0	0.004491	553960	require	1	/home/daniel/www/phpbench/phpbench/vendor/padraic/humbug_get_contents/src/function.php	/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	55	0
+8	103	0	0.004501	554056	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/padraic/humbug_get_contents/src/function.php	13	1	'humbug_get_contents'
+8	103	1	0.004509	554056
+8	104	0	0.004513	554056	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/padraic/humbug_get_contents/src/function.php	38	1	'humbug_get_headers'
+8	104	1	0.004519	554056
+8	105	0	0.004523	554056	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/padraic/humbug_get_contents/src/function.php	46	1	'humbug_set_headers'
+8	105	1	0.004529	554056
+7	102	1	0.004533	554008
+6	101	1	0.004538	551720
+6	106	0	0.004543	551496	composerRequire9bed9e1f915d0ebcff3af38e17fc302a	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	45	2	'bd9ae12176e6d741c5a5bd2efe7b71b7'	'/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php'
+7	107	0	0.004651	569672	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	55	0
+8	108	0	0.004661	570448	call_user_func:{/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php:106}	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	106	1	class Closure { public $static = array ('symbols' => array (0 => 'Functional\\Exceptions\\InvalidArgumentException', 1 => 'Functional\\Sequences\\LinearSequence', 2 => 'Functional\\Sequences\\ExponentialSequence', 3 => 'Functional\\every', 4 => 'Functional\\some', 5 => 'Functional\\difference', 6 => 'Functional\\drop_first', 7 => 'Functional\\drop_last', 8 => 'Functional\\each', 9 => 'Functional\\first', 10 => 'Functional\\filter', 11 => 'Functional\\flat_map', 12 => 'Functional\\flatten', 13 => 'Functional\\group', 14 => 'Functional\\invoke', 15 => 'Functional\\invoke_if', 16 => 'Functional\\invoke_first', 17 => 'Functional\\invoke_last', 18 => 'Functional\\last', 19 => 'Functional\\memoize', 20 => 'Functional\\map', 21 => 'Functional\\maximum', 22 => 'Functional\\minimum', 23 => 'Functional\\none', 24 => 'Functional\\partition', 25 => 'Functional\\pick', 26 => 'Functional\\pluck', 27 => 'Functional\\product', 28 => 'Functional\\ratio', 29 => 'Functional\\unique', 30 => 'Functional\\reduce_left', 31 => 'Functional\\reduce_right', 32 => 'Functional\\reject', 33 => 'Functional\\select', 34 => 'Functional\\sum', 35 => 'Functional\\average', 36 => 'Functional\\first_index_of', 37 => 'Functional\\last_index_of', 38 => 'Functional\\indexes_of', 39 => 'Functional\\true', 40 => 'Functional\\false', 41 => 'Functional\\truthy', 42 => 'Functional\\falsy', 43 => 'Functional\\contains', 44 => 'Functional\\zip', 45 => 'Functional\\head', 46 => 'Functional\\tail', 47 => 'Functional\\with', 48 => 'Functional\\sort', 49 => 'Functional\\retry', 50 => 'Functional\\poll', 51 => 'Functional\\sequence_constant', 52 => 'Functional\\sequence_linear', 53 => 'Functional\\sequence_exponential', 54 => 'Functional\\partial_left', 55 => 'Functional\\partial_right', 56 => 'Functional\\partial_any', 57 => 'Functional\\partial_method', 58 => 'Functional\\id', 59 => 'Functional\\const_function', 60 => 'Functional\\capture'), 'basePath' => '/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional') }
+9	109	0	0.004705	571216	{closure:/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php:24-106}	1		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	106	0
+10	110	0	0.004717	577472	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\Exceptions\\InvalidArgumentException'
+10	110	1	0.004729	577472
+10	111	0	0.004732	577520	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\Exceptions\\InvalidArgumentException'	FALSE
+10	111	1	0.004740	577520
+10	112	0	0.004744	577520	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\Exceptions\\InvalidArgumentException'	FALSE
+10	112	1	0.004752	577520
+10	113	0	0.004755	577864	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\Exceptions\\InvalidArgumentException'	11
+10	113	1	0.004762	577920
+10	114	0	0.004765	577920	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'Exceptions\\InvalidArgumentException'
+10	114	1	0.004773	578280
+10	115	0	0.004776	578176	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'Exceptions\\InvalidArgumentException')
+11	116	0	0.004786	578488	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'Exceptions\\InvalidArgumentException'
+11	116	1	0.004799	578544
+10	115	1	0.004803	578536
+10	117	0	0.004806	578128	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Exceptions\\InvalidArgumentException')
+10	117	1	0.004814	578224
+10	118	0	0.004818	577816	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Exceptions\\InvalidArgumentException'
+10	118	1	0.004826	577872
+10	119	0	0.005119	631320	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Exceptions/InvalidArgumentException.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	119	1	0.005129	631368
+10	120	0	0.005134	630608	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\Sequences\\LinearSequence'
+10	120	1	0.005142	630608
+10	121	0	0.005145	630656	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\Sequences\\LinearSequence'	FALSE
+10	121	1	0.005152	630656
+10	122	0	0.005156	630656	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\Sequences\\LinearSequence'	FALSE
+10	122	1	0.005176	630656
+10	123	0	0.005180	631000	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\Sequences\\LinearSequence'	11
+10	123	1	0.005187	631048
+10	124	0	0.005190	631048	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'Sequences\\LinearSequence'
+10	124	1	0.005198	631416
+10	125	0	0.005201	631320	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'Sequences\\LinearSequence')
+11	126	0	0.005210	631632	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'Sequences\\LinearSequence'
+11	126	1	0.005217	631680
+10	125	1	0.005221	631672
+10	127	0	0.005224	631256	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Sequences\\LinearSequence')
+10	127	1	0.005232	631352
+10	128	0	0.005235	630952	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Sequences\\LinearSequence'
+10	128	1	0.005243	631000
+10	129	0	0.005332	640552	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Sequences/LinearSequence.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	129	1	0.005360	640632
+10	130	0	0.005365	639688	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\Sequences\\ExponentialSequence'
+10	130	1	0.005373	639688
+10	131	0	0.005376	639736	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\Sequences\\ExponentialSequence'	FALSE
+10	131	1	0.005384	639736
+10	132	0	0.005387	639736	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\Sequences\\ExponentialSequence'	FALSE
+10	132	1	0.005394	639736
+10	133	0	0.005397	640080	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\Sequences\\ExponentialSequence'	11
+10	133	1	0.005407	640128
+10	134	0	0.005412	640128	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'Sequences\\ExponentialSequence'
+10	134	1	0.005423	640480
+10	135	0	0.005428	640384	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'Sequences\\ExponentialSequence')
+11	136	0	0.005437	640696	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'Sequences\\ExponentialSequence'
+11	136	1	0.005444	640744
+10	135	1	0.005447	640744
+10	137	0	0.005450	640344	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Sequences\\ExponentialSequence')
+10	137	1	0.005458	640440
+10	138	0	0.005461	640032	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Sequences\\ExponentialSequence'
+10	138	1	0.005469	640080
+10	139	0	0.005578	652624	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Sequences/ExponentialSequence.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	139	1	0.005589	652704
+10	140	0	0.005594	651760	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\every'
+10	140	1	0.005601	651760
+10	141	0	0.005604	651808	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\every'	FALSE
+10	141	1	0.005611	651808
+10	142	0	0.005614	651808	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\every'	FALSE
+10	142	1	0.005621	651808
+10	143	0	0.005624	652152	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\every'	11
+10	143	1	0.005630	652184
+10	144	0	0.005633	652184	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'every'
+10	144	1	0.005640	652520
+10	145	0	0.005643	652440	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'every')
+11	146	0	0.005651	652760	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'every'
+11	146	1	0.005658	652808
+10	145	1	0.005661	652792
+10	147	0	0.005664	652408	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Every')
+10	147	1	0.005671	652504
+10	148	0	0.005674	652104	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Every'
+10	148	1	0.005681	652136
+10	149	0	0.005736	656064	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Every.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	149	1	0.005749	656112
+10	150	0	0.005753	655416	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\some'
+10	150	1	0.005760	655416
+10	151	0	0.005764	655464	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\some'	FALSE
+10	151	1	0.005770	655464
+10	152	0	0.005773	655464	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\some'	FALSE
+10	152	1	0.005780	655464
+10	153	0	0.005783	655808	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\some'	11
+10	153	1	0.005790	655840
+10	154	0	0.005792	655840	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'some'
+10	154	1	0.005799	656176
+10	155	0	0.005802	656096	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'some')
+11	156	0	0.005809	656408	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'some'
+11	156	1	0.005815	656440
+10	155	1	0.005819	656432
+10	157	0	0.005822	656048	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Some')
+10	157	1	0.005829	656144
+10	158	0	0.005832	655760	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Some'
+10	158	1	0.005839	655792
+10	159	0	0.005891	659744	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Some.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	159	1	0.005899	659792
+10	160	0	0.005903	659096	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\difference'
+10	160	1	0.005910	659096
+10	161	0	0.005914	659144	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\difference'	FALSE
+10	161	1	0.005920	659144
+10	162	0	0.005923	659144	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\difference'	FALSE
+10	162	1	0.005929	659144
+10	163	0	0.005933	659488	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\difference'	11
+10	163	1	0.005939	659520
+10	164	0	0.005942	659520	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'difference'
+10	164	1	0.005949	659856
+10	165	0	0.005951	659776	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'difference')
+11	166	0	0.005959	660088	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'difference'
+11	166	1	0.005965	660120
+10	165	1	0.005969	660112
+10	167	0	0.005984	659728	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Difference')
+10	167	1	0.005991	659824
+10	168	0	0.005995	659440	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Difference'
+10	168	1	0.006002	659472
+10	169	0	0.006064	663128	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Difference.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	169	1	0.006073	663176
+10	170	0	0.006077	662480	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\drop_first'
+10	170	1	0.006087	662480
+10	171	0	0.006090	662528	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\drop_first'	FALSE
+10	171	1	0.006097	662528
+10	172	0	0.006100	662528	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\drop_first'	FALSE
+10	172	1	0.006107	662528
+10	173	0	0.006110	662872	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\drop_first'	11
+10	173	1	0.006117	662904
+10	174	0	0.006120	662904	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'drop_first'
+10	174	1	0.006126	663408
+10	175	0	0.006129	663328	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'drop', 1 => 'first')
+11	176	0	0.006137	663640	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'drop'
+11	176	1	0.006143	663672
+11	177	0	0.006146	663888	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'first'
+11	177	1	0.006152	663920
+10	175	1	0.006156	663832
+10	178	0	0.006159	663280	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Drop', 1 => 'First')
+10	178	1	0.006166	663376
+10	179	0	0.006169	662824	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'DropFirst'
+10	179	1	0.006176	662856
+10	180	0	0.006243	667320	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/DropFirst.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	180	1	0.006252	667368
+10	181	0	0.006256	666672	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\drop_last'
+10	181	1	0.006263	666672
+10	182	0	0.006267	666720	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\drop_last'	FALSE
+10	182	1	0.006274	666720
+10	183	0	0.006277	666720	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\drop_last'	FALSE
+10	183	1	0.006284	666720
+10	184	0	0.006287	667064	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\drop_last'	11
+10	184	1	0.006306	667096
+10	185	0	0.006309	667096	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'drop_last'
+10	185	1	0.006316	667600
+10	186	0	0.006319	667520	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'drop', 1 => 'last')
+11	187	0	0.006326	667832	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'drop'
+11	187	1	0.006332	667864
+11	188	0	0.006336	668080	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'last'
+11	188	1	0.006341	668112
+10	186	1	0.006345	668024
+10	189	0	0.006348	667472	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Drop', 1 => 'Last')
+10	189	1	0.006355	667568
+10	190	0	0.006358	667016	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'DropLast'
+10	190	1	0.006365	667048
+10	191	0	0.006419	671856	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/DropLast.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	191	1	0.006428	671904
+10	192	0	0.006434	671208	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\each'
+10	192	1	0.006442	671208
+10	193	0	0.006445	671256	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\each'	FALSE
+10	193	1	0.006451	671256
+10	194	0	0.006454	671256	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\each'	FALSE
+10	194	1	0.006461	671256
+10	195	0	0.006464	671600	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\each'	11
+10	195	1	0.006471	671632
+10	196	0	0.006475	671632	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'each'
+10	196	1	0.006486	671992
+10	197	0	0.006491	671912	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'each')
+11	198	0	0.006501	672224	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'each'
+11	198	1	0.006507	672256
+10	197	1	0.006511	672248
+10	199	0	0.006514	671840	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Each')
+10	199	1	0.006521	671936
+10	200	0	0.006524	671552	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Each'
+10	200	1	0.006531	671584
+10	201	0	0.006580	674656	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Each.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	201	1	0.006591	674704
+10	202	0	0.006598	674008	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\first'
+10	202	1	0.006609	674008
+10	203	0	0.006614	674056	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\first'	FALSE
+10	203	1	0.006625	674056
+10	204	0	0.006628	674056	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\first'	FALSE
+10	204	1	0.006635	674056
+10	205	0	0.006638	674400	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\first'	11
+10	205	1	0.006645	674432
+10	206	0	0.006648	674432	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'first'
+10	206	1	0.006654	674768
+10	207	0	0.006657	674688	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'first')
+11	208	0	0.006665	675016	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'first'
+11	208	1	0.006671	675048
+10	207	1	0.006675	675040
+10	209	0	0.006678	674656	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'First')
+10	209	1	0.006684	674752
+10	210	0	0.006687	674352	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'First'
+10	210	1	0.006694	674384
+10	211	0	0.006749	678768	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/First.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	211	1	0.006757	678816
+10	212	0	0.006761	678120	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\filter'
+10	212	1	0.006769	678120
+10	213	0	0.006772	678168	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\filter'	FALSE
+10	213	1	0.006784	678168
+10	214	0	0.006788	678168	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\filter'	FALSE
+10	214	1	0.006794	678168
+10	215	0	0.006798	678512	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\filter'	11
+10	215	1	0.006805	678544
+10	216	0	0.006807	678544	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'filter'
+10	216	1	0.006814	678880
+10	217	0	0.006817	678800	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'filter')
+11	218	0	0.006824	679112	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'filter'
+11	218	1	0.006831	679144
+10	217	1	0.006834	679136
+10	219	0	0.006837	678752	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Filter')
+10	219	1	0.006844	678848
+10	220	0	0.006847	678464	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Filter'
+10	220	1	0.006853	678496
+10	221	0	0.006895	681096	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Filter.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	221	1	0.006903	681144
+10	222	0	0.006907	680448	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\flat_map'
+10	222	1	0.006915	680448
+10	223	0	0.006918	680496	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\flat_map'	FALSE
+10	223	1	0.006924	680496
+10	224	0	0.006928	680496	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\flat_map'	FALSE
+10	224	1	0.006934	680496
+10	225	0	0.006937	680840	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\flat_map'	11
+10	225	1	0.006944	680872
+10	226	0	0.006946	680872	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'flat_map'
+10	226	1	0.006953	681376
+10	227	0	0.006956	681296	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'flat', 1 => 'map')
+11	228	0	0.006964	681608	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'flat'
+11	228	1	0.006970	681664
+11	229	0	0.006973	681880	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'map'
+11	229	1	0.006979	681912
+10	227	1	0.006983	681824
+10	230	0	0.006986	681272	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Flat', 1 => 'Map')
+10	230	1	0.006993	681368
+10	231	0	0.006996	680792	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'FlatMap'
+10	231	1	0.007003	680824
+10	232	0	0.007074	686424	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/FlatMap.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	232	1	0.007083	686472
+10	233	0	0.007087	685776	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\flatten'
+10	233	1	0.007095	685776
+10	234	0	0.007098	685824	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\flatten'	FALSE
+10	234	1	0.007105	685824
+10	235	0	0.007112	685824	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\flatten'	FALSE
+10	235	1	0.007119	685824
+10	236	0	0.007122	686168	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\flatten'	11
+10	236	1	0.007129	686200
+10	237	0	0.007132	686200	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'flatten'
+10	237	1	0.007138	686536
+10	238	0	0.007141	686456	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'flatten')
+11	239	0	0.007149	686768	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'flatten'
+11	239	1	0.007155	686800
+10	238	1	0.007159	686792
+10	240	0	0.007162	686408	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Flatten')
+10	240	1	0.007169	686504
+10	241	0	0.007171	686120	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Flatten'
+10	241	1	0.007178	686152
+10	242	0	0.007252	691448	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Flatten.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	242	1	0.007261	691496
+10	243	0	0.007265	690800	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\group'
+10	243	1	0.007272	690800
+10	244	0	0.007275	690848	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\group'	FALSE
+10	244	1	0.007282	690848
+10	245	0	0.007285	690848	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\group'	FALSE
+10	245	1	0.007291	690848
+10	246	0	0.007295	691192	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\group'	11
+10	246	1	0.007301	691224
+10	247	0	0.007304	691224	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'group'
+10	247	1	0.007310	691560
+10	248	0	0.007313	691480	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'group')
+11	249	0	0.007320	691816	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'group'
+11	249	1	0.007326	691848
+10	248	1	0.007330	691840
+10	250	0	0.007333	691456	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Group')
+10	250	1	0.007340	691552
+10	251	0	0.007343	691144	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Group'
+10	251	1	0.007350	691176
+10	252	0	0.007403	695624	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Group.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	252	1	0.007411	695672
+10	253	0	0.007415	694976	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\invoke'
+10	253	1	0.007423	694976
+10	254	0	0.007426	695024	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\invoke'	FALSE
+10	254	1	0.007433	695024
+10	255	0	0.007436	695024	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\invoke'	FALSE
+10	255	1	0.007442	695024
+10	256	0	0.007446	695368	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\invoke'	11
+10	256	1	0.007455	695400
+10	257	0	0.007459	695400	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'invoke'
+10	257	1	0.007465	695736
+10	258	0	0.007468	695656	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'invoke')
+11	259	0	0.007476	695968	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'invoke'
+11	259	1	0.007482	696000
+10	258	1	0.007485	695992
+10	260	0	0.007488	695608	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Invoke')
+10	260	1	0.007495	695704
+10	261	0	0.007498	695320	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Invoke'
+10	261	1	0.007505	695352
+10	262	0	0.007569	700752	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Invoke.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	262	1	0.007578	700800
+10	263	0	0.007582	700104	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\invoke_if'
+10	263	1	0.007590	700104
+10	264	0	0.007593	700152	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\invoke_if'	FALSE
+10	264	1	0.007600	700152
+10	265	0	0.007603	700152	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\invoke_if'	FALSE
+10	265	1	0.007609	700152
+10	266	0	0.007612	700496	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\invoke_if'	11
+10	266	1	0.007619	700528
+10	267	0	0.007621	700528	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'invoke_if'
+10	267	1	0.007628	701032
+10	268	0	0.007631	700952	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'invoke', 1 => 'if')
+11	269	0	0.007638	701264	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'invoke'
+11	269	1	0.007645	701296
+11	270	0	0.007648	701512	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'if'
+11	270	1	0.007654	701544
+10	268	1	0.007658	701456
+10	271	0	0.007660	700904	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Invoke', 1 => 'If')
+10	271	1	0.007669	701000
+10	272	0	0.007674	700448	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'InvokeIf'
+10	272	1	0.007685	700480
+10	273	0	0.007741	703600	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/InvokeIf.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	273	1	0.007749	703648
+10	274	0	0.007753	703048	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\invoke_first'
+10	274	1	0.007761	703048
+10	275	0	0.007764	703096	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\invoke_first'	FALSE
+10	275	1	0.007772	703096
+10	276	0	0.007775	703096	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\invoke_first'	FALSE
+10	276	1	0.007781	703096
+10	277	0	0.007785	703440	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\invoke_first'	11
+10	277	1	0.007795	703472
+10	278	0	0.007798	703472	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'invoke_first'
+10	278	1	0.007805	703976
+10	279	0	0.007808	703896	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'invoke', 1 => 'first')
+11	280	0	0.007816	704208	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'invoke'
+11	280	1	0.007822	704240
+11	281	0	0.007825	704456	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'first'
+11	281	1	0.007831	704488
+10	279	1	0.007835	704416
+10	282	0	0.007837	703864	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Invoke', 1 => 'First')
+10	282	1	0.007845	703960
+10	283	0	0.007847	703392	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'InvokeFirst'
+10	283	1	0.007854	703424
+10	284	0	0.007907	708392	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/InvokeFirst.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	284	1	0.007915	708440
+10	285	0	0.007919	707744	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\invoke_last'
+10	285	1	0.007927	707744
+10	286	0	0.007930	707792	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\invoke_last'	FALSE
+10	286	1	0.007937	707792
+10	287	0	0.007940	707792	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\invoke_last'	FALSE
+10	287	1	0.007946	707792
+10	288	0	0.007950	708136	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\invoke_last'	11
+10	288	1	0.007956	708168
+10	289	0	0.007959	708168	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'invoke_last'
+10	289	1	0.007966	708672
+10	290	0	0.007968	708592	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'invoke', 1 => 'last')
+11	291	0	0.007976	708904	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'invoke'
+11	291	1	0.007982	708936
+11	292	0	0.007985	709152	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'last'
+11	292	1	0.007991	709184
+10	290	1	0.007995	709096
+10	293	0	0.007998	708544	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Invoke', 1 => 'Last')
+10	293	1	0.008005	708640
+10	294	0	0.008008	708088	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'InvokeLast'
+10	294	1	0.008014	708120
+10	295	0	0.008070	713656	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/InvokeLast.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	295	1	0.008078	713704
+10	296	0	0.008082	713008	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\last'
+10	296	1	0.008089	713008
+10	297	0	0.008093	713056	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\last'	FALSE
+10	297	1	0.008099	713056
+10	298	0	0.008102	713056	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\last'	FALSE
+10	298	1	0.008112	713056
+10	299	0	0.008116	713400	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\last'	11
+10	299	1	0.008122	713432
+10	300	0	0.008125	713432	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'last'
+10	300	1	0.008132	713768
+10	301	0	0.008135	713688	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'last')
+11	302	0	0.008154	714000	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'last'
+11	302	1	0.008161	714032
+10	301	1	0.008164	714024
+10	303	0	0.008167	713640	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Last')
+10	303	1	0.008174	713736
+10	304	0	0.008177	713352	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Last'
+10	304	1	0.008184	713384
+10	305	0	0.008239	717528	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Last.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	305	1	0.008247	717576
+10	306	0	0.008251	716880	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\memoize'
+10	306	1	0.008258	716880
+10	307	0	0.008261	716928	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\memoize'	FALSE
+10	307	1	0.008268	716928
+10	308	0	0.008271	716928	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\memoize'	FALSE
+10	308	1	0.008278	716928
+10	309	0	0.008281	717272	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\memoize'	11
+10	309	1	0.008288	717304
+10	310	0	0.008291	717304	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'memoize'
+10	310	1	0.008297	717640
+10	311	0	0.008318	717560	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'memoize')
+11	312	0	0.008340	717872	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'memoize'
+11	312	1	0.008346	717904
+10	311	1	0.008350	717896
+10	313	0	0.008353	717512	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Memoize')
+10	313	1	0.008360	717608
+10	314	0	0.008363	717224	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Memoize'
+10	314	1	0.008370	717256
+10	315	0	0.008479	730640	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Memoize.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	315	1	0.008488	730688
+10	316	0	0.008492	730040	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\map'
+10	316	1	0.008500	730040
+10	317	0	0.008503	730088	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\map'	FALSE
+10	317	1	0.008510	730088
+10	318	0	0.008513	730088	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\map'	FALSE
+10	318	1	0.008519	730088
+10	319	0	0.008523	730432	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\map'	11
+10	319	1	0.008529	730464
+10	320	0	0.008532	730464	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'map'
+10	320	1	0.008542	730800
+10	321	0	0.008545	730720	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'map')
+11	322	0	0.008552	731032	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'map'
+11	322	1	0.008558	731064
+10	321	1	0.008562	731056
+10	323	0	0.008565	730672	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Map')
+10	323	1	0.008572	730768
+10	324	0	0.008575	730384	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Map'
+10	324	1	0.008582	730416
+10	325	0	0.008635	733848	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Map.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	325	1	0.008644	733896
+10	326	0	0.008648	733200	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\maximum'
+10	326	1	0.008655	733200
+10	327	0	0.008658	733248	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\maximum'	FALSE
+10	327	1	0.008664	733248
+10	328	0	0.008667	733248	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\maximum'	FALSE
+10	328	1	0.008673	733248
+10	329	0	0.008677	733592	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\maximum'	11
+10	329	1	0.008683	733624
+10	330	0	0.008686	733624	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'maximum'
+10	330	1	0.008692	733960
+10	331	0	0.008695	733880	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'maximum')
+11	332	0	0.008703	734192	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'maximum'
+11	332	1	0.008708	734224
+10	331	1	0.008712	734232
+10	333	0	0.008715	733848	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Maximum')
+10	333	1	0.008722	733944
+10	334	0	0.008725	733544	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Maximum'
+10	334	1	0.008732	733576
+10	335	0	0.008796	738288	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Maximum.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	335	1	0.008807	738336
+10	336	0	0.008811	737640	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\minimum'
+10	336	1	0.008819	737640
+10	337	0	0.008822	737688	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\minimum'	FALSE
+10	337	1	0.008829	737688
+10	338	0	0.008832	737688	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\minimum'	FALSE
+10	338	1	0.008838	737688
+10	339	0	0.008842	738032	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\minimum'	11
+10	339	1	0.008848	738064
+10	340	0	0.008851	738064	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'minimum'
+10	340	1	0.008857	738400
+10	341	0	0.008860	738320	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'minimum')
+11	342	0	0.008872	738632	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'minimum'
+11	342	1	0.008878	738664
+10	341	1	0.008882	738656
+10	343	0	0.008885	738272	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Minimum')
+10	343	1	0.008892	738368
+10	344	0	0.008895	737984	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Minimum'
+10	344	1	0.008902	738016
+10	345	0	0.008952	742288	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Minimum.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	345	1	0.008960	742336
+10	346	0	0.008964	741640	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\none'
+10	346	1	0.008971	741640
+10	347	0	0.008974	741688	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\none'	FALSE
+10	347	1	0.008981	741688
+10	348	0	0.008984	741688	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\none'	FALSE
+10	348	1	0.008990	741688
+10	349	0	0.008994	742032	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\none'	11
+10	349	1	0.009000	742064
+10	350	0	0.009003	742064	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'none'
+10	350	1	0.009010	742408
+10	351	0	0.009013	742328	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'none')
+11	352	0	0.009020	742640	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'none'
+11	352	1	0.009026	742672
+10	351	1	0.009029	742664
+10	353	0	0.009032	742272	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'None')
+10	353	1	0.009039	742368
+10	354	0	0.009042	741984	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'None'
+10	354	1	0.009049	742016
+10	355	0	0.009096	745912	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/None.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	355	1	0.009104	745960
+10	356	0	0.009108	745264	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\partition'
+10	356	1	0.009115	745264
+10	357	0	0.009118	745312	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\partition'	FALSE
+10	357	1	0.009125	745312
+10	358	0	0.009128	745312	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\partition'	FALSE
+10	358	1	0.009134	745312
+10	359	0	0.009138	745656	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\partition'	11
+10	359	1	0.009144	745688
+10	360	0	0.009147	745688	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'partition'
+10	360	1	0.009153	746024
+10	361	0	0.009156	745944	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'partition')
+11	362	0	0.009163	746256	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'partition'
+11	362	1	0.009170	746288
+10	361	1	0.009174	746304
+10	363	0	0.009177	745920	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Partition')
+10	363	1	0.009187	746016
+10	364	0	0.009190	745608	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Partition'
+10	364	1	0.009198	745640
+10	365	0	0.009264	749712	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Partition.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	365	1	0.009285	749760
+10	366	0	0.009289	749064	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\pick'
+10	366	1	0.009296	749064
+10	367	0	0.009299	749112	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\pick'	FALSE
+10	367	1	0.009306	749112
+10	368	0	0.009309	749112	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\pick'	FALSE
+10	368	1	0.009315	749112
+10	369	0	0.009319	749456	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\pick'	11
+10	369	1	0.009325	749488
+10	370	0	0.009328	749488	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'pick'
+10	370	1	0.009334	749824
+10	371	0	0.009337	749744	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'pick')
+11	372	0	0.009344	750056	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'pick'
+11	372	1	0.009351	750088
+10	371	1	0.009355	750104
+10	373	0	0.009358	749720	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Pick')
+10	373	1	0.009365	749816
+10	374	0	0.009368	749408	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Pick'
+10	374	1	0.009375	749440
+10	375	0	0.009429	753528	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Pick.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	375	1	0.009437	753576
+10	376	0	0.009441	752880	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\pluck'
+10	376	1	0.009449	752880
+10	377	0	0.009452	752928	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\pluck'	FALSE
+10	377	1	0.009459	752928
+10	378	0	0.009462	752928	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\pluck'	FALSE
+10	378	1	0.009468	752928
+10	379	0	0.009472	753272	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\pluck'	11
+10	379	1	0.009478	753304
+10	380	0	0.009481	753304	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'pluck'
+10	380	1	0.009488	753640
+10	381	0	0.009491	753560	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'pluck')
+11	382	0	0.009499	753872	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'pluck'
+11	382	1	0.009505	753904
+10	381	1	0.009509	753896
+10	383	0	0.009512	753512	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Pluck')
+10	383	1	0.009518	753608
+10	384	0	0.009521	753224	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Pluck'
+10	384	1	0.009528	753256
+10	385	0	0.009597	759088	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Pluck.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	385	1	0.009606	759136
+10	386	0	0.009610	758392	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\product'
+10	386	1	0.009618	758392
+10	387	0	0.009621	758440	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\product'	FALSE
+10	387	1	0.009628	758440
+10	388	0	0.009631	758440	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\product'	FALSE
+10	388	1	0.009638	758440
+10	389	0	0.009641	758784	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\product'	11
+10	389	1	0.009648	758816
+10	390	0	0.009651	758816	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'product'
+10	390	1	0.009657	759152
+10	391	0	0.009660	759072	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'product')
+11	392	0	0.009668	759384	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'product'
+11	392	1	0.009674	759416
+10	391	1	0.009679	759408
+10	393	0	0.009684	759024	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Product')
+10	393	1	0.009696	759120
+10	394	0	0.009701	758736	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Product'
+10	394	1	0.009709	758768
+10	395	0	0.009757	762144	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Product.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	395	1	0.009765	762192
+10	396	0	0.009770	761496	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\ratio'
+10	396	1	0.009777	761496
+10	397	0	0.009780	761544	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\ratio'	FALSE
+10	397	1	0.009787	761544
+10	398	0	0.009790	761544	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\ratio'	FALSE
+10	398	1	0.009796	761544
+10	399	0	0.009800	761888	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\ratio'	11
+10	399	1	0.009806	761920
+10	400	0	0.009809	761920	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'ratio'
+10	400	1	0.009816	762256
+10	401	0	0.009819	762176	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'ratio')
+11	402	0	0.009827	762488	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'ratio'
+11	402	1	0.009833	762520
+10	401	1	0.009837	762512
+10	403	0	0.009840	762128	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Ratio')
+10	403	1	0.009848	762224
+10	404	0	0.009853	761840	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Ratio'
+10	404	1	0.009864	761872
+10	405	0	0.009919	765248	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Ratio.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	405	1	0.009928	765296
+10	406	0	0.009932	764600	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\unique'
+10	406	1	0.009943	764600
+10	407	0	0.009947	764648	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\unique'	FALSE
+10	407	1	0.009954	764648
+10	408	0	0.009958	764648	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\unique'	FALSE
+10	408	1	0.009964	764648
+10	409	0	0.009968	764992	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\unique'	11
+10	409	1	0.009974	765024
+10	410	0	0.009978	765024	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'unique'
+10	410	1	0.009984	765376
+10	411	0	0.009988	765296	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'unique')
+11	412	0	0.009995	765608	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'unique'
+11	412	1	0.010002	765640
+10	411	1	0.010006	765632
+10	413	0	0.010009	765232	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Unique')
+10	413	1	0.010016	765328
+10	414	0	0.010019	764944	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Unique'
+10	414	1	0.010026	764976
+10	415	0	0.010084	769800	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Unique.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	415	1	0.010092	769848
+10	416	0	0.010096	769152	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\reduce_left'
+10	416	1	0.010103	769152
+10	417	0	0.010107	769200	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\reduce_left'	FALSE
+10	417	1	0.010114	769200
+10	418	0	0.010117	769200	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\reduce_left'	FALSE
+10	418	1	0.010123	769200
+10	419	0	0.010140	769544	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\reduce_left'	11
+10	419	1	0.010147	769576
+10	420	0	0.010150	769576	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'reduce_left'
+10	420	1	0.010157	770080
+10	421	0	0.010173	770000	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'reduce', 1 => 'left')
+11	422	0	0.010181	770312	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'reduce'
+11	422	1	0.010187	770344
+11	423	0	0.010191	770560	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'left'
+11	423	1	0.010197	770592
+10	421	1	0.010201	770504
+10	424	0	0.010204	769952	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Reduce', 1 => 'Left')
+10	424	1	0.010211	770048
+10	425	0	0.010214	769496	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'ReduceLeft'
+10	425	1	0.010221	769528
+10	426	0	0.010267	772784	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/ReduceLeft.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	426	1	0.010276	772832
+10	427	0	0.010280	772136	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\reduce_right'
+10	427	1	0.010291	772136
+10	428	0	0.010295	772184	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\reduce_right'	FALSE
+10	428	1	0.010302	772184
+10	429	0	0.010317	772184	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\reduce_right'	FALSE
+10	429	1	0.010324	772184
+10	430	0	0.010328	772528	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\reduce_right'	11
+10	430	1	0.010334	772560
+10	431	0	0.010337	772560	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'reduce_right'
+10	431	1	0.010344	773064
+10	432	0	0.010347	772984	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'reduce', 1 => 'right')
+11	433	0	0.010355	773296	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'reduce'
+11	433	1	0.010361	773328
+11	434	0	0.010365	773544	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'right'
+11	434	1	0.010371	773576
+10	432	1	0.010375	773488
+10	435	0	0.010378	772936	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Reduce', 1 => 'Right')
+10	435	1	0.010385	773032
+10	436	0	0.010388	772480	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'ReduceRight'
+10	436	1	0.010395	772512
+10	437	0	0.010451	777544	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/ReduceRight.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	437	1	0.010460	777592
+10	438	0	0.010464	776896	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\reject'
+10	438	1	0.010471	776896
+10	439	0	0.010475	776944	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\reject'	FALSE
+10	439	1	0.010482	776944
+10	440	0	0.010485	776944	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\reject'	FALSE
+10	440	1	0.010491	776944
+10	441	0	0.010495	777288	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\reject'	11
+10	441	1	0.010501	777320
+10	442	0	0.010504	777320	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'reject'
+10	442	1	0.010511	777656
+10	443	0	0.010514	777576	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'reject')
+11	444	0	0.010522	777888	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'reject'
+11	444	1	0.010528	777920
+10	443	1	0.010532	777912
+10	445	0	0.010535	777528	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Reject')
+10	445	1	0.010541	777624
+10	446	0	0.010545	777240	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Reject'
+10	446	1	0.010552	777272
+10	447	0	0.010615	780904	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Reject.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	447	1	0.010623	780952
+10	448	0	0.010627	780256	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\select'
+10	448	1	0.010637	780256
+10	449	0	0.010640	780304	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\select'	FALSE
+10	449	1	0.010647	780304
+10	450	0	0.010650	780304	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\select'	FALSE
+10	450	1	0.010656	780304
+10	451	0	0.010660	780648	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\select'	11
+10	451	1	0.010666	780680
+10	452	0	0.010669	780680	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'select'
+10	452	1	0.010676	781016
+10	453	0	0.010679	780936	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'select')
+11	454	0	0.010686	781248	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'select'
+11	454	1	0.010692	781280
+10	453	1	0.010695	781272
+10	455	0	0.010698	780888	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Select')
+10	455	1	0.010705	780984
+10	456	0	0.010708	780600	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Select'
+10	456	1	0.010714	780632
+10	457	0	0.010771	784248	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Select.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	457	1	0.010780	784296
+10	458	0	0.010784	783600	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\sum'
+10	458	1	0.010791	783600
+10	459	0	0.010794	783648	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\sum'	FALSE
+10	459	1	0.010801	783648
+10	460	0	0.010804	783648	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\sum'	FALSE
+10	460	1	0.010811	783648
+10	461	0	0.010814	783992	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\sum'	11
+10	461	1	0.010821	784024
+10	462	0	0.010824	784024	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'sum'
+10	462	1	0.010830	784360
+10	463	0	0.010833	784280	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'sum')
+11	464	0	0.010841	784592	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'sum'
+11	464	1	0.010846	784624
+10	463	1	0.010850	784616
+10	465	0	0.010853	784232	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Sum')
+10	465	1	0.010860	784328
+10	466	0	0.010863	783944	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Sum'
+10	466	1	0.010870	783976
+10	467	0	0.010916	787344	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Sum.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	467	1	0.010924	787392
+10	468	0	0.010928	786696	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\average'
+10	468	1	0.010936	786696
+10	469	0	0.010941	786744	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\average'	FALSE
+10	469	1	0.010953	786744
+10	470	0	0.010958	786744	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\average'	FALSE
+10	470	1	0.010974	786744
+10	471	0	0.010979	787088	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\average'	11
+10	471	1	0.010986	787120
+10	472	0	0.010989	787120	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'average'
+10	472	1	0.010996	787456
+10	473	0	0.010999	787376	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'average')
+11	474	0	0.011006	787688	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'average'
+11	474	1	0.011012	787720
+10	473	1	0.011016	787736
+10	475	0	0.011019	787352	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Average')
+10	475	1	0.011025	787448
+10	476	0	0.011029	787040	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Average'
+10	476	1	0.011035	787072
+10	477	0	0.011103	791640	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Average.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	477	1	0.011112	791688
+10	478	0	0.011116	790992	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\first_index_of'
+10	478	1	0.011124	790992
+10	479	0	0.011127	791040	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\first_index_of'	FALSE
+10	479	1	0.011148	791040
+10	480	0	0.011151	791040	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\first_index_of'	FALSE
+10	480	1	0.011157	791040
+10	481	0	0.011161	791384	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\first_index_of'	11
+10	481	1	0.011167	791416
+10	482	0	0.011170	791416	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'first_index_of'
+10	482	1	0.011177	792088
+10	483	0	0.011180	792008	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'first', 1 => 'index', 2 => 'of')
+11	484	0	0.011189	792320	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'first'
+11	484	1	0.011195	792352
+11	485	0	0.011198	792584	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'index'
+11	485	1	0.011204	792616
+11	486	0	0.011208	792752	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'of'
+11	486	1	0.011214	792784
+10	483	1	0.011217	792696
+10	487	0	0.011220	791976	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'First', 1 => 'Index', 2 => 'Of')
+10	487	1	0.011228	792072
+10	488	0	0.011231	791336	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'FirstIndexOf'
+10	488	1	0.011238	791368
+10	489	0	0.011291	796304	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/FirstIndexOf.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	489	1	0.011300	796352
+10	490	0	0.011304	795656	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\last_index_of'
+10	490	1	0.011311	795656
+10	491	0	0.011314	795704	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\last_index_of'	FALSE
+10	491	1	0.011324	795704
+10	492	0	0.011328	795704	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\last_index_of'	FALSE
+10	492	1	0.011334	795704
+10	493	0	0.011338	796048	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\last_index_of'	11
+10	493	1	0.011344	796080
+10	494	0	0.011347	796080	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'last_index_of'
+10	494	1	0.011354	796752
+10	495	0	0.011357	796672	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'last', 1 => 'index', 2 => 'of')
+11	496	0	0.011364	796984	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'last'
+11	496	1	0.011370	797016
+11	497	0	0.011374	797232	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'index'
+11	497	1	0.011380	797264
+11	498	0	0.011396	797400	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'of'
+11	498	1	0.011403	797432
+10	495	1	0.011407	797344
+10	499	0	0.011410	796624	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Last', 1 => 'Index', 2 => 'Of')
+10	499	1	0.011417	796720
+10	500	0	0.011421	796000	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'LastIndexOf'
+10	500	1	0.011428	796032
+10	501	0	0.011497	800960	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/LastIndexOf.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	501	1	0.011505	801008
+10	502	0	0.011509	800312	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\indexes_of'
+10	502	1	0.011516	800312
+10	503	0	0.011519	800360	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\indexes_of'	FALSE
+10	503	1	0.011526	800360
+10	504	0	0.011529	800360	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\indexes_of'	FALSE
+10	504	1	0.011535	800360
+10	505	0	0.011539	800704	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\indexes_of'	11
+10	505	1	0.011545	800736
+10	506	0	0.011548	800736	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'indexes_of'
+10	506	1	0.011555	801240
+10	507	0	0.011558	801160	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'indexes', 1 => 'of')
+11	508	0	0.011565	801472	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'indexes'
+11	508	1	0.011571	801504
+11	509	0	0.011575	801720	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'of'
+11	509	1	0.011581	801752
+10	507	1	0.011584	801664
+10	510	0	0.011587	801112	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Indexes', 1 => 'Of')
+10	510	1	0.011594	801208
+10	511	0	0.011597	800656	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'IndexesOf'
+10	511	1	0.011604	800688
+10	512	0	0.011657	805536	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/IndexesOf.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	512	1	0.011668	805584
+10	513	0	0.011672	804888	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\true'
+10	513	1	0.011679	804888
+10	514	0	0.011682	804936	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\true'	FALSE
+10	514	1	0.011689	804936
+10	515	0	0.011692	804936	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\true'	FALSE
+10	515	1	0.011698	804936
+10	516	0	0.011702	805280	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\true'	11
+10	516	1	0.011708	805312
+10	517	0	0.011711	805312	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'true'
+10	517	1	0.011717	805648
+10	518	0	0.011720	805568	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'true')
+11	519	0	0.011727	805880	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'true'
+11	519	1	0.011733	805912
+10	518	1	0.011737	805904
+10	520	0	0.011739	805520	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'True')
+10	520	1	0.011746	805616
+10	521	0	0.011749	805232	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'True'
+10	521	1	0.011755	805264
+10	522	0	0.011800	808808	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/True.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	522	1	0.011809	808856
+10	523	0	0.011813	808160	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\false'
+10	523	1	0.011823	808160
+10	524	0	0.011829	808208	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\false'	FALSE
+10	524	1	0.011839	808208
+10	525	0	0.011842	808208	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\false'	FALSE
+10	525	1	0.011848	808208
+10	526	0	0.011852	808552	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\false'	11
+10	526	1	0.011858	808584
+10	527	0	0.011861	808584	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'false'
+10	527	1	0.011867	808920
+10	528	0	0.011870	808840	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'false')
+11	529	0	0.011878	809152	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'false'
+11	529	1	0.011883	809184
+10	528	1	0.011887	809176
+10	530	0	0.011890	808792	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'False')
+10	530	1	0.011896	808888
+10	531	0	0.011899	808504	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'False'
+10	531	1	0.011906	808536
+10	532	0	0.011952	812088	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/False.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	532	1	0.011960	812136
+10	533	0	0.011964	811440	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\truthy'
+10	533	1	0.011971	811440
+10	534	0	0.011977	811488	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\truthy'	FALSE
+10	534	1	0.011984	811488
+10	535	0	0.011987	811488	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\truthy'	FALSE
+10	535	1	0.011993	811488
+10	536	0	0.011997	811832	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\truthy'	11
+10	536	1	0.012003	811864
+10	537	0	0.012006	811864	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'truthy'
+10	537	1	0.012012	812200
+10	538	0	0.012015	812120	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'truthy')
+11	539	0	0.012024	812432	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'truthy'
+11	539	1	0.012034	812464
+10	538	1	0.012039	812456
+10	540	0	0.012045	812072	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Truthy')
+10	540	1	0.012056	812168
+10	541	0	0.012063	811784	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Truthy'
+10	541	1	0.012071	811816
+10	542	0	0.012118	815128	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Truthy.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	542	1	0.012126	815176
+10	543	0	0.012130	814480	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\falsy'
+10	543	1	0.012137	814480
+10	544	0	0.012140	814528	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\falsy'	FALSE
+10	544	1	0.012146	814528
+10	545	0	0.012150	814528	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\falsy'	FALSE
+10	545	1	0.012156	814528
+10	546	0	0.012159	814872	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\falsy'	11
+10	546	1	0.012165	814904
+10	547	0	0.012168	814904	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'falsy'
+10	547	1	0.012175	815240
+10	548	0	0.012178	815160	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'falsy')
+11	549	0	0.012185	815472	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'falsy'
+11	549	1	0.012191	815504
+10	548	1	0.012194	815496
+10	550	0	0.012197	815112	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Falsy')
+10	550	1	0.012204	815208
+10	551	0	0.012207	814824	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Falsy'
+10	551	1	0.012213	814856
+10	552	0	0.012258	818112	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Falsy.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	552	1	0.012266	818160
+10	553	0	0.012270	817464	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\contains'
+10	553	1	0.012277	817464
+10	554	0	0.012280	817512	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\contains'	FALSE
+10	554	1	0.012287	817512
+10	555	0	0.012290	817512	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\contains'	FALSE
+10	555	1	0.012320	817512
+10	556	0	0.012325	817856	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\contains'	11
+10	556	1	0.012331	817888
+10	557	0	0.012335	817888	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'contains'
+10	557	1	0.012341	818224
+10	558	0	0.012344	818144	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'contains')
+11	559	0	0.012352	818456	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'contains'
+11	559	1	0.012358	818488
+10	558	1	0.012362	818480
+10	560	0	0.012365	818096	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Contains')
+10	560	1	0.012371	818192
+10	561	0	0.012374	817808	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Contains'
+10	561	1	0.012381	817840
+10	562	0	0.012433	821824	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Contains.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	562	1	0.012441	821872
+10	563	0	0.012445	821176	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\zip'
+10	563	1	0.012453	821176
+10	564	0	0.012456	821224	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\zip'	FALSE
+10	564	1	0.012463	821224
+10	565	0	0.012466	821224	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\zip'	FALSE
+10	565	1	0.012472	821224
+10	566	0	0.012476	821568	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\zip'	11
+10	566	1	0.012482	821600
+10	567	0	0.012485	821600	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'zip'
+10	567	1	0.012492	821936
+10	568	0	0.012495	821856	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'zip')
+11	569	0	0.012503	822168	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'zip'
+11	569	1	0.012521	822200
+10	568	1	0.012525	822192
+10	570	0	0.012528	821808	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Zip')
+10	570	1	0.012534	821904
+10	571	0	0.012537	821520	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Zip'
+10	571	1	0.012544	821552
+10	572	0	0.012615	828992	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Zip.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	572	1	0.012623	829040
+10	573	0	0.012627	828344	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\head'
+10	573	1	0.012634	828344
+10	574	0	0.012637	828392	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\head'	FALSE
+10	574	1	0.012644	828392
+10	575	0	0.012647	828392	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\head'	FALSE
+10	575	1	0.012653	828392
+10	576	0	0.012656	828736	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\head'	11
+10	576	1	0.012663	828768
+10	577	0	0.012669	828768	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'head'
+10	577	1	0.012676	829112
+10	578	0	0.012679	829032	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'head')
+11	579	0	0.012686	829344	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'head'
+11	579	1	0.012692	829376
+10	578	1	0.012695	829368
+10	580	0	0.012698	828976	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Head')
+10	580	1	0.012705	829072
+10	581	0	0.012708	828688	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Head'
+10	581	1	0.012714	828720
+10	582	0	0.012755	831352	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Head.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	582	1	0.012763	831400
+10	583	0	0.012767	830704	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\tail'
+10	583	1	0.012774	830704
+10	584	0	0.012777	830752	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\tail'	FALSE
+10	584	1	0.012784	830752
+10	585	0	0.012787	830752	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\tail'	FALSE
+10	585	1	0.012793	830752
+10	586	0	0.012796	831096	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\tail'	11
+10	586	1	0.012803	831128
+10	587	0	0.012805	831128	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'tail'
+10	587	1	0.012812	831464
+10	588	0	0.012815	831384	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'tail')
+11	589	0	0.012822	831696	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'tail'
+11	589	1	0.012828	831728
+10	588	1	0.012831	831720
+10	590	0	0.012834	831336	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Tail')
+10	590	1	0.012841	831432
+10	591	0	0.012844	831048	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Tail'
+10	591	1	0.012850	831080
+10	592	0	0.012911	835816	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Tail.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	592	1	0.012920	835864
+10	593	0	0.012924	835168	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\with'
+10	593	1	0.012931	835168
+10	594	0	0.012934	835216	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\with'	FALSE
+10	594	1	0.012940	835216
+10	595	0	0.012944	835216	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\with'	FALSE
+10	595	1	0.012950	835216
+10	596	0	0.012953	835560	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\with'	11
+10	596	1	0.012960	835592
+10	597	0	0.012963	835592	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'with'
+10	597	1	0.012969	835928
+10	598	0	0.012972	835848	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'with')
+11	599	0	0.012983	836160	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'with'
+11	599	1	0.012989	836192
+10	598	1	0.012993	836184
+10	600	0	0.012996	835800	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'With')
+10	600	1	0.013002	835896
+10	601	0	0.013005	835512	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'With'
+10	601	1	0.013012	835544
+10	602	0	0.013060	839496	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/With.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	602	1	0.013068	839544
+10	603	0	0.013072	838896	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\sort'
+10	603	1	0.013079	838896
+10	604	0	0.013082	838944	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\sort'	FALSE
+10	604	1	0.013089	838944
+10	605	0	0.013092	838944	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\sort'	FALSE
+10	605	1	0.013098	838944
+10	606	0	0.013102	839288	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\sort'	11
+10	606	1	0.013109	839320
+10	607	0	0.013114	839320	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'sort'
+10	607	1	0.013124	839656
+10	608	0	0.013129	839576	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'sort')
+11	609	0	0.013141	839888	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'sort'
+11	609	1	0.013153	839920
+10	608	1	0.013157	839912
+10	610	0	0.013160	839528	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Sort')
+10	610	1	0.013167	839624
+10	611	0	0.013170	839240	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Sort'
+10	611	1	0.013176	839272
+10	612	0	0.013243	845760	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Sort.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	612	1	0.013251	845808
+10	613	0	0.013255	845112	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\retry'
+10	613	1	0.013262	845112
+10	614	0	0.013265	845160	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\retry'	FALSE
+10	614	1	0.013273	845160
+10	615	0	0.013276	845160	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\retry'	FALSE
+10	615	1	0.013282	845160
+10	616	0	0.013285	845504	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\retry'	11
+10	616	1	0.013292	845536
+10	617	0	0.013294	845536	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'retry'
+10	617	1	0.013301	845872
+10	618	0	0.013304	845792	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'retry')
+11	619	0	0.013311	846104	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'retry'
+11	619	1	0.013317	846136
+10	618	1	0.013321	846128
+10	620	0	0.013324	845744	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Retry')
+10	620	1	0.013334	845840
+10	621	0	0.013337	845456	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Retry'
+10	621	1	0.013344	845488
+10	622	0	0.013428	854784	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Retry.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	622	1	0.013436	854832
+10	623	0	0.013440	853896	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\poll'
+10	623	1	0.013447	853896
+10	624	0	0.013450	853944	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\poll'	FALSE
+10	624	1	0.013457	853944
+10	625	0	0.013460	853944	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\poll'	FALSE
+10	625	1	0.013466	853944
+10	626	0	0.013470	854288	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\poll'	11
+10	626	1	0.013476	854320
+10	627	0	0.013479	854320	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'poll'
+10	627	1	0.013486	854656
+10	628	0	0.013489	854576	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'poll')
+11	629	0	0.013496	854888	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'poll'
+11	629	1	0.013501	854920
+10	628	1	0.013505	854912
+10	630	0	0.013508	854528	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Poll')
+10	630	1	0.013514	854624
+10	631	0	0.013517	854240	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Poll'
+10	631	1	0.013524	854272
+10	632	0	0.013625	863544	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Poll.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	632	1	0.013634	863592
+10	633	0	0.013638	862752	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\sequence_constant'
+10	633	1	0.013645	862752
+10	634	0	0.013648	862800	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\sequence_constant'	FALSE
+10	634	1	0.013655	862800
+10	635	0	0.013658	862800	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\sequence_constant'	FALSE
+10	635	1	0.013664	862800
+10	636	0	0.013668	863144	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\sequence_constant'	11
+10	636	1	0.013674	863184
+10	637	0	0.013677	863184	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'sequence_constant'
+10	637	1	0.013683	863688
+10	638	0	0.013686	863600	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'sequence', 1 => 'constant')
+11	639	0	0.013694	863912	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'sequence'
+11	639	1	0.013700	863944
+11	640	0	0.013703	864160	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'constant'
+11	640	1	0.013709	864192
+10	638	1	0.013713	864104
+10	641	0	0.013716	863552	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Sequence', 1 => 'Constant')
+10	641	1	0.013726	863648
+10	642	0	0.013730	863096	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'SequenceConstant'
+10	642	1	0.013737	863136
+10	643	0	0.013778	866208	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/SequenceConstant.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	643	1	0.013787	866256
+10	644	0	0.013790	865464	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\sequence_linear'
+10	644	1	0.013797	865464
+10	645	0	0.013801	865512	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\sequence_linear'	FALSE
+10	645	1	0.013808	865512
+10	646	0	0.013811	865512	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\sequence_linear'	FALSE
+10	646	1	0.013817	865512
+10	647	0	0.013820	865856	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\sequence_linear'	11
+10	647	1	0.013827	865888
+10	648	0	0.013829	865888	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'sequence_linear'
+10	648	1	0.013836	866392
+10	649	0	0.013839	866312	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'sequence', 1 => 'linear')
+11	650	0	0.013847	866624	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'sequence'
+11	650	1	0.013852	866656
+11	651	0	0.013856	866872	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'linear'
+11	651	1	0.013862	866904
+10	649	1	0.013866	866816
+10	652	0	0.013868	866264	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Sequence', 1 => 'Linear')
+10	652	1	0.013875	866360
+10	653	0	0.013878	865808	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'SequenceLinear'
+10	653	1	0.013885	865840
+10	654	0	0.013929	869264	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/SequenceLinear.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	654	1	0.013937	869312
+10	655	0	0.013942	868568	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\sequence_exponential'
+10	655	1	0.013950	868568
+10	656	0	0.013955	868616	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\sequence_exponential'	FALSE
+10	656	1	0.013967	868616
+10	657	0	0.013972	868616	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\sequence_exponential'	FALSE
+10	657	1	0.013979	868616
+10	658	0	0.013983	868960	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\sequence_exponential'	11
+10	658	1	0.013989	869000
+10	659	0	0.013992	869000	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'sequence_exponential'
+10	659	1	0.013998	869504
+10	660	0	0.014002	869416	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'sequence', 1 => 'exponential')
+11	661	0	0.014009	869728	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'sequence'
+11	661	1	0.014015	869760
+11	662	0	0.014019	869976	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'exponential'
+11	662	1	0.014028	870008
+10	660	1	0.014032	869920
+10	663	0	0.014035	869368	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Sequence', 1 => 'Exponential')
+10	663	1	0.014042	869464
+10	664	0	0.014045	868912	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'SequenceExponential'
+10	664	1	0.014052	868952
+10	665	0	0.014106	874264	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/SequenceExponential.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	665	1	0.014114	874312
+10	666	0	0.014118	873616	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\partial_left'
+10	666	1	0.014125	873616
+10	667	0	0.014129	873664	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\partial_left'	FALSE
+10	667	1	0.014136	873664
+10	668	0	0.014139	873664	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\partial_left'	FALSE
+10	668	1	0.014145	873664
+10	669	0	0.014148	874008	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\partial_left'	11
+10	669	1	0.014155	874040
+10	670	0	0.014158	874040	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'partial_left'
+10	670	1	0.014164	874544
+10	671	0	0.014167	874464	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'partial', 1 => 'left')
+11	672	0	0.014175	874776	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'partial'
+11	672	1	0.014180	874808
+11	673	0	0.014184	875024	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'left'
+11	673	1	0.014190	875056
+10	671	1	0.014193	874968
+10	674	0	0.014198	874416	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Partial', 1 => 'Left')
+10	674	1	0.014210	874512
+10	675	0	0.014216	873960	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'PartialLeft'
+10	675	1	0.014228	873992
+10	676	0	0.014278	877656	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/PartialLeft.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	676	1	0.014286	877704
+10	677	0	0.014290	877104	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\partial_right'
+10	677	1	0.014297	877104
+10	678	0	0.014300	877152	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\partial_right'	FALSE
+10	678	1	0.014307	877152
+10	679	0	0.014310	877152	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\partial_right'	FALSE
+10	679	1	0.014316	877152
+10	680	0	0.014320	877496	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\partial_right'	11
+10	680	1	0.014326	877528
+10	681	0	0.014329	877528	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'partial_right'
+10	681	1	0.014336	878040
+10	682	0	0.014339	877960	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'partial', 1 => 'right')
+11	683	0	0.014350	878272	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'partial'
+11	683	1	0.014356	878304
+11	684	0	0.014360	878528	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'right'
+11	684	1	0.014366	878560
+10	682	1	0.014369	878472
+10	685	0	0.014372	877912	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Partial', 1 => 'Right')
+10	685	1	0.014379	878008
+10	686	0	0.014382	877448	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'PartialRight'
+10	686	1	0.014389	877480
+10	687	0	0.014433	881072	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/PartialRight.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	687	1	0.014441	881120
+10	688	0	0.014445	880520	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\partial_any'
+10	688	1	0.014452	880520
+10	689	0	0.014455	880568	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\partial_any'	FALSE
+10	689	1	0.014462	880568
+10	690	0	0.014465	880568	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\partial_any'	FALSE
+10	690	1	0.014471	880568
+10	691	0	0.014475	880912	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\partial_any'	11
+10	691	1	0.014481	880944
+10	692	0	0.014484	880944	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'partial_any'
+10	692	1	0.014491	881472
+10	693	0	0.014494	881392	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'partial', 1 => 'any')
+11	694	0	0.014501	881704	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'partial'
+11	694	1	0.014507	881736
+11	695	0	0.014510	881952	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'any'
+11	695	1	0.014516	881984
+10	693	1	0.014520	881896
+10	696	0	0.014523	881320	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Partial', 1 => 'Any')
+10	696	1	0.014530	881416
+10	697	0	0.014533	880864	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'PartialAny'
+10	697	1	0.014540	880896
+10	698	0	0.014644	892096	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/PartialAny.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+11	699	0	0.014653	892192	defined	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/PartialAny.php	53	1	'HHVM_VERSION'
+11	699	1	0.014673	892192
+11	700	0	0.014679	892176	Functional\…	1		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/PartialAny.php	87	0
+12	701	0	0.014685	892272	hash_init	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/PartialAny.php	72	1	'gost'
+12	701	1	0.014693	892576
+11	700	1	0.014697	892528
+11	702	0	0.014701	892576	define	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/PartialAny.php	87	2	'Functional\\…'	resource(71) of type (Hash Context)
+11	702	1	0.014710	892576
+10	698	1	0.014714	892480
+10	703	0	0.014718	889952	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\partial_method'
+10	703	1	0.014724	889952
+10	704	0	0.014731	890000	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\partial_method'	FALSE
+10	704	1	0.014738	890000
+10	705	0	0.014741	890000	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\partial_method'	FALSE
+10	705	1	0.014747	890000
+10	706	0	0.014751	890344	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\partial_method'	11
+10	706	1	0.014757	890376
+10	707	0	0.014760	890376	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'partial_method'
+10	707	1	0.014767	890880
+10	708	0	0.014770	890800	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'partial', 1 => 'method')
+11	709	0	0.014778	891112	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'partial'
+11	709	1	0.014784	891144
+11	710	0	0.014788	891376	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'method'
+11	710	1	0.014793	891408
+10	708	1	0.014797	891320
+10	711	0	0.014800	890768	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Partial', 1 => 'Method')
+10	711	1	0.014807	890864
+10	712	0	0.014810	890296	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'PartialMethod'
+10	712	1	0.014817	890328
+10	713	0	0.014872	895584	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/PartialMethod.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	713	1	0.014881	895632
+10	714	0	0.014885	894984	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\id'
+10	714	1	0.014892	894984
+10	715	0	0.014895	895032	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\id'	FALSE
+10	715	1	0.014902	895032
+10	716	0	0.014905	895032	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\id'	FALSE
+10	716	1	0.014912	895032
+10	717	0	0.014915	895392	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\id'	11
+10	717	1	0.014921	895424
+10	718	0	0.014924	895424	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'id'
+10	718	1	0.014931	895760
+10	719	0	0.014934	895680	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'id')
+11	720	0	0.014941	895992	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'id'
+11	720	1	0.014947	896024
+10	719	1	0.014951	896016
+10	721	0	0.014954	895632	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Id')
+10	721	1	0.014961	895728
+10	722	0	0.014964	895344	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Id'
+10	722	1	0.014970	895376
+10	723	0	0.015004	896640	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Id.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	723	1	0.015012	896688
+10	724	0	0.015017	896088	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\const_function'
+10	724	1	0.015028	896088
+10	725	0	0.015034	896136	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\const_function'	FALSE
+10	725	1	0.015046	896136
+10	726	0	0.015049	896136	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\const_function'	FALSE
+10	726	1	0.015056	896136
+10	727	0	0.015059	896480	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\const_function'	11
+10	727	1	0.015066	896512
+10	728	0	0.015069	896512	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'const_function'
+10	728	1	0.015075	897016
+10	729	0	0.015078	896936	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'const', 1 => 'function')
+11	730	0	0.015086	897248	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'const'
+11	730	1	0.015092	897280
+11	731	0	0.015096	897496	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'function'
+11	731	1	0.015102	897528
+10	729	1	0.015105	897440
+10	732	0	0.015108	896888	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Const', 1 => 'Function')
+10	732	1	0.015115	896984
+10	733	0	0.015118	896432	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'ConstFunction'
+10	733	1	0.015125	896464
+10	734	0	0.015165	898832	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/ConstFunction.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	734	1	0.015173	898880
+10	735	0	0.015177	898280	function_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	1	'Functional\\capture'
+10	735	1	0.015184	898280
+10	736	0	0.015187	898328	class_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\capture'	FALSE
+10	736	1	0.015193	898328
+10	737	0	0.015197	898328	interface_exists	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	92	2	'Functional\\capture'	FALSE
+10	737	1	0.015202	898328
+10	738	0	0.015206	898672	substr	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'Functional\\capture'	11
+10	738	1	0.015212	898704
+10	739	0	0.015215	898704	explode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'_'	'capture'
+10	739	1	0.015221	899040
+10	740	0	0.015224	898960	array_map	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	'ucfirst'	array (0 => 'capture')
+11	741	0	0.015231	899272	ucfirst	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	1	'capture'
+11	741	1	0.015237	899304
+10	740	1	0.015241	899296
+10	742	0	0.015244	898912	implode	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	101	2	''	array (0 => 'Capture')
+10	742	1	0.015250	899008
+10	743	0	0.015253	898624	str_replace	0		/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	102	3	'\\'	'/'	'Capture'
+10	743	1	0.015260	898656
+10	744	0	0.015314	901920	require	1	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/Capture.php	/home/daniel/www/phpbench/phpbench/vendor/lstrojny/functional-php/src/Functional/_import.php	104	0
+10	744	1	0.015327	901968
+9	109	1	0.015332	901368
+8	108	1	0.015337	900808
+7	107	1	0.015343	893104
+6	106	1	0.015349	892424
+6	745	0	0.015355	892184	composerRequire9bed9e1f915d0ebcff3af38e17fc302a	1		/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	45	2	'a4ecaeafb8cfb009ad0e052c90355e98'	'/home/daniel/www/phpbench/phpbench/vendor/beberlei/assert/lib/Assert/functions.php'
+7	746	0	0.015440	899944	require	1	/home/daniel/www/phpbench/phpbench/vendor/beberlei/assert/lib/Assert/functions.php	/home/daniel/www/phpbench/phpbench/vendor/composer/autoload_real.php	55	0
+7	746	1	0.015448	899992
+6	745	1	0.015453	899120
+5	7	1	0.015457	898896
+4	5	1	0.015466	885304
+3	4	1	0.015471	884048
+2	3	1	0.015474	883912
+2	747	0	0.015525	888080	require_once	1	/home/daniel/www/phpbench/phpbench/benchmarks/Micro/Math/StatisticsBench.php	/tmp/daniel/PhpBenchypQVRT	28	0
+2	747	1	0.015533	888128
+2	748	0	0.015540	887664	benchmark	1		/tmp/daniel/PhpBenchypQVRT	37	4	class PhpBench\Micro\Math\StatisticsBench {  }	'benchVariance'	0	array ()
+3	749	0	0.015551	887848	microtime	0		/tmp/daniel/PhpBenchypQVRT	74	1	TRUE
+3	749	1	0.015557	887848
+3	750	0	0.015561	887944	microtime	0		/tmp/daniel/PhpBenchypQVRT	80	1	TRUE
+3	750	1	0.015566	887944
+2	748	1	0.015570	887800
+2	751	0	0.015588	887752	benchmark	1		/tmp/daniel/PhpBenchypQVRT	39	4	class PhpBench\Micro\Math\StatisticsBench {  }	'benchVariance'	1	array ()
+3	752	0	0.015596	887848	microtime	0		/tmp/daniel/PhpBenchypQVRT	74	1	TRUE
+3	752	1	0.015601	887848
+3	753	0	0.015618	887880	PhpBench\Micro\Math\StatisticsBench->benchVariance	1		/tmp/daniel/PhpBenchypQVRT	77	0
+4	754	0	0.015626	888144	spl_autoload_call	0		/tmp/daniel/PhpBenchypQVRT	25	1	'PhpBench\\Math\\Statistics'
+5	755	0	0.015633	888240	Composer\Autoload\ClassLoader->loadClass	1		/tmp/daniel/PhpBenchypQVRT	25	1	'PhpBench\\Math\\Statistics'
+6	756	0	0.015641	888400	Composer\Autoload\ClassLoader->findFile	1		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	300	1	'PhpBench\\Math\\Statistics'
+7	757	0	0.015652	888768	Composer\Autoload\ClassLoader->findFileWithExtension	1		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	329	2	'PhpBench\\Math\\Statistics'	'.php'
+8	758	0	0.015662	888944	strtr	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	347	3	'PhpBench\\Math\\Statistics'	'\\'	'/'
+8	758	1	0.015670	888992
+8	759	0	0.015677	889040	strpos	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	352	2	'PhpBench\\Math\\Statistics'	'PhpBench\\Tests\\'
+8	759	1	0.015685	889040
+8	760	0	0.015690	889040	strpos	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	352	2	'PhpBench\\Math\\Statistics'	'PhpBench\\Extensions\\XDebug\\Tests\\'
+8	760	1	0.015709	889040
+8	761	0	0.015713	889040	strpos	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	352	2	'PhpBench\\Math\\Statistics'	'PhpBench\\Extensions\\XDebug\\'
+8	761	1	0.015720	889040
+8	762	0	0.015724	889040	strpos	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	352	2	'PhpBench\\Math\\Statistics'	'PhpBench\\Extensions\\Dbal\\Tests\\'
+8	762	1	0.015731	889040
+8	763	0	0.015734	889040	strpos	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	352	2	'PhpBench\\Math\\Statistics'	'PhpBench\\Extensions\\Dbal\\Benchmarks\\'
+8	763	1	0.015753	889040
+8	764	0	0.015757	889040	strpos	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	352	2	'PhpBench\\Math\\Statistics'	'PhpBench\\Extensions\\Dbal\\'
+8	764	1	0.015763	889040
+8	765	0	0.015767	889040	strpos	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	352	2	'PhpBench\\Math\\Statistics'	'PhpBench\\Dom\\'
+8	765	1	0.015773	889040
+8	766	0	0.015776	889040	strpos	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	352	2	'PhpBench\\Math\\Statistics'	'PhpBench\\DependencyInjection\\'
+8	766	1	0.015783	889040
+8	767	0	0.015786	889040	strpos	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	352	2	'PhpBench\\Math\\Statistics'	'PhpBench\\Benchmarks\\'
+8	767	1	0.015792	889040
+8	768	0	0.015796	889040	strpos	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	352	2	'PhpBench\\Math\\Statistics'	'PhpBench\\'
+8	768	1	0.015802	889040
+8	769	0	0.015807	889096	substr	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	354	2	'PhpBench/Math/Statistics.php'	9
+8	769	1	0.015817	889136
+8	770	0	0.015821	889168	file_exists	0		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	354	1	'/home/daniel/www/phpbench/phpbench/lib/Math/Statistics.php'
+8	770	1	0.015832	889168
+7	757	1	0.015837	888896
+6	756	1	0.015842	888848
+6	771	0	0.015846	888848	Composer\Autoload\includeFile	1		/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	301	1	'/home/daniel/www/phpbench/phpbench/lib/Math/Statistics.php'
+7	772	0	0.016055	921016	include	1	/home/daniel/www/phpbench/phpbench/lib/Math/Statistics.php	/home/daniel/www/phpbench/phpbench/vendor/composer/ClassLoader.php	412	0
+7	772	1	0.016064	921064
+6	771	1	0.016068	920464
+5	755	1	0.016072	920248
+4	754	1	0.016076	920152
+4	773	0	0.016081	921248	PhpBench\Math\Statistics::variance	1		/home/daniel/www/phpbench/phpbench/benchmarks/Micro/Math/StatisticsBench.php	27	2	array (0 => 10, 1 => 100, 2 => 42, 3 => 84, 4 => 11, 5 => 12, 6 => 9, 7 => 6)	???
+5	774	0	0.016098	921328	PhpBench\Math\Statistics::mean	1		/home/daniel/www/phpbench/phpbench/lib/Math/Statistics.php	44	1	array (0 => 10, 1 => 100, 2 => 42, 3 => 84, 4 => 11, 5 => 12, 6 => 9, 7 => 6)
+6	775	0	0.016112	921376	array_sum	0		/home/daniel/www/phpbench/phpbench/lib/Math/Statistics.php	73	1	array (0 => 10, 1 => 100, 2 => 42, 3 => 84, 4 => 11, 5 => 12, 6 => 9, 7 => 6)
+6	775	1	0.016121	921376
+6	776	0	0.016125	921424	count	0		/home/daniel/www/phpbench/phpbench/lib/Math/Statistics.php	79	1	array (0 => 10, 1 => 100, 2 => 42, 3 => 84, 4 => 11, 5 => 12, 6 => 9, 7 => 6)
+6	776	1	0.016134	921424
+5	774	1	0.016138	921376
+5	777	0	0.016143	922488	pow	0		/home/daniel/www/phpbench/phpbench/lib/Math/Statistics.php	47	2	-24.25	2
+5	777	1	0.016165	922488
+5	778	0	0.016170	922536	pow	0		/home/daniel/www/phpbench/phpbench/lib/Math/Statistics.php	47	2	65.75	2
+5	778	1	0.016177	922536
+5	779	0	0.016181	922536	pow	0		/home/daniel/www/phpbench/phpbench/lib/Math/Statistics.php	47	2	7.75	2
+5	779	1	0.016187	922536
+5	780	0	0.016191	922536	pow	0		/home/daniel/www/phpbench/phpbench/lib/Math/Statistics.php	47	2	49.75	2
+5	780	1	0.016197	922536
+5	781	0	0.016201	922536	pow	0		/home/daniel/www/phpbench/phpbench/lib/Math/Statistics.php	47	2	-23.25	2
+5	781	1	0.016207	922536
+5	782	0	0.016210	922536	pow	0		/home/daniel/www/phpbench/phpbench/lib/Math/Statistics.php	47	2	-22.25	2
+5	782	1	0.016217	922536
+5	783	0	0.016220	922536	pow	0		/home/daniel/www/phpbench/phpbench/lib/Math/Statistics.php	47	2	-25.25	2
+5	783	1	0.016226	922536
+5	784	0	0.016229	922536	pow	0		/home/daniel/www/phpbench/phpbench/lib/Math/Statistics.php	47	2	-28.25	2
+5	784	1	0.016235	922536
+5	785	0	0.016239	921520	count	0		/home/daniel/www/phpbench/phpbench/lib/Math/Statistics.php	51	1	array (0 => 10, 1 => 100, 2 => 42, 3 => 84, 4 => 11, 5 => 12, 6 => 9, 7 => 6)
+5	785	1	0.016248	921520
+5	786	0	0.016251	921520	count	0		/home/daniel/www/phpbench/phpbench/lib/Math/Statistics.php	55	1	array (0 => 10, 1 => 100, 2 => 42, 3 => 84, 4 => 11, 5 => 12, 6 => 9, 7 => 6)
+5	786	1	0.016258	921520
+4	773	1	0.016263	921328
+3	753	1	0.016267	920024
+3	787	0	0.016271	920072	microtime	0		/tmp/daniel/PhpBenchypQVRT	80	1	TRUE
+3	787	1	0.016276	920072
+2	751	1	0.016280	919928
+2	788	0	0.016284	920064	ob_get_contents	0		/tmp/daniel/PhpBenchypQVRT	45	0
+2	788	1	0.016290	920096
+2	789	0	0.016323	920232	ob_end_clean	0		/tmp/daniel/PhpBenchypQVRT	46	0
+2	789	1	0.016330	903648
+2	790	0	0.016334	903648	memory_get_peak_usage	0		/tmp/daniel/PhpBenchypQVRT	52	0
+2	790	1	0.016340	903648
+2	791	0	0.016343	903952	memory_get_usage	0		/tmp/daniel/PhpBenchypQVRT	53	0
+2	791	1	0.016348	903952
+2	792	0	0.016352	904136	memory_get_usage	0		/tmp/daniel/PhpBenchypQVRT	54	1	TRUE
+2	792	1	0.016357	904136
+2	793	0	0.016361	904752	json_encode	0		/tmp/daniel/PhpBenchypQVRT	58	1	array ('mem' => array ('peak' => 1007952, 'final' => 903952, 'real' => 1310720), 'time' => 676, 'buffer' => '')
+2	793	1	0.016379	904848
+			0.016635	16600
+TRACE END   [2016-06-18 16:12:57]
+

@@ -242,7 +242,7 @@ class TimeUnit
      */
     public function format($time, $unit = null, $mode = null, $precision = null, $suffix = true)
     {
-        $value = number_format($this->toDestUnit($time, $unit, $mode), $precision ?: $this->precision);
+        $value = number_format($this->toDestUnit($time, $unit, $mode), $precision !== null ? $precision : $this->precision);
 
         if (false === $suffix) {
             return $value;

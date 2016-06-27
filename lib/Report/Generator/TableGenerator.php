@@ -75,6 +75,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
             'pretty_params' => false,
             'iterations' => false,
             'labels' => [],
+            'class_map' => [],
         ];
     }
 
@@ -119,6 +120,9 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
                 ],
                 'iterations' => [
                     'type' => 'boolean',
+                ],
+                'class_map' => [
+                    'type' => ['object', 'array'],
                 ],
             ],
         ];
@@ -518,6 +522,10 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
         $reportsEl = $document->createRoot('reports');
         $reportsEl->setAttribute('name', 'table');
         $reportEl = $reportsEl->appendElement('report');
+        $classMap = array_merge(
+            $this->classMap,
+            $config['class_map']
+        );
 
         if (isset($config['title'])) {
             $reportEl->setAttribute('title', $config['title']);
@@ -571,8 +579,8 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
                     $cellEl = $rowEl->appendElement('cell', $value);
                     $cellEl->setAttribute('name', $key);
 
-                    if (isset($this->classMap[$key])) {
-                        $cellEl->setAttribute('class', implode(' ', $this->classMap[$key]));
+                    if (isset($classMap[$key])) {
+                        $cellEl->setAttribute('class', implode(' ', $classMap[$key]));
                     }
                 }
             }

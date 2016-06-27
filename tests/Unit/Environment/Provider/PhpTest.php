@@ -51,9 +51,10 @@ class PhpTest extends \PHPUnit_Framework_TestCase
     public function testRemote()
     {
         $this->launcher->payload(Argument::type('string'), [])->willReturn($this->payload->reveal());
-        $this->payload->launch()->willReturn(['version' => 'success']);
+        $this->payload->launch()->willReturn(['version' => 'success', 'xdebug' => true]);
         $info = $this->createProvider(true)->getInformation();
         $this->assertEquals('success', $info['version']);
+        $this->assertTrue($info['xdebug']);
     }
 
     private function createProvider($remote = false)

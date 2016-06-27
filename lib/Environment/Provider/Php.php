@@ -45,7 +45,10 @@ class Php implements ProviderInterface
     private function getData()
     {
         if (false === $this->remoteVersion) {
-            return ['version' => phpversion()];
+            return [
+                'version' => phpversion(),
+                'xdebug' => in_array('xdebug', get_loaded_extensions()),
+            ];
         }
 
         return $this->launcher->payload(

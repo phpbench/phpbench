@@ -202,6 +202,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->assertNoErrors($suite);
         $this->assertEquals(2, $suite->getSummary()->getNbSubjects());
         $subjects = $suite->getSubjects();
+
         $this->assertEquals('one', $subjects[0]->getName());
         $this->assertEquals('three', $subjects[1]->getName());
         $this->executor->execute($subject2, Argument::cetera())->shouldNotHaveBeenCalled();
