@@ -68,7 +68,11 @@ class ConfigurableRegistry extends Registry
             ));
         }
 
-        return $this->configs[$name];
+        if (!isset($this->resolvedConfigs[$name])) {
+            $this->resolveConfig($name);
+        }
+
+        return $this->resolvedConfigs[$name];
     }
 
     /**
@@ -90,22 +94,7 @@ class ConfigurableRegistry extends Registry
             ));
         }
 
-        $config = $this->resolveConfig($config);
-
-        if (!isset($config[$this->serviceType])) {
-            throw new \InvalidArgumentException(sprintf(
-                '%s configuration must EITHER indicate its target %s service with the "%s" key or extend an existing configuration with the "extends" key.',
-                $this->serviceType,
-                $this->serviceType,
-                $this->serviceType
-            ));
-        }
-
-        $service = $this->getService($config[$this->serviceType]);
-
-        // eagerly validate
-        $config = $this->mergeAndValidateConfig($service, $config);
-        $this->configs[$name] = new Config($name, $config);
+        $this->configs[$name] = $config;
     }
 
     /**
@@ -117,8 +106,10 @@ class ConfigurableRegistry extends Registry
      *
      * @return array
      */
-    private function resolveConfig(array $config)
+    private function resolveConfig($name)
     {
+        $config = $this->configs[$name];
+
         if (isset($config['extends'])) {
             $extended = $this->getConfig($config['extends']);
 
@@ -133,12 +124,24 @@ class ConfigurableRegistry extends Registry
 
             unset($config['extends']);
             $config = array_merge(
-                $this->resolveConfig($extended->getArrayCopy()),
+                $extended->getArrayCopy(),
                 $config
             );
         }
 
-        return $config;
+        if (!isset($config[$this->serviceType])) {
+            throw new \InvalidArgumentException(sprintf(
+                '%s configuration must EITHER indicate its target %s service with the "%s" key or extend an existing configuration with the "extends" key.',
+                $this->serviceType,
+                $this->serviceType,
+                $this->serviceType
+            ));
+        }
+
+        $service = $this->getService($config[$this->serviceType]);
+
+        $config = $this->mergeAndValidateConfig($service, $config);
+        $this->resolvedConfigs[$name] = new Config($name, $config);
     }
 
     /**

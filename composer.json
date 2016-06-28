@@ -20,7 +20,7 @@
         "seld/jsonlint": "^1.0",
         "justinrainbow/json-schema": "^1.6",
         "doctrine/annotations": "^1.2.7",
-        "lstrojny/functional-php": "^1.0",
+        "lstrojny/functional-php": ">=1.0 <1.2.0",
         "beberlei/assert": "^2.4",
         "ext-dom": "*",
         "ext-json": "*",
