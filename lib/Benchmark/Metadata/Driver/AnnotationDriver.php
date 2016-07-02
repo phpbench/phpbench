@@ -21,37 +21,40 @@ use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\DriverInterface;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\ReflectionHierarchy;
-use PhpBench\Benchmark\Remote\Reflector;
+use BetterReflection\Reflection\ReflectionClass;
+use BetterReflection\Reflector\ClassReflector;
 
 class AnnotationDriver implements DriverInterface
 {
-    private $reflector;
     private $reader;
 
-    public function __construct(Reflector $reflector, AnnotationReader $reader = null)
+    public function __construct(AnnotationReader $reader = null)
     {
-        $this->reflector = $reflector;
         $this->reader = $reader ?: new AnnotationReader();
     }
 
-    public function getMetadataForHierarchy(ReflectionHierarchy $hierarchy)
+    public function getMetadataForClass(ReflectionClass $class)
     {
-        $primaryReflection = $hierarchy->getTop();
-        $benchmark = new BenchmarkMetadata($primaryReflection->path, $primaryReflection->class);
+        $benchmark = new BenchmarkMetadata($class->getFileName(), $class->getName());
 
-        $this->buildBenchmark($benchmark, $hierarchy);
+        $this->buildBenchmark($benchmark, $class);
 
         return $benchmark;
     }
 
-    private function buildBenchmark(BenchmarkMetadata $benchmark, ReflectionHierarchy $hierarchy)
+    private function buildBenchmark(BenchmarkMetadata $benchmark, ReflectionClass $class)
     {
         $annotations = [];
-        $reflectionHierarchy = array_reverse(iterator_to_array($hierarchy));
+        $stack = [ $class ];
 
-        foreach ($reflectionHierarchy as $reflection) {
+        while ($parent = $class->getParentClass()) {
+            $stack[] = $parent;
+            $class = $parent;
+        }
+
+        foreach (array_reverse($stack) as $class) {
             $benchAnnotations = $this->reader->getClassAnnotations(
-                $reflection
+                $class
             );
 
             $annotations = array_merge($annotations, $benchAnnotations);
@@ -61,16 +64,16 @@ class AnnotationDriver implements DriverInterface
             }
         }
 
-        foreach ($reflectionHierarchy as $reflection) {
-            foreach ($reflection->methods as $reflectionMethod) {
-                $hasPrefix = 'bench' === substr($reflectionMethod->name, 0, 5);
+        foreach ($stack as $class) {
+            foreach ($class->getMethods() as $method) {
+                $hasPrefix = 'bench' === substr($method->getName(), 0, 5);
                 $hasAnnotation = false;
                 $subjectAnnotations = null;
 
                 // if the prefix is false check to see if it has a `@Subject` annotation
                 if (false === $hasPrefix) {
                     $subjectAnnotations = $this->reader->getMethodAnnotations(
-                        $reflectionMethod
+                        $method
                     );
 
                     foreach ($subjectAnnotations as $annotation) {
@@ -86,11 +89,11 @@ class AnnotationDriver implements DriverInterface
 
                 if (null === $subjectAnnotations) {
                     $subjectAnnotations = $this->reader->getMethodAnnotations(
-                        $reflectionMethod
+                        $method
                     );
                 }
 
-                $subject = $benchmark->getOrCreateSubject($reflectionMethod->name);
+                $subject = $benchmark->getOrCreateSubject($method->getName());
 
                 // apply the benchmark annotations to the subject
                 foreach ($annotations as $annotation) {

@@ -15,8 +15,8 @@ use Doctrine\Common\Annotations\AnnotationException;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\DocParser;
 use Doctrine\Common\Annotations\TokenParser;
-use PhpBench\Benchmark\Remote\ReflectionClass;
-use PhpBench\Benchmark\Remote\ReflectionMethod;
+use BetterReflection\Reflection\ReflectionClass;
+use BetterReflection\Reflection\ReflectionMethod;
 
 /**
  * Annotation reader.
@@ -147,14 +147,14 @@ class AnnotationReader
     {
         $this->collectImports($class);
 
-        return $this->parse($class->comment, sprintf('benchmark: %s', $class->class));
+        return $this->parse($class->getDocComment(), sprintf('benchmark: %s', $class->getName()));
     }
 
     public function getMethodAnnotations(ReflectionMethod $method)
     {
-        $this->collectImports($method->reflectionClass);
+        $this->collectImports($method->getDeclaringClass());
 
-        return $this->parse($method->comment, sprintf('subject %s::%s', $method->class, $method->name));
+        return $this->parse($method->getDocComment(), sprintf('subject %s::%s', $method->getDeclaringClass(), $method->getName()));
     }
 
     private function collectImports(ReflectionClass $class)
@@ -180,11 +180,11 @@ class AnnotationReader
 
     private function getUseImports(ReflectionClass $class)
     {
-        if (isset($this->useImports[$class->class])) {
-            return $this->useImports[$class->class];
+        if (isset($this->useImports[$class->getName()])) {
+            return $this->useImports[$class->getName()];
         }
 
-        $content = file_get_contents($class->path);
+        $content = file_get_contents($class->getFileName());
         $tokenizer = new TokenParser('<?php ' . $content);
         $useImports = $tokenizer->parseUseStatements($class->namespace);
         $this->useImports[$class->class] = $useImports;

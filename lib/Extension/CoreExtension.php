@@ -73,6 +73,9 @@ use PhpBench\Storage\UuidResolver;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\ExecutableFinder;
+use Composer\Autoload\ClassLoader;
+use BetterReflection\Reflector\ClassReflector;
+use BetterReflection\SourceLocator\Type\ComposerSourceLocator;
 
 class CoreExtension implements ExtensionInterface
 {
@@ -134,6 +137,7 @@ class CoreExtension implements ExtensionInterface
         $this->registerStorage($container);
         $this->registerExpression($container);
         $this->registerFormatter($container);
+        $this->registerReflector($container);
     }
 
     public function build(Container $container)
@@ -180,24 +184,19 @@ class CoreExtension implements ExtensionInterface
             );
         });
 
-        $container->register('benchmark.remote.reflector', function (Container $container) {
-            return new Reflector($container->get('benchmark.remote.launcher'));
-        });
-
         $container->register('benchmark.annotation_reader', function (Container $container) {
             return new AnnotationReader($container->getParameter('annotation_import_use'));
         });
 
         $container->register('benchmark.metadata.driver.annotation', function (Container $container) {
             return new AnnotationDriver(
-                $container->get('benchmark.remote.reflector'),
                 $container->get('benchmark.annotation_reader')
             );
         });
 
         $container->register('benchmark.metadata_factory', function (Container $container) {
             return new Factory(
-                $container->get('benchmark.remote.reflector'),
+                $container->get('reflector'),
                 $container->get('benchmark.metadata.driver.annotation')
             );
         });
@@ -593,5 +592,27 @@ class CoreExtension implements ExtensionInterface
         }
 
         $container->setParameter('path', sprintf('%s/%s', dirname($container->getParameter('config_path')), $path));
+    }
+
+    private function registerReflector(Container $container)
+    {
+        $container->register('reflector', function (Container $container) {
+            $autoload = $container->getParameter('bootstrap');
+            if (!$autoload) {
+                throw new \InvalidArgumentException($autoload);
+            }
+
+            $autoloader = require($autoload);
+
+            if ($autoloader instanceof ClassLoader) {
+                $locator = new ComposerSourceLocator($autoloader);
+            } else {
+                throw new \InvalidArgumentException(
+                    'Only composer projects supported for now!'
+                );
+            }
+
+            return new ClassReflector($locator);
+        });
     }
 }

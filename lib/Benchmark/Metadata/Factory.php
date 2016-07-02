@@ -14,6 +14,8 @@ namespace PhpBench\Benchmark\Metadata;
 use PhpBench\Benchmark\Remote\ReflectionHierarchy;
 use PhpBench\Benchmark\Remote\Reflector;
 use PhpBench\Model\Subject;
+use BetterReflection\Reflector\ClassReflector;
+use BetterReflection\Reflection\ReflectionClass;
 
 /**
  * Benchmark Metadata Factory.
@@ -34,7 +36,7 @@ class Factory
      * @param Reflector $reflector
      * @param DriverInterface $driver
      */
-    public function __construct(Reflector $reflector, DriverInterface $driver)
+    public function __construct(ClassReflector $reflector, DriverInterface $driver)
     {
         $this->reflector = $reflector;
         $this->driver = $driver;
@@ -51,23 +53,25 @@ class Factory
      */
     public function getMetadataForFile($file)
     {
-        $hierarchy = $this->reflector->reflect($file);
+        $class = $this->reflector->reflect($name = $this->getClassNameFromFile($file));
 
-        if ($hierarchy->isEmpty()) {
+        if (null === $class) {
             return;
         }
 
-        if ($hierarchy->getTop() && true === $hierarchy->getTop()->abstract) {
+        if ($class->isAbstract()) {
             return;
         }
 
-        $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
-        $this->validateBenchmark($hierarchy, $metadata);
+        $metadata = $this->driver->getMetadataForClass($class);
+        $this->validateBenchmark($class, $metadata);
 
         // validate the subject and load the parameter sets
         foreach ($metadata->getSubjects() as $subject) {
-            $this->validateSubject($hierarchy, $subject);
+            $this->validateSubject($class, $subject);
             $paramProviders = $subject->getParamProviders();
+
+            continue;
             $parameterSets = $this->reflector->getParameterSets($metadata->getPath(), $paramProviders);
 
             foreach ($parameterSets as $parameterSet) {
@@ -86,40 +90,100 @@ class Factory
         return $metadata;
     }
 
-    private function validateSubject(ReflectionHierarchy $benchmarkReflection, SubjectMetadata $subject)
+    private function validateSubject(ReflectionClass $class, SubjectMetadata $subject)
     {
         foreach (['getBeforeMethods' => 'before', 'getAfterMethods' => 'after'] as $methodName => $context) {
             foreach ($subject->$methodName() as $method) {
-                $this->validateMethodExists($context, $benchmarkReflection, $method);
+                $this->validateMethodExists($context, $class, $method);
             }
         }
     }
 
-    private function validateBenchmark(ReflectionHierarchy $hierarchy, BenchmarkMetadata $benchmark)
+    private function validateBenchmark(ReflectionClass $class, BenchmarkMetadata $benchmark)
     {
         foreach (['getBeforeClassMethods' => 'before class', 'getAfterClassMethods' => 'after class'] as $methodName => $context) {
             foreach ($benchmark->$methodName() as $method) {
-                $this->validateMethodExists($context, $hierarchy, $method, true);
+                $this->validateMethodExists($context, $class, $method, true);
             }
         }
     }
 
-    private function validateMethodExists($context, ReflectionHierarchy $benchmarkReflection, $method, $isStatic = false)
+    private function validateMethodExists($context, ReflectionClass $class, $method, $isStatic = false)
     {
-        if (false === $benchmarkReflection->hasMethod($method)) {
+        if (false === $class->hasMethod($method)) {
             throw new \InvalidArgumentException(sprintf(
                 'Unknown %s method "%s" in benchmark class "%s"',
-                $context, $method, $benchmarkReflection->getTop()->class
+                $context, $method, $class->getName()
             ));
         }
 
-        if ($isStatic !== $benchmarkReflection->hasStaticMethod($method)) {
+        if ($isStatic !== $class->getMethod($method)->isStatic()) {
             throw new \InvalidArgumentException(sprintf(
                 '%s method "%s" must %s static in benchmark class "%s"',
                 $context, $method,
                 $isStatic ? 'be' : 'not be',
-                $benchmarkReflection->getTop()->class
+                $class->getName()
             ));
         }
+    }
+
+    /**
+     * Return the class name from a file.
+     *
+     * Taken from http://stackoverflow.com/questions/7153000/get-class-name-from-file
+     *
+     * @param string $file
+     *
+     * @return string
+     */
+    private function getClassNameFromFile($file)
+    {
+        $fp = fopen($file, 'r');
+
+        $class = $namespace = $buffer = '';
+        $i = 0;
+
+        while (!$class) {
+            if (feof($fp)) {
+                break;
+            }
+
+            // Read entire lines to prevent keyword truncation
+            for ($line = 0; $line <= 20; $line++) {
+                $buffer .= fgets($fp);
+            }
+            $tokens = @token_get_all($buffer);
+
+            if (strpos($buffer, '{') === false) {
+                continue;
+            }
+
+            for (; $i < count($tokens); $i++) {
+                if ($tokens[$i][0] === T_NAMESPACE) {
+                    for ($j = $i + 1; $j < count($tokens); $j++) {
+                        if ($tokens[$j][0] === T_STRING) {
+                            $namespace .= '\\' . $tokens[$j][1];
+                        } elseif ($tokens[$j] === '{' || $tokens[$j] === ';') {
+                            break;
+                        }
+                    }
+                }
+
+                if ($tokens[$i][0] === T_CLASS) {
+                    for ($j = $i + 1; $j < count($tokens); $j++) {
+                        if ($tokens[$j][0] === T_STRING) {
+                            $class = $tokens[$i + 2][1];
+                            break 2;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (!trim($class)) {
+            return;
+        }
+
+        return $namespace . '\\' . $class;
     }
 }

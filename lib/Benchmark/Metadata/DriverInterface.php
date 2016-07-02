@@ -11,8 +11,8 @@
 
 namespace PhpBench\Benchmark\Metadata;
 
-use PhpBench\Benchmark\Remote\ReflectionClass;
 use PhpBench\Benchmark\Remote\ReflectionHierarchy;
+use BetterReflection\Reflection\ReflectionClass;
 
 /**
  * Interface for metadata drivers.
@@ -26,5 +26,5 @@ interface DriverInterface
      *
      * @return Benchmark
      */
-    public function getMetadataForHierarchy(ReflectionHierarchy $classHierarchy);
+    public function getMetadataForClass(ReflectionClass $class);
 }
