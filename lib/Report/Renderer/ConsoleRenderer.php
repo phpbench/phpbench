@@ -37,7 +37,6 @@ class ConsoleRenderer implements RendererInterface, OutputAwareInterface
     public function __construct(Formatter $formatter)
     {
         $this->formatter = $formatter;
-        $formatter->classesFromFile(__DIR__ . '/classes/main.json');
     }
 
     /**

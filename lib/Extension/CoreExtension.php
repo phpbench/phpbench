@@ -138,60 +138,6 @@ class CoreExtension implements ExtensionInterface
 
     public function build(Container $container)
     {
-        // build
-        foreach ($container->getServiceIdsForTag('progress_logger') as $serviceId => $attributes) {
-            $progressLogger = $container->get($serviceId);
-            $container->get('progress_logger.registry')->addProgressLogger($attributes['name'], $progressLogger);
-        }
-
-        foreach ($container->getServiceIdsForTag('report_generator') as $serviceId => $attributes) {
-            $container->get('report.registry.generator')->registerService($attributes['name'], $serviceId);
-        }
-
-        foreach ($container->getServiceIdsForTag('report_renderer') as $serviceId => $attributes) {
-            $container->get('report.registry.renderer')->registerService($attributes['name'], $serviceId);
-        }
-
-        foreach ($container->getServiceIdsForTag('benchmark_executor') as $serviceId => $attributes) {
-            $container->get('benchmark.registry.executor')->registerService($attributes['name'], $serviceId);
-        }
-
-        foreach ($container->getServiceIdsForTag('storage_driver') as $serviceId => $attributes) {
-            $container->get('storage.driver_registry')->registerService($attributes['name'], $serviceId);
-        }
-
-        foreach ($container->getServiceIdsForTag('storage_archiver') as $serviceId => $attributes) {
-            $container->get('storage.archiver_registry')->registerService($attributes['name'], $serviceId);
-        }
-
-        foreach ($container->getServiceIdsForTag('environment_provider') as $serviceId => $attributes) {
-            $provider = $container->get($serviceId);
-            $container->get('environment.supplier')->addProvider($provider);
-        }
-
-        $generatorConfigs = array_merge(
-            require(__DIR__ . '/config/report/generators.php'),
-            $container->getParameter('reports')
-        );
-        foreach ($generatorConfigs as $name => $config) {
-            $container->get('report.registry.generator')->setConfig($name, $config);
-        }
-
-        $rendererConfigs = array_merge(
-            require(__DIR__ . '/config/report/renderers.php'),
-            $container->getParameter('outputs')
-        );
-        foreach ($rendererConfigs as $name => $config) {
-            $container->get('report.registry.renderer')->setConfig($name, $config);
-        }
-        $executorConfigs = array_merge(
-            require(__DIR__ . '/config/benchmark/executors.php'),
-            $container->getParameter('executors')
-        );
-        foreach ($executorConfigs as $name => $config) {
-            $container->get('benchmark.registry.executor')->setConfig($name, $config);
-        }
-
         $this->relativizeConfigPath($container);
     }
 
@@ -391,7 +337,16 @@ class CoreExtension implements ExtensionInterface
     private function registerProgressLoggers(Container $container)
     {
         $container->register('progress_logger.registry', function (Container $container) {
-            return new LoggerRegistry();
+            $registry = new LoggerRegistry();
+
+            foreach ($container->getServiceIdsForTag('progress_logger') as $serviceId => $attributes) {
+                $registry->addProgressLogger(
+                    $attributes['name'],
+                    $container->get($serviceId)
+                );
+            }
+
+            return $registry;
         });
 
         $container->register('progress_logger.dots', function (Container $container) {
@@ -468,30 +423,62 @@ class CoreExtension implements ExtensionInterface
         });
 
         $container->register('phpbench.formatter', function (Container $container) {
-            return new Formatter($container->get('phpbench.formatter.registry'));
+            $formatter = new Formatter($container->get('phpbench.formatter.registry'));
+            $formatter->classesFromFile(__DIR__ . '/config/class/main.json');
+
+            return $formatter;
         });
     }
 
     private function registerRegistries(Container $container)
     {
-        foreach (['generator', 'renderer'] as $registryType) {
-            $container->register('report.registry.' . $registryType, function (Container $container) use ($registryType) {
-                return new ConfigurableRegistry(
+        foreach (['generator' => 'reports', 'renderer' => 'outputs'] as $registryType => $optionName) {
+            $container->register('report.registry.' . $registryType, function (Container $container) use ($registryType, $optionName) {
+                $registry = new ConfigurableRegistry(
                     $registryType,
                     $container,
                     $container->get('json_schema.validator'),
                     $container->get('json.decoder')
                 );
+
+                foreach ($container->getServiceIdsForTag('report_' . $registryType) as $serviceId => $attributes) {
+                    $registry->registerService($attributes['name'], $serviceId);
+                }
+
+                $configs = array_merge(
+                    require(__DIR__ . '/config/report/' . $registryType . 's.php'),
+                    $container->getParameter($optionName)
+                );
+
+                foreach ($configs as $name => $config) {
+                    $registry->setConfig($name, $config);
+                }
+
+                return $registry;
             });
         }
 
         $container->register('benchmark.registry.executor', function (Container $container) {
-            return new ConfigurableRegistry(
+            $registry = new ConfigurableRegistry(
                 'executor',
                 $container,
                 $container->get('json_schema.validator'),
                 $container->get('json.decoder')
             );
+
+            foreach ($container->getServiceIdsForTag('benchmark_executor') as $serviceId => $attributes) {
+                $registry->registerService($attributes['name'], $serviceId);
+            }
+
+            $executorConfigs = array_merge(
+                require(__DIR__ . '/config/benchmark/executors.php'),
+                $container->getParameter('executors')
+            );
+            foreach ($executorConfigs as $name => $config) {
+                $registry->setConfig($name, $config);
+            }
+
+            return $registry;
         });
     }
 
@@ -524,7 +511,14 @@ class CoreExtension implements ExtensionInterface
         }, ['environment_provider' => []]);
 
         $container->register('environment.supplier', function (Container $container) {
-            return new Supplier();
+            $supplier = new Supplier();
+
+            foreach ($container->getServiceIdsForTag('environment_provider') as $serviceId => $attributes) {
+                $provider = $container->get($serviceId);
+                $supplier->addProvider($provider);
+            }
+
+            return $supplier;
         });
     }
 
@@ -541,10 +535,21 @@ class CoreExtension implements ExtensionInterface
     private function registerStorage(Container $container)
     {
         $container->register('storage.driver_registry', function (Container $container) {
-            return new Registry('storage', $container, $container->getParameter('storage'));
+            $registry = new Registry('storage', $container, $container->getParameter('storage'));
+            foreach ($container->getServiceIdsForTag('storage_driver') as $serviceId => $attributes) {
+                $registry->registerService($attributes['name'], $serviceId);
+            }
+
+            return $registry;
         });
         $container->register('storage.archiver_registry', function (Container $container) {
-            return new Registry('archiver', $container, $container->getParameter('archiver'));
+            $registry = new Registry('archiver', $container, $container->getParameter('archiver'));
+
+            foreach ($container->getServiceIdsForTag('storage_archiver') as $serviceId => $attributes) {
+                $registry->registerService($attributes['name'], $serviceId);
+            }
+
+            return $registry;
         });
         $container->register('storage.driver.xml', function (Container $container) {
             return new XmlDriver(
