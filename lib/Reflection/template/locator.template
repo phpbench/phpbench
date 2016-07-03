@@ -1,0 +1,26 @@
+<?php
+
+$bootstrap = '{{ bootstrap }}';
+$class = '{{ class }}';
+$file = '{{ file }}';
+
+if ($bootstrap) {
+    call_user_func(function () use ($bootstrap) {
+        require_once($bootstrap);
+    });
+}
+
+require_once($file);
+
+array_unshift($classHierarchy, $class);
+
+foreach ($classHierarchy as $class) {
+    $refl = new \ReflectionClass($class);
+    $metadata = array(
+        'class' => $class,
+        'file' => $class->getFileName()
+    );
+}
+
+echo json_encode($metadatas);
+exit(0);

@@ -596,23 +596,9 @@ class CoreExtension implements ExtensionInterface
 
     private function registerReflector(Container $container)
     {
-        $container->register('reflector', function (Container $container) {
-            $autoload = $container->getParameter('bootstrap');
-            if (!$autoload) {
-                throw new \InvalidArgumentException($autoload);
-            }
-
-            $autoloader = require($autoload);
-
-            if ($autoloader instanceof ClassLoader) {
-                $locator = new ComposerSourceLocator($autoloader);
-            } else {
-                throw new \InvalidArgumentException(
-                    'Only composer projects supported for now!'
-                );
-            }
-
-            return new ClassReflector($locator);
+        $container->register('reflection.factory', function (Container $container) {
+            $bootstrap = $container->getParameter('bootstrap');
+            return new ReflectionFactory($bootstrap);
         });
     }
 }
