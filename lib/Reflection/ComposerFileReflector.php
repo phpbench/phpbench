@@ -7,6 +7,7 @@ use BetterReflection\SourceLocator\Type\SourceLocator;
 use BetterReflection\SourceLocator\Type\SingleFileSourceLocator;
 use BetterReflection\Reflector\ClassReflector;
 use BetterReflection\SourceLocator\Type\ComposerSourceLocator;
+use PhpBench\Reflection\FileReflectorInterface;
 
 class ComposerFileReflector extends AbstractFileReflector
 {
@@ -21,6 +22,13 @@ class ComposerFileReflector extends AbstractFileReflector
     {
         $class = $this->getClassNameFromFile($file);
 
-        return $this->reflector->reflect($class);
+        if (null === $reflection = $this->reflector->reflect($class)) {
+            throw new \InvalidArgumentException(sprintf(
+                'Composer could not find class "%s" for file "%s", maybe the namespace is wrong?',
+                $class, $file
+            ));
+        }
+
+        return $reflection;
     }
 }

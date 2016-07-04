@@ -4,6 +4,7 @@ namespace PhpBench\Reflection\Locator;
 
 use BetterReflection\SourceLocator\Type\AbstractSourceLocator;
 use BetterReflection\Identifier\Identifier;
+use PhpBench\Benchmark\Remote\Launcher;
 
 class RemoteSourceLocator extends AbstractSourceLocator
 {

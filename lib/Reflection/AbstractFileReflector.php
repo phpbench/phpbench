@@ -2,7 +2,11 @@
 
 namespace PhpBench\Reflection;
 
-class AbstractFileReflector
+use PhpBench\Reflection\FileReflectorInterface;
+use BetterReflection\SourceLocator\Type\SingleFileSourceLocator;
+use BetterReflection\Reflector\ClassReflector;
+
+abstract class AbstractFileReflector implements FileReflectorInterface
 {
     protected function getClassNameFromFile($file)
     {

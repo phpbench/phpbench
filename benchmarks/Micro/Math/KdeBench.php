@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpBench\Micro\Math;
+namespace PhpBench\Benchmarks\Micro\Math;
 
 use PhpBench\Math\Kde;
 use PhpBench\Math\Statistics;

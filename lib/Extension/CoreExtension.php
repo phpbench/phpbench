@@ -76,6 +76,8 @@ use Symfony\Component\Process\ExecutableFinder;
 use Composer\Autoload\ClassLoader;
 use BetterReflection\Reflector\ClassReflector;
 use BetterReflection\SourceLocator\Type\ComposerSourceLocator;
+use PhpBench\Reflection\RemoteFileReflector;
+use PhpBench\Reflection\ComposerFileReflector;
 
 class CoreExtension implements ExtensionInterface
 {
@@ -196,7 +198,7 @@ class CoreExtension implements ExtensionInterface
 
         $container->register('benchmark.metadata_factory', function (Container $container) {
             return new Factory(
-                $container->get('reflector'),
+                $container->get('reflection.reflector'),
                 $container->get('benchmark.metadata.driver.annotation')
             );
         });
@@ -596,9 +598,17 @@ class CoreExtension implements ExtensionInterface
 
     private function registerReflector(Container $container)
     {
-        $container->register('reflection.factory', function (Container $container) {
+        $container->register('reflection.reflector', function (Container $container) {
             $bootstrap = $container->getParameter('bootstrap');
-            return new ReflectionFactory($bootstrap);
+            if ($bootstrap) {
+                $autoloader = require($bootstrap);
+
+                if ($autoloader instanceof ClassLoader) {
+                    return new ComposerFileReflector($autoloader);
+                }
+            }
+
+            return new RemoteFileReflector($container->get('benchmark.remote.launcher'));
         });
     }
 }

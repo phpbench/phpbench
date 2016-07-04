@@ -5,14 +5,15 @@ namespace PhpBench\Reflection;
 use BetterReflection\SourceLocator\Type\AbstractSourceLocator;
 use PhpBench\Benchmark\Remote\Launcher;
 use BetterReflection\Reflector\ClassReflector;
+use PhpBench\Reflection\FileReflectorInterface;
+use PhpBench\Reflection\Locator\RemoteSourceLocator;
 
-class RemoteFileReflector extends AbstractSourceLocator
+class RemoteFileReflector implements FileReflectorInterface
 {
     private $launcher;
 
     public function __construct(Launcher $launcher)
     {
-        parent::__construct();
         $this->launcher = $launcher;
     }
 

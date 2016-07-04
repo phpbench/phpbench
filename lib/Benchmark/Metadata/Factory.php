@@ -16,6 +16,7 @@ use PhpBench\Benchmark\Remote\Reflector;
 use PhpBench\Model\Subject;
 use BetterReflection\Reflector\ClassReflector;
 use BetterReflection\Reflection\ReflectionClass;
+use PhpBench\Reflection\FileReflectorInterface;
 
 /**
  * Benchmark Metadata Factory.
@@ -36,7 +37,7 @@ class Factory
      * @param Reflector $reflector
      * @param DriverInterface $driver
      */
-    public function __construct(ClassReflector $reflector, DriverInterface $driver)
+    public function __construct(FileReflectorInterface $reflector, DriverInterface $driver)
     {
         $this->reflector = $reflector;
         $this->driver = $driver;
@@ -53,7 +54,7 @@ class Factory
      */
     public function getMetadataForFile($file)
     {
-        $class = $this->reflector->reflect($name = $this->getClassNameFromFile($file));
+        $class = $this->reflector->reflectFile($file);
 
         if (null === $class) {
             return;
@@ -70,9 +71,7 @@ class Factory
         foreach ($metadata->getSubjects() as $subject) {
             $this->validateSubject($class, $subject);
             $paramProviders = $subject->getParamProviders();
-
-            continue;
-            $parameterSets = $this->reflector->getParameterSets($metadata->getPath(), $paramProviders);
+            $parameterSets = $this->getParameterSets($paramProviders, $class);
 
             foreach ($parameterSets as $parameterSet) {
                 if (!is_array($parameterSet)) {
@@ -127,63 +126,14 @@ class Factory
         }
     }
 
-    /**
-     * Return the class name from a file.
-     *
-     * Taken from http://stackoverflow.com/questions/7153000/get-class-name-from-file
-     *
-     * @param string $file
-     *
-     * @return string
-     */
-    private function getClassNameFromFile($file)
+    private function getParameterSets(array $paramProviders, ReflectionClass $class)
     {
-        $fp = fopen($file, 'r');
-
-        $class = $namespace = $buffer = '';
-        $i = 0;
-
-        while (!$class) {
-            if (feof($fp)) {
-                break;
-            }
-
-            // Read entire lines to prevent keyword truncation
-            for ($line = 0; $line <= 20; $line++) {
-                $buffer .= fgets($fp);
-            }
-            $tokens = @token_get_all($buffer);
-
-            if (strpos($buffer, '{') === false) {
-                continue;
-            }
-
-            for (; $i < count($tokens); $i++) {
-                if ($tokens[$i][0] === T_NAMESPACE) {
-                    for ($j = $i + 1; $j < count($tokens); $j++) {
-                        if ($tokens[$j][0] === T_STRING) {
-                            $namespace .= '\\' . $tokens[$j][1];
-                        } elseif ($tokens[$j] === '{' || $tokens[$j] === ';') {
-                            break;
-                        }
-                    }
-                }
-
-                if ($tokens[$i][0] === T_CLASS) {
-                    for ($j = $i + 1; $j < count($tokens); $j++) {
-                        if ($tokens[$j][0] === T_STRING) {
-                            $class = $tokens[$i + 2][1];
-                            break 2;
-                        }
-                    }
-                }
-            }
+        $parameterSets = [];
+        foreach ($paramProviders as $paramProvider) {
+            $method = $class->getMethod($paramProvider);
+            $parameterSets[] = eval($method->getBodyCode());
         }
 
-        if (!trim($class)) {
-            return;
-        }
-
-        return $namespace . '\\' . $class;
+        return $parameterSets;
     }
 }
