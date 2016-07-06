@@ -13,10 +13,9 @@ namespace PhpBench\Tests\Unit\Benchmark\Metadata\Driver;
 
 use PhpBench\Benchmark\Metadata\Annotations;
 use PhpBench\Benchmark\Metadata\Driver\AnnotationDriver;
-use PhpBench\Benchmark\Remote\ReflectionClass;
-use PhpBench\Benchmark\Remote\ReflectionHierarchy;
-use PhpBench\Benchmark\Remote\ReflectionMethod;
 use PhpBench\Benchmark\Remote\Reflector;
+use BetterReflection\Reflection\ReflectionClass;
+use BetterReflection\Reflection\ReflectionMethod;
 
 class AnnotationDriverTest extends \PHPUnit_Framework_TestCase
 {
@@ -25,10 +24,7 @@ class AnnotationDriverTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->reflector = $this->prophesize(Reflector::class);
-        $this->driver = new AnnotationDriver(
-            $this->reflector->reveal()
-        );
+        $this->driver = new AnnotationDriver();
     }
 
     /**
@@ -36,18 +32,20 @@ class AnnotationDriverTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadClassMetadata()
     {
-        $reflection = new ReflectionClass();
-        $reflection->class = 'Test';
-        $reflection->comment = <<<'EOT'
+        $reflection = $this->prophesize(ReflectionClass::class);
+        $reflection->getFileName()->willReturn('asd');
+        $reflection->getParentClass()->willReturn(null);
+        $reflection->getMethods()->willReturn([]);
+        $reflection->getName()->willReturn('Test');;
+        $reflection->getDocComment()->willReturn(<<<'EOT'
 /**
  * @BeforeClassMethods({"beforeClass"})
  * @AfterClassMethods({"afterClass"})
  */
-EOT;
-        $hierarchy = new ReflectionHierarchy();
-        $hierarchy->addReflectionClass($reflection);
+EOT
+        );
 
-        $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
+        $metadata = $this->driver->getMetadataForClass($reflection->reveal());
         $this->assertEquals(['beforeClass'], $metadata->getBeforeClassMethods());
         $this->assertEquals(['afterClass'], $metadata->getAfterClassMethods());
         $this->assertEquals('Test', $metadata->getClass());
@@ -58,18 +56,17 @@ EOT;
      */
     public function testIgnoreCommonAnnotations()
     {
-        $reflection = new ReflectionClass();
-        $reflection->class = 'Test';
-        $reflection->comment = <<<'EOT'
+        $reflection = $this->prophesize(ReflectionClass::class);
+        $reflection->getName()->willReturn('Test');;
+        $reflection->getDocComment()->willReturn(<<<'EOT'
 /**
  * @since Foo
  * @author Daniel Leech
  */
-EOT;
-        $hierarchy = new ReflectionHierarchy();
-        $hierarchy->addReflectionClass($reflection);
+EOT
+        );
 
-        $this->driver->getMetadataForHierarchy($hierarchy);
+        $this->driver->getMetadataForClass($reflection->reveal());
     }
 
     /**
@@ -77,16 +74,14 @@ EOT;
      */
     public function testLoadSubject()
     {
-        $reflection = new ReflectionClass();
-        $reflection->class = 'Test';
-        $hierarchy = new ReflectionHierarchy();
-        $hierarchy->addReflectionClass($reflection);
+        $reflection = $this->prophesize(ReflectionClass::class);
+        $reflection->getName()->willReturn('Test');;
 
-        $method = new ReflectionMethod();
-        $method->reflectionClass = $reflection;
-        $method->class = 'Test';
-        $method->name = 'benchFoo';
-        $method->comment = <<<'EOT'
+        $method = $this->prophesize(ReflectionMethod::class);
+        $method->getDeclaringClass()->willReturn($reflection);
+        $method->getClass()->willReturn('Test');;
+        $method->getName()->willReturn('benchFoo');;
+        $method->getDocComment()->willReturn(<<<'EOT'
     /**
      * @BeforeMethods({"beforeOne", "beforeTwo"})
      * @AfterMethods({"afterOne", "afterTwo"})
@@ -100,10 +95,11 @@ EOT;
      * @OutputMode("throughput")
      * @Warmup(501)
      */
-EOT;
+EOT
+        );
         $reflection->methods[$method->name] = $method;
 
-        $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
+        $metadata = $this->driver->getMetadataForClass($reflection->reveal());
         $subjects = $metadata->getSubjects();
         $this->assertCount(1, $subjects);
         $metadata = reset($subjects);
@@ -126,23 +122,22 @@ EOT;
      */
     public function testLoadSubjectNonPrefixed()
     {
-        $reflection = new ReflectionClass();
-        $reflection->class = 'Test';
-        $hierarchy = new ReflectionHierarchy();
-        $hierarchy->addReflectionClass($reflection);
+        $reflection = $this->prophesize(ReflectionClass::class);
+        $reflection->getName()->willReturn('Test');;
 
-        $method = new ReflectionMethod();
-        $method->reflectionClass = $reflection;
-        $method->class = 'Test';
-        $method->name = 'foo';
-        $method->comment = <<<'EOT'
+        $method = $this->prophesize(ReflectionMethod::class);
+        $method->getDeclaringClass()->willReturn($reflection);
+        $method->getClass()->willReturn('Test');;
+        $method->getName()->willReturn('foo');;
+        $method->getDocComment()->willReturn(<<<'EOT'
 /**
  * @Subject()
  */
-EOT;
+EOT
+        );
         $reflection->methods[$method->name] = $method;
 
-        $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
+        $metadata = $this->driver->getMetadataForClass($reflection->reveal());
         $subjects = $metadata->getSubjects();
         $this->assertCount(1, $subjects);
     }
@@ -152,23 +147,22 @@ EOT;
      */
     public function testLoadIgnoreNonPrefixed()
     {
-        $reflection = new ReflectionClass();
-        $reflection->class = 'Test';
-        $hierarchy = new ReflectionHierarchy();
-        $hierarchy->addReflectionClass($reflection);
+        $reflection = $this->prophesize(ReflectionClass::class);
+        $reflection->getName()->willReturn('Test');;
 
-        $method = new ReflectionMethod();
-        $method->reflectionClass = $reflection;
-        $method->class = 'Test';
-        $method->name = 'foo';
-        $method->comment = <<<'EOT'
+        $method = $this->prophesize(ReflectionMethod::class);
+        $method->getDeclaringClass()->willReturn($reflection);
+        $method->getClass()->willReturn('Test');;
+        $method->getName()->willReturn('foo');;
+        $method->getDocComment()->willReturn(<<<'EOT'
 /**
  * @Iterations(10)
  */
-EOT;
+EOT
+        );
         $reflection->methods[$method->name] = $method;
 
-        $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
+        $metadata = $this->driver->getMetadataForClass($reflection->reveal());
         $subjects = $metadata->getSubjects();
         $this->assertCount(0, $subjects);
     }
@@ -183,19 +177,17 @@ EOT;
      */
     public function testClassMethodsOnException($annotation)
     {
-        $reflection = new ReflectionClass();
-        $reflection->class = 'Test';
-        $hierarchy = new ReflectionHierarchy();
-        $hierarchy->addReflectionClass($reflection);
+        $reflection = $this->prophesize(ReflectionClass::class);
+        $reflection->getName()->willReturn('Test');;
 
-        $method = new ReflectionMethod();
-        $method->reflectionClass = $reflection;
-        $method->class = 'Test';
-        $method->name = 'benchFoo';
+        $method = $this->prophesize(ReflectionMethod::class);
+        $method->getDeclaringClass()->willReturn($reflection);
+        $method->getClass()->willReturn('Test');;
+        $method->getName()->willReturn('benchFoo');;
         $method->comment = sprintf('/** %s */', $annotation);
         $reflection->methods[$method->name] = $method;
 
-        $this->driver->getMetadataForHierarchy($hierarchy);
+        $this->driver->getMetadataForClass($reflection->reveal());
     }
 
     public function provideClassMethodsOnMethodException()
@@ -215,23 +207,22 @@ EOT;
      */
     public function testSubjectOptionalValues()
     {
-        $reflection = new ReflectionClass();
-        $reflection->class = 'Test';
-        $hierarchy = new ReflectionHierarchy();
-        $hierarchy->addReflectionClass($reflection);
+        $reflection = $this->prophesize(ReflectionClass::class);
+        $reflection->getName()->willReturn('Test');;
 
-        $method = new ReflectionMethod();
-        $method->reflectionClass = $reflection;
-        $method->class = 'Test';
-        $method->name = 'benchFoo';
-        $method->comment = <<<'EOT'
+        $method = $this->prophesize(ReflectionMethod::class);
+        $method->getDeclaringClass()->willReturn($reflection);
+        $method->getClass()->willReturn('Test');;
+        $method->getName()->willReturn('benchFoo');;
+        $method->getDocComment()->willReturn(<<<'EOT'
     /**
      * @OutputTimeUnit("seconds", precision=3)
      */
-EOT;
+EOT
+        );
         $reflection->methods[$method->name] = $method;
 
-        $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
+        $metadata = $this->driver->getMetadataForClass($reflection->reveal());
         $subjects = $metadata->getSubjects();
         $this->assertCount(1, $subjects);
         $metadata = reset($subjects);
@@ -244,28 +235,28 @@ EOT;
      */
     public function testLoadSubjectOverride()
     {
-        $reflection = new ReflectionClass();
-        $reflection->class = 'Test';
-        $reflection->comment = <<<'EOT'
+        $reflection = $this->prophesize(ReflectionClass::class);
+        $reflection->getName()->willReturn('Test');;
+        $reflection->getDocComment()->willReturn(<<<'EOT'
     /**
      * @BeforeMethods({"beforeOne", "beforeTwo"})
      */
-EOT;
-        $hierarchy = new ReflectionHierarchy();
-        $hierarchy->addReflectionClass($reflection);
+EOT
+        );
 
-        $method = new ReflectionMethod();
-        $method->reflectionClass = $reflection;
-        $method->class = 'Test';
-        $method->name = 'benchFoo';
-        $method->comment = <<<'EOT'
+        $method = $this->prophesize(ReflectionMethod::class);
+        $method->getDeclaringClass()->willReturn($reflection);
+        $method->getClass()->willReturn('Test');;
+        $method->getName()->willReturn('benchFoo');;
+        $method->getDocComment()->willReturn(<<<'EOT'
     /**
      * @BeforeMethods({"beforeFive"})
      */
-EOT;
+EOT
+        );
         $reflection->methods[$method->name] = $method;
 
-        $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
+        $metadata = $this->driver->getMetadataForClass($reflection->reveal());
         $subjects = $metadata->getSubjects();
         $this->assertCount(1, $subjects);
         $metadata = reset($subjects);
@@ -277,75 +268,79 @@ EOT;
      */
     public function testLoadSubjectMerge()
     {
-        $reflection = new ReflectionClass();
-        $reflection->class = 'TestChild';
-        $reflection->comment = <<<'EOT'
+        $reflection = $this->prophesize(ReflectionClass::class);
+        $reflection->getName()->willReturn('TestChild');;
+        $reflection->getDocComment()->willReturn(<<<'EOT'
     /**
      * @BeforeMethods({"class2"})
      */
-EOT;
-        $hierarchy = new ReflectionHierarchy();
-
-        $method = new ReflectionMethod();
-        $method->reflectionClass = $reflection;
-        $method->class = 'Test';
-        $method->name = 'benchFoo';
-        $method->comment = <<<'EOT'
+EOT
+        );
+        $method = $this->prophesize(ReflectionMethod::class);
+        $method->getDeclaringClass()->willReturn($reflection);
+        $method->getClass()->willReturn('Test');;
+        $method->getName()->willReturn('benchFoo');;
+        $method->getDocComment()->willReturn(<<<'EOT'
     /**
      * @Revs(2000)
      */
-EOT;
+EOT
+        );
         $reflection->methods[$method->name] = $method;
-        $method = new ReflectionMethod();
-        $method->reflectionClass = $reflection;
-        $method->class = 'Test';
-        $method->name = 'benchBar';
-        $method->comment = <<<'EOT'
+        $method = $this->prophesize(ReflectionMethod::class);
+        $method->getDeclaringClass()->willReturn($reflection);
+        $method->getClass()->willReturn('Test');;
+        $method->getName()->willReturn('benchBar');;
+        $method->getDocComment()->willReturn(<<<'EOT'
     /**
      * @Iterations(99)
      */
-EOT;
+EOT
+        );
         $reflection->methods[$method->name] = $method;
-        $hierarchy->addReflectionClass($reflection);
+        $reflection->addReflectionClass($reflection);
 
-        $reflection = new ReflectionClass();
-        $reflection->class = 'Test';
-        $reflection->comment = <<<'EOT'
+        $reflection = $this->prophesize(ReflectionClass::class);
+        $reflection->getName()->willReturn('Test');;
+        $reflection->getDocComment()->willReturn(<<<'EOT'
     /**
      * @AfterMethods({"after"})
      * @Iterations(50)
      */
-EOT;
-        $method = new ReflectionMethod();
-        $method->reflectionClass = $reflection;
-        $method->class = 'Test';
-        $method->name = 'benchFoo';
-        $method->comment = <<<'EOT'
+EOT
+        );
+        $method = $this->prophesize(ReflectionMethod::class);
+        $method->getDeclaringClass()->willReturn($reflection);
+        $method->getClass()->willReturn('Test');;
+        $method->getName()->willReturn('benchFoo');;
+        $method->getDocComment()->willReturn(<<<'EOT'
     /**
      * @Revs(1000)
      */
-EOT;
+EOT
+        );
         $reflection->methods[$method->name] = $method;
-        $method = new ReflectionMethod();
-        $method->reflectionClass = $reflection;
-        $method->class = 'Test';
-        $method->name = 'benchBar';
-        $method->comment = <<<'EOT'
+        $method = $this->prophesize(ReflectionMethod::class);
+        $method->getDeclaringClass()->willReturn($reflection);
+        $method->getClass()->willReturn('Test');;
+        $method->getName()->willReturn('benchBar');;
+        $method->getDocComment()->willReturn(<<<'EOT'
     /**
      * @Revs(50)
      */
-EOT;
+EOT
+        );
         $reflection->methods[$method->name] = $method;
 
-        $method = new ReflectionMethod();
-        $method->reflectionClass = $reflection;
-        $method->class = 'Test';
-        $method->name = 'benchNoAnnotations';
+        $method = $this->prophesize(ReflectionMethod::class);
+        $method->getDeclaringClass()->willReturn($reflection);
+        $method->getClass()->willReturn('Test');;
+        $method->getName()->willReturn('benchNoAnnotations');;
         $method->comment = null;
         $reflection->methods[$method->name] = $method;
-        $hierarchy->addReflectionClass($reflection);
+        $reflection->addReflectionClass($reflection);
 
-        $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
+        $metadata = $this->driver->getMetadataForClass($reflection->reveal());
 
         $subjects = $metadata->getSubjects();
         $this->assertCount(3, $subjects);
@@ -370,27 +365,27 @@ EOT;
      */
     public function testMetadataExtend()
     {
-        $reflection = new ReflectionClass();
-        $reflection->class = 'TestChild';
-        $reflection->comment = <<<'EOT'
+        $reflection = $this->prophesize(ReflectionClass::class);
+        $reflection->getName()->willReturn('TestChild');;
+        $reflection->getDocComment()->willReturn(<<<'EOT'
     /**
      * @Groups({"group1"})
      */
-EOT;
-        $hierarchy = new ReflectionHierarchy();
-        $hierarchy->addReflectionClass($reflection);
+EOT
+        );
 
-        $method = new ReflectionMethod();
-        $method->reflectionClass = $reflection;
-        $method->class = 'Test';
-        $method->name = 'benchFoo';
-        $method->comment = <<<'EOT'
+        $method = $this->prophesize(ReflectionMethod::class);
+        $method->getDeclaringClass()->willReturn($reflection);
+        $method->getClass()->willReturn('Test');;
+        $method->getName()->willReturn('benchFoo');;
+        $method->getDocComment()->willReturn(<<<'EOT'
     /**
      * @Groups({"group2", "group3"}, extend=true)
      */
-EOT;
+EOT
+        );
         $reflection->methods[$method->name] = $method;
-        $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
+        $metadata = $this->driver->getMetadataForClass($reflection->reveal());
 
         $subjects = $metadata->getSubjects();
         $this->assertCount(1, $subjects);
@@ -404,25 +399,24 @@ EOT;
      */
     public function testArrayElements()
     {
-        $reflection = new ReflectionClass();
-        $reflection->class = 'Test';
+        $reflection = $this->prophesize(ReflectionClass::class);
+        $reflection->getName()->willReturn('Test');;
 
-        $method = new ReflectionMethod();
-        $method->reflectionClass = $reflection;
-        $method->class = 'Test';
-        $method->name = 'benchFoo';
-        $method->comment = <<<'EOT'
+        $method = $this->prophesize(ReflectionMethod::class);
+        $method->getDeclaringClass()->willReturn($reflection);
+        $method->getClass()->willReturn('Test');;
+        $method->getName()->willReturn('benchFoo');;
+        $method->getDocComment()->willReturn(<<<'EOT'
 /**
  * @Iterations({10, 20, 30})
  * @Revs({1, 2, 3})
  * @Warmup({5, 15, 115})
  */
-EOT;
+EOT
+        );
         $reflection->methods[$method->name] = $method;
-        $hierarchy = new ReflectionHierarchy();
-        $hierarchy->addReflectionClass($reflection);
 
-        $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
+        $metadata = $this->driver->getMetadataForClass($reflection->reveal());
         $subject = $metadata->getSubjects();
         $subject = current($subject);
         $this->assertEquals([10, 20, 30], $subject->getIterations());
@@ -438,18 +432,15 @@ EOT;
      */
     public function testUsefulException()
     {
-        $hierarchy = 'test';
-
-        $reflection = new ReflectionClass();
-        $reflection->class = 'TestChild';
-        $reflection->comment = <<<'EOT'
+        $reflection = $this->prophesize(ReflectionClass::class);
+        $reflection->getName()->willReturn('TestChild');;
+        $reflection->getDocComment()->willReturn(<<<'EOT'
     /**
      * @Foobar("foo")
      */
-EOT;
-        $hierarchy = new ReflectionHierarchy();
-        $hierarchy->addReflectionClass($reflection);
+EOT
+        );
 
-        $this->driver->getMetadataForHierarchy($hierarchy);
+        $this->driver->getMetadataForClass($reflection->reveal());
     }
 }
