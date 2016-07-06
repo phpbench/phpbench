@@ -8,7 +8,7 @@ use BetterReflection\Reflector\ClassReflector;
 use PhpBench\Reflection\FileReflectorInterface;
 use PhpBench\Reflection\Locator\RemoteSourceLocator;
 
-class RemoteFileReflector implements FileReflectorInterface
+class RemoteFileReflector extends AbstractFileReflector
 {
     private $launcher;
 
@@ -21,5 +21,16 @@ class RemoteFileReflector implements FileReflectorInterface
     {
         $locator = new RemoteSourceLocator($this->launcher, $file);
         $reflector = new ClassReflector($locator);
+
+        $class = $this->getClassNameFromFile($file);
+
+        if (null === $reflection = $reflector->reflect($class)) {
+            throw new \InvalidArgumentException(sprintf(
+                'Composer could not find class "%s" for file "%s", maybe the namespace is wrong?',
+                $class, $file
+            ));
+        }
+
+        return $reflection;
     }
 }

@@ -241,6 +241,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $this->subjectMetadata->setParameterSets([])->shouldBeCalled();
         $this->reflectionClass->isAbstract()->willReturn(false);
         $this->reflectionClass->hasMethod('beforeMe')->willReturn(true);
+        $this->reflectionClass->getName()->willReturn('hello');
 
         $benchmarkMetadata = $this->factory->getMetadataForFile(self::FNAME);
     }

@@ -5,6 +5,7 @@ namespace PhpBench\Reflection\Locator;
 use BetterReflection\SourceLocator\Type\AbstractSourceLocator;
 use BetterReflection\Identifier\Identifier;
 use PhpBench\Benchmark\Remote\Launcher;
+use BetterReflection\SourceLocator\Located\LocatedSource;
 
 class RemoteSourceLocator extends AbstractSourceLocator
 {
@@ -32,10 +33,7 @@ class RemoteSourceLocator extends AbstractSourceLocator
         $classFqn = $identifier->getName();
         $file = $this->locateFile($classFqn);
 
-        return [
-            file_get_contents($file),
-            $file
-        ];
+        return new LocatedSource(file_get_contents($file), $file);
     }
 
     private function locateFile($classFqn)
@@ -44,9 +42,9 @@ class RemoteSourceLocator extends AbstractSourceLocator
             return $this->locatedClasses[$classFqn];
         }
 
-        $classHierarchy = $this->launcher->payload(__DIR__ . '/template/reflector.template', [
+        $classHierarchy = $this->launcher->payload(__DIR__ . '/template/locator.template', [
             'file' => $this->file,
-            'class' => $identifier->getName()
+            'class' => $classFqn
         ])->launch();
 
         foreach ($classHierarchy as $classData) {

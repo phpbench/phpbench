@@ -12,13 +12,16 @@ if ($bootstrap) {
 
 require_once($file);
 
+$classHierarchy = class_parents($class);
 array_unshift($classHierarchy, $class);
 
+
+$metadatas = [];
 foreach ($classHierarchy as $class) {
     $refl = new \ReflectionClass($class);
-    $metadata = array(
+    $metadatas[] = array(
         'class' => $class,
-        'file' => $class->getFileName()
+        'file' => $refl->getFileName()
     );
 }
 
