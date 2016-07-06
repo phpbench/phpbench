@@ -154,7 +154,7 @@ class AnnotationReader
     {
         $this->collectImports($method->getDeclaringClass());
 
-        return $this->parse($method->getDocComment(), sprintf('subject %s::%s', $method->getDeclaringClass(), $method->getName()));
+        return $this->parse($method->getDocComment(), sprintf('subject %s::%s', $method->getDeclaringClass()->getName(), $method->getName()));
     }
 
     private function collectImports(ReflectionClass $class)
@@ -186,8 +186,8 @@ class AnnotationReader
 
         $content = file_get_contents($class->getFileName());
         $tokenizer = new TokenParser('<?php ' . $content);
-        $useImports = $tokenizer->parseUseStatements($class->namespace);
-        $this->useImports[$class->class] = $useImports;
+        $useImports = $tokenizer->parseUseStatements($class->getNamespaceName());
+        $this->useImports[$class->getName()] = $useImports;
 
         return $useImports;
     }

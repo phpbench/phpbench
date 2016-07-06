@@ -13,8 +13,8 @@ namespace PhpBench\Tests\Unit\Benchmark\Metadata;
 
 use PhpBench\Benchmark\Metadata\AnnotationReader;
 use PhpBench\Benchmark\Metadata\Annotations;
-use PhpBench\Benchmark\Remote\ReflectionClass;
-use PhpBench\Benchmark\Remote\ReflectionMethod;
+use BetterReflection\Reflection\ReflectionClass;
+use BetterReflection\Reflection\ReflectionMethod;
 
 class AnnotationReaderTest extends \PHPUnit_Framework_TestCase
 {
@@ -23,16 +23,17 @@ class AnnotationReaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadClassMetadata()
     {
-        $reflection = new ReflectionClass();
-        $reflection->class = 'Test';
-        $reflection->comment = <<<'EOT'
+        $reflection = $this->prophesize(ReflectionClass::class);
+        $reflection->getName()->willReturn('Test');
+        $reflection->getDocComment()->willReturn(<<<'EOT'
 /**
  * @BeforeClassMethods({"beforeClass"})
  * @AfterClassMethods({"afterClass"})
  */
-EOT;
+EOT
+        );
 
-        $annotations = $this->createReader()->getClassAnnotations($reflection);
+        $annotations = $this->createReader()->getClassAnnotations($reflection->reveal());
         $this->assertCount(2, $annotations);
     }
 
@@ -41,18 +42,20 @@ EOT;
      */
     public function testLoadMethodMetadata()
     {
-        $reflection = new ReflectionClass();
-        $reflection->class = 'Test';
-        $reflectionMethod = new ReflectionMethod();
-        $reflectionMethod->reflectionClass = $reflection;
-        $reflectionMethod->comment = <<<'EOT'
+        $reflection = $this->prophesize(ReflectionClass::class);
+        $reflection->getName()->willReturn('Test');
+        $reflectionMethod = $this->prophesize(ReflectionMethod::class);
+        $reflectionMethod->getName()->willReturn('foobar');
+        $reflectionMethod->getDeclaringClass()->willReturn($reflection->reveal());
+        $reflectionMethod->getDocComment()->willReturn(<<<'EOT'
 /**
  * @Subject()
  * @Iterations(10)
  */
-EOT;
+EOT
+        );
 
-        $annotations = $this->createReader()->getMethodAnnotations($reflectionMethod);
+        $annotations = $this->createReader()->getMethodAnnotations($reflectionMethod->reveal());
         $this->assertCount(2, $annotations);
     }
 
@@ -61,19 +64,22 @@ EOT;
      */
     public function testImportedUse()
     {
-        $reflection = new ReflectionClass();
-        $reflection->class = 'Test';
-        $reflection->path = __DIR__ . '/classes/Test.php';
-        $reflectionMethod = new ReflectionMethod();
-        $reflectionMethod->reflectionClass = $reflection;
-        $reflectionMethod->comment = <<<'EOT'
+        $reflection = $this->prophesize(ReflectionClass::class);
+        $reflection->getName()->willReturn('Test');
+        $reflection->getFileName()->willReturn(__DIR__ . '/classes/Test.php');
+        $reflection->getNamespaceName()->willReturn('Foo\Bar');
+        $reflectionMethod = $this->prophesize(ReflectionMethod::class);
+        $reflectionMethod->getName()->willReturn('method');
+        $reflectionMethod->getDeclaringClass()->willReturn($reflection);
+        $reflectionMethod->getDocComment()->willReturn(<<<'EOT'
 /**
  * @PhpBench\Subject()
  * @PhpBench\Iterations(10)
  */
-EOT;
+EOT
+        );
 
-        $annotations = $this->createReader(true)->getMethodAnnotations($reflectionMethod);
+        $annotations = $this->createReader(true)->getMethodAnnotations($reflectionMethod->reveal());
         $this->assertCount(2, $annotations);
     }
 
