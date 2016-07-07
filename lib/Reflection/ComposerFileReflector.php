@@ -1,14 +1,20 @@
 <?php
 
+/*
+ * This file is part of the PHPBench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Reflection;
 
-use Composer\Autoload\ClassLoader;
-use BetterReflection\SourceLocator\Type\SourceLocator;
-use BetterReflection\SourceLocator\Type\SingleFileSourceLocator;
 use BetterReflection\Reflector\ClassReflector;
 use BetterReflection\SourceLocator\Type\ComposerSourceLocator;
-use PhpBench\Reflection\FileReflectorInterface;
-
+use BetterReflection\SourceLocator\Type\SingleFileSourceLocator;
+use Composer\Autoload\ClassLoader;
 class ComposerFileReflector extends AbstractFileReflector
 {
     private $reflector;

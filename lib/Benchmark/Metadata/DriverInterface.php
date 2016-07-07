@@ -11,7 +11,6 @@
 
 namespace PhpBench\Benchmark\Metadata;
 
-use PhpBench\Benchmark\Remote\ReflectionHierarchy;
 use BetterReflection\Reflection\ReflectionClass;
 
 /**

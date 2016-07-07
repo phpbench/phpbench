@@ -11,6 +11,7 @@
 
 namespace PhpBench\Extension;
 
+use Composer\Autoload\ClassLoader;
 use PhpBench\Benchmark\BaselineManager;
 use PhpBench\Benchmark\BenchmarkFinder;
 use PhpBench\Benchmark\Executor\DebugExecutor;
@@ -55,6 +56,8 @@ use PhpBench\Progress\Logger\NullLogger;
 use PhpBench\Progress\Logger\TravisLogger;
 use PhpBench\Progress\Logger\VerboseLogger;
 use PhpBench\Progress\LoggerRegistry;
+use PhpBench\Reflection\ComposerFileReflector;
+use PhpBench\Reflection\RemoteFileReflector;
 use PhpBench\Registry\ConfigurableRegistry;
 use PhpBench\Registry\Registry;
 use PhpBench\Report\Generator\CompositeGenerator;
@@ -73,11 +76,6 @@ use PhpBench\Storage\UuidResolver;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\ExecutableFinder;
-use Composer\Autoload\ClassLoader;
-use BetterReflection\Reflector\ClassReflector;
-use BetterReflection\SourceLocator\Type\ComposerSourceLocator;
-use PhpBench\Reflection\RemoteFileReflector;
-use PhpBench\Reflection\ComposerFileReflector;
 
 class CoreExtension implements ExtensionInterface
 {
@@ -601,7 +599,7 @@ class CoreExtension implements ExtensionInterface
         $container->register('reflection.reflector', function (Container $container) {
             $bootstrap = $container->getParameter('bootstrap');
             if ($bootstrap) {
-                $autoloader = require($bootstrap);
+                $autoloader = require $bootstrap;
 
                 if ($autoloader instanceof ClassLoader) {
                     return new ComposerFileReflector($autoloader);

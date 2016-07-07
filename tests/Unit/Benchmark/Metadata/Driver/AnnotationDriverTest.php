@@ -11,11 +11,10 @@
 
 namespace PhpBench\Tests\Unit\Benchmark\Metadata\Driver;
 
-use PhpBench\Benchmark\Metadata\Annotations;
-use PhpBench\Benchmark\Metadata\Driver\AnnotationDriver;
-use PhpBench\Benchmark\Remote\Reflector;
 use BetterReflection\Reflection\ReflectionClass;
 use BetterReflection\Reflection\ReflectionMethod;
+use PhpBench\Benchmark\Metadata\Annotations;
+use PhpBench\Benchmark\Metadata\Driver\AnnotationDriver;
 
 class AnnotationDriverTest extends \PHPUnit_Framework_TestCase
 {
@@ -87,7 +86,7 @@ EOT
         ]);
 
         $reflection = $this->getReflection([
-            'methods' => [ $method ]
+            'methods' => [$method],
         ]);
 
         $metadata = $this->driver->getMetadataForClass($reflection->reveal());
@@ -113,7 +112,6 @@ EOT
      */
     public function testLoadSubjectNonPrefixed()
     {
-
         $method = $this->getMethod([
             'comment' => <<<'EOT'
 /**
@@ -123,7 +121,7 @@ EOT
         ]);
 
         $reflection = $this->getReflection([
-            'methods' => [ $method ]
+            'methods' => [$method],
         ]);
 
         $metadata = $this->driver->getMetadataForClass($reflection->reveal());
@@ -146,7 +144,7 @@ EOT
         ]);
 
         $reflection = $this->getReflection([
-            'methods' => [ $method ]
+            'methods' => [$method],
         ]);
 
         $metadata = $this->driver->getMetadataForClass($reflection->reveal());
@@ -165,10 +163,10 @@ EOT
     public function testClassMethodsOnException($annotation)
     {
         $method = $this->getMethod([
-            'comment' => sprintf('/** %s */', $annotation)
+            'comment' => sprintf('/** %s */', $annotation),
         ]);
         $reflection = $this->getReflection([
-            'methods' => [ $method ]
+            'methods' => [$method],
         ]);
 
         $this->driver->getMetadataForClass($reflection->reveal());
@@ -199,7 +197,7 @@ EOT
 EOT
         ]);
         $reflection = $this->getReflection([
-            'methods' => [ $method ]
+            'methods' => [$method],
         ]);
 
         $metadata = $this->driver->getMetadataForClass($reflection->reveal());
@@ -224,7 +222,7 @@ EOT
         ]);
 
         $reflection = $this->getReflection([
-            'methods' => [ $method ],
+            'methods' => [$method],
             'comment' => <<<'EOT'
     /**
      * @BeforeMethods({"beforeOne", "beforeTwo"})
@@ -247,7 +245,7 @@ EOT
     {
         $method1 = $this->getMethod([
             'name' => 'benchFoo',
-            'comment'=> <<<'EOT'
+            'comment' => <<<'EOT'
     /**
      * @Revs(2000)
      */
@@ -256,14 +254,14 @@ EOT
 
         $method2 = $this->getMethod([
             'name' => 'benchBar',
-            'comment'=> <<<'EOT'
+            'comment' => <<<'EOT'
     /**
      * @Iterations(99)
      */
 EOT
         ]);
         $reflection1 = $this->getReflection([
-            'methods' => [ $method1, $method2 ],
+            'methods' => [$method1, $method2],
             'comment' => <<<'EOT'
     /**
      * @BeforeMethods({"class2"})
@@ -273,7 +271,7 @@ EOT
 
         $method1 = $this->getMethod([
             'name' => 'benchFoo',
-            'comment'=> <<<'EOT'
+            'comment' => <<<'EOT'
     /**
      * @Revs(1000)
      */
@@ -282,7 +280,7 @@ EOT
 
         $method2 = $this->getMethod([
             'name' => 'benchBar',
-            'comment'=> <<<'EOT'
+            'comment' => <<<'EOT'
     /**
      * @Revs(50)
      */
@@ -290,10 +288,10 @@ EOT
         ]);
         $method3 = $this->getMethod([
             'name' => 'benchNoAnnotations',
-            'comment'=> null,
+            'comment' => null,
         ]);
         $reflection2 = $this->getReflection([
-            'methods' => [ $method1, $method2, $method3 ],
+            'methods' => [$method1, $method2, $method3],
             'comment' => <<<'EOT'
     /**
      * @AfterMethods({"after"})
@@ -336,7 +334,7 @@ EOT
 EOT
         ]);
         $reflection = $this->getReflection([
-            'methods' => [ $method ],
+            'methods' => [$method],
             'comment' => <<<'EOT'
     /**
      * @Groups({"group1"})
@@ -368,7 +366,7 @@ EOT
 EOT
         ]);
         $reflection = $this->getReflection([
-            'methods' => [ $method ],
+            'methods' => [$method],
         ]);
 
         $metadata = $this->driver->getMetadataForClass($reflection->reveal());
@@ -405,7 +403,7 @@ EOT
             'parent' => null,
             'methods' => [],
             'name' => 'Test',
-            'comment' => ''
+            'comment' => '',
         ], $data);
 
         $reflection = $this->prophesize(ReflectionClass::class);
@@ -418,7 +416,7 @@ EOT
         $reflection->getFileName()->willReturn($data['filename']);
         $reflection->getParentClass()->willReturn($data['parent']);
         $reflection->getMethods()->willReturn($data['methods']);
-        $reflection->getName()->willReturn($data['name']);;
+        $reflection->getName()->willReturn($data['name']);
         $reflection->getDocComment()->willReturn($data['comment']);
 
         return $reflection;
@@ -429,12 +427,12 @@ EOT
         $data = array_merge([
             'class' => null,
             'name' => 'benchFoo',
-            'comment' => ''
+            'comment' => '',
         ], $data);
 
         $method = $this->prophesize(ReflectionMethod::class);
         $method->getDeclaringClass()->willReturn($data['class']);
-        $method->getName()->willReturn($data['name']);;
+        $method->getName()->willReturn($data['name']);
         $method->getDocComment()->willReturn($data['comment']);
 
         return $method;

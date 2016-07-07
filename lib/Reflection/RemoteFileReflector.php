@@ -1,13 +1,18 @@
 <?php
 
+/*
+ * This file is part of the PHPBench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Reflection;
 
-use BetterReflection\SourceLocator\Type\AbstractSourceLocator;
-use PhpBench\Benchmark\Remote\Launcher;
 use BetterReflection\Reflector\ClassReflector;
-use PhpBench\Reflection\FileReflectorInterface;
-use PhpBench\Reflection\Locator\RemoteSourceLocator;
-
+use PhpBench\Benchmark\Remote\Launcher;use PhpBench\Reflection\Locator\RemoteSourceLocator;
 class RemoteFileReflector extends AbstractFileReflector
 {
     private $launcher;

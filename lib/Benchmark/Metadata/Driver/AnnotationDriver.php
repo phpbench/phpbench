@@ -11,6 +11,7 @@
 
 namespace PhpBench\Benchmark\Metadata\Driver;
 
+use BetterReflection\Reflection\ReflectionClass;
 use PhpBench\Benchmark\Metadata\AnnotationReader;
 use PhpBench\Benchmark\Metadata\Annotations;
 use PhpBench\Benchmark\Metadata\Annotations\AbstractArrayAnnotation;
@@ -20,9 +21,6 @@ use PhpBench\Benchmark\Metadata\Annotations\Subject;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\DriverInterface;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
-use PhpBench\Benchmark\Remote\ReflectionHierarchy;
-use BetterReflection\Reflection\ReflectionClass;
-use BetterReflection\Reflector\ClassReflector;
 
 class AnnotationDriver implements DriverInterface
 {
@@ -45,7 +43,7 @@ class AnnotationDriver implements DriverInterface
     private function buildBenchmark(BenchmarkMetadata $benchmark, ReflectionClass $class)
     {
         $annotations = [];
-        $stack = [ $class ];
+        $stack = [$class];
 
         while ($parent = $class->getParentClass()) {
             $stack[] = $parent;

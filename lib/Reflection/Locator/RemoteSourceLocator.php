@@ -1,11 +1,20 @@
 <?php
 
+/*
+ * This file is part of the PHPBench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpBench\Reflection\Locator;
 
-use BetterReflection\SourceLocator\Type\AbstractSourceLocator;
 use BetterReflection\Identifier\Identifier;
-use PhpBench\Benchmark\Remote\Launcher;
 use BetterReflection\SourceLocator\Located\LocatedSource;
+use BetterReflection\SourceLocator\Type\AbstractSourceLocator;
+use PhpBench\Benchmark\Remote\Launcher;
 
 class RemoteSourceLocator extends AbstractSourceLocator
 {
@@ -44,7 +53,7 @@ class RemoteSourceLocator extends AbstractSourceLocator
 
         $classHierarchy = $this->launcher->payload(__DIR__ . '/template/locator.template', [
             'file' => $this->file,
-            'class' => $classFqn
+            'class' => $classFqn,
         ])->launch();
 
         foreach ($classHierarchy as $classData) {

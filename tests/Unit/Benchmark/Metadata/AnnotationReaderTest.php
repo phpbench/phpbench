@@ -11,10 +11,10 @@
 
 namespace PhpBench\Tests\Unit\Benchmark\Metadata;
 
-use PhpBench\Benchmark\Metadata\AnnotationReader;
-use PhpBench\Benchmark\Metadata\Annotations;
 use BetterReflection\Reflection\ReflectionClass;
 use BetterReflection\Reflection\ReflectionMethod;
+use PhpBench\Benchmark\Metadata\AnnotationReader;
+use PhpBench\Benchmark\Metadata\Annotations;
 
 class AnnotationReaderTest extends \PHPUnit_Framework_TestCase
 {

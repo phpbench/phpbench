@@ -11,12 +11,12 @@
 
 namespace PhpBench\Benchmark\Metadata;
 
+use BetterReflection\Reflection\ReflectionClass;
+use BetterReflection\Reflection\ReflectionMethod;
 use Doctrine\Common\Annotations\AnnotationException;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\DocParser;
 use Doctrine\Common\Annotations\TokenParser;
-use BetterReflection\Reflection\ReflectionClass;
-use BetterReflection\Reflection\ReflectionMethod;
 
 /**
  * Annotation reader.

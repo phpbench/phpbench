@@ -11,15 +11,14 @@
 
 namespace PhpBench\Tests\Unit\Benchmark\Metadata;
 
+use BetterReflection\Reflection\ReflectionClass;
+use BetterReflection\Reflection\ReflectionMethod;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\DriverInterface;
 use PhpBench\Benchmark\Metadata\Factory;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
-use PhpBench\Tests\Util\TestUtil;
 use PhpBench\Reflection\FileReflectorInterface;
-use BetterReflection\Reflection\ReflectionClass;
-use BetterReflection\Reflection\ReflectionMethod;
-use Prophecy\Argument;
+use PhpBench\Tests\Util\TestUtil;
 
 class FactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -43,7 +42,6 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $this->reflectionClass = $this->prophesize(ReflectionClass::class);
         $this->benchmarkMetadata = $this->prophesize(BenchmarkMetadata::class);
         $this->subjectMetadata = $this->prophesize(SubjectMetadata::class);
-
     }
 
     /**
@@ -210,7 +208,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should return null if the class is not found
+     * It should return null if the class is not found.
      */
     public function testEmptyClassHierachy()
     {
@@ -246,7 +244,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             [
                 'return [ [ "one" => new \stdClass ]];',
                 'Only scalar values allowed as parameter values, got "object" in Benchmark:benchFoo',
-            ]
+            ],
         ];
     }
 
@@ -272,11 +270,11 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             ],
             [
                 'return [ [ "one" => "two"] ];',
-                [ [ [ 'one' => 'two' ] ] ]
+                [[['one' => 'two']]],
             ],
             [
                 'return [ [ "foo" => "bar", "bar" => "foo" ], [ "bar" => "boo", "boo" => "bar" ] ];',
-                [ [ [ "foo" => "bar", "bar" => "foo" ], [ "bar" => "boo", "boo" => "bar" ] ] ]
+                [[['foo' => 'bar', 'bar' => 'foo'], ['bar' => 'boo', 'boo' => 'bar']]],
             ],
         ];
     }
@@ -294,7 +292,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         ]);
 
         TestUtil::configureSubjectMetadata($this->subjectMetadata, [
-            'paramProviders' => [ 'provideFoo' ],
+            'paramProviders' => ['provideFoo'],
         ]);
         $this->reflectionClass->getMethod('beforeMe')->willReturn(
             $this->reflectionMethod->reveal()
