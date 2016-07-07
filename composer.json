@@ -22,6 +22,7 @@
         "doctrine/annotations": "^1.2.7",
         "lstrojny/functional-php": ">=1.0 <1.2.0",
         "beberlei/assert": "^2.4",
+        "roave/better-reflection": "^1.0",
         "ext-dom": "*",
         "ext-json": "*",
         "ext-pcre": "*",
