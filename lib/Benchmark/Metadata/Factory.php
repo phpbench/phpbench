@@ -82,6 +82,30 @@ class Factory
                         $subject->getName()
                     ));
                 }
+
+                foreach ($parameterSet as $parameters) {
+                    if (!is_array($parameters)) {
+                        throw new \InvalidArgumentException(sprintf(
+                            'Each parameter group must be an array, got "%s" for %s::%s',
+                            gettype($parameters),
+                            $metadata->getClass(),
+                            $subject->getName()
+                        ));
+                    }
+
+                    foreach ($parameters as $value) {
+                        if (is_scalar($value)) {
+                            continue;
+                        }
+
+                        throw new \InvalidArgumentException(sprintf(
+                            'Only scalar values allowed as parameter values, got "%s" in %s:%s',
+                            gettype($value),
+                            $metadata->getClass(),
+                            $subject->getName()
+                        ));
+                    }
+                }
             }
             $subject->setParameterSets($parameterSets);
         }

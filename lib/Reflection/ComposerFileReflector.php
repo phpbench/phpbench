@@ -23,10 +23,16 @@ class ComposerFileReflector extends AbstractFileReflector
         $class = $this->getClassNameFromFile($file);
 
         if (null === $reflection = $this->reflector->reflect($class)) {
-            throw new \InvalidArgumentException(sprintf(
-                'Composer could not find class "%s" for file "%s", maybe the namespace is wrong?',
-                $class, $file
-            ));
+            $locator = new SingleFileSourceLocator($file);
+            $reflector = new ClassReflector($locator);
+            $reflection = $reflector->reflect($class);
+
+            if (!$reflection) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Composer could not find class "%s" for file "%s" and falling back to single-file source location failed.',
+                    $class, $file
+                ));
+            }
         }
 
         return $reflection;
