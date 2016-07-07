@@ -19,6 +19,7 @@ use PhpBench\Tests\Util\TestUtil;
 use PhpBench\Reflection\FileReflectorInterface;
 use BetterReflection\Reflection\ReflectionClass;
 use BetterReflection\Reflection\ReflectionMethod;
+use Prophecy\Argument;
 
 class FactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -38,6 +39,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
 
 
         $this->reflectionMethod = $this->prophesize(ReflectionMethod::class);
+        $this->reflectionMethod2 = $this->prophesize(ReflectionMethod::class);
         $this->reflectionClass = $this->prophesize(ReflectionClass::class);
         $this->benchmarkMetadata = $this->prophesize(BenchmarkMetadata::class);
         $this->subjectMetadata = $this->prophesize(SubjectMetadata::class);
@@ -218,8 +220,69 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @dataProvider provideInvalidParameters
      */
-    public function testInvalidParameters()
+    public function testInvalidParameters($bodyCode, $expectedMessage)
+    {
+        $this->setExpectedException(\InvalidArgumentException::class, $expectedMessage);
+
+        $this->setUpParameterTest();
+        $this->reflectionMethod2->getBodyCode()->willReturn($bodyCode);
+        $this->subjectMetadata->setParameterSets(Argument::cetera())->shouldNotBeCalled();
+
+        $this->factory->getMetadataForFile(self::FNAME);
+    }
+
+    public function provideInvalidParameters()
+    {
+        return [
+            [
+                '[];',
+                'Each parameter set must be an array, got "NULL"',
+            ],
+            [
+                'return [ new \stdClass ];',
+                'Each parameter group must be an array, got "object" for Benchmark::benchFoo',
+            ],
+            [
+                'return [ [ "one" => new \stdClass ]];',
+                'Only scalar values allowed as parameter values, got "object" in Benchmark:benchFoo',
+            ]
+        ];
+    }
+
+    /**
+     * @dataProvider provideValidParameters
+     */
+    public function testValidParameters($bodyCode, $expectedParams)
+    {
+        $this->setUpParameterTest();
+        $this->reflectionMethod2->getBodyCode()->willReturn($bodyCode);
+        $this->subjectMetadata->setParameterSets($expectedParams)->shouldNotBeCalled();
+
+        $this->factory->getMetadataForFile(self::FNAME);
+    }
+
+    public function provideValidParameters()
+    {
+        return [
+            // valid
+            [
+                'return [];',
+                [[]],
+            ],
+            [
+                'return [ [ "one" => "two"] ];',
+                [ [ [ 'one' => 'two' ] ] ]
+            ],
+            [
+                'return [ [ "foo" => "bar", "bar" => "foo" ], [ "bar" => "boo", "boo" => "bar" ] ];',
+                [ [ [ "foo" => "bar", "bar" => "foo" ], [ "bar" => "boo", "boo" => "bar" ] ] ]
+            ],
+        ];
+    }
+
+    private function setUpParameterTest()
     {
         $this->reflector->reflectFile(self::FNAME)->willReturn($this->reflectionClass->reveal());
         $this->driver->getMetadataForClass($this->reflectionClass->reveal())->willReturn($this->benchmarkMetadata->reveal());
@@ -237,11 +300,12 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $this->reflectionClass->getMethod('beforeMe')->willReturn(
             $this->reflectionMethod->reveal()
         );
+        $this->reflectionClass->getMethod('provideFoo')->willReturn(
+            $this->reflectionMethod2->reveal()
+        );
 
         $this->subjectMetadata->setParameterSets([])->shouldBeCalled();
         $this->reflectionClass->isAbstract()->willReturn(false);
         $this->reflectionClass->hasMethod('beforeMe')->willReturn(true);
-
-        $benchmarkMetadata = $this->factory->getMetadataForFile(self::FNAME);
     }
 }

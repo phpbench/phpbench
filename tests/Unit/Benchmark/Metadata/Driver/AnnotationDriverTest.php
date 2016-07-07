@@ -20,7 +20,6 @@ use BetterReflection\Reflection\ReflectionMethod;
 class AnnotationDriverTest extends \PHPUnit_Framework_TestCase
 {
     private $driver;
-    private $reflector;
 
     public function setUp()
     {
@@ -32,18 +31,14 @@ class AnnotationDriverTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadClassMetadata()
     {
-        $reflection = $this->prophesize(ReflectionClass::class);
-        $reflection->getFileName()->willReturn('asd');
-        $reflection->getParentClass()->willReturn(null);
-        $reflection->getMethods()->willReturn([]);
-        $reflection->getName()->willReturn('Test');;
-        $reflection->getDocComment()->willReturn(<<<'EOT'
+        $reflection = $this->getReflection([
+            'comment' => <<<'EOT'
 /**
  * @BeforeClassMethods({"beforeClass"})
  * @AfterClassMethods({"afterClass"})
  */
 EOT
-        );
+        ]);
 
         $metadata = $this->driver->getMetadataForClass($reflection->reveal());
         $this->assertEquals(['beforeClass'], $metadata->getBeforeClassMethods());
@@ -56,15 +51,14 @@ EOT
      */
     public function testIgnoreCommonAnnotations()
     {
-        $reflection = $this->prophesize(ReflectionClass::class);
-        $reflection->getName()->willReturn('Test');;
-        $reflection->getDocComment()->willReturn(<<<'EOT'
+        $reflection = $this->getReflection([
+            'comment' => <<<'EOT'
 /**
  * @since Foo
  * @author Daniel Leech
  */
 EOT
-        );
+        ]);
 
         $this->driver->getMetadataForClass($reflection->reveal());
     }
@@ -74,14 +68,8 @@ EOT
      */
     public function testLoadSubject()
     {
-        $reflection = $this->prophesize(ReflectionClass::class);
-        $reflection->getName()->willReturn('Test');;
-
-        $method = $this->prophesize(ReflectionMethod::class);
-        $method->getDeclaringClass()->willReturn($reflection);
-        $method->getClass()->willReturn('Test');;
-        $method->getName()->willReturn('benchFoo');;
-        $method->getDocComment()->willReturn(<<<'EOT'
+        $method = $this->getMethod([
+            'comment' => <<<'EOT'
     /**
      * @BeforeMethods({"beforeOne", "beforeTwo"})
      * @AfterMethods({"afterOne", "afterTwo"})
@@ -96,8 +84,11 @@ EOT
      * @Warmup(501)
      */
 EOT
-        );
-        $reflection->methods[$method->name] = $method;
+        ]);
+
+        $reflection = $this->getReflection([
+            'methods' => [ $method ]
+        ]);
 
         $metadata = $this->driver->getMetadataForClass($reflection->reveal());
         $subjects = $metadata->getSubjects();
@@ -122,20 +113,18 @@ EOT
      */
     public function testLoadSubjectNonPrefixed()
     {
-        $reflection = $this->prophesize(ReflectionClass::class);
-        $reflection->getName()->willReturn('Test');;
 
-        $method = $this->prophesize(ReflectionMethod::class);
-        $method->getDeclaringClass()->willReturn($reflection);
-        $method->getClass()->willReturn('Test');;
-        $method->getName()->willReturn('foo');;
-        $method->getDocComment()->willReturn(<<<'EOT'
+        $method = $this->getMethod([
+            'comment' => <<<'EOT'
 /**
  * @Subject()
  */
 EOT
-        );
-        $reflection->methods[$method->name] = $method;
+        ]);
+
+        $reflection = $this->getReflection([
+            'methods' => [ $method ]
+        ]);
 
         $metadata = $this->driver->getMetadataForClass($reflection->reveal());
         $subjects = $metadata->getSubjects();
@@ -147,20 +136,18 @@ EOT
      */
     public function testLoadIgnoreNonPrefixed()
     {
-        $reflection = $this->prophesize(ReflectionClass::class);
-        $reflection->getName()->willReturn('Test');;
-
-        $method = $this->prophesize(ReflectionMethod::class);
-        $method->getDeclaringClass()->willReturn($reflection);
-        $method->getClass()->willReturn('Test');;
-        $method->getName()->willReturn('foo');;
-        $method->getDocComment()->willReturn(<<<'EOT'
+        $method = $this->getMethod([
+            'name' => 'foo',
+            'comment' => <<<'EOT'
 /**
  * @Iterations(10)
  */
 EOT
-        );
-        $reflection->methods[$method->name] = $method;
+        ]);
+
+        $reflection = $this->getReflection([
+            'methods' => [ $method ]
+        ]);
 
         $metadata = $this->driver->getMetadataForClass($reflection->reveal());
         $subjects = $metadata->getSubjects();
@@ -177,15 +164,12 @@ EOT
      */
     public function testClassMethodsOnException($annotation)
     {
-        $reflection = $this->prophesize(ReflectionClass::class);
-        $reflection->getName()->willReturn('Test');;
-
-        $method = $this->prophesize(ReflectionMethod::class);
-        $method->getDeclaringClass()->willReturn($reflection);
-        $method->getClass()->willReturn('Test');;
-        $method->getName()->willReturn('benchFoo');;
-        $method->comment = sprintf('/** %s */', $annotation);
-        $reflection->methods[$method->name] = $method;
+        $method = $this->getMethod([
+            'comment' => sprintf('/** %s */', $annotation)
+        ]);
+        $reflection = $this->getReflection([
+            'methods' => [ $method ]
+        ]);
 
         $this->driver->getMetadataForClass($reflection->reveal());
     }
@@ -207,20 +191,16 @@ EOT
      */
     public function testSubjectOptionalValues()
     {
-        $reflection = $this->prophesize(ReflectionClass::class);
-        $reflection->getName()->willReturn('Test');;
-
-        $method = $this->prophesize(ReflectionMethod::class);
-        $method->getDeclaringClass()->willReturn($reflection);
-        $method->getClass()->willReturn('Test');;
-        $method->getName()->willReturn('benchFoo');;
-        $method->getDocComment()->willReturn(<<<'EOT'
-    /**
-     * @OutputTimeUnit("seconds", precision=3)
-     */
+        $method = $this->getMethod([
+            'comment' => <<<'EOT'
+/**
+ * @OutputTimeUnit("seconds", precision=3)
+ */
 EOT
-        );
-        $reflection->methods[$method->name] = $method;
+        ]);
+        $reflection = $this->getReflection([
+            'methods' => [ $method ]
+        ]);
 
         $metadata = $this->driver->getMetadataForClass($reflection->reveal());
         $subjects = $metadata->getSubjects();
@@ -235,26 +215,23 @@ EOT
      */
     public function testLoadSubjectOverride()
     {
-        $reflection = $this->prophesize(ReflectionClass::class);
-        $reflection->getName()->willReturn('Test');;
-        $reflection->getDocComment()->willReturn(<<<'EOT'
-    /**
-     * @BeforeMethods({"beforeOne", "beforeTwo"})
-     */
-EOT
-        );
-
-        $method = $this->prophesize(ReflectionMethod::class);
-        $method->getDeclaringClass()->willReturn($reflection);
-        $method->getClass()->willReturn('Test');;
-        $method->getName()->willReturn('benchFoo');;
-        $method->getDocComment()->willReturn(<<<'EOT'
+        $method = $this->getMethod([
+            'comment' => <<<'EOT'
     /**
      * @BeforeMethods({"beforeFive"})
      */
 EOT
-        );
-        $reflection->methods[$method->name] = $method;
+        ]);
+
+        $reflection = $this->getReflection([
+            'methods' => [ $method ],
+            'comment' => <<<'EOT'
+    /**
+     * @BeforeMethods({"beforeOne", "beforeTwo"})
+     */
+EOT
+        ]);
+
 
         $metadata = $this->driver->getMetadataForClass($reflection->reveal());
         $subjects = $metadata->getSubjects();
@@ -268,79 +245,65 @@ EOT
      */
     public function testLoadSubjectMerge()
     {
-        $reflection = $this->prophesize(ReflectionClass::class);
-        $reflection->getName()->willReturn('TestChild');;
-        $reflection->getDocComment()->willReturn(<<<'EOT'
-    /**
-     * @BeforeMethods({"class2"})
-     */
-EOT
-        );
-        $method = $this->prophesize(ReflectionMethod::class);
-        $method->getDeclaringClass()->willReturn($reflection);
-        $method->getClass()->willReturn('Test');;
-        $method->getName()->willReturn('benchFoo');;
-        $method->getDocComment()->willReturn(<<<'EOT'
+        $method1 = $this->getMethod([
+            'name' => 'benchFoo',
+            'comment'=> <<<'EOT'
     /**
      * @Revs(2000)
      */
 EOT
-        );
-        $reflection->methods[$method->name] = $method;
-        $method = $this->prophesize(ReflectionMethod::class);
-        $method->getDeclaringClass()->willReturn($reflection);
-        $method->getClass()->willReturn('Test');;
-        $method->getName()->willReturn('benchBar');;
-        $method->getDocComment()->willReturn(<<<'EOT'
+        ]);
+
+        $method2 = $this->getMethod([
+            'name' => 'benchBar',
+            'comment'=> <<<'EOT'
     /**
      * @Iterations(99)
      */
 EOT
-        );
-        $reflection->methods[$method->name] = $method;
-        $reflection->addReflectionClass($reflection);
+        ]);
+        $reflection1 = $this->getReflection([
+            'methods' => [ $method1, $method2 ],
+            'comment' => <<<'EOT'
+    /**
+     * @BeforeMethods({"class2"})
+     */
+EOT
+        ]);
 
-        $reflection = $this->prophesize(ReflectionClass::class);
-        $reflection->getName()->willReturn('Test');;
-        $reflection->getDocComment()->willReturn(<<<'EOT'
+        $method1 = $this->getMethod([
+            'name' => 'benchFoo',
+            'comment'=> <<<'EOT'
+    /**
+     * @Revs(1000)
+     */
+EOT
+        ]);
+
+        $method2 = $this->getMethod([
+            'name' => 'benchBar',
+            'comment'=> <<<'EOT'
+    /**
+     * @Revs(50)
+     */
+EOT
+        ]);
+        $method3 = $this->getMethod([
+            'name' => 'benchNoAnnotations',
+            'comment'=> null,
+        ]);
+        $reflection2 = $this->getReflection([
+            'methods' => [ $method1, $method2, $method3 ],
+            'comment' => <<<'EOT'
     /**
      * @AfterMethods({"after"})
      * @Iterations(50)
      */
 EOT
-        );
-        $method = $this->prophesize(ReflectionMethod::class);
-        $method->getDeclaringClass()->willReturn($reflection);
-        $method->getClass()->willReturn('Test');;
-        $method->getName()->willReturn('benchFoo');;
-        $method->getDocComment()->willReturn(<<<'EOT'
-    /**
-     * @Revs(1000)
-     */
-EOT
-        );
-        $reflection->methods[$method->name] = $method;
-        $method = $this->prophesize(ReflectionMethod::class);
-        $method->getDeclaringClass()->willReturn($reflection);
-        $method->getClass()->willReturn('Test');;
-        $method->getName()->willReturn('benchBar');;
-        $method->getDocComment()->willReturn(<<<'EOT'
-    /**
-     * @Revs(50)
-     */
-EOT
-        );
-        $reflection->methods[$method->name] = $method;
+        ]);
+        $reflection2->getParentClass()->willReturn($reflection1->reveal());
 
-        $method = $this->prophesize(ReflectionMethod::class);
-        $method->getDeclaringClass()->willReturn($reflection);
-        $method->getClass()->willReturn('Test');;
-        $method->getName()->willReturn('benchNoAnnotations');;
-        $method->comment = null;
-        $reflection->methods[$method->name] = $method;
-        $reflection->addReflectionClass($reflection);
-
-        $metadata = $this->driver->getMetadataForClass($reflection->reveal());
+        $metadata = $this->driver->getMetadataForClass($reflection2->reveal());
 
         $subjects = $metadata->getSubjects();
         $this->assertCount(3, $subjects);
@@ -365,26 +328,22 @@ EOT
      */
     public function testMetadataExtend()
     {
-        $reflection = $this->prophesize(ReflectionClass::class);
-        $reflection->getName()->willReturn('TestChild');;
-        $reflection->getDocComment()->willReturn(<<<'EOT'
-    /**
-     * @Groups({"group1"})
-     */
-EOT
-        );
-
-        $method = $this->prophesize(ReflectionMethod::class);
-        $method->getDeclaringClass()->willReturn($reflection);
-        $method->getClass()->willReturn('Test');;
-        $method->getName()->willReturn('benchFoo');;
-        $method->getDocComment()->willReturn(<<<'EOT'
+        $method = $this->getMethod([
+            'comment' => <<<'EOT'
     /**
      * @Groups({"group2", "group3"}, extend=true)
      */
 EOT
-        );
-        $reflection->methods[$method->name] = $method;
+        ]);
+        $reflection = $this->getReflection([
+            'methods' => [ $method ],
+            'comment' => <<<'EOT'
+    /**
+     * @Groups({"group1"})
+     */
+EOT
+        ]);
+
         $metadata = $this->driver->getMetadataForClass($reflection->reveal());
 
         $subjects = $metadata->getSubjects();
@@ -399,22 +358,18 @@ EOT
      */
     public function testArrayElements()
     {
-        $reflection = $this->prophesize(ReflectionClass::class);
-        $reflection->getName()->willReturn('Test');;
-
-        $method = $this->prophesize(ReflectionMethod::class);
-        $method->getDeclaringClass()->willReturn($reflection);
-        $method->getClass()->willReturn('Test');;
-        $method->getName()->willReturn('benchFoo');;
-        $method->getDocComment()->willReturn(<<<'EOT'
+        $method = $this->getMethod([
+            'comment' => <<<'EOT'
 /**
  * @Iterations({10, 20, 30})
  * @Revs({1, 2, 3})
  * @Warmup({5, 15, 115})
  */
 EOT
-        );
-        $reflection->methods[$method->name] = $method;
+        ]);
+        $reflection = $this->getReflection([
+            'methods' => [ $method ],
+        ]);
 
         $metadata = $this->driver->getMetadataForClass($reflection->reveal());
         $subject = $metadata->getSubjects();
@@ -432,15 +387,56 @@ EOT
      */
     public function testUsefulException()
     {
-        $reflection = $this->prophesize(ReflectionClass::class);
-        $reflection->getName()->willReturn('TestChild');;
-        $reflection->getDocComment()->willReturn(<<<'EOT'
+        $reflection = $this->getReflection([
+            'comment' => <<<'EOT'
     /**
      * @Foobar("foo")
      */
 EOT
-        );
+        ]);
 
         $this->driver->getMetadataForClass($reflection->reveal());
+    }
+
+    private function getReflection(array $data)
+    {
+        $data = array_merge([
+            'filename' => 'filename.php',
+            'parent' => null,
+            'methods' => [],
+            'name' => 'Test',
+            'comment' => ''
+        ], $data);
+
+        $reflection = $this->prophesize(ReflectionClass::class);
+
+        $unwrappedMethods = [];
+        foreach ($data['methods'] as $method) {
+            $method->getDeclaringClass()->willReturn($reflection);
+            $unwrappedMethods[] = $method->reveal();
+        }
+        $reflection->getFileName()->willReturn($data['filename']);
+        $reflection->getParentClass()->willReturn($data['parent']);
+        $reflection->getMethods()->willReturn($data['methods']);
+        $reflection->getName()->willReturn($data['name']);;
+        $reflection->getDocComment()->willReturn($data['comment']);
+
+        return $reflection;
+    }
+
+    private function getMethod(array $data)
+    {
+        $data = array_merge([
+            'class' => null,
+            'name' => 'benchFoo',
+            'comment' => ''
+        ], $data);
+
+        $method = $this->prophesize(ReflectionMethod::class);
+        $method->getDeclaringClass()->willReturn($data['class']);
+        $method->getName()->willReturn($data['name']);;
+        $method->getDocComment()->willReturn($data['comment']);
+
+        return $method;
     }
 }
