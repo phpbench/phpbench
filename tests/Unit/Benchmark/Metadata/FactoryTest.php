@@ -224,11 +224,10 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidParameters($bodyCode, $expectedMessage)
     {
+        $this->setUpParameterTest();
         $this->setExpectedException(\InvalidArgumentException::class, $expectedMessage);
 
-        $this->setUpParameterTest();
         $this->reflectionMethod2->getBodyCode()->willReturn($bodyCode);
-        $this->subjectMetadata->setParameterSets(Argument::cetera())->shouldNotBeCalled();
 
         $this->factory->getMetadataForFile(self::FNAME);
     }
@@ -258,7 +257,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->setUpParameterTest();
         $this->reflectionMethod2->getBodyCode()->willReturn($bodyCode);
-        $this->subjectMetadata->setParameterSets($expectedParams)->shouldNotBeCalled();
+        $this->subjectMetadata->setParameterSets($expectedParams)->shouldBeCalled();
 
         $this->factory->getMetadataForFile(self::FNAME);
     }
@@ -304,7 +303,6 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             $this->reflectionMethod2->reveal()
         );
 
-        $this->subjectMetadata->setParameterSets([])->shouldBeCalled();
         $this->reflectionClass->isAbstract()->willReturn(false);
         $this->reflectionClass->hasMethod('beforeMe')->willReturn(true);
     }

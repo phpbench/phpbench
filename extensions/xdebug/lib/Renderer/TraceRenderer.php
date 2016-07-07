@@ -54,8 +54,19 @@ class TraceRenderer
         $benchmark = $subject->getBenchmark();
 
         if ($options['filter_benchmark']) {
-            $selector = '//entry[@function="' . substr($benchmark->getClass(), 1) . '->' . $subject->getName() . '"]';
+            $class = $benchmark->getClass();
+
+            // strip initial backslash if set.
+            $class = 0 === strpos($class, '/') ? substr($class, 1) : $class;
+
+            $selector = '//entry[@function="' . $class . '->' . $subject->getName() . '"]';
             $trace = $trace->queryOne($selector);
+
+            if (null === $trace) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Could not find filter results wth "%s"', $selector
+                ));
+            }
         }
 
         $this->renderEntries($trace, $table, $options);
