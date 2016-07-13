@@ -39,7 +39,15 @@ class UuidResolver
     {
         $history = $this->driver->getService()->history();
 
-        return $history->current()->getRunId();
+        $current = $history->current();
+
+        if (!$current) {
+            throw new \InvalidArgumentException(
+                'No history present, therefore cannot retrieve latest UUID'
+            );
+        }
+
+        return $current->getRunId();
     }
 
     private function getNthUuid($nth)
