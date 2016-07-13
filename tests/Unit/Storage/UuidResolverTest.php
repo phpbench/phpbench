@@ -82,4 +82,18 @@ class UuidResolverTest extends \PHPUnit_Framework_TestCase
         $uuid = $this->resolver->resolve('latest-2');
         $this->assertEquals(4321, $uuid);
     }
+
+    /**
+     * It should throw an exception if no history is present.
+     *
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage No history present
+     */
+    public function testNoHistory()
+    {
+        $this->storage->history()->willReturn($this->history->reveal());
+        $this->history->current()->willReturn(false);
+
+        $this->resolver->resolve('latest');
+    }
 }
