@@ -230,10 +230,12 @@ Parameter sets can be provided to benchmark subjects. For example:
         public function provideStrings()
         {
             return array(
-                array(
-                    'hello' => 'Hello World!',
-                    'goodbye' => 'Goodbye Cruel World!',
-                )
+                [
+                    'string' => 'Hello World!'
+                [,
+                [
+                    'string' => 'Goodbye Cruel World!'
+                ]
             );
         }
 
