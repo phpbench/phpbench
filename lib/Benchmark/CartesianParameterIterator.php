@@ -18,7 +18,7 @@ use PhpBench\Model\ParameterSet;
 class CartesianParameterIterator implements \Iterator
 {
     private $sets;
-    private $index = 0;
+    private $index;
     private $max;
     private $current;
     private $break = false;
