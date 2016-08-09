@@ -60,6 +60,7 @@ Conditions:
 - **subject**: Name of the subject method.
 - **groups**: Comma separated list of groups.
 - **params**: Parameters (represented as JSON).
+- **index**: Parameters array index.
 - **revs**: Number of revolutions.
 - **its**: Number of iterations.
 
