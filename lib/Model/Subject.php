@@ -103,7 +103,7 @@ class Subject
      *
      * @return Variant.
      */
-    public function createVariant(ParameterSet $parameterSet, $revolutions, $warmup, array $computedStats = [])
+    public function createVariant(ParameterSet $parameterSet, $revolutions, $warmup, array $computedStats = [], $index = null)
     {
         $variant = new Variant(
             $this,
@@ -112,7 +112,12 @@ class Subject
             $warmup,
             $computedStats
         );
-        $this->variants[] = $variant;
+
+        if ($index === null) {
+            $this->variants[] = $variant;
+        } else {
+            $this->variants[$index] = $variant;
+        }
 
         return $variant;
     }

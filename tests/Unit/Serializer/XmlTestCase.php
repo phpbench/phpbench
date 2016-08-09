@@ -136,7 +136,7 @@ class XmlTestCase extends \PHPUnit_Framework_TestCase
       <subject name="subjectName">
         <group name="group1"/>
         <group name="group2"/>
-        <variant sleep="5" output-time-unit="milliseconds" output-time-precision="7" output-mode="throughput" revs="100" warmup="50" retry-threshold="10">
+        <variant index="0" sleep="5" output-time-unit="milliseconds" output-time-precision="7" output-mode="throughput" revs="100" warmup="50" retry-threshold="10">
           <parameter name="foo" value="bar"/>
           <parameter name="bar" type="collection">
             <parameter name="baz" value="bon"/>
@@ -165,7 +165,7 @@ EOT
     </env>
     <benchmark class="Bench1">
       <subject name="subjectName">
-        <variant sleep="5" output-time-unit="milliseconds" output-time-precision="7" output-mode="throughput" revs="100" warmup="50" retry-threshold="10">
+        <variant index="0" sleep="5" output-time-unit="milliseconds" output-time-precision="7" output-mode="throughput" revs="100" warmup="50" retry-threshold="10">
           <errors>
             <error exception-class="ErrorClass" code="0" file="1" line="2">This is an error</error>
           </errors>

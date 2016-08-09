@@ -7,7 +7,6 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
  */
 
 namespace PhpBench\Benchmark;
@@ -29,6 +28,8 @@ class CartesianParameterIterator implements \Iterator
         }
 
         $this->max = count($parameterSets) - 1;
+
+        $this->rewind();
     }
 
     public function current()
@@ -53,8 +54,7 @@ class CartesianParameterIterator implements \Iterator
             }
         }
 
-        $this->index++;
-        $this->update();
+        $this->index = $this->update();
 
         return $this->getParameterSet();
     }
@@ -66,11 +66,10 @@ class CartesianParameterIterator implements \Iterator
 
     public function rewind()
     {
-        $this->index = 0;
         foreach ($this->sets as $set) {
             $set->rewind();
         }
-        $this->update();
+        $this->index = $this->update();
 
         return $this->current();
     }
@@ -84,8 +83,11 @@ class CartesianParameterIterator implements \Iterator
     {
         $this->current = [];
         foreach ($this->sets as $set) {
+            $index = $set->key();
             $this->current = array_merge($this->current, $set->current());
         }
+
+        return $index;
     }
 
     private function getParameterSet()

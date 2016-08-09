@@ -150,6 +150,9 @@ class XmlDecoder
 
         foreach ($subjectEl->query('./variant') as $index => $variantEl) {
             $parameters = $this->getParameters($variantEl);
+            if ($variantEl->hasAttribute('index')) {
+                $index = $variantEl->getAttribute('index');
+            }
             $parameterSet = new ParameterSet($index, $parameters);
             $stats = $this->getComputedStats($variantEl);
             $variant = $subject->createVariant($parameterSet, $variantEl->getAttribute('revs'), $variantEl->getAttribute('warmup'), $stats);

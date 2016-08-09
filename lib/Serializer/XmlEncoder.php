@@ -82,17 +82,18 @@ class XmlEncoder
             $groupEl->setAttribute('name', $group);
         }
 
-        foreach ($subject->getVariants() as $variant) {
-            $this->processVariant($subject, $variant, $subjectEl);
+        foreach ($subject->getVariants() as $index => $variant) {
+            $this->processVariant($subject, $variant, $subjectEl, $index);
         }
     }
 
-    private function processVariant(Subject $subject, Variant $variant, \DOMElement $subjectEl)
+    private function processVariant(Subject $subject, Variant $variant, \DOMElement $subjectEl, $index)
     {
         $variantEl = $subjectEl->appendElement('variant');
 
         // TODO: These attributes should be on the subject, see
         // https://github.com/phpbench/phpbench/issues/307
+        $variantEl->setAttribute('index', $index);
         $variantEl->setAttribute('sleep', $subject->getSleep());
         $variantEl->setAttribute('output-time-unit', $subject->getOutputTimeUnit() ?: TimeUnit::MICROSECONDS);
         $variantEl->setAttribute('output-time-precision', $subject->getOutputTimePrecision());

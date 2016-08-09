@@ -163,11 +163,11 @@ class Runner
         $paramsIterator = new CartesianParameterIterator($parameterSets);
 
         // create the variants.
-        foreach ($paramsIterator as $parameterSet) {
+        foreach ($paramsIterator as $index => $parameterSet) {
             foreach ($subjectMetadata->getIterations() as $nbIterations) {
                 foreach ($subjectMetadata->getRevs() as $revolutions) {
                     foreach ($subjectMetadata->getWarmup() as $warmup) {
-                        $variant = $subject->createVariant($parameterSet, $revolutions, $warmup);
+                        $variant = $subject->createVariant($parameterSet, $revolutions, $warmup, [], $index);
                         $variant->spawnIterations($nbIterations);
                     }
                 }
