@@ -1,0 +1,67 @@
+build: false
+platform:
+  - x64
+clone_folder: c:\projects\phpbench
+
+
+## Build matrix for lowest and highest possible targets
+environment:
+  matrix:
+  - dependencies: lowest
+    php_ver: 7.0.9
+  - dependencies: current
+    php_ver: 7.0.9
+  - dependencies: highest
+    php_ver: 7.0.9
+  - dependencies: lowest
+    php_ver: 5.6.9
+  - dependencies: current
+    php_ver: 5.6.9
+  - dependencies: highest
+    php_ver: 5.6.9
+  - dependencies: lowest
+    php_ver: 5.5.9
+  - dependencies: current
+    php_ver: 5.5.9
+  - dependencies: highest
+    php_ver: 5.5.9
+
+## Cache composer bits
+cache:
+    - c:\tools\php -> appveyor.yml
+    - c:\projects\phpbench\vendor -> composer.lock
+    - '%LOCALAPPDATA%\Composer\files -> composer.lock'
+
+## Set up environment varriables
+init:
+    - SET PATH=C:\Program Files\OpenSSL;c:\tools\php;%PATH%
+    - SET COMPOSER_NO_INTERACTION=1
+    - SET PHP=1
+    - SET ANSICON=121x90 (121x90)
+
+## Install PHP and composer, and run the appropriate composer command
+install:
+    - IF EXIST c:\tools\php (SET PHP=0)
+    - IF %PHP%==1 appveyor-retry cinst -y OpenSSL.Light
+    - IF %PHP%==1 appveyor-retry cinst -y php --version %php_ver%
+    - cd c:\tools\php
+    - IF %PHP%==1 copy php.ini-production php.ini /Y
+    - IF %PHP%==1 echo date.timezone="UTC" >> php.ini
+    - IF %PHP%==1 echo extension_dir=ext >> php.ini
+    - IF %PHP%==1 echo extension=php_openssl.dll >> php.ini
+    - IF %PHP%==1 echo extension=php_mbstring.dll >> php.ini
+    - IF %PHP%==1 echo extension=php_fileinfo.dll >> php.ini
+    - IF %PHP%==1 echo @php %%~dp0composer.phar %%* > composer.bat
+    - appveyor-retry appveyor DownloadFile https://getcomposer.org/composer.phar
+    - cd c:\projects\phpbench
+    - IF %dependencies%==lowest appveyor-retry composer update --prefer-lowest --no-progress -n
+    - IF %dependencies%==current appveyor-retry composer install --no-progress
+    - IF %dependencies%==highest appveyor-retry composer update --no-progress -n
+    - composer show
+
+## Run the actual test
+test_script:
+    - cd c:\projects\phpbench
+    - vendor/bin/phpunit -c phpunit.xml.dist
+    - php bin/phpbench run --iterations=1 --revs=1 --report=env --progress=dots
+    - php bin/phpbench run --iterations=1 --revs=1 --config=extensions/dbal/benchmarks/phpbench.json --progress=dots
