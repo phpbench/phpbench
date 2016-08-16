@@ -64,6 +64,6 @@ install:
 ## Run the actual test
 test_script:
     - cd c:\projects\phpbench
-    - vendor/bin/phpunit -c phpunit.xml.dist
+    - vendor/bin/phpunit -c phpunit.xml.dist --colors=never
     - php bin/phpbench run --iterations=1 --revs=1 --report=env --progress=dots
     - php bin/phpbench run --iterations=1 --revs=1 --config=extensions/dbal/benchmarks/phpbench.json --progress=dots
