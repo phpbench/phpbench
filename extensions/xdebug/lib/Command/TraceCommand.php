@@ -55,6 +55,7 @@ EOT
         $this->addOption('no-benchmark-filter', null, InputOption::VALUE_NONE, 'Do not filter functions surrounding the benchmark');
         $this->addOption('trace-filter', null, InputOption::VALUE_REQUIRED, 'Regex function name filter');
         $this->addOption('show-args', null, InputOption::VALUE_NONE, 'Show function arguments');
+        $this->addOption('top', null, InputOption::VALUE_REQUIRED, 'Sort by inclusive time descending and limit results to given number of entries');
     }
 
     /**
@@ -65,6 +66,7 @@ EOT
         $outputDir = $this->outputDirHandler->handleOutputDir($input, $output);
         $this->output = $output;
         $dump = $input->getOption('dump');
+        $top = $input->getOption('top');
 
         $suite = $this->runnerHandler->runFromInput($input, $output, [
             'executor' => [
@@ -86,6 +88,7 @@ EOT
             'filter_benchmark' => !$input->getOption('no-benchmark-filter'),
             'show_args' => $input->getOption('show-args'),
             'filter' => $input->getOption('trace-filter'),
+            'top' => $top
         ]);
     }
 

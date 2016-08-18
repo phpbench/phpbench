@@ -33,6 +33,7 @@ class TraceRenderer
             'filter_benchmark' => true,
             'show_args' => false,
             'filter' => null,
+            'top' => null,
         ], $options);
 
         foreach ($suite->getIterations() as $iteration) {
@@ -50,6 +51,7 @@ class TraceRenderer
 
         $result = $iteration->getResult(XDebugTraceResult::class);
         $trace = $result->getTraceDocument();
+        $top = $options['top'];
 
         $subject = $iteration->getVariant()->getSubject();
         $benchmark = $subject->getBenchmark();
@@ -59,19 +61,28 @@ class TraceRenderer
             $trace = $trace->queryOne($selector);
         }
 
-        $this->renderEntries($trace, $table, $options);
+        $rows = [];
+        $this->buildRows($trace, $rows, $options);
+
+        if ($top) {
+            $this->filterTop($rows, $top);
+        }
+
+        foreach ($rows as $row) {
+            $table->addRow($row);
+        }
 
         $table->render();
     }
 
-    private function renderEntries(\DOMNode $trace, $table, array $options, $padding = 0)
+    private function buildRows(\DOMNode $trace, &$rows, array $options, $padding = 0)
     {
         $totalTime = $trace->evaluate('number(/trace/entry[1]/@end-time) - number(/trace/entry[1]/@start-time)') * 1E6;
         foreach ($trace->query('./entry') as $entryEl) {
             if (null === $options['filter'] || preg_match('{' . $options['filter'] .'}', $entryEl->getAttribute('function'))) {
                 $timeInc = ($entryEl->getAttribute('end-time') - $entryEl->getAttribute('start-time')) * 1E6;
 
-                $table->addRow([
+                $rows[] = [
                     $entryEl->getAttribute('func_nb'),
                     $entryEl->getAttribute('level'),
                     number_format($entryEl->getAttribute('start-memory')) . 'b',
@@ -90,10 +101,10 @@ class TraceRenderer
                         str_replace(getcwd(), '.', $entryEl->getAttribute('filename')),
                         $entryEl->getAttribute('line')
                     ),
-                ]);
+                ];
             }
 
-            $this->renderEntries($entryEl, $table, $options, $padding + 1);
+            $this->buildRows($entryEl, $rows, $options, $padding + 1);
         }
     }
 
@@ -129,5 +140,20 @@ class TraceRenderer
             $pad = str_repeat(' ', $padding),
             $function
         );
+    }
+
+    private function filterTop(&$rows, $nbEntries)
+    {
+        usort($rows, function ($a, $b) {
+            $timeA = (float) $a[5];
+            $timeB = (float) $b[5];
+            if ($timeA === $timeB) {
+                return;
+            }
+
+            return $timeA < $timeB;
+        });
+
+        $rows = array_slice($rows, 0, $nbEntries);
     }
 }

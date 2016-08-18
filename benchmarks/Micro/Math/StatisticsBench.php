@@ -27,6 +27,9 @@ class StatisticsBench
         Statistics::variance([]);
     }
 
+    /**
+     * @Subject()
+     */
     public function benchVariance()
     {
         Statistics::variance([
