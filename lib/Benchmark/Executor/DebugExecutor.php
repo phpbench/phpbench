@@ -18,6 +18,7 @@ use PhpBench\Model\Iteration;
 use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Registry\Config;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * This executor for testing purposes. It always returns constant times, it
@@ -76,33 +77,16 @@ class DebugExecutor extends BaseExecutor
     /**
      * {@inheritdoc}
      */
-    public function getDefaultConfig()
+    public function configure(OptionsResolver $options)
     {
-        return [
+        $options->setDefaults([
             'times' => [10],
             'spread' => [0],
-        ];
-    }
+            'memories' => null,
+        ]);
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getSchema()
-    {
-        return [
-            'type' => 'object',
-            'additionalProperties' => false,
-            'properties' => [
-                'times' => [
-                    'type' => 'array',
-                ],
-                'spread' => [
-                    'type' => 'array',
-                ],
-                'memories' => [
-                    'type' => 'array',
-                ],
-            ],
-        ];
+        $options->setAllowedTypes('times', 'array');
+        $options->setAllowedTypes('spread', 'array');
+        $options->setAllowedTypes('memories', ['null', 'array']);
     }
 }

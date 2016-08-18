@@ -12,20 +12,14 @@
 
 namespace PhpBench\Registry;
 
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 interface RegistrableInterface
 {
     /***
-     * Return the default configuration. This configuration will be prepended
-     * to all subsequent reports and should be used to provide default values.
+     * Configure options.
      *
-     * @return array
+     * @return OptionsResolver $options
      */
-
-    public function getDefaultConfig();
-
-    /**
-     * Return a JSON schema which should be used to validate the configuration.
-     * Return an empty array() if you want to allow anything.
-     */
-    public function getSchema();
+    public function configure(OptionsResolver $options);
 }

@@ -13,10 +13,23 @@
 namespace PhpBench\Tests\Unit\Report\Renderer;
 
 use PhpBench\Dom\Document;
+use PhpBench\Registry\Config;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class AbstractRendererCase extends \PHPUnit_Framework_TestCase
 {
-    public function getReportsDocument()
+    abstract protected function getRenderer();
+
+    protected function renderReport($reports, $config)
+    {
+        $renderer = $this->getRenderer();
+        $options = new OptionsResolver();
+        $renderer->configure($options);
+
+        $renderer->render($reports, new Config('test', $options->resolve($config)));
+    }
+
+    protected function getReportsDocument()
     {
         $document = new Document();
         $report = <<<'EOT'

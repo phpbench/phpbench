@@ -17,6 +17,7 @@ use PhpBench\Dom\Document;
 use PhpBench\Registry\Config;
 use PhpBench\Report\RendererInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DebugRenderer implements RendererInterface, OutputAwareInterface
 {
@@ -39,13 +40,7 @@ class DebugRenderer implements RendererInterface, OutputAwareInterface
         $this->output->writeln($reportsDocument->dump());
     }
 
-    public function getSchema()
+    public function configure(OptionsResolver $options)
     {
-        return [];
-    }
-
-    public function getDefaultConfig()
-    {
-        return [];
     }
 }

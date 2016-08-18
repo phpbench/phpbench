@@ -90,12 +90,4 @@ abstract class BaseExecutor implements ExecutorInterface
         $payload = $this->launcher->payload(__DIR__ . '/template/benchmark_static_methods.template', $tokens);
         $payload->launch();
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSchema()
-    {
-        return [];
-    }
 }

@@ -17,6 +17,7 @@ use PhpBench\Model\Iteration;
 use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Registry\Config;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * This class generates a benchmarking script and places it in the systems
@@ -51,10 +52,10 @@ class MicrotimeExecutor extends BaseExecutor
     /**
      * {@inheritdoc}
      */
-    public function getDefaultConfig()
+    public function configure(OptionsResolver $options)
     {
-        return [
+        $options->setDefaults([
             'php_config' => [],
-        ];
+        ]);
     }
 }

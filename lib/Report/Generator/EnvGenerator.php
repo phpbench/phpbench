@@ -19,6 +19,7 @@ use PhpBench\Registry\Config;
 use PhpBench\Report\Generator\Table\Row;
 use PhpBench\Report\GeneratorInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Report generator for environmental information.
@@ -41,31 +42,12 @@ class EnvGenerator implements GeneratorInterface, OutputAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function getDefaultConfig()
+    public function configure(OptionsResolver $options)
     {
-        return [
+        $options->setDefaults([
             'title' => null,
             'description' => null,
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSchema()
-    {
-        return [
-            'type' => 'object',
-            'additionalProperties' => false,
-            'properties' => [
-                'title' => [
-                    'type' => ['string', 'null'],
-                ],
-                'description' => [
-                    'type' => ['string', 'null'],
-                ],
-            ],
-        ];
+        ]);
     }
 
     /**

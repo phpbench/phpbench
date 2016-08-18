@@ -10,7 +10,6 @@
  *
  */
 
-
 namespace PhpBench\Tests\Unit\Util;
 
 use PhpBench\Util\TimeUnit;

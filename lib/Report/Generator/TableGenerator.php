@@ -24,6 +24,7 @@ use PhpBench\Report\Generator\Table\Row;
 use PhpBench\Report\Generator\Table\Sort;
 use PhpBench\Report\GeneratorInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * The table generator generates reports about benchmarking results.
@@ -62,9 +63,9 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function getDefaultConfig()
+    public function configure(OptionsResolver $options)
     {
-        return [
+        $options->setDefaults([
             'title' => null,
             'description' => null,
             'cols' => ['benchmark', 'subject', 'groups', 'params', 'revs', 'its', 'mem_peak', 'best', 'mean', 'mode', 'worst', 'stdev', 'rstdev', 'diff'],
@@ -77,56 +78,20 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
             'iterations' => false,
             'labels' => [],
             'class_map' => [],
-        ];
-    }
+        ]);
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getSchema()
-    {
-        return [
-            'type' => 'object',
-            'additionalProperties' => false,
-            'properties' => [
-                'title' => [
-                    'type' => ['string', 'null'],
-                ],
-                'description' => [
-                    'type' => ['string', 'null'],
-                ],
-                'cols' => [
-                    'type' => 'array',
-                ],
-                'labels' => [
-                    'type' => ['object', 'array'],
-                ],
-                'break' => [
-                    'type' => 'array',
-                ],
-                'compare' => [
-                    'type' => ['string', 'null'],
-                ],
-                'compare_fields' => [
-                    'type' => 'array',
-                ],
-                'diff_col' => [
-                    'type' => ['string', 'null'],
-                ],
-                'sort' => [
-                    'type' => ['array', 'object'],
-                ],
-                'pretty_params' => [
-                    'type' => 'boolean',
-                ],
-                'iterations' => [
-                    'type' => 'boolean',
-                ],
-                'class_map' => [
-                    'type' => ['object', 'array'],
-                ],
-            ],
-        ];
+        $options->setAllowedTypes('title', ['null', 'string']);
+        $options->setAllowedTypes('description', ['null', 'string']);
+        $options->setAllowedTypes('cols', 'array');
+        $options->setAllowedTypes('labels', 'array');
+        $options->setAllowedTypes('break', 'array');
+        $options->setAllowedTypes('compare', ['null', 'string']);
+        $options->setAllowedTypes('compare_fields', 'array');
+        $options->setAllowedTypes('diff_col', 'string');
+        $options->setAllowedTypes('sort', 'array');
+        $options->setAllowedTypes('pretty_params', 'bool');
+        $options->setAllowedTypes('iterations', 'bool');
+        $options->setAllowedTypes('class_map', 'array');
     }
 
     /**

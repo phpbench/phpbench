@@ -20,6 +20,7 @@ use PhpBench\Registry\Config;
 use PhpBench\Report\RendererInterface;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class XsltRenderer implements RendererInterface, OutputAwareInterface
 {
@@ -115,34 +116,12 @@ class XsltRenderer implements RendererInterface, OutputAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function getDefaultConfig()
+    public function configure(OptionsResolver $options)
     {
-        return [
+        $options->setDefaults([
             'title' => 'PHPBench Benchmark Results',
             'template' => __DIR__ . '/templates/html.xsl',
             'file' => null,
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSchema()
-    {
-        return [
-            'type' => 'object',
-            'properties' => [
-                'title' => [
-                    'type' => 'string',
-                ],
-                'template' => [
-                    'type' => 'string',
-                ],
-                'file' => [
-                    'type' => ['string', 'null'],
-                ],
-            ],
-            'additionalProperties' => false,
-        ];
+        ]);
     }
 }

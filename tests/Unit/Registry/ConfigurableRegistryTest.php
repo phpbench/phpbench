@@ -12,26 +12,23 @@
 
 namespace PhpBench\Tests\Unit\Registry;
 
-use JsonSchema\Validator;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\Json\JsonDecoder;
 use PhpBench\Registry\Config;
 use PhpBench\Registry\ConfigurableRegistry;
 use PhpBench\Registry\Registry;
+use Prophecy\Argument;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ConfigurableRegistryTest extends RegistryTest
 {
-    private $validator;
-
     public function setUp()
     {
         parent::setUp();
-        $this->validator = new Validator();
 
         $this->registry = new ConfigurableRegistry(
             'test',
             $this->container->reveal(),
-            $this->validator,
             new JsonDecoder()
         );
     }
@@ -49,48 +46,14 @@ class ConfigurableRegistryTest extends RegistryTest
         ];
 
         $this->registry->setService('service', $this->service1->reveal());
-        $this->service1->getDefaultConfig()->willReturn([]);
-        $this->service1->getSchema()->willReturn([]);
+        $this->service1->configure(Argument::type(OptionsResolver::class))->will(function ($args) {
+            $args[0]->setDefaults(['one' => 'one', 'two' => 'two']);
+        });
 
         $this->registry->setConfig('one', $config);
 
         $result = $this->registry->getConfig('one');
         $this->assertEquals($config, $result->getArrayCopy());
-    }
-
-    /**
-     * It should merge the default config.
-     */
-    public function testMergeDefaultConfig()
-    {
-        $config = [
-            'test' => 'service',
-            'one' => [
-                'foo' => 'bar',
-            ],
-            'two' => 2,
-        ];
-
-        $this->registry->setService('service', $this->service1->reveal());
-        $this->service1->getDefaultConfig()->willReturn([
-            'hello' => 'goodbye',
-            'one' => [
-                'bar' => 'foo',
-            ],
-        ]);
-        $this->service1->getSchema()->willReturn([]);
-
-        $this->registry->setConfig('one', $config);
-        $result = $this->registry->getConfig('one');
-
-        $this->assertEquals([
-            'test' => 'service',
-            'one' => [
-                'foo' => 'bar',
-            ],
-            'two' => 2,
-            'hello' => 'goodbye',
-        ], $result->getArrayCopy());
     }
 
     /**
@@ -110,8 +73,15 @@ class ConfigurableRegistryTest extends RegistryTest
         ];
 
         $this->registry->setService('service', $this->service1->reveal());
-        $this->service1->getDefaultConfig()->willReturn([]);
-        $this->service1->getSchema()->willReturn([]);
+        $this->service1->configure(Argument::type(OptionsResolver::class))->will(function ($args) {
+            $args[0]->setDefaults([
+                'test' => null,
+                'one' => null,
+                'two' => null,
+                'three' => null,
+                'four' => null,
+            ]);
+        });
 
         $this->registry->setConfig('config1', $config1);
         $this->registry->setConfig('config2', $config2);
@@ -136,7 +106,6 @@ class ConfigurableRegistryTest extends RegistryTest
     {
         $config1 = [
             'test' => 'service1',
-            'one' => 'two',
         ];
         $config2 = [
             'test' => 'service2',
@@ -146,65 +115,10 @@ class ConfigurableRegistryTest extends RegistryTest
         $this->registry->setService('service1', $this->service1->reveal());
         $this->registry->setService('service2', $this->service2->reveal());
 
-        $this->service1->getDefaultConfig()->willReturn([]);
-        $this->service1->getSchema()->willReturn([]);
-        $this->service2->getDefaultConfig()->willReturn([]);
-        $this->service2->getSchema()->willReturn([]);
-
         $this->registry->setConfig('config1', $config1);
         $this->registry->setConfig('config2', $config2);
 
         $this->registry->getConfig('config2');
-    }
-
-    /**
-     * It should validate configuration.
-     *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Invalid JSON
-     */
-    public function testValidate()
-    {
-        $config = [
-            'test' => 'service',
-            'one' => 1,
-            'two' => 2,
-        ];
-
-        $this->registry->setService('service', $this->service1->reveal());
-        $this->service1->getDefaultConfig()->willReturn([]);
-        $this->service1->getSchema()->willReturn([
-            'type' => 'object',
-            'additionalProperties' => false,
-            'properties' => [
-                'title' => [
-                    'type' => 'string',
-                ],
-            ],
-        ]);
-
-        $this->registry->setConfig('one', $config);
-
-        $result = $this->registry->getConfig('one');
-        $this->assertEquals($config, $result->getArrayCopy());
-    }
-
-    /**
-     * It should throw an exception if the registrable class does not return an array as a schema.
-     *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage must return the JSON schema as an array
-     */
-    public function testJsonSchemaAsArrayException()
-    {
-        $this->registry->setService('service', $this->service1->reveal());
-        $this->service1->getDefaultConfig()->willReturn([]);
-        $this->service1->getSchema()->willReturn(new \stdClass());
-        $this->registry->setConfig('one', [
-            'test' => 'service',
-        ]);
-
-        $this->registry->getConfig('one');
     }
 
     /**
@@ -213,8 +127,7 @@ class ConfigurableRegistryTest extends RegistryTest
     public function testGetConfigJsonString()
     {
         $this->registry->setService('service', $this->service1->reveal());
-        $this->service1->getDefaultConfig()->willReturn([]);
-        $this->service1->getSchema()->willReturn([]);
+        $this->service1->configure(Argument::type(OptionsResolver::class))->shouldBeCalled();
 
         $result = $this->registry->getConfig('{"test": "service"}');
         $this->assertEquals(new Config('test', [
@@ -230,8 +143,6 @@ class ConfigurableRegistryTest extends RegistryTest
     public function testGetConfigJsonStringInvalid()
     {
         $this->registry->setService('service', $this->service1->reveal());
-        $this->service1->getDefaultConfig()->willReturn([]);
-        $this->service1->getSchema()->willReturn([]);
 
         $result = $this->registry->getConfig('{tes  t: se  rvice');
         $this->assertEquals(new Config('test', [
