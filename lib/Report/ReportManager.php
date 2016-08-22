@@ -20,8 +20,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Manage report configuration and generation.
- *
- * TODO: Create Generator and Renderer factories, reduce the size of this class.
  */
 class ReportManager
 {

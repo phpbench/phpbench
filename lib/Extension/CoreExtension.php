@@ -124,7 +124,7 @@ class CoreExtension implements ExtensionInterface
         });
 
         $this->registerBenchmark($container);
-        $this->registerJsonSchema($container);
+        $this->registerJson($container);
         $this->registerCommands($container);
         $this->registerRegistries($container);
         $this->registerProgressLoggers($container);
@@ -169,7 +169,6 @@ class CoreExtension implements ExtensionInterface
         $container->register('benchmark.finder', function (Container $container) {
             return new Finder();
         });
-
         $container->register('benchmark.remote.launcher', function (Container $container) {
             return new Launcher(
                 new PayloadFactory(),
@@ -230,13 +229,10 @@ class CoreExtension implements ExtensionInterface
         });
     }
 
-    private function registerJsonSchema(Container $container)
+    private function registerJson(Container $container)
     {
         $container->register('json.decoder', function (Container $container) {
             return new JsonDecoder();
-        });
-        $container->register('json_schema.validator', function (Container $container) {
-            return new \JsonSchema\Validator();
         });
     }
 
@@ -438,7 +434,6 @@ class CoreExtension implements ExtensionInterface
                 $registry = new ConfigurableRegistry(
                     $registryType,
                     $container,
-                    $container->get('json_schema.validator'),
                     $container->get('json.decoder')
                 );
 
@@ -463,7 +458,6 @@ class CoreExtension implements ExtensionInterface
             $registry = new ConfigurableRegistry(
                 'executor',
                 $container,
-                $container->get('json_schema.validator'),
                 $container->get('json.decoder')
             );
 

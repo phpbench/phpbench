@@ -19,6 +19,7 @@ use PhpBench\Registry\Config;
 use PhpBench\Report\GeneratorInterface;
 use PhpBench\Report\ReportManager;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Report generator which is a composite of other named reports.
@@ -54,27 +55,10 @@ class CompositeGenerator implements GeneratorInterface, OutputAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function getSchema()
+    public function configure(OptionsResolver $options)
     {
-        return [
-            'type' => 'object',
-            'additionalProperties' => false,
-            'properties' => [
-                'reports' => [
-                    'title' => 'List of reports to use',
-                    'type' => 'array',
-                ],
-            ],
-            'required' => ['reports'],
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefaultConfig()
-    {
-        return [];
+        $options->setRequired(['reports']);
+        $options->setAllowedTypes('reports', 'array');
     }
 
     /**

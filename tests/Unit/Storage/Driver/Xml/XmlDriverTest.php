@@ -10,7 +10,6 @@
  *
  */
 
-
 namespace PhpBench\Tests\Unit\Storage\Driver\Xml;
 
 use PhpBench\Dom\Document;

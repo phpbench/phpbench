@@ -10,7 +10,6 @@
  *
  */
 
-
 namespace PhpBench\Tests\Util;
 
 use PhpBench\Environment\Information;

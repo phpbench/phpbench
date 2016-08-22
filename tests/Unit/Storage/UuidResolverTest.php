@@ -10,7 +10,6 @@
  *
  */
 
-
 namespace PhpBench\Tests\Unit\Storage;
 
 use PhpBench\Registry\Registry;

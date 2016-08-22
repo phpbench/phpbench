@@ -13,7 +13,6 @@
 namespace PhpBench\Tests\Unit\Report\Renderer;
 
 use PhpBench\Formatter\Formatter;
-use PhpBench\Registry\Config;
 use PhpBench\Report\Renderer\ConsoleRenderer;
 use Symfony\Component\Console\Output\BufferedOutput;
 
@@ -25,10 +24,16 @@ class ConsoleRendererTest extends AbstractRendererCase
 
     public function setUp()
     {
-        $this->formatter = $this->prophesize(Formatter::class);
-        $this->renderer = new ConsoleRenderer($this->formatter->reveal());
         $this->output = new BufferedOutput();
-        $this->renderer->setOutput($this->output);
+        $this->formatter = $this->prophesize(Formatter::class);
+    }
+
+    protected function getRenderer()
+    {
+        $renderer = new ConsoleRenderer($this->formatter->reveal());
+        $renderer->setOutput($this->output);
+
+        return $renderer;
     }
 
     /**
@@ -36,7 +41,7 @@ class ConsoleRendererTest extends AbstractRendererCase
      */
     public function testRender()
     {
-        $this->renderer->render($this->getReportsDocument(), new Config('test', $this->renderer->getDefaultConfig()));
+        $this->renderReport($this->getReportsDocument(), []);
 
         $output = $this->output->fetch();
         $this->assertContains('Report Title', $output);
@@ -50,11 +55,8 @@ class ConsoleRendererTest extends AbstractRendererCase
      */
     public function testTableStyle()
     {
-        $this->renderer->render($this->getReportsDocument(), new Config('test', array_merge(
-            $this->renderer->getDefaultConfig(),
-            [
+        $this->renderReport($this->getReportsDocument(), [
                 'table_style' => 'compact',
-            ]
-        )));
+        ]);
     }
 }

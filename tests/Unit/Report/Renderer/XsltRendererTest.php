@@ -13,7 +13,6 @@
 namespace PhpBench\Tests\Unit\Report\Renderer;
 
 use PhpBench\Formatter\Formatter;
-use PhpBench\Registry\Config;
 use PhpBench\Report\Renderer\XsltRenderer;
 use Symfony\Component\Console\Output\BufferedOutput;
 
@@ -29,9 +28,7 @@ class XsltRendererTest extends AbstractRendererCase
     public function setUp()
     {
         $this->formatter = $this->prophesize(Formatter::class);
-        $this->renderer = new XsltRenderer($this->formatter->reveal());
         $this->output = new BufferedOutput();
-        $this->renderer->setOutput($this->output);
         $this->specificReport = 'report_specific.html';
         $this->tokenReport = 'foobar_test_report.html';
 
@@ -58,18 +55,23 @@ class XsltRendererTest extends AbstractRendererCase
         }
     }
 
+    protected function getRenderer()
+    {
+        $renderer = new XsltRenderer($this->formatter->reveal());
+        $renderer->setOutput($this->output);
+
+        return $renderer;
+    }
+
     /**
      * It should render an XSLT report to a file.
      */
     public function testRender()
     {
         $reports = $this->getReportsDocument();
-        $this->renderer->render($reports, new Config('test', array_merge(
-            $this->renderer->getDefaultConfig(),
-            [
-                'file' => $this->defaultReport,
-            ]
-        )));
+        $this->renderReport($reports, [
+            'file' => $this->defaultReport,
+        ]);
         $this->assertFileExists($this->defaultReport);
     }
 
@@ -79,13 +81,10 @@ class XsltRendererTest extends AbstractRendererCase
     public function testRenderTemplate()
     {
         $reports = $this->getReportsDocument();
-        $this->renderer->render($reports, new Config('test', array_merge(
-            $this->renderer->getDefaultConfig(),
-            [
-                'template' => __DIR__ . '/templates/test.xsl',
-                'file' => $this->defaultReport,
-            ]
-        )));
+        $this->renderReport($reports, [
+            'file' => $this->defaultReport,
+            'template' => __DIR__ . '/templates/test.xsl',
+        ]);
         $this->assertFileExists($this->defaultReport);
         $this->assertContains('zeeSa8ju', file_get_contents($this->defaultReport));
     }
@@ -96,13 +95,10 @@ class XsltRendererTest extends AbstractRendererCase
     public function testRenderTemplateEmptyFilename()
     {
         $reports = $this->getReportsDocument();
-        $this->renderer->render($reports, new Config('test', array_merge(
-            $this->renderer->getDefaultConfig(),
-            [
-                'template' => __DIR__ . '/templates/test.xsl',
-                'file' => null,
-            ]
-        )));
+        $this->renderReport($reports, [
+            'file' => null,
+            'template' => __DIR__ . '/templates/test.xsl',
+        ]);
         $output = $this->output->fetch();
         $this->assertContains('zeeSa8ju', $output);
     }
@@ -113,13 +109,10 @@ class XsltRendererTest extends AbstractRendererCase
     public function testRenderTemplateReportNameToken()
     {
         $reports = $this->getReportsDocument();
-        $this->renderer->render($reports, new Config('test', array_merge(
-            $this->renderer->getDefaultConfig(),
-            [
-                'template' => __DIR__ . '/templates/test.xsl',
-                'file' => 'foobar_%report_name%.html',
-            ]
-        )));
+        $this->renderReport($reports, [
+            'template' => __DIR__ . '/templates/test.xsl',
+            'file' => 'foobar_%report_name%.html',
+        ]);
         $this->assertFileExists($this->tokenReport);
         $this->assertContains('zeeSa8ju', file_get_contents($this->tokenReport));
     }
@@ -130,12 +123,9 @@ class XsltRendererTest extends AbstractRendererCase
     public function testOutputSpecific()
     {
         $reports = $this->getReportsDocument();
-        $this->renderer->render($reports, new Config('test', array_merge(
-            $this->renderer->getDefaultConfig(),
-            [
-                'file' => $this->specificReport,
-            ]
-        )));
+        $this->renderReport($reports, [
+            'file' => $this->specificReport,
+        ]);
         $this->assertFileExists($this->specificReport);
     }
 
@@ -148,9 +138,9 @@ class XsltRendererTest extends AbstractRendererCase
     public function testRenderNotExistingTemplate()
     {
         $reports = $this->getReportsDocument();
-        $this->renderer->render($reports, new Config('test', array_merge(
-            $this->renderer->getDefaultConfig(),
-            ['template' => 'not_existing.xsl']
-        )));
+        $this->renderReport($reports, [
+            'file' => $this->defaultReport,
+            'template' => 'not_existing.xsl',
+        ]);
     }
 }

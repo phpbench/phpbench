@@ -22,6 +22,7 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ConsoleRenderer implements RendererInterface, OutputAwareInterface
 {
@@ -173,27 +174,11 @@ class ConsoleRenderer implements RendererInterface, OutputAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function getDefaultConfig()
+    public function configure(OptionsResolver $options)
     {
-        return [
+        $options->setDefaults([
             'table_style' => 'default',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSchema()
-    {
-        return [
-            'type' => 'object',
-            'properties' => [
-                'table_style' => [
-                    'title' => 'Style of the table',
-                    'enum' => ['default', 'borderless', 'compact', 'symfony-style-guide'],
-                ],
-            ],
-            'additionalProperties' => false,
-        ];
+        ]);
+        $options->setAllowedTypes('table_style', ['string']);
     }
 }

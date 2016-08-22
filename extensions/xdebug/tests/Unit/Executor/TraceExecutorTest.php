@@ -28,6 +28,7 @@ use PhpBench\Model\Variant;
 use PhpBench\Registry\Config;
 use Prophecy\Argument;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TraceExecutorTest extends \PHPUnit_Framework_TestCase
 {
@@ -43,7 +44,9 @@ class TraceExecutorTest extends \PHPUnit_Framework_TestCase
             $this->filesystem->reveal()
         );
 
-        $this->config = new Config('test', $this->executor->getDefaultConfig());
+        $options = new OptionsResolver();
+        $this->executor->configure($options);
+        $this->config = new Config('test', $options->resolve([]));
 
         $this->payload = $this->prophesize(Payload::class);
         $this->iteration = $this->prophesize(Iteration::class);

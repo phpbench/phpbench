@@ -12,9 +12,9 @@
 
 namespace PhpBench\Registry;
 
-use JsonSchema\Validator;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\Json\JsonDecoder;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Registry that adds configuration capabilities to the service
@@ -30,17 +30,14 @@ use PhpBench\Json\JsonDecoder;
 class ConfigurableRegistry extends Registry
 {
     private $configs = [];
-    private $validator;
     private $jsonDecoder;
 
     public function __construct(
         $serviceType,
         Container $container,
-        Validator $validator,
         JsonDecoder $jsonDecoder
     ) {
         parent::__construct($serviceType, $container);
-        $this->validator = $validator ?: new Validator();
         $this->jsonDecoder = $jsonDecoder;
     }
 
@@ -141,64 +138,12 @@ class ConfigurableRegistry extends Registry
 
         $service = $this->getService($config[$this->serviceType]);
 
-        $config = $this->mergeAndValidateConfig($service, $config);
+        $options = new OptionsResolver();
+        $options->setRequired([$this->serviceType]);
+        $service->configure($options);
+        $config = $options->resolve($config);
+
         $this->resolvedConfigs[$name] = new Config($name, $config);
-    }
-
-    /**
-     * Merge the given config on to "configurable" (either a GeneratorInterface
-     * or a RendererInterface) instance's default config and validate it
-     * according to the "configurable" instance's JSON schema.
-     *
-     * @param ConfigurableInterface $configurable
-     * @param array $config
-     *
-     * @return array
-     */
-    private function mergeAndValidateConfig(RegistrableInterface $configurable, array $config)
-    {
-        $config = array_merge($configurable->getDefaultConfig(), $config);
-
-        // not sure if there is a better way to convert the schema array to objects
-        // as expected by the validator.
-        $validationConfig = json_decode(json_encode($config));
-
-        $schema = $configurable->getSchema();
-
-        if (!is_array($schema)) {
-            throw new \InvalidArgumentException(sprintf(
-                'Configurable class "%s" must return the JSON schema as an array',
-                get_class($configurable)
-            ));
-        }
-
-        $schema['properties'][$this->serviceType] = ['type' => 'string'];
-        $schema['properties']['_name'] = ['type' => 'string'];
-
-        // convert the schema to a \stdClass
-        $schema = json_decode(json_encode($schema));
-
-        // json_encode encodes an array instead of an object if the schema
-        // is empty. JSON schema requires an object.
-        if (empty($schema)) {
-            $schema = new \stdClass();
-        }
-
-        $this->validator->check($validationConfig, $schema);
-
-        if (!$this->validator->isValid()) {
-            $errorString = [];
-            foreach ($this->validator->getErrors() as $error) {
-                $errorString[] = sprintf('[%s] %s', $error['property'], $error['message']);
-            }
-
-            throw new \InvalidArgumentException(sprintf(
-                'Invalid JSON: %s%s',
-                PHP_EOL . PHP_EOL . PHP_EOL, implode(PHP_EOL, $errorString)
-            ));
-        }
-
-        return $config;
     }
 
     /**

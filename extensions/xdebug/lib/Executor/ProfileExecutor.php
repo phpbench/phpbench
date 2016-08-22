@@ -20,6 +20,7 @@ use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\PhpBench;
 use PhpBench\Registry\Config;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProfileExecutor extends BaseExecutor
 {
@@ -59,31 +60,12 @@ class ProfileExecutor extends BaseExecutor
     /**
      * {@inheritdoc}
      */
-    public function getDefaultConfig()
+    public function configure(OptionsResolver $options)
     {
-        return [
+        $options->setDefaults([
             'callback' => function () {
             },
             'output_dir' => 'xdebug',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSchema()
-    {
-        return [
-            'type' => 'object',
-            'additionalProperties' => false,
-            'properties' => [
-                'callback' => [
-                    'type' => null,
-                ],
-                'output_dir' => [
-                    'type' => 'string',
-                ],
-            ],
-        ];
+        ]);
     }
 }

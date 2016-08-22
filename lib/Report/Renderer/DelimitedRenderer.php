@@ -19,6 +19,7 @@ use PhpBench\Registry\Config;
 use PhpBench\Report\RendererInterface;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Renders the report as a delimited list.
@@ -100,34 +101,12 @@ class DelimitedRenderer implements RendererInterface, OutputAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function getDefaultConfig()
+    public function configure(OptionsResolver $options)
     {
-        return [
+        $options->setDefaults([
             'delimiter' => "\t",
             'file' => null,
             'header' => true,
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSchema()
-    {
-        return [
-            'type' => 'object',
-            'properties' => [
-                'delimiter' => [
-                    'type' => 'string',
-                ],
-                'file' => [
-                    'type' => ['string', 'null'],
-                ],
-                'header' => [
-                    'type' => 'boolean',
-                ],
-            ],
-            'additionalProperties' => false,
-        ];
+        ]);
     }
 }

@@ -16,6 +16,7 @@ use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Report\Generator\TableGenerator;
 use PhpBench\Tests\Util\TestUtil;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TableGeneratorTest extends GeneratorTestCase
 {
@@ -513,10 +514,10 @@ EOT
 
     private function generate(SuiteCollection $collection, array $config = [])
     {
-        $config = new Config('test', array_merge(
-            $this->generator->getDefaultConfig(),
-            $config
-        ));
+        $options = new OptionsResolver();
+        $this->generator->configure($options);
+
+        $config = new Config('test', $options->resolve($config));
 
         return $this->generator->generate($collection, $config);
     }
