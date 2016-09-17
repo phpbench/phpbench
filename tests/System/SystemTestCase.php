@@ -19,17 +19,19 @@ use Symfony\Component\Process\Process;
 class SystemTestCase extends \PHPUnit_Framework_TestCase
 {
     protected $fname;
+    protected $filesystem;
+    protected $workspaceDir;
 
     public function setUp()
     {
-        $this->fname = tempnam(sys_get_temp_dir(), 'phpbench_report_output_test');
-        $this->clearStorage();
-    }
-
-    public function tearDown()
-    {
-        unlink($this->fname);
-        $this->clearStorage();
+        $this->filesystem = new Filesystem();
+        $this->workspaceDir = sys_get_temp_dir() . '/phpbench-tests';
+        $this->filesystem->remove($this->workspaceDir);
+        $this->filesystem->mkdir($this->workspaceDir);
+        $this->fname = sprintf('%s/%s', $this->workspaceDir, 'testfile');
+        $this->filesystem->mirror(__DIR__ . '/env', $this->workspaceDir . '/env');
+        $this->filesystem->mirror(__DIR__ . '/benchmarks', $this->workspaceDir . '/benchmarks');
+        $this->filesystem->mirror(__DIR__ . '/bootstrap', $this->workspaceDir . '/bootstrap');
     }
 
     public function createResult($benchmark = null, $extraCmd = '')
@@ -57,8 +59,6 @@ class SystemTestCase extends \PHPUnit_Framework_TestCase
      */
     public function clearStorage()
     {
-        $filesystem = new Filesystem();
-        $filesystem = new Filesystem();
         foreach (['_storage', '_archive'] as $dirname) {
             $storageDir = __DIR__ . '/' . $dirname;
             if ($filesystem->exists($storageDir)) {
@@ -67,16 +67,11 @@ class SystemTestCase extends \PHPUnit_Framework_TestCase
         }
     }
 
-    protected function getWorkingDir($workingDir = '.')
+    public function phpbench($command, $cwd = null)
     {
-        $dir = __DIR__ . '/' . $workingDir;
+        $cwd = $this->workspaceDir . '/' . $cwd;
 
-        return $dir;
-    }
-
-    public function phpbench($command, $workingDir = '.')
-    {
-        chdir($this->getWorkingDir($workingDir));
+        chdir($cwd);
         $bin = __DIR__ . '/../../bin/phpbench --verbose';
         $process = new Process($bin . ' ' . $command);
         $process->run();
@@ -121,5 +116,10 @@ class SystemTestCase extends \PHPUnit_Framework_TestCase
         $dom->formatOutput = true;
         $result = $xpath->evaluate($expression);
         $this->assertEquals($expected, $result);
+    }
+
+    protected function getWorkingDir()
+    {
+        return $this->workspaceDir;
     }
 }
