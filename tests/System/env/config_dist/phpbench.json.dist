@@ -1,4 +1,4 @@
 {
-    "bootstrap": "../../../../../vendor/autoload.php",
+    "bootstrap": "../../bootstrap/foobar.bootstrap",
     "path": "."
 }

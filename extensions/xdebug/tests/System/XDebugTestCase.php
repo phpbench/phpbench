@@ -13,7 +13,6 @@
 namespace PhpBench\Extensions\XDebug\Tests\System;
 
 use PhpBench\Tests\System\SystemTestCase;
-use Symfony\Component\Filesystem\Filesystem;
 
 class XDebugTestCase extends SystemTestCase
 {
@@ -23,25 +22,7 @@ class XDebugTestCase extends SystemTestCase
             $this->markTestSkipped('XDebug not enabled.');
         }
 
-        $this->clean();
-    }
-
-    public function tearDown()
-    {
-        $this->clean();
-    }
-
-    private function clean()
-    {
-        if (file_exists($profileDir = $this->getWorkingDir('xdebug'))) {
-            $filesystem = new Filesystem();
-            $filesystem->remove($profileDir);
-        }
-
-        if (file_exists($profileDir = $this->getWorkingDir('foobar'))) {
-            $filesystem = new Filesystem();
-            $filesystem->remove($profileDir);
-        }
+        parent::setUp();
     }
 
     public function phpbench($command, $workingDir = '.')
