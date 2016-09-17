@@ -98,8 +98,4 @@ class DbalExtension implements ExtensionInterface
             return new MigrateCommand($container->get('storage.driver.dbal.connection'));
         }, ['console.command' => []]);
     }
-
-    public function build(Container $container)
-    {
-    }
 }

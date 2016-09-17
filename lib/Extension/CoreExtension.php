@@ -106,6 +106,8 @@ class CoreExtension implements ExtensionInterface
 
     public function load(Container $container)
     {
+        $this->relativizeConfigPath($container);
+
         $container->register('console.application', function (Container $container) {
             $application = new Application();
 
@@ -135,11 +137,6 @@ class CoreExtension implements ExtensionInterface
         $this->registerStorage($container);
         $this->registerExpression($container);
         $this->registerFormatter($container);
-    }
-
-    public function build(Container $container)
-    {
-        $this->relativizeConfigPath($container);
     }
 
     private function registerBenchmark(Container $container)

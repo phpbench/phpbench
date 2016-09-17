@@ -78,8 +78,4 @@ class XDebugExtension implements ExtensionInterface
         $container->mergeParameter('executors', require_once(__DIR__ . '/config/executors.php'));
         $container->mergeParameter('reports', require_once(__DIR__ . '/config/generators.php'));
     }
-
-    public function build(Container $container)
-    {
-    }
 }
