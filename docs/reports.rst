@@ -160,23 +160,22 @@ By default the mean is used as the comparison value, you may also select differe
     for the ``compare`` column. In such cases extra columns are added suffixed
     with an index, for example: ``revs:10:mean#1``.
 
+
 Difference Between Rows
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-You can show the percentage of difference from the lowest column value in the table by specifying the ``diff`` column. By
-default this will use the ``mean``, you can specify a different value using the ``deviation_col`` option, e.g. ``deviation_col: "mode"``.
+You can show the percentage of difference from the lowest column value in the table (:math:`($meanOrMode / $min)  - 1) * 100`) by specifying the ``diff`` column. By
+default this will use the ``mean``, you can specify a different value using the ``diff_col`` option, e.g. ``diff_col: "mode"``.
 
 .. code-block:: bash
 
     $ phpbench run --report='generator: "table", cols: ["subject", "revs", "mean", "diff"]'
-
-	+-------------+------+---------+---------+
-	| subject     | revs | mean    | diff    |
-	+-------------+------+---------+---------+
-	| benchMd5    | 100  | 0.400μs | 0.00%   |
-	| benchSha1   | 100  | 0.497μs | +19.52% |
-	| benchSha256 | 100  | 0.886μs | +54.85% |
-	+-------------+------+---------+---------+
+    +---------------+------+---------+--------+
+    | subject       | revs | mean    | diff   |
+    +---------------+------+---------+--------+
+    | benchVariance | 100  | 12.05μs | 0.00%  |
+    | benchStDev    | 100  | 12.53μs | +4.03% |
+    +---------------+------+---------+--------+
 
 Sorting
 ~~~~~~~

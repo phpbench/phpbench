@@ -29,7 +29,7 @@ Options:
   based for the given column.
 - **compare_fields**: *(array)* List of fields to compare based on the column
   specified with **compare**.
-- **deviation_col**: *(string)* If the ``diff`` column is given in ``cols``, use
+- **diff_col**: *(string)* If the ``diff`` column is given in ``cols``, use
   this column as the value on which to determine the ``diff`` (default
   ``mean``).
 - **sort**: *(assoc_array)* Sort specification, can specify multiple columns;
