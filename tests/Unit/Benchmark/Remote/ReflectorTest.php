@@ -49,6 +49,17 @@ class ReflectorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * It should return an empty class hierarchy if no classes are found in a file.
+     */
+    public function testReflectorNoClass()
+    {
+        $fname = __DIR__ . '/reflector/EmptyFile.php';
+        $classHierarchy = $this->reflector->reflect($fname);
+        $this->assertInstanceOf('PhpBench\Benchmark\Remote\ReflectionHierarchy', $classHierarchy);
+        $this->assertTrue($classHierarchy->isEmpty());
+    }
+
+    /**
      * It should parse a file whose class declaration is on the 20th line.
      * See: https://github.com/phpbench/phpbench/issues/325.
      */
