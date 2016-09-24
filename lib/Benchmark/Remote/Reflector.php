@@ -44,19 +44,16 @@ class Reflector
     public function reflect($file)
     {
         $classFqn = $this->getClassNameFromFile($file);
+        $hierarchy = new ReflectionHierarchy();
 
         if (null === $classFqn) {
-            throw new \InvalidArgumentException(sprintf(
-                'Could not find class in file "%s"', $file
-            ));
+            return $hierarchy;
         }
 
         $classHierarchy = $this->launcher->payload(__DIR__ . '/template/reflector.template', [
             'file' => $file,
             'class' => $classFqn,
         ])->launch();
-
-        $hierarchy = new ReflectionHierarchy();
 
         foreach ($classHierarchy as $classInfo) {
             $reflectionClass = new ReflectionClass();
