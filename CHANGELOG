@@ -1,6 +1,10 @@
 VERSION 0
 =========
 
+   Version 0.12.1
+         dc121e2 No exception for empty file
+         df45675 Cleaned up test debris
+
    Version 0.12 - Split
          31b8b24 Updated deps
          5a474ad Removed container build call
