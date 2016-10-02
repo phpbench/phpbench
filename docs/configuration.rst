@@ -189,3 +189,41 @@ You can prefix the benchmarking command line using the ``php_wrapper`` option:
 
     This can also be set using the ``--php-wrapper`` CLI option.
 
+.. _configuration_subject_pattern:
+
+Customizing the subject matching pattern
+----------------------------------------
+
+By default PHPBench will identify subject methods when they have a ``bench``
+prefix. It is possible to change the regex pattern used to identify subjects
+as follows:
+
+.. code-block:: javascript
+
+    {
+        "subject_pattern": "^spin_"
+    }
+
+The above will allow you to have benchmark class such as:
+
+.. code-block:: php
+
+    <?php
+
+    class Foobar
+    {
+        public function spin_kde()
+        {
+            // ...
+        }
+
+        public function spin_lcd()
+        {
+            // ...
+        }
+    }
+
+.. note::
+
+    You can also explicitly declare that methods are benchmark subjects by
+    using the ``@Subject`` annotation.
