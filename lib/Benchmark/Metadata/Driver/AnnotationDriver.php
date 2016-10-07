@@ -28,11 +28,13 @@ class AnnotationDriver implements DriverInterface
 {
     private $reflector;
     private $reader;
+    private $subjectPattern;
 
-    public function __construct(Reflector $reflector, AnnotationReader $reader = null)
+    public function __construct(Reflector $reflector, $subjectPattern = '^bench', AnnotationReader $reader = null)
     {
         $this->reflector = $reflector;
         $this->reader = $reader ?: new AnnotationReader();
+        $this->subjectPattern = $subjectPattern;
     }
 
     public function getMetadataForHierarchy(ReflectionHierarchy $hierarchy)
@@ -64,7 +66,7 @@ class AnnotationDriver implements DriverInterface
 
         foreach ($reflectionHierarchy as $reflection) {
             foreach ($reflection->methods as $reflectionMethod) {
-                $hasPrefix = 'bench' === substr($reflectionMethod->name, 0, 5);
+                $hasPrefix = (bool) preg_match('{' . $this->subjectPattern . '}', $reflectionMethod->name);
                 $hasAnnotation = false;
                 $subjectAnnotations = null;
 

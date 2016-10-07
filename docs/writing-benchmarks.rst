@@ -54,7 +54,7 @@ placed in the class docblock, or on individual methods docblocks.
 .. note::
 
     Instead of prefixing a method with ``bench`` you can use the
-    ``@Subject`` annotation.
+    ``@Subject`` annotation or specify a :ref:`custom pattern <configuration_subject_pattern>`.
 
 .. _revolutions:
 

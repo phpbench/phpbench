@@ -92,6 +92,7 @@ class CoreExtension implements ExtensionInterface
             'output_mode' => TimeUnit::MODE_TIME,
             'storage' => 'xml',
             'archiver' => 'xml',
+            'subject_pattern' => '^bench',
             'archive_path' => '_archive',
             'env_baselines' => ['nothing', 'md5', 'file_rw'],
             'env_baseline_callables' => [],
@@ -188,6 +189,7 @@ class CoreExtension implements ExtensionInterface
         $container->register('benchmark.metadata.driver.annotation', function (Container $container) {
             return new AnnotationDriver(
                 $container->get('benchmark.remote.reflector'),
+                $container->getParameter('subject_pattern'),
                 $container->get('benchmark.annotation_reader')
             );
         });

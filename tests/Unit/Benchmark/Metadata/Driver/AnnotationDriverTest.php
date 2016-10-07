@@ -27,9 +27,6 @@ class AnnotationDriverTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->reflector = $this->prophesize(Reflector::class);
-        $this->driver = new AnnotationDriver(
-            $this->reflector->reveal()
-        );
     }
 
     /**
@@ -48,7 +45,7 @@ EOT;
         $hierarchy = new ReflectionHierarchy();
         $hierarchy->addReflectionClass($reflection);
 
-        $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
+        $metadata = $this->createDriver()->getMetadataForHierarchy($hierarchy);
         $this->assertEquals(['beforeClass'], $metadata->getBeforeClassMethods());
         $this->assertEquals(['afterClass'], $metadata->getAfterClassMethods());
         $this->assertEquals('Test', $metadata->getClass());
@@ -70,7 +67,7 @@ EOT;
         $hierarchy = new ReflectionHierarchy();
         $hierarchy->addReflectionClass($reflection);
 
-        $this->driver->getMetadataForHierarchy($hierarchy);
+        $this->createDriver()->getMetadataForHierarchy($hierarchy);
     }
 
     /**
@@ -104,7 +101,7 @@ EOT;
 EOT;
         $reflection->methods[$method->name] = $method;
 
-        $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
+        $metadata = $this->createDriver()->getMetadataForHierarchy($hierarchy);
         $subjects = $metadata->getSubjects();
         $this->assertCount(1, $subjects);
         $metadata = reset($subjects);
@@ -143,7 +140,7 @@ EOT;
 EOT;
         $reflection->methods[$method->name] = $method;
 
-        $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
+        $metadata = $this->createDriver()->getMetadataForHierarchy($hierarchy);
         $subjects = $metadata->getSubjects();
         $this->assertCount(1, $subjects);
     }
@@ -169,7 +166,7 @@ EOT;
 EOT;
         $reflection->methods[$method->name] = $method;
 
-        $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
+        $metadata = $this->createDriver()->getMetadataForHierarchy($hierarchy);
         $subjects = $metadata->getSubjects();
         $this->assertCount(0, $subjects);
     }
@@ -196,7 +193,7 @@ EOT;
         $method->comment = sprintf('/** %s */', $annotation);
         $reflection->methods[$method->name] = $method;
 
-        $this->driver->getMetadataForHierarchy($hierarchy);
+        $this->createDriver()->getMetadataForHierarchy($hierarchy);
     }
 
     public function provideClassMethodsOnMethodException()
@@ -232,7 +229,7 @@ EOT;
 EOT;
         $reflection->methods[$method->name] = $method;
 
-        $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
+        $metadata = $this->createDriver()->getMetadataForHierarchy($hierarchy);
         $subjects = $metadata->getSubjects();
         $this->assertCount(1, $subjects);
         $metadata = reset($subjects);
@@ -266,7 +263,7 @@ EOT;
 EOT;
         $reflection->methods[$method->name] = $method;
 
-        $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
+        $metadata = $this->createDriver()->getMetadataForHierarchy($hierarchy);
         $subjects = $metadata->getSubjects();
         $this->assertCount(1, $subjects);
         $metadata = reset($subjects);
@@ -346,7 +343,7 @@ EOT;
         $reflection->methods[$method->name] = $method;
         $hierarchy->addReflectionClass($reflection);
 
-        $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
+        $metadata = $this->createDriver()->getMetadataForHierarchy($hierarchy);
 
         $subjects = $metadata->getSubjects();
         $this->assertCount(3, $subjects);
@@ -391,7 +388,7 @@ EOT;
      */
 EOT;
         $reflection->methods[$method->name] = $method;
-        $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
+        $metadata = $this->createDriver()->getMetadataForHierarchy($hierarchy);
 
         $subjects = $metadata->getSubjects();
         $this->assertCount(1, $subjects);
@@ -423,7 +420,7 @@ EOT;
         $hierarchy = new ReflectionHierarchy();
         $hierarchy->addReflectionClass($reflection);
 
-        $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
+        $metadata = $this->createDriver()->getMetadataForHierarchy($hierarchy);
         $subject = $metadata->getSubjects();
         $subject = current($subject);
         $this->assertEquals([10, 20, 30], $subject->getIterations());
@@ -451,6 +448,35 @@ EOT;
         $hierarchy = new ReflectionHierarchy();
         $hierarchy->addReflectionClass($reflection);
 
-        $this->driver->getMetadataForHierarchy($hierarchy);
+        $this->createDriver()->getMetadataForHierarchy($hierarchy);
+    }
+
+    /**
+     * It should allow a custom subject pattern.
+     */
+    public function testCustomSubjectPattern()
+    {
+        $reflection = new ReflectionClass();
+        $reflection->class = 'Test';
+
+        $method = new ReflectionMethod();
+        $method->reflectionClass = $reflection;
+        $method->class = 'Test';
+        $method->name = 'foo_bar_Foo';
+        $reflection->methods[$method->name] = $method;
+        $hierarchy = new ReflectionHierarchy();
+        $hierarchy->addReflectionClass($reflection);
+
+        $metadata = $this->createDriver('foo_bar_')->getMetadataForHierarchy($hierarchy);
+        $this->assertCount(1, $metadata->getSubjects());
+        $this->assertArrayHasKey('foo_bar_Foo', $metadata->getSubjects());
+    }
+
+    private function createDriver($prefix = '^bench')
+    {
+        return new AnnotationDriver(
+            $this->reflector->reveal(),
+            $prefix
+        );
     }
 }
