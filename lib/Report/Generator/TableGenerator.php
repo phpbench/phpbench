@@ -144,6 +144,12 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
             $min = min($means);
 
             return F\map($table, function ($row) use ($min, $stat) {
+                if ($row[$stat] === 0) {
+                    $row['diff'] = 0;
+
+                    return $row;
+                }
+
                 $row['diff'] = (100 / $row[$stat]) * ($row[$stat] - $min);
 
                 return $row;

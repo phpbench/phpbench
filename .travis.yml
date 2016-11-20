@@ -26,6 +26,8 @@ script:
   - php bin/phpbench run --iterations=1 --revs=1 --config=extensions/dbal/benchmarks/phpbench.json --progress=dots
 
 matrix:
+  allow_failures: 
+    - php: hhvm
   include:
     - php: 5.5
       env:
