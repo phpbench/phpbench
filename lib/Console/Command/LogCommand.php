@@ -45,7 +45,7 @@ class LogCommand extends Command
     public function configure()
     {
         $this->setName('log');
-        $this->setDescription('List previously executed benchmark runs.');
+        $this->setDescription('List previously executed and stored benchmark runs.');
         $this->setHelp(<<<'EOT'
 Show a list of previously executed benchmark runs.
 

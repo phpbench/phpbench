@@ -43,12 +43,28 @@ class ReportCommand extends Command
     public function configure()
     {
         $this->setName('report');
-        $this->setDescription('Generate a report from an XML file');
+        $this->setDescription('Generate a report from storage or an XML file');
         $this->setHelp(<<<'EOT'
-Generate a report from an existing XML file.
+Generate report from the latest stored suite:
+
+    $ %command.full_name% --uuid=latest --report=aggregate
+
+Generate report from a UUID (as determined from the <info>log</info> command:
+
+    $ %command.full_name% --uuid=133a2605fac74edabf046edeb9c5f7c4dc1a3aac --report=aggregate
+
+Generate from a query:
+
+    $ %command.full_name% --query='benchmark: "MyBench"' --report=aggregate
+
+Generate from an XML file:
+
+    $ %command.full_name% --file=dump.xml
 
 To dump an XML file, use the <info>run</info> command with the
-<comment>dump-file</comment option.
+<comment>dump-file</comment> option.
+
+You can specify the options multiple times to compare multiple suites.
 EOT
         );
         ReportHandler::configure($this);
