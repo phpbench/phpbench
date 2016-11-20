@@ -22,7 +22,7 @@ use Symfony\Component\Debug\ErrorHandler;
 class PhpBench
 {
     // PHPBench version: @git_sha@ will be replaced by box.
-    const VERSION = '0.13.0';
+    const VERSION = '0.14-dev (@git_version@)';
 
     // URL to phar and version file for self-updating
     const PHAR_URL = 'https://phpbench.github.io/phpbench/phpbench.phar';
