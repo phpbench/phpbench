@@ -35,9 +35,9 @@ class DeleteCommand extends Command
     public function configure()
     {
         $this->setName('delete');
-        $this->setDescription('Delete suite runs from storage');
+        $this->setDescription('Delete suites from storage');
         $this->setHelp(<<<'EOT'
-Delete one or many runs from storage:
+Delete one or many suites from storage:
 
     $ %command.full_name% --uuid=38aa53bf1edb2cf21391407487d98f37a2e0e2ba
 
