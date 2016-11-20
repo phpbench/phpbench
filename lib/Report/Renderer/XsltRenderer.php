@@ -38,6 +38,13 @@ class XsltRenderer implements RendererInterface, OutputAwareInterface
 
     public function __construct(Formatter $formatter)
     {
+        if (!extension_loaded($ext = 'xsl')) {
+            throw new \RuntimeException(sprintf(
+                'The XsltRenderer requires the `%s` extension to be loaded',
+                $ext
+            ));
+        }
+
         $this->formatter = $formatter;
     }
 
