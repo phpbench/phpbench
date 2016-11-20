@@ -77,6 +77,23 @@ class TableGeneratorTest extends GeneratorTestCase
     }
 
     /**
+     * It should not crash if an itreation reports 0 time.
+     */
+    public function testZeroTime()
+    {
+        $collection = TestUtil::createCollection([
+            [
+                'basetime' => 0,
+                'iterations' => [0],
+            ],
+        ]);
+
+        $report = $this->generate($collection);
+        $this->assertXPathEval($report, '0', 'string(//cell[@name="diff"])');
+        $this->assertXPathEval($report, '0', 'string(//cell[@name="mean"])');
+    }
+
+    /**
      * It should generate iteration rows.
      */
     public function testIterationRows()
