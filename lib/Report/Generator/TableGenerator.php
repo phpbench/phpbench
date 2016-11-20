@@ -48,7 +48,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
         'mem_real' => ['mem'],
         'mem_final' => ['mem'],
         'diff' => ['diff'],
-        'comp_deviation' => ['diff'],
+        'comp_deviation' => ['deviation'],
         'comp_z_value' => ['z-value'],
     ];
 
@@ -150,7 +150,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
                     return $row;
                 }
 
-                $row['diff'] = (100 / $row[$stat]) * ($row[$stat] - $min);
+                $row['diff'] = (($row[$stat] / $min) - 1) * 100;
 
                 return $row;
             });

@@ -10,6 +10,11 @@
     "percentage": [
         [ "printf", { "format": "%.2f%%" } ]
     ],
+    "deviation": [
+        [ "number", { "decimal_places": 2 }],
+        [ "balance", {} ],
+        [ "printf", { "format": "%s%%" } ]
+    ],
     "diff": [
         [ "number", { "decimal_places": 2 }],
         [ "balance", {} ],
