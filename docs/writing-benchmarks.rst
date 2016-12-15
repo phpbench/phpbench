@@ -232,7 +232,7 @@ Parameter sets can be provided to benchmark subjects. For example:
             return array(
                 [
                     'string' => 'Hello World!'
-                [,
+                ],
                 [
                     'string' => 'Goodbye Cruel World!'
                 ]
