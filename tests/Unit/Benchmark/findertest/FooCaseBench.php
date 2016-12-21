@@ -10,7 +10,6 @@
  *
  */
 
-
 use PhpBench\BenchIteration;
 
 class FooCaseBench

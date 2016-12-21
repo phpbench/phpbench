@@ -10,7 +10,6 @@
  *
  */
 
-
 return [
     'xdebug_trace' => [
         'executor' => 'xdebug_trace',

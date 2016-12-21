@@ -26,10 +26,29 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class RunCommand extends Command
 {
+    /**
+     * @var RunnerHandler
+     */
     private $runnerHandler;
+
+    /**
+     * @var ReportHandler
+     */
     private $reportHandler;
+
+    /**
+     * @var TimeUnitHandler
+     */
     private $timeUnitHandler;
+
+    /**
+     * @var DumpHandler
+     */
     private $dumpHandler;
+
+    /**
+     * @var Registry
+     */
     private $storage;
 
     public function __construct(
@@ -75,6 +94,7 @@ EOT
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $this->timeUnitHandler->timeUnitFromInput($input);
+        $this->reportHandler->validateReportsFromInput($input);
         $suite = $this->runnerHandler->runFromInput($input, $output, [
             'context_name' => $input->getOption('context'),
             'retry_threshold' => $input->getOption('retry-threshold'),
