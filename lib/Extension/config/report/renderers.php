@@ -10,7 +10,6 @@
  *
  */
 
-
 return [
     'console' => [
         'renderer' => 'console',

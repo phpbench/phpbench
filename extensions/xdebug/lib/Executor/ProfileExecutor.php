@@ -49,7 +49,6 @@ class ProfileExecutor extends BaseExecutor
             ));
         }
 
-
         $callback($iteration, $result);
         $iteration->setResult(new TimeResult($result['time']));
         $iteration->setResult(MemoryResult::fromArray($result['mem']));

@@ -10,7 +10,6 @@
  *
  */
 
-
 class BenchmarkBench
 {
     public function benchRandom()

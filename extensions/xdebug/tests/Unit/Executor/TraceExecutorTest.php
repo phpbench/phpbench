@@ -55,7 +55,6 @@ class TraceExecutorTest extends \PHPUnit_Framework_TestCase
         $this->benchmark = $this->prophesize(Benchmark::class);
         $this->dom = $this->prophesize(Document::class);
 
-
         $this->iteration->getVariant()->willReturn($this->variant->reveal());
         $this->variant->getSubject()->willReturn($this->subject->reveal());
         $this->subject->getBenchmark()->willReturn($this->benchmark->reveal());

@@ -220,7 +220,6 @@ class XmlDecoder
                     ));
                 }
 
-
                 $prefix = substr($name, 0, strpos($name, '-'));
 
                 if (!isset($resultClasses[$prefix])) {

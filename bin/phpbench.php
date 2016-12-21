@@ -10,7 +10,6 @@
  *
  */
 
-
 if (is_file(__DIR__ . '/../vendor/autoload.php')) {
     $autoloader = require __DIR__ . '/../vendor/autoload.php';
 } elseif (is_file(__DIR__ . '/../../../autoload.php')) {

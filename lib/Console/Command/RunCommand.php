@@ -26,14 +26,29 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class RunCommand extends Command
 {
+    /**
+     * @var RunnerHandler
+     */
     private $runnerHandler;
 
     /**
      * @var ReportHandler
      */
     private $reportHandler;
+
+    /**
+     * @var TimeUnitHandler
+     */
     private $timeUnitHandler;
+
+    /**
+     * @var DumpHandler
+     */
     private $dumpHandler;
+
+    /**
+     * @var Registry
+     */
     private $storage;
 
     public function __construct(

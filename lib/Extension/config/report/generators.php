@@ -10,7 +10,6 @@
  *
  */
 
-
 return [
     'aggregate' => [
         'generator' => 'table',

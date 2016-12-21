@@ -10,7 +10,6 @@
  *
  */
 
-
 abstract class AbstractBench
 {
 }
