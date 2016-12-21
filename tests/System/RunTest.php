@@ -114,6 +114,18 @@ class RunTest extends SystemTestCase
     }
 
     /**
+     * It should fail if an invalid report name is provided.
+     */
+    public function testFailInvalidReportName()
+    {
+        $process = $this->phpbench(
+            'run --report=foobar benchmarks/set4/NothingBench.php'
+        );
+        $this->assertExitCode(1, $process);
+        $this->assertContains('No generator configuration named "foobar" exists.', $process->getErrorOutput());
+    }
+
+    /**
      * It should dump none to an XML file.
      */
     public function testDumpXml()

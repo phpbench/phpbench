@@ -34,6 +34,13 @@ class ReportManager
         $this->rendererRegistry = $rendererRegistry;
     }
 
+    public function validateReportNames($reportNames)
+    {
+        foreach ($reportNames as $reportName) {
+            $this->generatorRegistry->getConfig($reportName);
+        }
+    }
+
     /**
      * Generate the named reports.
      *

@@ -34,6 +34,12 @@ class ReportHandler
         $command->addOption('output', 'o', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Specify output', ['console']);
     }
 
+    public function validateReportsFromInput(InputInterface $input)
+    {
+        $reportNames = $input->getOption('report');
+        $this->reportManager->validateReportNames($reportNames);
+    }
+
     public function reportsFromInput(InputInterface $input, OutputInterface $output, SuiteCollection $collection)
     {
         $reports = $input->getOption('report');
