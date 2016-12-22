@@ -151,7 +151,7 @@ number of times that the code is consecutively executed.
 
     // ...
 
-    class TimeConsumerBench implements Benchmark
+    class TimeConsumerBench
     {
         /**
          * @Revs(1000)
@@ -178,11 +178,11 @@ the ``@Iterations`` annotation (either as a replacement or in addition to
 
     // ...
 
-    class TimeConsumerBench implements Benchmark
+    class TimeConsumerBench
     {
         /**
          * @Revs(1000)
-           @Iterations(5)
+         * @Iterations(5)
          */
         public function benchConsume()
         {
