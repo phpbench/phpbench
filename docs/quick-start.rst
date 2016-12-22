@@ -242,7 +242,7 @@ following:
 
 .. code-block:: bash
 
-    $ ./vendor/bin/phpbench run benchmarks/TimeConsumerBench.php --report='{"extends": "aggregate", "cols": ["subject", "mode""]}'
+    $ ./vendor/bin/phpbench run benchmarks/TimeConsumerBench.php --report='{"extends": "aggregate", "cols": ["subject", "mode"]}'
 
 Above we configure a new report which extends the ``default`` report that we
 have already used, but we use only the ``subject`` and ``mode`` columns.
