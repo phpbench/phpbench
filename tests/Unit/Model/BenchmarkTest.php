@@ -42,6 +42,7 @@ class BenchmarkTest extends \PHPUnit_Framework_TestCase
     {
         $metadata = $this->prophesize(SubjectMetadata::class);
         $metadata->getName()->willReturn('hello');
+        $metadata->getLabel()->willReturn('hello world');
         $metadata->getGroups()->willReturn(['one', 'two']);
         $metadata->getSleep()->willReturn(30);
         $metadata->getRetryThreshold()->willReturn(10);

@@ -77,6 +77,8 @@ class Runner
      *
      * @param string $contextName
      * @param string $path
+     *
+     * @return Suite
      */
     public function run(RunnerContext $context)
     {

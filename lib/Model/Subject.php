@@ -33,6 +33,11 @@ class Subject
     private $name;
 
     /**
+     * @var string
+     */
+    private $label;
+
+    /**
      * @var string[]
      */
     private $groups = [];
@@ -195,6 +200,16 @@ class Subject
     public function setRetryThreshold($retryThreshold)
     {
         $this->retryThreshold = $retryThreshold;
+    }
+
+    public function getLabel() 
+    {
+        return $this->label;
+    }
+    
+    public function setLabel($label)
+    {
+        $this->label = $label;
     }
 
     public function getIndex()

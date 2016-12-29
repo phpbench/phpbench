@@ -15,7 +15,21 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
 /**
  * @Annotation
  * @Taget({"METHOD"})
+ * @Attributes({
+ *    @Attribute("label", type="string")
+ * })
  */
 class Subject
 {
+    private $label;
+
+    public function __construct($data)
+    {
+        $this->label = isset($data['label']) ? $data['label'] : null;
+    }
+
+    public function getLabel()
+    {
+        return $this->label;
+    }
 }

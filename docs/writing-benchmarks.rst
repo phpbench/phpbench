@@ -517,5 +517,29 @@ actually measuring the revolutions time.
 
 As with :ref:`revolutions <revolutions>`, you may also specify an array.
 
+Labels
+------
+
+You can optionally assign labels to subjects, these labels are subsequently
+made available to you in reports:
+
+.. code-block:: php
+
+    <?php
+
+    // ...
+    class ReportBench
+    {
+        // ...
+
+        /**
+         * @Subject(label="Generate report")
+         */
+        public function benchGenerateReport()
+        {
+            $this->generator->generateMyComplexReport();
+        }
+    }
+
 .. _cartesian product: https://en.wikipedia.org/wiki/Cartesian_product
 .. _Relative standard deviation: https://en.wikipedia.org/wiki/Coefficient_of_variation

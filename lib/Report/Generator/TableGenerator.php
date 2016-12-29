@@ -380,6 +380,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
                             'benchmark' => $this->getClassShortName($benchmark->getClass()),
                             'benchmark_full' => $benchmark->getClass(),
                             'subject' => $subject->getName(),
+                            'label' => $subject->getLabel() ?: $subject->getName(),
                             'groups' => implode(',', $subject->getGroups()),
                             'params' => json_encode($variant->getParameterSet()->getArrayCopy(), $paramJsonFlags),
                             'revs' => $variant->getRevolutions(),

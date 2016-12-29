@@ -31,6 +31,9 @@ class KdeBench
         $this->points = Statistics::linspace(1, 10, $params['points']);
     }
 
+    /**
+     * @Subject(label="Do this from that")
+     */
     public function benchKde()
     {
         $kde = new Kde([

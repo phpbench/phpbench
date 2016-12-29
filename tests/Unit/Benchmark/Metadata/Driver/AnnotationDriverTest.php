@@ -135,7 +135,7 @@ EOT;
         $method->name = 'foo';
         $method->comment = <<<'EOT'
 /**
- * @Subject()
+ * @Subject(label="foobar")
  */
 EOT;
         $reflection->methods[$method->name] = $method;
@@ -143,6 +143,8 @@ EOT;
         $metadata = $this->createDriver()->getMetadataForHierarchy($hierarchy);
         $subjects = $metadata->getSubjects();
         $this->assertCount(1, $subjects);
+        $subject = reset($subjects);
+        $this->assertEquals("foobar", $subject->getLabel());
     }
 
     /**
