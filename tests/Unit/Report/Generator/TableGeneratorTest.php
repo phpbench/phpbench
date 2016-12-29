@@ -511,14 +511,18 @@ EOT
     }
 
     /**
-     * It should customize the column names by column index.
+     * It should customize the column names.
      */
-    public function testCustomizeColumnLabelsIndex()
+    public function testCustomizeColumnLabels()
     {
         $report = $this->generate(
             TestUtil::createCollection([[]]),
             [
-                'labels' => ['Column one', 'Column two', 'params' => 'Parameters'],
+                'labels' => [
+                    'benchmark' => 'Column one',
+                    'subject' => 'Column two',
+                    'params' => 'Parameters',
+                ],
             ]
         );
 

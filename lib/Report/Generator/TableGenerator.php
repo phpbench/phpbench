@@ -513,7 +513,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
             // Build the col(umn) definitions.
             foreach ($table as $row) {
                 $colsEl = $tableEl->appendElement('cols');
-                foreach ($row->getNames() as $cellIndex => $colName) {
+                foreach ($row->getNames() as $colName) {
                     $colEl = $colsEl->appendElement('col');
                     $colEl->setAttribute('name', $colName);
 
@@ -522,8 +522,6 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
                     $colLabel = $colName;
                     if (isset($config['labels'][$colName])) {
                         $colLabel = $config['labels'][$colName];
-                    } elseif (isset($config['labels'][$cellIndex])) {
-                        $colLabel = $config['labels'][$cellIndex];
                     }
 
                     $colEl->setAttribute('label', $colLabel);
