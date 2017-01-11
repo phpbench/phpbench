@@ -212,7 +212,7 @@ The following are reports defined by PHPBench, other reports can be defined in y
 ``aggregate``
 ~~~~~~~~~~~~~
 
-Shows aggregate details of each each set of iterations:
+Shows aggregate details of each set of iterations:
 
 .. code-block:: bash
 
