@@ -36,7 +36,7 @@ class such as:
 
     /**
      * @BeforeMethods({"setUp"})
-     * @AfterMethods({"setUp"})
+     * @AfterMethods({"tearDown"})
      */
     abstract class BenchmarkCase
     {
