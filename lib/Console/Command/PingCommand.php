@@ -23,13 +23,18 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
+use PhpBench\Benchmark\Metadata\BenchmarkMetadataCollection;
+use PhpBench\Benchmark\RunnerContext;
+use PhpBench\Benchmark\Runner;
+use PhpBench\Progress\LoggerRegistry;
 
 class PingCommand extends Command
 {
     /**
-     * @var RunnerHandler
+     * @var LoggerRegistry
      */
-    private $runnerHandler;
+    private $loggerRegistry;
 
     /**
      * @var ReportHandler
@@ -51,19 +56,28 @@ class PingCommand extends Command
      */
     private $storage;
 
+    /**
+     * @var string
+     */
+    private $defaultProgress;
+
     public function __construct(
-        RunnerHandler $runnerHandler,
+        Runner $runner,
+        LoggerRegistry $loggerRegistry,
         ReportHandler $reportHandler,
         TimeUnitHandler $timeUnitHandler,
         DumpHandler $dumpHandler,
-        Registry $storage
+        Registry $storage,
+        $defaultProgress = null
     ) {
         parent::__construct();
-        $this->runnerHandler = $runnerHandler;
+        $this->runner = $runner;
+        $this->loggerRegistry = $loggerRegistry;
         $this->reportHandler = $reportHandler;
         $this->timeUnitHandler = $timeUnitHandler;
         $this->dumpHandler = $dumpHandler;
         $this->storage = $storage;
+        $this->defaultProgress = $defaultProgress;
     }
 
     public function configure()
@@ -84,21 +98,41 @@ EOT
         $this->addOption('sleep', null, InputOption::VALUE_REQUIRED, 'Number of microseconds to sleep between iterations');
         $this->addOption('context', null, InputOption::VALUE_REQUIRED, 'Context label to apply to the suite result (useful when comparing reports)');
         $this->addOption('store', null, InputOption::VALUE_NONE, 'Persist the results.');
+        $this->addOption('url', null, InputOption::VALUE_IS_ARRAY|InputOption::VALUE_REQUIRED, 'Url(s) to ping');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $this->timeUnitHandler->timeUnitFromInput($input);
         $this->reportHandler->validateReportsFromInput($input);
+        $urls = $input->getOption('url');
 
-        $suite = $this->runnerHandler->runFromInput($input, $output, [
-            'executor' => 'ping',
-            'context_name' => $input->getOption('context'),
-            'retry_threshold' => $input->getOption('retry-threshold'),
-            'sleep' => $input->getOption('sleep'),
-            'iterations' => $input->getOption('iterations'),
-            'warmup' => $input->getOption('warmup'),
-        ]);
+        $context = new RunnerContext(
+            __DIR__,
+            [
+                'executor' => 'ping',
+                'revolutions' => $input->getOption('revs'),
+                'filters' => $input->getOption('filter'),
+                'groups' => $input->getOption('group'),
+                'sleep' => $input->getOption('sleep'),
+                'warmup' => $input->getOption('warmup'),
+                'iterations' => $input->getOption('iterations'),
+                'stop_on_error' => $input->getOption('stop-on-error'),
+            ]
+        );
+
+        $benchmarkMetadata = new BenchmarkMetadata(null, 'Ping');
+        foreach ($urls as $url) {
+            $benchmarkMetadata->getOrCreateSubject($url);
+        }
+        $benchmarkMetadatas = new BenchmarkMetadataCollection([$benchmarkMetadata]);
+
+        $progressLoggerName = $input->getOption('progress') ?: $this->defaultProgress;
+        $progressLogger = $this->loggerRegistry->getProgressLogger($progressLoggerName);
+        $progressLogger->setOutput($output);
+        $this->runner->setProgressLogger($progressLogger);
+
+        $suite = $this->runner->run($context, $benchmarkMetadatas);
 
         $collection = new SuiteCollection([$suite]);
 

@@ -74,6 +74,8 @@ use PhpBench\Storage\UuidResolver;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\ExecutableFinder;
+use PhpBench\Console\Command\PingCommand;
+use PhpBench\Benchmark\Executor\PingExecutor;
 
 class CoreExtension implements ExtensionInterface
 {
@@ -156,6 +158,10 @@ class CoreExtension implements ExtensionInterface
                 $container->get('benchmark.remote.launcher')
             );
         }, ['benchmark_executor' => ['name' => 'microtime']]);
+
+        $container->register('benchmark.executor.ping', function (Container $container) {
+            return new PingExecutor();
+        }, ['benchmark_executor' => ['name' => 'ping']]);
 
         $container->register('benchmark.executor.debug', function (Container $container) {
             return new DebugExecutor(
@@ -320,6 +326,18 @@ class CoreExtension implements ExtensionInterface
             return new DeleteCommand(
                 $container->get('console.command.handler.suite_collection'),
                 $container->get('storage.driver_registry')
+            );
+        }, ['console.command' => []]);
+
+        $container->register('console.command.ping', function (Container $container) {
+            return new PingCommand(
+                $container->get('benchmark.runner'),
+                $container->get('progress_logger.registry'),
+                $container->get('console.command.handler.report'),
+                $container->get('console.command.handler.time_unit'),
+                $container->get('console.command.handler.dump'),
+                $container->get('storage.driver_registry'),
+                $container->getParameter('progress')
             );
         }, ['console.command' => []]);
 

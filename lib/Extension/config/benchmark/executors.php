@@ -14,6 +14,9 @@ return [
     'microtime' => [
         'executor' => 'microtime',
     ],
+    'ping' => [
+        'executor' => 'ping',
+    ],
     'debug' => [
         'executor' => 'debug',
     ],
