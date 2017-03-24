@@ -20,6 +20,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use PhpBench\Benchmark\BenchmarkFinder;
 
 class RunnerHandler
 {
@@ -27,10 +28,12 @@ class RunnerHandler
     private $defaultProgress;
     private $benchPath;
     private $runner;
+    private $benchmarkFinder;
 
     public function __construct(
         Runner $runner,
         LoggerRegistry $loggerRegistry,
+        BenchmarkFinder $benchmarkFinder,
         $defaultProgress = null,
         $benchPath = null
     ) {
@@ -38,6 +41,7 @@ class RunnerHandler
         $this->loggerRegistry = $loggerRegistry;
         $this->defaultProgress = $defaultProgress;
         $this->benchPath = $benchPath;
+        $this->benchmarkFinder = $benchmarkFinder;
     }
 
     public static function configure(Command $command)
@@ -77,6 +81,11 @@ class RunnerHandler
                 $options
             )
         );
+        $benchmarkMetadatas = $this->benchmarkFinder->findBenchmarks(
+            $context->getPath(),
+            $context->getFilters(),
+            $context->getGroups()
+        );
 
         $progressLoggerName = $input->getOption('progress') ?: $this->defaultProgress;
 
@@ -84,7 +93,7 @@ class RunnerHandler
         $progressLogger->setOutput($output);
         $this->runner->setProgressLogger($progressLogger);
 
-        return $this->runner->run($context);
+        return $this->runner->run($context, $benchmarkMetadatas);
     }
 
     private function getParameters($parametersJson)

@@ -16,6 +16,7 @@ use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\Factory;
 use PhpBench\PhpBench;
 use Symfony\Component\Finder\Finder;
+use PhpBench\Benchmark\Metadata\BenchmarkMetadataCollection;
 
 /**
  * This class finds a benchmark (or benchmarks depending on the path), loads
@@ -42,6 +43,8 @@ class BenchmarkFinder
      * @param string $path
      * @param array $subjectFilter
      * @param array $groupFilter
+     *
+     * @return BenchmarkMetadataCollection
      */
     public function findBenchmarks($path, array $subjectFilter = [], array $groupFilter = [])
     {
@@ -94,6 +97,6 @@ class BenchmarkFinder
             $benchmarks[] = $benchmark;
         }
 
-        return $benchmarks;
+        return new BenchmarkMetadataCollection($benchmarks);
     }
 }

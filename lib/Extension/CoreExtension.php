@@ -144,7 +144,6 @@ class CoreExtension implements ExtensionInterface
     {
         $container->register('benchmark.runner', function (Container $container) {
             return new Runner(
-                $container->get('benchmark.benchmark_finder'),
                 $container->get('benchmark.registry.executor'),
                 $container->get('environment.supplier'),
                 $container->getParameter('retry_threshold'),
@@ -241,6 +240,7 @@ class CoreExtension implements ExtensionInterface
             return new RunnerHandler(
                 $container->get('benchmark.runner'),
                 $container->get('progress_logger.registry'),
+                $container->get('benchmark.benchmark_finder'),
                 $container->getParameter('progress'),
                 $container->getParameter('path')
             );

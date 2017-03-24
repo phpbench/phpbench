@@ -27,6 +27,8 @@ use PhpBench\Progress\Logger\NullLogger;
 use PhpBench\Progress\LoggerInterface;
 use PhpBench\Registry\Config;
 use PhpBench\Registry\ConfigurableRegistry;
+use PhpBench\Benchmark\RunnerContext;
+use PhpBench\Benchmark\Metadata\BenchmarkMetadataCollection;
 
 /**
  * The benchmark runner.
@@ -34,26 +36,22 @@ use PhpBench\Registry\ConfigurableRegistry;
 class Runner
 {
     private $logger;
-    private $benchmarkFinder;
     private $configPath;
     private $retryThreshold = null;
     private $executorRegistry;
     private $envSupplier;
 
     /**
-     * @param BenchmarkFinder $benchmarkFinder
      * @param SubjectBuilder $subjectBuilder
      * @param string $configPath
      */
     public function __construct(
-        BenchmarkFinder $benchmarkFinder,
         ConfigurableRegistry $executorRegistry,
         Supplier $envSupplier,
         $retryThreshold,
         $configPath
     ) {
         $this->logger = new NullLogger();
-        $this->benchmarkFinder = $benchmarkFinder;
         $this->executorRegistry = $executorRegistry;
         $this->envSupplier = $envSupplier;
         $this->configPath = $configPath;
@@ -78,13 +76,11 @@ class Runner
      * @param string $contextName
      * @param string $path
      */
-    public function run(RunnerContext $context)
+    public function run(RunnerContext $context, BenchmarkMetadataCollection $benchmarkMetadatas)
     {
         $executorConfig = $this->executorRegistry->getConfig($context->getExecutor());
         $executor = $this->executorRegistry->getService($executorConfig['executor']);
 
-        // build the collection of benchmarks to be executed.
-        $benchmarkMetadatas = $this->benchmarkFinder->findBenchmarks($context->getPath(), $context->getFilters(), $context->getGroups());
         $suite = new Suite(
             $context->getContextName(),
             new \DateTime(),
