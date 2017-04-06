@@ -203,8 +203,7 @@ class CoreExtension implements ExtensionInterface
 
         $container->register('benchmark.benchmark_finder', function (Container $container) {
             return new BenchmarkFinder(
-                $container->get('benchmark.metadata_factory'),
-                $container->get('benchmark.finder')
+                $container->get('benchmark.metadata_factory')
             );
         });
 
