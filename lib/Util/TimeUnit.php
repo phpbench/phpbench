@@ -342,11 +342,7 @@ class TimeUnit
      */
     public static function getSuffix($unit, $mode = null)
     {
-        if (null !== $unit) {
-            self::validateUnit($unit);
-        } else {
-            $unit = $this->destUnit;
-        }
+        self::validateUnit($unit);
 
         $suffix = self::$suffixes[$unit];
 
