@@ -64,6 +64,6 @@ class Iteration extends ResultCollection
      */
     public function getRejectionCount()
     {
-        return $this->results->getMetricOrDefault(ComputedResult::class, 'reject_count', 0);
+        return $this->getResults()->getMetricOrDefault(ComputedResult::class, 'reject_count', 0);
     }
 }
