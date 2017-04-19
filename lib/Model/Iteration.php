@@ -12,8 +12,6 @@
 
 namespace PhpBench\Model;
 
-use PhpBench\Model\Result\ComputedResult;
-
 /**
  * Represents the data required to execute a single iteration.
  */
