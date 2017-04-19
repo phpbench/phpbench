@@ -56,14 +56,4 @@ class Iteration extends ResultCollection
     {
         return $this->index;
     }
-
-    /**
-     * Return the number of times that this iteration was rejected.
-     *
-     * @return int
-     */
-    public function getRejectionCount()
-    {
-        return $this->getResults()->getMetricOrDefault(ComputedResult::class, 'reject_count', 0);
-    }
 }
