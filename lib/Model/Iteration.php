@@ -12,8 +12,6 @@
 
 namespace PhpBench\Model;
 
-use PhpBench\Model\Result\ComputedResult;
-
 /**
  * Represents the data required to execute a single iteration.
  */
@@ -55,15 +53,5 @@ class Iteration extends ResultCollection
     public function getIndex()
     {
         return $this->index;
-    }
-
-    /**
-     * Return the number of times that this iteration was rejected.
-     *
-     * @return int
-     */
-    public function getRejectionCount()
-    {
-        return $this->results->getMetricOrDefault(ComputedResult::class, 'reject_count', 0);
     }
 }
