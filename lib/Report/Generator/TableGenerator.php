@@ -150,7 +150,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
                     return $row;
                 }
 
-                $row['diff'] = (($row[$stat] / $min) - 1) * 100;
+                $row['diff'] = $row[$stat] / $min;
 
                 return $row;
             });

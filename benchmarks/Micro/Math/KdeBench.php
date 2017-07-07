@@ -21,6 +21,8 @@ use PhpBench\Math\Statistics;
  * @Revs(100)
  * @Iterations(10)
  * @OutputTimeUnit("milliseconds", precision=4)
+ * @Assert("stdev < 1000")
+ * @Assert("mean < 1000")
  */
 class KdeBench
 {

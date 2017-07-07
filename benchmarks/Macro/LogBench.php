@@ -35,6 +35,9 @@ class LogBench extends BaseBenchCase
         }
     }
 
+    /**
+     * @Fail('< 10s')
+     */
     public function benchLog()
     {
         $this->runCommand('console.command.log', [

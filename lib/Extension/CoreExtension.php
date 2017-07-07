@@ -74,6 +74,8 @@ use PhpBench\Storage\UuidResolver;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\ExecutableFinder;
+use Hoa\Ruler\Ruler;
+use PhpBench\Benchmark\Asserter\RulerAsserter;
 
 class CoreExtension implements ExtensionInterface
 {
@@ -148,9 +150,14 @@ class CoreExtension implements ExtensionInterface
                 $container->get('benchmark.benchmark_finder'),
                 $container->get('benchmark.registry.executor'),
                 $container->get('environment.supplier'),
+                $container->get('benchmark.asserter'),
                 $container->getParameter('retry_threshold'),
                 $container->getParameter('config_path')
             );
+        });
+
+        $container->register('benchmark.asserter', function (Container $container) {
+            return new RulerAsserter();
         });
 
         $container->register('benchmark.executor.microtime', function (Container $container) {

@@ -23,6 +23,8 @@ use PhpBench\Benchmark\Metadata\DriverInterface;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\ReflectionHierarchy;
 use PhpBench\Benchmark\Remote\Reflector;
+use PhpBench\Benchmark\Assertion\RulerAsserter;
+use PhpBench\Benchmark\Metadata\AssertionMetadata;
 
 class AnnotationDriver implements DriverInterface
 {
@@ -195,6 +197,10 @@ class AnnotationDriver implements DriverInterface
 
         if ($annotation instanceof Annotations\OutputMode) {
             $subject->setOutputMode($annotation->getMode());
+        }
+
+        if ($annotation instanceof Annotations\Assert) {
+            $subject->addAssertion(new AssertionMetadata($annotation->getExpression()));
         }
     }
 

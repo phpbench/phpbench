@@ -39,6 +39,7 @@ class Runner
     private $retryThreshold = null;
     private $executorRegistry;
     private $envSupplier;
+    private $asserter;
 
     /**
      * @param BenchmarkFinder $benchmarkFinder
@@ -49,6 +50,7 @@ class Runner
         BenchmarkFinder $benchmarkFinder,
         ConfigurableRegistry $executorRegistry,
         Supplier $envSupplier,
+        AsserterInterface $asserter,
         $retryThreshold,
         $configPath
     ) {
@@ -57,6 +59,7 @@ class Runner
         $this->executorRegistry = $executorRegistry;
         $this->envSupplier = $envSupplier;
         $this->configPath = $configPath;
+        $this->asserter = $asserter;
         $this->retryThreshold = $retryThreshold;
     }
 
@@ -209,8 +212,7 @@ class Runner
             return;
         }
 
-        $variant->computeStats();
-        $this->logger->variantEnd($variant);
+        $this->endVariant($subjectMetadata, $variant);
 
         while ($variant->getRejectCount() > 0) {
             $this->logger->retryStart($variant->getRejectCount());
@@ -219,10 +221,23 @@ class Runner
                 $rejectCount[spl_object_hash($reject)]++;
                 $this->runIteration($executor, $executorConfig, $reject, $subjectMetadata);
             }
-            $variant->computeStats();
-            $this->logger->variantEnd($variant);
+            $this->endVariant($subjectMetadata, $variant);
             $reject->setResult(new RejectionCountResult($rejectCount[spl_object_hash($reject)]));
         }
+    }
+
+    private function endVariant(SubjectMetadata $subjectMetadata, Variant $variant) 
+    {
+        $variant->computeStats();
+
+        foreach ($subjectMetadata->getAssertions() as $assertion) {
+            $failures = $this->asserter->assert((string) $assertion, $variant->getStats());
+            foreach ($failures as $failure) {
+                $variant->addFailure($failure);
+            }
+        }
+
+        $this->logger->variantEnd($variant);
     }
 
     public function runIteration(ExecutorInterface $executor, Config $executorConfig, Iteration $iteration, SubjectMetadata $subjectMetadata)

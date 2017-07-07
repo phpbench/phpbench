@@ -13,6 +13,7 @@
 namespace PhpBench\Expression;
 
 use PhpBench\Json\JsonDecoder;
+use PhpBench\Expression\Constraint\Constraint;
 
 /**
  * Parse a JSON query into a Constraint.
@@ -44,6 +45,9 @@ class Parser
         $this->decoder = new JsonDecoder();
     }
 
+    /**
+     * @return Constraint
+     */
     public function parse($json)
     {
         $expr = $this->decoder->decode($json);

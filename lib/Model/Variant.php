@@ -16,6 +16,7 @@ use PhpBench\Math\Distribution;
 use PhpBench\Math\Statistics;
 use PhpBench\Model\Result\ComputedResult;
 use PhpBench\Model\Result\TimeResult;
+use PhpBench\Benchmark\AssertionFailure;
 
 /**
  * Stores Iterations and calculates the deviations and rejection
@@ -75,6 +76,11 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
      */
     private $warmup;
 
+    /**
+     * @var AssertionFailure[]
+     */
+    private $failures;
+
     public function __construct(
         Subject $subject,
         ParameterSet $parameterSet,
@@ -87,6 +93,7 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
         $this->revolutions = $revolutions;
         $this->warmup = $warmup;
         $this->computedStats = $computedStats;
+        $this->failures = [];
     }
 
     /**
@@ -353,6 +360,16 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
         } while ($exception = $exception->getPrevious());
 
         $this->errorStack = new ErrorStack($this, $errors);
+    }
+
+    public function addFailure(AssertionFailure $failure)
+    {
+        $this->failures[] = $failure;
+    }
+
+    public function hasFailed()
+    {
+        return count($this->failures) > 0;
     }
 
     /**
