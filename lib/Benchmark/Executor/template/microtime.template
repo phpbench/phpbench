@@ -29,7 +29,11 @@ foreach ($beforeMethods as $beforeMethod) {
 }
 
 // warmup if required
-benchmark($benchmark, $warmup, $parameters);
+if ($warmup) {
+    for ($i = 0; $i < $warmup; $i++) {
+        $benchmark->{{ subject }}($parameters);
+    }
+}
 
 $time = benchmark($benchmark, $parameters);
 
