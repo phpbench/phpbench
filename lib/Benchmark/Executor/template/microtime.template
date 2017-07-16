@@ -8,8 +8,6 @@ ob_start();
 
 $class = '{{ class }}';
 $file = '{{ file }}';
-$subject = '{{ subject }}';
-$revolutions = {{ revolutions }};
 $beforeMethods = {{ beforeMethods }};
 $afterMethods = {{ afterMethods }};
 $bootstrap = '{{ bootstrap }}';
@@ -31,9 +29,13 @@ foreach ($beforeMethods as $beforeMethod) {
 }
 
 // warmup if required
-benchmark($benchmark, $subject, $warmup, $parameters);
+if ($warmup) {
+    for ($i = 0; $i < $warmup; $i++) {
+        $benchmark->{{ subject }}($parameters);
+    }
+}
 
-$time = benchmark($benchmark, $subject, $revolutions, $parameters);
+$time = benchmark($benchmark, $parameters);
 
 foreach ($afterMethods as $afterMethod) {
     $benchmark->$afterMethod($parameters);
@@ -54,7 +56,7 @@ echo json_encode(array(
     'buffer' => $buffer,
 ));
 
-function benchmark($benchmark, $subject, $revolutions, $parameters)
+function benchmark($benchmark, $parameters)
 {
     // run the benchmarks: note that passing arguments to the method slightly increases
     // the calltime, so we explicitly do one thing or the other depending on if parameters
@@ -62,16 +64,16 @@ function benchmark($benchmark, $subject, $revolutions, $parameters)
     if ($parameters) {
         $startTime = microtime(true);
 
-        for ($i = 0; $i < $revolutions; $i++) {
-            $benchmark->$subject($parameters);
+        for ($i = 0; $i < {{ revolutions }}; $i++) {
+            $benchmark->{{ subject }}($parameters);
         }
 
         $endTime = microtime(true);
     } else {
         $startTime = microtime(true);
 
-        for ($i = 0; $i < $revolutions; $i++) {
-            $benchmark->$subject();
+        for ($i = 0; $i < {{ revolutions }}; $i++) {
+            $benchmark->{{ subject }}();
         }
 
         $endTime = microtime(true);
