@@ -12,9 +12,10 @@
 
 namespace PhpBench\Tests\Unit\Formatter\Format;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Formatter\Format\BalanceFormat;
 
-class BalanceFormatTest extends \PHPUnit_Framework_TestCase
+class BalanceFormatTest extends TestCase
 {
     private $format;
 

@@ -12,9 +12,10 @@
 
 namespace PhpBench\Tests\Unit\Formatter;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Formatter\ClassLoader;
 
-class ClassLoaderTest extends \PHPUnit_Framework_TestCase
+class ClassLoaderTest extends TestCase
 {
     private $loader;
 

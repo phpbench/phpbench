@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Progress\Logger;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\ParameterSet;
 use PhpBench\Model\Subject;
@@ -21,7 +22,7 @@ use PhpBench\Tests\Util\TestUtil;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Console\Output\BufferedOutput;
 
-class BlinkenLoggerTest extends \PHPUnit_Framework_TestCase
+class BlinkenLoggerTest extends TestCase
 {
     public function setUp()
     {

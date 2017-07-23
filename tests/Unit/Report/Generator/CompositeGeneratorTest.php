@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Report\Generator;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Dom\Document;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
@@ -19,7 +20,7 @@ use PhpBench\Report\Generator\CompositeGenerator;
 use PhpBench\Report\ReportManager;
 use Prophecy\Argument;
 
-class CompositeGeneratorTest extends \PHPUnit_Framework_TestCase
+class CompositeGeneratorTest extends TestCase
 {
     private $generator;
     private $manager;

@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Console\Command;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Console\CharacterReader;
 use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use PhpBench\Console\Command\LogCommand;
@@ -26,7 +27,7 @@ use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
-class LogCommandTest extends \PHPUnit_Framework_TestCase
+class LogCommandTest extends TestCase
 {
     private $storage;
     private $command;
@@ -76,6 +77,7 @@ class LogCommandTest extends \PHPUnit_Framework_TestCase
     public function testConfigure()
     {
         $this->command->configure();
+        $this->addToAssertionCount(1);
     }
 
     /**

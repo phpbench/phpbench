@@ -12,12 +12,13 @@
 
 namespace PhpBench\Tests\Unit\Environment\Provider;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Environment\Provider;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
 
-class GitTest extends \PHPUnit_Framework_TestCase
+class GitTest extends TestCase
 {
     private $provider;
     private $filesystem;

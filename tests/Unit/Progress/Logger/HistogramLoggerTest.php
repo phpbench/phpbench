@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Progress\Logger;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\ParameterSet;
@@ -22,7 +23,7 @@ use PhpBench\Tests\Util\TestUtil;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Console\Output\BufferedOutput;
 
-class HistogramLoggerTest extends \PHPUnit_Framework_TestCase
+class HistogramLoggerTest extends TestCase
 {
     public function setUp()
     {

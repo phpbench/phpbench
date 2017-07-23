@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Progress\Logger;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Math\Distribution;
 use PhpBench\Model\Benchmark;
@@ -25,7 +26,7 @@ use PhpBench\Model\Variant;
 use Prophecy\Argument;
 use Symfony\Component\Console\Output\OutputInterface;
 
-abstract class PhpBenchLoggerTest extends \PHPUnit_Framework_TestCase
+abstract class PhpBenchLoggerTest extends TestCase
 {
     protected $logger;
     protected $output;
@@ -68,6 +69,7 @@ abstract class PhpBenchLoggerTest extends \PHPUnit_Framework_TestCase
      */
     public function testStart()
     {
+        $this->addToAssertionCount(1);
     }
 
     /**

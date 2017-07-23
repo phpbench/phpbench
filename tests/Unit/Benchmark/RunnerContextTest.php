@@ -12,9 +12,10 @@
 
 namespace PhpBench\Tests\Unit\Benchmark;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Benchmark\RunnerContext;
 
-class RunnerContextTest extends \PHPUnit_Framework_TestCase
+class RunnerContextTest extends TestCase
 {
     /**
      * It should throw an exception if the path is null.

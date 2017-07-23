@@ -12,11 +12,12 @@
 
 namespace PhpBench\Tests\Unit\Model;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\ResultCollection;
 
-class ResultCollectionTest extends \PHPUnit_Framework_TestCase
+class ResultCollectionTest extends TestCase
 {
     private $collection;
 

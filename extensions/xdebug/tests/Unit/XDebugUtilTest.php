@@ -12,6 +12,7 @@
 
 namespace PhpBench\Extensions\XDebug\Tests\Unit;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Extensions\XDebug\XDebugUtil;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Iteration;
@@ -19,7 +20,7 @@ use PhpBench\Model\ParameterSet;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Variant;
 
-class XDebugUtilTest extends \PHPUnit_Framework_TestCase
+class XDebugUtilTest extends TestCase
 {
     private $iteration;
     private $subject;

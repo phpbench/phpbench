@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Serializer;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Environment\Information;
 use PhpBench\Math\Distribution;
 use PhpBench\Model\Benchmark;
@@ -27,7 +28,7 @@ use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Model\Variant;
 
-class XmlTestCase extends \PHPUnit_Framework_TestCase
+class XmlTestCase extends TestCase
 {
     public function setUp()
     {

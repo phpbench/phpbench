@@ -12,9 +12,10 @@
 
 namespace PhpBench\Tests\Unit\Math;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Math\Distribution;
 
-class DistributionTest extends \PHPUnit_Framework_TestCase
+class DistributionTest extends TestCase
 {
     /**
      * It should return stats.
@@ -78,6 +79,7 @@ class DistributionTest extends \PHPUnit_Framework_TestCase
     {
         $distribution = new Distribution([10]);
         iterator_to_array($distribution);
+        $this->addToAssertionCount(1);
     }
 
     /**
@@ -87,6 +89,7 @@ class DistributionTest extends \PHPUnit_Framework_TestCase
     {
         $distribution = new Distribution([0, 0]);
         iterator_to_array($distribution);
+        $this->addToAssertionCount(1);
     }
 
     /**

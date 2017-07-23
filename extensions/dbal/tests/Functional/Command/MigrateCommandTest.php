@@ -21,7 +21,7 @@ class MigrateCommandTest extends DbalTestCase
 {
     private $output;
 
-    public function __construct()
+    public function setUp()
     {
         $this->output = new BufferedOutput();
         $this->command = new MigrateCommand($this->getConnection());

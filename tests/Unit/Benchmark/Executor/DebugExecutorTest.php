@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Benchmark\Executor;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Benchmark\Executor\DebugExecutor;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\Launcher;
@@ -22,7 +23,7 @@ use PhpBench\Model\Variant;
 use PhpBench\Registry\Config;
 use Prophecy\Argument;
 
-class DebugExecutorTest extends \PHPUnit_Framework_TestCase
+class DebugExecutorTest extends TestCase
 {
     private $executor;
 

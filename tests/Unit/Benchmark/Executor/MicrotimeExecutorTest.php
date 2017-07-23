@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Benchmark\Executor;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Benchmark\Executor\MicrotimeExecutor;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
@@ -25,7 +26,7 @@ use PhpBench\Model\Variant;
 use PhpBench\Registry\Config;
 use Prophecy\Argument;
 
-class MicrotimeExecutorTest extends \PHPUnit_Framework_TestCase
+class MicrotimeExecutorTest extends TestCase
 {
     private $executor;
     private $beforeMethodFile;

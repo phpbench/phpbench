@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Benchmark;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Benchmark\BenchmarkFinder;
 use PhpBench\Benchmark\ExecutorInterface;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
@@ -30,7 +31,7 @@ use PhpBench\Registry\ConfigurableRegistry;
 use PhpBench\Tests\Util\TestUtil;
 use Prophecy\Argument;
 
-class RunnerTest extends \PHPUnit_Framework_TestCase
+class RunnerTest extends TestCase
 {
     public function setUp()
     {

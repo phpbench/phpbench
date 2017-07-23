@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Benchmark;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\ParameterSet;
 use PhpBench\Model\Result\ComputedResult;
@@ -22,7 +23,7 @@ use PhpBench\Model\Variant;
 use PhpBench\Tests\Util\TestUtil;
 use Prophecy\Argument;
 
-class VariantTest extends \PHPUnit_Framework_TestCase
+class VariantTest extends TestCase
 {
     private $subject;
     private $parameterSet;
@@ -104,6 +105,7 @@ class VariantTest extends \PHPUnit_Framework_TestCase
     {
         $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 10, 20);
         $variant->computeStats();
+        $this->addToAssertionCount(1);
     }
 
     /**

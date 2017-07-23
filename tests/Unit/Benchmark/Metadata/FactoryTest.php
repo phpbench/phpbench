@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Benchmark\Metadata;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\DriverInterface;
 use PhpBench\Benchmark\Metadata\Factory;
@@ -21,7 +22,7 @@ use PhpBench\Benchmark\Remote\ReflectionHierarchy;
 use PhpBench\Benchmark\Remote\Reflector;
 use PhpBench\Tests\Util\TestUtil;
 
-class FactoryTest extends \PHPUnit_Framework_TestCase
+class FactoryTest extends TestCase
 {
     const FNAME = 'fname';
     const PATH = '/path/to';

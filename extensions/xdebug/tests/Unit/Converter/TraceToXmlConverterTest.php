@@ -13,8 +13,9 @@
 namespace PhpBench\Extensions\XDebug\Tests\Unit\Converter;
 
 use PhpBench\Extensions\XDebug\Converter\TraceToXmlConverter;
+use PHPUnit\Framework\TestCase;
 
-class TraceToXmlConverterTest extends \PHPUnit_Framework_TestCase
+class TraceToXmlConverterTest extends TestCase
 {
     private $converter;
 

@@ -12,9 +12,10 @@
 
 namespace PhpBench\Tests\Unit\Formatter\Formatter;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Formatter\Format\NumberFormat;
 
-class NumberFormatTest extends \PHPUnit_Framework_TestCase
+class NumberFormatTest extends TestCase
 {
     private $format;
 

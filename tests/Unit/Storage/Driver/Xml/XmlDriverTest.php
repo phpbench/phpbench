@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Storage\Driver\Xml;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Dom\Document;
 use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
@@ -22,7 +23,7 @@ use PhpBench\Storage\Driver\Xml\XmlDriver;
 use Prophecy\Argument;
 use Symfony\Component\Filesystem\Filesystem;
 
-class XmlDriverTest extends \PHPUnit_Framework_TestCase
+class XmlDriverTest extends TestCase
 {
     private $xmlEncoder;
     private $xmlDecoder;

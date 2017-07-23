@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Storage\Driver\Xml;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Dom\Document;
 use PhpBench\Environment\Information;
 use PhpBench\Model\Suite;
@@ -23,7 +24,7 @@ use PhpBench\Tests\Util\Workspace;
 use Prophecy\Argument;
 use Symfony\Component\Filesystem\Filesystem;
 
-class HistoryIteratorTest extends \PHPUnit_Framework_TestCase
+class HistoryIteratorTest extends TestCase
 {
     private $xmlDecoder;
     private $iterator;
@@ -62,6 +63,7 @@ class HistoryIteratorTest extends \PHPUnit_Framework_TestCase
         );
 
         $iterator->current();
+        $this->addToAssertionCount(1);
     }
 
     /**

@@ -12,9 +12,10 @@
 
 namespace PhpBench\Tabular\Tests\Unit;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Report\Generator\Table\Sort;
 
-class SortTest extends \PHPUnit_Framework_TestCase
+class SortTest extends TestCase
 {
     /**
      * It should sort and preserve order for unchanging comparisons.

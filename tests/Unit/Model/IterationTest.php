@@ -12,12 +12,13 @@
 
 namespace PhpBench\Tests\Unit\Benchmark;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Variant;
 use PhpBench\Tests\Util\TestUtil;
 
-class IterationTest extends \PHPUnit_Framework_TestCase
+class IterationTest extends TestCase
 {
     private $iteration;
 

@@ -12,12 +12,13 @@
 
 namespace PhpBench\Tests\Unit\Environment\Provider;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Benchmark\Remote\Payload;
 use PhpBench\Environment\Provider;
 use Prophecy\Argument;
 
-class PhpTest extends \PHPUnit_Framework_TestCase
+class PhpTest extends TestCase
 {
     private $launcher;
     private $payload;

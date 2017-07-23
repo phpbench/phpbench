@@ -12,9 +12,10 @@
 
 namespace PhpBench\Tests;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Benchmark\CartesianParameterIterator;
 
-class CartesianIteratorTest extends \PHPUnit_Framework_TestCase
+class CartesianIteratorTest extends TestCase
 {
     /**
      * It should generate the cartestian product of all sets for each iteration.

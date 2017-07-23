@@ -15,8 +15,9 @@ namespace PhpBench\Tests\System;
 use PhpBench\Dom\Document;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
+use PHPUnit\Framework\TestCase;
 
-class SystemTestCase extends \PHPUnit_Framework_TestCase
+class SystemTestCase extends TestCase
 {
     protected $fname;
     protected $filesystem;

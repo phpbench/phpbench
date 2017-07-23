@@ -17,8 +17,9 @@ use PhpBench\Expression\Constraint\Composite;
 use PhpBench\Expression\Constraint\Constraint;
 use PhpBench\Expression\Parser;
 use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\Visitor\SqlVisitor;
+use PHPUnit\Framework\TestCase;
 
-class SqlVisitorTest extends \PHPUnit_Framework_TestCase
+class SqlVisitorTest extends TestCase
 {
     private $visitor;
 

@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Report;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Dom\Document;
 use PhpBench\Model\SuiteCollection;
@@ -22,7 +23,7 @@ use PhpBench\Report\RendererInterface;
 use PhpBench\Report\ReportManager;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ReportManagerTest extends \PHPUnit_Framework_TestCase
+class ReportManagerTest extends TestCase
 {
     private $reportManager;
     private $generator;

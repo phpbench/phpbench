@@ -12,9 +12,10 @@
 
 namespace PhpBench\Tests\Unit\Util;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Util\TimeUnit;
 
-class TimeUnitTest extends \PHPUnit_Framework_TestCase
+class TimeUnitTest extends TestCase
 {
     /**
      * It should convertTo one time unit to another.

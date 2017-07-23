@@ -12,10 +12,11 @@
 
 namespace PhpBench\Tests\Unit\Benchmark\Remote;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Benchmark\Remote\Payload;
 use PhpBench\Benchmark\Remote\PayloadFactory;
 
-class PayloadFactoryTest extends \PHPUnit_Framework_TestCase
+class PayloadFactoryTest extends TestCase
 {
     private $factory;
 

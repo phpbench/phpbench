@@ -12,10 +12,11 @@
 
 namespace PhpBench\Tests\Tests\Unit\Unit\Math;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Math\Kde;
 use PhpBench\Math\Statistics;
 
-class KdeTest extends \PHPUnit_Framework_TestCase
+class KdeTest extends TestCase
 {
     /**
      * It should evaluate a kernel distribution estimate over a given space.

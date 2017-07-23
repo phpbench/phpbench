@@ -12,9 +12,10 @@
 
 namespace PhpBench\Tests\Unit\Registry;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Registry\Config;
 
-class ConfigTest extends \PHPUnit_Framework_TestCase
+class ConfigTest extends TestCase
 {
     private $config;
 

@@ -12,9 +12,10 @@
 
 namespace PhpBench\Tests\Unit\Extension;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\DependencyInjection\Container;
 
-class CoreExtensionTest extends \PHPUnit_Framework_TestCase
+class CoreExtensionTest extends TestCase
 {
     public function tearDown()
     {

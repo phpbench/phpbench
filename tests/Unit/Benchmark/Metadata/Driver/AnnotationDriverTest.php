@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Benchmark\Metadata\Driver;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Benchmark\Metadata\Annotations;
 use PhpBench\Benchmark\Metadata\Driver\AnnotationDriver;
 use PhpBench\Benchmark\Remote\ReflectionClass;
@@ -19,7 +20,7 @@ use PhpBench\Benchmark\Remote\ReflectionHierarchy;
 use PhpBench\Benchmark\Remote\ReflectionMethod;
 use PhpBench\Benchmark\Remote\Reflector;
 
-class AnnotationDriverTest extends \PHPUnit_Framework_TestCase
+class AnnotationDriverTest extends TestCase
 {
     private $driver;
     private $reflector;
@@ -68,6 +69,7 @@ EOT;
         $hierarchy->addReflectionClass($reflection);
 
         $this->createDriver()->getMetadataForHierarchy($hierarchy);
+        $this->addToAssertionCount(1);
     }
 
     /**

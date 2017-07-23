@@ -12,12 +12,13 @@
 
 namespace PhpBench\Tests\Benchmark;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Benchmark\BenchmarkFinder;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\Factory;
 use PhpBench\Model\Subject;
 
-class BenchmarkFinderTest extends \PHPUnit_Framework_TestCase
+class BenchmarkFinderTest extends TestCase
 {
     private $finder;
     private $factory;

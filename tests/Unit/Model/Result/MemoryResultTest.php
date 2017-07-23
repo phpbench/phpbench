@@ -12,9 +12,10 @@
 
 namespace PhpBench\Tests\Unit\Model\Result;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Model\Result\MemoryResult;
 
-class MemoryResultTest extends \PHPUnit_Framework_TestCase
+class MemoryResultTest extends TestCase
 {
     /**
      * @expectedException \InvalidArgumentException

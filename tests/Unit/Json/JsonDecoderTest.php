@@ -12,9 +12,10 @@
 
 namespace PhpBench\Tests\Unit\Json;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Json\JsonDecoder;
 
-class JsonDecoderTest extends \PHPUnit_Framework_TestCase
+class JsonDecoderTest extends TestCase
 {
     private $jsonDecoder;
 

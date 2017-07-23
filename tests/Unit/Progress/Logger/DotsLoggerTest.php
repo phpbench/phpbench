@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Progress\Logger;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\Subject;
@@ -21,7 +22,7 @@ use PhpBench\Util\TimeUnit;
 use Prophecy\Argument;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class DotsLoggerTest extends \PHPUnit_Framework_TestCase
+class DotsLoggerTest extends TestCase
 {
     public function setUp()
     {

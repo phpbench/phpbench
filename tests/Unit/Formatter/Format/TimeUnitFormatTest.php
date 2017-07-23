@@ -12,10 +12,11 @@
 
 namespace PhpBench\Tests\Unit\Report\Generator\Tabular\Format;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Formatter\Format\TimeUnitFormat;
 use PhpBench\Util\TimeUnit;
 
-class TimeUnitFormatTest extends \PHPUnit_Framework_TestCase
+class TimeUnitFormatTest extends TestCase
 {
     /**
      * It should work with the default options.

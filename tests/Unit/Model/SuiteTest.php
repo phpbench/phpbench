@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Model;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Environment\Information;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\ErrorStack;
@@ -20,7 +21,7 @@ use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
 use PhpBench\Model\Variant;
 
-class SuiteTest extends \PHPUnit_Framework_TestCase
+class SuiteTest extends TestCase
 {
     private $env1;
     private $bench1;

@@ -12,12 +12,13 @@
 
 namespace PhpBench\Tests\Unit\Benchmark;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Benchmark\BaselineManager;
 
 /**
     * @\PhpBench\Benchmark\Metadata\Annotations\BeforeMethods({"setUp"})
  */
-class BaselineManagerTest extends \PHPUnit_Framework_TestCase
+class BaselineManagerTest extends TestCase
 {
     private $manager;
 

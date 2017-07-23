@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Storage\Archiver;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Dom\Document;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Registry;
@@ -25,7 +26,7 @@ use Prophecy\Argument;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Filesystem\Filesystem;
 
-class XmlArchiverTest extends \PHPUnit_Framework_TestCase
+class XmlArchiverTest extends TestCase
 {
     private $registry;
     private $xmlEncoder;

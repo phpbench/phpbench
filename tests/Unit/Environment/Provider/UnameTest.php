@@ -12,9 +12,10 @@
 
 namespace PhpBench\Tests\Unit\Environment\Provider;
 
+use PHPUnit\Framework\TestCase;
 use PhpBench\Environment\Provider;
 
-class UnameTest extends \PHPUnit_Framework_TestCase
+class UnameTest extends TestCase
 {
     private $provider;
 
