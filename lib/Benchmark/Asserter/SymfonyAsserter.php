@@ -3,29 +3,30 @@
 namespace PhpBench\Benchmark\Asserter;
 
 use PhpBench\Benchmark\AsserterInterface;
-use Hoa\Ruler\Ruler;
-use Hoa\Ruler\Context;
 use PhpBench\Math\Distribution;
 use PhpBench\Benchmark\Assertion;
 use PhpBench\Benchmark\AssertionFailure;
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
-class RulerAsserter implements AsserterInterface
+class SymfonyAsserter implements AsserterInterface
 {
-    private $ruler;
+    private $language;
 
-    public function __construct(Ruler $ruler = null)
+    public function __construct(ExpressionLanguage $language = null)
     {
-        $this->ruler = $ruler ?: new Ruler();
+        $this->language = $language ?: new ExpressionLanguage();
     }
 
     public function assert(string $expression, Distribution $distribution)
     {
-        $context = ['stats' => new \stdClass()];
+        $context = [
+            'stats' => new \stdClass,
+        ];
         foreach ($distribution->getStats() as $key => $value) {
             $context['stats']->$key = $value;
         }
 
-        if (false === $this->ruler->assert($expression, new Context($context))) {
+        if (false === $this->language->evaluate($expression, $context)) {
             throw new AssertionFailure($expression, $context);
         }
     }

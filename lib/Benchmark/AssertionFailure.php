@@ -2,17 +2,23 @@
 
 namespace PhpBench\Benchmark;
 
-class AssertionFailure
+class AssertionFailure extends \Exception
 {
-    private $message;
+    private $context;
 
-    public function __construct($message)
+    public function __construct($expression, array $context)
     {
-        $this->message = $message;
+        $this->context = $context;
+        $this->expression = $expression;
+        parent::__construct(sprintf(
+            'Assertion "%s" failed, context: "%s"',
+            $expression, json_encode($context)
+        ));
+
     }
 
-    public function __toString()
+    public function getContext(): array
     {
-        return $this->message;
+        return $this->context;
     }
 }
