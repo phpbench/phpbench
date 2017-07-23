@@ -12,8 +12,8 @@
 
 namespace PhpBench\Tests\Unit\Environment;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Environment\Information;
+use PHPUnit\Framework\TestCase;
 
 class InformationTest extends TestCase
 {

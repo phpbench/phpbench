@@ -12,8 +12,8 @@
 
 namespace PhpBench\Tests\Unit\Math;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Math\Distribution;
+use PHPUnit\Framework\TestCase;
 
 class DistributionTest extends TestCase
 {

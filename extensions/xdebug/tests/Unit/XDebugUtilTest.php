@@ -12,13 +12,13 @@
 
 namespace PhpBench\Extensions\XDebug\Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Extensions\XDebug\XDebugUtil;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\ParameterSet;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Variant;
+use PHPUnit\Framework\TestCase;
 
 class XDebugUtilTest extends TestCase
 {

@@ -12,8 +12,8 @@
 
 namespace PhpBench\Tests\Functional;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\DependencyInjection\Container;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**

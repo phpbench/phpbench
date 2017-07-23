@@ -12,9 +12,9 @@
 
 namespace PhpBench\Tests\Unit\Model;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
+use PHPUnit\Framework\TestCase;
 
 class SuiteCollectionTest extends TestCase
 {

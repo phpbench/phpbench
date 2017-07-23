@@ -12,10 +12,10 @@
 
 namespace PhpBench\Tests\Unit\Vcs\Detector;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Environment\Information;
 use PhpBench\Environment\ProviderInterface;
 use PhpBench\Environment\Supplier;
+use PHPUnit\Framework\TestCase;
 
 class SupplierTest extends TestCase
 {

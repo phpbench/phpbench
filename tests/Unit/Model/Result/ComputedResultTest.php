@@ -12,8 +12,8 @@
 
 namespace PhpBench\Tests\Unit\Model\Result;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Model\Result\ComputedResult;
+use PHPUnit\Framework\TestCase;
 
 class ComputedResultTest extends TestCase
 {

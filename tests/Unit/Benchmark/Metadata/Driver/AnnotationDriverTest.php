@@ -12,13 +12,13 @@
 
 namespace PhpBench\Tests\Unit\Benchmark\Metadata\Driver;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Benchmark\Metadata\Annotations;
 use PhpBench\Benchmark\Metadata\Driver\AnnotationDriver;
 use PhpBench\Benchmark\Remote\ReflectionClass;
 use PhpBench\Benchmark\Remote\ReflectionHierarchy;
 use PhpBench\Benchmark\Remote\ReflectionMethod;
 use PhpBench\Benchmark\Remote\Reflector;
+use PHPUnit\Framework\TestCase;
 
 class AnnotationDriverTest extends TestCase
 {

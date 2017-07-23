@@ -12,7 +12,6 @@
 
 namespace PhpBench\Tests\Unit\Storage\Driver\Xml;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Dom\Document;
 use PhpBench\Environment\Information;
 use PhpBench\Model\Suite;
@@ -21,6 +20,7 @@ use PhpBench\Model\Summary;
 use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Storage\Driver\Xml\HistoryIterator;
 use PhpBench\Tests\Util\Workspace;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Filesystem\Filesystem;
 

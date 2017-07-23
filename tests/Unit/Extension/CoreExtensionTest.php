@@ -12,8 +12,8 @@
 
 namespace PhpBench\Tests\Unit\Extension;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\DependencyInjection\Container;
+use PHPUnit\Framework\TestCase;
 
 class CoreExtensionTest extends TestCase
 {

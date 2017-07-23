@@ -12,8 +12,8 @@
 
 namespace PhpBench\Tests\Unit\Benchmark;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Benchmark\RunnerContext;
+use PHPUnit\Framework\TestCase;
 
 class RunnerContextTest extends TestCase
 {

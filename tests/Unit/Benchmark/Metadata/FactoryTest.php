@@ -12,7 +12,6 @@
 
 namespace PhpBench\Tests\Unit\Benchmark\Metadata;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\DriverInterface;
 use PhpBench\Benchmark\Metadata\Factory;
@@ -21,6 +20,7 @@ use PhpBench\Benchmark\Remote\ReflectionClass;
 use PhpBench\Benchmark\Remote\ReflectionHierarchy;
 use PhpBench\Benchmark\Remote\Reflector;
 use PhpBench\Tests\Util\TestUtil;
+use PHPUnit\Framework\TestCase;
 
 class FactoryTest extends TestCase
 {

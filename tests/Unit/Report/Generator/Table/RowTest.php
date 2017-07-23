@@ -12,8 +12,8 @@
 
 namespace PhpBench\Tests\Unit\Report\Generator\Table;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Report\Generator\Table\Row;
+use PHPUnit\Framework\TestCase;
 
 class RowTest extends TestCase
 {

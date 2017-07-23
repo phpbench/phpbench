@@ -12,9 +12,9 @@
 
 namespace PhpBench\Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Progress\LoggerInterface;
 use PhpBench\Progress\LoggerRegistry;
+use PHPUnit\Framework\TestCase;
 
 class LoggerRegistryTest extends TestCase
 {

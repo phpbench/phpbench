@@ -12,7 +12,6 @@
 
 namespace PhpBench\Tests\Unit\Console\Command;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Console\CharacterReader;
 use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use PhpBench\Console\Command\LogCommand;
@@ -21,6 +20,7 @@ use PhpBench\Storage\DriverInterface;
 use PhpBench\Storage\HistoryEntry;
 use PhpBench\Storage\HistoryIteratorInterface;
 use PhpBench\Util\TimeUnit;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Helper\QuestionHelper;

@@ -12,9 +12,9 @@
 
 namespace PhpBench\Tests\Unit\Formatter;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Formatter\FormatInterface;
 use PhpBench\Formatter\FormatRegistry;
+use PHPUnit\Framework\TestCase;
 
 class FormatRegistryTest extends TestCase
 {

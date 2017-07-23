@@ -12,12 +12,12 @@
 
 namespace PhpBench\Tests\Unit\Storage;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Registry\Registry;
 use PhpBench\Storage\DriverInterface;
 use PhpBench\Storage\HistoryEntry;
 use PhpBench\Storage\HistoryIteratorInterface;
 use PhpBench\Storage\UuidResolver;
+use PHPUnit\Framework\TestCase;
 
 class UuidResolverTest extends TestCase
 {

@@ -12,13 +12,13 @@
 
 namespace PhpBench\Tests\Unit\Model;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Math\Distribution;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
 use PhpBench\Model\Summary;
 use PhpBench\Model\Variant;
+use PHPUnit\Framework\TestCase;
 
 class SummaryTest extends TestCase
 {

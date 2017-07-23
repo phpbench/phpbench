@@ -12,7 +12,6 @@
 
 namespace PhpBench\Extensions\XDebug\Tests\Unit\Executor;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Benchmark\Remote\Payload;
 use PhpBench\Dom\Document;
@@ -27,6 +26,7 @@ use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Variant;
 use PhpBench\Registry\Config;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\OptionsResolver\OptionsResolver;

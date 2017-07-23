@@ -12,7 +12,6 @@
 
 namespace PhpBench\Tests\Unit\Progress\Logger;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Math\Distribution;
 use PhpBench\Model\Benchmark;
@@ -23,6 +22,7 @@ use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
 use PhpBench\Model\Summary;
 use PhpBench\Model\Variant;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Console\Output\OutputInterface;
 

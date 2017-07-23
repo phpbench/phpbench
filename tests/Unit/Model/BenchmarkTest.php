@@ -12,10 +12,10 @@
 
 namespace PhpBench\Tests\Unit\Model;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Suite;
+use PHPUnit\Framework\TestCase;
 
 class BenchmarkTest extends TestCase
 {

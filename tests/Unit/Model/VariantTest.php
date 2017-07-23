@@ -12,7 +12,6 @@
 
 namespace PhpBench\Tests\Unit\Benchmark;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\ParameterSet;
 use PhpBench\Model\Result\ComputedResult;
@@ -21,6 +20,7 @@ use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Variant;
 use PhpBench\Tests\Util\TestUtil;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 
 class VariantTest extends TestCase

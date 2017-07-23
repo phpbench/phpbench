@@ -12,10 +12,10 @@
 
 namespace PhpBench\Tests\Unit\Benchmark\Remote;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Benchmark\Remote\Payload;
 use PhpBench\Benchmark\Remote\PayloadFactory;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Process\ExecutableFinder;
 
 class LauncherTest extends TestCase

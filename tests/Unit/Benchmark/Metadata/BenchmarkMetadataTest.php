@@ -12,8 +12,8 @@
 
 namespace PhpBench\Tests\Unit\Benchmark\Metadata;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
+use PHPUnit\Framework\TestCase;
 
 class BenchmarkMetadataTest extends TestCase
 {

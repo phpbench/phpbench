@@ -12,10 +12,10 @@
 
 namespace PhpBench\Tests\Unit\Environment\Provider;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Benchmark\BaselineManager;
 use PhpBench\Environment\Information;
 use PhpBench\Environment\Provider\Baseline;
+use PHPUnit\Framework\TestCase;
 
 class BaselineTest extends TestCase
 {

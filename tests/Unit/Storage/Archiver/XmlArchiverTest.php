@@ -12,7 +12,6 @@
 
 namespace PhpBench\Tests\Unit\Storage\Archiver;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Dom\Document;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Registry;
@@ -22,6 +21,7 @@ use PhpBench\Storage\Archiver\XmlArchiver;
 use PhpBench\Storage\DriverInterface;
 use PhpBench\Storage\HistoryEntry;
 use PhpBench\Tests\Util\Workspace;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Filesystem\Filesystem;

@@ -12,8 +12,8 @@
 
 namespace PhpBench\Tests\Unit\Registry;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Registry\Config;
+use PHPUnit\Framework\TestCase;
 
 class ConfigTest extends TestCase
 {

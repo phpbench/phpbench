@@ -12,8 +12,8 @@
 
 namespace PhpBench\Tabular\Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Report\Generator\Table\Sort;
+use PHPUnit\Framework\TestCase;
 
 class SortTest extends TestCase
 {

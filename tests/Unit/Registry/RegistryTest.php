@@ -12,10 +12,10 @@
 
 namespace PhpBench\Tests\Unit\Registry;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\Registry\RegistrableInterface;
 use PhpBench\Registry\Registry;
+use PHPUnit\Framework\TestCase;
 
 class RegistryTest extends TestCase
 {

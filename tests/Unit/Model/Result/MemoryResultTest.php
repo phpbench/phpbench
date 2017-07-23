@@ -12,8 +12,8 @@
 
 namespace PhpBench\Tests\Unit\Model\Result;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Model\Result\MemoryResult;
+use PHPUnit\Framework\TestCase;
 
 class MemoryResultTest extends TestCase
 {

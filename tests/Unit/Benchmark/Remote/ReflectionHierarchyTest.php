@@ -12,10 +12,10 @@
 
 namespace PhpBench\Tests\Unit\Benchmark\Remote;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Benchmark\Remote\ReflectionClass;
 use PhpBench\Benchmark\Remote\ReflectionHierarchy;
 use PhpBench\Benchmark\Remote\ReflectionMethod;
+use PHPUnit\Framework\TestCase;
 
 class ReflectionHierarchyTest extends TestCase
 {

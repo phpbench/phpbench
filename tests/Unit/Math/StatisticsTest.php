@@ -12,8 +12,8 @@
 
 namespace PhpBench\Tests\Unit\Math;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Math\Statistics;
+use PHPUnit\Framework\TestCase;
 
 class StatisticsTest extends TestCase
 {

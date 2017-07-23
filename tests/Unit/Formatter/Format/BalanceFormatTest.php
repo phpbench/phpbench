@@ -12,8 +12,8 @@
 
 namespace PhpBench\Tests\Unit\Formatter\Format;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Formatter\Format\BalanceFormat;
+use PHPUnit\Framework\TestCase;
 
 class BalanceFormatTest extends TestCase
 {

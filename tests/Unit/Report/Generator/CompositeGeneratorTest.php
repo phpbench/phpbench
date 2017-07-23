@@ -12,12 +12,12 @@
 
 namespace PhpBench\Tests\Unit\Report\Generator;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Dom\Document;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Report\Generator\CompositeGenerator;
 use PhpBench\Report\ReportManager;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 
 class CompositeGeneratorTest extends TestCase

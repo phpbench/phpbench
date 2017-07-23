@@ -12,8 +12,8 @@
 
 namespace PhpBench\Tests\Unit\Util;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Util\TimeUnit;
+use PHPUnit\Framework\TestCase;
 
 class TimeUnitTest extends TestCase
 {

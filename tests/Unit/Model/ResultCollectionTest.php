@@ -12,10 +12,10 @@
 
 namespace PhpBench\Tests\Unit\Model;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\ResultCollection;
+use PHPUnit\Framework\TestCase;
 
 class ResultCollectionTest extends TestCase
 {

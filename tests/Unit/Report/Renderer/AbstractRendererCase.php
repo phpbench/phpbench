@@ -12,9 +12,9 @@
 
 namespace PhpBench\Tests\Unit\Report\Renderer;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Dom\Document;
 use PhpBench\Registry\Config;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class AbstractRendererCase extends TestCase

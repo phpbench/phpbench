@@ -12,8 +12,8 @@
 
 namespace PhpBench\Tests\Unit\Environment\Provider;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Environment\Provider;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
