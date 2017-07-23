@@ -14,8 +14,9 @@ namespace PhpBench\Tests\Unit;
 
 use PhpBench\Progress\LoggerInterface;
 use PhpBench\Progress\LoggerRegistry;
+use PHPUnit\Framework\TestCase;
 
-class LoggerRegistryTest extends \PHPUnit_Framework_TestCase
+class LoggerRegistryTest extends TestCase
 {
     private $registry;
 

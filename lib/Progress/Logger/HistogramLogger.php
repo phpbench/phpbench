@@ -19,7 +19,6 @@ use PhpBench\Model\Iteration;
 use PhpBench\Model\Result\ComputedResult;
 use PhpBench\Model\Suite;
 use PhpBench\Model\Variant;
-use PhpBench\Util\TimeUnit;
 
 class HistogramLogger extends AnsiLogger
 {

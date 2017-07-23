@@ -15,8 +15,9 @@ namespace PhpBench\Tests\Unit\Expression;
 use PhpBench\Expression\Constraint\Comparison;
 use PhpBench\Expression\Constraint\Composite;
 use PhpBench\Expression\Parser;
+use PHPUnit\Framework\TestCase;
 
-class ParserTest extends \PHPUnit_Framework_TestCase
+class ParserTest extends TestCase
 {
     private $parser;
 

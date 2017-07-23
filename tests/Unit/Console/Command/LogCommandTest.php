@@ -20,13 +20,14 @@ use PhpBench\Storage\DriverInterface;
 use PhpBench\Storage\HistoryEntry;
 use PhpBench\Storage\HistoryIteratorInterface;
 use PhpBench\Util\TimeUnit;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
-class LogCommandTest extends \PHPUnit_Framework_TestCase
+class LogCommandTest extends TestCase
 {
     private $storage;
     private $command;
@@ -76,6 +77,7 @@ class LogCommandTest extends \PHPUnit_Framework_TestCase
     public function testConfigure()
     {
         $this->command->configure();
+        $this->addToAssertionCount(1);
     }
 
     /**

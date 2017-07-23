@@ -13,10 +13,11 @@
 namespace PhpBench\Tests\Unit\Benchmark\Remote;
 
 use PhpBench\Benchmark\Remote\Payload;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Process\Process;
 
-class PayloadTest extends \PHPUnit_Framework_TestCase
+class PayloadTest extends TestCase
 {
     private $process;
 

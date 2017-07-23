@@ -161,6 +161,7 @@ class LoaderTest extends DbalTestCase
             $constraint = new Comparison('$eq', $fieldName, 'foo');
             $this->loader->load($constraint);
         }
+        $this->addToAssertionCount(1);
     }
 
     /**

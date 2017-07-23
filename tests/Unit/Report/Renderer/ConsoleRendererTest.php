@@ -56,7 +56,8 @@ class ConsoleRendererTest extends AbstractRendererCase
     public function testTableStyle()
     {
         $this->renderReport($this->getReportsDocument(), [
-                'table_style' => 'compact',
+            'table_style' => 'compact',
         ]);
+        $this->addToAssertionCount(1);
     }
 }

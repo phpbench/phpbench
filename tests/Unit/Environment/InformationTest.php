@@ -13,8 +13,9 @@
 namespace PhpBench\Tests\Unit\Environment;
 
 use PhpBench\Environment\Information;
+use PHPUnit\Framework\TestCase;
 
-class InformationTest extends \PHPUnit_Framework_TestCase
+class InformationTest extends TestCase
 {
     /**
      * Information acts as an array.

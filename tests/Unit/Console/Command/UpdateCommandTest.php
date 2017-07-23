@@ -14,10 +14,11 @@ namespace PhpBench\Tests\Unit\Console\Command;
 
 use Humbug\SelfUpdate\Updater;
 use PhpBench\Console\Command\SelfUpdateCommand;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
-class UpdateCommandTest extends \PHPUnit_Framework_TestCase
+class UpdateCommandTest extends TestCase
 {
     private $updater;
     private $command;

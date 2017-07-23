@@ -19,10 +19,11 @@ use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Storage\Driver\Xml\HistoryIterator;
 use PhpBench\Storage\Driver\Xml\XmlDriver;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Filesystem\Filesystem;
 
-class XmlDriverTest extends \PHPUnit_Framework_TestCase
+class XmlDriverTest extends TestCase
 {
     private $xmlEncoder;
     private $xmlDecoder;

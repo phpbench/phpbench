@@ -13,8 +13,9 @@
 namespace PhpBench\Tests\Unit\Formatter\Formatter;
 
 use PhpBench\Formatter\Format\NumberFormat;
+use PHPUnit\Framework\TestCase;
 
-class NumberFormatTest extends \PHPUnit_Framework_TestCase
+class NumberFormatTest extends TestCase
 {
     private $format;
 

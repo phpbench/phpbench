@@ -21,11 +21,12 @@ use PhpBench\Storage\Archiver\XmlArchiver;
 use PhpBench\Storage\DriverInterface;
 use PhpBench\Storage\HistoryEntry;
 use PhpBench\Tests\Util\Workspace;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Filesystem\Filesystem;
 
-class XmlArchiverTest extends \PHPUnit_Framework_TestCase
+class XmlArchiverTest extends TestCase
 {
     private $registry;
     private $xmlEncoder;

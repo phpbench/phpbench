@@ -13,8 +13,9 @@
 namespace PhpBench\Tests\Unit\Formatter\Formatter;
 
 use PhpBench\Formatter\Format\PrintfFormat;
+use PHPUnit\Framework\TestCase;
 
-class PrintfFormatTest extends \PHPUnit_Framework_TestCase
+class PrintfFormatTest extends TestCase
 {
     public function setUp()
     {

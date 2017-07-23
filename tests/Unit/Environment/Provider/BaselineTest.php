@@ -15,8 +15,9 @@ namespace PhpBench\Tests\Unit\Environment\Provider;
 use PhpBench\Benchmark\BaselineManager;
 use PhpBench\Environment\Information;
 use PhpBench\Environment\Provider\Baseline;
+use PHPUnit\Framework\TestCase;
 
-class BaselineTest extends \PHPUnit_Framework_TestCase
+class BaselineTest extends TestCase
 {
     private $manager;
     private $provider;

@@ -18,8 +18,9 @@ use PhpBench\Model\Iteration;
 use PhpBench\Model\ParameterSet;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Variant;
+use PHPUnit\Framework\TestCase;
 
-class XDebugUtilTest extends \PHPUnit_Framework_TestCase
+class XDebugUtilTest extends TestCase
 {
     private $iteration;
     private $subject;

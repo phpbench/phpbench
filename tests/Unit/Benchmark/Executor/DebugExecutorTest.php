@@ -20,9 +20,10 @@ use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Variant;
 use PhpBench\Registry\Config;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 
-class DebugExecutorTest extends \PHPUnit_Framework_TestCase
+class DebugExecutorTest extends TestCase
 {
     private $executor;
 

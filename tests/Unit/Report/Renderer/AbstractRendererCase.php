@@ -14,9 +14,10 @@ namespace PhpBench\Tests\Unit\Report\Renderer;
 
 use PhpBench\Dom\Document;
 use PhpBench\Registry\Config;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-abstract class AbstractRendererCase extends \PHPUnit_Framework_TestCase
+abstract class AbstractRendererCase extends TestCase
 {
     abstract protected function getRenderer();
 

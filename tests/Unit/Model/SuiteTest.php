@@ -19,8 +19,9 @@ use PhpBench\Model\Iteration;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
 use PhpBench\Model\Variant;
+use PHPUnit\Framework\TestCase;
 
-class SuiteTest extends \PHPUnit_Framework_TestCase
+class SuiteTest extends TestCase
 {
     private $env1;
     private $bench1;

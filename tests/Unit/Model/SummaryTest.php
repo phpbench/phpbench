@@ -18,8 +18,9 @@ use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
 use PhpBench\Model\Summary;
 use PhpBench\Model\Variant;
+use PHPUnit\Framework\TestCase;
 
-class SummaryTest extends \PHPUnit_Framework_TestCase
+class SummaryTest extends TestCase
 {
     public function setUp()
     {

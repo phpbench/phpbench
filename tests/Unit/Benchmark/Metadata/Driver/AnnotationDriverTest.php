@@ -18,8 +18,9 @@ use PhpBench\Benchmark\Remote\ReflectionClass;
 use PhpBench\Benchmark\Remote\ReflectionHierarchy;
 use PhpBench\Benchmark\Remote\ReflectionMethod;
 use PhpBench\Benchmark\Remote\Reflector;
+use PHPUnit\Framework\TestCase;
 
-class AnnotationDriverTest extends \PHPUnit_Framework_TestCase
+class AnnotationDriverTest extends TestCase
 {
     private $driver;
     private $reflector;
@@ -68,6 +69,7 @@ EOT;
         $hierarchy->addReflectionClass($reflection);
 
         $this->createDriver()->getMetadataForHierarchy($hierarchy);
+        $this->addToAssertionCount(1);
     }
 
     /**

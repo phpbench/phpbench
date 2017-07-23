@@ -13,8 +13,9 @@
 namespace PhpBench\Tests\Unit\Report\Generator\Table;
 
 use PhpBench\Report\Generator\Table\Row;
+use PHPUnit\Framework\TestCase;
 
-class RowTest extends \PHPUnit_Framework_TestCase
+class RowTest extends TestCase
 {
     /**
      * It should throw an exception if a non-existing offset is requested.

@@ -15,8 +15,9 @@ namespace PhpBench\Tests\Unit\Subject\Metadata;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\ParameterSet;
 use PhpBench\Model\Subject;
+use PHPUnit\Framework\TestCase;
 
-class SubjectTest extends \PHPUnit_Framework_TestCase
+class SubjectTest extends TestCase
 {
     private $subject;
     private $benchmark;

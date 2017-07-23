@@ -13,8 +13,9 @@
 namespace PhpBench\Tests\Unit\Model\Result;
 
 use PhpBench\Model\Result\TimeResult;
+use PHPUnit\Framework\TestCase;
 
-class TimeResultTest extends \PHPUnit_Framework_TestCase
+class TimeResultTest extends TestCase
 {
     public function testGetters()
     {

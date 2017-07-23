@@ -20,9 +20,10 @@ use PhpBench\Model\Variant;
 use PhpBench\Progress\Logger\HistogramLogger;
 use PhpBench\Tests\Util\TestUtil;
 use PhpBench\Util\TimeUnit;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\BufferedOutput;
 
-class HistogramLoggerTest extends \PHPUnit_Framework_TestCase
+class HistogramLoggerTest extends TestCase
 {
     public function setUp()
     {

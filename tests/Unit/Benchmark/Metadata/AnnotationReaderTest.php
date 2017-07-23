@@ -16,8 +16,9 @@ use PhpBench\Benchmark\Metadata\AnnotationReader;
 use PhpBench\Benchmark\Metadata\Annotations;
 use PhpBench\Benchmark\Remote\ReflectionClass;
 use PhpBench\Benchmark\Remote\ReflectionMethod;
+use PHPUnit\Framework\TestCase;
 
-class AnnotationReaderTest extends \PHPUnit_Framework_TestCase
+class AnnotationReaderTest extends TestCase
 {
     /**
      * It should read class annotations.

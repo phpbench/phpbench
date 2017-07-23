@@ -13,8 +13,9 @@
 namespace PhpBench\Tests\Unit\Report\Generator;
 
 use PhpBench\Dom\Document;
+use PHPUnit\Framework\TestCase;
 
-abstract class GeneratorTestCase extends \PHPUnit_Framework_TestCase
+abstract class GeneratorTestCase extends TestCase
 {
     protected function assertXPathEval(Document $document, $expected, $expression)
     {

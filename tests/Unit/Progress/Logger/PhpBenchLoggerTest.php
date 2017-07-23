@@ -22,10 +22,11 @@ use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
 use PhpBench\Model\Summary;
 use PhpBench\Model\Variant;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Console\Output\OutputInterface;
 
-abstract class PhpBenchLoggerTest extends \PHPUnit_Framework_TestCase
+abstract class PhpBenchLoggerTest extends TestCase
 {
     protected $logger;
     protected $output;
@@ -68,6 +69,7 @@ abstract class PhpBenchLoggerTest extends \PHPUnit_Framework_TestCase
      */
     public function testStart()
     {
+        $this->addToAssertionCount(1);
     }
 
     /**

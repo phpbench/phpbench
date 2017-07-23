@@ -13,8 +13,9 @@
 namespace PhpBench\Tests\Unit\Environment\Provider;
 
 use PhpBench\Environment\Provider;
+use PHPUnit\Framework\TestCase;
 
-class UnixSysloadTest extends \PHPUnit_Framework_TestCase
+class UnixSysloadTest extends TestCase
 {
     private $provider;
 

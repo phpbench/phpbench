@@ -13,8 +13,9 @@
 namespace PhpBench\Tests\Unit\Model\Result;
 
 use PhpBench\Model\Result\ComputedResult;
+use PHPUnit\Framework\TestCase;
 
-class ComputedResultTest extends \PHPUnit_Framework_TestCase
+class ComputedResultTest extends TestCase
 {
     /**
      * It should throw an exception if the z-value is non-numeric.

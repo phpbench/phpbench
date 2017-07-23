@@ -20,10 +20,11 @@ use PhpBench\Model\Summary;
 use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Storage\Driver\Xml\HistoryIterator;
 use PhpBench\Tests\Util\Workspace;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Filesystem\Filesystem;
 
-class HistoryIteratorTest extends \PHPUnit_Framework_TestCase
+class HistoryIteratorTest extends TestCase
 {
     private $xmlDecoder;
     private $iterator;
@@ -62,6 +63,7 @@ class HistoryIteratorTest extends \PHPUnit_Framework_TestCase
         );
 
         $iterator->current();
+        $this->addToAssertionCount(1);
     }
 
     /**

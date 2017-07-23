@@ -13,8 +13,9 @@
 namespace PhpBench\Tests\Unit\Model\Result;
 
 use PhpBench\Model\Result\RejectionCountResult;
+use PHPUnit\Framework\TestCase;
 
-class RejectionCountResultTest extends \PHPUnit_Framework_TestCase
+class RejectionCountResultTest extends TestCase
 {
     /**
      * @expectedException \InvalidArgumentException

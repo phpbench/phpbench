@@ -17,8 +17,9 @@ use PhpBench\Storage\DriverInterface;
 use PhpBench\Storage\HistoryEntry;
 use PhpBench\Storage\HistoryIteratorInterface;
 use PhpBench\Storage\UuidResolver;
+use PHPUnit\Framework\TestCase;
 
-class UuidResolverTest extends \PHPUnit_Framework_TestCase
+class UuidResolverTest extends TestCase
 {
     private $resolver;
     private $storage;

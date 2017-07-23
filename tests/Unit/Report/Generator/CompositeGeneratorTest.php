@@ -17,9 +17,10 @@ use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Report\Generator\CompositeGenerator;
 use PhpBench\Report\ReportManager;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 
-class CompositeGeneratorTest extends \PHPUnit_Framework_TestCase
+class CompositeGeneratorTest extends TestCase
 {
     private $generator;
     private $manager;

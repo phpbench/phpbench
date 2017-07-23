@@ -13,8 +13,9 @@
 namespace PhpBench\Tests\Unit\Extension;
 
 use PhpBench\DependencyInjection\Container;
+use PHPUnit\Framework\TestCase;
 
-class CoreExtensionTest extends \PHPUnit_Framework_TestCase
+class CoreExtensionTest extends TestCase
 {
     public function tearDown()
     {

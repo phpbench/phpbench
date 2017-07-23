@@ -15,8 +15,9 @@ namespace PhpBench\Tests\Unit\Formatter;
 use PhpBench\Formatter\FormatInterface;
 use PhpBench\Formatter\FormatRegistry;
 use PhpBench\Formatter\Formatter;
+use PHPUnit\Framework\TestCase;
 
-class FormatterTest extends \PHPUnit_Framework_TestCase
+class FormatterTest extends TestCase
 {
     private $registry;
     private $formatter;
@@ -69,7 +70,7 @@ class FormatterTest extends \PHPUnit_Framework_TestCase
             'option_2' => 'arg',
         ]);
 
-        $this->format->format('hello world', $expectedParams)->willReturn('hai!');
+        $this->format->format('hello world', $expectedParams)->shouldBeCalled()->willReturn('hai!');
         $this->formatter->applyClasses(['one'], 'hello world', $params);
     }
 

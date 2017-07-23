@@ -28,9 +28,10 @@ use PhpBench\PhpBench;
 use PhpBench\Registry\Config;
 use PhpBench\Registry\ConfigurableRegistry;
 use PhpBench\Tests\Util\TestUtil;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 
-class RunnerTest extends \PHPUnit_Framework_TestCase
+class RunnerTest extends TestCase
 {
     public function setUp()
     {

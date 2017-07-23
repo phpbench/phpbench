@@ -14,8 +14,9 @@ namespace PhpBench\Tests\Unit\Benchmark\Remote;
 
 use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Benchmark\Remote\Reflector;
+use PHPUnit\Framework\TestCase;
 
-class ReflectorTest extends \PHPUnit_Framework_TestCase
+class ReflectorTest extends TestCase
 {
     private $reflector;
 
@@ -67,6 +68,7 @@ class ReflectorTest extends \PHPUnit_Framework_TestCase
     {
         $fname = __DIR__ . '/reflector/ExampleClass2.php';
         $this->reflector->reflect($fname);
+        $this->addToAssertionCount(1);
     }
 
     /**
@@ -112,13 +114,14 @@ class ReflectorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should throw an exception if the parameter set contains non-scalar values.
+     * It should not throw an exception if the parameter set contains non-scalar values.
      */
     public function testGetParameterSetsNonScalar()
     {
-        $parameterSets = $this->reflector->getParameterSets(__DIR__ . '/reflector/ExampleClass.php', [
+        $this->reflector->getParameterSets(__DIR__ . '/reflector/ExampleClass.php', [
             'provideParamsNonScalar',
         ]);
+        $this->addToAssertionCount(1);
     }
 
     /**

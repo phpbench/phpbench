@@ -18,8 +18,9 @@ use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\Persister;
 use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\Repository;
 use PhpBench\Extensions\Dbal\Storage\Driver\DbalDriver;
 use PhpBench\Model\SuiteCollection;
+use PHPUnit\Framework\TestCase;
 
-class DbalDriverTest extends \PHPUnit_Framework_TestCase
+class DbalDriverTest extends TestCase
 {
     private $loader;
     private $persister;

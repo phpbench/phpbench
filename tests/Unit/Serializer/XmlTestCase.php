@@ -26,8 +26,9 @@ use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Model\Variant;
+use PHPUnit\Framework\TestCase;
 
-class XmlTestCase extends \PHPUnit_Framework_TestCase
+class XmlTestCase extends TestCase
 {
     public function setUp()
     {

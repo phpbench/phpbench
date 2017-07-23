@@ -13,8 +13,9 @@
 namespace PhpBench\Tests\Unit\Math;
 
 use PhpBench\Math\Statistics;
+use PHPUnit\Framework\TestCase;
 
-class StatisticsTest extends \PHPUnit_Framework_TestCase
+class StatisticsTest extends TestCase
 {
     /**
      * It should return the standard deviation.

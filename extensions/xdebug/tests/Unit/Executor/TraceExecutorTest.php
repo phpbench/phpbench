@@ -26,11 +26,12 @@ use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Variant;
 use PhpBench\Registry\Config;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TraceExecutorTest extends \PHPUnit_Framework_TestCase
+class TraceExecutorTest extends TestCase
 {
     public function setUp()
     {
