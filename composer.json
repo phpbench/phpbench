@@ -29,7 +29,7 @@
         "ext-spl": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "^5.0|^6.0",
+        "phpunit/phpunit": "^6.0",
         "doctrine/dbal": "^2.4",
         "liip/rmt": "^1.2",
         "padraic/phar-updater": "^1.0"
