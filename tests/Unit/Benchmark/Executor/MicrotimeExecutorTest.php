@@ -12,7 +12,6 @@
 
 namespace PhpBench\Tests\Unit\Benchmark\Executor;
 
-use PhpBench\Benchmark\Executor;
 use PhpBench\Benchmark\Executor\MicrotimeExecutor;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;

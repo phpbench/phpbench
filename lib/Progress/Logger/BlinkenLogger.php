@@ -16,7 +16,6 @@ use PhpBench\Model\Benchmark;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\Suite;
 use PhpBench\Model\Variant;
-use PhpBench\Util\TimeUnit;
 
 class BlinkenLogger extends AnsiLogger
 {

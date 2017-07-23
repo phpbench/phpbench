@@ -187,9 +187,6 @@ class BenchmarkMetadata
         $this->afterClassMethods = $afterClassMethods;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIterator()
     {
         return $this->subjects;

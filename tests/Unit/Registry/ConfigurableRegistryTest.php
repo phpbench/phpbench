@@ -12,11 +12,9 @@
 
 namespace PhpBench\Tests\Unit\Registry;
 
-use PhpBench\DependencyInjection\Container;
 use PhpBench\Json\JsonDecoder;
 use PhpBench\Registry\Config;
 use PhpBench\Registry\ConfigurableRegistry;
-use PhpBench\Registry\Registry;
 use Prophecy\Argument;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
