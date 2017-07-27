@@ -182,7 +182,7 @@ class HistogramLogger extends AnsiLogger
             $this->timeUnit->format($stats->getStdev()),
             $sigma
         ));
-        $this->drawBlocks($freqs, $stats);
+        $this->drawBlocks($freqs);
 
         $this->output->write(sprintf(
             '] +%sσ <comment>%s</comment>',
