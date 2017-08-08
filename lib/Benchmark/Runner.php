@@ -231,8 +231,9 @@ class Runner
         $variant->computeStats();
 
         foreach ($subjectMetadata->getAssertions() as $assertion) {
-            $failures = $this->asserter->assert((string) $assertion, $variant->getStats());
-            foreach ($failures as $failure) {
+            try {
+                $this->asserter->assert((string) $assertion, $variant->getStats());
+            } catch (AssertionFailure $failure) {
                 $variant->addFailure($failure);
             }
         }

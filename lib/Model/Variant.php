@@ -119,7 +119,7 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
     public function createIteration(array $results = [])
     {
         $index = count($this->iterations);
-        $iteration = $iteration = new Iteration($index, $this, $results);
+        $iteration = new Iteration($index, $this, $results);
         $this->iterations[] = $iteration;
 
         return $iteration;
@@ -370,6 +370,11 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
     public function hasFailed()
     {
         return count($this->failures) > 0;
+    }
+
+    public function getFailures()
+    {
+        return $this->failures;
     }
 
     /**

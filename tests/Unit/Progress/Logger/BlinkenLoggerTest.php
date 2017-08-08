@@ -21,9 +21,36 @@ use PhpBench\Tests\Util\TestUtil;
 use PhpBench\Util\TimeUnit;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\BufferedOutput;
+use PhpBench\Benchmark\AssertionFailure;
+use PhpBench\Model\Result\TimeResult;
 
 class BlinkenLoggerTest extends TestCase
 {
+    /**
+     * @var BufferedOutput
+     */
+    private $output;
+    /**
+     * @var TimeUnit
+     */
+    private $timeUnit;
+    /**
+     * @var BlinkenLogger
+     */
+    private $logger;
+    /**
+     * @var ObjectProphecy
+     */
+    private $benchmark;
+    /**
+     * @var ObjectProphecy
+     */
+    private $subject;
+    /**
+     * @var Variant
+     */
+    private $variant;
+
     public function setUp()
     {
         $this->output = new BufferedOutput();
@@ -105,6 +132,22 @@ class BlinkenLoggerTest extends TestCase
     }
 
     /**
+     * It should show an error if the iteration has an exception.
+     */
+    public function testIterationFailure()
+    {
+        foreach ($this->variant as $iteration) {
+            $iteration->setResult(new TimeResult(10));
+        }
+        $this->variant->addFailure(new AssertionFailure('a > b', []));
+        $this->variant->addIteration($iteration);
+        $this->variant->computeStats();
+        $this->variant->addFailure(new AssertionFailure('5 > 0', []));
+        $this->logger->variantEnd($this->variant);
+        $this->assertContains('FAIL', $this->output->fetch());
+    }
+
+    /**
      * It should show statistics when an iteration is completed (and there
      * were no rejections).
      */
@@ -121,3 +164,4 @@ class BlinkenLoggerTest extends TestCase
         $this->assertContains('RSD/r: 0.00%', $this->output->fetch());
     }
 }
+

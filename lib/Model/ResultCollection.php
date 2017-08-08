@@ -17,7 +17,7 @@ namespace PhpBench\Model;
  */
 class ResultCollection
 {
-    private $results;
+    private $results = [];
 
     /**
      * @param ResultInterface[] $results

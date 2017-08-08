@@ -4,9 +4,17 @@ namespace PhpBench\Benchmark;
 
 class AssertionFailure extends \Exception
 {
+    /**
+     * @var array
+     */
     private $context;
 
-    public function __construct($expression, array $context)
+    /**
+     * @var string
+     */
+    private $expression;
+
+    public function __construct(string $expression, array $context)
     {
         $this->context = $context;
         $this->expression = $expression;
@@ -21,4 +29,10 @@ class AssertionFailure extends \Exception
     {
         return $this->context;
     }
+
+    public function getExpression(): string
+    {
+        return $this->expression;
+    }
 }
+

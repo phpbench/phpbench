@@ -105,6 +105,17 @@ class BlinkenLogger extends AnsiLogger
             return;
         }
 
+        if ($variant->hasFailed()) {
+            $this->output->write(sprintf(' <error>FAIL</error> <comment>%s</>', implode(', ', array_map(function ($failure) {
+                return $failure->getExpression();
+            }, $variant->getFailures()))));
+            $this->output->write("\x1B[0J"); // clear the rest of the line
+            $this->output->write(PHP_EOL);
+
+            return;
+        }
+
+
         $this->rejects = [];
 
         foreach ($variant->getRejects() as $reject) {

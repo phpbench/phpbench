@@ -23,7 +23,6 @@ use PhpBench\Benchmark\Metadata\DriverInterface;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\ReflectionHierarchy;
 use PhpBench\Benchmark\Remote\Reflector;
-use PhpBench\Benchmark\Assertion\RulerAsserter;
 use PhpBench\Benchmark\Metadata\AssertionMetadata;
 
 class AnnotationDriver implements DriverInterface
