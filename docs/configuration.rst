@@ -182,7 +182,7 @@ You can prefix the benchmarking command line using the ``php_wrapper`` option:
 .. code-block:: javascript
 
     {
-        "php_wrapper": "blackfire run"
+        "php_wrapper": "blackfire run -q"
     }
 
 .. note::
