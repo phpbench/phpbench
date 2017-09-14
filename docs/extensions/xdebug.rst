@@ -27,9 +27,9 @@ The XDebug extension is bundled with PHPBench, it just needs to be activated:
 .. code-block:: javascript
 
     {
-       "extensions": {
+       "extensions": [
            "PhpBench\\Extensions\\XDebug\\XDebugExtension"
-       }
+       ]
     }
 
 Alternatively you can activate it directly from the CLI using the
