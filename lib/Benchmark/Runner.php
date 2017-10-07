@@ -27,6 +27,7 @@ use PhpBench\Progress\Logger\NullLogger;
 use PhpBench\Progress\LoggerInterface;
 use PhpBench\Registry\Config;
 use PhpBench\Registry\ConfigurableRegistry;
+use PhpBench\Assertion\AssertionRegistry;
 
 /**
  * The benchmark runner.
@@ -50,7 +51,7 @@ class Runner
         BenchmarkFinder $benchmarkFinder,
         ConfigurableRegistry $executorRegistry,
         Supplier $envSupplier,
-        AsserterInterface $asserter,
+        AssertionRegistry $assertionRegister,
         $retryThreshold,
         $configPath
     ) {
@@ -232,7 +233,7 @@ class Runner
 
         foreach ($subjectMetadata->getAssertions() as $assertion) {
             try {
-                $this->asserter->assert((string) $assertion, $variant->getStats());
+                $this->assertionRegistry->get($assertion->type(), $assertion->options())->assert($variant->getStats());
             } catch (AssertionFailure $failure) {
                 $variant->addFailure($failure);
             }
