@@ -20,6 +20,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use PhpBench\Model\Suite;
 
 class RunnerHandler
 {
@@ -62,7 +63,7 @@ class RunnerHandler
         $command->addOption('php-disable-ini', null, InputOption::VALUE_NONE, 'Do not load the PHP INI file');
     }
 
-    public function runFromInput(InputInterface $input, OutputInterface $output, array $options = [])
+    public function runFromInput(InputInterface $input, OutputInterface $output, array $options = []): Suite
     {
         $context = new RunnerContext(
             $input->getArgument('path') ?: $this->benchPath,

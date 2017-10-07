@@ -26,6 +26,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class RunCommand extends Command
 {
+    const EXIT_CODE_ERROR = 1;
+    const EXIT_CODE_FAILURE = 2;
+
     /**
      * @var RunnerHandler
      */
@@ -116,8 +119,12 @@ EOT
 
         $this->reportHandler->reportsFromInput($input, $output, $collection);
 
+        if ($suite->getFailures()) {
+            return self::EXIT_CODE_FAILURE;
+        }
+
         if ($suite->getErrorStacks()) {
-            return 1;
+            return self::EXIT_CODE_ERROR;
         }
 
         return 0;

@@ -151,6 +151,21 @@ class Suite implements \IteratorAggregate
         return $errorStacks;
     }
 
+    public function getFailures()
+    {
+        $failures = [];
+
+        foreach ($this->getVariants() as $variant) {
+            if (false === $variant->hasFailed()) {
+                continue;
+            }
+
+            $failures[] = $variant->getFailures();
+        }
+
+        return $failures;
+    }
+
     /**
      * @param Information[]
      */

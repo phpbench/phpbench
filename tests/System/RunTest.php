@@ -126,6 +126,17 @@ class RunTest extends SystemTestCase
     }
 
     /**
+     * It should fail if an invalid report name is provided.
+     */
+    public function testFailAssertionFailure()
+    {
+        $process = $this->phpbench(
+            'run benchmarks/set5/AssertFailBench.php'
+        );
+        $this->assertExitCode(2, $process);
+    }
+
+    /**
      * It should dump none to an XML file.
      */
     public function testDumpXml()
