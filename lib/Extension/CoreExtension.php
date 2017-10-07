@@ -76,6 +76,9 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\ExecutableFinder;
 use Hoa\Ruler\Ruler;
 use PhpBench\Benchmark\Asserter\SymfonyAsserter;
+use PhpBench\Assertion\AsserterRegistry;
+use PhpBench\Assertion\ComparatorAsserter;
+use PhpBench\Assertion\Assertion;
 
 class CoreExtension implements ExtensionInterface
 {
@@ -141,6 +144,7 @@ class CoreExtension implements ExtensionInterface
         $this->registerStorage($container);
         $this->registerExpression($container);
         $this->registerFormatter($container);
+        $this->registerAsserters($container);
     }
 
     private function registerBenchmark(Container $container)
@@ -150,14 +154,10 @@ class CoreExtension implements ExtensionInterface
                 $container->get('benchmark.benchmark_finder'),
                 $container->get('benchmark.registry.executor'),
                 $container->get('environment.supplier'),
-                $container->get('benchmark.asserter'),
+                $container->get('assertion.assertion'),
                 $container->getParameter('retry_threshold'),
                 $container->getParameter('config_path')
             );
-        });
-
-        $container->register('benchmark.asserter', function (Container $container) {
-            return new SymfonyAsserter();
         });
 
         $container->register('benchmark.executor.microtime', function (Container $container) {
@@ -434,6 +434,16 @@ class CoreExtension implements ExtensionInterface
         });
     }
 
+    private function registerAsserters(Container $container)
+    {
+        $container->register('assertion.assertion', function () use ($container) {
+            return new Assertion($container->get('assertion.registry'));
+        });
+        $container->register('assertion.asserter.comparator', function () {
+            return new ComparatorAsserter();
+        }, [ 'assertion.asserter' => [ 'name' => 'comparator' ] ]);
+    }
+
     private function registerRegistries(Container $container)
     {
         foreach (['generator' => 'reports', 'renderer' => 'outputs'] as $registryType => $optionName) {
@@ -478,6 +488,16 @@ class CoreExtension implements ExtensionInterface
             );
             foreach ($executorConfigs as $name => $config) {
                 $registry->setConfig($name, $config);
+            }
+
+            return $registry;
+        });
+
+        $container->register('assertion.registry', function (Container $container) {
+            $registry = new AsserterRegistry($container);
+
+            foreach ($container->getServiceIdsForTag('assertion.asserter') as $serviceId => $attributes) {
+                $registry->registerService($attributes['name'], $serviceId);
             }
 
             return $registry;

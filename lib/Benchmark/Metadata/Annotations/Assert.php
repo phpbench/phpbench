@@ -15,22 +15,23 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
 /**
  * @Annotation
  * @Taget({"METHOD", "CLASS"})
- * @Attributes({
- *    @Attribute("value", required = true, type="string"),
- * })
  */
 class Assert extends AbstractArrayAnnotation
 {
-    private $expression;
+    /** 
+     * @var array
+     */
+    private $options;
 
     public function __construct($params)
     {
         parent::__construct($params);
-        $this->expression = $params['value'];
+        $this->options = $params;
     }
 
-    public function getExpression()
+    public function getOptions(): array
     {
-        return $this->expression;
+        return $this->options;
     }
 }
+

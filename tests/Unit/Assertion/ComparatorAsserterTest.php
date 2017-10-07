@@ -3,15 +3,15 @@
 namespace PhpBench\Tests\Unit\Assertion;
 
 use PHPUnit\Framework\TestCase;
-use PhpBench\Assertion\ComparatorAssertion;
+use PhpBench\Assertion\ComparatorAsserter;
 use PhpBench\Math\Distribution;
 use PhpBench\Registry\Config;
 use PhpBench\Assertion\AssertionFailure;
-use PhpBench\Assertion\AssertionRegistry;
+use PhpBench\Assertion\AsserterRegistry;
 use PhpBench\DependencyInjection\Container;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ComparatorAssertionTest extends TestCase
+class ComparatorAsserterTest extends TestCase
 {
     const COMPARATOR_ASSERTION = 'comparator';
 
@@ -62,7 +62,7 @@ class ComparatorAssertionTest extends TestCase
 
     private function assert(string $stat, $expectedValue, Distribution $distribution, array $config = [])
     {
-        $assertion = new ComparatorAssertion();
+        $assertion = new ComparatorAsserter();
         $optionsResolver = new OptionsResolver();
         $assertion->configure($optionsResolver);
         $config = $optionsResolver->resolve($config);

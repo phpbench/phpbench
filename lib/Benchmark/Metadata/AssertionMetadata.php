@@ -4,18 +4,20 @@ namespace PhpBench\Benchmark\Metadata;
 
 class AssertionMetadata
 {
-    private $expression;
-
     /**
-     * @param string $expression
+     * @var array
      */
-    public function __construct($expression)
+    private $options;
+
+    public function __construct(array $options)
     {
-        $this->expression = $expression;
+        $this->options = $options;
+
     }
 
-    public function __toString()
+    public function getOptions(): array
     {
-        return $this->expression;
+        return $this->options;
     }
 }
+

@@ -27,41 +27,59 @@ use PhpBench\Progress\Logger\NullLogger;
 use PhpBench\Progress\LoggerInterface;
 use PhpBench\Registry\Config;
 use PhpBench\Registry\ConfigurableRegistry;
-use PhpBench\Assertion\AssertionRegistry;
+use PhpBench\Assertion\Assertion;
+use PhpBench\Assertion\AssertionFailure;
 
 /**
  * The benchmark runner.
  */
 class Runner
 {
-    private $logger;
+    /**
+     * @var BenchmarkFinder
+     */
     private $benchmarkFinder;
-    private $configPath;
-    private $retryThreshold = null;
-    private $executorRegistry;
-    private $envSupplier;
-    private $asserter;
 
     /**
-     * @param BenchmarkFinder $benchmarkFinder
-     * @param SubjectBuilder $subjectBuilder
-     * @param string $configPath
+     * @var ConfigurableRegistry
      */
+    private $executorRegistry;
+
+    /**
+     * @var Supplier
+     */
+    private $envSupplier;
+
+    /**
+     * @var float
+     */
+    private $retryThreshold;
+
+    /**
+     * @var string
+     */
+    private $configPath;
+
+    /**
+     * @var Assertion
+     */
+    private $assertion;
+
     public function __construct(
         BenchmarkFinder $benchmarkFinder,
         ConfigurableRegistry $executorRegistry,
         Supplier $envSupplier,
-        AssertionRegistry $assertionRegister,
-        $retryThreshold,
-        $configPath
+        Assertion $assertion,
+        float $retryThreshold = null,
+        string $configPath = null
     ) {
         $this->logger = new NullLogger();
         $this->benchmarkFinder = $benchmarkFinder;
         $this->executorRegistry = $executorRegistry;
         $this->envSupplier = $envSupplier;
-        $this->configPath = $configPath;
-        $this->asserter = $asserter;
         $this->retryThreshold = $retryThreshold;
+        $this->configPath = $configPath;
+        $this->assertion = $assertion;
     }
 
     /**
@@ -233,7 +251,7 @@ class Runner
 
         foreach ($subjectMetadata->getAssertions() as $assertion) {
             try {
-                $this->assertionRegistry->get($assertion->type(), $assertion->options())->assert($variant->getStats());
+                $this->assertion->assertWith('comparator', $assertion->getOptions(), $variant->getStats());
             } catch (AssertionFailure $failure) {
                 $variant->addFailure($failure);
             }
@@ -255,3 +273,4 @@ class Runner
         $this->logger->iterationEnd($iteration);
     }
 }
+

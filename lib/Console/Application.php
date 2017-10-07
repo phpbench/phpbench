@@ -44,7 +44,6 @@ class Application extends BaseApplication
             new InputOption('--config', null, InputOption::VALUE_REQUIRED, 'Configuration file'),
             new InputOption('--extension', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Enable an extension'),
         ]);
-        $this->default = $default;
 
         return $default;
     }

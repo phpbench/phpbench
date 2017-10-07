@@ -13,7 +13,6 @@
 namespace PhpBench\Expression;
 
 use PhpBench\Json\JsonDecoder;
-use PhpBench\Expression\Constraint\Constraint;
 
 /**
  * Parse a JSON query into a Constraint.

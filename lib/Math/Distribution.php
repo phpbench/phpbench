@@ -138,6 +138,13 @@ class Distribution implements \IteratorAggregate, \ArrayAccess
             return $this->stats[$name];
         }
 
+        if (!isset($this->closures[$name])) {
+            throw new \InvalidArgumentException(sprintf(
+                'Unknown stat "%s", known stats: "%s"',
+                $name, implode('", "', array_keys($this->closures))
+            ));
+        }
+
         $this->stats[$name] = $this->closures[$name]($this->samples, $this);
 
         return $this->stats[$name];

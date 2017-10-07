@@ -16,8 +16,9 @@
         [ "printf", { "format": "%s%%" } ]
     ],
     "diff": [
-        [ "number", { "decimal_places": "{{ output_time_precision }}" }],
-        [ "printf", { "format": "%sx" } ]
+        [ "number", { "decimal_places": 2 }],
+        [ "balance", {} ],
+        [ "printf", { "format": "%s%%" } ]
     ],
     "mem": [
         [ "number" ],

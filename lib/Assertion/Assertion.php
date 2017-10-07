@@ -2,11 +2,30 @@
 
 namespace PhpBench\Assertion;
 
-use PhpBench\Registry\RegistrableInterface;
-use PhpBench\Math\Distribution;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use PhpBench\Registry\Config;
+use PhpBench\Math\Distribution;
 
-interface Assertion extends RegistrableInterface
+class Assertion
 {
-    public function assert(string $property, $value, Distribution $distribution, Config $config);
+    /**
+     * @var AsserterRegistry
+     */
+    private $registry;
+
+    public function __construct(AsserterRegistry $registry)
+    {
+        $this->registry = $registry;
+    }
+
+    public function assertWith($asserterName, array $config, Distribution $distribution)
+    {
+        $asserter = $this->registry->getService($asserterName);
+        $optionsResolver = new OptionsResolver();
+        $asserter->configure($optionsResolver);
+        $config = new Config('test', $optionsResolver->resolve($config));
+
+        return $asserter->assert($distribution, $config);
+    }
 }
+

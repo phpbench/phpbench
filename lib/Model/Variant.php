@@ -16,7 +16,7 @@ use PhpBench\Math\Distribution;
 use PhpBench\Math\Statistics;
 use PhpBench\Model\Result\ComputedResult;
 use PhpBench\Model\Result\TimeResult;
-use PhpBench\Benchmark\AssertionFailure;
+use PhpBench\Assertion\AssertionFailure;
 
 /**
  * Stores Iterations and calculates the deviations and rejection

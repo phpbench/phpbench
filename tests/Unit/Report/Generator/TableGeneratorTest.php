@@ -72,8 +72,8 @@ class TableGeneratorTest extends GeneratorTestCase
         $this->assertXPathEval($report, '1.000', 'string(//cell[@name="stdev"])');
         $this->assertXPathEval($report, '33.333333333333', 'string(//cell[@name="rstdev"])');
 
-        $this->assertXPathEval($report, '1', 'string(//cell[@name="diff"])');
-        $this->assertXPathEval($report, '1.0666666666667', 'string(//row[2]//cell[@name="diff"])');
+        $this->assertXPathEval($report, '0', 'string(//cell[@name="diff"])');
+        $this->assertXPathEval($report, '6.6666666666667', 'string(//row[2]//cell[@name="diff"])');
     }
 
     /**

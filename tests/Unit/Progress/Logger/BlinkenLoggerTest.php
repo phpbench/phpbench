@@ -21,11 +21,13 @@ use PhpBench\Tests\Util\TestUtil;
 use PhpBench\Util\TimeUnit;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\BufferedOutput;
-use PhpBench\Benchmark\AssertionFailure;
 use PhpBench\Model\Result\TimeResult;
+use PhpBench\Assertion\AssertionFailure;
 
 class BlinkenLoggerTest extends TestCase
 {
+    const ASSERTION_FAILURE_MESSAGE = 'Failure message';
+
     /**
      * @var BufferedOutput
      */
@@ -139,10 +141,10 @@ class BlinkenLoggerTest extends TestCase
         foreach ($this->variant as $iteration) {
             $iteration->setResult(new TimeResult(10));
         }
-        $this->variant->addFailure(new AssertionFailure('a > b', []));
+        $this->variant->addFailure(new AssertionFailure(self::ASSERTION_FAILURE_MESSAGE));
         $this->variant->addIteration($iteration);
         $this->variant->computeStats();
-        $this->variant->addFailure(new AssertionFailure('5 > 0', []));
+        $this->variant->addFailure(new AssertionFailure(self::ASSERTION_FAILURE_MESSAGE));
         $this->logger->variantEnd($this->variant);
         $this->assertContains('FAIL', $this->output->fetch());
     }

@@ -2,14 +2,14 @@
 
 namespace PhpBench\Assertion;
 
-use PhpBench\Assertion\Assertion;
+use PhpBench\Assertion\Asserter;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use PhpBench\Math\Distribution;
 use PhpBench\Registry\Config;
 use PhpBench\Assertion\AssertionFailure;
 
 
-class ComparatorAssertion implements Assertion
+class ComparatorAsserter implements Asserter
 {
     const LESS_THAN = '<';
     const GREATER_THAN = '>';
@@ -19,6 +19,8 @@ class ComparatorAssertion implements Assertion
         self::LESS_THAN => 'less than',
         self::GREATER_THAN => 'greater than',
     ];
+    const OPTION_STAT = 'stat';
+    const OPTION_VALUE = 'value';
 
     /**
      * {@inheritDoc}
@@ -31,17 +33,22 @@ class ComparatorAssertion implements Assertion
             self::GREATER_THAN,
             self::APPROXIMATELY
         ]);
+
+        $options->setRequired(self::OPTION_STAT);
+        $options->setRequired(self::OPTION_VALUE);
     }
 
-    public function assert(string $property, $expectedValue, Distribution $distribution, Config $config)
+    public function assert(Distribution $distribution, Config $config)
     {
         $comparator = $config[self::OPTION_COMPARATOR];
-        $value = $distribution[$property];
+        $stat = $config[self::OPTION_STAT];
+        $expectedValue = $config[self::OPTION_VALUE];
+        $value = $distribution[$stat];
 
         if (false === $this->compare($expectedValue, $value, $comparator)) {
             throw new AssertionFailure(sprintf(
                 '%s is not %s %s, it was %s',
-                $property,
+                $stat,
                 $this->humanize($comparator),
                 $expectedValue,
                 $value
