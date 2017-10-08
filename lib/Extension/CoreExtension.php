@@ -440,8 +440,8 @@ class CoreExtension implements ExtensionInterface
                 $container->get('json.decoder')
             );
         });
-        $container->register('assertion.asserter.comparator', function () {
-            return new ComparatorAsserter();
+        $container->register('assertion.asserter.comparator', function (Container $container) {
+            return new ComparatorAsserter($container->get('benchmark.time_unit'));
         }, ['assertion.asserter' => ['name' => 'comparator']]);
     }
 

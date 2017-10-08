@@ -548,7 +548,7 @@ for example, "the mean must be less than 10".
          */
         public function benchGenerateReport()
         {
-            $this->generator->generateMyComplexReport();
+            // ...
         }
     }
 
@@ -568,11 +568,33 @@ using the ``comparator`` key:
          */
         public function benchGenerateReport()
         {
-            $this->generator->generateMyComplexReport();
+            // ...
         }
     }
 
-You can specify multiple assertions.
+The default time unit for assertions is microseconds, but you can specify any
+supported time unit and you can also change the mode to ``throughput``:
+
+
+.. code-block:: php
+
+    <?php
+
+    class AssertiveBench
+    {
+        // ...
+
+        /**
+         * @Assert(stat="mean", value="10", comparator=">", time_unit="milliseconds", mode="throughput")
+         */
+        public function benchGenerateReport()
+        {
+            // ...
+        }
+    }
+
+The above will assert that an average of more than 10 operations are completed
+in a millisecond. See :ref:`time_unit` and :ref:`mode` for more information.
 
 .. _cartesian product: https://en.wikipedia.org/wiki/Cartesian_product
 .. _Relative standard deviation: https://en.wikipedia.org/wiki/Coefficient_of_variation

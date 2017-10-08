@@ -19,6 +19,7 @@ use PhpBench\Registry\Config;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use PhpBench\Assertion\AssertionData;
+use PhpBench\Util\TimeUnit;
 
 class ComparatorAsserterTest extends TestCase
 {
@@ -58,7 +59,7 @@ class ComparatorAsserterTest extends TestCase
                     ComparatorAsserter::OPTION_STAT => 'mean',
                     ComparatorAsserter::OPTION_VALUE => 5,
                 ],
-                'mean is not less than 5, it was 10',
+                'mean is not less than 5.000μs, it was 10.000μs',
             ],
             [
                 [2, 2],
@@ -67,14 +68,23 @@ class ComparatorAsserterTest extends TestCase
                     ComparatorAsserter::OPTION_STAT => 'mean',
                     ComparatorAsserter::OPTION_VALUE => 5,
                 ],
-                'mean is not greater than 5, it was 2',
+                'mean is not greater than 5.000μs, it was 2.000μs',
+            ],
+            [
+                [2000, 2000],
+                [
+                    ComparatorAsserter::OPTION_STAT => 'mean',
+                    ComparatorAsserter::OPTION_VALUE => 1,
+                    ComparatorAsserter::OPTION_TIME_UNIT => 'milliseconds',
+                ],
+                'mean is not less than 1.000ms, it was 2.000ms',
             ],
         ];
     }
 
     private function assert(AssertionData $data, array $config = [])
     {
-        $assertion = new ComparatorAsserter();
+        $assertion = new ComparatorAsserter(new TimeUnit());
         $optionsResolver = new OptionsResolver();
         $assertion->configure($optionsResolver);
         $config = $optionsResolver->resolve($config);

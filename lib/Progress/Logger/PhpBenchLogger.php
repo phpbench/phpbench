@@ -25,6 +25,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
 {
     protected $output;
+
+    /**
+     * @var TimeUnit
+     */
     protected $timeUnit;
 
     public function __construct(TimeUnit $timeUnit = null)
@@ -93,14 +97,14 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
         $this->output->write(PHP_EOL);
         foreach ($errorStacks as $errorStack) {
             $this->output->writeln(sprintf(
-                '<error>%s::%s</error>',
+                '%s::%s</error>',
                 $errorStack->getVariant()->getSubject()->getBenchmark()->getClass(),
                 $errorStack->getVariant()->getSubject()->getName()
             ));
             $this->output->write(PHP_EOL);
             foreach ($errorStack as $error) {
                 $this->output->writeln(sprintf(
-                    "    %s %s\n\n    <comment>%s</comment>\n",
+                    "    %s %s\n\n    %s</comment>\n",
                     $error->getClass(),
                     str_replace("\n", "\n    ", $error->getMessage()),
                     str_replace("\n", "\n    ", $error->getTrace())
@@ -196,3 +200,4 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
         );
     }
 }
+
