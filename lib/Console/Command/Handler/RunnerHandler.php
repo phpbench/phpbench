@@ -47,15 +47,15 @@ class RunnerHandler
         $command->addOption('filter', [], InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Ignore all benchmarks not matching command filter (can be a regex)');
         $command->addOption('group', [], InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Group to run (can be specified multiple times)');
         $command->addOption('parameters', null, InputOption::VALUE_REQUIRED, 'Override parameters to use in (all) benchmarks');
+        $command->addOption('assert', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Override assertions');
         $command->addOption('revs', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Override number of revs (revolutions) on (all) benchmarks');
-        $command->addOption('progress', 'l', InputOption::VALUE_REQUIRED, 'Progress logger to use. Specify anything to find out what is available.');
-        $command->addOption('assert', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Override assertions.');
+        $command->addOption('progress', 'l', InputOption::VALUE_REQUIRED, 'Progress logger to use');
 
         // command option is parsed before the container is compiled.
         $command->addOption('bootstrap', 'b', InputOption::VALUE_REQUIRED, 'Set or override the bootstrap file.');
         $command->addOption('group', [], InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Group to run (can be specified multiple times)');
         $command->addOption('executor', [], InputOption::VALUE_REQUIRED, 'Executor to use', 'microtime');
-        $command->addOption('stop-on-error', [], InputOption::VALUE_NONE, 'Stop on the first error encountered.');
+        $command->addOption('stop-on-error', [], InputOption::VALUE_NONE, 'Stop on the first error encountered');
 
         // Launcher options (processed in PhpBench.php before the container is initialized).
         $command->addOption('php-binary', null, InputOption::VALUE_REQUIRED, 'Alternative PHP binary to use');

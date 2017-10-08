@@ -56,11 +56,12 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
         $this->listFailures($suite);
 
         $this->output->writeln(sprintf(
-            '%s subjects, %s iterations, %s revs, %s rejects',
+            '%s subjects, %s iterations, %s revs, %s rejects, %s failures',
             number_format($summary->getNbSubjects()),
             number_format($summary->getNbIterations()),
             number_format($summary->getNbRevolutions()),
-            number_format($summary->getNbRejects())
+            number_format($summary->getNbRejects()),
+            number_format($summary->getNbFailures())
         ));
 
         $this->output->writeln(sprintf(
@@ -145,14 +146,15 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
         $precision = $this->timeUnit->resolvePrecision($subject->getOutputTimePrecision());
 
         return sprintf(
-            "%s[μ Mo]/r: %s %s (%s) \t[μSD μRSD]/r: %s %s%%",
+            "%s[μ Mo]/r: %s %s (%s) \t[μSD μRSD]/r: %s %s%%%s",
 
-            $variant->hasFailed() ? '<error>FAIL</error> ' : '',
+            $variant->hasFailed() ? '<error>' : '',
             $this->timeUnit->format($stats->getMean(), $timeUnit, $mode, $precision, false),
             $this->timeUnit->format($stats->getMode(), $timeUnit, $mode, $precision, false),
             $this->timeUnit->getDestSuffix($timeUnit, $mode),
             $this->timeUnit->format($stats->getStdev(), $timeUnit, TimeUnit::MODE_TIME),
-            number_format($stats->getRstdev(), 2)
+            number_format($stats->getRstdev(), 2),
+            $variant->hasFailed() ? '</error>' : ''
         );
     }
 

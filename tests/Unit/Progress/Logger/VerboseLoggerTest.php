@@ -98,7 +98,7 @@ class VerboseLoggerTest extends PhpBenchLoggerTest
         $this->subject->getName()->willReturn('benchFoo');
         $this->parameterSet->getIndex()->willReturn(0);
 
-        $this->output->write(Argument::containingString('FAIL'))->shouldBeCalled();
+        $this->output->write(Argument::containingString('<error>'))->shouldBeCalled();
         $this->output->write(PHP_EOL)->shouldBeCalled();
         $this->logger->variantEnd($this->variant->reveal());
     }

@@ -137,6 +137,17 @@ class RunTest extends SystemTestCase
     }
 
     /**
+     * If passed the tolerate-failure option, it should return 0 exit code even when failures are encountered
+     */
+    public function testFailAssertionFailureTolerate()
+    {
+        $process = $this->phpbench(
+            'run benchmarks/set5/AssertFailBench.php --tolerate-failure'
+        );
+        $this->assertExitCode(0, $process);
+    }
+
+    /**
      * It should override assertions
      */
     public function testFailAssertionOverride()

@@ -20,6 +20,7 @@ use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
 use PhpBench\Model\Variant;
 use PHPUnit\Framework\TestCase;
+use PhpBench\Assertion\AssertionFailures;
 
 class SuiteTest extends TestCase
 {
@@ -106,6 +107,7 @@ class SuiteTest extends TestCase
         $this->variant1->getRevolutions()->willReturn(10);
         $this->variant1->getRejectCount()->willReturn(0);
         $this->variant1->getRejectCount()->willReturn(0);
+        $this->variant1->getFailures()->willReturn(new AssertionFailures($this->variant1->reveal()));
         $this->variant1->getErrorStack()->willReturn($errorStack->reveal());
 
         $suite = $this->createSuite([

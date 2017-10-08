@@ -23,6 +23,7 @@ class Summary
     private $nbIterations = 0;
     private $nbRejects = 0;
     private $nbRevolutions = 0;
+    private $nbFailures = 0;
     private $stats = [
         'stdev' => [],
         'mean' => [],
@@ -47,6 +48,7 @@ class Summary
                 foreach ($subject->getVariants() as $variant) {
                     $this->nbIterations += count($variant);
                     $this->nbRevolutions += $variant->getRevolutions();
+                    $this->nbFailures += count($variant->getFailures());
                     $this->nbRejects += $variant->getRejectCount();
 
                     if ($variant->hasErrorStack()) {
@@ -80,6 +82,11 @@ class Summary
     public function getNbRevolutions()
     {
         return $this->nbRevolutions;
+    }
+
+    public function getNbFailures()
+    {
+        return $this->nbFailures;
     }
 
     public function getStats()
@@ -122,3 +129,4 @@ class Summary
         return Statistics::mean($this->stats['rstdev']);
     }
 }
+

@@ -19,6 +19,7 @@ use PhpBench\Model\Suite;
 use PhpBench\Model\Summary;
 use PhpBench\Model\Variant;
 use PHPUnit\Framework\TestCase;
+use PhpBench\Assertion\AssertionFailures;
 
 class SummaryTest extends TestCase
 {
@@ -44,6 +45,7 @@ class SummaryTest extends TestCase
         $this->variant1->hasErrorStack()->wilLReturn(false);
         $this->variant1->getRevolutions()->willReturn(10);
         $this->variant1->getSubject()->willReturn($this->subject1->reveal());
+        $this->variant1->getFailures()->willReturn(new AssertionFailures($this->variant1->reveal()));
         $this->stats->getIterator()->willReturn(new \ArrayIterator([
             'min' => '1',
             'max' => '2',

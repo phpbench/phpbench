@@ -522,6 +522,15 @@ As with :ref:`revolutions <revolutions>`, you may also specify an array.
 Assertions
 ----------
 
+.. warning::
+
+    Assertions are absolute, benchmarks are relative to the environment they
+    are running in. 
+    
+    If you use them in a continuous integration environment the stability of
+    your build will depend on the state of the environment, you can prevent
+    failing builds with the `--tolerate-failure` option.
+
 Assertions allow you to specify what a valid range is for a given statistic,
 for example, "the mean must be less than 10".
 
