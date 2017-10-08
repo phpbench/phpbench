@@ -15,6 +15,7 @@ namespace PhpBench\Benchmark;
 use PhpBench\Assertion\AssertionFailure;
 use PhpBench\Assertion\AssertionProcessor;
 use PhpBench\Benchmark\Exception\StopOnErrorException;
+use PhpBench\Benchmark\Metadata\AssertionMetadata;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Environment\Supplier;
@@ -168,11 +169,6 @@ class Runner
                 $subjectMetadata->setAssertions($this->assertionProcessor->assertionsFromRawCliConfig($context->getAssertions()));
             }
 
-            if ($context->getAssertions()) {
-                foreach ($context->getAssertions() as $assertion) {
-                }
-            }
-
             $benchmark->createSubjectFromMetadata($subjectMetadata);
         }
 
@@ -260,9 +256,10 @@ class Runner
     {
         $variant->computeStats();
 
+        /** @var AssertionMetadata $assertion */
         foreach ($subjectMetadata->getAssertions() as $assertion) {
             try {
-                $this->assertionProcessor->assertWith('comparator', $assertion->getOptions(), $variant->getStats());
+                $this->assertionProcessor->assertWith('comparator', $assertion->getConfig(), $variant->getStats());
             } catch (AssertionFailure $failure) {
                 $variant->addFailure($failure);
             }

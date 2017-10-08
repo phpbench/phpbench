@@ -21,16 +21,16 @@ class Assert extends AbstractArrayAnnotation
     /**
      * @var array
      */
-    private $options;
+    private $config;
 
     public function __construct($params)
     {
         parent::__construct($params);
-        $this->options = $params;
+        $this->config = $params;
     }
 
-    public function getOptions(): array
+    public function getConfig(): array
     {
-        return $this->options;
+        return $this->config;
     }
 }

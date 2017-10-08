@@ -20,8 +20,10 @@ use PhpBench\Registry\Registry;
  */
 class AsserterRegistry extends Registry
 {
+    const NAME = 'assertion';
+
     public function __construct(Container $container, string $defaultService = null)
     {
-        parent::__construct('assertion', $container, $defaultService);
+        parent::__construct(self::NAME, $container, $defaultService);
     }
 }

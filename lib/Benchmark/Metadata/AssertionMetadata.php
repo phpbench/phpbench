@@ -17,15 +17,15 @@ class AssertionMetadata
     /**
      * @var array
      */
-    private $options;
+    private $config;
 
-    public function __construct(array $options)
+    public function __construct(array $config)
     {
-        $this->options = $options;
+        $this->config = $config;
     }
 
-    public function getOptions(): array
+    public function getConfig(): array
     {
-        return $this->options;
+        return $this->config;
     }
 }

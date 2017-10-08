@@ -199,7 +199,7 @@ class AnnotationDriver implements DriverInterface
         }
 
         if ($annotation instanceof Annotations\Assert) {
-            $subject->addAssertion(new AssertionMetadata($annotation->getOptions()));
+            $subject->addAssertion(new AssertionMetadata($annotation->getConfig()));
         }
     }
 

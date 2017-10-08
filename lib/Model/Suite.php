@@ -12,6 +12,7 @@
 
 namespace PhpBench\Model;
 
+use PhpBench\Assertion\AssertionFailures;
 use PhpBench\Environment\Information;
 
 /**
@@ -151,6 +152,9 @@ class Suite implements \IteratorAggregate
         return $errorStacks;
     }
 
+    /**
+     * @return AssertionFailures[]
+     */
     public function getFailures()
     {
         $failures = [];
