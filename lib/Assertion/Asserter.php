@@ -18,5 +18,5 @@ use PhpBench\Registry\RegistrableInterface;
 
 interface Asserter extends RegistrableInterface
 {
-    public function assert(Distribution $distribution, Config $config);
+    public function assert(AssertionData $data, Config $config);
 }

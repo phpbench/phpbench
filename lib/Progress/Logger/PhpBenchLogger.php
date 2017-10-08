@@ -118,7 +118,7 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
         }
 
         $this->output->write(PHP_EOL);
-        $this->output->writeln(sprintf('%d subjects failed:', count($variantFailures)));
+        $this->output->writeln(sprintf('%d variants failed:', count($variantFailures)));
         $this->output->write(PHP_EOL);
 
         /** @var AssertionFailures $variantFailure */

@@ -22,12 +22,13 @@ class ComparatorAsserter implements Asserter
     const GREATER_THAN = '>';
 
     const OPTION_COMPARATOR = 'comparator';
+    const OPTION_STAT = 'stat';
+    const OPTION_VALUE = 'value';
+
     const HUMANIZED = [
         self::LESS_THAN => 'less than',
         self::GREATER_THAN => 'greater than',
     ];
-    const OPTION_STAT = 'stat';
-    const OPTION_VALUE = 'value';
 
     /**
      * {@inheritdoc}
@@ -44,12 +45,12 @@ class ComparatorAsserter implements Asserter
         $options->setRequired(self::OPTION_VALUE);
     }
 
-    public function assert(Distribution $distribution, Config $config)
+    public function assert(AssertionData $data, Config $config)
     {
         $comparator = $config[self::OPTION_COMPARATOR];
         $stat = $config[self::OPTION_STAT];
         $expectedValue = $config[self::OPTION_VALUE];
-        $value = $distribution[$stat];
+        $value = $data->getDistribution()[$stat];
 
         if (false === $this->compare($expectedValue, $value, $comparator)) {
             throw new AssertionFailure(sprintf(

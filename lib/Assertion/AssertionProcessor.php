@@ -36,16 +36,19 @@ class AssertionProcessor
         $this->jsonDecoder = $jsonDecoder;
     }
 
-    public function assertWith($asserterName, array $config, Distribution $distribution)
+    public function assertWith($asserterName, array $config, AssertionData $data)
     {
         $asserter = $this->registry->getService($asserterName);
         $optionsResolver = new OptionsResolver();
         $asserter->configure($optionsResolver);
         $config = new Config('test', $optionsResolver->resolve($config));
 
-        return $asserter->assert($distribution, $config);
+        return $asserter->assert($data, $config);
     }
 
+    /**
+     * Return an array of assertion metadatas from the raw JSON-like stuff from the CLI
+     */
     public function assertionsFromRawCliConfig(array $rawAssertions)
     {
         $assertions = [];

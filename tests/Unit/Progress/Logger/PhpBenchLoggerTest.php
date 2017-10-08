@@ -136,7 +136,7 @@ abstract class PhpBenchLoggerTest extends TestCase
         $this->subject->getName()->willReturn('bar');
         $this->benchmark->getClass()->willReturn('Namespace\Foo');
 
-        $this->output->writeln(Argument::containingString('1 subjects failed'))->shouldBeCalled();
+        $this->output->writeln(Argument::containingString('1 variants failed'))->shouldBeCalled();
         $this->output->writeln(Argument::any())->shouldBeCalled();
         $this->output->write(Argument::any())->shouldBeCalled();
 

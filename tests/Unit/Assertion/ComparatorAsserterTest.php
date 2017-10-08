@@ -18,6 +18,7 @@ use PhpBench\Math\Distribution;
 use PhpBench\Registry\Config;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use PhpBench\Assertion\AssertionData;
 
 class ComparatorAsserterTest extends TestCase
 {
@@ -33,7 +34,7 @@ class ComparatorAsserterTest extends TestCase
             $this->expectExceptionMessage($failureMessage);
         }
 
-        $this->assert(new Distribution($samples), $config);
+        $this->assert(AssertionData::fromDistribution(new Distribution($samples)), $config);
 
         if (null === $failureMessage) {
             $this->addToAssertionCount(1);
@@ -71,13 +72,13 @@ class ComparatorAsserterTest extends TestCase
         ];
     }
 
-    private function assert(Distribution $distribution, array $config = [])
+    private function assert(AssertionData $data, array $config = [])
     {
         $assertion = new ComparatorAsserter();
         $optionsResolver = new OptionsResolver();
         $assertion->configure($optionsResolver);
         $config = $optionsResolver->resolve($config);
 
-        $assertion->assert($distribution, new Config('test', $config));
+        $assertion->assert($data, new Config('test', $config));
     }
 }
