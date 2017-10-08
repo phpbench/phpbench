@@ -45,6 +45,7 @@ class VerboseLoggerTest extends PhpBenchLoggerTest
         $this->variant->getRejectCount()->willReturn(0);
         $this->variant->getStats()->willReturn($this->stats->reveal());
         $this->variant->getSubject()->willReturn($this->subject->reveal());
+        $this->variant->hasFailed()->willReturn(false);
         $this->variant->getParameterSet()->willReturn($this->parameterSet->reveal());
         $this->subject->getOutputTimeUnit()->willReturn(null);
         $this->subject->getOutputMode()->willReturn(null);
@@ -68,6 +69,7 @@ class VerboseLoggerTest extends PhpBenchLoggerTest
         $this->variant->getStats()->willReturn($this->stats->reveal());
         $this->variant->getSubject()->willReturn($this->subject->reveal());
         $this->variant->getParameterSet()->willReturn($this->parameterSet->reveal());
+        $this->variant->hasFailed()->willReturn(false);
         $this->subject->getOutputTimeUnit()->willReturn(TimeUnit::MICROSECONDS);
         $this->subject->getOutputMode()->willReturn(TimeUnit::MODE_THROUGHPUT);
         $this->subject->getOutputTimePrecision()->willReturn(null);
@@ -80,12 +82,35 @@ class VerboseLoggerTest extends PhpBenchLoggerTest
     }
 
     /**
+     * It should show failures
+     */
+    public function testShowFailures()
+    {
+        $this->variant->hasErrorStack()->willReturn(false);
+        $this->variant->getRejectCount()->willReturn(0);
+        $this->variant->getStats()->willReturn($this->stats->reveal());
+        $this->variant->getSubject()->willReturn($this->subject->reveal());
+        $this->variant->getParameterSet()->willReturn($this->parameterSet->reveal());
+        $this->variant->hasFailed()->willReturn(true);
+        $this->subject->getOutputTimeUnit()->willReturn(TimeUnit::MICROSECONDS);
+        $this->subject->getOutputMode()->willReturn(TimeUnit::MODE_THROUGHPUT);
+        $this->subject->getOutputTimePrecision()->willReturn(null);
+        $this->subject->getName()->willReturn('benchFoo');
+        $this->parameterSet->getIndex()->willReturn(0);
+
+        $this->output->write(Argument::containingString('FAIL'))->shouldBeCalled();
+        $this->output->write(PHP_EOL)->shouldBeCalled();
+        $this->logger->variantEnd($this->variant->reveal());
+    }
+
+    /**
      * It should log exceptions as ERROR.
      */
     public function testLogError()
     {
         $this->variant->hasErrorStack()->willReturn(true);
         $this->variant->getSubject()->willReturn($this->subject->reveal());
+        $this->variant->hasFailed()->willReturn(false);
         $this->subject->getName()->willReturn('benchFoo');
         $this->output->write(Argument::containingString('ERROR'))->shouldBeCalled();
         $this->output->write(PHP_EOL)->shouldBeCalled();

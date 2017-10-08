@@ -87,7 +87,7 @@ Use the ``--assert`` option to introduce or override assertions:
     $ phpbench run /path/to/HashBench.php --assert="stat: mode, value: 10"
 
 This will assert that ALL variants must have a mode less than 10. For more
-information on assertions see :doc:`assertions`.
+information on assertions see :ref:`assertions`.
 
 
 Generating Reports
@@ -273,3 +273,13 @@ Configuration File
 
 A custom configuration file can be specified with the ``--config`` option.  See
 the :doc:`configuration` chapter for more information on configuration.
+
+Exit codes
+----------
+
+The following exit codes can occur:
+
+- ``0``: Everything was fine.
+- ``1``: Errors encountered in benchmarks.
+- ``2``: Assertion failures.
+- ``255``: Internal error

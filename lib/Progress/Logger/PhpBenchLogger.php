@@ -145,8 +145,9 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
         $precision = $this->timeUnit->resolvePrecision($subject->getOutputTimePrecision());
 
         return sprintf(
-            "[μ Mo]/r: %s %s (%s) \t[μSD μRSD]/r: %s %s%%",
+            "%s[μ Mo]/r: %s %s (%s) \t[μSD μRSD]/r: %s %s%%",
 
+            $variant->hasFailed() ? '<error>FAIL</error> ' : '',
             $this->timeUnit->format($stats->getMean(), $timeUnit, $mode, $precision, false),
             $this->timeUnit->format($stats->getMode(), $timeUnit, $mode, $precision, false),
             $this->timeUnit->getDestSuffix($timeUnit, $mode),
