@@ -49,6 +49,7 @@ class RunnerHandler
         $command->addOption('parameters', null, InputOption::VALUE_REQUIRED, 'Override parameters to use in (all) benchmarks');
         $command->addOption('revs', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Override number of revs (revolutions) on (all) benchmarks');
         $command->addOption('progress', 'l', InputOption::VALUE_REQUIRED, 'Progress logger to use. Specify anything to find out what is available.');
+        $command->addOption('assert', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Override assertions.');
 
         // command option is parsed before the container is compiled.
         $command->addOption('bootstrap', 'b', InputOption::VALUE_REQUIRED, 'Set or override the bootstrap file.');

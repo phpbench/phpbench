@@ -27,7 +27,7 @@ use PhpBench\Progress\Logger\NullLogger;
 use PhpBench\Progress\LoggerInterface;
 use PhpBench\Registry\Config;
 use PhpBench\Registry\ConfigurableRegistry;
-use PhpBench\Assertion\Assertion;
+use PhpBench\Assertion\AssertionProcessor;
 use PhpBench\Assertion\AssertionFailure;
 
 /**
@@ -63,13 +63,13 @@ class Runner
     /**
      * @var Assertion
      */
-    private $assertion;
+    private $assertionProcessor;
 
     public function __construct(
         BenchmarkFinder $benchmarkFinder,
         ConfigurableRegistry $executorRegistry,
         Supplier $envSupplier,
-        Assertion $assertion,
+        AssertionProcessor $assertion,
         float $retryThreshold = null,
         string $configPath = null
     ) {
@@ -79,7 +79,7 @@ class Runner
         $this->envSupplier = $envSupplier;
         $this->retryThreshold = $retryThreshold;
         $this->configPath = $configPath;
-        $this->assertion = $assertion;
+        $this->assertionProcessor = $assertion;
     }
 
     /**
@@ -153,6 +153,8 @@ class Runner
             return true;
         });
         $subjectMetadatas = array_values($subjectMetadatas);
+
+        /** @var SubjectMetadata $subjectMetadata */
         foreach ($subjectMetadatas as $subjectMetadata) {
 
             // override parameters
@@ -161,6 +163,15 @@ class Runner
             $subjectMetadata->setWarmup($context->getWarmup($subjectMetadata->getWarmUp()));
             $subjectMetadata->setSleep($context->getSleep($subjectMetadata->getSleep()));
             $subjectMetadata->setRetryThreshold($context->getRetryThreshold($this->retryThreshold));
+
+            if ($context->getAssertions()) {
+                $subjectMetadata->setAssertions($this->assertionProcessor->assertionsFromRawCliConfig($context->getAssertions()));
+            }
+
+            if ($context->getAssertions()) {
+                foreach ($context->getAssertions() as $assertion) {
+                }
+            }
 
             $benchmark->createSubjectFromMetadata($subjectMetadata);
         }
@@ -251,7 +262,7 @@ class Runner
 
         foreach ($subjectMetadata->getAssertions() as $assertion) {
             try {
-                $this->assertion->assertWith('comparator', $assertion->getOptions(), $variant->getStats());
+                $this->assertionProcessor->assertWith('comparator', $assertion->getOptions(), $variant->getStats());
             } catch (AssertionFailure $failure) {
                 $variant->addFailure($failure);
             }

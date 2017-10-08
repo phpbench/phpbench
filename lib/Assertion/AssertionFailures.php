@@ -21,7 +21,7 @@ class AssertionFailures implements \IteratorAggregate, \Countable
         $this->variant = $variant;
 
         foreach ($failures as $failure) {
-            $this->addFailure($failure);
+            $this->add($failure);
         }
     }
 

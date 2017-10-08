@@ -48,6 +48,7 @@ class RunnerContext
             'output_time_precision' => null,
             'output_time_unit' => null,
             'stop_on_error' => null,
+            'assertions' => null,
         ];
 
         $options = array_merge(
@@ -304,5 +305,13 @@ class RunnerContext
     public function getStopOnError()
     {
         return $this->options['stop_on_error'];
+    }
+
+    /**
+     * Return assertions (which will override any metadata based assertions)
+     */
+    public function getAssertions(): array
+    {
+        return $this->options['assertions'] ?: [];
     }
 }

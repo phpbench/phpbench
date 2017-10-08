@@ -293,6 +293,14 @@ class SubjectMetadata
         $this->assertions[] = $assertion;
     }
 
+    public function setAssertions(array $assertions)
+    {
+        $this->assertions = [];
+        foreach ($assertions as $assertion) {
+            $this->addAssertion($assertion);
+        }
+    }
+
     public function getAssertions()
     {
         return $this->assertions;

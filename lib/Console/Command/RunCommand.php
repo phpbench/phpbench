@@ -104,6 +104,7 @@ EOT
             'sleep' => $input->getOption('sleep'),
             'iterations' => $input->getOption('iterations'),
             'warmup' => $input->getOption('warmup'),
+            'assertions' => $input->getOption('assert'),
         ]);
 
         $collection = new SuiteCollection([$suite]);

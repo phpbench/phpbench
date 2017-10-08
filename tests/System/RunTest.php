@@ -137,6 +137,17 @@ class RunTest extends SystemTestCase
     }
 
     /**
+     * It should override assertions
+     */
+    public function testFailAssertionOverride()
+    {
+        $process = $this->phpbench(
+            'run benchmarks/set5/AssertFailBench.php --assert="{stat: mean, value: 1000}"'
+        );
+        $this->assertExitCode(0, $process);
+    }
+
+    /**
      * It should dump none to an XML file.
      */
     public function testDumpXml()
