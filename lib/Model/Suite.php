@@ -155,6 +155,7 @@ class Suite implements \IteratorAggregate
     {
         $failures = [];
 
+        /** @var Variant $variant */
         foreach ($this->getVariants() as $variant) {
             if (false === $variant->hasFailed()) {
                 continue;

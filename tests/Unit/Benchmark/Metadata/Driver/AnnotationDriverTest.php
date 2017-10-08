@@ -118,7 +118,7 @@ EOT;
         $this->assertEquals('seconds', $metadata->getOutputTimeUnit());
         $this->assertEquals('throughput', $metadata->getOutputMode());
         $this->assertEquals([501], $metadata->getWarmup());
-        $this->assertEquals('mean < 100', $metadata->getAssertions()[0]->__toString());
+        $this->assertEquals(['value' => 'mean < 100'], $metadata->getAssertions()[0]->getOptions());
         $this->assertTrue($metadata->getSkip());
     }
 

@@ -18,14 +18,14 @@ class ComparatorAsserterTest extends TestCase
     /**
      * @dataProvider provideComparison
      */
-    public function testComparison(string $stat, $expectedValue, array $samples, array $config, string $failureMessage = null)
+    public function testComparison(array $samples, array $config, string $failureMessage = null)
     {
         if ($failureMessage) {
             $this->expectException(AssertionFailure::class);
             $this->expectExceptionMessage($failureMessage);
         }
 
-        $this->assert($stat, $expectedValue, new Distribution($samples), $config);
+        $this->assert(new Distribution($samples), $config);
 
         if (null === $failureMessage) {
             $this->addToAssertionCount(1);
@@ -36,37 +36,40 @@ class ComparatorAsserterTest extends TestCase
     {
         return [
             [
-                'mean',
-                15,
                 [ 10, 10 ],
-                [],
+                [
+                    ComparatorAsserter::OPTION_STAT => 'mean',
+                    ComparatorAsserter::OPTION_VALUE => 15,
+
+                ],
             ],
             [
-                'mean',
-                5,
                 [ 10, 10 ],
-                [],
+                [
+                    ComparatorAsserter::OPTION_STAT => 'mean',
+                    ComparatorAsserter::OPTION_VALUE => 5
+                ],
                 'mean is not less than 5, it was 10',
             ],
             [
-                'mean',
-                5,
                 [ 2, 2 ],
                 [
-                    self::COMPARATOR_ASSERTION => '>',
+                    ComparatorAsserter::OPTION_COMPARATOR => '>',
+                    ComparatorAsserter::OPTION_STAT => 'mean',
+                    ComparatorAsserter::OPTION_VALUE => 5,
                 ],
                 'mean is not greater than 5, it was 2',
             ],
         ];
     }
 
-    private function assert(string $stat, $expectedValue, Distribution $distribution, array $config = [])
+    private function assert(Distribution $distribution, array $config = [])
     {
         $assertion = new ComparatorAsserter();
         $optionsResolver = new OptionsResolver();
         $assertion->configure($optionsResolver);
         $config = $optionsResolver->resolve($config);
 
-        $assertion->assert($stat, $expectedValue, $distribution, new Config('test', $config));
+        $assertion->assert($distribution, new Config('test', $config));
     }
 }

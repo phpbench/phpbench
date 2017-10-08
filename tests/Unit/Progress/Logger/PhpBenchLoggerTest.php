@@ -78,6 +78,7 @@ abstract class PhpBenchLoggerTest extends TestCase
     public function testEndSuite()
     {
         $this->setUpSummary();
+        $this->suite->getFailures()->willReturn([]);
         $this->suite->getErrorStacks()->willReturn([]);
         $this->output->writeln(Argument::any())->shouldBeCalled();
         $this->logger->endSuite($this->suite->reveal());
@@ -102,6 +103,7 @@ abstract class PhpBenchLoggerTest extends TestCase
         $errorStack->getIterator()->willReturn(new \ArrayIterator([$error1->reveal(), $error2->reveal()]));
 
         $this->setUpSummary();
+        $this->suite->getFailures()->willReturn([]);
         $this->suite->getErrorStacks()->willReturn([$errorStack]);
         $errorStack->getVariant()->willReturn($this->variant->reveal());
         $this->variant->getSubject()->willReturn($this->subject->reveal());
