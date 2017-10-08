@@ -22,6 +22,7 @@ use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Model\Variant;
 use PhpBench\PhpBench;
+use PhpBench\Assertion\AssertionFailure;
 
 /**
  * Encodes the Suite object graph into an XML document.
@@ -205,6 +206,14 @@ class XmlDecoder
             $variant->createErrorStack($errors);
 
             return;
+        }
+
+        $failureEls = $variantEl->query('.//failure');
+        if ($failureEls->length) {
+            $failures = [];
+            foreach ($failureEls as $failureEl) {
+                $variant->addFailure(new AssertionFailure($failureEl->nodeValue));
+            }
         }
 
         foreach ($variantEl->query('./iteration') as $iterationEl) {

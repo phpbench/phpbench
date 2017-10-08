@@ -120,12 +120,12 @@ EOT
 
         $this->reportHandler->reportsFromInput($input, $output, $collection);
 
-        if ($suite->getFailures()) {
-            return self::EXIT_CODE_FAILURE;
-        }
-
         if ($suite->getErrorStacks()) {
             return self::EXIT_CODE_ERROR;
+        }
+
+        if ($suite->getFailures()) {
+            return self::EXIT_CODE_FAILURE;
         }
 
         return 0;

@@ -13,7 +13,7 @@ class ComparatorAsserter implements Asserter
 {
     const LESS_THAN = '<';
     const GREATER_THAN = '>';
-    const APPROXIMATELY = '~=';
+
     const OPTION_COMPARATOR = 'comparator';
     const HUMANIZED = [
         self::LESS_THAN => 'less than',
@@ -31,7 +31,6 @@ class ComparatorAsserter implements Asserter
         $options->setAllowedValues(self::OPTION_COMPARATOR, [
             self::LESS_THAN,
             self::GREATER_THAN,
-            self::APPROXIMATELY
         ]);
 
         $options->setRequired(self::OPTION_STAT);

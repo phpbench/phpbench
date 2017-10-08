@@ -118,6 +118,13 @@ class XmlEncoder
             return;
         }
 
+        if ($variant->hasFailed()) {
+            $failuresEl = $variantEl->appendElement('failures');
+            foreach ($variant->getFailures() as $failure) {
+                $failureEl = $failuresEl->appendElement('failure', $failure->getMessage());
+            }
+        }
+
         $stats = $variant->getStats();
         $stats = iterator_to_array($stats);
         $resultClasses = [];

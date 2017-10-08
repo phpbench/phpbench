@@ -27,6 +27,8 @@ use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Model\Variant;
 use PHPUnit\Framework\TestCase;
+use PhpBench\Assertion\AssertionFailures;
+use PhpBench\Assertion\AssertionFailure;
 
 class XmlTestCase extends TestCase
 {
@@ -45,6 +47,7 @@ class XmlTestCase extends TestCase
     {
         $params = array_merge([
             'error' => false,
+            'failure' => false,
             'groups' => [],
             'params' => [],
         ], $params);
@@ -81,6 +84,7 @@ class XmlTestCase extends TestCase
         $this->variant1->getWarmup()->willReturn(50);
         $this->variant1->getParameterSet()->willReturn(new ParameterSet(1, $params['params']));
         $this->variant1->hasErrorStack()->willReturn($params['error']);
+        $this->variant1->hasFailed()->willReturn($params['failure']);
         $this->variant1->isComputed()->willReturn(true);
         $this->variant1->getRevolutions()->willReturn(100);
 
@@ -97,6 +101,14 @@ class XmlTestCase extends TestCase
                         ),
                     ]
                 )
+            );
+        }
+
+        if ($params['failure']) {
+            $this->variant1->getFailures()->willReturn(
+                new AssertionFailures($this->variant1->reveal(), [
+                    new AssertionFailure('Fail!'),
+                ])
             );
         }
 
@@ -178,7 +190,34 @@ EOT
 
 EOT
             ],
+            'failure' => [
+                ['failure' => true],
+                <<<'EOT'
+<?xml version="1.0"?>
+<phpbench version="PHPBENCH_VERSION">
+  <suite context="test" date="2015-01-01 00:00:00" config-path="/path/to/config.json" uuid="1234">
+    <env>
+      <info1 foo="bar"/>
+    </env>
+    <benchmark class="Bench1">
+      <subject name="subjectName">
+        <variant sleep="5" output-time-unit="milliseconds" output-time-precision="7" output-mode="throughput" revs="100" warmup="50" retry-threshold="10">
+          <failures>
+            <failure>Fail!</failure>
+          </failures>
+          <iteration time-net="10" mem-peak="100" mem-real="110" mem-final="109" comp-z-value="0" comp-deviation="0"/>
+          <stats max="0.1" mean="0.1" min="0.1" mode="0.1" rstdev="0" stdev="0" sum="0.1" variance="0"/>
+        </variant>
+      </subject>
+    </benchmark>
+    <result key="time" class="PhpBench\Model\Result\TimeResult"/>
+    <result key="mem" class="PhpBench\Model\Result\MemoryResult"/>
+    <result key="comp" class="PhpBench\Model\Result\ComputedResult"/>
+  </suite>
+</phpbench>
 
+EOT
+            ],
         ];
     }
 }
