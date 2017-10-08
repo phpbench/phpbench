@@ -137,7 +137,7 @@ class RunTest extends SystemTestCase
     }
 
     /**
-     * If passed the tolerate-failure option, it should return 0 exit code even when failures are encountered
+     * If passed the tolerate-failure option, it should return 0 exit code even when failures are encountered.
      */
     public function testFailAssertionFailureTolerate()
     {
@@ -148,7 +148,7 @@ class RunTest extends SystemTestCase
     }
 
     /**
-     * It should override assertions
+     * It should override assertions.
      */
     public function testFailAssertionOverride()
     {

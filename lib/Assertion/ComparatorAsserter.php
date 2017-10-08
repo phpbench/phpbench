@@ -1,13 +1,20 @@
 <?php
 
+/*
+ * This file is part of the PHPBench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
+
 namespace PhpBench\Assertion;
 
-use PhpBench\Assertion\Asserter;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use PhpBench\Math\Distribution;
 use PhpBench\Registry\Config;
-use PhpBench\Assertion\AssertionFailure;
-
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ComparatorAsserter implements Asserter
 {
@@ -23,7 +30,7 @@ class ComparatorAsserter implements Asserter
     const OPTION_VALUE = 'value';
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function configure(OptionsResolver $options)
     {
@@ -65,7 +72,7 @@ class ComparatorAsserter implements Asserter
         }
 
         throw new \RuntimeException(sprintf(
-            'Unknown comparator "%s"',$comparator
+            'Unknown comparator "%s"', $comparator
         ));
     }
 
@@ -74,4 +81,3 @@ class ComparatorAsserter implements Asserter
         return self::HUMANIZED[$comparator];
     }
 }
-

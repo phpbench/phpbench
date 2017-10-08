@@ -12,6 +12,8 @@
 
 namespace PhpBench\Tests\Unit\Progress\Logger;
 
+use PhpBench\Assertion\AssertionFailure;
+use PhpBench\Assertion\AssertionFailures;
 use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Math\Distribution;
 use PhpBench\Model\Benchmark;
@@ -25,8 +27,6 @@ use PhpBench\Model\Variant;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Console\Output\OutputInterface;
-use PhpBench\Assertion\AssertionFailures;
-use PhpBench\Assertion\AssertionFailure;
 
 abstract class PhpBenchLoggerTest extends TestCase
 {
@@ -125,7 +125,7 @@ abstract class PhpBenchLoggerTest extends TestCase
     {
         $failure1 = new AssertionFailure('Failed!');
         $failure2 = new AssertionFailure('Failed!');
-        $failures = new AssertionFailures($this->variant->reveal(), [ $failure1, $failure2 ]);
+        $failures = new AssertionFailures($this->variant->reveal(), [$failure1, $failure2]);
 
         $this->setUpSummary();
         $this->suite->getFailures()->willReturn([$failures]);

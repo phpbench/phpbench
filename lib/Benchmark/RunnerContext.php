@@ -308,7 +308,7 @@ class RunnerContext
     }
 
     /**
-     * Return assertions (which will override any metadata based assertions)
+     * Return assertions (which will override any metadata based assertions).
      */
     public function getAssertions(): array
     {

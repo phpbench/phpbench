@@ -18,7 +18,7 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
  */
 class Assert extends AbstractArrayAnnotation
 {
-    /** 
+    /**
      * @var array
      */
     private $options;
@@ -34,4 +34,3 @@ class Assert extends AbstractArrayAnnotation
         return $this->options;
     }
 }
-

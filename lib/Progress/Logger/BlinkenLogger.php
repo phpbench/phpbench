@@ -113,7 +113,6 @@ class BlinkenLogger extends AnsiLogger
             return;
         }
 
-
         $this->rejects = [];
 
         foreach ($variant->getRejects() as $reject) {

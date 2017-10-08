@@ -75,7 +75,7 @@ class DotsLoggerTest extends TestCase
     }
 
     /**
-     * It should log a failure
+     * It should log a failure.
      */
     public function testIterationsEndFailure()
     {
@@ -86,7 +86,6 @@ class DotsLoggerTest extends TestCase
         $this->output->write("\x0D<error>F</error> ")->shouldBeCalled();
         $logger->variantEnd($this->variant->reveal());
     }
-
 
     /**
      * It should return early if the rejection count > 0.

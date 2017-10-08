@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Model;
 
+use PhpBench\Assertion\AssertionFailures;
 use PhpBench\Math\Distribution;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Subject;
@@ -19,7 +20,6 @@ use PhpBench\Model\Suite;
 use PhpBench\Model\Summary;
 use PhpBench\Model\Variant;
 use PHPUnit\Framework\TestCase;
-use PhpBench\Assertion\AssertionFailures;
 
 class SummaryTest extends TestCase
 {

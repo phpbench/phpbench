@@ -12,6 +12,7 @@
 
 namespace PhpBench\Serializer;
 
+use PhpBench\Assertion\AssertionFailure;
 use PhpBench\Dom\Document;
 use PhpBench\Environment\Information;
 use PhpBench\Model\Benchmark;
@@ -22,7 +23,6 @@ use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Model\Variant;
 use PhpBench\PhpBench;
-use PhpBench\Assertion\AssertionFailure;
 
 /**
  * Encodes the Suite object graph into an XML document.

@@ -14,13 +14,13 @@ namespace PhpBench\Console\Command\Handler;
 
 use PhpBench\Benchmark\Runner;
 use PhpBench\Benchmark\RunnerContext;
+use PhpBench\Model\Suite;
 use PhpBench\Progress\LoggerRegistry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use PhpBench\Model\Suite;
 
 class RunnerHandler
 {

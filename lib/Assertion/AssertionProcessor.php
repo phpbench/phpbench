@@ -1,12 +1,22 @@
 <?php
 
+/*
+ * This file is part of the PHPBench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
+
 namespace PhpBench\Assertion;
 
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use PhpBench\Registry\Config;
-use PhpBench\Math\Distribution;
-use PhpBench\Json\JsonDecoder;
 use PhpBench\Benchmark\Metadata\AssertionMetadata;
+use PhpBench\Json\JsonDecoder;
+use PhpBench\Math\Distribution;
+use PhpBench\Registry\Config;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AssertionProcessor
 {
@@ -47,4 +57,3 @@ class AssertionProcessor
         return $assertions;
     }
 }
-

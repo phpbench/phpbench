@@ -151,7 +151,7 @@ class Distribution implements \IteratorAggregate, \ArrayAccess
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function offsetExists($offset)
     {
@@ -159,7 +159,7 @@ class Distribution implements \IteratorAggregate, \ArrayAccess
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function offsetGet($offset)
     {
@@ -167,7 +167,7 @@ class Distribution implements \IteratorAggregate, \ArrayAccess
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function offsetSet($offset, $value)
     {
@@ -175,11 +175,10 @@ class Distribution implements \IteratorAggregate, \ArrayAccess
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function offsetUnset($offset)
     {
         throw new \BadMethodCallException('Distribution is read-only');
     }
 }
-

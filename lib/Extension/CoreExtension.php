@@ -12,6 +12,9 @@
 
 namespace PhpBench\Extension;
 
+use PhpBench\Assertion\AsserterRegistry;
+use PhpBench\Assertion\AssertionProcessor;
+use PhpBench\Assertion\ComparatorAsserter;
 use PhpBench\Benchmark\BaselineManager;
 use PhpBench\Benchmark\BenchmarkFinder;
 use PhpBench\Benchmark\Executor\DebugExecutor;
@@ -74,11 +77,6 @@ use PhpBench\Storage\UuidResolver;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\ExecutableFinder;
-use Hoa\Ruler\Ruler;
-use PhpBench\Benchmark\Asserter\SymfonyAsserter;
-use PhpBench\Assertion\AsserterRegistry;
-use PhpBench\Assertion\ComparatorAsserter;
-use PhpBench\Assertion\AssertionProcessor;
 
 class CoreExtension implements ExtensionInterface
 {
@@ -444,7 +442,7 @@ class CoreExtension implements ExtensionInterface
         });
         $container->register('assertion.asserter.comparator', function () {
             return new ComparatorAsserter();
-        }, [ 'assertion.asserter' => [ 'name' => 'comparator' ] ]);
+        }, ['assertion.asserter' => ['name' => 'comparator']]);
     }
 
     private function registerRegistries(Container $container)

@@ -82,7 +82,7 @@ class VerboseLoggerTest extends PhpBenchLoggerTest
     }
 
     /**
-     * It should show failures
+     * It should show failures.
      */
     public function testShowFailures()
     {

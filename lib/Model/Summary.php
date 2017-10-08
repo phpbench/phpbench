@@ -129,4 +129,3 @@ class Summary
         return Statistics::mean($this->stats['rstdev']);
     }
 }
-

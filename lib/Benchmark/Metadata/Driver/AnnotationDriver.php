@@ -18,12 +18,12 @@ use PhpBench\Benchmark\Metadata\Annotations\AbstractArrayAnnotation;
 use PhpBench\Benchmark\Metadata\Annotations\AfterClassMethods;
 use PhpBench\Benchmark\Metadata\Annotations\BeforeClassMethods;
 use PhpBench\Benchmark\Metadata\Annotations\Subject;
+use PhpBench\Benchmark\Metadata\AssertionMetadata;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\DriverInterface;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\ReflectionHierarchy;
 use PhpBench\Benchmark\Remote\Reflector;
-use PhpBench\Benchmark\Metadata\AssertionMetadata;
 
 class AnnotationDriver implements DriverInterface
 {

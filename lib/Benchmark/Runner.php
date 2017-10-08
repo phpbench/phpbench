@@ -12,6 +12,8 @@
 
 namespace PhpBench\Benchmark;
 
+use PhpBench\Assertion\AssertionFailure;
+use PhpBench\Assertion\AssertionProcessor;
 use PhpBench\Benchmark\Exception\StopOnErrorException;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
@@ -27,8 +29,6 @@ use PhpBench\Progress\Logger\NullLogger;
 use PhpBench\Progress\LoggerInterface;
 use PhpBench\Registry\Config;
 use PhpBench\Registry\ConfigurableRegistry;
-use PhpBench\Assertion\AssertionProcessor;
-use PhpBench\Assertion\AssertionFailure;
 
 /**
  * The benchmark runner.
@@ -256,7 +256,7 @@ class Runner
         }
     }
 
-    private function endVariant(SubjectMetadata $subjectMetadata, Variant $variant) 
+    private function endVariant(SubjectMetadata $subjectMetadata, Variant $variant)
     {
         $variant->computeStats();
 
@@ -284,4 +284,3 @@ class Runner
         $this->logger->iterationEnd($iteration);
     }
 }
-

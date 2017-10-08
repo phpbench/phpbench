@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Benchmark;
 
+use PhpBench\Assertion\AssertionProcessor;
 use PhpBench\Benchmark\BenchmarkFinder;
 use PhpBench\Benchmark\ExecutorInterface;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
@@ -30,8 +31,6 @@ use PhpBench\Registry\ConfigurableRegistry;
 use PhpBench\Tests\Util\TestUtil;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
-use PhpBench\Assertion\AsserterRegistry;
-use PhpBench\Assertion\AssertionProcessor;
 
 class RunnerTest extends TestCase
 {
@@ -481,4 +480,3 @@ class RunnerTest extends TestCase
 class RunnerTestBenchCase
 {
 }
-
