@@ -129,9 +129,10 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
                 json_encode($variantFailure->getVariant()->getParameterSet()->getArrayCopy())
             ));
             $this->output->write(PHP_EOL);
-            foreach ($variantFailure as $failure) {
-                $this->output->writeln(sprintf('    %s%s', $failure->getMessage(), PHP_EOL));
+            foreach ($variantFailure as $index => $failure) {
+                $this->output->writeln(sprintf('    %s) %s', $index + 1, $failure->getMessage()));
             }
+            $this->output->write(PHP_EOL);
         }
     }
 

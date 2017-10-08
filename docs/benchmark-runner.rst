@@ -77,6 +77,19 @@ You can override or set the :ref:`configuration_bootstrap` using the
 
     $ phpbench run /path/to/HashBench.php --bootstrap=vendor/autoload.php
 
+Overriding assertions
+---------------------
+
+Use the ``--assert`` option to introduce or override assertions:
+
+.. code-block:: bash
+
+    $ phpbench run /path/to/HashBench.php --assert="stat: mode, value: 10"
+
+This will assert that ALL variants must have a mode less than 10. For more
+information on assertions see :doc:`assertions`.
+
+
 Generating Reports
 ------------------
 

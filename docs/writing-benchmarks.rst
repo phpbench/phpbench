@@ -517,5 +517,53 @@ actually measuring the revolutions time.
 
 As with :ref:`revolutions <revolutions>`, you may also specify an array.
 
+.. _assertions:
+
+Assertions
+----------
+
+Assertions allow you to specify what a valid range is for a given statistic,
+for example, "the mean must be less than 10".
+
+.. code-block:: php
+
+    <?php
+
+    // ...
+    class AssertiveBench
+    {
+        // ...
+
+        /**
+         * @Assert(stat="mean", value="10")
+         */
+        public function benchGenerateReport()
+        {
+            $this->generator->generateMyComplexReport();
+        }
+    }
+
+By default the comparator is ``<`` (less than), you can also specify ``>``
+using the ``comparator`` key:
+
+.. code-block:: php
+
+    <?php
+
+    class AssertiveBench
+    {
+        // ...
+
+        /**
+         * @Assert(stat="mean", value="10", comparator=">")
+         */
+        public function benchGenerateReport()
+        {
+            $this->generator->generateMyComplexReport();
+        }
+    }
+
+You can specify multiple assertions.
+
 .. _cartesian product: https://en.wikipedia.org/wiki/Cartesian_product
 .. _Relative standard deviation: https://en.wikipedia.org/wiki/Coefficient_of_variation
