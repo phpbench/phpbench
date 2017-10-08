@@ -25,6 +25,8 @@ use PhpBench\Model\Variant;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Console\Output\OutputInterface;
+use PhpBench\Assertion\AssertionFailures;
+use PhpBench\Assertion\AssertionFailure;
 
 abstract class PhpBenchLoggerTest extends TestCase
 {
@@ -84,9 +86,6 @@ abstract class PhpBenchLoggerTest extends TestCase
         $this->logger->endSuite($this->suite->reveal());
     }
 
-    /**
-     * It should show errors.
-     */
     public function testEndSuiteErrors()
     {
         $error1 = $this->prophesize(Error::class);
@@ -118,6 +117,28 @@ abstract class PhpBenchLoggerTest extends TestCase
         $this->output->writeln(Argument::containingString('MessageOne'))->shouldBeCalled();
         $this->output->writeln(Argument::containingString('Two'))->shouldBeCalled();
         $this->output->writeln(Argument::any())->shouldBeCalled();
+
+        $this->logger->endSuite($this->suite->reveal());
+    }
+
+    public function testEndSuiteFailures()
+    {
+        $failure1 = new AssertionFailure('Failed!');
+        $failure2 = new AssertionFailure('Failed!');
+        $failures = new AssertionFailures($this->variant->reveal(), [ $failure1, $failure2 ]);
+
+        $this->setUpSummary();
+        $this->suite->getFailures()->willReturn([$failures]);
+        $this->suite->getErrorStacks()->willReturn([]);
+        $this->variant->getSubject()->willReturn($this->subject->reveal());
+        $this->variant->getParameterSet()->willReturn(new \ArrayObject());
+        $this->subject->getBenchmark()->willReturn($this->benchmark->reveal());
+        $this->subject->getName()->willReturn('bar');
+        $this->benchmark->getClass()->willReturn('Namespace\Foo');
+
+        $this->output->writeln(Argument::containingString('1 subjects failed'))->shouldBeCalled();
+        $this->output->writeln(Argument::any())->shouldBeCalled();
+        $this->output->write(Argument::any())->shouldBeCalled();
 
         $this->logger->endSuite($this->suite->reveal());
     }
