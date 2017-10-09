@@ -136,7 +136,7 @@ class RunTest extends SystemTestCase
         $this->assertExitCode(0, $process);
         $output = $process->getOutput();
         $this->assertContains('Dumped', $output);
-        $this->assertTrue(file_exists($this->fname));
+        $this->assertFileExists($this->fname);
     }
 
     /**

@@ -110,12 +110,12 @@ class MicrotimeExecutorTest extends TestCase
             new Config('test', [])
         );
 
-        $this->assertFalse(file_exists($this->beforeMethodFile));
-        $this->assertFalse(file_exists($this->afterMethodFile));
-        $this->assertTrue(file_exists($this->revFile));
+        $this->assertFileNotExists($this->beforeMethodFile);
+        $this->assertFileNotExists($this->afterMethodFile);
+        $this->assertFileExists($this->revFile);
 
         // 10 revolutions + 1 warmup
-        $this->assertEquals('11', file_get_contents($this->revFile));
+        $this->assertStringEqualsFile($this->revFile, '11');
     }
 
     /**
@@ -155,7 +155,7 @@ class MicrotimeExecutorTest extends TestCase
 
         $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', []));
 
-        $this->assertTrue(file_exists($this->beforeMethodFile));
+        $this->assertFileExists($this->beforeMethodFile);
     }
 
     /**
@@ -175,7 +175,7 @@ class MicrotimeExecutorTest extends TestCase
 
         $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', []));
 
-        $this->assertTrue(file_exists($this->afterMethodFile));
+        $this->assertFileExists($this->afterMethodFile);
     }
 
     /**
@@ -198,7 +198,7 @@ class MicrotimeExecutorTest extends TestCase
         $this->iteration->setResult(Argument::type(MemoryResult::class))->shouldBeCalled();
 
         $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', []));
-        $this->assertTrue(file_exists($this->paramFile));
+        $this->assertFileExists($this->paramFile);
         $params = json_decode(file_get_contents($this->paramFile), true);
         $this->assertEquals([
             'one' => 'two',
@@ -228,11 +228,11 @@ class MicrotimeExecutorTest extends TestCase
 
         $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', []));
 
-        $this->assertTrue(file_exists($this->paramBeforeFile));
+        $this->assertFileExists($this->paramBeforeFile);
         $params = json_decode(file_get_contents($this->paramBeforeFile), true);
         $this->assertEquals($expected->getArrayCopy(), $params);
 
-        $this->assertTrue(file_exists($this->paramAfterFile));
+        $this->assertFileExists($this->paramAfterFile);
         $params = json_decode(file_get_contents($this->paramAfterFile), true);
         $this->assertEquals($expected->getArrayCopy(), $params);
     }
@@ -243,6 +243,6 @@ class MicrotimeExecutorTest extends TestCase
     public function testExecuteMethods()
     {
         $this->executor->executeMethods($this->benchmarkMetadata->reveal(), ['initDatabase']);
-        $this->assertTrue(file_exists($this->staticMethodFile));
+        $this->assertFileExists($this->staticMethodFile);
     }
 }
