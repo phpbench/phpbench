@@ -18,7 +18,7 @@ by default, this can be changed in the configuration as follows:
 .. code-block:: javascript
 
     {
-        'xml_storage_path' => '_storage'
+        "xml_storage_path": "_storage"
     }
 
 Storing Results
