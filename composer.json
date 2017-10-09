@@ -44,7 +44,7 @@
             "PhpBench\\Extensions\\XDebug\\": "extensions/xdebug/lib/"
         }
     },
-    "suggests": {
+    "suggest": {
         "ext-xdebug": "For XDebug profiling extension."
     },
     "autoload-dev": {
