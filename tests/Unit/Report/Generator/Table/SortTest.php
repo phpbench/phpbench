@@ -38,7 +38,7 @@ class SortTest extends TestCase
             ['col1' => 20, 'col2' => 10],
         ];
 
-        Sort::mergesort($array, function ($row1, $row2) {
+        Sort::mergeSort($array, function ($row1, $row2) {
             return strcmp($row1['col1'], $row2['col1']);
         });
 

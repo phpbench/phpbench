@@ -35,8 +35,8 @@ class Sort
         $array2 = array_slice($array, $halfway);
 
         // Recurse to sort the two halves
-        self::mergesort($array1, $callback);
-        self::mergesort($array2, $callback);
+        self::mergeSort($array1, $callback);
+        self::mergeSort($array2, $callback);
 
         // If all of $array1 is <= all of $array2, just append them.
         if (call_user_func($callback, end($array1), $array2[0]) < 1) {

@@ -49,7 +49,7 @@ abstract class AbstractRendererCase extends TestCase
     </report>
 </reports>
 EOT;
-        $document->loadXml($report);
+        $document->loadXML($report);
 
         return $document;
     }

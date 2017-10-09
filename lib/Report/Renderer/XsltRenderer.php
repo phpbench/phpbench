@@ -97,7 +97,7 @@ class XsltRenderer implements RendererInterface, OutputAwareInterface
 
         $stylesheetDom = new \DOMDocument('1.0');
         $stylesheetDom->load($template);
-        $xsltProcessor = new \XsltProcessor();
+        $xsltProcessor = new \XSLTProcessor();
         $xsltProcessor->importStylesheet($stylesheetDom);
         $xsltProcessor->setParameter(null, 'title', $config['title']);
         $xsltProcessor->setParameter(null, 'phpbench-version', PhpBench::VERSION);
