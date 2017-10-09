@@ -105,7 +105,7 @@ class SystemTestCase extends TestCase
     protected function assertXPathExpression($expected, $xmlString, $expression)
     {
         $dom = new \DOMDocument();
-        $result = @$dom->loadXml($xmlString);
+        $result = @$dom->loadXML($xmlString);
 
         if (false === $result) {
             throw new \RuntimeException(sprintf(

@@ -49,7 +49,7 @@ class XmlDecoderTest extends XmlTestCase
     public function testDecodeUnknownResultClass()
     {
         $dom = new Document(1.0);
-        $dom->loadXml(<<<EOT
+        $dom->loadXML(<<<EOT
 <phpbench>
   <suite>
     <result key="foo" class="FooVendor\FooResult"/>
@@ -70,7 +70,7 @@ EOT
     public function testDecodeUnknownResultKey()
     {
         $dom = new Document(1.0);
-        $dom->loadXml(<<<EOT
+        $dom->loadXML(<<<EOT
 <phpbench>
   <suite>
       <benchmark class="\PhpBench\Micro\Math\KdeBench">
@@ -97,7 +97,7 @@ EOT
     public function testInvalidAttribute()
     {
         $dom = new Document(1.0);
-        $dom->loadXml(<<<EOT
+        $dom->loadXML(<<<EOT
 <phpbench>
   <suite>
       <benchmark class="\PhpBench\Micro\Math\KdeBench">
