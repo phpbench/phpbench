@@ -16,7 +16,7 @@ use PhpBench\Benchmark\BaselineManager;
 use PHPUnit\Framework\TestCase;
 
 /**
-    * @\PhpBench\Benchmark\Metadata\Annotations\BeforeMethods({"setUp"})
+ * @\PhpBench\Benchmark\Metadata\Annotations\BeforeMethods({"setUp"})
  */
 class BaselineManagerTest extends TestCase
 {

@@ -66,18 +66,12 @@ class PayloadTest extends TestCase
      */
     public function testBinaryPath()
     {
-        $process = $this->prophesize(Process::class);
-        $payload = new Payload(
-            __DIR__ . '/template/foo.template',
-            [],
-            null,
-            $process->reveal()
-        );
+        $payload = $this->validPayload();
         $payload->setPhpPath('/foo/bar');
-        $process->setCommandLine(Argument::containingString('/foo/bar'))->shouldBeCalled();
-        $process->run()->shouldBeCalled();
-        $process->isSuccessful()->willReturn(true);
-        $process->getOutput()->willReturn('{"foo": "bar"}');
+        $this->process->setCommandLine(Argument::containingString('/foo/bar'))->shouldBeCalled();
+        $this->process->run()->shouldBeCalled();
+        $this->process->isSuccessful()->willReturn(true);
+        $this->process->getOutput()->willReturn('{"foo": "bar"}');
 
         $payload->launch($payload);
     }
@@ -87,22 +81,20 @@ class PayloadTest extends TestCase
      */
     public function testPhpConfig()
     {
-        $process = $this->prophesize(Process::class);
-        $payload = new Payload(
-            __DIR__ . '/template/foo.template',
-            [],
-            null,
-            $process->reveal()
-        );
-        $payload->setPhpConfig([
+        $payload = $this->validPayload();
+
+        $payload->mergePhpConfig([
             'foo' => 'bar',
+        ]);
+        $payload->mergePhpConfig([
             'bar' => 'foo',
         ]);
-        $process->setCommandLine(Argument::containingString('-dfoo=bar'))->shouldBeCalled();
-        $process->setCommandLine(Argument::containingString('-dbar=foo'))->shouldBeCalled();
-        $process->run()->shouldBeCalled();
-        $process->isSuccessful()->willReturn(true);
-        $process->getOutput()->willReturn('{"foo": "bar"}');
+
+        $this->process->setCommandLine(Argument::containingString('-dfoo=bar'))->shouldBeCalled();
+        $this->process->setCommandLine(Argument::containingString('-dbar=foo'))->shouldBeCalled();
+        $this->process->run()->shouldBeCalled();
+        $this->process->isSuccessful()->willReturn(true);
+        $this->process->getOutput()->willReturn('{"foo": "bar"}');
 
         $payload->launch($payload);
     }
@@ -112,19 +104,13 @@ class PayloadTest extends TestCase
      */
     public function testWrap()
     {
-        $process = $this->prophesize(Process::class);
-        $payload = new Payload(
-            __DIR__ . '/template/foo.template',
-            [],
-            null,
-            $process->reveal()
-        );
+        $payload = $this->validPayload();
         $payload->setWrapper('bockfire');
         $payload->setPhpPath('/boo/bar/php');
-        $process->setCommandLine(Argument::containingString('bockfire /boo/bar/php'))->shouldBeCalled();
-        $process->run()->shouldBeCalled();
-        $process->isSuccessful()->willReturn(true);
-        $process->getOutput()->willReturn('{"foo": "bar"}');
+        $this->process->setCommandLine(Argument::containingString('bockfire /boo/bar/php'))->shouldBeCalled();
+        $this->process->run()->shouldBeCalled();
+        $this->process->isSuccessful()->willReturn(true);
+        $this->process->getOutput()->willReturn('{"foo": "bar"}');
 
         $payload->launch($payload);
     }
@@ -146,5 +132,20 @@ class PayloadTest extends TestCase
         );
 
         $payload->launch($payload);
+    }
+
+    private function validPayload()
+    {
+        return $this->validPayloadWithPhpConfig();
+    }
+
+    private function validPayloadWithPhpConfig(array $phpConfig = [])
+    {
+        return new Payload(
+            __DIR__ . '/template/foo.template',
+            [],
+            null,
+            $this->process->reveal()
+        );
     }
 }

@@ -71,7 +71,7 @@ class TraceExecutor extends BaseExecutor
             'xdebug.collect_params' => '3',
         ];
 
-        $payload->setPhpConfig($phpConfig);
+        $payload->mergePhpConfig($phpConfig);
 
         $path = $dir . DIRECTORY_SEPARATOR . $name . '.xt';
 

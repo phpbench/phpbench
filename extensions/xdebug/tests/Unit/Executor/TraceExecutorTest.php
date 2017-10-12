@@ -93,7 +93,7 @@ class TraceExecutorTest extends TestCase
                 'final' => 10,
             ],
         ]);
-        $this->payload->setPhpConfig([
+        $this->payload->mergePhpConfig([
             'xdebug.trace_output_name' => 'Test::benchFoo.P1',
             'xdebug.trace_output_dir' => 'xdebug',
             'xdebug.trace_format' => '1',
