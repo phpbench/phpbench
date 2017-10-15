@@ -473,7 +473,7 @@ class RunTest extends SystemTestCase
     }
 
     /**
-     * It should disable the PHP ini file
+     * It should disable the PHP ini file.
      */
     public function testPhpDisableIni()
     {

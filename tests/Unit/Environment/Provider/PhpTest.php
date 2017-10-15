@@ -16,7 +16,6 @@ use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Benchmark\Remote\Payload;
 use PhpBench\Environment\Provider;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 
 class PhpTest extends TestCase
 {
@@ -47,7 +46,7 @@ class PhpTest extends TestCase
     }
 
     /**
-     * It should provide the path to the PHP ini file
+     * It should provide the path to the PHP ini file.
      */
     public function testPhpIni()
     {

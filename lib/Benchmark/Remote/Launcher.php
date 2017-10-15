@@ -14,7 +14,6 @@ namespace PhpBench\Benchmark\Remote;
 
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\PhpExecutableFinder;
-use PhpBench\Benchmark\Remote\Payload;
 
 /**
  * Build and execute tokenized scripts in separate processes.
@@ -143,4 +142,3 @@ class Launcher
         return $phpBinary;
     }
 }
-

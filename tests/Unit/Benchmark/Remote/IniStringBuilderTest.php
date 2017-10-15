@@ -1,9 +1,19 @@
 <?php
 
+/*
+ * This file is part of the PHPBench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
+
 namespace PhpBench\Tests\Unit\Benchmark\Remote;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Benchmark\Remote\IniStringBuilder;
+use PHPUnit\Framework\TestCase;
 
 class IniStringBuilderTest extends TestCase
 {
@@ -31,7 +41,7 @@ class IniStringBuilderTest extends TestCase
         return [
             [
                 [
-                    'a' => 'b'
+                    'a' => 'b',
                 ],
                 '-da=b',
             ],
@@ -44,11 +54,10 @@ class IniStringBuilderTest extends TestCase
             ],
             [
                 [
-                    'a' => ['b','c','d'],
+                    'a' => ['b', 'c', 'd'],
                 ],
                 '-da=b -da=c -da=d',
             ],
         ];
     }
 }
-
