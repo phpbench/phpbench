@@ -122,6 +122,8 @@ class TraceExecutorTest extends TestCase
      */
     public function testNoTraceGenerated()
     {
+        $this->payload->launch()->willReturn([]);
+        $this->payload->mergePhpConfig(Argument::type('array'))->shouldBeCalled();
         $this->filesystem->exists(Argument::any())->willReturn(true, false);
         $this->filesystem->remove(Argument::any())->shouldBeCalled();
 
