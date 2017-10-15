@@ -1,6 +1,6 @@
 <?php
 
-echo json_encode(get_stats($stats));
+echo json_encode(get_stats());
 exit(0);
 
 function get_stats()
