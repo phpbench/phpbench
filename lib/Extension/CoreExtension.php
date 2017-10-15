@@ -489,6 +489,12 @@ class CoreExtension implements ExtensionInterface
             );
         }, ['environment_provider' => []]);
 
+        $container->register('environment.provider.opcache', function (Container $container) {
+            return new Provider\Opcache(
+                $container->get('benchmark.remote.launcher')
+            );
+        }, ['environment_provider' => []]);
+
         $container->register('environment.provider.unix_sysload', function (Container $container) {
             return new Provider\UnixSysload();
         }, ['environment_provider' => []]);
