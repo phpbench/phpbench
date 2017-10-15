@@ -20,6 +20,8 @@ use Symfony\Component\Process\Process;
  */
 class Payload
 {
+    const FLAG_DISABLE_INI = '-n';
+
     /**
      * Path to script template.
      */
@@ -164,12 +166,21 @@ class Payload
 
     private function buildCommandLine(string $scriptPath)
     {
-        $wrapper = '';
+        $arguments = [];
         if ($this->wrapper) {
-            $wrapper = $this->wrapper . ' ';
+            $arguments[] = $this->wrapper;
         }
 
-        return $wrapper . $this->phpBinary . $this->getIniString() . ' ' . escapeshellarg($scriptPath);
+        $arguments[] = $this->phpBinary;
+
+        if (true === $this->disableIni) {
+            $arguments[] = self::FLAG_DISABLE_INI;
+        }
+
+        $arguments[] = $this->getIniString();
+        $arguments[] = escapeshellarg($scriptPath);
+
+        return implode(' ', $arguments);
     }
 
     private function removeTmpFile(string $scriptPath)
