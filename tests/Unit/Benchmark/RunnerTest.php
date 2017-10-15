@@ -42,6 +42,7 @@ class RunnerTest extends TestCase
             $this->benchmark->reveal(),
         ]);
         $this->executor = $this->prophesize(ExecutorInterface::class);
+        $this->executor->healthCheck()->shouldBeCalled();
         $this->executorRegistry = $this->prophesize(ConfigurableRegistry::class);
         $this->executorConfig = new Config('test', ['executor' => 'microtime']);
         $this->envSupplier = $this->prophesize(Supplier::class);

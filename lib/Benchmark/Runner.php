@@ -82,6 +82,7 @@ class Runner
     {
         $executorConfig = $this->executorRegistry->getConfig($context->getExecutor());
         $executor = $this->executorRegistry->getService($executorConfig['executor']);
+        $executor->healthCheck();
 
         // build the collection of benchmarks to be executed.
         $benchmarkMetadatas = $this->benchmarkFinder->findBenchmarks($context->getPath(), $context->getFilters(), $context->getGroups());

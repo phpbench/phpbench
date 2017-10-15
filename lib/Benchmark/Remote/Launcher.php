@@ -14,6 +14,7 @@ namespace PhpBench\Benchmark\Remote;
 
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\PhpExecutableFinder;
+use PhpBench\Benchmark\Remote\Payload;
 
 /**
  * Build and execute tokenized scripts in separate processes.
@@ -83,7 +84,7 @@ class Launcher
         $this->phpDisableIni = $phpDisableIni;
     }
 
-    public function payload($template, array $tokens)
+    public function payload($template, array $tokens): Payload
     {
         $tokens['bootstrap'] = '';
         if (null !== $this->bootstrap) {
