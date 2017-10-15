@@ -95,6 +95,11 @@ class Information implements \ArrayAccess, \IteratorAggregate
         return new \ArrayIterator($this->information);
     }
 
+    public function toArray(): array
+    {
+        return $this->information;
+    }
+
     private function flattenInformation(array $information, $prefix = '')
     {
         $transformed = [];

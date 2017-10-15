@@ -85,4 +85,25 @@ class InformationTest extends TestCase
             'boo' => 'boo',
         ], $result);
     }
+
+    public function testFlattensArrays()
+    {
+        $information = new Information('foo', [
+            'a' => 'b',
+            'c' => [
+                'd' => [
+                    'e' => 'f',
+                ],
+                'g' => 'h',
+            ],
+            'i' => 'j',
+        ]);
+
+        $this->assertEquals([
+            'a' => 'b',
+            'c_d_e' => 'f',
+            'c_g' => 'h',
+            'i' => 'j',
+        ], $information->toArray());
+    }
 }
