@@ -73,6 +73,12 @@ Create the file ``phpbench.json`` in the projects root directory:
     that matter). You may omit it if you do not need autoloading, or you want
     to include files manually.
 
+.. warning::
+
+    Some PHP extensions such as XDebug will affect the performance of your
+    benchmark subjects and you may want to disable them, see :ref:`Disabling
+    the PHP INI file <configuration_disable_php_ini>`.
+
 Creating and running a benchmark
 --------------------------------
 
