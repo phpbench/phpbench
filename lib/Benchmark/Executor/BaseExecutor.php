@@ -71,7 +71,7 @@ abstract class BaseExecutor implements ExecutorInterface
 
     public function healthCheck()
     {
-        $result = $this->launcher->payload(__DIR__ . '/template/health_check.template', [])->launch();
+        $this->launcher->payload(__DIR__ . '/template/health_check.template', [])->launch();
     }
 
     /**

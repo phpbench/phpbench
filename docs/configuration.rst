@@ -233,14 +233,14 @@ The above will allow you to have benchmark class such as:
 Disable the PHP INI file
 ------------------------
 
-PHP extensions, especially XDebug can drastically affect the performance of
-your benchmarks. You can disable XDebug and other dynamically loaded
+PHP extensions, especially XDebug, can drastically affect the performance of
+your benchmark subjects. You can disable XDebug and other dynamically loaded
 extensions by setting ``php_disable_ini`` to ``true``.
 
 .. note:
 
-    PHPBench currently makes use of the ``json`` extension remote
-    processes, so you are required to explicitly enable this as follows.
+    PHPBench currently makes use of the ``json`` extension in remote
+    processes, so you are required to explicitly enable it as follows.
 
 .. code-block:: javascript
 
