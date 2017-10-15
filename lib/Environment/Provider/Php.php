@@ -22,12 +22,10 @@ use PhpBench\Environment\ProviderInterface;
 class Php implements ProviderInterface
 {
     private $launcher;
-    private $remoteVersion;
 
-    public function __construct(Launcher $launcher, $remoteVersion = false)
+    public function __construct(Launcher $launcher)
     {
         $this->launcher = $launcher;
-        $this->remoteVersion = $remoteVersion;
     }
 
     public function isApplicable()
@@ -45,13 +43,6 @@ class Php implements ProviderInterface
 
     private function getData()
     {
-        if (false === $this->remoteVersion) {
-            return [
-                'version' => phpversion(),
-                'xdebug' => in_array('xdebug', get_loaded_extensions()),
-            ];
-        }
-
         return $this->launcher->payload(
             __DIR__ . '/template/php.template',
             []

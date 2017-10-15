@@ -101,6 +101,7 @@ class CoreExtension implements ExtensionInterface
             'php_config' => [],
             'php_binary' => null,
             'php_wrapper' => null,
+            'php_disable_ini' => false,
             'annotation_import_use' => false,
         ];
     }
@@ -174,7 +175,8 @@ class CoreExtension implements ExtensionInterface
                 $container->hasParameter('bootstrap') ? $container->getParameter('bootstrap') : null,
                 $container->hasParameter('php_binary') ? $container->getParameter('php_binary') : null,
                 $container->hasParameter('php_config') ? $container->getParameter('php_config') : null,
-                $container->hasParameter('php_wrapper') ? $container->getParameter('php_wrapper') : null
+                $container->hasParameter('php_wrapper') ? $container->getParameter('php_wrapper') : null,
+                $container->hasParameter('php_disable_ini') ? $container->getParameter('php_disable_ini') : false
             );
         });
 
@@ -484,7 +486,7 @@ class CoreExtension implements ExtensionInterface
         $container->register('environment.provider.php', function (Container $container) {
             return new Provider\Php(
                 $container->get('benchmark.remote.launcher'),
-                $container->getParameter('php_binary') !== PHP_BINARY && $container->getParameter('php_binary') !== null
+                true // always use remote env information
             );
         }, ['environment_provider' => []]);
 

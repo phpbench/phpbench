@@ -14,7 +14,7 @@ namespace PhpBench\Benchmark\Remote;
 
 class PayloadFactory
 {
-    public function create($template, array $tokens = [], $phpBinary = null)
+    public function create($template, array $tokens = [], $phpBinary = null): Payload
     {
         return new Payload($template, $tokens, $phpBinary);
     }

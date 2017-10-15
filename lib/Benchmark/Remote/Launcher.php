@@ -47,6 +47,21 @@ class Launcher
     private $phpWrapper;
 
     /**
+     * @var PayloadFactory
+     */
+    private $factory;
+
+    /**
+     * @var ExecutableFinder
+     */
+    private $finder;
+
+    /**
+     * @var bool
+     */
+    private $phpDisableIni;
+
+    /**
      * @param mixed string
      */
     public function __construct(
@@ -55,7 +70,8 @@ class Launcher
         $bootstrap = null,
         $phpBinary = null,
         $phpConfig = [],
-        $phpWrapper = null
+        $phpWrapper = null,
+        $phpDisableIni = false
     ) {
         $this->bootstrap = $bootstrap;
         $this->payloadFactory = $factory ?: new PayloadFactory();
@@ -63,6 +79,8 @@ class Launcher
         $this->phpConfig = $phpConfig;
         $this->phpWrapper = $phpWrapper;
         $this->finder = $finder ?: new ExecutableFinder();
+        $this->factory = $factory;
+        $this->phpDisableIni = $phpDisableIni;
     }
 
     public function payload($template, array $tokens)
@@ -88,6 +106,10 @@ class Launcher
 
         if ($this->phpConfig) {
             $payload->mergePhpConfig($this->phpConfig);
+        }
+
+        if (true === $this->phpDisableIni) {
+            $payload->disableIni();
         }
 
         return $payload;
@@ -120,3 +142,4 @@ class Launcher
         return $phpBinary;
     }
 }
+

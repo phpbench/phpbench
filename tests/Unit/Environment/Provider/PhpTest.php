@@ -47,23 +47,18 @@ class PhpTest extends TestCase
     }
 
     /**
-     * It should get the version from the remote process if the configured
-     * PHP binary is different from the one being used to execute PhpBench.
+     * It should provide the path to the PHP ini file
      */
-    public function testRemote()
+    public function testPhpIni()
     {
-        $this->launcher->payload(Argument::type('string'), [])->willReturn($this->payload->reveal());
-        $this->payload->launch()->willReturn(['version' => 'success', 'xdebug' => true]);
-        $info = $this->createProvider(true)->getInformation();
-        $this->assertEquals('success', $info['version']);
-        $this->assertTrue($info['xdebug']);
+        $info = $this->createProvider()->getInformation();
+        $this->assertEquals(php_ini_loaded_file(), $info['ini']);
     }
 
-    private function createProvider($remote = false)
+    private function createProvider()
     {
         return new Provider\Php(
-            $this->launcher->reveal(),
-            $remote
+            new Launcher()
         );
     }
 }

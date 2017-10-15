@@ -2,7 +2,8 @@
 
 echo json_encode([
     'xdebug' => in_array('xdebug', get_loaded_extensions()),
-    'version' => phpversion()
+    'version' => phpversion(),
+    'ini' => php_ini_loaded_file(),
 ]);
 
 exit(0);
