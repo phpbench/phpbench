@@ -113,6 +113,10 @@ class PhpBench
                 $value = $jsonParser->decode($value);
                 $configOverride['php_config'] = $value;
             }
+
+            if ($arg == '--php-disable-ini') {
+                $configOverride['php_disable_ini'] = true;
+            }
         }
 
         if (empty($configPaths)) {

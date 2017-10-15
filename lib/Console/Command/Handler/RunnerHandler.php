@@ -59,6 +59,7 @@ class RunnerHandler
         $command->addOption('php-binary', null, InputOption::VALUE_REQUIRED, 'Alternative PHP binary to use');
         $command->addOption('php-config', null, InputOption::VALUE_REQUIRED, 'JSON-like object of PHP INI settings');
         $command->addOption('php-wrapper', null, InputOption::VALUE_REQUIRED, 'Prefix process launch command with this string');
+        $command->addOption('php-disable-ini', null, InputOption::VALUE_NONE, 'Do not load the PHP INI file');
     }
 
     public function runFromInput(InputInterface $input, OutputInterface $output, array $options = [])

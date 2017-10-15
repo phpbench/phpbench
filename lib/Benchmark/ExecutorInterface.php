@@ -53,4 +53,6 @@ interface ExecutorInterface extends RegistrableInterface
      * @param string[]
      */
     public function executeMethods(BenchmarkMetadata $benchmark, array $methods);
+
+    public function healthCheck();
 }

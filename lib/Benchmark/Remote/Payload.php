@@ -20,6 +20,8 @@ use Symfony\Component\Process\Process;
  */
 class Payload
 {
+    const FLAG_DISABLE_INI = '-n';
+
     /**
      * Path to script template.
      */
@@ -51,6 +53,11 @@ class Payload
     private $process;
 
     /**
+     * @var bool
+     */
+    private $disableIni = false;
+
+    /**
      * Create a new Payload object with the given script template.
      * The template must be the path to a script template.
      *
@@ -65,6 +72,7 @@ class Payload
         // disable timeout.
         $this->process->setTimeout(null);
         $this->phpBinary = $phpBinary;
+        $this->iniStringBuilder = new IniStringBuilder();
     }
 
     public function setWrapper($wrapper)
@@ -85,40 +93,22 @@ class Payload
         $this->phpBinary = $phpBinary;
     }
 
+    public function disableIni()
+    {
+        $this->disableIni = true;
+    }
+
     public function launch()
     {
-        if (!file_exists($this->template)) {
-            throw new \RuntimeException(sprintf(
-                'Could not find script template "%s"',
-                $this->template
-            ));
-        }
+        $script = $this->readFile();
+        $script = $this->replaceTokens($script);
+        $scriptPath = $this->writeTempFile($script);
+        $commandLine = $this->buildCommandLine($scriptPath);
 
-        $tokenSubs = [];
-        foreach ($this->tokens as $key => $value) {
-            $tokenSubs['{{ ' . $key . ' }}'] = $value;
-        }
-
-        $templateBody = file_get_contents($this->template);
-        $script = str_replace(
-            array_keys($tokenSubs),
-            array_values($tokenSubs),
-            $templateBody
-        );
-
-        $scriptPath = tempnam(sys_get_temp_dir(), 'PhpBench');
-        file_put_contents($scriptPath, $script);
-
-        $wrapper = '';
-        if ($this->wrapper) {
-            $wrapper = $this->wrapper . ' ';
-        }
-
-        $cmdLine = $wrapper . $this->phpBinary . $this->getIniString() . ' ' . escapeshellarg($scriptPath);
-
-        $this->process->setCommandLine($cmdLine);
+        $this->process->setCommandLine($commandLine);
         $this->process->run();
-        unlink($scriptPath);
+
+        $this->removeTmpFile($scriptPath);
 
         if (false === $this->process->isSuccessful()) {
             throw new ScriptErrorException(sprintf(
@@ -128,18 +118,7 @@ class Payload
             ));
         }
 
-        $output = $this->process->getOutput();
-        $result = json_decode($output, true);
-
-        if (null === $result) {
-            throw new \RuntimeException(sprintf(
-                'Could not decode return value from script from template "%s" (should be a JSON encoded string): %s',
-                $this->template,
-                $output
-            ));
-        }
-
-        return $result;
+        return $this->decodeResults();
     }
 
     private function getIniString()
@@ -148,11 +127,80 @@ class Payload
             return '';
         }
 
-        $string = [];
-        foreach ($this->phpConfig as $key => $value) {
-            $string[] = sprintf('-d%s=%s', $key, $value);
+        return $this->iniStringBuilder->build($this->phpConfig);
+    }
+
+    private function replaceTokens(string $templateBody): string
+    {
+        $tokenSubs = [];
+        foreach ($this->tokens as $key => $value) {
+            $tokenSubs['{{ ' . $key . ' }}'] = $value;
         }
 
-        return ' ' . implode(' ', $string) . ' ';
+        return str_replace(
+            array_keys($tokenSubs),
+            array_values($tokenSubs),
+            $templateBody
+        );
+    }
+
+    private function readFile(): string
+    {
+        if (!file_exists($this->template)) {
+            throw new \RuntimeException(sprintf(
+                'Could not find script template "%s"',
+                $this->template
+            ));
+        }
+
+        return file_get_contents($this->template);
+    }
+
+    private function writeTempFile(string $script): string
+    {
+        $scriptPath = tempnam(sys_get_temp_dir(), 'PhpBench');
+        file_put_contents($scriptPath, $script);
+
+        return $scriptPath;
+    }
+
+    private function buildCommandLine(string $scriptPath)
+    {
+        $arguments = [];
+        if ($this->wrapper) {
+            $arguments[] = $this->wrapper;
+        }
+
+        $arguments[] = $this->phpBinary;
+
+        if (true === $this->disableIni) {
+            $arguments[] = self::FLAG_DISABLE_INI;
+        }
+
+        $arguments[] = $this->getIniString();
+        $arguments[] = escapeshellarg($scriptPath);
+
+        return implode(' ', $arguments);
+    }
+
+    private function removeTmpFile(string $scriptPath)
+    {
+        unlink($scriptPath);
+    }
+
+    private function decodeResults()
+    {
+        $output = $this->process->getOutput();
+        $result = json_decode($output, true);
+
+        if (false !== $result) {
+            return $result;
+        }
+
+        throw new \RuntimeException(sprintf(
+            'Could not decode return value from script from template "%s" (should be a JSON encoded string): %s',
+            $this->template,
+            $output
+        ));
     }
 }
