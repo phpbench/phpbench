@@ -471,4 +471,16 @@ class RunTest extends SystemTestCase
         );
         $this->assertExitCode(0, $process);
     }
+
+    /**
+     * It should disable the PHP ini file
+     */
+    public function testPhpDisableIni()
+    {
+        $process = $this->phpbench(
+            'run benchmarks/set4/NothingBench.php --php-disable-ini --php-config="extension:json.so" --report=env'
+        );
+        $this->assertExitCode(0, $process);
+        $this->assertRegExp('{ini\s+\| no}', $process->getOutput());
+    }
 }

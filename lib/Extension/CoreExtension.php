@@ -485,8 +485,7 @@ class CoreExtension implements ExtensionInterface
 
         $container->register('environment.provider.php', function (Container $container) {
             return new Provider\Php(
-                $container->get('benchmark.remote.launcher'),
-                true // always use remote env information
+                $container->get('benchmark.remote.launcher')
             );
         }, ['environment_provider' => []]);
 
