@@ -39,7 +39,7 @@ class ProfileExecutor extends BaseExecutor
             'xdebug.profiler_output_name' => $name,
         ];
 
-        $payload->setPhpConfig($phpConfig);
+        $payload->mergePhpConfig($phpConfig);
         $result = $payload->launch();
 
         if (isset($result['buffer']) && $result['buffer']) {

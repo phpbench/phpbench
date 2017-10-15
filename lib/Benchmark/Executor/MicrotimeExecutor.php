@@ -35,7 +35,7 @@ class MicrotimeExecutor extends BaseExecutor
             'max_execution_time' => 0,
         ];
 
-        $payload->setPhpConfig($phpConfig);
+        $payload->mergePhpConfig($phpConfig);
         $result = $payload->launch();
 
         if (isset($result['buffer']) && $result['buffer']) {

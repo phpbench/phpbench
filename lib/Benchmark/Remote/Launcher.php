@@ -87,7 +87,7 @@ class Launcher
         }
 
         if ($this->phpConfig) {
-            $payload->setPhpConfig($this->phpConfig);
+            $payload->mergePhpConfig($this->phpConfig);
         }
 
         return $payload;

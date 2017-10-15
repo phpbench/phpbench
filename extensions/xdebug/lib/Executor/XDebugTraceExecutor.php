@@ -69,7 +69,7 @@ class XDebugTraceExecutor extends BaseExecutor
             'xdebug.coverage_enable' => '0',
         ];
 
-        $payload->setPhpConfig($phpConfig);
+        $payload->mergePhpConfig($phpConfig);
 
         $path = $dir . DIRECTORY_SEPARATOR . $name . '.xt';
         $result = $payload->launch();

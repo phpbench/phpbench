@@ -2,6 +2,9 @@
     "bootstrap": "vendor/autoload.php",
     "path": "benchmarks",
     "storage": "dbal",
+    "php_config": {
+        "memory_limit": "1G"
+    },
     "extensions": [
         "PhpBench\\Extensions\\XDebug\\XDebugExtension",
         "PhpBench\\Extensions\\Dbal\\DbalExtension"

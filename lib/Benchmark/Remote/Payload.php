@@ -72,9 +72,12 @@ class Payload
         $this->wrapper = $wrapper;
     }
 
-    public function setPhpConfig($phpConfig)
+    public function mergePhpConfig(array $phpConfig)
     {
-        $this->phpConfig = $phpConfig;
+        $this->phpConfig = array_merge(
+            $this->phpConfig,
+            $phpConfig
+        );
     }
 
     public function setPhpPath($phpBinary)
@@ -111,7 +114,9 @@ class Payload
             $wrapper = $this->wrapper . ' ';
         }
 
-        $this->process->setCommandLine($wrapper . $this->phpBinary . $this->getIniString() . ' ' . escapeshellarg($scriptPath));
+        $cmdLine = $wrapper . $this->phpBinary . $this->getIniString() . ' ' . escapeshellarg($scriptPath);
+
+        $this->process->setCommandLine($cmdLine);
         $this->process->run();
         unlink($scriptPath);
 

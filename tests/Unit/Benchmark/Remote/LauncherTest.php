@@ -71,7 +71,7 @@ class LauncherTest extends TestCase
         )->willReturn($this->payload->reveal());
 
         $this->payload->setWrapper('wrapper')->shouldBeCalled();
-        $this->payload->setPhpConfig($phpConfig)->shouldBeCalled();
+        $this->payload->mergePhpConfig($phpConfig)->shouldBeCalled();
 
         $launcher->payload(__FILE__, []);
     }
