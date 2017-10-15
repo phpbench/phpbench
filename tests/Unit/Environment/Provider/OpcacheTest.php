@@ -29,6 +29,7 @@ class OpcacheTest extends TestCase
 
         if (false === extension_loaded('Zend OPcache')) {
             $this->markTestSkipped();
+
             return;
         }
     }
