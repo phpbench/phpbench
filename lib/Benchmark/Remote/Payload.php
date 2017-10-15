@@ -193,7 +193,7 @@ class Payload
         $output = $this->process->getOutput();
         $result = json_decode($output, true);
 
-        if (false !== $result) {
+        if (null !== $result && false !== $result) {
             return $result;
         }
 
