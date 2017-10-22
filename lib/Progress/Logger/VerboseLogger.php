@@ -95,4 +95,3 @@ class VerboseLogger extends PhpBenchLogger
         $this->output->write("\x1B[1F\x1B[0K");
     }
 }
-

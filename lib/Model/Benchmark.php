@@ -113,4 +113,3 @@ class Benchmark implements \IteratorAggregate
         return $this->subjects;
     }
 }
-

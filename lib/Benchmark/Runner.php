@@ -297,4 +297,3 @@ class Runner
         $this->logger->iterationEnd($iteration);
     }
 }
-

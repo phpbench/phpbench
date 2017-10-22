@@ -246,4 +246,3 @@ class Kde
         $this->normFactor = sqrt(2 * M_PI * $this->covariance) * count($this->dataset);
     }
 }
-

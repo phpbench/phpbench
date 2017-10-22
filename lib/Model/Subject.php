@@ -12,8 +12,8 @@
 
 namespace PhpBench\Model;
 
-use PhpBench\Util\TimeUnit;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
+use PhpBench\Util\TimeUnit;
 
 /**
  * Subject representation.

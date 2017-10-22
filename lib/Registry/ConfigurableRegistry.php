@@ -181,4 +181,3 @@ class ConfigurableRegistry extends Registry
         return $configName;
     }
 }
-

@@ -161,4 +161,3 @@ class JsonDecoder
         return $normalized;
     }
 }
-
