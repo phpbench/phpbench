@@ -14,6 +14,8 @@ namespace PhpBench\Tests\Unit\Serializer;
 
 use PhpBench\Assertion\AssertionFailure;
 use PhpBench\Assertion\AssertionFailures;
+use PhpBench\Assertion\AssertionWarning;
+use PhpBench\Assertion\AssertionWarnings;
 use PhpBench\Environment\Information;
 use PhpBench\Math\Distribution;
 use PhpBench\Model\Benchmark;
@@ -29,8 +31,6 @@ use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Model\Variant;
 use PHPUnit\Framework\TestCase;
-use PhpBench\Assertion\AssertionWarnings;
-use PhpBench\Assertion\AssertionWarning;
 
 class XmlTestCase extends TestCase
 {

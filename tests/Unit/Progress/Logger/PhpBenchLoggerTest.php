@@ -14,6 +14,8 @@ namespace PhpBench\Tests\Unit\Progress\Logger;
 
 use PhpBench\Assertion\AssertionFailure;
 use PhpBench\Assertion\AssertionFailures;
+use PhpBench\Assertion\AssertionWarning;
+use PhpBench\Assertion\AssertionWarnings;
 use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Math\Distribution;
 use PhpBench\Model\Benchmark;
@@ -27,8 +29,6 @@ use PhpBench\Model\Variant;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Console\Output\OutputInterface;
-use PhpBench\Assertion\AssertionWarning;
-use PhpBench\Assertion\AssertionWarnings;
 
 abstract class PhpBenchLoggerTest extends TestCase
 {

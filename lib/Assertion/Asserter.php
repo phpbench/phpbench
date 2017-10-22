@@ -12,7 +12,6 @@
 
 namespace PhpBench\Assertion;
 
-use PhpBench\Math\Distribution;
 use PhpBench\Registry\Config;
 use PhpBench\Registry\RegistrableInterface;
 

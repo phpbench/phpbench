@@ -14,12 +14,12 @@ namespace PhpBench\Model;
 
 use PhpBench\Assertion\AssertionFailure;
 use PhpBench\Assertion\AssertionFailures;
+use PhpBench\Assertion\AssertionWarning;
+use PhpBench\Assertion\AssertionWarnings;
 use PhpBench\Math\Distribution;
 use PhpBench\Math\Statistics;
 use PhpBench\Model\Result\ComputedResult;
 use PhpBench\Model\Result\TimeResult;
-use PhpBench\Assertion\AssertionWarnings;
-use PhpBench\Assertion\AssertionWarning;
 
 /**
  * Stores Iterations and calculates the deviations and rejection

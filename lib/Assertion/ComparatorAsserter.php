@@ -12,11 +12,9 @@
 
 namespace PhpBench\Assertion;
 
-use PhpBench\Math\Distribution;
 use PhpBench\Registry\Config;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use PhpBench\Util\TimeUnit;
-use PhpBench\Assertion\AssertionWarning;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ComparatorAsserter implements Asserter
 {
@@ -81,9 +79,11 @@ class ComparatorAsserter implements Asserter
         switch ($mode) {
             case TimeUnit::MODE_THROUGHPUT:
                 $this->assertThroughput($stat, $timeUnit, $comparator, $value, $expectedValue, $tolerance);
+
                 return;
             case TimeUnit::MODE_TIME:
                 $this->assertTime($stat, $timeUnit, $comparator, $value, $expectedValue, $tolerance);
+
                 return;
         }
 
@@ -132,7 +132,7 @@ class ComparatorAsserter implements Asserter
             $upperLimit = $expectedValue + $tolerance;
 
             if (
-                $this->compare($lowerLimit, $value, $comparator) || 
+                $this->compare($lowerLimit, $value, $comparator) ||
                 $this->compare($upperLimit, $value, $comparator)
             ) {
                 $assertionClass = AssertionWarning::class;
@@ -174,7 +174,7 @@ class ComparatorAsserter implements Asserter
 
     private function convertValueToMicroseconds($value, $timeUnit)
     {
-        return $this->timeUnit->convert($value, $timeUnit, TimeUnit::MICROSECONDS, TimeUnit::MODE_TIME);;
+        return $this->timeUnit->convert($value, $timeUnit, TimeUnit::MICROSECONDS, TimeUnit::MODE_TIME);
     }
 
     private function compare($expectedValue, $value, $comparator)
@@ -191,4 +191,3 @@ class ComparatorAsserter implements Asserter
         ));
     }
 }
-

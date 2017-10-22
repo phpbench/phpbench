@@ -126,7 +126,7 @@ class RunTest extends SystemTestCase
     }
 
     /**
-     * It should fail if there is an assertion failure
+     * It should fail if there is an assertion failure.
      */
     public function testFailAssertionFailure()
     {
@@ -137,7 +137,7 @@ class RunTest extends SystemTestCase
     }
 
     /**
-     * It should not fail if there are warnings
+     * It should not fail if there are warnings.
      */
     public function testFailAssertionWarning()
     {

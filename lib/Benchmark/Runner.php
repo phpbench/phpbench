@@ -12,8 +12,10 @@
 
 namespace PhpBench\Benchmark;
 
+use PhpBench\Assertion\AssertionData;
 use PhpBench\Assertion\AssertionFailure;
 use PhpBench\Assertion\AssertionProcessor;
+use PhpBench\Assertion\AssertionWarning;
 use PhpBench\Benchmark\Exception\StopOnErrorException;
 use PhpBench\Benchmark\Metadata\AssertionMetadata;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
@@ -30,8 +32,6 @@ use PhpBench\Progress\Logger\NullLogger;
 use PhpBench\Progress\LoggerInterface;
 use PhpBench\Registry\Config;
 use PhpBench\Registry\ConfigurableRegistry;
-use PhpBench\Assertion\AssertionData;
-use PhpBench\Assertion\AssertionWarning;
 
 /**
  * The benchmark runner.

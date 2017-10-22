@@ -12,20 +12,19 @@
 
 namespace PhpBench\Tests\Unit\Assertion;
 
+use PhpBench\Assertion\AssertionData;
 use PhpBench\Assertion\AssertionFailure;
+use PhpBench\Assertion\AssertionWarning;
 use PhpBench\Assertion\ComparatorAsserter;
 use PhpBench\Math\Distribution;
 use PhpBench\Registry\Config;
+use PhpBench\Util\TimeUnit;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use PhpBench\Assertion\AssertionData;
-use PhpBench\Util\TimeUnit;
-use PhpBench\Assertion\AssertionWarning;
 
 class ComparatorAsserterTest extends TestCase
 {
     const COMPARATOR_ASSERTION = 'comparator';
-
 
     /**
      * @dataProvider provideComparison
@@ -150,4 +149,3 @@ class ComparatorAsserterTest extends TestCase
         $assertion->assert($data, new Config('test', $config));
     }
 }
-

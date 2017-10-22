@@ -230,4 +230,3 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
         );
     }
 }
-

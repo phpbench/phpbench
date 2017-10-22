@@ -14,7 +14,6 @@ namespace PhpBench\Assertion;
 
 use PhpBench\Benchmark\Metadata\AssertionMetadata;
 use PhpBench\Json\JsonDecoder;
-use PhpBench\Math\Distribution;
 use PhpBench\Registry\Config;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -47,7 +46,7 @@ class AssertionProcessor
     }
 
     /**
-     * Return an array of assertion metadatas from the raw JSON-like stuff from the CLI
+     * Return an array of assertion metadatas from the raw JSON-like stuff from the CLI.
      */
     public function assertionsFromRawCliConfig(array $rawAssertions)
     {

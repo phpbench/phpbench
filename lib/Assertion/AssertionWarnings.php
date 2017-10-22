@@ -12,8 +12,6 @@
 
 namespace PhpBench\Assertion;
 
-use PhpBench\Model\Variant;
-
 class AssertionWarnings extends AbstractAssertionResults
 {
 }

@@ -13,6 +13,7 @@
 namespace PhpBench\Tests\Unit\Model;
 
 use PhpBench\Assertion\AssertionFailures;
+use PhpBench\Assertion\AssertionWarnings;
 use PhpBench\Environment\Information;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\ErrorStack;
@@ -21,7 +22,6 @@ use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
 use PhpBench\Model\Variant;
 use PHPUnit\Framework\TestCase;
-use PhpBench\Assertion\AssertionWarnings;
 
 class SuiteTest extends TestCase
 {
