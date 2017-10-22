@@ -197,6 +197,12 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
         }, $this->getMetricValues($resultClass, $metric));
     }
 
+    public function resetAssertionResults()
+    {
+        $this->warnings = new AssertionWarnings($this);
+        $this->failures = new AssertionFailures($this);
+    }
+
     /**
      * Calculate and set the deviation from the mean time for each iteration. If
      * the deviation is greater than the rejection threshold, then mark the iteration as

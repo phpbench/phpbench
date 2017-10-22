@@ -107,10 +107,6 @@ class BlinkenLogger extends AnsiLogger
 
         if ($variant->hasFailed()) {
             $this->output->write(' <error>FAIL</error>');
-            $this->output->write("\x1B[0J"); // clear the rest of the line
-            $this->output->write(PHP_EOL);
-
-            return;
         }
 
         $this->rejects = [];

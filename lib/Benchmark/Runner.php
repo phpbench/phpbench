@@ -264,6 +264,7 @@ class Runner
     private function endVariant(SubjectMetadata $subjectMetadata, Variant $variant)
     {
         $variant->computeStats();
+        $variant->resetAssertionResults();
 
         /** @var AssertionMetadata $assertion */
         foreach ($subjectMetadata->getAssertions() as $assertion) {
