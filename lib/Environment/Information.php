@@ -31,7 +31,7 @@ class Information implements \ArrayAccess, \IteratorAggregate
     public function __construct($name, array $information)
     {
         $this->name = $name;
-        $this->information = $information;
+        $this->information = $this->flattenInformation($information);
     }
 
     /**
@@ -93,5 +93,27 @@ class Information implements \ArrayAccess, \IteratorAggregate
     public function getIterator()
     {
         return new \ArrayIterator($this->information);
+    }
+
+    public function toArray(): array
+    {
+        return $this->information;
+    }
+
+    private function flattenInformation(array $information, $prefix = '')
+    {
+        $transformed = [];
+        foreach ($information as $key => $value) {
+            $key = $prefix ? $prefix . '_' . $key : $key;
+
+            if (is_array($value)) {
+                $transformed = array_merge($transformed, $this->flattenInformation($value, $key));
+                continue;
+            }
+
+            $transformed[$key] = $value;
+        }
+
+        return $transformed;
     }
 }

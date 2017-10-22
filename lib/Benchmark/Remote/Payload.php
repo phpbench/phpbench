@@ -98,7 +98,7 @@ class Payload
         $this->disableIni = true;
     }
 
-    public function launch()
+    public function launch(): array
     {
         $script = $this->readFile();
         $script = $this->replaceTokens($script);
@@ -188,17 +188,24 @@ class Payload
         unlink($scriptPath);
     }
 
-    private function decodeResults()
+    private function decodeResults(): array
     {
         $output = $this->process->getOutput();
         $result = json_decode($output, true);
 
-        if (false !== $result) {
+        if (false === $result) {
+            throw new \RuntimeException(sprintf(
+                'Could not decode JSON: %s',
+                json_last_error()
+            ));
+        }
+
+        if (is_array($result)) {
             return $result;
         }
 
         throw new \RuntimeException(sprintf(
-            'Could not decode return value from script from template "%s" (should be a JSON encoded string): %s',
+            'Script "%s" did not return an array, got: %s',
             $this->template,
             $output
         ));

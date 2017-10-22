@@ -17,15 +17,15 @@ use PhpBench\Environment\Information;
 /**
  * Return PHP information.
  */
-class Php extends AbstractRemoteProvider
+class Opcache extends AbstractRemoteProvider
 {
-    public function name(): string
+    protected function name(): string
     {
-        return 'php';
+        return 'opcache';
     }
 
-    public function template(): string
+    protected function template(): string
     {
-        return __DIR__ . '/template/php.template';
+        return __DIR__ . '/template/opcache.template';
     }
 }

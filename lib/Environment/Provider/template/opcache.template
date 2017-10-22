@@ -1,0 +1,22 @@
+<?php
+
+echo json_encode(get_stats());
+exit(0);
+
+function get_stats()
+{
+    $stats = [
+        'extension_loaded' => extension_loaded('Zend OPcache'),
+    ];
+
+    if (false === $stats['extension_loaded']) {
+        return $stats;
+    }
+
+    $opcacheStats = opcache_get_status();
+
+    $stats['enabled'] = false !== $opcacheStats;
+
+    return $stats;
+}
+

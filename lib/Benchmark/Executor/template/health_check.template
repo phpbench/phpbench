@@ -7,3 +7,6 @@ if (false === extension_loaded('json')) {
         extension, e.g. --php-config="extension:json.so"' 
     );
 }
+
+echo '{}';
+exit(0);

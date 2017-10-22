@@ -83,7 +83,7 @@ class Launcher
         $this->phpDisableIni = $phpDisableIni;
     }
 
-    public function payload($template, array $tokens): Payload
+    public function payload($template, array $tokens = []): Payload
     {
         $tokens['bootstrap'] = '';
         if (null !== $this->bootstrap) {
