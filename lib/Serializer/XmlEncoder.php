@@ -118,6 +118,13 @@ class XmlEncoder
             return;
         }
 
+        if ($variant->hasWarning()) {
+            $warningsEl = $variantEl->appendElement('warnings');
+            foreach ($variant->getWarnings() as $warning) {
+                $warningEl = $warningsEl->appendElement('warning', $warning->getMessage());
+            }
+        }
+
         if ($variant->hasFailed()) {
             $failuresEl = $variantEl->appendElement('failures');
             foreach ($variant->getFailures() as $failure) {

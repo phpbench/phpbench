@@ -29,6 +29,8 @@ use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Model\Variant;
 use PHPUnit\Framework\TestCase;
+use PhpBench\Assertion\AssertionWarnings;
+use PhpBench\Assertion\AssertionWarning;
 
 class XmlTestCase extends TestCase
 {
@@ -48,6 +50,7 @@ class XmlTestCase extends TestCase
         $params = array_merge([
             'error' => false,
             'failure' => false,
+            'warning' => false,
             'groups' => [],
             'params' => [],
         ], $params);
@@ -85,6 +88,7 @@ class XmlTestCase extends TestCase
         $this->variant1->getParameterSet()->willReturn(new ParameterSet(1, $params['params']));
         $this->variant1->hasErrorStack()->willReturn($params['error']);
         $this->variant1->hasFailed()->willReturn($params['failure']);
+        $this->variant1->hasWarning()->willReturn($params['warning']);
         $this->variant1->isComputed()->willReturn(true);
         $this->variant1->getRevolutions()->willReturn(100);
 
@@ -108,6 +112,14 @@ class XmlTestCase extends TestCase
             $this->variant1->getFailures()->willReturn(
                 new AssertionFailures($this->variant1->reveal(), [
                     new AssertionFailure('Fail!'),
+                ])
+            );
+        }
+
+        if ($params['warning']) {
+            $this->variant1->getWarnings()->willReturn(
+                new AssertionWarnings($this->variant1->reveal(), [
+                    new AssertionWarning('Warn!'),
                 ])
             );
         }
@@ -190,8 +202,8 @@ EOT
 
 EOT
             ],
-            'failure' => [
-                ['failure' => true],
+            'failure and warnings' => [
+                ['failure' => true, 'warning' => true],
                 <<<'EOT'
 <?xml version="1.0"?>
 <phpbench version="PHPBENCH_VERSION">
@@ -202,6 +214,9 @@ EOT
     <benchmark class="Bench1">
       <subject name="subjectName">
         <variant sleep="5" output-time-unit="milliseconds" output-time-precision="7" output-mode="throughput" revs="100" warmup="50" retry-threshold="10">
+          <warnings>
+            <warning>Warn!</warning>
+          </warnings>
           <failures>
             <failure>Fail!</failure>
           </failures>

@@ -23,6 +23,7 @@ use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Model\Variant;
 use PhpBench\PhpBench;
+use PhpBench\Assertion\AssertionWarning;
 
 /**
  * Encodes the Suite object graph into an XML document.
@@ -206,6 +207,14 @@ class XmlDecoder
             $variant->createErrorStack($errors);
 
             return;
+        }
+
+        $warningEls = $variantEl->query('.//warning');
+        if ($warningEls->length) {
+            $warnings = [];
+            foreach ($warningEls as $warningEl) {
+                $variant->addWarning(new AssertionWarning($warningEl->nodeValue));
+            }
         }
 
         $failureEls = $variantEl->query('.//failure');
