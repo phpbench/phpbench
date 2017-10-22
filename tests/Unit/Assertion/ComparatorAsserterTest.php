@@ -79,6 +79,17 @@ class ComparatorAsserterTest extends TestCase
                 ],
                 'mean is not less than 1.000ms, it was 2.000ms',
             ],
+            [
+                [2000, 2000],
+                [
+                    ComparatorAsserter::OPTION_STAT => 'mean',
+                    ComparatorAsserter::OPTION_VALUE => 1,
+                    ComparatorAsserter::OPTION_TIME_UNIT => 'milliseconds',
+                    ComparatorAsserter::OPTION_COMPARATOR => '>',
+                    ComparatorAsserter::OPTION_MODE=> 'throughput',
+                ],
+                'Throughput for mean is not greater than 1.000ops/ms, it was 0.500ops/ms',
+            ],
         ];
     }
 

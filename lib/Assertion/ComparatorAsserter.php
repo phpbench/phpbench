@@ -57,6 +57,11 @@ class ComparatorAsserter implements Asserter
         $options->setRequired(self::OPTION_STAT);
         $options->setRequired(self::OPTION_VALUE);
         $options->setDefault(self::OPTION_TIME_UNIT, TimeUnit::MICROSECONDS);
+        $options->setDefault(self::OPTION_MODE, TimeUnit::MODE_TIME);
+        $options->setAllowedValues(self::OPTION_MODE, [
+            TimeUnit::MODE_TIME,
+            TimeUnit::MODE_THROUGHPUT,
+        ]);
     }
 
     public function assert(AssertionData $data, Config $config)
@@ -64,24 +69,28 @@ class ComparatorAsserter implements Asserter
         $comparator = $config[self::OPTION_COMPARATOR];
         $stat = $config[self::OPTION_STAT];
         $expectedValue = $config[self::OPTION_VALUE];
+        $mode = $config[self::OPTION_MODE];
+        $timeUnit = $config[self::OPTION_TIME_UNIT];
 
         $value = $data->getDistribution()[$stat];
-        $expectedValue = $this->convertExpectedValueToMicroseconds($expectedValue, $config);
 
-        if (false === $this->compare($expectedValue, $value, $comparator)) {
-            throw new AssertionFailure(sprintf(
-                '%s is not %s %s, it was %s',
-                $stat,
-                $this->humanize($comparator),
-                $this->timeUnit->format($expectedValue, $config[self::OPTION_TIME_UNIT], TimeUnit::MODE_TIME),
-                $this->timeUnit->format($value, $config[self::OPTION_TIME_UNIT], TimeUnit::MODE_TIME)
-            ));
+        switch ($mode) {
+            case TimeUnit::MODE_THROUGHPUT:
+                $this->assertThroughput($stat, $timeUnit, $comparator, $value, $expectedValue);
+                return;
+            case TimeUnit::MODE_TIME:
+                $this->assertTime($stat, $timeUnit, $comparator, $value, $expectedValue);
+                return;
         }
+
+        throw new \RuntimeException(sprintf(
+            'Invalid mode "%s"', $mode
+        ));
     }
 
-    private function convertExpectedValueToMicroseconds($value, Config $config)
+    private function convertExpectedValueToMicroseconds($value, $timeUnit)
     {
-        return $this->timeUnit->convert($value, $config[self::OPTION_TIME_UNIT], TimeUnit::MICROSECONDS, TimeUnit::MODE_TIME);;
+        return $this->timeUnit->convert($value, $timeUnit, TimeUnit::MICROSECONDS, TimeUnit::MODE_TIME);;
     }
 
     private function compare($expectedValue, $value, $comparator)
@@ -101,6 +110,45 @@ class ComparatorAsserter implements Asserter
     private function humanize(string $comparator)
     {
         return self::HUMANIZED[$comparator];
+    }
+
+    private function assertThroughput(string $stat, string $timeUnit, string $comparator, $value, $expectedValue)
+    {
+        $value = TimeUnit::convertInto($value, TimeUnit::MICROSECONDS, $timeUnit);
+
+        if (false === $this->compare($expectedValue, $value, $comparator)) {
+            throw new AssertionFailure(sprintf(
+                'Throughput for %s is not %s %s, it was %s',
+                $stat,
+                $this->humanize($comparator),
+                $this->formatThroughput($expectedValue, $timeUnit),
+                $this->formatThroughput($value, $timeUnit)
+            ));
+        }
+    }
+
+    private function assertTime(string $stat, $timeUnit, $comparator, $value, $expectedValue)
+    {
+        $expectedValue = $this->convertExpectedValueToMicroseconds($expectedValue, $timeUnit);
+
+        if (false === $this->compare($expectedValue, $value, $comparator)) {
+            throw new AssertionFailure(sprintf(
+                '%s is not %s %s, it was %s',
+                $stat,
+                $this->humanize($comparator),
+                $this->timeUnit->format($expectedValue, $timeUnit, TimeUnit::MODE_TIME),
+                $this->timeUnit->format($value, $timeUnit, TimeUnit::MODE_TIME)
+            ));
+        }
+    }
+
+    private function formatThroughput($value, string $timeUnit)
+    {
+        return sprintf(
+            '%s%s',
+            number_format($value, $this->timeUnit->getPrecision()),
+            $this->timeUnit->getSuffix($timeUnit, TimeUnit::MODE_THROUGHPUT)
+        );
     }
 }
 
