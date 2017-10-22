@@ -38,6 +38,8 @@ use PhpBench\Assertion\AssertionWarning;
  */
 class Runner
 {
+    const DEFAULT_ASSERTER = 'comparator';
+
     /**
      * @var BenchmarkFinder
      */
@@ -261,7 +263,11 @@ class Runner
         /** @var AssertionMetadata $assertion */
         foreach ($subjectMetadata->getAssertions() as $assertion) {
             try {
-                $this->assertionProcessor->assertWith('comparator', $assertion->getConfig(), AssertionData::fromDistribution($variant->getStats()));
+                $this->assertionProcessor->assertWith(
+                    self::DEFAULT_ASSERTER,
+                    $assertion->getConfig(),
+                    AssertionData::fromDistribution($variant->getStats())
+                );
             } catch (AssertionWarning $warning) {
                 $variant->addWarning($warning);
             } catch (AssertionFailure $failure) {
@@ -285,3 +291,4 @@ class Runner
         $this->logger->iterationEnd($iteration);
     }
 }
+
