@@ -31,6 +31,7 @@ use PhpBench\Progress\LoggerInterface;
 use PhpBench\Registry\Config;
 use PhpBench\Registry\ConfigurableRegistry;
 use PhpBench\Assertion\AssertionData;
+use PhpBench\Assertion\AssertionWarning;
 
 /**
  * The benchmark runner.
@@ -261,6 +262,8 @@ class Runner
         foreach ($subjectMetadata->getAssertions() as $assertion) {
             try {
                 $this->assertionProcessor->assertWith('comparator', $assertion->getConfig(), AssertionData::fromDistribution($variant->getStats()));
+            } catch (AssertionWarning $warning) {
+                $variant->addWarning($warning);
             } catch (AssertionFailure $failure) {
                 $variant->addFailure($failure);
             }

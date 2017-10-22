@@ -107,39 +107,46 @@ class ComparatorAsserter implements Asserter
         ));
     }
 
-    private function humanize(string $comparator)
+    private function assertThroughput(string $statName, string $timeUnit, string $comparator, $value, $expectedValue)
     {
-        return self::HUMANIZED[$comparator];
     }
 
-    private function assertThroughput(string $stat, string $timeUnit, string $comparator, $value, $expectedValue)
-    {
-        $value = TimeUnit::convertInto($value, TimeUnit::MICROSECONDS, $timeUnit);
-
-        if (false === $this->compare($expectedValue, $value, $comparator)) {
-            throw new AssertionFailure(sprintf(
-                'Throughput for %s is not %s %s, it was %s',
-                $stat,
-                $this->humanize($comparator),
-                $this->formatThroughput($expectedValue, $timeUnit),
-                $this->formatThroughput($value, $timeUnit)
-            ));
-        }
-    }
-
-    private function assertTime(string $stat, $timeUnit, $comparator, $value, $expectedValue)
+    private function assertTime(string $statName, $timeUnit, $comparator, $value, $expectedValue)
     {
         $expectedValue = $this->convertExpectedValueToMicroseconds($expectedValue, $timeUnit);
 
+        $this->check(
+            '%s is not %s %s, it was %s',
+            $value, $expectedValue, $statName, TimeUnit::MODE_TIME, $timeUnit, $comparator
+        );
+    }
+
+    private function check(string $failureMessage, $value, $expectedValue, string $statName, string $mode, string $timeUnit, string $comparator)
+    {
         if (false === $this->compare($expectedValue, $value, $comparator)) {
             throw new AssertionFailure(sprintf(
-                '%s is not %s %s, it was %s',
-                $stat,
+                $failureMessage,
+                $statName,
                 $this->humanize($comparator),
-                $this->timeUnit->format($expectedValue, $timeUnit, TimeUnit::MODE_TIME),
-                $this->timeUnit->format($value, $timeUnit, TimeUnit::MODE_TIME)
+                $this->formatValue($expectedValue, $timeUnit, $mode),
+                $this->formatValue($value, $timeUnit, $mode)
             ));
         }
+    }
+
+    private function formatValue($value, $timeUnit, $mode)
+    {
+        switch ($mode) {
+            case TimeUnit::MODE_THROUGHPUT:
+                return $this->formatThroughput($value, $timeUnit);
+            case TimeUnit::MODE_TIME:
+                return $this->timeUnit->format($value, $timeUnit, TimeUnit::MODE_TIME);
+        }
+    }
+
+    private function humanize(string $comparator)
+    {
+        return self::HUMANIZED[$comparator];
     }
 
     private function formatThroughput($value, string $timeUnit)
