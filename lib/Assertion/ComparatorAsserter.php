@@ -16,6 +16,7 @@ use PhpBench\Math\Distribution;
 use PhpBench\Registry\Config;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use PhpBench\Util\TimeUnit;
+use PhpBench\Assertion\AssertionWarning;
 
 class ComparatorAsserter implements Asserter
 {
@@ -23,15 +24,16 @@ class ComparatorAsserter implements Asserter
     const GREATER_THAN = '>';
 
     const OPTION_COMPARATOR = 'comparator';
+    const OPTION_MODE = 'mode';
     const OPTION_STAT = 'stat';
+    const OPTION_TIME_UNIT = 'time_unit';
+    const OPTION_TOLERANCE = 'tolerance';
     const OPTION_VALUE = 'value';
 
     const HUMANIZED = [
         self::LESS_THAN => 'less than',
         self::GREATER_THAN => 'greater than',
     ];
-    const OPTION_TIME_UNIT = 'time_unit';
-    const OPTION_MODE = 'mode';
 
     /**
      * @var TimeUnit
@@ -58,6 +60,7 @@ class ComparatorAsserter implements Asserter
         $options->setRequired(self::OPTION_VALUE);
         $options->setDefault(self::OPTION_TIME_UNIT, TimeUnit::MICROSECONDS);
         $options->setDefault(self::OPTION_MODE, TimeUnit::MODE_TIME);
+        $options->setDefault(self::OPTION_TOLERANCE, 0);
         $options->setAllowedValues(self::OPTION_MODE, [
             TimeUnit::MODE_TIME,
             TimeUnit::MODE_THROUGHPUT,
@@ -71,15 +74,16 @@ class ComparatorAsserter implements Asserter
         $expectedValue = $config[self::OPTION_VALUE];
         $mode = $config[self::OPTION_MODE];
         $timeUnit = $config[self::OPTION_TIME_UNIT];
+        $tolerance = $config[self::OPTION_TOLERANCE];
 
         $value = $data->getDistribution()[$stat];
 
         switch ($mode) {
             case TimeUnit::MODE_THROUGHPUT:
-                $this->assertThroughput($stat, $timeUnit, $comparator, $value, $expectedValue);
+                $this->assertThroughput($stat, $timeUnit, $comparator, $value, $expectedValue, $tolerance);
                 return;
             case TimeUnit::MODE_TIME:
-                $this->assertTime($stat, $timeUnit, $comparator, $value, $expectedValue);
+                $this->assertTime($stat, $timeUnit, $comparator, $value, $expectedValue, $tolerance);
                 return;
         }
 
@@ -88,43 +92,53 @@ class ComparatorAsserter implements Asserter
         ));
     }
 
-    private function convertExpectedValueToMicroseconds($value, $timeUnit)
+    private function assertThroughput(string $statName, string $timeUnit, string $comparator, $value, $expectedValue, $tolerance)
     {
-        return $this->timeUnit->convert($value, $timeUnit, TimeUnit::MICROSECONDS, TimeUnit::MODE_TIME);;
-    }
-
-    private function compare($expectedValue, $value, $comparator)
-    {
-        switch ($comparator) {
-            case self::LESS_THAN:
-                return $value < $expectedValue;
-            case self::GREATER_THAN:
-                return $value > $expectedValue;
-        }
-
-        throw new \RuntimeException(sprintf(
-            'Unknown comparator "%s"', $comparator
-        ));
-    }
-
-    private function assertThroughput(string $statName, string $timeUnit, string $comparator, $value, $expectedValue)
-    {
-    }
-
-    private function assertTime(string $statName, $timeUnit, $comparator, $value, $expectedValue)
-    {
-        $expectedValue = $this->convertExpectedValueToMicroseconds($expectedValue, $timeUnit);
-
+        $value = TimeUnit::convertInto($value, TimeUnit::MICROSECONDS, $timeUnit);
         $this->check(
-            '%s is not %s %s, it was %s',
-            $value, $expectedValue, $statName, TimeUnit::MODE_TIME, $timeUnit, $comparator
+            'Throughput for %s is not %s %s, it was %s',
+            $value,
+            $expectedValue,
+            $statName,
+            TimeUnit::MODE_THROUGHPUT,
+            $timeUnit,
+            $comparator,
+            $tolerance
         );
     }
 
-    private function check(string $failureMessage, $value, $expectedValue, string $statName, string $mode, string $timeUnit, string $comparator)
+    private function assertTime(string $statName, $timeUnit, $comparator, $value, $expectedValue, $tolerance)
+    {
+        $expectedValue = $this->convertValueToMicroseconds($expectedValue, $timeUnit);
+        $tolerance = $this->convertValueToMicroseconds($tolerance, $timeUnit);
+
+        $this->check(
+            '%s is not %s %s, it was %s',
+            $value,
+            $expectedValue,
+            $statName,
+            TimeUnit::MODE_TIME,
+            $timeUnit,
+            $comparator,
+            $tolerance
+        );
+    }
+
+    private function check(string $failureMessage, $value, $expectedValue, string $statName, string $mode, string $timeUnit, string $comparator, $tolerance)
     {
         if (false === $this->compare($expectedValue, $value, $comparator)) {
-            throw new AssertionFailure(sprintf(
+            $assertionClass = AssertionFailure::class;
+            $lowerLimit = $expectedValue - $tolerance;
+            $upperLimit = $expectedValue + $tolerance;
+
+            if (
+                $this->compare($lowerLimit, $value, $comparator) || 
+                $this->compare($upperLimit, $value, $comparator)
+            ) {
+                $assertionClass = AssertionWarning::class;
+            }
+
+            throw new $assertionClass(sprintf(
                 $failureMessage,
                 $statName,
                 $this->humanize($comparator),
@@ -156,6 +170,25 @@ class ComparatorAsserter implements Asserter
             number_format($value, $this->timeUnit->getPrecision()),
             $this->timeUnit->getSuffix($timeUnit, TimeUnit::MODE_THROUGHPUT)
         );
+    }
+
+    private function convertValueToMicroseconds($value, $timeUnit)
+    {
+        return $this->timeUnit->convert($value, $timeUnit, TimeUnit::MICROSECONDS, TimeUnit::MODE_TIME);;
+    }
+
+    private function compare($expectedValue, $value, $comparator)
+    {
+        switch ($comparator) {
+            case self::LESS_THAN:
+                return $value < $expectedValue;
+            case self::GREATER_THAN:
+                return $value > $expectedValue;
+        }
+
+        throw new \RuntimeException(sprintf(
+            'Unknown comparator "%s"', $comparator
+        ));
     }
 }
 

@@ -20,18 +20,20 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use PhpBench\Assertion\AssertionData;
 use PhpBench\Util\TimeUnit;
+use PhpBench\Assertion\AssertionWarning;
 
 class ComparatorAsserterTest extends TestCase
 {
     const COMPARATOR_ASSERTION = 'comparator';
 
+
     /**
      * @dataProvider provideComparison
      */
-    public function testComparison(array $samples, array $config, string $failureMessage = null)
+    public function testComparison(array $samples, array $config, string $failureMessage = null, string $exceptionClass = AssertionFailure::class)
     {
         if ($failureMessage) {
-            $this->expectException(AssertionFailure::class);
+            $this->expectException($exceptionClass);
             $this->expectExceptionMessage($failureMessage);
         }
 
@@ -90,6 +92,51 @@ class ComparatorAsserterTest extends TestCase
                 ],
                 'Throughput for mean is not greater than 1.000ops/ms, it was 0.500ops/ms',
             ],
+            'tolerance lower' => [
+                [2000, 2000],
+                [
+                    ComparatorAsserter::OPTION_STAT => 'mean',
+                    ComparatorAsserter::OPTION_VALUE => 1999,
+                    ComparatorAsserter::OPTION_TOLERANCE => 2,
+                ],
+                'mean is not less than 1,999.000μs, it was 2,000.000μs',
+                AssertionWarning::class,
+            ],
+            'tolerance upper' => [
+                [2000, 2000],
+                [
+                    ComparatorAsserter::OPTION_STAT => 'mean',
+                    ComparatorAsserter::OPTION_VALUE => 2001,
+                    ComparatorAsserter::OPTION_TOLERANCE => 2,
+                    ComparatorAsserter::OPTION_COMPARATOR => '>',
+                ],
+                'mean is not',
+                AssertionWarning::class,
+            ],
+            'tolerance time unit' => [
+                [2000, 2000],
+                [
+                    ComparatorAsserter::OPTION_STAT => 'mean',
+                    ComparatorAsserter::OPTION_VALUE => 1,
+                    ComparatorAsserter::OPTION_TOLERANCE => 2,
+                    ComparatorAsserter::OPTION_TIME_UNIT => 'milliseconds',
+                ],
+                'mean is not',
+                AssertionWarning::class,
+            ],
+            'tolerance throughput' => [
+                [2000, 2000],
+                [
+                    ComparatorAsserter::OPTION_STAT => 'mean',
+                    ComparatorAsserter::OPTION_VALUE => 1,
+                    ComparatorAsserter::OPTION_COMPARATOR => '>',
+                    ComparatorAsserter::OPTION_TIME_UNIT => 'milliseconds',
+                    ComparatorAsserter::OPTION_TOLERANCE => 2,
+                    ComparatorAsserter::OPTION_MODE=> 'throughput',
+                ],
+                'Throughput for mean is not greater than 1.000ops/ms, it was 0.500ops/ms',
+                AssertionWarning::class,
+            ],
         ];
     }
 
@@ -103,3 +150,4 @@ class ComparatorAsserterTest extends TestCase
         $assertion->assert($data, new Config('test', $config));
     }
 }
+
