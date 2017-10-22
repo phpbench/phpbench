@@ -14,6 +14,7 @@ namespace PhpBench\Model;
 
 use PhpBench\Assertion\AssertionFailures;
 use PhpBench\Environment\Information;
+use PhpBench\Assertion\AssertionWarnings;
 
 /**
  * Represents a Suite.

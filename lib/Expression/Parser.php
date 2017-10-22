@@ -13,6 +13,9 @@
 namespace PhpBench\Expression;
 
 use PhpBench\Json\JsonDecoder;
+use PhpBench\Expression\Constraint\Constraint;
+use PhpBench\Expression\Constraint\Comparison;
+use PhpBench\Expression\Constraint\Composite;
 
 /**
  * Parse a JSON query into a Constraint.
@@ -98,7 +101,7 @@ class Parser
             ));
         }
 
-        return new Constraint\Comparison($operator, $field, $value);
+        return new Comparison($operator, $field, $value);
     }
 
     private function parseComposite($operator, $args)
@@ -122,7 +125,7 @@ class Parser
 
         foreach ($args as $rightArg) {
             $rightConstraint = $this->processExpr($rightArg);
-            $composite = new Constraint\Composite($operator, $leftConstraint, $rightConstraint);
+            $composite = new Composite($operator, $leftConstraint, $rightConstraint);
 
             $leftConstraint = $composite;
         }

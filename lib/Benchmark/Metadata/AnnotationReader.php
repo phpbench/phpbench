@@ -68,7 +68,7 @@ class AnnotationReader
         'static' => true, 'staticvar' => true, 'staticVar' => true,
         'throw' => true,
         // PHPDocumentor 2 tags.
-        'api' => true, 'author' => true,
+        'api' => true,
         'category' => true, 'copyright' => true,
         'deprecated' => true,
         'example' => true,
@@ -81,7 +81,7 @@ class AnnotationReader
         'return' => true,
         'see' => true, 'since' => true, 'source' => true, 'subpackage' => true,
         'throws' => true, 'todo' => true, 'TODO' => true,
-        'usedby' => true, 'uses' => true,
+        'usedby' => true,
         'var' => true, 'version' => true,
         // PHPUnit tags
         'author' => true,
@@ -122,6 +122,11 @@ class AnnotationReader
         // PlantUML
         'startuml' => true, 'enduml' => true,
     ];
+
+    /**
+     * @var DocParser
+     */
+    private $docParser;
 
     /**
      * Set import use to true in order to use imported annotations, otherwise
@@ -219,3 +224,4 @@ class AnnotationReader
         return $annotations;
     }
 }
+

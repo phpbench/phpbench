@@ -54,6 +54,7 @@ class UuidResolver
     private function getNthUuid($nth)
     {
         $history = $this->driver->getService()->history();
+        $entry = $history->current();
 
         for ($i = 0; $i <= $nth; $i++) {
             $entry = $history->current();

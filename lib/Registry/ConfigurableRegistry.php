@@ -32,6 +32,11 @@ class ConfigurableRegistry extends Registry
     private $configs = [];
     private $jsonDecoder;
 
+    /**
+     * @var array
+     */
+    private $resolvedConfigs;
+
     public function __construct(
         $serviceType,
         Container $container,
@@ -176,3 +181,4 @@ class ConfigurableRegistry extends Registry
         return $configName;
     }
 }
+

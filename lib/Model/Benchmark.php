@@ -45,16 +45,6 @@ class Benchmark implements \IteratorAggregate
         $this->class = $class;
     }
 
-    /**
-     * Get the file path of this benchmark.
-     *
-     * @return string
-     */
-    public function getPath()
-    {
-        return $this->path;
-    }
-
     public function createSubjectFromMetadata(SubjectMetadata $metadata)
     {
         $subject = new Subject($this, $metadata->getName());
@@ -123,3 +113,4 @@ class Benchmark implements \IteratorAggregate
         return $this->subjects;
     }
 }
+

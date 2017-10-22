@@ -288,7 +288,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
         $compareFields = $config['compare_fields'];
 
         return F\map($tables, function ($table) use ($conditions, $compare, $compareFields) {
-            $groups = F\group($table, function ($row) use ($conditions, $compare, $compareFields) {
+            $groups = F\group($table, function ($row) use ($conditions) {
                 $values = array_intersect_key($row->getArrayCopy(), array_flip($conditions));
 
                 return F\reduce_left($values, function ($value, $i, $c, $reduction) {

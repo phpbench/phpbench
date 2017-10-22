@@ -15,6 +15,7 @@ namespace PhpBench\Benchmark\Metadata;
 use PhpBench\Benchmark\Remote\ReflectionHierarchy;
 use PhpBench\Benchmark\Remote\Reflector;
 use PhpBench\Model\Subject;
+use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 
 /**
  * Benchmark Metadata Factory.
@@ -48,7 +49,7 @@ class Factory
      *
      * @param string $file
      *
-     * @return Benchmark
+     * @return BenchmarkMetadata
      */
     public function getMetadataForFile($file)
     {

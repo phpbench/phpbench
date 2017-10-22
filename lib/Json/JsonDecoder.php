@@ -26,6 +26,11 @@ use Seld\JsonLint\JsonParser;
  */
 class JsonDecoder
 {
+    /**
+     * @var JsonParser
+     */
+    private $parser;
+
     public function __construct()
     {
         $this->parser = new JsonParser();
@@ -156,3 +161,4 @@ class JsonDecoder
         return $normalized;
     }
 }
+

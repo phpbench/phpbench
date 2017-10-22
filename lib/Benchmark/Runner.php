@@ -66,9 +66,14 @@ class Runner
     private $configPath;
 
     /**
-     * @var Assertion
+     * @var AssertionProcessor
      */
     private $assertionProcessor;
+
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     public function __construct(
         BenchmarkFinder $benchmarkFinder,

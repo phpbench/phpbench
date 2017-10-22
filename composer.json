@@ -35,6 +35,7 @@
         "doctrine/dbal": "^2.4",
         "liip/rmt": "^1.2",
         "padraic/phar-updater": "^1.0",
+        "phpstan/phpstan": "^0.8.5",
         "phpunit/phpunit": "^6.0"
     },
     "autoload": {
