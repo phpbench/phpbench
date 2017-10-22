@@ -2,6 +2,6 @@
 
 namespace PhpBench\Assertion;
 
-class AssertionWarning extends AssertionFailure
+class AssertionWarning extends AssertionResult
 {
 }

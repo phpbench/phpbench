@@ -10,10 +10,14 @@
  *
  */
 
-namespace PhpBench\Assertion;
+namespace PhpBench\Tests\System\benchmarks\set5;
 
-use PhpBench\Model\Variant;
-
-class AssertionFailures extends AbstractAssertionResults
+/**
+ * @Assert(stat="mean", value="1000", tolerance="10000", comparator=">")
+ */
+class AssertWarnBench
 {
+    public function benchFail()
+    {
+    }
 }

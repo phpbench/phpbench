@@ -14,6 +14,7 @@ namespace PhpBench\Model;
 
 use PhpBench\Assertion\AssertionFailures;
 use PhpBench\Environment\Information;
+use PhpBench\Model\Summary;
 
 /**
  * Represents a Suite.
@@ -94,7 +95,7 @@ class Suite implements \IteratorAggregate
         return $this->configPath;
     }
 
-    public function getSummary()
+    public function getSummary(): Summary
     {
         return new Summary($this);
     }
@@ -169,6 +170,25 @@ class Suite implements \IteratorAggregate
         }
 
         return $failures;
+    }
+
+    /**
+     * @return AssertionWarnings[]
+     */
+    public function getWarnings()
+    {
+        $warnings = [];
+
+        /** @var Variant $variant */
+        foreach ($this->getVariants() as $variant) {
+            if (false === $variant->hasWarning()) {
+                continue;
+            }
+
+            $warnings[] = $variant->getWarnings();
+        }
+
+        return $warnings;
     }
 
     /**

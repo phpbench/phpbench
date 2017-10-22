@@ -24,6 +24,7 @@ class Summary
     private $nbRejects = 0;
     private $nbRevolutions = 0;
     private $nbFailures = 0;
+    private $nbWarnings = 0;
     private $stats = [
         'stdev' => [],
         'mean' => [],
@@ -49,6 +50,7 @@ class Summary
                     $this->nbIterations += count($variant);
                     $this->nbRevolutions += $variant->getRevolutions();
                     $this->nbFailures += count($variant->getFailures());
+                    $this->nbWarnings += count($variant->getWarnings());
                     $this->nbRejects += $variant->getRejectCount();
 
                     if ($variant->hasErrorStack()) {
@@ -87,6 +89,11 @@ class Summary
     public function getNbFailures()
     {
         return $this->nbFailures;
+    }
+
+    public function getNbWarnings()
+    {
+        return $this->nbWarnings;
     }
 
     public function getStats()

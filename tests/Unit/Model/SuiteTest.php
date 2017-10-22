@@ -21,6 +21,7 @@ use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
 use PhpBench\Model\Variant;
 use PHPUnit\Framework\TestCase;
+use PhpBench\Assertion\AssertionWarnings;
 
 class SuiteTest extends TestCase
 {
@@ -108,6 +109,7 @@ class SuiteTest extends TestCase
         $this->variant1->getRejectCount()->willReturn(0);
         $this->variant1->getRejectCount()->willReturn(0);
         $this->variant1->getFailures()->willReturn(new AssertionFailures($this->variant1->reveal()));
+        $this->variant1->getWarnings()->willReturn(new AssertionWarnings($this->variant1->reveal()));
         $this->variant1->getErrorStack()->willReturn($errorStack->reveal());
 
         $suite = $this->createSuite([

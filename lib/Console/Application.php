@@ -55,5 +55,6 @@ class Application extends BaseApplication
     {
         parent::configureIO($input, $output);
         $output->getFormatter()->setStyle('greenbg', new OutputFormatterStyle('black', 'green', []));
+        $output->getFormatter()->setStyle('warning', new OutputFormatterStyle('black', 'yellow', []));
     }
 }

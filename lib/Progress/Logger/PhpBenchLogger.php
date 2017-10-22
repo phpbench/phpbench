@@ -58,14 +58,16 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
 
         $this->listErrors($suite);
         $this->listFailures($suite);
+        $this->listWarnings($suite);
 
         $this->output->writeln(sprintf(
-            '%s subjects, %s iterations, %s revs, %s rejects, %s failures',
+            '%s subjects, %s iterations, %s revs, %s rejects, %s failures, %s warnings',
             number_format($summary->getNbSubjects()),
             number_format($summary->getNbIterations()),
             number_format($summary->getNbRevolutions()),
             number_format($summary->getNbRejects()),
-            number_format($summary->getNbFailures())
+            number_format($summary->getNbFailures()),
+            number_format($summary->getNbWarnings())
         ));
 
         $this->output->writeln(sprintf(
@@ -136,6 +138,34 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
             $this->output->write(PHP_EOL);
             foreach ($variantFailure as $index => $failure) {
                 $this->output->writeln(sprintf('    %s) %s', $index + 1, $failure->getMessage()));
+            }
+            $this->output->write(PHP_EOL);
+        }
+    }
+
+    private function listWarnings(Suite $suite)
+    {
+        $variantWarnings = $suite->getWarnings();
+
+        if (empty($variantWarnings)) {
+            return;
+        }
+
+        $this->output->write(PHP_EOL);
+        $this->output->writeln(sprintf('%d variants have warnings:', count($variantWarnings)));
+        $this->output->write(PHP_EOL);
+
+        /** @var AssertionWarnings $variantWarning */
+        foreach ($variantWarnings as $variantWarning) {
+            $this->output->writeln(sprintf(
+                '<warning>%s::%s %s</warning>',
+                $variantWarning->getVariant()->getSubject()->getBenchmark()->getClass(),
+                $variantWarning->getVariant()->getSubject()->getName(),
+                json_encode($variantWarning->getVariant()->getParameterSet()->getArrayCopy())
+            ));
+            $this->output->write(PHP_EOL);
+            foreach ($variantWarning as $index => $warning) {
+                $this->output->writeln(sprintf('    %s) %s', $index + 1, $warning->getMessage()));
             }
             $this->output->write(PHP_EOL);
         }

@@ -126,7 +126,7 @@ class RunTest extends SystemTestCase
     }
 
     /**
-     * It should fail if an invalid report name is provided.
+     * It should fail if there is an assertion failure
      */
     public function testFailAssertionFailure()
     {
@@ -134,6 +134,17 @@ class RunTest extends SystemTestCase
             'run benchmarks/set5/AssertFailBench.php'
         );
         $this->assertExitCode(2, $process);
+    }
+
+    /**
+     * It should not fail if there are warnings
+     */
+    public function testFailAssertionWarning()
+    {
+        $process = $this->phpbench(
+            'run benchmarks/set5/AssertWarnBench.php'
+        );
+        $this->assertExitCode(0, $process);
     }
 
     /**

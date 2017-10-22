@@ -18,6 +18,8 @@ use PhpBench\Math\Distribution;
 use PhpBench\Math\Statistics;
 use PhpBench\Model\Result\ComputedResult;
 use PhpBench\Model\Result\TimeResult;
+use PhpBench\Assertion\AssertionWarnings;
+use PhpBench\Assertion\AssertionWarning;
 
 /**
  * Stores Iterations and calculates the deviations and rejection
@@ -82,6 +84,11 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
      */
     private $failures;
 
+    /**
+     * @var AssertionWarnings
+     */
+    private $warnings;
+
     public function __construct(
         Subject $subject,
         ParameterSet $parameterSet,
@@ -95,6 +102,7 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
         $this->warmup = $warmup;
         $this->computedStats = $computedStats;
         $this->failures = new AssertionFailures($this);
+        $this->warnings = new AssertionWarnings($this);
     }
 
     /**
@@ -368,9 +376,19 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
         $this->failures->add($failure);
     }
 
+    public function addWarning(AssertionWarning $warning)
+    {
+        $this->warnings->add($warning);
+    }
+
     public function hasFailed()
     {
         return count($this->failures) > 0;
+    }
+
+    public function hasWarning()
+    {
+        return count($this->warnings) > 0;
     }
 
     public function getFailures(): AssertionFailures
@@ -462,5 +480,10 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
     public function offsetExists($offset)
     {
         return array_key_exists($offset, $this->iterations);
+    }
+
+    public function getWarnings(): AssertionWarnings
+    {
+        return $this->warnings;
     }
 }

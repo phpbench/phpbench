@@ -12,6 +12,6 @@
 
 namespace PhpBench\Assertion;
 
-class AssertionFailure extends \Exception
+class AssertionFailure extends AssertionResult
 {
 }
