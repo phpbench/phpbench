@@ -1,0 +1,4 @@
+parameters:
+    ignoreErrors:
+        - '#TableHelper#'
+        - '#Undefined variable: \$argv#'

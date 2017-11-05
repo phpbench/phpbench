@@ -126,26 +126,28 @@ class ComparatorAsserter implements Asserter
 
     private function check(string $failureMessage, $value, $expectedValue, string $statName, string $mode, string $timeUnit, string $comparator, $tolerance)
     {
-        if (false === $this->compare($expectedValue, $value, $comparator)) {
-            $assertionClass = AssertionFailure::class;
-            $lowerLimit = $expectedValue - $tolerance;
-            $upperLimit = $expectedValue + $tolerance;
-
-            if (
-                $this->compare($lowerLimit, $value, $comparator) ||
-                $this->compare($upperLimit, $value, $comparator)
-            ) {
-                $assertionClass = AssertionWarning::class;
-            }
-
-            throw new $assertionClass(sprintf(
-                $failureMessage,
-                $statName,
-                $this->humanize($comparator),
-                $this->formatValue($expectedValue, $timeUnit, $mode),
-                $this->formatValue($value, $timeUnit, $mode)
-            ));
+        if (true === $this->compare($expectedValue, $value, $comparator)) {
+            return;
         }
+
+        $assertionClass = AssertionFailure::class;
+        $lowerLimit = $expectedValue - $tolerance;
+        $upperLimit = $expectedValue + $tolerance;
+
+        if (
+            $this->compare($lowerLimit, $value, $comparator) ||
+            $this->compare($upperLimit, $value, $comparator)
+        ) {
+            $assertionClass = AssertionWarning::class;
+        }
+
+        throw new $assertionClass(sprintf(
+            $failureMessage,
+            $statName,
+            $this->humanize($comparator),
+            $this->formatValue($expectedValue, $timeUnit, $mode),
+            $this->formatValue($value, $timeUnit, $mode)
+        ));
     }
 
     private function formatValue($value, $timeUnit, $mode)
@@ -156,6 +158,10 @@ class ComparatorAsserter implements Asserter
             case TimeUnit::MODE_TIME:
                 return $this->timeUnit->format($value, $timeUnit, TimeUnit::MODE_TIME);
         }
+
+        throw new \RuntimeException(sprintf(
+            'Unknown time unit "%s"', $timeUnit
+        ));
     }
 
     private function humanize(string $comparator)
@@ -180,10 +186,10 @@ class ComparatorAsserter implements Asserter
     private function compare($expectedValue, $value, $comparator)
     {
         switch ($comparator) {
-            case self::LESS_THAN:
-                return $value < $expectedValue;
-            case self::GREATER_THAN:
-                return $value > $expectedValue;
+        case self::LESS_THAN:
+            return $value < $expectedValue;
+        case self::GREATER_THAN:
+            return $value > $expectedValue;
         }
 
         throw new \RuntimeException(sprintf(

@@ -123,6 +123,8 @@ class Parser
 
         $leftConstraint = $this->processExpr(array_shift($args));
 
+        $composite = null;
+
         foreach ($args as $rightArg) {
             $rightConstraint = $this->processExpr($rightArg);
             $composite = new Composite($operator, $leftConstraint, $rightConstraint);
