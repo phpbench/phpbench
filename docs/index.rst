@@ -24,6 +24,7 @@ Book
    environment
    report-generators
    report-renderers
+   assertions-asserters
    configuration
    faq
 

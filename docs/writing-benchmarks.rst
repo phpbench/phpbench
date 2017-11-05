@@ -596,7 +596,7 @@ supported time unit and you can also change the mode to ``throughput``:
 The above will assert that an average of more than 10 operations are completed
 in a millisecond. See :ref:`time_unit` and :ref:`mode` for more information.
 
-For more information about assertions see :ref:`assertions-asserters`.
+For more information about assertions see :doc:`assertions-asserters`.
 
 .. _cartesian product: https://en.wikipedia.org/wiki/Cartesian_product
 .. _Relative standard deviation: https://en.wikipedia.org/wiki/Coefficient_of_variation

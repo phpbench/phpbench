@@ -26,6 +26,7 @@ Features:
 - Store and query results.
 - Before and After method / class specification.
 - Pause (recover) between iterations.
+- Assertions.
 - Extendable.
 - More..
 
