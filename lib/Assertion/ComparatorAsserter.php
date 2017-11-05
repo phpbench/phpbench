@@ -54,11 +54,11 @@ class ComparatorAsserter implements Asserter
             self::GREATER_THAN,
         ]);
 
-        $options->setRequired(self::OPTION_STAT);
         $options->setRequired(self::OPTION_VALUE);
         $options->setDefault(self::OPTION_TIME_UNIT, TimeUnit::MICROSECONDS);
         $options->setDefault(self::OPTION_MODE, TimeUnit::MODE_TIME);
         $options->setDefault(self::OPTION_TOLERANCE, 0);
+        $options->setDefault(self::OPTION_STAT, 'mean');
         $options->setAllowedValues(self::OPTION_MODE, [
             TimeUnit::MODE_TIME,
             TimeUnit::MODE_THROUGHPUT,
