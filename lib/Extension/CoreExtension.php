@@ -77,6 +77,7 @@ use PhpBench\Storage\UuidResolver;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\ExecutableFinder;
+use PhpBench\Console\Command\CalibrateCommand;
 
 class CoreExtension implements ExtensionInterface
 {
@@ -326,6 +327,13 @@ class CoreExtension implements ExtensionInterface
             return new DeleteCommand(
                 $container->get('console.command.handler.suite_collection'),
                 $container->get('storage.driver_registry')
+            );
+        }, ['console.command' => []]);
+
+        $container->register('console.command.calibrate', function (Container $container) {
+            return new CalibrateCommand(
+                $container->get('storage.driver_registry'),
+                $container->get('benchmark.runner')
             );
         }, ['console.command' => []]);
 

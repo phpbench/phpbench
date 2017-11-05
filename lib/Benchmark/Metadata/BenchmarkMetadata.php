@@ -103,7 +103,7 @@ class BenchmarkMetadata
 
             foreach ($filters as $filter) {
                 if (preg_match(
-                    sprintf('{^.*?%s.*?$}', $filter),
+                    sprintf('{^.*?%s.*?$}', preg_quote($filter)),
                     sprintf('%s::%s', $this->getClass(), $subjectName)
                 )) {
                     $unset = false;

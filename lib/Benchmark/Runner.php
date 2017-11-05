@@ -110,7 +110,7 @@ class Runner
      * @param string $contextName
      * @param string $path
      */
-    public function run(RunnerContext $context)
+    public function run(RunnerContext $context): Suite
     {
         $executorConfig = $this->executorRegistry->getConfig($context->getExecutor());
         $executor = $this->executorRegistry->getService($executorConfig['executor']);
