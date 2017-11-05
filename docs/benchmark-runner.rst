@@ -93,6 +93,8 @@ Failing assertions will cause PHPBench to exit with code ``2``. If you want to
 tolerate failures (f.e. in an unstable CI environment) you can use the
 ``--tolerate-failure`` option.
 
+For more information about assertions see :ref:`assertions-asserters`.
+
 Generating Reports
 ------------------
 
