@@ -26,6 +26,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class RunCommand extends Command
 {
+    const EXIT_CODE_ERROR = 1;
+    const EXIT_CODE_FAILURE = 2;
+
     /**
      * @var RunnerHandler
      */
@@ -88,7 +91,8 @@ EOT
         $this->addOption('retry-threshold', 'r', InputOption::VALUE_REQUIRED, 'Set target allowable deviation', null);
         $this->addOption('sleep', null, InputOption::VALUE_REQUIRED, 'Number of microseconds to sleep between iterations');
         $this->addOption('context', null, InputOption::VALUE_REQUIRED, 'Context label to apply to the suite result (useful when comparing reports)');
-        $this->addOption('store', null, InputOption::VALUE_NONE, 'Persist the results.');
+        $this->addOption('store', null, InputOption::VALUE_NONE, 'Persist the results');
+        $this->addOption('tolerate-failure', null, InputOption::VALUE_NONE, 'Return 0 exit code even when failures occur');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
@@ -101,6 +105,7 @@ EOT
             'sleep' => $input->getOption('sleep'),
             'iterations' => $input->getOption('iterations'),
             'warmup' => $input->getOption('warmup'),
+            'assertions' => $input->getOption('assert'),
         ]);
 
         $collection = new SuiteCollection([$suite]);
@@ -117,7 +122,11 @@ EOT
         $this->reportHandler->reportsFromInput($input, $output, $collection);
 
         if ($suite->getErrorStacks()) {
-            return 1;
+            return self::EXIT_CODE_ERROR;
+        }
+
+        if (false === $input->getOption('tolerate-failure') && $suite->getFailures()) {
+            return self::EXIT_CODE_FAILURE;
         }
 
         return 0;

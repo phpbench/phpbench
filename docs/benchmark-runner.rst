@@ -77,6 +77,24 @@ You can override or set the :ref:`configuration_bootstrap` using the
 
     $ phpbench run /path/to/HashBench.php --bootstrap=vendor/autoload.php
 
+Assertions: Overriding and Toleration
+-------------------------------------
+
+Use the ``--assert`` option to introduce or override assertions:
+
+.. code-block:: bash
+
+    $ phpbench run /path/to/HashBench.php --assert="stat: mode, value: 10"
+
+This will assert that ALL variants must have a mode less than 10. For more
+information on assertions see :ref:`assertions`.
+
+Failing assertions will cause PHPBench to exit with code ``2``. If you want to
+tolerate failures (f.e. in an unstable CI environment) you can use the
+``--tolerate-failure`` option.
+
+For more information about assertions see :ref:`assertions-asserters`.
+
 Generating Reports
 ------------------
 
@@ -260,3 +278,13 @@ Configuration File
 
 A custom configuration file can be specified with the ``--config`` option.  See
 the :doc:`configuration` chapter for more information on configuration.
+
+Exit codes
+----------
+
+The following exit codes can occur:
+
+- ``0``: Everything was fine.
+- ``1``: Errors encountered in benchmarks.
+- ``2``: Assertion failures.
+- ``255``: Internal error

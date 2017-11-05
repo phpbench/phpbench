@@ -12,6 +12,7 @@
 
 namespace PhpBench\Model;
 
+use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Util\TimeUnit;
 
 /**

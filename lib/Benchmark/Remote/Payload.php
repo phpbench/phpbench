@@ -58,6 +58,11 @@ class Payload
     private $disableIni = false;
 
     /**
+     * @var IniStringBuilder
+     */
+    private $iniStringBuilder;
+
+    /**
      * Create a new Payload object with the given script template.
      * The template must be the path to a script template.
      *

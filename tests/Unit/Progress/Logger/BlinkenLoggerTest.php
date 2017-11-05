@@ -12,8 +12,10 @@
 
 namespace PhpBench\Tests\Unit\Progress\Logger;
 
+use PhpBench\Assertion\AssertionFailure;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\ParameterSet;
+use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Variant;
 use PhpBench\Progress\Logger\BlinkenLogger;
@@ -24,6 +26,33 @@ use Symfony\Component\Console\Output\BufferedOutput;
 
 class BlinkenLoggerTest extends TestCase
 {
+    const ASSERTION_FAILURE_MESSAGE = 'Failure message';
+
+    /**
+     * @var BufferedOutput
+     */
+    private $output;
+    /**
+     * @var TimeUnit
+     */
+    private $timeUnit;
+    /**
+     * @var BlinkenLogger
+     */
+    private $logger;
+    /**
+     * @var ObjectProphecy
+     */
+    private $benchmark;
+    /**
+     * @var ObjectProphecy
+     */
+    private $subject;
+    /**
+     * @var Variant
+     */
+    private $variant;
+
     public function setUp()
     {
         $this->output = new BufferedOutput();
@@ -102,6 +131,22 @@ class BlinkenLoggerTest extends TestCase
         $this->variant->setException(new \Exception('foo'));
         $this->logger->variantEnd($this->variant);
         $this->assertContains('ERROR', $this->output->fetch());
+    }
+
+    /**
+     * It should show an error if the iteration has an exception.
+     */
+    public function testIterationFailure()
+    {
+        foreach ($this->variant as $iteration) {
+            $iteration->setResult(new TimeResult(10));
+        }
+        $this->variant->addFailure(new AssertionFailure(self::ASSERTION_FAILURE_MESSAGE));
+        $this->variant->addIteration($iteration);
+        $this->variant->computeStats();
+        $this->variant->addFailure(new AssertionFailure(self::ASSERTION_FAILURE_MESSAGE));
+        $this->logger->variantEnd($this->variant);
+        $this->assertContains('FAIL', $this->output->fetch());
     }
 
     /**

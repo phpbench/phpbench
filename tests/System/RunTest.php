@@ -126,6 +126,50 @@ class RunTest extends SystemTestCase
     }
 
     /**
+     * It should fail if there is an assertion failure.
+     */
+    public function testFailAssertionFailure()
+    {
+        $process = $this->phpbench(
+            'run benchmarks/set5/AssertFailBench.php'
+        );
+        $this->assertExitCode(2, $process);
+    }
+
+    /**
+     * It should not fail if there are warnings.
+     */
+    public function testFailAssertionWarning()
+    {
+        $process = $this->phpbench(
+            'run benchmarks/set5/AssertWarnBench.php'
+        );
+        $this->assertExitCode(0, $process);
+    }
+
+    /**
+     * If passed the tolerate-failure option, it should return 0 exit code even when failures are encountered.
+     */
+    public function testFailAssertionFailureTolerate()
+    {
+        $process = $this->phpbench(
+            'run benchmarks/set5/AssertFailBench.php --tolerate-failure'
+        );
+        $this->assertExitCode(0, $process);
+    }
+
+    /**
+     * It should override assertions.
+     */
+    public function testFailAssertionOverride()
+    {
+        $process = $this->phpbench(
+            'run benchmarks/set5/AssertFailBench.php --assert="{stat: mean, value: 1000}"'
+        );
+        $this->assertExitCode(0, $process);
+    }
+
+    /**
      * It should dump none to an XML file.
      */
     public function testDumpXml()

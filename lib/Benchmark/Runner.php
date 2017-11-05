@@ -12,7 +12,12 @@
 
 namespace PhpBench\Benchmark;
 
+use PhpBench\Assertion\AssertionData;
+use PhpBench\Assertion\AssertionFailure;
+use PhpBench\Assertion\AssertionProcessor;
+use PhpBench\Assertion\AssertionWarning;
 use PhpBench\Benchmark\Exception\StopOnErrorException;
+use PhpBench\Benchmark\Metadata\AssertionMetadata;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Environment\Supplier;
@@ -33,31 +38,58 @@ use PhpBench\Registry\ConfigurableRegistry;
  */
 class Runner
 {
-    private $logger;
+    const DEFAULT_ASSERTER = 'comparator';
+
+    /**
+     * @var BenchmarkFinder
+     */
     private $benchmarkFinder;
-    private $configPath;
-    private $retryThreshold = null;
+
+    /**
+     * @var ConfigurableRegistry
+     */
     private $executorRegistry;
+
+    /**
+     * @var Supplier
+     */
     private $envSupplier;
 
     /**
-     * @param BenchmarkFinder $benchmarkFinder
-     * @param SubjectBuilder $subjectBuilder
-     * @param string $configPath
+     * @var float
      */
+    private $retryThreshold;
+
+    /**
+     * @var string
+     */
+    private $configPath;
+
+    /**
+     * @var AssertionProcessor
+     */
+    private $assertionProcessor;
+
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
     public function __construct(
         BenchmarkFinder $benchmarkFinder,
         ConfigurableRegistry $executorRegistry,
         Supplier $envSupplier,
-        $retryThreshold,
-        $configPath
+        AssertionProcessor $assertion,
+        float $retryThreshold = null,
+        string $configPath = null
     ) {
         $this->logger = new NullLogger();
         $this->benchmarkFinder = $benchmarkFinder;
         $this->executorRegistry = $executorRegistry;
         $this->envSupplier = $envSupplier;
-        $this->configPath = $configPath;
         $this->retryThreshold = $retryThreshold;
+        $this->configPath = $configPath;
+        $this->assertionProcessor = $assertion;
     }
 
     /**
@@ -131,6 +163,8 @@ class Runner
             return true;
         });
         $subjectMetadatas = array_values($subjectMetadatas);
+
+        /** @var SubjectMetadata $subjectMetadata */
         foreach ($subjectMetadatas as $subjectMetadata) {
 
             // override parameters
@@ -139,6 +173,10 @@ class Runner
             $subjectMetadata->setWarmup($context->getWarmup($subjectMetadata->getWarmUp()));
             $subjectMetadata->setSleep($context->getSleep($subjectMetadata->getSleep()));
             $subjectMetadata->setRetryThreshold($context->getRetryThreshold($this->retryThreshold));
+
+            if ($context->getAssertions()) {
+                $subjectMetadata->setAssertions($this->assertionProcessor->assertionsFromRawCliConfig($context->getAssertions()));
+            }
 
             $benchmark->createSubjectFromMetadata($subjectMetadata);
         }
@@ -209,8 +247,7 @@ class Runner
             return;
         }
 
-        $variant->computeStats();
-        $this->logger->variantEnd($variant);
+        $this->endVariant($subjectMetadata, $variant);
 
         while ($variant->getRejectCount() > 0) {
             $this->logger->retryStart($variant->getRejectCount());
@@ -219,10 +256,32 @@ class Runner
                 $rejectCount[spl_object_hash($reject)]++;
                 $this->runIteration($executor, $executorConfig, $reject, $subjectMetadata);
             }
-            $variant->computeStats();
-            $this->logger->variantEnd($variant);
+            $this->endVariant($subjectMetadata, $variant);
             $reject->setResult(new RejectionCountResult($rejectCount[spl_object_hash($reject)]));
         }
+    }
+
+    private function endVariant(SubjectMetadata $subjectMetadata, Variant $variant)
+    {
+        $variant->computeStats();
+        $variant->resetAssertionResults();
+
+        /** @var AssertionMetadata $assertion */
+        foreach ($subjectMetadata->getAssertions() as $assertion) {
+            try {
+                $this->assertionProcessor->assertWith(
+                    self::DEFAULT_ASSERTER,
+                    $assertion->getConfig(),
+                    AssertionData::fromDistribution($variant->getStats())
+                );
+            } catch (AssertionWarning $warning) {
+                $variant->addWarning($warning);
+            } catch (AssertionFailure $failure) {
+                $variant->addFailure($failure);
+            }
+        }
+
+        $this->logger->variantEnd($variant);
     }
 
     public function runIteration(ExecutorInterface $executor, Config $executorConfig, Iteration $iteration, SubjectMetadata $subjectMetadata)

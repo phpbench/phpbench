@@ -76,8 +76,6 @@ abstract class BaseExecutor implements ExecutorInterface
 
     /**
      * Launch the payload. This method has to return the ResultCollection.
-     *
-     * @return ResultCollection
      */
     abstract protected function launch(Payload $payload, Iteration $iteration, Config $config);
 

@@ -17,7 +17,7 @@ namespace PhpBench\Math;
  *
  * Lazily Provides summary statistics, also traversable.
  */
-class Distribution implements \IteratorAggregate
+class Distribution implements \IteratorAggregate, \ArrayAccess
 {
     private $samples = [];
     private $stats = [];
@@ -138,8 +138,47 @@ class Distribution implements \IteratorAggregate
             return $this->stats[$name];
         }
 
+        if (!isset($this->closures[$name])) {
+            throw new \InvalidArgumentException(sprintf(
+                'Unknown stat "%s", known stats: "%s"',
+                $name, implode('", "', array_keys($this->closures))
+            ));
+        }
+
         $this->stats[$name] = $this->closures[$name]($this->samples, $this);
 
         return $this->stats[$name];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->stats[$offset]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function offsetGet($offset)
+    {
+        return $this->getStat($offset);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function offsetSet($offset, $value)
+    {
+        throw new \BadMethodCallException('Distribution is read-only');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function offsetUnset($offset)
+    {
+        throw new \BadMethodCallException('Distribution is read-only');
     }
 }

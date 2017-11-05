@@ -55,7 +55,14 @@ class DotsLogger extends PhpBenchLogger
             return;
         }
 
-        $dot = $variant->hasErrorStack() ? '<error>E</error>' : '.';
+        $dot = '.';
+        if ($variant->hasFailed()) {
+            $dot = '<error>F</error>';
+        }
+
+        if ($variant->hasErrorStack()) {
+            $dot = '<error>E</error>';
+        }
 
         if ($this->isCi) {
             $this->output->write($dot);

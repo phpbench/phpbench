@@ -141,6 +141,11 @@ class TimeUnit
         $this->overriddenPrecision = true;
     }
 
+    public function getPrecision(): int
+    {
+        return $this->precision;
+    }
+
     /**
      * Return the destination unit.
      *
@@ -298,10 +303,10 @@ class TimeUnit
         self::validateUnit($unit);
         self::validateUnit($destUnit);
 
-        $destM = self::$map[$destUnit];
-        $sourceM = self::$map[$unit];
+        $destMultiplier = self::$map[$destUnit];
+        $sourceMultiplier = self::$map[$unit];
 
-        $time = $destM / ($time * $sourceM);
+        $time = $destMultiplier / ($time * $sourceMultiplier);
 
         return $time;
     }

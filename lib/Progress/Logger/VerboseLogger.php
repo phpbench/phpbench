@@ -24,6 +24,11 @@ class VerboseLogger extends PhpBenchLogger
     private $rejectionCount = 0;
 
     /**
+     * @var int
+     */
+    private $paramSetIndex;
+
+    /**
      * {@inheritdoc}
      */
     public function benchmarkStart(Benchmark $benchmark)
@@ -69,7 +74,7 @@ class VerboseLogger extends PhpBenchLogger
     {
         if ($variant->hasErrorStack()) {
             $this->output->write(sprintf(
-                "\x1B[0G    %-30s<error>ERROR</error>",
+                "\x1B[0G    %-30sERROR</error>",
                 $variant->getSubject()->getName()
             ));
             $this->output->write(PHP_EOL);

@@ -48,7 +48,7 @@ class Factory
      *
      * @param string $file
      *
-     * @return Benchmark
+     * @return BenchmarkMetadata
      */
     public function getMetadataForFile($file)
     {

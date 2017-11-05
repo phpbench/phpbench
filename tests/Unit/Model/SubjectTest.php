@@ -25,6 +25,7 @@ class SubjectTest extends TestCase
     public function setUp()
     {
         $this->benchmark = $this->prophesize(Benchmark::class);
+        $this->benchmark->getSubjects()->willReturn([]);
         $this->subject = new Subject($this->benchmark->reveal(), 'subjectOne', 0);
     }
 

@@ -12,6 +12,10 @@
 
 namespace PhpBench\Tests\Unit\Progress\Logger;
 
+use PhpBench\Assertion\AssertionFailure;
+use PhpBench\Assertion\AssertionFailures;
+use PhpBench\Assertion\AssertionWarning;
+use PhpBench\Assertion\AssertionWarnings;
 use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Math\Distribution;
 use PhpBench\Model\Benchmark;
@@ -78,14 +82,13 @@ abstract class PhpBenchLoggerTest extends TestCase
     public function testEndSuite()
     {
         $this->setUpSummary();
+        $this->suite->getFailures()->willReturn([]);
+        $this->suite->getWarnings()->willReturn([]);
         $this->suite->getErrorStacks()->willReturn([]);
         $this->output->writeln(Argument::any())->shouldBeCalled();
         $this->logger->endSuite($this->suite->reveal());
     }
 
-    /**
-     * It should show errors.
-     */
     public function testEndSuiteErrors()
     {
         $error1 = $this->prophesize(Error::class);
@@ -102,6 +105,8 @@ abstract class PhpBenchLoggerTest extends TestCase
         $errorStack->getIterator()->willReturn(new \ArrayIterator([$error1->reveal(), $error2->reveal()]));
 
         $this->setUpSummary();
+        $this->suite->getFailures()->willReturn([]);
+        $this->suite->getWarnings()->willReturn([]);
         $this->suite->getErrorStacks()->willReturn([$errorStack]);
         $errorStack->getVariant()->willReturn($this->variant->reveal());
         $this->variant->getSubject()->willReturn($this->subject->reveal());
@@ -120,6 +125,52 @@ abstract class PhpBenchLoggerTest extends TestCase
         $this->logger->endSuite($this->suite->reveal());
     }
 
+    public function testEndSuiteFailures()
+    {
+        $failure1 = new AssertionFailure('Failed!');
+        $failure2 = new AssertionFailure('Failed!');
+        $failures = new AssertionFailures($this->variant->reveal(), [$failure1, $failure2]);
+
+        $this->setUpSummary();
+        $this->suite->getFailures()->willReturn([$failures]);
+        $this->suite->getWarnings()->willReturn([]);
+        $this->suite->getErrorStacks()->willReturn([]);
+        $this->variant->getSubject()->willReturn($this->subject->reveal());
+        $this->variant->getParameterSet()->willReturn(new \ArrayObject());
+        $this->subject->getBenchmark()->willReturn($this->benchmark->reveal());
+        $this->subject->getName()->willReturn('bar');
+        $this->benchmark->getClass()->willReturn('Namespace\Foo');
+
+        $this->output->writeln(Argument::containingString('1 variants failed'))->shouldBeCalled();
+        $this->output->writeln(Argument::any())->shouldBeCalled();
+        $this->output->write(Argument::any())->shouldBeCalled();
+
+        $this->logger->endSuite($this->suite->reveal());
+    }
+
+    public function testEndSuiteWarnings()
+    {
+        $warning1 = new AssertionWarning('Failed!');
+        $warning2 = new AssertionWarning('Failed!');
+        $warnings = new AssertionWarnings($this->variant->reveal(), [$warning1, $warning2]);
+
+        $this->setUpSummary();
+        $this->suite->getFailures()->willReturn([]);
+        $this->suite->getWarnings()->willReturn([$warnings]);
+        $this->suite->getErrorStacks()->willReturn([]);
+        $this->variant->getSubject()->willReturn($this->subject->reveal());
+        $this->variant->getParameterSet()->willReturn(new \ArrayObject());
+        $this->subject->getBenchmark()->willReturn($this->benchmark->reveal());
+        $this->subject->getName()->willReturn('bar');
+        $this->benchmark->getClass()->willReturn('Namespace\Foo');
+
+        $this->output->writeln(Argument::containingString('1 variants have warnings'))->shouldBeCalled();
+        $this->output->writeln(Argument::any())->shouldBeCalled();
+        $this->output->write(Argument::any())->shouldBeCalled();
+
+        $this->logger->endSuite($this->suite->reveal());
+    }
+
     private function setUpSummary()
     {
         $nbSubjects = 4;
@@ -133,11 +184,15 @@ abstract class PhpBenchLoggerTest extends TestCase
         $totalTime = 123;
         $meanStDev = 321;
         $meanRelStDev = 231;
+        $nbFailures = 0;
+        $nbWarnings = 0;
 
         $this->summary->getNbSubjects()->willReturn($nbSubjects);
         $this->summary->getNbIterations()->willReturn($nbIterations);
         $this->summary->getNbRevolutions()->willReturn($nbRevolutions);
         $this->summary->getNbRejects()->willReturn($nbRejects);
+        $this->summary->getNbFailures()->willReturn($nbFailures);
+        $this->summary->getNbWarnings()->willReturn($nbWarnings);
         $this->summary->getMinTime()->willReturn($min);
         $this->summary->getMeanTime()->willReturn($mean);
         $this->summary->getModeTime()->willReturn($mode);

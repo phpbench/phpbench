@@ -12,6 +12,8 @@
 
 namespace PhpBench\Tests\Unit\Model;
 
+use PhpBench\Assertion\AssertionFailures;
+use PhpBench\Assertion\AssertionWarnings;
 use PhpBench\Environment\Information;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\ErrorStack;
@@ -106,6 +108,8 @@ class SuiteTest extends TestCase
         $this->variant1->getRevolutions()->willReturn(10);
         $this->variant1->getRejectCount()->willReturn(0);
         $this->variant1->getRejectCount()->willReturn(0);
+        $this->variant1->getFailures()->willReturn(new AssertionFailures($this->variant1->reveal()));
+        $this->variant1->getWarnings()->willReturn(new AssertionWarnings($this->variant1->reveal()));
         $this->variant1->getErrorStack()->willReturn($errorStack->reveal());
 
         $suite = $this->createSuite([

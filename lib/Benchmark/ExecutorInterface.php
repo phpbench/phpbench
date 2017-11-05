@@ -33,12 +33,6 @@ interface ExecutorInterface extends RegistrableInterface
      *       reference to the Variant that could be useful here. The Variant in
      *       its turn is only currently used to get the ParameterSet, but is
      *       likely more useful that the Iteration.
-     *
-     * @param SubjectMetadata $subjectMetadata
-     * @param Iteration $iteration
-     * @param array $config
-     *
-     * @return ResultCollection
      */
     public function execute(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config);
 

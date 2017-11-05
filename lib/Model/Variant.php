@@ -12,6 +12,10 @@
 
 namespace PhpBench\Model;
 
+use PhpBench\Assertion\AssertionFailure;
+use PhpBench\Assertion\AssertionFailures;
+use PhpBench\Assertion\AssertionWarning;
+use PhpBench\Assertion\AssertionWarnings;
 use PhpBench\Math\Distribution;
 use PhpBench\Math\Statistics;
 use PhpBench\Model\Result\ComputedResult;
@@ -75,6 +79,16 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
      */
     private $warmup;
 
+    /**
+     * @var AssertionFailures
+     */
+    private $failures;
+
+    /**
+     * @var AssertionWarnings
+     */
+    private $warnings;
+
     public function __construct(
         Subject $subject,
         ParameterSet $parameterSet,
@@ -87,6 +101,8 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
         $this->revolutions = $revolutions;
         $this->warmup = $warmup;
         $this->computedStats = $computedStats;
+        $this->failures = new AssertionFailures($this);
+        $this->warnings = new AssertionWarnings($this);
     }
 
     /**
@@ -112,7 +128,7 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
     public function createIteration(array $results = [])
     {
         $index = count($this->iterations);
-        $iteration = $iteration = new Iteration($index, $this, $results);
+        $iteration = new Iteration($index, $this, $results);
         $this->iterations[] = $iteration;
 
         return $iteration;
@@ -179,6 +195,12 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
         return array_map(function ($value) {
             return $value / $this->getRevolutions();
         }, $this->getMetricValues($resultClass, $metric));
+    }
+
+    public function resetAssertionResults()
+    {
+        $this->warnings = new AssertionWarnings($this);
+        $this->failures = new AssertionFailures($this);
     }
 
     /**
@@ -355,6 +377,31 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
         $this->errorStack = new ErrorStack($this, $errors);
     }
 
+    public function addFailure(AssertionFailure $failure)
+    {
+        $this->failures->add($failure);
+    }
+
+    public function addWarning(AssertionWarning $warning)
+    {
+        $this->warnings->add($warning);
+    }
+
+    public function hasFailed()
+    {
+        return count($this->failures) > 0;
+    }
+
+    public function hasWarning()
+    {
+        return count($this->warnings) > 0;
+    }
+
+    public function getFailures(): AssertionFailures
+    {
+        return $this->failures;
+    }
+
     /**
      * Create and set the error stack from a list of Error instances.
      *
@@ -439,5 +486,10 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
     public function offsetExists($offset)
     {
         return array_key_exists($offset, $this->iterations);
+    }
+
+    public function getWarnings(): AssertionWarnings
+    {
+        return $this->warnings;
     }
 }

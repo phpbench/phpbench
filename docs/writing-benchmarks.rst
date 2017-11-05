@@ -517,5 +517,86 @@ actually measuring the revolutions time.
 
 As with :ref:`revolutions <revolutions>`, you may also specify an array.
 
+.. _assertions:
+
+Assertions
+----------
+
+.. warning::
+
+    Assertions are absolute, benchmarks are relative to the environment they
+    are running in. 
+    
+    If you use them in a continuous integration environment the stability of
+    your build will depend on the state of the environment, you can prevent
+    failing builds with the `--tolerate-failure` option.
+
+Assertions allow you to specify what a valid range is for a given statistic,
+for example, "the mean must be less than 10".
+
+.. code-block:: php
+
+    <?php
+
+    // ...
+    class AssertiveBench
+    {
+        // ...
+
+        /**
+         * @Assert(stat="mean", value="10")
+         */
+        public function benchGenerateReport()
+        {
+            // ...
+        }
+    }
+
+By default the comparator is ``<`` (less than), you can also specify ``>``
+using the ``comparator`` key:
+
+.. code-block:: php
+
+    <?php
+
+    class AssertiveBench
+    {
+        // ...
+
+        /**
+         * @Assert(stat="mean", value="10", comparator=">")
+         */
+        public function benchGenerateReport()
+        {
+            // ...
+        }
+    }
+
+The default time unit for assertions is microseconds, but you can specify any
+supported time unit and you can also change the mode to ``throughput``:
+
+
+.. code-block:: php
+
+    <?php
+
+    class AssertiveBench
+    {
+        // ...
+
+        /**
+         * @Assert(stat="mean", value="10", comparator=">", time_unit="milliseconds", mode="throughput")
+         */
+        public function benchGenerateReport()
+        {
+            // ...
+        }
+    }
+
+The above will assert that an average of more than 10 operations are completed
+in a millisecond. See :ref:`time_unit` and :ref:`mode` for more information.
+
+For more information about assertions see :ref:`assertions-asserters`.
+
 .. _cartesian product: https://en.wikipedia.org/wiki/Cartesian_product
 .. _Relative standard deviation: https://en.wikipedia.org/wiki/Coefficient_of_variation

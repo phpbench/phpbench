@@ -68,8 +68,22 @@ class DotsLoggerTest extends TestCase
     {
         $logger = $this->createLogger(false);
         $this->variant->hasErrorStack()->willReturn(true);
+        $this->variant->hasFailed()->willReturn(false);
         $this->variant->getRejectCount()->willReturn(0);
         $this->output->write("\x0D<error>E</error> ")->shouldBeCalled();
+        $logger->variantEnd($this->variant->reveal());
+    }
+
+    /**
+     * It should log a failure.
+     */
+    public function testIterationsEndFailure()
+    {
+        $logger = $this->createLogger(false);
+        $this->variant->hasErrorStack()->willReturn(false);
+        $this->variant->getRejectCount()->willReturn(0);
+        $this->variant->hasFailed()->willReturn(true);
+        $this->output->write("\x0D<error>F</error> ")->shouldBeCalled();
         $logger->variantEnd($this->variant->reveal());
     }
 

@@ -26,7 +26,7 @@ use Symfony\Component\Filesystem\Filesystem;
 class XmlArchiver implements ArchiverInterface
 {
     /**
-     * @var DriverFactory
+     * @var Registry
      */
     private $storageRegistry;
 

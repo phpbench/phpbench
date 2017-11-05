@@ -39,7 +39,7 @@ namespace PhpBench\Math;
 class Kde
 {
     /**
-     * @var Closure
+     * @var \Closure
      */
     private $coVarianceFactor;
 
@@ -67,6 +67,10 @@ class Kde
      * @var float
      */
     private $invCov;
+
+    private $covariance;
+
+    private $normFactor;
 
     /**
      * Representation of a kernel-density estimate using Gaussian kernels.

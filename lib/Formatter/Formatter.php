@@ -129,9 +129,8 @@ class Formatter
                 }
             } catch (\InvalidArgumentException $e) {
                 throw new \InvalidArgumentException(sprintf(
-                    'Could not load class definition: %s (format %s)',
-                    json_encode($classDefinition),
-                    $formatName
+                    'Could not load class definition: %s',
+                    json_encode($classDefinition)
                 ), null, $e);
             }
         }

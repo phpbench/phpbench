@@ -10,8 +10,9 @@
  *
  */
 
-namespace PhpBench\Tests\Benchmark;
+namespace PhpBench\Tests\Unit\Benchmark;
 
+use PhpBench\Assertion\AssertionProcessor;
 use PhpBench\Benchmark\BenchmarkFinder;
 use PhpBench\Benchmark\ExecutorInterface;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
@@ -33,6 +34,56 @@ use Prophecy\Argument;
 
 class RunnerTest extends TestCase
 {
+    /**
+     * @var ObjectProphecy
+     */
+    private $benchmarkFinder;
+
+    /**
+     * @var ObjectProphecy
+     */
+    private $suite;
+
+    /**
+     * @var ObjectProphecy
+     */
+    private $benchmark;
+
+    /**
+     * @var ObjectProphecy
+     */
+    private $executor;
+
+    /**
+     * @var ObjectProphecy
+     */
+    private $executorRegistry;
+
+    /**
+     * @var ObjectProphecy
+     */
+    private $assertion;
+
+    /**
+     * @var Config
+     */
+    private $executorConfig;
+
+    /**
+     * @var ObjectProphecy
+     */
+    private $envSupplier;
+
+    /**
+     * @var ArrayObject
+     */
+    private $informations;
+
+    /**
+     * @var Runner
+     */
+    private $runner;
+
     public function setUp()
     {
         $this->benchmarkFinder = $this->prophesize(BenchmarkFinder::class);
@@ -44,6 +95,7 @@ class RunnerTest extends TestCase
         $this->executor = $this->prophesize(ExecutorInterface::class);
         $this->executor->healthCheck()->shouldBeCalled();
         $this->executorRegistry = $this->prophesize(ConfigurableRegistry::class);
+        $this->assertion = $this->prophesize(AssertionProcessor::class);
         $this->executorConfig = new Config('test', ['executor' => 'microtime']);
         $this->envSupplier = $this->prophesize(Supplier::class);
         $this->informations = new \ArrayObject();
@@ -53,6 +105,7 @@ class RunnerTest extends TestCase
             $this->benchmarkFinder->reveal(),
             $this->executorRegistry->reveal(),
             $this->envSupplier->reveal(),
+            $this->assertion->reveal(),
             null,
             null
         );

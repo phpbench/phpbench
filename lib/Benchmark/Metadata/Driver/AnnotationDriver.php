@@ -18,6 +18,7 @@ use PhpBench\Benchmark\Metadata\Annotations\AbstractArrayAnnotation;
 use PhpBench\Benchmark\Metadata\Annotations\AfterClassMethods;
 use PhpBench\Benchmark\Metadata\Annotations\BeforeClassMethods;
 use PhpBench\Benchmark\Metadata\Annotations\Subject;
+use PhpBench\Benchmark\Metadata\AssertionMetadata;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\DriverInterface;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
@@ -195,6 +196,10 @@ class AnnotationDriver implements DriverInterface
 
         if ($annotation instanceof Annotations\OutputMode) {
             $subject->setOutputMode($annotation->getMode());
+        }
+
+        if ($annotation instanceof Annotations\Assert) {
+            $subject->addAssertion(new AssertionMetadata($annotation->getConfig()));
         }
     }
 

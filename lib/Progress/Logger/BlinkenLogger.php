@@ -105,6 +105,10 @@ class BlinkenLogger extends AnsiLogger
             return;
         }
 
+        if ($variant->hasFailed()) {
+            $this->output->write(' <error>FAIL</error>');
+        }
+
         $this->rejects = [];
 
         foreach ($variant->getRejects() as $reject) {

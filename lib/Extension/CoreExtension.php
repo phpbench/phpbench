@@ -12,6 +12,9 @@
 
 namespace PhpBench\Extension;
 
+use PhpBench\Assertion\AsserterRegistry;
+use PhpBench\Assertion\AssertionProcessor;
+use PhpBench\Assertion\ComparatorAsserter;
 use PhpBench\Benchmark\BaselineManager;
 use PhpBench\Benchmark\BenchmarkFinder;
 use PhpBench\Benchmark\Executor\DebugExecutor;
@@ -139,6 +142,7 @@ class CoreExtension implements ExtensionInterface
         $this->registerStorage($container);
         $this->registerExpression($container);
         $this->registerFormatter($container);
+        $this->registerAsserters($container);
     }
 
     private function registerBenchmark(Container $container)
@@ -148,6 +152,7 @@ class CoreExtension implements ExtensionInterface
                 $container->get('benchmark.benchmark_finder'),
                 $container->get('benchmark.registry.executor'),
                 $container->get('environment.supplier'),
+                $container->get('assertion.assertion_processor'),
                 $container->getParameter('retry_threshold'),
                 $container->getParameter('config_path')
             );
@@ -427,6 +432,19 @@ class CoreExtension implements ExtensionInterface
         });
     }
 
+    private function registerAsserters(Container $container)
+    {
+        $container->register('assertion.assertion_processor', function () use ($container) {
+            return new AssertionProcessor(
+                $container->get('assertion.registry'),
+                $container->get('json.decoder')
+            );
+        });
+        $container->register('assertion.asserter.comparator', function (Container $container) {
+            return new ComparatorAsserter($container->get('benchmark.time_unit'));
+        }, ['assertion.asserter' => ['name' => 'comparator']]);
+    }
+
     private function registerRegistries(Container $container)
     {
         foreach (['generator' => 'reports', 'renderer' => 'outputs'] as $registryType => $optionName) {
@@ -471,6 +489,16 @@ class CoreExtension implements ExtensionInterface
             );
             foreach ($executorConfigs as $name => $config) {
                 $registry->setConfig($name, $config);
+            }
+
+            return $registry;
+        });
+
+        $container->register('assertion.registry', function (Container $container) {
+            $registry = new AsserterRegistry($container);
+
+            foreach ($container->getServiceIdsForTag('assertion.asserter') as $serviceId => $attributes) {
+                $registry->registerService($attributes['name'], $serviceId);
             }
 
             return $registry;

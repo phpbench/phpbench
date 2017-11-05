@@ -98,6 +98,11 @@ class SubjectMetadata
     private $benchmarkMetadata;
 
     /**
+     * @var AssertionMetadata[]
+     */
+    private $assertions = [];
+
+    /**
      * @param string $name
      */
     public function __construct(BenchmarkMetadata $benchmarkMetadata, $name)
@@ -281,5 +286,23 @@ class SubjectMetadata
     public function setRetryThreshold($retryThreshold)
     {
         $this->retryThreshold = $retryThreshold;
+    }
+
+    public function addAssertion(AssertionMetadata $assertion)
+    {
+        $this->assertions[] = $assertion;
+    }
+
+    public function setAssertions(array $assertions)
+    {
+        $this->assertions = [];
+        foreach ($assertions as $assertion) {
+            $this->addAssertion($assertion);
+        }
+    }
+
+    public function getAssertions()
+    {
+        return $this->assertions;
     }
 }
