@@ -111,7 +111,7 @@ class ConsoleRenderer implements RendererInterface, OutputAwareInterface
             $rows[] = $row;
         }
 
-        $table = $this->createTable();
+        $table = new Table($this->output);
 
         // style only supported in Symfony > 2.4
         if (method_exists($table, 'setStyle')) {
@@ -137,20 +137,6 @@ class ConsoleRenderer implements RendererInterface, OutputAwareInterface
             return;
         }
         $table->render($this->output);
-    }
-
-    /**
-     * Create the table class. For Symfony 2.4 support.
-     *
-     * @return object
-     */
-    protected function createTable()
-    {
-        if (class_exists('Symfony\Component\Console\Helper\Table')) {
-            return new Table($this->output);
-        }
-
-        return new \Symfony\Component\Console\Helper\TableHelper();
     }
 
     /**
