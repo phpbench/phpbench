@@ -32,6 +32,7 @@ use PhpBench\Progress\Logger\NullLogger;
 use PhpBench\Progress\LoggerInterface;
 use PhpBench\Registry\Config;
 use PhpBench\Registry\ConfigurableRegistry;
+use PhpBench\Benchmark\RunnerConfig;
 
 /**
  * The benchmark runner.
@@ -110,14 +111,14 @@ class Runner
      * @param string $contextName
      * @param string $path
      */
-    public function run(RunnerContext $context)
+    public function run($path, RunnerConfig $context)
     {
         $executorConfig = $this->executorRegistry->getConfig($context->getExecutor());
         $executor = $this->executorRegistry->getService($executorConfig['executor']);
         $executor->healthCheck();
 
         // build the collection of benchmarks to be executed.
-        $benchmarkMetadatas = $this->benchmarkFinder->findBenchmarks($context->getPath(), $context->getFilters(), $context->getGroups());
+        $benchmarkMetadatas = $this->benchmarkFinder->findBenchmarks($path, $context->getFilters(), $context->getGroups());
         $suite = new Suite(
             $context->getContextName(),
             new \DateTime(),
@@ -146,7 +147,7 @@ class Runner
 
     private function runBenchmark(
         ExecutorInterface $executor,
-        RunnerContext $context,
+        RunnerConfig $context,
         Benchmark $benchmark,
         BenchmarkMetadata $benchmarkMetadata
     ) {
@@ -196,7 +197,7 @@ class Runner
         }
     }
 
-    private function runSubject(ExecutorInterface $executor, RunnerContext $context, Subject $subject, SubjectMetadata $subjectMetadata)
+    private function runSubject(ExecutorInterface $executor, RunnerConfig $context, Subject $subject, SubjectMetadata $subjectMetadata)
     {
         $parameterSets = $context->getParameterSets($subjectMetadata->getParameterSets());
         $paramsIterator = new CartesianParameterIterator($parameterSets);
@@ -223,7 +224,7 @@ class Runner
 
     private function runVariant(
         ExecutorInterface $executor,
-        RunnerContext $context,
+        RunnerConfig $context,
         SubjectMetadata $subjectMetadata,
         Variant $variant
     ) {

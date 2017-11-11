@@ -23,6 +23,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use PhpBench\Benchmark\RunnerConfig;
 
 class RunCommand extends Command
 {
@@ -99,14 +100,16 @@ EOT
     {
         $this->timeUnitHandler->timeUnitFromInput($input);
         $this->reportHandler->validateReportsFromInput($input);
-        $suite = $this->runnerHandler->runFromInput($input, $output, [
-            'context_name' => $input->getOption('context'),
-            'retry_threshold' => $input->getOption('retry-threshold'),
-            'sleep' => $input->getOption('sleep'),
-            'iterations' => $input->getOption('iterations'),
-            'warmup' => $input->getOption('warmup'),
-            'assertions' => $input->getOption('assert'),
-        ]);
+
+        $context = RunnerConfig::create()
+            ->withContextName($input->getOption('context'))
+            ->withRetryThreshold($input->getOption('retry-threshold'))
+            ->withSleep($input->getOption('sleep'))
+            ->withIterations($input->getOption('iterations'))
+            ->withWarmUp((int) $input->getOption('warmup'))
+            ->withAssertions($input->getOption('assert'));
+
+        $suite = $this->runnerHandler->runFromInput($input, $output, $context);
 
         $collection = new SuiteCollection([$suite]);
 

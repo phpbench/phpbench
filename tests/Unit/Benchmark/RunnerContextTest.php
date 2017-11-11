@@ -12,7 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Benchmark;
 
-use PhpBench\Benchmark\RunnerContext;
+use PhpBench\Benchmark\RunnerConfig;
 use PHPUnit\Framework\TestCase;
 
 class RunnerContextTest extends TestCase
@@ -25,7 +25,7 @@ class RunnerContextTest extends TestCase
      */
     public function testNullPath()
     {
-        new RunnerContext(null);
+        new RunnerConfig(null);
     }
 
     /**
@@ -36,7 +36,7 @@ class RunnerContextTest extends TestCase
      */
     public function testRetryNotNumeric()
     {
-        new RunnerContext(__DIR__, [
+        new RunnerConfig(__DIR__, [
             'retry_threshold' => 'asd',
         ]);
     }
@@ -49,7 +49,7 @@ class RunnerContextTest extends TestCase
      */
     public function testRetryLessThanZetro()
     {
-        new RunnerContext(__DIR__, [
+        new RunnerConfig(__DIR__, [
             'retry_threshold' => -1,
         ]);
     }
@@ -62,7 +62,7 @@ class RunnerContextTest extends TestCase
      */
     public function testIterationsNotNumeric()
     {
-        new RunnerContext(__DIR__, [
+        new RunnerConfig(__DIR__, [
             'iterations' => ['asd'],
         ]);
     }
@@ -75,7 +75,7 @@ class RunnerContextTest extends TestCase
      */
     public function testRevolutionsNotNumeric()
     {
-        new RunnerContext(__DIR__, [
+        new RunnerConfig(__DIR__, [
             'revolutions' => ['asd'],
         ]);
     }
@@ -88,7 +88,7 @@ class RunnerContextTest extends TestCase
      */
     public function testWarmupNotNumeric()
     {
-        new RunnerContext(__DIR__, [
+        new RunnerConfig(__DIR__, [
             'warmup' => ['asd'],
         ]);
     }
@@ -101,7 +101,7 @@ class RunnerContextTest extends TestCase
      */
     public function testUnknownOptions()
     {
-        new RunnerContext(__DIR__, [
+        new RunnerConfig(__DIR__, [
             'abar' => 'invalid',
             'baar' => 'dilavni',
         ]);
@@ -122,7 +122,7 @@ class RunnerContextTest extends TestCase
             'retry_threshold' => 10,
         ];
 
-        $context = new RunnerContext(
+        $context = new RunnerConfig(
             '/path/to',
             $options
         );
@@ -142,7 +142,7 @@ class RunnerContextTest extends TestCase
      */
     public function testDefaults()
     {
-        $context = new RunnerContext(__DIR__);
+        $context = new RunnerConfig(__DIR__);
         $this->assertEquals([10], $context->getIterations([10]));
         $this->assertEquals([10], $context->getRevolutions([10]));
         $this->assertEquals(10, $context->getRetryThreshold(10));
@@ -153,7 +153,7 @@ class RunnerContextTest extends TestCase
      */
     public function testOverride()
     {
-        $context = new RunnerContext(
+        $context = new RunnerConfig(
             __DIR__,
             [
                 'iterations' => [20],
@@ -171,7 +171,7 @@ class RunnerContextTest extends TestCase
      */
     public function testGetParameterSets()
     {
-        $context = new RunnerContext(
+        $context = new RunnerConfig(
             __DIR__,
             [
                 'parameters' => [

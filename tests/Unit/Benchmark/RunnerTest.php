@@ -18,7 +18,7 @@ use PhpBench\Benchmark\ExecutorInterface;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Runner;
-use PhpBench\Benchmark\RunnerContext;
+use PhpBench\Benchmark\RunnerConfig;
 use PhpBench\Environment\Information;
 use PhpBench\Environment\Supplier;
 use PhpBench\Model\Iteration;
@@ -147,10 +147,10 @@ class RunnerTest extends TestCase
                 'executor' => 'microtime',
             ])
         )
-            ->shouldBeCalledTimes(count($revs) * array_sum($iterations))
-            ->will($this->loadIterationResultCallback());
+        ->shouldBeCalledTimes(count($revs) * array_sum($iterations))
+        ->will($this->loadIterationResultCallback());
 
-        $suite = $this->runner->run(new RunnerContext(__DIR__, [
+        $suite = $this->runner->run(new RunnerConfig(__DIR__, [
             'context_name' => 'context',
         ]));
 
@@ -252,7 +252,7 @@ class RunnerTest extends TestCase
         $this->executor->execute($subject2, Argument::cetera())->will($this->loadIterationResultCallback());
         $this->executor->execute($subject3, Argument::cetera())->will($this->loadIterationResultCallback());
 
-        $suite = $this->runner->run(new RunnerContext(__DIR__));
+        $suite = $this->runner->run(new RunnerConfig(__DIR__));
 
         $this->assertInstanceOf('PhpBench\Model\Suite', $suite);
         $this->assertNoErrors($suite);
@@ -285,7 +285,7 @@ class RunnerTest extends TestCase
                 $callback($args);
             });
 
-        $suite = $this->runner->run(new RunnerContext(__DIR__));
+        $suite = $this->runner->run(new RunnerConfig(__DIR__));
         $this->assertNoErrors($suite);
     }
 
@@ -317,7 +317,7 @@ class RunnerTest extends TestCase
                 $callback($args);
             });
 
-        $suite = $this->runner->run(new RunnerContext(__DIR__, [
+        $suite = $this->runner->run(new RunnerConfig(__DIR__, [
             'sleep' => 100,
             'retry_threshold' => 12,
             'warmup' => [66],
@@ -348,7 +348,7 @@ class RunnerTest extends TestCase
                 $callback($args);
             });
 
-        $suite = $this->runner->run(new RunnerContext(__DIR__, []));
+        $suite = $this->runner->run(new RunnerConfig(__DIR__, []));
 
         $this->assertInstanceOf('PhpBench\Model\Suite', $suite);
         $this->assertNoErrors($suite);
@@ -375,7 +375,7 @@ class RunnerTest extends TestCase
                 $callback($args);
             });
 
-        $suite = $this->runner->run(new RunnerContext(
+        $suite = $this->runner->run(new RunnerConfig(
             __DIR__,
             [
                 'retry_threshold' => 10,
@@ -399,7 +399,7 @@ class RunnerTest extends TestCase
         $this->executor->executeMethods($this->benchmark->reveal(), ['afterClass'])->shouldBeCalled();
         $this->benchmark->getSubjects()->willReturn([]);
 
-        $this->runner->run(new RunnerContext(__DIR__));
+        $this->runner->run(new RunnerConfig(__DIR__));
     }
 
     /**
@@ -418,7 +418,7 @@ class RunnerTest extends TestCase
             ->shouldBeCalledTimes(1)
             ->willThrow(new \Exception('Foobar', null, new \InvalidArgumentException('Barfoo')));
 
-        $suite = $this->runner->run(new RunnerContext(
+        $suite = $this->runner->run(new RunnerConfig(
             __DIR__
         ));
 
@@ -448,7 +448,7 @@ class RunnerTest extends TestCase
         $this->executor->execute(Argument::type('PhpBench\Benchmark\Metadata\SubjectMetadata'), Argument::type('PhpBench\Model\Iteration'), $this->executorConfig)
             ->shouldBeCalledTimes(1)
             ->will($this->loadIterationResultCallback());
-        $suite = $this->runner->run(new RunnerContext(
+        $suite = $this->runner->run(new RunnerConfig(
             __DIR__
         ));
         $envInformations = $suite->getEnvInformations();
