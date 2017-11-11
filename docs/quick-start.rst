@@ -144,7 +144,7 @@ And you should see some output similar to the following:
     +-------------------+---------------+-------+--------+------+------+-----+----------+------------+---------+-------+
     | benchmark         | subject       | group | params | revs | iter | rej | mem      | time       | z-score | diff  |
     +-------------------+---------------+-------+--------+------+------+-----+----------+------------+---------+-------+
-    | TimeConsumerBench | benchConsume  |       | []     | 1    | 0    | 0   | 265,936b | 173.0000μs | 0.00σ   | 0.00% |
+    | TimeConsumerBench | benchConsume  |       | []     | 1    | 0    | 0   | 265,936b | 173.0000μs | 0.00σ   | 1.00x |
     +-------------------+---------------+-------+--------+------+------+-----+----------+------------+---------+-------+
 
 You may have guessed that the code was only executed once (as indicated by the
