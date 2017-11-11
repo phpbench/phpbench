@@ -38,7 +38,7 @@ class CartesianParameterIterator implements \Iterator
 
     public function next()
     {
-        for ($index = 0; $index <= $this->max; ++$index) {
+        for ($index = 0; $index <= $this->max; $index++) {
             $this->sets[$index]->next();
 
             if (true === $this->sets[$index]->valid()) {

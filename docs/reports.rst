@@ -170,12 +170,12 @@ default this will use the ``mean``, you can specify a different value using the 
 .. code-block:: bash
 
     $ phpbench run --report='generator: "table", cols: ["subject", "revs", "mean", "diff"]'
-    +---------------+------+---------+--------+
-    | subject       | revs | mean    | diff   |
-    +---------------+------+---------+--------+
-    | benchVariance | 100  | 12.05μs | 0.00%  |
-    | benchStDev    | 100  | 12.53μs | +4.03% |
-    +---------------+------+---------+--------+
+    +---------------+------+--------+---------+
+    | subject       | revs | mean   | diff    |
+    +---------------+------+--------+---------+
+    | benchVariance | 100  | 6.73μs | 0.00%   |
+    | benchStDev    | 100  | 8.11μs | +20.39% |
+    +---------------+------+--------+---------+
 
 Sorting
 ~~~~~~~
@@ -186,19 +186,6 @@ Sorting can be achieved on multiple columns in either ascending (``asc``) or des
 
     $ phpbench run --report='generator: "table", cols: ["subject", "revs", "mean", "diff"], sort: {subject: "asc", mean: "desc"}'
 
-	+-------------+------+---------+---------+
-	| subject     | revs | mean    | diff    |
-	+-------------+------+---------+---------+
-	| benchMd5    | 1    | 3.600μs | +89.32% |
-	| benchMd5    | 10   | 0.680μs | +43.44% |
-	| benchMd5    | 100  | 0.420μs | +8.43%  |
-	| benchSha1   | 1    | 5.000μs | +92.31% |
-	| benchSha1   | 10   | 0.900μs | +57.27% |
-	| benchSha1   | 100  | 0.494μs | +22.15% |
-	| benchSha256 | 1    | 4.600μs | +91.64% |
-	| benchSha256 | 10   | 1.320μs | +70.86% |
-	| benchSha256 | 100  | 0.847μs | +54.59% |
-	+-------------+------+---------+---------+
 
 Default Reports
 ---------------
@@ -216,13 +203,13 @@ Shows aggregate details of each set of iterations:
 
 .. code-block:: bash
 
-    +------------------+-------------+---------+--------+------+-----+----------+---------+---------+---------+---------+---------+--------+
-    | benchmark        | subject     | groups  | params | revs | its | mem_peak | best    | mean    | mode    | worst   | stdev   | rstdev |
-    +------------------+-------------+---------+--------+------+-----+----------+---------+---------+---------+---------+---------+--------+
-    | HashingBenchmark | benchMd5    | hashing | []     | 1000 | 10  | 272,616b | 2.470μs | 2.636μs | 2.621μs | 2.805μs | 0.093μs | 3.55%  |
-    | HashingBenchmark | benchSha1   | hashing | []     | 1000 | 10  | 272,616b | 2.640μs | 2.837μs | 2.903μs | 2.937μs | 0.097μs | 3.43%  |
-    | HashingBenchmark | benchSha256 | hashing | []     | 1000 | 10  | 272,616b | 2.735μs | 3.021μs | 2.988μs | 3.247μs | 0.159μs | 5.26%  |
-    +------------------+-------------+---------+--------+------+-----+----------+---------+---------+---------+---------+---------+--------+
+    +--------------+-------------+--------+--------+------+-----+------------+---------+---------+---------+---------+---------+--------+-------+
+    | benchmark    | subject     | groups | params | revs | its | mem_peak   | best    | mean    | mode    | worst   | stdev   | rstdev | diff  |
+    +--------------+-------------+--------+--------+------+-----+------------+---------+---------+---------+---------+---------+--------+-------+
+    | HashingBench | benchMd5    |        | []     | 1000 | 10  | 1,255,792b | 0.931μs | 0.979μs | 0.957μs | 1.153μs | 0.062μs | 6.37%  | 1.00x |
+    | HashingBench | benchSha1   |        | []     | 1000 | 10  | 1,255,792b | 0.988μs | 1.015μs | 1.004μs | 1.079μs | 0.026μs | 2.57%  | 1.04x |
+    | HashingBench | benchSha256 |        | []     | 1000 | 10  | 1,255,792b | 1.273μs | 1.413μs | 1.294μs | 1.994μs | 0.242μs | 17.16% | 1.44x |
+    +--------------+-------------+--------+--------+------+-----+------------+---------+---------+---------+---------+---------+--------+-------+
 
 It is uses the ``table`` generator, see :ref:`generator_table` for more information.
 
@@ -234,16 +221,16 @@ The default report presents the result of *each iteration*:
 
 .. code-block:: bash
 
-    +------------------+-------------+---------+--------+------+------+-----+----------+----------+---------+--------+
-    | benchmark        | subject     | groups  | params | revs | iter | rej | mem_peak | time     | z-score | diff   |
-    +------------------+-------------+---------+--------+------+------+-----+----------+----------+---------+--------+
-    | HashingBenchmark | benchMd5    | hashing | []     | 1000 | 0    | 0   | 268,160b | 0.8040μs | -1σ     | -3.48% |
-    | HashingBenchmark | benchMd5    | hashing | []     | 1000 | 1    | 0   | 268,160b | 0.8620μs | +1.00σ  | +3.48% |
-    | HashingBenchmark | benchSha256 | hashing | []     | 1000 | 0    | 0   | 268,160b | 1.2880μs | +1.00σ  | +1.98% |
-    | HashingBenchmark | benchSha256 | hashing | []     | 1000 | 1    | 0   | 268,160b | 1.2380μs | -1σ     | -1.98% |
-    | HashingBenchmark | benchSha1   | hashing | []     | 1000 | 0    | 0   | 268,160b | 0.9030μs | -1σ     | -4.7%  |
-    | HashingBenchmark | benchSha1   | hashing | []     | 1000 | 1    | 0   | 268,160b | 0.9920μs | +1.00σ  | +4.70% |
-    +------------------+-------------+---------+--------+------+------+-----+----------+----------+---------+--------+
+    -------------+-------------+--------+--------+------+------+------------+----------+--------------+----------------+
+    | benchmark    | subject     | groups | params | revs | iter | mem_peak   | time_rev | comp_z_value | comp_deviation |
+    +--------------+-------------+--------+--------+------+------+------------+----------+--------------+----------------+
+    | HashingBench | benchMd5    |        | []     | 1000 | 0    | 1,255,792b | 0.985μs  | +1.00σ       | +0.20%         |
+    | HashingBench | benchMd5    |        | []     | 1000 | 1    | 1,255,792b | 0.981μs  | -1σ          | -0.2%          |
+    | HashingBench | benchSha1   |        | []     | 1000 | 0    | 1,255,792b | 0.992μs  | +1.00σ       | +0.05%         |
+    | HashingBench | benchSha1   |        | []     | 1000 | 1    | 1,255,792b | 0.991μs  | -1σ          | -0.05%         |
+    | HashingBench | benchSha256 |        | []     | 1000 | 0    | 1,255,792b | 1.533μs  | +1.00σ       | +8.68%         |
+    | HashingBench | benchSha256 |        | []     | 1000 | 1    | 1,255,792b | 1.288μs  | -1σ          | -8.68%         |
+    +--------------+-------------+--------+--------+------+------+------------+----------+--------------+----------------+
 
 It is uses the ``table`` generator, see :ref:`generator_table` for more information.
 
