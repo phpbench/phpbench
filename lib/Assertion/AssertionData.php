@@ -26,7 +26,7 @@ class AssertionData
         $this->distribution = $distribution;
     }
 
-    public static function fromDistribution(Distribution $distribution): AssertionData
+    public static function fromDistribution(Distribution $distribution): self
     {
         return new self($distribution);
     }
