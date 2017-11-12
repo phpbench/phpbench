@@ -77,6 +77,10 @@ use PhpBench\Storage\UuidResolver;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\ExecutableFinder;
+use PhpBench\Storage\Driver\Elastic\ElasticDriver;
+use PhpBench\Storage\Driver\Elastic\ElasticClient;
+use PhpBench\Serializer\ArrayEncoder;
+use PhpBench\Serializer\DocumentEncoder;
 
 class CoreExtension implements ExtensionInterface
 {
@@ -558,6 +562,10 @@ class CoreExtension implements ExtensionInterface
         $container->register('serializer.decoder.xml', function (Container $container) {
             return new XmlDecoder();
         });
+
+        $container->register('serializer.encoder.document', function (Container $container) {
+            return new DocumentEncoder();
+        });
     }
 
     private function registerStorage(Container $container)
@@ -586,6 +594,19 @@ class CoreExtension implements ExtensionInterface
                 $container->get('serializer.decoder.xml')
             );
         }, ['storage_driver' => ['name' => 'xml']]);
+
+        $container->register('storage.driver.elastic', function (Container $container) {
+            return new ElasticDriver(
+                $container->get('storage.elastic.client'),
+                $container->get('serializer.encoder.document')
+            );
+        }, ['storage_driver' => ['name' => 'elastic']]);
+
+        $container->register('storage.elastic.client', function (Container $container) {
+            return new ElasticClient([
+                'port' => 9201,
+            ]);
+        });
 
         $container->register('storage.uuid_resolver', function (Container $container) {
             return new UuidResolver(

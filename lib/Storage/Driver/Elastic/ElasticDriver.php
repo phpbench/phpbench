@@ -8,7 +8,8 @@ use PhpBench\Expression\Constraint\Constraint;
 use BadMethodCallException;
 use PhpBench\Storage\Driver\Elastic\ElasticClient;
 use PhpBench\Model\Suite;
-
+use PhpBench\Serializer\ArrayEncoder;
+use PhpBench\Serializer\DocumentEncoder;
 
 class ElasticDriver implements DriverInterface
 {
@@ -17,10 +18,16 @@ class ElasticDriver implements DriverInterface
      */
     private $elasticClient;
 
-    public function __construct(ElasticClient $elasticClient, ArrayEncoder $arrayEncoder)
+    /**
+     * @var ArrayEncoder
+     */
+    private $documentEncoder;
+
+
+    public function __construct(ElasticClient $elasticClient, DocumentEncoder $documentEncoder)
     {
         $this->elasticClient = $elasticClient;
-        $this->arrayEncoder = $arrayEncoder;
+        $this->documentEncoder = $documentEncoder;
     }
 
     /**
@@ -30,7 +37,12 @@ class ElasticDriver implements DriverInterface
     {
         /** @var Suite $suite */
         foreach ($collection as $suite) {
-            $this->elasticClient->put($suite->getUuid(), $suite->toArray());
+            foreach ($this->documentEncoder->documentsFromSuite($suite) as $id => $document) {
+                $this->elasticClient->put(
+                    $id,
+                    $document
+                );
+            }
         }
     }
 

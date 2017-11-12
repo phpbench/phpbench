@@ -15,6 +15,7 @@ namespace PhpBench\Model;
 use PhpBench\Assertion\AssertionFailures;
 use PhpBench\Assertion\AssertionWarnings;
 use PhpBench\Environment\Information;
+use DateTime;
 
 /**
  * Represents a Suite.
@@ -85,7 +86,7 @@ class Suite implements \IteratorAggregate
         return $this->contextName;
     }
 
-    public function getDate()
+    public function getDate(): DateTime
     {
         return $this->date;
     }
