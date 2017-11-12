@@ -12,6 +12,7 @@
 
 namespace PhpBench\Console\Command\Handler;
 
+use InvalidArgumentException;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Benchmark\RunnerConfig;
 use PhpBench\Model\Suite;
@@ -21,7 +22,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use InvalidArgumentException;
 
 class RunnerHandler
 {

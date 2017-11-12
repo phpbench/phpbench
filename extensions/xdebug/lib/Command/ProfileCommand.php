@@ -12,6 +12,7 @@
 
 namespace PhpBench\Extensions\XDebug\Command;
 
+use PhpBench\Benchmark\RunnerConfig;
 use PhpBench\Console\Command\Configure\Executor;
 use PhpBench\Console\Command\Handler\RunnerHandler;
 use PhpBench\Extensions\XDebug\Command\Handler\OutputDirHandler;
@@ -23,7 +24,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
-use PhpBench\Benchmark\RunnerConfig;
 
 class ProfileCommand extends Command
 {

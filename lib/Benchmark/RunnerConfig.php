@@ -12,7 +12,6 @@
 
 namespace PhpBench\Benchmark;
 
-use PhpBench\Benchmark\RunnerConfig;
 use InvalidArgumentException;
 
 /**
@@ -90,12 +89,12 @@ class RunnerConfig
      */
     private $parameters = [];
 
-    public static function create(): RunnerConfig
+    public static function create(): self
     {
-        return new RunnerConfig();
+        return new self();
     }
 
-    public function merge(RunnerConfig $config): RunnerConfig
+    public function merge(self $config): self
     {
         $default = new self();
         $new = clone $this;
@@ -265,9 +264,9 @@ class RunnerConfig
     }
 
     /**
-     * @var string|array $executor
+     * @var string|array
      */
-    public function withExecutor($executor = null): RunnerConfig
+    public function withExecutor($executor = null): self
     {
         $new = clone $this;
         $new->executor = $executor;
@@ -275,7 +274,7 @@ class RunnerConfig
         return $new;
     }
 
-    public function withContextName(string $contextName = null): RunnerConfig
+    public function withContextName(string $contextName = null): self
     {
         $new = clone $this;
         $new->contextName = $contextName;
@@ -283,7 +282,7 @@ class RunnerConfig
         return $new;
     }
 
-    public function withFilters(array $filters = null): RunnerConfig
+    public function withFilters(array $filters = null): self
     {
         $new = clone $this;
         $new->filters = $filters;
@@ -291,7 +290,7 @@ class RunnerConfig
         return $new;
     }
 
-    public function withGroups(array $groups = null): RunnerConfig
+    public function withGroups(array $groups = null): self
     {
         $new = clone $this;
         $new->groups = $groups;
@@ -299,7 +298,7 @@ class RunnerConfig
         return $new;
     }
 
-    public function withIterations(array $iterations = null): RunnerConfig
+    public function withIterations(array $iterations = null): self
     {
         $this->assertArrayValuesGreaterThanZero($iterations);
 
@@ -309,7 +308,7 @@ class RunnerConfig
         return $new;
     }
 
-    public function withRevolutions(array $revolutions = null): RunnerConfig
+    public function withRevolutions(array $revolutions = null): self
     {
         $this->assertArrayValuesGreaterThanZero('revs', $revolutions);
 
@@ -319,7 +318,7 @@ class RunnerConfig
         return $new;
     }
 
-    public function withParameters(array $parameters = null): RunnerConfig
+    public function withParameters(array $parameters = null): self
     {
         $new = clone $this;
         $new->parameters = $parameters;
@@ -327,7 +326,7 @@ class RunnerConfig
         return $new;
     }
 
-    public function withRetryThreshold(float $retryThreshold = null): RunnerConfig
+    public function withRetryThreshold(float $retryThreshold = null): self
     {
         $this->assertGreaterThanZero('retry threshold', $retryThreshold);
 
@@ -337,7 +336,7 @@ class RunnerConfig
         return $new;
     }
 
-    public function withSleep(int $sleep = null): RunnerConfig
+    public function withSleep(int $sleep = null): self
     {
         $this->assertGreaterThanZero('sleep', $sleep);
 
@@ -347,7 +346,7 @@ class RunnerConfig
         return $new;
     }
 
-    public function withWarmup(array $warmup = null): RunnerConfig
+    public function withWarmup(array $warmup = null): self
     {
         $this->assertArrayValuesGreaterThanZero('warmup', $warmup);
 
@@ -357,7 +356,7 @@ class RunnerConfig
         return $new;
     }
 
-    public function withOutputTimePrecision(int $outputTimePrecision = null): RunnerConfig
+    public function withOutputTimePrecision(int $outputTimePrecision = null): self
     {
         $new = clone $this;
         $new->outputTimePrecision = $outputTimePrecision;
@@ -365,7 +364,7 @@ class RunnerConfig
         return $new;
     }
 
-    public function withOutputTimeUnit(string $outputTimeUnit = null): RunnerConfig
+    public function withOutputTimeUnit(string $outputTimeUnit = null): self
     {
         $new = clone $this;
         $new->outputTimeUnit = $outputTimeUnit;
@@ -373,7 +372,7 @@ class RunnerConfig
         return $new;
     }
 
-    public function withStopOnError(bool $stopOnError = null): RunnerConfig
+    public function withStopOnError(bool $stopOnError = null): self
     {
         $new = clone $this;
         $new->stopOnError = $stopOnError;
@@ -381,7 +380,7 @@ class RunnerConfig
         return $new;
     }
 
-    public function withAssertions(array $assertions = null): RunnerConfig
+    public function withAssertions(array $assertions = null): self
     {
         $new = clone $this;
         $new->assertions = $assertions;

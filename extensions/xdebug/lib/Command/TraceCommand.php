@@ -12,6 +12,7 @@
 
 namespace PhpBench\Extensions\XDebug\Command;
 
+use PhpBench\Benchmark\RunnerConfig;
 use PhpBench\Console\Command\Configure\Executor;
 use PhpBench\Console\Command\Handler\RunnerHandler;
 use PhpBench\Extensions\XDebug\Command\Handler\OutputDirHandler;
@@ -21,7 +22,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use PhpBench\Benchmark\RunnerConfig;
 
 class TraceCommand extends Command
 {

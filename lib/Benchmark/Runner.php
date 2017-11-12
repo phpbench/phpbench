@@ -32,7 +32,6 @@ use PhpBench\Progress\Logger\NullLogger;
 use PhpBench\Progress\LoggerInterface;
 use PhpBench\Registry\Config;
 use PhpBench\Registry\ConfigurableRegistry;
-use PhpBench\Benchmark\RunnerConfig;
 
 /**
  * The benchmark runner.

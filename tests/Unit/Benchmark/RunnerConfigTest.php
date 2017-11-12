@@ -19,18 +19,18 @@ class RunnerConfigTest extends TestCase
 {
     const TEST_CONTEXT_NAME = 'context_name';
     const TEST_FILTERS = ['filter_one', 'filter_two'];
-    const TEST_ITERATIONS = [ 5 ];
-    const TEST_REVOLUTIONS = [ 6 ];
-    const TEST_PARAMETERS = [ 'one' => 1 ];
+    const TEST_ITERATIONS = [5];
+    const TEST_REVOLUTIONS = [6];
+    const TEST_PARAMETERS = ['one' => 1];
     const TEST_SLEEP = 100;
     const TEST_RETRY_THRESHOLD = 10;
-    const TEST_WARMUP = [ 10 ];
-    const TEST_GROUPS = [ 'group1' ];
+    const TEST_WARMUP = [10];
+    const TEST_GROUPS = ['group1'];
     const TEST_OUTPUT_TIME_UNIT = 'milliseconds';
     const TEST_OUTPUT_TIME_PRECISION = 2;
     const TEST_EXECUTOR = 'microtimre';
     const TEST_STOP_ON_ERROR = true;
-    const TEST_ASSERTIONS = [ 'x > y' ];
+    const TEST_ASSERTIONS = ['x > y'];
 
     /**
      * It should throw an exception if the retry threshold is less than zero.
@@ -45,14 +45,14 @@ class RunnerConfigTest extends TestCase
     }
 
     /**
-     * It should throw an exception if the revolutions are less than zero
+     * It should throw an exception if the revolutions are less than zero.
      *
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage greater than
      */
     public function testRevolutionsLessThanZero()
     {
-        RunnerConfig::create()->withRevolutions([ -1 ]);
+        RunnerConfig::create()->withRevolutions([-1]);
     }
 
     public function testBuild()
@@ -115,9 +115,8 @@ class RunnerConfigTest extends TestCase
     {
         $config = RunnerConfig::create()
             ->withParameters([
-                'nb_elements' => 10
-            ])
-        ;
+                'nb_elements' => 10,
+            ]);
 
         $this->assertEquals(
             [
