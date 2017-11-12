@@ -12,6 +12,7 @@
 
 namespace PhpBench\Extensions\XDebug\Command;
 
+use PhpBench\Benchmark\RunnerConfig;
 use PhpBench\Console\Command\Configure\Executor;
 use PhpBench\Console\Command\Handler\RunnerHandler;
 use PhpBench\Extensions\XDebug\Command\Handler\OutputDirHandler;
@@ -66,13 +67,13 @@ EOT
         $this->output = $output;
         $dump = $input->getOption('dump');
 
-        $suite = $this->runnerHandler->runFromInput($input, $output, [
-            'executor' => [
+        $config = RunnerConfig::create()
+            ->withExecutor([
                 'executor' => 'xdebug_trace',
                 'output_dir' => $outputDir,
-            ],
-            'iterations' => [1],
-        ]);
+            ])
+            ->withIterations([1]);
+        $suite = $this->runnerHandler->runFromInput($input, $output, $config);
 
         if ($dump) {
             foreach ($suite->getIterations() as $iteration) {

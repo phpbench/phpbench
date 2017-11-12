@@ -12,8 +12,9 @@
 
 namespace PhpBench\Console\Command\Handler;
 
+use InvalidArgumentException;
 use PhpBench\Benchmark\Runner;
-use PhpBench\Benchmark\RunnerContext;
+use PhpBench\Benchmark\RunnerConfig;
 use PhpBench\Model\Suite;
 use PhpBench\Progress\LoggerRegistry;
 use Symfony\Component\Console\Command\Command;
@@ -64,22 +65,17 @@ class RunnerHandler
         $command->addOption('php-disable-ini', null, InputOption::VALUE_NONE, 'Do not load the PHP INI file');
     }
 
-    public function runFromInput(InputInterface $input, OutputInterface $output, array $options = []): Suite
+    public function runFromInput(InputInterface $input, OutputInterface $output, RunnerConfig $config): Suite
     {
-        $context = new RunnerContext(
-            $input->getArgument('path') ?: $this->benchPath,
-            array_merge(
-                [
-                    'parameters' => $this->getParameters($input->getOption('parameters')),
-                    'revolutions' => $input->getOption('revs'),
-                    'filters' => $input->getOption('filter'),
-                    'groups' => $input->getOption('group'),
-                    'executor' => $input->getOption('executor'),
-                    'stop_on_error' => $input->getOption('stop-on-error'),
-                ],
-                $options
-            )
-        );
+        $default = RunnerConfig::create()
+            ->withRevolutions($input->getOption('revs'))
+            ->withParameters($this->getParameters($input->getOption('parameters')))
+            ->withFilters($input->getOption('filter'))
+            ->withGroups($input->getOption('group'))
+            ->withExecutor($input->getOption('executor'))
+            ->withStopOnError($input->getOption('stop-on-error'));
+
+        $config = $config->merge($default);
 
         $progressLoggerName = $input->getOption('progress') ?: $this->defaultProgress;
 
@@ -87,7 +83,15 @@ class RunnerHandler
         $progressLogger->setOutput($output);
         $this->runner->setProgressLogger($progressLogger);
 
-        return $this->runner->run($context);
+        $path = $input->getArgument('path') ?: $this->benchPath;
+
+        if (null === $path) {
+            throw new InvalidArgumentException(sprintf(
+                'You must either specify or configure a path'
+            ));
+        }
+
+        return $this->runner->run($path, $config);
     }
 
     private function getParameters($parametersJson)

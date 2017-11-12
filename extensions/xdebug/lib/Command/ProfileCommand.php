@@ -12,6 +12,7 @@
 
 namespace PhpBench\Extensions\XDebug\Command;
 
+use PhpBench\Benchmark\RunnerConfig;
 use PhpBench\Console\Command\Configure\Executor;
 use PhpBench\Console\Command\Handler\RunnerHandler;
 use PhpBench\Extensions\XDebug\Command\Handler\OutputDirHandler;
@@ -71,8 +72,8 @@ EOT
         }
 
         $generatedFiles = [];
-        $this->runnerHandler->runFromInput($input, $output, [
-            'executor' => [
+        $config = RunnerConfig::create()
+            ->withExecutor([
                 'executor' => 'xdebug_profile',
                 'output_dir' => $outputDir,
                 'callback' => function ($iteration) use ($outputDir, $guiBin, &$generatedFiles) {
@@ -85,9 +86,9 @@ EOT
                         $process->run();
                     }
                 },
-            ],
-            'iterations' => [1],
-        ]);
+            ])
+            ->withIterations([1]);
+        $this->runnerHandler->runFromInput($input, $output, $config);
 
         $output->write(PHP_EOL);
         $output->writeln(sprintf(

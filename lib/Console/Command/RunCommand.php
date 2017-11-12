@@ -12,6 +12,7 @@
 
 namespace PhpBench\Console\Command;
 
+use PhpBench\Benchmark\RunnerConfig;
 use PhpBench\Console\Command\Handler\DumpHandler;
 use PhpBench\Console\Command\Handler\ReportHandler;
 use PhpBench\Console\Command\Handler\RunnerHandler;
@@ -99,17 +100,18 @@ EOT
     {
         $this->timeUnitHandler->timeUnitFromInput($input);
         $this->reportHandler->validateReportsFromInput($input);
-        $suite = $this->runnerHandler->runFromInput($input, $output, [
-            'context_name' => $input->getOption('context'),
-            'retry_threshold' => $input->getOption('retry-threshold'),
-            'sleep' => $input->getOption('sleep'),
-            'iterations' => $input->getOption('iterations'),
-            'warmup' => $input->getOption('warmup'),
-            'assertions' => $input->getOption('assert'),
-        ]);
+
+        $config = RunnerConfig::create()
+            ->withContextName($input->getOption('context'))
+            ->withRetryThreshold($input->getOption('retry-threshold'))
+            ->withSleep($input->getOption('sleep'))
+            ->withIterations($input->getOption('iterations'))
+            ->withWarmup($input->getOption('warmup'))
+            ->withAssertions($input->getOption('assert'));
+
+        $suite = $this->runnerHandler->runFromInput($input, $output, $config);
 
         $collection = new SuiteCollection([$suite]);
-
         $this->dumpHandler->dumpFromInput($input, $output, $collection);
 
         if (true === $input->getOption('store')) {
