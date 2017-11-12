@@ -73,6 +73,10 @@ class PhpBench
             return $path;
         }
 
+        if (PHP_OS === 'WINNT') {
+            return stream_resolve_include_path($path);
+        }
+
         return getcwd() . DIRECTORY_SEPARATOR . $path;
     }
 
