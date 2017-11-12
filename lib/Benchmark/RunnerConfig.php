@@ -23,7 +23,7 @@ class RunnerConfig
     /**
      * @var string
      */
-    private $executor;
+    private $executor = 'microtime';
 
     /**
      * @var string
@@ -33,22 +33,22 @@ class RunnerConfig
     /**
      * @var array
      */
-    private $filters;
+    private $filters = [];
 
     /**
-     * @var array
+     * @var string[]
      */
-    private $groups;
+    private $groups = [];
 
     /**
-     * @var int
+     * @var int[]
      */
-    private $iterations;
+    private $iterations = [];
 
     /**
-     * @var int
+     * @var int[]
      */
-    private $revolutions;
+    private $revolutions = [];
 
     /**
      * @var float
@@ -63,7 +63,7 @@ class RunnerConfig
     /**
      * @var int
      */
-    private $warmup;
+    private $warmup = [];
 
     /**
      * @var int
@@ -97,10 +97,11 @@ class RunnerConfig
 
     public function merge(RunnerConfig $config): RunnerConfig
     {
+        $default = new self();
         $new = clone $this;
 
         foreach ($config as $property => $value) {
-            if (null !== $value) {
+            if ($value !== $default->$property) {
                 $new->$property = $value;
             }
         }
@@ -155,7 +156,7 @@ class RunnerConfig
     /**
      * Return the number of warmup revolutions that should be exectuted.
      *
-     * @param int $default
+     * @param array $default
      */
     public function getWarmup($default = null)
     {
@@ -343,9 +344,9 @@ class RunnerConfig
         return $new;
     }
 
-    public function withWarmup(int $warmup = null): RunnerConfig
+    public function withWarmup(array $warmup = null): RunnerConfig
     {
-        $this->assertGreaterThanZero('warmup', $warmup);
+        $this->assertArrayValuesGreaterThanZero('warmup', $warmup);
 
         $new = clone $this;
         $new->warmup = $warmup;
@@ -401,7 +402,7 @@ class RunnerConfig
         ));
     }
 
-    private function assertGreaterThanZero(string $field, float $value)
+    private function assertGreaterThanZero(string $field, float $value = null)
     {
         if (null === $value) {
             return;

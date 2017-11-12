@@ -24,7 +24,7 @@ class RunnerConfigTest extends TestCase
     const TEST_PARAMETERS = [ 'one' => 1 ];
     const TEST_SLEEP = 100;
     const TEST_RETRY_THRESHOLD = 10;
-    const TEST_WARMUP = 10;
+    const TEST_WARMUP = [ 10 ];
     const TEST_GROUPS = [ 'group1' ];
     const TEST_OUTPUT_TIME_UNIT = 'milliseconds';
     const TEST_OUTPUT_TIME_PRECISION = 2;

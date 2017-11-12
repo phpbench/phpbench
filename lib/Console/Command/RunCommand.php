@@ -106,7 +106,7 @@ EOT
             ->withRetryThreshold($input->getOption('retry-threshold'))
             ->withSleep($input->getOption('sleep'))
             ->withIterations($input->getOption('iterations'))
-            ->withWarmUp((int) $input->getOption('warmup'))
+            ->withWarmup($input->getOption('warmup'))
             ->withAssertions($input->getOption('assert'));
 
         $suite = $this->runnerHandler->runFromInput($input, $output, $config);
