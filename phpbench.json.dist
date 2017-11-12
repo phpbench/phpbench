@@ -2,12 +2,16 @@
     "bootstrap": "vendor/autoload.php",
     "path": "benchmarks",
     "storage": "elastic",
+    "storage.elastic.connection": {
+        "port": 9201
+    },
     "php_config": {
         "memory_limit": "1G"
     },
     "extensions": [
         "PhpBench\\Extensions\\XDebug\\XDebugExtension",
-        "PhpBench\\Extensions\\Dbal\\DbalExtension"
+        "PhpBench\\Extensions\\Dbal\\DbalExtension",
+        "PhpBench\\Extensions\\Elastic\\ElasticExtension"
     ],
     "reports": {
         "all": {

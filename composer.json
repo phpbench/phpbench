@@ -42,7 +42,8 @@
         "psr-4": {
             "PhpBench\\": "lib/",
             "PhpBench\\Extensions\\Dbal\\": "extensions/dbal/lib/",
-            "PhpBench\\Extensions\\XDebug\\": "extensions/xdebug/lib/"
+            "PhpBench\\Extensions\\XDebug\\": "extensions/xdebug/lib/",
+            "PhpBench\\Extensions\\Elastic\\": "extensions/elastic/lib/"
         }
     },
     "suggest": {
@@ -54,7 +55,8 @@
             "PhpBench\\Benchmarks\\": "benchmarks/",
             "PhpBench\\Extensions\\XDebug\\Tests\\": "extensions/xdebug/tests/",
             "PhpBench\\Extensions\\Dbal\\Tests\\": "extensions/dbal/tests/",
-            "PhpBench\\Extensions\\Dbal\\Benchmarks\\": "extensions/dbal/benchmarks/"
+            "PhpBench\\Extensions\\Dbal\\Benchmarks\\": "extensions/dbal/benchmarks/",
+            "PhpBench\\Extensions\\Elastic\\Tests\\": "extensions/elastic/tests/"
         }
     },
     "extra": {

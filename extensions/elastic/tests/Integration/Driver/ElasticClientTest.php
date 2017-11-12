@@ -1,11 +1,11 @@
 <?php
 
-namespace PhpBench\Tests\Integration\Storage\Driver\Elastic;
+namespace PhpBench\Extensions\Elastic\Tests\Integration;
 
 use PHPUnit\Framework\TestCase;
-use PhpBench\Storage\Driver\Elastic\ElasticClient;
+use PhpBench\Extensions\Elastic\Driver\ElasticClient;
 
-class ElasticClientTest extends TestCase
+class Driver extends TestCase
 {
     public function testElasticClient()
     {

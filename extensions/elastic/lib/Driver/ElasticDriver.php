@@ -1,12 +1,12 @@
 <?php
 
-namespace PhpBench\Storage\Driver\Elastic;
+namespace PhpBench\Extensions\Elastic\Driver;
 
 use PhpBench\Storage\DriverInterface;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Expression\Constraint\Constraint;
 use BadMethodCallException;
-use PhpBench\Storage\Driver\Elastic\ElasticClient;
+use PhpBench\Extensions\Elastic\Driver\ElasticClient;
 use PhpBench\Model\Suite;
 use PhpBench\Serializer\ArrayEncoder;
 use PhpBench\Serializer\DocumentEncoder;
@@ -22,7 +22,6 @@ class ElasticDriver implements DriverInterface
      * @var ArrayEncoder
      */
     private $documentEncoder;
-
 
     public function __construct(ElasticClient $elasticClient, DocumentEncoder $documentEncoder)
     {
@@ -61,6 +60,9 @@ class ElasticDriver implements DriverInterface
      */
     public function fetch($runId)
     {
+        throw new BadMethodCallException(sprintf(
+            'Fetch not supported'
+        ));
     }
 
     /**
@@ -68,6 +70,9 @@ class ElasticDriver implements DriverInterface
      */
     public function has($runId)
     {
+        throw new BadMethodCallException(sprintf(
+            'Has not supported'
+        ));
     }
 
     /**
@@ -75,6 +80,9 @@ class ElasticDriver implements DriverInterface
      */
     public function delete($runId)
     {
+        throw new BadMethodCallException(sprintf(
+            'Delete not supported'
+        ));
     }
 
     /**
@@ -82,5 +90,8 @@ class ElasticDriver implements DriverInterface
      */
     public function history()
     {
+        throw new BadMethodCallException(sprintf(
+            'History not supported'
+        ));
     }
 }
