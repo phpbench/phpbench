@@ -23,6 +23,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
+use PhpBench\Benchmark\RunnerConfig;
 
 class ProfileCommand extends Command
 {
@@ -71,8 +72,8 @@ EOT
         }
 
         $generatedFiles = [];
-        $this->runnerHandler->runFromInput($input, $output, [
-            'executor' => [
+        $config = RunnerConfig::create()
+            ->withExecutor([
                 'executor' => 'xdebug_profile',
                 'output_dir' => $outputDir,
                 'callback' => function ($iteration) use ($outputDir, $guiBin, &$generatedFiles) {
@@ -85,9 +86,9 @@ EOT
                         $process->run();
                     }
                 },
-            ],
-            'iterations' => [1],
-        ]);
+            ])
+            ->withIterations([1]);
+        $this->runnerHandler->runFromInput($input, $output, $config);
 
         $output->write(PHP_EOL);
         $output->writeln(sprintf(

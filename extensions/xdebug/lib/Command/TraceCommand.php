@@ -21,6 +21,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use PhpBench\Benchmark\RunnerConfig;
 
 class TraceCommand extends Command
 {
@@ -66,13 +67,13 @@ EOT
         $this->output = $output;
         $dump = $input->getOption('dump');
 
-        $suite = $this->runnerHandler->runFromInput($input, $output, [
-            'executor' => [
+        $config = RunnerConfig::create()
+            ->withExecutor([
                 'executor' => 'xdebug_trace',
                 'output_dir' => $outputDir,
-            ],
-            'iterations' => [1],
-        ]);
+            ])
+            ->withIterations([1]);
+        $suite = $this->runnerHandler->runFromInput($input, $output, $config);
 
         if ($dump) {
             foreach ($suite->getIterations() as $iteration) {

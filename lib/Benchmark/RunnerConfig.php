@@ -264,7 +264,10 @@ class RunnerConfig
         return $this->assertions ?: [];
     }
 
-    public function withExecutor(string $executor = null): RunnerConfig
+    /**
+     * @var string|array $executor
+     */
+    public function withExecutor($executor = null): RunnerConfig
     {
         $new = clone $this;
         $new->executor = $executor;
