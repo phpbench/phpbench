@@ -70,6 +70,10 @@ class Payload
      */
     public function __construct($template, array $tokens = [], $phpBinary = PHP_BINARY, Process $process = null)
     {
+        if (PHP_OS === 'WINNT') {
+            $phpBinary = sprintf('"%s"', $phpBinary);
+        }
+
         $this->template = $template;
         $this->process = $process ?: new Process($phpBinary);
         $this->tokens = $tokens;
