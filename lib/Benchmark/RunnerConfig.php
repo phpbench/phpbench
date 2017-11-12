@@ -13,6 +13,7 @@
 namespace PhpBench\Benchmark;
 
 use PhpBench\Benchmark\RunnerConfig;
+use InvalidArgumentException;
 
 /**
  * The benchmark runner context.
@@ -296,6 +297,8 @@ class RunnerConfig
 
     public function withIterations(array $iterations = null): RunnerConfig
     {
+        $this->assertArrayValuesGreaterThanZero($iterations);
+
         $new = clone $this;
         $new->iterations = $iterations;
 
@@ -304,6 +307,8 @@ class RunnerConfig
 
     public function withRevolutions(array $revolutions = null): RunnerConfig
     {
+        $this->assertArrayValuesGreaterThanZero('revs', $revolutions);
+
         $new = clone $this;
         $new->revolutions = $revolutions;
 
@@ -320,6 +325,8 @@ class RunnerConfig
 
     public function withRetryThreshold(float $retryThreshold = null): RunnerConfig
     {
+        $this->assertGreaterThanZero('retry threshold', $retryThreshold);
+
         $new = clone $this;
         $new->retryThreshold = $retryThreshold;
 
@@ -328,6 +335,8 @@ class RunnerConfig
 
     public function withSleep(int $sleep = null): RunnerConfig
     {
+        $this->assertGreaterThanZero('sleep', $sleep);
+
         $new = clone $this;
         $new->sleep = $sleep;
 
@@ -336,6 +345,8 @@ class RunnerConfig
 
     public function withWarmup(int $warmup = null): RunnerConfig
     {
+        $this->assertGreaterThanZero('warmup', $warmup);
+
         $new = clone $this;
         $new->warmup = $warmup;
 
@@ -372,5 +383,37 @@ class RunnerConfig
         $new->assertions = $assertions;
 
         return $new;
+    }
+
+    private function assertArrayValuesGreaterThanZero($field, array $values = [])
+    {
+        $values = array_filter($values, function ($value) {
+            return $value <= 0;
+        });
+
+        if (empty($values)) {
+            return;
+        }
+
+        throw new InvalidArgumentException(sprintf(
+            'All values for "%s" must be greater than 0, the following were less than 0 "%s"',
+            $field, implode('", "', $values)
+        ));
+    }
+
+    private function assertGreaterThanZero(string $field, float $value)
+    {
+        if (null === $value) {
+            return;
+        }
+
+        if ($value > 0) {
+            return;
+        }
+
+        throw new InvalidArgumentException(sprintf(
+            '"%s" must be greater than 0, got "%s"',
+            $field, $value
+        ));
     }
 }

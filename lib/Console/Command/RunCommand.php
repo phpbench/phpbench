@@ -101,7 +101,7 @@ EOT
         $this->timeUnitHandler->timeUnitFromInput($input);
         $this->reportHandler->validateReportsFromInput($input);
 
-        $context = RunnerConfig::create()
+        $config = RunnerConfig::create()
             ->withContextName($input->getOption('context'))
             ->withRetryThreshold($input->getOption('retry-threshold'))
             ->withSleep($input->getOption('sleep'))
@@ -109,10 +109,9 @@ EOT
             ->withWarmUp((int) $input->getOption('warmup'))
             ->withAssertions($input->getOption('assert'));
 
-        $suite = $this->runnerHandler->runFromInput($input, $output, $context);
+        $suite = $this->runnerHandler->runFromInput($input, $output, $config);
 
         $collection = new SuiteCollection([$suite]);
-
         $this->dumpHandler->dumpFromInput($input, $output, $collection);
 
         if (true === $input->getOption('store')) {
