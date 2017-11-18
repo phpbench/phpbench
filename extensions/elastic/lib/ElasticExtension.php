@@ -17,7 +17,7 @@ use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Extensions\Elastic\Driver\ElasticDriver;
 use PhpBench\Extensions\Elastic\Driver\ElasticClient;
-use PhpBench\Serializer\DocumentEncoder;
+use PhpBench\Extensions\Elastic\Encoder\DocumentEncoder;
 
 class ElasticExtension implements ExtensionInterface
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Serializer;
+namespace PhpBench\Extensions\Elastic\Encoder;
 
 use PhpBench\Model\Suite;
 use PhpBench\Environment\Information;
@@ -65,7 +65,9 @@ class DocumentEncoder
     {
         return [
             'parameters' => $variant->getParameterSet()->getArrayCopy(),
-            'iterations' => $variant->getIterations(),
+            'iterations' => array_map(function (Iteration $iteration) {
+                return $this->encodeIteration($iteration);
+            }, $variant->getIterations()),
             'rejects' => $variant->getRejects(),
             'revolutions' => $variant->getRevolutions(),
             'warmup' => $variant->getWarmup(),

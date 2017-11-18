@@ -9,7 +9,7 @@ use BadMethodCallException;
 use PhpBench\Extensions\Elastic\Driver\ElasticClient;
 use PhpBench\Model\Suite;
 use PhpBench\Serializer\ArrayEncoder;
-use PhpBench\Serializer\DocumentEncoder;
+use PhpBench\Extensions\Elastic\Encoder\DocumentEncoder;
 
 class ElasticDriver implements DriverInterface
 {
@@ -23,10 +23,10 @@ class ElasticDriver implements DriverInterface
      */
     private $documentEncoder;
 
-    public function __construct(ElasticClient $elasticClient, DocumentEncoder $documentEncoder)
+    public function __construct(ElasticClient $elasticClient, DocumentEncoder $documentEncoder = null)
     {
         $this->elasticClient = $elasticClient;
-        $this->documentEncoder = $documentEncoder;
+        $this->documentEncoder = $documentEncoder ?: new DocumentEncoder();
     }
 
     /**
