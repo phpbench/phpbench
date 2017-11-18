@@ -1,0 +1,11 @@
+{
+    "mappings": {
+        "variant": {
+            "properties": {
+                "suite": {
+                    "type": "keyword"
+                }
+            }
+        }
+    }
+}

@@ -18,6 +18,7 @@ use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Extensions\Elastic\Driver\ElasticDriver;
 use PhpBench\Extensions\Elastic\Driver\ElasticClient;
 use PhpBench\Extensions\Elastic\Encoder\DocumentEncoder;
+use PhpBench\Extensions\Elastic\Command\InstallCommand;
 
 class ElasticExtension implements ExtensionInterface
 {
@@ -50,6 +51,10 @@ class ElasticExtension implements ExtensionInterface
         $container->register('storage.elastic.client', function (Container $container) {
             return new ElasticClient($container->getParameter('storage.elastic.connection'));
         });
+
+        $container->register('storage.elastic.command.update_mapping', function (Container $container) {
+            return new InstallCommand($container->get('storage.elastic.client'));
+        }, ['console.command' => []]);
 
     }
 }

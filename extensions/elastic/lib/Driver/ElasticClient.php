@@ -36,19 +36,12 @@ class ElasticClient
 
     public function put(string $id, array $data)
     {
-        $this->request('PUT', $id, $data);
+        $this->request('PUT', $this->options['type'] . '/' . $id, $data);
     }
 
     public function search(array $query)
     {
-        $response = $this->request('GET','_search', $query);
-
-        if (isset($response['error'])) {
-            throw new RuntimeException(sprintf(
-                'Elastic returned an error: "%s"',
-                json_encode($response['error'])
-            ));
-        }
+        $response = $this->request('GET', $this->options['type'] . '/_search', $query);
 
         $hits = $response['hits'];
 
@@ -57,11 +50,21 @@ class ElasticClient
         }, $hits['hits']);
     }
 
+    public function install(array $config)
+    {
+        $this->request('PUT', null, $config);
+    }
+
+    public function purge()
+    {
+        $this->request('DELETE');
+    }
+
     private function request(string $method, string $suffix = null, array $data = [])
     {
         $curl = \curl_init();
         $options = [
-            CURLOPT_URL => $this->elasticUrl($suffix),
+            CURLOPT_URL => $this->indexUrl($suffix),
             CURLOPT_CUSTOMREQUEST => $method,
             CURLOPT_HTTPHEADER => [
                 'Content-Type: application/json'
@@ -93,18 +96,24 @@ class ElasticClient
             ));
         }
 
+        if (isset($response['error'])) {
+            throw new RuntimeException(sprintf(
+                'Elastic returned an error: "%s"',
+                json_encode($response['error'])
+            ));
+        }
+
         return $response;
     }
 
-    private function elasticUrl(string $suffix): string
+    private function indexUrl($suffix = null): string
     {
         $url = sprintf(
-            '%s://%s:%s/%s/%s/%s',
+            '%s://%s:%s/%s/%s',
             $this->options['scheme'],
             $this->options['host'],
             $this->options['port'],
             $this->options['index'],
-            $this->options['type'],
             $suffix
         );
 
