@@ -9,6 +9,7 @@ use PhpBench\Model\Suite;
 use DateTime;
 use PhpBench\Model\ParameterSet;
 use PhpBench\Environment\Information;
+use PhpBench\Model\SuiteCollection;
 
 class DocumentReconstructor
 {
@@ -57,11 +58,9 @@ class DocumentReconstructor
         return $suite;
     }
 
-    public function getSuite(): Suite
+    public function getSuiteCollection(): SuiteCollection
     {
-        foreach ($this->suites as $suite) {
-            return $suite;
-        }
+        return new SuiteCollection($this->suites);
     }
 
     private function benchmarkFrom(Suite $suite, array $variant): Benchmark
@@ -106,5 +105,6 @@ class DocumentReconstructor
                 ], [ $result['metrics'] ]));
             }
         }
+        $variantModel->computeStats();
     }
 }

@@ -10,6 +10,7 @@ use PhpBench\Extensions\Elastic\Driver\ElasticClient;
 use PhpBench\Model\Suite;
 use PhpBench\Serializer\ArrayEncoder;
 use PhpBench\Extensions\Elastic\Encoder\DocumentEncoder;
+use PhpBench\Extensions\Elastic\Encoder\DocumentDecoder;
 
 class ElasticDriver implements DriverInterface
 {
@@ -23,10 +24,20 @@ class ElasticDriver implements DriverInterface
      */
     private $documentEncoder;
 
-    public function __construct(ElasticClient $elasticClient, DocumentEncoder $documentEncoder = null)
+    /**
+     * @var DocumentDecoder
+     */
+    private $documentDecoder;
+
+    public function __construct(
+        ElasticClient $elasticClient,
+        DocumentEncoder $documentEncoder = null,
+        DocumentDecoder $documentDecoder = null
+    )
     {
         $this->elasticClient = $elasticClient;
         $this->documentEncoder = $documentEncoder ?: new DocumentEncoder();
+        $this->documentDecoder = $documentDecoder ?: new DocumentDecoder();
     }
 
     /**
@@ -58,17 +69,25 @@ class ElasticDriver implements DriverInterface
     /**
      * {@inheritDoc}
      */
-    public function fetch($runId)
+    public function fetch($suiteId)
     {
-        throw new BadMethodCallException(sprintf(
-            'Fetch not supported'
-        ));
+        return $this->documentDecoder->decode($this->elasticClient->search([
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                        'term' => [
+                            'suite' => $suiteId
+                        ],
+                    ],
+                ],
+            ],
+        ]));
     }
 
     /**
      * {@inheritDoc}
      */
-    public function has($runId)
+    public function has($suiteId)
     {
         throw new BadMethodCallException(sprintf(
             'Has not supported'
@@ -78,7 +97,7 @@ class ElasticDriver implements DriverInterface
     /**
      * {@inheritDoc}
      */
-    public function delete($runId)
+    public function delete($suiteId)
     {
         throw new BadMethodCallException(sprintf(
             'Delete not supported'
@@ -90,8 +109,16 @@ class ElasticDriver implements DriverInterface
      */
     public function history()
     {
-        throw new BadMethodCallException(sprintf(
-            'History not supported'
-        ));
+        $result = $this->elasticClient->search([
+            'size' => 0,
+            'aggs' => [
+                'group_by_suite' => [
+                    'terms' => [
+                        'field' => 'suite',
+                    ],
+                ],
+            ]
+        ]);
+        var_dump($result);
     }
 }

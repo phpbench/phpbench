@@ -9,11 +9,12 @@ use PhpBench\Model\Subject;
 use PhpBench\Model\Variant;
 use PhpBench\Model\Iteration;
 use DateTime;
+use PhpBench\Model\SuiteCollection;
 
 class DocumentDecoder
 {
-    public function decode(array $documents): Suite
+    public function decode(array $documents): SuiteCollection
     {
-        return (new DocumentReconstructor($documents))->getSuite();
+        return (new DocumentReconstructor($documents))->getSuiteCollection();
     }
 }

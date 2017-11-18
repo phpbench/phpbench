@@ -7,8 +7,9 @@ use PhpBench\Extensions\Elastic\Driver\ElasticClient;
 use PhpBench\Extensions\Elastic\Driver\ElasticDriver;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Tests\Util\TestUtil;
+use PhpBench\Extensions\Elastic\Tests\Integration\ElasticTestCase;
 
-class ElasticDriverTest extends TestCase
+class ElasticDriverTest extends ElasticTestCase
 {
     /**
      * @var ElasticDriver
@@ -17,14 +18,35 @@ class ElasticDriverTest extends TestCase
 
     public function setUp()
     {
-        $client = new ElasticClient([]);
-        $this->driver = new ElasticDriver($client);
+        $this->driver = new ElasticDriver($this->createClient());
     }
 
     public function testPersistAndFetch()
     {
+        $uuid = 'abcd';
+        $suiteCollection = $this->createSuiteCollection($uuid);
+        $this->driver->store($suiteCollection);
+
+        $persistedSuiteCollection = $this->driver->fetch($suiteCollection->first()->getUuid());
+        $persistedSuite = $persistedSuiteCollection->first();
+        $this->assertEquals($uuid, $persistedSuite->getUuid());
+    }
+
+    public function testHistory()
+    {
+        $suiteCollection = $this->createSuiteCollection('a');
+        $this->driver->store($suiteCollection);
+        $suiteCollection = $this->createSuiteCollection('b');
+        $this->driver->store($suiteCollection);
+
+        $this->driver->history();
+
+    }
+
+    private function createSuiteCollection(string $uuid): SuiteCollection
+    {
         $suite = TestUtil::createSuite([
-            'uuid' => '1',
+            'uuid' => $uuid,
             'subjects' => ['benchOne', 'benchTwo'],
             'groups' => ['one', 'two'],
             'parameters' => [
@@ -43,11 +65,7 @@ class ElasticDriverTest extends TestCase
                 ],
             ],
         ]);
-        $suiteCollection = new SuiteCollection([ $suite ]);
 
-        $this->driver->store($suiteCollection);
-
-        $persistedSuite = $this->driver->fetch(1);
-        $this->assertEquals($persistedSuite, $suite);
+        return new SuiteCollection([ $suite ]);
     }
 }

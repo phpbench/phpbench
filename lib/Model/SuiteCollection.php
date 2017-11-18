@@ -12,6 +12,8 @@
 
 namespace PhpBench\Model;
 
+use RuntimeException;
+
 class SuiteCollection implements \IteratorAggregate
 {
     /**
@@ -25,6 +27,17 @@ class SuiteCollection implements \IteratorAggregate
     public function __construct(array $suites = [])
     {
         $this->suites = $suites;
+    }
+
+    public function first(): Suite
+    {
+        if (count($this->suites) === 0) {
+            throw new RuntimeException(
+                'No suites in collection, cannot get the first'
+            );
+        }
+
+        return current($this->suites);
     }
 
     /**

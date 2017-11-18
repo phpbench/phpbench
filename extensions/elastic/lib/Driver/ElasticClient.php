@@ -20,7 +20,7 @@ class ElasticClient
             'host' => 'localhost',
             'port' => 9200,
             'index' => 'phpbench',
-            'type' => 'suite_collection',
+            'type' => 'variant',
         ];
 
         if ($diff = array_diff(array_keys($options), array_keys($defaults))) {
@@ -36,16 +36,44 @@ class ElasticClient
 
     public function put(string $id, array $data)
     {
+        $this->request('PUT', $id, $data);
+    }
+
+    public function search(array $query)
+    {
+        $response = $this->request('GET','_search', $query);
+
+        if (isset($response['error'])) {
+            throw new RuntimeException(sprintf(
+                'Elastic returned an error: "%s"',
+                json_encode($response['error'])
+            ));
+        }
+
+        $hits = $response['hits'];
+
+        return array_map(function (array $response) {
+            return $response['_source'];
+        }, $hits['hits']);
+    }
+
+    private function request(string $method, string $suffix = null, array $data = [])
+    {
         $curl = \curl_init();
-        curl_setopt_array($curl, [
-            CURLOPT_URL => $this->elasticUrl($id),
-            CURLOPT_CUSTOMREQUEST => 'PUT',
-            CURLOPT_POSTFIELDS => json_encode($data),
+        $options = [
+            CURLOPT_URL => $this->elasticUrl($suffix),
+            CURLOPT_CUSTOMREQUEST => $method,
             CURLOPT_HTTPHEADER => [
                 'Content-Type: application/json'
             ],
             CURLOPT_RETURNTRANSFER => true,
-        ]);
+        ];
+
+        if ($data) {
+            $options[CURLOPT_POSTFIELDS] = json_encode($data);
+        }
+
+        curl_setopt_array($curl, $options);
 
         $response = curl_exec($curl);
 
@@ -64,18 +92,22 @@ class ElasticClient
                 json_last_error_msg()
             ));
         }
+
+        return $response;
     }
 
-    private function elasticUrl($id): string
+    private function elasticUrl(string $suffix): string
     {
-        return sprintf(
+        $url = sprintf(
             '%s://%s:%s/%s/%s/%s',
             $this->options['scheme'],
             $this->options['host'],
             $this->options['port'],
             $this->options['index'],
             $this->options['type'],
-            $id
+            $suffix
         );
+
+        return $url;
     }
 }
