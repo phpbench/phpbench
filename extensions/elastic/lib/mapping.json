@@ -4,6 +4,9 @@
             "properties": {
                 "suite": {
                     "type": "keyword"
+                },
+                "name": {
+                    "type": "keyword"
                 }
             }
         }

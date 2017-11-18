@@ -68,6 +68,7 @@ class DocumentEncoder
             'iterations' => array_map(function (Iteration $iteration) {
                 return $this->encodeIteration($iteration);
             }, $variant->getIterations()),
+            'nb_iterations' => count($variant->getIterations()),
             'rejects' => $variant->getRejects(),
             'revolutions' => $variant->getRevolutions(),
             'warmup' => $variant->getWarmup(),

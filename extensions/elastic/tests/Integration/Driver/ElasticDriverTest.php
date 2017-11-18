@@ -40,7 +40,6 @@ class ElasticDriverTest extends ElasticTestCase
         $this->driver->store($suiteCollection);
 
         $this->driver->history();
-
     }
 
     private function createSuiteCollection(string $uuid): SuiteCollection

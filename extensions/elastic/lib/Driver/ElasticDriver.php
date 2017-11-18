@@ -71,7 +71,7 @@ class ElasticDriver implements DriverInterface
      */
     public function fetch($suiteId)
     {
-        return $this->documentDecoder->decode($this->elasticClient->search([
+        return $this->documentDecoder->decode($this->elasticClient->searchDocuments([
             'query' => [
                 'bool' => [
                     'filter' => [
@@ -109,16 +109,6 @@ class ElasticDriver implements DriverInterface
      */
     public function history()
     {
-        $result = $this->elasticClient->search([
-            'size' => 0,
-            'aggs' => [
-                'group_by_suite' => [
-                    'terms' => [
-                        'field' => 'suite',
-                    ],
-                ],
-            ]
-        ]);
-        var_dump($result);
+        return new HistoryIterator($this->elasticClient);
     }
 }
