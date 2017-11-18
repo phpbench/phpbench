@@ -98,6 +98,13 @@ class DocumentReconstructor
         $variantModel = $subject->createVariant($parameterSet, $variant['revolutions'], $variant['warmup'], $variant['stats']);
 
         foreach ($variant['iterations'] as $iteration) {
+            $iterationModel = $variantModel->createIteration();
+            foreach ($iteration['results'] as $result) {
+                $iterationModel->setResult(call_user_func_array([
+                    $result['class'],
+                    'fromArray',
+                ], [ $result['metrics'] ]));
+            }
         }
     }
 }

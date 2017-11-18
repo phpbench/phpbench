@@ -55,9 +55,10 @@ class DocumentDecoderTest extends DocumentEncoderTest
 
         $exampleVariant->computeStats();
         $variant->computeStats();
+
         $this->assertEquals(
-            $exampleVariant->getStats(),
-            $variant->getStats()
+            $exampleVariant->getStats()->getStats(),
+            $variant->getStats()->getStats()
         );
     }
 

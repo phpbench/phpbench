@@ -46,6 +46,7 @@ class DocumentEncoderTest extends TestCase
     public function testEncode(): array
     {
         $suite = $this->createTestSuite();
+        $this->addToAssertionCount(1);
 
         return $this->encoder->documentsFromSuite($suite);
     }

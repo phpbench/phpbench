@@ -79,10 +79,14 @@ class DocumentEncoder
     {
         $encoded = [
             'index' => $iteration->getIndex(),
+            'results' => [],
         ];
 
         foreach ($iteration->getResults() as $result) {
-            $encoded[$result->getKey()] = $result->getMetrics();
+            $encoded['results'][$result->getKey()] = [
+                'class' => get_class($result),
+                'metrics' => $result->getMetrics(),
+            ];
         }
 
         return $encoded;
