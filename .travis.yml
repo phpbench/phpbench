@@ -1,3 +1,6 @@
+services:
+  - elasticsearch
+
 language: php
 
 php:
@@ -24,6 +27,7 @@ before_script:
 script:
   - ./vendor/bin/phpstan analyze --level=1 -c phpstan.neon lib/
   - ./vendor/bin/phpunit
+  - php bin/phpbench elastic:install
   - php bin/phpbench run --iterations=1 --revs=1 --report=env --progress=dots
   - php bin/phpbench run --iterations=1 --revs=1 --config=extensions/dbal/benchmarks/phpbench.json --progress=dots
 
