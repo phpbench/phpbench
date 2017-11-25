@@ -25,19 +25,19 @@ class ElasticDriver implements DriverInterface
     private $documentEncoder;
 
     /**
-     * @var DocumentDecoder
+     * @var DriverInterface
      */
-    private $documentDecoder;
+    private $innerDriver;
 
     public function __construct(
         ElasticClient $elasticClient,
-        DocumentEncoder $documentEncoder = null,
-        DocumentDecoder $documentDecoder = null
+        DriverInterface $innerDriver,
+        DocumentEncoder $documentEncoder = null
     )
     {
         $this->elasticClient = $elasticClient;
+        $this->innerDriver = $innerDriver;
         $this->documentEncoder = $documentEncoder ?: new DocumentEncoder();
-        $this->documentDecoder = $documentDecoder ?: new DocumentDecoder();
     }
 
     /**
@@ -54,6 +54,8 @@ class ElasticDriver implements DriverInterface
                 );
             }
         }
+
+        $this->innerDriver->store($collection);
     }
 
     /**
@@ -61,9 +63,7 @@ class ElasticDriver implements DriverInterface
      */
     public function query(Constraint $constraint)
     {
-        throw new BadMethodCallException(sprintf(
-            'Querying not supported'
-        ));
+        return $this->innerDriver->query($constraint);
     }
 
     /**
@@ -71,17 +71,7 @@ class ElasticDriver implements DriverInterface
      */
     public function fetch($suiteId)
     {
-        return $this->documentDecoder->decode($this->elasticClient->searchDocuments([
-            'query' => [
-                'bool' => [
-                    'filter' => [
-                        'term' => [
-                            'suite' => $suiteId
-                        ],
-                    ],
-                ],
-            ],
-        ]));
+        return $this->innerDriver->fetch($suiteId);
     }
 
     /**
@@ -89,9 +79,7 @@ class ElasticDriver implements DriverInterface
      */
     public function has($suiteId)
     {
-        throw new BadMethodCallException(sprintf(
-            'Has not supported'
-        ));
+        return $this->innerDriver->has($suiteId);
     }
 
     /**
@@ -99,9 +87,7 @@ class ElasticDriver implements DriverInterface
      */
     public function delete($suiteId)
     {
-        throw new BadMethodCallException(sprintf(
-            'Delete not supported'
-        ));
+        $this->innerDriver->delete($suiteId);
     }
 
     /**
@@ -109,6 +95,6 @@ class ElasticDriver implements DriverInterface
      */
     public function history()
     {
-        return new HistoryIterator($this->elasticClient);
+        return $this->innerDriver->history();
     }
 }
