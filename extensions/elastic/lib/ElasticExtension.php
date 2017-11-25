@@ -24,6 +24,7 @@ class ElasticExtension implements ExtensionInterface
 {
     const PARAM_INNER_STORAGE = 'storage.elastic.inner_storage';
     const PARAM_CONNECTION = 'storage.elastic.connection';
+    const PARAM_STORE_ITERATIONS = 'storage.elastic.store_iterations';
 
     public function getDefaultConfig()
     {
@@ -36,6 +37,7 @@ class ElasticExtension implements ExtensionInterface
                 'type' => 'suite',
             ],
             self::PARAM_INNER_STORAGE => 'xml',
+            self::PARAM_STORE_ITERATIONS => false,
         ];
     }
 
@@ -53,7 +55,8 @@ class ElasticExtension implements ExtensionInterface
             return new ElasticDriver(
                 $container->get('storage.elastic.client'),
                 $innerStorage,
-                $container->get('serializer.encoder.document')
+                $container->get('serializer.encoder.document'),
+                self::PARAM_STORE_ITERATIONS
             );
         }, ['storage_driver' => ['name' => 'elastic']]);
 

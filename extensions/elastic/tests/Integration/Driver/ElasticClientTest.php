@@ -5,7 +5,7 @@ namespace PhpBench\Extensions\Elastic\Tests\Integration\Driver;
 use PHPUnit\Framework\TestCase;
 use PhpBench\Extensions\Elastic\Driver\ElasticClient;
 
-class Driver extends TestCase
+class ElasticClientTest extends TestCase
 {
     public function testPutGet()
     {

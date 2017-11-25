@@ -5,6 +5,7 @@
     "storage.elastic.connection": {
         "port": 9200
     },
+    "storage.elastic.store_iterations": true,
     "php_config": {
         "memory_limit": "1G"
     },

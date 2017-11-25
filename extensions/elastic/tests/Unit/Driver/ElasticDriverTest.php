@@ -12,6 +12,7 @@ use PhpBench\Extensions\Elastic\Driver\ElasticClient;
 use PhpBench\Expression\Constraint\Comparison;
 use PhpBench\Expression\Constraint\Constraint;
 use PhpBench\Storage\HistoryIteratorInterface;
+use Prophecy\Prophecy\ObjectProphecy;
 
 class ElasticDriverTest extends TestCase
 {
