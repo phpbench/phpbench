@@ -3,7 +3,7 @@
     "path": "benchmarks",
     "storage": "elastic",
     "storage.elastic.connection": {
-        "port": 9201
+        "port": 9200
     },
     "php_config": {
         "memory_limit": "1G"

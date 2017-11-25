@@ -22,16 +22,20 @@ use PhpBench\Extensions\Elastic\Command\InstallCommand;
 
 class ElasticExtension implements ExtensionInterface
 {
+    const PARAM_INNER_STORAGE = 'storage.elastic.inner_storage';
+    const PARAM_CONNECTION = 'storage.elastic.connection';
+
     public function getDefaultConfig()
     {
         return [
-            'storage.elastic.connection' => [
+            self::PARAM_CONNECTION => [
                 'scheme' => 'http',
                 'host' => 'localhost',
                 'port' => 9200,
                 'index' => 'phpbench',
                 'type' => 'suite',
             ],
+            self::PARAM_INNER_STORAGE => 'xml',
         ];
     }
 
@@ -42,14 +46,19 @@ class ElasticExtension implements ExtensionInterface
         });
 
         $container->register('storage.driver.elastic', function (Container $container) {
+            $innerStorage = $container->get('storage.driver_registry')->getService(
+                $container->getParameter(self::PARAM_INNER_STORAGE)
+            );
+
             return new ElasticDriver(
                 $container->get('storage.elastic.client'),
+                $innerStorage,
                 $container->get('serializer.encoder.document')
             );
         }, ['storage_driver' => ['name' => 'elastic']]);
 
         $container->register('storage.elastic.client', function (Container $container) {
-            return new ElasticClient($container->getParameter('storage.elastic.connection'));
+            return new ElasticClient($container->getParameter(self::PARAM_CONNECTION));
         });
 
         $container->register('storage.elastic.command.update_mapping', function (Container $container) {

@@ -3,26 +3,26 @@
 namespace PhpBench\Extensions\Elastic\Tests\Integration\Driver;
 
 use PHPUnit\Framework\TestCase;
-use PhpBench\Extensions\Elastic\Tests\Integration\ElasticTestCase;
+use PhpBench\Extensions\Elastic\Driver\ElasticClient;
 
-class Driver extends ElasticTestCase
+class Driver extends TestCase
 {
     public function testPutGet()
     {
-        $document = [
+        $data = [
             'data' => 'yes please'
         ];
+
         $client = $this->createClient();
-        $client->put(1234, $document);
-        $this->assertEquals($document, $client->get(1234));
+        $client->put(1234, $data);
+        $document = $client->get(1234);
+
+        $this->assertEquals($data, $document['_source']);
     }
-
-    public function testSuites()
+    protected function createClient(): ElasticClient
     {
-        $client->put(1, [ 'suite' => 10 ]);
-        $client->put(2, [ 'suite' => 20 ]);
-
-        $client = $this->createClient();
-        $suites = $this->client->suites();
+        return new ElasticClient([
+            'port' => getenv('PHPBENCH_ELASTIC_PORT') ?: 9200
+        ]);
     }
 }

@@ -39,19 +39,9 @@ class ElasticClient
         $this->request('PUT', $this->options['type'] . '/' . $id, $data);
     }
 
-    public function searchDocuments(array $query)
+    public function get(string $id, array $data = [])
     {
-        $response = $this->search($query);
-        $hits = $response['hits'];
-
-        return array_map(function (array $response) {
-            return $response['_source'];
-        }, $hits['hits']);
-    }
-
-    public function search(array $query)
-    {
-        return $this->request('GET', $this->options['type'] . '/_search', $query);
+        return $this->request('GET', $this->options['type'] . '/' . $id, $data);
     }
 
     public function install(array $config)
