@@ -19,7 +19,33 @@ class DocumentEncoderTest extends TestCase
         $this->encoder = new DocumentEncoder();
     }
 
-    protected function createTestSuite(): Suite
+    public function testAggregationsFromSuite()
+    {
+        $suite = $this->createTestSuite();
+
+        $documents = $this->encoder->aggregationsFromSuite($suite);
+        $this->assertInternalType('array', $documents);
+        $this->assertCount(2, $documents);
+        $document = reset($documents);
+        $this->assertEquals('1', $document['suite']);
+        $this->assertEquals(2, $document['stats']['min']);
+    }
+
+    public function testIterationsFromSuite()
+    {
+        $suite = $this->createTestSuite();
+
+        $documents = $this->encoder->iterationsFromSuite($suite);
+        $this->assertCount(4, $documents);
+        $document = reset($documents);
+        $this->assertEquals('1', $document['suite']);
+        $this->assertEquals('benchOne', $document['subject']);
+        $this->assertEquals('TestBench', $document['class']);
+        $this->assertEquals(0, $document['variant']);
+        $this->assertEquals(0, $document['iteration']);
+    }
+
+    private function createTestSuite(): Suite
     {
         return TestUtil::createSuite([
             'uuid' => '1',
@@ -43,11 +69,4 @@ class DocumentEncoderTest extends TestCase
         ]);
     }
 
-    public function testEncode(): array
-    {
-        $suite = $this->createTestSuite();
-        $this->addToAssertionCount(1);
-
-        return $this->encoder->documentsFromSuite($suite);
-    }
 }

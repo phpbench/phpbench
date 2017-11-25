@@ -11,7 +11,7 @@ use PhpBench\Model\Iteration;
 
 class DocumentEncoder
 {
-    public function documentsFromSuite(Suite $suite)
+    public function aggregationsFromSuite(Suite $suite)
     {
         $documents = [];
 
@@ -32,7 +32,40 @@ class DocumentEncoder
                 $subjectData = array_merge($benchmarkData, $this->encodeSubject($subject));
                 foreach ($subject->getVariants() as $variantIndex => $variant) {
                     $variantData = array_merge($subjectData, $this->encodeVariant($variant));
-                    $documents[$suite->getUuid() . $benchmark->getClass() . $subject->getName() . $variantIndex] = $variantData;
+                    $documents[$this->subjectId($suite, $benchmark, $subject) . $variantIndex] = $variantData;
+                }
+            }
+        }
+
+        return $documents;
+    }
+
+    public function iterationsFromSuite(Suite $suite)
+    {
+        $documents = [];
+        foreach ($suite->getBenchmarks() as $benchmark) {
+            /** @var Subject $subject */
+            foreach ($benchmark->getSubjects() as $subject) {
+                foreach ($subject->getVariants() as $variantIndex => $variant) {
+                    foreach ($variant->getIterations() as $iterationIndex => $iteration) {
+
+                        $iterationData = $this->encodeIteration($iteration);
+                        $id = implode(
+                            '',
+                            [
+                                $this->subjectId($suite, $benchmark, $subject),
+                                $variantIndex,
+                                $iterationIndex
+                            ]
+                        );
+                        $iterationData['iteration'] = $iterationIndex;
+                        $iterationData['suite'] = $suite->getUuid();
+                        $iterationData['variant'] = $variantIndex;
+                        $iterationData['subject'] = $subject->getName();
+                        $iterationData['class'] = $benchmark->getClass();
+
+                        $documents[$id] = $iterationData;
+                    }
                 }
             }
         }
@@ -109,6 +142,11 @@ class DocumentEncoder
         }
 
         return $flattened;
+    }
+
+    private function subjectId(Suite $suite, Benchmark $benchmark, Subject $subject)
+    {
+        return $suite->getUuid() . $benchmark->getClass() . $subject->getName();
     }
 
 }

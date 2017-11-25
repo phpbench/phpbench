@@ -51,12 +51,6 @@ class ElasticDriverTest extends TestCase
         $this->client = $this->prophesize(ElasticClient::class);
         $this->encoder = $this->prophesize(DocumentEncoder::class);
 
-        $this->driver = new ElasticDriver(
-            $this->client->reveal(),
-            $this->innerDriver->reveal(),
-            $this->encoder->reveal()
-        );
-
         $this->constraint = $this->prophesize(Constraint::class);
         $this->history = $this->prophesize(HistoryIteratorInterface::class);
     }
@@ -67,38 +61,69 @@ class ElasticDriverTest extends TestCase
         $collection = new SuiteCollection([$suite]);
         $document = [ 'field' => 'value' ];
 
-        $this->encoder->documentsFromSuite($suite)->willReturn([
+        $this->encoder->aggregationsFromSuite($suite)->willReturn([
             'one' => $document
         ]);
-        $this->client->put('one', $document)->shouldBeCalled();
+        $this->client->put(ElasticClient::TYPE_VARIANT, 'one', $document)->shouldBeCalled();
 
         $this->innerDriver->store($collection)->shouldBeCalled();
 
-        $this->driver->store($collection);
+        $this->createDriver()->store($collection);
+    }
+
+    public function testStoreIterations()
+    {
+        $suite = TestUtil::createSuite();
+        $collection = new SuiteCollection([$suite]);
+        $document = [ 'field' => 'value' ];
+
+        $this->encoder->aggregationsFromSuite($suite)->willReturn([
+            'one' => $document
+        ]);
+        $this->encoder->iterationsFromSuite($suite)->willReturn([
+            'two' => $document
+        ]);
+        $this->client->put(ElasticClient::TYPE_VARIANT, 'one', $document)->shouldBeCalled();
+        $this->client->put(ElasticClient::TYPE_ITERATION, 'two', $document)->shouldBeCalled();
+
+        $this->innerDriver->store($collection)->shouldBeCalled();
+
+        $this->createDriver(true)->store($collection);
     }
 
     public function testDecoration()
     {
         $collection = new SuiteCollection();
         $suiteId = 1234;
+        $driver = $this->createDriver();
 
         $this->innerDriver->query($this->constraint->reveal())->willReturn($collection);
-        $return = $this->driver->query($this->constraint->reveal());
+        $return = $driver->query($this->constraint->reveal());
         $this->assertSame($return, $collection);
 
         $this->innerDriver->fetch($suiteId)->willReturn($collection);
-        $return = $this->driver->fetch($suiteId);
+        $return = $driver->fetch($suiteId);
         $this->assertSame($collection, $return);
 
         $this->innerDriver->has($suiteId)->willReturn(true);
-        $return = $this->driver->has($suiteId);
+        $return = $driver->has($suiteId);
         $this->assertTrue($return);
 
         $this->innerDriver->delete($suiteId)->shouldBeCalled();
-        $return = $this->driver->delete($suiteId);
+        $return = $driver->delete($suiteId);
 
         $this->innerDriver->history()->willReturn($this->history->reveal());
-        $return = $this->driver->history();
+        $return = $driver->history();
         $this->assertSame($this->history->reveal(), $return);
+    }
+
+    private function createDriver(bool $storeIterations = false): ElasticDriver
+    {
+        return new ElasticDriver(
+            $this->client->reveal(),
+            $this->innerDriver->reveal(),
+            $this->encoder->reveal(),
+            $storeIterations
+        );
     }
 }

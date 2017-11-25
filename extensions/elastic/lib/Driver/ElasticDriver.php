@@ -20,7 +20,7 @@ class ElasticDriver implements DriverInterface
     private $elasticClient;
 
     /**
-     * @var ArrayEncoder
+     * @var DocumentEncoder
      */
     private $documentEncoder;
 
@@ -29,15 +29,22 @@ class ElasticDriver implements DriverInterface
      */
     private $innerDriver;
 
+    /**
+     * @var bool
+     */
+    private $storeIterations;
+
     public function __construct(
         ElasticClient $elasticClient,
         DriverInterface $innerDriver,
-        DocumentEncoder $documentEncoder = null
+        DocumentEncoder $documentEncoder = null,
+        bool $storeIterations = false
     )
     {
         $this->elasticClient = $elasticClient;
         $this->innerDriver = $innerDriver;
         $this->documentEncoder = $documentEncoder ?: new DocumentEncoder();
+        $this->storeIterations = $storeIterations;
     }
 
     /**
@@ -47,8 +54,21 @@ class ElasticDriver implements DriverInterface
     {
         /** @var Suite $suite */
         foreach ($collection as $suite) {
-            foreach ($this->documentEncoder->documentsFromSuite($suite) as $id => $document) {
+            foreach ($this->documentEncoder->aggregationsFromSuite($suite) as $id => $document) {
                 $this->elasticClient->put(
+                    ElasticClient::TYPE_VARIANT,
+                    $id,
+                    $document
+                );
+            }
+
+            if (false === $this->storeIterations) {
+                continue;
+            }
+
+            foreach ($this->documentEncoder->iterationsFromSuite($suite) as $id => $document) {
+                $this->elasticClient->put(
+                    ElasticClient::TYPE_ITERATION,
                     $id,
                     $document
                 );

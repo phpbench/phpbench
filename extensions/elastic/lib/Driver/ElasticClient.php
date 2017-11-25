@@ -8,6 +8,9 @@ use InvalidArgumentException;
 
 class ElasticClient
 {
+    const TYPE_VARIANT = 'variant';
+    const TYPE_ITERATION = 'iteration';
+
     /**
      * @var array
      */
@@ -19,8 +22,7 @@ class ElasticClient
             'scheme' => 'http',
             'host' => 'localhost',
             'port' => 9200,
-            'index' => 'phpbench',
-            'type' => 'variant',
+            'index' => 'phpbench'
         ];
 
         if ($diff = array_diff(array_keys($options), array_keys($defaults))) {
@@ -34,14 +36,14 @@ class ElasticClient
 
     }
 
-    public function put(string $id, array $data)
+    public function put(string $type, string $id, array $data)
     {
-        $this->request('PUT', $this->options['type'] . '/' . $id, $data);
+        $this->request('PUT', $type . '/' . $id, $data);
     }
 
-    public function get(string $id, array $data = [])
+    public function get(string $type, string $id, array $data = [])
     {
-        return $this->request('GET', $this->options['type'] . '/' . $id, $data);
+        return $this->request('GET', $type . '/' . $id, $data);
     }
 
     public function install(array $config)

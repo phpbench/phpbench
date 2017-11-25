@@ -14,8 +14,8 @@ class Driver extends TestCase
         ];
 
         $client = $this->createClient();
-        $client->put(1234, $data);
-        $document = $client->get(1234);
+        $client->put(ElasticClient::TYPE_VARIANT, 1234, $data);
+        $document = $client->get(ElasticClient::TYPE_VARIANT, 1234);
 
         $this->assertEquals($data, $document['_source']);
     }
