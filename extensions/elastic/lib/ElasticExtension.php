@@ -34,7 +34,6 @@ class ElasticExtension implements ExtensionInterface
                 'host' => 'localhost',
                 'port' => 9200,
                 'index' => 'phpbench',
-                'type' => 'suite',
             ],
             self::PARAM_INNER_STORAGE => 'xml',
             self::PARAM_STORE_ITERATIONS => false,
