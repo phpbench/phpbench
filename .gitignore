@@ -5,6 +5,7 @@ docs/build
 phpunit.xml
 .travis/phpbench-phar-private.pem
 phpbench.phar
+phpbench.json
 phpbench.phar.pubkey
 phpbench.phar.version
 .travis/build-key.pem

@@ -7,7 +7,8 @@
     },
     "extensions": [
         "PhpBench\\Extensions\\XDebug\\XDebugExtension",
-        "PhpBench\\Extensions\\Dbal\\DbalExtension"
+        "PhpBench\\Extensions\\Dbal\\DbalExtension",
+        "PhpBench\\Extension\\ReportsExtension"
     ],
     "reports": {
         "all": {
