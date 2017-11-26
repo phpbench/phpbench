@@ -77,6 +77,9 @@ use PhpBench\Storage\UuidResolver;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\ExecutableFinder;
+use PhpBench\Storage\Driver\Reports\ReportsDriver;
+use PhpBench\Serializer\ElasticEncoder;
+use PhpBench\Storage\Driver\Reports\ReportClient;
 
 class CoreExtension implements ExtensionInterface
 {

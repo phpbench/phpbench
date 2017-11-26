@@ -2,49 +2,45 @@
 
 namespace PhpBench\Storage\Driver\Reports;
 
-use PhpBench\Storage\DriverInterface;
-use PhpBench\Model\SuiteCollection;
-use PhpBench\Expression\Constraint\Constraint;
 use BadMethodCallException;
+use PhpBench\Expression\Constraint\Constraint;
 use PhpBench\Extensions\Elastic\Driver\ElasticClient;
 use PhpBench\Model\Suite;
-use PhpBench\Serializer\ArrayEncoder;
-use PhpBench\Extensions\Elastic\Encoder\DocumentEncoder;
-use PhpBench\Extensions\Elastic\Encoder\DocumentDecoder;
+use PhpBench\Model\SuiteCollection;
+use PhpBench\Storage\DriverInterface;
+use PhpBench\Registry\Registry;
 
 class ReportsDriver implements DriverInterface
 {
-    /**
-     * @var DocumentEncoder
-     */
-    private $documentEncoder;
-
     /**
      * @var DriverInterface
      */
     private $innerDriver;
 
     /**
-     * @var bool
-     */
-    private $storeIterations;
-
-    /**
      * @var ReportClientInterface
      */
     private $client;
 
+    /**
+     * @var Registry
+     */
+    private $storageRegistry;
+
+    /**
+     * @var string
+     */
+    private $innerStorageName;
+
     public function __construct(
-        ReportClientInterface $client,
-        DriverInterface $innerDriver,
-        DocumentEncoder $documentEncoder = null,
-        bool $storeIterations = false
+        ReportClient $client,
+        Registry $storageRegistry,
+        string $innerStorageName
     )
     {
-        $this->innerDriver = $innerDriver;
-        $this->documentEncoder = $documentEncoder ?: new DocumentEncoder();
-        $this->storeIterations = $storeIterations;
         $this->client = $client;
+        $this->storageRegistry = $storageRegistry;
+        $this->innerStorageName = $innerStorageName;
     }
 
     /**
@@ -57,7 +53,7 @@ class ReportsDriver implements DriverInterface
             $this->client->post($suite);
         }
 
-        $this->innerDriver->store($collection);
+        $this->innerDriver()->store($collection);
     }
 
     /**
@@ -65,7 +61,7 @@ class ReportsDriver implements DriverInterface
      */
     public function query(Constraint $constraint)
     {
-        return $this->innerDriver->query($constraint);
+        return $this->innerDriver()->query($constraint);
     }
 
     /**
@@ -73,7 +69,7 @@ class ReportsDriver implements DriverInterface
      */
     public function fetch($suiteId)
     {
-        return $this->innerDriver->fetch($suiteId);
+        return $this->innerDriver()->fetch($suiteId);
     }
 
     /**
@@ -81,7 +77,7 @@ class ReportsDriver implements DriverInterface
      */
     public function has($suiteId)
     {
-        return $this->innerDriver->has($suiteId);
+        return $this->innerDriver()->has($suiteId);
     }
 
     /**
@@ -89,7 +85,7 @@ class ReportsDriver implements DriverInterface
      */
     public function delete($suiteId)
     {
-        $this->innerDriver->delete($suiteId);
+        $this->innerDriver()->delete($suiteId);
     }
 
     /**
@@ -97,6 +93,15 @@ class ReportsDriver implements DriverInterface
      */
     public function history()
     {
-        return $this->innerDriver->history();
+        return $this->innerDriver()->history();
+    }
+
+    private function innerDriver()
+    {
+        if ($this->innerDriver) {
+            return $this->innerDriver;
+        }
+
+        return $this->storageRegistry->getService($this->innerStorageName);
     }
 }

@@ -2,14 +2,26 @@
 
 namespace PhpBench\Storage\Driver\Reports;
 
+use RuntimeException;
+
 class CurlTransport implements TransportInterface
 {
+    /**
+     * @var array
+     */
+    private $config;
+
+    public function __construct(array $config)
+    {
+        $this->config = $config;
+    }
+
     public function post(string $url, array $data): array
     {
+        $config = $this->resolveConfig($this->config);
         $curl = \curl_init();
-        $url = $this->indexUrl($type, $suffix);
         $options = [
-            CURLOPT_URL => $url,
+            CURLOPT_URL => $config['base_url'] . $url,
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_HTTPHEADER => [
                 'Content-Type: application/json'
@@ -28,6 +40,39 @@ class CurlTransport implements TransportInterface
             ));
         }
 
-        return $response;
+        $decoded = json_decode($response, true);
+
+        if (null === $decoded) {
+            throw new RuntimeException(sprintf(
+                'Could not decode JSON: %s',
+                json_last_error_msg()
+            ));
+        }
+
+        return $decoded;
+    }
+
+    private function resolveConfig(array $config)
+    {
+        $defaults = [
+            'base_url' => null,
+        ];
+
+        if ($diff = array_diff(array_keys($config), array_keys($defaults))) {
+            throw new RuntimeException(sprintf(
+                'Unknown connection config keys "%s", known keys: "%s"',
+                implode('", "', $diff), implode('", "', array_keys($defaults))
+            ));
+        }
+
+        $config = array_merge($defaults, $config);
+
+        if (null === $config['base_url']) {
+            throw new RuntimeException(sprintf(
+                'base_url must be configured in order to use the "reports" storage'
+            ));
+        }
+
+        return $config;
     }
 }
