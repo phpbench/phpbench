@@ -22,7 +22,7 @@ class ElasticClient
             'scheme' => 'http',
             'host' => 'localhost',
             'port' => 9200,
-            'index' => 'phpbench'
+            'index_prefix' => 'phpbench_'
         ];
 
         if ($diff = array_diff(array_keys($options), array_keys($defaults))) {
@@ -38,29 +38,31 @@ class ElasticClient
 
     public function put(string $type, string $id, array $data)
     {
-        $this->request('PUT', $type . '/' . $id, $data);
+        $this->request('PUT', $type, 'doc/' . $id, $data);
     }
 
     public function get(string $type, string $id, array $data = [])
     {
-        return $this->request('GET', $type . '/' . $id, $data);
+        return $this->request('GET', $type, 'doc/' . $id, $data);
     }
 
     public function install(array $config)
     {
-        $this->request('PUT', null, $config);
+        $this->request('PUT', self::TYPE_VARIANT, '', $config);
     }
 
     public function purge()
     {
-        $this->request('DELETE');
+        $this->request('DELETE', self::TYPE_VARIANT);
+        $this->request('DELETE', self::TYPE_ITERATION);
     }
 
-    private function request(string $method, string $suffix = null, array $data = [])
+    private function request(string $method, string $type, string $suffix = null, array $data = [])
     {
         $curl = \curl_init();
+        $url = $this->indexUrl($type, $suffix);
         $options = [
-            CURLOPT_URL => $this->indexUrl($suffix),
+            CURLOPT_URL => $url,
             CURLOPT_CUSTOMREQUEST => $method,
             CURLOPT_HTTPHEADER => [
                 'Content-Type: application/json'
@@ -102,14 +104,14 @@ class ElasticClient
         return $response;
     }
 
-    private function indexUrl($suffix = null): string
+    private function indexUrl(string $type, string $suffix = null): string
     {
         $url = sprintf(
             '%s://%s:%s/%s/%s',
             $this->options['scheme'],
             $this->options['host'],
             $this->options['port'],
-            $this->options['index'],
+            $this->options['index_prefix'] . $type,
             $suffix
         );
 
