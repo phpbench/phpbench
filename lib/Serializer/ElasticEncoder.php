@@ -1,13 +1,23 @@
 <?php
 
+/*
+ * This file is part of the PHPBench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
+
 namespace PhpBench\Serializer;
 
-use PhpBench\Model\Suite;
 use PhpBench\Environment\Information;
 use PhpBench\Model\Benchmark;
-use PhpBench\Model\Subject;
-use PhpBench\Model\Variant;
 use PhpBench\Model\Iteration;
+use PhpBench\Model\Subject;
+use PhpBench\Model\Suite;
+use PhpBench\Model\Variant;
 
 class ElasticEncoder
 {
@@ -48,14 +58,13 @@ class ElasticEncoder
             foreach ($benchmark->getSubjects() as $subject) {
                 foreach ($subject->getVariants() as $variantIndex => $variant) {
                     foreach ($variant->getIterations() as $iterationIndex => $iteration) {
-
                         $iterationData = $this->encodeIteration($iteration);
                         $id = implode(
                             '',
                             [
                                 $this->subjectId($suite, $benchmark, $subject),
                                 $variantIndex,
-                                $iterationIndex
+                                $iterationIndex,
                             ]
                         );
                         $iterationData['iteration'] = $iterationIndex;
@@ -124,5 +133,4 @@ class ElasticEncoder
     {
         return $suite->getUuid() . $benchmark->getClass() . $subject->getName();
     }
-
 }

@@ -1,12 +1,22 @@
 <?php
 
+/*
+ * This file is part of the PHPBench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
+
 namespace PhpBench\Tests\Unit\Storage\Driver\Reports;
 
-use PHPUnit\Framework\TestCase;
-use PhpBench\Storage\Driver\Reports\TransportInterface;
-use PhpBench\Storage\Driver\Reports\ReportsClient;
-use PhpBench\Tests\Util\TestUtil;
 use PhpBench\Serializer\ElasticEncoder;
+use PhpBench\Storage\Driver\Reports\ReportsClient;
+use PhpBench\Storage\Driver\Reports\TransportInterface;
+use PhpBench\Tests\Util\TestUtil;
+use PHPUnit\Framework\TestCase;
 
 class ReportsClientTest extends TestCase
 {
@@ -33,7 +43,7 @@ class ReportsClientTest extends TestCase
 
     public function testPostNoStoreIterations()
     {
-        $testElastic = [ 'one' => 'two' ];
+        $testElastic = ['one' => 'two'];
         $suite = TestUtil::createSuite();
         $this->elasticEncoder->aggregationsFromSuite($suite)->willReturn($testElastic);
         $this->transport->post('/suite', $testElastic)->shouldBeCalled();
@@ -43,7 +53,7 @@ class ReportsClientTest extends TestCase
 
     public function testStoreIterations()
     {
-        $testElastic = [ 'one' => 'two' ];
+        $testElastic = ['one' => 'two'];
         $suite = TestUtil::createSuite();
         $this->elasticEncoder->aggregationsFromSuite($suite)->willReturn($testElastic);
         $this->transport->post('/suite', $testElastic)->shouldBeCalled();

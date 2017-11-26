@@ -1,15 +1,22 @@
 <?php
 
+/*
+ * This file is part of the PHPBench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
+
 namespace PhpBench\Storage\Driver\Reports;
 
-use BadMethodCallException;
 use PhpBench\Expression\Constraint\Constraint;
-use PhpBench\Extensions\Elastic\Driver\ElasticClient;
 use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
-use PhpBench\Storage\DriverInterface;
 use PhpBench\Registry\Registry;
-use PhpBench\Storage\Driver\Reports\ReportsClient;
+use PhpBench\Storage\DriverInterface;
 
 class ReportsDriver implements DriverInterface
 {
@@ -37,15 +44,14 @@ class ReportsDriver implements DriverInterface
         ReportsClient $client,
         Registry $storageRegistry,
         string $innerStorageName
-    )
-    {
+    ) {
         $this->client = $client;
         $this->storageRegistry = $storageRegistry;
         $this->innerStorageName = $innerStorageName;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function store(SuiteCollection $collection)
     {
@@ -58,7 +64,7 @@ class ReportsDriver implements DriverInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function query(Constraint $constraint)
     {
@@ -66,7 +72,7 @@ class ReportsDriver implements DriverInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function fetch($suiteId)
     {
@@ -74,7 +80,7 @@ class ReportsDriver implements DriverInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function has($suiteId)
     {
@@ -82,7 +88,7 @@ class ReportsDriver implements DriverInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function delete($suiteId)
     {
@@ -90,7 +96,7 @@ class ReportsDriver implements DriverInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function history()
     {

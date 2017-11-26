@@ -1,18 +1,28 @@
 <?php
 
+/*
+ * This file is part of the PHPBench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
+
 namespace PhpBench\Extension;
 
-use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\DependencyInjection\Container;
-use PhpBench\Storage\Driver\Reports\CurlTransport;
-use PhpBench\Storage\Driver\Reports\ReportsDriver;
-use PhpBench\Storage\Driver\Reports\ReportsClient;
+use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Serializer\ElasticEncoder;
+use PhpBench\Storage\Driver\Reports\CurlTransport;
+use PhpBench\Storage\Driver\Reports\ReportsClient;
+use PhpBench\Storage\Driver\Reports\ReportsDriver;
 
 class ReportsExtension implements ExtensionInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(Container $container)
     {
@@ -23,7 +33,6 @@ class ReportsExtension implements ExtensionInterface
                 $container->getParameter('storage.reports.inner_driver')
             );
         }, ['storage_driver' => ['name' => 'reports']]);
-
 
         $container->register('storage.driver.reports.client', function (Container $container) {
             return new ReportsClient(
@@ -42,7 +51,7 @@ class ReportsExtension implements ExtensionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getDefaultConfig()
     {

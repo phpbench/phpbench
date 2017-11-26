@@ -1,5 +1,15 @@
 <?php
 
+/*
+ * This file is part of the PHPBench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
+
 namespace PhpBench\Storage\Driver\Reports;
 
 use RuntimeException;
@@ -31,7 +41,7 @@ class CurlTransport implements TransportInterface
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_HTTPHEADER => [
                 'Content-Type: application/json',
-                'X-API-Key: ' . $this->apiKey
+                'X-API-Key: ' . $this->apiKey,
             ],
             CURLOPT_RETURNTRANSFER => true,
         ];
