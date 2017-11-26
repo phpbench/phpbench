@@ -34,7 +34,10 @@ class ReportsExtension implements ExtensionInterface
         });
 
         $container->register('storage.driver.reports.transport', function (Container $container) {
-            return new CurlTransport($container->getParameter('storage.reports.connection'));
+            return new CurlTransport(
+                $container->getParameter('storage.reports.connection'),
+                $container->getParameter('storage.reports.api_key')
+            );
         });
     }
 
@@ -47,6 +50,7 @@ class ReportsExtension implements ExtensionInterface
             'storage.reports.connection' => [],
             'storage.reports.store_iterations' => false,
             'storage.reports.inner_driver' => 'xml',
+            'storage.reports.api_key' => 'changeme',
         ];
     }
 }

@@ -76,7 +76,7 @@ class ElasticEncoder
     private function encodeBenchmark(Benchmark $benchmark)
     {
         return [
-            'class' => $benchmark->getClass(),
+            'benchmark' => $benchmark->getClass(),
         ];
     }
 

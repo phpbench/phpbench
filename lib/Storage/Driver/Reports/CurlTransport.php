@@ -11,9 +11,15 @@ class CurlTransport implements TransportInterface
      */
     private $config;
 
-    public function __construct(array $config)
+    /**
+     * @var string
+     */
+    private $apiKey;
+
+    public function __construct(array $config, string $apiKey)
     {
         $this->config = $config;
+        $this->apiKey = $apiKey;
     }
 
     public function post(string $url, array $data): array
@@ -24,7 +30,8 @@ class CurlTransport implements TransportInterface
             CURLOPT_URL => $config['base_url'] . '/api/v1' . $url,
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_HTTPHEADER => [
-                'Content-Type: application/json'
+                'Content-Type: application/json',
+                'X-API-Key: ' . $this->apiKey
             ],
             CURLOPT_RETURNTRANSFER => true,
         ];
@@ -40,13 +47,22 @@ class CurlTransport implements TransportInterface
             ));
         }
 
+        $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+        if ($status !== 200) {
+            throw new RuntimeException(sprintf(
+                'Endpoint returned non-200 status: %s with content "%s"',
+                $status, $response
+            ));
+        }
+
         $decoded = json_decode($response, true);
 
         if (null === $decoded) {
             throw new RuntimeException(sprintf(
                 'Could not decode JSON: %s',
                 json_last_error_msg()
-            ));
+            ), null, new RuntimeException($response));
         }
 
         return $decoded;
