@@ -24,17 +24,6 @@ use PhpBench\Serializer\XmlEncoder;
 
 class XmlEncoderTest extends XmlTestCase
 {
-    public function setUp()
-    {
-        $this->suiteCollection = $this->prophesize(SuiteCollection::class);
-        $this->suite = $this->prophesize(Suite::class);
-        $this->env1 = $this->prophesize(Information::class);
-        $this->bench1 = $this->prophesize(Benchmark::class);
-        $this->subject1 = $this->prophesize(Subject::class);
-        $this->variant1 = $this->prophesize(Variant::class);
-        $this->iteration1 = $this->prophesize(Iteration::class);
-    }
-
     /**
      * It should encode the suite to an XML document.
      *

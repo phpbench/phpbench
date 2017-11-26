@@ -77,6 +77,8 @@ use PhpBench\Storage\UuidResolver;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\ExecutableFinder;
+use PhpBench\Serializer\ArrayEncoder;
+use PhpBench\Serializer\ElasticEncoder;
 
 class CoreExtension implements ExtensionInterface
 {
@@ -557,6 +559,9 @@ class CoreExtension implements ExtensionInterface
         });
         $container->register('serializer.decoder.xml', function (Container $container) {
             return new XmlDecoder();
+        });
+        $container->register('serializer.encoder.elastic', function (Container $container) {
+            return new ElasticEncoder();
         });
     }
 

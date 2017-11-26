@@ -1,0 +1,14 @@
+{
+    "mappings": {
+        "doc": {
+            "properties": {
+                "suite": {
+                    "type": "keyword"
+                },
+                "name": {
+                    "type": "keyword"
+                }
+            }
+        }
+    }
+}
