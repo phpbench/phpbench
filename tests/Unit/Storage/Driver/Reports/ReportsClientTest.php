@@ -4,11 +4,11 @@ namespace PhpBench\Tests\Unit\Storage\Driver\Reports;
 
 use PHPUnit\Framework\TestCase;
 use PhpBench\Storage\Driver\Reports\TransportInterface;
-use PhpBench\Storage\Driver\Reports\ReportClient;
+use PhpBench\Storage\Driver\Reports\ReportsClient;
 use PhpBench\Tests\Util\TestUtil;
 use PhpBench\Serializer\ElasticEncoder;
 
-class ReportClientTest extends TestCase
+class ReportsClientTest extends TestCase
 {
     /**
      * @var ObjectProphecy
@@ -54,9 +54,9 @@ class ReportClientTest extends TestCase
         $this->createClient(true)->post($suite);
     }
 
-    private function createClient(bool $storeIterations): ReportClient
+    private function createClient(bool $storeIterations): ReportsClient
     {
-        return new ReportClient(
+        return new ReportsClient(
             $this->transport->reveal(),
             $this->elasticEncoder->reveal(),
             $storeIterations

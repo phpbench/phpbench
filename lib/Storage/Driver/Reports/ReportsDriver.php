@@ -9,6 +9,7 @@ use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Storage\DriverInterface;
 use PhpBench\Registry\Registry;
+use PhpBench\Storage\Driver\Reports\ReportsClient;
 
 class ReportsDriver implements DriverInterface
 {
@@ -18,7 +19,7 @@ class ReportsDriver implements DriverInterface
     private $innerDriver;
 
     /**
-     * @var ReportClientInterface
+     * @var ReportsClient
      */
     private $client;
 
@@ -33,7 +34,7 @@ class ReportsDriver implements DriverInterface
     private $innerStorageName;
 
     public function __construct(
-        ReportClient $client,
+        ReportsClient $client,
         Registry $storageRegistry,
         string $innerStorageName
     )

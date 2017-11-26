@@ -79,7 +79,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\ExecutableFinder;
 use PhpBench\Storage\Driver\Reports\ReportsDriver;
 use PhpBench\Serializer\ElasticEncoder;
-use PhpBench\Storage\Driver\Reports\ReportClient;
+use PhpBench\Storage\Driver\Reports\ReportsClient;
 
 class CoreExtension implements ExtensionInterface
 {

@@ -6,7 +6,7 @@ use PhpBench\Model\Suite;
 use PhpBench\Storage\Driver\Reports\TransportInterface;
 use PhpBench\Serializer\ElasticEncoder;
 
-class ReportClient
+class ReportsClient
 {
     /**
      * @var bool

@@ -52,7 +52,6 @@ class PhpBench
 
         $extensions = $config['extensions'];
         $extensions[] = 'PhpBench\Extension\CoreExtension';
-        $extensions[] = 'PhpBench\Extension\ReportsExtension';
         unset($config['extensions']);
         $container = new Container($extensions, $config);
         $container->init();

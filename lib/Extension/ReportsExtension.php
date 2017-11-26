@@ -6,7 +6,7 @@ use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\Storage\Driver\Reports\CurlTransport;
 use PhpBench\Storage\Driver\Reports\ReportsDriver;
-use PhpBench\Storage\Driver\Reports\ReportClient;
+use PhpBench\Storage\Driver\Reports\ReportsClient;
 use PhpBench\Serializer\ElasticEncoder;
 
 class ReportsExtension implements ExtensionInterface
@@ -26,7 +26,7 @@ class ReportsExtension implements ExtensionInterface
 
 
         $container->register('storage.driver.reports.client', function (Container $container) {
-            return new ReportClient(
+            return new ReportsClient(
                 $container->get('storage.driver.reports.transport'),
                 new ElasticEncoder(),
                 $container->getParameter('storage.reports.store_iterations')
