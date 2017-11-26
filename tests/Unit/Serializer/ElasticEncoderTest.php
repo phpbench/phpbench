@@ -40,7 +40,7 @@ class ElasticEncoderTest extends TestCase
         $document = reset($documents);
         $this->assertEquals('1', $document['suite']);
         $this->assertEquals('benchOne', $document['subject']);
-        $this->assertEquals('TestBench', $document['class']);
+        $this->assertEquals('TestBench', $document['benchmark']);
         $this->assertEquals(0, $document['variant']);
         $this->assertEquals(0, $document['iteration']);
     }

@@ -62,7 +62,7 @@ class ElasticEncoder
                         $iterationData['suite'] = $suite->getUuid();
                         $iterationData['variant'] = $variantIndex;
                         $iterationData['subject'] = $subject->getName();
-                        $iterationData['class'] = $benchmark->getClass();
+                        $iterationData['benchmark'] = $benchmark->getClass();
 
                         $documents[$id] = $iterationData;
                     }
@@ -83,7 +83,7 @@ class ElasticEncoder
     private function encodeSubject(Subject $subject)
     {
         return [
-            'name' => $subject->getName(),
+            'subject' => $subject->getName(),
             'groups' => $subject->getGroups(),
             'sleep' => $subject->getSleep(),
             'retry_threshold' => $subject->getRetryThreshold(),
@@ -114,31 +114,10 @@ class ElasticEncoder
         ];
 
         foreach ($iteration->getResults() as $result) {
-            $encoded['results'][$result->getKey()] = [
-                'class' => get_class($result),
-                'metrics' => $result->getMetrics(),
-            ];
+            $encoded['results'][$result->getKey()] = $result->getMetrics();
         }
 
         return $encoded;
-    }
-
-    private function flatten(array $result, $flatKeys = [], array $flattened = [])
-    {
-        foreach ($result as $key => $value) {
-            $newKeys = $flatKeys;
-            $newKeys[] = $key;
-            $newKey = implode('.', $newKeys);
-
-            if (false === is_array($value)) {
-                $flattened[$newKey] = $value;
-                continue;
-            }
-
-            $flattened = $this->flatten($value, $newKeys, $flattened);
-        }
-
-        return $flattened;
     }
 
     private function subjectId(Suite $suite, Benchmark $benchmark, Subject $subject)

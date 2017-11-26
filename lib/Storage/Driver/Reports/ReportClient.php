@@ -3,8 +3,8 @@
 namespace PhpBench\Storage\Driver\Reports;
 
 use PhpBench\Model\Suite;
-use PhpBench\Extensions\Elastic\Encoder\DocumentEncoder;
 use PhpBench\Storage\Driver\Reports\TransportInterface;
+use PhpBench\Serializer\ElasticEncoder;
 
 class ReportClient
 {
@@ -19,11 +19,11 @@ class ReportClient
     private $transport;
 
     /**
-     * @var DocumentEncoder
+     * @var ElasticEncoder
      */
     private $encoder;
 
-    public function __construct(TransportInterface $transport, DocumentEncoder $encoder, bool $storeIterations)
+    public function __construct(TransportInterface $transport, ElasticEncoder $encoder, bool $storeIterations)
     {
         $this->storeIterations = $storeIterations;
         $this->transport = $transport;
