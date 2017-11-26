@@ -17,7 +17,7 @@ use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Extensions\Elastic\Driver\ElasticDriver;
 use PhpBench\Extensions\Elastic\Driver\ElasticClient;
-use PhpBench\Extensions\Elastic\Encoder\DocumentEncoder;
+use PhpBench\Serializer\ElasticEncoder;
 use PhpBench\Extensions\Elastic\Command\InstallCommand;
 
 class ElasticExtension implements ExtensionInterface
@@ -42,10 +42,6 @@ class ElasticExtension implements ExtensionInterface
 
     public function load(Container $container)
     {
-        $container->register('serializer.encoder.document', function (Container $container) {
-            return new DocumentEncoder();
-        });
-
         $container->register('storage.driver.elastic', function (Container $container) {
             $innerStorage = $container->get('storage.driver_registry')->getService(
                 $container->getParameter(self::PARAM_INNER_STORAGE)
@@ -54,7 +50,7 @@ class ElasticExtension implements ExtensionInterface
             return new ElasticDriver(
                 $container->get('storage.elastic.client'),
                 $innerStorage,
-                $container->get('serializer.encoder.document'),
+                $container->get('serializer.encoder.elastic'),
                 self::PARAM_STORE_ITERATIONS
             );
         }, ['storage_driver' => ['name' => 'elastic']]);

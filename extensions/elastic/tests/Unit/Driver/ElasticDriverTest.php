@@ -7,7 +7,7 @@ use PhpBench\Storage\DriverInterface;
 use PhpBench\Extensions\Elastic\Driver\ElasticDriver;
 use PhpBench\Tests\Util\TestUtil;
 use PhpBench\Model\SuiteCollection;
-use PhpBench\Extensions\Elastic\Encoder\DocumentEncoder;
+use PhpBench\Serializer\ElasticEncoder;
 use PhpBench\Extensions\Elastic\Driver\ElasticClient;
 use PhpBench\Expression\Constraint\Comparison;
 use PhpBench\Expression\Constraint\Constraint;
@@ -50,7 +50,7 @@ class ElasticDriverTest extends TestCase
     {
         $this->innerDriver = $this->prophesize(DriverInterface::class);
         $this->client = $this->prophesize(ElasticClient::class);
-        $this->encoder = $this->prophesize(DocumentEncoder::class);
+        $this->encoder = $this->prophesize(ElasticEncoder::class);
 
         $this->constraint = $this->prophesize(Constraint::class);
         $this->history = $this->prophesize(HistoryIteratorInterface::class);

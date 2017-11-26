@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Extensions\Elastic\Encoder;
+namespace PhpBench\Serializer;
 
 use PhpBench\Model\Suite;
 use PhpBench\Environment\Information;
@@ -9,7 +9,7 @@ use PhpBench\Model\Subject;
 use PhpBench\Model\Variant;
 use PhpBench\Model\Iteration;
 
-class DocumentEncoder
+class ElasticEncoder
 {
     public function aggregationsFromSuite(Suite $suite)
     {

@@ -1,13 +1,13 @@
 <?php
 
-namespace PhpBench\Extensions\Elastic\Tests\Unit\Encoder;
+namespace PhpBench\Tests\Unit\Serializer;
 
 use PHPUnit\Framework\TestCase;
-use PhpBench\Extensions\Elastic\Encoder\DocumentEncoder;
+use PhpBench\Serializer\ElasticEncoder;
 use PhpBench\Tests\Util\TestUtil;
 use PhpBench\Model\Suite;
 
-class DocumentEncoderTest extends TestCase
+class ElasticEncoderTest extends TestCase
 {
     /**
      * @var DocumentEncoder
@@ -16,7 +16,7 @@ class DocumentEncoderTest extends TestCase
 
     public function setUp()
     {
-        $this->encoder = new DocumentEncoder();
+        $this->encoder = new ElasticEncoder();
     }
 
     public function testAggregationsFromSuite()
