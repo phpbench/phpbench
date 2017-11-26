@@ -59,7 +59,7 @@ class ReportsExtension implements ExtensionInterface
             'storage.reports.connection' => [],
             'storage.reports.store_iterations' => false,
             'storage.reports.inner_driver' => 'xml',
-            'storage.reports.api_key' => 'changeme',
+            'storage.reports.api_key' => getenv('REPORTS_API_KEY') ?: 'changeme',
         ];
     }
 }

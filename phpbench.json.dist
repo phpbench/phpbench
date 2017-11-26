@@ -1,7 +1,11 @@
 {
     "bootstrap": "vendor/autoload.php",
     "path": "benchmarks",
-    "storage": "dbal",
+    "storage": "reports",
+    "storage.reports.connection": {
+        "base_url": "https://phpbench.dantleech.com"
+    },
+    "storage.reports.store_iterations": true,
     "php_config": {
         "memory_limit": "1G"
     },

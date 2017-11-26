@@ -1,5 +1,9 @@
 language: php
 
+env:
+  global:
+    secure: KKuB8rlYrNylciqu/XPm2rOAOVRCz2vYoGykBCm7Q2rU0zBPvQj1SlgdBKfFlfWjPd6mfQ0Q/D7jzOrnKy1NYYtSlwu2UyzyNTXwUrxQwIpSKpA1WltlyU1qNDpJWGO/kSVhccHQ8L0yYm2ZnEAKQoyPkK/ty6iU+vcY0BzAlRU=
+
 php:
   - 7.0
   - 7.1
@@ -24,7 +28,7 @@ before_script:
 script:
   - ./vendor/bin/phpstan analyze --level=1 -c phpstan.neon lib/
   - ./vendor/bin/phpunit
-  - php bin/phpbench run --iterations=1 --revs=1 --report=env --progress=dots
+  - php bin/phpbench run --report=env --progress=dots --store
   - php bin/phpbench run --iterations=1 --revs=1 --config=extensions/dbal/benchmarks/phpbench.json --progress=dots
 
 matrix:
