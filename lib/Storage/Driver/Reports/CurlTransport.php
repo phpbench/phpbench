@@ -21,7 +21,7 @@ class CurlTransport implements TransportInterface
         $config = $this->resolveConfig($this->config);
         $curl = \curl_init();
         $options = [
-            CURLOPT_URL => $config['base_url'] . $url,
+            CURLOPT_URL => $config['base_url'] . '/api/v1' . $url,
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_HTTPHEADER => [
                 'Content-Type: application/json'
