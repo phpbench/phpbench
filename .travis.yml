@@ -1,5 +1,9 @@
 language: php
 
+env:
+  global:
+    secure: KKuB8rlYrNylciqu/XPm2rOAOVRCz2vYoGykBCm7Q2rU0zBPvQj1SlgdBKfFlfWjPd6mfQ0Q/D7jzOrnKy1NYYtSlwu2UyzyNTXwUrxQwIpSKpA1WltlyU1qNDpJWGO/kSVhccHQ8L0yYm2ZnEAKQoyPkK/ty6iU+vcY0BzAlRU=
+
 php:
   - 7.0
   - 7.1
