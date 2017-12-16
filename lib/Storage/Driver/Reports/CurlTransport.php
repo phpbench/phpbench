@@ -32,41 +32,43 @@ class CurlTransport implements TransportInterface
         $this->apiKey = $apiKey;
     }
 
-    public function post(string $url, array $data): array
+    public function post(string $url, string $data): array
     {
         $config = $this->resolveConfig($this->config);
+        $url = $config['base_url'] . $url;
         $curl = \curl_init();
         $options = [
-            CURLOPT_URL => $config['base_url'] . '/api/v1' . $url,
+            CURLOPT_URL => $url,
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_HTTPHEADER => [
                 'Content-Type: application/json',
                 'X-API-Key: ' . $this->apiKey,
+                'Accept: application/json',
             ],
             CURLOPT_RETURNTRANSFER => true,
         ];
-        $options[CURLOPT_POSTFIELDS] = json_encode($data);
+        $options[CURLOPT_POSTFIELDS] = $data;
         curl_setopt_array($curl, $options);
 
         $response = curl_exec($curl);
 
         if ($error = curl_error($curl)) {
             throw new RuntimeException(sprintf(
-                'Could not talk to elastic search: "%s"',
+                'Could not talk to server: "%s"',
                 $error
             ));
         }
 
         $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $decoded = json_decode($response, true);
 
         if ($status !== 200) {
             throw new RuntimeException(sprintf(
-                'Endpoint returned non-200 status: %s with content "%s"',
-                $status, $response
+                'Endpoint returned non-200 status: %s for %s',
+                $status, $url
             ));
         }
 
-        $decoded = json_decode($response, true);
 
         if (null === $decoded) {
             throw new RuntimeException(sprintf(

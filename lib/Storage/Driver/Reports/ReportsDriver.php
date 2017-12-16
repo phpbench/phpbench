@@ -55,11 +55,7 @@ class ReportsDriver implements DriverInterface
      */
     public function store(SuiteCollection $collection)
     {
-        /** @var Suite $suite */
-        foreach ($collection as $suite) {
-            $this->client->post($suite);
-        }
-
+        $this->client->post($collection);
         $this->innerDriver()->store($collection);
     }
 

@@ -13,7 +13,8 @@
 namespace PhpBench\Storage\Driver\Reports;
 
 use PhpBench\Model\Suite;
-use PhpBench\Serializer\ElasticEncoder;
+use PhpBench\Serializer\XmlEncoder;
+use PhpBench\Model\SuiteCollection;
 
 class ReportsClient
 {
@@ -28,27 +29,20 @@ class ReportsClient
     private $transport;
 
     /**
-     * @var ElasticEncoder
+     * @var XmlEncoder
      */
     private $encoder;
 
-    public function __construct(TransportInterface $transport, ElasticEncoder $encoder, bool $storeIterations)
+    public function __construct(TransportInterface $transport, XmlEncoder $encoder, bool $storeIterations)
     {
         $this->storeIterations = $storeIterations;
         $this->transport = $transport;
         $this->encoder = $encoder;
     }
 
-    public function post(Suite $suite)
+    public function post(SuiteCollection $suite)
     {
-        $suiteArray = $this->encoder->aggregationsFromSuite($suite);
-        $this->transport->post('/suite', $suiteArray);
-
-        if (false === $this->storeIterations) {
-            return;
-        }
-
-        $iterationsArray = $this->encoder->iterationsFromSuite($suite);
-        $this->transport->post('/iterations', $iterationsArray);
+        $suiteDocument = $this->encoder->encode($suite);
+        $this->transport->post('/import', $suiteDocument->dump());
     }
 }

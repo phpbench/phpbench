@@ -17,58 +17,53 @@ use PhpBench\Storage\Driver\Reports\ReportsClient;
 use PhpBench\Storage\Driver\Reports\TransportInterface;
 use PhpBench\Tests\Util\TestUtil;
 use PHPUnit\Framework\TestCase;
+use PhpBench\Serializer\XmlEncoder;
+use PhpBench\Dom\Document;
 
 class ReportsClientTest extends TestCase
 {
     /**
-     * @var ObjectProphecy
+     * @var TransportInterface|ObjectProphecy
      */
     private $transport;
 
     /**
-     * @var ObjectProphecy
+     * @var XmlEncoder|ObjectProphecy
      */
-    private $elasticEncoder;
+    private $xmlEncoder;
 
     /**
      * @var ReportClient
      */
     private $client;
 
+    /**
+     * @var Document|ObjectProphecy
+     */
+    private $document;
+
     public function setUp()
     {
         $this->transport = $this->prophesize(TransportInterface::class);
-        $this->elasticEncoder = $this->prophesize(ElasticEncoder::class);
-    }
-
-    public function testPostNoStoreIterations()
-    {
-        $testElastic = ['one' => 'two'];
-        $suite = TestUtil::createSuite();
-        $this->elasticEncoder->aggregationsFromSuite($suite)->willReturn($testElastic);
-        $this->transport->post('/suite', $testElastic)->shouldBeCalled();
-
-        $this->createClient(false)->post($suite);
+        $this->xmlEncoder = $this->prophesize(XmlEncoder::class);
+        $this->document = $this->prophesize(Document::class);
+        $this->document->dump()->willReturn('asd');
     }
 
     public function testStoreIterations()
     {
         $testElastic = ['one' => 'two'];
-        $suite = TestUtil::createSuite();
-        $this->elasticEncoder->aggregationsFromSuite($suite)->willReturn($testElastic);
-        $this->transport->post('/suite', $testElastic)->shouldBeCalled();
-
-        $this->elasticEncoder->iterationsFromSuite($suite)->willReturn($testElastic);
-        $this->transport->post('/iterations', $testElastic)->shouldBeCalled();
-
-        $this->createClient(true)->post($suite);
+        $collection = TestUtil::createCollection();
+        $this->xmlEncoder->encode($collection)->willReturn($this->document);
+        $this->transport->post('/import', 'asd')->shouldBeCalled();
+        $this->createClient(true)->post($collection);
     }
 
     private function createClient(bool $storeIterations): ReportsClient
     {
         return new ReportsClient(
             $this->transport->reveal(),
-            $this->elasticEncoder->reveal(),
+            $this->xmlEncoder->reveal(),
             $storeIterations
         );
     }

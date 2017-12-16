@@ -18,6 +18,7 @@ use PhpBench\Serializer\ElasticEncoder;
 use PhpBench\Storage\Driver\Reports\CurlTransport;
 use PhpBench\Storage\Driver\Reports\ReportsClient;
 use PhpBench\Storage\Driver\Reports\ReportsDriver;
+use PhpBench\Serializer\XmlEncoder;
 
 class ReportsExtension implements ExtensionInterface
 {
@@ -37,7 +38,7 @@ class ReportsExtension implements ExtensionInterface
         $container->register('storage.driver.reports.client', function (Container $container) {
             return new ReportsClient(
                 $container->get('storage.driver.reports.transport'),
-                new ElasticEncoder(),
+                new XmlEncoder(),
                 $container->getParameter('storage.reports.store_iterations')
             );
         });
