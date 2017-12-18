@@ -55,8 +55,10 @@ class ReportsDriver implements DriverInterface
      */
     public function store(SuiteCollection $collection)
     {
-        $this->client->post($collection);
+        $response = $this->client->post($collection);
         $this->innerDriver()->store($collection);
+
+        return 'Report: ' . $response['suite_url'];
     }
 
     /**

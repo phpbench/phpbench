@@ -17,25 +17,24 @@ use RuntimeException;
 class CurlTransport implements TransportInterface
 {
     /**
-     * @var array
-     */
-    private $config;
-
-    /**
      * @var string
      */
     private $apiKey;
 
-    public function __construct(array $config, string $apiKey)
+    /**
+     * @var array
+     */
+    private $url;
+
+    public function __construct(string $url, string $apiKey)
     {
-        $this->config = $config;
         $this->apiKey = $apiKey;
+        $this->url = $url;
     }
 
     public function post(string $url, string $data): array
     {
-        $config = $this->resolveConfig($this->config);
-        $url = $config['base_url'] . $url;
+        $url = $this->url . $url;
         $curl = \curl_init();
         $options = [
             CURLOPT_URL => $url,
@@ -67,6 +66,7 @@ class CurlTransport implements TransportInterface
                 'Endpoint returned non-200 status: %s for %s',
                 $status, $url
             ));
+
         }
 
 
@@ -78,29 +78,5 @@ class CurlTransport implements TransportInterface
         }
 
         return $decoded;
-    }
-
-    private function resolveConfig(array $config)
-    {
-        $defaults = [
-            'base_url' => null,
-        ];
-
-        if ($diff = array_diff(array_keys($config), array_keys($defaults))) {
-            throw new RuntimeException(sprintf(
-                'Unknown connection config keys "%s", known keys: "%s"',
-                implode('", "', $diff), implode('", "', array_keys($defaults))
-            ));
-        }
-
-        $config = array_merge($defaults, $config);
-
-        if (null === $config['base_url']) {
-            throw new RuntimeException(sprintf(
-                'base_url must be configured in order to use the "reports" storage'
-            ));
-        }
-
-        return $config;
     }
 }

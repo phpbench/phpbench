@@ -45,7 +45,7 @@ class ReportsExtension implements ExtensionInterface
 
         $container->register('storage.driver.reports.transport', function (Container $container) {
             return new CurlTransport(
-                $container->getParameter('storage.reports.connection'),
+                $container->getParameter('storage.reports.url'),
                 $container->getParameter('storage.reports.api_key')
             );
         });
@@ -57,7 +57,7 @@ class ReportsExtension implements ExtensionInterface
     public function getDefaultConfig()
     {
         return [
-            'storage.reports.connection' => [],
+            'storage.reports.url' => 'https://reports.phpbench.org',
             'storage.reports.store_iterations' => false,
             'storage.reports.inner_driver' => 'xml',
             'storage.reports.api_key' => getenv('REPORTS_API_KEY') ?: 'changeme',

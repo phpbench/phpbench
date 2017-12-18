@@ -43,6 +43,6 @@ class ReportsClient
     public function post(SuiteCollection $suite)
     {
         $suiteDocument = $this->encoder->encode($suite);
-        $this->transport->post('/import', $suiteDocument->dump());
+        return $this->transport->post('/import', $suiteDocument->dump());
     }
 }
