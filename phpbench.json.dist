@@ -1,14 +1,12 @@
 {
     "bootstrap": "vendor/autoload.php",
     "path": "benchmarks",
-    "storage.reports.store_iterations": true,
     "php_config": {
         "memory_limit": "1G"
     },
     "extensions": [
         "PhpBench\\Extensions\\XDebug\\XDebugExtension",
-        "PhpBench\\Extensions\\Dbal\\DbalExtension",
-        "PhpBench\\Extension\\ReportsExtension"
+        "PhpBench\\Extensions\\Dbal\\DbalExtension"
     ],
     "reports": {
         "all": {

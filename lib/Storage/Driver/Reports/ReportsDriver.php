@@ -13,9 +13,9 @@
 namespace PhpBench\Storage\Driver\Reports;
 
 use PhpBench\Expression\Constraint\Constraint;
-use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Registry;
+use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Storage\DriverInterface;
 
 class ReportsDriver implements DriverInterface
@@ -40,14 +40,21 @@ class ReportsDriver implements DriverInterface
      */
     private $innerStorageName;
 
+    /**
+     * @var XmlEncoder
+     */
+    private $xmlEncoder;
+
     public function __construct(
         ReportsClient $client,
         Registry $storageRegistry,
+        XmlEncoder $xmlEncoder,
         string $innerStorageName
     ) {
         $this->client = $client;
         $this->storageRegistry = $storageRegistry;
         $this->innerStorageName = $innerStorageName;
+        $this->xmlEncoder = $xmlEncoder;
     }
 
     /**
@@ -55,12 +62,12 @@ class ReportsDriver implements DriverInterface
      */
     public function store(SuiteCollection $collection)
     {
-        /** @var Suite $suite */
-        foreach ($collection as $suite) {
-            $this->client->post($suite);
-        }
+        $suiteDocument = $this->xmlEncoder->encode($collection);
+        $response = $this->client->post('/import', $suiteDocument->dump());
 
         $this->innerDriver()->store($collection);
+
+        return 'Report: ' . $response['suite_url'];
     }
 
     /**

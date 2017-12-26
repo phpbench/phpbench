@@ -42,7 +42,7 @@ class XmlEncoder
         foreach ($suiteCollection->getSuites() as $suite) {
             $suiteEl = $rootEl->appendElement('suite');
             $suiteEl->setAttribute('context', $suite->getContextName());
-            $suiteEl->setAttribute('date', $suite->getDate()->format('Y-m-d H:i:s'));
+            $suiteEl->setAttribute('date', $suite->getDate()->format('c'));
             $suiteEl->setAttribute('config-path', $suite->getConfigPath());
             $suiteEl->setAttribute('uuid', $suite->getUuid());
 
