@@ -14,11 +14,9 @@ namespace PhpBench\Extension;
 
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
-use PhpBench\Serializer\ElasticEncoder;
-use PhpBench\Storage\Driver\Reports\CurlTransmitter;
+use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Storage\Driver\Reports\ReportsClient;
 use PhpBench\Storage\Driver\Reports\ReportsDriver;
-use PhpBench\Serializer\XmlEncoder;
 
 class ReportsExtension implements ExtensionInterface
 {

@@ -27,6 +27,7 @@ interface DriverInterface
      * by the CLI interface after successful storage.
      *
      * @param SuiteCollection $collection
+     *
      * @return string|null
      */
     public function store(SuiteCollection $collection);

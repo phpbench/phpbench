@@ -13,11 +13,10 @@
 namespace PhpBench\Storage\Driver\Reports;
 
 use PhpBench\Expression\Constraint\Constraint;
-use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Registry;
-use PhpBench\Storage\DriverInterface;
 use PhpBench\Serializer\XmlEncoder;
+use PhpBench\Storage\DriverInterface;
 
 class ReportsDriver implements DriverInterface
 {

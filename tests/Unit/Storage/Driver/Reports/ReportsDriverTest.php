@@ -12,19 +12,19 @@
 
 namespace PhpBench\Tests\Unit\Storage\Driver\Reports;
 
+use PhpBench\Dom\Document;
 use PhpBench\Expression\Constraint\Constraint;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Registry;
+use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Storage\Driver\Reports\ReportsClient;
 use PhpBench\Storage\Driver\Reports\ReportsDriver;
 use PhpBench\Storage\DriverInterface;
 use PhpBench\Storage\HistoryIteratorInterface;
 use PhpBench\Tests\Util\TestUtil;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Prophecy\ObjectProphecy;
-use PhpBench\Serializer\XmlEncoder;
 use Prophecy\Argument;
-use PhpBench\Dom\Document;
+use Prophecy\Prophecy\ObjectProphecy;
 
 class ReportsDriverTest extends TestCase
 {

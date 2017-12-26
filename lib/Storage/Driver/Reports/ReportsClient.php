@@ -13,7 +13,6 @@
 namespace PhpBench\Storage\Driver\Reports;
 
 use RuntimeException;
-use PhpBench\Storage\Driver\Reports\ReportsClientInterface;
 
 class ReportsClient
 {
@@ -70,12 +69,10 @@ class ReportsClient
                 ));
             }
 
-
             throw new RuntimeException(sprintf(
                 'Reports server returned status: %s for %s',
                 $status, $url
             ));
-
         }
 
         if (null === $decoded) {
