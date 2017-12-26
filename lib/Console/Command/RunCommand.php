@@ -117,8 +117,10 @@ EOT
         if (true === $input->getOption('store')) {
             $output->write('Storing results ... ');
             $message = $this->storage->getService()->store($collection);
+
             $output->writeln('OK');
             $output->writeln(sprintf('Run: %s', $suite->getUuid()));
+
             if ($message) {
                 $output->writeln($message);
             }

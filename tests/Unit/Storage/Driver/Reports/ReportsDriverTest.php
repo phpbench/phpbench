@@ -22,6 +22,9 @@ use PhpBench\Storage\HistoryIteratorInterface;
 use PhpBench\Tests\Util\TestUtil;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
+use PhpBench\Serializer\XmlEncoder;
+use Prophecy\Argument;
+use PhpBench\Dom\Document;
 
 class ReportsDriverTest extends TestCase
 {
@@ -58,6 +61,7 @@ class ReportsDriverTest extends TestCase
         $this->history = $this->prophesize(HistoryIteratorInterface::class);
         $this->registry = $this->prophesize(Registry::class);
         $this->client = $this->prophesize(ReportsClient::class);
+        $this->xmlEncoder = $this->prophesize(XmlEncoder::class);
         $this->storageName = 'foobar';
 
         $this->registry->getService('foobar')->willReturn($this->innerDriver->reveal());
@@ -68,12 +72,13 @@ class ReportsDriverTest extends TestCase
         $suite = TestUtil::createSuite();
         $collection = new SuiteCollection([$suite]);
         $document = ['field' => 'value'];
-
-        $this->client->post($suite);
+        $this->xmlEncoder->encode(Argument::type(SuiteCollection::class))->willReturn(new Document());
 
         $this->innerDriver->store($collection)->shouldBeCalled();
+        $this->client->post('/import', '<?xml version="1.0"?>'.PHP_EOL)->willReturn(['suite_url' => 'http://example.com']);
 
-        $this->createDriver()->store($collection);
+        $message = $this->createDriver()->store($collection);
+        $this->assertEquals('Report: http://example.com', $message);
     }
 
     public function testDecoration()
@@ -107,6 +112,7 @@ class ReportsDriverTest extends TestCase
         return new ReportsDriver(
             $this->client->reveal(),
             $this->registry->reveal(),
+            $this->xmlEncoder->reveal(),
             $this->storageName
         );
     }

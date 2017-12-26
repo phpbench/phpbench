@@ -12,37 +12,79 @@
 
 namespace PhpBench\Storage\Driver\Reports;
 
-use PhpBench\Model\Suite;
-use PhpBench\Serializer\XmlEncoder;
-use PhpBench\Model\SuiteCollection;
+use RuntimeException;
+use PhpBench\Storage\Driver\Reports\ReportsClientInterface;
 
 class ReportsClient
 {
     /**
-     * @var bool
+     * @var string
      */
-    private $storeIterations;
+    private $apiKey;
 
     /**
-     * @var TransportInterface
+     * @var array
      */
-    private $transport;
+    private $baseUrl;
 
-    /**
-     * @var XmlEncoder
-     */
-    private $encoder;
-
-    public function __construct(TransportInterface $transport, XmlEncoder $encoder, bool $storeIterations)
+    public function __construct(string $baseUrl, string $apiKey)
     {
-        $this->storeIterations = $storeIterations;
-        $this->transport = $transport;
-        $this->encoder = $encoder;
+        $this->apiKey = $apiKey;
+        $this->baseUrl = $baseUrl;
     }
 
-    public function post(SuiteCollection $suite)
+    public function post(string $url, string $data): array
     {
-        $suiteDocument = $this->encoder->encode($suite);
-        return $this->transport->post('/import', $suiteDocument->dump());
+        $url = $this->baseUrl . $url;
+        $curl = \curl_init();
+        $options = [
+            CURLOPT_URL => $url,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_HTTPHEADER => [
+                'Content-Type: application/json',
+                'X-API-Key: ' . $this->apiKey,
+                'Accept: application/json',
+            ],
+            CURLOPT_RETURNTRANSFER => true,
+        ];
+        $options[CURLOPT_POSTFIELDS] = $data;
+        curl_setopt_array($curl, $options);
+
+        $response = curl_exec($curl);
+
+        if ($error = curl_error($curl)) {
+            throw new RuntimeException(sprintf(
+                'Could not talk to server: "%s"',
+                $error
+            ));
+        }
+
+        $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $decoded = json_decode($response, true);
+
+        if ($status !== 200) {
+            if (isset($decoded['error'])) {
+                throw new RuntimeException(sprintf(
+                    'Reports server error %s "%s" at %s',
+                    $status, $decoded['error']['message'], $url
+                ));
+            }
+
+
+            throw new RuntimeException(sprintf(
+                'Reports server returned status: %s for %s',
+                $status, $url
+            ));
+
+        }
+
+        if (null === $decoded) {
+            throw new RuntimeException(sprintf(
+                'Could not decode JSON: %s',
+                json_last_error_msg()
+            ), null, new RuntimeException($response));
+        }
+
+        return $decoded;
     }
 }
