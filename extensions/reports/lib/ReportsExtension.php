@@ -10,13 +10,13 @@
  *
  */
 
-namespace PhpBench\Extension;
+namespace PhpBench\Extensions\Reports;
 
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Serializer\XmlEncoder;
-use PhpBench\Storage\Driver\Reports\ReportsClient;
-use PhpBench\Storage\Driver\Reports\ReportsDriver;
+use PhpBench\Extensions\Reports\Driver\ReportsClient;
+use PhpBench\Extensions\Reports\Driver\ReportsDriver;
 
 class ReportsExtension implements ExtensionInterface
 {
@@ -36,8 +36,8 @@ class ReportsExtension implements ExtensionInterface
 
         $container->register('storage.driver.reports.client', function (Container $container) {
             return new ReportsClient(
-                $container->getParameter('storage.reports.url'),
-                $container->getParameter('storage.reports.api_key')
+                $container->getParameter('storage.reports.api_key'),
+                $container->getParameter('storage.reports.url')
             );
         });
     }
@@ -48,7 +48,7 @@ class ReportsExtension implements ExtensionInterface
     public function getDefaultConfig()
     {
         return [
-            'storage.reports.url' => 'https://reports.phpbench.org',
+            'storage.reports.url' => null,
             'storage.reports.store_iterations' => false,
             'storage.reports.inner_driver' => 'xml',
             'storage.reports.api_key' => getenv('REPORTS_API_KEY') ?: 'changeme',

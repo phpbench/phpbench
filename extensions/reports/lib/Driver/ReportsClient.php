@@ -10,7 +10,7 @@
  *
  */
 
-namespace PhpBench\Storage\Driver\Reports;
+namespace PhpBench\Extensions\Reports\Driver;
 
 use RuntimeException;
 
@@ -26,7 +26,7 @@ class ReportsClient
      */
     private $baseUrl;
 
-    public function __construct(string $baseUrl, string $apiKey)
+    public function __construct(string $apiKey, string $baseUrl = null)
     {
         $this->apiKey = $apiKey;
         $this->baseUrl = $baseUrl;

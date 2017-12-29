@@ -10,13 +10,14 @@
  *
  */
 
-namespace PhpBench\Storage\Driver\Reports;
+namespace PhpBench\Extensions\Reports\Driver;
 
 use PhpBench\Expression\Constraint\Constraint;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Registry;
 use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Storage\DriverInterface;
+use PhpBench\Extensions\Reports\Driver\ReportsClient;
 
 class ReportsDriver implements DriverInterface
 {
