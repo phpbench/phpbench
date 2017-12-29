@@ -47,7 +47,8 @@
         }
     },
     "suggest": {
-        "ext-xdebug": "For XDebug profiling extension."
+        "ext-xdebug": "For XDebug profiling extension.",
+        "ext-curl": "For (web) reports extension"
     },
     "autoload-dev": {
         "psr-4": {

@@ -16,6 +16,9 @@
         <testsuite name="PhpBench DBAL Extension">
             <directory>./extensions/dbal/tests</directory>
         </testsuite>
+        <testsuite name="PhpBench Reports Extension">
+            <directory>./extensions/reports/tests</directory>
+        </testsuite>
     </testsuites>
 
     <filter>
