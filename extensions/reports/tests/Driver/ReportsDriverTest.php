@@ -14,11 +14,11 @@ namespace PhpBench\Extensions\Reports\Tests\Driver;
 
 use PhpBench\Dom\Document;
 use PhpBench\Expression\Constraint\Constraint;
+use PhpBench\Extensions\Reports\Driver\ReportsClient;
+use PhpBench\Extensions\Reports\Driver\ReportsDriver;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Registry;
 use PhpBench\Serializer\XmlEncoder;
-use PhpBench\Extensions\Reports\Driver\ReportsClient;
-use PhpBench\Extensions\Reports\Driver\ReportsDriver;
 use PhpBench\Storage\DriverInterface;
 use PhpBench\Storage\HistoryIteratorInterface;
 use PhpBench\Tests\Util\TestUtil;

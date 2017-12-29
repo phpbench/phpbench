@@ -17,7 +17,6 @@ use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Registry;
 use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Storage\DriverInterface;
-use PhpBench\Extensions\Reports\Driver\ReportsClient;
 
 class ReportsDriver implements DriverInterface
 {
