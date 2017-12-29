@@ -36,6 +36,7 @@ Extensions
 
    extensions/xdebug
    extensions/dbal
+   extensions/reports
    extensions/custom
 
 Indices and tables
