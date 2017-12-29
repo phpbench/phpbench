@@ -64,8 +64,9 @@ class ReportsClient
         if ($status !== 200) {
             if (isset($decoded['error'])) {
                 throw new RuntimeException(sprintf(
-                    'Reports server error %s "%s" at %s',
-                    $status, $decoded['error']['message'], $url
+                    "Server returned error %s: \"%s\"\n%s",
+                    $status, $decoded['error'],
+                    $decoded['message'] ?? ''
                 ));
             }
 
