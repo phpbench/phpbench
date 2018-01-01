@@ -1,7 +1,7 @@
-XDebug
+Xdebug
 ======
 
-The XDebug extension allows you to easily profile your code using
+The Xdebug extension allows you to easily profile your code using
 `function traces`_ or by generating cachegrind `profiles`_.
 
 The commands are very similar to the standard ``run`` command with the
@@ -9,20 +9,20 @@ difference that only single iterations are performed.
 
 .. note::
 
-    XDebug needs to be installed, however it does NOT need to be activated by
+    Xdebug needs to be installed, however it does NOT need to be activated by
     default. PHPBench will automatically try and load and configure the
     extension even if it is disabled.
 
 .. tip::
 
-	You can use the XDebug executors with the standard ``run`` command by
+	You can use the Xdebug executors with the standard ``run`` command by
 	specifying either ``xdebug_profile`` or ``xdebug_trace`` with the
 	``--executor`` option.
 
 Installation
 ------------
 
-The XDebug extension is bundled with PHPBench, it just needs to be activated:
+The Xdebug extension is bundled with PHPBench, it just needs to be activated:
 
 .. code-block:: javascript
 
