@@ -70,13 +70,13 @@ class Payload
      */
     public function __construct($template, array $tokens = [], $phpBinary = PHP_BINARY, Process $process = null)
     {
+        $this->phpBinary = escapeshellarg($phpBinary);
         $this->template = $template;
-        $this->process = $process ?: new Process($phpBinary);
+        $this->process = $process ?: new Process($this->phpBinary);
         $this->tokens = $tokens;
 
         // disable timeout.
         $this->process->setTimeout(null);
-        $this->phpBinary = $phpBinary;
         $this->iniStringBuilder = new IniStringBuilder();
     }
 
@@ -95,7 +95,7 @@ class Payload
 
     public function setPhpPath($phpBinary)
     {
-        $this->phpBinary = $phpBinary;
+        $this->phpBinary = escapeshellarg($phpBinary);
     }
 
     public function disableIni()

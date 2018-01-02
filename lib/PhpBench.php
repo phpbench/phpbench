@@ -69,11 +69,7 @@ class PhpBench
      */
     public static function normalizePath($path)
     {
-        if (substr($path, 0, 1) == DIRECTORY_SEPARATOR) {
-            return $path;
-        }
-
-        return getcwd() . DIRECTORY_SEPARATOR . $path;
+        return stream_resolve_include_path($path);
     }
 
     private static function loadConfig()
