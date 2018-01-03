@@ -107,7 +107,7 @@ class PayloadTest extends TestCase
         $payload = $this->validPayload();
         $payload->setWrapper('bockfire');
         $payload->setPhpPath('/boo/bar/php');
-        $this->process->setCommandLine(Argument::containingString('bockfire /boo/bar/php'))->shouldBeCalled();
+        $this->process->setCommandLine(Argument::containingString('bockfire \'/boo/bar/php\''))->shouldBeCalled();
         $this->process->run()->shouldBeCalled();
         $this->process->isSuccessful()->willReturn(true);
         $this->process->getOutput()->willReturn('{"foo": "bar"}');

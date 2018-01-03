@@ -40,7 +40,7 @@ class Payload
     /**
      * Path to PHP binary.
      */
-    private $phpBinary;
+    private $phpPath;
 
     /**
      * Tokens to substitute in the script template.
@@ -68,11 +68,11 @@ class Payload
      *
      * @param string $template
      */
-    public function __construct($template, array $tokens = [], $phpBinary = PHP_BINARY, Process $process = null)
+    public function __construct($template, array $tokens = [], $phpPath = PHP_BINARY, Process $process = null)
     {
-        $this->phpBinary = escapeshellarg($phpBinary);
+        $this->setPhpPath($phpPath);
         $this->template = $template;
-        $this->process = $process ?: new Process($this->phpBinary);
+        $this->process = $process ?: new Process($this->phpPath);
         $this->tokens = $tokens;
 
         // disable timeout.
@@ -93,9 +93,9 @@ class Payload
         );
     }
 
-    public function setPhpPath($phpBinary)
+    public function setPhpPath($phpPath)
     {
-        $this->phpBinary = escapeshellarg($phpBinary);
+        $this->phpPath = escapeshellarg($phpPath);
     }
 
     public function disableIni()
@@ -176,7 +176,7 @@ class Payload
             $arguments[] = $this->wrapper;
         }
 
-        $arguments[] = $this->phpBinary;
+        $arguments[] = $this->phpPath;
 
         if (true === $this->disableIni) {
             $arguments[] = self::FLAG_DISABLE_INI;

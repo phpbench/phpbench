@@ -18,6 +18,7 @@ use PhpBench\Json\JsonDecoder;
 use Seld\JsonLint\JsonParser;
 use Seld\JsonLint\ParsingException;
 use Symfony\Component\Debug\ErrorHandler;
+use Webmozart\PathUtil\Path;
 
 class PhpBench
 {
@@ -69,7 +70,11 @@ class PhpBench
      */
     public static function normalizePath($path)
     {
-        return stream_resolve_include_path($path);
+        if (Path::isAbsolute($path)) {
+            return $path;
+        }
+
+        return getcwd() . DIRECTORY_SEPARATOR . $path;
     }
 
     private static function loadConfig()
