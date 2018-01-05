@@ -29,7 +29,7 @@ return [
     'compare' => [
         'generator' => 'table',
         'cols' => ['benchmark', 'subject', 'groups', 'params', 'revs'],
-        'compare' => 'vcs_branch',
+        'compare' => 'suite',
         'break' => ['benchmark', 'subject'],
     ],
     'env' => [
