@@ -91,7 +91,7 @@ class ConfigurableRegistryTest extends RegistryTest
             'three' => 'four',
             'two' => 'three',
             'four' => 'five',
-        ], $result->getarraycopy());
+        ], $result->getArrayCopy());
     }
 
     /**
