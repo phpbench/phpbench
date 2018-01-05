@@ -104,7 +104,7 @@ class SuiteTest extends TestCase
         $this->subject1->getVariants()->willReturn([$this->variant1->reveal()]);
         $this->variant1->hasErrorStack()->willReturn(true);
         $this->variant1->count()->willReturn(1);
-        $this->variant1->getSubject()->wilLReturn($this->subject1->reveal());
+        $this->variant1->getSubject()->willReturn($this->subject1->reveal());
         $this->variant1->getRevolutions()->willReturn(10);
         $this->variant1->getRejectCount()->willReturn(0);
         $this->variant1->getRejectCount()->willReturn(0);

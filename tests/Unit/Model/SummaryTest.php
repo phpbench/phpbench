@@ -41,9 +41,9 @@ class SummaryTest extends TestCase
         $this->bench1->getSubjects()->willReturn([$this->subject1->reveal()]);
         $this->subject1->getVariants()->willReturn([$this->variant1->reveal()]);
         $this->variant1->getStats()->willReturn($this->stats->reveal());
-        $this->variant1->count()->wilLReturn(4);
-        $this->variant1->getRejectCount()->wilLReturn(11);
-        $this->variant1->hasErrorStack()->wilLReturn(false);
+        $this->variant1->count()->willReturn(4);
+        $this->variant1->getRejectCount()->willReturn(11);
+        $this->variant1->hasErrorStack()->willReturn(false);
         $this->variant1->getRevolutions()->willReturn(10);
         $this->variant1->getSubject()->willReturn($this->subject1->reveal());
         $this->variant1->getFailures()->willReturn(new AssertionFailures($this->variant1->reveal()));

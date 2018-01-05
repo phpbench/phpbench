@@ -170,7 +170,7 @@ class Runner
             // override parameters
             $subjectMetadata->setIterations($context->getIterations($subjectMetadata->getIterations()));
             $subjectMetadata->setRevs($context->getRevolutions($subjectMetadata->getRevs()));
-            $subjectMetadata->setWarmup($context->getWarmup($subjectMetadata->getWarmUp()));
+            $subjectMetadata->setWarmup($context->getWarmup($subjectMetadata->getWarmup()));
             $subjectMetadata->setSleep($context->getSleep($subjectMetadata->getSleep()));
             $subjectMetadata->setRetryThreshold($context->getRetryThreshold($this->retryThreshold));
 
