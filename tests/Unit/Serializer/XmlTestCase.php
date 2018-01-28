@@ -58,7 +58,7 @@ class XmlTestCase extends TestCase
         $this->suiteCollection->getSuites()->willReturn([$this->suite->reveal()]);
         $this->suite->getUuid()->willReturn(1234);
         $this->suite->getDate()->willReturn(new \DateTime('2015-01-01T00:00:00+00:00'));
-        $this->suite->getContextName()->willReturn('test');
+        $this->suite->getTag()->willReturn('test');
         $this->suite->getConfigPath()->willReturn('/path/to/config.json');
         $this->suite->getEnvInformations()->willReturn([
             $this->env1,
@@ -153,7 +153,7 @@ class XmlTestCase extends TestCase
                 <<<'EOT'
 <?xml version="1.0"?>
 <phpbench version="PHPBENCH_VERSION">
-  <suite context="test" date="2015-01-01T00:00:00+00:00" config-path="/path/to/config.json" uuid="1234">
+  <suite tag="test" context="test" date="2015-01-01T00:00:00+00:00" config-path="/path/to/config.json" uuid="1234">
     <env>
       <info1 foo="bar"/>
     </env>
@@ -184,7 +184,7 @@ EOT
                 <<<'EOT'
 <?xml version="1.0"?>
 <phpbench version="PHPBENCH_VERSION">
-  <suite context="test" date="2015-01-01T00:00:00+00:00" config-path="/path/to/config.json" uuid="1234">
+  <suite tag="test" context="test" date="2015-01-01T00:00:00+00:00" config-path="/path/to/config.json" uuid="1234">
     <env>
       <info1 foo="bar"/>
     </env>
@@ -207,7 +207,7 @@ EOT
                 <<<'EOT'
 <?xml version="1.0"?>
 <phpbench version="PHPBENCH_VERSION">
-  <suite context="test" date="2015-01-01T00:00:00+00:00" config-path="/path/to/config.json" uuid="1234">
+  <suite tag="test" context="test" date="2015-01-01T00:00:00+00:00" config-path="/path/to/config.json" uuid="1234">
     <env>
       <info1 foo="bar"/>
     </env>

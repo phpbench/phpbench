@@ -77,7 +77,7 @@ class XmlDecoder
     private function processSuite(\DOMElement $suiteEl)
     {
         $suite = new Suite(
-            $suiteEl->getAttribute('context'),
+            $suiteEl->getAttribute('tag'),
             new \DateTime($suiteEl->getAttribute('date')),
             $suiteEl->getAttribute('config-path'),
             [],

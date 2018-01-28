@@ -27,7 +27,7 @@ class RunnerConfig
     /**
      * @var string
      */
-    private $contextName;
+    private $tag;
 
     /**
      * @var array
@@ -117,9 +117,9 @@ class RunnerConfig
      *
      * @return string
      */
-    public function getContextName()
+    public function getTag()
     {
-        return $this->contextName;
+        return $this->tag;
     }
 
     /**
@@ -274,10 +274,10 @@ class RunnerConfig
         return $new;
     }
 
-    public function withContextName(string $contextName = null): self
+    public function withTag(string $tag = null): self
     {
         $new = clone $this;
-        $new->contextName = $contextName;
+        $new->tag = $tag;
 
         return $new;
     }

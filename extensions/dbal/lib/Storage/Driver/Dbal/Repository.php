@@ -127,7 +127,7 @@ EOT;
 SELECT 
     run.uuid AS run_uuid, 
     run.date AS run_date,
-    run.context AS context,
+    run.tag AS tag,
     environment.value AS vcs_branch,
     run.nb_subjects AS nb_subjects,
     run.nb_iterations AS nb_iterations,

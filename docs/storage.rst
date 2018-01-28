@@ -43,7 +43,7 @@ see what you have got:
     run 875c827946204db23eadd4b10e76b7189e10dde2
     Date:    2016-03-19T09:46:52+01:00
     Branch:  git_log
-    Context: <none>
+    Tag: <none>
     Scale:   1 subjects, 60 iterations, 120 revolutions
     Summary: (best [mean] worst) = 433.467 [988.067] 504.600 (μs)
              ⅀T: 59,284.000μs μRSD/r: 9.911%
@@ -51,7 +51,7 @@ see what you have got:
     run 9d38a760e6ebec0a466c80f148264a7a4bb7a203
     Date:    2016-03-19T09:46:39+01:00
     Branch:  git_log
-    Context: <none>
+    Tag: <none>
     Scale:   1 subjects, 30 iterations, 30 revolutions
     Summary: (best [mean] worst) = 461.800 [935.720] 503.300 (μs)
              ⅀T: 28,071.600μs μRSD/r: 4.582%

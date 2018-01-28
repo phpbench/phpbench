@@ -44,7 +44,7 @@ class HistoryIterator implements HistoryIteratorInterface
         $entry = new HistoryEntry(
             $current['run_uuid'],
             new \DateTime($current['run_date']),
-            $current['context'],
+            $current['tag'],
             $current['vcs_branch'],
             $current['nb_subjects'],
             $current['nb_iterations'],

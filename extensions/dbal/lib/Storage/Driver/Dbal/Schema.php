@@ -40,7 +40,7 @@ class Schema extends BaseSchema
         $table = $this->createTable('run');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('uuid', 'string');
-        $table->addColumn('context', 'string', ['notnull' => false]);
+        $table->addColumn('tag', 'string', ['notnull' => false]);
         $table->addColumn('date', 'datetime');
         $table->addColumn('nb_subjects', 'integer');
         $table->addColumn('nb_iterations', 'integer');

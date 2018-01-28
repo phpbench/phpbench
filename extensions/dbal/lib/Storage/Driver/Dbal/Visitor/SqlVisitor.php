@@ -83,7 +83,7 @@ class SqlVisitor
         $select = [
             'run.id',
             'run.uuid',
-            'run.context',
+            'run.tag',
             'run.date',
             'subject.benchmark',
             'subject.name',
