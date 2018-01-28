@@ -73,7 +73,7 @@ use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Storage;
 use PhpBench\Storage\Driver\Xml\XmlDriver;
-use PhpBench\Storage\UuidResolver;
+use PhpBench\Storage\UuidResolver\LatestResolver;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\ExecutableFinder;
@@ -588,7 +588,7 @@ class CoreExtension implements ExtensionInterface
         }, ['storage_driver' => ['name' => 'xml']]);
 
         $container->register('storage.uuid_resolver', function (Container $container) {
-            return new UuidResolver(
+            return new LatestResolver(
                 $container->get('storage.driver_registry')
             );
         });

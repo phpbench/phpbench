@@ -16,7 +16,7 @@ use PhpBench\Expression\Constraint\Comparison;
 use PhpBench\Expression\Constraint\Composite;
 use PhpBench\Expression\Constraint\Constraint;
 use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\Repository;
-use PhpBench\Storage\UuidResolver;
+use PhpBench\Storage\UuidResolverInterface;
 
 /**
  * Resolves token values, for example "latest" will be resolved to the latest
@@ -29,7 +29,7 @@ class TokenValueVisitor
      */
     private $uuidResolver;
 
-    public function __construct(UuidResolver $uuidResolver)
+    public function __construct(UuidResolverInterface $uuidResolver)
     {
         $this->uuidResolver = $uuidResolver;
     }

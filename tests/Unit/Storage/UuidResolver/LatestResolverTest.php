@@ -10,16 +10,17 @@
  *
  */
 
-namespace PhpBench\Tests\Unit\Storage;
+namespace PhpBench\Tests\Unit\Storage\UuidResolver;
 
 use PhpBench\Registry\Registry;
 use PhpBench\Storage\DriverInterface;
 use PhpBench\Storage\HistoryEntry;
 use PhpBench\Storage\HistoryIteratorInterface;
-use PhpBench\Storage\UuidResolver;
+use PhpBench\Storage\UuidResolver\LatestResolver;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
-class UuidResolverTest extends TestCase
+class LatestResolverTest extends TestCase
 {
     private $resolver;
     private $storage;
@@ -36,7 +37,7 @@ class UuidResolverTest extends TestCase
         $this->historyEntry = $this->prophesize(HistoryEntry::class);
         $this->historyEntry1 = $this->prophesize(HistoryEntry::class);
 
-        $this->resolver = new UuidResolver(
+        $this->resolver = new LatestResolver(
             $registry->reveal()
         );
     }
@@ -54,15 +55,10 @@ class UuidResolverTest extends TestCase
         $this->assertEquals(1234, $uuid);
     }
 
-    /**
-     * It should return the given UUID it is not a token.
-     */
-    public function testResolveLatestNotKeyword()
+    public function testResolveCantResolve()
     {
-        $this->storage->history()->shouldNotBeCalled();
-
-        $uuid = $this->resolver->resolve(1234);
-        $this->assertEquals(1234, $uuid);
+        $this->expectException(RuntimeException::class);
+        $this->resolver->resolve('nutbar');
     }
 
     /**

@@ -16,11 +16,11 @@ use PhpBench\Console\Command\Handler\DumpHandler;
 use PhpBench\Console\Command\Handler\ReportHandler;
 use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use PhpBench\Registry\Registry;
-use PhpBench\Storage\UuidResolver;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use PhpBench\Storage\UuidResolverInterface;
 
 /**
  * Command to show/report on a specific run.
@@ -38,7 +38,7 @@ class ShowCommand extends Command
         ReportHandler $reportHandler,
         TimeUnitHandler $timeUnitHandler,
         DumpHandler $dumpHandler,
-        UuidResolver $uuidResolver
+        UuidResolverInterface $uuidResolver
     ) {
         parent::__construct();
         $this->storage = $storage;

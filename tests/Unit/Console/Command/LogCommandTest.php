@@ -111,7 +111,7 @@ class LogCommandTest extends TestCase
 run 1
 Date:    2016-01-01T00:00:00+02:00
 Branch:  branch1
-Tag: foo
+Tag:     foo
 Scale:   10 subjects, 20 iterations, 40 revolutions
 Summary: (best [mean] worst) = 0.500 [1.250] 2.000 (s)
          ⅀T: 100 μRSD/r: 0.750%
@@ -119,7 +119,7 @@ Summary: (best [mean] worst) = 0.500 [1.250] 2.000 (s)
 run 2
 Date:    2016-01-01T00:00:00+02:00
 Branch:  branch2
-Tag: foo
+Tag:     foo
 Scale:   10 subjects, 20 iterations, 40 revolutions
 Summary: (best [mean] worst) = 0.500 [1.250] 2.000 (s)
          ⅀T: 100 μRSD/r: 0.750%
@@ -127,7 +127,7 @@ Summary: (best [mean] worst) = 0.500 [1.250] 2.000 (s)
 run 3
 Date:    2016-01-01T00:00:00+01:00
 Branch:  branch3
-Tag: foo
+Tag:     foo
 Scale:   10 subjects, 20 iterations, 40 revolutions
 Summary: (best [mean] worst) = 0.500 [1.250] 2.000 (s)
          ⅀T: 100 μRSD/r: 0.750%
@@ -168,7 +168,7 @@ EOT;
 run 1
 Date:    2016-01-01T00:00:00+01:00
 Branch:  branch1
-Tag: foo
+Tag:     foo
 Scale:   10 subjects, 20 iterations, 40 revolutions
 Summary: (best [mean] worst) = 0.500 [1.250] 2.000 (s)
          ⅀T: 100 μRSD/r: 0.750%
@@ -176,13 +176,13 @@ Summary: (best [mean] worst) = 0.500 [1.250] 2.000 (s)
 run 2
 Date:    2016-01-01T00:00:00+01:00
 Branch:  branch2
-Tag: foo
+Tag:     foo
 Scale:   10 subjects, 20 iterations, 40 revolutions
 lines 0-13 any key to continue, <q> to quit
 run 3
 Date:    2016-01-01T00:00:00+01:00
 Branch:  branch3
-Tag: foo
+Tag:     foo
 Scale:   10 subjects, 20 iterations, 40 revolutions
 Summary: (best [mean] worst) = 0.500 [1.250] 2.000 (s)
          ⅀T: 100 μRSD/r: 0.750%
@@ -223,7 +223,7 @@ EOT;
 run 1
 Date:    2016-01-01T00:00:00+01:00
 Branch:  branch1
-Tag: foo
+Tag:     foo
 Scale:   10 subjects, 20 iterations, 40 revolutions
 Summary: (best [mean] worst) = 0.500 [1.250] 2.000 (s)
          ⅀T: 100 μRSD/r: 0.750%
@@ -231,7 +231,7 @@ Summary: (best [mean] worst) = 0.500 [1.250] 2.000 (s)
 run 2
 Date:    2016-01-01T00:00:00+01:00
 Branch:  branch2
-Tag: foo
+Tag:     foo
 Scale:   10 subjects, 20 iterations, 40 revolutions
 lines 0-13 any key to continue, <q> to quit
 EOT;
