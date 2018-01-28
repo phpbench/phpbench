@@ -16,10 +16,10 @@ use PhpBench\Expression\Parser;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Registry;
 use PhpBench\Serializer\XmlDecoder;
+use PhpBench\Storage\UuidResolverInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use PhpBench\Storage\UuidResolverInterface;
 
 class SuiteCollectionHandler
 {

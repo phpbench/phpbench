@@ -14,8 +14,8 @@ namespace PhpBench\Tests\Unit\Storage\Driver\Dbal\Visitor;
 
 use PhpBench\Expression\Parser;
 use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\Visitor\TokenValueVisitor;
-use PHPUnit\Framework\TestCase;
 use PhpBench\Storage\UuidResolverInterface;
+use PHPUnit\Framework\TestCase;
 
 class TokenValueVisitorTest extends TestCase
 {

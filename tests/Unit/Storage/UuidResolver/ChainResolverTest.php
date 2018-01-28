@@ -1,10 +1,20 @@
 <?php
 
+/*
+ * This file is part of the PHPBench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
+
 namespace PhpBench\Tests\Unit\Storage\UuidResolver;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Storage\UuidResolver\ChainResolver;
 use PhpBench\Storage\UuidResolverInterface;
+use PHPUnit\Framework\TestCase;
 
 class ChainResolverTest extends TestCase
 {
@@ -29,7 +39,7 @@ class ChainResolverTest extends TestCase
 
     public function testChainResolve()
     {
-        $chainResolver = new ChainResolver([ $this->resolver->reveal() ]);
+        $chainResolver = new ChainResolver([$this->resolver->reveal()]);
         $this->resolver->supports(self::TEST_REFERENCE)->willReturn(true);
         $this->resolver->resolve(self::TEST_REFERENCE)->willReturn(self::TEST_UUID);
 
@@ -40,7 +50,7 @@ class ChainResolverTest extends TestCase
 
     public function testChainResolveNoSupport()
     {
-        $chainResolver = new ChainResolver([ $this->resolver->reveal() ]);
+        $chainResolver = new ChainResolver([$this->resolver->reveal()]);
         $this->resolver->supports(self::TEST_REFERENCE)->willReturn(false);
         $this->resolver->resolve(self::TEST_REFERENCE)->shouldNotBeCalled();
 

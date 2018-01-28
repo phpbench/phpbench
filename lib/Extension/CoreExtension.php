@@ -73,11 +73,11 @@ use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Storage;
 use PhpBench\Storage\Driver\Xml\XmlDriver;
+use PhpBench\Storage\UuidResolver\ChainResolver;
 use PhpBench\Storage\UuidResolver\LatestResolver;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\ExecutableFinder;
-use PhpBench\Storage\UuidResolver\ChainResolver;
 
 class CoreExtension implements ExtensionInterface
 {
@@ -593,6 +593,7 @@ class CoreExtension implements ExtensionInterface
             foreach (array_keys($container->getServiceIdsForTag('uuid_resolver')) as $serviceId) {
                 $resolvers[] = $container->get($serviceId);
             }
+
             return new ChainResolver($resolvers);
         });
 
