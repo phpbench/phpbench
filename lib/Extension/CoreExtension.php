@@ -77,6 +77,7 @@ use PhpBench\Storage\UuidResolver\LatestResolver;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\ExecutableFinder;
+use PhpBench\Storage\UuidResolver\ChainResolver;
 
 class CoreExtension implements ExtensionInterface
 {
@@ -588,10 +589,18 @@ class CoreExtension implements ExtensionInterface
         }, ['storage_driver' => ['name' => 'xml']]);
 
         $container->register('storage.uuid_resolver', function (Container $container) {
+            $resolvers = [];
+            foreach (array_keys($container->getServiceIdsForTag('uuid_resolver')) as $serviceId) {
+                $resolvers[] = $container->get($serviceId);
+            }
+            return new ChainResolver($resolvers);
+        });
+
+        $container->register('storage.uuid_resolver.latest', function (Container $container) {
             return new LatestResolver(
                 $container->get('storage.driver_registry')
             );
-        });
+        }, ['uuid_resolver' => []]);
 
         $container->register('storage.archiver.xml', function (Container $container) {
             return new Storage\Archiver\XmlArchiver(
