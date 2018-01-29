@@ -78,6 +78,8 @@ use PhpBench\Storage\UuidResolver\LatestResolver;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\ExecutableFinder;
+use PhpBench\Storage\StorageRegistry;
+use PhpBench\Storage\UuidResolver\TagResolver;
 
 class CoreExtension implements ExtensionInterface
 {
@@ -564,7 +566,7 @@ class CoreExtension implements ExtensionInterface
     private function registerStorage(Container $container)
     {
         $container->register('storage.driver_registry', function (Container $container) {
-            $registry = new Registry('storage', $container, $container->getParameter('storage'));
+            $registry = new StorageRegistry($container, $container->getParameter('storage'));
             foreach ($container->getServiceIdsForTag('storage_driver') as $serviceId => $attributes) {
                 $registry->registerService($attributes['name'], $serviceId);
             }
@@ -599,6 +601,12 @@ class CoreExtension implements ExtensionInterface
 
         $container->register('storage.uuid_resolver.latest', function (Container $container) {
             return new LatestResolver(
+                $container->get('storage.driver_registry')
+            );
+        }, ['uuid_resolver' => []]);
+
+        $container->register('storage.uuid_resolver.tag', function (Container $container) {
+            return new TagResolver(
                 $container->get('storage.driver_registry')
             );
         }, ['uuid_resolver' => []]);
