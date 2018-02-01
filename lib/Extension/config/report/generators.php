@@ -28,9 +28,9 @@ return [
     ],
     'compare' => [
         'generator' => 'table',
-        'cols' => ['benchmark', 'subject', 'groups', 'params', 'revs'],
+        'cols' => ['benchmark', 'subject', ],
         'compare' => 'suite',
-        'break' => ['benchmark', 'subject'],
+        'break' => [],
     ],
     'env' => [
         'generator' => 'env',
