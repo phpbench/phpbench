@@ -106,20 +106,17 @@ class Runner
      * Run all benchmarks (or all applicable benchmarks) in the given path.
      *
      * The $name argument will set the "name" attribute on the "suite" element.
-     *
-     * @param string $tagName
-     * @param string $path
      */
-    public function run($path, RunnerConfig $tag)
+    public function run($path, RunnerConfig $config)
     {
-        $executorConfig = $this->executorRegistry->getConfig($tag->getExecutor());
+        $executorConfig = $this->executorRegistry->getConfig($config->getExecutor());
         $executor = $this->executorRegistry->getService($executorConfig['executor']);
         $executor->healthCheck();
 
         // build the collection of benchmarks to be executed.
-        $benchmarkMetadatas = $this->benchmarkFinder->findBenchmarks($path, $tag->getFilters(), $tag->getGroups());
+        $benchmarkMetadatas = $this->benchmarkFinder->findBenchmarks($path, $config->getFilters(), $config->getGroups());
         $suite = new Suite(
-            $tag->getTag(),
+            $config->getTag(),
             new \DateTime(),
             $this->configPath
         );
@@ -132,7 +129,7 @@ class Runner
             /* @var BenchmarkMetadata */
             foreach ($benchmarkMetadatas as $benchmarkMetadata) {
                 $benchmark = $suite->createBenchmark($benchmarkMetadata->getClass());
-                $this->runBenchmark($executor, $tag, $benchmark, $benchmarkMetadata);
+                $this->runBenchmark($executor, $config, $benchmark, $benchmarkMetadata);
             }
         } catch (StopOnErrorException $e) {
         }

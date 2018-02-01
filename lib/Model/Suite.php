@@ -15,6 +15,7 @@ namespace PhpBench\Model;
 use PhpBench\Assertion\AssertionFailures;
 use PhpBench\Assertion\AssertionWarnings;
 use PhpBench\Environment\Information;
+use PhpBench\Model\Tag;
 
 /**
  * Represents a Suite.
@@ -47,7 +48,7 @@ class Suite implements \IteratorAggregate
         array $envInformations = [],
         $uuid = null
     ) {
-        $this->tag = $tag;
+        $this->tag = $tag ? new Tag($tag) : null;
         $this->date = $date;
         $this->configPath = $configPath;
         $this->envInformations = $envInformations;

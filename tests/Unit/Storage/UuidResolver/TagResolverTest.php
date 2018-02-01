@@ -79,4 +79,32 @@ class TagResolverTest extends TestCase
         $uuid = $this->resolver->resolve('tag:foobar');
         $this->assertEquals(1234, $uuid);
     }
+
+    public function testReturnsUuidForTagWithMatchingTagAtOffset()
+    {
+        $this->history->rewind()->shouldBeCalled();
+        $this->history->valid()->willReturn(true, true, true, false);
+        $this->history->next()->shouldBeCalledTimes(2);
+        $this->history->current()->willReturn($this->historyEntry->reveal());
+
+        $this->historyEntry->getTag()->willReturn('foobar');
+        $this->historyEntry->getRunId()->willReturn(1234);
+
+        $uuid = $this->resolver->resolve('tag:foobar-2');
+        $this->assertEquals(1234, $uuid);
+    }
+
+    public function testReturnsUuidForFirstTagAtOffset()
+    {
+        $this->history->rewind()->shouldBeCalled();
+        $this->history->valid()->willReturn(true, true, true, true, false);
+        $this->history->next()->shouldBeCalledTimes(3);
+        $this->history->current()->willReturn($this->historyEntry->reveal());
+
+        $this->historyEntry->getTag()->willReturn(null, 'foobar');
+        $this->historyEntry->getRunId()->willReturn(1234);
+
+        $uuid = $this->resolver->resolve('tag:foobar-2');
+        $this->assertEquals(1234, $uuid);
+    }
 }

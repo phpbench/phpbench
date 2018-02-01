@@ -36,11 +36,17 @@ class TagResolver implements UuidResolverInterface
     public function resolve(string $reference): string
     {
         $history = $this->storageRegistry->getService()->history();
-        $tag = substr($reference, 4);
 
+        list($offset, $tag) = $this->tagAndOffset($reference);
+
+        $count = 0;
         /** @var HistoryEntry $entry */
         foreach ($history as $entry) {
             if (strtolower($tag) === strtolower($entry->getTag())) {
+                if ($count++ < $offset) {
+                    continue;
+                }
+
                 return $entry->getRunId();
             }
         }
@@ -48,5 +54,14 @@ class TagResolver implements UuidResolverInterface
         throw new InvalidArgumentException(sprintf(
             'Could not find tag "%s"', $tag
         ));
+    }
+
+    private function tagAndOffset(string $reference)
+    {
+        preg_match('{^tag:([a-zA-Z_]+)-?([0-9]+)?$}', $reference, $matches);
+        $tag = $matches[1] ?? null;
+        $offset = $matches[2] ?? 0;
+
+        return [$offset, $tag];
     }
 }

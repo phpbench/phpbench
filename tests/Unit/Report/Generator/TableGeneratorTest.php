@@ -271,7 +271,7 @@ class TableGeneratorTest extends GeneratorTestCase
                     'break' => [],
                 ],
                 [
-                    11 => '//row[1]/cell',
+                    12 => '//row[1]/cell',
                     1 => '//table',
                     4 => '//cell[@name="git_branch:foobar:mem_peak"]',
                     4 => '//cell[@name="git_branch:foobar:mean"]',
@@ -324,7 +324,7 @@ class TableGeneratorTest extends GeneratorTestCase
             'break' => [],
         ]);
 
-        $this->assertXPathCount($report, 9, '//row[1]/cell');
+        $this->assertXPathCount($report, 10, '//row[1]/cell');
         $this->assertXPathCount($report, 1, '//cell[@name="revs:5:mean"]');
         $this->assertXPathCount($report, 1, '//cell[@name="revs:5:mean#1"]');
         $this->assertXPathCount($report, 1, '//cell[@name="revs:5:mean#2"]');

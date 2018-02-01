@@ -31,6 +31,15 @@ when running your benchmarks:
 
     $ phpbench run --store
 
+You can tag runs with the ``--tag`` option to make them easier to reference
+(more on this later):
+
+.. code-block:: bash
+
+    $ phpbench run --store --tag=my_tag_name
+
+Tags must be alpha-numeric and may also contain underscores.
+
 Viewing the History
 -------------------
 
@@ -71,8 +80,14 @@ You may also specify a different report with the ``--report`` option. In order
 to compare two or more reports, you should use the ``report`` command as
 detailed in the following section.
 
-Meta UUIDs
-----------
+Pseudo UUIDs
+------------
+
+UUIDs are difficult to work with. Phpbench allows you to use a number of
+"pseudo" uuids.
+
+``latest``
+~~~~~~~~~~
 
 It is possible to specify "meta" UUIDs, such as ``latest``:
 
@@ -89,6 +104,21 @@ the history from the latest:
 
 Would show the second latest entry. Meta UUIDs can be used anywhere where you
 would normally specify a UUID, including queries.
+
+``tag:``
+~~~~~~~~
+
+Allows you to reference a tagged run. If you store a suite:
+
+.. code-block:: bash
+
+    $ phpbench run --store --tag=my_tag
+
+Then you can reference it with ``tag:my_tag``
+
+.. code-block:: bash
+
+    $ phpbench show tag:my_tag
 
 Querying
 --------
