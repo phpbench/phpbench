@@ -73,13 +73,13 @@ use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Storage;
 use PhpBench\Storage\Driver\Xml\XmlDriver;
+use PhpBench\Storage\StorageRegistry;
 use PhpBench\Storage\UuidResolver\ChainResolver;
 use PhpBench\Storage\UuidResolver\LatestResolver;
+use PhpBench\Storage\UuidResolver\TagResolver;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\ExecutableFinder;
-use PhpBench\Storage\StorageRegistry;
-use PhpBench\Storage\UuidResolver\TagResolver;
 
 class CoreExtension implements ExtensionInterface
 {

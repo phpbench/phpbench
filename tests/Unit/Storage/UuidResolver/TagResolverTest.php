@@ -1,15 +1,24 @@
 <?php
 
+/*
+ * This file is part of the PHPBench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
+
 namespace PhpBench\Tests\Unit\Storage\UuidResolver;
 
-use PHPUnit\Framework\TestCase;
-use PhpBench\Storage\UuidResolver\TagResolver;
-use PhpBench\Storage\DriverInterface;
-use PhpBench\Storage\HistoryIteratorInterface;
-use PhpBench\Storage\HistoryEntry;
-use PhpBench\Storage\StorageRegistry;
-use RuntimeException;
 use InvalidArgumentException;
+use PhpBench\Storage\DriverInterface;
+use PhpBench\Storage\HistoryEntry;
+use PhpBench\Storage\HistoryIteratorInterface;
+use PhpBench\Storage\StorageRegistry;
+use PhpBench\Storage\UuidResolver\TagResolver;
+use PHPUnit\Framework\TestCase;
 
 class TagResolverTest extends TestCase
 {

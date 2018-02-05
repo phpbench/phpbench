@@ -1,12 +1,21 @@
 <?php
 
+/*
+ * This file is part of the PHPBench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
+
 namespace PhpBench\Storage\UuidResolver;
 
-use PhpBench\Storage\UuidResolverInterface;
-use PhpBench\Registry\Registry;
-use PhpBench\Storage\StorageRegistry;
-use PhpBench\Storage\HistoryEntry;
 use InvalidArgumentException;
+use PhpBench\Storage\HistoryEntry;
+use PhpBench\Storage\StorageRegistry;
+use PhpBench\Storage\UuidResolverInterface;
 
 class TagResolver implements UuidResolverInterface
 {
