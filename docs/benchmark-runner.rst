@@ -205,24 +205,24 @@ implementation and specify a *tag*:
 
 .. code-block:: bash
 
-    $ # .. configure for implementation A
-    $ phpbench run --tag="Impl. A" --dump-file=impl-a.xml
-    $ # .. configure for implementation B
-    $ phpbench run --tag="Impl. B" --dump-file=impl-b.xml
-    $ # .. configure for implementation C
-    $ phpbench run --tag="Impl. C" --dump-file=impl-c.xml
+    # .. configure for implementation A
+    $ phpbench run --tag=impl_a --store
+    # .. configure for implementation B
+    $ phpbench run --tag=impl_b --store
+    # .. configure for implementation C
+    $ phpbench run --tag=impl_c --store
 
 Now you can use the `report` command and specify the `compare` report to
 compare the results for each implementation side-by-side:
 
 .. code-block:: bash
 
-    $ phpbench report --file=impl-a.xml --file=impl-b.xml --file=impl-c.xml --report=compare
-    +---------+------------------+----------+---------+--------+-----------+-----------+-----------+
-    | tag     | benchmark        | subject  | group   | params | t:Impl. A | t:Impl. C | t:Impl. B |
-    +---------+------------------+----------+---------+--------+-----------+-----------+-----------+
-    | Impl. A | HashingBenchmark | benchMd5 | hashing | []     | 2.4448μs  | 4.3039μs  | 1.5003μs  |
-    +---------+------------------+----------+---------+--------+-----------+-----------+-----------+
+    $ phpbench report --uuid=tag:impl_a --uuid=tag:impl_b --uuid=tag:impl_c --report='{extends: compare, compare: tag}'
+    +--------------+----------+--------+--------+------+-----------------+-----------------+-----------------+
+    | benchmark    | subject  | groups | params | revs | tag:impl_a:mean | tag:impl_b:mean | tag:impl_c:mean |
+    +--------------+----------+--------+--------+------+-----------------+-----------------+-----------------+
+    | HashingBench | benchMd5 |        | []     | 1000 | 0.957μs         | 0.939μs         | 0.952μs         |
+    +--------------+----------+--------+--------+------+-----------------+-----------------+-----------------+
 
 Progress Reporters
 ------------------

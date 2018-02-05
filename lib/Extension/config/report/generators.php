@@ -30,7 +30,7 @@ return [
         'generator' => 'table',
         'cols' => ['benchmark', 'subject', 'groups', 'params', 'revs'],
         'compare' => 'suite',
-        'break' => ['benchmark', 'subject'],
+        'break' => [],
     ],
     'env' => [
         'generator' => 'env',
