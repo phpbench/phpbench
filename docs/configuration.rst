@@ -20,8 +20,7 @@ that order and use one if it exists.
         },
         "reports": {
             "my_report": {
-                "extends": "aggregate",
-                "exclude": ["benchmark"]
+                "extends": "aggregate"
             }
         }
     }
