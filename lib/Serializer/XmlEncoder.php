@@ -42,6 +42,9 @@ class XmlEncoder
         foreach ($suiteCollection->getSuites() as $suite) {
             $suiteEl = $rootEl->appendElement('suite');
             $suiteEl->setAttribute('tag', $suite->getTag());
+
+            // @deprecated context is deprecated and replaced by `tag`, to be
+            //             removed in version 1.0
             $suiteEl->setAttribute('context', $suite->getTag());
             $suiteEl->setAttribute('date', $suite->getDate()->format('c'));
             $suiteEl->setAttribute('config-path', $suite->getConfigPath());
