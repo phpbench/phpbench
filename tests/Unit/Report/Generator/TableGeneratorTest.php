@@ -529,8 +529,9 @@ EOT
         $this->assertXPathCount($report, 15, '//col');
         $this->assertXPathEval($report, 'Column one', 'string(//table/cols/col[1]/@label)');
         $this->assertXPathEval($report, 'Column two', 'string(//table/cols/col[2]/@label)');
-        $this->assertXPathEval($report, 'groups', 'string(//table/cols/col[3]/@label)');
-        $this->assertXPathEval($report, 'Parameters', 'string(//table/cols/col[4]/@label)');
+        $this->assertXPathEval($report, 'tag', 'string(//table/cols/col[3]/@label)');
+        $this->assertXPathEval($report, 'groups', 'string(//table/cols/col[4]/@label)');
+        $this->assertXPathEval($report, 'Parameters', 'string(//table/cols/col[5]/@label)');
     }
 
     private function generate(SuiteCollection $collection, array $config = [])
