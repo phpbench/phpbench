@@ -20,6 +20,7 @@ use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\PhpBench;
 use PhpBench\Registry\Registry;
+use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -55,12 +56,7 @@ class RunCommand extends Command
      */
     private $storage;
 
-    public function __construct(
-        RunnerHandler $runnerHandler,
-        ReportHandler $reportHandler,
-        TimeUnitHandler $timeUnitHandler,
-        DumpHandler $dumpHandler,
-        Registry $storage
+    public function __construct(RunnerHandler $runnerHandler, ReportHandler $reportHandler, TimeUnitHandler $timeUnitHandler, DumpHandler $dumpHandler, Registry $storage
     ) {
         parent::__construct();
         $this->runnerHandler = $runnerHandler;
@@ -91,7 +87,8 @@ EOT
         $this->addOption('warmup', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Override number of warmup revolutions on all benchmarks');
         $this->addOption('retry-threshold', 'r', InputOption::VALUE_REQUIRED, 'Set target allowable deviation', null);
         $this->addOption('sleep', null, InputOption::VALUE_REQUIRED, 'Number of microseconds to sleep between iterations');
-        $this->addOption('context', null, InputOption::VALUE_REQUIRED, 'Context label to apply to the suite result (useful when comparing reports)');
+        $this->addOption('context', null, InputOption::VALUE_REQUIRED, 'DEPRECATED! Use tag instead.');
+        $this->addOption('tag', null, InputOption::VALUE_REQUIRED, 'Tag to apply to stored result (useful when comparing reports)');
         $this->addOption('store', null, InputOption::VALUE_NONE, 'Persist the results');
         $this->addOption('tolerate-failure', null, InputOption::VALUE_NONE, 'Return 0 exit code even when failures occur');
     }
@@ -102,7 +99,7 @@ EOT
         $this->reportHandler->validateReportsFromInput($input);
 
         $config = RunnerConfig::create()
-            ->withContextName($input->getOption('context'))
+            ->withTag($this->resolveTag($input))
             ->withRetryThreshold($input->getOption('retry-threshold'))
             ->withSleep($input->getOption('sleep'))
             ->withIterations($input->getOption('iterations'))
@@ -137,5 +134,23 @@ EOT
         }
 
         return 0;
+    }
+
+    private function resolveTag(InputInterface $input)
+    {
+        $tag = $input->getOption('tag');
+        $context = $input->getOption('context');
+
+        if ($tag && $context) {
+            throw new RuntimeException(
+                'Options `tag` and `context` are synonyms (and context is deprecated), you cannot use them both'
+            );
+        }
+
+        if ($context) {
+            return $context;
+        }
+
+        return $tag;
     }
 }

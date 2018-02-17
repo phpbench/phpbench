@@ -68,7 +68,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
         $options->setDefaults([
             'title' => null,
             'description' => null,
-            'cols' => ['benchmark', 'subject', 'groups', 'params', 'revs', 'its', 'mem_peak', 'best', 'mean', 'mode', 'worst', 'stdev', 'rstdev', 'diff'],
+            'cols' => ['benchmark', 'subject', 'tag', 'groups', 'params', 'revs', 'its', 'mem_peak', 'best', 'mean', 'mode', 'worst', 'stdev', 'rstdev', 'diff'],
             'break' => ['suite', 'date', 'stime'],
             'compare' => null,
             'compare_fields' => ['mean'],
@@ -327,8 +327,11 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
                         $firstRow[$name] = $row[$compareField];
                         $colNames[$name] = $name;
 
-                        // we invent a new col name here, use the compare field's class.
-                        $this->classMap[$name] = $this->classMap[$compareField];
+                        // TODO: This probably means the field is non-comparable, could handle this earlier..
+                        if (isset($this->classMap[$compareField])) {
+                            // we invent a new col name here, use the compare field's class.
+                            $this->classMap[$name] = $this->classMap[$compareField];
+                        }
                     }
                 }
 
@@ -375,6 +378,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
                     foreach ($subject->getVariants() as $variant) {
                         $row = new Row([
                             'suite' => $suite->getUuid(),
+                            'tag' => $suite->getTag(),
                             'date' => $suite->getDate()->format('Y-m-d'),
                             'stime' => $suite->getDate()->format('H:i:s'),
                             'benchmark' => $this->getClassShortName($benchmark->getClass()),

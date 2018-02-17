@@ -23,7 +23,7 @@ use PhpBench\Environment\Information;
  */
 class Suite implements \IteratorAggregate
 {
-    private $contextName;
+    private $tag;
     private $date;
     private $configPath;
     private $envInformations = [];
@@ -34,20 +34,20 @@ class Suite implements \IteratorAggregate
      * __construct.
      *
      * @param array $benchmarks
-     * @param string $contextName
+     * @param string $tag
      * @param \DateTime $date
      * @param string $configPath
      * @param Information[] $envInformations
      */
     public function __construct(
-        $contextName,
+        $tag,
         \DateTime $date,
         $configPath = null,
         array $benchmarks = [],
         array $envInformations = [],
         $uuid = null
     ) {
-        $this->contextName = $contextName;
+        $this->tag = $tag ? new Tag($tag) : null;
         $this->date = $date;
         $this->configPath = $configPath;
         $this->envInformations = $envInformations;
@@ -80,9 +80,9 @@ class Suite implements \IteratorAggregate
         return new \ArrayIterator($this->benchmarks);
     }
 
-    public function getContextName()
+    public function getTag()
     {
-        return $this->contextName;
+        return $this->tag;
     }
 
     public function getDate()

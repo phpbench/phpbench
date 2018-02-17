@@ -225,7 +225,7 @@ class HistoryIterator implements HistoryIteratorInterface
         $entry = new HistoryEntry(
             $suite->getUuid(),
             $suite->getDate(),
-            $suite->getContextName(),
+            $suite->getTag(),
             $vcsBranch,
             $summary->getNbSubjects(),
             $summary->getNbIterations(),

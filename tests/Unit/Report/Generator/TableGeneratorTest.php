@@ -271,7 +271,7 @@ class TableGeneratorTest extends GeneratorTestCase
                     'break' => [],
                 ],
                 [
-                    11 => '//row[1]/cell',
+                    12 => '//row[1]/cell',
                     1 => '//table',
                     4 => '//cell[@name="git_branch:foobar:mem_peak"]',
                     4 => '//cell[@name="git_branch:foobar:mean"]',
@@ -324,7 +324,7 @@ class TableGeneratorTest extends GeneratorTestCase
             'break' => [],
         ]);
 
-        $this->assertXPathCount($report, 9, '//row[1]/cell');
+        $this->assertXPathCount($report, 10, '//row[1]/cell');
         $this->assertXPathCount($report, 1, '//cell[@name="revs:5:mean"]');
         $this->assertXPathCount($report, 1, '//cell[@name="revs:5:mean#1"]');
         $this->assertXPathCount($report, 1, '//cell[@name="revs:5:mean#2"]');
@@ -526,11 +526,12 @@ EOT
             ]
         );
 
-        $this->assertXPathCount($report, 14, '//col');
+        $this->assertXPathCount($report, 15, '//col');
         $this->assertXPathEval($report, 'Column one', 'string(//table/cols/col[1]/@label)');
         $this->assertXPathEval($report, 'Column two', 'string(//table/cols/col[2]/@label)');
-        $this->assertXPathEval($report, 'groups', 'string(//table/cols/col[3]/@label)');
-        $this->assertXPathEval($report, 'Parameters', 'string(//table/cols/col[4]/@label)');
+        $this->assertXPathEval($report, 'tag', 'string(//table/cols/col[3]/@label)');
+        $this->assertXPathEval($report, 'groups', 'string(//table/cols/col[4]/@label)');
+        $this->assertXPathEval($report, 'Parameters', 'string(//table/cols/col[5]/@label)');
     }
 
     private function generate(SuiteCollection $collection, array $config = [])

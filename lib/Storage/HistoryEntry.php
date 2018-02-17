@@ -19,7 +19,7 @@ class HistoryEntry
 {
     private $runId;
     private $date;
-    private $context;
+    private $tag;
     private $branch;
 
     private $nbSubjects;
@@ -35,7 +35,7 @@ class HistoryEntry
     public function __construct(
         $runId,
         \DateTime $date,
-        $context,
+        $tag,
         $branch,
         $nbSubjects,
         $nbIterations,
@@ -48,7 +48,7 @@ class HistoryEntry
     ) {
         $this->runId = $runId;
         $this->date = $date;
-        $this->context = $context;
+        $this->tag = $tag;
         $this->branch = $branch;
         $this->nbSubjects = $nbSubjects;
         $this->nbIterations = $nbIterations;
@@ -70,9 +70,9 @@ class HistoryEntry
         return $this->date;
     }
 
-    public function getContext()
+    public function getTag()
     {
-        return $this->context;
+        return $this->tag;
     }
 
     public function getNbSubjects()

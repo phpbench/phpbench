@@ -106,20 +106,17 @@ class Runner
      * Run all benchmarks (or all applicable benchmarks) in the given path.
      *
      * The $name argument will set the "name" attribute on the "suite" element.
-     *
-     * @param string $contextName
-     * @param string $path
      */
-    public function run($path, RunnerConfig $context)
+    public function run($path, RunnerConfig $config)
     {
-        $executorConfig = $this->executorRegistry->getConfig($context->getExecutor());
+        $executorConfig = $this->executorRegistry->getConfig($config->getExecutor());
         $executor = $this->executorRegistry->getService($executorConfig['executor']);
         $executor->healthCheck();
 
         // build the collection of benchmarks to be executed.
-        $benchmarkMetadatas = $this->benchmarkFinder->findBenchmarks($path, $context->getFilters(), $context->getGroups());
+        $benchmarkMetadatas = $this->benchmarkFinder->findBenchmarks($path, $config->getFilters(), $config->getGroups());
         $suite = new Suite(
-            $context->getContextName(),
+            $config->getTag(),
             new \DateTime(),
             $this->configPath
         );
@@ -132,7 +129,7 @@ class Runner
             /* @var BenchmarkMetadata */
             foreach ($benchmarkMetadatas as $benchmarkMetadata) {
                 $benchmark = $suite->createBenchmark($benchmarkMetadata->getClass());
-                $this->runBenchmark($executor, $context, $benchmark, $benchmarkMetadata);
+                $this->runBenchmark($executor, $config, $benchmark, $benchmarkMetadata);
             }
         } catch (StopOnErrorException $e) {
         }
@@ -146,7 +143,7 @@ class Runner
 
     private function runBenchmark(
         ExecutorInterface $executor,
-        RunnerConfig $context,
+        RunnerConfig $config,
         Benchmark $benchmark,
         BenchmarkMetadata $benchmarkMetadata
     ) {
@@ -168,14 +165,14 @@ class Runner
         foreach ($subjectMetadatas as $subjectMetadata) {
 
             // override parameters
-            $subjectMetadata->setIterations($context->getIterations($subjectMetadata->getIterations()));
-            $subjectMetadata->setRevs($context->getRevolutions($subjectMetadata->getRevs()));
-            $subjectMetadata->setWarmup($context->getWarmup($subjectMetadata->getWarmup()));
-            $subjectMetadata->setSleep($context->getSleep($subjectMetadata->getSleep()));
-            $subjectMetadata->setRetryThreshold($context->getRetryThreshold($this->retryThreshold));
+            $subjectMetadata->setIterations($config->getIterations($subjectMetadata->getIterations()));
+            $subjectMetadata->setRevs($config->getRevolutions($subjectMetadata->getRevs()));
+            $subjectMetadata->setWarmup($config->getWarmup($subjectMetadata->getWarmup()));
+            $subjectMetadata->setSleep($config->getSleep($subjectMetadata->getSleep()));
+            $subjectMetadata->setRetryThreshold($config->getRetryThreshold($this->retryThreshold));
 
-            if ($context->getAssertions()) {
-                $subjectMetadata->setAssertions($this->assertionProcessor->assertionsFromRawCliConfig($context->getAssertions()));
+            if ($config->getAssertions()) {
+                $subjectMetadata->setAssertions($this->assertionProcessor->assertionsFromRawCliConfig($config->getAssertions()));
             }
 
             $benchmark->createSubjectFromMetadata($subjectMetadata);
@@ -186,7 +183,7 @@ class Runner
             $subjectMetadata = $subjectMetadatas[$index];
 
             $this->logger->subjectStart($subject);
-            $this->runSubject($executor, $context, $subject, $subjectMetadata);
+            $this->runSubject($executor, $config, $subject, $subjectMetadata);
             $this->logger->subjectEnd($subject);
         }
         $this->logger->benchmarkEnd($benchmark);
@@ -196,9 +193,9 @@ class Runner
         }
     }
 
-    private function runSubject(ExecutorInterface $executor, RunnerConfig $context, Subject $subject, SubjectMetadata $subjectMetadata)
+    private function runSubject(ExecutorInterface $executor, RunnerConfig $tag, Subject $subject, SubjectMetadata $subjectMetadata)
     {
-        $parameterSets = $context->getParameterSets($subjectMetadata->getParameterSets());
+        $parameterSets = $tag->getParameterSets($subjectMetadata->getParameterSets());
         $paramsIterator = new CartesianParameterIterator($parameterSets);
 
         // create the variants.
@@ -215,7 +212,7 @@ class Runner
 
         // run the variants.
         foreach ($subject->getVariants() as $variant) {
-            $this->runVariant($executor, $context, $subjectMetadata, $variant);
+            $this->runVariant($executor, $tag, $subjectMetadata, $variant);
         }
 
         return $subject;
@@ -223,11 +220,11 @@ class Runner
 
     private function runVariant(
         ExecutorInterface $executor,
-        RunnerConfig $context,
+        RunnerConfig $tag,
         SubjectMetadata $subjectMetadata,
         Variant $variant
     ) {
-        $executorConfig = $this->executorRegistry->getConfig($context->getExecutor());
+        $executorConfig = $this->executorRegistry->getConfig($tag->getExecutor());
         $this->logger->variantStart($variant);
         $rejectCount = [];
 
@@ -240,7 +237,7 @@ class Runner
             $variant->setException($e);
             $this->logger->variantEnd($variant);
 
-            if ($context->getStopOnError()) {
+            if ($tag->getStopOnError()) {
                 throw new StopOnErrorException();
             }
 

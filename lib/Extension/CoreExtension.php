@@ -73,7 +73,10 @@ use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Storage;
 use PhpBench\Storage\Driver\Xml\XmlDriver;
-use PhpBench\Storage\UuidResolver;
+use PhpBench\Storage\StorageRegistry;
+use PhpBench\Storage\UuidResolver\ChainResolver;
+use PhpBench\Storage\UuidResolver\LatestResolver;
+use PhpBench\Storage\UuidResolver\TagResolver;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\ExecutableFinder;
@@ -563,7 +566,7 @@ class CoreExtension implements ExtensionInterface
     private function registerStorage(Container $container)
     {
         $container->register('storage.driver_registry', function (Container $container) {
-            $registry = new Registry('storage', $container, $container->getParameter('storage'));
+            $registry = new StorageRegistry($container, $container->getParameter('storage'));
             foreach ($container->getServiceIdsForTag('storage_driver') as $serviceId => $attributes) {
                 $registry->registerService($attributes['name'], $serviceId);
             }
@@ -588,10 +591,25 @@ class CoreExtension implements ExtensionInterface
         }, ['storage_driver' => ['name' => 'xml']]);
 
         $container->register('storage.uuid_resolver', function (Container $container) {
-            return new UuidResolver(
+            $resolvers = [];
+            foreach (array_keys($container->getServiceIdsForTag('uuid_resolver')) as $serviceId) {
+                $resolvers[] = $container->get($serviceId);
+            }
+
+            return new ChainResolver($resolvers);
+        });
+
+        $container->register('storage.uuid_resolver.latest', function (Container $container) {
+            return new LatestResolver(
                 $container->get('storage.driver_registry')
             );
-        });
+        }, ['uuid_resolver' => []]);
+
+        $container->register('storage.uuid_resolver.tag', function (Container $container) {
+            return new TagResolver(
+                $container->get('storage.driver_registry')
+            );
+        }, ['uuid_resolver' => []]);
 
         $container->register('storage.archiver.xml', function (Container $container) {
             return new Storage\Archiver\XmlArchiver(

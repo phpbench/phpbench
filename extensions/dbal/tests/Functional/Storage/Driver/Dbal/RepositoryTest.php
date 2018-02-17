@@ -71,7 +71,7 @@ class RepositoryTest extends DbalTestCase
         $this->assertEquals([
             [
                 'run_date' => '2016-01-01 00:00:00',
-                'context' => 'one',
+                'tag' => 'one',
                 'vcs_branch' => 'branch_1',
                 'run_uuid' => 1,
                 'nb_subjects' => '1',
@@ -85,7 +85,7 @@ class RepositoryTest extends DbalTestCase
             ],
             [
                 'run_date' => '2015-01-01 00:00:00',
-                'context' => 'two',
+                'tag' => 'two',
                 'vcs_branch' => 'branch_2',
                 'run_uuid' => 2,
                 'nb_subjects' => '1',

@@ -152,7 +152,7 @@ class RunnerTest extends TestCase
         ->shouldBeCalledTimes(count($revs) * array_sum($iterations))
         ->will($this->loadIterationResultCallback());
 
-        $suite = $this->runner->run(self::TEST_PATH, RunnerConfig::create()->withContextName('context'));
+        $suite = $this->runner->run(self::TEST_PATH, RunnerConfig::create()->withTag('context'));
 
         $this->assertInstanceOf('PhpBench\Model\Suite', $suite);
         $this->assertNoErrors($suite);

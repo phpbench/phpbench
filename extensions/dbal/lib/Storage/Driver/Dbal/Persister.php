@@ -36,7 +36,7 @@ class Persister
             $summary = $suite->getSummary();
             $id = $this->insertUpdate($conn, 'run', [
                 'uuid' => $suite->getUuid(),
-                'context' => $suite->getContextName(),
+                'tag' => $suite->getTag(),
                 'date' => $suite->getDate()->format('Y-m-d H:i:s'),
                 'nb_subjects' => $summary->getNbSubjects(),
                 'nb_iterations' => $summary->getNbIterations(),

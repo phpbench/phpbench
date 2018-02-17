@@ -127,7 +127,7 @@ class HistoryIteratorTest extends TestCase
         $collection->getSuites()->willReturn([$suite->reveal()]);
         $suite->getUuid()->willReturn($uuid);
         $suite->getDate()->willReturn($date);
-        $suite->getContextName()->willReturn('foo');
+        $suite->getTag()->willReturn('foo');
         $suite->getEnvInformations()->willReturn([
             'vcs' => [
                 'branch' => 'foo_branch',

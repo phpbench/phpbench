@@ -145,7 +145,7 @@ class Loader
         }
 
         $suite = new Suite(
-            $row['run.context'],
+            $row['run.tag'],
             new \DateTime($row['run.date']),
             null,
             [],

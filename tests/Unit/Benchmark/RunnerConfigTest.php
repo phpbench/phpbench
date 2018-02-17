@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 class RunnerConfigTest extends TestCase
 {
-    const TEST_CONTEXT_NAME = 'context_name';
+    const TEST_TAG_NAME = 'tag_name';
     const TEST_FILTERS = ['filter_one', 'filter_two'];
     const TEST_ITERATIONS = [5];
     const TEST_REVOLUTIONS = [6];
@@ -58,7 +58,7 @@ class RunnerConfigTest extends TestCase
     public function testBuild()
     {
         $config = RunnerConfig::create()
-            ->withContextName(self::TEST_CONTEXT_NAME)
+            ->withTag(self::TEST_TAG_NAME)
             ->withFilters(self::TEST_FILTERS)
             ->withIterations(self::TEST_ITERATIONS)
             ->withRevolutions(self::TEST_REVOLUTIONS)
@@ -73,7 +73,7 @@ class RunnerConfigTest extends TestCase
             ->withAssertions(self::TEST_ASSERTIONS)
             ->withRetryThreshold(self::TEST_RETRY_THRESHOLD);
 
-        $this->assertEquals(self::TEST_CONTEXT_NAME, $config->getContextName());
+        $this->assertEquals(self::TEST_TAG_NAME, $config->getTag());
         $this->assertEquals(self::TEST_FILTERS, $config->getFilters());
         $this->assertEquals(self::TEST_ITERATIONS, $config->getIterations());
         $this->assertEquals(self::TEST_REVOLUTIONS, $config->getRevolutions());
