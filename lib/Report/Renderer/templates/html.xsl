@@ -27,6 +27,7 @@
                     margin: 1em;
                     }
                 </style>
+                <meta charset="utf-8">
             </head>
             <body>
                 <center>
