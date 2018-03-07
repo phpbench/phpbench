@@ -201,7 +201,7 @@ class XmlEncoder
 
             return $parameterEl;
         }
-        
+
         if (is_null($value)) {
             $parameterEl->setAttribute('nillable', 'true');
             $parameterEl->setAttribute('value', '');
