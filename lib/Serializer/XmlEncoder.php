@@ -201,7 +201,13 @@ class XmlEncoder
 
             return $parameterEl;
         }
+        
+        if (is_null($value)) {
+            $parameterEl->setAttribute('nillable', 'true');
+            $parameterEl->setAttribute('value', '');
 
+            return $parameterEl;
+        }
         throw new \InvalidArgumentException(sprintf(
             'Parameters must be either scalars or arrays, got: %s',
             is_object($value) ? get_class($value) : gettype($value)
