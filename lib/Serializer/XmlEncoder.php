@@ -186,7 +186,6 @@ class XmlEncoder
     {
         $parameterEl = $parentEl->appendElement('parameter');
         $parameterEl->setAttribute('name', $name);
-
         if (is_array($value)) {
             $parameterEl->setAttribute('type', 'collection');
             foreach ($value as $key => $element) {
@@ -195,19 +194,19 @@ class XmlEncoder
 
             return $parameterEl;
         }
-
+        if (is_null($value)) {
+            $parameterEl->setAttribute('xsi:nil', 'true');
+            
+            return $parameterEl;
+        }
+        
         if (is_scalar($value)) {
             $parameterEl->setAttribute('value', $value);
 
             return $parameterEl;
         }
 
-        if (is_null($value)) {
-            $parameterEl->setAttribute('nillable', 'true');
-            $parameterEl->setAttribute('value', '');
-
-            return $parameterEl;
-        }
+        
 
         throw new \InvalidArgumentException(sprintf(
             'Parameters must be either scalars or arrays, got: %s',
