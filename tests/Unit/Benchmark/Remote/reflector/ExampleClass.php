@@ -60,4 +60,15 @@ class ExampleClass
             ],
         ];
     }
+
+    public function provideParamsNull()
+    {
+        return [
+            [
+                'nine' => null,
+                'ten' => null,
+            ],
+        ];
+    }
+    
 }
