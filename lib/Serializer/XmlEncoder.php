@@ -197,7 +197,7 @@ class XmlEncoder
 
         if (is_null($value)) {
             $parameterEl->setAttribute('xsi:nil', 'true');
-            
+
             return $parameterEl;
         }
 
