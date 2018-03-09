@@ -95,6 +95,7 @@ class ReflectorTest extends TestCase
         $parameterSets = $this->reflector->getParameterSets(__DIR__ . '/reflector/ExampleClass.php', [
             'provideParamsOne',
             'provideParamsTwo',
+            'provideParamsNull',
         ]);
 
         $this->assertEquals([
@@ -108,6 +109,12 @@ class ReflectorTest extends TestCase
                 [
                     'five' => 'six',
                     'seven' => 'eight',
+                ],
+            ],
+            [
+                [
+                    'nine' => null,
+                    'ten' => null,
                 ],
             ],
         ], $parameterSets);
