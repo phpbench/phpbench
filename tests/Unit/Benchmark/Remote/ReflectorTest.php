@@ -45,6 +45,7 @@ class ReflectorTest extends TestCase
             'provideParamsOne',
             'provideParamsTwo',
             'provideParamsNonScalar',
+            'provideParamsNull',
         ], array_keys($reflection->methods));
         $this->assertContains('Method One Comment', $reflection->methods['methodOne']->comment);
     }
