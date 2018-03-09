@@ -194,19 +194,18 @@ class XmlEncoder
 
             return $parameterEl;
         }
+
         if (is_null($value)) {
             $parameterEl->setAttribute('xsi:nil', 'true');
             
             return $parameterEl;
         }
-        
+
         if (is_scalar($value)) {
             $parameterEl->setAttribute('value', $value);
 
             return $parameterEl;
         }
-
-        
 
         throw new \InvalidArgumentException(sprintf(
             'Parameters must be either scalars or arrays, got: %s',
