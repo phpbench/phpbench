@@ -181,10 +181,12 @@ class XmlDecoder
                 $parameters[$name] = $this->getParameters($parameterEl);
                 continue;
             }
-            if (($nil=$parameterEl->attributes->getNamedItem('nil')) && $nil.value === 'true') {
+
+            if (($nil = $parameterEl->attributes->getNamedItem('nil')) && $nil.value === 'true') {
                 $parameters[$name] = null;
                 continue;
             }
+
             $parameters[$name] = $parameterEl->getAttribute('value');
         }
 
