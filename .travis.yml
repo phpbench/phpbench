@@ -2,7 +2,7 @@ language: php
 
 env:
   global:
-    secure: KKuB8rlYrNylciqu/XPm2rOAOVRCz2vYoGykBCm7Q2rU0zBPvQj1SlgdBKfFlfWjPd6mfQ0Q/D7jzOrnKy1NYYtSlwu2UyzyNTXwUrxQwIpSKpA1WltlyU1qNDpJWGO/kSVhccHQ8L0yYm2ZnEAKQoyPkK/ty6iU+vcY0BzAlRU=
+    secure: 
 
 php:
   - 7.0
@@ -20,8 +20,6 @@ before_install:
 
 before_script:
   - if [ -n "${SYMFONY_VERSION}" ]; then composer require symfony/symfony:${SYMFONY_VERSION} --no-update; fi;
-  - if [[ $EXECUTE_DEPLOYMENT == 'true' ]]; then composer require "doctrine/dbal" "~2.5"  --no-update; fi;
-  - if [[ $EXECUTE_DEPLOYMENT == 'true' ]]; then composer require "padraic/phar-updater" "^1.0" --no-update; fi;
   - composer update ${COMPOSER_FLAGS} --prefer-dist
   - export TZ=Europe/Paris
 
@@ -42,10 +40,23 @@ matrix:
       - SYMFONY_VERSION=^3.0
       - EXECUTE_DEPLOYMENT=true
 
-before_install:
-  - openssl aes-256-cbc -K $encrypted_d58d55177063_key -iv $encrypted_d58d55177063_iv
-    -in .travis/secrets.tar.enc -out .travis/secrets.tar -d
+before_deploy:
+  - composer require "doctrine/dbal" "~2.5"  --no-update
+  - composer require "padraic/phar-updater" "^1.0" --no-update
+  - curl -LSs https://box-project.github.io/box2/installer.php | php
+  - export PATH=.:$PATH
+  - rm -Rf ./vendor
+  - composer install --no-dev -o
+  - box.phar build
 
-after_success:
-    - if [[ $EXECUTE_DEPLOYMENT == 'true' && $TRAVIS_BRANCH == 'master' && $TRAVIS_PULL_REQUEST == 'false' ]]; then composer install --no-dev -oa ; fi
-    - if [[ $EXECUTE_DEPLOYMENT == 'true' && $TRAVIS_BRANCH == 'master' && $TRAVIS_PULL_REQUEST == 'false' ]]; then ./.travis/deploy.sh ; fi
+deploy:
+    provider: pages
+    skip-cleanup: true
+    file:
+        - phpbench.phar
+        - phpbench.phar.version
+    github-token: 
+        secure: "bitKbagFwUVdwSRNsZxQexWLOv0NtutCALHsqMvvy06fkESXqswoM4X06oJBTdM+0P+Tb6YnBdTS5cBntoMRPfvKZO4P3SawaRIT7Csv3Wvb0e5l7/eoejjSCJbd7dVSwmvWoEYJCOUYVxGyRsP9/1vPvXFVVXVYRIYbPsRjJZU="
+    keep-history: true
+    on:
+      branch: gh-deploy
