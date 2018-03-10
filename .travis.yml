@@ -55,7 +55,7 @@ deploy:
         - phpbench.phar
         - phpbench.phar.version
     github-token: 
-        secure: "bitKbagFwUVdwSRNsZxQexWLOv0NtutCALHsqMvvy06fkESXqswoM4X06oJBTdM+0P+Tb6YnBdTS5cBntoMRPfvKZO4P3SawaRIT7Csv3Wvb0e5l7/eoejjSCJbd7dVSwmvWoEYJCOUYVxGyRsP9/1vPvXFVVXVYRIYbPsRjJZU="
+        secure: "cVKcMHHv6MV1HiP78hYPyBx6VIy+DzIv6HS0QM/g3gHnE7EWopu9mQjku2DQtQWAjqVrIPL3ClvZxJH5MjDd4/kB6kWQDGX5O2+CaqzhaJgSpT0htFLbiClqK1uvl2QnHoqwfnhIux230AWDtQfod1g1p60nryo65pLG0HGHqXU="
     keep-history: true
     on:
       branch: gh-deploy
