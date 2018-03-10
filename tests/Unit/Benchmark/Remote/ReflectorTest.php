@@ -45,6 +45,7 @@ class ReflectorTest extends TestCase
             'provideParamsOne',
             'provideParamsTwo',
             'provideParamsNonScalar',
+            'provideParamsNull',
         ], array_keys($reflection->methods));
         $this->assertContains('Method One Comment', $reflection->methods['methodOne']->comment);
     }
@@ -95,6 +96,7 @@ class ReflectorTest extends TestCase
         $parameterSets = $this->reflector->getParameterSets(__DIR__ . '/reflector/ExampleClass.php', [
             'provideParamsOne',
             'provideParamsTwo',
+            'provideParamsNull',
         ]);
 
         $this->assertEquals([
@@ -108,6 +110,12 @@ class ReflectorTest extends TestCase
                 [
                     'five' => 'six',
                     'seven' => 'eight',
+                ],
+            ],
+            [
+                [
+                    'nine' => null,
+                    'ten' => null,
                 ],
             ],
         ], $parameterSets);

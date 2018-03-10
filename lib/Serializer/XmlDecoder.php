@@ -182,6 +182,11 @@ class XmlDecoder
                 continue;
             }
 
+            if ($parameterEl->getAttribute('xsi:nil') === 'true') {
+                $parameters[$name] = null;
+                continue;
+            }
+
             $parameters[$name] = $parameterEl->getAttribute('value');
         }
 

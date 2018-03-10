@@ -186,12 +186,17 @@ class XmlEncoder
     {
         $parameterEl = $parentEl->appendElement('parameter');
         $parameterEl->setAttribute('name', $name);
-
         if (is_array($value)) {
             $parameterEl->setAttribute('type', 'collection');
             foreach ($value as $key => $element) {
                 $this->createParameter($parameterEl, $key, $element);
             }
+
+            return $parameterEl;
+        }
+
+        if (is_null($value)) {
+            $parameterEl->setAttribute('xsi:nil', 'true');
 
             return $parameterEl;
         }
