@@ -48,6 +48,7 @@ before_deploy:
   - composer install --no-dev -o
   - box.phar build
   - sha1sum phpbench.phar > phpbench.phar.version
+  - git add -f phpbench.phar phpbench.phar.version
 
 deploy:
     edge:
