@@ -1,9 +1,5 @@
 language: php
 
-env:
-  global:
-    secure: 
-
 php:
   - 7.0
   - 7.1
@@ -41,7 +37,9 @@ matrix:
       - EXECUTE_DEPLOYMENT=true
 
 before_deploy:
-  - in .travis/secrets.tar.enc -out .travis/secrets.tar -d
+  - openssl aes-256-cbc -K $encrypted_d58d55177063_key -iv $encrypted_d58d55177063_iv
+    -in .travis/secrets.tar.enc -out .travis/secrets.tar -d
+  - tar xvf .travis/secrets.tar -C .travis
   - composer require "doctrine/dbal" "~2.5"  --no-update
   - composer require "padraic/phar-updater" "^1.0" --no-update
   - curl -LSs https://box-project.github.io/box2/installer.php | php
@@ -61,3 +59,4 @@ deploy:
     keep-history: true
     on:
       branch: gh-deploy
+      condition: $EXECUTE_DEPLOYMENT=true
