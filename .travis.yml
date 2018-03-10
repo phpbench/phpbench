@@ -49,6 +49,8 @@ before_deploy:
   - box.phar build
   - sha1sum phpbench.phar > phpbench.phar.version
   - git add -f phpbench.phar phpbench.phar.version
+  - cat phpbench.phar.version
+  - git commit -m 'Rebuilt phar'
 
 deploy:
     edge:
