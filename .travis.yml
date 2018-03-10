@@ -47,14 +47,16 @@ before_deploy:
   - rm -Rf ./vendor
   - composer install --no-dev -o
   - box.phar build
+  - sha1sum phpbench.phar > phpbench.phar.version
 
 deploy:
     edge:
         branch: v1.8.47
     provider: pages
     skip-cleanup: true
-    file_glob: true
-    file: phpbench.phar*
+    file: 
+        - phpbench.phar
+        - phpbench.phar.version
     github-token: 
         secure: "cVKcMHHv6MV1HiP78hYPyBx6VIy+DzIv6HS0QM/g3gHnE7EWopu9mQjku2DQtQWAjqVrIPL3ClvZxJH5MjDd4/kB6kWQDGX5O2+CaqzhaJgSpT0htFLbiClqK1uvl2QnHoqwfnhIux230AWDtQfod1g1p60nryo65pLG0HGHqXU="
     keep-history: true
