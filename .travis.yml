@@ -41,6 +41,7 @@ matrix:
       - EXECUTE_DEPLOYMENT=true
 
 before_deploy:
+  - in .travis/secrets.tar.enc -out .travis/secrets.tar -d
   - composer require "doctrine/dbal" "~2.5"  --no-update
   - composer require "padraic/phar-updater" "^1.0" --no-update
   - curl -LSs https://box-project.github.io/box2/installer.php | php
