@@ -1,9 +1,9 @@
 language: php
 
 php:
-  - 7.0
+  #- 7.0
   - 7.1
-  - 7.2
+  #- 7.2
 
 sudo: false
 
@@ -20,10 +20,10 @@ before_script:
   - export TZ=Europe/Paris
 
 script:
-  - ./vendor/bin/phpstan analyze --level=1 -c phpstan.neon lib/
-  - ./vendor/bin/phpunit
-  - php bin/phpbench run --report=env --progress=dots --store
-  - php bin/phpbench run --iterations=1 --revs=1 --config=extensions/dbal/benchmarks/phpbench.json --progress=dots
+  #- ./vendor/bin/phpstan analyze --level=1 -c phpstan.neon lib/
+  #- ./vendor/bin/phpunit
+  #- php bin/phpbench run --report=env --progress=dots --store
+  #- php bin/phpbench run --iterations=1 --revs=1 --config=extensions/dbal/benchmarks/phpbench.json --progress=dots
 
 matrix:
   fast_finish: true
@@ -42,11 +42,12 @@ before_deploy:
   - tar xvf .travis/secrets.tar -C .travis
   - composer require "doctrine/dbal" "~2.5"  --no-update
   - composer require "padraic/phar-updater" "^1.0" --no-update
-  - curl -LSs https://box-project.github.io/box2/installer.php | php
+  #- curl -LSs https://box-project.github.io/box2/installer.php | php
+  - echo "<?php echo 'Hello';" > phpactor.phar
   - export PATH=.:$PATH
   - rm -Rf ./vendor
-  - composer install --no-dev -o
-  - box.phar build
+  # - composer install --no-dev -o
+  #- box.phar build
   - sha1sum phpbench.phar > phpbench.phar.version
   - git add -f phpbench.phar phpbench.phar.version
   - cat phpbench.phar.version
@@ -55,6 +56,7 @@ before_deploy:
 deploy:
     edge:
         branch: v1.8.47
+    target-branch: gh-deploy-test
     provider: pages
     skip-cleanup: true
     file: 
