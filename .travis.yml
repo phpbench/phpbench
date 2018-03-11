@@ -1,11 +1,10 @@
 language: php
+sudo: false
 
 php:
     - 7.0
-#   - 7.1
-#   - 7.2
-
-sudo: false
+    - 7.1
+    - 7.2
 
 cache:
   directories:
@@ -21,9 +20,9 @@ before_script:
 
 script:
     - ./vendor/bin/phpstan analyze --level=1 -c phpstan.neon lib/
-#   - ./vendor/bin/phpunit
-#   - php bin/phpbench run --report=env --progress=dots --store
-#   - php bin/phpbench run --iterations=1 --revs=1 --config=extensions/dbal/benchmarks/phpbench.json --progress=dots
+    - ./vendor/bin/phpunit
+    - php bin/phpbench run --report=env --progress=dots --store
+    - php bin/phpbench run --iterations=1 --revs=1 --config=extensions/dbal/benchmarks/phpbench.json --progress=dots
 
 matrix:
   fast_finish: true
@@ -47,5 +46,5 @@ deploy:
     github-token: 
         secure: "cVKcMHHv6MV1HiP78hYPyBx6VIy+DzIv6HS0QM/g3gHnE7EWopu9mQjku2DQtQWAjqVrIPL3ClvZxJH5MjDd4/kB6kWQDGX5O2+CaqzhaJgSpT0htFLbiClqK1uvl2QnHoqwfnhIux230AWDtQfod1g1p60nryo65pLG0HGHqXU="
     on:
-        branch: gh-deploy
+        branch: master
         condition: $EXECUTE_DEPLOYMENT=true
