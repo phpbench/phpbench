@@ -14,6 +14,5 @@ rm -Rf ./vendor
 composer install --no-dev -o
 
 box.phar build
-echo "<?php echo 'Testing build;'" > phpbench.phar
 
 sha1sum phpbench.phar > phpbench.phar.version
