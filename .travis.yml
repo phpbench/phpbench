@@ -1,35 +1,28 @@
 language: php
-
-env:
-  global:
-    secure: KKuB8rlYrNylciqu/XPm2rOAOVRCz2vYoGykBCm7Q2rU0zBPvQj1SlgdBKfFlfWjPd6mfQ0Q/D7jzOrnKy1NYYtSlwu2UyzyNTXwUrxQwIpSKpA1WltlyU1qNDpJWGO/kSVhccHQ8L0yYm2ZnEAKQoyPkK/ty6iU+vcY0BzAlRU=
+sudo: false
 
 php:
-  - 7.0
-  - 7.1
-  - 7.2
-
-sudo: false
+    - 7.0
+    - 7.1
+    - 7.2
 
 cache:
   directories:
     - "$HOME/.composer/cache"
 
 before_install:
-  - composer validate
+    - composer validate
 
 before_script:
-  - if [ -n "${SYMFONY_VERSION}" ]; then composer require symfony/symfony:${SYMFONY_VERSION} --no-update; fi;
-  - if [[ $EXECUTE_DEPLOYMENT == 'true' ]]; then composer require "doctrine/dbal" "~2.5"  --no-update; fi;
-  - if [[ $EXECUTE_DEPLOYMENT == 'true' ]]; then composer require "padraic/phar-updater" "^1.0" --no-update; fi;
-  - composer update ${COMPOSER_FLAGS} --prefer-dist
-  - export TZ=Europe/Paris
+    - if [ -n "${SYMFONY_VERSION}" ]; then composer require symfony/symfony:${SYMFONY_VERSION} --no-update; fi;
+    - composer update ${COMPOSER_FLAGS} --prefer-dist
+    - export TZ=Europe/Paris
 
 script:
-  - ./vendor/bin/phpstan analyze --level=1 -c phpstan.neon lib/
-  - ./vendor/bin/phpunit
-  - php bin/phpbench run --report=env --progress=dots --store
-  - php bin/phpbench run --iterations=1 --revs=1 --config=extensions/dbal/benchmarks/phpbench.json --progress=dots
+    - ./vendor/bin/phpstan analyze --level=1 -c phpstan.neon lib/
+    - ./vendor/bin/phpunit
+    - php bin/phpbench run --report=env --progress=dots --store
+    - php bin/phpbench run --iterations=1 --revs=1 --config=extensions/dbal/benchmarks/phpbench.json --progress=dots
 
 matrix:
   fast_finish: true
@@ -42,10 +35,16 @@ matrix:
       - SYMFONY_VERSION=^3.0
       - EXECUTE_DEPLOYMENT=true
 
-before_install:
-  - openssl aes-256-cbc -K $encrypted_d58d55177063_key -iv $encrypted_d58d55177063_iv
-    -in .travis/secrets.tar.enc -out .travis/secrets.tar -d
+before_deploy:
+    - ./.travis/before-deploy.sh
 
-after_success:
-    - if [[ $EXECUTE_DEPLOYMENT == 'true' && $TRAVIS_BRANCH == 'master' && $TRAVIS_PULL_REQUEST == 'false' ]]; then composer install --no-dev -oa ; fi
-    - if [[ $EXECUTE_DEPLOYMENT == 'true' && $TRAVIS_BRANCH == 'master' && $TRAVIS_PULL_REQUEST == 'false' ]]; then ./.travis/deploy.sh ; fi
+deploy:
+    edge:
+        branch: v1.8.47
+    provider: pages
+    skip-cleanup: true
+    github-token: 
+        secure: "cVKcMHHv6MV1HiP78hYPyBx6VIy+DzIv6HS0QM/g3gHnE7EWopu9mQjku2DQtQWAjqVrIPL3ClvZxJH5MjDd4/kB6kWQDGX5O2+CaqzhaJgSpT0htFLbiClqK1uvl2QnHoqwfnhIux230AWDtQfod1g1p60nryo65pLG0HGHqXU="
+    on:
+        branch: master
+        condition: $EXECUTE_DEPLOYMENT=true
