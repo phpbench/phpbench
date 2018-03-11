@@ -39,12 +39,24 @@ before_deploy:
     - ./.travis/before-deploy.sh
 
 deploy:
-    edge:
-        branch: v1.8.47
-    provider: pages
-    skip-cleanup: true
-    github-token: 
-        secure: "cVKcMHHv6MV1HiP78hYPyBx6VIy+DzIv6HS0QM/g3gHnE7EWopu9mQjku2DQtQWAjqVrIPL3ClvZxJH5MjDd4/kB6kWQDGX5O2+CaqzhaJgSpT0htFLbiClqK1uvl2QnHoqwfnhIux230AWDtQfod1g1p60nryo65pLG0HGHqXU="
-    on:
-        branch: master
-        condition: $EXECUTE_DEPLOYMENT == true
+    -
+        provider: pages
+        edge:
+            branch: v1.8.47
+        skip-cleanup: true
+        github-token: 
+            secure: "cVKcMHHv6MV1HiP78hYPyBx6VIy+DzIv6HS0QM/g3gHnE7EWopu9mQjku2DQtQWAjqVrIPL3ClvZxJH5MjDd4/kB6kWQDGX5O2+CaqzhaJgSpT0htFLbiClqK1uvl2QnHoqwfnhIux230AWDtQfod1g1p60nryo65pLG0HGHqXU="
+        on:
+            branch: master
+        condition: $EXECUTE_DEPLOYMENT == truedeploy:
+
+    -
+        github-token: 
+        provider: releases
+        api_key:
+            secure: "cVKcMHHv6MV1HiP78hYPyBx6VIy+DzIv6HS0QM/g3gHnE7EWopu9mQjku2DQtQWAjqVrIPL3ClvZxJH5MjDd4/kB6kWQDGX5O2+CaqzhaJgSpT0htFLbiClqK1uvl2QnHoqwfnhIux230AWDtQfod1g1p60nryo65pLG0HGHqXU="
+        file:
+            - phpbench.phar
+        skip_cleanup: true
+        #on:
+        #    tags: true
