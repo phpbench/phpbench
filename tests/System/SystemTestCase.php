@@ -49,6 +49,7 @@ class SystemTestCase extends TestCase
 
         $document = new Document();
         $document->load($this->fname);
+
         return $document;
     }
 
