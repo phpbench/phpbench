@@ -19,7 +19,7 @@ class LogTest extends SystemTestCase
      */
     public function testLog()
     {
-        $this->createResult(null, ' --store');
+        $this->getResult(null, ' --store');
         $process = $this->phpbench(
             'log'
         );

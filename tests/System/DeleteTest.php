@@ -19,8 +19,8 @@ class DeleteTest extends SystemTestCase
      */
     public function testLog()
     {
-        $result = $this->createResult(null, ' --store');
-        $uuid = $result->evaluate('string(./suite/@uuid)');
+        $document = $this->getResult(null, ' --store');
+        $uuid = $document->evaluate('string(./suite/@uuid)');
 
         $process = $this->phpbench(
             'delete --uuid=' . $uuid

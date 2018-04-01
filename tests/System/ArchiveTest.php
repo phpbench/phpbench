@@ -19,8 +19,8 @@ class ArchiveTest extends SystemTestCase
      */
     public function testArchive()
     {
-        $this->createResult(null, ' --store');
-        $this->createResult(null, ' --store');
+        $this->getResult(null, ' --store');
+        $this->getResult(null, ' --store');
         $process = $this->phpbench(
             'archive'
         );

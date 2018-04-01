@@ -35,7 +35,7 @@ class SystemTestCase extends TestCase
         $this->filesystem->mirror(__DIR__ . '/bootstrap', $this->workspaceDir . '/bootstrap');
     }
 
-    public function createResult($benchmark = null, $extraCmd = '')
+    public function getResult($benchmark = null, $extraCmd = '')
     {
         $benchmark = $benchmark ?: 'benchmarks/set4';
 
@@ -49,7 +49,6 @@ class SystemTestCase extends TestCase
 
         $document = new Document();
         $document->load($this->fname);
-
         return $document;
     }
 

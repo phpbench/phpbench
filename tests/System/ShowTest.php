@@ -19,7 +19,7 @@ class ShowTest extends SystemTestCase
      */
     public function testDefaultReport()
     {
-        $document = $this->createResult(null, ' --store');
+        $document = $this->getResult(null, ' --store');
         $uuid = $document->evaluate('string(./suite/@uuid)');
         $process = $this->phpbench(
             'show ' . $uuid
@@ -42,7 +42,7 @@ EOT
      */
     public function testSpecificReport()
     {
-        $document = $this->createResult(null, ' --store');
+        $document = $this->getResult(null, ' --store');
         $uuid = $document->evaluate('string(./suite/@uuid)');
         $process = $this->phpbench(
             'show ' . $uuid . ' --report=default'
