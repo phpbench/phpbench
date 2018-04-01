@@ -22,7 +22,7 @@ class ReportOutputTest extends SystemTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->createResult();
+        $this->getResult();
     }
 
     /**
