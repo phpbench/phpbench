@@ -113,8 +113,11 @@ class TraceToXmlConverter
             // parse arguments
             $i = 11;
             while (isset($parts[$i])) {
+                /** @var \DOMElement $argEl */
                 $argEl = $entryEl->appendElement('arg');
-                $argEl->nodeValue = html_entity_decode($parts[$i]);
+                $argEl->appendChild(
+                    $dom->createTextNode(html_entity_decode($parts[$i]))
+                );
                 $i++;
             }
 
