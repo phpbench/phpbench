@@ -1,10 +1,20 @@
 <?php
 
+/*
+ * This file is part of the PHPBench package
+ *
+ * (c) Daniel Leech <daniel@dantleech.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
+
 namespace PhpBench\Tests\Unit\Benchmark\Executor;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Benchmark\Remote\Payload;
 use PhpBench\Tests\Unit\Benchmark\Executor\benchmarks\ParamProviderBench;
+use PHPUnit\Framework\TestCase;
 
 class ParameterSetExtractorTest extends TestCase
 {
@@ -29,8 +39,8 @@ class ParameterSetExtractorTest extends TestCase
         $result = $payload->launch();
         $this->assertEquals([
             [
-                [ 'hello' => 'goodbye' ]
-            ]
+                ['hello' => 'goodbye'],
+            ],
         ], $result);
     }
 }

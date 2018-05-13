@@ -15,7 +15,7 @@ function param_provider()
     return [
         [
             'hello' => 'goodbye',
-        ]
+        ],
     ];
 }
 
