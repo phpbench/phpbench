@@ -14,12 +14,10 @@ namespace PhpBench\Benchmarks\Micro;
 
 function hash_algos()
 {
-    $algos = [];
-    foreach (\hash_algos() as $algo) {
-        $algos[] = ['algo' => $algo];
-    }
-
-    return $algos;
+    return [
+        [ 'algo' => 'md5' ],
+        [ 'algo' => 'sha256' ],
+    ];
 }
 
 /**
@@ -33,6 +31,6 @@ class HashingBench
      */
     public function benchAlgos($params)
     {
-        return md5($params[0]);
+        return hash($params[0], 'Hello World');
     }
 }
