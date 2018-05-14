@@ -9,7 +9,7 @@ develop
 0.14.0 Munich
 -------------
 
-## Features
+### Features
 
 - Assertions [docs](http://phpbench.readthedocs.io/en/latest/writing-benchmarks.html#assertions)
 - Added `--disable-php-ini` option
@@ -17,12 +17,12 @@ develop
 - Show enabled PHP extensions in env.
 - PHP 7 only
 
-## Bugfixes
+### Bugfixes
 
 - Fixed merging of PHP ini config
 - Fixed Blackfire integration (#480 @torinaki )
 
-## Improvements
+### Improvements
 
 - Internal refactoring!
 - Aggregate report: `diff` column now shows multiplier (`x` times slower).
