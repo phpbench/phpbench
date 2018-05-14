@@ -22,7 +22,19 @@ $parameterSets = array();
 ob_start();
 
 foreach ($paramProviders as $paramProvider) {
-    $parameterSets[] = $benchmark->$paramProvider();
+    if (is_callable([$class, $paramProvider])) {
+        $parameterSets[] = $benchmark->$paramProvider();
+        continue;
+    }
+
+    if (is_callable($paramProvider)) {
+        $parameterSets[] = $paramProvider();
+        continue;
+    }
+
+    throw new \RuntimeException(sprintf(
+        'Class has no method "%s" and it is not a callable', $paramProvider
+    ));
 }
 
 ob_end_clean();

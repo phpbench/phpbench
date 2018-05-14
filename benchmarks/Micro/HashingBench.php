@@ -12,24 +12,25 @@
 
 namespace PhpBench\Benchmarks\Micro;
 
+function hash_algos()
+{
+    return [
+        ['algo' => 'md5'],
+        ['algo' => 'sha256'],
+    ];
+}
+
 /**
  * @Revs(1000)
  * @Iterations(10)
  */
 class HashingBench
 {
-    public function benchMd5()
+    /**
+     * @ParamProviders({"\PhpBench\Benchmarks\Micro\hash_algos"})
+     */
+    public function benchAlgos($params)
     {
-        return md5('hello world');
-    }
-
-    public function benchSha1()
-    {
-        return sha1('hello world');
-    }
-
-    public function benchSha256()
-    {
-        return hash('sha256', 'hello world');
+        return hash($params['algo'], 'Hello World');
     }
 }

@@ -10,9 +10,9 @@
  *
  */
 
-namespace PhpBench\Tests\Unit\Benchmark\Executor\microtimetest;
+namespace PhpBench\Tests\Unit\Benchmark\Executor\benchmarks;
 
-class ExecutorBench
+class MicrotimeExecutorBench
 {
     public static function initDatabase()
     {
