@@ -22,13 +22,13 @@ $parameterSets = array();
 ob_start();
 
 foreach ($paramProviders as $paramProvider) {
-    if (is_callable($paramProvider)) {
-        $parameterSets[] = call_user_func($paramProvider);
+    if (is_callable([$class, $paramProvider])) {
+        $parameterSets[] = $benchmark->$paramProvider();
         continue;
     }
 
-    if (method_exists($class, $paramProvider)) {
-        $parameterSets[] = $benchmark->$paramProvider();
+    if (is_callable($paramProvider)) {
+        $parameterSets[] = $paramProvider();
         continue;
     }
 

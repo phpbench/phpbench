@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Benchmark\Executor;
 
+use PhpBench\Benchmark\Remote\Exception\ScriptErrorException;
 use PhpBench\Benchmark\Remote\Payload;
 use PhpBench\Tests\Unit\Benchmark\Executor\benchmarks\ParamProviderBench;
 use PHPUnit\Framework\TestCase;
@@ -26,6 +27,20 @@ class ParameterSetExtractorTest extends TestCase
     public function testProvideParameterFromBenchmark()
     {
         $this->provideParams(['provideParams']);
+    }
+
+    public function testThrowsExceptionIfParameterDoesntExist()
+    {
+        $this->expectException(ScriptErrorException::class);
+        $this->expectExceptionMessage('Class has no method "idontexist"');
+        $this->provideParams(['idontexist']);
+    }
+
+    public function testThrowsExceptionIfMethodIsPrivate()
+    {
+        $this->expectException(ScriptErrorException::class);
+        $this->expectExceptionMessage('Class has no method "privateParamProvider"');
+        $this->provideParams(['privateParamProvider']);
     }
 
     private function provideParams(array $providers)

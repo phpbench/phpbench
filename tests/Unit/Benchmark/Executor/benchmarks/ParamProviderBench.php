@@ -23,6 +23,10 @@ function hello_world()
 
 class ParamProviderBench
 {
+    private function privateParamProvider()
+    {
+    }
+
     public function provideParams()
     {
         return [
