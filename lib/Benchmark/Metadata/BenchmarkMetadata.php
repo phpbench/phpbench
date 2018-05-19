@@ -43,6 +43,11 @@ class BenchmarkMetadata
     private $afterClassMethods = [];
 
     /**
+     * @var ServiceMetadata
+     */
+    private $executorMetadata;
+
+    /**
      * @param mixed $path
      * @param mixed $class
      * @param Subject[] $subjects
@@ -190,5 +195,15 @@ class BenchmarkMetadata
     public function getIterator()
     {
         return $this->subjects;
+    }
+
+    public function getExecutor():? ServiceMetadata
+    {
+        return $this->executorMetadata;
+    }
+
+    public function setExecutor(ServiceMetadata $serviceMetadata)
+    {
+        $this->executorMetadata = $serviceMetadata;
     }
 }

@@ -210,6 +210,10 @@ class AnnotationDriver implements DriverInterface
 
     public function processBenchmark(BenchmarkMetadata $benchmark, $annotation)
     {
+        if ($annotation instanceof Annotations\Executor) {
+            $benchmark->setExecutor(new ServiceMetadata($annotation->getName(), $annotation->getConfig()));
+        }
+
         if ($annotation instanceof BeforeClassMethods) {
             $benchmark->setBeforeClassMethods($annotation->getMethods());
         }

@@ -109,10 +109,6 @@ class Runner
      */
     public function run($path, RunnerConfig $config)
     {
-        $executorConfig = $this->executorRegistry->getConfig($config->getExecutor());
-        $executor = $this->executorRegistry->getService($executorConfig['executor']);
-        $executor->healthCheck();
-
         // build the collection of benchmarks to be executed.
         $benchmarkMetadatas = $this->benchmarkFinder->findBenchmarks($path, $config->getFilters(), $config->getGroups());
         $suite = new Suite(
@@ -126,10 +122,10 @@ class Runner
         $this->logger->startSuite($suite);
 
         try {
-            /* @var BenchmarkMetadata */
+            /* @var BenchmarkMetadata $benchmarkMetadata */
             foreach ($benchmarkMetadatas as $benchmarkMetadata) {
                 $benchmark = $suite->createBenchmark($benchmarkMetadata->getClass());
-                $this->runBenchmark($executor, $config, $benchmark, $benchmarkMetadata);
+                $this->runBenchmark($config, $benchmark, $benchmarkMetadata);
             }
         } catch (StopOnErrorException $e) {
         }
@@ -142,16 +138,18 @@ class Runner
     }
 
     private function runBenchmark(
-        ExecutorInterface $executor,
         RunnerConfig $config,
         Benchmark $benchmark,
         BenchmarkMetadata $benchmarkMetadata
     ) {
+        // determine the executor
+        $executorConfig = $this->executorRegistry->getConfig($config->getExecutor());
+        $executor = $this->executorRegistry->getService($benchmarkMetadata->getExecutor() ? $benchmarkMetadata->getExecutor()->getName() : $executorConfig['executor']);
+
         if ($benchmarkMetadata->getBeforeClassMethods()) {
             $executor->executeMethods($benchmarkMetadata, $benchmarkMetadata->getBeforeClassMethods());
         }
 
-        // the keys are subject names, convert them to numerical indexes.
         $subjectMetadatas = array_filter($benchmarkMetadata->getSubjects(), function ($subjectMetadata) {
             if ($subjectMetadata->getSkip()) {
                 return false;
@@ -159,6 +157,8 @@ class Runner
 
             return true;
         });
+
+        // the keys are subject names, convert them to numerical indexes.
         $subjectMetadatas = array_values($subjectMetadatas);
 
         /** @var SubjectMetadata $subjectMetadata */
@@ -193,10 +193,16 @@ class Runner
         }
     }
 
-    private function runSubject(ExecutorInterface $executor, RunnerConfig $tag, Subject $subject, SubjectMetadata $subjectMetadata)
+    private function runSubject(ExecutorInterface $executor, RunnerConfig $config, Subject $subject, SubjectMetadata $subjectMetadata)
     {
-        $parameterSets = $tag->getParameterSets($subjectMetadata->getParameterSets());
+        $parameterSets = $config->getParameterSets($subjectMetadata->getParameterSets());
         $paramsIterator = new CartesianParameterIterator($parameterSets);
+
+        $executorConfig = $this->executorRegistry->getConfig($config->getExecutor());
+        if ($executorMetadata = $subjectMetadata->getExecutor()) {
+            $executor = $this->executorRegistry->getService($executorMetadata->getName());
+            $executorConfig = $this->executorRegistry->getConfig($executorMetadata->getConfig());
+        }
 
         // create the variants.
         foreach ($paramsIterator as $parameterSet) {
@@ -212,7 +218,7 @@ class Runner
 
         // run the variants.
         foreach ($subject->getVariants() as $variant) {
-            $this->runVariant($executor, $tag, $subjectMetadata, $variant);
+            $this->runVariant($executor, $executorConfig, $config, $subjectMetadata, $variant);
         }
 
         return $subject;
@@ -220,11 +226,11 @@ class Runner
 
     private function runVariant(
         ExecutorInterface $executor,
-        RunnerConfig $tag,
+        Config $executorConfig,
+        RunnerConfig $config,
         SubjectMetadata $subjectMetadata,
         Variant $variant
     ) {
-        $executorConfig = $this->executorRegistry->getConfig($tag->getExecutor());
         $this->logger->variantStart($variant);
         $rejectCount = [];
 
@@ -237,7 +243,7 @@ class Runner
             $variant->setException($e);
             $this->logger->variantEnd($variant);
 
-            if ($tag->getStopOnError()) {
+            if ($config->getStopOnError()) {
                 throw new StopOnErrorException();
             }
 

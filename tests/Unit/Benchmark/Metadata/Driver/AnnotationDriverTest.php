@@ -16,6 +16,7 @@ use PhpBench\Benchmark\Metadata\Annotations;
 use PhpBench\Benchmark\Metadata\DriverInterface;
 use PhpBench\Benchmark\Metadata\Driver\AnnotationDriver;
 use PhpBench\Benchmark\Metadata\ServiceMetadata;
+use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\ReflectionClass;
 use PhpBench\Benchmark\Remote\ReflectionHierarchy;
 use PhpBench\Benchmark\Remote\ReflectionMethod;
@@ -43,6 +44,7 @@ class AnnotationDriverTest extends TestCase
 /**
  * @BeforeClassMethods({"beforeClass"})
  * @AfterClassMethods({"afterClass"})
+ * @Executor("microtime", revs=100)
  */
 EOT;
         $hierarchy = new ReflectionHierarchy();
@@ -52,6 +54,7 @@ EOT;
         $this->assertEquals(['beforeClass'], $metadata->getBeforeClassMethods());
         $this->assertEquals(['afterClass'], $metadata->getAfterClassMethods());
         $this->assertEquals('Test', $metadata->getClass());
+        $this->assertEquals(new ServiceMetadata('microtime', ['revs' => 100 ]), $metadata->getExecutor());
     }
 
     /**

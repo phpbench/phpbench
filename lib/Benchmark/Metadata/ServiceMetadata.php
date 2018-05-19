@@ -12,11 +12,21 @@ class ServiceMetadata
     /**
      * @var array
      */
-    private $options;
+    private $config;
 
     public function __construct(string $name, array $options)
     {
         $this->name = $name;
-        $this->options = $options;
+        $this->config = $options;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getConfig(): array
+    {
+        return $this->config;
     }
 }

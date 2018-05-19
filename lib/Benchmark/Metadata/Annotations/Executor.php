@@ -17,6 +17,7 @@ class Executor
         unset($params['value']);
 
         $this->config = $params ?? [];
+        $this->config['executor'] = $this->name;
     }
 
     public function getConfig(): array
