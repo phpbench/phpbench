@@ -33,10 +33,10 @@ class TimeUnit
     private static $map = [
         self::MICROSECONDS => 1,
         self::MILLISECONDS => 1000,
-        self::SECONDS      => 1000000,
-        self::MINUTES      => 60000000,
-        self::HOURS        => 3600000000,
-        self::DAYS         => 86400000000,
+        self::SECONDS => 1000000,
+        self::MINUTES => 60000000,
+        self::HOURS => 3600000000,
+        self::DAYS => 86400000000,
     ];
 
     /**
@@ -45,10 +45,10 @@ class TimeUnit
     private static $suffixes = [
         self::MICROSECONDS => 'μs',
         self::MILLISECONDS => 'ms',
-        self::SECONDS      => 's',
-        self::MINUTES      => 'm',
-        self::HOURS        => 'h',
-        self::DAYS         => 'd',
+        self::SECONDS => 's',
+        self::MINUTES => 'm',
+        self::HOURS => 'h',
+        self::DAYS => 'd',
     ];
 
     /**

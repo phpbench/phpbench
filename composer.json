@@ -34,6 +34,7 @@
     },
     "require-dev": {
         "doctrine/dbal": "^2.4",
+        "friendsofphp/php-cs-fixer": "^2.11",
         "padraic/phar-updater": "^1.0",
         "phpstan/phpstan": "^0.8.5",
         "phpunit/phpunit": "^6.5 | ^7.0"
