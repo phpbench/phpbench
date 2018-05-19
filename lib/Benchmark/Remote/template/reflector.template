@@ -45,5 +45,5 @@ foreach ($classHierarchy as $class) {
 }
 
 // in the future we should return also the parent classes
-echo json_encode($metadatas);
+echo serialize($metadatas);
 exit(0);

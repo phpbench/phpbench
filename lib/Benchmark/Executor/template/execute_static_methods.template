@@ -17,6 +17,6 @@ foreach ($methods as $method) {
     $class::$method();
 }
 
-echo json_encode(array());
+echo serialize(array());
 
 exit(0);

@@ -1,6 +1,6 @@
 <?php
 
-echo json_encode([
+echo serialize([
     'xdebug' => in_array('xdebug', get_loaded_extensions()),
     'version' => phpversion(),
     'ini' => php_ini_loaded_file(),

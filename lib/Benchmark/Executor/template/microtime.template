@@ -44,7 +44,7 @@ foreach ($afterMethods as $afterMethod) {
 $buffer = ob_get_contents();
 ob_end_clean();
 
-echo json_encode(array(
+echo serialize([
     'mem' => [
         // observer effect - getting memory usage affects memory usage. order
         // counts, peak is probably the best metric.
@@ -52,9 +52,9 @@ echo json_encode(array(
         'final' => memory_get_usage(),
         'real' => memory_get_usage(true),
     ],
-    'time' => $time,
+    'time' => (int) $time,
     'buffer' => $buffer,
-));
+]);
 
 function benchmark($benchmark, $parameters)
 {

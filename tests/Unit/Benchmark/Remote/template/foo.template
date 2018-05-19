@@ -2,4 +2,4 @@
 
 $foo = '{{ foo }}';
 
-echo json_encode(array('foo' => $foo));
+echo serialize(array('foo' => $foo));

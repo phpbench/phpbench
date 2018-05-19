@@ -39,6 +39,6 @@ foreach ($paramProviders as $paramProvider) {
 
 ob_end_clean();
 
-echo json_encode($parameterSets);
+echo serialize($parameterSets);
 exit(0);
 

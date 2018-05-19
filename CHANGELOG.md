@@ -5,6 +5,8 @@ develop
 -------
 
 - Allow any callable as a parameter provider. Fixes #533
+- Remove benchmark dependency on JSON extension, use `serialize` instead.
+  Fixes #534
 
 0.14.0 Munich
 -------------
