@@ -1,0 +1,21 @@
+<?php
+
+$finder = PhpCsFixer\Finder::create()
+    ->in([
+        __DIR__ . '/lib',
+        __DIR__ . '/tests',
+        __DIR__ . '/extensions',
+    ])
+;
+
+return PhpCsFixer\Config::create()
+    ->setRules([
+        '@PSR2' => true,
+        'binary_operator_spaces' => [ 'align_double_arrow' => false ],
+        'concat_space' => false,
+        'phpdoc_indent' => false,
+        'method_argument_space' => false,
+        'phpdoc_align' => [],
+    ])
+    ->setFinder($finder)
+    ;

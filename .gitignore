@@ -10,3 +10,4 @@ phpbench.phar.pubkey
 phpbench.phar.version
 .travis/build-key.pem
 .travis/secrets.tar
+.php_cs.cache
