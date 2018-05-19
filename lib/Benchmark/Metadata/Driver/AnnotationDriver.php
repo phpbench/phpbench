@@ -21,6 +21,7 @@ use PhpBench\Benchmark\Metadata\Annotations\Subject;
 use PhpBench\Benchmark\Metadata\AssertionMetadata;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\DriverInterface;
+use PhpBench\Benchmark\Metadata\ServiceMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\ReflectionHierarchy;
 use PhpBench\Benchmark\Remote\Reflector;
@@ -38,7 +39,7 @@ class AnnotationDriver implements DriverInterface
         $this->subjectPattern = $subjectPattern;
     }
 
-    public function getMetadataForHierarchy(ReflectionHierarchy $hierarchy)
+    public function getMetadataForHierarchy(ReflectionHierarchy $hierarchy): BenchmarkMetadata
     {
         $primaryReflection = $hierarchy->getTop();
         $benchmark = new BenchmarkMetadata($primaryReflection->path, $primaryReflection->class);
@@ -200,6 +201,10 @@ class AnnotationDriver implements DriverInterface
 
         if ($annotation instanceof Annotations\Assert) {
             $subject->addAssertion(new AssertionMetadata($annotation->getConfig()));
+        }
+
+        if ($annotation instanceof Annotations\Executor) {
+            $subject->setExecutor(new ServiceMetadata($annotation->getName(), $annotation->getConfig()));
         }
     }
 

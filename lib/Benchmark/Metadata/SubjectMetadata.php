@@ -103,6 +103,11 @@ class SubjectMetadata
     private $assertions = [];
 
     /**
+     * @var ServiceMetadata
+     */
+    private $executorMetadata;
+
+    /**
      * @param string $name
      */
     public function __construct(BenchmarkMetadata $benchmarkMetadata, $name)
@@ -304,5 +309,15 @@ class SubjectMetadata
     public function getAssertions()
     {
         return $this->assertions;
+    }
+
+    public function getExecutor():? ServiceMetadata
+    {
+        return $this->executorMetadata;
+    }
+
+    public function setExecutor(ServiceMetadata $serviceMetadata)
+    {
+        $this->executorMetadata = $serviceMetadata;
     }
 }
