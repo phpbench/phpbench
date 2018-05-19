@@ -71,7 +71,7 @@ class PayloadTest extends TestCase
         $this->process->setCommandLine(Argument::containingString('/foo/bar'))->shouldBeCalled();
         $this->process->run()->shouldBeCalled();
         $this->process->isSuccessful()->willReturn(true);
-        $this->process->getOutput()->willReturn('{"foo": "bar"}');
+        $this->process->getOutput()->willReturn(serialize(['foo' => 'bar']));
 
         $payload->launch($payload);
     }
@@ -94,7 +94,7 @@ class PayloadTest extends TestCase
         $this->process->setCommandLine(Argument::containingString('-dbar=foo'))->shouldBeCalled();
         $this->process->run()->shouldBeCalled();
         $this->process->isSuccessful()->willReturn(true);
-        $this->process->getOutput()->willReturn('{"foo": "bar"}');
+        $this->process->getOutput()->willReturn(serialize(['foo' => 'bar']));
 
         $payload->launch($payload);
     }
@@ -110,7 +110,7 @@ class PayloadTest extends TestCase
         $this->process->setCommandLine(Argument::containingString('bockfire \'/boo/bar/php\''))->shouldBeCalled();
         $this->process->run()->shouldBeCalled();
         $this->process->isSuccessful()->willReturn(true);
-        $this->process->getOutput()->willReturn('{"foo": "bar"}');
+        $this->process->getOutput()->willReturn(serialize(['foo' => 'bar']));
 
         $payload->launch($payload);
     }

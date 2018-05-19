@@ -196,14 +196,7 @@ class Payload
     private function decodeResults(): array
     {
         $output = $this->process->getOutput();
-        $result = json_decode($output, true);
-
-        if (false === $result) {
-            throw new \RuntimeException(sprintf(
-                'Could not decode JSON: %s',
-                json_last_error()
-            ));
-        }
+        $result = unserialize($output);
 
         if (is_array($result)) {
             return $result;
