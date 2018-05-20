@@ -75,7 +75,7 @@ class Subject
     private $index = 0;
 
     /**
-     * @var Executor
+     * @var ResolvedExecutor
      */
     private $executor;
 

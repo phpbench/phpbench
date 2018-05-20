@@ -45,7 +45,7 @@ class BenchmarkMetadata
     private $afterClassMethods = [];
 
     /**
-     * @var ServiceMetadata
+     * @var ExecutorMetadata
      */
     private $executorMetadata;
 
@@ -199,7 +199,10 @@ class BenchmarkMetadata
         return $this->subjects;
     }
 
-    public function getExecutor():? ExecutorMetadata
+    /**
+     * @return ExecutorMetadata|null
+     */
+    public function getExecutor()
     {
         return $this->executorMetadata;
     }

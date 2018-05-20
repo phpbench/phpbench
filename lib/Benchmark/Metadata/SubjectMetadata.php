@@ -105,7 +105,7 @@ class SubjectMetadata
     private $assertions = [];
 
     /**
-     * @var ServiceMetadata
+     * @var ExecutorMetadata
      */
     private $executorMetadata;
 
@@ -313,7 +313,10 @@ class SubjectMetadata
         return $this->assertions;
     }
 
-    public function getExecutor():? ExecutorMetadata
+    /**
+     * @return ExecutorMetadata|null
+     */
+    public function getExecutor()
     {
         return $this->executorMetadata;
     }
