@@ -12,6 +12,8 @@
 
 namespace PhpBench\Benchmark\Metadata;
 
+use PhpBench\Benchmark\Metadata\ExecutorMetadata;
+
 /**
  * Benchmark metadata class.
  */
@@ -197,12 +199,12 @@ class BenchmarkMetadata
         return $this->subjects;
     }
 
-    public function getExecutor():? ServiceMetadata
+    public function getExecutor():? ExecutorMetadata
     {
         return $this->executorMetadata;
     }
 
-    public function setExecutor(ServiceMetadata $serviceMetadata)
+    public function setExecutor(ExecutorMetadata $serviceMetadata)
     {
         $this->executorMetadata = $serviceMetadata;
     }

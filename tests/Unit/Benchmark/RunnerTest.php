@@ -394,6 +394,7 @@ class RunnerTest extends TestCase
 
         $this->executor->executeMethods($this->benchmark->reveal(), ['beforeClass'])->shouldBeCalled();
         $this->executor->executeMethods($this->benchmark->reveal(), ['afterClass'])->shouldBeCalled();
+        $this->executor->healthCheck()->shouldNotBeCalled();
         $this->benchmark->getSubjects()->willReturn([]);
 
         $this->runner->run(self::TEST_PATH, RunnerConfig::create());

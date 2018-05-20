@@ -23,6 +23,7 @@ use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Environment\Supplier;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Iteration;
+use PhpBench\Model\ResolvedExecutor;
 use PhpBench\Model\Result\RejectionCountResult;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
@@ -144,6 +145,7 @@ class Runner
     ) {
         // determine the executor
         $executorConfig = $this->executorRegistry->getConfig($config->getExecutor());
+        /** @var ExecutorInterface $executor */
         $executor = $this->executorRegistry->getService($benchmarkMetadata->getExecutor() ? $benchmarkMetadata->getExecutor()->getName() : $executorConfig['executor']);
 
         if ($benchmarkMetadata->getBeforeClassMethods()) {
@@ -175,7 +177,15 @@ class Runner
                 $subjectMetadata->setAssertions($this->assertionProcessor->assertionsFromRawCliConfig($config->getAssertions()));
             }
 
-            $benchmark->createSubjectFromMetadata($subjectMetadata);
+            // resolve executor config for this subject
+            $executorConfig = $this->executorRegistry->getConfig($config->getExecutor());
+            if ($executorMetadata = $subjectMetadata->getExecutor()) {
+                $executor = $this->executorRegistry->getService($executorMetadata->getName());
+                $executorConfig = $this->executorRegistry->getConfig($executorMetadata->getRegistryConfig());
+            }
+            $resolvedExecutor = ResolvedExecutor::fromNameAndConfig($executorConfig['executor'], $executorConfig);
+
+            $benchmark->createSubjectFromMetadataAndExecutor($subjectMetadata, $resolvedExecutor);
         }
 
         $this->logger->benchmarkStart($benchmark);
@@ -195,14 +205,10 @@ class Runner
 
     private function runSubject(ExecutorInterface $executor, RunnerConfig $config, Subject $subject, SubjectMetadata $subjectMetadata)
     {
+        $executor->healthCheck();
+
         $parameterSets = $config->getParameterSets($subjectMetadata->getParameterSets());
         $paramsIterator = new CartesianParameterIterator($parameterSets);
-
-        $executorConfig = $this->executorRegistry->getConfig($config->getExecutor());
-        if ($executorMetadata = $subjectMetadata->getExecutor()) {
-            $executor = $this->executorRegistry->getService($executorMetadata->getName());
-            $executorConfig = $this->executorRegistry->getConfig($executorMetadata->getConfig());
-        }
 
         // create the variants.
         foreach ($paramsIterator as $parameterSet) {
@@ -218,7 +224,7 @@ class Runner
 
         // run the variants.
         foreach ($subject->getVariants() as $variant) {
-            $this->runVariant($executor, $executorConfig, $config, $subjectMetadata, $variant);
+            $this->runVariant($executor, $subject->getExecutor()->getConfig(), $config, $subjectMetadata, $variant);
         }
 
         return $subject;

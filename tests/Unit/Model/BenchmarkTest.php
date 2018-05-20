@@ -14,11 +14,16 @@ namespace PhpBench\Tests\Unit\Model;
 
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Model\Benchmark;
+use PhpBench\Model\ResolvedExecutor;
 use PhpBench\Model\Suite;
 use PHPUnit\Framework\TestCase;
+use PhpBench\Registry\Config;
 
 class BenchmarkTest extends TestCase
 {
+    /**
+     * @var Benchmark
+     */
     private $benchmark;
     private $suite;
 
@@ -50,7 +55,9 @@ class BenchmarkTest extends TestCase
         $metadata->getOutputMode()->willReturn(60);
         $metadata->getOutputTimePrecision()->willReturn(3);
 
-        $subject = $this->benchmark->createSubjectFromMetadata($metadata->reveal());
+        $executor = ResolvedExecutor::fromNameAndConfig('foo', new Config('one', ['foo' => 'bar']));
+
+        $subject = $this->benchmark->createSubjectFromMetadataAndExecutor($metadata->reveal(), $executor);
         $this->assertInstanceOf('PhpBench\Model\Subject', $subject);
         $this->assertEquals('hello', $subject->getName());
         $this->assertEquals(['one', 'two'], $subject->getGroups());

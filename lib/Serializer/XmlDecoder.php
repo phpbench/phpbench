@@ -19,11 +19,13 @@ use PhpBench\Environment\Information;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Error;
 use PhpBench\Model\ParameterSet;
+use PhpBench\Model\ResolvedExecutor;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Model\Variant;
 use PhpBench\PhpBench;
+use PhpBench\Registry\Config;
 
 /**
  * Encodes the Suite object graph into an XML document.
@@ -138,6 +140,11 @@ class XmlDecoder
             $groups[] = $groupEl->getAttribute('name');
         }
         $subject->setGroups($groups);
+
+        foreach ($subjectEl->query('./executor') as $executorEl) {
+            $subject->setExecutor(ResolvedExecutor::fromNameAndConfig($executorEl->getAttribute('name'), new Config('asd', $this->getParameters($executorEl))));
+            break;
+        }
 
         // TODO: These attributes should be on the subject, see
         // https://github.com/phpbench/phpbench/issues/307

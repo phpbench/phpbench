@@ -73,6 +73,7 @@ class TestUtil
         $benchmark->getBeforeClassMethods()->willReturn($options['beforeClassMethods']);
         $benchmark->getAfterClassMethods()->willReturn($options['afterClassMethods']);
         $benchmark->getPath()->willReturn($options['path']);
+        $benchmark->getExecutor()->willReturn(null);
     }
 
     public static function createSuite(array $options = [], $suiteIndex = null)

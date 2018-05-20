@@ -21,7 +21,7 @@ use PhpBench\Benchmark\Metadata\Annotations\Subject;
 use PhpBench\Benchmark\Metadata\AssertionMetadata;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\DriverInterface;
-use PhpBench\Benchmark\Metadata\ServiceMetadata;
+use PhpBench\Benchmark\Metadata\ExecutorMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\ReflectionHierarchy;
 use PhpBench\Benchmark\Remote\Reflector;
@@ -204,14 +204,14 @@ class AnnotationDriver implements DriverInterface
         }
 
         if ($annotation instanceof Annotations\Executor) {
-            $subject->setExecutor(new ServiceMetadata($annotation->getName(), $annotation->getConfig()));
+            $subject->setExecutor(new ExecutorMetadata($annotation->getName(), $annotation->getConfig()));
         }
     }
 
     public function processBenchmark(BenchmarkMetadata $benchmark, $annotation)
     {
         if ($annotation instanceof Annotations\Executor) {
-            $benchmark->setExecutor(new ServiceMetadata($annotation->getName(), $annotation->getConfig()));
+            $benchmark->setExecutor(new ExecutorMetadata($annotation->getName(), $annotation->getConfig()));
         }
 
         if ($annotation instanceof BeforeClassMethods) {

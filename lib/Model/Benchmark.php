@@ -13,6 +13,8 @@
 namespace PhpBench\Model;
 
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
+use PhpBench\Registry\Config;
+use PhpBench\Model\ResolvedExecutor;
 
 /**
  * Benchmark metadata class.
@@ -45,7 +47,7 @@ class Benchmark implements \IteratorAggregate
         $this->class = $class;
     }
 
-    public function createSubjectFromMetadata(SubjectMetadata $metadata)
+    public function createSubjectFromMetadataAndExecutor(SubjectMetadata $metadata, ResolvedExecutor $executor)
     {
         $subject = new Subject($this, $metadata->getName());
         $subject->setGroups($metadata->getGroups());
@@ -54,6 +56,7 @@ class Benchmark implements \IteratorAggregate
         $subject->setOutputTimeUnit($metadata->getOutputTimeUnit());
         $subject->setOutputTimePrecision($metadata->getOutputTimePrecision());
         $subject->setOutputMode($metadata->getOutputMode());
+        $subject->setExecutor($executor);
 
         $this->subjects[] = $subject;
 

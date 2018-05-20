@@ -2,7 +2,7 @@
 
 namespace PhpBench\Benchmark\Metadata;
 
-class ServiceMetadata
+class ExecutorMetadata
 {
     /**
      * @var string
@@ -28,5 +28,12 @@ class ServiceMetadata
     public function getConfig(): array
     {
         return $this->config;
+    }
+
+    public function getRegistryConfig()
+    {
+        return array_merge($this->config, [
+            'executor' => $this->getName(),
+        ]);
     }
 }

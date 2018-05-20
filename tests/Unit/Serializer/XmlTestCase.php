@@ -23,6 +23,7 @@ use PhpBench\Model\Error;
 use PhpBench\Model\ErrorStack;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\ParameterSet;
+use PhpBench\Model\ResolvedExecutor;
 use PhpBench\Model\Result\ComputedResult;
 use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;
@@ -31,6 +32,7 @@ use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Model\Variant;
 use PHPUnit\Framework\TestCase;
+use PhpBench\Registry\Config;
 
 class XmlTestCase extends TestCase
 {
@@ -83,6 +85,7 @@ class XmlTestCase extends TestCase
         $this->subject1->getOutputTimeUnit()->willReturn('milliseconds');
         $this->subject1->getOutputTimePrecision()->willReturn(7);
         $this->subject1->getOutputMode()->willReturn('throughput');
+        $this->subject1->getExecutor()->willReturn(ResolvedExecutor::fromNameAndConfig('foo', new Config('asd', [])));
         $this->subject1->getRetryThreshold()->willReturn(10);
         $this->variant1->getWarmup()->willReturn(50);
         $this->variant1->getParameterSet()->willReturn(new ParameterSet(1, $params['params']));
@@ -153,13 +156,14 @@ class XmlTestCase extends TestCase
                 ],
                 <<<'EOT'
 <?xml version="1.0"?>
-<phpbench version="PHPBENCH_VERSION">
+<phpbench xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="PHPBENCH_VERSION">
   <suite tag="test" context="test" date="2015-01-01T00:00:00+00:00" config-path="/path/to/config.json" uuid="1234">
     <env>
       <info1 foo="bar"/>
     </env>
     <benchmark class="Bench1">
       <subject name="subjectName">
+        <executor name="foo"/>
         <group name="group1"/>
         <group name="group2"/>
         <variant sleep="5" output-time-unit="milliseconds" output-time-precision="7" output-mode="throughput" revs="100" warmup="50" retry-threshold="10">
@@ -185,13 +189,14 @@ EOT
                 ['error' => true],
                 <<<'EOT'
 <?xml version="1.0"?>
-<phpbench version="PHPBENCH_VERSION">
+<phpbench xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="PHPBENCH_VERSION">
   <suite tag="test" context="test" date="2015-01-01T00:00:00+00:00" config-path="/path/to/config.json" uuid="1234">
     <env>
       <info1 foo="bar"/>
     </env>
     <benchmark class="Bench1">
       <subject name="subjectName">
+        <executor name="foo"/>
         <variant sleep="5" output-time-unit="milliseconds" output-time-precision="7" output-mode="throughput" revs="100" warmup="50" retry-threshold="10">
           <errors>
             <error exception-class="ErrorClass" code="0" file="1" line="2">This is an error</error>
@@ -208,13 +213,14 @@ EOT
                 ['failure' => true, 'warning' => true],
                 <<<'EOT'
 <?xml version="1.0"?>
-<phpbench version="PHPBENCH_VERSION">
+<phpbench xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="PHPBENCH_VERSION">
   <suite tag="test" context="test" date="2015-01-01T00:00:00+00:00" config-path="/path/to/config.json" uuid="1234">
     <env>
       <info1 foo="bar"/>
     </env>
     <benchmark class="Bench1">
       <subject name="subjectName">
+        <executor name="foo"/>
         <variant sleep="5" output-time-unit="milliseconds" output-time-precision="7" output-mode="throughput" revs="100" warmup="50" retry-threshold="10">
           <warnings>
             <warning>Warn!</warning>
