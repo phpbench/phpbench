@@ -43,6 +43,7 @@ class AnnotationReader
         'Warmup' => Annotations\Warmup::class,
         'Subject' => Annotations\Subject::class,
         'Assert' => Annotations\Assert::class,
+        'Executor' => Annotations\Executor::class,
     ];
 
     private static $globalIgnoredNames = [

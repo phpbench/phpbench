@@ -12,6 +12,8 @@
 
 namespace PhpBench\Benchmark\Metadata;
 
+use PhpBench\Benchmark\Metadata\ExecutorMetadata;
+
 /**
  * Metadata for benchmarkMetadata subjects.
  */
@@ -101,6 +103,11 @@ class SubjectMetadata
      * @var AssertionMetadata[]
      */
     private $assertions = [];
+
+    /**
+     * @var ExecutorMetadata
+     */
+    private $executorMetadata;
 
     /**
      * @param string $name
@@ -304,5 +311,18 @@ class SubjectMetadata
     public function getAssertions()
     {
         return $this->assertions;
+    }
+
+    /**
+     * @return ExecutorMetadata|null
+     */
+    public function getExecutor()
+    {
+        return $this->executorMetadata;
+    }
+
+    public function setExecutor(ExecutorMetadata $serviceMetadata)
+    {
+        $this->executorMetadata = $serviceMetadata;
     }
 }

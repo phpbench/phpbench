@@ -14,6 +14,7 @@ namespace PhpBench\Model;
 
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Util\TimeUnit;
+use PhpBench\Model\ResolvedExecutor;
 
 /**
  * Subject representation.
@@ -72,6 +73,11 @@ class Subject
      * @var int
      */
     private $index = 0;
+
+    /**
+     * @var ResolvedExecutor
+     */
+    private $executor;
 
     /**
      * @param BenchmarkMetadata $benchmark
@@ -201,5 +207,18 @@ class Subject
     public function getIndex()
     {
         return $this->index;
+    }
+
+    /**
+     * @return ResolvedExecutor|null
+     */
+    public function getExecutor()
+    {
+        return $this->executor;
+    }
+
+    public function setExecutor(ResolvedExecutor $executor)
+    {
+        $this->executor = $executor;
     }
 }

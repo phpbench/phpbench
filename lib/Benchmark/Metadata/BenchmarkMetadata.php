@@ -12,6 +12,8 @@
 
 namespace PhpBench\Benchmark\Metadata;
 
+use PhpBench\Benchmark\Metadata\ExecutorMetadata;
+
 /**
  * Benchmark metadata class.
  */
@@ -41,6 +43,11 @@ class BenchmarkMetadata
      * @var string[]
      */
     private $afterClassMethods = [];
+
+    /**
+     * @var ExecutorMetadata
+     */
+    private $executorMetadata;
 
     /**
      * @param mixed $path
@@ -190,5 +197,18 @@ class BenchmarkMetadata
     public function getIterator()
     {
         return $this->subjects;
+    }
+
+    /**
+     * @return ExecutorMetadata|null
+     */
+    public function getExecutor()
+    {
+        return $this->executorMetadata;
+    }
+
+    public function setExecutor(ExecutorMetadata $serviceMetadata)
+    {
+        $this->executorMetadata = $serviceMetadata;
     }
 }

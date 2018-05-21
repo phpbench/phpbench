@@ -13,7 +13,10 @@
 namespace PhpBench\Tests\Unit\Benchmark\Metadata\Driver;
 
 use PhpBench\Benchmark\Metadata\Annotations;
+use PhpBench\Benchmark\Metadata\DriverInterface;
 use PhpBench\Benchmark\Metadata\Driver\AnnotationDriver;
+use PhpBench\Benchmark\Metadata\ExecutorMetadata;
+use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\ReflectionClass;
 use PhpBench\Benchmark\Remote\ReflectionHierarchy;
 use PhpBench\Benchmark\Remote\ReflectionMethod;
@@ -41,6 +44,7 @@ class AnnotationDriverTest extends TestCase
 /**
  * @BeforeClassMethods({"beforeClass"})
  * @AfterClassMethods({"afterClass"})
+ * @Executor("microtime", revs=100)
  */
 EOT;
         $hierarchy = new ReflectionHierarchy();
@@ -50,6 +54,7 @@ EOT;
         $this->assertEquals(['beforeClass'], $metadata->getBeforeClassMethods());
         $this->assertEquals(['afterClass'], $metadata->getAfterClassMethods());
         $this->assertEquals('Test', $metadata->getClass());
+        $this->assertEquals(new ExecutorMetadata('microtime', ['revs' => 100 ]), $metadata->getExecutor());
     }
 
     /**
@@ -100,6 +105,7 @@ EOT;
      * @OutputMode("throughput")
      * @Warmup(501)
      * @Assert("mean < 100")
+     * @Executor("microtime", revs=100)
      */
 EOT;
         $reflection->methods[$method->name] = $method;
@@ -107,6 +113,8 @@ EOT;
         $metadata = $this->createDriver()->getMetadataForHierarchy($hierarchy);
         $subjects = $metadata->getSubjects();
         $this->assertCount(1, $subjects);
+
+        /** @var SubjectMetadata $metadata */
         $metadata = reset($subjects);
         $this->assertEquals(['beforeOne', 'beforeTwo'], $metadata->getBeforeMethods());
         $this->assertEquals(['afterOne', 'afterTwo'], $metadata->getAfterMethods());
@@ -119,6 +127,7 @@ EOT;
         $this->assertEquals('throughput', $metadata->getOutputMode());
         $this->assertEquals([501], $metadata->getWarmup());
         $this->assertEquals(['value' => 'mean < 100'], $metadata->getAssertions()[0]->getConfig());
+        $this->assertEquals(new ExecutorMetadata('microtime', ['revs' => 100 ]), $metadata->getExecutor());
         $this->assertTrue($metadata->getSkip());
     }
 
@@ -476,7 +485,7 @@ EOT;
         $this->assertArrayHasKey('foo_bar_Foo', $metadata->getSubjects());
     }
 
-    private function createDriver($prefix = '^bench')
+    private function createDriver($prefix = '^bench'): DriverInterface
     {
         return new AnnotationDriver(
             $this->reflector->reveal(),

@@ -12,8 +12,10 @@
 
 namespace PhpBench\Serializer;
 
+use DOMElement;
 use PhpBench\Dom\Document;
 use PhpBench\Model\Benchmark;
+use PhpBench\Model\ResolvedExecutor;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
@@ -36,8 +38,14 @@ class XmlEncoder
     public function encode(SuiteCollection $suiteCollection)
     {
         $dom = new Document();
+
         $rootEl = $dom->createRoot('phpbench');
         $rootEl->setAttribute('version', PhpBench::VERSION);
+        $rootEl->setAttributeNS(
+            'http://www.w3.org/2000/xmlns/',
+            'xmlns:xsi',
+            'http://www.w3.org/2001/XMLSchema-instance'
+        );
 
         foreach ($suiteCollection->getSuites() as $suite) {
             $suiteEl = $rootEl->appendElement('suite');
@@ -67,7 +75,7 @@ class XmlEncoder
         return $dom;
     }
 
-    private function processBenchmark(Benchmark $benchmark, \DOMElement $suiteEl)
+    private function processBenchmark(Benchmark $benchmark, DOMElement $suiteEl)
     {
         $benchmarkEl = $suiteEl->appendElement('benchmark');
         $benchmarkEl->setAttribute('class', $benchmark->getClass());
@@ -76,10 +84,12 @@ class XmlEncoder
         }
     }
 
-    private function processSubject(Subject $subject, \DOMElement $benchmarkEl)
+    private function processSubject(Subject $subject, DOMElement $benchmarkEl)
     {
         $subjectEl = $benchmarkEl->appendElement('subject');
         $subjectEl->setAttribute('name', $subject->getName());
+
+        $this->appendExecutor($subjectEl, $subject->getExecutor());
 
         foreach ($subject->getGroups() as $group) {
             $groupEl = $subjectEl->appendElement('group');
@@ -91,7 +101,7 @@ class XmlEncoder
         }
     }
 
-    private function processVariant(Subject $subject, Variant $variant, \DOMElement $subjectEl)
+    private function processVariant(Subject $subject, Variant $variant, DOMElement $subjectEl)
     {
         $variantEl = $subjectEl->appendElement('variant');
 
@@ -211,5 +221,20 @@ class XmlEncoder
             'Parameters must be either scalars or arrays, got: %s',
             is_object($value) ? get_class($value) : gettype($value)
         ));
+    }
+
+    private function appendExecutor(DOMElement $subjectEl, ResolvedExecutor $executor = null)
+    {
+        if (null === $executor) {
+            return;
+        }
+
+        $executorEl = $subjectEl->appendElement('executor');
+        $executorEl->setAttribute('name', $executor->getName());
+        $subjectEl->appendChild($executorEl);
+
+        foreach ($executor->getConfig() as $key => $value) {
+            $this->createParameter($executorEl, $key, $value);
+        }
     }
 }
