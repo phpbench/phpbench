@@ -209,7 +209,10 @@ class Subject
         return $this->index;
     }
 
-    public function getExecutor():? ResolvedExecutor
+    /**
+     * @return ResolvedExecutor|null
+     */
+    public function getExecutor()
     {
         return $this->executor;
     }
