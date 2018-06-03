@@ -229,14 +229,8 @@ Parameter sets can be provided to benchmark subjects. For example:
     {
         public function provideStrings()
         {
-            return array(
-                [
-                    'string' => 'Hello World!'
-                ],
-                [
-                    'string' => 'Goodbye Cruel World!'
-                ]
-            );
+            yield [ 'string' => 'Hello World!' ];
+            yield [ 'string' => 'Goodbye Cruel World!' ];
         }
 
         /**
@@ -250,6 +244,30 @@ Parameter sets can be provided to benchmark subjects. For example:
 
 The ``benchMd5`` subject will now be benchmarked with each parameter set.
 
+The param provider can return a set of parameters using any `iterable`.
+For example the above could also be retuned as an array:
+
+... code-block:: php
+
+    <?php
+
+    class HashBench
+    {
+        public function provideStrings()
+        {
+            return [
+                [ 'string' => 'Hello World!' ],
+                [ 'string' => 'Goodbye Cruel World!' ]
+            ];
+        }
+    }
+
+.. warning::
+
+   It should be noted that Generators are consumed completely before the
+   subject is executed. If you have a very large data set, it will be read
+   completely into memory.
+
 Multiple parameter providers can be used, in which case the data sets will be
 combined into a `cartesian product`_ - all possible combinations of the
 parameters will be generated, for example:
@@ -262,26 +280,14 @@ parameters will be generated, for example:
     {
         public function provideStrings()
         {
-            return array(
-                array(
-                    'string' => 'Hello World!',
-                ),
-                array(
-                    'string' => 'Goodbye Cruel World!',
-                ),
-            );
+            yield [ 'string' => 'Hello World!' ];
+            yield [ 'string' => 'Goodbye Cruel World!' ];
         }
 
         public function provideNumbers()
         {
-            return array(
-                array(
-                    'algorithm' => 'md5',
-                ),
-                array(
-                    'algorithm' => 'sha1',
-                ),
-            );
+            yield [ 'algorithm' => 'md5' ];
+            yield [ 'algorithm' => 'sha1' ];
         }
 
         /**
@@ -300,16 +306,16 @@ Will result in the following parameter benchmark scenarios:
     <?php
 
     // #0
-    array('string' => 'Hello World!', 'algorithm' => 'md5');
+    ['string' => 'Hello World!', 'algorithm' => 'md5'];
 
     // #1
-    array('string' => 'Goodbye Cruel World!', 'algorithm' => 'md5');
+    ['string' => 'Goodbye Cruel World!', 'algorithm' => 'md5'[;
 
     // #2
-    array('string' => 'Hello World!', 'algorithm' => 'sha1');
+    ['string' => 'Hello World!', 'algorithm' => 'sha1'];
 
     // #3
-    array('string' => 'Goodbye Cruel World!', 'algorithm' => 'sha1');
+    ['string' => 'Goodbye Cruel World!', 'algorithm' => 'sha1'];
 
 .. _groups:
 

@@ -9,6 +9,7 @@ develop
 - Remove benchmark dependency on JSON extension, use `serialize` instead.
   Fixes #534
 - Allow Executor to be specified per benchmark/subject.
+- Allow `@ParamProviders` to return a `Generator`. Fixes #529.
 
 0.14.0 Munich
 -------------

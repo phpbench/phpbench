@@ -12,6 +12,10 @@
 
 namespace PhpBench\Tests\Unit\Benchmark\Executor\benchmarks;
 
+use ArrayIterator;
+use Generator;
+use Iterator;
+
 function hello_world()
 {
     return [
@@ -34,5 +38,19 @@ class ParamProviderBench
                 'hello' => 'goodbye',
             ],
         ];
+    }
+
+    public function provideGenerator(): Generator
+    {
+        yield [ 'hello' => 'goodbye' ];
+    }
+
+    public function provideIterator(): Iterator
+    {
+        return new ArrayIterator(
+            [
+                [ 'hello' => 'goodbye' ]
+            ]
+        );
     }
 }

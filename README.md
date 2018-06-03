@@ -3,7 +3,6 @@ PhpBench
 
 ![PHPBench Logo](https://avatars3.githubusercontent.com/u/12785153?v=3&s=100)
 [![Build Status](https://travis-ci.org/phpbench/phpbench.svg?branch=master)](https://travis-ci.org/phpbench/phpbench)
-[![StyleCI](https://styleci.io/repos/34982189/shield)](https://styleci.io/repos/34982189)
 
 PhpBench is a benchmarking framework for PHP.
 
@@ -46,6 +45,14 @@ Documentation
 -------------
 
 See the [official documentation](http://phpbench.readthedocs.org).
+
+Community
+---------
+
+- Follow [@phpbench](https://twitter.com/phpbench) for the latest news.
+- Join the `#phpbench` channel on the Slack [Symfony
+  Devs](https://symfony-devs.slack.com/join/shared_invite/enQtMzM3NDA1NzEyMzg0LTgyNGYwYjFjMjY5YjllYWZkYTY2OWM4MDQzZTgzMmNjNGI3ZDJhYzE2Yjc4NmFmM2JiOTZjODg2MGJlM2RjMDU)
+  channel.
 
 Screenshots
 -----------
