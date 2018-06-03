@@ -4,7 +4,7 @@ namespace PhpBench;
 
 use Traversable;
 
-function normalize_parameter_set(iterable $parameterSet) 
+function normalize_parameter_set($parameterSet) 
 {
     if ($parameterSet instanceof Traversable) {
         return iterator_to_array($parameterSet);
