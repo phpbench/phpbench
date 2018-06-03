@@ -29,6 +29,11 @@ class ParameterSetExtractorTest extends TestCase
         $this->provideParams(['provideParams']);
     }
 
+    public function testProvideParameterFromIterator()
+    {
+        $this->provideParams(['provideIterator']);
+    }
+
     public function testProvideParameterFromGenerator()
     {
         $this->provideParams(['provideGenerator']);

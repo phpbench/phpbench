@@ -2,11 +2,11 @@
 
 namespace PhpBench;
 
-use Generator;
+use Traversable;
 
 function normalize_parameter_set(iterable $parameterSet) 
 {
-    if ($parameterSet instanceof Generator) {
+    if ($parameterSet instanceof Traversable) {
         return iterator_to_array($parameterSet);
     }
 
