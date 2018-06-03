@@ -2,6 +2,17 @@
 
 namespace PhpBench;
 
+use Generator;
+
+function normalize_parameter_set(iterable $parameterSet) 
+{
+    if ($parameterSet instanceof Generator) {
+        return iterator_to_array($parameterSet);
+    }
+
+    return $parameterSet;
+}
+
 $bootstrap = '{{ bootstrap }}';
 $file = '{{ file }}';
 $class = '{{ class }}';
@@ -23,12 +34,12 @@ ob_start();
 
 foreach ($paramProviders as $paramProvider) {
     if (is_callable([$class, $paramProvider])) {
-        $parameterSets[] = $benchmark->$paramProvider();
+        $parameterSets[] = normalize_parameter_set($benchmark->$paramProvider());
         continue;
     }
 
     if (is_callable($paramProvider)) {
-        $parameterSets[] = $paramProvider();
+        $parameterSets[] = normalize_parameter_set($paramProvider());
         continue;
     }
 
@@ -41,4 +52,3 @@ ob_end_clean();
 
 echo serialize($parameterSets);
 exit(0);
-

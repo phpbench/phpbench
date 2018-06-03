@@ -229,14 +229,8 @@ Parameter sets can be provided to benchmark subjects. For example:
     {
         public function provideStrings()
         {
-            return array(
-                [
-                    'string' => 'Hello World!'
-                ],
-                [
-                    'string' => 'Goodbye Cruel World!'
-                ]
-            );
+            yield [ 'string' => 'Hello World!' ];
+            yield [ 'string' => 'Goodbye Cruel World!' ];
         }
 
         /**
@@ -250,9 +244,8 @@ Parameter sets can be provided to benchmark subjects. For example:
 
 The ``benchMd5`` subject will now be benchmarked with each parameter set.
 
-Multiple parameter providers can be used, in which case the data sets will be
-combined into a `cartesian product`_ - all possible combinations of the
-parameters will be generated, for example:
+The param provider can return a set of parameters using any `iterable`.
+For example the above could also be retuned as an array:
 
 .. code-block:: php
 
@@ -262,54 +255,61 @@ parameters will be generated, for example:
     {
         public function provideStrings()
         {
-            return array(
-                array(
-                    'string' => 'Hello World!',
-                ),
-                array(
-                    'string' => 'Goodbye Cruel World!',
-                ),
-            );
-        }
-
-        public function provideNumbers()
-        {
-            return array(
-                array(
-                    'algorithm' => 'md5',
-                ),
-                array(
-                    'algorithm' => 'sha1',
-                ),
-            );
-        }
-
-        /**
-         * @ParamProviders({"provideStrings", "provideNumbers"})
-         */
-        public function benchHash($params)
-        {
-            hash($params['algorithm'], $params['string']);
+            return [ 
+                [ 'string' => 'Hello World!' ], 
+                [ 'string' => 'Goodbye Cruel World!' ] 
+            ];
         }
     }
+
+Multiple parameter providers can be used, in which case the data sets will be
+combined into a `cartesian product`_ - all possible combinations of the
+parameters will be generated, for example:
+
+.. code-block:: php
+
+<?php
+
+class HashBench
+{
+public function provideStrings()
+{
+yield [ 'string' => 'Hello World!' ];
+yield [ 'string' => 'Goodbye Cruel World!' ];
+}
+
+public function provideNumbers()
+{
+yield [ 'algorithm' => 'md5' ];
+yield [ 'algorithm' => 'sha1' ];
+}
+
+/**
+* @ParamProviders({"provideStrings", "provideNumbers"})
+  */
+  public function benchHash($params)
+  {
+  hash($params['algorithm'], $params['string']);
+  }
+  }
 
 Will result in the following parameter benchmark scenarios:
 
 .. code-block:: php
 
-    <?php
+<?php
 
-    // #0
-    array('string' => 'Hello World!', 'algorithm' => 'md5');
+// #0
+['string' => 'Hello World!', 'algorithm' => 'md5'];
 
-    // #1
-    array('string' => 'Goodbye Cruel World!', 'algorithm' => 'md5');
+// #1
+['string' => 'Goodbye Cruel World!', 'algorithm' => 'md5'[;
 
-    // #2
-    array('string' => 'Hello World!', 'algorithm' => 'sha1');
+// #2
+['string' => 'Hello World!', 'algorithm' => 'sha1'];
 
-    // #3
-    array('string' => 'Goodbye Cruel World!', 'algorithm' => 'sha1');
+// #3
+['string' => 'Goodbye Cruel World!', 'algorithm' => 'sha1'];
 
 .. _groups:
 
@@ -320,15 +320,15 @@ You can assign benchmark subjects to groups using the ``@Groups`` annotation.
 
 .. code-block:: php
 
-    <?php
+<?php
 
-    /**
-     * @Groups({"hash"})
-     */
-    class HashBench
-    {
-        // ...
-    }
+/**
+* @Groups({"hash"})
+  */
+  class HashBench
+  {
+  // ...
+  }
 
 The group can then be targeted using the command line interface.
 
@@ -339,17 +339,17 @@ You can skip subjects by using the ``@Skip`` annotation:
 
 .. code-block:: php
 
-    <?php
+<?php
 
-    class HashBench extends Foobar
-    {
-        /**
-         * @Skip()
-         */
-        public function testFoobar()
-        {
-        }
-    }
+class HashBench extends Foobar
+{
+/**
+* @Skip()
+  */
+  public function testFoobar()
+  {
+  }
+  }
 
 Extending Existing Array Values
 -------------------------------
@@ -360,26 +360,26 @@ accomplished using the ``extend`` option.
 
 .. code-block:: php
 
-    <?php
+<?php
 
-    abstract class AbstractHash
-    {
-        /**
-         * @Groups({"md5"})
-         */
-        abstract public function benchMd5();
-    }
+abstract class AbstractHash
+{
+/**
+* @Groups({"md5"})
+  */
+  abstract public function benchMd5();
+  }
 
-    /**
-     * @Groups({"my_hash_implementation"}, extend=true)
-     */
-    class HashBench extends AbstractHash
-    {
-        public function benchMd5()
-        {
-            // ...
-        }
-    }
+/**
+* @Groups({"my_hash_implementation"}, extend=true)
+  */
+  class HashBench extends AbstractHash
+  {
+  public function benchMd5()
+  {
+  // ...
+  }
+  }
 
 The ``benchHash`` subject will now be in both the ``md5`` and
 ``my_hash_implementation`` groups.
@@ -395,182 +395,182 @@ the system recover. Use the ``@Sleep`` annotation, specifying the number of
 
 .. code-block:: php
 
-    <?php
+<?php
 
-    class HashBench
+class HashBench
+{
+/**
+* @Iterations(10)
+  * @Sleep(1000000)
+    */
+    public function benchMd5()
     {
-        /**
-         * @Iterations(10)
-         * @Sleep(1000000)
-         */
-        public function benchMd5()
-        {
-            md5('Hello World');
-        }
+    md5('Hello World');
+    }
     }
 
-The above example will pause (sleep) for 1 second *after* each iteration.
+  The above example will pause (sleep) for 1 second *after* each iteration.
 
-.. note::
+  .. note::
 
     This can be overridden using the ``--sleep`` option from the CLI.
 
-.. _time_unit:
+    .. _time_unit:
 
-Microseconds to Minutes: Time Units
------------------------------------
+ Microseconds to Minutes: Time Units
+ -----------------------------------
 
-If you have benchmarks which take seconds or even minutes to execute then the
-default time unit, microseconds, is going to be far more visual precision than you
-need and will only serve to make the results more difficult to interpret.
+ If you have benchmarks which take seconds or even minutes to execute then the
+ default time unit, microseconds, is going to be far more visual precision than you
+ need and will only serve to make the results more difficult to interpret.
 
-You can specify *output* time units using the ``@OutputTimeUnit``
-annotation (`precision` is optional):
+ You can specify *output* time units using the ``@OutputTimeUnit``
+ annotation (`precision` is optional):
 
-.. code-block:: php
-
-    <?php
-
-    class HashBench
-    {
-        /**
-         * @Iterations(10)
-           @OutputTimeUnit("seconds", precision=3)
-         */
-        public function benchSleep()
-        {
-            sleep(2);
-        }
-    }
-
-The following time units are available:
-
-- ``microseconds``
-- ``milliseconds``
-- ``seconds``
-- ``minutes``
-- ``hours``
-- ``days``
-
-.. _throughput:
-.. _mode:
-
-Mode: Throughput Representation
---------------------------------
-
-The output mode determines how the measurements are presented, either `time`
-or `throughput`. `time` mode is the default and shows the average execution
-time of a single :ref:`revolution <revolutions>`. `throughput` shows how many *operations*
-are executed within a single time unit:
-
-.. code-block:: php
+ .. code-block:: php
 
     <?php
 
     class HashBench
     {
-        /**
-         * @OutputTimeUnit("seconds")
-         * @OutputMode("throughput")
-         */
-        public function benchMd5()
+    /**
+    * @Iterations(10)
+      @OutputTimeUnit("seconds", precision=3)
+      */
+      public function benchSleep()
+      {
+      sleep(2);
+      }
+      }
+
+    The following time units are available:
+
+    - ``microseconds``
+      - ``milliseconds``
+        - ``seconds``
+          - ``minutes``
+            - ``hours``
+              - ``days``
+
+              .. _throughput:
+              .. _mode:
+
+           Mode: Throughput Representation
+           --------------------------------
+
+           The output mode determines how the measurements are presented, either `time`
+           or `throughput`. `time` mode is the default and shows the average execution
+           time of a single :ref:`revolution <revolutions>`. `throughput` shows how many *operations*
+           are executed within a single time unit:
+
+           .. code-block:: php
+
+        <?php
+
+        class HashBench
         {
+        /**
+        * @OutputTimeUnit("seconds")
+          * @OutputMode("throughput")
+            */
+            public function benchMd5()
+            {
             hash('md5', 'Hello World!');
-        }
-    }
+            }
+            }
 
-PHPBench will then render all measurements for `benchMd5` similar to
-`363,874.536ops/s`.
+          PHPBench will then render all measurements for `benchMd5` similar to
+          `363,874.536ops/s`.
 
-Warming Up: Getting ready for the show
---------------------------------------
+          Warming Up: Getting ready for the show
+          --------------------------------------
 
-In some cases, it might be a good idea to execute a revolution or two before
-performing the revolutions time measurement. 
+          In some cases, it might be a good idea to execute a revolution or two before
+          performing the revolutions time measurement. 
 
-For example, when benchmarking something that uses an class autoloader, the
-first revolution will always be slower because the autoloader will not to be
-called again.
+          For example, when benchmarking something that uses an class autoloader, the
+          first revolution will always be slower because the autoloader will not to be
+          called again.
 
-Use the ``@Warmup`` annotation to execute any number of revolutions before
-actually measuring the revolutions time.
+          Use the ``@Warmup`` annotation to execute any number of revolutions before
+          actually measuring the revolutions time.
 
 
-.. code-block:: php
+          .. code-block:: php
 
-    <?php
+       <?php
 
-    // ...
-    class ReportBench
-    {
-        // ...
+       // ...
+       class ReportBench
+       {
+       // ...
 
-        /**
-         * @Warmup(2)
+       /**
+       * @Warmup(2)
          * @Revs(10)
-         */
-        public function benchGenerateReport()
-        {
-            $this->generator->generateMyComplexReport();
-        }
-    }
+           */
+           public function benchGenerateReport()
+           {
+           $this->generator->generateMyComplexReport();
+           }
+           }
 
-As with :ref:`revolutions <revolutions>`, you may also specify an array.
+         As with :ref:`revolutions <revolutions>`, you may also specify an array.
 
-.. _assertions:
+         .. _assertions:
 
-Assertions
-----------
+      Assertions
+      ----------
 
-.. warning::
+      .. warning::
 
-    Assertions are absolute, benchmarks are relative to the environment they
-    are running in. 
-    
-    If you use them in a continuous integration environment the stability of
-    your build will depend on the state of the environment, you can prevent
-    failing builds with the `--tolerate-failure` option.
+   Assertions are absolute, benchmarks are relative to the environment they
+   are running in. 
 
-Assertions allow you to specify what a valid range is for a given statistic,
-for example, "the mean must be less than 10".
+   If you use them in a continuous integration environment the stability of
+   your build will depend on the state of the environment, you can prevent
+   failing builds with the `--tolerate-failure` option.
 
-.. code-block:: php
+   Assertions allow you to specify what a valid range is for a given statistic,
+   for example, "the mean must be less than 10".
 
-    <?php
+   .. code-block:: php
 
-    // ...
-    class AssertiveBench
-    {
-        // ...
+<?php
 
-        /**
-         * @Assert(stat="mean", value="10")
-         */
-        public function benchGenerateReport()
-        {
-            // ...
-        }
-    }
+// ...
+class AssertiveBench
+{
+// ...
+
+/**
+* @Assert(stat="mean", value="10")
+  */
+  public function benchGenerateReport()
+  {
+  // ...
+  }
+  }
 
 By default the comparator is ``<`` (less than), you can also specify ``>``
 using the ``comparator`` key:
 
 .. code-block:: php
 
-    <?php
+<?php
 
-    class AssertiveBench
-    {
-        // ...
+class AssertiveBench
+{
+// ...
 
-        /**
-         * @Assert(stat="mean", value="10", comparator=">")
-         */
-        public function benchGenerateReport()
-        {
-            // ...
-        }
-    }
+/**
+* @Assert(stat="mean", value="10", comparator=">")
+  */
+  public function benchGenerateReport()
+  {
+  // ...
+  }
+  }
 
 The default time unit for assertions is microseconds, but you can specify any
 supported time unit and you can also change the mode to ``throughput``:
@@ -578,20 +578,20 @@ supported time unit and you can also change the mode to ``throughput``:
 
 .. code-block:: php
 
-    <?php
+<?php
 
-    class AssertiveBench
-    {
-        // ...
+class AssertiveBench
+{
+// ...
 
-        /**
-         * @Assert(stat="mean", value="10", comparator=">", time_unit="milliseconds", mode="throughput")
-         */
-        public function benchGenerateReport()
-        {
-            // ...
-        }
-    }
+/**
+* @Assert(stat="mean", value="10", comparator=">", time_unit="milliseconds", mode="throughput")
+  */
+  public function benchGenerateReport()
+  {
+  // ...
+  }
+  }
 
 The above will assert that an average of more than 10 operations are completed
 in a millisecond. See :ref:`time_unit` and :ref:`mode` for more information.

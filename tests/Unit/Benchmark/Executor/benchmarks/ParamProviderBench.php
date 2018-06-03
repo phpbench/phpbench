@@ -12,6 +12,8 @@
 
 namespace PhpBench\Tests\Unit\Benchmark\Executor\benchmarks;
 
+use Generator;
+
 function hello_world()
 {
     return [
@@ -34,5 +36,10 @@ class ParamProviderBench
                 'hello' => 'goodbye',
             ],
         ];
+    }
+
+    public function provideGenerator(): Generator
+    {
+        yield [ 'hello' => 'goodbye' ];
     }
 }
