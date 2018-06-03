@@ -47,6 +47,14 @@ Documentation
 
 See the [official documentation](http://phpbench.readthedocs.org).
 
+Community
+---------
+
+- Follow [@phpbench](https://twitter.com/phpbench) for the latest news.
+- Join the `#phpbench` channel on the Slack [Symfony
+  Devs](https://symfony-devs.slack.com/join/shared_invite/enQtMzM3NDA1NzEyMzg0LTgyNGYwYjFjMjY5YjllYWZkYTY2OWM4MDQzZTgzMmNjNGI3ZDJhYzE2Yjc4NmFmM2JiOTZjODg2MGJlM2RjMDU)
+  channel.
+
 Screenshots
 -----------
 
