@@ -13,7 +13,7 @@
 namespace PhpBench\Console\Command;
 
 use PhpBench\Console\Command\Handler\SuiteCollectionHandler;
-use PhpBench\Registry\Registry;
+use PhpBench\Registry\RegistryInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -25,7 +25,7 @@ class DeleteCommand extends Command
 
     public function __construct(
         SuiteCollectionHandler $collectionHandler,
-        Registry $storage
+        RegistryInterface $storage
     ) {
         parent::__construct();
         $this->collectionHandler = $collectionHandler;

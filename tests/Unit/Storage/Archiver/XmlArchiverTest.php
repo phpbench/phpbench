@@ -14,7 +14,7 @@ namespace PhpBench\Tests\Unit\Storage\Archiver;
 
 use PhpBench\Dom\Document;
 use PhpBench\Model\SuiteCollection;
-use PhpBench\Registry\Registry;
+use PhpBench\Registry\RegistryInterface;
 use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Storage\Archiver\XmlArchiver;
@@ -47,7 +47,7 @@ class XmlArchiverTest extends TestCase
         $dom->save($this->archivePath . '/' . '2.txt');
         $dom->save($this->archivePath . '/' . '2.xml');
 
-        $this->registry = $this->prophesize(Registry::class);
+        $this->registry = $this->prophesize(RegistryInterface::class);
         $this->xmlEncoder = $this->prophesize(XmlEncoder::class);
         $this->xmlDecoder = $this->prophesize(XmlDecoder::class);
         $this->filesystem = $this->prophesize(Filesystem::class);

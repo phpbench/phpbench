@@ -14,7 +14,7 @@ namespace PhpBench\Console\Command;
 
 use PhpBench\Console\CharacterReader;
 use PhpBench\Console\Command\Handler\TimeUnitHandler;
-use PhpBench\Registry\Registry;
+use PhpBench\Registry\RegistryInterface;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -30,7 +30,7 @@ class LogCommand extends Command
     private $characterReader;
 
     public function __construct(
-        Registry $storage,
+        RegistryInterface $storage,
         TimeUnit $timeUnit,
         TimeUnitHandler $timeUnitHandler,
         CharacterReader $characterReader = null

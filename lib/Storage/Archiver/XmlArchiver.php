@@ -13,7 +13,7 @@
 namespace PhpBench\Storage\Archiver;
 
 use PhpBench\Dom\Document;
-use PhpBench\Registry\Registry;
+use PhpBench\Registry\RegistryInterface;
 use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Storage\ArchiverInterface;
@@ -26,7 +26,7 @@ use Symfony\Component\Filesystem\Filesystem;
 class XmlArchiver implements ArchiverInterface
 {
     /**
-     * @var Registry
+     * @var RegistryInterface
      */
     private $storageRegistry;
 
@@ -51,7 +51,7 @@ class XmlArchiver implements ArchiverInterface
     private $xmlDecoder;
 
     public function __construct(
-        Registry $storageRegistry,
+        RegistryInterface $storageRegistry,
         XmlEncoder $xmlEncoder,
         XmlDecoder $xmlDecoder,
         $archivePath,

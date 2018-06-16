@@ -25,7 +25,7 @@ use PhpBench\DependencyInjection\Container;
  * $reg->render($something, $config);
  * ```
  */
-class Registry
+class Registry implements RegistryInterface
 {
     protected $serviceType;
     private $serviceMap = [];

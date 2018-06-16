@@ -15,7 +15,7 @@ namespace PhpBench\Tests\Unit\Console\Command;
 use PhpBench\Console\CharacterReader;
 use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use PhpBench\Console\Command\LogCommand;
-use PhpBench\Registry\Registry;
+use PhpBench\Registry\RegistryInterface;
 use PhpBench\Storage\DriverInterface;
 use PhpBench\Storage\HistoryEntry;
 use PhpBench\Storage\HistoryIteratorInterface;
@@ -41,7 +41,7 @@ class LogCommandTest extends TestCase
             $this->markTestSkipped('Not testing if QuestionHelper class does not exist (< Symfony 2.7)');
         }
 
-        $this->storage = $this->prophesize(Registry::class);
+        $this->storage = $this->prophesize(RegistryInterface::class);
         $this->timeUnit = $this->prophesize(TimeUnit::class);
         $this->timeUnitHandler = $this->prophesize(TimeUnitHandler::class);
         $this->characterReader = $this->prophesize(CharacterReader::class);

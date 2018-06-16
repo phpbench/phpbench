@@ -14,7 +14,7 @@ namespace PhpBench\Console\Command\Handler;
 
 use PhpBench\Expression\Parser;
 use PhpBench\Model\SuiteCollection;
-use PhpBench\Registry\Registry;
+use PhpBench\Registry\RegistryInterface;
 use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Storage\UuidResolverInterface;
 use Symfony\Component\Console\Command\Command;
@@ -31,7 +31,7 @@ class SuiteCollectionHandler
     public function __construct(
         XmlDecoder $xmlDecoder,
         Parser $parser,
-        Registry $storage,
+        RegistryInterface $storage,
         UuidResolverInterface $uuidResolver
     ) {
         $this->xmlDecoder = $xmlDecoder;

@@ -12,7 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Storage\UuidResolver;
 
-use PhpBench\Registry\Registry;
+use PhpBench\Registry\RegistryInterface;
 use PhpBench\Storage\DriverInterface;
 use PhpBench\Storage\HistoryEntry;
 use PhpBench\Storage\HistoryIteratorInterface;
@@ -30,7 +30,7 @@ class LatestResolverTest extends TestCase
 
     public function setUp()
     {
-        $registry = $this->prophesize(Registry::class);
+        $registry = $this->prophesize(RegistryInterface::class);
         $this->storage = $this->prophesize(DriverInterface::class);
         $registry->getService()->willReturn($this->storage->reveal());
         $this->history = $this->prophesize(HistoryIteratorInterface::class);

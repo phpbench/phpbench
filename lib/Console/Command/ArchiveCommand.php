@@ -12,7 +12,7 @@
 
 namespace PhpBench\Console\Command;
 
-use PhpBench\Registry\Registry;
+use PhpBench\Registry\RegistryInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -26,7 +26,7 @@ class ArchiveCommand extends Command
     private $archiver;
 
     public function __construct(
-        Registry $archiver
+        RegistryInterface $archiver
     ) {
         parent::__construct();
         $this->archiver = $archiver;
