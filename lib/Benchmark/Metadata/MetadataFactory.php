@@ -15,11 +15,12 @@ namespace PhpBench\Benchmark\Metadata;
 use PhpBench\Benchmark\Remote\ReflectionHierarchy;
 use PhpBench\Benchmark\Remote\Reflector;
 use PhpBench\Model\Subject;
+use SplFileInfo;
 
 /**
  * Benchmark Metadata Factory.
  */
-class Factory
+class MetadataFactory
 {
     /**
      * @var Reflector
@@ -45,13 +46,10 @@ class Factory
      * Return a Benchmark instance for the given file or NULL if the
      * given file contains no classes, or the class in the given file is
      * abstract.
-     *
-     * @param string $file
-     *
-     * @return BenchmarkMetadata
      */
-    public function getMetadataForFile($file)
+    public function getMetadataForFile(SplFileInfo $file): BenchmarkMetadata
     {
+        $file = $file->getPathname();
         $hierarchy = $this->reflector->reflect($file);
 
         if ($hierarchy->isEmpty()) {

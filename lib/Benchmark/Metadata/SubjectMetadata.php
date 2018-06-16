@@ -107,7 +107,7 @@ class SubjectMetadata
     /**
      * @var ExecutorMetadata
      */
-    private $executorMetadata;
+    private $executorMetadata = [];
 
     /**
      * @param string $name

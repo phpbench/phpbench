@@ -14,7 +14,7 @@ namespace PhpBench\Tests\Unit\Benchmark\Metadata;
 
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\DriverInterface;
-use PhpBench\Benchmark\Metadata\Factory;
+use PhpBench\Benchmark\Metadata\MetadataFactory;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\ReflectionClass;
 use PhpBench\Benchmark\Remote\ReflectionHierarchy;
@@ -33,7 +33,7 @@ class FactoryTest extends TestCase
     {
         $this->reflector = $this->prophesize(Reflector::class);
         $this->driver = $this->prophesize(DriverInterface::class);
-        $this->factory = new Factory(
+        $this->factory = new MetadataFactory(
             $this->reflector->reveal(),
             $this->driver->reveal()
         );
