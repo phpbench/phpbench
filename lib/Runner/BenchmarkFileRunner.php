@@ -6,15 +6,17 @@ use PhpBench\Benchmark\Metadata\MetadataFactory;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Registry\ConfigResolverInterface;
 use PhpBench\Registry\RegistryInterface;
+use PhpBench\Runner\Scheduler\LinearScheduler;
+use PhpBench\Runner\Stage\AggregateStage;
 use PhpBench\Runner\Stage\IterationLimiter;
 use PhpBench\Runner\Stage\SamplerStage;
 
-class Runner
+class BenchmarkFileRunner
 {
     /**
      * @var SubjectIteratorFactory
      */
-    private $subjectIteratorFactory;
+    private $metadataIteratorFactory;
 
     /**
      * @var RegistryInterface
@@ -27,24 +29,23 @@ class Runner
     private $samplerConfigResolver;
 
     public function __construct(
-        SubjectIteratorFactory $subjectIteratorFactory,
+        SubjectIteratorFactory $metadataIteratorFactory,
         RegistryInterface $samplerRegistry,
         ConfigResolverInterface $samplerConfigResolver
     )
     {
-        $this->subjectIteratorFactory = $subjectIteratorFactory;
+        $this->metadataIteratorFactory = $metadataIteratorFactory;
         $this->samplerRegistry = $samplerRegistry;
         $this->samplerConfigResolver = $samplerConfigResolver;
     }
 
-    public function run(string $path)
+    public function build(string $path): Scheduler
     {
-        $subjectIterator = $this->subjectIteratorFactory->subjectIterator($path);
+        $metadataIterator = $this->metadataIteratorFactory->subjectIterator($path);
         $stageAggregates = [];
 
         /** @var SubjectMetadata $subjectMetadata */
-        foreach ($subjectIterator as $subjectMetadata) {
-
+        foreach ($metadataIterator as $subjectMetadata) {
             $samplerStage = $this->resolveSamplerStage($subjectMetadata);
             $stages = [ $samplerStage ];
             $stages[] = new IterationLimiter($subjectMetadata->getIterations());
@@ -52,13 +53,12 @@ class Runner
             $stageAggregates[] = new AggregateStage($stages);
         }
 
-        $scheduler = new LinearScheduler($stages);
-        $scheduler->run();
+        return new LinearScheduler($stages);
     }
 
     private function resolveSamplerStage(SubjectMetadata $subjectMetadata)
     {
-        $sampler = $this->samplerRegistry->get($subjectMetadata->executor()->name());
+        $sampler = $this->samplerRegistry->getService($subjectMetadata->getExecutor()->getName());
         $samplerConfig = $this->samplerConfigResolver->getConfig($subjectMetadata->getExecutor()->getConfig());
         $samplerStage = new SamplerStage($sampler, $samplerConfig);
         return $samplerStage;

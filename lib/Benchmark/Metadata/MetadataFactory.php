@@ -47,17 +47,17 @@ class MetadataFactory
      * given file contains no classes, or the class in the given file is
      * abstract.
      */
-    public function getMetadataForFile(SplFileInfo $file): BenchmarkMetadata
+    public function getMetadataForFile(SplFileInfo $file):? BenchmarkMetadata
     {
         $file = $file->getPathname();
         $hierarchy = $this->reflector->reflect($file);
 
         if ($hierarchy->isEmpty()) {
-            return;
+            return null;
         }
 
         if ($hierarchy->getTop() && true === $hierarchy->getTop()->abstract) {
-            return;
+            return null;
         }
 
         $metadata = $this->driver->getMetadataForHierarchy($hierarchy);

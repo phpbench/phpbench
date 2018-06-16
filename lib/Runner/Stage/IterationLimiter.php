@@ -14,7 +14,7 @@ class IterationLimiter implements Stage
 
     public function __construct(int $limit = 1)
     {
-        if (!$limit < 1) {
+        if ($limit < 1) {
             throw new OutOfBoundsException(sprintf(
                 'Limit must be greater than 0, got %d',
                 $limit

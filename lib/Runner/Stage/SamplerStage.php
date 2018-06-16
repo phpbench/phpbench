@@ -2,6 +2,7 @@
 
 namespace PhpBench\Runner\Stage;
 
+use PhpBench\Runner\Sampler;
 use PhpBench\Runner\Stage;
 
 class SamplerStage implements Stage
