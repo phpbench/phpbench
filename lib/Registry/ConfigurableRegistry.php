@@ -27,7 +27,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * $config = $reg->getConfig('foobar');
  * ```
  */
-class ConfigurableRegistry extends Registry
+class ConfigurableRegistry extends Registry implements ConfigResolverInterface
 {
     private $configs = [];
     private $jsonDecoder;

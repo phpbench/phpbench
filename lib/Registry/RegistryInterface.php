@@ -6,13 +6,13 @@ interface RegistryInterface
 {
     /**
      * Register a service ID with against the given name.
-     * 
+     *
      */
     public function registerService($name, $serviceId);
 
     /**
      * Directly set a named service.
-     * 
+     *
      */
     public function setService($name, $object);
 
