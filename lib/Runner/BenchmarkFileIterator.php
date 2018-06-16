@@ -3,6 +3,7 @@
 namespace PhpBench\Runner;
 
 use Generator;
+use InvalidArgumentException;
 use IteratorAggregate;
 use PhpBench\PhpBench;
 use Symfony\Component\Finder\Finder;
@@ -22,7 +23,7 @@ class BenchmarkFileIterator implements IteratorAggregate
         $path = PhpBench::normalizePath($this->path);
 
         if (false === file_exists($path)) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'File or directory "%s" does not exist (cwd: %s)',
                 $path,
                 getcwd()
