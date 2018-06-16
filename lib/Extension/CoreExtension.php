@@ -154,6 +154,7 @@ class CoreExtension implements ExtensionInterface
             return new Runner(
                 $container->get('benchmark.benchmark_finder'),
                 $container->get('benchmark.registry.executor'),
+                $container->get('benchmark.registry.executor'),
                 $container->get('environment.supplier'),
                 $container->get('assertion.assertion_processor'),
                 $container->getParameter('retry_threshold'),

@@ -12,7 +12,7 @@
 
 namespace PhpBench\Storage\UuidResolver;
 
-use PhpBench\Registry\Registry;
+use PhpBench\Registry\RegistryInterface;
 use PhpBench\Storage\UuidResolverInterface;
 use RuntimeException;
 
@@ -22,9 +22,9 @@ class LatestResolver implements UuidResolverInterface
 
     private $driverRegistry;
 
-    public function __construct(Registry $driver)
+    public function __construct(RegistryInterface $driverRegistry)
     {
-        $this->driverRegistry = $driver;
+        $this->driverRegistry = $driverRegistry;
     }
 
     public function supports(string $reference): bool

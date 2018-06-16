@@ -19,7 +19,7 @@ use PhpBench\Console\Command\Handler\RunnerHandler;
 use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\PhpBench;
-use PhpBench\Registry\Registry;
+use PhpBench\Registry\RegistryInterface;
 use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -52,11 +52,11 @@ class RunCommand extends Command
     private $dumpHandler;
 
     /**
-     * @var Registry
+     * @var RegistryInterface
      */
     private $storage;
 
-    public function __construct(RunnerHandler $runnerHandler, ReportHandler $reportHandler, TimeUnitHandler $timeUnitHandler, DumpHandler $dumpHandler, Registry $storage
+    public function __construct(RunnerHandler $runnerHandler, ReportHandler $reportHandler, TimeUnitHandler $timeUnitHandler, DumpHandler $dumpHandler, RegistryInterface $storage
     ) {
         parent::__construct();
         $this->runnerHandler = $runnerHandler;

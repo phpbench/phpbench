@@ -14,7 +14,7 @@ namespace PhpBench\Extensions\Reports\Driver;
 
 use PhpBench\Expression\Constraint\Constraint;
 use PhpBench\Model\SuiteCollection;
-use PhpBench\Registry\Registry;
+use PhpBench\Registry\RegistryInterface;
 use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Storage\DriverInterface;
 
@@ -47,7 +47,7 @@ class ReportsDriver implements DriverInterface
 
     public function __construct(
         ReportsClient $client,
-        Registry $storageRegistry,
+        RegistryInterface $storageRegistry,
         XmlEncoder $xmlEncoder,
         string $innerStorageName
     ) {

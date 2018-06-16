@@ -32,7 +32,9 @@ use PhpBench\PhpBench;
 use PhpBench\Progress\Logger\NullLogger;
 use PhpBench\Progress\LoggerInterface;
 use PhpBench\Registry\Config;
+use PhpBench\Registry\ConfigResolverInterface;
 use PhpBench\Registry\ConfigurableRegistry;
+use PhpBench\Registry\RegistryInterface;
 
 /**
  * The benchmark runner.
@@ -76,9 +78,20 @@ class Runner
      */
     private $logger;
 
+    /**
+     * @var ConfigResolverInterface
+     */
+    private $executorConfigResolver;
+
+    /**
+     * @var AssertionProcessor
+     */
+    private $assertion;
+
     public function __construct(
         BenchmarkFinder $benchmarkFinder,
-        ConfigurableRegistry $executorRegistry,
+        ConfigResolverInterface $executorConfigResolver,
+        RegistryInterface $executorRegistry,
         Supplier $envSupplier,
         AssertionProcessor $assertion,
         float $retryThreshold = null,
@@ -91,6 +104,7 @@ class Runner
         $this->retryThreshold = $retryThreshold;
         $this->configPath = $configPath;
         $this->assertionProcessor = $assertion;
+        $this->executorConfigResolver = $executorConfigResolver;
     }
 
     /**
@@ -144,7 +158,7 @@ class Runner
         BenchmarkMetadata $benchmarkMetadata
     ) {
         // determine the executor
-        $executorConfig = $this->executorRegistry->getConfig($config->getExecutor());
+        $executorConfig = $this->executorConfigResolver->getConfig($config->getExecutor());
         /** @var ExecutorInterface $executor */
         $executor = $this->executorRegistry->getService($benchmarkMetadata->getExecutor() ? $benchmarkMetadata->getExecutor()->getName() : $executorConfig['executor']);
 
@@ -178,10 +192,10 @@ class Runner
             }
 
             // resolve executor config for this subject
-            $executorConfig = $this->executorRegistry->getConfig($config->getExecutor());
+            $executorConfig = $this->executorConfigResolver->getConfig($config->getExecutor());
             if ($executorMetadata = $subjectMetadata->getExecutor()) {
                 $executor = $this->executorRegistry->getService($executorMetadata->getName());
-                $executorConfig = $this->executorRegistry->getConfig($executorMetadata->getRegistryConfig());
+                $executorConfig = $this->executorConfigResolver->getConfig($executorMetadata->getRegistryConfig());
             }
             $resolvedExecutor = ResolvedExecutor::fromNameAndConfig($executorConfig['executor'], $executorConfig);
 

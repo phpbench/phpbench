@@ -17,7 +17,7 @@ use PhpBench\Expression\Constraint\Constraint;
 use PhpBench\Extensions\Reports\Driver\ReportsClient;
 use PhpBench\Extensions\Reports\Driver\ReportsDriver;
 use PhpBench\Model\SuiteCollection;
-use PhpBench\Registry\Registry;
+use PhpBench\Registry\RegistryInterface;
 use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Storage\DriverInterface;
 use PhpBench\Storage\HistoryIteratorInterface;
@@ -59,7 +59,7 @@ class ReportsDriverTest extends TestCase
 
         $this->constraint = $this->prophesize(Constraint::class);
         $this->history = $this->prophesize(HistoryIteratorInterface::class);
-        $this->registry = $this->prophesize(Registry::class);
+        $this->registry = $this->prophesize(RegistryInterface::class);
         $this->client = $this->prophesize(ReportsClient::class);
         $this->xmlEncoder = $this->prophesize(XmlEncoder::class);
         $this->storageName = 'foobar';
