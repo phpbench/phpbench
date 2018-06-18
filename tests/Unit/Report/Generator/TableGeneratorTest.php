@@ -64,13 +64,13 @@ class TableGeneratorTest extends GeneratorTestCase
         $this->assertXPathEval($report, '{"param1":"value1"}', 'string(//cell[@name="params"])');
         $this->assertXPathEval($report, 5, 'string(//cell[@name="revs"])');
         $this->assertXPathEval($report, 2, 'string(//cell[@name="its"])');
-        $this->assertXPathEval($report, '200', 'string(//cell[@name="mem_peak"])');
-        $this->assertXPathEval($report, '2.000', 'string(//cell[@name="best"])');
-        $this->assertXPathEval($report, '3.000', 'string(//cell[@name="mean"])');
-        $this->assertXPathEval($report, '3.200', 'string(//row[2]//cell[@name="mean"])');
-        $this->assertXPathEval($report, '4.000', 'string(//cell[@name="worst"])');
-        $this->assertXPathEval($report, '1.000', 'string(//cell[@name="stdev"])');
-        $this->assertXPathEval($report, '33.333333333333', 'string(//cell[@name="rstdev"])');
+        $this->assertXPathEval($report, 200, 'string(//cell[@name="mem_peak"])');
+        $this->assertXPathEval($report, 2, 'string(//cell[@name="best"])');
+        $this->assertXPathEval($report, 3, 'string(//cell[@name="mean"])');
+        $this->assertXPathEval($report, 3.2, 'string(//row[2]//cell[@name="mean"])');
+        $this->assertXPathEval($report, 4, 'string(//cell[@name="worst"])');
+        $this->assertXPathEval($report, 1, 'string(//cell[@name="stdev"])');
+        $this->assertXPathEval($report, 33.333333333333, 'string(//cell[@name="rstdev"])');
 
         $this->assertXPathEval($report, '1', 'string(//cell[@name="diff"])');
         $this->assertXPathEval($report, '1.0666666666667', 'string(//row[2]//cell[@name="diff"])');
