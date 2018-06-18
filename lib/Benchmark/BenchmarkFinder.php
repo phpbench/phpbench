@@ -13,7 +13,7 @@
 namespace PhpBench\Benchmark;
 
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
-use PhpBench\Benchmark\Metadata\Factory;
+use PhpBench\Benchmark\Metadata\MetadataFactory;
 use PhpBench\PhpBench;
 use Symfony\Component\Finder\Finder;
 
@@ -24,14 +24,14 @@ use Symfony\Component\Finder\Finder;
 class BenchmarkFinder
 {
     /**
-     * @var Factory
+     * @var MetadataFactory
      */
     private $factory;
 
     /**
      * @param Factory $factory
      */
-    public function __construct(Factory $factory)
+    public function __construct(MetadataFactory $factory)
     {
         $this->factory = $factory;
     }

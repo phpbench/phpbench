@@ -19,7 +19,7 @@ use PhpBench\Model\Subject;
 /**
  * Benchmark Metadata Factory.
  */
-class Factory
+class MetadataFactory
 {
     /**
      * @var Reflector

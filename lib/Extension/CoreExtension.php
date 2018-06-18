@@ -21,7 +21,7 @@ use PhpBench\Benchmark\Executor\DebugExecutor;
 use PhpBench\Benchmark\Executor\MicrotimeExecutor;
 use PhpBench\Benchmark\Metadata\AnnotationReader;
 use PhpBench\Benchmark\Metadata\Driver\AnnotationDriver;
-use PhpBench\Benchmark\Metadata\Factory;
+use PhpBench\Benchmark\Metadata\MetadataFactory;
 use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Benchmark\Remote\PayloadFactory;
 use PhpBench\Benchmark\Remote\Reflector;
@@ -205,7 +205,7 @@ class CoreExtension implements ExtensionInterface
         });
 
         $container->register('benchmark.metadata_factory', function (Container $container) {
-            return new Factory(
+            return new MetadataFactory(
                 $container->get('benchmark.remote.reflector'),
                 $container->get('benchmark.metadata.driver.annotation')
             );
