@@ -4,6 +4,7 @@ CHANGELOG
 develop
 -------
 
+- Renamed Factory => MetadataFactory
 - Replace Style CI with PHP-CS-Fixer, fixes #537
 - Allow any callable as a parameter provider. Fixes #533
 - Remove benchmark dependency on JSON extension, use `serialize` instead.
