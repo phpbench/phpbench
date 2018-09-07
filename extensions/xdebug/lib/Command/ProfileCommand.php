@@ -46,7 +46,7 @@ class ProfileCommand extends Command
     {
         $this->setName('xdebug:profile');
         $this->setDescription(<<<'EOT'
-Generate and optionally visulaize profiles with XDebug
+Generate and optionally visualize profiles with XDebug
 EOT
         );
         RunnerHandler::configure($this);
