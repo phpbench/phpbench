@@ -47,7 +47,7 @@ class TraceCommand extends Command
     {
         $this->setName('xdebug:trace');
         $this->setDescription(<<<'EOT'
-Generate and optionally visulaize traces with XDebug
+Generate and optionally visualize traces with XDebug
 EOT
         );
         RunnerHandler::configure($this);
