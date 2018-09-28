@@ -20,7 +20,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Console\Terminal;
 
 class LogCommand extends Command
 {
@@ -70,11 +70,11 @@ EOT
         // value of 100.
         $height = 100;
         if ($application = $this->getApplication()) {
-            list($width, $height) = $application->getTerminalDimensions();
+            $height = (new Terminal())->getHeight();
             $height = $height ?: 100;
         }
 
-        $height -= 1; // reduce height by one to accomodate the pagination prompt
+        $height -= 1; // reduce height by one to accommodate the pagination prompt
         $nbRows = 0;
         $totalRows = 0;
 
