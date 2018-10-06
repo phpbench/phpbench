@@ -24,7 +24,7 @@
         "phpbench/container": "~1.2",
         "phpbench/dom": "~0.2.0",
         "seld/jsonlint": "^1.0",
-        "symfony/console": "^2.6|^3.0|^4.0",
+        "symfony/console": "^3.2|^4.0",
         "symfony/debug": "^2.4|^3.0|^4.0",
         "symfony/filesystem": "^2.4|^3.0|^4.0",
         "symfony/finder": "^2.4|^3.0|^4.0",
