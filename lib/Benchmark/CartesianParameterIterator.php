@@ -12,51 +12,34 @@
 
 namespace PhpBench\Benchmark;
 
+use PatchRanger\CartesianIterator;
 use PhpBench\Model\ParameterSet;
 
-class CartesianParameterIterator implements \Iterator
+class CartesianParameterIterator extends CartesianIterator
 {
-    private $sets;
     private $index = 0;
-    private $max;
-    private $current;
-    private $break = false;
 
     public function __construct(array $parameterSets)
     {
+        parent::__construct(static::MIT_KEYS_ASSOC);
+        /** @var ParameterSet $parameterSet */
         foreach ($parameterSets as $parameterSet) {
-            $this->sets[] = new \ArrayIterator($parameterSet);
+            $key = 0;
+            $values = [];
+            foreach ($parameterSet as $array) {
+                foreach ($array as $key => $value) {
+                    $values[] = $value;
+                }
+            }
+            $this->attachIterator(new \ArrayIterator($values), $key);
         }
-
-        $this->max = count($parameterSets) - 1;
     }
 
     public function current()
     {
-        return $this->getParameterSet();
-    }
-
-    public function next()
-    {
-        for ($index = 0; $index <= $this->max; $index++) {
-            $this->sets[$index]->next();
-
-            if (true === $this->sets[$index]->valid()) {
-                break;
-            }
-
-            $this->sets[$index]->rewind();
-
-            if ($index === $this->max) {
-                $this->break = true;
-                break;
-            }
-        }
-
-        $this->index++;
-        $this->update();
-
-        return $this->getParameterSet();
+        return $this->valid()
+            ? new ParameterSet($this->index, parent::current())
+            : null;
     }
 
     public function key()
@@ -64,32 +47,17 @@ class CartesianParameterIterator implements \Iterator
         return $this->index;
     }
 
-    public function rewind()
+    public function next()
     {
-        $this->index = 0;
-        foreach ($this->sets as $set) {
-            $set->rewind();
-        }
-        $this->update();
-
+        parent::next();
+        $this->index++;
         return $this->current();
     }
 
-    public function valid()
+    public function rewind()
     {
-        return false === $this->break;
-    }
-
-    private function update()
-    {
-        $this->current = [];
-        foreach ($this->sets as $set) {
-            $this->current = array_merge($this->current, $set->current());
-        }
-    }
-
-    private function getParameterSet()
-    {
-        return new ParameterSet($this->index, $this->current);
+        parent::rewind();
+        $this->index = 0;
+        return $this->current();
     }
 }
