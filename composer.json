@@ -23,7 +23,7 @@
         "lstrojny/functional-php": "1.0|^1.2.3",
         "phpbench/container": "~1.2",
         "phpbench/dom": "~0.2.0",
-        "seld/jsonlint": "^1.0",
+        "seld/jsonlint": "^1.1",
         "symfony/console": "^3.2|^4.0",
         "symfony/debug": "^2.4|^3.0|^4.0",
         "symfony/filesystem": "^2.4|^3.0|^4.0",
