@@ -4,6 +4,7 @@ CHANGELOG
 develop
 -------
 
+- Minimumum supported PHP version is 7.1
 - Renamed Factory => MetadataFactory
 - Replace Style CI with PHP-CS-Fixer, fixes #537
 - Allow any callable as a parameter provider. Fixes #533
@@ -11,6 +12,7 @@ develop
   Fixes #534
 - Allow Executor to be specified per benchmark/subject.
 - Allow `@ParamProviders` to return a `Generator`. Fixes #529.
+- Fix computation exception with `--stop-on-error` and multiple variants #563
 
 0.14.0 Munich
 -------------

@@ -453,7 +453,7 @@ class RunTest extends SystemTestCase
     }
 
     /**
-     * It should stop on the first exception if an exceptio is encountered.
+     * It should stop on the first exception if an exception is encountered.
      */
     public function testIterationStopOnError()
     {
@@ -466,6 +466,20 @@ class RunTest extends SystemTestCase
         $this->assertNotContains('benchNothingElse', $process->getOutput());
     }
 
+    /**
+     * It should stop on the first exception if an exception is encountered
+     * with many variants
+     */
+    public function testIterationStopOnErrorWithMultipleVariants()
+    {
+        $process = $this->phpbench(
+            'run benchmarks/set3/ErrorVariantsBench.php --stop-on-error'
+        );
+
+        $this->assertExitCode(1, $process);
+        $this->assertContains('1 subjects encountered errors', $process->getOutput());
+        $this->assertNotContains('benchNothingElse', $process->getOutput());
+    }
     /**
      * It should allow the precision to be set.
      */

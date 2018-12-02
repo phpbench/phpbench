@@ -13,6 +13,7 @@
 namespace PhpBench\Model;
 
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
+use PhpBench\Model\Variant;
 use PhpBench\Util\TimeUnit;
 use PhpBench\Model\ResolvedExecutor;
 
@@ -124,6 +125,9 @@ class Subject
         return $variant;
     }
 
+    /**
+     * @return Variant[]
+     */
     public function getVariants()
     {
         return $this->variants;
@@ -220,5 +224,12 @@ class Subject
     public function setExecutor(ResolvedExecutor $executor)
     {
         $this->executor = $executor;
+    }
+
+    public function remove(Variant $target): void
+    {
+        $this->variants = array_filter($this->variants, function (Variant $variant) use ($target) {
+            return $variant !== $target;
+        });
     }
 }

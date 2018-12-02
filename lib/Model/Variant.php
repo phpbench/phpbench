@@ -12,6 +12,7 @@
 
 namespace PhpBench\Model;
 
+use Exception;
 use PhpBench\Assertion\AssertionFailure;
 use PhpBench\Assertion\AssertionFailures;
 use PhpBench\Assertion\AssertionWarning;

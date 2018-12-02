@@ -223,8 +223,21 @@ class Runner
         }
 
         // run the variants.
+        $stopException = null;
         foreach ($subject->getVariants() as $variant) {
-            $this->runVariant($executor, $subject->getExecutor()->getConfig(), $config, $subjectMetadata, $variant);
+            if ($stopException) {
+                $subject->remove($variant);
+                continue;
+            }
+
+            try {
+                $this->runVariant($executor, $subject->getExecutor()->getConfig(), $config, $subjectMetadata, $variant);
+            } catch (StopOnErrorException $stopException) {
+            }
+        }
+
+        if ($stopException) {
+            throw $stopException;
         }
 
         return $subject;
