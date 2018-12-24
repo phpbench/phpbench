@@ -71,6 +71,11 @@ class LogCommandTest extends TestCase
         $this->timeUnit->getDestSuffix()->willReturn('s');
     }
 
+    protected function tearDown(): void
+    {
+        $this->resetTerminalDimensions();
+    }
+
     /**
      * It should be configured.
      */
@@ -89,7 +94,8 @@ class LogCommandTest extends TestCase
             '--no-pagination' => true,
         ], $this->command->getDefinition());
 
-        $this->application->setTerminalDimensions(100, 10);
+        $this->setTerminalDimensions(100, 10);
+
         $this->characterReader->read()->shouldNotBeCalled();
 
         $this->driver->history()->willReturn($this->history->reveal());
@@ -146,7 +152,8 @@ EOT;
         $input = new ArrayInput([], $this->command->getDefinition());
         $output = $this->output;
 
-        $this->application->setTerminalDimensions(100, 14);
+        $this->setTerminalDimensions(100, 14);
+
         $this->characterReader->read()->willReturn('')->shouldBeCalledTimes(1);
 
         $this->driver->history()->willReturn($this->history->reveal());
@@ -201,7 +208,8 @@ EOT;
         $input = new ArrayInput([], $this->command->getDefinition());
         $output = $this->output;
 
-        $this->application->setTerminalDimensions(100, 14);
+        $this->setTerminalDimensions(100, 14);
+
         $this->characterReader->read()->willReturn('q')->shouldBeCalledTimes(1);
 
         $this->driver->history()->willReturn($this->history->reveal());
@@ -259,5 +267,17 @@ EOT;
             0.75,
             100
         );
+    }
+
+    private function setTerminalDimensions(int $columns, int $lines): void
+    {
+        putenv('COLUMNS=' . $columns);
+        putenv('LINES=' . $lines);
+    }
+
+    private function resetTerminalDimensions(): void
+    {
+        putenv('COLUMNS');
+        putenv('LINES');
     }
 }
