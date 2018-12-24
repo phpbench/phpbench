@@ -17,6 +17,8 @@ jobs:
       php: 7.1
 
       before_install:
+        - source .travis/xdebug.sh
+        - xdebug-disable
         - composer validate
 
       install:
@@ -30,6 +32,8 @@ jobs:
       php: 7.1
 
       before_install:
+        - source .travis/xdebug.sh
+        - xdebug-disable
         - composer validate
 
       install:
@@ -45,6 +49,8 @@ jobs:
       php: 7.1
 
       before_install:
+        - source .travis/xdebug.sh
+        - xdebug-disable
         - composer validate
 
       install:
@@ -80,6 +86,10 @@ jobs:
       if: (NOT type IN (pull_request)) AND (branch = master)
 
       php: 7.1
+
+      before_install:
+        - source .travis/xdebug.sh
+        - xdebug-disable
 
       script: skip
 
