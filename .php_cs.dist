@@ -9,11 +9,13 @@ $finder = PhpCsFixer\Finder::create()
 ;
 
 return PhpCsFixer\Config::create()
+    ->setRiskyAllowed(true)
     ->setRules([
         '@PSR2' => true,
         'binary_operator_spaces' => [ 'align_double_arrow' => false ],
         'concat_space' => false,
         'method_argument_space' => false,
+        'php_unit_set_up_tear_down_visibility' => true,
         'phpdoc_align' => [],
         'phpdoc_indent' => false,
     ])
