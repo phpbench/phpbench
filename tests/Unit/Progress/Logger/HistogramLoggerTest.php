@@ -25,7 +25,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
 
 class HistogramLoggerTest extends TestCase
 {
-    public function setUp()
+    protected function setUp()
     {
         $this->output = new BufferedOutput();
         $this->timeUnit = new TimeUnit(TimeUnit::MICROSECONDS, TimeUnit::MILLISECONDS);

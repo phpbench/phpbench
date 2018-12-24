@@ -34,7 +34,7 @@ class XmlArchiverTest extends TestCase
     private $filesystem;
     private $archivePath;
 
-    public function setUp()
+    protected function setUp()
     {
         Workspace::initWorkspace();
 
@@ -70,7 +70,7 @@ class XmlArchiverTest extends TestCase
         $this->registry->getService()->willReturn($this->storage->reveal());
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
         Workspace::cleanWorkspace();
     }

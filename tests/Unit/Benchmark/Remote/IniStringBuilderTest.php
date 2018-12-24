@@ -22,7 +22,7 @@ class IniStringBuilderTest extends TestCase
      */
     private $builder;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->builder = new IniStringBuilder();
     }

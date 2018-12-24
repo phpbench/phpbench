@@ -18,7 +18,7 @@ use Prophecy\Argument;
 
 class TravisLoggerTest extends PhpBenchLoggerTest
 {
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
     }

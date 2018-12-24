@@ -19,7 +19,7 @@ class TruncateFormatTest extends TestCase
 {
     private $format;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->format = new TruncateFormat();
     }

@@ -28,7 +28,7 @@ class SuiteTest extends TestCase
     private $env1;
     private $bench1;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->env1 = $this->prophesize(Information::class);
         $this->bench1 = $this->prophesize(Benchmark::class);

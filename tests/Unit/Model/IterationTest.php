@@ -22,7 +22,7 @@ class IterationTest extends TestCase
 {
     private $iteration;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->variant = $this->prophesize(Variant::class);
         $this->iteration = new Iteration(

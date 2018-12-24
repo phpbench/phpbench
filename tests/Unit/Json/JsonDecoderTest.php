@@ -19,7 +19,7 @@ class JsonDecoderTest extends TestCase
 {
     private $jsonDecoder;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->jsonDecoder = new JsonDecoder();
     }

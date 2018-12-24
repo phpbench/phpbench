@@ -23,7 +23,7 @@ class SystemTestCase extends TestCase
     protected $filesystem;
     protected $workspaceDir;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->filesystem = new Filesystem();
         $this->workspaceDir = sys_get_temp_dir() . '/phpbench-tests';

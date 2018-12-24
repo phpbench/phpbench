@@ -19,7 +19,7 @@ class TraceToXmlConverterTest extends TestCase
 {
     private $converter;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->converter = new TraceToXmlConverter();
     }

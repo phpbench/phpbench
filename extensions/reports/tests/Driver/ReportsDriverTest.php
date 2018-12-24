@@ -53,7 +53,7 @@ class ReportsDriverTest extends TestCase
      */
     private $history;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->innerDriver = $this->prophesize(DriverInterface::class);
 

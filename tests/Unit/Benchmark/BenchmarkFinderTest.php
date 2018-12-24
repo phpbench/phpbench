@@ -25,7 +25,7 @@ class BenchmarkFinderTest extends TestCase
     private $benchmark1;
     private $benchmark2;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->factory = $this->prophesize(MetadataFactory::class);
         $this->benchmark1 = $this->prophesize(BenchmarkMetadata::class);

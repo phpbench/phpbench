@@ -27,7 +27,7 @@ class DebugExecutorTest extends TestCase
 {
     private $executor;
 
-    public function setUp()
+    protected function setUp()
     {
         $launcher = $this->prophesize(Launcher::class);
         $this->executor = new DebugExecutor($launcher->reveal());

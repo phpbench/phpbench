@@ -27,7 +27,7 @@ class BenchmarkTest extends TestCase
     private $benchmark;
     private $suite;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->suite = $this->prophesize(Suite::class);
         $this->benchmark = new Benchmark($this->suite->reveal(), '/path/to', 'Class');

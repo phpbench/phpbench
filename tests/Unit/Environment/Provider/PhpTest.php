@@ -21,7 +21,7 @@ class PhpTest extends TestCase
 {
     private $payload;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->payload = $this->prophesize(Payload::class);
     }

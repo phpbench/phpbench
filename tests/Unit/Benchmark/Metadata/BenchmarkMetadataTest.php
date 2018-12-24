@@ -19,7 +19,7 @@ class BenchmarkMetadataTest extends TestCase
 {
     private $metadata;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->metadata = new BenchmarkMetadata('/path/to', 'Class');
         $this->subject1 = $this->metadata->getOrCreateSubject('subjectOne');

@@ -21,7 +21,7 @@ class ResultCollectionTest extends TestCase
 {
     private $collection;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->timeResult = new TimeResult(1);
         $this->memoryResult = new MemoryResult(1, 0, 0);

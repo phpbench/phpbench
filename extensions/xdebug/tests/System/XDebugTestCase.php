@@ -16,7 +16,7 @@ use PhpBench\Tests\System\SystemTestCase;
 
 class XDebugTestCase extends SystemTestCase
 {
-    public function setUp()
+    protected function setUp()
     {
         if (!extension_loaded('xdebug')) {
             $this->markTestSkipped('XDebug not enabled.');

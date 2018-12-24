@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 class PrintfFormatTest extends TestCase
 {
-    public function setUp()
+    protected function setUp()
     {
         $this->format = new PrintfFormat();
     }

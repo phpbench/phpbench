@@ -23,7 +23,7 @@ class FormatterTest extends TestCase
     private $formatter;
     private $format;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->registry = $this->prophesize(FormatRegistry::class);
         $this->formatter = new Formatter($this->registry->reveal());

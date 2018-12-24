@@ -24,7 +24,7 @@ class PeristerTest extends DbalTestCase
     private $persister;
     private $manager;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->manager = $this->getManager();
 
@@ -32,7 +32,7 @@ class PeristerTest extends DbalTestCase
         $this->persister = new Persister($this->manager);
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
         $this->cleanWorkspace();
     }

@@ -30,7 +30,7 @@ class ReportManagerTest extends TestCase
     private $suiteCollection;
     private $output;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->rendererRegistry = $this->prophesize(ConfigurableRegistry::class);
         $this->generatorRegistry = $this->prophesize(ConfigurableRegistry::class);

@@ -36,7 +36,7 @@ class MicrotimeExecutorTest extends TestCase
     private $paramBeforeFile;
     private $paramAfterFile;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->beforeMethodFile = __DIR__ . '/benchmarks/before_method.tmp';
         $this->afterMethodFile = __DIR__ . '/benchmarks/after_method.tmp';
@@ -64,7 +64,7 @@ class MicrotimeExecutorTest extends TestCase
         $this->iteration->getVariant()->willReturn($this->variant->reveal());
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
         $this->removeTemporaryFiles();
     }

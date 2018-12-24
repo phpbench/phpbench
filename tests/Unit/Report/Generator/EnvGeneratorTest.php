@@ -24,7 +24,7 @@ class EnvGeneratorTest extends GeneratorTestCase
      */
     private $generator;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->generator = new EnvGenerator();
     }

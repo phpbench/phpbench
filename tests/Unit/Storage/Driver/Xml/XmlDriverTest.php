@@ -36,7 +36,7 @@ class XmlDriverTest extends TestCase
      */
     private $document;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->xmlEncoder = $this->prophesize(XmlEncoder::class);
         $this->xmlDecoder = $this->prophesize(XmlDecoder::class);

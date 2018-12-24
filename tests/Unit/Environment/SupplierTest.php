@@ -21,7 +21,7 @@ class SupplierTest extends TestCase
 {
     private $supplier;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->supplier = new Supplier();
         $this->provider1 = $this->prophesize(ProviderInterface::class);

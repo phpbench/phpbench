@@ -22,7 +22,7 @@ class BaselineTest extends TestCase
     private $manager;
     private $provider;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->manager = $this->prophesize(BaselineManager::class);
         $this->provider = new Baseline(

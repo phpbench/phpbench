@@ -21,7 +21,7 @@ class FormatRegistryTest extends TestCase
     private $registry;
     private $format;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->registry = new FormatRegistry();
         $this->format = $this->prophesize(FormatInterface::class);

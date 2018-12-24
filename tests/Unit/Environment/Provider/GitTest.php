@@ -24,7 +24,7 @@ class GitTest extends TestCase
     private $filesystem;
     private $testRepoDir;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->filesystem = new Filesystem();
 
@@ -41,7 +41,7 @@ class GitTest extends TestCase
         $this->provider = new Provider\Git();
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
         $this->clean();
     }
