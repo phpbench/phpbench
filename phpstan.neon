@@ -1,3 +1,6 @@
+includes:
+    - vendor/phpstan/phpstan/conf/config.level4.neon
+
 parameters:
     ignoreErrors:
         - '#Undefined variable: \$argv#'
