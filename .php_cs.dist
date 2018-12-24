@@ -13,9 +13,9 @@ return PhpCsFixer\Config::create()
         '@PSR2' => true,
         'binary_operator_spaces' => [ 'align_double_arrow' => false ],
         'concat_space' => false,
-        'phpdoc_indent' => false,
         'method_argument_space' => false,
         'phpdoc_align' => [],
+        'phpdoc_indent' => false,
     ])
     ->setFinder($finder)
     ;
