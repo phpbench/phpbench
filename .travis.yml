@@ -40,7 +40,7 @@ jobs:
         - composer install
 
       script:
-        - ./vendor/bin/phpstan analyze -c phpstan.neon
+        - ./vendor/bin/phpstan analyse -c phpstan.neon
 
     - &TEST
 
