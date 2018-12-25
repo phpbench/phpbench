@@ -25,7 +25,7 @@ class HistoryIteratorTest extends DbalTestCase
     private $persister;
     private $iterator;
 
-    public function setUp()
+    protected function setUp()
     {
         $manager = $this->getManager();
         $tokenVisitor = $this->prophesize(TokenValueVisitor::class);
@@ -35,7 +35,7 @@ class HistoryIteratorTest extends DbalTestCase
         $this->iterator = new HistoryIterator($repository);
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
         $this->cleanWorkspace();
     }

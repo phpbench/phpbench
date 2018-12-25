@@ -29,7 +29,7 @@ class FactoryTest extends TestCase
 
     private $factory;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->reflector = $this->prophesize(Reflector::class);
         $this->driver = $this->prophesize(DriverInterface::class);

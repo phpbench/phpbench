@@ -19,7 +19,7 @@ class UnameTest extends TestCase
 {
     private $provider;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->provider = new Provider\Uname();
     }

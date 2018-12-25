@@ -22,7 +22,7 @@ class TokenValueVisitorTest extends TestCase
     private $visitor;
     private $uuidResolver;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->uuidResolver = $this->prophesize(UuidResolverInterface::class);
         $this->visitor = new TokenValueVisitor($this->uuidResolver->reveal());

@@ -21,7 +21,7 @@ class PayloadTest extends TestCase
 {
     private $process;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->process = $this->prophesize(Process::class);
     }

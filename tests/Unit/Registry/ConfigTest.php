@@ -19,7 +19,7 @@ class ConfigTest extends TestCase
 {
     private $config;
 
-    public function setUp()
+    protected function setUp()
     {
     }
 

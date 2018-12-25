@@ -24,7 +24,7 @@ class UpdateCommandTest extends TestCase
     private $command;
     private $output;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->updater = $this->prophesize(Updater::class);
         $this->command = new SelfUpdateCommand($this->updater->reveal());

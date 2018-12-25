@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 class CoreExtensionTest extends TestCase
 {
-    public function tearDown()
+    protected function tearDown()
     {
         putenv('CONTINUOUS_INTEGRATION=0');
     }

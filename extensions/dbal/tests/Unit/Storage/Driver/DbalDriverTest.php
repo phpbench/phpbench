@@ -28,7 +28,7 @@ class DbalDriverTest extends TestCase
     private $constraint;
     private $driver;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->loader = $this->prophesize(Loader::class);
         $this->persister = $this->prophesize(Persister::class);

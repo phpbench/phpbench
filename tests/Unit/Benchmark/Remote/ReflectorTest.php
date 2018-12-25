@@ -20,7 +20,7 @@ class ReflectorTest extends TestCase
 {
     private $reflector;
 
-    public function setUp()
+    protected function setUp()
     {
         $executor = new Launcher(null, null, __DIR__ . '/../../../../vendor/autoload.php', null);
         $this->reflector = new Reflector($executor);

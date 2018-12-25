@@ -24,7 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class DotsLoggerTest extends TestCase
 {
-    public function setUp()
+    protected function setUp()
     {
         $this->tearDown();
 
@@ -36,7 +36,7 @@ class DotsLoggerTest extends TestCase
         $this->variant = $this->prophesize(Variant::class);
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
         putenv('CONTINUOUS_INTEGRATION=0');
     }

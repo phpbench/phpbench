@@ -25,7 +25,7 @@ class TableGeneratorTest extends GeneratorTestCase
      */
     private $generator;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->generator = new TableGenerator();
     }

@@ -23,7 +23,7 @@ class ReflectionHierarchyTest extends TestCase
     private $reflection1;
     private $reflection2;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->hierarchy = new ReflectionHierarchy();
         $this->reflection1 = new ReflectionClass();

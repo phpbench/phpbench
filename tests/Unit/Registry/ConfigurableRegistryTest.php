@@ -20,7 +20,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ConfigurableRegistryTest extends RegistryTest
 {
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
 

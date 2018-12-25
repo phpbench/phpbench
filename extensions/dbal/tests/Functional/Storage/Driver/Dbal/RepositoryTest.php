@@ -25,7 +25,7 @@ class RepositoryTest extends DbalTestCase
     private $persister;
     private $repository;
 
-    public function setUp()
+    protected function setUp()
     {
         $manager = $this->getManager();
 

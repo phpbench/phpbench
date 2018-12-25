@@ -24,7 +24,7 @@ use PhpBench\Serializer\XmlEncoder;
 
 class XmlEncoderTest extends XmlTestCase
 {
-    public function setUp()
+    protected function setUp()
     {
         $this->suiteCollection = $this->prophesize(SuiteCollection::class);
         $this->suite = $this->prophesize(Suite::class);

@@ -36,7 +36,7 @@ use PhpBench\Registry\Config;
 
 class XmlTestCase extends TestCase
 {
-    public function setUp()
+    protected function setUp()
     {
         $this->suiteCollection = $this->prophesize(SuiteCollection::class);
         $this->suite = $this->prophesize(Suite::class);

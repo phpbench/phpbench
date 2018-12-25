@@ -22,7 +22,7 @@ class OpcacheTest extends TestCase
     private $launcher;
     private $payload;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->launcher = $this->prophesize(Launcher::class);
         $this->payload = $this->prophesize(Payload::class);

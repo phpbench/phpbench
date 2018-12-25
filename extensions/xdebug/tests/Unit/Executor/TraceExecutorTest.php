@@ -33,7 +33,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TraceExecutorTest extends TestCase
 {
-    public function setUp()
+    protected function setUp()
     {
         $this->launcher = $this->prophesize(Launcher::class);
         $this->filesystem = $this->prophesize(Filesystem::class);
