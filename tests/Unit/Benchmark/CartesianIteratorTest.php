@@ -35,37 +35,64 @@ class CartesianIteratorTest extends TestCase
 
     public function provideIterate()
     {
-        return [
+        yield 'cartesian' => [
             [
-                // parameter sets
                 [
-                    [
-                        ['optimized' => false],
-                        ['optimized' => true],
-                    ],
-                    [
-                        ['nb_foos' => 4],
-                        ['nb_foos' => 5],
-                    ],
+                    'opt false' => ['optimized' => false],
+                    'opt true' => ['optimized' => true],
                 ],
-                // expected result
                 [
-                    [
-                        'optimized' => false,
-                        'nb_foos' => 4,
-                    ],
-                    [
-                        'optimized' => true,
-                        'nb_foos' => 4,
-                    ],
-                    [
-                        'optimized' => false,
-                        'nb_foos' => 5,
-                    ],
-                    [
-                        'optimized' => true,
-                        'nb_foos' => 5,
-                    ],
+                    '4 foos' => ['nb_foos' => 4],
+                    '5 foos' => ['nb_foos' => 5],
+                ],
+            ],
+            [
+                'opt false,4 foos' => [
+                    'optimized' => false,
+                    'nb_foos' => 4,
+                ],
+                'opt true,4 foos' => [
+                    'optimized' => true,
+                    'nb_foos' => 4,
+                ],
+                'opt false,5 foos' => [
+                    'optimized' => false,
+                    'nb_foos' => 5,
+                ],
+                'opt true,5 foos' => [
+                    'optimized' => true,
+                    'nb_foos' => 5,
+                ],
+            ],
+        ];
+
+        yield 'named sets' => [
+            [
+                'opts' => [
+                    ['optimized' => false],
+                    ['optimized' => true],
+                ],
+                [
+                    ['nb_foos' => 4],
+                    ['nb_foos' => 5],
+                ],
+            ],
+            [
+                [
+                    'optimized' => false,
+                    'nb_foos' => 4,
+                ],
+                [
+                    'optimized' => true,
+                    'nb_foos' => 4,
+                ],
+                [
+                    'optimized' => false,
+                    'nb_foos' => 5,
+                ],
+                [
+                    'optimized' => true,
+                    'nb_foos' => 5,
                 ],
             ],
         ];
