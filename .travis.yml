@@ -1,50 +1,107 @@
 language: php
-sudo: false
-
-php:
-    - 7.1
-    - 7.2
 
 cache:
   directories:
     - "$HOME/.composer/cache"
 
-before_install:
-    - composer validate
+stages:
+  - style
+  - stan
+  - test
+  - deploy
 
-before_script:
-    - if [ -n "${SYMFONY_VERSION}" ]; then composer require symfony/symfony:${SYMFONY_VERSION} --no-update; fi;
-    - composer update ${COMPOSER_FLAGS} --prefer-dist
-    - export TZ=Europe/Paris
-
-script:
-    - ./vendor/bin/phpstan analyze --level=1 -c phpstan.neon lib/
-    - ./vendor/bin/phpunit
-    - ./vendor/bin/php-cs-fixer fix --dry-run
-    - php bin/phpbench run --report=env --progress=dots --store
-    - php bin/phpbench run --iterations=1 --revs=1 --config=extensions/dbal/benchmarks/phpbench.json --progress=dots
-
-matrix:
-  fast_finish: true
+jobs:
   include:
-    - php: 7.1
-      env:
-      - COMPOSER_FLAGS="--prefer-lowest"
-    - php: 7.1
-      env: 
-      - SYMFONY_VERSION=^3.2
-      - EXECUTE_DEPLOYMENT=true
+    - stage: Style
 
-before_deploy:
-    - ./.travis/before-deploy.sh
+      php: 7.1
 
-deploy:
-    edge:
-        branch: v1.8.47
-    provider: pages
-    skip-cleanup: true
-    github-token: 
-        secure: "cVKcMHHv6MV1HiP78hYPyBx6VIy+DzIv6HS0QM/g3gHnE7EWopu9mQjku2DQtQWAjqVrIPL3ClvZxJH5MjDd4/kB6kWQDGX5O2+CaqzhaJgSpT0htFLbiClqK1uvl2QnHoqwfnhIux230AWDtQfod1g1p60nryo65pLG0HGHqXU="
-    on:
-        branch: master
-        condition: $EXECUTE_DEPLOYMENT == true
+      before_install:
+        - source .travis/xdebug.sh
+        - xdebug-disable
+        - composer validate
+
+      install:
+        - composer install
+
+      script:
+        - ./vendor/bin/php-cs-fixer fix --diff --dry-run --verbose
+
+    - stage: Stan
+
+      php: 7.1
+
+      before_install:
+        - source .travis/xdebug.sh
+        - xdebug-disable
+        - composer validate
+
+      install:
+        - composer install
+
+      script:
+        - ./vendor/bin/phpstan analyze --level=1 -c phpstan.neon lib/
+
+    - &TEST
+
+      stage: Test
+
+      php: 7.1
+
+      before_install:
+        - source .travis/xdebug.sh
+        - xdebug-disable
+        - composer validate
+
+      install:
+        - if [ -n "${SYMFONY_VERSION}" ]; then composer require symfony/symfony:${SYMFONY_VERSION} --no-update; fi;
+        - composer update ${COMPOSER_FLAGS} --prefer-dist
+
+      before_script:
+        - export TZ=Europe/Paris
+
+      script:
+        - ./vendor/bin/phpunit
+        - php bin/phpbench run --report=env --progress=dots --store
+        - php bin/phpbench run --iterations=1 --revs=1 --config=extensions/dbal/benchmarks/phpbench.json --progress=dots
+
+    - <<: *TEST
+
+      php: 7.1
+
+      env: COMPOSER_FLAGS="--prefer-lowest"
+
+    - <<: *TEST
+
+      php: 7.1
+
+      env: SYMFONY_VERSION=^3.2
+
+    - <<: *TEST
+
+      php: 7.2
+
+    - stage: Deploy
+
+      if: (NOT type IN (pull_request)) AND (branch = master)
+
+      php: 7.1
+
+      before_install:
+        - source .travis/xdebug.sh
+        - xdebug-disable
+
+      script: skip
+
+      before_deploy:
+        - ./.travis/before-deploy.sh
+
+      deploy:
+        edge:
+          branch: v1.8.47
+        provider: pages
+        skip-cleanup: true
+        github-token:
+          secure: "cVKcMHHv6MV1HiP78hYPyBx6VIy+DzIv6HS0QM/g3gHnE7EWopu9mQjku2DQtQWAjqVrIPL3ClvZxJH5MjDd4/kB6kWQDGX5O2+CaqzhaJgSpT0htFLbiClqK1uvl2QnHoqwfnhIux230AWDtQfod1g1p60nryo65pLG0HGHqXU="
+        on:
+          branch: master
