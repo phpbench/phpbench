@@ -97,8 +97,6 @@ jobs:
         - ./.travis/before-deploy.sh
 
       deploy:
-        edge:
-          branch: v1.8.47
         provider: pages
         skip-cleanup: true
         github-token:
