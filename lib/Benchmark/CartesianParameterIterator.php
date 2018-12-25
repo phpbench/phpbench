@@ -22,6 +22,11 @@ class CartesianParameterIterator implements \Iterator
     private $current;
     private $break = false;
 
+    /**
+     * @var string
+     */
+    private $key;
+
     public function __construct(array $parameterSets)
     {
         foreach ($parameterSets as $parameterSet) {
@@ -61,7 +66,7 @@ class CartesianParameterIterator implements \Iterator
 
     public function key()
     {
-        return $this->index;
+        return $this->key;
     }
 
     public function rewind()
@@ -83,9 +88,12 @@ class CartesianParameterIterator implements \Iterator
     private function update()
     {
         $this->current = [];
+        $key = [];
         foreach ($this->sets as $set) {
             $this->current = array_merge($this->current, $set->current());
+            $key[] = $set->key();
         }
+        $this->key = implode(',', $key);
     }
 
     private function getParameterSet()

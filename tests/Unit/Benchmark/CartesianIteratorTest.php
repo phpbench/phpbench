@@ -26,8 +26,8 @@ class CartesianIteratorTest extends TestCase
     {
         $iterator = new CartesianParameterIterator($parameterSets);
         $result = [];
-        foreach ($iterator as $parameters) {
-            $result[] = $parameters->getArrayCopy();
+        foreach ($iterator as $name => $parameters) {
+            $result[$name] = $parameters->getArrayCopy();
         }
 
         $this->assertEquals($expected, $result);
@@ -35,7 +35,7 @@ class CartesianIteratorTest extends TestCase
 
     public function provideIterate()
     {
-        yield 'cartesian' => [
+        yield 'named sets' => [
             [
                 [
                     'opt false' => ['optimized' => false],
@@ -66,7 +66,7 @@ class CartesianIteratorTest extends TestCase
             ],
         ];
 
-        yield 'named sets' => [
+        yield 'cartesian' => [
             [
                 'opts' => [
                     ['optimized' => false],
