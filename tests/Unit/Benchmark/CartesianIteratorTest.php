@@ -35,7 +35,128 @@ class CartesianIteratorTest extends TestCase
 
     public function provideIterate()
     {
-        yield 'named sets' => [
+        yield '0 x 0' => [
+            [
+            ],
+            [
+            ],
+        ];
+
+        yield '1 x 0' => [
+            [
+                [
+                ],
+            ],
+            [
+                '' => [
+                ],
+            ],
+        ];
+
+        yield '1 x 1' => [
+            [
+                [
+                    ['one' => 1],
+                ],
+            ],
+            [
+                '0' => [
+                    'one' => 1,
+                ],
+            ],
+        ];
+
+        yield '2 x 2' => [
+            [
+                [
+                    ['optimized' => false],
+                    ['optimized' => true],
+                ],
+                [
+                    ['nb_foos' => 4],
+                    ['nb_foos' => 5],
+                ],
+            ],
+            [
+                '0,0' => [
+                    'optimized' => false,
+                    'nb_foos' => 4,
+                ],
+                '1,0' => [
+                    'optimized' => true,
+                    'nb_foos' => 4,
+                ],
+                '0,1' => [
+                    'optimized' => false,
+                    'nb_foos' => 5,
+                ],
+                '1,1' => [
+                    'optimized' => true,
+                    'nb_foos' => 5,
+                ],
+            ],
+        ];
+
+        yield '3 x 2' => [
+            [
+                [
+                    ['one' => 1],
+                    ['two' => 2],
+                ],
+                [
+                    ['three' => 3],
+                    ['four' => 4],
+                ],
+                [
+                    ['five' => 5],
+                    ['six' => 6],
+                ],
+            ],
+            [
+                '0,0,0' => [
+                    'one' => 1,
+                    'three' => 3,
+                    'five' => 5,
+                ],
+                '1,0,0' => [
+                    'three' => 3,
+                    'five' => 5,
+                    'two' => 2,
+                ],
+                '0,1,0' => [
+                    'one' => 1,
+                    'four' => 4,
+                    'five' => 5,
+                ],
+                '0,0,1'  => [
+                    'one' => 1,
+                    'three' => 3,
+                    'six' => 6,
+                ],
+                '1,1,0'  => [
+                    'two' => 2,
+                    'four' => 4,
+                    'five' => 5,
+                ],
+                '1,0,1'  => [
+                    'two' => 2,
+                    'three' => 3,
+                    'six' => 6,
+                ],
+                '0,1,1'  => [
+                    'one' => 1,
+                    'four' => 4,
+                    'six' => 6,
+                ],
+                '1,1,1'  => [
+                    'two' => 2,
+                    'four' => 4,
+                    'six' => 6,
+                ],
+            ],
+        ];
+
+        yield 'named' => [
             [
                 [
                     'opt false' => ['optimized' => false],
@@ -66,33 +187,48 @@ class CartesianIteratorTest extends TestCase
             ],
         ];
 
-        yield 'cartesian' => [
+        yield 'uneven first set' => [
             [
-                'opts' => [
-                    ['optimized' => false],
-                    ['optimized' => true],
+                [
+                    [
+                        'one' => 1,
+                        'two' => 2,
+                    ],
                 ],
                 [
-                    ['nb_foos' => 4],
-                    ['nb_foos' => 5],
+                    [
+                        'three' => 3,
+                    ],
                 ],
             ],
             [
+                '0,0' => [
+                    'one' => 1,
+                    'two' => 2,
+                    'three' => 3,
+                ],
+            ],
+        ];
+
+        yield 'uneven second set' => [
+            [
                 [
-                    'optimized' => false,
-                    'nb_foos' => 4,
+                    [
+                        'one' => 1,
+                    ],
                 ],
                 [
-                    'optimized' => true,
-                    'nb_foos' => 4,
+                    [
+                        'two' => 2,
+                        'three' => 3,
+                    ],
                 ],
-                [
-                    'optimized' => false,
-                    'nb_foos' => 5,
-                ],
-                [
-                    'optimized' => true,
-                    'nb_foos' => 5,
+            ],
+            [
+                '0,0' => [
+                    'one' => 1,
+                    'two' => 2,
+                    'three' => 3,
                 ],
             ],
         ];

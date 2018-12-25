@@ -16,10 +16,10 @@ use PhpBench\Model\ParameterSet;
 
 class CartesianParameterIterator implements \Iterator
 {
-    private $sets;
+    private $sets = [];
     private $index = 0;
     private $max;
-    private $current;
+    private $current = [];
     private $break = false;
 
     /**
@@ -31,6 +31,10 @@ class CartesianParameterIterator implements \Iterator
     {
         foreach ($parameterSets as $parameterSet) {
             $this->sets[] = new \ArrayIterator($parameterSet);
+        }
+
+        if (empty($parameterSets)) {
+            $this->break = true;
         }
 
         $this->max = count($parameterSets) - 1;
@@ -90,7 +94,10 @@ class CartesianParameterIterator implements \Iterator
         $this->current = [];
         $key = [];
         foreach ($this->sets as $set) {
-            $this->current = array_merge($this->current, $set->current());
+            $this->current = array_merge(
+                $this->current,
+                $set->current() ?: []
+            );
             $key[] = $set->key();
         }
         $this->key = implode(',', $key);
