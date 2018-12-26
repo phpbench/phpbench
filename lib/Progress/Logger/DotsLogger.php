@@ -41,7 +41,7 @@ class DotsLogger extends PhpBenchLogger
             if (false === $this->firstTime) {
                 $this->output->writeln('');
             }
-            $this->firstTime =false;
+            $this->firstTime = false;
 
             $this->output->writeln($benchmark->getClass());
         }
