@@ -385,6 +385,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
                             'benchmark_full' => $benchmark->getClass(),
                             'subject' => $subject->getName(),
                             'groups' => implode(',', $subject->getGroups()),
+                            'param_set' => $variant->getParameterSet()->getName(),
                             'params' => json_encode($variant->getParameterSet()->getArrayCopy(), $paramJsonFlags),
                             'revs' => $variant->getRevolutions(),
                             'its' => count($variant->getIterations()),
