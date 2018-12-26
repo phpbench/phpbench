@@ -19,6 +19,7 @@ use PhpBench\Math\Statistics;
 use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\SuiteCollection;
+use PhpBench\Model\Variant;
 use PhpBench\Registry\Config;
 use PhpBench\Report\Generator\Table\Row;
 use PhpBench\Report\Generator\Table\Sort;
@@ -375,6 +376,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
 
             foreach ($suite->getBenchmarks() as $benchmark) {
                 foreach ($benchmark->getSubjects() as $subject) {
+                    /** @var Variant $variant */
                     foreach ($subject->getVariants() as $variant) {
                         $row = new Row([
                             'suite' => $suite->getUuid(),
@@ -412,6 +414,9 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
                         }
                         $row->setFormatParams($formatParams);
 
+                        if ($variant->hasErrorStack()) {
+                            continue;
+                        }
                         $stats = $variant->getStats()->getStats();
                         $stats['best'] = $stats['min'];
                         $stats['worst'] = $stats['max'];
