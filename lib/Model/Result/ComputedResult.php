@@ -44,8 +44,8 @@ class ComputedResult implements ResultInterface
         Assertion::numeric($zValue, 'Z-value was not numeric, got "%s"');
         Assertion::numeric($deviation, 'Deviation was not numeric, got "%s"');
 
-        $this->zValue = (float) $zValue;
-        $this->deviation = (float) $deviation;
+        $this->zValue = $zValue;
+        $this->deviation = $deviation;
     }
 
     /**

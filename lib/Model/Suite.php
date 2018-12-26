@@ -192,9 +192,9 @@ class Suite implements \IteratorAggregate
     }
 
     /**
-     * @param Information[]
+     * @param Information[] $envInformations
      */
-    public function setEnvInformations(array $envInformations)
+    public function setEnvInformations(iterable $envInformations)
     {
         foreach ($envInformations as $envInformation) {
             $this->addEnvInformation($envInformation);

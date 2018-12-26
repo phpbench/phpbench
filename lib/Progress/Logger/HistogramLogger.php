@@ -39,12 +39,7 @@ class HistogramLogger extends AnsiLogger
      */
     public function benchmarkStart(Benchmark $benchmark)
     {
-        static $first = true;
-
-        if (false === $first) {
-            $this->output->write(PHP_EOL);
-        }
-        $first = false;
+        $this->output->write(PHP_EOL);
         $this->output->write(sprintf('<comment>%s</comment>', $benchmark->getClass()));
         $subjectNames = [];
         foreach ($benchmark->getSubjects() as $subject) {

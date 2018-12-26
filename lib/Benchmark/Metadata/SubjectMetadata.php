@@ -55,7 +55,7 @@ class SubjectMetadata
     private $retryThreshold;
 
     /**
-     * @var int
+     * @var int[]
      */
     private $iterations = [1];
 
@@ -65,7 +65,7 @@ class SubjectMetadata
     private $revs = [1];
 
     /**
-     * @var int
+     * @var int[]
      */
     private $warmup = [0];
 

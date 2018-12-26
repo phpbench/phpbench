@@ -93,6 +93,7 @@ class ReportManager
         foreach ($outputNames as $outputName) {
             $outputConfig = $this->rendererRegistry->getConfig($outputName);
             $renderer = $this->rendererRegistry->getService($outputConfig['renderer']);
+            assert($renderer instanceof RendererInterface);
 
             // set the output instance if the renderer requires it.
             if ($renderer instanceof OutputAwareInterface) {

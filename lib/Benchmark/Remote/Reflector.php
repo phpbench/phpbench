@@ -114,12 +114,8 @@ class Reflector
      * Return the class name from a file.
      *
      * Taken from http://stackoverflow.com/questions/7153000/get-class-name-from-file
-     *
-     * @param string $file
-     *
-     * @return string
      */
-    private function getClassNameFromFile($file)
+    private function getClassNameFromFile(string $file): ?string
     {
         $fp = fopen($file, 'r');
 
@@ -164,7 +160,7 @@ class Reflector
         }
 
         if (!trim($class)) {
-            return;
+            return null;
         }
 
         return $namespace . '\\' . $class;

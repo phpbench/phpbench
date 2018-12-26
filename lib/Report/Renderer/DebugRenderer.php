@@ -22,7 +22,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class DebugRenderer implements RendererInterface, OutputAwareInterface
 {
     /**
-     * @var OutputAwareInterface
+     * @var OutputInterface
      */
     private $output;
 

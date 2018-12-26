@@ -4,15 +4,21 @@ CHANGELOG
 unreleased
 ----------
 
+Features:
+
 - Support for named parameters #574
   - Replaces `params` column in reports with `set` (showing param set name) by
     default
   - Progress loggers show param name.
   - Serialized XML documents have a new element `parameter-set` to contain
     parameter elements.
+
+Improvements:
+
 - Various CI and code quality fixes, thanks @localheinz
 - `groups` column no longer shown by default in reports.
 - HTML report changed from XHTML to HTML5.
+- Changed PHPStan level from 1 to 4.
 
 0.15.0
 ------

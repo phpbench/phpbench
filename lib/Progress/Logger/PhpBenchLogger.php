@@ -13,6 +13,7 @@
 namespace PhpBench\Progress\Logger;
 
 use PhpBench\Assertion\AssertionFailures;
+use PhpBench\Assertion\AssertionWarnings;
 use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\Result\TimeResult;
@@ -217,7 +218,9 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
 
         $time = 0;
         if ($iteration->hasResult(TimeResult::class)) {
-            $time = $iteration->getResult(TimeResult::class)->getRevTime($iteration->getVariant()->getRevolutions());
+            $timeResult = $iteration->getResult(TimeResult::class);
+            assert($timeResult instanceof TimeResult);
+            $time = $timeResult->getRevTime($iteration->getVariant()->getRevolutions());
         }
 
         return number_format(

@@ -1,3 +1,4 @@
 parameters:
     ignoreErrors:
         - '#Undefined variable: \$argv#'
+        - '#Call to an undefined method DOMNode::#'

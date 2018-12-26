@@ -29,7 +29,7 @@ interface ProviderInterface
     /**
      * Return information about the detected VCS repository.
      *
-     * @return VcsInformation
+     * @return Information
      */
     public function getInformation();
 }

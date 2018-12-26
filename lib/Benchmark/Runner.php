@@ -117,7 +117,7 @@ class Runner
             new \DateTime(),
             $this->configPath
         );
-        $suite->setEnvInformations((array) $this->envSupplier->getInformations());
+        $suite->setEnvInformations($this->envSupplier->getInformations());
 
         // log the start of the suite run.
         $this->logger->startSuite($suite);

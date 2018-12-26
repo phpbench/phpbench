@@ -46,6 +46,7 @@ class BlinkenLogger extends AnsiLogger
      * @var int
      */
     private $colWidth = 6;
+    private $firstTime = true;
 
     /**
      * {@inheritdoc}
@@ -61,12 +62,10 @@ class BlinkenLogger extends AnsiLogger
      */
     public function benchmarkStart(Benchmark $benchmark)
     {
-        static $first = true;
-
-        if (false === $first) {
+        if (false === $this->firstTime) {
             $this->output->write(PHP_EOL);
         }
-        $first = false;
+        $this->firstTime = true;
         $this->output->write(sprintf('<comment>%s</comment>', $benchmark->getClass()));
 
         $subjectNames = [];

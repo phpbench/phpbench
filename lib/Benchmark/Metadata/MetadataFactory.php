@@ -45,21 +45,17 @@ class MetadataFactory
      * Return a Benchmark instance for the given file or NULL if the
      * given file contains no classes, or the class in the given file is
      * abstract.
-     *
-     * @param string $file
-     *
-     * @return BenchmarkMetadata
      */
-    public function getMetadataForFile($file)
+    public function getMetadataForFile(string $file): ?BenchmarkMetadata
     {
         $hierarchy = $this->reflector->reflect($file);
 
         if ($hierarchy->isEmpty()) {
-            return;
+            return null;
         }
 
         if ($hierarchy->getTop() && true === $hierarchy->getTop()->abstract) {
-            return;
+            return null;
         }
 
         $metadata = $this->driver->getMetadataForHierarchy($hierarchy);

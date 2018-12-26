@@ -26,7 +26,7 @@ use PhpBench\Model\ResolvedExecutor;
 class Subject
 {
     /**
-     * @var BenchmarkMetadata
+     * @var Benchmark
      */
     private $benchmark;
 
@@ -135,10 +135,8 @@ class Subject
 
     /**
      * Return the (containing) benchmark for this subject.
-     *
-     * @return BenchmarkMetadata
      */
-    public function getBenchmark()
+    public function getBenchmark(): Benchmark
     {
         return $this->benchmark;
     }
