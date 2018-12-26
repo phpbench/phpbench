@@ -44,6 +44,6 @@ class KdeBench
     {
         yield 'ten points' => [ 'points' => 10 ];
         yield 'twenty points' => [ 'points' => 20 ];
-        yield 'forty points,this is quite long yes' => [ 'points' => 40 ];
+        yield 'forty points' => [ 'points' => 40 ];
     }
 }
