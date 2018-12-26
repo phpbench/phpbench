@@ -64,7 +64,7 @@ class BlinkenLoggerTest extends TestCase
         $this->subject = $this->prophesize(Subject::class);
         $this->variant = new Variant(
             $this->subject->reveal(),
-            new ParameterSet(),
+            new ParameterSet('one'),
             10,
             0
         );
@@ -118,7 +118,7 @@ class BlinkenLoggerTest extends TestCase
             $display
         );
         $this->assertContains(
-            'parameters []',
+            'parameter set one',
             $display
         );
     }

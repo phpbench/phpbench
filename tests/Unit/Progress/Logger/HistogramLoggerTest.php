@@ -37,7 +37,7 @@ class HistogramLoggerTest extends TestCase
         $this->iteration = $this->prophesize(Iteration::class);
         $this->variant = new Variant(
             $this->subject->reveal(),
-            new ParameterSet(),
+            new ParameterSet('one'),
             1,
             0
         );
@@ -94,7 +94,7 @@ class HistogramLoggerTest extends TestCase
             $display
         );
         $this->assertContains(
-            'parameters []',
+            'parameter set one',
             $display
         );
     }
