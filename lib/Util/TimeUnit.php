@@ -197,10 +197,8 @@ class TimeUnit
     /**
      * Utility method, if the precision is overridden, return the overridden
      * value.
-     *
-     * @return string
      */
-    public function resolvePrecision($precision)
+    public function resolvePrecision($precision): int
     {
         if ($this->overriddenPrecision) {
             return $this->precision;

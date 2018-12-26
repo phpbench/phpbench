@@ -60,7 +60,7 @@ class RunnerConfig
     private $sleep;
 
     /**
-     * @var int
+     * @var int[]
      */
     private $warmup = [];
 

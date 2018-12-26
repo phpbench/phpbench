@@ -100,17 +100,15 @@ class Statistics
      * @param array $population
      * @param int $space
      * @param float $bandwidth
-     *
-     * @return float[]
      */
-    public static function kdeMode(array $population, $space = 512, $bandwidth = null)
+    public static function kdeMode(array $population, $space = 512, $bandwidth = null): float
     {
         if (count($population) === 1) {
             return current($population);
         }
 
         if (count($population) === 0) {
-            return 0;
+            return 0.0;
         }
 
         if (min($population) == max($population)) {

@@ -25,12 +25,12 @@ class Composite extends Constraint
     /**
      * @var Constraint
      */
-    private $constraint1 = [];
+    private $constraint1;
 
     /**
      * @var Constraint
      */
-    private $constraint2 = [];
+    private $constraint2;
 
     /**
      * @param string $operator
