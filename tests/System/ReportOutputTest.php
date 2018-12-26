@@ -25,10 +25,7 @@ class ReportOutputTest extends SystemTestCase
         $this->getResult();
     }
 
-    /**
-     * It should generate a HTML report.
-     */
-    public function testOutputHtml()
+    public function testGeneratesHtmlReport()
     {
         $process = $this->phpbench(
             'report --file=' . $this->fname . ' --report=default --output=\'{"extends": "html", "file": "report.html"}\''
@@ -39,10 +36,7 @@ class ReportOutputTest extends SystemTestCase
         $this->assertGeneratedContents($output, 'html.html');
     }
 
-    /**
-     * It should generate a markdown report.
-     */
-    public function testOutputMarkdown()
+    public function testGeneratesMarkdownReport()
     {
         $process = $this->phpbench(
             'report --file=' . $this->fname . ' --report=default --output=\'{"extends": "markdown", "file": "markdown.md"}\''
@@ -52,10 +46,6 @@ class ReportOutputTest extends SystemTestCase
         $output = $process->getOutput();
         $this->assertGeneratedContents($output, 'markdown.md');
     }
-
-    /**
-     * It should generate a delimited tab output.
-     */
 
     /**
      * @dataProvider provideOutputDelimited

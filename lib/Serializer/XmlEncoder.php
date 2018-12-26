@@ -14,6 +14,7 @@ namespace PhpBench\Serializer;
 
 use DOMElement;
 use PhpBench\Dom\Document;
+use PhpBench\Dom\Element;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\ResolvedExecutor;
 use PhpBench\Model\Subject;
@@ -101,7 +102,7 @@ class XmlEncoder
         }
     }
 
-    private function processVariant(Subject $subject, Variant $variant, DOMElement $subjectEl)
+    private function processVariant(Subject $subject, Variant $variant, Element $subjectEl)
     {
         $variantEl = $subjectEl->appendElement('variant');
 
@@ -115,8 +116,10 @@ class XmlEncoder
         $variantEl->setAttribute('warmup', $variant->getWarmup());
         $variantEl->setAttribute('retry-threshold', $subject->getRetryThreshold());
 
+        $parameterSetEl = $variantEl->appendElement('parameter-set');
+        $parameterSetEl->setAttribute('name', $variant->getParameterSet()->getName());
         foreach ($variant->getParameterSet() as $name => $value) {
-            $this->createParameter($variantEl, $name, $value);
+            $this->createParameter($parameterSetEl, $name, $value);
         }
 
         if ($variant->hasErrorStack()) {

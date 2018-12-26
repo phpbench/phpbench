@@ -51,11 +51,10 @@ class VerboseLogger extends PhpBenchLogger
     public function iterationStart(Iteration $iteration)
     {
         $this->output->write(sprintf(
-            "\x1B[0G    %-30s%sI%s P%s ",
-            $iteration->getVariant()->getSubject()->getName(),
+            "\x1B[0G    %'.-40.39s%sI%s ",
+            $this->formatVariantName($iteration->getVariant()),
             $this->rejectionCount ? 'R' . $this->rejectionCount . ' ' : '',
-            $iteration->getIndex(),
-            $iteration->getVariant()->getParameterSet()->getIndex()
+            $iteration->getIndex()
         ));
     }
 
@@ -82,7 +81,7 @@ class VerboseLogger extends PhpBenchLogger
             return;
         }
 
-        $this->output->write(sprintf("\t%s", $this->formatIterationsFullSummary($variant)));
+        $this->output->write(sprintf("%s", $this->formatIterationsFullSummary($variant)));
         $this->output->write(PHP_EOL);
     }
 

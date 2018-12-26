@@ -1,8 +1,21 @@
 CHANGELOG
 =========
 
-develop
--------
+unreleased
+----------
+
+- Support for named parameters #574
+  - Replaces `params` column in reports with `set` (showing param set name) by
+    default
+  - Progress loggers show param name.
+  - Serialized XML documents have a new element `parameter-set` to contain
+    parameter elements.
+- Various CI and code quality fixes, thanks @localheinz
+- `groups` column no longer shown by default in reports.
+- HTML report changed from XHTML to HTML5.
+
+0.15.0
+------
 
 - Minimumum supported PHP version is 7.1
 - Renamed Factory => MetadataFactory

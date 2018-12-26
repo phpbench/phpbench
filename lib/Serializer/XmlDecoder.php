@@ -158,8 +158,13 @@ class XmlDecoder
         }
 
         foreach ($subjectEl->query('./variant') as $index => $variantEl) {
-            $parameters = $this->getParameters($variantEl);
-            $parameterSet = new ParameterSet($index, $parameters);
+            $parameterSet = new ParameterSet(0, []);
+            foreach ($variantEl->query('./parameter-set') as $parameterSetEl) {
+                $name = $parameterSetEl->getAttribute('name');
+                $parameters = $this->getParameters($parameterSetEl);
+                $parameterSet = new ParameterSet($name, $parameters);
+                break;
+            }
             $stats = $this->getComputedStats($variantEl);
             $variant = $subject->createVariant($parameterSet, $variantEl->getAttribute('revs'), $variantEl->getAttribute('warmup'), $stats);
             $this->processVariant($variant, $variantEl, $resultClasses);

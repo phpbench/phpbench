@@ -30,8 +30,8 @@ abstract class AnsiLogger extends PhpBenchLogger
         ));
         $this->output->write(PHP_EOL);
         $this->output->write(sprintf(
-            '<info>parameters</info> %s',
-            json_encode($variant->getParameterSet()->getArrayCopy(), true)
+            '<info>parameter set</info> %s',
+            $variant->getParameterSet()->getName()
         ));
         $this->output->write(PHP_EOL);
         $this->output->write("\x1B[". 4 . 'A'); // put the cursor back to the line with the measurements

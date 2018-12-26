@@ -12,30 +12,29 @@
 
 namespace PhpBench\Model;
 
-/**
- * Represents a parameter set for an Iteration.
- * This object allows the storage of the parameter set index in addition to the parameter data.
- */
 class ParameterSet extends \ArrayObject
 {
     /**
      * @var int
      */
-    private $index;
+    private $name;
 
-    public function __construct($index = 0, array $parameters = [])
+    public function __construct($name, array $parameters = [])
     {
-        $this->index = $index;
+        $this->name = $name;
         parent::__construct($parameters);
     }
 
+    public function getName(): string
+    {
+        return (string) $this->name;
+    }
+
     /**
-     * Return the index of this parameter set.
-     *
-     * @return int
+     * @deprecated use getName instead
      */
     public function getIndex()
     {
-        return $this->index;
+        return $this->name;
     }
 }

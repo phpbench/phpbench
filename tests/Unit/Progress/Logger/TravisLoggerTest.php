@@ -56,6 +56,7 @@ class TravisLoggerTest extends PhpBenchLoggerTest
         $this->subject->getOutputTimeUnit()->willReturn(null);
         $this->subject->getOutputMode()->willReturn(null);
         $this->subject->getName()->willReturn('benchFoo');
+        $this->subject->getVariants()->willReturn([$this->variant->reveal()]);
         $this->subject->getOutputTimePrecision()->willReturn(null);
         $this->parameterSet->getIndex()->willReturn(0);
 
@@ -92,6 +93,7 @@ class TravisLoggerTest extends PhpBenchLoggerTest
         $this->variant->count()->willReturn(10);
         $this->variant->getParameterSet()->willReturn($this->parameterSet->reveal());
         $this->variant->hasFailed()->willReturn(false);
+        $this->subject->getVariants()->willReturn([$this->variant->reveal()]);
         $this->subject->getOutputTimeUnit()->willReturn(TimeUnit::MICROSECONDS);
         $this->subject->getOutputTimePrecision()->willReturn(null);
         $this->subject->getOutputMode()->willReturn(TimeUnit::MODE_THROUGHPUT);

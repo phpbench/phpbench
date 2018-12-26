@@ -16,16 +16,25 @@ use PhpBench\Model\ParameterSet;
 
 class CartesianParameterIterator implements \Iterator
 {
-    private $sets;
+    private $sets = [];
     private $index = 0;
     private $max;
-    private $current;
+    private $current = [];
     private $break = false;
+
+    /**
+     * @var string
+     */
+    private $key;
 
     public function __construct(array $parameterSets)
     {
         foreach ($parameterSets as $parameterSet) {
             $this->sets[] = new \ArrayIterator($parameterSet);
+        }
+
+        if (empty($parameterSets)) {
+            $this->break = true;
         }
 
         $this->max = count($parameterSets) - 1;
@@ -61,7 +70,7 @@ class CartesianParameterIterator implements \Iterator
 
     public function key()
     {
-        return $this->index;
+        return $this->key;
     }
 
     public function rewind()
@@ -83,13 +92,19 @@ class CartesianParameterIterator implements \Iterator
     private function update()
     {
         $this->current = [];
+        $key = [];
         foreach ($this->sets as $set) {
-            $this->current = array_merge($this->current, $set->current());
+            $this->current = array_merge(
+                $this->current,
+                $set->current() ?: []
+            );
+            $key[] = $set->key();
         }
+        $this->key = implode(',', $key);
     }
 
     private function getParameterSet()
     {
-        return new ParameterSet($this->index, $this->current);
+        return new ParameterSet($this->key, $this->current);
     }
 }

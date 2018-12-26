@@ -97,7 +97,7 @@ class MicrotimeExecutorTest extends TestCase
         $this->metadata->getBeforeMethods()->willReturn([]);
         $this->metadata->getAfterMethods()->willReturn([]);
         $this->metadata->getName()->willReturn('doSomething');
-        $this->variant->getParameterSet()->willReturn(new ParameterSet());
+        $this->variant->getParameterSet()->willReturn(new ParameterSet('one'));
         $this->variant->getRevolutions()->willReturn(10);
         $this->variant->getWarmup()->willReturn(1);
 
@@ -131,7 +131,7 @@ class MicrotimeExecutorTest extends TestCase
         $this->metadata->getName()->willReturn('benchOutput');
         $this->metadata->getRevs()->willReturn(10);
         $this->metadata->getWarmup()->willReturn(0);
-        $this->variant->getParameterSet()->willReturn(new ParameterSet());
+        $this->variant->getParameterSet()->willReturn(new ParameterSet('one'));
 
         $results = $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', []));
 
@@ -146,7 +146,7 @@ class MicrotimeExecutorTest extends TestCase
         $this->metadata->getBeforeMethods()->willReturn(['beforeMethod']);
         $this->metadata->getAfterMethods()->willReturn([]);
         $this->metadata->getName()->willReturn('doSomething');
-        $this->variant->getParameterSet()->willReturn(new ParameterSet());
+        $this->variant->getParameterSet()->willReturn(new ParameterSet('one'));
         $this->variant->getRevolutions()->willReturn(1);
         $this->variant->getWarmup()->willReturn(0);
 
@@ -166,7 +166,7 @@ class MicrotimeExecutorTest extends TestCase
         $this->metadata->getBeforeMethods()->willReturn([]);
         $this->metadata->getAfterMethods()->willReturn(['afterMethod']);
         $this->metadata->getName()->willReturn('doSomething');
-        $this->variant->getParameterSet()->willReturn(new ParameterSet());
+        $this->variant->getParameterSet()->willReturn(new ParameterSet('one'));
         $this->variant->getRevolutions()->willReturn(1);
         $this->variant->getWarmup()->willReturn(0);
 

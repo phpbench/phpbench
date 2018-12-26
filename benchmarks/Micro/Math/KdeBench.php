@@ -42,8 +42,8 @@ class KdeBench
 
     public function providePoints()
     {
-        yield [ 'points' => 10 ];
-        yield [ 'points' => 20 ];
-        yield [ 'points' => 40 ];
+        yield 'ten points' => [ 'points' => 10 ];
+        yield 'twenty points' => [ 'points' => 20 ];
+        yield 'forty points' => [ 'points' => 40 ];
     }
 }
