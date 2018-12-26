@@ -13,6 +13,7 @@
 namespace PhpBench\Progress\Logger;
 
 use PhpBench\Assertion\AssertionFailures;
+use PhpBench\Assertion\AssertionWarnings;
 use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\Result\TimeResult;

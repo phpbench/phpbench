@@ -15,6 +15,7 @@ namespace PhpBench\Serializer;
 use PhpBench\Assertion\AssertionFailure;
 use PhpBench\Assertion\AssertionWarning;
 use PhpBench\Dom\Document;
+use PhpBench\Dom\Element;
 use PhpBench\Environment\Information;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Error;
@@ -76,7 +77,7 @@ class XmlDecoder
         return $this->decode($suiteDocument);
     }
 
-    private function processSuite(\DOMElement $suiteEl)
+    private function processSuite(Element $suiteEl)
     {
         $suite = new Suite(
             $suiteEl->getAttribute('tag'),
@@ -125,7 +126,7 @@ class XmlDecoder
         return $suite;
     }
 
-    private function processBenchmark(Benchmark $benchmark, \DOMElement $benchmarkEl, array $resultClasses)
+    private function processBenchmark(Benchmark $benchmark, Element $benchmarkEl, array $resultClasses)
     {
         foreach ($benchmarkEl->query('./subject') as $subjectEl) {
             $subject = $benchmark->createSubject($subjectEl->getAttribute('name'));
@@ -133,7 +134,7 @@ class XmlDecoder
         }
     }
 
-    private function processSubject(Subject $subject, \DOMElement $subjectEl, array $resultClasses)
+    private function processSubject(Subject $subject, Element $subjectEl, array $resultClasses)
     {
         $groups = [];
         foreach ($subjectEl->query('./group') as $groupEl) {
@@ -171,7 +172,7 @@ class XmlDecoder
         }
     }
 
-    private function getComputedStats(\DOMElement $element)
+    private function getComputedStats(Element $element)
     {
         $stats = [];
         foreach ($element->query('./stats') as $statsEl) {
@@ -183,7 +184,7 @@ class XmlDecoder
         return $stats;
     }
 
-    private function getParameters(\DOMElement $element)
+    private function getParameters(Element $element)
     {
         $parameters = [];
         foreach ($element->query('./parameter') as $parameterEl) {
@@ -205,7 +206,7 @@ class XmlDecoder
         return $parameters;
     }
 
-    private function processVariant(Variant $variant, \DOMElement $variantEl, array $resultClasses)
+    private function processVariant(Variant $variant, Element $variantEl, array $resultClasses)
     {
         $errorEls = $variantEl->query('.//error');
         if ($errorEls->length) {

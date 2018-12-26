@@ -27,7 +27,7 @@ class Benchmark implements \IteratorAggregate
     private $class;
 
     /**
-     * @var SubjectMetadata[]
+     * @var Subject[]
      */
     private $subjects = [];
 
@@ -81,7 +81,7 @@ class Benchmark implements \IteratorAggregate
     /**
      * Get the subject metadata instances for this benchmark metadata.
      *
-     * @return SubjectMetadata[]
+     * @return Subject[]
      */
     public function getSubjects()
     {

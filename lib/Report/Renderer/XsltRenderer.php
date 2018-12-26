@@ -27,7 +27,7 @@ class XsltRenderer implements RendererInterface, OutputAwareInterface
     const DEFAULT_FILENAME = 'report.html';
 
     /**
-     * @var OutputAwareInterface
+     * @var OutputInterface
      */
     private $output;
 

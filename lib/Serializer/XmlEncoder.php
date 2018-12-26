@@ -76,7 +76,7 @@ class XmlEncoder
         return $dom;
     }
 
-    private function processBenchmark(Benchmark $benchmark, DOMElement $suiteEl)
+    private function processBenchmark(Benchmark $benchmark, Element $suiteEl)
     {
         $benchmarkEl = $suiteEl->appendElement('benchmark');
         $benchmarkEl->setAttribute('class', $benchmark->getClass());
@@ -85,7 +85,7 @@ class XmlEncoder
         }
     }
 
-    private function processSubject(Subject $subject, DOMElement $benchmarkEl)
+    private function processSubject(Subject $subject, Element $benchmarkEl)
     {
         $subjectEl = $benchmarkEl->appendElement('subject');
         $subjectEl->setAttribute('name', $subject->getName());
@@ -226,7 +226,7 @@ class XmlEncoder
         ));
     }
 
-    private function appendExecutor(DOMElement $subjectEl, ResolvedExecutor $executor = null)
+    private function appendExecutor(Element $subjectEl, ResolvedExecutor $executor = null)
     {
         if (null === $executor) {
             return;
