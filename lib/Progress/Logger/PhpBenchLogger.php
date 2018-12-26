@@ -229,4 +229,17 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
             $this->timeUnit->resolvePrecision($subject->getOutputTimePrecision())
         );
     }
+
+    protected function formatVariantName(Variant $variant)
+    {
+        if (count($variant->getSubject()->getVariants()) > 1) {
+            return sprintf(
+                '%s # %s',
+                $variant->getSubject()->getName(),
+                $variant->getParameterSet()->getName()
+            );
+        }
+
+        return $variant->getSubject()->getName();
+    }
 }

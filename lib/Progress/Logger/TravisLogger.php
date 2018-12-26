@@ -54,10 +54,9 @@ class TravisLogger extends PhpBenchLogger
         }
 
         $this->output->writeln(sprintf(
-            "    %-30s I%s P:%-20.19s%s",
-            $subject->getName(),
+            "    %-40.39s I%s %s",
+            $this->formatVariantName($variant),
             $variant->count(),
-            $variant->getParameterSet()->getIndex(),
             $this->formatIterationsFullSummary($variant)
         ));
     }
