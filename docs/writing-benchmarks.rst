@@ -229,8 +229,8 @@ Parameter sets can be provided to benchmark subjects. For example:
     {
         public function provideStrings()
         {
-            yield [ 'string' => 'Hello World!' ];
-            yield [ 'string' => 'Goodbye Cruel World!' ];
+            yield 'hello' => [ 'string' => 'Hello World!' ];
+            yield 'goodbye' => [ 'string' => 'Goodbye Cruel World!' ];
         }
 
         /**
@@ -256,8 +256,8 @@ For example the above could also be retuned as an array:
         public function provideStrings()
         {
             return [
-                [ 'string' => 'Hello World!' ],
-                [ 'string' => 'Goodbye Cruel World!' ]
+                'hello' => [ 'string' => 'Hello World!' ],
+                'goodbye' => [ 'string' => 'Goodbye Cruel World!' ]
             ];
         }
     }
@@ -280,14 +280,14 @@ parameters will be generated, for example:
     {
         public function provideStrings()
         {
-            yield [ 'string' => 'Hello World!' ];
-            yield [ 'string' => 'Goodbye Cruel World!' ];
+            yield 'hello' => [ 'string' => 'Hello World!' ];
+            yield 'goodbye' => [ 'string' => 'Goodbye Cruel World!' ];
         }
 
         public function provideNumbers()
         {
-            yield [ 'algorithm' => 'md5' ];
-            yield [ 'algorithm' => 'sha1' ];
+            yield 'md5' => [ 'algorithm' => 'md5' ];
+            yield 'sha1' => [ 'algorithm' => 'sha1' ];
         }
 
         /**
