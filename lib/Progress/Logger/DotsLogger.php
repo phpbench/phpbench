@@ -23,6 +23,7 @@ class DotsLogger extends PhpBenchLogger
     private $showBench;
     private $buffer;
     private $isCi = false;
+    private $firstTime = true;
 
     public function __construct(TimeUnit $timeUnit, $showBench = false)
     {
@@ -35,14 +36,12 @@ class DotsLogger extends PhpBenchLogger
 
     public function benchmarkStart(Benchmark $benchmark)
     {
-        static $first = true;
-
         if ($this->showBench) {
             // do not output a line break on the first run
-            if (false === $first) {
+            if (false === $this->firstTime) {
                 $this->output->writeln('');
             }
-            $first = false;
+            $this->firstTime =false;
 
             $this->output->writeln($benchmark->getClass());
         }

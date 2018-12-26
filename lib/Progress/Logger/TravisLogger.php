@@ -18,17 +18,16 @@ use PhpBench\Model\Variant;
 
 class TravisLogger extends PhpBenchLogger
 {
+    private $firstTime = true;
     /**
      * {@inheritdoc}
      */
     public function benchmarkStart(Benchmark $benchmark)
     {
-        static $first = true;
-
-        if (false === $first) {
+        if (false === $this->firstTime) {
             $this->output->write(PHP_EOL);
         }
-        $first = false;
+        $this->firstTime = false;
         $this->output->writeln(sprintf('<comment>%s</comment>', $benchmark->getClass()));
         $this->output->write(PHP_EOL);
     }
