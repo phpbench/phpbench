@@ -224,11 +224,13 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
         $this->stats = new Distribution($times, $this->computedStats);
 
         foreach ($this->iterations as $iteration) {
+            $timeResult = $iteration->getResult(TimeResult::class);
+            assert($timeResult instanceof TimeResult);
             // deviation is the percentage different of the value from the mean of the set.
             if ($this->stats->getMean() > 0) {
                 $deviation = 100 / $this->stats->getMean() * (
                     (
-                        $iteration->getResult(TimeResult::class)->getRevTime($iteration->getVariant()->getRevolutions())
+                        $timeResult->getRevTime($iteration->getVariant()->getRevolutions())
                     ) - $this->stats->getMean()
                 );
             } else {
@@ -237,7 +239,7 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
 
             // the Z-Value represents the number of standard deviations this
             // value is away from the mean.
-            $revTime = $iteration->getResult(TimeResult::class)->getRevTime($revs);
+            $revTime = $timeResult->getRevTime($revs);
             $zValue = $this->stats->getStdev() ? ($revTime - $this->stats->getMean()) / $this->stats->getStdev() : 0;
 
             if (null !== $retryThreshold) {
