@@ -88,7 +88,7 @@ class XmlTestCase extends TestCase
         $this->subject1->getExecutor()->willReturn(ResolvedExecutor::fromNameAndConfig('foo', new Config('asd', [])));
         $this->subject1->getRetryThreshold()->willReturn(10);
         $this->variant1->getWarmup()->willReturn(50);
-        $this->variant1->getParameterSet()->willReturn(new ParameterSet(1, $params['params']));
+        $this->variant1->getParameterSet()->willReturn(new ParameterSet('some params', $params['params']));
         $this->variant1->hasErrorStack()->willReturn($params['error']);
         $this->variant1->hasFailed()->willReturn($params['failure']);
         $this->variant1->hasWarning()->willReturn($params['warning']);
@@ -167,11 +167,13 @@ class XmlTestCase extends TestCase
         <group name="group1"/>
         <group name="group2"/>
         <variant sleep="5" output-time-unit="milliseconds" output-time-precision="7" output-mode="throughput" revs="100" warmup="50" retry-threshold="10">
-          <parameter name="foo" value="bar"/>
-          <parameter name="bar" type="collection">
-            <parameter name="baz" value="bon"/>
-          </parameter>
-          <parameter name="baz" xsi:nil="true"/>
+          <parameter-set name="some params">
+            <parameter name="foo" value="bar"/>
+            <parameter name="bar" type="collection">
+              <parameter name="baz" value="bon"/>
+            </parameter>
+            <parameter name="baz" xsi:nil="true"/>
+          </parameter-set>
           <iteration time-net="10" mem-peak="100" mem-real="110" mem-final="109" comp-z-value="0" comp-deviation="0"/>
           <stats max="0.1" mean="0.1" min="0.1" mode="0.1" rstdev="0" stdev="0" sum="0.1" variance="0"/>
         </variant>
@@ -198,6 +200,7 @@ EOT
       <subject name="subjectName">
         <executor name="foo"/>
         <variant sleep="5" output-time-unit="milliseconds" output-time-precision="7" output-mode="throughput" revs="100" warmup="50" retry-threshold="10">
+          <parameter-set name="some params"/>
           <errors>
             <error exception-class="ErrorClass" code="0" file="1" line="2">This is an error</error>
           </errors>
@@ -222,6 +225,7 @@ EOT
       <subject name="subjectName">
         <executor name="foo"/>
         <variant sleep="5" output-time-unit="milliseconds" output-time-precision="7" output-mode="throughput" revs="100" warmup="50" retry-threshold="10">
+          <parameter-set name="some params"/>
           <warnings>
             <warning>Warn!</warning>
           </warnings>
