@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet
     version="1.0"
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns="http://www.w3.org/1999/xhtml">
-    <xsl:output method="xml" indent="yes" encoding="UTF-8"/>
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+    <xsl:output method="html" indent="yes" encoding="UTF-8"/>
     <xsl:param name="date" select="string('')"/>
     <xsl:param name="title" select="string('PHPBench Suite Results')"/>
 
     <xsl:template match="/reports">
-        <html>
+        <xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html&gt;</xsl:text>
+        <html lang="en">
             <head>
                 <title>PHPBench</title>
                 <style>
