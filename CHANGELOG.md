@@ -1,8 +1,14 @@
 CHANGELOG
 =========
 
-develop
--------
+unreleased
+----------
+
+- Support for named parameters #574
+- Various CI and code quality fixes, thanks @localheinz
+
+0.15.0
+------
 
 - Minimumum supported PHP version is 7.1
 - Renamed Factory => MetadataFactory
