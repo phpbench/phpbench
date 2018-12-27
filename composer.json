@@ -8,9 +8,6 @@
             "email": "daniel@dantleech.com"
         }
     ],
-    "config": {
-        "sort-packages": true
-    },
     "require": {
         "php": "^7.1",
         "ext-dom": "*",
@@ -18,18 +15,18 @@
         "ext-pcre": "*",
         "ext-reflection": "*",
         "ext-spl": "*",
-        "beberlei/assert": "^2.4|^3.0",
+        "beberlei/assert": "^2.4 || ^3.0",
         "doctrine/annotations": "^1.2.7",
-        "lstrojny/functional-php": "1.0|^1.2.3",
+        "lstrojny/functional-php": "1.0 || ^1.2.3",
         "phpbench/container": "~1.2",
         "phpbench/dom": "~0.2.0",
         "seld/jsonlint": "^1.1",
-        "symfony/console": "^3.2|^4.0",
-        "symfony/debug": "^2.4|^3.0|^4.0",
-        "symfony/filesystem": "^2.4|^3.0|^4.0",
-        "symfony/finder": "^2.4|^3.0|^4.0",
-        "symfony/options-resolver": "^2.6|^3.0|^4.0",
-        "symfony/process": "^2.1|^3.0|^4.0",
+        "symfony/console": "^3.2 || ^4.0",
+        "symfony/debug": "^2.4 || ^3.0 || ^4.0",
+        "symfony/filesystem": "^2.4 || ^3.0 || ^4.0",
+        "symfony/finder": "^2.4 || ^3.0 || ^4.0",
+        "symfony/options-resolver": "^2.6 || ^3.0 || ^4.0",
+        "symfony/process": "^2.1 || ^3.0 || ^4.0",
         "webmozart/path-util": "^2.3"
     },
     "require-dev": {
@@ -37,7 +34,19 @@
         "friendsofphp/php-cs-fixer": "^2.13.1",
         "padraic/phar-updater": "^1.0",
         "phpstan/phpstan": "^0.8.5",
-        "phpunit/phpunit": "^6.5 | ^7.0"
+        "phpunit/phpunit": "^6.5 || ^7.0"
+    },
+    "suggest": {
+        "ext-curl": "For (web) reports extension",
+        "ext-xdebug": "For XDebug profiling extension."
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
     },
     "autoload": {
         "psr-4": {
@@ -46,10 +55,6 @@
             "PhpBench\\Extensions\\XDebug\\": "extensions/xdebug/lib/",
             "PhpBench\\Extensions\\Reports\\": "extensions/reports/lib/"
         }
-    },
-    "suggest": {
-        "ext-xdebug": "For XDebug profiling extension.",
-        "ext-curl": "For (web) reports extension"
     },
     "autoload-dev": {
         "psr-4": {
@@ -61,10 +66,7 @@
             "PhpBench\\Extensions\\Reports\\Tests\\": "extensions/reports/tests/"
         }
     },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.0-dev"
-        }
-    },
-    "bin": ["bin/phpbench"]
+    "bin": [
+        "bin/phpbench"
+    ]
 }
