@@ -3,6 +3,9 @@ includes:
 
 parameters:
     ignoreErrors:
+        - '#Argument of an invalid type PhpBench\\Benchmark\\RunnerConfig supplied for foreach, only iterables are supported.#'
         - '#Call to an undefined method DOMNode::#'
+        - "#Offset 'name' does not exist on string.#"
+        - '#Variable \$reject might not be defined.#'
     paths:
         - lib
