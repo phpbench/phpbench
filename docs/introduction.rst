@@ -20,7 +20,7 @@ Why PHPBench?
 -------------
 
 Performance can be monitored and measured in a number of ways: profiling (via.
-`XDebug`_ or `Blackfire`_), injecting timing classes (e.g. `Symfony Stopwatch`_, `Hoa
+`Xdebug`_ or `Blackfire`_), injecting timing classes (e.g. `Symfony Stopwatch`_, `Hoa
 Bench`_) or with server tools such as `NewRelic`_.
 
 PHPBench differs from these tools in that it allows you to benchmark explicit
@@ -37,7 +37,7 @@ Are There Other Benchmarking Frameworks?
 You can try `Athletic`_ .
 
 .. _Symfony Stopwatch: http://symfony.com/doc/current/components/stopwatch.html
-.. _XDebug: http://xdebug.org
+.. _Xdebug: http://xdebug.org
 .. _Blackfire: https://blackfire.io/
 .. _NewRelic: http://newrelic.com
 .. _Athletic: https://github.com/polyfractal/athletic

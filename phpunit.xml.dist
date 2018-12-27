@@ -12,7 +12,7 @@
         <testsuite name="PhpBench">
             <directory>./tests</directory>
         </testsuite>
-        <testsuite name="PhpBench XDebug Extension">
+        <testsuite name="PhpBench Xdebug Extension">
             <directory>./extensions/xdebug/tests</directory>
         </testsuite>
         <testsuite name="PhpBench DBAL Extension">

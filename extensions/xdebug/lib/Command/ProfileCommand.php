@@ -46,7 +46,7 @@ class ProfileCommand extends Command
     {
         $this->setName('xdebug:profile');
         $this->setDescription(<<<'EOT'
-Generate and optionally visualize profiles with XDebug
+Generate and optionally visualize profiles with Xdebug
 EOT
         );
         RunnerHandler::configure($this);
@@ -100,7 +100,7 @@ EOT
         foreach ($generatedFiles as $generatedFile) {
             if (!file_exists($generatedFile)) {
                 throw new \InvalidArgumentException(sprintf(
-                    'Profile "%s" was not generated. Maybe you do not have XDebug installed?',
+                    'Profile "%s" was not generated. Maybe you do not have Xdebug installed?',
                     $generatedFile
                 ));
             }

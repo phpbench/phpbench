@@ -76,7 +76,7 @@ class XDebugTraceExecutor extends BaseExecutor
 
         if (false === $this->filesystem->exists($path)) {
             throw new \RuntimeException(sprintf(
-                'Trace file at "%s" was not generated. Is XDebug enabled in the benchmarking environment',
+                'Trace file at "%s" was not generated. Is Xdebug enabled in the benchmarking environment',
                 $path
             ));
         }

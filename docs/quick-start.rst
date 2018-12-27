@@ -75,7 +75,7 @@ Create the file ``phpbench.json`` in the projects root directory:
 
 .. warning::
 
-    Some PHP extensions such as XDebug will affect the performance of your
+    Some PHP extensions such as Xdebug will affect the performance of your
     benchmark subjects and you may want to disable them, see :ref:`Disabling
     the PHP INI file <configuration_disable_php_ini>`.
 
@@ -102,7 +102,7 @@ consumes *time itself*:
 
 In order to benchmark your code you will need to execute that code within
 a method of a benchmarking class. Benchmarking classes MUST have the ``Bench``
-suffix and each benchmarking method must be prefixed with ``bench``. 
+suffix and each benchmarking method must be prefixed with ``bench``.
 
 Create the following class in the ``benchmarks`` directory:
 
@@ -149,7 +149,7 @@ And you should see some output similar to the following:
 
 You may have guessed that the code was only executed once (as indicated by the
 ``revs`` column). To achieve a better measurement we should increase the
-number of times that the code is consecutively executed.  
+number of times that the code is consecutively executed.
 
 .. code-block:: php
 
