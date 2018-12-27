@@ -39,11 +39,6 @@ abstract class BaseExecutor implements ExecutorInterface
      */
     private $launcher;
 
-    /**
-     * @param Launcher $launcher
-     * @param string $configPath
-     * @param string $bootstrap
-     */
     public function __construct(Launcher $launcher)
     {
         $this->launcher = $launcher;

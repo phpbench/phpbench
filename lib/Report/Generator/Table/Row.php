@@ -71,7 +71,7 @@ class Row extends \ArrayObject
     /**
      * Set the format parameters.
      *
-     * @param array
+     * @param array $formatParams
      */
     public function setFormatParams($formatParams)
     {

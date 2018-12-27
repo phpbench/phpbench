@@ -96,7 +96,7 @@ class Runner
     /**
      * Set the progress logger to use.
      *
-     * @param LoggerInterface
+     * @param LoggerInterface $logger
      */
     public function setProgressLogger(LoggerInterface $logger)
     {
@@ -181,6 +181,7 @@ class Runner
             $executorConfig = $this->executorRegistry->getConfig($config->getExecutor());
 
             if ($executorMetadata = $subjectMetadata->getExecutor()) {
+                /** @var ExecutorInterface $executor */
                 $executor = $this->executorRegistry->getService($executorMetadata->getName());
                 $executorConfig = $this->executorRegistry->getConfig($executorMetadata->getRegistryConfig());
             }

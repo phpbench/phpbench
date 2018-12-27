@@ -37,9 +37,9 @@ class MemoryResult implements ResultInterface
     }
 
     /**
-     * @param int $current
-     * @param int $real
      * @param int $peak
+     * @param int $real
+     * @param int $final
      */
     public function __construct($peak, $real, $final)
     {

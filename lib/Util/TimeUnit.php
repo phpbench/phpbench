@@ -97,7 +97,9 @@ class TimeUnit
     /**
      * Convert instance value to given unit.
      *
-     * @param string
+     * @param int $time
+     * @param string $destUnit
+     * @param string $mode
      *
      * @return int
      */
@@ -109,7 +111,7 @@ class TimeUnit
     /**
      * Override the destination unit.
      *
-     * @param string
+     * @param string $destUnit
      */
     public function overrideDestUnit($destUnit)
     {
@@ -210,7 +212,7 @@ class TimeUnit
     /**
      * Return the destination mode.
      *
-     * @param string $unit
+     * @param string $mode
      *
      * @return string
      */
@@ -240,9 +242,13 @@ class TimeUnit
     /**
      * Return a human readable representation of the unit including the suffix.
      *
-     * @param int
-     * @param string
-     * @param string
+     * @param int $time
+     * @param string $unit
+     * @param string $mode
+     * @param int $precision
+     * @param bool $suffix
+     *
+     * @return string
      */
     public function format($time, $unit = null, $mode = null, $precision = null, $suffix = true)
     {
@@ -286,9 +292,9 @@ class TimeUnit
      *
      * @static
      *
-     * @param int
-     * @param string
-     * @param string
+     * @param int $time
+     * @param string $unit
+     * @param string $destUnit
      *
      * @return int
      */
@@ -315,9 +321,9 @@ class TimeUnit
      *
      * @static
      *
-     * @param int
-     * @param string
-     * @param string
+     * @param int $time
+     * @param string $unit
+     * @param string $destUnit
      *
      * @return int
      */
@@ -339,7 +345,8 @@ class TimeUnit
      *
      * @static
      *
-     * @param string
+     * @param string $unit
+     * @param string $mode
      *
      * @return string
      */

@@ -16,7 +16,7 @@ use PhpBench\DependencyInjection\Container;
 use PhpBench\Registry\Registry;
 
 /**
- * @method \PhpBench\Assertion\Asserter getService()
+ * @method \PhpBench\Assertion\Asserter getService(string $name)
  */
 class AsserterRegistry extends Registry
 {

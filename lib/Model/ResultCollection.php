@@ -34,7 +34,7 @@ class ResultCollection
      *
      * Only one result per class is permitted.
      *
-     * @param ResultInterface
+     * @param ResultInterface $result
      */
     public function setResult(ResultInterface $result)
     {

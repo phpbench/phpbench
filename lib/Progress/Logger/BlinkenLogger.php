@@ -29,7 +29,7 @@ class BlinkenLogger extends AnsiLogger
     /**
      * Track rejected iterations.
      *
-     * @var int[]
+     * @var bool[]
      */
     private $rejects = [];
 

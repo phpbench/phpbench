@@ -48,9 +48,8 @@ class BenchmarkMetadata
     private $executorMetadata;
 
     /**
-     * @param mixed $path
-     * @param mixed $class
-     * @param Subject[] $subjects
+     * @param string $path
+     * @param string $class
      */
     public function __construct($path, $class)
     {
@@ -99,7 +98,7 @@ class BenchmarkMetadata
     /**
      * Remove all subjects whose name is not in the given list.
      *
-     * @param array $subjectNames
+     * @param string[] $filters
      */
     public function filterSubjectNames(array $filters)
     {
@@ -126,7 +125,7 @@ class BenchmarkMetadata
     /**
      * Remove all the subjects which are not contained in the given list of groups.
      *
-     * @param string[]
+     * @param string[] $groups
      */
     public function filterSubjectGroups(array $groups)
     {

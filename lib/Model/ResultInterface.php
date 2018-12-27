@@ -23,7 +23,7 @@ interface ResultInterface
     /**
      * Return a new instance based using the given array values.
      *
-     * @param array $array
+     * @param array $values
      *
      * @return ResultInterface
      */

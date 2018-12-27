@@ -20,6 +20,7 @@ use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\PhpBench;
 use PhpBench\Registry\Registry;
+use PhpBench\Storage\DriverInterface;
 use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -113,7 +114,11 @@ EOT
 
         if (true === $input->getOption('store')) {
             $output->write('Storing results ... ');
-            $message = $this->storage->getService()->store($collection);
+
+            /** @var DriverInterface $driver */
+            $driver = $this->storage->getService();
+
+            $message = $driver->store($collection);
 
             $output->writeln('OK');
             $output->writeln(sprintf('Run: %s', $suite->getUuid()));

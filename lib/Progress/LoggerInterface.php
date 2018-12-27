@@ -38,14 +38,14 @@ interface LoggerInterface extends OutputAwareInterface
     /**
      * Log the end of a benchmarking subject.
      *
-     * @param Subject $case
+     * @param Subject $subject
      */
     public function subjectEnd(Subject $subject);
 
     /**
      * Log the end of a benchmarking subject.
      *
-     * @param Subject $case
+     * @param Subject $subject
      */
     public function subjectStart(Subject $subject);
 

@@ -59,8 +59,8 @@ class XsltRenderer implements RendererInterface, OutputAwareInterface
     /**
      * Render the table.
      *
-     * @param mixed $tableDom
-     * @param mixed $config
+     * @param Document $reportDom
+     * @param Config $config
      */
     public function render(Document $reportDom, Config $config)
     {

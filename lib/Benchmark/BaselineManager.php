@@ -37,10 +37,10 @@ class BaselineManager
      * Throws an invalid argument exception if the name has
      * already been registered.
      *
-     * @param string
-     * @param mixed
+     * @param string $name
+     * @param mixed $callable
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function addBaselineCallable($name, $callable)
     {
