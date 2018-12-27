@@ -232,8 +232,8 @@ The above will allow you to have benchmark class such as:
 Disable the PHP INI file
 ------------------------
 
-PHP extensions, especially XDebug, can drastically affect the performance of
-your benchmark subjects. You can disable XDebug and other dynamically loaded
+PHP extensions, especially Xdebug, can drastically affect the performance of
+your benchmark subjects. You can disable Xdebug and other dynamically loaded
 extensions by setting ``php_disable_ini`` to ``true``.
 
 .. note:

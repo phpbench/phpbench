@@ -38,7 +38,7 @@
     },
     "suggest": {
         "ext-curl": "For (web) reports extension",
-        "ext-xdebug": "For XDebug profiling extension."
+        "ext-xdebug": "For Xdebug profiling extension."
     },
     "config": {
         "sort-packages": true

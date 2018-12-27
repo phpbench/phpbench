@@ -75,7 +75,7 @@ class TraceExecutor extends BaseExecutor
 
         $path = $dir . DIRECTORY_SEPARATOR . $name . '.xt';
 
-        // if the file exists, remove it. XDebug might not be installed
+        // if the file exists, remove it. Xdebug might not be installed
         // on the PHP binary and the file may not be generated. We should
         // fail in such a case and not use the file from a previous run.
         if ($this->filesystem->exists($path)) {
