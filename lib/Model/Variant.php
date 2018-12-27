@@ -177,6 +177,7 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
     public function getMetricValues($resultClass, $metricName)
     {
         $values = [];
+
         foreach ($this->iterations as $iteration) {
             if ($iteration->hasResult($resultClass)) {
                 $values[] = $iteration->getMetric($resultClass, $metricName);

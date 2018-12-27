@@ -368,6 +368,7 @@ class TableGeneratorTest extends GeneratorTestCase
         ]);
 
         $values = [];
+
         foreach ($report->query('//group[@name="body"]//cell[@name="mean"]') as $cellEl) {
             $values[] = $cellEl->nodeValue;
         }
@@ -392,6 +393,7 @@ class TableGeneratorTest extends GeneratorTestCase
         ]);
 
         $values = [];
+
         foreach ($report->query('//group[@name="body"]//cell[@name="mean"]') as $cellEl) {
             $values[] = $cellEl->nodeValue;
         }
@@ -423,6 +425,7 @@ class TableGeneratorTest extends GeneratorTestCase
         ]);
 
         $subjects = [];
+
         foreach ($report->query('//group[@name="body"]//row') as $cellEl) {
             $subjects[] = $cellEl->evaluate('string(cell[@name="subject"])');
             $values[] = $cellEl->evaluate('string(./cell[@name="mean"])');
@@ -459,6 +462,7 @@ class TableGeneratorTest extends GeneratorTestCase
         );
 
         $value = null;
+
         foreach ($dom->xpath()->query('//group[@name="body"]/row[1]/cell[@name="params"]') as $cellEl) {
             $value = $cellEl->nodeValue;
         }

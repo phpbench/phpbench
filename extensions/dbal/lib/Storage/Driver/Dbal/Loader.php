@@ -140,6 +140,7 @@ class Loader
     private function getSuite(\ArrayObject $context, array $row)
     {
         $key = $row['run.uuid'];
+
         if (isset($context[self::SUITES][$key])) {
             return $context[self::SUITES][$key];
         }
@@ -158,6 +159,7 @@ class Loader
         $envRows = $this->repository->getRunEnvInformationRows($row['run.id']);
 
         $providerData = [];
+
         foreach ($envRows as $row) {
             if (!isset($providerData[$row['provider']])) {
                 $providerData[$row['provider']] = [];
@@ -167,6 +169,7 @@ class Loader
         }
 
         $informations = [];
+
         foreach ($providerData as $name => $data) {
             $informations[] = new Information($name, $data);
         }

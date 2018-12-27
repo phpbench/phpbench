@@ -27,6 +27,7 @@ class Workspace
     {
         $filesystem = new Filesystem();
         $path = self::getWorkspacePath();
+
         if (file_exists($path)) {
             $filesystem->remove($path);
         }

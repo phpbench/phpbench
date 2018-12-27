@@ -242,6 +242,7 @@ EOT;
         }
 
         $paramNames = [];
+
         foreach ($values as $value) {
             $paramNames[] = $this->registerParamValue($value);
         }

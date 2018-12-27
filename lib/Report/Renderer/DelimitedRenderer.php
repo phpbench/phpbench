@@ -60,6 +60,7 @@ class DelimitedRenderer implements RendererInterface, OutputAwareInterface
 
         if (true === $config['header']) {
             $header = [];
+
             foreach ($tableEl->query('.//row') as $rowEl) {
                 foreach ($rowEl->query('.//cell') as $cellEl) {
                     $colName = $cellEl->getAttribute('name');
@@ -71,6 +72,7 @@ class DelimitedRenderer implements RendererInterface, OutputAwareInterface
 
         foreach ($tableEl->query('.//row') as $rowEl) {
             $row = [];
+
             foreach ($rowEl->query('.//cell') as $cellEl) {
                 $colName = $cellEl->getAttribute('name');
                 $row[$colName] = $cellEl->nodeValue;
@@ -84,6 +86,7 @@ class DelimitedRenderer implements RendererInterface, OutputAwareInterface
         } else {
             $pointer = fopen('php://temp', 'w+');
         }
+
         foreach ($rows as $row) {
             // use fputcsv to handle escaping
             fputcsv($pointer, $row, $config['delimiter']);

@@ -114,6 +114,7 @@ class BenchmarkMetadata
                     sprintf('%s::%s', $this->getClass(), $subjectName)
                 )) {
                     $unset = false;
+
                     break;
                 }
             }

@@ -52,6 +52,7 @@ class ReportManager
     {
         $reportDoms = [];
         $reportConfigs = [];
+
         foreach ($reportNames as $reportName) {
             $reportConfigs[$reportName] = $this->generatorRegistry->getConfig($reportName);
         }

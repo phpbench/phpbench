@@ -17,6 +17,7 @@ class IniStringBuilder
     public function build(array $config)
     {
         $string = [];
+
         foreach ($config as $key => $values) {
             $values = (array) $values;
 

@@ -42,8 +42,10 @@ class DebugExecutorTest extends TestCase
     public function testConstantTimes(array $times, array $spread, $nbCollections, $nbIterations, $expectedTimes)
     {
         $actualTimes = [];
+
         for ($i = 0; $i < $nbCollections; $i++) {
             $variant = $this->prophesize(Variant::class);
+
             for ($ii = 0; $ii < $nbIterations; $ii++) {
                 $iteration = $this->prophesize(Iteration::class);
                 $iteration->getVariant()->willReturn($variant->reveal());

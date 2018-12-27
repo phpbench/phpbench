@@ -81,12 +81,14 @@ class XsltRenderer implements RendererInterface, OutputAwareInterface
 
         foreach ($reportDom->query('.//row') as $rowEl) {
             $formatterParams = [];
+
             foreach ($rowEl->query('./formatter-param') as $paramEl) {
                 $formatterParams[$paramEl->getAttribute('name')] = $paramEl->nodeValue;
             }
 
             foreach ($rowEl->query('./cell') as $cellEl) {
                 $value = $cellEl->nodeValue;
+
                 if ('' !== $value && $cellEl->hasAttribute('class')) {
                     $classes = explode(' ', $cellEl->getAttribute('class'));
                     $value = $this->formatter->applyClasses($classes, $value, $formatterParams);

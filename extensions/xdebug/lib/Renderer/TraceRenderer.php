@@ -67,6 +67,7 @@ class TraceRenderer
     private function renderEntries(\DOMNode $trace, $table, array $options, $padding = 0)
     {
         $totalTime = $trace->evaluate('number(/trace/entry[1]/@end-time) - number(/trace/entry[1]/@start-time)') * 1E6;
+
         foreach ($trace->query('./entry') as $entryEl) {
             if (null === $options['filter'] || preg_match('{' . $options['filter'] .'}', $entryEl->getAttribute('function'))) {
                 $timeInc = ($entryEl->getAttribute('end-time') - $entryEl->getAttribute('start-time')) * 1E6;

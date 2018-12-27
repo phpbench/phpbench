@@ -69,6 +69,7 @@ EOT
         // terminal dimensions are null then set the height to the arbitrary
         // value of 100.
         $height = 100;
+
         if ($application = $this->getApplication()) {
             $height = (new Terminal())->getHeight();
             $height = $height ?: 100;
@@ -115,6 +116,7 @@ EOT
                     $totalRows, $totalRows + $nbRows
                 ));
                 $character = $this->characterReader->read();
+
                 if ($character == 'q') {
                     break;
                 }
@@ -135,6 +137,7 @@ EOT
             // set the limit to the different and subtract one (for the prompt)
             $limit = $height - $nbRows;
         }
+
         for ($i = 0; $i < $limit; $i++) {
             $line = $lines[$i];
             $output->writeln($line);

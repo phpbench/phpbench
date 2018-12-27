@@ -51,6 +51,7 @@ class AssertionProcessor
     public function assertionsFromRawCliConfig(array $rawAssertions)
     {
         $assertions = [];
+
         foreach ($rawAssertions as $rawAssertion) {
             $config = $this->jsonDecoder->decode($rawAssertion);
             $assertions[] = new AssertionMetadata($config);

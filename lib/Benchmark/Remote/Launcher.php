@@ -86,6 +86,7 @@ class Launcher
     public function payload($template, array $tokens = []): Payload
     {
         $tokens['bootstrap'] = '';
+
         if (null !== $this->bootstrap) {
             if (!file_exists($this->bootstrap)) {
                 throw new \InvalidArgumentException(sprintf(

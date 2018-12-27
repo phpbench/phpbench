@@ -43,6 +43,7 @@ class XmlDecoder
     public function decode(Document $document)
     {
         $suites = [];
+
         foreach ($document->query('//suite') as $suiteEl) {
             $suites[] = $this->processSuite($suiteEl);
         }
@@ -89,9 +90,11 @@ class XmlDecoder
         );
 
         $informations = [];
+
         foreach ($suiteEl->query('./env/*') as $envEl) {
             $name = $envEl->nodeName;
             $info = [];
+
             foreach ($envEl->attributes as $iName => $valueAttr) {
                 $info[$iName] = $valueAttr->nodeValue;
             }
@@ -100,6 +103,7 @@ class XmlDecoder
         }
 
         $resultClasses = [];
+
         foreach ($suiteEl->query('//result') as $resultEl) {
             $class = $resultEl->getAttribute('class');
 
@@ -137,6 +141,7 @@ class XmlDecoder
     private function processSubject(Subject $subject, Element $subjectEl, array $resultClasses)
     {
         $groups = [];
+
         foreach ($subjectEl->query('./group') as $groupEl) {
             $groups[] = $groupEl->getAttribute('name');
         }
@@ -144,6 +149,7 @@ class XmlDecoder
 
         foreach ($subjectEl->query('./executor') as $executorEl) {
             $subject->setExecutor(ResolvedExecutor::fromNameAndConfig($executorEl->getAttribute('name'), new Config('asd', $this->getParameters($executorEl))));
+
             break;
         }
 
@@ -155,15 +161,18 @@ class XmlDecoder
             $subject->setOutputTimePrecision($variantEl->getAttribute('output-time-precision'));
             $subject->setOutputMode($variantEl->getAttribute('output-mode'));
             $subject->setRetryThreshold($variantEl->getAttribute('retry-threshold'));
+
             break;
         }
 
         foreach ($subjectEl->query('./variant') as $index => $variantEl) {
             $parameterSet = new ParameterSet(0, []);
+
             foreach ($variantEl->query('./parameter-set') as $parameterSetEl) {
                 $name = $parameterSetEl->getAttribute('name');
                 $parameters = $this->getParameters($parameterSetEl);
                 $parameterSet = new ParameterSet($name, $parameters);
+
                 break;
             }
             $stats = $this->getComputedStats($variantEl);
@@ -175,6 +184,7 @@ class XmlDecoder
     private function getComputedStats(Element $element)
     {
         $stats = [];
+
         foreach ($element->query('./stats') as $statsEl) {
             foreach ($statsEl->attributes as $key => $attribute) {
                 $stats[$key] = $attribute->nodeValue;
@@ -187,16 +197,19 @@ class XmlDecoder
     private function getParameters(Element $element)
     {
         $parameters = [];
+
         foreach ($element->query('./parameter') as $parameterEl) {
             $name = $parameterEl->getAttribute('name');
 
             if ($parameterEl->getAttribute('type') === 'collection') {
                 $parameters[$name] = $this->getParameters($parameterEl);
+
                 continue;
             }
 
             if ($parameterEl->getAttribute('xsi:nil') === 'true') {
                 $parameters[$name] = null;
+
                 continue;
             }
 
@@ -209,8 +222,10 @@ class XmlDecoder
     private function processVariant(Variant $variant, Element $variantEl, array $resultClasses)
     {
         $errorEls = $variantEl->query('.//error');
+
         if ($errorEls->length) {
             $errors = [];
+
             foreach ($errorEls as $errorEl) {
                 $error = new Error(
                     $errorEl->nodeValue,
@@ -228,16 +243,20 @@ class XmlDecoder
         }
 
         $warningEls = $variantEl->query('.//warning');
+
         if ($warningEls->length) {
             $warnings = [];
+
             foreach ($warningEls as $warningEl) {
                 $variant->addWarning(new AssertionWarning($warningEl->nodeValue));
             }
         }
 
         $failureEls = $variantEl->query('.//failure');
+
         if ($failureEls->length) {
             $failures = [];
+
             foreach ($failureEls as $failureEl) {
                 $variant->addFailure(new AssertionFailure($failureEl->nodeValue));
             }
@@ -270,6 +289,7 @@ class XmlDecoder
             }
 
             $iteration = $variant->createIteration();
+
             foreach ($results as $resultKey => $resultData) {
                 $iteration->setResult(call_user_func_array([
                     $resultClasses[$resultKey],

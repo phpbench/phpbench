@@ -143,6 +143,7 @@ class Formatter
         foreach ($formatConfig as $key => $value) {
             if (is_array($value)) {
                 $formatConfig[$key] = $this->substituteTokens($value, $params);
+
                 continue;
             }
 
@@ -154,6 +155,7 @@ class Formatter
             }
 
             $tokens = [];
+
             foreach ($tokenNames as $tokenName) {
                 $realTokenName = trim($tokenName);
 
@@ -161,6 +163,7 @@ class Formatter
                 // on the generators then that is extra responsiblity for them.
                 if (!isset($params[$realTokenName])) {
                     unset($formatConfig[$key]);
+
                     continue 2;
                 }
 

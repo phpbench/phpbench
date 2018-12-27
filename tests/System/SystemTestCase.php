@@ -62,6 +62,7 @@ class SystemTestCase extends TestCase
     {
         foreach (['_storage', '_archive'] as $dirname) {
             $storageDir = __DIR__ . '/' . $dirname;
+
             if ($filesystem->exists($storageDir)) {
                 $filesystem->remove($storageDir);
             }

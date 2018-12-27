@@ -490,6 +490,7 @@ class CoreExtension implements ExtensionInterface
                 require(__DIR__ . '/config/benchmark/executors.php'),
                 $container->getParameter('executors')
             );
+
             foreach ($executorConfigs as $name => $config) {
                 $registry->setConfig($name, $config);
             }
@@ -567,6 +568,7 @@ class CoreExtension implements ExtensionInterface
     {
         $container->register('storage.driver_registry', function (Container $container) {
             $registry = new StorageRegistry($container, $container->getParameter('storage'));
+
             foreach ($container->getServiceIdsForTag('storage_driver') as $serviceId => $attributes) {
                 $registry->registerService($attributes['name'], $serviceId);
             }
@@ -592,6 +594,7 @@ class CoreExtension implements ExtensionInterface
 
         $container->register('storage.uuid_resolver', function (Container $container) {
             $resolvers = [];
+
             foreach (array_keys($container->getServiceIdsForTag('uuid_resolver')) as $serviceId) {
                 $resolvers[] = $container->get($serviceId);
             }

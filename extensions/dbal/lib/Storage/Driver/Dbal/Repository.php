@@ -93,6 +93,7 @@ EOT;
         $stmt->execute([$variantId]);
 
         $parameters = [];
+
         foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $data) {
             $parameters[$data['pkey']] = json_decode($data['value']);
         }

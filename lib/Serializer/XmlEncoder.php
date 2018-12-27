@@ -63,6 +63,7 @@ class XmlEncoder
 
             foreach ($suite->getEnvInformations() as $information) {
                 $infoEl = $envEl->appendElement($information->getName());
+
                 foreach ($information as $key => $value) {
                     $infoEl->setAttribute($key, $value);
                 }
@@ -80,6 +81,7 @@ class XmlEncoder
     {
         $benchmarkEl = $suiteEl->appendElement('benchmark');
         $benchmarkEl->setAttribute('class', $benchmark->getClass());
+
         foreach ($benchmark->getSubjects() as $subject) {
             $this->processSubject($subject, $benchmarkEl);
         }
@@ -118,12 +120,14 @@ class XmlEncoder
 
         $parameterSetEl = $variantEl->appendElement('parameter-set');
         $parameterSetEl->setAttribute('name', $variant->getParameterSet()->getName());
+
         foreach ($variant->getParameterSet() as $name => $value) {
             $this->createParameter($parameterSetEl, $name, $value);
         }
 
         if ($variant->hasErrorStack()) {
             $errorsEl = $variantEl->appendElement('errors');
+
             foreach ($variant->getErrorStack() as $error) {
                 $errorEl = $errorsEl->appendElement('error', $error->getMessage());
                 $errorEl->setAttribute('exception-class', $error->getClass());
@@ -137,6 +141,7 @@ class XmlEncoder
 
         if ($variant->hasWarning()) {
             $warningsEl = $variantEl->appendElement('warnings');
+
             foreach ($variant->getWarnings() as $warning) {
                 $warningEl = $warningsEl->appendElement('warning', $warning->getMessage());
             }
@@ -144,6 +149,7 @@ class XmlEncoder
 
         if ($variant->hasFailed()) {
             $failuresEl = $variantEl->appendElement('failures');
+
             foreach ($variant->getFailures() as $failure) {
                 $failureEl = $failuresEl->appendElement('failure', $failure->getMessage());
             }
@@ -180,6 +186,7 @@ class XmlEncoder
         }
 
         $statsEl = $variantEl->appendElement('stats');
+
         foreach ($stats as $statName => $statValue) {
             $statsEl->setAttribute($statName, $statValue);
         }
@@ -199,8 +206,10 @@ class XmlEncoder
     {
         $parameterEl = $parentEl->appendElement('parameter');
         $parameterEl->setAttribute('name', $name);
+
         if (is_array($value)) {
             $parameterEl->setAttribute('type', 'collection');
+
             foreach ($value as $key => $element) {
                 $this->createParameter($parameterEl, $key, $element);
             }

@@ -95,6 +95,7 @@ class JsonDecoder
                 $fakeQuoteStart = $index;
                 $index++;
                 $inQuote = $inFakeQuote = true;
+
                 continue;
             }
 
@@ -117,6 +118,7 @@ class JsonDecoder
                         $chars = array_values($chars);
                         $inQuote = $inFakeQuote = false;
                         $index--;
+
                         continue;
                     }
 
@@ -126,6 +128,7 @@ class JsonDecoder
                         $chars = array_values($chars);
                         $inQuote = $inFakeQuote = false;
                         $index--;
+
                         continue;
                     }
                 }
@@ -134,12 +137,14 @@ class JsonDecoder
                 array_splice($chars, $index, 0, '"');
                 $index++;
                 $inQuote = $inFakeQuote = false;
+
                 continue;
             }
 
             // enter standard quote mode
             if (!$inQuote && $char === '"') {
                 $inQuote = true;
+
                 continue;
             }
 
@@ -147,6 +152,7 @@ class JsonDecoder
             // was not the escape character
             if ($inQuote && $char === '"' && $prevChar !== '\\') {
                 $inQuote = $inFakeQuote = false;
+
                 continue;
             }
         }

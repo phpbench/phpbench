@@ -58,6 +58,7 @@ class CartesianParameterIterator implements \Iterator
 
             if ($index === $this->max) {
                 $this->break = true;
+
                 break;
             }
         }
@@ -76,6 +77,7 @@ class CartesianParameterIterator implements \Iterator
     public function rewind()
     {
         $this->index = 0;
+
         foreach ($this->sets as $set) {
             $set->rewind();
         }
@@ -93,6 +95,7 @@ class CartesianParameterIterator implements \Iterator
     {
         $this->current = [];
         $key = [];
+
         foreach ($this->sets as $set) {
             $this->current = array_merge(
                 $this->current,

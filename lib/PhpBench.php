@@ -47,6 +47,7 @@ class PhpBench
             }
 
             $autoloader->unregister();
+
             include $autoloadFile;
             $autoloader->register(true);
         }
@@ -84,10 +85,12 @@ class PhpBench
         $configPaths = [];
         $extensions = [];
         $configOverride = [];
+
         foreach ($argv as $arg) {
             if ($configFile = self::parseOption($arg, 'config')) {
                 if (!file_exists($configFile)) {
                     echo sprintf('Config file "%s" does not exist', $configFile) . PHP_EOL;
+
                     exit(1);
                 }
                 $configPaths = [$configFile];
@@ -145,6 +148,7 @@ class PhpBench
             } catch (ParsingException $e) {
                 echo 'Error parsing config file:' . PHP_EOL . PHP_EOL;
                 echo $e->getMessage();
+
                 exit(1);
             }
 

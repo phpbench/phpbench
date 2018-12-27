@@ -69,6 +69,7 @@ class BlinkenLogger extends AnsiLogger
         $this->output->write(sprintf('<comment>%s</comment>', $benchmark->getClass()));
 
         $subjectNames = [];
+
         foreach ($benchmark->getSubjects() as $index => $subject) {
             $subjectNames[] = sprintf('#%s %s', $index, $subject->getName());
         }

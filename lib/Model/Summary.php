@@ -55,6 +55,7 @@ class Summary
 
                     if ($variant->hasErrorStack()) {
                         $this->errorStacks[] = $variant->getErrorStack();
+
                         continue;
                     }
 

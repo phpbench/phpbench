@@ -109,6 +109,7 @@ class HistoryIteratorTest extends TestCase
         $test = $dom->createRoot('test');
         $test->setAttribute('uuid', $uuid);
         $path = Workspace::getWorkspacePath() . $date->format('/Y/m/d/') . '/' . $uuid . '.xml';
+
         if (!$this->filesystem->exists(dirname($path))) {
             $this->filesystem->mkdir(dirname($path));
         }

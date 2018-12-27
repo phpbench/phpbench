@@ -220,6 +220,7 @@ class RepositoryTest extends DbalTestCase
         $schema = new Schema();
         $counts = [];
         $conn = $this->getConnection();
+
         foreach ($schema->getTables() as $table) {
             $count = $conn->query('SELECT COUNT(*) FROM ' . $table->getName());
             $count = (int) $count->fetchColumn(0);

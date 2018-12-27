@@ -26,6 +26,7 @@ class CartesianIteratorTest extends TestCase
     {
         $iterator = new CartesianParameterIterator($parameterSets);
         $result = [];
+
         foreach ($iterator as $name => $parameters) {
             $result[$name] = $parameters->getArrayCopy();
         }

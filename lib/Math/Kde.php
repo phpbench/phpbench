@@ -113,6 +113,7 @@ class Kde
     public function __construct(array $dataset, $bwMethod = null)
     {
         $this->dataset = $dataset;
+
         if (count($this->dataset) <= 1) {
             throw new \OutOfBoundsException('`dataset` input should have multiple elements.');
         }
@@ -175,6 +176,7 @@ class Kde
 
             if ($bigger) {
                 $sum = $result;
+
                 foreach ($sum as $index => $value) {
                     $sum[$index] = $sum[$index] + $energy[$index];
                 }

@@ -27,16 +27,20 @@ class TruncateFormat implements FormatInterface
         switch ($options['position']) {
             case 'left':
                 $string = $options['pad'] . substr($value, -$truncateLength);
+
                 break;
             case 'right':
                 $string = substr($value, 0, $truncateLength) . $options['pad'];
+
                 break;
             case 'middle':
                 $offset = floor($truncateLength / 2);
                 $left = substr($value, 0, $offset);
                 $string = $left . $options['pad'];
                 $string = $string . substr($value, -($options['length'] - strlen($string)));
+
                 break;
+
             default:
                 throw new \Exception(sprintf(
                     'Truncation position must be one of "%s", got "%s"',

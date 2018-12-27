@@ -170,6 +170,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
     {
         if ($config['sort']) {
             $cols = array_reverse($config['sort']);
+
             foreach ($cols as $colName => $direction) {
                 Sort::mergeSort($table, function ($elementA, $elementB) use ($colName, $direction) {
                     if ($elementA[$colName] == $elementB[$colName]) {
@@ -227,6 +228,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
 
         return F\group($table, function ($row) use ($break) {
             $breakHash = [];
+
             foreach ($break as $breakKey) {
                 $breakHash[] = $breakKey. ': ' .$row[$breakKey];
                 unset($row[$breakKey]);
@@ -248,6 +250,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
     {
         if ($config['cols']) {
             $cols = $config['cols'];
+
             if ($config['compare']) {
                 $cols[] = $config['compare'];
                 $cols = array_merge($cols, $config['compare_fields']);
@@ -255,6 +258,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
             $tables = F\map($tables, function ($table) use ($cols) {
                 return F\map($table, function ($row) use ($cols) {
                     $newRow = $row->newInstance([]);
+
                     foreach ($cols as $col) {
                         if ($col === 'diff') {
                             continue;
@@ -299,14 +303,18 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
 
             $table = [];
             $colNames = null;
+
             foreach ($groups as $group) {
                 $firstRow = null;
+
                 foreach ($group as $row) {
                     if (null === $firstRow) {
                         $firstRow = $row->newInstance(array_diff_key($row->getArrayCopy(), array_flip($this->statKeys)));
+
                         if (isset($firstRow[$compare])) {
                             unset($firstRow[$compare]);
                         }
+
                         foreach ($compareFields as $compareField) {
                             if (isset($firstRow[$compareField])) {
                                 unset($firstRow[$compareField]);
@@ -341,6 +349,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
 
             $table = F\map($table, function ($row) use ($colNames) {
                 $newRow = $row->newInstance([]);
+
                 foreach ($colNames as $colName) {
                     $newRow[$colName] = isset($row[$colName]) ? $row[$colName] : null;
                 }
@@ -365,12 +374,14 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
     private function buildTable(SuiteCollection $suiteCollection, Config $config)
     {
         $paramJsonFlags = null;
+
         if (true === $config['pretty_params']) {
             $paramJsonFlags = JSON_PRETTY_PRINT;
         }
 
         $table = [];
         $columnNames = [];
+
         foreach ($suiteCollection->getSuites() as $suite) {
             $env = $suite->getEnvInformations();
 
@@ -401,6 +412,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
                         // in other words we can override formatting on a
                         // per-row basis.
                         $formatParams = [];
+
                         if ($timeUnit = $subject->getOutputTimeUnit()) {
                             $formatParams['output_time_unit'] = $timeUnit;
                         }
@@ -448,12 +460,14 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
                         // we continue.
                         if (false === $config['iterations']) {
                             $table[] = $row;
+
                             continue;
                         }
 
                         foreach ($variant->getIterations() as $index => $iteration) {
                             $row = clone $row;
                             $row['iter'] = $index;
+
                             foreach ($iteration->getResults() as $result) {
                                 $metrics = $result->getMetrics();
 
@@ -523,6 +537,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
             // Build the col(umn) definitions.
             foreach ($table as $row) {
                 $colsEl = $tableEl->appendElement('cols');
+
                 foreach ($row->getNames() as $colName) {
                     $colEl = $colsEl->appendElement('col');
                     $colEl->setAttribute('name', $colName);
@@ -530,12 +545,14 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
                     // column labels are the column names by default.
                     // the user may override by column name or column index.
                     $colLabel = $colName;
+
                     if (isset($config['labels'][$colName])) {
                         $colLabel = $config['labels'][$colName];
                     }
 
                     $colEl->setAttribute('label', $colLabel);
                 }
+
                 break;
             }
 
