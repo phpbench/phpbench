@@ -49,6 +49,7 @@ class Persister
             ]);
 
             $envData = [];
+
             foreach ($suite->getEnvInformations() as $information) {
                 foreach ($information as $key => $value) {
                     $envData[] = [
@@ -63,6 +64,7 @@ class Persister
 
             $iterationDatas = [];
             $parameterAssocs = [];
+
             foreach ($suite->getBenchmarks() as $benchmark) {
                 foreach ($benchmark->getSubjects() as $subject) {
                     $data = [

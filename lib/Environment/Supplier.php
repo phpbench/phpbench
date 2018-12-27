@@ -45,6 +45,7 @@ class Supplier
     public function getInformations()
     {
         $informations = [];
+
         foreach ($this->providers as $provider) {
             if (false === $provider->isApplicable()) {
                 continue;

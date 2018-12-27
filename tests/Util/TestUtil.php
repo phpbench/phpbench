@@ -114,6 +114,7 @@ class TestUtil
             $benchmark = $suite->createBenchmark($benchmarkClass);
 
             $baseTime = $options['basetime'];
+
             foreach ($options['subjects'] as $subjectName) {
                 $subject = $benchmark->createSubject($subjectName);
                 $subject->setSleep($options['sleep']);
@@ -124,6 +125,7 @@ class TestUtil
                 $variant = $subject->createVariant(new ParameterSet(0, $options['parameters']), $options['revs'], $options['warmup']);
 
                 $time = $baseTime;
+
                 foreach ($options['iterations'] as $time) {
                     $variant->createIteration(self::createResults($baseTime + $time, 200, 0));
                 }
@@ -134,6 +136,7 @@ class TestUtil
         }
 
         $informations = [];
+
         foreach ($options['env'] as $name => $information) {
             $informations[] = new Information($name, $information);
         }
@@ -145,6 +148,7 @@ class TestUtil
     public static function createCollection(array $suiteConfigs = [])
     {
         $suites = [];
+
         foreach ($suiteConfigs as $suiteIndex => $suiteConfig) {
             $suites[] = self::createSuite($suiteConfig, $suiteIndex);
         }

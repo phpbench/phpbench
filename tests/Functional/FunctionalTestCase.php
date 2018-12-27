@@ -52,6 +52,7 @@ class FunctionalTestCase extends TestCase
     {
         $filesystem = new Filesystem();
         $path = $this->getWorkspacePath();
+
         if (file_exists($path)) {
             $filesystem->remove($path);
         }

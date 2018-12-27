@@ -76,6 +76,7 @@ class InformationTest extends TestCase
         ]);
 
         $result = [];
+
         foreach ($information as $key => $value) {
             $result[$key] = $value;
         }

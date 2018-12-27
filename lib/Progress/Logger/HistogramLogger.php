@@ -42,6 +42,7 @@ class HistogramLogger extends AnsiLogger
         $this->output->write(PHP_EOL);
         $this->output->write(sprintf('<comment>%s</comment>', $benchmark->getClass()));
         $subjectNames = [];
+
         foreach ($benchmark->getSubjects() as $subject) {
             $subjectNames[] = sprintf('#%s %s', $subject->getIndex(), $subject->getName());
         }
@@ -117,6 +118,7 @@ class HistogramLogger extends AnsiLogger
             foreach ($freqs as &$freq) {
                 if (null === $freq || 0 === $freq) {
                     $blocks[$row][] = ' ';
+
                     continue;
                 }
 
@@ -139,6 +141,7 @@ class HistogramLogger extends AnsiLogger
         }
 
         $output = [];
+
         foreach ($blocks as $blockRow) {
             $output[] = implode('', $blockRow);
         }

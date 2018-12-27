@@ -61,6 +61,7 @@ class Parser
     {
         if (count($expr) != 1) {
             $newExpr = [];
+
             foreach ($expr as $key => $value) {
                 $newExpr[] = [$key => $value];
             }

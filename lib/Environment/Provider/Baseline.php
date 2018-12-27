@@ -45,6 +45,7 @@ class Baseline implements ProviderInterface
     public function getInformation()
     {
         $results = [];
+
         foreach ($this->enabled as $callbackName) {
             $results[$callbackName] = $this->manager->benchmark($callbackName, 1000);
         }

@@ -85,6 +85,7 @@ class XDebugTraceExecutor extends BaseExecutor
 
         $subject = $iteration->getVariant()->getSubject();
         $class = $subject->getBenchmark()->getClass();
+
         if (substr($class, 0, 1) == '\\') {
             $class = substr($class, 1);
         }

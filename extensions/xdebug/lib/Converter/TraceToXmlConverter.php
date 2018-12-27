@@ -34,6 +34,7 @@ class TraceToXmlConverter
         $traceEl->setAttribute('version', $matches[1]);
 
         $format = fgets($handle);
+
         if (!preg_match('/^File format: (.*)$/', $format, $matches)) {
             throw new \InvalidArgumentException(sprintf(
                 'Expected "File format" in trace "%s"',
@@ -44,6 +45,7 @@ class TraceToXmlConverter
         $traceEl->setAttribute('format', $matches[1]);
 
         $start = fgets($handle);
+
         if (!preg_match('/^TRACE START \[(.*)\]$/', $start, $matches)) {
             throw new \InvalidArgumentException(sprintf(
                 'Expected "TRACE START" in "%s"',
@@ -59,10 +61,12 @@ class TraceToXmlConverter
 
         while ($line = fgets($handle)) {
             $lineNb++;
+
             if (preg_match('/TRACE END\s+\[(.*)\]/', $line, $matches)) {
                 $scopeEl->setAttribute('end-time', $last[3]);
                 $scopeEl->setAttribute('end-memory', trim($last[4]));
                 $scopeEl->setAttribute('end', $matches[1]);
+
                 break;
             }
 
@@ -75,13 +79,16 @@ class TraceToXmlConverter
                 $scopeEl->setAttribute('end-time', $parts[3]);
                 $scopeEl->setAttribute('end-memory', trim($parts[4]));
                 $scopeEl = $scopeEl->parentNode;
+
                 continue;
             } elseif (isset($parts[2]) && $parts[2] == 'R') {
                 $scopeEl = $tree[$level];
                 $scopeEl = $scopeEl->parentNode;
+
                 continue;
             } elseif (isset($parts[2]) && $parts[2] == '') {
                 $last = $parts;
+
                 continue;
             }
 
@@ -112,6 +119,7 @@ class TraceToXmlConverter
 
             // parse arguments
             $i = 11;
+
             while (isset($parts[$i])) {
                 /** @var \DOMElement $argEl */
                 $argEl = $entryEl->appendElement('arg');

@@ -137,6 +137,7 @@ class VariantTest extends TestCase
 
         if (null !== $expectedDeviation) {
             $iteration->setDeviation($expectedDeviation)->shouldBeCalled();
+
             if (null === $expectedZValue) {
                 $iteration->setZValue(Argument::that(function ($args) use ($expectedZValue) {
                     return round($args[0], 4) == round($expectedZValue, 4);

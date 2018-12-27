@@ -303,6 +303,7 @@ class SubjectMetadata
     public function setAssertions(array $assertions)
     {
         $this->assertions = [];
+
         foreach ($assertions as $assertion) {
             $this->addAssertion($assertion);
         }

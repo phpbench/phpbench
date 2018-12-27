@@ -17,6 +17,7 @@ class ErrorVariantsBench
     public function provideFoos()
     {
         yield [ 'one' => 'two' ];
+
         yield [ 'two' => 'three' ];
     }
     /**

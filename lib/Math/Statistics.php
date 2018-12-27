@@ -44,6 +44,7 @@ class Statistics
     {
         $average = self::mean($values);
         $sum = 0;
+
         foreach ($values as $value) {
             $diff = pow($value - $average, 2);
             $sum += $diff;
@@ -194,6 +195,7 @@ class Statistics
         $histogram = [];
 
         $floor = $min;
+
         for ($i = 0; $i < $steps; $i++) {
             $ceil = $floor + $step;
 

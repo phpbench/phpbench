@@ -55,6 +55,7 @@ class DotsLogger extends PhpBenchLogger
         }
 
         $dot = '.';
+
         if ($variant->hasFailed()) {
             $dot = '<error>F</error>';
         }

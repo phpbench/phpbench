@@ -101,8 +101,10 @@ class RunnerHandler
         }
 
         $parameters = [];
+
         if ($parametersJson) {
             $parameters = json_decode($parametersJson, true);
+
             if (null === $parameters) {
                 throw new \InvalidArgumentException(sprintf(
                     'Could not decode parameters JSON string: "%s"', $parametersJson

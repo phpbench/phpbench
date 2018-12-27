@@ -28,6 +28,7 @@ class Uname implements ProviderInterface
     public function getInformation()
     {
         $uname = [];
+
         foreach ([
             'os' => 's',
             'host' => 'n',

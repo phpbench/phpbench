@@ -173,6 +173,7 @@ class HistoryIterator implements HistoryIteratorInterface
         $files = $this->days->current();
         $files = new \DirectoryIterator($this->days->current());
         $historyEntries = [];
+
         foreach ($files as $file) {
             if (!$file->isFile()) {
                 continue;
@@ -217,6 +218,7 @@ class HistoryIterator implements HistoryIteratorInterface
         $envInformations = $suite->getEnvInformations();
 
         $vcsBranch = null;
+
         if (isset($envInformations['vcs']['branch'])) {
             $vcsBranch = $envInformations['vcs']['branch'];
         }
@@ -251,6 +253,7 @@ class HistoryIterator implements HistoryIteratorInterface
     {
         $nodes = new \DirectoryIterator($path);
         $dirs = [];
+
         foreach ($nodes as $dir) {
             if (!$dir->isDir()) {
                 continue;

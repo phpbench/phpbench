@@ -92,6 +92,7 @@ class ReflectionHierarchy implements \IteratorAggregate
                 if ($method->isStatic) {
                     return true;
                 }
+
                 break;
             }
         }

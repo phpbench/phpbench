@@ -103,11 +103,13 @@ class Information implements \ArrayAccess, \IteratorAggregate
     private function flattenInformation(array $information, $prefix = '')
     {
         $transformed = [];
+
         foreach ($information as $key => $value) {
             $key = $prefix ? $prefix . '_' . $key : $key;
 
             if (is_array($value)) {
                 $transformed = array_merge($transformed, $this->flattenInformation($value, $key));
+
                 continue;
             }
 

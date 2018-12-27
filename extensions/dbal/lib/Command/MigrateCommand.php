@@ -77,6 +77,7 @@ EOT
 
         if ($force) {
             $output->writeln('Updating database schema');
+
             foreach ($sql as $line) {
                 $this->connection->exec($line);
             }

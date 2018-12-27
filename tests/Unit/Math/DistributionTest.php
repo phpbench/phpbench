@@ -99,6 +99,7 @@ class DistributionTest extends TestCase
     {
         $distribution = new Distribution([10, 20]);
         $stats = $distribution->getStats();
+
         foreach ([
             'min', 'max', 'sum', 'stdev', 'mean', 'mode', 'variance', 'rstdev',
         ] as $key) {

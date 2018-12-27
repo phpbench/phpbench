@@ -125,6 +125,7 @@ class Distribution implements \IteratorAggregate, \ArrayAccess
     public function getStats()
     {
         $stats = [];
+
         foreach (array_keys($this->closures) as $name) {
             $stats[$name] = $this->getStat($name);
         }

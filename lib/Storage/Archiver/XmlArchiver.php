@@ -76,6 +76,7 @@ class XmlArchiver implements ArchiverInterface
         }
 
         $runIds = [];
+
         foreach ($driver->history() as $entry) {
             $runIds[] = $entry->getRunId();
         }
@@ -88,6 +89,7 @@ class XmlArchiver implements ArchiverInterface
 
             if ($this->filesystem->exists($path)) {
                 $this->writeProgress($output, $index, count($runIds), 'S');
+
                 continue;
             }
 
@@ -115,6 +117,7 @@ class XmlArchiver implements ArchiverInterface
         $count = count($files);
 
         $output->writeln(sprintf('Restoring %s of %s suites.', $count, $totalCount));
+
         foreach ($files as $index => $file) {
             $this->writeProgress($output, $index, $count, '.');
 

@@ -129,6 +129,7 @@ class Suite implements \IteratorAggregate
     public function getVariants()
     {
         $variants = [];
+
         foreach ($this->getSubjects() as $subject) {
             foreach ($subject->getVariants() as $variant) {
                 $variants[] = $variant;

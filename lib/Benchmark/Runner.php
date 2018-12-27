@@ -179,6 +179,7 @@ class Runner
 
             // resolve executor config for this subject
             $executorConfig = $this->executorRegistry->getConfig($config->getExecutor());
+
             if ($executorMetadata = $subjectMetadata->getExecutor()) {
                 $executor = $this->executorRegistry->getService($executorMetadata->getName());
                 $executorConfig = $this->executorRegistry->getConfig($executorMetadata->getRegistryConfig());
@@ -189,6 +190,7 @@ class Runner
         }
 
         $this->logger->benchmarkStart($benchmark);
+
         foreach ($benchmark->getSubjects() as $index => $subject) {
             $subjectMetadata = $subjectMetadatas[$index];
 
@@ -224,9 +226,11 @@ class Runner
 
         // run the variants.
         $stopException = null;
+
         foreach ($subject->getVariants() as $variant) {
             if ($stopException) {
                 $subject->remove($variant);
+
                 continue;
             }
 
@@ -274,6 +278,7 @@ class Runner
         while ($variant->getRejectCount() > 0) {
             $this->logger->retryStart($variant->getRejectCount());
             $this->logger->variantStart($variant);
+
             foreach ($variant->getRejects() as $reject) {
                 $rejectCount[spl_object_hash($reject)]++;
                 $this->runIteration($executor, $executorConfig, $reject, $subjectMetadata);
@@ -312,6 +317,7 @@ class Runner
         $executor->execute($subjectMetadata, $iteration, $executorConfig);
 
         $sleep = $subjectMetadata->getSleep();
+
         if ($sleep) {
             usleep($sleep);
         }

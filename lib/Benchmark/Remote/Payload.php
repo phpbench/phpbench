@@ -138,6 +138,7 @@ class Payload
     private function replaceTokens(string $templateBody): string
     {
         $tokenSubs = [];
+
         foreach ($this->tokens as $key => $value) {
             $tokenSubs['{{ ' . $key . ' }}'] = $value;
         }
@@ -172,6 +173,7 @@ class Payload
     private function buildCommandLine(string $scriptPath)
     {
         $arguments = [];
+
         if ($this->wrapper) {
             $arguments[] = $this->wrapper;
         }

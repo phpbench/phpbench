@@ -57,6 +57,7 @@ class Baselines
         $handle = fopen($tempName, 'w');
 
         $line = true;
+
         while ($line) {
             $line = fgets($handle);
         }

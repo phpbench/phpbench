@@ -91,6 +91,7 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
     private function listErrors(Suite $suite)
     {
         $errorStacks = $suite->getErrorStacks();
+
         if (empty($errorStacks)) {
             return;
         }
@@ -98,6 +99,7 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
         $this->output->write(PHP_EOL);
         $this->output->writeln(sprintf('%d subjects encountered errors:', count($errorStacks)));
         $this->output->write(PHP_EOL);
+
         foreach ($errorStacks as $errorStack) {
             $this->output->writeln(sprintf(
                 '%s::%s</error>',
@@ -105,6 +107,7 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
                 $errorStack->getVariant()->getSubject()->getName()
             ));
             $this->output->write(PHP_EOL);
+
             foreach ($errorStack as $error) {
                 $this->output->writeln(sprintf(
                     "    %s %s\n\n    %s</comment>\n",
@@ -137,6 +140,7 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
                 json_encode($variantFailure->getVariant()->getParameterSet()->getArrayCopy())
             ));
             $this->output->write(PHP_EOL);
+
             foreach ($variantFailure as $index => $failure) {
                 $this->output->writeln(sprintf('    %s) %s', $index + 1, $failure->getMessage()));
             }
@@ -165,6 +169,7 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
                 json_encode($variantWarning->getVariant()->getParameterSet()->getArrayCopy())
             ));
             $this->output->write(PHP_EOL);
+
             foreach ($variantWarning as $index => $warning) {
                 $this->output->writeln(sprintf('    %s) %s', $index + 1, $warning->getMessage()));
             }
@@ -217,6 +222,7 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
         $outputMode = $subject->getOutputMode();
 
         $time = 0;
+
         if ($iteration->hasResult(TimeResult::class)) {
             $timeResult = $iteration->getResult(TimeResult::class);
             assert($timeResult instanceof TimeResult);

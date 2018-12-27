@@ -99,6 +99,7 @@ class Reflector
         $parameters = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($parameterSets));
         iterator_apply($parameters, function (\Iterator $iterator) {
             $parameter = $iterator->current();
+
             if (!is_scalar($parameter) && isset($parameter)) {
                 throw new \InvalidArgumentException(sprintf(
                     'Parameter values must be scalar. Got "%s"',
@@ -152,6 +153,7 @@ class Reflector
                     for ($j = $i + 1; $j < count($tokens); $j++) {
                         if ($tokens[$j][0] === T_STRING) {
                             $class = $tokens[$i + 2][1];
+
                             break 2;
                         }
                     }

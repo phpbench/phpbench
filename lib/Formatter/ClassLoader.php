@@ -41,6 +41,7 @@ class ClassLoader
         }
 
         $contents = file_get_contents($filename);
+
         if ($error = $this->parser->lint($contents)) {
             throw $error;
         }
