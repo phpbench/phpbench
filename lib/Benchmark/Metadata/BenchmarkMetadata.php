@@ -12,8 +12,6 @@
 
 namespace PhpBench\Benchmark\Metadata;
 
-use PhpBench\Benchmark\Metadata\ExecutorMetadata;
-
 /**
  * Benchmark metadata class.
  */

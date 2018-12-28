@@ -12,7 +12,6 @@
 
 namespace PhpBench\Progress\Logger;
 
-use PhpBench\Model\Iteration;
 use PhpBench\Model\Variant;
 
 abstract class AnsiLogger extends PhpBenchLogger

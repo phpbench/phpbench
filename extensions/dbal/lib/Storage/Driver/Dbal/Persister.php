@@ -13,7 +13,6 @@
 namespace PhpBench\Extensions\Dbal\Storage\Driver\Dbal;
 
 use Doctrine\DBAL\Connection;
-use PhpBench\Model\Iteration;
 use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\RejectionCountResult;
 use PhpBench\Model\Result\TimeResult;

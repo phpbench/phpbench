@@ -13,8 +13,6 @@
 namespace PhpBench\Model;
 
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
-use PhpBench\Registry\Config;
-use PhpBench\Model\ResolvedExecutor;
 
 /**
  * Benchmark metadata class.

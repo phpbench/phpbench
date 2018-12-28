@@ -12,7 +12,6 @@
 
 namespace PhpBench\Serializer;
 
-use DOMElement;
 use PhpBench\Dom\Document;
 use PhpBench\Dom\Element;
 use PhpBench\Model\Benchmark;
