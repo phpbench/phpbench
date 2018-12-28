@@ -13,9 +13,7 @@
 namespace PhpBench\Model;
 
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
-use PhpBench\Model\Variant;
 use PhpBench\Util\TimeUnit;
-use PhpBench\Model\ResolvedExecutor;
 
 /**
  * Subject representation.

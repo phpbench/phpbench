@@ -13,7 +13,6 @@
 namespace PhpBench\Extensions\XDebug\Command;
 
 use PhpBench\Benchmark\RunnerConfig;
-use PhpBench\Console\Command\Configure\Executor;
 use PhpBench\Console\Command\Handler\RunnerHandler;
 use PhpBench\Extensions\XDebug\Command\Handler\OutputDirHandler;
 use PhpBench\Extensions\XDebug\XDebugUtil;

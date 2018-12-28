@@ -13,7 +13,6 @@
 namespace PhpBench\Tests\Unit\Storage\Driver\Xml;
 
 use PhpBench\Dom\Document;
-use PhpBench\Environment\Information;
 use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Model\Summary;
