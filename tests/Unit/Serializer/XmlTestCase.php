@@ -31,8 +31,8 @@ use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Model\Variant;
-use PHPUnit\Framework\TestCase;
 use PhpBench\Registry\Config;
+use PHPUnit\Framework\TestCase;
 
 class XmlTestCase extends TestCase
 {

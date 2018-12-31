@@ -13,8 +13,8 @@
 namespace PhpBench\Tests\Unit\Benchmark\Metadata\Driver;
 
 use PhpBench\Benchmark\Metadata\Annotations;
-use PhpBench\Benchmark\Metadata\DriverInterface;
 use PhpBench\Benchmark\Metadata\Driver\AnnotationDriver;
+use PhpBench\Benchmark\Metadata\DriverInterface;
 use PhpBench\Benchmark\Metadata\ExecutorMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\ReflectionClass;
