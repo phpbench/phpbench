@@ -12,7 +12,6 @@
 
 namespace PhpBench\Model;
 
-use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Util\TimeUnit;
 
 /**
@@ -79,7 +78,7 @@ class Subject
     private $executor;
 
     /**
-     * @param BenchmarkMetadata $benchmark
+     * @param Benchmark $benchmark
      * @param string $name
      */
     public function __construct(Benchmark $benchmark, $name)

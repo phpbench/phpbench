@@ -62,7 +62,13 @@ class Launcher
     private $phpDisableIni;
 
     /**
-     * @param mixed string
+     * @param PayloadFactory|null $factory
+     * @param ExecutableFinder|null $finder
+     * @param string|null $bootstrap
+     * @param string|null $phpBinary
+     * @param array $phpConfig
+     * @param null|string $phpWrapper
+     * @param bool $phpDisableIni
      */
     public function __construct(
         PayloadFactory $factory = null,
@@ -132,6 +138,7 @@ class Launcher
         }
 
         // otherwise try and find it in PATH etc.
+        /** @var string|null $phpBinary */
         $phpBinary = $this->finder->find($this->phpBinary);
 
         if (null === $phpBinary) {

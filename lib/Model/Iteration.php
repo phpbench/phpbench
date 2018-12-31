@@ -22,7 +22,8 @@ class Iteration extends ResultCollection
 
     /**
      * @param int $index
-     * @param int $revolutions
+     * @param Variant $variant
+     * @param array $results
      */
     public function __construct(
         $index,

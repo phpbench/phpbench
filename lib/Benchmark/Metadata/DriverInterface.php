@@ -12,7 +12,6 @@
 
 namespace PhpBench\Benchmark\Metadata;
 
-use PhpBench\Benchmark\Remote\ReflectionClass;
 use PhpBench\Benchmark\Remote\ReflectionHierarchy;
 
 /**
@@ -23,7 +22,7 @@ interface DriverInterface
     /**
      * Return the metadata for the given class FQN.
      *
-     * @param ReflectionClass[] $reflections
+     * @param ReflectionHierarchy $classHierarchy
      *
      * @return BenchmarkMetadata
      */

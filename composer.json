@@ -33,7 +33,7 @@
         "doctrine/dbal": "^2.4",
         "friendsofphp/php-cs-fixer": "^2.13.1",
         "padraic/phar-updater": "^1.0",
-        "phpstan/phpstan": "^0.8.5",
+        "phpstan/phpstan": "^0.10.7",
         "phpunit/phpunit": "^6.5 || ^7.0"
     },
     "suggest": {

@@ -17,6 +17,8 @@ use PhpBench\Registry\Registry;
 use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Storage\ArchiverInterface;
+use PhpBench\Storage\DriverInterface;
+use PhpBench\Storage\HistoryEntry;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -69,6 +71,7 @@ class XmlArchiver implements ArchiverInterface
      */
     public function archive(OutputInterface $output)
     {
+        /** @var DriverInterface $driver */
         $driver = $this->storageRegistry->getService();
 
         if (!$this->filesystem->exists($this->archivePath)) {
@@ -78,6 +81,7 @@ class XmlArchiver implements ArchiverInterface
         $runIds = [];
 
         foreach ($driver->history() as $entry) {
+            /** @var HistoryEntry $entry */
             $runIds[] = $entry->getRunId();
         }
 
@@ -108,6 +112,7 @@ class XmlArchiver implements ArchiverInterface
      */
     public function restore(OutputInterface $output)
     {
+        /** @var DriverInterface $driver */
         $driver = $this->storageRegistry->getService();
 
         $iterator = new \DirectoryIterator($this->archivePath);

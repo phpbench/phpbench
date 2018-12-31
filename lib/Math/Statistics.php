@@ -20,7 +20,7 @@ class Statistics
     /**
      * Return the standard deviation of a given population.
      *
-     * @param \DOMNodeList $nodeList
+     * @param array $values
      * @param bool $sample
      *
      * @return float

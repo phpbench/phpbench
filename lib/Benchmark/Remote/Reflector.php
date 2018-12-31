@@ -18,7 +18,7 @@ namespace PhpBench\Benchmark\Remote;
 class Reflector
 {
     /**
-     * @param Launcher
+     * @var Launcher
      */
     private $launcher;
 

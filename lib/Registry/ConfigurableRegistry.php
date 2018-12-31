@@ -104,8 +104,7 @@ class ConfigurableRegistry extends Registry
      * Recursively merge configs (having the "extends" key) which extend
      * another report.
      *
-     * @param array $config
-     * @param string $getMethod
+     * @param string $name
      *
      * @return array
      */
@@ -141,6 +140,7 @@ class ConfigurableRegistry extends Registry
             ));
         }
 
+        /** @var RegistrableInterface $service */
         $service = $this->getService($config[$this->serviceType]);
 
         $options = new OptionsResolver();
@@ -164,9 +164,9 @@ class ConfigurableRegistry extends Registry
      * table
      * ````
      *
-     * @param array $rawConfigs
+     * @param string $rawConfig
      *
-     * @return array
+     * @return string
      */
     private function processRawCliConfig($rawConfig)
     {

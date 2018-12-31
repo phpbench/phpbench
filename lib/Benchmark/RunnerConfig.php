@@ -124,8 +124,6 @@ class RunnerConfig
 
     /**
      * Whitelist of subject method names.
-     *
-     * @param string[] $subjects
      */
     public function getFilters(): array
     {
@@ -181,7 +179,7 @@ class RunnerConfig
     /**
      * Override the sleep interval (in microseconds).
      *
-     * @param int $sleep
+     * @param mixed $default
      */
     public function getSleep($default = null)
     {

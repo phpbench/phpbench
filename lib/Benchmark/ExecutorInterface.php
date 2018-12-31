@@ -44,7 +44,7 @@ interface ExecutorInterface extends RegistrableInterface
      *
      * Methods called here cannot establish a runtime state.
      *
-     * @param string[]
+     * @param string[] $methods
      */
     public function executeMethods(BenchmarkMetadata $benchmark, array $methods);
 

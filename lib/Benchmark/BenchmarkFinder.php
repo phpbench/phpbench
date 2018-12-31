@@ -28,9 +28,6 @@ class BenchmarkFinder
      */
     private $factory;
 
-    /**
-     * @param Factory $factory
-     */
     public function __construct(MetadataFactory $factory)
     {
         $this->factory = $factory;

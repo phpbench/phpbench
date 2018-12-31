@@ -12,6 +12,7 @@
 
 namespace PhpBench\Console\Command;
 
+use PhpBench\Console\Application;
 use PhpBench\Console\CharacterReader;
 use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use PhpBench\Registry\Registry;
@@ -70,7 +71,10 @@ EOT
         // value of 100.
         $height = 100;
 
-        if ($application = $this->getApplication()) {
+        /** @var Application|null $application */
+        $application = $this->getApplication();
+
+        if ($application) {
             $height = (new Terminal())->getHeight();
             $height = $height ?: 100;
         }

@@ -54,7 +54,13 @@ class MetadataFactory
             return null;
         }
 
-        if ($hierarchy->getTop() && true === $hierarchy->getTop()->abstract) {
+        try {
+            $top = $hierarchy->getTop();
+        } catch (\InvalidArgumentException $exception) {
+            return null;
+        }
+
+        if (true === $top->abstract) {
             return null;
         }
 

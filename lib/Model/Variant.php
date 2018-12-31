@@ -121,8 +121,7 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
     /**
      * Create and add a new iteration.
      *
-     * @param int $time
-     * @param int $memory
+     * @param array $results
      *
      * @return Iteration
      */
@@ -368,7 +367,7 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
      * After an exception is encountered the results from this iteration
      * set are invalid.
      *
-     * @param \Exception $e
+     * @param \Exception $exception
      */
     public function setException(\Exception $exception)
     {
@@ -409,7 +408,7 @@ class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
     /**
      * Create and set the error stack from a list of Error instances.
      *
-     * @param Error[]
+     * @param Error[] $errors
      */
     public function createErrorStack(array $errors)
     {

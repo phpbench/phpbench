@@ -47,7 +47,7 @@ interface DriverInterface
      *
      * @param int $runId
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      *
      * @return SuiteCollection
      */

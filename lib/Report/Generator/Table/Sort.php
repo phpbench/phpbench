@@ -19,8 +19,8 @@ class Sort
      *
      * http://at2.php.net/manual/en/function.usort.php#38827
      *
-     * @param array
-     * @param \Closure Sorting callback
+     * @param array $array
+     * @param \Closure $callback Sorting callback
      */
     public static function mergeSort(&$array, \Closure $callback)
     {

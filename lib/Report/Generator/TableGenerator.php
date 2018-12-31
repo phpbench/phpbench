@@ -242,7 +242,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
      * Remove unwanted columns from the tables.
      *
      * @param array $tables
-     * @param array $config
+     * @param Config $config
      *
      * @return array
      */

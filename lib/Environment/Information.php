@@ -22,11 +22,8 @@ class Information implements \ArrayAccess, \IteratorAggregate
     private $information;
 
     /**
-     * __construct.
-     *
-     * @param string $system
-     * @param stirng $version
-     * @param string $branch
+     * @param string $name
+     * @param array $information
      */
     public function __construct($name, array $information)
     {

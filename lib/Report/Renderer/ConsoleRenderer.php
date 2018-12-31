@@ -53,8 +53,8 @@ class ConsoleRenderer implements RendererInterface, OutputAwareInterface
     /**
      * Render the table.
      *
-     * @param mixed $tableDom
-     * @param mixed $config
+     * @param Document $reportDom
+     * @param Config $config
      */
     public function render(Document $reportDom, Config $config)
     {
@@ -142,7 +142,7 @@ class ConsoleRenderer implements RendererInterface, OutputAwareInterface
     /**
      * Adds some output formatters.
      *
-     * @param OutputFormatterInterface
+     * @param OutputFormatterInterface $formatter
      */
     private function configureFormatters(OutputFormatterInterface $formatter)
     {

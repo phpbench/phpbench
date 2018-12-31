@@ -35,9 +35,8 @@ class Benchmark implements \IteratorAggregate
     private $suite;
 
     /**
-     * @param mixed $path
-     * @param mixed $class
-     * @param Subject[] $subjects
+     * @param Suite $suite
+     * @param string $class
      */
     public function __construct(Suite $suite, $class)
     {
