@@ -16,7 +16,6 @@ use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Dom\Document;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
-use PhpBench\Report\Generator\Table\Row;
 use PhpBench\Report\GeneratorInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -100,20 +99,5 @@ class EnvGenerator implements GeneratorInterface, OutputAwareInterface
         }
 
         return $document;
-    }
-
-    private function resolveCompareColumnName(Row $row, $name, $index = 1)
-    {
-        if (!isset($row[$name])) {
-            return $name;
-        }
-
-        $newName = $name . '#' . (string) $index++;
-
-        if (!isset($row[$newName])) {
-            return $newName;
-        }
-
-        return $this->resolveCompareColumnName($row, $name, $index);
     }
 }
