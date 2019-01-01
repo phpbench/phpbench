@@ -100,7 +100,7 @@ class Statistics
      *
      * @param array $population
      * @param int $space
-     * @param float $bandwidth
+     * @param string $bandwidth
      */
     public static function kdeMode(array $population, $space = 512, $bandwidth = null): float
     {

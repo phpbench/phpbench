@@ -131,7 +131,7 @@ class Formatter
                 throw new \InvalidArgumentException(sprintf(
                     'Could not load class definition: %s',
                     json_encode($classDefinition)
-                ), null, $e);
+                ), 0, $e);
             }
         }
 

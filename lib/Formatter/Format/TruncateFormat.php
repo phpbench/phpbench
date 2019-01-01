@@ -34,7 +34,7 @@ class TruncateFormat implements FormatInterface
 
                 break;
             case 'middle':
-                $offset = floor($truncateLength / 2);
+                $offset = (int) floor($truncateLength / 2);
                 $left = substr($value, 0, $offset);
                 $string = $left . $options['pad'];
                 $string = $string . substr($value, -($options['length'] - strlen($string)));

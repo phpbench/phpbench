@@ -101,9 +101,9 @@ class XsltRenderer implements RendererInterface, OutputAwareInterface
         $stylesheetDom->load($template);
         $xsltProcessor = new \XSLTProcessor();
         $xsltProcessor->importStylesheet($stylesheetDom);
-        $xsltProcessor->setParameter(null, 'title', $config['title']);
-        $xsltProcessor->setParameter(null, 'phpbench-version', PhpBench::VERSION);
-        $xsltProcessor->setParameter(null, 'date', date('Y-m-d H:i:s'));
+        $xsltProcessor->setParameter('', 'title', $config['title']);
+        $xsltProcessor->setParameter('', 'phpbench-version', PhpBench::VERSION);
+        $xsltProcessor->setParameter('', 'date', date('Y-m-d H:i:s'));
         $output = $xsltProcessor->transformToXml($reportDom);
 
         if (!$output) {

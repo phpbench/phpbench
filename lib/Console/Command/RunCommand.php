@@ -99,10 +99,13 @@ EOT
         $this->timeUnitHandler->timeUnitFromInput($input);
         $this->reportHandler->validateReportsFromInput($input);
 
+        $retryThreshold = $input->getOption('retry-threshold');
+        $sleep = $input->getOption('sleep');
+
         $config = RunnerConfig::create()
             ->withTag($this->resolveTag($input))
-            ->withRetryThreshold($input->getOption('retry-threshold'))
-            ->withSleep($input->getOption('sleep'))
+            ->withRetryThreshold($retryThreshold !== null ? (float) $retryThreshold : null)
+            ->withSleep($sleep !== null ? (int) $sleep : null)
             ->withIterations($input->getOption('iterations'))
             ->withWarmup($input->getOption('warmup'))
             ->withAssertions($input->getOption('assert'));
