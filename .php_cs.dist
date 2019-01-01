@@ -41,6 +41,7 @@ return PhpCsFixer\Config::create()
         'concat_space' => false,
         'method_argument_space' => false,
         'no_unused_imports' => true,
+        'ordered_imports' => true,
         'php_unit_set_up_tear_down_visibility' => true,
         'phpdoc_align' => [],
         'phpdoc_indent' => false,
