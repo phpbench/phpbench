@@ -1,5 +1,5 @@
 includes:
-    - vendor/phpstan/phpstan/conf/config.level4.neon
+    - vendor/phpstan/phpstan/conf/config.level5.neon
 
 parameters:
     ignoreErrors:
