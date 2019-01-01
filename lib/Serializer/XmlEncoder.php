@@ -113,8 +113,8 @@ class XmlEncoder
         $variantEl->setAttribute('output-time-unit', $subject->getOutputTimeUnit() ?: TimeUnit::MICROSECONDS);
         $variantEl->setAttribute('output-time-precision', $subject->getOutputTimePrecision());
         $variantEl->setAttribute('output-mode', $subject->getOutputMode() ?: TimeUnit::MODE_TIME);
-        $variantEl->setAttribute('revs', $variant->getRevolutions());
-        $variantEl->setAttribute('warmup', $variant->getWarmup());
+        $variantEl->setAttribute('revs', (string) $variant->getRevolutions());
+        $variantEl->setAttribute('warmup', (string) $variant->getWarmup());
         $variantEl->setAttribute('retry-threshold', $subject->getRetryThreshold());
 
         $parameterSetEl = $variantEl->appendElement('parameter-set');

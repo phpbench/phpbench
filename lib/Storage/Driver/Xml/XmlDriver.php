@@ -129,7 +129,7 @@ class XmlDriver implements DriverInterface
     private function getPath($uuid)
     {
         try {
-            $date = new \DateTime(hexdec(substr($uuid, 0, 7)));
+            $date = new \DateTime((string) hexdec(substr($uuid, 0, 7)));
         } catch (\Exception $e) {
             return false;
         }
@@ -137,9 +137,9 @@ class XmlDriver implements DriverInterface
         return sprintf(
             '%s/%s/%s/%s/%s.xml',
             $this->path,
-            dechex($date->format('Y')),
-            dechex($date->format('m')),
-            dechex($date->format('d')),
+            dechex((int) $date->format('Y')),
+            dechex((int) $date->format('m')),
+            dechex((int) $date->format('d')),
             $uuid
         );
     }

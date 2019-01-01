@@ -219,7 +219,7 @@ class AnnotationReader
                 'Unrecognized annotation %s, valid PHPBench annotations: @%s',
                 $matches[1],
                 implode(', @', array_keys(self::$phpBenchImports))
-            ), null, $e);
+            ), 0, $e);
         }
 
         return $annotations;
