@@ -33,7 +33,7 @@ You can update the version at any time by using the ``self-update`` command:
 
 .. warning::
 
-    PHPBench is unstable, installing as a PHAR will means that you are always
+    PHPBench is unstable, installing as a PHAR means that you are always
     updating to the latest version, the latest version may include BC breaks.
     Therefore it is recommended to include the package as a project dependency
     for continuous-integration.
