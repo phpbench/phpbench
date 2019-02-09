@@ -59,7 +59,7 @@ abstract class BaseExecutor implements ExecutorInterface
             'parameters' => var_export($iteration->getVariant()->getParameterSet()->getArrayCopy(), true),
             'warmup' => $iteration->getVariant()->getWarmup() ?: 0,
         ];
-        $payload = $this->launcher->payload(__DIR__ . '/template/microtime.template', $tokens);
+        $payload = $this->launcher->payload($tokens);
 
         return $this->launch($payload, $iteration, $config);
     }
@@ -84,7 +84,7 @@ abstract class BaseExecutor implements ExecutorInterface
             'methods' => var_export($methods, true),
         ];
 
-        $payload = $this->launcher->payload(__DIR__ . '/template/execute_static_methods.template', $tokens);
-        $payload->launch();
+        $payload = $this->launcher->payload($tokens);
+        $payload->launch(__DIR__ . '/template/execute_static_methods.template');
     }
 }

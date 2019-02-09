@@ -39,11 +39,10 @@ class LauncherTest extends TestCase
     {
         $launcher = $this->createLiveLauncher();
         $result = $launcher->payload(
-            __DIR__ . '/template/foo.template',
             [
                 'foo' => 'bar',
             ]
-        )->launch();
+        )->launch(__DIR__ . '/template/foo.template');
 
         $this->assertEquals([
             'foo' => 'bar',
@@ -65,7 +64,6 @@ class LauncherTest extends TestCase
         );
 
         $this->factory->create(
-            __FILE__,
             ['bootstrap' => $bootstrap],
             '/path/to/php'
         )->willReturn($this->payload->reveal());
@@ -73,7 +71,7 @@ class LauncherTest extends TestCase
         $this->payload->setWrapper('wrapper')->shouldBeCalled();
         $this->payload->mergePhpConfig($phpConfig)->shouldBeCalled();
 
-        $launcher->payload(__FILE__, []);
+        $launcher->payload([]);
     }
 
     /**
@@ -90,7 +88,6 @@ class LauncherTest extends TestCase
             __DIR__ . '/../../../../vendor/notexisting.php'
         );
         $launcher->payload(
-            __DIR__ . '/template/foo.template',
             [
                 'foo' => 'bar',
             ]

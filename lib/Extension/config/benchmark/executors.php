@@ -14,6 +14,9 @@ return [
     'microtime' => [
         'executor' => 'microtime',
     ],
+    'hrtime' => [
+        'executor' => 'hrtime',
+    ],
     'debug' => [
         'executor' => 'debug',
     ],

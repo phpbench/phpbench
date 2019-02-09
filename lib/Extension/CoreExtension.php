@@ -18,6 +18,7 @@ use PhpBench\Assertion\ComparatorAsserter;
 use PhpBench\Benchmark\BaselineManager;
 use PhpBench\Benchmark\BenchmarkFinder;
 use PhpBench\Benchmark\Executor\DebugExecutor;
+use PhpBench\Benchmark\Executor\HrtimeExecutor;
 use PhpBench\Benchmark\Executor\MicrotimeExecutor;
 use PhpBench\Benchmark\Metadata\AnnotationReader;
 use PhpBench\Benchmark\Metadata\Driver\AnnotationDriver;
@@ -166,6 +167,12 @@ class CoreExtension implements ExtensionInterface
                 $container->get('benchmark.remote.launcher')
             );
         }, ['benchmark_executor' => ['name' => 'microtime']]);
+
+        $container->register('benchmark.executor.hrtime', function (Container $container) {
+            return new HrtimeExecutor(
+                $container->get('benchmark.remote.launcher')
+            );
+        }, ['benchmark_executor' => ['name' => 'hrtime']]);
 
         $container->register('benchmark.executor.debug', function (Container $container) {
             return new DebugExecutor(

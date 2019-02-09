@@ -30,7 +30,7 @@ class PayloadFactoryTest extends TestCase
      */
     public function testCreate()
     {
-        $payload = $this->factory->create('template', ['token' => 'one'], '/path/to/php');
+        $payload = $this->factory->create(['token' => 'one'], '/path/to/php');
         $this->assertInstanceOf(Payload::class, $payload);
     }
 }

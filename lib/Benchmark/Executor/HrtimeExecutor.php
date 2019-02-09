@@ -24,7 +24,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * temp. directory and then executes it. The generated script then returns the
  * time taken to execute the benchmark and the memory consumed.
  */
-class MicrotimeExecutor extends BaseExecutor
+class HrtimeExecutor extends BaseExecutor
 {
     /**
      * {@inheritdoc}
@@ -36,7 +36,7 @@ class MicrotimeExecutor extends BaseExecutor
         ];
 
         $payload->mergePhpConfig($phpConfig);
-        $result = $payload->launch(__DIR__ . '/template/microtime.template');
+        $result = $payload->launch(__DIR__ . '/template/hrtime.template');
 
         if (isset($result['buffer']) && $result['buffer']) {
             throw new \RuntimeException(sprintf(

@@ -33,13 +33,12 @@ class PayloadTest extends TestCase
     public function testLaunch()
     {
         $payload = new Payload(
-            __DIR__ . '/template/foo.template',
             [
                 'foo' => 'bar',
             ]
         );
 
-        $result = $payload->launch($payload);
+        $result = $payload->launch(__DIR__ . '/template/foo.template');
 
         $this->assertEquals([
             'foo' => 'bar',
@@ -54,11 +53,8 @@ class PayloadTest extends TestCase
      */
     public function testInvalidScript()
     {
-        $payload = new Payload(
-            __DIR__ . '/template/invalid.template'
-        );
-
-        $payload->launch($payload);
+        $payload = new Payload();
+        $payload->launch(__DIR__ . '/template/invalid.template');
     }
 
     /**
@@ -73,7 +69,7 @@ class PayloadTest extends TestCase
         $this->process->isSuccessful()->willReturn(true);
         $this->process->getOutput()->willReturn(serialize(['foo' => 'bar']));
 
-        $payload->launch($payload);
+        $payload->launch(__DIR__ . '/template/foo.template');
     }
 
     /**
@@ -96,7 +92,7 @@ class PayloadTest extends TestCase
         $this->process->isSuccessful()->willReturn(true);
         $this->process->getOutput()->willReturn(serialize(['foo' => 'bar']));
 
-        $payload->launch($payload);
+        $payload->launch(__DIR__ . '/template/foo.template');
     }
 
     /**
@@ -112,7 +108,7 @@ class PayloadTest extends TestCase
         $this->process->isSuccessful()->willReturn(true);
         $this->process->getOutput()->willReturn(serialize(['foo' => 'bar']));
 
-        $payload->launch($payload);
+        $payload->launch(__DIR__ . '/template/foo.template');
     }
 
     /**
@@ -125,13 +121,12 @@ class PayloadTest extends TestCase
     {
         $process = $this->prophesize(Process::class);
         $payload = new Payload(
-            __DIR__ . '/template/not-existing-filename.template',
             [],
             null,
             $process->reveal()
         );
 
-        $payload->launch($payload);
+        $payload->launch(__DIR__ . '/template/not-existing-filename.template');
     }
 
     private function validPayload()
@@ -142,7 +137,6 @@ class PayloadTest extends TestCase
     private function validPayloadWithPhpConfig(array $phpConfig = [])
     {
         return new Payload(
-            __DIR__ . '/template/foo.template',
             [],
             null,
             $this->process->reveal()

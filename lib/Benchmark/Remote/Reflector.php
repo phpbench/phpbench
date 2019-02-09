@@ -50,10 +50,10 @@ class Reflector
             return $hierarchy;
         }
 
-        $classHierarchy = $this->launcher->payload(__DIR__ . '/template/reflector.template', [
+        $classHierarchy = $this->launcher->payload([
             'file' => $file,
             'class' => $classFqn,
-        ])->launch();
+        ])->launch(__DIR__ . '/template/reflector.template');
 
         foreach ($classHierarchy as $classInfo) {
             $reflectionClass = new ReflectionClass();
@@ -89,11 +89,11 @@ class Reflector
      */
     public function getParameterSets($file, $paramProviders)
     {
-        $parameterSets = $this->launcher->payload(__DIR__ . '/template/parameter_set_extractor.template', [
+        $parameterSets = $this->launcher->payload([
             'file' => $file,
             'class' => $this->getClassNameFromFile($file),
             'paramProviders' => var_export($paramProviders, true),
-        ])->launch();
+        ])->launch(__DIR__ . '/template/parameter_set_extractor.template');
 
         // validate parameters
         $parameters = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($parameterSets));

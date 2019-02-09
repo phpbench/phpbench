@@ -66,12 +66,10 @@ class Payload
      * Create a new Payload object with the given script template.
      * The template must be the path to a script template.
      *
-     * @param string $template
      */
-    public function __construct($template, array $tokens = [], $phpPath = PHP_BINARY, Process $process = null)
+    public function __construct(array $tokens = [], $phpPath = PHP_BINARY, Process $process = null)
     {
         $this->setPhpPath($phpPath);
-        $this->template = $template;
         $this->process = $process ?: new Process($this->phpPath);
         $this->tokens = $tokens;
 
@@ -103,9 +101,12 @@ class Payload
         $this->disableIni = true;
     }
 
-    public function launch(): array
+    /**
+     * @param string $template
+     */
+    public function launch($template): array
     {
-        $script = $this->readFile();
+        $script = $this->readFile($template);
         $script = $this->replaceTokens($script);
         $scriptPath = $this->writeTempFile($script);
         $commandLine = $this->buildCommandLine($scriptPath);
@@ -123,7 +124,7 @@ class Payload
             ));
         }
 
-        return $this->decodeResults();
+        return $this->decodeResults($template);
     }
 
     private function getIniString()
@@ -150,16 +151,16 @@ class Payload
         );
     }
 
-    private function readFile(): string
+    private function readFile($template): string
     {
-        if (!file_exists($this->template)) {
+        if (!file_exists($template)) {
             throw new \RuntimeException(sprintf(
                 'Could not find script template "%s"',
-                $this->template
+                $template
             ));
         }
 
-        return file_get_contents($this->template);
+        return file_get_contents($template);
     }
 
     private function writeTempFile(string $script): string
@@ -195,7 +196,7 @@ class Payload
         unlink($scriptPath);
     }
 
-    private function decodeResults(): array
+    private function decodeResults($template): array
     {
         $output = $this->process->getOutput();
         $result = unserialize($output);
@@ -206,7 +207,7 @@ class Payload
 
         throw new \RuntimeException(sprintf(
             'Script "%s" did not return an array, got: %s',
-            $this->template,
+            $template,
             $output
         ));
     }

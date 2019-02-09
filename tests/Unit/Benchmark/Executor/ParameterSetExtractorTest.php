@@ -55,13 +55,13 @@ class ParameterSetExtractorTest extends TestCase
 
     private function provideParams(array $providers)
     {
-        $payload = new Payload(__DIR__ . '/../../../../lib/Benchmark/Remote/template/parameter_set_extractor.template', [
+        $payload = new Payload([
             'bootstrap' => __DIR__ . '/benchmarks/ParamProviderBench.php',
             'file' => __DIR__ . '/benchmarks/ParamProviderBench.php',
             'class' => ParamProviderBench::class,
             'paramProviders' => json_encode($providers),
         ]);
-        $result = $payload->launch();
+        $result = $payload->launch(__DIR__ . '/../../../../lib/Benchmark/Remote/template/parameter_set_extractor.template');
         $this->assertEquals([
             [
                 ['hello' => 'goodbye'],
