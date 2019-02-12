@@ -509,9 +509,52 @@ class RunTest extends SystemTestCase
     }
 
     /**
-     * It should run with the memory-centric-microtime executor
+     * It should run with the memory-centric-time executor
      */
-    public function testRunsWithMemoryExecutor()
+    public function testRunsWithMemoryCentricTimeExecutor()
+    {
+        $process = $this->phpbench(
+            'run benchmarks/set4/NothingBench.php --executor=memory_centric_time --iterations=1 --revs=1'
+        );
+
+        // because there is no storage driver by default the factory will throw an exception.
+        $this->assertExitCode(0, $process);
+    }
+
+    /**
+     * It should run with the time executor
+     */
+    public function testRunsWithTimeExecutor()
+    {
+        $process = $this->phpbench(
+            'run benchmarks/set4/NothingBench.php --executor=time --iterations=1 --revs=1'
+        );
+
+        // because there is no storage driver by default the factory will throw an exception.
+        $this->assertExitCode(0, $process);
+    }
+
+    /**
+     * It should run with the microtime executor
+     *
+     * @deprecated
+     */
+    public function testRunsWithMicrotimeExecutor()
+    {
+        $process = $this->phpbench(
+            'run benchmarks/set4/NothingBench.php --executor=microtime --iterations=1 --revs=1'
+        );
+
+        // because there is no storage driver by default the factory will throw an exception.
+        $this->assertExitCode(0, $process);
+    }
+
+    /**
+     * It should run with the memory-centric-microtime executor
+     *
+     * @deprecated
+     */
+    public function testRunsWithMemoryCentricMicrotimeExecutor()
     {
         $process = $this->phpbench(
             'run benchmarks/set4/NothingBench.php --executor=memory_centric_microtime --iterations=1 --revs=1'

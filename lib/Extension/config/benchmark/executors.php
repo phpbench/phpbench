@@ -11,11 +11,11 @@
  */
 
 return [
-    'memory_centric_microtime' => [
-        'executor' => 'memory_centric_microtime',
+    'memory_centric_time' => [
+        'executor' => 'memory_centric_time',
     ],
-    'microtime' => [
-        'executor' => 'microtime',
+    'time' => [
+        'executor' => 'time',
     ],
     'debug' => [
         'executor' => 'debug',
@@ -24,5 +24,13 @@ return [
         'executor' => 'debug',
         'times' => [1000000, 200000],
         'spread' => [50000, -12345, 1000],
+    ],
+
+    // deprecated
+    'memory_centric_microtime' => [
+        'executor' => 'memory_centric_time',
+    ],
+    'microtime' => [
+        'executor' => 'time',
     ],
 ];

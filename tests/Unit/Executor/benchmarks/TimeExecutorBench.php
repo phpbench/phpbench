@@ -12,7 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Executor\benchmarks;
 
-class MicrotimeExecutorBench
+class TimeExecutorBench
 {
     private static $workspaceDir = __DIR__ . '/../../../Workspace';
 

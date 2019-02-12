@@ -21,7 +21,7 @@ use PhpBench\Model\ResultInterface;
 class TimeResult implements ResultInterface
 {
     /**
-     * @var int
+     * @var int|float
      */
     private $netTime;
 
@@ -30,7 +30,7 @@ class TimeResult implements ResultInterface
      */
     public static function fromArray(array $values)
     {
-        return new self((int) $values['net']);
+        return new self($values['net']);
     }
 
     /**
@@ -39,15 +39,15 @@ class TimeResult implements ResultInterface
     public function __construct($time)
     {
         Assertion::greaterOrEqualThan($time, 0, 'Time cannot be less than 0, got %s');
-        Assertion::integer($time);
+        Assertion::numeric($time);
 
-        $this->netTime = $time;
+        $this->netTime = is_int($time) ? $time : (float)$time;
     }
 
     /**
      * Return the net-time for this iteration.
      *
-     * @return int
+     * @return int|float
      */
     public function getNet()
     {

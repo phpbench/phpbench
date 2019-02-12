@@ -37,16 +37,31 @@ cleanGarbageCollectionAndDisable();
 
 // run benchmark
 $time = 0.00;
-for ($i = 0; $i < {{ revolutions }}; $i++) {
-    $startTime = microtime(true);
 
-    $benchmark->{{ subject }}({{ parameters }});
+if (function_exists('hrtime')) {
+    for ($i = 0; $i < {{ revolutions }}; $i++) {
+        $startTime = hrtime(true);
 
-    $endTime = microtime(true);
+        $benchmark->{{ subject }}({{ parameters }});
 
-    $time += ($endTime - $startTime) * 1000000;
+        $endTime = hrtime(true);
 
-    cleanGarbageCollectionAndDisable();
+        $time += ($endTime - $startTime) / 1000;
+
+        cleanGarbageCollectionAndDisable();
+    }
+} else {
+    for ($i = 0; $i < {{ revolutions }}; $i++) {
+        $startTime = microtime(true);
+
+        $benchmark->{{ subject }}({{ parameters }});
+
+        $endTime = microtime(true);
+
+        $time += ($endTime - $startTime) * 1000000;
+
+        cleanGarbageCollectionAndDisable();
+    }
 }
 
 // run after methods
@@ -65,7 +80,7 @@ echo serialize([
         'final' => memory_get_usage(),
         'real' => memory_get_usage(true),
     ],
-    'time' => (int) $time,
+    'time' => $time,
     'buffer' => $buffer,
 ]);
 

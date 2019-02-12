@@ -45,7 +45,7 @@ class AnnotationDriverTest extends TestCase
 /**
  * @BeforeClassMethods({"beforeClass"})
  * @AfterClassMethods({"afterClass"})
- * @Executor("microtime", revs=100)
+ * @Executor("time", revs=100)
  */
 EOT;
         $hierarchy = new ReflectionHierarchy();
@@ -55,7 +55,7 @@ EOT;
         $this->assertEquals(['beforeClass'], $metadata->getBeforeClassMethods());
         $this->assertEquals(['afterClass'], $metadata->getAfterClassMethods());
         $this->assertEquals('Test', $metadata->getClass());
-        $this->assertEquals(new ExecutorMetadata('microtime', ['revs' => 100 ]), $metadata->getExecutor());
+        $this->assertEquals(new ExecutorMetadata('time', ['revs' => 100 ]), $metadata->getExecutor());
     }
 
     /**
@@ -106,7 +106,7 @@ EOT;
      * @OutputMode("throughput")
      * @Warmup(501)
      * @Assert("mean < 100")
-     * @Executor("microtime", revs=100)
+     * @Executor("time", revs=100)
      */
 EOT;
         $reflection->methods[$method->name] = $method;
@@ -128,7 +128,7 @@ EOT;
         $this->assertEquals('throughput', $metadata->getOutputMode());
         $this->assertEquals([501], $metadata->getWarmup());
         $this->assertEquals(['value' => 'mean < 100'], $metadata->getAssertions()[0]->getConfig());
-        $this->assertEquals(new ExecutorMetadata('microtime', ['revs' => 100 ]), $metadata->getExecutor());
+        $this->assertEquals(new ExecutorMetadata('time', ['revs' => 100 ]), $metadata->getExecutor());
         $this->assertTrue($metadata->getSkip());
     }
 

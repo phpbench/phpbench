@@ -57,7 +57,7 @@ class XDebugExtension implements ExtensionInterface
             function (Container $container) {
                 return new CompositeExecutor(
                     new ProfileExecutor(
-                        $container->get(CoreExtension::SERVICE_EXECUTOR_BENCHMARK_MICROTIME)
+                        $container->get(CoreExtension::SERVICE_EXECUTOR_BENCHMARK_TIME)
                     ),
                     $container->get(CoreExtension::SERVICE_EXECUTOR_METHOD_REMOTE)
                 );
@@ -69,7 +69,7 @@ class XDebugExtension implements ExtensionInterface
             function (Container $container) {
                 return new CompositeExecutor(
                     new TraceExecutor(
-                        $container->get(CoreExtension::SERVICE_EXECUTOR_BENCHMARK_MICROTIME)
+                        $container->get(CoreExtension::SERVICE_EXECUTOR_BENCHMARK_TIME)
                     ),
                     $container->get(CoreExtension::SERVICE_EXECUTOR_METHOD_REMOTE)
                 );

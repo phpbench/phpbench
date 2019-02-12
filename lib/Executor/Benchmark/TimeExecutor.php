@@ -14,10 +14,10 @@ namespace PhpBench\Executor\Benchmark;
 
 use PhpBench\Benchmark\Remote\Launcher;
 
-class MicrotimeExecutor extends TemplateExecutor
+class TimeExecutor extends TemplateExecutor
 {
     public function __construct(Launcher $launcher)
     {
-        parent::__construct($launcher, __DIR__ . '/template/microtime.template');
+        parent::__construct($launcher, __DIR__ . '/template/time.template');
     }
 }

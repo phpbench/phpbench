@@ -22,7 +22,7 @@ class RunnerConfig
     /**
      * @var string
      */
-    private $executor = 'microtime';
+    private $executor = 'time';
 
     /**
      * @var string

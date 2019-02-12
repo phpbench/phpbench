@@ -102,7 +102,7 @@ class RunnerTest extends TestCase
         $this->executor->healthCheck()->shouldBeCalled();
         $this->executorRegistry = $this->prophesize(ConfigurableRegistry::class);
         $this->assertion = $this->prophesize(AssertionProcessor::class);
-        $this->executorConfig = new Config('test', ['executor' => 'microtime']);
+        $this->executorConfig = new Config('test', ['executor' => 'time']);
         $this->envSupplier = $this->prophesize(Supplier::class);
         $this->informations = new \ArrayObject();
         $this->envSupplier->getInformations()->willReturn($this->informations);
@@ -116,10 +116,10 @@ class RunnerTest extends TestCase
             null
         );
 
-        $this->executorRegistry->getService('microtime')->willReturn(
+        $this->executorRegistry->getService('time')->willReturn(
             $this->executor->reveal()
         );
-        $this->executorRegistry->getConfig('microtime')->willReturn(
+        $this->executorRegistry->getConfig('time')->willReturn(
             $this->executorConfig
         );
     }
@@ -150,7 +150,7 @@ class RunnerTest extends TestCase
             Argument::type('PhpBench\Benchmark\Metadata\SubjectMetadata'),
             Argument::type('PhpBench\Model\Iteration'),
             new Config('test', [
-                'executor' => 'microtime',
+                'executor' => 'time',
             ])
         )
         ->shouldBeCalledTimes(count($revs) * array_sum($iterations))

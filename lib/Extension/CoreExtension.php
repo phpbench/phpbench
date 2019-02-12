@@ -43,8 +43,8 @@ use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Environment\Provider;
 use PhpBench\Environment\Supplier;
 use PhpBench\Executor\Benchmark\DebugExecutor;
-use PhpBench\Executor\Benchmark\MemoryCentricMicrotimeExecutor;
-use PhpBench\Executor\Benchmark\MicrotimeExecutor;
+use PhpBench\Executor\Benchmark\MemoryCentricTimeExecutor;
+use PhpBench\Executor\Benchmark\TimeExecutor;
 use PhpBench\Executor\CompositeExecutor;
 use PhpBench\Executor\Method\RemoteMethodExecutor;
 use PhpBench\Expression\Parser;
@@ -87,11 +87,11 @@ use Symfony\Component\Process\ExecutableFinder;
 
 class CoreExtension implements ExtensionInterface
 {
-    const SERVICE_EXECUTOR_MICROTIME = 'benchmark.executor.microtime';
+    const SERVICE_EXECUTOR_TIME = 'benchmark.executor.time';
     const SERVICE_EXECUTOR_MEMORY = 'benchmark.executor.memory';
     const SERVICE_REMOTE_LAUNCHER = 'benchmark.remote.launcher';
     const SERVICE_EXECUTOR_METHOD_REMOTE = 'executor.method.remote_method';
-    const SERVICE_EXECUTOR_BENCHMARK_MICROTIME = 'executor.benchmark.microtime';
+    const SERVICE_EXECUTOR_BENCHMARK_TIME = 'executor.benchmark.time';
     const TAG_EXECUTOR = 'benchmark_executor';
 
 
@@ -173,22 +173,22 @@ class CoreExtension implements ExtensionInterface
             );
         });
 
-        $container->register(self::SERVICE_EXECUTOR_MICROTIME, function (Container $container) {
+        $container->register(self::SERVICE_EXECUTOR_TIME, function (Container $container) {
             return new CompositeExecutor(
-                $container->get(self::SERVICE_EXECUTOR_BENCHMARK_MICROTIME),
+                $container->get(self::SERVICE_EXECUTOR_BENCHMARK_TIME),
                 $container->get(self::SERVICE_EXECUTOR_METHOD_REMOTE)
             );
-        }, [self::TAG_EXECUTOR => ['name' => 'microtime']]);
+        }, [self::TAG_EXECUTOR => ['name' => 'time']]);
 
         $container->register(self::SERVICE_EXECUTOR_MEMORY, function (Container $container) {
             return new CompositeExecutor(
-                new MemoryCentricMicrotimeExecutor($container->get(self::SERVICE_REMOTE_LAUNCHER)),
+                new MemoryCentricTimeExecutor($container->get(self::SERVICE_REMOTE_LAUNCHER)),
                 $container->get(self::SERVICE_EXECUTOR_METHOD_REMOTE)
             );
-        }, [self::TAG_EXECUTOR => ['name' => 'memory_centric_microtime']]);
+        }, [self::TAG_EXECUTOR => ['name' => 'memory_centric_time']]);
 
-        $container->register(self::SERVICE_EXECUTOR_BENCHMARK_MICROTIME, function (Container $container) {
-            return new MicrotimeExecutor(
+        $container->register(self::SERVICE_EXECUTOR_BENCHMARK_TIME, function (Container $container) {
+            return new TimeExecutor(
                 $container->get(self::SERVICE_REMOTE_LAUNCHER)
             );
         });

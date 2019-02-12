@@ -4,7 +4,7 @@ namespace PhpBench\Executor\Benchmark;
 
 use PhpBench\Benchmark\Remote\Launcher;
 
-class MemoryCentricMicrotimeExecutor extends TemplateExecutor
+class MemoryCentricTimeExecutor extends TemplateExecutor
 {
     public function __construct(Launcher $launcher)
     {

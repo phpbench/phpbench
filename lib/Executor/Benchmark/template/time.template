@@ -36,15 +36,27 @@ if ($warmup) {
 }
 
 // run benchmark
-$startTime = microtime(true);
+if (function_exists('hrtime')) {
+    $startTime = hrtime(true);
 
-for ($i = 0; $i < {{ revolutions }}; $i++) {
-    $benchmark->{{ subject }}({{ parameters }});
+    for ($i = 0; $i < {{ revolutions }}; $i++) {
+        $benchmark->{{ subject }}({{ parameters }});
+    }
+
+    $endTime = hrtime(true);
+
+    $time = ($endTime - $startTime) / 1000;
+} else {
+    $startTime = microtime(true);
+
+    for ($i = 0; $i < {{ revolutions }}; $i++) {
+        $benchmark->{{ subject }}({{ parameters }});
+    }
+
+    $endTime = microtime(true);
+
+    $time = ($endTime - $startTime) * 1000000;
 }
-
-$endTime = microtime(true);
-
-$time = ($endTime - $startTime) * 1000000;
 
 // run after methods
 foreach ($afterMethods as $afterMethod) {
@@ -62,7 +74,7 @@ echo serialize([
         'final' => memory_get_usage(),
         'real' => memory_get_usage(true),
     ],
-    'time' => (int) $time,
+    'time' => $time,
     'buffer' => $buffer,
 ]);
 
