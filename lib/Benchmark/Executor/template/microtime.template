@@ -1,7 +1,7 @@
 <?php
 
 // disable garbage collection
-gc_disable();
+cleanGarbageCollectionAndDisable();
 
 // repress any output from the user scripts
 ob_start();
@@ -56,30 +56,47 @@ echo serialize([
     'buffer' => $buffer,
 ]);
 
-function benchmark($benchmark, $parameters)
+function benchmark($benchmark, $parameters) : float
 {
+    $time = 0.00;
+
     // run the benchmarks: note that passing arguments to the method slightly increases
     // the calltime, so we explicitly do one thing or the other depending on if parameters
     // are provided.
     if ($parameters) {
-        $startTime = microtime(true);
-
         for ($i = 0; $i < {{ revolutions }}; $i++) {
+            $startTime = microtime(true);
+            
             $benchmark->{{ subject }}($parameters);
-        }
 
-        $endTime = microtime(true);
+            $endTime =  microtime(true);
+
+            $time += ($endTime * 1000000) - ($startTime * 1000000);
+
+            cleanGarbageCollectionAndDisable();
+        }
     } else {
-        $startTime = microtime(true);
-
         for ($i = 0; $i < {{ revolutions }}; $i++) {
-            $benchmark->{{ subject }}();
-        }
+            $startTime = microtime(true);
 
-        $endTime = microtime(true);
+            $benchmark->{{ subject }}();
+
+            $endTime =  microtime(true);
+
+            $time += ($endTime * 1000000) - ($startTime * 1000000);
+
+            cleanGarbageCollectionAndDisable();
+        }
     }
 
-    return ($endTime * 1000000) - ($startTime * 1000000);
+    return $time;
+}
+
+function cleanGarbageCollectionAndDisable () : void
+{
+    gc_enable();
+    gc_collect_cycles();
+    gc_disable();
 }
 
 exit(0);
