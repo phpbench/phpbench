@@ -1,8 +1,5 @@
 <?php
 
-// disable garbage collection
-cleanGarbageCollectionAndDisable();
-
 // repress any output from the user scripts
 ob_start();
 
@@ -34,6 +31,9 @@ if ($warmup) {
         $benchmark->{{ subject }}($parameters);
     }
 }
+
+// disable garbage collection
+cleanGarbageCollectionAndDisable();
 
 $time = benchmark($benchmark, $parameters);
 
