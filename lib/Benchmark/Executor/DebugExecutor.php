@@ -32,7 +32,7 @@ class DebugExecutor extends BaseExecutor
     /**
      * {@inheritdoc}
      */
-    public function execute(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config)
+    public function execute(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config): void
     {
         // add 100 bytes of memory.
         $memory = 100;

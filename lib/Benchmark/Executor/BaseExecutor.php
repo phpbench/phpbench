@@ -32,7 +32,7 @@ use PhpBench\Registry\Config;
  *
  * To be refactored...
  */
-abstract class BaseExecutor implements ExecutorInterface
+abstract class BaseExecutor implements BenchmarkExecutorInterface, MethodExecutorInterface
 {
     /**
      * @var Launcher
@@ -62,10 +62,6 @@ abstract class BaseExecutor implements ExecutorInterface
         $payload = $this->launcher->payload(__DIR__ . '/template/microtime.template', $tokens);
 
         $this->launch($payload, $iteration, $config);
-    }
-
-    public function healthCheck(): void
-    {
     }
 
     /**

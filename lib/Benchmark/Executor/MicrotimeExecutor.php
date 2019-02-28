@@ -12,6 +12,8 @@
 
 namespace PhpBench\Benchmark\Executor;
 
+use PhpBench\Benchmark\Metadata\SubjectMetadata;
+use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Benchmark\Remote\Payload;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\Result\MemoryResult;
@@ -24,8 +26,35 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * temp. directory and then executes it. The generated script then returns the
  * time taken to execute the benchmark and the memory consumed.
  */
-class MicrotimeExecutor extends BaseExecutor
+class MicrotimeExecutor implements BenchmarkExecutorInterface
 {
+    /**
+     * @var Launcher
+     */
+    private $launcher;
+
+    public function __construct(Launcher $launcher)
+    {
+        $this->launcher = $launcher;
+    }
+
+    public function execute(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config): void
+    {
+        $tokens = [
+            'class' => $subjectMetadata->getBenchmark()->getClass(),
+            'file' => $subjectMetadata->getBenchmark()->getPath(),
+            'subject' => $subjectMetadata->getName(),
+            'revolutions' => $iteration->getVariant()->getRevolutions(),
+            'beforeMethods' => var_export($subjectMetadata->getBeforeMethods(), true),
+            'afterMethods' => var_export($subjectMetadata->getAfterMethods(), true),
+            'parameters' => var_export($iteration->getVariant()->getParameterSet()->getArrayCopy(), true),
+            'warmup' => $iteration->getVariant()->getWarmup() ?: 0,
+        ];
+        $payload = $this->launcher->payload(__DIR__ . '/template/microtime.template', $tokens);
+
+        $this->launch($payload, $iteration, $config);
+    }
+
     /**
      * {@inheritdoc}
      */

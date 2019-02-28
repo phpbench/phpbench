@@ -18,7 +18,7 @@ use PhpBench\Model\Iteration;
 use PhpBench\Registry\Config;
 use PhpBench\Registry\RegistrableInterface;
 
-interface HealthCheckInterface extends RegistrableInterface
+interface HealthCheckInterface
 {
     /**
      * This method should throw an exception if the executor cannot be used in
