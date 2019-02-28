@@ -10,11 +10,8 @@
  *
  */
 
-namespace PhpBench\Benchmark;
+namespace PhpBench\Benchmark\Executor;
 
-use PhpBench\Benchmark\Executor\BenchmarkExecutorInterface;
-use PhpBench\Benchmark\Executor\HealthCheckInterface;
-use PhpBench\Benchmark\Executor\MethodExecutorInterface;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Model\Iteration;
@@ -26,6 +23,7 @@ use PhpBench\Registry\RegistrableInterface;
  * and returning the timing metrics, and optionally the memory and profiling
  * data.
  */
-interface ExecutorInterface extends BenchmarkExecutorInterface, HealthCheckInterface, MethodExecutorInterface
+interface BenchmarkExecutorInterface extends RegistrableInterface
 {
+    public function execute(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config): void;
 }

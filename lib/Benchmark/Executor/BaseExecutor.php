@@ -47,7 +47,7 @@ abstract class BaseExecutor implements ExecutorInterface
     /**
      * {@inheritdoc}
      */
-    public function execute(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config)
+    public function execute(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config): void
     {
         $tokens = [
             'class' => $subjectMetadata->getBenchmark()->getClass(),
@@ -61,10 +61,10 @@ abstract class BaseExecutor implements ExecutorInterface
         ];
         $payload = $this->launcher->payload(__DIR__ . '/template/microtime.template', $tokens);
 
-        return $this->launch($payload, $iteration, $config);
+        $this->launch($payload, $iteration, $config);
     }
 
-    public function healthCheck()
+    public function healthCheck(): void
     {
     }
 
@@ -76,7 +76,7 @@ abstract class BaseExecutor implements ExecutorInterface
     /**
      * {@inheritdoc}
      */
-    public function executeMethods(BenchmarkMetadata $benchmark, array $methods)
+    public function executeMethods(BenchmarkMetadata $benchmark, array $methods): void
     {
         $tokens = [
             'class' => $benchmark->getClass(),
