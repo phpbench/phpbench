@@ -85,7 +85,7 @@ class Payload
         $this->wrapper = $wrapper;
     }
 
-    public function mergePhpConfig(array $phpConfig)
+    public function mergePhpConfig(array $phpConfig): void
     {
         $this->phpConfig = array_merge(
             $this->phpConfig,

@@ -13,6 +13,9 @@
 namespace PhpBench\Extensions\XDebug\Executor;
 
 use PhpBench\Benchmark\Executor\BaseExecutor;
+use PhpBench\Benchmark\Executor\BenchmarkExecutorInterface;
+use PhpBench\Benchmark\Executor\Benchmark\TemplateExecutor;
+use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\Payload;
 use PhpBench\Extensions\XDebug\XDebugUtil;
 use PhpBench\Model\Iteration;
@@ -22,38 +25,16 @@ use PhpBench\PhpBench;
 use PhpBench\Registry\Config;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ProfileExecutor extends BaseExecutor
+class ProfileExecutor implements BenchmarkExecutorInterface
 {
     /**
-     * {@inheritdoc}
+     * @var TemplateExecutor
      */
-    public function launch(Payload $payload, Iteration $iteration, Config $config)
+    private $innerExecutor;
+
+    public function __construct(BenchmarkExecutorInterface $innerExecutor)
     {
-        $outputDir = $config['output_dir'];
-        $callback = $config['callback'];
-        $name = XDebugUtil::filenameFromIteration($iteration, '.cachegrind');
-
-        $phpConfig = [
-            'xdebug.profiler_enable' => 1,
-            'xdebug.profiler_output_dir' => PhpBench::normalizePath($outputDir),
-            'xdebug.profiler_output_name' => $name,
-        ];
-
-        $payload->mergePhpConfig($phpConfig);
-        $result = $payload->launch();
-
-        if (isset($result['buffer']) && $result['buffer']) {
-            throw new \RuntimeException(sprintf(
-                'Benchmark made some noise: %s',
-                $result['buffer']
-            ));
-        }
-
-        $callback($iteration, $result);
-        $iteration->setResult(new TimeResult($result['time']));
-        $iteration->setResult(MemoryResult::fromArray($result['mem']));
-
-        return $result;
+        $this->innerExecutor = $innerExecutor;
     }
 
     /**
@@ -61,10 +42,31 @@ class ProfileExecutor extends BaseExecutor
      */
     public function configure(OptionsResolver $options)
     {
+        $this->innerExecutor->configure($options);
+
         $options->setDefaults([
             'callback' => function () {
             },
             'output_dir' => 'xdebug',
         ]);
+    }
+
+    public function execute(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config): void
+    {
+        $outputDir = $config['output_dir'];
+        $callback = $config['callback'];
+        $name = XDebugUtil::filenameFromIteration($iteration, '.cachegrind');
+
+        $config[TemplateExecutor::OPTION_PHP_CONFIG] = [
+            'xdebug.profiler_enable' => 1,
+            'xdebug.profiler_output_dir' => PhpBench::normalizePath($outputDir),
+            'xdebug.profiler_output_name' => $name,
+        ];
+
+        $this->innerExecutor->execute(
+            $subjectMetadata, $iteration, $config
+        );
+
+        $callback($iteration);
     }
 }
