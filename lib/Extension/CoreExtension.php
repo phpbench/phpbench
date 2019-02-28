@@ -88,6 +88,7 @@ class CoreExtension implements ExtensionInterface
     const SERVICE_EXECUTOR_MICROTIME = 'benchmark.executor.microtime';
     const SERVICE_REMOTE_LAUNCHER = 'benchmark.remote.launcher';
     const SERVICE_EXECUTOR_METHOD_REMOTE = 'executor.method.remote_method';
+    const SERVICE_EXECUTOR_BENCHMARK_MICROTIME = 'executor.benchmark.microtime';
 
 
     public function getDefaultConfig()
@@ -170,12 +171,15 @@ class CoreExtension implements ExtensionInterface
 
         $container->register(self::SERVICE_EXECUTOR_MICROTIME, function (Container $container) {
             return new CompositeExecutor(
-                new MicrotimeExecutor(
-                    $container->get(self::SERVICE_REMOTE_LAUNCHER)
-                ),
                 $container->get(self::SERVICE_EXECUTOR_METHOD_REMOTE)
             );
         }, ['benchmark_executor' => ['name' => 'microtime']]);
+
+        $container->register(self::SERVICE_EXECUTOR_BENCHMARK_MICROTIME, function (Container $container) {
+            return new MicrotimeExecutor(
+                $container->get(self::SERVICE_REMOTE_LAUNCHER)
+            );
+        });
 
         $container->register(self::SERVICE_EXECUTOR_METHOD_REMOTE, function (Container $container) {
             return new RemoteMethodExecutor(

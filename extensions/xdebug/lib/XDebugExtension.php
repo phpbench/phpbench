@@ -69,8 +69,11 @@ class XDebugExtension implements ExtensionInterface
 
         $container->register('xdebug.executor.xdebug_trace',
             function (Container $container) {
-                return new TraceExecutor(
-                    $container->get('benchmark.remote.launcher')
+                return new CompositeExecutor(
+                    new TraceExecutor(
+                        $container->get(CoreExtension::SERVICE_EXECUTOR_BENCHMARK_MICROTIME)
+                    ),
+                    $container->get(CoreExtension::SERVICE_EXECUTOR_METHOD_REMOTE)
                 );
             },
             ['benchmark_executor' => ['name' => 'xdebug_trace'],
