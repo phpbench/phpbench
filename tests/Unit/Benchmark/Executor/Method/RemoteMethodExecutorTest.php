@@ -21,10 +21,10 @@ class RemoteMethodExecutorTest extends TestCase
 
     public function setUp()
     {
-        $this->staticMethodFile = __DIR__ . '/../Benchmark/benchmarks/static_method.tmp';
+        $this->staticMethodFile = __DIR__ . '/../benchmarks/static_method.tmp';
         $this->executor = new RemoteMethodExecutor(new Launcher());
         $this->benchmarkMetadata = $this->prophesize(BenchmarkMetadata::class);
-        $this->benchmarkMetadata->getPath()->willReturn(__DIR__ . '/../Benchmark/benchmarks/MicrotimeExecutorBench.php');
+        $this->benchmarkMetadata->getPath()->willReturn(__DIR__ . '/../benchmarks/MicrotimeExecutorBench.php');
         $this->benchmarkMetadata->getClass()->willReturn('PhpBench\Tests\Unit\Benchmark\Executor\benchmarks\MicrotimeExecutorBench');
     }
 
