@@ -10,29 +10,24 @@
  *
  */
 
-namespace PhpBench\Benchmark\Executor;
+namespace PhpBench\Benchmark\Executor\Benchmark;
 
-use PhpBench\Benchmark\ExecutorInterface;
-use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
+use PhpBench\Benchmark\Executor\BenchmarkExecutorInterface;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Benchmark\Remote\Payload;
 use PhpBench\Model\Iteration;
+use PhpBench\Model\Result\MemoryResult;
+use PhpBench\Model\Result\TimeResult;
 use PhpBench\Registry\Config;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * This is a bad class.
- *
- * The executor bundles both the methods for executing before and after and the
- * benchmark iteration executor.
- *
- * The standard use case for an Executor is to execute or obtain the iteration
- * measurements in a different way (e.g. xdebug, blackfire), the executeMethods logic
- * has nothing to do with this and so this awkward base class is required.
- *
- * To be refactored...
+ * This class generates a benchmarking script and places it in the systems
+ * temp. directory and then executes it. The generated script then returns the
+ * time taken to execute the benchmark and the memory consumed.
  */
-abstract class BaseExecutor implements BenchmarkExecutorInterface, MethodExecutorInterface
+class MicrotimeExecutor implements BenchmarkExecutorInterface
 {
     /**
      * @var Launcher
@@ -44,9 +39,6 @@ abstract class BaseExecutor implements BenchmarkExecutorInterface, MethodExecuto
         $this->launcher = $launcher;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function execute(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config): void
     {
         $tokens = [
@@ -65,22 +57,35 @@ abstract class BaseExecutor implements BenchmarkExecutorInterface, MethodExecuto
     }
 
     /**
-     * Launch the payload. This method has to return the ResultCollection.
+     * {@inheritdoc}
      */
-    abstract protected function launch(Payload $payload, Iteration $iteration, Config $config);
+    public function launch(Payload $payload, Iteration $iteration, Config $options)
+    {
+        $phpConfig = [
+            'max_execution_time' => 0,
+        ];
+
+        $payload->mergePhpConfig($phpConfig);
+        $result = $payload->launch();
+
+        if (isset($result['buffer']) && $result['buffer']) {
+            throw new \RuntimeException(sprintf(
+                'Benchmark made some noise: %s',
+                $result['buffer']
+            ));
+        }
+
+        $iteration->setResult(new TimeResult($result['time']));
+        $iteration->setResult(MemoryResult::fromArray($result['mem']));
+    }
 
     /**
      * {@inheritdoc}
      */
-    public function executeMethods(BenchmarkMetadata $benchmark, array $methods): void
+    public function configure(OptionsResolver $options)
     {
-        $tokens = [
-            'class' => $benchmark->getClass(),
-            'file' => $benchmark->getPath(),
-            'methods' => var_export($methods, true),
-        ];
-
-        $payload = $this->launcher->payload(__DIR__ . '/template/execute_static_methods.template', $tokens);
-        $payload->launch();
+        $options->setDefaults([
+            'php_config' => [],
+        ]);
     }
 }

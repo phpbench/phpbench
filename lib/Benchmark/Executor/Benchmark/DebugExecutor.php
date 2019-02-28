@@ -10,8 +10,9 @@
  *
  */
 
-namespace PhpBench\Benchmark\Executor;
+namespace PhpBench\Benchmark\Executor\Benchmark;
 
+use PhpBench\Benchmark\Executor\BenchmarkExecutorInterface;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\Payload;
 use PhpBench\Model\Iteration;
@@ -24,7 +25,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * This executor for testing purposes. It always returns constant times, it
  * does not actually execute any benchmarking.
  */
-class DebugExecutor extends BaseExecutor
+class DebugExecutor implements BenchmarkExecutorInterface
 {
     private $variantTimes = [];
     private $index = 0;
@@ -64,14 +65,6 @@ class DebugExecutor extends BaseExecutor
         }
 
         $iteration->setResult(new TimeResult($time));
-    }
-
-    /**
-     * TODO: Decouple the logic from the base class.
-     * {@inheritdoc}
-     */
-    protected function launch(Payload $payload, Iteration $iteration, Config $config)
-    {
     }
 
     /**

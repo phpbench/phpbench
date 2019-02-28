@@ -10,9 +10,9 @@
  *
  */
 
-namespace PhpBench\Tests\Unit\Benchmark\Executor;
+namespace PhpBench\Tests\Unit\Benchmark\Executor\Benchmark;
 
-use PhpBench\Benchmark\Executor\MicrotimeExecutor;
+use PhpBench\Benchmark\Executor\Benchmark\MicrotimeExecutor;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\Launcher;
@@ -235,14 +235,5 @@ class MicrotimeExecutorTest extends TestCase
         $this->assertFileExists($this->paramAfterFile);
         $params = json_decode(file_get_contents($this->paramAfterFile), true);
         $this->assertEquals($expected->getArrayCopy(), $params);
-    }
-
-    /**
-     * It should execute arbitrary methods on the benchmark class.
-     */
-    public function testExecuteMethods()
-    {
-        $this->executor->executeMethods($this->benchmarkMetadata->reveal(), ['initDatabase']);
-        $this->assertFileExists($this->staticMethodFile);
     }
 }
