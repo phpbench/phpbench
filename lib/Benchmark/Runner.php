@@ -17,6 +17,8 @@ use PhpBench\Assertion\AssertionFailure;
 use PhpBench\Assertion\AssertionProcessor;
 use PhpBench\Assertion\AssertionWarning;
 use PhpBench\Benchmark\Exception\StopOnErrorException;
+use PhpBench\Benchmark\Executor\BenchmarkExecutorInterface;
+use PhpBench\Benchmark\Executor\HealthCheckInterface;
 use PhpBench\Benchmark\Metadata\AssertionMetadata;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
@@ -206,9 +208,11 @@ class Runner
         }
     }
 
-    private function runSubject(ExecutorInterface $executor, RunnerConfig $config, Subject $subject, SubjectMetadata $subjectMetadata)
+    private function runSubject(BenchmarkExecutorInterface $executor, RunnerConfig $config, Subject $subject, SubjectMetadata $subjectMetadata)
     {
-        $executor->healthCheck();
+        if ($executor instanceof HealthCheckInterface) {
+            $executor->healthCheck();
+        }
 
         $parameterSets = $config->getParameterSets($subjectMetadata->getParameterSets());
         $paramsIterator = new CartesianParameterIterator($parameterSets);
@@ -249,7 +253,7 @@ class Runner
     }
 
     private function runVariant(
-        ExecutorInterface $executor,
+        BenchmarkExecutorInterface $executor,
         Config $executorConfig,
         RunnerConfig $config,
         SubjectMetadata $subjectMetadata,
@@ -312,7 +316,7 @@ class Runner
         $this->logger->variantEnd($variant);
     }
 
-    public function runIteration(ExecutorInterface $executor, Config $executorConfig, Iteration $iteration, SubjectMetadata $subjectMetadata)
+    public function runIteration(BenchmarkExecutorInterface $executor, Config $executorConfig, Iteration $iteration, SubjectMetadata $subjectMetadata)
     {
         $this->logger->iterationStart($iteration);
         $executor->execute($subjectMetadata, $iteration, $executorConfig);
