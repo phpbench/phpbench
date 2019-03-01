@@ -17,8 +17,8 @@ use PhpBench\Assertion\AssertionProcessor;
 use PhpBench\Assertion\ComparatorAsserter;
 use PhpBench\Benchmark\BaselineManager;
 use PhpBench\Benchmark\BenchmarkFinder;
-use PhpBench\Executor\CompositeExecutor;
 use PhpBench\Executor\Benchmark\DebugExecutor;
+use PhpBench\Executor\CompositeExecutor;
 use PhpBench\Executor\Method\RemoteMethodExecutor;
 use PhpBench\Executor\Benchmark\MicrotimeExecutor;
 use PhpBench\Benchmark\Metadata\AnnotationReader;
@@ -189,9 +189,7 @@ class CoreExtension implements ExtensionInterface
         });
 
         $container->register('benchmark.executor.debug', function (Container $container) {
-            return new DebugExecutor(
-                $container->get(self::SERVICE_REMOTE_LAUNCHER)
-            );
+            return new DebugExecutor();
         }, ['benchmark_executor' => ['name' => 'debug']]);
 
         $container->register('benchmark.finder', function (Container $container) {
