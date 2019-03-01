@@ -12,18 +12,13 @@
 
 namespace PhpBench\Extensions\XDebug\Executor;
 
-use PhpBench\Benchmark\Executor\BaseExecutor;
 use PhpBench\Benchmark\Executor\BenchmarkExecutorInterface;
 use PhpBench\Benchmark\Executor\Benchmark\TemplateExecutor;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
-use PhpBench\Benchmark\Remote\Launcher;
-use PhpBench\Benchmark\Remote\Payload;
 use PhpBench\Extensions\XDebug\Converter\TraceToXmlConverter;
 use PhpBench\Extensions\XDebug\Result\XDebugTraceResult;
 use PhpBench\Extensions\XDebug\XDebugUtil;
 use PhpBench\Model\Iteration;
-use PhpBench\Model\Result\MemoryResult;
-use PhpBench\Model\Result\TimeResult;
 use PhpBench\Registry\Config;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -54,8 +49,7 @@ class TraceExecutor implements BenchmarkExecutorInterface
         TemplateExecutor $innerExecutor,
         TraceToXmlConverter $converter = null,
         Filesystem $filesystem = null
-    )
-    {
+    ) {
         $this->filesystem = $filesystem ? $filesystem : new Filesystem();
         $this->converter = $converter ?: new TraceToXmlConverter();
         $this->innerExecutor = $innerExecutor;
@@ -68,8 +62,7 @@ class TraceExecutor implements BenchmarkExecutorInterface
         SubjectMetadata $subjectMetadata,
         Iteration $iteration,
         Config $config
-    ): void
-    {
+    ): void {
         $name = XDebugUtil::filenameFromIteration($iteration);
         $dir = $config['output_dir'];
 
@@ -141,5 +134,4 @@ class TraceExecutor implements BenchmarkExecutorInterface
             'output_dir' => 'xdebug',
         ]);
     }
-
 }

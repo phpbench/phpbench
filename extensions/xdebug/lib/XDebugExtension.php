@@ -12,9 +12,7 @@
 
 namespace PhpBench\Extensions\XDebug;
 
-use PhpBench\Benchmark\Executor\Benchmark\MicrotimeExecutor;
 use PhpBench\Benchmark\Executor\CompositeExecutor;
-use PhpBench\Benchmark\Executor\Method\RemoteMethodExecutor;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Extension\CoreExtension;
@@ -59,7 +57,7 @@ class XDebugExtension implements ExtensionInterface
             function (Container $container) {
                 return new CompositeExecutor(
                     new ProfileExecutor(
-                        $container->get(CoreExtension::SERVICE_EXECUTOR_MICROTIME)
+                        $container->get(CoreExtension::SERVICE_EXECUTOR_BENCHMARK_MICROTIME)
                     ),
                     $container->get(CoreExtension::SERVICE_EXECUTOR_METHOD_REMOTE)
                 );

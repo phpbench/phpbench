@@ -12,15 +12,7 @@
 
 namespace PhpBench\Benchmark\Executor\Benchmark;
 
-use PhpBench\Benchmark\Executor\BenchmarkExecutorInterface;
-use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\Launcher;
-use PhpBench\Benchmark\Remote\Payload;
-use PhpBench\Model\Iteration;
-use PhpBench\Model\Result\MemoryResult;
-use PhpBench\Model\Result\TimeResult;
-use PhpBench\Registry\Config;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MicrotimeExecutor extends TemplateExecutor
 {

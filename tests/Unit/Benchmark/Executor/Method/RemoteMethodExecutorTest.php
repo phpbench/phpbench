@@ -19,7 +19,7 @@ class RemoteMethodExecutorTest extends TestCase
      */
     private $executor;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->staticMethodFile = __DIR__ . '/../benchmarks/static_method.tmp';
         $this->executor = new RemoteMethodExecutor(new Launcher());

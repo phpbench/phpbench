@@ -15,11 +15,6 @@ namespace PhpBench\Benchmark;
 use PhpBench\Benchmark\Executor\BenchmarkExecutorInterface;
 use PhpBench\Benchmark\Executor\HealthCheckInterface;
 use PhpBench\Benchmark\Executor\MethodExecutorInterface;
-use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
-use PhpBench\Benchmark\Metadata\SubjectMetadata;
-use PhpBench\Model\Iteration;
-use PhpBench\Registry\Config;
-use PhpBench\Registry\RegistrableInterface;
 
 /**
  * Executors are responsible for executing the benchmark class

@@ -12,15 +12,11 @@
 
 namespace PhpBench\Extensions\XDebug\Executor;
 
-use PhpBench\Benchmark\Executor\BaseExecutor;
 use PhpBench\Benchmark\Executor\BenchmarkExecutorInterface;
 use PhpBench\Benchmark\Executor\Benchmark\TemplateExecutor;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
-use PhpBench\Benchmark\Remote\Payload;
 use PhpBench\Extensions\XDebug\XDebugUtil;
 use PhpBench\Model\Iteration;
-use PhpBench\Model\Result\MemoryResult;
-use PhpBench\Model\Result\TimeResult;
 use PhpBench\PhpBench;
 use PhpBench\Registry\Config;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -32,7 +28,7 @@ class ProfileExecutor implements BenchmarkExecutorInterface
      */
     private $innerExecutor;
 
-    public function __construct(BenchmarkExecutorInterface $innerExecutor)
+    public function __construct(TemplateExecutor $innerExecutor)
     {
         $this->innerExecutor = $innerExecutor;
     }

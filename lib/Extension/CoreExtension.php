@@ -171,6 +171,7 @@ class CoreExtension implements ExtensionInterface
 
         $container->register(self::SERVICE_EXECUTOR_MICROTIME, function (Container $container) {
             return new CompositeExecutor(
+                $container->get(self::SERVICE_EXECUTOR_BENCHMARK_MICROTIME),
                 $container->get(self::SERVICE_EXECUTOR_METHOD_REMOTE)
             );
         }, ['benchmark_executor' => ['name' => 'microtime']]);

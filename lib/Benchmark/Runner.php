@@ -17,7 +17,6 @@ use PhpBench\Assertion\AssertionFailure;
 use PhpBench\Assertion\AssertionProcessor;
 use PhpBench\Assertion\AssertionWarning;
 use PhpBench\Benchmark\Exception\StopOnErrorException;
-use PhpBench\Benchmark\ExecutorInterface;
 use PhpBench\Benchmark\Executor\BenchmarkExecutorInterface;
 use PhpBench\Benchmark\Executor\HealthCheckInterface;
 use PhpBench\Benchmark\Executor\MethodExecutorInterface;

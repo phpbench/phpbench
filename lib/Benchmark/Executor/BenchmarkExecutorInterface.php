@@ -12,7 +12,6 @@
 
 namespace PhpBench\Benchmark\Executor;
 
-use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Model\Iteration;
 use PhpBench\Registry\Config;
