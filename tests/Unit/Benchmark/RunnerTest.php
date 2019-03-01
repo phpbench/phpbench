@@ -14,7 +14,7 @@ namespace PhpBench\Tests\Unit\Benchmark;
 
 use PhpBench\Assertion\AssertionProcessor;
 use PhpBench\Benchmark\BenchmarkFinder;
-use PhpBench\Benchmark\ExecutorInterface;
+use PhpBench\Executor;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Runner;
@@ -94,7 +94,7 @@ class RunnerTest extends TestCase
         $this->benchmarkFinder->findBenchmarks(self::TEST_PATH, [], [])->willReturn([
             $this->benchmark->reveal(),
         ]);
-        $this->executor = $this->prophesize(ExecutorInterface::class);
+        $this->executor = $this->prophesize(Executor::class);
         $this->executor->healthCheck()->shouldBeCalled();
         $this->executorRegistry = $this->prophesize(ConfigurableRegistry::class);
         $this->assertion = $this->prophesize(AssertionProcessor::class);

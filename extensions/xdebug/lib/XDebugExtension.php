@@ -12,7 +12,7 @@
 
 namespace PhpBench\Extensions\XDebug;
 
-use PhpBench\Benchmark\Executor\CompositeExecutor;
+use PhpBench\Executor\CompositeExecutor;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Extension\CoreExtension;

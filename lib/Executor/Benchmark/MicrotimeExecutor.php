@@ -10,7 +10,7 @@
  *
  */
 
-namespace PhpBench\Benchmark\Executor\Benchmark;
+namespace PhpBench\Executor\Benchmark;
 
 use PhpBench\Benchmark\Remote\Launcher;
 

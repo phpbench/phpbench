@@ -1,8 +1,8 @@
 <?php
 
-namespace PhpBench\Benchmark\Executor;
+namespace PhpBench\Executor;
 
-use PhpBench\Benchmark\Executor\HealthCheck\AlwaysFineHealthCheck;
+use PhpBench\Executor\HealthCheck\AlwaysFineHealthCheck;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Model\Iteration;

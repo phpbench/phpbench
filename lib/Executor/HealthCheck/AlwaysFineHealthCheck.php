@@ -1,8 +1,8 @@
 <?php
 
-namespace PhpBench\Benchmark\Executor\HealthCheck;
+namespace PhpBench\Executor\HealthCheck;
 
-use PhpBench\Benchmark\Executor\HealthCheckInterface;
+use PhpBench\Executor\HealthCheckInterface;
 
 class AlwaysFineHealthCheck implements HealthCheckInterface
 {

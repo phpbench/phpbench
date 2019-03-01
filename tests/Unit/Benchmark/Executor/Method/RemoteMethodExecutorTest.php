@@ -3,7 +3,7 @@
 namespace PhpBench\Tests\Unit\Benchmark\Executor\Method;
 
 use PHPUnit\Framework\TestCase;
-use PhpBench\Benchmark\Executor\Method\RemoteMethodExecutor;
+use PhpBench\Executor\Method\RemoteMethodExecutor;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Remote\Launcher;
 

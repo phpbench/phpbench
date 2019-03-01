@@ -12,7 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Benchmark\Executor\Benchmark;
 
-use PhpBench\Benchmark\Executor\Benchmark\DebugExecutor;
+use PhpBench\Executor\Benchmark\DebugExecutor;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Model\Iteration;

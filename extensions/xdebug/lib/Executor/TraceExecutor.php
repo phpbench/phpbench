@@ -12,8 +12,8 @@
 
 namespace PhpBench\Extensions\XDebug\Executor;
 
-use PhpBench\Benchmark\Executor\BenchmarkExecutorInterface;
-use PhpBench\Benchmark\Executor\Benchmark\TemplateExecutor;
+use PhpBench\Executor\BenchmarkExecutorInterface;
+use PhpBench\Executor\Benchmark\TemplateExecutor;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Extensions\XDebug\Converter\TraceToXmlConverter;
 use PhpBench\Extensions\XDebug\Result\XDebugTraceResult;

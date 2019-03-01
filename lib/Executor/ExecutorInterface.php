@@ -10,17 +10,17 @@
  *
  */
 
-namespace PhpBench\Benchmark;
+namespace PhpBench;
 
-use PhpBench\Benchmark\Executor\BenchmarkExecutorInterface;
-use PhpBench\Benchmark\Executor\HealthCheckInterface;
-use PhpBench\Benchmark\Executor\MethodExecutorInterface;
+use PhpBench\Executor\BenchmarkExecutorInterface;
+use PhpBench\Executor\HealthCheckInterface;
+use PhpBench\Executor\MethodExecutorInterface;
 
 /**
  * Executors are responsible for executing the benchmark class
  * and returning the timing metrics, and optionally the memory and profiling
  * data.
  */
-interface ExecutorInterface extends BenchmarkExecutorInterface, HealthCheckInterface, MethodExecutorInterface
+interface Executor extends BenchmarkExecutorInterface, HealthCheckInterface, MethodExecutorInterface
 {
 }

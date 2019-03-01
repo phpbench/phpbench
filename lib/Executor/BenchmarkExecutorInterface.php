@@ -10,7 +10,7 @@
  *
  */
 
-namespace PhpBench\Benchmark\Executor;
+namespace PhpBench\Executor;
 
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Model\Iteration;

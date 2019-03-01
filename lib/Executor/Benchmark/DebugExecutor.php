@@ -10,9 +10,9 @@
  *
  */
 
-namespace PhpBench\Benchmark\Executor\Benchmark;
+namespace PhpBench\Executor\Benchmark;
 
-use PhpBench\Benchmark\Executor\BenchmarkExecutorInterface;
+use PhpBench\Executor\BenchmarkExecutorInterface;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\Result\MemoryResult;

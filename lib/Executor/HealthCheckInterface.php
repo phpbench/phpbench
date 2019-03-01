@@ -10,11 +10,13 @@
  *
  */
 
-namespace PhpBench\Benchmark\Executor;
+namespace PhpBench\Executor;
 
-use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
-
-interface MethodExecutorInterface
+interface HealthCheckInterface
 {
-    public function executeMethods(BenchmarkMetadata $benchmark, array $methods): void;
+    /**
+     * This method should throw an exception if the executor cannot be used in
+     * the current environment.
+     */
+    public function healthCheck(): void;
 }

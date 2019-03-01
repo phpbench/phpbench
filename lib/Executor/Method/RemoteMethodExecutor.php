@@ -1,8 +1,8 @@
 <?php
 
-namespace PhpBench\Benchmark\Executor\Method;
+namespace PhpBench\Executor\Method;
 
-use PhpBench\Benchmark\Executor\MethodExecutorInterface;
+use PhpBench\Executor\MethodExecutorInterface;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Remote\Launcher;
 

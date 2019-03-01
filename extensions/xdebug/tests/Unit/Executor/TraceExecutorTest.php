@@ -12,7 +12,7 @@
 
 namespace PhpBench\Extensions\XDebug\Tests\Unit\Executor;
 
-use PhpBench\Benchmark\Executor\Benchmark\TemplateExecutor;
+use PhpBench\Executor\Benchmark\TemplateExecutor;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\Payload;
 use PhpBench\Dom\Document;
