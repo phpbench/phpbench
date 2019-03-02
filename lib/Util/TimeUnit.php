@@ -96,14 +96,8 @@ class TimeUnit
 
     /**
      * Convert instance value to given unit.
-     *
-     * @param int $time
-     * @param string $destUnit
-     * @param string $mode
-     *
-     * @return int
      */
-    public function toDestUnit($time, $destUnit = null, $mode = null)
+    public function toDestUnit(float $time, string $destUnit = null, string $mode = null)
     {
         return self::convert($time, $this->sourceUnit, $this->getDestUnit($destUnit), $this->getMode($mode));
     }
@@ -211,12 +205,8 @@ class TimeUnit
 
     /**
      * Return the destination mode.
-     *
-     * @param string $mode
-     *
-     * @return string
      */
-    public function getMode($mode = null)
+    public function getMode(string $mode = null): string
     {
         // if a mode is given, use that
         if ($mode) {
@@ -229,28 +219,16 @@ class TimeUnit
 
     /**
      * Return the destination unit suffix.
-     *
-     * @param string $unit
-     *
-     * @return string
      */
-    public function getDestSuffix($unit = null, $mode = null)
+    public function getDestSuffix(string $unit = null, string $mode = null)
     {
         return self::getSuffix($this->getDestUnit($unit), $this->getMode($mode));
     }
 
     /**
      * Return a human readable representation of the unit including the suffix.
-     *
-     * @param int $time
-     * @param string $unit
-     * @param string $mode
-     * @param int $precision
-     * @param bool $suffix
-     *
-     * @return string
      */
-    public function format($time, $unit = null, $mode = null, $precision = null, $suffix = true)
+    public function format(float $time, string $unit = null, string $mode = null, int $precision = null, bool $suffix = true)
     {
         $value = number_format($this->toDestUnit($time, $unit, $mode), $precision !== null ? $precision : $this->precision);
 
@@ -265,17 +243,8 @@ class TimeUnit
 
     /**
      * Convert given time in given unit to given destination unit in given mode.
-     *
-     * @static
-     *
-     * @param int $time
-     * @param string $unit
-     * @param string $destUnit
-     * @param string $mode
-     *
-     * @return int
      */
-    public static function convert($time, $unit, $destUnit, $mode)
+    public static function convert(float $time, string $unit, string $destUnit, string $mode)
     {
         self::validateMode($mode);
 
@@ -289,16 +258,8 @@ class TimeUnit
     /**
      * Convert a given time INTO the given unit. That is, how many times the
      * given time will fit into the the destination unit. i.e. `x` per unit.
-     *
-     * @static
-     *
-     * @param int $time
-     * @param string $unit
-     * @param string $destUnit
-     *
-     * @return int
      */
-    public static function convertInto($time, $unit, $destUnit)
+    public static function convertInto(float $time, string $unit, string $destUnit)
     {
         if (!$time) {
             return 0;
@@ -318,16 +279,8 @@ class TimeUnit
     /**
      * Convert the given time from the given unit to the given destination
      * unit.
-     *
-     * @static
-     *
-     * @param int $time
-     * @param string $unit
-     * @param string $destUnit
-     *
-     * @return int
      */
-    public static function convertTo($time, $unit, $destUnit)
+    public static function convertTo(float $time, string $unit, string $destUnit)
     {
         self::validateUnit($unit);
         self::validateUnit($destUnit);
@@ -365,13 +318,6 @@ class TimeUnit
 
     private static function validateUnit($unit)
     {
-        if (!is_string($unit)) {
-            throw new \InvalidArgumentException(sprintf(
-                'Expected string value for time unit, got "%s"',
-                is_object($unit) ? get_class($unit) : gettype($unit)
-            ));
-        }
-
         if (!isset(self::$map[$unit])) {
             throw new \InvalidArgumentException(sprintf(
                 'Invalid time unit "%s", available units: "%s"',
