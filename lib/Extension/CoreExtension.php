@@ -44,6 +44,8 @@ use PhpBench\Environment\Provider;
 use PhpBench\Environment\Supplier;
 use PhpBench\Executor\Benchmark\DebugExecutor;
 use PhpBench\Executor\Benchmark\MemoryCentricMicrotimeExecutor;
+use PhpBench\Executor\Benchmark\InternalHrtimeExecutor;
+use PhpBench\Executor\Benchmark\HrtimeExecutor;
 use PhpBench\Executor\Benchmark\MicrotimeExecutor;
 use PhpBench\Executor\CompositeExecutor;
 use PhpBench\Executor\Method\RemoteMethodExecutor;
@@ -89,6 +91,7 @@ class CoreExtension implements ExtensionInterface
 {
     const SERVICE_EXECUTOR_MICROTIME = 'benchmark.executor.microtime';
     const SERVICE_EXECUTOR_MEMORY = 'benchmark.executor.memory';
+    const SERVICE_EXECUTOR_HRTIME = 'benchmark.executor.hrtime';
     const SERVICE_REMOTE_LAUNCHER = 'benchmark.remote.launcher';
     const SERVICE_EXECUTOR_METHOD_REMOTE = 'executor.method.remote_method';
     const SERVICE_EXECUTOR_BENCHMARK_MICROTIME = 'executor.benchmark.microtime';
@@ -186,6 +189,17 @@ class CoreExtension implements ExtensionInterface
                 $container->get(self::SERVICE_EXECUTOR_METHOD_REMOTE)
             );
         }, [self::TAG_EXECUTOR => ['name' => 'memory_centric_microtime']]);
+
+        $container->register('benchmark.service.intrenal_hrtime', function (Container $container) {
+            return new InternalHrtimeExecutor();
+        }, ['benchmark_executor' => ['name' => 'internal_hrtime']]);
+
+        $container->register(self::SERVICE_EXECUTOR_HRTIME, function (Container $container) {
+            return new CompositeExecutor(
+                new HrtimeExecutor($container->get(self::SERVICE_REMOTE_LAUNCHER)),
+                $container->get(self::SERVICE_EXECUTOR_METHOD_REMOTE)
+            );
+        }, ['benchmark_executor' => ['name' => 'hrtime']]);
 
         $container->register(self::SERVICE_EXECUTOR_BENCHMARK_MICROTIME, function (Container $container) {
             return new MicrotimeExecutor(
