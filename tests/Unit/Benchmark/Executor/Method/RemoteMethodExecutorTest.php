@@ -5,7 +5,6 @@ namespace PhpBench\Tests\Unit\Benchmark\Executor\Method;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Executor\Method\RemoteMethodExecutor;
-use PHPUnit\Framework\TestCase;
 use PhpBench\Tests\PhpBenchTestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 
