@@ -190,10 +190,6 @@ class CoreExtension implements ExtensionInterface
             );
         }, [self::TAG_EXECUTOR => ['name' => 'memory_centric_microtime']]);
 
-        $container->register('benchmark.service.intrenal_hrtime', function (Container $container) {
-            return new InternalHrtimeExecutor();
-        }, ['benchmark_executor' => ['name' => 'internal_hrtime']]);
-
         $container->register(self::SERVICE_EXECUTOR_HRTIME, function (Container $container) {
             return new CompositeExecutor(
                 new HrtimeExecutor($container->get(self::SERVICE_REMOTE_LAUNCHER)),
