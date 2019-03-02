@@ -74,6 +74,12 @@ class TimeUnitTest extends TestCase
                 TimeUnit::DAYS,
                 1,
             ],
+            [
+                1.1234,
+                TimeUnit::MICROSECONDS,
+                TimeUnit::MICROSECONDS,
+                1.1234,
+            ],
         ];
     }
 
@@ -257,14 +263,5 @@ class TimeUnitTest extends TestCase
     public function testInvalidDestFormat()
     {
         TimeUnit::convertTo(1000, TimeUnit::MICROSECONDS, 'arf');
-    }
-
-    /**
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Expected string value
-     */
-    public function testInvalidUnitType()
-    {
-        TimeUnit::convertTo(100, new \stdClass(), TimeUnit::MINUTES);
     }
 }

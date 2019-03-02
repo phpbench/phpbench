@@ -205,12 +205,8 @@ class TimeUnit
 
     /**
      * Return the destination mode.
-     *
-     * @param string $mode
-     *
-     * @return string
      */
-    public function getMode($mode = null)
+    public function getMode(string $mode = null): string
     {
         // if a mode is given, use that
         if ($mode) {
@@ -223,28 +219,16 @@ class TimeUnit
 
     /**
      * Return the destination unit suffix.
-     *
-     * @param string $unit
-     *
-     * @return string
      */
-    public function getDestSuffix($unit = null, $mode = null)
+    public function getDestSuffix(string $unit = null, string $mode = null)
     {
         return self::getSuffix($this->getDestUnit($unit), $this->getMode($mode));
     }
 
     /**
      * Return a human readable representation of the unit including the suffix.
-     *
-     * @param float $time
-     * @param string $unit
-     * @param string $mode
-     * @param int $precision
-     * @param bool $suffix
-     *
-     * @return string
      */
-    public function format($time, $unit = null, $mode = null, $precision = null, $suffix = true)
+    public function format(float $time, string $unit = null, string $mode = null, int $precision = null, bool $suffix = true)
     {
         $value = number_format($this->toDestUnit($time, $unit, $mode), $precision !== null ? $precision : $this->precision);
 
@@ -334,13 +318,6 @@ class TimeUnit
 
     private static function validateUnit($unit)
     {
-        if (!is_string($unit)) {
-            throw new \InvalidArgumentException(sprintf(
-                'Expected string value for time unit, got "%s"',
-                is_object($unit) ? get_class($unit) : gettype($unit)
-            ));
-        }
-
         if (!isset(self::$map[$unit])) {
             throw new \InvalidArgumentException(sprintf(
                 'Invalid time unit "%s", available units: "%s"',
