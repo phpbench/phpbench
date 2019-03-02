@@ -9,7 +9,7 @@ use PhpBench\Model\Iteration;
 use PhpBench\Registry\Config;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class MemoryExecutor extends TemplateExecutor
+class MemoryCentricMicrotimeExecutor extends TemplateExecutor
 {
     public function __construct(Launcher $launcher)
     {

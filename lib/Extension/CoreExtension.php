@@ -42,7 +42,7 @@ use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Environment\Provider;
 use PhpBench\Environment\Supplier;
 use PhpBench\Executor\Benchmark\DebugExecutor;
-use PhpBench\Executor\Benchmark\MemoryExecutor;
+use PhpBench\Executor\Benchmark\MemoryCentricMicrotimeExecutor;
 use PhpBench\Executor\Benchmark\MicrotimeExecutor;
 use PhpBench\Executor\CompositeExecutor;
 use PhpBench\Executor\Method\RemoteMethodExecutor;
@@ -181,10 +181,10 @@ class CoreExtension implements ExtensionInterface
 
         $container->register(self::SERVICE_EXECUTOR_MEMORY, function (Container $container) {
             return new CompositeExecutor(
-                new MemoryExecutor($container->get(self::SERVICE_REMOTE_LAUNCHER)),
+                new MemoryCentricMicrotimeExecutor($container->get(self::SERVICE_REMOTE_LAUNCHER)),
                 $container->get(self::SERVICE_EXECUTOR_METHOD_REMOTE)
             );
-        }, [self::TAG_EXECUTOR => ['name' => 'memory']]);
+        }, [self::TAG_EXECUTOR => ['name' => 'memory_centric_microtime']]);
 
         $container->register(self::SERVICE_EXECUTOR_BENCHMARK_MICROTIME, function (Container $container) {
             return new MicrotimeExecutor(
