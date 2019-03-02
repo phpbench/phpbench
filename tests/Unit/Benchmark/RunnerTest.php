@@ -14,13 +14,13 @@ namespace PhpBench\Tests\Unit\Benchmark;
 
 use PhpBench\Assertion\AssertionProcessor;
 use PhpBench\Benchmark\BenchmarkFinder;
-use PhpBench\Executor;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Benchmark\RunnerConfig;
 use PhpBench\Environment\Information;
 use PhpBench\Environment\Supplier;
+use PhpBench\Executor;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;

@@ -12,9 +12,9 @@
 
 namespace PhpBench\Extensions\XDebug\Executor;
 
-use PhpBench\Executor\BenchmarkExecutorInterface;
-use PhpBench\Executor\Benchmark\TemplateExecutor;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
+use PhpBench\Executor\Benchmark\TemplateExecutor;
+use PhpBench\Executor\BenchmarkExecutorInterface;
 use PhpBench\Extensions\XDebug\Converter\TraceToXmlConverter;
 use PhpBench\Extensions\XDebug\Result\XDebugTraceResult;
 use PhpBench\Extensions\XDebug\XDebugUtil;

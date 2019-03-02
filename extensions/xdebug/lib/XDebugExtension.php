@@ -12,9 +12,9 @@
 
 namespace PhpBench\Extensions\XDebug;
 
-use PhpBench\Executor\CompositeExecutor;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
+use PhpBench\Executor\CompositeExecutor;
 use PhpBench\Extension\CoreExtension;
 use PhpBench\Extensions\XDebug\Command\Handler\OutputDirHandler;
 use PhpBench\Extensions\XDebug\Command\ProfileCommand;

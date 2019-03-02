@@ -12,10 +12,10 @@
 
 namespace PhpBench\Extensions\XDebug\Tests\Unit\Executor;
 
-use PhpBench\Executor\Benchmark\TemplateExecutor;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\Payload;
 use PhpBench\Dom\Document;
+use PhpBench\Executor\Benchmark\TemplateExecutor;
 use PhpBench\Extensions\XDebug\Converter\TraceToXmlConverter;
 use PhpBench\Extensions\XDebug\Executor\TraceExecutor;
 use PhpBench\Extensions\XDebug\Result\XDebugTraceResult;
