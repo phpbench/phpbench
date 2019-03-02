@@ -23,10 +23,10 @@ use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Variant;
 use PhpBench\Registry\Config;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\PhpBenchTestCase;
 use Prophecy\Argument;
 
-class MicrotimeExecutorTest extends TestCase
+class MicrotimeExecutorTest extends PhpBenchTestCase
 {
     private $executor;
     private $beforeMethodFile;
@@ -38,6 +38,8 @@ class MicrotimeExecutorTest extends TestCase
 
     protected function setUp()
     {
+        $this->initWorkspace();
+
         $this->beforeMethodFile = __DIR__ . '/../benchmarks/before_method.tmp';
         $this->afterMethodFile = __DIR__ . '/../benchmarks/after_method.tmp';
         $this->staticMethodFile = __DIR__ . '/../benchmarks/static_method.tmp';
@@ -55,37 +57,12 @@ class MicrotimeExecutorTest extends TestCase
 
         $launcher = new Launcher(null, null);
         $this->executor = new MicrotimeExecutor($launcher);
-        $this->removeTemporaryFiles();
 
         $this->benchmarkMetadata->getPath()->willReturn(__DIR__ . '/../benchmarks/MicrotimeExecutorBench.php');
         $this->benchmarkMetadata->getClass()->willReturn('PhpBench\Tests\Unit\Benchmark\Executor\benchmarks\MicrotimeExecutorBench');
         $this->iteration = $this->prophesize(Iteration::class);
         $this->metadata->getBenchmark()->willReturn($this->benchmarkMetadata->reveal());
         $this->iteration->getVariant()->willReturn($this->variant->reveal());
-    }
-
-    protected function tearDown()
-    {
-        $this->removeTemporaryFiles();
-    }
-
-    private function removeTemporaryFiles()
-    {
-        foreach ([
-            $this->beforeMethodFile,
-            $this->afterMethodFile,
-            $this->revFile,
-            $this->setupFile,
-            $this->teardownFile,
-            $this->paramFile,
-            $this->paramBeforeFile,
-            $this->paramAfterFile,
-            $this->staticMethodFile,
-        ] as $file) {
-            if (file_exists($file)) {
-                unlink($file);
-            }
-        }
     }
 
     /**
@@ -110,12 +87,12 @@ class MicrotimeExecutorTest extends TestCase
             new Config('test', [])
         );
 
-        $this->assertFileNotExists($this->beforeMethodFile);
-        $this->assertFileNotExists($this->afterMethodFile);
-        $this->assertFileExists($this->revFile);
+        $this->assertFileNotExists($this->workspacePath('before_method.tmp'));
+        $this->assertFileNotExists($this->workspacePath('after_method.tmp'));
+        $this->assertFileExists($this->workspacePath('revs.tmp'));
 
         // 10 revolutions + 1 warmup
-        $this->assertStringEqualsFile($this->revFile, '11');
+        $this->assertStringEqualsFile($this->workspacePath('revs.tmp'), '11');
     }
 
     /**
@@ -155,7 +132,7 @@ class MicrotimeExecutorTest extends TestCase
 
         $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', []));
 
-        $this->assertFileExists($this->beforeMethodFile);
+        $this->assertFileExists($this->workspacePath('before_method.tmp'));
     }
 
     /**
@@ -175,7 +152,7 @@ class MicrotimeExecutorTest extends TestCase
 
         $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', []));
 
-        $this->assertFileExists($this->afterMethodFile);
+        $this->assertFileExists($this->workspacePath('after_method.tmp'));
     }
 
     /**
@@ -198,8 +175,8 @@ class MicrotimeExecutorTest extends TestCase
         $this->iteration->setResult(Argument::type(MemoryResult::class))->shouldBeCalled();
 
         $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', []));
-        $this->assertFileExists($this->paramFile);
-        $params = json_decode(file_get_contents($this->paramFile), true);
+        $this->assertFileExists($this->workspacePath('param.tmp'));
+        $params = json_decode(file_get_contents($this->workspacePath('param.tmp')), true);
         $this->assertEquals([
             'one' => 'two',
             'three' => 'four',
@@ -228,12 +205,12 @@ class MicrotimeExecutorTest extends TestCase
 
         $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', []));
 
-        $this->assertFileExists($this->paramBeforeFile);
-        $params = json_decode(file_get_contents($this->paramBeforeFile), true);
+        $this->assertFileExists($this->workspacePath('parambefore.tmp'));
+        $params = json_decode(file_get_contents($this->workspacePath('parambefore.tmp')), true);
         $this->assertEquals($expected->getArrayCopy(), $params);
 
-        $this->assertFileExists($this->paramAfterFile);
-        $params = json_decode(file_get_contents($this->paramAfterFile), true);
+        $this->assertFileExists($this->workspacePath('paramafter.tmp'));
+        $params = json_decode(file_get_contents($this->workspacePath('paramafter.tmp')), true);
         $this->assertEquals($expected->getArrayCopy(), $params);
     }
 }
