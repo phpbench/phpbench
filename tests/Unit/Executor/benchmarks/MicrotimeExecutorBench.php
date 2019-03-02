@@ -14,7 +14,7 @@ namespace PhpBench\Tests\Unit\Executor\benchmarks;
 
 class MicrotimeExecutorBench
 {
-    private static $workspaceDir = __DIR__ . '/../../../../Workspace';
+    private static $workspaceDir = __DIR__ . '/../../../Workspace';
 
     public static function initDatabase()
     {

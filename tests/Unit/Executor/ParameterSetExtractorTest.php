@@ -21,7 +21,7 @@ class ParameterSetExtractorTest extends TestCase
 {
     public function testProvideParameterFromCallable()
     {
-        $this->provideParams(['PhpBench\Tests\Unit\Benchmark\Executor\benchmarks\hello_world']);
+        $this->provideParams(['PhpBench\Tests\Unit\Executor\benchmarks\hello_world']);
     }
 
     public function testProvideParameterFromBenchmark()
@@ -55,7 +55,7 @@ class ParameterSetExtractorTest extends TestCase
 
     private function provideParams(array $providers)
     {
-        $payload = new Payload(__DIR__ . '/../../../../lib/Benchmark/Remote/template/parameter_set_extractor.template', [
+        $payload = new Payload(__DIR__ . '/../../../lib/Benchmark/Remote/template/parameter_set_extractor.template', [
             'bootstrap' => __DIR__ . '/benchmarks/ParamProviderBench.php',
             'file' => __DIR__ . '/benchmarks/ParamProviderBench.php',
             'class' => ParamProviderBench::class,
