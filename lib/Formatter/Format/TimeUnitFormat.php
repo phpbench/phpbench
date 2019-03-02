@@ -36,7 +36,7 @@ class TimeUnitFormat implements FormatInterface
     public function format($subject, array $options)
     {
         return $this->timeUnit->format(
-            (int) $subject,
+            (float) $subject,
             in_array('unit', $options['resolve']) ? $this->timeUnit->resolveDestUnit($options['unit']) : $options['unit'],
             in_array('mode', $options['resolve']) ? $this->timeUnit->resolveMode($options['mode']) : $options['mode'],
             $this->timeUnit->resolvePrecision($options['precision'])

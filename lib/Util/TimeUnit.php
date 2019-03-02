@@ -96,14 +96,8 @@ class TimeUnit
 
     /**
      * Convert instance value to given unit.
-     *
-     * @param int $time
-     * @param string $destUnit
-     * @param string $mode
-     *
-     * @return int
      */
-    public function toDestUnit($time, $destUnit = null, $mode = null)
+    public function toDestUnit(float $time, string $destUnit = null, string $mode = null)
     {
         return self::convert($time, $this->sourceUnit, $this->getDestUnit($destUnit), $this->getMode($mode));
     }
@@ -242,7 +236,7 @@ class TimeUnit
     /**
      * Return a human readable representation of the unit including the suffix.
      *
-     * @param int $time
+     * @param float $time
      * @param string $unit
      * @param string $mode
      * @param int $precision
@@ -265,17 +259,8 @@ class TimeUnit
 
     /**
      * Convert given time in given unit to given destination unit in given mode.
-     *
-     * @static
-     *
-     * @param int $time
-     * @param string $unit
-     * @param string $destUnit
-     * @param string $mode
-     *
-     * @return int
      */
-    public static function convert($time, $unit, $destUnit, $mode)
+    public static function convert(float $time, string $unit, string $destUnit, string $mode)
     {
         self::validateMode($mode);
 
@@ -289,16 +274,8 @@ class TimeUnit
     /**
      * Convert a given time INTO the given unit. That is, how many times the
      * given time will fit into the the destination unit. i.e. `x` per unit.
-     *
-     * @static
-     *
-     * @param int $time
-     * @param string $unit
-     * @param string $destUnit
-     *
-     * @return int
      */
-    public static function convertInto($time, $unit, $destUnit)
+    public static function convertInto(float $time, string $unit, string $destUnit)
     {
         if (!$time) {
             return 0;
@@ -318,16 +295,8 @@ class TimeUnit
     /**
      * Convert the given time from the given unit to the given destination
      * unit.
-     *
-     * @static
-     *
-     * @param int $time
-     * @param string $unit
-     * @param string $destUnit
-     *
-     * @return int
      */
-    public static function convertTo($time, $unit, $destUnit)
+    public static function convertTo(float $time, string $unit, string $destUnit)
     {
         self::validateUnit($unit);
         self::validateUnit($destUnit);
