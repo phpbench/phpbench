@@ -21,6 +21,9 @@ use PhpBench\Benchmark\RunnerConfig;
 use PhpBench\Environment\Information;
 use PhpBench\Environment\Supplier;
 use PhpBench\Executor;
+use PhpBench\Executor\BenchmarkExecutorInterface;
+use PhpBench\Executor\HealthCheckInterface;
+use PhpBench\Executor\MethodExecutorInterface;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;
@@ -94,7 +97,9 @@ class RunnerTest extends TestCase
         $this->benchmarkFinder->findBenchmarks(self::TEST_PATH, [], [])->willReturn([
             $this->benchmark->reveal(),
         ]);
-        $this->executor = $this->prophesize(Executor::class);
+        $this->executor = $this->prophesize(BenchmarkExecutorInterface::class);
+        $this->executor->willImplement(MethodExecutorInterface::class);
+        $this->executor->willImplement(HealthCheckInterface::class);
         $this->executor->healthCheck()->shouldBeCalled();
         $this->executorRegistry = $this->prophesize(ConfigurableRegistry::class);
         $this->assertion = $this->prophesize(AssertionProcessor::class);

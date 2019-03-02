@@ -205,6 +205,32 @@ class Runner
         $this->executeAfterMethods($benchmarkMetadata, $executor);
     }
 
+    private function executeBeforeMethods(BenchmarkMetadata $benchmarkMetadata, BenchmarkExecutorInterface $executor): void
+    {
+        if (!$executor instanceof MethodExecutorInterface) {
+            return;
+        }
+
+        if (!$benchmarkMetadata->getBeforeClassMethods()) {
+            return;
+        }
+
+        $executor->executeMethods($benchmarkMetadata, $benchmarkMetadata->getBeforeClassMethods());
+    }
+
+    private function executeAfterMethods(BenchmarkMetadata $benchmarkMetadata, BenchmarkExecutorInterface $executor): void
+    {
+        if (!$executor instanceof MethodExecutorInterface) {
+            return;
+        }
+
+        if (!$benchmarkMetadata->getAfterClassMethods()) {
+            return;
+        }
+
+        $executor->executeMethods($benchmarkMetadata, $benchmarkMetadata->getAfterClassMethods());
+    }
+
     private function runSubject(BenchmarkExecutorInterface $executor, RunnerConfig $config, Subject $subject, SubjectMetadata $subjectMetadata)
     {
         if ($executor instanceof HealthCheckInterface) {
@@ -325,31 +351,5 @@ class Runner
         }
 
         $this->logger->iterationEnd($iteration);
-    }
-
-    private function executeBeforeMethods(BenchmarkMetadata $benchmarkMetadata, BenchmarkExecutorInterface $executor): void
-    {
-        if (!$executor instanceof MethodExecutorInterface) {
-            return;
-        }
-
-        if (!$benchmarkMetadata->getBeforeClassMethods()) {
-            return;
-        }
-
-        $executor->executeMethods($benchmarkMetadata, $benchmarkMetadata->getBeforeClassMethods());
-    }
-
-    private function executeAfterMethods(BenchmarkMetadata $benchmarkMetadata, BenchmarkExecutorInterface $executor): void
-    {
-        if (!$executor instanceof MethodExecutorInterface) {
-            return;
-        }
-
-        if (!$benchmarkMetadata->getAfterClassMethods()) {
-            return;
-        }
-
-        $executor->executeMethods($benchmarkMetadata, $benchmarkMetadata->getAfterClassMethods());
     }
 }

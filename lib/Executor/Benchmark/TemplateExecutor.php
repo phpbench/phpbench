@@ -22,11 +22,6 @@ use PhpBench\Model\Result\TimeResult;
 use PhpBench\Registry\Config;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * This class generates a benchmarking script and places it in the systems
- * temp. directory and then executes it. The generated script then returns the
- * time taken to execute the benchmark and the memory consumed.
- */
 class TemplateExecutor implements BenchmarkExecutorInterface
 {
     public const OPTION_PHP_CONFIG = 'php_config';
