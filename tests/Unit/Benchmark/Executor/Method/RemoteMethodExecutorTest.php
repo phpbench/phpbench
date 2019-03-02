@@ -6,18 +6,20 @@ use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Executor\Method\RemoteMethodExecutor;
 use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\PhpBenchTestCase;
+use Prophecy\Prophecy\ObjectProphecy;
 
-class RemoteMethodExecutorTest extends TestCase
+class RemoteMethodExecutorTest extends PhpBenchTestCase
 {
-    /**
-     * @var string
-     */
-    private $staticMethodFile;
-
     /**
      * @var RemoteMethodExecutor
      */
     private $executor;
+
+    /**
+     * @var ObjectProphecy
+     */
+    private $benchmarkMetadata;
 
     protected function setUp()
     {
@@ -34,6 +36,6 @@ class RemoteMethodExecutorTest extends TestCase
     public function testExecuteMethods()
     {
         $this->executor->executeMethods($this->benchmarkMetadata->reveal(), ['initDatabase']);
-        $this->assertFileExists($this->staticMethodFile);
+        $this->assertFileExists($this->workspacePath('static_method.tmp'));
     }
 }
