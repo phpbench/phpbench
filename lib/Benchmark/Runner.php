@@ -21,6 +21,9 @@ use PhpBench\Benchmark\Metadata\AssertionMetadata;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Environment\Supplier;
+use PhpBench\Executor\BenchmarkExecutorInterface;
+use PhpBench\Executor\HealthCheckInterface;
+use PhpBench\Executor\MethodExecutorInterface;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\ResolvedExecutor;
@@ -145,12 +148,10 @@ class Runner
     ) {
         // determine the executor
         $executorConfig = $this->executorRegistry->getConfig($config->getExecutor());
-        /** @var ExecutorInterface $executor */
+        /** @var BenchmarkExecutorInterface $executor */
         $executor = $this->executorRegistry->getService($benchmarkMetadata->getExecutor() ? $benchmarkMetadata->getExecutor()->getName() : $executorConfig['executor']);
 
-        if ($benchmarkMetadata->getBeforeClassMethods()) {
-            $executor->executeMethods($benchmarkMetadata, $benchmarkMetadata->getBeforeClassMethods());
-        }
+        $this->executeBeforeMethods($benchmarkMetadata, $executor);
 
         $subjectMetadatas = array_filter($benchmarkMetadata->getSubjects(), function ($subjectMetadata) {
             if ($subjectMetadata->getSkip()) {
@@ -181,7 +182,7 @@ class Runner
             $executorConfig = $this->executorRegistry->getConfig($config->getExecutor());
 
             if ($executorMetadata = $subjectMetadata->getExecutor()) {
-                /** @var ExecutorInterface $executor */
+                /** @var BenchmarkExecutorInterface $executor */
                 $executor = $this->executorRegistry->getService($executorMetadata->getName());
                 $executorConfig = $this->executorRegistry->getConfig($executorMetadata->getRegistryConfig());
             }
@@ -201,14 +202,40 @@ class Runner
         }
         $this->logger->benchmarkEnd($benchmark);
 
-        if ($benchmarkMetadata->getAfterClassMethods()) {
-            $executor->executeMethods($benchmarkMetadata, $benchmarkMetadata->getAfterClassMethods());
-        }
+        $this->executeAfterMethods($benchmarkMetadata, $executor);
     }
 
-    private function runSubject(ExecutorInterface $executor, RunnerConfig $config, Subject $subject, SubjectMetadata $subjectMetadata)
+    private function executeBeforeMethods(BenchmarkMetadata $benchmarkMetadata, BenchmarkExecutorInterface $executor): void
     {
-        $executor->healthCheck();
+        if (!$executor instanceof MethodExecutorInterface) {
+            return;
+        }
+
+        if (!$benchmarkMetadata->getBeforeClassMethods()) {
+            return;
+        }
+
+        $executor->executeMethods($benchmarkMetadata, $benchmarkMetadata->getBeforeClassMethods());
+    }
+
+    private function executeAfterMethods(BenchmarkMetadata $benchmarkMetadata, BenchmarkExecutorInterface $executor): void
+    {
+        if (!$executor instanceof MethodExecutorInterface) {
+            return;
+        }
+
+        if (!$benchmarkMetadata->getAfterClassMethods()) {
+            return;
+        }
+
+        $executor->executeMethods($benchmarkMetadata, $benchmarkMetadata->getAfterClassMethods());
+    }
+
+    private function runSubject(BenchmarkExecutorInterface $executor, RunnerConfig $config, Subject $subject, SubjectMetadata $subjectMetadata)
+    {
+        if ($executor instanceof HealthCheckInterface) {
+            $executor->healthCheck();
+        }
 
         $parameterSets = $config->getParameterSets($subjectMetadata->getParameterSets());
         $paramsIterator = new CartesianParameterIterator($parameterSets);
@@ -249,7 +276,7 @@ class Runner
     }
 
     private function runVariant(
-        ExecutorInterface $executor,
+        BenchmarkExecutorInterface $executor,
         Config $executorConfig,
         RunnerConfig $config,
         SubjectMetadata $subjectMetadata,
@@ -312,7 +339,7 @@ class Runner
         $this->logger->variantEnd($variant);
     }
 
-    public function runIteration(ExecutorInterface $executor, Config $executorConfig, Iteration $iteration, SubjectMetadata $subjectMetadata)
+    public function runIteration(BenchmarkExecutorInterface $executor, Config $executorConfig, Iteration $iteration, SubjectMetadata $subjectMetadata)
     {
         $this->logger->iterationStart($iteration);
         $executor->execute($subjectMetadata, $iteration, $executorConfig);

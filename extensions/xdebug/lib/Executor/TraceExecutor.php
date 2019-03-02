@@ -12,15 +12,13 @@
 
 namespace PhpBench\Extensions\XDebug\Executor;
 
-use PhpBench\Benchmark\Executor\BaseExecutor;
-use PhpBench\Benchmark\Remote\Launcher;
-use PhpBench\Benchmark\Remote\Payload;
+use PhpBench\Benchmark\Metadata\SubjectMetadata;
+use PhpBench\Executor\Benchmark\TemplateExecutor;
+use PhpBench\Executor\BenchmarkExecutorInterface;
 use PhpBench\Extensions\XDebug\Converter\TraceToXmlConverter;
 use PhpBench\Extensions\XDebug\Result\XDebugTraceResult;
 use PhpBench\Extensions\XDebug\XDebugUtil;
 use PhpBench\Model\Iteration;
-use PhpBench\Model\Result\MemoryResult;
-use PhpBench\Model\Result\TimeResult;
 use PhpBench\Registry\Config;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -30,7 +28,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * temp. directory and then executes it. The generated script then returns the
  * time taken to execute the benchmark and the memory consumed.
  */
-class TraceExecutor extends BaseExecutor
+class TraceExecutor implements BenchmarkExecutorInterface
 {
     /**
      * @var TraceToXmlConverter
@@ -43,35 +41,39 @@ class TraceExecutor extends BaseExecutor
     private $filesystem;
 
     /**
-     * @param Launcher $launcher
-     * @param string $configPath
-     * @param string $bootstrap
+     * @var TemplateExecutor
      */
-    public function __construct(Launcher $launcher, TraceToXmlConverter $converter = null, Filesystem $filesystem = null)
-    {
-        parent::__construct($launcher);
+    private $innerExecutor;
+
+    public function __construct(
+        TemplateExecutor $innerExecutor,
+        TraceToXmlConverter $converter = null,
+        Filesystem $filesystem = null
+    ) {
         $this->filesystem = $filesystem ? $filesystem : new Filesystem();
         $this->converter = $converter ?: new TraceToXmlConverter();
+        $this->innerExecutor = $innerExecutor;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function launch(Payload $payload, Iteration $iteration, Config $config)
-    {
+    public function execute(
+        SubjectMetadata $subjectMetadata,
+        Iteration $iteration,
+        Config $config
+    ): void {
         $name = XDebugUtil::filenameFromIteration($iteration);
         $dir = $config['output_dir'];
 
-        $phpConfig = [
+        $config[TemplateExecutor::OPTION_PHP_CONFIG] = array_merge([
             'xdebug.trace_output_name' => $name,
             'xdebug.trace_output_dir' => $dir,
             'xdebug.trace_format' => '1',
             'xdebug.auto_trace' => '1',
             'xdebug.coverage_enable' => '0',
             'xdebug.collect_params' => '3',
-        ];
-
-        $payload->mergePhpConfig($phpConfig);
+        ], $config[TemplateExecutor::OPTION_PHP_CONFIG ]);
 
         $path = $dir . DIRECTORY_SEPARATOR . $name . '.xt';
 
@@ -82,7 +84,7 @@ class TraceExecutor extends BaseExecutor
             $this->filesystem->remove($path);
         }
 
-        $result = $payload->launch();
+        $this->innerExecutor->execute($subjectMetadata, $iteration, $config);
 
         if (false === $this->filesystem->exists($path)) {
             throw new \RuntimeException(sprintf(
@@ -117,8 +119,6 @@ class TraceExecutor extends BaseExecutor
         ));
         $funcCalls = (int) $dom->evaluate('count(' . $selector . '//*)');
 
-        $iteration->setResult(new TimeResult($result['time']));
-        $iteration->setResult(MemoryResult::fromArray($result['mem']));
         $iteration->setResult(new XDebugTraceResult($time, $memory, $funcCalls, $dom));
     }
 
@@ -127,6 +127,7 @@ class TraceExecutor extends BaseExecutor
      */
     public function configure(OptionsResolver $options)
     {
+        $this->innerExecutor->configure($options);
         $options->setDefaults([
             'callback' => function () {
             },

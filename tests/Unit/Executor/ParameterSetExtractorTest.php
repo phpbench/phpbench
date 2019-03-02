@@ -10,18 +10,18 @@
  *
  */
 
-namespace PhpBench\Tests\Unit\Benchmark\Executor;
+namespace PhpBench\Tests\Unit\Executor;
 
 use PhpBench\Benchmark\Remote\Exception\ScriptErrorException;
 use PhpBench\Benchmark\Remote\Payload;
-use PhpBench\Tests\Unit\Benchmark\Executor\benchmarks\ParamProviderBench;
+use PhpBench\Tests\Unit\Executor\benchmarks\ParamProviderBench;
 use PHPUnit\Framework\TestCase;
 
 class ParameterSetExtractorTest extends TestCase
 {
     public function testProvideParameterFromCallable()
     {
-        $this->provideParams(['PhpBench\Tests\Unit\Benchmark\Executor\benchmarks\hello_world']);
+        $this->provideParams(['PhpBench\Tests\Unit\Executor\benchmarks\hello_world']);
     }
 
     public function testProvideParameterFromBenchmark()
@@ -55,7 +55,7 @@ class ParameterSetExtractorTest extends TestCase
 
     private function provideParams(array $providers)
     {
-        $payload = new Payload(__DIR__ . '/../../../../lib/Benchmark/Remote/template/parameter_set_extractor.template', [
+        $payload = new Payload(__DIR__ . '/../../../lib/Benchmark/Remote/template/parameter_set_extractor.template', [
             'bootstrap' => __DIR__ . '/benchmarks/ParamProviderBench.php',
             'file' => __DIR__ . '/benchmarks/ParamProviderBench.php',
             'class' => ParamProviderBench::class,

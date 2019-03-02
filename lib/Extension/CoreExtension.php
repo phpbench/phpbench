@@ -17,8 +17,6 @@ use PhpBench\Assertion\AssertionProcessor;
 use PhpBench\Assertion\ComparatorAsserter;
 use PhpBench\Benchmark\BaselineManager;
 use PhpBench\Benchmark\BenchmarkFinder;
-use PhpBench\Benchmark\Executor\DebugExecutor;
-use PhpBench\Benchmark\Executor\MicrotimeExecutor;
 use PhpBench\Benchmark\Metadata\AnnotationReader;
 use PhpBench\Benchmark\Metadata\Driver\AnnotationDriver;
 use PhpBench\Benchmark\Metadata\MetadataFactory;
@@ -43,6 +41,10 @@ use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Environment\Provider;
 use PhpBench\Environment\Supplier;
+use PhpBench\Executor\Benchmark\DebugExecutor;
+use PhpBench\Executor\Benchmark\MicrotimeExecutor;
+use PhpBench\Executor\CompositeExecutor;
+use PhpBench\Executor\Method\RemoteMethodExecutor;
 use PhpBench\Expression\Parser;
 use PhpBench\Formatter\Format\BalanceFormat;
 use PhpBench\Formatter\Format\NumberFormat;
@@ -83,6 +85,12 @@ use Symfony\Component\Process\ExecutableFinder;
 
 class CoreExtension implements ExtensionInterface
 {
+    const SERVICE_EXECUTOR_MICROTIME = 'benchmark.executor.microtime';
+    const SERVICE_REMOTE_LAUNCHER = 'benchmark.remote.launcher';
+    const SERVICE_EXECUTOR_METHOD_REMOTE = 'executor.method.remote_method';
+    const SERVICE_EXECUTOR_BENCHMARK_MICROTIME = 'executor.benchmark.microtime';
+
+
     public function getDefaultConfig()
     {
         return [
@@ -161,22 +169,33 @@ class CoreExtension implements ExtensionInterface
             );
         });
 
-        $container->register('benchmark.executor.microtime', function (Container $container) {
-            return new MicrotimeExecutor(
-                $container->get('benchmark.remote.launcher')
+        $container->register(self::SERVICE_EXECUTOR_MICROTIME, function (Container $container) {
+            return new CompositeExecutor(
+                $container->get(self::SERVICE_EXECUTOR_BENCHMARK_MICROTIME),
+                $container->get(self::SERVICE_EXECUTOR_METHOD_REMOTE)
             );
         }, ['benchmark_executor' => ['name' => 'microtime']]);
 
-        $container->register('benchmark.executor.debug', function (Container $container) {
-            return new DebugExecutor(
-                $container->get('benchmark.remote.launcher')
+        $container->register(self::SERVICE_EXECUTOR_BENCHMARK_MICROTIME, function (Container $container) {
+            return new MicrotimeExecutor(
+                $container->get(self::SERVICE_REMOTE_LAUNCHER)
             );
+        });
+
+        $container->register(self::SERVICE_EXECUTOR_METHOD_REMOTE, function (Container $container) {
+            return new RemoteMethodExecutor(
+                $container->get(self::SERVICE_REMOTE_LAUNCHER)
+            );
+        });
+
+        $container->register('benchmark.executor.debug', function (Container $container) {
+            return new DebugExecutor();
         }, ['benchmark_executor' => ['name' => 'debug']]);
 
         $container->register('benchmark.finder', function (Container $container) {
             return new Finder();
         });
-        $container->register('benchmark.remote.launcher', function (Container $container) {
+        $container->register(self::SERVICE_REMOTE_LAUNCHER, function (Container $container) {
             return new Launcher(
                 new PayloadFactory(),
                 new ExecutableFinder(),
@@ -189,7 +208,7 @@ class CoreExtension implements ExtensionInterface
         });
 
         $container->register('benchmark.remote.reflector', function (Container $container) {
-            return new Reflector($container->get('benchmark.remote.launcher'));
+            return new Reflector($container->get(self::SERVICE_REMOTE_LAUNCHER));
         });
 
         $container->register('benchmark.annotation_reader', function (Container $container) {
@@ -517,13 +536,13 @@ class CoreExtension implements ExtensionInterface
 
         $container->register('environment.provider.php', function (Container $container) {
             return new Provider\Php(
-                $container->get('benchmark.remote.launcher')
+                $container->get(self::SERVICE_REMOTE_LAUNCHER)
             );
         }, ['environment_provider' => []]);
 
         $container->register('environment.provider.opcache', function (Container $container) {
             return new Provider\Opcache(
-                $container->get('benchmark.remote.launcher')
+                $container->get(self::SERVICE_REMOTE_LAUNCHER)
             );
         }, ['environment_provider' => []]);
 

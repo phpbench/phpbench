@@ -14,6 +14,8 @@ namespace PhpBench\Extensions\XDebug;
 
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
+use PhpBench\Executor\CompositeExecutor;
+use PhpBench\Extension\CoreExtension;
 use PhpBench\Extensions\XDebug\Command\Handler\OutputDirHandler;
 use PhpBench\Extensions\XDebug\Command\ProfileCommand;
 use PhpBench\Extensions\XDebug\Command\TraceCommand;
@@ -53,8 +55,11 @@ class XDebugExtension implements ExtensionInterface
 
         $container->register('benchmark.executor.xdebug_profile',
             function (Container $container) {
-                return new ProfileExecutor(
-                    $container->get('benchmark.remote.launcher')
+                return new CompositeExecutor(
+                    new ProfileExecutor(
+                        $container->get(CoreExtension::SERVICE_EXECUTOR_BENCHMARK_MICROTIME)
+                    ),
+                    $container->get(CoreExtension::SERVICE_EXECUTOR_METHOD_REMOTE)
                 );
             },
             ['benchmark_executor' => ['name' => 'xdebug_profile'],
@@ -62,8 +67,11 @@ class XDebugExtension implements ExtensionInterface
 
         $container->register('xdebug.executor.xdebug_trace',
             function (Container $container) {
-                return new TraceExecutor(
-                    $container->get('benchmark.remote.launcher')
+                return new CompositeExecutor(
+                    new TraceExecutor(
+                        $container->get(CoreExtension::SERVICE_EXECUTOR_BENCHMARK_MICROTIME)
+                    ),
+                    $container->get(CoreExtension::SERVICE_EXECUTOR_METHOD_REMOTE)
                 );
             },
             ['benchmark_executor' => ['name' => 'xdebug_trace'],

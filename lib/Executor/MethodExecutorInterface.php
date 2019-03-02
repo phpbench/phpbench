@@ -10,12 +10,11 @@
  *
  */
 
-namespace PhpBench\Tests;
+namespace PhpBench\Executor;
 
-class Tests
+use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
+
+interface MethodExecutorInterface
 {
-    public static function getResourceDirectory()
-    {
-        return __DIR__ . '/_Resources';
-    }
+    public function executeMethods(BenchmarkMetadata $benchmark, array $methods): void;
 }
