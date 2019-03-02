@@ -28,27 +28,9 @@ use Prophecy\Argument;
 
 class MicrotimeExecutorTest extends PhpBenchTestCase
 {
-    private $executor;
-    private $beforeMethodFile;
-    private $afterMethodFile;
-    private $revFile;
-    private $paramFile;
-    private $paramBeforeFile;
-    private $paramAfterFile;
-
     protected function setUp()
     {
         $this->initWorkspace();
-
-        $this->beforeMethodFile = __DIR__ . '/../benchmarks/before_method.tmp';
-        $this->afterMethodFile = __DIR__ . '/../benchmarks/after_method.tmp';
-        $this->staticMethodFile = __DIR__ . '/../benchmarks/static_method.tmp';
-        $this->revFile = __DIR__ . '/../benchmarks/revs.tmp';
-        $this->setupFile = __DIR__ . '/../benchmarks/setup.tmp';
-        $this->paramFile = __DIR__ . '/../benchmarks/param.tmp';
-        $this->paramBeforeFile = __DIR__ . '/../benchmarks/parambefore.tmp';
-        $this->paramAfterFile = __DIR__ . '/../benchmarks/paramafter.tmp';
-        $this->teardownFile = __DIR__ . '/../benchmarks/teardown.tmp';
 
         $this->metadata = $this->prophesize(SubjectMetadata::class);
         $this->benchmark = $this->prophesize(Benchmark::class);
