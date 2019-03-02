@@ -11,6 +11,9 @@
  */
 
 return [
+    'memory' => [
+        'executor' => 'memory',
+    ],
     'microtime' => [
         'executor' => 'microtime',
     ],
