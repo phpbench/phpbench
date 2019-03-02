@@ -10,7 +10,7 @@
  *
  */
 
-namespace PhpBench\Tests\Unit\Benchmark\Executor\benchmarks;
+namespace PhpBench\Tests\Unit\Executor\benchmarks;
 
 use ArrayIterator;
 use Generator;

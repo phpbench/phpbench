@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Tests\Unit\Benchmark\Executor\Method;
+namespace PhpBench\Tests\Unit\Executor\Method;
 
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Remote\Launcher;

@@ -10,7 +10,7 @@
  *
  */
 
-namespace PhpBench\Tests\Unit\Benchmark\Executor\Benchmark;
+namespace PhpBench\Tests\Unit\Executor\Benchmark;
 
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;

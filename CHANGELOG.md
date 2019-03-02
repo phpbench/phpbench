@@ -4,6 +4,14 @@ CHANGELOG
 unreleased
 ----------
 
+BC Break:
+
+- The ExecutorInterface has been
+  removed and replaced by the `BenchmarkExecutorInterface`,
+  `MethodExecutorInterface` and `HealthCheckInterface`.
+- The Executor namespace has been moved from `PhpBench\Benchmark\Executor` to
+  `PhpBench\Executor`.
+
 Features:
 
 - Support for named parameters #574
