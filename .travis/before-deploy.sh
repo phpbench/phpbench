@@ -20,6 +20,8 @@ composer install --no-dev -o
 # Build the PHAR
 curl -LSs https://box-project.github.io/box2/installer.php | php
 box.phar build
+ls
 
 # Dump the version file (used to see if PHPBench needs an update)
 sha1sum phpbench.phar > phpbench.phar.version
+echo "Done pre-deploy build"
