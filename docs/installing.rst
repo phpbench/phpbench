@@ -7,36 +7,19 @@ package.
 Install as a PHAR package
 -------------------------
 
-Installing as a PHAR is convenient, you will need to download the
-phar_ and the `public key`_, this can be
-done with CURL as follows:
+You can download PHPBench form the [Github
+Releases](https://github.com/phpbench/phpbench/releases) or you can install it
+with [Phive][https://github.com/phar-io/phive]
 
-.. code-block:: bash
+```bash
+$ phive install phpbench
+```
 
-    $ curl -o phpbench.phar https://phpbench.github.io/phpbench/phpbench.phar
-    $ curl -o phpbench.phar.pubkey https://phpbench.github.io/phpbench/phpbench.phar.pubkey
+To upgrade PHPBench use the following command:
 
-You will probably then want make it executable and put it in your systems
-global path, on Linux systems:
-
-.. code-block:: bash
-
-    $ chmod 0755 phpbench.phar
-    $ sudo mv phpbench.phar /usr/local/bin/phpbench
-    $ sudo mv phpbench.phar.pubkey /usr/local/bin/phpbench.pubkey
-
-You can update the version at any time by using the ``self-update`` command:
-
-.. code-block:: bash
-
-    $ phpbench self-update
-
-.. warning::
-
-    PHPBench is unstable, installing as a PHAR means that you are always
-    updating to the latest version, the latest version may include BC breaks.
-    Therefore it is recommended to include the package as a project dependency
-    for continuous-integration.
+```bash
+$ phive update phpbench
+```
 
 Composer Install
 ----------------
