@@ -18,7 +18,7 @@
       "in": "vendor"
     }
   ],
-  "git-commit-short": "git_version",
+  "git-tag": "git_tag",
   "intercept": true,
   "main": "bin/phpbench.php",
   "output": "phpbench.phar",
