@@ -121,6 +121,7 @@ jobs:
 
       before_deploy:
         - ./.travis/before-deploy.sh
+        - mv phpbench.phar.pubkey phpbench.phar.asc
 
       deploy:
         provider: releases
