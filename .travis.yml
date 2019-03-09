@@ -120,7 +120,7 @@ jobs:
       script: skip
 
       before_deploy:
-        - ./.travis/before-deploy.sh
+        - ./.travis/before-deploy-gh-release.sh
 
       deploy:
         provider: releases
@@ -129,7 +129,6 @@ jobs:
           secure: "eH6r1KiCUb5z2vOke9BcAl7BSN7GtU3TVCe4eDRHv9xO4Kg2hHD16i2jaL7POq18JjwwojqkQuOivpbkyDQeAmkZhaO5NLrdxzgwuYjkfEgbrjWhbK0AEW7W4dKTLBGn0/tiK5hPXfdkwIuzmUjQE5vU37so1NDTiKBjLJ9k44M="
         file: 
           - phpbench.phar
-          - phpbench.phar.pubkey
         on:
           repo: phpbench/phpbench
           tags: true
