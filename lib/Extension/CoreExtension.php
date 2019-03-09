@@ -12,6 +12,7 @@
 
 namespace PhpBench\Extension;
 
+use Humbug\SelfUpdate\Updater;
 use PhpBench\Assertion\AsserterRegistry;
 use PhpBench\Assertion\AssertionProcessor;
 use PhpBench\Assertion\ComparatorAsserter;
@@ -351,7 +352,7 @@ class CoreExtension implements ExtensionInterface
             );
         }, ['console.command' => []]);
 
-        if (\Phar::running()) {
+        if (class_exists(Updater::class) && \Phar::running()) {
             $container->register('console.command.self_update', function (Container $container) {
                 return new SelfUpdateCommand();
             }, ['console.command' => []]);

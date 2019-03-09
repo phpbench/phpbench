@@ -13,8 +13,7 @@ composer require "doctrine/dbal" "~2.5"  --no-update
 composer install --no-dev -o
 
 # Build the PHAR
-curl -LSs https://box-project.github.io/box2/installer.php | php
-box.phar build -c box.json.gh-release
-ls
+wget https://github.com/humbug/box/releases/download/3.5.1/box.phar
+box.phar compile -c box.json.gh-release
 
 echo "Done pre-deploy build"
