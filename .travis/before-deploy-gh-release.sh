@@ -14,6 +14,6 @@ composer install --no-dev -o
 
 # Build the PHAR
 wget https://github.com/humbug/box/releases/download/3.5.1/box.phar
-box.phar compile -c box.json.gh-release
+php box.phar compile -c box.json.gh-release
 
 echo "Done pre-deploy build"
