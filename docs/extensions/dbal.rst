@@ -24,15 +24,16 @@ package installed, install it with composer::
 
     $ composer require --dev "doctrine/dbal"
 
-You will then need to enable the extension (which is bundled with PHPBench):
+You will then need to enable the extension (which is bundled with PHPBench) in your
+``phpbench.json`` file:
 
 .. code-block:: javascript
 
     {
        "storage": "dbal",
-       "extensions": {
+       "extensions": [
            "PhpBench\\Extensions\\Dbal\\DbalExtension"
-       }
+       ]
     }
 
 In addition to adding the extension we also set ``sqlite`` as our storage
