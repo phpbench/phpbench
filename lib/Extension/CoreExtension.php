@@ -43,6 +43,7 @@ use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Environment\Provider;
 use PhpBench\Environment\Supplier;
 use PhpBench\Executor\Benchmark\DebugExecutor;
+use PhpBench\Executor\Benchmark\MemoryCentricMicrotimeExecutor;
 use PhpBench\Executor\Benchmark\MicrotimeExecutor;
 use PhpBench\Executor\CompositeExecutor;
 use PhpBench\Executor\Method\RemoteMethodExecutor;
@@ -87,9 +88,11 @@ use Symfony\Component\Process\ExecutableFinder;
 class CoreExtension implements ExtensionInterface
 {
     const SERVICE_EXECUTOR_MICROTIME = 'benchmark.executor.microtime';
+    const SERVICE_EXECUTOR_MEMORY = 'benchmark.executor.memory';
     const SERVICE_REMOTE_LAUNCHER = 'benchmark.remote.launcher';
     const SERVICE_EXECUTOR_METHOD_REMOTE = 'executor.method.remote_method';
     const SERVICE_EXECUTOR_BENCHMARK_MICROTIME = 'executor.benchmark.microtime';
+    const TAG_EXECUTOR = 'benchmark_executor';
 
 
     public function getDefaultConfig()
@@ -175,7 +178,14 @@ class CoreExtension implements ExtensionInterface
                 $container->get(self::SERVICE_EXECUTOR_BENCHMARK_MICROTIME),
                 $container->get(self::SERVICE_EXECUTOR_METHOD_REMOTE)
             );
-        }, ['benchmark_executor' => ['name' => 'microtime']]);
+        }, [self::TAG_EXECUTOR => ['name' => 'microtime']]);
+
+        $container->register(self::SERVICE_EXECUTOR_MEMORY, function (Container $container) {
+            return new CompositeExecutor(
+                new MemoryCentricMicrotimeExecutor($container->get(self::SERVICE_REMOTE_LAUNCHER)),
+                $container->get(self::SERVICE_EXECUTOR_METHOD_REMOTE)
+            );
+        }, [self::TAG_EXECUTOR => ['name' => 'memory_centric_microtime']]);
 
         $container->register(self::SERVICE_EXECUTOR_BENCHMARK_MICROTIME, function (Container $container) {
             return new MicrotimeExecutor(
@@ -191,7 +201,7 @@ class CoreExtension implements ExtensionInterface
 
         $container->register('benchmark.executor.debug', function (Container $container) {
             return new DebugExecutor();
-        }, ['benchmark_executor' => ['name' => 'debug']]);
+        }, [self::TAG_EXECUTOR => ['name' => 'debug']]);
 
         $container->register('benchmark.finder', function (Container $container) {
             return new Finder();
@@ -502,7 +512,7 @@ class CoreExtension implements ExtensionInterface
                 $container->get('json.decoder')
             );
 
-            foreach ($container->getServiceIdsForTag('benchmark_executor') as $serviceId => $attributes) {
+            foreach ($container->getServiceIdsForTag(self::TAG_EXECUTOR) as $serviceId => $attributes) {
                 $registry->registerService($attributes['name'], $serviceId);
             }
 

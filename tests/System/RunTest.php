@@ -509,6 +509,19 @@ class RunTest extends SystemTestCase
     }
 
     /**
+     * It should run with the memory-centric-microtime executor
+     */
+    public function testRunsWithMemoryExecutor()
+    {
+        $process = $this->phpbench(
+            'run benchmarks/set4/NothingBench.php --executor=memory_centric_microtime --iterations=1 --revs=1'
+        );
+
+        // because there is no storage driver by default the factory will throw an exception.
+        $this->assertExitCode(0, $process);
+    }
+
+    /**
      * It should not crash when zeros are reported as times.
      */
     public function testZeroTimedIterations()

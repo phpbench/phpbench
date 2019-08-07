@@ -11,6 +11,9 @@
  */
 
 return [
+    'memory_centric_microtime' => [
+        'executor' => 'memory_centric_microtime',
+    ],
     'microtime' => [
         'executor' => 'microtime',
     ],

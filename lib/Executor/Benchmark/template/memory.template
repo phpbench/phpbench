@@ -1,0 +1,102 @@
+<?php
+
+// repress any output from the user scripts
+ob_start();
+
+$class = '{{ class }}';
+$file = '{{ file }}';
+$beforeMethods = {{ beforeMethods }};
+$afterMethods = {{ afterMethods }};
+$bootstrap = '{{ bootstrap }}';
+$parameters = {{ parameters }};
+$warmup = {{ warmup }};
+
+if ($bootstrap) {
+    call_user_func(function () use ($bootstrap) {
+        require_once($bootstrap);
+    });
+}
+
+require_once($file);
+
+$benchmark = new $class();
+
+foreach ($beforeMethods as $beforeMethod) {
+    $benchmark->$beforeMethod($parameters);
+}
+
+// warmup if required
+if ($warmup) {
+    for ($i = 0; $i < $warmup; $i++) {
+        $benchmark->{{ subject }}($parameters);
+    }
+}
+
+// disable garbage collection
+cleanGarbageCollectionAndDisable();
+
+$time = benchmark($benchmark, $parameters);
+
+foreach ($afterMethods as $afterMethod) {
+    $benchmark->$afterMethod($parameters);
+}
+
+$buffer = ob_get_contents();
+ob_end_clean();
+
+echo serialize([
+    'mem' => [
+        // observer effect - getting memory usage affects memory usage. order
+        // counts, peak is probably the best metric.
+        'peak' => memory_get_peak_usage(),
+        'final' => memory_get_usage(),
+        'real' => memory_get_usage(true),
+    ],
+    'time' => (int) $time,
+    'buffer' => $buffer,
+]);
+
+function benchmark($benchmark, $parameters) : float
+{
+    $time = 0.00;
+
+    // run the benchmarks: note that passing arguments to the method slightly increases
+    // the calltime, so we explicitly do one thing or the other depending on if parameters
+    // are provided.
+    if ($parameters) {
+        for ($i = 0; $i < {{ revolutions }}; $i++) {
+            $startTime = microtime(true);
+            
+            $benchmark->{{ subject }}($parameters);
+
+            $endTime =  microtime(true);
+
+            $time += ($endTime * 1000000) - ($startTime * 1000000);
+
+            cleanGarbageCollectionAndDisable();
+        }
+    } else {
+        for ($i = 0; $i < {{ revolutions }}; $i++) {
+            $startTime = microtime(true);
+
+            $benchmark->{{ subject }}();
+
+            $endTime =  microtime(true);
+
+            $time += ($endTime * 1000000) - ($startTime * 1000000);
+
+            cleanGarbageCollectionAndDisable();
+        }
+    }
+
+    return $time;
+}
+
+function cleanGarbageCollectionAndDisable () : void
+{
+    gc_enable();
+    gc_collect_cycles();
+    gc_disable();
+}
+
+exit(0);
