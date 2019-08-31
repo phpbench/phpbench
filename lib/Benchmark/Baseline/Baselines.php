@@ -54,7 +54,7 @@ class Baselines
 
         fclose($handle);
 
-        $handle = fopen($tempName, 'w');
+        $handle = fopen($tempName, 'r');
 
         $line = true;
 
