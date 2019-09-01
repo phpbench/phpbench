@@ -6,7 +6,7 @@ CHANGELOG
 
 Bug fix:
 
-- Fix PHP 7.4 bug for baseline script (@julien-bodry)
+- Fix PHP 7.4 bug for baseline script (@julien-boudry)
 
 0.16.0
 ------
