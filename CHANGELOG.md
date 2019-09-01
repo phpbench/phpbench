@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+0.16.10
+-------
+
+Bug fix:
+
+- Fix PHP 7.4 bug for baseline script (@julien-bodry)
+
 0.16.0
 ------
 
