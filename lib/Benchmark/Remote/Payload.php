@@ -198,7 +198,7 @@ class Payload
     private function decodeResults(): array
     {
         $output = $this->process->getOutput();
-        $result = unserialize($output);
+        $result = @unserialize($output);
 
         if (is_array($result)) {
             return $result;
