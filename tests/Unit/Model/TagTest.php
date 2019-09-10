@@ -30,9 +30,13 @@ class TagTest extends TestCase
     public function provideValidTag()
     {
         yield ['foobar'];
+
         yield ['FooBAR'];
+
         yield ['42'];
+
         yield ['foo42'];
+
         yield ['foo_42'];
     }
 
@@ -49,8 +53,11 @@ class TagTest extends TestCase
     public function provideInvalidTag()
     {
         yield [''];
+
         yield ['foo-bar'];
+
         yield ['foo&#!$bar'];
+
         yield ['foo4.2'];
     }
 }
