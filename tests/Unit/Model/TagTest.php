@@ -22,7 +22,7 @@ class TagTest extends TestCase
      * @doesNotPerformAssertions
      * @dataProvider provideValidTag
      */
-    public function testValidTagValue(string $tag)
+    public function testValidTag(string $tag)
     {
         new Tag($tag);
     }
@@ -43,7 +43,7 @@ class TagTest extends TestCase
     /**
      * @dataProvider provideInvalidTag
      */
-    public function testInvalidTagValue(string $tag)
+    public function testInvalidTag(string $tag)
     {
         $this->expectException(InvalidArgumentException::class);
 
