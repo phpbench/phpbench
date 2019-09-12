@@ -23,9 +23,9 @@ final class Tag
 
     public function __construct(string $tag)
     {
-        if (!preg_match('{^[a-zA-Z_]+$}', $tag)) {
+        if (!preg_match('/^[\w]+$/', $tag)) {
             throw new InvalidArgumentException(sprintf(
-                'Tags can only contain alpha-numeric characters and _, got "%s"',
+                'Tag mast be non-empty string of alphanumeric characters and _, got "%s"',
                 $tag
             ));
         }

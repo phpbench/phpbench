@@ -18,9 +18,46 @@ use PHPUnit\Framework\TestCase;
 
 class TagTest extends TestCase
 {
-    public function testExceptionNonAlphaNumericUnderscore()
+    /**
+     * @doesNotPerformAssertions
+     * @dataProvider provideValidTag
+     */
+    public function testValidTag(string $tag)
+    {
+        new Tag($tag);
+    }
+
+    public function provideValidTag()
+    {
+        yield ['foobar'];
+
+        yield ['FooBAR'];
+
+        yield ['42'];
+
+        yield ['foo42'];
+
+        yield ['foo_42'];
+    }
+
+    /**
+     * @dataProvider provideInvalidTag
+     */
+    public function testInvalidTag(string $tag)
     {
         $this->expectException(InvalidArgumentException::class);
-        new Tag('hello-world');
+
+        new Tag($tag);
+    }
+
+    public function provideInvalidTag()
+    {
+        yield [''];
+
+        yield ['foo-bar'];
+
+        yield ['foo&#!$bar'];
+
+        yield ['foo4.2'];
     }
 }
