@@ -28,6 +28,7 @@ use PhpBench\Model\Iteration;
 use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Suite;
+use PhpBench\PhpBench;
 use PhpBench\Registry\Config;
 use PhpBench\Registry\ConfigurableRegistry;
 use PhpBench\Tests\Util\TestUtil;
