@@ -18,6 +18,7 @@ use PhpBench\Console\Command\Handler\ReportHandler;
 use PhpBench\Console\Command\Handler\RunnerHandler;
 use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use PhpBench\Model\SuiteCollection;
+use PhpBench\PhpBench;
 use PhpBench\Registry\Registry;
 use PhpBench\Storage\DriverInterface;
 use RuntimeException;
