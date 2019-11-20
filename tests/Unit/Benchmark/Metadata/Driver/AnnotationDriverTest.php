@@ -107,6 +107,7 @@ EOT;
      * @Warmup(501)
      * @Assert("mean < 100")
      * @Executor("microtime", revs=100)
+     * @Timeout(0.1)
      */
 EOT;
         $reflection->methods[$method->name] = $method;
@@ -130,6 +131,7 @@ EOT;
         $this->assertEquals(['value' => 'mean < 100'], $metadata->getAssertions()[0]->getConfig());
         $this->assertEquals(new ExecutorMetadata('microtime', ['revs' => 100 ]), $metadata->getExecutor());
         $this->assertTrue($metadata->getSkip());
+        $this->assertEquals(0.1, $metadata->getTimeout());
     }
 
     /**

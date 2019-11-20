@@ -108,6 +108,11 @@ class SubjectMetadata
     private $executorMetadata;
 
     /**
+     * @var float
+     */
+    private $timeout = 0;
+
+    /**
      * @param string $name
      */
     public function __construct(BenchmarkMetadata $benchmarkMetadata, $name)
@@ -323,5 +328,15 @@ class SubjectMetadata
     public function setExecutor(ExecutorMetadata $serviceMetadata)
     {
         $this->executorMetadata = $serviceMetadata;
+    }
+
+    public function getTimeout(): float
+    {
+        return $this->timeout;
+    }
+
+    public function setTimeout(float $timeout): void
+    {
+        $this->timeout = $timeout;
     }
 }
