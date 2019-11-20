@@ -47,7 +47,7 @@ class TemplateExecutor implements BenchmarkExecutorInterface
     {
         $tokens = $this->createTokens($subjectMetadata, $iteration, $config);
 
-        $payload = $this->launcher->payload($this->templatePath, $tokens);
+        $payload = $this->launcher->payload($this->templatePath, $tokens, $subjectMetadata->getTimeout());
         $this->launch($payload, $iteration, $config);
     }
 
