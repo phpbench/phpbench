@@ -82,8 +82,7 @@ class Payload
         $phpPath = PHP_BINARY,
         ?float $timeout = null,
         Process $process = null
-    )
-    {
+    ) {
         $this->setPhpPath($phpPath);
         $this->template = $template;
         $this->tokens = $tokens;
