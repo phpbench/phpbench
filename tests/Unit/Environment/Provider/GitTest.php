@@ -106,7 +106,7 @@ class GitTest extends TestCase
     public function testNotApplicableIfGitNotFound()
     {
         $exeFinder = $this->prophesize(ExecutableFinder::class);
-        $exeFinder->find('git', false)->willReturn(false);
+        $exeFinder->find('git', null)->willReturn(null);
 
         $provider = new Provider\Git($exeFinder->reveal());
 
