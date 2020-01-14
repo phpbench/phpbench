@@ -47,7 +47,7 @@ class TagResolverTest extends TestCase
      */
     private $resolver;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->storage = $this->prophesize(DriverInterface::class);
         $this->history = $this->prophesize(HistoryIteratorInterface::class);

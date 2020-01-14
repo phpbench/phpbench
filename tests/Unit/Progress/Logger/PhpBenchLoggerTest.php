@@ -41,7 +41,7 @@ abstract class PhpBenchLoggerTest extends TestCase
     protected $parameterSet;
     protected $stats;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->suite = $this->prophesize(Suite::class);
         $this->summary = $this->prophesize(Summary::class);

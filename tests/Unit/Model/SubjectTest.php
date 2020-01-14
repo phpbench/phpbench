@@ -22,7 +22,7 @@ class SubjectTest extends TestCase
     private $subject;
     private $benchmark;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->benchmark = $this->prophesize(Benchmark::class);
         $this->benchmark->getSubjects()->willReturn([]);

@@ -19,7 +19,7 @@ namespace PhpBench\Tests\System;
  */
 class ReportOutputTest extends SystemTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->getResult();

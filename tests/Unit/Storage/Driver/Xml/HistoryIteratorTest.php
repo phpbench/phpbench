@@ -29,7 +29,7 @@ class HistoryIteratorTest extends TestCase
     private $iterator;
     private $filesystem;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         Workspace::initWorkspace();
 

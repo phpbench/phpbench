@@ -24,7 +24,7 @@ use PHPUnit\Framework\TestCase;
 
 class SummaryTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->suite = $this->prophesize(Suite::class);
         $this->bench1 = $this->prophesize(Benchmark::class);

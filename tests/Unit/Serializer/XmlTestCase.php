@@ -36,7 +36,7 @@ use PHPUnit\Framework\TestCase;
 
 class XmlTestCase extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->suiteCollection = $this->prophesize(SuiteCollection::class);
         $this->suite = $this->prophesize(Suite::class);

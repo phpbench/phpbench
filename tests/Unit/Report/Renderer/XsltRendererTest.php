@@ -25,7 +25,7 @@ class XsltRendererTest extends AbstractRendererCase
     private $tokenReport;
     private $formatter;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->formatter = $this->prophesize(Formatter::class);
         $this->output = new BufferedOutput();
@@ -37,7 +37,7 @@ class XsltRendererTest extends AbstractRendererCase
         $this->clean();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->clean();
     }

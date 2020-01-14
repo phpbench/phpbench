@@ -88,7 +88,7 @@ class RunnerTest extends TestCase
      */
     private $runner;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->benchmarkFinder = $this->prophesize(BenchmarkFinder::class);
         $this->suite = $this->prophesize(Suite::class);

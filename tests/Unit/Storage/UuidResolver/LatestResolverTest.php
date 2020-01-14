@@ -28,7 +28,7 @@ class LatestResolverTest extends TestCase
     private $historyEntry;
     private $historyEntry1;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $registry = $this->prophesize(Registry::class);
         $this->storage = $this->prophesize(DriverInterface::class);

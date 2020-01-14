@@ -35,7 +35,7 @@ class LogCommandTest extends TestCase
     private $output;
     private $history;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         if (!class_exists(QuestionHelper::class)) {
             $this->markTestSkipped('Not testing if QuestionHelper class does not exist (< Symfony 2.7)');

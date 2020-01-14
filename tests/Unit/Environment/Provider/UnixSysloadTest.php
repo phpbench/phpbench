@@ -19,7 +19,7 @@ class UnixSysloadTest extends TestCase
 {
     private $provider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         if (stristr(PHP_OS, 'win')) {
             $this->markTestSkipped('Unix specific test');

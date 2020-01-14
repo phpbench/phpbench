@@ -19,7 +19,7 @@ class NumberFormatTest extends TestCase
 {
     private $format;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->format = new NumberFormat();
     }

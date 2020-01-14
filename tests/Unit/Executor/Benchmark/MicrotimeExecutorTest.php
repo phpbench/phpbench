@@ -28,7 +28,7 @@ use Prophecy\Argument;
 
 class MicrotimeExecutorTest extends PhpBenchTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->initWorkspace();
 

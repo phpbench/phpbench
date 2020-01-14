@@ -20,7 +20,7 @@ class LoggerRegistryTest extends TestCase
 {
     private $registry;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->registry = new LoggerRegistry();
         $this->progressLogger = $this->prophesize(LoggerInterface::class);

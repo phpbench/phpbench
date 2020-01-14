@@ -21,7 +21,7 @@ class SubjectMetadataTest extends TestCase
     private $subject;
     private $benchmark;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->benchmark = $this->prophesize(BenchmarkMetadata::class);
         $this->subject = new SubjectMetadata($this->benchmark->reveal(), 'subjectOne', 0);
