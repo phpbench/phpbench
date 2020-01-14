@@ -22,7 +22,7 @@ use PhpBench\Math\Statistics;
  */
 class StatisticsBench
 {
-    protected function setUp(): void
+    public function setUp(): void
     {
         Statistics::variance([]);
     }

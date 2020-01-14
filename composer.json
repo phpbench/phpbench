@@ -34,7 +34,8 @@
         "friendsofphp/php-cs-fixer": "^2.13.1",
         "padraic/phar-updater": "^1.0",
         "phpstan/phpstan": "^0.10.7",
-        "phpunit/phpunit": "^8.0"
+        "phpunit/phpunit": "^8.0",
+        "phpspec/prophecy": "^1.8"
     },
     "suggest": {
         "ext-curl": "For (web) reports extension",
