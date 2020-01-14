@@ -1,0 +1,29 @@
+<?php
+
+namespace PhpBench\Benchmark\Remote;
+
+use ArrayIterator;
+use Iterator;
+use IteratorAggregate;
+
+class ProcessFactory implements IteratorAggregate
+{
+    private $elements;
+
+    public function __construct(array $elements)
+    {
+        foreach ($elements as $element) {
+            $this->add($element);
+        }
+    }
+
+    private function add($element): void
+    {
+        $this->elements[] = $element;
+    }
+
+    public function getIterator(): Iterator
+    {
+        return new ArrayIterator($this->elements);
+    }
+}

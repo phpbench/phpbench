@@ -14,7 +14,7 @@ namespace PhpBench\Benchmark\Remote;
 
 class IniStringBuilder
 {
-    public function build(array $config)
+    public function build(array $config): string
     {
         $string = [];
 

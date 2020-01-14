@@ -63,20 +63,24 @@ class Payload
     private $iniStringBuilder;
 
     /**
+     * @var ProcessFactory
+     */
+    private $processFactory;
+
+    /**
      * Create a new Payload object with the given script template.
      * The template must be the path to a script template.
      *
      * @param string $template
      */
-    public function __construct($template, array $tokens = [], $phpPath = PHP_BINARY, Process $process = null)
+    public function __construct($template, array $tokens = [], $phpPath = PHP_BINARY, ProcessFactory $processFactory = null)
     {
         $this->setPhpPath($phpPath);
         $this->template = $template;
-        $this->process = $process ?: new Process($this->phpPath);
         $this->tokens = $tokens;
+        $this->processFactory = $processFactory ?: new ProcessFactory();
 
         // disable timeout.
-        $this->process->setTimeout(null);
         $this->iniStringBuilder = new IniStringBuilder();
     }
 
@@ -110,20 +114,20 @@ class Payload
         $scriptPath = $this->writeTempFile($script);
         $commandLine = $this->buildCommandLine($scriptPath);
 
-        $this->process->setCommandLine($commandLine);
-        $this->process->run();
+        $process = $this->processFactory->create($commandLine);
+        $process->run();
 
         $this->removeTmpFile($scriptPath);
 
-        if (false === $this->process->isSuccessful()) {
+        if (false === $process->isSuccessful()) {
             throw new ScriptErrorException(sprintf(
                 '%s%s',
-                $this->process->getErrorOutput(),
-                $this->process->getOutput()
+                $process->getErrorOutput(),
+                $process->getOutput()
             ));
         }
 
-        return $this->decodeResults();
+        return $this->decodeResults($process);
     }
 
     private function getIniString()
@@ -195,9 +199,9 @@ class Payload
         unlink($scriptPath);
     }
 
-    private function decodeResults(): array
+    private function decodeResults(Process $process): array
     {
-        $output = $this->process->getOutput();
+        $output = $process->getOutput();
         $result = @unserialize($output);
 
         if (is_array($result)) {

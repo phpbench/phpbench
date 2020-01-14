@@ -122,7 +122,7 @@ class GitTest extends TestCase
 
     private function exec($cmd)
     {
-        $proc = new Process($cmd);
+        $proc = Process::fromShellCommandline($cmd);
         $exitCode = $proc->run();
 
         if ($exitCode !== 0) {
