@@ -91,6 +91,8 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
         $this->metadata->getRevs()->willReturn(10);
         $this->metadata->getWarmup()->willReturn(0);
         $this->variant->getParameterSet()->willReturn(new ParameterSet('one'));
+        $this->variant->getRevolutions()->willReturn(10);
+        $this->variant->getWarmup()->willReturn(0);
 
         $results = $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', []));
 
