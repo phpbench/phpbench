@@ -53,7 +53,7 @@ class BlinkenLoggerTest extends TestCase
      */
     private $variant;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->output = new BufferedOutput();
         $this->timeUnit = new TimeUnit(TimeUnit::MICROSECONDS, TimeUnit::MILLISECONDS);

@@ -25,7 +25,7 @@ class CompositeGeneratorTest extends TestCase
     private $generator;
     private $manager;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->manager = $this->prophesize(ReportManager::class);
         $this->collection = $this->prophesize(SuiteCollection::class);

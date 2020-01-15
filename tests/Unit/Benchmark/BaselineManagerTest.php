@@ -24,7 +24,7 @@ class BaselineManagerTest extends TestCase
 
     public static $callCount = false;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->manager = new BaselineManager();
     }

@@ -24,7 +24,7 @@ class RegistryTest extends TestCase
     protected $service1;
     protected $service2;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->container = $this->prophesize(Container::class);
         $this->service1 = $this->prophesize(RegistrableInterface::class);

@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+0.17.0
+------
+
+- Support for Symfony 5
+- Dropped support for Symfony < 4.2
+- Minimum version of PHP is 7.2
+
 0.16.10
 -------
 

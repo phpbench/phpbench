@@ -11,10 +11,13 @@ stages:
   - deploy
 
 jobs:
+  allow_failures:
+    - php: 7.4
+
   include:
     - stage: Style
 
-      php: 7.1
+      php: 7.2
 
       before_install:
         - source .travis/xdebug.sh
@@ -29,7 +32,7 @@ jobs:
 
     - stage: Stan
 
-      php: 7.1
+      php: 7.2
 
       before_install:
         - source .travis/xdebug.sh
@@ -46,7 +49,7 @@ jobs:
 
       stage: Test
 
-      php: 7.1
+      php: 7.2
 
       env: WITH_LOWEST=true
 
@@ -70,12 +73,6 @@ jobs:
 
     - <<: *TEST
 
-      php: 7.1
-
-      env: WITH_HIGHEST=true
-
-    - <<: *TEST
-
       php: 7.2
 
       env: WITH_HIGHEST=true
@@ -86,11 +83,17 @@ jobs:
 
       env: WITH_HIGHEST=true
 
+    - <<: *TEST
+
+      php: 7.4
+
+      env: WITH_HIGHEST=true
+
     - stage: Deploy
 
       if: (NOT type IN (pull_request)) AND (branch = master)
 
-      php: 7.1
+      php: 7.2
 
       before_install:
         - source .travis/xdebug.sh
@@ -111,7 +114,7 @@ jobs:
 
     - stage: Deploy to GH Releases
 
-      php: 7.1
+      php: 7.2
 
       before_install:
         - source .travis/xdebug.sh

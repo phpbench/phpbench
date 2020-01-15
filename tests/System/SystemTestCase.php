@@ -23,7 +23,7 @@ class SystemTestCase extends TestCase
     protected $filesystem;
     protected $workspaceDir;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->filesystem = new Filesystem();
         $this->workspaceDir = sys_get_temp_dir() . '/phpbench-tests';
@@ -75,7 +75,7 @@ class SystemTestCase extends TestCase
 
         chdir($cwd);
         $bin = __DIR__ . '/../../bin/phpbench --verbose';
-        $process = new Process($bin . ' ' . $command);
+        $process = Process::fromShellCommandline($bin . ' ' . $command);
         $process->run();
 
         return $process;

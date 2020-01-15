@@ -24,7 +24,7 @@ class GitTest extends TestCase
     private $filesystem;
     private $testRepoDir;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->filesystem = new Filesystem();
 
@@ -41,7 +41,7 @@ class GitTest extends TestCase
         $this->provider = new Provider\Git();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->clean();
     }
@@ -106,7 +106,7 @@ class GitTest extends TestCase
     public function testNotApplicableIfGitNotFound()
     {
         $exeFinder = $this->prophesize(ExecutableFinder::class);
-        $exeFinder->find('git', false)->willReturn(false);
+        $exeFinder->find('git', null)->willReturn(null);
 
         $provider = new Provider\Git($exeFinder->reveal());
 
@@ -122,7 +122,7 @@ class GitTest extends TestCase
 
     private function exec($cmd)
     {
-        $proc = new Process($cmd);
+        $proc = Process::fromShellCommandline($cmd);
         $exitCode = $proc->run();
 
         if ($exitCode !== 0) {

@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 
 class SuiteCollectionTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->suite1 = $this->prophesize(Suite::class);
         $this->suite2 = $this->prophesize(Suite::class);

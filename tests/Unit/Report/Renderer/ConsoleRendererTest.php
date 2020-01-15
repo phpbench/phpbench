@@ -22,7 +22,7 @@ class ConsoleRendererTest extends AbstractRendererCase
     private $output;
     private $formatter;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->output = new BufferedOutput();
         $this->formatter = $this->prophesize(Formatter::class);

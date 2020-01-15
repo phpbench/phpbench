@@ -81,7 +81,7 @@ class TraceExecutorTest extends TestCase
      */
     private $parameterSet;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->templateExecutor = $this->prophesize(TemplateExecutor::class);
         $this->filesystem = $this->prophesize(Filesystem::class);

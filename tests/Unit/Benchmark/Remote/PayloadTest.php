@@ -13,6 +13,7 @@
 namespace PhpBench\Tests\Unit\Benchmark\Remote;
 
 use PhpBench\Benchmark\Remote\Payload;
+use PhpBench\Benchmark\Remote\ProcessFactory;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Process\Process;
@@ -20,10 +21,12 @@ use Symfony\Component\Process\Process;
 class PayloadTest extends TestCase
 {
     private $process;
+    private $processFactory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->process = $this->prophesize(Process::class);
+        $this->processFactory = $this->prophesize(ProcessFactory::class);
     }
 
     /**
@@ -68,7 +71,7 @@ class PayloadTest extends TestCase
     {
         $payload = $this->validPayload();
         $payload->setPhpPath('/foo/bar');
-        $this->process->setCommandLine(Argument::containingString('/foo/bar'))->shouldBeCalled();
+        $this->processFactory->create(Argument::containingString('/foo/bar'))->willReturn($this->process);
         $this->process->run()->shouldBeCalled();
         $this->process->isSuccessful()->willReturn(true);
         $this->process->getOutput()->willReturn(serialize(['foo' => 'bar']));
@@ -90,8 +93,9 @@ class PayloadTest extends TestCase
             'bar' => 'foo',
         ]);
 
-        $this->process->setCommandLine(Argument::containingString('-dfoo=bar'))->shouldBeCalled();
-        $this->process->setCommandLine(Argument::containingString('-dbar=foo'))->shouldBeCalled();
+        $this->processFactory->create(Argument::containingString('-dfoo=bar'))->willReturn($this->process)->shouldBeCalled();
+        $this->processFactory->create(Argument::containingString('-dbar=foo'))->willReturn($this->process)->shouldBeCalled();
+        $this->process->run()->shouldBeCalled();
         $this->process->run()->shouldBeCalled();
         $this->process->isSuccessful()->willReturn(true);
         $this->process->getOutput()->willReturn(serialize(['foo' => 'bar']));
@@ -107,7 +111,7 @@ class PayloadTest extends TestCase
         $payload = $this->validPayload();
         $payload->setWrapper('bockfire');
         $payload->setPhpPath('/boo/bar/php');
-        $this->process->setCommandLine(Argument::containingString('bockfire \'/boo/bar/php\''))->shouldBeCalled();
+        $this->processFactory->create(Argument::containingString('bockfire \'/boo/bar/php\''))->willReturn($this->process)->shouldBeCalled();
         $this->process->run()->shouldBeCalled();
         $this->process->isSuccessful()->willReturn(true);
         $this->process->getOutput()->willReturn(serialize(['foo' => 'bar']));
@@ -123,12 +127,12 @@ class PayloadTest extends TestCase
      */
     public function testTemplateNotFound()
     {
-        $process = $this->prophesize(Process::class);
+        $processFactory = $this->prophesize(ProcessFactory::class);
         $payload = new Payload(
             __DIR__ . '/template/not-existing-filename.template',
             [],
             null,
-            $process->reveal()
+            $processFactory->reveal()
         );
 
         $payload->launch($payload);
@@ -145,7 +149,7 @@ class PayloadTest extends TestCase
             __DIR__ . '/template/foo.template',
             [],
             null,
-            $this->process->reveal()
+            $this->processFactory->reveal()
         );
     }
 }

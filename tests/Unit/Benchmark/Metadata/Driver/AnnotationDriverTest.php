@@ -28,7 +28,7 @@ class AnnotationDriverTest extends TestCase
     private $driver;
     private $reflector;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->reflector = $this->prophesize(Reflector::class);
     }

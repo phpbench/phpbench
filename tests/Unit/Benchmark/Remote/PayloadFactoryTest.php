@@ -20,7 +20,7 @@ class PayloadFactoryTest extends TestCase
 {
     private $factory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->factory = new PayloadFactory();
     }

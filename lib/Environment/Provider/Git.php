@@ -37,7 +37,7 @@ class Git implements ProviderInterface
      */
     public function isApplicable()
     {
-        if (false === $this->getGitPath()) {
+        if (null === $this->getGitPath()) {
             return false;
         }
 
@@ -89,19 +89,19 @@ class Git implements ProviderInterface
     private function exec($cmd)
     {
         $cmd = sprintf('%s %s', escapeshellarg($this->getGitPath()), $cmd);
-        $process = new Process($cmd);
+        $process = Process::fromShellCommandline($cmd);
         $process->run();
 
         return $process;
     }
 
-    private function getGitPath()
+    private function getGitPath(): ?string
     {
         if (null !== $this->exePath) {
             return $this->exePath;
         }
 
-        $this->exePath = $this->exeFinder->find($this->exeName, false);
+        $this->exePath = $this->exeFinder->find($this->exeName, null);
 
         return $this->exePath;
     }

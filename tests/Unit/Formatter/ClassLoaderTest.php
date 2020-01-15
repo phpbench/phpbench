@@ -19,7 +19,7 @@ class ClassLoaderTest extends TestCase
 {
     private $loader;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->loader = new ClassLoader();
     }

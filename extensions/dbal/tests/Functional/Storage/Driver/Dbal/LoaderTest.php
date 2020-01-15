@@ -31,7 +31,7 @@ class LoaderTest extends DbalTestCase
     private $loader;
     private $visitor;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->manager = $this->getManager();
 
@@ -44,7 +44,7 @@ class LoaderTest extends DbalTestCase
         $this->loader = new Loader($repository);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanWorkspace();
     }

@@ -23,7 +23,7 @@ class SqlVisitorTest extends TestCase
 {
     private $visitor;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->visitor = new SqlVisitor();
         $this->parser = new Parser();

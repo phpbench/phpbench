@@ -27,7 +27,7 @@ class XDebugUtilTest extends TestCase
     private $benchmark;
     private $parameters;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->iteration = $this->prophesize(Iteration::class);
         $this->subject = $this->prophesize(Subject::class);

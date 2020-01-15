@@ -28,7 +28,7 @@ class VariantTest extends TestCase
     private $subject;
     private $parameterSet;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->subject = $this->prophesize(Subject::class);
         $this->parameterSet = $this->prophesize(ParameterSet::class);

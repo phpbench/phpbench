@@ -26,7 +26,7 @@ class ChainResolverTest extends TestCase
      */
     private $resolver;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->resolver = $this->prophesize(UuidResolverInterface::class);
     }

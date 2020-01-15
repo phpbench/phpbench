@@ -24,7 +24,7 @@ class LauncherTest extends TestCase
     private $payload;
     private $finder;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->factory = $this->prophesize(PayloadFactory::class);
         $this->payload = $this->prophesize(Payload::class);
