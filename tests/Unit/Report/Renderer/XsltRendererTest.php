@@ -133,10 +133,10 @@ class XsltRendererTest extends AbstractRendererCase
      * It should throw an exception if the XSLT template does not exist.
      *
      * @expectedException RuntimeException
-     * @expectedExceptionMessage does not exist
      */
     public function testRenderNotExistingTemplate()
     {
+        $this->expectExceptionMessage('does not exist');
         $reports = $this->getReportsDocument();
         $this->renderReport($reports, [
             'file' => $this->defaultReport,

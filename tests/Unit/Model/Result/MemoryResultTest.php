@@ -19,28 +19,28 @@ class MemoryResultTest extends TestCase
 {
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Peak memory must be an integer
      */
     public function testPeakMemoryNonInteger()
     {
+        $this->expectExceptionMessage('Peak memory must be an integer');
         new MemoryResult('hello', 10, 10);
     }
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Real memory must be an integer
      */
     public function testRealMemoryNonInteger()
     {
+        $this->expectExceptionMessage('Real memory must be an integer');
         new MemoryResult(10, 'hello', 10);
     }
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Final memory must be an integer
      */
     public function testFinalMemoryNonInteger()
     {
+        $this->expectExceptionMessage('Final memory must be an integer');
         new MemoryResult(10, 10, 'hello');
     }
 }

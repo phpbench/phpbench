@@ -33,10 +33,10 @@ class BaselineManagerTest extends TestCase
      * It should throw an exception if a baseline callable name already exists.
      *
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Baseline callable "foo" has already been registered.
      */
     public function testRegisterTwice()
     {
+        $this->expectExceptionMessage('Baseline callable "foo" has already been registered.');
         $this->manager->addBaselineCallable('foo', __CLASS__ . '::baselineExample');
         $this->manager->addBaselineCallable('foo', __CLASS__ . '::baselineExample');
     }
@@ -59,10 +59,10 @@ class BaselineManagerTest extends TestCase
      * It should throw an exception if the callable is not callable (string).
      *
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Given baseline "foo" callable "does_not_exist" is not callable.
      */
     public function testCallableNotCallable()
     {
+        $this->expectExceptionMessage('Given baseline "foo" callable "does_not_exist" is not callable.');
         $this->manager->addBaselineCallable('foo', 'does_not_exist');
         $this->manager->benchmark('foo', 100);
     }
@@ -71,10 +71,10 @@ class BaselineManagerTest extends TestCase
      * It should throw an exception if the callable is not callable (object).
      *
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Given baseline "foo" callable "object" is not callable.
      */
     public function testCallableNotCallableObject()
     {
+        $this->expectExceptionMessage('Given baseline "foo" callable "object" is not callable.');
         $this->manager->addBaselineCallable('foo', new \stdClass());
         $this->manager->benchmark('foo', 100);
     }

@@ -36,10 +36,10 @@ class TimeResultTest extends TestCase
      * It should throw an exception if the time is less than 0.
      *
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Time cannot be less than 0, got -10
      */
     public function testLessThanZero()
     {
+        $this->expectExceptionMessage('Time cannot be less than 0, got -10');
         new TimeResult(-10);
     }
 
@@ -47,10 +47,10 @@ class TimeResultTest extends TestCase
      * It should throw an exception if the revolutions is zero0 or less than zero.
      *
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Revolutions must be more than 0, got 0
      */
     public function testRevsAreZero()
     {
+        $this->expectExceptionMessage('Revolutions must be more than 0, got 0');
         $result = new TimeResult(10);
         $result->getRevTime(0);
     }

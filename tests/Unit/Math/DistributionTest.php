@@ -65,10 +65,10 @@ class DistributionTest extends TestCase
      * It should throw an exception if zero samples are given.
      *
      * @expectedException LogicException
-     * @expectedExceptionMessage zero
      */
     public function testDistributionZero()
     {
+        $this->expectExceptionMessage('zero');
         new Distribution([]);
     }
 
@@ -113,10 +113,10 @@ class DistributionTest extends TestCase
      * It should throw an exception if a non-recognized pre-computed statistic is passed.
      *
      * @expectedException \RuntimeException
-     * @expectedExceptionMessage Unknown pre-computed stat(s) encountered: "bar_stat", "boo_stat"
      */
     public function testNonRecognizedPreComputed()
     {
+        $this->expectExceptionMessage('Unknown pre-computed stat(s) encountered: "bar_stat", "boo_stat"');
         new Distribution([10, 20], ['bar_stat' => 1, 'boo_stat' => 2]);
     }
 }

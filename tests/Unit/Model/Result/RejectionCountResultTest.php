@@ -19,19 +19,19 @@ class RejectionCountResultTest extends TestCase
 {
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Rejection count must be an integer
      */
     public function testFinalMemoryNonInteger()
     {
+        $this->expectExceptionMessage('Rejection count must be an integer');
         new RejectionCountResult('hello');
     }
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Rejection count must be greater or equal to 0
      */
     public function testMemoryGreaterEqualThan()
     {
+        $this->expectExceptionMessage('Rejection count must be greater or equal to 0');
         new RejectionCountResult(-1);
     }
 }

@@ -21,10 +21,10 @@ class RowTest extends TestCase
      * It should throw an exception if a non-existing offset is requested.
      *
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Column "foo" does not exist, valid columns: "bar"
      */
     public function testGetNotExisting()
     {
+        $this->expectExceptionMessage('Column "foo" does not exist, valid columns: "bar"');
         $row = new Row(['bar' => 'boo']);
         $row['foo'];
     }

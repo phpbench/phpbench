@@ -85,10 +85,10 @@ class RegistryTest extends TestCase
      * It should throw an exception if no argument given to get() and no default is defined.
      *
      * @expectedException RuntimeException
-     * @expectedExceptionMessage You must configure a default test service, registered test services: "foo"
      */
     public function testDefaultGetNoDefault()
     {
+        $this->expectExceptionMessage('You must configure a default test service, registered test services: "foo"');
         $registry = new Registry(
             'test',
             $this->container->reveal()
@@ -101,10 +101,10 @@ class RegistryTest extends TestCase
      * It should throw an exception if a service does not exist.
      *
      * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage test service "bar" does not exist. Registered test services: "one"
      */
     public function testExceptionServivceNotExist()
     {
+        $this->expectExceptionMessage('test service "bar" does not exist. Registered test services: "one"');
         $this->registry->setService('one', $this->service1->reveal());
         $this->registry->getService('bar');
     }

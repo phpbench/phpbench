@@ -37,10 +37,10 @@ class NumberFormatTest extends TestCase
      * It should throw an exception if passed a non-numeric value.
      *
      * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Non-numeric value
      */
     public function testNonNumeric()
     {
+        $this->expectExceptionMessage('Non-numeric value');
         $this->format->format('hello', $this->format->getDefaultOptions());
     }
 }

@@ -54,10 +54,10 @@ class ClassLoaderTest extends TestCase
      * It should throw an exception if the file does not exist.
      *
      * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage does not exist.
      */
     public function testNotExist()
     {
+        $this->expectExceptionMessage('does not exist.');
         $this->loader->load(__DIR__ . '/class/not_exists.json');
     }
 }

@@ -249,19 +249,19 @@ class TimeUnitTest extends TestCase
 
     /**
      * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Invalid time unit "arf"
      */
     public function testInvalidSourceFormat()
     {
+        $this->expectExceptionMessage('Invalid time unit "arf"');
         TimeUnit::convertTo(1000, 'arf', TimeUnit::MICROSECONDS);
     }
 
     /**
      * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Invalid time unit "arf"
      */
     public function testInvalidDestFormat()
     {
+        $this->expectExceptionMessage('Invalid time unit "arf"');
         TimeUnit::convertTo(1000, TimeUnit::MICROSECONDS, 'arf');
     }
 }

@@ -98,10 +98,10 @@ class ConfigurableRegistryTest extends RegistryTest
      * It should throw an exception if a config extends a config from a different service.
      *
      * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage test configuration for service "service2" cannot extend configuration for different service "service1"
      */
     public function testExtendsDifferentServiceException()
     {
+        $this->expectExceptionMessage('test configuration for service "service2" cannot extend configuration for different service "service1"');
         $config1 = [
             'test' => 'service1',
         ];
