@@ -12,8 +12,10 @@
 
 namespace PhpBench\Tests\Unit\Formatter;
 
+use InvalidArgumentException;
 use PhpBench\Formatter\ClassLoader;
 use PHPUnit\Framework\TestCase;
+use Seld\JsonLint\ParsingException;
 
 class ClassLoaderTest extends TestCase
 {
@@ -43,21 +45,21 @@ class ClassLoaderTest extends TestCase
     /**
      * It should throw an exception if invalid json is given.
      *
-     * @expectedException Seld\JsonLint\ParsingException
      */
     public function testInvalidJson()
     {
+        $this->expectException(ParsingException::class);
         $this->loader->load(__DIR__ . '/class/invalid.json');
     }
 
     /**
      * It should throw an exception if the file does not exist.
      *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage does not exist.
      */
     public function testNotExist()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('does not exist.');
         $this->loader->load(__DIR__ . '/class/not_exists.json');
     }
 }

@@ -44,10 +44,10 @@ class ConsoleRendererTest extends AbstractRendererCase
         $this->renderReport($this->getReportsDocument(), []);
 
         $output = $this->output->fetch();
-        $this->assertContains('Report Title', $output);
-        $this->assertContains('Report Description', $output);
-        $this->assertContains('Hello', $output);
-        $this->assertContains('Goodbye', $output);
+        $this->assertStringContainsString('Report Title', $output);
+        $this->assertStringContainsString('Report Description', $output);
+        $this->assertStringContainsString('Hello', $output);
+        $this->assertStringContainsString('Goodbye', $output);
     }
 
     /**

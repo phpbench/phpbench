@@ -34,7 +34,7 @@ class MigrateCommandTest extends DbalTestCase
     public function testNoArgs()
     {
         $this->execute();
-        $this->assertContains(
+        $this->assertStringContainsString(
             'would be executed',
             $this->output->fetch()
         );
@@ -48,7 +48,7 @@ class MigrateCommandTest extends DbalTestCase
         $this->execute([
             '--dump-sql' => true,
         ]);
-        $this->assertContains(
+        $this->assertStringContainsString(
             'CREATE TABLE',
             $this->output->fetch()
         );
@@ -63,7 +63,7 @@ class MigrateCommandTest extends DbalTestCase
             '--force' => true,
         ]);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             '18 sql statements',
             $this->output->fetch()
         );
@@ -76,7 +76,7 @@ class MigrateCommandTest extends DbalTestCase
 
         // dbal creates temporary tables, drops the existing tables and then creates new ones.
         // I do not know why, as here the schemas should be identical.
-        $this->assertContains(
+        $this->assertStringContainsString(
             '39 sql statements',
             $this->output->fetch()
         );

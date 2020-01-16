@@ -12,10 +12,12 @@
 
 namespace PhpBench\Tests\Unit\Registry;
 
+use InvalidArgumentException;
 use PhpBench\Json\JsonDecoder;
 use PhpBench\Registry\Config;
 use PhpBench\Registry\ConfigurableRegistry;
 use Prophecy\Argument;
+use Seld\JsonLint\ParsingException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ConfigurableRegistryTest extends RegistryTest
@@ -97,11 +99,11 @@ class ConfigurableRegistryTest extends RegistryTest
     /**
      * It should throw an exception if a config extends a config from a different service.
      *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage test configuration for service "service2" cannot extend configuration for different service "service1"
      */
     public function testExtendsDifferentServiceException()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('test configuration for service "service2" cannot extend configuration for different service "service1"');
         $config1 = [
             'test' => 'service1',
         ];
@@ -136,10 +138,10 @@ class ConfigurableRegistryTest extends RegistryTest
     /**
      * If a invalid JSON encoded string is passed to getConfig, then it should throw an exception.
      *
-     * @expectedException Seld\JsonLint\ParsingException
      */
     public function testGetConfigJsonStringInvalid()
     {
+        $this->expectException(ParsingException::class);
         $this->registry->setService('service', $this->service1->reveal());
 
         $result = $this->registry->getConfig('{tes  t: se  rvice');

@@ -58,11 +58,11 @@ class ResultCollectionTest extends TestCase
     /**
      * It should throw an exception when retrieving a non-existant class.
      *
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Result of class "stdClass" has not been set
      */
     public function testNonExistantClass()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Result of class "stdClass" has not been set');
         $this->collection->getResult(\stdClass::class);
     }
 
@@ -78,11 +78,11 @@ class ResultCollectionTest extends TestCase
     /**
      * It should throw an exception if the named metric does not exist.
      *
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Unknown metric "foobar" for result class "PhpBench\Model\Result\TimeResult". Available metrics: "net"
      */
     public function testNamedMetricDoesNotExist()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unknown metric "foobar" for result class "PhpBench\Model\Result\TimeResult". Available metrics: "net"');
         $this->collection->setResult($this->timeResult);
         $this->assertEquals(1, $this->collection->getMetric(TimeResult::class, 'foobar'));
     }

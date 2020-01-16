@@ -82,7 +82,7 @@ class DelimitedRenderer implements RendererInterface, OutputAwareInterface
         }
 
         if ($config['file']) {
-            $pointer = fopen($config['file'], 'w');
+            $pointer = fopen($config['file'], 'w+');
         } else {
             $pointer = fopen('php://temp', 'w+');
         }

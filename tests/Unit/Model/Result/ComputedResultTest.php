@@ -20,22 +20,22 @@ class ComputedResultTest extends TestCase
     /**
      * It should throw an exception if the z-value is non-numeric.
      *
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Z-value was not numeric, got "hello"
      */
     public function testZValueNonNumeric()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Z-value was not numeric, got "hello"');
         new ComputedResult('hello', 10);
     }
 
     /**
      * It should throw an exception if the deviation is non-numeric.
      *
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Deviation was not numeric, got "hello"
      */
     public function testDeviationNonNumeric()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Deviation was not numeric, got "hello"');
         new ComputedResult(10, 'hello');
     }
 }

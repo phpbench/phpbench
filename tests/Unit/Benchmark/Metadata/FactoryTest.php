@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Benchmark\Metadata;
 
+use InvalidArgumentException;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\DriverInterface;
 use PhpBench\Benchmark\Metadata\MetadataFactory;
@@ -80,18 +81,18 @@ class FactoryTest extends TestCase
 
         $metadata = $this->factory->getMetadataForFile(self::FNAME);
         $this->assertInstanceOf('PhpBench\Benchmark\Metadata\BenchmarkMetadata', $metadata);
-        $this->assertInternalType('array', $metadata->getSubjects());
+        $this->assertIsArray($metadata->getSubjects());
         $this->assertCount(1, $metadata->getSubjects());
     }
 
     /**
      * It should throw an exception if a before/after method does not exist on the benchmark.
      *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Unknown before
      */
     public function testValidationBeforeMethodsBenchmark()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unknown before');
         $this->hierarchy->isEmpty()->willReturn(false);
         TestUtil::configureBenchmarkMetadata($this->metadata, [
             'beforeClassMethods' => ['beforeMe'],
@@ -105,11 +106,11 @@ class FactoryTest extends TestCase
     /**
      * It should throw an exception if a before class method is not static.
      *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage must be static in benchmark class "TestClass"
      */
     public function testValidationBeforeClassMethodsBenchmarkNotStatic()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('must be static in benchmark class "TestClass"');
         $this->hierarchy->isEmpty()->willReturn(false);
         $this->reflection->class = 'TestClass';
         TestUtil::configureBenchmarkMetadata($this->metadata, [
@@ -124,11 +125,11 @@ class FactoryTest extends TestCase
     /**
      * It should throw an exception if a before method IS static.
      *
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage before method "beforeMe" must not be static in benchmark class "TestClass"
      */
     public function testValidationBeforeMethodsBenchmarkIsStatic()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('before method "beforeMe" must not be static in benchmark class "TestClass"');
         $this->hierarchy->isEmpty()->willReturn(false);
         $this->reflection->class = 'TestClass';
         TestUtil::configureBenchmarkMetadata($this->metadata, []);
@@ -147,11 +148,11 @@ class FactoryTest extends TestCase
     /**
      * It should throw an exception if a before/after method does not exist on the subject.
      *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Unknown before method "beforeMe" in benchmark class "TestClass"
      */
     public function testValidationBeforeMethodsSubject()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unknown before method "beforeMe" in benchmark class "TestClass"');
         $this->hierarchy->isEmpty()->willReturn(false);
         $this->reflection->class = 'TestClass';
         TestUtil::configureBenchmarkMetadata($this->metadata, []);
@@ -169,11 +170,11 @@ class FactoryTest extends TestCase
     /**
      * It should throw an exception if an after method does not exist.
      *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Unknown after
      */
     public function testValidationAfterMethods()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unknown after');
         $this->hierarchy->isEmpty()->willReturn(false);
         TestUtil::configureBenchmarkMetadata($this->metadata, [
         ]);
@@ -201,11 +202,11 @@ class FactoryTest extends TestCase
     /**
      * It should throw an exception if the parameters are not in a valid format.
      *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Each parameter set must be an array, got "string" for TestBench::benchTest
      */
     public function testInvalidParameters()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Each parameter set must be an array, got "string" for TestBench::benchTest');
         $this->hierarchy->isEmpty()->willReturn(false);
         $this->metadata->getSubjects()->willReturn([
             $this->subjectMetadata->reveal(),

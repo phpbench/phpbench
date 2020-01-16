@@ -69,11 +69,11 @@ class DbalDriverTest extends TestCase
     /**
      * It should throw an exception if getting a non-existant run.
      *
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Could not find suite with run
      */
     public function testFetchNonExisting()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Could not find suite with run');
         $this->repository->hasRun('1234')->willReturn(false);
         $this->driver->fetch('1234');
     }

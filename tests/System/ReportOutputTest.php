@@ -89,7 +89,7 @@ class ReportOutputTest extends SystemTestCase
         $actual = preg_replace('{([0-9]{4}-[0-9]{2}-[0-9]{2})}', '%date%', $actual);
         $actual = preg_replace('{([0-9]{2}:[0-9]{2}:[0-9]{2})}', '%time%', $actual);
 
-        $this->assertContains($expected, $actual);
+        $this->assertStringContainsString($expected, $actual);
         unlink($generatedFilename);
     }
 }

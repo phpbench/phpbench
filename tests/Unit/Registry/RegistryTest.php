@@ -12,10 +12,12 @@
 
 namespace PhpBench\Tests\Unit\Registry;
 
+use InvalidArgumentException;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\Registry\RegistrableInterface;
 use PhpBench\Registry\Registry;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 class RegistryTest extends TestCase
 {
@@ -84,11 +86,11 @@ class RegistryTest extends TestCase
     /**
      * It should throw an exception if no argument given to get() and no default is defined.
      *
-     * @expectedException RuntimeException
-     * @expectedExceptionMessage You must configure a default test service, registered test services: "foo"
      */
     public function testDefaultGetNoDefault()
     {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('You must configure a default test service, registered test services: "foo"');
         $registry = new Registry(
             'test',
             $this->container->reveal()
@@ -100,11 +102,11 @@ class RegistryTest extends TestCase
     /**
      * It should throw an exception if a service does not exist.
      *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage test service "bar" does not exist. Registered test services: "one"
      */
     public function testExceptionServivceNotExist()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('test service "bar" does not exist. Registered test services: "one"');
         $this->registry->setService('one', $this->service1->reveal());
         $this->registry->getService('bar');
     }
@@ -112,11 +114,11 @@ class RegistryTest extends TestCase
     /**
      * It should throw an exception if setting an already set service.
      *
-     * @expectedException InvalidArgumentException
-     * @expectedException test service "bar" is already registered.
      */
     public function testRegisterAlreadyRegistered()
     {
+        $this->expectExceptionMessage('test service "one" already exists');
+        $this->expectException(InvalidArgumentException::class);
         $this->registry->setService('one', $this->service1->reveal());
         $this->registry->setService('one', $this->service1->reveal());
     }

@@ -22,6 +22,7 @@ use PhpBench\Model\Variant;
 use PhpBench\Tests\Util\TestUtil;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use RuntimeException;
 
 class VariantTest extends TestCase
 {
@@ -123,9 +124,9 @@ class VariantTest extends TestCase
         $variant->computeStats();
 
         $this->assertCount(3, $variant->getRejects());
-        $this->assertContains($variant[2], $variant->getRejects());
-        $this->assertContains($variant[3], $variant->getRejects());
-        $this->assertNotContains($variant[1], $variant->getRejects());
+        $this->assertContainsEquals($variant[2], $variant->getRejects());
+        $this->assertContainsEquals($variant[3], $variant->getRejects());
+        $this->assertNotContainsEquals($variant[1], $variant->getRejects());
     }
 
     private function createIteration($time, $expectedDeviation = null, $expectedZValue = null)
@@ -177,11 +178,11 @@ class VariantTest extends TestCase
     /**
      * It should throw an exception if getStats is called when no computation has taken place.
      *
-     * @expectedException RuntimeException
-     * @expectedExceptionMessage No statistics have yet
      */
     public function testGetStatsNoComputeException()
     {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('No statistics have yet');
         $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 10, 20);
         $variant->getStats();
     }
@@ -189,11 +190,11 @@ class VariantTest extends TestCase
     /**
      * It should throw an exception if getStats is called when an exception has been set.
      *
-     * @expectedException RuntimeException
-     * @expectedExceptionMessage Cannot retrieve stats when an exception
      */
     public function testGetStatsWithExceptionException()
     {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Cannot retrieve stats when an exception');
         $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 4, 20);
         $this->subject->getRetryThreshold()->willReturn(10);
         $variant->createIteration(TestUtil::createResults(4, 10));

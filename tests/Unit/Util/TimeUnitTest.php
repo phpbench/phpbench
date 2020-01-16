@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Util;
 
+use InvalidArgumentException;
 use PhpBench\Util\TimeUnit;
 use PHPUnit\Framework\TestCase;
 
@@ -247,21 +248,17 @@ class TimeUnitTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Invalid time unit "arf"
-     */
     public function testInvalidSourceFormat()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid time unit "arf"');
         TimeUnit::convertTo(1000, 'arf', TimeUnit::MICROSECONDS);
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Invalid time unit "arf"
-     */
     public function testInvalidDestFormat()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid time unit "arf"');
         TimeUnit::convertTo(1000, TimeUnit::MICROSECONDS, 'arf');
     }
 }

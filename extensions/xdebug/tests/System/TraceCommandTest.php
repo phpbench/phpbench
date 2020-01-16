@@ -22,7 +22,7 @@ class TraceCommandTest extends XDebugTestCase
     {
         $process = $this->phpbench('xdebug:trace benchmarks/set1/BenchmarkBench.php --filter=benchDoNothing');
         $this->assertExitCode(0, $process);
-        $this->assertContains('Time inc', $process->getOutput());
+        $this->assertStringContainsString('Time inc', $process->getOutput());
     }
 
     /**
@@ -32,7 +32,7 @@ class TraceCommandTest extends XDebugTestCase
     {
         $process = $this->phpbench('xdebug:trace benchmarks/set1/BenchmarkBench.php --dump --filter=benchDoNothing');
         $this->assertExitCode(0, $process);
-        $this->assertContains('<trace', $process->getOutput());
+        $this->assertStringContainsString('<trace', $process->getOutput());
     }
 
     /**
@@ -42,7 +42,7 @@ class TraceCommandTest extends XDebugTestCase
     {
         $process = $this->phpbench('xdebug:trace benchmarks/set1/BenchmarkBench.php --dump --filter=benchDoNothing --outdir=foobar');
         $this->assertExitCode(0, $process);
-        $this->assertContains('<trace', $process->getOutput());
+        $this->assertStringContainsString('<trace', $process->getOutput());
         $this->assertFileExists('foobar');
     }
 
@@ -62,8 +62,8 @@ class TraceCommandTest extends XDebugTestCase
     {
         $process = $this->phpbench('xdebug:trace benchmarks/set1/BenchmarkBench.php --filter=benchRandom --show-args --outdir=foobar');
         $this->assertExitCode(0, $process);
-        $this->assertContains('rand', $process->getOutput());
-        $this->assertContains('1000', $process->getOutput());
+        $this->assertStringContainsString('rand', $process->getOutput());
+        $this->assertStringContainsString('1000', $process->getOutput());
     }
 
     /**
@@ -77,6 +77,6 @@ class TraceCommandTest extends XDebugTestCase
     {
         $process = $this->phpbench('xdebug:trace benchmarks/set1/BenchmarkBench.php --filter=benchRandom --trace-filter=rand --outdir=foobar');
         $this->assertExitCode(0, $process);
-        $this->assertContains('rand', $process->getOutput());
+        $this->assertStringContainsString('rand', $process->getOutput());
     }
 }

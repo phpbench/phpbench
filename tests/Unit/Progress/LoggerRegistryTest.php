@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit;
 
+use InvalidArgumentException;
 use PhpBench\Progress\LoggerInterface;
 use PhpBench\Progress\LoggerRegistry;
 use PHPUnit\Framework\TestCase;
@@ -39,11 +40,11 @@ class LoggerRegistryTest extends TestCase
     /**
      * It should throw an exception when a non-existing logger is requested.
      *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage No progress logger with name "barfoo" has been registered, known progress loggers: "foobar"
      */
     public function testUnknownLogger()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('No progress logger with name "barfoo" has been registered, known progress loggers: "foobar"');
         $this->registry->addProgressLogger('foobar', $this->progressLogger->reveal());
         $this->registry->getProgressLogger('barfoo');
     }

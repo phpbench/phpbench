@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Benchmark\Remote;
 
+use InvalidArgumentException;
 use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Benchmark\Remote\Payload;
 use PhpBench\Benchmark\Remote\PayloadFactory;
@@ -79,11 +80,11 @@ class LauncherTest extends TestCase
     /**
      * It should throw an exception if the bootstrap file does not exist.
      *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Bootstrap file
      */
     public function testInvalidBootstrap()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Bootstrap file');
         $launcher = new Launcher(
             $this->factory->reveal(),
             $this->finder->reveal(),

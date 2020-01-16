@@ -22,7 +22,7 @@ class ProfileCommandTest extends XDebugTestCase
     {
         $process = $this->phpbench('xdebug:profile benchmarks/set1/BenchmarkBench.php --filter=benchDoNothing');
         $this->assertExitCode(0, $process);
-        $this->assertContains('profile(s) generated', $process->getOutput());
+        $this->assertStringContainsString('profile(s) generated', $process->getOutput());
         $lines = explode("\n", $process->getOutput());
 
         // get the filename from the output and check it exists.
@@ -36,7 +36,7 @@ class ProfileCommandTest extends XDebugTestCase
     public function testCommandBadGui()
     {
         $process = $this->phpbench('xdebug:profile benchmarks/set1/BenchmarkBench.php --gui --gui-bin=idontexistdotcom1234');
-        $this->assertContains(
+        $this->assertStringContainsString(
             'Could not locate GUI bin "idontexistdotcom1234"',
             $process->getErrorOutput()
         );
@@ -64,7 +64,7 @@ class ProfileCommandTest extends XDebugTestCase
         $lines = explode("\n", $process->getOutput());
         // get the filename from the output and check it exists.
         $line = trim($lines[count($lines) - 2]);
-        $this->assertContains('profilenew', $line);
+        $this->assertStringContainsString('profilenew', $line);
         $this->assertFileExists($line);
     }
 }

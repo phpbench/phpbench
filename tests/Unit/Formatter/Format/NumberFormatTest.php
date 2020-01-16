@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Formatter\Formatter;
 
+use InvalidArgumentException;
 use PhpBench\Formatter\Format\NumberFormat;
 use PHPUnit\Framework\TestCase;
 
@@ -36,11 +37,11 @@ class NumberFormatTest extends TestCase
     /**
      * It should throw an exception if passed a non-numeric value.
      *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Non-numeric value
      */
     public function testNonNumeric()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Non-numeric value');
         $this->format->format('hello', $this->format->getDefaultOptions());
     }
 }

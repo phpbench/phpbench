@@ -25,38 +25,38 @@ class TraceToXmlConverterTest extends TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Expected "Version"
      */
     public function testNoVersion()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Expected "Version"');
         $this->convert('no_version.xt');
     }
 
     /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Expected "File format"
      */
     public function testNoFileFormat()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Expected "File format"');
         $this->convert('no_file_format.xt');
     }
 
     /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Expected "TRACE START"
      */
     public function testNoTraceStart()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Expected "TRACE START"');
         $this->convert('no_trace_start.xt');
     }
 
     /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Expected at least
      */
     public function testInvalidNbFields()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Expected at least');
         $this->convert('invalid_nb_fields.xt');
     }
 

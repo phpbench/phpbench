@@ -21,6 +21,7 @@ use PhpBench\Report\GeneratorInterface;
 use PhpBench\Report\RendererInterface;
 use PhpBench\Report\ReportManager;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ReportManagerTest extends TestCase
@@ -91,11 +92,11 @@ class ReportManagerTest extends TestCase
     /**
      * It should throw an exception if the generator does not return a Document class.
      *
-     * @expectedException RuntimeException
-     * @expectedExceptionMessage Report generator "service" should
      */
     public function testGeneratorNotReturnDocument()
     {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Report generator "service" should');
         $config = new Config('test', [
             'generator' => 'service',
             'one' => 'two',

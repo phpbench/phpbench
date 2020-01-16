@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Benchmark;
 
+use InvalidArgumentException;
 use PhpBench\Benchmark\RunnerConfig;
 use PHPUnit\Framework\TestCase;
 
@@ -35,11 +36,11 @@ class RunnerConfigTest extends TestCase
     /**
      * It should throw an exception if the retry threshold is less than zero.
      *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage must be greater
      */
     public function testRetryLessThanZetro()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('must be greater');
         RunnerConfig::create()
             ->withRetryThreshold(-1);
     }
@@ -47,11 +48,11 @@ class RunnerConfigTest extends TestCase
     /**
      * It should throw an exception if the revolutions are less than zero.
      *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage greater than
      */
     public function testRevolutionsLessThanZero()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('greater than');
         RunnerConfig::create()->withRevolutions([-1]);
     }
 

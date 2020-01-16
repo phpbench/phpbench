@@ -25,7 +25,7 @@ class ReportTest extends SystemTestCase
         );
         $this->assertEquals(0, $process->getExitCode());
         $output = $process->getOutput();
-        $this->assertContains('benchNothing', $output);
+        $this->assertStringContainsString('benchNothing', $output);
     }
 
     /**
@@ -40,7 +40,7 @@ class ReportTest extends SystemTestCase
         );
         $this->assertEquals(0, $process->getExitCode());
         $output = $process->getOutput();
-        $this->assertContains('benchNothing', $output);
+        $this->assertStringContainsString('benchNothing', $output);
     }
 
     /**
@@ -54,7 +54,7 @@ class ReportTest extends SystemTestCase
         );
         $output = $process->getOutput();
         $this->assertExitCode(0, $process);
-        $this->assertContains('100,000.000000ops/s', $output);
+        $this->assertStringContainsString('100,000.000000ops/s', $output);
     }
 
     /**
@@ -64,7 +64,7 @@ class ReportTest extends SystemTestCase
     {
         $process = $this->phpbench('report --file=results/report1.xml');
         $this->assertExitCode(1, $process);
-        $this->assertContains('You must specify or con', $process->getErrorOutput());
+        $this->assertStringContainsString('You must specify or con', $process->getErrorOutput());
     }
 
     /**

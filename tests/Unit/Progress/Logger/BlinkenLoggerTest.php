@@ -89,8 +89,8 @@ class BlinkenLoggerTest extends TestCase
     {
         $this->logger->benchmarkStart($this->benchmark->reveal());
         $display = $this->output->fetch();
-        $this->assertContains('BenchmarkTest', $display);
-        $this->assertContains('#0 benchSubject', $display);
+        $this->assertStringContainsString('BenchmarkTest', $display);
+        $this->assertStringContainsString('#0 benchSubject', $display);
     }
 
     /**
@@ -100,7 +100,7 @@ class BlinkenLoggerTest extends TestCase
     {
         $this->logger->iterationStart($this->variant[0]);
         $display = $this->output->fetch();
-        $this->assertContains(
+        $this->assertStringContainsString(
             '0.000',
             $display
         );
@@ -113,11 +113,11 @@ class BlinkenLoggerTest extends TestCase
     {
         $this->logger->variantStart($this->variant);
         $display = $this->output->fetch();
-        $this->assertContains(
+        $this->assertStringContainsString(
             'benchSubject',
             $display
         );
-        $this->assertContains(
+        $this->assertStringContainsString(
             'parameter set one',
             $display
         );
@@ -130,7 +130,7 @@ class BlinkenLoggerTest extends TestCase
     {
         $this->variant->setException(new \Exception('foo'));
         $this->logger->variantEnd($this->variant);
-        $this->assertContains('ERROR', $this->output->fetch());
+        $this->assertStringContainsString('ERROR', $this->output->fetch());
     }
 
     /**
@@ -146,7 +146,7 @@ class BlinkenLoggerTest extends TestCase
         $this->variant->computeStats();
         $this->variant->addFailure(new AssertionFailure(self::ASSERTION_FAILURE_MESSAGE));
         $this->logger->variantEnd($this->variant);
-        $this->assertContains('FAIL', $this->output->fetch());
+        $this->assertStringContainsString('FAIL', $this->output->fetch());
     }
 
     /**
@@ -163,6 +163,6 @@ class BlinkenLoggerTest extends TestCase
         $this->variant->computeStats();
 
         $this->logger->variantEnd($this->variant);
-        $this->assertContains('RSD/r: 0.00%', $this->output->fetch());
+        $this->assertStringContainsString('RSD/r: 0.00%', $this->output->fetch());
     }
 }

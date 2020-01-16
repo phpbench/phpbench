@@ -87,8 +87,9 @@ class SystemTestCase extends TestCase
 
         if ($exitCode !== $expected) {
             $this->fail(sprintf(
-                'Expected exit code "%s" but got "%s": STDOUT: %s ERR: %s',
+                'Expected exit code "%s" from "%s" but got "%s": STDOUT: %s ERR: %s',
                 $expected,
+                $process->getCommandLine(),
                 $exitCode,
                 $process->getOutput(),
                 $process->getErrorOutput()

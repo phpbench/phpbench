@@ -14,6 +14,7 @@ namespace PhpBench\Tests\Unit\Report\Renderer;
 
 use PhpBench\Formatter\Formatter;
 use PhpBench\Report\Renderer\XsltRenderer;
+use RuntimeException;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 class XsltRendererTest extends AbstractRendererCase
@@ -86,7 +87,7 @@ class XsltRendererTest extends AbstractRendererCase
             'template' => __DIR__ . '/templates/test.xsl',
         ]);
         $this->assertFileExists($this->defaultReport);
-        $this->assertContains('zeeSa8ju', file_get_contents($this->defaultReport));
+        $this->assertStringContainsString('zeeSa8ju', file_get_contents($this->defaultReport));
     }
 
     /**
@@ -100,7 +101,7 @@ class XsltRendererTest extends AbstractRendererCase
             'template' => __DIR__ . '/templates/test.xsl',
         ]);
         $output = $this->output->fetch();
-        $this->assertContains('zeeSa8ju', $output);
+        $this->assertStringContainsString('zeeSa8ju', $output);
     }
 
     /**
@@ -114,7 +115,7 @@ class XsltRendererTest extends AbstractRendererCase
             'file' => 'foobar_%report_name%.html',
         ]);
         $this->assertFileExists($this->tokenReport);
-        $this->assertContains('zeeSa8ju', file_get_contents($this->tokenReport));
+        $this->assertStringContainsString('zeeSa8ju', file_get_contents($this->tokenReport));
     }
 
     /**
@@ -132,11 +133,11 @@ class XsltRendererTest extends AbstractRendererCase
     /**
      * It should throw an exception if the XSLT template does not exist.
      *
-     * @expectedException RuntimeException
-     * @expectedExceptionMessage does not exist
      */
     public function testRenderNotExistingTemplate()
     {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('does not exist');
         $reports = $this->getReportsDocument();
         $this->renderReport($reports, [
             'file' => $this->defaultReport,
