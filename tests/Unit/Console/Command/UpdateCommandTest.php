@@ -42,7 +42,7 @@ class UpdateCommandTest extends TestCase
         $this->updater->getOldVersion()->willReturn('10');
         $this->updater->getNewVersion()->willReturn('20');
         $this->command->execute($input, $this->output);
-        $this->assertContains(
+        $this->assertStringContainsString(
             'PHPBench was updated from "10" to "20"',
             $this->output->fetch()
         );
@@ -56,7 +56,7 @@ class UpdateCommandTest extends TestCase
         $input = new ArrayInput([], $this->command->getDefinition());
         $this->updater->update()->shouldBeCalled()->willReturn(false);
         $this->command->execute($input, $this->output);
-        $this->assertContains(
+        $this->assertStringContainsString(
             'No update required',
             $this->output->fetch()
         );
@@ -73,7 +73,7 @@ class UpdateCommandTest extends TestCase
         $this->updater->rollback()->shouldBeCalled()->willReturn(true);
         $this->command->execute($input, $this->output);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'Successfully rolled back',
             $this->output->fetch()
         );

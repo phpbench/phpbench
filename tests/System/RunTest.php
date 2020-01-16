@@ -21,7 +21,7 @@ class RunTest extends SystemTestCase
     {
         $process = $this->phpbench('run --verbose --config=env/config_valid/phpbench.json');
         $this->assertExitCode(0, $process);
-        $this->assertContains('best [mean mode] worst', $process->getOutput());
+        $this->assertStringContainsString('best [mean mode] worst', $process->getOutput());
     }
 
     /**
@@ -32,7 +32,7 @@ class RunTest extends SystemTestCase
     {
         $process = $this->phpbench('run', 'env/config_valid');
         $this->assertExitCode(0, $process);
-        $this->assertContains('best [mean mode] worst', $process->getOutput());
+        $this->assertStringContainsString('best [mean mode] worst', $process->getOutput());
     }
 
     /**
@@ -42,7 +42,7 @@ class RunTest extends SystemTestCase
     {
         $process = $this->phpbench('run', 'env/config_dist');
         $this->assertExitCode(0, $process);
-        $this->assertContains('best [mean mode] worst', $process->getOutput());
+        $this->assertStringContainsString('best [mean mode] worst', $process->getOutput());
     }
 
     /**
@@ -63,7 +63,7 @@ class RunTest extends SystemTestCase
         $process = $this->phpbench('run benchmarks/set4/NothingBench.php --report=default');
         $this->assertExitCode(0, $process);
         $output = $process->getOutput();
-        $this->assertContains('bench', $output);
+        $this->assertStringContainsString('bench', $output);
     }
 
     /**
@@ -73,7 +73,7 @@ class RunTest extends SystemTestCase
     {
         $process = $this->phpbench('run');
         $this->assertExitCode(1, $process);
-        $this->assertContains('You must either specify', $process->getErrorOutput());
+        $this->assertStringContainsString('You must either specify', $process->getErrorOutput());
     }
 
     /**
@@ -86,7 +86,7 @@ class RunTest extends SystemTestCase
         );
         $this->assertExitCode(0, $process);
         $output = $process->getOutput();
-        $this->assertContains('benchNothing', $output);
+        $this->assertStringContainsString('benchNothing', $output);
     }
 
     /**
@@ -98,7 +98,7 @@ class RunTest extends SystemTestCase
             'run --report=\'{"generator": "foo_table"}\' benchmarks/set4/NothingBench.php'
         );
         $this->assertExitCode(1, $process);
-        $this->assertContains('generator service "foo_table" does not exist', $process->getErrorOutput());
+        $this->assertStringContainsString('generator service "foo_table" does not exist', $process->getErrorOutput());
     }
 
     /**
@@ -110,7 +110,7 @@ class RunTest extends SystemTestCase
             'run --report=\'{"name": "foo_ta\' benchmarks/set4/NothingBench.php'
         );
         $this->assertExitCode(1, $process);
-        $this->assertContains('Parse error', $process->getErrorOutput());
+        $this->assertStringContainsString('Parse error', $process->getErrorOutput());
     }
 
     /**
@@ -122,7 +122,7 @@ class RunTest extends SystemTestCase
             'run --report=foobar benchmarks/set4/NothingBench.php'
         );
         $this->assertExitCode(1, $process);
-        $this->assertContains('No generator configuration named "foobar" exists.', $process->getErrorOutput());
+        $this->assertStringContainsString('No generator configuration named "foobar" exists.', $process->getErrorOutput());
     }
 
     /**
@@ -179,7 +179,7 @@ class RunTest extends SystemTestCase
         );
         $this->assertExitCode(0, $process);
         $output = $process->getOutput();
-        $this->assertContains('Dumped', $output);
+        $this->assertStringContainsString('Dumped', $output);
         $this->assertFileExists($this->fname);
     }
 
@@ -219,7 +219,7 @@ class RunTest extends SystemTestCase
         );
 
         $this->assertExitCode(1, $process);
-        $this->assertContains('Could not decode', $process->getErrorOutput());
+        $this->assertStringContainsString('Could not decode', $process->getErrorOutput());
     }
 
     /**
@@ -260,7 +260,7 @@ class RunTest extends SystemTestCase
         );
 
         $this->assertExitCode(0, $process);
-        $this->assertContains('(ms)', $process->getOutput());
+        $this->assertStringContainsString('(ms)', $process->getOutput());
     }
 
     /**
@@ -273,7 +273,7 @@ class RunTest extends SystemTestCase
         );
 
         $this->assertExitCode(0, $process);
-        $this->assertContains('(ops/μs)', $process->getOutput());
+        $this->assertStringContainsString('(ops/μs)', $process->getOutput());
     }
 
     /**
@@ -328,7 +328,7 @@ class RunTest extends SystemTestCase
 
         $this->assertExitCode(0, $process);
         $output = $process->getOutput();
-        $this->assertContains('best [mean mode] worst', $output);
+        $this->assertStringContainsString('best [mean mode] worst', $output);
     }
 
     /**
@@ -422,7 +422,7 @@ class RunTest extends SystemTestCase
         );
         $this->assertExitCode(0, $process);
         $output = $process->getOutput();
-        $this->assertContains(' reject-count="4"', $output);
+        $this->assertStringContainsString(' reject-count="4"', $output);
     }
 
     /**
@@ -448,8 +448,8 @@ class RunTest extends SystemTestCase
         );
 
         $this->assertExitCode(1, $process);
-        $this->assertContains('1 subjects encountered errors', $process->getOutput());
-        $this->assertContains('benchNothingElse', $process->getOutput());
+        $this->assertStringContainsString('1 subjects encountered errors', $process->getOutput());
+        $this->assertStringContainsString('benchNothingElse', $process->getOutput());
     }
 
     /**
@@ -462,8 +462,8 @@ class RunTest extends SystemTestCase
         );
 
         $this->assertExitCode(1, $process);
-        $this->assertContains('1 subjects encountered errors', $process->getOutput());
-        $this->assertNotContains('benchNothingElse', $process->getOutput());
+        $this->assertStringContainsString('1 subjects encountered errors', $process->getOutput());
+        $this->assertStringNotContainsString('benchNothingElse', $process->getOutput());
     }
 
     /**
@@ -477,8 +477,8 @@ class RunTest extends SystemTestCase
         );
 
         $this->assertExitCode(1, $process);
-        $this->assertContains('1 subjects encountered errors', $process->getOutput());
-        $this->assertNotContains('benchNothingElse', $process->getOutput());
+        $this->assertStringContainsString('1 subjects encountered errors', $process->getOutput());
+        $this->assertStringNotContainsString('benchNothingElse', $process->getOutput());
     }
     /**
      * It should allow the precision to be set.

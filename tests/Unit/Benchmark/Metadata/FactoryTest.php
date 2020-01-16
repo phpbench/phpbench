@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Benchmark\Metadata;
 
+use InvalidArgumentException;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\DriverInterface;
 use PhpBench\Benchmark\Metadata\MetadataFactory;
@@ -80,7 +81,7 @@ class FactoryTest extends TestCase
 
         $metadata = $this->factory->getMetadataForFile(self::FNAME);
         $this->assertInstanceOf('PhpBench\Benchmark\Metadata\BenchmarkMetadata', $metadata);
-        $this->assertInternalType('array', $metadata->getSubjects());
+        $this->assertIsArray($metadata->getSubjects());
         $this->assertCount(1, $metadata->getSubjects());
     }
 

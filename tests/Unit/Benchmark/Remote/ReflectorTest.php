@@ -37,7 +37,7 @@ class ReflectorTest extends TestCase
         $reflection = $classHierarchy->getTop();
         $this->assertInstanceOf('PhpBench\Benchmark\Remote\ReflectionClass', $reflection);
         $this->assertEquals('\PhpBench\Tests\Unit\Benchmark\reflector\ExampleClass', $reflection->class);
-        $this->assertContains('Some doc comment', $reflection->comment);
+        $this->assertStringContainsString('Some doc comment', $reflection->comment);
         $this->assertEquals($fname, $reflection->path);
         $this->assertEquals([
             'methodOne',
@@ -47,7 +47,7 @@ class ReflectorTest extends TestCase
             'provideParamsNonScalar',
             'provideParamsNull',
         ], array_keys($reflection->methods));
-        $this->assertContains('Method One Comment', $reflection->methods['methodOne']->comment);
+        $this->assertStringContainsString('Method One Comment', $reflection->methods['methodOne']->comment);
     }
 
     /**

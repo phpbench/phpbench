@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Math;
 
+use InvalidArgumentException;
 use PhpBench\Math\Statistics;
 use PHPUnit\Framework\TestCase;
 

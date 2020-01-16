@@ -62,8 +62,8 @@ class HistogramLoggerTest extends TestCase
     {
         $this->logger->benchmarkStart($this->benchmark->reveal());
         $display = $this->output->fetch();
-        $this->assertContains('BenchmarkTest', $display);
-        $this->assertContains('#1 benchSubject', $display);
+        $this->assertStringContainsString('BenchmarkTest', $display);
+        $this->assertStringContainsString('#1 benchSubject', $display);
     }
 
     /**
@@ -75,7 +75,7 @@ class HistogramLoggerTest extends TestCase
         $this->iteration->getVariant()->willReturn($this->variant);
         $this->logger->iterationStart($this->iteration->reveal());
         $display = $this->output->fetch();
-        $this->assertContains('it  1/4', $display);
+        $this->assertStringContainsString('it  1/4', $display);
     }
 
     /**
@@ -85,15 +85,15 @@ class HistogramLoggerTest extends TestCase
     {
         $this->logger->variantStart($this->variant);
         $display = $this->output->fetch();
-        $this->assertContains(
+        $this->assertStringContainsString(
             '1  (σ = 0.000ms ) -2σ [                 ] +2σ',
             $display
         );
-        $this->assertContains(
+        $this->assertStringContainsString(
             'benchSubject',
             $display
         );
-        $this->assertContains(
+        $this->assertStringContainsString(
             'parameter set one',
             $display
         );
@@ -106,7 +106,7 @@ class HistogramLoggerTest extends TestCase
     {
         $this->variant->setException(new \Exception('foo'));
         $this->logger->variantEnd($this->variant);
-        $this->assertContains('ERROR', $this->output->fetch());
+        $this->assertStringContainsString('ERROR', $this->output->fetch());
     }
 
     /**
@@ -124,7 +124,7 @@ class HistogramLoggerTest extends TestCase
 
         $this->logger->variantEnd($this->variant);
         $display = $this->output->fetch();
-        $this->assertContains(
+        $this->assertStringContainsString(
             '1  (σ = 0.000ms ) -2σ [        █        ] +2σ [μ Mo]/r: 0.010 0.010 μRSD/r: 0.00%',
             $display
         );

@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Formatter;
 
+use InvalidArgumentException;
 use PhpBench\Formatter\FormatInterface;
 use PhpBench\Formatter\FormatRegistry;
 use PHPUnit\Framework\TestCase;

@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Util;
 
+use InvalidArgumentException;
 use PhpBench\Util\TimeUnit;
 use PHPUnit\Framework\TestCase;
 

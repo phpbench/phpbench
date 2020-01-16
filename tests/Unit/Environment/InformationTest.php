@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Environment;
 
+use BadMethodCallException;
 use PhpBench\Environment\Information;
 use PHPUnit\Framework\TestCase;
 

@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Registry;
 
+use InvalidArgumentException;
 use PhpBench\Registry\Config;
 use PHPUnit\Framework\TestCase;
 

@@ -22,6 +22,7 @@ use PhpBench\Model\Variant;
 use PhpBench\Tests\Util\TestUtil;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use RuntimeException;
 
 class VariantTest extends TestCase
 {
@@ -123,9 +124,9 @@ class VariantTest extends TestCase
         $variant->computeStats();
 
         $this->assertCount(3, $variant->getRejects());
-        $this->assertContains($variant[2], $variant->getRejects());
-        $this->assertContains($variant[3], $variant->getRejects());
-        $this->assertNotContains($variant[1], $variant->getRejects());
+        $this->assertContainsEquals($variant[2], $variant->getRejects());
+        $this->assertContainsEquals($variant[3], $variant->getRejects());
+        $this->assertNotContainsEquals($variant[1], $variant->getRejects());
     }
 
     private function createIteration($time, $expectedDeviation = null, $expectedZValue = null)

@@ -12,10 +12,12 @@
 
 namespace PhpBench\Tests\Unit\Expression;
 
+use InvalidArgumentException;
 use PhpBench\Expression\Constraint\Comparison;
 use PhpBench\Expression\Constraint\Composite;
 use PhpBench\Expression\Parser;
 use PHPUnit\Framework\TestCase;
+use Seld\JsonLint\ParsingException;
 
 class ParserTest extends TestCase
 {
@@ -32,7 +34,7 @@ class ParserTest extends TestCase
      */
     public function testInvalidJson()
     {
-        $this->expectException(Seld\JsonLint\ParsingException::class);
+        $this->expectException(ParsingException::class);
         $this->parser->parse('{"$eq": ["benchmark", foo__');
     }
 
@@ -88,7 +90,7 @@ class ParserTest extends TestCase
      */
     public function testInvalidOperator()
     {
-        $this->expectExceptionMessage('Unknown operator');
+        $this->expectExceptionMessage('Unknown comparison operator');
         $this->expectException(InvalidArgumentException::class);
         $this->parser->parse('{foo: {$asdasd: "bar"}}');
     }

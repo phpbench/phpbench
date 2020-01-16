@@ -16,6 +16,7 @@ use PhpBench\Benchmark\Remote\Payload;
 use PhpBench\Benchmark\Remote\ProcessFactory;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use RuntimeException;
 use Symfony\Component\Process\Process;
 
 class PayloadTest extends TestCase

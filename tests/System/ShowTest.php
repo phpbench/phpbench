@@ -27,7 +27,7 @@ class ShowTest extends SystemTestCase
 
         $this->assertExitCode(0, $process);
         $output = $process->getOutput();
-        $this->assertContains(<<<'EOT'
+        $this->assertStringContainsString(<<<'EOT'
 +--------------+--------------+-----+------+-----+----------+----------+----------+----------+----------+---------+--------+-------+
 | benchmark    | subject      | set | revs | its | mem_peak | best     | mean     | mode     | worst    | stdev   | rstdev | diff  |
 +--------------+--------------+-----+------+-----+----------+----------+----------+----------+----------+---------+--------+-------+
@@ -50,7 +50,7 @@ EOT
 
         $this->assertExitCode(0, $process);
         $output = $process->getOutput();
-        $this->assertContains(<<<'EOT'
+        $this->assertStringContainsString(<<<'EOT'
 +--------------+--------------+-----+------+------+----------+----------+--------------+----------------+
 | benchmark    | subject      | set | revs | iter | mem_peak | time_rev | comp_z_value | comp_deviation |
 +--------------+--------------+-----+------+------+----------+----------+--------------+----------------+

@@ -29,7 +29,7 @@ class ArchiveTest extends SystemTestCase
         $output = $process->getOutput();
 
         // it should show two dots, one for each result
-        $this->assertContains(<<<'EOT'
+        $this->assertStringContainsString(<<<'EOT'
 ..
 EOT
         , $output);
@@ -39,7 +39,7 @@ EOT
         );
 
         $output = $process->getOutput();
-        $this->assertContains(<<<'EOT'
+        $this->assertStringContainsString(<<<'EOT'
 Restoring 0 of 2 suites
 EOT
         , $output);

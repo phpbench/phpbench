@@ -12,8 +12,10 @@
 
 namespace PhpBench\Tests\Unit\Formatter;
 
+use InvalidArgumentException;
 use PhpBench\Formatter\ClassLoader;
 use PHPUnit\Framework\TestCase;
+use Seld\JsonLint\ParsingException;
 
 class ClassLoaderTest extends TestCase
 {
@@ -46,7 +48,7 @@ class ClassLoaderTest extends TestCase
      */
     public function testInvalidJson()
     {
-        $this->expectException(Seld\JsonLint\ParsingException::class);
+        $this->expectException(ParsingException::class);
         $this->loader->load(__DIR__ . '/class/invalid.json');
     }
 

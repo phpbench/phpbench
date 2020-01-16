@@ -12,11 +12,13 @@
 
 namespace PhpBench\Tests\Unit\Storage\Driver\Dbal\Visitor;
 
+use InvalidArgumentException;
 use PhpBench\Expression\Constraint\Comparison;
 use PhpBench\Expression\Constraint\Composite;
 use PhpBench\Expression\Constraint\Constraint;
 use PhpBench\Expression\Parser;
 use PhpBench\Extensions\Dbal\Storage\Driver\Dbal\Visitor\SqlVisitor;
+use RuntimeException;
 use PHPUnit\Framework\TestCase;
 
 class SqlVisitorTest extends TestCase
@@ -121,11 +123,11 @@ class SqlVisitorTest extends TestCase
     /**
      * It should throw an exception if an unknown composite operator is supplied.
      *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Unknown composite operator
      */
     public function testInvalidCompositeOperator()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unknown composite operator');
         $composite = $this->prophesize(Composite::class);
         $composite->getOperator()->willReturn('$boobar');
 
@@ -165,11 +167,11 @@ class SqlVisitorTest extends TestCase
     /**
      * It should throw an exception if an invalid field is specified.
      *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Unknown field "boobar", allowed fields:
      */
     public function testUnknownField()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unknown field "boobar", allowed fields:');
         $constraint = $this->prophesize(Comparison::class);
         $constraint->getComparator()->willReturn('$eq');
         $constraint->getField()->willReturn('boobar');
@@ -180,11 +182,11 @@ class SqlVisitorTest extends TestCase
     /**
      * It should throw an exception if "param" is used without a key.
      *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage must be of form
      */
     public function testInvalidParam()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('must be of form');
         $constraint = $this->prophesize(Comparison::class);
         $constraint->getComparator()->willReturn('$eq');
         $constraint->getField()->willReturn('param');
@@ -195,11 +197,11 @@ class SqlVisitorTest extends TestCase
     /**
      * It should throw an exception if an unknown comparator is encountered.
      *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Unsupported comparator
      */
     public function testUnknownComparator()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unsupported comparator');
         $constraint = $this->prophesize(Comparison::class);
         $constraint->getComparator()->willReturn('narf');
         $constraint->getField()->willReturn('subject');
@@ -210,11 +212,11 @@ class SqlVisitorTest extends TestCase
     /**
      * It should throw an exception if an unsupported constraint class is given.
      *
-     * @expectedException RuntimeException
-     * @expectedExceptionMessage Unsupported constraint class
      */
     public function testUnsupportedConstraintClass()
     {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Unsupported constraint class');
         $constraint = $this->prophesize(Constraint::class);
         $this->visitor->visit($constraint->reveal());
     }
@@ -222,11 +224,11 @@ class SqlVisitorTest extends TestCase
     /**
      * It should throw an exception if a non-array value is passed as an argument to $in.
      *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage array
      */
     public function testNonArrayIn()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('array');
         $constraint = $this->prophesize(Comparison::class);
         $constraint->getComparator()->willReturn('$in');
         $constraint->getValue()->willReturn('hei');

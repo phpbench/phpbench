@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Json;
 
+use InvalidArgumentException;
 use PhpBench\Json\JsonDecoder;
 use PHPUnit\Framework\TestCase;
 

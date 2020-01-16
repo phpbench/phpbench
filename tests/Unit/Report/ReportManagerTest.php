@@ -21,6 +21,7 @@ use PhpBench\Report\GeneratorInterface;
 use PhpBench\Report\RendererInterface;
 use PhpBench\Report\ReportManager;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ReportManagerTest extends TestCase

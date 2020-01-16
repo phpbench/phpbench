@@ -147,11 +147,11 @@ class TraceExecutorTest extends TestCase
      * It should throw an exception if the trace file was not generated.
      * It should remove any existing trace file.
      *
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage was not generated
      */
     public function testNoTraceGenerated()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('was not generated');
         $this->filesystem->exists(Argument::any())->willReturn(false, false);
 
         $this->executor->execute(

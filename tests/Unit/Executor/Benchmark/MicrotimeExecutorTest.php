@@ -25,6 +25,7 @@ use PhpBench\Model\Variant;
 use PhpBench\Registry\Config;
 use PhpBench\Tests\PhpBenchTestCase;
 use Prophecy\Argument;
+use RuntimeException;
 
 class MicrotimeExecutorTest extends PhpBenchTestCase
 {

@@ -12,10 +12,12 @@
 
 namespace PhpBench\Tests\Unit\Registry;
 
+use InvalidArgumentException;
 use PhpBench\Json\JsonDecoder;
 use PhpBench\Registry\Config;
 use PhpBench\Registry\ConfigurableRegistry;
 use Prophecy\Argument;
+use Seld\JsonLint\ParsingException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ConfigurableRegistryTest extends RegistryTest
@@ -139,7 +141,7 @@ class ConfigurableRegistryTest extends RegistryTest
      */
     public function testGetConfigJsonStringInvalid()
     {
-        $this->expectException(Seld\JsonLint\ParsingException::class);
+        $this->expectException(ParsingException::class);
         $this->registry->setService('service', $this->service1->reveal());
 
         $result = $this->registry->getConfig('{tes  t: se  rvice');

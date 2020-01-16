@@ -12,10 +12,12 @@
 
 namespace PhpBench\Tests\Unit\Registry;
 
+use InvalidArgumentException;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\Registry\RegistrableInterface;
 use PhpBench\Registry\Registry;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 class RegistryTest extends TestCase
 {
@@ -115,7 +117,7 @@ class RegistryTest extends TestCase
      */
     public function testRegisterAlreadyRegistered()
     {
-        $this->expectExceptionMessage('test service "bar" is already registered.');
+        $this->expectExceptionMessage('test service "one" already exists');
         $this->expectException(InvalidArgumentException::class);
         $this->registry->setService('one', $this->service1->reveal());
         $this->registry->setService('one', $this->service1->reveal());

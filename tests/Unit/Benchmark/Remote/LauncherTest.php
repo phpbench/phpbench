@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Benchmark\Remote;
 
+use InvalidArgumentException;
 use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Benchmark\Remote\Payload;
 use PhpBench\Benchmark\Remote\PayloadFactory;

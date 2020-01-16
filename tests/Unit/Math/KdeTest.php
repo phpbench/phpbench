@@ -12,6 +12,8 @@
 
 namespace PhpBench\Tests\Tests\Unit\Unit\Math;
 
+use InvalidArgumentException;
+use OutOfBoundsException;
 use PhpBench\Math\Kde;
 use PhpBench\Math\Statistics;
 use PHPUnit\Framework\TestCase;

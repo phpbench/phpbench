@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Math;
 
+use LogicException;
 use PhpBench\Math\Distribution;
 use PHPUnit\Framework\TestCase;
 
