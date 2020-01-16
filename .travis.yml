@@ -11,9 +11,6 @@ stages:
   - deploy
 
 jobs:
-  allow_failures:
-    - php: 7.4
-
   include:
     - stage: Style
 
