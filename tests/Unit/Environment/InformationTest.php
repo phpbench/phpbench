@@ -37,10 +37,10 @@ class InformationTest extends TestCase
     /**
      * It should throw an Exception if unset is called.
      *
-     * @expectedException BadMethodCallException
      */
     public function testUnset()
     {
+        $this->expectException(BadMethodCallException::class);
         $information = new Information('hello', []);
         unset($information['foo']);
     }
@@ -48,10 +48,10 @@ class InformationTest extends TestCase
     /**
      * It should throw an Exception if set is called.
      *
-     * @expectedException BadMethodCallException
      */
     public function testSet()
     {
+        $this->expectException(BadMethodCallException::class);
         $information = new Information('hello', []);
         $information['foo'] = 'bar';
     }

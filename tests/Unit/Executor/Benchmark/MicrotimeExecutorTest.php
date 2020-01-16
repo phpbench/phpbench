@@ -80,11 +80,11 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
     /**
      * It should prevent output from the benchmarking class.
      *
-     * @expectedException RuntimeException
-     * @expectedException Benchmark made some noise
      */
     public function testRepressOutput()
     {
+        $this->expectExceptionMessage('Benchmark made some noise');
+        $this->expectException(RuntimeException::class);
         $this->metadata->getBeforeMethods()->willReturn([]);
         $this->metadata->getAfterMethods()->willReturn([]);
         $this->metadata->getName()->willReturn('benchOutput');

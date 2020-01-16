@@ -97,10 +97,10 @@ class ConfigurableRegistryTest extends RegistryTest
     /**
      * It should throw an exception if a config extends a config from a different service.
      *
-     * @expectedException InvalidArgumentException
      */
     public function testExtendsDifferentServiceException()
     {
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('test configuration for service "service2" cannot extend configuration for different service "service1"');
         $config1 = [
             'test' => 'service1',
@@ -136,10 +136,10 @@ class ConfigurableRegistryTest extends RegistryTest
     /**
      * If a invalid JSON encoded string is passed to getConfig, then it should throw an exception.
      *
-     * @expectedException Seld\JsonLint\ParsingException
      */
     public function testGetConfigJsonStringInvalid()
     {
+        $this->expectException(Seld\JsonLint\ParsingException::class);
         $this->registry->setService('service', $this->service1->reveal());
 
         $result = $this->registry->getConfig('{tes  t: se  rvice');

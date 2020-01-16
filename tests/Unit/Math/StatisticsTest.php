@@ -79,10 +79,10 @@ class StatisticsTest extends TestCase
     /**
      * It should throw an exception if the linspace min and max are the same number.
      *
-     * @expectedException InvalidArgumentException
      */
     public function testLinspaceMinMaxSame()
     {
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Min and max cannot be the same number: 4');
         Statistics::linspace(4, 4, 10);
     }

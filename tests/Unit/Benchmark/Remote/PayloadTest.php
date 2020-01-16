@@ -52,10 +52,10 @@ class PayloadTest extends TestCase
     /**
      * It should throw an exception if the script is invalid.
      *
-     * @expectedException RuntimeException
      */
     public function testInvalidScript()
     {
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('syntax error');
         $payload = new Payload(
             __DIR__ . '/template/invalid.template'
@@ -122,10 +122,10 @@ class PayloadTest extends TestCase
     /**
      * It should throw an execption if a template is not found.
      *
-     * @expectedException RuntimeException
      */
     public function testTemplateNotFound()
     {
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Could not find script template');
         $processFactory = $this->prophesize(ProcessFactory::class);
         $payload = new Payload(

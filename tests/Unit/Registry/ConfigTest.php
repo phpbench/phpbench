@@ -26,11 +26,11 @@ class ConfigTest extends TestCase
     /**
      * It should throw an exception if an offset does not exist.
      *
-     * @expectedException InvalidArgumentException
-     * @expectedException Configuration offset "offset_not_exist" does not exist.
      */
     public function testExceptionOffsetNotExist()
     {
+        $this->expectExceptionMessage('Configuration offset "offset_not_exist" does not exist.');
+        $this->expectException(InvalidArgumentException::class);
         $config = new Config(
             'test',
             [
@@ -46,11 +46,11 @@ class ConfigTest extends TestCase
     /**
      * It should throw an exception if an invalid name is given.
      *
-     * @expectedException InvalidArgumentException
      * @dataProvider provideInvalidName
      */
     public function testInvalidName($name)
     {
+        $this->expectException(InvalidArgumentException::class);
         new Config($name, []);
     }
 

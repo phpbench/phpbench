@@ -75,30 +75,30 @@ class KdeTest extends TestCase
     /**
      * It should throw an exception if an invalid bandwidth method is given.
      *
-     * @expectedException InvalidArgumentException
      */
     public function testInvalidBandwidth()
     {
+        $this->expectException(InvalidArgumentException::class);
         new Kde([1, 2], 'foo');
     }
 
     /**
      * It should throw an exception if the data set has zero elements.
      *
-     * @expectedException OutOfBoundsException
      */
     public function testNoElements()
     {
+        $this->expectException(OutOfBoundsException::class);
         new Kde([]);
     }
 
     /**
      * It should throw an exception if the data set has only a single element.
      *
-     * @expectedException OutOfBoundsException
      */
     public function testOneElement()
     {
+        $this->expectException(OutOfBoundsException::class);
         new Kde([1]);
     }
 }

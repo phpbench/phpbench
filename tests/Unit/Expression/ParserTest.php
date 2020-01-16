@@ -29,10 +29,10 @@ class ParserTest extends TestCase
     /**
      * It should throw an exception if the JSON is invalid.
      *
-     * @expectedException Seld\JsonLint\ParsingException
      */
     public function testInvalidJson()
     {
+        $this->expectException(Seld\JsonLint\ParsingException::class);
         $this->parser->parse('{"$eq": ["benchmark", foo__');
     }
 
@@ -85,11 +85,11 @@ class ParserTest extends TestCase
     /**
      * It should throw an exception if an invalid operator is provided.
      *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessge Unknown operator
      */
     public function testInvalidOperator()
     {
+        $this->expectExceptionMessage('Unknown operator');
+        $this->expectException(InvalidArgumentException::class);
         $this->parser->parse('{foo: {$asdasd: "bar"}}');
     }
 

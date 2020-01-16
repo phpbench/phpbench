@@ -40,10 +40,10 @@ class FormatRegistryTest extends TestCase
     /**
      * It should throw an exception if an attempt is made to add a duplicate format.
      *
-     * @expectedException InvalidArgumentException
      */
     public function testRegisterExisting()
     {
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Formatter with name');
         $this->registry->register('hello', $this->format->reveal());
         $this->registry->register('hello', $this->format->reveal());
@@ -52,10 +52,10 @@ class FormatRegistryTest extends TestCase
     /**
      * It should throw an exception if an unknown formatter is requiested.
      *
-     * @expectedException InvalidArgumentException
      */
     public function testUnknownFormatter()
     {
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Unknown format');
         $this->registry->get('hello');
     }

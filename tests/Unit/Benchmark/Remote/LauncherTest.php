@@ -79,10 +79,10 @@ class LauncherTest extends TestCase
     /**
      * It should throw an exception if the bootstrap file does not exist.
      *
-     * @expectedException InvalidArgumentException
      */
     public function testInvalidBootstrap()
     {
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Bootstrap file');
         $launcher = new Launcher(
             $this->factory->reveal(),

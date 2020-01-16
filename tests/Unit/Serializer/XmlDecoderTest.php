@@ -43,10 +43,10 @@ class XmlDecoderTest extends XmlTestCase
     /**
      * It should throw an exception when encountering a non-existing result class.
      *
-     * @expectedException \RuntimeException
      */
     public function testDecodeUnknownResultClass()
     {
+        $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('XML file defines a non-existing result class "FooVendor\FooResult" - maybe you are missing an extension?');
         $dom = new Document(1.0);
         $dom->loadXML(<<<EOT
@@ -64,10 +64,10 @@ EOT
     /**
      * It should throw an exception for a non-existing result key.
      *
-     * @expectedException \RuntimeException
      */
     public function testDecodeUnknownResultKey()
     {
+        $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('No result class was provided with key "foobar" for attribute "foobar-foo"');
         $dom = new Document(1.0);
         $dom->loadXML(<<<EOT
@@ -91,10 +91,10 @@ EOT
     /**
      * It should throw an exception if an attribute name has no - prefix.
      *
-     * @expectedException \RuntimeException
      */
     public function testInvalidAttribute()
     {
+        $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Expected attribute name to have a result key prefix, got "foo"');
         $dom = new Document(1.0);
         $dom->loadXML(<<<EOT

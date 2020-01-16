@@ -35,10 +35,10 @@ class RunnerConfigTest extends TestCase
     /**
      * It should throw an exception if the retry threshold is less than zero.
      *
-     * @expectedException InvalidArgumentException
      */
     public function testRetryLessThanZetro()
     {
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('must be greater');
         RunnerConfig::create()
             ->withRetryThreshold(-1);
@@ -47,10 +47,10 @@ class RunnerConfigTest extends TestCase
     /**
      * It should throw an exception if the revolutions are less than zero.
      *
-     * @expectedException InvalidArgumentException
      */
     public function testRevolutionsLessThanZero()
     {
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('greater than');
         RunnerConfig::create()->withRevolutions([-1]);
     }

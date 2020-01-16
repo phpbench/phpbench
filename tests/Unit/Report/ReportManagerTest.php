@@ -91,10 +91,10 @@ class ReportManagerTest extends TestCase
     /**
      * It should throw an exception if the generator does not return a Document class.
      *
-     * @expectedException RuntimeException
      */
     public function testGeneratorNotReturnDocument()
     {
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Report generator "service" should');
         $config = new Config('test', [
             'generator' => 'service',

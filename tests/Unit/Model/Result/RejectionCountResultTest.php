@@ -18,19 +18,19 @@ use PHPUnit\Framework\TestCase;
 class RejectionCountResultTest extends TestCase
 {
     /**
-     * @expectedException \InvalidArgumentException
      */
     public function testFinalMemoryNonInteger()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Rejection count must be an integer');
         new RejectionCountResult('hello');
     }
 
     /**
-     * @expectedException \InvalidArgumentException
      */
     public function testMemoryGreaterEqualThan()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Rejection count must be greater or equal to 0');
         new RejectionCountResult(-1);
     }

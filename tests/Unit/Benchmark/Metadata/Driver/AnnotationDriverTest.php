@@ -189,10 +189,10 @@ EOT;
      * are specified at the method level rather than the class level.
      *
      * @dataProvider provideClassMethodsOnMethodException
-     * @expectedException \InvalidArgumentException
      */
     public function testClassMethodsOnException($annotation)
     {
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('annotation can only be applied');
         $reflection = new ReflectionClass();
         $reflection->class = 'Test';
@@ -444,10 +444,10 @@ EOT;
     /**
      * It should throw a helpful exception when an annotation is not recognized.
      *
-     * @expectedException InvalidArgumentException
      */
     public function testUsefulException()
     {
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Unrecognized annotation @Foobar, valid PHPBench annotations: @BeforeMethods,');
         $hierarchy = 'test';
 

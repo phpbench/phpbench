@@ -53,10 +53,10 @@ class ReflectionHierarchyTest extends TestCase
     /**
      * It should throw an exception if there are no classes and the top is requested.
      *
-     * @expectedException \InvalidArgumentException
      */
     public function testGetTopNoClasses()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Cannot get top');
         $this->hierarchy->getTop();
     }

@@ -177,10 +177,10 @@ class VariantTest extends TestCase
     /**
      * It should throw an exception if getStats is called when no computation has taken place.
      *
-     * @expectedException RuntimeException
      */
     public function testGetStatsNoComputeException()
     {
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('No statistics have yet');
         $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 10, 20);
         $variant->getStats();
@@ -189,10 +189,10 @@ class VariantTest extends TestCase
     /**
      * It should throw an exception if getStats is called when an exception has been set.
      *
-     * @expectedException RuntimeException
      */
     public function testGetStatsWithExceptionException()
     {
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Cannot retrieve stats when an exception');
         $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 4, 20);
         $this->subject->getRetryThreshold()->willReturn(10);

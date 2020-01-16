@@ -82,10 +82,10 @@ class UpdateCommandTest extends TestCase
     /**
      * It should show an error if it could not roll back.
      *
-     * @expectedException \RuntimeException
      */
     public function testUpdateRollbackError()
     {
+        $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Could not rollback');
         $input = new ArrayInput([
             '--rollback' => true,

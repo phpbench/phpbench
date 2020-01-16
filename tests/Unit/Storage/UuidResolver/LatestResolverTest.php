@@ -84,10 +84,10 @@ class LatestResolverTest extends TestCase
     /**
      * It should throw an exception if no history is present.
      *
-     * @expectedException \InvalidArgumentException
      */
     public function testNoHistory()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('No history present');
         $this->storage->history()->willReturn($this->history->reveal());
         $this->history->current()->willReturn(false);

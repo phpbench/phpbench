@@ -87,10 +87,10 @@ class FactoryTest extends TestCase
     /**
      * It should throw an exception if a before/after method does not exist on the benchmark.
      *
-     * @expectedException InvalidArgumentException
      */
     public function testValidationBeforeMethodsBenchmark()
     {
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Unknown before');
         $this->hierarchy->isEmpty()->willReturn(false);
         TestUtil::configureBenchmarkMetadata($this->metadata, [
@@ -105,10 +105,10 @@ class FactoryTest extends TestCase
     /**
      * It should throw an exception if a before class method is not static.
      *
-     * @expectedException InvalidArgumentException
      */
     public function testValidationBeforeClassMethodsBenchmarkNotStatic()
     {
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('must be static in benchmark class "TestClass"');
         $this->hierarchy->isEmpty()->willReturn(false);
         $this->reflection->class = 'TestClass';
@@ -124,10 +124,10 @@ class FactoryTest extends TestCase
     /**
      * It should throw an exception if a before method IS static.
      *
-     * @expectedException \InvalidArgumentException
      */
     public function testValidationBeforeMethodsBenchmarkIsStatic()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('before method "beforeMe" must not be static in benchmark class "TestClass"');
         $this->hierarchy->isEmpty()->willReturn(false);
         $this->reflection->class = 'TestClass';
@@ -147,10 +147,10 @@ class FactoryTest extends TestCase
     /**
      * It should throw an exception if a before/after method does not exist on the subject.
      *
-     * @expectedException InvalidArgumentException
      */
     public function testValidationBeforeMethodsSubject()
     {
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Unknown before method "beforeMe" in benchmark class "TestClass"');
         $this->hierarchy->isEmpty()->willReturn(false);
         $this->reflection->class = 'TestClass';
@@ -169,10 +169,10 @@ class FactoryTest extends TestCase
     /**
      * It should throw an exception if an after method does not exist.
      *
-     * @expectedException InvalidArgumentException
      */
     public function testValidationAfterMethods()
     {
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Unknown after');
         $this->hierarchy->isEmpty()->willReturn(false);
         TestUtil::configureBenchmarkMetadata($this->metadata, [
@@ -201,10 +201,10 @@ class FactoryTest extends TestCase
     /**
      * It should throw an exception if the parameters are not in a valid format.
      *
-     * @expectedException InvalidArgumentException
      */
     public function testInvalidParameters()
     {
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Each parameter set must be an array, got "string" for TestBench::benchTest');
         $this->hierarchy->isEmpty()->willReturn(false);
         $this->metadata->getSubjects()->willReturn([

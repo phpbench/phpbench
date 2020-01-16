@@ -43,20 +43,20 @@ class ClassLoaderTest extends TestCase
     /**
      * It should throw an exception if invalid json is given.
      *
-     * @expectedException Seld\JsonLint\ParsingException
      */
     public function testInvalidJson()
     {
+        $this->expectException(Seld\JsonLint\ParsingException::class);
         $this->loader->load(__DIR__ . '/class/invalid.json');
     }
 
     /**
      * It should throw an exception if the file does not exist.
      *
-     * @expectedException InvalidArgumentException
      */
     public function testNotExist()
     {
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('does not exist.');
         $this->loader->load(__DIR__ . '/class/not_exists.json');
     }
