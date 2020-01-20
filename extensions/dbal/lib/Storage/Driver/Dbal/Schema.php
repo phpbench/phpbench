@@ -119,7 +119,7 @@ class Schema extends BaseSchema
         $table->addColumn('run_id', 'integer');
         $table->addColumn('provider', 'string');
         $table->addColumn('ekey', 'string');
-        $table->addColumn('value', 'string');
+        $table->addColumn('value', 'text');
         $table->addForeignKeyConstraint(
             $this->runTable, ['run_id'], ['id'], ['onDelete' => 'CASCADE']
         );
