@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+develop
+-------
+
+Bugfixes:
+
+ - Use `text` instead of `string` for envrionment key for DBAL storage
+
 0.17.0
 ------
 
