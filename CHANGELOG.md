@@ -6,7 +6,7 @@ develop
 
 Bugfixes:
 
- - Use `text` instead of `string` for envrionment key for DBAL storage
+ - Use `text` instead of `string` for envrionment key for DBAL storage - @flobee
 
 0.17.0
 ------
