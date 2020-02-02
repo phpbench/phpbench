@@ -11,7 +11,6 @@ $file = '{{ file }}';
 $beforeMethods = {{ beforeMethods }};
 $afterMethods = {{ afterMethods }};
 $bootstrap = '{{ bootstrap }}';
-$parameters = {{ parameters }};
 $warmup = {{ warmup }};
 
 if ($bootstrap) {
@@ -24,21 +23,32 @@ require_once($file);
 
 $benchmark = new $class();
 
+// run before methods
 foreach ($beforeMethods as $beforeMethod) {
-    $benchmark->$beforeMethod($parameters);
+    $benchmark->$beforeMethod({{ parameters }});
 }
 
-// warmup if required
+// run warmup if required
 if ($warmup) {
     for ($i = 0; $i < $warmup; $i++) {
-        $benchmark->{{ subject }}($parameters);
+        $benchmark->{{ subject }}({{ parameters }});
     }
 }
 
-$time = benchmark($benchmark, $parameters);
+// run benchmark
+$startTime = microtime(true);
 
+for ($i = 0; $i < {{ revolutions }}; $i++) {
+    $benchmark->{{ subject }}({{ parameters }});
+}
+
+$endTime = microtime(true);
+
+$time = ($endTime - $startTime) * 1000000;
+
+// run after methods
 foreach ($afterMethods as $afterMethod) {
-    $benchmark->$afterMethod($parameters);
+    $benchmark->$afterMethod({{ parameters }});
 }
 
 $buffer = ob_get_contents();
@@ -55,31 +65,5 @@ echo serialize([
     'time' => (int) $time,
     'buffer' => $buffer,
 ]);
-
-function benchmark($benchmark, $parameters)
-{
-    // run the benchmarks: note that passing arguments to the method slightly increases
-    // the calltime, so we explicitly do one thing or the other depending on if parameters
-    // are provided.
-    if ($parameters) {
-        $startTime = microtime(true);
-
-        for ($i = 0; $i < {{ revolutions }}; $i++) {
-            $benchmark->{{ subject }}($parameters);
-        }
-
-        $endTime = microtime(true);
-    } else {
-        $startTime = microtime(true);
-
-        for ($i = 0; $i < {{ revolutions }}; $i++) {
-            $benchmark->{{ subject }}();
-        }
-
-        $endTime = microtime(true);
-    }
-
-    return ($endTime * 1000000) - ($startTime * 1000000);
-}
 
 exit(0);

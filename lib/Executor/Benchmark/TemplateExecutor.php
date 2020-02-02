@@ -45,6 +45,8 @@ class TemplateExecutor implements BenchmarkExecutorInterface
 
     public function execute(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config): void
     {
+        $parameterSet = $iteration->getVariant()->getParameterSet();
+
         $tokens = [
             'class' => $subjectMetadata->getBenchmark()->getClass(),
             'file' => $subjectMetadata->getBenchmark()->getPath(),
@@ -52,7 +54,7 @@ class TemplateExecutor implements BenchmarkExecutorInterface
             'revolutions' => $iteration->getVariant()->getRevolutions(),
             'beforeMethods' => var_export($subjectMetadata->getBeforeMethods(), true),
             'afterMethods' => var_export($subjectMetadata->getAfterMethods(), true),
-            'parameters' => var_export($iteration->getVariant()->getParameterSet()->getArrayCopy(), true),
+            'parameters' => $parameterSet->count() ? var_export($parameterSet->getArrayCopy(), true) : '',
             'warmup' => $iteration->getVariant()->getWarmup() ?: 0,
         ];
 

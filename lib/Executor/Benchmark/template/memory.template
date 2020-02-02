@@ -8,7 +8,6 @@ $file = '{{ file }}';
 $beforeMethods = {{ beforeMethods }};
 $afterMethods = {{ afterMethods }};
 $bootstrap = '{{ bootstrap }}';
-$parameters = {{ parameters }};
 $warmup = {{ warmup }};
 
 if ($bootstrap) {
@@ -21,24 +20,38 @@ require_once($file);
 
 $benchmark = new $class();
 
+// run before methods
 foreach ($beforeMethods as $beforeMethod) {
-    $benchmark->$beforeMethod($parameters);
+    $benchmark->$beforeMethod({{ parameters }});
 }
 
-// warmup if required
+// run warmup if required
 if ($warmup) {
     for ($i = 0; $i < $warmup; $i++) {
-        $benchmark->{{ subject }}($parameters);
+        $benchmark->{{ subject }}({{ parameters }});
     }
 }
 
 // disable garbage collection
 cleanGarbageCollectionAndDisable();
 
-$time = benchmark($benchmark, $parameters);
+// run benchmark
+$time = 0.00;
+for ($i = 0; $i < {{ revolutions }}; $i++) {
+    $startTime = microtime(true);
 
+    $benchmark->{{ subject }}({{ parameters }});
+
+    $endTime = microtime(true);
+
+    $time += ($endTime - $startTime) * 1000000;
+
+    cleanGarbageCollectionAndDisable();
+}
+
+// run after methods
 foreach ($afterMethods as $afterMethod) {
-    $benchmark->$afterMethod($parameters);
+    $benchmark->$afterMethod({{ parameters }});
 }
 
 $buffer = ob_get_contents();
@@ -55,42 +68,6 @@ echo serialize([
     'time' => (int) $time,
     'buffer' => $buffer,
 ]);
-
-function benchmark($benchmark, $parameters) : float
-{
-    $time = 0.00;
-
-    // run the benchmarks: note that passing arguments to the method slightly increases
-    // the calltime, so we explicitly do one thing or the other depending on if parameters
-    // are provided.
-    if ($parameters) {
-        for ($i = 0; $i < {{ revolutions }}; $i++) {
-            $startTime = microtime(true);
-            
-            $benchmark->{{ subject }}($parameters);
-
-            $endTime =  microtime(true);
-
-            $time += ($endTime * 1000000) - ($startTime * 1000000);
-
-            cleanGarbageCollectionAndDisable();
-        }
-    } else {
-        for ($i = 0; $i < {{ revolutions }}; $i++) {
-            $startTime = microtime(true);
-
-            $benchmark->{{ subject }}();
-
-            $endTime =  microtime(true);
-
-            $time += ($endTime * 1000000) - ($startTime * 1000000);
-
-            cleanGarbageCollectionAndDisable();
-        }
-    }
-
-    return $time;
-}
 
 function cleanGarbageCollectionAndDisable () : void
 {
