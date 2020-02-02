@@ -22,6 +22,8 @@ class RemoteMethodExecutorTest extends PhpBenchTestCase
 
     protected function setUp(): void
     {
+        $this->initWorkspace();
+
         $this->staticMethodFile = __DIR__ . '/../benchmarks/static_method.tmp';
         $this->executor = new RemoteMethodExecutor(new Launcher());
         $this->benchmarkMetadata = $this->prophesize(BenchmarkMetadata::class);
