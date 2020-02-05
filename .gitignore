@@ -8,4 +8,5 @@
 /.travis/build-key.pem
 /.travis/secrets.tar
 /.php_cs.cache
+/.phpunit.result.cache
 /tests/Workspace
