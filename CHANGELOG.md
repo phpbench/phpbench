@@ -4,6 +4,11 @@ CHANGELOG
 develop
 -------
 
+Improvements
+
+ - Decrease benchmark overhead by rendering parameters in-template -
+   @marc-mabe
+
 Bugfixes:
 
  - Use `text` instead of `string` for envrionment key for DBAL storage - @flobee
