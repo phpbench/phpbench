@@ -10,7 +10,7 @@
  *
  */
 
-namespace PhpBench\Tests\Unit\Benchmark;
+namespace PhpBench\Tests\Unit\Model;
 
 use PhpBench\Model\Iteration;
 use PhpBench\Model\Result\TimeResult;

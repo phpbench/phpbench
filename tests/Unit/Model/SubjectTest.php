@@ -10,7 +10,7 @@
  *
  */
 
-namespace PhpBench\Tests\Unit\Subject\Metadata;
+namespace PhpBench\Tests\Unit\Subject;
 
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\ParameterSet;
