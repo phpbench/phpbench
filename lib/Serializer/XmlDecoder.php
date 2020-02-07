@@ -187,7 +187,7 @@ class XmlDecoder
 
         foreach ($element->query('./stats') as $statsEl) {
             foreach ($statsEl->attributes as $key => $attribute) {
-                $stats[$key] = $attribute->nodeValue;
+                $stats[$key] = (float)$attribute->nodeValue;
             }
         }
 
