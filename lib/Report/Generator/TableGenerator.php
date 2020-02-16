@@ -359,8 +359,6 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
 
             return $table;
         });
-
-        return $tables;
     }
 
     /**

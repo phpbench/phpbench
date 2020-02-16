@@ -86,9 +86,9 @@ class RunnerHandler
         $path = $input->getArgument('path') ?: $this->benchPath;
 
         if (null === $path) {
-            throw new InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(
                 'You must either specify or configure a path'
-            ));
+            );
         }
 
         return $this->runner->run($path, $config);

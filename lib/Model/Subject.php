@@ -106,7 +106,7 @@ class Subject
      * @param int $revolutions
      * @param int $warmup
      *
-     * @return Variant.
+     * @return Variant
      */
     public function createVariant(ParameterSet $parameterSet, $revolutions, $warmup, array $computedStats = [])
     {
