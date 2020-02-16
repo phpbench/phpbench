@@ -106,7 +106,7 @@ class ConfigurableRegistry extends Registry
      *
      * @param string $name
      *
-     * @return array
+     * @return void
      */
     private function resolveConfig($name)
     {
