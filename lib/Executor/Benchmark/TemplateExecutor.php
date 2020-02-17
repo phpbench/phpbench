@@ -45,18 +45,7 @@ class TemplateExecutor implements BenchmarkExecutorInterface
 
     public function execute(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config): void
     {
-        $parameterSet = $iteration->getVariant()->getParameterSet();
-
-        $tokens = [
-            'class' => $subjectMetadata->getBenchmark()->getClass(),
-            'file' => $subjectMetadata->getBenchmark()->getPath(),
-            'subject' => $subjectMetadata->getName(),
-            'revolutions' => $iteration->getVariant()->getRevolutions(),
-            'beforeMethods' => var_export($subjectMetadata->getBeforeMethods(), true),
-            'afterMethods' => var_export($subjectMetadata->getAfterMethods(), true),
-            'parameters' => $parameterSet->count() ? var_export($parameterSet->getArrayCopy(), true) : '',
-            'warmup' => $iteration->getVariant()->getWarmup() ?: 0,
-        ];
+        $tokens = $this->createTokens($subjectMetadata, $iteration, $config);
 
         $payload = $this->launcher->payload($this->templatePath, $tokens);
         $this->launch($payload, $iteration, $config);
@@ -93,5 +82,27 @@ class TemplateExecutor implements BenchmarkExecutorInterface
             self::OPTION_PHP_CONFIG => [
             ]
         ]);
+    }
+
+    /**
+     * @param SubjectMetadata $subjectMetadata
+     * @param Iteration $iteration
+     *
+     * @return array
+     */
+    protected function createTokens(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config) : array
+    {
+        $parameterSet = $iteration->getVariant()->getParameterSet();
+
+        return [
+            'class' => $subjectMetadata->getBenchmark()->getClass(),
+            'file' => $subjectMetadata->getBenchmark()->getPath(),
+            'subject' => $subjectMetadata->getName(),
+            'revolutions' => $iteration->getVariant()->getRevolutions(),
+            'beforeMethods' => var_export($subjectMetadata->getBeforeMethods(), true),
+            'afterMethods' => var_export($subjectMetadata->getAfterMethods(), true),
+            'parameters' => $parameterSet->count() ? var_export($parameterSet->getArrayCopy(), true) : '',
+            'warmup' => $iteration->getVariant()->getWarmup() ?: 0,
+        ];
     }
 }
