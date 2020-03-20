@@ -20,6 +20,8 @@ of these escape sequences.
 You may also consider using `Cgywin`, `emuCon` or `ansiCon` programs to
 enhance your console. You may also switch to Linux.
 
+Or you may consider adapting this to Windows, so commercial IDEs like PHPStorm would consider supporting PHPBench which then would make it much more popular which in turn would bring more developers to contribute and adopt benchmarking as part of their daily workflow, how about that.
+
 Why do `setUp` and `tearDown` methods not automatically get called?
 ----------------------------------------------------------------------
 
