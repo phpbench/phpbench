@@ -523,6 +523,32 @@ actually measuring the revolutions time.
 
 As with :ref:`revolutions <revolutions>`, you may also specify an array.
 
+.. _timeouts:
+
+Timeout: Bailing when things take too long
+------------------------------------------
+
+Use the ``@Timeout`` annotation to specify the maximum number of seconds
+before an iteration timesout and fails. The following example will fail after
+0.1 seconds:
+
+.. code-block:: php
+
+    <?php
+
+    // ...
+    class ReportBench
+    {
+        /**
+         * @Timeout(0.1)
+         */
+        public function benchGenerateReport()
+        {
+           sleep(1);
+        }
+    }
+
+
 .. _assertions:
 
 Assertions

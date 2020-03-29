@@ -37,6 +37,13 @@
         "phpunit/phpunit": "^8.5",
         "phpspec/prophecy": "^1.8"
     },
+    "scripts": {
+        "integrate": [
+            "vendor/bin/php-cs-fixer fix",
+            "vendor/bin/phpstan analyse -c phpstan.neon",
+            "vendor/bin/phpunit"
+        ]
+    },
     "suggest": {
         "ext-curl": "For (web) reports extension",
         "ext-xdebug": "For Xdebug profiling extension."

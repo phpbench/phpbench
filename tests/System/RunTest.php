@@ -554,4 +554,12 @@ class RunTest extends SystemTestCase
         $this->assertExitCode(0, $process);
         $this->assertRegExp('{ini\s+\| no}', $process->getOutput());
     }
+
+    public function testErrorWhenTimeoutExceeded()
+    {
+        $process = $this->phpbench(
+            'run benchmarks/set6/TimeoutBench.php'
+        );
+        $this->assertExitCode(1, $process);
+    }
 }

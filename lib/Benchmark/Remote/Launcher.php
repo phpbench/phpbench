@@ -61,23 +61,14 @@ class Launcher
      */
     private $phpDisableIni;
 
-    /**
-     * @param PayloadFactory|null $factory
-     * @param ExecutableFinder|null $finder
-     * @param string|null $bootstrap
-     * @param string|null $phpBinary
-     * @param array $phpConfig
-     * @param null|string $phpWrapper
-     * @param bool $phpDisableIni
-     */
     public function __construct(
         PayloadFactory $factory = null,
         ExecutableFinder $finder = null,
-        $bootstrap = null,
-        $phpBinary = null,
-        $phpConfig = [],
-        $phpWrapper = null,
-        $phpDisableIni = false
+        ?string $bootstrap = null,
+        ?string $phpBinary = null,
+        array $phpConfig = [],
+        ?string $phpWrapper = null,
+        bool $phpDisableIni = false
     ) {
         $this->bootstrap = $bootstrap;
         $this->payloadFactory = $factory ?: new PayloadFactory();
@@ -89,7 +80,7 @@ class Launcher
         $this->phpDisableIni = $phpDisableIni;
     }
 
-    public function payload($template, array $tokens = []): Payload
+    public function payload($template, array $tokens = [], ?float $timeout = null): Payload
     {
         $tokens['bootstrap'] = '';
 
@@ -105,7 +96,7 @@ class Launcher
 
         $phpBinary = $this->resolvePhpBinary();
 
-        $payload = $this->payloadFactory->create($template, $tokens, $phpBinary);
+        $payload = $this->payloadFactory->create($template, $tokens, $phpBinary, $timeout);
 
         if ($this->phpWrapper) {
             $payload->setWrapper($this->phpWrapper);

@@ -72,7 +72,7 @@ class PayloadTest extends TestCase
     {
         $payload = $this->validPayload();
         $payload->setPhpPath('/foo/bar');
-        $this->processFactory->create(Argument::containingString('/foo/bar'))->willReturn($this->process);
+        $this->processFactory->create(Argument::containingString('/foo/bar'), null)->willReturn($this->process);
         $this->process->run()->shouldBeCalled();
         $this->process->isSuccessful()->willReturn(true);
         $this->process->getOutput()->willReturn(serialize(['foo' => 'bar']));
@@ -94,8 +94,8 @@ class PayloadTest extends TestCase
             'bar' => 'foo',
         ]);
 
-        $this->processFactory->create(Argument::containingString('-dfoo=bar'))->willReturn($this->process)->shouldBeCalled();
-        $this->processFactory->create(Argument::containingString('-dbar=foo'))->willReturn($this->process)->shouldBeCalled();
+        $this->processFactory->create(Argument::containingString('-dfoo=bar'), null)->willReturn($this->process)->shouldBeCalled();
+        $this->processFactory->create(Argument::containingString('-dbar=foo'), null)->willReturn($this->process)->shouldBeCalled();
         $this->process->run()->shouldBeCalled();
         $this->process->run()->shouldBeCalled();
         $this->process->isSuccessful()->willReturn(true);
@@ -112,7 +112,7 @@ class PayloadTest extends TestCase
         $payload = $this->validPayload();
         $payload->setWrapper('bockfire');
         $payload->setPhpPath('/boo/bar/php');
-        $this->processFactory->create(Argument::containingString('bockfire \'/boo/bar/php\''))->willReturn($this->process)->shouldBeCalled();
+        $this->processFactory->create(Argument::containingString('bockfire \'/boo/bar/php\''), null)->willReturn($this->process)->shouldBeCalled();
         $this->process->run()->shouldBeCalled();
         $this->process->isSuccessful()->willReturn(true);
         $this->process->getOutput()->willReturn(serialize(['foo' => 'bar']));
@@ -133,6 +133,7 @@ class PayloadTest extends TestCase
             __DIR__ . '/template/not-existing-filename.template',
             [],
             null,
+            null,
             $processFactory->reveal()
         );
 
@@ -149,6 +150,7 @@ class PayloadTest extends TestCase
         return new Payload(
             __DIR__ . '/template/foo.template',
             [],
+            null,
             null,
             $this->processFactory->reveal()
         );

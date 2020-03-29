@@ -206,6 +206,10 @@ class AnnotationDriver implements DriverInterface
         if ($annotation instanceof Annotations\Executor) {
             $subject->setExecutor(new ExecutorMetadata($annotation->getName(), $annotation->getConfig()));
         }
+
+        if ($annotation instanceof Annotations\Timeout) {
+            $subject->setTimeout($annotation->getTimeout());
+        }
     }
 
     public function processBenchmark(BenchmarkMetadata $benchmark, $annotation)
