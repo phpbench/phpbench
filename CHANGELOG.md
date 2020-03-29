@@ -4,6 +4,11 @@ CHANGELOG
 develop
 -------
 
+Features
+
+- Add `@Timeout` to enable a timeout to be specified for any given benchmark -
+  @dantleech #614
+
 Improvements
 
  - Decrease benchmark overhead by rendering parameters in-template -
