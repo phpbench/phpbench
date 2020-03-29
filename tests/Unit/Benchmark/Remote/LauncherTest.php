@@ -68,7 +68,8 @@ class LauncherTest extends TestCase
         $this->factory->create(
             __FILE__,
             ['bootstrap' => $bootstrap],
-            '/path/to/php'
+            '/path/to/php',
+            null
         )->willReturn($this->payload->reveal());
 
         $this->payload->setWrapper('wrapper')->shouldBeCalled();

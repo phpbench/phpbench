@@ -108,7 +108,7 @@ class SubjectMetadata
     private $executorMetadata;
 
     /**
-     * @var float
+     * @var float|null
      */
     private $timeout = 0;
 
@@ -330,7 +330,7 @@ class SubjectMetadata
         $this->executorMetadata = $serviceMetadata;
     }
 
-    public function getTimeout(): float
+    public function getTimeout(): ?float
     {
         return $this->timeout;
     }

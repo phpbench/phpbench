@@ -54,6 +54,7 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
      */
     public function testExecute()
     {
+        $this->metadata->getTimeout()->willReturn(0);
         $this->metadata->getBeforeMethods()->willReturn([]);
         $this->metadata->getAfterMethods()->willReturn([]);
         $this->metadata->getName()->willReturn('doSomething');
@@ -90,6 +91,7 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
         $this->metadata->getAfterMethods()->willReturn([]);
         $this->metadata->getName()->willReturn('benchOutput');
         $this->metadata->getRevs()->willReturn(10);
+        $this->metadata->getTimeout()->willReturn(0);
         $this->metadata->getWarmup()->willReturn(0);
         $this->variant->getParameterSet()->willReturn(new ParameterSet('one'));
         $this->variant->getRevolutions()->willReturn(10);
@@ -108,6 +110,7 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
         $this->metadata->getBeforeMethods()->willReturn(['beforeMethod']);
         $this->metadata->getAfterMethods()->willReturn([]);
         $this->metadata->getName()->willReturn('doSomething');
+        $this->metadata->getTimeout()->willReturn(0);
         $this->variant->getParameterSet()->willReturn(new ParameterSet('one'));
         $this->variant->getRevolutions()->willReturn(1);
         $this->variant->getWarmup()->willReturn(0);
@@ -128,6 +131,7 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
         $this->metadata->getBeforeMethods()->willReturn([]);
         $this->metadata->getAfterMethods()->willReturn(['afterMethod']);
         $this->metadata->getName()->willReturn('doSomething');
+        $this->metadata->getTimeout()->willReturn(0);
         $this->variant->getParameterSet()->willReturn(new ParameterSet('one'));
         $this->variant->getRevolutions()->willReturn(1);
         $this->variant->getWarmup()->willReturn(0);
@@ -148,6 +152,7 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
         $this->metadata->getBeforeMethods()->willReturn([]);
         $this->metadata->getAfterMethods()->willReturn([]);
         $this->metadata->getName()->willReturn('parameterized');
+        $this->metadata->getTimeout()->willReturn(0);
 
         $this->variant->getParameterSet()->willReturn(new ParameterSet(0, [
             'one' => 'two',
@@ -178,6 +183,7 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
             'three' => 'four',
         ]);
 
+        $this->metadata->getTimeout()->willReturn(0);
         $this->metadata->getBeforeMethods()->willReturn(['parameterizedBefore']);
         $this->metadata->getAfterMethods()->willReturn(['parameterizedAfter']);
         $this->metadata->getName()->willReturn('parameterized');

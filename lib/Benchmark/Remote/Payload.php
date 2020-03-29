@@ -68,7 +68,7 @@ class Payload
     private $processFactory;
 
     /**
-     * @var float|null
+     * @var float
      */
     private $timeout;
 
@@ -81,7 +81,7 @@ class Payload
         array $tokens = [],
         $phpPath = PHP_BINARY,
         ?float $timeout = null,
-        Process $process = null
+        ProcessFactory $processFactory = null
     ) {
         $this->setPhpPath($phpPath);
         $this->template = $template;
@@ -121,11 +121,8 @@ class Payload
         $scriptPath = $this->writeTempFile($script);
         $commandLine = $this->buildCommandLine($scriptPath);
 
-        $process = $this->processFactory->create($commandLine);
+        $process = $this->processFactory->create($commandLine, $this->timeout);
         $process->run();
-        $this->process->setCommandLine($commandLine);
-        $this->process->setTimeout($this->timeout);
-        $this->process->run();
 
         $this->removeTmpFile($scriptPath);
 
