@@ -31,12 +31,14 @@ class CharacterReader
     /**
      * Wait for a single character input and return it.
      *
-     * @return string
+     * @return ?string
      */
     public function read()
     {
         while (false !== $character = fgetc(STDIN)) {
             return $character;
         }
+
+        return null;
     }
 }

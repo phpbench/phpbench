@@ -65,9 +65,11 @@ class XsltRenderer implements RendererInterface, OutputAwareInterface
     public function render(Document $reportDom, Config $config)
     {
         $template = $config['template'];
+
         $out = strtr(
             $config['file'],
             [
+                // @phpstan-ignore-next-line
                 '%report_name%' => $reportDom->firstChild->getAttribute('name'),
             ]
         );

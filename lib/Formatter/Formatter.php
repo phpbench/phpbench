@@ -76,7 +76,7 @@ class Formatter
      * options; this is required when options should be overridden on a per-subject basis.
      *
      * @param string[] $classNames
-     * @param string $value
+     * @param mixed $value
      * @param array $params
      *
      * @return string

@@ -25,7 +25,12 @@ class NumberFormat implements FormatInterface
             ));
         }
 
-        return number_format($subject, $options['decimal_places'], $options['decimal_point'], $options['thousands_separator']);
+        return number_format(
+            (float)$subject,
+            $options['decimal_places'],
+            $options['decimal_point'],
+            $options['thousands_separator']
+        );
     }
 
     public function getDefaultOptions()

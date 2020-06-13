@@ -47,6 +47,9 @@ class DelimitedRenderer implements RendererInterface, OutputAwareInterface
      */
     public function render(Document $reportDom, Config $config)
     {
+        /**
+         * @phpstan-ignore-next-line
+         */
         foreach ($reportDom->firstChild->query('./report') as $reportEl) {
             foreach ($reportEl->query('.//table') as $tableEl) {
                 $this->renderTableElement($tableEl, $config);

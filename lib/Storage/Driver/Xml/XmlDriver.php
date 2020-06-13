@@ -41,9 +41,6 @@ class XmlDriver implements DriverInterface
         $this->filesystem = $filesystem ?: new Filesystem();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function store(SuiteCollection $collection)
     {
         foreach ($collection->getSuites() as $suite) {
@@ -57,6 +54,8 @@ class XmlDriver implements DriverInterface
             $dom = $this->xmlEncoder->encode($collection);
             $dom->save($path);
         }
+
+        return null;
     }
 
     /**
