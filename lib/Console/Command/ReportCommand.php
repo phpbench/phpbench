@@ -85,5 +85,7 @@ EOT
         $collection = $this->collectionHandler->suiteCollectionFromInput($input);
         $this->dumpHandler->dumpFromInput($input, $output, $collection);
         $this->reportHandler->reportsFromInput($input, $output, $collection);
+
+        return 0;
     }
 }

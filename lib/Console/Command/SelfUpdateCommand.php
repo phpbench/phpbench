@@ -69,6 +69,8 @@ class SelfUpdateCommand extends Command
             $this->updater->getOldVersion(),
             $this->updater->getNewVersion()
         ));
+
+        return 0;
     }
 
     private function doRollback(OutputInterface $output)

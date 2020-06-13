@@ -59,5 +59,7 @@ EOT
             $output->writeln('- ' . $suite->getUuid());
             $storage->delete($suite->getUuid());
         }
+
+        return 0;
     }
 }
