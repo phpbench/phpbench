@@ -12,12 +12,12 @@
 
 namespace PhpBench\Model;
 
-use PhpBench\Benchmark\Metadata\SubjectMetadata;
-use PhpBench\Model\Subject;
 use \ArrayIterator;
+use PhpBench\Benchmark\Metadata\SubjectMetadata;
 
 /**
  * Benchmark metadata class.
+ *
  * @implements \IteratorAggregate<Subject>
  */
 class Benchmark implements \IteratorAggregate

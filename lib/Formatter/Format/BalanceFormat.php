@@ -13,7 +13,6 @@
 namespace PhpBench\Formatter\Format;
 
 use PhpBench\Formatter\FormatInterface;
-use RuntimeException;
 
 class BalanceFormat implements FormatInterface
 {
