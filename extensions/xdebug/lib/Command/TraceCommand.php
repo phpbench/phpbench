@@ -79,7 +79,7 @@ EOT
                 $this->renderDump($iteration, $output);
             }
 
-            return;
+            return 0;
         }
 
         $this->renderer->render($suite, $output, [
@@ -87,6 +87,8 @@ EOT
             'show_args' => $input->getOption('show-args'),
             'filter' => $input->getOption('trace-filter'),
         ]);
+
+        return 0;
     }
 
     private function renderDump($iteration, $output)

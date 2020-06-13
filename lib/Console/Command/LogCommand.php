@@ -130,6 +130,8 @@ EOT
                 $nbRows = 0;
             }
         }
+
+        return 0;
     }
 
     private function writeLines($output, $nbRows, $height, $lines)

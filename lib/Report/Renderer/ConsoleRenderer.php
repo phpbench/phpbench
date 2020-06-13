@@ -58,6 +58,9 @@ class ConsoleRenderer implements RendererInterface, OutputAwareInterface
      */
     public function render(Document $reportDom, Config $config)
     {
+        /**
+         * @phpstan-ignore-next-line
+         */
         foreach ($reportDom->firstChild->query('./report') as $reportEl) {
             $title = $reportEl->getAttribute('title');
 

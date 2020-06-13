@@ -19,7 +19,7 @@ class BalanceFormat implements FormatInterface
     public function format($subject, array $options)
     {
         if ($subject < 0) {
-            // switch back to positive so we can use our own prefix
+            // @phpstan-ignore-next-line switch back to positive so we can use our own prefix
             $subject = $subject * -1;
 
             return sprintf($options['negative_format'], $subject);

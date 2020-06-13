@@ -61,9 +61,11 @@ EOT
         if ($restore) {
             $this->archiver->getService()->restore($output);
 
-            return;
+            return 0;
         }
 
         $this->archiver->getService()->archive($output);
+
+        return 0;
     }
 }

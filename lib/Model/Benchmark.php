@@ -12,10 +12,13 @@
 
 namespace PhpBench\Model;
 
+use \ArrayIterator;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 
 /**
  * Benchmark metadata class.
+ *
+ * @implements \IteratorAggregate<Subject>
  */
 class Benchmark implements \IteratorAggregate
 {
@@ -106,10 +109,10 @@ class Benchmark implements \IteratorAggregate
     }
 
     /**
-     * {@inheritdoc}
+     * @return ArrayIterator<Subject>
      */
     public function getIterator()
     {
-        return $this->subjects;
+        return new ArrayIterator($this->subjects);
     }
 }

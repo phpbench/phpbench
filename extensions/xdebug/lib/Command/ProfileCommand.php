@@ -106,5 +106,7 @@ EOT
 
             $output->writeln(sprintf('    %s', $generatedFile));
         }
+
+        return 0;
     }
 }
