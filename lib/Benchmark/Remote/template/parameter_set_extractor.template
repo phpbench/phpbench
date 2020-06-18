@@ -33,7 +33,7 @@ $parameterSets = array();
 ob_start();
 
 foreach ($paramProviders as $paramProvider) {
-    if (is_callable([$class, $paramProvider])) {
+    if (is_callable([$benchmark, $paramProvider])) {
         $parameterSets[] = normalize_parameter_set($benchmark->$paramProvider());
         continue;
     }
