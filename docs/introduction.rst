@@ -31,15 +31,9 @@ of the results.
 As a tool it is analogous to the test framework `PHPUnit`_, but instead of *tests* we run
 *benchmarks* and generate reports.
 
-Are There Other Benchmarking Frameworks?
-----------------------------------------
-
-You can try `Athletic`_ .
-
 .. _Symfony Stopwatch: http://symfony.com/doc/current/components/stopwatch.html
 .. _Xdebug: http://xdebug.org
 .. _Blackfire: https://blackfire.io/
 .. _NewRelic: http://newrelic.com
-.. _Athletic: https://github.com/polyfractal/athletic
 .. _HOA Bench: http://hoa-project.net/En/Literature/Hack/Bench.html
 .. _PHPunit: http://phpunit.de
