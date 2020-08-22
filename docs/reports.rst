@@ -28,9 +28,9 @@ Multiple reports can be specified::
 The report command operates in a similar way but requires you to provide some
 data, either from XML dumps or from a :doc:`storage <storage>` query::
 
-    $ phpbench report --query='benchmark: "MyBench"' --report=aggregate
+    $ phpbench report --uuid=latest --report=aggregate
 
-For more information on storage and the query language see :doc:`storage`.
+For more information on storage see :doc:`storage`.
 
 Configuring Reports
 -------------------

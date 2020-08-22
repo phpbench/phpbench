@@ -1,5 +1,5 @@
-Storage and Querying
-====================
+Storage
+=======
 
 PHPBench allows benchmarking results to be persisted using a configured
 storage driver. You can inspect the results with either the ``show`` or
@@ -31,12 +31,12 @@ when running your benchmarks:
 
     $ phpbench run --store
 
-You can tag runs with the ``--tag`` option to make them easier to reference
-(more on this later):
+You can :ref:`tag <storage_tags>` _and_ store runs with the ``--tag`` option to make them easier to
+reference:
 
 .. code-block:: bash
 
-    $ phpbench run --store --tag=my_tag_name
+    $ phpbench run --tag=my_tag_name
 
 Tags must be alpha-numeric and may also contain underscores.
 
@@ -105,6 +105,8 @@ the history from the latest:
 Would show the second latest entry. Meta UUIDs can be used anywhere where you
 would normally specify a UUID, including queries.
 
+.. _storage_tags:
+
 ``tag:``
 ~~~~~~~~
 
@@ -112,13 +114,19 @@ Allows you to reference a tagged run. If you store a suite:
 
 .. code-block:: bash
 
-    $ phpbench run --store --tag=my_tag
+    $ phpbench run --tag=my_tag
 
 Then you can reference it with ``tag:my_tag``
 
 .. code-block:: bash
 
     $ phpbench show tag:my_tag
+
+Or report on it:
+
+.. code-block:: bash
+
+    $ phpbench report --uuid=tag:my_tag --report=aggregate
 
 Querying
 --------

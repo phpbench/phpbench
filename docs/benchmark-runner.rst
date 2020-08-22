@@ -162,10 +162,17 @@ See the :doc:`report-renderers` chapter for more information.
 Deferring Report Generation
 ---------------------------
 
-You can store benchmark results which can then later be used later to generate reports.
+You can store benchmark results locally:
 
-There are two ways to do this: Firstly you may dump the results to an XML
-file, secondly you can use a storage driver to persist them.
+.. code-block:: bash
+
+    $ phpbench run /path/to/HashBench.php --tag=foobar
+
+Then generate reports:
+
+.. code-block:: bash
+
+    $ phpbench report --uuid=tag:foobar --report=aggregate
 
 To dump the benchmark results to an XML file use the ``--dump-file`` option:
 
@@ -173,26 +180,11 @@ To dump the benchmark results to an XML file use the ``--dump-file`` option:
 
     $ phpbench run /path/to/HashBench.php --dump-file=report.xml
 
-You can then generate reports using the ``report`` command:
+Then generate reports:
 
 .. code-block:: bash
 
     $ phpbench report --file=report.xml --report=default
-
-Alternatively (or in a addition) you may use the storage driver as follows:
-
-.. code-block:: bash
-
-    $ phpbench run /path/to/HashBench.php --store
-
-Then generate reports using a *query*:
-
-.. code-block:: bash
-
-    $ phpbench report --query='benchmark: "MyBench"' --report=aggregate
-
-This method is highly mighty. See the :doc:`storage <storage>` chapter for
-more information.
 
 Comparing Results
 -----------------
@@ -206,11 +198,11 @@ implementation and specify a *tag*:
 .. code-block:: bash
 
     # .. configure for implementation A
-    $ phpbench run --tag=impl_a --store
+    $ phpbench run --tag=impl_a
     # .. configure for implementation B
-    $ phpbench run --tag=impl_b --store
+    $ phpbench run --tag=impl_b
     # .. configure for implementation C
-    $ phpbench run --tag=impl_c --store
+    $ phpbench run --tag=impl_c
 
 Now you can use the `report` command and specify the `compare` report to
 compare the results for each implementation side-by-side:

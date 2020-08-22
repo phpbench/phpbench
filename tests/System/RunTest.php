@@ -504,7 +504,21 @@ class RunTest extends SystemTestCase
             'run benchmarks/set4/NothingBench.php --store'
         );
 
-        // because there is no storage driver by default the factory will throw an exception.
+        $this->assertExitCode(0, $process);
+    }
+
+    public function testTaggingImplicitlyStoresResult()
+    {
+        $process = $this->phpbench(
+            'run benchmarks/set4/NothingBench.php --tag=foobar'
+        );
+
+        $this->assertExitCode(0, $process);
+
+        $process = $this->phpbench(
+            'report --report=aggregate --uuid=tag:foobar'
+        );
+
         $this->assertExitCode(0, $process);
     }
 
