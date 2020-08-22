@@ -11,6 +11,8 @@ Features
 
 Improvements
 
+ - `--tag` implicitly stores the benchmark (no need to additionally use
+   `--store`)
  - Decrease benchmark overhead by rendering parameters in-template -
    @marc-mabe
 
