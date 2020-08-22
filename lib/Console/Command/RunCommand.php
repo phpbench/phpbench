@@ -114,7 +114,7 @@ EOT
         $collection = new SuiteCollection([$suite]);
         $this->dumpHandler->dumpFromInput($input, $output, $collection);
 
-        if (true === $input->getOption('store')) {
+        if (true === $input->getOption('store') || $input->getOption('tag')) {
             $output->write('Storing results ... ');
 
             /** @var DriverInterface $driver */
