@@ -21,26 +21,31 @@ use RuntimeException;
 final class Row
 {
     /**
-     * @var array
+     * @var array<string,mixed>
      */
     private $formatParams = [];
 
     /**
-     * @var array
+     * @var array<Cell>
      */
-    private $row;
+    private $cells;
 
+    /**
+     * @param array<Cell> $row
+     */
     public function __construct(array $row)
     {
-        $this->row = $row;
+        $this->cells = array_map(function (Cell $cell) {
+            return $cell;
+        }, $row);
     }
 
     /**
-     * @return array<string,mixed>
+     * @return array<string,Cell>
      */
     public function toArray(): array
     {
-        return $this->row;
+        return $this->cells;
     }
 
     /**
@@ -48,15 +53,14 @@ final class Row
      * return a new instance.
      *
      * @param array $array
-     *
-     * @return Row
      */
-    public function merge(array $array)
+    public function merge(array $array): self
     {
+        $array = Row::fromMap($array);
         return $this->newInstance(
             array_merge(
-                $this->row,
-                $array
+                $this->cells,
+                $array->toArray()
             )
         );
     }
@@ -64,9 +68,9 @@ final class Row
     /**
      * Return the format parameters.
      *
-     * @return array
+     * @return array<string,mixed>
      */
-    public function getFormatParams()
+    public function getFormatParams(): array
     {
         return $this->formatParams;
     }
@@ -74,9 +78,9 @@ final class Row
     /**
      * Set the format parameters.
      *
-     * @param array $formatParams
+     * @param array<string,mixed> $formatParams
      */
-    public function setFormatParams($formatParams)
+    public function setFormatParams(array $formatParams): void
     {
         $this->formatParams = $formatParams;
     }
@@ -85,13 +89,13 @@ final class Row
      * Return a new instance of row using the given data but
      * keeping the metadata for this row.
      *
-     * @param array $array
+     * @param array<Cell> $cells
      *
      * @return Row
      */
-    public function newInstance(array $array)
+    public function newInstance(array $cells): self
     {
-        $duplicate = new self($array);
+        $duplicate = new self($cells);
         $duplicate->setFormatParams($this->getFormatParams());
 
         return $duplicate;
@@ -109,7 +113,7 @@ final class Row
 
     public function hasColumn(string $columnName): bool
     {
-        return array_key_exists($columnName, $this->row);
+        return array_key_exists($columnName, $this->cells);
     }
 
     /**
@@ -117,19 +121,21 @@ final class Row
      */
     public function getValue(string $columnName)
     {
-        if (!array_key_exists($columnName, $this->row)) {
-            throw new RuntimeException(sprintf(
-                'Column "%s" does not exist in row with columns "%s"',
-                $columnName, implode('", "', array_keys($this->row))
-            ));
-        }
+        $this->assertColumnExists($columnName);
 
-        return $this->row[$columnName];
+        return $this->getCell($columnName)->getValue();
+    }
+
+    public function getCell(string $columnName): Cell
+    {
+        $this->assertColumnExists($columnName);
+
+        return $this->cells[$columnName];
     }
 
     public function removeColumn(string $columnName): void
     {
-        unset($this->row[$columnName]);
+        unset($this->cells[$columnName]);
     }
 
     /**
@@ -137,13 +143,39 @@ final class Row
      */
     public function setValue(string $columnName, $value): void
     {
-        $this->row[$columnName] = $value;
+        if (!isset($this->cells[$columnName])) {
+            $this->cells[$columnName] = Cell::fromValue($value);
+            return;
+        }
+        $this->cells[$columnName]->setValue($value);
     }
 
-    public static function fromMap(array $array): self
+    /**
+     * @param array<string,mixed> $map
+     */
+    public static function fromMap(array $map): self
     {
         return new self(array_map(function ($value) {
             return Cell::fromValue($value);
-        }, $array));
+        }, $map));
+    }
+
+    private function assertColumnExists(string $columnName): void
+    {
+        if (array_key_exists($columnName, $this->cells)) {
+            return;
+        }
+
+        throw new RuntimeException(sprintf(
+            'Column "%s" does not exist in row with columns "%s"',
+            $columnName, implode('", "', array_keys($this->cells))
+        ));
+    }
+
+    public function __clone()
+    {
+        $this->cells = array_map(function (Cell $cell) {
+            return clone $cell;
+        }, $this->cells);
     }
 }

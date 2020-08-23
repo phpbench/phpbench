@@ -28,9 +28,17 @@ final class Cell
     /**
      * @return mixed
      */
-    public function value()
+    public function getValue()
     {
         return $this->value;
+    }
+
+    /**
+     * @param mixed $value
+     */
+    public function setValue($value): void
+    {
+        $this->value = $value;
     }
 
     public function __toString(): string

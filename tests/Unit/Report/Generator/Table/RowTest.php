@@ -26,7 +26,7 @@ class RowTest extends TestCase
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Column "foo" does not exist');
-        $row = new Row(['bar' => 'boo']);
+        $row = Row::fromMap(['bar' => 'boo']);
         $row->getValue('foo');
     }
 
@@ -35,7 +35,7 @@ class RowTest extends TestCase
      */
     public function testGet(): void
     {
-        $row = new Row(['bar' => 'boo']);
+        $row = Row::fromMap(['bar' => 'boo']);
         $value = $row->getValue('bar');
 
         $this->assertEquals('boo', $value);
@@ -47,7 +47,7 @@ class RowTest extends TestCase
      */
     public function testMerge(): void
     {
-        $row = new Row(['bar' => 'bar']);
+        $row = Row::fromMap(['bar' => 'bar']);
         $row->setFormatParams(['of' => 'fo']);
         $new = $row->merge(['foo' => 'foo']);
 
@@ -64,7 +64,7 @@ class RowTest extends TestCase
      */
     public function testNames(): void
     {
-        $row = new Row(['one' => 1, 'two' => 2]);
+        $row = Row::fromMap(['one' => 1, 'two' => 2]);
         $this->assertEquals(['one', 'two'], $row->getNames());
     }
 }
