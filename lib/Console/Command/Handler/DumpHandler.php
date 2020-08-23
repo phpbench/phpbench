@@ -21,6 +21,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class DumpHandler
 {
+    public const OPT_DUMP_FILE = 'dump-file';
+    public const OPT_DUMP = 'dump';
+
+    /**
+     * @var XmlEncoder
+     */
     private $xmlEncoder;
 
     public function __construct(XmlEncoder $xmlEncoder)
@@ -30,25 +36,25 @@ class DumpHandler
 
     public static function configure(Command $command)
     {
-        $command->addOption('dump-file', 'd', InputOption::VALUE_OPTIONAL, 'Dump XML result to named file');
-        $command->addOption('dump', null, InputOption::VALUE_NONE, 'Dump XML result to stdout and suppress all other output');
+        $command->addOption(self::OPT_DUMP_FILE, 'd', InputOption::VALUE_OPTIONAL, 'Dump XML result to named file');
+        $command->addOption(self::OPT_DUMP, null, InputOption::VALUE_NONE, 'Dump XML result to stdout and suppress all other output');
     }
 
     public function dumpFromInput(InputInterface $input, OutputInterface $output, SuiteCollection $collection)
     {
-        if (false === $input->getOption('dump-file') && false === $input->getOption('dump')) {
+        if (false === $input->getOption(self::OPT_DUMP_FILE) && false === $input->getOption(self::OPT_DUMP)) {
             return;
         }
 
         $dom = $this->xmlEncoder->encode($collection);
 
-        if ($dumpFile = $input->getOption('dump-file')) {
-            $xml = $dom->dump();
+        if ($dumpFile = $input->getOption(self::OPT_DUMP_FILE)) {
+            $xml = (string)$dom->dump();
             file_put_contents($dumpFile, $xml);
             $output->writeln('Dumped result to ' . $dumpFile);
         }
 
-        if ($input->getOption('dump')) {
+        if ($input->getOption(self::OPT_DUMP)) {
             $xml = $dom->dump();
             $output->write($xml);
         }

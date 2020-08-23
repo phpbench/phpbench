@@ -30,7 +30,7 @@ class RunnerConfig
     private $tag;
 
     /**
-     * @var array
+     * @var array<string>
      */
     private $filters = [];
 
@@ -80,12 +80,12 @@ class RunnerConfig
     private $stopOnError;
 
     /**
-     * @var array
+     * @var array<string>
      */
     private $assertions;
 
     /**
-     * @var array
+     * @var array<string,mixed>
      */
     private $parameters = [];
 
@@ -99,7 +99,8 @@ class RunnerConfig
         $default = new self();
         $new = clone $this;
 
-        /** @phpstan-ignore-next-line */
+        /** @phpstan-ignore-next-line Phpstan doesn't understand this
+            and it's rather ugly in anycase */
         foreach ($config as $property => $value) {
             if ($value !== $default->$property) {
                 $new->$property = $value;

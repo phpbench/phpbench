@@ -230,7 +230,7 @@ final class Runner
         $executor->executeMethods($benchmarkMetadata, $benchmarkMetadata->getAfterClassMethods());
     }
 
-    private function runSubject(BenchmarkExecutorInterface $executor, RunnerConfig $config, Subject $subject, SubjectMetadata $subjectMetadata): void
+    private function runSubject(BenchmarkExecutorInterface $executor, RunnerConfig $config, Subject $subject, SubjectMetadata $subjectMetadata): Subject
     {
         if ($executor instanceof HealthCheckInterface) {
             $executor->healthCheck();

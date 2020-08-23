@@ -25,7 +25,7 @@ class ReportOutputTest extends SystemTestCase
         $this->getResult();
     }
 
-    public function testGeneratesHtmlReport()
+    public function testGeneratesHtmlReport(): void
     {
         $process = $this->phpbench(
             'report --file=' . $this->fname . ' --report=default --output=\'{"extends": "html", "file": "report.html"}\''
@@ -36,7 +36,7 @@ class ReportOutputTest extends SystemTestCase
         $this->assertGeneratedContents($output, 'html.html');
     }
 
-    public function testGeneratesMarkdownReport()
+    public function testGeneratesMarkdownReport(): void
     {
         $process = $this->phpbench(
             'report --file=' . $this->fname . ' --report=default --output=\'{"extends": "markdown", "file": "markdown.md"}\''
