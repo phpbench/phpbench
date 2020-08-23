@@ -12,7 +12,7 @@
 
 namespace PhpBench\Registry;
 
-use PhpBench\DependencyInjection\Container;
+use Psr\Container\ContainerInterface;
 
 /**
  * Service and configuration registry.
@@ -35,7 +35,7 @@ class Registry
 
     public function __construct(
         $serviceType,
-        Container $container,
+        ContainerInterface $container,
         $defaultService = null
     ) {
         $this->serviceType = $serviceType;

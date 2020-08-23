@@ -35,10 +35,16 @@ use function Functional\reduce_left;
  *
  * NOTE: This class could be improved, and perhaps even generalized.
  */
-class TableGenerator implements GeneratorInterface, OutputAwareInterface
+class TableGenerator implements GeneratorInterface
 {
-    private $output;
+    /**
+     * @var array<int,string|int>
+     */
     private $statKeys;
+
+    /**
+     * @var array<string,array<string>>
+     */
     private $classMap = [
         'best' => ['timeunit'],
         'worst' => ['timeunit'],
@@ -59,15 +65,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function setOutput(OutputInterface $output)
-    {
-        $this->output = $output;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configure(OptionsResolver $options)
+    public function configure(OptionsResolver $options): void
     {
         $options->setDefaults([
             'title' => null,
@@ -117,12 +115,10 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
     /**
      * Calculate the ``diff`` column if it is displayed.
      *
-     * @param array $tables
-     * @param Config $config
-     *
-     * @return array
+     * @param array<array<Row>> $tables
+     * @return array<array<Row>>
      */
-    private function processDiffs(array $tables, Config $config)
+    private function processDiffs(array $tables, Config $config): array
     {
         $stat = $config['diff_col'];
 
@@ -164,10 +160,10 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
     /**
      * Process the sorting, also break sorting.
      *
-     * @param array $table
+     * @param array<Row> $table
      * @param Config $config
      *
-     * @return array
+     * @return array<Row>
      */
     private function processSort(array $table, Config $config)
     {
@@ -207,10 +203,10 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
     /**
      * Process breaks (split large table into smaller tables).
      *
-     * @param array $table
+     * @param array<Row> $table
      * @param Config $config
      *
-     * @return array
+     * @return array<array<Row>>
      */
     private function processBreak(array $table, Config $config)
     {
@@ -244,10 +240,10 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
     /**
      * Remove unwanted columns from the tables.
      *
-     * @param array $tables
+     * @param array<array<Row>> $tables
      * @param Config $config
      *
-     * @return array
+     * @return array<array<Row>>
      */
     private function processCols(array $tables, Config $config)
     {
@@ -280,10 +276,10 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
     /**
      * Process the compare feature.
      *
-     * @param array $tables
+     * @param array<array<Row>> $tables
      * @param Config $config
      *
-     * @return array
+     * @return array<array<Row>>
      */
     private function processCompare(array $tables, Config $config)
     {
@@ -327,7 +323,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
                     }
 
                     if (null === $colNames) {
-                        $colNames = array_combine($firstRow->getNames(), $firstRow->getNames());
+                        $colNames = (array)array_combine($firstRow->getNames(), $firstRow->getNames());
                     }
 
                     $compared = $row->getValue($compare);
@@ -371,7 +367,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
      * @param SuiteCollection $suiteCollection
      * @param Config $config
      *
-     * @return array
+     * @return array<Row>
      */
     private function buildTable(SuiteCollection $suiteCollection, Config $config)
     {
@@ -389,7 +385,6 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
 
             foreach ($suite->getBenchmarks() as $benchmark) {
                 foreach ($benchmark->getSubjects() as $subject) {
-                    /** @var Variant $variant */
                     foreach ($subject->getVariants() as $variant) {
                         $row = new Row([
                             'suite' => $suite->getUuid(),
@@ -510,7 +505,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
     /**
      * Generate the report DOM document to pass to the report renderer.
      *
-     * @param array $tables
+     * @param array<array<Row>> $tables
      * @param Config $config
      *
      * @return Document
@@ -561,7 +556,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
             }
 
             if ($breakHash) {
-                $tableEl->setAttribute('title', $breakHash);
+                $tableEl->setAttribute('title', (string)$breakHash);
             }
 
             $groupEl = $tableEl->appendElement('group');
@@ -592,10 +587,8 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
 
     /**
      * Return the short name of a fully qualified class name.
-     *
-     * @param string $fullName
      */
-    private function getClassShortName($fullName)
+    private function getClassShortName(string $fullName): string
     {
         $parts = explode('\\', $fullName);
         end($parts);
@@ -606,13 +599,8 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
     /**
      * Recursively resolve a comparison column - find a column name that
      * doesn't already exist by adding and incrementing an index.
-     *
-     * @param Row $row
-     * @param int $index
-     *
-     * @return string
      */
-    private function resolveCompareColumnName(Row $row, $name, $index = 1)
+    private function resolveCompareColumnName(Row $row, string $name, int $index = 1): string
     {
         if (!$row->hasColumn($name)) {
             return $name;

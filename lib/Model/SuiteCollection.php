@@ -12,7 +12,13 @@
 
 namespace PhpBench\Model;
 
-class SuiteCollection implements \IteratorAggregate
+use ArrayIterator;
+use IteratorAggregate;
+
+/**
+ * @implements IteratorAggregate<Suite>
+ */
+class SuiteCollection implements IteratorAggregate
 {
     /**
      * @var Suite[]
@@ -32,7 +38,7 @@ class SuiteCollection implements \IteratorAggregate
      *
      * @return Suite[]
      */
-    public function getSuites()
+    public function getSuites(): array
     {
         return $this->suites;
     }
@@ -42,7 +48,7 @@ class SuiteCollection implements \IteratorAggregate
      *
      * @param Suite $suite
      */
-    public function addSuite(Suite $suite)
+    public function addSuite(Suite $suite): void
     {
         $this->suites[] = $suite;
     }
@@ -52,7 +58,7 @@ class SuiteCollection implements \IteratorAggregate
      *
      * @param SuiteCollection $collection
      */
-    public function mergeCollection(self $collection)
+    public function mergeCollection(self $collection): void
     {
         foreach ($collection->getSuites() as $suite) {
             $this->addSuite($suite);
@@ -60,9 +66,9 @@ class SuiteCollection implements \IteratorAggregate
     }
 
     /**
-     * {@inheritdoc}
+     * @return ArrayIterator<string,Suite>
      */
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
         return new \ArrayIterator($this->suites);
     }

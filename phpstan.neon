@@ -1,12 +1,6 @@
 parameters:
-    level: 7
+    level: 5
     ignoreErrors:
-        - '#Argument of an invalid type PhpBench\\Benchmark\\RunnerConfig supplied for foreach, only iterables are supported.#'
-        - '#Call to an undefined method DOMNode::#'
-        - "#Offset 'name' does not exist on string.#"
-        - '#Parameter \#1 \$exception of static method PhpBench\\Model\\Error::fromException\(\) expects Exception, Throwable given.#'
-        - '#Parameter \#2 \$container of method PhpBench\\Registry\\Registry::__construct\(\) expects PhpBench\\DependencyInjection\\Container, Psr\\Container\\ContainerInterface given.#'
-        - '#Parameter \#3 \$tags of method PhpBench\\DependencyInjection\\Container::register\(\) expects array<string>#'
-        - '#Variable \$reject might not be defined.#'
+        - '#Call to an undefined method DOMNode#'
     paths:
         - lib

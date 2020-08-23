@@ -99,6 +99,7 @@ class RunnerConfig
         $default = new self();
         $new = clone $this;
 
+        /** @phpstan-ignore-next-line */
         foreach ($config as $property => $value) {
             if ($value !== $default->$property) {
                 $new->$property = $value;

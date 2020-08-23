@@ -12,16 +12,20 @@
 
 namespace PhpBench\Model;
 
+use IteratorAggregate;
 use PhpBench\Assertion\AssertionFailures;
 use PhpBench\Assertion\AssertionWarnings;
 use PhpBench\Environment\Information;
+
 
 /**
  * Represents a Suite.
  *
  * This is the base of the object graph created by the Runner.
+ *
+ * @implements IteratorAggregate<Benchmark>
  */
-class Suite implements \IteratorAggregate
+class Suite implements IteratorAggregate
 {
     private $tag;
     private $date;
