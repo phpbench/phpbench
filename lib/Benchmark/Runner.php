@@ -39,7 +39,7 @@ use PhpBench\Registry\ConfigurableRegistry;
 /**
  * The benchmark runner.
  */
-class Runner
+final class Runner
 {
     const DEFAULT_ASSERTER = 'comparator';
 
@@ -230,7 +230,7 @@ class Runner
         $executor->executeMethods($benchmarkMetadata, $benchmarkMetadata->getAfterClassMethods());
     }
 
-    private function runSubject(BenchmarkExecutorInterface $executor, RunnerConfig $config, Subject $subject, SubjectMetadata $subjectMetadata)
+    private function runSubject(BenchmarkExecutorInterface $executor, RunnerConfig $config, Subject $subject, SubjectMetadata $subjectMetadata): void
     {
         if ($executor instanceof HealthCheckInterface) {
             $executor->healthCheck();
@@ -280,7 +280,7 @@ class Runner
         RunnerConfig $config,
         SubjectMetadata $subjectMetadata,
         Variant $variant
-    ) {
+    ): void {
         $this->logger->variantStart($variant);
         $rejectCount = [];
 
@@ -312,13 +312,15 @@ class Runner
             }
             $this->endVariant($subjectMetadata, $variant);
 
-            if (isset($reject)) {
-                $reject->setResult(new RejectionCountResult($rejectCount[spl_object_hash($reject)]));
+            if (!isset($reject)) {
+                continue;
             }
+
+            $reject->setResult(new RejectionCountResult($rejectCount[spl_object_hash($reject)]));
         }
     }
 
-    private function endVariant(SubjectMetadata $subjectMetadata, Variant $variant)
+    private function endVariant(SubjectMetadata $subjectMetadata, Variant $variant): void
     {
         $variant->computeStats();
         $variant->resetAssertionResults();
@@ -341,7 +343,7 @@ class Runner
         $this->logger->variantEnd($variant);
     }
 
-    public function runIteration(BenchmarkExecutorInterface $executor, Config $executorConfig, Iteration $iteration, SubjectMetadata $subjectMetadata)
+    public function runIteration(BenchmarkExecutorInterface $executor, Config $executorConfig, Iteration $iteration, SubjectMetadata $subjectMetadata): void
     {
         $this->logger->iterationStart($iteration);
         $executor->execute($subjectMetadata, $iteration, $executorConfig);
