@@ -111,6 +111,11 @@ class ConsoleRenderer implements RendererInterface, OutputAwareInterface
                     if ($classes) {
                         $value = $this->formatter->applyClasses($classes, $value, $formatterParams);
                     }
+
+                    if ($valueEl->getAttribute('role') !== 'primary') {
+                        $value = sprintf('<fg=cyan>%s</>', $value);
+                    }
+
                     $values[] = $value;
                 }
 

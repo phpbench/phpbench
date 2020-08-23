@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Report\Generator;
 
+use PhpBench\Dom\Document;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Report\Generator\TableGenerator;
@@ -383,7 +384,7 @@ class TableGeneratorTest extends GeneratorTestCase
         $this->assertXPathCount($report, 1, '//report[description="The world said hello back."]');
 
         // the table title is the break criteria, in this case the suite index.
-        $this->assertXPathCount($report, 1, '//table[@title="suite: 0, date: 2016-02-06, stime: 00:00:00"]');
+        $this->assertXPathCount($report, 1, '//table[@title="tag: test, suite: 0, date: 2016-02-06, stime: 00:00:00"]');
     }
 
     /**
@@ -564,15 +565,16 @@ EOT
             ]
         );
 
-        $this->assertXPathCount($report, 15, '//col');
+        $report->formatOutput = true;
+        $this->assertXPathCount($report, 14, '//col');
         $this->assertXPathEval($report, 'Column one', 'string(//table/cols/col[1]/@label)');
         $this->assertXPathEval($report, 'Column two', 'string(//table/cols/col[2]/@label)');
-        $this->assertXPathEval($report, 'tag', 'string(//table/cols/col[3]/@label)');
-        $this->assertXPathEval($report, 'groups', 'string(//table/cols/col[4]/@label)');
-        $this->assertXPathEval($report, 'Parameters', 'string(//table/cols/col[5]/@label)');
+        $this->assertXPathEval($report, 'groups', 'string(//table/cols/col[3]/@label)');
+        $this->assertXPathEval($report, 'Parameters', 'string(//table/cols/col[4]/@label)');
+        $this->assertXPathEval($report, 'revs', 'string(//table/cols/col[5]/@label)');
     }
 
-    private function generate(SuiteCollection $collection, array $config = [])
+    private function generate(SuiteCollection $collection, array $config = []): Document
     {
         $options = new OptionsResolver();
         $this->generator->configure($options);

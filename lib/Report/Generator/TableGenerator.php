@@ -85,7 +85,7 @@ class TableGenerator implements GeneratorInterface
             self::OPT_BASELINE_FIELDS => ['mean', 'mode'],
             'description' => null,
             'cols' => ['benchmark', 'subject', 'tag', 'groups', 'params', 'revs', 'its', 'mem_peak', 'best', 'mean', 'mode', 'worst', 'stdev', 'rstdev', 'diff'],
-            'break' => ['suite', 'date', 'stime'],
+            'break' => ['tag', 'suite', 'date', 'stime'],
             'compare' => null,
             'compare_fields' => ['mean'],
             'diff_col' => 'mean',
@@ -290,7 +290,10 @@ class TableGenerator implements GeneratorInterface
             $breakHash = [];
 
             foreach ($break as $breakKey) {
-                $breakHash[] = $breakKey. ': ' .$row->getValue($breakKey);
+                $value = $row->getValue($breakKey);
+                if (null !== $value) {
+                    $breakHash[] = $breakKey. ': ' .$value;
+                }
                 $row->removeColumn($breakKey);
             }
 

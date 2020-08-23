@@ -17,6 +17,9 @@ use PHPUnit\Framework\TestCase;
 
 class BalanceFormatTest extends TestCase
 {
+    /**
+     * @var BalanceFormat
+     */
     private $format;
 
     protected function setUp(): void
@@ -29,7 +32,7 @@ class BalanceFormatTest extends TestCase
      * It should format negative numbers
      * It should format neutral numbers.
      */
-    public function testFormat()
+    public function testFormat(): void
     {
         $result = $this->format->format(0, $this->format->getDefaultOptions());
         $this->assertEquals('+0', $result);
