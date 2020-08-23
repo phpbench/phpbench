@@ -54,7 +54,7 @@ class EnvGeneratorTest extends GeneratorTestCase
         $this->assertXPathCount($report, 1, '//table[contains(@title, "Suite #0")]');
         $this->assertXPathCount($report, 4, '//row');
         $this->assertXPathCount($report, 12, '//cell');
-        $this->assertXPathCount($report, 2, '//row[cell[@name="provider"] = "vcs"]');
+        $this->assertXPathCount($report, 2, '//row[cell[@name="provider"]/value = "vcs"]');
         $this->assertXPathCount($report, 1, '//row[cell[@name="key"] = "branch"]');
         $this->assertXPathCount($report, 1, '//row[cell[@name="value"] = "my_branch"]');
     }

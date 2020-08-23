@@ -49,7 +49,9 @@
             <xsl:for-each select=".//row">
                 <xsl:for-each select=".//cell">
                     <xsl:if test="position()!=1" xml:space="preserve"> | </xsl:if>
-                    <xsl:value-of select="text()" />
+                    <xsl:for-each select="./value">
+                        <xsl:value-of select="text()" />
+                    </xsl:for-each>
                 </xsl:for-each>
                 <xsl:call-template name="newline" />
             </xsl:for-each>
