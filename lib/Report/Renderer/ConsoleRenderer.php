@@ -23,7 +23,6 @@ use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use function Functional\map;
 
 class ConsoleRenderer implements RendererInterface, OutputAwareInterface
 {

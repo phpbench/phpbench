@@ -14,7 +14,6 @@ namespace PhpBench\Report\Generator\Table;
 
 use RuntimeException;
 
-
 /**
  * Repesents a *data* table row including any metadata about the row.
  */
@@ -57,6 +56,7 @@ final class Row
     public function mergeMap(array $array): self
     {
         $array = Row::fromMap($array);
+
         return $this->newInstance(
             array_merge(
                 $this->cells,
@@ -139,12 +139,13 @@ final class Row
     }
 
     /**
-     * @param mixed $value 
+     * @param mixed $value
      */
     public function setValue(string $columnName, $value): void
     {
         if (!isset($this->cells[$columnName])) {
             $this->cells[$columnName] = Cell::fromValue($value);
+
             return;
         }
         $this->cells[$columnName]->setValue($value);

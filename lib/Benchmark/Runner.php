@@ -311,6 +311,7 @@ class Runner
                 $this->runIteration($executor, $executorConfig, $reject, $subjectMetadata);
             }
             $this->endVariant($subjectMetadata, $variant);
+
             if (isset($reject)) {
                 $reject->setResult(new RejectionCountResult($rejectCount[spl_object_hash($reject)]));
             }

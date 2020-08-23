@@ -93,8 +93,7 @@ class ReportManager
         SuiteCollection $collection,
         array $reportNames,
         array $outputNames
-    )
-    {
+    ) {
         $reportDoms = $this->generateReports($collection, $reportNames);
 
         foreach ($outputNames as $outputName) {

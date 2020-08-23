@@ -2,8 +2,6 @@
 
 namespace PhpBench\Report\Generator\Table;
 
-use RuntimeException;
-
 final class AdditionalValue
 {
     /**

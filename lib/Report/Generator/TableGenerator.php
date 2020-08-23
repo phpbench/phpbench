@@ -12,14 +12,14 @@
 
 namespace PhpBench\Report\Generator;
 
-use Functional as F;
-use PhpBench\Console\OutputAwareInterface;
+use function Functional\group;
+use function Functional\map;
+use function Functional\reduce_left;
 use PhpBench\Dom\Document;
 use PhpBench\Math\Statistics;
 use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\SuiteCollection;
-use PhpBench\Model\Variant;
 use PhpBench\Registry\Config;
 use PhpBench\Report\Generator\Table\AdditionalValue;
 use PhpBench\Report\Generator\Table\Cell;
@@ -27,16 +27,7 @@ use PhpBench\Report\Generator\Table\Row;
 use PhpBench\Report\Generator\Table\Sort;
 use PhpBench\Report\GeneratorInterface;
 use RuntimeException;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use function Functional\group;
-use function Functional\map;
-use function Functional\partition;
-use function Functional\reduce_left;
-
-
-
-
 
 /**
  * The table generator generates reports about benchmarking results.
@@ -50,7 +41,7 @@ class TableGenerator implements GeneratorInterface
 
 
     /**
-     * @var array<int,strinng|int>
+     * @var array<int,string|int>
      */
     private $statKeys;
 
@@ -133,6 +124,7 @@ class TableGenerator implements GeneratorInterface
      * Calculate the ``diff`` column if it is displayed.
      *
      * @param array<array<Row>> $tables
+     *
      * @return array<array<Row>>
      */
     private function processDiffs(array $tables, Config $config): array
@@ -219,6 +211,7 @@ class TableGenerator implements GeneratorInterface
 
     /**
      * @param array<array<Row>> $tables
+     *
      * @return array<array<Row>>
      */
     private function processBaseline(array $tables, Config $config): array
@@ -291,6 +284,7 @@ class TableGenerator implements GeneratorInterface
 
             foreach ($break as $breakKey) {
                 $value = $row->getValue($breakKey);
+
                 if (null !== $value) {
                     $breakHash[] = $breakKey. ': ' .$value;
                 }
@@ -373,6 +367,7 @@ class TableGenerator implements GeneratorInterface
 
                 foreach ($group as $row) {
                     assert($row instanceof Row);
+
                     if (null === $firstRow) {
                         $firstRow = $row->newInstance(array_diff_key($row->toArray(), array_flip($this->statKeys)));
 
@@ -557,6 +552,7 @@ class TableGenerator implements GeneratorInterface
         // defined.
         foreach ($table as $row) {
             assert($row instanceof Row);
+
             foreach (array_keys($columnNames) as $columnName) {
                 if (!$row->hasColumn($columnName)) {
                     $row->setValue($columnName, null);

@@ -14,7 +14,6 @@ namespace PhpBench\Model;
 
 use Throwable;
 
-
 /**
  * Represents an Error. Typically this is
  * a serializable representation of an Exception.
