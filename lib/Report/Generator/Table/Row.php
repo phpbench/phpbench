@@ -178,4 +178,9 @@ final class Row
             return clone $cell;
         }, $this->cells);
     }
+
+    public function addCell(string $columnName, Cell $cell): void
+    {
+        $this->cells[$columnName] = $cell;
+    }
 }

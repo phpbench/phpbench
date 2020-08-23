@@ -76,6 +76,9 @@ class TestUtil
         $benchmark->getExecutor()->willReturn(null);
     }
 
+    /**
+     * @param array<string,mixed> $options
+     */
     public static function createSuite(array $options = [], $suiteIndex = null)
     {
         $options = array_merge([
@@ -85,7 +88,6 @@ class TestUtil
             'warmup' => 10,
             'sleep' => 1,
             'basetime' => 10,
-            'groups' => [],
             'name' => 'test',
             'benchmarks' => ['TestBench'],
             'groups' => ['one', 'two', 'three'],
@@ -145,6 +147,9 @@ class TestUtil
         return $suite;
     }
 
+    /**
+     * @var array<string,mixed>
+     */
     public static function createCollection(array $suiteConfigs = []): SuiteCollection
     {
         $suites = [];

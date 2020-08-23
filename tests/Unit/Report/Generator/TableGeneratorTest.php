@@ -57,9 +57,9 @@ class TableGeneratorTest extends GeneratorTestCase
         $this->assertXPathCount($report, 4, '//cell[@name="best"]');
         $this->assertXPathCount($report, 4, '//cell[@name="worst"]');
 
-        $this->assertXPathCount($report, 2, '//cell[text() = "oneBench"]');
-        $this->assertXPathCount($report, 2, '//cell[text() = "subjectOne"]');
-        $this->assertXPathCount($report, 2, '//cell[text() = "subjectTwo"]');
+        $this->assertXPathCount($report, 2, '//cell/value[text() = "oneBench"]');
+        $this->assertXPathCount($report, 2, '//cell/value[text() = "subjectOne"]');
+        $this->assertXPathCount($report, 2, '//cell/value[text() = "subjectTwo"]');
         $this->assertXPathEval($report, 'one,two,three', 'string(//cell[@name="groups"])');
         $this->assertXPathEval($report, '{"param1":"value1"}', 'string(//cell[@name="params"])');
         $this->assertXPathEval($report, 5, 'string(//cell[@name="revs"])');
@@ -82,22 +82,30 @@ class TableGeneratorTest extends GeneratorTestCase
             [
                 'benchmarks' => ['oneBench'],
                 'subjects' => ['subjectOne'],
+                'revs' => 1,
                 'iterations' => [ 20, 20 ],
+                'basetime' => 0,
             ],
         ]);
         $baseline = TestUtil::createCollection([
             [
                 'benchmarks' => ['oneBench'],
                 'subjects' => ['subjectOne'],
+                'revs' => 1,
                 'iterations' => [ 10, 10 ],
+                'basetime' => 0,
             ],
         ]);
 
         $report = $this->generate($collection->mergeCollection($baseline), [
             'baseline' => true,
+            'baseline_fields' => ['mean'],
         ]);
+        $report->formatOutput = true;
         $this->assertXPathCount($report, 1, '//table');
         $this->assertXPathCount($report, 1, '//row');
+        $this->assertXPathCount($report, 1, '//value[@role="baseline"]');
+        $this->assertXPathEval($report, '10', 'string(//value[@role="baseline"])');
     }
 
 
@@ -536,7 +544,7 @@ EOT
         );
 
         $this->assertXPathCount($report, 2, '//cell[@name="uname_os"]');
-        $this->assertXPathCount($report, 1, '//cell[@name="uname_os" and text() = "linux"]');
+        $this->assertXPathCount($report, 1, '//cell[@name="uname_os"]/value[text() = "linux"]');
         $this->assertXPathCount($report, 2, '//cell[@name="foobar_os"]');
     }
 

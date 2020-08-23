@@ -22,6 +22,7 @@ use PhpBench\Model\SuiteCollection;
 use PhpBench\Model\Variant;
 use PhpBench\Registry\Config;
 use PhpBench\Report\Generator\Table\AdditionalValue;
+use PhpBench\Report\Generator\Table\Cell;
 use PhpBench\Report\Generator\Table\Row;
 use PhpBench\Report\Generator\Table\Sort;
 use PhpBench\Report\GeneratorInterface;
@@ -36,6 +37,7 @@ use function Functional\reduce_left;
 
 
 
+
 /**
  * The table generator generates reports about benchmarking results.
  *
@@ -44,6 +46,8 @@ use function Functional\reduce_left;
 class TableGenerator implements GeneratorInterface
 {
     const OPT_BASELINE_FIELDS = 'baseline_fields';
+    const OPT_BASELINE = 'baseline';
+
 
     /**
      * @var array<int,strinng|int>
@@ -77,10 +81,8 @@ class TableGenerator implements GeneratorInterface
     {
         $options->setDefaults([
             'title' => null,
-            'baseline' => false,
-            self::OPT_BASELINE_FIELDS => [
-                'mean', 'mode'
-            ],
+            self::OPT_BASELINE => false,
+            self::OPT_BASELINE_FIELDS => ['mean', 'mode'],
             'description' => null,
             'cols' => ['benchmark', 'subject', 'tag', 'groups', 'params', 'revs', 'its', 'mem_peak', 'best', 'mean', 'mode', 'worst', 'stdev', 'rstdev', 'diff'],
             'break' => ['suite', 'date', 'stime'],
@@ -94,6 +96,8 @@ class TableGenerator implements GeneratorInterface
             'class_map' => [],
         ]);
 
+        $options->setAllowedTypes('baseline', 'bool');
+        $options->setAllowedTypes('baseline_fields', 'array');
         $options->setAllowedTypes('title', ['null', 'string']);
         $options->setAllowedTypes('description', ['null', 'string']);
         $options->setAllowedTypes('cols', 'array');
@@ -219,7 +223,7 @@ class TableGenerator implements GeneratorInterface
      */
     private function processBaseline(array $tables, Config $config): array
     {
-        if (!$config['baseline']) {
+        if (!$config[self::OPT_BASELINE]) {
             return $tables;
         }
 
@@ -245,7 +249,7 @@ class TableGenerator implements GeneratorInterface
 
                 foreach ($config[self::OPT_BASELINE_FIELDS] as $columnName) {
                     $mainRow->getCell($columnName)->addSecondaryValue(
-                        AdditionalValue::create($baseLine->getCell($columnName)->getValue(), 'baseline')
+                        AdditionalValue::create($baseLine->getCell($columnName)->getValue(), self::OPT_BASELINE)
                     );
                 }
 
@@ -308,6 +312,7 @@ class TableGenerator implements GeneratorInterface
                 $cols[] = $config['compare'];
                 $cols = array_merge($cols, $config['compare_fields']);
             }
+
             $tables = map($tables, function ($table) use ($cols) {
                 return map($table, function (Row $row) use ($cols) {
                     $newRow = $row->newInstance([]);
@@ -316,7 +321,7 @@ class TableGenerator implements GeneratorInterface
                         if ($col === 'diff') {
                             continue;
                         }
-                        $newRow->setValue($col, $row->getValue($col));
+                        $newRow->addCell($col, $row->getCell($col));
                     }
 
                     return $newRow;
@@ -617,6 +622,7 @@ class TableGenerator implements GeneratorInterface
             $groupEl->setAttribute('name', 'body');
 
             foreach ($table as $row) {
+                assert($row instanceof Row);
                 $rowEl = $groupEl->appendElement('row');
 
                 // apply formatter options
@@ -625,12 +631,20 @@ class TableGenerator implements GeneratorInterface
                     $paramEl->setAttribute('name', $paramName);
                 }
 
-                foreach ($row->toArray() as $key => $value) {
-                    $cellEl = $rowEl->appendElement('cell', $value);
+                foreach ($row->toArray() as $key => $cell) {
+                    assert($cell instanceof Cell);
+                    $cellEl = $rowEl->appendElement('cell');
                     $cellEl->setAttribute('name', $key);
+                    $valueEl = $cellEl->appendElement('value', $cell->getValue());
+                    $valueEl->setAttribute('role', 'primary');
+
+                    foreach ($cell->getSecondaryValues() as $secondaryValue) {
+                        $secondaryValueEl = $cellEl->appendElement('value', $secondaryValue->getValue());
+                        $secondaryValueEl->setAttribute('role', $secondaryValue->getRole());
+                    }
 
                     if (isset($classMap[$key])) {
-                        $cellEl->setAttribute('class', implode(' ', $classMap[$key]));
+                        $valueEl->setAttribute('class', implode(' ', $classMap[$key]));
                     }
                 }
             }

@@ -53,4 +53,9 @@ final class AdditionalValue
     {
         $this->value = $value;
     }
+
+    public function getRole(): string
+    {
+        return $this->role;
+    }
 }

@@ -54,6 +54,14 @@ final class Cell
         return (string)$this->value;
     }
 
+    /**
+     * @return array<AdditionalValue>
+     */
+    public function getSecondaryValues(): array
+    {
+        return $this->secondaryValues;
+    }
+
     public function addSecondaryValue(AdditionalValue $additionalValue): void
     {
         $this->secondaryValues[] = $additionalValue;
