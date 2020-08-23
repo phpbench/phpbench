@@ -59,6 +59,9 @@ class Suite implements IteratorAggregate
         $this->uuid = $uuid;
     }
 
+    /**
+     * @return array<Benchmark>
+     */
     public function getBenchmarks()
     {
         return $this->benchmarks;

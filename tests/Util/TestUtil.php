@@ -145,7 +145,7 @@ class TestUtil
         return $suite;
     }
 
-    public static function createCollection(array $suiteConfigs = [])
+    public static function createCollection(array $suiteConfigs = []): SuiteCollection
     {
         $suites = [];
 

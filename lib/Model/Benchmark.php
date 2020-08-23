@@ -81,7 +81,7 @@ class Benchmark implements \IteratorAggregate
     /**
      * Get the subject metadata instances for this benchmark metadata.
      *
-     * @return Subject[]
+     * @return array<Subject>
      */
     public function getSubjects()
     {

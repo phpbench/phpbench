@@ -76,6 +76,31 @@ class TableGeneratorTest extends GeneratorTestCase
         $this->assertXPathEval($report, '1.0666666666667', 'string(//row[2]//cell[@name="diff"])');
     }
 
+    public function testBaseline(): void
+    {
+        $collection = TestUtil::createCollection([
+            [
+                'benchmarks' => ['oneBench'],
+                'subjects' => ['subjectOne'],
+                'iterations' => [ 20, 20 ],
+            ],
+        ]);
+        $baseline = TestUtil::createCollection([
+            [
+                'benchmarks' => ['oneBench'],
+                'subjects' => ['subjectOne'],
+                'iterations' => [ 10, 10 ],
+            ],
+        ]);
+
+        $report = $this->generate($collection->mergeCollection($baseline), [
+            'baseline' => true,
+        ]);
+        $this->assertXPathCount($report, 1, '//table');
+        $this->assertXPathCount($report, 1, '//row');
+    }
+
+
     /**
      * It should not crash if an itreation reports 0 time.
      */

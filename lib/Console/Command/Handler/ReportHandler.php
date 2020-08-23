@@ -43,23 +43,24 @@ class ReportHandler
         $this->suiteCollectionHandler = $suiteCollectionHandler;
     }
 
-    public static function configure(Command $command)
+    public static function configure(Command $command): void
     {
         $command->addOption('report', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Report name or configuration in JSON format');
         $command->addOption('output', 'o', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Specify output', ['console']);
         SuiteCollectionHandler::configure($command);
     }
 
-    public function validateReportsFromInput(InputInterface $input)
+    public function validateReportsFromInput(InputInterface $input): void
     {
         $reportNames = $input->getOption('report');
         $this->reportManager->validateReportNames($reportNames);
     }
 
-    public function reportsFromInput(InputInterface $input, OutputInterface $output, SuiteCollection $collection)
+    public function reportsFromInput(InputInterface $input, OutputInterface $output, SuiteCollection $collection): void
     {
         $reports = $input->getOption('report');
         $outputs = $input->getOption('output');
+
         if ($input->getOption('uuid')) {
             $baselineCollection = $this->suiteCollectionHandler->suiteCollectionFromInput($input);
             $collection->mergeCollection($baselineCollection);

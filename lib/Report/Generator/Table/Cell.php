@@ -12,7 +12,7 @@ final class Cell
     private $value;
 
     /**
-     * @var array<CellValue>
+     * @var array<AdditionalValue>
      */
     private $secondaryValues;
 
@@ -52,5 +52,10 @@ final class Cell
     public function __toString(): string
     {
         return (string)$this->value;
+    }
+
+    public function addSecondaryValue(AdditionalValue $additionalValue): void
+    {
+        $this->secondaryValues[] = $additionalValue;
     }
 }

@@ -40,14 +40,14 @@ class SuiteCollectionHandler
         $this->uuidResolver = $uuidResolver;
     }
 
-    public static function configure(Command $command)
+    public static function configure(Command $command): void
     {
         $command->addOption('uuid', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Run UUID');
         $command->addOption('query', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Storage query');
         $command->addOption('file', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Report XML file');
     }
 
-    public function suiteCollectionFromInput(InputInterface $input)
+    public function suiteCollectionFromInput(InputInterface $input): SuiteCollection
     {
         $files = $input->getOption('file');
         $queries = $input->getOption('query');

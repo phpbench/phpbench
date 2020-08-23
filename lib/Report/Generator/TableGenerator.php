@@ -21,14 +21,20 @@ use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Model\Variant;
 use PhpBench\Registry\Config;
+use PhpBench\Report\Generator\Table\AdditionalValue;
 use PhpBench\Report\Generator\Table\Row;
 use PhpBench\Report\Generator\Table\Sort;
 use PhpBench\Report\GeneratorInterface;
+use RuntimeException;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use function Functional\group;
 use function Functional\map;
+use function Functional\partition;
 use function Functional\reduce_left;
+
+
+
 
 /**
  * The table generator generates reports about benchmarking results.
@@ -37,8 +43,10 @@ use function Functional\reduce_left;
  */
 class TableGenerator implements GeneratorInterface
 {
+    const OPT_BASELINE_FIELDS = 'baseline_fields';
+
     /**
-     * @var array<int,string|int>
+     * @var array<int,strinng|int>
      */
     private $statKeys;
 
@@ -69,6 +77,10 @@ class TableGenerator implements GeneratorInterface
     {
         $options->setDefaults([
             'title' => null,
+            'baseline' => false,
+            self::OPT_BASELINE_FIELDS => [
+                'mean', 'mode'
+            ],
             'description' => null,
             'cols' => ['benchmark', 'subject', 'tag', 'groups', 'params', 'revs', 'its', 'mem_peak', 'best', 'mean', 'mode', 'worst', 'stdev', 'rstdev', 'diff'],
             'break' => ['suite', 'date', 'stime'],
@@ -105,6 +117,7 @@ class TableGenerator implements GeneratorInterface
 
         $table = $this->processSort($table, $config);
         $tables = $this->processBreak($table, $config);
+        $tables = $this->processBaseline($tables, $config);
         $tables = $this->processCols($tables, $config);
         $tables = $this->processCompare($tables, $config);
         $tables = $this->processDiffs($tables, $config);
@@ -198,6 +211,47 @@ class TableGenerator implements GeneratorInterface
         }
 
         return $table;
+    }
+
+    /**
+     * @param array<array<Row>> $tables
+     * @return array<array<Row>>
+     */
+    private function processBaseline(array $tables, Config $config): array
+    {
+        if (!$config['baseline']) {
+            return $tables;
+        }
+
+        $baselineGroups = map($tables, function (array $table) {
+            return group($table, function (Row $row) {
+                return $this->baselineRowIdentifier($row);
+            });
+        });
+
+        return map($baselineGroups, function (array $grouped, string $index) use ($config) {
+            return map($grouped, function ($groups) use ($config) {
+                $mainRow = array_shift($groups);
+
+                if (!$mainRow instanceof Row) {
+                    throw new RuntimeException('No main row in grouped results, this should not happen');
+                }
+
+                $baseLine = array_shift($groups);
+
+                if (!$baseLine instanceof Row) {
+                    return $mainRow;
+                }
+
+                foreach ($config[self::OPT_BASELINE_FIELDS] as $columnName) {
+                    $mainRow->getCell($columnName)->addSecondaryValue(
+                        AdditionalValue::create($baseLine->getCell($columnName)->getValue(), 'baseline')
+                    );
+                }
+
+                return $mainRow;
+            });
+        });
     }
 
     /**
@@ -613,5 +667,15 @@ class TableGenerator implements GeneratorInterface
         }
 
         return $this->resolveCompareColumnName($row, $name, $index);
+    }
+
+    private function baselineRowIdentifier(Row $row): string
+    {
+        return implode('.', [
+            $row->getValue('benchmark'),
+            $row->getValue('subject'),
+            $row->getValue('set'),
+            $row->getValue('revs'),
+        ]);
     }
 }

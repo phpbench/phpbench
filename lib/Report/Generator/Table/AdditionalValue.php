@@ -25,6 +25,14 @@ final class AdditionalValue
         $this->role = $role;
     }
 
+    /**
+     * @param mixed $value
+     */
+    public static function create($value, string $role): self
+    {
+        return new self($value, $role);
+    }
+
     public function __toString(): string
     {
         return (string)$this->value;
