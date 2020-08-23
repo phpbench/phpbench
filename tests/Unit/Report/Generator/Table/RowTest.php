@@ -14,6 +14,7 @@ namespace PhpBench\Tests\Unit\Report\Generator\Table;
 
 use PhpBench\Report\Generator\Table\Row;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 class RowTest extends TestCase
 {
@@ -21,21 +22,21 @@ class RowTest extends TestCase
      * It should throw an exception if a non-existing offset is requested.
      *
      */
-    public function testGetNotExisting()
+    public function testGetNotExisting(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Column "foo" does not exist, valid columns: "bar"');
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Column "foo" does not exist');
         $row = new Row(['bar' => 'boo']);
-        $row['foo'];
+        $row->getValue('foo');
     }
 
     /**
      * It should return a given key.
      */
-    public function testGet()
+    public function testGet(): void
     {
         $row = new Row(['bar' => 'boo']);
-        $value = $row['bar'];
+        $value = $row->getValue('bar');
 
         $this->assertEquals('boo', $value);
     }
@@ -44,7 +45,7 @@ class RowTest extends TestCase
      * It should merge a given array and return a new instance with the
      * merged data.
      */
-    public function testMerge()
+    public function testMerge(): void
     {
         $row = new Row(['bar' => 'bar']);
         $row->setFormatParams(['of' => 'fo']);
@@ -55,13 +56,13 @@ class RowTest extends TestCase
         $this->assertEquals([
             'bar' => 'bar',
             'foo' => 'foo',
-        ], $new->getArrayCopy());
+        ], $new->toArray());
     }
 
     /**
      * It should return the names.
      */
-    public function testNames()
+    public function testNames(): void
     {
         $row = new Row(['one' => 1, 'two' => 2]);
         $this->assertEquals(['one', 'two'], $row->getNames());

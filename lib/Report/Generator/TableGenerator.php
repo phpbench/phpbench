@@ -386,7 +386,7 @@ class TableGenerator implements GeneratorInterface
             foreach ($suite->getBenchmarks() as $benchmark) {
                 foreach ($benchmark->getSubjects() as $subject) {
                     foreach ($subject->getVariants() as $variant) {
-                        $row = new Row([
+                        $row = Row::fromMap([
                             'suite' => $suite->getUuid(),
                             'tag' => $suite->getTag(),
                             'date' => $suite->getDate()->format('Y-m-d'),

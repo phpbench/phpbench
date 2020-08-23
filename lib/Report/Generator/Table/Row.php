@@ -139,4 +139,11 @@ final class Row
     {
         $this->row[$columnName] = $value;
     }
+
+    public static function fromMap(array $array): self
+    {
+        return new self(array_map(function ($value) {
+            return Cell::fromValue($value);
+        }, $array));
+    }
 }
