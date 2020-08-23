@@ -127,7 +127,7 @@ final class Row
         return $this->row[$columnName];
     }
 
-    public function removeCell(string $columnName): void
+    public function removeColumn(string $columnName): void
     {
         unset($this->row[$columnName]);
     }

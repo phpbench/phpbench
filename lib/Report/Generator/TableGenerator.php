@@ -234,7 +234,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
 
             foreach ($break as $breakKey) {
                 $breakHash[] = $breakKey. ': ' .$row->getValue($breakKey);
-                $row->removeCell($breakKey);
+                $row->removeColumn($breakKey);
             }
 
             return implode(', ', $breakHash);
@@ -316,12 +316,12 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
                         $firstRow = $row->newInstance(array_diff_key($row->toArray(), array_flip($this->statKeys)));
 
                         if ($firstRow->hasColumn($compare)) {
-                            $firstRow->removeCell($compare);
+                            $firstRow->removeColumn($compare);
                         }
 
                         foreach ($compareFields as $compareField) {
                             if ($firstRow->hasColumn($compareField)) {
-                                $firstRow->removeCell($compareField);
+                                $firstRow->removeColumn($compareField);
                             }
                         }
                     }
