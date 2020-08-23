@@ -16,6 +16,7 @@ use PhpBench\Benchmark\RunnerConfig;
 use PhpBench\Console\Command\Handler\DumpHandler;
 use PhpBench\Console\Command\Handler\ReportHandler;
 use PhpBench\Console\Command\Handler\RunnerHandler;
+use PhpBench\Console\Command\Handler\SuiteCollectionHandler;
 use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Registry;
@@ -56,7 +57,12 @@ class RunCommand extends Command
      */
     private $storage;
 
-    public function __construct(RunnerHandler $runnerHandler, ReportHandler $reportHandler, TimeUnitHandler $timeUnitHandler, DumpHandler $dumpHandler, Registry $storage
+    public function __construct(
+        RunnerHandler $runnerHandler,
+        ReportHandler $reportHandler,
+        TimeUnitHandler $timeUnitHandler,
+        DumpHandler $dumpHandler,
+        Registry $storage
     ) {
         parent::__construct();
         $this->runnerHandler = $runnerHandler;
@@ -70,6 +76,7 @@ class RunCommand extends Command
     {
         RunnerHandler::configure($this);
         ReportHandler::configure($this);
+        SuiteCollectionHandler::configure($this);
         TimeUnitHandler::configure($this);
         DumpHandler::configure($this);
 
@@ -90,6 +97,7 @@ EOT
         $this->addOption('context', null, InputOption::VALUE_REQUIRED, 'DEPRECATED! Use tag instead.');
         $this->addOption('tag', null, InputOption::VALUE_REQUIRED, 'Tag to apply to stored result (useful when comparing reports)');
         $this->addOption('store', null, InputOption::VALUE_NONE, 'Persist the results');
+        $this->addOption('baseline', null, InputOption::VALUE_REQUIRED, 'Specify a baseline UUID or Pseudo UUID');
         $this->addOption('tolerate-failure', null, InputOption::VALUE_NONE, 'Return 0 exit code even when failures occur');
     }
 

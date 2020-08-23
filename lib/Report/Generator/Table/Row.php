@@ -12,10 +12,13 @@
 
 namespace PhpBench\Report\Generator\Table;
 
+use RuntimeException;
+
+
 /**
  * Repesents a *data* table row including any metadata about the row.
  */
-class Row extends \ArrayObject
+final class Row
 {
     /**
      * @var array
@@ -23,21 +26,21 @@ class Row extends \ArrayObject
     private $formatParams = [];
 
     /**
-     * Return the given offset.
-     * Throw an exception if the given offset does not exist.
-     *
-     * @throws \InvalidArgumentException
+     * @var array
      */
-    public function offsetGet($offset)
-    {
-        if (!$this->offsetExists($offset)) {
-            throw new \InvalidArgumentException(sprintf(
-                'Column "%s" does not exist, valid columns: "%s"',
-                $offset, implode('", "', array_keys($this->getArrayCopy()))
-            ));
-        }
+    private $row;
 
-        return parent::offsetGet($offset);
+    public function __construct(array $row)
+    {
+        $this->row = $row;
+    }
+
+    /**
+     * @return array<string,mixed>
+     */
+    public function toArray(): array
+    {
+        return $this->row;
     }
 
     /**
@@ -52,7 +55,7 @@ class Row extends \ArrayObject
     {
         return $this->newInstance(
             array_merge(
-                $this->getArrayCopy(),
+                $this->row,
                 $array
             )
         );
@@ -97,10 +100,43 @@ class Row extends \ArrayObject
     /**
      * Return the cell names for this row.
      *
-     * @return string[]
+     * @return array<string>
      */
-    public function getNames()
+    public function getNames(): array
     {
-        return array_keys($this->getArrayCopy());
+        return array_keys($this->toArray());
+    }
+
+    public function hasColumn(string $columnName): bool
+    {
+        return array_key_exists($columnName, $this->row);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getValue(string $columnName)
+    {
+        if (!array_key_exists($columnName, $this->row)) {
+            throw new RuntimeException(sprintf(
+                'Column "%s" does not exist in row with columns "%s"',
+                $columnName, implode('", "', array_keys($this->row))
+            ));
+        }
+
+        return $this->row[$columnName];
+    }
+
+    public function removeCell(string $columnName): void
+    {
+        unset($this->row[$columnName]);
+    }
+
+    /**
+     * @param mixed $value 
+     */
+    public function setValue(string $columnName, $value): void
+    {
+        $this->row[$columnName] = $value;
     }
 }

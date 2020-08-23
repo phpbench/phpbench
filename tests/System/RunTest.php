@@ -66,6 +66,13 @@ class RunTest extends SystemTestCase
         $this->assertStringContainsString('bench', $output);
     }
 
+    public function testCommandWithReportAndBaseline()
+    {
+        $process = $this->phpbench('run benchmarks/set4/NothingBench.php --tag=foo');
+        $this->assertExitCode(0, $process);
+        $process = $this->phpbench('run benchmarks/set4/NothingBench.php --report=default --baseline=tag:foo');
+        $this->assertExitCode(0, $process);
+    }
     /**
      * It should show an error if no path is given (and no path is configured).
      */

@@ -26,6 +26,9 @@ use PhpBench\Report\Generator\Table\Sort;
 use PhpBench\Report\GeneratorInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function Functional\group;
+use function Functional\map;
+use function Functional\reduce_left;
 
 /**
  * The table generator generates reports about benchmarking results.
@@ -138,20 +141,20 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
             ));
         }
 
-        return F\map($tables, function ($table) use ($stat) {
-            $means = F\map($table, function ($row) use ($stat) {
-                return $row[$stat];
+        return map($tables, function ($table) use ($stat) {
+            $means = map($table, function (Row $row) use ($stat) {
+                return $row->getValue($stat);
             });
             $min = min($means);
 
-            return F\map($table, function ($row) use ($min, $stat) {
+            return map($table, function (Row $row) use ($min, $stat) {
                 if ($min === 0 || $min === 0.0) {
-                    $row['diff'] = 0;
+                    $row->setValue('diff', 0);
 
                     return $row;
                 }
 
-                $row['diff'] = $row[$stat] / $min;
+                $row->setValue('diff', $row->getValue($stat) / $min);
 
                 return $row;
             });
@@ -172,28 +175,28 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
             $cols = array_reverse($config['sort']);
 
             foreach ($cols as $colName => $direction) {
-                Sort::mergeSort($table, function ($elementA, $elementB) use ($colName, $direction) {
-                    if ($elementA[$colName] == $elementB[$colName]) {
+                Sort::mergeSort($table, function (Row $elementA, Row $elementB) use ($colName, $direction) {
+                    if ($elementA->getValue($colName) == $elementB->getValue($colName)) {
                         return 0;
                     }
 
                     if ($direction === 'asc') {
-                        return $elementA[$colName] < $elementB[$colName] ? -1 : 1;
+                        return $elementA->getValue($colName) < $elementB->getValue($colName) ? -1 : 1;
                     }
 
-                    return $elementA[$colName] > $elementB[$colName] ? -1 : 1;
+                    return $elementA->getValue($colName) > $elementB->getValue($colName) ? -1 : 1;
                 });
             }
         }
 
         if ($config['break']) {
             foreach ($config['break'] as $colName) {
-                Sort::mergeSort($table, function ($elementA, $elementB) use ($colName) {
-                    if ($elementA[$colName] == $elementB[$colName]) {
+                Sort::mergeSort($table, function (Row $elementA, Row $elementB) use ($colName) {
+                    if ($elementA->getValue($colName) == $elementB->getValue($colName)) {
                         return 0;
                     }
 
-                    return $elementA[$colName] < $elementB[$colName] ? -1 : 1;
+                    return $elementA->getValue($colName) < $elementB->getValue($colName) ? -1 : 1;
                 });
             }
         }
@@ -226,12 +229,12 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
             }
         }
 
-        return F\group($table, function ($row) use ($break) {
+        return group($table, function (Row $row) use ($break) {
             $breakHash = [];
 
             foreach ($break as $breakKey) {
-                $breakHash[] = $breakKey. ': ' .$row[$breakKey];
-                unset($row[$breakKey]);
+                $breakHash[] = $breakKey. ': ' .$row->getValue($breakKey);
+                $row->removeCell($breakKey);
             }
 
             return implode(', ', $breakHash);
@@ -255,15 +258,15 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
                 $cols[] = $config['compare'];
                 $cols = array_merge($cols, $config['compare_fields']);
             }
-            $tables = F\map($tables, function ($table) use ($cols) {
-                return F\map($table, function ($row) use ($cols) {
+            $tables = map($tables, function ($table) use ($cols) {
+                return map($table, function (Row $row) use ($cols) {
                     $newRow = $row->newInstance([]);
 
                     foreach ($cols as $col) {
                         if ($col === 'diff') {
                             continue;
                         }
-                        $newRow[$col] = $row[$col];
+                        $newRow->setValue($col, $row->getValue($col));
                     }
 
                     return $newRow;
@@ -292,11 +295,11 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
         $compare = $config['compare'];
         $compareFields = $config['compare_fields'];
 
-        return F\map($tables, function ($table) use ($conditions, $compare, $compareFields) {
-            $groups = F\group($table, function ($row) use ($conditions) {
-                $values = array_intersect_key($row->getArrayCopy(), array_flip($conditions));
+        return map($tables, function ($table) use ($conditions, $compare, $compareFields) {
+            $groups = group($table, function (Row $row) use ($conditions) {
+                $values = array_intersect_key($row->toArray(), array_flip($conditions));
 
-                return F\reduce_left($values, function ($value, $i, $c, $reduction) {
+                return reduce_left($values, function ($value, $i, $c, $reduction) {
                     return $reduction . $value;
                 });
             });
@@ -308,16 +311,17 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
                 $firstRow = null;
 
                 foreach ($group as $row) {
+                    assert($row instanceof Row);
                     if (null === $firstRow) {
-                        $firstRow = $row->newInstance(array_diff_key($row->getArrayCopy(), array_flip($this->statKeys)));
+                        $firstRow = $row->newInstance(array_diff_key($row->toArray(), array_flip($this->statKeys)));
 
-                        if (isset($firstRow[$compare])) {
-                            unset($firstRow[$compare]);
+                        if ($firstRow->hasColumn($compare)) {
+                            $firstRow->removeCell($compare);
                         }
 
                         foreach ($compareFields as $compareField) {
-                            if (isset($firstRow[$compareField])) {
-                                unset($firstRow[$compareField]);
+                            if ($firstRow->hasColumn($compareField)) {
+                                $firstRow->removeCell($compareField);
                             }
                         }
                     }
@@ -326,14 +330,14 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
                         $colNames = array_combine($firstRow->getNames(), $firstRow->getNames());
                     }
 
-                    $compared = $row[$compare];
+                    $compared = $row->getValue($compare);
 
                     foreach ($compareFields as $compareField) {
                         $name = $compare . ':' . $compared . ':' . $compareField;
 
                         $name = $this->resolveCompareColumnName($firstRow, $name);
 
-                        $firstRow[$name] = $row[$compareField];
+                        $firstRow->setValue($name, $row->getValue($compareField));
                         $colNames[$name] = $name;
 
                         // TODO: This probably means the field is non-comparable, could handle this earlier..
@@ -347,11 +351,11 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
                 $table[] = $firstRow;
             }
 
-            $table = F\map($table, function ($row) use ($colNames) {
+            $table = map($table, function (Row $row) use ($colNames) {
                 $newRow = $row->newInstance([]);
 
                 foreach ($colNames as $colName) {
-                    $newRow[$colName] = isset($row[$colName]) ? $row[$colName] : null;
+                    $newRow->setValue($colName, $row->hasColumn($colName) ? $row->getValue($colName) : null);
                 }
 
                 return $newRow;
@@ -444,7 +448,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
                         //       override a row?  it could happen.
                         foreach ($env as $providerName => $information) {
                             foreach ($information as $key => $value) {
-                                $row[$providerName . '_' . $key] = $value;
+                                $row->setValue($providerName . '_' . $key, $value);
                             }
                         }
 
@@ -464,7 +468,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
 
                         foreach ($variant->getIterations() as $index => $iteration) {
                             $row = clone $row;
-                            $row['iter'] = $index;
+                            $row->setValue('iter', $index);
 
                             foreach ($iteration->getResults() as $result) {
                                 $metrics = $result->getMetrics();
@@ -474,10 +478,10 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
 
                                     // TODO: this is a hack to add the rev time to the report.
                                     if ($result instanceof TimeResult && $key === 'net') {
-                                        $row[$result->getKey() . '_rev'] = $result->getRevTime($iteration->getVariant()->getRevolutions());
+                                        $row->setValue($result->getKey() . '_rev', $result->getRevTime($iteration->getVariant()->getRevolutions()));
                                     }
 
-                                    $row[$result->getKey() . '_' . $key] = $value;
+                                    $row->setValue($result->getKey() . '_' . $key, $value);
                                 }
                             }
                             $table[] = $row;
@@ -492,9 +496,10 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
         // the rows to ensure they all have all of the columns which have been
         // defined.
         foreach ($table as $row) {
+            assert($row instanceof Row);
             foreach (array_keys($columnNames) as $columnName) {
-                if (!isset($row[$columnName])) {
-                    $row[$columnName] = null;
+                if (!$row->hasColumn($columnName)) {
+                    $row->setValue($columnName, null);
                 }
             }
         }
@@ -534,6 +539,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
 
             // Build the col(umn) definitions.
             foreach ($table as $row) {
+                assert($row instanceof Row);
                 $colsEl = $tableEl->appendElement('cols');
 
                 foreach ($row->getNames() as $colName) {
@@ -570,7 +576,7 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
                     $paramEl->setAttribute('name', $paramName);
                 }
 
-                foreach ($row as $key => $value) {
+                foreach ($row->toArray() as $key => $value) {
                     $cellEl = $rowEl->appendElement('cell', $value);
                     $cellEl->setAttribute('name', $key);
 
@@ -608,13 +614,13 @@ class TableGenerator implements GeneratorInterface, OutputAwareInterface
      */
     private function resolveCompareColumnName(Row $row, $name, $index = 1)
     {
-        if (!isset($row[$name])) {
+        if (!$row->hasColumn($name)) {
             return $name;
         }
 
         $newName = $name . '#' . (string) $index++;
 
-        if (!isset($row[$newName])) {
+        if (!$row->hasColumn($newName)) {
             return $newName;
         }
 

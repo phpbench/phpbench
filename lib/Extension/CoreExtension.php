@@ -287,7 +287,8 @@ class CoreExtension implements ExtensionInterface
 
         $container->register('console.command.handler.report', function (Container $container) {
             return new ReportHandler(
-                $container->get('report.manager')
+                $container->get('report.manager'),
+                $container->get('console.command.handler.suite_collection'),
             );
         });
 

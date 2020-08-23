@@ -20,7 +20,7 @@ abstract class GeneratorTestCase extends TestCase
     protected function assertXPathEval(Document $document, $expected, $expression)
     {
         $result = $document->evaluate($expression);
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($expected, $result, sprintf('Xpath: %s', $expression));
     }
 
     protected function assertXPathCount(Document $document, $expected, $expression)
