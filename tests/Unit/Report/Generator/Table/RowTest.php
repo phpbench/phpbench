@@ -49,7 +49,7 @@ class RowTest extends TestCase
     {
         $row = Row::fromMap(['bar' => 'bar']);
         $row->setFormatParams(['of' => 'fo']);
-        $new = $row->merge(['foo' => 'foo']);
+        $new = $row->mergeMap(['foo' => 'foo']);
 
         $this->assertNotSame($row, $new);
         $this->assertEquals(['of' => 'fo'], $new->getFormatParams());

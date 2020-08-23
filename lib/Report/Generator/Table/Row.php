@@ -52,9 +52,9 @@ final class Row
      * Merge the given array into the data of this row and
      * return a new instance.
      *
-     * @param array $array
+     * @param array<string,mixed> $array
      */
-    public function merge(array $array): self
+    public function mergeMap(array $array): self
     {
         $array = Row::fromMap($array);
         return $this->newInstance(

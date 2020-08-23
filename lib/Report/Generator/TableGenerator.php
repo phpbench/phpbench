@@ -436,7 +436,7 @@ class TableGenerator implements GeneratorInterface
                             $this->statKeys = array_keys($stats);
                         }
 
-                        $row = $row->merge($stats);
+                        $row = $row->mergeMap($stats);
 
                         // generate the environment parameters.
                         // TODO: should we crash here if an attempt is made to
