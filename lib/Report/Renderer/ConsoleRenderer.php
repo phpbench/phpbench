@@ -23,6 +23,7 @@ use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function Functional\map;
 
 class ConsoleRenderer implements RendererInterface, OutputAwareInterface
 {
@@ -101,14 +102,19 @@ class ConsoleRenderer implements RendererInterface, OutputAwareInterface
 
             foreach ($rowEl->query('.//cell') as $cellEl) {
                 $colName = $cellEl->getAttribute('name');
-                $value = $cellEl->nodeValue;
+                $values = [];
 
-                if ('' !== $value && $cellEl->hasAttribute('class')) {
-                    $classes = explode(' ', $cellEl->getAttribute('class'));
-                    $value = $this->formatter->applyClasses($classes, $value, $formatterParams);
+                foreach ($cellEl->query('./value') as $valueEl) {
+                    $value = $valueEl->nodeValue;
+                    $classes = array_filter(explode(' ', $valueEl->getAttribute('class')));
+
+                    if ($classes) {
+                        $value = $this->formatter->applyClasses($classes, $value, $formatterParams);
+                    }
+                    $values[] = $value;
                 }
 
-                $row[$colName] = $value;
+                $row[$colName] = implode(' ', $values);
             }
 
             $rows[] = $row;

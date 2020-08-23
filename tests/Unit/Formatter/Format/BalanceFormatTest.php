@@ -32,7 +32,7 @@ class BalanceFormatTest extends TestCase
     public function testFormat()
     {
         $result = $this->format->format(0, $this->format->getDefaultOptions());
-        $this->assertEquals('0', $result);
+        $this->assertEquals('+0', $result);
 
         $result = $this->format->format(-1, $this->format->getDefaultOptions());
         $this->assertEquals('-1', $result);

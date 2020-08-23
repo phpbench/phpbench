@@ -35,7 +35,7 @@ class BalanceFormat implements FormatInterface
     public function getDefaultOptions()
     {
         return [
-            'zero_format' => '%s',
+            'zero_format' => '+%s',
             'negative_format' => '-%s',
             'positive_format' => '+%s',
         ];

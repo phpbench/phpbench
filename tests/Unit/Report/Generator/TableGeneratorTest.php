@@ -105,7 +105,7 @@ class TableGeneratorTest extends GeneratorTestCase
         $this->assertXPathCount($report, 1, '//table');
         $this->assertXPathCount($report, 1, '//row');
         $this->assertXPathCount($report, 1, '//value[@role="baseline"]');
-        $this->assertXPathEval($report, '10', 'string(//value[@role="baseline"])');
+        $this->assertXPathEval($report, '100', 'string(//value[@role="baseline"])');
     }
 
 

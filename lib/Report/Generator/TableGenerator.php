@@ -249,7 +249,10 @@ class TableGenerator implements GeneratorInterface
 
                 foreach ($config[self::OPT_BASELINE_FIELDS] as $columnName) {
                     $mainRow->getCell($columnName)->addSecondaryValue(
-                        AdditionalValue::create($baseLine->getCell($columnName)->getValue(), self::OPT_BASELINE)
+                        AdditionalValue::create(
+                            (($mainRow->getValue($columnName) / $baseLine->getCell($columnName)->getValue()) - 1) * 100,
+                            self::OPT_BASELINE
+                        )
                     );
                 }
 
@@ -635,16 +638,17 @@ class TableGenerator implements GeneratorInterface
                     assert($cell instanceof Cell);
                     $cellEl = $rowEl->appendElement('cell');
                     $cellEl->setAttribute('name', $key);
+
+                    $attributeClasses = isset($classMap[$key]) ? implode(' ', $classMap[$key]) : '';
+
                     $valueEl = $cellEl->appendElement('value', $cell->getValue());
                     $valueEl->setAttribute('role', 'primary');
+                    $valueEl->setAttribute('class', $attributeClasses);
 
                     foreach ($cell->getSecondaryValues() as $secondaryValue) {
                         $secondaryValueEl = $cellEl->appendElement('value', $secondaryValue->getValue());
                         $secondaryValueEl->setAttribute('role', $secondaryValue->getRole());
-                    }
-
-                    if (isset($classMap[$key])) {
-                        $valueEl->setAttribute('class', implode(' ', $classMap[$key]));
+                        $secondaryValueEl->setAttribute('class', 'deviation');
                     }
                 }
             }
