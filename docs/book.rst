@@ -1,10 +1,9 @@
-Book
-====
+Reference
+=========
 
 .. toctree::
    :maxdepth: 2
 
-   writing-benchmarks
    benchmark-runner
    reports
    storage
@@ -14,4 +13,3 @@ Book
    assertions-asserters
    configuration
    faq
-

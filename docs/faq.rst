@@ -1,24 +1,21 @@
 FAQ
 ===
 
-Why does PHPBench slow on Windows?
-----------------------------------
+PHPBench is slow on Windows
+---------------------------
 
-Process spawning on Windows is more expensive than on Linux, PHPBench spawns
+Process spawning on Windows is more expensive than on Linux/MacOS, PHPBench spawns
 many processes. Actual benchmarking time however is not affected.
 
-Why does PHPBench look terrible on Windows?
--------------------------------------------
+PHPBench's output looks corrupted on Windows
+--------------------------------------------
 
 PHPBench makes use of ansi escape sequences in most of its progress loggers.
 The default Windows console does not support these sequences, so the output
-can look very bad.
+can look corrupted.
 
 You can mitigate this by using the `travis` logger, which does not issue any
 of these escape sequences.
-
-You may also consider using `Cgywin`, `emuCon` or `ansiCon` programs to
-enhance your console. You may also switch to Linux.
 
 Why do `setUp` and `tearDown` methods not automatically get called?
 ----------------------------------------------------------------------
