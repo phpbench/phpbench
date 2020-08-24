@@ -173,7 +173,7 @@ class Summary
         return $this->xdebugEnabled;
     }
 
-    public function getPhpVersion(): string
+    public function getPhpVersion(): ?string
     {
         return $this->phpVersion;
     }
