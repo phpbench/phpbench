@@ -2,7 +2,7 @@
 
 namespace PhpBench\Report\Generator\Table;
 
-final class AdditionalValue
+final class SecondaryValue
 {
     /**
      * @var mixed

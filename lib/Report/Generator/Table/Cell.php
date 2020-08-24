@@ -2,6 +2,8 @@
 
 namespace PhpBench\Report\Generator\Table;
 
+use PhpBench\Report\Generator\Table\SecondaryValue;
+
 final class Cell
 {
     /**
@@ -10,14 +12,14 @@ final class Cell
     private $value;
 
     /**
-     * @var array<AdditionalValue>
+     * @var array<SecondaryValue>
      */
     private $secondaryValues;
 
     /**
      * @param mixed $value
      */
-    public function __construct($value, AdditionalValue ...$additionalValues)
+    public function __construct($value, SecondaryValue ...$additionalValues)
     {
         $this->value = $value;
         $this->secondaryValues = $additionalValues;
@@ -53,14 +55,14 @@ final class Cell
     }
 
     /**
-     * @return array<AdditionalValue>
+     * @return array<SecondaryValue>
      */
     public function getSecondaryValues(): array
     {
         return $this->secondaryValues;
     }
 
-    public function addSecondaryValue(AdditionalValue $additionalValue): void
+    public function addSecondaryValue(SecondaryValue $additionalValue): void
     {
         $this->secondaryValues[] = $additionalValue;
     }

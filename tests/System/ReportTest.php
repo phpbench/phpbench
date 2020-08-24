@@ -12,6 +12,8 @@
 
 namespace PhpBench\Tests\System;
 
+use Generator;
+
 class ReportTest extends SystemTestCase
 {
     /**
@@ -114,12 +116,37 @@ class ReportTest extends SystemTestCase
         $this->assertExitCode(0, $process);
     }
 
-    public function provideGenerators()
+    /**
+     * @return Generator<mixed>
+     */
+    public function provideGenerators(): Generator
     {
-        return [
-            [['generator' => 'table']],
-            [['generator' => 'env']],
-            [['generator' => 'composite', 'reports' => ['default']]],
-        ];
+        yield [['generator' => 'table']];
+        yield [['generator' => 'env']];
+        yield [['generator' => 'composite', 'reports' => ['default']]];
+    }
+
+    /**
+     * The core report generators should execute.
+     *
+     * @dataProvider providePreconfiguredReports
+     */
+    public function testPreConfiguredReports(string $reportName): void
+    {
+        $this->getResult();
+        $process = $this->phpbench(
+            'report --file=' . $this->fname .' --report=\'' . $reportName . '\''
+        );
+
+        $this->assertExitCode(0, $process);
+    }
+
+    /**
+     * @return Generator<mixed>
+     */
+    public function providePreconfiguredReports(): Generator
+    {
+        yield [ 'aggregate' ];
+        yield [ 'aggregate_baseline' ];
     }
 }

@@ -21,7 +21,7 @@ use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
-use PhpBench\Report\Generator\Table\AdditionalValue;
+use PhpBench\Report\Generator\Table\SecondaryValue;
 use PhpBench\Report\Generator\Table\Cell;
 use PhpBench\Report\Generator\Table\Row;
 use PhpBench\Report\Generator\Table\Sort;
@@ -242,7 +242,7 @@ class TableGenerator implements GeneratorInterface
 
                 foreach ($config[self::OPT_BASELINE_FIELDS] as $columnName) {
                     $mainRow->getCell($columnName)->addSecondaryValue(
-                        AdditionalValue::create(
+                        SecondaryValue::create(
                             (($mainRow->getValue($columnName) / $baseLine->getCell($columnName)->getValue()) - 1) * 100,
                             self::OPT_BASELINE
                         )
