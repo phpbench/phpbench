@@ -27,14 +27,7 @@ Then switch to the new version of your code and run PHPBench again:
 
 The final report should look something like:
 
-.. code-block::
-
-    +--------------+------------+-----+-------------------+---------+----------------+----------------+---------+---------------+
-    | benchmark    | subject    | set | mem_peak          | best    | mean           | mode           | worst   | rstdev        |
-    +--------------+------------+-----+-------------------+---------+----------------+----------------+---------+---------------+
-    | HashingBench | benchAlgos | 0   | 1,170,000b +0.00% | 1.004μs | 1.048μs +2.57% | 1.036μs +2.31% | 1.156μs | 3.91% +28.98% |
-    | HashingBench | benchAlgos | 1   | 1,170,000b +0.00% | 1.332μs | 1.366μs -0.56% | 1.356μs -0.25% | 1.435μs | 2.19% +8.02%  |
-    +--------------+------------+-----+-------------------+---------+----------------+----------------+---------+---------------+
+.. image:: images/baseline.png
 
 The ``mean``, ``mode`` and ``rstdev`` columns show the percentage difference
 from the previous run.
