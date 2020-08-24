@@ -7,7 +7,9 @@ develop
 Features
 
 - Suite baseline: Introduce `aggregate_baseline` report to show `%` difference
-  to a referenced suite.
+  to a referenced suite #648
+- Show PHP version and the status of XDebug and Opcache in the runner output
+  #649
 - Add `@Timeout` to enable a timeout to be specified for any given benchmark -
   @dantleech #614
 
