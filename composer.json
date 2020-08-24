@@ -32,10 +32,11 @@
     "require-dev": {
         "doctrine/dbal": "^2.4",
         "friendsofphp/php-cs-fixer": "^2.13.1",
+        "jangregor/phpstan-prophecy": "^0.8.0",
         "padraic/phar-updater": "^1.0",
+        "phpspec/prophecy": "^1.8",
         "phpstan/phpstan": "^0.12.7",
-        "phpunit/phpunit": "^8.5",
-        "phpspec/prophecy": "^1.8"
+        "phpunit/phpunit": "^8.5"
     },
     "scripts": {
         "integrate": [
