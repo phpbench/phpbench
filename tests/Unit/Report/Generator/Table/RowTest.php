@@ -67,4 +67,12 @@ class RowTest extends TestCase
         $row = Row::fromMap(['one' => 1, 'two' => 2]);
         $this->assertEquals(['one', 'two'], $row->getNames());
     }
+
+    public function testCloneDereferencesCells(): void
+    {
+        $row = Row::fromMap(['one' => 1]);
+        $newRow = clone $row;
+
+        self::assertNotSame($row->getCell('one'), $newRow->getCell('one'));
+    }
 }
