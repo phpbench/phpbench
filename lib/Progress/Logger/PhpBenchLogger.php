@@ -55,7 +55,7 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
             'with PHP version %s, xdebug %s, opcache %s',
             $summary->getPhpVersion() ?? '<unknown>',
             $summary->getXdebugEnabled() ? '✔' : '❌',
-            $summary->getOpcacheEnabled()  ? '✔' : '❌',
+            $summary->getOpcacheEnabled()  ? '✔' : '❌'
         ));
 
         $this->output->writeln('');
