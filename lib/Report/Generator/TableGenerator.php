@@ -12,6 +12,7 @@
 
 namespace PhpBench\Report\Generator;
 
+use PhpBench\Report\Generator\Table\ValueRole;
 use function Functional\group;
 use function Functional\map;
 use function Functional\reduce_left;
@@ -28,6 +29,7 @@ use PhpBench\Report\Generator\Table\Sort;
 use PhpBench\Report\GeneratorInterface;
 use RuntimeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+
 
 /**
  * The table generator generates reports about benchmarking results.
@@ -641,7 +643,7 @@ class TableGenerator implements GeneratorInterface
                     $attributeClasses = isset($classMap[$key]) ? implode(' ', $classMap[$key]) : '';
 
                     $valueEl = $cellEl->appendElement('value', $cell->getValue());
-                    $valueEl->setAttribute('role', 'primary');
+                    $valueEl->setAttribute('role', ValueRole::ROLE_PRIMARY);
                     $valueEl->setAttribute('class', $attributeClasses);
 
                     foreach ($cell->getSecondaryValues() as $secondaryValue) {

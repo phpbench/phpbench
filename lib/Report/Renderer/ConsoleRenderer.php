@@ -17,6 +17,7 @@ use PhpBench\Dom\Document;
 use PhpBench\Dom\Element;
 use PhpBench\Formatter\Formatter;
 use PhpBench\Registry\Config;
+use PhpBench\Report\Generator\Table\ValueRole;
 use PhpBench\Report\RendererInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
@@ -111,7 +112,7 @@ class ConsoleRenderer implements RendererInterface, OutputAwareInterface
                         $value = $this->formatter->applyClasses($classes, $value, $formatterParams);
                     }
 
-                    if ($valueEl->getAttribute('role') !== 'primary') {
+                    if ($valueEl->getAttribute('role') !== ValueRole::ROLE_PRIMARY) {
                         $value = sprintf('<fg=cyan>%s</>', $value);
                     }
 
