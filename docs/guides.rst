@@ -6,4 +6,5 @@ Guides
 
    installing
    quick-start
+   writing-benchmarks
    regression-testing

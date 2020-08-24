@@ -38,6 +38,21 @@ class Summary
     private $errorStacks = [];
 
     /**
+     * @var bool
+     */
+    private $opCacheEnabled = false;
+
+    /**
+     * @var bool
+     */
+    private $xdebugEnabled = false;
+
+    /**
+     * @var string
+     */
+    private $phpVersion = null;
+
+    /**
      * @param Suite $suite
      */
     public function __construct(Suite $suite)
@@ -65,39 +80,50 @@ class Summary
                 }
             }
         }
+
+        $env = $suite->getEnvInformations();
+
+        if (isset($env['opcache'])) {
+            $this->opCacheEnabled = (bool)($env['opcache']['enabled'] ?? false);
+        }
+
+        if (isset($env['php'])) {
+            $this->xdebugEnabled = (bool)($env['php']['xdebug'] ?? false);
+            $this->phpVersion = $env['php']['version'] ?? null;
+        }
     }
 
-    public function getNbSubjects()
+    public function getNbSubjects(): int
     {
         return $this->nbSubjects;
     }
 
-    public function getNbIterations()
+    public function getNbIterations(): int
     {
         return $this->nbIterations;
     }
 
-    public function getNbRejects()
+    public function getNbRejects(): int
     {
         return $this->nbRejects;
     }
 
-    public function getNbRevolutions()
+    public function getNbRevolutions(): int
     {
         return $this->nbRevolutions;
     }
 
-    public function getNbFailures()
+    public function getNbFailures(): int
     {
         return $this->nbFailures;
     }
 
-    public function getNbWarnings()
+    public function getNbWarnings(): int
     {
         return $this->nbWarnings;
     }
 
-    public function getStats()
+    public function getStats(): array
     {
         return $this->stats;
     }
@@ -135,5 +161,20 @@ class Summary
     public function getMeanRelStDev()
     {
         return Statistics::mean($this->stats['rstdev']);
+    }
+
+    public function getOpcacheEnabled(): ?bool
+    {
+        return $this->opCacheEnabled;
+    }
+
+    public function getXdebugEnabled(): bool
+    {
+        return $this->xdebugEnabled;
+    }
+
+    public function getPhpVersion(): ?string
+    {
+        return $this->phpVersion;
     }
 }

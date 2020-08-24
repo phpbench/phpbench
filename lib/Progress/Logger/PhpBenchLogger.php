@@ -44,11 +44,19 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
 
     public function startSuite(Suite $suite)
     {
-        $this->output->writeln('PhpBench ' . PhpBench::VERSION . '. Running benchmarks.');
+        $this->output->writeln('PHPBench ' . PhpBench::VERSION . ' running benchmarks...');
 
         if ($configPath = $suite->getConfigPath()) {
-            $this->output->writeln(sprintf('Using configuration file: %s', $configPath));
+            $this->output->writeln(sprintf('with configuration file: %s', $configPath));
         }
+
+        $summary = $suite->getSummary();
+        $this->output->writeln(sprintf(
+            'with PHP version %s, xdebug %s, opcache %s',
+            $summary->getPhpVersion() ?? '<unknown>',
+            $summary->getXdebugEnabled() ? '✔' : '❌',
+            $summary->getOpcacheEnabled()  ? '✔' : '❌'
+        ));
 
         $this->output->writeln('');
     }
@@ -61,6 +69,7 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
         $this->listFailures($suite);
         $this->listWarnings($suite);
 
+
         $this->output->writeln(sprintf(
             '%s subjects, %s iterations, %s revs, %s rejects, %s failures, %s warnings',
             number_format($summary->getNbSubjects()),
@@ -70,6 +79,7 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
             number_format($summary->getNbFailures()),
             number_format($summary->getNbWarnings())
         ));
+
 
         $this->output->writeln(sprintf(
             '(best [mean mode] worst) = %s [%s %s] %s (%s)',

@@ -4,3 +4,5 @@ parameters:
         - '#Call to an undefined method DOMNode#'
     paths:
         - lib
+includes:
+    - vendor/jangregor/phpstan-prophecy/extension.neon
