@@ -232,8 +232,10 @@ class StatisticsTest extends TestCase
     public function testPercentageDifference(float $value1, float $value2, float $expected): void
     {
         $result = Statistics::percentageDifference($value1, $value2);
+
         if ((string)$expected == 'NAN') {
             self::assertEquals('NAN', (string)$result);
+
             return;
         }
         self::assertEquals(round($expected, 2), $result);
@@ -280,5 +282,4 @@ class StatisticsTest extends TestCase
             -50
         ];
     }
-
 }

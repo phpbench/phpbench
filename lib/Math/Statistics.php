@@ -45,7 +45,7 @@ class Statistics
         $average = self::mean($values);
         $sum = 0;
 
-       foreach ($values as $value) {
+        foreach ($values as $value) {
             $diff = pow($value - $average, 2);
             $sum += $diff;
         }
