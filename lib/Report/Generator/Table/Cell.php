@@ -2,8 +2,6 @@
 
 namespace PhpBench\Report\Generator\Table;
 
-use PhpBench\Report\Generator\Table\SecondaryValue;
-
 final class Cell
 {
     /**

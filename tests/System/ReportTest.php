@@ -122,7 +122,9 @@ class ReportTest extends SystemTestCase
     public function provideGenerators(): Generator
     {
         yield [['generator' => 'table']];
+
         yield [['generator' => 'env']];
+
         yield [['generator' => 'composite', 'reports' => ['default']]];
     }
 
@@ -147,6 +149,7 @@ class ReportTest extends SystemTestCase
     public function providePreconfiguredReports(): Generator
     {
         yield [ 'aggregate' ];
+
         yield [ 'aggregate_baseline' ];
     }
 }
