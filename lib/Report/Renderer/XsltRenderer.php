@@ -92,11 +92,13 @@ class XsltRenderer implements RendererInterface, OutputAwareInterface
                 foreach ($cellEl->query('./value') as $valueEl) {
                     $value = $valueEl->nodeValue;
 
-                    if ('' !== $value && $valueEl->getAttribute('class')) {
-                        $classes = explode(' ', $valueEl->getAttribute('class'));
-                        $value = $this->formatter->applyClasses($classes, $value, $formatterParams);
-                        $valueEl->nodeValue = $value;
+                    if ('' === $value || !$valueEl->getAttribute('class')) {
+                        continue;
                     }
+
+                    $classes = explode(' ', $valueEl->getAttribute('class'));
+                    $value = $this->formatter->applyClasses($classes, $value, $formatterParams);
+                    $valueEl->nodeValue = $value;
                 }
             }
         }
