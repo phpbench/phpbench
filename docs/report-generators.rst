@@ -39,6 +39,10 @@ Options:
   iteration (default ``false``).
 - **labels**: *(array)* Override the default column names, either as a
   numerical array or as a `colName => label` hash.
+- **baseline**: Use any previous suites as baselines for the most recent
+  suite.
+- **baseline_fields**: Change the default selection of fields to which
+  baseline results are shown.
 
 .. _generator_table_columns:
 
@@ -53,6 +57,7 @@ single iterations (as provided when ``iterations`` option is set to ``true``).
 Conditions:
 
 - **suite**: Identifier of the suite.
+- **tag**: If applicable, the tag which was applied to this suite.
 - **date**: Date the suite was generated,
 - **stime**: Time the suite was generated 
 - **benchmark**: Short name of the benchmark class (i.e. no namespace).

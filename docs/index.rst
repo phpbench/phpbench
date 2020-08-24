@@ -8,36 +8,13 @@ Welcome to PHPBench's documentation!
 
 PHPBench is a benchmarking framework for PHP. Find it on Github_.
 
-Book
-----
-
 .. toctree::
    :maxdepth: 2
 
    introduction
-   installing
-   quick-start
-   writing-benchmarks
-   benchmark-runner
-   reports
-   storage
-   environment
-   report-generators
-   report-renderers
-   assertions-asserters
-   configuration
-   faq
-
-Extensions
-----------
-
-.. toctree::
-   :maxdepth: 1
-
-   extensions/xdebug
-   extensions/dbal
-   extensions/reports
-   extensions/custom
+   guides
+   book
+   extensions
 
 Indices and tables
 ==================
