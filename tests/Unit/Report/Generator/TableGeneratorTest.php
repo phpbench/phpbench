@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Report\Generator;
 
+use PhpBench\Dom\Document;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Report\Generator\TableGenerator;
@@ -33,7 +34,7 @@ class TableGeneratorTest extends GeneratorTestCase
     /**
      * It should build an aggregate table.
      */
-    public function testAggregate()
+    public function testAggregate(): void
     {
         $collection = TestUtil::createCollection([
             [
@@ -57,9 +58,9 @@ class TableGeneratorTest extends GeneratorTestCase
         $this->assertXPathCount($report, 4, '//cell[@name="best"]');
         $this->assertXPathCount($report, 4, '//cell[@name="worst"]');
 
-        $this->assertXPathCount($report, 2, '//cell[text() = "oneBench"]');
-        $this->assertXPathCount($report, 2, '//cell[text() = "subjectOne"]');
-        $this->assertXPathCount($report, 2, '//cell[text() = "subjectTwo"]');
+        $this->assertXPathCount($report, 2, '//cell/value[text() = "oneBench"]');
+        $this->assertXPathCount($report, 2, '//cell/value[text() = "subjectOne"]');
+        $this->assertXPathCount($report, 2, '//cell/value[text() = "subjectTwo"]');
         $this->assertXPathEval($report, 'one,two,three', 'string(//cell[@name="groups"])');
         $this->assertXPathEval($report, '{"param1":"value1"}', 'string(//cell[@name="params"])');
         $this->assertXPathEval($report, 5, 'string(//cell[@name="revs"])');
@@ -76,10 +77,43 @@ class TableGeneratorTest extends GeneratorTestCase
         $this->assertXPathEval($report, '1.0666666666667', 'string(//row[2]//cell[@name="diff"])');
     }
 
+    public function testBaseline(): void
+    {
+        $collection = TestUtil::createCollection([
+            [
+                'benchmarks' => ['oneBench'],
+                'subjects' => ['subjectOne'],
+                'revs' => 1,
+                'iterations' => [ 20, 20 ],
+                'basetime' => 0,
+            ],
+        ]);
+        $baseline = TestUtil::createCollection([
+            [
+                'benchmarks' => ['oneBench'],
+                'subjects' => ['subjectOne'],
+                'revs' => 1,
+                'iterations' => [ 10, 10 ],
+                'basetime' => 0,
+            ],
+        ]);
+
+        $report = $this->generate($collection->mergeCollection($baseline), [
+            'baseline' => true,
+            'baseline_fields' => ['mean'],
+        ]);
+        $report->formatOutput = true;
+        $this->assertXPathCount($report, 1, '//table');
+        $this->assertXPathCount($report, 1, '//row');
+        $this->assertXPathCount($report, 1, '//value[@role="baseline"]');
+        $this->assertXPathEval($report, '100', 'string(//value[@role="baseline"])');
+    }
+
+
     /**
      * It should not crash if an itreation reports 0 time.
      */
-    public function testZeroTime()
+    public function testZeroTime(): void
     {
         $collection = TestUtil::createCollection([
             [
@@ -96,7 +130,7 @@ class TableGeneratorTest extends GeneratorTestCase
     /**
      * It should generate iteration rows.
      */
-    public function testIterationRows()
+    public function testIterationRows(): void
     {
         $collection = TestUtil::createCollection([
             [
@@ -114,6 +148,7 @@ class TableGeneratorTest extends GeneratorTestCase
             'iterations' => true,
             'cols' => ['time_rev', 'comp_z_value', 'iter', 'revs'],
         ]);
+        $report->formatOutput = true;
         $this->assertXPathCount($report, 1, '//table');
         $this->assertXPathCount($report, 8, '//row');
         $this->assertXPathEval($report, 2, 'number(//row[1]//cell[@name="time_rev"])');
@@ -128,7 +163,7 @@ class TableGeneratorTest extends GeneratorTestCase
     /**
      * It should allow selection of env columns.
      */
-    public function testEnvCols()
+    public function testEnvCols(): void
     {
         $collection = TestUtil::createCollection([
             [
@@ -153,7 +188,7 @@ class TableGeneratorTest extends GeneratorTestCase
      *
      * @dataProvider provideBreak
      */
-    public function testBreak(array $breaks, array $assertions)
+    public function testBreak(array $breaks, array $assertions): void
     {
         $prototype = [
             'benchmarks' => ['oneBench', 'twoBench'],
@@ -209,7 +244,7 @@ class TableGeneratorTest extends GeneratorTestCase
     /**
      * It should provide the specfied columns in the specified order.
      */
-    public function testColumns()
+    public function testColumns(): void
     {
         $collection = TestUtil::createCollection([
             [],
@@ -231,7 +266,7 @@ class TableGeneratorTest extends GeneratorTestCase
      *
      * @dataProvider provideCompare
      */
-    public function testCompare($config, $assertions)
+    public function testCompare($config, $assertions): void
     {
         $collection = TestUtil::createCollection([
             [
@@ -301,7 +336,7 @@ class TableGeneratorTest extends GeneratorTestCase
      * Compare should expand duplicate values, e.g. if "mean" appears twice or more for the criteria which we
      * are comparing, then additional columns should be added, mean#1, mean#2 .. mean#n.
      */
-    public function testCompareExpandDuplicate()
+    public function testCompareExpandDuplicate(): void
     {
         $collection = TestUtil::createCollection([
             [
@@ -333,7 +368,7 @@ class TableGeneratorTest extends GeneratorTestCase
     /**
      * It should add table and report titles and descriptions.
      */
-    public function testTitles()
+    public function testTitles(): void
     {
         $collection = TestUtil::createCollection([
             [
@@ -349,13 +384,13 @@ class TableGeneratorTest extends GeneratorTestCase
         $this->assertXPathCount($report, 1, '//report[description="The world said hello back."]');
 
         // the table title is the break criteria, in this case the suite index.
-        $this->assertXPathCount($report, 1, '//table[@title="suite: 0, date: 2016-02-06, stime: 00:00:00"]');
+        $this->assertXPathCount($report, 1, '//table[@title="tag: test, suite: 0, date: 2016-02-06, stime: 00:00:00"]');
     }
 
     /**
      * It should sort ASC.
      */
-    public function testSortAsc()
+    public function testSortAsc(): void
     {
         $collection = TestUtil::createCollection([
             [
@@ -380,7 +415,7 @@ class TableGeneratorTest extends GeneratorTestCase
     /**
      * It should sort DESC.
      */
-    public function testSortDesc()
+    public function testSortDesc(): void
     {
         $collection = TestUtil::createCollection([
             [
@@ -405,7 +440,7 @@ class TableGeneratorTest extends GeneratorTestCase
     /**
      * It should sort multiple columns.
      */
-    public function testSortMultiple()
+    public function testSortMultiple(): void
     {
         $collection = TestUtil::createCollection([
             [
@@ -441,7 +476,7 @@ class TableGeneratorTest extends GeneratorTestCase
     /**
      * It should pretty print parameters.
      */
-    public function testPrettyParams()
+    public function testPrettyParams(): void
     {
         $dom = $this->generate(
             TestUtil::createCollection([
@@ -485,7 +520,7 @@ EOT
     /**
      * It should normalize the column names for each row.
      */
-    public function testNormalizeColumnNames()
+    public function testNormalizeColumnNames(): void
     {
         $report = $this->generate(
             TestUtil::createCollection([
@@ -510,14 +545,14 @@ EOT
         );
 
         $this->assertXPathCount($report, 2, '//cell[@name="uname_os"]');
-        $this->assertXPathCount($report, 1, '//cell[@name="uname_os" and text() = "linux"]');
+        $this->assertXPathCount($report, 1, '//cell[@name="uname_os"]/value[text() = "linux"]');
         $this->assertXPathCount($report, 2, '//cell[@name="foobar_os"]');
     }
 
     /**
      * It should customize the column names.
      */
-    public function testCustomizeColumnLabels()
+    public function testCustomizeColumnLabels(): void
     {
         $report = $this->generate(
             TestUtil::createCollection([[]]),
@@ -530,15 +565,16 @@ EOT
             ]
         );
 
-        $this->assertXPathCount($report, 15, '//col');
+        $report->formatOutput = true;
+        $this->assertXPathCount($report, 14, '//col');
         $this->assertXPathEval($report, 'Column one', 'string(//table/cols/col[1]/@label)');
         $this->assertXPathEval($report, 'Column two', 'string(//table/cols/col[2]/@label)');
-        $this->assertXPathEval($report, 'tag', 'string(//table/cols/col[3]/@label)');
-        $this->assertXPathEval($report, 'groups', 'string(//table/cols/col[4]/@label)');
-        $this->assertXPathEval($report, 'Parameters', 'string(//table/cols/col[5]/@label)');
+        $this->assertXPathEval($report, 'groups', 'string(//table/cols/col[3]/@label)');
+        $this->assertXPathEval($report, 'Parameters', 'string(//table/cols/col[4]/@label)');
+        $this->assertXPathEval($report, 'revs', 'string(//table/cols/col[5]/@label)');
     }
 
-    private function generate(SuiteCollection $collection, array $config = [])
+    private function generate(SuiteCollection $collection, array $config = []): Document
     {
         $options = new OptionsResolver();
         $this->generator->configure($options);

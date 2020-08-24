@@ -18,7 +18,7 @@
         "beberlei/assert": "^2.4 || ^3.0",
         "doctrine/annotations": "^1.2.7",
         "lstrojny/functional-php": "1.0 || ^1.2.3",
-        "phpbench/container": "~1.2",
+        "phpbench/container": "^1.2.1",
         "phpbench/dom": "~0.2.0",
         "seld/jsonlint": "^1.1",
         "symfony/console": "^4.2 || ^5.0",

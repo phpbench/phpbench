@@ -6,6 +6,8 @@ develop
 
 Features
 
+- Suite baseline: Introduce `aggregate_baseline` report to show `%` difference
+  to a referenced suite.
 - Add `@Timeout` to enable a timeout to be specified for any given benchmark -
   @dantleech #614
 

@@ -316,6 +316,7 @@ class CoreExtension implements ExtensionInterface
             return new RunCommand(
                 $container->get('console.command.handler.runner'),
                 $container->get('console.command.handler.report'),
+                $container->get('console.command.handler.suite_collection'),
                 $container->get('console.command.handler.time_unit'),
                 $container->get('console.command.handler.dump'),
                 $container->get('storage.driver_registry')

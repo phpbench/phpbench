@@ -41,8 +41,8 @@ abstract class AbstractRendererCase extends TestCase
         <table>
             <group name="body">
                 <row>
-                    <cell name="one">Hello</cell>
-                    <cell name="two">Goodbye</cell>
+                    <cell name="one"><value>Hello</value></cell>
+                    <cell name="two"><value>Goodbye</value></cell>
                 </row>
             </group>
         </table>

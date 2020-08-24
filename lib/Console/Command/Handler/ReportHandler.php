@@ -14,6 +14,7 @@ namespace PhpBench\Console\Command\Handler;
 
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Report\ReportManager;
+use PhpBench\Storage\StorageRegistry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -21,29 +22,41 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ReportHandler
 {
+    public const OPT_REPORT = 'report';
+    public const OPT_OUTPUT = 'output';
+
+    /**
+     * @var ReportManager
+     */
     private $reportManager;
+
+    /**
+     * @var StorageRegistry
+     */
+    private $storageRegistry;
 
     public function __construct(ReportManager $reportManager)
     {
         $this->reportManager = $reportManager;
     }
 
-    public static function configure(Command $command)
+    public static function configure(Command $command): void
     {
-        $command->addOption('report', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Report name or configuration in JSON format');
-        $command->addOption('output', 'o', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Specify output', ['console']);
+        $command->addOption(self::OPT_REPORT, null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Report name or configuration in JSON format');
+        $command->addOption(self::OPT_OUTPUT, 'o', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Specify output', ['console']);
     }
 
-    public function validateReportsFromInput(InputInterface $input)
+    public function validateReportsFromInput(InputInterface $input): void
     {
-        $reportNames = $input->getOption('report');
+        $reportNames = $input->getOption(self::OPT_REPORT);
         $this->reportManager->validateReportNames($reportNames);
     }
 
-    public function reportsFromInput(InputInterface $input, OutputInterface $output, SuiteCollection $collection)
+    public function reportsFromInput(InputInterface $input, OutputInterface $output, SuiteCollection $collection): void
     {
-        $reports = $input->getOption('report');
-        $outputs = $input->getOption('output');
+        $reports = $input->getOption(self::OPT_REPORT);
+        $outputs = $input->getOption(self::OPT_OUTPUT);
+
         $this->reportManager->renderReports($output, $collection, $reports, $outputs);
     }
 }

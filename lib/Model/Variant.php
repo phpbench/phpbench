@@ -12,7 +12,10 @@
 
 namespace PhpBench\Model;
 
+use ArrayAccess;
+use Countable;
 use Exception;
+use IteratorAggregate;
 use PhpBench\Assertion\AssertionFailure;
 use PhpBench\Assertion\AssertionFailures;
 use PhpBench\Assertion\AssertionWarning;
@@ -26,9 +29,9 @@ use PhpBench\Model\Result\TimeResult;
  * Stores Iterations and calculates the deviations and rejection
  * status for each based on the given rejection threshold.
  *
- * TODO: Remove array access?
+ * @implements IteratorAggregate<Iteration>, ArrayAccess<string, Iteration>
  */
-class Variant implements \IteratorAggregate, \ArrayAccess, \Countable
+class Variant implements IteratorAggregate, ArrayAccess, Countable
 {
     /**
      * @var Subject

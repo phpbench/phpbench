@@ -17,6 +17,7 @@ use PhpBench\Dom\Document;
 use PhpBench\Dom\Element;
 use PhpBench\Formatter\Formatter;
 use PhpBench\Registry\Config;
+use PhpBench\Report\Generator\Table\ValueRole;
 use PhpBench\Report\RendererInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
@@ -101,14 +102,24 @@ class ConsoleRenderer implements RendererInterface, OutputAwareInterface
 
             foreach ($rowEl->query('.//cell') as $cellEl) {
                 $colName = $cellEl->getAttribute('name');
-                $value = $cellEl->nodeValue;
+                $values = [];
 
-                if ('' !== $value && $cellEl->hasAttribute('class')) {
-                    $classes = explode(' ', $cellEl->getAttribute('class'));
-                    $value = $this->formatter->applyClasses($classes, $value, $formatterParams);
+                foreach ($cellEl->query('./value') as $valueEl) {
+                    $value = $valueEl->nodeValue;
+                    $classes = array_filter(explode(' ', $valueEl->getAttribute('class')));
+
+                    if ($classes) {
+                        $value = $this->formatter->applyClasses($classes, $value, $formatterParams);
+                    }
+
+                    if ($valueEl->getAttribute('role') !== ValueRole::ROLE_PRIMARY) {
+                        $value = sprintf('<fg=cyan>%s</>', $value);
+                    }
+
+                    $values[] = $value;
                 }
 
-                $row[$colName] = $value;
+                $row[$colName] = implode(' ', $values);
             }
 
             $rows[] = $row;

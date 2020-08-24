@@ -22,9 +22,24 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ReportCommand extends Command
 {
+    /**
+     * @var ReportHandler
+     */
     private $reportHandler;
+
+    /**
+     * @var TimeUnitHandler
+     */
     private $timeUnitHandler;
+
+    /**
+     * @var SuiteCollectionHandler
+     */
     private $collectionHandler;
+
+    /**
+     * @var DumpHandler
+     */
     private $dumpHandler;
 
     public function __construct(

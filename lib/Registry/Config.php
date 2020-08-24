@@ -12,11 +12,15 @@
 
 namespace PhpBench\Registry;
 
+use ArrayObject;
+
 /**
  * Configuration storage.
  * Throws exceptions when accessing undefined offsets.
+ *
+ * @extends ArrayObject<string,mixed>
  */
-class Config extends \ArrayObject
+class Config extends ArrayObject
 {
     /**
      * All names must satisfy this regex.

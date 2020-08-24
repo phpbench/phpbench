@@ -88,8 +88,12 @@ class ReportManager
      * @param array $reportNames
      * @param array $outputNames
      */
-    public function renderReports(OutputInterface $output, SuiteCollection $collection, array $reportNames, array $outputNames)
-    {
+    public function renderReports(
+        OutputInterface $output,
+        SuiteCollection $collection,
+        array $reportNames,
+        array $outputNames
+    ) {
         $reportDoms = $this->generateReports($collection, $reportNames);
 
         foreach ($outputNames as $outputName) {
