@@ -45,7 +45,7 @@ class Statistics
         $average = self::mean($values);
         $sum = 0;
 
-        foreach ($values as $value) {
+       foreach ($values as $value) {
             $diff = pow($value - $average, 2);
             $sum += $diff;
         }
@@ -214,5 +214,14 @@ class Statistics
         }
 
         return $histogram;
+    }
+
+    public static function percentageDifference(float $value1, float $value2): float
+    {
+        if ($value1 == 0) {
+            return NAN;
+        }
+
+        return (($value2 / $value1) - 1) * 100;
     }
 }

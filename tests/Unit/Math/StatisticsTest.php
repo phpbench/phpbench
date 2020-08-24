@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Math;
 
+use Generator;
 use InvalidArgumentException;
 use PhpBench\Math\Statistics;
 use PHPUnit\Framework\TestCase;
@@ -224,4 +225,60 @@ class StatisticsTest extends TestCase
             ],
         ];
     }
+
+    /**
+     * @dataProvider providePercentageDifference
+     */
+    public function testPercentageDifference(float $value1, float $value2, float $expected): void
+    {
+        $result = Statistics::percentageDifference($value1, $value2);
+        if ((string)$expected == 'NAN') {
+            self::assertEquals('NAN', (string)$result);
+            return;
+        }
+        self::assertEquals(round($expected, 2), $result);
+    }
+
+    /**
+     * @return Generator<mixed>
+     */
+    public function providePercentageDifference(): Generator
+    {
+        yield 'zero' => [
+            0,
+            0,
+            NAN,
+        ];
+
+        yield 'zero and one' => [
+            0,
+            1,
+            NAN,
+        ];
+
+        yield 'one and zero' => [
+            1,
+            0,
+            -100
+        ];
+
+        yield 'one and two' => [
+            1,
+            2,
+            100
+        ];
+
+        yield 'one and three' => [
+            1,
+            3,
+            200
+        ];
+
+        yield 'one and zero point five' => [
+            1,
+            0.5,
+            -50
+        ];
+    }
+
 }

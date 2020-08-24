@@ -243,10 +243,10 @@ class TableGenerator implements GeneratorInterface
 
                 foreach ($config[self::OPT_BASELINE_FIELDS] as $columnName) {
                     $mainRow->getCell($columnName)->addSecondaryValue(
-                        SecondaryValue::create(
-                            (($mainRow->getValue($columnName) / $baseLine->getCell($columnName)->getValue()) - 1) * 100,
-                            self::OPT_BASELINE
-                        )
+                        SecondaryValue::create(Statistics::percentageDifference(
+                            $baseLine->getCell($columnName)->getValue(),
+                            $mainRow->getValue($columnName)
+                        ), self::OPT_BASELINE)
                     );
                 }
 
