@@ -22,7 +22,7 @@ Features:
 - Output mode specification (throughput, average time).
 - Parameterized benchmarking cases.
 - Per-project configuration.
-- Store and query results.
+- Store and reference results.
 - Before and After method / class specification.
 - Pause (recover) between iterations.
 - Assertions.

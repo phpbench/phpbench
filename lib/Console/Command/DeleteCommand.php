@@ -40,10 +40,6 @@ class DeleteCommand extends Command
 Delete one or many suites from storage:
 
     $ %command.full_name% --uuid=38aa53bf1edb2cf21391407487d98f37a2e0e2ba
-
-Or with a query
-
-    $ %command.full_name% --query='subject: "benchMd5"'
 EOT
         );
         SuiteCollectionHandler::configure($this);

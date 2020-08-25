@@ -12,7 +12,6 @@
 
 namespace PhpBench\Storage;
 
-use PhpBench\Expression\Constraint\Constraint;
 use PhpBench\Model\SuiteCollection;
 
 /**
@@ -31,15 +30,6 @@ interface DriverInterface
      * @return string|null
      */
     public function store(SuiteCollection $collection);
-
-    /**
-     * Query the storage and return a SuiteCollection.
-     *
-     * @param Constraint $constraint
-     *
-     * @return SuiteCollection
-     */
-    public function query(Constraint $constraint);
 
     /**
      * Return the suite collection with the given run ID.

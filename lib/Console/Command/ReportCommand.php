@@ -64,13 +64,13 @@ Generate report from the latest stored suite:
 
     $ %command.full_name% --uuid=latest --report=aggregate
 
+Generate report from a tag:
+
+    $ %command.full_name% --uuid=tag:foobar --report=aggregate
+
 Generate report from a UUID (as determined from the <info>log</info> command:
 
     $ %command.full_name% --uuid=133a2605fac74edabf046edeb9c5f7c4dc1a3aac --report=aggregate
-
-Generate from a query:
-
-    $ %command.full_name% --query='benchmark: "MyBench"' --report=aggregate
 
 Generate from an XML file:
 

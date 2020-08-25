@@ -12,7 +12,6 @@
 
 namespace PhpBench\Console\Command\Handler;
 
-use PhpBench\Expression\Parser;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Registry;
 use PhpBench\Serializer\XmlDecoder;
@@ -24,18 +23,15 @@ use Symfony\Component\Console\Input\InputOption;
 class SuiteCollectionHandler
 {
     private $xmlDecoder;
-    private $parser;
     private $storage;
     private $uuidResolver;
 
     public function __construct(
         XmlDecoder $xmlDecoder,
-        Parser $parser,
         Registry $storage,
         UuidResolverInterface $uuidResolver
     ) {
         $this->xmlDecoder = $xmlDecoder;
-        $this->parser = $parser;
         $this->storage = $storage;
         $this->uuidResolver = $uuidResolver;
     }
@@ -43,19 +39,17 @@ class SuiteCollectionHandler
     public static function configure(Command $command): void
     {
         $command->addOption('uuid', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Run UUID');
-        $command->addOption('query', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Storage query');
         $command->addOption('file', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Report XML file');
     }
 
     public function suiteCollectionFromInput(InputInterface $input): SuiteCollection
     {
         $files = $input->getOption('file');
-        $queries = $input->getOption('query');
         $uuids = $input->getOption('uuid');
 
-        if (!$files && !$queries && !$uuids) {
+        if (!$files && !$uuids) {
             throw new \InvalidArgumentException(
-                'You must specify at least one of `--query` and/or `--uuid`'
+                'You must specify at least one of `--file` and/or `--uuid`'
             );
         }
 
@@ -65,15 +59,6 @@ class SuiteCollectionHandler
             $collection->mergeCollection(
                 $this->xmlDecoder->decodeFiles($files)
             );
-        }
-
-        if ($queries) {
-            foreach ($queries as $query) {
-                $constraint = $this->parser->parse($query);
-                $collection->mergeCollection(
-                    $this->storage->getService()->query($constraint)
-                );
-            }
         }
 
         if ($uuids) {

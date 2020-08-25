@@ -13,7 +13,6 @@
 namespace PhpBench\Storage\Driver\Xml;
 
 use PhpBench\Dom\Document;
-use PhpBench\Expression\Constraint\Constraint;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Serializer\XmlEncoder;
@@ -70,17 +69,6 @@ class XmlDriver implements DriverInterface
         }
 
         $this->filesystem->remove($this->getPath($uuid));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function query(Constraint $constraint)
-    {
-        // TODO: Make this a separate interface?
-        throw new \BadMethodCallException(
-            'The XML storage driver does not support querying.'
-        );
     }
 
     /**

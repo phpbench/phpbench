@@ -5,12 +5,11 @@ PHPBench allows benchmarking results to be persisted using a configured
 storage driver. You can inspect the results with either the ``show`` or
 ``report`` commands.
 
-Configuring a Storage Driver
-----------------------------
+XML Storage Driver
+------------------
 
-PHPBench will use XML storage by default, which is fine for most purposes. If
-you want advanced functionality (e.g. the ability to query benchmarks) then
-you can install the :doc:`Doctrine DBAL extension<extensions/dbal>`.
+PHPBench will use XML storage by default (other storage drivers can be added
+through extensions).
 
 The XML storage driver will place benchmarks in a folder called ``_storage``
 by default, this can be changed in the configuration as follows:
@@ -127,124 +126,6 @@ Or report on it:
 .. code-block:: bash
 
     $ phpbench report --uuid=tag:my_tag --report=aggregate
-
-Querying
---------
-
-.. important::
-
-    The XML storage driver does not support querying, if you require this
-    functionality install the :doc:`Doctrine DBAL extrension<extensions/dbal>`.
-
-PHPBench uses a query language very similar to that of MongoDB. A simple
-example:
-
-.. code-block:: bash
-
-    $ phpbench report --report=aggregate --query='subject: "benchMd5", run: 239"'
-
-Would show the results in an aggregate report for the benchmarking subject
-``benchMd5`` from run ``239``.
-
-A more complex example:
-
-.. code-block:: bash
-
-    $ phpbench report --report=aggregate --query='$and: [ { subject: "benchMd5" }, { date: { $gt: "2016-02-09" } } ]'
-
-This would generate a suite collection containing all the ``benchMd5``
-subjects created after ``2016-02-09``.
-
-Logical Operators
-~~~~~~~~~~~~~~~~~
-
-Logical operators must have as a value an array of constraints.
-
-$and
-""""
-
-Return only the records which meet both of the given constraints::
-
-    $and: [ { field1: "value1" }, { field2: "value2" } ]
-
-$or
-""""
-
-Return only the records which meet at least one of the given constraints::
-
-    $or: [ { field1: "value1" }, { field2: "value2" } ]
-
-Logical Comparisons
-~~~~~~~~~~~~~~~~~~~
-
-$eq
-"""
-
-Note that that equality is assumed if the value for a field is a scalar::
-
-    subject: "benchMd5"
-
-The verbose equality comparison would be::
-
-    subject: { $eq: "benchMd5" }
-
-$neq
-""""
-
-Non-equality comparison::
-
-    run: { $neq: 12 }
-
-$gt, $gte
-"""""""""
-
-Greater than and greater than or equal to comparisons::
-
-    date: { $gt: "2016-02-10" }
-
-$lt, $lte
-"""""""""
-
-Greater than and greater than or equal to comparisons::
-
-    date: { $lt: "2016-02-10" }
-
-$in
-"""
-
-Matches when the field value matches any one of the given values::
-
-    run: { $in: [ 10, 11, 12 ] }
-
-$regex
-""""""
-
-Provides regular expression capabilities for pattern matching strings in
-queries::
-
-    benchmark: { $regex: "FooBarBench" }
-
-    benchmark: { $regex: "Foo.*Bench" }
-
-Fields
-~~~~~~
-
-The following fields are currently available for querying:
-
-- **benchmark**: The benchmark class name.
-- **subject**: The subject name (e.g. ``benchMd5``)
-- **revs**: The number of revolutions.
-- **date**: The date.
-- **run**: The run ID (as inferred from the ``phpbench history`` command).
-- **group**: The group name.
-- **param**: Query a parameter value, parameter name in square brackets.
-
-Parameters may be queried with the `param` field - the parameter name should
-be enclosed in square brackets as follows::
-
-    param[nb_elements]: 10
-
-    param[points]: { $gt: 50 }
 
 .. _archive:
 
