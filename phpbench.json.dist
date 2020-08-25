@@ -5,8 +5,7 @@
         "memory_limit": "1G"
     },
     "extensions": [
-        "PhpBench\\Extensions\\XDebug\\XDebugExtension",
-        "PhpBench\\Extensions\\Dbal\\DbalExtension"
+        "PhpBench\\Extensions\\XDebug\\XDebugExtension"
     ],
     "reports": {
         "all": {
