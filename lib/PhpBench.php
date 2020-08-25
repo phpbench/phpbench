@@ -14,6 +14,8 @@ namespace PhpBench;
 
 use Composer\Autoload\ClassLoader;
 use PhpBench\DependencyInjection\Container;
+use PhpBench\Extension\CoreExtension;
+use PhpBench\Extensions\XDebug\XDebugExtension;
 use PhpBench\Json\JsonDecoder;
 use Seld\JsonLint\JsonParser;
 use Seld\JsonLint\ParsingException;
@@ -53,9 +55,13 @@ class PhpBench
         }
 
         $extensions = $config['extensions'];
-        $extensions[] = 'PhpBench\Extension\CoreExtension';
+        $extensions[] = CoreExtension::class;
+
+        if (extension_loaded('xdebug')) {
+            $extensions[] = XDebugExtension::class;
+        }
         unset($config['extensions']);
-        $container = new Container($extensions, $config);
+        $container = new Container(array_unique($extensions), $config);
         $container->init();
         $container->get('console.application')->run();
     }

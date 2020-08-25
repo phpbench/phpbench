@@ -67,37 +67,3 @@ and activate the extension in your ``phpbench.json`` file:
             "Acme\\PhpBench\\Extension\\Example\\ExampleExtension"
         ]
     }
-
-PHPBench as a project dependency
---------------------------------
-
-If you are using PHPBench as a ``require-dev`` dependency of your project, and
-the extension is in your projects autoloader, then you are done,
-congratulations!
-
-PHPBench as a PHAR
-------------------
-
-If you are using the PHAR version of PHPBench then you will need to tell
-PHPBench where it can find an autoloader for your extension (or extensions):
-
-.. code-block:: javascript
-
-    {
-        "extension_autoloader": "/home/daniel/www/phpbench/phpbench-example-extension/vendor/autoload.php"
-    }
-
-If you have multiple extensions you may consider creating an "extension
-project" e.g.
-
-.. code-block:: bash
-
-    $ mkdir phpbench-extensions
-    $ cd phpbench-extensions
-    $ composer require vendor/my-phpbench-extension-1
-    $ composer require vendor/my-phpbench-extension-2
-
-and then using the ``autoload.php`` of this project.
-
-.. _here: https://github.com/phpbench/phpbench-example-extension
-.. _CoreExtension: https://github.com/phpbench/phpbench/blob/master/lib/Extension/CoreExtension.php
