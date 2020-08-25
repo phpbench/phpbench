@@ -26,11 +26,11 @@ Multiple reports can be specified::
     $ phpbench run --report=aggregate --report=env
 
 The report command operates in a similar way but requires you to provide some
-data, either from XML dumps or from a :doc:`storage <storage>` query::
+data, either from XML dumps or by using a :doc:`storage <storage>` UUID or tag::
 
     $ phpbench report --uuid=latest --report=aggregate
 
-For more information on storage see :doc:`storage`.
+For more information on storage see :doc:`storage <storage>`.
 
 Configuring Reports
 -------------------

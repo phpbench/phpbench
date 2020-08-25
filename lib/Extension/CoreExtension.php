@@ -47,7 +47,6 @@ use PhpBench\Executor\Benchmark\MemoryCentricMicrotimeExecutor;
 use PhpBench\Executor\Benchmark\MicrotimeExecutor;
 use PhpBench\Executor\CompositeExecutor;
 use PhpBench\Executor\Method\RemoteMethodExecutor;
-use PhpBench\Expression\Parser;
 use PhpBench\Formatter\Format\BalanceFormat;
 use PhpBench\Formatter\Format\NumberFormat;
 use PhpBench\Formatter\Format\PrintfFormat;
@@ -155,7 +154,6 @@ class CoreExtension implements ExtensionInterface
         $this->registerEnvironment($container);
         $this->registerSerializer($container);
         $this->registerStorage($container);
-        $this->registerExpression($container);
         $this->registerFormatter($container);
         $this->registerAsserters($container);
     }
@@ -300,7 +298,6 @@ class CoreExtension implements ExtensionInterface
         $container->register('console.command.handler.suite_collection', function (Container $container) {
             return new SuiteCollectionHandler(
                 $container->get('serializer.decoder.xml'),
-                $container->get('expression.parser'),
                 $container->get('storage.driver_registry'),
                 $container->get('storage.uuid_resolver')
             );
@@ -653,13 +650,6 @@ class CoreExtension implements ExtensionInterface
                 $container->getParameter('archive_path')
             );
         }, ['storage_archiver' => ['name' => 'xml']]);
-    }
-
-    private function registerExpression(Container $container)
-    {
-        $container->register('expression.parser', function (Container $container) {
-            return new Parser();
-        });
     }
 
     private function relativizeConfigPath(Container $container)

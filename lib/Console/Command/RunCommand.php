@@ -21,7 +21,6 @@ use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Registry;
 use PhpBench\Storage\DriverInterface;
-use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -125,7 +124,7 @@ EOT
         $sleep = $input->getOption(self::OPT_SLEEP);
 
         $config = RunnerConfig::create()
-            ->withTag($this->resolveTag($input))
+            ->withTag((string)$input->getOption(self::OPT_TAG))
             ->withRetryThreshold($retryThreshold !== null ? (float) $retryThreshold : null)
             ->withSleep($sleep !== null ? (int) $sleep : null)
             ->withIterations($input->getOption(self::OPT_ITERATIONS))
@@ -153,7 +152,7 @@ EOT
             }
         }
 
-        if ($input->getOption('uuid') || $input->getOption('file') || $input->getOption('query')) {
+        if ($input->getOption('uuid') || $input->getOption('file')) {
             $collection->mergeCollection(
                 $this->suiteCollectionHandler->suiteCollectionFromInput($input)
             );
@@ -170,23 +169,5 @@ EOT
         }
 
         return 0;
-    }
-
-    private function resolveTag(InputInterface $input): ?string
-    {
-        $tag = $input->getOption(self::OPT_TAG);
-        $context = $input->getOption(self::OPT_CONTEXT);
-
-        if ($tag && $context) {
-            throw new RuntimeException(
-                'Options `tag` and `context` are synonyms (and context is deprecated), you cannot use them both'
-            );
-        }
-
-        if ($context) {
-            return $context;
-        }
-
-        return $tag;
     }
 }
