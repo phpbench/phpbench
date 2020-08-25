@@ -35,7 +35,6 @@ class RunCommand extends Command
     public const OPT_WARMUP = 'warmup';
     public const OPT_RETRY_THRESHOLD = 'retry-threshold';
     public const OPT_SLEEP = 'sleep';
-    public const OPT_CONTEXT = 'context';
     public const OPT_TAG = 'tag';
     public const OPT_STORE = 'store';
     public const OPT_TOLERATE_FAILURE = 'tolerate-failure';
@@ -87,7 +86,7 @@ class RunCommand extends Command
         $this->storage = $storage;
     }
 
-    public function configure()
+    public function configure(): void
     {
         RunnerHandler::configure($this);
         ReportHandler::configure($this);
@@ -109,7 +108,6 @@ EOT
         $this->addOption(self::OPT_WARMUP, null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Override number of warmup revolutions on all benchmarks');
         $this->addOption(self::OPT_RETRY_THRESHOLD, 'r', InputOption::VALUE_REQUIRED, 'Set target allowable deviation', null);
         $this->addOption(self::OPT_SLEEP, null, InputOption::VALUE_REQUIRED, 'Number of microseconds to sleep between iterations');
-        $this->addOption(self::OPT_CONTEXT, null, InputOption::VALUE_REQUIRED, 'DEPRECATED! Use tag instead.');
         $this->addOption(self::OPT_TAG, null, InputOption::VALUE_REQUIRED, 'Tag to apply to stored result (useful when comparing reports)');
         $this->addOption(self::OPT_STORE, null, InputOption::VALUE_NONE, 'Persist the results');
         $this->addOption(self::OPT_TOLERATE_FAILURE, null, InputOption::VALUE_NONE, 'Return 0 exit code even when failures occur');

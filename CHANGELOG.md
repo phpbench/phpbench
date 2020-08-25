@@ -9,6 +9,7 @@ Backward compatibility breaks:
 - DBAL extension removed.
 - PHPBench Reports extension removed.
 - Removed `--query` featre (only worked with DBAL, too complex).
+- Removed `--context` (depreacted in favor of `--tag`)
 
 Features
 
