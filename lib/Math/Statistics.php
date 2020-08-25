@@ -219,7 +219,7 @@ class Statistics
     public static function percentageDifference(float $value1, float $value2): float
     {
         if ($value1 == 0) {
-            return NAN;
+            return INF;
         }
 
         return (($value2 / $value1) - 1) * 100;
