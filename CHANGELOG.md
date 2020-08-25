@@ -4,6 +4,11 @@ CHANGELOG
 develop
 -------
 
+Backward compatibility breaks:
+
+- DBAL extension removed
+- PHPBench Reports extension removed
+
 Features
 
 - Suite baseline: Introduce `aggregate_baseline` report to show `%` difference
