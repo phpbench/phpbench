@@ -249,13 +249,13 @@ class StatisticsTest extends TestCase
         yield 'zero' => [
             0,
             0,
-            NAN,
+            INF,
         ];
 
         yield 'zero and one' => [
             0,
             1,
-            NAN,
+            INF,
         ];
 
         yield 'one and zero' => [
