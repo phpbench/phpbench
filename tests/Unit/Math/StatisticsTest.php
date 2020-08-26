@@ -249,7 +249,7 @@ class StatisticsTest extends TestCase
         yield 'zero' => [
             0,
             0,
-            INF,
+            0
         ];
 
         yield 'zero and one' => [

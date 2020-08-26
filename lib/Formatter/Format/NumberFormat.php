@@ -18,6 +18,14 @@ class NumberFormat implements FormatInterface
 {
     public function format($subject, array $options)
     {
+        if ($subject === 'INF') {
+            return 'INF';
+        }
+
+        if (is_infinite((float)$subject)) {
+            return 'INF';
+        }
+
         if (!is_numeric($subject)) {
             throw new \InvalidArgumentException(sprintf(
                 'Non-numeric value encountered: "%s"',

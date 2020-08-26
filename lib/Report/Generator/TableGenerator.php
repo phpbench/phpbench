@@ -12,6 +12,7 @@
 
 namespace PhpBench\Report\Generator;
 
+use PhpBench\Model\Variant;
 use function Functional\group;
 use function Functional\map;
 use function Functional\reduce_left;
@@ -28,6 +29,7 @@ use PhpBench\Report\Generator\Table\Sort;
 use PhpBench\Report\Generator\Table\ValueRole;
 use PhpBench\Report\GeneratorInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+
 
 /**
  * The table generator generates reports about benchmarking results.
@@ -76,6 +78,7 @@ class TableGenerator implements GeneratorInterface
             'title' => null,
             'description' => null,
             'cols' => ['benchmark', 'subject', 'tag', 'groups', 'params', 'revs', 'its', 'mem_peak', 'best', 'mean', 'mode', 'worst', 'stdev', 'rstdev', 'diff'],
+            'baseline_cols' => ['mean', 'mode', 'rstdev', 'mem_peak'],
             'break' => ['tag', 'suite', 'date', 'stime'],
             'compare' => null,
             'compare_fields' => ['mean'],
@@ -393,85 +396,23 @@ class TableGenerator implements GeneratorInterface
         $columnNames = [];
 
         foreach ($suiteCollection->getSuites() as $suite) {
-            $env = $suite->getEnvInformations();
-
             foreach ($suite->getBenchmarks() as $benchmark) {
                 foreach ($benchmark->getSubjects() as $subject) {
                     foreach ($subject->getVariants() as $variant) {
-                        $row = Row::fromMap([
-                            'suite' => $suite->getUuid(),
-                            'tag' => $suite->getTag(),
-                            'date' => $suite->getDate()->format('Y-m-d'),
-                            'stime' => $suite->getDate()->format('H:i:s'),
-                            'benchmark' => $this->getClassShortName($benchmark->getClass()),
-                            'benchmark_full' => $benchmark->getClass(),
-                            'subject' => $subject->getName(),
-                            'groups' => implode(',', $subject->getGroups()),
-                            'set' => $variant->getParameterSet()->getName(),
-                            'params' => json_encode($variant->getParameterSet()->getArrayCopy(), $paramJsonFlags),
-                            'revs' => $variant->getRevolutions(),
-                            'its' => count($variant->getIterations()),
-                            'mem_real' => Statistics::mean($variant->getMetricValues(MemoryResult::class, 'real')),
-                            'mem_final' => Statistics::mean($variant->getMetricValues(MemoryResult::class, 'final')),
-                            'mem_peak' => Statistics::mean($variant->getMetricValues(MemoryResult::class, 'peak')),
-                        ]);
+                        $row = $this->buildRow($variant, $paramJsonFlags);
+                        $baseline = $variant->getBaseline();
 
-                        // the formatter params are passed to the Formatter and
-                        // allow the formatter configurations to use tokens --
-                        // in other words we can override formatting on a
-                        // per-row basis.
-                        $formatParams = [];
+                        if ($baseline) {
+                            $baselineRow = $this->buildRow($baseline, $paramJsonFlags);
 
-                        if ($timeUnit = $subject->getOutputTimeUnit()) {
-                            $formatParams['output_time_unit'] = $timeUnit;
-                        }
-
-                        if ($mode = $subject->getOutputMode()) {
-                            $formatParams['output_mode'] = $mode;
-                        }
-
-                        if ($precision = $subject->getOutputTimePrecision()) {
-                            $formatParams['output_time_precision'] = $precision;
-                        }
-                        $row->setFormatParams($formatParams);
-
-                        if ($variant->hasErrorStack()) {
-                            continue;
-                        }
-                        $stats = $variant->getStats()->getStats();
-                        $stats['best'] = $stats['min'];
-                        $stats['worst'] = $stats['max'];
-
-                        // save on duplication and lazily evaluate the
-                        // available statistics.
-                        if (null === $this->statKeys) {
-                            $this->statKeys = array_keys($stats);
-                        }
-
-                        $row = $row->mergeMap($stats);
-
-                        if ($variant->getBaseline()) {
-                            foreach ($variant->getBaseline()->getStats() as $statName => $statValue) {
-                                $row->setValue('baseline_' . $statName, $statValue);
-                                $row->getCell($statName)->addSecondaryValue(
+                            foreach ($config['baseline_cols'] as $col) {
+                                $row->setValue('baseline_' . $col, $baselineRow->getValue($col));
+                                $row->getCell($col)->addSecondaryValue(
                                     SecondaryValue::create(
-                                        Statistics::percentageDifference(
-                                            $statValue,
-                                            $row->getValue($statName)
-                                        ),
+                                        Statistics::percentageDifference($baselineRow->getValue($col), $row->getValue($col)),
                                         'baseline_percentage_diff'
                                     )
                                 );
-                            }
-                        }
-
-
-                        // generate the environment parameters.
-                        // TODO: should we crash here if an attempt is made to
-                        //       override a row?  it could happen.
-                        foreach ($env as $providerName => $information) {
-                            foreach ($information as $key => $value) {
-                                $row->setValue($providerName . '_' . $key, $value);
                             }
                         }
 
@@ -654,13 +595,76 @@ class TableGenerator implements GeneratorInterface
         return $this->resolveCompareColumnName($row, $name, $index);
     }
 
-    private function baselineRowIdentifier(Row $row): string
+    private function buildRow(Variant $variant, ?int $paramJsonFlags): Row
     {
-        return implode('.', [
-            $row->getValue('benchmark'),
-            $row->getValue('subject'),
-            $row->getValue('set'),
-            $row->getValue('revs'),
+        $subject = $variant->getSubject();
+        $benchmark = $subject->getBenchmark();
+        $suite = $benchmark->getSuite();
+        $env = $suite->getEnvInformations();
+
+        $row = Row::fromMap([
+            'suite' => $suite->getUuid(),
+            'tag' => $suite->getTag(),
+            'date' => $suite->getDate()->format('Y-m-d'),
+            'stime' => $suite->getDate()->format('H:i:s'),
+            'benchmark' => $this->getClassShortName($benchmark->getClass()),
+            'benchmark_full' => $benchmark->getClass(),
+            'subject' => $subject->getName(),
+            'groups' => implode(',', $subject->getGroups()),
+            'set' => $variant->getParameterSet()->getName(),
+            'params' => json_encode($variant->getParameterSet()->getArrayCopy(), $paramJsonFlags),
+            'revs' => $variant->getRevolutions(),
+            'its' => count($variant->getIterations()),
+            'mem_real' => Statistics::mean($variant->getMetricValues(MemoryResult::class, 'real')),
+            'mem_final' => Statistics::mean($variant->getMetricValues(MemoryResult::class, 'final')),
+            'mem_peak' => Statistics::mean($variant->getMetricValues(MemoryResult::class, 'peak')),
         ]);
+
+        // the formatter params are passed to the Formatter and
+        // allow the formatter configurations to use tokens --
+        // in other words we can override formatting on a
+        // per-row basis.
+        $formatParams = [];
+
+        if ($timeUnit = $subject->getOutputTimeUnit()) {
+            $formatParams['output_time_unit'] = $timeUnit;
+        }
+
+        if ($mode = $subject->getOutputMode()) {
+            $formatParams['output_mode'] = $mode;
+        }
+
+        if ($precision = $subject->getOutputTimePrecision()) {
+            $formatParams['output_time_precision'] = $precision;
+        }
+
+        $row->setFormatParams($formatParams);
+
+        if ($variant->hasErrorStack()) {
+            return $row;
+        }
+
+        $stats = $variant->getStats()->getStats();
+        $stats['best'] = $stats['min'];
+        $stats['worst'] = $stats['max'];
+
+        // save on duplication and lazily evaluate the
+        // available statistics.
+        if (null === $this->statKeys) {
+            $this->statKeys = array_keys($stats);
+        }
+
+        $row = $row->mergeMap($stats);
+
+        // generate the environment parameters.
+        // TODO: should we crash here if an attempt is made to
+        //       override a row?  it could happen.
+        foreach ($env as $providerName => $information) {
+            foreach ($information as $key => $value) {
+                $row->setValue($providerName . '_' . $key, $value);
+            }
+        }
+
+        return $row;
     }
 }

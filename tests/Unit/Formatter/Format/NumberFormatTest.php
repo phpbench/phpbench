@@ -28,17 +28,29 @@ class NumberFormatTest extends TestCase
     /**
      * It should format a number.
      */
-    public function testNumberFormat()
+    public function testNumberFormat(): void
     {
         $result = $this->format->format(1000000, $this->format->getDefaultOptions());
         $this->assertEquals('1,000,000', $result);
+    }
+
+    public function testReturnsINFForInfiniteNumber(): void
+    {
+        $result = $this->format->format(INF, $this->format->getDefaultOptions());
+        $this->assertEquals('INF', $result);
+    }
+
+    public function testReturnsINFForStringInfiniteNumber(): void
+    {
+        $result = $this->format->format('INF', $this->format->getDefaultOptions());
+        $this->assertEquals('INF', $result);
     }
 
     /**
      * It should throw an exception if passed a non-numeric value.
      *
      */
-    public function testNonNumeric()
+    public function testNonNumeric(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Non-numeric value');

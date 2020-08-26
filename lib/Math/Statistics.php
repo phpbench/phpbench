@@ -218,6 +218,10 @@ class Statistics
 
     public static function percentageDifference(float $value1, float $value2): float
     {
+        if ($value1 == 0 && $value2 == 0) {
+            return 0;
+        }
+
         if ($value1 == 0) {
             return INF;
         }
