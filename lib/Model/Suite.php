@@ -259,31 +259,7 @@ class Suite implements IteratorAggregate
         ])), 0, -7);
     }
 
-    public function mergeBaselines(SuiteCollection $suiteCollection): self
-    {
-        foreach ($suiteCollection->getSuites() as $baselineSuite) {
-            foreach ($this->getVariants() as $variant) {
-                $subject = $variant->getSubject();
-                $benchmark = $subject->getBenchmark();
-
-                $baselineVariant = $baselineSuite->findVariant(
-                    $benchmark->getClass(),
-                    $subject->getName(),
-                    $variant->getParameterSet()->getName()
-                );
-
-                if (!$baselineVariant) {
-                    continue;
-                }
-
-                $variant->attachBaseline($baselineVariant);
-            }
-        }
-
-        return $this;
-    }
-
-    private function findVariant(string $benchmarkClass, string $subjectName, string $variantName): ?Variant
+    public function findVariant(string $benchmarkClass, string $subjectName, string $variantName): ?Variant
     {
         if (!$benchmark = $this->getBenchmark($benchmarkClass)) {
             return null;

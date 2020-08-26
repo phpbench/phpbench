@@ -87,17 +87,17 @@ class TableGeneratorTest extends GeneratorTestCase
             'iterations' => [ 20, 20 ],
             'basetime' => 0,
         ]);
-        $baselines = TestUtil::createCollection([
-            [
-                'benchmarks' => ['oneBench'],
-                'subjects' => ['subjectOne'],
-                'revs' => 1,
-                'iterations' => [ 10, 10 ],
-                'basetime' => 0,
-            ],
+        $baselineSuite = TestUtil::createSuite([
+            'benchmarks' => ['oneBench'],
+            'subjects' => ['subjectOne'],
+            'revs' => 1,
+            'iterations' => [ 10, 10 ],
+            'basetime' => 0,
         ]);
 
-        $report = $this->generate(new SuiteCollection([$suite->mergeBaselines($baselines)]));
+        $suite->findVariant('oneBench', 'subjectOne', '0')->attachBaseline($baselineSuite->findVariant('oneBench', 'subjectOne', '0'));
+
+        $report = $this->generate(new SuiteCollection([$suite]));
 
         $this->assertXPathCount($report, 1, '//table');
         $this->assertXPathCount($report, 1, '//row');

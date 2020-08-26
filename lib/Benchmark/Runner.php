@@ -284,6 +284,10 @@ final class Runner
         $this->logger->variantStart($variant);
         $rejectCount = [];
 
+        if ($baseline = $config->getBaselines()->findBaselineForVariant($variant)) {
+            $variant->attachBaseline($baseline);
+        }
+
         try {
             foreach ($variant->getIterations() as $iteration) {
                 $rejectCount[spl_object_hash($iteration)] = 0;

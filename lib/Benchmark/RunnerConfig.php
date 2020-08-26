@@ -13,6 +13,7 @@
 namespace PhpBench\Benchmark;
 
 use InvalidArgumentException;
+use PhpBench\Model\SuiteCollection;
 
 /**
  * The benchmark runner context.
@@ -88,6 +89,16 @@ class RunnerConfig
      * @var array<string,mixed>
      */
     private $parameters = [];
+
+    /**
+     * @var SuiteCollection
+     */
+    private $baselines;
+
+    private function __construct()
+    {
+        $this->baselines = new SuiteCollection();
+    }
 
     public static function create(): self
     {
@@ -383,6 +394,19 @@ class RunnerConfig
         $new->assertions = $assertions;
 
         return $new;
+    }
+
+    public function withBaselines(SuiteCollection $baselines): self
+    {
+        $new = clone($this);
+        $new->baselines = $baselines;
+
+        return $new;
+    }
+
+    public function getBaselines(): SuiteCollection
+    {
+        return $this->baselines;
     }
 
     private function assertArrayValuesGreaterThanZero($field, array $values = [])

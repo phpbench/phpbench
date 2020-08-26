@@ -104,7 +104,7 @@ class RunnerHandler
             ->withExecutor($input->getOption(self::OPT_EXECUTOR))
             ->withStopOnError($input->getOption(self::OPT_STOP_ON_ERROR));
 
-        $config = $config->merge($default);
+        $config = $default->merge($config);
 
         $progressLoggerName = $input->getOption(self::OPT_PROGRESS) ?: $this->defaultProgress;
 

@@ -121,19 +121,18 @@ EOT
         $retryThreshold = $input->getOption(self::OPT_RETRY_THRESHOLD);
         $sleep = $input->getOption(self::OPT_SLEEP);
 
+        $baselines = $this->resolveBaselines($input);
+
         $config = RunnerConfig::create()
             ->withTag((string)$input->getOption(self::OPT_TAG))
             ->withRetryThreshold($retryThreshold !== null ? (float) $retryThreshold : null)
             ->withSleep($sleep !== null ? (int) $sleep : null)
             ->withIterations($input->getOption(self::OPT_ITERATIONS))
             ->withWarmup($input->getOption(self::OPT_WARMUP))
+            ->withBaselines($baselines)
             ->withAssertions($input->getOption('assert'));
 
         $suite = $this->runnerHandler->runFromInput($input, $output, $config);
-
-        if ($input->getOption('uuid') || $input->getOption('file')) {
-            $suite->mergeBaselines($this->suiteCollectionHandler->suiteCollectionFromInput($input));
-        }
 
         $collection = new SuiteCollection([$suite]);
         $this->dumpHandler->dumpFromInput($input, $output, $collection);
@@ -166,5 +165,14 @@ EOT
         }
 
         return 0;
+    }
+
+    private function resolveBaselines(InputInterface $input): SuiteCollection
+    {
+        if ($input->getOption('uuid') || $input->getOption('file')) {
+            return $this->suiteCollectionHandler->suiteCollectionFromInput($input);
+        }
+
+        return new SuiteCollection();
     }
 }

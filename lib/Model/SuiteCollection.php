@@ -74,4 +74,21 @@ class SuiteCollection implements IteratorAggregate
     {
         return new \ArrayIterator($this->suites);
     }
+
+    public function findBaselineForVariant(Variant $variant): ?Variant
+    {
+        foreach (array_reverse($this->suites) as $suite) {
+            if (!$variant = $suite->findVariant(
+                $variant->getSubject()->getBenchmark()->getClass(),
+                $variant->getSubject()->getName(),
+                $variant->getParameterSet()->getName()
+            )) {
+                continue;
+            }
+
+            return $variant;
+        }
+
+        return null;
+    }
 }
