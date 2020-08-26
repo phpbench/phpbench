@@ -136,7 +136,7 @@ abstract class PhpBenchLoggerTest extends TestCase
         $this->suite->getWarnings()->willReturn([]);
         $this->suite->getErrorStacks()->willReturn([]);
         $this->variant->getSubject()->willReturn($this->subject->reveal());
-        $this->variant->getParameterSet()->willReturn(new \ArrayObject());
+        $this->variant->getParameterSet()->willReturn(new ParameterSet('one',[]));
         $this->subject->getBenchmark()->willReturn($this->benchmark->reveal());
         $this->subject->getName()->willReturn('bar');
         $this->benchmark->getClass()->willReturn('Namespace\Foo');
@@ -159,7 +159,7 @@ abstract class PhpBenchLoggerTest extends TestCase
         $this->suite->getWarnings()->willReturn([$warnings]);
         $this->suite->getErrorStacks()->willReturn([]);
         $this->variant->getSubject()->willReturn($this->subject->reveal());
-        $this->variant->getParameterSet()->willReturn(new \ArrayObject());
+        $this->variant->getParameterSet()->willReturn(new ParameterSet('one',[]));
         $this->subject->getBenchmark()->willReturn($this->benchmark->reveal());
         $this->subject->getName()->willReturn('bar');
         $this->benchmark->getClass()->willReturn('Namespace\Foo');

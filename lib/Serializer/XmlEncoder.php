@@ -154,12 +154,7 @@ class XmlEncoder
             }
         }
 
-        $stats = $variant->getStats();
-        $stats = iterator_to_array($stats);
         $resultClasses = [];
-
-        // ensure same order (for testing)
-        ksort($stats);
 
         foreach ($variant as $iteration) {
             $iterationEl = $variantEl->appendElement('iteration');
@@ -185,9 +180,11 @@ class XmlEncoder
         }
 
         $statsEl = $variantEl->appendElement('stats');
+        $this->buildStatsEl($variant, $statsEl);
 
-        foreach ($stats as $statName => $statValue) {
-            $statsEl->setAttribute($statName, $statValue);
+        if ($variant->getBaseline()) {
+            $baselineEl = $variantEl->appendElement('baseline-stats');
+            $this->buildStatsEl($variant->getBaseline(), $baselineEl);
         }
 
         foreach ($resultClasses as $resultKey => $classFqn) {
@@ -234,7 +231,7 @@ class XmlEncoder
         ));
     }
 
-    private function appendExecutor(Element $subjectEl, ResolvedExecutor $executor = null)
+    private function appendExecutor(Element $subjectEl, ResolvedExecutor $executor = null): void
     {
         if (null === $executor) {
             return;
@@ -246,6 +243,18 @@ class XmlEncoder
 
         foreach ($executor->getConfig() as $key => $value) {
             $this->createParameter($executorEl, $key, $value);
+        }
+    }
+
+    private function buildStatsEl(Variant $variant, Element $statsEl): void
+    {
+        $stats = $variant->getStats();
+        $stats = iterator_to_array($stats);
+        // ensure same order (for testing)
+        ksort($stats);
+
+        foreach ($stats as $statName => $statValue) {
+            $statsEl->setAttribute($statName, $statValue);
         }
     }
 }

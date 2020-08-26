@@ -18,12 +18,10 @@ Then switch to the new version of your code and run PHPBench again:
 
 .. code-block:: bash
 
-    phpbench run tests/Benchmark/MyBenchmark.php --report=aggregate_baseline --uuid=tag:original
+    phpbench run tests/Benchmark/MyBenchmark.php --report=aggregate --uuid=tag:original
 
 - We use ``--uuid`` to reference the previous, tagged, run, which will merge
   the previous benchmarks into the results.
-- We use the ``aggregate_baseline`` report which is pre-configured to show
-  differences relative to previous benchmarks in the suite.
 
 The final report should look something like:
 

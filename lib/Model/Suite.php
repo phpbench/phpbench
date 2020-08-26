@@ -66,6 +66,11 @@ class Suite implements IteratorAggregate
         return $this->benchmarks;
     }
 
+    public function getBenchmark(string $class): ?Benchmark
+    {
+        return $this->benchmarks[$class] ?? null;
+    }
+
     /**
      * Create and add a benchmark.
      *
@@ -76,7 +81,7 @@ class Suite implements IteratorAggregate
     public function createBenchmark($class)
     {
         $benchmark = new Benchmark($this, $class);
-        $this->benchmarks[] = $benchmark;
+        $this->benchmarks[$class] = $benchmark;
 
         return $benchmark;
     }
@@ -132,6 +137,9 @@ class Suite implements IteratorAggregate
         return $subjects;
     }
 
+    /**
+     * @return array<Variant>
+     */
     public function getVariants()
     {
         $variants = [];
@@ -241,7 +249,7 @@ class Suite implements IteratorAggregate
      * truncated sha1 string encoding the environmental information, the
      * microtime and the configuration path.
      */
-    public function generateUuid()
+    public function generateUuid(): void
     {
         $serialized = serialize($this->envInformations);
         $this->uuid = dechex($this->getDate()->format('Ymd')) . substr(sha1(implode([
@@ -249,5 +257,42 @@ class Suite implements IteratorAggregate
             $serialized,
             $this->configPath,
         ])), 0, -7);
+    }
+
+    public function mergeBaselines(SuiteCollection $suiteCollection): self
+    {
+        foreach ($suiteCollection->getSuites() as $baselineSuite) {
+            foreach ($this->getVariants() as $variant) {
+                $subject = $variant->getSubject();
+                $benchmark = $subject->getBenchmark();
+
+                $baselineVariant = $baselineSuite->findVariant(
+                    $benchmark->getClass(),
+                    $subject->getName(),
+                    $variant->getParameterSet()->getName()
+                );
+
+                if (!$baselineVariant) {
+                    continue;
+                }
+
+                $variant->attachBaseline($baselineVariant);
+            }
+        }
+
+        return $this;
+    }
+
+    private function findVariant(string $benchmarkClass, string $subjectName, string $variantName): ?Variant
+    {
+        if (!$benchmark = $this->getBenchmark($benchmarkClass)) {
+            return null;
+        }
+
+        if (!$subject = $benchmark->getSubject($subjectName)) {
+            return null;
+        }
+
+        return $subject->getVariant($variantName);
     }
 }

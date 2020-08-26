@@ -12,13 +12,17 @@
 
 namespace PhpBench\Model;
 
+use IteratorAggregate;
+
 /**
  * Essentially this class represents a single exception (the "top"
  * exception) and any parent exceptions of it.
  *
  * It is also linked to the variant which encountered the error.
+ *
+ * @implements IteratorAggregate<Error>
  */
-class ErrorStack implements \IteratorAggregate
+class ErrorStack implements IteratorAggregate
 {
     /**
      * @var Error[]

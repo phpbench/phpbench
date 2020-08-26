@@ -79,16 +79,15 @@ class TableGeneratorTest extends GeneratorTestCase
 
     public function testBaseline(): void
     {
-        $collection = TestUtil::createCollection([
-            [
-                'benchmarks' => ['oneBench'],
-                'subjects' => ['subjectOne'],
-                'revs' => 1,
-                'iterations' => [ 20, 20 ],
-                'basetime' => 0,
-            ],
+        $suite = TestUtil::createSuite([
+            'benchmarks' => ['oneBench'],
+            'subjects' => ['subjectOne'],
+
+            'revs' => 1,
+            'iterations' => [ 20, 20 ],
+            'basetime' => 0,
         ]);
-        $baseline = TestUtil::createCollection([
+        $baselines = TestUtil::createCollection([
             [
                 'benchmarks' => ['oneBench'],
                 'subjects' => ['subjectOne'],
@@ -98,15 +97,12 @@ class TableGeneratorTest extends GeneratorTestCase
             ],
         ]);
 
-        $report = $this->generate($collection->mergeCollection($baseline), [
-            'baseline' => true,
-            'baseline_fields' => ['mean'],
-        ]);
-        $report->formatOutput = true;
+        $report = $this->generate(new SuiteCollection([$suite->mergeBaselines($baselines)]));
+
         $this->assertXPathCount($report, 1, '//table');
         $this->assertXPathCount($report, 1, '//row');
-        $this->assertXPathCount($report, 1, '//value[@role="baseline"]');
-        $this->assertXPathEval($report, '100', 'string(//value[@role="baseline"])');
+        $this->assertXPathCount($report, 4, '//value[@role="baseline_percentage_diff"]');
+        $this->assertXPathEval($report, '100', 'string(//value[@role="baseline_percentage_diff"])');
     }
 
 

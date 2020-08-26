@@ -18,8 +18,10 @@ use PhpBench\Environment\Information;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\ErrorStack;
 use PhpBench\Model\Iteration;
+use PhpBench\Model\ParameterSet;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
+use PhpBench\Model\SuiteCollection;
 use PhpBench\Model\Variant;
 use PHPUnit\Framework\TestCase;
 
@@ -122,7 +124,27 @@ class SuiteTest extends TestCase
         $this->assertInstanceOf('PhpBench\Model\Summary', $summary);
     }
 
-    private function createSuite(array $benchmarks = [], array $informations = [])
+    public function testMergeBaseline(): void
+    {
+        $suite = $this->createSuite([]);
+        $variant = $suite->createBenchmark('Foobar')->createSubject('barfoo')->createVariant(
+            ParameterSet::create('one', []),
+            1,
+            1
+        );
+        $baselineSuite = $this->createSuite([]);
+        $baselineVariant = $baselineSuite->createBenchmark('Foobar')->createSubject('barfoo')->createVariant(
+            ParameterSet::create('one', []),
+            1,
+            1
+        );
+
+        $suite->mergeBaselines(new SuiteCollection([$baselineSuite]));
+
+        self::assertSame($baselineVariant, $variant->getBaseline());
+    }
+
+    private function createSuite(array $benchmarks = [], array $informations = []): Suite
     {
         return new Suite(
             'context',

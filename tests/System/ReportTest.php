@@ -149,7 +149,5 @@ class ReportTest extends SystemTestCase
     public function providePreconfiguredReports(): Generator
     {
         yield [ 'aggregate' ];
-
-        yield [ 'aggregate_baseline' ];
     }
 }

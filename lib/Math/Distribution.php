@@ -12,12 +12,17 @@
 
 namespace PhpBench\Math;
 
+use ArrayAccess;
+use IteratorAggregate;
+
 /**
  * Represents a population of samples.
  *
  * Lazily Provides summary statistics, also traversable.
+ *
+ * @implements IteratorAggregate<string,mixed>, ArrayAccess<string,mixed>
  */
-class Distribution implements \IteratorAggregate, \ArrayAccess
+class Distribution implements IteratorAggregate, ArrayAccess
 {
     private $samples = [];
     private $stats = [];

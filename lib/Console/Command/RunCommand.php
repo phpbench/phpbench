@@ -131,6 +131,10 @@ EOT
 
         $suite = $this->runnerHandler->runFromInput($input, $output, $config);
 
+        if ($input->getOption('uuid') || $input->getOption('file')) {
+            $suite->mergeBaselines($this->suiteCollectionHandler->suiteCollectionFromInput($input));
+        }
+
         $collection = new SuiteCollection([$suite]);
         $this->dumpHandler->dumpFromInput($input, $output, $collection);
 
@@ -150,11 +154,6 @@ EOT
             }
         }
 
-        if ($input->getOption('uuid') || $input->getOption('file')) {
-            $collection->mergeCollection(
-                $this->suiteCollectionHandler->suiteCollectionFromInput($input)
-            );
-        }
 
         $this->reportHandler->reportsFromInput($input, $output, $collection);
 

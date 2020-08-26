@@ -14,8 +14,8 @@ Backward compatibility breaks:
 Features
 
 - XDebug extension is loaded by default if extension is loaded
-- Suite baseline: Introduce `aggregate_baseline` report to show `%` difference
-  to a referenced suite #648
+- Baseline: Specify baseline suite when running benchmarks and differences in
+  reports #648
 - Show PHP version and the status of XDebug and Opcache in the runner output
   #649
 - Add `@Timeout` to enable a timeout to be specified for any given benchmark -
