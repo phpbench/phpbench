@@ -90,31 +90,6 @@ class XmlDriverTest extends TestCase
     }
 
     /**
-     * It should delete a given run ID.
-     */
-    public function testDelete()
-    {
-        $uuid = '1339f38b191b77e1185f9729eb25a2aa4e262b01';
-        $this->filesystem->exists('/path/to/7e0/3/c/' . $uuid . '.xml')->willReturn(true);
-        $this->filesystem->remove('/path/to/7e0/3/c/' . $uuid . '.xml')->shouldBeCalled();
-
-        $this->driver->delete($uuid);
-    }
-
-    /**
-     * It should throw an exception if trying to delete non-existing UUID.
-     *
-     */
-    public function testDeleteNonExisting()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Cannot find run with UUID "1339f38b191b77e1185f9729eb25a2aa4e262b01"');
-        $uuid = '1339f38b191b77e1185f9729eb25a2aa4e262b01';
-        $this->filesystem->exists('/path/to/7e0/3/c/' . $uuid . '.xml')->willReturn(false);
-        $this->driver->delete($uuid);
-    }
-
-    /**
      * It should throw an exception if it cannot locate a given run by UUID.
      *
      */

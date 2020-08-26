@@ -15,13 +15,6 @@ return [
         'generator' => 'table',
         'cols' => ['benchmark', 'subject', 'set', 'revs', 'its', 'mem_peak', 'best', 'mean', 'mode', 'worst', 'stdev', 'rstdev', 'diff'],
     ],
-    'aggregate_baseline' => [
-        'generator' => 'table',
-        'cols' => ['benchmark', 'subject', 'set', 'mem_peak', 'best', 'mean', 'mode', 'worst', 'rstdev'],
-        'baseline' => true,
-        'break' => [],
-        'baseline_fields' => [ 'mem_peak', 'mean', 'mode', 'rstdev' ],
-    ],
     'default' => [
         'generator' => 'table',
         'iterations' => true,

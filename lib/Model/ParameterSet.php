@@ -12,17 +12,33 @@
 
 namespace PhpBench\Model;
 
-class ParameterSet extends \ArrayObject
+use ArrayObject;
+
+/**
+ * @extends ArrayObject<string,mixed>
+ */
+class ParameterSet extends ArrayObject
 {
     /**
-     * @var int
+     * @var string
      */
     private $name;
 
-    public function __construct($name, array $parameters = [])
+    /**
+     * @param array<string,mixed> $parameters
+     */
+    public function __construct(string $name, array $parameters = [])
     {
         $this->name = $name;
         parent::__construct($parameters);
+    }
+
+    /**
+     * @param array<string,mixed> $parameters
+     */
+    public static function create(string $name, array $parameters): self
+    {
+        return new self($name, $parameters);
     }
 
     public function getName(): string
@@ -33,7 +49,7 @@ class ParameterSet extends \ArrayObject
     /**
      * @deprecated use getName instead
      */
-    public function getIndex()
+    public function getIndex(): string
     {
         return $this->name;
     }

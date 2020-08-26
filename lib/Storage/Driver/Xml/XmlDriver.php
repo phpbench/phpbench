@@ -60,20 +60,6 @@ class XmlDriver implements DriverInterface
     /**
      * {@inheritdoc}
      */
-    public function delete($uuid)
-    {
-        if (!$this->has($uuid)) {
-            throw new \InvalidArgumentException(sprintf(
-                'Cannot find run with UUID "%s"', $uuid
-            ));
-        }
-
-        $this->filesystem->remove($this->getPath($uuid));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function fetch($runId)
     {
         if (!$this->has($runId)) {

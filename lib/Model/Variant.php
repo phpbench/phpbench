@@ -13,6 +13,7 @@
 namespace PhpBench\Model;
 
 use ArrayAccess;
+use ArrayIterator;
 use Countable;
 use Exception;
 use IteratorAggregate;
@@ -24,12 +25,14 @@ use PhpBench\Math\Distribution;
 use PhpBench\Math\Statistics;
 use PhpBench\Model\Result\ComputedResult;
 use PhpBench\Model\Result\TimeResult;
+use RuntimeException;
 
 /**
  * Stores Iterations and calculates the deviations and rejection
  * status for each based on the given rejection threshold.
  *
- * @implements IteratorAggregate<Iteration>, ArrayAccess<string, Iteration>
+ * @implements IteratorAggregate<Iteration>
+ * @implements ArrayAccess<string, Iteration>
  */
 class Variant implements IteratorAggregate, ArrayAccess, Countable
 {
@@ -93,11 +96,16 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
      */
     private $warnings;
 
+    /**
+     * @var Variant|null
+     */
+    private $baseline;
+
     public function __construct(
         Subject $subject,
         ParameterSet $parameterSet,
-        $revolutions,
-        $warmup,
+        int $revolutions,
+        int $warmup,
         array $computedStats = []
     ) {
         $this->subject = $subject;
@@ -114,7 +122,7 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
      *
      * @param int $nbIterations
      */
-    public function spawnIterations($nbIterations)
+    public function spawnIterations($nbIterations): void
     {
         for ($index = 0; $index < $nbIterations; $index++) {
             $this->iterations[] = new Iteration($index, $this);
@@ -124,11 +132,9 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
     /**
      * Create and add a new iteration.
      *
-     * @param array $results
-     *
-     * @return Iteration
+     * @param array<ResultInterface> $results
      */
-    public function createIteration(array $results = [])
+    public function createIteration(array $results = []): Iteration
     {
         $index = count($this->iterations);
         $iteration = new Iteration($index, $this, $results);
@@ -142,9 +148,9 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
      *
      * @return Iteration
      */
-    public function getIteration($index)
+    public function getIteration($index): ?Iteration
     {
-        return $this->iterations[$index];
+        return $this->iterations[$index] ?? null;
     }
 
     /**
@@ -152,17 +158,17 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
      *
      * @param Iteration $iteration
      */
-    public function addIteration(Iteration $iteration)
+    public function addIteration(Iteration $iteration): void
     {
         $this->iterations[] = $iteration;
     }
 
     /**
-     * {@inheritdoc}
+     * @return ArrayIterator<int,Iteration>
      */
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
-        return new \ArrayIterator($this->iterations);
+        return new ArrayIterator($this->iterations);
     }
 
     /**
@@ -176,7 +182,7 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
      *
      * @return mixed[]
      */
-    public function getMetricValues($resultClass, $metricName)
+    public function getMetricValues(string $resultClass, string $metricName): array
     {
         $values = [];
 
@@ -194,14 +200,14 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
      *
      * @return mixed[]
      */
-    public function getMetricValuesByRev($resultClass, $metric)
+    public function getMetricValuesByRev(string $resultClass, string $metric): array
     {
         return array_map(function ($value) {
             return $value / $this->getRevolutions();
         }, $this->getMetricValues($resultClass, $metric));
     }
 
-    public function resetAssertionResults()
+    public function resetAssertionResults(): void
     {
         $this->warnings = new AssertionWarnings($this);
         $this->failures = new AssertionFailures($this);
@@ -212,7 +218,7 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
      * the deviation is greater than the rejection threshold, then mark the iteration as
      * rejected.
      */
-    public function computeStats()
+    public function computeStats(): void
     {
         $this->rejects = [];
         $revs = $this->getRevolutions();
@@ -262,7 +268,7 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
      *
      * @return int
      */
-    public function getRejectCount()
+    public function getRejectCount(): int
     {
         return count($this->rejects);
     }
@@ -272,7 +278,7 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
      *
      * @return Iteration[]
      */
-    public function getRejects()
+    public function getRejects(): array
     {
         return $this->rejects;
     }
@@ -286,10 +292,10 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
      *
      * @return Distribution
      */
-    public function getStats()
+    public function getStats(): Distribution
     {
         if (null !== $this->errorStack) {
-            throw new \RuntimeException(sprintf(
+            throw new RuntimeException(sprintf(
                 'Cannot retrieve stats when an exception was encountered ([%s] %s)',
                 $this->errorStack->getTop()->getClass(),
                 $this->errorStack->getTop()->getMessage()
@@ -297,7 +303,7 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
         }
 
         if (false === $this->computed) {
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 'No statistics have yet been computed for this iteration set (::computeStats should be called)'
             );
         }
@@ -308,30 +314,24 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
     /**
      * Return true if the collection has been computed (i.e. stats have been s
      * set and rejects identified).
-     *
-     * @return bool
      */
-    public function isComputed()
+    public function isComputed(): bool
     {
         return $this->computed;
     }
 
     /**
      * Return the parameter set.
-     *
-     * @return ParameterSet
      */
-    public function getParameterSet()
+    public function getParameterSet(): ParameterSet
     {
         return $this->parameterSet;
     }
 
     /**
      * Return the subject metadata.
-     *
-     * @return Subject
      */
-    public function getSubject()
+    public function getSubject(): Subject
     {
         return $this->subject;
     }
@@ -339,20 +339,16 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
     /**
      * Return true if any of the iterations in this set encountered
      * an error.
-     *
-     * @return bool
      */
-    public function hasErrorStack()
+    public function hasErrorStack(): bool
     {
         return null !== $this->errorStack;
     }
 
     /**
      * Should be called when rebuiling the object graph.
-     *
-     * @return ErrorStack
      */
-    public function getErrorStack()
+    public function getErrorStack(): ErrorStack
     {
         if (null === $this->errorStack) {
             return new ErrorStack($this, []);
@@ -372,7 +368,7 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
      *
      * @param \Exception $exception
      */
-    public function setException(\Exception $exception)
+    public function setException(\Exception $exception): void
     {
         $errors = [];
 
@@ -383,22 +379,22 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
         $this->errorStack = new ErrorStack($this, $errors);
     }
 
-    public function addFailure(AssertionFailure $failure)
+    public function addFailure(AssertionFailure $failure): void
     {
         $this->failures->add($failure);
     }
 
-    public function addWarning(AssertionWarning $warning)
+    public function addWarning(AssertionWarning $warning): void
     {
         $this->warnings->add($warning);
     }
 
-    public function hasFailed()
+    public function hasFailed(): bool
     {
         return count($this->failures) > 0;
     }
 
-    public function hasWarning()
+    public function hasWarning(): bool
     {
         return count($this->warnings) > 0;
     }
@@ -413,27 +409,23 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
      *
      * @param Error[] $errors
      */
-    public function createErrorStack(array $errors)
+    public function createErrorStack(array $errors): void
     {
         $this->errorStack = new ErrorStack($this, $errors);
     }
 
     /**
      * Return the number of revolutions for this variant.
-     *
-     * @return int
      */
-    public function getRevolutions()
+    public function getRevolutions(): int
     {
         return $this->revolutions;
     }
 
     /**
      * Return the number of warmup revolutions.
-     *
-     * @return int
      */
-    public function getWarmup()
+    public function getWarmup(): int
     {
         return $this->warmup;
     }
@@ -443,32 +435,24 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
      *
      * @return Iteration[]
      */
-    public function getIterations()
+    public function getIterations(): array
     {
         return $this->iterations;
     }
 
     /**
      * Return number of iterations.
-     *
-     * {@inheritdoc}
      */
-    public function count()
+    public function count(): int
     {
         return count($this->iterations);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function offsetGet($offset)
     {
         return $this->getIteration($offset);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function offsetSet($offset, $value)
     {
         throw new \InvalidArgumentException(
@@ -486,9 +470,6 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function offsetExists($offset)
     {
         return array_key_exists($offset, $this->iterations);
@@ -497,5 +478,15 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
     public function getWarnings(): AssertionWarnings
     {
         return $this->warnings;
+    }
+
+    public function attachBaseline(Variant $baselineVariant): void
+    {
+        $this->baseline = $baselineVariant;
+    }
+
+    public function getBaseline(): ?Variant
+    {
+        return $this->baseline;
     }
 }

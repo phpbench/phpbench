@@ -117,7 +117,7 @@ class Subject
             $warmup,
             $computedStats
         );
-        $this->variants[] = $variant;
+        $this->variants[$parameterSet->getName()] = $variant;
 
         return $variant;
     }
@@ -226,5 +226,10 @@ class Subject
         $this->variants = array_filter($this->variants, function (Variant $variant) use ($target) {
             return $variant !== $target;
         });
+    }
+
+    public function getVariant(string $parameterSetName): ?Variant
+    {
+        return $this->variants[$parameterSetName] ?? null;
     }
 }

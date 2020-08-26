@@ -27,7 +27,6 @@ use PhpBench\Report\Generator\Table\SecondaryValue;
 use PhpBench\Report\Generator\Table\Sort;
 use PhpBench\Report\Generator\Table\ValueRole;
 use PhpBench\Report\GeneratorInterface;
-use RuntimeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -37,10 +36,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class TableGenerator implements GeneratorInterface
 {
-    const OPT_BASELINE_FIELDS = 'baseline_fields';
-    const OPT_BASELINE = 'baseline';
-
-
     /**
      * @var array<int,string|int>
      */
@@ -55,9 +50,15 @@ class TableGenerator implements GeneratorInterface
         'mean' => ['timeunit'],
         'mode' => ['timeunit'],
         'stdev' => ['timeunit'],
+        'rstdev' => ['percentage'],
+        'baseline_best' => ['timeunit'],
+        'baseline_worst' => ['timeunit'],
+        'baseline_mean' => ['timeunit'],
+        'baseline_mode' => ['timeunit'],
+        'baseline_stdev' => ['timeunit'],
+        'baseline_rstdev' => ['percentage'],
         'time_rev' => ['timeunit'],
         'time_net' => ['timeunit'],
-        'rstdev' => ['percentage'],
         'mem_peak' => ['mem'],
         'mem_real' => ['mem'],
         'mem_final' => ['mem'],
@@ -73,8 +74,6 @@ class TableGenerator implements GeneratorInterface
     {
         $options->setDefaults([
             'title' => null,
-            self::OPT_BASELINE => false,
-            self::OPT_BASELINE_FIELDS => ['mean', 'mode'],
             'description' => null,
             'cols' => ['benchmark', 'subject', 'tag', 'groups', 'params', 'revs', 'its', 'mem_peak', 'best', 'mean', 'mode', 'worst', 'stdev', 'rstdev', 'diff'],
             'break' => ['tag', 'suite', 'date', 'stime'],
@@ -88,8 +87,6 @@ class TableGenerator implements GeneratorInterface
             'class_map' => [],
         ]);
 
-        $options->setAllowedTypes('baseline', 'bool');
-        $options->setAllowedTypes('baseline_fields', 'array');
         $options->setAllowedTypes('title', ['null', 'string']);
         $options->setAllowedTypes('description', ['null', 'string']);
         $options->setAllowedTypes('cols', 'array');
@@ -113,7 +110,6 @@ class TableGenerator implements GeneratorInterface
 
         $table = $this->processSort($table, $config);
         $tables = $this->processBreak($table, $config);
-        $tables = $this->processBaseline($tables, $config);
         $tables = $this->processCols($tables, $config);
         $tables = $this->processCompare($tables, $config);
         $tables = $this->processDiffs($tables, $config);
@@ -208,51 +204,6 @@ class TableGenerator implements GeneratorInterface
         }
 
         return $table;
-    }
-
-    /**
-     * @param array<array<Row>> $tables
-     *
-     * @return array<array<Row>>
-     */
-    private function processBaseline(array $tables, Config $config): array
-    {
-        if (!$config[self::OPT_BASELINE]) {
-            return $tables;
-        }
-
-        $baselineGroups = map($tables, function (array $table) {
-            return group($table, function (Row $row) {
-                return $this->baselineRowIdentifier($row);
-            });
-        });
-
-        return map($baselineGroups, function (array $grouped, string $index) use ($config) {
-            return map($grouped, function ($groups) use ($config) {
-                $mainRow = array_shift($groups);
-
-                if (!$mainRow instanceof Row) {
-                    throw new RuntimeException('No main row in grouped results, this should not happen');
-                }
-
-                $baseLine = array_shift($groups);
-
-                if (!$baseLine instanceof Row) {
-                    return $mainRow;
-                }
-
-                foreach ($config[self::OPT_BASELINE_FIELDS] as $columnName) {
-                    $mainRow->getCell($columnName)->addSecondaryValue(
-                        SecondaryValue::create(Statistics::percentageDifference(
-                            $baseLine->getCell($columnName)->getValue(),
-                            $mainRow->getValue($columnName)
-                        ), self::OPT_BASELINE)
-                    );
-                }
-
-                return $mainRow;
-            });
-        });
     }
 
     /**
@@ -498,6 +449,22 @@ class TableGenerator implements GeneratorInterface
                         }
 
                         $row = $row->mergeMap($stats);
+
+                        if ($variant->getBaseline()) {
+                            foreach ($variant->getBaseline()->getStats() as $statName => $statValue) {
+                                $row->setValue('baseline_' . $statName, $statValue);
+                                $row->getCell($statName)->addSecondaryValue(
+                                    SecondaryValue::create(
+                                        Statistics::percentageDifference(
+                                            $statValue,
+                                            $row->getValue($statName)
+                                        ),
+                                        'baseline_percentage_diff'
+                                    )
+                                );
+                            }
+                        }
+
 
                         // generate the environment parameters.
                         // TODO: should we crash here if an attempt is made to

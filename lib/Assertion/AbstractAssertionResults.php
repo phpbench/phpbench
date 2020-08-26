@@ -12,9 +12,13 @@
 
 namespace PhpBench\Assertion;
 
+use IteratorAggregate;
 use PhpBench\Model\Variant;
 
-abstract class AbstractAssertionResults implements \IteratorAggregate, \Countable
+/**
+ * @implements IteratorAggregate<AssertionResult>
+ */
+abstract class AbstractAssertionResults implements IteratorAggregate, \Countable
 {
     /**
      * @var Variant
@@ -22,10 +26,13 @@ abstract class AbstractAssertionResults implements \IteratorAggregate, \Countabl
     private $variant;
 
     /**
-     * @var array
+     * @var array<AssertionResult>
      */
     private $results = [];
 
+    /**
+     * @param array<AssertionResult> $results
+     */
     public function __construct(Variant $variant, array $results = [])
     {
         $this->variant = $variant;

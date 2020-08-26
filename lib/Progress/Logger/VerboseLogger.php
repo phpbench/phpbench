@@ -24,7 +24,7 @@ class VerboseLogger extends PhpBenchLogger
     private $rejectionCount = 0;
 
     /**
-     * @var int
+     * @var string
      */
     private $paramSetIndex;
 

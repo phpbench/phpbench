@@ -48,6 +48,9 @@ class DotsLoggerTest extends TestCase
     {
         $logger = $this->createLogger(true);
         $this->output->write('.')->shouldBeCalled();
+        $this->variant->getRejectCount()->willReturn(0);
+        $this->variant->hasFailed()->willReturn(false);
+        $this->variant->hasErrorStack()->willReturn(false);
         $logger->variantEnd($this->variant->reveal());
     }
 
@@ -57,6 +60,9 @@ class DotsLoggerTest extends TestCase
     public function testIterationsEnd()
     {
         $logger = $this->createLogger(false);
+        $this->variant->getRejectCount()->willReturn(0);
+        $this->variant->hasFailed()->willReturn(false);
+        $this->variant->hasErrorStack()->willReturn(false);
         $this->output->write("\x0D. ")->shouldBeCalled();
         $logger->variantEnd($this->variant->reveal());
     }

@@ -51,6 +51,7 @@ class SubjectTest extends TestCase
     public function testCreateVariant()
     {
         $parameterSet = $this->prophesize(ParameterSet::class);
+        $parameterSet->getName()->willReturn('foo');
         $variant = $this->subject->createVariant(
             $parameterSet->reveal(),
             10,

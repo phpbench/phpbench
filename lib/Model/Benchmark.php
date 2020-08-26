@@ -115,4 +115,9 @@ class Benchmark implements \IteratorAggregate
     {
         return new ArrayIterator($this->subjects);
     }
+
+    public function getSubject(string $subjectName): ?Subject
+    {
+        return $this->subjects[$subjectName] ?? null;
+    }
 }
