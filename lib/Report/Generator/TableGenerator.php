@@ -12,7 +12,6 @@
 
 namespace PhpBench\Report\Generator;
 
-use PhpBench\Model\Variant;
 use function Functional\group;
 use function Functional\map;
 use function Functional\reduce_left;
@@ -21,6 +20,7 @@ use PhpBench\Math\Statistics;
 use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\SuiteCollection;
+use PhpBench\Model\Variant;
 use PhpBench\Registry\Config;
 use PhpBench\Report\Generator\Table\Cell;
 use PhpBench\Report\Generator\Table\Row;
@@ -29,7 +29,6 @@ use PhpBench\Report\Generator\Table\Sort;
 use PhpBench\Report\Generator\Table\ValueRole;
 use PhpBench\Report\GeneratorInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
 
 /**
  * The table generator generates reports about benchmarking results.
