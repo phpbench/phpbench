@@ -35,5 +35,10 @@ final class Condition
         $this->operator = $operator;
         $this->parameter2 = $parameter2;
     }
+
+    public function isSatisfied(Arguments $arguments): bool
+    {
+        return $this->operator->isSatisfiedBy($this->parameter1, $this->parameter2, $arguments);
+    }
 }
 

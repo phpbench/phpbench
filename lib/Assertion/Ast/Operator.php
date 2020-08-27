@@ -12,6 +12,9 @@
 
 namespace PhpBench\Assertion\Ast;
 
+use PhpBench\Assertion\Ast;
+
 abstract class Operator
 {
+    abstract public function isSatisfiedBy(Parameter $parameter1, Parameter $parameter2, Arguments $arguments): bool;
 }

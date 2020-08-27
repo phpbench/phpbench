@@ -13,4 +13,9 @@ final class Comparator extends Operator
     {
         $this->comparator = $comparator;
     }
+
+    public function isSatisfiedBy(Parameter $parameter1, Parameter $parameter2, Arguments $arguments): bool
+    {
+        return false;
+    }
 }

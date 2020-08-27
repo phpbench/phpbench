@@ -12,6 +12,9 @@
 
 namespace PhpBench\Assertion\Ast;
 
+use PhpBench\Assertion\Ast;
+use PhpBench\Math\Statistics;
+
 class Within extends Operator
 {
     /**
@@ -22,6 +25,33 @@ class Within extends Operator
     public function __construct(Value $value)
     {
         $this->value = $value;
+    }
+
+    public function isSatisfiedBy(Parameter $parameter1, Parameter $parameter2, Arguments $arguments): bool
+    {
+        $leftValue = $parameter1->resolveValue($arguments);
+        $rightValue = $parameter2->resolveValue($arguments);
+
+        if ($this->value->unit()->type() === '%') {
+            return $this->isSatisfiedByPercent(
+                $this->value->number(),
+                $leftValue,
+                $rightValue
+            );
+        }
+
+        return false;
+    }
+
+    /**
+     * @param int|float $leftValue
+     * @param int|float $rightValue
+     */
+    private function isSatisfiedByPercent(Number $number, $leftValue, $rightValue): bool
+    {
+        $diff = Statistics::percentageDifference($leftValue, $rightValue);
+        $diff = (new Number($diff))->asPositive();
+        return $diff->lessThanOrEqualTo($number);
     }
 }
 

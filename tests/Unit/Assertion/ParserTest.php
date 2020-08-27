@@ -50,7 +50,7 @@ class ParserTest extends TestCase
                     new Value(new Number(10), new Unit('%'))
                 ),
                 new PropertyAccess(['baseline', 'mean'])
-            )
+            ),
         ];
 
         yield [
