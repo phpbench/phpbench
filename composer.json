@@ -18,6 +18,7 @@
         "beberlei/assert": "^2.4 || ^3.0",
         "doctrine/annotations": "^1.2.7",
         "lstrojny/functional-php": "1.0 || ^1.2.3",
+        "mathiasverraes/parsica": "^0.5.0",
         "phpbench/container": "^1.2.1",
         "phpbench/dom": "~0.2.0",
         "seld/jsonlint": "^1.1",
@@ -60,7 +61,6 @@
     "autoload": {
         "psr-4": {
             "PhpBench\\": "lib/",
-            "PhpBench\\Extensions\\Dbal\\": "extensions/dbal/lib/",
             "PhpBench\\Extensions\\XDebug\\": "extensions/xdebug/lib/",
             "PhpBench\\Extensions\\Reports\\": "extensions/reports/lib/"
         }
@@ -69,10 +69,7 @@
         "psr-4": {
             "PhpBench\\Tests\\": "tests/",
             "PhpBench\\Benchmarks\\": "benchmarks/",
-            "PhpBench\\Extensions\\XDebug\\Tests\\": "extensions/xdebug/tests/",
-            "PhpBench\\Extensions\\Dbal\\Tests\\": "extensions/dbal/tests/",
-            "PhpBench\\Extensions\\Dbal\\Benchmarks\\": "extensions/dbal/benchmarks/",
-            "PhpBench\\Extensions\\Reports\\Tests\\": "extensions/reports/tests/"
+            "PhpBench\\Extensions\\XDebug\\Tests\\": "extensions/xdebug/tests/"
         }
     },
     "bin": [
