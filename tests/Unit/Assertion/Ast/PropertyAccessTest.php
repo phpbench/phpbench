@@ -25,7 +25,7 @@ class PropertyAccessTest extends TestCase
     {
         $object = new class {
             public function bar(): string {
-                return 'hello';
+                return 2;
             }
         };
 
@@ -34,17 +34,17 @@ class PropertyAccessTest extends TestCase
             [
                 'foo' => $object
             ],
-            'hello'
+            2
         ];
 
         yield 'array access' => [
             ['foo', 'bar'],
             [
                 'foo' => [
-                    'bar' => 'hello',
+                    'bar' => 2.1,
                 ],
             ],
-            'hello'
+            2.1
         ];
 
         yield 'nested array access' => [
@@ -52,11 +52,11 @@ class PropertyAccessTest extends TestCase
             [
                 'foo' => [
                     'bar' => [
-                        'baz' => 'goodbye',
+                        'baz' => 4.5,
                     ]
                 ],
             ],
-            'goodbye'
+            4.5
         ];
 
         yield 'array access with nested object' => [
@@ -66,7 +66,7 @@ class PropertyAccessTest extends TestCase
                     'bar' => $object,
                 ],
             ],
-            'hello'
+            2
         ];
     }
 

@@ -15,6 +15,6 @@ use PhpBench\Assertion\Ast;
 
 abstract class Parameter
 {
-    abstract public function resolveValue(Arguments $arguments);
+    abstract public function resolveValue(Arguments $arguments): float;
 }
 

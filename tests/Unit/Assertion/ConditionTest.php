@@ -18,10 +18,10 @@ use PhpBench\Assertion\AssertionData;
 use PhpBench\Assertion\Ast\Arguments;
 use PhpBench\Assertion\Ast\Comparator;
 use PhpBench\Assertion\Ast\Condition;
-use PhpBench\Assertion\Ast\Number;
+use PhpBench\Assertion\Ast\Microseconds;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\Unit;
-use PhpBench\Assertion\Ast\Value;
+use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\Variable;
 use PhpBench\Assertion\Ast\Within;
 use PhpBench\Assertion\Parser;
@@ -54,10 +54,9 @@ class ConditionTest extends TestCase
         ];
 
         yield 'within 2' => [
-            'this.getMean within 10% of baseline.getMean',
+            'this.getMean less than 10 microseconds',
             [
-                'this' => new Distribution([30, 30, 30]),
-                'baseline' => new Distribution([10, 10, 10])
+                'this' => new Distribution([9, 9, 9]),
             ],
             false
         ];

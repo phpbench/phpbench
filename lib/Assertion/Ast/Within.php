@@ -14,17 +14,19 @@ namespace PhpBench\Assertion\Ast;
 
 use PhpBench\Assertion\Ast;
 use PhpBench\Math\Statistics;
+use PhpBench\Assertion\Ast\Microseconds;
+use PhpBench\Assertion\Ast\TimeValue;
 
 class Within extends Operator
 {
     /**
-     * @var Value
+     * @var Parameter
      */
-    private $value;
+    private $parameter;
 
-    public function __construct(Value $value)
+    public function __construct(Parameter $parameter)
     {
-        $this->value = $value;
+        $this->parameter = $parameter;
     }
 
     public function isSatisfiedBy(Parameter $parameter1, Parameter $parameter2, Arguments $arguments): bool
@@ -32,27 +34,19 @@ class Within extends Operator
         $leftValue = $parameter1->resolveValue($arguments);
         $rightValue = $parameter2->resolveValue($arguments);
 
-        if ($this->value->unit()->type() === '%') {
-            return $this->isSatisfiedByPercent(
-                $this->value->number(),
-                $leftValue,
-                $rightValue
-            );
+        if ($this->parameter instanceof PercentageValue) {
+            return $this->parameter->difference($leftValue, $rightValue);
         }
 
-        return false;
+        $diff = abs($rightValue - $leftValue);
+
+        return $diff <= $this->parameter->resolveValue($arguments);
     }
 
     /**
      * @param int|float $leftValue
      * @param int|float $rightValue
      */
-    private function isSatisfiedByPercent(Number $number, $leftValue, $rightValue): bool
-    {
-        $diff = Statistics::percentageDifference($leftValue, $rightValue);
-        $diff = (new Number($diff))->asPositive();
-        return $diff->lessThanOrEqualTo($number);
-    }
 }
 
 

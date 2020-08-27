@@ -15,11 +15,12 @@ namespace PhpBench\Assertion;
 use PhpBench\Assertion\Ast\Argument;
 use PhpBench\Assertion\Ast\Comparator;
 use PhpBench\Assertion\Ast\Condition;
-use PhpBench\Assertion\Ast\Number;
+use PhpBench\Assertion\Ast\Microseconds;
 use PhpBench\Assertion\Ast\Operator;
+use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\Unit;
-use PhpBench\Assertion\Ast\Value;
+use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\Variable;
 use PhpBench\Assertion\Ast\Within;
 use Verraes\Parsica\Parser as VerraesParser;
@@ -58,7 +59,7 @@ class Parser
 
     private function parameterParser(): VerraesParser
     {
-        return $this->valueParser()->or($this->variableParser());
+        return $this->percentageParser()->or($this->timeValueParser())->or($this->propertyAccessParser());
     }
 
     private function operatorParser(): VerraesParser
@@ -71,7 +72,7 @@ class Parser
         return collect(
             stringI('within'),
             whitespace(),
-            $this->valueParser(),
+            $this->parameterParser(),
             whitespace(),
             stringI('of')
         )->map(fn (array $vars) => new Within($vars[2]));
@@ -79,11 +80,9 @@ class Parser
 
     private function unitParser(): VerraesParser
     {
-        return string('%')
-            ->or(string('microseconds'))
+        return string('microseconds')
             ->or(string('milliseconds'))
             ->or(string('seconds'))
-            ->map(fn (string $unit) => new Unit($unit))
         ;
     }
 
@@ -92,19 +91,28 @@ class Parser
         return string('less than')->map(fn (string $operator) => new Comparator($operator));
     }
 
-    private function variableParser(): VerraesParser
+    private function propertyAccessParser(): VerraesParser
     {
         return sepBy(char('.'), atLeastOne(
             alphaChar()->or(char('_'))
         ))->map(fn (array $segments) => new PropertyAccess($segments));
     }
 
-    private function valueParser(): VerraesParser
+    private function timeValueParser(): VerraesParser
     {
         return collect(
             float()->or(integer()),
             whitespace()->optional(),
             $this->unitParser(),
-        )->map(fn (array $data) => new Value(new Number($data[0]), $data[2]));
+        )->map(fn (array $data) => TimeValue::fromValueAndUnit($data[0], $data[2]));
+    }
+
+    private function percentageParser(): VerraesParser
+    {
+        return collect(
+            float()->or(integer()),
+            whitespace()->optional(),
+            string('%')
+        )->map(fn (array $data) => new PercentageValue($data[0]));
     }
 }

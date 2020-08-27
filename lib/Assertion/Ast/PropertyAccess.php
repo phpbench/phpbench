@@ -30,10 +30,7 @@ class PropertyAccess extends Parameter
         $this->segments = $segments;
     }
 
-    /**
-     * @return int|float
-     */
-    public function resolveValue(Arguments $arguments)
+    public function resolveValue(Arguments $arguments): float
     {
         return $this->resolvePropertyAccess($this->segments, $arguments->toArray());
     }

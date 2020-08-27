@@ -16,10 +16,11 @@ use PHPUnit\Framework\TestCase;
 use Generator;
 use PhpBench\Assertion\Ast\Comparator;
 use PhpBench\Assertion\Ast\Condition;
-use PhpBench\Assertion\Ast\Number;
+use PhpBench\Assertion\Ast\Microseconds;
+use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\Unit;
-use PhpBench\Assertion\Ast\Value;
+use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\Variable;
 use PhpBench\Assertion\Ast\Within;
 use PhpBench\Assertion\Parser;
@@ -47,7 +48,7 @@ class ParserTest extends TestCase
             new Condition(
                 new PropertyAccess(['this', 'mean']),
                 new Within(
-                    new Value(new Number(10), new Unit('%'))
+                    new PercentageValue(10)
                 ),
                 new PropertyAccess(['baseline', 'mean'])
             ),
@@ -58,7 +59,7 @@ class ParserTest extends TestCase
             new Condition(
                 new PropertyAccess(['this', 'mean']),
                 new Within(
-                    new Value(new Number(10), new Unit('%'))
+                    new PercentageValue(10)
                 ),
                 new PropertyAccess(['baseline', 'mean'])
             )
@@ -69,7 +70,7 @@ class ParserTest extends TestCase
             new Condition(
                 new PropertyAccess(['this', 'mem_peak']),
                 new Comparator('less than'),
-                new Value(new Number(100), new Unit('microseconds'))
+                TimeValue::fromMicroseconds(100)
             )
         ];
     }
@@ -84,7 +85,7 @@ class ParserTest extends TestCase
             new Condition(
                 new PropertyAccess(['this', 'mem_peak']),
                 new Comparator('less than'),
-                new Value(new Number(100), new Unit('microseconds'))
+                TimeValue::fromMicroseconds(100)
             )
         ];
 
@@ -93,7 +94,7 @@ class ParserTest extends TestCase
             new Condition(
                 new PropertyAccess(['this', 'mem_peak']),
                 new Comparator('less than'),
-                new Value(new Number(100), new Unit('milliseconds'))
+                TimeValue::fromMilliseconds(100)
             )
         ];
 
@@ -102,7 +103,7 @@ class ParserTest extends TestCase
             new Condition(
                 new PropertyAccess(['this', 'mem_peak']),
                 new Comparator('less than'),
-                new Value(new Number(100), new Unit('seconds'))
+                TimeValue::fromSeconds(100)
             )
         ];
     }

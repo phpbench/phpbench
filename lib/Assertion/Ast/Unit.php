@@ -18,4 +18,14 @@ class Unit
     {
         return $this->type;
     }
+
+    public static function microseconds(): self
+    {
+        return new self('microseconds');
+    }
+
+    public static function percent(): self
+    {
+        return new self('%');
+    }
 }
