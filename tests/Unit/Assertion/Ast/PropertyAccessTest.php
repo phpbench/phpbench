@@ -7,15 +7,16 @@ use PHPUnit\Framework\TestCase;
 use PhpBench\Assertion\Ast\Arguments;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Exception\PropertyAccessError;
+use PhpBench\Tests\Unit\Assertion\ExpressionParserTestCase;
 
-class PropertyAccessTest extends TestCase
+class PropertyAccessTest extends ExpressionParserTestCase
 {
     /**
      * @dataProvider providePropertyAccess
      */
     public function testPropertyAccess(array $segments, array $args, $expected): void
     {
-        self::assertEquals($expected, (new PropertyAccess($segments))->resolveValue(new Arguments($args)));
+        self::assertEquals($expected, $this->evaluate(new PropertyAccess($segments), $args));
     }
 
     /**
@@ -24,7 +25,7 @@ class PropertyAccessTest extends TestCase
     public function providePropertyAccess(): Generator
     {
         $object = new class {
-            public function bar(): string {
+            public function bar() {
                 return 2;
             }
         };
@@ -36,6 +37,7 @@ class PropertyAccessTest extends TestCase
             ],
             2
         ];
+        return;
 
         yield 'array access' => [
             ['foo', 'bar'],
@@ -77,7 +79,7 @@ class PropertyAccessTest extends TestCase
     {
         $this->expectException(PropertyAccessError::class);
         $this->expectExceptionMessage($expectedMessage);
-        (new PropertyAccess($segments))->resolveValue(new Arguments($args));
+        $this->evaluate(new PropertyAccess($segments), $args);
     }
     
     /**

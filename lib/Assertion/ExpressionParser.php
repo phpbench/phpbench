@@ -14,105 +14,113 @@ namespace PhpBench\Assertion;
 
 use PhpBench\Assertion\Ast\Argument;
 use PhpBench\Assertion\Ast\Comparator;
+use PhpBench\Assertion\Ast\Comparison;
 use PhpBench\Assertion\Ast\Condition;
 use PhpBench\Assertion\Ast\Microseconds;
+use PhpBench\Assertion\Ast\Node;
 use PhpBench\Assertion\Ast\Operator;
 use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\Unit;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\Variable;
-use PhpBench\Assertion\Ast\Within;
-use Verraes\Parsica\Parser as VerraesParser;
-use Verraes\Parsica\StringStream;
+use PhpBench\Assertion\Ast\WithinRangeOf;
+use Verraes\Parsica\Parser;
+use Parsica\StringStream;
 use function Verraes\Parsica\alphaChar;
 use function Verraes\Parsica\atLeastOne;
 use function Verraes\Parsica\char;
 use function Verraes\Parsica\collect;
-use function Verraes\Parsica\eof;
-use function Verraes\Parsica\eol;
 use function Verraes\Parsica\float;
 use function Verraes\Parsica\integer;
-use function Verraes\Parsica\oneOf;
 use function Verraes\Parsica\sepBy;
-use function Verraes\Parsica\sequence;
 use function Verraes\Parsica\string;
 use function Verraes\Parsica\stringI;
 use function Verraes\Parsica\whitespace;
-use function Verraes\Parsica\zeroOrMore;
 
-class Parser
+class ExpressionParser
 {
-    public function parse(string $dsl): Condition
+    public function parse(string $expression): Node
     {
-        $predicate = collect(
-            $this->parameterParser(),
-            whitespace(),
-            $this->operatorParser(),
-            whitespace(),
-            $this->parameterParser(),
-            eol()->or(eof())
-        )->map(fn (array $vars) => new Condition($vars[0] ,$vars[2], $vars[4]));
-
-        return $predicate->tryString($dsl)->output();
+        return 
+            $this->withinParser()->or(
+                $this->comparisonParser()
+            )->tryString($expression)->output();
     }
 
-    private function parameterParser(): VerraesParser
+    private function parameterParser(): Parser
     {
-        return $this->percentageParser()->or($this->timeValueParser())->or($this->propertyAccessParser());
+        return $this->percentageParser()
+            ->or($this->timeValueParser())
+            ->or($this->propertyAccessParser());
     }
 
-    private function operatorParser(): VerraesParser
+    private function comparatorParser(): Parser
     {
-        return $this->withinParser()->or($this->lessThanParser());
+        return $this->lessThanParser();
     }
 
-    private function withinParser(): VerraesParser
+    private function withinParser(): Parser
     {
         return collect(
+            $this->parameterParser(),
+            whitespace(),
             stringI('within'),
             whitespace(),
             $this->parameterParser(),
             whitespace(),
-            stringI('of')
-        )->map(fn (array $vars) => new Within($vars[2]));
+            stringI('of'),
+            whitespace(),
+            $this->parameterParser()
+        )->map(fn (array $vars) => new WithinRangeOf($vars[0], $vars[4], $vars[8]));
     }
 
-    private function unitParser(): VerraesParser
+    private function unitParser(): Parser
     {
-        return string('microseconds')
-            ->or(string('milliseconds'))
-            ->or(string('seconds'))
+        return stringI('microseconds')
+            ->or(stringI('milliseconds'))
+            ->or(stringI('seconds'))
         ;
     }
 
-    private function lessThanParser(): VerraesParser
+    private function lessThanParser(): Parser
     {
-        return string('less than')->map(fn (string $operator) => new Comparator($operator));
+        return stringI('less than');
     }
 
-    private function propertyAccessParser(): VerraesParser
+    private function propertyAccessParser(): Parser
     {
         return sepBy(char('.'), atLeastOne(
             alphaChar()->or(char('_'))
         ))->map(fn (array $segments) => new PropertyAccess($segments));
     }
 
-    private function timeValueParser(): VerraesParser
+    private function timeValueParser(): Parser
     {
         return collect(
             float()->or(integer()),
             whitespace()->optional(),
             $this->unitParser(),
-        )->map(fn (array $data) => TimeValue::fromValueAndUnit($data[0], $data[2]));
+        )->map(fn (array $data) => new TimeValue($data[0], $data[2]));
     }
 
-    private function percentageParser(): VerraesParser
+    private function percentageParser(): Parser
     {
         return collect(
             float()->or(integer()),
             whitespace()->optional(),
             string('%')
         )->map(fn (array $data) => new PercentageValue($data[0]));
+    }
+
+    private function comparisonParser(): Parser
+    {
+        return collect(
+            $this->parameterParser(),
+            whitespace(),
+            $this->comparatorParser(),
+            whitespace(),
+            $this->parameterParser(),
+        )->map(fn (array $vars) => new Comparison($vars[0], $vars[2], $vars[4]));
     }
 }

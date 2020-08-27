@@ -8,20 +8,22 @@ use PhpBench\Assertion\Ast\Arguments;
 use PhpBench\Assertion\Ast\Parameter;
 use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\TimeValue;
-use PhpBench\Assertion\Ast\Within;
+use PhpBench\Assertion\Ast\Value;
+use PhpBench\Assertion\Ast\WithinRangeOf;
+use PhpBench\Assertion\ExpressionWalker;
+use PhpBench\Tests\Unit\Assertion\ExpressionParserTestCase;
 
-class WithinTest extends TestCase
+class WithinRangeOfTest extends ExpressionParserTestCase
 {
     /**
      * @dataProvider provideMicroseconds
      * @dataProvider providePercent
      */
-    public function testWithin(Parameter $threshold, Parameter $param1, Parameter $param2, array $args = [], bool $expected): void
+    public function testWithin(Value $param1, Value $threshold, Value $param2, array $args = [], bool $expected): void
     {
-        self::assertEquals($expected, (new Within($threshold))->isSatisfiedBy(
-            $param1,
-            $param2,
-            new Arguments($args)
+        self::assertEquals($expected, $this->evaluate(
+            new WithinRangeOf($param1, $threshold, $param2),
+            $args
         ));
     }
     
@@ -32,7 +34,7 @@ class WithinTest extends TestCase
     {
         yield [
             TimeValue::fromMicroseconds(10),
-            TimeValue::fromMicroseconds(0),
+            TimeValue::fromMicroseconds(20),
             TimeValue::fromMicroseconds(-10),
             [],
             true
@@ -77,22 +79,22 @@ class WithinTest extends TestCase
     public function providePercent(): Generator
     {
         yield '10 percent more' => [
-            new PercentageValue(10),
             TimeValue::fromMicroseconds(10),
+            new PercentageValue(10),
             TimeValue::fromMicroseconds(11),
             [],
             true
         ];
-        yield [
-            new PercentageValue(10),
+        yield 'two' => [
             TimeValue::fromMicroseconds(10),
+            new PercentageValue(10),
             TimeValue::fromMicroseconds(11.5),
             [],
             false
         ];
-        yield [
-            new PercentageValue(10),
+        yield 'three' => [
             TimeValue::fromMicroseconds(-100),
+            new PercentageValue(10),
             TimeValue::fromMicroseconds(-110),
             [],
             true

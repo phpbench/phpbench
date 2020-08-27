@@ -15,7 +15,7 @@ namespace PhpBench\Assertion\Ast;
 use PhpBench\Assertion\Exception\PropertyAccessError;
 use RuntimeException;
 
-class PropertyAccess extends Parameter
+class PropertyAccess implements Value
 {
     /**
      * @var array<string>
@@ -30,9 +30,9 @@ class PropertyAccess extends Parameter
         $this->segments = $segments;
     }
 
-    public function resolveValue(Arguments $arguments): float
+    public function segments(): array
     {
-        return $this->resolvePropertyAccess($this->segments, $arguments->toArray());
+        return $this->segments;
     }
 
     /**
@@ -40,23 +40,23 @@ class PropertyAccess extends Parameter
      * @param array<string,mixed>|object|scalar $container
      * @param array<string> $segments
      */
-    private function resolvePropertyAccess(array $segments, $container)
+    public static function resolvePropertyAccess(array $segments, $container)
     {
         $segment = array_shift($segments);
-        $value = $this->valueFromContainer($container, $segment);
+        $value = self::valueFromContainer($container, $segment);
 
         if (is_scalar($value)) {
             return $value;
         }
 
-        return $this->resolvePropertyAccess($segments, $value);
+        return self::resolvePropertyAccess($segments, $value);
     }
 
     /**
      * @return int|float|object|array<string,mixed>
      * @param array<string,mixed>|object|scalar $container
      */
-    private function valueFromContainer($container, string $segment)
+    private static function valueFromContainer($container, string $segment)
     {
         if (is_array($container)) {
             if (!array_key_exists($segment, $container)) {
@@ -80,4 +80,3 @@ class PropertyAccess extends Parameter
         ));
     }
 }
-
