@@ -2,8 +2,6 @@ parameters:
     level: 5
     ignoreErrors:
         - '#Call to an undefined method DOMNode#'
-        - '#resolve the template type#'
-        - '#generic#'
     paths:
         - lib
 includes:

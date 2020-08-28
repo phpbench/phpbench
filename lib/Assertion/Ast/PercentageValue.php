@@ -2,9 +2,6 @@
 
 namespace PhpBench\Assertion\Ast;
 
-use PhpBench\Math\FloatNumber;
-use PhpBench\Math\Statistics;
-
 final class PercentageValue implements Value
 {
     /**

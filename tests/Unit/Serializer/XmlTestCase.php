@@ -12,10 +12,8 @@
 
 namespace PhpBench\Tests\Unit\Serializer;
 
-use PhpBench\Assertion\AssertionFailure;
-use PhpBench\Assertion\AssertionFailures;
-use PhpBench\Assertion\AssertionWarning;
-use PhpBench\Assertion\AssertionWarnings;
+use PhpBench\Assertion\AssertionResult;
+use PhpBench\Assertion\VariantAssertionResults;
 use PhpBench\Environment\Information;
 use PhpBench\Math\Distribution;
 use PhpBench\Model\Benchmark;
@@ -91,8 +89,18 @@ class XmlTestCase extends TestCase
         $this->variant1->getBaseline()->willReturn(null);
         $this->variant1->getParameterSet()->willReturn(new ParameterSet('some params', $params['params']));
         $this->variant1->hasErrorStack()->willReturn($params['error']);
-        $this->variant1->hasFailed()->willReturn($params['failure']);
-        $this->variant1->hasWarning()->willReturn($params['warning']);
+
+        if ($params['failure']) {
+            $this->variant1->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant1->reveal(), [AssertionResult::fail()]));
+        } else {
+            $this->variant1->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant1->reveal(), []));
+        }
+
+        if ($params['warning']) {
+            $this->variant1->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant1->reveal(), [AssertionResult::tolerated()]));
+        } else {
+            $this->variant1->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant1->reveal(), []));
+        }
         $this->variant1->isComputed()->willReturn(true);
         $this->variant1->getRevolutions()->willReturn(100);
 
@@ -112,21 +120,16 @@ class XmlTestCase extends TestCase
             );
         }
 
+        $results = [];
+
         if ($params['failure']) {
-            $this->variant1->getFailures()->willReturn(
-                new AssertionFailures($this->variant1->reveal(), [
-                    new AssertionFailure('Fail!'),
-                ])
-            );
+            $results[] = AssertionResult::fail('Fail!');
         }
 
         if ($params['warning']) {
-            $this->variant1->getWarnings()->willReturn(
-                new AssertionWarnings($this->variant1->reveal(), [
-                    new AssertionWarning('Warn!'),
-                ])
-            );
+            $results[] = AssertionResult::tolerated('Warn!');
         }
+        $this->variant1->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant1->reveal(), $results));
 
         $this->variant1->getStats()->willReturn(new Distribution([0.1]));
         $this->variant1->getIterator()->willReturn(new \ArrayIterator([
@@ -187,7 +190,7 @@ class XmlTestCase extends TestCase
 </phpbench>
 
 EOT
-            ],
+        ],
             [
                 ['error' => true],
                 <<<'EOT'
@@ -212,7 +215,7 @@ EOT
 </phpbench>
 
 EOT
-            ],
+        ],
             'failure and warnings' => [
                 ['failure' => true, 'warning' => true],
                 <<<'EOT'
@@ -245,7 +248,7 @@ EOT
 </phpbench>
 
 EOT
-            ],
+        ],
         ];
     }
 }

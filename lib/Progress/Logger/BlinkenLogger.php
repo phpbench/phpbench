@@ -105,7 +105,7 @@ class BlinkenLogger extends AnsiLogger
             return;
         }
 
-        if ($variant->hasFailed()) {
+        if ($variant->getAssertionResults()->hasFailures()) {
             $this->output->write(' <error>FAIL</error>');
         }
 

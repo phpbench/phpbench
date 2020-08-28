@@ -13,7 +13,7 @@
 namespace PhpBench\Tests\System\benchmarks\set5;
 
 /**
- * @Assert(stat="mean", value="1000", tolerance="10000", comparator=">")
+ * @Assert("variant.mean < 1 microseconds +/- 1000 microseconds")
  */
 class AssertWarnBench
 {

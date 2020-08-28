@@ -12,8 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Model;
 
-use PhpBench\Assertion\AssertionFailures;
-use PhpBench\Assertion\AssertionWarnings;
+use PhpBench\Assertion\VariantAssertionResults;
 use PhpBench\Environment\Information;
 use PhpBench\Math\Distribution;
 use PhpBench\Model\Benchmark;
@@ -126,8 +125,7 @@ class SummaryTest extends TestCase
         $this->variant1->hasErrorStack()->willReturn(false);
         $this->variant1->getRevolutions()->willReturn(10);
         $this->variant1->getSubject()->willReturn($this->subject1->reveal());
-        $this->variant1->getFailures()->willReturn(new AssertionFailures($this->variant1->reveal()));
-        $this->variant1->getWarnings()->willReturn(new AssertionWarnings($this->variant1->reveal()));
+        $this->variant1->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant1->reveal(), []));
         $this->stats->getIterator()->willReturn(new \ArrayIterator([
             'min' => '1',
             'max' => '2',

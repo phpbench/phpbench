@@ -2,7 +2,9 @@
 
 namespace PhpBench\Assertion;
 
+use PhpBench\Assertion\Ast\Assertion;
 use PhpBench\Assertion\Ast\Comparison;
+use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Assertion\Ast\Node;
 use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
@@ -11,7 +13,9 @@ use PhpBench\Assertion\Ast\WithinRangeOf;
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
 use PhpBench\Math\FloatNumber;
 use PhpBench\Math\Statistics;
+use PhpBench\Util\MemoryUnit;
 use PhpBench\Util\TimeUnit;
+use RuntimeException;
 
 class ExpressionEvaluator
 {
@@ -21,11 +25,32 @@ class ExpressionEvaluator
     private $args;
 
     /**
-     * @param array<string,mixed>
+     * @var MessageFormatter
      */
-    public function __construct(array $args = [])
+    private $formatter;
+
+    /**
+     * @param array<string,mixed> $args
+     */
+    public function __construct(MessageFormatter $formatter, array $args = [])
     {
         $this->args = $args;
+        $this->formatter = $formatter;
+    }
+
+    public function assert(Assertion $node): AssertionResult
+    {
+        $result = $this->evaluate($node);
+
+        if (!$result instanceof AssertionResult) {
+            throw new RuntimeException(sprintf(
+                'Assertion node "%s" did not evaluate to an AssertionResult, evaluated to "%s"',
+                get_class($node),
+                is_object($result) ? get_class($result) : gettype($result)
+            ));
+        }
+
+        return $result;
     }
 
     /**
@@ -49,6 +74,10 @@ class ExpressionEvaluator
             return $this->evaluateWithinRangeOf($node);
         }
 
+        if ($node instanceof MemoryValue) {
+            return $this->evaluateMemoryValue($node);
+        }
+
         throw new ExpressionEvaluatorError(sprintf(
             'Do not know how to evaluate node "%s"',
             get_class($node)
@@ -62,10 +91,19 @@ class ExpressionEvaluator
     {
         $left = $this->evaluate($node->value1());
         $right = $this->evaluate($node->value2());
+        $tolerance = $this->evaluate($node->tolerance());
 
         switch ($node->operator()) {
-            case 'less than':
-                return $left < $right;
+            case '<':
+                if ($left >= $right) {
+                    if ($left < ($right + $tolerance)) {
+                        return AssertionResult::tolerated($this->formatter->format($node));
+                    }
+
+                    return AssertionResult::fail($this->formatter->format($node));
+                }
+
+                return AssertionResult::ok();
         }
 
         throw new ExpressionEvaluatorError(sprintf(
@@ -99,6 +137,7 @@ class ExpressionEvaluator
         $value2 = $this->evaluate($node->value2());
 
         $range = $node->range();
+
         if ($range instanceof PercentageValue) {
             return FloatNumber::isLessThanOrEqual(
                 Statistics::percentageDifference($value1, $value2),
@@ -110,5 +149,10 @@ class ExpressionEvaluator
             abs($value2 - $value1),
             $this->evaluate($range)
         );
+    }
+
+    private function evaluateMemoryValue(MemoryValue $node): int
+    {
+        return MemoryUnit::convertToBytes($node->value(), $node->unit());
     }
 }

@@ -12,12 +12,8 @@
 
 namespace PhpBench\Benchmark;
 
-use PhpBench\Assertion\AssertionData;
-use PhpBench\Assertion\AssertionFailure;
 use PhpBench\Assertion\AssertionProcessor;
-use PhpBench\Assertion\AssertionWarning;
 use PhpBench\Benchmark\Exception\StopOnErrorException;
-use PhpBench\Benchmark\Metadata\AssertionMetadata;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Environment\Supplier;
@@ -174,7 +170,7 @@ final class Runner
             $subjectMetadata->setRetryThreshold($config->getRetryThreshold($this->retryThreshold));
 
             if ($config->getAssertions()) {
-                $subjectMetadata->setAssertions($this->assertionProcessor->assertionsFromRawCliConfig($config->getAssertions()));
+                $subjectMetadata->setAssertions($config->getAssertions());
             }
 
             // resolve executor config for this subject
@@ -329,19 +325,9 @@ final class Runner
         $variant->computeStats();
         $variant->resetAssertionResults();
 
-        /** @var AssertionMetadata $assertion */
         foreach ($subjectMetadata->getAssertions() as $assertion) {
-            try {
-                $this->assertionProcessor->assertWith(
-                    self::DEFAULT_ASSERTER,
-                    $assertion->getConfig(),
-                    AssertionData::fromDistribution($variant->getStats())
-                );
-            } catch (AssertionWarning $warning) {
-                $variant->addWarning($warning);
-            } catch (AssertionFailure $failure) {
-                $variant->addFailure($failure);
-            }
+            $result = $this->assertionProcessor->assert($variant, $assertion);
+            $variant->addAssertionResult($result);
         }
 
         $this->logger->variantEnd($variant);

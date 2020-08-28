@@ -13,7 +13,6 @@
 namespace PhpBench\Assertion\Ast;
 
 use PhpBench\Assertion\Exception\PropertyAccessError;
-use RuntimeException;
 
 class PropertyAccess implements Value
 {
@@ -37,6 +36,7 @@ class PropertyAccess implements Value
 
     /**
      * @return int|float
+     *
      * @param array<string,mixed>|object|scalar $container
      * @param array<string> $segments
      */
@@ -54,6 +54,7 @@ class PropertyAccess implements Value
 
     /**
      * @return int|float|object|array<string,mixed>
+     *
      * @param array<string,mixed>|object|scalar $container
      */
     private static function valueFromContainer($container, string $segment)
@@ -66,7 +67,9 @@ class PropertyAccess implements Value
                     implode('", "', array_keys($container))
                 ));
             }
-            return $container[$segment];;
+
+            return $container[$segment];
+            ;
         }
         
         if (is_object($container) && method_exists($container, $segment)) {

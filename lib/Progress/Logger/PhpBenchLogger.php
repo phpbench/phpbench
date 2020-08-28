@@ -12,8 +12,6 @@
 
 namespace PhpBench\Progress\Logger;
 
-use PhpBench\Assertion\AssertionFailures;
-use PhpBench\Assertion\AssertionWarnings;
 use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\Result\TimeResult;
@@ -141,7 +139,6 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
         $this->output->writeln(sprintf('%d variants failed:', count($variantFailures)));
         $this->output->write(PHP_EOL);
 
-        /** @var AssertionFailures $variantFailure */
         foreach ($variantFailures as $variantFailure) {
             $this->output->writeln(sprintf(
                 '<error>%s::%s %s</error>',
@@ -152,7 +149,7 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
             $this->output->write(PHP_EOL);
 
             foreach ($variantFailure as $index => $failure) {
-                $this->output->writeln(sprintf('    %s) %s', $index + 1, $failure->getMessage()));
+                $this->output->writeln(sprintf('    %s) Failed to assert that %s', $index + 1, $failure->getMessage()));
             }
             $this->output->write(PHP_EOL);
         }
@@ -170,7 +167,6 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
         $this->output->writeln(sprintf('%d variants have warnings:', count($variantWarnings)));
         $this->output->write(PHP_EOL);
 
-        /** @var AssertionWarnings $variantWarning */
         foreach ($variantWarnings as $variantWarning) {
             $this->output->writeln(sprintf(
                 '<warning>%s::%s %s</warning>',
@@ -181,7 +177,7 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
             $this->output->write(PHP_EOL);
 
             foreach ($variantWarning as $index => $warning) {
-                $this->output->writeln(sprintf('    %s) %s', $index + 1, $warning->getMessage()));
+                $this->output->writeln(sprintf('    %s)  Tolerated that %s', $index + 1, $warning->getMessage()));
             }
             $this->output->write(PHP_EOL);
         }
@@ -198,13 +194,13 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
         return sprintf(
             "%s[μ Mo]/r: %s %s (%s) [μSD μRSD]/r: %s %s%%%s",
 
-            $variant->hasFailed() ? '<error>' : '',
+            $variant->getAssertionResults()->hasFailures() ? '<error>' : '',
             $this->timeUnit->format($stats->getMean(), $timeUnit, $mode, $precision, false),
             $this->timeUnit->format($stats->getMode(), $timeUnit, $mode, $precision, false),
             $this->timeUnit->getDestSuffix($timeUnit, $mode),
             $this->timeUnit->format($stats->getStdev(), $timeUnit, TimeUnit::MODE_TIME),
             number_format($stats->getRstdev(), 2),
-            $variant->hasFailed() ? '</error>' : ''
+            $variant->getAssertionResults()->hasFailures() ? '</error>' : ''
         );
     }
 

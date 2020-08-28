@@ -3,14 +3,10 @@
 namespace PhpBench\Tests\Unit\Assertion\Ast;
 
 use Generator;
-use PHPUnit\Framework\TestCase;
-use PhpBench\Assertion\Ast\Arguments;
-use PhpBench\Assertion\Ast\Parameter;
 use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\Value;
 use PhpBench\Assertion\Ast\WithinRangeOf;
-use PhpBench\Assertion\ExpressionWalker;
 use PhpBench\Tests\Unit\Assertion\ExpressionParserTestCase;
 
 class WithinRangeOfTest extends ExpressionParserTestCase
@@ -85,6 +81,7 @@ class WithinRangeOfTest extends ExpressionParserTestCase
             [],
             true
         ];
+
         yield 'two' => [
             TimeValue::fromMicroseconds(10),
             new PercentageValue(10),
@@ -92,6 +89,7 @@ class WithinRangeOfTest extends ExpressionParserTestCase
             [],
             false
         ];
+
         yield 'three' => [
             TimeValue::fromMicroseconds(-100),
             new PercentageValue(10),

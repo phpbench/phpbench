@@ -12,6 +12,8 @@
 
 namespace PhpBench\Tests\Unit\Progress\Logger;
 
+use PhpBench\Assertion\AssertionResult;
+use PhpBench\Assertion\VariantAssertionResults;
 use PhpBench\Progress\Logger\VerboseLogger;
 use PhpBench\Util\TimeUnit;
 use Prophecy\Argument;
@@ -45,7 +47,7 @@ class VerboseLoggerTest extends PhpBenchLoggerTest
         $this->variant->getRejectCount()->willReturn(0);
         $this->variant->getStats()->willReturn($this->stats->reveal());
         $this->variant->getSubject()->willReturn($this->subject->reveal());
-        $this->variant->hasFailed()->willReturn(false);
+        $this->variant->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant->reveal(), []));
         $this->variant->getParameterSet()->willReturn($this->parameterSet->reveal());
         $this->subject->getOutputTimeUnit()->willReturn(null);
         $this->subject->getOutputMode()->willReturn(null);
@@ -69,7 +71,7 @@ class VerboseLoggerTest extends PhpBenchLoggerTest
         $this->variant->getStats()->willReturn($this->stats->reveal());
         $this->variant->getSubject()->willReturn($this->subject->reveal());
         $this->variant->getParameterSet()->willReturn($this->parameterSet->reveal());
-        $this->variant->hasFailed()->willReturn(false);
+        $this->variant->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant->reveal(), []));
         $this->subject->getOutputTimeUnit()->willReturn(TimeUnit::MICROSECONDS);
         $this->subject->getOutputMode()->willReturn(TimeUnit::MODE_THROUGHPUT);
         $this->subject->getOutputTimePrecision()->willReturn(null);
@@ -91,7 +93,7 @@ class VerboseLoggerTest extends PhpBenchLoggerTest
         $this->variant->getStats()->willReturn($this->stats->reveal());
         $this->variant->getSubject()->willReturn($this->subject->reveal());
         $this->variant->getParameterSet()->willReturn($this->parameterSet->reveal());
-        $this->variant->hasFailed()->willReturn(true);
+        $this->variant->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant->reveal(), [AssertionResult::fail()]));
         $this->subject->getOutputTimeUnit()->willReturn(TimeUnit::MICROSECONDS);
         $this->subject->getOutputMode()->willReturn(TimeUnit::MODE_THROUGHPUT);
         $this->subject->getOutputTimePrecision()->willReturn(null);
@@ -110,7 +112,7 @@ class VerboseLoggerTest extends PhpBenchLoggerTest
     {
         $this->variant->hasErrorStack()->willReturn(true);
         $this->variant->getSubject()->willReturn($this->subject->reveal());
-        $this->variant->hasFailed()->willReturn(false);
+        $this->variant->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant->reveal(), []));
         $this->subject->getName()->willReturn('benchFoo');
         $this->output->write(Argument::containingString('ERROR'))->shouldBeCalled();
         $this->output->write(PHP_EOL)->shouldBeCalled();

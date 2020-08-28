@@ -13,9 +13,9 @@
 namespace PhpBench\Extension;
 
 use Humbug\SelfUpdate\Updater;
-use PhpBench\Assertion\AsserterRegistry;
 use PhpBench\Assertion\AssertionProcessor;
-use PhpBench\Assertion\ComparatorAsserter;
+use PhpBench\Assertion\ExpressionEvaluatorFactory;
+use PhpBench\Assertion\ExpressionParser;
 use PhpBench\Benchmark\BaselineManager;
 use PhpBench\Benchmark\BenchmarkFinder;
 use PhpBench\Benchmark\Metadata\AnnotationReader;
@@ -465,15 +465,12 @@ class CoreExtension implements ExtensionInterface
 
     private function registerAsserters(Container $container)
     {
-        $container->register('assertion.assertion_processor', function () use ($container) {
+        $container->register('assertion.assertion_processor', function () {
             return new AssertionProcessor(
-                $container->get('assertion.registry'),
-                $container->get('json.decoder')
+                new ExpressionParser(),
+                new ExpressionEvaluatorFactory()
             );
         });
-        $container->register('assertion.asserter.comparator', function (Container $container) {
-            return new ComparatorAsserter($container->get('benchmark.time_unit'));
-        }, ['assertion.asserter' => ['name' => 'comparator']]);
     }
 
     private function registerRegistries(Container $container)
@@ -521,16 +518,6 @@ class CoreExtension implements ExtensionInterface
 
             foreach ($executorConfigs as $name => $config) {
                 $registry->setConfig($name, $config);
-            }
-
-            return $registry;
-        });
-
-        $container->register('assertion.registry', function (Container $container) {
-            $registry = new AsserterRegistry($container);
-
-            foreach ($container->getServiceIdsForTag('assertion.asserter') as $serviceId => $attributes) {
-                $registry->registerService($attributes['name'], $serviceId);
             }
 
             return $registry;

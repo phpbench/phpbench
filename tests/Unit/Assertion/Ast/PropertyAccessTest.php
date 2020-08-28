@@ -3,8 +3,6 @@
 namespace PhpBench\Tests\Unit\Assertion\Ast;
 
 use Generator;
-use PHPUnit\Framework\TestCase;
-use PhpBench\Assertion\Ast\Arguments;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Exception\PropertyAccessError;
 use PhpBench\Tests\Unit\Assertion\ExpressionParserTestCase;
@@ -25,7 +23,8 @@ class PropertyAccessTest extends ExpressionParserTestCase
     public function providePropertyAccess(): Generator
     {
         $object = new class {
-            public function bar() {
+            public function bar()
+            {
                 return 2;
             }
         };
@@ -37,6 +36,7 @@ class PropertyAccessTest extends ExpressionParserTestCase
             ],
             2
         ];
+
         return;
 
         yield 'array access' => [
@@ -88,7 +88,8 @@ class PropertyAccessTest extends ExpressionParserTestCase
     public function provideErrors(): Generator
     {
         $object = new class {
-            public function bar(): string {
+            public function bar(): string
+            {
                 return 'hello';
             }
         };
@@ -99,6 +100,7 @@ class PropertyAccessTest extends ExpressionParserTestCase
             ],
             'Array does not have key',
         ];
+
         yield [
             ['one', 'two'],
             [
@@ -108,6 +110,7 @@ class PropertyAccessTest extends ExpressionParserTestCase
             ],
             'Array does not have key',
         ];
+
         yield [
             ['one', 'two'],
             [

@@ -128,7 +128,7 @@ EOT;
         $this->assertEquals('seconds', $metadata->getOutputTimeUnit());
         $this->assertEquals('throughput', $metadata->getOutputMode());
         $this->assertEquals([501], $metadata->getWarmup());
-        $this->assertEquals(['value' => 'mean < 100'], $metadata->getAssertions()[0]->getConfig());
+        $this->assertEquals('mean < 100', $metadata->getAssertions()[0]);
         $this->assertEquals(new ExecutorMetadata('microtime', ['revs' => 100 ]), $metadata->getExecutor());
         $this->assertTrue($metadata->getSkip());
         $this->assertEquals(0.1, $metadata->getTimeout());

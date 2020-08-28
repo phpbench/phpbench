@@ -3,7 +3,7 @@
 namespace PhpBench\Tests\Unit\Assertion\Ast;
 
 use Generator;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Assertion\AssertionResult;
 use PhpBench\Tests\Unit\Assertion\ExpressionParserTestCase;
 
 class ComparisonTest extends ExpressionParserTestCase
@@ -14,11 +14,10 @@ class ComparisonTest extends ExpressionParserTestCase
     public function testComparison(
         string $expression,
         array $args,
-        bool $expected
-    ): void
-    {
+        AssertionResult $result
+    ): void {
         self::assertEquals(
-            $expected,
+            $result,
             $this->evaluateExpression($expression, $args)
         );
     }
@@ -29,33 +28,33 @@ class ComparisonTest extends ExpressionParserTestCase
     public function provideLessThan(): Generator
     {
         yield [
-            '10 microseconds less than 10 microseconds',
+            '10 microseconds < 10 microseconds',
             [],
-            false
+            AssertionResult::fail()
         ];
 
         yield [
-            '10 microseconds less than 11 microseconds',
+            '10 microseconds < 11 microseconds',
             [],
-            true
+            AssertionResult::ok()
         ];
 
         yield [
-            '9 microseconds less than 8 microseconds',
+            '9 microseconds < 8 microseconds',
             [],
-            false
+            AssertionResult::fail()
         ];
 
         yield [
-            '10 seconds less than 10 seconds',
+            '10 seconds < 10 seconds',
             [],
-            false
+            AssertionResult::fail()
         ];
 
         yield [
-            '10 seconds less than 11 seconds',
+            '10 seconds < 11 seconds',
             [],
-            true
+            AssertionResult::ok()
         ];
     }
 }

@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Progress\Logger;
 
+use PhpBench\Assertion\VariantAssertionResults;
 use PhpBench\Progress\Logger\TravisLogger;
 use PhpBench\Util\TimeUnit;
 use Prophecy\Argument;
@@ -52,7 +53,7 @@ class TravisLoggerTest extends PhpBenchLoggerTest
         $this->variant->getStats()->willReturn($this->stats->reveal());
         $this->variant->getSubject()->willReturn($this->subject->reveal());
         $this->variant->getParameterSet()->willReturn($this->parameterSet->reveal());
-        $this->variant->hasFailed()->willReturn(false);
+        $this->variant->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant->reveal(), []));
         $this->subject->getOutputTimeUnit()->willReturn(null);
         $this->subject->getOutputMode()->willReturn(null);
         $this->subject->getName()->willReturn('benchFoo');
@@ -73,7 +74,7 @@ class TravisLoggerTest extends PhpBenchLoggerTest
         $this->variant->getRejectCount()->willReturn(0);
         $this->variant->getSubject()->willReturn($this->subject->reveal());
         $this->variant->count()->willReturn(10);
-        $this->variant->hasFailed()->willReturn(false);
+        $this->variant->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant->reveal(), []));
         $this->subject->getName()->willReturn('benchFoo');
 
         $this->output->writeln(Argument::containingString('ERROR'))->shouldBeCalled();
@@ -92,7 +93,7 @@ class TravisLoggerTest extends PhpBenchLoggerTest
         $this->variant->getSubject()->willReturn($this->subject->reveal());
         $this->variant->count()->willReturn(10);
         $this->variant->getParameterSet()->willReturn($this->parameterSet->reveal());
-        $this->variant->hasFailed()->willReturn(false);
+        $this->variant->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant->reveal(), []));
         $this->subject->getVariants()->willReturn([$this->variant->reveal()]);
         $this->subject->getOutputTimeUnit()->willReturn(TimeUnit::MICROSECONDS);
         $this->subject->getOutputTimePrecision()->willReturn(null);

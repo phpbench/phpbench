@@ -12,28 +12,21 @@
 
 namespace PhpBench\Assertion;
 
-use PhpBench\Assertion\Ast\Argument;
-use PhpBench\Assertion\Ast\Comparator;
 use PhpBench\Assertion\Ast\Comparison;
-use PhpBench\Assertion\Ast\Condition;
-use PhpBench\Assertion\Ast\Microseconds;
+use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Assertion\Ast\Node;
-use PhpBench\Assertion\Ast\Operator;
 use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
-use PhpBench\Assertion\Ast\Unit;
 use PhpBench\Assertion\Ast\TimeValue;
-use PhpBench\Assertion\Ast\Variable;
 use PhpBench\Assertion\Ast\WithinRangeOf;
-use Verraes\Parsica\Parser;
-use Parsica\StringStream;
 use function Verraes\Parsica\alphaChar;
 use function Verraes\Parsica\atLeastOne;
 use function Verraes\Parsica\char;
 use function Verraes\Parsica\collect;
 use function Verraes\Parsica\float;
 use function Verraes\Parsica\integer;
-use function Verraes\Parsica\sepBy;
+use Verraes\Parsica\Parser;
+use function Verraes\Parsica\sepBy2;
 use function Verraes\Parsica\string;
 use function Verraes\Parsica\stringI;
 use function Verraes\Parsica\whitespace;
@@ -42,16 +35,17 @@ class ExpressionParser
 {
     public function parse(string $expression): Node
     {
-        return 
+        return
             $this->withinParser()->or(
                 $this->comparisonParser()
             )->tryString($expression)->output();
     }
 
-    private function parameterParser(): Parser
+    private function valueParser(): Parser
     {
         return $this->percentageParser()
             ->or($this->timeValueParser())
+            ->or($this->memoryParser())
             ->or($this->propertyAccessParser());
     }
 
@@ -63,19 +57,21 @@ class ExpressionParser
     private function withinParser(): Parser
     {
         return collect(
-            $this->parameterParser(),
+            $this->valueParser(),
             whitespace(),
             stringI('within'),
             whitespace(),
-            $this->parameterParser(),
+            $this->valueParser(),
             whitespace(),
             stringI('of'),
             whitespace(),
-            $this->parameterParser()
+            $this->valueParser(),
+            whitespace()->optional(),
+            $this->toleranceParser()->optional()
         )->map(fn (array $vars) => new WithinRangeOf($vars[0], $vars[4], $vars[8]));
     }
 
-    private function unitParser(): Parser
+    private function timeUnitParser(): Parser
     {
         return stringI('microseconds')
             ->or(stringI('milliseconds'))
@@ -83,14 +79,22 @@ class ExpressionParser
         ;
     }
 
+    private function memoryUnitParser(): Parser
+    {
+        return stringI('bytes')
+            ->or(stringI('kilobytes'))
+            ->or(stringI('megabytes'))
+            ->or(stringI('gigabytes'));
+    }
+
     private function lessThanParser(): Parser
     {
-        return stringI('less than');
+        return stringI('<');
     }
 
     private function propertyAccessParser(): Parser
     {
-        return sepBy(char('.'), atLeastOne(
+        return sepBy2(char('.'), atLeastOne(
             alphaChar()->or(char('_'))
         ))->map(fn (array $segments) => new PropertyAccess($segments));
     }
@@ -100,8 +104,17 @@ class ExpressionParser
         return collect(
             float()->or(integer()),
             whitespace()->optional(),
-            $this->unitParser(),
+            $this->timeUnitParser(),
         )->map(fn (array $data) => new TimeValue($data[0], $data[2]));
+    }
+
+    private function memoryParser(): Parser
+    {
+        return collect(
+            float()->or(integer()),
+            whitespace()->optional(),
+            $this->memoryUnitParser(),
+        )->map(fn (array $data) => new MemoryValue($data[0], $data[2]));
     }
 
     private function percentageParser(): Parser
@@ -116,11 +129,22 @@ class ExpressionParser
     private function comparisonParser(): Parser
     {
         return collect(
-            $this->parameterParser(),
+            $this->valueParser(),
             whitespace(),
             $this->comparatorParser(),
             whitespace(),
-            $this->parameterParser(),
-        )->map(fn (array $vars) => new Comparison($vars[0], $vars[2], $vars[4]));
+            $this->valueParser(),
+            whitespace()->optional(),
+            $this->toleranceParser()->optional()
+        )->map(fn (array $vars) => new Comparison($vars[0], $vars[2], $vars[4], $vars[6]));
+    }
+
+    private function toleranceParser(): Parser
+    {
+        return collect(
+            string('+/-')->or(char('±')),
+            whitespace()->optional(),
+            $this->valueParser()
+        )->map(fn (array $vars) => $vars[2]);
     }
 }

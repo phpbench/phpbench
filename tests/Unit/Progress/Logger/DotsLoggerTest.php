@@ -12,6 +12,8 @@
 
 namespace PhpBench\Tests\Unit\Progress\Logger;
 
+use PhpBench\Assertion\AssertionResult;
+use PhpBench\Assertion\VariantAssertionResults;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\Subject;
@@ -49,8 +51,8 @@ class DotsLoggerTest extends TestCase
         $logger = $this->createLogger(true);
         $this->output->write('.')->shouldBeCalled();
         $this->variant->getRejectCount()->willReturn(0);
-        $this->variant->hasFailed()->willReturn(false);
         $this->variant->hasErrorStack()->willReturn(false);
+        $this->variant->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant->reveal(), []));
         $logger->variantEnd($this->variant->reveal());
     }
 
@@ -61,8 +63,8 @@ class DotsLoggerTest extends TestCase
     {
         $logger = $this->createLogger(false);
         $this->variant->getRejectCount()->willReturn(0);
-        $this->variant->hasFailed()->willReturn(false);
         $this->variant->hasErrorStack()->willReturn(false);
+        $this->variant->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant->reveal(), []));
         $this->output->write("\x0D. ")->shouldBeCalled();
         $logger->variantEnd($this->variant->reveal());
     }
@@ -74,7 +76,7 @@ class DotsLoggerTest extends TestCase
     {
         $logger = $this->createLogger(false);
         $this->variant->hasErrorStack()->willReturn(true);
-        $this->variant->hasFailed()->willReturn(false);
+        $this->variant->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant->reveal(), []));
         $this->variant->getRejectCount()->willReturn(0);
         $this->output->write("\x0D<error>E</error> ")->shouldBeCalled();
         $logger->variantEnd($this->variant->reveal());
@@ -88,7 +90,7 @@ class DotsLoggerTest extends TestCase
         $logger = $this->createLogger(false);
         $this->variant->hasErrorStack()->willReturn(false);
         $this->variant->getRejectCount()->willReturn(0);
-        $this->variant->hasFailed()->willReturn(true);
+        $this->variant->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant->reveal(), [AssertionResult::fail()]));
         $this->output->write("\x0D<error>F</error> ")->shouldBeCalled();
         $logger->variantEnd($this->variant->reveal());
     }

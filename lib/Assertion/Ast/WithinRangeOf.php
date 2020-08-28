@@ -13,11 +13,9 @@
 namespace PhpBench\Assertion\Ast;
 
 use PhpBench\Assertion\Ast;
-use PhpBench\Math\Statistics;
-use PhpBench\Assertion\Ast\Microseconds;
-use PhpBench\Assertion\Ast\TimeValue;
 
-class WithinRangeOf implements Node
+
+class WithinRangeOf implements Assertion
 {
     /**
      * @var Ast\Value
@@ -38,8 +36,7 @@ class WithinRangeOf implements Node
         Value $value1,
         Value $range,
         Value $value2
-    )
-    {
+    ) {
         $this->value1 = $value1;
         $this->range = $range;
         $this->value2 = $value2;
@@ -60,4 +57,3 @@ class WithinRangeOf implements Node
         return $this->value2;
     }
 }
-

@@ -12,36 +12,26 @@
 
 namespace PhpBench\Tests\Unit\Assertion;
 
-use PHPUnit\Framework\TestCase;
 use Generator;
-use PhpBench\Assertion\Ast\Comparator;
 use PhpBench\Assertion\Ast\Comparison;
-use PhpBench\Assertion\Ast\Condition;
-use PhpBench\Assertion\Ast\Microseconds;
 use PhpBench\Assertion\Ast\Node;
 use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
-use PhpBench\Assertion\Ast\Unit;
 use PhpBench\Assertion\Ast\TimeValue;
-use PhpBench\Assertion\Ast\Variable;
 use PhpBench\Assertion\Ast\WithinRangeOf;
-use PhpBench\Assertion\ExpressionParser;
-use SebastianBergmann\CodeCoverage\Report\Xml\Unit as SebastianBergmannUnit;
 
 class ExpressionParserTest extends ExpressionParserTestCase
 {
     /**
-     * @dataProvider provideGeneral
+     * @dataProvider provideWithin
+     * @dataProvider provideComparison
      */
     public function testParse(string $dsl, Node $expected): void
     {
         $this->assertEquals($expected, $this->parse($dsl));
     }
-    
-    /**
-     * @return Generator<mixed>
-     */
-    public function provideGeneral(): Generator
+
+    public function provideWithin(): Generator
     {
         yield 'within' => [
             'this.mean within 10% of baseline.mean',
@@ -49,6 +39,7 @@ class ExpressionParserTest extends ExpressionParserTestCase
                 new PropertyAccess(['this', 'mean']),
                 new PercentageValue(10),
                 new PropertyAccess(['baseline', 'mean']),
+                new TimeValue(0, 'microseconds')
             )
         ];
 
@@ -58,15 +49,44 @@ class ExpressionParserTest extends ExpressionParserTestCase
                 new PropertyAccess(['this', 'mean']),
                 new PercentageValue(10),
                 new PropertyAccess(['baseline', 'mean']),
+                new TimeValue(0, 'microseconds')
             )
         ];
 
         yield [
-            'this.mem_peak less than 100 microseconds',
+            'this.mem_peak < 100 microseconds',
             new Comparison(
                 new PropertyAccess(['this', 'mem_peak']),
-                'less than',
+                '<',
                 new TimeValue(100, 'microseconds'),
+                new TimeValue(0, 'microseconds')
+            )
+        ];
+    }
+    
+    /**
+     * @return Generator<mixed>
+     */
+    public function provideComparison(): Generator
+    {
+        yield [
+            'this.mem_peak < 100 microseconds',
+            new Comparison(
+                new PropertyAccess(['this', 'mem_peak']),
+                '<',
+                new TimeValue(100, 'microseconds'),
+                new TimeValue(0, 'microseconds')
+            )
+        ];
+
+        yield [
+            'this.mem_peak < 100 microseconds +/- 50 microseconds',
+            new Comparison(
+                new PropertyAccess(['this', 'mem_peak']),
+                '<',
+                new TimeValue(100, 'microseconds'),
+                new TimeValue(50, 'microseconds'),
+                new TimeValue(0, 'microseconds')
             )
         ];
     }

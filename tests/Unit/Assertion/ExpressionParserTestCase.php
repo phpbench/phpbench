@@ -2,16 +2,18 @@
 
 namespace PhpBench\Tests\Unit\Assertion;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Assertion\Ast\Node;
 use PhpBench\Assertion\ExpressionEvaluator;
 use PhpBench\Assertion\ExpressionParser;
+use PhpBench\Assertion\MessageFormatter;
+use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 
 class ExpressionParserTestCase extends TestCase
 {
     protected function parse(string $expression): Node
     {
-        return (new ExpressionParser())->parse($expression);
+        return (new ExpressionParser([]))->parse($expression);
     }
 
     /**
@@ -19,14 +21,20 @@ class ExpressionParserTestCase extends TestCase
      */
     protected function evaluateExpression(string $expression, array $args)
     {
-        return (new ExpressionEvaluator($args))->evaluate($this->parse($expression));
+        $formatter = $this->prophesize(MessageFormatter::class);
+        $formatter->format(Argument::type(Node::class))->willReturn('');
+
+        return (new ExpressionEvaluator($formatter->reveal(), $args))->evaluate($this->parse($expression));
     }
 
     /**
      * @return mixed
      */
-    protected function evaluate(Node $node, array $args)
+    protected function evaluate(Node $node, array $args = [])
     {
-        return (new ExpressionEvaluator($args))->evaluate($node);
+        $formatter = $this->prophesize(MessageFormatter::class);
+        $formatter->format(Argument::type(Node::class))->willReturn('');
+
+        return (new ExpressionEvaluator($formatter->reveal(), $args))->evaluate($node);
     }
 }

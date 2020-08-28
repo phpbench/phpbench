@@ -2,20 +2,19 @@
 
 namespace PhpBench\Assertion\Ast;
 
-use PhpBench\Util\TimeUnit;
-
-class TimeValue implements Value
+class MemoryValue implements Value
 {
     /**
      * @var float
      */
     private $value;
+
     /**
      * @var string
      */
     private $unit;
 
-    public function __construct(float $value, ?string $unit = TimeUnit::MICROSECONDS)
+    public function __construct(float $value, string $unit)
     {
         $this->value = $value;
         $this->unit = $unit;
@@ -31,8 +30,8 @@ class TimeValue implements Value
         return $this->value;
     }
 
-    public static function fromMicroseconds(float $int): self
+    public function toBytes()
     {
-        return new self($int, TimeUnit::MICROSECONDS);
+        return $this->value;
     }
 }

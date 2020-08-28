@@ -2,7 +2,7 @@
 
 namespace PhpBench\Assertion\Ast;
 
-class Comparison implements Node
+class Comparison implements Assertion
 {
     /**
      * @var Value
@@ -17,11 +17,17 @@ class Comparison implements Node
      */
     private $value2;
 
-    public function __construct(Value $value1, string $operator, Value $value2)
+    /**
+     * @var Value
+     */
+    private $tolerance;
+
+    public function __construct(Value $value1, string $operator, Value $value2, ?Value $tolerance = null)
     {
         $this->value1 = $value1;
         $this->operator = $operator;
         $this->value2 = $value2;
+        $this->tolerance = $tolerance ?: new TimeValue(0);
     }
 
     public function operator(): string
@@ -37,5 +43,10 @@ class Comparison implements Node
     public function value1(): Value
     {
         return $this->value1;
+    }
+
+    public function tolerance(): Value
+    {
+        return $this->tolerance;
     }
 }
