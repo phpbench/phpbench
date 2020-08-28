@@ -14,7 +14,6 @@ namespace PhpBench\Assertion\Ast;
 
 use PhpBench\Assertion\Ast;
 
-
 class WithinRangeOf implements Assertion
 {
     /**
