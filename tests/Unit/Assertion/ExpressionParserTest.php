@@ -74,19 +74,52 @@ class ExpressionParserTest extends ExpressionParserTestCase
             new Comparison(
                 new PropertyAccess(['this', 'mem_peak']),
                 '<',
-                new TimeValue(100, 'microseconds'),
-                new TimeValue(0, 'microseconds')
+                new TimeValue(100, 'microseconds')
             )
         ];
 
         yield [
-            'this.mem_peak < 100 microseconds +/- 50 microseconds',
+            'this.mem_peak < 100 microseconds +/-',
             new Comparison(
                 new PropertyAccess(['this', 'mem_peak']),
                 '<',
+                new TimeValue(100, 'microseconds')
+            )
+        ];
+
+        yield 'less than equal' => [
+            'this.mem_peak <= 100 microseconds',
+            new Comparison(
+                new PropertyAccess(['this', 'mem_peak']),
+                '<=',
                 new TimeValue(100, 'microseconds'),
-                new TimeValue(50, 'microseconds'),
-                new TimeValue(0, 'microseconds')
+            )
+        ];
+
+        yield 'equal' => [
+            'this.mem_peak = 100 microseconds',
+            new Comparison(
+                new PropertyAccess(['this', 'mem_peak']),
+                '=',
+                new TimeValue(100, 'microseconds')
+            )
+        ];
+
+        yield 'greater than' => [
+            'this.mem_peak > 100 microseconds',
+            new Comparison(
+                new PropertyAccess(['this', 'mem_peak']),
+                '>',
+                new TimeValue(100, 'microseconds')
+            )
+        ];
+
+        yield 'greater than equal' => [
+            'this.mem_peak >= 100 microseconds',
+            new Comparison(
+                new PropertyAccess(['this', 'mem_peak']),
+                '>=',
+                new TimeValue(100, 'microseconds')
             )
         ];
     }

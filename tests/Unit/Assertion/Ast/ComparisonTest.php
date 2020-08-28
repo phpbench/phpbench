@@ -10,15 +10,18 @@ class ComparisonTest extends ExpressionParserTestCase
 {
     /**
      * @dataProvider provideLessThan
+     * @dataProvider provideLessThanOrEqual
+     * @dataProvider provideEqual
+     * @dataProvider provideGreaterThan
+     * @dataProvider provideGreaterThanEqual
      */
     public function testComparison(
         string $expression,
-        array $args,
         AssertionResult $result
     ): void {
         self::assertEquals(
             $result,
-            $this->evaluateExpression($expression, $args)
+            $this->evaluateExpression($expression, [])
         );
     }
     
@@ -29,32 +32,128 @@ class ComparisonTest extends ExpressionParserTestCase
     {
         yield [
             '10 microseconds < 10 microseconds',
-            [],
             AssertionResult::fail()
         ];
 
         yield [
             '10 microseconds < 11 microseconds',
-            [],
             AssertionResult::ok()
         ];
 
         yield [
             '9 microseconds < 8 microseconds',
-            [],
             AssertionResult::fail()
         ];
 
         yield [
             '10 seconds < 10 seconds',
-            [],
             AssertionResult::fail()
         ];
 
         yield [
             '10 seconds < 11 seconds',
-            [],
             AssertionResult::ok()
+        ];
+    }
+
+    /**
+     * @return Generator<mixed>
+     */
+    public function provideLessThanOrEqual(): Generator
+    {
+        yield [
+            '10 seconds <= 10 seconds',
+            AssertionResult::ok()
+        ];
+
+        yield [
+            '10 seconds <= 9 seconds',
+            AssertionResult::fail()
+        ];
+
+        yield 'tolerated' => [
+            '10 seconds <= 9.9 seconds +/- 0.1 seconds',
+            AssertionResult::tolerated()
+        ];
+    }
+
+    /**
+     * @return Generator<mixed>
+     */
+    public function provideEqual(): Generator
+    {
+        yield [
+            '10 seconds = 10 seconds',
+            AssertionResult::ok()
+        ];
+
+        yield [
+            '10 seconds = 11 seconds',
+            AssertionResult::fail()
+        ];
+
+        yield [
+            '10 seconds = 9 seconds',
+            AssertionResult::fail()
+        ];
+
+        yield [
+            '10 seconds = 9 seconds +/- 1 seconds',
+            AssertionResult::tolerated()
+        ];
+
+        yield [
+            '10 seconds = 11 seconds +/- 1 seconds',
+            AssertionResult::tolerated()
+        ];
+    }
+
+    /**
+     * @return Generator<mixed>
+     */
+    public function provideGreaterThan(): Generator
+    {
+        yield [
+            '10 seconds > 9 seconds',
+            AssertionResult::ok()
+        ];
+        yield [
+            '10 seconds > 10 seconds',
+            AssertionResult::fail()
+        ];
+        yield [
+            '10 seconds > 11 seconds',
+            AssertionResult::fail()
+        ];
+        yield [
+            '10 seconds > 10 seconds +/- 1 seconds',
+            AssertionResult::tolerated()
+        ];
+    }
+
+    /**
+     * @return Generator<mixed>
+     */
+    public function provideGreaterThanEqual(): Generator
+    {
+        yield [
+            '10 seconds >= 10 seconds',
+            AssertionResult::ok()
+        ];
+
+        yield [
+            '10 seconds >= 11 seconds',
+            AssertionResult::fail()
+        ];
+
+        yield [
+            '10 seconds >= 10.1 seconds',
+            AssertionResult::fail()
+        ];
+
+        yield 'tolerated' => [
+            '10 seconds >= 10.1 seconds +/- 0.1 seconds',
+            AssertionResult::tolerated()
         ];
     }
 }

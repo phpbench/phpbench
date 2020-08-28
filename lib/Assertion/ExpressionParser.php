@@ -22,6 +22,7 @@ use PhpBench\Assertion\Ast\WithinRangeOf;
 use function Verraes\Parsica\alphaChar;
 use function Verraes\Parsica\atLeastOne;
 use function Verraes\Parsica\char;
+use function Verraes\Parsica\charI;
 use function Verraes\Parsica\collect;
 use function Verraes\Parsica\float;
 use function Verraes\Parsica\integer;
@@ -89,7 +90,11 @@ class ExpressionParser
 
     private function lessThanParser(): Parser
     {
-        return stringI('<');
+        return string('<=')
+            ->or(char('<'))
+            ->or(char('='))
+            ->or(string('>='))
+            ->or(char('>'));
     }
 
     private function propertyAccessParser(): Parser
