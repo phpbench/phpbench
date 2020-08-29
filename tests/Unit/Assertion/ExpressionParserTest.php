@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Assertion;
 
+use Exception;
 use Generator;
 use PhpBench\Assertion\Ast\Comparison;
 use PhpBench\Assertion\Ast\Node;
@@ -19,6 +20,7 @@ use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\WithinRangeOf;
+use Verraes\Parsica\ParserFailure;
 
 class ExpressionParserTest extends ExpressionParserTestCase
 {
@@ -79,7 +81,7 @@ class ExpressionParserTest extends ExpressionParserTestCase
         ];
 
         yield [
-            'this.mem_peak < 100 microseconds +/-',
+            'this.mem_peak < 100 microseconds',
             new Comparison(
                 new PropertyAccess(['this', 'mem_peak']),
                 '<',
@@ -122,5 +124,11 @@ class ExpressionParserTest extends ExpressionParserTestCase
                 new TimeValue(100, 'microseconds')
             )
         ];
+    }
+
+    public function testTrailingText(): void
+    {
+        $this->expectException(ParserFailure::class);
+        $this->parse('this.foobar > 10 seconds asd');
     }
 }

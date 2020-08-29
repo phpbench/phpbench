@@ -24,10 +24,13 @@ use function Verraes\Parsica\atLeastOne;
 use function Verraes\Parsica\char;
 use function Verraes\Parsica\charI;
 use function Verraes\Parsica\collect;
+use function Verraes\Parsica\eof;
 use function Verraes\Parsica\float;
 use function Verraes\Parsica\integer;
 use Verraes\Parsica\Parser;
+use function Verraes\Parsica\keepFirst;
 use function Verraes\Parsica\sepBy2;
+use function Verraes\Parsica\sequence;
 use function Verraes\Parsica\string;
 use function Verraes\Parsica\stringI;
 use function Verraes\Parsica\whitespace;
@@ -36,10 +39,12 @@ class ExpressionParser
 {
     public function parse(string $expression): Node
     {
-        return
+        return keepFirst(
             $this->withinParser()->or(
                 $this->comparisonParser()
-            )->tryString($expression)->output();
+            ),
+            eof()
+        )->tryString($expression)->output();
     }
 
     private function valueParser(): Parser
