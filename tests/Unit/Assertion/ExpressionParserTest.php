@@ -15,9 +15,12 @@ namespace PhpBench\Tests\Unit\Assertion;
 use Exception;
 use Generator;
 use PhpBench\Assertion\Ast\Comparison;
+use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Assertion\Ast\Node;
+use PhpBench\Assertion\Ast\Parenthesised;
 use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
+use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\WithinRangeOf;
 use Verraes\Parsica\ParserFailure;
@@ -27,6 +30,7 @@ class ExpressionParserTest extends ExpressionParserTestCase
     /**
      * @dataProvider provideWithin
      * @dataProvider provideComparison
+     * @dataProvider provideComparisonThroughput
      */
     public function testParse(string $dsl, Node $expected): void
     {
@@ -72,56 +76,91 @@ class ExpressionParserTest extends ExpressionParserTestCase
     public function provideComparison(): Generator
     {
         yield [
-            'this.mem_peak < 100 microseconds',
+            'this.foobar < 100 microseconds',
             new Comparison(
-                new PropertyAccess(['this', 'mem_peak']),
+                new PropertyAccess(['this', 'foobar']),
                 '<',
                 new TimeValue(100, 'microseconds')
             )
         ];
 
         yield [
-            'this.mem_peak < 100 microseconds',
+            'this.foobar < 100 microseconds',
             new Comparison(
-                new PropertyAccess(['this', 'mem_peak']),
+                new PropertyAccess(['this', 'foobar']),
                 '<',
                 new TimeValue(100, 'microseconds')
             )
         ];
 
         yield 'less than equal' => [
-            'this.mem_peak <= 100 microseconds',
+            'this.foobar <= 100 microseconds',
             new Comparison(
-                new PropertyAccess(['this', 'mem_peak']),
+                new PropertyAccess(['this', 'foobar']),
                 '<=',
                 new TimeValue(100, 'microseconds'),
             )
         ];
 
         yield 'equal' => [
-            'this.mem_peak = 100 microseconds',
+            'this.foobar = 100 microseconds',
             new Comparison(
-                new PropertyAccess(['this', 'mem_peak']),
+                new PropertyAccess(['this', 'foobar']),
                 '=',
                 new TimeValue(100, 'microseconds')
             )
         ];
 
         yield 'greater than' => [
-            'this.mem_peak > 100 microseconds',
+            'this.foobar > 100 microseconds',
             new Comparison(
-                new PropertyAccess(['this', 'mem_peak']),
+                new PropertyAccess(['this', 'foobar']),
                 '>',
                 new TimeValue(100, 'microseconds')
             )
         ];
 
         yield 'greater than equal' => [
-            'this.mem_peak >= 100 microseconds',
+            'this.foobar >= 100 microseconds',
+            new Comparison(
+                new PropertyAccess(['this', 'foobar']),
+                '>=',
+                new TimeValue(100, 'microseconds')
+            )
+        ];
+
+        yield 'with tolerance' => [
+            'this.foobar >= 100 microseconds +/- 10 microseconds',
+            new Comparison(
+                new PropertyAccess(['this', 'foobar']),
+                '>=',
+                new TimeValue(100, 'microseconds'),
+                new TimeValue(10, 'microseconds')
+            )
+        ];
+
+        yield 'with tolerance percentage' => [
+            'this.mem_peak >= 100 bytes +/- 10%',
             new Comparison(
                 new PropertyAccess(['this', 'mem_peak']),
                 '>=',
-                new TimeValue(100, 'microseconds')
+                new MemoryValue(100, 'bytes'),
+                new PercentageValue(10)
+            )
+        ];
+    }
+
+    /**
+     * @return Generator<mixed>
+     */
+    public function provideComparisonThroughput(): Generator
+    {
+        yield 'with throughput' => [
+            'this.mem_peak >= 100 ops/millisecond',
+            new Comparison(
+                new PropertyAccess(['this', 'mem_peak']),
+                '>=',
+                new ThroughputValue(100, 'millisecond')
             )
         ];
     }

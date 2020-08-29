@@ -8,7 +8,9 @@ use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Assertion\Ast\Node;
 use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
+use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeValue;
+use PhpBench\Assertion\Ast\Value;
 use PhpBench\Assertion\Ast\WithinRangeOf;
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
 use PhpBench\Math\FloatNumber;
@@ -66,6 +68,10 @@ class ExpressionEvaluator
             return $this->evaluateTimeValue($node);
         }
 
+        if ($node instanceof ThroughputValue) {
+            return $this->evaluateThroughputValue($node);
+        }
+
         if ($node instanceof PropertyAccess) {
             return $this->evaluatePropertyAccess($node);
         }
@@ -91,7 +97,7 @@ class ExpressionEvaluator
     {
         $left = $this->evaluate($node->value1());
         $right = $this->evaluate($node->value2());
-        $tolerance = $this->evaluate($node->tolerance());
+        $tolerance = $this->evaluateTolerance($node->tolerance(), $right);
 
         switch ($node->operator()) {
             case '<':
@@ -194,5 +200,19 @@ class ExpressionEvaluator
     private function evaluateMemoryValue(MemoryValue $node): int
     {
         return MemoryUnit::convertToBytes($node->value(), $node->unit());
+    }
+
+    private function evaluateTolerance(Value $value, $right): float
+    {
+        if ($value instanceof PercentageValue) {
+            return ($right / 100) * $value->percentage();
+        }
+
+        return $this->evaluate($value);
+    }
+
+    private function evaluateThroughputValue(ThroughputValue $node): float
+    {
+        return TimeUnit::convertTo(1, $node->unit() .'s', TimeUnit::MICROSECONDS) / $node->value();
     }
 }

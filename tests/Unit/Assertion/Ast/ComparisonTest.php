@@ -14,6 +14,7 @@ class ComparisonTest extends ExpressionParserTestCase
      * @dataProvider provideEqual
      * @dataProvider provideGreaterThan
      * @dataProvider provideGreaterThanEqual
+     * @dataProvider provideTolerance
      */
     public function testComparison(
         string $expression,
@@ -153,6 +154,32 @@ class ComparisonTest extends ExpressionParserTestCase
 
         yield 'tolerated' => [
             '10 seconds >= 10.1 seconds +/- 0.1 seconds',
+            AssertionResult::tolerated()
+        ];
+    }
+
+    /**
+     * @return Generator<mixed>
+     */
+    public function provideTolerance(): Generator
+    {
+        yield [
+            '11 seconds <= 10 seconds +/- 0%',
+            AssertionResult::fail()
+        ];
+
+        yield '11 microseconds <= 10 microseconds +/- 10%' => [
+            '11 microseconds <= 10 microseconds +/- 10%',
+            AssertionResult::tolerated()
+        ];
+
+        yield '11 microseconds <= 10 microseconds +/- 9.999%' => [
+            '11 microseconds <= 10 microseconds +/- 9.999%',
+            AssertionResult::fail()
+        ];
+
+        yield '11 microseconds <= 10 microseconds +/- 10.001%' => [
+            '11 microseconds <= 10 microseconds +/- 10.001%',
             AssertionResult::tolerated()
         ];
     }

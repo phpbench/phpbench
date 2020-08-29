@@ -4,6 +4,7 @@ namespace PhpBench\Assertion\MessageFormatter;
 
 use PhpBench\Assertion\Ast\Comparison;
 use PhpBench\Assertion\Ast\Node;
+use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\Value;
@@ -47,8 +48,11 @@ final class NodeMessageFormatter implements MessageFormatter
             return $this->formatPropertyAccess($node);
         }
 
+        if ($node instanceof PercentageValue) {
+            return $this->formatPercentageValue($node);
+        }
 
-        return sprintf('<could not format "%s"', get_class($node));
+        return sprintf('!!!! could not format "%s" !!!!', get_class($node));
     }
 
     private function formatComparison(Comparison $node): string
@@ -113,5 +117,10 @@ final class NodeMessageFormatter implements MessageFormatter
         }
 
         return $this->format($value);
+    }
+
+    private function formatPercentageValue(PercentageValue $node): string
+    {
+        return sprintf('%s%%', $node->percentage());
     }
 }

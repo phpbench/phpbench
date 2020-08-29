@@ -17,6 +17,7 @@ use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Assertion\Ast\Node;
 use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
+use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\WithinRangeOf;
 use function Verraes\Parsica\alphaChar;
@@ -40,19 +41,24 @@ class ExpressionParser
     public function parse(string $expression): Node
     {
         return keepFirst(
-            $this->withinParser()->or(
-                $this->comparisonParser()
-            ),
+            $this->expressionParser(),
             eof()
         )->tryString($expression)->output();
     }
 
+    private function expressionParser(): Parser
+    {
+        return $this->withinParser()->or(
+            $this->comparisonParser()
+        );
+    }
+
     private function valueParser(): Parser
     {
-        return $this->percentageParser()
-            ->or($this->timeValueParser())
+        return $this->timeValueParser()
             ->or($this->memoryParser())
-            ->or($this->propertyAccessParser());
+            ->or($this->propertyAccessParser())
+            ->or($this->throughputParser());
     }
 
     private function comparatorParser(): Parser
@@ -67,7 +73,7 @@ class ExpressionParser
             whitespace(),
             stringI('within'),
             whitespace(),
-            $this->valueParser(),
+            $this->percentageParser()->or($this->valueParser()),
             whitespace(),
             stringI('of'),
             whitespace(),
@@ -154,7 +160,20 @@ class ExpressionParser
         return collect(
             string('+/-')->or(char('±')),
             whitespace()->optional(),
-            $this->valueParser()
+            $this->percentageParser()->or($this->valueParser()),
         )->map(fn (array $vars) => $vars[2]);
+    }
+
+    private function throughputParser(): Parser
+    {
+        return collect(
+            float()->or(integer()),
+            whitespace(),
+            stringI('ops/'),
+            stringI('microsecond')
+                ->or(stringI('second'))
+                ->or(stringI('millisecond'))
+                ->or(stringI('second'))
+        )->map(fn (array $vars) => new ThroughputValue($vars[0], $vars[3]));
     }
 }
