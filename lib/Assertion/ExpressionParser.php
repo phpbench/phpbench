@@ -46,9 +46,7 @@ class ExpressionParser
 
     private function expressionParser(): Parser
     {
-        return $this->withinParser()->or(
-            $this->comparisonParser()
-        );
+        return $this->comparisonParser();
     }
 
     private function valueParser(): Parser
@@ -61,23 +59,6 @@ class ExpressionParser
     private function comparatorParser(): Parser
     {
         return $this->lessThanParser();
-    }
-
-    private function withinParser(): Parser
-    {
-        return collect(
-            $this->valueParser(),
-            whitespace(),
-            stringI('within'),
-            whitespace(),
-            $this->percentageParser()->or($this->valueParser()),
-            whitespace(),
-            stringI('of'),
-            whitespace(),
-            $this->valueParser(),
-            whitespace()->optional(),
-            $this->toleranceParser()->optional()
-        )->map(fn (array $vars) => new WithinRangeOf($vars[0], $vars[4], $vars[8]));
     }
 
     private function timeUnitParser(): Parser

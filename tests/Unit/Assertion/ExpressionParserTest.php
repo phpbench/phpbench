@@ -26,7 +26,6 @@ use Verraes\Parsica\ParserFailure;
 class ExpressionParserTest extends ExpressionParserTestCase
 {
     /**
-     * @dataProvider provideWithin
      * @dataProvider provideComparison
      * @dataProvider provideComparisonThroughput
      */
@@ -35,39 +34,6 @@ class ExpressionParserTest extends ExpressionParserTestCase
         $this->assertEquals($expected, $this->parse($dsl));
     }
 
-    public function provideWithin(): Generator
-    {
-        yield 'within' => [
-            'this.mean within 10% of baseline.mean',
-            new WithinRangeOf(
-                new PropertyAccess(['this', 'mean']),
-                new PercentageValue(10),
-                new PropertyAccess(['baseline', 'mean']),
-                new TimeValue(0, 'microseconds')
-            )
-        ];
-
-        yield [
-            'this.mean WITHIN 10% OF baseline.mean',
-            new WithinRangeOf(
-                new PropertyAccess(['this', 'mean']),
-                new PercentageValue(10),
-                new PropertyAccess(['baseline', 'mean']),
-                new TimeValue(0, 'microseconds')
-            )
-        ];
-
-        yield [
-            'this.mem_peak < 100 microseconds',
-            new Comparison(
-                new PropertyAccess(['this', 'mem_peak']),
-                '<',
-                new TimeValue(100, 'microseconds'),
-                new TimeValue(0, 'microseconds')
-            )
-        ];
-    }
-    
     /**
      * @return Generator<mixed>
      */
