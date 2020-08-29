@@ -19,7 +19,6 @@ use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeValue;
-use PhpBench\Assertion\Ast\WithinRangeOf;
 use function Verraes\Parsica\alphaChar;
 use function Verraes\Parsica\atLeastOne;
 use function Verraes\Parsica\char;
