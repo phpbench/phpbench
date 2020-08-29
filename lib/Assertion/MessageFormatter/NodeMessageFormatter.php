@@ -6,6 +6,7 @@ use PhpBench\Assertion\Ast\Comparison;
 use PhpBench\Assertion\Ast\Node;
 use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
+use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\Value;
 use PhpBench\Assertion\MessageFormatter;
@@ -24,6 +25,9 @@ final class NodeMessageFormatter implements MessageFormatter
      * @var array<string,string>
      */
     private $aliases = [
+        'microsecond' => 'μs',
+        'millisecond' => 'ms',
+        'second' => 's',
         TimeUnit::MICROSECONDS => 'μs',
         TimeUnit::MILLISECONDS => 'ms',
         TimeUnit::SECONDS => 's',
@@ -50,6 +54,10 @@ final class NodeMessageFormatter implements MessageFormatter
 
         if ($node instanceof PercentageValue) {
             return $this->formatPercentageValue($node);
+        }
+
+        if ($node instanceof ThroughputValue) {
+            return $this->formatThroughputValue($node);
         }
 
         return sprintf('!!!! could not format "%s" !!!!', get_class($node));
@@ -83,11 +91,13 @@ final class NodeMessageFormatter implements MessageFormatter
             $value = number_format($timeValue->value());
         }
 
-        if (array_key_exists($timeValue->unit(), $this->aliases)) {
-            return sprintf('%s%s', $value, $this->aliases[$timeValue->unit()]);
+        $unit = $timeValue->unit();
+
+        if (array_key_exists($unit, $this->aliases)) {
+            return sprintf('%s%s', $value, $this->aliases[$unit]);
         }
 
-        return sprintf('%s %s', $value, $timeValue->unit());
+        return sprintf('%s %s', $value, $unit);
     }
 
     private function formatPropertyAccess(PropertyAccess $value): string
@@ -101,12 +111,23 @@ final class NodeMessageFormatter implements MessageFormatter
             return $this->format($value);
         }
 
+        $propertyValue = (float)$this->formatPropertyAccess($value);
+
         foreach ($companionValues as $companionValue) {
+            if ($companionValue instanceof ThroughputValue) {
+                return $this->format(
+                    new ThroughputValue(
+                        TimeUnit::convert($propertyValue, TimeUnit::MICROSECONDS, $companionValue->unit(), TimeUnit::MODE_THROUGHPUT),
+                        $companionValue->unit()
+                    )
+                );
+            }
+
             if ($companionValue instanceof TimeValue) {
                 return $this->format(
                     new TimeValue(
                         TimeUnit::convertTo(
-                            (float)$this->formatPropertyAccess($value),
+                            $propertyValue,
                             TimeUnit::MICROSECONDS,
                             $companionValue->unit()
                         ),
@@ -122,5 +143,16 @@ final class NodeMessageFormatter implements MessageFormatter
     private function formatPercentageValue(PercentageValue $node): string
     {
         return sprintf('%s%%', $node->percentage());
+    }
+
+    private function formatThroughputValue(ThroughputValue $node): string
+    {
+        if (array_key_exists($node->unit(), $this->aliases)) {
+            $unit = $this->aliases[$node->unit()];
+        } else {
+            $unit = $node->unit();
+        }
+
+        return sprintf('%s ops/%s', $node->value(), $unit);
     }
 }

@@ -15,6 +15,7 @@ class ComparisonTest extends ExpressionParserTestCase
      * @dataProvider provideGreaterThan
      * @dataProvider provideGreaterThanEqual
      * @dataProvider provideTolerance
+     * @dataProvider provideThroughput
      */
     public function testComparison(
         string $expression,
@@ -118,14 +119,17 @@ class ComparisonTest extends ExpressionParserTestCase
             '10 seconds > 9 seconds',
             AssertionResult::ok()
         ];
+
         yield [
             '10 seconds > 10 seconds',
             AssertionResult::fail()
         ];
+
         yield [
             '10 seconds > 11 seconds',
             AssertionResult::fail()
         ];
+
         yield [
             '10 seconds > 10 seconds +/- 1 seconds',
             AssertionResult::tolerated()
@@ -155,6 +159,32 @@ class ComparisonTest extends ExpressionParserTestCase
         yield 'tolerated' => [
             '10 seconds >= 10.1 seconds +/- 0.1 seconds',
             AssertionResult::tolerated()
+        ];
+    }
+
+    /**
+     * @return Generator<mixed>
+     */
+    public function provideThroughput(): Generator
+    {
+        yield 'throughput 1' => [
+            '11 ops/second > 10 ops/second',
+            AssertionResult::ok()
+        ];
+
+        yield 'throughput 2' => [
+            '9 ops/second > 10 ops/second',
+            AssertionResult::fail()
+        ];
+
+        yield 'throughput 3' => [
+            '9 ops/second < 10 ops/second',
+            AssertionResult::ok()
+        ];
+
+        yield 'throughput 4' => [
+            '11 ops/second < 10 ops/second',
+            AssertionResult::fail()
         ];
     }
 

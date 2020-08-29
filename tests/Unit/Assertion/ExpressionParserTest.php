@@ -12,12 +12,10 @@
 
 namespace PhpBench\Tests\Unit\Assertion;
 
-use Exception;
 use Generator;
 use PhpBench\Assertion\Ast\Comparison;
 use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Assertion\Ast\Node;
-use PhpBench\Assertion\Ast\Parenthesised;
 use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\ThroughputValue;
@@ -156,9 +154,9 @@ class ExpressionParserTest extends ExpressionParserTestCase
     public function provideComparisonThroughput(): Generator
     {
         yield 'with throughput' => [
-            'this.mem_peak >= 100 ops/millisecond',
+            'this.time >= 100 ops/millisecond',
             new Comparison(
-                new PropertyAccess(['this', 'mem_peak']),
+                new PropertyAccess(['this', 'time']),
                 '>=',
                 new ThroughputValue(100, 'millisecond')
             )

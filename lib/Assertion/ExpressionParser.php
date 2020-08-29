@@ -23,15 +23,13 @@ use PhpBench\Assertion\Ast\WithinRangeOf;
 use function Verraes\Parsica\alphaChar;
 use function Verraes\Parsica\atLeastOne;
 use function Verraes\Parsica\char;
-use function Verraes\Parsica\charI;
 use function Verraes\Parsica\collect;
 use function Verraes\Parsica\eof;
 use function Verraes\Parsica\float;
 use function Verraes\Parsica\integer;
-use Verraes\Parsica\Parser;
 use function Verraes\Parsica\keepFirst;
+use Verraes\Parsica\Parser;
 use function Verraes\Parsica\sepBy2;
-use function Verraes\Parsica\sequence;
 use function Verraes\Parsica\string;
 use function Verraes\Parsica\stringI;
 use function Verraes\Parsica\whitespace;
@@ -57,8 +55,7 @@ class ExpressionParser
     {
         return $this->timeValueParser()
             ->or($this->memoryParser())
-            ->or($this->propertyAccessParser())
-            ->or($this->throughputParser());
+            ->or($this->propertyAccessParser());
     }
 
     private function comparatorParser(): Parser
@@ -145,11 +142,11 @@ class ExpressionParser
     private function comparisonParser(): Parser
     {
         return collect(
-            $this->valueParser(),
+            $this->valueParser()->or($this->throughputParser()),
             whitespace(),
             $this->comparatorParser(),
             whitespace(),
-            $this->valueParser(),
+            $this->valueParser()->or($this->throughputParser()),
             whitespace()->optional(),
             $this->toleranceParser()->optional()
         )->map(fn (array $vars) => new Comparison($vars[0], $vars[2], $vars[4], $vars[6]));

@@ -3,7 +3,6 @@
 namespace PhpBench\Tests\Benchmark;
 
 use Generator;
-use PhpBench\Assertion\ExpressionEvaluatorFactory;
 use PhpBench\Assertion\ExpressionParser;
 
 /**
@@ -26,6 +25,7 @@ class ExpresionParserBench
 
     /**
      * @ParamProviders({"provideExpressions"})
+     *
      * @param array<mixed> $params
      */
     public function benchEvaluate(array $params): void

@@ -95,8 +95,20 @@ class ExpressionEvaluator
      */
     private function evaluateComparison(Comparison $node)
     {
-        $left = $this->evaluate($node->value1());
-        $right = $this->evaluate($node->value2());
+        $value1 = $node->value1();
+        $value2 = $node->value2();
+
+        $left = $this->evaluate($value1);
+        $right = $this->evaluate($value2);
+
+        // throughput is inverted
+        if ($value1 instanceof ThroughputValue || $value2 instanceof ThroughputValue) {
+            $left1 = $left;
+            $left = $right;
+            $right = $left1;
+            unset($left1);
+        }
+
         $tolerance = $this->evaluateTolerance($node->tolerance(), $right);
 
         switch ($node->operator()) {
@@ -213,6 +225,6 @@ class ExpressionEvaluator
 
     private function evaluateThroughputValue(ThroughputValue $node): float
     {
-        return TimeUnit::convertTo(1, $node->unit() .'s', TimeUnit::MICROSECONDS) / $node->value();
+        return TimeUnit::convertTo(1, $node->unit(), TimeUnit::MICROSECONDS) / $node->value();
     }
 }
