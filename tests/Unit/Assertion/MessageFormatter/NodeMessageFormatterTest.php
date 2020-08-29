@@ -51,7 +51,7 @@ class NodeMessageFormatterTest extends TestCase
          */
         public function provideComparison(): Generator
         {
-            yield 'use right hand side unit when showing left hand side for property access' => [
+            yield 'normalise property access unit 1' => [
                 new Comparison(
                     new PropertyAccess(['foo', 'bar']),
                     '>',
@@ -60,10 +60,40 @@ class NodeMessageFormatterTest extends TestCase
                 ),
                 [
                     'foo' => [
-                        'bar' => 10
+                        'bar' => 1E7
                     ]
                 ],
                 '10s > 10s ± 5s',
+            ];
+
+            yield 'normalise property access unit 2' => [
+                new Comparison(
+                    new TimeValue(10, 'seconds'),
+                    '>',
+                    new PropertyAccess(['foo', 'bar']),
+                    new TimeValue(5, 'seconds')
+                ),
+                [
+                    'foo' => [
+                        'bar' => 1E7
+                    ]
+                ],
+                '10s > 10s ± 5s',
+            ];
+
+            yield 'normalise property access unit 3' => [
+                new Comparison(
+                    new TimeValue(10, 'seconds'),
+                    '>',
+                    new TimeValue(5, 'seconds'),
+                    new PropertyAccess(['foo', 'bar'])
+                ),
+                [
+                    'foo' => [
+                        'bar' => 5E6
+                    ]
+                ],
+                '10s > 5s ± 5s',
             ];
         }
 }

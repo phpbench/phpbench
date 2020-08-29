@@ -12,6 +12,8 @@ use PhpBench\Util\TimeUnit;
 
 final class NodeMessageFormatter implements MessageFormatter
 {
+    const DECIMAL_PRECISION = 3;
+
     /**
      * @var array
      */
@@ -54,26 +56,12 @@ final class NodeMessageFormatter implements MessageFormatter
         $value1 = $node->value1();
         $value2 = $node->value2();
 
-        if ($value1 instanceof PropertyAccess && $value2 instanceof TimeValue) {
-            $value1Formatted = $this->formatTimeValue(
-                new TimeValue(
-                    TimeUnit::convertTo(
-                        $this->formatPropertyAccess($value1),
-                        TimeUnit::MICROSECONDS,
-                        $value2->unit()
-                    ),
-                    $value2->unit()
-                )
-            );
-        } else {
-            $value1Formatted = $this->format($value1);
-        }
         $message = sprintf(
             '%s %s %s ± %s',
-            $value1Formatted,
+            $this->formatValueWithNormalizedUnit($value1, $value2, $node->tolerance()),
             $node->operator(),
-            $this->format($value2),
-            $this->format($node->tolerance())
+            $this->formatValueWithNormalizedUnit($value2, $value1, $node->tolerance()),
+            $this->formatValueWithNormalizedUnit($node->tolerance(), $value1, $value2)
         );
 
         return $message;
@@ -82,18 +70,48 @@ final class NodeMessageFormatter implements MessageFormatter
     private function formatTimeValue(TimeValue $timeValue): string
     {
         $value = $timeValue->value();
+
         if (false !== strpos((string)$value, '.')) {
-            $value = number_Format($timeValue->value(), 3);
+            // if value has a fractional part, limit the precision
+            $value = number_format($timeValue->value(), self::DECIMAL_PRECISION);
+        } else {
+            // else only format the integer value
+            $value = number_format($timeValue->value());
         }
 
         if (array_key_exists($timeValue->unit(), $this->aliases)) {
             return sprintf('%s%s', $value, $this->aliases[$timeValue->unit()]);
         }
+
         return sprintf('%s %s', $value, $timeValue->unit());
     }
 
     private function formatPropertyAccess(PropertyAccess $value): string
     {
         return (string)PropertyAccess::resolvePropertyAccess($value->segments(), $this->args);
+    }
+
+    private function formatValueWithNormalizedUnit(Value $value, Value ...$companionValues): string
+    {
+        if (!$value instanceof PropertyAccess) {
+            return $this->format($value);
+        }
+
+        foreach ($companionValues as $companionValue) {
+            if ($companionValue instanceof TimeValue) {
+                return $this->format(
+                    new TimeValue(
+                        TimeUnit::convertTo(
+                            (float)$this->formatPropertyAccess($value),
+                            TimeUnit::MICROSECONDS,
+                            $companionValue->unit()
+                        ),
+                        $companionValue->unit()
+                    )
+                );
+            }
+        }
+
+        return $this->format($value);
     }
 }
