@@ -58,7 +58,11 @@ class ExpressionParser
 
     private function comparatorParser(): Parser
     {
-        return $this->lessThanParser();
+        return string('<=')
+            ->or(char('<'))
+            ->or(char('='))
+            ->or(string('>='))
+            ->or(char('>'));
     }
 
     private function timeUnitParser(): Parser
@@ -77,14 +81,6 @@ class ExpressionParser
             ->or(stringI('gigabytes'));
     }
 
-    private function lessThanParser(): Parser
-    {
-        return string('<=')
-            ->or(char('<'))
-            ->or(char('='))
-            ->or(string('>='))
-            ->or(char('>'));
-    }
 
     private function propertyAccessParser(): Parser
     {

@@ -38,24 +38,12 @@ class ExpresionParserBench
      */
     public function provideExpressions(): Generator
     {
-        yield '10 seconds within 10% of 10 seconds' => [
-            'expr' => '10 seconds within 10% of 10 seconds',
-        ];
-
-        yield '10 seconds within 10 seconds of 10 seconds' => [
-            'expr' => '10 seconds within 10 seconds of 10 seconds',
-        ];
-
-        yield '10 seconds within 10 seconds of 10 seconds +/- 10 seconds' => [
-            'expr' => '10 seconds within 10 seconds of 10 seconds +/- 10 seconds',
-        ];
-
-        yield '10 seconds < 10 seconds' => [
-            'expr' => '10 seconds < 10 seconds',
-        ];
 
         yield '10 seconds < 10 seconds +/- 10 seconds' => [
             'expr' => '10 seconds < 10 seconds +/- 10 seconds',
+        ];
+        yield '10 seconds < 10 seconds' => [
+            'expr' => '10 seconds < 10 seconds',
         ];
     }
 }

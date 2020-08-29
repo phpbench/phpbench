@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "php": "^7.2",
+        "php": "^7.4",
         "ext-dom": "*",
         "ext-json": "*",
         "ext-pcre": "*",
@@ -37,7 +37,7 @@
         "padraic/phar-updater": "^1.0",
         "phpspec/prophecy": "^1.8",
         "phpstan/phpstan": "^0.12.7",
-        "phpunit/phpunit": "^8.5"
+        "phpunit/phpunit": "^8.5.8"
     },
     "scripts": {
         "integrate": [

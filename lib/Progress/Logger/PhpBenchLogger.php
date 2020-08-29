@@ -177,7 +177,7 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
             $this->output->write(PHP_EOL);
 
             foreach ($variantWarning as $index => $warning) {
-                $this->output->writeln(sprintf('    %s)  Tolerated that %s', $index + 1, $warning->getMessage()));
+                $this->output->writeln(sprintf('    %s)  Assertion failed within tolerance range: %s', $index + 1, $warning->getMessage()));
             }
             $this->output->write(PHP_EOL);
         }
