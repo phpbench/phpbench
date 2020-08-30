@@ -21,7 +21,6 @@ use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Exception\SyntaxError;
-use Verraes\Parsica\ParserFailure;
 
 class ExpressionParserTest extends ExpressionParserTestCase
 {

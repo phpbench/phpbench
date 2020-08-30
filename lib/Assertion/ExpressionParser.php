@@ -41,6 +41,7 @@ class ExpressionParser
     private function buildAst(): Node
     {
         $this->lexer->moveNext();
+
         return $this->parseComparisonExpression();
     }
 
@@ -59,14 +60,16 @@ class ExpressionParser
         switch ($this->lexer->lookahead['type']) {
             case ExpressionLexer::T_PROPERTY_ACCESS:
                 return $this->parsePropertyAccess();
-            case ExpressionLexer::T_INTEGER || ExpressionLexer::T_FLOAT:
+            case ExpressionLexer::T_INTEGER:
+            case ExpressionLexer::T_FLOAT:
                 if ($this->lexer->glimpse()['value'] === '%') {
                     return $this->parsePercentageValue();
                 }
+
                 return $this->parseUnitValue();
         }
 
-        $this->syntaxError();
+        throw $this->syntaxError();
     }
 
     private function parsePropertyAccess(): PropertyAccess
@@ -85,10 +88,10 @@ class ExpressionParser
             return;
         }
 
-        $this->syntaxError(implode('", "', $expectedTypes), $token);
+        throw $this->syntaxError(implode('", "', $expectedTypes), $token);
     }
 
-    private function syntaxError(string $expected = '', ?array $token = null): void
+    private function syntaxError(string $expected = '', ?array $token = null): SyntaxError
     {
         if ($token === null) {
             $token = $this->lexer->lookahead;
@@ -96,17 +99,18 @@ class ExpressionParser
 
         $tokenPos = $token['position'] ?? '-1';
 
-        $message  = sprintf('line 0, col %d: Error: ', $tokenPos);
+        $message = sprintf('line 0, col %d: Error: ', $tokenPos);
         $message .= $expected !== '' ? sprintf('Expected %s, got ', $expected) : 'Unexpected ';
         $message .= $this->lexer->lookahead === null ? 'end of string.' : sprintf("'%s'", $token['value']);
 
-        throw new SyntaxError($message);
+        return new SyntaxError($message);
     }
 
     private function parseComparator(): string
     {
         $token = $this->lexer->lookahead;
         $this->matchAndMoveNext($token, ExpressionLexer::T_COMPARATOR);
+
         return $token['value'];
     }
 
@@ -129,7 +133,7 @@ class ExpressionParser
             return new ThroughputValue($value, substr($unit, 4));
         }
 
-        $this->syntaxError('time or memory unit', $token);
+        throw $this->syntaxError('time or memory unit', $token);
     }
 
     /**
@@ -141,20 +145,24 @@ class ExpressionParser
 
         if ($token['type'] === ExpressionLexer::T_INTEGER) {
             $this->lexer->moveNext();
+
             return (int)$token['value'];
         }
+
         if ($token['type'] === ExpressionLexer::T_FLOAT) {
             $this->lexer->moveNext();
+
             return (float)$token['value'];
         }
 
-        $this->syntaxError('integer or float', $token);
+        throw $this->syntaxError('integer or float', $token);
     }
 
     private function parseUnit(): string
     {
         $token = $this->lexer->lookahead;
         $this->matchAndMoveNext($token, ExpressionLexer::T_UNIT);
+
         return $token['value'];
     }
 
@@ -167,6 +175,7 @@ class ExpressionParser
         }
 
         $this->matchAndMoveNext($token, ExpressionLexer::T_TOLERANCE);
+
         return $this->parseValue();
     }
 
