@@ -15,7 +15,7 @@ try and ensure it is as accurate as possible, it is therefore recommended to
 use find a low value of :ref:`retry_threshold` and use a appropriate amount of
 iterations (e.g. 10):
 
-Create your baseline as follows:
+Run your benchmark on the code to which you want to compare:
 
 .. code-block:: bash
 

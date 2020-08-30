@@ -187,8 +187,4 @@ class Distribution implements IteratorAggregate, ArrayAccess
     {
         throw new \BadMethodCallException('Distribution is read-only');
     }
-
-    public function toArray()
-    {
-    }
 }

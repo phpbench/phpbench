@@ -1,7 +1,7 @@
 Assertions
 ==========
 
-Assertions be added to your benchmarks as follows:
+Assertions can be added to your benchmarks as follows:
 
 .. code-block:: php
 
