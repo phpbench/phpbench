@@ -21,7 +21,20 @@ class MemoryUnit
         self::GIGABYTES => 1000000000,
     ];
 
-    public static function convertToBytes(float $value, string $unit): int
+    public static function isMemoryUnit(string $unit): bool
+    {
+        return isset(self::$multipliers[$unit]);
+    }
+
+    public static function convertTo(float $value, string $fromUnit, string $toUnit): float
+    {
+        self::assertUnitExists($fromUnit);
+        self::assertUnitExists($toUnit);
+        $byteValue = $value * self::$multipliers[$fromUnit];
+        return $byteValue / self::$multipliers[$toUnit];
+    }
+
+    private static function assertUnitExists(string $unit)
     {
         if (!isset(self::$multipliers[$unit])) {
             throw new RuntimeException(sprintf(
@@ -29,12 +42,5 @@ class MemoryUnit
                 $unit, implode('", "', array_keys(self::$multipliers))
             ));
         }
-
-        return (int) ($value * self::$multipliers[$unit]);
-    }
-
-    public static function isMemoryUnit(string $unit): bool
-    {
-        return isset(self::$multipliers[$unit]);
     }
 }

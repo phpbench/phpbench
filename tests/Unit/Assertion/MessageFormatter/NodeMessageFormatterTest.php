@@ -4,6 +4,7 @@ namespace PhpBench\Tests\Unit\Assertion\MessageFormatter;
 
 use Generator;
 use PhpBench\Assertion\Ast\Comparison;
+use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Assertion\Ast\Node;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\ThroughputValue;
@@ -17,6 +18,7 @@ class NodeMessageFormatterTest extends TestCase
      * @dataProvider provideTimeValue
      * @dataProvider provideThroughputValue
      * @dataProvider provideComparison
+     * @dataProvider provideMemoryValue
      */
     public function testFormat(Node $node, array $args, string $expected): void
     {
@@ -122,6 +124,38 @@ class NodeMessageFormatterTest extends TestCase
                     ]
                 ],
                 '0.2 ops/s > 5 ops/s ± 10s',
+            ];
+    }
+
+    /**
+     * @return Generator<mixed>
+     */
+    public function provideMemoryValue(): Generator
+    {
+        yield [
+            new MemoryValue(10, 'bytes'),
+            [],
+            '10 bytes',
+        ];
+
+        yield [
+            new MemoryValue(10.3, 'megabytes'),
+            [],
+            '10.300 megabytes',
+        ];
+
+        yield 'normalise property access' => [
+                new Comparison(
+                    new PropertyAccess(['foo', 'bar']),
+                    '>',
+                    new MemoryValue(10, 'megabytes')
+                ),
+                [
+                    'foo' => [
+                        'bar' => 5E6
+                    ]
+                ],
+                '5 megabytes > 10 megabytes',
             ];
     }
 }

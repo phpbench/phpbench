@@ -3,6 +3,7 @@
 namespace PhpBench\Assertion\MessageFormatter;
 
 use PhpBench\Assertion\Ast\Comparison;
+use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Assertion\Ast\Node;
 use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
@@ -10,6 +11,7 @@ use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\Value;
 use PhpBench\Assertion\MessageFormatter;
+use PhpBench\Util\MemoryUnit;
 use PhpBench\Util\TimeUnit;
 
 final class NodeMessageFormatter implements MessageFormatter
@@ -60,6 +62,10 @@ final class NodeMessageFormatter implements MessageFormatter
             return $this->formatThroughputValue($node);
         }
 
+        if ($node instanceof MemoryValue) {
+            return $this->formatMemoryValue($node);
+        }
+
         return sprintf('!!!! could not format "%s" !!!!', get_class($node));
     }
 
@@ -82,14 +88,7 @@ final class NodeMessageFormatter implements MessageFormatter
     private function formatTimeValue(TimeValue $timeValue): string
     {
         $value = $timeValue->value();
-
-        if (false !== strpos((string)$value, '.')) {
-            // if value has a fractional part, limit the precision
-            $value = number_format($timeValue->value(), self::DECIMAL_PRECISION);
-        } else {
-            // else only format the integer value
-            $value = number_format($timeValue->value());
-        }
+        $value = $this->formatNumberValue($value);
 
         $unit = $timeValue->unit();
 
@@ -135,6 +134,19 @@ final class NodeMessageFormatter implements MessageFormatter
                     )
                 );
             }
+
+            if ($companionValue instanceof MemoryValue) {
+                return $this->format(
+                    new MemoryValue(
+                        MemoryUnit::convertTo(
+                            $propertyValue,
+                            MemoryUnit::BYTES,
+                            $companionValue->unit()
+                        ),
+                        $companionValue->unit()
+                    )
+                );
+            }
         }
 
         return $this->format($value);
@@ -154,5 +166,21 @@ final class NodeMessageFormatter implements MessageFormatter
         }
 
         return sprintf('%s ops/%s', $node->value(), $unit);
+    }
+
+    private function formatMemoryValue(MemoryValue $node): string
+    {
+        return sprintf('%s %s', $this->formatNumberValue((float)$node->value()), $node->unit());
+    }
+
+    private function formatNumberValue(float $value): string
+    {
+        // if value has a fractional part, limit the precision
+        if (false !== strpos((string)$value, '.')) {
+            return number_format($value, self::DECIMAL_PRECISION);
+        }
+
+        // else only format the integer value
+        return number_format($value);
     }
 }

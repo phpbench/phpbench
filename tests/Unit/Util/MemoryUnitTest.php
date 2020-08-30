@@ -15,6 +15,7 @@ class MemoryUnitTest extends TestCase
     public function testConvertToBytes(float $value, string $unit, int $expected): void
     {
         self::assertEquals($expected, MemoryUnit::convertToBytes($value, $unit));
+        self::assertEquals($expected, MemoryUnit::convertTo($value, $unit, MemoryUnit::BYTES));
     }
         
     /**

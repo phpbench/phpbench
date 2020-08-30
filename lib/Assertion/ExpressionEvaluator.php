@@ -211,7 +211,7 @@ class ExpressionEvaluator
 
     private function evaluateMemoryValue(MemoryValue $node): int
     {
-        return MemoryUnit::convertToBytes($node->value(), $node->unit());
+        return MemoryUnit::convertTo($node->value(), $node->unit(), MemoryUnit::BYTES);
     }
 
     private function evaluateTolerance(Value $value, $right): float
