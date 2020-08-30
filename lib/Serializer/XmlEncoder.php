@@ -138,18 +138,18 @@ class XmlEncoder
             return;
         }
 
-        if ($variant->hasWarning()) {
+        if ($variant->getAssertionResults()->warnings()->count()) {
             $warningsEl = $variantEl->appendElement('warnings');
 
-            foreach ($variant->getWarnings() as $warning) {
+            foreach ($variant->getAssertionResults()->warnings() as $warning) {
                 $warningEl = $warningsEl->appendElement('warning', $warning->getMessage());
             }
         }
 
-        if ($variant->hasFailed()) {
+        if ($variant->getAssertionResults()->failures()->count()) {
             $failuresEl = $variantEl->appendElement('failures');
 
-            foreach ($variant->getFailures() as $failure) {
+            foreach ($variant->getAssertionResults()->failures() as $failure) {
                 $failureEl = $failuresEl->appendElement('failure', $failure->getMessage());
             }
         }

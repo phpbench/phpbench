@@ -10,6 +10,11 @@ Reference
    environment
    report-generators
    report-renderers
-   assertions-asserters
+   assertions
    configuration
    faq
+
+.. toctree::
+   :hidden:
+
+   extensions/custom

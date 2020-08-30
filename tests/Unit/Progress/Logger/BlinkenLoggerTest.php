@@ -12,7 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Progress\Logger;
 
-use PhpBench\Assertion\AssertionFailure;
+use PhpBench\Assertion\AssertionResult;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\ParameterSet;
 use PhpBench\Model\Result\TimeResult;
@@ -141,10 +141,9 @@ class BlinkenLoggerTest extends TestCase
         foreach ($this->variant as $iteration) {
             $iteration->setResult(new TimeResult(10));
         }
-        $this->variant->addFailure(new AssertionFailure(self::ASSERTION_FAILURE_MESSAGE));
+        $this->variant->getAssertionResults()->add(AssertionResult::fail(self::ASSERTION_FAILURE_MESSAGE));
         $this->variant->addIteration($iteration);
         $this->variant->computeStats();
-        $this->variant->addFailure(new AssertionFailure(self::ASSERTION_FAILURE_MESSAGE));
         $this->logger->variantEnd($this->variant);
         $this->assertStringContainsString('FAIL', $this->output->fetch());
     }

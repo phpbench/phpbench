@@ -17,10 +17,8 @@ use ArrayIterator;
 use Countable;
 use Exception;
 use IteratorAggregate;
-use PhpBench\Assertion\AssertionFailure;
-use PhpBench\Assertion\AssertionFailures;
-use PhpBench\Assertion\AssertionWarning;
-use PhpBench\Assertion\AssertionWarnings;
+use PhpBench\Assertion\AssertionResult;
+use PhpBench\Assertion\VariantAssertionResults;
 use PhpBench\Math\Distribution;
 use PhpBench\Math\Statistics;
 use PhpBench\Model\Result\ComputedResult;
@@ -87,19 +85,14 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
     private $warmup;
 
     /**
-     * @var AssertionFailures
-     */
-    private $failures;
-
-    /**
-     * @var AssertionWarnings
-     */
-    private $warnings;
-
-    /**
      * @var Variant|null
      */
     private $baseline;
+
+    /**
+     * @var VariantAssertionResults
+     */
+    private $assertionResults;
 
     public function __construct(
         Subject $subject,
@@ -113,8 +106,7 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
         $this->revolutions = $revolutions;
         $this->warmup = $warmup;
         $this->computedStats = $computedStats;
-        $this->failures = new AssertionFailures($this);
-        $this->warnings = new AssertionWarnings($this);
+        $this->assertionResults = new VariantAssertionResults($this, []);
     }
 
     /**
@@ -209,8 +201,7 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
 
     public function resetAssertionResults(): void
     {
-        $this->warnings = new AssertionWarnings($this);
-        $this->failures = new AssertionFailures($this);
+        $this->assertionResults = new VariantAssertionResults($this, []);
     }
 
     /**
@@ -379,31 +370,6 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
         $this->errorStack = new ErrorStack($this, $errors);
     }
 
-    public function addFailure(AssertionFailure $failure): void
-    {
-        $this->failures->add($failure);
-    }
-
-    public function addWarning(AssertionWarning $warning): void
-    {
-        $this->warnings->add($warning);
-    }
-
-    public function hasFailed(): bool
-    {
-        return count($this->failures) > 0;
-    }
-
-    public function hasWarning(): bool
-    {
-        return count($this->warnings) > 0;
-    }
-
-    public function getFailures(): AssertionFailures
-    {
-        return $this->failures;
-    }
-
     /**
      * Create and set the error stack from a list of Error instances.
      *
@@ -475,11 +441,6 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
         return array_key_exists($offset, $this->iterations);
     }
 
-    public function getWarnings(): AssertionWarnings
-    {
-        return $this->warnings;
-    }
-
     public function attachBaseline(Variant $baselineVariant): void
     {
         $this->baseline = $baselineVariant;
@@ -488,5 +449,15 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
     public function getBaseline(): ?Variant
     {
         return $this->baseline;
+    }
+
+    public function addAssertionResult(AssertionResult $result): void
+    {
+        $this->assertionResults->add($result);
+    }
+
+    public function getAssertionResults(): VariantAssertionResults
+    {
+        return $this->assertionResults;
     }
 }

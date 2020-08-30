@@ -12,51 +12,45 @@
 
 namespace PhpBench\Assertion;
 
-use PhpBench\Benchmark\Metadata\AssertionMetadata;
-use PhpBench\Json\JsonDecoder;
-use PhpBench\Registry\Config;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use PhpBench\Math\Statistics;
+use PhpBench\Model\Result\MemoryResult;
+use PhpBench\Model\Variant;
 
 class AssertionProcessor
 {
     /**
-     * @var AsserterRegistry
+     * @var ExpressionEvaluatorFactory
      */
-    private $registry;
+    private $evaluator;
 
     /**
-     * @var JsonDecoder
+     * @var ExpressionParser
      */
-    private $jsonDecoder;
+    private $parser;
 
-    public function __construct(AsserterRegistry $registry, JsonDecoder $jsonDecoder)
+    public function __construct(ExpressionParser $parser, ExpressionEvaluatorFactory $evaluator)
     {
-        $this->registry = $registry;
-        $this->jsonDecoder = $jsonDecoder;
+        $this->evaluator = $evaluator;
+        $this->parser = $parser;
     }
 
-    public function assertWith($asserterName, array $config, AssertionData $data)
+    public function assert(Variant $variant, string $assertion): AssertionResult
     {
-        $asserter = $this->registry->getService($asserterName);
-        $optionsResolver = new OptionsResolver();
-        $asserter->configure($optionsResolver);
-        $config = new Config('test', $optionsResolver->resolve($config));
+        $variantData = $this->buildVariantData($variant);
+        $result = $this->evaluator->createWithArgs([
+            'variant' => $variantData,
+            'baseline' => $variant->getBaseline() ? $this->buildVariantData($variant->getBaseline()) : $variantData,
+        ])->evaluate($this->parser->parse($assertion));
 
-        return $asserter->assert($data, $config);
+        return $result;
     }
 
-    /**
-     * Return an array of assertion metadatas from the raw JSON-like stuff from the CLI.
-     */
-    public function assertionsFromRawCliConfig(array $rawAssertions)
+    private function buildVariantData(Variant $variant)
     {
-        $assertions = [];
-
-        foreach ($rawAssertions as $rawAssertion) {
-            $config = $this->jsonDecoder->decode($rawAssertion);
-            $assertions[] = new AssertionMetadata($config);
-        }
-
-        return $assertions;
+        return array_merge($variant->getStats()->getStats(), [
+            'mem_real' => Statistics::mean($variant->getMetricValues(MemoryResult::class, 'real')),
+            'mem_final' => Statistics::mean($variant->getMetricValues(MemoryResult::class, 'final')),
+            'mem_peak' => Statistics::mean($variant->getMetricValues(MemoryResult::class, 'peak')),
+        ]);
     }
 }

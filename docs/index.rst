@@ -9,7 +9,7 @@ Welcome to PHPBench's documentation!
 PHPBench is a benchmarking framework for PHP. Find it on Github_.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
 
    introduction
    guides

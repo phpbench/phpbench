@@ -12,12 +12,13 @@
 
 namespace PhpBench\Tests\System\benchmarks\set5;
 
-/**
- * @Assert(stat="mean", value="1000", comparator=">")
- */
 class AssertFailBench
 {
-    public function benchFail()
+    /**
+     * @Assert("variant.mean < 1 microseconds")
+     */
+    public function benchFail(): void
     {
+        usleep(10);
     }
 }

@@ -18,7 +18,7 @@ use PhpBench\Model\Variant;
 /**
  * @implements IteratorAggregate<AssertionResult>
  */
-abstract class AbstractAssertionResults implements IteratorAggregate, \Countable
+class VariantAssertionResults implements IteratorAggregate, \Countable
 {
     /**
      * @var Variant
@@ -47,7 +47,7 @@ abstract class AbstractAssertionResults implements IteratorAggregate, \Countable
         return new \ArrayIterator($this->results);
     }
 
-    public function add(AssertionResult $result)
+    public function add(AssertionResult $result): void
     {
         $this->results[] = $result;
     }
@@ -68,5 +68,30 @@ abstract class AbstractAssertionResults implements IteratorAggregate, \Countable
     public function count()
     {
         return count($this->results);
+    }
+
+    public function hasFailures(): bool
+    {
+        foreach ($this->results as $result) {
+            if ($result->isFail()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function failures(): self
+    {
+        return new self($this->variant, array_filter($this->results, function (AssertionResult $result) {
+            return $result->isFail();
+        }));
+    }
+
+    public function warnings(): self
+    {
+        return new self($this->variant, array_filter($this->results, function (AssertionResult $result) {
+            return $result->isTolerated();
+        }));
     }
 }

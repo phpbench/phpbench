@@ -13,8 +13,7 @@
 namespace PhpBench\Model;
 
 use IteratorAggregate;
-use PhpBench\Assertion\AssertionFailures;
-use PhpBench\Assertion\AssertionWarnings;
+use PhpBench\Assertion\VariantAssertionResults;
 use PhpBench\Environment\Information;
 
 /**
@@ -169,7 +168,7 @@ class Suite implements IteratorAggregate
     }
 
     /**
-     * @return AssertionFailures[]
+     * @return VariantAssertionResults[]
      */
     public function getFailures()
     {
@@ -177,18 +176,18 @@ class Suite implements IteratorAggregate
 
         /** @var Variant $variant */
         foreach ($this->getVariants() as $variant) {
-            if (false === $variant->hasFailed()) {
+            if (0 === $variant->getAssertionResults()->failures()->count()) {
                 continue;
             }
 
-            $failures[] = $variant->getFailures();
+            $failures[] = $variant->getAssertionResults()->failures();
         }
 
         return $failures;
     }
 
     /**
-     * @return AssertionWarnings[]
+     * @return VariantAssertionResults[]
      */
     public function getWarnings()
     {
@@ -196,11 +195,11 @@ class Suite implements IteratorAggregate
 
         /** @var Variant $variant */
         foreach ($this->getVariants() as $variant) {
-            if (false === $variant->hasWarning()) {
+            if (0 === $variant->getAssertionResults()->warnings()->count()) {
                 continue;
             }
 
-            $warnings[] = $variant->getWarnings();
+            $warnings[] = $variant->getAssertionResults()->warnings();
         }
 
         return $warnings;

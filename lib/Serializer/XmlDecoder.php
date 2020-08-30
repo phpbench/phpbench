@@ -12,8 +12,7 @@
 
 namespace PhpBench\Serializer;
 
-use PhpBench\Assertion\AssertionFailure;
-use PhpBench\Assertion\AssertionWarning;
+use PhpBench\Assertion\AssertionResult;
 use PhpBench\Dom\Document;
 use PhpBench\Dom\Element;
 use PhpBench\Environment\Information;
@@ -255,7 +254,7 @@ class XmlDecoder
             $warnings = [];
 
             foreach ($warningEls as $warningEl) {
-                $variant->addWarning(new AssertionWarning($warningEl->nodeValue));
+                $variant->addAssertionResult(AssertionResult::tolerated($warningEl->nodeValue));
             }
         }
 
@@ -265,7 +264,7 @@ class XmlDecoder
             $failures = [];
 
             foreach ($failureEls as $failureEl) {
-                $variant->addFailure(new AssertionFailure($failureEl->nodeValue));
+                $variant->addAssertionResult(AssertionResult::fail($failureEl->nodeValue));
             }
         }
 

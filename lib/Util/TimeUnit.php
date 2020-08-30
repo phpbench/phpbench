@@ -17,15 +17,22 @@ namespace PhpBench\Util;
  */
 class TimeUnit
 {
-    const MICROSECONDS = 'microseconds';
-    const MILLISECONDS = 'milliseconds';
-    const SECONDS = 'seconds';
-    const MINUTES = 'minutes';
-    const HOURS = 'hours';
-    const DAYS = 'days';
+    public const MILLISECOND = 'millisecond';
+    public const MICROSECOND = 'microsecond';
+    public const SECOND = 'second';
+    public const MINUTE = 'minute';
+    public const HOUR = 'hour';
+    public const DAY = 'day';
 
-    const MODE_THROUGHPUT = 'throughput';
-    const MODE_TIME = 'time';
+    public const MICROSECONDS = 'microseconds';
+    public const MILLISECONDS = 'milliseconds';
+    public const SECONDS = 'seconds';
+    public const MINUTES = 'minutes';
+    public const HOURS = 'hours';
+    public const DAYS = 'days';
+
+    public const MODE_THROUGHPUT = 'throughput';
+    public const MODE_TIME = 'time';
 
     /**
      * @var array
@@ -37,6 +44,15 @@ class TimeUnit
         self::MINUTES => 60000000,
         self::HOURS => 3600000000,
         self::DAYS => 86400000000,
+    ];
+
+    private static $aliases = [
+        self::MICROSECOND => self::MICROSECONDS,
+        self::MILLISECOND => self::MILLISECONDS,
+        self::SECOND => self::SECONDS,
+        self::MINUTE => self::MINUTES,
+        self::HOUR => self::HOURS,
+        self::DAY => self::DAYS,
     ];
 
     /**
@@ -109,7 +125,7 @@ class TimeUnit
      */
     public function overrideDestUnit($destUnit)
     {
-        self::validateUnit($destUnit);
+        $destUnit = self::resolveUnit($destUnit);
         $this->destUnit = $destUnit;
         $this->overriddenDestUnit = true;
     }
@@ -265,8 +281,8 @@ class TimeUnit
             return 0;
         }
 
-        self::validateUnit($unit);
-        self::validateUnit($destUnit);
+        $unit = self::resolveUnit($unit);
+        $destUnit = self::resolveUnit($destUnit);
 
         $destMultiplier = self::$map[$destUnit];
         $sourceMultiplier = self::$map[$unit];
@@ -282,8 +298,8 @@ class TimeUnit
      */
     public static function convertTo(float $time, string $unit, string $destUnit)
     {
-        self::validateUnit($unit);
-        self::validateUnit($destUnit);
+        $unit = self::resolveUnit($unit);
+        $destUnit = self::resolveUnit($destUnit);
 
         $destM = self::$map[$destUnit];
         $sourceM = self::$map[$unit];
@@ -305,7 +321,7 @@ class TimeUnit
      */
     public static function getSuffix($unit, $mode = null)
     {
-        self::validateUnit($unit);
+        $unit = self::resolveUnit($unit);
 
         $suffix = self::$suffixes[$unit];
 
@@ -316,14 +332,9 @@ class TimeUnit
         return $suffix;
     }
 
-    private static function validateUnit($unit)
+    public static function isTimeUnit(string $unit): bool
     {
-        if (!isset(self::$map[$unit])) {
-            throw new \InvalidArgumentException(sprintf(
-                'Invalid time unit "%s", available units: "%s"',
-                $unit, implode('", "', array_keys(self::$map))
-            ));
-        }
+        return isset(self::$map[$unit]) || isset(self::$aliases[$unit]);
     }
 
     private static function validateMode($mode)
@@ -336,5 +347,21 @@ class TimeUnit
                 implode('", "', $validModes), $mode
             ));
         }
+    }
+
+    private static function resolveUnit(string $unit): string
+    {
+        if (isset(self::$aliases[$unit])) {
+            $unit = self::$aliases[$unit];
+        }
+
+        if (isset(self::$map[$unit])) {
+            return $unit;
+        }
+
+        throw new \InvalidArgumentException(sprintf(
+            'Invalid time unit "%s", available units: "%s"',
+            $unit, implode('", "', array_keys(self::$map))
+        ));
     }
 }

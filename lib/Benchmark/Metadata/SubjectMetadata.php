@@ -98,7 +98,7 @@ class SubjectMetadata
     private $benchmarkMetadata;
 
     /**
-     * @var AssertionMetadata[]
+     * @var array<string>
      */
     private $assertions = [];
 
@@ -186,7 +186,7 @@ class SubjectMetadata
         $this->beforeMethods = $beforeMethods;
     }
 
-    public function getAfterMethods()
+    public function getAfterMethods(): array
     {
         return $this->afterMethods;
     }
@@ -298,12 +298,15 @@ class SubjectMetadata
         $this->retryThreshold = $retryThreshold;
     }
 
-    public function addAssertion(AssertionMetadata $assertion)
+    public function addAssertion(string $assertion): void
     {
         $this->assertions[] = $assertion;
     }
 
-    public function setAssertions(array $assertions)
+    /**
+     * @param array<string> $assertions
+     */
+    public function setAssertions(array $assertions): void
     {
         $this->assertions = [];
 
@@ -312,6 +315,9 @@ class SubjectMetadata
         }
     }
 
+    /**
+     * @return array<string>
+     */
     public function getAssertions()
     {
         return $this->assertions;

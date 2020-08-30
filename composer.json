@@ -17,7 +17,8 @@
         "ext-spl": "*",
         "beberlei/assert": "^2.4 || ^3.0",
         "doctrine/annotations": "^1.2.7",
-        "lstrojny/functional-php": "1.0 || ^1.2.3",
+        "doctrine/lexer": "^1.2",
+        "lstrojny/functional-php": "^1.14",
         "phpbench/container": "^1.2.1",
         "phpbench/dom": "~0.2.0",
         "seld/jsonlint": "^1.1",
@@ -33,10 +34,11 @@
         "doctrine/dbal": "^2.4",
         "friendsofphp/php-cs-fixer": "^2.13.1",
         "jangregor/phpstan-prophecy": "^0.8.0",
+        "symfony/var-dumper": "^4.0||^5.0",
         "padraic/phar-updater": "^1.0",
-        "phpspec/prophecy": "^1.8",
+        "phpspec/prophecy": "^1.11",
         "phpstan/phpstan": "^0.12.7",
-        "phpunit/phpunit": "^8.5"
+        "phpunit/phpunit": "^8.5.8"
     },
     "scripts": {
         "integrate": [
@@ -60,7 +62,6 @@
     "autoload": {
         "psr-4": {
             "PhpBench\\": "lib/",
-            "PhpBench\\Extensions\\Dbal\\": "extensions/dbal/lib/",
             "PhpBench\\Extensions\\XDebug\\": "extensions/xdebug/lib/",
             "PhpBench\\Extensions\\Reports\\": "extensions/reports/lib/"
         }
@@ -69,10 +70,7 @@
         "psr-4": {
             "PhpBench\\Tests\\": "tests/",
             "PhpBench\\Benchmarks\\": "benchmarks/",
-            "PhpBench\\Extensions\\XDebug\\Tests\\": "extensions/xdebug/tests/",
-            "PhpBench\\Extensions\\Dbal\\Tests\\": "extensions/dbal/tests/",
-            "PhpBench\\Extensions\\Dbal\\Benchmarks\\": "extensions/dbal/benchmarks/",
-            "PhpBench\\Extensions\\Reports\\Tests\\": "extensions/reports/tests/"
+            "PhpBench\\Extensions\\XDebug\\Tests\\": "extensions/xdebug/tests/"
         }
     },
     "bin": [

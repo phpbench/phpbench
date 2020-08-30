@@ -12,10 +12,8 @@
 
 namespace PhpBench\Tests\Unit\Progress\Logger;
 
-use PhpBench\Assertion\AssertionFailure;
-use PhpBench\Assertion\AssertionFailures;
-use PhpBench\Assertion\AssertionWarning;
-use PhpBench\Assertion\AssertionWarnings;
+use PhpBench\Assertion\AssertionResult;
+use PhpBench\Assertion\VariantAssertionResults;
 use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Math\Distribution;
 use PhpBench\Model\Benchmark;
@@ -127,9 +125,9 @@ abstract class PhpBenchLoggerTest extends TestCase
 
     public function testEndSuiteFailures()
     {
-        $failure1 = new AssertionFailure('Failed!');
-        $failure2 = new AssertionFailure('Failed!');
-        $failures = new AssertionFailures($this->variant->reveal(), [$failure1, $failure2]);
+        $failure1 = AssertionResult::tolerated('Failed!');
+        $failure2 = AssertionResult::tolerated('Failed!');
+        $failures = new VariantAssertionResults($this->variant->reveal(), [$failure1, $failure2]);
 
         $this->setUpSummary();
         $this->suite->getFailures()->willReturn([$failures]);
@@ -150,9 +148,9 @@ abstract class PhpBenchLoggerTest extends TestCase
 
     public function testEndSuiteWarnings()
     {
-        $warning1 = new AssertionWarning('Failed!');
-        $warning2 = new AssertionWarning('Failed!');
-        $warnings = new AssertionWarnings($this->variant->reveal(), [$warning1, $warning2]);
+        $warning1 = AssertionResult::tolerated('Failed!');
+        $warning2 = AssertionResult::tolerated('Failed!');
+        $warnings = new VariantAssertionResults($this->variant->reveal(), [$warning1, $warning2]);
 
         $this->setUpSummary();
         $this->suite->getFailures()->willReturn([]);

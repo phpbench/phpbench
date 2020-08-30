@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Util;
 
+use Generator;
 use InvalidArgumentException;
 use PhpBench\Util\TimeUnit;
 use PHPUnit\Framework\TestCase;
@@ -21,6 +22,7 @@ class TimeUnitTest extends TestCase
     /**
      * It should convertTo one time unit to another.
      *
+     * @dataProvider provideAliases
      * @dataProvider provideConvert
      */
     public function testConvert($time, $unit, $destUnit, $expectedTime)
@@ -81,6 +83,47 @@ class TimeUnitTest extends TestCase
                 TimeUnit::MICROSECONDS,
                 1.1234,
             ],
+        ];
+    }
+
+    /**
+     * @return Generator<mixed>
+     */
+    public function provideAliases(): Generator
+    {
+        yield [
+            1,
+            TimeUnit::MICROSECOND,
+            TimeUnit::MICROSECOND,
+            1
+        ];
+
+        yield [
+            1,
+            TimeUnit::MILLISECOND,
+            TimeUnit::MICROSECOND,
+            1000
+        ];
+
+        yield [
+            1,
+            TimeUnit::SECOND,
+            TimeUnit::MICROSECOND,
+            1000000
+        ];
+
+        yield [
+            1,
+            TimeUnit::MINUTE,
+            TimeUnit::MICROSECOND,
+            60000000
+        ];
+
+        yield [
+            1,
+            TimeUnit::DAY,
+            TimeUnit::HOUR,
+            24
         ];
     }
 
