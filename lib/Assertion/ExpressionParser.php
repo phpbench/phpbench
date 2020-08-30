@@ -69,7 +69,7 @@ class ExpressionParser
                 return $this->parseUnitValue();
         }
 
-        throw $this->syntaxError();
+        throw $this->syntaxError('property, integer or float', $this->lexer->lookahead);
     }
 
     private function parsePropertyAccess(): PropertyAccess
@@ -78,32 +78,6 @@ class ExpressionParser
         $this->matchAndMoveNext($token, ExpressionLexer::T_PROPERTY_ACCESS);
 
         return new PropertyAccess(explode('.', $token['value']));
-    }
-
-    private function matchAndMoveNext(array $token, string ...$expectedTypes): void
-    {
-        if (in_array($token['type'], $expectedTypes)) {
-            $this->lexer->moveNext();
-
-            return;
-        }
-
-        throw $this->syntaxError(implode('", "', $expectedTypes), $token);
-    }
-
-    private function syntaxError(string $expected = '', ?array $token = null): SyntaxError
-    {
-        if ($token === null) {
-            $token = $this->lexer->lookahead;
-        }
-
-        $tokenPos = $token['position'] ?? '-1';
-
-        $message = sprintf('line 0, col %d: Error: ', $tokenPos);
-        $message .= $expected !== '' ? sprintf('Expected %s, got ', $expected) : 'Unexpected ';
-        $message .= $this->lexer->lookahead === null ? 'end of string.' : sprintf("'%s'", $token['value']);
-
-        return new SyntaxError($message);
     }
 
     private function parseComparator(): string
@@ -133,7 +107,7 @@ class ExpressionParser
             return new ThroughputValue($value, substr($unit, 4));
         }
 
-        throw $this->syntaxError('time or memory unit', $token);
+        throw $this->syntaxError('time (e.g. microseconds), memory (e.g. bytes) or throughput unit (e.g. ops/second)', $token);
     }
 
     /**
@@ -188,5 +162,37 @@ class ExpressionParser
         $this->matchAndMoveNext($token, ExpressionLexer::T_PERCENTAGE);
 
         return new PercentageValue((float)$value);
+    }
+
+    /**
+     * @param array<mixed> $token
+     */
+    private function matchAndMoveNext(array $token, string ...$expectedTypes): void
+    {
+        if (in_array($token['type'], $expectedTypes)) {
+            $this->lexer->moveNext();
+
+            return;
+        }
+
+        throw $this->syntaxError(implode('", "', $expectedTypes), $token);
+    }
+
+    /**
+     * @param array<mixed> $token
+     */
+    private function syntaxError(string $expected = '', ?array $token = null): SyntaxError
+    {
+        if ($token === null) {
+            $token = $this->lexer->lookahead;
+        }
+
+        $tokenPos = $token['position'] ?? '-1';
+
+        $message = sprintf('line 0, col %d: Error: ', $tokenPos);
+        $message .= $expected !== '' ? sprintf('Expected %s, got ', $expected) : 'Unexpected ';
+        $message .= $this->lexer->lookahead === null ? 'end of string.' : sprintf('"%s"', $token['value']);
+
+        return new SyntaxError($message);
     }
 }

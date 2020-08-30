@@ -128,9 +128,34 @@ class ExpressionParserTest extends ExpressionParserTestCase
         ];
     }
 
-    public function testTrailingText(): void
-    {
-        $this->expectException(SyntaxError::class);
-        $this->parse('this.foobar > 10 seconds asd');
-    }
+        /**
+         * @dataProvider provideSyntaxErrors
+         */
+        public function testSyntaxErrors(string $expression, string $expectedMessage): void
+        {
+            $this->expectException(SyntaxError::class);
+            $this->expectExceptionMessage($expectedMessage);
+            $this->parse($expression);
+        }
+        
+        /**
+         * @return Generator<mixed>
+         */
+        public function provideSyntaxErrors(): Generator
+        {
+            yield 'invalid value' => [
+                '"!£',
+                'Expected property, integer or float'
+            ];
+
+            yield 'invalid unit' => [
+                '100 foobars',
+                'Expected time'
+            ];
+
+            yield 'invalid comparator' => [
+                '100 microseconds !',
+                'Expected comparator, got "!"'
+            ];
+        }
 }
