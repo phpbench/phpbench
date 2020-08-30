@@ -32,4 +32,9 @@ class MemoryUnit
 
         return (int) ($value * self::$multipliers[$unit]);
     }
+
+    public static function isMemoryUnit(string $unit): bool
+    {
+        return isset(self::$multipliers[$unit]);
+    }
 }

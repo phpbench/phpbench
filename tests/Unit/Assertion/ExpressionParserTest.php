@@ -20,6 +20,7 @@ use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeValue;
+use PhpBench\Assertion\Exception\SyntaxError;
 use Verraes\Parsica\ParserFailure;
 
 class ExpressionParserTest extends ExpressionParserTestCase
@@ -130,7 +131,7 @@ class ExpressionParserTest extends ExpressionParserTestCase
 
     public function testTrailingText(): void
     {
-        $this->expectException(ParserFailure::class);
+        $this->expectException(SyntaxError::class);
         $this->parse('this.foobar > 10 seconds asd');
     }
 }

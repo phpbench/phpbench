@@ -332,6 +332,11 @@ class TimeUnit
         return $suffix;
     }
 
+    public static function isTimeUnit(string $unit): bool
+    {
+        return isset(self::$map[$unit]) || isset(self::$aliases[$unit]);
+    }
+
     private static function validateMode($mode)
     {
         $validModes = [self::MODE_THROUGHPUT, self::MODE_TIME];
