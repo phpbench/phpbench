@@ -20,6 +20,7 @@ use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\Value;
+use PhpBench\Assertion\Ast\ZeroValue;
 use PhpBench\Assertion\Exception\SyntaxError;
 use PhpBench\Util\MemoryUnit;
 use PhpBench\Util\TimeUnit;
@@ -145,7 +146,7 @@ class ExpressionParser
         $token = $this->lexer->lookahead;
 
         if (null === $token) {
-            return new TimeValue(0);
+            return new ZeroValue();
         }
 
         $this->matchAndMoveNext($token, ExpressionLexer::T_TOLERANCE);

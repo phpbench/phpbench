@@ -57,6 +57,6 @@ class MemoryUnitTest extends TestCase
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Unknown memory unit');
-        MemoryUnit::convertToBytes(5, 'bobobytes');
+        MemoryUnit::convertTo(5, 'bobobytes', MemoryUnit::BYTES);
     }
 }

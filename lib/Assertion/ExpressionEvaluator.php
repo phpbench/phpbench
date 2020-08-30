@@ -12,6 +12,7 @@ use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\Value;
 use PhpBench\Assertion\Ast\WithinRangeOf;
+use PhpBench\Assertion\Ast\ZeroValue;
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
 use PhpBench\Math\FloatNumber;
 use PhpBench\Math\Statistics;
@@ -82,6 +83,10 @@ class ExpressionEvaluator
 
         if ($node instanceof MemoryValue) {
             return $this->evaluateMemoryValue($node);
+        }
+
+        if ($node instanceof ZeroValue) {
+            return $this->evaluateZeroValue($node);
         }
 
         throw new ExpressionEvaluatorError(sprintf(
@@ -209,7 +214,7 @@ class ExpressionEvaluator
         );
     }
 
-    private function evaluateMemoryValue(MemoryValue $node): int
+    private function evaluateMemoryValue(MemoryValue $node): float
     {
         return MemoryUnit::convertTo($node->value(), $node->unit(), MemoryUnit::BYTES);
     }
@@ -226,5 +231,10 @@ class ExpressionEvaluator
     private function evaluateThroughputValue(ThroughputValue $node): float
     {
         return TimeUnit::convertTo(1, $node->unit(), TimeUnit::MICROSECONDS) / $node->value();
+    }
+
+    private function evaluateZeroValue(ZeroValue $node): int
+    {
+        return 0;
     }
 }

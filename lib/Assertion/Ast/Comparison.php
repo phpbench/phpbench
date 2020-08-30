@@ -27,7 +27,7 @@ class Comparison implements Assertion
         $this->value1 = $value1;
         $this->operator = $operator;
         $this->value2 = $value2;
-        $this->tolerance = $tolerance ?: new TimeValue(0);
+        $this->tolerance = $tolerance ?: new ZeroValue();
     }
 
     public function operator(): string

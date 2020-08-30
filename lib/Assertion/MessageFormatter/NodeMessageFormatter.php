@@ -10,6 +10,7 @@ use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\Value;
+use PhpBench\Assertion\Ast\ZeroValue;
 use PhpBench\Assertion\MessageFormatter;
 use PhpBench\Util\MemoryUnit;
 use PhpBench\Util\TimeUnit;
@@ -64,6 +65,10 @@ final class NodeMessageFormatter implements MessageFormatter
 
         if ($node instanceof MemoryValue) {
             return $this->formatMemoryValue($node);
+        }
+
+        if ($node instanceof ZeroValue) {
+            return $this->formatZeroValue($node);
         }
 
         return sprintf('!!!! could not format "%s" !!!!', get_class($node));
@@ -182,5 +187,10 @@ final class NodeMessageFormatter implements MessageFormatter
 
         // else only format the integer value
         return number_format($value);
+    }
+
+    private function formatZeroValue(ZeroValue $node): string
+    {
+        return '0';
     }
 }

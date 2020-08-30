@@ -144,7 +144,7 @@ class NodeMessageFormatterTest extends TestCase
             '10.300 megabytes',
         ];
 
-        yield 'normalise property access' => [
+        yield 'normalise property access 1' => [
                 new Comparison(
                     new PropertyAccess(['foo', 'bar']),
                     '>',
@@ -155,7 +155,22 @@ class NodeMessageFormatterTest extends TestCase
                         'bar' => 5E6
                     ]
                 ],
-                '5 megabytes > 10 megabytes',
+                '5 megabytes > 10 megabytes ± 0',
+            ];
+
+        yield 'normalise property access 2' => [
+                new Comparison(
+                    new PropertyAccess(['foo', 'bar']),
+                    '>',
+                    new MemoryValue(10, 'megabytes'),
+                    new MemoryValue(1, 'megabytes')
+                ),
+                [
+                    'foo' => [
+                        'bar' => 5E6
+                    ]
+                ],
+                '5 megabytes > 10 megabytes ± 1 megabytes',
             ];
     }
 }

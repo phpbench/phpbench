@@ -31,6 +31,7 @@ class MemoryUnit
         self::assertUnitExists($fromUnit);
         self::assertUnitExists($toUnit);
         $byteValue = $value * self::$multipliers[$fromUnit];
+
         return $byteValue / self::$multipliers[$toUnit];
     }
 
