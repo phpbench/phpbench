@@ -19,7 +19,6 @@
         "doctrine/annotations": "^1.2.7",
         "doctrine/lexer": "^1.2",
         "lstrojny/functional-php": "^1.2.3",
-        "mathiasverraes/parsica": "^0.5.0",
         "phpbench/container": "^1.2.1",
         "phpbench/dom": "~0.2.0",
         "seld/jsonlint": "^1.1",
