@@ -84,7 +84,7 @@ Use the ``--assert`` option to introduce or override assertions:
 
 .. code-block:: bash
 
-    $ phpbench run /path/to/HashBench.php --assert="stat: mode, value: 10"
+    $ phpbench run /path/to/HashBench.php --assert="variant.mode <= 10 microsconds +/- 10%"
 
 This will assert that ALL variants must have a mode less than 10. For more
 information on assertions see :ref:`assertions`.
@@ -93,7 +93,7 @@ Failing assertions will cause PHPBench to exit with code ``2``. If you want to
 tolerate failures (f.e. in an unstable CI environment) you can use the
 ``--tolerate-failure`` option.
 
-For more information about assertions see :doc:`assertions-asserters`.
+For more information about assertions see :doc:`assertions`.
 
 Generating Reports
 ------------------
