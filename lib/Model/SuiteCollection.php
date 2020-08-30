@@ -55,10 +55,8 @@ class SuiteCollection implements IteratorAggregate
 
     /**
      * Merge another collection into this one.
-     *
-     * @param SuiteCollection $collection
      */
-    public function mergeCollection(self $collection): self
+    public function mergeCollection(SuiteCollection $collection): self
     {
         foreach ($collection->getSuites() as $suite) {
             $this->addSuite($suite);
