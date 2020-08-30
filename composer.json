@@ -17,7 +17,7 @@
         "ext-spl": "*",
         "beberlei/assert": "^2.4 || ^3.0",
         "doctrine/annotations": "^1.2.7",
-        "lstrojny/functional-php": "1.0 || ^1.2.3",
+        "lstrojny/functional-php": "^1.2.3",
         "mathiasverraes/parsica": "^0.5.0",
         "phpbench/container": "^1.2.1",
         "phpbench/dom": "~0.2.0",
@@ -35,7 +35,7 @@
         "friendsofphp/php-cs-fixer": "^2.13.1",
         "jangregor/phpstan-prophecy": "^0.8.0",
         "padraic/phar-updater": "^1.0",
-        "phpspec/prophecy": "^1.8",
+        "phpspec/prophecy": "^1.11",
         "phpstan/phpstan": "^0.12.7",
         "phpunit/phpunit": "^8.5.8"
     },
