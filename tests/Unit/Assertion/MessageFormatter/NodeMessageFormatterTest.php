@@ -114,7 +114,7 @@ class NodeMessageFormatterTest extends TestCase
                     new PropertyAccess(['foo', 'bar']),
                     '>',
                     new ThroughputValue(5, 'second'),
-                    new TimeValue(10, 'seconds'),
+                    new TimeValue(10, 'seconds')
                 ),
                 [
                     'foo' => [

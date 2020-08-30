@@ -61,7 +61,7 @@ class ExpressionParserTest extends ExpressionParserTestCase
             new Comparison(
                 new PropertyAccess(['this', 'foobar']),
                 '<=',
-                new TimeValue(100, 'microseconds'),
+                new TimeValue(100, 'microseconds')
             )
         ];
 
@@ -128,34 +128,34 @@ class ExpressionParserTest extends ExpressionParserTestCase
         ];
     }
 
-        /**
-         * @dataProvider provideSyntaxErrors
-         */
-        public function testSyntaxErrors(string $expression, string $expectedMessage): void
-        {
-            $this->expectException(SyntaxError::class);
-            $this->expectExceptionMessage($expectedMessage);
-            $this->parse($expression);
-        }
+    /**
+     * @dataProvider provideSyntaxErrors
+     */
+    public function testSyntaxErrors(string $expression, string $expectedMessage): void
+    {
+        $this->expectException(SyntaxError::class);
+        $this->expectExceptionMessage($expectedMessage);
+        $this->parse($expression);
+    }
         
-        /**
-         * @return Generator<mixed>
-         */
-        public function provideSyntaxErrors(): Generator
-        {
-            yield 'invalid value' => [
+    /**
+     * @return Generator<mixed>
+     */
+    public function provideSyntaxErrors(): Generator
+    {
+        yield 'invalid value' => [
                 '"!£',
                 'Expected property, integer or float'
             ];
 
-            yield 'invalid unit' => [
+        yield 'invalid unit' => [
                 '100 foobars',
                 'Expected time'
             ];
 
-            yield 'invalid comparator' => [
+        yield 'invalid comparator' => [
                 '100 microseconds !',
                 'Expected comparator, got "!"'
             ];
-        }
+    }
 }
