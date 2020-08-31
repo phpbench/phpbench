@@ -21,9 +21,6 @@ class Iteration extends ResultCollection
     private $index;
 
     /**
-     * @param int $index
-     * @param Variant $variant
-     * @param array $results
      */
     public function __construct(
         int $index,

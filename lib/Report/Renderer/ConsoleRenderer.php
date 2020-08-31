@@ -54,8 +54,6 @@ class ConsoleRenderer implements RendererInterface, OutputAwareInterface
     /**
      * Render the table.
      *
-     * @param Document $reportDom
-     * @param Config $config
      */
     public function render(Document $reportDom, Config $config)
     {
@@ -141,7 +139,6 @@ class ConsoleRenderer implements RendererInterface, OutputAwareInterface
     /**
      * Render the table. For Symfony 2.4 support.
      *
-     * @param mixed $table
      */
     private function renderTable($table)
     {
@@ -156,7 +153,6 @@ class ConsoleRenderer implements RendererInterface, OutputAwareInterface
     /**
      * Adds some output formatters.
      *
-     * @param OutputFormatterInterface $formatter
      */
     private function configureFormatters(OutputFormatterInterface $formatter)
     {

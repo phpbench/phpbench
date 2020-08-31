@@ -53,7 +53,6 @@ class Summary
     private $phpVersion = null;
 
     /**
-     * @param Suite $suite
      */
     public function __construct(Suite $suite)
     {

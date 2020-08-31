@@ -36,9 +36,6 @@ class BenchmarkFinder
     /**
      * Build the BenchmarkMetadata collection.
      *
-     * @param string $path
-     * @param array $subjectFilter
-     * @param array $groupFilter
      */
     public function findBenchmarks(string $path, array $subjectFilter = [], array $groupFilter = [])
     {

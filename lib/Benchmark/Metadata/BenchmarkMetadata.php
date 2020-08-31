@@ -48,8 +48,6 @@ class BenchmarkMetadata
     private $executorMetadata;
 
     /**
-     * @param string $path
-     * @param string $class
      */
     public function __construct(string $path, string $class)
     {
@@ -70,7 +68,6 @@ class BenchmarkMetadata
     /**
      * Get or create a new SubjectMetadata instance with the given name.
      *
-     * @param string $name
      *
      * @return SubjectMetadata
      */
@@ -167,7 +164,6 @@ class BenchmarkMetadata
     /**
      * Set any methods that should be called before the benchmark class is executed.
      *
-     * @param array $beforeClassMethods
      */
     public function setBeforeClassMethods(array $beforeClassMethods)
     {
@@ -185,7 +181,6 @@ class BenchmarkMetadata
     /**
      * Set any methods that should be called after the benchmark class is executed.
      *
-     * @param array $afterClassMethods
      */
     public function setAfterClassMethods(array $afterClassMethods)
     {

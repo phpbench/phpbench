@@ -23,7 +23,6 @@ class Reflector
     private $launcher;
 
     /**
-     * @param Launcher $launcher
      */
     public function __construct(
         Launcher $launcher
@@ -37,7 +36,6 @@ class Reflector
      * may be only one) additional ReflectionClass instances are the ancestors
      * of this first class.
      *
-     * @param string $file
      *
      * @return ReflectionHierarchy
      */
@@ -82,7 +80,6 @@ class Reflector
     /**
      * Return the parameter sets for the benchmark container in the given file.
      *
-     * @param string $file
      * @param string[] $paramProviders
      *
      * @return array

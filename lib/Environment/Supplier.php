@@ -30,7 +30,6 @@ class Supplier
     /**
      * Add a provider.
      *
-     * @param ProviderInterface $provider
      */
     public function addProvider(ProviderInterface $provider)
     {

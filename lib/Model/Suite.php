@@ -35,9 +35,7 @@ class Suite implements IteratorAggregate
     /**
      * __construct.
      *
-     * @param array $benchmarks
      * @param string $tag
-     * @param \DateTime $date
      * @param string $configPath
      * @param Information[] $envInformations
      */
@@ -73,7 +71,6 @@ class Suite implements IteratorAggregate
     /**
      * Create and add a benchmark.
      *
-     * @param string $class
      *
      * @return Benchmark
      */
@@ -234,7 +231,6 @@ class Suite implements IteratorAggregate
      * The uuid is determined by the storage driver, and may be empty
      * only when dynamically generating reports on-the-fly.
      *
-     * @return mixed
      */
     public function getUuid()
     {

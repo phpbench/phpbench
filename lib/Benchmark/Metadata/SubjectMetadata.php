@@ -113,7 +113,6 @@ class SubjectMetadata
     private $timeout = 0;
 
     /**
-     * @param string $name
      */
     public function __construct(BenchmarkMetadata $benchmarkMetadata, string $name)
     {

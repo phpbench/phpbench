@@ -40,7 +40,6 @@ class JsonDecoder
      * Normalize, parse and decode the given JSON(ish) encoded string into
      * an array.
      *
-     * @param string $jsonString
      *
      * @return array
      */

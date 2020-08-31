@@ -46,8 +46,6 @@ class Registry
     /**
      * Register a service ID with against the given name.
      *
-     * @param string $name
-     * @param string $serviceId
      */
     public function registerService(string $name, string $serviceId)
     {
@@ -65,8 +63,6 @@ class Registry
     /**
      * Directly set a named service.
      *
-     * @param string $name
-     * @param object $object
      */
     public function setService(string $name, object $object)
     {

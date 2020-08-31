@@ -32,7 +32,6 @@ class XmlDriverTest extends TestCase
     private $suite;
 
     /**
-     * @var mixed
      */
     private $document;
 

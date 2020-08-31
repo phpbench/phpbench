@@ -12,7 +12,6 @@
 
 namespace PhpBench\Model\Result;
 
-use Assert\Assertion;
 use PhpBench\Model\ResultInterface;
 
 /**
@@ -37,9 +36,6 @@ class MemoryResult implements ResultInterface
     }
 
     /**
-     * @param int $peak
-     * @param int $real
-     * @param int $final
      */
     public function __construct(int $peak, int $real, int $final)
     {

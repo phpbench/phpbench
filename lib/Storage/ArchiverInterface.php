@@ -28,7 +28,6 @@ interface ArchiverInterface
      *
      * Progress should be written to the given console output class.
      *
-     * @param OutputInterface $output
      */
     public function archive(OutputInterface $output);
 

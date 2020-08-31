@@ -46,7 +46,6 @@ class SuiteCollection implements IteratorAggregate
     /**
      * Add a suite to the collection.
      *
-     * @param Suite $suite
      */
     public function addSuite(Suite $suite): void
     {

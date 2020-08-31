@@ -35,7 +35,6 @@ class ErrorStack implements IteratorAggregate
     private $variant;
 
     /**
-     * @param Variant $variant
      * @param Error[] $errors
      */
     public function __construct(Variant $variant, array $errors)

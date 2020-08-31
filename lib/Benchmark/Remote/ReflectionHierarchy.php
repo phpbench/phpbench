@@ -25,7 +25,6 @@ class ReflectionHierarchy implements \IteratorAggregate
     /**
      * Add a reflection class.
      *
-     * @param ReflectionClass $reflectionClass
      */
     public function addReflectionClass(ReflectionClass $reflectionClass)
     {
@@ -61,7 +60,6 @@ class ReflectionHierarchy implements \IteratorAggregate
     /**
      * Return true if the class hierarchy contains the named method.
      *
-     * @param string $name
      *
      * @return bool
      */
@@ -79,7 +77,6 @@ class ReflectionHierarchy implements \IteratorAggregate
     /**
      * Return true if the class hierarchy contains the named static method.
      *
-     * @param string $name
      *
      * @return bool
      */

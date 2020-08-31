@@ -22,8 +22,6 @@ class FormatRegistry
     /**
      * Register a format class.
      *
-     * @param string $name
-     * @param FormatInterface $format
      */
     public function register(string $name, FormatInterface $format)
     {
@@ -40,7 +38,6 @@ class FormatRegistry
     /**
      * Return the named format class.
      *
-     * @param string $name
      *
      * @throws \InvalidArgumentException When no formatter exists.
      *

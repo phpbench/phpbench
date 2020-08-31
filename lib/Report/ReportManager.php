@@ -44,8 +44,6 @@ class ReportManager
     /**
      * Generate the named reports.
      *
-     * @param SuiteCollection $collection
-     * @param array $reportNames
      *
      * @return array
      */
@@ -83,10 +81,6 @@ class ReportManager
     /**
      * Render reports (as opposed to just generating the report XML documents via. generateReports).
      *
-     * @param OutputInterface $output
-     * @param SuiteCollection $collection
-     * @param array $reportNames
-     * @param array $outputNames
      */
     public function renderReports(
         OutputInterface $output,

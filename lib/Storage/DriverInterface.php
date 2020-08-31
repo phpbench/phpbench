@@ -25,7 +25,6 @@ interface DriverInterface
      * Optionally return a message which should be displayed
      * by the CLI interface after successful storage.
      *
-     * @param SuiteCollection $collection
      *
      * @return string|null
      */
@@ -35,7 +34,6 @@ interface DriverInterface
      * Return the suite collection with the given run ID.
      * If no suite is found an exception will be thrown.
      *
-     * @param string $runId
      *
      * @throws \InvalidArgumentException
      *

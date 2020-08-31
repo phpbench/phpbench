@@ -204,7 +204,6 @@ class HistoryIterator implements HistoryIteratorInterface
      * is still quite expensive as we are creating the entire object
      * graph for each suite run.
      *
-     * @param string $path
      *
      * @return HistoryEntry
      */

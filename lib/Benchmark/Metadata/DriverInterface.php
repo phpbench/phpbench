@@ -22,9 +22,7 @@ interface DriverInterface
     /**
      * Return the metadata for the given class FQN.
      *
-     * @param ReflectionHierarchy $classHierarchy
      *
-     * @return BenchmarkMetadata
      */
     public function getMetadataForHierarchy(ReflectionHierarchy $classHierarchy): BenchmarkMetadata;
 }

@@ -22,8 +22,6 @@ interface GeneratorInterface extends RegistrableInterface
     /**
      * Generate the report document from the suite result document.
      *
-     * @param SuiteCollection $collection
-     * @param Config $config
      *
      * @return Document
      */

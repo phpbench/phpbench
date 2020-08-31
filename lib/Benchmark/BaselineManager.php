@@ -37,8 +37,6 @@ class BaselineManager
      * Throws an invalid argument exception if the name has
      * already been registered.
      *
-     * @param string $name
-     * @param mixed $callable
      *
      * @throws \InvalidArgumentException
      */

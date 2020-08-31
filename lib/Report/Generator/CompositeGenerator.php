@@ -37,7 +37,6 @@ class CompositeGenerator implements GeneratorInterface, OutputAwareInterface
     private $output;
 
     /**
-     * @param ReportManager $reportManager
      */
     public function __construct(ReportManager $reportManager)
     {

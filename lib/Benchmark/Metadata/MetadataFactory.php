@@ -32,8 +32,6 @@ class MetadataFactory
     private $driver;
 
     /**
-     * @param Reflector $reflector
-     * @param DriverInterface $driver
      */
     public function __construct(Reflector $reflector, DriverInterface $driver)
     {

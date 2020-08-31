@@ -125,7 +125,6 @@ class TimeUnit
     /**
      * Override the destination unit.
      *
-     * @param string $destUnit
      */
     public function overrideDestUnit(string $destUnit)
     {
@@ -137,7 +136,6 @@ class TimeUnit
     /**
      * Override the mode.
      *
-     * @param string $mode
      */
     public function overrideMode(string $mode)
     {
@@ -149,7 +147,6 @@ class TimeUnit
     /**
      * Override the precision.
      *
-     * @param int $precision
      */
     public function overridePrecision(int $precision)
     {
@@ -318,7 +315,6 @@ class TimeUnit
      *
      * @static
      *
-     * @param string $unit
      * @param string $mode
      *
      * @return string

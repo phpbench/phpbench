@@ -12,7 +12,6 @@
 
 namespace PhpBench\Model\Result;
 
-use Assert\Assertion;
 use PhpBench\Model\ResultInterface;
 
 /**
@@ -36,8 +35,6 @@ class ComputedResult implements ResultInterface
     }
 
     /**
-     * @param float $zValue
-     * @param float $deviation
      */
     public function __construct(float $zValue, float $deviation)
     {

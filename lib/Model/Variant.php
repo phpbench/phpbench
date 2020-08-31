@@ -112,7 +112,6 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
     /**
      * Generate $nbIterations and add them to the variant.
      *
-     * @param int $nbIterations
      */
     public function spawnIterations(int $nbIterations): void
     {
@@ -148,7 +147,6 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
     /**
      * Add an iteration.
      *
-     * @param Iteration $iteration
      */
     public function addIteration(Iteration $iteration): void
     {
@@ -257,7 +255,6 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
     /**
      * Return the number of rejected iterations.
      *
-     * @return int
      */
     public function getRejectCount(): int
     {
@@ -281,7 +278,6 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
      *
      * TODO: Rename to getDistribution
      *
-     * @return Distribution
      */
     public function getStats(): Distribution
     {
@@ -357,7 +353,6 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
      * After an exception is encountered the results from this iteration
      * set are invalid.
      *
-     * @param \Exception $exception
      */
     public function setException(\Exception $exception): void
     {

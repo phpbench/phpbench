@@ -192,7 +192,6 @@ class RunnerConfig
     /**
      * Override the sleep interval (in microseconds).
      *
-     * @param mixed $default
      */
     public function getSleep($default = null)
     {

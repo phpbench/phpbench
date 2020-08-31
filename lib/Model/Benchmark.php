@@ -38,8 +38,6 @@ class Benchmark implements \IteratorAggregate
     private $suite;
 
     /**
-     * @param Suite $suite
-     * @param string $class
      */
     public function __construct(Suite $suite, string $class)
     {
@@ -66,7 +64,6 @@ class Benchmark implements \IteratorAggregate
     /**
      * Create and add a subject.
      *
-     * @param string $name
      *
      * @return Subject
      */

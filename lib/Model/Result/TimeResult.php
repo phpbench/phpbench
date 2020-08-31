@@ -34,7 +34,7 @@ class TimeResult implements ResultInterface
     }
 
     /**
-     * @param mixed $time Time taken to execute the iteration in microseconds.
+     * @param int $time Time taken to execute the iteration in microseconds.
      */
     public function __construct(int $time)
     {
@@ -56,7 +56,6 @@ class TimeResult implements ResultInterface
     /**
      * Return the time for the given number of revolutions.
      *
-     * @param int $revs
      *
      * @throws \OutOfBoundsException If revs <= 0
      *

@@ -35,7 +35,6 @@ class XmlDecoder
     /**
      * Decode a PHPBench XML document into a SuiteCollection.
      *
-     * @param Document $document
      *
      * @return SuiteCollection
      */

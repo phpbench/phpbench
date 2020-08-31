@@ -30,7 +30,6 @@ class Formatter
     /**
      * Register classes from a given JSON encoded class definition file.
      *
-     * @param string $filename
      */
     public function classesFromFile(string $filename)
     {
@@ -43,7 +42,6 @@ class Formatter
      *
      * Class definitions have the form $className => (array) $formatDefinitions
      *
-     * @param array $classDefinitions
      */
     public function registerClasses(array $classDefinitions)
     {
@@ -62,8 +60,6 @@ class Formatter
      * i.e. a 2 element tuple with a scalar (the name of the formatter) and an
      * associative array of formatter options.
      *
-     * @param string $name
-     * @param array $formatDefinitions
      */
     public function registerClass(string $name, array $formatDefinitions)
     {
@@ -76,8 +72,6 @@ class Formatter
      * options; this is required when options should be overridden on a per-subject basis.
      *
      * @param string[] $classNames
-     * @param mixed $value
-     * @param array $params
      *
      * @return string
      */

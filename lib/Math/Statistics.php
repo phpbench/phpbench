@@ -20,8 +20,6 @@ class Statistics
     /**
      * Return the standard deviation of a given population.
      *
-     * @param array $values
-     * @param bool $sample
      *
      * @return float
      */
@@ -35,8 +33,6 @@ class Statistics
     /**
      * Return the variance for a given population.
      *
-     * @param array $values
-     * @param bool $sample
      *
      * @return float
      */
@@ -62,9 +58,7 @@ class Statistics
     /**
      * Return the mean (average) value of the given values.
      *
-     * @param array $values
      *
-     * @return mixed
      */
     public static function mean(array $values)
     {
@@ -98,8 +92,6 @@ class Statistics
      * is potentially misleading, but When benchmarking this should be a very
      * rare occurance.
      *
-     * @param array $population
-     * @param int $space
      * @param string $bandwidth
      */
     public static function kdeMode(array $population, int $space = 512, string $bandwidth = null): float
@@ -135,10 +127,6 @@ class Statistics
     /**
      * Return an array populated with $num numbers from $min to $max.
      *
-     * @param float $min
-     * @param float $max
-     * @param int $num
-     * @param bool $endpoint
      *
      * @return float[]
      */
@@ -175,8 +163,6 @@ class Statistics
      * For a better implementation copy:
      *   http://docs.scipy.org/doc/numpy-1.10.1/reference/generated/numpy.histogram.html
      *
-     * @param array $values
-     * @param int $steps
      * @param float $lowerBound
      * @param float $upperBound
      *

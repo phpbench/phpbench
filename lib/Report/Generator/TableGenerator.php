@@ -165,7 +165,6 @@ class TableGenerator implements GeneratorInterface
      * Process the sorting, also break sorting.
      *
      * @param array<Row> $table
-     * @param Config $config
      *
      * @return array<Row>
      */
@@ -208,7 +207,6 @@ class TableGenerator implements GeneratorInterface
      * Process breaks (split large table into smaller tables).
      *
      * @param array<Row> $table
-     * @param Config $config
      *
      * @return array<array<Row>>
      */
@@ -249,7 +247,6 @@ class TableGenerator implements GeneratorInterface
      * Remove unwanted columns from the tables.
      *
      * @param array<array<Row>> $tables
-     * @param Config $config
      *
      * @return array<array<Row>>
      */
@@ -286,7 +283,6 @@ class TableGenerator implements GeneratorInterface
      * Process the compare feature.
      *
      * @param array<array<Row>> $tables
-     * @param Config $config
      *
      * @return array<array<Row>>
      */
@@ -374,8 +370,6 @@ class TableGenerator implements GeneratorInterface
     /**
      * Construct the initial table from the SuiteCollection.
      *
-     * @param SuiteCollection $suiteCollection
-     * @param Config $config
      *
      * @return array<Row>
      */
@@ -471,7 +465,6 @@ class TableGenerator implements GeneratorInterface
      * Generate the report DOM document to pass to the report renderer.
      *
      * @param array<array<Row>> $tables
-     * @param Config $config
      *
      * @return Document
      */

@@ -134,7 +134,6 @@ class AnnotationReader
      * Set import use to true in order to use imported annotations, otherwise
      * import the PHPBench annotations directly.
      *
-     * @param bool $importUse
      */
     public function __construct(bool $importUse = false)
     {

@@ -94,7 +94,6 @@ final class Runner
     /**
      * Set the progress logger to use.
      *
-     * @param LoggerInterface $logger
      */
     public function setProgressLogger(LoggerInterface $logger)
     {

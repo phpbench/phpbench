@@ -23,8 +23,6 @@ interface FormatInterface
     /**
      * Format the given subject value.
      *
-     * @param string $subject
-     * @param array $options
      *
      * @return string
      */

@@ -84,8 +84,6 @@ class ConfigurableRegistry extends Registry
      * Note that all configurations must be associated with a named service
      * via a configuration key equal to the configuration service type of this registry.
      *
-     * @param string $name
-     * @param array $config
      */
     public function setConfig(string $name, array $config)
     {
@@ -104,7 +102,6 @@ class ConfigurableRegistry extends Registry
      * Recursively merge configs (having the "extends" key) which extend
      * another report.
      *
-     * @param string $name
      *
      * @return void
      */
@@ -164,7 +161,6 @@ class ConfigurableRegistry extends Registry
      * table
      * ````
      *
-     * @param string $rawConfig
      *
      * @return string
      */

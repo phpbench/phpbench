@@ -17,7 +17,6 @@ class ExpressionParserTestCase extends TestCase
     }
 
     /**
-     * @return mixed
      */
     protected function evaluateExpression(string $expression, array $args)
     {
@@ -28,7 +27,6 @@ class ExpressionParserTestCase extends TestCase
     }
 
     /**
-     * @return mixed
      */
     protected function evaluate(Node $node, array $args = [])
     {

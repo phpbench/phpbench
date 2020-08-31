@@ -85,10 +85,7 @@ class TemplateExecutor implements BenchmarkExecutorInterface
     }
 
     /**
-     * @param SubjectMetadata $subjectMetadata
-     * @param Iteration $iteration
      *
-     * @return array
      */
     protected function createTokens(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config) : array
     {

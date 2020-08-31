@@ -71,7 +71,6 @@ class PhpBench
      * because otherwise it will be the script path, which is wrong in the
      * context of a PHAR.
      *
-     * @param string $path
      *
      * @return string
      */

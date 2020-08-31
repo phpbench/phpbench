@@ -5,7 +5,6 @@ namespace PhpBench\Report\Generator\Table;
 final class SecondaryValue
 {
     /**
-     * @var mixed
      */
     private $value;
 
@@ -15,7 +14,6 @@ final class SecondaryValue
     private $role;
 
     /**
-     * @param mixed $value
      */
     private function __construct($value, string $role)
     {
@@ -24,7 +22,6 @@ final class SecondaryValue
     }
 
     /**
-     * @param mixed $value
      */
     public static function create($value, string $role): self
     {
@@ -37,7 +34,6 @@ final class SecondaryValue
     }
 
     /**
-     * @return mixed
      */
     public function getValue()
     {
@@ -45,7 +41,6 @@ final class SecondaryValue
     }
 
     /**
-     * @param mixed $value
      */
     public function setValue($value): void
     {

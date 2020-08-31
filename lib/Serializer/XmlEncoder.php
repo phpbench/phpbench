@@ -31,7 +31,6 @@ class XmlEncoder
     /**
      * Encode a Suite object into a XML document.
      *
-     * @param SuiteCollection $suiteCollection
      *
      * @return Document
      */

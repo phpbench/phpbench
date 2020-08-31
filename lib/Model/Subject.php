@@ -78,8 +78,6 @@ class Subject
     private $executor;
 
     /**
-     * @param Benchmark $benchmark
-     * @param string $name
      */
     public function __construct(Benchmark $benchmark, string $name)
     {
@@ -102,9 +100,6 @@ class Subject
     /**
      * Create and add a new variant based on this subject.
      *
-     * @param ParameterSet $parameterSet
-     * @param int $revolutions
-     * @param int $warmup
      *
      * @return Variant
      */

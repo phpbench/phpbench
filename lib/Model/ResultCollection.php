@@ -34,7 +34,6 @@ class ResultCollection
      *
      * Only one result per class is permitted.
      *
-     * @param ResultInterface $result
      */
     public function setResult(ResultInterface $result)
     {
@@ -45,7 +44,6 @@ class ResultCollection
     /**
      * Return true if there is a result for the given class name.
      *
-     * @param string $class
      *
      * @return bool
      */
@@ -58,7 +56,6 @@ class ResultCollection
      * Return the result of the given class, throw an exception
      * if it does not exist.
      *
-     * @param string $class
      *
      * @throws \RuntimeException
      *
@@ -79,12 +76,9 @@ class ResultCollection
     /**
      * Return the named metric for the given result class.
      *
-     * @param string $class
-     * @param string $metric
      *
      * @throws \InvalidArgumentException
      *
-     * @return mixed
      */
     public function getMetric(string $class, string $metric)
     {
@@ -107,11 +101,7 @@ class ResultCollection
      * If the metric does not exist but the class *does* exist then there is
      * clearly a problem and we should allow an error to be thrown.
      *
-     * @param string $class
-     * @param string $metric
-     * @param mixed $default
      *
-     * @return mixed
      */
     public function getMetricOrDefault(string $class, string $metric, $default = null)
     {
