@@ -46,7 +46,7 @@ class XDebugUtilTest extends TestCase
         $this->benchmark->getClass()->willReturn($class);
         $this->subject->getName()->willReturn($subject);
 
-        $this->parameters->getIndex()->willReturn(7);
+        $this->parameters->getName()->willReturn(7);
         $this->variant->getParameterSet()->willReturn($this->parameters->reveal());
         $this->subject->getBenchmark()->willReturn($this->benchmark->reveal());
         $this->variant->getSubject()->willReturn($this->subject->reveal());
@@ -64,12 +64,12 @@ class XDebugUtilTest extends TestCase
             [
                 'Benchmark',
                 'Subject',
-                'Benchmark::Subject.P7',
+                '2214b023e25587e253082262814e6c37'
             ],
             [
                 'Benchmark\\Foo',
                 'Subject\\//asd',
-                'Benchmark_Foo::Subject___asd.P7',
+                '25133125bf4eca7a08502711d2c8403d'
             ],
         ];
     }

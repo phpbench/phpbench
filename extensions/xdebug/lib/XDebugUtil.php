@@ -16,19 +16,16 @@ use PhpBench\Model\Iteration;
 
 class XDebugUtil
 {
-    public static function filenameFromIteration(Iteration $iteration, $extension = '')
+    public static function filenameFromIteration(Iteration $iteration, $extension = ''): string
     {
         $name = sprintf(
-            '%s::%s.P%s%s',
+            '%s%s%s',
             $iteration->getVariant()->getSubject()->getBenchmark()->getClass(),
             $iteration->getVariant()->getSubject()->getName(),
-            $iteration->getVariant()->getParameterSet()->getIndex(),
-            $extension
+            $iteration->getVariant()->getParameterSet()->getName()
         );
 
-        $name = str_replace('\\', '_', $name);
-        $name = str_replace('/', '_', $name);
 
-        return $name;
+        return md5($name) . $extension;
     }
 }

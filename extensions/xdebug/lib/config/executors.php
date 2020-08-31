@@ -11,9 +11,6 @@
  */
 
 return [
-    'xdebug_trace' => [
-        'executor' => 'xdebug_trace',
-    ],
     'xdebug_profile' => [
         'executor' => 'xdebug_profile',
     ],

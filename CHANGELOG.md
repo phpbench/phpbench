@@ -8,6 +8,7 @@ Backward compatibility breaks:
 
 - DBAL extension removed.
 - PHPBench Reports extension removed.
+- Removed XDebug Trace integration
 - Removed `--query` featre (only worked with DBAL, too complex).
 - Removed `--context` (depreacted in favor of `--tag`)
 - Assertions now accept a single expression rather than a set of
