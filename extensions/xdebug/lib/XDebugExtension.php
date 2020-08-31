@@ -41,14 +41,6 @@ class XDebugExtension implements ExtensionInterface
             );
         }, ['console.command' => []]);
 
-        $container->register('xdebug.command.trace', function (Container $container) {
-            return new TraceCommand(
-                $container->get('console.command.handler.runner'),
-                $container->get('xdebug.renderer.trace'),
-                $container->get('xdebug.command.handler.output_dir')
-            );
-        }, ['console.command' => []]);
-
         $container->register('xdebug.command.handler.output_dir', function (Container $container) {
             return new OutputDirHandler($container->getParameter('xdebug.output_dir'));
         });
@@ -65,25 +57,6 @@ class XDebugExtension implements ExtensionInterface
             ['benchmark_executor' => ['name' => 'xdebug_profile'],
         ]);
 
-        $container->register('xdebug.executor.xdebug_trace',
-            function (Container $container) {
-                return new CompositeExecutor(
-                    new TraceExecutor(
-                        $container->get(CoreExtension::SERVICE_EXECUTOR_BENCHMARK_MICROTIME)
-                    ),
-                    $container->get(CoreExtension::SERVICE_EXECUTOR_METHOD_REMOTE)
-                );
-            },
-            ['benchmark_executor' => ['name' => 'xdebug_trace'],
-        ]);
-
-        $container->register('xdebug.renderer.trace', function (Container $container) {
-            return new TraceRenderer(
-                $container->get('phpbench.formatter')
-            );
-        });
-
         $container->mergeParameter('executors', require_once(__DIR__ . '/config/executors.php'));
-        $container->mergeParameter('reports', require_once(__DIR__ . '/config/generators.php'));
     }
 }
