@@ -13,7 +13,6 @@
 namespace PhpBench\Report;
 
 use PhpBench\Console\OutputAwareInterface;
-use PhpBench\Dom\Document;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\ConfigurableRegistry;
 use Symfony\Component\Console\Output\OutputInterface;
