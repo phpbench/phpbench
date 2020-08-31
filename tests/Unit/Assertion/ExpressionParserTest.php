@@ -158,4 +158,70 @@ class ExpressionParserTest extends ExpressionParserTestCase
                 'Expected comparator, got "!"'
             ];
     }
+
+    /**
+     * @dataProvider provideUnits
+     */
+    public function testTimeUnit(string $unit): void
+    {
+        $node = $this->parse(sprintf('10 %s > 10 microseconds', $unit));
+        self::assertInstanceOf(Comparison::class, $node);
+        self::assertEquals($unit, $node->value1()->unit());
+    }
+
+    /**
+     * @return Generator<mixed>
+     */
+    public function provideUnits(): Generator
+    {
+        yield [ 'microseconds' ];
+
+        yield [ 'milliseconds' ];
+
+        yield [ 'ms' ];
+
+        yield [ 'seconds' ];
+
+        yield [ 's' ];
+
+        yield [ 'minutes' ];
+
+        yield [ 'm' ];
+    }
+
+    /**
+     * @dataProvider provideStorageUnit
+     */
+    public function testStorageUnit(string $unit): void
+    {
+        $node = $this->parse(sprintf('10 %s > 10 bytes', $unit));
+        self::assertInstanceOf(Comparison::class, $node);
+        self::assertEquals($unit, $node->value1()->unit());
+    }
+
+    /**
+     * @return Generator<mixed>
+     */
+    public function provideStorageUnit(): Generator
+    {
+        yield [ 'gigabytes' ];
+
+        yield [ 'gb' ];
+
+        yield [ 'megabytes' ];
+
+        yield [ 'mb' ];
+
+        yield [ 'kilobytes' ];
+
+        yield [ 'k' ];
+
+        yield [ 'kilobytes' ];
+
+        yield [ 'kb' ];
+
+        yield [ 'bytes' ];
+
+        yield [ 'b' ];
+    }
 }

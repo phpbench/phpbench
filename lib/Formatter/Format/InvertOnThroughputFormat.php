@@ -25,7 +25,7 @@ class InvertOnThroughputFormat implements FormatInterface
         $mode = $this->timeUnit->resolveMode($options['mode']);
 
         if ($mode === TimeUnit::MODE_THROUGHPUT) {
-            return -(float)$subject;
+            return (string)-(float)$subject;
         }
 
         return $subject;

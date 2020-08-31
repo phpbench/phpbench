@@ -53,6 +53,10 @@ class TimeUnit
         self::MINUTE => self::MINUTES,
         self::HOUR => self::HOURS,
         self::DAY => self::DAYS,
+        'us' => self::MICROSECONDS,
+        'ms' => self::MILLISECONDS,
+        's' => self::SECONDS,
+        'm' => self::MINUTES,
     ];
 
     /**
