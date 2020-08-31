@@ -18,10 +18,7 @@ use PhpBench\Executor\CompositeExecutor;
 use PhpBench\Extension\CoreExtension;
 use PhpBench\Extensions\XDebug\Command\Handler\OutputDirHandler;
 use PhpBench\Extensions\XDebug\Command\ProfileCommand;
-use PhpBench\Extensions\XDebug\Command\TraceCommand;
 use PhpBench\Extensions\XDebug\Executor\ProfileExecutor;
-use PhpBench\Extensions\XDebug\Executor\TraceExecutor;
-use PhpBench\Extensions\XDebug\Renderer\TraceRenderer;
 
 class XDebugExtension implements ExtensionInterface
 {
