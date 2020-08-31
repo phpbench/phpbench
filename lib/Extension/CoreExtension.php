@@ -114,7 +114,7 @@ class CoreExtension implements ExtensionInterface
             'archive_path' => '_archive',
             'env_baselines' => ['nothing', 'md5', 'file_rw'],
             'env_baseline_callables' => [],
-            'xml_storage_path' => getcwd() . '/_storage', // use cwd because PHARs
+            'xml_storage_path' => getcwd() . '/.phpbench/storage', // use cwd because PHARs
             'extension_autoloader' => null,
             'php_config' => [],
             'php_binary' => null,

@@ -11,13 +11,13 @@ XML Storage Driver
 PHPBench will use XML storage by default (other storage drivers can be added
 through extensions).
 
-The XML storage driver will place benchmarks in a folder called ``_storage``
+The XML storage driver will place benchmarks in a folder called ``.phpbench``
 by default, this can be changed in the configuration as follows:
 
 .. code-block:: javascript
 
     {
-        "xml_storage_path": "_storage"
+        "xml_storage_path": "path/to/my/folder"
     }
 
 Storing Results

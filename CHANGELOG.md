@@ -15,6 +15,7 @@ Backward compatibility breaks:
   configuration options.
 - Type hints have been added in most places - possibly causing issues with
   any extensions.
+- Assets (storage, xdebug profiles) are now placed in `.phpbench`
 
 Features
 
@@ -29,6 +30,8 @@ Features
 
 Improvements
 
+ - All assets now placed in `.phpbench` directory in CWD (instead of
+   `./_storage` and `./xdebug`
  - `--tag` implicitly stores the benchmark (no need to additionally use
    `--store`)
  - Decrease benchmark overhead by rendering parameters in-template -

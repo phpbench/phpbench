@@ -25,7 +25,7 @@ class XDebugExtension implements ExtensionInterface
     public function getDefaultConfig()
     {
         return [
-            'xdebug.output_dir' => 'xdebug',
+            'xdebug.output_dir' => '.phpbench/xdebug-profile',
         ];
     }
 
