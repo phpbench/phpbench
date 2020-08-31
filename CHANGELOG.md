@@ -13,6 +13,8 @@ Backward compatibility breaks:
 - Removed `--context` (depreacted in favor of `--tag`)
 - Assertions now accept a single expression rather than a set of
   configuration options.
+- Type hints have been added in most places - possibly causing issues with
+  any extensions.
 
 Features
 
