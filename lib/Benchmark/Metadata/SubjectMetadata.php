@@ -83,7 +83,7 @@ class SubjectMetadata
     private $outputTimeUnit = null;
 
     /**
-     * @var string|null
+     * @var int|null
      */
     private $outputTimePrecision = null;
 
@@ -253,12 +253,12 @@ class SubjectMetadata
         $this->outputTimeUnit = $outputTimeUnit;
     }
 
-    public function getOutputTimePrecision(): ?string
+    public function getOutputTimePrecision(): ?int
     {
         return $this->outputTimePrecision;
     }
 
-    public function setOutputTimePrecision(?string $outputTimePrecision): void
+    public function setOutputTimePrecision(?int $outputTimePrecision): void
     {
         $this->outputTimePrecision = $outputTimePrecision;
     }

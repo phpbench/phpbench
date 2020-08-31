@@ -245,7 +245,7 @@ class Suite implements IteratorAggregate
     public function generateUuid(): void
     {
         $serialized = serialize($this->envInformations);
-        $this->uuid = dechex($this->getDate()->format('Ymd')) . substr(sha1(implode([
+        $this->uuid = dechex((int)$this->getDate()->format('Ymd')) . substr(sha1(implode([
             microtime(),
             $serialized,
             $this->configPath,

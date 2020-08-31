@@ -148,7 +148,7 @@ class BlinkenLogger extends AnsiLogger
         if ($this->currentLine != $yPos = $this->getYPos($iteration)) {
             $downMovement = $yPos - $this->currentLine;
             $this->output->write("\x1B[" . $downMovement . 'B');
-            $this->currentLine = $yPos;
+            $this->currentLine = (int)$yPos;
         }
 
         $time = $this->formatIterationTime($iteration);

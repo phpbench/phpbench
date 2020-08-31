@@ -136,7 +136,7 @@ class Subject
 
     public function inGroups(array $groups): bool
     {
-        return count(array_intersect($this->groups, $groups));
+        return 0 !== count(array_intersect($this->groups, $groups));
     }
 
     public function setGroups(array $groups): void

@@ -106,13 +106,13 @@ class XmlEncoder
 
         // TODO: These attributes should be on the subject, see
         // https://github.com/phpbench/phpbench/issues/307
-        $variantEl->setAttribute('sleep', $subject->getSleep());
+        $variantEl->setAttribute('sleep', (string)$subject->getSleep());
         $variantEl->setAttribute('output-time-unit', $subject->getOutputTimeUnit() ?: TimeUnit::MICROSECONDS);
-        $variantEl->setAttribute('output-time-precision', $subject->getOutputTimePrecision());
+        $variantEl->setAttribute('output-time-precision', (string)$subject->getOutputTimePrecision());
         $variantEl->setAttribute('output-mode', $subject->getOutputMode() ?: TimeUnit::MODE_TIME);
         $variantEl->setAttribute('revs', (string) $variant->getRevolutions());
         $variantEl->setAttribute('warmup', (string) $variant->getWarmup());
-        $variantEl->setAttribute('retry-threshold', $subject->getRetryThreshold());
+        $variantEl->setAttribute('retry-threshold', (string)$subject->getRetryThreshold());
 
         $parameterSetEl = $variantEl->appendElement('parameter-set');
         $parameterSetEl->setAttribute('name', $variant->getParameterSet()->getName());
