@@ -52,7 +52,7 @@ class EnvGenerator implements GeneratorInterface, OutputAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function generate(SuiteCollection $suiteCollection, Config $config): \PhpBench\Dom\Document
+    public function generate(SuiteCollection $suiteCollection, Config $config): Document
     {
         $document = new Document();
         $reportsEl = $document->createRoot('reports');

@@ -43,7 +43,7 @@ class ErrorStack implements IteratorAggregate
         $this->errors = $errors;
     }
 
-    public function getVariant(): \PhpBench\Model\Variant
+    public function getVariant(): Variant
     {
         return $this->variant;
     }

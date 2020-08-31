@@ -33,7 +33,7 @@ abstract class AbstractRemoteProvider implements ProviderInterface
         return true;
     }
 
-    public function getInformation(): \PhpBench\Environment\Information
+    public function getInformation(): Information
     {
         return new Information(
             $this->name(),

@@ -105,7 +105,7 @@ final class Runner
      *
      * The $name argument will set the "name" attribute on the "suite" element.
      */
-    public function run($path, RunnerConfig $config): \PhpBench\Model\Suite
+    public function run($path, RunnerConfig $config): Suite
     {
         // build the collection of benchmarks to be executed.
         $benchmarkMetadatas = $this->benchmarkFinder->findBenchmarks($path, $config->getFilters(), $config->getGroups());

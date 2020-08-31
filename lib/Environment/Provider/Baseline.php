@@ -42,7 +42,7 @@ class Baseline implements ProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getInformation(): \PhpBench\Environment\Information
+    public function getInformation(): Information
     {
         $results = [];
 

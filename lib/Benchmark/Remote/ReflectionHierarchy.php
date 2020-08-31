@@ -44,7 +44,7 @@ class ReflectionHierarchy implements \IteratorAggregate
      *
      * @throws \InvalidArgumentException
      */
-    public function getTop(): \PhpBench\Benchmark\Remote\ReflectionClass
+    public function getTop(): ReflectionClass
     {
         if (!isset($this->reflectionClasses[0])) {
             throw new \InvalidArgumentException(

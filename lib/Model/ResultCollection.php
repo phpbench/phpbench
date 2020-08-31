@@ -57,7 +57,7 @@ class ResultCollection
      *
      * @throws \RuntimeException
      */
-    public function getResult(string $class): \PhpBench\Model\ResultInterface
+    public function getResult(string $class): ResultInterface
     {
         if (!isset($this->results[$class])) {
             throw new \RuntimeException(sprintf(

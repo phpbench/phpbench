@@ -354,7 +354,7 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
      * set are invalid.
      *
      */
-    public function setException(\Exception $exception): void
+    public function setException(Exception $exception): void
     {
         $errors = [];
 
@@ -409,7 +409,7 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
         return count($this->iterations);
     }
 
-    public function offsetGet($offset): ?\PhpBench\Model\Iteration
+    public function offsetGet($offset): ?Iteration
     {
         return $this->getIteration($offset);
     }

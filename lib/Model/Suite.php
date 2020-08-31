@@ -72,7 +72,7 @@ class Suite implements IteratorAggregate
      * Create and add a benchmark.
      *
      */
-    public function createBenchmark(string $class): \PhpBench\Model\Benchmark
+    public function createBenchmark(string $class): Benchmark
     {
         $benchmark = new Benchmark($this, $class);
         $this->benchmarks[$class] = $benchmark;
@@ -85,7 +85,7 @@ class Suite implements IteratorAggregate
         return new \ArrayIterator($this->benchmarks);
     }
 
-    public function getTag(): ?\PhpBench\Model\Tag
+    public function getTag(): ?Tag
     {
         return $this->tag;
     }

@@ -41,7 +41,7 @@ class FormatRegistry
      *
      * @throws \InvalidArgumentException When no formatter exists.
      */
-    public function get(string $name): \PhpBench\Formatter\FormatInterface
+    public function get(string $name): FormatInterface
     {
         if (!isset($this->formats[$name])) {
             throw new \InvalidArgumentException(sprintf(

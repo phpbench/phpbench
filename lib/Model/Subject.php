@@ -99,7 +99,7 @@ class Subject
      * Create and add a new variant based on this subject.
      *
      */
-    public function createVariant(ParameterSet $parameterSet, int $revolutions, int $warmup, array $computedStats = []): \PhpBench\Model\Variant
+    public function createVariant(ParameterSet $parameterSet, int $revolutions, int $warmup, array $computedStats = []): Variant
     {
         $variant = new Variant(
             $this,
@@ -199,7 +199,7 @@ class Subject
         return $this->index;
     }
 
-    public function getExecutor(): \PhpBench\Model\ResolvedExecutor
+    public function getExecutor(): ResolvedExecutor
     {
         return $this->executor;
     }

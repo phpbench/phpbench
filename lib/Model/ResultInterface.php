@@ -24,7 +24,7 @@ interface ResultInterface
      * Return a new instance based using the given array values.
      *
      */
-    public static function fromArray(array $values): \PhpBench\Model\ResultInterface;
+    public static function fromArray(array $values): ResultInterface;
 
     /**
      * Return a key value set representing the metrics in this result.

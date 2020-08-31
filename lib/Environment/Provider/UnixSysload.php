@@ -25,7 +25,7 @@ class UnixSysload implements ProviderInterface
         return false === stristr(PHP_OS, 'win');
     }
 
-    public function getInformation(): \PhpBench\Environment\Information
+    public function getInformation(): Information
     {
         $load = sys_getloadavg();
         $load = array_combine([

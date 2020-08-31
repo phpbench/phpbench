@@ -48,6 +48,7 @@ return PhpCsFixer\Config::create()
         'phpdoc_indent' => false,
         'phpdoc_separation' => true,
         'no_superfluous_phpdoc_tags' => true,
+        'fully_qualified_strict_types' => true,
     ])
     ->setFinder($finder)
     ;

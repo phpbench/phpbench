@@ -60,7 +60,7 @@ class XmlDriver implements DriverInterface
     /**
      * {@inheritdoc}
      */
-    public function fetch(string $runId): \PhpBench\Model\SuiteCollection
+    public function fetch(string $runId): SuiteCollection
     {
         if (!$this->has($runId)) {
             throw new \InvalidArgumentException(sprintf(

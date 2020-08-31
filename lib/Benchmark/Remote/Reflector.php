@@ -37,7 +37,7 @@ class Reflector
      * of this first class.
      *
      */
-    public function reflect(string $file): \PhpBench\Benchmark\Remote\ReflectionHierarchy
+    public function reflect(string $file): ReflectionHierarchy
     {
         $classFqn = $this->getClassNameFromFile($file);
         $hierarchy = new ReflectionHierarchy();

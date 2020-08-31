@@ -23,5 +23,5 @@ interface GeneratorInterface extends RegistrableInterface
      * Generate the report document from the suite result document.
      *
      */
-    public function generate(SuiteCollection $collection, Config $config): \PhpBench\Dom\Document;
+    public function generate(SuiteCollection $collection, Config $config): Document;
 }

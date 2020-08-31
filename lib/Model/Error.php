@@ -43,7 +43,7 @@ class Error
         $this->trace = $trace;
     }
 
-    public static function fromException(Throwable $exception): \PhpBench\Model\Error
+    public static function fromException(Throwable $exception): Error
     {
         return new self(
             $exception->getMessage(),

@@ -203,7 +203,7 @@ class HistoryIterator implements HistoryIteratorInterface
      * graph for each suite run.
      *
      */
-    private function getHistoryEntry(string $path): \PhpBench\Storage\HistoryEntry
+    private function getHistoryEntry(string $path): HistoryEntry
     {
         $dom = new Document();
         $dom->load($path);

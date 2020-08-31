@@ -86,7 +86,7 @@ class Git implements ProviderInterface
         return new VcsInformation('git', $branchName, $version);
     }
 
-    private function exec($cmd): \Symfony\Component\Process\Process
+    private function exec($cmd): Process
     {
         $cmd = sprintf('%s %s', escapeshellarg($this->getGitPath()), $cmd);
         $process = Process::fromShellCommandline($cmd);

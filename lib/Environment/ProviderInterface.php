@@ -27,5 +27,5 @@ interface ProviderInterface
     /**
      * Return information about the detected VCS repository.
      */
-    public function getInformation(): \PhpBench\Environment\Information;
+    public function getInformation(): Information;
 }

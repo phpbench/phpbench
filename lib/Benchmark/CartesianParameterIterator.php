@@ -106,7 +106,7 @@ class CartesianParameterIterator implements \Iterator
         $this->key = implode(',', $key);
     }
 
-    private function getParameterSet(): \PhpBench\Model\ParameterSet
+    private function getParameterSet(): ParameterSet
     {
         return new ParameterSet($this->key, $this->current);
     }

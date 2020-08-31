@@ -151,7 +151,7 @@ class SubjectMetadata
     /**
      * Return the benchmarkMetadata metadata for this subject.
      */
-    public function getBenchmark(): \PhpBench\Benchmark\Metadata\BenchmarkMetadata
+    public function getBenchmark(): BenchmarkMetadata
     {
         return $this->benchmarkMetadata;
     }
@@ -318,7 +318,7 @@ class SubjectMetadata
         return $this->assertions;
     }
 
-    public function getExecutor(): \PhpBench\Benchmark\Metadata\ExecutorMetadata
+    public function getExecutor(): ExecutorMetadata
     {
         return $this->executorMetadata;
     }

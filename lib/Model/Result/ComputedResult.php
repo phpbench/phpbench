@@ -26,7 +26,7 @@ class ComputedResult implements ResultInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromArray(array $values): \PhpBench\Model\ResultInterface
+    public static function fromArray(array $values): ResultInterface
     {
         return new self(
             (float) $values['z_value'],

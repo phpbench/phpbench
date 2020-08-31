@@ -67,7 +67,7 @@ class BenchmarkMetadata
      * Get or create a new SubjectMetadata instance with the given name.
      *
      */
-    public function getOrCreateSubject(string $name): \PhpBench\Benchmark\Metadata\SubjectMetadata
+    public function getOrCreateSubject(string $name): SubjectMetadata
     {
         if (isset($this->subjects[$name])) {
             return $this->subjects[$name];
@@ -184,7 +184,7 @@ class BenchmarkMetadata
         return $this->subjects;
     }
 
-    public function getExecutor(): \PhpBench\Benchmark\Metadata\ExecutorMetadata
+    public function getExecutor(): ExecutorMetadata
     {
         return $this->executorMetadata;
     }

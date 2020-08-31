@@ -102,7 +102,7 @@ class TableGenerator implements GeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function generate(SuiteCollection $suiteCollection, Config $config): \PhpBench\Dom\Document
+    public function generate(SuiteCollection $suiteCollection, Config $config): Document
     {
         $table = $this->buildTable($suiteCollection, $config);
 
@@ -466,7 +466,7 @@ class TableGenerator implements GeneratorInterface
      *
      * @param array<array<Row>> $tables
      */
-    private function generateDocument(array $tables, Config $config): \PhpBench\Dom\Document
+    private function generateDocument(array $tables, Config $config): Document
     {
         $document = new Document();
         $reportsEl = $document->createRoot('reports');

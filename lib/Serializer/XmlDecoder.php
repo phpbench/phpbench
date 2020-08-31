@@ -36,7 +36,7 @@ class XmlDecoder
      * Decode a PHPBench XML document into a SuiteCollection.
      *
      */
-    public function decode(Document $document): \PhpBench\Model\SuiteCollection
+    public function decode(Document $document): SuiteCollection
     {
         $suites = [];
 
@@ -53,7 +53,7 @@ class XmlDecoder
      *
      * @param string[] $files
      */
-    public function decodeFiles(array $files): \PhpBench\Model\SuiteCollection
+    public function decodeFiles(array $files): SuiteCollection
     {
         // combine into one document.
         //
@@ -73,7 +73,7 @@ class XmlDecoder
         return $this->decode($suiteDocument);
     }
 
-    private function processSuite(Element $suiteEl): \PhpBench\Model\Suite
+    private function processSuite(Element $suiteEl): Suite
     {
         $suite = new Suite(
             $suiteEl->getAttribute('tag'),

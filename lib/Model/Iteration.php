@@ -36,7 +36,7 @@ class Iteration extends ResultCollection
      * Return the Variant that this
      * iteration belongs to.
      */
-    public function getVariant(): \PhpBench\Model\Variant
+    public function getVariant(): Variant
     {
         return $this->variant;
     }

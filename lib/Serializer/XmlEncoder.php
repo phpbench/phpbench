@@ -32,7 +32,7 @@ class XmlEncoder
      * Encode a Suite object into a XML document.
      *
      */
-    public function encode(SuiteCollection $suiteCollection): \PhpBench\Dom\Document
+    public function encode(SuiteCollection $suiteCollection): Document
     {
         $dom = new Document();
 

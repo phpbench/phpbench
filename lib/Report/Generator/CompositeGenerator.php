@@ -63,7 +63,7 @@ class CompositeGenerator implements GeneratorInterface, OutputAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function generate(SuiteCollection $collection, Config $config): \PhpBench\Dom\Document
+    public function generate(SuiteCollection $collection, Config $config): Document
     {
         $reportDoms = $this->reportManager->generateReports($collection, $config['reports']);
         $compositeDom = new Document();

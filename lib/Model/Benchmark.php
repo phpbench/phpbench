@@ -45,7 +45,7 @@ class Benchmark implements \IteratorAggregate
         $this->class = $class;
     }
 
-    public function createSubjectFromMetadataAndExecutor(SubjectMetadata $metadata, ResolvedExecutor $executor): \PhpBench\Model\Subject
+    public function createSubjectFromMetadataAndExecutor(SubjectMetadata $metadata, ResolvedExecutor $executor): Subject
     {
         $subject = new Subject($this, $metadata->getName());
         $subject->setGroups($metadata->getGroups());
@@ -65,7 +65,7 @@ class Benchmark implements \IteratorAggregate
      * Create and add a subject.
      *
      */
-    public function createSubject(string $name): \PhpBench\Model\Subject
+    public function createSubject(string $name): Subject
     {
         $subject = new Subject($this, $name);
         $this->subjects[$name] = $subject;
@@ -94,7 +94,7 @@ class Benchmark implements \IteratorAggregate
     /**
      * Return the suite to which this benchmark belongs.
      */
-    public function getSuite(): \PhpBench\Model\Suite
+    public function getSuite(): Suite
     {
         return $this->suite;
     }
@@ -102,7 +102,7 @@ class Benchmark implements \IteratorAggregate
     /**
      * @return ArrayIterator<Subject>
      */
-    public function getIterator(): \ArrayIterator
+    public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->subjects);
     }

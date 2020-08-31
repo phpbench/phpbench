@@ -26,7 +26,6 @@ interface DriverInterface
      * by the CLI interface after successful storage.
      *
      *
-     * @return string|null
      */
     public function store(SuiteCollection $collection): ?string;
 
@@ -37,7 +36,7 @@ interface DriverInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function fetch(string $runId): \PhpBench\Model\SuiteCollection;
+    public function fetch(string $runId): SuiteCollection;
 
     /**
      * Return true if the driver has the given run ID.
@@ -48,5 +47,5 @@ interface DriverInterface
      * Return a history iterator of HistoryEntries in descending
      * chronological order.
      */
-    public function history(): \PhpBench\Storage\HistoryIteratorInterface;
+    public function history(): HistoryIteratorInterface;
 }

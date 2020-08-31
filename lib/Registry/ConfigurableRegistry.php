@@ -49,7 +49,7 @@ class ConfigurableRegistry extends Registry
     /**
      * Return the named configuration.
      */
-    public function getConfig($name): \PhpBench\Registry\Config
+    public function getConfig($name): Config
     {
         if (is_array($name)) {
             $config = $name;
