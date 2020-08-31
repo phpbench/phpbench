@@ -37,6 +37,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class TableGenerator implements GeneratorInterface
 {
+    private const CLASS_TIMEUNIT = 'timeunit';
+
     /**
      * @var array<int,string|int>
      */
@@ -46,20 +48,14 @@ class TableGenerator implements GeneratorInterface
      * @var array<string,array<string>>
      */
     private $classMap = [
-        'best' => ['timeunit'],
-        'worst' => ['timeunit'],
-        'mean' => ['timeunit'],
-        'mode' => ['timeunit'],
-        'stdev' => ['timeunit'],
+        'best' => [self::CLASS_TIMEUNIT],
+        'worst' => [self::CLASS_TIMEUNIT],
+        'mean' => [self::CLASS_TIMEUNIT],
+        'mode' => [self::CLASS_TIMEUNIT],
+        'stdev' => [self::CLASS_TIMEUNIT],
         'rstdev' => ['percentage'],
-        'baseline_best' => ['timeunit'],
-        'baseline_worst' => ['timeunit'],
-        'baseline_mean' => ['timeunit'],
-        'baseline_mode' => ['timeunit'],
-        'baseline_stdev' => ['timeunit'],
-        'baseline_rstdev' => ['percentage'],
-        'time_rev' => ['timeunit'],
-        'time_net' => ['timeunit'],
+        'time_rev' => [self::CLASS_TIMEUNIT],
+        'time_net' => [self::CLASS_TIMEUNIT],
         'mem_peak' => ['mem'],
         'mem_real' => ['mem'],
         'mem_final' => ['mem'],
@@ -555,7 +551,15 @@ class TableGenerator implements GeneratorInterface
                     foreach ($cell->getSecondaryValues() as $secondaryValue) {
                         $secondaryValueEl = $cellEl->appendElement('value', $secondaryValue->getValue());
                         $secondaryValueEl->setAttribute('role', $secondaryValue->getRole());
-                        $secondaryValueEl->setAttribute('class', 'deviation');
+
+                        // hack to ensure that throughput % deviations are
+                        // shown negative or positive according to if the
+                        // displayed value is throughput or not
+                        if (isset($classMap[$key]) && in_array(self::CLASS_TIMEUNIT, $classMap[$key])) {
+                            $secondaryValueEl->setAttribute('class', 'invert_on_throughput deviation');
+                        } else {
+                            $secondaryValueEl->setAttribute('class', 'deviation');
+                        }
                     }
                 }
             }

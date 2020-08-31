@@ -48,6 +48,7 @@ use PhpBench\Executor\Benchmark\MicrotimeExecutor;
 use PhpBench\Executor\CompositeExecutor;
 use PhpBench\Executor\Method\RemoteMethodExecutor;
 use PhpBench\Formatter\Format\BalanceFormat;
+use PhpBench\Formatter\Format\InvertOnThroughputFormat;
 use PhpBench\Formatter\Format\NumberFormat;
 use PhpBench\Formatter\Format\PrintfFormat;
 use PhpBench\Formatter\Format\TimeUnitFormat;
@@ -448,6 +449,7 @@ class CoreExtension implements ExtensionInterface
             $registry = new FormatRegistry();
             $registry->register('printf', new PrintfFormat());
             $registry->register('balance', new BalanceFormat());
+            $registry->register('invert_on_throughput', new InvertOnThroughputFormat($container->get('benchmark.time_unit')));
             $registry->register('number', new NumberFormat());
             $registry->register('truncate', new TruncateFormat());
             $registry->register('time', new TimeUnitFormat($container->get('benchmark.time_unit')));
