@@ -65,7 +65,7 @@ class ReflectionHierarchy implements \IteratorAggregate
      *
      * @return bool
      */
-    public function hasMethod($name)
+    public function hasMethod(string $name)
     {
         foreach ($this->reflectionClasses as $reflectionClass) {
             if (isset($reflectionClass->methods[$name])) {
@@ -83,7 +83,7 @@ class ReflectionHierarchy implements \IteratorAggregate
      *
      * @return bool
      */
-    public function hasStaticMethod($name)
+    public function hasStaticMethod(string $name)
     {
         foreach ($this->reflectionClasses as $reflectionClass) {
             if (isset($reflectionClass->methods[$name])) {

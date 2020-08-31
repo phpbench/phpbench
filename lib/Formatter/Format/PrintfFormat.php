@@ -16,7 +16,7 @@ use PhpBench\Formatter\FormatInterface;
 
 class PrintfFormat implements FormatInterface
 {
-    public function format($subject, array $options)
+    public function format(string $subject, array $options)
     {
         return sprintf($options['format'], $subject);
     }

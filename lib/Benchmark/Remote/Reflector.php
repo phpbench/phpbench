@@ -41,7 +41,7 @@ class Reflector
      *
      * @return ReflectionHierarchy
      */
-    public function reflect($file)
+    public function reflect(string $file)
     {
         $classFqn = $this->getClassNameFromFile($file);
         $hierarchy = new ReflectionHierarchy();
@@ -87,7 +87,7 @@ class Reflector
      *
      * @return array
      */
-    public function getParameterSets($file, $paramProviders)
+    public function getParameterSets(string $file, array $paramProviders)
     {
         $parameterSets = $this->launcher->payload(__DIR__ . '/template/parameter_set_extractor.template', [
             'file' => $file,

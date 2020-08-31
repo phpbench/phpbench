@@ -49,7 +49,7 @@ class ResultCollection
      *
      * @return bool
      */
-    public function hasResult($class)
+    public function hasResult(string $class)
     {
         return isset($this->results[$class]);
     }
@@ -64,7 +64,7 @@ class ResultCollection
      *
      * @return ResultInterface
      */
-    public function getResult($class)
+    public function getResult(string $class)
     {
         if (!isset($this->results[$class])) {
             throw new \RuntimeException(sprintf(
@@ -86,7 +86,7 @@ class ResultCollection
      *
      * @return mixed
      */
-    public function getMetric($class, $metric)
+    public function getMetric(string $class, string $metric)
     {
         $metrics = $this->getResult($class)->getMetrics();
 
@@ -113,7 +113,7 @@ class ResultCollection
      *
      * @return mixed
      */
-    public function getMetricOrDefault($class, $metric, $default = null)
+    public function getMetricOrDefault(string $class, string $metric, $default = null)
     {
         if (false === $this->hasResult($class)) {
             return $default;

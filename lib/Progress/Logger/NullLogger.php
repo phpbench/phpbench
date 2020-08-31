@@ -88,7 +88,7 @@ class NullLogger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function retryStart($rejectionCount)
+    public function retryStart(int $rejectionCount)
     {
     }
 

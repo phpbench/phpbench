@@ -35,13 +35,13 @@ interface DriverInterface
      * Return the suite collection with the given run ID.
      * If no suite is found an exception will be thrown.
      *
-     * @param int $runId
+     * @param string $runId
      *
      * @throws \InvalidArgumentException
      *
      * @return SuiteCollection
      */
-    public function fetch($runId);
+    public function fetch(string $runId);
 
     /**
      * Return true if the driver has the given run ID.

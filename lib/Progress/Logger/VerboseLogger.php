@@ -88,7 +88,7 @@ class VerboseLogger extends PhpBenchLogger
     /**
      * {@inheritdoc}
      */
-    public function retryStart($rejectionCount)
+    public function retryStart(int $rejectionCount)
     {
         $this->rejectionCount = $rejectionCount;
         $this->output->write("\x1B[1F\x1B[0K");

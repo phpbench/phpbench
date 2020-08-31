@@ -42,7 +42,7 @@ class BaselineManager
      *
      * @throws \InvalidArgumentException
      */
-    public function addBaselineCallable($name, $callable)
+    public function addBaselineCallable(string $name, $callable)
     {
         if (isset($this->callables[$name])) {
             throw new \InvalidArgumentException(sprintf(

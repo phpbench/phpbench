@@ -87,7 +87,7 @@ class ConfigurableRegistry extends Registry
      * @param string $name
      * @param array $config
      */
-    public function setConfig($name, array $config)
+    public function setConfig(string $name, array $config)
     {
         if (isset($this->configs[$name])) {
             throw new \InvalidArgumentException(sprintf(
@@ -108,7 +108,7 @@ class ConfigurableRegistry extends Registry
      *
      * @return void
      */
-    private function resolveConfig($name)
+    private function resolveConfig(string $name)
     {
         $config = $this->configs[$name];
 
@@ -168,7 +168,7 @@ class ConfigurableRegistry extends Registry
      *
      * @return string
      */
-    private function processRawCliConfig($rawConfig)
+    private function processRawCliConfig(string $rawConfig)
     {
         if (preg_match(Config::NAME_REGEX, $rawConfig)) {
             return $rawConfig;

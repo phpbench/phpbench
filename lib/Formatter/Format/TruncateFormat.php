@@ -16,7 +16,7 @@ use PhpBench\Formatter\FormatInterface;
 
 class TruncateFormat implements FormatInterface
 {
-    public function format($value, array $options)
+    public function format(string $value, array $options)
     {
         if (strlen($value) <= $options['length']) {
             return $value;

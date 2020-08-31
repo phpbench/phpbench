@@ -28,7 +28,7 @@ interface FormatInterface
      *
      * @return string
      */
-    public function format($subject, array $options);
+    public function format(string $subject, array $options);
 
     /**
      * Return the default options for this format class.

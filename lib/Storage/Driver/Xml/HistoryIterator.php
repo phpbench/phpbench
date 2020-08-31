@@ -208,7 +208,7 @@ class HistoryIterator implements HistoryIteratorInterface
      *
      * @return HistoryEntry
      */
-    private function getHistoryEntry($path)
+    private function getHistoryEntry(string $path)
     {
         $dom = new Document();
         $dom->load($path);

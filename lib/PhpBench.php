@@ -75,7 +75,7 @@ class PhpBench
      *
      * @return string
      */
-    public static function normalizePath($path)
+    public static function normalizePath(string $path)
     {
         if (Path::isAbsolute($path)) {
             return $path;

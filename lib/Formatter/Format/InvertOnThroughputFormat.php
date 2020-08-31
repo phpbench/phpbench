@@ -20,7 +20,7 @@ class InvertOnThroughputFormat implements FormatInterface
     /**
      * {@inheritDoc}
      */
-    public function format($subject, array $options)
+    public function format(string $subject, array $options)
     {
         $mode = $this->timeUnit->resolveMode($options['mode']);
 

@@ -29,9 +29,8 @@ class RejectionCountResult implements ResultInterface
         );
     }
 
-    public function __construct($rejectCount)
+    public function __construct(int $rejectCount)
     {
-        Assertion::integer($rejectCount, 'Rejection count must be an integer');
         Assertion::greaterOrEqualThan($rejectCount, 0, 'Rejection count must be greater or equal to 0');
         $this->rejectCount = $rejectCount;
     }

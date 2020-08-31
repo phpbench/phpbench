@@ -84,7 +84,7 @@ interface LoggerInterface extends OutputAwareInterface
      *
      * @param int $rejectionCount
      */
-    public function retryStart($rejectionCount);
+    public function retryStart(int $rejectionCount);
 
     /**
      * Called at the start of the suite run.

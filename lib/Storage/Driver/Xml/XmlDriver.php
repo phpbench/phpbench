@@ -60,7 +60,7 @@ class XmlDriver implements DriverInterface
     /**
      * {@inheritdoc}
      */
-    public function fetch($runId)
+    public function fetch(string $runId)
     {
         if (!$this->has($runId)) {
             throw new \InvalidArgumentException(sprintf(

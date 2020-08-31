@@ -33,7 +33,7 @@ class TimeUnitFormat implements FormatInterface
     /**
      * {@inheritdoc}
      */
-    public function format($subject, array $options)
+    public function format(string $subject, array $options)
     {
         return $this->timeUnit->format(
             (float) $subject,

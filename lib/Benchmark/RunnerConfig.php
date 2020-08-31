@@ -156,9 +156,9 @@ class RunnerConfig
     /**
      * Get the number of rev(olutions) to run.
      *
-     * @param int $default
+     * @param array $default
      */
-    public function getRevolutions($default = null)
+    public function getRevolutions(array $default = null)
     {
         return $this->revolutions ?: $default;
     }
@@ -168,7 +168,7 @@ class RunnerConfig
      *
      * @param array $default
      */
-    public function getWarmup($default = null)
+    public function getWarmup(array $default = null)
     {
         return $this->warmup ?: $default;
     }

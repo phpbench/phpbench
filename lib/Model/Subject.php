@@ -81,7 +81,7 @@ class Subject
      * @param Benchmark $benchmark
      * @param string $name
      */
-    public function __construct(Benchmark $benchmark, $name)
+    public function __construct(Benchmark $benchmark, string $name)
     {
         $this->benchmark = $benchmark;
         $this->name = $name;
@@ -108,7 +108,7 @@ class Subject
      *
      * @return Variant
      */
-    public function createVariant(ParameterSet $parameterSet, $revolutions, $warmup, array $computedStats = [])
+    public function createVariant(ParameterSet $parameterSet, int $revolutions, int $warmup, array $computedStats = [])
     {
         $variant = new Variant(
             $this,
@@ -148,7 +148,7 @@ class Subject
         return (bool) count(array_intersect($this->groups, $groups));
     }
 
-    public function setGroups($groups)
+    public function setGroups(array $groups)
     {
         $this->groups = $groups;
     }
@@ -158,7 +158,7 @@ class Subject
         return $this->sleep;
     }
 
-    public function setSleep($sleep)
+    public function setSleep(int $sleep)
     {
         $this->sleep = $sleep;
     }
@@ -168,7 +168,7 @@ class Subject
         return $this->outputTimeUnit;
     }
 
-    public function setOutputTimeUnit($outputTimeUnit)
+    public function setOutputTimeUnit(?string $outputTimeUnit)
     {
         $this->outputTimeUnit = $outputTimeUnit;
     }
@@ -178,7 +178,7 @@ class Subject
         return $this->outputTimePrecision;
     }
 
-    public function setOutputTimePrecision($outputTimePrecision)
+    public function setOutputTimePrecision(?int $outputTimePrecision)
     {
         $this->outputTimePrecision = $outputTimePrecision;
     }
@@ -188,7 +188,7 @@ class Subject
         return $this->outputMode;
     }
 
-    public function setOutputMode($outputMode)
+    public function setOutputMode(?string $outputMode)
     {
         $this->outputMode = $outputMode;
     }
@@ -198,7 +198,7 @@ class Subject
         return $this->retryThreshold;
     }
 
-    public function setRetryThreshold($retryThreshold)
+    public function setRetryThreshold(?float $retryThreshold)
     {
         $this->retryThreshold = $retryThreshold;
     }

@@ -79,8 +79,9 @@ class RegistryTest extends TestCase
             $this->container->reveal(),
             'foo'
         );
-        $registry->setService('foo', 'bar');
-        $this->assertEquals($registry->getService(), 'bar');
+        $service = new \stdClass();
+        $registry->setService('foo', $service);
+        $this->assertEquals($registry->getService(), $service);
     }
 
     /**
@@ -95,8 +96,9 @@ class RegistryTest extends TestCase
             'test',
             $this->container->reveal()
         );
-        $registry->setService('foo', 'bar');
-        $this->assertEquals($registry->getService(), 'bar');
+        $service = new \stdClass();
+        $registry->setService('foo', $service);
+        $this->assertEquals($registry->getService(), $service);
     }
 
     /**

@@ -41,12 +41,8 @@ class MemoryResult implements ResultInterface
      * @param int $real
      * @param int $final
      */
-    public function __construct($peak, $real, $final)
+    public function __construct(int $peak, int $real, int $final)
     {
-        Assertion::integer($peak, 'Peak memory must be an integer, got "%s"');
-        Assertion::integer($real, 'Real memory must be an integer, got "%s"');
-        Assertion::integer($final, 'Final memory must be an integer, got "%s"');
-
         $this->peak = $peak;
         $this->real = $real;
         $this->final = $final;

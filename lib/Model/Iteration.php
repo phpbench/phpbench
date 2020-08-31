@@ -26,7 +26,7 @@ class Iteration extends ResultCollection
      * @param array $results
      */
     public function __construct(
-        $index,
+        int $index,
         Variant $variant,
         array $results = []
     ) {

@@ -106,7 +106,7 @@ class TimeUnit
      */
     private $precision;
 
-    public function __construct($sourceUnit = self::MICROSECONDS, $destUnit = self::MICROSECONDS, $mode = self::MODE_TIME, $precision = 3)
+    public function __construct(string $sourceUnit = self::MICROSECONDS, string $destUnit = self::MICROSECONDS, string $mode = self::MODE_TIME, int $precision = 3)
     {
         $this->sourceUnit = $sourceUnit;
         $this->destUnit = $destUnit;
@@ -127,7 +127,7 @@ class TimeUnit
      *
      * @param string $destUnit
      */
-    public function overrideDestUnit($destUnit)
+    public function overrideDestUnit(string $destUnit)
     {
         $destUnit = self::resolveUnit($destUnit);
         $this->destUnit = $destUnit;
@@ -139,7 +139,7 @@ class TimeUnit
      *
      * @param string $mode
      */
-    public function overrideMode($mode)
+    public function overrideMode(string $mode)
     {
         self::validateMode($mode);
         $this->mode = $mode;
@@ -151,7 +151,7 @@ class TimeUnit
      *
      * @param int $precision
      */
-    public function overridePrecision($precision)
+    public function overridePrecision(int $precision)
     {
         $this->precision = $precision;
         $this->overriddenPrecision = true;
@@ -169,7 +169,7 @@ class TimeUnit
      *
      * @return string
      */
-    public function getDestUnit($unit = null)
+    public function getDestUnit(string $unit = null)
     {
         // if a unit is given, use that
         if ($unit) {
@@ -323,7 +323,7 @@ class TimeUnit
      *
      * @return string
      */
-    public static function getSuffix($unit, $mode = null)
+    public static function getSuffix(string $unit, string $mode = null)
     {
         $unit = self::resolveUnit($unit);
 

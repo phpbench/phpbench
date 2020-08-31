@@ -114,7 +114,7 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
      *
      * @param int $nbIterations
      */
-    public function spawnIterations($nbIterations): void
+    public function spawnIterations(int $nbIterations): void
     {
         for ($index = 0; $index < $nbIterations; $index++) {
             $this->iterations[] = new Iteration($index, $this);

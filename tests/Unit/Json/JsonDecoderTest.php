@@ -137,15 +137,4 @@ class JsonDecoderTest extends TestCase
             ],
         ];
     }
-
-    /**
-     * It should throw an exception if a non-string value is passed.
-     *
-     */
-    public function testThrowException()
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Expected a string');
-        $this->jsonDecoder->decode(new \stdClass());
-    }
 }

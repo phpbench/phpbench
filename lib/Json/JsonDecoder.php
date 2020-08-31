@@ -44,7 +44,7 @@ class JsonDecoder
      *
      * @return array
      */
-    public function decode($jsonString)
+    public function decode(string $jsonString)
     {
         $jsonString = $this->normalize($jsonString);
         $this->parser->parse($jsonString);

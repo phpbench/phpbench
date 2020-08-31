@@ -25,7 +25,7 @@ class Information implements \ArrayAccess, \IteratorAggregate
      * @param string $name
      * @param array $information
      */
-    public function __construct($name, array $information)
+    public function __construct(string $name, array $information)
     {
         $this->name = $name;
         $this->information = $this->flattenInformation($information);

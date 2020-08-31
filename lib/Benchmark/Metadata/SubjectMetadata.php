@@ -115,7 +115,7 @@ class SubjectMetadata
     /**
      * @param string $name
      */
-    public function __construct(BenchmarkMetadata $benchmarkMetadata, $name)
+    public function __construct(BenchmarkMetadata $benchmarkMetadata, string $name)
     {
         $this->name = $name;
         $this->benchmarkMetadata = $benchmarkMetadata;
@@ -171,7 +171,7 @@ class SubjectMetadata
         return (bool) count(array_intersect($this->groups, $groups));
     }
 
-    public function setGroups($groups)
+    public function setGroups(array $groups)
     {
         $this->groups = $groups;
     }
@@ -181,7 +181,7 @@ class SubjectMetadata
         return $this->beforeMethods;
     }
 
-    public function setBeforeMethods($beforeMethods)
+    public function setBeforeMethods(array $beforeMethods)
     {
         $this->beforeMethods = $beforeMethods;
     }
@@ -191,7 +191,7 @@ class SubjectMetadata
         return $this->afterMethods;
     }
 
-    public function setAfterMethods($afterMethods)
+    public function setAfterMethods(array $afterMethods)
     {
         $this->afterMethods = $afterMethods;
     }
@@ -201,7 +201,7 @@ class SubjectMetadata
         return $this->paramProviders;
     }
 
-    public function setParamProviders($paramProviders)
+    public function setParamProviders(array $paramProviders)
     {
         $this->paramProviders = $paramProviders;
 
@@ -213,7 +213,7 @@ class SubjectMetadata
         return $this->iterations;
     }
 
-    public function setIterations($iterations)
+    public function setIterations(array $iterations)
     {
         $this->iterations = $iterations;
     }
@@ -223,7 +223,7 @@ class SubjectMetadata
         return $this->revs;
     }
 
-    public function setRevs($revs)
+    public function setRevs(array $revs)
     {
         $this->revs = $revs;
     }
@@ -233,7 +233,7 @@ class SubjectMetadata
         return $this->skip;
     }
 
-    public function setSkip($skip)
+    public function setSkip(bool $skip)
     {
         $this->skip = $skip;
     }
@@ -243,7 +243,7 @@ class SubjectMetadata
         return $this->sleep;
     }
 
-    public function setSleep($sleep)
+    public function setSleep(int $sleep)
     {
         $this->sleep = $sleep;
     }
@@ -253,7 +253,7 @@ class SubjectMetadata
         return $this->outputTimeUnit;
     }
 
-    public function setOutputTimeUnit($outputTimeUnit)
+    public function setOutputTimeUnit(?string $outputTimeUnit)
     {
         $this->outputTimeUnit = $outputTimeUnit;
     }
@@ -263,7 +263,7 @@ class SubjectMetadata
         return $this->outputTimePrecision;
     }
 
-    public function setOutputTimePrecision($outputTimePrecision)
+    public function setOutputTimePrecision(?string $outputTimePrecision)
     {
         $this->outputTimePrecision = $outputTimePrecision;
     }
@@ -273,7 +273,7 @@ class SubjectMetadata
         return $this->outputMode;
     }
 
-    public function setOutputMode($outputMode)
+    public function setOutputMode(?string $outputMode)
     {
         $this->outputMode = $outputMode;
     }
@@ -283,7 +283,7 @@ class SubjectMetadata
         return $this->warmup;
     }
 
-    public function setWarmup($warmup)
+    public function setWarmup(array $warmup)
     {
         $this->warmup = $warmup;
     }
@@ -293,7 +293,7 @@ class SubjectMetadata
         return $this->retryThreshold;
     }
 
-    public function setRetryThreshold($retryThreshold)
+    public function setRetryThreshold(?float $retryThreshold): void
     {
         $this->retryThreshold = $retryThreshold;
     }
@@ -341,7 +341,7 @@ class SubjectMetadata
         return $this->timeout;
     }
 
-    public function setTimeout(float $timeout): void
+    public function setTimeout(?float $timeout): void
     {
         $this->timeout = $timeout;
     }

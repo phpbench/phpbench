@@ -51,7 +51,7 @@ class BenchmarkMetadata
      * @param string $path
      * @param string $class
      */
-    public function __construct($path, $class)
+    public function __construct(string $path, string $class)
     {
         $this->path = $path;
         $this->class = $class;
@@ -74,7 +74,7 @@ class BenchmarkMetadata
      *
      * @return SubjectMetadata
      */
-    public function getOrCreateSubject($name)
+    public function getOrCreateSubject(string $name)
     {
         if (isset($this->subjects[$name])) {
             return $this->subjects[$name];

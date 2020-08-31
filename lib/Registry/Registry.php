@@ -49,7 +49,7 @@ class Registry
      * @param string $name
      * @param string $serviceId
      */
-    public function registerService($name, $serviceId)
+    public function registerService(string $name, string $serviceId)
     {
         if (isset($this->serviceMap[$name])) {
             throw new \InvalidArgumentException(sprintf(
@@ -68,7 +68,7 @@ class Registry
      * @param string $name
      * @param object $object
      */
-    public function setService($name, $object)
+    public function setService(string $name, object $object)
     {
         if (isset($this->services[$name])) {
             throw new \InvalidArgumentException(sprintf(
@@ -89,7 +89,7 @@ class Registry
      *
      * @return object
      */
-    public function getService($name = null)
+    public function getService(string $name = null)
     {
         $name = $name ?: $this->defaultService;
 

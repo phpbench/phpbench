@@ -40,7 +40,7 @@ class BenchmarkFinder
      * @param array $subjectFilter
      * @param array $groupFilter
      */
-    public function findBenchmarks($path, array $subjectFilter = [], array $groupFilter = [])
+    public function findBenchmarks(string $path, array $subjectFilter = [], array $groupFilter = [])
     {
         $finder = new Finder();
         $path = PhpBench::normalizePath($path);

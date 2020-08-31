@@ -16,7 +16,7 @@ use PhpBench\Formatter\FormatInterface;
 
 class BalanceFormat implements FormatInterface
 {
-    public function format($subject, array $options)
+    public function format(string $subject, array $options)
     {
         if ($subject < 0) {
             // @phpstan-ignore-next-line switch back to positive so we can use our own prefix

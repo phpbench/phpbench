@@ -110,7 +110,7 @@ class Kde
      * @param array $dataset Array of univariate data points.
      * @param string $bwMethod : Either "scott", "silverman" or an explicit (float) value.
      */
-    public function __construct(array $dataset, $bwMethod = null)
+    public function __construct(array $dataset, string $bwMethod = null)
     {
         $this->dataset = $dataset;
 
@@ -201,7 +201,7 @@ class Kde
      *
      * @param string $bwMethod Either "scott" or "silverman"
      */
-    public function setBandwidth($bwMethod = null)
+    public function setBandwidth(string $bwMethod = null)
     {
         if ($bwMethod == 'scott' || null === $bwMethod) {
             $this->coVarianceFactor = function () {

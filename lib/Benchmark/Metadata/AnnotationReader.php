@@ -136,7 +136,7 @@ class AnnotationReader
      *
      * @param bool $importUse
      */
-    public function __construct($importUse = false)
+    public function __construct(bool $importUse = false)
     {
         $this->docParser = new DocParser();
         $this->docParser->setIgnoredAnnotationNames(self::$globalIgnoredNames);

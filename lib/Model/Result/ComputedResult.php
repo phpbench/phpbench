@@ -39,11 +39,8 @@ class ComputedResult implements ResultInterface
      * @param float $zValue
      * @param float $deviation
      */
-    public function __construct($zValue, $deviation)
+    public function __construct(float $zValue, float $deviation)
     {
-        Assertion::numeric($zValue, 'Z-value was not numeric, got "%s"');
-        Assertion::numeric($deviation, 'Deviation was not numeric, got "%s"');
-
         $this->zValue = $zValue;
         $this->deviation = $deviation;
     }

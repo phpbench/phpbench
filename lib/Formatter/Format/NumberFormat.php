@@ -16,7 +16,7 @@ use PhpBench\Formatter\FormatInterface;
 
 class NumberFormat implements FormatInterface
 {
-    public function format($subject, array $options)
+    public function format(string $subject, array $options)
     {
         if ($subject === 'INF') {
             return 'INF';

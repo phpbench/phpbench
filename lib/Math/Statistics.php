@@ -25,7 +25,7 @@ class Statistics
      *
      * @return float
      */
-    public static function stdev(array $values, $sample = false)
+    public static function stdev(array $values, bool $sample = false)
     {
         $variance = self::variance($values, $sample);
 
@@ -40,7 +40,7 @@ class Statistics
      *
      * @return float
      */
-    public static function variance(array $values, $sample = false)
+    public static function variance(array $values, bool $sample = false)
     {
         $average = self::mean($values);
         $sum = 0;
@@ -66,7 +66,7 @@ class Statistics
      *
      * @return mixed
      */
-    public static function mean($values)
+    public static function mean(array $values)
     {
         if (empty($values)) {
             return 0;
@@ -102,7 +102,7 @@ class Statistics
      * @param int $space
      * @param string $bandwidth
      */
-    public static function kdeMode(array $population, $space = 512, $bandwidth = null): float
+    public static function kdeMode(array $population, int $space = 512, string $bandwidth = null): float
     {
         if (count($population) === 1) {
             return current($population);
@@ -142,7 +142,7 @@ class Statistics
      *
      * @return float[]
      */
-    public static function linspace($min, $max, $num = 50, $endpoint = true)
+    public static function linspace(float $min, float $max, int $num = 50, bool $endpoint = true)
     {
         $range = $max - $min;
 
@@ -182,7 +182,7 @@ class Statistics
      *
      * @return array
      */
-    public static function histogram(array $values, $steps = 10, $lowerBound = null, $upperBound = null)
+    public static function histogram(array $values, int $steps = 10, float $lowerBound = null, float $upperBound = null)
     {
         $min = $lowerBound ?: min($values);
         $max = $upperBound ?: max($values);

@@ -36,10 +36,9 @@ class TimeResult implements ResultInterface
     /**
      * @param mixed $time Time taken to execute the iteration in microseconds.
      */
-    public function __construct($time)
+    public function __construct(int $time)
     {
         Assertion::greaterOrEqualThan($time, 0, 'Time cannot be less than 0, got %s');
-        Assertion::integer($time);
 
         $this->netTime = $time;
     }
@@ -63,7 +62,7 @@ class TimeResult implements ResultInterface
      *
      * @return float
      */
-    public function getRevTime($revs)
+    public function getRevTime(int $revs)
     {
         Assertion::greaterThan($revs, 0, 'Revolutions must be more than 0, got %s');
 

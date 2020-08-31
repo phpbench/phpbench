@@ -32,7 +32,7 @@ class Formatter
      *
      * @param string $filename
      */
-    public function classesFromFile($filename)
+    public function classesFromFile(string $filename)
     {
         $classes = $this->loader->load($filename);
         $this->registerClasses($classes);
@@ -65,7 +65,7 @@ class Formatter
      * @param string $name
      * @param array $formatDefinitions
      */
-    public function registerClass($name, array $formatDefinitions)
+    public function registerClass(string $name, array $formatDefinitions)
     {
         $this->classes[$name] = $formatDefinitions;
     }
@@ -81,7 +81,7 @@ class Formatter
      *
      * @return string
      */
-    public function applyClasses(array $classNames, $value, $params = [])
+    public function applyClasses(array $classNames, $value, array $params = [])
     {
         if (!is_scalar($value)) {
             throw new \InvalidArgumentException(sprintf(

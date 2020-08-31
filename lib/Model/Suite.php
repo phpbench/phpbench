@@ -42,9 +42,9 @@ class Suite implements IteratorAggregate
      * @param Information[] $envInformations
      */
     public function __construct(
-        $tag,
+        ?string $tag,
         \DateTime $date,
-        $configPath = null,
+        ?string $configPath = null,
         array $benchmarks = [],
         array $envInformations = [],
         $uuid = null
@@ -77,7 +77,7 @@ class Suite implements IteratorAggregate
      *
      * @return Benchmark
      */
-    public function createBenchmark($class)
+    public function createBenchmark(string $class)
     {
         $benchmark = new Benchmark($this, $class);
         $this->benchmarks[$class] = $benchmark;

@@ -41,7 +41,7 @@ class Benchmark implements \IteratorAggregate
      * @param Suite $suite
      * @param string $class
      */
-    public function __construct(Suite $suite, $class)
+    public function __construct(Suite $suite, string $class)
     {
         $this->suite = $suite;
         $this->class = $class;
@@ -70,7 +70,7 @@ class Benchmark implements \IteratorAggregate
      *
      * @return Subject
      */
-    public function createSubject($name)
+    public function createSubject(string $name)
     {
         $subject = new Subject($this, $name);
         $this->subjects[$name] = $subject;

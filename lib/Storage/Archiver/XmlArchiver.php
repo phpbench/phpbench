@@ -56,7 +56,7 @@ class XmlArchiver implements ArchiverInterface
         Registry $storageRegistry,
         XmlEncoder $xmlEncoder,
         XmlDecoder $xmlDecoder,
-        $archivePath,
+        string $archivePath,
         Filesystem $filesystem = null
     ) {
         $this->storageRegistry = $storageRegistry;

@@ -22,7 +22,7 @@ class Sort
      * @param array $array
      * @param \Closure $callback Sorting callback
      */
-    public static function mergeSort(&$array, \Closure $callback)
+    public static function mergeSort(array &$array, \Closure $callback)
     {
         // Arrays of size < 2 require no action.
         if (count($array) < 2) {
