@@ -43,7 +43,7 @@ class Subject
     private $sleep = 0;
 
     /**
-     * @var float
+     * @var float|null
      */
     private $retryThreshold;
 
@@ -53,7 +53,7 @@ class Subject
     private $outputTimeUnit = TimeUnit::MICROSECONDS;
 
     /**
-     * @var int
+     * @var int|null
      */
     private $outputTimePrecision = null;
 
@@ -136,7 +136,7 @@ class Subject
 
     public function inGroups(array $groups): bool
     {
-        return (bool) count(array_intersect($this->groups, $groups));
+        return count(array_intersect($this->groups, $groups));
     }
 
     public function setGroups(array $groups): void
@@ -154,7 +154,7 @@ class Subject
         $this->sleep = $sleep;
     }
 
-    public function getOutputTimeUnit(): string
+    public function getOutputTimeUnit(): ?string
     {
         return $this->outputTimeUnit;
     }
@@ -164,7 +164,7 @@ class Subject
         $this->outputTimeUnit = $outputTimeUnit;
     }
 
-    public function getOutputTimePrecision(): int
+    public function getOutputTimePrecision(): ?int
     {
         return $this->outputTimePrecision;
     }
@@ -174,7 +174,7 @@ class Subject
         $this->outputTimePrecision = $outputTimePrecision;
     }
 
-    public function getOutputMode(): string
+    public function getOutputMode(): ?string
     {
         return $this->outputMode;
     }
@@ -184,7 +184,7 @@ class Subject
         $this->outputMode = $outputMode;
     }
 
-    public function getRetryThreshold(): float
+    public function getRetryThreshold(): ?float
     {
         return $this->retryThreshold;
     }

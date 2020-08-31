@@ -184,7 +184,7 @@ class BenchmarkMetadata
         return $this->subjects;
     }
 
-    public function getExecutor(): ExecutorMetadata
+    public function getExecutor(): ?ExecutorMetadata
     {
         return $this->executorMetadata;
     }

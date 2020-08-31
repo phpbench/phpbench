@@ -59,15 +59,6 @@ class ReportManager
             $generator = $this->generatorRegistry->getService($generatorName);
 
             $reportDom = $generator->generate($collection, $reportConfig);
-
-            if (!$reportDom instanceof Document) {
-                throw new \RuntimeException(sprintf(
-                    'Report generator "%s" should have return a PhpBench\Dom\Document class, got: "%s"',
-                    $generatorName,
-                    is_object($reportDom) ? get_class($reportDom) : gettype($reportDom)
-                ));
-            }
-
             $reportDom->schemaValidate(__DIR__ . '/schema/report.xsd');
 
             $reportDoms[] = $reportDom;

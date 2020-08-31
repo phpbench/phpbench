@@ -48,7 +48,7 @@ class SubjectMetadata
     private $paramProviders = [];
 
     /**
-     * @var float
+     * @var float|null
      */
     private $retryThreshold;
 
@@ -78,17 +78,17 @@ class SubjectMetadata
     private $sleep = 0;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $outputTimeUnit = null;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $outputTimePrecision = null;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $outputMode = null;
 
@@ -103,7 +103,7 @@ class SubjectMetadata
     private $assertions = [];
 
     /**
-     * @var ExecutorMetadata
+     * @var ExecutorMetadata|null
      */
     private $executorMetadata;
 
@@ -243,7 +243,7 @@ class SubjectMetadata
         $this->sleep = $sleep;
     }
 
-    public function getOutputTimeUnit(): string
+    public function getOutputTimeUnit(): ?string
     {
         return $this->outputTimeUnit;
     }
@@ -253,7 +253,7 @@ class SubjectMetadata
         $this->outputTimeUnit = $outputTimeUnit;
     }
 
-    public function getOutputTimePrecision(): string
+    public function getOutputTimePrecision(): ?string
     {
         return $this->outputTimePrecision;
     }
@@ -263,7 +263,7 @@ class SubjectMetadata
         $this->outputTimePrecision = $outputTimePrecision;
     }
 
-    public function getOutputMode(): string
+    public function getOutputMode(): ?string
     {
         return $this->outputMode;
     }
@@ -283,7 +283,7 @@ class SubjectMetadata
         $this->warmup = $warmup;
     }
 
-    public function getRetryThreshold(): float
+    public function getRetryThreshold(): ?float
     {
         return $this->retryThreshold;
     }
@@ -318,7 +318,7 @@ class SubjectMetadata
         return $this->assertions;
     }
 
-    public function getExecutor(): ExecutorMetadata
+    public function getExecutor(): ?ExecutorMetadata
     {
         return $this->executorMetadata;
     }

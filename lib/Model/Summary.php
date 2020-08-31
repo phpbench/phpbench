@@ -48,7 +48,7 @@ class Summary
     private $xdebugEnabled = false;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $phpVersion = null;
 
@@ -172,7 +172,7 @@ class Summary
         return $this->xdebugEnabled;
     }
 
-    public function getPhpVersion(): string
+    public function getPhpVersion(): ?string
     {
         return $this->phpVersion;
     }

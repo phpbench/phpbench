@@ -104,7 +104,7 @@ class RunnerTest extends TestCase
         $this->assertion = $this->prophesize(AssertionProcessor::class);
         $this->executorConfig = new Config('test', ['executor' => 'microtime']);
         $this->envSupplier = $this->prophesize(Supplier::class);
-        $this->informations = new \ArrayObject();
+        $this->informations = [];
         $this->envSupplier->getInformations()->willReturn($this->informations);
 
         $this->runner = new Runner(
@@ -437,7 +437,10 @@ class RunnerTest extends TestCase
      */
     public function testEnvironment()
     {
-        $this->informations['hello'] = new Information('hello', ['say' => 'goodbye']);
+        $informations = [
+            'hello' => new Information('hello', ['say' => 'goodbye'])
+        ];
+        $this->envSupplier->getInformations()->willReturn($informations);
 
         $subject = new SubjectMetadata($this->benchmark->reveal(), 'name', 0);
         $this->benchmark->getSubjects()->willReturn([
@@ -450,7 +453,7 @@ class RunnerTest extends TestCase
             ->will($this->loadIterationResultCallback());
         $suite = $this->runner->run(self::TEST_PATH, RunnerConfig::create());
         $envInformations = $suite->getEnvInformations();
-        $this->assertSame((array) $this->informations, (array) $envInformations);
+        $this->assertSame((array) $informations, (array) $envInformations);
     }
 
     private function assertNoErrors(Suite $suite)

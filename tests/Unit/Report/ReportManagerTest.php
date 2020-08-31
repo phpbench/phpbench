@@ -90,32 +90,6 @@ class ReportManagerTest extends TestCase
     }
 
     /**
-     * It should throw an exception if the generator does not return a Document class.
-     *
-     */
-    public function testGeneratorNotReturnDocument()
-    {
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Report generator "service" should');
-        $config = new Config('test', [
-            'generator' => 'service',
-            'one' => 'two',
-        ]);
-        $this->generatorRegistry->getConfig('test_report')->willReturn($config);
-        $this->generatorRegistry->getService('service')->willReturn(
-            $this->generator->reveal()
-        );
-        $this->generator->generate($this->suiteCollection, $config)->willReturn(null);
-
-        $this->reportManager->renderReports(
-            $this->output->reveal(),
-            $this->suiteCollection,
-            ['test_report'],
-            ['console_output']
-        );
-    }
-
-    /**
      * Output aware generators should hvae the output set on them.
      */
     public function testRenderOutputAware()

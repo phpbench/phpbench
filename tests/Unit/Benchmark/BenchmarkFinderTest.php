@@ -43,6 +43,8 @@ class BenchmarkFinderTest extends TestCase
         $this->factory->getMetadataForFile(__DIR__ . '/findertest/FooCaseBench.php')->willReturn($this->benchmark1->reveal());
         $this->factory->getMetadataForFile(__DIR__ . '/findertest/FooCase2Bench.php')->willReturn($this->benchmark2->reveal());
         $this->factory->getMetadataForFile(__DIR__ . '/findertest/AbstractBench.php')->willReturn(null);
+        $this->benchmark1->hasSubjects()->willReturn(true);
+        $this->benchmark2->hasSubjects()->willReturn(true);
         $benchmarks = $this->finder->findBenchmarks(__DIR__ . '/findertest');
 
         $this->assertCount(2, $benchmarks);
@@ -56,6 +58,7 @@ class BenchmarkFinderTest extends TestCase
     public function testSpecificBenchmark()
     {
         $this->factory->getMetadataForFile(__DIR__ . '/findertestnested/MyBench.php')->willReturn($this->benchmark1->reveal());
+        $this->benchmark1->hasSubjects()->willReturn(true);
 
         $benchmarks = $this->finder->findBenchmarks(__DIR__ . '/findertestnested/MyBench.php');
 

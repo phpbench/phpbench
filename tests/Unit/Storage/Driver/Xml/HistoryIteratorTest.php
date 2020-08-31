@@ -16,6 +16,7 @@ use PhpBench\Dom\Document;
 use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Model\Summary;
+use PhpBench\Model\Tag;
 use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Storage\Driver\Xml\HistoryIterator;
 use PhpBench\Tests\Util\Workspace;
@@ -127,7 +128,7 @@ class HistoryIteratorTest extends TestCase
         $collection->getSuites()->willReturn([$suite->reveal()]);
         $suite->getUuid()->willReturn($uuid);
         $suite->getDate()->willReturn($date);
-        $suite->getTag()->willReturn('foo');
+        $suite->getTag()->willReturn(new Tag('foo'));
         $suite->getEnvInformations()->willReturn([
             'vcs' => [
                 'branch' => 'foo_branch',

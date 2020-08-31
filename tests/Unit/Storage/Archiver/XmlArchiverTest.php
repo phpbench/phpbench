@@ -19,6 +19,8 @@ use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Storage\Archiver\XmlArchiver;
 use PhpBench\Storage\DriverInterface;
+use PhpBench\Storage\Driver\Fake\FakeHistoryIterator;
+use PhpBench\Storage\Driver\Xml\HistoryIterator;
 use PhpBench\Storage\HistoryEntry;
 use PhpBench\Tests\Util\Workspace;
 use PHPUnit\Framework\TestCase;
@@ -82,7 +84,7 @@ class XmlArchiverTest extends TestCase
     {
         $this->filesystem->exists($this->archivePath)->willReturn(false);
         $this->filesystem->mkdir($this->archivePath)->shouldBeCalled();
-        $this->storage->history()->willReturn([]);
+        $this->storage->history()->willReturn(new FakeHistoryIterator());
         $this->archiver->archive($this->output);
     }
 
@@ -93,7 +95,7 @@ class XmlArchiverTest extends TestCase
     {
         $this->filesystem->exists($this->archivePath)->willReturn(true);
         $this->filesystem->mkdir($this->archivePath)->shouldNotBeCalled();
-        $this->storage->history()->willReturn([]);
+        $this->storage->history()->willReturn(new FakeHistoryIterator());
         $this->archiver->archive($this->output);
     }
 
@@ -104,11 +106,11 @@ class XmlArchiverTest extends TestCase
     public function testArchiveSkipExisting()
     {
         $this->filesystem->exists($this->archivePath)->willReturn(true);
-        $this->storage->history()->willReturn([
+        $this->storage->history()->willReturn(new FakeHistoryIterator(
             $this->createHistoryEntry(1),
             $this->createHistoryEntry(2),
-            $this->createHistoryEntry(3),
-        ]);
+            $this->createHistoryEntry(3)
+        ));
         $this->filesystem->exists($this->archivePath . '/1.xml')->willReturn(true);
         $this->filesystem->exists($this->archivePath . '/2.xml')->willReturn(false);
         $this->filesystem->exists($this->archivePath . '/3.xml')->willReturn(true);

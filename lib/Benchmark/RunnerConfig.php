@@ -21,12 +21,12 @@ use PhpBench\Model\SuiteCollection;
 class RunnerConfig
 {
     /**
-     * @var string
+     * @var string|array
      */
     private $executor = 'microtime';
 
     /**
-     * @var string
+     * @var string|null
      */
     private $tag;
 
@@ -78,7 +78,7 @@ class RunnerConfig
     /**
      * @var bool
      */
-    private $stopOnError;
+    private $stopOnError = true;
 
     /**
      * @var array<string>
@@ -128,7 +128,7 @@ class RunnerConfig
      *       this context class. It is simply an arbitrary identifier to identify the
      *       suite when doing a comparison.
      */
-    public function getTag(): string
+    public function getTag(): ?string
     {
         return $this->tag;
     }
@@ -239,8 +239,10 @@ class RunnerConfig
 
     /**
      * Return either an executor configuration name or an actual configuration.
+     *
+     * @return array|string
      */
-    public function getExecutor(): string
+    public function getExecutor()
     {
         return $this->executor;
     }
