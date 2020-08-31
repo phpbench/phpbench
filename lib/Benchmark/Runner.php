@@ -94,9 +94,8 @@ final class Runner
     /**
      * Set the progress logger to use.
      *
-     * @param LoggerInterface $logger
      */
-    public function setProgressLogger(LoggerInterface $logger)
+    public function setProgressLogger(LoggerInterface $logger): void
     {
         $this->logger = $logger;
     }
@@ -106,7 +105,7 @@ final class Runner
      *
      * The $name argument will set the "name" attribute on the "suite" element.
      */
-    public function run($path, RunnerConfig $config)
+    public function run($path, RunnerConfig $config): Suite
     {
         // build the collection of benchmarks to be executed.
         $benchmarkMetadatas = $this->benchmarkFinder->findBenchmarks($path, $config->getFilters(), $config->getGroups());
@@ -140,7 +139,7 @@ final class Runner
         RunnerConfig $config,
         Benchmark $benchmark,
         BenchmarkMetadata $benchmarkMetadata
-    ) {
+    ): void {
         // determine the executor
         $executorConfig = $this->executorRegistry->getConfig($config->getExecutor());
         /** @var BenchmarkExecutorInterface $executor */

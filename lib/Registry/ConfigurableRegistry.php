@@ -48,10 +48,8 @@ class ConfigurableRegistry extends Registry
 
     /**
      * Return the named configuration.
-     *
-     * @return Config
      */
-    public function getConfig($name)
+    public function getConfig($name): Config
     {
         if (is_array($name)) {
             $config = $name;
@@ -84,10 +82,8 @@ class ConfigurableRegistry extends Registry
      * Note that all configurations must be associated with a named service
      * via a configuration key equal to the configuration service type of this registry.
      *
-     * @param string $name
-     * @param array $config
      */
-    public function setConfig($name, array $config)
+    public function setConfig(string $name, array $config): void
     {
         if (isset($this->configs[$name])) {
             throw new \InvalidArgumentException(sprintf(
@@ -104,11 +100,8 @@ class ConfigurableRegistry extends Registry
      * Recursively merge configs (having the "extends" key) which extend
      * another report.
      *
-     * @param string $name
-     *
-     * @return void
      */
-    private function resolveConfig($name)
+    private function resolveConfig(string $name): void
     {
         $config = $this->configs[$name];
 
@@ -164,11 +157,8 @@ class ConfigurableRegistry extends Registry
      * table
      * ````
      *
-     * @param string $rawConfig
-     *
-     * @return string
      */
-    private function processRawCliConfig($rawConfig)
+    private function processRawCliConfig(string $rawConfig): string
     {
         if (preg_match(Config::NAME_REGEX, $rawConfig)) {
             return $rawConfig;

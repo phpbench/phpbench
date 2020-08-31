@@ -22,7 +22,7 @@ class TravisLogger extends PhpBenchLogger
     /**
      * {@inheritdoc}
      */
-    public function benchmarkStart(Benchmark $benchmark)
+    public function benchmarkStart(Benchmark $benchmark): void
     {
         if (false === $this->firstTime) {
             $this->output->write(PHP_EOL);
@@ -35,7 +35,7 @@ class TravisLogger extends PhpBenchLogger
     /**
      * {@inheritdoc}
      */
-    public function variantEnd(Variant $variant)
+    public function variantEnd(Variant $variant): void
     {
         if ($variant->getRejectCount() > 0) {
             return;
@@ -60,7 +60,7 @@ class TravisLogger extends PhpBenchLogger
         ));
     }
 
-    public function endSuite(Suite $suite)
+    public function endSuite(Suite $suite): void
     {
         $this->output->write(PHP_EOL);
         parent::endSuite($suite);

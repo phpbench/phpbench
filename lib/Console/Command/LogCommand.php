@@ -43,7 +43,7 @@ class LogCommand extends Command
         $this->characterReader = $characterReader ?: new CharacterReader();
     }
 
-    public function configure()
+    public function configure(): void
     {
         $this->setName('log');
         $this->setDescription('List previously executed and stored benchmark runs.');
@@ -61,7 +61,7 @@ EOT
         $this->addOption('no-pagination', 'P', InputOption::VALUE_NONE, 'Do not paginate');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->timeUnitHandler->timeUnitFromInput($input);
         $paginate = false === $input->getOption('no-pagination');

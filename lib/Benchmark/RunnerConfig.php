@@ -21,12 +21,12 @@ use PhpBench\Model\SuiteCollection;
 class RunnerConfig
 {
     /**
-     * @var string
+     * @var string|array
      */
     private $executor = 'microtime';
 
     /**
-     * @var string
+     * @var string|null
      */
     private $tag;
 
@@ -78,7 +78,7 @@ class RunnerConfig
     /**
      * @var bool
      */
-    private $stopOnError;
+    private $stopOnError = true;
 
     /**
      * @var array<string>
@@ -127,10 +127,8 @@ class RunnerConfig
      * NOTE: Do not confuse this with
      *       this context class. It is simply an arbitrary identifier to identify the
      *       suite when doing a comparison.
-     *
-     * @return string
      */
-    public function getTag()
+    public function getTag(): ?string
     {
         return $this->tag;
     }
@@ -145,10 +143,8 @@ class RunnerConfig
 
     /**
      * Override the number of iterations to execute.
-     *
-     * @return array
      */
-    public function getIterations($default = null)
+    public function getIterations($default = null): array
     {
         return $this->iterations ?: $default;
     }
@@ -156,9 +152,9 @@ class RunnerConfig
     /**
      * Get the number of rev(olutions) to run.
      *
-     * @param int $default
+     * @param array $default
      */
-    public function getRevolutions($default = null)
+    public function getRevolutions(array $default = null): ?array
     {
         return $this->revolutions ?: $default;
     }
@@ -168,7 +164,7 @@ class RunnerConfig
      *
      * @param array $default
      */
-    public function getWarmup($default = null)
+    public function getWarmup(array $default = null): ?array
     {
         return $this->warmup ?: $default;
     }
@@ -192,7 +188,6 @@ class RunnerConfig
     /**
      * Override the sleep interval (in microseconds).
      *
-     * @param mixed $default
      */
     public function getSleep($default = null)
     {
@@ -208,7 +203,7 @@ class RunnerConfig
      *
      * @return string[]
      */
-    public function getGroups()
+    public function getGroups(): array
     {
         return $this->groups;
     }
@@ -218,20 +213,16 @@ class RunnerConfig
      * be retried.
      *
      * A value of NULL will disable retry.
-     *
-     * @return float
      */
-    public function getRetryThreshold(float $default = null)
+    public function getRetryThreshold(float $default = null): ?float
     {
         return $this->retryThreshold ?: $default;
     }
 
     /**
      * Return the output time unit.
-     *
-     * @return string
      */
-    public function getOutputTimeUnit(string $default = null)
+    public function getOutputTimeUnit(string $default = null): ?string
     {
         return $this->outputTimeUnit ?: $default;
     }
@@ -249,7 +240,7 @@ class RunnerConfig
     /**
      * Return either an executor configuration name or an actual configuration.
      *
-     * @return string
+     * @return array|string
      */
     public function getExecutor()
     {
@@ -261,7 +252,7 @@ class RunnerConfig
      *
      * @retrun bool
      */
-    public function getStopOnError()
+    public function getStopOnError(): bool
     {
         return $this->stopOnError;
     }
@@ -409,7 +400,7 @@ class RunnerConfig
         return $this->baselines;
     }
 
-    private function assertArrayValuesGreaterThanZero($field, array $values = [])
+    private function assertArrayValuesGreaterThanZero($field, array $values = []): void
     {
         $values = array_filter($values, function ($value) {
             return $value <= 0;
@@ -425,7 +416,7 @@ class RunnerConfig
         ));
     }
 
-    private function assertGreaterThanZero(string $field, float $value = null)
+    private function assertGreaterThanZero(string $field, float $value = null): void
     {
         if (null === $value) {
             return;

@@ -22,10 +22,8 @@ class Information implements \ArrayAccess, \IteratorAggregate
     private $information;
 
     /**
-     * @param string $name
-     * @param array $information
      */
-    public function __construct($name, array $information)
+    public function __construct(string $name, array $information)
     {
         $this->name = $name;
         $this->information = $this->flattenInformation($information);
@@ -38,10 +36,8 @@ class Information implements \ArrayAccess, \IteratorAggregate
      * If an information is mutually exclusive then it should use a standard
      * name representing the category of the thing (e.g. "vcs"). This allows
      * reports and such things to reference it reliably.
-     *
-     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -57,7 +53,7 @@ class Information implements \ArrayAccess, \IteratorAggregate
     /**
      * {@inheritdoc}
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         throw new \BadMethodCallException(sprintf(
             'Environmental information is immutable. Tried to set key "%s" with value "%s"',
@@ -68,7 +64,7 @@ class Information implements \ArrayAccess, \IteratorAggregate
     /**
      * {@inheritdoc}
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return array_key_exists($offset, $this->information);
     }
@@ -76,7 +72,7 @@ class Information implements \ArrayAccess, \IteratorAggregate
     /**
      * {@inheritdoc}
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         throw new \BadMethodCallException(sprintf(
             'Environmental information is immutable. Tried to unset key "%s"',
@@ -87,7 +83,7 @@ class Information implements \ArrayAccess, \IteratorAggregate
     /**
      * {@inheritdoc}
      */
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->information);
     }
@@ -97,7 +93,7 @@ class Information implements \ArrayAccess, \IteratorAggregate
         return $this->information;
     }
 
-    private function flattenInformation(array $information, $prefix = '')
+    private function flattenInformation(array $information, $prefix = ''): array
     {
         $transformed = [];
 

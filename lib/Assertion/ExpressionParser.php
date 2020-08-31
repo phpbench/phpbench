@@ -46,7 +46,7 @@ class ExpressionParser
         return $this->parseComparisonExpression();
     }
 
-    private function parseComparisonExpression(): Node
+    private function parseComparisonExpression(): Comparison
     {
         $left = $this->parseValue();
         $comparator = $this->parseComparator();

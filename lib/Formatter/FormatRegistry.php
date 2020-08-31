@@ -22,10 +22,8 @@ class FormatRegistry
     /**
      * Register a format class.
      *
-     * @param string $name
-     * @param FormatInterface $format
      */
-    public function register($name, FormatInterface $format)
+    public function register(string $name, FormatInterface $format): void
     {
         if (isset($this->formats[$name])) {
             throw new \InvalidArgumentException(sprintf(
@@ -40,13 +38,10 @@ class FormatRegistry
     /**
      * Return the named format class.
      *
-     * @param string $name
      *
      * @throws \InvalidArgumentException When no formatter exists.
-     *
-     * @return FormatInterface
      */
-    public function get($name)
+    public function get(string $name): FormatInterface
     {
         if (!isset($this->formats[$name])) {
             throw new \InvalidArgumentException(sprintf(

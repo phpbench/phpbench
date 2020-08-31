@@ -35,12 +35,12 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
         $this->timeUnit = $timeUnit;
     }
 
-    public function setOutput(OutputInterface $output)
+    public function setOutput(OutputInterface $output): void
     {
         $this->output = $output;
     }
 
-    public function startSuite(Suite $suite)
+    public function startSuite(Suite $suite): void
     {
         $this->output->writeln('PHPBench ' . PhpBench::VERSION . ' running benchmarks...');
 
@@ -59,7 +59,7 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
         $this->output->writeln('');
     }
 
-    public function endSuite(Suite $suite)
+    public function endSuite(Suite $suite): void
     {
         $summary = $suite->getSummary();
 
@@ -96,7 +96,7 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
         ));
     }
 
-    private function listErrors(Suite $suite)
+    private function listErrors(Suite $suite): void
     {
         $errorStacks = $suite->getErrorStacks();
 
@@ -127,7 +127,7 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
         }
     }
 
-    private function listFailures(Suite $suite)
+    private function listFailures(Suite $suite): void
     {
         $variantFailures = $suite->getFailures();
 
@@ -155,7 +155,7 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
         }
     }
 
-    private function listWarnings(Suite $suite)
+    private function listWarnings(Suite $suite): void
     {
         $variantWarnings = $suite->getWarnings();
 
@@ -183,7 +183,7 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
         }
     }
 
-    public function formatIterationsFullSummary(Variant $variant)
+    public function formatIterationsFullSummary(Variant $variant): string
     {
         $subject = $variant->getSubject();
         $stats = $variant->getStats();
@@ -204,7 +204,7 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
         );
     }
 
-    public function formatIterationsShortSummary(Variant $variant)
+    public function formatIterationsShortSummary(Variant $variant): string
     {
         $subject = $variant->getSubject();
         $stats = $variant->getStats();
@@ -221,7 +221,7 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
         );
     }
 
-    protected function formatIterationTime(Iteration $iteration)
+    protected function formatIterationTime(Iteration $iteration): string
     {
         $subject = $iteration->getVariant()->getSubject();
         $timeUnit = $subject->getOutputTimeUnit();
@@ -245,7 +245,7 @@ abstract class PhpBenchLogger extends NullLogger implements OutputAwareInterface
         );
     }
 
-    protected function formatVariantName(Variant $variant)
+    protected function formatVariantName(Variant $variant): string
     {
         if (count($variant->getSubject()->getVariants()) > 1) {
             return sprintf(

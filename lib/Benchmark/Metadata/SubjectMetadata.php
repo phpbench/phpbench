@@ -48,7 +48,7 @@ class SubjectMetadata
     private $paramProviders = [];
 
     /**
-     * @var float
+     * @var float|null
      */
     private $retryThreshold;
 
@@ -78,17 +78,17 @@ class SubjectMetadata
     private $sleep = 0;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $outputTimeUnit = null;
 
     /**
-     * @var string
+     * @var int|null
      */
     private $outputTimePrecision = null;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $outputMode = null;
 
@@ -103,7 +103,7 @@ class SubjectMetadata
     private $assertions = [];
 
     /**
-     * @var ExecutorMetadata
+     * @var ExecutorMetadata|null
      */
     private $executorMetadata;
 
@@ -113,9 +113,8 @@ class SubjectMetadata
     private $timeout = 0;
 
     /**
-     * @param string $name
      */
-    public function __construct(BenchmarkMetadata $benchmarkMetadata, $name)
+    public function __construct(BenchmarkMetadata $benchmarkMetadata, string $name)
     {
         $this->name = $name;
         $this->benchmarkMetadata = $benchmarkMetadata;
@@ -123,10 +122,8 @@ class SubjectMetadata
 
     /**
      * Return the method name of this subject.
-     *
-     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -136,7 +133,7 @@ class SubjectMetadata
      *
      * @param array[] $parameterSets
      */
-    public function setParameterSets(array $parameterSets)
+    public function setParameterSets(array $parameterSets): void
     {
         $this->parameterSets = $parameterSets;
     }
@@ -146,42 +143,40 @@ class SubjectMetadata
      *
      * @return array[]
      */
-    public function getParameterSets()
+    public function getParameterSets(): array
     {
         return $this->parameterSets;
     }
 
     /**
      * Return the benchmarkMetadata metadata for this subject.
-     *
-     * @return BenchmarkMetadata
      */
-    public function getBenchmark()
+    public function getBenchmark(): BenchmarkMetadata
     {
         return $this->benchmarkMetadata;
     }
 
-    public function getGroups()
+    public function getGroups(): array
     {
         return $this->groups;
     }
 
-    public function inGroups(array $groups)
+    public function inGroups(array $groups): bool
     {
         return (bool) count(array_intersect($this->groups, $groups));
     }
 
-    public function setGroups($groups)
+    public function setGroups(array $groups): void
     {
         $this->groups = $groups;
     }
 
-    public function getBeforeMethods()
+    public function getBeforeMethods(): array
     {
         return $this->beforeMethods;
     }
 
-    public function setBeforeMethods($beforeMethods)
+    public function setBeforeMethods(array $beforeMethods): void
     {
         $this->beforeMethods = $beforeMethods;
     }
@@ -191,109 +186,109 @@ class SubjectMetadata
         return $this->afterMethods;
     }
 
-    public function setAfterMethods($afterMethods)
+    public function setAfterMethods(array $afterMethods): void
     {
         $this->afterMethods = $afterMethods;
     }
 
-    public function getParamProviders()
+    public function getParamProviders(): array
     {
         return $this->paramProviders;
     }
 
-    public function setParamProviders($paramProviders)
+    public function setParamProviders(array $paramProviders): self
     {
         $this->paramProviders = $paramProviders;
 
         return $this;
     }
 
-    public function getIterations()
+    public function getIterations(): array
     {
         return $this->iterations;
     }
 
-    public function setIterations($iterations)
+    public function setIterations(array $iterations): void
     {
         $this->iterations = $iterations;
     }
 
-    public function getRevs()
+    public function getRevs(): array
     {
         return $this->revs;
     }
 
-    public function setRevs($revs)
+    public function setRevs(array $revs): void
     {
         $this->revs = $revs;
     }
 
-    public function getSkip()
+    public function getSkip(): bool
     {
         return $this->skip;
     }
 
-    public function setSkip($skip)
+    public function setSkip(bool $skip): void
     {
         $this->skip = $skip;
     }
 
-    public function getSleep()
+    public function getSleep(): int
     {
         return $this->sleep;
     }
 
-    public function setSleep($sleep)
+    public function setSleep(int $sleep): void
     {
         $this->sleep = $sleep;
     }
 
-    public function getOutputTimeUnit()
+    public function getOutputTimeUnit(): ?string
     {
         return $this->outputTimeUnit;
     }
 
-    public function setOutputTimeUnit($outputTimeUnit)
+    public function setOutputTimeUnit(?string $outputTimeUnit): void
     {
         $this->outputTimeUnit = $outputTimeUnit;
     }
 
-    public function getOutputTimePrecision()
+    public function getOutputTimePrecision(): ?int
     {
         return $this->outputTimePrecision;
     }
 
-    public function setOutputTimePrecision($outputTimePrecision)
+    public function setOutputTimePrecision(?int $outputTimePrecision): void
     {
         $this->outputTimePrecision = $outputTimePrecision;
     }
 
-    public function getOutputMode()
+    public function getOutputMode(): ?string
     {
         return $this->outputMode;
     }
 
-    public function setOutputMode($outputMode)
+    public function setOutputMode(?string $outputMode): void
     {
         $this->outputMode = $outputMode;
     }
 
-    public function getWarmup()
+    public function getWarmup(): array
     {
         return $this->warmup;
     }
 
-    public function setWarmup($warmup)
+    public function setWarmup(array $warmup): void
     {
         $this->warmup = $warmup;
     }
 
-    public function getRetryThreshold()
+    public function getRetryThreshold(): ?float
     {
         return $this->retryThreshold;
     }
 
-    public function setRetryThreshold($retryThreshold)
+    public function setRetryThreshold(?float $retryThreshold): void
     {
         $this->retryThreshold = $retryThreshold;
     }
@@ -318,20 +313,17 @@ class SubjectMetadata
     /**
      * @return array<string>
      */
-    public function getAssertions()
+    public function getAssertions(): array
     {
         return $this->assertions;
     }
 
-    /**
-     * @return ExecutorMetadata|null
-     */
-    public function getExecutor()
+    public function getExecutor(): ?ExecutorMetadata
     {
         return $this->executorMetadata;
     }
 
-    public function setExecutor(ExecutorMetadata $serviceMetadata)
+    public function setExecutor(ExecutorMetadata $serviceMetadata): void
     {
         $this->executorMetadata = $serviceMetadata;
     }
@@ -341,7 +333,7 @@ class SubjectMetadata
         return $this->timeout;
     }
 
-    public function setTimeout(float $timeout): void
+    public function setTimeout(?float $timeout): void
     {
         $this->timeout = $timeout;
     }

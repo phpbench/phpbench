@@ -28,7 +28,7 @@ class Sleep
         $this->sleep = (int) $params['value'];
     }
 
-    public function getSleep()
+    public function getSleep(): int
     {
         return $this->sleep;
     }

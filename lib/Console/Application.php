@@ -37,7 +37,7 @@ class Application extends BaseApplication
     /**
      * {@inheritdoc}
      */
-    protected function getDefaultInputDefinition()
+    protected function getDefaultInputDefinition(): \Symfony\Component\Console\Input\InputDefinition
     {
         $default = parent::getDefaultInputDefinition();
         $default->addOptions([
@@ -51,7 +51,7 @@ class Application extends BaseApplication
     /**
      * {@inheritdoc}
      */
-    protected function configureIO(InputInterface $input, OutputInterface $output)
+    protected function configureIO(InputInterface $input, OutputInterface $output): void
     {
         parent::configureIO($input, $output);
         $output->getFormatter()->setStyle('greenbg', new OutputFormatterStyle('black', 'green', []));

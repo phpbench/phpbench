@@ -28,28 +28,25 @@ class TimeResult implements ResultInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromArray(array $values)
+    public static function fromArray(array $values): ResultInterface
     {
         return new self((int) $values['net']);
     }
 
     /**
-     * @param mixed $time Time taken to execute the iteration in microseconds.
+     * @param int $time Time taken to execute the iteration in microseconds.
      */
-    public function __construct($time)
+    public function __construct(int $time)
     {
         Assertion::greaterOrEqualThan($time, 0, 'Time cannot be less than 0, got %s');
-        Assertion::integer($time);
 
         $this->netTime = $time;
     }
 
     /**
      * Return the net-time for this iteration.
-     *
-     * @return int
      */
-    public function getNet()
+    public function getNet(): int
     {
         return $this->netTime;
     }
@@ -57,13 +54,12 @@ class TimeResult implements ResultInterface
     /**
      * Return the time for the given number of revolutions.
      *
-     * @param int $revs
      *
      * @throws \OutOfBoundsException If revs <= 0
      *
      * @return float
      */
-    public function getRevTime($revs)
+    public function getRevTime(int $revs)
     {
         Assertion::greaterThan($revs, 0, 'Revolutions must be more than 0, got %s');
 
@@ -73,7 +69,7 @@ class TimeResult implements ResultInterface
     /**
      * {@inheritdoc}
      */
-    public function getMetrics()
+    public function getMetrics(): array
     {
         return [
             'net' => $this->netTime,
@@ -83,7 +79,7 @@ class TimeResult implements ResultInterface
     /**
      * {@inheritdoc}
      */
-    public function getKey()
+    public function getKey(): string
     {
         return 'time';
     }

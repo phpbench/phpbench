@@ -134,9 +134,8 @@ class AnnotationReader
      * Set import use to true in order to use imported annotations, otherwise
      * import the PHPBench annotations directly.
      *
-     * @param bool $importUse
      */
-    public function __construct($importUse = false)
+    public function __construct(bool $importUse = false)
     {
         $this->docParser = new DocParser();
         $this->docParser->setIgnoredAnnotationNames(self::$globalIgnoredNames);
@@ -166,7 +165,7 @@ class AnnotationReader
         return $this->parse($method->comment, sprintf('subject %s::%s', $method->class, $method->name));
     }
 
-    private function collectImports(ReflectionClass $class)
+    private function collectImports(ReflectionClass $class): void
     {
         $imports = $this->importUse === true ? $this->getUseImports($class) : $this->getPhpBenchImports();
         $this->docParser->setImports($imports);
@@ -207,7 +206,7 @@ class AnnotationReader
      *
      * @see \Doctrine\Common\Annotations\DocParser
      */
-    private function parse($input, $context = '')
+    private function parse($input, $context = ''): array
     {
         try {
             $annotations = $this->docParser->parse($input, $context);

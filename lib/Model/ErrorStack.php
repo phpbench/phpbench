@@ -35,7 +35,6 @@ class ErrorStack implements IteratorAggregate
     private $variant;
 
     /**
-     * @param Variant $variant
      * @param Error[] $errors
      */
     public function __construct(Variant $variant, array $errors)
@@ -44,12 +43,12 @@ class ErrorStack implements IteratorAggregate
         $this->errors = $errors;
     }
 
-    public function getVariant()
+    public function getVariant(): Variant
     {
         return $this->variant;
     }
 
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors;
     }
@@ -59,7 +58,7 @@ class ErrorStack implements IteratorAggregate
         return reset($this->errors);
     }
 
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->errors);
     }

@@ -25,84 +25,84 @@ class NullLogger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function setOutput(OutputInterface $output)
+    public function setOutput(OutputInterface $output): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function benchmarkStart(Benchmark $benchmark)
+    public function benchmarkStart(Benchmark $benchmark): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function benchmarkEnd(Benchmark $benchmark)
+    public function benchmarkEnd(Benchmark $benchmark): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function subjectStart(Subject $subject)
+    public function subjectStart(Subject $subject): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function subjectEnd(Subject $subject)
+    public function subjectEnd(Subject $subject): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function iterationStart(Iteration $iteration)
+    public function iterationStart(Iteration $iteration): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function iterationEnd(Iteration $iteration)
+    public function iterationEnd(Iteration $iteration): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function variantStart(Variant $variant)
+    public function variantStart(Variant $variant): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function variantEnd(Variant $variant)
+    public function variantEnd(Variant $variant): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function retryStart($rejectionCount)
+    public function retryStart(int $rejectionCount): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function startSuite(Suite $suite)
+    public function startSuite(Suite $suite): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function endSuite(Suite $suite)
+    public function endSuite(Suite $suite): void
     {
     }
 }

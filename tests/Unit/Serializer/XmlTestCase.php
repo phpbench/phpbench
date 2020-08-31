@@ -28,6 +28,7 @@ use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
+use PhpBench\Model\Tag;
 use PhpBench\Model\Variant;
 use PhpBench\Registry\Config;
 use PHPUnit\Framework\TestCase;
@@ -58,7 +59,7 @@ class XmlTestCase extends TestCase
         $this->suiteCollection->getSuites()->willReturn([$this->suite->reveal()]);
         $this->suite->getUuid()->willReturn(1234);
         $this->suite->getDate()->willReturn(new \DateTime('2015-01-01T00:00:00+00:00'));
-        $this->suite->getTag()->willReturn('test');
+        $this->suite->getTag()->willReturn(new Tag('test'));
         $this->suite->getConfigPath()->willReturn('/path/to/config.json');
         $this->suite->getEnvInformations()->willReturn([
             $this->env1,

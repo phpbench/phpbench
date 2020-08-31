@@ -12,7 +12,6 @@
 
 namespace PhpBench\Model\Result;
 
-use Assert\Assertion;
 use PhpBench\Model\ResultInterface;
 
 /**
@@ -27,7 +26,7 @@ class ComputedResult implements ResultInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromArray(array $values)
+    public static function fromArray(array $values): ResultInterface
     {
         return new self(
             (float) $values['z_value'],
@@ -36,14 +35,9 @@ class ComputedResult implements ResultInterface
     }
 
     /**
-     * @param float $zValue
-     * @param float $deviation
      */
-    public function __construct($zValue, $deviation)
+    public function __construct(float $zValue, float $deviation)
     {
-        Assertion::numeric($zValue, 'Z-value was not numeric, got "%s"');
-        Assertion::numeric($deviation, 'Deviation was not numeric, got "%s"');
-
         $this->zValue = $zValue;
         $this->deviation = $deviation;
     }
@@ -51,7 +45,7 @@ class ComputedResult implements ResultInterface
     /**
      * {@inheritdoc}
      */
-    public function getMetrics()
+    public function getMetrics(): array
     {
         return [
             'z_value' => $this->zValue,
@@ -62,7 +56,7 @@ class ComputedResult implements ResultInterface
     /**
      * {@inheritdoc}
      */
-    public function getKey()
+    public function getKey(): string
     {
         return 'comp';
     }
@@ -71,10 +65,8 @@ class ComputedResult implements ResultInterface
      * Return the ZValue - the number of standard
      * deviations away from the mean of the iteration
      * set to which the iteration of this result belongs.
-     *
-     * @return float
      */
-    public function getZValue()
+    public function getZValue(): float
     {
         return $this->zValue;
     }
@@ -83,10 +75,8 @@ class ComputedResult implements ResultInterface
      * Return the percentage deviation from the mean of the
      * iteration set of the iteration to which this result
      * belongs.
-     *
-     * @return float
      */
-    public function getDeviation()
+    public function getDeviation(): float
     {
         return $this->deviation;
     }

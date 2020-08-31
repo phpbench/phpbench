@@ -13,7 +13,6 @@
 namespace PhpBench\Report;
 
 use PhpBench\Console\OutputAwareInterface;
-use PhpBench\Dom\Document;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\ConfigurableRegistry;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -34,7 +33,7 @@ class ReportManager
         $this->rendererRegistry = $rendererRegistry;
     }
 
-    public function validateReportNames($reportNames)
+    public function validateReportNames($reportNames): void
     {
         foreach ($reportNames as $reportName) {
             $this->generatorRegistry->getConfig($reportName);
@@ -44,12 +43,8 @@ class ReportManager
     /**
      * Generate the named reports.
      *
-     * @param SuiteCollection $collection
-     * @param array $reportNames
-     *
-     * @return array
      */
-    public function generateReports(SuiteCollection $collection, array $reportNames)
+    public function generateReports(SuiteCollection $collection, array $reportNames): array
     {
         $reportDoms = [];
         $reportConfigs = [];
@@ -63,15 +58,6 @@ class ReportManager
             $generator = $this->generatorRegistry->getService($generatorName);
 
             $reportDom = $generator->generate($collection, $reportConfig);
-
-            if (!$reportDom instanceof Document) {
-                throw new \RuntimeException(sprintf(
-                    'Report generator "%s" should have return a PhpBench\Dom\Document class, got: "%s"',
-                    $generatorName,
-                    is_object($reportDom) ? get_class($reportDom) : gettype($reportDom)
-                ));
-            }
-
             $reportDom->schemaValidate(__DIR__ . '/schema/report.xsd');
 
             $reportDoms[] = $reportDom;
@@ -83,17 +69,13 @@ class ReportManager
     /**
      * Render reports (as opposed to just generating the report XML documents via. generateReports).
      *
-     * @param OutputInterface $output
-     * @param SuiteCollection $collection
-     * @param array $reportNames
-     * @param array $outputNames
      */
     public function renderReports(
         OutputInterface $output,
         SuiteCollection $collection,
         array $reportNames,
         array $outputNames
-    ) {
+    ): void {
         $reportDoms = $this->generateReports($collection, $reportNames);
 
         foreach ($outputNames as $outputName) {

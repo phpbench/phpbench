@@ -110,7 +110,7 @@ class Kde
      * @param array $dataset Array of univariate data points.
      * @param string $bwMethod : Either "scott", "silverman" or an explicit (float) value.
      */
-    public function __construct(array $dataset, $bwMethod = null)
+    public function __construct(array $dataset, string $bwMethod = null)
     {
         $this->dataset = $dataset;
 
@@ -125,10 +125,8 @@ class Kde
      * Evaluate the estimated pdf on a set of points.
      *
      * @param array $points 1-D array of points on to which we will map the kde
-     *
-     * @return array
      */
-    public function evaluate(array $points)
+    public function evaluate(array $points): array
     {
         $count = count($this->dataset);
 
@@ -201,7 +199,7 @@ class Kde
      *
      * @param string $bwMethod Either "scott" or "silverman"
      */
-    public function setBandwidth($bwMethod = null)
+    public function setBandwidth(string $bwMethod = null): void
     {
         if ($bwMethod == 'scott' || null === $bwMethod) {
             $this->coVarianceFactor = function () {
@@ -229,7 +227,7 @@ class Kde
      * Computes the covariance matrix for each Gaussian kernel using
      * coVarianceFactor().
      */
-    private function computeCovariance()
+    private function computeCovariance(): void
     {
         $factorCallable = $this->coVarianceFactor;
         $this->factor = $factorCallable();

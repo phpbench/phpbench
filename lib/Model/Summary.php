@@ -48,12 +48,11 @@ class Summary
     private $xdebugEnabled = false;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $phpVersion = null;
 
     /**
-     * @param Suite $suite
      */
     public function __construct(Suite $suite)
     {
@@ -163,7 +162,7 @@ class Summary
         return Statistics::mean($this->stats['rstdev']);
     }
 
-    public function getOpcacheEnabled(): ?bool
+    public function getOpcacheEnabled(): bool
     {
         return $this->opCacheEnabled;
     }

@@ -35,11 +35,8 @@ class XmlDecoder
     /**
      * Decode a PHPBench XML document into a SuiteCollection.
      *
-     * @param Document $document
-     *
-     * @return SuiteCollection
      */
-    public function decode(Document $document)
+    public function decode(Document $document): SuiteCollection
     {
         $suites = [];
 
@@ -55,10 +52,8 @@ class XmlDecoder
      * Return a SuiteCollection from a number of PHPBench xml files.
      *
      * @param string[] $files
-     *
-     * @return SuiteCollection
      */
-    public function decodeFiles(array $files)
+    public function decodeFiles(array $files): SuiteCollection
     {
         // combine into one document.
         //
@@ -78,7 +73,7 @@ class XmlDecoder
         return $this->decode($suiteDocument);
     }
 
-    private function processSuite(Element $suiteEl)
+    private function processSuite(Element $suiteEl): Suite
     {
         $suite = new Suite(
             $suiteEl->getAttribute('tag'),
@@ -131,7 +126,7 @@ class XmlDecoder
         return $suite;
     }
 
-    private function processBenchmark(Benchmark $benchmark, Element $benchmarkEl, array $resultClasses)
+    private function processBenchmark(Benchmark $benchmark, Element $benchmarkEl, array $resultClasses): void
     {
         foreach ($benchmarkEl->query('./subject') as $subjectEl) {
             $subject = $benchmark->createSubject($subjectEl->getAttribute('name'));
@@ -140,7 +135,7 @@ class XmlDecoder
         }
     }
 
-    private function processSubject(Subject $subject, Element $subjectEl, array $resultClasses)
+    private function processSubject(Subject $subject, Element $subjectEl, array $resultClasses): void
     {
         $groups = [];
 
@@ -159,11 +154,11 @@ class XmlDecoder
         // TODO: These attributes should be on the subject, see
         // https://github.com/phpbench/phpbench/issues/307
         foreach ($subjectEl->query('./variant') as $variantEl) {
-            $subject->setSleep($variantEl->getAttribute('sleep'));
+            $subject->setSleep((int)$variantEl->getAttribute('sleep'));
             $subject->setOutputTimeUnit($variantEl->getAttribute('output-time-unit'));
-            $subject->setOutputTimePrecision($variantEl->getAttribute('output-time-precision'));
+            $subject->setOutputTimePrecision((int)$variantEl->getAttribute('output-time-precision'));
             $subject->setOutputMode($variantEl->getAttribute('output-mode'));
-            $subject->setRetryThreshold($variantEl->getAttribute('retry-threshold'));
+            $subject->setRetryThreshold((float)$variantEl->getAttribute('retry-threshold'));
 
             break;
         }
@@ -186,7 +181,7 @@ class XmlDecoder
         }
     }
 
-    private function getComputedStats(Element $element)
+    private function getComputedStats(Element $element): array
     {
         $stats = [];
 
@@ -199,7 +194,7 @@ class XmlDecoder
         return $stats;
     }
 
-    private function getParameters(Element $element)
+    private function getParameters(Element $element): array
     {
         $parameters = [];
 
@@ -225,7 +220,7 @@ class XmlDecoder
         return $parameters;
     }
 
-    private function processVariant(Variant $variant, Element $variantEl, array $resultClasses)
+    private function processVariant(Variant $variant, Element $variantEl, array $resultClasses): void
     {
         $errorEls = $variantEl->query('.//error');
 

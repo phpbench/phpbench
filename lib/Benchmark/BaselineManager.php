@@ -37,12 +37,10 @@ class BaselineManager
      * Throws an invalid argument exception if the name has
      * already been registered.
      *
-     * @param string $name
-     * @param mixed $callable
      *
      * @throws \InvalidArgumentException
      */
-    public function addBaselineCallable($name, $callable)
+    public function addBaselineCallable(string $name, $callable): void
     {
         if (isset($this->callables[$name])) {
             throw new \InvalidArgumentException(sprintf(
@@ -64,10 +62,8 @@ class BaselineManager
     /**
      * Return mean time taken to execute the named baseline
      * callable in microseconds.
-     *
-     * @return float
      */
-    public function benchmark($name, $revs)
+    public function benchmark($name, $revs): float
     {
         if (!isset($this->callables[$name])) {
             throw new \InvalidArgumentException(sprintf(

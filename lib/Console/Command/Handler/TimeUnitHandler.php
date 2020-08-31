@@ -27,14 +27,14 @@ class TimeUnitHandler
         $this->timeUnit = $timeUnit;
     }
 
-    public static function configure(Command $command)
+    public static function configure(Command $command): void
     {
         $command->addOption('time-unit', null, InputOption::VALUE_REQUIRED, 'Override the time unit');
         $command->addOption('precision', null, InputOption::VALUE_REQUIRED, 'Override the measurement precision');
         $command->addOption('mode', null, InputOption::VALUE_REQUIRED, 'Override the unit display mode ("throughput", "time")');
     }
 
-    public function timeUnitFromInput(InputInterface $input)
+    public function timeUnitFromInput(InputInterface $input): void
     {
         $timeUnit = $input->getOption('time-unit');
         $mode = $input->getOption('mode');

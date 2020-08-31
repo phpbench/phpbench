@@ -21,12 +21,9 @@ class Iteration extends ResultCollection
     private $index;
 
     /**
-     * @param int $index
-     * @param Variant $variant
-     * @param array $results
      */
     public function __construct(
-        $index,
+        int $index,
         Variant $variant,
         array $results = []
     ) {
@@ -38,20 +35,16 @@ class Iteration extends ResultCollection
     /**
      * Return the Variant that this
      * iteration belongs to.
-     *
-     * @return Variant
      */
-    public function getVariant()
+    public function getVariant(): Variant
     {
         return $this->variant;
     }
 
     /**
      * Return the index of this iteration.
-     *
-     * @return int
      */
-    public function getIndex()
+    public function getIndex(): int
     {
         return $this->index;
     }

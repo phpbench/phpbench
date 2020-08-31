@@ -34,7 +34,7 @@ class Baseline implements ProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function isApplicable()
+    public function isApplicable(): bool
     {
         return true;
     }
@@ -42,7 +42,7 @@ class Baseline implements ProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getInformation()
+    public function getInformation(): Information
     {
         $results = [];
 

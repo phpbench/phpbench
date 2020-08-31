@@ -116,7 +116,7 @@ class Distribution implements IteratorAggregate, ArrayAccess
         return $this->getStat('variance');
     }
 
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         foreach ($this->closures as $name => $callback) {
             if (!array_key_exists($name, $this->stats)) {
@@ -127,7 +127,7 @@ class Distribution implements IteratorAggregate, ArrayAccess
         return new \ArrayIterator($this->stats);
     }
 
-    public function getStats()
+    public function getStats(): array
     {
         $stats = [];
 
@@ -159,7 +159,7 @@ class Distribution implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritdoc}
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->stats[$offset]);
     }
@@ -175,7 +175,7 @@ class Distribution implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritdoc}
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         throw new \BadMethodCallException('Distribution is read-only');
     }
@@ -183,7 +183,7 @@ class Distribution implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritdoc}
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         throw new \BadMethodCallException('Distribution is read-only');
     }

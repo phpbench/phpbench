@@ -33,7 +33,7 @@ class EnvGenerator implements GeneratorInterface, OutputAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function setOutput(OutputInterface $output)
+    public function setOutput(OutputInterface $output): void
     {
         $this->output = $output;
     }
@@ -41,7 +41,7 @@ class EnvGenerator implements GeneratorInterface, OutputAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function configure(OptionsResolver $options)
+    public function configure(OptionsResolver $options): void
     {
         $options->setDefaults([
             'title' => null,
@@ -52,7 +52,7 @@ class EnvGenerator implements GeneratorInterface, OutputAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function generate(SuiteCollection $suiteCollection, Config $config)
+    public function generate(SuiteCollection $suiteCollection, Config $config): Document
     {
         $document = new Document();
         $reportsEl = $document->createRoot('reports');

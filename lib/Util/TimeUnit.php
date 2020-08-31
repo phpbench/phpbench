@@ -106,7 +106,7 @@ class TimeUnit
      */
     private $precision;
 
-    public function __construct($sourceUnit = self::MICROSECONDS, $destUnit = self::MICROSECONDS, $mode = self::MODE_TIME, $precision = 3)
+    public function __construct(string $sourceUnit = self::MICROSECONDS, string $destUnit = self::MICROSECONDS, string $mode = self::MODE_TIME, int $precision = 3)
     {
         $this->sourceUnit = $sourceUnit;
         $this->destUnit = $destUnit;
@@ -125,9 +125,8 @@ class TimeUnit
     /**
      * Override the destination unit.
      *
-     * @param string $destUnit
      */
-    public function overrideDestUnit($destUnit)
+    public function overrideDestUnit(string $destUnit): void
     {
         $destUnit = self::resolveUnit($destUnit);
         $this->destUnit = $destUnit;
@@ -137,9 +136,8 @@ class TimeUnit
     /**
      * Override the mode.
      *
-     * @param string $mode
      */
-    public function overrideMode($mode)
+    public function overrideMode(string $mode): void
     {
         self::validateMode($mode);
         $this->mode = $mode;
@@ -149,9 +147,8 @@ class TimeUnit
     /**
      * Override the precision.
      *
-     * @param int $precision
      */
-    public function overridePrecision($precision)
+    public function overridePrecision(int $precision): void
     {
         $this->precision = $precision;
         $this->overriddenPrecision = true;
@@ -166,10 +163,8 @@ class TimeUnit
      * Return the destination unit.
      *
      * @param string $unit
-     *
-     * @return string
      */
-    public function getDestUnit($unit = null)
+    public function getDestUnit(string $unit = null): string
     {
         // if a unit is given, use that
         if ($unit) {
@@ -240,7 +235,7 @@ class TimeUnit
     /**
      * Return the destination unit suffix.
      */
-    public function getDestSuffix(string $unit = null, string $mode = null)
+    public function getDestSuffix(string $unit = null, string $mode = null): string
     {
         return self::getSuffix($this->getDestUnit($unit), $this->getMode($mode));
     }
@@ -248,7 +243,7 @@ class TimeUnit
     /**
      * Return a human readable representation of the unit including the suffix.
      */
-    public function format(float $time, string $unit = null, string $mode = null, int $precision = null, bool $suffix = true)
+    public function format(float $time, string $unit = null, string $mode = null, int $precision = null, bool $suffix = true): string
     {
         $value = number_format($this->toDestUnit($time, $unit, $mode), $precision !== null ? $precision : $this->precision);
 
@@ -300,7 +295,7 @@ class TimeUnit
      * Convert the given time from the given unit to the given destination
      * unit.
      */
-    public static function convertTo(float $time, string $unit, string $destUnit)
+    public static function convertTo(float $time, string $unit, string $destUnit): float
     {
         $unit = self::resolveUnit($unit);
         $destUnit = self::resolveUnit($destUnit);
@@ -318,12 +313,11 @@ class TimeUnit
      *
      * @static
      *
-     * @param string $unit
      * @param string $mode
      *
      * @return string
      */
-    public static function getSuffix($unit, $mode = null)
+    public static function getSuffix(string $unit, string $mode = null)
     {
         $unit = self::resolveUnit($unit);
 
@@ -341,7 +335,7 @@ class TimeUnit
         return isset(self::$map[$unit]) || isset(self::$aliases[$unit]);
     }
 
-    private static function validateMode($mode)
+    private static function validateMode($mode): void
     {
         $validModes = [self::MODE_THROUGHPUT, self::MODE_TIME];
 

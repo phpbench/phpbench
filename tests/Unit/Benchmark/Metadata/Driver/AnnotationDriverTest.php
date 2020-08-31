@@ -40,6 +40,7 @@ class AnnotationDriverTest extends TestCase
     public function testLoadClassMetadata()
     {
         $reflection = new ReflectionClass();
+        $reflection->path = 'foo';
         $reflection->class = 'Test';
         $reflection->comment = <<<'EOT'
 /**
@@ -64,6 +65,7 @@ EOT;
     public function testIgnoreCommonAnnotations()
     {
         $reflection = new ReflectionClass();
+        $reflection->path = 'foo';
         $reflection->class = 'Test';
         $reflection->comment = <<<'EOT'
 /**
@@ -85,6 +87,7 @@ EOT;
     {
         $reflection = new ReflectionClass();
         $reflection->class = 'Test';
+        $reflection->path = 'foo';
         $hierarchy = new ReflectionHierarchy();
         $hierarchy->addReflectionClass($reflection);
 
@@ -142,6 +145,7 @@ EOT;
     {
         $reflection = new ReflectionClass();
         $reflection->class = 'Test';
+        $reflection->path = 'foo';
         $hierarchy = new ReflectionHierarchy();
         $hierarchy->addReflectionClass($reflection);
 
@@ -168,6 +172,7 @@ EOT;
     {
         $reflection = new ReflectionClass();
         $reflection->class = 'Test';
+        $reflection->path = 'foo';
         $hierarchy = new ReflectionHierarchy();
         $hierarchy->addReflectionClass($reflection);
 
@@ -199,6 +204,7 @@ EOT;
         $this->expectExceptionMessage('annotation can only be applied');
         $reflection = new ReflectionClass();
         $reflection->class = 'Test';
+        $reflection->path = 'foo';
         $hierarchy = new ReflectionHierarchy();
         $hierarchy->addReflectionClass($reflection);
 
@@ -231,6 +237,7 @@ EOT;
     {
         $reflection = new ReflectionClass();
         $reflection->class = 'Test';
+        $reflection->path = 'foo';
         $hierarchy = new ReflectionHierarchy();
         $hierarchy->addReflectionClass($reflection);
 
@@ -259,6 +266,7 @@ EOT;
     public function testLoadSubjectOverride()
     {
         $reflection = new ReflectionClass();
+        $reflection->path = 'foo';
         $reflection->class = 'Test';
         $reflection->comment = <<<'EOT'
     /**
@@ -293,6 +301,7 @@ EOT;
     {
         $reflection = new ReflectionClass();
         $reflection->class = 'TestChild';
+        $reflection->path = 'foo';
         $reflection->comment = <<<'EOT'
     /**
      * @BeforeMethods({"class2"})
@@ -386,6 +395,7 @@ EOT;
     {
         $reflection = new ReflectionClass();
         $reflection->class = 'TestChild';
+        $reflection->path = 'foo';
         $reflection->comment = <<<'EOT'
     /**
      * @Groups({"group1"})
@@ -420,6 +430,7 @@ EOT;
     {
         $reflection = new ReflectionClass();
         $reflection->class = 'Test';
+        $reflection->path = 'foo';
 
         $method = new ReflectionMethod();
         $method->reflectionClass = $reflection;
@@ -456,6 +467,7 @@ EOT;
 
         $reflection = new ReflectionClass();
         $reflection->class = 'TestChild';
+        $reflection->path = 'foo';
         $reflection->comment = <<<'EOT'
     /**
      * @Foobar("foo")
@@ -473,6 +485,7 @@ EOT;
     public function testCustomSubjectPattern()
     {
         $reflection = new ReflectionClass();
+        $reflection->path = 'foo';
         $reflection->class = 'Test';
 
         $method = new ReflectionMethod();

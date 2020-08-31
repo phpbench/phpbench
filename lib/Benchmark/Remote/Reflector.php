@@ -23,7 +23,6 @@ class Reflector
     private $launcher;
 
     /**
-     * @param Launcher $launcher
      */
     public function __construct(
         Launcher $launcher
@@ -37,11 +36,8 @@ class Reflector
      * may be only one) additional ReflectionClass instances are the ancestors
      * of this first class.
      *
-     * @param string $file
-     *
-     * @return ReflectionHierarchy
      */
-    public function reflect($file)
+    public function reflect(string $file): ReflectionHierarchy
     {
         $classFqn = $this->getClassNameFromFile($file);
         $hierarchy = new ReflectionHierarchy();
@@ -82,12 +78,9 @@ class Reflector
     /**
      * Return the parameter sets for the benchmark container in the given file.
      *
-     * @param string $file
      * @param string[] $paramProviders
-     *
-     * @return array
      */
-    public function getParameterSets($file, $paramProviders)
+    public function getParameterSets(string $file, array $paramProviders): array
     {
         $parameterSets = $this->launcher->payload(__DIR__ . '/template/parameter_set_extractor.template', [
             'file' => $file,

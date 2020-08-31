@@ -113,7 +113,7 @@ EOT
         $this->addOption(self::OPT_TOLERATE_FAILURE, null, InputOption::VALUE_NONE, 'Return 0 exit code even when failures occur');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->timeUnitHandler->timeUnitFromInput($input);
         $this->reportHandler->validateReportsFromInput($input);

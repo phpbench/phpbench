@@ -69,7 +69,7 @@ class DebugExecutor implements BenchmarkExecutorInterface
     /**
      * {@inheritdoc}
      */
-    public function configure(OptionsResolver $options)
+    public function configure(OptionsResolver $options): void
     {
         $options->setDefaults([
             'times' => [10],

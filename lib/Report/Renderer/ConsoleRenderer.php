@@ -45,7 +45,7 @@ class ConsoleRenderer implements RendererInterface, OutputAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function setOutput(OutputInterface $output)
+    public function setOutput(OutputInterface $output): void
     {
         $this->output = $output;
         $this->configureFormatters($output->getFormatter());
@@ -54,10 +54,8 @@ class ConsoleRenderer implements RendererInterface, OutputAwareInterface
     /**
      * Render the table.
      *
-     * @param Document $reportDom
-     * @param Config $config
      */
-    public function render(Document $reportDom, Config $config)
+    public function render(Document $reportDom, Config $config): void
     {
         /**
          * @phpstan-ignore-next-line
@@ -83,7 +81,7 @@ class ConsoleRenderer implements RendererInterface, OutputAwareInterface
         }
     }
 
-    protected function renderTableElement(Element $tableEl, $config)
+    protected function renderTableElement(Element $tableEl, $config): void
     {
         $rows = [];
         $colNames = [];
@@ -141,9 +139,8 @@ class ConsoleRenderer implements RendererInterface, OutputAwareInterface
     /**
      * Render the table. For Symfony 2.4 support.
      *
-     * @param mixed $table
      */
-    private function renderTable($table)
+    private function renderTable($table): void
     {
         if (class_exists('Symfony\Component\Console\Helper\Table')) {
             $table->render();
@@ -156,9 +153,8 @@ class ConsoleRenderer implements RendererInterface, OutputAwareInterface
     /**
      * Adds some output formatters.
      *
-     * @param OutputFormatterInterface $formatter
      */
-    private function configureFormatters(OutputFormatterInterface $formatter)
+    private function configureFormatters(OutputFormatterInterface $formatter): void
     {
         $formatter->setStyle(
             'title', new OutputFormatterStyle('white', null, ['bold'])
@@ -174,7 +170,7 @@ class ConsoleRenderer implements RendererInterface, OutputAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function configure(OptionsResolver $options)
+    public function configure(OptionsResolver $options): void
     {
         $options->setDefaults([
             'table_style' => 'default',

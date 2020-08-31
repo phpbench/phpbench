@@ -23,11 +23,8 @@ interface ResultInterface
     /**
      * Return a new instance based using the given array values.
      *
-     * @param array $values
-     *
-     * @return ResultInterface
      */
-    public static function fromArray(array $values);
+    public static function fromArray(array $values): ResultInterface;
 
     /**
      * Return a key value set representing the metrics in this result.
@@ -55,8 +52,6 @@ interface ResultInterface
     /**
      * Return a short key which should represent this result, f.e. `time`.
      * This key must be unique in the set of all result classes.
-     *
-     * @return string
      */
-    public function getKey();
+    public function getKey(): string;
 }

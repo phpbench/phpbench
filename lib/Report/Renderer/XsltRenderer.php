@@ -51,7 +51,7 @@ class XsltRenderer implements RendererInterface, OutputAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function setOutput(OutputInterface $output)
+    public function setOutput(OutputInterface $output): void
     {
         $this->output = $output;
     }
@@ -59,10 +59,8 @@ class XsltRenderer implements RendererInterface, OutputAwareInterface
     /**
      * Render the table.
      *
-     * @param Document $reportDom
-     * @param Config $config
      */
-    public function render(Document $reportDom, Config $config)
+    public function render(Document $reportDom, Config $config): void
     {
         $template = $config['template'];
 
@@ -131,7 +129,7 @@ class XsltRenderer implements RendererInterface, OutputAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function configure(OptionsResolver $options)
+    public function configure(OptionsResolver $options): void
     {
         $options->setDefaults([
             'title' => 'PHPBench Benchmark Results',

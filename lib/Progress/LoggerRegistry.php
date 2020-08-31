@@ -16,7 +16,7 @@ class LoggerRegistry
 {
     private $progressLoggers;
 
-    public function addProgressLogger($name, LoggerInterface $progressLogger)
+    public function addProgressLogger($name, LoggerInterface $progressLogger): void
     {
         $this->progressLoggers[$name] = $progressLogger;
     }

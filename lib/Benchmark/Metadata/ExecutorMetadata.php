@@ -30,7 +30,7 @@ class ExecutorMetadata
         return $this->config;
     }
 
-    public function getRegistryConfig()
+    public function getRegistryConfig(): array
     {
         return array_merge($this->config, [
             'executor' => $this->getName(),

@@ -32,7 +32,7 @@ class ArchiveCommand extends Command
         $this->archiver = $archiver;
     }
 
-    public function configure()
+    public function configure(): void
     {
         $this->setName('archive');
         $this->setDescription('Archives and restore suites from and to storage.');
@@ -54,7 +54,7 @@ EOT
         $this->addOption('restore', null, InputOption::VALUE_NONE, 'Restore the archive');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $restore = $input->getOption('restore');
 

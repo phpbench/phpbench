@@ -43,15 +43,13 @@ class BenchmarkMetadata
     private $afterClassMethods = [];
 
     /**
-     * @var ExecutorMetadata
+     * @var ExecutorMetadata|null
      */
     private $executorMetadata;
 
     /**
-     * @param string $path
-     * @param string $class
      */
-    public function __construct($path, $class)
+    public function __construct(string $path, string $class)
     {
         $this->path = $path;
         $this->class = $class;
@@ -59,10 +57,8 @@ class BenchmarkMetadata
 
     /**
      * Get the file path of this benchmark.
-     *
-     * @return string
      */
-    public function getPath()
+    public function getPath(): string
     {
         return $this->path;
     }
@@ -70,11 +66,8 @@ class BenchmarkMetadata
     /**
      * Get or create a new SubjectMetadata instance with the given name.
      *
-     * @param string $name
-     *
-     * @return SubjectMetadata
      */
-    public function getOrCreateSubject($name)
+    public function getOrCreateSubject(string $name): SubjectMetadata
     {
         if (isset($this->subjects[$name])) {
             return $this->subjects[$name];
@@ -90,7 +83,7 @@ class BenchmarkMetadata
      *
      * @return SubjectMetadata[]
      */
-    public function getSubjects()
+    public function getSubjects(): array
     {
         return $this->subjects;
     }
@@ -100,7 +93,7 @@ class BenchmarkMetadata
      *
      * @param string[] $filters
      */
-    public function filterSubjectNames(array $filters)
+    public function filterSubjectNames(array $filters): void
     {
         foreach (array_keys($this->subjects) as $subjectName) {
             $unset = true;
@@ -127,7 +120,7 @@ class BenchmarkMetadata
      *
      * @param string[] $groups
      */
-    public function filterSubjectGroups(array $groups)
+    public function filterSubjectGroups(array $groups): void
     {
         foreach ($this->subjects as $subjectName => $subject) {
             if (0 === count(array_intersect($subject->getGroups(), $groups))) {
@@ -138,20 +131,16 @@ class BenchmarkMetadata
 
     /**
      * Return true if there are subjects in this benchmark metadata, false if not.
-     *
-     * @return bool
      */
-    public function hasSubjects()
+    public function hasSubjects(): bool
     {
         return 0 !== count($this->subjects);
     }
 
     /**
      * Return the benchmark class.
-     *
-     * @return string
      */
-    public function getClass()
+    public function getClass(): string
     {
         return $this->class;
     }
@@ -159,7 +148,7 @@ class BenchmarkMetadata
     /**
      * Return any methods that should be called before the benchmark class is executed.
      */
-    public function getBeforeClassMethods()
+    public function getBeforeClassMethods(): array
     {
         return $this->beforeClassMethods;
     }
@@ -167,9 +156,8 @@ class BenchmarkMetadata
     /**
      * Set any methods that should be called before the benchmark class is executed.
      *
-     * @param array $beforeClassMethods
      */
-    public function setBeforeClassMethods(array $beforeClassMethods)
+    public function setBeforeClassMethods(array $beforeClassMethods): void
     {
         $this->beforeClassMethods = $beforeClassMethods;
     }
@@ -177,7 +165,7 @@ class BenchmarkMetadata
     /**
      * Return any methods that should be called after the benchmark class is executed.
      */
-    public function getAfterClassMethods()
+    public function getAfterClassMethods(): array
     {
         return $this->afterClassMethods;
     }
@@ -185,27 +173,23 @@ class BenchmarkMetadata
     /**
      * Set any methods that should be called after the benchmark class is executed.
      *
-     * @param array $afterClassMethods
      */
-    public function setAfterClassMethods(array $afterClassMethods)
+    public function setAfterClassMethods(array $afterClassMethods): void
     {
         $this->afterClassMethods = $afterClassMethods;
     }
 
-    public function getIterator()
+    public function getIterator(): array
     {
         return $this->subjects;
     }
 
-    /**
-     * @return ExecutorMetadata|null
-     */
-    public function getExecutor()
+    public function getExecutor(): ?ExecutorMetadata
     {
         return $this->executorMetadata;
     }
 
-    public function setExecutor(ExecutorMetadata $serviceMetadata)
+    public function setExecutor(ExecutorMetadata $serviceMetadata): void
     {
         $this->executorMetadata = $serviceMetadata;
     }

@@ -20,7 +20,7 @@ class InvertOnThroughputFormat implements FormatInterface
     /**
      * {@inheritDoc}
      */
-    public function format($subject, array $options)
+    public function format(string $subject, array $options): string
     {
         $mode = $this->timeUnit->resolveMode($options['mode']);
 
@@ -34,7 +34,7 @@ class InvertOnThroughputFormat implements FormatInterface
     /**
      * {@inheritDoc}
      */
-    public function getDefaultOptions()
+    public function getDefaultOptions(): array
     {
         return [
             'mode' => TimeUnit::MODE_TIME

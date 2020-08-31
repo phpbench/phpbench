@@ -43,7 +43,7 @@ class Subject
     private $sleep = 0;
 
     /**
-     * @var float
+     * @var float|null
      */
     private $retryThreshold;
 
@@ -53,7 +53,7 @@ class Subject
     private $outputTimeUnit = TimeUnit::MICROSECONDS;
 
     /**
-     * @var int
+     * @var int|null
      */
     private $outputTimePrecision = null;
 
@@ -78,10 +78,8 @@ class Subject
     private $executor;
 
     /**
-     * @param Benchmark $benchmark
-     * @param string $name
      */
-    public function __construct(Benchmark $benchmark, $name)
+    public function __construct(Benchmark $benchmark, string $name)
     {
         $this->benchmark = $benchmark;
         $this->name = $name;
@@ -91,10 +89,8 @@ class Subject
 
     /**
      * Return the method name of this subject.
-     *
-     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -102,13 +98,8 @@ class Subject
     /**
      * Create and add a new variant based on this subject.
      *
-     * @param ParameterSet $parameterSet
-     * @param int $revolutions
-     * @param int $warmup
-     *
-     * @return Variant
      */
-    public function createVariant(ParameterSet $parameterSet, $revolutions, $warmup, array $computedStats = [])
+    public function createVariant(ParameterSet $parameterSet, int $revolutions, int $warmup, array $computedStats = []): Variant
     {
         $variant = new Variant(
             $this,
@@ -125,7 +116,7 @@ class Subject
     /**
      * @return Variant[]
      */
-    public function getVariants()
+    public function getVariants(): array
     {
         return $this->variants;
     }
@@ -138,85 +129,82 @@ class Subject
         return $this->benchmark;
     }
 
-    public function getGroups()
+    public function getGroups(): array
     {
         return $this->groups;
     }
 
-    public function inGroups(array $groups)
+    public function inGroups(array $groups): bool
     {
-        return (bool) count(array_intersect($this->groups, $groups));
+        return 0 !== count(array_intersect($this->groups, $groups));
     }
 
-    public function setGroups($groups)
+    public function setGroups(array $groups): void
     {
         $this->groups = $groups;
     }
 
-    public function getSleep()
+    public function getSleep(): int
     {
         return $this->sleep;
     }
 
-    public function setSleep($sleep)
+    public function setSleep(int $sleep): void
     {
         $this->sleep = $sleep;
     }
 
-    public function getOutputTimeUnit()
+    public function getOutputTimeUnit(): ?string
     {
         return $this->outputTimeUnit;
     }
 
-    public function setOutputTimeUnit($outputTimeUnit)
+    public function setOutputTimeUnit(?string $outputTimeUnit): void
     {
         $this->outputTimeUnit = $outputTimeUnit;
     }
 
-    public function getOutputTimePrecision()
+    public function getOutputTimePrecision(): ?int
     {
         return $this->outputTimePrecision;
     }
 
-    public function setOutputTimePrecision($outputTimePrecision)
+    public function setOutputTimePrecision(?int $outputTimePrecision): void
     {
         $this->outputTimePrecision = $outputTimePrecision;
     }
 
-    public function getOutputMode()
+    public function getOutputMode(): ?string
     {
         return $this->outputMode;
     }
 
-    public function setOutputMode($outputMode)
+    public function setOutputMode(?string $outputMode): void
     {
         $this->outputMode = $outputMode;
     }
 
-    public function getRetryThreshold()
+    public function getRetryThreshold(): ?float
     {
         return $this->retryThreshold;
     }
 
-    public function setRetryThreshold($retryThreshold)
+    public function setRetryThreshold(?float $retryThreshold): void
     {
         $this->retryThreshold = $retryThreshold;
     }
 
-    public function getIndex()
+    public function getIndex(): int
     {
         return $this->index;
     }
 
-    /**
-     * @return ResolvedExecutor|null
-     */
-    public function getExecutor()
+    public function getExecutor(): ResolvedExecutor
     {
         return $this->executor;
     }
 
-    public function setExecutor(ResolvedExecutor $executor)
+    public function setExecutor(ResolvedExecutor $executor): void
     {
         $this->executor = $executor;
     }

@@ -34,9 +34,8 @@ class ResultCollection
      *
      * Only one result per class is permitted.
      *
-     * @param ResultInterface $result
      */
-    public function setResult(ResultInterface $result)
+    public function setResult(ResultInterface $result): void
     {
         $class = get_class($result);
         $this->results[$class] = $result;
@@ -45,11 +44,8 @@ class ResultCollection
     /**
      * Return true if there is a result for the given class name.
      *
-     * @param string $class
-     *
-     * @return bool
      */
-    public function hasResult($class)
+    public function hasResult(string $class): bool
     {
         return isset($this->results[$class]);
     }
@@ -58,13 +54,10 @@ class ResultCollection
      * Return the result of the given class, throw an exception
      * if it does not exist.
      *
-     * @param string $class
      *
      * @throws \RuntimeException
-     *
-     * @return ResultInterface
      */
-    public function getResult($class)
+    public function getResult(string $class): ResultInterface
     {
         if (!isset($this->results[$class])) {
             throw new \RuntimeException(sprintf(
@@ -79,14 +72,11 @@ class ResultCollection
     /**
      * Return the named metric for the given result class.
      *
-     * @param string $class
-     * @param string $metric
      *
      * @throws \InvalidArgumentException
      *
-     * @return mixed
      */
-    public function getMetric($class, $metric)
+    public function getMetric(string $class, string $metric)
     {
         $metrics = $this->getResult($class)->getMetrics();
 
@@ -107,13 +97,9 @@ class ResultCollection
      * If the metric does not exist but the class *does* exist then there is
      * clearly a problem and we should allow an error to be thrown.
      *
-     * @param string $class
-     * @param string $metric
-     * @param mixed $default
      *
-     * @return mixed
      */
-    public function getMetricOrDefault($class, $metric, $default = null)
+    public function getMetricOrDefault(string $class, string $metric, $default = null)
     {
         if (false === $this->hasResult($class)) {
             return $default;
@@ -127,7 +113,7 @@ class ResultCollection
      *
      * @return ResultInterface[]
      */
-    public function getResults()
+    public function getResults(): ?array
     {
         return $this->results;
     }

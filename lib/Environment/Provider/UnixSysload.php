@@ -20,12 +20,12 @@ use PhpBench\Environment\ProviderInterface;
  */
 class UnixSysload implements ProviderInterface
 {
-    public function isApplicable()
+    public function isApplicable(): bool
     {
         return false === stristr(PHP_OS, 'win');
     }
 
-    public function getInformation()
+    public function getInformation(): Information
     {
         $load = sys_getloadavg();
         $load = array_combine([

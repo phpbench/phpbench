@@ -51,7 +51,7 @@ class ShowCommand extends Command
     /**
      * {@inheritdoc}
      */
-    public function configure()
+    public function configure(): void
     {
         $this->setName('show');
         $this->setDescription('Show the details of a specific run.');
@@ -75,7 +75,7 @@ EOT
     /**
      * {@inheritdoc}
      */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!$input->getOption('report')) {
             $input->setOption('report', ['aggregate']);

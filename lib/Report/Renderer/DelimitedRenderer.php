@@ -34,7 +34,7 @@ class DelimitedRenderer implements RendererInterface, OutputAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function setOutput(OutputInterface $output)
+    public function setOutput(OutputInterface $output): void
     {
         $this->output = $output;
     }
@@ -42,10 +42,8 @@ class DelimitedRenderer implements RendererInterface, OutputAwareInterface
     /**
      * Render the table.
      *
-     * @param Document $reportDom
-     * @param Config $config
      */
-    public function render(Document $reportDom, Config $config)
+    public function render(Document $reportDom, Config $config): void
     {
         /**
          * @phpstan-ignore-next-line
@@ -57,7 +55,7 @@ class DelimitedRenderer implements RendererInterface, OutputAwareInterface
         }
     }
 
-    protected function renderTableElement(Element $tableEl, $config)
+    protected function renderTableElement(Element $tableEl, $config): void
     {
         $rows = [];
 
@@ -107,7 +105,7 @@ class DelimitedRenderer implements RendererInterface, OutputAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function configure(OptionsResolver $options)
+    public function configure(OptionsResolver $options): void
     {
         $options->setDefaults([
             'delimiter' => "\t",

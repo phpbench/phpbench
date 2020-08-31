@@ -112,9 +112,8 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
     /**
      * Generate $nbIterations and add them to the variant.
      *
-     * @param int $nbIterations
      */
-    public function spawnIterations($nbIterations): void
+    public function spawnIterations(int $nbIterations): void
     {
         for ($index = 0; $index < $nbIterations; $index++) {
             $this->iterations[] = new Iteration($index, $this);
@@ -148,7 +147,6 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
     /**
      * Add an iteration.
      *
-     * @param Iteration $iteration
      */
     public function addIteration(Iteration $iteration): void
     {
@@ -257,7 +255,6 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
     /**
      * Return the number of rejected iterations.
      *
-     * @return int
      */
     public function getRejectCount(): int
     {
@@ -281,7 +278,6 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
      *
      * TODO: Rename to getDistribution
      *
-     * @return Distribution
      */
     public function getStats(): Distribution
     {
@@ -357,9 +353,8 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
      * After an exception is encountered the results from this iteration
      * set are invalid.
      *
-     * @param \Exception $exception
      */
-    public function setException(\Exception $exception): void
+    public function setException(Exception $exception): void
     {
         $errors = [];
 
@@ -414,12 +409,12 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
         return count($this->iterations);
     }
 
-    public function offsetGet($offset)
+    public function offsetGet($offset): ?Iteration
     {
         return $this->getIteration($offset);
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         throw new \InvalidArgumentException(
             'Iteration collections are immutable'
@@ -429,14 +424,14 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
     /**
      * {@inheritdoc}
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         throw new \InvalidArgumentException(
             'Iteration collections are immutable'
         );
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return array_key_exists($offset, $this->iterations);
     }

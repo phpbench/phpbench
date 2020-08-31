@@ -34,7 +34,7 @@ class DotsLogger extends PhpBenchLogger
         $this->isCi = getenv('CONTINUOUS_INTEGRATION') ? true : false;
     }
 
-    public function benchmarkStart(Benchmark $benchmark)
+    public function benchmarkStart(Benchmark $benchmark): void
     {
         if ($this->showBench) {
             // do not output a line break on the first run
@@ -47,7 +47,7 @@ class DotsLogger extends PhpBenchLogger
         }
     }
 
-    public function variantEnd(Variant $variant)
+    public function variantEnd(Variant $variant): void
     {
         // do not show reject runs
         if ($variant->getRejectCount() > 0) {
@@ -77,7 +77,7 @@ class DotsLogger extends PhpBenchLogger
         ));
     }
 
-    public function iterationStart(Iteration $iteration)
+    public function iterationStart(Iteration $iteration): void
     {
         if ($this->isCi) {
             return;
@@ -98,7 +98,7 @@ class DotsLogger extends PhpBenchLogger
         ));
     }
 
-    public function endSuite(Suite $suite)
+    public function endSuite(Suite $suite): void
     {
         $this->output->write(PHP_EOL . PHP_EOL);
         parent::endSuite($suite);

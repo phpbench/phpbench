@@ -34,13 +34,13 @@ class DumpHandler
         $this->xmlEncoder = $xmlEncoder;
     }
 
-    public static function configure(Command $command)
+    public static function configure(Command $command): void
     {
         $command->addOption(self::OPT_DUMP_FILE, 'd', InputOption::VALUE_OPTIONAL, 'Dump XML result to named file');
         $command->addOption(self::OPT_DUMP, null, InputOption::VALUE_NONE, 'Dump XML result to stdout and suppress all other output');
     }
 
-    public function dumpFromInput(InputInterface $input, OutputInterface $output, SuiteCollection $collection)
+    public function dumpFromInput(InputInterface $input, OutputInterface $output, SuiteCollection $collection): void
     {
         if (false === $input->getOption(self::OPT_DUMP_FILE) && false === $input->getOption(self::OPT_DUMP)) {
             return;

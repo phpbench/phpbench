@@ -32,7 +32,7 @@ class DeleteCommand extends Command
         $this->storage = $storage;
     }
 
-    public function configure()
+    public function configure(): void
     {
         $this->setName('delete');
         $this->setDescription('Delete suites from storage');
@@ -45,7 +45,7 @@ EOT
         SuiteCollectionHandler::configure($this);
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $collection = $this->collectionHandler->suiteCollectionFromInput($input);
 

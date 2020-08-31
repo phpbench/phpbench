@@ -48,7 +48,7 @@ class AnnotationDriver implements DriverInterface
         return $benchmark;
     }
 
-    private function buildBenchmark(BenchmarkMetadata $benchmark, ReflectionHierarchy $hierarchy)
+    private function buildBenchmark(BenchmarkMetadata $benchmark, ReflectionHierarchy $hierarchy): void
     {
         $annotations = [];
         $reflectionHierarchy = array_reverse(iterator_to_array($hierarchy));
@@ -106,7 +106,7 @@ class AnnotationDriver implements DriverInterface
         }
     }
 
-    private function buildSubject(SubjectMetadata $subject, $annotations)
+    private function buildSubject(SubjectMetadata $subject, $annotations): void
     {
         foreach ($annotations as $annotation) {
             if ($annotation instanceof BeforeClassMethods) {
@@ -127,7 +127,7 @@ class AnnotationDriver implements DriverInterface
         }
     }
 
-    private function processSubject(SubjectMetadata $subject, $annotation)
+    private function processSubject(SubjectMetadata $subject, $annotation): void
     {
         if ($annotation instanceof Annotations\BeforeMethods) {
             $subject->setBeforeMethods(
@@ -211,7 +211,7 @@ class AnnotationDriver implements DriverInterface
         }
     }
 
-    public function processBenchmark(BenchmarkMetadata $benchmark, $annotation)
+    public function processBenchmark(BenchmarkMetadata $benchmark, $annotation): void
     {
         if ($annotation instanceof Annotations\Executor) {
             $benchmark->setExecutor(new ExecutorMetadata($annotation->getName(), $annotation->getConfig()));
@@ -226,7 +226,7 @@ class AnnotationDriver implements DriverInterface
         }
     }
 
-    private function resolveValue(AbstractArrayAnnotation $annotation, array $currentValues, array $annotationValues)
+    private function resolveValue(AbstractArrayAnnotation $annotation, array $currentValues, array $annotationValues): array
     {
         $values = $annotation->getExtend() === true ? $currentValues : [];
         $values = array_merge($values, $annotationValues);

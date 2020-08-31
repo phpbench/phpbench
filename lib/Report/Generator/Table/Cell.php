@@ -5,7 +5,6 @@ namespace PhpBench\Report\Generator\Table;
 final class Cell
 {
     /**
-     * @var mixed
      */
     private $value;
 
@@ -15,7 +14,6 @@ final class Cell
     private $secondaryValues;
 
     /**
-     * @param mixed $value
      */
     public function __construct($value, SecondaryValue ...$additionalValues)
     {
@@ -24,7 +22,6 @@ final class Cell
     }
 
     /**
-     * @param mixed $value
      */
     public static function fromValue($value): self
     {
@@ -32,7 +29,6 @@ final class Cell
     }
 
     /**
-     * @return mixed
      */
     public function getValue()
     {
@@ -40,7 +36,6 @@ final class Cell
     }
 
     /**
-     * @param mixed $value
      */
     public function setValue($value): void
     {

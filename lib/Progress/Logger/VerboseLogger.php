@@ -31,7 +31,7 @@ class VerboseLogger extends PhpBenchLogger
     /**
      * {@inheritdoc}
      */
-    public function benchmarkStart(Benchmark $benchmark)
+    public function benchmarkStart(Benchmark $benchmark): void
     {
         $this->output->writeln(sprintf('<comment>%s</comment>', $benchmark->getClass()));
         $this->output->write(PHP_EOL);
@@ -40,7 +40,7 @@ class VerboseLogger extends PhpBenchLogger
     /**
      * {@inheritdoc}
      */
-    public function benchmarkEnd(Benchmark $benchmark)
+    public function benchmarkEnd(Benchmark $benchmark): void
     {
         $this->output->write(PHP_EOL);
     }
@@ -48,7 +48,7 @@ class VerboseLogger extends PhpBenchLogger
     /**
      * {@inheritdoc}
      */
-    public function iterationStart(Iteration $iteration)
+    public function iterationStart(Iteration $iteration): void
     {
         $this->output->write(sprintf(
             "\x1B[0G    %'.-40.39s%sI%s ",
@@ -61,7 +61,7 @@ class VerboseLogger extends PhpBenchLogger
     /**
      * {@inheritdoc}
      */
-    public function variantStart(Variant $variant)
+    public function variantStart(Variant $variant): void
     {
         $this->paramSetIndex = $variant->getParameterSet()->getIndex();
     }
@@ -69,7 +69,7 @@ class VerboseLogger extends PhpBenchLogger
     /**
      * {@inheritdoc}
      */
-    public function variantEnd(Variant $variant)
+    public function variantEnd(Variant $variant): void
     {
         if ($variant->hasErrorStack()) {
             $this->output->write(sprintf(
@@ -88,7 +88,7 @@ class VerboseLogger extends PhpBenchLogger
     /**
      * {@inheritdoc}
      */
-    public function retryStart($rejectionCount)
+    public function retryStart(int $rejectionCount): void
     {
         $this->rejectionCount = $rejectionCount;
         $this->output->write("\x1B[1F\x1B[0K");

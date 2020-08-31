@@ -28,12 +28,12 @@ abstract class AbstractRemoteProvider implements ProviderInterface
         $this->launcher = $launcher;
     }
 
-    public function isApplicable()
+    public function isApplicable(): bool
     {
         return true;
     }
 
-    public function getInformation()
+    public function getInformation(): Information
     {
         return new Information(
             $this->name(),
@@ -41,7 +41,7 @@ abstract class AbstractRemoteProvider implements ProviderInterface
         );
     }
 
-    private function getData()
+    private function getData(): array
     {
         return $this->launcher->payload($this->template())->launch();
     }

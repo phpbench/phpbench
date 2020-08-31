@@ -40,7 +40,7 @@ class XmlDriver implements DriverInterface
         $this->filesystem = $filesystem ?: new Filesystem();
     }
 
-    public function store(SuiteCollection $collection)
+    public function store(SuiteCollection $collection): ?string
     {
         foreach ($collection->getSuites() as $suite) {
             $path = $this->getPath($suite->getUuid());
@@ -60,7 +60,7 @@ class XmlDriver implements DriverInterface
     /**
      * {@inheritdoc}
      */
-    public function fetch($runId)
+    public function fetch(string $runId): SuiteCollection
     {
         if (!$this->has($runId)) {
             throw new \InvalidArgumentException(sprintf(
@@ -80,7 +80,7 @@ class XmlDriver implements DriverInterface
     /**
      * {@inheritdoc}
      */
-    public function has($runId)
+    public function has($runId): bool
     {
         $path = $this->getPath($runId);
 
@@ -94,7 +94,7 @@ class XmlDriver implements DriverInterface
     /**
      * {@inheritdoc}
      */
-    public function history()
+    public function history(): \PhpBench\Storage\HistoryIteratorInterface
     {
         return new HistoryIterator($this->xmlDecoder, $this->path);
     }

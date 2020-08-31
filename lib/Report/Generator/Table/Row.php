@@ -117,7 +117,6 @@ final class Row
     }
 
     /**
-     * @return mixed
      */
     public function getValue(string $columnName)
     {
@@ -139,7 +138,6 @@ final class Row
     }
 
     /**
-     * @param mixed $value
      */
     public function setValue(string $columnName, $value): void
     {

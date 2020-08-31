@@ -22,21 +22,20 @@ class RejectionCountResult implements ResultInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromArray(array $values)
+    public static function fromArray(array $values): ResultInterface
     {
         return new self(
             (int) $values['count']
         );
     }
 
-    public function __construct($rejectCount)
+    public function __construct(int $rejectCount)
     {
-        Assertion::integer($rejectCount, 'Rejection count must be an integer');
         Assertion::greaterOrEqualThan($rejectCount, 0, 'Rejection count must be greater or equal to 0');
         $this->rejectCount = $rejectCount;
     }
 
-    public function getRejectCount()
+    public function getRejectCount(): int
     {
         return $this->rejectCount;
     }
@@ -44,14 +43,14 @@ class RejectionCountResult implements ResultInterface
     /**
      * {@inheritdoc}
      */
-    public function getMetrics()
+    public function getMetrics(): array
     {
         return [
             'count' => $this->rejectCount,
         ];
     }
 
-    public function getKey()
+    public function getKey(): string
     {
         return 'reject';
     }

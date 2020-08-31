@@ -91,7 +91,7 @@ class Payload
         $this->timeout = $timeout;
     }
 
-    public function setWrapper($wrapper)
+    public function setWrapper($wrapper): void
     {
         $this->wrapper = $wrapper;
     }
@@ -104,12 +104,12 @@ class Payload
         );
     }
 
-    public function setPhpPath($phpPath)
+    public function setPhpPath($phpPath): void
     {
         $this->phpPath = escapeshellarg($phpPath);
     }
 
-    public function disableIni()
+    public function disableIni(): void
     {
         $this->disableIni = true;
     }
@@ -137,7 +137,7 @@ class Payload
         return $this->decodeResults($process);
     }
 
-    private function getIniString()
+    private function getIniString(): string
     {
         if (empty($this->phpConfig)) {
             return '';
@@ -181,7 +181,7 @@ class Payload
         return $scriptPath;
     }
 
-    private function buildCommandLine(string $scriptPath)
+    private function buildCommandLine(string $scriptPath): string
     {
         $arguments = [];
 
@@ -201,7 +201,7 @@ class Payload
         return implode(' ', $arguments);
     }
 
-    private function removeTmpFile(string $scriptPath)
+    private function removeTmpFile(string $scriptPath): void
     {
         unlink($scriptPath);
     }

@@ -33,7 +33,7 @@ class TimeUnitFormat implements FormatInterface
     /**
      * {@inheritdoc}
      */
-    public function format($subject, array $options)
+    public function format(string $subject, array $options): string
     {
         return $this->timeUnit->format(
             (float) $subject,
@@ -46,7 +46,7 @@ class TimeUnitFormat implements FormatInterface
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions()
+    public function getDefaultOptions(): array
     {
         return [
             'unit' => TimeUnit::MICROSECONDS,

@@ -19,10 +19,9 @@ class Sort
      *
      * http://at2.php.net/manual/en/function.usort.php#38827
      *
-     * @param array $array
      * @param \Closure $callback Sorting callback
      */
-    public static function mergeSort(&$array, \Closure $callback)
+    public static function mergeSort(array &$array, \Closure $callback): void
     {
         // Arrays of size < 2 require no action.
         if (count($array) < 2) {
