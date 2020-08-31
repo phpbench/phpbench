@@ -48,10 +48,8 @@ class ConfigurableRegistry extends Registry
 
     /**
      * Return the named configuration.
-     *
-     * @return Config
      */
-    public function getConfig($name)
+    public function getConfig($name): \PhpBench\Registry\Config
     {
         if (is_array($name)) {
             $config = $name;
@@ -85,7 +83,7 @@ class ConfigurableRegistry extends Registry
      * via a configuration key equal to the configuration service type of this registry.
      *
      */
-    public function setConfig(string $name, array $config)
+    public function setConfig(string $name, array $config): void
     {
         if (isset($this->configs[$name])) {
             throw new \InvalidArgumentException(sprintf(
@@ -102,10 +100,8 @@ class ConfigurableRegistry extends Registry
      * Recursively merge configs (having the "extends" key) which extend
      * another report.
      *
-     *
-     * @return void
      */
-    private function resolveConfig(string $name)
+    private function resolveConfig(string $name): void
     {
         $config = $this->configs[$name];
 
@@ -161,10 +157,8 @@ class ConfigurableRegistry extends Registry
      * table
      * ````
      *
-     *
-     * @return string
      */
-    private function processRawCliConfig(string $rawConfig)
+    private function processRawCliConfig(string $rawConfig): string
     {
         if (preg_match(Config::NAME_REGEX, $rawConfig)) {
             return $rawConfig;

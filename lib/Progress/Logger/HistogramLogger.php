@@ -28,7 +28,7 @@ class HistogramLogger extends AnsiLogger
     /**
      * {@inheritdoc}
      */
-    public function endSuite(Suite $suite)
+    public function endSuite(Suite $suite): void
     {
         $this->output->write(PHP_EOL);
         parent::endSuite($suite);
@@ -37,7 +37,7 @@ class HistogramLogger extends AnsiLogger
     /**
      * {@inheritdoc}
      */
-    public function benchmarkStart(Benchmark $benchmark)
+    public function benchmarkStart(Benchmark $benchmark): void
     {
         $this->output->write(PHP_EOL);
         $this->output->write(sprintf('<comment>%s</comment>', $benchmark->getClass()));
@@ -56,7 +56,7 @@ class HistogramLogger extends AnsiLogger
     /**
      * {@inheritdoc}
      */
-    public function variantStart(Variant $variant)
+    public function variantStart(Variant $variant): void
     {
         $this->drawIterations($variant);
         $this->output->write("\x1B[1A"); // move cursor up
@@ -68,7 +68,7 @@ class HistogramLogger extends AnsiLogger
     /**
      * {@inheritdoc}
      */
-    public function variantEnd(Variant $variant)
+    public function variantEnd(Variant $variant): void
     {
         $this->drawIterations($variant);
 
@@ -91,7 +91,7 @@ class HistogramLogger extends AnsiLogger
     /**
      * {@inheritdoc}
      */
-    public function iterationStart(Iteration $iteration)
+    public function iterationStart(Iteration $iteration): void
     {
         $this->output->write(PHP_EOL);
         $this->output->write(PHP_EOL);
@@ -105,7 +105,7 @@ class HistogramLogger extends AnsiLogger
         $this->output->write("\x1B[0G");
     }
 
-    private function drawBlocks($freqs)
+    private function drawBlocks($freqs): void
     {
         $steps = 7;
         $resolution = $this->rows * $steps;
@@ -154,7 +154,7 @@ class HistogramLogger extends AnsiLogger
         $this->output->write($output);
     }
 
-    private function drawIterations(Variant $variant)
+    private function drawIterations(Variant $variant): void
     {
         $subject = $variant->getSubject();
         $this->output->write("\x1B[2K"); // clear the whole line

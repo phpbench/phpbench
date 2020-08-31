@@ -37,7 +37,7 @@ class BenchmarkFinder
      * Build the BenchmarkMetadata collection.
      *
      */
-    public function findBenchmarks(string $path, array $subjectFilter = [], array $groupFilter = [])
+    public function findBenchmarks(string $path, array $subjectFilter = [], array $groupFilter = []): array
     {
         $finder = new Finder();
         $path = PhpBench::normalizePath($path);

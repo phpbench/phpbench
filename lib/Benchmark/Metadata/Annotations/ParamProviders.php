@@ -29,7 +29,7 @@ class ParamProviders extends AbstractArrayAnnotation
         $this->providers = (array) $params['value'];
     }
 
-    public function getProviders()
+    public function getProviders(): array
     {
         return $this->providers;
     }

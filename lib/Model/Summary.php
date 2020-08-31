@@ -162,7 +162,7 @@ class Summary
         return Statistics::mean($this->stats['rstdev']);
     }
 
-    public function getOpcacheEnabled(): ?bool
+    public function getOpcacheEnabled(): bool
     {
         return $this->opCacheEnabled;
     }
@@ -172,7 +172,7 @@ class Summary
         return $this->xdebugEnabled;
     }
 
-    public function getPhpVersion(): ?string
+    public function getPhpVersion(): string
     {
         return $this->phpVersion;
     }

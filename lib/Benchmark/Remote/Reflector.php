@@ -36,10 +36,8 @@ class Reflector
      * may be only one) additional ReflectionClass instances are the ancestors
      * of this first class.
      *
-     *
-     * @return ReflectionHierarchy
      */
-    public function reflect(string $file)
+    public function reflect(string $file): \PhpBench\Benchmark\Remote\ReflectionHierarchy
     {
         $classFqn = $this->getClassNameFromFile($file);
         $hierarchy = new ReflectionHierarchy();
@@ -81,10 +79,8 @@ class Reflector
      * Return the parameter sets for the benchmark container in the given file.
      *
      * @param string[] $paramProviders
-     *
-     * @return array
      */
-    public function getParameterSets(string $file, array $paramProviders)
+    public function getParameterSets(string $file, array $paramProviders): array
     {
         $parameterSets = $this->launcher->payload(__DIR__ . '/template/parameter_set_extractor.template', [
             'file' => $file,

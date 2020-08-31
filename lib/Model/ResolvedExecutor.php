@@ -32,7 +32,7 @@ class ResolvedExecutor
         return $this->config;
     }
 
-    public static function fromNameAndConfig(string $name, Config $executorConfig)
+    public static function fromNameAndConfig(string $name, Config $executorConfig): \PhpBench\Model\ResolvedExecutor
     {
         return new self($name, $executorConfig);
     }

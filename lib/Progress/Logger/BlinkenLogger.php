@@ -51,7 +51,7 @@ class BlinkenLogger extends AnsiLogger
     /**
      * {@inheritdoc}
      */
-    public function endSuite(Suite $suite)
+    public function endSuite(Suite $suite): void
     {
         $this->output->write(PHP_EOL);
         parent::endSuite($suite);
@@ -60,7 +60,7 @@ class BlinkenLogger extends AnsiLogger
     /**
      * {@inheritdoc}
      */
-    public function benchmarkStart(Benchmark $benchmark)
+    public function benchmarkStart(Benchmark $benchmark): void
     {
         if (false === $this->firstTime) {
             $this->output->write(PHP_EOL);
@@ -82,7 +82,7 @@ class BlinkenLogger extends AnsiLogger
     /**
      * {@inheritdoc}
      */
-    public function variantStart(Variant $variant)
+    public function variantStart(Variant $variant): void
     {
         $this->drawIterations($variant, $this->rejects, 'error');
         $this->renderCollectionStatus($variant);
@@ -92,7 +92,7 @@ class BlinkenLogger extends AnsiLogger
     /**
      * {@inheritdoc}
      */
-    public function variantEnd(Variant $variant)
+    public function variantEnd(Variant $variant): void
     {
         $this->resetLinePosition();
         $this->drawIterations($variant, [], null);
@@ -131,7 +131,7 @@ class BlinkenLogger extends AnsiLogger
     /**
      * {@inheritdoc}
      */
-    public function iterationEnd(Iteration $iteration)
+    public function iterationEnd(Iteration $iteration): void
     {
         $time = $this->formatIterationTime($iteration);
         $this->output->write(sprintf(
@@ -143,7 +143,7 @@ class BlinkenLogger extends AnsiLogger
     /**
      * {@inheritdoc}
      */
-    public function iterationStart(Iteration $iteration)
+    public function iterationStart(Iteration $iteration): void
     {
         if ($this->currentLine != $yPos = $this->getYPos($iteration)) {
             $downMovement = $yPos - $this->currentLine;
@@ -162,7 +162,7 @@ class BlinkenLogger extends AnsiLogger
     /**
      * {@inheritdoc}
      */
-    protected function formatIterationTime(Iteration $iteration)
+    protected function formatIterationTime(Iteration $iteration): string
     {
         $time = sprintf('%-' . $this->colWidth . 's', parent::formatIterationTime($iteration));
 
@@ -176,7 +176,7 @@ class BlinkenLogger extends AnsiLogger
         return $time;
     }
 
-    private function drawIterations(Variant $variant, array $specials, $tag)
+    private function drawIterations(Variant $variant, array $specials, $tag): void
     {
         $this->output->write("\x1B[2K"); // clear line
 
@@ -218,17 +218,17 @@ class BlinkenLogger extends AnsiLogger
         $this->output->write(sprintf("%s\x1B[0J", $output)); // clear rest of the line
     }
 
-    private function getXPos(Iteration $iteration)
+    private function getXPos(Iteration $iteration): int
     {
         return self::INDENT + ($iteration->getIndex() % self::NUMBER_COLS) * $this->colWidth + 1;
     }
 
-    private function getYPos(Iteration $iteration)
+    private function getYPos(Iteration $iteration): float
     {
         return floor($iteration->getIndex() / self::NUMBER_COLS);
     }
 
-    private function resetLinePosition()
+    private function resetLinePosition(): void
     {
         if ($this->currentLine) {
             $this->output->write("\x1B[" . $this->currentLine . 'A'); // reset cursor Y pos

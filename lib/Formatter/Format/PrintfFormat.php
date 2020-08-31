@@ -16,12 +16,12 @@ use PhpBench\Formatter\FormatInterface;
 
 class PrintfFormat implements FormatInterface
 {
-    public function format(string $subject, array $options)
+    public function format(string $subject, array $options): string
     {
         return sprintf($options['format'], $subject);
     }
 
-    public function getDefaultOptions()
+    public function getDefaultOptions(): array
     {
         return [
             'format' => '%s',

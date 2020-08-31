@@ -72,7 +72,7 @@ class RunnerHandler
         $this->benchPath = $benchPath;
     }
 
-    public static function configure(Command $command)
+    public static function configure(Command $command): void
     {
         $command->addArgument(self::ARG_PATH, InputArgument::OPTIONAL, 'Path to benchmark(s)');
         $command->addOption(self::OPT_FILTER, [], InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Ignore all benchmarks not matching command filter (can be a regex)');

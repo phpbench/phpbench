@@ -23,15 +23,11 @@ interface FormatInterface
     /**
      * Format the given subject value.
      *
-     *
-     * @return string
      */
-    public function format(string $subject, array $options);
+    public function format(string $subject, array $options): string;
 
     /**
      * Return the default options for this format class.
-     *
-     * @return array
      */
-    public function getDefaultOptions();
+    public function getDefaultOptions(): array;
 }

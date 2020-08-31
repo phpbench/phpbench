@@ -28,7 +28,7 @@ class TimeResult implements ResultInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromArray(array $values)
+    public static function fromArray(array $values): \PhpBench\Model\ResultInterface
     {
         return new self((int) $values['net']);
     }
@@ -45,10 +45,8 @@ class TimeResult implements ResultInterface
 
     /**
      * Return the net-time for this iteration.
-     *
-     * @return int
      */
-    public function getNet()
+    public function getNet(): int
     {
         return $this->netTime;
     }
@@ -71,7 +69,7 @@ class TimeResult implements ResultInterface
     /**
      * {@inheritdoc}
      */
-    public function getMetrics()
+    public function getMetrics(): array
     {
         return [
             'net' => $this->netTime,
@@ -81,7 +79,7 @@ class TimeResult implements ResultInterface
     /**
      * {@inheritdoc}
      */
-    public function getKey()
+    public function getKey(): string
     {
         return 'time';
     }

@@ -35,7 +35,7 @@ class Git implements ProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function isApplicable()
+    public function isApplicable(): bool
     {
         if (null === $this->getGitPath()) {
             return false;
@@ -53,7 +53,7 @@ class Git implements ProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getInformation()
+    public function getInformation(): \PhpBench\Environment\Information
     {
         $process = $this->exec('symbolic-ref HEAD');
 
@@ -86,7 +86,7 @@ class Git implements ProviderInterface
         return new VcsInformation('git', $branchName, $version);
     }
 
-    private function exec($cmd)
+    private function exec($cmd): \Symfony\Component\Process\Process
     {
         $cmd = sprintf('%s %s', escapeshellarg($this->getGitPath()), $cmd);
         $process = Process::fromShellCommandline($cmd);

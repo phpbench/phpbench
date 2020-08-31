@@ -87,7 +87,7 @@ class MetadataFactory
         return $metadata;
     }
 
-    private function validateSubject(ReflectionHierarchy $benchmarkReflection, SubjectMetadata $subject)
+    private function validateSubject(ReflectionHierarchy $benchmarkReflection, SubjectMetadata $subject): void
     {
         foreach (['getBeforeMethods' => 'before', 'getAfterMethods' => 'after'] as $methodName => $context) {
             foreach ($subject->$methodName() as $method) {
@@ -96,7 +96,7 @@ class MetadataFactory
         }
     }
 
-    private function validateBenchmark(ReflectionHierarchy $hierarchy, BenchmarkMetadata $benchmark)
+    private function validateBenchmark(ReflectionHierarchy $hierarchy, BenchmarkMetadata $benchmark): void
     {
         foreach (['getBeforeClassMethods' => 'before class', 'getAfterClassMethods' => 'after class'] as $methodName => $context) {
             foreach ($benchmark->$methodName() as $method) {
@@ -105,7 +105,7 @@ class MetadataFactory
         }
     }
 
-    private function validateMethodExists($context, ReflectionHierarchy $benchmarkReflection, $method, $isStatic = false)
+    private function validateMethodExists($context, ReflectionHierarchy $benchmarkReflection, $method, $isStatic = false): void
     {
         if (false === $benchmarkReflection->hasMethod($method)) {
             throw new \InvalidArgumentException(sprintf(

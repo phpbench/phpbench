@@ -23,7 +23,7 @@ class FormatRegistry
      * Register a format class.
      *
      */
-    public function register(string $name, FormatInterface $format)
+    public function register(string $name, FormatInterface $format): void
     {
         if (isset($this->formats[$name])) {
             throw new \InvalidArgumentException(sprintf(
@@ -40,10 +40,8 @@ class FormatRegistry
      *
      *
      * @throws \InvalidArgumentException When no formatter exists.
-     *
-     * @return FormatInterface
      */
-    public function get(string $name)
+    public function get(string $name): \PhpBench\Formatter\FormatInterface
     {
         if (!isset($this->formats[$name])) {
             throw new \InvalidArgumentException(sprintf(

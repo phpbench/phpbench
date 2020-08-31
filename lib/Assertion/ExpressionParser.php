@@ -46,7 +46,7 @@ class ExpressionParser
         return $this->parseComparisonExpression();
     }
 
-    private function parseComparisonExpression(): Node
+    private function parseComparisonExpression(): \PhpBench\Assertion\Ast\Comparison
     {
         $left = $this->parseValue();
         $comparator = $this->parseComparator();

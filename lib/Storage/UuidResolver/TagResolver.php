@@ -65,7 +65,7 @@ class TagResolver implements UuidResolverInterface
         ));
     }
 
-    private function tagAndOffset(string $reference)
+    private function tagAndOffset(string $reference): array
     {
         preg_match('{^tag:([a-zA-Z_]+)-?([0-9]+)?$}', $reference, $matches);
         $tag = $matches[1] ?? null;

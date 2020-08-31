@@ -20,12 +20,12 @@ use PhpBench\Environment\ProviderInterface;
  */
 class Uname implements ProviderInterface
 {
-    public function isApplicable()
+    public function isApplicable(): bool
     {
         return true;
     }
 
-    public function getInformation()
+    public function getInformation(): \PhpBench\Environment\Information
     {
         $uname = [];
 

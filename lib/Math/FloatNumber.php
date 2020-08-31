@@ -4,7 +4,7 @@ namespace PhpBench\Math;
 
 class FloatNumber
 {
-    public static function isLessThanOrEqual(float $left, float $right)
+    public static function isLessThanOrEqual(float $left, float $right): bool
     {
         if (self::isEqual($left, $right)) {
             return true;

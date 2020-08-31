@@ -55,7 +55,7 @@ class ReportCommand extends Command
         $this->dumpHandler = $dumpHandler;
     }
 
-    public function configure()
+    public function configure(): void
     {
         $this->setName('report');
         $this->setDescription('Generate a report from storage or an XML file');
@@ -88,7 +88,7 @@ EOT
         DumpHandler::configure($this);
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!$input->getOption('report')) {
             throw new \InvalidArgumentException(

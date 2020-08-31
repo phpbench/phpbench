@@ -22,7 +22,7 @@ class RejectionCountResult implements ResultInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromArray(array $values)
+    public static function fromArray(array $values): \PhpBench\Model\ResultInterface
     {
         return new self(
             (int) $values['count']
@@ -35,7 +35,7 @@ class RejectionCountResult implements ResultInterface
         $this->rejectCount = $rejectCount;
     }
 
-    public function getRejectCount()
+    public function getRejectCount(): int
     {
         return $this->rejectCount;
     }
@@ -43,14 +43,14 @@ class RejectionCountResult implements ResultInterface
     /**
      * {@inheritdoc}
      */
-    public function getMetrics()
+    public function getMetrics(): array
     {
         return [
             'count' => $this->rejectCount,
         ];
     }
 
-    public function getKey()
+    public function getKey(): string
     {
         return 'reject';
     }

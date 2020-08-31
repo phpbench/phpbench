@@ -31,7 +31,7 @@ class PhpBench
     const PHAR_URL = 'https://phpbench.github.io/phpbench/phpbench.phar';
     const PHAR_VERSION_URL = 'https://phpbench.github.io/phpbench/phpbench.phar.version';
 
-    public static function run(ClassLoader $autoloader)
+    public static function run(ClassLoader $autoloader): void
     {
         // Converts warnings to exceptions
         ErrorHandler::register();
@@ -71,10 +71,8 @@ class PhpBench
      * because otherwise it will be the script path, which is wrong in the
      * context of a PHAR.
      *
-     *
-     * @return string
      */
-    public static function normalizePath(string $path)
+    public static function normalizePath(string $path): string
     {
         if (Path::isAbsolute($path)) {
             return $path;
@@ -83,7 +81,7 @@ class PhpBench
         return getcwd() . DIRECTORY_SEPARATOR . $path;
     }
 
-    private static function loadConfig()
+    private static function loadConfig(): array
     {
         global $argv;
 
@@ -199,7 +197,7 @@ class PhpBench
         return $configDir . '/' . $bootstrap;
     }
 
-    private static function parseOption($arg, $longName, $shortName = null)
+    private static function parseOption($arg, $longName, $shortName = null): ?string
     {
         $longOption = '--' . $longName . '=';
         $shortOption = '-' . $shortName .'=';
@@ -211,5 +209,7 @@ class PhpBench
 
             return substr($arg, strlen($option));
         }
+
+        return null;
     }
 }

@@ -32,7 +32,7 @@ final class Tag
         $this->tag = $tag;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->tag;
     }

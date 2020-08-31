@@ -102,7 +102,7 @@ class TableGenerator implements GeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function generate(SuiteCollection $suiteCollection, Config $config)
+    public function generate(SuiteCollection $suiteCollection, Config $config): \PhpBench\Dom\Document
     {
         $table = $this->buildTable($suiteCollection, $config);
 
@@ -168,7 +168,7 @@ class TableGenerator implements GeneratorInterface
      *
      * @return array<Row>
      */
-    private function processSort(array $table, Config $config)
+    private function processSort(array $table, Config $config): array
     {
         if ($config['sort']) {
             $cols = array_reverse($config['sort']);
@@ -210,7 +210,7 @@ class TableGenerator implements GeneratorInterface
      *
      * @return array<array<Row>>
      */
-    private function processBreak(array $table, Config $config)
+    private function processBreak(array $table, Config $config): array
     {
         if (!$config['break']) {
             return [$table];
@@ -250,7 +250,7 @@ class TableGenerator implements GeneratorInterface
      *
      * @return array<array<Row>>
      */
-    private function processCols(array $tables, Config $config)
+    private function processCols(array $tables, Config $config): array
     {
         if ($config['cols']) {
             $cols = $config['cols'];
@@ -286,7 +286,7 @@ class TableGenerator implements GeneratorInterface
      *
      * @return array<array<Row>>
      */
-    private function processCompare(array $tables, Config $config)
+    private function processCompare(array $tables, Config $config): array
     {
         if (!isset($config['compare'])) {
             return $tables;
@@ -373,7 +373,7 @@ class TableGenerator implements GeneratorInterface
      *
      * @return array<Row>
      */
-    private function buildTable(SuiteCollection $suiteCollection, Config $config)
+    private function buildTable(SuiteCollection $suiteCollection, Config $config): array
     {
         $paramJsonFlags = null;
 
@@ -465,10 +465,8 @@ class TableGenerator implements GeneratorInterface
      * Generate the report DOM document to pass to the report renderer.
      *
      * @param array<array<Row>> $tables
-     *
-     * @return Document
      */
-    private function generateDocument(array $tables, Config $config)
+    private function generateDocument(array $tables, Config $config): \PhpBench\Dom\Document
     {
         $document = new Document();
         $reportsEl = $document->createRoot('reports');

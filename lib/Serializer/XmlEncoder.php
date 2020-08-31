@@ -31,10 +31,8 @@ class XmlEncoder
     /**
      * Encode a Suite object into a XML document.
      *
-     *
-     * @return Document
      */
-    public function encode(SuiteCollection $suiteCollection)
+    public function encode(SuiteCollection $suiteCollection): \PhpBench\Dom\Document
     {
         $dom = new Document();
 
@@ -75,7 +73,7 @@ class XmlEncoder
         return $dom;
     }
 
-    private function processBenchmark(Benchmark $benchmark, Element $suiteEl)
+    private function processBenchmark(Benchmark $benchmark, Element $suiteEl): void
     {
         $benchmarkEl = $suiteEl->appendElement('benchmark');
         $benchmarkEl->setAttribute('class', $benchmark->getClass());
@@ -85,7 +83,7 @@ class XmlEncoder
         }
     }
 
-    private function processSubject(Subject $subject, Element $benchmarkEl)
+    private function processSubject(Subject $subject, Element $benchmarkEl): void
     {
         $subjectEl = $benchmarkEl->appendElement('subject');
         $subjectEl->setAttribute('name', $subject->getName());
@@ -102,7 +100,7 @@ class XmlEncoder
         }
     }
 
-    private function processVariant(Subject $subject, Variant $variant, Element $subjectEl)
+    private function processVariant(Subject $subject, Variant $variant, Element $subjectEl): void
     {
         $variantEl = $subjectEl->appendElement('variant');
 

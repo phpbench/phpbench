@@ -28,7 +28,7 @@ class Timeout
         $this->timeout = (float) $params['value'];
     }
 
-    public function getTimeout()
+    public function getTimeout(): float
     {
         return $this->timeout;
     }

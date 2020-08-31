@@ -35,10 +35,8 @@ class XmlDecoder
     /**
      * Decode a PHPBench XML document into a SuiteCollection.
      *
-     *
-     * @return SuiteCollection
      */
-    public function decode(Document $document)
+    public function decode(Document $document): \PhpBench\Model\SuiteCollection
     {
         $suites = [];
 
@@ -54,10 +52,8 @@ class XmlDecoder
      * Return a SuiteCollection from a number of PHPBench xml files.
      *
      * @param string[] $files
-     *
-     * @return SuiteCollection
      */
-    public function decodeFiles(array $files)
+    public function decodeFiles(array $files): \PhpBench\Model\SuiteCollection
     {
         // combine into one document.
         //
@@ -77,7 +73,7 @@ class XmlDecoder
         return $this->decode($suiteDocument);
     }
 
-    private function processSuite(Element $suiteEl)
+    private function processSuite(Element $suiteEl): \PhpBench\Model\Suite
     {
         $suite = new Suite(
             $suiteEl->getAttribute('tag'),
@@ -130,7 +126,7 @@ class XmlDecoder
         return $suite;
     }
 
-    private function processBenchmark(Benchmark $benchmark, Element $benchmarkEl, array $resultClasses)
+    private function processBenchmark(Benchmark $benchmark, Element $benchmarkEl, array $resultClasses): void
     {
         foreach ($benchmarkEl->query('./subject') as $subjectEl) {
             $subject = $benchmark->createSubject($subjectEl->getAttribute('name'));
@@ -139,7 +135,7 @@ class XmlDecoder
         }
     }
 
-    private function processSubject(Subject $subject, Element $subjectEl, array $resultClasses)
+    private function processSubject(Subject $subject, Element $subjectEl, array $resultClasses): void
     {
         $groups = [];
 
@@ -185,7 +181,7 @@ class XmlDecoder
         }
     }
 
-    private function getComputedStats(Element $element)
+    private function getComputedStats(Element $element): array
     {
         $stats = [];
 
@@ -198,7 +194,7 @@ class XmlDecoder
         return $stats;
     }
 
-    private function getParameters(Element $element)
+    private function getParameters(Element $element): array
     {
         $parameters = [];
 
@@ -224,7 +220,7 @@ class XmlDecoder
         return $parameters;
     }
 
-    private function processVariant(Variant $variant, Element $variantEl, array $resultClasses)
+    private function processVariant(Variant $variant, Element $variantEl, array $resultClasses): void
     {
         $errorEls = $variantEl->query('.//error');
 

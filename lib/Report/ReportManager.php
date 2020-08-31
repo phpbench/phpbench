@@ -34,7 +34,7 @@ class ReportManager
         $this->rendererRegistry = $rendererRegistry;
     }
 
-    public function validateReportNames($reportNames)
+    public function validateReportNames($reportNames): void
     {
         foreach ($reportNames as $reportName) {
             $this->generatorRegistry->getConfig($reportName);
@@ -44,10 +44,8 @@ class ReportManager
     /**
      * Generate the named reports.
      *
-     *
-     * @return array
      */
-    public function generateReports(SuiteCollection $collection, array $reportNames)
+    public function generateReports(SuiteCollection $collection, array $reportNames): array
     {
         $reportDoms = [];
         $reportConfigs = [];
@@ -87,7 +85,7 @@ class ReportManager
         SuiteCollection $collection,
         array $reportNames,
         array $outputNames
-    ) {
+    ): void {
         $reportDoms = $this->generateReports($collection, $reportNames);
 
         foreach ($outputNames as $outputName) {

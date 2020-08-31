@@ -95,7 +95,7 @@ class CoreExtension implements ExtensionInterface
     const TAG_EXECUTOR = 'benchmark_executor';
 
 
-    public function getDefaultConfig()
+    public function getDefaultConfig(): array
     {
         return [
             'bootstrap' => null,
@@ -124,7 +124,7 @@ class CoreExtension implements ExtensionInterface
         ];
     }
 
-    public function load(Container $container)
+    public function load(Container $container): void
     {
         $this->relativizeConfigPath($container);
 
@@ -159,7 +159,7 @@ class CoreExtension implements ExtensionInterface
         $this->registerAsserters($container);
     }
 
-    private function registerBenchmark(Container $container)
+    private function registerBenchmark(Container $container): void
     {
         $container->register('benchmark.runner', function (Container $container) {
             return new Runner(
@@ -266,14 +266,14 @@ class CoreExtension implements ExtensionInterface
         });
     }
 
-    private function registerJson(Container $container)
+    private function registerJson(Container $container): void
     {
         $container->register('json.decoder', function (Container $container) {
             return new JsonDecoder();
         });
     }
 
-    private function registerCommands(Container $container)
+    private function registerCommands(Container $container): void
     {
         $container->register('console.command.handler.runner', function (Container $container) {
             return new RunnerHandler(
@@ -368,7 +368,7 @@ class CoreExtension implements ExtensionInterface
         }
     }
 
-    private function registerProgressLoggers(Container $container)
+    private function registerProgressLoggers(Container $container): void
     {
         $container->register('progress_logger.registry', function (Container $container) {
             $registry = new LoggerRegistry();
@@ -412,7 +412,7 @@ class CoreExtension implements ExtensionInterface
         }, ['progress_logger' => ['name' => 'histogram']]);
     }
 
-    private function registerReportGenerators(Container $container)
+    private function registerReportGenerators(Container $container): void
     {
         $container->register('report_generator.table', function (Container $container) {
             return new TableGenerator();
@@ -427,7 +427,7 @@ class CoreExtension implements ExtensionInterface
         }, ['report_generator' => ['name' => 'composite']]);
     }
 
-    private function registerReportRenderers(Container $container)
+    private function registerReportRenderers(Container $container): void
     {
         $container->register('report_renderer.console', function (Container $container) {
             return new ConsoleRenderer($container->get('phpbench.formatter'));
@@ -443,7 +443,7 @@ class CoreExtension implements ExtensionInterface
         }, ['report_renderer' => ['name' => 'delimited']]);
     }
 
-    private function registerFormatter(Container $container)
+    private function registerFormatter(Container $container): void
     {
         $container->register('phpbench.formatter.registry', function (Container $container) {
             $registry = new FormatRegistry();
@@ -465,7 +465,7 @@ class CoreExtension implements ExtensionInterface
         });
     }
 
-    private function registerAsserters(Container $container)
+    private function registerAsserters(Container $container): void
     {
         $container->register('assertion.assertion_processor', function () {
             return new AssertionProcessor(
@@ -475,7 +475,7 @@ class CoreExtension implements ExtensionInterface
         });
     }
 
-    private function registerRegistries(Container $container)
+    private function registerRegistries(Container $container): void
     {
         foreach (['generator' => 'reports', 'renderer' => 'outputs'] as $registryType => $optionName) {
             $container->register('report.registry.' . $registryType, function (Container $container) use ($registryType, $optionName) {
@@ -526,7 +526,7 @@ class CoreExtension implements ExtensionInterface
         });
     }
 
-    public function registerEnvironment(Container $container)
+    public function registerEnvironment(Container $container): void
     {
         $container->register('environment.provider.uname', function (Container $container) {
             return new Provider\Uname();
@@ -571,7 +571,7 @@ class CoreExtension implements ExtensionInterface
         });
     }
 
-    private function registerSerializer(Container $container)
+    private function registerSerializer(Container $container): void
     {
         $container->register('serializer.encoder.xml', function (Container $container) {
             return new XmlEncoder();
@@ -581,7 +581,7 @@ class CoreExtension implements ExtensionInterface
         });
     }
 
-    private function registerStorage(Container $container)
+    private function registerStorage(Container $container): void
     {
         $container->register('storage.driver_registry', function (Container $container) {
             $registry = new StorageRegistry($container, $container->getParameter('storage'));
@@ -641,7 +641,7 @@ class CoreExtension implements ExtensionInterface
         }, ['storage_archiver' => ['name' => 'xml']]);
     }
 
-    private function relativizeConfigPath(Container $container)
+    private function relativizeConfigPath(Container $container): void
     {
         if (null === $path = $container->getParameter('path')) {
             return;

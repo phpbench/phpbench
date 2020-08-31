@@ -28,7 +28,7 @@ class Iterations
         $this->iterations = (array) $params['value'];
     }
 
-    public function getIterations()
+    public function getIterations(): array
     {
         return $this->iterations;
     }

@@ -28,7 +28,7 @@ class Warmup
         $this->revs = (array) $revs['value'];
     }
 
-    public function getRevs()
+    public function getRevs(): array
     {
         return $this->revs;
     }

@@ -30,7 +30,7 @@ class MemoryValue implements Value
         return $this->value;
     }
 
-    public function toBytes()
+    public function toBytes(): float
     {
         return $this->value;
     }

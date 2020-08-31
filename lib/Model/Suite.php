@@ -58,7 +58,7 @@ class Suite implements IteratorAggregate
     /**
      * @return array<Benchmark>
      */
-    public function getBenchmarks()
+    public function getBenchmarks(): array
     {
         return $this->benchmarks;
     }
@@ -71,10 +71,8 @@ class Suite implements IteratorAggregate
     /**
      * Create and add a benchmark.
      *
-     *
-     * @return Benchmark
      */
-    public function createBenchmark(string $class)
+    public function createBenchmark(string $class): \PhpBench\Model\Benchmark
     {
         $benchmark = new Benchmark($this, $class);
         $this->benchmarks[$class] = $benchmark;
@@ -82,22 +80,22 @@ class Suite implements IteratorAggregate
         return $benchmark;
     }
 
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->benchmarks);
     }
 
-    public function getTag()
+    public function getTag(): ?\PhpBench\Model\Tag
     {
         return $this->tag;
     }
 
-    public function getDate()
+    public function getDate(): \DateTime
     {
         return $this->date;
     }
 
-    public function getConfigPath()
+    public function getConfigPath(): ?string
     {
         return $this->configPath;
     }
@@ -107,7 +105,7 @@ class Suite implements IteratorAggregate
         return new Summary($this);
     }
 
-    public function getIterations()
+    public function getIterations(): array
     {
         $iterations = [];
 
@@ -120,7 +118,7 @@ class Suite implements IteratorAggregate
         return $iterations;
     }
 
-    public function getSubjects()
+    public function getSubjects(): array
     {
         $subjects = [];
 
@@ -136,7 +134,7 @@ class Suite implements IteratorAggregate
     /**
      * @return array<Variant>
      */
-    public function getVariants()
+    public function getVariants(): array
     {
         $variants = [];
 
@@ -149,7 +147,7 @@ class Suite implements IteratorAggregate
         return $variants;
     }
 
-    public function getErrorStacks()
+    public function getErrorStacks(): array
     {
         $errorStacks = [];
 
@@ -167,7 +165,7 @@ class Suite implements IteratorAggregate
     /**
      * @return VariantAssertionResults[]
      */
-    public function getFailures()
+    public function getFailures(): array
     {
         $failures = [];
 
@@ -186,7 +184,7 @@ class Suite implements IteratorAggregate
     /**
      * @return VariantAssertionResults[]
      */
-    public function getWarnings()
+    public function getWarnings(): array
     {
         $warnings = [];
 
@@ -205,14 +203,14 @@ class Suite implements IteratorAggregate
     /**
      * @param Information[] $envInformations
      */
-    public function setEnvInformations(iterable $envInformations)
+    public function setEnvInformations(iterable $envInformations): void
     {
         foreach ($envInformations as $envInformation) {
             $this->addEnvInformation($envInformation);
         }
     }
 
-    public function addEnvInformation(Information $information)
+    public function addEnvInformation(Information $information): void
     {
         $this->envInformations[$information->getName()] = $information;
     }
@@ -220,7 +218,7 @@ class Suite implements IteratorAggregate
     /**
      * @return Information[]
      */
-    public function getEnvInformations()
+    public function getEnvInformations(): array
     {
         return $this->envInformations;
     }
@@ -232,7 +230,7 @@ class Suite implements IteratorAggregate
      * only when dynamically generating reports on-the-fly.
      *
      */
-    public function getUuid()
+    public function getUuid(): ?string
     {
         return $this->uuid;
     }

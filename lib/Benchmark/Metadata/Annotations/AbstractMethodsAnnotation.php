@@ -28,7 +28,7 @@ abstract class AbstractMethodsAnnotation extends AbstractArrayAnnotation
         $this->methods = (array) $params['value'];
     }
 
-    public function getMethods()
+    public function getMethods(): array
     {
         return $this->methods;
     }

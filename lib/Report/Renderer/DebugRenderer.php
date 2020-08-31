@@ -29,18 +29,18 @@ class DebugRenderer implements RendererInterface, OutputAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function setOutput(OutputInterface $output)
+    public function setOutput(OutputInterface $output): void
     {
         $this->output = $output;
     }
 
-    public function render(Document $reportsDocument, Config $config)
+    public function render(Document $reportsDocument, Config $config): void
     {
         $this->output->writeln('Report XML (debug):');
         $this->output->writeln($reportsDocument->dump());
     }
 
-    public function configure(OptionsResolver $options)
+    public function configure(OptionsResolver $options): void
     {
     }
 }

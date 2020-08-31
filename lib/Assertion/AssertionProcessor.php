@@ -45,7 +45,7 @@ class AssertionProcessor
         return $result;
     }
 
-    private function buildVariantData(Variant $variant)
+    private function buildVariantData(Variant $variant): array
     {
         return array_merge($variant->getStats()->getStats(), [
             'mem_real' => Statistics::mean($variant->getMetricValues(MemoryResult::class, 'real')),

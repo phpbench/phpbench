@@ -51,7 +51,7 @@ class TemplateExecutor implements BenchmarkExecutorInterface
         $this->launch($payload, $iteration, $config);
     }
 
-    private function launch(Payload $payload, Iteration $iteration, Config $options)
+    private function launch(Payload $payload, Iteration $iteration, Config $options): void
     {
         $payload->mergePhpConfig(array_merge(
             [
@@ -76,7 +76,7 @@ class TemplateExecutor implements BenchmarkExecutorInterface
     /**
      * {@inheritdoc}
      */
-    public function configure(OptionsResolver $options)
+    public function configure(OptionsResolver $options): void
     {
         $options->setDefaults([
             self::OPTION_PHP_CONFIG => [
@@ -84,9 +84,6 @@ class TemplateExecutor implements BenchmarkExecutorInterface
         ]);
     }
 
-    /**
-     *
-     */
     protected function createTokens(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config) : array
     {
         $parameterSet = $iteration->getVariant()->getParameterSet();

@@ -42,7 +42,7 @@ class VariantAssertionResults implements IteratorAggregate, \Countable
         }
     }
 
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->results);
     }
@@ -65,7 +65,7 @@ class VariantAssertionResults implements IteratorAggregate, \Countable
     /**
      * {@inheritdoc}
      */
-    public function count()
+    public function count(): int
     {
         return count($this->results);
     }

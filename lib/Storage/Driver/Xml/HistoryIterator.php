@@ -55,7 +55,7 @@ class HistoryIterator implements HistoryIteratorInterface
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         $this->init();
 
@@ -89,7 +89,7 @@ class HistoryIterator implements HistoryIteratorInterface
     /**
      * {@inheritdoc}
      */
-    public function key()
+    public function key(): string
     {
         $this->init();
         $key = sprintf(
@@ -106,7 +106,7 @@ class HistoryIterator implements HistoryIteratorInterface
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->init();
         $this->years->rewind();
@@ -125,7 +125,7 @@ class HistoryIterator implements HistoryIteratorInterface
         return $this->entries->valid();
     }
 
-    private function init()
+    private function init(): void
     {
         if ($this->initialized) {
             return;
@@ -165,10 +165,8 @@ class HistoryIterator implements HistoryIteratorInterface
      * Return an iterator for the history entries.
      *
      * We hydrate all of the entries for the "current" day.
-     *
-     * @return \ArrayIterator
      */
-    private function getEntryIterator()
+    private function getEntryIterator(): \ArrayIterator
     {
         $files = $this->days->current();
         $files = new \DirectoryIterator($this->days->current());
@@ -204,10 +202,8 @@ class HistoryIterator implements HistoryIteratorInterface
      * is still quite expensive as we are creating the entire object
      * graph for each suite run.
      *
-     *
-     * @return HistoryEntry
      */
-    private function getHistoryEntry(string $path)
+    private function getHistoryEntry(string $path): \PhpBench\Storage\HistoryEntry
     {
         $dom = new Document();
         $dom->load($path);
@@ -245,10 +241,8 @@ class HistoryIterator implements HistoryIteratorInterface
      * Return the iterator for a specific path (years, months, days).
      *
      * We sort by date in descending order.
-     *
-     * @return \ArrayIterator
      */
-    private function getDirectoryIterator($path)
+    private function getDirectoryIterator($path): \ArrayIterator
     {
         $nodes = new \DirectoryIterator($path);
         $dirs = [];

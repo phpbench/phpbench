@@ -29,7 +29,7 @@ class Groups extends AbstractArrayAnnotation
         $this->groups = (array) $params['value'];
     }
 
-    public function getGroups()
+    public function getGroups(): array
     {
         return $this->groups;
     }

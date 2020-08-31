@@ -26,7 +26,7 @@ class MemoryResult implements ResultInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromArray(array $values)
+    public static function fromArray(array $values): \PhpBench\Model\ResultInterface
     {
         return new self(
             (int) $values['peak'],
@@ -49,10 +49,8 @@ class MemoryResult implements ResultInterface
      * `memory_get_peak_usage`.
      *
      * @see http://php.net/manual/en/function.memory-get-peak-usage.php
-     *
-     * @return int
      */
-    public function getPeak()
+    public function getPeak(): int
     {
         return $this->peak;
     }
@@ -62,10 +60,8 @@ class MemoryResult implements ResultInterface
      * as gathered by `memory_get_usage(true)`.
      *
      * @see http://php.net/manual/en/function.memory-get-usage.php
-     *
-     * @return int
      */
-    public function getReal()
+    public function getReal(): int
     {
         return $this->real;
     }
@@ -74,10 +70,8 @@ class MemoryResult implements ResultInterface
      * Get memory usage at the end of the script.
      *
      * @see http://php.net/manual/en/function.memory-get-usage.php
-     *
-     * @return int
      */
-    public function getFinal()
+    public function getFinal(): int
     {
         return $this->final;
     }
@@ -85,7 +79,7 @@ class MemoryResult implements ResultInterface
     /**
      * {@inheritdoc}
      */
-    public function getMetrics()
+    public function getMetrics(): array
     {
         return [
             'peak' => $this->peak,
@@ -97,7 +91,7 @@ class MemoryResult implements ResultInterface
     /**
      * {@inheritdoc}
      */
-    public function getKey()
+    public function getKey(): string
     {
         return 'mem';
     }

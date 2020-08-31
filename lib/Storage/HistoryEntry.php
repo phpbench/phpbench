@@ -65,7 +65,7 @@ class HistoryEntry
         return $this->runId;
     }
 
-    public function getDate()
+    public function getDate(): \DateTime
     {
         return $this->date;
     }

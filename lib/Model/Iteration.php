@@ -35,20 +35,16 @@ class Iteration extends ResultCollection
     /**
      * Return the Variant that this
      * iteration belongs to.
-     *
-     * @return Variant
      */
-    public function getVariant()
+    public function getVariant(): \PhpBench\Model\Variant
     {
         return $this->variant;
     }
 
     /**
      * Return the index of this iteration.
-     *
-     * @return int
      */
-    public function getIndex()
+    public function getIndex(): int
     {
         return $this->index;
     }

@@ -69,7 +69,7 @@ class XmlArchiver implements ArchiverInterface
     /**
      * {@inheritdoc}
      */
-    public function archive(OutputInterface $output)
+    public function archive(OutputInterface $output): void
     {
         /** @var DriverInterface $driver */
         $driver = $this->storageRegistry->getService();
@@ -110,7 +110,7 @@ class XmlArchiver implements ArchiverInterface
     /**
      * {@inheritdoc}
      */
-    public function restore(OutputInterface $output)
+    public function restore(OutputInterface $output): void
     {
         /** @var DriverInterface $driver */
         $driver = $this->storageRegistry->getService();
@@ -134,7 +134,7 @@ class XmlArchiver implements ArchiverInterface
         $output->write(PHP_EOL);
     }
 
-    private function filterExisting($driver, array $files)
+    private function filterExisting($driver, array $files): array
     {
         $newFiles = [];
 
@@ -156,7 +156,7 @@ class XmlArchiver implements ArchiverInterface
         return $newFiles;
     }
 
-    private function filterFiles(\DirectoryIterator $iterator)
+    private function filterFiles(\DirectoryIterator $iterator): array
     {
         $files = [];
 
@@ -175,7 +175,7 @@ class XmlArchiver implements ArchiverInterface
         return $files;
     }
 
-    private function writeProgress(OutputInterface $output, $index, $count, $char = '.')
+    private function writeProgress(OutputInterface $output, $index, $count, $char = '.'): void
     {
         if ($index > 0 && $index % 64 === 0) {
             $output->writeln(sprintf(' (%s/%s)', $index, $count));

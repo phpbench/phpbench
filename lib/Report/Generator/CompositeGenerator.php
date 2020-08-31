@@ -46,7 +46,7 @@ class CompositeGenerator implements GeneratorInterface, OutputAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function setOutput(OutputInterface $output)
+    public function setOutput(OutputInterface $output): void
     {
         $this->output = $output;
     }
@@ -54,7 +54,7 @@ class CompositeGenerator implements GeneratorInterface, OutputAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function configure(OptionsResolver $options)
+    public function configure(OptionsResolver $options): void
     {
         $options->setRequired(['reports']);
         $options->setAllowedTypes('reports', 'array');
@@ -63,7 +63,7 @@ class CompositeGenerator implements GeneratorInterface, OutputAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function generate(SuiteCollection $collection, Config $config)
+    public function generate(SuiteCollection $collection, Config $config): \PhpBench\Dom\Document
     {
         $reportDoms = $this->reportManager->generateReports($collection, $config['reports']);
         $compositeDom = new Document();

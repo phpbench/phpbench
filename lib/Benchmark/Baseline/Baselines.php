@@ -23,7 +23,7 @@ class Baselines
     /**
      * Do nothing.
      */
-    public static function nothing($revs)
+    public static function nothing($revs): void
     {
         for ($i = 0; $i < $revs; $i++) {
         }
@@ -32,7 +32,7 @@ class Baselines
     /**
      * Calculate an md5 hash.
      */
-    public static function md5($revs)
+    public static function md5($revs): void
     {
         for ($i = 0; $i < $revs; $i++) {
             md5('lorem ipusm');
@@ -43,7 +43,7 @@ class Baselines
      * Open a file, write a string to it $revs times, then
      * read each line back.
      */
-    public static function fwriteFread($revs)
+    public static function fwriteFread($revs): void
     {
         $tempName = tempnam(sys_get_temp_dir(), 'phpbench_baseline');
         $handle = fopen($tempName, 'w');

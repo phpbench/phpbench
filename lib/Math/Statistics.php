@@ -20,10 +20,8 @@ class Statistics
     /**
      * Return the standard deviation of a given population.
      *
-     *
-     * @return float
      */
-    public static function stdev(array $values, bool $sample = false)
+    public static function stdev(array $values, bool $sample = false): float
     {
         $variance = self::variance($values, $sample);
 
@@ -130,7 +128,7 @@ class Statistics
      *
      * @return float[]
      */
-    public static function linspace(float $min, float $max, int $num = 50, bool $endpoint = true)
+    public static function linspace(float $min, float $max, int $num = 50, bool $endpoint = true): array
     {
         $range = $max - $min;
 
@@ -165,10 +163,8 @@ class Statistics
      *
      * @param float $lowerBound
      * @param float $upperBound
-     *
-     * @return array
      */
-    public static function histogram(array $values, int $steps = 10, float $lowerBound = null, float $upperBound = null)
+    public static function histogram(array $values, int $steps = 10, float $lowerBound = null, float $upperBound = null): array
     {
         $min = $lowerBound ?: min($values);
         $max = $upperBound ?: max($values);

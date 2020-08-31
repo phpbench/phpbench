@@ -29,7 +29,7 @@ class SelfUpdateCommand extends Command
         $this->updater = $updater;
     }
 
-    public function configure()
+    public function configure(): void
     {
         $this->setName('self-update');
         $this->setDescription('Update the application to the latest version.');
@@ -54,7 +54,7 @@ class SelfUpdateCommand extends Command
         }
     }
 
-    private function doUpdate(OutputInterface $output)
+    private function doUpdate(OutputInterface $output): int
     {
         $result = $this->updater->update();
 
@@ -73,7 +73,7 @@ class SelfUpdateCommand extends Command
         return 0;
     }
 
-    private function doRollback(OutputInterface $output)
+    private function doRollback(OutputInterface $output): int
     {
         $result = $this->updater->rollback();
 

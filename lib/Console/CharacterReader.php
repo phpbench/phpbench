@@ -33,7 +33,7 @@ class CharacterReader
      *
      * @return ?string
      */
-    public function read()
+    public function read(): ?string
     {
         while (false !== $character = fgetc(STDIN)) {
             return $character;

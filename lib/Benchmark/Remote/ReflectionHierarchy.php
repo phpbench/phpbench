@@ -26,7 +26,7 @@ class ReflectionHierarchy implements \IteratorAggregate
      * Add a reflection class.
      *
      */
-    public function addReflectionClass(ReflectionClass $reflectionClass)
+    public function addReflectionClass(ReflectionClass $reflectionClass): void
     {
         $this->reflectionClasses[] = $reflectionClass;
     }
@@ -34,7 +34,7 @@ class ReflectionHierarchy implements \IteratorAggregate
     /**
      * {@inheritdoc}
      */
-    public function getIterator()
+    public function getIterator(): \ArrayObject
     {
         return new \ArrayObject($this->reflectionClasses);
     }
@@ -43,10 +43,8 @@ class ReflectionHierarchy implements \IteratorAggregate
      * Return the "top" class.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return ReflectionClass
      */
-    public function getTop()
+    public function getTop(): \PhpBench\Benchmark\Remote\ReflectionClass
     {
         if (!isset($this->reflectionClasses[0])) {
             throw new \InvalidArgumentException(
@@ -60,10 +58,8 @@ class ReflectionHierarchy implements \IteratorAggregate
     /**
      * Return true if the class hierarchy contains the named method.
      *
-     *
-     * @return bool
      */
-    public function hasMethod(string $name)
+    public function hasMethod(string $name): bool
     {
         foreach ($this->reflectionClasses as $reflectionClass) {
             if (isset($reflectionClass->methods[$name])) {
@@ -77,10 +73,8 @@ class ReflectionHierarchy implements \IteratorAggregate
     /**
      * Return true if the class hierarchy contains the named static method.
      *
-     *
-     * @return bool
      */
-    public function hasStaticMethod(string $name)
+    public function hasStaticMethod(string $name): bool
     {
         foreach ($this->reflectionClasses as $reflectionClass) {
             if (isset($reflectionClass->methods[$name])) {
@@ -99,10 +93,8 @@ class ReflectionHierarchy implements \IteratorAggregate
 
     /**
      * Return true if there are no reflection classes here.
-     *
-     * @return bool
      */
-    public function isEmpty()
+    public function isEmpty(): bool
     {
         return 0 === count($this->reflectionClasses);
     }

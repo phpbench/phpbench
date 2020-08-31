@@ -21,15 +21,11 @@ interface ProviderInterface
     /**
      * Return true if the instance detects a VCS repository
      * in the current CWD.
-     *
-     * @return bool
      */
-    public function isApplicable();
+    public function isApplicable(): bool;
 
     /**
      * Return information about the detected VCS repository.
-     *
-     * @return Information
      */
-    public function getInformation();
+    public function getInformation(): \PhpBench\Environment\Information;
 }

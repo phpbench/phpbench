@@ -31,7 +31,7 @@ class Formatter
      * Register classes from a given JSON encoded class definition file.
      *
      */
-    public function classesFromFile(string $filename)
+    public function classesFromFile(string $filename): void
     {
         $classes = $this->loader->load($filename);
         $this->registerClasses($classes);
@@ -43,7 +43,7 @@ class Formatter
      * Class definitions have the form $className => (array) $formatDefinitions
      *
      */
-    public function registerClasses(array $classDefinitions)
+    public function registerClasses(array $classDefinitions): void
     {
         foreach ($classDefinitions as $className => $formatDefinitions) {
             $this->registerClass($className, $formatDefinitions);
@@ -61,7 +61,7 @@ class Formatter
      * associative array of formatter options.
      *
      */
-    public function registerClass(string $name, array $formatDefinitions)
+    public function registerClass(string $name, array $formatDefinitions): void
     {
         $this->classes[$name] = $formatDefinitions;
     }
@@ -132,7 +132,7 @@ class Formatter
         return $value;
     }
 
-    private function substituteTokens(array $formatConfig, $params)
+    private function substituteTokens(array $formatConfig, $params): array
     {
         foreach ($formatConfig as $key => $value) {
             if (is_array($value)) {

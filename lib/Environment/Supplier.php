@@ -31,7 +31,7 @@ class Supplier
      * Add a provider.
      *
      */
-    public function addProvider(ProviderInterface $provider)
+    public function addProvider(ProviderInterface $provider): void
     {
         $this->providers[] = $provider;
     }
@@ -41,7 +41,7 @@ class Supplier
      *
      * @return Information[]
      */
-    public function getInformations()
+    public function getInformations(): array
     {
         $informations = [];
 

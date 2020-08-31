@@ -47,7 +47,7 @@ class Registry
      * Register a service ID with against the given name.
      *
      */
-    public function registerService(string $name, string $serviceId)
+    public function registerService(string $name, string $serviceId): void
     {
         if (isset($this->serviceMap[$name])) {
             throw new \InvalidArgumentException(sprintf(
@@ -64,7 +64,7 @@ class Registry
      * Directly set a named service.
      *
      */
-    public function setService(string $name, object $object)
+    public function setService(string $name, object $object): void
     {
         if (isset($this->services[$name])) {
             throw new \InvalidArgumentException(sprintf(
@@ -107,7 +107,7 @@ class Registry
         return $this->services[$name];
     }
 
-    private function assertServiceExists($name)
+    private function assertServiceExists($name): void
     {
         if (!array_key_exists($name, $this->services)) {
             throw new \InvalidArgumentException(sprintf(

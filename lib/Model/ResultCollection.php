@@ -35,7 +35,7 @@ class ResultCollection
      * Only one result per class is permitted.
      *
      */
-    public function setResult(ResultInterface $result)
+    public function setResult(ResultInterface $result): void
     {
         $class = get_class($result);
         $this->results[$class] = $result;
@@ -44,10 +44,8 @@ class ResultCollection
     /**
      * Return true if there is a result for the given class name.
      *
-     *
-     * @return bool
      */
-    public function hasResult(string $class)
+    public function hasResult(string $class): bool
     {
         return isset($this->results[$class]);
     }
@@ -58,10 +56,8 @@ class ResultCollection
      *
      *
      * @throws \RuntimeException
-     *
-     * @return ResultInterface
      */
-    public function getResult(string $class)
+    public function getResult(string $class): \PhpBench\Model\ResultInterface
     {
         if (!isset($this->results[$class])) {
             throw new \RuntimeException(sprintf(
@@ -117,7 +113,7 @@ class ResultCollection
      *
      * @return ResultInterface[]
      */
-    public function getResults()
+    public function getResults(): ?array
     {
         return $this->results;
     }

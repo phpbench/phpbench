@@ -28,7 +28,7 @@ interface DriverInterface
      *
      * @return string|null
      */
-    public function store(SuiteCollection $collection);
+    public function store(SuiteCollection $collection): ?string;
 
     /**
      * Return the suite collection with the given run ID.
@@ -36,10 +36,8 @@ interface DriverInterface
      *
      *
      * @throws \InvalidArgumentException
-     *
-     * @return SuiteCollection
      */
-    public function fetch(string $runId);
+    public function fetch(string $runId): \PhpBench\Model\SuiteCollection;
 
     /**
      * Return true if the driver has the given run ID.
@@ -49,8 +47,6 @@ interface DriverInterface
     /**
      * Return a history iterator of HistoryEntries in descending
      * chronological order.
-     *
-     * @return HistoryIteratorInterface
      */
-    public function history();
+    public function history(): \PhpBench\Storage\HistoryIteratorInterface;
 }

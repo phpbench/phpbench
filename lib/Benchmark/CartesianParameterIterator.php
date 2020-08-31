@@ -69,7 +69,7 @@ class CartesianParameterIterator implements \Iterator
         return $this->getParameterSet();
     }
 
-    public function key()
+    public function key(): string
     {
         return $this->key;
     }
@@ -86,12 +86,12 @@ class CartesianParameterIterator implements \Iterator
         return $this->current();
     }
 
-    public function valid()
+    public function valid(): bool
     {
         return false === $this->break;
     }
 
-    private function update()
+    private function update(): void
     {
         $this->current = [];
         $key = [];
@@ -106,7 +106,7 @@ class CartesianParameterIterator implements \Iterator
         $this->key = implode(',', $key);
     }
 
-    private function getParameterSet()
+    private function getParameterSet(): \PhpBench\Model\ParameterSet
     {
         return new ParameterSet($this->key, $this->current);
     }

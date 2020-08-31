@@ -409,12 +409,12 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
         return count($this->iterations);
     }
 
-    public function offsetGet($offset)
+    public function offsetGet($offset): ?\PhpBench\Model\Iteration
     {
         return $this->getIteration($offset);
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         throw new \InvalidArgumentException(
             'Iteration collections are immutable'
@@ -424,14 +424,14 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
     /**
      * {@inheritdoc}
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         throw new \InvalidArgumentException(
             'Iteration collections are immutable'
         );
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return array_key_exists($offset, $this->iterations);
     }
