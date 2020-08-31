@@ -10,12 +10,15 @@ Backward compatibility breaks:
 - PHPBench Reports extension removed.
 - Removed `--query` featre (only worked with DBAL, too complex).
 - Removed `--context` (depreacted in favor of `--tag`)
+- Assertions now accept a single expression rather than a set of
+  configuration options.
 
 Features
 
 - XDebug extension is loaded by default if extension is loaded
 - Baseline: Specify baseline suite when running benchmarks and show differences in
   reports #648
+- Assert against the baseline
 - Show PHP version and the status of XDebug and Opcache in the runner output
   #649
 - Add `@Timeout` to enable a timeout to be specified for any given benchmark -
