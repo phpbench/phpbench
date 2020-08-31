@@ -10,6 +10,9 @@
     "percentage": [
         [ "printf", { "format": "%.2f%%" } ]
     ],
+    "invert_on_throughput": [
+        [ "invert_on_throughput", { "mode": "{{ output_mode }}" } ]
+    ],
     "deviation": [
         [ "number", { "decimal_places": 2 }],
         [ "balance", {} ],
