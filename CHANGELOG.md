@@ -17,6 +17,7 @@ Backward compatibility breaks:
 - Type hints have been added in most places - possibly causing issues with
   any extensions.
 - Assets (storage, xdebug profiles) are now placed in `.phpbench`
+- Services referenced via. fully qualified class names instead of strings.
 
 Features
 
