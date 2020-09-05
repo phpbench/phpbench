@@ -26,7 +26,6 @@ use PhpBench\Benchmark\Remote\PayloadFactory;
 use PhpBench\Benchmark\Remote\Reflector;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Console\Application;
-use PhpBench\Console\Command\DeleteCommand;
 use PhpBench\Console\Command\Handler\DumpHandler;
 use PhpBench\Console\Command\Handler\ReportHandler;
 use PhpBench\Console\Command\Handler\RunnerHandler;
@@ -370,13 +369,6 @@ class CoreExtension implements ExtensionInterface
                 $container->get(TimeUnitHandler::class),
                 $container->get(DumpHandler::class),
                 $container->get(UuidResolverInterface::class)
-            );
-        }, [self::TAG_CONSOLE_COMMAND => []]);
-
-        $container->register(DeleteCommand::class, function (Container $container) {
-            return new DeleteCommand(
-                $container->get(SuiteCollectionHandler::class),
-                $container->get(self::SERVICE_REGISTRY_DRIVER)
             );
         }, [self::TAG_CONSOLE_COMMAND => []]);
 

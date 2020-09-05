@@ -12,6 +12,11 @@
 
 namespace PhpBench\Benchmarks\Macro;
 
+use PhpBench\Console\Command\ReportCommand;
+use PhpBench\Console\Command\RunCommand;
+
+
+
 /**
  * Benchmark for the report generation command.
  *
@@ -28,7 +33,7 @@ class ReportBench extends BaseBenchCase
         // instantiate the benchmark class (this) so that we can
         // run a command.
         $case = new self();
-        $case->runCommand('console.command.run', [
+        $case->runCommand(RunCommand::class, [
             'path' => self::getFunctionalBenchmarkPath(),
             '--dump-file' => self::getWorkspacePath() . '/dump.xml',
         ]);
@@ -36,7 +41,7 @@ class ReportBench extends BaseBenchCase
 
     public function benchAggregate()
     {
-        $this->runCommand('console.command.report', [
+        $this->runCommand(ReportCommand::class, [
             '--file' => [$this->getWorkspacePath() . '/dump.xml'],
             '--report' => ['aggregate'],
         ]);
@@ -44,7 +49,7 @@ class ReportBench extends BaseBenchCase
 
     public function benchDefault()
     {
-        $this->runCommand('console.command.report', [
+        $this->runCommand(ReportCommand::class, [
             '--file' => [$this->getWorkspacePath() . '/dump.xml'],
             '--report' => ['default'],
         ]);
@@ -52,7 +57,7 @@ class ReportBench extends BaseBenchCase
 
     public function benchEnv()
     {
-        $this->runCommand('console.command.report', [
+        $this->runCommand(ReportCommand::class, [
             '--file' => [$this->getWorkspacePath() . '/dump.xml'],
             '--report' => ['env'],
         ]);
