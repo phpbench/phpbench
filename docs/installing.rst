@@ -11,7 +11,7 @@ To install PHPBench as a dependency of your project:
 
 .. code-block:: php
 
-    $ composer require phpbench/phpbench @dev --dev
+    $ composer require phpbench/phpbench --dev
 
 
 You may then run PHPBench from your project's directory as follows:

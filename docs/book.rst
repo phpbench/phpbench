@@ -4,7 +4,6 @@ Reference
 .. toctree::
    :maxdepth: 2
 
-   benchmark-runner
    reports
    storage
    environment

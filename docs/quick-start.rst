@@ -1,12 +1,8 @@
 Quick Start
 ===========
 
-This tutorial will walk you through creating a typical, simple, project that
-uses PHPBench as a dependency. You may also install PHPBench globally, see the
-:doc:`installing` chapter for more information.
-
-You may skip various sections according to your needs and use this as a general
-reference.
+This tutorial will walk you through creating a simple project that
+uses PHPBench as a dependency.
 
 Create your project
 -------------------
@@ -24,11 +20,12 @@ And create the following Composer_ file within it:
     {
         "name": "acme/phpbench-test",
         "require-dev": {
-            "phpbench/phpbench": "^1.0@dev"
+            "phpbench/phpbench": "^1.0"
         },
         "autoload": {
             "psr-4": {
-                "Acme\\": "lib"
+                "Acme\\": "src/"
+                "Acme\\Tests\\": "tests/"
             }
         }
     }
@@ -39,18 +36,13 @@ Now perform a Composer install:
 
     $ composer install
 
-.. note::
-
-    You may also install PHPBench globally, see the :doc:`installing`
-    chapter for more information.
-
 PHPBench should now be installed. Now create two directories, ``benchmarks``
-and ``lib`` which we will need further on:
+and ``src`` which we will need further on:
 
 .. code-block:: bash
 
-    $ mkdir benchmarks
-    $ mkdir lib
+    $ mkdir -p tests/Benchmark
+    $ mkdir src
 
 PHPBench configuration
 ----------------------
@@ -59,7 +51,7 @@ In order for PHPBench to be able to autoload files from your library, you
 should specify the path to your bootstrap file (i.e. ``vendor/autoload.php``).
 This can be done in the PHPBench :doc:`configuration <configuration>`.
 
-Create the file ``phpbench.json`` in the projects root directory:
+Create a ``phpbench.json`` file in the projects root directory:
 
 .. code-block:: javascript
 
@@ -101,10 +93,11 @@ consumes *time itself*:
 
 
 In order to benchmark your code you will need to execute that code within
-a method of a benchmarking class. Benchmarking classes MUST have the ``Bench``
-suffix and each benchmarking method must be prefixed with ``bench``.
+a method of a benchmarking class. By default the class name **must**
+have the ``Bench`` suffix and each benchmark method must be prefixed
+with ``bench``.
 
-Create the following class in the ``benchmarks`` directory:
+Create the following class in file ``tests/Benchmark/TimeConsumerBench.php``:
 
 .. code-block:: php
 
@@ -131,7 +124,7 @@ And you should see some output similar to the following:
 
 .. code-block:: bash
 
-    PhpBench 0.8.0-dev. Running benchmarks.
+    Running benchmarks.
 
     \TimeConsumerBench
 
@@ -147,9 +140,8 @@ And you should see some output similar to the following:
     | TimeConsumerBench | benchConsume  |       | []     | 1    | 0    | 0   | 265,936b | 173.0000μs | 0.00σ   | 1.00x |
     +-------------------+---------------+-------+--------+------+------+-----+----------+------------+---------+-------+
 
-You may have guessed that the code was only executed once (as indicated by the
-``revs`` column). To achieve a better measurement we should increase the
-number of times that the code is consecutively executed.
+The code was only executed once (as indicated by the ``revs`` column). To
+achieve a better measurement increase the revolutions:
 
 .. code-block:: php
 
@@ -168,15 +160,12 @@ number of times that the code is consecutively executed.
         }
     }
 
-Run the benchmark again and you should notice that the report states that 1000
-revolutions were performed. :ref:`Revolutions <revolutions>` in PHPBench
-represent the number of times that the code is executed consecutively within a
-single measurement.
+:ref:`Revolutions <revolutions>` in PHPBench represent the number of times
+that the code is executed consecutively within a single measurement.
 
-Currently we only execute the benchmark subject a single time, to verify the
-result you should increase the number of :ref:`iterations <iterations>` using
-the ``@Iterations`` annotation (either as a replacement or in addition to
-``@Revs``:
+Currently we only execute the benchmark subject a single time, to build
+confidence in the result increase the number of :ref:`iterations <iterations>`
+using the ``@Iterations`` annotation:
 
 .. code-block:: php
 
@@ -205,8 +194,9 @@ times.
     You can override the number of iterations and revolutions on the CLI using
     the ``--iterations`` and ``--revs`` options.
 
-At this point it would be better for you to use the ``aggregate`` report
-rather than ``default``:
+At this point it would be better for you to use the :ref:`aggregate
+<report_aggregate>` report
+rather than :ref:`default <report_default>`:
 
 .. code-block:: bash
 
@@ -237,8 +227,8 @@ threshold:
 
 .. warning::
 
-    Lower values for ``retry-threshold``, depending on the stability of your
-    system,  generally lead to increased total benchmarking time.
+    Depending on system stability, the lower the ``retry-threshold`` the
+    longer it will take to resolve a stable set of results.
 
 Customize Reports
 -----------------
@@ -250,15 +240,15 @@ following:
 
     $ ./vendor/bin/phpbench run benchmarks/TimeConsumerBench.php --report='{"extends": "aggregate", "cols": ["subject", "mode"]}'
 
-Above we configure a new report which extends the ``default`` report that we
-have already used, but we use only the ``subject`` and ``mode`` columns.
-A full list of all the options for the default reports can be found in the
-:doc:`report-generators` chapter.
+Above we configure a new report which extends the :ref:`default
+<report_default>` report that we have already used, but we use only the
+``subject`` and ``mode`` columns.  A full list of all the options for the
+default reports can be found in the :doc:`report-generators` chapter.
 
 Configuration
 -------------
 
-Now to finish off, lets add the path and new report to the configuration file:
+To finish off, add the path and new report to the configuration file:
 
 .. code-block:: javascript
 
@@ -275,13 +265,8 @@ Now to finish off, lets add the path and new report to the configuration file:
         }
     }
 
-.. warning::
-
-    JSON files are very strict - be sure not to have commas after the final
-    elements in arrays or objects!
-
 Above you tell PHPBench where the benchmarks are located and you define a new
-report, ``consumation_of_time`` with a title, description and sort order.
+report, ``consumation_of_time``, with a title, description and sort order.
 
 We can now run the new report:
 
@@ -294,8 +279,16 @@ We can now run the new report:
     Note that we did not specify the path to the benchmark file, by default all
     benchmarks under the given or configured path will be executed.
 
-This quick start demonstrated some of the features of PHPBench, but there is
-more to discover everything can be found in this manual. Happy benchmarking.
+Summary
+-------
+
+In this tutorial you learnt to 
+
+- :doc:`Configure <configuration>` PHPBench for a project
+- Create a benchmarking class
+- Use :ref:`revolutions <revolutions>` and :ref:`iterations <iterations>` to more accurately profile your code
+- Increase stability with the :ref:`retry threshold <retry_threshold>`
+- Use :doc:`reports <reports>`
 
 .. _composer: http://getcomposer.org
 .. _Relative standard deviation: https://en.wikipedia.org/wiki/Coefficient_of_variation

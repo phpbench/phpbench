@@ -142,7 +142,7 @@ By default the retry threshold is disabled.
 You may also set the retry threshold in the
 :ref:`configuration <configuration_retry_threshold>`.
 
-Changing the Output Medium
+Changing the Output Format
 --------------------------
 
 By default PHPBench will output the reports to the console using the
@@ -159,8 +159,8 @@ Example of HTML output:
 
 See the :doc:`report-renderers` chapter for more information.
 
-Deferring Report Generation
----------------------------
+Storing Results
+---------------
 
 You can store benchmark results locally:
 
@@ -185,36 +185,6 @@ Then generate reports:
 .. code-block:: bash
 
     $ phpbench report --file=report.xml --report=default
-
-Comparing Results
------------------
-
-You can compare the results of two or more sets of results using the `compare`
-report.
-
-First you should generate a suite result document for each separate
-implementation and specify a *tag*:
-
-.. code-block:: bash
-
-    # .. configure for implementation A
-    $ phpbench run --tag=impl_a
-    # .. configure for implementation B
-    $ phpbench run --tag=impl_b
-    # .. configure for implementation C
-    $ phpbench run --tag=impl_c
-
-Now you can use the `report` command and specify the `compare` report to
-compare the results for each implementation side-by-side:
-
-.. code-block:: bash
-
-    $ phpbench report --uuid=tag:impl_a --uuid=tag:impl_b --uuid=tag:impl_c --report='{extends: compare, compare: tag}'
-    +--------------+----------+--------+--------+------+-----------------+-----------------+-----------------+
-    | benchmark    | subject  | groups | params | revs | tag:impl_a:mean | tag:impl_b:mean | tag:impl_c:mean |
-    +--------------+----------+--------+--------+------+-----------------+-----------------+-----------------+
-    | HashingBench | benchMd5 |        | []     | 1000 | 0.957μs         | 0.939μs         | 0.952μs         |
-    +--------------+----------+--------+--------+------+-----------------+-----------------+-----------------+
 
 Progress Reporters
 ------------------

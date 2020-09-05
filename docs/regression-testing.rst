@@ -1,3 +1,5 @@
+.. _comparison:
+
 Regression Testing
 ==================
 
@@ -6,6 +8,8 @@ performance regressions.
 
 PHPBench allows you to store results and use them as a baseline for subsequent
 runs.
+
+.. _baseline:
 
 Creating a baseline
 -------------------
