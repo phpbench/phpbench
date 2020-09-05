@@ -35,7 +35,7 @@ And it can be executed as follows:
 .. code-block:: bash
 
     $ phpbench run examples/HashBench.php --progress=dots
-    PhpBench 0.8.0-dev. Running benchmarks.
+    Running benchmarks.
 
     ... 
 
@@ -58,8 +58,8 @@ placed in the class docblock, or on individual methods docblocks.
 
 .. _revolutions:
 
-Improving Precision: Revolutions
---------------------------------
+Revolutions
+-----------
 
 When testing units of code where microsecond accuracy is important, it is
 necessary to increase the number of *revolutions* performed by the
@@ -68,7 +68,7 @@ of times the benchmark is executed consecutively within a single time
 measurement.
 
 We can arrive at a more accurate measurement by determining the mean time
-from multiple revolutions (i.e. *time / revolutions*) than we could with a
+from multiple revolutions (i.e. ``time / revolutions``) than we could with a
 single revolution. In other words, more revolutions means more precision.
 
 Revolutions can be specified using the ``@Revs`` annotation:
@@ -104,16 +104,15 @@ Revolutions can also be overridden from the :ref:`command line
 
 .. _iterations:
 
-Verifying and Improving Stability: Iterations
----------------------------------------------
+Iterations
+----------
 
-Iterations represent the number of times we will perform the benchmark
-(including all the revolutions). Contrary to revolutions, a time reading will
-be taken for *each iteration*.
+Iterations specify how many samples should be taken - i.e. how many times we
+run the :ref:`revolutions <revolutions>` and capture time and memory information (for example). 
 
 By looking at the separate time measurement of each iteration we can determine
 how *stable* the readings are. The less the measurements differ from each
-other, the more stable the benchmark is, and the more you can trust the results.
+other, the more stable the benchmark.
 
 .. note::
 
@@ -143,8 +142,11 @@ You can instruct PHPBench to continuously run the iterations until the
 deviation of each iteration fits within a given margin of error by using the
 ``--retry-threshold``. See :ref:`retry_threshold` for more information.
 
-Subject (runtime) State: Before and After
------------------------------------------
+Benchmark Hooks
+---------------
+
+Method hooks
+~~~~~~~~~~~~
 
 Any number of methods can be executed both before and after each benchmark
 **subject** using the ``@BeforeMethods`` and
@@ -180,8 +182,8 @@ Multiple before and after methods can be specified.
     If before and after methods are used when the ``@ParamProviders``
     annotations are used, then they will also be passed the parameters.
 
-Benchmark (external) State: Before and After
---------------------------------------------
+Class Hooks
+~~~~~~~~~~~
 
 Sometimes you will want to perform actions which establish an *external*
 state. For example, creating or populating a database, creating files, etc.
@@ -357,8 +359,8 @@ You can skip subjects by using the ``@Skip`` annotation:
         }
     }
 
-Extending Existing Array Values
--------------------------------
+Extending Values
+----------------
 
 When working with annotations which accept an array value, you may wish to
 extend the values of the same annotation from ancestor classes. This can be
@@ -390,10 +392,10 @@ accomplished using the ``extend`` option.
 The ``benchHash`` subject will now be in both the ``md5`` and
 ``my_hash_implementation`` groups.
 
-This option is available on all array valued (plural) annotations.
+This option is available on all annotations featuring a list of values.
 
-Recovery Period: Sleeping
---------------------------
+Sleeping
+--------
 
 Sometimes it may be necessary to pause between iterations in order to let
 the system recover. Use the ``@Sleep`` annotation, specifying the number of
@@ -423,15 +425,11 @@ The above example will pause (sleep) for 1 second *after* each iteration.
 
 .. _time_unit:
 
-Microseconds to Minutes: Time Units
------------------------------------
+Time Units
+----------
 
-If you have benchmarks which take seconds or even minutes to execute then the
-default time unit, microseconds, is going to be far more visual precision than you
-need and will only serve to make the results more difficult to interpret.
-
-You can specify *output* time units using the ``@OutputTimeUnit``
-annotation (`precision` is optional):
+Specify *output* time units using the ``@OutputTimeUnit`` annotation
+(`precision` is optional):
 
 .. code-block:: php
 
@@ -461,8 +459,8 @@ The following time units are available:
 .. _throughput:
 .. _mode:
 
-Mode: Throughput Representation
---------------------------------
+Throughput Representation
+-------------------------
 
 The output mode determines how the measurements are presented, either `time`
 or `throughput`. `time` mode is the default and shows the average execution
@@ -488,19 +486,11 @@ are executed within a single time unit:
 PHPBench will then render all measurements for `benchMd5` similar to
 `363,874.536ops/s`.
 
-Warming Up: Getting ready for the show
---------------------------------------
-
-In some cases, it might be a good idea to execute a revolution or two before
-performing the revolutions time measurement. 
-
-For example, when benchmarking something that uses an class autoloader, the
-first revolution will always be slower because the autoloader will not to be
-called again.
+Warm Up
+-------
 
 Use the ``@Warmup`` annotation to execute any number of revolutions before
 actually measuring the revolutions time.
-
 
 .. code-block:: php
 
@@ -525,8 +515,8 @@ As with :ref:`revolutions <revolutions>`, you may also specify an array.
 
 .. _timeouts:
 
-Timeout: Bailing when things take too long
-------------------------------------------
+Timeout
+-------
 
 Use the ``@Timeout`` annotation to specify the maximum number of seconds
 before an iteration timesout and fails. The following example will fail after

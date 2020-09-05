@@ -196,6 +196,8 @@ Configured reports can be executed simply by name as follows::
 
 The following are reports defined by PHPBench, other reports can be defined in your :doc:`configuration <configuration>`.
 
+.. _report_aggregate:
+
 ``aggregate``
 ~~~~~~~~~~~~~
 
@@ -213,6 +215,7 @@ Shows aggregate details of each set of iterations:
 
 It is uses the ``table`` generator, see :ref:`generator_table` for more information.
 
+.. _report_default:
 
 ``default``
 ~~~~~~~~~~~
