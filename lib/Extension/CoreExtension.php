@@ -26,7 +26,6 @@ use PhpBench\Benchmark\Remote\PayloadFactory;
 use PhpBench\Benchmark\Remote\Reflector;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Console\Application;
-use PhpBench\Console\Command\ArchiveCommand;
 use PhpBench\Console\Command\DeleteCommand;
 use PhpBench\Console\Command\Handler\DumpHandler;
 use PhpBench\Console\Command\Handler\ReportHandler;
@@ -64,7 +63,6 @@ use PhpBench\Progress\Logger\TravisLogger;
 use PhpBench\Progress\Logger\VerboseLogger;
 use PhpBench\Progress\LoggerRegistry;
 use PhpBench\Registry\ConfigurableRegistry;
-use PhpBench\Registry\Registry;
 use PhpBench\Report\Generator\CompositeGenerator;
 use PhpBench\Report\Generator\EnvGenerator;
 use PhpBench\Report\Generator\TableGenerator;
@@ -75,51 +73,78 @@ use PhpBench\Report\Renderer\XsltRenderer;
 use PhpBench\Report\ReportManager;
 use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Serializer\XmlEncoder;
-use PhpBench\Storage;
 use PhpBench\Storage\Driver\Xml\XmlDriver;
 use PhpBench\Storage\StorageRegistry;
 use PhpBench\Storage\UuidResolver\ChainResolver;
 use PhpBench\Storage\UuidResolver\LatestResolver;
 use PhpBench\Storage\UuidResolver\TagResolver;
+use PhpBench\Storage\UuidResolverInterface;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\ExecutableFinder;
 
 class CoreExtension implements ExtensionInterface
 {
-    const SERVICE_EXECUTOR_MICROTIME = 'benchmark.executor.microtime';
-    const SERVICE_EXECUTOR_MEMORY = 'benchmark.executor.memory';
-    const SERVICE_REMOTE_LAUNCHER = 'benchmark.remote.launcher';
-    const SERVICE_EXECUTOR_METHOD_REMOTE = 'executor.method.remote_method';
-    const SERVICE_EXECUTOR_BENCHMARK_MICROTIME = 'executor.benchmark.microtime';
-    const TAG_EXECUTOR = 'benchmark_executor';
+    public const PARAM_BOOTSTRAP = 'bootstrap';
+    public const PARAM_CONFIG_PATH = 'config_path';
+    public const PARAM_ENV_BASELINES = 'env_baselines';
+    public const PARAM_ENV_BASELINE_CALLABLES = 'env_baseline_callables';
+    public const PARAM_PATH = 'path';
+    public const PARAM_PHP_BINARY = 'php_binary';
+    public const PARAM_PHP_CONFIG = 'php_config';
+    public const PARAM_PHP_DISABLE_INI = 'php_disable_ini';
+    public const PARAM_PHP_WRAPPER = 'php_wrapper';
+    public const PARAM_PROGRESS = 'progress';
+    public const PARAM_RETRY_THRESHOLD = 'retry_threshold';
+    public const PARAM_SUBJECT_PATTERN = 'subject_pattern';
+    public const PARAM_TIME_UNIT = 'time_unit';
+    public const PARAM_XML_STORAGE_PATH = 'xml_storage_path';
 
+    public const SERVICE_EXECUTOR_MICROTIME = 'benchmark.executor.microtime';
+    public const SERVICE_EXECUTOR_MEMORY = 'benchmark.executor.memory';
+    public const SERVICE_REMOTE_LAUNCHER = 'benchmark.remote.launcher';
+    public const SERVICE_EXECUTOR_METHOD_REMOTE = 'executor.method.remote_method';
+    public const SERVICE_EXECUTOR_BENCHMARK_MICROTIME = 'executor.benchmark.microtime';
+    public const SERVICE_REGISTRY_DRIVER = 'storage.driver_registry';
+    public const SERVICE_REGISTRY_EXECUTOR = 'benchmark.registry.executor';
+    public const SERVICE_REGISTRY_GENERATOR = 'report.registry.generator';
+    public const SERVICE_REGISTRY_LOGGER = 'progress_logger.registry';
+    public const SERVICE_REGISTRY_RENDERER = 'report.registry.renderer';
+
+    public const TAG_EXECUTOR = 'benchmark_executor';
+    public const TAG_CONSOLE_COMMAND = 'console.command';
+    public const TAG_ENV_PROVIDER = 'environment_provider';
+    public const TAG_PROGRESS_LOGGER = 'progress_logger';
+    public const TAG_REPORT_GENERATOR = 'report_generator';
+    public const TAG_REPORT_RENDERER = 'report_renderer';
+    public const TAG_STORAGE_DRIVER = 'storage_driver';
+    public const TAG_UUID_RESOLVER = 'uuid_resolver';
 
     public function getDefaultConfig(): array
     {
         return [
-            'bootstrap' => null,
-            'path' => null,
+            self::PARAM_BOOTSTRAP => null,
+            self::PARAM_PATH => null,
             'reports' => [],
             'outputs' => [],
             'executors' => [],
-            'config_path' => null,
-            'progress' => getenv('CONTINUOUS_INTEGRATION') ? 'travis' : 'verbose',
-            'retry_threshold' => null,
-            'time_unit' => TimeUnit::MICROSECONDS,
+            self::PARAM_CONFIG_PATH => null,
+            self::PARAM_PROGRESS => getenv('CONTINUOUS_INTEGRATION') ? 'travis' : 'verbose',
+            self::PARAM_RETRY_THRESHOLD => null,
+            self::PARAM_TIME_UNIT => TimeUnit::MICROSECONDS,
             'output_mode' => TimeUnit::MODE_TIME,
             'storage' => 'xml',
             'archiver' => 'xml',
-            'subject_pattern' => '^bench',
+            self::PARAM_SUBJECT_PATTERN => '^bench',
             'archive_path' => '_archive',
-            'env_baselines' => ['nothing', 'md5', 'file_rw'],
-            'env_baseline_callables' => [],
-            'xml_storage_path' => getcwd() . '/.phpbench/storage', // use cwd because PHARs
+            self::PARAM_ENV_BASELINES => ['nothing', 'md5', 'file_rw'],
+            self::PARAM_ENV_BASELINE_CALLABLES => [],
+            self::PARAM_XML_STORAGE_PATH => getcwd() . '/.phpbench/storage', // use cwd because PHARs
             'extension_autoloader' => null,
-            'php_config' => [],
-            'php_binary' => null,
-            'php_wrapper' => null,
-            'php_disable_ini' => false,
+            self::PARAM_PHP_CONFIG => [],
+            self::PARAM_PHP_BINARY => null,
+            self::PARAM_PHP_WRAPPER => null,
+            self::PARAM_PHP_DISABLE_INI => false,
             'annotation_import_use' => false,
         ];
     }
@@ -128,20 +153,20 @@ class CoreExtension implements ExtensionInterface
     {
         $this->relativizeConfigPath($container);
 
-        $container->register('console.application', function (Container $container) {
+        $container->register(Application::class, function (Container $container) {
             $application = new Application();
 
-            foreach (array_keys($container->getServiceIdsForTag('console.command')) as $serviceId) {
+            foreach (array_keys($container->getServiceIdsForTag(self::TAG_CONSOLE_COMMAND)) as $serviceId) {
                 $command = $container->get($serviceId);
                 $application->add($command);
             }
 
             return $application;
         });
-        $container->register('report.manager', function (Container $container) {
+        $container->register(ReportManager::class, function (Container $container) {
             return new ReportManager(
-                $container->get('report.registry.generator'),
-                $container->get('report.registry.renderer')
+                $container->get(self::SERVICE_REGISTRY_GENERATOR),
+                $container->get(self::SERVICE_REGISTRY_RENDERER)
             );
         });
 
@@ -161,14 +186,14 @@ class CoreExtension implements ExtensionInterface
 
     private function registerBenchmark(Container $container): void
     {
-        $container->register('benchmark.runner', function (Container $container) {
+        $container->register(Runner::class, function (Container $container) {
             return new Runner(
-                $container->get('benchmark.benchmark_finder'),
-                $container->get('benchmark.registry.executor'),
-                $container->get('environment.supplier'),
-                $container->get('assertion.assertion_processor'),
-                $container->getParameter('retry_threshold'),
-                $container->getParameter('config_path')
+                $container->get(BenchmarkFinder::class),
+                $container->get(self::SERVICE_REGISTRY_EXECUTOR),
+                $container->get(Supplier::class),
+                $container->get(AssertionProcessor::class),
+                $container->getParameter(self::PARAM_RETRY_THRESHOLD),
+                $container->getParameter(self::PARAM_CONFIG_PATH)
             );
         });
 
@@ -198,61 +223,61 @@ class CoreExtension implements ExtensionInterface
             );
         });
 
-        $container->register('benchmark.executor.debug', function (Container $container) {
+        $container->register(DebugExecutor::class, function (Container $container) {
             return new DebugExecutor();
         }, [self::TAG_EXECUTOR => ['name' => 'debug']]);
 
-        $container->register('benchmark.finder', function (Container $container) {
+        $container->register(Finder::class, function (Container $container) {
             return new Finder();
         });
         $container->register(self::SERVICE_REMOTE_LAUNCHER, function (Container $container) {
             return new Launcher(
                 new PayloadFactory(),
                 new ExecutableFinder(),
-                $container->hasParameter('bootstrap') ? $container->getParameter('bootstrap') : null,
-                $container->hasParameter('php_binary') ? $container->getParameter('php_binary') : null,
-                $container->hasParameter('php_config') ? $container->getParameter('php_config') : null,
-                $container->hasParameter('php_wrapper') ? $container->getParameter('php_wrapper') : null,
-                $container->hasParameter('php_disable_ini') ? $container->getParameter('php_disable_ini') : false
+                $container->hasParameter(self::PARAM_BOOTSTRAP) ? $container->getParameter(self::PARAM_BOOTSTRAP) : null,
+                $container->hasParameter(self::PARAM_PHP_BINARY) ? $container->getParameter(self::PARAM_PHP_BINARY) : null,
+                $container->hasParameter(self::PARAM_PHP_CONFIG) ? $container->getParameter(self::PARAM_PHP_CONFIG) : null,
+                $container->hasParameter(self::PARAM_PHP_WRAPPER) ? $container->getParameter(self::PARAM_PHP_WRAPPER) : null,
+                $container->hasParameter(self::PARAM_PHP_DISABLE_INI) ? $container->getParameter(self::PARAM_PHP_DISABLE_INI) : false
             );
         });
 
-        $container->register('benchmark.remote.reflector', function (Container $container) {
+        $container->register(Reflector::class, function (Container $container) {
             return new Reflector($container->get(self::SERVICE_REMOTE_LAUNCHER));
         });
 
-        $container->register('benchmark.annotation_reader', function (Container $container) {
+        $container->register(AnnotationReader::class, function (Container $container) {
             return new AnnotationReader($container->getParameter('annotation_import_use'));
         });
 
-        $container->register('benchmark.metadata.driver.annotation', function (Container $container) {
+        $container->register(AnnotationDriver::class, function (Container $container) {
             return new AnnotationDriver(
-                $container->get('benchmark.remote.reflector'),
-                $container->getParameter('subject_pattern'),
-                $container->get('benchmark.annotation_reader')
+                $container->get(Reflector::class),
+                $container->getParameter(self::PARAM_SUBJECT_PATTERN),
+                $container->get(AnnotationReader::class)
             );
         });
 
-        $container->register('benchmark.metadata_factory', function (Container $container) {
+        $container->register(MetadataFactory::class, function (Container $container) {
             return new MetadataFactory(
-                $container->get('benchmark.remote.reflector'),
-                $container->get('benchmark.metadata.driver.annotation')
+                $container->get(Reflector::class),
+                $container->get(AnnotationDriver::class)
             );
         });
 
-        $container->register('benchmark.benchmark_finder', function (Container $container) {
+        $container->register(BenchmarkFinder::class, function (Container $container) {
             return new BenchmarkFinder(
-                $container->get('benchmark.metadata_factory')
+                $container->get(MetadataFactory::class)
             );
         });
 
-        $container->register('benchmark.baseline_manager', function (Container $container) {
+        $container->register(BaselineManager::class, function (Container $container) {
             $manager = new BaselineManager();
             $callables = array_merge([
                 'nothing' => '\PhpBench\Benchmark\Baseline\Baselines::nothing',
                 'md5' => '\PhpBench\Benchmark\Baseline\Baselines::md5',
                 'file_rw' => '\PhpBench\Benchmark\Baseline\Baselines::fwriteFread',
-            ], $container->getParameter('env_baseline_callables'));
+            ], $container->getParameter(self::PARAM_ENV_BASELINE_CALLABLES));
 
             foreach ($callables as $name => $callable) {
                 $manager->addBaselineCallable($name, $callable);
@@ -261,119 +286,113 @@ class CoreExtension implements ExtensionInterface
             return $manager;
         });
 
-        $container->register('benchmark.time_unit', function (Container $container) {
-            return new TimeUnit(TimeUnit::MICROSECONDS, $container->getParameter('time_unit'));
+        $container->register(TimeUnit::class, function (Container $container) {
+            return new TimeUnit(TimeUnit::MICROSECONDS, $container->getParameter(self::PARAM_TIME_UNIT));
         });
     }
 
     private function registerJson(Container $container): void
     {
-        $container->register('json.decoder', function (Container $container) {
+        $container->register(JsonDecoder::class, function (Container $container) {
             return new JsonDecoder();
         });
     }
 
     private function registerCommands(Container $container): void
     {
-        $container->register('console.command.handler.runner', function (Container $container) {
+        $container->register(RunnerHandler::class, function (Container $container) {
             return new RunnerHandler(
-                $container->get('benchmark.runner'),
-                $container->get('progress_logger.registry'),
-                $container->getParameter('progress'),
-                $container->getParameter('path')
+                $container->get(Runner::class),
+                $container->get(self::SERVICE_REGISTRY_LOGGER),
+                $container->getParameter(self::PARAM_PROGRESS),
+                $container->getParameter(self::PARAM_PATH)
             );
         });
 
-        $container->register('console.command.handler.report', function (Container $container) {
+        $container->register(ReportHandler::class, function (Container $container) {
             return new ReportHandler(
-                $container->get('report.manager')
+                $container->get(ReportManager::class)
             );
         });
 
-        $container->register('console.command.handler.time_unit', function (Container $container) {
+        $container->register(TimeUnitHandler::class, function (Container $container) {
             return new TimeUnitHandler(
-                $container->get('benchmark.time_unit')
+                $container->get(TimeUnit::class)
             );
         });
 
-        $container->register('console.command.handler.suite_collection', function (Container $container) {
+        $container->register(SuiteCollectionHandler::class, function (Container $container) {
             return new SuiteCollectionHandler(
-                $container->get('serializer.decoder.xml'),
-                $container->get('storage.driver_registry'),
-                $container->get('storage.uuid_resolver')
+                $container->get(XmlDecoder::class),
+                $container->get(self::SERVICE_REGISTRY_DRIVER),
+                $container->get(UuidResolverInterface::class)
             );
         });
 
-        $container->register('console.command.handler.dump', function (Container $container) {
+        $container->register(DumpHandler::class, function (Container $container) {
             return new DumpHandler(
-                $container->get('serializer.encoder.xml')
+                $container->get(XmlEncoder::class)
             );
         });
 
-        $container->register('console.command.run', function (Container $container) {
+        $container->register(RunCommand::class, function (Container $container) {
             return new RunCommand(
-                $container->get('console.command.handler.runner'),
-                $container->get('console.command.handler.report'),
-                $container->get('console.command.handler.suite_collection'),
-                $container->get('console.command.handler.time_unit'),
-                $container->get('console.command.handler.dump'),
-                $container->get('storage.driver_registry')
+                $container->get(RunnerHandler::class),
+                $container->get(ReportHandler::class),
+                $container->get(SuiteCollectionHandler::class),
+                $container->get(TimeUnitHandler::class),
+                $container->get(DumpHandler::class),
+                $container->get(self::SERVICE_REGISTRY_DRIVER)
             );
-        }, ['console.command' => []]);
+        }, [self::TAG_CONSOLE_COMMAND => []]);
 
-        $container->register('console.command.report', function (Container $container) {
+        $container->register(ReportCommand::class, function (Container $container) {
             return new ReportCommand(
-                $container->get('console.command.handler.report'),
-                $container->get('console.command.handler.time_unit'),
-                $container->get('console.command.handler.suite_collection'),
-                $container->get('console.command.handler.dump')
+                $container->get(ReportHandler::class),
+                $container->get(TimeUnitHandler::class),
+                $container->get(SuiteCollectionHandler::class),
+                $container->get(DumpHandler::class)
             );
-        }, ['console.command' => []]);
+        }, [self::TAG_CONSOLE_COMMAND => []]);
 
-        $container->register('console.command.log', function (Container $container) {
+        $container->register(LogCommand::class, function (Container $container) {
             return new LogCommand(
-                $container->get('storage.driver_registry'),
-                $container->get('benchmark.time_unit'),
-                $container->get('console.command.handler.time_unit')
+                $container->get(self::SERVICE_REGISTRY_DRIVER),
+                $container->get(TimeUnit::class),
+                $container->get(TimeUnitHandler::class)
             );
-        }, ['console.command' => []]);
+        }, [self::TAG_CONSOLE_COMMAND => []]);
 
-        $container->register('console.command.show', function (Container $container) {
+        $container->register(ShowCommand::class, function (Container $container) {
             return new ShowCommand(
-                $container->get('storage.driver_registry'),
-                $container->get('console.command.handler.report'),
-                $container->get('console.command.handler.time_unit'),
-                $container->get('console.command.handler.dump'),
-                $container->get('storage.uuid_resolver')
+                $container->get(self::SERVICE_REGISTRY_DRIVER),
+                $container->get(ReportHandler::class),
+                $container->get(TimeUnitHandler::class),
+                $container->get(DumpHandler::class),
+                $container->get(UuidResolverInterface::class)
             );
-        }, ['console.command' => []]);
+        }, [self::TAG_CONSOLE_COMMAND => []]);
 
-        $container->register('console.command.archive', function (Container $container) {
-            return new ArchiveCommand(
-                $container->get('storage.archiver_registry')
-            );
-        }, ['console.command' => []]);
-
-        $container->register('console.command.delete', function (Container $container) {
+        $container->register(DeleteCommand::class, function (Container $container) {
             return new DeleteCommand(
-                $container->get('console.command.handler.suite_collection'),
-                $container->get('storage.driver_registry')
+                $container->get(SuiteCollectionHandler::class),
+                $container->get(self::SERVICE_REGISTRY_DRIVER)
             );
-        }, ['console.command' => []]);
+        }, [self::TAG_CONSOLE_COMMAND => []]);
 
         if (class_exists(Updater::class) && \Phar::running()) {
-            $container->register('console.command.self_update', function (Container $container) {
+            $container->register(SelfUpdateCommand::class, function (Container $container) {
                 return new SelfUpdateCommand();
-            }, ['console.command' => []]);
+            }, [self::TAG_CONSOLE_COMMAND => []]);
         }
     }
 
     private function registerProgressLoggers(Container $container): void
     {
-        $container->register('progress_logger.registry', function (Container $container) {
+        $container->register(self::SERVICE_REGISTRY_LOGGER, function (Container $container) {
             $registry = new LoggerRegistry();
 
-            foreach ($container->getServiceIdsForTag('progress_logger') as $serviceId => $attributes) {
+            foreach ($container->getServiceIdsForTag(self::TAG_PROGRESS_LOGGER) as $serviceId => $attributes) {
                 $registry->addProgressLogger(
                     $attributes['name'],
                     $container->get($serviceId)
@@ -383,82 +402,84 @@ class CoreExtension implements ExtensionInterface
             return $registry;
         });
 
-        $container->register('progress_logger.dots', function (Container $container) {
-            return new DotsLogger($container->get('benchmark.time_unit'));
-        }, ['progress_logger' => ['name' => 'dots']]);
+        $container->register(DotsLogger::class, function (Container $container) {
+            return new DotsLogger($container->get(TimeUnit::class));
+        }, [self::TAG_PROGRESS_LOGGER => ['name' => 'dots']]);
 
-        $container->register('progress_logger.classdots', function (Container $container) {
-            return new DotsLogger($container->get('benchmark.time_unit'), true);
-        }, ['progress_logger' => ['name' => 'classdots']]);
+        $container->register(DotsLogger::class .'.show', function (Container $container) {
+            return new DotsLogger($container->get(TimeUnit::class), true);
+        }, [self::TAG_PROGRESS_LOGGER => ['name' => 'classdots']]);
 
-        $container->register('progress_logger.verbose', function (Container $container) {
-            return new VerboseLogger($container->get('benchmark.time_unit'));
-        }, ['progress_logger' => ['name' => 'verbose']]);
+        $container->register(VerboseLogger::class, function (Container $container) {
+            return new VerboseLogger($container->get(TimeUnit::class));
+        }, [self::TAG_PROGRESS_LOGGER => ['name' => 'verbose']]);
 
-        $container->register('progress_logger.travis', function (Container $container) {
-            return new TravisLogger($container->get('benchmark.time_unit'));
-        }, ['progress_logger' => ['name' => 'travis']]);
+        $container->register(TravisLogger::class, function (Container $container) {
+            return new TravisLogger($container->get(TimeUnit::class));
+        }, [self::TAG_PROGRESS_LOGGER => ['name' => 'travis']]);
 
-        $container->register('progress_logger.null', function (Container $container) {
+        $container->register(NullLogger::class, function (Container $container) {
             return new NullLogger();
-        }, ['progress_logger' => ['name' => 'none']]);
+        }, [self::TAG_PROGRESS_LOGGER => ['name' => 'none']]);
 
-        $container->register('progress_logger.blinken', function (Container $container) {
-            return new BlinkenLogger($container->get('benchmark.time_unit'));
-        }, ['progress_logger' => ['name' => 'blinken']]);
+        $container->register(BlinkenLogger::class, function (Container $container) {
+            return new BlinkenLogger($container->get(TimeUnit::class));
+        }, [self::TAG_PROGRESS_LOGGER => ['name' => 'blinken']]);
 
-        $container->register('progress_logger.histogram', function (Container $container) {
-            return new HistogramLogger($container->get('benchmark.time_unit'));
-        }, ['progress_logger' => ['name' => 'histogram']]);
+        $container->register(HistogramLogger::class, function (Container $container) {
+            return new HistogramLogger($container->get(TimeUnit::class));
+        }, [self::TAG_PROGRESS_LOGGER => ['name' => 'histogram']]);
     }
 
     private function registerReportGenerators(Container $container): void
     {
-        $container->register('report_generator.table', function (Container $container) {
+        $container->register(TableGenerator::class, function (Container $container) {
             return new TableGenerator();
-        }, ['report_generator' => ['name' => 'table']]);
-        $container->register('report_generator.env', function (Container $container) {
+        }, [self::TAG_REPORT_GENERATOR => ['name' => 'table']]);
+        $container->register(EnvGenerator::class, function (Container $container) {
             return new EnvGenerator();
-        }, ['report_generator' => ['name' => 'env']]);
-        $container->register('report_generator.composite', function (Container $container) {
+        }, [self::TAG_REPORT_GENERATOR => ['name' => 'env']]);
+        $container->register(CompositeGenerator::class, function (Container $container) {
             return new CompositeGenerator(
-                $container->get('report.manager')
+                $container->get(ReportManager::class)
             );
-        }, ['report_generator' => ['name' => 'composite']]);
+        }, [
+            self::TAG_REPORT_GENERATOR => ['name' => 'composite']
+        ]);
     }
 
     private function registerReportRenderers(Container $container): void
     {
-        $container->register('report_renderer.console', function (Container $container) {
-            return new ConsoleRenderer($container->get('phpbench.formatter'));
-        }, ['report_renderer' => ['name' => 'console']]);
-        $container->register('report_renderer.html', function (Container $container) {
-            return new XsltRenderer($container->get('phpbench.formatter'));
-        }, ['report_renderer' => ['name' => 'xslt']]);
-        $container->register('report_renderer.debug', function (Container $container) {
+        $container->register(ConsoleRenderer::class, function (Container $container) {
+            return new ConsoleRenderer($container->get(Formatter::class));
+        }, [self::TAG_REPORT_RENDERER => ['name' => 'console']]);
+        $container->register(XsltRenderer::class, function (Container $container) {
+            return new XsltRenderer($container->get(Formatter::class));
+        }, [self::TAG_REPORT_RENDERER => ['name' => 'xslt']]);
+        $container->register(DebugRenderer::class, function (Container $container) {
             return new DebugRenderer();
-        }, ['report_renderer' => ['name' => 'debug']]);
-        $container->register('report_renderer.delimited', function (Container $container) {
+        }, [self::TAG_REPORT_RENDERER => ['name' => 'debug']]);
+        $container->register(DelimitedRenderer::class, function (Container $container) {
             return new DelimitedRenderer();
-        }, ['report_renderer' => ['name' => 'delimited']]);
+        }, [self::TAG_REPORT_RENDERER => ['name' => 'delimited']]);
     }
 
     private function registerFormatter(Container $container): void
     {
-        $container->register('phpbench.formatter.registry', function (Container $container) {
+        $container->register(FormatRegistry::class, function (Container $container) {
             $registry = new FormatRegistry();
             $registry->register('printf', new PrintfFormat());
             $registry->register('balance', new BalanceFormat());
-            $registry->register('invert_on_throughput', new InvertOnThroughputFormat($container->get('benchmark.time_unit')));
+            $registry->register('invert_on_throughput', new InvertOnThroughputFormat($container->get(TimeUnit::class)));
             $registry->register('number', new NumberFormat());
             $registry->register('truncate', new TruncateFormat());
-            $registry->register('time', new TimeUnitFormat($container->get('benchmark.time_unit')));
+            $registry->register('time', new TimeUnitFormat($container->get(TimeUnit::class)));
 
             return $registry;
         });
 
-        $container->register('phpbench.formatter', function (Container $container) {
-            $formatter = new Formatter($container->get('phpbench.formatter.registry'));
+        $container->register(Formatter::class, function (Container $container) {
+            $formatter = new Formatter($container->get(FormatRegistry::class));
             $formatter->classesFromFile(__DIR__ . '/config/class/main.json');
 
             return $formatter;
@@ -467,7 +488,7 @@ class CoreExtension implements ExtensionInterface
 
     private function registerAsserters(Container $container): void
     {
-        $container->register('assertion.assertion_processor', function () {
+        $container->register(AssertionProcessor::class, function () {
             return new AssertionProcessor(
                 new ExpressionParser(),
                 new ExpressionEvaluatorFactory()
@@ -482,7 +503,7 @@ class CoreExtension implements ExtensionInterface
                 $registry = new ConfigurableRegistry(
                     $registryType,
                     $container,
-                    $container->get('json.decoder')
+                    $container->get(JsonDecoder::class)
                 );
 
                 foreach ($container->getServiceIdsForTag('report_' . $registryType) as $serviceId => $attributes) {
@@ -502,11 +523,11 @@ class CoreExtension implements ExtensionInterface
             });
         }
 
-        $container->register('benchmark.registry.executor', function (Container $container) {
+        $container->register(self::SERVICE_REGISTRY_EXECUTOR, function (Container $container) {
             $registry = new ConfigurableRegistry(
                 'executor',
                 $container,
-                $container->get('json.decoder')
+                $container->get(JsonDecoder::class)
             );
 
             foreach ($container->getServiceIdsForTag(self::TAG_EXECUTOR) as $serviceId => $attributes) {
@@ -528,41 +549,41 @@ class CoreExtension implements ExtensionInterface
 
     public function registerEnvironment(Container $container): void
     {
-        $container->register('environment.provider.uname', function (Container $container) {
+        $container->register(Provider\Uname::class, function (Container $container) {
             return new Provider\Uname();
-        }, ['environment_provider' => []]);
+        }, [self::TAG_ENV_PROVIDER => []]);
 
-        $container->register('environment.provider.php', function (Container $container) {
+        $container->register(Provider\Php::class, function (Container $container) {
             return new Provider\Php(
                 $container->get(self::SERVICE_REMOTE_LAUNCHER)
             );
-        }, ['environment_provider' => []]);
+        }, [self::TAG_ENV_PROVIDER => []]);
 
-        $container->register('environment.provider.opcache', function (Container $container) {
+        $container->register(Provider\Opcache::class, function (Container $container) {
             return new Provider\Opcache(
                 $container->get(self::SERVICE_REMOTE_LAUNCHER)
             );
-        }, ['environment_provider' => []]);
+        }, [self::TAG_ENV_PROVIDER => []]);
 
-        $container->register('environment.provider.unix_sysload', function (Container $container) {
+        $container->register(Provider\UnixSysload::class, function (Container $container) {
             return new Provider\UnixSysload();
-        }, ['environment_provider' => []]);
+        }, [self::TAG_ENV_PROVIDER => []]);
 
-        $container->register('environment.provider.git', function (Container $container) {
+        $container->register(Provider\Git::class, function (Container $container) {
             return new Provider\Git();
-        }, ['environment_provider' => []]);
+        }, [self::TAG_ENV_PROVIDER => []]);
 
-        $container->register('environment.provider.baseline', function (Container $container) {
+        $container->register(Provider\Baseline::class, function (Container $container) {
             return new Provider\Baseline(
-                $container->get('benchmark.baseline_manager'),
-                $container->getParameter('env_baselines')
+                $container->get(BaselineManager::class),
+                $container->getParameter(self::PARAM_ENV_BASELINES)
             );
-        }, ['environment_provider' => []]);
+        }, [self::TAG_ENV_PROVIDER => []]);
 
-        $container->register('environment.supplier', function (Container $container) {
+        $container->register(Supplier::class, function (Container $container) {
             $supplier = new Supplier();
 
-            foreach ($container->getServiceIdsForTag('environment_provider') as $serviceId => $attributes) {
+            foreach ($container->getServiceIdsForTag(self::TAG_ENV_PROVIDER) as $serviceId => $attributes) {
                 $provider = $container->get($serviceId);
                 $supplier->addProvider($provider);
             }
@@ -573,77 +594,59 @@ class CoreExtension implements ExtensionInterface
 
     private function registerSerializer(Container $container): void
     {
-        $container->register('serializer.encoder.xml', function (Container $container) {
+        $container->register(XmlEncoder::class, function (Container $container) {
             return new XmlEncoder();
         });
-        $container->register('serializer.decoder.xml', function (Container $container) {
+        $container->register(XmlDecoder::class, function (Container $container) {
             return new XmlDecoder();
         });
     }
 
     private function registerStorage(Container $container): void
     {
-        $container->register('storage.driver_registry', function (Container $container) {
+        $container->register(self::SERVICE_REGISTRY_DRIVER, function (Container $container) {
             $registry = new StorageRegistry($container, $container->getParameter('storage'));
 
-            foreach ($container->getServiceIdsForTag('storage_driver') as $serviceId => $attributes) {
+            foreach ($container->getServiceIdsForTag(self::TAG_STORAGE_DRIVER) as $serviceId => $attributes) {
                 $registry->registerService($attributes['name'], $serviceId);
             }
 
             return $registry;
         });
-        $container->register('storage.archiver_registry', function (Container $container) {
-            $registry = new Registry('archiver', $container, $container->getParameter('archiver'));
-
-            foreach ($container->getServiceIdsForTag('storage_archiver') as $serviceId => $attributes) {
-                $registry->registerService($attributes['name'], $serviceId);
-            }
-
-            return $registry;
-        });
-        $container->register('storage.driver.xml', function (Container $container) {
+        $container->register(XmlDriver::class, function (Container $container) {
             return new XmlDriver(
-                $container->getParameter('xml_storage_path'),
-                $container->get('serializer.encoder.xml'),
-                $container->get('serializer.decoder.xml')
+                $container->getParameter(self::PARAM_XML_STORAGE_PATH),
+                $container->get(XmlEncoder::class),
+                $container->get(XmlDecoder::class)
             );
-        }, ['storage_driver' => ['name' => 'xml']]);
+        }, [self::TAG_STORAGE_DRIVER => ['name' => 'xml']]);
 
-        $container->register('storage.uuid_resolver', function (Container $container) {
+        $container->register(UuidResolverInterface::class, function (Container $container) {
             $resolvers = [];
 
-            foreach (array_keys($container->getServiceIdsForTag('uuid_resolver')) as $serviceId) {
+            foreach (array_keys($container->getServiceIdsForTag(self::TAG_UUID_RESOLVER)) as $serviceId) {
                 $resolvers[] = $container->get($serviceId);
             }
 
             return new ChainResolver($resolvers);
         });
 
-        $container->register('storage.uuid_resolver.latest', function (Container $container) {
+        $container->register(LatestResolver::class, function (Container $container) {
             return new LatestResolver(
-                $container->get('storage.driver_registry')
+                $container->get(self::SERVICE_REGISTRY_DRIVER)
             );
-        }, ['uuid_resolver' => []]);
+        }, [self::TAG_UUID_RESOLVER => []]);
 
-        $container->register('storage.uuid_resolver.tag', function (Container $container) {
+        $container->register(TagResolver::class, function (Container $container) {
             return new TagResolver(
-                $container->get('storage.driver_registry')
+                $container->get(self::SERVICE_REGISTRY_DRIVER)
             );
-        }, ['uuid_resolver' => []]);
-
-        $container->register('storage.archiver.xml', function (Container $container) {
-            return new Storage\Archiver\XmlArchiver(
-                $container->get('storage.driver_registry'),
-                $container->get('serializer.encoder.xml'),
-                $container->get('serializer.decoder.xml'),
-                $container->getParameter('archive_path')
-            );
-        }, ['storage_archiver' => ['name' => 'xml']]);
+        }, [self::TAG_UUID_RESOLVER => []]);
     }
 
     private function relativizeConfigPath(Container $container): void
     {
-        if (null === $path = $container->getParameter('path')) {
+        if (null === $path = $container->getParameter(self::PARAM_PATH)) {
             return;
         }
 
@@ -651,6 +654,6 @@ class CoreExtension implements ExtensionInterface
             return;
         }
 
-        $container->setParameter('path', sprintf('%s/%s', dirname($container->getParameter('config_path')), $path));
+        $container->setParameter(self::PARAM_PATH, sprintf('%s/%s', dirname($container->getParameter(self::PARAM_CONFIG_PATH)), $path));
     }
 }

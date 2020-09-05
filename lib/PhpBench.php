@@ -13,6 +13,7 @@
 namespace PhpBench;
 
 use Composer\Autoload\ClassLoader;
+use PhpBench\Console\Application;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\Extension\CoreExtension;
 use PhpBench\Extensions\XDebug\XDebugExtension;
@@ -63,7 +64,7 @@ class PhpBench
         unset($config['extensions']);
         $container = new Container(array_unique($extensions), $config);
         $container->init();
-        $container->get('console.application')->run();
+        $container->get(Application::class)->run();
     }
 
     /**
