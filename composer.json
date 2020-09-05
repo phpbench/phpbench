@@ -44,7 +44,8 @@
         "integrate": [
             "vendor/bin/php-cs-fixer fix",
             "vendor/bin/phpstan analyse -c phpstan.neon",
-            "vendor/bin/phpunit"
+            "vendor/bin/phpunit",
+            "bin/phpbench run"
         ]
     },
     "suggest": {

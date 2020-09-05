@@ -12,6 +12,11 @@
 
 namespace PhpBench\Benchmarks\Macro;
 
+use PhpBench\Console\Command\LogCommand;
+use PhpBench\Console\Command\RunCommand;
+
+
+
 /**
  * Benchmark for the log command.
  *
@@ -25,7 +30,7 @@ class LogBench extends BaseBenchCase
             // instantiate the benchmark class (this) so that we can
             // run a command.
             $case = new self();
-            $case->runCommand('console.command.run', [
+            $case->runCommand(RunCommand::class, [
                 'path' => self::getFunctionalBenchmarkPath(),
                 '--executor' => 'debug',
                 '--iterations' => [100],
@@ -37,7 +42,7 @@ class LogBench extends BaseBenchCase
 
     public function benchLog()
     {
-        $this->runCommand('console.command.log', [
+        $this->runCommand(LogCommand::class, [
             '--no-pagination' => true,
         ]);
     }

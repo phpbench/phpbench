@@ -12,6 +12,9 @@
 
 namespace PhpBench\Benchmarks\Macro;
 
+use PhpBench\Console\Command\RunCommand;
+
+
 /**
  * This benchmark executes the run command using the benchmark classes
  * from the functional tests (which have "empty" subjects).
@@ -20,14 +23,14 @@ class RunBench extends BaseBenchCase
 {
     public function benchRun()
     {
-        $this->runCommand('console.command.run', [
+        $this->runCommand(RunCommand::class, [
             'path' => $this->getFunctionalBenchmarkPath(),
         ]);
     }
 
     public function benchRunAndReport()
     {
-        $this->runCommand('console.command.run', [
+        $this->runCommand(RunCommand::class, [
             'path' => $this->getFunctionalBenchmarkPath(),
             '--report' => ['aggregate'],
         ]);

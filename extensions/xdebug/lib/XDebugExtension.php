@@ -12,9 +12,12 @@
 
 namespace PhpBench\Extensions\XDebug;
 
+use PhpBench\Console\Command\Handler\RunnerHandler;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
+use PhpBench\Executor\Benchmark\MicrotimeExecutor;
 use PhpBench\Executor\CompositeExecutor;
+use PhpBench\Executor\Method\RemoteMethodExecutor;
 use PhpBench\Extension\CoreExtension;
 use PhpBench\Extensions\XDebug\Command\Handler\OutputDirHandler;
 use PhpBench\Extensions\XDebug\Command\ProfileCommand;
@@ -22,36 +25,43 @@ use PhpBench\Extensions\XDebug\Executor\ProfileExecutor;
 
 class XDebugExtension implements ExtensionInterface
 {
-    public function getDefaultConfig()
+    const PARAM_OUTPUT_DIR = 'xdebug.command.handler.output_dir';
+
+    public function getDefaultConfig(): array
     {
         return [
-            'xdebug.output_dir' => '.phpbench/xdebug-profile',
+            self::PARAM_OUTPUT_DIR => '.phpbench/xdebug-profile',
         ];
     }
 
-    public function load(Container $container)
+    public function load(Container $container): void
     {
-        $container->register('xdebug.command.profile', function (Container $container) {
+        $container->register(ProfileCommand::class, function (Container $container) {
             return new ProfileCommand(
-                $container->get('console.command.handler.runner'),
-                $container->get('xdebug.command.handler.output_dir')
+                $container->get(RunnerHandler::class),
+                $container->get(self::PARAM_OUTPUT_DIR)
             );
-        }, ['console.command' => []]);
+        }, [
+            CoreExtension::TAG_CONSOLE_COMMAND => []
+        ]);
 
-        $container->register('xdebug.command.handler.output_dir', function (Container $container) {
-            return new OutputDirHandler($container->getParameter('xdebug.output_dir'));
+        $container->register(self::PARAM_OUTPUT_DIR, function (Container $container) {
+            return new OutputDirHandler(
+                $container->getParameter(self::PARAM_OUTPUT_DIR)
+            );
         });
 
-        $container->register('benchmark.executor.xdebug_profile',
-            function (Container $container) {
-                return new CompositeExecutor(
-                    new ProfileExecutor(
-                        $container->get(CoreExtension::SERVICE_EXECUTOR_BENCHMARK_MICROTIME)
-                    ),
-                    $container->get(CoreExtension::SERVICE_EXECUTOR_METHOD_REMOTE)
-                );
-            },
-            ['benchmark_executor' => ['name' => 'xdebug_profile'],
+        $container->register(ProfileExecutor::class, function (Container $container) {
+            return new CompositeExecutor(
+                new ProfileExecutor(
+                    $container->get(MicrotimeExecutor::class)
+                ),
+                $container->get(RemoteMethodExecutor::class)
+            );
+        }, [
+            CoreExtension::TAG_EXECUTOR => [
+                'name' => 'xdebug_profile'
+            ]
         ]);
 
         $container->mergeParameter('executors', require_once(__DIR__ . '/config/executors.php'));
