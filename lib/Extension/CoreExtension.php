@@ -84,31 +84,26 @@ use Symfony\Component\Process\ExecutableFinder;
 
 class CoreExtension implements ExtensionInterface
 {
+    public const PARAM_ANNOTATION_IMPORT_USE = 'annotation_import_use';
     public const PARAM_BOOTSTRAP = 'bootstrap';
     public const PARAM_CONFIG_PATH = 'config_path';
     public const PARAM_ENV_BASELINES = 'env_baselines';
     public const PARAM_ENV_BASELINE_CALLABLES = 'env_baseline_callables';
+    public const PARAM_EXECUTORS = 'executors';
+    public const PARAM_OUTPUTS = 'outputs';
+    public const PARAM_OUTPUT_MODE = 'output_mode';
     public const PARAM_PATH = 'path';
     public const PARAM_PHP_BINARY = 'php_binary';
     public const PARAM_PHP_CONFIG = 'php_config';
     public const PARAM_PHP_DISABLE_INI = 'php_disable_ini';
     public const PARAM_PHP_WRAPPER = 'php_wrapper';
     public const PARAM_PROGRESS = 'progress';
+    public const PARAM_REPORTS = 'reports';
     public const PARAM_RETRY_THRESHOLD = 'retry_threshold';
+    public const PARAM_STORAGE = 'storage';
     public const PARAM_SUBJECT_PATTERN = 'subject_pattern';
     public const PARAM_TIME_UNIT = 'time_unit';
     public const PARAM_XML_STORAGE_PATH = 'xml_storage_path';
-
-    public const SERVICE_EXECUTOR_MICROTIME = 'benchmark.executor.microtime';
-    public const SERVICE_EXECUTOR_MEMORY = 'benchmark.executor.memory';
-    public const SERVICE_REMOTE_LAUNCHER = 'benchmark.remote.launcher';
-    public const SERVICE_EXECUTOR_METHOD_REMOTE = 'executor.method.remote_method';
-    public const SERVICE_EXECUTOR_BENCHMARK_MICROTIME = 'executor.benchmark.microtime';
-    public const SERVICE_REGISTRY_DRIVER = 'storage.driver_registry';
-    public const SERVICE_REGISTRY_EXECUTOR = 'benchmark.registry.executor';
-    public const SERVICE_REGISTRY_GENERATOR = 'report.registry.generator';
-    public const SERVICE_REGISTRY_LOGGER = 'progress_logger.registry';
-    public const SERVICE_REGISTRY_RENDERER = 'report.registry.renderer';
 
     public const TAG_EXECUTOR = 'benchmark_executor';
     public const TAG_CONSOLE_COMMAND = 'console.command';
@@ -119,32 +114,35 @@ class CoreExtension implements ExtensionInterface
     public const TAG_STORAGE_DRIVER = 'storage_driver';
     public const TAG_UUID_RESOLVER = 'uuid_resolver';
 
+    private const SERVICE_REGISTRY_DRIVER = 'storage.driver_registry';
+    private const SERVICE_REGISTRY_EXECUTOR = 'benchmark.registry.executor';
+    private const SERVICE_REGISTRY_GENERATOR = 'report.registry.generator';
+    private const SERVICE_REGISTRY_LOGGER = 'progress_logger.registry';
+    private const SERVICE_REGISTRY_RENDERER = 'report.registry.renderer';
+
     public function getDefaultConfig(): array
     {
         return [
             self::PARAM_BOOTSTRAP => null,
             self::PARAM_PATH => null,
-            'reports' => [],
-            'outputs' => [],
-            'executors' => [],
+            self::PARAM_REPORTS => [],
+            self::PARAM_OUTPUTS => [],
+            self::PARAM_EXECUTORS => [],
             self::PARAM_CONFIG_PATH => null,
             self::PARAM_PROGRESS => getenv('CONTINUOUS_INTEGRATION') ? 'travis' : 'verbose',
             self::PARAM_RETRY_THRESHOLD => null,
             self::PARAM_TIME_UNIT => TimeUnit::MICROSECONDS,
-            'output_mode' => TimeUnit::MODE_TIME,
-            'storage' => 'xml',
-            'archiver' => 'xml',
+            self::PARAM_OUTPUT_MODE => TimeUnit::MODE_TIME,
+            self::PARAM_STORAGE => 'xml',
             self::PARAM_SUBJECT_PATTERN => '^bench',
-            'archive_path' => '_archive',
             self::PARAM_ENV_BASELINES => ['nothing', 'md5', 'file_rw'],
             self::PARAM_ENV_BASELINE_CALLABLES => [],
             self::PARAM_XML_STORAGE_PATH => getcwd() . '/.phpbench/storage', // use cwd because PHARs
-            'extension_autoloader' => null,
             self::PARAM_PHP_CONFIG => [],
             self::PARAM_PHP_BINARY => null,
             self::PARAM_PHP_WRAPPER => null,
             self::PARAM_PHP_DISABLE_INI => false,
-            'annotation_import_use' => false,
+            self::PARAM_ANNOTATION_IMPORT_USE => false,
         ];
     }
 
@@ -196,40 +194,42 @@ class CoreExtension implements ExtensionInterface
             );
         });
 
-        $container->register(self::SERVICE_EXECUTOR_MICROTIME, function (Container $container) {
+        $container->register(MicrotimeExecutor::class . '.composite', function (Container $container) {
             return new CompositeExecutor(
-                $container->get(self::SERVICE_EXECUTOR_BENCHMARK_MICROTIME),
-                $container->get(self::SERVICE_EXECUTOR_METHOD_REMOTE)
+                $container->get(MicrotimeExecutor::class),
+                $container->get(RemoteMethodExecutor::class)
             );
         }, [self::TAG_EXECUTOR => ['name' => 'microtime']]);
 
-        $container->register(self::SERVICE_EXECUTOR_MEMORY, function (Container $container) {
+        $container->register(MemoryCentricMicrotimeExecutor::class, function (Container $container) {
             return new CompositeExecutor(
-                new MemoryCentricMicrotimeExecutor($container->get(self::SERVICE_REMOTE_LAUNCHER)),
-                $container->get(self::SERVICE_EXECUTOR_METHOD_REMOTE)
+                new MemoryCentricMicrotimeExecutor($container->get(Launcher::class)),
+                $container->get(RemoteMethodExecutor::class)
             );
         }, [self::TAG_EXECUTOR => ['name' => 'memory_centric_microtime']]);
 
-        $container->register(self::SERVICE_EXECUTOR_BENCHMARK_MICROTIME, function (Container $container) {
+        $container->register(MicrotimeExecutor::class, function (Container $container) {
             return new MicrotimeExecutor(
-                $container->get(self::SERVICE_REMOTE_LAUNCHER)
+                $container->get(Launcher::class)
             );
         });
 
-        $container->register(self::SERVICE_EXECUTOR_METHOD_REMOTE, function (Container $container) {
+        $container->register(RemoteMethodExecutor::class, function (Container $container) {
             return new RemoteMethodExecutor(
-                $container->get(self::SERVICE_REMOTE_LAUNCHER)
+                $container->get(Launcher::class)
             );
         });
 
         $container->register(DebugExecutor::class, function (Container $container) {
             return new DebugExecutor();
-        }, [self::TAG_EXECUTOR => ['name' => 'debug']]);
+        }, [
+            self::TAG_EXECUTOR => ['name' => 'debug']
+        ]);
 
         $container->register(Finder::class, function (Container $container) {
             return new Finder();
         });
-        $container->register(self::SERVICE_REMOTE_LAUNCHER, function (Container $container) {
+        $container->register(Launcher::class, function (Container $container) {
             return new Launcher(
                 new PayloadFactory(),
                 new ExecutableFinder(),
@@ -242,11 +242,11 @@ class CoreExtension implements ExtensionInterface
         });
 
         $container->register(Reflector::class, function (Container $container) {
-            return new Reflector($container->get(self::SERVICE_REMOTE_LAUNCHER));
+            return new Reflector($container->get(Launcher::class));
         });
 
         $container->register(AnnotationReader::class, function (Container $container) {
-            return new AnnotationReader($container->getParameter('annotation_import_use'));
+            return new AnnotationReader($container->getParameter(self::PARAM_ANNOTATION_IMPORT_USE));
         });
 
         $container->register(AnnotationDriver::class, function (Container $container) {
@@ -343,7 +343,9 @@ class CoreExtension implements ExtensionInterface
                 $container->get(DumpHandler::class),
                 $container->get(self::SERVICE_REGISTRY_DRIVER)
             );
-        }, [self::TAG_CONSOLE_COMMAND => []]);
+        }, [
+            self::TAG_CONSOLE_COMMAND => []
+        ]);
 
         $container->register(ReportCommand::class, function (Container $container) {
             return new ReportCommand(
@@ -352,7 +354,9 @@ class CoreExtension implements ExtensionInterface
                 $container->get(SuiteCollectionHandler::class),
                 $container->get(DumpHandler::class)
             );
-        }, [self::TAG_CONSOLE_COMMAND => []]);
+        }, [
+            self::TAG_CONSOLE_COMMAND => []
+        ]);
 
         $container->register(LogCommand::class, function (Container $container) {
             return new LogCommand(
@@ -360,7 +364,9 @@ class CoreExtension implements ExtensionInterface
                 $container->get(TimeUnit::class),
                 $container->get(TimeUnitHandler::class)
             );
-        }, [self::TAG_CONSOLE_COMMAND => []]);
+        }, [
+            self::TAG_CONSOLE_COMMAND => []
+        ]);
 
         $container->register(ShowCommand::class, function (Container $container) {
             return new ShowCommand(
@@ -370,12 +376,16 @@ class CoreExtension implements ExtensionInterface
                 $container->get(DumpHandler::class),
                 $container->get(UuidResolverInterface::class)
             );
-        }, [self::TAG_CONSOLE_COMMAND => []]);
+        }, [
+            self::TAG_CONSOLE_COMMAND => []
+        ]);
 
         if (class_exists(Updater::class) && \Phar::running()) {
             $container->register(SelfUpdateCommand::class, function (Container $container) {
                 return new SelfUpdateCommand();
-            }, [self::TAG_CONSOLE_COMMAND => []]);
+            }, [
+                self::TAG_CONSOLE_COMMAND => []
+            ]);
         }
     }
 
@@ -490,7 +500,7 @@ class CoreExtension implements ExtensionInterface
 
     private function registerRegistries(Container $container): void
     {
-        foreach (['generator' => 'reports', 'renderer' => 'outputs'] as $registryType => $optionName) {
+        foreach (['generator' => self::PARAM_REPORTS, 'renderer' => self::PARAM_OUTPUTS] as $registryType => $optionName) {
             $container->register('report.registry.' . $registryType, function (Container $container) use ($registryType, $optionName) {
                 $registry = new ConfigurableRegistry(
                     $registryType,
@@ -528,7 +538,7 @@ class CoreExtension implements ExtensionInterface
 
             $executorConfigs = array_merge(
                 require(__DIR__ . '/config/benchmark/executors.php'),
-                $container->getParameter('executors')
+                $container->getParameter(self::PARAM_EXECUTORS)
             );
 
             foreach ($executorConfigs as $name => $config) {
@@ -547,13 +557,13 @@ class CoreExtension implements ExtensionInterface
 
         $container->register(Provider\Php::class, function (Container $container) {
             return new Provider\Php(
-                $container->get(self::SERVICE_REMOTE_LAUNCHER)
+                $container->get(Launcher::class)
             );
         }, [self::TAG_ENV_PROVIDER => []]);
 
         $container->register(Provider\Opcache::class, function (Container $container) {
             return new Provider\Opcache(
-                $container->get(self::SERVICE_REMOTE_LAUNCHER)
+                $container->get(Launcher::class)
             );
         }, [self::TAG_ENV_PROVIDER => []]);
 
@@ -597,7 +607,7 @@ class CoreExtension implements ExtensionInterface
     private function registerStorage(Container $container): void
     {
         $container->register(self::SERVICE_REGISTRY_DRIVER, function (Container $container) {
-            $registry = new StorageRegistry($container, $container->getParameter('storage'));
+            $registry = new StorageRegistry($container, $container->getParameter(self::PARAM_STORAGE));
 
             foreach ($container->getServiceIdsForTag(self::TAG_STORAGE_DRIVER) as $serviceId => $attributes) {
                 $registry->registerService($attributes['name'], $serviceId);
