@@ -1,8 +1,6 @@
-<center>
-<img
-src="https://user-images.githubusercontent.com/530801/92305960-d2866a00-ef83-11ea-878a-10584e583da4.png"
-title="PHPBench logo"/>
-</center>
+<p  align="center">
+    <img src="https://user-images.githubusercontent.com/530801/92305960-d2866a00-ef83-11ea-878a-10584e583da4.png" title="PHPBench logo"/>
+</p>
 
 [![Build Status](https://travis-ci.org/phpbench/phpbench.svg?branch=master)](https://travis-ci.org/phpbench/phpbench)
 [![Latest Stable Version](https://poser.pugx.org/phpbench/phpbench/v)](//packagist.org/packages/phpbench/phpbench) 
