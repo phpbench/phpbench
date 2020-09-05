@@ -67,8 +67,9 @@ HTML report:
 
 ![phpbench2](https://cloud.githubusercontent.com/assets/530801/10666918/bb61e438-78d4-11e5-8add-454c51261aa8.png)
 
-See also
---------
+Contributing
+------------
 
-This library was influenced by the
-[athletic](https://github.com/polyfractal/athletic) benchmarking framework.
+PHPBench is an open source project. If you find an problem or want to discuss
+new features or improvements please create an issue, and/or if possible create
+a pull request.
