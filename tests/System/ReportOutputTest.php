@@ -73,16 +73,16 @@ class ReportOutputTest extends SystemTestCase
         ];
     }
 
-    private function assertGeneratedContents($output, $name)
+    private function assertGeneratedContents($output, $name): void
     {
         $lines = explode("\n", $output);
 
         array_pop($lines);
         $generatedFilename = array_pop($lines);
-        $this->assertFileExists($generatedFilename);
+        $this->assertFileExists($this->workspace()->path($generatedFilename));
 
         $expected = file_get_contents(trim(__DIR__ . '/output/' . $name));
-        $actual = file_get_contents(trim($generatedFilename));
+        $actual = file_get_contents($this->workspace()->path($generatedFilename));
 
         // replace the unique suite hash with %run.uuid%
         $actual = preg_replace('{([0-9a-f]{40})}', '%run.uuid%', $actual);
@@ -90,6 +90,5 @@ class ReportOutputTest extends SystemTestCase
         $actual = preg_replace('{([0-9]{2}:[0-9]{2}:[0-9]{2})}', '%time%', $actual);
 
         $this->assertStringContainsString($expected, $actual);
-        unlink($generatedFilename);
     }
 }

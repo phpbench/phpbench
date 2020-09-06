@@ -13,26 +13,27 @@
 namespace PhpBench\Tests\System;
 
 use PhpBench\Dom\Document;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\IntegrationTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
-class SystemTestCase extends TestCase
+class SystemTestCase extends IntegrationTestCase
 {
+    /**
+     * @var string
+     */
     protected $fname;
-    protected $filesystem;
-    protected $workspaceDir;
 
     protected function setUp(): void
     {
-        $this->filesystem = new Filesystem();
-        $this->workspaceDir = sys_get_temp_dir() . '/phpbench-tests';
-        $this->filesystem->remove($this->workspaceDir);
-        $this->filesystem->mkdir($this->workspaceDir);
-        $this->fname = sprintf('%s/%s', $this->workspaceDir, 'testfile');
-        $this->filesystem->mirror(__DIR__ . '/env', $this->workspaceDir . '/env');
-        $this->filesystem->mirror(__DIR__ . '/benchmarks', $this->workspaceDir . '/benchmarks');
-        $this->filesystem->mirror(__DIR__ . '/bootstrap', $this->workspaceDir . '/bootstrap');
+        $this->fname = $this->workspace()->path('testfile');
+
+        $this->workspace()->reset();
+
+        $filesystem = new Filesystem();
+        $filesystem->mirror(__DIR__ . '/env', $this->workspace()->path('/env'));
+        $filesystem->mirror(__DIR__ . '/benchmarks', $this->workspace()->path('/benchmarks'));
+        $filesystem->mirror(__DIR__ . '/bootstrap', $this->workspace()->path('/bootstrap'));
     }
 
     public function getResult($benchmark = null, $extraCmd = '')
@@ -53,29 +54,12 @@ class SystemTestCase extends TestCase
         return $document;
     }
 
-    /**
-     * TODO: We should be using a generic temporary environment here
-     *       as provided by PhpBench\Tests\Util\Workspace however this
-     *       requires futher refactoring of the tests.
-     */
-    public function clearStorage()
+    public function phpbench($command, $cwd = null): Process
     {
-        foreach (['_storage', '_archive'] as $dirname) {
-            $storageDir = __DIR__ . '/' . $dirname;
+        $cwd = $this->workspace()->path($cwd);
 
-            if ($filesystem->exists($storageDir)) {
-                $filesystem->remove($storageDir);
-            }
-        }
-    }
-
-    public function phpbench($command, $cwd = null)
-    {
-        $cwd = $this->workspaceDir . '/' . $cwd;
-
-        chdir($cwd);
         $bin = __DIR__ . '/../../bin/phpbench --verbose';
-        $process = Process::fromShellCommandline($bin . ' ' . $command);
+        $process = Process::fromShellCommandline($bin . ' ' . $command, $cwd);
         $process->run();
 
         return $process;
@@ -119,10 +103,5 @@ class SystemTestCase extends TestCase
         $dom->formatOutput = true;
         $result = $xpath->evaluate($expression);
         $this->assertEquals($expected, $result);
-    }
-
-    protected function getWorkingDir()
-    {
-        return $this->workspaceDir;
     }
 }

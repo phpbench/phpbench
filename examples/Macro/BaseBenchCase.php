@@ -10,12 +10,14 @@
  *
  */
 
-namespace PhpBench\Benchmarks\Macro;
+namespace PhpBench\Examples\Macro;
 
 use PhpBench\DependencyInjection\Container;
+use PhpBench\Tests\IntegrationTestCase;
 use PhpBench\Tests\Util\Workspace;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
+
 
 /**
  * Base class for PHPBench macro benchmarks.
@@ -25,7 +27,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
  * @OutputTimeUnit("seconds", precision=3)
  * @Iterations(10)
  * @Warmup(1)
- * @BeforeClassMethods({"createWorkspace"}, extend=true)
+ * @BeforeClassMethods({"resetWorkspace"})
  * @AfterClassMethods({"removeWorkspace"})
  */
 class BaseBenchCase
@@ -48,13 +50,18 @@ class BaseBenchCase
         $this->container = $this->getContainer();
     }
 
+    protected static function workspace(): Workspace
+    {
+        return Workspace::create(__DIR__ . '/../../tests/Workspace');
+    }
+
     /**
      * This method is called in a separate process before the iterations
      * are executed. See the annotations in the header of this class.
      */
-    public static function createWorkspace()
+    public static function resetWorkspace()
     {
-        Workspace::initWorkspace();
+        self::workspace()->reset();
     }
 
     /**
@@ -63,7 +70,7 @@ class BaseBenchCase
      */
     public static function removeWorkspace()
     {
-        Workspace::cleanWorkspace();
+        // do something
     }
 
     protected function getContainer()
@@ -76,11 +83,13 @@ class BaseBenchCase
 
     public function runCommand($serviceId, $args)
     {
-        chdir(Workspace::getWorkspacePath());
+        $cwd = getcwd();
+        chdir($this->workspace()->path());
         $input = new ArrayInput($args);
         $output = new BufferedOutput();
         $command = $this->getContainer()->get($serviceId);
         $exitCode = $command->run($input, $output);
+        chdir($cwd);
 
         if ($exitCode !== 0) {
             throw new \RuntimeException(sprintf(
@@ -95,11 +104,6 @@ class BaseBenchCase
     protected static function getFunctionalBenchmarkPath()
     {
         return __DIR__ . '/benchmarks';
-    }
-
-    protected static function getWorkspacePath()
-    {
-        return Workspace::getWorkspacePath();
     }
 
     protected function addContainerExtensionClass($extensionClass)

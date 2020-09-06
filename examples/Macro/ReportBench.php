@@ -10,17 +10,18 @@
  *
  */
 
-namespace PhpBench\Benchmarks\Macro;
+namespace PhpBench\Examples\Macro;
 
 use PhpBench\Console\Command\ReportCommand;
 use PhpBench\Console\Command\RunCommand;
+use PhpBench\Examples\Macro\BaseBenchCase;
 
 
 
 /**
  * Benchmark for the report generation command.
  *
- * @BeforeClassMethods({"createWorkspace", "generateDump"})
+ * @BeforeClassMethods({"resetWorkspace", "generateDump"})
  */
 class ReportBench extends BaseBenchCase
 {
@@ -35,14 +36,14 @@ class ReportBench extends BaseBenchCase
         $case = new self();
         $case->runCommand(RunCommand::class, [
             'path' => self::getFunctionalBenchmarkPath(),
-            '--dump-file' => self::getWorkspacePath() . '/dump.xml',
+            '--dump-file' => self::workspace()->path('dump.xml'),
         ]);
     }
 
     public function benchAggregate()
     {
         $this->runCommand(ReportCommand::class, [
-            '--file' => [$this->getWorkspacePath() . '/dump.xml'],
+            '--file' => [$this->workspace()->path('/dump.xml')],
             '--report' => ['aggregate'],
         ]);
     }
@@ -50,7 +51,7 @@ class ReportBench extends BaseBenchCase
     public function benchDefault()
     {
         $this->runCommand(ReportCommand::class, [
-            '--file' => [$this->getWorkspacePath() . '/dump.xml'],
+            '--file' => [$this->workspace()->path('dump.xml')],
             '--report' => ['default'],
         ]);
     }
@@ -58,7 +59,7 @@ class ReportBench extends BaseBenchCase
     public function benchEnv()
     {
         $this->runCommand(ReportCommand::class, [
-            '--file' => [$this->getWorkspacePath() . '/dump.xml'],
+            '--file' => [$this->workspace()->path('dump.xml')],
             '--report' => ['env'],
         ]);
     }

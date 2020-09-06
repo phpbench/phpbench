@@ -229,6 +229,7 @@ class CoreExtension implements ExtensionInterface
         $container->register(Finder::class, function (Container $container) {
             return new Finder();
         });
+
         $container->register(Launcher::class, function (Container $container) {
             return new Launcher(
                 new PayloadFactory(),

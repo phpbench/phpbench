@@ -15,12 +15,16 @@ namespace PhpBench;
 use Composer\Autoload\ClassLoader;
 use PhpBench\Console\Application;
 use PhpBench\DependencyInjection\Container;
+use PhpBench\Exception\ConfigurationPreProcessingError;
 use PhpBench\Extension\CoreExtension;
 use PhpBench\Extensions\XDebug\XDebugExtension;
 use PhpBench\Json\JsonDecoder;
 use Seld\JsonLint\JsonParser;
 use Seld\JsonLint\ParsingException;
-use Symfony\Component\Debug\ErrorHandler;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Style\SymfonyStyle;
+use Throwable;
 use Webmozart\PathUtil\Path;
 
 class PhpBench
@@ -34,9 +38,7 @@ class PhpBench
 
     public static function run(ClassLoader $autoloader): void
     {
-        // Converts warnings to exceptions
-        ErrorHandler::register();
-
+        self::registerErrorHandler();
         $config = self::loadConfig();
 
         if (isset($config['extension_autoloader']) && $config['extension_autoloader']) {
@@ -89,6 +91,7 @@ class PhpBench
         $configPaths = [];
         $extensions = [];
         $configOverride = [];
+        $profile = null;
 
         foreach ($argv as $arg) {
             if ($configFile = self::parseOption($arg, 'config')) {
@@ -125,6 +128,10 @@ class PhpBench
             if ($arg == '--php-disable-ini') {
                 $configOverride['php_disable_ini'] = true;
             }
+
+            if ($value = self::parseOption($arg, 'profile')) {
+                $profile = $value;
+            }
         }
 
         if (empty($configPaths)) {
@@ -144,7 +151,7 @@ class PhpBench
                 continue;
             }
 
-            $configRaw = file_get_contents($configPath);
+            $configRaw = (string)file_get_contents($configPath);
 
             try {
                 $parser = new JsonParser();
@@ -176,6 +183,11 @@ class PhpBench
             $configOverride
         );
 
+        if (null !== $profile) {
+            $config = self::mergeProfile($config, $profile);
+        }
+        unset($config['profiles']);
+
         // add any manually specified extensions
         foreach ($extensions as $extension) {
             $config['extensions'][] = $extension;
@@ -184,10 +196,10 @@ class PhpBench
         return $config;
     }
 
-    private static function getBootstrapPath($configDir, $bootstrap)
+    private static function getBootstrapPath($configDir, $bootstrap): ?string
     {
         if (!$bootstrap) {
-            return;
+            return null;
         }
 
         // if the path is absolute, return it unmodified
@@ -212,5 +224,34 @@ class PhpBench
         }
 
         return null;
+    }
+
+    private static function mergeProfile(array $config, string $profile): array
+    {
+        if (!isset($config['profiles'][$profile])) {
+            throw new ConfigurationPreProcessingError(sprintf(
+                'Unknown profile "%s" specified, defined profiles: "%s"',
+                $profile, implode('", "', array_keys($config['profiles'] ?? []))
+            ));
+        }
+
+        return array_merge($config, $config['profiles'][$profile]);
+    }
+
+    private static function registerErrorHandler(): void
+    {
+        set_exception_handler(function (Throwable $throwable): void {
+            $input = new ArgvInput();
+            $output = (new ConsoleOutput())->getErrorOutput();
+
+            $format = new SymfonyStyle($input, $output);
+            $format->error(sprintf('Error: %s', $throwable->getMessage()));
+
+            if ($input->hasParameterOption(['-v', '-vv', '-vvv'])) {
+                $format->block($throwable->getTraceAsString());
+            }
+
+            exit(255);
+        });
     }
 }

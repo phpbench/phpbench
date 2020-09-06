@@ -21,6 +21,7 @@ Backward compatibility breaks:
 
 Features
 
+- Configuration profiles
 - XDebug extension is loaded by default if extension is loaded
 - Baseline: Specify baseline suite when running benchmarks and show differences in
   reports #648

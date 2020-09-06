@@ -1,5 +1,8 @@
 <?php
 
+use PhpBench\Exception\ConfigurationPreProcessingError;
+use Symfony\Component\ErrorHandler\ErrorHandler;
+
 /*
  * This file is part of the PHPBench package
  *
