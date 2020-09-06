@@ -69,7 +69,6 @@
     "autoload-dev": {
         "psr-4": {
             "PhpBench\\Tests\\": "tests/",
-            "PhpBench\\Benchmarks\\": "benchmarks/",
             "PhpBench\\Examples\\": "examples/",
             "PhpBench\\Extensions\\XDebug\\Tests\\": "extensions/xdebug/tests/"
         }
