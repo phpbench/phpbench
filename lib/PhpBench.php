@@ -21,7 +21,11 @@ use PhpBench\Extensions\XDebug\XDebugExtension;
 use PhpBench\Json\JsonDecoder;
 use Seld\JsonLint\JsonParser;
 use Seld\JsonLint\ParsingException;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\ErrorHandler\ErrorHandler;
+use Throwable;
 use Webmozart\PathUtil\Path;
 
 class PhpBench
@@ -35,8 +39,7 @@ class PhpBench
 
     public static function run(ClassLoader $autoloader): void
     {
-        // Converts warnings to exceptions
-        ErrorHandler::register();
+        self::registerErrorHandler();
         $config = self::loadConfig();
 
         if (isset($config['extension_autoloader']) && $config['extension_autoloader']) {
@@ -228,5 +231,21 @@ class PhpBench
         }
 
         return array_merge($config, $config['profiles'][$profile]);
+    }
+
+    private static function registerErrorHandler(): void
+    {
+        set_exception_handler(function (Throwable $throwable) {
+            $input = new ArgvInput();
+            $output = new ConsoleOutput();
+            $format = new SymfonyStyle($input, $output);
+            $format->error(sprintf('Error: %s', $throwable->getMessage()));
+
+            if ($input->hasParameterOption(['-v', '-vv', '-vvv'])) {
+                $format->block($throwable->getTraceAsString());
+            }
+
+            exit(255);
+        });
     }
 }
