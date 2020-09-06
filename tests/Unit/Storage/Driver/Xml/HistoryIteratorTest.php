@@ -19,12 +19,13 @@ use PhpBench\Model\Summary;
 use PhpBench\Model\Tag;
 use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Storage\Driver\Xml\HistoryIterator;
+use PhpBench\Tests\IntegrationTestCase;
 use PhpBench\Tests\Util\Workspace;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Filesystem\Filesystem;
 
-class HistoryIteratorTest extends TestCase
+class HistoryIteratorTest extends IntegrationTestCase
 {
     private $xmlDecoder;
     private $iterator;
@@ -32,12 +33,11 @@ class HistoryIteratorTest extends TestCase
 
     protected function setUp(): void
     {
-        Workspace::initWorkspace();
-
+        $this->workspace()->reset();
         $this->xmlDecoder = $this->prophesize(XmlDecoder::class);
         $this->iterator = new HistoryIterator(
             $this->xmlDecoder->reveal(),
-            Workspace::getWorkspacePath()
+            $this->workspace()->path()
         );
 
         $this->filesystem = new Filesystem();
@@ -108,7 +108,7 @@ class HistoryIteratorTest extends TestCase
         $dom = new Document();
         $test = $dom->createRoot('test');
         $test->setAttribute('uuid', $uuid);
-        $path = Workspace::getWorkspacePath() . $date->format('/Y/m/d/') . '/' . $uuid . '.xml';
+        $path = $this->workspace()->path($date->format('/Y/m/d/') . '/' . $uuid . '.xml');
 
         if (!$this->filesystem->exists(dirname($path))) {
             $this->filesystem->mkdir(dirname($path));

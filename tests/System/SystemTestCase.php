@@ -12,13 +12,13 @@
 
 namespace PhpBench\Tests\System;
 
-use Phpactor\TestUtils\Workspace;
+use PhpBench\Tests\IntegrationTestCase;
 use PhpBench\Dom\Document;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
-class SystemTestCase extends TestCase
+class SystemTestCase extends IntegrationTestCase
 {
     /**
      * @var string
@@ -35,11 +35,6 @@ class SystemTestCase extends TestCase
         $filesystem->mirror(__DIR__ . '/env', $this->workspace()->path('/env'));
         $filesystem->mirror(__DIR__ . '/benchmarks', $this->workspace()->path('/benchmarks'));
         $filesystem->mirror(__DIR__ . '/bootstrap', $this->workspace()->path('/bootstrap'));
-    }
-
-    protected function workspace(): Workspace
-    {
-        return Workspace::create(__DIR__ . '/../Workspace');
     }
 
     public function getResult($benchmark = null, $extraCmd = '')
