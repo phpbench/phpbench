@@ -10,10 +10,11 @@
  *
  */
 
-namespace PhpBench\Benchmarks\Macro;
+namespace PhpBench\Examples\Macro;
 
 use PhpBench\Console\Command\LogCommand;
 use PhpBench\Console\Command\RunCommand;
+use PhpBench\Examples\Macro\BaseBenchCase;
 
 
 

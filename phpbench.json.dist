@@ -1,16 +1,28 @@
 {
     "bootstrap": "vendor/autoload.php",
-    "path": "benchmarks",
+    "path": "tests/Benchmark",
     "php_config": {
         "memory_limit": "1G"
     },
-    "extensions": [
-        "PhpBench\\Extensions\\XDebug\\XDebugExtension"
-    ],
     "reports": {
         "all": {
             "generator": "composite",
             "reports": ["env", "default", "aggregate" ]
+        }
+    },
+    "profiles": {
+        "examples": {
+            "path": "examples",
+            "php_disable_ini": true,
+            "php_config": {
+                "extension": [
+                    "phar.so",
+                    "tokenizer.so",
+                    "dom.so",
+                    "json.so",
+                    "mbstring.so"
+                ]
+            }
         }
     }
 }

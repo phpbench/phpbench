@@ -1,13 +1,13 @@
 <?php
 
-namespace PhpBench\Benchmarks;
+namespace PhpBench\Examples;
 
 class TestBench
 {
     /**
      * @Revs(10)
      * @Iterations(30)
-     * @Assert("variant.mode < baseline.mode +/- 10%")
+     * @Assert("variant.mode <= baseline.mode +/- 10%")
      */
     public function benchFoobar(): void
     {
