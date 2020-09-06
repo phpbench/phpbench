@@ -38,6 +38,7 @@ class RunCommand extends Command
     public const OPT_TAG = 'tag';
     public const OPT_STORE = 'store';
     public const OPT_TOLERATE_FAILURE = 'tolerate-failure';
+    const OPT_PROFILE = 'profile';
 
     /**
      * @var RunnerHandler
@@ -111,6 +112,7 @@ EOT
         $this->addOption(self::OPT_TAG, null, InputOption::VALUE_REQUIRED, 'Tag to apply to stored result (useful when comparing reports)');
         $this->addOption(self::OPT_STORE, null, InputOption::VALUE_NONE, 'Persist the results');
         $this->addOption(self::OPT_TOLERATE_FAILURE, null, InputOption::VALUE_NONE, 'Return 0 exit code even when failures occur');
+        $this->addOption(self::OPT_PROFILE, null, InputOption::VALUE_REQUIRED, 'Use the specified configuration profile');
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int

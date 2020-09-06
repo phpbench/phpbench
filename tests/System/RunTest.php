@@ -576,4 +576,14 @@ class RunTest extends SystemTestCase
         );
         $this->assertExitCode(1, $process);
     }
+
+    public function testWithSpecificProfile(): void
+    {
+        $this->workspace()->put('phpbench.json', '{"profiles": {"foobar":{"path": "benchmarks/set4"}}}');
+        $process = $this->phpbench(
+            'run --profile=foobar'
+        );
+
+        $this->assertExitCode(0, $process);
+    }
 }
