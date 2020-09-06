@@ -245,7 +245,7 @@ class PhpBench
             $output = (new ConsoleOutput())->getErrorOutput();
 
             $format = new SymfonyStyle($input, $output);
-            $format->error(sprintf('Error: %s', $throwable->getMessage()));
+            $format->error($throwable->getMessage());
 
             if ($input->hasParameterOption(['-v', '-vv', '-vvv'])) {
                 $format->block($throwable->getTraceAsString());

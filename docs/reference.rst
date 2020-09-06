@@ -11,9 +11,3 @@ Reference
    report-renderers
    assertions
    configuration
-   faq
-
-.. toctree::
-   :hidden:
-
-   extensions/custom
