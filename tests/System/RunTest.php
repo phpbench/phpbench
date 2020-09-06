@@ -579,11 +579,22 @@ class RunTest extends SystemTestCase
 
     public function testWithSpecificProfile(): void
     {
-        $this->workspace()->put('phpbench.json', '{"profiles": {"foobar":{"path": "benchmarks/set4"}}}');
+        $this->workspace()->put('phpbench.json', '{"profiles": {"foobar":{"path": "benchmarks/set4/NothingBench.php"}}}');
         $process = $this->phpbench(
             'run --profile=foobar'
         );
 
         $this->assertExitCode(0, $process);
+    }
+
+    public function testErrorWhenUnknownProfileGiven(): void
+    {
+        $this->workspace()->put('phpbench.json', '{"profiles": {"foobar":{"path": "benchmarks/set4/NothingBench.php"}}}');
+        $process = $this->phpbench(
+            'run --profile=barfoo'
+        );
+
+        $this->assertExitCode(255, $process);
+        $this->assertStringContainsString('Unknown profile', $process->getOutput());
     }
 }

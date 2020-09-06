@@ -1,5 +1,8 @@
 <?php
 
+use PhpBench\Exception\ConfigurationPreProcessingError;
+use Symfony\Component\ErrorHandler\ErrorHandler;
+
 /*
  * This file is part of the PHPBench package
  *
@@ -20,4 +23,9 @@ if (is_file(__DIR__ . '/../vendor/autoload.php')) {
     exit(1);
 }
 
-PhpBench\PhpBench::run($autoloader);
+try {
+    PhpBench\PhpBench::run($autoloader);
+} catch (ConfigurationPreProcessingError $error) {
+    echo $error->getMessage() . PHP_EOL;
+    exit(1);
+}
