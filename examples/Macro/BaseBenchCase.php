@@ -30,7 +30,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
  * @BeforeClassMethods({"resetWorkspace"})
  * @AfterClassMethods({"removeWorkspace"})
  */
-class BaseBenchCase extends IntegrationTestCase
+class BaseBenchCase
 {
     private $container;
 
@@ -48,6 +48,11 @@ class BaseBenchCase extends IntegrationTestCase
     public function __construct()
     {
         $this->container = $this->getContainer();
+    }
+
+    protected static function workspace(): Workspace
+    {
+        return Workspace::create(__DIR__ . '/../../tests/Workspace');
     }
 
     /**
