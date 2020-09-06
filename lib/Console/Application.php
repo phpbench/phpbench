@@ -41,7 +41,8 @@ class Application extends BaseApplication
     {
         $default = parent::getDefaultInputDefinition();
         $default->addOptions([
-            new InputOption('--config', null, InputOption::VALUE_REQUIRED, 'Configuration file'),
+            new InputOption('--profile', null, InputOption::VALUE_REQUIRED, 'Configuration file'),
+            new InputOption('--config', null, InputOption::VALUE_REQUIRED, 'Use the specified configuration profile'),
             new InputOption('--extension', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Enable an extension'),
         ]);
 
