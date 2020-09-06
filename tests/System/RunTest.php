@@ -17,7 +17,7 @@ class RunTest extends SystemTestCase
     /**
      * It should use a speified, valid, configuration.
      */
-    public function testSpecifiedConfig()
+    public function testSpecifiedConfig(): void
     {
         $process = $this->phpbench('run --verbose --config=env/config_valid/phpbench.json');
         $this->assertExitCode(0, $process);
@@ -28,7 +28,7 @@ class RunTest extends SystemTestCase
      * It should use phpbench.json if present
      * It should prioritize phpbench.json over .phpbench.dist.json.
      */
-    public function testPhpBenchConfig()
+    public function testPhpBenchConfig(): void
     {
         $process = $this->phpbench('run', 'env/config_valid');
         $this->assertExitCode(0, $process);
@@ -38,7 +38,7 @@ class RunTest extends SystemTestCase
     /**
      * It should use phpbench.json.dist if present.
      */
-    public function testPhpBenchDistConfig()
+    public function testPhpBenchDistConfig(): void
     {
         $process = $this->phpbench('run', 'env/config_dist');
         $this->assertExitCode(0, $process);
@@ -49,7 +49,7 @@ class RunTest extends SystemTestCase
      * It should run when given a path.
      * It should show the default (simple) report.
      */
-    public function testCommand()
+    public function testCommand(): void
     {
         $process = $this->phpbench('run benchmarks/set4/NothingBench.php');
         $this->assertExitCode(0, $process);
@@ -58,7 +58,7 @@ class RunTest extends SystemTestCase
     /**
      * It should run and generate a named report.
      */
-    public function testCommandWithReport()
+    public function testCommandWithReport(): void
     {
         $process = $this->phpbench('run benchmarks/set4/NothingBench.php --report=default');
         $this->assertExitCode(0, $process);
@@ -69,7 +69,7 @@ class RunTest extends SystemTestCase
     /**
      * It should show an error if no path is given (and no path is configured).
      */
-    public function testCommandWithNoPath()
+    public function testCommandWithNoPath(): void
     {
         $process = $this->phpbench('run');
         $this->assertExitCode(1, $process);
@@ -79,7 +79,7 @@ class RunTest extends SystemTestCase
     /**
      * It should run and generate a report configuration.
      */
-    public function testCommandWithReportConfiguration()
+    public function testCommandWithReportConfiguration(): void
     {
         $process = $this->phpbench(
             'run benchmarks/set4/NothingBench.php --report=\'{"extends": "default"}\''
@@ -92,7 +92,7 @@ class RunTest extends SystemTestCase
     /**
      * It should fail if an unknown report name is given.
      */
-    public function testCommandWithReportConfigurationUnknown()
+    public function testCommandWithReportConfigurationUnknown(): void
     {
         $process = $this->phpbench(
             'run --report=\'{"generator": "foo_table"}\' benchmarks/set4/NothingBench.php'
@@ -104,7 +104,7 @@ class RunTest extends SystemTestCase
     /**
      * It should fail if an invalid report configuration is given.
      */
-    public function testCommandWithReportConfigurationInvalid()
+    public function testCommandWithReportConfigurationInvalid(): void
     {
         $process = $this->phpbench(
             'run --report=\'{"name": "foo_ta\' benchmarks/set4/NothingBench.php'
@@ -116,7 +116,7 @@ class RunTest extends SystemTestCase
     /**
      * It should fail if an invalid report name is provided.
      */
-    public function testFailInvalidReportName()
+    public function testFailInvalidReportName(): void
     {
         $process = $this->phpbench(
             'run --report=foobar benchmarks/set4/NothingBench.php'
@@ -128,7 +128,7 @@ class RunTest extends SystemTestCase
     /**
      * It should fail if there is an assertion failure.
      */
-    public function testFailAssertionFailure()
+    public function testFailAssertionFailure(): void
     {
         $process = $this->phpbench(
             'run benchmarks/set5/AssertFailBench.php'
@@ -139,7 +139,7 @@ class RunTest extends SystemTestCase
     /**
      * It should not fail if there are warnings.
      */
-    public function testFailAssertionWarning()
+    public function testFailAssertionWarning(): void
     {
         $process = $this->phpbench(
             'run benchmarks/set5/AssertWarnBench.php'
@@ -150,7 +150,7 @@ class RunTest extends SystemTestCase
     /**
      * If passed the tolerate-failure option, it should return 0 exit code even when failures are encountered.
      */
-    public function testFailAssertionFailureTolerate()
+    public function testFailAssertionFailureTolerate(): void
     {
         $process = $this->phpbench(
             'run benchmarks/set5/AssertFailBench.php --tolerate-failure'
@@ -161,7 +161,7 @@ class RunTest extends SystemTestCase
     /**
      * It should override assertions.
      */
-    public function testFailAssertionOverride()
+    public function testFailAssertionOverride(): void
     {
         $process = $this->phpbench(
             'run benchmarks/set5/AssertFailBench.php --assert="variant.mean < 1000 microseconds"'
@@ -172,7 +172,7 @@ class RunTest extends SystemTestCase
     /**
      * It should dump none to an XML file.
      */
-    public function testDumpXml()
+    public function testDumpXml(): void
     {
         $process = $this->phpbench(
             'run --dump-file=' . $this->fname . ' benchmarks/set4/NothingBench.php'
@@ -186,7 +186,7 @@ class RunTest extends SystemTestCase
     /**
      * It should dump to stdout.
      */
-    public function testDumpXmlStdOut()
+    public function testDumpXmlStdOut(): void
     {
         $process = $this->phpbench(
             'run --dump --progress=none benchmarks/set1/BenchmarkBench.php'
@@ -199,7 +199,7 @@ class RunTest extends SystemTestCase
     /**
      * It should accept explicit parameters.
      */
-    public function testOverrideParameters()
+    public function testOverrideParameters(): void
     {
         $process = $this->phpbench(
             'run --dump --progress=none --parameters=\'{"length": 333}\' benchmarks/set1/BenchmarkBench.php'
@@ -212,7 +212,7 @@ class RunTest extends SystemTestCase
     /**
      * It should throw an exception if an invalid JSON string is provided for parameters.
      */
-    public function testOverrideParametersInvalidJson()
+    public function testOverrideParametersInvalidJson(): void
     {
         $process = $this->phpbench(
             'run --dump --progress=none --parameters=\'{"length": 333\' benchmarks/set1/BenchmarkBench.php'
@@ -225,7 +225,7 @@ class RunTest extends SystemTestCase
     /**
      * Its should allow the number of iterations to be specified.
      */
-    public function testOverrideIterations()
+    public function testOverrideIterations(): void
     {
         $process = $this->phpbench(
             'run --filter=benchDoNothing --progress=none --dump --iterations=10 benchmarks/set1/BenchmarkBench.php'
@@ -239,7 +239,7 @@ class RunTest extends SystemTestCase
     /**
      * It should override revolutions.
      */
-    public function testOverrideRevolutions()
+    public function testOverrideRevolutions(): void
     {
         $process = $this->phpbench(
             'run --filter=benchDoNothing --progress=none --dump --revs=666 benchmarks/set1/BenchmarkBench.php'
@@ -253,7 +253,7 @@ class RunTest extends SystemTestCase
     /**
      * Its should allow the time unit to be specified.
      */
-    public function testOverrideTimeUnit()
+    public function testOverrideTimeUnit(): void
     {
         $process = $this->phpbench(
             'run --filter=benchDoNothing --time-unit=milliseconds --iterations=10 benchmarks/set1/BenchmarkBench.php'
@@ -266,7 +266,7 @@ class RunTest extends SystemTestCase
     /**
      * Its should allow the mode to be specified.
      */
-    public function testOverrideMode()
+    public function testOverrideMode(): void
     {
         $process = $this->phpbench(
             'run --filter=benchDoNothing --mode=throughput --iterations=10 benchmarks/set1/BenchmarkBench.php'
@@ -279,7 +279,7 @@ class RunTest extends SystemTestCase
     /**
      * It should set the bootstrap file.
      */
-    public function testSetBootstrap()
+    public function testSetBootstrap(): void
     {
         // The foobar_bootstrap defines a single class which is used by FoobarBench
         $process = $this->phpbench(
@@ -293,7 +293,7 @@ class RunTest extends SystemTestCase
      * It should set the bootstrap file which contains variables that conflict with the
      * script templates.
      */
-    public function testSetConflictBootstrap()
+    public function testSetConflictBootstrap(): void
     {
         // The foobar_bootstrap defines a single class which is used by FoobarBench
         $process = $this->phpbench(
@@ -306,7 +306,7 @@ class RunTest extends SystemTestCase
     /**
      * It should set the bootstrap using the short option.
      */
-    public function testSetBootstrapShort()
+    public function testSetBootstrapShort(): void
     {
         // The foobar_bootstrap defines a single class which is used by FoobarBench
         $process = $this->phpbench(
@@ -319,7 +319,7 @@ class RunTest extends SystemTestCase
     /**
      * It should override the bootstrap file.
      */
-    public function testOverrideBootstrap()
+    public function testOverrideBootstrap(): void
     {
         // The foobar_bootstrap defines a single class which is used by FoobarBench
         $process = $this->phpbench(
@@ -334,7 +334,7 @@ class RunTest extends SystemTestCase
     /**
      * It should load the configured bootstrap relative to the config file.
      */
-    public function testConfigBootstrapRelativity()
+    public function testConfigBootstrapRelativity(): void
     {
         // The foobar.bootstrap defines a single class which is used by FoobarBench
         $process = $this->phpbench(
@@ -350,7 +350,7 @@ class RunTest extends SystemTestCase
      *
      * @dataProvider provideProgressLoggers
      */
-    public function testProgressLogger($progress)
+    public function testProgressLogger($progress): void
     {
         $process = $this->phpbench(
             'run --progress=' . $progress . ' benchmarks/set1/BenchmarkBench.php'
@@ -358,7 +358,7 @@ class RunTest extends SystemTestCase
         $this->assertExitCode(0, $process);
     }
 
-    public function provideProgressLoggers()
+    public function provideProgressLoggers(): array
     {
         return [
             ['classdots'],
@@ -374,7 +374,7 @@ class RunTest extends SystemTestCase
     /**
      * It should run specified groups.
      */
-    public function testGroups()
+    public function testGroups(): void
     {
         $process = $this->phpbench(
             'run --group=do_nothing --dump --progress=none benchmarks/set1/BenchmarkBench.php'
@@ -390,7 +390,7 @@ class RunTest extends SystemTestCase
      *
      * @dataProvider provideOutputs
      */
-    public function testOutputs($output)
+    public function testOutputs($output): void
     {
         $process = $this->phpbench(
             'run --output=' . $output . ' --report=default benchmarks/set1/BenchmarkBench.php'
@@ -399,7 +399,7 @@ class RunTest extends SystemTestCase
         $this->assertExitCode(0, $process);
     }
 
-    public function provideOutputs()
+    public function provideOutputs(): array
     {
         return [
             ['html'],
@@ -410,7 +410,7 @@ class RunTest extends SystemTestCase
     /**
      * It should set the retry threshold.
      */
-    public function testRetryThreshold()
+    public function testRetryThreshold(): void
     {
         // use the debug executor, providing 3 groups of 4 iterations. the
         // first two are out of bounds the third is constant.
@@ -428,7 +428,7 @@ class RunTest extends SystemTestCase
     /**
      * It should set the sleep option.
      */
-    public function testSleep()
+    public function testSleep(): void
     {
         $process = $this->phpbench(
             'run benchmarks/set4/NothingBench.php --sleep=5000'
@@ -441,7 +441,7 @@ class RunTest extends SystemTestCase
      * It should exit with code "1" if an exception is encountered while running
      * the iterations.
      */
-    public function testIterationErrorExitCode()
+    public function testIterationErrorExitCode(): void
     {
         $process = $this->phpbench(
             'run benchmarks/set3/ErrorBench.php'
@@ -455,7 +455,7 @@ class RunTest extends SystemTestCase
     /**
      * It should stop on the first exception if an exception is encountered.
      */
-    public function testIterationStopOnError()
+    public function testIterationStopOnError(): void
     {
         $process = $this->phpbench(
             'run benchmarks/set3/ErrorBench.php --stop-on-error'
@@ -470,7 +470,7 @@ class RunTest extends SystemTestCase
      * It should stop on the first exception if an exception is encountered
      * with many variants
      */
-    public function testIterationStopOnErrorWithMultipleVariants()
+    public function testIterationStopOnErrorWithMultipleVariants(): void
     {
         $process = $this->phpbench(
             'run benchmarks/set3/ErrorVariantsBench.php --stop-on-error'
@@ -483,7 +483,7 @@ class RunTest extends SystemTestCase
     /**
      * It should allow the precision to be set.
      */
-    public function testPrecision()
+    public function testPrecision(): void
     {
         $process = $this->phpbench(
             'run benchmarks/set4/NothingBench.php --precision=6'
@@ -498,7 +498,7 @@ class RunTest extends SystemTestCase
     /**
      * It should request that the suite result to be stored.
      */
-    public function testStore()
+    public function testStore(): void
     {
         $process = $this->phpbench(
             'run benchmarks/set4/NothingBench.php --store'
@@ -507,7 +507,7 @@ class RunTest extends SystemTestCase
         $this->assertExitCode(0, $process);
     }
 
-    public function testTaggingImplicitlyStoresResult()
+    public function testTaggingImplicitlyStoresResult(): void
     {
         $process = $this->phpbench(
             'run benchmarks/set4/NothingBench.php --tag=foobar'
@@ -525,7 +525,7 @@ class RunTest extends SystemTestCase
     /**
      * It should run with the memory-centric-microtime executor
      */
-    public function testRunsWithMemoryExecutor()
+    public function testRunsWithMemoryExecutor(): void
     {
         $process = $this->phpbench(
             'run benchmarks/set4/NothingBench.php --executor=memory_centric_microtime --iterations=1 --revs=1'
@@ -538,7 +538,7 @@ class RunTest extends SystemTestCase
     /**
      * It should not crash when zeros are reported as times.
      */
-    public function testZeroTimedIterations()
+    public function testZeroTimedIterations(): void
     {
         $process = $this->phpbench(
             'run benchmarks/set1 --executor=\'{"executor": "debug", "times": [0]}\''
@@ -549,7 +549,7 @@ class RunTest extends SystemTestCase
     /**
      * It should set the PHP binary, wrapper and config.
      */
-    public function testPhpEnvOptions()
+    public function testPhpEnvOptions(): void
     {
         $process = $this->phpbench(
             'run benchmarks/set4/NothingBench.php --php-binary=php --php-config="memory_limit: 10M" --php-wrapper="env"'
@@ -560,7 +560,7 @@ class RunTest extends SystemTestCase
     /**
      * It should disable the PHP ini file.
      */
-    public function testPhpDisableIni()
+    public function testPhpDisableIni(): void
     {
         $process = $this->phpbench(
             'run benchmarks/set4/NothingBench.php --php-disable-ini --php-config="extension:json.so" --report=env'
@@ -569,7 +569,7 @@ class RunTest extends SystemTestCase
         $this->assertRegExp('{ini\s+\| no}', $process->getOutput());
     }
 
-    public function testErrorWhenTimeoutExceeded()
+    public function testErrorWhenTimeoutExceeded(): void
     {
         $process = $this->phpbench(
             'run benchmarks/set6/TimeoutBench.php'

@@ -13,6 +13,7 @@
 namespace PhpBench\Extensions\XDebug\Tests\System;
 
 use PhpBench\Tests\System\SystemTestCase;
+use Symfony\Component\Process\Process;
 
 class XDebugTestCase extends SystemTestCase
 {
@@ -25,7 +26,7 @@ class XDebugTestCase extends SystemTestCase
         parent::setUp();
     }
 
-    public function phpbench($command, $workingDir = '.')
+    public function phpbench($command, $workingDir = '.'): Process
     {
         $command .= ' --extension="PhpBench\\Extensions\\XDebug\\XDebugExtension"';
 
