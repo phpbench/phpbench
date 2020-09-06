@@ -20,8 +20,6 @@ use PhpBench\Model\Tag;
 use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Storage\Driver\Xml\HistoryIterator;
 use PhpBench\Tests\IntegrationTestCase;
-use PhpBench\Tests\Util\Workspace;
-use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Filesystem\Filesystem;
 

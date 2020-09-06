@@ -12,9 +12,8 @@
 
 namespace PhpBench\Tests\System;
 
-use PhpBench\Tests\IntegrationTestCase;
 use PhpBench\Dom\Document;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\IntegrationTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 

@@ -2,8 +2,8 @@
 
 namespace PhpBench\Tests;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Tests\Util\Workspace;
+use PHPUnit\Framework\TestCase;
 
 class IntegrationTestCase extends TestCase
 {

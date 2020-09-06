@@ -108,6 +108,7 @@ class Workspace
 
             if (in_array($splFileInfo->getType(), ['socket', 'file', 'link'])) {
                 unlink($path);
+
                 return;
             }
         }
