@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class IntegrationTestCase extends TestCase
 {
-    protected function workspace(): Workspace
+    protected static function workspace(): Workspace
     {
         return Workspace::create(__DIR__ . '/Workspace');
     }

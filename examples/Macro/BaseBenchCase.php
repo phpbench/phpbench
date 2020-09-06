@@ -56,7 +56,7 @@ class BaseBenchCase extends IntegrationTestCase
      */
     public static function resetWorkspace()
     {
-        $this->workspace()->reset();
+        self::workspace()->reset();
     }
 
     /**

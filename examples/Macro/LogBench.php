@@ -21,7 +21,7 @@ use PhpBench\Examples\Macro\BaseBenchCase;
 /**
  * Benchmark for the log command.
  *
- * @BeforeClassMethods({"createWorkspace", "createResults"})
+ * @BeforeClassMethods({"resetWorkspace", "createResults"})
  */
 class LogBench extends BaseBenchCase
 {
