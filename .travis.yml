@@ -64,8 +64,9 @@ jobs:
         - export TZ=Europe/Paris
 
       script:
-        - ./vendor/bin/phpunit
-        - php bin/phpbench run --report=env --progress=dots --store
+        - vendor/bin/phpunit
+        - bin/phpbench run --report=env --progress=dots
+        - bin/phpbench run --profile=examples --report=env --progress=dots
 
     - <<: *TEST
 

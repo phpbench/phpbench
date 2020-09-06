@@ -594,7 +594,7 @@ class RunTest extends SystemTestCase
             'run --profile=barfoo'
         );
 
-        $this->assertExitCode(1, $process);
-        $this->assertStringContainsString('Unknown profile', $process->getOutput());
+        $this->assertExitCode(255, $process);
+        $this->assertStringContainsString('Unknown profile', $process->getErrorOutput());
     }
 }

@@ -24,7 +24,6 @@ use Seld\JsonLint\ParsingException;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\ErrorHandler\ErrorHandler;
 use Throwable;
 use Webmozart\PathUtil\Path;
 
@@ -126,7 +125,13 @@ class PhpBench
                 $configOverride['php_config'] = $value;
             }
 
-            $profile = self::parseOption($arg, 'profile');
+            if ($arg == '--php-disable-ini') {
+                $configOverride['php_disable_ini'] = true;
+            }
+
+            if ($value = self::parseOption($arg, 'profile')) {
+                $profile = $value;
+            }
         }
 
         if (empty($configPaths)) {
@@ -235,9 +240,10 @@ class PhpBench
 
     private static function registerErrorHandler(): void
     {
-        set_exception_handler(function (Throwable $throwable) {
+        set_exception_handler(function (Throwable $throwable): void {
             $input = new ArgvInput();
-            $output = new ConsoleOutput();
+            $output = (new ConsoleOutput())->getErrorOutput();
+
             $format = new SymfonyStyle($input, $output);
             $format->error(sprintf('Error: %s', $throwable->getMessage()));
 
