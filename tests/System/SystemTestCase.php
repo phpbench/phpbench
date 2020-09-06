@@ -12,9 +12,9 @@
 
 namespace PhpBench\Tests\System;
 
+use Phpactor\TestUtils\Workspace;
 use PhpBench\Dom\Document;
 use PHPUnit\Framework\TestCase;
-use Phpactor\TestUtils\Workspace;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
