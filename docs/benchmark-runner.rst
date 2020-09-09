@@ -123,7 +123,7 @@ configure reports.
 Retry Threshold
 ---------------
 
-PHPBench is able to dramatically improve the stability of your benchmarks by
+PHPBench is able to significantly improve the stability of your benchmarks by
 retrying the iteration set until all the deviations in time between iterations
 fit within a given margin of error.
 
