@@ -1,8 +1,8 @@
 CHANGELOG
 =========
 
-develop
--------
+1.0.0-alpha1
+------------
 
 Backward compatibility breaks:
 
