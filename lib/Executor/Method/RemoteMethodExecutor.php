@@ -30,9 +30,9 @@ class RemoteMethodExecutor implements MethodExecutorInterface
             'methods' => var_export($methods, true),
         ];
 
-        $payload = $this->launcher->payload(new PayloadConfig(
+        $payload = $this->launcher->payload(
             __DIR__ . '/template/execute_static_methods.template',
             $tokens
-        ))->launch();
+        )->launch();
     }
 }

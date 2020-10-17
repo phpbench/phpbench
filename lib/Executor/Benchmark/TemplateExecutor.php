@@ -52,15 +52,13 @@ class TemplateExecutor implements BenchmarkExecutorInterface
     {
         $tokens = $this->createTokens($subjectMetadata, $iteration, $config);
 
-        $config = PayloadConfig::builder($this->templatePath, $tokens)
+        $result = $this->launcher->payload($this->templatePath, $tokens)
             ->withTimeout($subjectMetadata->getTimeout())
             ->includePhpConfig(array_merge([
                 self::PHP_OPTION_MAX_EXECUTION_TIME => 0,
             ], $config[self::OPTION_PHP_CONFIG] ?? []))
             ->withRenderPath($config[self::OPTION_PHP_RENDER_PATH])
-            ->build();
-
-        $result = $this->launcher->payload($config)->launch();
+            ->launch();
 
         if (isset($result['buffer']) && $result['buffer']) {
             throw new \RuntimeException(sprintf(

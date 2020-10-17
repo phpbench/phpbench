@@ -12,8 +12,10 @@
 
 namespace PhpBench\Benchmark\Remote;
 
+use RuntimeException;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\PhpExecutableFinder;
+
 
 /**
  * Build and execute tokenized scripts in separate processes.
@@ -80,11 +82,8 @@ class Launcher
         $this->phpDisableIni = $phpDisableIni;
     }
 
-    public function payload(PayloadConfig $config): Payload
+    public function payload(string $templatePath, array $tokens = []): PayloadBuilder
     {
-        $tokens = $config->getTokens();
-        $tokens['bootstrap'] = '';
-
         if (null !== $this->bootstrap) {
             if (!file_exists($this->bootstrap)) {
                 throw new \InvalidArgumentException(sprintf(
@@ -95,33 +94,33 @@ class Launcher
             $tokens['bootstrap'] = $this->bootstrap;
         }
 
-        $phpBinary = $this->resolvePhpBinary();
-
-        $payload = new Payload($config);
-
-        if ($this->phpWrapper) {
-            $payload->setWrapper($this->phpWrapper);
-        }
-
-        if ($this->phpConfig) {
-            $payload->mergePhpConfig($this->phpConfig);
-        }
+        $builder = new PayloadBuilder($templatePath, $tokens);
+        $builder->withPhpBinary($this->resolvePhpBinary());
+        $builder->withPhpWrapper($this->phpWrapper);
+        $builder->includePhpConfig($this->phpConfig);
 
         if (true === $this->phpDisableIni) {
-            $payload->disableIni();
+            $builder->disableIni();
         }
 
-        return $payload;
+        return $builder;
     }
 
-    private function resolvePhpBinary()
+    private function resolvePhpBinary(): string
     {
         // if no php binary, use the PhpExecutableFinder (generally will
         // resolve to PHP_BINARY)
         if (!$this->phpBinary) {
             $finder = new PhpExecutableFinder();
 
-            return $finder->find();
+            $bin = $finder->find();
+            if (!$bin) {
+                throw new RuntimeException(
+                    'Could not resolve a PHP binary on this system'
+                );
+            }
+
+            return $bin;
         }
 
         // if the php binary is absolute, fine.

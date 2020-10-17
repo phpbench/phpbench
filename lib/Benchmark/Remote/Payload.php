@@ -53,11 +53,6 @@ class Payload
     private $process;
 
     /**
-     * @var bool
-     */
-    private $disableIni = false;
-
-    /**
      * @var IniStringBuilder
      */
     private $iniStringBuilder;
@@ -73,42 +68,40 @@ class Payload
     private $timeout;
 
     /**
+     * @var string|null
+     */
+    private $renderPath;
+
+    /**
+     * @var bool
+     */
+    private $disableIni;
+
+    /**
      * Create a new Payload object with the given script template.
      * The template must be the path to a script template.
      */
     public function __construct(
-        PayloadConfig $config,
+        string $template,
+        array $tokens = [],
+        string $phpPath,
+        bool $disableIni,
+        ?string $wrapper = null,
+        ?float $timeout = null,
+        ?array $phpConfig = [],
+        ?string $renderPath = null,
         ProcessFactory $processFactory = null
     ) {
-        $this->setPhpPath($phpPath);
         $this->template = $template;
         $this->tokens = $tokens;
         $this->processFactory = $processFactory ?: new ProcessFactory();
         $this->iniStringBuilder = new IniStringBuilder();
         $this->timeout = $timeout;
-    }
-
-    public function setWrapper($wrapper): void
-    {
-        $this->wrapper = $wrapper;
-    }
-
-    public function mergePhpConfig(array $phpConfig): void
-    {
-        $this->phpConfig = array_merge(
-            $this->phpConfig,
-            $phpConfig
-        );
-    }
-
-    public function setPhpPath($phpPath): void
-    {
         $this->phpPath = escapeshellarg($phpPath);
-    }
-
-    public function disableIni(): void
-    {
-        $this->disableIni = true;
+        $this->phpConfig = $phpConfig;
+        $this->renderPath = $renderPath;
+        $this->disableIni = $disableIni;
+        $this->wrapper = $wrapper;
     }
 
     public function launch(): array

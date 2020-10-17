@@ -44,7 +44,7 @@ abstract class AbstractRemoteProvider implements ProviderInterface
 
     private function getData(): array
     {
-        return $this->launcher->payload(new PayloadConfig($this->template()))->launch();
+        return $this->launcher->payload($this->template())->launch();
     }
 
     abstract protected function name(): string;
