@@ -2,6 +2,8 @@
 
 namespace PhpBench\Benchmark\Remote;
 
+use PhpBench\Registry\Config;
+
 final class PayloadConfigBuilder
 {
     /**
@@ -25,6 +27,16 @@ final class PayloadConfigBuilder
     private $phpConfig = [];
 
     /**
+     * @var ?string
+     */
+    private $renderPath;
+
+    /**
+     * @var ?string
+     */
+    private $phpBinary;
+
+    /**
      * @param array<string,mixed> $tokens
      */
     public function __construct(
@@ -42,9 +54,23 @@ final class PayloadConfigBuilder
         return $this;
     }
 
+    public function withPhpBinary(?string $phpBinary): self
+    {
+        $this->phpBinary = $phpBinary;
+
+        return $this;
+    }
+
     public function includePhpConfig(array $phpConfig): self
     {
         $this->phpConfig = $phpConfig;
+
+        return $this;
+    }
+
+    public function withRenderPath(?string $renderPath): self
+    {
+        $this->renderPath = $renderPath;
 
         return $this;
     }
@@ -55,7 +81,9 @@ final class PayloadConfigBuilder
             $this->templatePath,
             $this->tokens,
             $this->timeout,
-            $this->phpConfig
+            $this->phpConfig,
+            $this->renderPath,
+            $this->phpBinary
         );
     }
 }

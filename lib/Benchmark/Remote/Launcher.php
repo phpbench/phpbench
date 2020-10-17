@@ -97,12 +97,7 @@ class Launcher
 
         $phpBinary = $this->resolvePhpBinary();
 
-        $payload = $this->payloadFactory->create(
-            $config->getTemplatePath(),
-            $tokens,
-            $phpBinary,
-            $config->getTimeout()
-        );
+        $payload = new Payload($config);
 
         if ($this->phpWrapper) {
             $payload->setWrapper($this->phpWrapper);

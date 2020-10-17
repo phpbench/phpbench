@@ -25,6 +25,16 @@ final class PayloadConfig
     private $phpConfig;
 
     /**
+     * @var string
+     */
+    private $phpBinary;
+
+    /**
+     * @var string|null
+     */
+    private $renderPath;
+
+    /**
      * @param array<string,mixed> $tokens
      * @param array<string,mixed> $phpConfig
      */
@@ -32,13 +42,25 @@ final class PayloadConfig
         string $templatePath,
         array $tokens = [],
         ?float $timeout = null,
-        array $phpConfig = []
+        array $phpConfig = [],
+        ?string $renderPath = null,
+        ?string $phpBinary = null
     )
     {
         $this->templatePath = $templatePath;
         $this->tokens = $tokens;
         $this->timeout = $timeout;
         $this->phpConfig = $phpConfig;
+        $this->renderPath = $renderPath;
+        $this->phpBinary = $phpBinary;
+    }
+
+    /**
+     * @param array<string, mixed> $tokens
+     */
+    public static function builder(string $path, array $tokens): PayloadConfigBuilder
+    {
+        return new PayloadConfigBuilder($path, $tokens);
     }
 
     public function getTimeout(): ?float
@@ -67,11 +89,13 @@ final class PayloadConfig
         return $this->phpConfig;
     }
 
-    /**
-     * @param array<string, mixed> $tokens
-     */
-    public static function builder(string $path, array $tokens): PayloadConfigBuilder
+    public function getRenderPath(): ?string
     {
-        return new PayloadConfigBuilder($path, $tokens);
+        return $this->renderPath;
+    }
+
+    public function getPhpBinary(): string
+    {
+        return $this->phpBinary;
     }
 }

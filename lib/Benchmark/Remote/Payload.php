@@ -77,10 +77,7 @@ class Payload
      * The template must be the path to a script template.
      */
     public function __construct(
-        string $template,
-        array $tokens = [],
-        $phpPath = PHP_BINARY,
-        ?float $timeout = null,
+        PayloadConfig $config,
         ProcessFactory $processFactory = null
     ) {
         $this->setPhpPath($phpPath);
