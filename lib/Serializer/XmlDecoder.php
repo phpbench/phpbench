@@ -41,7 +41,6 @@ class XmlDecoder
         $suites = [];
 
         foreach ($document->query('//suite') as $suiteEl) {
-            /** @phpstan-ignore-next-line */
             $suites[] = $this->processSuite($suiteEl);
         }
 
@@ -119,7 +118,6 @@ class XmlDecoder
                 $benchmarkEl->getAttribute('class')
             );
 
-            /** @phpstan-ignore-next-line */
             $this->processBenchmark($benchmark, $benchmarkEl, $resultClasses);
         }
 
@@ -130,7 +128,6 @@ class XmlDecoder
     {
         foreach ($benchmarkEl->query('./subject') as $subjectEl) {
             $subject = $benchmark->createSubject($subjectEl->getAttribute('name'));
-            /** @phpstan-ignore-next-line */
             $this->processSubject($subject, $subjectEl, $resultClasses);
         }
     }
@@ -145,7 +142,6 @@ class XmlDecoder
         $subject->setGroups($groups);
 
         foreach ($subjectEl->query('./executor') as $executorEl) {
-            /** @phpstan-ignore-next-line */
             $subject->setExecutor(ResolvedExecutor::fromNameAndConfig($executorEl->getAttribute('name'), new Config('asd', $this->getParameters($executorEl))));
 
             break;
@@ -173,10 +169,8 @@ class XmlDecoder
 
                 break;
             }
-            /** @phpstan-ignore-next-line */
             $stats = $this->getComputedStats($variantEl);
             $variant = $subject->createVariant($parameterSet, (int)$variantEl->getAttribute('revs'), (int)$variantEl->getAttribute('warmup'), $stats);
-            /** @phpstan-ignore-next-line */
             $this->processVariant($variant, $variantEl, $resultClasses);
         }
     }
@@ -202,7 +196,6 @@ class XmlDecoder
             $name = $parameterEl->getAttribute('name');
 
             if ($parameterEl->getAttribute('type') === 'collection') {
-                /** @phpstan-ignore-next-line */
                 $parameters[$name] = $this->getParameters($parameterEl);
 
                 continue;
