@@ -12,6 +12,8 @@
 
 namespace PhpBench\Model;
 
+use ArrayIterator;
+use DateTime;
 use IteratorAggregate;
 use PhpBench\Assertion\VariantAssertionResults;
 use PhpBench\Environment\Information;
@@ -41,7 +43,7 @@ class Suite implements IteratorAggregate
      */
     public function __construct(
         ?string $tag,
-        \DateTime $date,
+        DateTime $date,
         ?string $configPath = null,
         array $benchmarks = [],
         array $envInformations = [],
@@ -80,7 +82,7 @@ class Suite implements IteratorAggregate
         return $benchmark;
     }
 
-    public function getIterator(): \ArrayIterator
+    public function getIterator(): ArrayIterator
     {
         return new \ArrayIterator($this->benchmarks);
     }
@@ -90,7 +92,7 @@ class Suite implements IteratorAggregate
         return $this->tag;
     }
 
-    public function getDate(): \DateTime
+    public function getDate(): DateTime
     {
         return $this->date;
     }

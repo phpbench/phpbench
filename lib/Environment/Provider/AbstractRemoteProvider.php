@@ -13,7 +13,6 @@
 namespace PhpBench\Environment\Provider;
 
 use PhpBench\Benchmark\Remote\Launcher;
-use PhpBench\Benchmark\Remote\PayloadConfig;
 use PhpBench\Environment\Information;
 use PhpBench\Environment\ProviderInterface;
 

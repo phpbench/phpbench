@@ -14,9 +14,8 @@ namespace PhpBench\Executor\Benchmark;
 
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\Launcher;
-use PhpBench\Benchmark\Remote\Payload;
-use PhpBench\Benchmark\Remote\PayloadConfig;
 use PhpBench\Executor\BenchmarkExecutorInterface;
+use PhpBench\Executor\Exception\ExecutorScriptError;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;
@@ -58,10 +57,21 @@ class TemplateExecutor implements BenchmarkExecutorInterface
                 self::PHP_OPTION_MAX_EXECUTION_TIME => 0,
             ], $config[self::OPTION_PHP_CONFIG] ?? []))
             ->withRenderPath($config[self::OPTION_PHP_RENDER_PATH] ?? null)
-            ->launch();
+            ->withRemoveScript($config[self::OPTION_PHP_REMOVE_SCRIPT])
+            ->validate(function (OptionsResolver $resolver): void {
+                $resolver->setDefaults([
+                    'buffer' => null,
+                ]);
+                $resolver->setRequired([
+                    'time',
+                    'mem',
+                ]);
+                $resolver->setAllowedTypes('time', 'int');
+                $resolver->setAllowedTypes('mem', 'array');
+            })->launch();
 
-        if (isset($result['buffer']) && $result['buffer']) {
-            throw new \RuntimeException(sprintf(
+        if ($result['buffer']) {
+            throw new ExecutorScriptError(sprintf(
                 'Benchmark made some noise: %s',
                 $result['buffer']
             ));
@@ -79,8 +89,10 @@ class TemplateExecutor implements BenchmarkExecutorInterface
         $config->setDefaults([
             self::OPTION_PHP_CONFIG => [
             ],
+            self::OPTION_PHP_REMOVE_SCRIPT => true,
             self::OPTION_PHP_RENDER_PATH => (function () {
                 $tmpPath = tempnam(sys_get_temp_dir(), 'PhpBench');
+
                 if (!$tmpPath) {
                     throw new RuntimeException(sprintf(
                         'Could not resolve temp path, configure "%s" explicitly',

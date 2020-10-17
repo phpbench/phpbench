@@ -13,7 +13,12 @@
 namespace PhpBench\Benchmark\Remote;
 
 use PhpBench\Benchmark\Remote\Exception\ScriptErrorException;
+use PhpBench\Executor\Exception\ExecutorScriptError;
+use RuntimeException;
+use Symfony\Component\OptionsResolver\Exception\ExceptionInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Process;
+use Throwable;
 
 /**
  * Class representing the context from which a script can be generated and executed by a PHP binary.
@@ -78,6 +83,21 @@ class Payload
     private $disableIni;
 
     /**
+     * @var string|null
+     */
+    private $wrapper;
+
+    /**
+     * @var callable|null
+     */
+    private $validator;
+
+    /**
+     * @var bool
+     */
+    private $removeScript;
+
+    /**
      * Create a new Payload object with the given script template.
      * The template must be the path to a script template.
      */
@@ -86,11 +106,13 @@ class Payload
         array $tokens = [],
         string $phpPath = PHP_BINARY,
         bool $disableIni = false,
-        ?string $wrapper = null,
+        ?string $phpWrapper = null,
         ?float $timeout = null,
         ?array $phpConfig = [],
         ?string $renderPath = null,
-        ProcessFactory $processFactory = null
+        bool $removeScript = true,
+        ?ProcessFactory $processFactory = null,
+        ?callable $validator = null
     ) {
         $this->template = $template;
         $this->tokens = $tokens;
@@ -101,7 +123,9 @@ class Payload
         $this->phpConfig = $phpConfig;
         $this->renderPath = $renderPath;
         $this->disableIni = $disableIni;
-        $this->phpWrapper = $wrapper;
+        $this->phpWrapper = $phpWrapper;
+        $this->validator = $validator;
+        $this->removeScript = $removeScript;
     }
 
     public function launch(): array
@@ -160,12 +184,19 @@ class Payload
             ));
         }
 
+        if (!is_file($this->template)) {
+            throw new \RuntimeException(sprintf(
+                'Template path "%s" points to a non-file',
+                $this->template
+            ));
+        }
+
         return file_get_contents($this->template);
     }
 
     private function writeTempFile(string $script): string
     {
-        $scriptPath = tempnam(sys_get_temp_dir(), 'PhpBench');
+        $scriptPath = $this->renderPath() ?: tempnam(sys_get_temp_dir(), 'PhpBench');
         file_put_contents($scriptPath, $script);
 
         return $scriptPath;
@@ -193,6 +224,10 @@ class Payload
 
     private function removeTmpFile(string $scriptPath): void
     {
+        if (!$this->removeScript) {
+            return;
+        }
+
         unlink($scriptPath);
     }
 
@@ -201,15 +236,29 @@ class Payload
         $output = $process->getOutput();
         $result = @unserialize($output);
 
-        if (is_array($result)) {
+        if (!is_array($result)) {
+            throw new \RuntimeException(sprintf(
+                'Script "%s" did not return an array, got: %s',
+                $this->template,
+                $output
+            ));
+        }
+
+        if (!$this->validator) {
             return $result;
         }
 
-        throw new \RuntimeException(sprintf(
-            'Script "%s" did not return an array, got: %s',
-            $this->template,
-            $output
-        ));
+        $resolver = new OptionsResolver();
+        $validator = $this->validator;
+        $validator($resolver);
+
+        try {
+            return $resolver->resolve($result);
+        } catch (ExceptionInterface $error) {
+            throw new ExecutorScriptError($error->getMessage());
+        } catch (Throwable $error) {
+            throw $error;
+        }
     }
 
     public function getTemplate(): string
@@ -250,5 +299,23 @@ class Payload
     public function getDisableIni(): bool
     {
         return $this->disableIni;
+    }
+
+    private function renderPath(): ?string
+    {
+        if (!$this->renderPath) {
+            return null;
+        }
+
+        if (!file_exists(dirname($this->renderPath))) {
+            if (!@mkdir($this->renderPath, 0777, true)) {
+                throw new RuntimeException(sprintf(
+                    'Could not create directory for render path "%s"',
+                    dirname($this->renderPath)
+                ));
+            }
+        }
+
+        return $this->renderPath;
     }
 }

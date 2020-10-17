@@ -12,6 +12,7 @@
 
 namespace PhpBench\Model\Result;
 
+use Assert\Assert;
 use PhpBench\Model\ResultInterface;
 
 /**
@@ -28,6 +29,11 @@ class MemoryResult implements ResultInterface
      */
     public static function fromArray(array $values): ResultInterface
     {
+        Assert::that($values)
+            ->keyExists('peak')
+            ->keyExists('real')
+            ->keyExists('final');
+
         return new self(
             (int) $values['peak'],
             (int) $values['real'],

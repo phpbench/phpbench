@@ -16,7 +16,6 @@ use RuntimeException;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\PhpExecutableFinder;
 
-
 /**
  * Build and execute tokenized scripts in separate processes.
  * The scripts should return a JSON encoded string.
@@ -72,6 +71,7 @@ class Launcher
     public function payload(string $templatePath, array $tokens = []): PayloadBuilder
     {
         $tokens['bootstrap'] = '';
+
         if (null !== $this->bootstrap) {
             if (!file_exists($this->bootstrap)) {
                 throw new \InvalidArgumentException(sprintf(
@@ -102,6 +102,7 @@ class Launcher
             $finder = new PhpExecutableFinder();
 
             $bin = $finder->find();
+
             if (!$bin) {
                 throw new RuntimeException(
                     'Could not resolve a PHP binary on this system'

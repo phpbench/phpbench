@@ -70,7 +70,6 @@ class LauncherTest extends TestCase
         self::assertEquals('\'/path/to/php\'', $payload->getPhpPath(), 'Shell escpaed PHP path');
         self::assertEquals($phpConfig, $payload->getPhpConfig());
         self::assertEquals('wrapper', $payload->getPhpWrapper());
-
     }
 
     /**

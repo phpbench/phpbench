@@ -2,7 +2,7 @@
 
 namespace PhpBench\Benchmark\Remote;
 
-use PhpBench\Registry\Config;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class PayloadBuilder
 {
@@ -57,6 +57,16 @@ final class PayloadBuilder
     private $bootstrap;
 
     /**
+     * @var callable(OptionsResolver): void
+     */
+    private $validator;
+
+    /**
+     * @var bool
+     */
+    private $removeScript;
+
+    /**
      * @param array<string,mixed> $tokens
      */
     public function __construct(
@@ -69,6 +79,7 @@ final class PayloadBuilder
         $this->processFactory = $processFactory ?: new ProcessFactory();
         $this->phpBinary = PHP_BINARY;
         $this->disableIni = false;
+        $this->removeScript = true;
     }
 
     public function disableIni(): self
@@ -120,6 +131,16 @@ final class PayloadBuilder
         return $this;
     }
 
+    /**
+     * @param callable(OptionsResolver): void $validator
+     */
+    public function validate(callable $validator): self
+    {
+        $this->validator = $validator;
+
+        return $this;
+    }
+
     public function build(): Payload
     {
         return new Payload(
@@ -131,7 +152,9 @@ final class PayloadBuilder
             $this->timeout,
             $this->phpConfig,
             $this->renderPath,
-            $this->processFactory
+            $this->removeScript,
+            $this->processFactory,
+            $this->validator
         );
     }
 
@@ -141,5 +164,12 @@ final class PayloadBuilder
     public function launch(): array
     {
         return $this->build()->launch();
+    }
+
+    public function withRemoveScript(bool $removeScript): self
+    {
+        $this->removeScript = $removeScript;
+
+        return $this;
     }
 }
