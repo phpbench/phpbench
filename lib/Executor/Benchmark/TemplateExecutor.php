@@ -26,9 +26,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TemplateExecutor implements BenchmarkExecutorInterface
 {
-    private const OPTION_PHP_CONFIG = 'php_config';
-    private const OPTION_PHP_RENDER_PATH = 'render_path';
-    private const OPTION_PHP_REMOVE_SCRIPT = 'remove_script';
+    public const OPTION_PHP_CONFIG = 'php_config';
+    public const OPTION_PHP_RENDER_PATH = 'render_path';
+    public const OPTION_PHP_REMOVE_SCRIPT = 'remove_script';
 
     private const PHP_OPTION_MAX_EXECUTION_TIME = 'max_execution_time';
 
@@ -57,7 +57,7 @@ class TemplateExecutor implements BenchmarkExecutorInterface
             ->includePhpConfig(array_merge([
                 self::PHP_OPTION_MAX_EXECUTION_TIME => 0,
             ], $config[self::OPTION_PHP_CONFIG] ?? []))
-            ->withRenderPath($config[self::OPTION_PHP_RENDER_PATH])
+            ->withRenderPath($config[self::OPTION_PHP_RENDER_PATH] ?? null)
             ->launch();
 
         if (isset($result['buffer']) && $result['buffer']) {

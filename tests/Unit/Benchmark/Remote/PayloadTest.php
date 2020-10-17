@@ -13,6 +13,7 @@
 namespace PhpBench\Tests\Unit\Benchmark\Remote;
 
 use PhpBench\Benchmark\Remote\Payload;
+use PhpBench\Benchmark\Remote\PayloadBuilder;
 use PhpBench\Benchmark\Remote\ProcessFactory;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -34,7 +35,7 @@ class PayloadTest extends TestCase
      * It should generate a script from a given template, launch it
      * and return the results.
      */
-    public function testLaunch()
+    public function testLaunch(): void
     {
         $payload = new Payload(
             __DIR__ . '/template/foo.template',
@@ -62,22 +63,7 @@ class PayloadTest extends TestCase
             __DIR__ . '/template/invalid.template'
         );
 
-        $payload->launch($payload);
-    }
-
-    /**
-     * It should customize the PHP binary path.
-     */
-    public function testBinaryPath()
-    {
-        $payload = $this->validPayload();
-        $payload->setPhpPath('/foo/bar');
-        $this->processFactory->create(Argument::containingString('/foo/bar'), null)->willReturn($this->process);
-        $this->process->run()->shouldBeCalled();
-        $this->process->isSuccessful()->willReturn(true);
-        $this->process->getOutput()->willReturn(serialize(['foo' => 'bar']));
-
-        $payload->launch($payload);
+        $payload->launch();
     }
 
     /**
@@ -87,10 +73,10 @@ class PayloadTest extends TestCase
     {
         $payload = $this->validPayload();
 
-        $payload->mergePhpConfig([
+        $payload->includePhpConfig([
             'foo' => 'bar',
         ]);
-        $payload->mergePhpConfig([
+        $payload->includePhpConfig([
             'bar' => 'foo',
         ]);
 
@@ -101,7 +87,7 @@ class PayloadTest extends TestCase
         $this->process->isSuccessful()->willReturn(true);
         $this->process->getOutput()->willReturn(serialize(['foo' => 'bar']));
 
-        $payload->launch($payload);
+        $payload->launch();
     }
 
     /**
@@ -110,49 +96,39 @@ class PayloadTest extends TestCase
     public function testWrap()
     {
         $payload = $this->validPayload();
-        $payload->setWrapper('bockfire');
-        $payload->setPhpPath('/boo/bar/php');
+        $payload->withPhpWrapper('bockfire');
+        $payload->withPhpBinary('/boo/bar/php');
         $this->processFactory->create(Argument::containingString('bockfire \'/boo/bar/php\''), null)->willReturn($this->process)->shouldBeCalled();
         $this->process->run()->shouldBeCalled();
         $this->process->isSuccessful()->willReturn(true);
         $this->process->getOutput()->willReturn(serialize(['foo' => 'bar']));
 
-        $payload->launch($payload);
+        $payload->launch();
     }
 
     /**
      * It should throw an execption if a template is not found.
-     *
      */
     public function testTemplateNotFound()
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Could not find script template');
         $processFactory = $this->prophesize(ProcessFactory::class);
-        $payload = new Payload(
+        $payload = (new PayloadBuilder(
             __DIR__ . '/template/not-existing-filename.template',
             [],
-            null,
-            null,
             $processFactory->reveal()
-        );
+        ));
 
         $payload->launch($payload);
     }
 
-    private function validPayload()
+    private function validPayload(): PayloadBuilder
     {
-        return $this->validPayloadWithPhpConfig();
-    }
-
-    private function validPayloadWithPhpConfig(array $phpConfig = [])
-    {
-        return new Payload(
+        return (new PayloadBuilder(
             __DIR__ . '/template/foo.template',
             [],
-            null,
-            null,
             $this->processFactory->reveal()
-        );
+        ));
     }
 }

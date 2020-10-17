@@ -30,7 +30,7 @@ class Payload
     /**
      * Wrapper for PHP binary, e.g. "blackfire".
      */
-    private $wrapper;
+    private $phpWrapper;
 
     /**
      * Associative array of PHP INI settings.
@@ -84,8 +84,8 @@ class Payload
     public function __construct(
         string $template,
         array $tokens = [],
-        string $phpPath,
-        bool $disableIni,
+        string $phpPath = PHP_BINARY,
+        bool $disableIni = false,
         ?string $wrapper = null,
         ?float $timeout = null,
         ?array $phpConfig = [],
@@ -101,7 +101,7 @@ class Payload
         $this->phpConfig = $phpConfig;
         $this->renderPath = $renderPath;
         $this->disableIni = $disableIni;
-        $this->wrapper = $wrapper;
+        $this->phpWrapper = $wrapper;
     }
 
     public function launch(): array
@@ -175,8 +175,8 @@ class Payload
     {
         $arguments = [];
 
-        if ($this->wrapper) {
-            $arguments[] = $this->wrapper;
+        if ($this->phpWrapper) {
+            $arguments[] = $this->phpWrapper;
         }
 
         $arguments[] = $this->phpPath;
@@ -210,5 +210,45 @@ class Payload
             $this->template,
             $output
         ));
+    }
+
+    public function getTemplate(): string
+    {
+        return $this->template;
+    }
+
+    public function getPhpWrapper(): ?string
+    {
+        return $this->phpWrapper;
+    }
+
+    public function getPhpConfig(): array
+    {
+        return $this->phpConfig;
+    }
+
+    public function getPhpPath(): string
+    {
+        return $this->phpPath;
+    }
+
+    public function getTokens(): array
+    {
+        return $this->tokens;
+    }
+
+    public function getTimeout(): float
+    {
+        return $this->timeout;
+    }
+
+    public function getRenderPath(): string
+    {
+        return $this->renderPath;
+    }
+
+    public function getDisableIni(): bool
+    {
+        return $this->disableIni;
     }
 }

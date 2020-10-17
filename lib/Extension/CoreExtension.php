@@ -22,7 +22,6 @@ use PhpBench\Benchmark\Metadata\AnnotationReader;
 use PhpBench\Benchmark\Metadata\Driver\AnnotationDriver;
 use PhpBench\Benchmark\Metadata\MetadataFactory;
 use PhpBench\Benchmark\Remote\Launcher;
-use PhpBench\Benchmark\Remote\PayloadFactory;
 use PhpBench\Benchmark\Remote\Reflector;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Console\Application;
@@ -232,7 +231,6 @@ class CoreExtension implements ExtensionInterface
 
         $container->register(Launcher::class, function (Container $container) {
             return new Launcher(
-                new PayloadFactory(),
                 new ExecutableFinder(),
                 $container->hasParameter(self::PARAM_BOOTSTRAP) ? $container->getParameter(self::PARAM_BOOTSTRAP) : null,
                 $container->hasParameter(self::PARAM_PHP_BINARY) ? $container->getParameter(self::PARAM_PHP_BINARY) : null,

@@ -54,10 +54,9 @@ class LauncherTest extends TestCase
     /**
      * It should pass the wrapper, ini settings and php-binary to the payload.
      */
-    public function testPassSettingsToPayload()
+    public function testPassSettingsToPayload(): void
     {
         $launcher = new Launcher(
-            $this->factory->reveal(),
             $this->finder->reveal(),
             $bootstrap = __DIR__ . '/../../../../vendor/autoload.php',
             '/path/to/php',
@@ -65,29 +64,23 @@ class LauncherTest extends TestCase
             'wrapper'
         );
 
-        $this->factory->create(
-            __FILE__,
-            ['bootstrap' => $bootstrap],
-            '/path/to/php',
-            null
-        )->willReturn($this->payload->reveal());
+        $payload = $launcher->payload(__FILE__, [])->build();
 
-        $this->payload->setWrapper('wrapper')->shouldBeCalled();
-        $this->payload->mergePhpConfig($phpConfig)->shouldBeCalled();
+        self::assertEquals($bootstrap, $payload->getTokens()['bootstrap']);
+        self::assertEquals('\'/path/to/php\'', $payload->getPhpPath(), 'Shell escpaed PHP path');
+        self::assertEquals($phpConfig, $payload->getPhpConfig());
+        self::assertEquals('wrapper', $payload->getPhpWrapper());
 
-        $launcher->payload(__FILE__, []);
     }
 
     /**
      * It should throw an exception if the bootstrap file does not exist.
-     *
      */
-    public function testInvalidBootstrap()
+    public function testInvalidBootstrap(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Bootstrap file');
         $launcher = new Launcher(
-            $this->factory->reveal(),
             $this->finder->reveal(),
             __DIR__ . '/../../../../vendor/notexisting.php'
         );
@@ -99,10 +92,9 @@ class LauncherTest extends TestCase
         );
     }
 
-    private function createLiveLauncher()
+    private function createLiveLauncher(): Launcher
     {
         return new Launcher(
-            new PayloadFactory(),
             new ExecutableFinder(),
             __DIR__ . '/../../../../vendor/autoload.php'
         );

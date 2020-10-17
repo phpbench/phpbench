@@ -63,7 +63,7 @@ class OpcacheTest extends TestCase
             'opcache.enable_cli' => $opcacheEnabled,
         ];
 
-        $launcher = new Launcher(null, null, null, null, $phpConfig);
+        $launcher = new Launcher(null, null, null, $phpConfig);
 
         return new Provider\Opcache($launcher);
     }

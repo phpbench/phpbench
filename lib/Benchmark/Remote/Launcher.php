@@ -29,11 +29,6 @@ class Launcher
     private $bootstrap;
 
     /**
-     * @var PayloadFactory
-     */
-    private $payloadFactory;
-
-    /**
      * @var string
      */
     private $phpBinary;
@@ -49,11 +44,6 @@ class Launcher
     private $phpWrapper;
 
     /**
-     * @var PayloadFactory
-     */
-    private $factory;
-
-    /**
      * @var ExecutableFinder
      */
     private $finder;
@@ -64,7 +54,6 @@ class Launcher
     private $phpDisableIni;
 
     public function __construct(
-        PayloadFactory $factory = null,
         ExecutableFinder $finder = null,
         ?string $bootstrap = null,
         ?string $phpBinary = null,
@@ -73,17 +62,16 @@ class Launcher
         bool $phpDisableIni = false
     ) {
         $this->bootstrap = $bootstrap;
-        $this->payloadFactory = $factory ?: new PayloadFactory();
         $this->phpBinary = $phpBinary;
         $this->phpConfig = $phpConfig;
         $this->phpWrapper = $phpWrapper;
         $this->finder = $finder ?: new ExecutableFinder();
-        $this->factory = $factory;
         $this->phpDisableIni = $phpDisableIni;
     }
 
     public function payload(string $templatePath, array $tokens = []): PayloadBuilder
     {
+        $tokens['bootstrap'] = '';
         if (null !== $this->bootstrap) {
             if (!file_exists($this->bootstrap)) {
                 throw new \InvalidArgumentException(sprintf(
