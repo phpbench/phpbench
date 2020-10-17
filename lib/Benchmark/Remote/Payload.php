@@ -83,11 +83,6 @@ class Payload
     private $disableIni;
 
     /**
-     * @var string|null
-     */
-    private $wrapper;
-
-    /**
      * @var callable|null
      */
     private $validator;
