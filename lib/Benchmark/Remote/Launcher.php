@@ -80,8 +80,9 @@ class Launcher
         $this->phpDisableIni = $phpDisableIni;
     }
 
-    public function payload($template, array $tokens = [], ?float $timeout = null): Payload
+    public function payload(PayloadConfig $config): Payload
     {
+        $tokens = $config->getTokens();
         $tokens['bootstrap'] = '';
 
         if (null !== $this->bootstrap) {
@@ -96,7 +97,12 @@ class Launcher
 
         $phpBinary = $this->resolvePhpBinary();
 
-        $payload = $this->payloadFactory->create($template, $tokens, $phpBinary, $timeout);
+        $payload = $this->payloadFactory->create(
+            $config->getTemplatePath(),
+            $tokens,
+            $phpBinary,
+            $config->getTimeout()
+        );
 
         if ($this->phpWrapper) {
             $payload->setWrapper($this->phpWrapper);

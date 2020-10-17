@@ -15,16 +15,21 @@ namespace PhpBench\Executor\Benchmark;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Benchmark\Remote\Payload;
+use PhpBench\Benchmark\Remote\PayloadConfig;
 use PhpBench\Executor\BenchmarkExecutorInterface;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Registry\Config;
+use RuntimeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TemplateExecutor implements BenchmarkExecutorInterface
 {
-    public const OPTION_PHP_CONFIG = 'php_config';
+    private const OPTION_PHP_CONFIG = 'php_config';
+    private const OPTION_PHP_RENDER_PATH = 'render_path';
+    private const OPTION_PHP_REMOVE_SCRIPT = 'remove_script';
+
     private const PHP_OPTION_MAX_EXECUTION_TIME = 'max_execution_time';
 
     /**
@@ -47,19 +52,18 @@ class TemplateExecutor implements BenchmarkExecutorInterface
     {
         $tokens = $this->createTokens($subjectMetadata, $iteration, $config);
 
-        $payload = $this->launcher->payload($this->templatePath, $tokens, $subjectMetadata->getTimeout());
+        $payload = $this->launcher->payload(PayloadConfig::builder($this->templatePath, $tokens)
+            ->withTimeout($subjectMetadata->getTimeout())
+            ->includePhpConfig(array_merge([
+                self::PHP_OPTION_MAX_EXECUTION_TIME => 0,
+            ], $options[self::OPTION_PHP_CONFIG] ?? []))
+            ->build()
+        );
         $this->launch($payload, $iteration, $config);
     }
 
     private function launch(Payload $payload, Iteration $iteration, Config $options): void
     {
-        $payload->mergePhpConfig(array_merge(
-            [
-                self::PHP_OPTION_MAX_EXECUTION_TIME => 0,
-            ],
-            $options[self::OPTION_PHP_CONFIG] ?? []
-        ));
-
         $result = $payload->launch();
 
         if (isset($result['buffer']) && $result['buffer']) {
@@ -80,10 +84,24 @@ class TemplateExecutor implements BenchmarkExecutorInterface
     {
         $options->setDefaults([
             self::OPTION_PHP_CONFIG => [
-            ]
+            ],
+            self::OPTION_PHP_RENDER_PATH => (function () {
+                $tmpPath = tempnam(sys_get_temp_dir(), 'PhpBench');
+                if (!$tmpPath) {
+                    throw new RuntimeException(sprintf(
+                        'Could not resolve temp path, configure "%s" explicitly',
+                        self::OPTION_PHP_RENDER_PATH
+                    ));
+                }
+
+                return $tmpPath;
+            })(),
         ]);
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     protected function createTokens(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config) : array
     {
         $parameterSet = $iteration->getVariant()->getParameterSet();

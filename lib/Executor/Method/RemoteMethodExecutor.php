@@ -4,6 +4,7 @@ namespace PhpBench\Executor\Method;
 
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Remote\Launcher;
+use PhpBench\Benchmark\Remote\PayloadConfig;
 use PhpBench\Executor\MethodExecutorInterface;
 
 class RemoteMethodExecutor implements MethodExecutorInterface
@@ -29,7 +30,9 @@ class RemoteMethodExecutor implements MethodExecutorInterface
             'methods' => var_export($methods, true),
         ];
 
-        $payload = $this->launcher->payload(__DIR__ . '/template/execute_static_methods.template', $tokens);
-        $payload->launch();
+        $payload = $this->launcher->payload(new PayloadConfig(
+            __DIR__ . '/template/execute_static_methods.template',
+            $tokens
+        ))->launch();
     }
 }
