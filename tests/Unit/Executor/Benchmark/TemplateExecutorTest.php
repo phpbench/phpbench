@@ -10,6 +10,7 @@ use PhpBench\Registry\Config;
 use PhpBench\Tests\IntegrationTestCase;
 use PhpBench\Tests\Util\BenchmarkMetadataBuiler;
 use PhpBench\Tests\Util\TestUtil;
+use RuntimeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TemplateExecutorTest extends IntegrationTestCase
@@ -79,6 +80,32 @@ EOT;
 
         $this->execute($template, [
             TemplateExecutor::OPTION_PHP_RENDER_PATH => $this->workspace()->path('foobar'),
+            TemplateExecutor::OPTION_PHP_REMOVE_SCRIPT => false,
+        ]);
+
+        $script = $this->workspace()->getContents('foobar');
+        self::assertEquals($template, $script);
+    }
+
+    public function testExeceptionIfRenderPathIsADirectory(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('is not a file');
+        $template = <<<'EOT'
+<?php
+
+echo serialize([
+    'time' => 1234,
+    'mem' => [
+        'peak' => 0,
+        'final' => 0,
+        'real' => 0,
+    ],
+]);
+EOT;
+
+        $this->execute($template, [
+            TemplateExecutor::OPTION_PHP_RENDER_PATH => $this->workspace()->path(),
             TemplateExecutor::OPTION_PHP_REMOVE_SCRIPT => false,
         ]);
 

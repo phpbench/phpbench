@@ -20,7 +20,6 @@ use PhpBench\Model\Iteration;
 use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Registry\Config;
-use RuntimeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TemplateExecutor implements BenchmarkExecutorInterface
@@ -90,18 +89,7 @@ class TemplateExecutor implements BenchmarkExecutorInterface
             self::OPTION_PHP_CONFIG => [
             ],
             self::OPTION_PHP_REMOVE_SCRIPT => true,
-            self::OPTION_PHP_RENDER_PATH => (function () {
-                $tmpPath = tempnam(sys_get_temp_dir(), 'PhpBench');
-
-                if (!$tmpPath) {
-                    throw new RuntimeException(sprintf(
-                        'Could not resolve temp path, configure "%s" explicitly',
-                        self::OPTION_PHP_RENDER_PATH
-                    ));
-                }
-
-                return $tmpPath;
-            })(),
+            self::OPTION_PHP_RENDER_PATH => null,
         ]);
     }
 

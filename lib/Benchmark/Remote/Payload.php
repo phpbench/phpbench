@@ -316,6 +316,13 @@ class Payload
             }
         }
 
+        if (file_exists($this->renderPath) && !is_file($this->renderPath)) {
+            throw new RuntimeException(sprintf(
+                'Render path "%s" is not a file',
+                $this->renderPath
+            ));
+        }
+
         return $this->renderPath;
     }
 }

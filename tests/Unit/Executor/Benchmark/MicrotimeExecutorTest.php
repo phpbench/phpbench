@@ -68,7 +68,7 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
         $this->executor->execute(
             $this->metadata->reveal(),
             $this->iteration->reveal(),
-            new Config('test', [])
+            $this->createConfig()
         );
 
         $this->assertFileNotExists($this->workspacePath('before_method.tmp'));
@@ -97,7 +97,7 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
         $this->variant->getRevolutions()->willReturn(10);
         $this->variant->getWarmup()->willReturn(0);
 
-        $results = $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', []));
+        $results = $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), $this->createConfig());
 
         $this->assertInstanceOf('PhpBench\Model\ResultCollection', $results);
     }
@@ -118,7 +118,7 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
         $this->iteration->setResult(Argument::type(TimeResult::class))->shouldBeCalled();
         $this->iteration->setResult(Argument::type(MemoryResult::class))->shouldBeCalled();
 
-        $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', []));
+        $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), $this->createConfig());
 
         $this->assertFileExists($this->workspacePath('before_method.tmp'));
     }
@@ -139,7 +139,7 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
         $this->iteration->setResult(Argument::type(TimeResult::class))->shouldBeCalled();
         $this->iteration->setResult(Argument::type(MemoryResult::class))->shouldBeCalled();
 
-        $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', []));
+        $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), $this->createConfig());
 
         $this->assertFileExists($this->workspacePath('after_method.tmp'));
     }
@@ -164,7 +164,7 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
         $this->iteration->setResult(Argument::type(TimeResult::class))->shouldBeCalled();
         $this->iteration->setResult(Argument::type(MemoryResult::class))->shouldBeCalled();
 
-        $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', []));
+        $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), $this->createConfig());
         $this->assertFileExists($this->workspacePath('param.tmp'));
         $params = json_decode(file_get_contents($this->workspacePath('param.tmp')), true);
         $this->assertEquals([
@@ -194,7 +194,7 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
         $this->iteration->setResult(Argument::type(TimeResult::class))->shouldBeCalled();
         $this->iteration->setResult(Argument::type(MemoryResult::class))->shouldBeCalled();
 
-        $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', []));
+        $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), $this->createConfig());
 
         $this->assertFileExists($this->workspacePath('parambefore.tmp'));
         $params = json_decode(file_get_contents($this->workspacePath('parambefore.tmp')), true);
@@ -203,5 +203,12 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
         $this->assertFileExists($this->workspacePath('paramafter.tmp'));
         $params = json_decode(file_get_contents($this->workspacePath('paramafter.tmp')), true);
         $this->assertEquals($expected->getArrayCopy(), $params);
+    }
+
+    private function createConfig(): Config
+    {
+        return new Config('foo', [
+            'remove_script' => false,
+        ]);
     }
 }

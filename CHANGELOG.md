@@ -1,6 +1,18 @@
 CHANGELOG
 =========
 
+develop
+-------
+
+Backward compatibility breaks:
+
+- Payload `Launcher` now returns a `PayloadBuilder`
+
+Features:
+
+- Add the `render_path` and `remove_script` options to the template executor,
+  facilitating easier debugging.
+
 1.0.0-alpha1
 ------------
 
