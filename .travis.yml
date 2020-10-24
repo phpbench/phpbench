@@ -86,6 +86,12 @@ jobs:
 
       env: WITH_HIGHEST=true
 
+    - <<: *TEST
+
+      php: nightly
+
+      env: WITH_HIGHEST=true
+
     - stage: Deploy
 
       if: (NOT type IN (pull_request)) AND (branch = master)
