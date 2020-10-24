@@ -184,7 +184,7 @@ class HistoryIterator implements HistoryIteratorInterface
             $historyEntries[] = $this->getHistoryEntry($file->getPathname());
         }
         usort($historyEntries, function ($entry1, $entry2) {
-            return $entry1->getDate()->format('U') <=> $entry2->getDate()->format('U');
+            return $entry2->getDate()->format('U') <=> $entry1->getDate()->format('U');
         });
 
         return new \ArrayIterator($historyEntries);
