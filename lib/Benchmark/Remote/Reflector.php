@@ -134,7 +134,8 @@ class Reflector
             for (; $i < count($tokens); $i++) {
                 if ($tokens[$i][0] === T_NAMESPACE) {
                     for ($j = $i + 1; $j < count($tokens); $j++) {
-                        if ($tokens[$j][0] === T_STRING) {
+                        $tokenId = $tokens[$j][0];
+                        if ($tokenId === T_STRING || $tokenId === 314) {
                             $namespace .= '\\' . $tokens[$j][1];
                         } elseif ($tokens[$j] === '{' || $tokens[$j] === ';') {
                             break;
