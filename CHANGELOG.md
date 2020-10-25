@@ -1,6 +1,14 @@
 CHANGELOG
 =========
 
+develop
+-------
+
+Backward compatiblity breaks:
+
+- `BenchmarkExecutorInterface#execute()` must now return an `ExecutionResults`
+  object.
+
 1.0.0-alpha-2
 -------------
 

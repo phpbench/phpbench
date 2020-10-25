@@ -14,6 +14,7 @@ namespace PhpBench\Executor\Benchmark;
 
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Executor\BenchmarkExecutorInterface;
+use PhpBench\Executor\ExecutionResults;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;
@@ -32,16 +33,18 @@ class DebugExecutor implements BenchmarkExecutorInterface
     /**
      * {@inheritdoc}
      */
-    public function execute(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config): void
+    public function execute(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config): ExecutionResults
     {
+        $results = ExecutionResults::new();
+
         // add 100 bytes of memory.
         $memory = 100;
-        $iteration->setResult(new MemoryResult($memory, $memory, $memory));
+        $results->add(new MemoryResult($memory, $memory, $memory));
 
         if (!$config['times']) {
-            $iteration->setResult(new TimeResult(0));
+            $results->add(new TimeResult(0));
 
-            return;
+            return $results;
         }
 
         $variantHash = spl_object_hash($iteration->getVariant());
@@ -63,7 +66,9 @@ class DebugExecutor implements BenchmarkExecutorInterface
             $time = $time + $spreadDiff;
         }
 
-        $iteration->setResult(new TimeResult($time));
+        $results->add(new TimeResult($time));
+
+        return $results;
     }
 
     /**

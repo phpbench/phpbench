@@ -26,14 +26,6 @@ class TimeResult implements ResultInterface
     private $netTime;
 
     /**
-     * {@inheritdoc}
-     */
-    public static function fromArray(array $values): ResultInterface
-    {
-        return new self((int) $values['net']);
-    }
-
-    /**
      * @param int $time Time taken to execute the iteration in microseconds.
      */
     public function __construct(int $time)
@@ -41,6 +33,14 @@ class TimeResult implements ResultInterface
         Assertion::greaterOrEqualThan($time, 0, 'Time cannot be less than 0, got %s');
 
         $this->netTime = $time;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function fromArray(array $values): ResultInterface
+    {
+        return new self((int) $values['net']);
     }
 
     /**

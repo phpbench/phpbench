@@ -22,6 +22,7 @@ use PhpBench\Environment\Information;
 use PhpBench\Environment\Supplier;
 use PhpBench\Executor;
 use PhpBench\Executor\BenchmarkExecutorInterface;
+use PhpBench\Executor\ExecutionResults;
 use PhpBench\Executor\HealthCheckInterface;
 use PhpBench\Executor\MethodExecutorInterface;
 use PhpBench\Model\Iteration;
@@ -154,7 +155,7 @@ class RunnerTest extends TestCase
             ])
         )
         ->shouldBeCalledTimes(count($revs) * array_sum($iterations))
-        ->will($this->loadIterationResultCallback());
+        ->willReturn($this->exampleResults());
 
         $suite = $this->runner->run(self::TEST_PATH, RunnerConfig::create()->withTag('context'));
 
@@ -252,9 +253,9 @@ class RunnerTest extends TestCase
         ]);
         TestUtil::configureBenchmarkMetadata($this->benchmark);
 
-        $this->executor->execute($subject1, Argument::cetera())->will($this->loadIterationResultCallback());
-        $this->executor->execute($subject2, Argument::cetera())->will($this->loadIterationResultCallback());
-        $this->executor->execute($subject3, Argument::cetera())->will($this->loadIterationResultCallback());
+        $this->executor->execute($subject1, Argument::cetera())->willReturn($this->exampleResults());
+        $this->executor->execute($subject2, Argument::cetera())->willReturn($this->exampleResults());
+        $this->executor->execute($subject3, Argument::cetera())->willReturn($this->exampleResults());
 
         $suite = $this->runner->run(self::TEST_PATH, RunnerConfig::create());
 
@@ -285,8 +286,8 @@ class RunnerTest extends TestCase
             ->will(function ($args) use ($test) {
                 $iteration = $args[1];
                 $test->assertEquals(50, $iteration->getVariant()->getSubject()->getSleep());
-                $callback = $test->loadIterationResultCallback();
-                $callback($args);
+
+                return $test->exampleResults();
             });
 
         $suite = $this->runner->run(self::TEST_PATH, RunnerConfig::create());
@@ -317,8 +318,7 @@ class RunnerTest extends TestCase
                 $test->assertEquals(66, $iteration->getVariant()->getWarmup());
                 $test->assertEquals(88, $iteration->getVariant()->getRevolutions());
 
-                $callback = $test->loadIterationResultCallback();
-                $callback($args);
+                return $test->exampleResults();
             });
 
         $suite = $this->runner->run(self::TEST_PATH, RunnerConfig::create()
@@ -347,8 +347,7 @@ class RunnerTest extends TestCase
                 $iteration = $args[1];
                 $test->assertEquals(50, $iteration->getVariant()->getWarmup());
 
-                $callback = $test->loadIterationResultCallback();
-                $callback($args);
+                return $test->exampleResults();
             });
 
         $suite = $this->runner->run(self::TEST_PATH, RunnerConfig::create());
@@ -374,8 +373,7 @@ class RunnerTest extends TestCase
                 $iteration = $args[1];
                 $test->assertEquals(10, $iteration->getVariant()->getSubject()->getRetryThreshold());
 
-                $callback = $test->loadIterationResultCallback();
-                $callback($args);
+                return $this->exampleResults();
             });
 
         $suite = $this->runner->run(
@@ -450,7 +448,7 @@ class RunnerTest extends TestCase
         TestUtil::configureBenchmarkMetadata($this->benchmark);
         $this->executor->execute(Argument::type('PhpBench\Benchmark\Metadata\SubjectMetadata'), Argument::type('PhpBench\Model\Iteration'), $this->executorConfig)
             ->shouldBeCalledTimes(1)
-            ->will($this->loadIterationResultCallback());
+            ->willReturn($this->exampleResults());
         $suite = $this->runner->run(self::TEST_PATH, RunnerConfig::create());
         $envInformations = $suite->getEnvInformations();
         $this->assertSame((array) $informations, (array) $envInformations);
@@ -469,15 +467,11 @@ class RunnerTest extends TestCase
         }
     }
 
-    private function loadIterationResultCallback(array $times = ['10'])
+    private function exampleResults(): ExecutionResults
     {
-        return function ($args) {
-            $args[1]->setResult(new TimeResult(10));
-            $args[1]->setResult(new MemoryResult(10, 10, 10));
-        };
+        return ExecutionResults::fromResults(
+            new TimeResult(10),
+            new MemoryResult(10, 10, 10)
+        );
     }
-}
-
-class RunnerTestBenchCase
-{
 }

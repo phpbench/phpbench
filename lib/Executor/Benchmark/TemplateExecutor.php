@@ -16,6 +16,7 @@ use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Benchmark\Remote\Payload;
 use PhpBench\Executor\BenchmarkExecutorInterface;
+use PhpBench\Executor\ExecutionResults;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;
@@ -43,15 +44,16 @@ class TemplateExecutor implements BenchmarkExecutorInterface
         $this->templatePath = $templatePath;
     }
 
-    public function execute(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config): void
+    public function execute(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config): ExecutionResults
     {
         $tokens = $this->createTokens($subjectMetadata, $iteration, $config);
 
         $payload = $this->launcher->payload($this->templatePath, $tokens, $subjectMetadata->getTimeout());
-        $this->launch($payload, $iteration, $config);
+
+        return $this->launch($payload, $iteration, $config);
     }
 
-    private function launch(Payload $payload, Iteration $iteration, Config $options): void
+    private function launch(Payload $payload, Iteration $iteration, Config $options): ExecutionResults
     {
         $payload->mergePhpConfig(array_merge(
             [
@@ -69,8 +71,10 @@ class TemplateExecutor implements BenchmarkExecutorInterface
             ));
         }
 
-        $iteration->setResult(new TimeResult($result['time']));
-        $iteration->setResult(MemoryResult::fromArray($result['mem']));
+        return ExecutionResults::fromResults(
+            new TimeResult($result['time']),
+            MemoryResult::fromArray($result['mem'])
+        );
     }
 
     /**

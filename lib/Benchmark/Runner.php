@@ -335,7 +335,10 @@ final class Runner
     public function runIteration(BenchmarkExecutorInterface $executor, Config $executorConfig, Iteration $iteration, SubjectMetadata $subjectMetadata): void
     {
         $this->logger->iterationStart($iteration);
-        $executor->execute($subjectMetadata, $iteration, $executorConfig);
+
+        foreach ($executor->execute($subjectMetadata, $iteration, $executorConfig) as $result) {
+            $iteration->setResult($result);
+        }
 
         $sleep = $subjectMetadata->getSleep();
 

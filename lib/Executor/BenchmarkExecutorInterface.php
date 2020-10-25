@@ -19,5 +19,5 @@ use PhpBench\Registry\RegistrableInterface;
 
 interface BenchmarkExecutorInterface extends RegistrableInterface
 {
-    public function execute(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config): void;
+    public function execute(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config): ExecutionResults;
 }
