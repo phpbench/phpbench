@@ -6,7 +6,7 @@ use PhpBench\Assertion\Ast\Node;
 use PhpBench\Assertion\ExpressionEvaluator;
 use PhpBench\Assertion\ExpressionParser;
 use PhpBench\Assertion\MessageFormatter;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 use Prophecy\Argument;
 
 class ExpressionParserTestCase extends TestCase

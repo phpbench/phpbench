@@ -13,7 +13,7 @@
 namespace PhpBench\Tests\Unit\Formatter\Format;
 
 use PhpBench\Formatter\Format\TruncateFormat;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 
 class TruncateFormatTest extends TestCase
 {

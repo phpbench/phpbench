@@ -14,7 +14,7 @@ namespace PhpBench\Tests\Unit\Storage\UuidResolver;
 
 use PhpBench\Storage\UuidResolver\ChainResolver;
 use PhpBench\Storage\UuidResolverInterface;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 
 class ChainResolverTest extends TestCase
 {

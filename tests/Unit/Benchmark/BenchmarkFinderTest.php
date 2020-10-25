@@ -16,7 +16,7 @@ use PhpBench\Benchmark\BenchmarkFinder;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\MetadataFactory;
 use PhpBench\Model\Subject;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 
 class BenchmarkFinderTest extends TestCase
 {

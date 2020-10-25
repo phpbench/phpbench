@@ -19,8 +19,8 @@ use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Variant;
+use PhpBench\Tests\TestCase;
 use PhpBench\Tests\Util\TestUtil;
-use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use RuntimeException;
 

@@ -15,7 +15,7 @@ namespace PhpBench\Tests\Unit\Model;
 use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\ResultCollection;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 
 class ResultCollectionTest extends TestCase
 {

@@ -35,6 +35,7 @@ class Baselines
     public static function md5($revs): void
     {
         for ($i = 0; $i < $revs; $i++) {
+            /** @phpstan-ignore-next-line */
             md5('lorem ipusm');
         }
     }

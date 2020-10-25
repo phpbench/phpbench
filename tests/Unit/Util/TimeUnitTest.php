@@ -14,8 +14,8 @@ namespace PhpBench\Tests\Unit\Util;
 
 use Generator;
 use InvalidArgumentException;
+use PhpBench\Tests\TestCase;
 use PhpBench\Util\TimeUnit;
-use PHPUnit\Framework\TestCase;
 
 class TimeUnitTest extends TestCase
 {

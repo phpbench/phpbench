@@ -10,7 +10,7 @@ use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\MessageFormatter\NodeMessageFormatter;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 
 class NodeMessageFormatterTest extends TestCase
 {

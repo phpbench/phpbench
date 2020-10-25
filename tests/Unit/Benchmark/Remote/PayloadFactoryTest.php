@@ -14,7 +14,7 @@ namespace PhpBench\Tests\Unit\Benchmark\Remote;
 
 use PhpBench\Benchmark\Remote\Payload;
 use PhpBench\Benchmark\Remote\PayloadFactory;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 
 class PayloadFactoryTest extends TestCase
 {

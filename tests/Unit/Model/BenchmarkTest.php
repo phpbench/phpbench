@@ -17,7 +17,7 @@ use PhpBench\Model\Benchmark;
 use PhpBench\Model\ResolvedExecutor;
 use PhpBench\Model\Suite;
 use PhpBench\Registry\Config;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 
 class BenchmarkTest extends TestCase
 {

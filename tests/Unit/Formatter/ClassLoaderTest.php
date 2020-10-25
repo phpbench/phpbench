@@ -14,7 +14,7 @@ namespace PhpBench\Tests\Unit\Formatter;
 
 use InvalidArgumentException;
 use PhpBench\Formatter\ClassLoader;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 use Seld\JsonLint\ParsingException;
 
 class ClassLoaderTest extends TestCase

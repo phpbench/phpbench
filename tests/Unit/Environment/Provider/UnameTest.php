@@ -13,7 +13,7 @@
 namespace PhpBench\Tests\Unit\Environment\Provider;
 
 use PhpBench\Environment\Provider;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 
 class UnameTest extends TestCase
 {

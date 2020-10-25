@@ -18,7 +18,7 @@ use PhpBench\Storage\HistoryEntry;
 use PhpBench\Storage\HistoryIteratorInterface;
 use PhpBench\Storage\StorageRegistry;
 use PhpBench\Storage\UuidResolver\TagResolver;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 
 class TagResolverTest extends TestCase
 {

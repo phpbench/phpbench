@@ -13,7 +13,6 @@
 namespace PhpBench\Tests;
 
 use PhpBench\Benchmark\CartesianParameterIterator;
-use PHPUnit\Framework\TestCase;
 
 class CartesianIteratorTest extends TestCase
 {

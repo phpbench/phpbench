@@ -14,7 +14,7 @@ namespace PhpBench\Tests\Unit\Benchmark\Remote;
 
 use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Benchmark\Remote\Reflector;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 
 class ReflectorTest extends TestCase
 {

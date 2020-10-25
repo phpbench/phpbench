@@ -14,7 +14,7 @@ namespace PhpBench\Tests\Unit\Formatter\Formatter;
 
 use InvalidArgumentException;
 use PhpBench\Formatter\Format\NumberFormat;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 
 class NumberFormatTest extends TestCase
 {

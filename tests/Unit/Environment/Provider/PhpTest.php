@@ -15,7 +15,7 @@ namespace PhpBench\Tests\Unit\Environment\Provider;
 use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Benchmark\Remote\Payload;
 use PhpBench\Environment\Provider;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 
 class PhpTest extends TestCase
 {

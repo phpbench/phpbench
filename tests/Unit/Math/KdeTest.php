@@ -16,7 +16,7 @@ use InvalidArgumentException;
 use OutOfBoundsException;
 use PhpBench\Math\Kde;
 use PhpBench\Math\Statistics;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 
 class KdeTest extends TestCase
 {

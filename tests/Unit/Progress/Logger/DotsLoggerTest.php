@@ -19,8 +19,8 @@ use PhpBench\Model\Iteration;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Variant;
 use PhpBench\Progress\Logger\DotsLogger;
+use PhpBench\Tests\TestCase;
 use PhpBench\Util\TimeUnit;
-use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Console\Output\OutputInterface;
 

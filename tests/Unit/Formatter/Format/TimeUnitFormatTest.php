@@ -13,8 +13,8 @@
 namespace PhpBench\Tests\Unit\Report\Generator\Tabular\Format;
 
 use PhpBench\Formatter\Format\TimeUnitFormat;
+use PhpBench\Tests\TestCase;
 use PhpBench\Util\TimeUnit;
-use PHPUnit\Framework\TestCase;
 
 class TimeUnitFormatTest extends TestCase
 {

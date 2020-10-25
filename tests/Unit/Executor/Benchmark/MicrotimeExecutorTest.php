@@ -71,8 +71,8 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
             new Config('test', [])
         );
 
-        $this->assertFileNotExists($this->workspacePath('before_method.tmp'));
-        $this->assertFileNotExists($this->workspacePath('after_method.tmp'));
+        $this->assertFileDoesNotExist($this->workspacePath('before_method.tmp'));
+        $this->assertFileDoesNotExist($this->workspacePath('after_method.tmp'));
         $this->assertFileExists($this->workspacePath('revs.tmp'));
 
         // 10 revolutions + 1 warmup

@@ -12,10 +12,8 @@
 
 namespace PhpBench\Report\Generator;
 
-use function Functional\group;
-use function Functional\map;
-use function Functional\reduce_left;
 use PhpBench\Dom\Document;
+use PhpBench\Functional\Functional as F;
 use PhpBench\Math\Statistics;
 use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;
@@ -141,13 +139,13 @@ class TableGenerator implements GeneratorInterface
             ));
         }
 
-        return map($tables, function ($table) use ($stat) {
-            $means = map($table, function (Row $row) use ($stat) {
+        return F::map($tables, function ($table) use ($stat) {
+            $means = F::map($table, function (Row $row) use ($stat) {
                 return $row->getValue($stat);
             });
             $min = min($means);
 
-            return map($table, function (Row $row) use ($min, $stat) {
+            return F::map($table, function (Row $row) use ($min, $stat) {
                 if ($min === 0 || $min === 0.0) {
                     $row->setValue('diff', 0);
 
@@ -227,7 +225,7 @@ class TableGenerator implements GeneratorInterface
             }
         }
 
-        return group($table, function (Row $row) use ($break) {
+        return F::group($table, function (Row $row) use ($break) {
             $breakHash = [];
 
             foreach ($break as $breakKey) {
@@ -260,8 +258,8 @@ class TableGenerator implements GeneratorInterface
                 $cols = array_merge($cols, $config['compare_fields']);
             }
 
-            $tables = map($tables, function ($table) use ($cols) {
-                return map($table, function (Row $row) use ($cols) {
+            $tables = F::map($tables, function ($table) use ($cols) {
+                return F::map($table, function (Row $row) use ($cols) {
                     $newRow = $row->newInstance([]);
 
                     foreach ($cols as $col) {
@@ -296,11 +294,11 @@ class TableGenerator implements GeneratorInterface
         $compare = $config['compare'];
         $compareFields = $config['compare_fields'];
 
-        return map($tables, function ($table) use ($conditions, $compare, $compareFields) {
-            $groups = group($table, function (Row $row) use ($conditions) {
+        return F::map($tables, function ($table) use ($conditions, $compare, $compareFields) {
+            $groups = F::group($table, function (Row $row) use ($conditions) {
                 $values = array_intersect_key($row->toArray(), array_flip($conditions));
 
-                return reduce_left($values, function ($value, $i, $c, $reduction) {
+                return F::reduceLeft($values, function ($value, $i, $c, $reduction) {
                     return $reduction . $value;
                 });
             });
@@ -353,7 +351,7 @@ class TableGenerator implements GeneratorInterface
                 $table[] = $firstRow;
             }
 
-            $table = map($table, function (Row $row) use ($colNames) {
+            $table = F::map($table, function (Row $row) use ($colNames) {
                 $newRow = $row->newInstance([]);
 
                 foreach ($colNames as $colName) {

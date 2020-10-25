@@ -20,8 +20,8 @@ use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\ReflectionClass;
 use PhpBench\Benchmark\Remote\ReflectionHierarchy;
 use PhpBench\Benchmark\Remote\Reflector;
+use PhpBench\Tests\TestCase;
 use PhpBench\Tests\Util\TestUtil;
-use PHPUnit\Framework\TestCase;
 
 class FactoryTest extends TestCase
 {

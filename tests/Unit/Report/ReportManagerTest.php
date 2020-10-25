@@ -20,7 +20,7 @@ use PhpBench\Registry\ConfigurableRegistry;
 use PhpBench\Report\GeneratorInterface;
 use PhpBench\Report\RendererInterface;
 use PhpBench\Report\ReportManager;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ReportManagerTest extends TestCase

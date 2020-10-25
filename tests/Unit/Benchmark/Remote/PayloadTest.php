@@ -14,7 +14,7 @@ namespace PhpBench\Tests\Unit\Benchmark\Remote;
 
 use PhpBench\Benchmark\Remote\Payload;
 use PhpBench\Benchmark\Remote\ProcessFactory;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 use Prophecy\Argument;
 use RuntimeException;
 use Symfony\Component\Process\Process;

@@ -14,7 +14,7 @@ namespace PhpBench\Tests\Unit\Math;
 
 use LogicException;
 use PhpBench\Math\Distribution;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 
 class DistributionTest extends TestCase
 {

@@ -16,7 +16,7 @@ use InvalidArgumentException;
 use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Benchmark\Remote\Payload;
 use PhpBench\Benchmark\Remote\PayloadFactory;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 use Symfony\Component\Process\ExecutableFinder;
 
 class LauncherTest extends TestCase

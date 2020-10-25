@@ -13,7 +13,7 @@
 namespace PhpBench\Tests\Unit\Benchmark;
 
 use PhpBench\Benchmark\BaselineManager;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 
 /**
  * @\PhpBench\Benchmark\Metadata\Annotations\BeforeMethods({"setUp"})

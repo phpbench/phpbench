@@ -48,7 +48,7 @@ jobs:
 
       php: 7.2
 
-      env: WITH_LOWEST=true
+      env: WITH_LOWEST=true WITH_EXAMPLES=true
 
       before_install:
         - source .travis/xdebug.sh
@@ -56,7 +56,7 @@ jobs:
         - composer validate
 
       install:
-        - if [[ "$TRAVIS_PHP_VERSION" == "7.3" ]]; then composer remove --dev friendsofphp/php-cs-fixer; fi
+        - composer remove --dev friendsofphp/php-cs-fixer --no-update
         - if [[ "$WITH_LOWEST" == "true" ]]; then composer update --prefer-lowest; fi
         - if [[ "$WITH_HIGHEST" == "true" ]]; then composer update; fi
 
@@ -66,7 +66,7 @@ jobs:
       script:
         - vendor/bin/phpunit
         - bin/phpbench run --report=env --progress=dots
-        - bin/phpbench run --profile=examples --report=env --progress=dots
+        - if [[ "$NO_EXAMPLES" == "false" ]]; then bin/phpbench run --profile=examples --report=env --progress=dots; fi
 
     - <<: *TEST
 
@@ -85,6 +85,12 @@ jobs:
       php: 7.4
 
       env: WITH_HIGHEST=true
+
+    - <<: *TEST
+
+      php: nightly
+
+      env: WITH_HIGHEST=true WITH_EXAMPLES=false
 
     - stage: Deploy
 

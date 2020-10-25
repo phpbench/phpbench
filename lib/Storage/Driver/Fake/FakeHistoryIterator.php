@@ -30,7 +30,7 @@ class FakeHistoryIterator implements HistoryIteratorInterface
      */
     public function next()
     {
-        return next($this->entries);
+        next($this->entries);
     }
 
     /**

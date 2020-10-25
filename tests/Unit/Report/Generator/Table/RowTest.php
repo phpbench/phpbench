@@ -13,7 +13,7 @@
 namespace PhpBench\Tests\Unit\Report\Generator\Table;
 
 use PhpBench\Report\Generator\Table\Row;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 use RuntimeException;
 
 class RowTest extends TestCase
