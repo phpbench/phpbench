@@ -56,7 +56,7 @@ jobs:
         - composer validate
 
       install:
-        - if [[ "$TRAVIS_PHP_VERSION" == "7.3" ]]; then composer remove --dev friendsofphp/php-cs-fixer; fi
+        - composer remove --dev friendsofphp/php-cs-fixer
         - if [[ "$WITH_LOWEST" == "true" ]]; then composer update --prefer-lowest; fi
         - if [[ "$WITH_HIGHEST" == "true" ]]; then composer update; fi
 
