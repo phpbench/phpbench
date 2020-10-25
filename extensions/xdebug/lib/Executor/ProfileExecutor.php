@@ -15,6 +15,7 @@ namespace PhpBench\Extensions\XDebug\Executor;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Executor\Benchmark\TemplateExecutor;
 use PhpBench\Executor\BenchmarkExecutorInterface;
+use PhpBench\Executor\ExecutionResults;
 use PhpBench\Extensions\XDebug\XDebugUtil;
 use PhpBench\Model\Iteration;
 use PhpBench\PhpBench;
@@ -47,7 +48,7 @@ class ProfileExecutor implements BenchmarkExecutorInterface
         ]);
     }
 
-    public function execute(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config): void
+    public function execute(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config): ExecutionResults
     {
         $outputDir = $config['output_dir'];
         $callback = $config['callback'];
@@ -59,10 +60,12 @@ class ProfileExecutor implements BenchmarkExecutorInterface
             'xdebug.profiler_output_name' => $name,
         ];
 
-        $this->innerExecutor->execute(
+        $results = $this->innerExecutor->execute(
             $subjectMetadata, $iteration, $config
         );
 
         $callback($iteration);
+
+        return $results;
     }
 }

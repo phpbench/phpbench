@@ -41,9 +41,9 @@ class CompositeExecutor implements BenchmarkExecutorInterface, HealthCheckInterf
         $this->benchmarkExecutor->configure($options);
     }
 
-    public function execute(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config): void
+    public function execute(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config): ExecutionResults
     {
-        $this->benchmarkExecutor->execute($subjectMetadata, $iteration, $config);
+        return $this->benchmarkExecutor->execute($subjectMetadata, $iteration, $config);
     }
 
     /**
@@ -54,6 +54,9 @@ class CompositeExecutor implements BenchmarkExecutorInterface, HealthCheckInterf
         $this->healthCheck->healthCheck();
     }
 
+    /**
+     * @param array<string> $methods
+     */
     public function executeMethods(BenchmarkMetadata $benchmark, array $methods): void
     {
         $this->methodExecutor->executeMethods($benchmark, $methods);

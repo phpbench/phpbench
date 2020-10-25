@@ -16,12 +16,10 @@ use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Executor\Benchmark\DebugExecutor;
 use PhpBench\Model\Iteration;
-use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Variant;
 use PhpBench\Registry\Config;
 use PhpBench\Tests\TestCase;
-use Prophecy\Argument;
 
 class DebugExecutorTest extends TestCase
 {
@@ -50,12 +48,8 @@ class DebugExecutorTest extends TestCase
                 $iteration = $this->prophesize(Iteration::class);
                 $iteration->getVariant()->willReturn($variant->reveal());
                 $iteration->getIndex()->willReturn($ii);
-                $iteration->setResult(Argument::type(TimeResult::class))->will(function ($args) use (&$actualTimes) {
-                    $actualTimes[] = $args[0]->getNet();
-                });
-                $iteration->setResult(Argument::type(MemoryResult::class))->shouldBeCalled();
 
-                $this->executor->execute(
+                $results = $this->executor->execute(
                     $this->subjectMetadata->reveal(),
                     $iteration->reveal(),
                     new Config('test', [
@@ -63,6 +57,12 @@ class DebugExecutorTest extends TestCase
                         'spread' => $spread,
                     ])
                 );
+
+                foreach ($results as $result) {
+                    if ($result instanceof TimeResult) {
+                        $actualTimes[] = $result->getNet();
+                    }
+                }
             }
         }
 

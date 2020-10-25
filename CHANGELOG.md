@@ -4,6 +4,19 @@ CHANGELOG
 develop
 -------
 
+Backward compatiblity breaks:
+
+- `BenchmarkExecutorInterface#execute()` must now return an `ExecutionResults`
+  object.
+
+1.0.0-alpha-2
+-------------
+
+- PHP 8.0 compatibility
+
+1.0.0-alpha-1
+-------------
+
 Backward compatibility breaks:
 
 - DBAL extension removed.

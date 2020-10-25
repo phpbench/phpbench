@@ -19,16 +19,38 @@ use PhpBench\Executor\Benchmark\MicrotimeExecutor;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\ParameterSet;
-use PhpBench\Model\Result\MemoryResult;
-use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Variant;
 use PhpBench\Registry\Config;
 use PhpBench\Tests\PhpBenchTestCase;
-use Prophecy\Argument;
 use RuntimeException;
 
 class MicrotimeExecutorTest extends PhpBenchTestCase
 {
+    /**
+     * @var ObjectProphecy
+     */
+    private $metadata;
+    /**
+     * @var ObjectProphecy
+     */
+    private $benchmark;
+    /**
+     * @var ObjectProphecy
+     */
+    private $benchmarkMetadata;
+    /**
+     * @var ObjectProphecy
+     */
+    private $variant;
+    /**
+     * @var MicrotimeExecutor
+     */
+    private $executor;
+    /**
+     * @var ObjectProphecy
+     */
+    private $iteration;
+
     protected function setUp(): void
     {
         $this->initWorkspace();
@@ -52,7 +74,7 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
      * It should create a script which benchmarks the code and returns
      * the time taken and the memory used.
      */
-    public function testExecute()
+    public function testExecute(): void
     {
         $this->metadata->getTimeout()->willReturn(0);
         $this->metadata->getBeforeMethods()->willReturn([]);
@@ -62,14 +84,13 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
         $this->variant->getRevolutions()->willReturn(10);
         $this->variant->getWarmup()->willReturn(1);
 
-        $this->iteration->setResult(Argument::type(TimeResult::class))->shouldBeCalled();
-        $this->iteration->setResult(Argument::type(MemoryResult::class))->shouldBeCalled();
 
-        $this->executor->execute(
+        $results = $this->executor->execute(
             $this->metadata->reveal(),
             $this->iteration->reveal(),
             new Config('test', [])
         );
+        self::assertCount(2, $results);
 
         $this->assertFileDoesNotExist($this->workspacePath('before_method.tmp'));
         $this->assertFileDoesNotExist($this->workspacePath('after_method.tmp'));
@@ -83,7 +104,7 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
      * It should prevent output from the benchmarking class.
      *
      */
-    public function testRepressOutput()
+    public function testRepressOutput(): void
     {
         $this->expectExceptionMessage('Benchmark made some noise');
         $this->expectException(RuntimeException::class);
@@ -99,13 +120,15 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
 
         $results = $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', []));
 
+
+
         $this->assertInstanceOf('PhpBench\Model\ResultCollection', $results);
     }
 
     /**
      * It should execute methods before the benchmark subject.
      */
-    public function testExecuteBefore()
+    public function testExecuteBefore(): void
     {
         $this->metadata->getBeforeMethods()->willReturn(['beforeMethod']);
         $this->metadata->getAfterMethods()->willReturn([]);
@@ -115,9 +138,6 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
         $this->variant->getRevolutions()->willReturn(1);
         $this->variant->getWarmup()->willReturn(0);
 
-        $this->iteration->setResult(Argument::type(TimeResult::class))->shouldBeCalled();
-        $this->iteration->setResult(Argument::type(MemoryResult::class))->shouldBeCalled();
-
         $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', []));
 
         $this->assertFileExists($this->workspacePath('before_method.tmp'));
@@ -126,7 +146,7 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
     /**
      * It should execute methods after the benchmark subject.
      */
-    public function testExecuteAfter()
+    public function testExecuteAfter(): void
     {
         $this->metadata->getBeforeMethods()->willReturn([]);
         $this->metadata->getAfterMethods()->willReturn(['afterMethod']);
@@ -136,9 +156,6 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
         $this->variant->getRevolutions()->willReturn(1);
         $this->variant->getWarmup()->willReturn(0);
 
-        $this->iteration->setResult(Argument::type(TimeResult::class))->shouldBeCalled();
-        $this->iteration->setResult(Argument::type(MemoryResult::class))->shouldBeCalled();
-
         $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', []));
 
         $this->assertFileExists($this->workspacePath('after_method.tmp'));
@@ -147,7 +164,7 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
     /**
      * It should pass parameters to the benchmark method.
      */
-    public function testParameters()
+    public function testParameters(): void
     {
         $this->metadata->getBeforeMethods()->willReturn([]);
         $this->metadata->getAfterMethods()->willReturn([]);
@@ -161,9 +178,6 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
         $this->variant->getRevolutions()->willReturn(1);
         $this->variant->getWarmup()->willReturn(0);
 
-        $this->iteration->setResult(Argument::type(TimeResult::class))->shouldBeCalled();
-        $this->iteration->setResult(Argument::type(MemoryResult::class))->shouldBeCalled();
-
         $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', []));
         $this->assertFileExists($this->workspacePath('param.tmp'));
         $params = json_decode(file_get_contents($this->workspacePath('param.tmp')), true);
@@ -176,7 +190,7 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
     /**
      * It should pass parameters to the before metadata and after metadata methods.
      */
-    public function testParametersBeforeSubject()
+    public function testParametersBeforeSubject(): void
     {
         $expected = new ParameterSet(0, [
             'one' => 'two',
@@ -190,9 +204,6 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
         $this->variant->getParameterSet()->willReturn($expected);
         $this->variant->getRevolutions()->willReturn(1);
         $this->variant->getWarmup()->willReturn(0);
-
-        $this->iteration->setResult(Argument::type(TimeResult::class))->shouldBeCalled();
-        $this->iteration->setResult(Argument::type(MemoryResult::class))->shouldBeCalled();
 
         $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', []));
 
