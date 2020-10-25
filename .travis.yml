@@ -49,6 +49,7 @@ jobs:
       php: 7.2
 
       env: WITH_LOWEST=true
+      env: WITH_EXAMPLES=true
 
       before_install:
         - source .travis/xdebug.sh
@@ -66,7 +67,7 @@ jobs:
       script:
         - vendor/bin/phpunit
         - bin/phpbench run --report=env --progress=dots
-        - bin/phpbench run --profile=examples --report=env --progress=dots
+        - if [[ "$NO_EXAMPLES" == "false" ]]; then bin/phpbench run --profile=examples --report=env --progress=dots; fi
 
     - <<: *TEST
 
@@ -91,6 +92,7 @@ jobs:
       php: nightly
 
       env: WITH_HIGHEST=true
+      env: WITH_EXAMPLES=false
 
     - stage: Deploy
 
