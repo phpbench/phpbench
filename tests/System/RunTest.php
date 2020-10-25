@@ -563,7 +563,7 @@ class RunTest extends SystemTestCase
     public function testPhpDisableIni(): void
     {
         $process = $this->phpbench(
-            'run benchmarks/set4/NothingBench.php --php-disable-ini --php-config="extension:json.so" --report=env'
+            'run benchmarks/set4/NothingBench.php --php-disable-ini --report=env'
         );
         $this->assertExitCode(0, $process);
         $this->assertMatchesRegularExpression('{ini\s+\| no}', $process->getOutput());
