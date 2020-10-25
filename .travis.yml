@@ -48,8 +48,7 @@ jobs:
 
       php: 7.2
 
-      env: WITH_LOWEST=true
-      env: WITH_EXAMPLES=true
+      env: WITH_LOWEST=true WITH_EXAMPLES=true
 
       before_install:
         - source .travis/xdebug.sh
