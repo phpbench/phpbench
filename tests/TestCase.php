@@ -18,4 +18,15 @@ class TestCase extends PHPUnitTestCase
 
         self::assertRegExp($pattern, $string, $message);
     }
+
+    public static function assertFileDoesNotExist(string $filename, string $message = ''): void
+    {
+        if (method_exists(parent::class, 'assertFileDoesNotExist')) {
+            parent::assertFileDoesNotExist($filename, $message);
+
+            return;
+        }
+
+        self::assertFileNotExists($filename, $message);
+    }
 }
