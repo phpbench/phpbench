@@ -12,7 +12,8 @@ use Prophecy\Prophecy\ObjectProphecy;
 use Prophecy\Prophet;
 
 /**
- * @mixin TestCase
+ * This stub is to permit compatibility with both PHPUnit 8.0 and 9.0 and is
+ * mostly lifted from phpspec/prophecy-phpunit.
  */
 trait ProphecyTrait
 {
@@ -36,8 +37,12 @@ trait ProphecyTrait
      *
      * @psalm-param class-string|null $type
      */
-    protected function prophesize(?string $classOrInterface = null): ObjectProphecy
+    protected function prophesize($classOrInterface = null): ObjectProphecy
     {
+        if (!is_callable([$this, 'recordDoubledType'])) {
+            return parent::prophesize($classOrInterface);
+        }
+
         if (\is_string($classOrInterface)) {
             \assert($this instanceof TestCase);
             $this->recordDoubledType($classOrInterface);
