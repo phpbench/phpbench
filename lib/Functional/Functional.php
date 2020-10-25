@@ -2,6 +2,10 @@
 
 namespace PhpBench\Functional;
 
+/**
+ * These functions lifted directly from lstrojny/functional in order to break
+ * the dependency and enable PHP8.0 support.
+ */
 class Functional
 {
     public static function group(iterable $collection, callable $callback): iterable
@@ -33,7 +37,6 @@ class Functional
     }
 
     /**
-     * @return mixed
      */
     public static function reduceLeft(iterable $collection, callable $callback, $initial = null)
     {
