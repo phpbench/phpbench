@@ -15,8 +15,8 @@ namespace PhpBench\Tests\Unit\Model;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Variant;
-use PhpBench\Tests\Util\TestUtil;
 use PhpBench\Tests\TestCase;
+use PhpBench\Tests\Util\TestUtil;
 
 class IterationTest extends TestCase
 {

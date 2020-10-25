@@ -3,7 +3,6 @@
 namespace PhpBench\Tests;
 
 use PhpBench\Tests\Util\Workspace;
-use PhpBench\Tests\TestCase;
 
 class IntegrationTestCase extends TestCase
 {

@@ -19,9 +19,9 @@ use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Variant;
 use PhpBench\Progress\Logger\BlinkenLogger;
+use PhpBench\Tests\TestCase;
 use PhpBench\Tests\Util\TestUtil;
 use PhpBench\Util\TimeUnit;
-use PhpBench\Tests\TestCase;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 class BlinkenLoggerTest extends TestCase

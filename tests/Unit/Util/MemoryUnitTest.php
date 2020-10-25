@@ -3,8 +3,8 @@
 namespace PhpBench\Tests\Unit\Util;
 
 use Generator;
-use PhpBench\Util\MemoryUnit;
 use PhpBench\Tests\TestCase;
+use PhpBench\Util\MemoryUnit;
 use RuntimeException;
 
 class MemoryUnitTest extends TestCase

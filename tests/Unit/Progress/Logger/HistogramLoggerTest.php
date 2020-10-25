@@ -18,9 +18,9 @@ use PhpBench\Model\ParameterSet;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Variant;
 use PhpBench\Progress\Logger\HistogramLogger;
+use PhpBench\Tests\TestCase;
 use PhpBench\Tests\Util\TestUtil;
 use PhpBench\Util\TimeUnit;
-use PhpBench\Tests\TestCase;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 class HistogramLoggerTest extends TestCase
