@@ -90,8 +90,7 @@ jobs:
 
       php: nightly
 
-      env: WITH_HIGHEST=true
-      env: WITH_EXAMPLES=false
+      env: WITH_HIGHEST=true WITH_EXAMPLES=false
 
     - stage: Deploy
 
