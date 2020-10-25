@@ -13,7 +13,7 @@
 namespace PhpBench\Tests\Unit\Report\Generator;
 
 use PhpBench\Dom\Document;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 
 abstract class GeneratorTestCase extends TestCase
 {

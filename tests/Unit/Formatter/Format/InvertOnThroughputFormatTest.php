@@ -5,7 +5,7 @@ namespace PhpBench\Tests\Unit\Formatter\Format;
 use Generator;
 use PhpBench\Formatter\Format\InvertOnThroughputFormat;
 use PhpBench\Util\TimeUnit;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 
 class InvertOnThroughputFormatTest extends TestCase
 {

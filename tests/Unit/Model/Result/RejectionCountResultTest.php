@@ -13,7 +13,7 @@
 namespace PhpBench\Tests\Unit\Model\Result;
 
 use PhpBench\Model\Result\RejectionCountResult;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 
 class RejectionCountResultTest extends TestCase
 {

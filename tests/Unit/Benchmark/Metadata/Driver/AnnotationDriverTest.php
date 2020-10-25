@@ -22,7 +22,7 @@ use PhpBench\Benchmark\Remote\ReflectionClass;
 use PhpBench\Benchmark\Remote\ReflectionHierarchy;
 use PhpBench\Benchmark\Remote\ReflectionMethod;
 use PhpBench\Benchmark\Remote\Reflector;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 
 class AnnotationDriverTest extends TestCase
 {

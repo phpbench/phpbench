@@ -17,7 +17,7 @@ use PhpBench\Storage\DriverInterface;
 use PhpBench\Storage\HistoryEntry;
 use PhpBench\Storage\HistoryIteratorInterface;
 use PhpBench\Storage\UuidResolver\LatestResolver;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 use RuntimeException;
 
 class LatestResolverTest extends TestCase

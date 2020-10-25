@@ -15,7 +15,7 @@ namespace PhpBench\Tests\Unit\Math;
 use Generator;
 use InvalidArgumentException;
 use PhpBench\Math\Statistics;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 
 class StatisticsTest extends TestCase
 {

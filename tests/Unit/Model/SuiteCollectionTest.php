@@ -14,7 +14,7 @@ namespace PhpBench\Tests\Unit\Model;
 
 use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 
 class SuiteCollectionTest extends TestCase
 {

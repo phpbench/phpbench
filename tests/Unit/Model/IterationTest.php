@@ -16,7 +16,7 @@ use PhpBench\Model\Iteration;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Variant;
 use PhpBench\Tests\Util\TestUtil;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 
 class IterationTest extends TestCase
 {

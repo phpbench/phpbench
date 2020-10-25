@@ -21,7 +21,7 @@ use PhpBench\Model\ParameterSet;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
 use PhpBench\Model\Variant;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 
 class SuiteTest extends TestCase
 {

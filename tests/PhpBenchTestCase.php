@@ -2,7 +2,7 @@
 
 namespace PhpBench\Tests;
 
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
 class PhpBenchTestCase extends TestCase

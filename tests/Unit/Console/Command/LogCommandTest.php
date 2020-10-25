@@ -20,7 +20,7 @@ use PhpBench\Storage\DriverInterface;
 use PhpBench\Storage\HistoryEntry;
 use PhpBench\Storage\HistoryIteratorInterface;
 use PhpBench\Util\TimeUnit;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Helper\QuestionHelper;

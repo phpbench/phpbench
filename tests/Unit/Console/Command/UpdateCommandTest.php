@@ -14,7 +14,7 @@ namespace PhpBench\Tests\Unit\Console\Command;
 
 use Humbug\SelfUpdate\Updater;
 use PhpBench\Console\Command\SelfUpdateCommand;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 

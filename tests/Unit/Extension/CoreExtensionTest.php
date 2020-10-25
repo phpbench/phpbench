@@ -13,7 +13,7 @@
 namespace PhpBench\Tests\Unit\Extension;
 
 use PhpBench\DependencyInjection\Container;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 
 class CoreExtensionTest extends TestCase
 {

@@ -15,7 +15,7 @@ namespace PhpBench\Tests\Unit\Executor;
 use PhpBench\Benchmark\Remote\Exception\ScriptErrorException;
 use PhpBench\Benchmark\Remote\Payload;
 use PhpBench\Tests\Unit\Executor\benchmarks\ParamProviderBench;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 
 class ParameterSetExtractorTest extends TestCase
 {

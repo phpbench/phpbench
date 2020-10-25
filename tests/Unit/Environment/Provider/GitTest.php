@@ -13,7 +13,7 @@
 namespace PhpBench\Tests\Unit\Environment\Provider;
 
 use PhpBench\Environment\Provider;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;

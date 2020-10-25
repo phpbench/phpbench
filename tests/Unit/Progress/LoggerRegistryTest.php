@@ -15,7 +15,7 @@ namespace PhpBench\Tests\Unit;
 use InvalidArgumentException;
 use PhpBench\Progress\LoggerInterface;
 use PhpBench\Progress\LoggerRegistry;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 
 class LoggerRegistryTest extends TestCase
 {

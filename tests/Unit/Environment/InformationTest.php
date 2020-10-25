@@ -14,7 +14,7 @@ namespace PhpBench\Tests\Unit\Environment;
 
 use BadMethodCallException;
 use PhpBench\Environment\Information;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 
 class InformationTest extends TestCase
 {

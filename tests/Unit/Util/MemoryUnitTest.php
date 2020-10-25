@@ -4,7 +4,7 @@ namespace PhpBench\Tests\Unit\Util;
 
 use Generator;
 use PhpBench\Util\MemoryUnit;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 use RuntimeException;
 
 class MemoryUnitTest extends TestCase

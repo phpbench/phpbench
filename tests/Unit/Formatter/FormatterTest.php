@@ -15,7 +15,7 @@ namespace PhpBench\Tests\Unit\Formatter;
 use PhpBench\Formatter\FormatInterface;
 use PhpBench\Formatter\FormatRegistry;
 use PhpBench\Formatter\Formatter;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 
 class FormatterTest extends TestCase
 {

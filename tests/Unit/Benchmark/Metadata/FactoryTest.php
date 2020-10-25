@@ -21,7 +21,7 @@ use PhpBench\Benchmark\Remote\ReflectionClass;
 use PhpBench\Benchmark\Remote\ReflectionHierarchy;
 use PhpBench\Benchmark\Remote\Reflector;
 use PhpBench\Tests\Util\TestUtil;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 
 class FactoryTest extends TestCase
 {

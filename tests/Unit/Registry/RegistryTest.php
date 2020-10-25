@@ -16,7 +16,7 @@ use InvalidArgumentException;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\Registry\RegistrableInterface;
 use PhpBench\Registry\Registry;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 use RuntimeException;
 
 class RegistryTest extends TestCase

@@ -13,7 +13,7 @@
 namespace PhpBench\Tests\Unit\Formatter\Formatter;
 
 use PhpBench\Formatter\Format\PrintfFormat;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 
 class PrintfFormatTest extends TestCase
 {

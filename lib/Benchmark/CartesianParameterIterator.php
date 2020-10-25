@@ -65,8 +65,6 @@ class CartesianParameterIterator implements \Iterator
 
         $this->index++;
         $this->update();
-
-        return $this->getParameterSet();
     }
 
     public function key(): string
@@ -82,8 +80,6 @@ class CartesianParameterIterator implements \Iterator
             $set->rewind();
         }
         $this->update();
-
-        return $this->current();
     }
 
     public function valid(): bool

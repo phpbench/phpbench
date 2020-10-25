@@ -15,7 +15,7 @@ namespace PhpBench\Tests\Unit\Subject;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\ParameterSet;
 use PhpBench\Model\Subject;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 
 class SubjectTest extends TestCase
 {

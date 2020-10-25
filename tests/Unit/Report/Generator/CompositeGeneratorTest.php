@@ -17,7 +17,7 @@ use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Report\Generator\CompositeGenerator;
 use PhpBench\Report\ReportManager;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 use Prophecy\Argument;
 
 class CompositeGeneratorTest extends TestCase

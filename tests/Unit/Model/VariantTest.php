@@ -20,7 +20,7 @@ use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Variant;
 use PhpBench\Tests\Util\TestUtil;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 use Prophecy\Argument;
 use RuntimeException;
 

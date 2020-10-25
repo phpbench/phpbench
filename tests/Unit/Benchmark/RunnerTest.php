@@ -31,7 +31,7 @@ use PhpBench\Model\Suite;
 use PhpBench\Registry\Config;
 use PhpBench\Registry\ConfigurableRegistry;
 use PhpBench\Tests\Util\TestUtil;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 use Prophecy\Argument;
 
 class RunnerTest extends TestCase

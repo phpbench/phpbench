@@ -13,7 +13,7 @@
 namespace PhpBench\Tests\Unit\Benchmark\Remote;
 
 use PhpBench\Benchmark\Remote\IniStringBuilder;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 
 class IniStringBuilderTest extends TestCase
 {

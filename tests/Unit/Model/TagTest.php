@@ -14,7 +14,7 @@ namespace PhpBench\Tests\Unit\Model;
 
 use InvalidArgumentException;
 use PhpBench\Model\Tag;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 
 class TagTest extends TestCase
 {

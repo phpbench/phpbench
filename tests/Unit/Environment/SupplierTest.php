@@ -15,7 +15,7 @@ namespace PhpBench\Tests\Unit\Vcs\Detector;
 use PhpBench\Environment\Information;
 use PhpBench\Environment\ProviderInterface;
 use PhpBench\Environment\Supplier;
-use PHPUnit\Framework\TestCase;
+use PhpBench\Tests\TestCase;
 
 class SupplierTest extends TestCase
 {

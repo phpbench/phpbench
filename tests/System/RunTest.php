@@ -566,7 +566,7 @@ class RunTest extends SystemTestCase
             'run benchmarks/set4/NothingBench.php --php-disable-ini --php-config="extension:json.so" --report=env'
         );
         $this->assertExitCode(0, $process);
-        $this->assertRegExp('{ini\s+\| no}', $process->getOutput());
+        $this->assertMatchesRegularExpression('{ini\s+\| no}', $process->getOutput());
     }
 
     public function testErrorWhenTimeoutExceeded(): void
