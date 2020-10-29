@@ -27,7 +27,9 @@ And create the following Composer_ file within it:
                 "Acme\\": "src/",
                 "Acme\\Tests\\": "tests/"
             }
-        }
+        },
+        "minimum-stability": "dev",
+        "prefer-stable": true
     }
 
 Now perform a Composer install:
