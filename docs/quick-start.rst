@@ -24,7 +24,7 @@ And create the following Composer_ file within it:
         },
         "autoload": {
             "psr-4": {
-                "Acme\\": "src/"
+                "Acme\\": "src/",
                 "Acme\\Tests\\": "tests/"
             }
         }
