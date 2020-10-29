@@ -120,7 +120,7 @@ Now you can execute the benchmark as follows:
 
 .. code-block:: bash
 
-    $ ./vendor/bin/phpbench run benchmarks/TimeConsumerBench.php --report=default
+   $ vendor/bin/phpbench run tests/Benchmark/TimeConsumerBench.php --report=default
 
 And you should see some output similar to the following:
 
