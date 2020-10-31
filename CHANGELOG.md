@@ -8,6 +8,8 @@ Backward compatiblity breaks:
 
 - `BenchmarkExecutorInterface#execute()` must now return an `ExecutionResults`
   object.
+- `TemplateExecutor`: expect an `array` for the time measurement result instead
+  of an `int`.
 
 1.0.0-alpha-2
 -------------

@@ -72,7 +72,7 @@ class TemplateExecutor implements BenchmarkExecutorInterface
         }
 
         return ExecutionResults::fromResults(
-            new TimeResult($result['time']),
+            TimeResult::fromArray($result['time']),
             MemoryResult::fromArray($result['mem'])
         );
     }
@@ -88,6 +88,9 @@ class TemplateExecutor implements BenchmarkExecutorInterface
         ]);
     }
 
+    /**
+     * @return array<string, string|int|array>
+     */
     protected function createTokens(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config) : array
     {
         $parameterSet = $iteration->getVariant()->getParameterSet();

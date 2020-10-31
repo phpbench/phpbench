@@ -62,7 +62,9 @@ echo serialize([
         'final' => memory_get_usage(),
         'real' => memory_get_usage(true),
     ],
-    'time' => (int) $time,
+    'time' => [
+        'net' => (int) $time,
+    ],
     'buffer' => $buffer,
 ]);
 
