@@ -597,4 +597,18 @@ class RunTest extends SystemTestCase
         $this->assertExitCode(255, $process);
         $this->assertStringContainsString('Unknown profile', $process->getErrorOutput());
     }
+
+    public function testSpecifyRemoteScriptPath(): void
+    {
+        $this->workspace()->put('phpbench.json', (string)json_encode([
+            'remote_script_path' => $this->workspace()->path('remote'),
+            'remote_script_remove' => false,
+        ]));
+
+        $process = $this->phpbench(
+            'run benchmarks/set4/NothingBench.php'
+        );
+        $this->assertExitCode(0, $process);
+        $this->assertFileExists($this->workspace()->path('remote/microtime.template'));
+    }
 }
