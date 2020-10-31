@@ -140,12 +140,12 @@ class PayloadTest extends TestCase
         $payload->launch($payload);
     }
 
-    private function validPayload()
+    private function validPayload(): Payload
     {
         return $this->validPayloadWithPhpConfig();
     }
 
-    private function validPayloadWithPhpConfig(array $phpConfig = [])
+    private function validPayloadWithPhpConfig(array $phpConfig = []): Payload
     {
         return new Payload(
             __DIR__ . '/template/foo.template',

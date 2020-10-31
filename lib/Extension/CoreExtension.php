@@ -104,6 +104,8 @@ class CoreExtension implements ExtensionInterface
     public const PARAM_SUBJECT_PATTERN = 'subject_pattern';
     public const PARAM_TIME_UNIT = 'time_unit';
     public const PARAM_XML_STORAGE_PATH = 'xml_storage_path';
+    public const PARAM_REMOTE_SCRIPT_PATH = 'remote_script_path';
+    public const PARAM_REMOTE_SCRIPT_REMOVE = 'remote_script_remove';
 
     public const TAG_EXECUTOR = 'benchmark_executor';
     public const TAG_CONSOLE_COMMAND = 'console.command';
@@ -143,6 +145,8 @@ class CoreExtension implements ExtensionInterface
             self::PARAM_PHP_WRAPPER => null,
             self::PARAM_PHP_DISABLE_INI => false,
             self::PARAM_ANNOTATION_IMPORT_USE => false,
+            self::PARAM_REMOTE_SCRIPT_PATH => null,
+            self::PARAM_REMOTE_SCRIPT_REMOVE => true,
         ];
     }
 
@@ -232,7 +236,10 @@ class CoreExtension implements ExtensionInterface
 
         $container->register(Launcher::class, function (Container $container) {
             return new Launcher(
-                new PayloadFactory(),
+                new PayloadFactory(
+                    $container->getParameter(self::PARAM_REMOTE_SCRIPT_PATH),
+                    $container->getParameter(self::PARAM_REMOTE_SCRIPT_REMOVE)
+                ),
                 new ExecutableFinder(),
                 $container->hasParameter(self::PARAM_BOOTSTRAP) ? $container->getParameter(self::PARAM_BOOTSTRAP) : null,
                 $container->hasParameter(self::PARAM_PHP_BINARY) ? $container->getParameter(self::PARAM_PHP_BINARY) : null,

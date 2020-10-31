@@ -14,8 +14,35 @@ namespace PhpBench\Benchmark\Remote;
 
 class PayloadFactory
 {
-    public function create($template, array $tokens = [], ?string $phpBinary = null, ?float $timeout = null): Payload
+    /**
+     * @var string|null
+     */
+    private $remoteScriptPath;
+
+    /**
+     * @var bool
+     */
+    private $remoteScriptRemove;
+
+    public function __construct(?string $remoteScriptPath = null, bool $remoteScriptRemove = false)
     {
-        return new Payload($template, $tokens, $phpBinary, $timeout);
+        $this->remoteScriptPath = $remoteScriptPath;
+        $this->remoteScriptRemove = $remoteScriptRemove;
+    }
+
+    /**
+     * @param array<string, mixed> $tokens
+     */
+    public function create(string $template, array $tokens = [], ?string $phpBinary = null, ?float $timeout = null): Payload
+    {
+        return new Payload(
+            $template,
+            $tokens,
+            $phpBinary,
+            $timeout,
+            null,
+            $this->remoteScriptPath,
+            $this->remoteScriptRemove
+        );
     }
 }
