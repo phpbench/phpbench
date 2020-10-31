@@ -80,7 +80,6 @@ use PhpBench\Storage\UuidResolver\TagResolver;
 use PhpBench\Storage\UuidResolverInterface;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\ExecutableFinder;
 
 class CoreExtension implements ExtensionInterface
