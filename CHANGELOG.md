@@ -1,8 +1,8 @@
 CHANGELOG
 =========
 
-develop
--------
+master
+------
 
 Backward compatiblity breaks:
 
@@ -10,6 +10,11 @@ Backward compatiblity breaks:
   object.
 - `TemplateExecutor`: expect an `array` for the time measurement result instead
   of an `int`.
+
+Features:
+
+- Introduced `remote_script_remove` and `remote_script_path` options to assist
+  in debugging.
 
 1.0.0-alpha-2
 -------------
@@ -34,7 +39,7 @@ Backward compatibility breaks:
 - Assets (storage, xdebug profiles) are now placed in `.phpbench`
 - Services referenced via. fully qualified class names instead of strings.
 
-Features
+Features:
 
 - Configuration profiles
 - XDebug extension is loaded by default if extension is loaded
