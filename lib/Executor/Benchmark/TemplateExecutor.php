@@ -50,16 +50,11 @@ class TemplateExecutor implements BenchmarkExecutorInterface
 
         $payload = $this->launcher->payload($this->templatePath, $tokens, $subjectMetadata->getTimeout());
 
-        return $this->launch($payload, $iteration, $config);
-    }
-
-    private function launch(Payload $payload, Iteration $iteration, Config $options): ExecutionResults
-    {
         $payload->mergePhpConfig(array_merge(
             [
                 self::PHP_OPTION_MAX_EXECUTION_TIME => 0,
             ],
-            $options[self::OPTION_PHP_CONFIG] ?? []
+            $config[self::OPTION_PHP_CONFIG] ?? []
         ));
 
         $result = $payload->launch();
