@@ -10,6 +10,9 @@ Backward compatiblity breaks:
   object.
 - `TemplateExecutor`: expect an `array` for the time measurement result instead
   of an `int`.
+- Extensions use the Symfony `OptionsResolver` instead of provding an array of
+  default values (which is in line with how other parts of PHPBench are
+  working).
 
 Features:
 
