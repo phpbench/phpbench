@@ -16,12 +16,12 @@ First, create a dependency injection container extension:
 
     use PhpBench\DependencyInjection\Container;
     use PhpBench\DependencyInjection\ExtensionInterface;
+    use Symfony\Component\OptionsResolver\OptionsResolver;
 
     class MyExtensionClass implements ExtensionInterface
     {
-        public function getDefaultConfig(): array
+        public function configure(OptionsResolver $resolver): void
         {
-            return [];
         }
 
         public function load(Container $container): void
@@ -54,12 +54,12 @@ command:
     use PhpBench\DependencyInjection\Container;
     use PhpBench\DependencyInjection\ExtensionInterface;
     use PhpBench\Extension\CoreExtension;
+    use Symfony\Component\OptionsResolver\OptionsResolver;
 
     class MyExtensionClass implements ExtensionInterface
     {
-        public function getDefaultConfig(): array
+        public function configure(OptionsResolver $resolver): void
         {
-            return [];
         }
 
         public function load(Container $container): void

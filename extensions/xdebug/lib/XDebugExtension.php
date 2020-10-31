@@ -22,16 +22,17 @@ use PhpBench\Extension\CoreExtension;
 use PhpBench\Extensions\XDebug\Command\Handler\OutputDirHandler;
 use PhpBench\Extensions\XDebug\Command\ProfileCommand;
 use PhpBench\Extensions\XDebug\Executor\ProfileExecutor;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class XDebugExtension implements ExtensionInterface
 {
     const PARAM_OUTPUT_DIR = 'xdebug.command.handler.output_dir';
 
-    public function getDefaultConfig(): array
+    public function configure(OptionsResolver $resolver): void
     {
-        return [
+        $resolver->setDefaults([
             self::PARAM_OUTPUT_DIR => '.phpbench/xdebug-profile',
-        ];
+        ]);
     }
 
     public function load(Container $container): void

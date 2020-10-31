@@ -80,6 +80,7 @@ use PhpBench\Storage\UuidResolver\TagResolver;
 use PhpBench\Storage\UuidResolverInterface;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\ExecutableFinder;
 
 class CoreExtension implements ExtensionInterface
@@ -122,9 +123,9 @@ class CoreExtension implements ExtensionInterface
     private const SERVICE_REGISTRY_LOGGER = 'progress_logger.registry';
     private const SERVICE_REGISTRY_RENDERER = 'report.registry.renderer';
 
-    public function getDefaultConfig(): array
+    public function configure(OptionsResolver $resolver): void
     {
-        return [
+        $resolver->setDefaults([
             self::PARAM_BOOTSTRAP => null,
             self::PARAM_PATH => null,
             self::PARAM_REPORTS => [],
@@ -147,7 +148,7 @@ class CoreExtension implements ExtensionInterface
             self::PARAM_ANNOTATION_IMPORT_USE => false,
             self::PARAM_REMOTE_SCRIPT_PATH => null,
             self::PARAM_REMOTE_SCRIPT_REMOVE => true,
-        ];
+        ]);
     }
 
     public function load(Container $container): void
