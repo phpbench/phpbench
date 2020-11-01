@@ -22,7 +22,6 @@ use PhpBench\Executor\ExecutionResults;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\ParameterSet;
 use PhpBench\Registry\Config;
-use PhpBench\Tests\PhpBenchTestCase;
 use RuntimeException;
 
 class RemoteExecutorTest extends AbstractExecutorTestCase

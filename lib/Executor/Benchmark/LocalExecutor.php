@@ -7,11 +7,9 @@ use PhpBench\Executor\BenchmarkExecutorInterface;
 use PhpBench\Executor\Exception\ExecutionError;
 use PhpBench\Executor\ExecutionResults;
 use PhpBench\Model\Iteration;
-use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Registry\Config;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use function memory_get_peak_usage;
 
 class LocalExecutor implements BenchmarkExecutorInterface
 {
@@ -33,7 +31,7 @@ class LocalExecutor implements BenchmarkExecutorInterface
             $benchmark->$afterMethod($parameters);
         }
 
-        for($i = 0; $i < $iteration->getVariant()->getWarmup() ?: 0; $i++) {
+        for ($i = 0; $i < $iteration->getVariant()->getWarmup() ?: 0; $i++) {
             $benchmark->$methodName($parameters);
         }
 

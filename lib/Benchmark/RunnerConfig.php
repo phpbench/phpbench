@@ -23,7 +23,7 @@ class RunnerConfig
     /**
      * @var string|array
      */
-    private $executor = 'microtime';
+    private $executor = 'remote';
 
     /**
      * @var string|null

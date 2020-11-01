@@ -2,9 +2,8 @@
 
 namespace PhpBench\Tests\Unit\Executor\Benchmark;
 
-use PhpBench\Executor\BenchmarkExecutorInterface;
 use PhpBench\Executor\Benchmark\LocalExecutor;
-use PhpBench\Executor\Exception\ExecutionError;
+use PhpBench\Executor\BenchmarkExecutorInterface;
 use PhpBench\Executor\ExecutionResults;
 
 class LocalExecutorTest extends AbstractExecutorTestCase

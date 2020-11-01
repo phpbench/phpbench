@@ -18,6 +18,6 @@ class RemoteExecutor extends TemplateExecutor
 {
     public function __construct(Launcher $launcher)
     {
-        parent::__construct($launcher, __DIR__ . '/template/microtime.template');
+        parent::__construct($launcher, __DIR__ . '/template/remote.template');
     }
 }

@@ -4,10 +4,11 @@ Reference
 .. toctree::
    :maxdepth: 2
 
-   reports
-   storage
-   environment
-   report-generators
-   report-renderers
    assertions
    configuration
+   environment
+   executors
+   report-generators
+   report-renderers
+   reports
+   storage

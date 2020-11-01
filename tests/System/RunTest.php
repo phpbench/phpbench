@@ -609,6 +609,6 @@ class RunTest extends SystemTestCase
             'run benchmarks/set4/NothingBench.php'
         );
         $this->assertExitCode(0, $process);
-        $this->assertFileExists($this->workspace()->path('remote/microtime.template'));
+        $this->assertFileExists($this->workspace()->path('remote/remote.template'));
     }
 }
