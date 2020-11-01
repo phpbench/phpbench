@@ -43,7 +43,7 @@ use PhpBench\Environment\Supplier;
 use PhpBench\Executor\Benchmark\DebugExecutor;
 use PhpBench\Executor\Benchmark\LocalExecutor;
 use PhpBench\Executor\Benchmark\MemoryCentricMicrotimeExecutor;
-use PhpBench\Executor\Benchmark\MicrotimeExecutor;
+use PhpBench\Executor\Benchmark\RemoteExecutor;
 use PhpBench\Executor\CompositeExecutor;
 use PhpBench\Executor\Method\RemoteMethodExecutor;
 use PhpBench\Formatter\Format\BalanceFormat;
@@ -199,12 +199,12 @@ class CoreExtension implements ExtensionInterface
             );
         });
 
-        $container->register(MicrotimeExecutor::class . '.composite', function (Container $container) {
+        $container->register(RemoteExecutor::class . '.composite', function (Container $container) {
             return new CompositeExecutor(
-                $container->get(MicrotimeExecutor::class),
+                $container->get(RemoteExecutor::class),
                 $container->get(RemoteMethodExecutor::class)
             );
-        }, [self::TAG_EXECUTOR => ['name' => 'microtime']]);
+        }, [self::TAG_EXECUTOR => ['name' => 'remote']]);
 
         $container->register(LocalExecutor::class . '.composite', function (Container $container) {
             return new CompositeExecutor(
@@ -220,8 +220,8 @@ class CoreExtension implements ExtensionInterface
             );
         }, [self::TAG_EXECUTOR => ['name' => 'memory_centric_microtime']]);
 
-        $container->register(MicrotimeExecutor::class, function (Container $container) {
-            return new MicrotimeExecutor(
+        $container->register(RemoteExecutor::class, function (Container $container) {
+            return new RemoteExecutor(
                 $container->get(Launcher::class)
             );
         });

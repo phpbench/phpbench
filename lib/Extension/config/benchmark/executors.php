@@ -14,8 +14,8 @@ return [
     'memory_centric_microtime' => [
         'executor' => 'memory_centric_microtime',
     ],
-    'microtime' => [
-        'executor' => 'microtime',
+    'remote' => [
+        'executor' => 'remote',
     ],
     'local' => [
         'executor' => 'local',

@@ -17,7 +17,8 @@ use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Executor\BenchmarkExecutorInterface;
 use PhpBench\Executor\Benchmark\LocalExecutor;
-use PhpBench\Executor\Benchmark\MicrotimeExecutor;
+use PhpBench\Executor\Benchmark\RemoteExecutor;
+use PhpBench\Executor\Exception\ExecutionError;
 use PhpBench\Executor\ExecutionResults;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Iteration;
@@ -70,6 +71,13 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
         $this->iteration = $this->prophesize(Iteration::class);
         $this->metadata->getBenchmark()->willReturn($this->benchmarkMetadata->reveal());
         $this->iteration->getVariant()->willReturn($this->variant->reveal());
+        $this->metadata->getTimeout()->willReturn(0);
+        $this->metadata->getBeforeMethods()->willReturn([]);
+        $this->metadata->getAfterMethods()->willReturn([]);
+        $this->metadata->getName()->willReturn('doSomething');
+        $this->variant->getParameterSet()->willReturn(new ParameterSet('one'));
+        $this->variant->getRevolutions()->willReturn(10);
+        $this->variant->getWarmup()->willReturn(1);
     }
 
     abstract protected function createExecutor(): BenchmarkExecutorInterface;
@@ -82,15 +90,6 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
      */
     public function testExecute(): void
     {
-        $this->metadata->getTimeout()->willReturn(0);
-        $this->metadata->getBeforeMethods()->willReturn([]);
-        $this->metadata->getAfterMethods()->willReturn([]);
-        $this->metadata->getName()->willReturn('doSomething');
-        $this->variant->getParameterSet()->willReturn(new ParameterSet('one'));
-        $this->variant->getRevolutions()->willReturn(10);
-        $this->variant->getWarmup()->willReturn(1);
-
-
         $results = $this->executor->execute(
             $this->metadata->reveal(),
             $this->iteration->reveal(),
@@ -98,6 +97,18 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
         );
 
         $this->assertExecute($results);
+    }
+
+    public function testExceptionWhenClassNotFound(): void
+    {
+        $this->expectException(ExecutionError::class);
+        $this->benchmarkMetadata->getClass()->willReturn('Foobar');
+
+        $this->executor->execute(
+            $this->metadata->reveal(),
+            $this->iteration->reveal(),
+            new Config('test', [])
+        );
     }
 
     /**
