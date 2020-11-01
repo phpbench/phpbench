@@ -15,11 +15,14 @@ Backward compatiblity breaks:
   working).
 - Executors accept a single, immutable `ExecutionContext` instead of the
   mutable `SubjectMetadata` and `Iteration`
+- Renamed the `microtime` executor to `remote`.
 
 Features:
 
 - Introduced `remote_script_remove` and `remote_script_path` options to assist
   in debugging.
+- Added `local` executor - execute benchmarks with in the same process as
+  PHPBench.
 
 Improvements:
 
