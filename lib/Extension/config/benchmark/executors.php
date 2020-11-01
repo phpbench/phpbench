@@ -17,6 +17,9 @@ return [
     'microtime' => [
         'executor' => 'microtime',
     ],
+    'local' => [
+        'executor' => 'in-process',
+    ],
     'debug' => [
         'executor' => 'debug',
     ],
