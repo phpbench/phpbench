@@ -13,7 +13,6 @@
 namespace PhpBench\Extensions\XDebug;
 
 use PhpBench\Executor\ExecutionContext;
-use PhpBench\Model\Iteration;
 
 class XDebugUtil
 {

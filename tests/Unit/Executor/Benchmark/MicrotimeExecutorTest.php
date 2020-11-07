@@ -13,15 +13,11 @@
 namespace PhpBench\Tests\Unit\Executor\Benchmark;
 
 use DTL\Invoke\Invoke;
-use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
-use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Executor\Benchmark\MicrotimeExecutor;
 use PhpBench\Executor\ExecutionContext;
 use PhpBench\Model\Benchmark;
-use PhpBench\Model\Iteration;
 use PhpBench\Model\ParameterSet;
-use PhpBench\Model\Variant;
 use PhpBench\Registry\Config;
 use PhpBench\Tests\PhpBenchTestCase;
 use RuntimeException;
@@ -180,6 +176,7 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
     private function buildContext(array $config)
     {
         $context = Invoke::new(ExecutionContext::class, $this->buildConfig($config));
+
         return $context;
     }
 }

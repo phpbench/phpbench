@@ -15,11 +15,7 @@ namespace PhpBench\Extensions\XDebug\Tests\Unit;
 use DTL\Invoke\Invoke;
 use PhpBench\Executor\ExecutionContext;
 use PhpBench\Extensions\XDebug\XDebugUtil;
-use PhpBench\Model\Benchmark;
 use PhpBench\Model\Iteration;
-use PhpBench\Model\ParameterSet;
-use PhpBench\Model\Subject;
-use PhpBench\Model\Variant;
 use PhpBench\Tests\TestCase;
 
 class XDebugUtilTest extends TestCase
