@@ -12,6 +12,7 @@
 
 namespace PhpBench\Benchmark;
 
+use Generator;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\MetadataFactory;
 use PhpBench\PhpBench;
@@ -34,10 +35,12 @@ class BenchmarkFinder
     }
 
     /**
-     * Build the BenchmarkMetadata collection.
+     * @param array<string> $subjectFilter
+     * @param array<string> $groupFilter
      *
+     * @return Generator<BenchmarkMetadata>
      */
-    public function findBenchmarks(string $path, array $subjectFilter = [], array $groupFilter = []): array
+    public function findBenchmarks(string $path, array $subjectFilter = [], array $groupFilter = []): Generator
     {
         $finder = new Finder();
         $path = PhpBench::normalizePath($path);
@@ -85,9 +88,7 @@ class BenchmarkFinder
                 continue;
             }
 
-            $benchmarks[] = $benchmark;
+            yield $benchmark;
         }
-
-        return $benchmarks;
     }
 }
