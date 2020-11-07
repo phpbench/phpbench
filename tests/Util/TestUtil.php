@@ -66,7 +66,7 @@ class TestUtil
             'class' => 'Benchmark',
             'beforeClassMethods' => [],
             'afterClassMethods' => [],
-            'path' => null,
+            'path' => 'example',
         ], $options);
 
         $benchmark->getClass()->willReturn($options['class']);

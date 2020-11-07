@@ -18,6 +18,7 @@ use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Environment\Supplier;
 use PhpBench\Executor\BenchmarkExecutorInterface;
+use PhpBench\Executor\ExecutionContext;
 use PhpBench\Executor\HealthCheckInterface;
 use PhpBench\Executor\MethodExecutorInterface;
 use PhpBench\Model\Benchmark;
@@ -331,7 +332,7 @@ final class Runner
     {
         $this->logger->iterationStart($iteration);
 
-        foreach ($executor->execute($subjectMetadata, $iteration, $executorConfig) as $result) {
+        foreach ($executor->execute(ExecutionContext::fromSubjectMetadataAndIteration($subjectMetadata, $iteration), $executorConfig) as $result) {
             $iteration->setResult($result);
         }
 

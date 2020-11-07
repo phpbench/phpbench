@@ -15,6 +15,7 @@ namespace PhpBench\Executor\Benchmark;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Executor\BenchmarkExecutorInterface;
+use PhpBench\Executor\ExecutionContext;
 use PhpBench\Executor\ExecutionResults;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\Result\MemoryResult;
@@ -43,12 +44,10 @@ class TemplateExecutor implements BenchmarkExecutorInterface
         $this->templatePath = $templatePath;
     }
 
-    public function execute(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config): ExecutionResults
+    public function execute(ExecutionContext $context, Config $config): ExecutionResults
     {
-        $tokens = $this->createTokens($subjectMetadata, $iteration, $config);
-
-        $payload = $this->launcher->payload($this->templatePath, $tokens, $subjectMetadata->getTimeout());
-
+        $tokens = $this->createTokens($context);
+        $payload = $this->launcher->payload($this->templatePath, $tokens, $context->getTimeout());
         $payload->mergePhpConfig(array_merge(
             [
                 self::PHP_OPTION_MAX_EXECUTION_TIME => 0,
@@ -82,22 +81,17 @@ class TemplateExecutor implements BenchmarkExecutorInterface
         ]);
     }
 
-    /**
-     * @return array<string, string|int|array>
-     */
-    protected function createTokens(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config) : array
+    protected function createTokens(ExecutionContext $context) : array
     {
-        $parameterSet = $iteration->getVariant()->getParameterSet();
-
         return [
-            'class' => $subjectMetadata->getBenchmark()->getClass(),
-            'file' => $subjectMetadata->getBenchmark()->getPath(),
-            'subject' => $subjectMetadata->getName(),
-            'revolutions' => $iteration->getVariant()->getRevolutions(),
-            'beforeMethods' => var_export($subjectMetadata->getBeforeMethods(), true),
-            'afterMethods' => var_export($subjectMetadata->getAfterMethods(), true),
-            'parameters' => $parameterSet->count() ? var_export($parameterSet->getArrayCopy(), true) : '',
-            'warmup' => $iteration->getVariant()->getWarmup() ?: 0,
+            'class' => $context->getClassName(),
+            'file' => $context->getClassPath(),
+            'subject' => $context->getMethodName(),
+            'revolutions' => $context->getRevolutions(),
+            'beforeMethods' => var_export($context->getBeforeMethods(), true),
+            'afterMethods' => var_export($context->getAfterMethods(), true),
+            'parameters' => $context->getParameters() ? var_export($context->getParameters(), true) : '',
+            'warmup' => $context->getWarmup() ?: 0,
         ];
     }
 }

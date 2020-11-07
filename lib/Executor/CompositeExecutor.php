@@ -41,9 +41,9 @@ class CompositeExecutor implements BenchmarkExecutorInterface, HealthCheckInterf
         $this->benchmarkExecutor->configure($options);
     }
 
-    public function execute(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config): ExecutionResults
+    public function execute(ExecutionContext $context, Config $config): ExecutionResults
     {
-        return $this->benchmarkExecutor->execute($subjectMetadata, $iteration, $config);
+        return $this->benchmarkExecutor->execute($context, $config);
     }
 
     /**
