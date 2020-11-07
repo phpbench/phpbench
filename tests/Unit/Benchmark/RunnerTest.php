@@ -130,7 +130,7 @@ class RunnerTest extends TestCase
         $this->assertInstanceOf('PhpBench\Model\Suite', $suite);
         $this->assertNoErrors($suite);
 
-        self::assertCount((int)(count($revs) * array_sum($iterations)), $this->executor->executedSubjects);
+        self::assertEquals((int)(count($revs) * array_sum($iterations)), $this->executor->getExecutedSubjectCount());
 
         foreach ($assertionCallbacks as $callback) {
             $callback($this, $suite);
@@ -310,9 +310,9 @@ class RunnerTest extends TestCase
         $this->benchmark->getSubjects()->willReturn([]);
 
         $this->runner->run([ $this->benchmark->reveal() ], RunnerConfig::create());
-        self::assertFalse($this->executor->healthChecked);
-        self::assertContainsEquals('afterClass', $this->executor->executedMethods);
-        self::assertContainsEquals('beforeClass', $this->executor->executedMethods);
+        self::assertFalse($this->executor->hasHealthBeenChecked());
+        self::assertTrue($this->executor->hasMethodBeenExecuted('afterClass'));
+        self::assertTrue($this->executor->hasMethodBeenExecuted('beforeClass'));
     }
 
     /**

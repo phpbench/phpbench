@@ -19,22 +19,22 @@ class TestExecutor implements BenchmarkExecutorInterface, MethodExecutorInterfac
     /**
      * @var array
      */
-    public $executedMethods = [];
+    private $executedMethods = [];
 
     /**
      * @var bool
      */
-    public $healthChecked = false;
+    private $healthChecked = false;
 
     /**
      * @var array<SubjectMetadata>
      */
-    public $executedSubjects = [];
+    private $executedSubjects = [];
 
     /**
      * @var SubjectMetadata|null
      */
-    public $lastSubject;
+    private $lastSubject;
 
     /**
      * @var Variant|null
@@ -97,5 +97,20 @@ class TestExecutor implements BenchmarkExecutorInterface, MethodExecutorInterfac
         }
 
         return $this->lastVariant;
+    }
+
+    public function hasMethodBeenExecuted(string $name): bool
+    {
+        return in_array($name, $this->executedMethods);
+    }
+
+    public function hasHealthBeenChecked(): bool
+    {
+        return $this->healthChecked;
+    }
+
+    public function getExecutedSubjectCount(): int
+    {
+        return count($this->executedSubjects);
     }
 }
