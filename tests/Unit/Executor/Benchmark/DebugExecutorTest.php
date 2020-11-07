@@ -12,9 +12,11 @@
 
 namespace PhpBench\Tests\Unit\Executor\Benchmark;
 
+use DTL\Invoke\Invoke;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Executor\Benchmark\DebugExecutor;
+use PhpBench\Executor\ExecutionContext;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Variant;
@@ -29,7 +31,6 @@ class DebugExecutorTest extends TestCase
     {
         $launcher = $this->prophesize(Launcher::class);
         $this->executor = new DebugExecutor($launcher->reveal());
-        $this->subjectMetadata = $this->prophesize(SubjectMetadata::class);
     }
 
     /**
@@ -42,16 +43,14 @@ class DebugExecutorTest extends TestCase
         $actualTimes = [];
 
         for ($i = 0; $i < $nbCollections; $i++) {
-            $variant = $this->prophesize(Variant::class);
-
             for ($ii = 0; $ii < $nbIterations; $ii++) {
-                $iteration = $this->prophesize(Iteration::class);
-                $iteration->getVariant()->willReturn($variant->reveal());
-                $iteration->getIndex()->willReturn($ii);
-
                 $results = $this->executor->execute(
-                    $this->subjectMetadata->reveal(),
-                    $iteration->reveal(),
+                    Invoke::new(ExecutionContext::class, [
+                        'classPath' => '',
+                        'className' => '',
+                        'methodName' => '',
+                        'iterationIndex' => $ii,
+                    ]),
                     new Config('test', [
                         'times' => $times,
                         'spread' => $spread,

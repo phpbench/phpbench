@@ -12,10 +12,12 @@
 
 namespace PhpBench\Tests\Unit\Executor\Benchmark;
 
+use DTL\Invoke\Invoke;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Executor\Benchmark\MicrotimeExecutor;
+use PhpBench\Executor\ExecutionContext;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\ParameterSet;
@@ -27,47 +29,16 @@ use RuntimeException;
 class MicrotimeExecutorTest extends PhpBenchTestCase
 {
     /**
-     * @var ObjectProphecy
-     */
-    private $metadata;
-    /**
-     * @var ObjectProphecy
-     */
-    private $benchmark;
-    /**
-     * @var ObjectProphecy
-     */
-    private $benchmarkMetadata;
-    /**
-     * @var ObjectProphecy
-     */
-    private $variant;
-    /**
      * @var MicrotimeExecutor
      */
     private $executor;
-    /**
-     * @var ObjectProphecy
-     */
-    private $iteration;
 
     protected function setUp(): void
     {
         $this->initWorkspace();
 
-        $this->metadata = $this->prophesize(SubjectMetadata::class);
-        $this->benchmark = $this->prophesize(Benchmark::class);
-        $this->benchmarkMetadata = $this->prophesize(BenchmarkMetadata::class);
-        $this->variant = $this->prophesize(Variant::class);
-
         $launcher = new Launcher(null, null);
         $this->executor = new MicrotimeExecutor($launcher);
-
-        $this->benchmarkMetadata->getPath()->willReturn(__DIR__ . '/../benchmarks/MicrotimeExecutorBench.php');
-        $this->benchmarkMetadata->getClass()->willReturn('PhpBench\Tests\Unit\Executor\benchmarks\MicrotimeExecutorBench');
-        $this->iteration = $this->prophesize(Iteration::class);
-        $this->metadata->getBenchmark()->willReturn($this->benchmarkMetadata->reveal());
-        $this->iteration->getVariant()->willReturn($this->variant->reveal());
     }
 
     /**
@@ -76,18 +47,14 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
      */
     public function testExecute(): void
     {
-        $this->metadata->getTimeout()->willReturn(0);
-        $this->metadata->getBeforeMethods()->willReturn([]);
-        $this->metadata->getAfterMethods()->willReturn([]);
-        $this->metadata->getName()->willReturn('doSomething');
-        $this->variant->getParameterSet()->willReturn(new ParameterSet('one'));
-        $this->variant->getRevolutions()->willReturn(10);
-        $this->variant->getWarmup()->willReturn(1);
-
-
         $results = $this->executor->execute(
-            $this->metadata->reveal(),
-            $this->iteration->reveal(),
+            $this->buildContext([
+                'timeOut' => 0.0,
+                'methodName' => 'doSomething',
+                'parameterSetName' => 'one',
+                'revolutions' => 10,
+                'warmup' => 1,
+            ]),
             new Config('test', [])
         );
         self::assertCount(2, $results);
@@ -100,29 +67,17 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
         $this->assertStringEqualsFile($this->workspacePath('revs.tmp'), '11');
     }
 
-    /**
-     * It should prevent output from the benchmarking class.
-     *
-     */
     public function testRepressOutput(): void
     {
         $this->expectExceptionMessage('Benchmark made some noise');
         $this->expectException(RuntimeException::class);
-        $this->metadata->getBeforeMethods()->willReturn([]);
-        $this->metadata->getAfterMethods()->willReturn([]);
-        $this->metadata->getName()->willReturn('benchOutput');
-        $this->metadata->getRevs()->willReturn(10);
-        $this->metadata->getTimeout()->willReturn(0);
-        $this->metadata->getWarmup()->willReturn(0);
-        $this->variant->getParameterSet()->willReturn(new ParameterSet('one'));
-        $this->variant->getRevolutions()->willReturn(10);
-        $this->variant->getWarmup()->willReturn(0);
 
-        $results = $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', []));
-
-
-
-        $this->assertInstanceOf('PhpBench\Model\ResultCollection', $results);
+        $this->executor->execute(
+            $this->buildContext([
+                'methodName' => 'benchOutput',
+            ]),
+            new Config('test', [])
+        );
     }
 
     /**
@@ -130,15 +85,13 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
      */
     public function testExecuteBefore(): void
     {
-        $this->metadata->getBeforeMethods()->willReturn(['beforeMethod']);
-        $this->metadata->getAfterMethods()->willReturn([]);
-        $this->metadata->getName()->willReturn('doSomething');
-        $this->metadata->getTimeout()->willReturn(0);
-        $this->variant->getParameterSet()->willReturn(new ParameterSet('one'));
-        $this->variant->getRevolutions()->willReturn(1);
-        $this->variant->getWarmup()->willReturn(0);
-
-        $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', []));
+        $this->executor->execute(
+            $this->buildContext([
+                'methodName' => 'doSomething',
+                'beforeMethods' => ['beforeMethod'],
+            ]),
+            new Config('test', [])
+        );
 
         $this->assertFileExists($this->workspacePath('before_method.tmp'));
     }
@@ -148,15 +101,13 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
      */
     public function testExecuteAfter(): void
     {
-        $this->metadata->getBeforeMethods()->willReturn([]);
-        $this->metadata->getAfterMethods()->willReturn(['afterMethod']);
-        $this->metadata->getName()->willReturn('doSomething');
-        $this->metadata->getTimeout()->willReturn(0);
-        $this->variant->getParameterSet()->willReturn(new ParameterSet('one'));
-        $this->variant->getRevolutions()->willReturn(1);
-        $this->variant->getWarmup()->willReturn(0);
-
-        $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', []));
+        $this->executor->execute(
+            $this->buildContext([
+                'methodName' => 'doSomething',
+                'beforeMethods' => ['afterMethod'],
+            ]),
+            new Config('test', [])
+        );
 
         $this->assertFileExists($this->workspacePath('after_method.tmp'));
     }
@@ -166,19 +117,17 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
      */
     public function testParameters(): void
     {
-        $this->metadata->getBeforeMethods()->willReturn([]);
-        $this->metadata->getAfterMethods()->willReturn([]);
-        $this->metadata->getName()->willReturn('parameterized');
-        $this->metadata->getTimeout()->willReturn(0);
+        $this->executor->execute(
+            $this->buildContext([
+                'methodName' => 'parameterized',
+                'parameters' => [
+                    'one' => 'two',
+                    'three' => 'four',
+                ],
+            ]),
+            new Config('test', [])
+        );
 
-        $this->variant->getParameterSet()->willReturn(new ParameterSet(0, [
-            'one' => 'two',
-            'three' => 'four',
-        ]));
-        $this->variant->getRevolutions()->willReturn(1);
-        $this->variant->getWarmup()->willReturn(0);
-
-        $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', []));
         $this->assertFileExists($this->workspacePath('param.tmp'));
         $params = json_decode(file_get_contents($this->workspacePath('param.tmp')), true);
         $this->assertEquals([
@@ -197,15 +146,19 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
             'three' => 'four',
         ]);
 
-        $this->metadata->getTimeout()->willReturn(0);
-        $this->metadata->getBeforeMethods()->willReturn(['parameterizedBefore']);
-        $this->metadata->getAfterMethods()->willReturn(['parameterizedAfter']);
-        $this->metadata->getName()->willReturn('parameterized');
-        $this->variant->getParameterSet()->willReturn($expected);
-        $this->variant->getRevolutions()->willReturn(1);
-        $this->variant->getWarmup()->willReturn(0);
+        $this->executor->execute(
+            $this->buildContext([
+                'methodName' => 'parameterized',
+                'beforeMethods' => ['parameterizedBefore'],
+                'afterMethods' => ['parameterizedAfter'],
+                'parameters' => [
+                    'one' => 'two',
+                    'three' => 'four',
+                ],
+            ]),
+            new Config('test', [])
+        );
 
-        $this->executor->execute($this->metadata->reveal(), $this->iteration->reveal(), new Config('test', []));
 
         $this->assertFileExists($this->workspacePath('parambefore.tmp'));
         $params = json_decode(file_get_contents($this->workspacePath('parambefore.tmp')), true);
@@ -214,5 +167,19 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
         $this->assertFileExists($this->workspacePath('paramafter.tmp'));
         $params = json_decode(file_get_contents($this->workspacePath('paramafter.tmp')), true);
         $this->assertEquals($expected->getArrayCopy(), $params);
+    }
+
+    private function buildConfig(array $config): array
+    {
+        return array_merge([
+            'className' => 'PhpBench\Tests\Unit\Executor\benchmarks\MicrotimeExecutorBench',
+            'classPath' => __DIR__ . '/../benchmarks/MicrotimeExecutorBench.php',
+        ], $config);
+    }
+
+    private function buildContext(array $config)
+    {
+        $context = Invoke::new(ExecutionContext::class, $this->buildConfig($config));
+        return $context;
     }
 }
