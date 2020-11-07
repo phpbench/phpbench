@@ -136,7 +136,9 @@ final class Runner
         // determine the executor
         $executorConfig = $this->executorRegistry->getConfig($config->getExecutor());
         /** @var BenchmarkExecutorInterface $executor */
-        $executor = $this->executorRegistry->getService($benchmarkMetadata->getExecutor() ? $benchmarkMetadata->getExecutor()->getName() : $executorConfig['executor']);
+        $executor = $this->executorRegistry->getService(
+            $benchmarkMetadata->getExecutor() ? $benchmarkMetadata->getExecutor()->getName() : $executorConfig['executor']
+        );
 
         $this->executeBeforeMethods($benchmarkMetadata, $executor);
 

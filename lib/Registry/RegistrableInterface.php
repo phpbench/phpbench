@@ -21,5 +21,5 @@ interface RegistrableInterface
      *
      * @return OptionsResolver $options
      */
-    public function configure(OptionsResolver $options);
+    public function configure(OptionsResolver $options): void;
 }
