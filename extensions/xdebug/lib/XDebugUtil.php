@@ -12,17 +12,17 @@
 
 namespace PhpBench\Extensions\XDebug;
 
-use PhpBench\Model\Iteration;
+use PhpBench\Executor\ExecutionContext;
 
 class XDebugUtil
 {
-    public static function filenameFromIteration(Iteration $iteration, $extension = ''): string
+    public static function filenameFromContext(ExecutionContext $context, $extension = ''): string
     {
         $name = sprintf(
             '%s%s%s',
-            $iteration->getVariant()->getSubject()->getBenchmark()->getClass(),
-            $iteration->getVariant()->getSubject()->getName(),
-            $iteration->getVariant()->getParameterSet()->getName()
+            $context->getClassName(),
+            $context->getMethodName(),
+            $context->getParameterSetName()
         );
 
 

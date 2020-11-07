@@ -13,11 +13,13 @@
 namespace PhpBench\Benchmark;
 
 use PhpBench\Assertion\AssertionProcessor;
+use PhpBench\Benchmark\Exception\RetryLimitReachedException;
 use PhpBench\Benchmark\Exception\StopOnErrorException;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Environment\Supplier;
 use PhpBench\Executor\BenchmarkExecutorInterface;
+use PhpBench\Executor\ExecutionContext;
 use PhpBench\Executor\HealthCheckInterface;
 use PhpBench\Executor\MethodExecutorInterface;
 use PhpBench\Model\Benchmark;
@@ -302,6 +304,14 @@ final class Runner
 
             foreach ($variant->getRejects() as $reject) {
                 $rejectCount[spl_object_hash($reject)]++;
+
+                if ($subjectMetadata->getRetryLimit() && $rejectCount[spl_object_hash($reject)] > $subjectMetadata->getRetryLimit()) {
+                    throw new RetryLimitReachedException(sprintf(
+                        'Retry limit of %s exceeded',
+                        $subjectMetadata->getRetryLimit()
+                    ));
+                }
+
                 $this->runIteration($executor, $executorConfig, $reject, $subjectMetadata);
             }
             $this->endVariant($subjectMetadata, $variant);
@@ -331,7 +341,7 @@ final class Runner
     {
         $this->logger->iterationStart($iteration);
 
-        foreach ($executor->execute($subjectMetadata, $iteration, $executorConfig) as $result) {
+        foreach ($executor->execute(ExecutionContext::fromSubjectMetadataAndIteration($subjectMetadata, $iteration), $executorConfig) as $result) {
             $iteration->setResult($result);
         }
 

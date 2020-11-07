@@ -12,12 +12,11 @@
 
 namespace PhpBench\Extensions\XDebug\Executor;
 
-use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Executor\Benchmark\TemplateExecutor;
 use PhpBench\Executor\BenchmarkExecutorInterface;
+use PhpBench\Executor\ExecutionContext;
 use PhpBench\Executor\ExecutionResults;
 use PhpBench\Extensions\XDebug\XDebugUtil;
-use PhpBench\Model\Iteration;
 use PhpBench\PhpBench;
 use PhpBench\Registry\Config;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -48,11 +47,11 @@ class ProfileExecutor implements BenchmarkExecutorInterface
         ]);
     }
 
-    public function execute(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config): ExecutionResults
+    public function execute(ExecutionContext $context, Config $config): ExecutionResults
     {
         $outputDir = $config['output_dir'];
         $callback = $config['callback'];
-        $name = XDebugUtil::filenameFromIteration($iteration, '.cachegrind');
+        $name = XDebugUtil::filenameFromContext($context, '.cachegrind');
 
         $config[TemplateExecutor::OPTION_PHP_CONFIG] = [
             'xdebug.profiler_enable' => 1,
@@ -60,11 +59,9 @@ class ProfileExecutor implements BenchmarkExecutorInterface
             'xdebug.profiler_output_name' => $name,
         ];
 
-        $results = $this->innerExecutor->execute(
-            $subjectMetadata, $iteration, $config
-        );
+        $results = $this->innerExecutor->execute($context, $config);
 
-        $callback($iteration);
+        $callback($context);
 
         return $results;
     }

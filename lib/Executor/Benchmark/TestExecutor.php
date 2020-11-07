@@ -3,12 +3,11 @@
 namespace PhpBench\Executor\Benchmark;
 
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
-use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Executor\BenchmarkExecutorInterface;
+use PhpBench\Executor\ExecutionContext;
 use PhpBench\Executor\ExecutionResults;
 use PhpBench\Executor\HealthCheckInterface;
 use PhpBench\Executor\MethodExecutorInterface;
-use PhpBench\Model\Iteration;
 use PhpBench\Model\Variant;
 use PhpBench\Registry\Config;
 use RuntimeException;
@@ -27,19 +26,21 @@ class TestExecutor implements BenchmarkExecutorInterface, MethodExecutorInterfac
     private $healthChecked = false;
 
     /**
-     * @var array<SubjectMetadata>
+     * @var array<ExecutionContext>
      */
-    private $executedSubjects = [];
+    private $executedContexts = [];
 
     /**
-     * @var SubjectMetadata|null
+     * @var ExecutionContext|null
      */
-    private $lastSubject;
+    private $lastContext;
 
     /**
      * @var Variant|null
      */
     private $lastVariant;
+
+    private $index = 0;
 
     /**
      * {@inheritDoc}
@@ -52,16 +53,15 @@ class TestExecutor implements BenchmarkExecutorInterface, MethodExecutorInterfac
         ]);
     }
 
-    public function execute(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config): ExecutionResults
+    public function execute(ExecutionContext $context, Config $config): ExecutionResults
     {
         if ($config['exception']) {
             throw $config['exception'];
         }
-        $this->executedSubjects[] = $subjectMetadata;
-        $this->lastSubject = $subjectMetadata;
-        $this->lastVariant = $iteration->getVariant();
+        $this->executedContexts[] = $context;
+        $this->lastContext = $context;
 
-        return ExecutionResults::fromResults(...$config['results']);
+        return ExecutionResults::fromResults($config['results'][$this->index++ % count($config['results'])]);
     }
 
     public function executeMethods(BenchmarkMetadata $benchmark, array $methods): void
@@ -77,26 +77,15 @@ class TestExecutor implements BenchmarkExecutorInterface, MethodExecutorInterfac
         $this->healthChecked = true;
     }
 
-    public function lastSubjectOrException(): SubjectMetadata
+    public function lastContextOrException(): ExecutionContext
     {
-        if (null === $this->lastSubject) {
+        if (null === $this->lastContext) {
             throw new RuntimeException(
                 'No subject has been executed'
             );
         }
 
-        return $this->lastSubject;
-    }
-
-    public function lastVariantOrException(): Variant
-    {
-        if (null === $this->lastVariant) {
-            throw new RuntimeException(
-                'No variant has been executed'
-            );
-        }
-
-        return $this->lastVariant;
+        return $this->lastContext;
     }
 
     public function hasMethodBeenExecuted(string $name): bool
@@ -109,8 +98,8 @@ class TestExecutor implements BenchmarkExecutorInterface, MethodExecutorInterfac
         return $this->healthChecked;
     }
 
-    public function getExecutedSubjectCount(): int
+    public function getExecutedContextCount(): int
     {
-        return count($this->executedSubjects);
+        return count($this->executedContexts);
     }
 }

@@ -12,12 +12,10 @@
 
 namespace PhpBench\Executor;
 
-use PhpBench\Benchmark\Metadata\SubjectMetadata;
-use PhpBench\Model\Iteration;
 use PhpBench\Registry\Config;
 use PhpBench\Registry\RegistrableInterface;
 
 interface BenchmarkExecutorInterface extends RegistrableInterface
 {
-    public function execute(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config): ExecutionResults;
+    public function execute(ExecutionContext $context, Config $config): ExecutionResults;
 }

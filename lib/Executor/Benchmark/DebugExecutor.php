@@ -12,10 +12,9 @@
 
 namespace PhpBench\Executor\Benchmark;
 
-use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Executor\BenchmarkExecutorInterface;
+use PhpBench\Executor\ExecutionContext;
 use PhpBench\Executor\ExecutionResults;
-use PhpBench\Model\Iteration;
 use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Registry\Config;
@@ -33,7 +32,7 @@ class DebugExecutor implements BenchmarkExecutorInterface
     /**
      * {@inheritdoc}
      */
-    public function execute(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config): ExecutionResults
+    public function execute(ExecutionContext $context, Config $config): ExecutionResults
     {
         $results = ExecutionResults::new();
 
@@ -47,21 +46,21 @@ class DebugExecutor implements BenchmarkExecutorInterface
             return $results;
         }
 
-        $variantHash = spl_object_hash($iteration->getVariant());
+        $contextHash = spl_object_hash($context);
 
-        if (!isset($this->variantTimes[$variantHash])) {
-            $this->variantTimes[$variantHash] = $config['times'];
+        if (!isset($this->variantTimes[$contextHash])) {
+            $this->variantTimes[$contextHash] = $config['times'];
         }
 
-        if (!isset($this->variantTimes[$variantHash][$this->index])) {
+        if (!isset($this->variantTimes[$contextHash][$this->index])) {
             $this->index = 0;
         }
 
-        $time = $this->variantTimes[$variantHash][$this->index];
+        $time = $this->variantTimes[$contextHash][$this->index];
         $this->index++;
 
         if ($config['spread']) {
-            $index = $iteration->getIndex() % count($config['spread']);
+            $index = $context->getIterationIndex() % count($config['spread']);
             $spreadDiff = $config['spread'][$index];
             $time = $time + $spreadDiff;
         }

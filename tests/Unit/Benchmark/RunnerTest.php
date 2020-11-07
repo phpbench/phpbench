@@ -16,6 +16,7 @@ use Exception;
 use Generator;
 use InvalidArgumentException;
 use PhpBench\Assertion\AssertionProcessor;
+use PhpBench\Benchmark\Exception\RetryLimitReachedException;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Runner;
@@ -130,7 +131,7 @@ class RunnerTest extends TestCase
         $this->assertInstanceOf('PhpBench\Model\Suite', $suite);
         $this->assertNoErrors($suite);
 
-        self::assertEquals((int)(count($revs) * array_sum($iterations)), $this->executor->getExecutedSubjectCount());
+        self::assertEquals((int)(count($revs) * array_sum($iterations)), $this->executor->getExecutedContextCount());
 
         foreach ($assertionCallbacks as $callback) {
             $callback($this, $suite);
@@ -243,15 +244,16 @@ class RunnerTest extends TestCase
     public function testSleep(): void
     {
         $subject = new SubjectMetadata($this->benchmark->reveal(), 'name');
-        $subject->setSleep(50);
+        $subject->setSleep(10000);
         $this->benchmark->getSubjects()->willReturn([
             $subject,
         ]);
         TestUtil::configureBenchmarkMetadata($this->benchmark);
 
+        $start = microtime(true);
         $suite = $this->runner->run([ $this->benchmark->reveal() ], RunnerConfig::create());
-        $this->assertNoErrors($suite);
-        self::assertEquals(50, $this->executor->lastSubjectOrException()->getSleep());
+        $end = microtime(true);
+        self::assertGreaterThanOrEqual(10000, ($end - $start) * 1E6, 'Should take at least 10 milliseconds');
     }
 
     public function testOverrideMetadata(): void
@@ -271,30 +273,67 @@ class RunnerTest extends TestCase
 
         $this->assertNoErrors($suite);
 
-        self::assertEquals(100, $this->executor->lastSubjectOrException()->getSleep());
-        self::assertEquals(12, $this->executor->lastSubjectOrException()->getRetryThreshold());
-        self::assertEquals(66, $this->executor->lastVariantOrException()->getWarmup());
-        self::assertEquals(88, $this->executor->lastVariantOrException()->getRevolutions());
+        self::assertEquals(88, $this->executor->lastContextOrException()->getRevolutions());
+        self::assertEquals(66, $this->executor->lastContextOrException()->getWarmup());
     }
 
     /**
      * It should serialize the retry threshold.
      */
-    public function testRetryThreshold(): void
+    public function testRetryThresholdExceeded(): void
     {
+        $this->expectException(RetryLimitReachedException::class);
+
         $subject = new SubjectMetadata($this->benchmark->reveal(), 'name');
+        $subject->setIterations([3]);
+        $subject->setRetryLimit(10);
+
         $this->benchmark->getSubjects()->willReturn([
             $subject,
         ]);
+
         TestUtil::configureBenchmarkMetadata($this->benchmark);
 
-        $suite = $this->runner->run(
+        $this->setUpExecutorConfig([
+            'results' => [
+                new TimeResult(1),
+                new TimeResult(1),
+                new TimeResult(1000),
+            ],
+        ]);
+
+        $this->runner->run(
+            [ $this->benchmark->reveal() ],
+            RunnerConfig::create()->withRetryThreshold(10)
+        );
+    }
+
+    public function testRetryThresholdMet(): void
+    {
+        $subject = new SubjectMetadata($this->benchmark->reveal(), 'name');
+        $subject->setIterations([3]);
+        $subject->setRetryLimit(10);
+
+        $this->benchmark->getSubjects()->willReturn([
+            $subject,
+        ]);
+
+        TestUtil::configureBenchmarkMetadata($this->benchmark);
+
+        $this->setUpExecutorConfig([
+            'results' => [
+                new TimeResult(10),
+                new TimeResult(10),
+                new TimeResult(10),
+            ],
+        ]);
+
+        $this->runner->run(
             [ $this->benchmark->reveal() ],
             RunnerConfig::create()->withRetryThreshold(10)
         );
 
-        self::assertEquals(10, $this->executor->lastSubjectOrException()->getRetryThreshold());
-        $this->assertInstanceOf('PhpBench\Model\Suite', $suite);
+        $this->addToAssertionCount(1); // no exception = retry limit not exceeded
     }
 
     /**

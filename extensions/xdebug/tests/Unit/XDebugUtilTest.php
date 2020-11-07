@@ -12,12 +12,10 @@
 
 namespace PhpBench\Extensions\XDebug\Tests\Unit;
 
+use DTL\Invoke\Invoke;
+use PhpBench\Executor\ExecutionContext;
 use PhpBench\Extensions\XDebug\XDebugUtil;
-use PhpBench\Model\Benchmark;
 use PhpBench\Model\Iteration;
-use PhpBench\Model\ParameterSet;
-use PhpBench\Model\Subject;
-use PhpBench\Model\Variant;
 use PhpBench\Tests\TestCase;
 
 class XDebugUtilTest extends TestCase
@@ -27,31 +25,22 @@ class XDebugUtilTest extends TestCase
     private $benchmark;
     private $parameters;
 
-    protected function setUp(): void
-    {
-        $this->iteration = $this->prophesize(Iteration::class);
-        $this->subject = $this->prophesize(Subject::class);
-        $this->benchmark = $this->prophesize(Benchmark::class);
-        $this->parameters = $this->prophesize(ParameterSet::class);
-        $this->variant = $this->prophesize(Variant::class);
-    }
-
     /**
      * It should generate a filename for an iteration.
      *
      * @dataProvider provideGenerate
      */
-    public function testGenerate($class, $subject, $expected)
+    public function testGenerate($class, $subject, $expected): void
     {
-        $this->benchmark->getClass()->willReturn($class);
-        $this->subject->getName()->willReturn($subject);
+        $params = [
+            'classPath' => '/foobar',
+            'parameterSetName' => '7',
+            'parameters' => ['asd'],
+            'className' => $class,
+            'methodName' => $subject,
+        ];
 
-        $this->parameters->getName()->willReturn(7);
-        $this->variant->getParameterSet()->willReturn($this->parameters->reveal());
-        $this->subject->getBenchmark()->willReturn($this->benchmark->reveal());
-        $this->variant->getSubject()->willReturn($this->subject->reveal());
-        $this->iteration->getVariant()->willReturn($this->variant->reveal());
-        $result = XDebugUtil::filenameFromIteration($this->iteration->reveal());
+        $result = XDebugUtil::filenameFromContext(Invoke::new(ExecutionContext::class, $params));
         $this->assertEquals(
             $expected,
             $result

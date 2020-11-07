@@ -3,9 +3,7 @@
 namespace PhpBench\Executor;
 
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
-use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Executor\HealthCheck\AlwaysFineHealthCheck;
-use PhpBench\Model\Iteration;
 use PhpBench\Registry\Config;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -41,9 +39,9 @@ class CompositeExecutor implements BenchmarkExecutorInterface, HealthCheckInterf
         $this->benchmarkExecutor->configure($options);
     }
 
-    public function execute(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config): ExecutionResults
+    public function execute(ExecutionContext $context, Config $config): ExecutionResults
     {
-        return $this->benchmarkExecutor->execute($subjectMetadata, $iteration, $config);
+        return $this->benchmarkExecutor->execute($context, $config);
     }
 
     /**
