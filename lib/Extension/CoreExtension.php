@@ -190,7 +190,6 @@ class CoreExtension implements ExtensionInterface
     {
         $container->register(Runner::class, function (Container $container) {
             return new Runner(
-                $container->get(BenchmarkFinder::class),
                 $container->get(self::SERVICE_REGISTRY_EXECUTOR),
                 $container->get(Supplier::class),
                 $container->get(AssertionProcessor::class),
@@ -312,6 +311,7 @@ class CoreExtension implements ExtensionInterface
             return new RunnerHandler(
                 $container->get(Runner::class),
                 $container->get(self::SERVICE_REGISTRY_LOGGER),
+                $container->get(BenchmarkFinder::class),
                 $container->getParameter(self::PARAM_PROGRESS),
                 $container->getParameter(self::PARAM_PATH)
             );

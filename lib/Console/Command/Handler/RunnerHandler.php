@@ -13,6 +13,7 @@
 namespace PhpBench\Console\Command\Handler;
 
 use InvalidArgumentException;
+use PhpBench\Benchmark\BenchmarkFinder;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Benchmark\RunnerConfig;
 use PhpBench\Model\Suite;
@@ -60,9 +61,15 @@ class RunnerHandler
      */
     private $runner;
 
+    /**
+     * @var BenchmarkFinder
+     */
+    private $finder;
+
     public function __construct(
         Runner $runner,
         LoggerRegistry $loggerRegistry,
+        BenchmarkFinder $finder,
         ?string $defaultProgress = null,
         ?string $benchPath = null
     ) {
@@ -70,6 +77,7 @@ class RunnerHandler
         $this->loggerRegistry = $loggerRegistry;
         $this->defaultProgress = $defaultProgress;
         $this->benchPath = $benchPath;
+        $this->finder = $finder;
     }
 
     public static function configure(Command $command): void
@@ -99,8 +107,6 @@ class RunnerHandler
         $default = RunnerConfig::create()
             ->withRevolutions($input->getOption(self::OPT_REVS))
             ->withParameters($this->getParameters($input->getOption(self::OPT_PARAMETERS)))
-            ->withFilters($input->getOption(self::OPT_FILTER))
-            ->withGroups($input->getOption(self::OPT_GROUP))
             ->withExecutor($input->getOption(self::OPT_EXECUTOR))
             ->withStopOnError($input->getOption(self::OPT_STOP_ON_ERROR));
 
@@ -120,7 +126,11 @@ class RunnerHandler
             );
         }
 
-        return $this->runner->run($path, $config);
+        return $this->runner->run($this->finder->findBenchmarks(
+            $path,
+            $input->getOption(self::OPT_FILTER),
+            $input->getOption(self::OPT_GROUP)
+        ), $config);
     }
 
     private function getParameters($parametersJson)

@@ -48,7 +48,6 @@ class BenchmarkFinderTest extends TestCase
         $benchmarks = $this->finder->findBenchmarks(__DIR__ . '/findertest');
 
         $this->assertCount(2, $benchmarks);
-        $this->assertContainsOnlyInstancesOf('PhpBench\Benchmark\Metadata\BenchmarkMetadata', $benchmarks);
     }
 
     /**

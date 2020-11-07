@@ -40,11 +40,6 @@ final class Runner
     const DEFAULT_ASSERTER = 'comparator';
 
     /**
-     * @var BenchmarkFinder
-     */
-    private $benchmarkFinder;
-
-    /**
      * @var ConfigurableRegistry
      */
     private $executorRegistry;
@@ -75,7 +70,6 @@ final class Runner
     private $logger;
 
     public function __construct(
-        BenchmarkFinder $benchmarkFinder,
         ConfigurableRegistry $executorRegistry,
         Supplier $envSupplier,
         AssertionProcessor $assertion,
@@ -83,7 +77,6 @@ final class Runner
         string $configPath = null
     ) {
         $this->logger = new NullLogger();
-        $this->benchmarkFinder = $benchmarkFinder;
         $this->executorRegistry = $executorRegistry;
         $this->envSupplier = $envSupplier;
         $this->retryThreshold = $retryThreshold;
@@ -104,11 +97,11 @@ final class Runner
      * Run all benchmarks (or all applicable benchmarks) in the given path.
      *
      * The $name argument will set the "name" attribute on the "suite" element.
+     *
+     * @param iterable<BenchmarkMetadata> $benchmarkMetadatas
      */
-    public function run($path, RunnerConfig $config): Suite
+    public function run(iterable $benchmarkMetadatas, RunnerConfig $config): Suite
     {
-        // build the collection of benchmarks to be executed.
-        $benchmarkMetadatas = $this->benchmarkFinder->findBenchmarks($path, $config->getFilters(), $config->getGroups());
         $suite = new Suite(
             $config->getTag(),
             new \DateTime(),
@@ -143,7 +136,9 @@ final class Runner
         // determine the executor
         $executorConfig = $this->executorRegistry->getConfig($config->getExecutor());
         /** @var BenchmarkExecutorInterface $executor */
-        $executor = $this->executorRegistry->getService($benchmarkMetadata->getExecutor() ? $benchmarkMetadata->getExecutor()->getName() : $executorConfig['executor']);
+        $executor = $this->executorRegistry->getService(
+            $benchmarkMetadata->getExecutor() ? $benchmarkMetadata->getExecutor()->getName() : $executorConfig['executor']
+        );
 
         $this->executeBeforeMethods($benchmarkMetadata, $executor);
 

@@ -33,7 +33,7 @@
     "require-dev": {
         "doctrine/dbal": "^2.4",
         "friendsofphp/php-cs-fixer": "^2.13.1",
-        "jangregor/phpstan-prophecy": "^0.8.0",
+        "jangregor/phpstan-prophecy": "^0.8.1",
         "padraic/phar-updater": "^1.0",
         "phpspec/prophecy": "^1.11",
         "phpstan/phpstan": "^0.12.7",

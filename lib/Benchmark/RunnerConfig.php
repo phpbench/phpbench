@@ -134,14 +134,6 @@ class RunnerConfig
     }
 
     /**
-     * Whitelist of subject method names.
-     */
-    public function getFilters(): array
-    {
-        return $this->filters;
-    }
-
-    /**
      * Override the number of iterations to execute.
      */
     public function getIterations($default = null): array
@@ -196,16 +188,6 @@ class RunnerConfig
         }
 
         return $this->sleep;
-    }
-
-    /**
-     * Whitelist of groups to execute.
-     *
-     * @return string[]
-     */
-    public function getGroups(): array
-    {
-        return $this->groups;
     }
 
     /**

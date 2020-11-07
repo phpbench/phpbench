@@ -37,7 +37,7 @@ class ProfileExecutor implements BenchmarkExecutorInterface
     /**
      * {@inheritdoc}
      */
-    public function configure(OptionsResolver $options)
+    public function configure(OptionsResolver $options): void
     {
         $this->innerExecutor->configure($options);
 

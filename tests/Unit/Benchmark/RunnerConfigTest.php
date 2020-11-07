@@ -75,7 +75,6 @@ class RunnerConfigTest extends TestCase
             ->withRetryThreshold(self::TEST_RETRY_THRESHOLD);
 
         $this->assertEquals(self::TEST_TAG_NAME, $config->getTag());
-        $this->assertEquals(self::TEST_FILTERS, $config->getFilters());
         $this->assertEquals(self::TEST_ITERATIONS, $config->getIterations());
         $this->assertEquals(self::TEST_REVOLUTIONS, $config->getRevolutions());
         $this->assertEquals([[self::TEST_PARAMETERS]], $config->getParameterSets());
