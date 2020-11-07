@@ -13,6 +13,8 @@ Backward compatiblity breaks:
 - Extensions use the Symfony `OptionsResolver` instead of provding an array of
   default values (which is in line with how other parts of PHPBench are
   working).
+- Executors accept a single, immutable `ExecutionContext` instead of the
+  mutable `SubjectMetadata` and `Iteration`
 
 Features:
 

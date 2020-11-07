@@ -165,18 +165,16 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
         $this->assertEquals($expected->getArrayCopy(), $params);
     }
 
+    private function buildContext(array $config): ExecutionContext
+    {
+        return Invoke::new(ExecutionContext::class, $this->buildConfig($config));
+    }
+
     private function buildConfig(array $config): array
     {
         return array_merge([
             'className' => 'PhpBench\Tests\Unit\Executor\benchmarks\MicrotimeExecutorBench',
             'classPath' => __DIR__ . '/../benchmarks/MicrotimeExecutorBench.php',
         ], $config);
-    }
-
-    private function buildContext(array $config)
-    {
-        $context = Invoke::new(ExecutionContext::class, $this->buildConfig($config));
-
-        return $context;
     }
 }

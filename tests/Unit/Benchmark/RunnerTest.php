@@ -273,8 +273,6 @@ class RunnerTest extends TestCase
 
         $this->assertNoErrors($suite);
 
-        //self::assertEquals(100, $this->executor->lastContextOrException()->getSleep());
-        //self::assertEquals(12, $this->executor->lastContextOrException()->getRetryThreshold());
         self::assertEquals(88, $this->executor->lastContextOrException()->getRevolutions());
         self::assertEquals(66, $this->executor->lastContextOrException()->getWarmup());
     }
