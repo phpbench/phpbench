@@ -113,6 +113,11 @@ class SubjectMetadata
     private $timeout = 0;
 
     /**
+     * @var int|null
+     */
+    private $retryLimit = null;
+
+    /**
      */
     public function __construct(BenchmarkMetadata $benchmarkMetadata, string $name)
     {
@@ -336,5 +341,15 @@ class SubjectMetadata
     public function setTimeout(?float $timeout): void
     {
         $this->timeout = $timeout;
+    }
+
+    public function setRetryLimit(int $retryLimit): void
+    {
+        $this->retryLimit = $retryLimit;
+    }
+
+    public function getRetryLimit(): ?int
+    {
+        return $this->retryLimit;
     }
 }

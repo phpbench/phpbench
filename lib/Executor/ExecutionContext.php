@@ -84,18 +84,6 @@ final class ExecutionContext
         $this->timeOut = $timeOut;
     }
 
-    /**
-     * @param array<string,mixed> $options
-     */
-    public static function create(string $classPath, string $className, string $methodName, array $options = []): self
-    {
-        return Invoke::new(self::class, array_merge($options, [
-            'className' => $className,
-            'methodName' => $classPath,
-            'classPath' => $methodName
-        ]));
-    }
-
     public static function fromSubjectMetadataAndIteration(SubjectMetadata $subjectMetadata, Iteration $iteration): self
     {
         return new self(
@@ -108,7 +96,7 @@ final class ExecutionContext
             $iteration->getVariant()->getParameterSet()->getArrayCopy(),
             $iteration->getVariant()->getWarmup() ?: 0,
             $iteration->getIndex(),
-            $subjectMetadata->getTimeout()
+            $subjectMetadata->getTimeout(),
         );
     }
 
