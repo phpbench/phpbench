@@ -2,10 +2,8 @@
 
 namespace PhpBench\Executor;
 
-use DTL\Invoke\Invoke;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Model\Iteration;
-use PhpCsFixer\Config;
 
 final class ExecutionContext
 {
@@ -59,19 +57,24 @@ final class ExecutionContext
      */
     private $timeOut;
 
+    /**
+     * @var string
+     */
+    private $parameterSetName;
+
     public function __construct(
         string $className,
         string $classPath,
         string $methodName,
-        int $revolutions,
-        array $beforeMethods,
-        array $afterMethods,
-        array $parameters,
-        int $warmup,
-        int $iterationIndex,
-        ?float $timeOut
-    )
-    {
+        int $revolutions = 1,
+        array $beforeMethods = [],
+        array $afterMethods = [],
+        array $parameters = [],
+        int $warmup = 0,
+        int $iterationIndex = 0,
+        ?float $timeOut = null,
+        string $parameterSetName = ''
+    ) {
         $this->className = $className;
         $this->classPath = $classPath;
         $this->methodName = $methodName;
@@ -82,6 +85,7 @@ final class ExecutionContext
         $this->warmup = $warmup;
         $this->iterationIndex = $iterationIndex;
         $this->timeOut = $timeOut;
+        $this->parameterSetName = $parameterSetName;
     }
 
     public static function fromSubjectMetadataAndIteration(SubjectMetadata $subjectMetadata, Iteration $iteration): self
@@ -97,6 +101,7 @@ final class ExecutionContext
             $iteration->getVariant()->getWarmup() ?: 0,
             $iteration->getIndex(),
             $subjectMetadata->getTimeout(),
+            $iteration->getVariant()->getParameterSet()->getName(),
         );
     }
 
@@ -148,5 +153,10 @@ final class ExecutionContext
     public function getTimeOut(): ?float
     {
         return $this->timeOut;
+    }
+
+    public function getParameterSetName(): string
+    {
+        return $this->parameterSetName;
     }
 }

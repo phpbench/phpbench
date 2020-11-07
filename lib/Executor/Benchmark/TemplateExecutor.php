@@ -12,12 +12,10 @@
 
 namespace PhpBench\Executor\Benchmark;
 
-use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Executor\BenchmarkExecutorInterface;
 use PhpBench\Executor\ExecutionContext;
 use PhpBench\Executor\ExecutionResults;
-use PhpBench\Model\Iteration;
 use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Registry\Config;

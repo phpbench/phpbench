@@ -25,8 +25,6 @@ use PhpBench\Environment\Information;
 use PhpBench\Environment\Supplier;
 use PhpBench\Executor;
 use PhpBench\Executor\Benchmark\TestExecutor;
-use PhpBench\Executor\BenchmarkExecutorInterface;
-use PhpBench\Executor\ExecutionContext;
 use PhpBench\Executor\ExecutionResults;
 use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;

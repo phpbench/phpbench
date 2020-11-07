@@ -33,7 +33,6 @@ use PhpBench\Progress\Logger\NullLogger;
 use PhpBench\Progress\LoggerInterface;
 use PhpBench\Registry\Config;
 use PhpBench\Registry\ConfigurableRegistry;
-use RuntimeException;
 
 /**
  * The benchmark runner.

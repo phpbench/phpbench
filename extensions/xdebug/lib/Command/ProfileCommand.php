@@ -76,7 +76,7 @@ EOT
                 'executor' => 'xdebug_profile',
                 'output_dir' => $outputDir,
                 'callback' => function ($iteration) use ($outputDir, $guiBin, &$generatedFiles) {
-                    $generatedFiles[] = $generatedFile = $outputDir . DIRECTORY_SEPARATOR . XDebugUtil::filenameFromIteration($iteration, '.cachegrind');
+                    $generatedFiles[] = $generatedFile = $outputDir . DIRECTORY_SEPARATOR . XDebugUtil::filenameFromContext($iteration, '.cachegrind');
 
                     if ($guiBin) {
                         $process = Process::fromShellCommandline(sprintf(

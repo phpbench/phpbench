@@ -31,6 +31,7 @@
         "webmozart/path-util": "^2.3"
     },
     "require-dev": {
+        "dantleech/invoke": "^1.1",
         "doctrine/dbal": "^2.4",
         "friendsofphp/php-cs-fixer": "^2.13.1",
         "jangregor/phpstan-prophecy": "^0.8.1",

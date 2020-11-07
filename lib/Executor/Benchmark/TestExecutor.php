@@ -3,13 +3,11 @@
 namespace PhpBench\Executor\Benchmark;
 
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
-use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Executor\BenchmarkExecutorInterface;
 use PhpBench\Executor\ExecutionContext;
 use PhpBench\Executor\ExecutionResults;
 use PhpBench\Executor\HealthCheckInterface;
 use PhpBench\Executor\MethodExecutorInterface;
-use PhpBench\Model\Iteration;
 use PhpBench\Model\Variant;
 use PhpBench\Registry\Config;
 use RuntimeException;
