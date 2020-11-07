@@ -40,11 +40,6 @@ final class Runner
     const DEFAULT_ASSERTER = 'comparator';
 
     /**
-     * @var BenchmarkFinder
-     */
-    private $benchmarkFinder;
-
-    /**
      * @var ConfigurableRegistry
      */
     private $executorRegistry;
@@ -75,7 +70,6 @@ final class Runner
     private $logger;
 
     public function __construct(
-        BenchmarkFinder $benchmarkFinder,
         ConfigurableRegistry $executorRegistry,
         Supplier $envSupplier,
         AssertionProcessor $assertion,
@@ -83,7 +77,6 @@ final class Runner
         string $configPath = null
     ) {
         $this->logger = new NullLogger();
-        $this->benchmarkFinder = $benchmarkFinder;
         $this->executorRegistry = $executorRegistry;
         $this->envSupplier = $envSupplier;
         $this->retryThreshold = $retryThreshold;
@@ -105,10 +98,8 @@ final class Runner
      *
      * The $name argument will set the "name" attribute on the "suite" element.
      */
-    public function run($path, RunnerConfig $config): Suite
+    public function run(iterable $benchmarkMetadatas, RunnerConfig $config): Suite
     {
-        // build the collection of benchmarks to be executed.
-        $benchmarkMetadatas = $this->benchmarkFinder->findBenchmarks($path, $config->getFilters(), $config->getGroups());
         $suite = new Suite(
             $config->getTag(),
             new \DateTime(),
