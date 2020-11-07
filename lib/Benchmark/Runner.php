@@ -308,7 +308,7 @@ final class Runner
                 if ($subjectMetadata->getRetryLimit() && $rejectCount[spl_object_hash($reject)] > $subjectMetadata->getRetryLimit()) {
                     throw new RetryLimitReachedException(sprintf(
                         'Retry limit of %s exceeded',
-                        $subjectMetadata->getRetryLimit(),
+                        $subjectMetadata->getRetryLimit()
                     ));
                 }
 

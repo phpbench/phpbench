@@ -101,7 +101,7 @@ final class ExecutionContext
             $iteration->getVariant()->getWarmup() ?: 0,
             $iteration->getIndex(),
             $subjectMetadata->getTimeout(),
-            $iteration->getVariant()->getParameterSet()->getName(),
+            $iteration->getVariant()->getParameterSet()->getName()
         );
     }
 
