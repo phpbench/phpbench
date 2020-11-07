@@ -13,7 +13,6 @@
 namespace PhpBench\Tests\Unit\Benchmark;
 
 use PhpBench\Assertion\AssertionProcessor;
-use PhpBench\Benchmark\BenchmarkFinder;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Runner;
@@ -38,11 +37,6 @@ use Prophecy\Argument;
 class RunnerTest extends TestCase
 {
     const TEST_PATH = 'path/to/bench.php';
-
-    /**
-     * @var ObjectProphecy
-     */
-    private $benchmarkFinder;
 
     /**
      * @var ObjectProphecy
@@ -91,12 +85,8 @@ class RunnerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->benchmarkFinder = $this->prophesize(BenchmarkFinder::class);
         $this->suite = $this->prophesize(Suite::class);
         $this->benchmark = $this->prophesize(BenchmarkMetadata::class);
-        $this->benchmarkFinder->findBenchmarks(self::TEST_PATH, [], [])->willReturn([
-            $this->benchmark->reveal(),
-        ]);
         $this->executor = $this->prophesize(BenchmarkExecutorInterface::class);
         $this->executor->willImplement(MethodExecutorInterface::class);
         $this->executor->willImplement(HealthCheckInterface::class);
@@ -109,7 +99,6 @@ class RunnerTest extends TestCase
         $this->envSupplier->getInformations()->willReturn($this->informations);
 
         $this->runner = new Runner(
-            $this->benchmarkFinder->reveal(),
             $this->executorRegistry->reveal(),
             $this->envSupplier->reveal(),
             $this->assertion->reveal(),
@@ -157,7 +146,7 @@ class RunnerTest extends TestCase
         ->shouldBeCalledTimes(count($revs) * array_sum($iterations))
         ->willReturn($this->exampleResults());
 
-        $suite = $this->runner->run(self::TEST_PATH, RunnerConfig::create()->withTag('context'));
+        $suite = $this->runner->run([ $this->benchmark->reveal() ], RunnerConfig::create()->withTag('context'));
 
         $this->assertInstanceOf('PhpBench\Model\Suite', $suite);
         $this->assertNoErrors($suite);
@@ -257,7 +246,7 @@ class RunnerTest extends TestCase
         $this->executor->execute($subject2, Argument::cetera())->willReturn($this->exampleResults());
         $this->executor->execute($subject3, Argument::cetera())->willReturn($this->exampleResults());
 
-        $suite = $this->runner->run(self::TEST_PATH, RunnerConfig::create());
+        $suite = $this->runner->run([ $this->benchmark->reveal() ], RunnerConfig::create());
 
         $this->assertInstanceOf('PhpBench\Model\Suite', $suite);
         $this->assertNoErrors($suite);
@@ -290,7 +279,7 @@ class RunnerTest extends TestCase
                 return $test->exampleResults();
             });
 
-        $suite = $this->runner->run(self::TEST_PATH, RunnerConfig::create());
+        $suite = $this->runner->run([ $this->benchmark->reveal() ], RunnerConfig::create());
         $this->assertNoErrors($suite);
     }
 
@@ -321,7 +310,7 @@ class RunnerTest extends TestCase
                 return $test->exampleResults();
             });
 
-        $suite = $this->runner->run(self::TEST_PATH, RunnerConfig::create()
+        $suite = $this->runner->run([ $this->benchmark->reveal() ], RunnerConfig::create()
             ->withSleep(100)
             ->withRetryThreshold(12)
             ->withWarmup([66])
@@ -350,7 +339,7 @@ class RunnerTest extends TestCase
                 return $test->exampleResults();
             });
 
-        $suite = $this->runner->run(self::TEST_PATH, RunnerConfig::create());
+        $suite = $this->runner->run([ $this->benchmark->reveal() ], RunnerConfig::create());
 
         $this->assertInstanceOf('PhpBench\Model\Suite', $suite);
         $this->assertNoErrors($suite);
@@ -377,7 +366,7 @@ class RunnerTest extends TestCase
             });
 
         $suite = $this->runner->run(
-            self::TEST_PATH,
+            [ $this->benchmark->reveal() ],
             RunnerConfig::create()->withRetryThreshold(10)
         );
 
@@ -399,7 +388,7 @@ class RunnerTest extends TestCase
         $this->executor->healthCheck()->shouldNotBeCalled();
         $this->benchmark->getSubjects()->willReturn([]);
 
-        $this->runner->run(self::TEST_PATH, RunnerConfig::create());
+        $this->runner->run([ $this->benchmark->reveal() ], RunnerConfig::create());
     }
 
     /**
@@ -418,7 +407,7 @@ class RunnerTest extends TestCase
             ->shouldBeCalledTimes(1)
             ->willThrow(new \Exception('Foobar', null, new \InvalidArgumentException('Barfoo')));
 
-        $suite = $this->runner->run(self::TEST_PATH, RunnerConfig::create());
+        $suite = $this->runner->run([ $this->benchmark->reveal() ], RunnerConfig::create());
 
         $errorStacks = $suite->getErrorStacks();
         $this->assertCount(1, $errorStacks);
@@ -449,7 +438,7 @@ class RunnerTest extends TestCase
         $this->executor->execute(Argument::type('PhpBench\Benchmark\Metadata\SubjectMetadata'), Argument::type('PhpBench\Model\Iteration'), $this->executorConfig)
             ->shouldBeCalledTimes(1)
             ->willReturn($this->exampleResults());
-        $suite = $this->runner->run(self::TEST_PATH, RunnerConfig::create());
+        $suite = $this->runner->run([ $this->benchmark->reveal() ], RunnerConfig::create());
         $envInformations = $suite->getEnvInformations();
         $this->assertSame((array) $informations, (array) $envInformations);
     }

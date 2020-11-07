@@ -12,6 +12,7 @@
 
 namespace PhpBench\Model;
 
+use ArrayIterator;
 use IteratorAggregate;
 use PhpBench\Assertion\VariantAssertionResults;
 use PhpBench\Environment\Information;
@@ -80,9 +81,12 @@ class Suite implements IteratorAggregate
         return $benchmark;
     }
 
-    public function getIterator(): \ArrayIterator
+    /**
+     * @return ArrayIterator<Benchmark>
+     */
+    public function getIterator(): ArrayIterator
     {
-        return new \ArrayIterator($this->benchmarks);
+        return new ArrayIterator($this->benchmarks);
     }
 
     public function getTag(): ?Tag

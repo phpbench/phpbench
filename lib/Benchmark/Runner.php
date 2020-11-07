@@ -97,6 +97,8 @@ final class Runner
      * Run all benchmarks (or all applicable benchmarks) in the given path.
      *
      * The $name argument will set the "name" attribute on the "suite" element.
+     *
+     * @param iterable<BenchmarkMetadata> $benchmarkMetadatas
      */
     public function run(iterable $benchmarkMetadatas, RunnerConfig $config): Suite
     {
