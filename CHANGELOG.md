@@ -19,6 +19,10 @@ Features:
 - Introduced `remote_script_remove` and `remote_script_path` options to assist
   in debugging.
 
+Improvements:
+
+- Benchmarks executed as they are found (no eager metadata loading)
+
 1.0.0-alpha-2
 -------------
 
