@@ -3,6 +3,7 @@
 namespace PhpBench\Tests\Unit\Executor\Method;
 
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
+use PhpBench\Executor\MethodExecutorContext;
 use PhpBench\Remote\Launcher;
 use PhpBench\Executor\Method\RemoteMethodExecutor;
 use PhpBench\Tests\PhpBenchTestCase;
@@ -16,9 +17,14 @@ class RemoteMethodExecutorTest extends PhpBenchTestCase
     private $executor;
 
     /**
-     * @var ObjectProphecy
+     * @var ObjectProphecy<BenchmarkMetadata>
      */
     private $benchmarkMetadata;
+
+    /**
+     * @var string
+     */
+    private $staticMethodFile;
 
     protected function setUp(): void
     {
@@ -32,9 +38,12 @@ class RemoteMethodExecutorTest extends PhpBenchTestCase
     /**
      * It should execute arbitrary methods on the benchmark class.
      */
-    public function testExecuteMethods()
+    public function testExecuteMethods(): void
     {
-        $this->executor->executeMethods($this->benchmarkMetadata->reveal(), ['initDatabase']);
+        $this->executor->executeMethods(
+            MethodExecutorContext::fromBenchmarkMetadata($this->benchmarkMetadata->reveal()),
+            ['initDatabase']
+        );
         $this->assertFileExists($this->workspacePath('static_method.tmp'));
     }
 }

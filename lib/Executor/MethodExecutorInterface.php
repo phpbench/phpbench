@@ -16,5 +16,5 @@ use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 
 interface MethodExecutorInterface
 {
-    public function executeMethods(BenchmarkMetadata $benchmark, array $methods): void;
+    public function executeMethods(MethodExecutorContext $context, array $methods): void;
 }

@@ -21,6 +21,7 @@ use PhpBench\Environment\Supplier;
 use PhpBench\Executor\BenchmarkExecutorInterface;
 use PhpBench\Executor\ExecutionContext;
 use PhpBench\Executor\HealthCheckInterface;
+use PhpBench\Executor\MethodExecutorContext;
 use PhpBench\Executor\MethodExecutorInterface;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Iteration;
@@ -206,7 +207,10 @@ final class Runner
             return;
         }
 
-        $executor->executeMethods($benchmarkMetadata, $benchmarkMetadata->getBeforeClassMethods());
+        $executor->executeMethods(
+            MethodExecutorContext::fromBenchmarkMetadata($benchmarkMetadata),
+            $benchmarkMetadata->getBeforeClassMethods()
+        );
     }
 
     private function executeAfterMethods(BenchmarkMetadata $benchmarkMetadata, BenchmarkExecutorInterface $executor): void
@@ -219,7 +223,10 @@ final class Runner
             return;
         }
 
-        $executor->executeMethods($benchmarkMetadata, $benchmarkMetadata->getAfterClassMethods());
+        $executor->executeMethods(
+            MethodExecutorContext::fromBenchmarkMetadata($benchmarkMetadata),
+            $benchmarkMetadata->getAfterClassMethods()
+        );
     }
 
     private function runSubject(BenchmarkExecutorInterface $executor, RunnerConfig $config, Subject $subject, SubjectMetadata $subjectMetadata): Subject

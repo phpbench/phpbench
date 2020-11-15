@@ -55,8 +55,8 @@ class CompositeExecutor implements BenchmarkExecutorInterface, HealthCheckInterf
     /**
      * @param array<string> $methods
      */
-    public function executeMethods(BenchmarkMetadata $benchmark, array $methods): void
+    public function executeMethods(MethodExecutorContext $context, array $methods): void
     {
-        $this->methodExecutor->executeMethods($benchmark, $methods);
+        $this->methodExecutor->executeMethods($context, $methods);
     }
 }

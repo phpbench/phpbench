@@ -3,30 +3,31 @@
 namespace PhpBench\Executor\Method;
 
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
+use PhpBench\Executor\MethodExecutorContext;
 use PhpBench\Executor\MethodExecutorInterface;
 use RuntimeException;
 
-class LocalMethodExecutor implements MethodExecutorInterface
+final class LocalMethodExecutor implements MethodExecutorInterface
 {
     /**
      * @param array<string> $methods
      */
-    public function executeMethods(BenchmarkMetadata $benchmark, array $methods): void
+    public function executeMethods(MethodExecutorContext $context, array $methods): void
     {
-        $class = $benchmark->getClass();
+        $className = $context->getBenchmarkClass();
 
-        if (!class_exists($class)) {
+        if (!class_exists($className)) {
             throw new RuntimeException(sprintf(
-                'Class "%s" does not exist', $class
+                'Class "%s" does not exist', $className
             ));
         }
 
-        $class = new $class;
+        $class = new $className;
 
         foreach ($methods as $method) {
             if (!method_exists($class, $method)) {
                 throw new RuntimeException(sprintf(
-                    'Method "%s" on class "%s" does not exist', $method, $class
+                    'Method "%s" on class "%s" does not exist', $method, $className
                 ));
             }
 
