@@ -13,8 +13,9 @@
 namespace PhpBench\Benchmark\Metadata;
 
 use PhpBench\Reflection\ReflectionHierarchy;
-use PhpBench\Reflection\Reflector;
+use PhpBench\Reflection\RemoteReflector;
 use PhpBench\Model\Subject;
+use PhpBench\Reflection\ReflectorInterface;
 
 /**
  * Benchmark Metadata Factory.
@@ -22,7 +23,7 @@ use PhpBench\Model\Subject;
 class MetadataFactory
 {
     /**
-     * @var Reflector
+     * @var ReflectorInterface
      */
     private $reflector;
 
@@ -31,9 +32,7 @@ class MetadataFactory
      */
     private $driver;
 
-    /**
-     */
-    public function __construct(Reflector $reflector, DriverInterface $driver)
+    public function __construct(ReflectorInterface $reflector, DriverInterface $driver)
     {
         $this->reflector = $reflector;
         $this->driver = $driver;

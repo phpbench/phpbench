@@ -21,9 +21,10 @@ use PhpBench\Benchmark\BenchmarkFinder;
 use PhpBench\Benchmark\Metadata\AnnotationReader;
 use PhpBench\Benchmark\Metadata\Driver\AnnotationDriver;
 use PhpBench\Benchmark\Metadata\MetadataFactory;
+use PhpBench\Executor\Method\LocalMethodExecutor;
 use PhpBench\Remote\Launcher;
 use PhpBench\Remote\PayloadFactory;
-use PhpBench\Reflection\Reflector;
+use PhpBench\Reflection\RemoteReflector;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Console\Application;
 use PhpBench\Console\Command\Handler\DumpHandler;
@@ -209,7 +210,7 @@ class CoreExtension implements ExtensionInterface
         $container->register(LocalExecutor::class . '.composite', function (Container $container) {
             return new CompositeExecutor(
                 $container->get(LocalExecutor::class),
-                $container->get(RemoteMethodExecutor::class)
+                $container->get(LocalMethodExecutor::class)
             );
         }, [self::TAG_EXECUTOR => ['name' => 'local']]);
 
@@ -234,6 +235,10 @@ class CoreExtension implements ExtensionInterface
             return new RemoteMethodExecutor(
                 $container->get(Launcher::class)
             );
+        });
+
+        $container->register(LocalMethodExecutor::class, function (Container $container) {
+            return new LocalMethodExecutor();
         });
 
         $container->register(DebugExecutor::class, function (Container $container) {
@@ -261,8 +266,8 @@ class CoreExtension implements ExtensionInterface
             );
         });
 
-        $container->register(Reflector::class, function (Container $container) {
-            return new Reflector($container->get(Launcher::class));
+        $container->register(RemoteReflector::class, function (Container $container) {
+            return new RemoteReflector($container->get(Launcher::class));
         });
 
         $container->register(AnnotationReader::class, function (Container $container) {
@@ -271,7 +276,7 @@ class CoreExtension implements ExtensionInterface
 
         $container->register(AnnotationDriver::class, function (Container $container) {
             return new AnnotationDriver(
-                $container->get(Reflector::class),
+                $container->get(RemoteReflector::class),
                 $container->getParameter(self::PARAM_SUBJECT_PATTERN),
                 $container->get(AnnotationReader::class)
             );
@@ -279,7 +284,7 @@ class CoreExtension implements ExtensionInterface
 
         $container->register(MetadataFactory::class, function (Container $container) {
             return new MetadataFactory(
-                $container->get(Reflector::class),
+                $container->get(RemoteReflector::class),
                 $container->get(AnnotationDriver::class)
             );
         });

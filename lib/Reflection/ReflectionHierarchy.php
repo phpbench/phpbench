@@ -12,10 +12,14 @@
 
 namespace PhpBench\Reflection;
 
+use IteratorAggregate;
+
 /**
  * Contains a reflected class (the "top" class) and all it's ancestors.
+ *
+ * @implements IteratorAggregate<ReflectionClass>
  */
-class ReflectionHierarchy implements \IteratorAggregate
+class ReflectionHierarchy implements IteratorAggregate
 {
     /**
      * @var ReflectionClass[]

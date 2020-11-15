@@ -10,7 +10,7 @@
  *
  */
 
-namespace PhpBench\Micro\Math;
+namespace PhpBench\Examples\Micro\Math;
 
 use PhpBench\Math\Kde;
 use PhpBench\Math\Statistics;

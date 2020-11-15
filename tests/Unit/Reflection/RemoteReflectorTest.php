@@ -15,20 +15,20 @@ namespace PhpBench\Tests\Unit\Reflection;
 use PhpBench\Remote\Launcher;
 use PhpBench\Reflection\ReflectionClass;
 use PhpBench\Reflection\ReflectionHierarchy;
-use PhpBench\Reflection\Reflector;
+use PhpBench\Reflection\RemoteReflector;
 use PhpBench\Tests\TestCase;
 use PhpBench\Tests\Unit\Reflection\reflector\Class1;
 use PhpBench\Tests\Unit\Reflection\reflector\Class2;
 use PhpBench\Tests\Unit\Reflection\reflector\Class3;
 
-class ReflectorTest extends TestCase
+class RemoteReflectorTest extends TestCase
 {
     private $reflector;
 
     protected function setUp(): void
     {
         $executor = new Launcher(null, null, __DIR__ . '/../../../vendor/autoload.php', null);
-        $this->reflector = new Reflector($executor);
+        $this->reflector = new RemoteReflector($executor);
     }
 
     /**

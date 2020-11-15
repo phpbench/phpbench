@@ -21,7 +21,8 @@ use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Reflection\ReflectionClass;
 use PhpBench\Reflection\ReflectionHierarchy;
 use PhpBench\Reflection\ReflectionMethod;
-use PhpBench\Reflection\Reflector;
+use PhpBench\Reflection\RemoteReflector;
+use PhpBench\Reflection\ReflectorInterface;
 use PhpBench\Tests\TestCase;
 
 class AnnotationDriverTest extends TestCase
@@ -31,7 +32,7 @@ class AnnotationDriverTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->reflector = $this->prophesize(Reflector::class);
+        $this->reflector = $this->prophesize(ReflectorInterface::class);
     }
 
     /**
