@@ -21,7 +21,6 @@ use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Reflection\ReflectionClass;
 use PhpBench\Reflection\ReflectionHierarchy;
 use PhpBench\Reflection\ReflectionMethod;
-use PhpBench\Reflection\RemoteReflector;
 use PhpBench\Reflection\ReflectorInterface;
 use PhpBench\Tests\TestCase;
 

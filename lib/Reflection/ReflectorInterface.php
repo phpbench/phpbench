@@ -2,8 +2,6 @@
 
 namespace PhpBench\Reflection;
 
-use PhpBench\Reflection\ReflectionHierarchy;
-
 interface ReflectorInterface
 {
     /**

@@ -14,7 +14,6 @@ namespace PhpBench\Reflection;
 
 use PhpBench\Remote\Launcher;
 
-
 /**
  * Reflector for remote classes.
  */

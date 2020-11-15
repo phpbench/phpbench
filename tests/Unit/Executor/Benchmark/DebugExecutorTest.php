@@ -13,11 +13,11 @@
 namespace PhpBench\Tests\Unit\Executor\Benchmark;
 
 use DTL\Invoke\Invoke;
-use PhpBench\Remote\Launcher;
 use PhpBench\Executor\Benchmark\DebugExecutor;
 use PhpBench\Executor\ExecutionContext;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Registry\Config;
+use PhpBench\Remote\Launcher;
 use PhpBench\Tests\TestCase;
 
 class DebugExecutorTest extends TestCase

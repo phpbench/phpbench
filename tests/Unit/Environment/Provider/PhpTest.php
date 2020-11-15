@@ -12,9 +12,9 @@
 
 namespace PhpBench\Tests\Unit\Environment\Provider;
 
+use PhpBench\Environment\Provider;
 use PhpBench\Remote\Launcher;
 use PhpBench\Remote\Payload;
-use PhpBench\Environment\Provider;
 use PhpBench\Tests\TestCase;
 
 class PhpTest extends TestCase

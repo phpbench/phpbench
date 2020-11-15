@@ -14,8 +14,6 @@ namespace PhpBench\Remote;
 
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\PhpExecutableFinder;
-use PhpBench\Remote\PayloadFactory;
-use PhpBench\Remote\Payload;
 
 /**
  * Build and execute tokenized scripts in separate processes.

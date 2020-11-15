@@ -12,8 +12,6 @@
 
 namespace PhpBench\Executor;
 
-use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
-
 interface MethodExecutorInterface
 {
     public function executeMethods(MethodExecutorContext $context, array $methods): void;

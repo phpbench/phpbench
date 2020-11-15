@@ -12,9 +12,9 @@
 
 namespace PhpBench\Environment\Provider;
 
-use PhpBench\Remote\Launcher;
 use PhpBench\Environment\Information;
 use PhpBench\Environment\ProviderInterface;
+use PhpBench\Remote\Launcher;
 
 abstract class AbstractRemoteProvider implements ProviderInterface
 {

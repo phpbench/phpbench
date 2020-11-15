@@ -12,10 +12,10 @@
 
 namespace PhpBench\Tests\Unit\Reflection;
 
-use PhpBench\Remote\Launcher;
 use PhpBench\Reflection\ReflectionClass;
 use PhpBench\Reflection\ReflectionHierarchy;
 use PhpBench\Reflection\RemoteReflector;
+use PhpBench\Remote\Launcher;
 use PhpBench\Tests\TestCase;
 use PhpBench\Tests\Unit\Reflection\reflector\Class1;
 use PhpBench\Tests\Unit\Reflection\reflector\Class2;

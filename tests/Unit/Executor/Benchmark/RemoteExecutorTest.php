@@ -12,11 +12,11 @@
 
 namespace PhpBench\Tests\Unit\Executor\Benchmark;
 
-use PhpBench\Remote\Launcher;
 use PhpBench\Executor\Benchmark\RemoteExecutor;
 use PhpBench\Executor\BenchmarkExecutorInterface;
 use PhpBench\Executor\ExecutionResults;
 use PhpBench\Registry\Config;
+use PhpBench\Remote\Launcher;
 use RuntimeException;
 
 class RemoteExecutorTest extends AbstractExecutorTestCase

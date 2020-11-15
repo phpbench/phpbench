@@ -12,8 +12,6 @@
 
 namespace PhpBench\Executor\Benchmark;
 
-use PhpBench\Remote\Exception\ScriptErrorException;
-use PhpBench\Remote\Launcher;
 use PhpBench\Executor\BenchmarkExecutorInterface;
 use PhpBench\Executor\Exception\ExecutionError;
 use PhpBench\Executor\ExecutionContext;
@@ -21,6 +19,8 @@ use PhpBench\Executor\ExecutionResults;
 use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Registry\Config;
+use PhpBench\Remote\Exception\ScriptErrorException;
+use PhpBench\Remote\Launcher;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TemplateExecutor implements BenchmarkExecutorInterface

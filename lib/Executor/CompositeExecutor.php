@@ -2,7 +2,6 @@
 
 namespace PhpBench\Executor;
 
-use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Executor\HealthCheck\AlwaysFineHealthCheck;
 use PhpBench\Registry\Config;
 use Symfony\Component\OptionsResolver\OptionsResolver;

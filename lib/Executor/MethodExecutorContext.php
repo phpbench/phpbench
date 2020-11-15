@@ -19,8 +19,7 @@ final class MethodExecutorContext
     public function __construct(
         string $benchmarkPath,
         string $benchmarkClass
-    )
-    {
+    ) {
         $this->benchmarkPath = $benchmarkPath;
         $this->benchmarkClass = $benchmarkClass;
     }

@@ -2,9 +2,9 @@
 
 namespace PhpBench\Tests\Unit\Executor\Method;
 
-use PHPUnit\Framework\TestCase;
-use PhpBench\Executor\MethodExecutorContext;
 use PhpBench\Executor\Method\LocalMethodExecutor;
+use PhpBench\Executor\MethodExecutorContext;
+use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
 class LocalMethodExecutorTest extends TestCase
@@ -50,7 +50,7 @@ class LocalMethodExecutorTest extends TestCase
         (new LocalMethodExecutor())->executeMethods($context, [ $methodName ]);
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         LocalTestClass::$executed = false;
     }

@@ -2,7 +2,6 @@
 
 namespace PhpBench\Executor\Method;
 
-use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Executor\MethodExecutorContext;
 use PhpBench\Executor\MethodExecutorInterface;
 use RuntimeException;
