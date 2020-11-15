@@ -10,7 +10,7 @@
  *
  */
 
-namespace PhpBench\Benchmark\Remote;
+namespace PhpBench\Reflection;
 
 /**
  * Contains a reflected class (the "top" class) and all it's ancestors.

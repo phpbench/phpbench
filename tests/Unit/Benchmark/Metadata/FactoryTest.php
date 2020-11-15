@@ -17,9 +17,9 @@ use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\DriverInterface;
 use PhpBench\Benchmark\Metadata\MetadataFactory;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
-use PhpBench\Benchmark\Remote\ReflectionClass;
-use PhpBench\Benchmark\Remote\ReflectionHierarchy;
-use PhpBench\Benchmark\Remote\Reflector;
+use PhpBench\Reflection\ReflectionClass;
+use PhpBench\Reflection\ReflectionHierarchy;
+use PhpBench\Reflection\Reflector;
 use PhpBench\Tests\TestCase;
 use PhpBench\Tests\Util\TestUtil;
 

@@ -10,7 +10,10 @@
  *
  */
 
-namespace PhpBench\Benchmark\Remote;
+namespace PhpBench\Reflection;
+
+use PhpBench\Benchmark\Remote\Launcher;
+
 
 /**
  * Reflector for remote classes.

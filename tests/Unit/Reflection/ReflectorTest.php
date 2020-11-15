@@ -10,11 +10,16 @@
  *
  */
 
-namespace PhpBench\Tests\Unit\Benchmark\Remote;
+namespace PhpBench\Tests\Unit\Reflection;
 
 use PhpBench\Benchmark\Remote\Launcher;
-use PhpBench\Benchmark\Remote\Reflector;
+use PhpBench\Reflection\ReflectionClass;
+use PhpBench\Reflection\ReflectionHierarchy;
+use PhpBench\Reflection\Reflector;
 use PhpBench\Tests\TestCase;
+use PhpBench\Tests\Unit\Reflection\reflector\Class1;
+use PhpBench\Tests\Unit\Reflection\reflector\Class2;
+use PhpBench\Tests\Unit\Reflection\reflector\Class3;
 
 class ReflectorTest extends TestCase
 {
@@ -22,7 +27,7 @@ class ReflectorTest extends TestCase
 
     protected function setUp(): void
     {
-        $executor = new Launcher(null, null, __DIR__ . '/../../../../vendor/autoload.php', null);
+        $executor = new Launcher(null, null, __DIR__ . '/../../../vendor/autoload.php', null);
         $this->reflector = new Reflector($executor);
     }
 
@@ -33,10 +38,10 @@ class ReflectorTest extends TestCase
     {
         $fname = __DIR__ . '/reflector/ExampleClass.php';
         $classHierarchy = $this->reflector->reflect($fname);
-        $this->assertInstanceOf('PhpBench\Benchmark\Remote\ReflectionHierarchy', $classHierarchy);
+        $this->assertInstanceOf(ReflectionHierarchy::class, $classHierarchy);
         $reflection = $classHierarchy->getTop();
-        $this->assertInstanceOf('PhpBench\Benchmark\Remote\ReflectionClass', $reflection);
-        $this->assertEquals('\PhpBench\Tests\Unit\Benchmark\reflector\ExampleClass', $reflection->class);
+        $this->assertInstanceOf(ReflectionClass::class, $reflection);
+        $this->assertEquals('\PhpBench\Tests\Unit\Reflection\reflector\ExampleClass', $reflection->class);
         $this->assertStringContainsString('Some doc comment', $reflection->comment);
         $this->assertEquals($fname, $reflection->path);
         $this->assertEquals([
@@ -57,7 +62,7 @@ class ReflectorTest extends TestCase
     {
         $fname = __DIR__ . '/reflector/EmptyFile.php';
         $classHierarchy = $this->reflector->reflect($fname);
-        $this->assertInstanceOf('PhpBench\Benchmark\Remote\ReflectionHierarchy', $classHierarchy);
+        $this->assertInstanceOf(ReflectionHierarchy::class, $classHierarchy);
         $this->assertTrue($classHierarchy->isEmpty());
     }
 
@@ -78,14 +83,14 @@ class ReflectorTest extends TestCase
     public function testHierarchy()
     {
         $classHierarchy = $this->reflector->reflect(__DIR__ . '/reflector/Class3.php');
-        $this->assertInstanceOf('PhpBench\Benchmark\Remote\ReflectionHierarchy', $classHierarchy);
+        $this->assertInstanceOf(ReflectionHierarchy::class, $classHierarchy);
         $classHierarchy = iterator_to_array($classHierarchy);
         $reflection = array_shift($classHierarchy);
-        $this->assertEquals('\PhpBench\Tests\Unit\Benchmark\Remote\reflector\Class3', $reflection->class);
+        $this->assertEquals('\\' . Class3::class, $reflection->class);
         $reflection = array_shift($classHierarchy);
-        $this->assertEquals('PhpBench\Tests\Unit\Benchmark\Remote\reflector\Class2', $reflection->class);
+        $this->assertEquals(Class2::class, $reflection->class);
         $reflection = array_shift($classHierarchy);
-        $this->assertEquals('PhpBench\Tests\Unit\Benchmark\Remote\reflector\Class1', $reflection->class);
+        $this->assertEquals(Class1::class, $reflection->class);
     }
 
     /**

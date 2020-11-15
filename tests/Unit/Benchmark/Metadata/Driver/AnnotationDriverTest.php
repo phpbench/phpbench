@@ -18,10 +18,10 @@ use PhpBench\Benchmark\Metadata\Driver\AnnotationDriver;
 use PhpBench\Benchmark\Metadata\DriverInterface;
 use PhpBench\Benchmark\Metadata\ExecutorMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
-use PhpBench\Benchmark\Remote\ReflectionClass;
-use PhpBench\Benchmark\Remote\ReflectionHierarchy;
-use PhpBench\Benchmark\Remote\ReflectionMethod;
-use PhpBench\Benchmark\Remote\Reflector;
+use PhpBench\Reflection\ReflectionClass;
+use PhpBench\Reflection\ReflectionHierarchy;
+use PhpBench\Reflection\ReflectionMethod;
+use PhpBench\Reflection\Reflector;
 use PhpBench\Tests\TestCase;
 
 class AnnotationDriverTest extends TestCase

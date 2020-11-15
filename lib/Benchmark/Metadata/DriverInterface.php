@@ -12,7 +12,7 @@
 
 namespace PhpBench\Benchmark\Metadata;
 
-use PhpBench\Benchmark\Remote\ReflectionHierarchy;
+use PhpBench\Reflection\ReflectionHierarchy;
 
 /**
  * Interface for metadata drivers.

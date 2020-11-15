@@ -12,8 +12,8 @@
 
 namespace PhpBench\Benchmark\Metadata;
 
-use PhpBench\Benchmark\Remote\ReflectionHierarchy;
-use PhpBench\Benchmark\Remote\Reflector;
+use PhpBench\Reflection\ReflectionHierarchy;
+use PhpBench\Reflection\Reflector;
 use PhpBench\Model\Subject;
 
 /**

@@ -14,8 +14,8 @@ namespace PhpBench\Tests\Unit\Benchmark\Metadata;
 
 use PhpBench\Benchmark\Metadata\AnnotationReader;
 use PhpBench\Benchmark\Metadata\Annotations;
-use PhpBench\Benchmark\Remote\ReflectionClass;
-use PhpBench\Benchmark\Remote\ReflectionMethod;
+use PhpBench\Reflection\ReflectionClass;
+use PhpBench\Reflection\ReflectionMethod;
 use PhpBench\Tests\TestCase;
 
 class AnnotationReaderTest extends TestCase

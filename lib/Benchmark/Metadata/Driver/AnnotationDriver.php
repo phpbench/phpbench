@@ -22,8 +22,8 @@ use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\DriverInterface;
 use PhpBench\Benchmark\Metadata\ExecutorMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
-use PhpBench\Benchmark\Remote\ReflectionHierarchy;
-use PhpBench\Benchmark\Remote\Reflector;
+use PhpBench\Reflection\ReflectionHierarchy;
+use PhpBench\Reflection\Reflector;
 
 class AnnotationDriver implements DriverInterface
 {

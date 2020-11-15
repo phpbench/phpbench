@@ -10,7 +10,7 @@
  *
  */
 
-namespace PhpBench\Tests\Unit\Benchmark\reflector;
+namespace PhpBench\Tests\Unit\Reflection\reflector;
 
 /**
  * Some doc comment.

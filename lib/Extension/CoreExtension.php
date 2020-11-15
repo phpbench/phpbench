@@ -23,7 +23,7 @@ use PhpBench\Benchmark\Metadata\Driver\AnnotationDriver;
 use PhpBench\Benchmark\Metadata\MetadataFactory;
 use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Benchmark\Remote\PayloadFactory;
-use PhpBench\Benchmark\Remote\Reflector;
+use PhpBench\Reflection\Reflector;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Console\Application;
 use PhpBench\Console\Command\Handler\DumpHandler;

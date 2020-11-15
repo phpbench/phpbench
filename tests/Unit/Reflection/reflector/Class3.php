@@ -10,7 +10,7 @@
  *
  */
 
-namespace PhpBench\Tests\Unit\Benchmark\Remote\reflector;
+namespace PhpBench\Tests\Unit\Reflection\reflector;
 
 class Class3 extends Class2
 {
