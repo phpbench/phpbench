@@ -5,6 +5,8 @@ Executors are the classes which perform the work and take the measurements.
 
 The default executor is ``remote``.
 
+.. _executor_remote:
+
 ``remote``
 ----------
 
@@ -14,6 +16,8 @@ This benchmark records:
 
 - Time in microseconds
 - Memory usage
+
+.. _executor_local:
 
 ``local``
 ---------
@@ -25,6 +29,8 @@ autoloader.
 This benchmark records:
 
 - Time in microseconds
+
+.. _executor_debug:
 
 ``debug``
 ---------
