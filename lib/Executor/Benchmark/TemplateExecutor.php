@@ -12,12 +12,11 @@
 
 namespace PhpBench\Executor\Benchmark;
 
+use PhpBench\Benchmark\Remote\Exception\ScriptErrorException;
 use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Executor\BenchmarkExecutorInterface;
-use PhpBench\Executor\ExecutionContext;
-use PhpBench\Benchmark\Metadata\SubjectMetadata;
-use PhpBench\Benchmark\Remote\Exception\ScriptErrorException;
 use PhpBench\Executor\Exception\ExecutionError;
+use PhpBench\Executor\ExecutionContext;
 use PhpBench\Executor\ExecutionResults;
 use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;

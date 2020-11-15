@@ -2,11 +2,10 @@
 
 namespace PhpBench\Executor\Benchmark;
 
-use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Executor\BenchmarkExecutorInterface;
 use PhpBench\Executor\Exception\ExecutionError;
+use PhpBench\Executor\ExecutionContext;
 use PhpBench\Executor\ExecutionResults;
-use PhpBench\Model\Iteration;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Registry\Config;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -20,30 +19,30 @@ class LocalExecutor implements BenchmarkExecutorInterface
     {
     }
 
-    public function execute(SubjectMetadata $subjectMetadata, Iteration $iteration, Config $config): ExecutionResults
+    public function execute(ExecutionContext $context, Config $config): ExecutionResults
     {
-        $benchmark = $this->createBenchmark($subjectMetadata);
+        $benchmark = $this->createBenchmark($context);
 
-        $methodName = $subjectMetadata->getName();
-        $parameters = $iteration->getVariant()->getParameterSet()->getArrayCopy();
+        $methodName = $context->getMethodName();
+        $parameters = $context->getParameters();
 
-        foreach ($subjectMetadata->getBeforeMethods() as $afterMethod) {
+        foreach ($context->getBeforeMethods() as $afterMethod) {
             $benchmark->$afterMethod($parameters);
         }
 
-        for ($i = 0; $i < $iteration->getVariant()->getWarmup() ?: 0; $i++) {
+        for ($i = 0; $i < $context->getWarmup() ?: 0; $i++) {
             $benchmark->$methodName($parameters);
         }
 
         $start = microtime(true);
 
-        for ($i = 0; $i < $iteration->getVariant()->getRevolutions(); $i++) {
+        for ($i = 0; $i < $context->getRevolutions(); $i++) {
             $benchmark->$methodName($parameters);
         }
 
         $end = microtime(true);
 
-        foreach ($subjectMetadata->getAfterMethods() as $afterMethod) {
+        foreach ($context->getAfterMethods() as $afterMethod) {
             $benchmark->$afterMethod($parameters);
         }
 
@@ -55,9 +54,9 @@ class LocalExecutor implements BenchmarkExecutorInterface
     /**
      * @return object
      */
-    private function createBenchmark(SubjectMetadata $subjectMetadata)
+    private function createBenchmark(ExecutionContext $context)
     {
-        $className = $subjectMetadata->getBenchmark()->getClass();
+        $className = $context->getClassName();
         
         if (!class_exists($className)) {
             throw new ExecutionError(sprintf(
