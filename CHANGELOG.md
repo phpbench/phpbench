@@ -27,6 +27,8 @@ Features:
 Improvements:
 
 - Benchmarks executed as they are found (no eager metadata loading)
+- Allow direct reference to services (e.g. `--executor=debug` without need for
+  a `debug` configuration).
 
 1.0.0-alpha-2
 -------------

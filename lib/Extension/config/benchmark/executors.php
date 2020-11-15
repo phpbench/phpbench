@@ -11,18 +11,6 @@
  */
 
 return [
-    'memory_centric_microtime' => [
-        'executor' => 'memory_centric_microtime',
-    ],
-    'remote' => [
-        'executor' => 'remote',
-    ],
-    'local' => [
-        'executor' => 'local',
-    ],
-    'debug' => [
-        'executor' => 'debug',
-    ],
     'debug_macro' => [
         'executor' => 'debug',
         'times' => [1000000, 200000],

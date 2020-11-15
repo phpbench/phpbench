@@ -28,9 +28,9 @@ use Psr\Container\ContainerInterface;
 class Registry
 {
     protected $serviceType;
+    protected $services = [];
     private $serviceMap = [];
     private $container;
-    private $services = [];
     private $defaultService;
 
     public function __construct(
@@ -107,7 +107,12 @@ class Registry
         return $this->services[$name];
     }
 
-    private function assertServiceExists($name): void
+    public function hasService(string $name): bool
+    {
+        return array_key_exists($name, $this->services);
+    }
+
+    private function assertServiceExists(string $name): void
     {
         if (!array_key_exists($name, $this->services)) {
             throw new \InvalidArgumentException(sprintf(
