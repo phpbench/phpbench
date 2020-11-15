@@ -104,7 +104,7 @@ class RunnerTest extends TestCase
             null
         );
 
-        $this->executorRegistry->getService('microtime')->willReturn(
+        $this->executorRegistry->getService('remote')->willReturn(
             $this->executor
         );
     }
@@ -430,12 +430,12 @@ class RunnerTest extends TestCase
      */
     private function setUpExecutorConfig(array $config = []): void
     {
-        $this->executorConfig = new Config('microtime', array_merge([
+        $this->executorConfig = new Config('remote', array_merge([
             'exception' => null,
-            'executor' => 'microtime',
+            'executor' => 'remote',
             'results' => [TimeResult::fromArray(['net' => 1])]
         ], $config));
-        $this->executorRegistry->getConfig('microtime')->willReturn(
+        $this->executorRegistry->getConfig('remote')->willReturn(
             $this->executorConfig
         );
     }

@@ -13,29 +13,30 @@
 namespace PhpBench\Tests\Unit\Executor\Benchmark;
 
 use DTL\Invoke\Invoke;
-use PhpBench\Benchmark\Remote\Launcher;
-use PhpBench\Executor\Benchmark\MicrotimeExecutor;
+use PhpBench\Executor\BenchmarkExecutorInterface;
 use PhpBench\Executor\ExecutionContext;
+use PhpBench\Executor\ExecutionResults;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\ParameterSet;
 use PhpBench\Registry\Config;
 use PhpBench\Tests\PhpBenchTestCase;
-use RuntimeException;
 
-class MicrotimeExecutorTest extends PhpBenchTestCase
+abstract class AbstractExecutorTestCase extends PhpBenchTestCase
 {
     /**
-     * @var MicrotimeExecutor
+     * @var BenchmarkExecutorInterface
      */
-    private $executor;
+    protected $executor;
 
     protected function setUp(): void
     {
         $this->initWorkspace();
-
-        $launcher = new Launcher(null, null);
-        $this->executor = new MicrotimeExecutor($launcher);
+        $this->executor = $this->createExecutor();
     }
+
+    abstract protected function createExecutor(): BenchmarkExecutorInterface;
+
+    abstract protected function assertExecute(ExecutionResults $reuslts): void;
 
     /**
      * It should create a script which benchmarks the code and returns
@@ -53,27 +54,8 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
             ]),
             new Config('test', [])
         );
-        self::assertCount(2, $results);
 
-        $this->assertFileDoesNotExist($this->workspacePath('before_method.tmp'));
-        $this->assertFileDoesNotExist($this->workspacePath('after_method.tmp'));
-        $this->assertFileExists($this->workspacePath('revs.tmp'));
-
-        // 10 revolutions + 1 warmup
-        $this->assertStringEqualsFile($this->workspacePath('revs.tmp'), '11');
-    }
-
-    public function testRepressOutput(): void
-    {
-        $this->expectExceptionMessage('Benchmark made some noise');
-        $this->expectException(RuntimeException::class);
-
-        $this->executor->execute(
-            $this->buildContext([
-                'methodName' => 'benchOutput',
-            ]),
-            new Config('test', [])
-        );
+        $this->assertExecute($results);
     }
 
     /**
@@ -165,12 +147,12 @@ class MicrotimeExecutorTest extends PhpBenchTestCase
         $this->assertEquals($expected->getArrayCopy(), $params);
     }
 
-    private function buildContext(array $config): ExecutionContext
+    protected function buildContext(array $config): ExecutionContext
     {
         return Invoke::new(ExecutionContext::class, $this->buildConfig($config));
     }
 
-    private function buildConfig(array $config): array
+    protected function buildConfig(array $config): array
     {
         return array_merge([
             'className' => 'PhpBench\Tests\Unit\Executor\benchmarks\MicrotimeExecutorBench',

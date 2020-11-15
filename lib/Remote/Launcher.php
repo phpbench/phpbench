@@ -10,7 +10,7 @@
  *
  */
 
-namespace PhpBench\Benchmark\Remote;
+namespace PhpBench\Remote;
 
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\PhpExecutableFinder;

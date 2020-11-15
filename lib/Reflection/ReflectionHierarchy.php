@@ -10,12 +10,16 @@
  *
  */
 
-namespace PhpBench\Benchmark\Remote;
+namespace PhpBench\Reflection;
+
+use IteratorAggregate;
 
 /**
  * Contains a reflected class (the "top" class) and all it's ancestors.
+ *
+ * @implements IteratorAggregate<int,ReflectionClass>
  */
-class ReflectionHierarchy implements \IteratorAggregate
+class ReflectionHierarchy implements IteratorAggregate
 {
     /**
      * @var ReflectionClass[]
@@ -31,10 +35,7 @@ class ReflectionHierarchy implements \IteratorAggregate
         $this->reflectionClasses[] = $reflectionClass;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getIterator(): \ArrayObject
+    public function getIterator()
     {
         return new \ArrayObject($this->reflectionClasses);
     }

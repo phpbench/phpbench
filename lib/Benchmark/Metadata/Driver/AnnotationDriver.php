@@ -22,8 +22,8 @@ use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\DriverInterface;
 use PhpBench\Benchmark\Metadata\ExecutorMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
-use PhpBench\Benchmark\Remote\ReflectionHierarchy;
-use PhpBench\Benchmark\Remote\Reflector;
+use PhpBench\Reflection\ReflectionHierarchy;
+use PhpBench\Reflection\ReflectorInterface;
 
 class AnnotationDriver implements DriverInterface
 {
@@ -31,7 +31,7 @@ class AnnotationDriver implements DriverInterface
     private $reader;
     private $subjectPattern;
 
-    public function __construct(Reflector $reflector, $subjectPattern = '^bench', AnnotationReader $reader = null)
+    public function __construct(ReflectorInterface $reflector, $subjectPattern = '^bench', AnnotationReader $reader = null)
     {
         $this->reflector = $reflector;
         $this->reader = $reader ?: new AnnotationReader();

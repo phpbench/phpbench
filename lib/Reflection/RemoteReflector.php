@@ -10,12 +10,14 @@
  *
  */
 
-namespace PhpBench\Benchmark\Remote;
+namespace PhpBench\Reflection;
+
+use PhpBench\Remote\Launcher;
 
 /**
  * Reflector for remote classes.
  */
-class Reflector
+class RemoteReflector implements ReflectorInterface
 {
     /**
      * @var Launcher

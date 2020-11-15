@@ -12,10 +12,14 @@
 
 namespace PhpBench\Executor;
 
+use PhpBench\Executor\Exception\ExecutionError;
 use PhpBench\Registry\Config;
 use PhpBench\Registry\RegistrableInterface;
 
 interface BenchmarkExecutorInterface extends RegistrableInterface
 {
+    /**
+     * @throws ExecutionError
+     */
     public function execute(ExecutionContext $context, Config $config): ExecutionResults;
 }

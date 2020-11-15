@@ -22,4 +22,4 @@ render this template in a local directory and ensure that it is not deleted.
     }
 
 Each remove will be rendered in this directory and can be executed with ``php
-.phpbench/script/microtime.template`` for example.
+.phpbench/script/remote.template`` for example.

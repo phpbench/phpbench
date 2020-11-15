@@ -92,7 +92,7 @@ class RunnerHandler
 
         // command option is parsed before the container is compiled.
         $command->addOption(self::OPT_BOOTSTRAP, 'b', InputOption::VALUE_REQUIRED, 'Set or override the bootstrap file.');
-        $command->addOption(self::OPT_EXECUTOR, [], InputOption::VALUE_REQUIRED, 'Executor to use', 'microtime');
+        $command->addOption(self::OPT_EXECUTOR, [], InputOption::VALUE_REQUIRED, 'Executor to use', 'remote');
         $command->addOption(self::OPT_STOP_ON_ERROR, [], InputOption::VALUE_NONE, 'Stop on the first error encountered');
 
         // Launcher options (processed in PhpBench.php before the container is initialized).

@@ -2,11 +2,11 @@
 
 namespace PhpBench\Executor\Benchmark;
 
-use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Executor\BenchmarkExecutorInterface;
 use PhpBench\Executor\ExecutionContext;
 use PhpBench\Executor\ExecutionResults;
 use PhpBench\Executor\HealthCheckInterface;
+use PhpBench\Executor\MethodExecutorContext;
 use PhpBench\Executor\MethodExecutorInterface;
 use PhpBench\Model\Variant;
 use PhpBench\Registry\Config;
@@ -64,7 +64,7 @@ class TestExecutor implements BenchmarkExecutorInterface, MethodExecutorInterfac
         return ExecutionResults::fromResults($config['results'][$this->index++ % count($config['results'])]);
     }
 
-    public function executeMethods(BenchmarkMetadata $benchmark, array $methods): void
+    public function executeMethods(MethodExecutorContext $context, array $methods): void
     {
         $this->executedMethods = array_merge($this->executedMethods, $methods);
     }

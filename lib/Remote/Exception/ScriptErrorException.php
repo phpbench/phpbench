@@ -10,14 +10,11 @@
  *
  */
 
-namespace PhpBench\Tests\Unit\Benchmark\Remote\reflector;
+namespace PhpBench\Remote\Exception;
 
-abstract class Class1
+/**
+ * Thrown in the case of an error in the remote script.
+ */
+class ScriptErrorException extends \RuntimeException
 {
-    /**
-     * one.
-     */
-    public function one()
-    {
-    }
 }

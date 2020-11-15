@@ -2,7 +2,6 @@
 
 namespace PhpBench\Executor;
 
-use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Executor\HealthCheck\AlwaysFineHealthCheck;
 use PhpBench\Registry\Config;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -55,8 +54,8 @@ class CompositeExecutor implements BenchmarkExecutorInterface, HealthCheckInterf
     /**
      * @param array<string> $methods
      */
-    public function executeMethods(BenchmarkMetadata $benchmark, array $methods): void
+    public function executeMethods(MethodExecutorContext $context, array $methods): void
     {
-        $this->methodExecutor->executeMethods($benchmark, $methods);
+        $this->methodExecutor->executeMethods($context, $methods);
     }
 }

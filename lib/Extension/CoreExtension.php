@@ -21,9 +21,6 @@ use PhpBench\Benchmark\BenchmarkFinder;
 use PhpBench\Benchmark\Metadata\AnnotationReader;
 use PhpBench\Benchmark\Metadata\Driver\AnnotationDriver;
 use PhpBench\Benchmark\Metadata\MetadataFactory;
-use PhpBench\Benchmark\Remote\Launcher;
-use PhpBench\Benchmark\Remote\PayloadFactory;
-use PhpBench\Benchmark\Remote\Reflector;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Console\Application;
 use PhpBench\Console\Command\Handler\DumpHandler;
@@ -41,9 +38,11 @@ use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Environment\Provider;
 use PhpBench\Environment\Supplier;
 use PhpBench\Executor\Benchmark\DebugExecutor;
+use PhpBench\Executor\Benchmark\LocalExecutor;
 use PhpBench\Executor\Benchmark\MemoryCentricMicrotimeExecutor;
-use PhpBench\Executor\Benchmark\MicrotimeExecutor;
+use PhpBench\Executor\Benchmark\RemoteExecutor;
 use PhpBench\Executor\CompositeExecutor;
+use PhpBench\Executor\Method\LocalMethodExecutor;
 use PhpBench\Executor\Method\RemoteMethodExecutor;
 use PhpBench\Formatter\Format\BalanceFormat;
 use PhpBench\Formatter\Format\InvertOnThroughputFormat;
@@ -61,7 +60,10 @@ use PhpBench\Progress\Logger\NullLogger;
 use PhpBench\Progress\Logger\TravisLogger;
 use PhpBench\Progress\Logger\VerboseLogger;
 use PhpBench\Progress\LoggerRegistry;
+use PhpBench\Reflection\RemoteReflector;
 use PhpBench\Registry\ConfigurableRegistry;
+use PhpBench\Remote\Launcher;
+use PhpBench\Remote\PayloadFactory;
 use PhpBench\Report\Generator\CompositeGenerator;
 use PhpBench\Report\Generator\EnvGenerator;
 use PhpBench\Report\Generator\TableGenerator;
@@ -198,12 +200,19 @@ class CoreExtension implements ExtensionInterface
             );
         });
 
-        $container->register(MicrotimeExecutor::class . '.composite', function (Container $container) {
+        $container->register(RemoteExecutor::class . '.composite', function (Container $container) {
             return new CompositeExecutor(
-                $container->get(MicrotimeExecutor::class),
+                $container->get(RemoteExecutor::class),
                 $container->get(RemoteMethodExecutor::class)
             );
-        }, [self::TAG_EXECUTOR => ['name' => 'microtime']]);
+        }, [self::TAG_EXECUTOR => ['name' => 'remote']]);
+
+        $container->register(LocalExecutor::class . '.composite', function (Container $container) {
+            return new CompositeExecutor(
+                $container->get(LocalExecutor::class),
+                $container->get(LocalMethodExecutor::class)
+            );
+        }, [self::TAG_EXECUTOR => ['name' => 'local']]);
 
         $container->register(MemoryCentricMicrotimeExecutor::class, function (Container $container) {
             return new CompositeExecutor(
@@ -212,16 +221,24 @@ class CoreExtension implements ExtensionInterface
             );
         }, [self::TAG_EXECUTOR => ['name' => 'memory_centric_microtime']]);
 
-        $container->register(MicrotimeExecutor::class, function (Container $container) {
-            return new MicrotimeExecutor(
+        $container->register(RemoteExecutor::class, function (Container $container) {
+            return new RemoteExecutor(
                 $container->get(Launcher::class)
             );
+        });
+
+        $container->register(LocalExecutor::class, function (Container $container) {
+            return new LocalExecutor();
         });
 
         $container->register(RemoteMethodExecutor::class, function (Container $container) {
             return new RemoteMethodExecutor(
                 $container->get(Launcher::class)
             );
+        });
+
+        $container->register(LocalMethodExecutor::class, function (Container $container) {
+            return new LocalMethodExecutor();
         });
 
         $container->register(DebugExecutor::class, function (Container $container) {
@@ -249,8 +266,8 @@ class CoreExtension implements ExtensionInterface
             );
         });
 
-        $container->register(Reflector::class, function (Container $container) {
-            return new Reflector($container->get(Launcher::class));
+        $container->register(RemoteReflector::class, function (Container $container) {
+            return new RemoteReflector($container->get(Launcher::class));
         });
 
         $container->register(AnnotationReader::class, function (Container $container) {
@@ -259,7 +276,7 @@ class CoreExtension implements ExtensionInterface
 
         $container->register(AnnotationDriver::class, function (Container $container) {
             return new AnnotationDriver(
-                $container->get(Reflector::class),
+                $container->get(RemoteReflector::class),
                 $container->getParameter(self::PARAM_SUBJECT_PATTERN),
                 $container->get(AnnotationReader::class)
             );
@@ -267,7 +284,7 @@ class CoreExtension implements ExtensionInterface
 
         $container->register(MetadataFactory::class, function (Container $container) {
             return new MetadataFactory(
-                $container->get(Reflector::class),
+                $container->get(RemoteReflector::class),
                 $container->get(AnnotationDriver::class)
             );
         });

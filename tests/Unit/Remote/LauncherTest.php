@@ -10,12 +10,12 @@
  *
  */
 
-namespace PhpBench\Tests\Unit\Benchmark\Remote;
+namespace PhpBench\Tests\Unit\Remote;
 
 use InvalidArgumentException;
-use PhpBench\Benchmark\Remote\Launcher;
-use PhpBench\Benchmark\Remote\Payload;
-use PhpBench\Benchmark\Remote\PayloadFactory;
+use PhpBench\Remote\Launcher;
+use PhpBench\Remote\Payload;
+use PhpBench\Remote\PayloadFactory;
 use PhpBench\Tests\TestCase;
 use Symfony\Component\Process\ExecutableFinder;
 
@@ -59,7 +59,7 @@ class LauncherTest extends TestCase
         $launcher = new Launcher(
             $this->factory->reveal(),
             $this->finder->reveal(),
-            $bootstrap = __DIR__ . '/../../../../vendor/autoload.php',
+            $bootstrap = __DIR__ . '/../../../vendor/autoload.php',
             '/path/to/php',
             $phpConfig = ['setting_1' => 'value_1', 'setting_2' => 'value_2'],
             'wrapper'
@@ -104,7 +104,7 @@ class LauncherTest extends TestCase
         return new Launcher(
             new PayloadFactory(),
             new ExecutableFinder(),
-            __DIR__ . '/../../../../vendor/autoload.php'
+            __DIR__ . '/../../../vendor/autoload.php'
         );
     }
 }

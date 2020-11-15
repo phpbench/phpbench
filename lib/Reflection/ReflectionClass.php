@@ -10,14 +10,15 @@
  *
  */
 
-namespace PhpBench\Tests\Unit\Benchmark\Remote\reflector;
+namespace PhpBench\Reflection;
 
-class Class2 extends Class1
+class ReflectionClass
 {
-    /**
-     * two.
-     */
-    public function two()
-    {
-    }
+    public $path;
+    public $interfaces = [];
+    public $class;
+    public $namespace;
+    public $abstract = false;
+    public $comment;
+    public $methods = [];
 }

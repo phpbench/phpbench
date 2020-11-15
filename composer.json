@@ -32,7 +32,6 @@
     },
     "require-dev": {
         "dantleech/invoke": "^1.2",
-        "doctrine/dbal": "^2.4",
         "friendsofphp/php-cs-fixer": "^2.13.1",
         "jangregor/phpstan-prophecy": "^0.8.1",
         "padraic/phar-updater": "^1.0",

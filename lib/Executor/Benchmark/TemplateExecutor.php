@@ -12,13 +12,15 @@
 
 namespace PhpBench\Executor\Benchmark;
 
-use PhpBench\Benchmark\Remote\Launcher;
 use PhpBench\Executor\BenchmarkExecutorInterface;
+use PhpBench\Executor\Exception\ExecutionError;
 use PhpBench\Executor\ExecutionContext;
 use PhpBench\Executor\ExecutionResults;
 use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Registry\Config;
+use PhpBench\Remote\Exception\ScriptErrorException;
+use PhpBench\Remote\Launcher;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TemplateExecutor implements BenchmarkExecutorInterface
@@ -53,7 +55,11 @@ class TemplateExecutor implements BenchmarkExecutorInterface
             $config[self::OPTION_PHP_CONFIG] ?? []
         ));
 
-        $result = $payload->launch();
+        try {
+            $result = $payload->launch();
+        } catch (ScriptErrorException $error) {
+            throw new ExecutionError($error->getMessage(), 0, $error);
+        }
 
         if (isset($result['buffer']) && $result['buffer']) {
             throw new \RuntimeException(sprintf(

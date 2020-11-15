@@ -10,9 +10,9 @@
  *
  */
 
-namespace PhpBench\Tests\Unit\Benchmark\Remote;
+namespace PhpBench\Tests\Unit\Remote;
 
-use PhpBench\Benchmark\Remote\IniStringBuilder;
+use PhpBench\Remote\IniStringBuilder;
 use PhpBench\Tests\TestCase;
 
 class IniStringBuilderTest extends TestCase

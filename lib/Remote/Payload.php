@@ -10,9 +10,9 @@
  *
  */
 
-namespace PhpBench\Benchmark\Remote;
+namespace PhpBench\Remote;
 
-use PhpBench\Benchmark\Remote\Exception\ScriptErrorException;
+use PhpBench\Remote\Exception\ScriptErrorException;
 use RuntimeException;
 use Symfony\Component\Process\Process;
 

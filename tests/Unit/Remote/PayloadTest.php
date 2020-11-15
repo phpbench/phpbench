@@ -10,10 +10,10 @@
  *
  */
 
-namespace PhpBench\Tests\Unit\Benchmark\Remote;
+namespace PhpBench\Tests\Unit\Remote;
 
-use PhpBench\Benchmark\Remote\Payload;
-use PhpBench\Benchmark\Remote\ProcessFactory;
+use PhpBench\Remote\Payload;
+use PhpBench\Remote\ProcessFactory;
 use PhpBench\Tests\TestCase;
 use Prophecy\Argument;
 use RuntimeException;

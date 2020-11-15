@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Benchmark\Remote;
+namespace PhpBench\Remote;
 
 use Symfony\Component\Process\Process;
 

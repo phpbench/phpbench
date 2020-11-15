@@ -16,8 +16,8 @@ use Doctrine\Common\Annotations\AnnotationException;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\DocParser;
 use Doctrine\Common\Annotations\TokenParser;
-use PhpBench\Benchmark\Remote\ReflectionClass;
-use PhpBench\Benchmark\Remote\ReflectionMethod;
+use PhpBench\Reflection\ReflectionClass;
+use PhpBench\Reflection\ReflectionMethod;
 
 /**
  * Annotation reader.

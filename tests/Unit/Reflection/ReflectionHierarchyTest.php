@@ -10,11 +10,11 @@
  *
  */
 
-namespace PhpBench\Tests\Unit\Benchmark\Remote;
+namespace PhpBench\Tests\Unit\Reflection;
 
-use PhpBench\Benchmark\Remote\ReflectionClass;
-use PhpBench\Benchmark\Remote\ReflectionHierarchy;
-use PhpBench\Benchmark\Remote\ReflectionMethod;
+use PhpBench\Reflection\ReflectionClass;
+use PhpBench\Reflection\ReflectionHierarchy;
+use PhpBench\Reflection\ReflectionMethod;
 use PhpBench\Tests\TestCase;
 
 class ReflectionHierarchyTest extends TestCase
@@ -41,7 +41,7 @@ class ReflectionHierarchyTest extends TestCase
         $this->hierarchy->addReflectionClass($this->reflection2);
 
         foreach ($this->hierarchy as $index => $reflectionClass) {
-            $this->assertInstanceOf('PhpBench\Benchmark\Remote\ReflectionClass', $reflectionClass);
+            $this->assertInstanceOf(ReflectionClass::class, $reflectionClass);
         }
 
         $this->assertEquals(1, $index);
