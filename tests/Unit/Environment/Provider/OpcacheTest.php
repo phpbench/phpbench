@@ -12,8 +12,8 @@
 
 namespace PhpBench\Tests\Unit\Environment\Provider;
 
-use PhpBench\Benchmark\Remote\Launcher;
-use PhpBench\Benchmark\Remote\Payload;
+use PhpBench\Remote\Launcher;
+use PhpBench\Remote\Payload;
 use PhpBench\Environment\Provider;
 use PhpBench\Tests\TestCase;
 

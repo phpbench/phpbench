@@ -12,7 +12,7 @@
 
 namespace PhpBench\Environment\Provider;
 
-use PhpBench\Benchmark\Remote\Launcher;
+use PhpBench\Remote\Launcher;
 use PhpBench\Environment\Information;
 use PhpBench\Environment\ProviderInterface;
 

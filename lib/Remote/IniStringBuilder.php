@@ -10,7 +10,7 @@
  *
  */
 
-namespace PhpBench\Benchmark\Remote;
+namespace PhpBench\Remote;
 
 class IniStringBuilder
 {

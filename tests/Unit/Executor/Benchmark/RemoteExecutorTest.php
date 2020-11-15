@@ -12,7 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Executor\Benchmark;
 
-use PhpBench\Benchmark\Remote\Launcher;
+use PhpBench\Remote\Launcher;
 use PhpBench\Executor\Benchmark\RemoteExecutor;
 use PhpBench\Executor\BenchmarkExecutorInterface;
 use PhpBench\Executor\ExecutionResults;

@@ -10,7 +10,7 @@
  *
  */
 
-namespace PhpBench\Benchmark\Remote\Exception;
+namespace PhpBench\Remote\Exception;
 
 /**
  * Thrown in the case of an error in the remote script.

@@ -12,7 +12,7 @@
 
 namespace PhpBench\Executor\Benchmark;
 
-use PhpBench\Benchmark\Remote\Launcher;
+use PhpBench\Remote\Launcher;
 
 class RemoteExecutor extends TemplateExecutor
 {

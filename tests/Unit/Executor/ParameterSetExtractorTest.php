@@ -12,8 +12,8 @@
 
 namespace PhpBench\Tests\Unit\Executor;
 
-use PhpBench\Benchmark\Remote\Exception\ScriptErrorException;
-use PhpBench\Benchmark\Remote\Payload;
+use PhpBench\Remote\Exception\ScriptErrorException;
+use PhpBench\Remote\Payload;
 use PhpBench\Tests\TestCase;
 use PhpBench\Tests\Unit\Executor\benchmarks\ParamProviderBench;
 

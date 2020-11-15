@@ -12,7 +12,7 @@
 
 namespace PhpBench\Reflection;
 
-use PhpBench\Benchmark\Remote\Launcher;
+use PhpBench\Remote\Launcher;
 
 
 /**

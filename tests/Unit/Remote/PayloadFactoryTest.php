@@ -10,10 +10,10 @@
  *
  */
 
-namespace PhpBench\Tests\Unit\Benchmark\Remote;
+namespace PhpBench\Tests\Unit\Remote;
 
-use PhpBench\Benchmark\Remote\Payload;
-use PhpBench\Benchmark\Remote\PayloadFactory;
+use PhpBench\Remote\Payload;
+use PhpBench\Remote\PayloadFactory;
 use PhpBench\Tests\TestCase;
 
 class PayloadFactoryTest extends TestCase

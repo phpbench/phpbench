@@ -12,8 +12,8 @@
 
 namespace PhpBench\Executor\Benchmark;
 
-use PhpBench\Benchmark\Remote\Exception\ScriptErrorException;
-use PhpBench\Benchmark\Remote\Launcher;
+use PhpBench\Remote\Exception\ScriptErrorException;
+use PhpBench\Remote\Launcher;
 use PhpBench\Executor\BenchmarkExecutorInterface;
 use PhpBench\Executor\Exception\ExecutionError;
 use PhpBench\Executor\ExecutionContext;

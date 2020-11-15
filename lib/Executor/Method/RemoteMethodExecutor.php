@@ -3,7 +3,7 @@
 namespace PhpBench\Executor\Method;
 
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
-use PhpBench\Benchmark\Remote\Launcher;
+use PhpBench\Remote\Launcher;
 use PhpBench\Executor\MethodExecutorInterface;
 
 class RemoteMethodExecutor implements MethodExecutorInterface
