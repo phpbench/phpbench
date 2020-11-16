@@ -57,7 +57,7 @@ You can compare against baselines in assertions, e.g.
 
     phpbench run tests/Benchmark/MyBenchmark.php --uuid=tag:original --retry-threshold=5 --iterations=10 --assert="variant.mode <= baseline.mode +/- 5%"
 
-We assert the the current run's ``mode`` is less than or equal to the baseline
+We assert the current run's ``mode`` is less than or equal to the baseline
 ``mode`` and tolerate a variance within 5% of the baseline ``mode``.
 
 See :doc:`assertions` for more information.
