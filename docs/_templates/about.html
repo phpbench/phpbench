@@ -1,0 +1,9 @@
+
+<p class="logo">
+  <a href="{{ pathto('index') }}">
+    <img class="logo" alt="PHPBench" src="{{ pathto('_static/logo.png', 1) }}" alt="Logo"/>
+    {% if theme_logo_name|lower == 'true' %}
+    {% endif %}
+  </a>
+</p>
+<p class="blurb">{{ theme_description }}</p>

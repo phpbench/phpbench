@@ -9,12 +9,13 @@ use PhpBench\Examples\Extension\Executor\AcmeExecutor;
 use PhpBench\Extension\CoreExtension;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-// section: command_di
+// section: command_di,executor_di
 class AcmeExtension implements ExtensionInterface
 {
-// endsection: command_di
+// endsection: executor_di
     private const PARAM_NUMBER_OF_CATS = 'acme.number_of_cats';
 
+    // section: command_di
     public function configure(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
@@ -22,9 +23,12 @@ class AcmeExtension implements ExtensionInterface
         ]);
     }
 
-    // section: command_di
+    // endsection: command_di
+
+    // section: command_di,executor_di
     public function load(Container $container): void
     {
+        // endsection: executor_di
         $container->register(CatsCommand::class, function (Container $container) {
             return new CatsCommand($container->getParameter(self::PARAM_NUMBER_OF_CATS));
         }, [
@@ -32,6 +36,7 @@ class AcmeExtension implements ExtensionInterface
         ]);
         // endsection: command_di
 
+        // section: executor_di
         $container->register(AcmeExecutor::class, function (Container $container) {
             return new AcmeExecutor();
         }, [
@@ -42,4 +47,4 @@ class AcmeExtension implements ExtensionInterface
     // section: command_di
     }
 }
-// endsection: command_di
+// endsection: command_di,executor_di
