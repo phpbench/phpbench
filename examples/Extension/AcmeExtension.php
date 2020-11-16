@@ -7,13 +7,14 @@ use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Examples\Extension\Command\CatsCommand;
 use PhpBench\Examples\Extension\Executor\AcmeExecutor;
 use PhpBench\Examples\Extension\ProgressLogger\CatLogger;
+use PhpBench\Examples\Extension\Report\AcmeGenerator;
 use PhpBench\Extension\CoreExtension;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-// section: command_di,executor_di,progress_logger_di
+// section: command_di,executor_di,progress_logger_di,report_generator_di
 class AcmeExtension implements ExtensionInterface
 {
-// endsection: executor_di,progress_logger_di
+// endsection: executor_di,progress_logger_di,report_generator_di
     private const PARAM_NUMBER_OF_CATS = 'acme.number_of_cats';
 
     // section: command_di
@@ -26,10 +27,10 @@ class AcmeExtension implements ExtensionInterface
 
     // endsection: command_di
 
-    // section: command_di,executor_di
+    // section: command_di,executor_di,report_generator_di
     public function load(Container $container): void
     {
-        // endsection: executor_di
+        // endsection: executor_di,report_generator_di
         $container->register(CatsCommand::class, function (Container $container) {
             return new CatsCommand($container->getParameter(self::PARAM_NUMBER_OF_CATS));
         }, [
@@ -46,6 +47,16 @@ class AcmeExtension implements ExtensionInterface
             ]
         ]);
         // endsection: progress_logger_di
+        //
+        // section: report_generator_di
+        $container->register(AcmeGenerator::class, function (Container $container) {
+            return new AcmeGenerator();
+        }, [
+            CoreExtension::TAG_REPORT_GENERATOR => [
+                'name' => 'catordog',
+            ]
+        ]);
+        // endsection: report_generator_di
 
         // section: executor_di
         $container->register(AcmeExecutor::class, function (Container $container) {
@@ -55,7 +66,7 @@ class AcmeExtension implements ExtensionInterface
                 'name' => 'acme',
             ]
         ]);
-    // section: command_di,progress_logger_di
+    // section: command_di,progress_logger_di,report_generator_di
     }
 }
-// endsection: command_di,executor_di,progress_logger_di
+// endsection: command_di,executor_di,progress_logger_di,report_generator_di
