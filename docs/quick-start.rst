@@ -12,6 +12,7 @@ Create a directory for the tutorial:
 .. code-block:: bash
 
     $ mkdir phpbench-tutorial
+    $ cd phpbench-tutorial
 
 And create the following Composer_ file within it:
 
