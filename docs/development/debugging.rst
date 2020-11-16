@@ -18,7 +18,7 @@ render this template in a local directory and ensure that it is not deleted.
 
     {
         "remote_script_path": ".phpbench/script",
-        "remote_script_remove": false,
+        "remote_script_remove": false
     }
 
 Each remove will be rendered in this directory and can be executed with ``php

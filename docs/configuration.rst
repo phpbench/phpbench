@@ -45,7 +45,7 @@ It is specified with the ``bootstrap`` key:
 .. code-block:: javascript
 
     {
-        "bootstrap": "vendor/autoload.php",
+        "bootstrap": "vendor/autoload.php"
     }
 
 .. note::
