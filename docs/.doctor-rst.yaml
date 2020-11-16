@@ -16,7 +16,7 @@ rules:
     no_composer_req: ~
     no_inheritdoc: ~
     no_namespace_after_use_statements: ~
-    #no_php_open_tag_in_code_block_php_directive: ~
+    no_php_open_tag_in_code_block_php_directive: ~
     no_space_before_self_xml_closing_tag: ~
     ordered_use_statements: ~
     php_prefix_before_bin_console: ~

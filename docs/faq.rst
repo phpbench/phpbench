@@ -31,8 +31,6 @@ class such as:
 
 .. code-block:: php
 
-    <?php
-
     /**
      * @BeforeMethods({"setUp"})
      * @AfterMethods({"tearDown"})
