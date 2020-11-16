@@ -11,9 +11,6 @@ PHPBench comes with two executor variations:
 - The :ref:`executor_local` executor executes you benchmarks the same process
   (sharing the runtime environment of PHPBench).
 
-Example Executor
-----------------
-
 This executor will return a constant configured value for each iteration.
 
 .. codeimport:: ../../../examples/Extension/Executor/AcmeExecutor.php

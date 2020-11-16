@@ -6,13 +6,14 @@ use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Examples\Extension\Command\CatsCommand;
 use PhpBench\Examples\Extension\Executor\AcmeExecutor;
+use PhpBench\Examples\Extension\ProgressLogger\CatLogger;
 use PhpBench\Extension\CoreExtension;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-// section: command_di,executor_di
+// section: command_di,executor_di,progress_logger_di
 class AcmeExtension implements ExtensionInterface
 {
-// endsection: executor_di
+// endsection: executor_di,progress_logger_di
     private const PARAM_NUMBER_OF_CATS = 'acme.number_of_cats';
 
     // section: command_di
@@ -35,6 +36,16 @@ class AcmeExtension implements ExtensionInterface
             CoreExtension::TAG_CONSOLE_COMMAND => []
         ]);
         // endsection: command_di
+        
+        // section: progress_logger_di
+        $container->register(CatLogger::class, function (Container $container) {
+            return new CatLogger();
+        }, [
+            CoreExtension::TAG_PROGRESS_LOGGER => [
+                'name' => 'cats',
+            ]
+        ]);
+        // endsection: progress_logger_di
 
         // section: executor_di
         $container->register(AcmeExecutor::class, function (Container $container) {
@@ -44,7 +55,7 @@ class AcmeExtension implements ExtensionInterface
                 'name' => 'acme',
             ]
         ]);
-    // section: command_di
+    // section: command_di,progress_logger_di
     }
 }
-// endsection: command_di,executor_di
+// endsection: command_di,executor_di,progress_logger_di
