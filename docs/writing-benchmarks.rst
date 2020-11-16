@@ -14,9 +14,7 @@ The following is a simple benchmark class:
 
 .. code-block:: php
 
-    <?php
     // HashBench.php
-
     class HashBench
     {
         public function benchMd5()
@@ -75,8 +73,6 @@ Revolutions can be specified using the ``@Revs`` annotation:
 
 .. code-block:: php
 
-    <?php
-
     /**
      * @Revs(1000)
      */
@@ -88,8 +84,6 @@ Revolutions can be specified using the ``@Revs`` annotation:
 You may also specify an array:
 
 .. code-block:: php
-
-    <?php
 
     /**
      * @Revs({1, 8, 64, 4096})
@@ -123,8 +117,6 @@ Iterations can be specified using the ``@Iterations`` annotation:
 
 .. code-block:: php
 
-    <?php
-
     /**
      * @Iterations(5)
      */
@@ -154,8 +146,6 @@ Any number of methods can be executed both before and after each benchmark
 your environment:
 
 .. code-block:: php
-
-    <?php
 
     /**
      * @BeforeMethods({"init"})
@@ -195,8 +185,6 @@ These methods will be executed by the runner once per benchmark class.
 
 .. code-block:: php
 
-    <?php
-
     /**
      * @BeforeClassMethods({"initDatabase"})
      */
@@ -225,8 +213,6 @@ Parameter sets can be provided to benchmark subjects:
 
 .. code-block:: php
 
-    <?php
-
     class HashBench
     {
         public function provideStrings()
@@ -251,8 +237,6 @@ For example the above could also be returned as an array:
 
 .. code-block:: php
 
-    <?php
-
     class HashBench
     {
         public function provideStrings()
@@ -275,8 +259,6 @@ combined into a `cartesian product`_ - all possible combinations of the
 parameters will be generated:
 
 .. code-block:: php
-
-    <?php
 
     class HashBench
     {
@@ -305,8 +287,6 @@ Will result in the following parameter benchmark scenarios:
 
 .. code-block:: php
 
-    <?php
-
     // #0
     ['string' => 'Hello World!', 'algorithm' => 'md5'];
 
@@ -328,8 +308,6 @@ You can assign benchmark subjects to groups using the ``@Groups`` annotation.
 
 .. code-block:: php
 
-    <?php
-
     /**
      * @Groups({"hash"})
      */
@@ -346,8 +324,6 @@ Skipping Subjects
 You can skip subjects by using the ``@Skip`` annotation:
 
 .. code-block:: php
-
-    <?php
 
     class HashBench extends Foobar
     {
@@ -367,8 +343,6 @@ extend the values of the same annotation from ancestor classes. This can be
 accomplished using the ``extend`` option.
 
 .. code-block:: php
-
-    <?php
 
     abstract class AbstractHash
     {
@@ -403,8 +377,6 @@ the system recover. Use the ``@Sleep`` annotation, specifying the number of
 
 .. code-block:: php
 
-    <?php
-
     class HashBench
     {
         /**
@@ -432,8 +404,6 @@ Specify *output* time units using the ``@OutputTimeUnit`` annotation
 (`precision` is optional):
 
 .. code-block:: php
-
-    <?php
 
     class HashBench
     {
@@ -469,8 +439,6 @@ are executed within a single time unit:
 
 .. code-block:: php
 
-    <?php
-
     class HashBench
     {
         /**
@@ -493,8 +461,6 @@ Use the ``@Warmup`` annotation to execute any number of revolutions before
 actually measuring the revolutions time.
 
 .. code-block:: php
-
-    <?php
 
     // ...
     class ReportBench
@@ -524,8 +490,6 @@ before an iteration timesout and fails. The following example will fail after
 
 .. code-block:: php
 
-    <?php
-
     // ...
     class ReportBench
     {
@@ -551,8 +515,6 @@ For example, assert that the mode is less than 100 microseconds:
 
 .. code-block:: php
 
-    <?php
-
     /**
      * @Assert("variant.mode < 100 microseconds")
      */
@@ -564,8 +526,6 @@ For example, assert that the mode is less than 100 microseconds:
 Assert a throughput greater than 0.25ops/µs:
 
 .. code-block:: php
-
-    <?php
 
     /**
      * @Assert("variant.mode > 0.25 ops/microsecond")

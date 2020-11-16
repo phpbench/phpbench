@@ -5,8 +5,6 @@ Assertions can be added to your benchmarks as follows:
 
 .. code-block:: php
 
-    <?php
-
     /**
      * @Assert("variant.mode < 100 microseconds +/- 10%")
      */

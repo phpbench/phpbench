@@ -72,8 +72,6 @@ The above will allow you to have benchmark class such as:
 
 .. code-block:: php
 
-    <?php
-
     class Foobar
     {
         public function spin_kde()

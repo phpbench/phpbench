@@ -85,8 +85,6 @@ consumes *time itself*:
 
 .. code-block:: php
 
-    <?php
-
     namespace Acme;
 
     class TimeConsumer
@@ -105,10 +103,7 @@ with ``bench``. Create the following class:
 
 .. code-block:: php
 
-    <?php
-
     // tests/Benchmark/TimeConsumerBench.php
-
     use Acme\TimeConsumer;
 
     class TimeConsumerBench
@@ -151,8 +146,6 @@ achieve a better measurement increase the revolutions:
 
 .. code-block:: php
 
-    <?php
-
     // ...
 
     class TimeConsumerBench
@@ -174,8 +167,6 @@ confidence in the result increase the number of :ref:`iterations <iterations>`
 using the ``@Iterations`` annotation:
 
 .. code-block:: php
-
-    <?php
 
     // ...
 

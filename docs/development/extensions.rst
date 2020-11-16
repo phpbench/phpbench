@@ -10,8 +10,6 @@ First, create a dependency injection container extension:
 
 .. code-block:: php
 
-    <?php
-
     namespace Acme\PhpBench\MyExtension;
 
     use PhpBench\DependencyInjection\Container;
@@ -46,8 +44,6 @@ You can register new services. For example, you can register a new
 command:
 
 .. code-block:: php
-
-    <?php
 
     namespace Acme\PhpBench\MyExtension;
 
