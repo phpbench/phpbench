@@ -1,15 +1,13 @@
 import pprint
 import re
-from typing import Any, Dict, List, Tuple
-from docutils.parsers.rst import directives
-from docutils.nodes import Element, Node
-from docutils import nodes
-from docutils.parsers.rst import Directive
-import os
-from sphinx.directives.code import LiteralIncludeReader, dedent_lines
+from typing import List
 
-from sphinx.locale import _
+from docutils import nodes
+from docutils.nodes import Element, Node
+from docutils.parsers.rst import directives
+from sphinx.directives.code import LiteralIncludeReader, dedent_lines
 from sphinx.util.docutils import SphinxDirective
+
 
 class codeimport(nodes.General, nodes.Element):
     pass
@@ -21,7 +19,7 @@ class CodeImportDirective(SphinxDirective):
     final_argument_whitespace = True
     option_spec = {
         'language': directives.unchanged_required,
-        'section': directives.unchanged_required,
+        'sections': directives.unchanged_required,
         'dedent': int
     }
 
@@ -32,13 +30,12 @@ class CodeImportDirective(SphinxDirective):
             location = self.state_machine.get_source_and_line(self.lineno)
             rel_filename, filename = self.env.relfn2path(self.arguments[0])
             self.env.note_dependency(rel_filename)
-
             reader = LiteralIncludeReader(filename, self.options, self.config)
             text, lines = reader.read(location=location)
             lines = text.split("\n")
 
-            if 'section' in self.options:
-                lines = self.filter(lines, self.options['section'])
+            if 'sections' in self.options:
+                lines = self.filter(lines, self.options['sections'].split(','))
 
             lines = self.filterSections(lines)
 
@@ -53,14 +50,14 @@ class CodeImportDirective(SphinxDirective):
         except Exception as exc:
             return [document.reporter.warning(exc, line=self.lineno)]
 
-    def filter(self, lines: List[str], section: str) -> List[str]:
+    def filter(self, lines: List[str], sections: List[str]) -> List[str]:
         sectionLines = []
         parsing = None
         for line in lines:
-            if section in self.parseSections("endsection", line):
+            if frozenset(sections) & frozenset(self.parseSections("endsection", line)):
                 parsing = False
             
-            if section in self.parseSections("section", line):
+            if frozenset(sections) & frozenset(self.parseSections("section", line)):
                 parsing = True
                 continue
 
@@ -68,10 +65,10 @@ class CodeImportDirective(SphinxDirective):
                 sectionLines.append(line)
 
         if True == parsing:
-            raise ValueError('No closing section found for %s' % (section))
+            raise ValueError('No closing section found for %s' % (sections))
 
         if None == parsing:
-            raise ValueError('Section %s not found' % (section))
+            raise ValueError('Section %s not found' % (sections))
 
         return sectionLines;
 
