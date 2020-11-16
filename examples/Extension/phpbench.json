@@ -1,4 +1,7 @@
 {
+    "path": "../../examples",
+    "bootstrap": "../../vendor/autoload.php",
+    "progress": "cats",
     "extensions": [
         "PhpBench\\Examples\\Extension\\AcmeExtension"
     ]
