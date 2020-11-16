@@ -547,7 +547,7 @@ Assertions
 You can annotate your benchmarks with *assertions* which will cause PHPBench
 to report failures and exit with a non-zero exit code if they fail.
 
-For example, assert that the mode is less than 1234 microseconds:
+For example, assert that the mode is less than 100 microseconds:
 
 .. code-block:: php
 
