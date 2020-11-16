@@ -247,7 +247,7 @@ Parameter sets can be provided to benchmark subjects:
 The ``benchMd5`` subject will now be benchmarked with each parameter set.
 
 The param provider can return a set of parameters using any `iterable`.
-For example the above could also be retuned as an array:
+For example the above could also be returned as an array:
 
 .. code-block:: php
 
