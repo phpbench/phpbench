@@ -97,13 +97,13 @@ consumes *time itself*:
 In order to benchmark your code you will need to execute that code within
 a method of a benchmarking class. By default the class name **must**
 have the ``Bench`` suffix and each benchmark method must be prefixed
-with ``bench``.
-
-Create the following class in file ``tests/Benchmark/TimeConsumerBench.php``:
+with ``bench``. Create the following class:
 
 .. code-block:: php
 
     <?php
+
+    // tests/Benchmark/TimeConsumerBench.php
 
     use Acme\TimeConsumer;
 
