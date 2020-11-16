@@ -11,21 +11,6 @@ stages:
 
 jobs:
   include:
-    - stage: Stan
-
-      php: 7.2
-
-      before_install:
-        - source .travis/xdebug.sh
-        - xdebug-disable
-        - composer validate
-
-      install:
-        - composer install
-
-      script:
-        - ./vendor/bin/phpstan analyse -c phpstan.neon
-
     - &TEST
 
       stage: Test
