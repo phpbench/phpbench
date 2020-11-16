@@ -16,7 +16,10 @@
             "php_disable_ini": true,
             "php_config": {
                 "extension": [
-                    "phar.so"
+                    "tokenizer.so",
+                    "dom.so",
+                    "json.so",
+                    "iconv.so"
                 ]
             }
         }
