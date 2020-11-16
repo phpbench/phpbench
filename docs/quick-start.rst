@@ -201,9 +201,8 @@ times.
     You can override the number of iterations and revolutions on the CLI using
     the ``--iterations`` and ``--revs`` options.
 
-At this point it would be better for you to use the :ref:`aggregate
-<report_aggregate>` report
-rather than :ref:`default <report_default>`:
+At this point it would be better for you to use the :ref:`aggregate <report_aggregate>`
+report rather than :ref:`default <report_default>`:
 
 .. code-block:: bash
 
