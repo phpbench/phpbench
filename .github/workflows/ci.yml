@@ -32,6 +32,7 @@ jobs:
                 with:
                     coverage: "none"
                     php-version: "${{ matrix.php-version }}"
+                    tools: composer:v2
 
             -
                 name: "Validate composer.json"
@@ -61,6 +62,7 @@ jobs:
                 with:
                     coverage: "none"
                     php-version: "${{ matrix.php-version }}"
+                    tools: composer:v2
 
             -
                 name: "Determine composer cache directory"
