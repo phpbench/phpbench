@@ -55,8 +55,8 @@ supported:
     :header: "comparator", "description"
 
     "<", "Less than"
-    "<=", "Less than equal"
-    "=", "Less than or equal"
+    "<=", "Less than or equal"
+    "=", "Equal"
     ">", "Greater than"
     ">=", "Greater than or equal"
 
