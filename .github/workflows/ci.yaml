@@ -159,25 +159,13 @@ jobs:
             - name: "Add PHPUnit matcher"
               run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
-            - name: "Set composer cache directory"
-              id: composer-cache
-              run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-            - name: "Cache composer"
-              uses: actions/cache@v2.1.2
-              with:
-                  path: ${{ steps.composer-cache.outputs.dir }}
-                  key: ${{ runner.os }}-${{ matrix.php-version }}-composer-${{ hashFiles('composer.json') }}
-                  restore-keys: ${{ runner.os }}-${{ matrix.php-version }}-composer-
-
             - name: "Remove friendsofphp/php-cs-fixer"
               run: composer remove --dev friendsofphp/php-cs-fixer --no-update
 
-            - if: matrix.dependency == 'highest'
-              run: composer update
-
-            - if: matrix.dependency == 'lowest'
-              run: composer update --prefer-lowest
+            - name: "Composer install"
+              uses: "ramsey/composer-install@v1"
+              with:
+                  dependency-versions: "${{ matrix.dependency }}"
 
             - name: "Run tests with PHPUnit"
               run: vendor/bin/phpunit
