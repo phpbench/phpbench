@@ -223,7 +223,7 @@ To increase stability you can use the ``--retry-threshold`` to automatically
 percentage difference from the lowest measurement) fits within a given
 threshold:
 
-.. note:
+.. note::
 
     You can see the `diff` value for each iteration in the `default` report.
 
