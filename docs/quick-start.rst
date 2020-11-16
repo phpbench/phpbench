@@ -257,7 +257,6 @@ To finish off, add the path and new report to the configuration file:
 .. code-block:: json
 
     {
-        ...
         "path": "tests/Benchmark",
         "reports": {
             "consumation_of_time": {
