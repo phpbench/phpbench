@@ -127,7 +127,7 @@ class RemoteReflector implements ReflectorInterface
             for ($line = 0; $line <= 20; $line++) {
                 $buffer .= fgets($fp);
             }
-            $tokens = @token_get_all($buffer);
+            $tokens = @\token_get_all($buffer);
 
             if (strpos($buffer, '{') === false) {
                 continue;

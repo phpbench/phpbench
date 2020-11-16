@@ -5,61 +5,10 @@ cache:
     - "$HOME/.composer/cache"
 
 stages:
-  - test
   - deploy
 
 jobs:
   include:
-    - &TEST
-
-      stage: Test
-
-      php: 7.2
-
-      env: WITH_LOWEST=true WITH_EXAMPLES=true
-
-      before_install:
-        - source .travis/xdebug.sh
-        - xdebug-disable
-        - composer validate
-
-      install:
-        - composer remove --dev friendsofphp/php-cs-fixer --no-update
-        - if [[ "$WITH_LOWEST" == "true" ]]; then composer update --prefer-lowest; fi
-        - if [[ "$WITH_HIGHEST" == "true" ]]; then composer update; fi
-
-      before_script:
-        - export TZ=Europe/Paris
-
-      script:
-        - vendor/bin/phpunit
-        - bin/phpbench run --report=env --progress=dots
-        - if [[ "$NO_EXAMPLES" == "false" ]]; then bin/phpbench run --profile=examples --report=env --progress=dots; fi
-
-    - <<: *TEST
-
-      php: 7.2
-
-      env: WITH_HIGHEST=true
-
-    - <<: *TEST
-
-      php: 7.3
-
-      env: WITH_HIGHEST=true
-
-    - <<: *TEST
-
-      php: 7.4
-
-      env: WITH_HIGHEST=true
-
-    - <<: *TEST
-
-      php: nightly
-
-      env: WITH_HIGHEST=true WITH_EXAMPLES=false
-
     - stage: Deploy
 
       if: (NOT type IN (pull_request)) AND (branch = master)

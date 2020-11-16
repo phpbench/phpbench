@@ -406,7 +406,7 @@ class CoreExtension implements ExtensionInterface
             self::TAG_CONSOLE_COMMAND => []
         ]);
 
-        if (class_exists(Updater::class) && \Phar::running()) {
+        if (class_exists(Updater::class) && class_exists(\Phar::class) && \Phar::running()) {
             $container->register(SelfUpdateCommand::class, function (Container $container) {
                 return new SelfUpdateCommand();
             }, [
