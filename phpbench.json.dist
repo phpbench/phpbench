@@ -1,4 +1,7 @@
 {
+    "extensions": [
+        "PhpBench\\Examples\\Extension\\AcmeExtension"
+    ],
     "bootstrap": "vendor/autoload.php",
     "path": "tests/Benchmark",
     "php_config": {
@@ -16,7 +19,7 @@
             "php_disable_ini": true,
             "php_config": {
                 "extension": [
-                    "phar.so"
+                    "tokenizer.so"
                 ]
             }
         }

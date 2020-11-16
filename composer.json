@@ -17,6 +17,7 @@
         "ext-pcre": "*",
         "ext-reflection": "*",
         "ext-spl": "*",
+        "ext-tokenizer": "*",
         "beberlei/assert": "^2.4 || ^3.0",
         "doctrine/annotations": "^1.2.7",
         "doctrine/lexer": "^1.2",
