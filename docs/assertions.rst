@@ -41,11 +41,7 @@ For each of these the following data is available:
     "mem_final", "Memory usage (``memory_get_usage()``)",
     "mem_peak", "Peak memory usage (``memory_get_peak_usage()``)",
 
-The data can be accessed using dot notation:
-
-For example:
-
-::
+The data can be accessed using dot notation::
 
     variant.mode < baseline.mode
 

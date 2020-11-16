@@ -151,7 +151,7 @@ Method hooks
 Any number of methods can be executed both before and after each benchmark
 **subject** using the ``@BeforeMethods`` and
 ``@AfterMethods`` annotations. Before methods are useful for bootstrapping
-your environment, for example:
+your environment:
 
 .. code-block:: php
 
@@ -221,7 +221,7 @@ These methods will be executed by the runner once per benchmark class.
 Parameterized Benchmarks
 ------------------------
 
-Parameter sets can be provided to benchmark subjects. For example:
+Parameter sets can be provided to benchmark subjects:
 
 .. code-block:: php
 
@@ -272,7 +272,7 @@ For example the above could also be retuned as an array:
 
 Multiple parameter providers can be used, in which case the data sets will be
 combined into a `cartesian product`_ - all possible combinations of the
-parameters will be generated, for example:
+parameters will be generated:
 
 .. code-block:: php
 
