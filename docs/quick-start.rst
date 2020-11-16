@@ -292,6 +292,6 @@ In this tutorial you learnt to
 - Increase stability with the :ref:`retry threshold <retry_threshold>`
 - Use :doc:`reports <reports>`
 
-.. _composer: http://getcomposer.org
-.. _Relative standard deviation: https://en.wikipedia.org/wiki/Coefficient_of_variation
+.. _Composer: http://getcomposer.org
+.. _relative standard deviation: https://en.wikipedia.org/wiki/Coefficient_of_variation
 .. _standard deviation: https://en.wikipedia.org/wiki/Standard_deviation
