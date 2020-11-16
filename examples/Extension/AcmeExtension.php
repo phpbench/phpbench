@@ -14,7 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 // section: command_di,executor_di,progress_logger_di,report_generator_di
 class AcmeExtension implements ExtensionInterface
 {
-// endsection: executor_di,progress_logger_di,report_generator_di
+    // endsection: executor_di,progress_logger_di,report_generator_di
     private const PARAM_NUMBER_OF_CATS = 'acme.number_of_cats';
 
     // section: command_di
@@ -66,7 +66,7 @@ class AcmeExtension implements ExtensionInterface
                 'name' => 'acme',
             ]
         ]);
-    // section: command_di,progress_logger_di,report_generator_di
+        // section: command_di,progress_logger_di,report_generator_di
     }
 }
 // endsection: command_di,executor_di,progress_logger_di,report_generator_di

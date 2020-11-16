@@ -3,10 +3,10 @@
 namespace PhpBench\Examples\Extension\ProgressLogger;
 
 use PhpBench\Model\Benchmark;
+use PhpBench\Model\Iteration;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
 use PhpBench\Model\Variant;
-use PhpBench\Model\Iteration;
 use PhpBench\Progress\LoggerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 

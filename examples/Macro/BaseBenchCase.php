@@ -13,11 +13,9 @@
 namespace PhpBench\Examples\Macro;
 
 use PhpBench\DependencyInjection\Container;
-use PhpBench\Tests\IntegrationTestCase;
 use PhpBench\Tests\Util\Workspace;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
-
 
 /**
  * Base class for PHPBench macro benchmarks.

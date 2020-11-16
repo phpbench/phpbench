@@ -13,8 +13,6 @@
 namespace PhpBench\Examples\Macro;
 
 use PhpBench\Console\Command\RunCommand;
-use PhpBench\Examples\Macro\BaseBenchCase;
-
 
 /**
  * This benchmark executes the run command using the benchmark classes
