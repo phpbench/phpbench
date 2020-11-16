@@ -36,10 +36,10 @@ For each of these the following data is available:
     "sum", "Sum of all iteration times"
     "stdev", "Standard deviation of the iteration times"
     "rstdev", "Relative standard deviation of the iteration times (a percentage value)"
-    "variance", "Variance of the iteration times",
-    "mem_real", "Real memory usage (``memory_get_usage(true)``)",
-    "mem_final", "Memory usage (``memory_get_usage()``)",
-    "mem_peak", "Peak memory usage (``memory_get_peak_usage()``)",
+    "variance", "Variance of the iteration times"
+    "mem_real", "Real memory usage (``memory_get_usage(true)``)"
+    "mem_final", "Memory usage (``memory_get_usage()``)"
+    "mem_peak", "Peak memory usage (``memory_get_peak_usage()``)"
 
 The data can be accessed using dot notation:
 
