@@ -239,8 +239,7 @@ threshold:
 Customize Reports
 -----------------
 
-PHPBench also allows you to customize reports on the command line, try the
-following:
+PHPBench allows you to customize reports on the command line:
 
 .. code-block:: bash
 
