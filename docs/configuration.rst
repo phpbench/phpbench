@@ -6,7 +6,7 @@ configuration from the current working directory. It will check for the
 existence each of the files ``phpbench.json`` and ``phpbench.json.dist`` in
 that order and use one if it exists.
 
-.. code-block:: javascript
+.. code-block:: json
 
     {
         "bootstrap": "vendor/autoload.php",
@@ -42,7 +42,7 @@ executed. Typically this will be the class autoloader (e.g.
 
 It is specified with the ``bootstrap`` key:
 
-.. code-block:: javascript
+.. code-block:: json
 
     {
         "bootstrap": "vendor/autoload.php"
@@ -62,7 +62,7 @@ By default PHPBench will identify subject methods when they have a ``bench``
 prefix. It is possible to change the regex pattern used to identify subjects
 as follows:
 
-.. code-block:: javascript
+.. code-block:: json
 
     {
         "subject_pattern": "^spin_"
@@ -106,7 +106,7 @@ extensions by setting ``php_disable_ini`` to ``true``.
     PHPBench currently makes use of the ``json`` extension in remote
     processes, so you are required to explicitly enable it as follows.
 
-.. code-block:: javascript
+.. code-block:: json
 
     {
         "php_disable_ini": true,
@@ -120,7 +120,7 @@ Outputs
 
 Custom output definitions:
 
-.. code-block:: javascript
+.. code-block:: json
 
         "outputs": {
              "my_output": {
@@ -144,7 +144,7 @@ Path
 
 Specify the default path to the benchmarks:
 
-.. code-block:: javascript
+.. code-block:: json
 
     {
         "path": "tests/benchmarks"
@@ -155,7 +155,7 @@ Progress Logger
 
 Specify which progress logger to use:
 
-.. code-block:: javascript
+.. code-block:: json
 
     {
         "progress": "dots"
@@ -168,7 +168,7 @@ Retry Threshold
 
 Set the :ref:`retry_threshold`:
 
-.. code-block:: javascript
+.. code-block:: json
 
     {
         "retry_threshold": 5
@@ -181,7 +181,7 @@ Reports
 
 List of report definitions:
 
-.. code-block:: javascript
+.. code-block:: json
 
     {
         "reports": {
@@ -204,7 +204,7 @@ Prefixing the Benchmarking Process
 
 You can prefix the benchmarking command line using the ``php_wrapper`` option:
 
-.. code-block:: javascript
+.. code-block:: json
 
     {
         "php_wrapper": "blackfire run -q"
@@ -224,7 +224,7 @@ Configuration profiles allow you to merge addition configuration.
 
 You can configure configuration profiles as follows:
 
-.. code-block:: javascript
+.. code-block:: json
 
     {
         "profiles": {
@@ -249,7 +249,7 @@ PHP Binary and INI settings
 
 You can change the PHP binary and INI settings used to execute the benchmarks:
 
-.. code-block:: javascript
+.. code-block:: json
 
     {
         "php_binary": "hhvm",
@@ -265,7 +265,7 @@ Specify the *default* :ref:`time unit <time_unit>`. Note that this will be overr
 individual benchmark/subjects and when the ``time-unit`` option is passed to
 the CLI.
 
-.. code-block:: javascript
+.. code-block:: json
 
     {
         "time_unit": "milliseconds"
@@ -273,7 +273,7 @@ the CLI.
 
 Similarly the :ref:`mode` can be set using the `output_mode` key:
 
-.. code-block:: javascript
+.. code-block:: json
 
     {
         "output_mode": "throughput"

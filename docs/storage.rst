@@ -14,7 +14,7 @@ through extensions).
 The XML storage driver will place benchmarks in a folder called ``.phpbench``
 by default, this can be changed in the configuration as follows:
 
-.. code-block:: javascript
+.. code-block:: json
 
     {
         "xml_storage_path": "path/to/my/folder"
@@ -153,7 +153,7 @@ Both operations are idempotent - they will skip any existing records.
 
 You may configure a different archiver in the configuration:
 
-.. code-block:: javascript
+.. code-block:: json
 
     {
         "archiver": "xml"

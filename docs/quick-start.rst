@@ -15,7 +15,7 @@ Create a directory for the tutorial:
 
 And create the following Composer_ file within it:
 
-.. code-block:: javascript
+.. code-block:: json
 
     {
         "name": "acme/phpbench-test",
@@ -55,7 +55,7 @@ This can be done in the PHPBench :doc:`configuration <configuration>`.
 
 Create a ``phpbench.json`` file in the projects root directory:
 
-.. code-block:: javascript
+.. code-block:: json
 
     {
         "bootstrap": "vendor/autoload.php"
@@ -252,7 +252,7 @@ Configuration
 
 To finish off, add the path and new report to the configuration file:
 
-.. code-block:: javascript
+.. code-block:: json
 
     {
         ...
