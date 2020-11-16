@@ -101,7 +101,7 @@ Memory Units:
     "byte", "1 byte"
     "kilobyte", "1,000 bytes"
     "megabyte", "1,000,000 bytes"
-    "gigabye", "1,000,000,000 bytes"
+    "gigabyte", "1,000,000,000 bytes"
 
 For example:
 
