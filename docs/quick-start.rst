@@ -120,7 +120,7 @@ Now you can execute the benchmark as follows:
 
 .. code-block:: bash
 
-   $ vendor/bin/phpbench run tests/Benchmark/TimeConsumerBench.php --report=default
+   $ php vendor/bin/phpbench run tests/Benchmark/TimeConsumerBench.php --report=default
 
 And you should see some output similar to the following:
 
@@ -240,7 +240,7 @@ following:
 
 .. code-block:: bash
 
-    $ ./vendor/bin/phpbench run benchmarks/TimeConsumerBench.php --report='{"extends": "aggregate", "cols": ["subject", "mode"]}'
+    $ php vendor/bin/phpbench run benchmarks/TimeConsumerBench.php --report='{"extends": "aggregate", "cols": ["subject", "mode"]}'
 
 Above we configure a new report which extends the :ref:`default
 <report_default>` report that we have already used, but we use only the
