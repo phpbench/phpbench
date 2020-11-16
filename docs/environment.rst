@@ -3,7 +3,7 @@ Environment
 
 PHPBench will try and record as much information about the current environment
 as it can. This is facilitated by "environment provider" classes which
-implement the ``PhpBench\\Environment\\ProviderInterface`` and are registered
+implement the ``PhpBench\Environment\ProviderInterface`` and are registered
 with the ``environment_provider`` tag in the DI container.
 
 This information is recorded in the XML document:
@@ -23,7 +23,7 @@ displayed when using the :ref:`table report generator <generator_table>`.
 GIT
 ---
 
-**Class**: ``PhpBench\\Environment\\Provider\\Git``.
+**Class**: ``PhpBench\Environment\Provider\Git``.
 **Available**: When PHPBench is run in the *root* directory of a GIT
 repository.
 
@@ -33,7 +33,7 @@ vesion (i.e. the ``commitsh``).
 PHP
 ---
 
-**Class**: ``PhpBench\\Environment\\Provider\\Php``.
+**Class**: ``PhpBench\Environment\Provider\Php``.
 **Available**: Always
 
 Provides the PHP version.
@@ -41,7 +41,7 @@ Provides the PHP version.
 Uname
 -----
 
-**Class**: ``PhpBench\\Environment\\Provider\\Uname``.
+**Class**: ``PhpBench\Environment\Provider\Uname``.
 **Available**: Always
 
 Provides information about the operating system obtained through the
@@ -50,7 +50,7 @@ Provides information about the operating system obtained through the
 Unix Sysload
 ------------
 
-**Class**: ``PhpBench\\Environment\\Provider\\UnixSysload``.
+**Class**: ``PhpBench\Environment\Provider\UnixSysload``.
 **Available**: On non-windows systems.
 
 Provides the `CPU load`_ for the following time periods: 1 minute, 5 minutes and

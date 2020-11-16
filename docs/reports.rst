@@ -269,7 +269,7 @@ Generator: :ref:`generator_table`.
 Columns:
 
 - **provider**: Name of the environment provider (see
-  ``PhpBench\\Environment\\Provider`` in the code for more information).
+  ``PhpBench\Environment\Provider`` in the code for more information).
 - **key**: Information key.
 - **value**: Information value.
 
