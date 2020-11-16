@@ -38,11 +38,11 @@ jobs:
                 name: "Validate composer.json"
                 run: "composer validate --strict --no-check-lock"
 
-    coding-standards:
+    php-cs-fixer:
         needs:
             - "composer-validate"
 
-        name: "Coding Standards (${{ matrix.php-version }})"
+        name: "PHP-CS-Fixer (${{ matrix.php-version }})"
 
         runs-on: "ubuntu-latest"
 
