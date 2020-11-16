@@ -1,0 +1,5 @@
+{
+    "extensions": [
+        "PhpBench\\Examples\\Extension\\AcmeExtension"
+    ]
+}

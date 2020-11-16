@@ -1,4 +1,5 @@
 <?php
+// section: command
 
 namespace PhpBench\Examples\Extension\Command;
 
@@ -31,3 +32,5 @@ class CatsCommand extends Command
         return 0;
     }
 }
+
+// endsection: command
