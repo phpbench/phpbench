@@ -23,7 +23,7 @@ Run your benchmark on the code to which you want to compare:
 
 .. code-block:: bash
 
-    phpbench run tests/Benchmark/MyBenchmark.php --tag=original --retry-threshold=5 --iterations=10
+    $ phpbench run tests/Benchmark/MyBenchmark.php --tag=original --retry-threshold=5 --iterations=10
 
 Compare against the baseline
 ----------------------------
@@ -32,7 +32,7 @@ Switch to the new version of your code and run PHPBench again:
 
 .. code-block:: bash
 
-    phpbench run tests/Benchmark/MyBenchmark.php --report=aggregate --uuid=tag:original --retry-threshold=5 --iterations=10
+    $ phpbench run tests/Benchmark/MyBenchmark.php --report=aggregate --uuid=tag:original --retry-threshold=5 --iterations=10
 
 
 Note that:
@@ -55,7 +55,7 @@ You can compare against baselines in assertions, e.g.
 
 .. code-block:: bash
 
-    phpbench run tests/Benchmark/MyBenchmark.php --uuid=tag:original --retry-threshold=5 --iterations=10 --assert="variant.mode <= baseline.mode +/- 5%"
+    $ phpbench run tests/Benchmark/MyBenchmark.php --uuid=tag:original --retry-threshold=5 --iterations=10 --assert="variant.mode <= baseline.mode +/- 5%"
 
 We assert the the current run's ``mode`` is less than or equal to the baseline
 ``mode`` and tolerate a variance within 5% of the baseline ``mode``.
