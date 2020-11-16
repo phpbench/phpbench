@@ -6,7 +6,7 @@ The Xdebug extension allows you to easily profile your code.
 Installation
 ------------
 
-The XDebug extension is enabled by default.
+The Xdebug extension is enabled by default.
 
 Generate a profile (cachegrind)
 -------------------------------
