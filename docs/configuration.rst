@@ -101,7 +101,7 @@ PHP extensions, especially Xdebug, can drastically affect the performance of
 your benchmark subjects. You can disable Xdebug and other dynamically loaded
 extensions by setting ``php_disable_ini`` to ``true``.
 
-.. note:
+.. note::
 
     PHPBench currently makes use of the ``json`` extension in remote
     processes, so you are required to explicitly enable it as follows.
@@ -122,6 +122,7 @@ Custom output definitions:
 
 .. code-block:: json
 
+    {
         "outputs": {
              "my_output": {
                  "extends": "html",
@@ -129,6 +130,7 @@ Custom output definitions:
                  "title": "Hello World"
              }
         }
+    }
 
 Note that:
 
