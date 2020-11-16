@@ -15,7 +15,7 @@ And register with your DI container:
 
 .. codeimport:: ../../../examples/Extension/AcmeExtension.php
   :language: php
-  :section: progress_logger_di
+  :sections: all,progress_logger_di
 
 Run it with:
 

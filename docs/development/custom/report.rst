@@ -41,7 +41,7 @@ And register with your DI container:
 
 .. codeimport:: ../../../examples/Extension/AcmeExtension.php
   :language: php
-  :section: report_generator_di
+  :sections: all,report_generator_di
 
 Use your new generator:
 

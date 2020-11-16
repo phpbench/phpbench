@@ -11,26 +11,32 @@ use PhpBench\Examples\Extension\Report\AcmeGenerator;
 use PhpBench\Extension\CoreExtension;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-// section: command_di,executor_di,progress_logger_di,report_generator_di
+// section: all
 class AcmeExtension implements ExtensionInterface
 {
-    // endsection: executor_di,progress_logger_di,report_generator_di
-    private const PARAM_NUMBER_OF_CATS = 'acme.number_of_cats';
-
+    // endsection: all
     // section: command_di
+    private const PARAM_NUMBER_OF_CATS = 'acme.number_of_cats';
+    // endsection: command_di
+
+    // section: all
     public function configure(OptionsResolver $resolver): void
     {
+        // endsection: all
+        // section: command_di
         $resolver->setDefaults([
             self::PARAM_NUMBER_OF_CATS => 7
         ]);
+        // endsection: command_di
+        // section: all
     }
 
-    // endsection: command_di
-
-    // section: command_di,executor_di,report_generator_di
+    // endsection: all
+    // section: all
     public function load(Container $container): void
     {
-        // endsection: executor_di,report_generator_di
+        // endsection: all
+        // section: command_di
         $container->register(CatsCommand::class, function (Container $container) {
             return new CatsCommand($container->getParameter(self::PARAM_NUMBER_OF_CATS));
         }, [
@@ -47,7 +53,7 @@ class AcmeExtension implements ExtensionInterface
             ]
         ]);
         // endsection: progress_logger_di
-        //
+
         // section: report_generator_di
         $container->register(AcmeGenerator::class, function (Container $container) {
             return new AcmeGenerator();
@@ -66,7 +72,8 @@ class AcmeExtension implements ExtensionInterface
                 'name' => 'acme',
             ]
         ]);
-        // section: command_di,progress_logger_di,report_generator_di
+        // endsection: executor_di
+        // section: all
     }
 }
-// endsection: command_di,executor_di,progress_logger_di,report_generator_di
+// endsection: all

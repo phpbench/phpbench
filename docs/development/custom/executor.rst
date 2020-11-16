@@ -20,4 +20,4 @@ You can register it in your :doc:`extension <extension>` as follows:
 
 .. codeimport:: ../../../examples/Extension/AcmeExtension.php
   :language: php
-  :section: executor_di
+  :sections: all,executor_di

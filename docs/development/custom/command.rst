@@ -13,7 +13,7 @@ Register it with the :doc:`DI extension <extensions>`:
 
 .. codeimport:: ../../../examples/Extension/AcmeExtension.php
   :language: php
-  :section: command_di
+  :sections: all,command_di
 
 You can then run your command:
 
