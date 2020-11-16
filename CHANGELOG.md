@@ -40,7 +40,7 @@ Backward compatibility breaks:
 
 - DBAL extension removed.
 - PHPBench Reports extension removed.
-- Removed XDebug Trace integration
+- Removed Xdebug Trace integration
 - Removed `--query` featre (only worked with DBAL, too complex).
 - Removed `--context` (depreacted in favor of `--tag`).
 - Removed `archive` and `delete` commands.
@@ -54,11 +54,11 @@ Backward compatibility breaks:
 Features:
 
 - Configuration profiles
-- XDebug extension is loaded by default if extension is loaded
+- Xdebug extension is loaded by default if extension is loaded
 - Baseline: Specify baseline suite when running benchmarks and show differences in
   reports #648
 - Assert against the baseline
-- Show PHP version and the status of XDebug and Opcache in the runner output
+- Show PHP version and the status of Xdebug and Opcache in the runner output
   #649
 - Add `@Timeout` to enable a timeout to be specified for any given benchmark -
   @dantleech #614
@@ -176,6 +176,6 @@ Improvements:
 - Allow additional extension autoloader to be configured
 - Allow configuration of launcher.
 - Refactored annotation reader (allow namespaced annotations, possibility to add benchmark annotations to PHPUnit tests).
-- Initial XDebug function trace support
+- Initial Xdebug function trace support
 - Container split into [independent library](https://github.com/phpbench/container)
 - Fix skipping benchmarks
