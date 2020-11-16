@@ -147,7 +147,7 @@ Specify the default path to the benchmarks:
 .. code-block:: json
 
     {
-        "path": "tests/benchmarks"
+        "path": "tests/Benchmarks"
     }
 
 Progress Logger
@@ -229,7 +229,7 @@ You can configure configuration profiles as follows:
     {
         "profiles": {
             "foobar": {
-                "path": "path/to/foobar/benchmarks",
+                "path": "path/to/foobar/Benchmarks",
                 "php_disable_ini": true
             }
         }

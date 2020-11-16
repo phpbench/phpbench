@@ -43,8 +43,7 @@ Now perform a Composer install:
 
     $ composer install
 
-PHPBench should now be installed. Now create two directories, ``benchmarks``
-and ``src`` which we will need further on:
+PHPBench should now be installed. Please create the following directories:
 
 .. code-block:: bash
 
@@ -206,7 +205,7 @@ report rather than :ref:`default <report_default>`:
 
 .. code-block:: bash
 
-    $ php vendor/bin/phpbench run benchmarks/TimeConsumerBench.php --report=aggregate
+    $ php vendor/bin/phpbench run tests/Benchmark/TimeConsumerBench.php --report=aggregate
 
 Increase Stability
 ------------------
@@ -229,7 +228,7 @@ threshold:
 
 .. code-block:: bash
 
-    $ php vendor/bin/phpbench run benchmarks/TimeConsumerBench.php --report=aggregate --retry-threshold=5
+    $ php vendor/bin/phpbench run tests/Benchmark/TimeConsumerBench.php --report=aggregate --retry-threshold=5
 
 .. warning::
 
@@ -243,7 +242,7 @@ PHPBench allows you to customize reports on the command line:
 
 .. code-block:: bash
 
-    $ php vendor/bin/phpbench run benchmarks/TimeConsumerBench.php --report='{"extends": "aggregate", "cols": ["subject", "mode"]}'
+    $ php vendor/bin/phpbench run tests/Benchmark/TimeConsumerBench.php --report='{"extends": "aggregate", "cols": ["subject", "mode"]}'
 
 Above we configure a new report which extends the :ref:`default
 <report_default>` report that we have already used, but we use only the
@@ -259,7 +258,7 @@ To finish off, add the path and new report to the configuration file:
 
     {
         ...
-        "path": "benchmarks",
+        "path": "tests/Benchmark",
         "reports": {
             "consumation_of_time": {
                 "extends": "default",
