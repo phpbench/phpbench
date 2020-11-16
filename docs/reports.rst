@@ -39,14 +39,14 @@ All reports can be configured either in the :ref:`report configuration
 <configuration_reports>` or directly on the command line using a simplified
 JSON encoded string instead of the report name::
 
-   $ phpbench run --report='generator: "table", cols: [ "suite", "subject", "mean" ], break: ["benchmark"]'
+    $ phpbench run --report='generator: "table", cols: [ "suite", "subject", "mean" ], break: ["benchmark"]'
 
 In each case it is required to specify the ``generator`` key which corresponds
 to the registered name of the :doc:`report generator <report-generators>`.
 
 You may also **extend** an existing report configuration::
 
-   $ phpbench run --report='extend: "aggregate", break: ["benchmark", "revs"]'
+    $ phpbench run --report='extend: "aggregate", break: ["benchmark", "revs"]'
 
 This will merge the given keys onto the configuration for the `aggregate
 report`_.
