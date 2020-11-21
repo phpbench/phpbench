@@ -13,9 +13,6 @@ class AcmeExecutor implements BenchmarkExecutorInterface
 {
     private const CONFIG_MICROSECONDS = 'microseconds';
 
-    /**
-     * {@inheritDoc}
-     */
     public function configure(OptionsResolver $options): void
     {
         $options->setDefaults([

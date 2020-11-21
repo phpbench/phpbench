@@ -9,9 +9,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AcmeGenerator implements GeneratorInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function configure(OptionsResolver $options): void
     {
         $options->setDefaults([
@@ -20,9 +17,6 @@ class AcmeGenerator implements GeneratorInterface
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function generate(SuiteCollection $suiteCollection, Config $config): Document
     {
         $document = new Document();
