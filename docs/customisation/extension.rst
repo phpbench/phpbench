@@ -79,5 +79,4 @@ You can activate and use your extension as follows ``phpbench.json``:
         "acme.number_of_cats": 8
     }
 
-.. _OptionsResolver: https://symfony.com/doc/current/components/options_resolver.html
 .. _PSR-11: https://www.php-fig.org/psr/psr-11/

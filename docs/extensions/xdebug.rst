@@ -27,7 +27,7 @@ A single profile is generated for each subject in the benchmark and placed in
 the directory ``profile`` by default.
 
 The generated profiles can be viewed with a cachegrind viewer such as
-`kcachgrind` (linux) or `webgrind`_ (web based).
+`kcachegrind`_ (linux) or `webgrind`_ (web based).
 
 .. image:: ../images/profile.png
 
@@ -41,6 +41,5 @@ By default PHPBench will attempt to locate the ``kcachegrind`` executable. If
 you do not have ``kcachegrind`` you can specify a different executable using
 the ``--gui-bin`` option.
 
-.. _profiles: http://xdebug.org/docs/profiler
 .. _kcachegrind: http://kcachegrind.sourceforge.net/html/Home.html
 .. _webgrind: https://github.com/jokkedk/webgrind
