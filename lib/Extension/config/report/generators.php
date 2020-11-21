@@ -31,8 +31,5 @@ return [
         'cols' => ['benchmark', 'subject', 'set', 'revs'],
         'compare' => 'suite',
         'break' => [],
-    ],
-    'env' => [
-        'generator' => 'env',
-    ],
+    ]
 ];
