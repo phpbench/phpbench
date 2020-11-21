@@ -35,10 +35,6 @@ jobs:
                     restore-keys: |
                         ${{ runner.os }}-pip-
 
-            -   name: "Create _static folder"
-                working-directory: "docs"
-                run: mkdir _static
-
             -   name: "Install Sphinx + requirements via pip"
                 working-directory: "docs"
                 run: pip install -r requirements.txt
