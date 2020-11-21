@@ -201,9 +201,8 @@ report rather than :ref:`default <report_default>`:
 Increase Stability
 ------------------
 
-You will see the columns `stdev` and `rstdev`. `stdev` is the `standard
-deviation`_ of the set of iterations and `rstdev` is `relative standard
-deviation`_.
+You will see the columns `stdev` and `rstdev`. `stdev` is the `standard deviation`_
+of the set of iterations and `rstdev` is `relative standard deviation`_.
 
 Stability can be inferred from `rstdev`, with 0% being the best and anything
 about 2% should be treated as suspicious.

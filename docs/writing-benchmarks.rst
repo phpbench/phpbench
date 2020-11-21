@@ -544,4 +544,3 @@ You can also specify assertions from the command line:
 See :doc:`assertions` for more information.
 
 .. _cartesian product: https://en.wikipedia.org/wiki/Cartesian_product
-.. _Relative standard deviation: https://en.wikipedia.org/wiki/Coefficient_of_variation

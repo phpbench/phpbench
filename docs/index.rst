@@ -4,12 +4,12 @@ Introduction
 PHPBench is a benchmark runner for PHP analagous to `PHPUnit`_ but for
 performance rather than correctness.
 
-Performance can be monitored and measured in a number of ways: profiling (via.
-`Xdebug`_ or `Blackfire`_), manually instrumenting your code (e.g. `Symfony
-Stopwatch`_) or with APM tools such as `NewRelic`_ or `Tideways`_.
+Performance can be monitored and measured in a number of ways: profiling
+(via. `Xdebug`_ or `Blackfire`_), manually instrumenting your code
+(e.g. `Symfony Stopwatch`_) or with APM tools such as `NewRelic`_ or `Tideways`_.
 
 PHPBench compliments these tools (and in some cases can integrate with them)
-allowing you to profile the `wall time_` and memory usage of specific
+allowing you to profile the `wall time`_ and memory usage of specific
 scenarios and code units independently of the application context.
 
 Features include but are not limited to:

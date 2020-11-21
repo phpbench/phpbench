@@ -22,4 +22,4 @@ You can then run your command:
     $ phpbench cats
     🐈🐈🐈🐈🐈🐈🐈
 
-.. _symfony command: https://symfony.com/doc/current/console.html
+.. _Symfony Command: https://symfony.com/doc/current/console.html

@@ -48,8 +48,7 @@ You may also **extend** an existing report configuration::
 
     $ phpbench run --report='extend: "aggregate", break: ["benchmark", "revs"]'
 
-This will merge the given keys onto the configuration for the `aggregate
-report`_.
+This will merge the given keys onto the configuration for the `aggregate report`_.
 
 Table Generator
 ---------------
