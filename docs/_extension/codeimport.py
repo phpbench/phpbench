@@ -8,7 +8,6 @@ from docutils.parsers.rst import directives
 from sphinx.directives.code import LiteralIncludeReader, dedent_lines
 from sphinx.util.docutils import SphinxDirective
 
-
 class codeimport(nodes.General, nodes.Element):
     pass
 
