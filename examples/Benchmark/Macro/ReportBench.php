@@ -10,10 +10,11 @@
  *
  */
 
-namespace PhpBench\Examples\Macro;
+namespace PhpBench\Examples\Benchmark;
 
 use PhpBench\Console\Command\ReportCommand;
 use PhpBench\Console\Command\RunCommand;
+use PhpBench\Examples\Benchmark\BaseBenchCase;
 
 /**
  * Benchmark for the report generation command.

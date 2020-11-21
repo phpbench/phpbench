@@ -177,7 +177,7 @@ jobs:
               run: bin/phpbench run --profile=examples --report=env --progress=dots --iterations=1 --revs=1
 
             - if: matrix.with-examples == 'yes'
-              run: bin/phpbench run --config=examples/Extension/phpbench.json --iterations=1 --revs=1 --report=catordog --executor=acme
+              run: bin/phpbench run --profile=examples --iterations=1 --revs=1 --report=catordog --executor=acme
 
             - if: matrix.with-examples == 'yes'
-              run: bin/phpbench cats --config=examples/Extension/phpbench.json
+              run: bin/phpbench cats --profile=examples

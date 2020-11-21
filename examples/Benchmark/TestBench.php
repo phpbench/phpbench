@@ -2,7 +2,7 @@
 
 namespace PhpBench\Examples;
 
-class TestBench
+class Benchmark
 {
     /**
      * @Revs(10)

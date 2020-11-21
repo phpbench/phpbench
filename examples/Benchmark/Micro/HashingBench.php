@@ -10,7 +10,7 @@
  *
  */
 
-namespace PhpBench\Examples\Micro;
+namespace PhpBench\Examples\Benchmark;
 
 function hash_algos()
 {

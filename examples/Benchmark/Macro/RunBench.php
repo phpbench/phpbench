@@ -10,9 +10,10 @@
  *
  */
 
-namespace PhpBench\Examples\Macro;
+namespace PhpBench\Examples\Benchmark;
 
 use PhpBench\Console\Command\RunCommand;
+use PhpBench\Examples\Benchmark\BaseBenchCase;
 
 /**
  * This benchmark executes the run command using the benchmark classes

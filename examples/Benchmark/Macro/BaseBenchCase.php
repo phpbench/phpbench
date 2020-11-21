@@ -10,7 +10,7 @@
  *
  */
 
-namespace PhpBench\Examples\Macro;
+namespace PhpBench\Examples\Benchmark;
 
 use PhpBench\DependencyInjection\Container;
 use PhpBench\Tests\Util\Workspace;
