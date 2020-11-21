@@ -149,4 +149,14 @@ class ConfigurableRegistryTest extends RegistryTest
             'test' => 'service',
         ]), $result);
     }
+
+    public function testServiceDirectly()
+    {
+        $this->registry->setService('service', $this->service1->reveal());
+
+        $result = $this->registry->getConfig('service');
+        $this->assertEquals(new Config('test', [
+            'test' => 'service',
+        ]), $result);
+    }
 }
