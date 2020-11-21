@@ -11,9 +11,6 @@
  */
 
 return [
-    'console' => [
-        'renderer' => 'console',
-    ],
     'html' => [
         'renderer' => 'xslt',
         'template' => __DIR__ . '/../../../Report/Renderer/templates/html.xsl',
@@ -22,14 +19,8 @@ return [
         'renderer' => 'xslt',
         'template' => __DIR__ . '/../../../Report/Renderer/templates/markdown.xsl',
     ],
-    'delimited' => [
-        'renderer' => 'delimited',
-    ],
     'csv' => [
         'renderer' => 'delimited',
         'delimiter' => ',',
-    ],
-    'debug' => [
-        'renderer' => 'debug',
     ],
 ];

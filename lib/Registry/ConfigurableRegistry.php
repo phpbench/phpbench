@@ -48,6 +48,8 @@ class ConfigurableRegistry extends Registry
 
     /**
      * Return the named configuration.
+     *
+     * @param string|array $name
      */
     public function getConfig($name): Config
     {
@@ -60,12 +62,19 @@ class ConfigurableRegistry extends Registry
         $name = trim($name);
         $name = $this->processRawCliConfig($name);
 
+        if (!isset($this->configs[$name]) && $this->hasService($name)) {
+            $this->setConfig($name, [
+                $this->serviceType => $name,
+            ]);
+        }
+
         if (!isset($this->configs[$name])) {
             throw new \InvalidArgumentException(sprintf(
-                'No %s configuration named "%s" exists. Known configurations: "%s"',
+                'No %s configuration or service named "%s" exists. Known configurations: "%s", known services: "%s"',
                 $this->serviceType,
                 $name,
-                implode('", "', array_keys($this->configs))
+                implode('", "', array_keys($this->configs)),
+                implode('", "', array_keys($this->services))
             ));
         }
 

@@ -16,7 +16,10 @@
     },
     "profiles": {
         "examples": {
-            "path": "examples",
+            "extensions": [
+                "PhpBench\\Examples\\Extension\\AcmeExtension"
+            ],
+            "path": "examples/Benchmark",
             "php_disable_ini": true,
             "php_config": {
                 "extension": [

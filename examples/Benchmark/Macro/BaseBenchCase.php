@@ -10,14 +10,13 @@
  *
  */
 
-namespace PhpBench\Examples\Macro;
+namespace PhpBench\Examples\Benchmark\Macro;
 
 use PhpBench\DependencyInjection\Container;
-use PhpBench\Tests\IntegrationTestCase;
+use PhpBench\Extension\CoreExtension;
 use PhpBench\Tests\Util\Workspace;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
-
 
 /**
  * Base class for PHPBench macro benchmarks.
@@ -35,7 +34,7 @@ class BaseBenchCase
     private $container;
 
     private $extensions = [
-        'PhpBench\Extension\CoreExtension',
+        CoreExtension::class,
     ];
 
     private $config = [];
@@ -52,7 +51,7 @@ class BaseBenchCase
 
     protected static function workspace(): Workspace
     {
-        return Workspace::create(__DIR__ . '/../../tests/Workspace');
+        return Workspace::create(__DIR__ . '/../../../tests/Workspace');
     }
 
     /**

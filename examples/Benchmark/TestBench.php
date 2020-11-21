@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Examples;
+namespace PhpBench\Examples\Benchmark;
 
 class TestBench
 {

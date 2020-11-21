@@ -122,7 +122,7 @@ class RunTest extends SystemTestCase
             'run --report=foobar benchmarks/set4/NothingBench.php'
         );
         $this->assertExitCode(1, $process);
-        $this->assertStringContainsString('No generator configuration named "foobar" exists.', $process->getErrorOutput());
+        $this->assertStringContainsString('No generator configuration or service named "foobar" exists.', $process->getErrorOutput());
     }
 
     /**

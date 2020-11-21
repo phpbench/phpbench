@@ -12,3 +12,4 @@
 /tests/Workspace
 /coverage
 /.phpbench
+/**/*.pyc

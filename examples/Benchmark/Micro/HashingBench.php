@@ -10,11 +10,12 @@
  *
  */
 
-namespace PhpBench\Examples\Micro;
+namespace PhpBench\Examples\Benchmark\Micro;
 
 function hash_algos()
 {
     yield ['algo' => 'md5'];
+
     yield ['algo' => 'sha256'];
 }
 
@@ -25,7 +26,7 @@ function hash_algos()
 class HashingBench
 {
     /**
-     * @ParamProviders({"\PhpBench\Examples\Micro\hash_algos"})
+     * @ParamProviders({"\PhpBench\Examples\Benchmark\Micro\hash_algos"})
      */
     public function benchAlgos($params)
     {
