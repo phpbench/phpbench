@@ -9,7 +9,7 @@ Create a new `Symfony Command <command>`_ similar to the following:
 .. codeimport:: ../../examples/Extension/Command/CatsCommand.php
   :language: php
 
-Register it with the :doc:`DI extension <extensions>`:
+Register it with the :doc:`DI extension <extension>`:
 
 .. codeimport:: ../../examples/Extension/AcmeExtension.php
   :language: php
