@@ -1,8 +1,8 @@
 rules:
     american_english: ~
     avoid_repetetive_words: ~
-    blank_line_after_directive: ~
-    blank_line_before_directive: ~
+    # blank_line_after_directive: ~
+    # blank_line_before_directive: ~
     composer_dev_option_at_the_end: ~
     correct_code_block_directive_based_on_the_content: ~
     deprecated_directive_should_have_version: ~
@@ -24,7 +24,7 @@ rules:
     replacement: ~
     short_array_syntax: ~
     typo: ~
-    #unused_links: ~
+    # unused_links: ~
     use_deprecated_directive_instead_of_versionadded: ~
     valid_inline_highlighted_namespaces: ~
     valid_use_statements: ~
