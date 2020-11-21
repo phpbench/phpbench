@@ -1,29 +1,37 @@
-Welcome to PHPBench's documentation!
-====================================
+Introduction
+============
 
-PHPBench is a benchmarking framework for PHP. Find it on Github_.
+PHPBench is a benchmark runner for PHP analagous to `PHPUnit`_ but for
+performance rather than correctness.
 
-.. toctree::
-   :maxdepth: 2
+Performance can be monitored and measured in a number of ways: profiling (via.
+`Xdebug`_ or `Blackfire`_), manually instrumenting your code (e.g. `Symfony
+Stopwatch`_) or with APM tools such as `NewRelic`_ or `Tideways`_.
 
-   introduction
-   installing
-   quick-start
-   writing-benchmarks
-   benchmark-runner
-   regression-testing
-   reference
-   extensions
-   faq
-   development/custom
-   development
+PHPBench compliments these tools (and in some cases can integrate with them)
+allowing you to profile the `wall time_` and memory usage of specific
+scenarios and code units independently of the application context.
 
-Indices and tables
-==================
+Features include but are not limited to:
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+- :ref:`Revolutions <revolutions>`: Repeat your code many times to determine average execution
+  *time*.
+- :ref:`Iterations <iterations>`: Sample your revolutions many times and review aggregated
+  statistical data.
+- **Process Isolation**: Each iteration is executed in a separate process.
+- :doc:`Reporting <reports>`: Customizable reports and various output formats (e.g.
+  console, CSV, Markdown, HTML).
+- Report :doc:`storage` and :ref:`comparison <comparison>`: Store benchmarks locally to be used as a
+  :ref:`baseline <baseline>` reference, or to reference them later.
+- **Memory Usage**: Keep an eye on the amount of memory used by benchmarking
+  subjects.
+- :doc:`Assertions <assertions>`: Assert that code is performing within acceptable limits, or
+  that it has not regressed from a previously recorded :ref:`baseline <baseline>`.
 
-
-.. _Github: https://github.com/phpbench/phpbench
+.. _wall time: https://en.wikipedia.org/wiki/Elapsed_real_time
+.. _Symfony Stopwatch: http://symfony.com/doc/current/components/stopwatch.html
+.. _Xdebug: http://xdebug.org
+.. _Blackfire: https://blackfire.io/
+.. _NewRelic: http://newrelic.com
+.. _Tideways: https://tideways.com/
+.. _PHPUnit: http://phpunit.de
