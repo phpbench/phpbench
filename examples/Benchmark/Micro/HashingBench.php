@@ -10,7 +10,7 @@
  *
  */
 
-namespace PhpBench\Examples\Benchmark;
+namespace PhpBench\Examples\Benchmark\Micro;
 
 function hash_algos()
 {
@@ -26,7 +26,7 @@ function hash_algos()
 class HashingBench
 {
     /**
-     * @ParamProviders({"\PhpBench\Examples\Micro\hash_algos"})
+     * @ParamProviders({"\PhpBench\Examples\Benchmark\Micro\hash_algos"})
      */
     public function benchAlgos($params)
     {

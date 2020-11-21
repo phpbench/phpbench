@@ -1,8 +1,8 @@
 <?php
 
-namespace PhpBench\Examples;
+namespace PhpBench\Examples\Benchmark;
 
-class Benchmark
+class TestBench
 {
     /**
      * @Revs(10)

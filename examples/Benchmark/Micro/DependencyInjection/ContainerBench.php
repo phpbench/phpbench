@@ -10,7 +10,7 @@
  *
  */
 
-namespace PhpBench\Examples\Benchmark\DependencyInjection;
+namespace PhpBench\Examples\Benchmark\Micro\DependencyInjection;
 
 use PhpBench\DependencyInjection\Container;
 
