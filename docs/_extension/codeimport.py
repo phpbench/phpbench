@@ -19,7 +19,8 @@ class CodeImportDirective(SphinxDirective):
     option_spec = {
         'language': directives.unchanged_required,
         'sections': directives.unchanged_required,
-        'dedent': int
+        'dedent': int,
+        'php_opening_tag': False,
     }
 
     def run(self) -> List[Node]:
@@ -32,6 +33,9 @@ class CodeImportDirective(SphinxDirective):
             reader = LiteralIncludeReader(filename, self.options, self.config)
             text, lines = reader.read(location=location)
             lines = text.split("\n")
+
+            if not 'php_opening_tag' in self.options:
+                lines = self.removeOpeningTag(lines)
 
             if 'sections' in self.options:
                 lines = self.filter(lines, self.options['sections'].split(','))
@@ -90,6 +94,12 @@ class CodeImportDirective(SphinxDirective):
             sectionLines.append(line)
 
         return sectionLines;
+
+    def removeOpeningTag(self, lines: List[str]) -> List[str]:
+        if lines[0].startswith('<?php'):
+            return lines[1:]
+
+        return lines
 
 def setup(app):
     app.add_config_value('codeimport_include_codeimports', False, 'html')
