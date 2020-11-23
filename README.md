@@ -7,7 +7,7 @@
 [![Total Downloads](https://poser.pugx.org/phpbench/phpbench/downloads)](//packagist.org/packages/phpbench/phpbench) 
 [![License](https://poser.pugx.org/phpbench/phpbench/license)](//packagist.org/packages/phpbench/phpbench)
 
-PHPBench is a benchmark runner for PHP analagous to
+PHPBench is a benchmark runner for PHP analogous to
 [PHPUnit](https://github.com/phpunit/phpunit) but for performance rather than
 correctness.
 
