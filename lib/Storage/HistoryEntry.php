@@ -12,6 +12,9 @@
 
 namespace PhpBench\Storage;
 
+use PhpBench\Model\Tag;
+
+
 /**
  * Represents a summary of a run. Used when listing the history.
  */
@@ -70,9 +73,9 @@ class HistoryEntry
         return $this->date;
     }
 
-    public function getTag()
+    public function getTag(): ?Tag
     {
-        return $this->tag;
+        return $this->tag ? new Tag($this->tag) : null;
     }
 
     public function getNbSubjects()

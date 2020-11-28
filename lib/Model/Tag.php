@@ -31,7 +31,7 @@ final class Tag
                 $tag
             ));
         }
-        $this->tag = $tag;
+        $this->tag = strtolower($tag);
     }
 
     public function __toString(): string

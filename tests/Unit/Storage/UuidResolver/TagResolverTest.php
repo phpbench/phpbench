@@ -12,12 +12,11 @@
 
 namespace PhpBench\Tests\Unit\Storage\UuidResolver;
 
-use InvalidArgumentException;
-use PhpBench\Storage\DriverInterface;
+use PhpBench\Model\Tag;
 use PhpBench\Storage\Driver\Fake\FakeHistoryIterator;
+use PhpBench\Storage\DriverInterface;
 use PhpBench\Storage\Exception\TagNotFoundException;
 use PhpBench\Storage\HistoryEntry;
-use PhpBench\Storage\HistoryIteratorInterface;
 use PhpBench\Storage\StorageRegistry;
 use PhpBench\Storage\UuidResolver\TagResolver;
 use PhpBench\Tests\TestCase;
@@ -84,7 +83,7 @@ class TagResolverTest extends TestCase
      */
     public function testReturnsUuidForLatestTag(string $tag)
     {
-        $this->historyEntry->getTag()->willReturn($tag);
+        $this->historyEntry->getTag()->willReturn(new Tag($tag));
         $this->historyEntry->getRunId()->willReturn(1234);
 
         $uuid = $this->resolver->resolve('tag:' . $tag);
@@ -102,8 +101,8 @@ class TagResolverTest extends TestCase
 
     public function testReturnsUuidForTagWithMatchingTagAtOffset(): void
     {
-        $this->historyEntry->getTag()->willReturn('foobar');
-        $this->historyEntry1->getTag()->willReturn('foobar');
+        $this->historyEntry->getTag()->willReturn(new Tag('foobar'));
+        $this->historyEntry1->getTag()->willReturn(new Tag('foobar'));
         $this->historyEntry1->getRunId()->willReturn(1234);
 
         $uuid = $this->resolver->resolve('tag:foobar-1');
