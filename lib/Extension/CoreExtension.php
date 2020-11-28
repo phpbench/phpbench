@@ -505,10 +505,10 @@ class CoreExtension implements ExtensionInterface
             return new XsltRenderer($container->get(OutputInterface::class), $container->get(Formatter::class));
         }, [self::TAG_REPORT_RENDERER => ['name' => 'xslt']]);
         $container->register(DebugRenderer::class, function (Container $container) {
-            return new DebugRenderer($container->get(OutputInterface::class), );
+            return new DebugRenderer($container->get(OutputInterface::class));
         }, [self::TAG_REPORT_RENDERER => ['name' => 'debug']]);
         $container->register(DelimitedRenderer::class, function (Container $container) {
-            return new DelimitedRenderer($container->get(OutputInterface::class), );
+            return new DelimitedRenderer($container->get(OutputInterface::class));
         }, [self::TAG_REPORT_RENDERER => ['name' => 'delimited']]);
     }
 
