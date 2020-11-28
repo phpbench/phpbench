@@ -14,7 +14,6 @@ namespace PhpBench\Storage;
 
 use PhpBench\Model\Tag;
 
-
 /**
  * Represents a summary of a run. Used when listing the history.
  */

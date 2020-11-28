@@ -55,7 +55,7 @@ class TagResolverTest extends TestCase
         $this->historyEntry1 = $this->prophesize(HistoryEntry::class);
         $this->history = new FakeHistoryIterator(
             $this->historyEntry->reveal(),
-            $this->historyEntry1->reveal(),
+            $this->historyEntry1->reveal()
         );
         $registry = $this->prophesize(StorageRegistry::class);
         $registry->getService()->willReturn($this->storage->reveal());

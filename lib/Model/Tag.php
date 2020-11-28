@@ -12,7 +12,6 @@
 
 namespace PhpBench\Model;
 
-use InvalidArgumentException;
 use PhpBench\Storage\Exception\InvalidTagException;
 
 final class Tag

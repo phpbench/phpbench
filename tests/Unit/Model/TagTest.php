@@ -12,7 +12,6 @@
 
 namespace PhpBench\Tests\Unit\Model;
 
-use InvalidArgumentException;
 use PhpBench\Model\Tag;
 use PhpBench\Storage\Exception\InvalidTagException;
 use PhpBench\Tests\TestCase;
