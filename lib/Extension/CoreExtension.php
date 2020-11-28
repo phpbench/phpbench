@@ -42,6 +42,7 @@ use PhpBench\Executor\Benchmark\LocalExecutor;
 use PhpBench\Executor\Benchmark\MemoryCentricMicrotimeExecutor;
 use PhpBench\Executor\Benchmark\RemoteExecutor;
 use PhpBench\Executor\CompositeExecutor;
+use PhpBench\Executor\Method\ErrorHandlingExecutorDecorator;
 use PhpBench\Executor\Method\LocalMethodExecutor;
 use PhpBench\Executor\Method\RemoteMethodExecutor;
 use PhpBench\Formatter\Format\BalanceFormat;
@@ -215,14 +216,14 @@ class CoreExtension implements ExtensionInterface
         $container->register(RemoteExecutor::class . '.composite', function (Container $container) {
             return new CompositeExecutor(
                 $container->get(RemoteExecutor::class),
-                $container->get(RemoteMethodExecutor::class)
+                new ErrorHandlingExecutorDecorator($container->get(RemoteMethodExecutor::class))
             );
         }, [self::TAG_EXECUTOR => ['name' => 'remote']]);
 
         $container->register(LocalExecutor::class . '.composite', function (Container $container) {
             return new CompositeExecutor(
                 $container->get(LocalExecutor::class),
-                $container->get(LocalMethodExecutor::class)
+                new ErrorHandlingExecutorDecorator($container->get(LocalMethodExecutor::class))
             );
         }, [self::TAG_EXECUTOR => ['name' => 'local']]);
 
