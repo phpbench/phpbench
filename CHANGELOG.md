@@ -16,6 +16,8 @@ Backward compatiblity breaks:
 - Executors accept a single, immutable `ExecutionContext` instead of the
   mutable `SubjectMetadata` and `Iteration`
 - Renamed the `microtime` executor to `remote`.
+- `OutputInterface` is injected from the DI conatiner, `OutputAwareInterface`
+  has been removed.
 
 Features:
 
@@ -26,6 +28,7 @@ Features:
 
 Improvements:
 
+- Decorator added to improve error reporting for method executors.
 - Benchmarks executed as they are found (no eager metadata loading)
 - Allow direct reference to services (e.g. `--executor=debug` without need for
   a `debug` configuration).
