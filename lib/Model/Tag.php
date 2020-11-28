@@ -12,10 +12,12 @@
 
 namespace PhpBench\Model;
 
-use InvalidArgumentException;
+use PhpBench\Storage\Exception\InvalidTagException;
 
 final class Tag
 {
+    public const REGEX_PATTERN = '\\w+';
+
     /**
      * @var string
      */
@@ -23,13 +25,13 @@ final class Tag
 
     public function __construct(string $tag)
     {
-        if (!preg_match('/^[\w]+$/', $tag)) {
-            throw new InvalidArgumentException(sprintf(
+        if (!preg_match(sprintf('/^%s$/', self::REGEX_PATTERN), $tag)) {
+            throw new InvalidTagException(sprintf(
                 'Tag mast be non-empty string of alphanumeric characters and _, got "%s"',
                 $tag
             ));
         }
-        $this->tag = $tag;
+        $this->tag = strtolower($tag);
     }
 
     public function __toString(): string

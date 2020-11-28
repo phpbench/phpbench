@@ -23,8 +23,8 @@ class LogTest extends SystemTestCase
         $process = $this->phpbench(
             'log'
         );
-        $this->assertEquals(0, $process->getExitCode());
         $output = $process->getOutput();
+        $this->assertEquals(0, $process->getExitCode());
         $this->assertCount(9, explode("\n", $output));
     }
 }

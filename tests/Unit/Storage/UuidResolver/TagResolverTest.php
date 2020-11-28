@@ -12,10 +12,11 @@
 
 namespace PhpBench\Tests\Unit\Storage\UuidResolver;
 
-use InvalidArgumentException;
+use PhpBench\Model\Tag;
+use PhpBench\Storage\Driver\Fake\FakeHistoryIterator;
 use PhpBench\Storage\DriverInterface;
+use PhpBench\Storage\Exception\TagNotFoundException;
 use PhpBench\Storage\HistoryEntry;
-use PhpBench\Storage\HistoryIteratorInterface;
 use PhpBench\Storage\StorageRegistry;
 use PhpBench\Storage\UuidResolver\TagResolver;
 use PhpBench\Tests\TestCase;
@@ -50,12 +51,15 @@ class TagResolverTest extends TestCase
     protected function setUp(): void
     {
         $this->storage = $this->prophesize(DriverInterface::class);
-        $this->history = $this->prophesize(HistoryIteratorInterface::class);
         $this->historyEntry = $this->prophesize(HistoryEntry::class);
         $this->historyEntry1 = $this->prophesize(HistoryEntry::class);
+        $this->history = new FakeHistoryIterator(
+            $this->historyEntry->reveal(),
+            $this->historyEntry1->reveal()
+        );
         $registry = $this->prophesize(StorageRegistry::class);
         $registry->getService()->willReturn($this->storage->reveal());
-        $this->storage->history()->willReturn($this->history->reveal());
+        $this->storage->history()->willReturn($this->history);
 
         $this->resolver = new TagResolver($registry->reveal());
     }
@@ -69,51 +73,39 @@ class TagResolverTest extends TestCase
 
     public function testThrowsExceptionWhenNoTagFound()
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(TagNotFoundException::class);
 
-        $this->history->rewind()->shouldBeCalled();
-        $this->history->valid()->willReturn(false);
-        $this->resolver->resolve('tag:foobar');
+        $this->resolver->resolve('tag:1asd3foobar123');
     }
 
-    public function testReturnsUuidForLatestTag()
+    /**
+     * @dataProvider provideTags
+     */
+    public function testReturnsUuidForLatestTag(string $tag)
     {
-        $this->history->rewind()->shouldBeCalled();
-        $this->history->valid()->willReturn(true);
-        $this->history->current()->willReturn($this->historyEntry->reveal());
-
-        $this->historyEntry->getTag()->willReturn('foobar');
+        $this->historyEntry->getTag()->willReturn(new Tag($tag));
         $this->historyEntry->getRunId()->willReturn(1234);
 
-        $uuid = $this->resolver->resolve('tag:foobar');
+        $uuid = $this->resolver->resolve('tag:' . $tag);
         $this->assertEquals(1234, $uuid);
     }
 
-    public function testReturnsUuidForTagWithMatchingTagAtOffset()
+    public function provideTags(): array
     {
-        $this->history->rewind()->shouldBeCalled();
-        $this->history->valid()->willReturn(true, true, true, false);
-        $this->history->next()->shouldBeCalledTimes(2);
-        $this->history->current()->willReturn($this->historyEntry->reveal());
-
-        $this->historyEntry->getTag()->willReturn('foobar');
-        $this->historyEntry->getRunId()->willReturn(1234);
-
-        $uuid = $this->resolver->resolve('tag:foobar-2');
-        $this->assertEquals(1234, $uuid);
+        return [
+            [ 'foobar',],
+            [ '1234',],
+            [ 'php74',],
+        ];
     }
 
-    public function testReturnsUuidForFirstTagAtOffset()
+    public function testReturnsUuidForTagWithMatchingTagAtOffset(): void
     {
-        $this->history->rewind()->shouldBeCalled();
-        $this->history->valid()->willReturn(true, true, true, true, false);
-        $this->history->next()->shouldBeCalledTimes(3);
-        $this->history->current()->willReturn($this->historyEntry->reveal());
+        $this->historyEntry->getTag()->willReturn(new Tag('foobar'));
+        $this->historyEntry1->getTag()->willReturn(new Tag('foobar'));
+        $this->historyEntry1->getRunId()->willReturn(1234);
 
-        $this->historyEntry->getTag()->willReturn(null, 'foobar');
-        $this->historyEntry->getRunId()->willReturn(1234);
-
-        $uuid = $this->resolver->resolve('tag:foobar-2');
+        $uuid = $this->resolver->resolve('tag:foobar-1');
         $this->assertEquals(1234, $uuid);
     }
 }

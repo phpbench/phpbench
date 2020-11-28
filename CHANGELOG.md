@@ -80,6 +80,7 @@ Improvements
 Bugfixes:
 
  - Use `text` instead of `string` for envrionment key for DBAL storage - @flobee
+ - Numeric tags are not found.
 
 0.17.0
 ------
