@@ -12,7 +12,6 @@
 
 namespace PhpBench\Tests\Unit\Report;
 
-use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Dom\Document;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
@@ -42,8 +41,7 @@ class ReportManagerTest extends TestCase
 
         $this->generator = $this->prophesize(GeneratorInterface::class);
         $this->renderer = $this->prophesize(RendererInterface::class);
-        $this->outputRenderer = $this->prophesize(RendererInterface::class)
-            ->willImplement(OutputAwareInterface::class);
+        $this->outputRenderer = $this->prophesize(RendererInterface::class);
         $this->output = $this->prophesize(OutputInterface::class);
 
         $this->suiteCollection = new SuiteCollection();
@@ -111,8 +109,6 @@ class ReportManagerTest extends TestCase
             $this->outputRenderer->reveal()
         );
         $this->outputRenderer->render($this->reportsDocument, $outputConfig)->shouldBeCalled();
-        $this->outputRenderer->setOutput($this->output->reveal())
-            ->shouldBeCalled();
         $this->rendererRegistry->getConfig('console_output')->willReturn($outputConfig);
 
         $this->reportManager->renderReports(

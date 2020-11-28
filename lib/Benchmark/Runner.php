@@ -348,7 +348,9 @@ final class Runner
     {
         $this->logger->iterationStart($iteration);
 
-        foreach ($executor->execute(ExecutionContext::fromSubjectMetadataAndIteration($subjectMetadata, $iteration), $executorConfig) as $result) {
+        $results = $executor->execute(ExecutionContext::fromSubjectMetadataAndIteration($subjectMetadata, $iteration), $executorConfig);
+
+        foreach ($results as $result) {
             $iteration->setResult($result);
         }
 

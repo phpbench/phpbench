@@ -58,8 +58,7 @@ class BlinkenLoggerTest extends TestCase
         $this->output = new BufferedOutput();
         $this->timeUnit = new TimeUnit(TimeUnit::MICROSECONDS, TimeUnit::MILLISECONDS);
 
-        $this->logger = new BlinkenLogger($this->timeUnit);
-        $this->logger->setOutput($this->output);
+        $this->logger = new BlinkenLogger($this->output, $this->timeUnit);
         $this->benchmark = $this->prophesize(Benchmark::class);
         $this->subject = $this->prophesize(Subject::class);
         $this->variant = new Variant(

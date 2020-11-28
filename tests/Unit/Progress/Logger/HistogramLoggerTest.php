@@ -30,8 +30,7 @@ class HistogramLoggerTest extends TestCase
         $this->output = new BufferedOutput();
         $this->timeUnit = new TimeUnit(TimeUnit::MICROSECONDS, TimeUnit::MILLISECONDS);
 
-        $this->logger = new HistogramLogger($this->timeUnit);
-        $this->logger->setOutput($this->output);
+        $this->logger = new HistogramLogger($this->output, $this->timeUnit);
         $this->benchmark = $this->prophesize(Benchmark::class);
         $this->subject = $this->prophesize(Subject::class);
         $this->iteration = $this->prophesize(Iteration::class);

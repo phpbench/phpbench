@@ -115,7 +115,6 @@ class RunnerHandler
         $progressLoggerName = $input->getOption(self::OPT_PROGRESS) ?: $this->defaultProgress;
 
         $progressLogger = $this->loggerRegistry->getProgressLogger($progressLoggerName);
-        $progressLogger->setOutput($output);
         $this->runner->setProgressLogger($progressLogger);
 
         $path = $input->getArgument(self::ARG_PATH) ?: $this->benchPath;

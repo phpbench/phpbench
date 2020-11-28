@@ -27,6 +27,8 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class XmlDriver implements DriverInterface
 {
+    const UUID_LENGTH = 40;
+
     private $path;
     private $xmlEncoder;
     private $xmlDecoder;
@@ -84,7 +86,7 @@ class XmlDriver implements DriverInterface
     {
         $path = $this->getPath($runId);
 
-        if (false === $path) {
+        if (null === $path) {
             return false;
         }
 
@@ -99,12 +101,16 @@ class XmlDriver implements DriverInterface
         return new HistoryIterator($this->xmlDecoder, $this->path);
     }
 
-    private function getPath($uuid)
+    private function getPath(string $uuid): ?string
     {
+        if (strlen($uuid) !== self::UUID_LENGTH) {
+            return null;
+        }
+
         try {
             $date = new \DateTime((string) hexdec(substr($uuid, 0, 7)));
         } catch (\Exception $e) {
-            return false;
+            return null;
         }
 
         return sprintf(

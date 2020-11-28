@@ -12,7 +12,6 @@
 
 namespace PhpBench\Report\Renderer;
 
-use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Dom\Document;
 use PhpBench\Dom\Element;
 use PhpBench\Registry\Config;
@@ -24,17 +23,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Renders the report as a delimited list.
  */
-class DelimitedRenderer implements RendererInterface, OutputAwareInterface
+class DelimitedRenderer implements RendererInterface
 {
     /**
      * @var OutputInterface
      */
     private $output;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setOutput(OutputInterface $output): void
+    public function __construct(OutputInterface $output)
     {
         $this->output = $output;
     }

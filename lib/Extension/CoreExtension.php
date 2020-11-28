@@ -42,6 +42,7 @@ use PhpBench\Executor\Benchmark\LocalExecutor;
 use PhpBench\Executor\Benchmark\MemoryCentricMicrotimeExecutor;
 use PhpBench\Executor\Benchmark\RemoteExecutor;
 use PhpBench\Executor\CompositeExecutor;
+use PhpBench\Executor\Method\ErrorHandlingExecutorDecorator;
 use PhpBench\Executor\Method\LocalMethodExecutor;
 use PhpBench\Executor\Method\RemoteMethodExecutor;
 use PhpBench\Formatter\Format\BalanceFormat;
@@ -81,6 +82,11 @@ use PhpBench\Storage\UuidResolver\LatestResolver;
 use PhpBench\Storage\UuidResolver\TagResolver;
 use PhpBench\Storage\UuidResolverInterface;
 use PhpBench\Util\TimeUnit;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\ExecutableFinder;
@@ -109,6 +115,7 @@ class CoreExtension implements ExtensionInterface
     public const PARAM_XML_STORAGE_PATH = 'xml_storage_path';
     public const PARAM_REMOTE_SCRIPT_PATH = 'remote_script_path';
     public const PARAM_REMOTE_SCRIPT_REMOVE = 'remote_script_remove';
+    public const PARAM_DISABLE_OUTPUT = 'console.disable_output';
 
     public const TAG_EXECUTOR = 'benchmark_executor';
     public const TAG_CONSOLE_COMMAND = 'console.command';
@@ -150,12 +157,25 @@ class CoreExtension implements ExtensionInterface
             self::PARAM_ANNOTATION_IMPORT_USE => false,
             self::PARAM_REMOTE_SCRIPT_PATH => null,
             self::PARAM_REMOTE_SCRIPT_REMOVE => true,
+            self::PARAM_DISABLE_OUTPUT => false,
         ]);
     }
 
     public function load(Container $container): void
     {
         $this->relativizeConfigPath($container);
+
+        $container->register(OutputInterface::class, function (Container $container) {
+            if ($container->getParameter(self::PARAM_DISABLE_OUTPUT)) {
+                return new NullOutput();
+            }
+
+            return new ConsoleOutput();
+        });
+        
+        $container->register(InputInterface::class, function (Container $container) {
+            return new ArgvInput();
+        });
 
         $container->register(Application::class, function (Container $container) {
             $application = new Application();
@@ -203,14 +223,14 @@ class CoreExtension implements ExtensionInterface
         $container->register(RemoteExecutor::class . '.composite', function (Container $container) {
             return new CompositeExecutor(
                 $container->get(RemoteExecutor::class),
-                $container->get(RemoteMethodExecutor::class)
+                new ErrorHandlingExecutorDecorator($container->get(RemoteMethodExecutor::class))
             );
         }, [self::TAG_EXECUTOR => ['name' => 'remote']]);
 
         $container->register(LocalExecutor::class . '.composite', function (Container $container) {
             return new CompositeExecutor(
                 $container->get(LocalExecutor::class),
-                $container->get(LocalMethodExecutor::class)
+                new ErrorHandlingExecutorDecorator($container->get(LocalMethodExecutor::class))
             );
         }, [self::TAG_EXECUTOR => ['name' => 'local']]);
 
@@ -431,19 +451,19 @@ class CoreExtension implements ExtensionInterface
         });
 
         $container->register(DotsLogger::class, function (Container $container) {
-            return new DotsLogger($container->get(TimeUnit::class));
+            return new DotsLogger($container->get(OutputInterface::class), $container->get(TimeUnit::class));
         }, [self::TAG_PROGRESS_LOGGER => ['name' => 'dots']]);
 
         $container->register(DotsLogger::class .'.show', function (Container $container) {
-            return new DotsLogger($container->get(TimeUnit::class), true);
+            return new DotsLogger($container->get(OutputInterface::class), $container->get(TimeUnit::class), true);
         }, [self::TAG_PROGRESS_LOGGER => ['name' => 'classdots']]);
 
         $container->register(VerboseLogger::class, function (Container $container) {
-            return new VerboseLogger($container->get(TimeUnit::class));
+            return new VerboseLogger($container->get(OutputInterface::class), $container->get(TimeUnit::class));
         }, [self::TAG_PROGRESS_LOGGER => ['name' => 'verbose']]);
 
         $container->register(TravisLogger::class, function (Container $container) {
-            return new TravisLogger($container->get(TimeUnit::class));
+            return new TravisLogger($container->get(OutputInterface::class), $container->get(TimeUnit::class));
         }, [self::TAG_PROGRESS_LOGGER => ['name' => 'travis']]);
 
         $container->register(NullLogger::class, function (Container $container) {
@@ -451,11 +471,11 @@ class CoreExtension implements ExtensionInterface
         }, [self::TAG_PROGRESS_LOGGER => ['name' => 'none']]);
 
         $container->register(BlinkenLogger::class, function (Container $container) {
-            return new BlinkenLogger($container->get(TimeUnit::class));
+            return new BlinkenLogger($container->get(OutputInterface::class), $container->get(TimeUnit::class));
         }, [self::TAG_PROGRESS_LOGGER => ['name' => 'blinken']]);
 
         $container->register(HistogramLogger::class, function (Container $container) {
-            return new HistogramLogger($container->get(TimeUnit::class));
+            return new HistogramLogger($container->get(OutputInterface::class), $container->get(TimeUnit::class));
         }, [self::TAG_PROGRESS_LOGGER => ['name' => 'histogram']]);
     }
 
@@ -479,16 +499,16 @@ class CoreExtension implements ExtensionInterface
     private function registerReportRenderers(Container $container): void
     {
         $container->register(ConsoleRenderer::class, function (Container $container) {
-            return new ConsoleRenderer($container->get(Formatter::class));
+            return new ConsoleRenderer($container->get(OutputInterface::class), $container->get(Formatter::class));
         }, [self::TAG_REPORT_RENDERER => ['name' => 'console']]);
         $container->register(XsltRenderer::class, function (Container $container) {
-            return new XsltRenderer($container->get(Formatter::class));
+            return new XsltRenderer($container->get(OutputInterface::class), $container->get(Formatter::class));
         }, [self::TAG_REPORT_RENDERER => ['name' => 'xslt']]);
         $container->register(DebugRenderer::class, function (Container $container) {
-            return new DebugRenderer();
+            return new DebugRenderer($container->get(OutputInterface::class));
         }, [self::TAG_REPORT_RENDERER => ['name' => 'debug']]);
         $container->register(DelimitedRenderer::class, function (Container $container) {
-            return new DelimitedRenderer();
+            return new DelimitedRenderer($container->get(OutputInterface::class));
         }, [self::TAG_REPORT_RENDERER => ['name' => 'delimited']]);
     }
 

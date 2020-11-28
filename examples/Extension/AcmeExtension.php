@@ -9,6 +9,7 @@ use PhpBench\Examples\Extension\Executor\AcmeExecutor;
 use PhpBench\Examples\Extension\ProgressLogger\CatLogger;
 use PhpBench\Examples\Extension\Report\AcmeGenerator;
 use PhpBench\Extension\CoreExtension;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 // section: all
@@ -46,7 +47,7 @@ class AcmeExtension implements ExtensionInterface
         
         // section: progress_logger_di
         $container->register(CatLogger::class, function (Container $container) {
-            return new CatLogger();
+            return new CatLogger($container->get(OutputInterface::class));
         }, [
             CoreExtension::TAG_PROGRESS_LOGGER => [
                 'name' => 'cats',

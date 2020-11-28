@@ -12,7 +12,6 @@
 
 namespace PhpBench\Report\Renderer;
 
-use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Dom\Document;
 use PhpBench\Dom\Element;
 use PhpBench\Formatter\Formatter;
@@ -25,30 +24,22 @@ use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ConsoleRenderer implements RendererInterface, OutputAwareInterface
+class ConsoleRenderer implements RendererInterface
 {
-    /**
-     * @var OutputInterface
-     */
-    private $output;
-
     /**
      * @var Formatter
      */
     private $formatter;
 
-    public function __construct(Formatter $formatter)
+    /**
+     * @var OutputInterface
+     */
+    private $output;
+
+    public function __construct(OutputInterface $output, Formatter $formatter)
     {
         $this->formatter = $formatter;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setOutput(OutputInterface $output): void
-    {
         $this->output = $output;
-        $this->configureFormatters($output->getFormatter());
     }
 
     /**

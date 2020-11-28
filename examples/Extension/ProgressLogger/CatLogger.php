@@ -13,24 +13,44 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CatLogger implements LoggerInterface
 {
     /**
-     * @var OutputInterface|null
+     * @var OutputInterface
      */
     private $output;
 
-    public function setOutput(OutputInterface $output)
+    public function __construct(OutputInterface $output)
     {
         $this->output = $output;
-    }
-
-    public function variantStart(Variant $variant)
-    {
     }
 
     public function startSuite(Suite $suite)
     {
     }
 
-    public function retryStart(int $rejectionCount)
+    public function endSuite(Suite $suite)
+    {
+    }
+
+    public function benchmarkStart(Benchmark $benchmark)
+    {
+    }
+
+    public function benchmarkEnd(Benchmark $benchmark)
+    {
+    }
+
+    public function subjectStart(Subject $subject)
+    {
+    }
+
+    public function subjectEnd(Subject $subject)
+    {
+    }
+
+    public function variantStart(Variant $variant)
+    {
+    }
+
+    public function variantEnd(Variant $variant)
     {
     }
 
@@ -43,28 +63,7 @@ class CatLogger implements LoggerInterface
     {
     }
 
-    public function subjectStart(Subject $subject)
-    {
-    }
-
-    public function variantEnd(Variant $variant)
-    {
-    }
-
-
-    public function subjectEnd(Subject $subject)
-    {
-    }
-
-    public function benchmarkStart(Benchmark $benchmark)
-    {
-    }
-
-    public function benchmarkEnd(Benchmark $benchmark)
-    {
-    }
-
-    public function endSuite(Suite $suite)
+    public function retryStart(int $rejectionCount)
     {
     }
 }

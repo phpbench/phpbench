@@ -17,6 +17,7 @@ use PhpBench\Model\Iteration;
 use PhpBench\Model\Suite;
 use PhpBench\Model\Variant;
 use PhpBench\Util\TimeUnit;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class DotsLogger extends PhpBenchLogger
 {
@@ -25,9 +26,9 @@ class DotsLogger extends PhpBenchLogger
     private $isCi = false;
     private $firstTime = true;
 
-    public function __construct(TimeUnit $timeUnit, $showBench = false)
+    public function __construct(OutputInterface $output, TimeUnit $timeUnit, $showBench = false)
     {
-        parent::__construct($timeUnit);
+        parent::__construct($output, $timeUnit);
         $this->showBench = $showBench;
 
         // if we are in travis, don't do any fancy stuff.
