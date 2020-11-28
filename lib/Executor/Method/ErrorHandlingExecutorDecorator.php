@@ -2,14 +2,9 @@
 
 namespace PhpBench\Executor\Method;
 
-use PhpBench\Executor\BenchmarkExecutorInterface;
 use PhpBench\Executor\Exception\ExecutionError;
-use PhpBench\Executor\ExecutionContext;
-use PhpBench\Executor\ExecutionResults;
 use PhpBench\Executor\MethodExecutorContext;
 use PhpBench\Executor\MethodExecutorInterface;
-use PhpBench\Registry\Config;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Throwable;
 
 class ErrorHandlingExecutorDecorator implements MethodExecutorInterface

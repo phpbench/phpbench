@@ -75,7 +75,7 @@ class BaseBenchCase
     protected function getContainer()
     {
         $container = new Container($this->extensions, array_merge([
-            'console.disable_output' => true,
+            CoreExtension::PARAM_DISABLE_OUTPUT => true,
         ], $this->config));
         $container->init();
 
