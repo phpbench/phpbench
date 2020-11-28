@@ -123,10 +123,6 @@ class RunnerConfig
 
     /**
      * Return the name to assign to this suite.
-     *
-     * NOTE: Do not confuse this with
-     *       this context class. It is simply an arbitrary identifier to identify the
-     *       suite when doing a comparison.
      */
     public function getTag(): ?string
     {
