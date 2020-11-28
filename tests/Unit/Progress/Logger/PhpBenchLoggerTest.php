@@ -14,7 +14,6 @@ namespace PhpBench\Tests\Unit\Progress\Logger;
 
 use PhpBench\Assertion\AssertionResult;
 use PhpBench\Assertion\VariantAssertionResults;
-use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Math\Distribution;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Error;
@@ -51,10 +50,6 @@ abstract class PhpBenchLoggerTest extends TestCase
         $this->stats = $this->prophesize(Distribution::class);
 
         $this->logger = $this->getLogger();
-
-        if ($this->logger instanceof OutputAwareInterface) {
-            $this->logger->setOutput($this->output->reveal());
-        }
 
         $this->suite->getSummary()->willReturn($this->summary->reveal());
 

@@ -18,7 +18,6 @@ use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
 use PhpBench\Model\Variant;
 use PhpBench\Progress\LoggerInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class NullLogger implements LoggerInterface
 {

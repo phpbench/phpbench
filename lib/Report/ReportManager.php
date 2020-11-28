@@ -12,7 +12,6 @@
 
 namespace PhpBench\Report;
 
-use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\ConfigurableRegistry;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -82,11 +81,6 @@ class ReportManager
             $outputConfig = $this->rendererRegistry->getConfig($outputName);
             $renderer = $this->rendererRegistry->getService($outputConfig['renderer']);
             assert($renderer instanceof RendererInterface);
-
-            // set the output instance if the renderer requires it.
-            if ($renderer instanceof OutputAwareInterface) {
-                $renderer->setOutput($output);
-            }
 
             foreach ($reportDoms as $reportDom) {
                 $renderer->render($reportDom->duplicate(), $outputConfig);

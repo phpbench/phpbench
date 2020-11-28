@@ -12,12 +12,10 @@
 
 namespace PhpBench\Report\Generator;
 
-use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Dom\Document;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Report\GeneratorInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -26,18 +24,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * NOTE: The Table report generator could probably be improved to be able to incorporate
  *       this report somehow.
  */
-class EnvGenerator implements GeneratorInterface, OutputAwareInterface
+class EnvGenerator implements GeneratorInterface
 {
-    private $output;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setOutput(OutputInterface $output): void
-    {
-        $this->output = $output;
-    }
-
     /**
      * {@inheritdoc}
      */

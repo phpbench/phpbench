@@ -12,7 +12,6 @@
 
 namespace PhpBench\Progress\Logger;
 
-use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Suite;
@@ -36,11 +35,6 @@ abstract class PhpBenchLogger extends NullLogger
     public function __construct(OutputInterface $output, TimeUnit $timeUnit = null)
     {
         $this->timeUnit = $timeUnit;
-        $this->output = $output;
-    }
-
-    public function setOutput(OutputInterface $output): void
-    {
         $this->output = $output;
     }
 

@@ -58,8 +58,7 @@ class XsltRendererTest extends AbstractRendererCase
 
     protected function getRenderer()
     {
-        $renderer = new XsltRenderer($this->formatter->reveal());
-        $renderer->setOutput($this->output);
+        $renderer = new XsltRenderer($this->output, $this->formatter->reveal());
 
         return $renderer;
     }

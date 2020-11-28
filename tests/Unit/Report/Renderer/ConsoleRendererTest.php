@@ -30,8 +30,7 @@ class ConsoleRendererTest extends AbstractRendererCase
 
     protected function getRenderer()
     {
-        $renderer = new ConsoleRenderer($this->formatter->reveal());
-        $renderer->setOutput($this->output);
+        $renderer = new ConsoleRenderer($this->output, $this->formatter->reveal());
 
         return $renderer;
     }

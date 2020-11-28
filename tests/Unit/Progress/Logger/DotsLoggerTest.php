@@ -141,8 +141,7 @@ class DotsLoggerTest extends TestCase
     private function createLogger($ci = false)
     {
         putenv('CONTINUOUS_INTEGRATION' . ($ci ? '=1' : '=0'));
-        $logger = new DotsLogger($this->timeUnit);
-        $logger->setOutput($this->output->reveal());
+        $logger = new DotsLogger($this->output->reveal(), $this->timeUnit);
 
         return $logger;
     }

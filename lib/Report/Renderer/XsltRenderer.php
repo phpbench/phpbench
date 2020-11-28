@@ -12,7 +12,6 @@
 
 namespace PhpBench\Report\Renderer;
 
-use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Dom\Document;
 use PhpBench\Formatter\Formatter;
 use PhpBench\PhpBench;
@@ -22,21 +21,21 @@ use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class XsltRenderer implements RendererInterface, OutputAwareInterface
+class XsltRenderer implements RendererInterface
 {
     const DEFAULT_FILENAME = 'report.html';
-
-    /**
-     * @var OutputInterface
-     */
-    private $output;
 
     /**
      * @var Formatter
      */
     private $formatter;
 
-    public function __construct(Formatter $formatter)
+    /**
+     * @var OutputInterface
+     */
+    private $output;
+
+    public function __construct(OutputInterface $output, Formatter $formatter)
     {
         if (!extension_loaded($ext = 'xsl')) {
             throw new \RuntimeException(sprintf(
@@ -46,13 +45,6 @@ class XsltRenderer implements RendererInterface, OutputAwareInterface
         }
 
         $this->formatter = $formatter;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setOutput(OutputInterface $output): void
-    {
         $this->output = $output;
     }
 

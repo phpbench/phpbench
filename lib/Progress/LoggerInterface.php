@@ -12,7 +12,6 @@
 
 namespace PhpBench\Progress;
 
-use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\Subject;

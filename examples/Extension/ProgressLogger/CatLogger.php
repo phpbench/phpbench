@@ -12,16 +12,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CatLogger implements LoggerInterface
 {
-    /**
-     * @var OutputInterface|null
-     */
-    private $output;
-
-    public function setOutput(OutputInterface $output)
-    {
-        $this->output = $output;
-    }
-
     public function variantStart(Variant $variant)
     {
     }

@@ -12,19 +12,17 @@
 
 namespace PhpBench\Report\Generator;
 
-use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Dom\Document;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Report\GeneratorInterface;
 use PhpBench\Report\ReportManager;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Report generator which is a composite of other named reports.
  */
-class CompositeGenerator implements GeneratorInterface, OutputAwareInterface
+class CompositeGenerator implements GeneratorInterface
 {
     /**
      * @var ReportManager
@@ -32,23 +30,10 @@ class CompositeGenerator implements GeneratorInterface, OutputAwareInterface
     private $reportManager;
 
     /**
-     * @var OutputInterface
-     */
-    private $output;
-
-    /**
      */
     public function __construct(ReportManager $reportManager)
     {
         $this->reportManager = $reportManager;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setOutput(OutputInterface $output): void
-    {
-        $this->output = $output;
     }
 
     /**

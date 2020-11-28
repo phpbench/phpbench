@@ -24,7 +24,7 @@ class VerboseLoggerTest extends PhpBenchLoggerTest
     {
         $timeUnit = new TimeUnit(TimeUnit::MICROSECONDS, TimeUnit::MILLISECONDS);
 
-        return new VerboseLogger($timeUnit);
+        return new VerboseLogger($this->output->reveal(), $timeUnit);
     }
 
     /**

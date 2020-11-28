@@ -12,24 +12,20 @@
 
 namespace PhpBench\Report\Renderer;
 
-use PhpBench\Console\OutputAwareInterface;
 use PhpBench\Dom\Document;
 use PhpBench\Registry\Config;
 use PhpBench\Report\RendererInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class DebugRenderer implements RendererInterface, OutputAwareInterface
+class DebugRenderer implements RendererInterface
 {
     /**
      * @var OutputInterface
      */
     private $output;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setOutput(OutputInterface $output): void
+    public function __construct(OutputInterface $output)
     {
         $this->output = $output;
     }

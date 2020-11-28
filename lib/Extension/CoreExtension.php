@@ -491,16 +491,16 @@ class CoreExtension implements ExtensionInterface
     private function registerReportRenderers(Container $container): void
     {
         $container->register(ConsoleRenderer::class, function (Container $container) {
-            return new ConsoleRenderer($container->get(Formatter::class));
+            return new ConsoleRenderer($container->get(OutputInterface::class), $container->get(Formatter::class));
         }, [self::TAG_REPORT_RENDERER => ['name' => 'console']]);
         $container->register(XsltRenderer::class, function (Container $container) {
-            return new XsltRenderer($container->get(Formatter::class));
+            return new XsltRenderer($container->get(OutputInterface::class), $container->get(Formatter::class));
         }, [self::TAG_REPORT_RENDERER => ['name' => 'xslt']]);
         $container->register(DebugRenderer::class, function (Container $container) {
-            return new DebugRenderer();
+            return new DebugRenderer($container->get(OutputInterface::class), );
         }, [self::TAG_REPORT_RENDERER => ['name' => 'debug']]);
         $container->register(DelimitedRenderer::class, function (Container $container) {
-            return new DelimitedRenderer();
+            return new DelimitedRenderer($container->get(OutputInterface::class), );
         }, [self::TAG_REPORT_RENDERER => ['name' => 'delimited']]);
     }
 
