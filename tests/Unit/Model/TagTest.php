@@ -14,6 +14,7 @@ namespace PhpBench\Tests\Unit\Model;
 
 use InvalidArgumentException;
 use PhpBench\Model\Tag;
+use PhpBench\Storage\Exception\InvalidTagException;
 use PhpBench\Tests\TestCase;
 
 class TagTest extends TestCase
@@ -45,7 +46,7 @@ class TagTest extends TestCase
      */
     public function testInvalidTag(string $tag)
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(InvalidTagException::class);
 
         new Tag($tag);
     }

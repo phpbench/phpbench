@@ -13,6 +13,7 @@
 namespace PhpBench\Model;
 
 use InvalidArgumentException;
+use PhpBench\Storage\Exception\InvalidTagException;
 
 final class Tag
 {
@@ -26,7 +27,7 @@ final class Tag
     public function __construct(string $tag)
     {
         if (!preg_match(sprintf('/^%s$/', self::REGEX_PATTERN), $tag)) {
-            throw new InvalidArgumentException(sprintf(
+            throw new InvalidTagException(sprintf(
                 'Tag mast be non-empty string of alphanumeric characters and _, got "%s"',
                 $tag
             ));
