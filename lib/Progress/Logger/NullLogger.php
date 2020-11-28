@@ -25,13 +25,6 @@ class NullLogger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function setOutput(OutputInterface $output): void
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function benchmarkStart(Benchmark $benchmark): void
     {
     }

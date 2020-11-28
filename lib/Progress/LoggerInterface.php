@@ -19,7 +19,7 @@ use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
 use PhpBench\Model\Variant;
 
-interface LoggerInterface extends OutputAwareInterface
+interface LoggerInterface
 {
     /**
      * Log the end of a benchmark.

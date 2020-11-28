@@ -81,6 +81,10 @@ use PhpBench\Storage\UuidResolver\LatestResolver;
 use PhpBench\Storage\UuidResolver\TagResolver;
 use PhpBench\Storage\UuidResolverInterface;
 use PhpBench\Util\TimeUnit;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\ExecutableFinder;
@@ -156,6 +160,14 @@ class CoreExtension implements ExtensionInterface
     public function load(Container $container): void
     {
         $this->relativizeConfigPath($container);
+
+        $container->register(OutputInterface::class, function (Container $container) {
+            return new ConsoleOutput();
+        });
+        
+        $container->register(InputInterface::class, function (Container $container) {
+            return new ArgvInput();
+        });
 
         $container->register(Application::class, function (Container $container) {
             $application = new Application();
@@ -431,19 +443,19 @@ class CoreExtension implements ExtensionInterface
         });
 
         $container->register(DotsLogger::class, function (Container $container) {
-            return new DotsLogger($container->get(TimeUnit::class));
+            return new DotsLogger($container->get(OutputInterface::class), $container->get(TimeUnit::class));
         }, [self::TAG_PROGRESS_LOGGER => ['name' => 'dots']]);
 
         $container->register(DotsLogger::class .'.show', function (Container $container) {
-            return new DotsLogger($container->get(TimeUnit::class), true);
+            return new DotsLogger($container->get(OutputInterface::class), $container->get(TimeUnit::class), true);
         }, [self::TAG_PROGRESS_LOGGER => ['name' => 'classdots']]);
 
         $container->register(VerboseLogger::class, function (Container $container) {
-            return new VerboseLogger($container->get(TimeUnit::class));
+            return new VerboseLogger($container->get(OutputInterface::class), $container->get(TimeUnit::class));
         }, [self::TAG_PROGRESS_LOGGER => ['name' => 'verbose']]);
 
         $container->register(TravisLogger::class, function (Container $container) {
-            return new TravisLogger($container->get(TimeUnit::class));
+            return new TravisLogger($container->get(OutputInterface::class), $container->get(TimeUnit::class));
         }, [self::TAG_PROGRESS_LOGGER => ['name' => 'travis']]);
 
         $container->register(NullLogger::class, function (Container $container) {
@@ -451,11 +463,11 @@ class CoreExtension implements ExtensionInterface
         }, [self::TAG_PROGRESS_LOGGER => ['name' => 'none']]);
 
         $container->register(BlinkenLogger::class, function (Container $container) {
-            return new BlinkenLogger($container->get(TimeUnit::class));
+            return new BlinkenLogger($container->get(OutputInterface::class), $container->get(TimeUnit::class));
         }, [self::TAG_PROGRESS_LOGGER => ['name' => 'blinken']]);
 
         $container->register(HistogramLogger::class, function (Container $container) {
-            return new HistogramLogger($container->get(TimeUnit::class));
+            return new HistogramLogger($container->get(OutputInterface::class), $container->get(TimeUnit::class));
         }, [self::TAG_PROGRESS_LOGGER => ['name' => 'histogram']]);
     }
 
