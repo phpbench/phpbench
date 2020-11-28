@@ -85,6 +85,7 @@ use PhpBench\Util\TimeUnit;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -114,6 +115,7 @@ class CoreExtension implements ExtensionInterface
     public const PARAM_XML_STORAGE_PATH = 'xml_storage_path';
     public const PARAM_REMOTE_SCRIPT_PATH = 'remote_script_path';
     public const PARAM_REMOTE_SCRIPT_REMOVE = 'remote_script_remove';
+    public const PARAM_DISABLE_OUTPUT = 'console.disable_output';
 
     public const TAG_EXECUTOR = 'benchmark_executor';
     public const TAG_CONSOLE_COMMAND = 'console.command';
@@ -155,6 +157,7 @@ class CoreExtension implements ExtensionInterface
             self::PARAM_ANNOTATION_IMPORT_USE => false,
             self::PARAM_REMOTE_SCRIPT_PATH => null,
             self::PARAM_REMOTE_SCRIPT_REMOVE => true,
+            self::PARAM_DISABLE_OUTPUT => false,
         ]);
     }
 
@@ -163,6 +166,10 @@ class CoreExtension implements ExtensionInterface
         $this->relativizeConfigPath($container);
 
         $container->register(OutputInterface::class, function (Container $container) {
+            if ($container->getParameter(self::PARAM_DISABLE_OUTPUT)) {
+                return new NullOutput();
+            }
+
             return new ConsoleOutput();
         });
         

@@ -74,7 +74,9 @@ class BaseBenchCase
 
     protected function getContainer()
     {
-        $container = new Container($this->extensions, $this->config);
+        $container = new Container($this->extensions, array_merge([
+            'console.disable_output' => true,
+        ], $this->config));
         $container->init();
 
         return $container;
