@@ -16,7 +16,7 @@ jobs:
       - name: Compile phpbench.phar
         run: |
           composer install
-          vendor/bin/box compile
+          vendor/bin/box compile -c box.json.gh-release
       - name: Check existence of compiled .phar
         run: test -e phpbench.phar && exit 0 || exit 10
 
