@@ -31,27 +31,3 @@ jobs:
           secure: "cVKcMHHv6MV1HiP78hYPyBx6VIy+DzIv6HS0QM/g3gHnE7EWopu9mQjku2DQtQWAjqVrIPL3ClvZxJH5MjDd4/kB6kWQDGX5O2+CaqzhaJgSpT0htFLbiClqK1uvl2QnHoqwfnhIux230AWDtQfod1g1p60nryo65pLG0HGHqXU="
         on:
           branch: master
-
-    - stage: Deploy to GH Releases
-
-      php: 7.2
-
-      before_install:
-        - source .travis/xdebug.sh
-        - xdebug-disable
-
-      script: skip
-
-      before_deploy:
-        - ./.travis/before-deploy-gh-release.sh
-
-      deploy:
-        provider: releases
-        skip_cleanup: true
-        api_key:
-          secure: "eH6r1KiCUb5z2vOke9BcAl7BSN7GtU3TVCe4eDRHv9xO4Kg2hHD16i2jaL7POq18JjwwojqkQuOivpbkyDQeAmkZhaO5NLrdxzgwuYjkfEgbrjWhbK0AEW7W4dKTLBGn0/tiK5hPXfdkwIuzmUjQE5vU37so1NDTiKBjLJ9k44M="
-        file: 
-          - phpbench.phar
-        on:
-          repo: phpbench/phpbench
-          tags: true
