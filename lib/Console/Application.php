@@ -14,10 +14,7 @@ namespace PhpBench\Console;
 
 use PhpBench\PhpBench;
 use Symfony\Component\Console\Application as BaseApplication;
-use Symfony\Component\Console\Formatter\OutputFormatterStyle;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * PhpBench application.
@@ -47,15 +44,5 @@ class Application extends BaseApplication
         ]);
 
         return $default;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function configureIO(InputInterface $input, OutputInterface $output): void
-    {
-        parent::configureIO($input, $output);
-        $output->getFormatter()->setStyle('greenbg', new OutputFormatterStyle('black', 'green', []));
-        $output->getFormatter()->setStyle('warning', new OutputFormatterStyle('black', 'yellow', []));
     }
 }

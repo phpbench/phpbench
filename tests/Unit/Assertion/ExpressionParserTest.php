@@ -111,6 +111,16 @@ class ExpressionParserTest extends ExpressionParserTestCase
                 new PercentageValue(10)
             )
         ];
+
+        yield 'with no tolerance unit' => [
+            'this.mode < 1 microsecond +/- 1000',
+            new Comparison(
+                new PropertyAccess(['this', 'mode']),
+                '<',
+                new TimeValue(1, 'microsecond'),
+                new TimeValue(1000, 'microseconds')
+            )
+        ];
     }
 
     /**
