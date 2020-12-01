@@ -82,6 +82,7 @@ use PhpBench\Storage\UuidResolver\LatestResolver;
 use PhpBench\Storage\UuidResolver\TagResolver;
 use PhpBench\Storage\UuidResolverInterface;
 use PhpBench\Util\TimeUnit;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -170,9 +171,13 @@ class CoreExtension implements ExtensionInterface
                 return new NullOutput();
             }
 
-            return new ConsoleOutput();
+            $output =  new ConsoleOutput();
+            $output->getFormatter()->setStyle('greenbg', new OutputFormatterStyle('black', 'green', []));
+            $output->getFormatter()->setStyle('warning', new OutputFormatterStyle('black', 'yellow', []));
+
+            return $output;
         });
-        
+
         $container->register(InputInterface::class, function (Container $container) {
             return new ArgvInput();
         });

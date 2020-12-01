@@ -48,14 +48,4 @@ class Application extends BaseApplication
 
         return $default;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function configureIO(InputInterface $input, OutputInterface $output): void
-    {
-        parent::configureIO($input, $output);
-        $output->getFormatter()->setStyle('greenbg', new OutputFormatterStyle('black', 'green', []));
-        $output->getFormatter()->setStyle('warning', new OutputFormatterStyle('black', 'yellow', []));
-    }
 }
