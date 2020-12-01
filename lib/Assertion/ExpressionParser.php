@@ -64,6 +64,7 @@ class ExpressionParser
             case ExpressionLexer::T_INTEGER:
             case ExpressionLexer::T_FLOAT:
                 $glimpsed = $this->lexer->glimpse();
+
                 if ($glimpsed && $glimpsed['value'] === '%') {
                     return $this->parsePercentageValue();
                 }

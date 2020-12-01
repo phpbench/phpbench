@@ -171,7 +171,7 @@ class CoreExtension implements ExtensionInterface
                 return new NullOutput();
             }
 
-            $output =  new ConsoleOutput();
+            $output = new ConsoleOutput();
             $output->getFormatter()->setStyle('greenbg', new OutputFormatterStyle('black', 'green', []));
             $output->getFormatter()->setStyle('warning', new OutputFormatterStyle('black', 'yellow', []));
 
