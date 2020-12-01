@@ -110,6 +110,7 @@ class SuiteTest extends TestCase
         $this->variant1->getRejectCount()->willReturn(0);
         $this->variant1->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant1->reveal(), []));
         $this->variant1->getErrorStack()->willReturn($errorStack->reveal());
+        $errorStack->count()->willReturn(0);
 
         $suite = $this->createSuite([
             $this->bench1->reveal(),

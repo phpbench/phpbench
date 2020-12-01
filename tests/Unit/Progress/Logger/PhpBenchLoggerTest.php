@@ -179,8 +179,12 @@ abstract class PhpBenchLoggerTest extends TestCase
         $meanRelStDev = 231;
         $nbFailures = 0;
         $nbWarnings = 0;
+        $nbAssertions = 0;
 
         $this->summary->getNbSubjects()->willReturn($nbSubjects);
+        $this->summary->getNbAssertions()->willReturn(0);
+        $this->summary->getNbErrors()->willReturn(0);
+
         $this->summary->getNbIterations()->willReturn($nbIterations);
         $this->summary->getNbRevolutions()->willReturn($nbRevolutions);
         $this->summary->getNbRejects()->willReturn($nbRejects);
