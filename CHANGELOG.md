@@ -1,6 +1,20 @@
 CHANGELOG
 =========
 
+master
+------
+
+Bug fixes:
+
+- Numeric tags cause an error #717
+- Benchmark errors cause reports to error
+- Undefined console formatter `subtitle` #729
+- Missing formatters not defined in correct place #727
+
+Improvements:
+
+- Colourful indication of success/failure/warnings when assertions are used.
+
 1.0.0-alpha-3
 -------------
 
@@ -28,7 +42,6 @@ Features:
 
 Improvements:
 
-- Colourful indication of success/failure/warnings when assertions are used.
 - Decorator added to improve error reporting for method executors.
 - Benchmarks executed as they are found (no eager metadata loading)
 - Allow direct reference to services (e.g. `--executor=debug` without need for
