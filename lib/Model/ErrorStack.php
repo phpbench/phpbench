@@ -12,6 +12,7 @@
 
 namespace PhpBench\Model;
 
+use Countable;
 use IteratorAggregate;
 
 /**
@@ -22,7 +23,7 @@ use IteratorAggregate;
  *
  * @implements IteratorAggregate<Error>
  */
-class ErrorStack implements IteratorAggregate
+class ErrorStack implements IteratorAggregate, Countable
 {
     /**
      * @var Error[]
@@ -61,5 +62,13 @@ class ErrorStack implements IteratorAggregate
     public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->errors);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function count(): int
+    {
+        return count($this->errors);
     }
 }

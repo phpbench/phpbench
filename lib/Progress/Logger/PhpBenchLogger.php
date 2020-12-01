@@ -15,6 +15,7 @@ namespace PhpBench\Progress\Logger;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Suite;
+use PhpBench\Model\Summary;
 use PhpBench\Model\Variant;
 use PhpBench\PhpBench;
 use PhpBench\Util\TimeUnit;
@@ -65,18 +66,6 @@ abstract class PhpBenchLogger extends NullLogger
         $this->listFailures($suite);
         $this->listWarnings($suite);
 
-
-        $this->output->writeln(sprintf(
-            '%s subjects, %s iterations, %s revs, %s rejects, %s failures, %s warnings',
-            number_format($summary->getNbSubjects()),
-            number_format($summary->getNbIterations()),
-            number_format($summary->getNbRevolutions()),
-            number_format($summary->getNbRejects()),
-            number_format($summary->getNbFailures()),
-            number_format($summary->getNbWarnings())
-        ));
-
-
         $this->output->writeln(sprintf(
             '(best [mean mode] worst) = %s [%s %s] %s (%s)',
             number_format($this->timeUnit->toDestUnit($summary->getMinTime()), 3),
@@ -92,6 +81,29 @@ abstract class PhpBenchLogger extends NullLogger
             $this->timeUnit->format($summary->getMeanStDev(), null, TimeUnit::MODE_TIME),
             number_format($summary->getMeanRelStDev(), 3)
         ));
+
+        $this->output->writeln((function (Summary $summary, string $message) {
+            if ($summary->getNbFailures() || $summary->getNbErrors()) {
+                return sprintf('<error>%s</>', $message);
+            }
+
+            if ($summary->getNbWarnings()) {
+                return sprintf('<warning>%s</>', $message);
+            }
+           
+            if ($summary->getNbAssertions()) {
+                return sprintf('<greenbg>%s</>', $message);
+            }
+
+            return $message;
+        })($suite->getSummary(), sprintf(
+            'Subjects: %s, Assertions: %s, Warnings: %s warnings, Errors: %s, Failures: %s',
+            number_format($summary->getNbSubjects()),
+            number_format($summary->getNbAssertions()),
+            number_format($summary->getNbWarnings()),
+            number_format($summary->getNbErrors()),
+            number_format($summary->getNbFailures()),
+        )));
     }
 
     private function listErrors(Suite $suite): void
