@@ -63,7 +63,8 @@ class ExpressionParser
                 return $this->parsePropertyAccess();
             case ExpressionLexer::T_INTEGER:
             case ExpressionLexer::T_FLOAT:
-                if ($this->lexer->glimpse()['value'] === '%') {
+                $glimpsed = $this->lexer->glimpse();
+                if ($glimpsed && $glimpsed['value'] === '%') {
                     return $this->parsePercentageValue();
                 }
 
@@ -94,7 +95,7 @@ class ExpressionParser
         $value = $this->parseNumericValue();
 
         $token = $this->lexer->lookahead;
-        $unit = $this->parseUnit();
+        $unit = $token ? $this->parseUnit($token) : TimeUnit::MICROSECONDS;
 
         if (TimeUnit::isTimeUnit($unit)) {
             return new TimeValue($value, $unit);
@@ -133,9 +134,8 @@ class ExpressionParser
         throw $this->syntaxError('integer or float', $token);
     }
 
-    private function parseUnit(): string
+    private function parseUnit(?array $token): string
     {
-        $token = $this->lexer->lookahead;
         $this->matchAndMoveNext($token, ExpressionLexer::T_UNIT);
 
         return $token['value'];
