@@ -92,7 +92,7 @@ abstract class PhpBenchLogger extends NullLogger
             }
            
             if ($summary->getNbAssertions()) {
-                return sprintf('<greenbg>%s</>', $message);
+                return sprintf('<success>%s</>', $message);
             }
 
             return $message;
