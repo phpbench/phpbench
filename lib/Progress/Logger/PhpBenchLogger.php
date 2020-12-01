@@ -102,7 +102,7 @@ abstract class PhpBenchLogger extends NullLogger
             number_format($summary->getNbAssertions()),
             number_format($summary->getNbWarnings()),
             number_format($summary->getNbErrors()),
-            number_format($summary->getNbFailures()),
+            number_format($summary->getNbFailures())
         )));
     }
 
