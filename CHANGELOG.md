@@ -28,6 +28,7 @@ Features:
 
 Improvements:
 
+- Colourful indication of success/failure/warnings when assertions are used.
 - Decorator added to improve error reporting for method executors.
 - Benchmarks executed as they are found (no eager metadata loading)
 - Allow direct reference to services (e.g. `--executor=debug` without need for
