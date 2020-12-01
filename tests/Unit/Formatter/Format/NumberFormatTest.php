@@ -46,6 +46,12 @@ class NumberFormatTest extends TestCase
         $this->assertEquals('INF', $result);
     }
 
+    public function testReturnsNANForStringNAN(): void
+    {
+        $result = $this->format->format('NAN', $this->format->getDefaultOptions());
+        $this->assertEquals('NAN', $result);
+    }
+
     /**
      * It should throw an exception if passed a non-numeric value.
      *

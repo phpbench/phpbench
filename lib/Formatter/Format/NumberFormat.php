@@ -18,6 +18,10 @@ class NumberFormat implements FormatInterface
 {
     public function format(string $subject, array $options): string
     {
+        if ($subject === 'NAN') {
+            return 'NAN';
+        }
+
         if ($subject === 'INF') {
             return 'INF';
         }

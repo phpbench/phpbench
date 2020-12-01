@@ -386,6 +386,10 @@ class TableGenerator implements GeneratorInterface
             foreach ($suite->getBenchmarks() as $benchmark) {
                 foreach ($benchmark->getSubjects() as $subject) {
                     foreach ($subject->getVariants() as $variant) {
+                        if ($variant->hasErrorStack()) {
+                            continue;
+                        }
+
                         $row = $this->buildRow($variant, $paramJsonFlags);
                         $baseline = $variant->getBaseline();
 
