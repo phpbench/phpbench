@@ -18,8 +18,6 @@ use PhpBench\Formatter\Formatter;
 use PhpBench\Registry\Config;
 use PhpBench\Report\Generator\Table\ValueRole;
 use PhpBench\Report\RendererInterface;
-use Symfony\Component\Console\Formatter\OutputFormatterInterface;
-use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -66,7 +64,7 @@ class ConsoleRenderer implements RendererInterface
             }
 
             foreach ($reportEl->query('.//table') as $tableEl) {
-                $this->output->writeln(sprintf('<subtitle>%s</subtitle>', $tableEl->getAttribute('title')));
+                $this->output->writeln(sprintf('%s', $tableEl->getAttribute('title')));
                 $this->renderTableElement($tableEl, $config);
             }
         }
@@ -139,23 +137,6 @@ class ConsoleRenderer implements RendererInterface
             return;
         }
         $table->render($this->output);
-    }
-
-    /**
-     * Adds some output formatters.
-     *
-     */
-    private function configureFormatters(OutputFormatterInterface $formatter): void
-    {
-        $formatter->setStyle(
-            'title', new OutputFormatterStyle('white', null, ['bold'])
-        );
-        $formatter->setStyle(
-            'subtitle', new OutputFormatterStyle('white', null, [])
-        );
-        $formatter->setStyle(
-            'description', new OutputFormatterStyle(null, null, [])
-        );
     }
 
     /**
