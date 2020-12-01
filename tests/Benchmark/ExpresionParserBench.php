@@ -27,7 +27,6 @@ class ExpresionParserBench
      * @ParamProviders({"provideExpressions"})
      *
      * @param array<mixed> $params
-     * @Assert("variant.mode < 1 microsecond +/- 10 minutes")
      */
     public function benchEvaluate(array $params): void
     {
