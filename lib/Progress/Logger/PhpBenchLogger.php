@@ -97,7 +97,7 @@ abstract class PhpBenchLogger extends NullLogger
 
             return $message;
         })($suite->getSummary(), sprintf(
-            'Subjects: %s, Assertions: %s, Warnings: %s warnings, Errors: %s, Failures: %s',
+            'Subjects: %s, Assertions: %s, Warnings: %s, Errors: %s, Failures: %s',
             number_format($summary->getNbSubjects()),
             number_format($summary->getNbAssertions()),
             number_format($summary->getNbWarnings()),
