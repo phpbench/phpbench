@@ -11,12 +11,12 @@ config="/home/travis/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.i
 
 function xdebug-disable() {
     if [[ -f $config ]]; then
-        mv $config "$config.bak"
+        mv "$config" "$config.bak"
     fi
 }
 
 function xdebug-enable() {
     if [[ -f "$config.bak" ]]; then
-        mv "$config.bak" $config
+        mv "$config.bak" "$config"
     fi
 }
