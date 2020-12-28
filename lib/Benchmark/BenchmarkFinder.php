@@ -16,6 +16,7 @@ use Generator;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\MetadataFactory;
 use PhpBench\PhpBench;
+use SplFileInfo;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -40,32 +41,9 @@ class BenchmarkFinder
      *
      * @return Generator<BenchmarkMetadata>
      */
-    public function findBenchmarks(string $path, array $subjectFilter = [], array $groupFilter = []): Generator
+    public function findBenchmarks(array $paths, array $subjectFilter = [], array $groupFilter = []): Generator
     {
-        $finder = new Finder();
-        $path = PhpBench::normalizePath($path);
-
-        if (!file_exists($path)) {
-            throw new \InvalidArgumentException(sprintf(
-                'File or directory "%s" does not exist (cwd: %s)',
-                $path,
-                getcwd()
-            ));
-        }
-
-        if (is_dir($path)) {
-            $finder->in($path)
-                ->name('*.php');
-        } else {
-            // the path is already a file, just restrict the finder to that.
-            $finder->in(dirname($path))
-                ->depth(0)
-                ->name(basename($path));
-        }
-
-        $benchmarks = [];
-
-        foreach ($finder as $file) {
+        foreach ($this->findFiles($paths) as $file) {
             if (!is_file($file)) {
                 continue;
             }
@@ -89,6 +67,48 @@ class BenchmarkFinder
             }
 
             yield $benchmark;
+        }
+    }
+
+    /**
+     * @return Generator<SplFileInfo>
+     */
+    private function findFiles(array $paths): Generator
+    {
+        $finder = new Finder();
+        $search = false;
+
+        foreach ($paths as $path) {
+            $path = PhpBench::normalizePath($path);
+
+            if (!file_exists($path)) {
+                throw new \InvalidArgumentException(sprintf(
+                    'File or directory "%s" does not exist (cwd: %s)',
+                    $path,
+                    getcwd()
+                ));
+            }
+
+            if (is_dir($path)) {
+                $search = true;
+                $finder->in($path)->name('*.php');
+
+                continue;
+            }
+
+            if (is_file($path)) {
+                yield new SplFileInfo($path);
+
+                continue;
+            }
+        }
+
+        if ($search === false) {
+            return;
+        }
+
+        foreach ($finder as $file) {
+            yield $file;
         }
     }
 }

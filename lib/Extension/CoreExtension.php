@@ -91,6 +91,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\ExecutableFinder;
+use Webmozart\PathUtil\Path;
 
 class CoreExtension implements ExtensionInterface
 {
@@ -160,6 +161,28 @@ class CoreExtension implements ExtensionInterface
             self::PARAM_REMOTE_SCRIPT_REMOVE => true,
             self::PARAM_DISABLE_OUTPUT => false,
         ]);
+        $resolver->setAllowedTypes(self::PARAM_BOOTSTRAP, ['string', 'null']);
+        $resolver->setAllowedTypes(self::PARAM_PATH, ['string', 'array', 'null']);
+        $resolver->setAllowedTypes(self::PARAM_REPORTS, ['array']);
+        $resolver->setAllowedTypes(self::PARAM_OUTPUTS, ['array']);
+        $resolver->setAllowedTypes(self::PARAM_EXECUTORS, ['array']);
+        $resolver->setAllowedTypes(self::PARAM_PROGRESS, ['string']);
+        $resolver->setAllowedTypes(self::PARAM_RETRY_THRESHOLD, ['null', 'int', 'float']);
+        $resolver->setAllowedTypes(self::PARAM_TIME_UNIT, ['string']);
+        $resolver->setAllowedTypes(self::PARAM_OUTPUT_MODE, ['string']);
+        $resolver->setAllowedTypes(self::PARAM_STORAGE, ['string']);
+        $resolver->setAllowedTypes(self::PARAM_SUBJECT_PATTERN, ['string']);
+        $resolver->setAllowedTypes(self::PARAM_ENV_BASELINES, ['array']);
+        $resolver->setAllowedTypes(self::PARAM_ENV_BASELINE_CALLABLES, ['array']);
+        $resolver->setAllowedTypes(self::PARAM_XML_STORAGE_PATH, ['string']);
+        $resolver->setAllowedTypes(self::PARAM_PHP_CONFIG, ['array']);
+        $resolver->setAllowedTypes(self::PARAM_PHP_BINARY, ['string', 'null']);
+        $resolver->setAllowedTypes(self::PARAM_PHP_WRAPPER, ['string', 'null']);
+        $resolver->setAllowedTypes(self::PARAM_PHP_DISABLE_INI, ['bool']);
+        $resolver->setAllowedTypes(self::PARAM_ANNOTATION_IMPORT_USE, ['bool']);
+        $resolver->setAllowedTypes(self::PARAM_REMOTE_SCRIPT_REMOVE, ['bool']);
+        $resolver->setAllowedTypes(self::PARAM_REMOTE_SCRIPT_PATH, ['string', 'null']);
+        $resolver->setAllowedTypes(self::PARAM_DISABLE_OUTPUT, ['bool']);
     }
 
     public function load(Container $container): void
@@ -699,14 +722,21 @@ class CoreExtension implements ExtensionInterface
 
     private function relativizeConfigPath(Container $container): void
     {
-        if (null === $path = $container->getParameter(self::PARAM_PATH)) {
+        $paths = (array)$container->getParameter(self::PARAM_PATH);
+
+        if (empty($paths)) {
             return;
         }
 
-        if (substr($path, 0, 1) === '/') {
-            return;
-        }
+        $container->setParameter(self::PARAM_PATH, array_map(function (string $path) use ($container) {
+            if (Path::isAbsolute($path)) {
+                return $path;
+            }
 
-        $container->setParameter(self::PARAM_PATH, sprintf('%s/%s', dirname($container->getParameter(self::PARAM_CONFIG_PATH)), $path));
+            return Path::join([
+                dirname($container->getParameter(self::PARAM_CONFIG_PATH)),
+                $path
+            ]);
+        }, $paths));
     }
 }
