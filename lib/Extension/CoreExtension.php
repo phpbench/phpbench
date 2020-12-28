@@ -160,6 +160,28 @@ class CoreExtension implements ExtensionInterface
             self::PARAM_REMOTE_SCRIPT_REMOVE => true,
             self::PARAM_DISABLE_OUTPUT => false,
         ]);
+        $resolver->setAllowedTypes(self::PARAM_BOOTSTRAP, ['string', 'null']);
+        $resolver->setAllowedTypes(self::PARAM_PATH, ['string', 'null']);
+        $resolver->setAllowedTypes(self::PARAM_REPORTS, ['array']);
+        $resolver->setAllowedTypes(self::PARAM_OUTPUTS, ['array']);
+        $resolver->setAllowedTypes(self::PARAM_EXECUTORS, ['array']);
+        $resolver->setAllowedTypes(self::PARAM_PROGRESS, ['string']);
+        $resolver->setAllowedTypes(self::PARAM_RETRY_THRESHOLD, ['null', 'int', 'float']);
+        $resolver->setAllowedTypes(self::PARAM_TIME_UNIT, ['string']);
+        $resolver->setAllowedTypes(self::PARAM_OUTPUT_MODE, ['string']);
+        $resolver->setAllowedTypes(self::PARAM_STORAGE, ['string']);
+        $resolver->setAllowedTypes(self::PARAM_SUBJECT_PATTERN, ['string']);
+        $resolver->setAllowedTypes(self::PARAM_ENV_BASELINES, ['array']);
+        $resolver->setAllowedTypes(self::PARAM_ENV_BASELINE_CALLABLES, ['array']);
+        $resolver->setAllowedTypes(self::PARAM_XML_STORAGE_PATH, ['string']);
+        $resolver->setAllowedTypes(self::PARAM_PHP_CONFIG, ['array']);
+        $resolver->setAllowedTypes(self::PARAM_PHP_BINARY, ['string', 'null']);
+        $resolver->setAllowedTypes(self::PARAM_PHP_WRAPPER, ['string', 'null']);
+        $resolver->setAllowedTypes(self::PARAM_PHP_DISABLE_INI, ['bool']);
+        $resolver->setAllowedTypes(self::PARAM_ANNOTATION_IMPORT_USE, ['bool']);
+        $resolver->setAllowedTypes(self::PARAM_REMOTE_SCRIPT_REMOVE, ['bool']);
+        $resolver->setAllowedTypes(self::PARAM_REMOTE_SCRIPT_PATH, ['string', 'null']);
+        $resolver->setAllowedTypes(self::PARAM_DISABLE_OUTPUT, ['bool']);
     }
 
     public function load(Container $container): void
