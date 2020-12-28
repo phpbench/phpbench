@@ -45,9 +45,33 @@ class BenchmarkFinderTest extends TestCase
         $this->factory->getMetadataForFile(__DIR__ . '/findertest/AbstractBench.php')->willReturn(null);
         $this->benchmark1->hasSubjects()->willReturn(true);
         $this->benchmark2->hasSubjects()->willReturn(true);
-        $benchmarks = $this->finder->findBenchmarks(__DIR__ . '/findertest');
+        $benchmarks = $this->finder->findBenchmarks([__DIR__ . '/findertest']);
 
         $this->assertCount(2, $benchmarks);
+    }
+
+    /**
+     * It should return a collection of all found bench benchmarks.
+     * It should not instantiate abstract classes.
+     */
+    public function testFromMultiplePaths()
+    {
+        $this->factory->getMetadataForFile(
+            __DIR__ . '/findertest/FooCaseBench.php'
+        )->willReturn($this->benchmark1->reveal());
+        $this->factory->getMetadataForFile(
+            __DIR__ . '/findertest/FooCase2Bench.php'
+        )->willReturn($this->benchmark2->reveal());
+
+        $this->benchmark1->hasSubjects()->willReturn(true);
+        $this->benchmark2->hasSubjects()->willReturn(true);
+
+        $benchmarks = $this->finder->findBenchmarks([
+            __DIR__ . '/findertest/FooCaseBench.php',
+            __DIR__ . '/findertest/FooCase2Bench.php'
+        ]);
+
+        $this->assertCount(2, iterator_to_array($benchmarks));
     }
 
     /**
@@ -59,7 +83,7 @@ class BenchmarkFinderTest extends TestCase
         $this->factory->getMetadataForFile(__DIR__ . '/findertestnested/MyBench.php')->willReturn($this->benchmark1->reveal());
         $this->benchmark1->hasSubjects()->willReturn(true);
 
-        $benchmarks = $this->finder->findBenchmarks(__DIR__ . '/findertestnested/MyBench.php');
+        $benchmarks = $this->finder->findBenchmarks([__DIR__ . '/findertestnested/MyBench.php']);
 
         $this->assertCount(1, $benchmarks);
     }
@@ -72,7 +96,7 @@ class BenchmarkFinderTest extends TestCase
         $this->factory->getMetadataForFile(__DIR__ . '/findertestnested/MyBench.php')->willReturn($this->benchmark1->reveal());
         $this->benchmark1->hasSubjects()->willReturn(false);
 
-        $benchmarks = $this->finder->findBenchmarks(__DIR__ . '/findertestnested/MyBench.php');
+        $benchmarks = $this->finder->findBenchmarks([__DIR__ . '/findertestnested/MyBench.php']);
 
         $this->assertCount(0, $benchmarks);
     }

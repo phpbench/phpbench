@@ -14,6 +14,8 @@ Bug fixes:
 Improvements:
 
 - Colourful indication of success/failure/warnings when assertions are used.
+- Allow multiple paths to be specified in config
+- Add type restrictions to config values
 
 1.0.0-alpha-3
 -------------

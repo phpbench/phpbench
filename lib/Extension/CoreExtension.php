@@ -91,6 +91,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\ExecutableFinder;
+use Webmozart\PathUtil\Path;
 
 class CoreExtension implements ExtensionInterface
 {
@@ -161,7 +162,7 @@ class CoreExtension implements ExtensionInterface
             self::PARAM_DISABLE_OUTPUT => false,
         ]);
         $resolver->setAllowedTypes(self::PARAM_BOOTSTRAP, ['string', 'null']);
-        $resolver->setAllowedTypes(self::PARAM_PATH, ['string', 'null']);
+        $resolver->setAllowedTypes(self::PARAM_PATH, ['string', 'array', 'null']);
         $resolver->setAllowedTypes(self::PARAM_REPORTS, ['array']);
         $resolver->setAllowedTypes(self::PARAM_OUTPUTS, ['array']);
         $resolver->setAllowedTypes(self::PARAM_EXECUTORS, ['array']);
@@ -721,14 +722,21 @@ class CoreExtension implements ExtensionInterface
 
     private function relativizeConfigPath(Container $container): void
     {
-        if (null === $path = $container->getParameter(self::PARAM_PATH)) {
+        $paths = (array)$container->getParameter(self::PARAM_PATH);
+
+        if (empty($paths)) {
             return;
         }
 
-        if (substr($path, 0, 1) === '/') {
-            return;
-        }
+        $container->setParameter(self::PARAM_PATH, array_map(function (string $path) use ($container) {
+            if (Path::isAbsolute($path)) {
+                return $path;
+            }
 
-        $container->setParameter(self::PARAM_PATH, sprintf('%s/%s', dirname($container->getParameter(self::PARAM_CONFIG_PATH)), $path));
+            return Path::join([
+                dirname($container->getParameter(self::PARAM_CONFIG_PATH)),
+                $path
+            ]);
+        }, $paths));
     }
 }

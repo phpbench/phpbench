@@ -611,4 +611,17 @@ class RunTest extends SystemTestCase
         $this->assertExitCode(0, $process);
         $this->assertFileExists($this->workspace()->path('remote/remote.template'));
     }
+
+    public function testSpecifyMultiplePaths(): void
+    {
+        $this->workspace()->put('phpbench.json', (string)json_encode([
+            'path' => [
+                'benchmarks/set4/NothingBench.php',
+                'benchmarks/set4/NothingBench.php',
+            ]
+        ]));
+
+        $process = $this->phpbench('run');
+        $this->assertExitCode(0, $process);
+    }
 }

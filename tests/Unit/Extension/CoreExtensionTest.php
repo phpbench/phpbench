@@ -32,7 +32,7 @@ class CoreExtensionTest extends TestCase
             'config_path' => '/path/to/phpbench.json',
         ]);
         $container->init();
-        $this->assertEquals('/path/to/hello', $container->getParameter('path'));
+        $this->assertEquals(['/path/to/hello'], $container->getParameter('path'));
     }
 
     /**

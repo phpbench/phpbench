@@ -52,9 +52,9 @@ class RunnerHandler
     private $defaultProgress;
 
     /**
-     * @var string|null
+     * @var array<string>
      */
-    private $benchPath;
+    private $benchPaths;
 
     /**
      * @var Runner
@@ -71,12 +71,12 @@ class RunnerHandler
         LoggerRegistry $loggerRegistry,
         BenchmarkFinder $finder,
         ?string $defaultProgress = null,
-        ?string $benchPath = null
+        array $benchPaths = null
     ) {
         $this->runner = $runner;
         $this->loggerRegistry = $loggerRegistry;
         $this->defaultProgress = $defaultProgress;
-        $this->benchPath = $benchPath;
+        $this->benchPaths = $benchPaths;
         $this->finder = $finder;
     }
 
@@ -117,16 +117,16 @@ class RunnerHandler
         $progressLogger = $this->loggerRegistry->getProgressLogger($progressLoggerName);
         $this->runner->setProgressLogger($progressLogger);
 
-        $path = $input->getArgument(self::ARG_PATH) ?: $this->benchPath;
+        $paths = (array)($input->getArgument(self::ARG_PATH) ?: $this->benchPaths);
 
-        if (null === $path) {
+        if (empty($paths)) {
             throw new InvalidArgumentException(
                 'You must either specify or configure a path'
             );
         }
 
         return $this->runner->run($this->finder->findBenchmarks(
-            $path,
+            $paths,
             $input->getOption(self::OPT_FILTER),
             $input->getOption(self::OPT_GROUP)
         ), $config);
