@@ -13,10 +13,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Compile phpbench.phar
+      - name: Set PHP 7.3
         uses: shivammathur/setup-php@v2
         with:
           php-version: '7.3'
+
+      - name: Compile phpbench.phar
         run: |
           composer install
           wget https://github.com/box-project/box/releases/download/3.9.1/box.phar
