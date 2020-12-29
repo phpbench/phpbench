@@ -121,10 +121,9 @@ class BlinkenLogger extends AnsiLogger
             return;
         }
 
-        $this->output->write(sprintf(
-            ' <comment>%s</comment>',
-            $this->formatIterationsShortSummary($variant)
-        ));
+        $this->output->write(
+            ' = ' . $this->formatIterationsShortSummary($variant)
+        );
         $this->output->write(PHP_EOL);
     }
 

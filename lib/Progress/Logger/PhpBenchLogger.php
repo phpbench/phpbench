@@ -12,12 +12,14 @@
 
 namespace PhpBench\Progress\Logger;
 
+use PhpBench\Math\Statistics;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Suite;
 use PhpBench\Model\Summary;
 use PhpBench\Model\Variant;
 use PhpBench\PhpBench;
+use PhpBench\Progress\VariantSummaryFormatter;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -161,40 +163,12 @@ abstract class PhpBenchLogger extends NullLogger
 
     public function formatIterationsFullSummary(Variant $variant): string
     {
-        $subject = $variant->getSubject();
-        $stats = $variant->getStats();
-        $timeUnit = $this->timeUnit->resolveDestUnit($variant->getSubject()->getOutputTimeUnit());
-        $mode = $this->timeUnit->resolveMode($subject->getOutputMode());
-        $precision = $this->timeUnit->resolvePrecision($subject->getOutputTimePrecision());
-
-        return sprintf(
-            "%s[μ Mo]/r: %s %s (%s) [μSD μRSD]/r: %s %s%%%s",
-
-            $variant->getAssertionResults()->hasFailures() ? '<error>' : '',
-            $this->timeUnit->format($stats->getMean(), $timeUnit, $mode, $precision, false),
-            $this->timeUnit->format($stats->getMode(), $timeUnit, $mode, $precision, false),
-            $this->timeUnit->getDestSuffix($timeUnit, $mode),
-            $this->timeUnit->format($stats->getStdev(), $timeUnit, TimeUnit::MODE_TIME),
-            number_format($stats->getRstdev(), 2),
-            $variant->getAssertionResults()->hasFailures() ? '</error>' : ''
-        );
+        return (new VariantSummaryFormatter($this->timeUnit))->formatVariant($variant);
     }
 
     public function formatIterationsShortSummary(Variant $variant): string
     {
-        $subject = $variant->getSubject();
-        $stats = $variant->getStats();
-        $timeUnit = $this->timeUnit->resolveDestUnit($variant->getSubject()->getOutputTimeUnit());
-        $mode = $this->timeUnit->resolveMode($subject->getOutputMode());
-        $precision = $this->timeUnit->resolvePrecision($subject->getOutputTimePrecision());
-
-        return sprintf(
-            '[μ Mo]/r: %s %s μRSD/r: %s%%',
-
-            $this->timeUnit->format($stats->getMean(), $timeUnit, $mode, $precision, false),
-            $this->timeUnit->format($stats->getMode(), $timeUnit, $mode, $precision, false),
-            number_format($stats->getRstdev(), 2)
-        );
+        return (new VariantSummaryFormatter($this->timeUnit))->formatVariant($variant);
     }
 
     protected function formatIterationTime(Iteration $iteration): string

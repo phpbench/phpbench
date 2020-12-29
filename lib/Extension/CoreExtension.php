@@ -196,6 +196,7 @@ class CoreExtension implements ExtensionInterface
 
             $output = new ConsoleOutput();
             $output->getFormatter()->setStyle('success', new OutputFormatterStyle('black', 'green', []));
+            $output->getFormatter()->setStyle('baseline', new OutputFormatterStyle('cyan', null, []));
 
             return $output;
         });
