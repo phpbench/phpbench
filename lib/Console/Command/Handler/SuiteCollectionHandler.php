@@ -13,43 +13,57 @@
 namespace PhpBench\Console\Command\Handler;
 
 use PhpBench\Model\SuiteCollection;
-use PhpBench\Registry\Registry;
 use PhpBench\Serializer\XmlDecoder;
-use PhpBench\Storage\UuidResolverInterface;
+use PhpBench\Storage\StorageRegistry;
+use PhpBench\Storage\UuidResolver;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Webmozart\Assert\Assert;
 
 class SuiteCollectionHandler
 {
+    /**
+     * @var XmlDecoder
+     */
     private $xmlDecoder;
+
+    /**
+     * @var StorageRegistry
+     */
     private $storage;
-    private $uuidResolver;
+
+    /**
+     * @var UuidResolver
+     */
+    private $refResolver;
 
     public function __construct(
         XmlDecoder $xmlDecoder,
-        Registry $storage,
-        UuidResolverInterface $uuidResolver
+        StorageRegistry $storage,
+        UuidResolver $refResolver
     ) {
         $this->xmlDecoder = $xmlDecoder;
         $this->storage = $storage;
-        $this->uuidResolver = $uuidResolver;
+        $this->refResolver = $refResolver;
     }
 
     public static function configure(Command $command): void
     {
-        $command->addOption('uuid', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Run UUID');
+        $command->addOption('ref', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Reference to an existing run - can be a UUID or tag or special word (e.g. latest)');
         $command->addOption('file', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Report XML file');
     }
 
     public function suiteCollectionFromInput(InputInterface $input): SuiteCollection
     {
         $files = $input->getOption('file');
-        $uuids = $input->getOption('uuid');
+        $refs = $input->getOption('ref');
+        assert(is_array($files));
+        assert(is_array($refs));
 
-        if (!$files && !$uuids) {
+        if (!$files && !$refs) {
             throw new \InvalidArgumentException(
-                'You must specify at least one of `--file` and/or `--uuid`'
+                'You must specify at least one of `--file` and/or `--ref`'
             );
         }
 
@@ -61,12 +75,11 @@ class SuiteCollectionHandler
             );
         }
 
-        if ($uuids) {
-            foreach ($uuids as $uuid) {
-                $uuid = $this->uuidResolver->resolve($uuid);
-                $collection->mergeCollection(
-                    $this->storage->getService()->fetch($uuid)
-                );
+        if ($refs) {
+            foreach ($refs as $ref) {
+                $collection->mergeCollection($this->storage->getService()->fetch(
+                    $this->refResolver->resolve($ref)
+                ));
             }
         }
 

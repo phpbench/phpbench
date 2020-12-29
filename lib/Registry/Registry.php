@@ -24,13 +24,31 @@ use Psr\Container\ContainerInterface;
  * $reg->getService($config['renderer']);
  * $reg->render($something, $config);
  * ```
+ *
+ * @template T of object
  */
 class Registry
 {
     protected $serviceType;
+
+    /**
+     * @var array<string,T|null>
+     */
     protected $services = [];
+
+    /**
+     * @var array<string, string>
+     */
     private $serviceMap = [];
+
+    /**
+     * @var ContainerInterface
+     */
     private $container;
+
+    /**
+     * @var string
+     */
     private $defaultService;
 
     public function __construct(
@@ -63,6 +81,7 @@ class Registry
     /**
      * Directly set a named service.
      *
+     * @param T $object
      */
     public function setService(string $name, object $object): void
     {
@@ -83,9 +102,9 @@ class Registry
      *
      * @param string $name
      *
-     * @return object
+     * @return T
      */
-    public function getService(string $name = null)
+    public function getService(string $name = null): object
     {
         $name = $name ?: $this->defaultService;
 

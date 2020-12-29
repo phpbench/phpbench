@@ -33,7 +33,6 @@ interface DriverInterface
      * Return the suite collection with the given run ID.
      * If no suite is found an exception will be thrown.
      *
-     *
      * @throws \InvalidArgumentException
      */
     public function fetch(string $runId): SuiteCollection;

@@ -16,7 +16,7 @@ use PhpBench\Console\Command\Handler\DumpHandler;
 use PhpBench\Console\Command\Handler\ReportHandler;
 use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use PhpBench\Registry\Registry;
-use PhpBench\Storage\UuidResolverInterface;
+use PhpBench\Storage\UuidResolver;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,21 +31,21 @@ class ShowCommand extends Command
     private $reportHandler;
     private $timeUnitHandler;
     private $dumpHandler;
-    private $uuidResolver;
+    private $refResolver;
 
     public function __construct(
         Registry $storage,
         ReportHandler $reportHandler,
         TimeUnitHandler $timeUnitHandler,
         DumpHandler $dumpHandler,
-        UuidResolverInterface $uuidResolver
+        UuidResolver $refResolver
     ) {
         parent::__construct();
         $this->storage = $storage;
         $this->reportHandler = $reportHandler;
         $this->timeUnitHandler = $timeUnitHandler;
         $this->dumpHandler = $dumpHandler;
-        $this->uuidResolver = $uuidResolver;
+        $this->refResolver = $refResolver;
     }
 
     /**
@@ -82,7 +82,7 @@ EOT
         }
 
         $storage = $this->storage->getService();
-        $collection = $storage->fetch($this->uuidResolver->resolve($input->getArgument('run_id')));
+        $collection = $storage->fetch($this->refResolver->resolve($input->getArgument('run_id')));
         $this->timeUnitHandler->timeUnitFromInput($input);
         $this->dumpHandler->dumpFromInput($input, $output, $collection);
         $this->reportHandler->reportsFromInput($input, $output, $collection);

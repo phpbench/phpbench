@@ -26,20 +26,19 @@ class ChainResolver implements UuidResolverInterface
         $this->resolvers = $resolvers;
     }
 
-    public function supports(string $reference): bool
-    {
-        return true;
-    }
-
-    public function resolve(string $reference): string
+    public function resolve(string $reference): ?string
     {
         /** @var UuidResolverInterface $resolver */
         foreach ($this->resolvers as $resolver) {
-            if ($resolver->supports($reference)) {
-                return $resolver->resolve($reference);
+            $ref = $resolver->resolve($reference);
+
+            if (null === $ref) {
+                continue;
             }
+
+            return $ref;
         }
 
-        return $reference;
+        return null;
     }
 }

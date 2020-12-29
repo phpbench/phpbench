@@ -516,7 +516,7 @@ class RunTest extends SystemTestCase
         $this->assertExitCode(0, $process);
 
         $process = $this->phpbench(
-            'report --report=aggregate --uuid=tag:foobar'
+            'report --report=aggregate --ref=foobar'
         );
 
         $this->assertExitCode(0, $process);

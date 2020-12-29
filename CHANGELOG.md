@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+develop
+-------
+
+Backward compatiblity breaks:
+
+- `--uuid` renamed to `--ref` and `tag:` prefix removed #740
+
 1.0.0-alpha-4
 -------------
 

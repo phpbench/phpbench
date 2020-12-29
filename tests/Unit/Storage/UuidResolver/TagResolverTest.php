@@ -15,7 +15,6 @@ namespace PhpBench\Tests\Unit\Storage\UuidResolver;
 use PhpBench\Model\Tag;
 use PhpBench\Storage\Driver\Fake\FakeHistoryIterator;
 use PhpBench\Storage\DriverInterface;
-use PhpBench\Storage\Exception\TagNotFoundException;
 use PhpBench\Storage\HistoryEntry;
 use PhpBench\Storage\StorageRegistry;
 use PhpBench\Storage\UuidResolver\TagResolver;
@@ -64,18 +63,9 @@ class TagResolverTest extends TestCase
         $this->resolver = new TagResolver($registry->reveal());
     }
 
-    public function testSupportsReferencesWithTagPrefix()
+    public function testThrowsExceptionWhenNoTagFound(): void
     {
-        $this->assertTrue($this->resolver->supports('tag:asdf'));
-        $this->assertFalse($this->resolver->supports('tag:'));
-        $this->assertFalse($this->resolver->supports('test'));
-    }
-
-    public function testThrowsExceptionWhenNoTagFound()
-    {
-        $this->expectException(TagNotFoundException::class);
-
-        $this->resolver->resolve('tag:1asd3foobar123');
+        self::assertNull($this->resolver->resolve('1asd3foobar123'));
     }
 
     /**
@@ -86,7 +76,7 @@ class TagResolverTest extends TestCase
         $this->historyEntry->getTag()->willReturn(new Tag($tag));
         $this->historyEntry->getRunId()->willReturn(1234);
 
-        $uuid = $this->resolver->resolve('tag:' . $tag);
+        $uuid = $this->resolver->resolve($tag);
         $this->assertEquals(1234, $uuid);
     }
 
@@ -105,7 +95,7 @@ class TagResolverTest extends TestCase
         $this->historyEntry1->getTag()->willReturn(new Tag('foobar'));
         $this->historyEntry1->getRunId()->willReturn(1234);
 
-        $uuid = $this->resolver->resolve('tag:foobar-1');
+        $uuid = $this->resolver->resolve('foobar-1');
         $this->assertEquals(1234, $uuid);
     }
 }
