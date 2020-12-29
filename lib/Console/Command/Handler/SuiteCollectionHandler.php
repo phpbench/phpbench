@@ -15,25 +15,35 @@ namespace PhpBench\Console\Command\Handler;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Registry;
 use PhpBench\Serializer\XmlDecoder;
+use PhpBench\Storage\RefResolver;
 use PhpBench\Storage\RefResolverInterface;
+use PhpBench\Storage\StorageRegistry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Webmozart\Assert\Assert;
 
 class SuiteCollectionHandler
 {
+    /**
+     * @var XmlDecoder
+     */
     private $xmlDecoder;
+
+    /**
+     * @var StorageRegistry
+     */
     private $storage;
 
     /**
-     * @var RefResolverInterface
+     * @var RefResolver
      */
     private $refResolver;
 
     public function __construct(
         XmlDecoder $xmlDecoder,
-        Registry $storage,
-        RefResolverInterface $refResolver
+        StorageRegistry $storage,
+        RefResolver $refResolver
     ) {
         $this->xmlDecoder = $xmlDecoder;
         $this->storage = $storage;
@@ -50,6 +60,8 @@ class SuiteCollectionHandler
     {
         $files = $input->getOption('file');
         $uuids = $input->getOption('uuid');
+        assert(is_array($files));
+        assert(is_array($uuids));
 
         if (!$files && !$uuids) {
             throw new \InvalidArgumentException(
@@ -67,10 +79,9 @@ class SuiteCollectionHandler
 
         if ($uuids) {
             foreach ($uuids as $uuid) {
-                $uuid = $this->refResolver->resolve($uuid);
-                $collection->mergeCollection(
-                    $this->storage->getService()->fetch($uuid)
-                );
+                $collection->mergeCollection($this->storage->getService()->fetch(
+                    $this->refResolver->resolve($uuid)
+                ));
             }
         }
 

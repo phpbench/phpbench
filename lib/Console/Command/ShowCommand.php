@@ -16,7 +16,7 @@ use PhpBench\Console\Command\Handler\DumpHandler;
 use PhpBench\Console\Command\Handler\ReportHandler;
 use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use PhpBench\Registry\Registry;
-use PhpBench\Storage\RefResolverInterface;
+use PhpBench\Storage\RefResolver;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -38,7 +38,7 @@ class ShowCommand extends Command
         ReportHandler $reportHandler,
         TimeUnitHandler $timeUnitHandler,
         DumpHandler $dumpHandler,
-        RefResolverInterface $refResolver
+        RefResolver $refResolver
     ) {
         parent::__construct();
         $this->storage = $storage;

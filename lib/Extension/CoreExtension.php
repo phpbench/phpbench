@@ -76,11 +76,11 @@ use PhpBench\Report\ReportManager;
 use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Storage\Driver\Xml\XmlDriver;
+use PhpBench\Storage\RefResolver;
 use PhpBench\Storage\StorageRegistry;
 use PhpBench\Storage\RefResolver\ChainResolver;
 use PhpBench\Storage\RefResolver\LatestResolver;
 use PhpBench\Storage\RefResolver\TagResolver;
-use PhpBench\Storage\RefResolverInterface;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\ArgvInput;
@@ -398,7 +398,7 @@ class CoreExtension implements ExtensionInterface
             return new SuiteCollectionHandler(
                 $container->get(XmlDecoder::class),
                 $container->get(self::SERVICE_REGISTRY_DRIVER),
-                $container->get(RefResolverInterface::class)
+                $container->get(RefResolver::class)
             );
         });
 
@@ -448,7 +448,7 @@ class CoreExtension implements ExtensionInterface
                 $container->get(ReportHandler::class),
                 $container->get(TimeUnitHandler::class),
                 $container->get(DumpHandler::class),
-                $container->get(RefResolverInterface::class)
+                $container->get(RefResolver::class)
             );
         }, [
             self::TAG_CONSOLE_COMMAND => []
@@ -697,14 +697,14 @@ class CoreExtension implements ExtensionInterface
             );
         }, [self::TAG_STORAGE_DRIVER => ['name' => 'xml']]);
 
-        $container->register(RefResolverInterface::class, function (Container $container) {
+        $container->register(RefResolver::class, function (Container $container) {
             $resolvers = [];
 
             foreach (array_keys($container->getServiceIdsForTag(self::TAG_UUID_RESOLVER)) as $serviceId) {
                 $resolvers[] = $container->get($serviceId);
             }
 
-            return new ChainResolver($resolvers);
+            return new RefResolver(new ChainResolver($resolvers));
         });
 
         $container->register(LatestResolver::class, function (Container $container) {
