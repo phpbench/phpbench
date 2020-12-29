@@ -32,12 +32,12 @@ Switch to the new version of your code and run PHPBench again:
 
 .. code-block:: bash
 
-    $ phpbench run tests/Benchmark/MyBenchmark.php --report=aggregate --uuid=tag:original --retry-threshold=5 --iterations=10
+    $ phpbench run tests/Benchmark/MyBenchmark.php --report=aggregate --ref=original --retry-threshold=5 --iterations=10
 
 
 Note that:
 
-- ``--uuid`` is used to reference the previous, tagged, run, which will merge
+- ``--ref`` is used to reference the previous, tagged, run, which will merge
   the previous benchmarks into the results.  - ``--report=aggregate`` shows
   the aggregate report, and if a baseline is present it will show differences.
 
@@ -55,7 +55,7 @@ You can compare against baselines in assertions, e.g.
 
 .. code-block:: bash
 
-    $ phpbench run tests/Benchmark/MyBenchmark.php --uuid=tag:original --retry-threshold=5 --iterations=10 --assert="variant.mode <= baseline.mode +/- 5%"
+    $ phpbench run tests/Benchmark/MyBenchmark.php --ref=original --retry-threshold=5 --iterations=10 --assert="variant.mode <= baseline.mode +/- 5%"
 
 We assert the current run's ``mode`` is less than or equal to the baseline
 ``mode`` and tolerate a variance within 5% of the baseline ``mode``.

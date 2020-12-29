@@ -28,7 +28,7 @@ Multiple reports can be specified::
 The report command operates in a similar way but requires you to provide some
 data, either from XML dumps or by using a :doc:`storage <storage>` UUID or tag::
 
-    $ phpbench report --uuid=latest --report=aggregate
+    $ phpbench report --ref=latest --report=aggregate
 
 For more information on storage see :doc:`storage <storage>`.
 

@@ -79,16 +79,15 @@ You may also specify a different report with the ``--report`` option. In order
 to compare two or more reports, you should use the ``report`` command as
 detailed in the following section.
 
-Pseudo UUIDs
-------------
+Tags
+----
 
-UUIDs are difficult to work with. Phpbench allows you to use a number of
-"pseudo" uuids.
+UUIDs are difficult to work with, but you can use tags
 
 ``latest``
 ~~~~~~~~~~
 
-It is possible to specify "meta" UUIDs, such as ``latest``:
+Latest is a special tag which always returns the latest benchmark.
 
 .. code-block:: bash
 
@@ -106,55 +105,23 @@ would normally specify a UUID, including queries.
 
 .. _storage_tags:
 
-``tag:``
-~~~~~~~~
+tags
+~~~~
 
-Allows you to reference a tagged run. If you store a suite:
+Reference a tagged run. If you store a suite:
 
 .. code-block:: bash
 
     $ phpbench run --tag=my_tag
 
-Then you can reference it with ``tag:my_tag``
+Then you can reference it with ``my_tag``
 
 .. code-block:: bash
 
-    $ phpbench show tag:my_tag
+    $ phpbench show my_tag
 
 Or report on it:
 
 .. code-block:: bash
 
-    $ phpbench report --uuid=tag:my_tag --report=aggregate
-
-.. _archive:
-
-Archiving
----------
-
-Archiving provides a way to export and reimport data from and to the
-configured storage. This allows you to:
-
-- Backup your results (for example to a GIT repository).
-- Migrate to other storage drivers.
-
-By default PHPBench is configured to use an ``XML`` archiver, which will dump
-results to a directory in the current working directory, ``_archive``.
-
-To archive::
-
-    $ phpbench archive
-
-To restore::
-
-    $ phpbench archive --restore 
-
-Both operations are idempotent - they will skip any existing records.
-
-You may configure a different archiver in the configuration:
-
-.. code-block:: json
-
-    {
-        "archiver": "xml"
-    }
+    $ phpbench report --ref=my_tag --report=aggregate

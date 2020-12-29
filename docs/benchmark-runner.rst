@@ -172,7 +172,7 @@ Then generate reports:
 
 .. code-block:: bash
 
-    $ phpbench report --uuid=tag:foobar --report=aggregate
+    $ phpbench report --ref=foobar --report=aggregate
 
 To dump the benchmark results to an XML file use the ``--dump-file`` option:
 
