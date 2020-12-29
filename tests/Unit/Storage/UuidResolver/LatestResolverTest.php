@@ -51,14 +51,24 @@ class LatestResolverTest extends TestCase
         $this->history->current()->willReturn($this->historyEntry->reveal());
         $this->historyEntry->getRunId()->willReturn(1234);
 
-        $uuid = $this->resolver->resolve('latest');
-        $this->assertEquals(1234, $uuid);
+        $ref = $this->resolver->resolve('latest');
+        $this->assertEquals(1234, $ref);
+    }
+
+    public function testNullWhenNotBeginningWithLatest(): void
+    {
+        $this->storage->history()->willReturn($this->history->reveal());
+        $this->history->current()->willReturn($this->historyEntry->reveal());
+        $this->historyEntry->getRunId()->willReturn(1234);
+
+        $ref = $this->resolver->resolve('foobar');
+        $this->assertEquals(null, $ref);
     }
 
     public function testResolveCantResolve()
     {
         $this->expectException(RuntimeException::class);
-        $this->resolver->resolve('nutbar');
+        $this->resolver->resolve('latest-nutbar');
     }
 
     /**
@@ -77,8 +87,8 @@ class LatestResolverTest extends TestCase
 
         $this->history->next()->shouldBeCalledTimes(3);
 
-        $uuid = $this->resolver->resolve('latest-2');
-        $this->assertEquals(4321, $uuid);
+        $ref = $this->resolver->resolve('latest-2');
+        $this->assertEquals(4321, $ref);
     }
 
     /**

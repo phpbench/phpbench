@@ -27,23 +27,22 @@ class LatestResolver implements RefResolverInterface
         $this->driverRegistry = $driver;
     }
 
-    public function supports(string $reference): bool
+    public function resolve(string $ref): ?string
     {
-        return 0 === strpos($reference, self::LATEST_KEYWORD);
-    }
+        if (0 !== strpos($ref, self::LATEST_KEYWORD)) {
+            return null;
+        }
 
-    public function resolve(string $uuid): string
-    {
-        if (strtolower($uuid) === self::LATEST_KEYWORD) {
+        if (strtolower($ref) === self::LATEST_KEYWORD) {
             return $this->getLatestUuid();
         }
 
-        if (preg_match('{' . self::LATEST_KEYWORD . '-([0-9]+)}', $uuid, $matches)) {
+        if (preg_match('{' . self::LATEST_KEYWORD . '-([0-9]+)}', $ref, $matches)) {
             return $this->getNthUuid($matches[1]);
         }
 
         throw new RuntimeException(sprintf(
-            'Could not resolve UUID "%s"', $uuid
+            'Could not resolve ref "%s"', $ref
         ));
     }
 
