@@ -1,8 +1,8 @@
 CHANGELOG
 =========
 
-master
-------
+1.0.0-alpha-4
+-------------
 
 Bug fixes:
 
