@@ -50,7 +50,7 @@ class SuiteCollectionHandler
 
     public static function configure(Command $command): void
     {
-        $command->addOption('ref', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Run UUID');
+        $command->addOption('ref', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Reference to an existing run - can be a UUID or tag or special word (e.g. latest)');
         $command->addOption('file', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Report XML file');
     }
 
