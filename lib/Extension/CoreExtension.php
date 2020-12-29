@@ -77,10 +77,10 @@ use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Storage\Driver\Xml\XmlDriver;
 use PhpBench\Storage\StorageRegistry;
-use PhpBench\Storage\UuidResolver\ChainResolver;
-use PhpBench\Storage\UuidResolver\LatestResolver;
-use PhpBench\Storage\UuidResolver\TagResolver;
-use PhpBench\Storage\UuidResolverInterface;
+use PhpBench\Storage\RefResolver\ChainResolver;
+use PhpBench\Storage\RefResolver\LatestResolver;
+use PhpBench\Storage\RefResolver\TagResolver;
+use PhpBench\Storage\RefResolverInterface;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\ArgvInput;
@@ -398,7 +398,7 @@ class CoreExtension implements ExtensionInterface
             return new SuiteCollectionHandler(
                 $container->get(XmlDecoder::class),
                 $container->get(self::SERVICE_REGISTRY_DRIVER),
-                $container->get(UuidResolverInterface::class)
+                $container->get(RefResolverInterface::class)
             );
         });
 
@@ -448,7 +448,7 @@ class CoreExtension implements ExtensionInterface
                 $container->get(ReportHandler::class),
                 $container->get(TimeUnitHandler::class),
                 $container->get(DumpHandler::class),
-                $container->get(UuidResolverInterface::class)
+                $container->get(RefResolverInterface::class)
             );
         }, [
             self::TAG_CONSOLE_COMMAND => []
@@ -697,7 +697,7 @@ class CoreExtension implements ExtensionInterface
             );
         }, [self::TAG_STORAGE_DRIVER => ['name' => 'xml']]);
 
-        $container->register(UuidResolverInterface::class, function (Container $container) {
+        $container->register(RefResolverInterface::class, function (Container $container) {
             $resolvers = [];
 
             foreach (array_keys($container->getServiceIdsForTag(self::TAG_UUID_RESOLVER)) as $serviceId) {

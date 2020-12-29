@@ -10,11 +10,11 @@
  *
  */
 
-namespace PhpBench\Storage\UuidResolver;
+namespace PhpBench\Storage\RefResolver;
 
-use PhpBench\Storage\UuidResolverInterface;
+use PhpBench\Storage\RefResolverInterface;
 
-class ChainResolver implements UuidResolverInterface
+class ChainResolver implements RefResolverInterface
 {
     /**
      * @var array

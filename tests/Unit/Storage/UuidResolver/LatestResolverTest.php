@@ -16,7 +16,7 @@ use PhpBench\Registry\Registry;
 use PhpBench\Storage\DriverInterface;
 use PhpBench\Storage\HistoryEntry;
 use PhpBench\Storage\HistoryIteratorInterface;
-use PhpBench\Storage\UuidResolver\LatestResolver;
+use PhpBench\Storage\RefResolver\LatestResolver;
 use PhpBench\Tests\TestCase;
 use RuntimeException;
 

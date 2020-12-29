@@ -12,7 +12,7 @@
 
 namespace PhpBench\Storage;
 
-interface UuidResolverInterface
+interface RefResolverInterface
 {
     public function supports(string $reference): bool;
 

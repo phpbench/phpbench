@@ -18,7 +18,7 @@ use PhpBench\Storage\DriverInterface;
 use PhpBench\Storage\Exception\TagNotFoundException;
 use PhpBench\Storage\HistoryEntry;
 use PhpBench\Storage\StorageRegistry;
-use PhpBench\Storage\UuidResolver\TagResolver;
+use PhpBench\Storage\RefResolver\TagResolver;
 use PhpBench\Tests\TestCase;
 
 class TagResolverTest extends TestCase

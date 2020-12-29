@@ -10,16 +10,16 @@
  *
  */
 
-namespace PhpBench\Storage\UuidResolver;
+namespace PhpBench\Storage\RefResolver;
 
 use PhpBench\Model\Tag;
 use PhpBench\Storage\Exception\InvalidTagException;
 use PhpBench\Storage\Exception\TagNotFoundException;
 use PhpBench\Storage\HistoryEntry;
 use PhpBench\Storage\StorageRegistry;
-use PhpBench\Storage\UuidResolverInterface;
+use PhpBench\Storage\RefResolverInterface;
 
-class TagResolver implements UuidResolverInterface
+class TagResolver implements RefResolverInterface
 {
     const PREFIX = 'tag:';
 

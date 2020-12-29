@@ -15,7 +15,7 @@ namespace PhpBench\Console\Command\Handler;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Registry;
 use PhpBench\Serializer\XmlDecoder;
-use PhpBench\Storage\UuidResolverInterface;
+use PhpBench\Storage\RefResolverInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -24,16 +24,20 @@ class SuiteCollectionHandler
 {
     private $xmlDecoder;
     private $storage;
-    private $uuidResolver;
+
+    /**
+     * @var RefResolverInterface
+     */
+    private $refResolver;
 
     public function __construct(
         XmlDecoder $xmlDecoder,
         Registry $storage,
-        UuidResolverInterface $uuidResolver
+        RefResolverInterface $refResolver
     ) {
         $this->xmlDecoder = $xmlDecoder;
         $this->storage = $storage;
-        $this->uuidResolver = $uuidResolver;
+        $this->refResolver = $refResolver;
     }
 
     public static function configure(Command $command): void
@@ -63,7 +67,7 @@ class SuiteCollectionHandler
 
         if ($uuids) {
             foreach ($uuids as $uuid) {
-                $uuid = $this->uuidResolver->resolve($uuid);
+                $uuid = $this->refResolver->resolve($uuid);
                 $collection->mergeCollection(
                     $this->storage->getService()->fetch($uuid)
                 );

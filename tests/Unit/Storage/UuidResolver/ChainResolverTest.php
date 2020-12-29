@@ -12,8 +12,8 @@
 
 namespace PhpBench\Tests\Unit\Storage\UuidResolver;
 
-use PhpBench\Storage\UuidResolver\ChainResolver;
-use PhpBench\Storage\UuidResolverInterface;
+use PhpBench\Storage\RefResolver\ChainResolver;
+use PhpBench\Storage\RefResolverInterface;
 use PhpBench\Tests\TestCase;
 
 class ChainResolverTest extends TestCase
@@ -28,7 +28,7 @@ class ChainResolverTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->resolver = $this->prophesize(UuidResolverInterface::class);
+        $this->resolver = $this->prophesize(RefResolverInterface::class);
     }
 
     public function testReturnsUuidIfNoResolverIntervened()
