@@ -21,8 +21,6 @@ use PhpBench\Storage\RefResolverInterface;
 
 class TagResolver implements RefResolverInterface
 {
-    const PREFIX = 'tag:';
-
     /**
      * @var StorageRegistry
      */
@@ -32,21 +30,7 @@ class TagResolver implements RefResolverInterface
     {
         $this->storageRegistry = $storageRegistry;
     }
-
-    public function supports(string $reference): bool
-    {
-        if (0 === strpos($reference, self::PREFIX)) {
-            if (strlen($reference) === 4) {
-                return false;
-            }
-
-            return true;
-        }
-
-        return false;
-    }
-
-    public function resolve(string $reference): string
+    public function resolve(string $reference): ?string
     {
         $history = $this->storageRegistry->getService()->history();
 
@@ -64,15 +48,7 @@ class TagResolver implements RefResolverInterface
             }
         }
 
-        if ($offset > 0) {
-            throw new TagNotFoundException(sprintf(
-                'Could not find entry %s entries before tag "%s"', $offset, $tag
-            ));
-        }
-
-        throw new TagNotFoundException(sprintf(
-            'Could not find entry for tag "%s"', $tag
-        ));
+        return null;
     }
 
     /**
@@ -80,7 +56,7 @@ class TagResolver implements RefResolverInterface
      */
     private function tagAndOffset(string $reference): array
     {
-        if (!preg_match(sprintf('{^tag:(%s)?-?([0-9]+)?$}', Tag::REGEX_PATTERN), $reference, $matches)) {
+        if (!preg_match(sprintf('{^(%s)?-?([0-9]+)?$}', Tag::REGEX_PATTERN), $reference, $matches)) {
             throw new InvalidTagException(sprintf(
                 'Could not parse tag "%s"', $reference
             ));
