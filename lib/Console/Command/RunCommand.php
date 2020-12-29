@@ -169,7 +169,7 @@ EOT
 
     private function resolveBaselines(InputInterface $input): SuiteCollection
     {
-        if ($input->getOption('uuid') || $input->getOption('file')) {
+        if ($input->getOption('ref') || $input->getOption('file')) {
             return $this->suiteCollectionHandler->suiteCollectionFromInput($input);
         }
 

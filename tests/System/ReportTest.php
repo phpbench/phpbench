@@ -31,14 +31,14 @@ class ReportTest extends SystemTestCase
     }
 
     /**
-     * It should generate a report when given the --uuid option.
+     * It should generate a report when given the --ref option.
      */
     public function testGenerateReportFromUuid()
     {
         $document = $this->getResult(null, ' --store');
-        $uuid = $document->evaluate('string(./suite/@uuid)');
+        $ref = $document->evaluate('string(./suite/@uuid)');
         $process = $this->phpbench(
-            'report --uuid=' . $uuid . ' --report=default'
+            'report --ref=' . $ref . ' --report=default'
         );
         $this->assertEquals(0, $process->getExitCode());
         $output = $process->getOutput();
