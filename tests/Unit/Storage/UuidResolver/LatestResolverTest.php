@@ -10,7 +10,7 @@
  *
  */
 
-namespace PhpBench\Tests\Unit\Storage\UuidResolver;
+namespace PhpBench\Tests\Unit\Storage\RefResolver;
 
 use PhpBench\Registry\Registry;
 use PhpBench\Storage\DriverInterface;

@@ -14,7 +14,5 @@ namespace PhpBench\Storage;
 
 interface RefResolverInterface
 {
-    public function supports(string $reference): bool;
-
-    public function resolve(string $reference): string;
+    public function resolve(string $reference): ?string;
 }

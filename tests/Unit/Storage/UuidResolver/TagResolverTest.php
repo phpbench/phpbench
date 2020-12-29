@@ -10,7 +10,7 @@
  *
  */
 
-namespace PhpBench\Tests\Unit\Storage\UuidResolver;
+namespace PhpBench\Tests\Unit\Storage\RefResolver;
 
 use PhpBench\Model\Tag;
 use PhpBench\Storage\Driver\Fake\FakeHistoryIterator;

@@ -10,11 +10,12 @@
  *
  */
 
-namespace PhpBench\Tests\Unit\Storage\UuidResolver;
+namespace PhpBench\Tests\Unit\Storage\RefResolver;
 
 use PhpBench\Storage\RefResolver\ChainResolver;
 use PhpBench\Storage\RefResolverInterface;
 use PhpBench\Tests\TestCase;
+use Prophecy\Prophecy\ObjectProphecy;
 
 class ChainResolverTest extends TestCase
 {
@@ -22,7 +23,7 @@ class ChainResolverTest extends TestCase
     const TEST_UUID = 'uuid';
 
     /**
-     * @var UuidResolverInterface|ObjectProphecy
+     * @var RefResolverInterface|ObjectProphecy
      */
     private $resolver;
 
@@ -31,16 +32,15 @@ class ChainResolverTest extends TestCase
         $this->resolver = $this->prophesize(RefResolverInterface::class);
     }
 
-    public function testReturnsUuidIfNoResolverIntervened()
+    public function testNullIfNoResolverIntervened(): void
     {
         $chainResolver = new ChainResolver([]);
-        $this->assertEquals(self::TEST_REFERENCE, $chainResolver->resolve(self::TEST_REFERENCE));
+        $this->assertEquals(null, $chainResolver->resolve(self::TEST_REFERENCE));
     }
 
-    public function testChainResolve()
+    public function testChainResolve(): void
     {
         $chainResolver = new ChainResolver([$this->resolver->reveal()]);
-        $this->resolver->supports(self::TEST_REFERENCE)->willReturn(true);
         $this->resolver->resolve(self::TEST_REFERENCE)->willReturn(self::TEST_UUID);
 
         $uuid = $chainResolver->resolve(self::TEST_REFERENCE);
@@ -48,14 +48,13 @@ class ChainResolverTest extends TestCase
         $this->assertEquals(self::TEST_UUID, $uuid);
     }
 
-    public function testChainResolveNoSupport()
+    public function testNullWhenChainResolveNoSupport(): void
     {
         $chainResolver = new ChainResolver([$this->resolver->reveal()]);
-        $this->resolver->supports(self::TEST_REFERENCE)->willReturn(false);
-        $this->resolver->resolve(self::TEST_REFERENCE)->shouldNotBeCalled();
+        $this->resolver->resolve(self::TEST_REFERENCE)->willReturn(null);
 
         $uuid = $chainResolver->resolve(self::TEST_REFERENCE);
 
-        $this->assertEquals(self::TEST_REFERENCE, $uuid);
+        $this->assertEquals(null, $uuid);
     }
 }
