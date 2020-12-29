@@ -10,7 +10,7 @@
  *
  */
 
-namespace PhpBench\Tests\Unit\Storage\RefResolver;
+namespace PhpBench\Tests\Unit\Storage\UuidResolver;
 
 use PhpBench\Model\Tag;
 use PhpBench\Storage\Driver\Fake\FakeHistoryIterator;
@@ -18,7 +18,7 @@ use PhpBench\Storage\DriverInterface;
 use PhpBench\Storage\Exception\TagNotFoundException;
 use PhpBench\Storage\HistoryEntry;
 use PhpBench\Storage\StorageRegistry;
-use PhpBench\Storage\RefResolver\TagResolver;
+use PhpBench\Storage\UuidResolver\TagResolver;
 use PhpBench\Tests\TestCase;
 
 class TagResolverTest extends TestCase

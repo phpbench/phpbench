@@ -15,8 +15,8 @@ namespace PhpBench\Console\Command\Handler;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Registry;
 use PhpBench\Serializer\XmlDecoder;
-use PhpBench\Storage\RefResolver;
-use PhpBench\Storage\RefResolverInterface;
+use PhpBench\Storage\UuidResolver;
+use PhpBench\Storage\UuidResolverInterface;
 use PhpBench\Storage\StorageRegistry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -36,14 +36,14 @@ class SuiteCollectionHandler
     private $storage;
 
     /**
-     * @var RefResolver
+     * @var UuidResolver
      */
     private $refResolver;
 
     public function __construct(
         XmlDecoder $xmlDecoder,
         StorageRegistry $storage,
-        RefResolver $refResolver
+        UuidResolver $refResolver
     ) {
         $this->xmlDecoder = $xmlDecoder;
         $this->storage = $storage;

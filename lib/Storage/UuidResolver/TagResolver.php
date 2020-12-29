@@ -10,16 +10,16 @@
  *
  */
 
-namespace PhpBench\Storage\RefResolver;
+namespace PhpBench\Storage\UuidResolver;
 
 use PhpBench\Model\Tag;
 use PhpBench\Storage\Exception\InvalidTagException;
 use PhpBench\Storage\Exception\TagNotFoundException;
 use PhpBench\Storage\HistoryEntry;
 use PhpBench\Storage\StorageRegistry;
-use PhpBench\Storage\RefResolverInterface;
+use PhpBench\Storage\UuidResolverInterface;
 
-class TagResolver implements RefResolverInterface
+class TagResolver implements UuidResolverInterface
 {
     /**
      * @var StorageRegistry

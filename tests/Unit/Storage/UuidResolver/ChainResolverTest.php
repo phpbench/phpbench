@@ -10,10 +10,10 @@
  *
  */
 
-namespace PhpBench\Tests\Unit\Storage\RefResolver;
+namespace PhpBench\Tests\Unit\Storage\UuidResolver;
 
-use PhpBench\Storage\RefResolver\ChainResolver;
-use PhpBench\Storage\RefResolverInterface;
+use PhpBench\Storage\UuidResolver\ChainResolver;
+use PhpBench\Storage\UuidResolverInterface;
 use PhpBench\Tests\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 
@@ -23,13 +23,13 @@ class ChainResolverTest extends TestCase
     const TEST_UUID = 'uuid';
 
     /**
-     * @var RefResolverInterface|ObjectProphecy
+     * @var UuidResolverInterface|ObjectProphecy
      */
     private $resolver;
 
     protected function setUp(): void
     {
-        $this->resolver = $this->prophesize(RefResolverInterface::class);
+        $this->resolver = $this->prophesize(UuidResolverInterface::class);
     }
 
     public function testNullIfNoResolverIntervened(): void

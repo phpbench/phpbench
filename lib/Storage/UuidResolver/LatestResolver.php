@@ -10,13 +10,13 @@
  *
  */
 
-namespace PhpBench\Storage\RefResolver;
+namespace PhpBench\Storage\UuidResolver;
 
 use PhpBench\Registry\Registry;
-use PhpBench\Storage\RefResolverInterface;
+use PhpBench\Storage\UuidResolverInterface;
 use RuntimeException;
 
-class LatestResolver implements RefResolverInterface
+class LatestResolver implements UuidResolverInterface
 {
     const LATEST_KEYWORD = 'latest';
 

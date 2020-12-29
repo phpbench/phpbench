@@ -10,11 +10,11 @@
  *
  */
 
-namespace PhpBench\Storage\RefResolver;
+namespace PhpBench\Storage\UuidResolver;
 
-use PhpBench\Storage\RefResolverInterface;
+use PhpBench\Storage\UuidResolverInterface;
 
-class ChainResolver implements RefResolverInterface
+class ChainResolver implements UuidResolverInterface
 {
     /**
      * @var array
@@ -28,7 +28,7 @@ class ChainResolver implements RefResolverInterface
 
     public function resolve(string $reference): ?string
     {
-        /** @var RefResolverInterface $resolver */
+        /** @var UuidResolverInterface $resolver */
         foreach ($this->resolvers as $resolver) {
             $ref = $resolver->resolve($reference);
 
