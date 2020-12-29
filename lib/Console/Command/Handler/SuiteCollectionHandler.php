@@ -13,11 +13,9 @@
 namespace PhpBench\Console\Command\Handler;
 
 use PhpBench\Model\SuiteCollection;
-use PhpBench\Registry\Registry;
 use PhpBench\Serializer\XmlDecoder;
-use PhpBench\Storage\UuidResolver;
-use PhpBench\Storage\UuidResolverInterface;
 use PhpBench\Storage\StorageRegistry;
+use PhpBench\Storage\UuidResolver;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

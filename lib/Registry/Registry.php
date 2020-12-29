@@ -24,6 +24,7 @@ use Psr\Container\ContainerInterface;
  * $reg->getService($config['renderer']);
  * $reg->render($something, $config);
  * ```
+ *
  * @template T of object
  */
 class Registry

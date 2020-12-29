@@ -15,7 +15,6 @@ namespace PhpBench\Tests\Unit\Storage\UuidResolver;
 use PhpBench\Model\Tag;
 use PhpBench\Storage\Driver\Fake\FakeHistoryIterator;
 use PhpBench\Storage\DriverInterface;
-use PhpBench\Storage\Exception\TagNotFoundException;
 use PhpBench\Storage\HistoryEntry;
 use PhpBench\Storage\StorageRegistry;
 use PhpBench\Storage\UuidResolver\TagResolver;

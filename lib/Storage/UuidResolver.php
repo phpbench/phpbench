@@ -2,8 +2,6 @@
 
 namespace PhpBench\Storage;
 
-use PhpBench\Storage\UuidResolverInterface;
-
 /**
  * Wrapper class for the UUID resolver interface which will always return the
  * UUID
