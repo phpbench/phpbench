@@ -66,11 +66,13 @@ class TestUtil
     {
         $variants = self::createSuite()->getVariants();
         $variant = reset($variants);
+
         if (!$variant) {
             throw new RuntimeException(sprintf(
                 'Could not find a variant in test suite'
             ));
         }
+
         return $variant;
     }
 

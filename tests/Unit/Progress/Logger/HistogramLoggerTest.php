@@ -18,19 +18,14 @@ use PhpBench\Model\ParameterSet;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Variant;
 use PhpBench\Progress\Logger\HistogramLogger;
-use PhpBench\Tests\TestCase;
 use PhpBench\Tests\Util\TestUtil;
-use PhpBench\Util\TimeUnit;
-use Symfony\Component\Console\Output\BufferedOutput;
 
-class HistogramLoggerTest extends TestCase
+class HistogramLoggerTest extends LoggerTestCase
 {
     protected function setUp(): void
     {
-        $this->output = new BufferedOutput();
-        $this->timeUnit = new TimeUnit(TimeUnit::MICROSECONDS, TimeUnit::MILLISECONDS);
-
-        $this->logger = new HistogramLogger($this->output, $this->timeUnit);
+        parent::setUp();
+        $this->logger = new HistogramLogger($this->output, $this->variantFormatter, $this->timeUnit);
         $this->benchmark = $this->prophesize(Benchmark::class);
         $this->subject = $this->prophesize(Subject::class);
         $this->iteration = $this->prophesize(Iteration::class);
@@ -124,7 +119,7 @@ class HistogramLoggerTest extends TestCase
         $this->logger->variantEnd($this->variant);
         $display = $this->output->fetch();
         $this->assertStringContainsString(
-            '1  (σ = 0.000ms ) -2σ [        █        ] +2σ 0.010 ms (±0.00%)',
+            '1  (σ = 0.000ms ) -2σ [        █        ] +2σ summray',
             $display
         );
     }

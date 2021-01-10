@@ -34,10 +34,19 @@ abstract class PhpBenchLogger extends NullLogger
      */
     public $output;
 
-    public function __construct(OutputInterface $output, TimeUnit $timeUnit = null)
-    {
+    /**
+     * @var VariantSummaryFormatter
+     */
+    private $formatter;
+
+    public function __construct(
+        OutputInterface $output,
+        VariantSummaryFormatter $formatter,
+        TimeUnit $timeUnit = null
+    ) {
         $this->timeUnit = $timeUnit;
         $this->output = $output;
+        $this->formatter = $formatter;
     }
 
     public function startSuite(Suite $suite): void
@@ -155,12 +164,12 @@ abstract class PhpBenchLogger extends NullLogger
 
     public function formatIterationsFullSummary(Variant $variant): string
     {
-        return (new VariantSummaryFormatter($this->timeUnit))->formatVariant($variant);
+        return $this->formatter->formatVariant($variant);
     }
 
     public function formatIterationsShortSummary(Variant $variant): string
     {
-        return (new VariantSummaryFormatter($this->timeUnit))->formatVariant($variant);
+        return $this->formatter->formatVariant($variant);
     }
 
     protected function formatIterationTime(Iteration $iteration): string

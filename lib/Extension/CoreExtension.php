@@ -61,6 +61,7 @@ use PhpBench\Progress\Logger\NullLogger;
 use PhpBench\Progress\Logger\TravisLogger;
 use PhpBench\Progress\Logger\VerboseLogger;
 use PhpBench\Progress\LoggerRegistry;
+use PhpBench\Progress\VariantSummaryFormatter;
 use PhpBench\Reflection\RemoteReflector;
 use PhpBench\Registry\ConfigurableRegistry;
 use PhpBench\Remote\Launcher;
@@ -133,6 +134,9 @@ class CoreExtension implements ExtensionInterface
     private const SERVICE_REGISTRY_GENERATOR = 'report.registry.generator';
     private const SERVICE_REGISTRY_LOGGER = 'progress_logger.registry';
     private const SERVICE_REGISTRY_RENDERER = 'report.registry.renderer';
+    private const SERVICE_VARIANT_SUMMARY_FORMATTER = 'progress_logger.variant_summary_formatter';
+    private const PARAM_PROGRESS_SUMMARY_FORMAT = 'progress_summary_variant_format';
+    private const PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT = 'progress_summary_baseline_format';
 
     public function configure(OptionsResolver $resolver): void
     {
@@ -160,6 +164,8 @@ class CoreExtension implements ExtensionInterface
             self::PARAM_REMOTE_SCRIPT_PATH => null,
             self::PARAM_REMOTE_SCRIPT_REMOVE => true,
             self::PARAM_DISABLE_OUTPUT => false,
+            self::PARAM_PROGRESS_SUMMARY_FORMAT => '%variant.mode% %time_unit% (±%variant.rstdev%%)',
+            self::PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT => '%variant.mode%%time_unit% vs %baseline.mode%%time_unit% (±%variant.rstdev%%) <%result_style%>%percent_difference%%</>',
         ]);
         $resolver->setAllowedTypes(self::PARAM_BOOTSTRAP, ['string', 'null']);
         $resolver->setAllowedTypes(self::PARAM_PATH, ['string', 'array', 'null']);
@@ -470,6 +476,13 @@ class CoreExtension implements ExtensionInterface
 
     private function registerProgressLoggers(Container $container): void
     {
+        $container->register(VariantSummaryFormatter::class, function (Container $container) {
+            return new VariantSummaryFormatter(
+                $container->get(TimeUnit::class),
+                $container->getParameter(self::PARAM_PROGRESS_SUMMARY_FORMAT),
+                $container->getParameter(self::PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT)
+            );
+        });
         $container->register(self::SERVICE_REGISTRY_LOGGER, function (Container $container) {
             $registry = new LoggerRegistry();
 
@@ -484,19 +497,36 @@ class CoreExtension implements ExtensionInterface
         });
 
         $container->register(DotsLogger::class, function (Container $container) {
-            return new DotsLogger($container->get(OutputInterface::class), $container->get(TimeUnit::class));
+            return new DotsLogger(
+                $container->get(OutputInterface::class),
+                $container->get(VariantSummaryFormatter::class),
+                $container->get(TimeUnit::class)
+            );
         }, [self::TAG_PROGRESS_LOGGER => ['name' => 'dots']]);
 
         $container->register(DotsLogger::class .'.show', function (Container $container) {
-            return new DotsLogger($container->get(OutputInterface::class), $container->get(TimeUnit::class), true);
+            return new DotsLogger(
+                $container->get(OutputInterface::class),
+                $container->get(VariantSummaryFormatter::class),
+                $container->get(TimeUnit::class),
+                true
+            );
         }, [self::TAG_PROGRESS_LOGGER => ['name' => 'classdots']]);
 
         $container->register(VerboseLogger::class, function (Container $container) {
-            return new VerboseLogger($container->get(OutputInterface::class), $container->get(TimeUnit::class));
+            return new VerboseLogger(
+                $container->get(OutputInterface::class),
+                $container->get(VariantSummaryFormatter::class),
+                $container->get(TimeUnit::class)
+            );
         }, [self::TAG_PROGRESS_LOGGER => ['name' => 'verbose']]);
 
         $container->register(TravisLogger::class, function (Container $container) {
-            return new TravisLogger($container->get(OutputInterface::class), $container->get(TimeUnit::class));
+            return new TravisLogger(
+                $container->get(OutputInterface::class),
+                $container->get(VariantSummaryFormatter::class),
+                $container->get(TimeUnit::class)
+            );
         }, [self::TAG_PROGRESS_LOGGER => ['name' => 'travis']]);
 
         $container->register(NullLogger::class, function (Container $container) {
@@ -504,11 +534,19 @@ class CoreExtension implements ExtensionInterface
         }, [self::TAG_PROGRESS_LOGGER => ['name' => 'none']]);
 
         $container->register(BlinkenLogger::class, function (Container $container) {
-            return new BlinkenLogger($container->get(OutputInterface::class), $container->get(TimeUnit::class));
+            return new BlinkenLogger(
+                $container->get(OutputInterface::class),
+                $container->get(VariantSummaryFormatter::class),
+                $container->get(TimeUnit::class)
+            );
         }, [self::TAG_PROGRESS_LOGGER => ['name' => 'blinken']]);
 
         $container->register(HistogramLogger::class, function (Container $container) {
-            return new HistogramLogger($container->get(OutputInterface::class), $container->get(TimeUnit::class));
+            return new HistogramLogger(
+                $container->get(OutputInterface::class),
+                $container->get(VariantSummaryFormatter::class),
+                $container->get(TimeUnit::class)
+            );
         }, [self::TAG_PROGRESS_LOGGER => ['name' => 'histogram']]);
     }
 

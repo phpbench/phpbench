@@ -58,8 +58,7 @@ final class VariantSummaryFormatter
         TimeUnit $timeUnit,
         string $format = self::DEFAULT_FORMAT,
         string $baselineFormat = self::BASELINE_FORMAT
-    )
-    {
+    ) {
         $this->format = $format;
         $this->timeUnit = $timeUnit;
         $this->baselineFormat = $baselineFormat;
@@ -134,6 +133,7 @@ final class VariantSummaryFormatter
             if (!$results->count()) {
                 return self::FORMAT_NONE;
             }
+
             if ($results->failures()->count()) {
                 return self::FORMAT_FAILURE;
             }

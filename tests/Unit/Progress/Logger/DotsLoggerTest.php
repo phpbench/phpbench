@@ -19,19 +19,31 @@ use PhpBench\Model\Iteration;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Variant;
 use PhpBench\Progress\Logger\DotsLogger;
-use PhpBench\Tests\TestCase;
-use PhpBench\Util\TimeUnit;
-use Prophecy\Argument;
-use Symfony\Component\Console\Output\OutputInterface;
+use Prophecy\Prophecy\ObjectProphecy;
 
-class DotsLoggerTest extends TestCase
+class DotsLoggerTest extends LoggerTestCase
 {
+    /**
+     * @var ObjectProphecy|Benchmark
+     */
+    private $benchmark;
+    /**
+     * @var ObjectProphecy|Subject
+     */
+    private $subject;
+    /**
+     * @var ObjectProphecy|Iteration
+     */
+    private $iteration;
+    /**
+     * @var ObjectProphecy|Variant
+     */
+    private $variant;
+
     protected function setUp(): void
     {
-        $this->tearDown();
+        parent::setUp();
 
-        $this->output = $this->prophesize(OutputInterface::class);
-        $this->timeUnit = new TimeUnit(TimeUnit::MICROSECONDS, TimeUnit::MILLISECONDS);
         $this->benchmark = $this->prophesize(Benchmark::class);
         $this->subject = $this->prophesize(Subject::class);
         $this->iteration = $this->prophesize(Iteration::class);
@@ -46,102 +58,101 @@ class DotsLoggerTest extends TestCase
     /**
      * It should output a simple . at the end of a subject in CI mode.
      */
-    public function testIterationsEndWithCI()
+    public function testIterationsEndWithCI(): void
     {
         $logger = $this->createLogger(true);
-        $this->output->write('.')->shouldBeCalled();
         $this->variant->getRejectCount()->willReturn(0);
         $this->variant->hasErrorStack()->willReturn(false);
         $this->variant->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant->reveal(), []));
         $logger->variantEnd($this->variant->reveal());
+        self::assertEquals('.', $this->output->fetch());
     }
 
     /**
      * It should reset the line and dump the buffer when NOT in CI mode.
      */
-    public function testIterationsEnd()
+    public function testIterationsEnd(): void
     {
         $logger = $this->createLogger(false);
         $this->variant->getRejectCount()->willReturn(0);
         $this->variant->hasErrorStack()->willReturn(false);
         $this->variant->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant->reveal(), []));
-        $this->output->write("\x0D. ")->shouldBeCalled();
         $logger->variantEnd($this->variant->reveal());
+        self::assertEquals("\x0D. ", $this->output->fetch());
     }
 
     /**
      * It should log an error.
      */
-    public function testIterationsEndException()
+    public function testIterationsEndException(): void
     {
         $logger = $this->createLogger(false);
         $this->variant->hasErrorStack()->willReturn(true);
         $this->variant->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant->reveal(), []));
         $this->variant->getRejectCount()->willReturn(0);
-        $this->output->write("\x0D<error>E</error> ")->shouldBeCalled();
         $logger->variantEnd($this->variant->reveal());
+        self::assertEquals("\x0DE ", $this->output->fetch());
     }
 
     /**
      * It should log a failure.
      */
-    public function testIterationsEndFailure()
+    public function testIterationsEndFailure(): void
     {
         $logger = $this->createLogger(false);
         $this->variant->hasErrorStack()->willReturn(false);
         $this->variant->getRejectCount()->willReturn(0);
         $this->variant->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant->reveal(), [AssertionResult::fail()]));
-        $this->output->write("\x0D<error>F</error> ")->shouldBeCalled();
         $logger->variantEnd($this->variant->reveal());
+        self::assertEquals("\x0DF ", $this->output->fetch());
     }
 
     /**
      * It should return early if the rejection count > 0.
      */
-    public function testIterationsEndRejectionsReturnEarly()
+    public function testIterationsEndRejectionsReturnEarly(): void
     {
         $logger = $this->createLogger(false);
         $this->variant->getRejectCount()->willReturn(5);
-        $this->output->write(Argument::any())->shouldNotBeCalled();
         $logger->variantEnd($this->variant->reveal());
+        self::assertEquals('', $this->output->fetch());
     }
 
     /**
      * It should do nothing in CI mode at the end of an iteration.
      */
-    public function testDoNothingCiIterations()
+    public function testDoNothingCiIterations(): void
     {
         $logger = $this->createLogger(true);
-        $this->output->write(Argument::any())->shouldNotBeCalled();
         $logger->iterationEnd($this->iteration->reveal());
+        self::assertEquals('', $this->output->fetch());
     }
 
     /**
      * It should show a spinner when not in CI mode.
      */
-    public function testIteration()
+    public function testIteration(): void
     {
         $logger = $this->createLogger(false);
 
         $this->iteration->getIndex()->willReturn(0, 1, 2, 3, 4);
 
-        $this->output->write("\x0D|")->shouldBeCalled();
-        $this->output->write("\x0D/")->shouldBeCalled();
-        $this->output->write("\x0D-")->shouldBeCalled();
-        $this->output->write("\x0D|")->shouldBeCalled();
-        $this->output->write("\x0D\\")->shouldBeCalled();
-
         $logger->iterationStart($this->iteration->reveal());
         $logger->iterationStart($this->iteration->reveal());
         $logger->iterationStart($this->iteration->reveal());
         $logger->iterationStart($this->iteration->reveal());
         $logger->iterationStart($this->iteration->reveal());
+        self::assertEquals("\r|\r/\r-\r\\\r|", $this->output->fetch());
     }
 
-    private function createLogger($ci = false)
+    private function createLogger(bool $ci = false): DotsLogger
     {
         putenv('CONTINUOUS_INTEGRATION' . ($ci ? '=1' : '=0'));
-        $logger = new DotsLogger($this->output->reveal(), $this->timeUnit);
+        $logger = new DotsLogger(
+            $this->output,
+            $this->variantFormatter,
+            $this->timeUnit
+        );
 
         return $logger;
     }

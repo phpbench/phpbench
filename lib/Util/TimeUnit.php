@@ -111,8 +111,7 @@ class TimeUnit
         string $destUnit = self::MICROSECONDS,
         string $mode = self::MODE_TIME,
         int $precision = 3
-    )
-    {
+    ) {
         $this->sourceUnit = $sourceUnit;
         $this->destUnit = $destUnit;
         $this->mode = $mode;
