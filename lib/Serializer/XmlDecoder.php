@@ -236,16 +236,6 @@ class XmlDecoder
             return;
         }
 
-        $warningEls = $variantEl->query('.//warning');
-
-        if ($warningEls->length) {
-            $warnings = [];
-
-            foreach ($warningEls as $warningEl) {
-                $variant->addAssertionResult(AssertionResult::tolerated($warningEl->nodeValue));
-            }
-        }
-
         $failureEls = $variantEl->query('.//failure');
 
         if ($failureEls->length) {

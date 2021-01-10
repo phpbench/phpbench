@@ -76,7 +76,6 @@ abstract class PhpBenchLoggerTest extends TestCase
     {
         $this->setUpSummary();
         $this->suite->getFailures()->willReturn([]);
-        $this->suite->getWarnings()->willReturn([]);
         $this->suite->getErrorStacks()->willReturn([]);
         $this->output->writeln(Argument::any())->shouldBeCalled();
         $this->logger->endSuite($this->suite->reveal());
@@ -99,7 +98,6 @@ abstract class PhpBenchLoggerTest extends TestCase
 
         $this->setUpSummary();
         $this->suite->getFailures()->willReturn([]);
-        $this->suite->getWarnings()->willReturn([]);
         $this->suite->getErrorStacks()->willReturn([$errorStack]);
         $errorStack->getVariant()->willReturn($this->variant->reveal());
         $this->variant->getSubject()->willReturn($this->subject->reveal());
@@ -120,13 +118,12 @@ abstract class PhpBenchLoggerTest extends TestCase
 
     public function testEndSuiteFailures()
     {
-        $failure1 = AssertionResult::tolerated('Failed!');
-        $failure2 = AssertionResult::tolerated('Failed!');
+        $failure1 = AssertionResult::fail('Failed!');
+        $failure2 = AssertionResult::fail('Failed!');
         $failures = new VariantAssertionResults($this->variant->reveal(), [$failure1, $failure2]);
 
         $this->setUpSummary();
         $this->suite->getFailures()->willReturn([$failures]);
-        $this->suite->getWarnings()->willReturn([]);
         $this->suite->getErrorStacks()->willReturn([]);
         $this->variant->getSubject()->willReturn($this->subject->reveal());
         $this->variant->getParameterSet()->willReturn(new ParameterSet('one',[]));
@@ -135,29 +132,6 @@ abstract class PhpBenchLoggerTest extends TestCase
         $this->benchmark->getClass()->willReturn('Namespace\Foo');
 
         $this->output->writeln(Argument::containingString('1 variants failed'))->shouldBeCalled();
-        $this->output->writeln(Argument::any())->shouldBeCalled();
-        $this->output->write(Argument::any())->shouldBeCalled();
-
-        $this->logger->endSuite($this->suite->reveal());
-    }
-
-    public function testEndSuiteWarnings()
-    {
-        $warning1 = AssertionResult::tolerated('Failed!');
-        $warning2 = AssertionResult::tolerated('Failed!');
-        $warnings = new VariantAssertionResults($this->variant->reveal(), [$warning1, $warning2]);
-
-        $this->setUpSummary();
-        $this->suite->getFailures()->willReturn([]);
-        $this->suite->getWarnings()->willReturn([$warnings]);
-        $this->suite->getErrorStacks()->willReturn([]);
-        $this->variant->getSubject()->willReturn($this->subject->reveal());
-        $this->variant->getParameterSet()->willReturn(new ParameterSet('one',[]));
-        $this->subject->getBenchmark()->willReturn($this->benchmark->reveal());
-        $this->subject->getName()->willReturn('bar');
-        $this->benchmark->getClass()->willReturn('Namespace\Foo');
-
-        $this->output->writeln(Argument::containingString('1 variants have warnings'))->shouldBeCalled();
         $this->output->writeln(Argument::any())->shouldBeCalled();
         $this->output->write(Argument::any())->shouldBeCalled();
 
@@ -178,7 +152,6 @@ abstract class PhpBenchLoggerTest extends TestCase
         $meanStDev = 321;
         $meanRelStDev = 231;
         $nbFailures = 0;
-        $nbWarnings = 0;
         $nbAssertions = 0;
 
         $this->summary->getNbSubjects()->willReturn($nbSubjects);
@@ -189,7 +162,6 @@ abstract class PhpBenchLoggerTest extends TestCase
         $this->summary->getNbRevolutions()->willReturn($nbRevolutions);
         $this->summary->getNbRejects()->willReturn($nbRejects);
         $this->summary->getNbFailures()->willReturn($nbFailures);
-        $this->summary->getNbWarnings()->willReturn($nbWarnings);
         $this->summary->getMinTime()->willReturn($min);
         $this->summary->getMeanTime()->willReturn($mean);
         $this->summary->getModeTime()->willReturn($mode);

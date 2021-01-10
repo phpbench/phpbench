@@ -7,6 +7,7 @@ develop
 Backward compatiblity breaks:
 
 - `--uuid` renamed to `--ref` and `tag:` prefix removed #740
+- No warnings - if assertion fails within tolerance zone then it is OK
 
 1.0.0-alpha-4
 -------------

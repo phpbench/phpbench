@@ -24,7 +24,6 @@ class Summary
     private $nbRejects = 0;
     private $nbRevolutions = 0;
     private $nbFailures = 0;
-    private $nbWarnings = 0;
     private $nbAssertions = 0;
     private $nbErrors = 0;
     private $stats = [
@@ -66,7 +65,6 @@ class Summary
                     $this->nbIterations += count($variant);
                     $this->nbRevolutions += $variant->getRevolutions();
                     $this->nbFailures += $variant->getAssertionResults()->failures()->count();
-                    $this->nbWarnings += $variant->getAssertionResults()->warnings()->count();
                     $this->nbAssertions += $variant->getAssertionResults()->count();
                     $this->nbErrors += $variant->getErrorStack()->count();
                     $this->nbRejects += $variant->getRejectCount();
@@ -124,11 +122,6 @@ class Summary
     public function getNbErrors(): int
     {
         return $this->nbErrors;
-    }
-
-    public function getNbWarnings(): int
-    {
-        return $this->nbWarnings;
     }
 
     public function getNbAssertions(): int

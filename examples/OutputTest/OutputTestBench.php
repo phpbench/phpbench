@@ -6,14 +6,10 @@ use RuntimeException;
 
 class OutputTestBench
 {
-    public function benchStandard()
-    {
-    }
-
     /**
      * @Assert("10ms <= 9ms +/- 1ms")
      */
-    public function benchWarning()
+    public function benchStandard()
     {
     }
 

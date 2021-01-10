@@ -64,7 +64,6 @@ abstract class PhpBenchLogger extends NullLogger
 
         $this->listErrors($suite);
         $this->listFailures($suite);
-        $this->listWarnings($suite);
 
         $this->output->writeln(sprintf(
             '(best [mean mode] worst) = %s [%s %s] %s (%s)',
@@ -87,22 +86,17 @@ abstract class PhpBenchLogger extends NullLogger
                 return sprintf('<error>%s</>', $message);
             }
 
-            if ($summary->getNbWarnings()) {
-                return sprintf('<warning>%s</>', $message);
-            }
-           
             if ($summary->getNbAssertions()) {
                 return sprintf('<success>%s</>', $message);
             }
 
             return $message;
         })($suite->getSummary(), sprintf(
-            'Subjects: %s, Assertions: %s, Warnings: %s, Errors: %s, Failures: %s',
+            'Subjects: %s, Assertions: %s, Failures: %s, Errors: %s',
             number_format($summary->getNbSubjects()),
             number_format($summary->getNbAssertions()),
-            number_format($summary->getNbWarnings()),
-            number_format($summary->getNbErrors()),
-            number_format($summary->getNbFailures())
+            number_format($summary->getNbFailures()),
+            number_format($summary->getNbErrors())
         )));
     }
 
@@ -160,34 +154,6 @@ abstract class PhpBenchLogger extends NullLogger
 
             foreach ($variantFailure as $index => $failure) {
                 $this->output->writeln(sprintf('    %s) Failed to assert that %s', $index + 1, $failure->getMessage()));
-            }
-            $this->output->write(PHP_EOL);
-        }
-    }
-
-    private function listWarnings(Suite $suite): void
-    {
-        $variantWarnings = $suite->getWarnings();
-
-        if (empty($variantWarnings)) {
-            return;
-        }
-
-        $this->output->write(PHP_EOL);
-        $this->output->writeln(sprintf('%d variants have warnings:', count($variantWarnings)));
-        $this->output->write(PHP_EOL);
-
-        foreach ($variantWarnings as $variantWarning) {
-            $this->output->writeln(sprintf(
-                '<warning>%s::%s %s</warning>',
-                $variantWarning->getVariant()->getSubject()->getBenchmark()->getClass(),
-                $variantWarning->getVariant()->getSubject()->getName(),
-                json_encode($variantWarning->getVariant()->getParameterSet()->getArrayCopy())
-            ));
-            $this->output->write(PHP_EOL);
-
-            foreach ($variantWarning as $index => $warning) {
-                $this->output->writeln(sprintf('    %s)  Assertion failed within tolerance range: %s', $index + 1, $warning->getMessage()));
             }
             $this->output->write(PHP_EOL);
         }

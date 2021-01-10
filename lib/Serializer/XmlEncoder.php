@@ -135,14 +135,6 @@ class XmlEncoder
             return;
         }
 
-        if ($variant->getAssertionResults()->warnings()->count()) {
-            $warningsEl = $variantEl->appendElement('warnings');
-
-            foreach ($variant->getAssertionResults()->warnings() as $warning) {
-                $warningEl = $warningsEl->appendElement('warning', $warning->getMessage());
-            }
-        }
-
         if ($variant->getAssertionResults()->failures()->count()) {
             $failuresEl = $variantEl->appendElement('failures');
 
