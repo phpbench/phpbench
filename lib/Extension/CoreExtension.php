@@ -119,6 +119,8 @@ class CoreExtension implements ExtensionInterface
     public const PARAM_REMOTE_SCRIPT_PATH = 'remote_script_path';
     public const PARAM_REMOTE_SCRIPT_REMOVE = 'remote_script_remove';
     public const PARAM_DISABLE_OUTPUT = 'console.disable_output';
+    public const PARAM_PROGRESS_SUMMARY_FORMAT = 'progress_summary_variant_format';
+    public const PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT = 'progress_summary_baseline_format';
 
     public const TAG_EXECUTOR = 'benchmark_executor';
     public const TAG_CONSOLE_COMMAND = 'console.command';
@@ -135,8 +137,6 @@ class CoreExtension implements ExtensionInterface
     private const SERVICE_REGISTRY_LOGGER = 'progress_logger.registry';
     private const SERVICE_REGISTRY_RENDERER = 'report.registry.renderer';
     private const SERVICE_VARIANT_SUMMARY_FORMATTER = 'progress_logger.variant_summary_formatter';
-    private const PARAM_PROGRESS_SUMMARY_FORMAT = 'progress_summary_variant_format';
-    private const PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT = 'progress_summary_baseline_format';
 
     public function configure(OptionsResolver $resolver): void
     {
@@ -189,6 +189,8 @@ class CoreExtension implements ExtensionInterface
         $resolver->setAllowedTypes(self::PARAM_REMOTE_SCRIPT_REMOVE, ['bool']);
         $resolver->setAllowedTypes(self::PARAM_REMOTE_SCRIPT_PATH, ['string', 'null']);
         $resolver->setAllowedTypes(self::PARAM_DISABLE_OUTPUT, ['bool']);
+        $resolver->setAllowedTypes(self::PARAM_PROGRESS_SUMMARY_FORMAT, ['string']);
+        $resolver->setAllowedTypes(self::PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT, ['string']);
     }
 
     public function load(Container $container): void
