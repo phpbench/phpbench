@@ -186,25 +186,6 @@ class Suite implements IteratorAggregate
     }
 
     /**
-     * @return VariantAssertionResults[]
-     */
-    public function getWarnings(): array
-    {
-        $warnings = [];
-
-        /** @var Variant $variant */
-        foreach ($this->getVariants() as $variant) {
-            if (0 === $variant->getAssertionResults()->warnings()->count()) {
-                continue;
-            }
-
-            $warnings[] = $variant->getAssertionResults()->warnings();
-        }
-
-        return $warnings;
-    }
-
-    /**
      * @param Information[] $envInformations
      */
     public function setEnvInformations(iterable $envInformations): void

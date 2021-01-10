@@ -51,7 +51,6 @@ class XmlTestCase extends TestCase
         $params = array_merge([
             'error' => false,
             'failure' => false,
-            'warning' => false,
             'groups' => [],
             'params' => [],
         ], $params);
@@ -97,11 +96,6 @@ class XmlTestCase extends TestCase
             $this->variant1->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant1->reveal(), []));
         }
 
-        if ($params['warning']) {
-            $this->variant1->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant1->reveal(), [AssertionResult::tolerated()]));
-        } else {
-            $this->variant1->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant1->reveal(), []));
-        }
         $this->variant1->isComputed()->willReturn(true);
         $this->variant1->getRevolutions()->willReturn(100);
 
@@ -127,9 +121,6 @@ class XmlTestCase extends TestCase
             $results[] = AssertionResult::fail('Fail!');
         }
 
-        if ($params['warning']) {
-            $results[] = AssertionResult::tolerated('Warn!');
-        }
         $this->variant1->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant1->reveal(), $results));
 
         $this->variant1->getStats()->willReturn(new Distribution([0.1]));
@@ -217,8 +208,8 @@ EOT
 
 EOT
         ],
-            'failure and warnings' => [
-                ['failure' => true, 'warning' => true],
+            'failure' => [
+                ['failure' => true],
                 <<<'EOT'
 <?xml version="1.0"?>
 <phpbench xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="PHPBENCH_VERSION">
@@ -231,9 +222,6 @@ EOT
         <executor name="foo"/>
         <variant sleep="5" output-time-unit="milliseconds" output-time-precision="7" output-mode="throughput" revs="100" warmup="50" retry-threshold="10">
           <parameter-set name="some params"/>
-          <warnings>
-            <warning>Warn!</warning>
-          </warnings>
           <failures>
             <failure>Fail!</failure>
           </failures>

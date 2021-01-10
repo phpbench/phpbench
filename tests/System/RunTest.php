@@ -137,17 +137,6 @@ class RunTest extends SystemTestCase
     }
 
     /**
-     * It should not fail if there are warnings.
-     */
-    public function testFailAssertionWarning(): void
-    {
-        $process = $this->phpbench(
-            'run benchmarks/set5/AssertWarnBench.php'
-        );
-        $this->assertExitCode(0, $process);
-    }
-
-    /**
      * If passed the tolerate-failure option, it should return 0 exit code even when failures are encountered.
      */
     public function testFailAssertionFailureTolerate(): void
