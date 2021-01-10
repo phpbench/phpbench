@@ -12,6 +12,7 @@
 
 namespace PhpBench\Assertion;
 
+use ArrayIterator;
 use IteratorAggregate;
 use PhpBench\Model\Variant;
 
@@ -42,7 +43,10 @@ class VariantAssertionResults implements IteratorAggregate, \Countable
         }
     }
 
-    public function getIterator(): \ArrayIterator
+    /**
+     * @return ArrayIterator<int,AssertionResult>
+     */
+    public function getIterator(): ArrayIterator
     {
         return new \ArrayIterator($this->results);
     }
@@ -52,6 +56,9 @@ class VariantAssertionResults implements IteratorAggregate, \Countable
         $this->results[] = $result;
     }
 
+    /**
+     * @return AssertionResult[]
+     */
     public function asArray(): array
     {
         return $this->results;
@@ -81,10 +88,23 @@ class VariantAssertionResults implements IteratorAggregate, \Countable
         return false;
     }
 
+    /**
+     * @return self<AssertionResult>
+     */
     public function failures(): self
     {
         return new self($this->variant, array_filter($this->results, function (AssertionResult $result) {
             return $result->isFail();
+        }));
+    }
+
+    /**
+     * @return self<AssertionResult>
+     */
+    public function tolerations(): self
+    {
+        return new self($this->variant, array_filter($this->results, function (AssertionResult $result) {
+            return $result->isTolerated();
         }));
     }
 }

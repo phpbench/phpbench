@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Model;
 
+use PhpBench\Assertion\AssertionResult;
 use PhpBench\Assertion\VariantAssertionResults;
 use PhpBench\Environment\Information;
 use PhpBench\Math\Distribution;
@@ -80,6 +81,7 @@ class SummaryTest extends TestCase
         $this->assertEquals(7, $summary->getTotalTime());
         $this->assertEquals(8, $summary->getMeanStDev());
         $this->assertEquals(9, $summary->getMeanRelStDev());
+        $this->assertEquals(1, $summary->getNbFailures());
         $this->assertFalse($summary->getXdebugEnabled());
         $this->assertFalse($summary->getOpcacheEnabled());
         $this->assertNull($summary->getPhpVersion());
@@ -126,7 +128,13 @@ class SummaryTest extends TestCase
         $this->variant1->hasErrorStack()->willReturn(false);
         $this->variant1->getRevolutions()->willReturn(10);
         $this->variant1->getSubject()->willReturn($this->subject1->reveal());
-        $this->variant1->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant1->reveal(), []));
+        $this->variant1->getAssertionResults()->willReturn(
+            new VariantAssertionResults($this->variant1->reveal(), [
+                AssertionResult::ok(),
+                AssertionResult::tolerated('foo'),
+                AssertionResult::fail('foo'),
+            ])
+        );
         $this->variant1->getErrorStack()->willReturn(new ErrorStack($this->variant1->reveal(), []));
         $this->stats->getIterator()->willReturn(new \ArrayIterator([
             'min' => '1',

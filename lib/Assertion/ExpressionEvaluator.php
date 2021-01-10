@@ -94,8 +94,6 @@ class ExpressionEvaluator
         ));
     }
 
-    /**
-     */
     private function evaluateComparison(Comparison $node)
     {
         $value1 = $node->value1();
@@ -116,32 +114,52 @@ class ExpressionEvaluator
 
         switch ($node->operator()) {
             case '<':
-                if ($left < ($right + $tolerance)) {
+                if ($left < $right) {
                     return AssertionResult::ok();
+                }
+
+                if ($left < ($right + $tolerance)) {
+                    return AssertionResult::tolerated($this->formatter->format($node));
                 }
 
                 return AssertionResult::fail($this->formatter->format($node));
             case '<=':
-                if (FloatNumber::isLessThanOrEqual($left, $right + $tolerance)) {
+                if ($left <= $right) {
                     return AssertionResult::ok();
+                }
+
+                if (FloatNumber::isLessThanOrEqual($left, $right + $tolerance)) {
+                    return AssertionResult::tolerated($this->formatter->format($node));
                 }
 
                 return AssertionResult::fail($this->formatter->format($node));
             case '=':
-                if (FloatNumber::isWithin($left, $right - $tolerance, $right + $tolerance)) {
+                if (FloatNumber::isEqual($left, $right)) {
                     return AssertionResult::ok();
+                }
+
+                if (FloatNumber::isWithin($left, $right - $tolerance, $right + $tolerance)) {
+                    return AssertionResult::tolerated($this->formatter->format($node));
                 }
 
                 return AssertionResult::fail($this->formatter->format($node));
             case '>':
-                if ($left > ($right - $tolerance)) {
+                if ($left > $right) {
                     return AssertionResult::ok();
+                }
+
+                if ($left > ($right - $tolerance)) {
+                    return AssertionResult::tolerated($this->formatter->format($node));
                 }
 
                 return AssertionResult::fail($this->formatter->format($node));
             case '>=':
-                if (FloatNumber::isGreaterThanOrEqual($left, $right - $tolerance)) {
+                if (FloatNumber::isGreaterThanOrEqual($left, $right)) {
                     return AssertionResult::ok();
+                }
+
+                if (FloatNumber::isGreaterThanOrEqual($left, $right - $tolerance)) {
+                    return AssertionResult::tolerated($this->formatter->format($node));
                 }
 
                 return AssertionResult::fail($this->formatter->format($node));
