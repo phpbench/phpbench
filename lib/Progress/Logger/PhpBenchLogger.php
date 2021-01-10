@@ -67,20 +67,13 @@ abstract class PhpBenchLogger extends NullLogger
         $this->listFailures($suite);
 
         $this->output->writeln(sprintf(
-            '(best [mean mode] worst) = %s [%s %s] %s (%s)',
-            number_format($this->timeUnit->toDestUnit($summary->getMinTime()), 3),
-            number_format($this->timeUnit->toDestUnit($summary->getMeanTime()), 3),
-            number_format($this->timeUnit->toDestUnit($summary->getModeTime()), 3),
-            number_format($this->timeUnit->toDestUnit($summary->getMaxTime()), 3),
-            $this->timeUnit->getDestSuffix()
-        ));
-
-        $this->output->writeln(sprintf(
             '⅀T: %s μSD/r %s μRSD/r: %s%%',
             $this->timeUnit->format($summary->getTotalTime(), null, TimeUnit::MODE_TIME),
             $this->timeUnit->format($summary->getMeanStDev(), null, TimeUnit::MODE_TIME),
             number_format($summary->getMeanRelStDev(), 3)
         ));
+
+        $this->output->write("\n");
 
         $this->output->writeln((function (Summary $summary, string $message) {
             if ($summary->getNbFailures() || $summary->getNbErrors()) {
