@@ -3,6 +3,7 @@
 namespace PhpBench\Progress;
 
 use Closure;
+use PhpBench\Assertion\VariantAssertionResults;
 use PhpBench\Math\Statistics;
 use PhpBench\Model\Variant;
 use PhpBench\Util\TimeUnit;
@@ -10,11 +11,11 @@ use PhpBench\Util\TimeUnit;
 final class VariantSummaryFormatter
 {
     const DEFAULT_FORMAT = '%variant.mode% %time_unit% (±%variant.rstdev%%)';
-    const BASELINE_FORMAT = '%variant.mode% vs. <baseline>%baseline.mode%</> (%time_unit%) (±%variant.rstdev%%) <%diff_format%>%percent_difference%%</>';
+    const BASELINE_FORMAT = '= %variant.mode%%time_unit% vs %baseline.mode%%time_unit% (±%variant.rstdev%%) <%diff_format%>%percent_difference%%</>';
 
     const NOT_APPLICABLE = 'n/a';
     const FORMAT_NO_CHANGE = 'fg=cyan';
-    const FORMAT_BAD_CHANGE = 'fg=red';
+    const FORMAT_BAD_CHANGE = 'bg=red;fg=white';
     const FORMAT_GOOD_CHANGE = 'fg=green';
 
     /**
@@ -116,17 +117,18 @@ final class VariantSummaryFormatter
             return $prefix .number_format($diff, 2);
         })($diff);
 
-        $tokens['diff_format'] = (function (float $diff, float $rstdev) {
-            // difference falls within margin of error
-            if (abs($diff) <= abs($rstdev)) {
+        $tokens['diff_format'] = (function (VariantAssertionResults $results, float $diff) {
+            if ($results->failures()->count()) {
+                return self::FORMAT_BAD_CHANGE;
+            }
+
+            if ($results->tolerations()->count()) {
                 return self::FORMAT_NO_CHANGE;
             }
 
-            if ($diff > 0) {
-                return self::FORMAT_BAD_CHANGE;
-            }
             return self::FORMAT_GOOD_CHANGE;
-        })($diff, $stats->getRstdev());
+
+        })($variant->getAssertionResults(), $diff);
 
         return $tokens;
     }
