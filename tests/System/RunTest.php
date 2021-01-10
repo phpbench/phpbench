@@ -21,7 +21,7 @@ class RunTest extends SystemTestCase
     {
         $process = $this->phpbench('run --verbose --config=env/config_valid/phpbench.json');
         $this->assertExitCode(0, $process);
-        $this->assertStringContainsString('best [mean mode] worst', $process->getOutput());
+        $this->assertStringContainsString('Subjects', $process->getOutput());
     }
 
     /**
@@ -32,7 +32,7 @@ class RunTest extends SystemTestCase
     {
         $process = $this->phpbench('run', 'env/config_valid');
         $this->assertExitCode(0, $process);
-        $this->assertStringContainsString('best [mean mode] worst', $process->getOutput());
+        $this->assertStringContainsString('Subjects', $process->getOutput());
     }
 
     /**
@@ -42,7 +42,7 @@ class RunTest extends SystemTestCase
     {
         $process = $this->phpbench('run', 'env/config_dist');
         $this->assertExitCode(0, $process);
-        $this->assertStringContainsString('best [mean mode] worst', $process->getOutput());
+        $this->assertStringContainsString('Subjects', $process->getOutput());
     }
 
     /**
@@ -249,7 +249,7 @@ class RunTest extends SystemTestCase
         );
 
         $this->assertExitCode(0, $process);
-        $this->assertStringContainsString('(ms)', $process->getOutput());
+        $this->assertStringContainsString('ms', $process->getOutput());
     }
 
     /**
@@ -262,7 +262,7 @@ class RunTest extends SystemTestCase
         );
 
         $this->assertExitCode(0, $process);
-        $this->assertStringContainsString('(ops/μs)', $process->getOutput());
+        $this->assertStringContainsString('ops/μs', $process->getOutput());
     }
 
     /**
@@ -317,7 +317,7 @@ class RunTest extends SystemTestCase
 
         $this->assertExitCode(0, $process);
         $output = $process->getOutput();
-        $this->assertStringContainsString('best [mean mode] worst', $output);
+        $this->assertStringContainsString('Subjects', $output);
     }
 
     /**
