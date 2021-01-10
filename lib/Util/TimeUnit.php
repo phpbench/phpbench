@@ -106,7 +106,12 @@ class TimeUnit
      */
     private $precision;
 
-    public function __construct(string $sourceUnit = self::MICROSECONDS, string $destUnit = self::MICROSECONDS, string $mode = self::MODE_TIME, int $precision = 3)
+    public function __construct(
+        string $sourceUnit = self::MICROSECONDS,
+        string $destUnit = self::MICROSECONDS,
+        string $mode = self::MODE_TIME,
+        int $precision = 3
+    )
     {
         $this->sourceUnit = $sourceUnit;
         $this->destUnit = $destUnit;

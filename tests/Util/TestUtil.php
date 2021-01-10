@@ -19,7 +19,9 @@ use PhpBench\Model\Result\RejectionCountResult;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
+use PhpBench\Model\Variant;
 use Prophecy\Prophecy\ObjectProphecy;
+use RuntimeException;
 
 /**
  * Utility class for configuring benchmarking prophecy objects.
@@ -58,6 +60,18 @@ class TestUtil
         $subject->getParamProviders()->willReturn($options['paramProviders']);
         $subject->getOutputTimeUnit()->willReturn($options['outputTimeUnit']);
         $subject->getOutputMode()->willReturn($options['outputMode']);
+    }
+
+    public static function getVariant(): Variant
+    {
+        $variants = self::createSuite()->getVariants();
+        $variant = reset($variants);
+        if (!$variant) {
+            throw new RuntimeException(sprintf(
+                'Could not find a variant in test suite'
+            ));
+        }
+        return $variant;
     }
 
     public static function configureBenchmarkMetadata(ObjectProphecy $benchmark, array $options = [])
