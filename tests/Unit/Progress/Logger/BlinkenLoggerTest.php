@@ -161,6 +161,6 @@ class BlinkenLoggerTest extends TestCase
         $this->variant->computeStats();
 
         $this->logger->variantEnd($this->variant);
-        $this->assertStringContainsString('RSD/r: 0.00%', $this->output->fetch());
+        $this->assertStringContainsString('±0.00%', $this->output->fetch());
     }
 }

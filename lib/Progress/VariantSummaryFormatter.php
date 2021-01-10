@@ -15,7 +15,7 @@ final class VariantSummaryFormatter
 
     const NOT_APPLICABLE = 'n/a';
     const FORMAT_NO_CHANGE = 'fg=cyan';
-    const FORMAT_BAD_CHANGE = 'bg=red;fg=white';
+    const FORMAT_FAILURE = 'failure';
     const FORMAT_GOOD_CHANGE = 'fg=green';
 
     /**
@@ -53,7 +53,7 @@ final class VariantSummaryFormatter
         };
 
         $tokens = [
-            'time_unit' => $this->timeUnit->getDestSuffix($timeUnit),
+            'time_unit' => $this->timeUnit->getDestSuffix($timeUnit, $mode),
             'variant.min' => self::NOT_APPLICABLE,
             'variant.max' => self::NOT_APPLICABLE,
             'variant.mean' => self::NOT_APPLICABLE,
@@ -92,6 +92,7 @@ final class VariantSummaryFormatter
     private function populateFromVariant(Closure $f, string $prefix, Variant $variant): array
     {
         $stats = $variant->getStats();
+
         return [
             $prefix.'.min' => $f($stats->getMin()),
             $prefix.'.max' => $f($stats->getMax()),
@@ -114,12 +115,13 @@ final class VariantSummaryFormatter
 
         $tokens['percent_difference'] = (function (float $diff) {
             $prefix = $diff > 0 ? '+' : '';
+
             return $prefix .number_format($diff, 2);
         })($diff);
 
         $tokens['diff_format'] = (function (VariantAssertionResults $results, float $diff) {
             if ($results->failures()->count()) {
-                return self::FORMAT_BAD_CHANGE;
+                return self::FORMAT_FAILURE;
             }
 
             if ($results->tolerations()->count()) {
@@ -127,7 +129,6 @@ final class VariantSummaryFormatter
             }
 
             return self::FORMAT_GOOD_CHANGE;
-
         })($variant->getAssertionResults(), $diff);
 
         return $tokens;

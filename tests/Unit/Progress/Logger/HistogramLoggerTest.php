@@ -124,7 +124,7 @@ class HistogramLoggerTest extends TestCase
         $this->logger->variantEnd($this->variant);
         $display = $this->output->fetch();
         $this->assertStringContainsString(
-            '1  (σ = 0.000ms ) -2σ [        █        ] +2σ [μ Mo]/r: 0.010 0.010 μRSD/r: 0.00%',
+            '1  (σ = 0.000ms ) -2σ [        █        ] +2σ 0.010 ms (±0.00%)',
             $display
         );
     }

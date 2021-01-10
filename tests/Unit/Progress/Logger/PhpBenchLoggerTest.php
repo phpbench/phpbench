@@ -52,7 +52,11 @@ abstract class PhpBenchLoggerTest extends TestCase
         $this->logger = $this->getLogger();
 
         $this->suite->getSummary()->willReturn($this->summary->reveal());
+        $this->variant->getBaseline()->willReturn($this->variant->reveal());
 
+        $this->stats->getMin()->willReturn(1.0);
+        $this->stats->getMax()->willReturn(1.0);
+        $this->stats->getVariance()->willReturn(1.0);
         $this->stats->getMean()->willReturn(1.0);
         $this->stats->getMode()->willReturn(1.0);
         $this->stats->getStdev()->willReturn(2.0);

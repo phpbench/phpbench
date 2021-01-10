@@ -12,7 +12,6 @@
 
 namespace PhpBench\Progress\Logger;
 
-use PhpBench\Math\Statistics;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Suite;
