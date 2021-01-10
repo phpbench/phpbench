@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- http://www.phpunit.de/manual/current/en/appendixes.configuration.html -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd" colors="true" bootstrap="vendor/autoload.php" failOnWarning="true">
-  <coverage includeUncoveredFiles="true">
-    <include>
-      <directory>.</directory>
-    </include>
-    <exclude>
-      <directory>vendor/</directory>
-    </exclude>
-  </coverage>
   <testsuites>
     <testsuite name="PhpBench">
       <directory>./tests</directory>
