@@ -12,30 +12,16 @@
 
 namespace PhpBench\Tests\Unit\Progress\Logger;
 
-use PhpBench\Assertion\AssertionResult;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\ParameterSet;
-use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Variant;
 use PhpBench\Progress\Logger\BlinkenLogger;
-use PhpBench\Tests\TestCase;
-use PhpBench\Tests\Util\TestUtil;
 use PhpBench\Util\TimeUnit;
-use Symfony\Component\Console\Output\BufferedOutput;
 
-class BlinkenLoggerTest extends TestCase
+class BlinkenLoggerTest extends LoggerTestCase
 {
     const ASSERTION_FAILURE_MESSAGE = 'Failure message';
-
-    /**
-     * @var BufferedOutput
-     */
-    private $output;
-    /**
-     * @var TimeUnit
-     */
-    private $timeUnit;
     /**
      * @var BlinkenLogger
      */
@@ -55,10 +41,10 @@ class BlinkenLoggerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->output = new BufferedOutput();
+        parent::setUp();
         $this->timeUnit = new TimeUnit(TimeUnit::MICROSECONDS, TimeUnit::MILLISECONDS);
 
-        $this->logger = new BlinkenLogger($this->output, $this->timeUnit);
+        $this->logger = new BlinkenLogger($this->output, $this->variantFormatter, $this->timeUnit);
         $this->benchmark = $this->prophesize(Benchmark::class);
         $this->subject = $this->prophesize(Subject::class);
         $this->variant = new Variant(
@@ -130,37 +116,5 @@ class BlinkenLoggerTest extends TestCase
         $this->variant->setException(new \Exception('foo'));
         $this->logger->variantEnd($this->variant);
         $this->assertStringContainsString('ERROR', $this->output->fetch());
-    }
-
-    /**
-     * It should show an error if the iteration has an exception.
-     */
-    public function testIterationFailure()
-    {
-        foreach ($this->variant as $iteration) {
-            $iteration->setResult(new TimeResult(10));
-        }
-        $this->variant->getAssertionResults()->add(AssertionResult::fail(self::ASSERTION_FAILURE_MESSAGE));
-        $this->variant->addIteration($iteration);
-        $this->variant->computeStats();
-        $this->logger->variantEnd($this->variant);
-        $this->assertStringContainsString('FAIL', $this->output->fetch());
-    }
-
-    /**
-     * It should show statistics when an iteration is completed (and there
-     * were no rejections).
-     */
-    public function testIterationEndStats()
-    {
-        foreach ($this->variant as $iteration) {
-            foreach (TestUtil::createResults(10, 10) as $result) {
-                $iteration->setResult($result);
-            }
-        }
-        $this->variant->computeStats();
-
-        $this->logger->variantEnd($this->variant);
-        $this->assertStringContainsString('RSD/r: 0.00%', $this->output->fetch());
     }
 }

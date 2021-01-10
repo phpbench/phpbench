@@ -23,11 +23,8 @@ use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
 use PhpBench\Model\Summary;
 use PhpBench\Model\Variant;
-use PhpBench\Tests\TestCase;
-use Prophecy\Argument;
-use Symfony\Component\Console\Output\OutputInterface;
 
-abstract class PhpBenchLoggerTest extends TestCase
+abstract class PhpBenchLoggerTest extends LoggerTestCase
 {
     protected $logger;
     protected $output;
@@ -40,19 +37,23 @@ abstract class PhpBenchLoggerTest extends TestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
         $this->suite = $this->prophesize(Suite::class);
         $this->summary = $this->prophesize(Summary::class);
         $this->benchmark = $this->prophesize(Benchmark::class);
         $this->variant = $this->prophesize(Variant::class);
         $this->subject = $this->prophesize(Subject::class);
         $this->parameterSet = $this->prophesize(ParameterSet::class);
-        $this->output = $this->prophesize(OutputInterface::class);
         $this->stats = $this->prophesize(Distribution::class);
 
         $this->logger = $this->getLogger();
 
         $this->suite->getSummary()->willReturn($this->summary->reveal());
+        $this->variant->getBaseline()->willReturn($this->variant->reveal());
 
+        $this->stats->getMin()->willReturn(1.0);
+        $this->stats->getMax()->willReturn(1.0);
+        $this->stats->getVariance()->willReturn(1.0);
         $this->stats->getMean()->willReturn(1.0);
         $this->stats->getMode()->willReturn(1.0);
         $this->stats->getStdev()->willReturn(2.0);
@@ -77,8 +78,8 @@ abstract class PhpBenchLoggerTest extends TestCase
         $this->setUpSummary();
         $this->suite->getFailures()->willReturn([]);
         $this->suite->getErrorStacks()->willReturn([]);
-        $this->output->writeln(Argument::any())->shouldBeCalled();
         $this->logger->endSuite($this->suite->reveal());
+        self::assertNotEmpty($this->output->fetch());
     }
 
     public function testEndSuiteErrors()
@@ -104,16 +105,16 @@ abstract class PhpBenchLoggerTest extends TestCase
         $this->subject->getBenchmark()->willReturn($this->benchmark->reveal());
         $this->subject->getName()->willReturn('bar');
         $this->benchmark->getClass()->willReturn('Namespace\Foo');
-
-        $this->output->writeln(Argument::containingString('1 subjects encountered errors'))->shouldBeCalled();
-        $this->output->writeln(Argument::containingString('Namespace\Foo::bar'))->shouldBeCalled();
-        $this->output->writeln(Argument::containingString('ExceptionOne'))->shouldBeCalled();
-        $this->output->writeln(Argument::containingString('ExceptionTwo'))->shouldBeCalled();
-        $this->output->writeln(Argument::containingString('MessageOne'))->shouldBeCalled();
-        $this->output->writeln(Argument::containingString('Two'))->shouldBeCalled();
-        $this->output->writeln(Argument::any())->shouldBeCalled();
-
         $this->logger->endSuite($this->suite->reveal());
+
+        $buffer = $this->output->fetch();
+
+        self::assertStringContainsString('1 subjects encountered errors', $buffer);
+        self::assertStringContainsString('Namespace\Foo::bar', $buffer);
+        self::assertStringContainsString('ExceptionOne', $buffer);
+        self::assertStringContainsString('ExceptionTwo', $buffer);
+        self::assertStringContainsString('MessageOne', $buffer);
+        self::assertStringContainsString('Two', $buffer);
     }
 
     public function testEndSuiteFailures()
@@ -131,11 +132,11 @@ abstract class PhpBenchLoggerTest extends TestCase
         $this->subject->getName()->willReturn('bar');
         $this->benchmark->getClass()->willReturn('Namespace\Foo');
 
-        $this->output->writeln(Argument::containingString('1 variants failed'))->shouldBeCalled();
-        $this->output->writeln(Argument::any())->shouldBeCalled();
-        $this->output->write(Argument::any())->shouldBeCalled();
+
 
         $this->logger->endSuite($this->suite->reveal());
+        $buffer = $this->output->fetch();
+        self::assertStringContainsString('1 variants failed', $buffer);
     }
 
     private function setUpSummary()

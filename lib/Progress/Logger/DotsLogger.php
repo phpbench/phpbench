@@ -16,19 +16,39 @@ use PhpBench\Model\Benchmark;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\Suite;
 use PhpBench\Model\Variant;
+use PhpBench\Progress\VariantSummaryFormatter;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class DotsLogger extends PhpBenchLogger
 {
+    /**
+     * @var bool
+     */
     private $showBench;
+
+    /**
+     * @var string
+     */
     private $buffer;
+
+    /**
+     * @var bool
+     */
     private $isCi = false;
+
+    /**
+     * @var bool
+     */
     private $firstTime = true;
 
-    public function __construct(OutputInterface $output, TimeUnit $timeUnit, $showBench = false)
-    {
-        parent::__construct($output, $timeUnit);
+    public function __construct(
+        OutputInterface $output,
+        VariantSummaryFormatter $formatter,
+        TimeUnit $timeUnit,
+        bool $showBench = false
+    ) {
+        parent::__construct($output, $formatter, $timeUnit);
         $this->showBench = $showBench;
 
         // if we are in travis, don't do any fancy stuff.

@@ -153,7 +153,6 @@ EOT
             }
         }
 
-
         $this->reportHandler->reportsFromInput($input, $output, $collection);
 
         if ($suite->getErrorStacks()) {

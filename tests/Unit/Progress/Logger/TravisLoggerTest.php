@@ -14,38 +14,28 @@ namespace PhpBench\Tests\Unit\Progress\Logger;
 
 use PhpBench\Assertion\VariantAssertionResults;
 use PhpBench\Progress\Logger\TravisLogger;
-use PhpBench\Util\TimeUnit;
-use Prophecy\Argument;
 
 class TravisLoggerTest extends PhpBenchLoggerTest
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     public function getLogger()
     {
-        $timeUnit = new TimeUnit(TimeUnit::MICROSECONDS, TimeUnit::MILLISECONDS);
-
-        return new TravisLogger($this->output->reveal(), $timeUnit);
+        return new TravisLogger($this->output, $this->variantFormatter, $this->timeUnit);
     }
 
     /**
      * It should output when the benchmark starts.
      */
-    public function testBenchmarkStart()
+    public function testBenchmarkStart(): void
     {
         $this->benchmark->getClass()->willReturn('Benchmark');
-        $this->output->writeln('<comment>Benchmark</comment>')->shouldBeCalled();
-        $this->output->write(PHP_EOL)->shouldBeCalled();
         $this->logger->benchmarkStart($this->benchmark->reveal());
+        self::assertEquals("Benchmark\n\n", $this->output->fetch());
     }
 
     /**
      * It should output at the end of an iteration set.
      */
-    public function testIterationsEnd()
+    public function testIterationsEnd(): void
     {
         $this->variant->getRejectCount()->willReturn(0);
         $this->variant->hasErrorStack()->willReturn(false);
@@ -61,65 +51,7 @@ class TravisLoggerTest extends PhpBenchLoggerTest
         $this->subject->getOutputTimePrecision()->willReturn(null);
         $this->parameterSet->getIndex()->willReturn(0);
 
-        $this->output->writeln(Argument::containingString('0.001 (ms)'))->shouldBeCalled();
         $this->logger->variantEnd($this->variant->reveal());
-    }
-
-    /**
-     * It should log errors.
-     */
-    public function testIterationsEndException()
-    {
-        $this->variant->hasErrorStack()->willReturn(true);
-        $this->variant->getRejectCount()->willReturn(0);
-        $this->variant->getSubject()->willReturn($this->subject->reveal());
-        $this->variant->count()->willReturn(10);
-        $this->variant->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant->reveal(), []));
-        $this->subject->getName()->willReturn('benchFoo');
-
-        $this->output->writeln(Argument::containingString('ERROR'))->shouldBeCalled();
-        $this->logger->variantEnd($this->variant->reveal());
-    }
-
-    /**
-     * It should use the subject time unit.
-     * It should use the subject mode.
-     */
-    public function testUseSubjectTimeUnit()
-    {
-        $this->variant->getRejectCount()->willReturn(0);
-        $this->variant->hasErrorStack()->willReturn(false);
-        $this->variant->getStats()->willReturn($this->stats->reveal());
-        $this->variant->getSubject()->willReturn($this->subject->reveal());
-        $this->variant->count()->willReturn(10);
-        $this->variant->getParameterSet()->willReturn($this->parameterSet->reveal());
-        $this->variant->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant->reveal(), []));
-        $this->subject->getVariants()->willReturn([$this->variant->reveal()]);
-        $this->subject->getOutputTimeUnit()->willReturn(TimeUnit::MICROSECONDS);
-        $this->subject->getOutputTimePrecision()->willReturn(null);
-        $this->subject->getOutputMode()->willReturn(TimeUnit::MODE_THROUGHPUT);
-        $this->subject->getName()->willReturn('benchFoo');
-        $this->parameterSet->getIndex()->willReturn(0);
-
-        $this->output->writeln(Argument::containingString('1.000 (ops/μs)'))->shouldBeCalled();
-        $this->logger->variantEnd($this->variant->reveal());
-    }
-
-    /**
-     * It should output an empty line at the end of the suite.
-     */
-    public function testEndSuite()
-    {
-        $this->output->write(PHP_EOL)->shouldBeCalled();
-        parent::testEndSuite();
-    }
-
-    /**
-     * It should output an empty line at the end of the suite.
-     */
-    public function testEndSuiteErrors()
-    {
-        $this->output->write(PHP_EOL)->shouldBeCalled();
-        parent::testEndSuiteErrors();
+        self::assertStringContainsString('summary', $this->output->fetch());
     }
 }

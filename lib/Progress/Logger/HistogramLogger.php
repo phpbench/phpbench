@@ -183,7 +183,7 @@ class HistogramLogger extends AnsiLogger
         $this->drawBlocks($freqs);
 
         $this->output->write(sprintf(
-            '] +%sσ <comment>%s</comment>',
+            '] +%sσ %s</comment>',
             $sigma,
             $variant->isComputed() ? $this->formatIterationsShortSummary($variant) : ''
         ));

@@ -18,6 +18,7 @@ use PhpBench\Model\Suite;
 use PhpBench\Model\Summary;
 use PhpBench\Model\Variant;
 use PhpBench\PhpBench;
+use PhpBench\Progress\VariantSummaryFormatter;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -33,10 +34,19 @@ abstract class PhpBenchLogger extends NullLogger
      */
     public $output;
 
-    public function __construct(OutputInterface $output, TimeUnit $timeUnit = null)
-    {
+    /**
+     * @var VariantSummaryFormatter
+     */
+    private $formatter;
+
+    public function __construct(
+        OutputInterface $output,
+        VariantSummaryFormatter $formatter,
+        TimeUnit $timeUnit = null
+    ) {
         $this->timeUnit = $timeUnit;
         $this->output = $output;
+        $this->formatter = $formatter;
     }
 
     public function startSuite(Suite $suite): void
@@ -66,20 +76,13 @@ abstract class PhpBenchLogger extends NullLogger
         $this->listFailures($suite);
 
         $this->output->writeln(sprintf(
-            '(best [mean mode] worst) = %s [%s %s] %s (%s)',
-            number_format($this->timeUnit->toDestUnit($summary->getMinTime()), 3),
-            number_format($this->timeUnit->toDestUnit($summary->getMeanTime()), 3),
-            number_format($this->timeUnit->toDestUnit($summary->getModeTime()), 3),
-            number_format($this->timeUnit->toDestUnit($summary->getMaxTime()), 3),
-            $this->timeUnit->getDestSuffix()
-        ));
-
-        $this->output->writeln(sprintf(
             '⅀T: %s μSD/r %s μRSD/r: %s%%',
             $this->timeUnit->format($summary->getTotalTime(), null, TimeUnit::MODE_TIME),
             $this->timeUnit->format($summary->getMeanStDev(), null, TimeUnit::MODE_TIME),
             number_format($summary->getMeanRelStDev(), 3)
         ));
+
+        $this->output->write("\n");
 
         $this->output->writeln((function (Summary $summary, string $message) {
             if ($summary->getNbFailures() || $summary->getNbErrors()) {
@@ -161,40 +164,12 @@ abstract class PhpBenchLogger extends NullLogger
 
     public function formatIterationsFullSummary(Variant $variant): string
     {
-        $subject = $variant->getSubject();
-        $stats = $variant->getStats();
-        $timeUnit = $this->timeUnit->resolveDestUnit($variant->getSubject()->getOutputTimeUnit());
-        $mode = $this->timeUnit->resolveMode($subject->getOutputMode());
-        $precision = $this->timeUnit->resolvePrecision($subject->getOutputTimePrecision());
-
-        return sprintf(
-            "%s[μ Mo]/r: %s %s (%s) [μSD μRSD]/r: %s %s%%%s",
-
-            $variant->getAssertionResults()->hasFailures() ? '<error>' : '',
-            $this->timeUnit->format($stats->getMean(), $timeUnit, $mode, $precision, false),
-            $this->timeUnit->format($stats->getMode(), $timeUnit, $mode, $precision, false),
-            $this->timeUnit->getDestSuffix($timeUnit, $mode),
-            $this->timeUnit->format($stats->getStdev(), $timeUnit, TimeUnit::MODE_TIME),
-            number_format($stats->getRstdev(), 2),
-            $variant->getAssertionResults()->hasFailures() ? '</error>' : ''
-        );
+        return $this->formatter->formatVariant($variant);
     }
 
     public function formatIterationsShortSummary(Variant $variant): string
     {
-        $subject = $variant->getSubject();
-        $stats = $variant->getStats();
-        $timeUnit = $this->timeUnit->resolveDestUnit($variant->getSubject()->getOutputTimeUnit());
-        $mode = $this->timeUnit->resolveMode($subject->getOutputMode());
-        $precision = $this->timeUnit->resolvePrecision($subject->getOutputTimePrecision());
-
-        return sprintf(
-            '[μ Mo]/r: %s %s μRSD/r: %s%%',
-
-            $this->timeUnit->format($stats->getMean(), $timeUnit, $mode, $precision, false),
-            $this->timeUnit->format($stats->getMode(), $timeUnit, $mode, $precision, false),
-            number_format($stats->getRstdev(), 2)
-        );
+        return $this->formatter->formatVariant($variant);
     }
 
     protected function formatIterationTime(Iteration $iteration): string

@@ -22,7 +22,7 @@ class BlinkenLogger extends AnsiLogger
     /**
      * Number of measurements to show per row.
      */
-    const NUMBER_COLS = 15;
+    const NUMBER_COLS = 10;
 
     const INDENT = 4;
 
@@ -105,10 +105,6 @@ class BlinkenLogger extends AnsiLogger
             return;
         }
 
-        if ($variant->getAssertionResults()->hasFailures()) {
-            $this->output->write(' <error>FAIL</error>');
-        }
-
         $this->rejects = [];
 
         foreach ($variant->getRejects() as $reject) {
@@ -121,10 +117,7 @@ class BlinkenLogger extends AnsiLogger
             return;
         }
 
-        $this->output->write(sprintf(
-            ' <comment>%s</comment>',
-            $this->formatIterationsShortSummary($variant)
-        ));
+        $this->output->write(' ' . $this->formatIterationsShortSummary($variant));
         $this->output->write(PHP_EOL);
     }
 
