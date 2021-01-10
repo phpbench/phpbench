@@ -11,12 +11,13 @@ use PhpBench\Util\TimeUnit;
 final class VariantSummaryFormatter
 {
     const DEFAULT_FORMAT = '%variant.mode% %time_unit% (±%variant.rstdev%%)';
-    const BASELINE_FORMAT = '= %variant.mode%%time_unit% vs %baseline.mode%%time_unit% (±%variant.rstdev%%) <%diff_format%>%percent_difference%%</>';
+    const BASELINE_FORMAT = '= %variant.mode%%time_unit% vs %baseline.mode%%time_unit% (±%variant.rstdev%%) <%result_style%>%percent_difference%%</>';
 
     const NOT_APPLICABLE = 'n/a';
-    const FORMAT_NO_CHANGE = 'fg=cyan';
-    const FORMAT_FAILURE = 'failure';
-    const FORMAT_GOOD_CHANGE = 'fg=green';
+    const FORMAT_NEUTRAL = 'result-neutral';
+    const FORMAT_FAILURE = 'result-failure';
+    const FORMAT_GOOD_CHANGE = 'result-good';
+    const FORMAT_NONE = 'result-none';
 
     /**
      * @var string
@@ -33,7 +34,31 @@ final class VariantSummaryFormatter
      */
     private $baselineFormat;
 
-    public function __construct(TimeUnit $timeUnit, string $format = self::DEFAULT_FORMAT, string $baselineFormat = self::BASELINE_FORMAT)
+    private static $defaultTokens = [
+        'time_unit' => self::NOT_APPLICABLE,
+        'variant.min' => self::NOT_APPLICABLE,
+        'variant.max' => self::NOT_APPLICABLE,
+        'variant.mean' => self::NOT_APPLICABLE,
+        'variant.mode' => self::NOT_APPLICABLE,
+        'variant.stdev' => self::NOT_APPLICABLE,
+        'variant.rstdev' => self::NOT_APPLICABLE,
+        'variant.variance' => self::NOT_APPLICABLE,
+        'baseline.min' => self::NOT_APPLICABLE,
+        'baseline.max' => self::NOT_APPLICABLE,
+        'baseline.mean' => self::NOT_APPLICABLE,
+        'baseline.mode' => self::NOT_APPLICABLE,
+        'baseline.stdev' => self::NOT_APPLICABLE,
+        'baseline.rstdev' => self::NOT_APPLICABLE,
+        'baseline.variance' => self::NOT_APPLICABLE,
+        'percent_difference' => self::NOT_APPLICABLE,
+        'result_style' => self::FORMAT_NEUTRAL,
+    ];
+
+    public function __construct(
+        TimeUnit $timeUnit,
+        string $format = self::DEFAULT_FORMAT,
+        string $baselineFormat = self::BASELINE_FORMAT
+    )
     {
         $this->format = $format;
         $this->timeUnit = $timeUnit;
@@ -44,35 +69,21 @@ final class VariantSummaryFormatter
     {
         $subject = $variant->getSubject();
 
-        $timeUnit = $this->timeUnit->resolveDestUnit($variant->getSubject()->getOutputTimeUnit());
-        $mode = $this->timeUnit->resolveMode($subject->getOutputMode());
-        $precision = $this->timeUnit->resolvePrecision($subject->getOutputTimePrecision());
+        [ $timeUnit , $mode, $precision ] = [
+           $this->timeUnit->resolveDestUnit($variant->getSubject()->getOutputTimeUnit()),
+           $this->timeUnit->resolveMode($subject->getOutputMode()),
+           $this->timeUnit->resolvePrecision($subject->getOutputTimePrecision()),
+        ];
 
         $timeFormatter = function (float $time) use ($timeUnit, $mode, $precision): string {
             return $this->timeUnit->format($time, $timeUnit, $mode, $precision, false);
         };
 
-        $tokens = [
-            'time_unit' => $this->timeUnit->getDestSuffix($timeUnit, $mode),
-            'variant.min' => self::NOT_APPLICABLE,
-            'variant.max' => self::NOT_APPLICABLE,
-            'variant.mean' => self::NOT_APPLICABLE,
-            'variant.mode' => self::NOT_APPLICABLE,
-            'variant.stdev' => self::NOT_APPLICABLE,
-            'variant.rstdev' => self::NOT_APPLICABLE,
-            'variant.variance' => self::NOT_APPLICABLE,
-            'baseline.min' => self::NOT_APPLICABLE,
-            'baseline.max' => self::NOT_APPLICABLE,
-            'baseline.mean' => self::NOT_APPLICABLE,
-            'baseline.mode' => self::NOT_APPLICABLE,
-            'baseline.stdev' => self::NOT_APPLICABLE,
-            'baseline.rstdev' => self::NOT_APPLICABLE,
-            'baseline.variance' => self::NOT_APPLICABLE,
-            'percent_difference' => self::NOT_APPLICABLE,
-            'diff_format' => self::FORMAT_NO_CHANGE,
-        ];
-
-        $tokens = array_merge($tokens, $this->populateFromVariant($timeFormatter, 'variant', $variant));
+        $tokens = array_merge(
+            self::$defaultTokens,
+            $this->populateFromVariant($timeFormatter, 'variant', $variant)
+        );
+        $tokens['time_unit'] = $this->timeUnit->getDestSuffix($timeUnit, $mode);
 
         if ($variant->getBaseline()) {
             $tokens = array_merge($tokens, $this->getBaselineTokens($timeFormatter, $variant, $variant->getBaseline()));
@@ -119,13 +130,16 @@ final class VariantSummaryFormatter
             return $prefix .number_format($diff, 2);
         })($diff);
 
-        $tokens['diff_format'] = (function (VariantAssertionResults $results, float $diff) {
+        $tokens['result_style'] = (function (VariantAssertionResults $results, float $diff) {
+            if (!$results->count()) {
+                return self::FORMAT_NONE;
+            }
             if ($results->failures()->count()) {
                 return self::FORMAT_FAILURE;
             }
 
             if ($results->tolerations()->count()) {
-                return self::FORMAT_NO_CHANGE;
+                return self::FORMAT_NEUTRAL;
             }
 
             return self::FORMAT_GOOD_CHANGE;
