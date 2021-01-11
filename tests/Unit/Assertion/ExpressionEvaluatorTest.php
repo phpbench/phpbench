@@ -12,6 +12,6 @@ class ExpressionEvaluatorTest extends TestCase
     public function testThroughput(): void
     {
         $eval = new ExpressionEvaluator(new NodeMessageFormatter([]), []);
-        self::assertEquals(1_000_000, $eval->evaluate(new ThroughputValue(1.0, 'second')));
+        self::assertEquals(1000000, $eval->evaluate(new ThroughputValue(1.0, 'second')));
     }
 }
