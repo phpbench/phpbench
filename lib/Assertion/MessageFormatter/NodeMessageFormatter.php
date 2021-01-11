@@ -106,7 +106,11 @@ final class NodeMessageFormatter implements MessageFormatter
 
     private function formatPropertyAccess(PropertyAccess $value): string
     {
-        return (string)PropertyAccess::resolvePropertyAccess($value->segments(), $this->args);
+        $value = PropertyAccess::resolvePropertyAccess($value->segments(), $this->args);
+        if ($value instanceof Value) {
+            return $this->format($value);
+        }
+        return (string)$value;
     }
 
     private function formatValueWithNormalizedUnit(Value $value, Value ...$companionValues): string

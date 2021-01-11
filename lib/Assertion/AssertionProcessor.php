@@ -12,7 +12,11 @@
 
 namespace PhpBench\Assertion;
 
+use PhpBench\Assertion\Ast\MemoryValue;
+use PhpBench\Assertion\Ast\PercentageValue;
+use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Math\Statistics;
+use PhpBench\Model\Iteration;
 use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Variant;
 
@@ -45,12 +49,25 @@ class AssertionProcessor
         return $result;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function buildVariantData(Variant $variant): array
     {
-        return array_merge($variant->getStats()->getStats(), [
-            'mem_real' => Statistics::mean($variant->getMetricValues(MemoryResult::class, 'real')),
-            'mem_final' => Statistics::mean($variant->getMetricValues(MemoryResult::class, 'final')),
-            'mem_peak' => Statistics::mean($variant->getMetricValues(MemoryResult::class, 'peak')),
-        ]);
+        $stats = $variant->getStats();
+        $timeUnit = $variant->getSubject()->getOutputTimeUnit();
+
+        return [
+            'min' => new TimeValue($stats->getMin(), $timeUnit),
+            'max' => new TimeValue($stats->getMax(), $timeUnit),
+            'stdev' => new TimeValue($stats->getStdev(), $timeUnit),
+            'mean' => new TimeValue($stats->getMean(), $timeUnit),
+            'mode' => new TimeValue($stats->getMode(), $timeUnit),
+            'variance' => new TimeValue($stats->getVariance(), $timeUnit),
+            'rstdev' => new PercentageValue($stats->getRstdev()),
+            'mem_real' => new MemoryValue(Statistics::mean($variant->getMetricValues(MemoryResult::class, 'real'))),
+            'mem_final' => new MemoryValue(Statistics::mean($variant->getMetricValues(MemoryResult::class, 'final'))),
+            'mem_peak' => new MemoryValue(Statistics::mean($variant->getMetricValues(MemoryResult::class, 'peak'))),
+        ];
     }
 }

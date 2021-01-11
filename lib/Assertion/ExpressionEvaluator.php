@@ -167,7 +167,11 @@ class ExpressionEvaluator
      */
     private function evaluatePropertyAccess(PropertyAccess $node)
     {
-        return PropertyAccess::resolvePropertyAccess($node->segments(), $this->args);
+        $value = PropertyAccess::resolvePropertyAccess($node->segments(), $this->args);
+        if ($value instanceof Value) {
+            return $this->evaluate($value);
+        }
+        return $value;
     }
 
     /**

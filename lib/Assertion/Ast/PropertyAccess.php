@@ -49,6 +49,10 @@ class PropertyAccess implements Value
             return $value;
         }
 
+        if (is_object($value)) {
+            return $value;
+        }
+
         return self::resolvePropertyAccess($segments, $value);
     }
 

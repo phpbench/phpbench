@@ -14,7 +14,7 @@ class MemoryValue implements Value
      */
     private $unit;
 
-    public function __construct(float $value, string $unit)
+    public function __construct(float $value, string $unit = 'bytes')
     {
         $this->value = $value;
         $this->unit = $unit;
