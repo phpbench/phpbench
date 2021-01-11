@@ -134,6 +134,16 @@ class ComparisonTest extends ExpressionParserTestCase
             '10 seconds > 10 seconds +/- 1 seconds',
             AssertionResult::tolerated()
         ];
+
+        yield [
+            '9 seconds > 10 seconds +/- 1 seconds',
+            AssertionResult::tolerated()
+        ];
+
+        yield [
+            '9 seconds < 10 seconds +/- 1 seconds',
+            AssertionResult::tolerated()
+        ];
     }
 
     /**
@@ -158,6 +168,11 @@ class ComparisonTest extends ExpressionParserTestCase
 
         yield 'tolerated' => [
             '10 seconds >= 10.1 seconds +/- 0.1 seconds',
+            AssertionResult::tolerated()
+        ];
+
+        yield 'tolerated 2' => [
+            '10 seconds <= 10.1 seconds +/- 0.1 seconds',
             AssertionResult::tolerated()
         ];
     }
@@ -185,6 +200,21 @@ class ComparisonTest extends ExpressionParserTestCase
         yield 'throughput 4' => [
             '11 ops/second < 10 ops/second',
             AssertionResult::fail()
+        ];
+
+        yield 'throughput 4 tolerated' => [
+            '11 ops/second < 10 ops/second +/- 1 ops/second',
+            AssertionResult::tolerated()
+        ];
+
+        yield 'throughput 5 tolerated' => [
+            '9.1 ops/second > 10 ops/second +/- 1 ops/second',
+            AssertionResult::tolerated()
+        ];
+
+        yield 'throughput 6 tolerated fail' => [
+            '9 ops/second > 10 ops/second +/- 10 ops/second',
+            AssertionResult::tolerated()
         ];
     }
 
