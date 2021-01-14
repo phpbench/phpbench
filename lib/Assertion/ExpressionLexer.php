@@ -24,6 +24,7 @@ class ExpressionLexer extends AbstractLexer
     public const T_DOT = 'dot';
     public const T_OPEN_PAREN = 'open_paren';
     public const T_CLOSE_PAREN = 'close_paren';
+    public const T_COMMA = 'comma';
     public const T_TIME_UNIT = 'time_unit';
     public const T_COMPARATOR = 'comparator';
     public const T_PROPERTY_ACCESS = 'property_access';
@@ -84,6 +85,9 @@ class ExpressionLexer extends AbstractLexer
 
             case $value === '(':
                 return self::T_OPEN_PAREN;
+
+            case $value === ',':
+                return self::T_COMMA;
 
             case $value === ')':
                 return self::T_CLOSE_PAREN;

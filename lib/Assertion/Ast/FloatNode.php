@@ -2,7 +2,7 @@
 
 namespace PhpBench\Assertion\Ast;
 
-class FloatNode implements Value
+class FloatNode implements NumberNode
 {
     /**
      * @var float

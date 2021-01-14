@@ -18,6 +18,7 @@ use PhpBench\Assertion\Ast\FunctionNode;
 use PhpBench\Assertion\Ast\IntegerNode;
 use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Assertion\Ast\Node;
+use PhpBench\Assertion\Ast\NumberNode;
 use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\ThroughputValue;
@@ -58,7 +59,7 @@ class ExpressionParser
         $token = $this->lexer->token;
 
         while ($this->lexer->lookahead) {
-            $this->parts[] = $this->walkToken();
+            $this->parts[] = $this->resolveNode();
         }
 
         if (count($this->parts) === 1) {
@@ -71,7 +72,7 @@ class ExpressionParser
         ));
     }
 
-    private function walkToken(): ?Node
+    private function resolveNode(): ?Node
     {
         if (!$this->lexer->lookahead) {
             return null;
@@ -93,6 +94,8 @@ class ExpressionParser
                 return $this->parseComparison();
             case ExpressionLexer::T_FUNCTION:
                 return $this->parseFunction();
+            case ExpressionLexer::T_TIME_UNIT:
+                return $this->parseTimeUnit();
         }
 
         throw $this->syntaxError('Do not know how to parse token');
@@ -125,7 +128,7 @@ class ExpressionParser
             ));
         }
 
-        $right = $this->walkToken();
+        $right = $this->resolveNode();
 
         if (null === $right) {
             throw $this->syntaxError(sprintf(
@@ -159,7 +162,29 @@ class ExpressionParser
         $functionName = $this->lexer->lookahead['value'];
         $this->lexer->moveNext();
         $this->expect(ExpressionLexer::T_OPEN_PAREN);
-        $args = [$this->walkToken()];
+
+        $args = [];
+        while (true) {
+            $arg = $this->resolveNode();
+            if (!$arg instanceof Value) {
+                throw $this->syntaxError('Expected value');
+            }
+
+            $args[] = $arg;
+
+            $next = $this->lexer->lookahead;
+
+            if (!$next) {
+                throw $this->syntaxError('Unexpected end');
+            }
+
+            if ($next['type'] === ExpressionLexer::T_CLOSE_PAREN) {
+                break;
+            }
+
+            $this->expect(ExpressionLexer::T_COMMA);
+        }
+
         $this->expect(ExpressionLexer::T_CLOSE_PAREN);
 
         return new FunctionNode($functionName, $args);
@@ -177,5 +202,25 @@ class ExpressionParser
         }
 
         throw $this->syntaxError(sprintf('Expected token "%s"', $type));
+    }
+
+    private function parseTimeUnit(): TimeValue
+    {
+        $unit = $this->lexer->lookahead['value'];
+        $value = array_pop($this->parts);
+
+        if (null === $value) {
+            throw $this->syntaxError(sprintf(
+                'Time unit "%s" has no value', $unit
+            ));
+        }
+
+        if (!$value instanceof NumberNode) {
+            throw $this->syntaxError('Expected number');
+        }
+
+        $this->lexer->moveNext();
+
+        return new TimeValue($value, $unit);
     }
 }

@@ -7,15 +7,16 @@ use PhpBench\Util\TimeUnit;
 class TimeValue implements Value
 {
     /**
-     * @var float
+     * @var NumberNode
      */
     private $value;
+
     /**
      * @var string
      */
     private $unit;
 
-    public function __construct(float $value, ?string $unit = TimeUnit::MICROSECONDS)
+    public function __construct(NumberNode $value, ?string $unit = TimeUnit::MICROSECONDS)
     {
         $this->value = $value;
         $this->unit = $unit;
@@ -26,13 +27,13 @@ class TimeValue implements Value
         return $this->unit;
     }
 
-    public function value(): float
+    public function value(): NumberNode
     {
         return $this->value;
     }
 
-    public static function fromMicroseconds(float $int): self
+    public static function fromMicroseconds(int $int): self
     {
-        return new self($int, TimeUnit::MICROSECONDS);
+        return new self(new IntegerNode($int), TimeUnit::MICROSECONDS);
     }
 }

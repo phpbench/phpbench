@@ -16,6 +16,7 @@ class ExpressionParserTestCase extends TestCase
     {
         $parser = new ExpressionParser(new ExpressionLexer(
             $config['functions'] ?? [],
+            $config['timeUnits'] ?? [],
         ));
         return $parser->parse($expression);
     }

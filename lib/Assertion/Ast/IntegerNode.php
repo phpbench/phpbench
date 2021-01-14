@@ -2,7 +2,7 @@
 
 namespace PhpBench\Assertion\Ast;
 
-class IntegerNode implements Value
+class IntegerNode implements NumberNode
 {
     /**
      * @var int
@@ -14,7 +14,7 @@ class IntegerNode implements Value
         $this->value = $value;
     }
 
-    public function getValue(): int
+    public function value(): int
     {
         return $this->value;
     }

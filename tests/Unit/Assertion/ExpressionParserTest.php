@@ -31,9 +31,9 @@ class ExpressionParserTest extends ExpressionParserTestCase
      * @dataProvider provideValues
      * @dataProvider provideComparison
      * @dataProvider provideAggregateFunction
-     * @dataProvider provideComparisonThroughput
+     * @dataProvider provideValueWithUnit
      */
-    public function testParse(string $dsl, Node $expected, array $config): void
+    public function testParse(string $dsl, Node $expected, array $config = []): void
     {
         $this->assertEquals($expected, $this->parse($dsl, $config));
     }
@@ -113,15 +113,14 @@ class ExpressionParserTest extends ExpressionParserTestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideComparisonThroughput(): Generator
+    public function provideValueWithUnit(): Generator
     {
         yield 'with throughput' => [
-            'this.time >= 100 ops/millisecond',
-            new Comparison(
-                new PropertyAccess(['this', 'time']),
-                '>=',
-                new ThroughputValue(100, 'millisecond')
-            )
+            '100 milliseconds',
+            new TimeValue(new IntegerNode(100), 'milliseconds'),
+            [
+                'timeUnits' => ['milliseconds']
+            ]
         ];
     }
 
@@ -139,6 +138,17 @@ class ExpressionParserTest extends ExpressionParserTestCase
                 'functions' => ['mode']
             ]
         ];
+
+        yield 'function with multiple arguments' => [
+            'mode(10, 5)',
+            new FunctionNode('mode', [
+                new IntegerNode(10),
+                new IntegerNode(5),
+            ]),
+            [
+                'functions' => ['mode']
+            ]
+        ];
     }
 
     /**
@@ -148,7 +158,7 @@ class ExpressionParserTest extends ExpressionParserTestCase
     {
         $this->expectException(SyntaxError::class);
         $this->expectExceptionMessage($expectedMessage);
-        $this->parse($expression);
+        $this->parse($expression, []);
     }
         
     /**
@@ -158,83 +168,7 @@ class ExpressionParserTest extends ExpressionParserTestCase
     {
         yield 'invalid value' => [
                 '"!£',
-                'Expected property, integer or float'
+                'Do not know how to parse token'
             ];
-
-        yield 'invalid unit' => [
-                '100 foobars',
-                'Expected time'
-            ];
-
-        yield 'invalid comparator' => [
-                '100 microseconds !',
-                'Expected comparator, got "!"'
-            ];
-    }
-
-    /**
-     * @dataProvider provideUnits
-     */
-    public function testTimeUnit(string $unit): void
-    {
-        $node = $this->parse(sprintf('10 %s > 10 microseconds', $unit));
-        self::assertInstanceOf(Comparison::class, $node);
-        self::assertEquals($unit, $node->value1()->unit());
-    }
-
-    /**
-     * @return Generator<mixed>
-     */
-    public function provideUnits(): Generator
-    {
-        yield [ 'microseconds' ];
-
-        yield [ 'milliseconds' ];
-
-        yield [ 'ms' ];
-
-        yield [ 'seconds' ];
-
-        yield [ 's' ];
-
-        yield [ 'minutes' ];
-
-        yield [ 'm' ];
-    }
-
-    /**
-     * @dataProvider provideStorageUnit
-     */
-    public function testStorageUnit(string $unit): void
-    {
-        $node = $this->parse(sprintf('10 %s > 10 bytes', $unit));
-        self::assertInstanceOf(Comparison::class, $node);
-        self::assertEquals($unit, $node->value1()->unit());
-    }
-
-    /**
-     * @return Generator<mixed>
-     */
-    public function provideStorageUnit(): Generator
-    {
-        yield [ 'gigabytes' ];
-
-        yield [ 'gb' ];
-
-        yield [ 'megabytes' ];
-
-        yield [ 'mb' ];
-
-        yield [ 'kilobytes' ];
-
-        yield [ 'k' ];
-
-        yield [ 'kilobytes' ];
-
-        yield [ 'kb' ];
-
-        yield [ 'bytes' ];
-
-        yield [ 'b' ];
     }
 }
