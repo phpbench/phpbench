@@ -222,4 +222,18 @@ class VariantTest extends TestCase
         $this->assertEquals([4, 8], $times);
         $this->assertEquals([100, 200], $memories);
     }
+
+    public function testGetMetrics(): void
+    {
+        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 1, 0);
+
+        $variant->createIteration(TestUtil::createResults(4, 100));
+        $variant->createIteration(TestUtil::createResults(8, 200));
+
+        $times = $variant->getMetricValuesByRev(TimeResult::class, 'net');
+        $memories = $variant->getMetricValues(MemoryResult::class, 'peak');
+
+        $this->assertEquals([4, 8], $times);
+        $this->assertEquals([100, 200], $memories);
+    }
 }

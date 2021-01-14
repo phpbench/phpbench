@@ -6,24 +6,42 @@ use Doctrine\Common\Lexer\AbstractLexer;
 
 class ExpressionLexer extends AbstractLexer
 {
+    /**
+     * @var string[]
+     */
+    private $functionNames;
+
+    /**
+     * @var string[]
+     */
+    private $timeUnits;
+
     public const T_NONE = 'none';
     public const T_INTEGER = 'integer';
     public const T_FLOAT = 'float';
     public const T_TOLERANCE = 'tolerance';
+    public const T_FUNCTION = 'function';
     public const T_DOT = 'dot';
+    public const T_OPEN_PAREN = 'open_paren';
+    public const T_CLOSE_PAREN = 'close_paren';
+    public const T_TIME_UNIT = 'time_unit';
     public const T_COMPARATOR = 'comparator';
     public const T_PROPERTY_ACCESS = 'property_access';
-    public const T_UNIT = 'unit';
     public const T_PERCENTAGE = 'percentage';
 
-    private const PATTERN_PROPERTY_ACCESS = '(?:[a-z_][a-z0-9_]+\.[a-z_][a-z0-9_]+\.?)+';
+    private const PATTERN_PROPERTY_ACCESS = '(?:[a-z_][a-z0-9_]+\.(?:[a-z_][a-z0-9_]+\.?)+)';
     private const PATTERN_COMPARATORS = '(?:<=|>=|<|=|>)';
-    private const UNIT = '(?:[a-z\/]+)';
+    private const PATTERN_NAME = '(?:[a-z_\/]+)';
     private const PATTERN_TOLERANCE = '(?:\+\/\-)';
 
-    public function __construct(string $input)
+    /**
+     * @param string[] $timeUnits
+     * @param string[] $functionNames
+     */
+    public function __construct(array $functionNames, array $timeUnits = [])
     {
-        $this->setInput($input);
+        $this->functionNames = $functionNames;
+        $this->timeUnits = $timeUnits;
     }
 
     /**
@@ -36,7 +54,7 @@ class ExpressionLexer extends AbstractLexer
             self::PATTERN_COMPARATORS, // comparators
             '(?:[0-9]+(?:[\.][0-9]+)*)(?:e[+-]?[0-9]+)?', // numbers
             self::PATTERN_PROPERTY_ACCESS,
-            self::UNIT, // names
+            self::PATTERN_NAME, // names
             '%',
         ];
     }
@@ -63,15 +81,28 @@ class ExpressionLexer extends AbstractLexer
                 }
 
                 return self::T_INTEGER;
+
+            case $value === '(':
+                return self::T_OPEN_PAREN;
+
+            case $value === ')':
+                return self::T_CLOSE_PAREN;
+
             case $value === '+/-':
                 return self::T_TOLERANCE;
+
             case (preg_match('{'. self::PATTERN_PROPERTY_ACCESS . '}', $value)):
                 return self::T_PROPERTY_ACCESS;
 
             case (preg_match('{'. self::PATTERN_COMPARATORS. '}', $value)):
                 return self::T_COMPARATOR;
-            case (preg_match('{'. self::UNIT. '}', $value)):
-                return self::T_UNIT;
+
+            case (in_array($value, $this->functionNames)):
+                return self::T_FUNCTION;
+
+            case (in_array($value, $this->timeUnits)):
+                return self::T_TIME_UNIT;
+
             case $value === '%':
                 return self::T_PERCENTAGE;
         }

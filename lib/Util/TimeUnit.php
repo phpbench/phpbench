@@ -119,6 +119,17 @@ class TimeUnit
     }
 
     /**
+     * @return string[]
+     */
+    public static function supportedUnitNames(): array
+    {
+        return array_merge(
+            array_keys(self::$aliases),
+            array_keys(self::$map)
+        );
+    }
+
+    /**
      * Convert instance value to given unit.
      */
     public function toDestUnit(float $time, string $destUnit = null, string $mode = null)

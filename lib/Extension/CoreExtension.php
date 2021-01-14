@@ -15,6 +15,7 @@ namespace PhpBench\Extension;
 use Humbug\SelfUpdate\Updater;
 use PhpBench\Assertion\AssertionProcessor;
 use PhpBench\Assertion\ExpressionEvaluatorFactory;
+use PhpBench\Assertion\ExpressionLexer;
 use PhpBench\Assertion\ExpressionParser;
 use PhpBench\Benchmark\BaselineManager;
 use PhpBench\Benchmark\BenchmarkFinder;
@@ -613,6 +614,12 @@ class CoreExtension implements ExtensionInterface
             return new AssertionProcessor(
                 new ExpressionParser(),
                 new ExpressionEvaluatorFactory()
+            );
+        });
+
+        $container->register(ExpressionLexer::class, function (Container $container) {
+            return new ExpressionLexer(
+                TimeUnit::supportedUnitNames()
             );
         });
     }

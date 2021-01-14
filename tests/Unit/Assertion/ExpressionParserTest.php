@@ -14,6 +14,9 @@ namespace PhpBench\Tests\Unit\Assertion;
 
 use Generator;
 use PhpBench\Assertion\Ast\Comparison;
+use PhpBench\Assertion\Ast\FloatNode;
+use PhpBench\Assertion\Ast\FunctionNode;
+use PhpBench\Assertion\Ast\IntegerNode;
 use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Assertion\Ast\Node;
 use PhpBench\Assertion\Ast\PercentageValue;
@@ -25,12 +28,35 @@ use PhpBench\Assertion\Exception\SyntaxError;
 class ExpressionParserTest extends ExpressionParserTestCase
 {
     /**
+     * @dataProvider provideValues
      * @dataProvider provideComparison
+     * @dataProvider provideAggregateFunction
      * @dataProvider provideComparisonThroughput
      */
-    public function testParse(string $dsl, Node $expected): void
+    public function testParse(string $dsl, Node $expected, array $config): void
     {
-        $this->assertEquals($expected, $this->parse($dsl));
+        $this->assertEquals($expected, $this->parse($dsl, $config));
+    }
+
+    /**
+     * @return Generator<mixed>
+     */
+    public function provideValues(): Generator
+    {
+        yield [
+            '123',
+            new IntegerNode(123),
+        ];
+
+        yield [
+            '123.12',
+            new FloatNode(123.12),
+        ];
+
+        yield [
+            'this.foobar',
+            new PropertyAccess(['this', 'foobar']),
+        ];
     }
 
     /**
@@ -38,87 +64,48 @@ class ExpressionParserTest extends ExpressionParserTestCase
      */
     public function provideComparison(): Generator
     {
-        yield [
-            'this.foobar < 100 microseconds',
+        yield 'comp 1' => [
+            'this.foobar < 100',
             new Comparison(
                 new PropertyAccess(['this', 'foobar']),
                 '<',
-                new TimeValue(100, 'microseconds')
-            )
-        ];
-
-        yield [
-            'this.foobar < 100 microseconds',
-            new Comparison(
-                new PropertyAccess(['this', 'foobar']),
-                '<',
-                new TimeValue(100, 'microseconds')
+                new IntegerNode(100)
             )
         ];
 
         yield 'less than equal' => [
-            'this.foobar <= 100 microseconds',
+            'this.foobar <= 100',
             new Comparison(
                 new PropertyAccess(['this', 'foobar']),
                 '<=',
-                new TimeValue(100, 'microseconds')
+                new IntegerNode(100)
             )
         ];
 
         yield 'equal' => [
-            'this.foobar = 100 microseconds',
+            'this.foobar = 100',
             new Comparison(
                 new PropertyAccess(['this', 'foobar']),
                 '=',
-                new TimeValue(100, 'microseconds')
+                new IntegerNode(100)
             )
         ];
 
         yield 'greater than' => [
-            'this.foobar > 100 microseconds',
+            'this.foobar > 100',
             new Comparison(
                 new PropertyAccess(['this', 'foobar']),
                 '>',
-                new TimeValue(100, 'microseconds')
+                new IntegerNode(100)
             )
         ];
 
         yield 'greater than equal' => [
-            'this.foobar >= 100 microseconds',
+            'this.foobar >= 100',
             new Comparison(
                 new PropertyAccess(['this', 'foobar']),
                 '>=',
-                new TimeValue(100, 'microseconds')
-            )
-        ];
-
-        yield 'with tolerance' => [
-            'this.foobar >= 100 microseconds +/- 10 microseconds',
-            new Comparison(
-                new PropertyAccess(['this', 'foobar']),
-                '>=',
-                new TimeValue(100, 'microseconds'),
-                new TimeValue(10, 'microseconds')
-            )
-        ];
-
-        yield 'with tolerance percentage' => [
-            'this.mem_peak >= 100 bytes +/- 10%',
-            new Comparison(
-                new PropertyAccess(['this', 'mem_peak']),
-                '>=',
-                new MemoryValue(100, 'bytes'),
-                new PercentageValue(10)
-            )
-        ];
-
-        yield 'with no tolerance unit' => [
-            'this.mode < 1 microsecond +/- 1000',
-            new Comparison(
-                new PropertyAccess(['this', 'mode']),
-                '<',
-                new TimeValue(1, 'microsecond'),
-                new TimeValue(1000, 'microseconds')
+                new IntegerNode(100)
             )
         ];
     }
@@ -135,6 +122,22 @@ class ExpressionParserTest extends ExpressionParserTestCase
                 '>=',
                 new ThroughputValue(100, 'millisecond')
             )
+        ];
+    }
+
+    /**
+     * @return Generator<mixed>
+     */
+    public function provideAggregateFunction(): Generator
+    {
+        yield 'function' => [
+            'mode(variant.time.net)',
+            new FunctionNode('mode', [
+                new PropertyAccess(['variant', 'time', 'net']),
+            ]),
+            [
+                'functions' => ['mode']
+            ]
         ];
     }
 

@@ -13,6 +13,9 @@
 namespace PhpBench\Assertion;
 
 use PhpBench\Assertion\Ast\Comparison;
+use PhpBench\Assertion\Ast\FloatNode;
+use PhpBench\Assertion\Ast\FunctionNode;
+use PhpBench\Assertion\Ast\IntegerNode;
 use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Assertion\Ast\Node;
 use PhpBench\Assertion\Ast\PercentageValue;
@@ -24,177 +27,155 @@ use PhpBench\Assertion\Ast\ZeroValue;
 use PhpBench\Assertion\Exception\SyntaxError;
 use PhpBench\Util\MemoryUnit;
 use PhpBench\Util\TimeUnit;
+use RuntimeException;
 
 class ExpressionParser
 {
+    /**
+     * @var Node[]
+     */
+    private array $parts = [];
+
     /**
      * @var ExpressionLexer
      */
     private $lexer;
 
+    public function __construct(ExpressionLexer $lexer)
+    {
+        $this->lexer = $lexer;
+    }
+
     public function parse(string $expression): Node
     {
-        $this->lexer = new ExpressionLexer($expression);
-
+        $this->lexer->setInput($expression);
         return $this->buildAst();
     }
 
     private function buildAst(): Node
     {
         $this->lexer->moveNext();
+        $token = $this->lexer->token;
 
-        return $this->parseComparisonExpression();
-    }
-
-    private function parseComparisonExpression(): Comparison
-    {
-        $left = $this->parseValue();
-        $comparator = $this->parseComparator();
-        $right = $this->parseValue();
-        $tolerance = $this->parseTolerance();
-
-        return new Comparison($left, $comparator, $right, $tolerance);
-    }
-
-    private function parseValue(): Value
-    {
-        switch ($this->lexer->lookahead['type']) {
-            case ExpressionLexer::T_PROPERTY_ACCESS:
-                return $this->parsePropertyAccess();
-            case ExpressionLexer::T_INTEGER:
-            case ExpressionLexer::T_FLOAT:
-                $glimpsed = $this->lexer->glimpse();
-
-                if ($glimpsed && $glimpsed['value'] === '%') {
-                    return $this->parsePercentageValue();
-                }
-
-                return $this->parseUnitValue();
+        while ($this->lexer->lookahead) {
+            $this->parts[] = $this->walkToken();
         }
 
-        throw $this->syntaxError('property, integer or float', $this->lexer->lookahead);
+        if (count($this->parts) === 1) {
+            return reset($this->parts);
+        }
+
+        throw new RuntimeException(sprintf(
+            'Did not parse a single AST node, got "%s" nodes',
+            count($this->parts)
+        ));
+    }
+
+    private function walkToken(): ?Node
+    {
+        if (!$this->lexer->lookahead) {
+            return null;
+        }
+
+        $type = $this->lexer->lookahead['type'];
+        $value = $this->lexer->lookahead['value'];
+
+        switch ($type) {
+            case ExpressionLexer::T_INTEGER:
+                $this->lexer->moveNext();
+                return new IntegerNode($value);
+            case ExpressionLexer::T_FLOAT:
+                $this->lexer->moveNext();
+                return new FloatNode($value);
+            case ExpressionLexer::T_PROPERTY_ACCESS:
+                return $this->parsePropertyAccess();
+            case ExpressionLexer::T_COMPARATOR:
+                return $this->parseComparison();
+            case ExpressionLexer::T_FUNCTION:
+                return $this->parseFunction();
+        }
+
+        throw $this->syntaxError('Do not know how to parse token');
     }
 
     private function parsePropertyAccess(): PropertyAccess
     {
         $token = $this->lexer->lookahead;
-        $this->matchAndMoveNext($token, ExpressionLexer::T_PROPERTY_ACCESS);
+        $this->lexer->moveNext();
 
         return new PropertyAccess(explode('.', $token['value']));
     }
 
-    private function parseComparator(): string
+    private function parseComparison(): Comparison
     {
-        $token = $this->lexer->lookahead;
-        $this->matchAndMoveNext($token, ExpressionLexer::T_COMPARATOR);
+        $value = $this->lexer->lookahead['value'];
+        $this->lexer->moveNext();
+        $left = array_pop($this->parts);
 
-        return $token['value'];
+        if (null === $left) {
+            throw $this->syntaxError(sprintf(
+                'Comparison "%s" has no left hand side', $value
+            ));
+        }
+
+        if (!$left instanceof Value) {
+            throw $this->syntaxError(sprintf(
+                'Left hand side of "%s" must be a value got "%s"',
+                $value, get_class($left)
+            ));
+        }
+
+        $right = $this->walkToken();
+
+        if (null === $right) {
+            throw $this->syntaxError(sprintf(
+                'Comparison "%s" has no right hand side', $value
+            ));
+        }
+
+        if (!$right instanceof Value) {
+            throw $this->syntaxError(sprintf(
+                'Right hand side of "%s" must be a value got "%s"',
+                $value, get_class($right)
+            ));
+        }
+
+        return new Comparison($left, $value, $right);
     }
 
-    private function parseUnitValue(): Value
+    private function syntaxError(string $message): SyntaxError
     {
-        $value = $this->parseNumericValue();
-
-        $token = $this->lexer->lookahead;
-        $unit = $token ? $this->parseUnit($token) : TimeUnit::MICROSECONDS;
-
-        if (TimeUnit::isTimeUnit($unit)) {
-            return new TimeValue($value, $unit);
-        }
-
-        if (MemoryUnit::isMemoryUnit($unit)) {
-            return new MemoryValue($value, $unit);
-        }
-
-        if (0 === strpos($unit, 'ops/')) {
-            return new ThroughputValue($value, substr($unit, 4));
-        }
-
-        throw $this->syntaxError('time (e.g. microseconds), memory (e.g. bytes) or throughput unit (e.g. ops/second)', $token);
+        return new SyntaxError(sprintf(
+            '%s: (token "%s", position: %s, value: %s)',
+            $message,
+            $this->lexer->lookahead['type'],
+            $this->lexer->lookahead['position'],
+            json_encode($this->lexer->lookahead['value'])
+        ));
     }
 
-    /**
-     * @return int|float
-     */
-    private function parseNumericValue()
+    private function parseFunction(): FunctionNode
     {
-        $token = $this->lexer->lookahead;
+        $functionName = $this->lexer->lookahead['value'];
+        $this->lexer->moveNext();
+        $this->expect(ExpressionLexer::T_OPEN_PAREN);
+        $args = [$this->walkToken()];
+        $this->expect(ExpressionLexer::T_CLOSE_PAREN);
 
-        if ($token['type'] === ExpressionLexer::T_INTEGER) {
+        return new FunctionNode($functionName, $args);
+    }
+
+    private function expect(string $type): void
+    {
+        if (!$this->lexer->lookahead) {
+            throw $this->syntaxError('No token to look ahead to');
+        }
+
+        if ($type === $this->lexer->lookahead['type']) {
             $this->lexer->moveNext();
-
-            return (int)$token['value'];
-        }
-
-        if ($token['type'] === ExpressionLexer::T_FLOAT) {
-            $this->lexer->moveNext();
-
-            return (float)$token['value'];
-        }
-
-        throw $this->syntaxError('integer or float', $token);
-    }
-
-    private function parseUnit(?array $token): string
-    {
-        $this->matchAndMoveNext($token, ExpressionLexer::T_UNIT);
-
-        return $token['value'];
-    }
-
-    private function parseTolerance(): Value
-    {
-        $token = $this->lexer->lookahead;
-
-        if (null === $token) {
-            return new ZeroValue();
-        }
-
-        $this->matchAndMoveNext($token, ExpressionLexer::T_TOLERANCE);
-
-        return $this->parseValue();
-    }
-
-    private function parsePercentageValue(): PercentageValue
-    {
-        $token = $this->lexer->lookahead;
-        $this->matchAndMoveNext($token, ExpressionLexer::T_INTEGER, ExpressionLexer::T_FLOAT);
-        $value = $token['value'];
-        $token = $this->lexer->lookahead;
-        $this->matchAndMoveNext($token, ExpressionLexer::T_PERCENTAGE);
-
-        return new PercentageValue((float)$value);
-    }
-
-    /**
-     * @param array<mixed> $token
-     */
-    private function matchAndMoveNext(array $token, string ...$expectedTypes): void
-    {
-        if (in_array($token['type'], $expectedTypes)) {
-            $this->lexer->moveNext();
-
             return;
         }
 
-        throw $this->syntaxError(implode('", "', $expectedTypes), $token);
-    }
-
-    /**
-     * @param array<mixed> $token
-     */
-    private function syntaxError(string $expected = '', ?array $token = null): SyntaxError
-    {
-        if ($token === null) {
-            $token = $this->lexer->lookahead;
-        }
-
-        $tokenPos = $token['position'] ?? '-1';
-
-        $message = sprintf('line 0, col %d: Error: ', $tokenPos);
-        $message .= $expected !== '' ? sprintf('Expected %s, got ', $expected) : 'Unexpected ';
-        $message .= $this->lexer->lookahead === null ? 'end of string.' : sprintf('"%s"', $token['value']);
-
-        return new SyntaxError($message);
+        throw $this->syntaxError(sprintf('Expected token "%s"', $type));
     }
 }
