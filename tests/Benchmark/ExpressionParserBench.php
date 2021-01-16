@@ -10,7 +10,7 @@ use PhpBench\Assertion\ExpressionParser;
  * @Iterations(3)
  * @BeforeMethods({"setUp"})
  * @OutputTimeUnit("milliseconds")
- * @Assert("variant.mode = baseline.mode +/- 5%")
+ * @Assert("mode(variant.time.net) = mode(baseline.time.net) +/- 5%")
  */
 class ExpressionParserBench
 {

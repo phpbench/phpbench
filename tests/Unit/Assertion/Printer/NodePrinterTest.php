@@ -12,6 +12,8 @@ use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\ToleranceNode;
+use PhpBench\Assertion\ExpressionEvaluator;
+use PhpBench\Assertion\ExpressionFunctions;
 use PhpBench\Assertion\Printer\NodePrinter;
 use PhpBench\Tests\TestCase;
 use PhpBench\Util\TimeUnit;
@@ -30,7 +32,7 @@ class NodePrinterTest extends TestCase
             TimeUnit::MICROSECONDS,
             TimeUnit::MODE_TIME,
             0
-        )))->format($node));
+        ), new ExpressionEvaluator($args, new ExpressionFunctions([]))))->format($node));
     }
         
     /**
@@ -88,36 +90,6 @@ class NodePrinterTest extends TestCase
                 ],
                 '10s > 10s ± 5s',
             ];
-
-        yield 'normalise property access unit 2' => [
-                new Comparison(
-                    new TimeValue(new IntegerNode(10), 'seconds'),
-                    '>',
-                    new PropertyAccess(['foo', 'bar']),
-                    new ToleranceNode(new TimeValue(new IntegerNode(5), 'seconds'))
-                ),
-                [
-                    'foo' => [
-                        'bar' => 1E7
-                    ]
-                ],
-                '10s > 10s ± 5s',
-            ];
-
-        yield 'normalise property access unit 3' => [
-                new Comparison(
-                    new TimeValue(new IntegerNode(10), 'seconds'),
-                    '>',
-                    new TimeValue(new IntegerNode(5), 'seconds'),
-                    new ToleranceNode(new PropertyAccess(['foo', 'bar']))
-                ),
-                [
-                    'foo' => [
-                        'bar' => 5E6
-                    ]
-                ],
-                '10s > 5s ± 5s',
-            ];
     }
 
     /**
@@ -136,34 +108,5 @@ class NodePrinterTest extends TestCase
             [],
             '10.300 megabytes',
         ];
-
-        yield 'normalise property access 1' => [
-                new Comparison(
-                    new PropertyAccess(['foo', 'bar']),
-                    '>',
-                    new MemoryValue(new IntegerNode(10), 'megabytes')
-                ),
-                [
-                    'foo' => [
-                        'bar' => 5E6
-                    ]
-                ],
-                '5 megabytes > 10 megabytes ± 0',
-            ];
-
-        yield 'normalise property access 2' => [
-                new Comparison(
-                    new PropertyAccess(['foo', 'bar']),
-                    '>',
-                    new MemoryValue(new IntegerNode(10), 'megabytes'),
-                    new ToleranceNode(new MemoryValue(new IntegerNode(1), 'megabytes'))
-                ),
-                [
-                    'foo' => [
-                        'bar' => 5E6
-                    ]
-                ],
-                '5 megabytes > 10 megabytes ± 1 megabytes',
-            ];
     }
 }

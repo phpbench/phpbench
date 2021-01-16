@@ -126,6 +126,8 @@ class ExpressionEvaluatorTest extends TestCase
 
         // property access
         yield ['foo.bar', ['foo' => ['bar' => 10]], 10];
+        yield ['foo.bar ms', ['foo' => ['bar' => 10]], 10000];
+
         yield ['multiply(multiply(12, foo.bar), 4)', [
             'foo' => ['bar' => 10]
         ], 480, [

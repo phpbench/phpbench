@@ -11,8 +11,10 @@ use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeValue;
+use PhpBench\Assertion\Ast\ToleranceNode;
 use PhpBench\Assertion\Ast\Value;
 use PhpBench\Assertion\Ast\ZeroValue;
+use PhpBench\Assertion\ExpressionEvaluator;
 use PhpBench\Assertion\MessageFormatter;
 use PhpBench\Util\MemoryUnit;
 use PhpBench\Util\TimeUnit;
@@ -31,10 +33,19 @@ final class NodePrinter implements MessageFormatter
      */
     private $timeUnit;
 
-    public function __construct(array $args, TimeUnit $timeUnit)
+    /**
+     * @var ExpressionEvaluator
+     */
+    private $evaulator;
+
+    /**
+     * @param array<string,mixed> $args
+     */
+    public function __construct(array $args, TimeUnit $timeUnit, ExpressionEvaluator $evaulator)
     {
         $this->args = $args;
         $this->timeUnit = $timeUnit;
+        $this->evaulator = $evaulator;
     }
 
     public function format(Node $node): string
@@ -80,23 +91,29 @@ final class NodePrinter implements MessageFormatter
 
     private function formatComparison(Comparison $node): string
     {
-        return sprintf(
-            '%s %s %s ± %s',
-            $this->format($node->value1()),
-            $node->operator(),
-            $this->format($node->value2()),
-            $this->format($node->tolerance()->tolerance())
-        );
+        return (function (?ToleranceNode $tolerance, Value $value1, string $operator, Value $value2) {
+            if ($tolerance) {
+                return sprintf(
+                    '%s %s %s ± %s',
+                    $this->format($value1),
+                    $operator,
+                    $this->format($value2),
+                    $this->format($tolerance->tolerance())
+                );
+            }
+
+            return sprintf(
+                '%s %s %s',
+                $this->format($value1),
+                $operator,
+                $this->format($value2)
+            );
+        })($node->tolerance(), $node->value1(), $node->operator(), $node->value2());
     }
 
     private function formatTimeValue(TimeValue $timeValue): string
     {
-        $value = $timeValue->value();
-        $value = $this->format($value);
-
-        $unit = $timeValue->unit();
-
-        return sprintf('%s%s', $value, TimeUnit::getSuffix($unit));
+        return $this->timeUnit->format($this->evaulator->evaluate($timeValue), $timeValue->unit());
     }
 
     private function formatPropertyAccess(PropertyAccess $value): string
@@ -122,7 +139,11 @@ final class NodePrinter implements MessageFormatter
 
     private function formatMemoryValue(MemoryValue $node): string
     {
-        return sprintf('%s %s', $this->formatNumberValue((float)$node->value()), $node->unit());
+        return sprintf(
+            '%s %s',
+            $this->format($node->value()),
+            $node->unit()
+        );
     }
 
     private function formatNumberValue(float $value): string
