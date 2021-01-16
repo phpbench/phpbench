@@ -43,20 +43,16 @@ class ExpressionEvaluatorTest extends TestCase
         );
     }
 
+    /**
+     * @return Generator<mixed>
+     */
     public function provideEvaluate(): Generator
     {
-        yield 'int' => [
-            '10',
-            [],
-            10
-        ];
+        yield 'int' => ['10', [], 10];
 
-        yield 'float' => [
-            '10.1',
-            [],
-            10.1
-        ];
+        yield 'float' => ['10.1', [], 10.1];
 
+        // comparisons
         yield ['10 > 5', [], ComparisonResult::true()];
         yield ['10 < 5', [], ComparisonResult::false()];
         yield ['5 < 5', [], ComparisonResult::false()];
@@ -66,13 +62,31 @@ class ExpressionEvaluatorTest extends TestCase
         yield ['5 > 4', [], ComparisonResult::true()];
         yield ['4 > 4', [], ComparisonResult::false()];
         yield ['4 >= 4', [], ComparisonResult::true()];
-        yield ['4 >= 4 +/- 10', [], ComparisonResult::tolerated()];
+        yield ['4 >= 4 +/- 1', [], ComparisonResult::tolerated()];
+        yield ['3 >= 4 +/- 1', [], ComparisonResult::tolerated()];
+        yield ['2 >= 4 +/- 1', [], ComparisonResult::false()];
+        yield ['5 >= 4 +/- 1', [], ComparisonResult::tolerated()];
+        yield ['3 >= 4 +/- 30%', [], ComparisonResult::tolerated()];
+        yield ['5 >= 4 +/- 30%', [], ComparisonResult::tolerated()];
+        yield ['10 >= 4 +/- 30%', [], ComparisonResult::true()];
+        yield ['0 >= 4 +/- 30%', [], ComparisonResult::false()];
 
-        yield 'memory' => [
-            '10 megabytes',
-            [],
-            10 * 1E6
-        ];
+        // time units
+        yield ['10', [], 10];
+        yield ['10 microseconds', [], 10];
+        yield ['1 ms', [], 1000.0];
+        yield ['1 minutes', [], 6E7];
 
+        // time unit comparison
+        yield ['1 minute = 60 seconds', [], ComparisonResult::true()];
+        yield ['1 minute > 60 seconds', [], ComparisonResult::false()];
+        yield ['1 minute > 60 seconds +/- 1 seconds', [], ComparisonResult::tolerated()];
+        yield ['1 minute > 60 seconds +/- 0 seconds', [], ComparisonResult::false()];
+
+        // memory
+        yield ['10 kilobytes', [], 10000];
+        yield ['10 megabytes', [], 10 * 1E6];
+        yield ['10 bytes', [], 10];
+        yield ['10 gb', [], 1E4 * 1E6];
     }
 }

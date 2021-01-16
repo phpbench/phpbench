@@ -148,7 +148,12 @@ class ExpressionEvaluator
      */
     private function evaluateTimeValue(TimeValue $node)
     {
-        return TimeUnit::convert($node->value(), $node->unit(), TimeUnit::MICROSECONDS, TimeUnit::MODE_TIME);
+        return TimeUnit::convert(
+            $this->evaluate($node->value()),
+            $node->unit(),
+            TimeUnit::MICROSECONDS,
+            TimeUnit::MODE_TIME
+        );
     }
 
     /**
@@ -198,7 +203,7 @@ class ExpressionEvaluator
         $value = $tolerance->tolerance();
 
         if ($value instanceof PercentageValue) {
-            return ($right / 100) * $value->percentage();
+            return ($right / 100) * $value->percentage()->value();
         }
 
         return $this->evaluate($value);
