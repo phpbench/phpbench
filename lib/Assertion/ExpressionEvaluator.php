@@ -4,6 +4,8 @@ namespace PhpBench\Assertion;
 
 use PhpBench\Assertion\Ast\Assertion;
 use PhpBench\Assertion\Ast\Comparison;
+use PhpBench\Assertion\Ast\FloatNode;
+use PhpBench\Assertion\Ast\IntegerNode;
 use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Assertion\Ast\Node;
 use PhpBench\Assertion\Ast\PercentageValue;
@@ -28,38 +30,23 @@ class ExpressionEvaluator
     private $args;
 
     /**
-     * @var MessageFormatter
-     */
-    private $formatter;
-
-    /**
      * @param array<string,mixed> $args
      */
-    public function __construct(MessageFormatter $formatter, array $args = [])
+    public function __construct(array $args = [])
     {
         $this->args = $args;
-        $this->formatter = $formatter;
     }
 
-    public function assert(Assertion $node): AssertionResult
-    {
-        $result = $this->evaluate($node);
-
-        if (!$result instanceof AssertionResult) {
-            throw new RuntimeException(sprintf(
-                'Assertion node "%s" did not evaluate to an AssertionResult, evaluated to "%s"',
-                get_class($node),
-                is_object($result) ? get_class($result) : gettype($result)
-            ));
-        }
-
-        return $result;
-    }
-
-    /**
-     */
     public function evaluate(Node $node)
     {
+        if ($node instanceof IntegerNode) {
+            return $node->value();
+        }
+
+        if ($node instanceof FloatNode) {
+            return $node->value();
+        }
+
         if ($node instanceof Comparison) {
             return $this->evaluateComparison($node);
         }
@@ -94,7 +81,7 @@ class ExpressionEvaluator
         ));
     }
 
-    private function evaluateComparison(Comparison $node): AssertionResult
+    private function evaluateComparison(Comparison $node): ComparisonResult
     {
         $value1 = $node->value1();
         $value2 = $node->value2();
@@ -113,41 +100,41 @@ class ExpressionEvaluator
         $tolerance = $this->evaluateTolerance($node->tolerance(), $right);
 
         if ($tolerance > 0 && FloatNumber::isWithin($left, $right - $tolerance, $right + $tolerance)) {
-            return AssertionResult::tolerated($this->formatter->format($node));
+            return ComparisonResult::tolerated($this->formatter->format($node));
         }
 
         switch ($node->operator()) {
             case '<':
                 if ($left < $right) {
-                    return AssertionResult::ok();
+                    return ComparisonResult::true();
                 }
 
-                return AssertionResult::fail($this->formatter->format($node));
+                return ComparisonResult::false();
             case '<=':
                 if ($left <= $right) {
-                    return AssertionResult::ok();
+                    return ComparisonResult::true();
                 }
 
 
-                return AssertionResult::fail($this->formatter->format($node));
+                return ComparisonResult::false();
             case '=':
                 if (FloatNumber::isEqual($left, $right)) {
-                    return AssertionResult::ok();
+                    return ComparisonResult::true();
                 }
 
-                return AssertionResult::fail($this->formatter->format($node));
+                return ComparisonResult::false();
             case '>':
                 if ($left > $right) {
-                    return AssertionResult::ok();
+                    return ComparisonResult::true();
                 }
 
-                return AssertionResult::fail($this->formatter->format($node));
+                return ComparisonResult::false();
             case '>=':
                 if (FloatNumber::isGreaterThanOrEqual($left, $right)) {
-                    return AssertionResult::ok();
+                    return ComparisonResult::true();
                 }
 
-                return AssertionResult::fail($this->formatter->format($node));
+                return ComparisonResult::false();
         }
 
         throw new ExpressionEvaluatorError(sprintf(
@@ -194,7 +181,7 @@ class ExpressionEvaluator
 
     private function evaluateMemoryValue(MemoryValue $node): float
     {
-        return MemoryUnit::convertTo($node->value(), $node->unit(), MemoryUnit::BYTES);
+        return MemoryUnit::convertTo($node->value()->value(), $node->unit(), MemoryUnit::BYTES);
     }
 
     private function evaluateTolerance(Value $value, $right): float

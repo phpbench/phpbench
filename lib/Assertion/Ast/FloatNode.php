@@ -14,7 +14,7 @@ class FloatNode implements NumberNode
         $this->number = $number;
     }
 
-    public function getNumber(): float
+    public function value(): float
     {
         return $this->number;
     }
