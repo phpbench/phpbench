@@ -231,9 +231,17 @@ class VariantTest extends TestCase
         $variant->createIteration(TestUtil::createResults(8, 200));
 
         $this->assertEquals([
-            'time' => [],
-            'mem' => [],
-            'reject' => [],
+            'time' => [
+                'net' => [8],
+            ],
+            'mem' => [
+                'peak' => [200],
+                'real' => [200],
+                'final' => [200],
+            ],
+            'reject' => [
+                'count' => [0],
+            ],
         ], $variant->getAllMetricValues());
     }
 }

@@ -2,8 +2,6 @@
 
 namespace PhpBench\Assertion;
 
-use PhpBench\Assertion\Printer\NodePrinter;
-
 final class ExpressionEvaluatorFactory
 {
     /**

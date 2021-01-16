@@ -191,9 +191,11 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
     public function getAllMetricValues(): array
     {
         $data = [];
+
         foreach ($this->iterations as $iteration) {
             foreach ($iteration->getResults() as $result) {
                 $metrics = [];
+
                 foreach ($result->getMetrics() as $name => $value) {
                     if (!isset($metrics[$name])) {
                         $metrics[$name] = [];

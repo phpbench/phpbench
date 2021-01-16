@@ -10,7 +10,6 @@ use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Assertion\Ast\Node;
 use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
-use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\ToleranceNode;
 use PhpBench\Assertion\Ast\Value;
@@ -18,7 +17,6 @@ use PhpBench\Assertion\Ast\ZeroValue;
 use PhpBench\Assertion\ExpressionEvaluator;
 use PhpBench\Assertion\ExpressionEvaluatorFactory;
 use PhpBench\Assertion\ExpressionPrinter;
-use PhpBench\Util\MemoryUnit;
 use PhpBench\Util\TimeUnit;
 
 final class NodePrinter implements ExpressionPrinter
@@ -66,10 +64,6 @@ final class NodePrinter implements ExpressionPrinter
 
         if ($node instanceof PercentageValue) {
             return $this->formatPercentageValue($node);
-        }
-
-        if ($node instanceof ThroughputValue) {
-            return $this->formatThroughputValue($node);
         }
 
         if ($node instanceof MemoryValue) {
@@ -132,17 +126,6 @@ final class NodePrinter implements ExpressionPrinter
         return sprintf('%s%%', $node->percentage()->value());
     }
 
-    private function formatThroughputValue(ThroughputValue $node): string
-    {
-        if (array_key_exists($node->unit(), $this->aliases)) {
-            $unit = $this->aliases[$node->unit()];
-        } else {
-            $unit = $node->unit();
-        }
-
-        return sprintf('%s ops/%s', $node->value(), $unit);
-    }
-
     private function formatMemoryValue(MemoryValue $node): string
     {
         return sprintf(
@@ -171,6 +154,7 @@ final class NodePrinter implements ExpressionPrinter
     private function formatFunctionNode(FunctionNode $node): string
     {
         $value = $this->evaulator->evaluate($node);
+
         return (string)$value;
     }
 }

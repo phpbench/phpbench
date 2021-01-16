@@ -13,7 +13,6 @@ use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\ToleranceNode;
-use PhpBench\Assertion\ExpressionEvaluator;
 use PhpBench\Assertion\ExpressionEvaluatorFactory;
 use PhpBench\Assertion\ExpressionFunctions;
 use PhpBench\Assertion\Printer\NodePrinter;

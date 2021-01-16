@@ -14,9 +14,6 @@ namespace PhpBench\Assertion;
 
 use PhpBench\Assertion\Ast\Comparison;
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
-use PhpBench\Assertion\Printer\NodePrinter;
-use PhpBench\Math\Statistics;
-use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Variant;
 use RuntimeException;
 
@@ -41,8 +38,7 @@ class AssertionProcessor
         ExpressionParser $parser,
         ExpressionEvaluatorFactory $evaluator,
         ExpressionPrinterFactory $printer
-    )
-    {
+    ) {
         $this->evaluator = $evaluator;
         $this->parser = $parser;
         $this->printer = $printer;

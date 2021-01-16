@@ -50,8 +50,7 @@ class ExpressionLexer extends AbstractLexer
         array $functionNames = [],
         array $timeUnits = [],
         array $memoryUnits = []
-    )
-    {
+    ) {
         $this->functionNames = $functionNames;
         $this->timeUnits = $timeUnits;
         $this->memoryUnits = $memoryUnits;

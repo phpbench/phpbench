@@ -108,7 +108,7 @@ class Kde
      *          Chapman and Hall, London, 1986.
      *
      * @param array $dataset Array of univariate data points.
-     * @param string $bwMethod : Either "scott", "silverman" or an explicit (float) value.
+     * @param "scott"|"sliverman"|null $bwMethod : Either "scott", "silverman" or an explicit (float) value.
      */
     public function __construct(array $dataset, string $bwMethod = null)
     {
@@ -197,9 +197,9 @@ class Kde
      * The new bandwidth calculated after a call to `setBandwidth` is used
      * for subsequent evaluations of the estimated density.
      *
-     * @param "scott"|"silverman" $bwMethod Either "scott" or "silverman"
+     * @param "scott"|"silverman"|int $bwMethod Either "scott" or "silverman"
      */
-    public function setBandwidth(string $bwMethod = null): void
+    public function setBandwidth($bwMethod = null): void
     {
         if ($bwMethod == 'scott' || null === $bwMethod) {
             $this->coVarianceFactor = function () {

@@ -2,7 +2,6 @@
 
 namespace PhpBench\Assertion\Printer;
 
-use PhpBench\Assertion\ExpressionEvaluator;
 use PhpBench\Assertion\ExpressionEvaluatorFactory;
 use PhpBench\Assertion\ExpressionPrinter;
 use PhpBench\Assertion\ExpressionPrinterFactory;

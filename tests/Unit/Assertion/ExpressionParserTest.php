@@ -21,7 +21,6 @@ use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Assertion\Ast\Node;
 use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
-use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\ToleranceNode;
 use PhpBench\Assertion\Exception\SyntaxError;
@@ -230,6 +229,7 @@ class ExpressionParserTest extends ExpressionParserTestCase
                 'timeUnits' => ['milliseconds'],
             ]
         ];
+
         yield 'function with multiple arguments' => [
             'mode(10, 5)',
             new FunctionNode('mode', [

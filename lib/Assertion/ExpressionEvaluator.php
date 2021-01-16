@@ -2,7 +2,6 @@
 
 namespace PhpBench\Assertion;
 
-use PhpBench\Assertion\Ast\Assertion;
 use PhpBench\Assertion\Ast\Comparison;
 use PhpBench\Assertion\Ast\FloatNode;
 use PhpBench\Assertion\Ast\FunctionNode;
@@ -22,7 +21,6 @@ use PhpBench\Math\FloatNumber;
 use PhpBench\Math\Statistics;
 use PhpBench\Util\MemoryUnit;
 use PhpBench\Util\TimeUnit;
-use RuntimeException;
 
 class ExpressionEvaluator
 {
@@ -46,7 +44,6 @@ class ExpressionEvaluator
     }
 
     /**
-     * @return mixed
      */
     public function evaluate(Node $node)
     {
@@ -177,9 +174,7 @@ class ExpressionEvaluator
         return PropertyAccess::resolvePropertyAccess($node->segments(), $this->args);
     }
 
-    /**
-     */
-    private function evaluateWithinRangeOf(WithinRangeOf $node)
+    private function evaluateWithinRangeOf(WithinRangeOf $node): bool
     {
         $value1 = $this->evaluate($node->value1());
         $value2 = $this->evaluate($node->value2());
@@ -189,7 +184,7 @@ class ExpressionEvaluator
         if ($range instanceof PercentageValue) {
             return FloatNumber::isLessThanOrEqual(
                 Statistics::percentageDifference($value1, $value2),
-                $range->percentage()
+                $range->percentage()->value()
             );
         }
 
@@ -205,8 +200,6 @@ class ExpressionEvaluator
     }
 
     /**
-     * @param mixed $right
-     * @return mixed
      */
     private function evaluateTolerance(?ToleranceNode $tolerance, $right)
     {
@@ -234,9 +227,8 @@ class ExpressionEvaluator
     }
 
     /**
-     * @return mixed
      */
-    private function evaluateFunction(FunctionNode $node) 
+    private function evaluateFunction(FunctionNode $node)
     {
         return $this->functions->execute($node->name(), array_map(function (Value $node) {
             return $this->evaluate($node);

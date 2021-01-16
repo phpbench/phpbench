@@ -21,14 +21,10 @@ use PhpBench\Assertion\Ast\Node;
 use PhpBench\Assertion\Ast\NumberNode;
 use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
-use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\ToleranceNode;
 use PhpBench\Assertion\Ast\Value;
-use PhpBench\Assertion\Ast\ZeroValue;
 use PhpBench\Assertion\Exception\SyntaxError;
-use PhpBench\Util\MemoryUnit;
-use PhpBench\Util\TimeUnit;
 use RuntimeException;
 
 class ExpressionParser
@@ -51,6 +47,7 @@ class ExpressionParser
     public function parse(string $expression): Node
     {
         $this->lexer->setInput($expression);
+
         return $this->buildAst();
     }
 
@@ -96,9 +93,11 @@ class ExpressionParser
         switch ($type) {
             case ExpressionLexer::T_INTEGER:
                 $this->lexer->moveNext();
+
                 return new IntegerNode($value);
             case ExpressionLexer::T_FLOAT:
                 $this->lexer->moveNext();
+
                 return new FloatNode($value);
             case ExpressionLexer::T_PROPERTY_ACCESS:
                 return $this->parsePropertyAccess();
@@ -197,8 +196,10 @@ class ExpressionParser
         $this->expect(ExpressionLexer::T_OPEN_PAREN);
 
         $args = [];
+
         while (true) {
             $arg = $this->resolveToken();
+
             if (!$arg instanceof Value) {
                 throw $this->syntaxError('Expected value');
             }
@@ -231,6 +232,7 @@ class ExpressionParser
 
         if ($type === $this->lexer->lookahead['type']) {
             $this->lexer->moveNext();
+
             return;
         }
 
@@ -295,6 +297,7 @@ class ExpressionParser
     {
         $value = $this->lexer->lookahead['value'];
         $node = array_pop($this->parts);
+
         if (!$node instanceof NumberNode) {
             throw $this->syntaxError(sprintf(
                 'Expected number node for percentage, got "%s"',
@@ -302,6 +305,7 @@ class ExpressionParser
             ));
         }
         $this->lexer->moveNext();
+
         return new PercentageValue($node);
     }
 }

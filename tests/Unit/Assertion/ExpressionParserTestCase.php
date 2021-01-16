@@ -19,6 +19,7 @@ class ExpressionParserTestCase extends TestCase
             $config['timeUnits'] ?? [],
             $config['memoryUnits'] ?? [],
         ));
+
         return $parser->parse($expression);
     }
 

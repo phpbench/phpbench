@@ -4,25 +4,20 @@ namespace PhpBench\Tests\Unit\Assertion;
 
 use Generator;
 use PhpBench\Assertion\Ast\Comparison;
-use PhpBench\Assertion\Ast\IntegerNode;
-use PhpBench\Assertion\Ast\ThroughputValue;
-use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\ComparisonResult;
 use PhpBench\Assertion\ExpressionEvaluator;
 use PhpBench\Assertion\ExpressionFunctions;
 use PhpBench\Assertion\ExpressionLexer;
 use PhpBench\Assertion\ExpressionParser;
-use PhpBench\Assertion\Printer\NodePrinter;
-use PHPUnit\Framework\TestCase;
 use PhpBench\Util\MemoryUnit;
 use PhpBench\Util\TimeUnit;
+use PHPUnit\Framework\TestCase;
 
 class ExpressionEvaluatorTest extends TestCase
 {
     /**
      * @dataProvider provideEvaluate
      *
-     * @param mixed $expected
      * @param array<string,mixed> $params
      * @param array<string,callable> $functions
      */
@@ -55,43 +50,69 @@ class ExpressionEvaluatorTest extends TestCase
     {
         // scalars
         yield 'int' => ['10', [], 10];
+
         yield 'float' => ['10.1', [], 10.1];
 
         // comparisons
         yield ['10 > 5', [], ComparisonResult::true()];
+
         yield ['10 < 5', [], ComparisonResult::false()];
+
         yield ['5 < 5', [], ComparisonResult::false()];
+
         yield ['5 <= 5', [], ComparisonResult::true()];
+
         yield ['5 = 5', [], ComparisonResult::true()];
+
         yield ['5 = 4', [], ComparisonResult::false()];
+
         yield ['5 > 4', [], ComparisonResult::true()];
+
         yield ['4 > 4', [], ComparisonResult::false()];
+
         yield ['4 >= 4', [], ComparisonResult::true()];
+
         yield ['4 >= 4 +/- 1', [], ComparisonResult::tolerated()];
+
         yield ['3 >= 4 +/- 1', [], ComparisonResult::tolerated()];
+
         yield ['2 >= 4 +/- 1', [], ComparisonResult::false()];
+
         yield ['5 >= 4 +/- 1', [], ComparisonResult::tolerated()];
+
         yield ['3 >= 4 +/- 30%', [], ComparisonResult::tolerated()];
+
         yield ['5 >= 4 +/- 30%', [], ComparisonResult::tolerated()];
+
         yield ['10 >= 4 +/- 30%', [], ComparisonResult::true()];
+
         yield ['0 >= 4 +/- 30%', [], ComparisonResult::false()];
 
         // time units
         yield ['10', [], 10];
+
         yield ['10 microseconds', [], 10];
+
         yield ['1 ms', [], 1000.0];
+
         yield ['1 minutes', [], 6E7];
 
         // time unit comparison
         yield ['1 minute = 60 seconds', [], ComparisonResult::true()];
+
         yield ['1 minute > 60 seconds', [], ComparisonResult::false()];
+
         yield ['1 minute > 60 seconds +/- 1 seconds', [], ComparisonResult::tolerated()];
+
         yield ['1 minute > 60 seconds +/- 0 seconds', [], ComparisonResult::false()];
 
         // memory
         yield ['10 kilobytes', [], 10000];
+
         yield ['10 megabytes', [], 10 * 1E6];
+
         yield ['10 bytes', [], 10];
+
         yield ['10 gb', [], 1E4 * 1E6];
 
         // functions
@@ -126,6 +147,7 @@ class ExpressionEvaluatorTest extends TestCase
 
         // property access
         yield ['foo.bar', ['foo' => ['bar' => 10]], 10];
+
         yield ['foo.bar ms', ['foo' => ['bar' => 10]], 10000];
 
         yield ['multiply(multiply(12, foo.bar), 4)', [

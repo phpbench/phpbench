@@ -36,7 +36,6 @@ final class ExpressionFunctions
 
     /**
      * @param mixed[] $args
-     * @return mixed
      */
     public function execute(string $functionName, array $args)
     {
