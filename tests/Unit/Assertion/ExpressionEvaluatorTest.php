@@ -9,6 +9,7 @@ use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\ComparisonResult;
 use PhpBench\Assertion\ExpressionEvaluator;
+use PhpBench\Assertion\ExpressionFunctions;
 use PhpBench\Assertion\ExpressionLexer;
 use PhpBench\Assertion\ExpressionParser;
 use PhpBench\Assertion\MessageFormatter\NodeMessageFormatter;
@@ -20,15 +21,19 @@ class ExpressionEvaluatorTest extends TestCase
 {
     /**
      * @dataProvider provideEvaluate
+     *
      * @param mixed $expected
      * @param array<string,mixed> $params
+     * @param array<string,callable> $functions
      */
-    public function testEvaluate(string $expression, array $params, $expected): void
+    public function testEvaluate(string $expression, array $params, $expected, array $functions = []): void
     {
-        $eval = new ExpressionEvaluator($params);
+        $functions = new ExpressionFunctions($functions);
+
+        $eval = new ExpressionEvaluator($params, $functions);
 
         $parser = new ExpressionParser(new ExpressionLexer(
-            [],
+            $functions->names(),
             TimeUnit::supportedUnitNames(),
             MemoryUnit::supportedUnitNames()
         ));
@@ -48,8 +53,8 @@ class ExpressionEvaluatorTest extends TestCase
      */
     public function provideEvaluate(): Generator
     {
+        // scalars
         yield 'int' => ['10', [], 10];
-
         yield 'float' => ['10.1', [], 10.1];
 
         // comparisons
@@ -88,5 +93,35 @@ class ExpressionEvaluatorTest extends TestCase
         yield ['10 megabytes', [], 10 * 1E6];
         yield ['10 bytes', [], 10];
         yield ['10 gb', [], 1E4 * 1E6];
+
+        // functions
+        yield ['pass(12)', [], 12, ['pass' => function (int $val) {
+            return $val;
+        }]];
+
+        // functions
+        yield ['multiply(pass(12), 2)', [], 24, [
+            'pass' => function (int $val) {
+                return $val;
+            },
+            'multiply' => function (int $val, int $multiplier) {
+                return $val * $multiplier;
+            }
+        ]];
+
+        yield ['multiply(pass(12), 2) > 10', [], ComparisonResult::true(), [
+            'pass' => function (int $val) {
+                return $val;
+            },
+            'multiply' => function (int $val, int $multiplier) {
+                return $val * $multiplier;
+            }
+        ]];
+
+        yield ['multiply(multiply(12, 2), 4)', [], 96, [
+            'multiply' => function (int $val, int $multiplier) {
+                return $val * $multiplier;
+            }
+        ]];
     }
 }

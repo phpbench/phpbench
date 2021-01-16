@@ -5,6 +5,7 @@ namespace PhpBench\Assertion;
 use PhpBench\Assertion\Ast\Assertion;
 use PhpBench\Assertion\Ast\Comparison;
 use PhpBench\Assertion\Ast\FloatNode;
+use PhpBench\Assertion\Ast\FunctionNode;
 use PhpBench\Assertion\Ast\IntegerNode;
 use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Assertion\Ast\Node;
@@ -31,13 +32,22 @@ class ExpressionEvaluator
     private $args;
 
     /**
+     * @var ExpressionFunctions
+     */
+    private $functions;
+
+    /**
      * @param array<string,mixed> $args
      */
-    public function __construct(array $args = [])
+    public function __construct(array $args, ExpressionFunctions $functions)
     {
         $this->args = $args;
+        $this->functions = $functions;
     }
 
+    /**
+     * @return mixed
+     */
     public function evaluate(Node $node)
     {
         if ($node instanceof IntegerNode) {
@@ -50,6 +60,10 @@ class ExpressionEvaluator
 
         if ($node instanceof Comparison) {
             return $this->evaluateComparison($node);
+        }
+
+        if ($node instanceof FunctionNode) {
+            return $this->evaluateFunction($node);
         }
 
         if ($node instanceof TimeValue) {
@@ -217,5 +231,15 @@ class ExpressionEvaluator
     private function evaluateZeroValue(ZeroValue $node): int
     {
         return 0;
+    }
+
+    /**
+     * @return mixed
+     */
+    private function evaluateFunction(FunctionNode $node) 
+    {
+        return $this->functions->execute($node->name(), array_map(function (Value $node) {
+            return $this->evaluate($node);
+        }, $node->args()));
     }
 }
