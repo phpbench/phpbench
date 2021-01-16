@@ -23,6 +23,7 @@ use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeValue;
+use PhpBench\Assertion\Ast\ToleranceNode;
 use PhpBench\Assertion\Exception\SyntaxError;
 
 class ExpressionParserTest extends ExpressionParserTestCase
@@ -33,6 +34,7 @@ class ExpressionParserTest extends ExpressionParserTestCase
      * @dataProvider provideAggregateFunction
      * @dataProvider provideValueWithUnit
      * @dataProvider provideExpression
+     * @dataProvider provideTolerance
      *
      * @param array<string,mixed> $config
      */
@@ -236,6 +238,17 @@ class ExpressionParserTest extends ExpressionParserTestCase
             [
                 'functions' => ['mode']
             ]
+        ];
+    }
+
+    /**
+     * @return Generator<mixed>
+     */
+    public function provideTolerance(): Generator
+    {
+        yield [
+            '+/- 10',
+            new ToleranceNode(new IntegerNode(10))
         ];
     }
 

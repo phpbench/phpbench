@@ -23,6 +23,7 @@ use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeValue;
+use PhpBench\Assertion\Ast\ToleranceNode;
 use PhpBench\Assertion\Ast\Value;
 use PhpBench\Assertion\Ast\ZeroValue;
 use PhpBench\Assertion\Exception\SyntaxError;
@@ -105,6 +106,8 @@ class ExpressionParser
                 return $this->parseTimeUnit();
             case ExpressionLexer::T_MEMORY_UNIT:
                 return $this->parseMemoryUnit();
+            case ExpressionLexer::T_TOLERANCE:
+                return $this->parseTolerance();
         }
 
         throw $this->syntaxError('Do not know how to parse token');
@@ -251,5 +254,19 @@ class ExpressionParser
         $this->lexer->moveNext();
 
         return new MemoryValue($value, $unit);
+    }
+
+    private function parseTolerance(): ToleranceNode
+    {
+        $this->lexer->moveNext();
+        $value = $this->resolveNode();
+
+        if (!$value instanceof Value) {
+            throw $this->syntaxError(sprintf(
+                'Expected "%s", got "%s"', Value::class, get_class($value)
+            ));
+        }
+
+        return new ToleranceNode($value);
     }
 }
