@@ -143,7 +143,7 @@ class TimeUnit
      */
     public function overrideDestUnit(string $destUnit): void
     {
-        $destUnit = self::resolveUnit($destUnit);
+        $destUnit = self::normalizeUnit($destUnit);
         $this->destUnit = $destUnit;
         $this->overriddenDestUnit = true;
     }
@@ -295,8 +295,8 @@ class TimeUnit
             return 0;
         }
 
-        $unit = self::resolveUnit($unit);
-        $destUnit = self::resolveUnit($destUnit);
+        $unit = self::normalizeUnit($unit);
+        $destUnit = self::normalizeUnit($destUnit);
 
         $destMultiplier = self::$map[$destUnit];
         $sourceMultiplier = self::$map[$unit];
@@ -312,8 +312,8 @@ class TimeUnit
      */
     public static function convertTo(float $time, string $unit, string $destUnit): float
     {
-        $unit = self::resolveUnit($unit);
-        $destUnit = self::resolveUnit($destUnit);
+        $unit = self::normalizeUnit($unit);
+        $destUnit = self::normalizeUnit($destUnit);
 
         $destM = self::$map[$destUnit];
         $sourceM = self::$map[$unit];
@@ -334,7 +334,7 @@ class TimeUnit
      */
     public static function getSuffix(string $unit, string $mode = null)
     {
-        $unit = self::resolveUnit($unit);
+        $unit = self::normalizeUnit($unit);
 
         $suffix = self::$suffixes[$unit];
 
@@ -350,7 +350,7 @@ class TimeUnit
         return isset(self::$map[$unit]) || isset(self::$aliases[$unit]);
     }
 
-    private static function validateMode($mode): void
+    private static function validateMode(string $mode): void
     {
         $validModes = [self::MODE_THROUGHPUT, self::MODE_TIME];
 
@@ -362,7 +362,7 @@ class TimeUnit
         }
     }
 
-    private static function resolveUnit(string $unit): string
+    public static function normalizeUnit(string $unit): string
     {
         if (isset(self::$aliases[$unit])) {
             $unit = self::$aliases[$unit];

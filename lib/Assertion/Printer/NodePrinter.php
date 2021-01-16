@@ -17,6 +17,7 @@ use PhpBench\Assertion\Ast\ZeroValue;
 use PhpBench\Assertion\ExpressionEvaluator;
 use PhpBench\Assertion\ExpressionEvaluatorFactory;
 use PhpBench\Assertion\ExpressionPrinter;
+use PhpBench\Util\MemoryUnit;
 use PhpBench\Util\TimeUnit;
 
 final class NodePrinter implements ExpressionPrinter
@@ -41,8 +42,11 @@ final class NodePrinter implements ExpressionPrinter
     /**
      * @param array<string,mixed> $args
      */
-    public function __construct(array $args, TimeUnit $timeUnit, ExpressionEvaluatorFactory $evaulator)
-    {
+    public function __construct(
+        array $args,
+        TimeUnit $timeUnit,
+        ExpressionEvaluatorFactory $evaulator
+    ) {
         $this->args = $args;
         $this->timeUnit = $timeUnit;
         $this->evaulator = $evaulator->createWithArgs($args);
@@ -92,6 +96,13 @@ final class NodePrinter implements ExpressionPrinter
     private function formatComparison(Comparison $node): string
     {
         return (function (?ToleranceNode $tolerance, Value $value1, string $operator, Value $value2) {
+            switch ($operator) {
+                case '=':
+                    $operator = '≈';
+
+                    break;
+            }
+
             if ($tolerance) {
                 return sprintf(
                     '%s %s %s ± %s',
@@ -113,7 +124,12 @@ final class NodePrinter implements ExpressionPrinter
 
     private function formatTimeValue(TimeValue $timeValue): string
     {
-        return $this->timeUnit->format($this->evaulator->evaluate($timeValue), $timeValue->unit());
+        return $this->timeUnit->format(
+            $this->evaulator->evaluate($timeValue),
+            $timeValue->asUnit(),
+            null,
+            $timeValue->asUnit() === TimeUnit::MICROSECONDS ? 0 : null
+        );
     }
 
     private function formatPropertyAccess(PropertyAccess $value): string
@@ -130,8 +146,12 @@ final class NodePrinter implements ExpressionPrinter
     {
         return sprintf(
             '%s %s',
-            $this->format($node->value()),
-            $node->unit()
+            number_format(MemoryUnit::convertTo(
+                $this->evaulator->evaluate($node),
+                MemoryUnit::BYTES,
+                $node->asUnit()
+            )),
+            $node->asUnit()
         );
     }
 

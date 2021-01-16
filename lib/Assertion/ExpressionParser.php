@@ -25,6 +25,8 @@ use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\ToleranceNode;
 use PhpBench\Assertion\Ast\Value;
 use PhpBench\Assertion\Exception\SyntaxError;
+use PhpBench\Util\MemoryUnit;
+use PhpBench\Util\TimeUnit;
 use RuntimeException;
 
 class ExpressionParser
@@ -32,7 +34,7 @@ class ExpressionParser
     /**
      * @var Node[]
      */
-    private array $parts = [];
+    private $parts = [];
 
     /**
      * @var ExpressionLexer
@@ -111,6 +113,8 @@ class ExpressionParser
                 return $this->parseMemoryUnit();
             case ExpressionLexer::T_TOLERANCE:
                 return $this->parseTolerance();
+            case ExpressionLexer::T_AS:
+                return $this->parseAsUnit();
             case ExpressionLexer::T_PERCENTAGE:
                 return $this->parsePercentage();
         }
@@ -241,8 +245,8 @@ class ExpressionParser
 
     private function parseTimeUnit(): TimeValue
     {
-        $unit = $this->lexer->lookahead['value'];
         $value = array_pop($this->parts);
+        $unit = $this->lexer->lookahead['value'];
 
         if (null === $value) {
             throw $this->syntaxError(sprintf(
@@ -256,7 +260,44 @@ class ExpressionParser
 
         $this->lexer->moveNext();
 
-        return new TimeValue($value, $unit);
+        $asUnit = null;
+
+        if ($this->lexer->lookahead && $this->lexer->lookahead['type'] === ExpressionLexer::T_AS) {
+            $this->lexer->moveNext();
+            $asUnit = $this->lexer->lookahead['value'];
+            $this->lexer->moveNext();
+        }
+
+        return new TimeValue($value, $unit, $asUnit);
+    }
+
+    private function parseAsUnit(): Node
+    {
+        $value = array_pop($this->parts);
+
+        if (!$value instanceof Value) {
+            throw $this->syntaxError(sprintf(
+                'Expected "%s", got "%s"', Value::class, get_class($value)
+            ));
+        }
+
+        $this->lexer->moveNext();
+        $type = $this->lexer->lookahead['type'];
+        $unit = $this->lexer->lookahead['value'];
+        $this->lexer->moveNext();
+
+        if ($type === ExpressionLexer::T_TIME_UNIT) {
+            return new TimeValue($value, TimeUnit::MICROSECONDS, $unit);
+        }
+
+        if ($type === ExpressionLexer::T_MEMORY_UNIT) {
+            return new MemoryValue($value, MemoryUnit::BYTES, $unit);
+        }
+
+        throw new RuntimeException(sprintf(
+            'Expected memory or time unit token, got "%s"',
+            $type
+        ));
     }
 
     private function parseMemoryUnit(): MemoryValue
@@ -270,13 +311,21 @@ class ExpressionParser
             ));
         }
 
-        if (!$value instanceof NumberNode) {
-            throw $this->syntaxError('Expected number');
+        if (!$value instanceof Value) {
+            throw $this->syntaxError('Expected value');
         }
 
         $this->lexer->moveNext();
 
-        return new MemoryValue($value, $unit);
+        $asUnit = null;
+
+        if ($this->lexer->lookahead && $this->lexer->lookahead['type'] === ExpressionLexer::T_AS) {
+            $this->lexer->moveNext();
+            $asUnit = $this->lexer->lookahead['value'];
+            $this->lexer->moveNext();
+        }
+
+        return new MemoryValue($value, $unit, $asUnit);
     }
 
     private function parseTolerance(): ToleranceNode

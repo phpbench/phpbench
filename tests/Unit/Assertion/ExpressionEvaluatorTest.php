@@ -115,6 +115,10 @@ class ExpressionEvaluatorTest extends TestCase
 
         yield ['10 gb', [], 1E4 * 1E6];
 
+        yield ['func(10) gb', [], 1E4 * 1E6, ['func' => function (int $val) {
+            return $val;
+        }]];
+
         // functions
         yield ['pass(12)', [], 12, ['pass' => function (int $val) {
             return $val;
@@ -149,6 +153,10 @@ class ExpressionEvaluatorTest extends TestCase
         yield ['foo.bar', ['foo' => ['bar' => 10]], 10];
 
         yield ['foo.bar ms', ['foo' => ['bar' => 10]], 10000];
+
+        yield ['foo.bar microseconds as ms', ['foo' => ['bar' => 10000]], 10E3];
+
+        yield ['foo.bar as ms', ['foo' => ['bar' => 10000]], 10E3];
 
         yield ['multiply(multiply(12, foo.bar), 4)', [
             'foo' => ['bar' => 10]

@@ -136,11 +136,40 @@ class ExpressionParserTest extends ExpressionParserTestCase
             ]
         ];
 
-        yield '100 bytes' => [
+        yield [
             '100 bytes',
             new MemoryValue(new IntegerNode(100), 'bytes'),
             [
                 'memoryUnits' => ['bytes']
+            ]
+        ];
+
+        yield [
+            '100 bytes as megabytes',
+            new MemoryValue(new IntegerNode(100), 'bytes', 'megabytes'),
+            [
+                'memoryUnits' => ['bytes', 'megabytes']
+            ]
+        ];
+
+        yield [
+            '100 as megabytes',
+            new MemoryValue(new IntegerNode(100), 'bytes', 'megabytes'),
+            [
+                'memoryUnits' => ['bytes', 'megabytes']
+            ]
+        ];
+
+        yield [
+            'func(100) bytes as megabytes',
+            new MemoryValue(
+                new FunctionNode('func', [new IntegerNode(100)],),
+                'bytes',
+                'megabytes'
+            ),
+            [
+                'memoryUnits' => ['bytes', 'megabytes'],
+                'functions' => ['func'],
             ]
         ];
     }

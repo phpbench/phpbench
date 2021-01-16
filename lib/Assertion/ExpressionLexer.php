@@ -35,6 +35,7 @@ class ExpressionLexer extends AbstractLexer
     public const T_COMPARATOR = 'comparator';
     public const T_PROPERTY_ACCESS = 'property_access';
     public const T_PERCENTAGE = 'percentage';
+    public const T_AS = 'as';
 
     private const PATTERN_PROPERTY_ACCESS = '(?:[a-z_][a-z0-9_]+\.(?:[a-z_][a-z0-9_]+\.?)+)';
     private const PATTERN_COMPARATORS = '(?:<=|>=|<|=|>)';
@@ -94,6 +95,9 @@ class ExpressionLexer extends AbstractLexer
 
             case $value === ')':
                 return self::T_CLOSE_PAREN;
+
+            case $value === self::T_AS:
+                return self::T_AS;
 
             case $value === '+/-':
                 return self::T_TOLERANCE;

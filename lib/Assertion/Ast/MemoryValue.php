@@ -2,10 +2,10 @@
 
 namespace PhpBench\Assertion\Ast;
 
-class MemoryValue implements Value
+class MemoryValue implements NumberNode
 {
     /**
-     * @var NumberNode
+     * @var Value
      */
     private $value;
 
@@ -14,10 +14,16 @@ class MemoryValue implements Value
      */
     private $unit;
 
-    public function __construct(NumberNode $value, string $unit)
+    /**
+     * @var string
+     */
+    private $asUnit;
+
+    public function __construct(Value $value, string $unit, ?string $asUnit = null)
     {
         $this->value = $value;
         $this->unit = $unit;
+        $this->asUnit = $asUnit;
     }
 
     public function unit(): string
@@ -25,8 +31,13 @@ class MemoryValue implements Value
         return $this->unit;
     }
 
-    public function value(): NumberNode
+    public function value(): Value
     {
         return $this->value;
+    }
+
+    public function asUnit(): string
+    {
+        return $this->asUnit ?: $this->unit;
     }
 }

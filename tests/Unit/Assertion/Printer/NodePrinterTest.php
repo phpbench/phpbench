@@ -108,7 +108,13 @@ class NodePrinterTest extends TestCase
         yield [
             new MemoryValue(new FloatNode(10.3), 'megabytes'),
             [],
-            '10.300 megabytes',
+            '10 megabytes',
+        ];
+
+        yield [
+            new MemoryValue(new IntegerNode(1000), 'bytes', 'kilobytes'),
+            [],
+            '1 kilobytes',
         ];
     }
 
@@ -126,12 +132,6 @@ class NodePrinterTest extends TestCase
                     return $foo;
                 },
             ]
-        ];
-
-        yield [
-            new MemoryValue(new FloatNode(10.3), 'megabytes'),
-            [],
-            '10.300 megabytes',
         ];
     }
 }

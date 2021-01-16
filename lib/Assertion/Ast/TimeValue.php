@@ -16,10 +16,16 @@ class TimeValue implements Value
      */
     private $unit;
 
-    public function __construct(Value $value, ?string $unit = TimeUnit::MICROSECONDS)
+    /**
+     * @var string|null
+     */
+    private $asUnit;
+
+    public function __construct(Value $value, ?string $unit = TimeUnit::MICROSECONDS, ?string $asUnit = null)
     {
         $this->value = $value;
-        $this->unit = $unit;
+        $this->unit = TimeUnit::normalizeUnit($unit);
+        $this->asUnit = $asUnit ? TimeUnit::normalizeUnit($asUnit) : null;
     }
 
     public function unit(): string
@@ -35,5 +41,10 @@ class TimeValue implements Value
     public static function fromMicroseconds(int $int): self
     {
         return new self(new IntegerNode($int), TimeUnit::MICROSECONDS);
+    }
+
+    public function asUnit(): string
+    {
+        return $this->asUnit ?? $this->unit;
     }
 }

@@ -155,9 +155,7 @@ class ExpressionEvaluator
         ));
     }
 
-    /**
-     */
-    private function evaluateTimeValue(TimeValue $node)
+    private function evaluateTimeValue(TimeValue $node): float
     {
         return TimeUnit::convert(
             $this->evaluate($node->value()),
@@ -196,7 +194,11 @@ class ExpressionEvaluator
 
     private function evaluateMemoryValue(MemoryValue $node): float
     {
-        return MemoryUnit::convertTo($node->value()->value(), $node->unit(), MemoryUnit::BYTES);
+        return MemoryUnit::convertTo(
+            $this->evaluate($node->value()),
+            $node->unit(),
+            MemoryUnit::BYTES
+        );
     }
 
     /**
