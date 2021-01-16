@@ -163,7 +163,7 @@ class ExpressionParserTest extends ExpressionParserTestCase
         yield [
             'func(100) bytes as megabytes',
             new MemoryValue(
-                new FunctionNode('func', [new IntegerNode(100)],),
+                new FunctionNode('func', [new IntegerNode(100)]),
                 'bytes',
                 'megabytes'
             ),

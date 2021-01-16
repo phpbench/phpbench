@@ -7,7 +7,7 @@ class TestBench
     /**
      * @Revs(10)
      * @Iterations(30)
-     * @Assert("variant.mode <= baseline.mode +/- 10%")
+     * @Assert("mode(variant.time.net) <= mode(baseline.time.net) +/- 10%")
      */
     public function benchFoobar(): void
     {
