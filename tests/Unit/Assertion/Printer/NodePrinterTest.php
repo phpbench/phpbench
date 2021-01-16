@@ -1,28 +1,36 @@
 <?php
 
-namespace PhpBench\Tests\Unit\Assertion\MessageFormatter;
+namespace PhpBench\Tests\Unit\Assertion\Printer;
 
 use Generator;
 use PhpBench\Assertion\Ast\Comparison;
+use PhpBench\Assertion\Ast\FloatNode;
+use PhpBench\Assertion\Ast\IntegerNode;
 use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Assertion\Ast\Node;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeValue;
-use PhpBench\Assertion\MessageFormatter\NodeMessageFormatter;
+use PhpBench\Assertion\Ast\ToleranceNode;
+use PhpBench\Assertion\Printer\NodePrinter;
 use PhpBench\Tests\TestCase;
+use PhpBench\Util\TimeUnit;
 
-class NodeMessageFormatterTest extends TestCase
+class NodePrinterTest extends TestCase
 {
     /**
      * @dataProvider provideTimeValue
-     * @dataProvider provideThroughputValue
      * @dataProvider provideComparison
      * @dataProvider provideMemoryValue
      */
     public function testFormat(Node $node, array $args, string $expected): void
     {
-        self::assertEquals($expected, (new NodeMessageFormatter($args))->format($node));
+        self::assertEquals($expected, (new NodePrinter($args, new TimeUnit(
+            TimeUnit::MICROSECONDS,
+            TimeUnit::MICROSECONDS,
+            TimeUnit::MODE_TIME,
+            0
+        )))->format($node));
     }
         
     /**
@@ -31,19 +39,19 @@ class NodeMessageFormatterTest extends TestCase
     public function provideTimeValue(): Generator
     {
         yield [
-                new TimeValue(10, 'microseconds'),
+                new TimeValue(new IntegerNode(10), 'microseconds'),
                 [],
                 '10μs',
             ];
 
         yield [
-                new TimeValue(10, 'milliseconds'),
+                new TimeValue(new IntegerNode(10), 'milliseconds'),
                 [],
                 '10ms',
             ];
 
         yield [
-                new TimeValue(10, 'seconds'),
+                new TimeValue(new IntegerNode(10), 'seconds'),
                 [],
                 '10s',
             ];
@@ -55,7 +63,7 @@ class NodeMessageFormatterTest extends TestCase
     public function provideThroughputValue(): Generator
     {
         yield [
-                new ThroughputValue(10, 'second'),
+                new ThroughputValue(new IntegerNode(10), 'second'),
                 [],
                 '10 ops/s'
             ];
@@ -66,16 +74,16 @@ class NodeMessageFormatterTest extends TestCase
      */
     public function provideComparison(): Generator
     {
-        yield 'normalise property access unit 1' => [
+        yield 'property access unit 1' => [
                 new Comparison(
-                    new PropertyAccess(['foo', 'bar']),
+                    new TimeValue(new PropertyAccess(['foo', 'bar']), 'seconds'),
                     '>',
-                    new TimeValue(10, 'seconds'),
-                    new TimeValue(5, 'seconds')
+                    new TimeValue(new IntegerNode(10), 'seconds'),
+                    new ToleranceNode(new TimeValue(new IntegerNode(5), 'seconds'))
                 ),
                 [
                     'foo' => [
-                        'bar' => 1E7
+                        'bar' => 10
                     ]
                 ],
                 '10s > 10s ± 5s',
@@ -83,10 +91,10 @@ class NodeMessageFormatterTest extends TestCase
 
         yield 'normalise property access unit 2' => [
                 new Comparison(
-                    new TimeValue(10, 'seconds'),
+                    new TimeValue(new IntegerNode(10), 'seconds'),
                     '>',
                     new PropertyAccess(['foo', 'bar']),
-                    new TimeValue(5, 'seconds')
+                    new ToleranceNode(new TimeValue(new IntegerNode(5), 'seconds'))
                 ),
                 [
                     'foo' => [
@@ -98,10 +106,10 @@ class NodeMessageFormatterTest extends TestCase
 
         yield 'normalise property access unit 3' => [
                 new Comparison(
-                    new TimeValue(10, 'seconds'),
+                    new TimeValue(new IntegerNode(10), 'seconds'),
                     '>',
-                    new TimeValue(5, 'seconds'),
-                    new PropertyAccess(['foo', 'bar'])
+                    new TimeValue(new IntegerNode(5), 'seconds'),
+                    new ToleranceNode(new PropertyAccess(['foo', 'bar']))
                 ),
                 [
                     'foo' => [
@@ -109,21 +117,6 @@ class NodeMessageFormatterTest extends TestCase
                     ]
                 ],
                 '10s > 5s ± 5s',
-            ];
-
-        yield 'normalise property access unit 4' => [
-                new Comparison(
-                    new PropertyAccess(['foo', 'bar']),
-                    '>',
-                    new ThroughputValue(5, 'second'),
-                    new TimeValue(10, 'seconds')
-                ),
-                [
-                    'foo' => [
-                        'bar' => 5E6
-                    ]
-                ],
-                '0.2 ops/s > 5 ops/s ± 10s',
             ];
     }
 
@@ -133,13 +126,13 @@ class NodeMessageFormatterTest extends TestCase
     public function provideMemoryValue(): Generator
     {
         yield [
-            new MemoryValue(10, 'bytes'),
+            new MemoryValue(new IntegerNode(10), 'bytes'),
             [],
             '10 bytes',
         ];
 
         yield [
-            new MemoryValue(10.3, 'megabytes'),
+            new MemoryValue(new FloatNode(10.3), 'megabytes'),
             [],
             '10.300 megabytes',
         ];
@@ -148,7 +141,7 @@ class NodeMessageFormatterTest extends TestCase
                 new Comparison(
                     new PropertyAccess(['foo', 'bar']),
                     '>',
-                    new MemoryValue(10, 'megabytes')
+                    new MemoryValue(new IntegerNode(10), 'megabytes')
                 ),
                 [
                     'foo' => [
@@ -162,8 +155,8 @@ class NodeMessageFormatterTest extends TestCase
                 new Comparison(
                     new PropertyAccess(['foo', 'bar']),
                     '>',
-                    new MemoryValue(10, 'megabytes'),
-                    new MemoryValue(1, 'megabytes')
+                    new MemoryValue(new IntegerNode(10), 'megabytes'),
+                    new ToleranceNode(new MemoryValue(new IntegerNode(1), 'megabytes'))
                 ),
                 [
                     'foo' => [

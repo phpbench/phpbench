@@ -12,7 +12,7 @@ use PhpBench\Assertion\ExpressionEvaluator;
 use PhpBench\Assertion\ExpressionFunctions;
 use PhpBench\Assertion\ExpressionLexer;
 use PhpBench\Assertion\ExpressionParser;
-use PhpBench\Assertion\MessageFormatter\NodeMessageFormatter;
+use PhpBench\Assertion\Printer\NodePrinter;
 use PHPUnit\Framework\TestCase;
 use PhpBench\Util\MemoryUnit;
 use PhpBench\Util\TimeUnit;
@@ -119,6 +119,16 @@ class ExpressionEvaluatorTest extends TestCase
         ]];
 
         yield ['multiply(multiply(12, 2), 4)', [], 96, [
+            'multiply' => function (int $val, int $multiplier) {
+                return $val * $multiplier;
+            }
+        ]];
+
+        // property access
+        yield ['foo.bar', ['foo' => ['bar' => 10]], 10];
+        yield ['multiply(multiply(12, foo.bar), 4)', [
+            'foo' => ['bar' => 10]
+        ], 480, [
             'multiply' => function (int $val, int $multiplier) {
                 return $val * $multiplier;
             }

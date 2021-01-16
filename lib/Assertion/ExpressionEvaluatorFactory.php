@@ -2,7 +2,7 @@
 
 namespace PhpBench\Assertion;
 
-use PhpBench\Assertion\MessageFormatter\NodeMessageFormatter;
+use PhpBench\Assertion\Printer\NodePrinter;
 
 final class ExpressionEvaluatorFactory
 {
@@ -11,6 +11,6 @@ final class ExpressionEvaluatorFactory
      */
     public function createWithArgs(array $args): ExpressionEvaluator
     {
-        return new ExpressionEvaluator(new NodeMessageFormatter($args), $args);
+        return new ExpressionEvaluator(new NodePrinter($args), $args);
     }
 }

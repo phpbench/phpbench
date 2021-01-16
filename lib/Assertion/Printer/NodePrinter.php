@@ -1,8 +1,10 @@
 <?php
 
-namespace PhpBench\Assertion\MessageFormatter;
+namespace PhpBench\Assertion\Printer;
 
 use PhpBench\Assertion\Ast\Comparison;
+use PhpBench\Assertion\Ast\FloatNode;
+use PhpBench\Assertion\Ast\IntegerNode;
 use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Assertion\Ast\Node;
 use PhpBench\Assertion\Ast\PercentageValue;
@@ -15,7 +17,7 @@ use PhpBench\Assertion\MessageFormatter;
 use PhpBench\Util\MemoryUnit;
 use PhpBench\Util\TimeUnit;
 
-final class NodeMessageFormatter implements MessageFormatter
+final class NodePrinter implements MessageFormatter
 {
     const DECIMAL_PRECISION = 3;
 
@@ -25,20 +27,14 @@ final class NodeMessageFormatter implements MessageFormatter
     private $args;
 
     /**
-     * @var array<string,string>
+     * @var TimeUnit
      */
-    private $aliases = [
-        'microsecond' => 'μs',
-        'millisecond' => 'ms',
-        'second' => 's',
-        TimeUnit::MICROSECONDS => 'μs',
-        TimeUnit::MILLISECONDS => 'ms',
-        TimeUnit::SECONDS => 's',
-    ];
+    private $timeUnit;
 
-    public function __construct(array $args)
+    public function __construct(array $args, TimeUnit $timeUnit)
     {
         $this->args = $args;
+        $this->timeUnit = $timeUnit;
     }
 
     public function format(Node $node): string
@@ -71,90 +67,41 @@ final class NodeMessageFormatter implements MessageFormatter
             return $this->formatZeroValue($node);
         }
 
+        if ($node instanceof IntegerNode) {
+            return (string)$node->value();
+        }
+
+        if ($node instanceof FloatNode) {
+            return (string)number_format($node->value(), self::DECIMAL_PRECISION);
+        }
+
         return sprintf('!!!! could not format "%s" !!!!', get_class($node));
     }
 
     private function formatComparison(Comparison $node): string
     {
-        $value1 = $node->value1();
-        $value2 = $node->value2();
-
-        $message = sprintf(
+        return sprintf(
             '%s %s %s ± %s',
-            $this->formatValueWithNormalizedUnit($value1, $value2, $node->tolerance()),
+            $this->format($node->value1()),
             $node->operator(),
-            $this->formatValueWithNormalizedUnit($value2, $value1, $node->tolerance()),
-            $this->formatValueWithNormalizedUnit($node->tolerance(), $value1, $value2)
+            $this->format($node->value2()),
+            $this->format($node->tolerance()->tolerance())
         );
-
-        return $message;
     }
 
     private function formatTimeValue(TimeValue $timeValue): string
     {
         $value = $timeValue->value();
-        $value = $this->formatNumberValue($value);
+        $value = $this->format($value);
 
         $unit = $timeValue->unit();
 
-        if (array_key_exists($unit, $this->aliases)) {
-            return sprintf('%s%s', $value, $this->aliases[$unit]);
-        }
-
-        return sprintf('%s %s', $value, $unit);
+        return sprintf('%s%s', $value, TimeUnit::getSuffix($unit));
     }
 
     private function formatPropertyAccess(PropertyAccess $value): string
     {
         return (string)PropertyAccess::resolvePropertyAccess($value->segments(), $this->args);
-    }
-
-    private function formatValueWithNormalizedUnit(Value $value, Value ...$companionValues): string
-    {
-        if (!$value instanceof PropertyAccess) {
-            return $this->format($value);
-        }
-
-        $propertyValue = (float)$this->formatPropertyAccess($value);
-
-        foreach ($companionValues as $companionValue) {
-            if ($companionValue instanceof ThroughputValue) {
-                return $this->format(
-                    new ThroughputValue(
-                        TimeUnit::convert($propertyValue, TimeUnit::MICROSECONDS, $companionValue->unit(), TimeUnit::MODE_THROUGHPUT),
-                        $companionValue->unit()
-                    )
-                );
-            }
-
-            if ($companionValue instanceof TimeValue) {
-                return $this->format(
-                    new TimeValue(
-                        TimeUnit::convertTo(
-                            $propertyValue,
-                            TimeUnit::MICROSECONDS,
-                            $companionValue->unit()
-                        ),
-                        $companionValue->unit()
-                    )
-                );
-            }
-
-            if ($companionValue instanceof MemoryValue) {
-                return $this->format(
-                    new MemoryValue(
-                        MemoryUnit::convertTo(
-                            $propertyValue,
-                            MemoryUnit::BYTES,
-                            $companionValue->unit()
-                        ),
-                        $companionValue->unit()
-                    )
-                );
-            }
-        }
-
-        return $this->format($value);
     }
 
     private function formatPercentageValue(PercentageValue $node): string
