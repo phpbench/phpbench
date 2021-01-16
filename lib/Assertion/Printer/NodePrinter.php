@@ -4,6 +4,7 @@ namespace PhpBench\Assertion\Printer;
 
 use PhpBench\Assertion\Ast\Comparison;
 use PhpBench\Assertion\Ast\FloatNode;
+use PhpBench\Assertion\Ast\FunctionNode;
 use PhpBench\Assertion\Ast\IntegerNode;
 use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Assertion\Ast\Node;
@@ -15,16 +16,17 @@ use PhpBench\Assertion\Ast\ToleranceNode;
 use PhpBench\Assertion\Ast\Value;
 use PhpBench\Assertion\Ast\ZeroValue;
 use PhpBench\Assertion\ExpressionEvaluator;
-use PhpBench\Assertion\MessageFormatter;
+use PhpBench\Assertion\ExpressionEvaluatorFactory;
+use PhpBench\Assertion\ExpressionPrinter;
 use PhpBench\Util\MemoryUnit;
 use PhpBench\Util\TimeUnit;
 
-final class NodePrinter implements MessageFormatter
+final class NodePrinter implements ExpressionPrinter
 {
     const DECIMAL_PRECISION = 3;
 
     /**
-     * @var array
+     * @var array<string,mixed>
      */
     private $args;
 
@@ -41,11 +43,11 @@ final class NodePrinter implements MessageFormatter
     /**
      * @param array<string,mixed> $args
      */
-    public function __construct(array $args, TimeUnit $timeUnit, ExpressionEvaluator $evaulator)
+    public function __construct(array $args, TimeUnit $timeUnit, ExpressionEvaluatorFactory $evaulator)
     {
         $this->args = $args;
         $this->timeUnit = $timeUnit;
-        $this->evaulator = $evaulator;
+        $this->evaulator = $evaulator->createWithArgs($args);
     }
 
     public function format(Node $node): string
@@ -80,6 +82,10 @@ final class NodePrinter implements MessageFormatter
 
         if ($node instanceof IntegerNode) {
             return (string)$node->value();
+        }
+
+        if ($node instanceof FunctionNode) {
+            return $this->formatFunctionNode($node);
         }
 
         if ($node instanceof FloatNode) {
@@ -123,7 +129,7 @@ final class NodePrinter implements MessageFormatter
 
     private function formatPercentageValue(PercentageValue $node): string
     {
-        return sprintf('%s%%', $node->percentage());
+        return sprintf('%s%%', $node->percentage()->value());
     }
 
     private function formatThroughputValue(ThroughputValue $node): string
@@ -160,5 +166,11 @@ final class NodePrinter implements MessageFormatter
     private function formatZeroValue(ZeroValue $node): string
     {
         return '0';
+    }
+
+    private function formatFunctionNode(FunctionNode $node): string
+    {
+        $value = $this->evaulator->evaluate($node);
+        return (string)$value;
     }
 }

@@ -15,8 +15,15 @@ namespace PhpBench\Extension;
 use Humbug\SelfUpdate\Updater;
 use PhpBench\Assertion\AssertionProcessor;
 use PhpBench\Assertion\ExpressionEvaluatorFactory;
+use PhpBench\Assertion\ExpressionFunctions;
 use PhpBench\Assertion\ExpressionLexer;
 use PhpBench\Assertion\ExpressionParser;
+use PhpBench\Assertion\ExpressionPrinter;
+use PhpBench\Assertion\ExpressionPrinterFactory;
+use PhpBench\Assertion\Func\MeanFunction;
+use PhpBench\Assertion\Func\ModeFunction;
+use PhpBench\Assertion\Printer\NodePrinter;
+use PhpBench\Assertion\Printer\NodePrinterFactory;
 use PhpBench\Benchmark\BaselineManager;
 use PhpBench\Benchmark\BenchmarkFinder;
 use PhpBench\Benchmark\Metadata\AnnotationReader;
@@ -83,6 +90,7 @@ use PhpBench\Storage\UuidResolver;
 use PhpBench\Storage\UuidResolver\ChainResolver;
 use PhpBench\Storage\UuidResolver\LatestResolver;
 use PhpBench\Storage\UuidResolver\TagResolver;
+use PhpBench\Util\MemoryUnit;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\ArgvInput;
@@ -610,16 +618,42 @@ class CoreExtension implements ExtensionInterface
 
     private function registerAsserters(Container $container): void
     {
-        $container->register(AssertionProcessor::class, function () {
+        $container->register(AssertionProcessor::class, function (Container $container) {
             return new AssertionProcessor(
-                new ExpressionParser(),
-                new ExpressionEvaluatorFactory()
+                $container->get(ExpressionParser::class),
+                $container->get(ExpressionEvaluatorFactory::class),
+                $container->get(ExpressionPrinterFactory::class)
+            );
+        });
+        $container->register(ExpressionEvaluatorFactory::class, function (Container $container) {
+            return new ExpressionEvaluatorFactory($container->get(ExpressionFunctions::class));
+        });
+
+        $container->register(ExpressionParser::class, function (Container $container) {
+            return new ExpressionParser(
+                $container->get(ExpressionLexer::class)
+            );
+        });
+
+        $container->register(ExpressionFunctions::class, function () {
+            return new ExpressionFunctions([
+                'mode' => new ModeFunction(),
+                'mean' => new MeanFunction()
+            ]);
+        });
+
+        $container->register(ExpressionPrinterFactory::class, function (Container $container) {
+            return new NodePrinterFactory(
+                $container->get(TimeUnit::class),
+                $container->get(ExpressionEvaluatorFactory::class)
             );
         });
 
         $container->register(ExpressionLexer::class, function (Container $container) {
             return new ExpressionLexer(
-                TimeUnit::supportedUnitNames()
+                $container->get(ExpressionFunctions::class)->names(),
+                TimeUnit::supportedUnitNames(),
+                MemoryUnit::supportedUnitNames()
             );
         });
     }

@@ -90,12 +90,13 @@ class Statistics
      * is potentially misleading, but When benchmarking this should be a very
      * rare occurance.
      *
-     * @param string $bandwidth
+     * @param "scott"|"silvermann" $bandwidth
+     * @param numeric[] $population
      */
     public static function kdeMode(array $population, int $space = 512, string $bandwidth = null): float
     {
         if (count($population) === 1) {
-            return current($population);
+            return (float)current($population);
         }
 
         if (count($population) === 0) {
@@ -103,7 +104,7 @@ class Statistics
         }
 
         if (min($population) == max($population)) {
-            return min($population);
+            return (float)min($population);
         }
 
         $kde = new Kde($population, $bandwidth);

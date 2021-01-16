@@ -42,6 +42,10 @@ class PropertyAccess implements Value
      */
     public static function resolvePropertyAccess(array $segments, $container)
     {
+        if (empty($segments)) {
+            return $container;
+        }
+
         $segment = array_shift($segments);
         $value = self::valueFromContainer($container, $segment);
 

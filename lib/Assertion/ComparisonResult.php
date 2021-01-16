@@ -20,6 +20,16 @@ class ComparisonResult
         $this->tolerated = $tolerated;
     }
 
+    public function isTolerated(): bool
+    {
+        return $this->tolerated;
+    }
+
+    public function isTrue(): bool
+    {
+        return $this->result;
+    }
+
     public static function tolerated(): self
     {
         return new self(false, true);

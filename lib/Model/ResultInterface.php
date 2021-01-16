@@ -45,9 +45,9 @@ interface ResultInterface
      * <iteration foo-stat-1="1234" foo-stat-2="5678"/>
      * ```
      *
-     * @retrun array
+     * @return array<string,mixed>
      */
-    public function getMetrics();
+    public function getMetrics(): array;
 
     /**
      * Return a short key which should represent this result, f.e. `time`.

@@ -186,6 +186,30 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
     }
 
     /**
+     * @return array<string, array<string, mixed[]>>
+     */
+    public function getAllMetricValues(): array
+    {
+        $data = [];
+        foreach ($this->iterations as $iteration) {
+            foreach ($iteration->getResults() as $result) {
+                $metrics = [];
+                foreach ($result->getMetrics() as $name => $value) {
+                    if (!isset($metrics[$name])) {
+                        $metrics[$name] = [];
+                    }
+
+                    $metrics[$name][] = $value;
+                }
+
+                $data[(string)$result->getKey()] = $metrics;
+            }
+        }
+
+        return $data;
+    }
+
+    /**
      * Return the average metric values by revolution.
      *
      * @return mixed[]

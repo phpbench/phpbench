@@ -12,9 +12,13 @@
 
 namespace PhpBench\Assertion;
 
+use PhpBench\Assertion\Ast\Comparison;
+use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
+use PhpBench\Assertion\Printer\NodePrinter;
 use PhpBench\Math\Statistics;
 use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Variant;
+use RuntimeException;
 
 class AssertionProcessor
 {
@@ -28,29 +32,61 @@ class AssertionProcessor
      */
     private $parser;
 
-    public function __construct(ExpressionParser $parser, ExpressionEvaluatorFactory $evaluator)
+    /**
+     * @var ExpressionPrinterFactory
+     */
+    private $printer;
+
+    public function __construct(
+        ExpressionParser $parser,
+        ExpressionEvaluatorFactory $evaluator,
+        ExpressionPrinterFactory $printer
+    )
     {
         $this->evaluator = $evaluator;
         $this->parser = $parser;
+        $this->printer = $printer;
     }
 
     public function assert(Variant $variant, string $assertion): AssertionResult
     {
+        $node = $this->parser->parse($assertion);
+
+        if (!$node instanceof Comparison) {
+            throw new ExpressionEvaluatorError(sprintf(
+                'Assertion must be a comparison, got "%s"', get_class($node)
+            ));
+        }
+
         $variantData = $this->buildVariantData($variant);
-        $result = $this->evaluator->createWithArgs([
+        $args = [
             'variant' => $variantData,
             'baseline' => $variant->getBaseline() ? $this->buildVariantData($variant->getBaseline()) : $variantData,
-        ])->evaluate($this->parser->parse($assertion));
+        ];
 
-        return $result;
+        $result = $this->evaluator->createWithArgs($args)->evaluate($node);
+        $printer = $this->printer->create($args);
+
+        if (!$result instanceof ComparisonResult) {
+            throw new RuntimeException(sprintf(
+                'Expected comparison result, got "%s"',
+                gettype($result)
+            ));
+        }
+
+        if ($result->isTolerated()) {
+            return AssertionResult::tolerated($printer->format($node));
+        }
+
+        if ($result->isTrue()) {
+            return AssertionResult::ok();
+        }
+
+        return AssertionResult::fail($printer->format($node));
     }
 
     private function buildVariantData(Variant $variant): array
     {
-        return array_merge($variant->getStats()->getStats(), [
-            'mem_real' => Statistics::mean($variant->getMetricValues(MemoryResult::class, 'real')),
-            'mem_final' => Statistics::mean($variant->getMetricValues(MemoryResult::class, 'final')),
-            'mem_peak' => Statistics::mean($variant->getMetricValues(MemoryResult::class, 'peak')),
-        ]);
+        return $variant->getAllMetricValues();
     }
 }

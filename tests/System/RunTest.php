@@ -153,7 +153,7 @@ class RunTest extends SystemTestCase
     public function testFailAssertionOverride(): void
     {
         $process = $this->phpbench(
-            'run benchmarks/set5/AssertFailBench.php --assert="variant.mean < 1000 microseconds"'
+            'run benchmarks/set5/AssertFailBench.php --assert="mean(variant.time.net) < 1000 microseconds"'
         );
         $this->assertExitCode(0, $process);
     }

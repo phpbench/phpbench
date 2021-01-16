@@ -4,13 +4,17 @@ namespace PhpBench\Tests\Benchmark;
 
 use Generator;
 use PhpBench\Assertion\ExpressionParser;
+use PhpBench\DependencyInjection\Container;
+use PhpBench\Extension\CoreExtension;
 
 /**
  * @Revs(10)
  * @Iterations(3)
  * @BeforeMethods({"setUp"})
  * @OutputTimeUnit("milliseconds")
- * @Assert("mode(variant.time.net) = mode(baseline.time.net) +/- 5%")
+ * @Assert(
+ *     "mode(variant.time.net) = mode(baseline.time.net) +/- 10%"
+ * )
  */
 class ExpressionParserBench
 {
@@ -21,7 +25,11 @@ class ExpressionParserBench
 
     public function setUp(): void
     {
-        $this->parser = new ExpressionParser();
+        $container = new Container([
+            CoreExtension::class
+        ]);
+        $container->init();
+        $this->parser = $container->get(ExpressionParser::class);
     }
 
     /**

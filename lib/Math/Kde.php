@@ -197,7 +197,7 @@ class Kde
      * The new bandwidth calculated after a call to `setBandwidth` is used
      * for subsequent evaluations of the estimated density.
      *
-     * @param string $bwMethod Either "scott" or "silverman"
+     * @param "scott"|"silverman" $bwMethod Either "scott" or "silverman"
      */
     public function setBandwidth(string $bwMethod = null): void
     {

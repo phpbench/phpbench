@@ -5,6 +5,7 @@ namespace PhpBench\Tests\Unit\Assertion\Printer;
 use Generator;
 use PhpBench\Assertion\Ast\Comparison;
 use PhpBench\Assertion\Ast\FloatNode;
+use PhpBench\Assertion\Ast\FunctionNode;
 use PhpBench\Assertion\Ast\IntegerNode;
 use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Assertion\Ast\Node;
@@ -13,6 +14,7 @@ use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\ToleranceNode;
 use PhpBench\Assertion\ExpressionEvaluator;
+use PhpBench\Assertion\ExpressionEvaluatorFactory;
 use PhpBench\Assertion\ExpressionFunctions;
 use PhpBench\Assertion\Printer\NodePrinter;
 use PhpBench\Tests\TestCase;
@@ -24,15 +26,16 @@ class NodePrinterTest extends TestCase
      * @dataProvider provideTimeValue
      * @dataProvider provideComparison
      * @dataProvider provideMemoryValue
+     * @dataProvider provideFunction
      */
-    public function testFormat(Node $node, array $args, string $expected): void
+    public function testFormat(Node $node, array $args, string $expected, array $functions = []): void
     {
         self::assertEquals($expected, (new NodePrinter($args, new TimeUnit(
             TimeUnit::MICROSECONDS,
             TimeUnit::MICROSECONDS,
             TimeUnit::MODE_TIME,
             0
-        ), new ExpressionEvaluator($args, new ExpressionFunctions([]))))->format($node));
+        ), new ExpressionEvaluatorFactory(new ExpressionFunctions($functions))))->format($node));
     }
         
     /**
@@ -101,6 +104,29 @@ class NodePrinterTest extends TestCase
             new MemoryValue(new IntegerNode(10), 'bytes'),
             [],
             '10 bytes',
+        ];
+
+        yield [
+            new MemoryValue(new FloatNode(10.3), 'megabytes'),
+            [],
+            '10.300 megabytes',
+        ];
+    }
+
+    /**
+     * @return Generator<mixed>
+     */
+    public function provideFunction(): Generator
+    {
+        yield [
+            new FunctionNode('foo', [new IntegerNode(10)]),
+            [],
+            '10',
+            [
+                'foo' => function (int $foo) {
+                    return $foo;
+                },
+            ]
         ];
 
         yield [
