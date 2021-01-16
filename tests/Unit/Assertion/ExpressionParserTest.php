@@ -32,6 +32,9 @@ class ExpressionParserTest extends ExpressionParserTestCase
      * @dataProvider provideComparison
      * @dataProvider provideAggregateFunction
      * @dataProvider provideValueWithUnit
+     * @dataProvider provideExpression
+     *
+     * @param array<string,mixed> $config
      */
     public function testParse(string $dsl, Node $expected, array $config = []): void
     {
@@ -115,11 +118,27 @@ class ExpressionParserTest extends ExpressionParserTestCase
      */
     public function provideValueWithUnit(): Generator
     {
-        yield 'with throughput' => [
+        yield '100 milliseconds' => [
             '100 milliseconds',
             new TimeValue(new IntegerNode(100), 'milliseconds'),
             [
                 'timeUnits' => ['milliseconds']
+            ]
+        ];
+
+        yield '10.2 milliseconds' => [
+            '10.2 milliseconds',
+            new TimeValue(new FloatNode(10.2), 'milliseconds'),
+            [
+                'timeUnits' => ['milliseconds']
+            ]
+        ];
+
+        yield '100 bytes' => [
+            '100 bytes',
+            new MemoryValue(new IntegerNode(100), 'bytes'),
+            [
+                'memoryUnits' => ['bytes']
             ]
         ];
     }
@@ -152,6 +171,75 @@ class ExpressionParserTest extends ExpressionParserTestCase
     }
 
     /**
+     * @return Generator<mixed>
+     */
+    public function provideExpression(): Generator
+    {
+        yield 'full comparison' => [
+            'mode(foobar.foo) milliseconds > 100 seconds',
+            new Comparison(
+                new TimeValue(new FunctionNode('mode', [new PropertyAccess(['foobar', 'foo'])]), 'milliseconds'),
+                '>',
+                new TimeValue(new IntegerNode(100), 'seconds')
+            ),
+            [
+                'functions' => ['mode'],
+                'timeUnits' => ['milliseconds', 'seconds'],
+            ]
+        ];
+
+        yield 'nested function' => [
+            'addTwo(mode(10)) milliseconds',
+            new TimeValue(
+                new FunctionNode(
+                    'addTwo',
+                    [new FunctionNode(
+                        'mode',
+                        [new IntegerNode(10)]
+                    )]
+                ),
+                'milliseconds'
+            ),
+            [
+                'functions' => ['mode', 'addTwo'],
+                'timeUnits' => ['milliseconds'],
+            ]
+        ];
+
+        yield 'nested function 2' => [
+            'mode(addTwo(mode(10, 20)))',
+            new FunctionNode(
+                'mode',
+                [
+                    new FunctionNode(
+                    'addTwo',
+                    [
+                        new FunctionNode('mode', [
+                            new IntegerNode(10),
+                            new IntegerNode(20),
+                        ])
+                    ]
+                    ),
+                ]
+            ),
+            [
+                'functions' => ['mode', 'addTwo'],
+                'timeUnits' => ['milliseconds'],
+            ]
+        ];
+        yield 'function with multiple arguments' => [
+            'mode(10, 5)',
+            new FunctionNode('mode', [
+                new IntegerNode(10),
+                new IntegerNode(5),
+            ]),
+            [
+                'functions' => ['mode']
+            ]
+        ];
+    }
+
+    /**
      * @dataProvider provideSyntaxErrors
      */
     public function testSyntaxErrors(string $expression, string $expectedMessage): void
@@ -160,15 +248,15 @@ class ExpressionParserTest extends ExpressionParserTestCase
         $this->expectExceptionMessage($expectedMessage);
         $this->parse($expression, []);
     }
-        
+
     /**
      * @return Generator<mixed>
      */
     public function provideSyntaxErrors(): Generator
     {
         yield 'invalid value' => [
-                '"!£',
-                'Do not know how to parse token'
-            ];
+            '"!£',
+            'Do not know how to parse token'
+        ];
     }
 }

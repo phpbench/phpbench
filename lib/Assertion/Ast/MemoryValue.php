@@ -5,7 +5,7 @@ namespace PhpBench\Assertion\Ast;
 class MemoryValue implements Value
 {
     /**
-     * @var float
+     * @var NumberNode
      */
     private $value;
 
@@ -14,7 +14,7 @@ class MemoryValue implements Value
      */
     private $unit;
 
-    public function __construct(float $value, string $unit)
+    public function __construct(NumberNode $value, string $unit)
     {
         $this->value = $value;
         $this->unit = $unit;
@@ -25,12 +25,7 @@ class MemoryValue implements Value
         return $this->unit;
     }
 
-    public function value(): float
-    {
-        return $this->value;
-    }
-
-    public function toBytes(): float
+    public function value(): NumberNode
     {
         return $this->value;
     }

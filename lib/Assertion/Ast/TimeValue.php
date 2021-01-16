@@ -7,7 +7,7 @@ use PhpBench\Util\TimeUnit;
 class TimeValue implements Value
 {
     /**
-     * @var NumberNode
+     * @var Value
      */
     private $value;
 
@@ -16,7 +16,7 @@ class TimeValue implements Value
      */
     private $unit;
 
-    public function __construct(NumberNode $value, ?string $unit = TimeUnit::MICROSECONDS)
+    public function __construct(Value $value, ?string $unit = TimeUnit::MICROSECONDS)
     {
         $this->value = $value;
         $this->unit = $unit;
@@ -27,7 +27,7 @@ class TimeValue implements Value
         return $this->unit;
     }
 
-    public function value(): NumberNode
+    public function value(): Value
     {
         return $this->value;
     }

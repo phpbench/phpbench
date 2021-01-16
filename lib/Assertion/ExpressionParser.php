@@ -58,21 +58,28 @@ class ExpressionParser
         $this->lexer->moveNext();
         $token = $this->lexer->token;
 
-        while ($this->lexer->lookahead) {
-            $this->parts[] = $this->resolveNode();
+        $expression = $this->resolveNode();
+
+        if (count($this->parts)) {
+            throw new RuntimeException(sprintf(
+                'Did not parse a single AST node, "%s" nodes remaining',
+                count($this->parts)
+            ));
         }
 
-        if (count($this->parts) === 1) {
-            return reset($this->parts);
-        }
-
-        throw new RuntimeException(sprintf(
-            'Did not parse a single AST node, got "%s" nodes',
-            count($this->parts)
-        ));
+        return $expression;
     }
 
-    private function resolveNode(): ?Node
+    private function resolveNode(): Node
+    {
+        while ($this->lexer->lookahead) {
+            $this->parts[] = $this->resolveToken();
+        }
+
+        return array_pop($this->parts);
+    }
+
+    private function resolveToken(): ?Node
     {
         if (!$this->lexer->lookahead) {
             return null;
@@ -96,6 +103,8 @@ class ExpressionParser
                 return $this->parseFunction();
             case ExpressionLexer::T_TIME_UNIT:
                 return $this->parseTimeUnit();
+            case ExpressionLexer::T_MEMORY_UNIT:
+                return $this->parseMemoryUnit();
         }
 
         throw $this->syntaxError('Do not know how to parse token');
@@ -165,7 +174,7 @@ class ExpressionParser
 
         $args = [];
         while (true) {
-            $arg = $this->resolveNode();
+            $arg = $this->resolveToken();
             if (!$arg instanceof Value) {
                 throw $this->syntaxError('Expected value');
             }
@@ -215,12 +224,32 @@ class ExpressionParser
             ));
         }
 
+        if (!$value instanceof Value) {
+            throw $this->syntaxError(sprintf('Expected "%s", got "%s"', Value::class, get_class($value)));
+        }
+
+        $this->lexer->moveNext();
+
+        return new TimeValue($value, $unit);
+    }
+
+    private function parseMemoryUnit(): MemoryValue
+    {
+        $unit = $this->lexer->lookahead['value'];
+        $value = array_pop($this->parts);
+
+        if (null === $value) {
+            throw $this->syntaxError(sprintf(
+                'Time unit "%s" has no value', $unit
+            ));
+        }
+
         if (!$value instanceof NumberNode) {
             throw $this->syntaxError('Expected number');
         }
 
         $this->lexer->moveNext();
 
-        return new TimeValue($value, $unit);
+        return new MemoryValue($value, $unit);
     }
 }

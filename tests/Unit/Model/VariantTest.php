@@ -223,7 +223,7 @@ class VariantTest extends TestCase
         $this->assertEquals([100, 200], $memories);
     }
 
-    public function testGetMetrics(): void
+    public function testGetMetricValues()
     {
         $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 1, 0);
 

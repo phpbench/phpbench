@@ -16,6 +16,11 @@ class ExpressionLexer extends AbstractLexer
      */
     private $timeUnits;
 
+    /**
+     * @var string[]
+     */
+    private $memoryUnits;
+
     public const T_NONE = 'none';
     public const T_INTEGER = 'integer';
     public const T_FLOAT = 'float';
@@ -26,6 +31,7 @@ class ExpressionLexer extends AbstractLexer
     public const T_CLOSE_PAREN = 'close_paren';
     public const T_COMMA = 'comma';
     public const T_TIME_UNIT = 'time_unit';
+    public const T_MEMORY_UNIT = 'memory_unit';
     public const T_COMPARATOR = 'comparator';
     public const T_PROPERTY_ACCESS = 'property_access';
     public const T_PERCENTAGE = 'percentage';
@@ -38,19 +44,23 @@ class ExpressionLexer extends AbstractLexer
     /**
      * @param string[] $timeUnits
      * @param string[] $functionNames
+     * @param string[] $memoryUnits
      */
-    public function __construct(array $functionNames, array $timeUnits = [])
+    public function __construct(
+        array $functionNames = [],
+        array $timeUnits = [],
+        array $memoryUnits = []
+    )
     {
         $this->functionNames = $functionNames;
         $this->timeUnits = $timeUnits;
+        $this->memoryUnits = $memoryUnits;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected function getCatchablePatterns(): array
     {
         return [
+            '(?:[\(\)])', // parenthesis
             self::PATTERN_TOLERANCE, // comparators
             self::PATTERN_COMPARATORS, // comparators
             '(?:[0-9]+(?:[\.][0-9]+)*)(?:e[+-]?[0-9]+)?', // numbers
@@ -60,17 +70,11 @@ class ExpressionLexer extends AbstractLexer
         ];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected function getNonCatchablePatterns(): array
     {
         return ['\s+'];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected function getType(&$value)
     {
         $type = self::T_NONE;
@@ -106,6 +110,9 @@ class ExpressionLexer extends AbstractLexer
 
             case (in_array($value, $this->timeUnits)):
                 return self::T_TIME_UNIT;
+
+            case (in_array($value, $this->memoryUnits)):
+                return self::T_MEMORY_UNIT;
 
             case $value === '%':
                 return self::T_PERCENTAGE;

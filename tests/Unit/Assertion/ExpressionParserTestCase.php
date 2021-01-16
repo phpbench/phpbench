@@ -17,6 +17,7 @@ class ExpressionParserTestCase extends TestCase
         $parser = new ExpressionParser(new ExpressionLexer(
             $config['functions'] ?? [],
             $config['timeUnits'] ?? [],
+            $config['memoryUnits'] ?? [],
         ));
         return $parser->parse($expression);
     }
@@ -31,8 +32,6 @@ class ExpressionParserTestCase extends TestCase
         return (new ExpressionEvaluator($formatter->reveal(), $args))->evaluate($this->parse($expression));
     }
 
-    /**
-     */
     protected function evaluate(Node $node, array $args = [])
     {
         $formatter = $this->prophesize(MessageFormatter::class);
