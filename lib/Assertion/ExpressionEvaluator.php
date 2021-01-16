@@ -12,6 +12,7 @@ use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeValue;
+use PhpBench\Assertion\Ast\ToleranceNode;
 use PhpBench\Assertion\Ast\Value;
 use PhpBench\Assertion\Ast\WithinRangeOf;
 use PhpBench\Assertion\Ast\ZeroValue;
@@ -100,7 +101,7 @@ class ExpressionEvaluator
         $tolerance = $this->evaluateTolerance($node->tolerance(), $right);
 
         if ($tolerance > 0 && FloatNumber::isWithin($left, $right - $tolerance, $right + $tolerance)) {
-            return ComparisonResult::tolerated($this->formatter->format($node));
+            return ComparisonResult::tolerated();
         }
 
         switch ($node->operator()) {
@@ -184,8 +185,18 @@ class ExpressionEvaluator
         return MemoryUnit::convertTo($node->value()->value(), $node->unit(), MemoryUnit::BYTES);
     }
 
-    private function evaluateTolerance(Value $value, $right): float
+    /**
+     * @param mixed $right
+     * @return mixed
+     */
+    private function evaluateTolerance(?ToleranceNode $tolerance, $right)
     {
+        if (null === $tolerance) {
+            return 0;
+        }
+
+        $value = $tolerance->tolerance();
+
         if ($value instanceof PercentageValue) {
             return ($right / 100) * $value->percentage();
         }

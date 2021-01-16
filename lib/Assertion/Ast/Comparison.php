@@ -18,16 +18,16 @@ class Comparison implements Assertion
     private $value2;
 
     /**
-     * @var Value
+     * @var ToleranceNode|null
      */
     private $tolerance;
 
-    public function __construct(Value $value1, string $operator, Value $value2, ?Value $tolerance = null)
+    public function __construct(Value $value1, string $operator, Value $value2, ?ToleranceNode $tolerance = null)
     {
         $this->value1 = $value1;
         $this->operator = $operator;
         $this->value2 = $value2;
-        $this->tolerance = $tolerance ?: new ZeroValue();
+        $this->tolerance = $tolerance;
     }
 
     public function operator(): string
@@ -45,7 +45,7 @@ class Comparison implements Assertion
         return $this->value1;
     }
 
-    public function tolerance(): Value
+    public function tolerance(): ?ToleranceNode
     {
         return $this->tolerance;
     }

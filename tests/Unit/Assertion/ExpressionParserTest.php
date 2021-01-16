@@ -40,7 +40,8 @@ class ExpressionParserTest extends ExpressionParserTestCase
      */
     public function testParse(string $dsl, Node $expected, array $config = []): void
     {
-        $this->assertEquals($expected, $this->parse($dsl, $config));
+        $parsed = $this->parse($dsl, $config);
+        $this->assertEquals($expected, $parsed);
     }
 
     /**
@@ -249,6 +250,32 @@ class ExpressionParserTest extends ExpressionParserTestCase
         yield [
             '+/- 10',
             new ToleranceNode(new IntegerNode(10))
+        ];
+
+        yield [
+            '9 ms > 10 ms +/- 1',
+            new Comparison(
+                new TimeValue(new IntegerNode(9), 'ms'),
+                '>',
+                new TimeValue(new IntegerNode(10), 'ms'),
+                new ToleranceNode(new IntegerNode(1))
+            ),
+            [
+                'timeUnits' => ['ms'],
+            ]
+        ];
+
+        yield [
+            '9 ms > 10 ms +/- 10%',
+            new Comparison(
+                new TimeValue(new IntegerNode(9), 'ms'),
+                '>',
+                new TimeValue(new IntegerNode(10), 'ms'),
+                new ToleranceNode(new PercentageValue(new IntegerNode(10)))
+            ),
+            [
+                'timeUnits' => ['ms'],
+            ]
         ];
     }
 

@@ -71,13 +71,17 @@ class ExpressionParser
         return $expression;
     }
 
-    private function resolveNode(): Node
+    private function resolveNode(bool $pop = false): ?Node
     {
         while ($this->lexer->lookahead) {
             $this->parts[] = $this->resolveToken();
         }
 
-        return array_pop($this->parts);
+        if ($pop) {
+            return array_pop($this->parts);
+        }
+
+        return array_shift($this->parts);
     }
 
     private function resolveToken(): ?Node
@@ -108,6 +112,8 @@ class ExpressionParser
                 return $this->parseMemoryUnit();
             case ExpressionLexer::T_TOLERANCE:
                 return $this->parseTolerance();
+            case ExpressionLexer::T_PERCENTAGE:
+                return $this->parsePercentage();
         }
 
         throw $this->syntaxError('Do not know how to parse token');
@@ -155,11 +161,26 @@ class ExpressionParser
             ));
         }
 
-        return new Comparison($left, $value, $right);
+        $tolerance = array_pop($this->parts);
+
+        if (null !== $tolerance && !$tolerance instanceof ToleranceNode) {
+            throw $this->syntaxError(sprintf(
+                'Expected tolerance, got "%s"',
+                get_class($tolerance)
+            ));
+        }
+
+        return new Comparison($left, $value, $right, $tolerance);
     }
 
     private function syntaxError(string $message): SyntaxError
     {
+        if (!$this->lexer->lookahead) {
+            return new SyntaxError(sprintf(
+                '%s. lookahead is empty', $message
+            ));
+        }
+
         return new SyntaxError(sprintf(
             '%s: (token "%s", position: %s, value: %s)',
             $message,
@@ -259,7 +280,7 @@ class ExpressionParser
     private function parseTolerance(): ToleranceNode
     {
         $this->lexer->moveNext();
-        $value = $this->resolveNode();
+        $value = $this->resolveNode(true);
 
         if (!$value instanceof Value) {
             throw $this->syntaxError(sprintf(
@@ -268,5 +289,19 @@ class ExpressionParser
         }
 
         return new ToleranceNode($value);
+    }
+
+    private function parsePercentage(): PercentageValue
+    {
+        $value = $this->lexer->lookahead['value'];
+        $node = array_pop($this->parts);
+        if (!$node instanceof NumberNode) {
+            throw $this->syntaxError(sprintf(
+                'Expected number node for percentage, got "%s"',
+                is_object($node) ? get_class($node) : gettype($node)
+            ));
+        }
+        $this->lexer->moveNext();
+        return new PercentageValue($node);
     }
 }
