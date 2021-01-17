@@ -24,9 +24,9 @@ class IterationBuilder
         $this->variant = $variant;
     }
 
-    public function setResult(TimeResult $timeResult): self
+    public function setResult(ResultInterface $result): self
     {
-        $this->results[] = $timeResult;
+        $this->results[] = $result;
 
         return $this;
     }

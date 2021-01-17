@@ -21,6 +21,7 @@ use PhpBench\Model\Subject;
 use PhpBench\Model\Variant;
 use PhpBench\Tests\TestCase;
 use PhpBench\Tests\Util\TestUtil;
+use PhpBench\Tests\Util\VariantBuilder;
 use Prophecy\Argument;
 use RuntimeException;
 
@@ -223,25 +224,37 @@ class VariantTest extends TestCase
         $this->assertEquals([100, 200], $memories);
     }
 
-    public function testAllGetMetricValues()
+    public function testAllGetMetricValues(): void
     {
-        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 1, 0);
-
-        $variant->createIteration(TestUtil::createResults(4, 100));
-        $variant->createIteration(TestUtil::createResults(8, 200));
+        $variant = VariantBuilder::create()
+            ->iteration()
+                ->setResult(new TimeResult(10))
+            ->end()->iteration()
+                ->setResult(new TimeResult(20))
+            ->end()->iteration()
+                ->setResult(new TimeResult(30))
+                ->setResult(new MemoryResult(10, 10, 10))
+            ->end()
+            ->build();
 
         $this->assertEquals([
             'time' => [
-                'net' => [8],
+                'net' => [10, 20, 30],
             ],
             'mem' => [
-                'peak' => [200],
-                'real' => [200],
-                'final' => [200],
+                'peak' => [10],
+                'real' => [10],
+                'final' => [10],
             ],
-            'reject' => [
-                'count' => [0],
-            ],
+        ], $variant->getAllMetricValues());
+    }
+
+    public function testAllGetMetricEmpty(): void
+    {
+        $variant = VariantBuilder::create()
+            ->build();
+
+        $this->assertEquals([
         ], $variant->getAllMetricValues());
     }
 }

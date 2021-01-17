@@ -194,17 +194,13 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
 
         foreach ($this->iterations as $iteration) {
             foreach ($iteration->getResults() as $result) {
-                $metrics = [];
 
                 foreach ($result->getMetrics() as $name => $value) {
-                    if (!isset($metrics[$name])) {
-                        $metrics[$name] = [];
+                    if (!isset($data[(string)$result->getKey()][$name])) {
+                        $data[(string)$result->getKey()][$name] = [];
                     }
-
-                    $metrics[$name][] = $value;
+                    $data[(string)$result->getKey()][$name][] = $value;
                 }
-
-                $data[(string)$result->getKey()] = $metrics;
             }
         }
 
