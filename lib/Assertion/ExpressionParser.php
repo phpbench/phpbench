@@ -32,9 +32,9 @@ use RuntimeException;
 class ExpressionParser
 {
     /**
-     * @var Node[]
+     * @var Nodes
      */
-    private $parts = [];
+    private $nodes;
 
     /**
      * @var ExpressionLexer
@@ -44,6 +44,7 @@ class ExpressionParser
     public function __construct(ExpressionLexer $lexer)
     {
         $this->lexer = $lexer;
+        $this->nodes = new Nodes();
     }
 
     public function parse(string $expression): Node
@@ -58,29 +59,16 @@ class ExpressionParser
         $this->lexer->moveNext();
         $token = $this->lexer->token;
 
-        $expression = $this->resolveNode();
+        $this->parseNextNode();
 
-        if (count($this->parts)) {
-            throw new RuntimeException(sprintf(
-                'Did not parse a single AST node, "%s" nodes remaining',
-                count($this->parts)
-            ));
-        }
-
-        return $expression;
+        return $this->nodes->singleRemainingNode();
     }
 
-    private function resolveNode(bool $pop = false): ?Node
+    private function parseNextNode(bool $pop = false): void
     {
         while ($this->lexer->lookahead) {
-            $this->parts[] = $this->resolveToken();
+            $this->nodes->push($this->resolveToken());
         }
-
-        if ($pop) {
-            return array_pop($this->parts);
-        }
-
-        return array_shift($this->parts);
     }
 
     private function resolveToken(): ?Node
@@ -97,10 +85,12 @@ class ExpressionParser
                 $this->lexer->moveNext();
 
                 return new IntegerNode($value);
+
             case ExpressionLexer::T_FLOAT:
                 $this->lexer->moveNext();
 
                 return new FloatNode($value);
+
             case ExpressionLexer::T_PROPERTY_ACCESS:
                 return $this->parsePropertyAccess();
             case ExpressionLexer::T_COMPARATOR:
@@ -134,7 +124,7 @@ class ExpressionParser
     {
         $value = $this->lexer->lookahead['value'];
         $this->lexer->moveNext();
-        $left = array_pop($this->parts);
+        $left = $this->nodes->pop();
 
         if (null === $left) {
             throw $this->syntaxError(sprintf(
@@ -149,7 +139,8 @@ class ExpressionParser
             ));
         }
 
-        $right = $this->resolveNode();
+        $this->parseNextNode();
+        $right = $this->nodes->shift();
 
         if (null === $right) {
             throw $this->syntaxError(sprintf(
@@ -164,7 +155,7 @@ class ExpressionParser
             ));
         }
 
-        $tolerance = array_pop($this->parts);
+        $tolerance = $this->nodes->pop();
 
         if (null !== $tolerance && !$tolerance instanceof ToleranceNode) {
             throw $this->syntaxError(sprintf(
@@ -196,7 +187,9 @@ class ExpressionParser
     private function parseFunction(): FunctionNode
     {
         $functionName = $this->lexer->lookahead['value'];
+
         $this->lexer->moveNext();
+
         $this->expect(ExpressionLexer::T_OPEN_PAREN);
 
         $args = [];
@@ -245,7 +238,7 @@ class ExpressionParser
 
     private function parseTimeUnit(): TimeValue
     {
-        $value = array_pop($this->parts);
+        $value = $this->nodes->pop();
         $unit = $this->lexer->lookahead['value'];
 
         if (null === $value) {
@@ -273,7 +266,7 @@ class ExpressionParser
 
     private function parseAsUnit(): Node
     {
-        $value = array_pop($this->parts);
+        $value = $this->nodes->pop();
 
         if (!$value instanceof Value) {
             throw $this->syntaxError(sprintf(
@@ -303,7 +296,7 @@ class ExpressionParser
     private function parseMemoryUnit(): MemoryValue
     {
         $unit = $this->lexer->lookahead['value'];
-        $value = array_pop($this->parts);
+        $value = $this->nodes->pop();
 
         if (null === $value) {
             throw $this->syntaxError(sprintf(
@@ -331,7 +324,8 @@ class ExpressionParser
     private function parseTolerance(): ToleranceNode
     {
         $this->lexer->moveNext();
-        $value = $this->resolveNode(true);
+        $this->parseNextNode();
+        $value = $this->nodes->pop();
 
         if (!$value instanceof Value) {
             throw $this->syntaxError(sprintf(
@@ -345,7 +339,7 @@ class ExpressionParser
     private function parsePercentage(): PercentageValue
     {
         $value = $this->lexer->lookahead['value'];
-        $node = array_pop($this->parts);
+        $node = $this->nodes->pop();
 
         if (!$node instanceof NumberNode) {
             throw $this->syntaxError(sprintf(
