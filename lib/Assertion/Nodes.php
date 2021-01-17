@@ -17,12 +17,9 @@ class Nodes implements IteratorAggregate
      */
     private $nodes;
 
-    /**
-     * @param Node[] $nodes
-     */
-    public function __construct(array $nodes = [])
+    public function __construct()
     {
-        $this->nodes = array_values($nodes);
+        $this->nodes = [];
     }
 
     public function push(Node $node): void

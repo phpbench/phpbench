@@ -70,7 +70,7 @@ class ExpressionParser
         return $this->nodes->singleRemainingNode();
     }
 
-    private function parseNextNode(bool $pop = false): void
+    private function parseNextNode(): void
     {
         while ($this->lexer->lookahead) {
             $this->nodes->push($this->resolveToken());
@@ -129,11 +129,11 @@ class ExpressionParser
     private function parseComparison(): Comparison
     {
         $comparator = $this->lexer->lookahead['value'];
-        $this->lexer->moveNext();
 
-        $left = $this->assureType(Value::class, $this->nodes->pop());
+        $left = $this->assureType(Value::class, $this->nodes->pop(), 'Left hand side of comparison');
+        $this->lexer->moveNext();
         $this->parseNextNode();
-        $right = $this->assureType(Value::class, $this->nodes->shift());
+        $right = $this->assureType(Value::class, $this->nodes->shift(), 'Right side of comparison');
         $tolerance = $this->assureTypeOrNull(ToleranceNode::class, $this->nodes->pop());
 
         return new Comparison($left, $comparator, $right, $tolerance);
@@ -219,16 +219,7 @@ class ExpressionParser
     {
         $value = $this->nodes->pop();
         $unit = $this->lexer->lookahead['value'];
-
-        if (null === $value) {
-            throw $this->syntaxError(sprintf(
-                'Time unit "%s" has no value', $unit
-            ));
-        }
-
-        if (!$value instanceof Value) {
-            throw $this->syntaxError(sprintf('Expected "%s", got "%s"', Value::class, get_class($value)));
-        }
+        $value = $this->assureType(Value::class, $value, 'Time unit');
 
         $this->lexer->moveNext();
 
@@ -308,12 +299,43 @@ class ExpressionParser
      *
      * @return T
      */
-    private function assureType(string $classFqn, $value)
+    private function assureType(string $classFqn, $value, ?string $context = null)
+    {
+        $formatter = function (string $message) use ($context) {
+            if ($context) {
+                return sprintf('%s %s', $context, lcfirst($message));
+            }
+
+            return $message;
+        };
+
+        if (null === $value) {
+            throw $this->syntaxError($formatter(sprintf(
+                'Expected "%s", got NULL', Value::class
+            )));
+        }
+
+        if (!($value instanceof $classFqn)) {
+            throw $this->syntaxError($formatter(sprintf(
+                'Expected "%s", got "%s"', Value::class, get_class($value)
+            )));
+        }
+
+        return $value;
+    }
+
+    /**
+     * @template T
+     *
+     * @param class-string<T> $classFqn
+     * @param null|object $value
+     *
+     * @return T|null
+     */
+    private function assureTypeOrNull(string $classFqn, $value)
     {
         if (null === $value) {
-            throw $this->syntaxError(sprintf(
-                'Expected "%s", got NULL', Value::class
-            ));
+            return $value;
         }
 
         if (!($value instanceof $classFqn)) {
@@ -323,28 +345,5 @@ class ExpressionParser
         }
 
         return $value;
-        }
-
-        /**
-         * @template T
-         *
-         * @param class-string<T> $classFqn
-         * @param null|object $value
-         *
-         * @return T|null
-         */
-        private function assureTypeOrNull(string $classFqn, $value)
-        {
-            if (null === $value) {
-                return $value;
-            }
-
-            if (!($value instanceof $classFqn)) {
-                throw $this->syntaxError(sprintf(
-                    'Expected "%s", got "%s"', Value::class, get_class($value)
-                ));
-            }
-
-            return $value;
-        }
-        }
+    }
+}

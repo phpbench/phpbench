@@ -95,6 +95,7 @@ class ExpressionEvaluatorTest extends TestCase
         yield ['10 >= 4 +/- 30%', [], ComparisonResult::true()];
 
         yield ['0 >= 4 +/- 30%', [], ComparisonResult::false()];
+        yield ['101 = 100 +/- 1%', [], ComparisonResult::tolerated()];
 
         // time units
         yield ['10', [], 10];

@@ -174,8 +174,9 @@ class ExpressionEvaluator
     }
 
     /**
+     * @param int|float $right
      */
-    private function evaluateTolerance(?ToleranceNode $tolerance, $right)
+    private function evaluateTolerance(?ToleranceNode $tolerance, $right): float
     {
         if (null === $tolerance) {
             return 0;

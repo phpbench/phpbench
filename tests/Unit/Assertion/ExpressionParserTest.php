@@ -326,11 +326,11 @@ class ExpressionParserTest extends ExpressionParserTestCase
     /**
      * @dataProvider provideSyntaxErrors
      */
-    public function testSyntaxErrors(string $expression, string $expectedMessage): void
+    public function testSyntaxErrors(string $expression, string $expectedMessage, array $config = []): void
     {
         $this->expectException(SyntaxError::class);
         $this->expectExceptionMessage($expectedMessage);
-        $this->parse($expression, []);
+        $this->parse($expression, $config);
     }
 
     /**
@@ -341,6 +341,53 @@ class ExpressionParserTest extends ExpressionParserTestCase
         yield 'invalid value' => [
             '"!£',
             'Do not know how to parse token'
+        ];
+
+        yield 'unknown node' => [
+            'foobar()',
+            'Do not know how to parse token'
+        ];
+
+        yield [
+            '<=',
+            'Left hand side of comparison',
+            [
+                'functions' => [
+                    'func'
+                ]
+            ]
+        ];
+
+        yield [
+            'func(10 +/- 10)',
+            'Expected token "comma"',
+            [
+                'functions' => [
+                    'func'
+                ]
+            ]
+        ];
+
+        yield [
+            'func(10 ms)',
+            'Expected token "comma"',
+            [
+                'timeUnits' => ['ms'],
+                'functions' => [
+                    'func'
+                ]
+            ]
+        ];
+
+        yield [
+            'ms',
+            'Time unit expected',
+            [
+                'timeUnits' => ['ms'],
+                'functions' => [
+                    'func'
+                ]
+            ]
         ];
     }
 }
