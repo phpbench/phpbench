@@ -13,10 +13,12 @@ use PhpBench\Extension\CoreExtension;
  * @BeforeMethods({"setUp"})
  * @OutputTimeUnit("milliseconds")
  * @Assert(
- *     "mode(variant.time.net) as ms <= mode(baseline.time.net) as ms +/- 10%"
+ *
+ *     "mode(variant.time.avg) as ms <= mode(baseline.time.avg) as ms +/- 10%"
+ *
  * )
  * @Assert(
- *     "mode(variant.mem.peak) as kilobytes = mode(baseline.mem.peak) as kilobytes"
+ *     "mean(variant.mem.peak) as kilobytes = mean(baseline.mem.peak) as kilobytes"
  * )
  */
 class ExpressionParserBench

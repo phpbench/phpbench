@@ -240,6 +240,7 @@ class VariantTest extends TestCase
         $this->assertEquals([
             'time' => [
                 'net' => [10, 20, 30],
+                'avg' => [10, 20, 30],
             ],
             'mem' => [
                 'peak' => [10],
@@ -249,12 +250,30 @@ class VariantTest extends TestCase
         ], $variant->getAllMetricValues());
     }
 
-    public function testAllGetMetricEmpty(): void
+    public function testVariantDependentResults(): void
     {
         $variant = VariantBuilder::create()
+            ->iteration()
+                ->setResult(new TimeResult(10))
+            ->end()
+            ->iteration()
+                ->setResult(new TimeResult(20))
+            ->end()
+            ->setRevs(2)
             ->build();
 
         $this->assertEquals([
+            'time' => [
+                'net' => [10, 20],
+                'avg' => [5, 10],
+            ],
         ], $variant->getAllMetricValues());
+    }
+
+    public function testAllGetMetricEmpty(): void
+    {
+        $variant = VariantBuilder::create()->build();
+
+        $this->assertEquals([], $variant->getAllMetricValues());
     }
 }

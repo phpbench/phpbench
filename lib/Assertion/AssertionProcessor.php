@@ -94,6 +94,6 @@ class AssertionProcessor
 
     private function buildVariantData(Variant $variant): array
     {
-        return $variant->getAllMetricValues();
+        return $variant->getAllMetricValues($variant);
     }
 }

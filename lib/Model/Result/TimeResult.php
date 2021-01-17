@@ -13,12 +13,15 @@
 namespace PhpBench\Model\Result;
 
 use Assert\Assertion;
+use PhpBench\Math\Statistics;
 use PhpBench\Model\ResultInterface;
+use PhpBench\Model\Variant;
+use PhpBench\Model\VariantEnhancedResultInterface;
 
 /**
  * Represents the net time taken by a single iteration (all revolutions).
  */
-class TimeResult implements ResultInterface
+class TimeResult implements ResultInterface, VariantEnhancedResultInterface
 {
     /**
      * @var int
@@ -80,6 +83,19 @@ class TimeResult implements ResultInterface
         return [
             'net' => $this->netTime,
         ];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getVariantEnhancedMetrics(Variant $variant): array
+    {
+        return array_merge(
+            $this->getMetrics(),
+            [
+                'avg' => $this->getRevTime($variant->getRevolutions())
+            ]
+        );
     }
 
     /**
