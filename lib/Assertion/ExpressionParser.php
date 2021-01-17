@@ -41,6 +41,11 @@ class ExpressionParser
      */
     private $lexer;
 
+    /**
+     * @var string
+     */
+    private $expression;
+
     public function __construct(ExpressionLexer $lexer)
     {
         $this->lexer = $lexer;
@@ -49,6 +54,7 @@ class ExpressionParser
 
     public function parse(string $expression): Node
     {
+        $this->expression = $expression;
         $this->lexer->setInput($expression);
 
         return $this->buildAst();
@@ -135,19 +141,26 @@ class ExpressionParser
 
     private function syntaxError(string $message): SyntaxError
     {
+        $out = [''];
+        $out[] = $this->expression;
+
         if (!$this->lexer->lookahead) {
-            return new SyntaxError(sprintf(
-                '%s. lookahead is empty', $message
-            ));
+            $error = sprintf(
+                '%s', $message
+            );
+        } else {
+            $out[] = str_repeat('-', $this->lexer->lookahead['position']);
+            $error = sprintf(
+                '%s: (token "%s", position: %s, value: %s)',
+                $message,
+                $this->lexer->lookahead['type'],
+                $this->lexer->lookahead['position'],
+                json_encode($this->lexer->lookahead['value'])
+            );
         }
 
-        return new SyntaxError(sprintf(
-            '%s: (token "%s", position: %s, value: %s)',
-            $message,
-            $this->lexer->lookahead['type'],
-            $this->lexer->lookahead['position'],
-            json_encode($this->lexer->lookahead['value'])
-        ));
+        $out[] = $error;
+        throw new SyntaxError(implode("\n", $out));
     }
 
     private function parseFunction(): FunctionNode
@@ -312,28 +325,28 @@ class ExpressionParser
         }
 
         return $value;
-    }
+        }
 
-    /**
-     * @template T
-     *
-     * @param class-string<T> $classFqn
-     * @param null|object $value
-     *
-     * @return T|null
-     */
-    private function assureTypeOrNull(string $classFqn, $value)
-    {
-        if (null === $value) {
+        /**
+         * @template T
+         *
+         * @param class-string<T> $classFqn
+         * @param null|object $value
+         *
+         * @return T|null
+         */
+        private function assureTypeOrNull(string $classFqn, $value)
+        {
+            if (null === $value) {
+                return $value;
+            }
+
+            if (!($value instanceof $classFqn)) {
+                throw $this->syntaxError(sprintf(
+                    'Expected "%s", got "%s"', Value::class, get_class($value)
+                ));
+            }
+
             return $value;
         }
-
-        if (!($value instanceof $classFqn)) {
-            throw $this->syntaxError(sprintf(
-                'Expected "%s", got "%s"', Value::class, get_class($value)
-            ));
         }
-
-        return $value;
-    }
-}

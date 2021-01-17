@@ -45,7 +45,7 @@ class Nodes implements IteratorAggregate
 
     public function singleRemainingNode(): Node
     {
-        $node = reset($this->nodes);
+        $node = array_pop($this->nodes);
 
         if (!$node) {
             throw new RuntimeException(sprintf(

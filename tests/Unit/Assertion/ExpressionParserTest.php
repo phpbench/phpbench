@@ -24,6 +24,7 @@ use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\ToleranceNode;
 use PhpBench\Assertion\Exception\SyntaxError;
+use PhpBench\Util\TimeUnit;
 
 class ExpressionParserTest extends ExpressionParserTestCase
 {
@@ -113,6 +114,20 @@ class ExpressionParserTest extends ExpressionParserTestCase
                 new IntegerNode(100)
             )
         ];
+
+        yield 'seconds' => [
+            '10 seconds < 10 seconds +/- 10 seconds',
+            new Comparison(
+                new TimeValue(new IntegerNode(10), 'seconds'),
+                '<',
+                new TimeValue(new IntegerNode(10), 'seconds'),
+                new ToleranceNode(new TimeValue(new IntegerNode(10), 'seconds'))
+            ),
+            [
+                'timeUnits' => ['seconds'],
+            ]
+        ];
+
     }
 
     /**
