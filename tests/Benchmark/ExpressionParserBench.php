@@ -16,7 +16,7 @@ use PhpBench\Extension\CoreExtension;
  *     "mode(variant.time.net) as ms <= mode(baseline.time.net) as ms +/- 10%"
  * )
  * @Assert(
- *     "mode(variant.mem.peak) as kilobytes <= mode(baseline.mem.peak) as kilobytes"
+ *     "mode(variant.mem.peak) as mode() = mode(baseline.mem.peak) as kilobytes"
  * )
  */
 class ExpressionParserBench

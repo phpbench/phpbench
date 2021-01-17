@@ -250,20 +250,18 @@ class ExpressionParser
         $this->lexer->moveNext();
         $type = $this->lexer->lookahead['type'];
         $unit = $this->lexer->lookahead['value'];
-        $this->lexer->moveNext();
 
         if ($type === ExpressionLexer::T_TIME_UNIT) {
+            $this->lexer->moveNext();
             return new TimeValue($value, TimeUnit::MICROSECONDS, $unit);
         }
 
         if ($type === ExpressionLexer::T_MEMORY_UNIT) {
+            $this->lexer->moveNext();
             return new MemoryValue($value, MemoryUnit::BYTES, $unit);
         }
 
-        throw new RuntimeException(sprintf(
-            'Expected memory or time unit token, got "%s"',
-            $type
-        ));
+        throw $this->syntaxError('Expected memory or time unit');
     }
 
     private function parseMemoryUnit(): MemoryValue
