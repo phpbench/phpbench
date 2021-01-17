@@ -17,6 +17,7 @@ class IntegrationTestCase extends TestCase
     {
         return (function (Container $container) {
             $container->init();
+
             return $container;
         })(new Container([
             CoreExtension::class

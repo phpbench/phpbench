@@ -43,7 +43,7 @@ class Suite implements IteratorAggregate
      */
     public function __construct(
         ?string $tag,
-        \DateTime $date,
+        DateTime $date,
         ?string $configPath = null,
         array $benchmarks = [],
         array $envInformations = [],
@@ -95,7 +95,7 @@ class Suite implements IteratorAggregate
         return $this->tag;
     }
 
-    public function getDate(): \DateTime
+    public function getDate(): DateTime
     {
         return $this->date;
     }

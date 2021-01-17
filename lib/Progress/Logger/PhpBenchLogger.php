@@ -221,7 +221,6 @@ abstract class PhpBenchLogger extends NullLogger
             $this->output->writeln('');
 
             foreach ($variantWarning as $index => $warning) {
-
                 $this->output->writeln(implode("\n     ", explode("\n", sprintf('%s) %s', $index + 1, $warning->getMessage()))));
             }
             $this->output->write(PHP_EOL);

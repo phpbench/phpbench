@@ -187,7 +187,8 @@ class ExpressionEvaluatorTest extends TestCase
     public function testErrorOnCannotEvaluate(): void
     {
         $this->expectException(ExpressionEvaluatorError::class);
-        $node = new class() implements Node {};
+        $node = new class() implements Node {
+        };
         $eval = (new ExpressionEvaluator())->evaluate($node);
     }
 

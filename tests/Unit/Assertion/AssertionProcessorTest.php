@@ -3,14 +3,11 @@
 namespace PhpBench\Tests\Unit\Assertion;
 
 use Generator;
-use PHPUnit\Framework\TestCase;
 use PhpBench\Assertion\AssertionProcessor;
 use PhpBench\Assertion\AssertionResult;
-use PhpBench\Assertion\Exception\ExpressionError;
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Tests\IntegrationTestCase;
-use PhpBench\Tests\Util\SuiteBuilder;
 use PhpBench\Tests\Util\VariantBuilder;
 
 class AssertionProcessorTest extends IntegrationTestCase
@@ -40,10 +37,12 @@ class AssertionProcessorTest extends IntegrationTestCase
             'mode(variant.time.net) = mode(variant.time.net)',
             AssertionResult::ok()
         ];
+
         yield [
             'mode(variant.time.net) < mode(variant.time.net)',
             AssertionResult::fail('10 < 10')
         ];
+
         yield [
             'mode(variant.time.net) < mode(variant.time.net) +/- 100',
             AssertionResult::tolerated('10 < 10 ± 100')
@@ -78,7 +77,7 @@ class AssertionProcessorTest extends IntegrationTestCase
     {
         $processor = $this->container()->get(AssertionProcessor::class);
         assert($processor instanceof AssertionProcessor);
+
         return $processor;
     }
-
 }

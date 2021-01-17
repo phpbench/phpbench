@@ -2,11 +2,10 @@
 
 namespace PhpBench\Tests\Unit\Assertion\Ast;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Exception\PropertyAccessError;
-use PhpBench\Model\Result\TimeResult;
 use PhpBench\Tests\Util\VariantBuilder;
+use PHPUnit\Framework\TestCase;
 
 class PropertyAccessTest extends TestCase
 {

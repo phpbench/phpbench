@@ -2,9 +2,9 @@
 
 namespace PhpBench\Tests\Unit\Assertion;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
 use PhpBench\Assertion\ExpressionFunctions;
+use PHPUnit\Framework\TestCase;
 
 class ExpressionFunctionsTest extends TestCase
 {
@@ -12,6 +12,7 @@ class ExpressionFunctionsTest extends TestCase
     {
         $this->expectException(ExpressionEvaluatorError::class);
         $this->expectExceptionMessage('Unknown function');
-        (new ExpressionFunctions(['one' => function () {}]))->execute('foo', []);
+        (new ExpressionFunctions(['one' => function () {
+        }]))->execute('foo', []);
     }
 }

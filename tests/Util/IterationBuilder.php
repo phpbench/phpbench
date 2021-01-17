@@ -3,8 +3,8 @@
 namespace PhpBench\Tests\Util;
 
 use PhpBench\Model\Iteration;
-use PhpBench\Model\ResultInterface;
 use PhpBench\Model\Result\TimeResult;
+use PhpBench\Model\ResultInterface;
 use PhpBench\Model\Variant;
 
 class IterationBuilder
