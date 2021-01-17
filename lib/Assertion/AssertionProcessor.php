@@ -12,10 +12,13 @@
 
 namespace PhpBench\Assertion;
 
+use Exception;
 use PhpBench\Assertion\Ast\Comparison;
+use PhpBench\Assertion\Exception\ExpressionError;
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
 use PhpBench\Model\Variant;
 use RuntimeException;
+use Throwable;
 
 class AssertionProcessor
 {
@@ -60,7 +63,11 @@ class AssertionProcessor
             'baseline' => $variant->getBaseline() ? $this->buildVariantData($variant->getBaseline()) : $variantData,
         ];
 
-        $result = $this->evaluator->createWithArgs($args)->evaluate($node);
+        try {
+            $result = $this->evaluator->createWithArgs($args)->evaluate($node);
+        } catch (Exception $error) {
+            throw ExpressionError::forExpression($assertion, $error->getMessage());
+        }
         $printer = $this->printer->create($args);
 
         if (!$result instanceof ComparisonResult) {

@@ -149,9 +149,9 @@ class ExpressionParser
                 '%s', $message
             );
         } else {
-            $out[] = str_repeat('-', $this->lexer->lookahead['position']);
+            $out[] = str_repeat('-', $this->lexer->lookahead['position']) . '^';
             $error = sprintf(
-                '%s: (token "%s", position: %s, value: %s)',
+                '%s (type: "%s", position: %s, value: %s)',
                 $message,
                 $this->lexer->lookahead['type'],
                 $this->lexer->lookahead['position'],
