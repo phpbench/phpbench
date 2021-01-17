@@ -28,7 +28,7 @@ class SuiteCollectionTest extends TestCase
     /**
      * It should add suites.
      */
-    public function testAddSuite()
+    public function testAddSuite(): void
     {
         $collection = new SuiteCollection();
         $collection->addSuite($this->suite1->reveal());
@@ -40,7 +40,7 @@ class SuiteCollectionTest extends TestCase
     /**
      * It should merge another colleciton into itself.
      */
-    public function testMergeCollection()
+    public function testMergeCollection(): void
     {
         $collection = new SuiteCollection([
             $this->suite1->reveal(),

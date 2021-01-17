@@ -25,7 +25,7 @@ class PrintfFormatTest extends TestCase
     /**
      * It should format using sprintf.
      */
-    public function testNumberFormat()
+    public function testNumberFormat(): void
     {
         $result = $this->format->format('hai', ['format' => '%s bye']);
         $this->assertEquals('hai bye', $result);

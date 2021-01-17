@@ -33,7 +33,7 @@ class SupplierTest extends TestCase
     /**
      * It should return nothing if all the providers are not applicable.
      */
-    public function testNoApplicableProviders()
+    public function testNoApplicableProviders(): void
     {
         $this->supplier->addProvider($this->provider1->reveal());
         $this->supplier->addProvider($this->provider2->reveal());
@@ -48,7 +48,7 @@ class SupplierTest extends TestCase
     /**
      * It should return information from both the providers.
      */
-    public function testApplicableProviders()
+    public function testApplicableProviders(): void
     {
         $this->supplier->addProvider($this->provider1->reveal());
         $this->supplier->addProvider($this->provider2->reveal());

@@ -17,13 +17,13 @@ use PhpBench\Tests\TestCase;
 
 abstract class GeneratorTestCase extends TestCase
 {
-    protected function assertXPathEval(Document $document, $expected, $expression)
+    protected function assertXPathEval(Document $document, $expected, $expression): void
     {
         $result = $document->evaluate($expression);
         $this->assertEquals($expected, $result, sprintf('Xpath: %s', $expression));
     }
 
-    protected function assertXPathCount(Document $document, $expected, $expression)
+    protected function assertXPathCount(Document $document, $expected, $expression): void
     {
         $this->assertXPathEval($document, $expected, 'count(' . $expression . ')');
     }

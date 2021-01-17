@@ -21,7 +21,7 @@ class InformationTest extends TestCase
     /**
      * Information acts as an array.
      */
-    public function testActsAsArray()
+    public function testActsAsArray(): void
     {
         $information = new Information(
             'hello',
@@ -39,7 +39,7 @@ class InformationTest extends TestCase
      * It should throw an Exception if unset is called.
      *
      */
-    public function testUnset()
+    public function testUnset(): void
     {
         $this->expectException(BadMethodCallException::class);
         $information = new Information('hello', []);
@@ -50,7 +50,7 @@ class InformationTest extends TestCase
      * It should throw an Exception if set is called.
      *
      */
-    public function testSet()
+    public function testSet(): void
     {
         $this->expectException(BadMethodCallException::class);
         $information = new Information('hello', []);
@@ -60,7 +60,7 @@ class InformationTest extends TestCase
     /**
      * It should retrieve its name.
      */
-    public function testGetName()
+    public function testGetName(): void
     {
         $information = new Information('foo', []);
         $this->assertEquals('foo', $information->getName());
@@ -69,7 +69,7 @@ class InformationTest extends TestCase
     /**
      * It should be iterable.
      */
-    public function testIterable()
+    public function testIterable(): void
     {
         $information = new Information('foo', [
             'bar' => 'bar',
@@ -88,7 +88,7 @@ class InformationTest extends TestCase
         ], $result);
     }
 
-    public function testFlattensArrays()
+    public function testFlattensArrays(): void
     {
         $information = new Information('foo', [
             'a' => 'b',

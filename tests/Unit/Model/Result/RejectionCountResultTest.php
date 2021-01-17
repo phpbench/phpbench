@@ -17,7 +17,7 @@ use PhpBench\Tests\TestCase;
 
 class RejectionCountResultTest extends TestCase
 {
-    public function testMemoryGreaterEqualThan()
+    public function testMemoryGreaterEqualThan(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Rejection count must be greater or equal to 0');

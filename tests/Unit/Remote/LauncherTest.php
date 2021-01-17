@@ -36,7 +36,7 @@ class LauncherTest extends TestCase
      * It should generate a script from a given template, launch it
      * and return the results.
      */
-    public function testLiveExecute()
+    public function testLiveExecute(): void
     {
         $launcher = $this->createLiveLauncher();
         $result = $launcher->payload(
@@ -54,7 +54,7 @@ class LauncherTest extends TestCase
     /**
      * It should pass the wrapper, ini settings and php-binary to the payload.
      */
-    public function testPassSettingsToPayload()
+    public function testPassSettingsToPayload(): void
     {
         $launcher = new Launcher(
             $this->factory->reveal(),
@@ -82,7 +82,7 @@ class LauncherTest extends TestCase
      * It should throw an exception if the bootstrap file does not exist.
      *
      */
-    public function testInvalidBootstrap()
+    public function testInvalidBootstrap(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Bootstrap file');

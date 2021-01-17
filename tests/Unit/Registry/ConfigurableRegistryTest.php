@@ -37,7 +37,7 @@ class ConfigurableRegistryTest extends RegistryTest
      * It should set configuration for a registered service
      * It should retrieve configurations.
      */
-    public function testGetSetConfig()
+    public function testGetSetConfig(): void
     {
         $config = [
             'test' => 'service',
@@ -46,7 +46,7 @@ class ConfigurableRegistryTest extends RegistryTest
         ];
 
         $this->registry->setService('service', $this->service1->reveal());
-        $this->service1->configure(Argument::type(OptionsResolver::class))->will(function ($args) {
+        $this->service1->configure(Argument::type(OptionsResolver::class))->will(function ($args): void {
             $args[0]->setDefaults(['one' => 'one', 'two' => 'two']);
         });
 
@@ -59,7 +59,7 @@ class ConfigurableRegistryTest extends RegistryTest
     /**
      * It should resolve configs that exend other configs.
      */
-    public function testResolveExtended()
+    public function testResolveExtended(): void
     {
         $config1 = [
             'test' => 'service',
@@ -73,7 +73,7 @@ class ConfigurableRegistryTest extends RegistryTest
         ];
 
         $this->registry->setService('service', $this->service1->reveal());
-        $this->service1->configure(Argument::type(OptionsResolver::class))->will(function ($args) {
+        $this->service1->configure(Argument::type(OptionsResolver::class))->will(function ($args): void {
             $args[0]->setDefaults([
                 'test' => null,
                 'one' => null,
@@ -100,7 +100,7 @@ class ConfigurableRegistryTest extends RegistryTest
      * It should throw an exception if a config extends a config from a different service.
      *
      */
-    public function testExtendsDifferentServiceException()
+    public function testExtendsDifferentServiceException(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('test configuration for service "service2" cannot extend configuration for different service "service1"');
@@ -124,7 +124,7 @@ class ConfigurableRegistryTest extends RegistryTest
     /**
      * If a JSON encoded string is passed to getConfig, then it should be processed.
      */
-    public function testGetConfigJsonString()
+    public function testGetConfigJsonString(): void
     {
         $this->registry->setService('service', $this->service1->reveal());
         $this->service1->configure(Argument::type(OptionsResolver::class))->shouldBeCalled();
@@ -139,7 +139,7 @@ class ConfigurableRegistryTest extends RegistryTest
      * If a invalid JSON encoded string is passed to getConfig, then it should throw an exception.
      *
      */
-    public function testGetConfigJsonStringInvalid()
+    public function testGetConfigJsonStringInvalid(): void
     {
         $this->expectException(ParsingException::class);
         $this->registry->setService('service', $this->service1->reveal());
@@ -150,7 +150,7 @@ class ConfigurableRegistryTest extends RegistryTest
         ]), $result);
     }
 
-    public function testServiceDirectly()
+    public function testServiceDirectly(): void
     {
         $this->registry->setService('service', $this->service1->reveal());
 

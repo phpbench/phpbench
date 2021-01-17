@@ -29,7 +29,7 @@ class PhpTest extends TestCase
     /**
      * Provider is always applicable.
      */
-    public function testIsApplicable()
+    public function testIsApplicable(): void
     {
         $this->assertTrue($this->createProvider()->isApplicable());
     }
@@ -37,7 +37,7 @@ class PhpTest extends TestCase
     /**
      * It should provide the PHP version.
      */
-    public function testPhpVersion()
+    public function testPhpVersion(): void
     {
         $info = $this->createProvider()->getInformation();
         $this->assertEquals(PHP_VERSION, $info['version']);
@@ -46,7 +46,7 @@ class PhpTest extends TestCase
     /**
      * It should provide the path to the PHP ini file.
      */
-    public function testPhpIni()
+    public function testPhpIni(): void
     {
         $info = $this->createProvider()->getInformation();
         $this->assertEquals(php_ini_loaded_file(), $info['ini']);

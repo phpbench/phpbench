@@ -54,7 +54,7 @@ class FactoryTest extends TestCase
     /**
      * It can retrieve the metadata for a file containing a class.
      */
-    public function testGetMetadataForFile()
+    public function testGetMetadataForFile(): void
     {
         $this->hierarchy->isEmpty()->willReturn(false);
         $this->metadata->getSubjects()->willReturn([]);
@@ -66,7 +66,7 @@ class FactoryTest extends TestCase
     /**
      * It will return a benchmark populated with subjects.
      */
-    public function testWithSubjects()
+    public function testWithSubjects(): void
     {
         $this->hierarchy->isEmpty()->willReturn(false);
         $this->metadata->getSubjects()->willReturn([
@@ -89,7 +89,7 @@ class FactoryTest extends TestCase
      * It should throw an exception if a before/after method does not exist on the benchmark.
      *
      */
-    public function testValidationBeforeMethodsBenchmark()
+    public function testValidationBeforeMethodsBenchmark(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Unknown before');
@@ -107,7 +107,7 @@ class FactoryTest extends TestCase
      * It should throw an exception if a before class method is not static.
      *
      */
-    public function testValidationBeforeClassMethodsBenchmarkNotStatic()
+    public function testValidationBeforeClassMethodsBenchmarkNotStatic(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('must be static in benchmark class "TestClass"');
@@ -126,7 +126,7 @@ class FactoryTest extends TestCase
      * It should throw an exception if a before method IS static.
      *
      */
-    public function testValidationBeforeMethodsBenchmarkIsStatic()
+    public function testValidationBeforeMethodsBenchmarkIsStatic(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('before method "beforeMe" must not be static in benchmark class "TestClass"');
@@ -149,7 +149,7 @@ class FactoryTest extends TestCase
      * It should throw an exception if a before/after method does not exist on the subject.
      *
      */
-    public function testValidationBeforeMethodsSubject()
+    public function testValidationBeforeMethodsSubject(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Unknown before method "beforeMe" in benchmark class "TestClass"');
@@ -171,7 +171,7 @@ class FactoryTest extends TestCase
      * It should throw an exception if an after method does not exist.
      *
      */
-    public function testValidationAfterMethods()
+    public function testValidationAfterMethods(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Unknown after');
@@ -192,7 +192,7 @@ class FactoryTest extends TestCase
     /**
      * It should return null if the class hierarchy is empty.
      */
-    public function testEmptyClassHierachy()
+    public function testEmptyClassHierachy(): void
     {
         $this->hierarchy->isEmpty()->willReturn(true);
         $metadata = $this->factory->getMetadataForFile(self::FNAME);
@@ -203,7 +203,7 @@ class FactoryTest extends TestCase
      * It should throw an exception if the parameters are not in a valid format.
      *
      */
-    public function testInvalidParameters()
+    public function testInvalidParameters(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Each parameter set must be an array, got "string" for TestBench::benchTest');

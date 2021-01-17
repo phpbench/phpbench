@@ -41,7 +41,7 @@ class ProfileExecutor implements BenchmarkExecutorInterface
         $this->innerExecutor->configure($options);
 
         $options->setDefaults([
-            'callback' => function () {
+            'callback' => function (): void {
             },
             'output_dir' => 'xdebug',
         ]);

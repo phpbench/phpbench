@@ -25,7 +25,7 @@ class CoreExtensionTest extends TestCase
     /**
      * It should expand the "path" parameter to an absolute path if it is relative.
      */
-    public function testRelativizePath()
+    public function testRelativizePath(): void
     {
         $container = new Container(['PhpBench\Extension\CoreExtension'], [
             'path' => 'hello',
@@ -39,7 +39,7 @@ class CoreExtensionTest extends TestCase
      * It should automatically switch to the travis logger if the
      * CONTINUOUS_INTEGRATION environment variable is set.
      */
-    public function testTravisLogger()
+    public function testTravisLogger(): void
     {
         putenv('CONTINUOUS_INTEGRATION=1');
 

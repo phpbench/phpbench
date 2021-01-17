@@ -37,7 +37,7 @@ class AnnotationDriverTest extends TestCase
     /**
      * It should return class metadata according to annotations.
      */
-    public function testLoadClassMetadata()
+    public function testLoadClassMetadata(): void
     {
         $reflection = new ReflectionClass();
         $reflection->path = 'foo';
@@ -62,7 +62,7 @@ EOT;
     /**
      * It should ignore common annotations.
      */
-    public function testIgnoreCommonAnnotations()
+    public function testIgnoreCommonAnnotations(): void
     {
         $reflection = new ReflectionClass();
         $reflection->path = 'foo';
@@ -83,7 +83,7 @@ EOT;
     /**
      * It should return method metadata according to annotations.
      */
-    public function testLoadSubject()
+    public function testLoadSubject(): void
     {
         $reflection = new ReflectionClass();
         $reflection->class = 'Test';
@@ -141,7 +141,7 @@ EOT;
      * It should return method metadata for non-prefixed methods with the
      * Subject annotation.
      */
-    public function testLoadSubjectNonPrefixed()
+    public function testLoadSubjectNonPrefixed(): void
     {
         $reflection = new ReflectionClass();
         $reflection->class = 'Test';
@@ -168,7 +168,7 @@ EOT;
     /**
      * It should ignore non-prefixed subjects without the Subject annotation.
      */
-    public function testLoadIgnoreNonPrefixed()
+    public function testLoadIgnoreNonPrefixed(): void
     {
         $reflection = new ReflectionClass();
         $reflection->class = 'Test';
@@ -198,7 +198,7 @@ EOT;
      *
      * @dataProvider provideClassMethodsOnMethodException
      */
-    public function testClassMethodsOnException($annotation)
+    public function testClassMethodsOnException($annotation): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('annotation can only be applied');
@@ -233,7 +233,7 @@ EOT;
     /**
      * Test optional values.
      */
-    public function testSubjectOptionalValues()
+    public function testSubjectOptionalValues(): void
     {
         $reflection = new ReflectionClass();
         $reflection->class = 'Test';
@@ -263,7 +263,7 @@ EOT;
     /**
      * Subject metadata should override class metadata.
      */
-    public function testLoadSubjectOverride()
+    public function testLoadSubjectOverride(): void
     {
         $reflection = new ReflectionClass();
         $reflection->path = 'foo';
@@ -297,7 +297,7 @@ EOT;
     /**
      * It should merge class parent classes.
      */
-    public function testLoadSubjectMerge()
+    public function testLoadSubjectMerge(): void
     {
         $reflection = new ReflectionClass();
         $reflection->class = 'TestChild';
@@ -391,7 +391,7 @@ EOT;
     /**
      * It should extend values of previous annotations when the "extend" option is true.
      */
-    public function testMetadataExtend()
+    public function testMetadataExtend(): void
     {
         $reflection = new ReflectionClass();
         $reflection->class = 'TestChild';
@@ -426,7 +426,7 @@ EOT;
     /**
      * It should allow multiple array elements for warmup, iterations and revolutions.
      */
-    public function testArrayElements()
+    public function testArrayElements(): void
     {
         $reflection = new ReflectionClass();
         $reflection->class = 'Test';
@@ -459,7 +459,7 @@ EOT;
      * It should throw a helpful exception when an annotation is not recognized.
      *
      */
-    public function testUsefulException()
+    public function testUsefulException(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Unrecognized annotation @Foobar, valid PHPBench annotations: @BeforeMethods,');
@@ -482,7 +482,7 @@ EOT;
     /**
      * It should allow a custom subject pattern.
      */
-    public function testCustomSubjectPattern()
+    public function testCustomSubjectPattern(): void
     {
         $reflection = new ReflectionClass();
         $reflection->path = 'foo';

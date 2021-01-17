@@ -45,7 +45,7 @@ class LatestResolverTest extends TestCase
     /**
      * It should resove the "latest" token.
      */
-    public function testResolveLatest()
+    public function testResolveLatest(): void
     {
         $this->storage->history()->willReturn($this->history->reveal());
         $this->history->current()->willReturn($this->historyEntry->reveal());
@@ -65,7 +65,7 @@ class LatestResolverTest extends TestCase
         $this->assertEquals(null, $ref);
     }
 
-    public function testResolveCantResolve()
+    public function testResolveCantResolve(): void
     {
         $this->expectException(RuntimeException::class);
         $this->resolver->resolve('latest-nutbar');
@@ -74,7 +74,7 @@ class LatestResolverTest extends TestCase
     /**
      * It should return the nth history run using the minus operator.
      */
-    public function testLatestMinusNth()
+    public function testLatestMinusNth(): void
     {
         $this->storage->history()->willReturn($this->history->reveal());
         $this->history->current()->willReturn(
@@ -95,7 +95,7 @@ class LatestResolverTest extends TestCase
      * It should throw an exception if no history is present.
      *
      */
-    public function testNoHistory()
+    public function testNoHistory(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('No history present');

@@ -19,41 +19,41 @@ use PhpBench\Tests\Unit\Executor\benchmarks\ParamProviderBench;
 
 class ParameterSetExtractorTest extends TestCase
 {
-    public function testProvideParameterFromCallable()
+    public function testProvideParameterFromCallable(): void
     {
         $this->provideParams(['PhpBench\Tests\Unit\Executor\benchmarks\hello_world']);
     }
 
-    public function testProvideParameterFromBenchmark()
+    public function testProvideParameterFromBenchmark(): void
     {
         $this->provideParams(['provideParams']);
     }
 
-    public function testProvideParameterFromIterator()
+    public function testProvideParameterFromIterator(): void
     {
         $this->provideParams(['provideIterator']);
     }
 
-    public function testProvideParameterFromGenerator()
+    public function testProvideParameterFromGenerator(): void
     {
         $this->provideParams(['provideGenerator']);
     }
 
-    public function testThrowsExceptionIfParameterDoesntExist()
+    public function testThrowsExceptionIfParameterDoesntExist(): void
     {
         $this->expectException(ScriptErrorException::class);
         $this->expectExceptionMessage('Class has no method "idontexist"');
         $this->provideParams(['idontexist']);
     }
 
-    public function testThrowsExceptionIfMethodIsPrivate()
+    public function testThrowsExceptionIfMethodIsPrivate(): void
     {
         $this->expectException(ScriptErrorException::class);
         $this->expectExceptionMessage('Class has no method "privateParamProvider"');
         $this->provideParams(['privateParamProvider']);
     }
 
-    private function provideParams(array $providers)
+    private function provideParams(array $providers): void
     {
         $payload = new Payload(__DIR__ . '/../../../lib/Reflection/template/parameter_set_extractor.template', [
             'bootstrap' => __DIR__ . '/benchmarks/ParamProviderBench.php',

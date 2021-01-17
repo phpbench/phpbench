@@ -20,12 +20,12 @@ class ClassWithClassKeywords
 {
     protected $class = \Test\B::class;
 
-    public function benchIsSubclassOf()
+    public function benchIsSubclassOf(): void
     {
         is_subclass_of($this->class, \Test\A::class);
     }
 
-    public function benchReflectionClass()
+    public function benchReflectionClass(): void
     {
         $c = new \ReflectionClass($this->class);
         $c->isSubclassOf(\Test\A::class);

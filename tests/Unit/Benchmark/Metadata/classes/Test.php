@@ -22,7 +22,7 @@ class Test
     /**
      * @PhpBench\Subject()
      */
-    public function test()
+    public function test(): void
     {
     }
 }

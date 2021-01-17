@@ -32,7 +32,7 @@ class UnixSysloadTest extends TestCase
      * Provider is always applicable because this test only runs
      * in Unix environments.
      */
-    public function testIsApplicable()
+    public function testIsApplicable(): void
     {
         $this->assertTrue($this->provider->isApplicable());
     }
@@ -40,7 +40,7 @@ class UnixSysloadTest extends TestCase
     /**
      * It should provide the load averages.
      */
-    public function testUnixSysloadVersion()
+    public function testUnixSysloadVersion(): void
     {
         $info = $this->provider->getInformation();
         $this->assertArrayHasKey('l1', $info);

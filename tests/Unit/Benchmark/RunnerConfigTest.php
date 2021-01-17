@@ -37,7 +37,7 @@ class RunnerConfigTest extends TestCase
      * It should throw an exception if the retry threshold is less than zero.
      *
      */
-    public function testRetryLessThanZetro()
+    public function testRetryLessThanZetro(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('must be greater');
@@ -49,14 +49,14 @@ class RunnerConfigTest extends TestCase
      * It should throw an exception if the revolutions are less than zero.
      *
      */
-    public function testRevolutionsLessThanZero()
+    public function testRevolutionsLessThanZero(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('greater than');
         RunnerConfig::create()->withRevolutions([-1]);
     }
 
-    public function testBuild()
+    public function testBuild(): void
     {
         $config = RunnerConfig::create()
             ->withTag(self::TEST_TAG_NAME)
@@ -85,7 +85,7 @@ class RunnerConfigTest extends TestCase
     /**
      * Default should be used if no explict value set in the context.
      */
-    public function testDefaults()
+    public function testDefaults(): void
     {
         $config = RunnerConfig::create();
         $this->assertEquals([self::TEST_RETRY_THRESHOLD], $config->getIterations([self::TEST_RETRY_THRESHOLD]));
@@ -96,7 +96,7 @@ class RunnerConfigTest extends TestCase
     /**
      * Defaults should be ignored if explicit values are set in the context.
      */
-    public function testOverride()
+    public function testOverride(): void
     {
         $config = RunnerConfig::create()
             ->withIterations(self::TEST_ITERATIONS)
@@ -111,7 +111,7 @@ class RunnerConfigTest extends TestCase
     /**
      * The overridden parameter sets should be nested in an array of an array.
      */
-    public function testGetParameterSets()
+    public function testGetParameterSets(): void
     {
         $config = RunnerConfig::create()
             ->withParameters([

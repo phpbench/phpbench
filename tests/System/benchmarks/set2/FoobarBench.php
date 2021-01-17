@@ -18,7 +18,7 @@ namespace PhpBench\Tests\System\benchmarks\foobar;
  */
 class FoobarBench
 {
-    public function benchFoobar()
+    public function benchFoobar(): void
     {
         new \Test\Foobar();
     }

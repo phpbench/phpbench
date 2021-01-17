@@ -20,14 +20,14 @@ class ExampleClass
     /**
      * Method One Comment.
      */
-    public function methodOne()
+    public function methodOne(): void
     {
     }
 
     /**
      * Method Two Comment.
      */
-    public function methodTwo()
+    public function methodTwo(): void
     {
     }
 

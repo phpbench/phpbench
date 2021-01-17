@@ -30,7 +30,7 @@ class OutputDirHandler
         $this->filesystem = $filesystem ?: new Filesystem();
     }
 
-    public static function configure(Command $command)
+    public static function configure(Command $command): void
     {
         $command->addOption('outdir', null, InputOption::VALUE_REQUIRED, 'Output directory');
     }

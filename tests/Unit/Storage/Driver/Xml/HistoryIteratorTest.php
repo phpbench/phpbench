@@ -44,7 +44,7 @@ class HistoryIteratorTest extends IntegrationTestCase
     /**
      * It should "iterate" given an empty directory.
      */
-    public function testIterateEmpty()
+    public function testIterateEmpty(): void
     {
         $entries = iterator_to_array($this->iterator);
         $this->assertCount(0, $entries);
@@ -53,7 +53,7 @@ class HistoryIteratorTest extends IntegrationTestCase
     /**
      * It should "iterate" if the directory does not exist.
      */
-    public function testNoDirectoryExist()
+    public function testNoDirectoryExist(): void
     {
         $iterator = new HistoryIterator(
             $this->xmlDecoder->reveal(),
@@ -67,7 +67,7 @@ class HistoryIteratorTest extends IntegrationTestCase
     /**
      * It should iterate over entries.
      */
-    public function testIterate()
+    public function testIterate(): void
     {
         $collections = [];
         $collections[1] = $this->createEntry(1, new \DateTime('2014-02-03'));

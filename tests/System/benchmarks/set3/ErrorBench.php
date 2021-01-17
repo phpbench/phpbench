@@ -17,16 +17,16 @@ namespace PhpBench\Tests\System\benchmarks\set3;
  */
 class ErrorBench
 {
-    public function benchNothing()
+    public function benchNothing(): void
     {
     }
 
-    public function benchException()
+    public function benchException(): void
     {
         throw new \Exception('Arff');
     }
 
-    public function benchNothingElse()
+    public function benchNothingElse(): void
     {
     }
 }

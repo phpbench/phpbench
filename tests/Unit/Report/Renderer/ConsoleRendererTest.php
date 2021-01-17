@@ -38,7 +38,7 @@ class ConsoleRendererTest extends AbstractRendererCase
     /**
      * It should render a report.
      */
-    public function testRender()
+    public function testRender(): void
     {
         $this->renderReport($this->getReportsDocument(), []);
 
@@ -52,7 +52,7 @@ class ConsoleRendererTest extends AbstractRendererCase
     /**
      * It should allow the table style to be set.
      */
-    public function testTableStyle()
+    public function testTableStyle(): void
     {
         $this->renderReport($this->getReportsDocument(), [
             'table_style' => 'compact',

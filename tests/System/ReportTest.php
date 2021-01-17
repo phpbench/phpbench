@@ -19,7 +19,7 @@ class ReportTest extends SystemTestCase
     /**
      * It should generate a report.
      */
-    public function testGenerateReport()
+    public function testGenerateReport(): void
     {
         $this->getResult();
         $process = $this->phpbench(
@@ -33,7 +33,7 @@ class ReportTest extends SystemTestCase
     /**
      * It should generate a report when given the --ref option.
      */
-    public function testGenerateReportFromUuid()
+    public function testGenerateReportFromUuid(): void
     {
         $document = $this->getResult(null, ' --store');
         $ref = $document->evaluate('string(./suite/@uuid)');
@@ -48,7 +48,7 @@ class ReportTest extends SystemTestCase
     /**
      * It should allow the mode, precision and time-unit to be specified.
      */
-    public function testTimeUnitOverride()
+    public function testTimeUnitOverride(): void
     {
         $this->getResult();
         $process = $this->phpbench(
@@ -62,7 +62,7 @@ class ReportTest extends SystemTestCase
     /**
      * It should throw an exception if no reports are specified.
      */
-    public function testNoReports()
+    public function testNoReports(): void
     {
         $process = $this->phpbench('report --file=results/report1.xml');
         $this->assertExitCode(1, $process);
@@ -72,7 +72,7 @@ class ReportTest extends SystemTestCase
     /**
      * It should throw an exception if the report file does not exist.
      */
-    public function testNonExistingFile()
+    public function testNonExistingFile(): void
     {
         $process = $this->phpbench('report tests/Systemist.xml');
         $this->assertExitCode(1, $process);
@@ -83,7 +83,7 @@ class ReportTest extends SystemTestCase
      *
      * @dataProvider provideOutputs
      */
-    public function testOutputs($output)
+    public function testOutputs($output): void
     {
         $this->getResult();
         $process = $this->phpbench(
@@ -106,7 +106,7 @@ class ReportTest extends SystemTestCase
      *
      * @dataProvider provideGenerators
      */
-    public function testGenerators($config)
+    public function testGenerators($config): void
     {
         $this->getResult();
         $process = $this->phpbench(

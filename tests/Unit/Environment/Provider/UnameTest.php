@@ -27,7 +27,7 @@ class UnameTest extends TestCase
     /**
      * Provider is always applicable.
      */
-    public function testIsApplicable()
+    public function testIsApplicable(): void
     {
         $this->assertTrue($this->provider->isApplicable());
     }
@@ -35,7 +35,7 @@ class UnameTest extends TestCase
     /**
      * It should provide the UNAME version.
      */
-    public function testUnameVersion()
+    public function testUnameVersion(): void
     {
         $info = $this->provider->getInformation();
 

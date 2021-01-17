@@ -32,7 +32,7 @@ class ResultCollectionTest extends TestCase
     /**
      * It can have results added in the constructor.
      */
-    public function testAddConstructor()
+    public function testAddConstructor(): void
     {
         $collection = new ResultCollection([
             $expected = new TimeResult(10),
@@ -46,7 +46,7 @@ class ResultCollectionTest extends TestCase
      * It should be able to have results added to it.
      * It should retrive results.
      */
-    public function testAddResult()
+    public function testAddResult(): void
     {
         $this->collection->setResult($this->timeResult);
         $this->assertEquals(
@@ -59,7 +59,7 @@ class ResultCollectionTest extends TestCase
      * It should throw an exception when retrieving a non-existant class.
      *
      */
-    public function testNonExistantClass()
+    public function testNonExistantClass(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Result of class "stdClass" has not been set');
@@ -69,7 +69,7 @@ class ResultCollectionTest extends TestCase
     /**
      * It should return a named metric.
      */
-    public function testGetNamedMetric()
+    public function testGetNamedMetric(): void
     {
         $this->collection->setResult($this->timeResult);
         $this->assertEquals(1, $this->collection->getMetric(TimeResult::class, 'net'));
@@ -79,7 +79,7 @@ class ResultCollectionTest extends TestCase
      * It should throw an exception if the named metric does not exist.
      *
      */
-    public function testNamedMetricDoesNotExist()
+    public function testNamedMetricDoesNotExist(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Unknown metric "foobar" for result class "PhpBench\Model\Result\TimeResult". Available metrics: "net"');
@@ -91,7 +91,7 @@ class ResultCollectionTest extends TestCase
      * It should return a default value when using getMetricOrDefault when the
      * class has not been set.
      */
-    public function testGetMetricOrDefault()
+    public function testGetMetricOrDefault(): void
     {
         $this->collection->setResult($this->timeResult);
         $this->assertEquals(100, $this->collection->getMetricOrDefault('UnknownClass', 'barbar', 100));

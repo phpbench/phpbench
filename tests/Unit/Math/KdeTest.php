@@ -25,7 +25,7 @@ class KdeTest extends TestCase
      *
      * @dataProvider provideEvaluate
      */
-    public function testEvaluate($dataSet, $space, $bwMethod, $expected)
+    public function testEvaluate($dataSet, $space, $bwMethod, $expected): void
     {
         $kde = new Kde($dataSet, $bwMethod);
         $result = $kde->evaluate($space);
@@ -78,7 +78,7 @@ class KdeTest extends TestCase
      * It should throw an exception if an invalid bandwidth method is given.
      *
      */
-    public function testInvalidBandwidth()
+    public function testInvalidBandwidth(): void
     {
         $this->expectException(InvalidArgumentException::class);
         new Kde([1, 2], 'foo');
@@ -88,7 +88,7 @@ class KdeTest extends TestCase
      * It should throw an exception if the data set has zero elements.
      *
      */
-    public function testNoElements()
+    public function testNoElements(): void
     {
         $this->expectException(OutOfBoundsException::class);
         new Kde([]);
@@ -98,7 +98,7 @@ class KdeTest extends TestCase
      * It should throw an exception if the data set has only a single element.
      *
      */
-    public function testOneElement()
+    public function testOneElement(): void
     {
         $this->expectException(OutOfBoundsException::class);
         new Kde([1]);

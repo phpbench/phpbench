@@ -49,7 +49,7 @@ class GitTest extends TestCase
     /**
      * It should return TRUE if the CWD is a git repository.
      */
-    public function testIsApplicable()
+    public function testIsApplicable(): void
     {
         $result = $this->provider->isApplicable();
         $this->assertTrue($result);
@@ -58,7 +58,7 @@ class GitTest extends TestCase
     /**
      * It should return FALSE if the CWD is not a git repository.
      */
-    public function testIsNotApplicable()
+    public function testIsNotApplicable(): void
     {
         chdir(sys_get_temp_dir());
         $result = $this->provider->isApplicable();
@@ -68,7 +68,7 @@ class GitTest extends TestCase
     /**
      * It should return the VCS information for the current git repository.
      */
-    public function testGetVcsInformation()
+    public function testGetVcsInformation(): void
     {
         $info = $this->provider->getInformation();
         $this->assertEquals('git', $info['system']);
@@ -79,7 +79,7 @@ class GitTest extends TestCase
     /**
      * It should show the commitsh.
      */
-    public function testGetVcsCommitsh()
+    public function testGetVcsCommitsh(): void
     {
         $this->exec('git commit -m "test"');
         $info = $this->provider->getInformation();
@@ -90,7 +90,7 @@ class GitTest extends TestCase
     /**
      * It should show the branch.
      */
-    public function testGetVcsBranch()
+    public function testGetVcsBranch(): void
     {
         $this->exec('git commit -m "test"');
 
@@ -103,7 +103,7 @@ class GitTest extends TestCase
     /**
      * It should not be applicable if GIT is not available.
      */
-    public function testNotApplicableIfGitNotFound()
+    public function testNotApplicableIfGitNotFound(): void
     {
         $exeFinder = $this->prophesize(ExecutableFinder::class);
         $exeFinder->find('git', null)->willReturn(null);
@@ -113,14 +113,14 @@ class GitTest extends TestCase
         $this->assertFalse($provider->isApplicable());
     }
 
-    private function clean()
+    private function clean(): void
     {
         if (file_exists($this->testRepoDir)) {
             $this->filesystem->remove(__DIR__ . '/testRepo');
         }
     }
 
-    private function exec($cmd)
+    private function exec($cmd): void
     {
         $proc = Process::fromShellCommandline($cmd);
         $exitCode = $proc->run();

@@ -28,7 +28,7 @@ class FakeHistoryIterator implements HistoryIteratorInterface
     /**
      * {@inheritDoc}
      */
-    public function next()
+    public function next(): void
     {
         next($this->entries);
     }
@@ -52,7 +52,7 @@ class FakeHistoryIterator implements HistoryIteratorInterface
     /**
      * {@inheritDoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         reset($this->entries);
     }

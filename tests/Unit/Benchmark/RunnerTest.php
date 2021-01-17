@@ -147,7 +147,7 @@ class RunnerTest extends TestCase
             [1],
             [1],
             [],
-            function ($test, $suite) {
+            function ($test, $suite): void {
                 $test->assertEquals(1, $suite->getSummary()->getNbIterations());
             },
         ];
@@ -156,7 +156,7 @@ class RunnerTest extends TestCase
             [1],
             [3],
             [],
-            function ($test, $suite) {
+            function ($test, $suite): void {
                 $test->assertEquals(1, $iterations = $suite->getIterations());
                 $iteration = reset($iterations);
                 $test->assertEquals(3, $iteration->getVariant()->getRevolutions());
@@ -167,7 +167,7 @@ class RunnerTest extends TestCase
             [4],
             [3],
             [],
-            function ($test, $suite) {
+            function ($test, $suite): void {
                 $test->assertEquals(4, $iterations = $suite->getIterations());
                 $iteration = reset($iterations);
                 $test->assertEquals(3, $iteration->getVariant()->getRevolutions());
@@ -178,7 +178,7 @@ class RunnerTest extends TestCase
             [1],
             [1],
             ['one' => 'two', 'three' => 'four'],
-            function ($test, $suite) {
+            function ($test, $suite): void {
                 $test->assertEquals(1, $iterations = $suite->getIterations());
                 $iteration = reset($iterations);
                 $parameters = $iteration->getVariant()->getParameterSet();
@@ -191,7 +191,7 @@ class RunnerTest extends TestCase
             [1],
             [1],
             ['one', 'two'],
-            function ($test, $suite) {
+            function ($test, $suite): void {
                 $test->assertEquals(1, $iterations = $suite->getIterations());
                 $iteration = reset($iterations);
                 $parameters = $iteration->getVariant()->getParameterSet();
@@ -204,7 +204,7 @@ class RunnerTest extends TestCase
             [1],
             [1],
             ['one' => ['three' => 'four']],
-            function ($test, $suite) {
+            function ($test, $suite): void {
                 $test->assertEquals(1, $iterations = $suite->getIterations());
                 $iteration = reset($iterations);
                 $parameters = $iteration->getVariant()->getParameterSet();

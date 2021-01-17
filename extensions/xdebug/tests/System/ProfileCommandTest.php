@@ -18,7 +18,7 @@ class ProfileCommandTest extends XDebugTestCase
      * It should run when given a path.
      * It should show the default (simple) report.
      */
-    public function testCommand()
+    public function testCommand(): void
     {
         $process = $this->phpbench('xdebug:profile benchmarks/set1/BenchmarkBench.php --filter=benchDoNothing');
         $this->assertExitCode(0, $process);
@@ -33,7 +33,7 @@ class ProfileCommandTest extends XDebugTestCase
     /**
      * It die if an unknown gui-bin is specified.
      */
-    public function testCommandBadGui()
+    public function testCommandBadGui(): void
     {
         $process = $this->phpbench('xdebug:profile benchmarks/set1/BenchmarkBench.php --gui --gui-bin=idontexistdotcom1234');
         $this->assertStringContainsString(
@@ -46,7 +46,7 @@ class ProfileCommandTest extends XDebugTestCase
     /**
      * It should launch a gui.
      */
-    public function testGui()
+    public function testGui(): void
     {
         $env = getenv('PATH');
         putenv('PATH=' . $env . ':' . __DIR__ . '/bin');
@@ -58,7 +58,7 @@ class ProfileCommandTest extends XDebugTestCase
     /**
      * Specify custom output dir.
      */
-    public function testOutputDir()
+    public function testOutputDir(): void
     {
         $process = $this->phpbench('xdebug:profile benchmarks/set1/BenchmarkBench.php --outdir=profilenew --filter=benchDoNothing');
         $lines = explode("\n", $process->getOutput());

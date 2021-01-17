@@ -34,7 +34,7 @@ class FormatterTest extends TestCase
      * It should register class definitions.
      * It should apply class definitions.
      */
-    public function testApplyClasses()
+    public function testApplyClasses(): void
     {
         $this->registry->get('formatter_1')->willReturn($this->format->reveal());
         $this->formatter->registerClasses([
@@ -57,7 +57,7 @@ class FormatterTest extends TestCase
      *
      * @dataProvider provideApplyClassesSubstituteTokens
      */
-    public function testApplyClassesSubstituteTokens($classParams, $params, $expectedParams)
+    public function testApplyClassesSubstituteTokens($classParams, $params, $expectedParams): void
     {
         $this->registry->get('formatter_1')->willReturn($this->format->reveal());
         $this->formatter->registerClasses([
@@ -139,7 +139,7 @@ class FormatterTest extends TestCase
     /**
      * It should throw an exception if invalid options are given for a formatter.
      */
-    public function testInvalidFormatOptions()
+    public function testInvalidFormatOptions(): void
     {
         $this->registry->get('formatter_1')->willReturn($this->format->reveal());
         $this->formatter->registerClasses([

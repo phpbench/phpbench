@@ -29,7 +29,7 @@ class JsonDecoderTest extends TestCase
      *
      * @dataProvider provideNormalizer
      */
-    public function testNormalizer($string, $expected)
+    public function testNormalizer($string, $expected): void
     {
         $result = $this->jsonDecoder->decode($string);
         $this->assertEquals($expected, $result);

@@ -37,7 +37,7 @@ class OpcacheTest extends TestCase
     /**
      * Provider is always applicable.
      */
-    public function testIsApplicable()
+    public function testIsApplicable(): void
     {
         $this->assertTrue($this->createProvider(false)->isApplicable());
     }
@@ -45,13 +45,13 @@ class OpcacheTest extends TestCase
     /**
      * It should provide the PHP version.
      */
-    public function testExtensionLoaded()
+    public function testExtensionLoaded(): void
     {
         $info = $this->createProvider(false)->getInformation();
         $this->assertEquals(true, $info['extension_loaded']);
     }
 
-    public function testExtensionDisabledOnCli()
+    public function testExtensionDisabledOnCli(): void
     {
         $info = $this->createProvider(false)->getInformation();
         $this->assertEquals(false, $info['enabled']);

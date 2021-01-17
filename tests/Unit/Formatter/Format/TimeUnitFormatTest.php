@@ -21,7 +21,7 @@ class TimeUnitFormatTest extends TestCase
     /**
      * It should work with the default options.
      */
-    public function testTimeFormatDefault()
+    public function testTimeFormatDefault(): void
     {
         $format = new TimeUnitFormat(new TimeUnit());
         $result = $format->format('1234', $format->getDefaultOptions());
@@ -31,7 +31,7 @@ class TimeUnitFormatTest extends TestCase
     /**
      * It should convert the time.
      */
-    public function testTimeFormatConvert()
+    public function testTimeFormatConvert(): void
     {
         $format = new TimeUnitFormat(new TimeUnit());
         $result = $format->format(2000, [

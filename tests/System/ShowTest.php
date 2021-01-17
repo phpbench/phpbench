@@ -17,7 +17,7 @@ class ShowTest extends SystemTestCase
     /**
      * It should show a report for a specific run.
      */
-    public function testDefaultReport()
+    public function testDefaultReport(): void
     {
         $document = $this->getResult(null, ' --store');
         $uuid = $document->evaluate('string(./suite/@uuid)');
@@ -40,7 +40,7 @@ EOT
     /**
      * It should show a specific report.
      */
-    public function testSpecificReport()
+    public function testSpecificReport(): void
     {
         $document = $this->getResult(null, ' --store');
         $uuid = $document->evaluate('string(./suite/@uuid)');

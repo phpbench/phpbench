@@ -12,7 +12,7 @@
 
 class BenchmarkBench
 {
-    public function benchRandom()
+    public function benchRandom(): void
     {
         usleep(rand(0, 1000));
     }
@@ -22,7 +22,7 @@ class BenchmarkBench
      * @Revs(10000)
      * @Groups({"do_nothing"})
      */
-    public function benchDoNothing()
+    public function benchDoNothing(): void
     {
     }
 
@@ -31,7 +31,7 @@ class BenchmarkBench
      * @Groups({"parameterized"})
      * @Iterations(1)
      */
-    public function benchParameterized($params)
+    public function benchParameterized($params): void
     {
     }
 

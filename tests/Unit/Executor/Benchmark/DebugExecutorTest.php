@@ -35,7 +35,7 @@ class DebugExecutorTest extends TestCase
      *
      * @dataProvider provideConstantTimes
      */
-    public function testConstantTimes(array $times, array $spread, $nbCollections, $nbIterations, $expectedTimes)
+    public function testConstantTimes(array $times, array $spread, $nbCollections, $nbIterations, $expectedTimes): void
     {
         $actualTimes = [];
 

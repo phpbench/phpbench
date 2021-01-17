@@ -33,7 +33,7 @@ class BaselineManagerTest extends TestCase
      * It should throw an exception if a baseline callable name already exists.
      *
      */
-    public function testRegisterTwice()
+    public function testRegisterTwice(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Baseline callable "foo" has already been registered.');
@@ -47,7 +47,7 @@ class BaselineManagerTest extends TestCase
      * @\PhpBench\Benchmark\Metadata\Annotations\Subject()
      * @\PhpBench\Benchmark\Metadata\Annotations\Iterations(100)
      */
-    public function testCallable()
+    public function testCallable(): void
     {
         static::$callCount = 0;
         $this->manager->addBaselineCallable('foo', __CLASS__ . '::baselineExample');
@@ -59,7 +59,7 @@ class BaselineManagerTest extends TestCase
      * It should throw an exception if the callable is not callable (string).
      *
      */
-    public function testCallableNotCallable()
+    public function testCallableNotCallable(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Given baseline "foo" callable "does_not_exist" is not callable.');
@@ -71,7 +71,7 @@ class BaselineManagerTest extends TestCase
      * It should throw an exception if the callable is not callable (object).
      *
      */
-    public function testCallableNotCallableObject()
+    public function testCallableNotCallableObject(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Given baseline "foo" callable "object" is not callable.');
@@ -79,7 +79,7 @@ class BaselineManagerTest extends TestCase
         $this->manager->benchmark('foo', 100);
     }
 
-    public static function baselineExample($revs)
+    public static function baselineExample($revs): void
     {
         self::$callCount = $revs;
     }

@@ -32,7 +32,7 @@ class EnvGeneratorTest extends GeneratorTestCase
     /**
      * It should generate an environment report.
      */
-    public function testEnv()
+    public function testEnv(): void
     {
         $collection = TestUtil::createCollection([
             [
@@ -62,7 +62,7 @@ class EnvGeneratorTest extends GeneratorTestCase
     /**
      * It should generate an environment report for each suite.
      */
-    public function testEnvEachSuite()
+    public function testEnvEachSuite(): void
     {
         $collection = TestUtil::createCollection([
             [

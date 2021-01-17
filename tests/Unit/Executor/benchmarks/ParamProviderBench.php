@@ -27,7 +27,7 @@ function hello_world()
 
 class ParamProviderBench
 {
-    private function privateParamProvider()
+    private function privateParamProvider(): void
     {
     }
 
