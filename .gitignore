@@ -13,3 +13,4 @@
 /coverage
 /.phpbench
 /**/*.pyc
+/infection.log
