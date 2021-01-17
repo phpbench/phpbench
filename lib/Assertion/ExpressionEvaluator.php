@@ -75,10 +75,6 @@ class ExpressionEvaluator
             return $this->evaluatePropertyAccess($node);
         }
 
-        if ($node instanceof WithinRangeOf) {
-            return $this->evaluateWithinRangeOf($node);
-        }
-
         if ($node instanceof MemoryValue) {
             return $this->evaluateMemoryValue($node);
         }
@@ -166,26 +162,6 @@ class ExpressionEvaluator
     private function evaluatePropertyAccess(PropertyAccess $node)
     {
         return PropertyAccess::resolvePropertyAccess($node->segments(), $this->args);
-    }
-
-    private function evaluateWithinRangeOf(WithinRangeOf $node): bool
-    {
-        $value1 = $this->evaluate($node->value1());
-        $value2 = $this->evaluate($node->value2());
-
-        $range = $node->range();
-
-        if ($range instanceof PercentageValue) {
-            return FloatNumber::isLessThanOrEqual(
-                Statistics::percentageDifference($value1, $value2),
-                $range->percentage()->value()
-            );
-        }
-
-        return FloatNumber::isLessThanOrEqual(
-            abs($value2 - $value1),
-            $this->evaluate($range)
-        );
     }
 
     private function evaluateMemoryValue(MemoryValue $node): float
