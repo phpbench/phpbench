@@ -107,4 +107,14 @@ class VariantAssertionResults implements IteratorAggregate, \Countable
             return $result->isTolerated();
         }));
     }
+
+    /**
+     * @return self<AssertionResult>
+     */
+    public function warnings(): self
+    {
+        return new self($this->variant, array_filter($this->results, function (AssertionResult $result) {
+            return $result->isWarning();
+        }));
+    }
 }

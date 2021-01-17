@@ -34,6 +34,7 @@ class ExpressionParserTest extends ExpressionParserTestCase
      * @dataProvider provideValueWithUnit
      * @dataProvider provideExpression
      * @dataProvider provideTolerance
+     * @dataProvider provideThroughput
      *
      * @param array<string,mixed> $config
      */

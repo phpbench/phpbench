@@ -9,7 +9,7 @@ class ExpressionError extends RuntimeException
 {
     public static function forExpression(string $expression, string $message, ?Throwable $previous = null): self
     {
-        $out = [''];
+        $out = ['Expression error:', ''];
         $out[] = $expression;
         $out[] = str_repeat('-', strlen($expression));
         $out[] = $message;

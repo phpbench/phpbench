@@ -16,6 +16,7 @@ use Exception;
 use PhpBench\Assertion\Ast\Comparison;
 use PhpBench\Assertion\Exception\ExpressionError;
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
+use PhpBench\Assertion\Exception\PropertyAccessError;
 use PhpBench\Model\Variant;
 use RuntimeException;
 
@@ -52,18 +53,22 @@ class AssertionProcessor
 
         if (!$node instanceof Comparison) {
             throw new ExpressionEvaluatorError(sprintf(
-                'Assertion must be a comparison, got "%s"', get_class($node)
+                'Assertion must be a comparison, got "%s"',
+                get_class($node)
             ));
         }
 
-        $variantData = $this->buildVariantData($variant);
-        $args = [
-            'variant' => $variantData,
-            'baseline' => $variant->getBaseline() ? $this->buildVariantData($variant->getBaseline()) : $variantData,
-        ];
+        $args = (function (array $variantData) use ($variant) {
+            return [
+                'variant' => $variantData,
+                'baseline' => $variant->getBaseline() ? $this->buildVariantData($variant->getBaseline()) : $variantData,
+            ];
+        })($this->buildVariantData($variant));
 
         try {
             $result = $this->evaluator->createWithArgs($args)->evaluate($node);
+        } catch (PropertyAccessError $error) {
+            return AssertionResult::warning(ExpressionError::forExpression($assertion, $error->getMessage())->getMessage());
         } catch (Exception $error) {
             throw ExpressionError::forExpression($assertion, $error->getMessage());
         }

@@ -13,6 +13,7 @@
 namespace PhpBench\Model;
 
 use ArrayIterator;
+use DateTime;
 use IteratorAggregate;
 use PhpBench\Assertion\VariantAssertionResults;
 use PhpBench\Environment\Information;
@@ -183,6 +184,25 @@ class Suite implements IteratorAggregate
         }
 
         return $failures;
+    }
+
+    /**
+     * @return VariantAssertionResults[]
+     */
+    public function getWarnings()
+    {
+        $warnings = [];
+
+        /** @var Variant $variant */
+        foreach ($this->getVariants() as $variant) {
+            if (0 === $variant->getAssertionResults()->warnings()->count()) {
+                continue;
+            }
+
+            $warnings[] = $variant->getAssertionResults()->warnings();
+        }
+
+        return $warnings;
     }
 
     /**

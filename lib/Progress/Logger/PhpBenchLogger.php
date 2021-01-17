@@ -74,6 +74,7 @@ abstract class PhpBenchLogger extends NullLogger
 
         $this->listErrors($suite);
         $this->listFailures($suite);
+        $this->listWarnings($suite);
 
         $this->output->writeln(sprintf(
             '⅀T: %s μSD/r %s μRSD/r: %s%%',
@@ -207,5 +208,23 @@ abstract class PhpBenchLogger extends NullLogger
         }
 
         return $variant->getSubject()->getName();
+    }
+
+    private function listWarnings(Suite $suite): void
+    {
+        foreach ($suite->getWarnings() as $variantWarning) {
+            $this->output->writeln(sprintf(
+                '<warning>%s::%s</>',
+                $variantWarning->getVariant()->getSubject()->getBenchmark()->getClass(),
+                $variantWarning->getVariant()->getSubject()->getName(),
+            ));
+            $this->output->writeln('');
+
+            foreach ($variantWarning as $index => $warning) {
+
+                $this->output->writeln(implode("\n     ", explode("\n", sprintf('%s) %s', $index + 1, $warning->getMessage()))));
+            }
+            $this->output->write(PHP_EOL);
+        }
     }
 }

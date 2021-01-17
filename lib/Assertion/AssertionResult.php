@@ -16,6 +16,7 @@ class AssertionResult
 {
     public const TOLERATED = 'tolerated';
     public const FAIL = 'fail';
+    public const WARNING = 'warning';
     public const OK = 'ok';
 
     /**
@@ -44,6 +45,11 @@ class AssertionResult
         return new self(self::FAIL, $message);
     }
 
+    public static function warning(string $message = ''): self
+    {
+        return new self(self::WARNING, $message);
+    }
+
     public static function ok(): self
     {
         return new self(self::OK);
@@ -62,5 +68,10 @@ class AssertionResult
     public function getMessage(): string
     {
         return $this->message ?? '<no message>';
+    }
+
+    public function isWarning(): bool
+    {
+        return $this->type === self::WARNING;
     }
 }

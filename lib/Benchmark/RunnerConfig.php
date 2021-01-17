@@ -405,7 +405,7 @@ class RunnerConfig
         }
 
         throw new InvalidArgumentException(sprintf(
-            '"%s" must be greater than 0, got "%s"',
+            '"%s" must be greater than 0, got %s',
             $field, $value
         ));
     }
