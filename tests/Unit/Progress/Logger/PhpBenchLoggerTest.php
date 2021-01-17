@@ -77,6 +77,7 @@ abstract class PhpBenchLoggerTest extends LoggerTestCase
     {
         $this->setUpSummary();
         $this->suite->getFailures()->willReturn([]);
+        $this->suite->getWarnings()->willReturn([]);
         $this->suite->getErrorStacks()->willReturn([]);
         $this->logger->endSuite($this->suite->reveal());
         self::assertNotEmpty($this->output->fetch());
@@ -99,6 +100,7 @@ abstract class PhpBenchLoggerTest extends LoggerTestCase
 
         $this->setUpSummary();
         $this->suite->getFailures()->willReturn([]);
+        $this->suite->getWarnings()->willReturn([]);
         $this->suite->getErrorStacks()->willReturn([$errorStack]);
         $errorStack->getVariant()->willReturn($this->variant->reveal());
         $this->variant->getSubject()->willReturn($this->subject->reveal());
@@ -125,6 +127,7 @@ abstract class PhpBenchLoggerTest extends LoggerTestCase
 
         $this->setUpSummary();
         $this->suite->getFailures()->willReturn([$failures]);
+        $this->suite->getWarnings()->willReturn([]);
         $this->suite->getErrorStacks()->willReturn([]);
         $this->variant->getSubject()->willReturn($this->subject->reveal());
         $this->variant->getParameterSet()->willReturn(new ParameterSet('one',[]));

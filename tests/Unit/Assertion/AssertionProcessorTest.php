@@ -62,16 +62,16 @@ class AssertionProcessorTest extends IntegrationTestCase
         $this->createProcessor()->assert($variant, '12');
     }
 
-    public function testEvaluationError(): void
+    public function testWarningOnBadPropertyAccess(): void
     {
-        $this->expectException(ExpressionError::class);
         $variant = VariantBuilder::create(
             'one'
         )->iteration()->setResult(
             new TimeResult(10)
         )->end()->build();
 
-        $this->createProcessor()->assert($variant, 'mode(foo.bar) > 10');
+        $result = $this->createProcessor()->assert($variant, 'mode(foo.bar) > 10');
+        self::assertTrue($result->isWarning());
     }
 
     private function createProcessor(): AssertionProcessor
