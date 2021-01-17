@@ -45,7 +45,7 @@ class CartesianParameterIterator implements \Iterator
         return $this->getParameterSet();
     }
 
-    public function next()
+    public function next(): void
     {
         for ($index = 0; $index <= $this->max; $index++) {
             $this->sets[$index]->next();
@@ -72,7 +72,7 @@ class CartesianParameterIterator implements \Iterator
         return $this->key;
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         $this->index = 0;
 

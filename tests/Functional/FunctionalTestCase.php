@@ -47,7 +47,7 @@ class FunctionalTestCase extends TestCase
         return $path;
     }
 
-    protected function cleanWorkspace()
+    protected function cleanWorkspace(): void
     {
         $filesystem = new Filesystem();
         $path = $this->getWorkspacePath();
@@ -57,7 +57,7 @@ class FunctionalTestCase extends TestCase
         }
     }
 
-    protected function initWorkspace()
+    protected function initWorkspace(): void
     {
         $this->cleanWorkspace();
         $filesystem = new Filesystem();

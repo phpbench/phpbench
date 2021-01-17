@@ -70,7 +70,7 @@ class BlinkenLoggerTest extends LoggerTestCase
     /**
      * It should show the benchmark name and list all of the subjects.
      */
-    public function testShowAndList()
+    public function testShowAndList(): void
     {
         $this->logger->benchmarkStart($this->benchmark->reveal());
         $display = $this->output->fetch();
@@ -81,7 +81,7 @@ class BlinkenLoggerTest extends LoggerTestCase
     /**
      * It should initialize the status line.
      */
-    public function testIterationStart()
+    public function testIterationStart(): void
     {
         $this->logger->iterationStart($this->variant[0]);
         $display = $this->output->fetch();
@@ -94,7 +94,7 @@ class BlinkenLoggerTest extends LoggerTestCase
     /**
      * It should show information at the start of the variant.
      */
-    public function testIterationsStart()
+    public function testIterationsStart(): void
     {
         $this->logger->variantStart($this->variant);
         $display = $this->output->fetch();
@@ -111,7 +111,7 @@ class BlinkenLoggerTest extends LoggerTestCase
     /**
      * It should show an error if the iteration has an exception.
      */
-    public function testIterationException()
+    public function testIterationException(): void
     {
         $this->variant->setException(new \Exception('foo'));
         $this->logger->variantEnd($this->variant);

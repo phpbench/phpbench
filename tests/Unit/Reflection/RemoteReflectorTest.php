@@ -34,7 +34,7 @@ class RemoteReflectorTest extends TestCase
     /**
      * It should return information about a class in a different application.
      */
-    public function testReflector()
+    public function testReflector(): void
     {
         $fname = __DIR__ . '/reflector/ExampleClass.php';
         $classHierarchy = $this->reflector->reflect($fname);
@@ -58,7 +58,7 @@ class RemoteReflectorTest extends TestCase
     /**
      * It should return an empty class hierarchy if no classes are found in a file.
      */
-    public function testReflectorNoClass()
+    public function testReflectorNoClass(): void
     {
         $fname = __DIR__ . '/reflector/EmptyFile.php';
         $classHierarchy = $this->reflector->reflect($fname);
@@ -70,7 +70,7 @@ class RemoteReflectorTest extends TestCase
      * It should parse a file whose class declaration is on the 20th line.
      * See: https://github.com/phpbench/phpbench/issues/325.
      */
-    public function testReflector20LineFile()
+    public function testReflector20LineFile(): void
     {
         $fname = __DIR__ . '/reflector/ExampleClass2.php';
         $this->reflector->reflect($fname);
@@ -80,7 +80,7 @@ class RemoteReflectorTest extends TestCase
     /**
      * It should inherit metadata from parent classes.
      */
-    public function testHierarchy()
+    public function testHierarchy(): void
     {
         $classHierarchy = $this->reflector->reflect(__DIR__ . '/reflector/Class3.php');
         $this->assertInstanceOf(ReflectionHierarchy::class, $classHierarchy);
@@ -96,7 +96,7 @@ class RemoteReflectorTest extends TestCase
     /**
      * It should return the parameter sets from a benchmark class.
      */
-    public function testGetParameterSets()
+    public function testGetParameterSets(): void
     {
         $parameterSets = $this->reflector->getParameterSets(__DIR__ . '/reflector/ExampleClass.php', [
             'provideParamsOne',
@@ -129,7 +129,7 @@ class RemoteReflectorTest extends TestCase
     /**
      * It should not throw an exception if the parameter set contains non-scalar values.
      */
-    public function testGetParameterSetsNonScalar()
+    public function testGetParameterSetsNonScalar(): void
     {
         $this->reflector->getParameterSets(__DIR__ . '/reflector/ExampleClass.php', [
             'provideParamsNonScalar',
@@ -141,7 +141,7 @@ class RemoteReflectorTest extends TestCase
      * It should parse a class which has multiple class keywords and return the first
      * declared class.
      */
-    public function testMultipleClassKeywords()
+    public function testMultipleClassKeywords(): void
     {
         if (version_compare(phpversion(), '5.5', '<')) {
             $this->markTestSkipped();

@@ -38,7 +38,7 @@ class BenchmarkFinderTest extends TestCase
      * It should return a collection of all found bench benchmarks.
      * It should not instantiate abstract classes.
      */
-    public function testBuildCollection()
+    public function testBuildCollection(): void
     {
         $this->factory->getMetadataForFile(__DIR__ . '/findertest/FooCaseBench.php')->willReturn($this->benchmark1->reveal());
         $this->factory->getMetadataForFile(__DIR__ . '/findertest/FooCase2Bench.php')->willReturn($this->benchmark2->reveal());
@@ -54,7 +54,7 @@ class BenchmarkFinderTest extends TestCase
      * It should return a collection of all found bench benchmarks.
      * It should not instantiate abstract classes.
      */
-    public function testFromMultiplePaths()
+    public function testFromMultiplePaths(): void
     {
         $this->factory->getMetadataForFile(
             __DIR__ . '/findertest/FooCaseBench.php'
@@ -78,7 +78,7 @@ class BenchmarkFinderTest extends TestCase
      * It should run a specified benchmark.
      * It should not run other benchmarks.
      */
-    public function testSpecificBenchmark()
+    public function testSpecificBenchmark(): void
     {
         $this->factory->getMetadataForFile(__DIR__ . '/findertestnested/MyBench.php')->willReturn($this->benchmark1->reveal());
         $this->benchmark1->hasSubjects()->willReturn(true);
@@ -91,7 +91,7 @@ class BenchmarkFinderTest extends TestCase
     /**
      * It should skip benchmarks that have no subjects.
      */
-    public function testNoSubjects()
+    public function testNoSubjects(): void
     {
         $this->factory->getMetadataForFile(__DIR__ . '/findertestnested/MyBench.php')->willReturn($this->benchmark1->reveal());
         $this->benchmark1->hasSubjects()->willReturn(false);

@@ -36,7 +36,7 @@ class BenchmarkTest extends TestCase
     /**
      * It should get and set .. things.
      */
-    public function testGetSet()
+    public function testGetSet(): void
     {
         $this->assertSame($this->suite->reveal(), $this->benchmark->getSuite());
     }
@@ -44,7 +44,7 @@ class BenchmarkTest extends TestCase
     /**
      * It should create and add a subject from some metadata.
      */
-    public function testCreateSubjectFromMetadata()
+    public function testCreateSubjectFromMetadata(): void
     {
         $metadata = $this->prophesize(SubjectMetadata::class);
         $metadata->getName()->willReturn('hello');

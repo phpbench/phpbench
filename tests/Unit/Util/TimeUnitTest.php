@@ -25,7 +25,7 @@ class TimeUnitTest extends TestCase
      * @dataProvider provideAliases
      * @dataProvider provideConvert
      */
-    public function testConvert($time, $unit, $destUnit, $expectedTime)
+    public function testConvert($time, $unit, $destUnit, $expectedTime): void
     {
         $unit = new TimeUnit($unit, $destUnit);
         $result = $unit->toDestUnit($time);
@@ -132,7 +132,7 @@ class TimeUnitTest extends TestCase
      *
      * @dataProvider provideConvertThroughput
      */
-    public function testConvertThroughput($time, $unit, $destUnit, $expectedThroughput)
+    public function testConvertThroughput($time, $unit, $destUnit, $expectedThroughput): void
     {
         $unit = new TimeUnit($unit, $destUnit);
         $result = $unit->toDestUnit($time, null, TimeUnit::MODE_THROUGHPUT);
@@ -178,7 +178,7 @@ class TimeUnitTest extends TestCase
     /**
      * It should use the given values for getDestUnit and getMode.
      */
-    public function testGivenValuesModeAndDestUnit()
+    public function testGivenValuesModeAndDestUnit(): void
     {
         $unit = new TimeUnit(TimeUnit::SECONDS, TimeUnit::MINUTES, TimeUnit::MODE_TIME);
         $this->assertEquals(TimeUnit::SECONDS, $unit->getDestUnit(TimeUnit::SECONDS));
@@ -188,7 +188,7 @@ class TimeUnitTest extends TestCase
     /**
      * It should use the default values for mode and dest unit if null values are given.
      */
-    public function testDefaultValuesModeAndDestUnit()
+    public function testDefaultValuesModeAndDestUnit(): void
     {
         $unit = new TimeUnit(TimeUnit::SECONDS, TimeUnit::MINUTES, TimeUnit::MODE_THROUGHPUT);
         $this->assertEquals(TimeUnit::MINUTES, $unit->getDestUnit());
@@ -199,7 +199,7 @@ class TimeUnitTest extends TestCase
      * It should resolve given values to the overridden values in the case that
      * the values are overridden (dest unit and mode).
      */
-    public function testResolveDestUnitAndModeAndPrecision()
+    public function testResolveDestUnitAndModeAndPrecision(): void
     {
         $unit = new TimeUnit(TimeUnit::SECONDS, TimeUnit::MINUTES, TimeUnit::MODE_THROUGHPUT, 10);
         $this->assertEquals(TimeUnit::MILLISECONDS, $unit->resolveDestUnit(TimeUnit::MILLISECONDS));
@@ -218,7 +218,7 @@ class TimeUnitTest extends TestCase
     /**
      * It should return the destination suffix for default state.
      */
-    public function testDestSuffixDefaultState()
+    public function testDestSuffixDefaultState(): void
     {
         $unit = new TimeUnit(TimeUnit::SECONDS, TimeUnit::MINUTES, TimeUnit::MODE_THROUGHPUT);
         $this->assertEquals('ops/m', $unit->getDestSuffix());
@@ -230,7 +230,7 @@ class TimeUnitTest extends TestCase
     /**
      * It should return the destination suffix for a given state.
      */
-    public function testDestSuffixGivenState()
+    public function testDestSuffixGivenState(): void
     {
         $unit = new TimeUnit(
             TimeUnit::SECONDS, TimeUnit::MINUTES, TimeUnit::MODE_THROUGHPUT
@@ -250,7 +250,7 @@ class TimeUnitTest extends TestCase
     /**
      * It should format a time into a human readable string.
      */
-    public function testFormat()
+    public function testFormat(): void
     {
         $unit = new TimeUnit(
             TimeUnit::SECONDS, TimeUnit::MINUTES, TimeUnit::MODE_THROUGHPUT
@@ -277,7 +277,7 @@ class TimeUnitTest extends TestCase
     /**
      * It should allow the precision to be overriden.
      */
-    public function testOverridePrecision()
+    public function testOverridePrecision(): void
     {
         $unit = new TimeUnit(
             TimeUnit::SECONDS, TimeUnit::MINUTES, TimeUnit::MODE_THROUGHPUT, 7
@@ -291,14 +291,14 @@ class TimeUnitTest extends TestCase
         );
     }
 
-    public function testInvalidSourceFormat()
+    public function testInvalidSourceFormat(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid time unit "arf"');
         TimeUnit::convertTo(1000, 'arf', TimeUnit::MICROSECONDS);
     }
 
-    public function testInvalidDestFormat()
+    public function testInvalidDestFormat(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid time unit "arf"');

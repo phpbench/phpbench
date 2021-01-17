@@ -56,7 +56,7 @@ class XmlDriverTest extends TestCase
     /**
      * It should store a suite collection.
      */
-    public function testStore()
+    public function testStore(): void
     {
         $this->collection->getSuites()->willReturn([
             $this->suite->reveal(),
@@ -73,7 +73,7 @@ class XmlDriverTest extends TestCase
     /**
      * It should create a non existing directory when storing the collection.
      */
-    public function testStoreMkdir()
+    public function testStoreMkdir(): void
     {
         $this->collection->getSuites()->willReturn([
             $this->suite->reveal(),
@@ -92,7 +92,7 @@ class XmlDriverTest extends TestCase
      * It should throw an exception if it cannot locate a given run by UUID.
      *
      */
-    public function testFetch()
+    public function testFetch(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Cannot find run with UUID');
@@ -105,7 +105,7 @@ class XmlDriverTest extends TestCase
     /**
      * It should return true if ->has is called and the collection exists.
      */
-    public function testHas()
+    public function testHas(): void
     {
         $uuid = '1339f38b191b77e1185f9729eb25a2aa4e262b01';
         $this->filesystem->exists('/path/to/7e0/3/c/' . $uuid . '.xml')->willReturn(true);
@@ -116,7 +116,7 @@ class XmlDriverTest extends TestCase
     /**
      * It should return false for `has` given an invalid UUID.
      */
-    public function testHasInvalidUuid()
+    public function testHasInvalidUuid(): void
     {
         $uuid = '123';
         $this->assertFalse($this->driver->has($uuid));
@@ -125,7 +125,7 @@ class XmlDriverTest extends TestCase
     /**
      * It should return the history iterator.
      */
-    public function testGetHistoryIterator()
+    public function testGetHistoryIterator(): void
     {
         $history = $this->driver->history();
         $this->assertInstanceOf(HistoryIterator::class, $history);

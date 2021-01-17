@@ -16,28 +16,28 @@ class MicrotimeExecutorBench
 {
     private static $workspaceDir = __DIR__ . '/../../../Workspace';
 
-    public static function initDatabase()
+    public static function initDatabase(): void
     {
         file_put_contents(self::$workspaceDir . '/static_method.tmp', 'Static method method executed');
     }
 
-    public function beforeMethod()
+    public function beforeMethod(): void
     {
         file_put_contents(self::$workspaceDir . '/before_method.tmp', 'Before method executed');
     }
 
-    public function afterMethod()
+    public function afterMethod(): void
     {
         file_put_contents(self::$workspaceDir . '/after_method.tmp', 'After method executed');
     }
 
-    public function benchOutput()
+    public function benchOutput(): void
     {
         // PHPBench should not crash if the user outputs something in their benchmark.
         echo 'Hello World';
     }
 
-    public function doSomething()
+    public function doSomething(): void
     {
         static $count = 0;
         $data = [];
@@ -49,17 +49,17 @@ class MicrotimeExecutorBench
         file_put_contents(self::$workspaceDir . '/revs.tmp', $count);
     }
 
-    public function parameterized($params)
+    public function parameterized($params): void
     {
         file_put_contents(self::$workspaceDir . '/param.tmp', json_encode($params));
     }
 
-    public function parameterizedBefore($params)
+    public function parameterizedBefore($params): void
     {
         file_put_contents(self::$workspaceDir . '/parambefore.tmp', json_encode($params));
     }
 
-    public function parameterizedAfter($params)
+    public function parameterizedAfter($params): void
     {
         file_put_contents(self::$workspaceDir . '/paramafter.tmp', json_encode($params));
     }

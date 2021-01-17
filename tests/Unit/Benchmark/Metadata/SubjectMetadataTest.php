@@ -30,7 +30,7 @@ class SubjectMetadataTest extends TestCase
     /**
      * It should say if it is in a set of groups.
      */
-    public function testInGroups()
+    public function testInGroups(): void
     {
         $this->subject->setGroups(['one', 'two', 'three']);
         $result = $this->subject->inGroups(['five', 'two', 'six']);

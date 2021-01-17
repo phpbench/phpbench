@@ -16,7 +16,7 @@ use PhpBench\Model\Variant;
 
 abstract class AnsiLogger extends PhpBenchLogger
 {
-    protected function renderCollectionStatus(Variant $variant)
+    protected function renderCollectionStatus(Variant $variant): void
     {
         $this->output->write(PHP_EOL);
         $this->output->write("\x1B[0J"); // clear the line

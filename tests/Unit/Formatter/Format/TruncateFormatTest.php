@@ -29,7 +29,7 @@ class TruncateFormatTest extends TestCase
      *
      * @dataProvider provideTruncate
      */
-    public function testTruncate($expected, $value, $length, $position = 'left', $pad = '...')
+    public function testTruncate($expected, $value, $length, $position = 'left', $pad = '...'): void
     {
         $result = $this->format->format($value, [
             'length' => $length,

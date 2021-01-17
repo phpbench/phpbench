@@ -34,7 +34,7 @@ class IterationTest extends TestCase
     /**
      * It should have getters that return its values.
      */
-    public function testGetters()
+    public function testGetters(): void
     {
         $this->assertEquals($this->variant->reveal(), $this->iteration->getVariant());
     }
@@ -42,7 +42,7 @@ class IterationTest extends TestCase
     /**
      * It should return the revolution time.
      */
-    public function testGetRevTime()
+    public function testGetRevTime(): void
     {
         $iteration = new Iteration(1, $this->variant->reveal(), TestUtil::createResults(100));
         $this->variant->getRevolutions()->willReturn(100);

@@ -35,7 +35,7 @@ class UpdateCommandTest extends TestCase
     /**
      * It should update the PHAR.
      */
-    public function testUpdate()
+    public function testUpdate(): void
     {
         $input = new ArrayInput([], $this->command->getDefinition());
         $this->updater->update()->shouldBeCalled()->willReturn(true);
@@ -51,7 +51,7 @@ class UpdateCommandTest extends TestCase
     /**
      * It should show a message if no update is required.
      */
-    public function testUpdateNotRequired()
+    public function testUpdateNotRequired(): void
     {
         $input = new ArrayInput([], $this->command->getDefinition());
         $this->updater->update()->shouldBeCalled()->willReturn(false);
@@ -65,7 +65,7 @@ class UpdateCommandTest extends TestCase
     /**
      * It should rollback.
      */
-    public function testUpdateRollback()
+    public function testUpdateRollback(): void
     {
         $input = new ArrayInput([
             '--rollback' => true,
@@ -83,7 +83,7 @@ class UpdateCommandTest extends TestCase
      * It should show an error if it could not roll back.
      *
      */
-    public function testUpdateRollbackError()
+    public function testUpdateRollbackError(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Could not rollback');

@@ -24,7 +24,7 @@ class XmlDecoderTest extends XmlTestCase
      *
      * @dataProvider provideEncode
      */
-    public function testDecoder(array $params, $expected)
+    public function testDecoder(array $params, $expected): void
     {
         $collection = $this->getSuiteCollection($params);
         $dom = $this->encode($collection);
@@ -44,7 +44,7 @@ class XmlDecoderTest extends XmlTestCase
      * It should throw an exception when encountering a non-existing result class.
      *
      */
-    public function testDecodeUnknownResultClass()
+    public function testDecodeUnknownResultClass(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('XML file defines a non-existing result class "FooVendor\FooResult" - maybe you are missing an extension?');
@@ -65,7 +65,7 @@ EOT
      * It should throw an exception for a non-existing result key.
      *
      */
-    public function testDecodeUnknownResultKey()
+    public function testDecodeUnknownResultKey(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('No result class was provided with key "foobar" for attribute "foobar-foo"');
@@ -92,7 +92,7 @@ EOT
      * It should throw an exception if an attribute name has no - prefix.
      *
      */
-    public function testInvalidAttribute()
+    public function testInvalidAttribute(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Expected attribute name to have a result key prefix, got "foo"');

@@ -20,7 +20,7 @@ class SortTest extends TestCase
     /**
      * It should sort and preserve order for unchanging comparisons.
      */
-    public function testSort()
+    public function testSort(): void
     {
         $array = [
             ['col1' => 20, 'col2' => 20],

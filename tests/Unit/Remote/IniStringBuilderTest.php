@@ -30,7 +30,7 @@ class IniStringBuilderTest extends TestCase
     /**
      * @dataProvider provideBuild
      */
-    public function testBuild(array $example, string $expectedIniString)
+    public function testBuild(array $example, string $expectedIniString): void
     {
         $iniString = $this->builder->build($example);
         $this->assertEquals($expectedIniString, $iniString);

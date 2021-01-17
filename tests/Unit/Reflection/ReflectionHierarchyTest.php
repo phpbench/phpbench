@@ -35,7 +35,7 @@ class ReflectionHierarchyTest extends TestCase
      * It is iterable.
      * It should get the top reflection.
      */
-    public function testAddReflectionsAndIterate()
+    public function testAddReflectionsAndIterate(): void
     {
         $this->hierarchy->addReflectionClass($this->reflection1);
         $this->hierarchy->addReflectionClass($this->reflection2);
@@ -54,7 +54,7 @@ class ReflectionHierarchyTest extends TestCase
      * It should throw an exception if there are no classes and the top is requested.
      *
      */
-    public function testGetTopNoClasses()
+    public function testGetTopNoClasses(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Cannot get top');
@@ -64,7 +64,7 @@ class ReflectionHierarchyTest extends TestCase
     /**
      * It can determine if a method exists.
      */
-    public function testHasMethod()
+    public function testHasMethod(): void
     {
         $this->reflection1->methods['foobar'] = true;
         $this->hierarchy->addReflectionClass($this->reflection1);
@@ -80,7 +80,7 @@ class ReflectionHierarchyTest extends TestCase
     /**
      * It can determine if a method is static.
      */
-    public function testHasStaticMethod()
+    public function testHasStaticMethod(): void
     {
         $this->reflection1->methods['foobar'] = new ReflectionMethod();
         $this->reflection1->methods['foobar']->isStatic = true;

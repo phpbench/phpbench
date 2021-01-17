@@ -50,7 +50,7 @@ class ReportOutputTest extends SystemTestCase
     /**
      * @dataProvider provideOutputDelimited
      */
-    public function testOutputDelimited($reportName)
+    public function testOutputDelimited($reportName): void
     {
         $process = $this->phpbench(
             'report --file=' . $this->fname . ' --report=default --output=\'{"extends": "' . $reportName . '", "file": "delimited", "header": false}\''

@@ -21,7 +21,7 @@ class DistributionTest extends TestCase
     /**
      * It should return stats.
      */
-    public function testStats()
+    public function testStats(): void
     {
         $distribution = new Distribution([
             -50,
@@ -42,7 +42,7 @@ class DistributionTest extends TestCase
     /**
      * It should be iterable.
      */
-    public function testIterator()
+    public function testIterator(): void
     {
         $distribution = new Distribution([
             10,
@@ -66,7 +66,7 @@ class DistributionTest extends TestCase
      * It should throw an exception if zero samples are given.
      *
      */
-    public function testDistributionZero()
+    public function testDistributionZero(): void
     {
         $this->expectException(LogicException::class);
         $this->expectExceptionMessage('zero');
@@ -76,7 +76,7 @@ class DistributionTest extends TestCase
     /**
      * It should allow "distributions" of 1 sample.
      */
-    public function testDistributionOne()
+    public function testDistributionOne(): void
     {
         $distribution = new Distribution([10]);
         iterator_to_array($distribution);
@@ -86,7 +86,7 @@ class DistributionTest extends TestCase
     /**
      * It should allow distributions with 0 values.
      */
-    public function testDistributionZeroValues()
+    public function testDistributionZeroValues(): void
     {
         $distribution = new Distribution([0, 0]);
         iterator_to_array($distribution);
@@ -96,7 +96,7 @@ class DistributionTest extends TestCase
     /**
      * It should return all the stats.
      */
-    public function testReturnStats()
+    public function testReturnStats(): void
     {
         $distribution = new Distribution([10, 20]);
         $stats = $distribution->getStats();
@@ -114,7 +114,7 @@ class DistributionTest extends TestCase
      * It should throw an exception if a non-recognized pre-computed statistic is passed.
      *
      */
-    public function testNonRecognizedPreComputed()
+    public function testNonRecognizedPreComputed(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Unknown pre-computed stat(s) encountered: "bar_stat", "boo_stat"');

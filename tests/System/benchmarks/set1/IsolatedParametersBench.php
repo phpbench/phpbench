@@ -17,7 +17,7 @@ class IsolatedParameterBench
      * @Iterations(5)
      * @ParamProviders({"provideParams"})
      */
-    public function benchIterationIsolation()
+    public function benchIterationIsolation(): void
     {
     }
 

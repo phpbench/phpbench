@@ -23,7 +23,7 @@ class AnnotationReaderTest extends TestCase
     /**
      * It should read class annotations.
      */
-    public function testLoadClassMetadata()
+    public function testLoadClassMetadata(): void
     {
         $reflection = new ReflectionClass();
         $reflection->class = 'Test';
@@ -41,7 +41,7 @@ EOT;
     /**
      * It should read method annotations.
      */
-    public function testLoadMethodMetadata()
+    public function testLoadMethodMetadata(): void
     {
         $reflection = new ReflectionClass();
         $reflection->class = 'Test';
@@ -61,7 +61,7 @@ EOT;
     /**
      * It should use imported annotations when configured to do so.
      */
-    public function testImportedUse()
+    public function testImportedUse(): void
     {
         $reflection = new ReflectionClass();
         $reflection->class = 'Test';

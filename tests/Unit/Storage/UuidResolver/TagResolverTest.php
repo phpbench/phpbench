@@ -71,7 +71,7 @@ class TagResolverTest extends TestCase
     /**
      * @dataProvider provideTags
      */
-    public function testReturnsUuidForLatestTag(string $tag)
+    public function testReturnsUuidForLatestTag(string $tag): void
     {
         $this->historyEntry->getTag()->willReturn(new Tag($tag));
         $this->historyEntry->getRunId()->willReturn(1234);

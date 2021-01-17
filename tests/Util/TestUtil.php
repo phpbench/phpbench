@@ -28,7 +28,7 @@ use RuntimeException;
  */
 class TestUtil
 {
-    public static function configureSubjectMetadata(ObjectProphecy $subject, array $options = [])
+    public static function configureSubjectMetadata(ObjectProphecy $subject, array $options = []): void
     {
         $options = array_merge([
             'iterations' => 1,
@@ -76,7 +76,7 @@ class TestUtil
         return $variant;
     }
 
-    public static function configureBenchmarkMetadata(ObjectProphecy $benchmark, array $options = [])
+    public static function configureBenchmarkMetadata(ObjectProphecy $benchmark, array $options = []): void
     {
         $options = array_merge([
             'class' => 'Benchmark',

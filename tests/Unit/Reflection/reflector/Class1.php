@@ -17,7 +17,7 @@ abstract class Class1
     /**
      * one.
      */
-    public function one()
+    public function one(): void
     {
     }
 }

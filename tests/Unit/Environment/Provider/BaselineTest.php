@@ -34,7 +34,7 @@ class BaselineTest extends TestCase
     /**
      * Provider is always applicable.
      */
-    public function testIsApplicable()
+    public function testIsApplicable(): void
     {
         $this->assertTrue($this->provider->isApplicable());
     }
@@ -42,7 +42,7 @@ class BaselineTest extends TestCase
     /**
      * It should get the baseline measurements from the baseline manager.
      */
-    public function testBaselineMeasurements()
+    public function testBaselineMeasurements(): void
     {
         $this->manager->benchmark('one', 1000)->willReturn(10);
         $info = $this->provider->getInformation();

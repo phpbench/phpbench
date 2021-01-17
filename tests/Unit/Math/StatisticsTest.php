@@ -22,7 +22,7 @@ class StatisticsTest extends TestCase
     /**
      * It should return the standard deviation.
      */
-    public function testStdev()
+    public function testStdev(): void
     {
         $this->assertEquals(1.4142, round(Statistics::stdev([1, 2, 3, 4, 5]), 4));
         $this->assertEquals(17.2116, round(Statistics::stdev([13, 23, 12, 44, 55]), 4));
@@ -34,7 +34,7 @@ class StatisticsTest extends TestCase
     /**
      * It should return the average.
      */
-    public function testMean()
+    public function testMean(): void
     {
         $expected = 33 / 7;
         $this->assertEquals($expected, Statistics::mean([2, 2, 2, 2, 2, 20, 3]));
@@ -45,7 +45,7 @@ class StatisticsTest extends TestCase
      *
      * @dataProvider provideLinearSpace
      */
-    public function testLinearSpace($min, $max, $steps, $endpoint, $expected)
+    public function testLinearSpace($min, $max, $steps, $endpoint, $expected): void
     {
         $result = Statistics::linspace($min, $max, $steps, $endpoint);
         $this->assertEquals($expected, $result);
@@ -82,7 +82,7 @@ class StatisticsTest extends TestCase
      * It should throw an exception if the linspace min and max are the same number.
      *
      */
-    public function testLinspaceMinMaxSame()
+    public function testLinspaceMinMaxSame(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Min and max cannot be the same number: 4');
@@ -92,7 +92,7 @@ class StatisticsTest extends TestCase
     /**
      * @dataProvider provideKdeMode
      */
-    public function testKdeMode($population, $space, $bandwidth, $expected)
+    public function testKdeMode($population, $space, $bandwidth, $expected): void
     {
         $result = Statistics::kdeMode($population, $space, $bandwidth);
         $this->assertEquals($expected, round($result, 2));
@@ -152,7 +152,7 @@ class StatisticsTest extends TestCase
      *
      * @dataProvider provideHistogram
      */
-    public function testHistogram(array $data, $steps, $lower, $upper, array $expected)
+    public function testHistogram(array $data, $steps, $lower, $upper, array $expected): void
     {
         $result = Statistics::histogram($data, $steps, $lower, $upper);
         $this->assertEquals($expected, $result);

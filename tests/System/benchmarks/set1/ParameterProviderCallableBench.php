@@ -26,7 +26,7 @@ class ParameterProviderCallableBench
      * @Iterations(5)
      * @ParamProviders({"param_provider"})
      */
-    public function benchParamProviderCallable($params)
+    public function benchParamProviderCallable($params): void
     {
     }
 }

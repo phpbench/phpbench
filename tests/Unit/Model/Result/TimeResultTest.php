@@ -17,7 +17,7 @@ use PhpBench\Tests\TestCase;
 
 class TimeResultTest extends TestCase
 {
-    public function testGetters()
+    public function testGetters(): void
     {
         $result = new TimeResult(10);
         $this->assertEquals(10, $result->getNet());
@@ -26,7 +26,7 @@ class TimeResultTest extends TestCase
     /**
      * It should allow time "0" (because windows mostly).
      */
-    public function testTimeZero()
+    public function testTimeZero(): void
     {
         $result = new TimeResult(0);
         $this->assertEquals(0, $result->getNet());
@@ -36,7 +36,7 @@ class TimeResultTest extends TestCase
      * It should throw an exception if the time is less than 0.
      *
      */
-    public function testLessThanZero()
+    public function testLessThanZero(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Time cannot be less than 0, got -10');
@@ -47,7 +47,7 @@ class TimeResultTest extends TestCase
      * It should throw an exception if the revolutions is zero0 or less than zero.
      *
      */
-    public function testRevsAreZero()
+    public function testRevsAreZero(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Revolutions must be more than 0, got 0');
@@ -58,7 +58,7 @@ class TimeResultTest extends TestCase
     /**
      * It should return the rev time.
      */
-    public function testGetRevTime()
+    public function testGetRevTime(): void
     {
         $result = new TimeResult(10);
         $revTime = $result->getRevTime(2);

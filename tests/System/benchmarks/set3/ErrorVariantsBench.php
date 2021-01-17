@@ -23,7 +23,7 @@ class ErrorVariantsBench
     /**
      * @ParamProviders({"provideFoos"})
      */
-    public function benchException()
+    public function benchException(): void
     {
         throw new \Exception('Foobar');
     }

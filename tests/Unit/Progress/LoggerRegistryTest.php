@@ -30,7 +30,7 @@ class LoggerRegistryTest extends TestCase
     /**
      * It should register progress loggers.
      */
-    public function testRegisterProgressLogger()
+    public function testRegisterProgressLogger(): void
     {
         $this->registry->addProgressLogger('foobar', $this->progressLogger->reveal());
         $logger = $this->registry->getProgressLogger('foobar');
@@ -41,7 +41,7 @@ class LoggerRegistryTest extends TestCase
      * It should throw an exception when a non-existing logger is requested.
      *
      */
-    public function testUnknownLogger()
+    public function testUnknownLogger(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('No progress logger with name "barfoo" has been registered, known progress loggers: "foobar"');

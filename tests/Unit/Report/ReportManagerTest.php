@@ -56,7 +56,7 @@ class ReportManagerTest extends TestCase
     /**
      * It should render a report.
      */
-    public function testRender()
+    public function testRender(): void
     {
         $config = new Config('test', [
             'generator' => 'service',
@@ -89,7 +89,7 @@ class ReportManagerTest extends TestCase
     /**
      * Output aware generators should hvae the output set on them.
      */
-    public function testRenderOutputAware()
+    public function testRenderOutputAware(): void
     {
         $config = new Config('test', [
             'generator' => 'service',

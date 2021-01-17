@@ -38,7 +38,7 @@ class VerboseLoggerTest extends PhpBenchLoggerTest
     /**
      * It should output at the end of an iteration set.
      */
-    public function testIterationsEnd()
+    public function testIterationsEnd(): void
     {
         $this->variant->hasErrorStack()->willReturn(false);
         $this->variant->getRejectCount()->willReturn(0);

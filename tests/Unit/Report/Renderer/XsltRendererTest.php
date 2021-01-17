@@ -43,7 +43,7 @@ class XsltRendererTest extends AbstractRendererCase
         $this->clean();
     }
 
-    public function clean()
+    public function clean(): void
     {
         foreach ([
             $this->defaultReport,
@@ -66,7 +66,7 @@ class XsltRendererTest extends AbstractRendererCase
     /**
      * It should render an XSLT report to a file.
      */
-    public function testRender()
+    public function testRender(): void
     {
         $reports = $this->getReportsDocument();
         $this->renderReport($reports, [
@@ -78,7 +78,7 @@ class XsltRendererTest extends AbstractRendererCase
     /**
      * It should renderer the report using a specific template.
      */
-    public function testRenderTemplate()
+    public function testRenderTemplate(): void
     {
         $reports = $this->getReportsDocument();
         $this->renderReport($reports, [
@@ -92,7 +92,7 @@ class XsltRendererTest extends AbstractRendererCase
     /**
      * It should echo to STDOUT if no filename is provided.
      */
-    public function testRenderTemplateEmptyFilename()
+    public function testRenderTemplateEmptyFilename(): void
     {
         $reports = $this->getReportsDocument();
         $this->renderReport($reports, [
@@ -106,7 +106,7 @@ class XsltRendererTest extends AbstractRendererCase
     /**
      * It should replace the %report_name% token with the report name,.
      */
-    public function testRenderTemplateReportNameToken()
+    public function testRenderTemplateReportNameToken(): void
     {
         $reports = $this->getReportsDocument();
         $this->renderReport($reports, [
@@ -120,7 +120,7 @@ class XsltRendererTest extends AbstractRendererCase
     /**
      * It should output to a specific file.
      */
-    public function testOutputSpecific()
+    public function testOutputSpecific(): void
     {
         $reports = $this->getReportsDocument();
         $this->renderReport($reports, [
@@ -133,7 +133,7 @@ class XsltRendererTest extends AbstractRendererCase
      * It should throw an exception if the XSLT template does not exist.
      *
      */
-    public function testRenderNotExistingTemplate()
+    public function testRenderNotExistingTemplate(): void
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('does not exist');

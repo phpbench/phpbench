@@ -15,7 +15,7 @@ class IsolatedBench
     /**
      * @Iterations(5)
      */
-    public function benchIterationIsolation()
+    public function benchIterationIsolation(): void
     {
         $handle = fopen(sys_get_temp_dir() . '/phpbench_isolationtest', 'a');
         fwrite($handle, getmypid() . PHP_EOL);
@@ -25,7 +25,7 @@ class IsolatedBench
     /**
      * @Iterations(5)
      */
-    public function benchIterationsIsolation()
+    public function benchIterationsIsolation(): void
     {
         $handle = fopen(sys_get_temp_dir() . '/phpbench_isolationtest', 'a');
         fwrite($handle, getmypid() . PHP_EOL);

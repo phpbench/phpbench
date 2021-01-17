@@ -41,7 +41,7 @@ class ProfileCommand extends Command
         $this->outputDirHandler = $outputDirHandler;
     }
 
-    public function configure()
+    public function configure(): void
     {
         $this->setName('xdebug:profile');
         $this->setDescription(<<<'EOT'
@@ -75,7 +75,7 @@ EOT
             ->withExecutor([
                 'executor' => 'xdebug_profile',
                 'output_dir' => $outputDir,
-                'callback' => function ($iteration) use ($outputDir, $guiBin, &$generatedFiles) {
+                'callback' => function ($iteration) use ($outputDir, $guiBin, &$generatedFiles): void {
                     $generatedFiles[] = $generatedFile = $outputDir . DIRECTORY_SEPARATOR . XDebugUtil::filenameFromContext($iteration, '.cachegrind');
 
                     if ($guiBin) {

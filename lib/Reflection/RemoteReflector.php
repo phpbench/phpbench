@@ -92,7 +92,7 @@ class RemoteReflector implements ReflectorInterface
 
         // validate parameters
         $parameters = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($parameterSets));
-        iterator_apply($parameters, function (\Iterator $iterator) {
+        iterator_apply($parameters, function (\Iterator $iterator): void {
             $parameter = $iterator->current();
 
             if (!is_scalar($parameter) && isset($parameter)) {

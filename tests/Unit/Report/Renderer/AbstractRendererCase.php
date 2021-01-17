@@ -21,7 +21,7 @@ abstract class AbstractRendererCase extends TestCase
 {
     abstract protected function getRenderer();
 
-    protected function renderReport($reports, $config)
+    protected function renderReport($reports, $config): void
     {
         $renderer = $this->getRenderer();
         $options = new OptionsResolver();

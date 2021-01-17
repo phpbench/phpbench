@@ -50,7 +50,7 @@ class FooCaseBench
         ];
     }
 
-    public function beforeSelectSql(BenchIteration $iteration)
+    public function beforeSelectSql(BenchIteration $iteration): void
     {
     }
 
@@ -60,7 +60,7 @@ class FooCaseBench
      * @ParamProvider({"provideColumns"})
      * @Iterations(3)
      */
-    public function benchSelectSql(BenchIteration $iteration)
+    public function benchSelectSql(BenchIteration $iteration): void
     {
     }
 
@@ -70,7 +70,7 @@ class FooCaseBench
      * @ParamProvider({"provideColumns"})
      * @Iterations(3)
      */
-    public function benchTraverseSomething(BenchIteration $iteration)
+    public function benchTraverseSomething(BenchIteration $iteration): void
     {
     }
 }

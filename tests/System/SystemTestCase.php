@@ -65,7 +65,7 @@ class SystemTestCase extends IntegrationTestCase
         return $process;
     }
 
-    protected function assertExitCode($expected, Process $process)
+    protected function assertExitCode($expected, Process $process): void
     {
         $exitCode = $process->getExitCode();
 
@@ -83,12 +83,12 @@ class SystemTestCase extends IntegrationTestCase
         $this->assertEquals($expected, $exitCode);
     }
 
-    protected function assertXPathCount($count, $xmlString, $query)
+    protected function assertXPathCount($count, $xmlString, $query): void
     {
         $this->assertXPathExpression($count, $xmlString, sprintf('count(%s)', $query));
     }
 
-    protected function assertXPathExpression($expected, $xmlString, $expression)
+    protected function assertXPathExpression($expected, $xmlString, $expression): void
     {
         $dom = new \DOMDocument();
         $result = @$dom->loadXML($xmlString);

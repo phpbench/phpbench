@@ -21,7 +21,7 @@ class CartesianIteratorTest extends TestCase
      *
      * @dataProvider provideIterate
      */
-    public function testIterate($parameterSets, $expected)
+    public function testIterate($parameterSets, $expected): void
     {
         $iterator = new CartesianParameterIterator($parameterSets);
         $result = [];

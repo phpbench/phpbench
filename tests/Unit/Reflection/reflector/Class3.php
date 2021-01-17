@@ -17,14 +17,14 @@ class Class3 extends Class2
     /**
      * foobar.
      */
-    public function two()
+    public function two(): void
     {
     }
 
     /**
      * three.
      */
-    public function three()
+    public function three(): void
     {
     }
 }

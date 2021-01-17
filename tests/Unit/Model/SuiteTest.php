@@ -40,7 +40,7 @@ class SuiteTest extends TestCase
     /**
      * It should add a benchmark.
      */
-    public function testCreateBenchmark()
+    public function testCreateBenchmark(): void
     {
         $benchmark = $this->createSuite([])->createBenchmark('FooBench');
         $this->assertInstanceOf('PhpBench\Model\Benchmark', $benchmark);
@@ -51,7 +51,7 @@ class SuiteTest extends TestCase
      * It should return all of the subjects
      * It should return all of the variants.
      */
-    public function testGetIterations()
+    public function testGetIterations(): void
     {
         $this->bench1->getSubjects()->willReturn([$this->subject1->reveal()]);
         $this->subject1->getVariants()->willReturn([$this->variant1->reveal()]);
@@ -75,7 +75,7 @@ class SuiteTest extends TestCase
     /**
      * It should return all of the error stacks.
      */
-    public function testGetErrorStacks()
+    public function testGetErrorStacks(): void
     {
         $errorStack = $this->prophesize(ErrorStack::class);
         $this->bench1->getSubjects()->willReturn([$this->subject1->reveal()]);
@@ -97,7 +97,7 @@ class SuiteTest extends TestCase
     /**
      * It should return the summary.
      */
-    public function testGetSummary()
+    public function testGetSummary(): void
     {
         $errorStack = $this->prophesize(ErrorStack::class);
         $this->bench1->getSubjects()->willReturn([$this->subject1->reveal()]);

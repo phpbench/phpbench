@@ -52,7 +52,7 @@ class HistogramLoggerTest extends LoggerTestCase
     /**
      * It should show the benchmark name and list all of the subjects.
      */
-    public function testBenchmarkStart()
+    public function testBenchmarkStart(): void
     {
         $this->logger->benchmarkStart($this->benchmark->reveal());
         $display = $this->output->fetch();
@@ -63,7 +63,7 @@ class HistogramLoggerTest extends LoggerTestCase
     /**
      * Test iteration start.
      */
-    public function testIterationStart()
+    public function testIterationStart(): void
     {
         $this->iteration->getIndex()->willReturn(1);
         $this->iteration->getVariant()->willReturn($this->variant);
@@ -75,7 +75,7 @@ class HistogramLoggerTest extends LoggerTestCase
     /**
      * It should show information at the start of the variant.
      */
-    public function testIterationsStart()
+    public function testIterationsStart(): void
     {
         $this->logger->variantStart($this->variant);
         $display = $this->output->fetch();
@@ -96,7 +96,7 @@ class HistogramLoggerTest extends LoggerTestCase
     /**
      * It should show an error if the iteration has an exception.
      */
-    public function testIterationException()
+    public function testIterationException(): void
     {
         $this->variant->setException(new \Exception('foo'));
         $this->logger->variantEnd($this->variant);
@@ -107,7 +107,7 @@ class HistogramLoggerTest extends LoggerTestCase
      * It should show the histogram and statistics when an iteration is
      * completed (and there were no rejections).
      */
-    public function testIterationEnd()
+    public function testIterationEnd(): void
     {
         foreach ($this->variant as $iteration) {
             foreach (TestUtil::createResults(10, 10) as $result) {

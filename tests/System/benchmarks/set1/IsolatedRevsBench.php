@@ -16,7 +16,7 @@ class IsolatedRevsBench
      * @Revs(10)
      * @Revs(100)
      */
-    public function benchIterationIsolation()
+    public function benchIterationIsolation(): void
     {
         $handle = fopen(sys_get_temp_dir() . '/phpbench_isolationtest', 'a');
         fwrite($handle, getmypid() . PHP_EOL);

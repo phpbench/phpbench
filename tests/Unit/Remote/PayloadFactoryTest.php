@@ -28,7 +28,7 @@ class PayloadFactoryTest extends TestCase
     /**
      * It should create a new payload.
      */
-    public function testCreate()
+    public function testCreate(): void
     {
         $payload = $this->factory->create('template', ['token' => 'one'], '/path/to/php');
         $this->assertInstanceOf(Payload::class, $payload);

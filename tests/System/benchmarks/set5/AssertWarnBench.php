@@ -17,7 +17,7 @@ namespace PhpBench\Tests\System\benchmarks\set5;
  */
 class AssertWarnBench
 {
-    public function benchFail()
+    public function benchFail(): void
     {
     }
 }

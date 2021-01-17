@@ -43,7 +43,7 @@ class RegistryTest extends TestCase
      * It should retrieve a service
      * It should retrieve a service from the container only once.
      */
-    public function testRegisterRetrieveService()
+    public function testRegisterRetrieveService(): void
     {
         $this->container->get('foo')
             ->willReturn(
@@ -59,7 +59,7 @@ class RegistryTest extends TestCase
     /**
      * It should set and retrieve services.
      */
-    public function testSetAndRetrieve()
+    public function testSetAndRetrieve(): void
     {
         $this->registry->setService('one', $this->service1->reveal());
         $service = $this->registry->getService('one');
@@ -72,7 +72,7 @@ class RegistryTest extends TestCase
     /**
      * It should return a default service if no argument is given to get().
      */
-    public function testDefaultGet()
+    public function testDefaultGet(): void
     {
         $registry = new Registry(
             'test',
@@ -88,7 +88,7 @@ class RegistryTest extends TestCase
      * It should throw an exception if no argument given to get() and no default is defined.
      *
      */
-    public function testDefaultGetNoDefault()
+    public function testDefaultGetNoDefault(): void
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('You must configure a default test service, registered test services: "foo"');
@@ -105,7 +105,7 @@ class RegistryTest extends TestCase
      * It should throw an exception if a service does not exist.
      *
      */
-    public function testExceptionServivceNotExist()
+    public function testExceptionServivceNotExist(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('test service "bar" does not exist. Registered test services: "one"');
@@ -117,7 +117,7 @@ class RegistryTest extends TestCase
      * It should throw an exception if setting an already set service.
      *
      */
-    public function testRegisterAlreadyRegistered()
+    public function testRegisterAlreadyRegistered(): void
     {
         $this->expectExceptionMessage('test service "one" already exists');
         $this->expectException(InvalidArgumentException::class);

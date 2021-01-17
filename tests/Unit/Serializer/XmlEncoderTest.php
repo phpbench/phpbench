@@ -40,7 +40,7 @@ class XmlEncoderTest extends XmlTestCase
      *
      * @dataProvider provideEncode
      */
-    public function testEncode(array $params, $expected)
+    public function testEncode(array $params, $expected): void
     {
         $expected = str_replace('PHPBENCH_VERSION', PhpBench::VERSION, $expected);
         $collection = $this->getSuiteCollection($params);

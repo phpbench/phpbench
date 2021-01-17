@@ -35,7 +35,7 @@ class CompositeGeneratorTest extends TestCase
     /**
      * It should generate a composite report.
      */
-    public function testGenerateComposite()
+    public function testGenerateComposite(): void
     {
         $config = ['reports' => ['one', 'two']];
 

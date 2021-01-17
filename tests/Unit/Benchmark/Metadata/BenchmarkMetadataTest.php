@@ -29,7 +29,7 @@ class BenchmarkMetadataTest extends TestCase
     /**
      * It should filter subjects based on a given filter.
      */
-    public function testFilter()
+    public function testFilter(): void
     {
         $this->assertCount(2, $this->metadata->getSubjects());
         $this->metadata->filterSubjectNames(['subjectOne']);
@@ -41,7 +41,7 @@ class BenchmarkMetadataTest extends TestCase
     /**
      * It should filter on the class name.
      */
-    public function testFilterClassName()
+    public function testFilterClassName(): void
     {
         $this->metadata->filterSubjectNames(['Class::subjectOne*']);
         $this->assertCount(1, $this->metadata->getSubjects());
@@ -50,7 +50,7 @@ class BenchmarkMetadataTest extends TestCase
     /**
      * It should filter using a regex.
      */
-    public function testFilterRegex()
+    public function testFilterRegex(): void
     {
         $this->metadata->filterSubjectNames(['.*One*']);
         $this->assertCount(1, $this->metadata->getSubjects());
@@ -61,7 +61,7 @@ class BenchmarkMetadataTest extends TestCase
      *
      * @depends testFilter
      */
-    public function testHasSubjects()
+    public function testHasSubjects(): void
     {
         $this->assertTrue($this->metadata->hasSubjects());
         $this->metadata->filterSubjectNames(['subjectSeventySeven']);

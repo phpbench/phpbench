@@ -14,7 +14,7 @@ namespace PhpBench\Tests\System\benchmarks\set4;
 
 class NothingBench
 {
-    public function benchNothing()
+    public function benchNothing(): void
     {
     }
 }

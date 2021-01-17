@@ -29,7 +29,7 @@ class ClassLoaderTest extends TestCase
     /**
      * It should load a class fiel.
      */
-    public function testLoadClassFile()
+    public function testLoadClassFile(): void
     {
         $classes = $this->loader->load(__DIR__ . '/class/valid.json');
         $this->assertEquals([
@@ -46,7 +46,7 @@ class ClassLoaderTest extends TestCase
      * It should throw an exception if invalid json is given.
      *
      */
-    public function testInvalidJson()
+    public function testInvalidJson(): void
     {
         $this->expectException(ParsingException::class);
         $this->loader->load(__DIR__ . '/class/invalid.json');
@@ -56,7 +56,7 @@ class ClassLoaderTest extends TestCase
      * It should throw an exception if the file does not exist.
      *
      */
-    public function testNotExist()
+    public function testNotExist(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('does not exist.');

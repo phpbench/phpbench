@@ -34,7 +34,7 @@ class PayloadTest extends TestCase
      * It should generate a script from a given template, launch it
      * and return the results.
      */
-    public function testLaunch()
+    public function testLaunch(): void
     {
         $payload = new Payload(
             __DIR__ . '/template/foo.template',
@@ -54,7 +54,7 @@ class PayloadTest extends TestCase
      * It should throw an exception if the script is invalid.
      *
      */
-    public function testInvalidScript()
+    public function testInvalidScript(): void
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('syntax error');
@@ -68,7 +68,7 @@ class PayloadTest extends TestCase
     /**
      * It should customize the PHP binary path.
      */
-    public function testBinaryPath()
+    public function testBinaryPath(): void
     {
         $payload = $this->validPayload();
         $payload->setPhpPath('/foo/bar');
@@ -83,7 +83,7 @@ class PayloadTest extends TestCase
     /**
      * It should pass PHP ini settings to the PHP executable.
      */
-    public function testPhpConfig()
+    public function testPhpConfig(): void
     {
         $payload = $this->validPayload();
 
@@ -107,7 +107,7 @@ class PayloadTest extends TestCase
     /**
      * It should allow the PHP executable to be wrapped with a different executable.
      */
-    public function testWrap()
+    public function testWrap(): void
     {
         $payload = $this->validPayload();
         $payload->setWrapper('bockfire');
@@ -124,7 +124,7 @@ class PayloadTest extends TestCase
      * It should throw an execption if a template is not found.
      *
      */
-    public function testTemplateNotFound()
+    public function testTemplateNotFound(): void
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Could not find script template');

@@ -40,7 +40,7 @@ class VariantTest extends TestCase
      * It should be iterable
      * It sohuld be countable.
      */
-    public function testIterationSpawn()
+    public function testIterationSpawn(): void
     {
         $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 10, 20);
         $variant->spawnIterations(4);
@@ -55,7 +55,7 @@ class VariantTest extends TestCase
     /**
      * It should create new iterations with the correct indexes.
      */
-    public function testCreateIteration()
+    public function testCreateIteration(): void
     {
         $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 10, 20);
         $iteration = $variant->createIteration(TestUtil::createResults(10, 20));
@@ -74,7 +74,7 @@ class VariantTest extends TestCase
     /**
      * It should calculate the stats of each iteration from the mean.
      */
-    public function testComputeStats()
+    public function testComputeStats(): void
     {
         $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 4, 0);
         $this->subject->getRetryThreshold()->willReturn(10);
@@ -102,7 +102,7 @@ class VariantTest extends TestCase
     /**
      * It should not crash if compute deviations is called with zero variant in the collection.
      */
-    public function testComputeDeviationZeroIterations()
+    public function testComputeDeviationZeroIterations(): void
     {
         $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 10, 20);
         $variant->computeStats();
@@ -112,7 +112,7 @@ class VariantTest extends TestCase
     /**
      * It should mark variant as rejected if they deviate too far from the mean.
      */
-    public function testReject()
+    public function testReject(): void
     {
         $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 4, 20);
         $this->subject->getRetryThreshold()->willReturn(10);
@@ -154,7 +154,7 @@ class VariantTest extends TestCase
     /**
      * It should be aware of exceptions.
      */
-    public function testExceptionAwareness()
+    public function testExceptionAwareness(): void
     {
         $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 10, 20);
         $error = new \Exception('Test');
@@ -168,7 +168,7 @@ class VariantTest extends TestCase
     /**
      * It should return a new ErrorStack if none has not been set.
      */
-    public function testExceptionNoneGet()
+    public function testExceptionNoneGet(): void
     {
         $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 10, 20);
         $errorStack = $variant->getErrorStack();
@@ -179,7 +179,7 @@ class VariantTest extends TestCase
      * It should throw an exception if getStats is called when no computation has taken place.
      *
      */
-    public function testGetStatsNoComputeException()
+    public function testGetStatsNoComputeException(): void
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('No statistics have yet');
@@ -191,7 +191,7 @@ class VariantTest extends TestCase
      * It should throw an exception if getStats is called when an exception has been set.
      *
      */
-    public function testGetStatsWithExceptionException()
+    public function testGetStatsWithExceptionException(): void
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Cannot retrieve stats when an exception');
@@ -209,7 +209,7 @@ class VariantTest extends TestCase
     /**
      * It should return times and memories.
      */
-    public function testGetMetricValues()
+    public function testGetMetricValues(): void
     {
         $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 1, 0);
 

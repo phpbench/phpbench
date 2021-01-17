@@ -65,7 +65,7 @@ abstract class PhpBenchLoggerTest extends LoggerTestCase
     /**
      * It should show the PHPBench version.
      */
-    public function testStart()
+    public function testStart(): void
     {
         $this->addToAssertionCount(1);
     }
@@ -73,7 +73,7 @@ abstract class PhpBenchLoggerTest extends LoggerTestCase
     /**
      * It should show a summary at the end of the suite.
      */
-    public function testEndSuite()
+    public function testEndSuite(): void
     {
         $this->setUpSummary();
         $this->suite->getFailures()->willReturn([]);
@@ -82,7 +82,7 @@ abstract class PhpBenchLoggerTest extends LoggerTestCase
         self::assertNotEmpty($this->output->fetch());
     }
 
-    public function testEndSuiteErrors()
+    public function testEndSuiteErrors(): void
     {
         $error1 = $this->prophesize(Error::class);
         $error1->getMessage()->willReturn('MessageOne');
@@ -117,7 +117,7 @@ abstract class PhpBenchLoggerTest extends LoggerTestCase
         self::assertStringContainsString('Two', $buffer);
     }
 
-    public function testEndSuiteFailures()
+    public function testEndSuiteFailures(): void
     {
         $failure1 = AssertionResult::fail('Failed!');
         $failure2 = AssertionResult::fail('Failed!');
@@ -139,7 +139,7 @@ abstract class PhpBenchLoggerTest extends LoggerTestCase
         self::assertStringContainsString('1 variants failed', $buffer);
     }
 
-    private function setUpSummary()
+    private function setUpSummary(): void
     {
         $nbSubjects = 4;
         $nbIterations = 1;

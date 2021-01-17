@@ -79,7 +79,7 @@ class LogCommandTest extends TestCase
     /**
      * It should be configured.
      */
-    public function testConfigure()
+    public function testConfigure(): void
     {
         $this->command->configure();
         $this->addToAssertionCount(1);
@@ -88,7 +88,7 @@ class LogCommandTest extends TestCase
     /**
      * It should show the history.
      */
-    public function testHistory()
+    public function testHistory(): void
     {
         $input = new ArrayInput([
             '--no-pagination' => true,
@@ -147,7 +147,7 @@ EOT;
     /**
      * It should paginate.
      */
-    public function testPaginate()
+    public function testPaginate(): void
     {
         $input = new ArrayInput([], $this->command->getDefinition());
         $output = $this->output;
@@ -203,7 +203,7 @@ EOT;
     /**
      * It should quit pagination.
      */
-    public function testQuitPagination()
+    public function testQuitPagination(): void
     {
         $input = new ArrayInput([], $this->command->getDefinition());
         $output = $this->output;
