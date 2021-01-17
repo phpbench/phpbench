@@ -2,9 +2,9 @@
 
 namespace PhpBench\Tests\Unit\Assertion\Ast;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Assertion\Ast\IntegerNode;
 use PhpBench\Assertion\Ast\TimeValue;
+use PHPUnit\Framework\TestCase;
 
 class TimeValueTest extends TestCase
 {

@@ -2,8 +2,6 @@
 
 namespace PhpBench\Assertion\Exception;
 
-use RuntimeException;
-
 class SyntaxError extends ExpressionError
 {
     /**
@@ -23,6 +21,7 @@ class SyntaxError extends ExpressionError
         );
 
         $out[] = $error;
+
         return new self(implode("\n", $out));
     }
 }

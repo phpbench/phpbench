@@ -14,11 +14,8 @@ use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\ToleranceNode;
 use PhpBench\Assertion\Ast\Value;
-use PhpBench\Assertion\Ast\WithinRangeOf;
-use PhpBench\Assertion\Ast\ZeroValue;
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
 use PhpBench\Math\FloatNumber;
-use PhpBench\Math\Statistics;
 use PhpBench\Util\MemoryUnit;
 use PhpBench\Util\TimeUnit;
 

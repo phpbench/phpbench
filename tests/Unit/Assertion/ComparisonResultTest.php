@@ -2,8 +2,8 @@
 
 namespace PhpBench\Tests\Unit\Assertion;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Assertion\ComparisonResult;
+use PHPUnit\Framework\TestCase;
 
 class ComparisonResultTest extends TestCase
 {

@@ -27,7 +27,6 @@ use PhpBench\Assertion\Ast\Value;
 use PhpBench\Assertion\Exception\SyntaxError;
 use PhpBench\Util\MemoryUnit;
 use PhpBench\Util\TimeUnit;
-use RuntimeException;
 
 class ExpressionParser
 {
@@ -139,21 +138,6 @@ class ExpressionParser
         return new Comparison($left, $comparator, $right, $tolerance);
     }
 
-    private function syntaxError(string $message): SyntaxError
-    {
-        $out = [''];
-
-        $token = $this->lexer->lookahead;
-        if (!$token) {
-            $error = sprintf(
-
-                '%s', $message
-            );
-            $token = $this->lexer->token;
-        }
-        throw SyntaxError::fromToken($this->expression, $message, $token);
-    }
-
     private function parseFunction(): FunctionNode
     {
         $functionName = $this->lexer->lookahead['value'];
@@ -235,11 +219,13 @@ class ExpressionParser
 
         if ($type === ExpressionLexer::T_TIME_UNIT) {
             $this->lexer->moveNext();
+
             return new TimeValue($value, TimeUnit::MICROSECONDS, $unit);
         }
 
         if ($type === ExpressionLexer::T_MEMORY_UNIT) {
             $this->lexer->moveNext();
+
             return new MemoryValue($value, MemoryUnit::BYTES, $unit);
         }
 
@@ -336,5 +322,22 @@ class ExpressionParser
         }
 
         return $value;
+    }
+
+    private function syntaxError(string $message): SyntaxError
+    {
+        $out = [''];
+
+        $token = $this->lexer->lookahead;
+
+        if (!$token) {
+            $error = sprintf(
+
+                '%s', $message
+            );
+            $token = $this->lexer->token;
+        }
+
+        throw SyntaxError::fromToken($this->expression, $message, $token);
     }
 }

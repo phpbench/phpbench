@@ -151,12 +151,14 @@ class NodePrinterTest extends TestCase
             ],
             'foo',
         ];
+
         yield [
             new PercentageValue(new IntegerNode(10)),
             [
             ],
             '10%',
         ];
+
         yield [
             new IntegerNode(10),
             [

@@ -18,7 +18,6 @@ use PhpBench\Assertion\Exception\ExpressionError;
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
 use PhpBench\Model\Variant;
 use RuntimeException;
-use Throwable;
 
 class AssertionProcessor
 {

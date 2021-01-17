@@ -2,9 +2,9 @@
 
 namespace PhpBench\Tests\Unit\Assertion\Exception;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Assertion\Exception\SyntaxError;
 use PhpBench\Assertion\ExpressionLexer;
+use PHPUnit\Framework\TestCase;
 
 class SyntaxErrorTest extends TestCase
 {
