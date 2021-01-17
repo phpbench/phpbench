@@ -54,7 +54,11 @@ class ExpressionEvaluatorTest extends TestCase
         yield 'float' => ['10.1', [], 10.1];
 
         // comparisons
-        yield ['10 > 5', [], ComparisonResult::true()];
+        yield [
+            '10 > 5',
+            [],
+            ComparisonResult::true()
+        ];
 
         yield ['10 < 5', [], ComparisonResult::false()];
 
@@ -72,7 +76,11 @@ class ExpressionEvaluatorTest extends TestCase
 
         yield ['4 >= 4', [], ComparisonResult::true()];
 
-        yield ['4 >= 4 +/- 1', [], ComparisonResult::tolerated()];
+        yield [
+            '4 >= 4 +/- 1',
+            [],
+            ComparisonResult::tolerated()
+        ];
 
         yield ['3 >= 4 +/- 1', [], ComparisonResult::tolerated()];
 
@@ -98,7 +106,11 @@ class ExpressionEvaluatorTest extends TestCase
         yield ['1 minutes', [], 6E7];
 
         // time unit comparison
-        yield ['1 minute = 60 seconds', [], ComparisonResult::true()];
+        yield [
+            '1 minute = 60 seconds',
+            [],
+            ComparisonResult::true()
+        ];
 
         yield ['1 minute > 60 seconds', [], ComparisonResult::false()];
 
