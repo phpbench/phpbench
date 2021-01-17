@@ -41,6 +41,7 @@ class ExpressionEvaluator
     }
 
     /**
+     * @return mixed
      */
     public function evaluate(Node $node)
     {
@@ -155,6 +156,7 @@ class ExpressionEvaluator
     }
 
     /**
+     * @return mixed
      */
     private function evaluatePropertyAccess(PropertyAccess $node)
     {
@@ -194,6 +196,7 @@ class ExpressionEvaluator
     }
 
     /**
+     * @return mixed
      */
     private function evaluateFunction(FunctionNode $node)
     {

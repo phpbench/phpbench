@@ -216,7 +216,7 @@ abstract class PhpBenchLogger extends NullLogger
             $this->output->writeln(sprintf(
                 '<warning>%s::%s</>',
                 $variantWarning->getVariant()->getSubject()->getBenchmark()->getClass(),
-                $variantWarning->getVariant()->getSubject()->getName(),
+                $variantWarning->getVariant()->getSubject()->getName()
             ));
             $this->output->writeln('');
 
