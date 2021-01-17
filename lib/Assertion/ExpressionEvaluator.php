@@ -34,10 +34,10 @@ class ExpressionEvaluator
     /**
      * @param array<string,mixed> $args
      */
-    public function __construct(array $args, ExpressionFunctions $functions)
+    public function __construct(array $args = [], ?ExpressionFunctions $functions = null)
     {
         $this->args = $args;
-        $this->functions = $functions;
+        $this->functions = $functions ?: new ExpressionFunctions([]);
     }
 
     /**

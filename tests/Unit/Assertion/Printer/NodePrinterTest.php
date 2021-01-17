@@ -165,5 +165,12 @@ class NodePrinterTest extends TestCase
             ],
             '10',
         ];
+
+        yield [
+            new FloatNode(10.1),
+            [
+            ],
+            '10.100',
+        ];
     }
 }

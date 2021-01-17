@@ -4,7 +4,10 @@ namespace PhpBench\Tests\Unit\Assertion;
 
 use Generator;
 use PhpBench\Assertion\Ast\Comparison;
+use PhpBench\Assertion\Ast\IntegerNode;
+use PhpBench\Assertion\Ast\Node;
 use PhpBench\Assertion\ComparisonResult;
+use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
 use PhpBench\Assertion\ExpressionEvaluator;
 use PhpBench\Assertion\ExpressionFunctions;
 use PhpBench\Assertion\ExpressionLexer;
@@ -179,5 +182,20 @@ class ExpressionEvaluatorTest extends TestCase
                 return $val * $multiplier;
             }
         ]];
+    }
+
+    public function testErrorOnCannotEvaluate(): void
+    {
+        $this->expectException(ExpressionEvaluatorError::class);
+        $node = new class() implements Node {};
+        $eval = (new ExpressionEvaluator())->evaluate($node);
+    }
+
+    public function testErrorOnInvalidOperator(): void
+    {
+        $this->expectException(ExpressionEvaluatorError::class);
+        $this->expectExceptionMessage('compare operator');
+        $node = new Comparison(new IntegerNode(1), 'x', new IntegerNode(2));
+        $eval = (new ExpressionEvaluator())->evaluate($node);
     }
 }

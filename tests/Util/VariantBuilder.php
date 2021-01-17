@@ -15,23 +15,29 @@ use PhpBench\Tests\Util\SubjectBuilder;
 final class VariantBuilder
 {
     /**
-     * @var string
-     */
-    private $name;
-
-    /**
      * @var IterationBuilder[]
      */
-    private $iterations;
+    private $iterations = [];
 
-    public function __construct(string $name)
+    /**
+     * @var int
+     */
+    private $revs = 1;
+
+
+    public function __construct()
     {
-        $this->name = $name;
     }
 
-    public static function create(string $name): self
+    public static function create(): self
     {
-        return new self($name);
+        return new self();
+    }
+
+    public function setRevs(int $revs): self
+    {
+        $this->revs = $revs;
+        return $this;
     }
 
     public function iteration(): IterationBuilder
@@ -50,7 +56,7 @@ final class VariantBuilder
         );
         $benchmark = new Benchmark($suite, 'testBenchmark');
         $subject = new Subject($benchmark, 'foo');
-        $variant = new Variant($subject, new ParameterSet('foo', []), 1, 1, []);
+        $variant = new Variant($subject, new ParameterSet('foo', []), $this->revs, 1, []);
         foreach ($this->iterations as $iteration) {
             $iteration->build($variant);
         }

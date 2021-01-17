@@ -38,11 +38,6 @@ class TimeValue implements Value
         return $this->value;
     }
 
-    public static function fromMicroseconds(int $int): self
-    {
-        return new self(new IntegerNode($int), TimeUnit::MICROSECONDS);
-    }
-
     public function asUnit(): string
     {
         return $this->asUnit ?? $this->unit;
