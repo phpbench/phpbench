@@ -194,7 +194,6 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
 
         foreach ($this->iterations as $iteration) {
             foreach ($iteration->getResults() as $result) {
-
                 if ($result instanceof VariantEnhancedResultInterface) {
                     $metrics = $result->getVariantEnhancedMetrics($this);
                 } else {

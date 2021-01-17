@@ -12,7 +12,7 @@ class ExpressionFunctionsTest extends TestCase
     {
         $this->expectException(ExpressionEvaluatorError::class);
         $this->expectExceptionMessage('Unknown function');
-        (new ExpressionFunctions(['one' => function () {
+        (new ExpressionFunctions(['one' => function (): void {
         }]))->execute('foo', []);
     }
 }

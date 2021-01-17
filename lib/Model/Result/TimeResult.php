@@ -13,7 +13,6 @@
 namespace PhpBench\Model\Result;
 
 use Assert\Assertion;
-use PhpBench\Math\Statistics;
 use PhpBench\Model\ResultInterface;
 use PhpBench\Model\Variant;
 use PhpBench\Model\VariantEnhancedResultInterface;
@@ -34,7 +33,6 @@ class TimeResult implements ResultInterface, VariantEnhancedResultInterface
     private $revs;
 
     /**
-     * @param int $time Time taken to execute the iteration in microseconds.
      */
     public function __construct(int $netTime, int $revs = 1)
     {
