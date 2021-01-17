@@ -24,9 +24,9 @@ final class NodePrinter implements ExpressionPrinter
     const DECIMAL_PRECISION = 3;
 
     /**
-     * @var array<string,mixed>
+     * @var parameters
      */
-    private $args;
+    private $parameters;
 
     /**
      * @var TimeUnit
@@ -39,16 +39,16 @@ final class NodePrinter implements ExpressionPrinter
     private $evaulator;
 
     /**
-     * @param array<string,mixed> $args
+     * @param parameters $parameters
      */
     public function __construct(
-        array $args,
+        array $parameters,
         TimeUnit $timeUnit,
         ExpressionEvaluatorFactory $evaulator
     ) {
-        $this->args = $args;
+        $this->parameters = $parameters;
         $this->timeUnit = $timeUnit;
-        $this->evaulator = $evaulator->createWithArgs($args);
+        $this->evaulator = $evaulator->createWithParameters($parameters);
     }
 
     public function format(Node $node): string
@@ -129,7 +129,7 @@ final class NodePrinter implements ExpressionPrinter
 
     private function formatPropertyAccess(PropertyAccess $value): string
     {
-        return (string)PropertyAccess::resolvePropertyAccess($value->segments(), $this->args);
+        return (string)PropertyAccess::resolvePropertyAccess($value->segments(), $this->parameters);
     }
 
     private function formatPercentageValue(PercentageValue $node): string

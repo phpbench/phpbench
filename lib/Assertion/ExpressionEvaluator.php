@@ -22,9 +22,9 @@ use PhpBench\Util\TimeUnit;
 class ExpressionEvaluator
 {
     /**
-     * @var array<string,mixed>
+     * @var parameters
      */
-    private $args;
+    private $parameters;
 
     /**
      * @var ExpressionFunctions
@@ -32,11 +32,11 @@ class ExpressionEvaluator
     private $functions;
 
     /**
-     * @param array<string,mixed> $args
+     * @param parameters $parameters
      */
-    public function __construct(array $args = [], ?ExpressionFunctions $functions = null)
+    public function __construct(array $parameters = [], ?ExpressionFunctions $functions = null)
     {
-        $this->args = $args;
+        $this->parameters = $parameters;
         $this->functions = $functions ?: new ExpressionFunctions([]);
     }
 
@@ -160,7 +160,7 @@ class ExpressionEvaluator
      */
     private function evaluatePropertyAccess(PropertyAccess $node)
     {
-        return PropertyAccess::resolvePropertyAccess($node->segments(), $this->args);
+        return PropertyAccess::resolvePropertyAccess($node->segments(), $this->parameters);
     }
 
     private function evaluateMemoryValue(MemoryValue $node): float

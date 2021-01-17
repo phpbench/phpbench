@@ -66,7 +66,7 @@ class AssertionProcessor
         })($this->buildVariantData($variant));
 
         try {
-            $result = $this->evaluator->createWithArgs($args)->evaluate($node);
+            $result = $this->evaluator->createWithParameters($args)->evaluate($node);
         } catch (PropertyAccessError $error) {
             return AssertionResult::warning(ExpressionError::forExpression($assertion, $error->getMessage())->getMessage());
         } catch (Exception $error) {
@@ -92,8 +92,11 @@ class AssertionProcessor
         return AssertionResult::fail($printer->format($node));
     }
 
+    /**
+     * @return parameters
+     */
     private function buildVariantData(Variant $variant): array
     {
-        return $variant->getAllMetricValues($variant);
+        return $variant->getAllMetricValues();
     }
 }

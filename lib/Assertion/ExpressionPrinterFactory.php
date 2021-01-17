@@ -5,7 +5,7 @@ namespace PhpBench\Assertion;
 interface ExpressionPrinterFactory
 {
     /**
-     * @param array<string, mixed> $args
+     * @param parameters $parameters
      */
-    public function create(array $args): ExpressionPrinter;
+    public function create(array $parameters): ExpressionPrinter;
 }

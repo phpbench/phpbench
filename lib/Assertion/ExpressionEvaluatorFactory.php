@@ -15,10 +15,10 @@ final class ExpressionEvaluatorFactory
     }
 
     /**
-     * @param array<string,mixed> $args
+     * @param parameters $parameters
      */
-    public function createWithArgs(array $args): ExpressionEvaluator
+    public function createWithParameters(array $parameters): ExpressionEvaluator
     {
-        return new ExpressionEvaluator($args, $this->functions);
+        return new ExpressionEvaluator($parameters, $this->functions);
     }
 }
