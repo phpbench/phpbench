@@ -9,6 +9,7 @@ use PhpBench\Assertion\Ast\FunctionNode;
 use PhpBench\Assertion\Ast\IntegerNode;
 use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Assertion\Ast\Node;
+use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeValue;
@@ -26,6 +27,7 @@ class NodePrinterTest extends TestCase
      * @dataProvider provideComparison
      * @dataProvider provideMemoryValue
      * @dataProvider provideFunction
+     * @dataProvider provideOtherNodes
      */
     public function testFormat(Node $node, array $args, string $expected, array $functions = []): void
     {
@@ -132,6 +134,34 @@ class NodePrinterTest extends TestCase
                     return $foo;
                 },
             ]
+        ];
+    }
+
+    /**
+     * @return Generator<mixed>
+     */
+    public function provideOtherNodes(): Generator
+    {
+        yield [
+            new PropertyAccess(['foo', 'bar']),
+            [
+                'foo' => [
+                    'bar' => 'foo',
+                ],
+            ],
+            'foo',
+        ];
+        yield [
+            new PercentageValue(new IntegerNode(10)),
+            [
+            ],
+            '10%',
+        ];
+        yield [
+            new IntegerNode(10),
+            [
+            ],
+            '10',
         ];
     }
 }

@@ -142,25 +142,16 @@ class ExpressionParser
     private function syntaxError(string $message): SyntaxError
     {
         $out = [''];
-        $out[] = $this->expression;
 
-        if (!$this->lexer->lookahead) {
+        $token = $this->lexer->lookahead;
+        if (!$token) {
             $error = sprintf(
+
                 '%s', $message
             );
-        } else {
-            $out[] = str_repeat('-', $this->lexer->lookahead['position']) . '^';
-            $error = sprintf(
-                '%s (type: "%s", position: %s, value: %s)',
-                $message,
-                $this->lexer->lookahead['type'],
-                $this->lexer->lookahead['position'],
-                json_encode($this->lexer->lookahead['value'])
-            );
+            $token = $this->lexer->token;
         }
-
-        $out[] = $error;
-        throw new SyntaxError(implode("\n", $out));
+        throw SyntaxError::fromToken($this->expression, $message, $token);
     }
 
     private function parseFunction(): FunctionNode
