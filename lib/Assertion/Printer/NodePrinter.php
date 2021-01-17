@@ -74,10 +74,6 @@ final class NodePrinter implements ExpressionPrinter
             return $this->formatMemoryValue($node);
         }
 
-        if ($node instanceof ZeroValue) {
-            return $this->formatZeroValue($node);
-        }
-
         if ($node instanceof IntegerNode) {
             return (string)$node->value();
         }
@@ -164,11 +160,6 @@ final class NodePrinter implements ExpressionPrinter
 
         // else only format the integer value
         return number_format($value);
-    }
-
-    private function formatZeroValue(ZeroValue $node): string
-    {
-        return '0';
     }
 
     private function formatFunctionNode(FunctionNode $node): string
