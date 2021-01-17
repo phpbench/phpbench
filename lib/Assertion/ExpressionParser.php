@@ -122,49 +122,15 @@ class ExpressionParser
 
     private function parseComparison(): Comparison
     {
-        $value = $this->lexer->lookahead['value'];
+        $comparator = $this->lexer->lookahead['value'];
         $this->lexer->moveNext();
-        $left = $this->nodes->pop();
 
-        if (null === $left) {
-            throw $this->syntaxError(sprintf(
-                'Comparison "%s" has no left hand side', $value
-            ));
-        }
-
-        if (!$left instanceof Value) {
-            throw $this->syntaxError(sprintf(
-                'Left hand side of "%s" must be a value got "%s"',
-                $value, get_class($left)
-            ));
-        }
-
+        $left = $this->assureType(Value::class, $this->nodes->pop());
         $this->parseNextNode();
-        $right = $this->nodes->shift();
+        $right = $this->assureType(Value::class, $this->nodes->shift());
+        $tolerance = $this->assureTypeOrNull(ToleranceNode::class, $this->nodes->pop());
 
-        if (null === $right) {
-            throw $this->syntaxError(sprintf(
-                'Comparison "%s" has no right hand side', $value
-            ));
-        }
-
-        if (!$right instanceof Value) {
-            throw $this->syntaxError(sprintf(
-                'Right hand side of "%s" must be a value got "%s"',
-                $value, get_class($right)
-            ));
-        }
-
-        $tolerance = $this->nodes->pop();
-
-        if (null !== $tolerance && !$tolerance instanceof ToleranceNode) {
-            throw $this->syntaxError(sprintf(
-                'Expected tolerance, got "%s"',
-                get_class($tolerance)
-            ));
-        }
-
-        return new Comparison($left, $value, $right, $tolerance);
+        return new Comparison($left, $comparator, $right, $tolerance);
     }
 
     private function syntaxError(string $message): SyntaxError
@@ -266,13 +232,7 @@ class ExpressionParser
 
     private function parseAsUnit(): Node
     {
-        $value = $this->nodes->pop();
-
-        if (!$value instanceof Value) {
-            throw $this->syntaxError(sprintf(
-                'Expected "%s", got "%s"', Value::class, get_class($value)
-            ));
-        }
+        $value = $this->assureType(Value::class, $this->nodes->pop());
 
         $this->lexer->moveNext();
         $type = $this->lexer->lookahead['type'];
@@ -296,17 +256,7 @@ class ExpressionParser
     private function parseMemoryUnit(): MemoryValue
     {
         $unit = $this->lexer->lookahead['value'];
-        $value = $this->nodes->pop();
-
-        if (null === $value) {
-            throw $this->syntaxError(sprintf(
-                'Time unit "%s" has no value', $unit
-            ));
-        }
-
-        if (!$value instanceof Value) {
-            throw $this->syntaxError('Expected value');
-        }
+        $value = $this->assureType(Value::class, $this->nodes->pop());
 
         $this->lexer->moveNext();
 
@@ -325,13 +275,7 @@ class ExpressionParser
     {
         $this->lexer->moveNext();
         $this->parseNextNode();
-        $value = $this->nodes->pop();
-
-        if (!$value instanceof Value) {
-            throw $this->syntaxError(sprintf(
-                'Expected "%s", got "%s"', Value::class, get_class($value)
-            ));
-        }
+        $value = $this->assureType(Value::class, $this->nodes->pop());
 
         return new ToleranceNode($value);
     }
@@ -339,16 +283,57 @@ class ExpressionParser
     private function parsePercentage(): PercentageValue
     {
         $value = $this->lexer->lookahead['value'];
-        $node = $this->nodes->pop();
-
-        if (!$node instanceof NumberNode) {
-            throw $this->syntaxError(sprintf(
-                'Expected number node for percentage, got "%s"',
-                is_object($node) ? get_class($node) : gettype($node)
-            ));
-        }
+        $node = $this->assureType(NumberNode::class, $this->nodes->pop());
         $this->lexer->moveNext();
 
         return new PercentageValue($node);
+    }
+
+    /**
+     * @template T
+     *
+     * @param class-string<T> $classFqn
+     * @param null|object $value
+     *
+     * @return T
+     */
+    private function assureType(string $classFqn, $value)
+    {
+        if (null === $value) {
+            throw $this->syntaxError(sprintf(
+                'Expected "%s", got NULL', Value::class
+            ));
+        }
+
+        if (!($value instanceof $classFqn)) {
+            throw $this->syntaxError(sprintf(
+                'Expected "%s", got "%s"', Value::class, get_class($value)
+            ));
+        }
+
+        return $value;
+    }
+
+    /**
+     * @template T
+     *
+     * @param class-string<T> $classFqn
+     * @param null|object $value
+     *
+     * @return T|null
+     */
+    private function assureTypeOrNull(string $classFqn, $value)
+    {
+        if (null === $value) {
+            return $value;
+        }
+
+        if (!($value instanceof $classFqn)) {
+            throw $this->syntaxError(sprintf(
+                'Expected "%s", got "%s"', Value::class, get_class($value)
+            ));
+        }
+
+        return $value;
     }
 }

@@ -3,7 +3,6 @@
 namespace PhpBench\Assertion;
 
 use ArrayIterator;
-use Iterator;
 use IteratorAggregate;
 use PhpBench\Assertion\Ast\Node;
 use RuntimeException;
@@ -63,4 +62,3 @@ class Nodes implements IteratorAggregate
         return array_shift($this->nodes);
     }
 }
-
