@@ -91,14 +91,6 @@ class ExpressionEvaluator
         $left = $this->evaluate($value1);
         $right = $this->evaluate($value2);
 
-        // throughput is inverted
-        if ($value1 instanceof ThroughputValue || $value2 instanceof ThroughputValue) {
-            $left1 = $left;
-            $left = $right;
-            $right = $left1;
-            unset($left1);
-        }
-
         $tolerance = $this->evaluateTolerance($node->tolerance(), $right);
 
         if ($tolerance > 0 && FloatNumber::isWithin($left, $right - $tolerance, $right + $tolerance)) {
@@ -192,7 +184,7 @@ class ExpressionEvaluator
 
     private function evaluateThroughputValue(ThroughputValue $node): float
     {
-        return TimeUnit::convertTo(1, $node->unit(), TimeUnit::MICROSECONDS) / $node->value();
+        return TimeUnit::convertTo(1, $node->unit(), TimeUnit::MICROSECONDS) / $this->evaluate($node->value());
     }
 
     /**

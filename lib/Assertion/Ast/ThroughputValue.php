@@ -5,22 +5,22 @@ namespace PhpBench\Assertion\Ast;
 class ThroughputValue implements Value
 {
     /**
-     * @var float
-     */
-    private $value;
-
-    /**
      * @var string
      */
     private $unit;
 
-    public function __construct(float $value, string $unit)
+    /**
+     * @var Value
+     */
+    private $value;
+
+    public function __construct(Value $value, string $unit)
     {
         $this->value = $value;
         $this->unit = $unit;
     }
 
-    public function value(): float
+    public function value(): Value
     {
         return $this->value;
     }

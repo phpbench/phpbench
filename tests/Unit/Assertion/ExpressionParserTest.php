@@ -21,6 +21,7 @@ use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Assertion\Ast\Node;
 use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
+use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\ToleranceNode;
 use PhpBench\Assertion\Exception\SyntaxError;
@@ -34,6 +35,7 @@ class ExpressionParserTest extends ExpressionParserTestCase
      * @dataProvider provideValueWithUnit
      * @dataProvider provideExpression
      * @dataProvider provideTolerance
+     * @dataProvider provideThroughput
      *
      * @param array<string,mixed> $config
      */
@@ -385,6 +387,25 @@ class ExpressionParserTest extends ExpressionParserTestCase
                 'functions' => [
                     'func'
                 ]
+            ]
+        ];
+    }
+
+    /**
+     * @return Generator<mixed>
+     */
+    public function provideThroughput(): Generator
+    {
+        yield 'throughput' => [
+            '100000 <= 10 ops/s +/- 1 ops/s',
+            new Comparison(
+                new IntegerNode(100000),
+                '<=',
+                new ThroughputValue(new IntegerNode(10), 's'),
+                new ToleranceNode(new ThroughputValue(new IntegerNode(1), 's'))
+            ),
+            [
+                'timeUnits' => ['s'],
             ]
         ];
     }

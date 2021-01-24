@@ -21,6 +21,7 @@ use PhpBench\Assertion\Ast\Node;
 use PhpBench\Assertion\Ast\NumberNode;
 use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
+use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\ToleranceNode;
 use PhpBench\Assertion\Ast\Value;
@@ -104,6 +105,8 @@ class ExpressionParser
                 return $this->parseFunction();
             case ExpressionLexer::T_TIME_UNIT:
                 return $this->parseTimeUnit();
+            case ExpressionLexer::T_THROUGHPUT:
+                return $this->parseThroughput();
             case ExpressionLexer::T_MEMORY_UNIT:
                 return $this->parseMemoryUnit();
             case ExpressionLexer::T_TOLERANCE:
@@ -207,6 +210,24 @@ class ExpressionParser
         }
 
         return new TimeValue($value, $unit, $asUnit);
+    }
+
+    private function parseThroughput(): ThroughputValue
+    {
+        $value = $this->nodes->pop();
+        $value = $this->assureType(Value::class, $value, 'Throughput');
+
+        $this->lexer->moveNext();
+
+        $unit = $this->lexer->lookahead;
+
+        if ($unit['type'] !== ExpressionLexer::T_TIME_UNIT) {
+            throw $this->syntaxError('Expected time unit for throughput');
+        }
+
+        $this->lexer->moveNext();
+
+        return new ThroughputValue($value, $unit['value']);
     }
 
     private function parseAsUnit(): Node

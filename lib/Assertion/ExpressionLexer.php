@@ -36,11 +36,18 @@ class ExpressionLexer extends AbstractLexer
     public const T_PROPERTY_ACCESS = 'property_access';
     public const T_PERCENTAGE = 'percentage';
     public const T_AS = 'as';
+    public const T_THROUGHPUT = 'throughput';
 
     private const PATTERN_PROPERTY_ACCESS = '(?:[a-z_][a-z0-9_]+\.(?:[a-z_][a-z0-9_]+\.?)+)';
     private const PATTERN_COMPARATORS = '(?:<=|>=|<|=|>)';
     private const PATTERN_NAME = '(?:[a-z_\/]+)';
     private const PATTERN_TOLERANCE = '(?:\+\/\-)';
+    private const PATTERN_THROUGHPUT = '(?:ops\/)';
+
+    private const TOKEN_VALUE_MAP = [
+        '+/-' => self::T_TOLERANCE,
+        'ops/' => self::T_THROUGHPUT,
+    ];
 
     /**
      * @param string[] $timeUnits
@@ -61,12 +68,13 @@ class ExpressionLexer extends AbstractLexer
     {
         return [
             '(?:[\(\)])', // parenthesis
-            self::PATTERN_TOLERANCE, // comparators
-            self::PATTERN_COMPARATORS, // comparators
+            self::PATTERN_TOLERANCE,
+            self::PATTERN_COMPARATORS,
             '(?:[0-9]+(?:[\.][0-9]+)*)(?:e[+-]?[0-9]+)?', // numbers
             self::PATTERN_PROPERTY_ACCESS,
-            self::PATTERN_NAME, // names
-            '%',
+            self::PATTERN_THROUGHPUT,
+            self::PATTERN_NAME,
+            '%'
         ];
     }
 
@@ -78,6 +86,10 @@ class ExpressionLexer extends AbstractLexer
     protected function getType(&$value)
     {
         $type = self::T_NONE;
+
+        if (array_key_exists($value, self::TOKEN_VALUE_MAP)) {
+            return self::TOKEN_VALUE_MAP[$value];
+        }
 
         switch (true) {
             case (is_numeric($value)):
@@ -98,9 +110,6 @@ class ExpressionLexer extends AbstractLexer
 
             case $value === self::T_AS:
                 return self::T_AS;
-
-            case $value === '+/-':
-                return self::T_TOLERANCE;
 
             case (preg_match('{'. self::PATTERN_PROPERTY_ACCESS . '}', $value)):
                 return self::T_PROPERTY_ACCESS;
