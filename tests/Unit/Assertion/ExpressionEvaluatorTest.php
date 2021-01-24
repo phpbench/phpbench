@@ -128,6 +128,7 @@ class ExpressionEvaluatorTest extends TestCase
         yield ['5 ops/second = 0.20 seconds', [], ComparisonResult::true()];
         yield ['4 ops/second = 0.20 seconds', [], ComparisonResult::false()];
         yield ['4 ops/second > 0.20 seconds', [], ComparisonResult::true()];
+        yield ['4 ops/second > 0.20 seconds +/- 1 second', [], ComparisonResult::tolerated()];
 
         // memory
         yield ['10 kilobytes', [], 10000];
@@ -174,14 +175,12 @@ class ExpressionEvaluatorTest extends TestCase
 
         // property access
         yield ['foo.bar', ['foo' => ['bar' => 10]], 10];
-
         yield ['foo.bar ms', ['foo' => ['bar' => 10]], 10000];
-
         yield ['foo.bar microseconds as ms', ['foo' => ['bar' => 10000]], 10E3];
-        yield ['foo.bar as ops/ms', ['foo' => ['bar' => 10000]], 10E3];
-
+        yield ['foo.bar ops/ms', [
+            'foo' => ['bar' => 1000]
+        ], 1.0];
         yield ['foo.bar as ms', ['foo' => ['bar' => 10000]], 10E3];
-
         yield ['multiply(multiply(12, foo.bar), 4)', [
             'foo' => ['bar' => 10]
         ], 480, [
