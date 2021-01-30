@@ -35,15 +35,19 @@ class Nodes implements IteratorAggregate, Countable
 
     /**
      * @template T of Node
+     *
      * @param class-string<T> $nodeType
+     *
      * @return T|null
      */
     public function popType(string $nodeType): ?Node
     {
         $node = $this->pop();
+
         if (null === $node) {
             return null;
         }
+
         if (!$node instanceof $nodeType) {
             return null;
         }
@@ -58,15 +62,19 @@ class Nodes implements IteratorAggregate, Countable
 
     /**
      * @template T of Node
+     *
      * @param class-string<T> $nodeType
+     *
      * @return T|null
      */
     public function shiftType(string $nodeType): ?Node
     {
         $node = $this->shift();
+
         if (null === $node) {
             return null;
         }
+
         if (!$node instanceof $nodeType) {
             return null;
         }

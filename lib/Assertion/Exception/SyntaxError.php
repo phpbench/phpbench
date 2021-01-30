@@ -20,6 +20,7 @@ class SyntaxError extends ExpressionError
         foreach ($tokens as $token) {
             if ($token === $target) {
                 $underline = str_repeat('-', $token->start()) . str_repeat('^', $token->length());
+
                 break;
             }
         }

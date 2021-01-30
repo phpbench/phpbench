@@ -4,6 +4,7 @@ namespace PhpBench\Assertion;
 
 use PhpBench\Assertion\Ast\Comparison;
 use PhpBench\Assertion\Ast\DisplayAsNode;
+use PhpBench\Assertion\Ast\ExpressionNode;
 use PhpBench\Assertion\Ast\FloatNode;
 use PhpBench\Assertion\Ast\FunctionNode;
 use PhpBench\Assertion\Ast\IntegerNode;
@@ -14,7 +15,6 @@ use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\ToleranceNode;
-use PhpBench\Assertion\Ast\ExpressionNode;
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
 use PhpBench\Math\FloatNumber;
 use PhpBench\Util\MemoryUnit;

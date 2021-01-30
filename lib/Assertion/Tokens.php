@@ -29,6 +29,7 @@ final class Tokens implements IteratorAggregate
     public function __construct(array $tokens)
     {
         $this->tokens = $tokens;
+
         if (count($tokens)) {
             $this->current = $tokens[$this->position];
         }
@@ -104,8 +105,10 @@ final class Tokens implements IteratorAggregate
     public function ifNextIs(string $type): bool
     {
         $next = $this->next();
+
         if ($next && $next->type === $type) {
             $this->current = @$this->tokens[++$this->position];
+
             return true;
         }
 
@@ -130,6 +133,7 @@ final class Tokens implements IteratorAggregate
 
         if ($next && $this->next()->type === $type) {
             $this->current = $this->tokens[++$this->position];
+
             return true;
         }
 
@@ -157,6 +161,7 @@ final class Tokens implements IteratorAggregate
     public function toString(): string
     {
         $last = $this->tokens[count($this->tokens) - 1];
+
         if (!$last instanceof Token) {
             return '';
         }

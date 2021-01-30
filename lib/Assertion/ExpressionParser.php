@@ -14,24 +14,21 @@ namespace PhpBench\Assertion;
 
 use PhpBench\Assertion\Ast\Comparison;
 use PhpBench\Assertion\Ast\DisplayAsNode;
+use PhpBench\Assertion\Ast\ExpressionNode;
 use PhpBench\Assertion\Ast\FloatNode;
 use PhpBench\Assertion\Ast\FunctionNode;
 use PhpBench\Assertion\Ast\IntegerNode;
 use PhpBench\Assertion\Ast\MemoryUnitNode;
 use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Assertion\Ast\Node;
-use PhpBench\Assertion\Ast\NumberNode;
 use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeUnitNode;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\ToleranceNode;
-use PhpBench\Assertion\Ast\ExpressionNode;
 use PhpBench\Assertion\Ast\UnitNode;
 use PhpBench\Assertion\Exception\SyntaxError;
-use PhpBench\Util\MemoryUnit;
-use PhpBench\Util\TimeUnit;
 
 final class ExpressionParser
 {
@@ -53,6 +50,7 @@ final class ExpressionParser
     public function parse(Tokens $tokens): Node
     {
         $this->tokens = $tokens;
+
         return $this->buildAst();
     }
 
@@ -61,6 +59,7 @@ final class ExpressionParser
         $this->parseExpression();
 
         $result = $this->buffer->pop();
+
         if ($this->buffer->count()) {
             throw $this->syntaxError('Unexpected extra tokens before');
         }
@@ -78,6 +77,7 @@ final class ExpressionParser
     private function parseNode(): ?Node
     {
         $token = $this->tokens->current;
+
         if (!$token) {
             return null;
         }
@@ -85,9 +85,11 @@ final class ExpressionParser
         switch ($token->type) {
             case Token::T_INTEGER:
                 $token = $this->tokens->chomp(Token::T_INTEGER);
+
                 return new IntegerNode((int)$token->value);
             case Token::T_FLOAT:
                 $token = $this->tokens->chomp(Token::T_FLOAT);
+
                 return new FloatNode((float)$token->value);
             case Token::T_NAME:
                 return $this->parseName();
@@ -115,12 +117,14 @@ final class ExpressionParser
         }
 
         $this->tokens->chomp();
+
         throw $this->syntaxError('Do not know how to parse token');
     }
 
     private function parseName(): ExpressionNode
     {
         $names = [$this->tokens->chomp(Token::T_NAME)->value];
+
         while ($this->tokens->if(Token::T_DOT)) {
             $this->tokens->chomp(Token::T_DOT);
             $names[] = $this->tokens->chomp(Token::T_NAME)->value;
@@ -221,8 +225,8 @@ final class ExpressionParser
     {
         $expressions = [];
         $this->parseExpression();
-        while ($expression = $this->buffer->popType(ExpressionNode::class)) {
 
+        while ($expression = $this->buffer->popType(ExpressionNode::class)) {
             $expressions[] = $expression;
 
             if ($this->tokens->if(Token::T_CLOSE_PAREN)) {
@@ -244,6 +248,7 @@ final class ExpressionParser
         $as = $this->tokens->chomp(Token::T_AS);
         $unit = $this->parseUnit();
         $expression = $this->mustPopNode(ExpressionNode::class);
+
         return new DisplayAsNode($expression, $unit);
     }
 
@@ -258,17 +263,21 @@ final class ExpressionParser
 
     /**
      * @template T
+     *
      * @param class-string<T> $nodeFqn
+     *
      * @return T
      */
     private function mustPopNode(string $nodeFqn, ?string $message = null)
     {
         $node = $this->buffer->pop();
+
         if (null === $node) {
             throw $this->syntaxError(
                 $message ?: 'Nothing left to pop'
             );
         }
+
         if (!$node instanceof $nodeFqn) {
             throw $this->syntaxError($message ?: sprintf(
                 'Expected node of type "%s", got "%s"',
@@ -276,17 +285,21 @@ final class ExpressionParser
                 get_class($node)
             ));
         }
+
         return $node;
     }
 
     /**
      * @template T
+     *
      * @param class-string<T> $nodeFqn
+     *
      * @return T
      */
     private function mustShiftNode(string $nodeFqn)
     {
         $node = $this->buffer->shift();
+
         if (!$node instanceof $nodeFqn) {
             throw $this->syntaxError(sprintf(
                 'Expected node of type "%s", got "%s"',
@@ -294,6 +307,7 @@ final class ExpressionParser
                 get_class($node)
             ));
         }
+
         return $node;
     }
 }

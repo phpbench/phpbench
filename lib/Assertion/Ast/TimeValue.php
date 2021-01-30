@@ -3,7 +3,6 @@
 namespace PhpBench\Assertion\Ast;
 
 use PhpBench\Util\TimeUnit;
-use PhpBench\Assertion\Ast\ExpressionNode;
 
 class TimeValue implements ExpressionNode
 {

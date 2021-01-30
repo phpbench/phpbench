@@ -2,8 +2,6 @@
 
 namespace PhpBench\Assertion;
 
-use Doctrine\Common\Lexer\AbstractLexer;
-
 final class ExpressionLexer
 {
     /**
@@ -86,6 +84,7 @@ final class ExpressionLexer
             PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE
         );
         $tokens = [];
+
         foreach ($chunks as $chunk) {
             [ $value, $offset ] = $chunk;
             $tokens[] = new Token(
