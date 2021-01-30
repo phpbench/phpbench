@@ -59,9 +59,16 @@ class ExpressionParser
 
     private function parseExpression(): ?ExpressionNode
     {
+        while ($node = $this->parseNode()) {
+            dump($node);
+        }
+    }
+
+    private function parseNode(): ?ExpressionNode
+    {
         $token = $this->tokens->current;
         if (!$token) {
-            throw $this->syntaxError('Expression is empty');
+            return null;
         }
 
         switch ($token->type) {
@@ -75,6 +82,7 @@ class ExpressionParser
                 return $this->parseName();
         }
 
+        $this->tokens->chomp();
         throw $this->syntaxError('Do not know how to parse node');
     }
 

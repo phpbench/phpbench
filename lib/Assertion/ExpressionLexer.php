@@ -50,7 +50,7 @@ final class ExpressionLexer
         self::PATTERN_THROUGHPUT,
         self::PATTERN_NAME,
         '%',
-        '.',
+        '\.',
     ];
 
     const IGNORE_PATTERNS = [
@@ -71,7 +71,7 @@ final class ExpressionLexer
         $this->timeUnits = $timeUnits;
         $this->memoryUnits = $memoryUnits;
         $this->pattern = sprintf(
-            '{(%s)|%s}',
+            '{(%s)|%s}iu',
             implode(')|(', self::PATTERNS),
             implode('|', self::IGNORE_PATTERNS)
         );
