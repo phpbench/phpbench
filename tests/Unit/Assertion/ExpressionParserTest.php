@@ -13,6 +13,7 @@
 namespace PhpBench\Tests\Unit\Assertion;
 
 use Generator;
+use PhpBench\Assertion\ArithmeticNode;
 use PhpBench\Assertion\Ast\Comparison;
 use PhpBench\Assertion\Ast\DisplayAsNode;
 use PhpBench\Assertion\Ast\FloatNode;
@@ -21,6 +22,7 @@ use PhpBench\Assertion\Ast\IntegerNode;
 use PhpBench\Assertion\Ast\MemoryUnitNode;
 use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Assertion\Ast\Node;
+use PhpBench\Assertion\Ast\ParenthesizedExpressionNode;
 use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\ThroughputValue;
@@ -39,6 +41,7 @@ class ExpressionParserTest extends ExpressionParserTestCase
      * @dataProvider provideExpression
      * @dataProvider provideTolerance
      * @dataProvider provideThroughput
+     * @dataProvider provideArithmetic
      *
      * @param array<string,mixed> $config
      */
@@ -412,6 +415,49 @@ class ExpressionParserTest extends ExpressionParserTestCase
             [
                 'timeUnits' => ['s'],
             ]
+        ];
+    }
+
+    /**
+     * @return Generator<mixed>
+     */
+    public function provideArithmetic(): Generator
+    {
+        yield [
+            '1 + 1',
+            new ArithmeticNode(
+                new IntegerNode(1),
+                '+',
+                new IntegerNode(1)
+            )
+        ];
+
+        yield [
+            '1 + 1 + 2',
+            new ArithmeticNode(
+                new IntegerNode(1),
+                '+',
+                new ArithmeticNode(
+                    new IntegerNode(1),
+                    '+',
+                    new IntegerNode(2)
+                )
+            )
+        ];
+
+        yield [
+            '(1 + 2) + 3',
+            new ArithmeticNode(
+                new ParenthesizedExpressionNode(
+                    new ArithmeticNode(
+                        new IntegerNode(1),
+                        '+',
+                        new IntegerNode(2),
+                    )
+                ),
+                '+',
+                new IntegerNode(3)
+            )
         ];
     }
 }

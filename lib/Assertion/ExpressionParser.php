@@ -21,6 +21,7 @@ use PhpBench\Assertion\Ast\IntegerNode;
 use PhpBench\Assertion\Ast\MemoryUnitNode;
 use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Assertion\Ast\Node;
+use PhpBench\Assertion\Ast\ParenthesizedExpressionNode;
 use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\ThroughputValue;
@@ -109,6 +110,17 @@ final class ExpressionParser
                 return $this->parsePercentage();
             case Token::T_THROUGHPUT:
                 return $this->parseThroughput();
+            case Token::T_OPEN_PAREN:
+                $next = $this->tokens->next();
+                if ($next && $next->type !== Token::T_CLOSE_PAREN) {
+                    return $this->parseParenthesizedExpression();
+                }
+                break;
+            case Token::T_PLUS:
+            case Token::T_MULTIPLY:
+            case Token::T_DIV:
+            case Token::T_MINUS:
+                return $this->parseArtithmetic();
 
             // tokens which end expressions
             case Token::T_COMMA:
@@ -117,7 +129,6 @@ final class ExpressionParser
         }
 
         $this->tokens->chomp();
-
         throw $this->syntaxError('Do not know how to parse token');
     }
 
@@ -146,6 +157,21 @@ final class ExpressionParser
             $comparator->value,
             $right,
             $tolerance
+        );
+    }
+
+    private function parseArtithmetic(): ArithmeticNode
+    {
+        $operator = $this->tokens->chomp();
+
+        $left = $this->mustPopNode(ExpressionNode::class, 'Left hand side of comparison is missing');
+        $this->parseExpression();
+        $right = $this->mustShiftNode(ExpressionNode::class);
+
+        return new ArithmeticNode(
+            $left,
+            $operator->value,
+            $right
         );
     }
 
@@ -216,6 +242,16 @@ final class ExpressionParser
         $close = $this->tokens->chomp(Token::T_CLOSE_PAREN);
 
         return new FunctionNode($name->value, $values);
+    }
+
+    private function parseParenthesizedExpression(): ParenthesizedExpressionNode
+    {
+        $open = $this->tokens->chomp(Token::T_OPEN_PAREN);
+        $this->parseExpression();
+        $expression = $this->mustPopNode(ExpressionNode::class);
+        $open = $this->tokens->chomp(Token::T_CLOSE_PAREN);
+
+        return new ParenthesizedExpressionNode($expression);
     }
 
     /**
@@ -304,7 +340,7 @@ final class ExpressionParser
             throw $this->syntaxError(sprintf(
                 'Expected node of type "%s", got "%s"',
                 $nodeFqn,
-                get_class($node)
+                is_object($node) ? get_class($node) : gettype($node)
             ));
         }
 

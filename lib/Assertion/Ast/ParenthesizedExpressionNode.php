@@ -2,15 +2,15 @@
 
 namespace PhpBench\Assertion\Ast;
 
-class ParenthesizedExpressionNode implements Node
+class ParenthesizedExpressionNode implements ExpressionNode
 {
     /**
-     * @var Node
+     * @var ExpressionNode
      */
-    private $value;
+    private $expression;
 
-    public function __construct(Node $value)
+    public function __construct(ExpressionNode $expression)
     {
-        $this->value = $value;
+        $this->expression = $expression;
     }
 }

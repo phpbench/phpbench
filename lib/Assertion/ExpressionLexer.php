@@ -38,6 +38,10 @@ final class ExpressionLexer
         ',' => Token::T_COMMA,
         'as' => Token::T_AS,
         '%' => Token::T_PERCENTAGE,
+        '+' => Token::T_PLUS,
+        '-' => Token::T_MINUS,
+        '*' => Token::T_MULTIPLY,
+        '/' => Token::T_DIV,
     ];
 
     const PATTERNS = [
