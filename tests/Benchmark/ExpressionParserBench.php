@@ -28,6 +28,10 @@ class ExpressionParserBench
      * @var ExpressionParser
      */
     private $parser;
+
+    /**
+     * @var ExpressionLexer
+     */
     private $lexer;
 
 
