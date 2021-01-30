@@ -172,7 +172,7 @@ final class NodePrinter implements ExpressionPrinter
     {
         $value = $this->evaulator->evaluate($node);
 
-        return sprintf('%s() = %s', $node->name(), (string)$value);
+        return (string)$value;
     }
 
     private function formatDisplayAsNode(DisplayAsNode $node): string
