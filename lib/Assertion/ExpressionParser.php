@@ -57,13 +57,13 @@ final class ExpressionParser
         return $this->parseExpression();
     }
 
-    private function parseExpression(): ?ExpressionNode
+    private function parseExpression(): ExpressionNode
     {
         while ($node = $this->parseNode()) {
             $this->buffer->push($node);
         }
 
-        return $this->buffer->pop();
+        return $this->buffer->singleRemainingNode();
     }
 
     private function parseNode(): ?ExpressionNode
@@ -105,9 +105,18 @@ final class ExpressionParser
     {
         $comparator = $this->tokens->chomp(Token::T_COMPARATOR);
         $left = $this->buffer->pop();
+
+        if (!$left instanceof ExpressionNode) {
+            throw $this->syntaxError('Expected expression to left of comparator');
+        }
+
         $right = $this->parseExpression();
 
-        return new Comparison($left, $comparator->value, $right);
+        return new Comparison(
+            $left,
+            $comparator->value,
+            $right
+        );
     }
 
     private function syntaxError(string $message): SyntaxError
