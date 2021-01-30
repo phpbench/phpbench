@@ -78,7 +78,7 @@ final class Tokens implements IteratorAggregate
                 $type,
                 $this->position,
                 $token->type,
-                $this->toString(),
+                $this->toString()
             ));
         }
 

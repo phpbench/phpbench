@@ -77,9 +77,9 @@ class NodePrinterTest extends TestCase
             new DisplayAsNode(
                 new TimeValue(
                     new IntegerNode(1),
-                    'seconds',
+                    'seconds'
                 ),
-                new TimeUnitNode('milliseconds'),
+                new TimeUnitNode('milliseconds')
             ),
             [],
             '1,000ms',

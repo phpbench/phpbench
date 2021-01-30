@@ -266,7 +266,7 @@ final class ExpressionParser
         $node = $this->buffer->pop();
         if (null === $node) {
             throw $this->syntaxError(
-                $message ?: 'Nothing left to pop',
+                $message ?: 'Nothing left to pop'
             );
         }
         if (!$node instanceof $nodeFqn) {
