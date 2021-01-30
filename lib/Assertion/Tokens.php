@@ -74,12 +74,11 @@ final class Tokens implements IteratorAggregate
 
         if (null !== $type && $token->type !== $type) {
             throw new RuntimeException(sprintf(
-                'Expected type "%s" at position "%s": "%s"',
+                'Expected type "%s" at position "%s", got "%s": "%s"',
                 $type,
                 $this->position,
-                implode('', array_map(function (Token $token) {
-                    return $token->value;
-                }, $this->tokens))
+                $token->type,
+                $this->toString(),
             ));
         }
 
@@ -127,11 +126,8 @@ final class Tokens implements IteratorAggregate
             return true;
         }
 
-        if ($this->current->type !== Token::T_WHITESPACE) {
-            return false;
-        }
-
         $next = $this->next();
+
         if ($next && $this->next()->type === $type) {
             $this->current = $this->tokens[++$this->position];
             return true;
@@ -160,7 +156,7 @@ final class Tokens implements IteratorAggregate
 
     public function toString(): string
     {
-        return implode(' ', array_map(function (Token $token) {
+        return implode('', array_map(function (Token $token) {
             return $token->value;
         }, $this->tokens));
     }

@@ -26,7 +26,6 @@ final class ExpressionLexer
      */
     private $pattern;
 
-    private const PATTERN_PROPERTY_ACCESS = '(?:[a-z_][a-z0-9_]+\.(?:[a-z_][a-z0-9_]+\.?)+)';
     private const PATTERN_COMPARATORS = '(?:<=|>=|<|=|>)';
     private const PATTERN_NAME = '(?:[a-z_\/]+)';
     private const PATTERN_TOLERANCE = '(?:\+\/\-)';
@@ -35,6 +34,12 @@ final class ExpressionLexer
     private const TOKEN_VALUE_MAP = [
         '+/-' => Token::T_TOLERANCE,
         'ops/' => Token::T_THROUGHPUT,
+        '.' => Token::T_DOT,
+        '(' => Token::T_OPEN_PAREN,
+        ')' => Token::T_CLOSE_PAREN,
+        ',' => Token::T_COMMA,
+        'as' => Token::T_AS,
+        '%' => Token::T_PERCENTAGE,
     ];
 
     const PATTERNS = [
@@ -42,10 +47,10 @@ final class ExpressionLexer
         self::PATTERN_TOLERANCE,
         self::PATTERN_COMPARATORS,
         '(?:[0-9]+(?:[\.][0-9]+)*)(?:e[+-]?[0-9]+)?', // numbers
-        self::PATTERN_PROPERTY_ACCESS,
         self::PATTERN_THROUGHPUT,
         self::PATTERN_NAME,
-        '%'
+        '%',
+        '.',
     ];
 
     const IGNORE_PATTERNS = [
@@ -106,42 +111,27 @@ final class ExpressionLexer
         }
 
         switch (true) {
-        case (is_numeric($value)):
-            if (strpos($value, '.') !== false || stripos($value, 'e') !== false) {
-                return Token::T_FLOAT;
-            }
+            case (is_numeric($value)):
+                if (strpos($value, '.') !== false || stripos($value, 'e') !== false) {
+                    return Token::T_FLOAT;
+                }
 
-            return Token::T_INTEGER;
+                return Token::T_INTEGER;
 
-        case $value === '(':
-            return Token::T_OPEN_PAREN;
+            case (preg_match('{'. self::PATTERN_NAME. '}', $value)):
+                return Token::T_NAME;
 
-        case $value === ',':
-            return Token::T_COMMA;
+            case (preg_match('{'. self::PATTERN_COMPARATORS. '}', $value)):
+                return Token::T_COMPARATOR;
 
-        case $value === ')':
-            return Token::T_CLOSE_PAREN;
+            case (in_array($value, $this->functionNames)):
+                return Token::T_FUNCTION;
 
-        case $value === Token::T_AS:
-            return Token::T_AS;
+            case (in_array($value, $this->timeUnits)):
+                return Token::T_TIME_UNIT;
 
-        case (preg_match('{'. self::PATTERN_PROPERTY_ACCESS . '}', $value)):
-            return Token::T_PROPERTY_ACCESS;
-
-        case (preg_match('{'. self::PATTERN_COMPARATORS. '}', $value)):
-            return Token::T_COMPARATOR;
-
-        case (in_array($value, $this->functionNames)):
-            return Token::T_FUNCTION;
-
-        case (in_array($value, $this->timeUnits)):
-            return Token::T_TIME_UNIT;
-
-        case (in_array($value, $this->memoryUnits)):
-            return Token::T_MEMORY_UNIT;
-
-        case $value === '%':
-            return Token::T_PERCENTAGE;
+            case (in_array($value, $this->memoryUnits)):
+                return Token::T_MEMORY_UNIT;
         }
 
         return $type;

@@ -59,30 +59,41 @@ class ExpressionParser
 
     private function parseExpression(): ?ExpressionNode
     {
-        $token = $this->tokens->chomp();
+        $token = $this->tokens->current;
         if (!$token) {
-            return null;
+            throw $this->syntaxError('Expression is empty');
         }
 
         switch ($token->type) {
             case Token::T_INTEGER:
+                $token = $this->tokens->chomp(Token::T_INTEGER);
                 return new IntegerNode((int)$token->value);
             case Token::T_FLOAT:
+                $token = $this->tokens->chomp(Token::T_FLOAT);
                 return new FloatNode((float)$token->value);
+            case Token::T_NAME:
+                return $this->parseName();
         }
 
         throw $this->syntaxError('Do not know how to parse node');
+    }
+
+    private function parseName(): Node
+    {
+        $names = [$this->tokens->chomp(Token::T_NAME)->value];
+        while ($this->tokens->if(Token::T_DOT)) {
+            $this->tokens->chomp(Token::T_DOT);
+            $names[] = $this->tokens->chomp(Token::T_NAME)->value;
+        }
+
+        return new PropertyAccess($names);
     }
 
     private function syntaxError(string $message): SyntaxError
     {
         $out = [''];
 
-        $token = $this->tokens->current;
-
-        if (!$token) {
-            $token = $this->tokens->previous();
-        }
+        $token = $this->tokens->previous();
 
         if (!$token) {
             throw new SyntaxError(sprintf(

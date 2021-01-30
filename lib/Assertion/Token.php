@@ -5,6 +5,7 @@ namespace PhpBench\Assertion;
 final class Token
 {
     public const T_NONE = 'none';
+    public const T_NAME = 'name';
     public const T_INTEGER = 'integer';
     public const T_FLOAT = 'float';
     public const T_TOLERANCE = 'tolerance';
