@@ -10,6 +10,7 @@ use PhpBench\Assertion\Ast\FunctionNode;
 use PhpBench\Assertion\Ast\IntegerNode;
 use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Assertion\Ast\Node;
+use PhpBench\Assertion\Ast\ParenthesizedExpressionNode;
 use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\ThroughputValue;
@@ -80,6 +81,14 @@ class ExpressionEvaluator
 
         if ($node instanceof DisplayAsNode) {
             return $this->evaluateDisplayasNode($node);
+        }
+
+        if ($node instanceof ArithmeticNode) {
+            return $this->evaluateArithmatic($node);
+        }
+
+        if ($node instanceof ParenthesizedExpressionNode) {
+            return $this->evaluateParenthesizedExpression($node);
         }
 
         throw new ExpressionEvaluatorError(sprintf(
@@ -209,5 +218,31 @@ class ExpressionEvaluator
         return $this->functions->execute($node->name(), array_map(function (ExpressionNode $node) {
             return $this->evaluate($node);
         }, $node->args()));
+    }
+
+    private function evaluateArithmatic(ArithmeticNode $node)
+    {
+        $leftValue = $this->evaluate($node->left());
+        $rightValue = $this->evaluate($node->right());
+        switch ($node->operator()) {
+            case '+':
+                return $leftValue + $rightValue;
+            case '*':
+                return $leftValue * $rightValue;
+            case '/':
+                return $leftValue / $rightValue;
+            case '-':
+                return $leftValue - $rightValue;
+        }
+
+        throw new ExpressionEvaluatorError(sprintf(
+            'Unknown operator "%s"',
+            $node->operator()
+        ));
+    }
+
+    private function evaluateParenthesizedExpression(ParenthesizedExpressionNode $node)
+    {
+        return $this->evaluate($node->expression());
     }
 }

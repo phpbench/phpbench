@@ -13,4 +13,9 @@ class ParenthesizedExpressionNode implements ExpressionNode
     {
         $this->expression = $expression;
     }
+
+    public function expression(): ExpressionNode
+    {
+        return $this->expression;
+    }
 }
