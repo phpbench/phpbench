@@ -3,6 +3,7 @@
 namespace PhpBench\Tests\Benchmark;
 
 use Generator;
+use PhpBench\Assertion\ExpressionLexer;
 use PhpBench\Assertion\ExpressionParser;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\Extension\CoreExtension;
@@ -27,6 +28,8 @@ class ExpressionParserBench
      * @var ExpressionParser
      */
     private $parser;
+    private $lexer;
+
 
     public function setUp(): void
     {
@@ -35,6 +38,7 @@ class ExpressionParserBench
         ]);
         $container->init();
         $this->parser = $container->get(ExpressionParser::class);
+        $this->lexer = $container->get(ExpressionLexer::class);
     }
 
     /**
@@ -44,7 +48,7 @@ class ExpressionParserBench
      */
     public function benchEvaluate(array $params): void
     {
-        $this->parser->parse($params['expr']);
+        $this->parser->parse($this->lexer->lex($params['expr']));
     }
 
     /**

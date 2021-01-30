@@ -172,7 +172,7 @@ final class NodePrinter implements ExpressionPrinter
     {
         $value = $this->evaulator->evaluate($node);
 
-        return (string)$value;
+        return sprintf('%s() = %s', $node->name(), (string)$value);
     }
 
     private function formatDisplayAsNode(DisplayAsNode $node): string
@@ -187,9 +187,8 @@ final class NodePrinter implements ExpressionPrinter
         if ($node->unit() instanceof MemoryUnitNode) {
             return MemoryUnit::convertTo(
                 $this->evaulator->evaluate($node->node()),
-                $node->unit()->unit(),
-                null,
-                $node->unit()->unit() === TimeUnit::MICROSECONDS ? 0 : null
+                MemoryUnit::BYTES,
+                $node->unit()->unit()
             );
         }
     }
