@@ -16,7 +16,7 @@ class ToleranceNode implements Node
         $this->tolerance = $tolerance;
     }
 
-    public function tolerance(): ExpresionNode
+    public function tolerance(): ExpressionNode
     {
         return $this->tolerance;
     }

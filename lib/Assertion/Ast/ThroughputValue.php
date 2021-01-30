@@ -7,7 +7,7 @@ use PhpBench\Assertion\Ast\ExpressionNode;
 class ThroughputValue implements ExpressionNode
 {
     /**
-     * @var string
+     * @var UnitNOde
      */
     private $unit;
 
@@ -16,7 +16,7 @@ class ThroughputValue implements ExpressionNode
      */
     private $value;
 
-    public function __construct(ExpressionNode $value, string $unit)
+    public function __construct(ExpressionNode $value, UnitNode $unit)
     {
         $this->value = $value;
         $this->unit = $unit;
@@ -27,7 +27,7 @@ class ThroughputValue implements ExpressionNode
         return $this->value;
     }
 
-    public function unit(): string
+    public function unit(): UnitNode
     {
         return $this->unit;
     }

@@ -37,19 +37,26 @@ class AssertionProcessor
      */
     private $printer;
 
+    /**
+     * @var ExpressionLexer
+     */
+    private $lexer;
+
     public function __construct(
         ExpressionParser $parser,
+        ExpressionLexer $lexer,
         ExpressionEvaluatorFactory $evaluator,
         ExpressionPrinterFactory $printer
     ) {
         $this->evaluator = $evaluator;
         $this->parser = $parser;
         $this->printer = $printer;
+        $this->lexer = $lexer;
     }
 
     public function assert(Variant $variant, string $assertion): AssertionResult
     {
-        $node = $this->parser->parse($assertion);
+        $node = $this->parser->parse($this->lexer->lex($assertion));
 
         if (!$node instanceof Comparison) {
             throw new ExpressionEvaluatorError(sprintf(

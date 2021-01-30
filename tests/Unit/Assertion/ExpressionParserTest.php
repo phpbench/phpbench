@@ -24,6 +24,7 @@ use PhpBench\Assertion\Ast\Node;
 use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\ThroughputValue;
+use PhpBench\Assertion\Ast\TimeUnitNode;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\ToleranceNode;
 use PhpBench\Assertion\Exception\SyntaxError;
@@ -370,19 +371,8 @@ class ExpressionParserTest extends ExpressionParserTestCase
 
         yield [
             'func(10 +/- 10)',
-            'Expected token "comma"',
+            'Unexpected extra tokens',
             [
-                'functions' => [
-                    'func'
-                ]
-            ]
-        ];
-
-        yield [
-            'func(10 ms)',
-            'Expected token "comma"',
-            [
-                'timeUnits' => ['ms'],
                 'functions' => [
                     'func'
                 ]
@@ -391,12 +381,17 @@ class ExpressionParserTest extends ExpressionParserTestCase
 
         yield [
             'ms',
-            'Time unit expected',
+            'Expression expected before',
             [
                 'timeUnits' => ['ms'],
-                'functions' => [
-                    'func'
-                ]
+            ]
+        ];
+
+        yield [
+            'mega',
+            'Expression expected before',
+            [
+                'memoryUnits' => ['mega'],
             ]
         ];
     }
@@ -411,8 +406,8 @@ class ExpressionParserTest extends ExpressionParserTestCase
             new Comparison(
                 new IntegerNode(100000),
                 '<=',
-                new ThroughputValue(new IntegerNode(10), 's'),
-                new ToleranceNode(new ThroughputValue(new IntegerNode(1), 's'))
+                new ThroughputValue(new IntegerNode(10), new TimeUnitNode('s')),
+                new ToleranceNode(new ThroughputValue(new IntegerNode(1), new TimeUnitNode('s')))
             ),
             [
                 'timeUnits' => ['s'],

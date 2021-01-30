@@ -184,7 +184,11 @@ class ExpressionEvaluator
 
     private function evaluateThroughputValue(ThroughputValue $node): float
     {
-        return TimeUnit::convertTo(1, $node->unit(), TimeUnit::MICROSECONDS) / $this->evaluate($node->value());
+        return TimeUnit::convertTo(
+            1,
+            $node->unit()->unit(),
+            TimeUnit::MICROSECONDS
+        ) / $this->evaluate($node->value());
     }
 
     /**

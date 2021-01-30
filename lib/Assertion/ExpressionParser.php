@@ -24,6 +24,7 @@ use PhpBench\Assertion\Ast\NumberNode;
 use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\ThroughputValue;
+use PhpBench\Assertion\Ast\TimeUnitNode;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\ToleranceNode;
 use PhpBench\Assertion\Ast\ExpressionNode;
@@ -58,7 +59,13 @@ final class ExpressionParser
     private function buildAst(): Node
     {
         $this->parseExpression();
-        return $this->buffer->singleRemainingNode();
+
+        $result = $this->buffer->pop();
+        if ($this->buffer->count()) {
+            throw $this->syntaxError('Unexpected extra tokens before');
+        }
+
+        return $result;
     }
 
     private function parseExpression(): void
@@ -96,6 +103,10 @@ final class ExpressionParser
                 return $this->parseFunction();
             case Token::T_AS:
                 return $this->parseAs();
+            case Token::T_PERCENTAGE:
+                return $this->parsePercentage();
+            case Token::T_THROUGHPUT:
+                return $this->parseThroughput();
 
             // tokens which end expressions
             case Token::T_COMMA:
@@ -121,7 +132,7 @@ final class ExpressionParser
     private function parseComparator(): Comparison
     {
         $comparator = $this->tokens->chomp(Token::T_COMPARATOR);
-        $left = $this->mustPopNode(ExpressionNode::class);
+        $left = $this->mustPopNode(ExpressionNode::class, 'Left hand side of comparison is missing');
         $this->parseExpression();
         $right = $this->mustShiftNode(ExpressionNode::class);
         $tolerance = $this->buffer->shiftType(ToleranceNode::class);
@@ -154,17 +165,34 @@ final class ExpressionParser
     private function parseTimeUnit(): TimeValue
     {
         $unit = $this->tokens->chomp(Token::T_TIME_UNIT);
-        $expression = $this->mustPopNode(ExpressionNode::class);
+        $expression = $this->mustPopNode(ExpressionNode::class, 'Expression expected before time unit');
 
         return new TimeValue($expression, $unit->value);
+    }
+
+    private function parsePercentage(): PercentageValue
+    {
+        $unit = $this->tokens->chomp(Token::T_PERCENTAGE);
+        $expression = $this->mustPopNode(ExpressionNode::class, 'Expression expected before percentage');
+
+        return new PercentageValue($expression);
     }
 
     private function parseMemoryUnit(): MemoryValue
     {
         $unit = $this->tokens->chomp(Token::T_MEMORY_UNIT);
-        $expression = $this->mustPopNode(ExpressionNode::class);
+        $expression = $this->mustPopNode(ExpressionNode::class, 'Expression expected before memory unit');
 
         return new MemoryValue($expression, $unit->value);
+    }
+
+    private function parseThroughput(): ThroughputValue
+    {
+        $this->tokens->chomp(Token::T_THROUGHPUT);
+        $unit = $this->parseUnit();
+        $expression = $this->mustPopNode(ExpressionNode::class);
+
+        return new ThroughputValue($expression, $unit);
     }
 
     private function parseTolerance(): ToleranceNode
@@ -181,7 +209,7 @@ final class ExpressionParser
         $name = $this->tokens->chomp(Token::T_FUNCTION);
         $open = $this->tokens->chomp(Token::T_OPEN_PAREN);
         $values = $this->parseExpressionList();
-        $open = $this->tokens->chomp(Token::T_CLOSE_PAREN);
+        $close = $this->tokens->chomp(Token::T_CLOSE_PAREN);
 
         return new FunctionNode($name->value, $values);
     }
@@ -194,10 +222,17 @@ final class ExpressionParser
         $expressions = [];
         $this->parseExpression();
         while ($expression = $this->buffer->popType(ExpressionNode::class)) {
+
             $expressions[] = $expression;
+
+            if ($this->tokens->if(Token::T_CLOSE_PAREN)) {
+                return $expressions;
+            }
+
             if ($this->tokens->if(Token::T_COMMA)) {
                 $this->tokens->chomp();
             }
+
             $this->parseExpression();
         }
 
@@ -226,11 +261,16 @@ final class ExpressionParser
      * @param class-string<T> $nodeFqn
      * @return T
      */
-    private function mustPopNode(string $nodeFqn)
+    private function mustPopNode(string $nodeFqn, ?string $message = null)
     {
         $node = $this->buffer->pop();
+        if (null === $node) {
+            throw $this->syntaxError(
+                $message ?: 'Nothing left to pop',
+            );
+        }
         if (!$node instanceof $nodeFqn) {
-            throw $this->syntaxError(sprintf(
+            throw $this->syntaxError($message ?: sprintf(
                 'Expected node of type "%s", got "%s"',
                 $nodeFqn,
                 get_class($node)

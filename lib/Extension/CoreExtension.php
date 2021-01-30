@@ -620,6 +620,7 @@ class CoreExtension implements ExtensionInterface
         $container->register(AssertionProcessor::class, function (Container $container) {
             return new AssertionProcessor(
                 $container->get(ExpressionParser::class),
+                $container->get(ExpressionLexer::class),
                 $container->get(ExpressionEvaluatorFactory::class),
                 $container->get(ExpressionPrinterFactory::class)
             );
@@ -629,9 +630,7 @@ class CoreExtension implements ExtensionInterface
         });
 
         $container->register(ExpressionParser::class, function (Container $container) {
-            return new ExpressionParser(
-                $container->get(ExpressionLexer::class)
-            );
+            return new ExpressionParser();
         });
 
         $container->register(ExpressionFunctions::class, function () {

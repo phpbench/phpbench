@@ -30,14 +30,15 @@ class ExpressionEvaluatorTest extends TestCase
 
         $eval = new ExpressionEvaluator($params, $functions);
 
-        $parser = new ExpressionParser(new ExpressionLexer(
+        $lexer = new ExpressionLexer(
             $functions->names(),
             TimeUnit::supportedUnitNames(),
             MemoryUnit::supportedUnitNames()
-        ));
+        );
+        $parser = new ExpressionParser($lexer);
 
         $result = $eval->evaluate(
-            $parser->parse($expression)
+            $parser->parse($lexer->lex($expression))
         );
 
         self::assertEquals(
@@ -149,7 +150,7 @@ class ExpressionEvaluatorTest extends TestCase
         }]];
 
         // functions
-        yield ['multiply(pass(12), 2)', [], 24, [
+        yield ['multiply(pass(12, 4), 2)', [], 24, [
             'pass' => function (int $val) {
                 return $val;
             },

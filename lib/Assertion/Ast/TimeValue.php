@@ -8,7 +8,7 @@ use PhpBench\Assertion\Ast\ExpressionNode;
 class TimeValue implements ExpressionNode
 {
     /**
-     * @var Value
+     * @var ExpressionNode
      */
     private $value;
 

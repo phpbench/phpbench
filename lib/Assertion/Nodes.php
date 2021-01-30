@@ -3,6 +3,7 @@
 namespace PhpBench\Assertion;
 
 use ArrayIterator;
+use Countable;
 use IteratorAggregate;
 use PhpBench\Assertion\Ast\Node;
 use RuntimeException;
@@ -10,7 +11,7 @@ use RuntimeException;
 /**
  * @implements IteratorAggregate<int, Node>
  */
-class Nodes implements IteratorAggregate
+class Nodes implements IteratorAggregate, Countable
 {
     /**
      * @var Node[]
@@ -93,5 +94,13 @@ class Nodes implements IteratorAggregate
         }
 
         return $node;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function count(): int
+    {
+        return count($this->nodes);
     }
 }
