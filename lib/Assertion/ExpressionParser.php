@@ -54,19 +54,18 @@ final class ExpressionParser
 
     private function buildAst(): Node
     {
-        return $this->parseExpression();
+        $this->parseExpression();
+        return $this->buffer->singleRemainingNode();
     }
 
-    private function parseExpression(): ExpressionNode
+    private function parseExpression(): void
     {
         while ($node = $this->parseNode()) {
             $this->buffer->push($node);
         }
-
-        return $this->buffer->singleRemainingNode();
     }
 
-    private function parseNode(): ?ExpressionNode
+    private function parseNode(): ?Node
     {
         $token = $this->tokens->current;
         if (!$token) {
@@ -84,6 +83,10 @@ final class ExpressionParser
                 return $this->parseName();
             case Token::T_COMPARATOR:
                 return $this->parseComparator();
+            case Token::T_TOLERANCE:
+                return $this->parseTolerance();
+            case Token::T_TIME_UNIT:
+                return $this->parseTimeUnit();
         }
 
         $this->tokens->chomp();
@@ -104,18 +107,16 @@ final class ExpressionParser
     private function parseComparator(): Comparison
     {
         $comparator = $this->tokens->chomp(Token::T_COMPARATOR);
-        $left = $this->buffer->pop();
-
-        if (!$left instanceof ExpressionNode) {
-            throw $this->syntaxError('Expected expression to left of comparator');
-        }
-
-        $right = $this->parseExpression();
+        $left = $this->mustPopNode(ExpressionNode::class);
+        $this->parseExpression();
+        $right = $this->buffer->shift();
+        $tolerance = $this->buffer->shift();
 
         return new Comparison(
             $left,
             $comparator->value,
-            $right
+            $right,
+            $tolerance
         );
     }
 
@@ -134,5 +135,40 @@ final class ExpressionParser
         }
 
         throw SyntaxError::forToken($this->tokens, $token, $message);
+    }
+
+    private function parseTimeUnit(): TimeValue
+    {
+        $unit = $this->tokens->chomp(Token::T_TIME_UNIT);
+        $expression = $this->mustPopNode(ExpressionNode::class);
+
+        return new TimeValue($expression, $unit->value);
+    }
+
+    private function parseTolerance(): ToleranceNode
+    {
+        $this->tokens->chomp(Token::T_TOLERANCE);
+        $this->parseExpression();
+        $tolerance = $this->mustPopNode(ExpressionNode::class);
+
+        return new ToleranceNode($tolerance);
+    }
+
+    /**
+     * @template T
+     * @param class-string<T> $nodeFqn
+     * @return T
+     */
+    private function mustPopNode(string $nodeFqn)
+    {
+        $node = $this->buffer->pop();
+        if (!$node instanceof $nodeFqn) {
+            throw $this->syntaxError(sprintf(
+                'Expected node of type "%s", got "%s"',
+                $nodeFqn,
+                get_class($node)
+            ));
+        }
+        return $node;
     }
 }

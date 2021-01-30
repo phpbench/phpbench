@@ -3,6 +3,7 @@
 namespace PhpBench\Assertion\Ast;
 
 use PhpBench\Assertion\Ast\ExpressionNode;
+use PhpBench\Assertion\Ast\ToleranceNode;
 
 class Comparison implements ExpressionNode
 {

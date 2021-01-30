@@ -7,7 +7,7 @@ use PhpBench\Assertion\Ast\ExpressionNode;
 class ToleranceNode implements Node
 {
     /**
-     * @var Value
+     * @var ExpresionNode
      */
     private $tolerance;
 
@@ -16,7 +16,7 @@ class ToleranceNode implements Node
         $this->tolerance = $tolerance;
     }
 
-    public function tolerance(): ExpressionNode
+    public function tolerance(): ExpresionNode
     {
         return $this->tolerance;
     }

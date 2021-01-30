@@ -44,7 +44,7 @@ class Nodes implements IteratorAggregate
     {
         $node = array_pop($this->nodes);
 
-        if (!$node) {
+        if (count($this->nodes)) {
             throw new RuntimeException(sprintf(
                 'Did not parse a single AST node, "%s" nodes remaining',
                 count($this->nodes)

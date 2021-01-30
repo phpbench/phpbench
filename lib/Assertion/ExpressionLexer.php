@@ -118,12 +118,6 @@ final class ExpressionLexer
 
                 return Token::T_INTEGER;
 
-            case (preg_match('{'. self::PATTERN_NAME. '}', $value)):
-                return Token::T_NAME;
-
-            case (preg_match('{'. self::PATTERN_COMPARATORS. '}', $value)):
-                return Token::T_COMPARATOR;
-
             case (in_array($value, $this->functionNames)):
                 return Token::T_FUNCTION;
 
@@ -132,6 +126,13 @@ final class ExpressionLexer
 
             case (in_array($value, $this->memoryUnits)):
                 return Token::T_MEMORY_UNIT;
+
+            case (preg_match('{'. self::PATTERN_NAME. '}', $value)):
+                return Token::T_NAME;
+
+            case (preg_match('{'. self::PATTERN_COMPARATORS. '}', $value)):
+                return Token::T_COMPARATOR;
+
         }
 
         return $type;
