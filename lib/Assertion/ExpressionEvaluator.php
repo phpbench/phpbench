@@ -3,6 +3,7 @@
 namespace PhpBench\Assertion;
 
 use PhpBench\Assertion\Ast\Comparison;
+use PhpBench\Assertion\Ast\DisplayAsNode;
 use PhpBench\Assertion\Ast\FloatNode;
 use PhpBench\Assertion\Ast\FunctionNode;
 use PhpBench\Assertion\Ast\IntegerNode;
@@ -75,6 +76,10 @@ class ExpressionEvaluator
 
         if ($node instanceof MemoryValue) {
             return $this->evaluateMemoryValue($node);
+        }
+
+        if ($node instanceof DisplayAsNode) {
+            return $this->evaluateDisplayasNode($node);
         }
 
         throw new ExpressionEvaluatorError(sprintf(
@@ -189,6 +194,11 @@ class ExpressionEvaluator
             $node->unit()->unit(),
             TimeUnit::MICROSECONDS
         ) / $this->evaluate($node->value());
+    }
+
+    private function evaluateDisplayasNode(DisplayAsNode $node): float
+    {
+        return $this->evaluate($node->node());
     }
 
     /**

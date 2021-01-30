@@ -260,7 +260,10 @@ class TimeUnit
      */
     public function format(float $time, string $unit = null, string $mode = null, int $precision = null, bool $suffix = true): string
     {
-        $value = number_format($this->toDestUnit($time, $unit, $mode), $precision !== null ? $precision : $this->precision);
+        $value = number_format(
+            $this->toDestUnit($time, $unit, $mode),
+            $precision !== null ? $precision : $this->precision
+        );
 
         if (false === $suffix) {
             return $value;

@@ -4,6 +4,7 @@ namespace PhpBench\Tests\Unit\Assertion\Printer;
 
 use Generator;
 use PhpBench\Assertion\Ast\Comparison;
+use PhpBench\Assertion\Ast\DisplayAsNode;
 use PhpBench\Assertion\Ast\FloatNode;
 use PhpBench\Assertion\Ast\FunctionNode;
 use PhpBench\Assertion\Ast\IntegerNode;
@@ -12,6 +13,7 @@ use PhpBench\Assertion\Ast\Node;
 use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\ThroughputValue;
+use PhpBench\Assertion\Ast\TimeUnitNode;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\ToleranceNode;
 use PhpBench\Assertion\ExpressionEvaluatorFactory;
@@ -60,7 +62,28 @@ class NodePrinterTest extends TestCase
                 new TimeValue(new IntegerNode(10), 'seconds'),
                 [],
                 '10s',
-            ];
+        ];
+
+        yield [
+            new DisplayAsNode(
+                new IntegerNode(10000000),
+                new TimeUnitNode('seconds')
+            ),
+            [],
+            '10s',
+        ];
+
+        yield [
+            new DisplayAsNode(
+                new TimeValue(
+                    new IntegerNode(1),
+                    'seconds',
+                ),
+                new TimeUnitNode('milliseconds'),
+            ),
+            [],
+            '1,000ms',
+        ];
     }
 
     /**
@@ -69,10 +92,10 @@ class NodePrinterTest extends TestCase
     public function provideThroughputValue(): Generator
     {
         yield [
-                new ThroughputValue(new IntegerNode(10), 'second'),
-                [],
-                '10 ops/s'
-            ];
+            new ThroughputValue(new IntegerNode(10), 'second'),
+            [],
+            '10 ops/s'
+        ];
     }
 
     /**
@@ -81,19 +104,19 @@ class NodePrinterTest extends TestCase
     public function provideComparison(): Generator
     {
         yield 'property access unit 1' => [
-                new Comparison(
-                    new TimeValue(new PropertyAccess(['foo', 'bar']), 'seconds'),
-                    '>',
-                    new TimeValue(new IntegerNode(10), 'seconds'),
-                    new ToleranceNode(new TimeValue(new IntegerNode(5), 'seconds'))
-                ),
-                [
-                    'foo' => [
-                        'bar' => 10
-                    ]
-                ],
-                '10s > 10s ± 5s',
-            ];
+            new Comparison(
+                new TimeValue(new PropertyAccess(['foo', 'bar']), 'seconds'),
+                '>',
+                new TimeValue(new IntegerNode(10), 'seconds'),
+                new ToleranceNode(new TimeValue(new IntegerNode(5), 'seconds'))
+            ),
+            [
+                'foo' => [
+                    'bar' => 10
+                ]
+            ],
+            '10s > 10s ± 5s',
+        ];
     }
 
     /**
@@ -111,12 +134,6 @@ class NodePrinterTest extends TestCase
             new MemoryValue(new FloatNode(10.3), 'megabytes'),
             [],
             '10 megabytes',
-        ];
-
-        yield [
-            new MemoryValue(new IntegerNode(1000), 'bytes', 'kilobytes'),
-            [],
-            '1 kilobytes',
         ];
     }
 

@@ -3,13 +3,16 @@
 namespace PhpBench\Assertion\Printer;
 
 use PhpBench\Assertion\Ast\Comparison;
+use PhpBench\Assertion\Ast\DisplayAsNode;
 use PhpBench\Assertion\Ast\FloatNode;
 use PhpBench\Assertion\Ast\FunctionNode;
 use PhpBench\Assertion\Ast\IntegerNode;
+use PhpBench\Assertion\Ast\MemoryUnitNode;
 use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Assertion\Ast\Node;
 use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
+use PhpBench\Assertion\Ast\TimeUnitNode;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\ToleranceNode;
 use PhpBench\Assertion\Ast\ExpressionNode;
@@ -81,6 +84,10 @@ final class NodePrinter implements ExpressionPrinter
             return $this->formatFunctionNode($node);
         }
 
+        if ($node instanceof DisplayAsNode) {
+            return $this->formatDisplayAsNode($node);
+        }
+
         if ($node instanceof FloatNode) {
             return (string)number_format($node->value(), self::DECIMAL_PRECISION);
         }
@@ -121,9 +128,9 @@ final class NodePrinter implements ExpressionPrinter
     {
         return $this->timeUnit->format(
             $this->evaulator->evaluate($timeValue),
-            $timeValue->asUnit(),
+            $timeValue->unit(),
             null,
-            $timeValue->asUnit() === TimeUnit::MICROSECONDS ? 0 : null
+            $timeValue->unit() === TimeUnit::MICROSECONDS ? 0 : null
         );
     }
 
@@ -144,9 +151,9 @@ final class NodePrinter implements ExpressionPrinter
             number_format(MemoryUnit::convertTo(
                 $this->evaulator->evaluate($node),
                 MemoryUnit::BYTES,
-                $node->asUnit()
+                $node->unit()
             )),
-            $node->asUnit()
+            $node->unit()
         );
     }
 
@@ -166,5 +173,24 @@ final class NodePrinter implements ExpressionPrinter
         $value = $this->evaulator->evaluate($node);
 
         return (string)$value;
+    }
+
+    private function formatDisplayAsNode(DisplayAsNode $node): string
+    {
+        if ($node->unit() instanceof TimeUnitNode) {
+            return $this->timeUnit->format(
+                $this->evaulator->evaluate($node->node()),
+                $node->unit()->unit()
+            );
+        }
+
+        if ($node->unit() instanceof MemoryUnitNode) {
+            return MemoryUnit::convertTo(
+                $this->evaulator->evaluate($node->node()),
+                $node->unit()->unit(),
+                null,
+                $node->unit()->unit() === TimeUnit::MICROSECONDS ? 0 : null
+            );
+        }
     }
 }
