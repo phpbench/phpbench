@@ -33,6 +33,47 @@ class Nodes implements IteratorAggregate
     }
 
     /**
+     * @template T of Node
+     * @param class-string<T> $nodeType
+     * @return T|null
+     */
+    public function popType(string $nodeType): ?Node
+    {
+        $node = $this->pop();
+        if (null === $node) {
+            return null;
+        }
+        if (!$node instanceof $nodeType) {
+            return null;
+        }
+
+        return $node;
+    }
+
+    public function shift(): ?Node
+    {
+        return array_shift($this->nodes);
+    }
+
+    /**
+     * @template T of Node
+     * @param class-string<T> $nodeType
+     * @return T|null
+     */
+    public function shiftType(string $nodeType): ?Node
+    {
+        $node = $this->shift();
+        if (null === $node) {
+            return null;
+        }
+        if (!$node instanceof $nodeType) {
+            return null;
+        }
+
+        return $node;
+    }
+
+    /**
      * @return ArrayIterator<int, Node>
      */
     public function getIterator(): ArrayIterator
@@ -52,10 +93,5 @@ class Nodes implements IteratorAggregate
         }
 
         return $node;
-    }
-
-    public function shift(): ?Node
-    {
-        return array_shift($this->nodes);
     }
 }

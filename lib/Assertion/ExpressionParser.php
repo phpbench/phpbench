@@ -87,10 +87,17 @@ final class ExpressionParser
                 return $this->parseTolerance();
             case Token::T_TIME_UNIT:
                 return $this->parseTimeUnit();
+            case Token::T_FUNCTION:
+                return $this->parseFunction();
+
+            // tokens which end expressions
+            case Token::T_COMMA:
+            case Token::T_CLOSE_PAREN:
+                return null;
         }
 
         $this->tokens->chomp();
-        throw $this->syntaxError('Do not know how to parse node');
+        throw $this->syntaxError('Do not know how to parse token');
     }
 
     private function parseName(): ExpressionNode
@@ -109,8 +116,8 @@ final class ExpressionParser
         $comparator = $this->tokens->chomp(Token::T_COMPARATOR);
         $left = $this->mustPopNode(ExpressionNode::class);
         $this->parseExpression();
-        $right = $this->buffer->shift();
-        $tolerance = $this->buffer->shift();
+        $right = $this->mustShiftNode(ExpressionNode::class);
+        $tolerance = $this->buffer->shiftType(ToleranceNode::class);
 
         return new Comparison(
             $left,
@@ -154,6 +161,34 @@ final class ExpressionParser
         return new ToleranceNode($tolerance);
     }
 
+    private function parseFunction(): FunctionNode
+    {
+        $name = $this->tokens->chomp(Token::T_FUNCTION);
+        $open = $this->tokens->chomp(Token::T_OPEN_PAREN);
+        $values = $this->parseExpressionList();
+        $open = $this->tokens->chomp(Token::T_CLOSE_PAREN);
+
+        return new FunctionNode($name->value, $values);
+    }
+
+    /**
+     * @return ExpressionNode[]
+     */
+    private function parseExpressionList(): array
+    {
+        $expressions = [];
+        $this->parseExpression();
+        while ($expression = $this->buffer->popType(ExpressionNode::class)) {
+            $expressions[] = $expression;
+            if ($this->tokens->if(Token::T_COMMA)) {
+                $this->tokens->chomp();
+            }
+            $this->parseExpression();
+        }
+
+        return $expressions;
+    }
+
     /**
      * @template T
      * @param class-string<T> $nodeFqn
@@ -162,6 +197,24 @@ final class ExpressionParser
     private function mustPopNode(string $nodeFqn)
     {
         $node = $this->buffer->pop();
+        if (!$node instanceof $nodeFqn) {
+            throw $this->syntaxError(sprintf(
+                'Expected node of type "%s", got "%s"',
+                $nodeFqn,
+                get_class($node)
+            ));
+        }
+        return $node;
+    }
+
+    /**
+     * @template T
+     * @param class-string<T> $nodeFqn
+     * @return T
+     */
+    private function mustShiftNode(string $nodeFqn)
+    {
+        $node = $this->buffer->shift();
         if (!$node instanceof $nodeFqn) {
             throw $this->syntaxError(sprintf(
                 'Expected node of type "%s", got "%s"',
