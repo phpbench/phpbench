@@ -13,9 +13,11 @@
 namespace PhpBench\Assertion;
 
 use PhpBench\Assertion\Ast\Comparison;
+use PhpBench\Assertion\Ast\DisplayAsNode;
 use PhpBench\Assertion\Ast\FloatNode;
 use PhpBench\Assertion\Ast\FunctionNode;
 use PhpBench\Assertion\Ast\IntegerNode;
+use PhpBench\Assertion\Ast\MemoryUnitNode;
 use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Assertion\Ast\Node;
 use PhpBench\Assertion\Ast\NumberNode;
@@ -25,6 +27,7 @@ use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\ToleranceNode;
 use PhpBench\Assertion\Ast\ExpressionNode;
+use PhpBench\Assertion\Ast\UnitNode;
 use PhpBench\Assertion\Exception\SyntaxError;
 use PhpBench\Util\MemoryUnit;
 use PhpBench\Util\TimeUnit;
@@ -87,8 +90,12 @@ final class ExpressionParser
                 return $this->parseTolerance();
             case Token::T_TIME_UNIT:
                 return $this->parseTimeUnit();
+            case Token::T_MEMORY_UNIT:
+                return $this->parseMemoryUnit();
             case Token::T_FUNCTION:
                 return $this->parseFunction();
+            case Token::T_AS:
+                return $this->parseAs();
 
             // tokens which end expressions
             case Token::T_COMMA:
@@ -152,6 +159,14 @@ final class ExpressionParser
         return new TimeValue($expression, $unit->value);
     }
 
+    private function parseMemoryUnit(): MemoryValue
+    {
+        $unit = $this->tokens->chomp(Token::T_MEMORY_UNIT);
+        $expression = $this->mustPopNode(ExpressionNode::class);
+
+        return new MemoryValue($expression, $unit->value);
+    }
+
     private function parseTolerance(): ToleranceNode
     {
         $this->tokens->chomp(Token::T_TOLERANCE);
@@ -187,6 +202,23 @@ final class ExpressionParser
         }
 
         return $expressions;
+    }
+
+    private function parseAs(): DisplayAsNode
+    {
+        $as = $this->tokens->chomp(Token::T_AS);
+        $unit = $this->parseUnit();
+        $expression = $this->mustPopNode(ExpressionNode::class);
+        return new DisplayAsNode($expression, $unit);
+    }
+
+    private function parseUnit(): UnitNode
+    {
+        if ($this->tokens->if(Token::T_MEMORY_UNIT)) {
+            return new MemoryUnitNode($this->tokens->chomp(Token::T_MEMORY_UNIT)->value);
+        }
+
+        return new TimeUnitNode($this->tokens->chomp(Token::T_TIME_UNIT)->value);
     }
 
     /**

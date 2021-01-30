@@ -17,13 +17,11 @@ class SyntaxError extends ExpressionError
         $underline = '';
         $found = false;
 
-        $until = 0;
         foreach ($tokens as $token) {
             if ($token === $target) {
-                $underline = str_repeat('-', $until) . str_repeat('^', $token->length());
+                $underline = str_repeat('-', $token->start()) . str_repeat('^', $token->length());
                 break;
             }
-            $until = $token->end();
         }
 
         return new self(implode(

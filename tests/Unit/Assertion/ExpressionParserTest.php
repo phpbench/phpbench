@@ -14,9 +14,11 @@ namespace PhpBench\Tests\Unit\Assertion;
 
 use Generator;
 use PhpBench\Assertion\Ast\Comparison;
+use PhpBench\Assertion\Ast\DisplayAsNode;
 use PhpBench\Assertion\Ast\FloatNode;
 use PhpBench\Assertion\Ast\FunctionNode;
 use PhpBench\Assertion\Ast\IntegerNode;
+use PhpBench\Assertion\Ast\MemoryUnitNode;
 use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Assertion\Ast\Node;
 use PhpBench\Assertion\Ast\PercentageValue;
@@ -161,7 +163,10 @@ class ExpressionParserTest extends ExpressionParserTestCase
 
         yield [
             '100 bytes as megabytes',
-            new MemoryValue(new IntegerNode(100), 'bytes', 'megabytes'),
+            new DisplayAsNode(
+                new MemoryValue(new IntegerNode(100), 'bytes'),
+                new MemoryUnitNode('megabytes')
+            ),
             [
                 'memoryUnits' => ['bytes', 'megabytes']
             ]
@@ -169,7 +174,10 @@ class ExpressionParserTest extends ExpressionParserTestCase
 
         yield [
             '100 as megabytes',
-            new MemoryValue(new IntegerNode(100), 'bytes', 'megabytes'),
+            new DisplayAsNode(
+                new IntegerNode(100),
+                new MemoryUnitNode('megabytes')
+            ),
             [
                 'memoryUnits' => ['bytes', 'megabytes']
             ]
@@ -177,10 +185,12 @@ class ExpressionParserTest extends ExpressionParserTestCase
 
         yield [
             'func(100) bytes as megabytes',
-            new MemoryValue(
-                new FunctionNode('func', [new IntegerNode(100)]),
-                'bytes',
-                'megabytes'
+            new DisplayAsNode(
+                new MemoryValue(
+                    new FunctionNode('func', [new IntegerNode(100)]),
+                    'bytes'
+                ),
+                new MemoryUnitNode('megabytes')
             ),
             [
                 'memoryUnits' => ['bytes', 'megabytes'],

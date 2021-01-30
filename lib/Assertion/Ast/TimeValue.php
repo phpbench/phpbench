@@ -17,16 +17,10 @@ class TimeValue implements ExpressionNode
      */
     private $unit;
 
-    /**
-     * @var string|null
-     */
-    private $asUnit;
-
-    public function __construct(ExpressionNode $value, ?string $unit = TimeUnit::MICROSECONDS, ?string $asUnit = null)
+    public function __construct(ExpressionNode $value, ?string $unit = TimeUnit::MICROSECONDS)
     {
         $this->value = $value;
         $this->unit = TimeUnit::normalizeUnit($unit);
-        $this->asUnit = $asUnit ? TimeUnit::normalizeUnit($asUnit) : null;
     }
 
     public function unit(): string
@@ -37,10 +31,5 @@ class TimeValue implements ExpressionNode
     public function value(): ExpressionNode
     {
         return $this->value;
-    }
-
-    public function asUnit(): string
-    {
-        return $this->asUnit ?? $this->unit;
     }
 }

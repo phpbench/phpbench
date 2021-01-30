@@ -16,16 +16,10 @@ class MemoryValue implements NumberNode
      */
     private $unit;
 
-    /**
-     * @var string
-     */
-    private $asUnit;
-
-    public function __construct(ExpressionNode $value, string $unit, ?string $asUnit = null)
+    public function __construct(ExpressionNode $value, string $unit)
     {
         $this->value = $value;
         $this->unit = $unit;
-        $this->asUnit = $asUnit;
     }
 
     public function unit(): string
@@ -36,10 +30,5 @@ class MemoryValue implements NumberNode
     public function value(): ExpressionNode
     {
         return $this->value;
-    }
-
-    public function asUnit(): string
-    {
-        return $this->asUnit ?: $this->unit;
     }
 }
