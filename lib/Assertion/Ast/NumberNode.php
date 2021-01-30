@@ -2,7 +2,9 @@
 
 namespace PhpBench\Assertion\Ast;
 
-interface NumberNode extends Value
+use PhpBench\Assertion\Ast\ExpressionNode;
+
+interface NumberNode extends ExpressionNode
 {
     public function value();
 }

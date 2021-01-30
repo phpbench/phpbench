@@ -14,13 +14,14 @@ class ExpressionParserTestCase extends TestCase
 {
     protected function parse(string $expression, array $config): Node
     {
-        $parser = new ExpressionParser(new ExpressionLexer(
+        $lexer = new ExpressionLexer(
             $config['functions'] ?? [],
             $config['timeUnits'] ?? [],
             $config['memoryUnits'] ?? []
-        ));
+        );
+        $parser = new ExpressionParser();
 
-        return $parser->parse($expression);
+        return $parser->parse($lexer->lex($expression));
     }
 
     /**

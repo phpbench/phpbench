@@ -13,8 +13,9 @@
 namespace PhpBench\Assertion\Ast;
 
 use PhpBench\Assertion\Exception\PropertyAccessError;
+use PhpBench\Assertion\Ast\ExpressionNode;
 
-class PropertyAccess implements Value
+class PropertyAccess implements ExpressionNode
 {
     /**
      * @var array<string>

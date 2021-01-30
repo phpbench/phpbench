@@ -2,7 +2,9 @@
 
 namespace PhpBench\Assertion\Ast;
 
-class FunctionNode implements Value
+use PhpBench\Assertion\Ast\ExpressionNode;
+
+class FunctionNode implements ExpressionNode
 {
     /**
      * @var string

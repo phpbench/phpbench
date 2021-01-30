@@ -2,7 +2,9 @@
 
 namespace PhpBench\Assertion\Ast;
 
-final class PercentageValue implements Value
+use PhpBench\Assertion\Ast\ExpressionNode;
+
+final class PercentageValue implements ExpressionNode
 {
     /**
      * @var NumberNode

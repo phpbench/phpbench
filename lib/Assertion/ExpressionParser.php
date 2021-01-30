@@ -24,7 +24,7 @@ use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\ToleranceNode;
-use PhpBench\Assertion\Ast\Value;
+use PhpBench\Assertion\Ast\ExpressionNode;
 use PhpBench\Assertion\Exception\SyntaxError;
 use PhpBench\Util\MemoryUnit;
 use PhpBench\Util\TimeUnit;
@@ -32,333 +32,66 @@ use PhpBench\Util\TimeUnit;
 class ExpressionParser
 {
     /**
-     * @var Nodes
+     * @var Nodes[]
      */
-    private $nodes;
+    private $stack;
 
     /**
-     * @var ExpressionLexer
+     * @var Tokens
      */
-    private $lexer;
+    private $tokens;
 
-    /**
-     * @var string
-     */
-    private $expression;
-
-    public function __construct(ExpressionLexer $lexer)
+    public function __construct()
     {
-        $this->lexer = $lexer;
         $this->nodes = new Nodes();
     }
 
-    public function parse(string $expression): Node
+    public function parse(Tokens $tokens): Node
     {
-        $this->expression = $expression;
-        $this->lexer->setInput($expression);
-
+        $this->tokens = $tokens;
         return $this->buildAst();
     }
 
     private function buildAst(): Node
     {
-        $this->lexer->moveNext();
-        $token = $this->lexer->token;
-
-        $this->parseNextNode();
-
-        return $this->nodes->singleRemainingNode();
+        return $this->parseExpression();
     }
 
-    private function parseNextNode(): void
+    private function parseExpression(): ?ExpressionNode
     {
-        while ($this->lexer->lookahead) {
-            $this->nodes->push($this->resolveToken());
-        }
-    }
-
-    private function resolveToken(): ?Node
-    {
-        if (!$this->lexer->lookahead) {
+        $token = $this->tokens->chomp();
+        if (!$token) {
             return null;
         }
 
-        $type = $this->lexer->lookahead['type'];
-        $value = $this->lexer->lookahead['value'];
-
-        switch ($type) {
-            case ExpressionLexer::T_INTEGER:
-                $this->lexer->moveNext();
-
-                return new IntegerNode($value);
-
-            case ExpressionLexer::T_FLOAT:
-                $this->lexer->moveNext();
-
-                return new FloatNode($value);
-
-            case ExpressionLexer::T_PROPERTY_ACCESS:
-                return $this->parsePropertyAccess();
-            case ExpressionLexer::T_COMPARATOR:
-                return $this->parseComparison();
-            case ExpressionLexer::T_FUNCTION:
-                return $this->parseFunction();
-            case ExpressionLexer::T_TIME_UNIT:
-                return $this->parseTimeUnit();
-            case ExpressionLexer::T_THROUGHPUT:
-                return $this->parseThroughput();
-            case ExpressionLexer::T_MEMORY_UNIT:
-                return $this->parseMemoryUnit();
-            case ExpressionLexer::T_TOLERANCE:
-                return $this->parseTolerance();
-            case ExpressionLexer::T_AS:
-                return $this->parseAsUnit();
-            case ExpressionLexer::T_PERCENTAGE:
-                return $this->parsePercentage();
+        switch ($token->type) {
+            case Token::T_INTEGER:
+                return new IntegerNode((int)$token->value);
+            case Token::T_FLOAT:
+                return new FloatNode((float)$token->value);
         }
 
-        throw $this->syntaxError('Do not know how to parse token');
-    }
-
-    private function parsePropertyAccess(): PropertyAccess
-    {
-        $token = $this->lexer->lookahead;
-        $this->lexer->moveNext();
-
-        return new PropertyAccess(explode('.', $token['value']));
-    }
-
-    private function parseComparison(): Comparison
-    {
-        $comparator = $this->lexer->lookahead['value'];
-
-        $left = $this->assureType(Value::class, $this->nodes->pop(), 'Left hand side of comparison');
-        $this->lexer->moveNext();
-        $this->parseNextNode();
-        $right = $this->assureType(Value::class, $this->nodes->shift(), 'Right side of comparison');
-        $tolerance = $this->assureTypeOrNull(ToleranceNode::class, $this->nodes->pop());
-
-        return new Comparison($left, $comparator, $right, $tolerance);
-    }
-
-    private function parseFunction(): FunctionNode
-    {
-        $functionName = $this->lexer->lookahead['value'];
-
-        $this->lexer->moveNext();
-
-        $this->expect(ExpressionLexer::T_OPEN_PAREN);
-
-        $args = [];
-
-        while (true) {
-            $arg = $this->resolveToken();
-
-            if (!$arg instanceof Value) {
-                throw $this->syntaxError('Expected value');
-            }
-
-            $args[] = $arg;
-
-            $next = $this->lexer->lookahead;
-
-            if (!$next) {
-                throw $this->syntaxError('Unexpected end');
-            }
-
-            if ($next['type'] === ExpressionLexer::T_CLOSE_PAREN) {
-                break;
-            }
-
-            $this->expect(ExpressionLexer::T_COMMA);
-        }
-
-        $this->expect(ExpressionLexer::T_CLOSE_PAREN);
-
-        return new FunctionNode($functionName, $args);
-    }
-
-    private function expect(string $type): void
-    {
-        if (!$this->lexer->lookahead) {
-            throw $this->syntaxError('No token to look ahead to');
-        }
-
-        if ($type === $this->lexer->lookahead['type']) {
-            $this->lexer->moveNext();
-
-            return;
-        }
-
-        throw $this->syntaxError(sprintf('Expected token "%s"', $type));
-    }
-
-    private function parseTimeUnit(): TimeValue
-    {
-        $value = $this->nodes->pop();
-        $unit = $this->lexer->lookahead['value'];
-        $value = $this->assureType(Value::class, $value, 'Time unit');
-
-        $this->lexer->moveNext();
-
-        $asUnit = null;
-
-        if ($this->lexer->lookahead && $this->lexer->lookahead['type'] === ExpressionLexer::T_AS) {
-            $this->lexer->moveNext();
-            $asUnit = $this->lexer->lookahead['value'];
-            $this->lexer->moveNext();
-        }
-
-        return new TimeValue($value, $unit, $asUnit);
-    }
-
-    private function parseThroughput(): ThroughputValue
-    {
-        $value = $this->nodes->pop();
-        $value = $this->assureType(Value::class, $value, 'Throughput');
-
-        $this->lexer->moveNext();
-
-        $unit = $this->lexer->lookahead;
-
-        if ($unit['type'] !== ExpressionLexer::T_TIME_UNIT) {
-            throw $this->syntaxError('Expected time unit for throughput');
-        }
-
-        $this->lexer->moveNext();
-
-        return new ThroughputValue($value, $unit['value']);
-    }
-
-    private function parseAsUnit(): Node
-    {
-        $value = $this->assureType(Value::class, $this->nodes->pop());
-
-        $this->lexer->moveNext();
-        $type = $this->lexer->lookahead['type'];
-        $unit = $this->lexer->lookahead['value'];
-
-        if ($type === ExpressionLexer::T_TIME_UNIT) {
-            $this->lexer->moveNext();
-
-            return new TimeValue($value, TimeUnit::MICROSECONDS, $unit);
-        }
-
-        if ($type === ExpressionLexer::T_MEMORY_UNIT) {
-            $this->lexer->moveNext();
-
-            return new MemoryValue($value, MemoryUnit::BYTES, $unit);
-        }
-
-        throw $this->syntaxError('Expected memory or time unit');
-    }
-
-    private function parseMemoryUnit(): MemoryValue
-    {
-        $unit = $this->lexer->lookahead['value'];
-        $value = $this->assureType(Value::class, $this->nodes->pop());
-
-        $this->lexer->moveNext();
-
-        $asUnit = null;
-
-        if ($this->lexer->lookahead && $this->lexer->lookahead['type'] === ExpressionLexer::T_AS) {
-            $this->lexer->moveNext();
-            $asUnit = $this->lexer->lookahead['value'];
-            $this->lexer->moveNext();
-        }
-
-        return new MemoryValue($value, $unit, $asUnit);
-    }
-
-    private function parseTolerance(): ToleranceNode
-    {
-        $this->lexer->moveNext();
-        $this->parseNextNode();
-        $value = $this->assureType(Value::class, $this->nodes->pop());
-
-        return new ToleranceNode($value);
-    }
-
-    private function parsePercentage(): PercentageValue
-    {
-        $value = $this->lexer->lookahead['value'];
-        $node = $this->assureType(NumberNode::class, $this->nodes->pop());
-        $this->lexer->moveNext();
-
-        return new PercentageValue($node);
-    }
-
-    /**
-     * @template T
-     *
-     * @param class-string<T> $classFqn
-     * @param null|object $value
-     *
-     * @return T
-     */
-    private function assureType(string $classFqn, $value, ?string $context = null)
-    {
-        $formatter = function (string $message) use ($context) {
-            if ($context) {
-                return sprintf('%s %s', $context, lcfirst($message));
-            }
-
-            return $message;
-        };
-
-        if (null === $value) {
-            throw $this->syntaxError($formatter(sprintf(
-                'Expected "%s", got NULL', Value::class
-            )));
-        }
-
-        if (!($value instanceof $classFqn)) {
-            throw $this->syntaxError($formatter(sprintf(
-                'Expected "%s", got "%s"', Value::class, get_class($value)
-            )));
-        }
-
-        return $value;
-    }
-
-    /**
-     * @template T
-     *
-     * @param class-string<T> $classFqn
-     * @param null|object $value
-     *
-     * @return T|null
-     */
-    private function assureTypeOrNull(string $classFqn, $value)
-    {
-        if (null === $value) {
-            return $value;
-        }
-
-        if (!($value instanceof $classFqn)) {
-            throw $this->syntaxError(sprintf(
-                'Expected "%s", got "%s"', Value::class, get_class($value)
-            ));
-        }
-
-        return $value;
+        throw $this->syntaxError('Do not know how to parse node');
     }
 
     private function syntaxError(string $message): SyntaxError
     {
         $out = [''];
 
-        $token = $this->lexer->lookahead;
+        $token = $this->tokens->current;
 
         if (!$token) {
-            $error = sprintf(
-
-                '%s', $message
-            );
-            $token = $this->lexer->token;
+            $token = $this->tokens->previous();
         }
 
-        throw SyntaxError::fromToken($this->expression, $message, $token);
+        if (!$token) {
+            throw new SyntaxError(sprintf(
+                'Could not parse expression "%s": %s',
+                $this->tokens->toString(),
+                $message
+            ));
+        }
+
+        throw SyntaxError::forToken($this->tokens->toString(), $message, $token);
     }
 }

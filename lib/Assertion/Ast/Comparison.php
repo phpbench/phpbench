@@ -2,6 +2,8 @@
 
 namespace PhpBench\Assertion\Ast;
 
+use PhpBench\Assertion\Ast\ExpressionNode;
+
 class Comparison implements Assertion
 {
     /**
@@ -22,7 +24,7 @@ class Comparison implements Assertion
      */
     private $tolerance;
 
-    public function __construct(Value $value1, string $operator, Value $value2, ?ToleranceNode $tolerance = null)
+    public function __construct(ExpressionNode $value1, string $operator, ExpressionNode $value2, ?ToleranceNode $tolerance = null)
     {
         $this->value1 = $value1;
         $this->operator = $operator;
@@ -35,12 +37,12 @@ class Comparison implements Assertion
         return $this->operator;
     }
 
-    public function value2(): Value
+    public function value2(): ExpressionNode
     {
         return $this->value2;
     }
 
-    public function value1(): Value
+    public function value1(): ExpressionNode
     {
         return $this->value1;
     }

@@ -4,7 +4,7 @@ namespace PhpBench\Assertion;
 
 use Doctrine\Common\Lexer\AbstractLexer;
 
-class ExpressionLexer extends AbstractLexer
+final class ExpressionLexer
 {
     /**
      * @var string[]
@@ -21,22 +21,10 @@ class ExpressionLexer extends AbstractLexer
      */
     private $memoryUnits;
 
-    public const T_NONE = 'none';
-    public const T_INTEGER = 'integer';
-    public const T_FLOAT = 'float';
-    public const T_TOLERANCE = 'tolerance';
-    public const T_FUNCTION = 'function';
-    public const T_DOT = 'dot';
-    public const T_OPEN_PAREN = 'open_paren';
-    public const T_CLOSE_PAREN = 'close_paren';
-    public const T_COMMA = 'comma';
-    public const T_TIME_UNIT = 'time_unit';
-    public const T_MEMORY_UNIT = 'memory_unit';
-    public const T_COMPARATOR = 'comparator';
-    public const T_PROPERTY_ACCESS = 'property_access';
-    public const T_PERCENTAGE = 'percentage';
-    public const T_AS = 'as';
-    public const T_THROUGHPUT = 'throughput';
+    /**
+     * @var string
+     */
+    private $pattern;
 
     private const PATTERN_PROPERTY_ACCESS = '(?:[a-z_][a-z0-9_]+\.(?:[a-z_][a-z0-9_]+\.?)+)';
     private const PATTERN_COMPARATORS = '(?:<=|>=|<|=|>)';
@@ -45,8 +33,23 @@ class ExpressionLexer extends AbstractLexer
     private const PATTERN_THROUGHPUT = '(?:ops\/)';
 
     private const TOKEN_VALUE_MAP = [
-        '+/-' => self::T_TOLERANCE,
-        'ops/' => self::T_THROUGHPUT,
+        '+/-' => Token::T_TOLERANCE,
+        'ops/' => Token::T_THROUGHPUT,
+    ];
+
+    const PATTERNS = [
+        '(?:[\(\)])', // parenthesis
+        self::PATTERN_TOLERANCE,
+        self::PATTERN_COMPARATORS,
+        '(?:[0-9]+(?:[\.][0-9]+)*)(?:e[+-]?[0-9]+)?', // numbers
+        self::PATTERN_PROPERTY_ACCESS,
+        self::PATTERN_THROUGHPUT,
+        self::PATTERN_NAME,
+        '%'
+    ];
+
+    const IGNORE_PATTERNS = [
+        '\s+',
     ];
 
     /**
@@ -62,72 +65,83 @@ class ExpressionLexer extends AbstractLexer
         $this->functionNames = $functionNames;
         $this->timeUnits = $timeUnits;
         $this->memoryUnits = $memoryUnits;
+        $this->pattern = sprintf(
+            '{(%s)|%s}',
+            implode(')|(', self::PATTERNS),
+            implode('|', self::IGNORE_PATTERNS)
+        );
     }
 
-    protected function getCatchablePatterns(): array
+    public function lex(string $expression)
     {
-        return [
-            '(?:[\(\)])', // parenthesis
-            self::PATTERN_TOLERANCE,
-            self::PATTERN_COMPARATORS,
-            '(?:[0-9]+(?:[\.][0-9]+)*)(?:e[+-]?[0-9]+)?', // numbers
-            self::PATTERN_PROPERTY_ACCESS,
-            self::PATTERN_THROUGHPUT,
-            self::PATTERN_NAME,
-            '%'
-        ];
+        $chunks = (array)preg_split(
+            $this->pattern,
+            $expression,
+            null,
+            PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE
+        );
+        $tokens = [];
+        foreach ($chunks as $chunk) {
+            [ $value, $offset ] = $chunk;
+            $tokens[] = new Token(
+                $this->resolveType($value),
+                $value,
+                $offset
+            );
+            $prevChunk = $chunk;
+        }
+
+        return new Tokens($tokens);
     }
 
-    protected function getNonCatchablePatterns(): array
+    /**
+     * @param mixed $value
+     */
+    protected function resolveType($value): string
     {
-        return ['\s+'];
-    }
-
-    protected function getType(&$value)
-    {
-        $type = self::T_NONE;
+        $type = Token::T_NONE;
 
         if (array_key_exists($value, self::TOKEN_VALUE_MAP)) {
             return self::TOKEN_VALUE_MAP[$value];
         }
 
         switch (true) {
-            case (is_numeric($value)):
-                if (strpos($value, '.') !== false || stripos($value, 'e') !== false) {
-                    return self::T_FLOAT;
-                }
+        case (is_numeric($value)):
+            if (strpos($value, '.') !== false || stripos($value, 'e') !== false) {
+                return Token::T_FLOAT;
+            }
 
-                return self::T_INTEGER;
+            return Token::T_INTEGER;
 
-            case $value === '(':
-                return self::T_OPEN_PAREN;
+        case $value === '(':
+            return Token::T_OPEN_PAREN;
 
-            case $value === ',':
-                return self::T_COMMA;
+        case $value === ',':
+            return Token::T_COMMA;
 
-            case $value === ')':
-                return self::T_CLOSE_PAREN;
+        case $value === ')':
+            return Token::T_CLOSE_PAREN;
 
-            case $value === self::T_AS:
-                return self::T_AS;
+        case $value === Token::T_AS:
+            return Token::T_AS;
 
-            case (preg_match('{'. self::PATTERN_PROPERTY_ACCESS . '}', $value)):
-                return self::T_PROPERTY_ACCESS;
+        case (preg_match('{'. self::PATTERN_PROPERTY_ACCESS . '}', $value)):
+            return Token::T_PROPERTY_ACCESS;
 
-            case (preg_match('{'. self::PATTERN_COMPARATORS. '}', $value)):
-                return self::T_COMPARATOR;
+        case (preg_match('{'. self::PATTERN_COMPARATORS. '}', $value)):
+            return Token::T_COMPARATOR;
 
-            case (in_array($value, $this->functionNames)):
-                return self::T_FUNCTION;
+        case (in_array($value, $this->functionNames)):
+            return Token::T_FUNCTION;
 
-            case (in_array($value, $this->timeUnits)):
-                return self::T_TIME_UNIT;
+        case (in_array($value, $this->timeUnits)):
+            return Token::T_TIME_UNIT;
 
-            case (in_array($value, $this->memoryUnits)):
-                return self::T_MEMORY_UNIT;
+        case (in_array($value, $this->memoryUnits)):
+            return Token::T_MEMORY_UNIT;
 
-            case $value === '%':
-                return self::T_PERCENTAGE;
+        case $value === '%':
+            return Token::T_PERCENTAGE;
         }
 
         return $type;

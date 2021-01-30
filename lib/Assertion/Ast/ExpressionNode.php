@@ -2,6 +2,6 @@
 
 namespace PhpBench\Assertion\Ast;
 
-interface Value extends Node
+interface ExpressionNode extends Node
 {
 }

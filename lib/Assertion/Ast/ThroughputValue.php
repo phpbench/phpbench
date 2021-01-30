@@ -2,7 +2,9 @@
 
 namespace PhpBench\Assertion\Ast;
 
-class ThroughputValue implements Value
+use PhpBench\Assertion\Ast\ExpressionNode;
+
+class ThroughputValue implements ExpressionNode
 {
     /**
      * @var string
@@ -14,13 +16,13 @@ class ThroughputValue implements Value
      */
     private $value;
 
-    public function __construct(Value $value, string $unit)
+    public function __construct(ExpressionNode $value, string $unit)
     {
         $this->value = $value;
         $this->unit = $unit;
     }
 
-    public function value(): Value
+    public function value(): ExpressionNode
     {
         return $this->value;
     }

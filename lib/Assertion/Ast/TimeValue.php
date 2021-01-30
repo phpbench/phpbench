@@ -3,8 +3,9 @@
 namespace PhpBench\Assertion\Ast;
 
 use PhpBench\Util\TimeUnit;
+use PhpBench\Assertion\Ast\ExpressionNode;
 
-class TimeValue implements Value
+class TimeValue implements ExpressionNode
 {
     /**
      * @var Value
@@ -21,7 +22,7 @@ class TimeValue implements Value
      */
     private $asUnit;
 
-    public function __construct(Value $value, ?string $unit = TimeUnit::MICROSECONDS, ?string $asUnit = null)
+    public function __construct(ExpressionNode $value, ?string $unit = TimeUnit::MICROSECONDS, ?string $asUnit = null)
     {
         $this->value = $value;
         $this->unit = TimeUnit::normalizeUnit($unit);
@@ -33,7 +34,7 @@ class TimeValue implements Value
         return $this->unit;
     }
 
-    public function value(): Value
+    public function value(): ExpressionNode
     {
         return $this->value;
     }

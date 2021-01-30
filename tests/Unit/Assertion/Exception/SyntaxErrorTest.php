@@ -10,7 +10,7 @@ class SyntaxErrorTest extends TestCase
 {
     public function testFromToken(): void
     {
-        $error = SyntaxError::fromToken('this is an expression', 'invalid', [
+        $error = SyntaxError::forToken('this is an expression', 'invalid', [
             'position' => 5,
             'type' => ExpressionLexer::T_NONE,
             'value' => 'is',

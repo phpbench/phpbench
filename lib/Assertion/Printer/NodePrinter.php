@@ -12,7 +12,7 @@ use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\ToleranceNode;
-use PhpBench\Assertion\Ast\Value;
+use PhpBench\Assertion\Ast\ExpressionNode;
 use PhpBench\Assertion\ExpressionEvaluator;
 use PhpBench\Assertion\ExpressionEvaluatorFactory;
 use PhpBench\Assertion\ExpressionPrinter;
@@ -90,7 +90,7 @@ final class NodePrinter implements ExpressionPrinter
 
     private function formatComparison(Comparison $node): string
     {
-        return (function (?ToleranceNode $tolerance, Value $value1, string $operator, Value $value2) {
+        return (function (?ToleranceNode $tolerance, ExpressionNode $value1, string $operator, ExpressionNode $value2) {
             switch ($operator) {
                 case '=':
                     $operator = '≈';

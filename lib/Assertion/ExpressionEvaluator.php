@@ -13,7 +13,7 @@ use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\ToleranceNode;
-use PhpBench\Assertion\Ast\Value;
+use PhpBench\Assertion\Ast\ExpressionNode;
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
 use PhpBench\Math\FloatNumber;
 use PhpBench\Util\MemoryUnit;
@@ -192,7 +192,7 @@ class ExpressionEvaluator
      */
     private function evaluateFunction(FunctionNode $node)
     {
-        return $this->functions->execute($node->name(), array_map(function (Value $node) {
+        return $this->functions->execute($node->name(), array_map(function (ExpressionNode $node) {
             return $this->evaluate($node);
         }, $node->args()));
     }

@@ -2,6 +2,8 @@
 
 namespace PhpBench\Assertion\Ast;
 
+use PhpBench\Assertion\Ast\ExpressionNode;
+
 class ToleranceNode implements Node
 {
     /**
@@ -9,12 +11,12 @@ class ToleranceNode implements Node
      */
     private $tolerance;
 
-    public function __construct(Value $tolerance)
+    public function __construct(ExpressionNode $tolerance)
     {
         $this->tolerance = $tolerance;
     }
 
-    public function tolerance(): Value
+    public function tolerance(): ExpressionNode
     {
         return $this->tolerance;
     }

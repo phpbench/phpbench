@@ -2,6 +2,8 @@
 
 namespace PhpBench\Assertion\Ast;
 
+use PhpBench\Assertion\Ast\ExpressionNode;
+
 class MemoryValue implements NumberNode
 {
     /**
@@ -19,7 +21,7 @@ class MemoryValue implements NumberNode
      */
     private $asUnit;
 
-    public function __construct(Value $value, string $unit, ?string $asUnit = null)
+    public function __construct(ExpressionNode $value, string $unit, ?string $asUnit = null)
     {
         $this->value = $value;
         $this->unit = $unit;
@@ -31,7 +33,7 @@ class MemoryValue implements NumberNode
         return $this->unit;
     }
 
-    public function value(): Value
+    public function value(): ExpressionNode
     {
         return $this->value;
     }
