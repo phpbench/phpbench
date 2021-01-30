@@ -459,5 +459,20 @@ class ExpressionParserTest extends ExpressionParserTestCase
                 new IntegerNode(3)
             )
         ];
+
+        yield [
+            '3 + (1 + 2)',
+            new ArithmeticNode(
+                new IntegerNode(3),
+                '+',
+                new ParenthesizedExpressionNode(
+                    new ArithmeticNode(
+                        new IntegerNode(1),
+                        '+',
+                        new IntegerNode(2),
+                    )
+                )
+            )
+        ];
     }
 }

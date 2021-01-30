@@ -102,8 +102,8 @@ class ExpressionEvaluator
         $value1 = $node->value1();
         $value2 = $node->value2();
 
-        $left = $this->evaluate($value1);
-        $right = $this->evaluate($value2);
+        $left = $this->evaluateComparable($value1);
+        $right = $this->evaluateComparable($value2);
 
         $tolerance = $this->evaluateTolerance($node->tolerance(), $right);
 
@@ -220,6 +220,9 @@ class ExpressionEvaluator
         }, $node->args()));
     }
 
+    /**
+     * @return number
+     */
     private function evaluateArithmatic(ArithmeticNode $node)
     {
         $leftValue = $this->evaluate($node->left());
@@ -244,5 +247,21 @@ class ExpressionEvaluator
     private function evaluateParenthesizedExpression(ParenthesizedExpressionNode $node)
     {
         return $this->evaluate($node->expression());
+    }
+
+    /**
+     * @return number
+     */
+    private function evaluateComparable(ExpressionNode $expression)
+    {
+        $result = $this->evaluate($expression);
+        if (!is_numeric($result)) {
+            throw new ExpressionEvaluatorError(sprintf(
+                'Cannot compare value of type "%s"',
+                is_object($result) ? get_class($result) : gettype($result)
+            ));
+        }
+
+        return $result;
     }
 }

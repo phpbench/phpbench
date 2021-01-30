@@ -10,6 +10,7 @@ use PhpBench\Assertion\Ast\FunctionNode;
 use PhpBench\Assertion\Ast\IntegerNode;
 use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Assertion\Ast\Node;
+use PhpBench\Assertion\Ast\ParenthesizedExpressionNode;
 use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\ThroughputValue;
@@ -188,6 +189,14 @@ class NodePrinterTest extends TestCase
             [
             ],
             '10.100',
+        ];
+
+        yield [
+            new ParenthesizedExpressionNode(
+                new IntegerNode(10)
+            ),
+            [],
+            '10',
         ];
     }
 }

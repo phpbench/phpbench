@@ -2,6 +2,7 @@
 
 namespace PhpBench\Assertion\Printer;
 
+use PhpBench\Assertion\ArithmeticNode;
 use PhpBench\Assertion\Ast\Comparison;
 use PhpBench\Assertion\Ast\DisplayAsNode;
 use PhpBench\Assertion\Ast\ExpressionNode;
@@ -11,6 +12,7 @@ use PhpBench\Assertion\Ast\IntegerNode;
 use PhpBench\Assertion\Ast\MemoryUnitNode;
 use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Assertion\Ast\Node;
+use PhpBench\Assertion\Ast\ParenthesizedExpressionNode;
 use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\TimeUnitNode;
@@ -90,6 +92,14 @@ final class NodePrinter implements ExpressionPrinter
 
         if ($node instanceof FloatNode) {
             return (string)number_format($node->value(), self::DECIMAL_PRECISION);
+        }
+
+        if ($node instanceof ParenthesizedExpressionNode) {
+            return $this->format($node->expression());
+        }
+
+        if ($node instanceof ArithmeticNode) {
+            return $this->evaulator->evaluate($node, $this->parameters);
         }
 
         return sprintf('!!!! could not format "%s" !!!!', get_class($node));
