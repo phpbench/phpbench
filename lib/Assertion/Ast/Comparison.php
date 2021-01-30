@@ -4,7 +4,7 @@ namespace PhpBench\Assertion\Ast;
 
 use PhpBench\Assertion\Ast\ExpressionNode;
 
-class Comparison implements Assertion
+class Comparison implements ExpressionNode
 {
     /**
      * @var Value

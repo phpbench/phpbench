@@ -29,12 +29,12 @@ use PhpBench\Assertion\Exception\SyntaxError;
 use PhpBench\Util\MemoryUnit;
 use PhpBench\Util\TimeUnit;
 
-class ExpressionParser
+final class ExpressionParser
 {
     /**
-     * @var Nodes[]
+     * @var Nodes
      */
-    private $stack;
+    private $buffer;
 
     /**
      * @var Tokens
@@ -43,7 +43,7 @@ class ExpressionParser
 
     public function __construct()
     {
-        $this->nodes = new Nodes();
+        $this->buffer = new Nodes();
     }
 
     public function parse(Tokens $tokens): Node
@@ -60,8 +60,10 @@ class ExpressionParser
     private function parseExpression(): ?ExpressionNode
     {
         while ($node = $this->parseNode()) {
-            dump($node);
+            $this->buffer->push($node);
         }
+
+        return $this->buffer->pop();
     }
 
     private function parseNode(): ?ExpressionNode
@@ -80,13 +82,15 @@ class ExpressionParser
                 return new FloatNode((float)$token->value);
             case Token::T_NAME:
                 return $this->parseName();
+            case Token::T_COMPARATOR:
+                return $this->parseComparator();
         }
 
         $this->tokens->chomp();
         throw $this->syntaxError('Do not know how to parse node');
     }
 
-    private function parseName(): Node
+    private function parseName(): ExpressionNode
     {
         $names = [$this->tokens->chomp(Token::T_NAME)->value];
         while ($this->tokens->if(Token::T_DOT)) {
@@ -95,6 +99,15 @@ class ExpressionParser
         }
 
         return new PropertyAccess($names);
+    }
+
+    private function parseComparator(): Comparison
+    {
+        $comparator = $this->tokens->chomp(Token::T_COMPARATOR);
+        $left = $this->buffer->pop();
+        $right = $this->parseExpression();
+
+        return new Comparison($left, $comparator->value, $right);
     }
 
     private function syntaxError(string $message): SyntaxError
