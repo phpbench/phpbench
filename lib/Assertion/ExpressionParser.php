@@ -111,6 +111,6 @@ class ExpressionParser
             ));
         }
 
-        throw SyntaxError::forToken($this->tokens->toString(), $message, $token);
+        throw SyntaxError::forToken($this->tokens, $token, $message);
     }
 }

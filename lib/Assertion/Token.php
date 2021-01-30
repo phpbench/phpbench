@@ -43,4 +43,19 @@ final class Token
         $this->value = $value;
         $this->offset = $offset;
     }
+
+    public function length(): int
+    {
+        return strlen($this->value);
+    }
+
+    public function start(): int
+    {
+        return $this->offset;
+    }
+
+    public function end(): int
+    {
+        return $this->offset + $this->length();
+    }
 }

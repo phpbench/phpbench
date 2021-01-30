@@ -156,8 +156,17 @@ final class Tokens implements IteratorAggregate
 
     public function toString(): string
     {
-        return implode('', array_map(function (Token $token) {
-            return $token->value;
-        }, $this->tokens));
+        $last = $this->tokens[count($this->tokens) - 1];
+        if (!$last instanceof Token) {
+            return '';
+        }
+
+        $out = str_repeat(' ', $last->end());
+
+        foreach ($this as $token) {
+            $out = substr_replace($out, $token->value, $token->start(), $token->length());
+        }
+
+        return $out;
     }
 }
