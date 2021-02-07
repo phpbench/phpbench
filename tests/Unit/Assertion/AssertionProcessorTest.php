@@ -6,7 +6,6 @@ use Generator;
 use PhpBench\Assertion\AssertionProcessor;
 use PhpBench\Assertion\AssertionResult;
 use PhpBench\Assertion\Exception\ExpressionError;
-use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Tests\IntegrationTestCase;
 use PhpBench\Tests\Util\VariantBuilder;

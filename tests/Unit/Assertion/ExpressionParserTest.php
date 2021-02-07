@@ -455,7 +455,7 @@ class ExpressionParserTest extends ExpressionParserTestCase
                     new ArithmeticNode(
                         new IntegerNode(1),
                         '+',
-                        new IntegerNode(2),
+                        new IntegerNode(2)
                     )
                 ),
                 '+',
@@ -472,7 +472,7 @@ class ExpressionParserTest extends ExpressionParserTestCase
                     new ArithmeticNode(
                         new IntegerNode(1),
                         '+',
-                        new IntegerNode(2),
+                        new IntegerNode(2)
                     )
                 )
             )
@@ -489,7 +489,7 @@ class ExpressionParserTest extends ExpressionParserTestCase
                     new ArithmeticNode(
                         new IntegerNode(2),
                         '*',
-                        new IntegerNode(2),
+                        new IntegerNode(2)
                     )
                 )
             )

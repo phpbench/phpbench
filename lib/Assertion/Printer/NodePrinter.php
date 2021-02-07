@@ -212,6 +212,6 @@ final class NodePrinter implements ExpressionPrinter
 
     private function formatThroughput(ThroughputValue $node): string
     {
-        return sprintf('%s ops/%s', $this->format($node->value()), $node->unit()->unit());
+        return sprintf('%s ops/%s', $this->evaulator->evaluate($node), $node->unit()->unit());
     }
 }

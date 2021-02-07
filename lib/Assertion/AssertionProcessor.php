@@ -13,12 +13,9 @@
 namespace PhpBench\Assertion;
 
 use Exception;
-use PhpBench\Assertion\Ast\Comparison;
 use PhpBench\Assertion\Exception\ExpressionError;
-use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
 use PhpBench\Assertion\Exception\PropertyAccessError;
 use PhpBench\Model\Variant;
-use RuntimeException;
 
 class AssertionProcessor
 {

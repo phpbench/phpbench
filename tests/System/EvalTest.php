@@ -24,4 +24,3 @@ class EvalTest extends SystemTestCase
         $this->assertStringContainsString('12', $process->getOutput());
     }
 }
-
