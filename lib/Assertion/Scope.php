@@ -4,7 +4,6 @@ namespace PhpBench\Assertion;
 
 use Countable;
 use IteratorAggregate;
-use PhpBench\Assertion\Scope;
 
 class Scope implements IteratorAggregate, Countable
 {
@@ -35,7 +34,7 @@ class Scope implements IteratorAggregate, Countable
     /**
      * {@inheritDoc}
      */
-    public function count()
+    public function count(): void
     {
     }
 }

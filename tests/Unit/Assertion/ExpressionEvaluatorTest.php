@@ -200,10 +200,15 @@ class ExpressionEvaluatorTest extends TestCase
 
         // arithmetic
         yield ['2+4', [], 6];
+
         yield ['2*2', [], 4];
+
         yield ['4/2', [], 2];
+
         yield ['4-2', [], 2];
+
         yield ['((4/2) * 2) + 6', [], 10];
+
         yield ['6 + (4 / 2) + (2 + 2)', [], 12];
 
         // lists

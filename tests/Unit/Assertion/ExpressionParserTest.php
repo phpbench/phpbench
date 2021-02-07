@@ -406,6 +406,7 @@ class ExpressionParserTest extends ExpressionParserTestCase
                 'timeUnits' => ['s', 'seconds'],
             ]
         ];
+
         yield 'throughput' => [
             '100000 <= 10 ops/s +/- 1 ops/s',
             new Comparison(
@@ -504,10 +505,12 @@ class ExpressionParserTest extends ExpressionParserTestCase
             '[]',
             new ListNode([])
         ];
+
         yield [
             '[10]',
             new ListNode([new IntegerNode(10)])
         ];
+
         yield [
             '[10, [12.12,12]]',
             new ListNode([

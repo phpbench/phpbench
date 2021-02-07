@@ -2,7 +2,6 @@
 
 namespace PhpBench\Console\Command;
 
-use PhpBench\Assertion\ExpressionEvaluator;
 use PhpBench\Assertion\ExpressionEvaluatorFactory;
 use PhpBench\Assertion\ExpressionLexer;
 use PhpBench\Assertion\ExpressionParser;
@@ -30,8 +29,7 @@ class EvaluateCommand extends Command
         ExpressionEvaluatorFactory $factory,
         ExpressionLexer $lexer,
         ExpressionParser $parser
-    )
-    {
+    ) {
         parent::__construct();
         $this->factory = $factory;
         $this->lexer = $lexer;
@@ -60,5 +58,4 @@ class EvaluateCommand extends Command
 
         return 0;
     }
-
 }

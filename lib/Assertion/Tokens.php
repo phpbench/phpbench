@@ -75,6 +75,7 @@ final class Tokens implements IteratorAggregate, Countable
                     $type
                 ));
             }
+
             return null;
         }
 

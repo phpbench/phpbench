@@ -91,9 +91,11 @@ final class ExpressionParser
         switch ($token->type) {
             case Token::T_INTEGER:
                 $token = $this->tokens->chomp(Token::T_INTEGER);
+
                 return new IntegerNode((int)$token->value);
             case Token::T_FLOAT:
                 $token = $this->tokens->chomp(Token::T_FLOAT);
+
                 return new FloatNode((float)$token->value);
             case Token::T_NAME:
                 return $this->parseName();
@@ -161,6 +163,7 @@ final class ExpressionParser
     private function parsePercentage(ExpressionNode $expression): PercentageValue
     {
         $unit = $this->tokens->chomp(Token::T_PERCENTAGE);
+
         return new PercentageValue($expression);
     }
 
@@ -194,6 +197,7 @@ final class ExpressionParser
         $this->tokens->chomp(Token::T_OPEN_PAREN);
         $expression = $this->parseExpression();
         $this->tokens->chomp(Token::T_CLOSE_PAREN);
+
         return new ParenthesizedExpressionNode($expression);
     }
 
@@ -206,13 +210,17 @@ final class ExpressionParser
 
         while (true) {
             $expressions[] = $this->parseExpression();
+
             if ($this->tokens->if(Token::T_COMMA)) {
                 $this->tokens->chomp();
+
                 continue;
             }
+
             if ($this->tokens->if(Token::T_CLOSE_PAREN)) {
                 return $expressions;
             }
+
             break;
         }
 
@@ -253,12 +261,14 @@ final class ExpressionParser
             case '>':
             case '>=':
                 $rightExpression = $this->parseExpression();
+
                 return $this->parseComparison($leftExpression, $operator, $rightExpression);
             case '+':
             case '-':
             case '/':
             case '*':
                 $rightExpression = $this->parseExpression();
+
                 return $this->parseArtithmetic($leftExpression, $operator, $rightExpression);
         }
 
@@ -279,6 +289,7 @@ final class ExpressionParser
     private function parseThroughput(ExpressionNode $leftExpression): ThroughputValue
     {
         $this->tokens->chomp(Token::T_THROUGHPUT);
+
         return new ThroughputValue($leftExpression, $this->parseUnit());
     }
 
@@ -289,14 +300,19 @@ final class ExpressionParser
 
         if ($this->tokens->if(Token::T_LIST_END)) {
             $this->tokens->chomp(Token::T_LIST_END);
+
             return new ListNode([]);
         }
+
         while (true) {
             $expressions[] = $this->parseExpression();
+
             if ($this->tokens->if(Token::T_COMMA)) {
                 $this->tokens->chomp();
+
                 continue;
             }
+
             break;
         }
         $this->tokens->chomp(Token::T_LIST_END);
