@@ -516,7 +516,7 @@ For example, assert that the mode is less than 100 microseconds:
 .. code-block:: php
 
     /**
-     * @Assert("variant.mode < 100 microseconds")
+     * @Assert("mode(variant.time.avg) as ms <= 100 microseconds")
      */
     public function benchFoobar()
     {
@@ -528,7 +528,7 @@ Assert a throughput greater than 0.25ops/µs:
 .. code-block:: php
 
     /**
-     * @Assert("variant.mode > 0.25 ops/microsecond")
+     * @Assert("mode(variant.time.avg) > 0.25ops/microseconds")
      */
     public function benchFoobar()
     {

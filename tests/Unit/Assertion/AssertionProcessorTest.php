@@ -5,6 +5,7 @@ namespace PhpBench\Tests\Unit\Assertion;
 use Generator;
 use PhpBench\Assertion\AssertionProcessor;
 use PhpBench\Assertion\AssertionResult;
+use PhpBench\Assertion\Exception\ExpressionError;
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Tests\IntegrationTestCase;
@@ -51,7 +52,7 @@ class AssertionProcessorTest extends IntegrationTestCase
 
     public function testExceptionIfNodeNotAComparison(): void
     {
-        $this->expectException(ExpressionEvaluatorError::class);
+        $this->expectException(ExpressionError::class);
         $variant = VariantBuilder::create(
             'one'
         )->iteration()->setResult(
@@ -61,16 +62,16 @@ class AssertionProcessorTest extends IntegrationTestCase
         $this->createProcessor()->assert($variant, '12');
     }
 
-    public function testWarningOnBadPropertyAccess(): void
+    public function testExceptionOnBadPropertyAccess(): void
     {
+        $this->expectException(ExpressionError::class);
         $variant = VariantBuilder::create(
             'one'
         )->iteration()->setResult(
             new TimeResult(10)
         )->end()->build();
 
-        $result = $this->createProcessor()->assert($variant, 'mode(foo.bar) > 10');
-        self::assertTrue($result->isWarning());
+        $this->createProcessor()->assert($variant, 'mode(foo.bar) > 10');
     }
 
     private function createProcessor(): AssertionProcessor

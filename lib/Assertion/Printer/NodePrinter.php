@@ -15,6 +15,7 @@ use PhpBench\Assertion\Ast\Node;
 use PhpBench\Assertion\Ast\ParenthesizedExpressionNode;
 use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
+use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeUnitNode;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\ToleranceNode;
@@ -100,6 +101,10 @@ final class NodePrinter implements ExpressionPrinter
 
         if ($node instanceof ArithmeticNode) {
             return $this->evaulator->evaluate($node);
+        }
+
+        if ($node instanceof ThroughputValue) {
+            return $this->formatThroughput($node);
         }
 
         return sprintf('!!!! could not format "%s" !!!!', get_class($node));
@@ -203,5 +208,10 @@ final class NodePrinter implements ExpressionPrinter
         }
 
         return '';
+    }
+
+    private function formatThroughput(ThroughputValue $node): string
+    {
+        return sprintf('%s ops/%s', $this->format($node->value()), $node->unit()->unit());
     }
 }

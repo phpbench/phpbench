@@ -198,5 +198,11 @@ class NodePrinterTest extends TestCase
             [],
             '10',
         ];
+
+        yield [
+            new ThroughputValue(new IntegerNode(10), new TimeUnitNode('second')),
+            [],
+            '10 ops/second',
+        ];
     }
 }
