@@ -6,7 +6,21 @@ Assertions can be added to your benchmarks as follows:
 .. code-block:: php
 
     /**
-     * @Assert("variant.mode < 100 microseconds +/- 10%")
+     * @Assert("mode(variant.time.avg) as ms < 10 ms")
+     */
+    public function benchFoobar()
+    {
+        // ...
+    }
+
+This will assert that the subject should complete in under 10 milliseconds.
+
+You can also compare aginst baselines (see :doc:`regression-testing`):
+
+.. code-block:: php
+
+    /**
+     * @Assert("mode(variant.time.avg) as ms <= mode(baseline.time.avg) as ms +/- 10%")
      */
     public function benchFoobar()
     {
@@ -16,32 +30,37 @@ Assertions can be added to your benchmarks as follows:
 Data
 ----
 
-There are two sources of data:
+You can access the results for both the variant you are testing and any
+baseline you are comparing against.
 
-- ``variant``: Data relating to the executed variant (i.e. the executed benchmark).
-- ``baseline``: Data from any referenced *baseline*. If no baseline was given,
-  the baseline will be the same as the ``variant``. See
-  :doc:`regression-testing` for information on creating baselines.
+You can access any data available in the variant result. Typically you will be
+most concerned with time and memory results:
 
-For each of these the following data is available:
+.. code-block:: php
 
-.. csv-table::
-    :header: "path", "description"
+    [
+        'variant' => [
+            'time' => [
+                'net' => [ 10, 10, 10, ... ], // total time for each iteration
+                'avg' => [ 2, 2, 2, ... ],    // average time for each revolution
+            ],
+            'mem' => [
+                'peak' => [ 10, 10, 10, ... ],
+                'real' => [ 2, 2, 2, ... ],
+                'final' => [ 2, 2, 2, ... ],
+            ],
+        ],
+        'baseline' => [
+            // ...
+        ]
+    ]
 
-    "min", "Minimum iteration time"
-    "max", "Maximum iteration time"
-    "mean", "Mean (average) iteration time"
-    "sum", "Sum of all iteration times"
-    "stdev", "Standard deviation of the iteration times"
-    "rstdev", "Relative standard deviation of the iteration times (a percentage value)"
-    "variance", "Variance of the iteration times"
-    "mem_real", "Real memory usage (``memory_get_usage(true)``)"
-    "mem_final", "Memory usage (``memory_get_usage()``)"
-    "mem_peak", "Peak memory usage (``memory_get_peak_usage()``)"
 
-The data can be accessed using dot notation::
+Time values are in microseconds if no unit is specified, and memory values are
+bytes.
 
-    variant.mode < baseline.mode
+You access the values with dot notation, for example to access the list of
+"final" memory samples: ``variant.mem.final``
 
 Comparators
 -----------
@@ -64,6 +83,20 @@ For example:
 
     10 microseconds < 20 microseconds
 
+In practice two runs will rarely return exactly the same result. To allow a
+tolerable variance you can specify a tolerance as follows:
+
+::
+
+    variant.mode <= 10 milliseconds +/- 2 milliseconds
+
+With the above both 11 and 12 milliseconds will be tolerated.
+
+You can also specify a percentage value:
+
+::
+
+    variant.mode <= 10 milliseconds +/- 10%
 
 Time Units
 ----------
@@ -113,20 +146,31 @@ with ``ops/``:
 
     variant.mode > 2 ops/second
 
-Tolerance
+
+Functions
 ---------
 
-In practice two runs will rarely return exactly the same result. To allow a
-tolerable variance you can specify a tolerance as follows:
+Mode
+~~~~
+
+Shows the `KDE mode`_ for a set of values:
 
 ::
 
-    variant.mode <= 10 milliseconds +/- 2 milliseconds
+     mode(variant.time.avg)
 
-With the above both 11 and 12 milliseconds will be tolerated.
+The mode is typically more accurate predictor of the true value as it is less
+susceptible to distortion by outlying values.
 
-You can also specify a percentage value:
+Mean
+~~~~
+
+Shows the mean (average) for a set of values:
 
 ::
 
-    variant.mode <= 10 milliseconds +/- 10%
+     mean([4, 2, 4])
+
+Tranaslates to `(4 + 2 + 4) / 3`.
+
+.. _KDE mode: https://en.wikipedia.org/wiki/Kernel_density_estimation
