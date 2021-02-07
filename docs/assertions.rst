@@ -139,13 +139,11 @@ For example:
 Throughput
 ----------
 
-You cap specify throughput (operations per time unit) by prefixing a time unit
-with ``ops/``:
+You convert any (microsecond) value into operations per-second:
 
 ::
 
-    variant.mode > 2 ops/second
-
+    mode(variant.time.avg) ops/second > 2
 
 Functions
 ---------
