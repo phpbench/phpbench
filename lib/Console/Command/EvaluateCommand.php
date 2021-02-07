@@ -26,7 +26,11 @@ class EvaluateCommand extends Command
      */
     private $parser;
 
-    public function __construct(ExpressionEvaluatorFactory $factory, ExpressionLexer $lexer, ExpressionParser $parser)
+    public function __construct(
+        ExpressionEvaluatorFactory $factory,
+        ExpressionLexer $lexer,
+        ExpressionParser $parser
+    )
     {
         parent::__construct();
         $this->factory = $factory;
@@ -45,11 +49,12 @@ class EvaluateCommand extends Command
         $expr = $input->getArgument('expr');
         assert(is_string($expr));
 
+        $node = $this->parser->parse(
+            $this->lexer->lex($expr)
+        );
         $output->writeln((string)json_encode(
             $this->factory->createWithParameters([])->evaluate(
-                $this->parser->parse(
-                    $this->lexer->lex($expr)
-                )
+                $node
             )
         ));
 

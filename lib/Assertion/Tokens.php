@@ -5,6 +5,7 @@ namespace PhpBench\Assertion;
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
+use PhpBench\Assertion\Exception\SyntaxError;
 use RuntimeException;
 
 final class Tokens implements IteratorAggregate, Countable
@@ -68,6 +69,12 @@ final class Tokens implements IteratorAggregate, Countable
     public function chomp(?string $type = null): ?Token
     {
         if (!isset($this->tokens[$this->position])) {
+            if ($type) {
+                throw SyntaxError::forToken($this, $this->previous(), sprintf(
+                    'Expected "%s" after token',
+                    $type
+                ));
+            }
             return null;
         }
 

@@ -35,19 +35,9 @@ use PhpBench\Assertion\Exception\SyntaxError;
 final class ExpressionParser
 {
     /**
-     * @var Nodes
-     */
-    private $buffer;
-
-    /**
      * @var Tokens
      */
     private $tokens;
-
-    public function __construct()
-    {
-        $this->buffer = new Nodes();
-    }
 
     public function parse(Tokens $tokens): Node
     {
@@ -56,7 +46,7 @@ final class ExpressionParser
         $expression = $this->parseExpression();
 
         if ($this->tokens->current) {
-            throw $this->syntaxError('Unexpected extra tokens');
+            throw $this->syntaxError('Unexpected extra tokens after');
         }
 
         return $expression;
@@ -114,6 +104,8 @@ final class ExpressionParser
             case Token::T_OPEN_PAREN:
                 return $this->parseParenthesizedExpression();
         }
+
+        $this->tokens->chomp();
 
         throw $this->syntaxError('Do not know how to parse token');
     }

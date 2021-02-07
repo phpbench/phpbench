@@ -376,6 +376,16 @@ class ExpressionParserTest extends ExpressionParserTestCase
                 ]
             ]
         ];
+
+        yield [
+            '5 + (5',
+            'Expected "close_paren"',
+            [
+                'functions' => [
+                    'func'
+                ]
+            ]
+        ];
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace PhpBench\Assertion;
 
+use Error;
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
 
 final class ExpressionFunctions
@@ -36,6 +37,7 @@ final class ExpressionFunctions
 
     /**
      * @param mixed[] $args
+     * @return mixed
      */
     public function execute(string $functionName, array $args)
     {
@@ -48,6 +50,10 @@ final class ExpressionFunctions
 
         $function = $this->functionMap[$functionName];
 
-        return $function(...$args);
+        try {
+            return $function(...$args);
+        } catch (Error $err) {
+            throw new ExpressionEvaluatorError($err->getMessage());
+        }
     }
 }

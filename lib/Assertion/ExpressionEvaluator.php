@@ -230,8 +230,9 @@ class ExpressionEvaluator
      */
     private function evaluateArithmatic(ArithmeticNode $node)
     {
-        $leftValue = $this->evaluate($node->left());
-        $rightValue = $this->evaluate($node->right());
+        $leftValue = $this->evaluateComparable($node->left());
+        $rightValue = $this->evaluateComparable($node->right());
+
         switch ($node->operator()) {
             case '+':
                 return $leftValue + $rightValue;
@@ -260,7 +261,12 @@ class ExpressionEvaluator
     private function evaluateComparable(ExpressionNode $expression)
     {
         $result = $this->evaluate($expression);
-        if (!is_numeric($result)) {
+
+        if ($result instanceof ComparisonResult) {
+            return $result->isTrue() || $result->isTolerated();
+        }
+
+        if (is_string($result) || !is_numeric($result)) {
             throw new ExpressionEvaluatorError(sprintf(
                 'Cannot compare value of type "%s"',
                 is_object($result) ? get_class($result) : gettype($result)
