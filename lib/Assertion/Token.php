@@ -22,6 +22,8 @@ final class Token
     public const T_AS = 'as';
     public const T_OPERATOR = 'operator';
     public const T_THROUGHPUT = 'throughput';
+    public const T_LIST_START = 'list_start';
+    public const T_LIST_END = 'list_end';
 
     /**
      * @var string

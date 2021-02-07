@@ -18,6 +18,7 @@ use PhpBench\Assertion\Ast\ExpressionNode;
 use PhpBench\Assertion\Ast\FloatNode;
 use PhpBench\Assertion\Ast\FunctionNode;
 use PhpBench\Assertion\Ast\IntegerNode;
+use PhpBench\Assertion\Ast\ListNode;
 use PhpBench\Assertion\Ast\MemoryUnitNode;
 use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Assertion\Ast\Node;
@@ -103,6 +104,8 @@ final class ExpressionParser
                 return $this->parseUnit();
             case Token::T_OPEN_PAREN:
                 return $this->parseParenthesizedExpression();
+            case Token::T_LIST_START:
+                return $this->parseListExpression();
         }
 
         $this->tokens->chomp();
@@ -277,5 +280,27 @@ final class ExpressionParser
     {
         $this->tokens->chomp(Token::T_THROUGHPUT);
         return new ThroughputValue($leftExpression, $this->parseUnit());
+    }
+
+    private function parseListExpression(): ListNode
+    {
+        $this->tokens->chomp(Token::T_LIST_START);
+        $expressions = [];
+
+        if ($this->tokens->if(Token::T_LIST_END)) {
+            $this->tokens->chomp(Token::T_LIST_END);
+            return new ListNode([]);
+        }
+        while (true) {
+            $expressions[] = $this->parseExpression();
+            if ($this->tokens->if(Token::T_COMMA)) {
+                $this->tokens->chomp();
+                continue;
+            }
+            break;
+        }
+        $this->tokens->chomp(Token::T_LIST_END);
+
+        return new ListNode($expressions);
     }
 }

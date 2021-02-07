@@ -43,6 +43,8 @@ final class ExpressionLexer
         '>' => Token::T_OPERATOR,
         '=' => Token::T_OPERATOR,
         '<' => Token::T_OPERATOR,
+        '[' => Token::T_LIST_START,
+        ']' => Token::T_LIST_END,
         'ops/' => Token::T_THROUGHPUT,
     ];
 

@@ -8,6 +8,7 @@ use PhpBench\Assertion\Ast\ExpressionNode;
 use PhpBench\Assertion\Ast\FloatNode;
 use PhpBench\Assertion\Ast\FunctionNode;
 use PhpBench\Assertion\Ast\IntegerNode;
+use PhpBench\Assertion\Ast\ListNode;
 use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Assertion\Ast\Node;
 use PhpBench\Assertion\Ast\ParenthesizedExpressionNode;
@@ -94,6 +95,10 @@ class ExpressionEvaluator
 
         if ($node instanceof ParenthesizedExpressionNode) {
             return $this->evaluateParenthesizedExpression($node);
+        }
+
+        if ($node instanceof ListNode) {
+            return $this->evaluateListNode($node);
         }
 
         throw new ExpressionEvaluatorError(sprintf(
@@ -284,5 +289,12 @@ class ExpressionEvaluator
             TimeUnit::MICROSECONDS,
             TimeUnit::MODE_TIME
         );
+    }
+
+    private function evaluateListNode(ListNode $node)
+    {
+        return array_map(function (ExpressionNode $expression) {
+            return $this->evaluate($expression);
+        }, $node->expressions());
     }
 }

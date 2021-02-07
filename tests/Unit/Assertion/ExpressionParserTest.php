@@ -19,6 +19,7 @@ use PhpBench\Assertion\Ast\DisplayAsNode;
 use PhpBench\Assertion\Ast\FloatNode;
 use PhpBench\Assertion\Ast\FunctionNode;
 use PhpBench\Assertion\Ast\IntegerNode;
+use PhpBench\Assertion\Ast\ListNode;
 use PhpBench\Assertion\Ast\MemoryUnitNode;
 use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Assertion\Ast\Node;
@@ -42,6 +43,7 @@ class ExpressionParserTest extends ExpressionParserTestCase
      * @dataProvider provideTolerance
      * @dataProvider provideThroughput
      * @dataProvider provideArithmetic
+     * @dataProvider provideList
      *
      * @param array<string,mixed> $config
      */
@@ -490,6 +492,31 @@ class ExpressionParserTest extends ExpressionParserTestCase
                     )
                 )
             )
+        ];
+    }
+
+    /**
+     * @return Generator<mixed>
+     */
+    public function provideList(): Generator
+    {
+        yield [
+            '[]',
+            new ListNode([])
+        ];
+        yield [
+            '[10]',
+            new ListNode([new IntegerNode(10)])
+        ];
+        yield [
+            '[10, [12.12,12]]',
+            new ListNode([
+                new IntegerNode(10),
+                new ListNode([
+                    new FloatNode(12.12),
+                    new IntegerNode(12)
+                ])
+            ])
         ];
     }
 }

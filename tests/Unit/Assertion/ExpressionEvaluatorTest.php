@@ -205,6 +205,9 @@ class ExpressionEvaluatorTest extends TestCase
         yield ['4-2', [], 2];
         yield ['((4/2) * 2) + 6', [], 10];
         yield ['6 + (4 / 2) + (2 + 2)', [], 12];
+
+        // lists
+        yield ['[10,20]', [], [10,20]];
     }
 
     public function testErrorOnCannotEvaluate(): void
