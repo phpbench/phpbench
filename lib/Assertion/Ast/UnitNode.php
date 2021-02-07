@@ -2,7 +2,7 @@
 
 namespace PhpBench\Assertion\Ast;
 
-interface UnitNode extends Node
+interface UnitNode extends ExpressionNode
 {
     public function unit(): string;
 }

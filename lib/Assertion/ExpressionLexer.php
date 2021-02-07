@@ -24,32 +24,31 @@ final class ExpressionLexer
      */
     private $pattern;
 
-    private const PATTERN_COMPARATORS = '(?:<=|>=|<|=|>)';
     private const PATTERN_NAME = '(?:[a-z_\/]+)';
-    private const PATTERN_TOLERANCE = '(?:\+\/\-)';
-    private const PATTERN_THROUGHPUT = '(?:ops\/)';
 
     private const TOKEN_VALUE_MAP = [
         '+/-' => Token::T_TOLERANCE,
-        'ops/' => Token::T_THROUGHPUT,
         '.' => Token::T_DOT,
         '(' => Token::T_OPEN_PAREN,
         ')' => Token::T_CLOSE_PAREN,
         ',' => Token::T_COMMA,
         'as' => Token::T_AS,
         '%' => Token::T_PERCENTAGE,
-        '+' => Token::T_PLUS,
-        '-' => Token::T_MINUS,
-        '*' => Token::T_MULTIPLY,
-        '/' => Token::T_DIV,
+        '+' => Token::T_OPERATOR,
+        '-' => Token::T_OPERATOR,
+        '*' => Token::T_OPERATOR,
+        '/' => Token::T_OPERATOR,
+        '>=' => Token::T_OPERATOR,
+        '<=' => Token::T_OPERATOR,
+        '>' => Token::T_OPERATOR,
+        '=' => Token::T_OPERATOR,
+        '<' => Token::T_OPERATOR,
+        'ops/' => Token::T_THROUGHPUT,
     ];
 
     const PATTERNS = [
         '(?:[\(\)])', // parenthesis
-        self::PATTERN_TOLERANCE,
-        self::PATTERN_COMPARATORS,
         '(?:[0-9]+(?:[\.][0-9]+)*)(?:e[+-]?[0-9]+)?', // numbers
-        self::PATTERN_THROUGHPUT,
         self::PATTERN_NAME,
         '%',
         '\.',
@@ -73,7 +72,10 @@ final class ExpressionLexer
         $this->timeUnits = $timeUnits;
         $this->memoryUnits = $memoryUnits;
         $this->pattern = sprintf(
-            '{(%s)|%s}iu',
+            '{(%s)|(%s)|%s}iu',
+            implode(')|(', array_map(function (string $value) {
+                return preg_quote($value);
+            }, array_keys(self::TOKEN_VALUE_MAP))),
             implode(')|(', self::PATTERNS),
             implode('|', self::IGNORE_PATTERNS)
         );
@@ -132,9 +134,6 @@ final class ExpressionLexer
 
             case (preg_match('{'. self::PATTERN_NAME. '}', $value)):
                 return Token::T_NAME;
-
-            case (preg_match('{'. self::PATTERN_COMPARATORS. '}', $value)):
-                return Token::T_COMPARATOR;
 
         }
 

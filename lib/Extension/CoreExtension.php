@@ -29,6 +29,7 @@ use PhpBench\Benchmark\Metadata\Driver\AnnotationDriver;
 use PhpBench\Benchmark\Metadata\MetadataFactory;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Console\Application;
+use PhpBench\Console\Command\EvaluateCommand;
 use PhpBench\Console\Command\Handler\DumpHandler;
 use PhpBench\Console\Command\Handler\ReportHandler;
 use PhpBench\Console\Command\Handler\RunnerHandler;
@@ -470,6 +471,16 @@ class CoreExtension implements ExtensionInterface
                 $container->get(TimeUnitHandler::class),
                 $container->get(DumpHandler::class),
                 $container->get(UuidResolver::class)
+            );
+        }, [
+            self::TAG_CONSOLE_COMMAND => []
+        ]);
+
+        $container->register(EvaluateCommand::class, function (Container $container) {
+            return new EvaluateCommand(
+                $container->get(ExpressionEvaluatorFactory::class),
+                $container->get(ExpressionLexer::class),
+                $container->get(ExpressionParser::class)
             );
         }, [
             self::TAG_CONSOLE_COMMAND => []

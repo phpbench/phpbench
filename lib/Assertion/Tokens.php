@@ -3,10 +3,11 @@
 namespace PhpBench\Assertion;
 
 use ArrayIterator;
+use Countable;
 use IteratorAggregate;
 use RuntimeException;
 
-final class Tokens implements IteratorAggregate
+final class Tokens implements IteratorAggregate, Countable
 {
     /**
      * @var ?Token
@@ -115,10 +116,6 @@ final class Tokens implements IteratorAggregate
         return false;
     }
 
-    /**
-     * If the current or next non-whitespace node matches,
-     * advance internal pointer and return true;
-     */
     public function if(string $type): bool
     {
         if (null === $this->current) {
@@ -126,14 +123,6 @@ final class Tokens implements IteratorAggregate
         }
 
         if ($this->current->type === $type) {
-            return true;
-        }
-
-        $next = $this->next();
-
-        if ($next && $this->next()->type === $type) {
-            $this->current = $this->tokens[++$this->position];
-
             return true;
         }
 
@@ -173,5 +162,10 @@ final class Tokens implements IteratorAggregate
         }
 
         return $out;
+    }
+
+    public function count(): int
+    {
+        return count($this->tokens);
     }
 }

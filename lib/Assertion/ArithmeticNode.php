@@ -3,8 +3,9 @@
 namespace PhpBench\Assertion;
 
 use PhpBench\Assertion\Ast\ExpressionNode;
+use PhpBench\Assertion\Ast\OperatorExpression;
 
-class ArithmeticNode implements ExpressionNode
+class ArithmeticNode implements OperatorExpression
 {
     /**
      * @var ExpressionNode

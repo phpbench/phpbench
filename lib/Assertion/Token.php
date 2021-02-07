@@ -20,11 +20,8 @@ final class Token
     public const T_PROPERTY_ACCESS = 'property_access';
     public const T_PERCENTAGE = 'percentage';
     public const T_AS = 'as';
+    public const T_OPERATOR = 'operator';
     public const T_THROUGHPUT = 'throughput';
-    public const T_PLUS = 'plus';
-    public const T_MINUS = 'minus';
-    public const T_DIV = 'div';
-    public const T_MULTIPLY = 'multiply';
 
     /**
      * @var string

@@ -7,12 +7,12 @@ class ComparisonResult
     /**
      * @var bool
      */
-    private $result;
+    public $result;
 
     /**
      * @var bool
      */
-    private $tolerated;
+    public $tolerated;
 
     private function __construct(bool $result, bool $tolerated)
     {

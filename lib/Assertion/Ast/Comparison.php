@@ -2,7 +2,7 @@
 
 namespace PhpBench\Assertion\Ast;
 
-class Comparison implements ExpressionNode
+class Comparison implements OperatorExpression
 {
     /**
      * @var Value

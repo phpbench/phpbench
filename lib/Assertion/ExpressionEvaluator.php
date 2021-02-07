@@ -14,6 +14,7 @@ use PhpBench\Assertion\Ast\ParenthesizedExpressionNode;
 use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\ThroughputValue;
+use PhpBench\Assertion\Ast\TimeUnitNode;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\ToleranceNode;
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
@@ -77,6 +78,10 @@ class ExpressionEvaluator
 
         if ($node instanceof MemoryValue) {
             return $this->evaluateMemoryValue($node);
+        }
+
+        if ($node instanceof TimeUnitNode) {
+            return $this->evaluateTimeUnit($node);
         }
 
         if ($node instanceof DisplayAsNode) {
@@ -263,5 +268,15 @@ class ExpressionEvaluator
         }
 
         return $result;
+    }
+
+    private function evaluateTimeUnit(TimeUnitNode $node): int
+    {
+        return TimeUnit::convert(
+            1,
+            $node->unit(),
+            TimeUnit::MICROSECONDS,
+            TimeUnit::MODE_TIME
+        );
     }
 }

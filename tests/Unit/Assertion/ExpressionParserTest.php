@@ -306,11 +306,6 @@ class ExpressionParserTest extends ExpressionParserTestCase
     public function provideTolerance(): Generator
     {
         yield [
-            '+/- 10',
-            new ToleranceNode(new IntegerNode(10))
-        ];
-
-        yield [
             '9 ms > 10 ms +/- 1',
             new Comparison(
                 new TimeValue(new IntegerNode(9), 'ms'),
@@ -359,12 +354,12 @@ class ExpressionParserTest extends ExpressionParserTestCase
 
         yield 'unknown node' => [
             'foobar()',
-            'Do not know how to parse token'
+            'Unexpected extra'
         ];
 
         yield [
             '<=',
-            'Left hand side of comparison',
+            'Do not know',
             [
                 'functions' => [
                     'func'
@@ -374,27 +369,11 @@ class ExpressionParserTest extends ExpressionParserTestCase
 
         yield [
             'func(10 +/- 10)',
-            'Unexpected extra tokens',
+            'Invalid expression',
             [
                 'functions' => [
                     'func'
                 ]
-            ]
-        ];
-
-        yield [
-            'ms',
-            'Expression expected before',
-            [
-                'timeUnits' => ['ms'],
-            ]
-        ];
-
-        yield [
-            'mega',
-            'Expression expected before',
-            [
-                'memoryUnits' => ['mega'],
             ]
         ];
     }
@@ -404,6 +383,17 @@ class ExpressionParserTest extends ExpressionParserTestCase
      */
     public function provideThroughput(): Generator
     {
+        yield [
+            '5 ops/s = 0.20 seconds',
+            new Comparison(
+                new ThroughputValue(new IntegerNode(5), new TimeUnitNode('s')),
+                '=',
+                new TimeValue(new FloatNode(0.20), 'seconds')
+            ),
+            [
+                'timeUnits' => ['s', 'seconds'],
+            ]
+        ];
         yield 'throughput' => [
             '100000 <= 10 ops/s +/- 1 ops/s',
             new Comparison(
@@ -469,6 +459,23 @@ class ExpressionParserTest extends ExpressionParserTestCase
                     new ArithmeticNode(
                         new IntegerNode(1),
                         '+',
+                        new IntegerNode(2),
+                    )
+                )
+            )
+        ];
+
+        yield [
+            '3 * 2 + 2* 2',
+            new ArithmeticNode(
+                new IntegerNode(3),
+                '*',
+                new ArithmeticNode(
+                    new IntegerNode(2),
+                    '+',
+                    new ArithmeticNode(
+                        new IntegerNode(2),
+                        '*',
                         new IntegerNode(2),
                     )
                 )

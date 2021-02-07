@@ -21,6 +21,7 @@ use PhpBench\Assertion\Ast\IntegerNode;
 use PhpBench\Assertion\Ast\MemoryUnitNode;
 use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Assertion\Ast\Node;
+use PhpBench\Assertion\Ast\OperatorExpression;
 use PhpBench\Assertion\Ast\ParenthesizedExpressionNode;
 use PhpBench\Assertion\Ast\PercentageValue;
 use PhpBench\Assertion\Ast\PropertyAccess;
@@ -52,83 +53,68 @@ final class ExpressionParser
     {
         $this->tokens = $tokens;
 
-        return $this->buildAst();
-    }
+        $expression = $this->parseExpression();
 
-    private function buildAst(): Node
-    {
-        $this->parseExpression();
-
-        $result = $this->buffer->pop();
-
-        if ($this->buffer->count()) {
-            throw $this->syntaxError('Unexpected extra tokens before');
+        if ($this->tokens->current) {
+            throw $this->syntaxError('Unexpected extra tokens');
         }
 
-        return $result;
+        return $expression;
     }
 
-    private function parseExpression(): void
+    private function parseExpression(): ExpressionNode
     {
-        while ($node = $this->parseNode()) {
-            $this->buffer->push($node);
+        $expression = $this->parseNode();
+
+        if ($this->tokens->if(Token::T_TIME_UNIT)) {
+            $expression = $this->parseTimeUnit($expression);
         }
+
+        if ($this->tokens->if(Token::T_MEMORY_UNIT)) {
+            $expression = $this->parseMemoryUnit($expression);
+        }
+
+        if ($this->tokens->if(Token::T_THROUGHPUT)) {
+            $expression = $this->parseThroughput($expression);
+        }
+
+        if ($this->tokens->if(Token::T_PERCENTAGE)) {
+            $expression = $this->parsePercentage($expression);
+        }
+
+        if ($this->tokens->if(Token::T_AS)) {
+            $expression = $this->parseAs($expression);
+        }
+
+        if ($this->tokens->if(Token::T_OPERATOR)) {
+            return $this->parseOperator($expression);
+        }
+
+        return $expression;
     }
 
-    private function parseNode(): ?Node
+    private function parseNode(): ExpressionNode
     {
         $token = $this->tokens->current;
-
-        if (!$token) {
-            return null;
-        }
 
         switch ($token->type) {
             case Token::T_INTEGER:
                 $token = $this->tokens->chomp(Token::T_INTEGER);
-
                 return new IntegerNode((int)$token->value);
             case Token::T_FLOAT:
                 $token = $this->tokens->chomp(Token::T_FLOAT);
-
                 return new FloatNode((float)$token->value);
             case Token::T_NAME:
                 return $this->parseName();
-            case Token::T_COMPARATOR:
-                return $this->parseComparator();
-            case Token::T_TOLERANCE:
-                return $this->parseTolerance();
-            case Token::T_TIME_UNIT:
-                return $this->parseTimeUnit();
-            case Token::T_MEMORY_UNIT:
-                return $this->parseMemoryUnit();
             case Token::T_FUNCTION:
                 return $this->parseFunction();
-            case Token::T_AS:
-                return $this->parseAs();
-            case Token::T_PERCENTAGE:
-                return $this->parsePercentage();
-            case Token::T_THROUGHPUT:
-                return $this->parseThroughput();
+            case Token::T_TIME_UNIT:
+            case Token::T_MEMORY_UNIT:
+                return $this->parseUnit();
             case Token::T_OPEN_PAREN:
-                $next = $this->tokens->next();
-                if ($next && $next->type !== Token::T_CLOSE_PAREN) {
-                    return $this->parseParenthesizedExpression();
-                }
-                break;
-            case Token::T_PLUS:
-            case Token::T_MULTIPLY:
-            case Token::T_DIV:
-            case Token::T_MINUS:
-                return $this->parseArtithmetic();
-
-            // tokens which end expressions
-            case Token::T_COMMA:
-            case Token::T_CLOSE_PAREN:
-                return null;
+                return $this->parseParenthesizedExpression();
         }
 
-        $this->tokens->chomp();
         throw $this->syntaxError('Do not know how to parse token');
     }
 
@@ -144,30 +130,8 @@ final class ExpressionParser
         return new PropertyAccess($names);
     }
 
-    private function parseComparator(): Comparison
+    private function parseArtithmetic(ExpressionNode $left, Token $operator, ExpressionNode $right): ArithmeticNode
     {
-        $comparator = $this->tokens->chomp(Token::T_COMPARATOR);
-        $left = $this->mustPopNode(ExpressionNode::class, 'Left hand side of comparison is missing');
-        $this->parseExpression();
-        $right = $this->mustShiftNode(ExpressionNode::class);
-        $tolerance = $this->buffer->shiftType(ToleranceNode::class);
-
-        return new Comparison(
-            $left,
-            $comparator->value,
-            $right,
-            $tolerance
-        );
-    }
-
-    private function parseArtithmetic(): ArithmeticNode
-    {
-        $operator = $this->tokens->chomp();
-
-        $left = $this->mustPopNode(ExpressionNode::class, 'Left hand side of comparison is missing');
-        $this->parseExpression();
-        $right = $this->mustShiftNode(ExpressionNode::class);
-
         return new ArithmeticNode(
             $left,
             $operator->value,
@@ -182,56 +146,42 @@ final class ExpressionParser
         $token = $this->tokens->previous();
 
         if (!$token) {
-            throw new SyntaxError(sprintf(
+            return new SyntaxError(sprintf(
                 'Could not parse expression "%s": %s',
                 $this->tokens->toString(),
                 $message
             ));
         }
 
-        throw SyntaxError::forToken($this->tokens, $token, $message);
+        return SyntaxError::forToken($this->tokens, $token, $message);
     }
 
-    private function parseTimeUnit(): TimeValue
+    private function parseTimeUnit(ExpressionNode $value): TimeValue
     {
         $unit = $this->tokens->chomp(Token::T_TIME_UNIT);
-        $expression = $this->mustPopNode(ExpressionNode::class, 'Expression expected before time unit');
 
-        return new TimeValue($expression, $unit->value);
+        return new TimeValue($value, $unit->value);
     }
 
-    private function parsePercentage(): PercentageValue
+    private function parsePercentage(ExpressionNode $expression): PercentageValue
     {
         $unit = $this->tokens->chomp(Token::T_PERCENTAGE);
-        $expression = $this->mustPopNode(ExpressionNode::class, 'Expression expected before percentage');
-
         return new PercentageValue($expression);
     }
 
-    private function parseMemoryUnit(): MemoryValue
+    private function parseMemoryUnit(ExpressionNode $expression): MemoryValue
     {
         $unit = $this->tokens->chomp(Token::T_MEMORY_UNIT);
-        $expression = $this->mustPopNode(ExpressionNode::class, 'Expression expected before memory unit');
 
         return new MemoryValue($expression, $unit->value);
-    }
-
-    private function parseThroughput(): ThroughputValue
-    {
-        $this->tokens->chomp(Token::T_THROUGHPUT);
-        $unit = $this->parseUnit();
-        $expression = $this->mustPopNode(ExpressionNode::class);
-
-        return new ThroughputValue($expression, $unit);
     }
 
     private function parseTolerance(): ToleranceNode
     {
         $this->tokens->chomp(Token::T_TOLERANCE);
-        $this->parseExpression();
-        $tolerance = $this->mustPopNode(ExpressionNode::class);
+        $value = $this->parseExpression();
 
-        return new ToleranceNode($tolerance);
+        return new ToleranceNode($value);
     }
 
     private function parseFunction(): FunctionNode
@@ -246,11 +196,9 @@ final class ExpressionParser
 
     private function parseParenthesizedExpression(): ParenthesizedExpressionNode
     {
-        $open = $this->tokens->chomp(Token::T_OPEN_PAREN);
-        $this->parseExpression();
-        $expression = $this->mustPopNode(ExpressionNode::class);
-        $open = $this->tokens->chomp(Token::T_CLOSE_PAREN);
-
+        $this->tokens->chomp(Token::T_OPEN_PAREN);
+        $expression = $this->parseExpression();
+        $this->tokens->chomp(Token::T_CLOSE_PAREN);
         return new ParenthesizedExpressionNode($expression);
     }
 
@@ -260,30 +208,26 @@ final class ExpressionParser
     private function parseExpressionList(): array
     {
         $expressions = [];
-        $this->parseExpression();
 
-        while ($expression = $this->buffer->popType(ExpressionNode::class)) {
-            $expressions[] = $expression;
-
+        while (true) {
+            $expressions[] = $this->parseExpression();
+            if ($this->tokens->if(Token::T_COMMA)) {
+                $this->tokens->chomp();
+                continue;
+            }
             if ($this->tokens->if(Token::T_CLOSE_PAREN)) {
                 return $expressions;
             }
-
-            if ($this->tokens->if(Token::T_COMMA)) {
-                $this->tokens->chomp();
-            }
-
-            $this->parseExpression();
+            break;
         }
 
-        return $expressions;
+        throw $this->syntaxError('Invalid expression list');
     }
 
-    private function parseAs(): DisplayAsNode
+    private function parseAs(ExpressionNode $expression): DisplayAsNode
     {
         $as = $this->tokens->chomp(Token::T_AS);
         $unit = $this->parseUnit();
-        $expression = $this->mustPopNode(ExpressionNode::class);
 
         return new DisplayAsNode($expression, $unit);
     }
@@ -294,56 +238,52 @@ final class ExpressionParser
             return new MemoryUnitNode($this->tokens->chomp(Token::T_MEMORY_UNIT)->value);
         }
 
-        return new TimeUnitNode($this->tokens->chomp(Token::T_TIME_UNIT)->value);
+        if ($this->tokens->if(Token::T_TIME_UNIT)) {
+            return new TimeUnitNode($this->tokens->chomp(Token::T_TIME_UNIT)->value);
+        }
+
+        $this->tokens->chomp();
+
+        throw $this->syntaxError('Unknown unit');
     }
 
-    /**
-     * @template T
-     *
-     * @param class-string<T> $nodeFqn
-     *
-     * @return T
-     */
-    private function mustPopNode(string $nodeFqn, ?string $message = null)
+    private function parseOperator(ExpressionNode $leftExpression): OperatorExpression
     {
-        $node = $this->buffer->pop();
+        $operator = $this->tokens->chomp(Token::T_OPERATOR);
 
-        if (null === $node) {
-            throw $this->syntaxError(
-                $message ?: 'Nothing left to pop'
-            );
+        switch ($operator->value) {
+            case '<':
+            case '<=':
+            case '=':
+            case '>':
+            case '>=':
+                $rightExpression = $this->parseExpression();
+                return $this->parseComparison($leftExpression, $operator, $rightExpression);
+            case '+':
+            case '-':
+            case '/':
+            case '*':
+                $rightExpression = $this->parseExpression();
+                return $this->parseArtithmetic($leftExpression, $operator, $rightExpression);
         }
 
-        if (!$node instanceof $nodeFqn) {
-            throw $this->syntaxError($message ?: sprintf(
-                'Expected node of type "%s", got "%s"',
-                $nodeFqn,
-                get_class($node)
-            ));
-        }
-
-        return $node;
+        throw $this->syntaxError('Unknown operator');
     }
 
-    /**
-     * @template T
-     *
-     * @param class-string<T> $nodeFqn
-     *
-     * @return T
-     */
-    private function mustShiftNode(string $nodeFqn)
+    private function parseComparison(ExpressionNode $leftExpression, Token $operator, ExpressionNode $rightExpression): Comparison
     {
-        $node = $this->buffer->shift();
+        $tolerance = null;
 
-        if (!$node instanceof $nodeFqn) {
-            throw $this->syntaxError(sprintf(
-                'Expected node of type "%s", got "%s"',
-                $nodeFqn,
-                is_object($node) ? get_class($node) : gettype($node)
-            ));
+        if ($this->tokens->if(Token::T_TOLERANCE)) {
+            $tolerance = $this->parseTolerance();
         }
 
-        return $node;
+        return new Comparison($leftExpression, $operator->value, $rightExpression, $tolerance);
+    }
+
+    private function parseThroughput(ExpressionNode $leftExpression): ThroughputValue
+    {
+        $this->tokens->chomp(Token::T_THROUGHPUT);
+        return new ThroughputValue($leftExpression, $this->parseUnit());
     }
 }
