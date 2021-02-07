@@ -155,7 +155,7 @@ Shows the `KDE mode`_ for a set of values:
 
 ::
 
-     mode(variant.time.avg)
+    mode(variant.time.avg)
 
 The mode is typically more accurate predictor of the true value as it is less
 susceptible to distortion by outlying values.
@@ -167,7 +167,7 @@ Shows the mean (average) for a set of values:
 
 ::
 
-     mean([4, 2, 4])
+    mean([4, 2, 4])
 
 Tranaslates to `(4 + 2 + 4) / 3`.
 
