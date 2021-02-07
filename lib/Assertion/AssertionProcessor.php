@@ -58,13 +58,6 @@ class AssertionProcessor
     {
         $node = $this->parser->parse($this->lexer->lex($assertion));
 
-        if (!$node instanceof Comparison) {
-            throw new ExpressionEvaluatorError(sprintf(
-                'Assertion must be a comparison, got "%s"',
-                get_class($node)
-            ));
-        }
-
         $args = (function (array $variantData) use ($variant) {
             return [
                 'variant' => $variantData,
@@ -75,16 +68,23 @@ class AssertionProcessor
         try {
             $result = $this->evaluator->createWithParameters($args)->evaluate($node);
         } catch (PropertyAccessError $error) {
-            return AssertionResult::warning(ExpressionError::forExpression($assertion, $error->getMessage())->getMessage());
+            throw ExpressionError::forExpression($assertion, $error->getMessage());
         } catch (Exception $error) {
             throw ExpressionError::forExpression($assertion, $error->getMessage());
         }
         $printer = $this->printer->create($args);
 
         if (!$result instanceof ComparisonResult) {
-            throw new RuntimeException(sprintf(
-                'Expected comparison result, got "%s"',
-                gettype($result)
+            throw ExpressionError::forExpression($assertion, sprintf(
+                'Expected boolean expression, got "%s", with value "%s"',
+                gettype($result),
+                (function (string $value) {
+                    if (strlen($value) > 255) {
+                        return substr($value, 0, 255) . '...';
+                    }
+
+                    return $value;
+                })(json_encode($result, JSON_PRETTY_PRINT))
             ));
         }
 

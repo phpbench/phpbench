@@ -39,6 +39,7 @@ class EvaluateCommand extends Command
     public function configure(): void
     {
         $this->setName('eval');
+        $this->setDescription('Evaluate an expression with the PHPBench expression language');
         $this->addArgument('expr', InputArgument::REQUIRED);
     }
 
