@@ -5,7 +5,7 @@ namespace PhpBench\Assertion\Ast;
 class ThroughputValue implements OperatorExpression
 {
     /**
-     * @var TimeUnitNode
+     * @var UnitNode
      */
     private $unit;
 
@@ -14,7 +14,7 @@ class ThroughputValue implements OperatorExpression
      */
     private $value;
 
-    public function __construct(ExpressionNode $value, TimeUnitNode $unit)
+    public function __construct(ExpressionNode $value, UnitNode $unit)
     {
         $this->value = $value;
         $this->unit = $unit;
@@ -25,7 +25,7 @@ class ThroughputValue implements OperatorExpression
         return $this->value;
     }
 
-    public function unit(): TimeUnitNode
+    public function unit(): UnitNode
     {
         return $this->unit;
     }

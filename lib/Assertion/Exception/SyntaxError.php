@@ -7,9 +7,6 @@ use PhpBench\Assertion\Tokens;
 
 class SyntaxError extends ExpressionError
 {
-    /**
-     * @param array{type: string, position: int, value: mixed} $token
-     */
     public static function forToken(Tokens $tokens, Token $target, string $message): self
     {
         $lines = [''];

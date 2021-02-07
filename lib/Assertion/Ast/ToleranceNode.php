@@ -5,7 +5,7 @@ namespace PhpBench\Assertion\Ast;
 class ToleranceNode implements Node
 {
     /**
-     * @var ExpresionNode
+     * @var ExpressionNode
      */
     private $tolerance;
 

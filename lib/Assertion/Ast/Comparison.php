@@ -5,7 +5,7 @@ namespace PhpBench\Assertion\Ast;
 class Comparison implements OperatorExpression
 {
     /**
-     * @var Value
+     * @var ExpressionNode
      */
     private $value1;
     /**
@@ -13,7 +13,7 @@ class Comparison implements OperatorExpression
      */
     private $operator;
     /**
-     * @var Value
+     * @var ExpressionNode
      */
     private $value2;
 

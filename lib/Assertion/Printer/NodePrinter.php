@@ -99,7 +99,7 @@ final class NodePrinter implements ExpressionPrinter
         }
 
         if ($node instanceof ArithmeticNode) {
-            return $this->evaulator->evaluate($node, $this->parameters);
+            return $this->evaulator->evaluate($node);
         }
 
         return sprintf('!!!! could not format "%s" !!!!', get_class($node));
@@ -151,7 +151,7 @@ final class NodePrinter implements ExpressionPrinter
 
     private function formatPercentageValue(PercentageValue $node): string
     {
-        return sprintf('%s%%', $node->percentage()->value());
+        return sprintf('%s%%', $this->format($node->percentage()));
     }
 
     private function formatMemoryValue(MemoryValue $node): string
@@ -195,11 +195,13 @@ final class NodePrinter implements ExpressionPrinter
         }
 
         if ($node->unit() instanceof MemoryUnitNode) {
-            return MemoryUnit::convertTo(
+            return (string)MemoryUnit::convertTo(
                 $this->evaulator->evaluate($node->node()),
                 MemoryUnit::BYTES,
                 $node->unit()->unit()
             );
         }
+
+        return '';
     }
 }

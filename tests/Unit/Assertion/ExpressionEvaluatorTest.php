@@ -211,6 +211,9 @@ class ExpressionEvaluatorTest extends TestCase
 
         yield ['6 + (4 / 2) + (2 + 2)', [], 12];
 
+        // percent
+        yield ['10 %', [], 10];
+
         // lists
         yield ['[10,20]', [], [10,20]];
     }

@@ -5,7 +5,7 @@ namespace PhpBench\Assertion\Ast;
 class MemoryValue implements NumberNode
 {
     /**
-     * @var Value
+     * @var ExpressionNode
      */
     private $value;
 

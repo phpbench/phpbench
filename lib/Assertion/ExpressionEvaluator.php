@@ -101,6 +101,10 @@ class ExpressionEvaluator
             return $this->evaluateListNode($node);
         }
 
+        if ($node instanceof PercentageValue) {
+            return $this->evaluate($node->percentage());
+        }
+
         throw new ExpressionEvaluatorError(sprintf(
             'Do not know how to evaluate node "%s"',
             get_class($node)
@@ -200,7 +204,7 @@ class ExpressionEvaluator
         $value = $tolerance->tolerance();
 
         if ($value instanceof PercentageValue) {
-            return ($right / 100) * $value->percentage()->value();
+            return ($right / 100) * $this->evaluate($value);
         }
 
         return $this->evaluate($value);
@@ -268,7 +272,7 @@ class ExpressionEvaluator
         $result = $this->evaluate($expression);
 
         if ($result instanceof ComparisonResult) {
-            return $result->isTrue() || $result->isTolerated();
+            return ($result->isTrue() || $result->isTolerated()) ? 1 : 0;
         }
 
         if (is_string($result) || !is_numeric($result)) {
