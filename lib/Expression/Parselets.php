@@ -57,12 +57,26 @@ final class Parselets
      */
     public function forToken(Token $token): Parselet
     {
-        if (!isset($this->parselets[$token->type])) {
+        $parselet = $this->forTokenOrNull($token);
+
+        if (null === $parselet) {
             throw new RuntimeException(sprintf(
                 'No %s parslet for token type "%s" registered',
                 $this->type,
                 $token->type
             ));
+        }
+
+        return $parselet;
+    }
+
+    /**
+     * @return T|null
+     */
+    public function forTokenOrNull(Token $token): ?Parselet
+    {
+        if (!isset($this->parselets[$token->type])) {
+            return null;
         }
 
         return $this->parselets[$token->type];

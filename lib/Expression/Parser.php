@@ -42,19 +42,35 @@ class Parser
     public function parse(int $precedence = 0): Node
     {
         $token = $this->tokens->chomp();
-
         $left = $this->prefixParselets->forToken($token)->parse($token);
 
-        if (!$next = $this->tokens->next()) {
+        if (!$this->tokens->hasAnother()) {
             return $left;
         }
 
-        do {
+        while ($precedence < $this->infixPrecedence()) {
             $token = $this->tokens->chomp();
             $infixParselet = $this->infixParselets->forToken($token);
             $left = $infixParselet->parse($this, $left, $token);
-        } while ($token = $this->tokens->hasAnother());
+        }
 
         return $left;
+    }
+
+    private function infixPrecedence(): int
+    {
+        $next = $this->tokens->current;
+
+        if (!$next) {
+            return 0;
+        }
+
+        $infixParser = $this->infixParselets->forTokenOrNull($next);
+
+        if (!$infixParser) {
+            return 0;
+        }
+
+        return $infixParser->precedence();
     }
 }
