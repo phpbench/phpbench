@@ -13,6 +13,8 @@ final class Token
     public const T_DOT = 'dot';
     public const T_OPEN_PAREN = 'open_paren';
     public const T_CLOSE_PAREN = 'close_paren';
+    public const T_OPEN_LIST = 'open_list';
+    public const T_CLOSE_LIST = 'close_list';
     public const T_COMMA = 'comma';
     public const T_TIME_UNIT = 'time_unit';
     public const T_MEMORY_UNIT = 'memory_unit';

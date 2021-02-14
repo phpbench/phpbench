@@ -238,7 +238,7 @@ class PhpBench
         return array_merge($config, $config['profiles'][$profile]);
     }
 
-    private static function registerErrorHandler(): void
+    public static function registerErrorHandler(): void
     {
         set_exception_handler(function (Throwable $throwable): void {
             $input = new ArgvInput();

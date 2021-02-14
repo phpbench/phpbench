@@ -6,6 +6,8 @@ use PhpBench\Assertion\Ast\FloatNode;
 use PhpBench\Assertion\Ast\IntegerNode;
 use PhpBench\Assertion\Ast\Node;
 use PhpBench\Assertion\Token;
+use PhpBench\Assertion\Tokens;
+use PhpBench\Expression\Parser;
 use PhpBench\Expression\PrefixParselet;
 
 class FloatParselet implements PrefixParselet
@@ -15,8 +17,8 @@ class FloatParselet implements PrefixParselet
         return Token::T_FLOAT;
     }
 
-    public function parse(Token $token): Node
+    public function parse(Parser $parser, Tokens $tokens): Node
     {
-        return new FloatNode((int)$token->value);
+        return new FloatNode((int)$tokens->chomp()->value);
     }
 }

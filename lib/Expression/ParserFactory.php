@@ -7,15 +7,19 @@ use PhpBench\Assertion\Tokens;
 use PhpBench\Expression\Ast\BinaryOperatorNode;
 use PhpBench\Expression\Parselet\BinaryOperatorParselet;
 use PhpBench\Expression\Parselet\FloatParselet;
+use PhpBench\Expression\Parselet\FunctionParselet;
 use PhpBench\Expression\Parselet\IntegerParselet;
+use PhpBench\Expression\Parselet\ArgumentListParselet;
+use PhpBench\Expression\Parselet\ListParselet;
 
 final class ParserFactory
 {
-    public function create(Tokens $tokens): Parser
+    public function create(): Parser
     {
         return new Parser(
-            $tokens,
             Parselets::fromPrefixParselets([
+                new ListParselet(),
+                new FunctionParselet(),
                 new IntegerParselet(),
                 new FloatParselet(),
             ]),

@@ -25,12 +25,15 @@ final class ExpressionLexer
     private $pattern;
 
     private const PATTERN_NAME = '(?:[a-z_\/]+)';
+    private const PATTERN_FUNCTION = '(?:[a-z_\/]+\()';
 
     private const TOKEN_VALUE_MAP = [
         '+/-' => Token::T_TOLERANCE,
         '.' => Token::T_DOT,
         '(' => Token::T_OPEN_PAREN,
         ')' => Token::T_CLOSE_PAREN,
+        '[' => Token::T_OPEN_LIST,
+        ']' => Token::T_CLOSE_LIST,
         ',' => Token::T_COMMA,
         'as' => Token::T_AS,
         '%' => Token::T_PERCENTAGE,
@@ -51,6 +54,7 @@ final class ExpressionLexer
     const PATTERNS = [
         '(?:[\(\)])', // parenthesis
         '(?:[0-9]+(?:[\.][0-9]+)*)(?:e[+-]?[0-9]+)?', // numbers
+        self::PATTERN_FUNCTION,
         self::PATTERN_NAME,
         '%',
         '\.',
@@ -133,6 +137,9 @@ final class ExpressionLexer
 
             case (in_array($value, $this->memoryUnits)):
                 return Token::T_MEMORY_UNIT;
+
+            case (preg_match('{'. self::PATTERN_FUNCTION. '}', $value)):
+                return Token::T_FUNCTION;
 
             case (preg_match('{'. self::PATTERN_NAME. '}', $value)):
                 return Token::T_NAME;

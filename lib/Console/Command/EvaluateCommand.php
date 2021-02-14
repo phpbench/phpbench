@@ -50,7 +50,7 @@ class EvaluateCommand extends Command
         $expr = $input->getArgument('expr');
         assert(is_string($expr));
 
-        $node = $this->parserFactory->create($this->lexer->lex($expr))->parse();
+        $node = $this->parserFactory->create()->parse($this->lexer->lex($expr));
         $output->writeln((string)json_encode(
             $this->factory->createWithParameters([])->evaluate(
                 $node

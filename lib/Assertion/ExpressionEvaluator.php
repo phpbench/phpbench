@@ -8,7 +8,6 @@ use PhpBench\Assertion\Ast\ExpressionNode;
 use PhpBench\Assertion\Ast\FloatNode;
 use PhpBench\Assertion\Ast\FunctionNode;
 use PhpBench\Assertion\Ast\IntegerNode;
-use PhpBench\Assertion\Ast\ListNode;
 use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Assertion\Ast\Node;
 use PhpBench\Assertion\Ast\ParenthesizedExpressionNode;
@@ -19,6 +18,9 @@ use PhpBench\Assertion\Ast\TimeUnitNode;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\ToleranceNode;
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
+use PhpBench\Expression\Ast\ArgumentListNode;
+use PhpBench\Expression\Ast\DelimitedListNode;
+use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Math\FloatNumber;
 use PhpBench\Util\MemoryUnit;
 use PhpBench\Util\TimeUnit;
@@ -98,7 +100,11 @@ class ExpressionEvaluator
         }
 
         if ($node instanceof ListNode) {
-            return $this->evaluateListNode($node);
+            return $this->evaluateDelimitedListNode($node);
+        }
+
+        if ($node instanceof ArgumentListNode) {
+            return $this->evaluateDelimitedListNode($node);
         }
 
         if ($node instanceof PercentageValue) {
@@ -235,7 +241,7 @@ class ExpressionEvaluator
      */
     private function evaluateFunction(FunctionNode $node)
     {
-        return $this->functions->execute($node->name(), array_map(function (ExpressionNode $node) {
+        return $this->functions->execute($node->name(), array_map(function (Node $node) {
             return $this->evaluate($node);
         }, $node->args()));
     }
@@ -301,9 +307,9 @@ class ExpressionEvaluator
         );
     }
 
-    private function evaluateListNode(ListNode $node)
+    private function evaluateDelimitedListNode(DelimitedListNode $node)
     {
-        return array_map(function (ExpressionNode $expression) {
+        return array_map(function (Node $expression) {
             return $this->evaluate($expression);
         }, $node->expressions());
     }

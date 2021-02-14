@@ -3,8 +3,11 @@
 namespace PhpBench\Expression;
 
 use PhpBench\Assertion\Ast\Node;
+use PhpBench\Assertion\Exception\SyntaxError;
 use PhpBench\Assertion\Token;
 use PhpBench\Assertion\Tokens;
+use PhpBench\Expression\Ast\DelimitedListNode;
+use PhpBench\Expression\Parselet\ArgumentListParselet;
 use PhpBench\Expression\Parselets;
 
 class Parser
@@ -25,41 +28,73 @@ class Parser
     private $tokens;
 
     /**
+     * @var DelimitedListParselet
+     */
+    private $listParselet;
+
+    /**
      * @param Parselets<PrefixParselet> $prefixParselets
      * @param Parselets<InfixParselet> $infixParselets
      */
     public function __construct(
-        Tokens $tokens,
         Parselets $prefixParselets,
         Parselets $infixParselets
     )
     {
         $this->prefixParselets = $prefixParselets;
         $this->infixParselets = $infixParselets;
-        $this->tokens = $tokens;
+        $this->listParselet = new ArgumentListParselet();
     }
 
-    public function parse(int $precedence = 0): Node
+    public function parse(Tokens $tokens, ?string $expectedType = null): Node
     {
-        $token = $this->tokens->chomp();
-        $left = $this->prefixParselets->forToken($token)->parse($token);
+        $node = $this->doParse($tokens);
+        if ($expectedType && !$node instanceof $expectedType) {
+            throw SyntaxError::forToken(
+                $tokens,
+                $tokens->current(),
+                sprintf(
+                    'Expected node of type "%s" got "%s"',
+                    $expectedType,
+                    get_class($node)
+                )
+            );
+        }
 
-        if (Token::T_EOF === $this->tokens->current()->type) {
+        return $node;
+    }
+
+    public function doParse(Tokens $tokens): Node
+    {
+        $expression = $this->parseExpression($tokens);
+
+        if ($tokens->current()->type === Token::T_COMMA) {
+            return $this->listParselet->parse($this, $expression, $tokens);
+        }
+
+        return $expression;
+    }
+
+    public function parseExpression(Tokens $tokens, int $precedence = 0): Node
+    {
+        $token = $tokens->current();
+        $left = $this->prefixParselets->forToken($token)->parse($this, $tokens);
+
+        if (Token::T_EOF === $tokens->current()->type) {
             return $left;
         }
 
-        while ($precedence < $this->infixPrecedence()) {
-            $token = $this->tokens->chomp();
-            $infixParselet = $this->infixParselets->forToken($token);
-            $left = $infixParselet->parse($this, $left, $token);
+        while ($precedence < $this->infixPrecedence($tokens->current())) {
+            $infixParselet = $this->infixParselets->forToken($tokens->current());
+            $left = $infixParselet->parse($this, $left, $tokens);
         }
 
         return $left;
     }
 
-    private function infixPrecedence(): int
+    private function infixPrecedence(Token $token): int
     {
-        $infixParser = $this->infixParselets->forTokenOrNull($this->tokens->current());
+        $infixParser = $this->infixParselets->forTokenOrNull($token);
 
         if (!$infixParser) {
             return 0;
