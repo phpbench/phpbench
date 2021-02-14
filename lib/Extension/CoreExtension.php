@@ -22,6 +22,7 @@ use PhpBench\Assertion\ExpressionPrinterFactory;
 use PhpBench\Assertion\Func\MeanFunction;
 use PhpBench\Assertion\Func\ModeFunction;
 use PhpBench\Assertion\Printer\NodePrinterFactory;
+use PhpBench\Assertion\Token;
 use PhpBench\Benchmark\BaselineManager;
 use PhpBench\Benchmark\BenchmarkFinder;
 use PhpBench\Benchmark\Metadata\AnnotationReader;
@@ -52,7 +53,22 @@ use PhpBench\Executor\CompositeExecutor;
 use PhpBench\Executor\Method\ErrorHandlingExecutorDecorator;
 use PhpBench\Executor\Method\LocalMethodExecutor;
 use PhpBench\Executor\Method\RemoteMethodExecutor;
+use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\Evaluator\ArgumentListEvaluator;
+use PhpBench\Expression\Evaluator\BinaryOperatorEvaluator;
+use PhpBench\Expression\Evaluator\FloatEvaluator;
+use PhpBench\Expression\Evaluator\FunctionEvaluator;
+use PhpBench\Expression\Evaluator\IntegerEvaluator;
+use PhpBench\Expression\Evaluator\ListEvaluator;
+use PhpBench\Expression\Parselet\BinaryOperatorParselet;
+use PhpBench\Expression\Parselet\FloatParselet;
+use PhpBench\Expression\Parselet\FunctionParselet;
+use PhpBench\Expression\Parselet\IntegerParselet;
+use PhpBench\Expression\Parselet\ListParselet;
+use PhpBench\Expression\Parselets;
+use PhpBench\Expression\Parser;
 use PhpBench\Expression\ParserFactory;
+use PhpBench\Expression\Precedence;
 use PhpBench\Formatter\Format\BalanceFormat;
 use PhpBench\Formatter\Format\InvertOnThroughputFormat;
 use PhpBench\Formatter\Format\NumberFormat;
@@ -481,7 +497,7 @@ class CoreExtension implements ExtensionInterface
             return new EvaluateCommand(
                 $container->get(ExpressionEvaluatorFactory::class),
                 $container->get(ExpressionLexer::class),
-                $container->get(ParserFactory::class)
+                $container->get(Parser::class)
             );
         }, [
             self::TAG_CONSOLE_COMMAND => []
@@ -645,8 +661,37 @@ class CoreExtension implements ExtensionInterface
             return new ExpressionParser();
         });
 
-        $container->register(ParserFactory::class, function (Container $container) {
-            return new ParserFactory();
+        $container->register(Parser::class, function (Container $container) {
+            return new Parser(
+                Parselets::fromPrefixParselets([
+                    new ListParselet(),
+                    new FunctionParselet(),
+                    new IntegerParselet(),
+                    new FloatParselet(),
+                ]),
+                Parselets::fromInfixParselets([
+                    new BinaryOperatorParselet(Token::T_PLUS, Precedence::SUM),
+                    new BinaryOperatorParselet(Token::T_MINUS, Precedence::SUM),
+                    new BinaryOperatorParselet(Token::T_MULTIPLY, Precedence::PRODUCT),
+                    new BinaryOperatorParselet(Token::T_DIVIDE, Precedence::PRODUCT),
+                    new BinaryOperatorParselet(Token::T_LT, Precedence::COMPARISON),
+                    new BinaryOperatorParselet(Token::T_LTE, Precedence::COMPARISON),
+                    new BinaryOperatorParselet(Token::T_EQUALS, Precedence::COMPARISON_EQUALITY),
+                    new BinaryOperatorParselet(Token::T_GT, Precedence::COMPARISON),
+                    new BinaryOperatorParselet(Token::T_GTE, Precedence::COMPARISON),
+                ])
+            );
+        });
+
+        $container->register(Evaluator::class, function (Container $container) {
+            return new Evaluator([
+                new ArgumentListEvaluator(),
+                new IntegerEvaluator(),
+                new BinaryOperatorEvaluator(),
+                new FloatEvaluator(),
+                new FunctionEvaluator($container->get(ExpressionFunctions::class)),
+                new ListEvaluator(),
+            ]);
         });
 
         $container->register(ExpressionFunctions::class, function () {

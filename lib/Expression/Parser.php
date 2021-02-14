@@ -28,7 +28,7 @@ class Parser
     private $tokens;
 
     /**
-     * @var DelimitedListParselet
+     * @var ArgumentListParselet
      */
     private $listParselet;
 

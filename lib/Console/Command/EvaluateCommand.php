@@ -5,6 +5,7 @@ namespace PhpBench\Console\Command;
 use PhpBench\Assertion\ExpressionEvaluatorFactory;
 use PhpBench\Assertion\ExpressionLexer;
 use PhpBench\Assertion\ExpressionParser;
+use PhpBench\Expression\Parser;
 use PhpBench\Expression\ParserFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -17,25 +18,26 @@ class EvaluateCommand extends Command
      * @var ExpressionEvaluatorFactory
      */
     private $factory;
+
     /**
      * @var ExpressionLexer
      */
     private $lexer;
 
     /**
-     * @var ParserFactory
+     * @var Parser
      */
     private $parserFactory;
 
     public function __construct(
         ExpressionEvaluatorFactory $factory,
         ExpressionLexer $lexer,
-        ParserFactory $parserFactory
+        Parser $parser
     ) {
         parent::__construct();
         $this->factory = $factory;
         $this->lexer = $lexer;
-        $this->parserFactory = $parserFactory;
+        $this->parser = $parser;
     }
 
     public function configure(): void
@@ -50,7 +52,7 @@ class EvaluateCommand extends Command
         $expr = $input->getArgument('expr');
         assert(is_string($expr));
 
-        $node = $this->parserFactory->create()->parse($this->lexer->lex($expr));
+        $node = $this->parser->parse($this->lexer->lex($expr));
         $output->writeln((string)json_encode(
             $this->factory->createWithParameters([])->evaluate(
                 $node

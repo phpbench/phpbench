@@ -22,10 +22,14 @@ class FunctionParselet implements PrefixParselet
     public function parse(Parser $parser, Tokens $tokens): Node
     {
         $functionToken = $tokens->chomp();
-        $arguments = $parser->parse($tokens);
-        $tokens->chomp(Token::T_CLOSE_PAREN);
+        if ($tokens->current()->type === Token::T_CLOSE_PAREN) {
+            $arguments = [];
+        } else {
+            $arguments = $parser->parse($tokens);
+            $arguments = $this->resolveArguments($arguments);
+        }
 
-        $arguments = $this->resolveArguments($arguments);
+        $tokens->chomp(Token::T_CLOSE_PAREN);
 
         return new FunctionNode(rtrim($functionToken->value, '('), $arguments);
     }

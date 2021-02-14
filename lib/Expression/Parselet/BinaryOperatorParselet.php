@@ -37,7 +37,7 @@ class BinaryOperatorParselet implements InfixParselet
         $binaryOperator = $tokens->chomp();
         $right = $parser->parseExpression($tokens, $this->precedence);
 
-        return new ArithmeticNode($left, $binaryOperator->value, $right);
+        return new BinaryOperatorNode($left, $binaryOperator->value, $right);
     }
 
     public function precedence(): int

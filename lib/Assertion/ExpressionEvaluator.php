@@ -19,6 +19,7 @@ use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\ToleranceNode;
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
 use PhpBench\Expression\Ast\ArgumentListNode;
+use PhpBench\Expression\Ast\BinaryOperatorNode;
 use PhpBench\Expression\Ast\DelimitedListNode;
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Math\FloatNumber;
@@ -91,8 +92,8 @@ class ExpressionEvaluator
             return $this->evaluateDisplayasNode($node);
         }
 
-        if ($node instanceof ArithmeticNode) {
-            return $this->evaluateArithmatic($node);
+        if ($node instanceof BinaryOperatorNode) {
+            return $this->evaluateBinaryOperator($node);
         }
 
         if ($node instanceof ParenthesizedExpressionNode) {
@@ -249,7 +250,7 @@ class ExpressionEvaluator
     /**
      * @return number
      */
-    private function evaluateArithmatic(ArithmeticNode $node)
+    private function evaluateBinaryOperator(BinaryOperatorNode $node)
     {
         $leftValue = $this->evaluateComparable($node->left());
         $rightValue = $this->evaluateComparable($node->right());
@@ -279,7 +280,7 @@ class ExpressionEvaluator
     /**
      * @return number
      */
-    private function evaluateComparable(ExpressionNode $expression)
+    private function evaluateComparable(Node $expression)
     {
         $result = $this->evaluate($expression);
 

@@ -7,6 +7,7 @@ use PhpBench\Assertion\Token;
 use PhpBench\Assertion\Tokens;
 use PhpBench\Expression\Ast\ArgumentListNode;
 use PhpBench\Expression\Ast\DelimitedListNode;
+use PhpBench\Expression\AbstractEvaluator;
 use PhpBench\Expression\InfixParselet;
 use PhpBench\Expression\Parser;
 

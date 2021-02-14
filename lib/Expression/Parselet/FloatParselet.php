@@ -19,6 +19,6 @@ class FloatParselet implements PrefixParselet
 
     public function parse(Parser $parser, Tokens $tokens): Node
     {
-        return new FloatNode((int)$tokens->chomp()->value);
+        return new FloatNode((float)$tokens->chomp()->value);
     }
 }
