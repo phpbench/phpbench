@@ -5,7 +5,7 @@ namespace PhpBench\Tests\Unit\Expression;
 use Generator;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Assertion\ExpressionEvaluator;
-use PhpBench\Assertion\ExpressionLexer;
+use PhpBench\Expression\Lexer;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Parser;
 use PhpBench\Expression\ParserFactory;

@@ -16,7 +16,7 @@ use Humbug\SelfUpdate\Updater;
 use PhpBench\Assertion\AssertionProcessor;
 use PhpBench\Assertion\ExpressionEvaluatorFactory;
 use PhpBench\Assertion\ExpressionFunctions;
-use PhpBench\Assertion\ExpressionLexer;
+use PhpBench\Expression\Lexer;
 use PhpBench\Assertion\ExpressionParser;
 use PhpBench\Assertion\ExpressionPrinterFactory;
 use PhpBench\Assertion\Func\MeanFunction;
@@ -500,7 +500,7 @@ class CoreExtension implements ExtensionInterface
         $container->register(EvaluateCommand::class, function (Container $container) {
             return new EvaluateCommand(
                 $container->get(Evaluator::class),
-                $container->get(ExpressionLexer::class),
+                $container->get(Lexer::class),
                 $container->get(Parser::class)
             );
         }, [
@@ -652,7 +652,7 @@ class CoreExtension implements ExtensionInterface
         $container->register(AssertionProcessor::class, function (Container $container) {
             return new AssertionProcessor(
                 $container->get(ExpressionParser::class),
-                $container->get(ExpressionLexer::class),
+                $container->get(Lexer::class),
                 $container->get(ExpressionEvaluatorFactory::class),
                 $container->get(ExpressionPrinterFactory::class)
             );
@@ -718,8 +718,8 @@ class CoreExtension implements ExtensionInterface
             );
         });
 
-        $container->register(ExpressionLexer::class, function (Container $container) {
-            return new ExpressionLexer(
+        $container->register(Lexer::class, function (Container $container) {
+            return new Lexer(
                 $container->get(ExpressionFunctions::class)->names(),
                 TimeUnit::supportedUnitNames(),
                 MemoryUnit::supportedUnitNames()

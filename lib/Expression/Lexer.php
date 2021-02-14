@@ -1,11 +1,11 @@
 <?php
 
-namespace PhpBench\Assertion;
+namespace PhpBench\Expression;
 
 use PhpBench\Expression\Token;
 use PhpBench\Expression\Tokens;
 
-final class ExpressionLexer
+final class Lexer
 {
     /**
      * @var string[]
@@ -48,7 +48,7 @@ final class ExpressionLexer
         '<=' => Token::T_LTE,
         '>' => Token::T_GT,
         '=' => Token::T_EQUALS,
-        '<' => Token::T_OPERATOR,
+        '<' => Token::T_LT,
         '[' => Token::T_LIST_START,
         ']' => Token::T_LIST_END,
         'ops/' => Token::T_THROUGHPUT,

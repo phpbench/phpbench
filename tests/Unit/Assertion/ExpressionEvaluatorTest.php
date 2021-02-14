@@ -10,7 +10,7 @@ use PhpBench\Assertion\ComparisonResult;
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
 use PhpBench\Assertion\ExpressionEvaluator;
 use PhpBench\Assertion\ExpressionFunctions;
-use PhpBench\Assertion\ExpressionLexer;
+use PhpBench\Expression\Lexer;
 use PhpBench\Assertion\ExpressionParser;
 use PhpBench\Util\MemoryUnit;
 use PhpBench\Util\TimeUnit;
@@ -30,7 +30,7 @@ class ExpressionEvaluatorTest extends TestCase
 
         $eval = new ExpressionEvaluator($params, $functions);
 
-        $lexer = new ExpressionLexer(
+        $lexer = new Lexer(
             $functions->names(),
             TimeUnit::supportedUnitNames(),
             MemoryUnit::supportedUnitNames()

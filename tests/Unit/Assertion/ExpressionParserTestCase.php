@@ -4,7 +4,7 @@ namespace PhpBench\Tests\Unit\Assertion;
 
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Assertion\ExpressionEvaluator;
-use PhpBench\Assertion\ExpressionLexer;
+use PhpBench\Expression\Lexer;
 use PhpBench\Assertion\ExpressionParser;
 use PhpBench\Assertion\ExpressionPrinter;
 use PhpBench\Tests\TestCase;
@@ -14,7 +14,7 @@ class ExpressionParserTestCase extends TestCase
 {
     protected function parse(string $expression, array $config): Node
     {
-        $lexer = new ExpressionLexer(
+        $lexer = new Lexer(
             $config['functions'] ?? [],
             $config['timeUnits'] ?? [],
             $config['memoryUnits'] ?? []

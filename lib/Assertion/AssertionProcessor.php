@@ -16,6 +16,7 @@ use Exception;
 use PhpBench\Expression\Exception\ExpressionError;
 use PhpBench\Assertion\Exception\PropertyAccessError;
 use PhpBench\Model\Variant;
+use PhpBench\Expression\Lexer;
 
 class AssertionProcessor
 {
@@ -41,7 +42,7 @@ class AssertionProcessor
 
     public function __construct(
         ExpressionParser $parser,
-        ExpressionLexer $lexer,
+        Lexer $lexer,
         ExpressionEvaluatorFactory $evaluator,
         ExpressionPrinterFactory $printer
     ) {
