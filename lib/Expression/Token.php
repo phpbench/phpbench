@@ -20,6 +20,9 @@ final class Token
     public const T_PERCENTAGE = 'percentage';
     public const T_AS = 'as';
 
+    public const T_LOGICAL_AND = 'and';
+    public const T_LOGICAL_OR = 'or';
+
     public const T_OPERATOR = 'operator';
     public const T_PLUS = 'plus';
     public const T_MINUS = 'minus';

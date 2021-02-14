@@ -44,6 +44,10 @@ class BinaryOperatorEvaluator extends AbstractEvaluator
                 return $leftValue > $rightValue;
             case '>=':
                 return $leftValue >= $rightValue;
+            case 'or':
+                return $leftValue || $rightValue;
+            case 'and':
+                return $leftValue && $rightValue;
         }
 
         throw new ExpressionEvaluatorError(sprintf(

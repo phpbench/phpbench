@@ -25,6 +25,7 @@ use PhpBench\Assertion\Printer\NodePrinterFactory;
 use PhpBench\Expression\Evaluator\ParenthesisEvaluator;
 use PhpBench\Expression\Evaluator\UnitEvaluator;
 use PhpBench\Expression\Parselet\ParenthesisParselet;
+use PhpBench\Expression\Parselet\ToleranceParselet;
 use PhpBench\Expression\Parselet\UnitParselet;
 use PhpBench\Expression\Token;
 use PhpBench\Benchmark\BaselineManager;
@@ -675,6 +676,9 @@ class CoreExtension implements ExtensionInterface
                     new ParenthesisParselet(),
                 ]),
                 Parselets::fromInfixParselets([
+                    new ToleranceParselet(),
+                    new BinaryOperatorParselet(Token::T_LOGICAL_OR, Precedence::LOGICAL_OR),
+                    new BinaryOperatorParselet(Token::T_LOGICAL_AND, Precedence::LOGICAL_AND),
                     new BinaryOperatorParselet(Token::T_PLUS, Precedence::SUM),
                     new BinaryOperatorParselet(Token::T_MINUS, Precedence::SUM),
                     new BinaryOperatorParselet(Token::T_MULTIPLY, Precedence::PRODUCT),

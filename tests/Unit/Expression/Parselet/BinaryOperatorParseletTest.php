@@ -53,5 +53,10 @@ class BinaryOperatorParseletTest extends ParseletTestCase
         yield ['3 >= 2', [], true];
         yield ['2 >= 2', [], true];
         yield ['1 >= 2', [], false];
+
+        yield ['3 > 2 and 4 > 2', [], true];
+        yield ['3 > 2 and 4 < 2', [], false];
+        yield ['2 > 2 or 4 < 2', [], false];
+        yield ['4 < 2 or 2 < 4', [], true];
     }
 }
