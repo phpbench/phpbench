@@ -33,38 +33,27 @@ class Parser
     private $listParselet;
 
     /**
+     * @var Parselets
+     */
+    private $suffixParselets;
+
+    /**
      * @param Parselets<PrefixParselet> $prefixParselets
      * @param Parselets<InfixParselet> $infixParselets
      */
     public function __construct(
         Parselets $prefixParselets,
-        Parselets $infixParselets
+        Parselets $infixParselets,
+        Parselets $suffixParselets
     )
     {
         $this->prefixParselets = $prefixParselets;
         $this->infixParselets = $infixParselets;
         $this->listParselet = new ArgumentListParselet();
+        $this->suffixParselets = $suffixParselets;
     }
 
-    public function parse(Tokens $tokens, ?string $expectedType = null): Node
-    {
-        $node = $this->doParse($tokens);
-        if ($expectedType && !$node instanceof $expectedType) {
-            throw SyntaxError::forToken(
-                $tokens,
-                $tokens->current(),
-                sprintf(
-                    'Expected node of type "%s" got "%s"',
-                    $expectedType,
-                    get_class($node)
-                )
-            );
-        }
-
-        return $node;
-    }
-
-    public function doParse(Tokens $tokens): Node
+    public function parse(Tokens $tokens): Node
     {
         $expression = $this->parseExpression($tokens);
 
@@ -87,6 +76,11 @@ class Parser
         while ($precedence < $this->infixPrecedence($tokens->current())) {
             $infixParselet = $this->infixParselets->forToken($tokens->current());
             $left = $infixParselet->parse($this, $left, $tokens);
+        }
+
+        $suffixParser = $this->suffixParselets->forTokenOrNull($tokens->current());
+        if ($suffixParser instanceof SuffixParselet) {
+            $left = $suffixParser->parse($left, $tokens);
         }
 
         return $left;

@@ -22,6 +22,10 @@ use PhpBench\Assertion\ExpressionPrinterFactory;
 use PhpBench\Assertion\Func\MeanFunction;
 use PhpBench\Assertion\Func\ModeFunction;
 use PhpBench\Assertion\Printer\NodePrinterFactory;
+use PhpBench\Expression\Evaluator\ParenthesisEvaluator;
+use PhpBench\Expression\Evaluator\UnitEvaluator;
+use PhpBench\Expression\Parselet\ParenthesisParselet;
+use PhpBench\Expression\Parselet\UnitParselet;
 use PhpBench\Expression\Token;
 use PhpBench\Benchmark\BaselineManager;
 use PhpBench\Benchmark\BenchmarkFinder;
@@ -495,7 +499,7 @@ class CoreExtension implements ExtensionInterface
 
         $container->register(EvaluateCommand::class, function (Container $container) {
             return new EvaluateCommand(
-                $container->get(ExpressionEvaluatorFactory::class),
+                $container->get(Evaluator::class),
                 $container->get(ExpressionLexer::class),
                 $container->get(Parser::class)
             );
@@ -668,6 +672,7 @@ class CoreExtension implements ExtensionInterface
                     new FunctionParselet(),
                     new IntegerParselet(),
                     new FloatParselet(),
+                    new ParenthesisParselet(),
                 ]),
                 Parselets::fromInfixParselets([
                     new BinaryOperatorParselet(Token::T_PLUS, Precedence::SUM),
@@ -679,6 +684,9 @@ class CoreExtension implements ExtensionInterface
                     new BinaryOperatorParselet(Token::T_EQUALS, Precedence::COMPARISON_EQUALITY),
                     new BinaryOperatorParselet(Token::T_GT, Precedence::COMPARISON),
                     new BinaryOperatorParselet(Token::T_GTE, Precedence::COMPARISON),
+                ]),
+                Parselets::fromSuffixParselets([
+                    new UnitParselet(),
                 ])
             );
         });
@@ -691,6 +699,8 @@ class CoreExtension implements ExtensionInterface
                 new FloatEvaluator(),
                 new FunctionEvaluator($container->get(ExpressionFunctions::class)),
                 new ListEvaluator(),
+                new UnitEvaluator(),
+                new ParenthesisEvaluator(),
             ]);
         });
 

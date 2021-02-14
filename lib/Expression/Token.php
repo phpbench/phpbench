@@ -16,7 +16,7 @@ final class Token
     public const T_OPEN_LIST = 'open_list';
     public const T_CLOSE_LIST = 'close_list';
     public const T_COMMA = 'comma';
-    public const T_TIME_UNIT = 'time_unit';
+    public const T_UNIT = 'unit';
     public const T_MEMORY_UNIT = 'memory_unit';
     public const T_COMPARATOR = 'comparator';
     public const T_PROPERTY_ACCESS = 'property_access';

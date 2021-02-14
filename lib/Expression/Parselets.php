@@ -53,6 +53,15 @@ final class Parselets
     }
 
     /**
+     * @param SuffixParselet[] $parselets
+     * @return self<SuffixParselet>
+     */
+    public static function fromSuffixParselets(array $parselets): self
+    {
+        return new self($parselets, 'suffix');
+    }
+
+    /**
      * @return T
      */
     public function forToken(Token $token): Parselet

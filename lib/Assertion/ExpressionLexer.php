@@ -136,10 +136,10 @@ final class ExpressionLexer
                 return Token::T_FUNCTION;
 
             case (in_array($value, $this->timeUnits)):
-                return Token::T_TIME_UNIT;
+                return Token::T_UNIT;
 
             case (in_array($value, $this->memoryUnits)):
-                return Token::T_MEMORY_UNIT;
+                return Token::T_UNIT;
 
             case (preg_match('{'. self::PATTERN_FUNCTION. '}', $value)):
                 return Token::T_FUNCTION;
