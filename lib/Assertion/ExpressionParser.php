@@ -15,13 +15,13 @@ namespace PhpBench\Assertion;
 use PhpBench\Assertion\Ast\Comparison;
 use PhpBench\Assertion\Ast\DisplayAsNode;
 use PhpBench\Assertion\Ast\ExpressionNode;
-use PhpBench\Assertion\Ast\FloatNode;
-use PhpBench\Assertion\Ast\FunctionNode;
-use PhpBench\Assertion\Ast\IntegerNode;
+use PhpBench\Expression\Ast\FloatNode;
+use PhpBench\Expression\Ast\FunctionNode;
+use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Assertion\Ast\ListNode;
 use PhpBench\Assertion\Ast\MemoryUnitNode;
 use PhpBench\Assertion\Ast\MemoryValue;
-use PhpBench\Assertion\Ast\Node;
+use PhpBench\Expression\Ast\Node;
 use PhpBench\Assertion\Ast\OperatorExpression;
 use PhpBench\Assertion\Ast\ParenthesizedExpressionNode;
 use PhpBench\Assertion\Ast\PercentageValue;
@@ -31,7 +31,9 @@ use PhpBench\Assertion\Ast\TimeUnitNode;
 use PhpBench\Assertion\Ast\TimeValue;
 use PhpBench\Assertion\Ast\ToleranceNode;
 use PhpBench\Assertion\Ast\UnitNode;
-use PhpBench\Assertion\Exception\SyntaxError;
+use PhpBench\Expression\Exception\SyntaxError;
+use PhpBench\Expression\Token;
+use PhpBench\Expression\Tokens;
 
 final class ExpressionParser
 {

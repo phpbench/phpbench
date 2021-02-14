@@ -2,9 +2,9 @@
 
 namespace PhpBench\Expression\Parselet;
 
-use PhpBench\Assertion\Ast\Node;
-use PhpBench\Assertion\Token;
-use PhpBench\Assertion\Tokens;
+use PhpBench\Expression\Ast\Node;
+use PhpBench\Expression\Token;
+use PhpBench\Expression\Tokens;
 use PhpBench\Expression\Ast\DelimitedListNode;
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Parser;

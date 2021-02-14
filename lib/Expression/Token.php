@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Assertion;
+namespace PhpBench\Expression;
 
 final class Token
 {

@@ -4,8 +4,8 @@ namespace PhpBench\Tests\Unit\Assertion;
 
 use Generator;
 use PhpBench\Assertion\Ast\Comparison;
-use PhpBench\Assertion\Ast\IntegerNode;
-use PhpBench\Assertion\Ast\Node;
+use PhpBench\Expression\Ast\IntegerNode;
+use PhpBench\Expression\Ast\Node;
 use PhpBench\Assertion\ComparisonResult;
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
 use PhpBench\Assertion\ExpressionEvaluator;

@@ -5,9 +5,9 @@ namespace PhpBench\Tests\Unit\Expression\Parselet;
 use Generator;
 use PHPUnit\Framework\TestCase;
 use PhpBench\Assertion\ArithmeticNode;
-use PhpBench\Assertion\Ast\FloatNode;
-use PhpBench\Assertion\Ast\FunctionNode;
-use PhpBench\Assertion\Ast\IntegerNode;
+use PhpBench\Expression\Ast\FloatNode;
+use PhpBench\Expression\Ast\FunctionNode;
+use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\BinaryOperatorNode;
 use PhpBench\Tests\Unit\Expression\ParseletTestCase;
 

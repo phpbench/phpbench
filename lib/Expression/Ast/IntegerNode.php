@@ -1,6 +1,8 @@
 <?php
 
-namespace PhpBench\Assertion\Ast;
+namespace PhpBench\Expression\Ast;
+
+use PhpBench\Expression\Ast\NumberNode;
 
 class IntegerNode implements NumberNode
 {

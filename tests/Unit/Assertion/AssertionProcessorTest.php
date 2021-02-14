@@ -5,7 +5,7 @@ namespace PhpBench\Tests\Unit\Assertion;
 use Generator;
 use PhpBench\Assertion\AssertionProcessor;
 use PhpBench\Assertion\AssertionResult;
-use PhpBench\Assertion\Exception\ExpressionError;
+use PhpBench\Expression\Exception\ExpressionError;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Tests\IntegrationTestCase;
 use PhpBench\Tests\Util\VariantBuilder;

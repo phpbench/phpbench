@@ -2,7 +2,7 @@
 
 namespace PhpBench\Expression;
 
-use PhpBench\Assertion\Ast\Node;
+use PhpBench\Expression\Ast\Node;
 
 /**
  * @template T of Node

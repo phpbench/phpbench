@@ -2,11 +2,10 @@
 
 namespace PhpBench\Expression\Parselet;
 
-use PhpBench\Assertion\Ast\FloatNode;
-use PhpBench\Assertion\Ast\IntegerNode;
-use PhpBench\Assertion\Ast\Node;
-use PhpBench\Assertion\Token;
-use PhpBench\Assertion\Tokens;
+use PhpBench\Expression\Ast\FloatNode;
+use PhpBench\Expression\Ast\Node;
+use PhpBench\Expression\Token;
+use PhpBench\Expression\Tokens;
 use PhpBench\Expression\Parser;
 use PhpBench\Expression\PrefixParselet;
 

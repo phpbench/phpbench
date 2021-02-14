@@ -2,7 +2,7 @@
 
 namespace PhpBench\Expression\Ast;
 
-use PhpBench\Assertion\Ast\Node;
+use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\DelimitedListNode;
 
 abstract class DelimitedListNode implements Node

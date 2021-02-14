@@ -2,10 +2,10 @@
 
 namespace PhpBench\Expression;
 
-use PhpBench\Assertion\Ast\Node;
-use PhpBench\Assertion\Exception\SyntaxError;
-use PhpBench\Assertion\Token;
-use PhpBench\Assertion\Tokens;
+use PhpBench\Expression\Ast\Node;
+use PhpBench\Expression\Exception\SyntaxError;
+use PhpBench\Expression\Token;
+use PhpBench\Expression\Tokens;
 use PhpBench\Expression\Ast\DelimitedListNode;
 use PhpBench\Expression\Parselet\ArgumentListParselet;
 use PhpBench\Expression\Parselets;

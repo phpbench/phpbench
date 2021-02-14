@@ -2,7 +2,7 @@
 
 namespace PhpBench\Assertion;
 
-use PhpBench\Assertion\Ast\Node;
+use PhpBench\Expression\Ast\Node;
 
 interface ExpressionPrinter
 {

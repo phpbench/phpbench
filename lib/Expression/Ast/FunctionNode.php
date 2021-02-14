@@ -1,8 +1,8 @@
 <?php
 
-namespace PhpBench\Assertion\Ast;
+namespace PhpBench\Expression\Ast;
 
-class FunctionNode implements ExpressionNode
+class FunctionNode implements Node
 {
     /**
      * @var string

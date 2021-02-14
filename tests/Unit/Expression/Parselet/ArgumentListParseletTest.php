@@ -4,8 +4,8 @@ namespace PhpBench\Tests\Unit\Expression\Parselet;
 
 use Generator;
 use PHPUnit\Framework\TestCase;
-use PhpBench\Assertion\Ast\IntegerNode;
-use PhpBench\Assertion\Ast\Node;
+use PhpBench\Expression\Ast\IntegerNode;
+use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\ArgumentListNode;
 use PhpBench\Tests\Unit\Expression\ParseletTestCase;
 

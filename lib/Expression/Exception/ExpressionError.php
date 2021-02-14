@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Assertion\Exception;
+namespace PhpBench\Expression\Exception;
 
 use RuntimeException;
 use Throwable;

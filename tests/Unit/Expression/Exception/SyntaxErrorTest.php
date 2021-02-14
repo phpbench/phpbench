@@ -1,10 +1,10 @@
 <?php
 
-namespace PhpBench\Tests\Unit\Assertion\Exception;
+namespace PhpBench\Tests\Unit\Expression\Exception;
 
-use PhpBench\Assertion\Exception\SyntaxError;
-use PhpBench\Assertion\Token;
-use PhpBench\Assertion\Tokens;
+use PhpBench\Expression\Exception\SyntaxError;
+use PhpBench\Expression\Token;
+use PhpBench\Expression\Tokens;
 use PHPUnit\Framework\TestCase;
 
 class SyntaxErrorTest extends TestCase

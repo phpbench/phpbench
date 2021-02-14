@@ -13,7 +13,7 @@
 namespace PhpBench\Assertion;
 
 use Exception;
-use PhpBench\Assertion\Exception\ExpressionError;
+use PhpBench\Expression\Exception\ExpressionError;
 use PhpBench\Assertion\Exception\PropertyAccessError;
 use PhpBench\Model\Variant;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Assertion\Ast;
+namespace PhpBench\Expression\Ast;
 
 class FloatNode implements NumberNode
 {

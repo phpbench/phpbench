@@ -3,7 +3,7 @@
 namespace PhpBench\Tests\Unit\Expression;
 
 use Generator;
-use PhpBench\Assertion\Ast\Node;
+use PhpBench\Expression\Ast\Node;
 use PhpBench\Assertion\ExpressionEvaluator;
 use PhpBench\Assertion\ExpressionLexer;
 use PhpBench\Expression\Evaluator;

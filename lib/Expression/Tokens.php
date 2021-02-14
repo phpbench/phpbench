@@ -1,13 +1,17 @@
 <?php
 
-namespace PhpBench\Assertion;
+namespace PhpBench\Expression;
 
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
-use PhpBench\Assertion\Exception\SyntaxError;
+use PhpBench\Expression\Exception\SyntaxError;
 use RuntimeException;
+use PhpBench\Expression\Token;
 
+/**
+ * @implements IteratorAggregate<int, Token>
+ */
 final class Tokens implements IteratorAggregate, Countable
 {
     /**

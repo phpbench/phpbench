@@ -2,7 +2,7 @@
 
 namespace PhpBench\Expression\Evaluator;
 
-use PhpBench\Assertion\Ast\Node;
+use PhpBench\Expression\Ast\Node;
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
 use PhpBench\Expression\AbstractEvaluator;
 use PhpBench\Expression\Ast\BinaryOperatorNode;

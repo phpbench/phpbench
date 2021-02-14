@@ -22,7 +22,7 @@ use PhpBench\Assertion\ExpressionPrinterFactory;
 use PhpBench\Assertion\Func\MeanFunction;
 use PhpBench\Assertion\Func\ModeFunction;
 use PhpBench\Assertion\Printer\NodePrinterFactory;
-use PhpBench\Assertion\Token;
+use PhpBench\Expression\Token;
 use PhpBench\Benchmark\BaselineManager;
 use PhpBench\Benchmark\BenchmarkFinder;
 use PhpBench\Benchmark\Metadata\AnnotationReader;

@@ -2,6 +2,8 @@
 
 namespace PhpBench\Assertion\Ast;
 
+use PhpBench\Expression\Ast\Node;
+
 class ToleranceNode implements Node
 {
     /**

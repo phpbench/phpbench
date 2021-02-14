@@ -1,9 +1,9 @@
 <?php
 
-namespace PhpBench\Assertion\Exception;
+namespace PhpBench\Expression\Exception;
 
-use PhpBench\Assertion\Token;
-use PhpBench\Assertion\Tokens;
+use PhpBench\Expression\Token;
+use PhpBench\Expression\Tokens;
 
 class SyntaxError extends ExpressionError
 {

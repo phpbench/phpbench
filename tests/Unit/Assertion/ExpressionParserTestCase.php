@@ -2,7 +2,7 @@
 
 namespace PhpBench\Tests\Unit\Assertion;
 
-use PhpBench\Assertion\Ast\Node;
+use PhpBench\Expression\Ast\Node;
 use PhpBench\Assertion\ExpressionEvaluator;
 use PhpBench\Assertion\ExpressionLexer;
 use PhpBench\Assertion\ExpressionParser;

@@ -2,6 +2,9 @@
 
 namespace PhpBench\Assertion;
 
+use PhpBench\Expression\Token;
+use PhpBench\Expression\Tokens;
+
 final class ExpressionLexer
 {
     /**
