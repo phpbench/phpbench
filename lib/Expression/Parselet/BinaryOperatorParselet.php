@@ -2,6 +2,7 @@
 
 namespace PhpBench\Expression\Parselet;
 
+use PhpBench\Assertion\ArithmeticNode;
 use PhpBench\Assertion\Ast\Node;
 use PhpBench\Assertion\Token;
 use PhpBench\Expression\Ast\BinaryOperatorNode;
@@ -34,7 +35,7 @@ class BinaryOperatorParselet implements InfixParselet
     {
         $right = $parser->parse($this->precedence);
 
-        return new BinaryOperatorNode($left, $token->value, $right);
+        return new ArithmeticNode($left, $token->value, $right);
     }
 
     public function precedence(): int

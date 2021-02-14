@@ -11,7 +11,7 @@ use PhpBench\Expression\Parselet\IntegerParselet;
 
 final class ParserFactory
 {
-    public function create(Tokens $tokens)
+    public function create(Tokens $tokens): Parser
     {
         return new Parser(
             $tokens,

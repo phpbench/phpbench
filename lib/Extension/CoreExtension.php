@@ -52,6 +52,7 @@ use PhpBench\Executor\CompositeExecutor;
 use PhpBench\Executor\Method\ErrorHandlingExecutorDecorator;
 use PhpBench\Executor\Method\LocalMethodExecutor;
 use PhpBench\Executor\Method\RemoteMethodExecutor;
+use PhpBench\Expression\ParserFactory;
 use PhpBench\Formatter\Format\BalanceFormat;
 use PhpBench\Formatter\Format\InvertOnThroughputFormat;
 use PhpBench\Formatter\Format\NumberFormat;
@@ -480,7 +481,7 @@ class CoreExtension implements ExtensionInterface
             return new EvaluateCommand(
                 $container->get(ExpressionEvaluatorFactory::class),
                 $container->get(ExpressionLexer::class),
-                $container->get(ExpressionParser::class)
+                $container->get(ParserFactory::class)
             );
         }, [
             self::TAG_CONSOLE_COMMAND => []
@@ -642,6 +643,10 @@ class CoreExtension implements ExtensionInterface
 
         $container->register(ExpressionParser::class, function (Container $container) {
             return new ExpressionParser();
+        });
+
+        $container->register(ParserFactory::class, function (Container $container) {
+            return new ParserFactory();
         });
 
         $container->register(ExpressionFunctions::class, function () {
