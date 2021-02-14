@@ -49,8 +49,6 @@ final class Lexer
         '>' => Token::T_GT,
         '=' => Token::T_EQUALS,
         '<' => Token::T_LT,
-        '[' => Token::T_LIST_START,
-        ']' => Token::T_LIST_END,
         'ops/' => Token::T_THROUGHPUT,
     ];
 

@@ -14,14 +14,14 @@ class ListParselet implements PrefixParselet
 {
     public function tokenType(): string
     {
-        return Token::T_LIST_START;
+        return Token::T_OPEN_LIST;
     }
 
     public function parse(Parser $parser, Tokens $tokens): Node
     {
         $tokens->chomp();
         $list = $parser->parse($tokens);
-        $tokens->chomp(Token::T_LIST_END);
+        $tokens->chomp(Token::T_CLOSE_LIST);
         if ($list instanceof DelimitedListNode) {
             return new ListNode($list->left(), $list->right());
         }

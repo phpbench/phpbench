@@ -17,9 +17,6 @@ final class Token
     public const T_CLOSE_LIST = 'close_list';
     public const T_COMMA = 'comma';
     public const T_UNIT = 'unit';
-    public const T_MEMORY_UNIT = 'memory_unit';
-    public const T_COMPARATOR = 'comparator';
-    public const T_PROPERTY_ACCESS = 'property_access';
     public const T_PERCENTAGE = 'percentage';
     public const T_AS = 'as';
 
@@ -33,12 +30,8 @@ final class Token
     public const T_EQUALS = 'equals';
     public const T_GTE = 'gte';
     public const T_GT = 'gt';
-
     public const T_EOF = 'eof';
-
     public const T_THROUGHPUT = 'throughput';
-    public const T_LIST_START = 'list_start';
-    public const T_LIST_END = 'list_end';
 
     /**
      * @var string
