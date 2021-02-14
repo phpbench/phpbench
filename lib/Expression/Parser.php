@@ -73,15 +73,16 @@ class Parser
             return $left;
         }
 
+        $suffixParser = $this->suffixParselets->forTokenOrNull($tokens->current());
+        if ($suffixParser instanceof SuffixParselet) {
+            $left = $suffixParser->parse($left, $tokens);
+        }
+
         while ($precedence < $this->infixPrecedence($tokens->current())) {
             $infixParselet = $this->infixParselets->forToken($tokens->current());
             $left = $infixParselet->parse($this, $left, $tokens);
         }
 
-        $suffixParser = $this->suffixParselets->forTokenOrNull($tokens->current());
-        if ($suffixParser instanceof SuffixParselet) {
-            $left = $suffixParser->parse($left, $tokens);
-        }
 
         return $left;
     }

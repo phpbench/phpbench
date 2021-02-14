@@ -3,6 +3,7 @@
 namespace PhpBench\Expression\Parselet;
 
 use PhpBench\Expression\Ast\Node;
+use PhpBench\Expression\Ast\RelativeAmountNode;
 use PhpBench\Expression\Token;
 use PhpBench\Expression\Tokens;
 use PhpBench\Expression\Ast\BinaryOperatorNode;
@@ -35,6 +36,10 @@ class BinaryOperatorParselet implements InfixParselet
     {
         $binaryOperator = $tokens->chomp();
         $right = $parser->parseExpression($tokens, $this->precedence);
+
+        if ($right instanceof RelativeAmountNode) {
+            $right = $right->withContext($left);
+        }
 
         return new BinaryOperatorNode($left, $binaryOperator->value, $right);
     }

@@ -11,7 +11,7 @@ use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Assertion\Ast\ParenthesizedExpressionNode;
-use PhpBench\Assertion\Ast\PercentageValue;
+use PhpBench\Expression\Ast\RelativeAmountNode;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeUnitNode;
@@ -171,7 +171,7 @@ class NodePrinterTest extends TestCase
         ];
 
         yield [
-            new PercentageValue(new IntegerNode(10)),
+            new RelativeAmountNode(new IntegerNode(10)),
             [
             ],
             '10%',

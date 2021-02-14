@@ -24,7 +24,7 @@ use PhpBench\Assertion\Ast\MemoryUnitNode;
 use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Assertion\Ast\ParenthesizedExpressionNode;
-use PhpBench\Assertion\Ast\PercentageValue;
+use PhpBench\Expression\Ast\RelativeAmountNode;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeUnitNode;
@@ -326,7 +326,7 @@ class ExpressionParserTest extends ExpressionParserTestCase
                 new TimeValue(new IntegerNode(9), 'ms'),
                 '>',
                 new TimeValue(new IntegerNode(10), 'ms'),
-                new ToleranceNode(new PercentageValue(new IntegerNode(10)))
+                new ToleranceNode(new RelativeAmountNode(new IntegerNode(10)))
             ),
             [
                 'timeUnits' => ['ms'],

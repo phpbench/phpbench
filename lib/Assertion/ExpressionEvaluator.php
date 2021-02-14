@@ -11,7 +11,7 @@ use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Assertion\Ast\ParenthesizedExpressionNode;
-use PhpBench\Assertion\Ast\PercentageValue;
+use PhpBench\Expression\Ast\RelativeAmountNode;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeUnitNode;
@@ -108,8 +108,8 @@ class ExpressionEvaluator
             return $this->evaluateDelimitedListNode($node);
         }
 
-        if ($node instanceof PercentageValue) {
-            return $this->evaluate($node->percentage());
+        if ($node instanceof RelativeAmountNode) {
+            return $this->evaluate($node->amount());
         }
 
         throw new ExpressionEvaluatorError(sprintf(
@@ -210,7 +210,7 @@ class ExpressionEvaluator
 
         $value = $tolerance->tolerance();
 
-        if ($value instanceof PercentageValue) {
+        if ($value instanceof RelativeAmountNode) {
             return ($right / 100) * $this->evaluate($value);
         }
 

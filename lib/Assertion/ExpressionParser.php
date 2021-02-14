@@ -24,7 +24,7 @@ use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Assertion\Ast\OperatorExpression;
 use PhpBench\Assertion\Ast\ParenthesizedExpressionNode;
-use PhpBench\Assertion\Ast\PercentageValue;
+use PhpBench\Expression\Ast\RelativeAmountNode;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeUnitNode;
@@ -162,11 +162,11 @@ final class ExpressionParser
         return new TimeValue($value, $unit->value);
     }
 
-    private function parsePercentage(ExpressionNode $expression): PercentageValue
+    private function parsePercentage(ExpressionNode $expression): RelativeAmountNode
     {
         $unit = $this->tokens->chomp(Token::T_PERCENTAGE);
 
-        return new PercentageValue($expression);
+        return new RelativeAmountNode($expression);
     }
 
     private function parseMemoryUnit(ExpressionNode $expression): MemoryValue

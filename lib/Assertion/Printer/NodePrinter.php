@@ -13,7 +13,7 @@ use PhpBench\Assertion\Ast\MemoryUnitNode;
 use PhpBench\Assertion\Ast\MemoryValue;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Assertion\Ast\ParenthesizedExpressionNode;
-use PhpBench\Assertion\Ast\PercentageValue;
+use PhpBench\Expression\Ast\RelativeAmountNode;
 use PhpBench\Assertion\Ast\PropertyAccess;
 use PhpBench\Assertion\Ast\ThroughputValue;
 use PhpBench\Assertion\Ast\TimeUnitNode;
@@ -71,7 +71,7 @@ final class NodePrinter implements ExpressionPrinter
             return $this->formatPropertyAccess($node);
         }
 
-        if ($node instanceof PercentageValue) {
+        if ($node instanceof RelativeAmountNode) {
             return $this->formatPercentageValue($node);
         }
 
@@ -154,9 +154,9 @@ final class NodePrinter implements ExpressionPrinter
         return (string)PropertyAccess::resolvePropertyAccess($value->segments(), $this->parameters);
     }
 
-    private function formatPercentageValue(PercentageValue $node): string
+    private function formatPercentageValue(RelativeAmountNode $node): string
     {
-        return sprintf('%s%%', $this->format($node->percentage()));
+        return sprintf('%s%%', $this->format($node->amount()));
     }
 
     private function formatMemoryValue(MemoryValue $node): string

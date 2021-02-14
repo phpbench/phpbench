@@ -39,10 +39,10 @@ final class Lexer
         ']' => Token::T_CLOSE_LIST,
         ',' => Token::T_COMMA,
         'as' => Token::T_AS,
-        '%' => Token::T_PERCENTAGE,
         '+' => Token::T_PLUS,
         '-' => Token::T_MINUS,
         '*' => Token::T_MULTIPLY,
+        '%' => Token::T_PERCENTAGE,
         '/' => Token::T_DIVIDE,
         '>=' => Token::T_GTE,
         '<=' => Token::T_LTE,
@@ -55,17 +55,17 @@ final class Lexer
     ];
 
     const PATTERNS = [
-        '(?:[\(\)])', // parenthesis
-        '(?:[0-9]+(?:[\.][0-9]+)*)(?:e[+-]?[0-9]+)?', // numbers
+        self::PATTERN_NUMBER, // numbers
         self::PATTERN_FUNCTION,
         self::PATTERN_NAME,
-        '%',
         '\.',
     ];
 
     const IGNORE_PATTERNS = [
         '\s+',
     ];
+    const PATTERN_NUMBER = '(?:[0-9]+(?:[\\.][0-9]+)*)(?:e[+-]?[0-9]+)?';
+
 
     /**
      * @param string[] $timeUnits
