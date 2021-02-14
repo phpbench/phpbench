@@ -20,7 +20,18 @@ final class Token
     public const T_PROPERTY_ACCESS = 'property_access';
     public const T_PERCENTAGE = 'percentage';
     public const T_AS = 'as';
+
     public const T_OPERATOR = 'operator';
+    public const T_PLUS = 'plus';
+    public const T_MINUS = 'minus';
+    public const T_MULTIPLY = 'multiply';
+    public const T_DIVIDE = '/';
+    public const T_LT = 'lt';
+    public const T_LTE = 'lte';
+    public const T_EQUALS = 'equals';
+    public const T_GTE = 'gte';
+    public const T_GT = 'gt';
+
     public const T_THROUGHPUT = 'throughput';
     public const T_LIST_START = 'list_start';
     public const T_LIST_END = 'list_end';
