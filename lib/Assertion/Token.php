@@ -32,6 +32,8 @@ final class Token
     public const T_GTE = 'gte';
     public const T_GT = 'gt';
 
+    public const T_EOF = 'eof';
+
     public const T_THROUGHPUT = 'throughput';
     public const T_LIST_START = 'list_start';
     public const T_LIST_END = 'list_end';

@@ -44,7 +44,7 @@ class Parser
         $token = $this->tokens->chomp();
         $left = $this->prefixParselets->forToken($token)->parse($token);
 
-        if (!$this->tokens->hasAnother()) {
+        if (Token::T_EOF === $this->tokens->current()->type) {
             return $left;
         }
 
@@ -59,13 +59,7 @@ class Parser
 
     private function infixPrecedence(): int
     {
-        $next = $this->tokens->current;
-
-        if (!$next) {
-            return 0;
-        }
-
-        $infixParser = $this->infixParselets->forTokenOrNull($next);
+        $infixParser = $this->infixParselets->forTokenOrNull($this->tokens->current());
 
         if (!$infixParser) {
             return 0;

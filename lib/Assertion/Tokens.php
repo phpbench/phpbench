@@ -11,11 +11,6 @@ use RuntimeException;
 final class Tokens implements IteratorAggregate, Countable
 {
     /**
-     * @var ?Token
-     */
-    public $current;
-
-    /**
      * @var Token[]
      */
     private $tokens;
@@ -31,10 +26,6 @@ final class Tokens implements IteratorAggregate, Countable
     public function __construct(array $tokens)
     {
         $this->tokens = $tokens;
-
-        if (count($tokens)) {
-            $this->current = $tokens[$this->position];
-        }
     }
 
     /**
@@ -53,34 +44,13 @@ final class Tokens implements IteratorAggregate, Countable
         return new ArrayIterator($this->tokens);
     }
 
-    public function hasCurrent(): bool
-    {
-        return isset($this->tokens[$this->position]);
-    }
-
-    public function hasAnother(): bool
-    {
-        return isset($this->tokens[$this->position + 1]);
-    }
-
     /**
      * Return the current token and move the position ahead.
      */
     public function chomp(?string $type = null): ?Token
     {
-        if (!isset($this->tokens[$this->position])) {
-            if ($type) {
-                throw SyntaxError::forToken($this, $this->previous(), sprintf(
-                    'Expected "%s" after token',
-                    $type
-                ));
-            }
+        $token = $this->atPosition($this->position++);
 
-            return null;
-        }
-
-        $token = $this->tokens[$this->position++];
-        $this->current = @$this->tokens[$this->position];
 
         if (null !== $type && $token->type !== $type) {
             throw new RuntimeException(sprintf(
@@ -95,64 +65,9 @@ final class Tokens implements IteratorAggregate, Countable
         return $token;
     }
 
-    /**
-     * Chomp only if the current node is the given type
-     */
-    public function chompIf(string $type): ?Token
+    public function count(): int
     {
-        if ($this->current === null) {
-            return null;
-        }
-
-        if ($this->current->type === $type) {
-            return $this->chomp($type);
-        }
-
-        return null;
-    }
-
-    public function ifNextIs(string $type): bool
-    {
-        $next = $this->next();
-
-        if ($next && $next->type === $type) {
-            $this->current = @$this->tokens[++$this->position];
-
-            return true;
-        }
-
-        return false;
-    }
-
-    public function if(string $type): bool
-    {
-        if (null === $this->current) {
-            return false;
-        }
-
-        if ($this->current->type === $type) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public function next(): ?Token
-    {
-        if (!isset($this->tokens[$this->position + 1])) {
-            return null;
-        }
-
-        return $this->tokens[$this->position + 1];
-    }
-
-    public function previous(): ?Token
-    {
-        if (!isset($this->tokens[$this->position - 1])) {
-            return null;
-        }
-
-        return $this->tokens[$this->position - 1];
+        return count($this->tokens);
     }
 
     public function toString(): string
@@ -172,8 +87,17 @@ final class Tokens implements IteratorAggregate, Countable
         return $out;
     }
 
-    public function count(): int
+    private function atPosition(int $position): Token
     {
-        return count($this->tokens);
+        if (isset($this->tokens[$position])) {
+            return $this->tokens[$position];
+        }
+
+        return new Token(Token::T_EOF, '', $position);
+    }
+
+    public function current(): Token
+    {
+        return $this->atPosition($this->position);
     }
 }
