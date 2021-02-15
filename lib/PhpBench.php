@@ -17,6 +17,7 @@ use PhpBench\Console\Application;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\Exception\ConfigurationPreProcessingError;
 use PhpBench\Extension\CoreExtension;
+use PhpBench\Extension\ExpressionExtension;
 use PhpBench\Extensions\XDebug\XDebugExtension;
 use PhpBench\Json\JsonDecoder;
 use Seld\JsonLint\JsonParser;
@@ -59,6 +60,7 @@ class PhpBench
 
         $extensions = $config['extensions'];
         $extensions[] = CoreExtension::class;
+        $extensions[] = ExpressionExtension::class;
 
         if (extension_loaded('xdebug')) {
             $extensions[] = XDebugExtension::class;

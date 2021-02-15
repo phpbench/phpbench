@@ -2,6 +2,7 @@
 
 namespace PhpBench\Extension;
 
+use PhpBench\Console\Command\EvaluateCommand;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Expression\Evaluator;
@@ -46,6 +47,15 @@ class ExpressionExtension implements ExtensionInterface
      */
     public function load(Container $container): void
     {
+        $container->register(EvaluateCommand::class, function (Container $container) {
+            return new EvaluateCommand(
+                $container->get(Evaluator::class),
+                $container->get(Lexer::class),
+                $container->get(Parser::class)
+            );
+        }, [
+            CoreExtension::TAG_CONSOLE_COMMAND => []
+        ]);
         $container->register(Parser::class, function (Container $container) {
             return new Parser(
                 Parselets::fromPrefixParselets([

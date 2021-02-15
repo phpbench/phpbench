@@ -8,6 +8,7 @@ class TolerableNode implements Node
      * @var Node
      */
     private $value;
+
     /**
      * @var Node
      */
