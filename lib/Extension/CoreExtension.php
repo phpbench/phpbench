@@ -15,7 +15,12 @@ namespace PhpBench\Extension;
 use Humbug\SelfUpdate\Updater;
 use PhpBench\Assertion\AssertionProcessor;
 use PhpBench\Assertion\ExpressionEvaluatorFactory;
+use PhpBench\Expression\ExpressionFunctions;
 use PhpBench\Assertion\ExpressionParser;
+use PhpBench\Assertion\ExpressionPrinterFactory;
+use PhpBench\Expression\Func\MeanFunction;
+use PhpBench\Expression\Func\ModeFunction;
+use PhpBench\Assertion\Printer\NodePrinterFactory;
 use PhpBench\Benchmark\BaselineManager;
 use PhpBench\Benchmark\BenchmarkFinder;
 use PhpBench\Benchmark\Metadata\AnnotationReader;
@@ -23,6 +28,7 @@ use PhpBench\Benchmark\Metadata\Driver\AnnotationDriver;
 use PhpBench\Benchmark\Metadata\MetadataFactory;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Console\Application;
+use PhpBench\Console\Command\EvaluateCommand;
 use PhpBench\Console\Command\Handler\DumpHandler;
 use PhpBench\Console\Command\Handler\ReportHandler;
 use PhpBench\Console\Command\Handler\RunnerHandler;
@@ -82,6 +88,7 @@ use PhpBench\Storage\UuidResolver;
 use PhpBench\Storage\UuidResolver\ChainResolver;
 use PhpBench\Storage\UuidResolver\LatestResolver;
 use PhpBench\Storage\UuidResolver\TagResolver;
+use PhpBench\Util\MemoryUnit;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\ArgvInput;
@@ -205,6 +212,7 @@ class CoreExtension implements ExtensionInterface
             $output = new ConsoleOutput();
 
             $output->getFormatter()->setStyle('success', new OutputFormatterStyle('black', 'green', []));
+            $output->getFormatter()->setStyle('warning', new OutputFormatterStyle('black', 'yellow', []));
             $output->getFormatter()->setStyle('baseline', new OutputFormatterStyle('cyan', null, []));
             $output->getFormatter()->setStyle('result-neutral', new OutputFormatterStyle('cyan', null, []));
             $output->getFormatter()->setStyle('result-good', new OutputFormatterStyle('green', null, []));
@@ -467,6 +475,16 @@ class CoreExtension implements ExtensionInterface
             self::TAG_CONSOLE_COMMAND => []
         ]);
 
+        $container->register(EvaluateCommand::class, function (Container $container) {
+            return new EvaluateCommand(
+                $container->get(Evaluator::class),
+                $container->get(Lexer::class),
+                $container->get(Parser::class)
+            );
+        }, [
+            self::TAG_CONSOLE_COMMAND => []
+        ]);
+
         if (class_exists(Updater::class) && class_exists(\Phar::class) && \Phar::running()) {
             $container->register(SelfUpdateCommand::class, function (Container $container) {
                 return new SelfUpdateCommand();
@@ -609,10 +627,27 @@ class CoreExtension implements ExtensionInterface
 
     private function registerAsserters(Container $container): void
     {
-        $container->register(AssertionProcessor::class, function () {
+        $container->register(AssertionProcessor::class, function (Container $container) {
             return new AssertionProcessor(
-                new ExpressionParser(),
-                new ExpressionEvaluatorFactory()
+                $container->get(ExpressionParser::class),
+                $container->get(Lexer::class),
+                $container->get(ExpressionEvaluatorFactory::class),
+                $container->get(ExpressionPrinterFactory::class)
+            );
+        });
+        $container->register(ExpressionEvaluatorFactory::class, function (Container $container) {
+            return new ExpressionEvaluatorFactory($container->get(ExpressionFunctions::class));
+        });
+
+        $container->register(ExpressionParser::class, function (Container $container) {
+            return new ExpressionParser();
+        });
+
+
+        $container->register(ExpressionPrinterFactory::class, function (Container $container) {
+            return new NodePrinterFactory(
+                $container->get(TimeUnit::class),
+                $container->get(ExpressionEvaluatorFactory::class)
             );
         });
     }
