@@ -2,8 +2,8 @@
 
 namespace PhpBench\Expression\Evaluator;
 
-use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\AbstractEvaluator;
+use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\ParenthesisNode;
 use PhpBench\Expression\Evaluator;
 

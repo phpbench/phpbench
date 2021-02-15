@@ -2,11 +2,10 @@
 
 namespace PhpBench\Expression\Evaluator;
 
-use PhpBench\Expression\Ast\RelativeAmountNode;
-use PhpBench\Expression\Ast\Node;
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
 use PhpBench\Expression\AbstractEvaluator;
 use PhpBench\Expression\Ast\BinaryOperatorNode;
+use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Evaluator;
 
 /**
@@ -44,5 +43,4 @@ class BinaryOperatorEvaluator extends AbstractEvaluator
             $node->operator()
         ));
     }
-
 }

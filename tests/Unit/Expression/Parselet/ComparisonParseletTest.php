@@ -3,11 +3,8 @@
 namespace PhpBench\Tests\Unit\Expression\Parselet;
 
 use Generator;
-use PHPUnit\Framework\TestCase;
-use PhpBench\Assertion\ArithmeticNode;
 use PhpBench\Expression\Ast\ComparisonNode;
 use PhpBench\Expression\Ast\IntegerNode;
-use PhpBench\Expression\Ast\BinaryOperatorNode;
 use PhpBench\Tests\Unit\Expression\ParseletTestCase;
 
 class ComparisonParseletTest extends ParseletTestCase
@@ -33,23 +30,31 @@ class ComparisonParseletTest extends ParseletTestCase
     public function provideEvaluate(): Generator
     {
         yield ['1 < 2', [], true];
+
         yield ['2 < 1', [], false];
+
         yield ['2 < 2', [], false];
 
         yield ['1 <= 2', [], true];
+
         yield ['2 <= 2', [], true];
+
         yield ['3 <= 2', [], false];
 
         yield ['2 = 2', [], true];
+
         yield ['1 = 2', [], false];
 
         yield ['2 > 1', [], true];
+
         yield ['1 > 2', [], false];
+
         yield ['2 > 2', [], false];
 
         yield ['3 >= 2', [], true];
-        yield ['2 >= 2', [], true];
-        yield ['1 >= 2', [], false];
 
+        yield ['2 >= 2', [], true];
+
+        yield ['1 >= 2', [], false];
     }
 }

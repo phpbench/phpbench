@@ -18,6 +18,7 @@ class PercentageParselet implements SuffixParselet
     public function parse(Node $left, Tokens $tokens): Node
     {
         $tokens->chomp();
+
         return new PercentageNode($left);
     }
 }

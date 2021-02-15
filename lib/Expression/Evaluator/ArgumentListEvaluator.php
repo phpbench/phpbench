@@ -2,9 +2,9 @@
 
 namespace PhpBench\Expression\Evaluator;
 
-use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\AbstractEvaluator;
 use PhpBench\Expression\Ast\ArgumentListNode;
+use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Evaluator;
 
 /**
@@ -23,5 +23,4 @@ class ArgumentListEvaluator extends AbstractEvaluator
             return $evaluator->evaluate($expression);
         }, $node->expressions());
     }
-
 }

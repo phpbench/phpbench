@@ -3,9 +3,9 @@
 namespace PhpBench\Expression\Evaluator;
 
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
-use PhpBench\Expression\Ast\UnitNode;
-use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\AbstractEvaluator;
+use PhpBench\Expression\Ast\Node;
+use PhpBench\Expression\Ast\UnitNode;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Util\MemoryUnit;
 use PhpBench\Util\TimeUnit;
@@ -53,5 +53,4 @@ class UnitEvaluator extends AbstractEvaluator
     {
         return MemoryUnit::convertTo($value, $unit, MemoryUnit::BYTES);
     }
-
 }

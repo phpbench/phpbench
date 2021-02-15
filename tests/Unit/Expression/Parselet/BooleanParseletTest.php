@@ -3,12 +3,7 @@
 namespace PhpBench\Tests\Unit\Expression\Parselet;
 
 use Generator;
-use PHPUnit\Framework\TestCase;
-use PhpBench\Assertion\ArithmeticNode;
 use PhpBench\Expression\Ast\BooleanNode;
-use PhpBench\Expression\Ast\FloatNode;
-use PhpBench\Expression\Ast\IntegerNode;
-use PhpBench\Expression\Ast\BinaryOperatorNode;
 use PhpBench\Tests\Unit\Expression\ParseletTestCase;
 
 class BooleanParseletTest extends ParseletTestCase
@@ -22,6 +17,7 @@ class BooleanParseletTest extends ParseletTestCase
             'true',
             new BooleanNode(true),
         ];
+
         yield [
             'false',
             new BooleanNode(false),
@@ -34,6 +30,7 @@ class BooleanParseletTest extends ParseletTestCase
     public function provideEvaluate(): Generator
     {
         yield ['true', [], true];
+
         yield ['false', [], false];
     }
 }

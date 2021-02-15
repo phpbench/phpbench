@@ -2,9 +2,6 @@
 
 namespace PhpBench\Expression\Ast;
 
-use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Ast\DelimitedListNode;
-
 abstract class DelimitedListNode implements Node
 {
     /**
@@ -43,6 +40,7 @@ abstract class DelimitedListNode implements Node
         if (!$this->right) {
             return $exprs;
         }
+
         if ($this->right instanceof DelimitedListNode) {
             $exprs = array_merge($exprs, $this->right->expressions());
         } else {

@@ -19,9 +19,11 @@ class BooleanParselet implements PrefixParselet
     public function parse(Parser $parser, Tokens $tokens): Node
     {
         $token = $tokens->chomp();
+
         if ($token->value === 'true') {
             return new BooleanNode(true);
         }
+
         return new BooleanNode(false);
     }
 }

@@ -2,9 +2,9 @@
 
 namespace PhpBench\Expression\Evaluator;
 
+use PhpBench\Expression\AbstractEvaluator;
 use PhpBench\Expression\Ast\FloatNode;
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\AbstractEvaluator;
 use PhpBench\Expression\Evaluator;
 
 /**
@@ -21,5 +21,4 @@ class FloatEvaluator extends AbstractEvaluator
     {
         return (float)$node->value();
     }
-
 }

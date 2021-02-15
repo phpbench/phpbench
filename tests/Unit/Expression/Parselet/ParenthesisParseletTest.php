@@ -3,10 +3,8 @@
 namespace PhpBench\Tests\Unit\Expression\Parselet;
 
 use Generator;
-use PHPUnit\Framework\TestCase;
-use PhpBench\Assertion\ArithmeticNode;
-use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\BinaryOperatorNode;
+use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\ParenthesisNode;
 use PhpBench\Tests\Unit\Expression\ParseletTestCase;
 
@@ -40,7 +38,9 @@ class ParenthesisParseletTest extends ParseletTestCase
     public function provideEvaluate(): Generator
     {
         yield ['(1 + 2) * 3', [], 9];
+
         yield ['1 + 2 * 3', [], 7];
+
         yield ['1 + (2 * 3)', [], 7];
     }
 }

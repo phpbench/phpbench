@@ -2,9 +2,6 @@
 
 namespace PhpBench\Expression;
 
-use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Token;
-use PhpBench\Expression\Tokens;
 use RuntimeException;
 
 /**
@@ -36,6 +33,7 @@ final class Parselets
 
     /**
      * @param PrefixParselet[] $parselets
+     *
      * @return self<PrefixParselet>
      */
     public static function fromPrefixParselets(array $parselets): self
@@ -45,6 +43,7 @@ final class Parselets
 
     /**
      * @param InfixParselet[] $parselets
+     *
      * @return self<InfixParselet>
      */
     public static function fromInfixParselets(array $parselets): self
@@ -54,6 +53,7 @@ final class Parselets
 
     /**
      * @param SuffixParselet[] $parselets
+     *
      * @return self<SuffixParselet>
      */
     public static function fromSuffixParselets(array $parselets): self

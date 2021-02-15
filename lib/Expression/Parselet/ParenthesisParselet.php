@@ -4,7 +4,6 @@ namespace PhpBench\Expression\Parselet;
 
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\ParenthesisNode;
-use PhpBench\Expression\InfixParselet;
 use PhpBench\Expression\Parser;
 use PhpBench\Expression\PrefixParselet;
 use PhpBench\Expression\Token;

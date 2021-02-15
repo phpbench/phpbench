@@ -2,13 +2,11 @@
 
 namespace PhpBench\Expression\Parselet;
 
-use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Ast\RelativeAmountNode;
-use PhpBench\Expression\Token;
-use PhpBench\Expression\Tokens;
 use PhpBench\Expression\Ast\BinaryOperatorNode;
+use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\InfixParselet;
 use PhpBench\Expression\Parser;
+use PhpBench\Expression\Tokens;
 
 class BinaryOperatorParselet implements InfixParselet
 {

@@ -4,10 +4,10 @@ namespace PhpBench\Expression\Parselet;
 
 use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Token;
-use PhpBench\Expression\Tokens;
 use PhpBench\Expression\Parser;
 use PhpBench\Expression\PrefixParselet;
+use PhpBench\Expression\Token;
+use PhpBench\Expression\Tokens;
 
 class IntegerParselet implements PrefixParselet
 {

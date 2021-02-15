@@ -2,11 +2,10 @@
 
 namespace PhpBench\Expression\Evaluator;
 
-use PhpBench\Expression\Ast\RelativeAmountNode;
-use PhpBench\Expression\Ast\Node;
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
 use PhpBench\Expression\AbstractEvaluator;
 use PhpBench\Expression\Ast\ComparisonNode;
+use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Value\TolerableValue;
 use PhpBench\Expression\Value\ToleratedValue;
@@ -60,5 +59,4 @@ class ComparisonEvaluator extends AbstractEvaluator
             $node->operator()
         ));
     }
-
 }

@@ -2,8 +2,8 @@
 
 namespace PhpBench\Expression\Evaluator;
 
-use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\AbstractEvaluator;
+use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\PercentageNode;
 use PhpBench\Expression\Ast\TolerableNode;
 use PhpBench\Expression\Evaluator;
@@ -23,6 +23,7 @@ class TolerableEvaluator extends AbstractEvaluator
     {
         $toleranceNode = $node->tolerance();
         $context = $evaluator->evaluate($node->value());
+
         if ($toleranceNode instanceof PercentageNode) {
             $tolerance = $context / 100 * $context;
         } else {

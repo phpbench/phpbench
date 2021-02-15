@@ -2,8 +2,6 @@
 
 namespace PhpBench\Expression\Ast;
 
-use PhpBench\Expression\Ast\Node;
-
 class BinaryOperatorNode implements Node
 {
     /**

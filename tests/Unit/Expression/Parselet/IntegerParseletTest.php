@@ -3,10 +3,7 @@
 namespace PhpBench\Tests\Unit\Expression\Parselet;
 
 use Generator;
-use PHPUnit\Framework\TestCase;
-use PhpBench\Assertion\ArithmeticNode;
 use PhpBench\Expression\Ast\IntegerNode;
-use PhpBench\Expression\Ast\BinaryOperatorNode;
 use PhpBench\Tests\Unit\Expression\ParseletTestCase;
 
 class IntegerParseletTest extends ParseletTestCase

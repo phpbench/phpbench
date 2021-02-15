@@ -3,12 +3,9 @@
 namespace PhpBench\Tests\Unit\Expression\Parselet;
 
 use Generator;
-use PHPUnit\Framework\TestCase;
-use PhpBench\Assertion\ArithmeticNode;
-use PhpBench\Expression\Ast\FloatNode;
+use PhpBench\Expression\Ast\BinaryOperatorNode;
 use PhpBench\Expression\Ast\FunctionNode;
 use PhpBench\Expression\Ast\IntegerNode;
-use PhpBench\Expression\Ast\BinaryOperatorNode;
 use PhpBench\Tests\Unit\Expression\ParseletTestCase;
 
 class FunctionParseletTest extends ParseletTestCase
@@ -22,12 +19,14 @@ class FunctionParseletTest extends ParseletTestCase
             'foobar()',
             new FunctionNode('foobar', []),
         ];
+
         yield [
             'foobar(12)',
             new FunctionNode('foobar', [
                 new IntegerNode(12)
             ]),
         ];
+
         yield [
             'foobar(12, 14, 12 + 2)',
             new FunctionNode('foobar', [

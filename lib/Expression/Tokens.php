@@ -5,9 +5,7 @@ namespace PhpBench\Expression;
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
-use PhpBench\Expression\Exception\SyntaxError;
 use RuntimeException;
-use PhpBench\Expression\Token;
 
 /**
  * @implements IteratorAggregate<int, Token>

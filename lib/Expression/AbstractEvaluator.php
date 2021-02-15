@@ -29,6 +29,7 @@ abstract class AbstractEvaluator
 
     /**
      * @param T $node
+     *
      * @return mixed
      */
     abstract public function evaluate(Evaluator $evaluator, Node $node);

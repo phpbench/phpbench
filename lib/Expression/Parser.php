@@ -3,12 +3,7 @@
 namespace PhpBench\Expression;
 
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Exception\SyntaxError;
-use PhpBench\Expression\Token;
-use PhpBench\Expression\Tokens;
-use PhpBench\Expression\Ast\DelimitedListNode;
 use PhpBench\Expression\Parselet\ArgumentListParselet;
-use PhpBench\Expression\Parselets;
 
 class Parser
 {
@@ -45,8 +40,7 @@ class Parser
         Parselets $prefixParselets,
         Parselets $infixParselets,
         Parselets $suffixParselets
-    )
-    {
+    ) {
         $this->prefixParselets = $prefixParselets;
         $this->infixParselets = $infixParselets;
         $this->listParselet = new ArgumentListParselet();
@@ -74,6 +68,7 @@ class Parser
         }
 
         $suffixParser = $this->suffixParselets->forTokenOrNull($tokens->current());
+
         if ($suffixParser instanceof SuffixParselet) {
             $left = $suffixParser->parse($left, $tokens);
         }

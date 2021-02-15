@@ -20,6 +20,7 @@ class TolerableParselet implements InfixParselet
     public function parse(Parser $parser, Node $left, Tokens $tokens): Node
     {
         $tokens->chomp();
+
         return new TolerableNode($left, $parser->parseExpression($tokens, 100));
     }
 

@@ -2,9 +2,9 @@
 
 namespace PhpBench\Expression\Evaluator;
 
-use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\AbstractEvaluator;
 use PhpBench\Expression\Ast\ListNode;
+use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Evaluator;
 
 /**

@@ -2,9 +2,6 @@
 
 namespace PhpBench\Expression;
 
-use PhpBench\Expression\Token;
-use PhpBench\Expression\Tokens;
-
 final class Lexer
 {
     /**

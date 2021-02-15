@@ -2,11 +2,11 @@
 
 namespace PhpBench\Expression\Evaluator;
 
+use PhpBench\Expression\AbstractEvaluator;
 use PhpBench\Expression\Ast\FunctionNode;
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\ExpressionFunctions;
-use PhpBench\Expression\AbstractEvaluator;
 use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\ExpressionFunctions;
 
 /**
  * @extends AbstractEvaluator<FunctionNode>
@@ -30,5 +30,4 @@ class FunctionEvaluator extends AbstractEvaluator
             return $evaluator->evaluate($node);
         }, $node->args()));
     }
-
 }
