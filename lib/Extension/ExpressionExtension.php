@@ -79,6 +79,7 @@ class ExpressionExtension implements ExtensionInterface
         });
 
         $container->register(Evaluator::class, function (Container $container) {
+            /** @phpstan-ignore-next-line */
             return new Evaluator([
                 new ArgumentListEvaluator(),
                 new IntegerEvaluator(),
