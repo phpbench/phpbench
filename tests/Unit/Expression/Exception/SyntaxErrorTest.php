@@ -30,8 +30,6 @@ invalid:
 
     Foobar  Barfoo   Baz
     --------^^^^^^
-
-position: 8, type: "name", value: "Barfoo"
 EOT
         , $error->getMessage());
     }

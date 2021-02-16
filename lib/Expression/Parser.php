@@ -67,7 +67,10 @@ class Parser
         try {
             $left = $this->prefixParselets->forToken($token)->parse($this, $tokens);
         } catch (ParseletNotFound $notFound) {
-            throw SyntaxError::forToken($tokens, $token, 'Unknown token');
+            throw SyntaxError::forToken($tokens, $token, sprintf(
+                'Unexpected "%s" token',
+                $token->type
+            ));
         }
 
         if (Token::T_EOF === $tokens->current()->type) {

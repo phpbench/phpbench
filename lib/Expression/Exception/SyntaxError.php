@@ -30,13 +30,6 @@ class SyntaxError extends ExpressionError
                 '',
                 '    ' . $tokens->toString(),
                 '    ' . $underline,
-                '',
-                sprintf(
-                    'position: %s, type: "%s", value: "%s"',
-                    $target->offset,
-                    $target->type,
-                    $target->value
-                )
             ]
         ));
     }

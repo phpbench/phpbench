@@ -1,0 +1,23 @@
+<?php
+
+namespace PhpBench\Tests\Unit\Expression;
+
+use PHPUnit\Framework\TestCase;
+use PhpBench\Expression\Exception\SyntaxError;
+
+class ParserTest extends ParserTestCase
+{
+    public function testPrefixSyntaxError(): void
+    {
+        $this->expectException(SyntaxError::class);
+        $this->expectExceptionMessage(<<<'EOT'
+Unexpected "name" token:
+
+    bar foo
+    ^^^
+EOT
+        );
+
+        $this->parse('bar foo');
+    }
+}
