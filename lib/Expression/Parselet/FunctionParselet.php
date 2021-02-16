@@ -24,7 +24,7 @@ class FunctionParselet implements PrefixParselet
         if ($tokens->current()->type === Token::T_CLOSE_PAREN) {
             $arguments = [];
         } else {
-            $arguments = $parser->parse($tokens);
+            $arguments = $parser->parseList($tokens);
             $arguments = $this->resolveArguments($arguments);
         }
 

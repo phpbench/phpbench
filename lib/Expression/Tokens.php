@@ -102,4 +102,9 @@ final class Tokens implements IteratorAggregate, Countable
     {
         return $this->atPosition($this->position);
     }
+
+    public function hasMore(): bool
+    {
+        return $this->position < count($this->tokens);
+    }
 }

@@ -19,7 +19,7 @@ class ParenthesisParselet implements PrefixParselet
     public function parse(Parser $parser, Tokens $tokens): Node
     {
         $tokens->chomp();
-        $expression = $parser->parse($tokens);
+        $expression = $parser->parseList($tokens);
         $tokens->chomp(Token::T_CLOSE_PAREN);
 
         return new ParenthesisNode($expression);

@@ -13,6 +13,6 @@ final class ArgumentListParselet
     {
         $tokens->chomp();
 
-        return new ArgumentListNode($left, $parser->parse($tokens));
+        return new ArgumentListNode($left, $parser->parseList($tokens));
     }
 }

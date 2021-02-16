@@ -51,6 +51,21 @@ class Parser
 
     public function parse(Tokens $tokens): Node
     {
+        $node = $this->parseList($tokens);
+
+        if ($tokens->hasMore()) {
+            throw SyntaxError::forToken(
+                $tokens,
+                $tokens->current(),
+                sprintf('Unexpected "%s" at end of expression', $tokens->current()->type)
+            );
+        }
+
+        return $node;
+    }
+
+    public function parseList(Tokens $tokens): Node
+    {
         $expression = $this->parseExpression($tokens);
 
         if ($tokens->current()->type === Token::T_COMMA) {
