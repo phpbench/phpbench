@@ -3,6 +3,8 @@
 namespace PhpBench\Expression;
 
 use PhpBench\Expression\Ast\Node;
+use PhpBench\Expression\Exception\ParseletNotFound;
+use PhpBench\Expression\Exception\SyntaxError;
 use PhpBench\Expression\Parselet\ArgumentListParselet;
 
 class Parser
@@ -61,7 +63,12 @@ class Parser
     public function parseExpression(Tokens $tokens, int $precedence = 0): Node
     {
         $token = $tokens->current();
-        $left = $this->prefixParselets->forToken($token)->parse($this, $tokens);
+
+        try {
+            $left = $this->prefixParselets->forToken($token)->parse($this, $tokens);
+        } catch (ParseletNotFound $notFound) {
+            throw SyntaxError::forToken($tokens, $token, 'Unknown token');
+        }
 
         if (Token::T_EOF === $tokens->current()->type) {
             return $left;
@@ -77,7 +84,6 @@ class Parser
             $infixParselet = $this->infixParselets->forToken($tokens->current());
             $left = $infixParselet->parse($this, $left, $tokens);
         }
-
 
         return $left;
     }

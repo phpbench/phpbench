@@ -2,6 +2,7 @@
 
 namespace PhpBench\Expression;
 
+use PhpBench\Expression\Exception\ParseletNotFound;
 use RuntimeException;
 
 /**
@@ -69,7 +70,7 @@ final class Parselets
         $parselet = $this->forTokenOrNull($token);
 
         if (null === $parselet) {
-            throw new RuntimeException(sprintf(
+            throw new ParseletNotFound(sprintf(
                 'No %s parslet for token type "%s" registered',
                 $this->type,
                 $token->type
