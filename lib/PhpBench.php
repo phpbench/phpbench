@@ -263,7 +263,7 @@ class PhpBench
             exit(255);
         });
 
-        set_exception_handler(function (Throwable $throwable) use ($format, $input): ?void {
+        set_exception_handler(function (Throwable $throwable) use ($format, $input): void {
             $format->error($throwable->getMessage());
 
             if ($input->hasParameterOption(['-v', '-vv', '-vvv'])) {
