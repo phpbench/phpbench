@@ -6,6 +6,7 @@ use Generator;
 use PhpBench\Expression\Ast\BinaryOperatorNode;
 use PhpBench\Expression\Ast\FunctionNode;
 use PhpBench\Expression\Ast\IntegerNode;
+use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Tests\Unit\Expression\ParseletTestCase;
 
 class FunctionParseletTest extends ParseletTestCase
@@ -51,5 +52,12 @@ class FunctionParseletTest extends ParseletTestCase
             [],
             12
         ];
+    }
+
+    public function testEvaluateInvalidArguments(): void
+    {
+        $this->expectException(EvaluationError::class);
+        $this->expectExceptionMessage('Call to function');
+        $this->evaluate($this->parse('mode(12)'));
     }
 }

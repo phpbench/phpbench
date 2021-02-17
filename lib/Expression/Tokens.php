@@ -5,6 +5,7 @@ namespace PhpBench\Expression;
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
+use PhpBench\Expression\Exception\SyntaxError;
 use RuntimeException;
 
 /**
@@ -51,16 +52,13 @@ final class Tokens implements IteratorAggregate, Countable
      */
     public function chomp(?string $type = null): ?Token
     {
+        $previous = $this->previous();
         $token = $this->atPosition($this->position++);
 
-
         if (null !== $type && $token->type !== $type) {
-            throw new RuntimeException(sprintf(
-                'Expected type "%s" at position "%s", got "%s": "%s"',
-                $type,
-                $this->position,
-                $token->type,
-                $this->toString()
+            throw SyntaxError::forToken($this, $previous, sprintf(
+                'Expected type "%s" after',
+                $type
             ));
         }
 
@@ -101,6 +99,11 @@ final class Tokens implements IteratorAggregate, Countable
     public function current(): Token
     {
         return $this->atPosition($this->position);
+    }
+
+    public function previous(): Token
+    {
+        return $this->atPosition($this->position - 1);
     }
 
     public function hasMore(): bool
