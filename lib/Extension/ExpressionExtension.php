@@ -18,7 +18,9 @@ use PhpBench\Expression\Evaluator\ParenthesisEvaluator;
 use PhpBench\Expression\Evaluator\TolerableEvaluator;
 use PhpBench\Expression\Evaluator\UnitEvaluator;
 use PhpBench\Expression\ExpressionFunctions;
+use PhpBench\Expression\Func\MaxFunction;
 use PhpBench\Expression\Func\MeanFunction;
+use PhpBench\Expression\Func\MinFunction;
 use PhpBench\Expression\Func\ModeFunction;
 use PhpBench\Expression\Lexer;
 use PhpBench\Expression\Parselet\BinaryOperatorParselet;
@@ -108,7 +110,9 @@ class ExpressionExtension implements ExtensionInterface
         $container->register(ExpressionFunctions::class, function () {
             return new ExpressionFunctions([
                 'mode' => new ModeFunction(),
-                'mean' => new MeanFunction()
+                'mean' => new MeanFunction(),
+                'min' => new MinFunction(),
+                'max' => new MaxFunction()
             ]);
         });
 
