@@ -127,10 +127,10 @@ class ExpressionExtension implements ExtensionInterface
         $container->register(Printer::class, function (Container $container) {
             return new MainPrinter([
                 new ArgumentListPrinter(),
-                new ConsoleStylePrinter(new NumberPrinter(), 'fg=cyan'),
+                new NumberPrinter(),
                 new BinaryOperatorPrinter(),
                 new ComparisonPrinter(),
-                new ConsoleStylePrinter(new BooleanPrinter(), 'fg=cyan'),
+                new BooleanPrinter(),
                 new FunctionPrinter(),
                 new ListPrinter(),
                 new ParenthesisPrinter(),
