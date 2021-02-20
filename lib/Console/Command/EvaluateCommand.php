@@ -8,6 +8,7 @@ use PhpBench\Assertion\ExpressionParser;
 use PhpBench\Expression\MainEvaluator;
 use PhpBench\Expression\Parser;
 use PhpBench\Expression\ParserFactory;
+use PhpBench\Expression\Printer;
 use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -36,15 +37,22 @@ class EvaluateCommand extends Command
      */
     private $parser;
 
+    /**
+     * @var Printer
+     */
+    private $printer;
+
     public function __construct(
         MainEvaluator $evaluator,
         Lexer $lexer,
-        Parser $parser
+        Parser $parser,
+        Printer $printer
     ) {
         parent::__construct();
         $this->lexer = $lexer;
         $this->parser = $parser;
         $this->evaluator = $evaluator;
+        $this->printer = $printer;
     }
 
     public function configure(): void
@@ -63,6 +71,7 @@ class EvaluateCommand extends Command
         assert(is_string($params) || is_null($params));
 
         $node = $this->parser->parse($this->lexer->lex($expr));
+        $output->writeln($this->printer->print($node, $params ?? []));
         $output->writeln((string)json_encode(
             $this->evaluator->evaluate(
                 $node,

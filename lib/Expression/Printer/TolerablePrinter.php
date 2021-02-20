@@ -17,7 +17,7 @@ class TolerablePrinter implements NodePrinter
         }
 
         return sprintf(
-            '%s +/- %s',
+            '%s ± %s',
             $printer->print($node->value(), $params),
             $printer->print($node->tolerance(), $params)
         );

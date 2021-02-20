@@ -45,6 +45,7 @@ use PhpBench\Expression\Printer\ArgumentListPrinter;
 use PhpBench\Expression\Printer\BinaryOperatorPrinter;
 use PhpBench\Expression\Printer\BooleanPrinter;
 use PhpBench\Expression\Printer\ComparisonPrinter;
+use PhpBench\Expression\Printer\ConsoleStylePrinter;
 use PhpBench\Expression\Printer\FunctionPrinter;
 use PhpBench\Expression\Printer\ListPrinter;
 use PhpBench\Expression\Printer\NumberPrinter;
@@ -68,7 +69,8 @@ class ExpressionExtension implements ExtensionInterface
             return new EvaluateCommand(
                 $container->get(MainEvaluator::class),
                 $container->get(Lexer::class),
-                $container->get(Parser::class)
+                $container->get(Parser::class),
+                $container->get(Printer::class)
             );
         }, [
             CoreExtension::TAG_CONSOLE_COMMAND => []
@@ -125,10 +127,10 @@ class ExpressionExtension implements ExtensionInterface
         $container->register(Printer::class, function (Container $container) {
             return new MainPrinter([
                 new ArgumentListPrinter(),
-                new NumberPrinter(),
+                new ConsoleStylePrinter(new NumberPrinter(), 'fg=cyan'),
                 new BinaryOperatorPrinter(),
                 new ComparisonPrinter(),
-                new BooleanPrinter(),
+                new ConsoleStylePrinter(new BooleanPrinter(), 'fg=cyan'),
                 new FunctionPrinter(),
                 new ListPrinter(),
                 new ParenthesisPrinter(),
