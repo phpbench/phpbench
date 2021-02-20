@@ -2,7 +2,7 @@
 
 namespace PhpBench\Expression\Ast;
 
-interface NumberNode extends Node, PhpValue
+interface NumberNode extends PhpValue
 {
     /**
      * @return float|integer

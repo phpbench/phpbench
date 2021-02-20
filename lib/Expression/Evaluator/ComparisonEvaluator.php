@@ -28,6 +28,7 @@ class ComparisonEvaluator extends AbstractEvaluator
         $rightNode = $node->right();
 
         $leftValue = $evaluator->evaluateType($node->left(), NumberNode::class);
+
         $rightValue = $evaluator->evaluate($node->right());
 
         if ($rightValue instanceof TolerableNode) {
