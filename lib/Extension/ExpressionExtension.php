@@ -5,7 +5,7 @@ namespace PhpBench\Extension;
 use PhpBench\Console\Command\EvaluateCommand;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
-use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\MainEvaluator;
 use PhpBench\Expression\Evaluator\ArgumentListEvaluator;
 use PhpBench\Expression\Evaluator\BinaryOperatorEvaluator;
 use PhpBench\Expression\Evaluator\BooleanEvaluator;
@@ -51,7 +51,7 @@ class ExpressionExtension implements ExtensionInterface
     {
         $container->register(EvaluateCommand::class, function (Container $container) {
             return new EvaluateCommand(
-                $container->get(Evaluator::class),
+                $container->get(MainEvaluator::class),
                 $container->get(Lexer::class),
                 $container->get(Parser::class)
             );
@@ -90,9 +90,9 @@ class ExpressionExtension implements ExtensionInterface
             );
         });
 
-        $container->register(Evaluator::class, function (Container $container) {
+        $container->register(MainEvaluator::class, function (Container $container) {
             /** @phpstan-ignore-next-line */
-            return new Evaluator([
+            return new MainEvaluator([
                 new ArgumentListEvaluator(),
                 new IntegerEvaluator(),
                 new BinaryOperatorEvaluator(),

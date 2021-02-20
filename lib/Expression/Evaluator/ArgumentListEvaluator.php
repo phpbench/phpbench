@@ -2,10 +2,10 @@
 
 namespace PhpBench\Expression\Evaluator;
 
-use PhpBench\Expression\AbstractEvaluator;
+use PhpBench\Expression\Evaluator\AbstractEvaluator;
 use PhpBench\Expression\Ast\ArgumentListNode;
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\MainEvaluator;
 
 /**
  * @extends AbstractEvaluator<ArgumentListNode>
@@ -17,7 +17,7 @@ class ArgumentListEvaluator extends AbstractEvaluator
         parent::__construct(ArgumentListNode::class);
     }
 
-    public function evaluate(Evaluator $evaluator, Node $node)
+    public function evaluate(MainEvaluator $evaluator, Node $node)
     {
         return array_map(function (Node $expression) use ($evaluator) {
             return $evaluator->evaluate($expression);

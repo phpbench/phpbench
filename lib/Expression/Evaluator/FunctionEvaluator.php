@@ -2,10 +2,10 @@
 
 namespace PhpBench\Expression\Evaluator;
 
-use PhpBench\Expression\AbstractEvaluator;
+use PhpBench\Expression\Evaluator\AbstractEvaluator;
 use PhpBench\Expression\Ast\FunctionNode;
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\MainEvaluator;
 use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Expression\ExpressionFunctions;
 use Throwable;
@@ -26,7 +26,7 @@ class FunctionEvaluator extends AbstractEvaluator
         parent::__construct(FunctionNode::class);
     }
 
-    public function evaluate(Evaluator $evaluator, Node $node)
+    public function evaluate(MainEvaluator $evaluator, Node $node)
     {
         try {
             return $this->functions->execute($node->name(), array_map(function (Node $node) use ($evaluator) {

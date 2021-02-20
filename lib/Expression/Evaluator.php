@@ -3,33 +3,19 @@
 namespace PhpBench\Expression;
 
 use PhpBench\Expression\Ast\Node;
+use PhpBench\Expression\MainEvaluator;
 
-final class Evaluator
+/**
+ * @template T of Node
+ */
+interface Evaluator
 {
-    /**
-     * @var AbstractEvaluator<Node>[]
-     */
-    private $evaluators;
+    public function evaluates(Node $node): bool;
 
     /**
-     * @param AbstractEvaluator<Node>[] $evaluators
-     */
-    public function __construct(array $evaluators)
-    {
-        $this->evaluators = $evaluators;
-    }
-
-    /**
+     * @param T $node
+     *
      * @return mixed
      */
-    public function evaluate(Node $node)
-    {
-        foreach ($this->evaluators as $evaluator) {
-            if ($evaluator->evaluates($node)) {
-                return $evaluator->evaluate($this, $node);
-            }
-        }
-
-        return null;
-    }
+    public function evaluate(MainEvaluator $evaluator, Node $node);
 }

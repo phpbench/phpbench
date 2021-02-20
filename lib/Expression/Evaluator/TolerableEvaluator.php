@@ -2,11 +2,11 @@
 
 namespace PhpBench\Expression\Evaluator;
 
-use PhpBench\Expression\AbstractEvaluator;
+use PhpBench\Expression\Evaluator\AbstractEvaluator;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\PercentageNode;
 use PhpBench\Expression\Ast\TolerableNode;
-use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\MainEvaluator;
 use PhpBench\Expression\Value\TolerableValue;
 
 /**
@@ -19,7 +19,7 @@ class TolerableEvaluator extends AbstractEvaluator
         parent::__construct(TolerableNode::class);
     }
 
-    public function evaluate(Evaluator $evaluator, Node $node)
+    public function evaluate(MainEvaluator $evaluator, Node $node)
     {
         $toleranceNode = $node->tolerance();
         $context = $evaluator->evaluate($node->value());

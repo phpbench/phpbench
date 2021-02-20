@@ -5,7 +5,7 @@ namespace PhpBench\Console\Command;
 use PhpBench\Assertion\ExpressionEvaluatorFactory;
 use PhpBench\Expression\Lexer;
 use PhpBench\Assertion\ExpressionParser;
-use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\MainEvaluator;
 use PhpBench\Expression\Parser;
 use PhpBench\Expression\ParserFactory;
 use RuntimeException;
@@ -37,7 +37,7 @@ class EvaluateCommand extends Command
     private $parser;
 
     public function __construct(
-        Evaluator $evaluator,
+        MainEvaluator $evaluator,
         Lexer $lexer,
         Parser $parser
     ) {

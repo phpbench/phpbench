@@ -3,10 +3,10 @@
 namespace PhpBench\Expression\Evaluator;
 
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
-use PhpBench\Expression\AbstractEvaluator;
+use PhpBench\Expression\Evaluator\AbstractEvaluator;
 use PhpBench\Expression\Ast\BinaryOperatorNode;
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\MainEvaluator;
 
 /**
  * @extends AbstractEvaluator<BinaryOperatorNode>
@@ -18,7 +18,7 @@ class BinaryOperatorEvaluator extends AbstractEvaluator
         parent::__construct(BinaryOperatorNode::class);
     }
 
-    public function evaluate(Evaluator $evaluator, Node $node)
+    public function evaluate(MainEvaluator $evaluator, Node $node)
     {
         $leftValue = $evaluator->evaluate($node->left());
         $rightValue = $evaluator->evaluate($node->right());

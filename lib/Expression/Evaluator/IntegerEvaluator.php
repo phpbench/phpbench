@@ -2,10 +2,10 @@
 
 namespace PhpBench\Expression\Evaluator;
 
-use PhpBench\Expression\AbstractEvaluator;
+use PhpBench\Expression\Evaluator\AbstractEvaluator;
 use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\MainEvaluator;
 
 /**
  * @extends AbstractEvaluator<IntegerNode>
@@ -17,7 +17,7 @@ class IntegerEvaluator extends AbstractEvaluator
         parent::__construct(IntegerNode::class);
     }
 
-    public function evaluate(Evaluator $evaluator, Node $node)
+    public function evaluate(MainEvaluator $evaluator, Node $node)
     {
         return (int)$node->value();
     }

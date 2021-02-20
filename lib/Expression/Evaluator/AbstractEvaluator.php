@@ -1,13 +1,16 @@
 <?php
 
-namespace PhpBench\Expression;
+namespace PhpBench\Expression\Evaluator;
 
 use PhpBench\Expression\Ast\Node;
+use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\MainEvaluator;
 
 /**
  * @template T of Node
+ * @implements Evaluator<T>
  */
-abstract class AbstractEvaluator
+abstract class AbstractEvaluator implements Evaluator
 {
     /**
      * @var class-string<T>
@@ -26,11 +29,4 @@ abstract class AbstractEvaluator
     {
         return $node instanceof $this->nodeFqn;
     }
-
-    /**
-     * @param T $node
-     *
-     * @return mixed
-     */
-    abstract public function evaluate(Evaluator $evaluator, Node $node);
 }

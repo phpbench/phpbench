@@ -2,10 +2,10 @@
 
 namespace PhpBench\Expression\Evaluator;
 
-use PhpBench\Expression\AbstractEvaluator;
+use PhpBench\Expression\Evaluator\AbstractEvaluator;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\ParenthesisNode;
-use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\MainEvaluator;
 
 /**
  * @extends AbstractEvaluator<ParenthesisNode>
@@ -17,7 +17,7 @@ class ParenthesisEvaluator extends AbstractEvaluator
         parent::__construct(ParenthesisNode::class);
     }
 
-    public function evaluate(Evaluator $evaluator, Node $node)
+    public function evaluate(MainEvaluator $evaluator, Node $node)
     {
         return $evaluator->evaluate($node->expression());
     }

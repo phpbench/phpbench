@@ -3,10 +3,10 @@
 namespace PhpBench\Expression\Evaluator;
 
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
-use PhpBench\Expression\AbstractEvaluator;
+use PhpBench\Expression\Evaluator\AbstractEvaluator;
 use PhpBench\Expression\Ast\ComparisonNode;
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\MainEvaluator;
 use PhpBench\Expression\Value\TolerableValue;
 use PhpBench\Expression\Value\ToleratedValue;
 use PhpBench\Math\FloatNumber;
@@ -21,7 +21,7 @@ class ComparisonEvaluator extends AbstractEvaluator
         parent::__construct(ComparisonNode::class);
     }
 
-    public function evaluate(Evaluator $evaluator, Node $node)
+    public function evaluate(MainEvaluator $evaluator, Node $node)
     {
         $leftNode = $node->left();
         $rightNode = $node->right();

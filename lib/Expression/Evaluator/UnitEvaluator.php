@@ -3,10 +3,10 @@
 namespace PhpBench\Expression\Evaluator;
 
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
-use PhpBench\Expression\AbstractEvaluator;
+use PhpBench\Expression\Evaluator\AbstractEvaluator;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\UnitNode;
-use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\MainEvaluator;
 use PhpBench\Util\MemoryUnit;
 use PhpBench\Util\TimeUnit;
 
@@ -20,7 +20,7 @@ class UnitEvaluator extends AbstractEvaluator
         parent::__construct(UnitNode::class);
     }
 
-    public function evaluate(Evaluator $evaluator, Node $node)
+    public function evaluate(MainEvaluator $evaluator, Node $node)
     {
         $value = $evaluator->evaluate($node->left());
         $unit = $node->unit();

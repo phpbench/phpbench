@@ -4,7 +4,7 @@ namespace PhpBench\Tests\Unit\Expression;
 
 use Generator;
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\MainEvaluator;
 
 abstract class ParseletTestCase extends ParserTestCase
 {
@@ -24,7 +24,7 @@ abstract class ParseletTestCase extends ParserTestCase
     public function evaluate(Node $node, array $params = [])
     {
         return $this->container()->get(
-            Evaluator::class
+            MainEvaluator::class
         )->evaluate($node);
     }
 
