@@ -22,7 +22,7 @@ class TolerableEvaluator extends AbstractEvaluator
     public function evaluate(Evaluator $evaluator, Node $node): Node
     {
         $toleranceNode = $node->tolerance();
-        $context = $evaluator->evaluate($node->value(), NumberNode::class);
+        $context = $evaluator->evaluateType($node->value(), NumberNode::class);
 
         if ($toleranceNode instanceof PercentageNode) {
             $tolerance = new FloatNode($context->value() / 100 * $context->value());

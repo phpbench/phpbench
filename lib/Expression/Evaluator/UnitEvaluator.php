@@ -23,7 +23,7 @@ class UnitEvaluator extends AbstractEvaluator
 
     public function evaluate(Evaluator $evaluator, Node $node): Node
     {
-        $value = $evaluator->evaluate($node->left(), NumberNode::class);
+        $value = $evaluator->evaluateType($node->left(), NumberNode::class);
         $unit = $node->unit();
 
         if (TimeUnit::isTimeUnit($unit)) {

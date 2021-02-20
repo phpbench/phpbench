@@ -14,17 +14,12 @@ class FunctionNode implements Node
      */
     private $arguments;
 
-    /**
-     */
     public function __construct(string $name, ?ArgumentListNode $arguments = null)
     {
         $this->name = $name;
         $this->arguments = $arguments;
     }
 
-    /**
-     * @return Arguments
-     */
     public function args(): ?ArgumentListNode
     {
         return $this->arguments;

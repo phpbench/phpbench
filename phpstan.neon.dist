@@ -3,6 +3,6 @@ parameters:
     paths:
         - lib
     typeAliases:
-		parameters: 'array<string,mixed>'
+        parameters: 'array<string,mixed>'
 includes:
     - vendor/jangregor/phpstan-prophecy/extension.neon

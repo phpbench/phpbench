@@ -13,7 +13,7 @@ final class NodePrinters
     private $printers;
 
     /**
-     * @param T[] $printers
+     * @param NodePrinter[] $printers
      */
     public function __construct(array $printers)
     {

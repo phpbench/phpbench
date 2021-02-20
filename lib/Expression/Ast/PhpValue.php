@@ -1,8 +1,8 @@
 <?php
 
-namespace PhpBench\Expression\Evaluator;
+namespace PhpBench\Expression\Ast;
 
-interface PhpValue
+interface PhpValue extends Node
 {
     /**
      * @return mixed

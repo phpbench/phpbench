@@ -27,12 +27,12 @@ class ComparisonEvaluator extends AbstractEvaluator
         $leftNode = $node->left();
         $rightNode = $node->right();
 
-        $leftValue = $evaluator->evaluate($node->left(), NumberNode::class);
+        $leftValue = $evaluator->evaluateType($node->left(), NumberNode::class);
         $rightValue = $evaluator->evaluate($node->right());
 
         if ($rightValue instanceof TolerableNode) {
-            $toleranceValue = $evaluator->evaluate($rightValue->tolerance(), NumberNode::class);
-            $rightValue = $evaluator->evaluate($rightValue->value(), NumberNode::class);
+            $toleranceValue = $evaluator->evaluateType($rightValue->tolerance(), NumberNode::class);
+            $rightValue = $evaluator->evaluateType($rightValue->value(), NumberNode::class);
 
             if (FloatNumber::isWithin(
                 $leftValue->value(),
@@ -43,11 +43,16 @@ class ComparisonEvaluator extends AbstractEvaluator
             }
         }
 
+        $rightValue = $evaluator->evaluateType($rightValue, NumberNode::class);
 
         return new BooleanNode($this->evaluateNode($node, $leftValue->value(), $rightValue->value()));
     }
 
-    private function evaluateNode(Node $node, $leftValue, $rightValue): bool
+    /**
+     * @param int|float $leftValue
+     * @param int|float $rightValue
+     */
+    private function evaluateNode(ComparisonNode $node, $leftValue, $rightValue): bool
     {
         switch ($node->operator()) {
             case '<':

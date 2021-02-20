@@ -10,7 +10,7 @@ use PhpBench\Expression\Ast\NumberNodeFactory;
 use PhpBench\Expression\Evaluator;
 
 /**
- * @extends AbstractEvaluator<BinaryOperatorNode>
+ * @extends AbstractEvaluator<ArithmeticOperatorNode>
  */
 class ArithmeticOperatorEvaluator extends AbstractEvaluator
 {
@@ -21,15 +21,21 @@ class ArithmeticOperatorEvaluator extends AbstractEvaluator
 
     public function evaluate(Evaluator $evaluator, Node $node): Node
     {
-        $leftValue = $evaluator->evaluate($node->left(), NumberNode::class);
-        $rightValue = $evaluator->evaluate($node->right(), NumberNode::class);
+        $leftValue = $evaluator->evaluateType($node->left(), NumberNode::class);
+        $rightValue = $evaluator->evaluateType($node->right(), NumberNode::class);
 
         $value = $this->evaluateNode($node, $leftValue->value(), $rightValue->value());
 
         return NumberNodeFactory::fromNumber($value);
     }
 
-    private function evaluateNode(Node $node, $leftValue, $rightValue)
+    /**
+     * @param int|float $leftValue
+     * @param int|float $rightValue
+     *
+     * @return int|float
+     */
+    private function evaluateNode(ArithmeticOperatorNode $node, $leftValue, $rightValue)
     {
         switch ($node->operator()) {
             case '+':

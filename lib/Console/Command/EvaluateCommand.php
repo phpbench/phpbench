@@ -25,7 +25,7 @@ class EvaluateCommand extends Command
     private $lexer;
 
     /**
-     * @var MainEvaluator
+     * @var Evaluator
      */
     private $evaluator;
 

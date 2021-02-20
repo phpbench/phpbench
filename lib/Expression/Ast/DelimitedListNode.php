@@ -2,8 +2,6 @@
 
 namespace PhpBench\Expression\Ast;
 
-use PhpBench\Expression\Evaluator\PhpValue;
-
 abstract class DelimitedListNode implements Node, PhpValue
 {
     /**

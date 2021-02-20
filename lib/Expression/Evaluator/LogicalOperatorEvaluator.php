@@ -20,15 +20,15 @@ class LogicalOperatorEvaluator extends AbstractEvaluator
 
     public function evaluate(Evaluator $evaluator, Node $node): Node
     {
-        $leftValue = $evaluator->evaluate($node->left());
-        $rightValue = $evaluator->evaluate($node->right());
+        $leftValue = $evaluator->evaluateType($node->left(), BooleanNode::class);
+        $rightValue = $evaluator->evaluateType($node->right(), BooleanNode::class);
 
         $value = $this->evaluateNode($node, $leftValue->value(), $rightValue->value());
 
         return new BooleanNode($value);
     }
 
-    private function evaluateNode(Node $node, $leftValue, $rightValue)
+    private function evaluateNode(LogicalOperatorNode $node, bool $leftValue, bool $rightValue): bool
     {
         switch ($node->operator()) {
             case 'or':

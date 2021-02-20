@@ -13,8 +13,6 @@ interface NodeEvaluator
 
     /**
      * @param T $node
-     *
-     * @return mixed
      */
     public function evaluate(Evaluator $evaluator, Node $node): Node;
 }

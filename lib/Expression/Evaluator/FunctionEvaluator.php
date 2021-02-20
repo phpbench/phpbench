@@ -6,6 +6,7 @@ use PhpBench\Expression\Ast\ArgumentListNode;
 use PhpBench\Expression\Ast\FunctionNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\NumberNodeFactory;
+use PhpBench\Expression\Ast\PhpValue;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Expression\ExpressionFunctions;
@@ -34,7 +35,7 @@ class FunctionEvaluator extends AbstractEvaluator
                 $this->functions->execute(
                     $node->name(),
                     array_map(function (Node $node) use ($evaluator) {
-                        return $this->resolveScalarValues($evaluator->evaluate($node, PhpValue::class));
+                        return $this->resolveScalarValues($evaluator->evaluateType($node, PhpValue::class));
                     }, $this->args($node->args()))
                 )
             );
@@ -47,6 +48,9 @@ class FunctionEvaluator extends AbstractEvaluator
         }
     }
 
+    /**
+     * @return array<mixed>
+     */
     private function args(?ArgumentListNode $args)
     {
         if (null === $args) {
@@ -56,6 +60,9 @@ class FunctionEvaluator extends AbstractEvaluator
         return $args->value();
     }
 
+    /**
+     * @return mixed
+     */
     private function resolveScalarValues(PhpValue $node)
     {
         $value = $node->value();
