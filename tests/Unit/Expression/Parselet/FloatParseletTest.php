@@ -27,7 +27,7 @@ class FloatParseletTest extends ParseletTestCase
         yield [
             '1.2',
             [],
-            1.2
+            '1.2'
         ];
     }
 

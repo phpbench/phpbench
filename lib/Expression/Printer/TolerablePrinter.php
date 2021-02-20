@@ -7,12 +7,19 @@ use PhpBench\Expression\Ast\ParenthesisNode;
 use PhpBench\Expression\Ast\TolerableNode;
 use PhpBench\Expression\Printer;
 use PhpBench\Expression\NodePrinter;
+use PhpBench\Expression\Value\TolerableValue;
+use PhpBench\Expression\Ast\ToleratedTrue;
 
 class TolerablePrinter implements NodePrinter
 {
     public function print(Printer $printer, Node $node, array $params): ?string
     {
-        if (!$node instanceof TolerableNode) {
+        if ($node instanceof ToleratedTrue) {
+            return '~true';
+        }
+        if (
+            !$node instanceof TolerableNode
+        ) {
             return null;
         }
 

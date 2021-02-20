@@ -23,7 +23,7 @@ class UnitParseletTest extends ParseletTestCase
      */
     public function provideEvaluate(): Generator
     {
-        yield ['1s', [], 1E6];
+        yield ['1s', [], (string)1E6];
     }
 
     /**

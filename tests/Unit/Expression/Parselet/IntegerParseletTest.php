@@ -27,7 +27,7 @@ class IntegerParseletTest extends ParseletTestCase
         yield [
             '1',
             [],
-            1
+            '1'
         ];
     }
 

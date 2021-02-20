@@ -29,9 +29,9 @@ class BooleanParseletTest extends ParseletTestCase
      */
     public function provideEvaluate(): Generator
     {
-        yield ['true', [], true];
+        yield ['true', [], 'true'];
 
-        yield ['false', [], false];
+        yield ['false', [], 'false'];
     }
 
     /**

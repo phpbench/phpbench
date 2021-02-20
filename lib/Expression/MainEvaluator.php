@@ -3,6 +3,7 @@
 namespace PhpBench\Expression;
 
 use PhpBench\Expression\Ast\Node;
+use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Expression\Exception\ExpressionError;
 
 final class MainEvaluator
@@ -41,6 +42,8 @@ final class MainEvaluator
             return $evaluated;
         }
 
-        return null;
+        throw new EvaluationError(sprintf(
+            'Could not find evaluator for node of type "%s"', get_class($node)
+        ));
     }
 }

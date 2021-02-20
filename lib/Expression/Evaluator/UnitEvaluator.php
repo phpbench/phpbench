@@ -3,6 +3,7 @@
 namespace PhpBench\Expression\Evaluator;
 
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
+use PhpBench\Expression\Ast\NumberNode;
 use PhpBench\Expression\Ast\NumberNodeFactory;
 use PhpBench\Expression\Evaluator\AbstractEvaluator;
 use PhpBench\Expression\Ast\Node;
@@ -23,15 +24,15 @@ class UnitEvaluator extends AbstractEvaluator
 
     public function evaluate(MainEvaluator $evaluator, Node $node): Node
     {
-        $value = $evaluator->evaluate($node->left());
+        $value = $evaluator->evaluate($node->left(), NumberNode::class);
         $unit = $node->unit();
 
         if (TimeUnit::isTimeUnit($unit)) {
-            return NumberNodeFactory::fromNumber($this->timeUnit($value, $unit));
+            return NumberNodeFactory::fromNumber($this->timeUnit($value->value(), $unit));
         }
 
         if (MemoryUnit::isMemoryUnit($unit)) {
-            return NumberNodeFactory::fromNumber($this->memoryUnit($value, $unit));
+            return NumberNodeFactory::fromNumber($this->memoryUnit($value->value(), $unit));
         }
 
         throw new ExpressionEvaluatorError(sprintf(

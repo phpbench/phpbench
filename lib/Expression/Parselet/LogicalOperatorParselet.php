@@ -2,13 +2,14 @@
 
 namespace PhpBench\Expression\Parselet;
 
-use PhpBench\Expression\Ast\BinaryOperatorNode;
+use PhpBench\Expression\Ast\ArithmeticOperatorNode;
+use PhpBench\Expression\Ast\LogicalOperatorNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\InfixParselet;
 use PhpBench\Expression\Parser;
 use PhpBench\Expression\Tokens;
 
-class BinaryOperatorParselet implements InfixParselet
+class LogicalOperatorParselet implements InfixParselet
 {
     /**
      * @var string
@@ -35,7 +36,7 @@ class BinaryOperatorParselet implements InfixParselet
         $binaryOperator = $tokens->chomp();
         $right = $parser->parseExpression($tokens, $this->precedence);
 
-        return new BinaryOperatorNode($left, $binaryOperator->value, $right);
+        return new LogicalOperatorNode($left, $binaryOperator->value, $right);
     }
 
     public function precedence(): int

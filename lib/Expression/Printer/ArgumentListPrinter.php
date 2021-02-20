@@ -16,7 +16,7 @@ class ArgumentListPrinter implements NodePrinter
         }
 
         $out = [];
-        foreach ($node->expressions() as $expression) {
+        foreach ($node->value() as $expression) {
             $out[] = $printer->print($expression, $params);
         }
 

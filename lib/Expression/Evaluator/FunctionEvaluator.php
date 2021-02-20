@@ -3,6 +3,7 @@
 namespace PhpBench\Expression\Evaluator;
 
 use PhpBench\Expression\Ast\ArgumentListNode;
+use PhpBench\Expression\Ast\NumberNode;
 use PhpBench\Expression\Ast\NumberNodeFactory;
 use PhpBench\Expression\Evaluator\AbstractEvaluator;
 use PhpBench\Expression\Ast\FunctionNode;
@@ -10,6 +11,7 @@ use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\MainEvaluator;
 use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Expression\ExpressionFunctions;
+use PhpBench\Expression\T;
 use Throwable;
 
 /**
@@ -31,15 +33,20 @@ class FunctionEvaluator extends AbstractEvaluator
     public function evaluate(MainEvaluator $evaluator, Node $node): Node
     {
         try {
-            return NumberNodeFactory::fromNumber($this->functions->execute($node->name(), array_map(function (Node $node) use ($evaluator) {
-                return $evaluator->evaluate($node);
-            }, $this->args($node->args()))));
+            return NumberNodeFactory::fromNumber(
+                $this->functions->execute(
+                    $node->name(),
+                    array_map(function (Node $node) use ($evaluator) {
+                        return $this->resolveScalarValues($evaluator->evaluate($node, PhpValue::class));
+                    }, $this->args($node->args()))
+                )
+            );
         } catch (Throwable $throwable) {
             throw new EvaluationError(sprintf(
                 'Call to function "%s" failed with error: %s',
                 $node->name(),
                 $throwable->getMessage()
-            ));
+            ), 0, $throwable);
         }
     }
 
@@ -49,6 +56,18 @@ class FunctionEvaluator extends AbstractEvaluator
             return [];
         }
 
-        return $args->expressions();
+        return $args->value();
+    }
+
+    private function resolveScalarValues(PhpValue $node)
+    {
+        $value = $node->value();
+        if (is_array($value)) {
+            return array_map(function (PhpValue $value) {
+                return $this->resolveScalarValues($value);
+            }, $value);
+        }
+
+        return $value;
     }
 }

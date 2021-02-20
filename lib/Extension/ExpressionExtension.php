@@ -6,9 +6,10 @@ use PhpBench\Console\Command\EvaluateCommand;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Expression\Ast\NumberNode;
+use PhpBench\Expression\Evaluator\LogicalOperatorEvaluator;
 use PhpBench\Expression\MainEvaluator;
 use PhpBench\Expression\Evaluator\ArgumentListEvaluator;
-use PhpBench\Expression\Evaluator\BinaryOperatorEvaluator;
+use PhpBench\Expression\Evaluator\ArithmeticOperatorEvaluator;
 use PhpBench\Expression\Evaluator\BooleanEvaluator;
 use PhpBench\Expression\Evaluator\ComparisonEvaluator;
 use PhpBench\Expression\Evaluator\FloatEvaluator;
@@ -26,13 +27,14 @@ use PhpBench\Expression\Func\ModeFunction;
 use PhpBench\Expression\Lexer;
 use PhpBench\Expression\NormalizingPrinter;
 use PhpBench\Expression\NodePrinter;
-use PhpBench\Expression\Parselet\BinaryOperatorParselet;
+use PhpBench\Expression\Parselet\ArithmeticOperatorParselet;
 use PhpBench\Expression\Parselet\BooleanParselet;
 use PhpBench\Expression\Parselet\ComparisonParselet;
 use PhpBench\Expression\Parselet\FloatParselet;
 use PhpBench\Expression\Parselet\FunctionParselet;
 use PhpBench\Expression\Parselet\IntegerParselet;
 use PhpBench\Expression\Parselet\ListParselet;
+use PhpBench\Expression\Parselet\LogicalOperatorParselet;
 use PhpBench\Expression\Parselet\ParenthesisParselet;
 use PhpBench\Expression\Parselet\PercentageParselet;
 use PhpBench\Expression\Parselet\TolerableParselet;
@@ -86,12 +88,12 @@ class ExpressionExtension implements ExtensionInterface
                     new BooleanParselet(),
                 ]),
                 Parselets::fromInfixParselets([
-                    new BinaryOperatorParselet(Token::T_LOGICAL_OR, Precedence::LOGICAL_OR),
-                    new BinaryOperatorParselet(Token::T_LOGICAL_AND, Precedence::LOGICAL_AND),
-                    new BinaryOperatorParselet(Token::T_PLUS, Precedence::SUM),
-                    new BinaryOperatorParselet(Token::T_MINUS, Precedence::SUM),
-                    new BinaryOperatorParselet(Token::T_MULTIPLY, Precedence::PRODUCT),
-                    new BinaryOperatorParselet(Token::T_DIVIDE, Precedence::PRODUCT),
+                    new LogicalOperatorParselet(Token::T_LOGICAL_OR, Precedence::LOGICAL_OR),
+                    new LogicalOperatorParselet(Token::T_LOGICAL_AND, Precedence::LOGICAL_AND),
+                    new ArithmeticOperatorParselet(Token::T_PLUS, Precedence::SUM),
+                    new ArithmeticOperatorParselet(Token::T_MINUS, Precedence::SUM),
+                    new ArithmeticOperatorParselet(Token::T_MULTIPLY, Precedence::PRODUCT),
+                    new ArithmeticOperatorParselet(Token::T_DIVIDE, Precedence::PRODUCT),
 
                     new ComparisonParselet(Token::T_LT, Precedence::COMPARISON),
                     new ComparisonParselet(Token::T_LTE, Precedence::COMPARISON),
@@ -112,7 +114,8 @@ class ExpressionExtension implements ExtensionInterface
             return new MainEvaluator([
                 new ArgumentListEvaluator(),
                 new IntegerEvaluator(),
-                new BinaryOperatorEvaluator(),
+                new ArithmeticOperatorEvaluator(),
+                new LogicalOperatorEvaluator(),
                 new FloatEvaluator(),
                 new FunctionEvaluator($container->get(ExpressionFunctions::class)),
                 new ListEvaluator(),

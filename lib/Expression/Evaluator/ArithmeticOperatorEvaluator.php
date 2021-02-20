@@ -6,18 +6,18 @@ use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
 use PhpBench\Expression\Ast\NumberNode;
 use PhpBench\Expression\Ast\NumberNodeFactory;
 use PhpBench\Expression\Evaluator\AbstractEvaluator;
-use PhpBench\Expression\Ast\BinaryOperatorNode;
+use PhpBench\Expression\Ast\ArithmeticOperatorNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\MainEvaluator;
 
 /**
  * @extends AbstractEvaluator<BinaryOperatorNode>
  */
-class BinaryOperatorEvaluator extends AbstractEvaluator
+class ArithmeticOperatorEvaluator extends AbstractEvaluator
 {
     final public function __construct()
     {
-        parent::__construct(BinaryOperatorNode::class);
+        parent::__construct(ArithmeticOperatorNode::class);
     }
 
     public function evaluate(MainEvaluator $evaluator, Node $node): Node
@@ -41,10 +41,6 @@ class BinaryOperatorEvaluator extends AbstractEvaluator
                 return $leftValue / $rightValue;
             case '-':
                 return $leftValue - $rightValue;
-            case 'or':
-                return $leftValue || $rightValue;
-            case 'and':
-                return $leftValue && $rightValue;
         }
         
         throw new ExpressionEvaluatorError(sprintf(

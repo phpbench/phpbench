@@ -29,33 +29,35 @@ class ComparisonParseletTest extends ParseletTestCase
      */
     public function provideEvaluate(): Generator
     {
-        yield ['1 < 2', [], true];
+        yield ['1 < 2', [], 'true'];
 
-        yield ['2 < 1', [], false];
+        yield ['2 < 1', [], 'false'];
 
-        yield ['2 < 2', [], false];
+        yield ['2 < 2', [], 'false'];
 
-        yield ['1 <= 2', [], true];
+        yield ['1 <= 2', [], 'true'];
 
-        yield ['2 <= 2', [], true];
+        yield ['2 <= 2', [], 'true'];
 
-        yield ['3 <= 2', [], false];
+        yield ['3 <= 2', [], 'false'];
 
-        yield ['2 = 2', [], true];
+        yield ['2 = 2', [], 'true'];
 
-        yield ['1 = 2', [], false];
+        yield ['1 = 2', [], 'false'];
 
-        yield ['2 > 1', [], true];
+        yield ['2 > 1', [], 'true'];
 
-        yield ['1 > 2', [], false];
+        yield ['1 > 2', [], 'false'];
 
-        yield ['2 > 2', [], false];
+        yield ['2 > 2', [], 'false'];
 
-        yield ['3 >= 2', [], true];
+        yield ['3 >= 2', [], 'true'];
 
-        yield ['2 >= 2', [], true];
+        yield ['2 >= 2', [], 'true'];
 
-        yield ['1 >= 2', [], false];
+        yield ['1 >= 2', [], 'false'];
+        
+        yield ['10 < 10 + 10 * 30ms', [], 'true'];
     }
 
     /**

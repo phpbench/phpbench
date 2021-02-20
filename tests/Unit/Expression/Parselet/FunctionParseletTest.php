@@ -4,7 +4,7 @@ namespace PhpBench\Tests\Unit\Expression\Parselet;
 
 use Generator;
 use PhpBench\Expression\Ast\ArgumentListNode;
-use PhpBench\Expression\Ast\BinaryOperatorNode;
+use PhpBench\Expression\Ast\ArithmeticOperatorNode;
 use PhpBench\Expression\Ast\FunctionNode;
 use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Exception\EvaluationError;
@@ -37,7 +37,7 @@ class FunctionParseletTest extends ParseletTestCase
                     new IntegerNode(12),
                     new ArgumentListNode(
                         new IntegerNode(14),
-                        new BinaryOperatorNode(new IntegerNode(12), '+', new IntegerNode(2))
+                        new ArithmeticOperatorNode(new IntegerNode(12), '+', new IntegerNode(2))
                     )
                 )
             ),
@@ -52,7 +52,7 @@ class FunctionParseletTest extends ParseletTestCase
         yield [
             'mode([12, 12])',
             [],
-            12
+            '12'
         ];
     }
 

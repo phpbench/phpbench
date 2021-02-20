@@ -2,7 +2,9 @@
 
 namespace PhpBench\Expression\Ast;
 
-abstract class DelimitedListNode implements Node
+use PhpBench\Expression\Evaluator\PhpValue;
+
+abstract class DelimitedListNode implements Node, PhpValue
 {
     /**
      * @var Node
@@ -33,7 +35,7 @@ abstract class DelimitedListNode implements Node
     /**
      * @return mixed[]
      */
-    public function expressions(): array
+    public function value(): array
     {
         $exprs = [$this->left];
 
@@ -42,7 +44,7 @@ abstract class DelimitedListNode implements Node
         }
 
         if ($this->right instanceof DelimitedListNode) {
-            $exprs = array_merge($exprs, $this->right->expressions());
+            $exprs = array_merge($exprs, $this->right->value());
         } else {
             $exprs[] = $this->right;
         }

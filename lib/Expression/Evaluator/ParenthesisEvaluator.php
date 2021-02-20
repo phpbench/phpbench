@@ -2,6 +2,7 @@
 
 namespace PhpBench\Expression\Evaluator;
 
+use PhpBench\Expression\Ast\NumberNodeFactory;
 use PhpBench\Expression\Evaluator\AbstractEvaluator;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\ParenthesisNode;
@@ -19,6 +20,6 @@ class ParenthesisEvaluator extends AbstractEvaluator
 
     public function evaluate(MainEvaluator $evaluator, Node $node): Node
     {
-        return $node;
+        return $evaluator->evaluate($node->expression());
     }
 }

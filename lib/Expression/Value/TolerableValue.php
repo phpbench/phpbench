@@ -2,15 +2,18 @@
 
 namespace PhpBench\Expression\Value;
 
-class TolerableValue
+use PhpBench\Expression\Ast\Node;
+use PhpBench\Expression\Ast\NumberNode;
+
+class TolerableValue implements Node
 {
     /**
-     * @var mixed
+     * @var NumberNode
      */
     public $value;
 
     /**
-     * @var mixed
+     * @var 
      */
     public $tolerance;
 
@@ -18,7 +21,7 @@ class TolerableValue
      * @param mixed $value
      * @param mixed $tolerance
      */
-    public function __construct($value, $tolerance)
+    public function __construct(NumberNode, $tolerance)
     {
         $this->value = $value;
         $this->tolerance = $tolerance;

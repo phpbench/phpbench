@@ -42,7 +42,10 @@ abstract class ParseletTestCase extends ParserTestCase
      */
     public function testEvaluate(string $expr, array $params, string $expected): void
     {
-        self::assertEquals($expected, $this->print($this->evaluate($this->parse($expr), $params)));
+        self::assertEquals(
+            $expected,
+            $this->print($this->evaluate($this->parse($expr), $params))
+        );
     }
 
     protected function providePrintFromEvaluate(): Generator

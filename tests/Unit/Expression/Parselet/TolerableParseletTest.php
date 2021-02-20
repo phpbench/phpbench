@@ -3,13 +3,14 @@
 namespace PhpBench\Tests\Unit\Expression\Parselet;
 
 use Generator;
-use PhpBench\Expression\Ast\BinaryOperatorNode;
+use PhpBench\Expression\Ast\ArithmeticOperatorNode;
 use PhpBench\Expression\Ast\ComparisonNode;
 use PhpBench\Expression\Ast\IntegerNode;
+use PhpBench\Expression\Ast\LogicalOperatorNode;
 use PhpBench\Expression\Ast\PercentageNode;
 use PhpBench\Expression\Ast\TolerableNode;
 use PhpBench\Expression\Value\TolerableValue;
-use PhpBench\Expression\Value\ToleratedValue;
+use PhpBench\Expression\Ast\ToleratedTrue;
 use PhpBench\Tests\Unit\Expression\ParseletTestCase;
 
 class TolerableParseletTest extends ParseletTestCase
@@ -38,7 +39,7 @@ class TolerableParseletTest extends ParseletTestCase
 
         yield [
             '2 < 1 +/- 1 or 5 > 10 +/- 10%',
-            new BinaryOperatorNode(
+            new LogicalOperatorNode(
                 new ComparisonNode(
                     new IntegerNode(2),
                     '<',
@@ -73,15 +74,15 @@ class TolerableParseletTest extends ParseletTestCase
      */
     public function provideEvaluate(): Generator
     {
-        yield ['1 +/- 1', [], new TolerableValue(1, 1)];
+        yield ['1 +/- 1', [], '1 ± 1'];
 
-        yield ['2 < 2 +/- 1', [], new ToleratedValue(2)];
+        yield ['2 < 2 +/- 1', [], '~true'];
 
-        yield ['11 < 10 +/- 10%', [], new ToleratedValue(11)];
+        yield ['11 < 10 +/- 10%', [], '~true'];
 
-        yield ['12 < 10 +/- 10%', [], false];
+        yield ['12 < 10 +/- 10%', [], 'false'];
 
-        yield ['12 < 10 +/- 10%', [], false];
+        yield ['12 < 10 +/- 10%', [], 'false'];
     }
 
     /**

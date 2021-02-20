@@ -19,6 +19,6 @@ class ListEvaluator extends AbstractEvaluator
 
     public function evaluate(MainEvaluator $evaluator, Node $node): Node
     {
-        return new ListNode($evaluator->evaluate($left), $evaluator->evaluate($right));
+        return new ListNode($evaluator->evaluate($node->left()), $evaluator->evaluate($node->right()));
     }
 }

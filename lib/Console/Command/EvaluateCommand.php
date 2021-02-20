@@ -28,7 +28,7 @@ class EvaluateCommand extends Command
     private $lexer;
 
     /**
-     * @var Evaluator
+     * @var MainEvaluator
      */
     private $evaluator;
 
@@ -71,12 +71,10 @@ class EvaluateCommand extends Command
         assert(is_string($params) || is_null($params));
 
         $node = $this->parser->parse($this->lexer->lex($expr));
-        $output->writeln($this->printer->print($node, $params ?? []));
-        $output->writeln((string)json_encode(
-            $this->evaluator->evaluate(
-                $node,
-                $this->resolveParams($params)
-            )
+        $output->writeln(sprintf(
+            '%s = %s',
+            $this->printer->print($node, $params ?? []),
+            $this->printer->print($this->evaluator->evaluate($node), $params ?: [])
         ));
 
         return 0;

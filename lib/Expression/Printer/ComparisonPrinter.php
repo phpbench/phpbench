@@ -2,7 +2,7 @@
 
 namespace PhpBench\Expression\Printer;
 
-use PhpBench\Expression\Ast\BinaryOperatorNode;
+use PhpBench\Expression\Ast\ArithmeticOperatorNode;
 use PhpBench\Expression\Ast\ComparisonNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Printer;
