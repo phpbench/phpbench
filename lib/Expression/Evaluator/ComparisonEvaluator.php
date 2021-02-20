@@ -9,7 +9,7 @@ use PhpBench\Expression\Ast\TolerableNode;
 use PhpBench\Expression\Evaluator\AbstractEvaluator;
 use PhpBench\Expression\Ast\ComparisonNode;
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\MainEvaluator;
+use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Value\TolerableValue;
 use PhpBench\Expression\Ast\ToleratedTrue;
 use PhpBench\Math\FloatNumber;
@@ -24,7 +24,7 @@ class ComparisonEvaluator extends AbstractEvaluator
         parent::__construct(ComparisonNode::class);
     }
 
-    public function evaluate(MainEvaluator $evaluator, Node $node): Node
+    public function evaluate(Evaluator $evaluator, Node $node): Node
     {
         $leftNode = $node->left();
         $rightNode = $node->right();

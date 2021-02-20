@@ -6,7 +6,7 @@ use PhpBench\Expression\Ast\NumberNodeFactory;
 use PhpBench\Expression\Evaluator\AbstractEvaluator;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\ParenthesisNode;
-use PhpBench\Expression\MainEvaluator;
+use PhpBench\Expression\Evaluator;
 
 /**
  * @extends AbstractEvaluator<ParenthesisNode>
@@ -18,7 +18,7 @@ class ParenthesisEvaluator extends AbstractEvaluator
         parent::__construct(ParenthesisNode::class);
     }
 
-    public function evaluate(MainEvaluator $evaluator, Node $node): Node
+    public function evaluate(Evaluator $evaluator, Node $node): Node
     {
         return $evaluator->evaluate($node->expression());
     }

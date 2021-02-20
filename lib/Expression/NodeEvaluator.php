@@ -3,7 +3,7 @@
 namespace PhpBench\Expression;
 
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\MainEvaluator;
+use PhpBench\Expression\Evaluator;
 
 /**
  * @template T of Node
@@ -17,5 +17,5 @@ interface NodeEvaluator
      *
      * @return mixed
      */
-    public function evaluate(MainEvaluator $evaluator, Node $node): Node;
+    public function evaluate(Evaluator $evaluator, Node $node): Node;
 }

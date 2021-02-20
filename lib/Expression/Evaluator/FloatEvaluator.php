@@ -5,7 +5,7 @@ namespace PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Evaluator\AbstractEvaluator;
 use PhpBench\Expression\Ast\FloatNode;
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\MainEvaluator;
+use PhpBench\Expression\Evaluator;
 
 /**
  * @extends AbstractEvaluator<FloatNode>
@@ -17,7 +17,7 @@ class FloatEvaluator extends AbstractEvaluator
         parent::__construct(FloatNode::class);
     }
 
-    public function evaluate(MainEvaluator $evaluator, Node $node): Node
+    public function evaluate(Evaluator $evaluator, Node $node): Node
     {
         return $node;
     }

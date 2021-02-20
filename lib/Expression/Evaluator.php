@@ -6,7 +6,7 @@ use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Expression\Exception\ExpressionError;
 
-final class MainEvaluator
+final class Evaluator
 {
     /**
      * @var NodeEvaluator<Node>[]

@@ -5,9 +5,12 @@ namespace PhpBench\Extension;
 use PhpBench\Console\Command\EvaluateCommand;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
+use PhpBench\Expression\Ast\ArithmeticOperatorNode;
+use PhpBench\Expression\Ast\FunctionNode;
 use PhpBench\Expression\Ast\NumberNode;
+use PhpBench\Expression\Ast\ParenthesisNode;
 use PhpBench\Expression\Evaluator\LogicalOperatorEvaluator;
-use PhpBench\Expression\MainEvaluator;
+use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Evaluator\ArgumentListEvaluator;
 use PhpBench\Expression\Evaluator\ArithmeticOperatorEvaluator;
 use PhpBench\Expression\Evaluator\BooleanEvaluator;
@@ -25,7 +28,9 @@ use PhpBench\Expression\Func\MeanFunction;
 use PhpBench\Expression\Func\MinFunction;
 use PhpBench\Expression\Func\ModeFunction;
 use PhpBench\Expression\Lexer;
-use PhpBench\Expression\NormalizingPrinter;
+use PhpBench\Expression\NodePrinters;
+use PhpBench\Expression\Printer\EvaluatingPrinter;
+use PhpBench\Expression\Printer\NormalizingPrinter;
 use PhpBench\Expression\NodePrinter;
 use PhpBench\Expression\Parselet\ArithmeticOperatorParselet;
 use PhpBench\Expression\Parselet\BooleanParselet;
@@ -43,18 +48,18 @@ use PhpBench\Expression\Parselets;
 use PhpBench\Expression\Parser;
 use PhpBench\Expression\Precedence;
 use PhpBench\Expression\Printer;
-use PhpBench\Expression\Printer\ArgumentListPrinter;
-use PhpBench\Expression\Printer\BinaryOperatorPrinter;
-use PhpBench\Expression\Printer\BooleanPrinter;
-use PhpBench\Expression\Printer\ComparisonPrinter;
+use PhpBench\Expression\NodePrinter\ArgumentListPrinter;
+use PhpBench\Expression\NodePrinter\BinaryOperatorPrinter;
+use PhpBench\Expression\NodePrinter\BooleanPrinter;
+use PhpBench\Expression\NodePrinter\ComparisonPrinter;
 use PhpBench\Expression\Printer\ConsoleStylePrinter;
-use PhpBench\Expression\Printer\FunctionPrinter;
-use PhpBench\Expression\Printer\ListPrinter;
-use PhpBench\Expression\Printer\NumberPrinter;
-use PhpBench\Expression\Printer\ParenthesisPrinter;
-use PhpBench\Expression\Printer\PercentagePrinter;
-use PhpBench\Expression\Printer\TolerablePrinter;
-use PhpBench\Expression\Printer\UnitPrinter;
+use PhpBench\Expression\NodePrinter\FunctionPrinter;
+use PhpBench\Expression\NodePrinter\ListPrinter;
+use PhpBench\Expression\NodePrinter\NumberPrinter;
+use PhpBench\Expression\NodePrinter\ParenthesisPrinter;
+use PhpBench\Expression\NodePrinter\PercentagePrinter;
+use PhpBench\Expression\NodePrinter\TolerablePrinter;
+use PhpBench\Expression\NodePrinter\UnitPrinter;
 use PhpBench\Expression\Token;
 use PhpBench\Util\MemoryUnit;
 use PhpBench\Util\TimeUnit;
@@ -69,10 +74,11 @@ class ExpressionExtension implements ExtensionInterface
     {
         $container->register(EvaluateCommand::class, function (Container $container) {
             return new EvaluateCommand(
-                $container->get(MainEvaluator::class),
+                $container->get(Evaluator::class),
                 $container->get(Lexer::class),
                 $container->get(Parser::class),
-                $container->get(Printer::class)
+                $container->get(Printer::class),
+                $container->get(EvaluatingPrinter::class)
             );
         }, [
             CoreExtension::TAG_CONSOLE_COMMAND => []
@@ -109,9 +115,9 @@ class ExpressionExtension implements ExtensionInterface
             );
         });
 
-        $container->register(MainEvaluator::class, function (Container $container) {
+        $container->register(Evaluator::class, function (Container $container) {
             /** @phpstan-ignore-next-line */
-            return new MainEvaluator([
+            return new Evaluator([
                 new ArgumentListEvaluator(),
                 new IntegerEvaluator(),
                 new ArithmeticOperatorEvaluator(),
@@ -127,8 +133,8 @@ class ExpressionExtension implements ExtensionInterface
             ]);
         });
 
-        $container->register(Printer::class, function (Container $container) {
-            return new NormalizingPrinter([
+        $container->register(NodePrinters::class, function (Container $container) {
+            return new NodePrinters([
                 new ArgumentListPrinter(),
                 new NumberPrinter(),
                 new BinaryOperatorPrinter(),
@@ -141,6 +147,23 @@ class ExpressionExtension implements ExtensionInterface
                 new PercentagePrinter(),
                 new UnitPrinter(),
             ]);
+        });
+
+        $container->register(Printer::class, function (Container $container) {
+            return new NormalizingPrinter($container->get(NodePrinters::class));
+        });
+
+        $container->register(EvaluatingPrinter::class, function (Container $container) {
+            return new EvaluatingPrinter(
+                $container->get(NodePrinters::class),
+                $container->get(Evaluator::class),
+                [
+                    FunctionNode::class,
+                    ArithmeticOperatorNode::class,
+                    ParenthesisNode::class
+                    
+                ]
+            );
         });
 
         $container->register(ExpressionFunctions::class, function () {

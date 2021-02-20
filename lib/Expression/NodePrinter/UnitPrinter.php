@@ -1,25 +1,26 @@
 <?php
 
-namespace PhpBench\Expression\Printer;
+namespace PhpBench\Expression\NodePrinter;
 
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\ParenthesisNode;
-use PhpBench\Expression\Ast\PercentageNode;
+use PhpBench\Expression\Ast\UnitNode;
 use PhpBench\Expression\Ast\TolerableNode;
 use PhpBench\Expression\Printer;
 use PhpBench\Expression\NodePrinter;
 
-class PercentagePrinter implements NodePrinter
+class UnitPrinter implements NodePrinter
 {
     public function print(Printer $printer, Node $node, array $params): ?string
     {
-        if (!$node instanceof PercentageNode) {
+        if (!$node instanceof UnitNode) {
             return null;
         }
 
         return sprintf(
-            '%s%%',
-            $printer->print($node->value(), $params)
+            '%s %s',
+            $printer->print($node->left(), $params),
+            $node->unit()
         );
     }
 }

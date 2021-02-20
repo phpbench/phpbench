@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Expression\Printer;
+namespace PhpBench\Expression\NodePrinter;
 
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\ParenthesisNode;

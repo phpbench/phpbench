@@ -8,7 +8,7 @@ use PhpBench\Expression\Ast\NumberNodeFactory;
 use PhpBench\Expression\Evaluator\AbstractEvaluator;
 use PhpBench\Expression\Ast\FunctionNode;
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\MainEvaluator;
+use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Expression\ExpressionFunctions;
 use PhpBench\Expression\T;
@@ -30,7 +30,7 @@ class FunctionEvaluator extends AbstractEvaluator
         parent::__construct(FunctionNode::class);
     }
 
-    public function evaluate(MainEvaluator $evaluator, Node $node): Node
+    public function evaluate(Evaluator $evaluator, Node $node): Node
     {
         try {
             return NumberNodeFactory::fromNumber(

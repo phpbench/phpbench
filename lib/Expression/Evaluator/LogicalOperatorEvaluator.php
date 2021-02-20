@@ -10,7 +10,7 @@ use PhpBench\Expression\Ast\NumberNodeFactory;
 use PhpBench\Expression\Evaluator\AbstractEvaluator;
 use PhpBench\Expression\Ast\ArithmeticOperatorNode;
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\MainEvaluator;
+use PhpBench\Expression\Evaluator;
 
 /**
  * @extends AbstractEvaluator<LogicalOperatorNode>
@@ -22,7 +22,7 @@ class LogicalOperatorEvaluator extends AbstractEvaluator
         parent::__construct(LogicalOperatorNode::class);
     }
 
-    public function evaluate(MainEvaluator $evaluator, Node $node): Node
+    public function evaluate(Evaluator $evaluator, Node $node): Node
     {
         $leftValue = $evaluator->evaluate($node->left());
         $rightValue = $evaluator->evaluate($node->right());

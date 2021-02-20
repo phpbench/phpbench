@@ -5,7 +5,7 @@ namespace PhpBench\Console\Command;
 use PhpBench\Assertion\ExpressionEvaluatorFactory;
 use PhpBench\Expression\Lexer;
 use PhpBench\Assertion\ExpressionParser;
-use PhpBench\Expression\MainEvaluator;
+use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Parser;
 use PhpBench\Expression\ParserFactory;
 use PhpBench\Expression\Printer;
@@ -42,17 +42,24 @@ class EvaluateCommand extends Command
      */
     private $printer;
 
+    /**
+     * @var Printer
+     */
+    private $evalPrinter;
+
     public function __construct(
-        MainEvaluator $evaluator,
+        Evaluator $evaluator,
         Lexer $lexer,
         Parser $parser,
-        Printer $printer
+        Printer $printer,
+        Printer $evalPrinter
     ) {
         parent::__construct();
         $this->lexer = $lexer;
         $this->parser = $parser;
         $this->evaluator = $evaluator;
         $this->printer = $printer;
+        $this->evalPrinter = $evalPrinter;
     }
 
     public function configure(): void
@@ -71,11 +78,9 @@ class EvaluateCommand extends Command
         assert(is_string($params) || is_null($params));
 
         $node = $this->parser->parse($this->lexer->lex($expr));
-        $output->writeln(sprintf(
-            '%s = %s',
-            $this->printer->print($node, $params ?? []),
-            $this->printer->print($this->evaluator->evaluate($node), $params ?: [])
-        ));
+        $output->writeln($this->printer->print($node, $params ?? []));
+        $output->writeln($this->evalPrinter->print($node, $params ?? []));
+        $output->writeln($this->printer->print($this->evaluator->evaluate($node), $params ?: []));
 
         return 0;
     }

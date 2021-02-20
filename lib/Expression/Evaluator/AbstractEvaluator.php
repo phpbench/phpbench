@@ -4,7 +4,7 @@ namespace PhpBench\Expression\Evaluator;
 
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\NodeEvaluator;
-use PhpBench\Expression\MainEvaluator;
+use PhpBench\Expression\Evaluator;
 
 /**
  * @template T of Node

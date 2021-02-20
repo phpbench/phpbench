@@ -4,8 +4,10 @@ namespace PhpBench\Expression;
 
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Exception\PrinterError;
+use PhpBench\Expression\Exception\PrinterNotFound;
+use RuntimeException;
 
-final class NormalizingPrinter implements Printer
+final class NodePrinters
 {
     /**
      * @var NodePrinter[]
@@ -13,21 +15,25 @@ final class NormalizingPrinter implements Printer
     private $printers;
 
     /**
-     * @param NodePrinter[] $printers
+     * @param T[] $printers
      */
     public function __construct(array $printers)
     {
         $this->printers = $printers;
     }
 
-    public function print(Node $node, array $params): string
+    /**
+     * @param parameters $params
+     */
+    public function print(Printer $printer, Node $node, array $params): string
     {
-        foreach ($this->printers as $printer) {
-            $output = $printer->print($this, $node, $params);
+        foreach ($this->printers as $nodePrinter) {
+            $output = $nodePrinter->print($printer, $node, $params);
 
             if (null === $output) {
                 continue;
             }
+
             return $output;
         }
 

@@ -1,18 +1,17 @@
 <?php
 
-namespace PhpBench\Expression\Printer;
+namespace PhpBench\Expression\NodePrinter;
 
 use PhpBench\Expression\Ast\ArgumentListNode;
-use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Printer;
 use PhpBench\Expression\NodePrinter;
 
-class ListPrinter implements NodePrinter
+class ArgumentListPrinter implements NodePrinter
 {
     public function print(Printer $printer, Node $node, array $params): ?string
     {
-        if (!$node instanceof ListNode) {
+        if (!$node instanceof ArgumentListNode) {
             return null;
         }
 
@@ -21,6 +20,6 @@ class ListPrinter implements NodePrinter
             $out[] = $printer->print($expression, $params);
         }
 
-        return '[' . implode(', ', $out) . ']';
+        return implode(', ', $out);
     }
 }

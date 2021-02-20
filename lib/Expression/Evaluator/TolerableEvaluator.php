@@ -8,7 +8,7 @@ use PhpBench\Expression\Evaluator\AbstractEvaluator;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\PercentageNode;
 use PhpBench\Expression\Ast\TolerableNode;
-use PhpBench\Expression\MainEvaluator;
+use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Value\TolerableValue;
 use PhpBench\Math\FloatNumber;
 
@@ -22,7 +22,7 @@ class TolerableEvaluator extends AbstractEvaluator
         parent::__construct(TolerableNode::class);
     }
 
-    public function evaluate(MainEvaluator $evaluator, Node $node): Node
+    public function evaluate(Evaluator $evaluator, Node $node): Node
     {
         $toleranceNode = $node->tolerance();
         $context = $evaluator->evaluate($node->value(), NumberNode::class);
