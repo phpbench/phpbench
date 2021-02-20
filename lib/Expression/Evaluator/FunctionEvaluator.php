@@ -3,6 +3,7 @@
 namespace PhpBench\Expression\Evaluator;
 
 use PhpBench\Expression\Ast\ArgumentListNode;
+use PhpBench\Expression\Ast\NumberNodeFactory;
 use PhpBench\Expression\Evaluator\AbstractEvaluator;
 use PhpBench\Expression\Ast\FunctionNode;
 use PhpBench\Expression\Ast\Node;
@@ -27,12 +28,12 @@ class FunctionEvaluator extends AbstractEvaluator
         parent::__construct(FunctionNode::class);
     }
 
-    public function evaluate(MainEvaluator $evaluator, Node $node)
+    public function evaluate(MainEvaluator $evaluator, Node $node): Node
     {
         try {
-            return $this->functions->execute($node->name(), array_map(function (Node $node) use ($evaluator) {
+            return NumberNodeFactory::fromNumber($this->functions->execute($node->name(), array_map(function (Node $node) use ($evaluator) {
                 return $evaluator->evaluate($node);
-            }, $this->args($node->args())));
+            }, $this->args($node->args()))));
         } catch (Throwable $throwable) {
             throw new EvaluationError(sprintf(
                 'Call to function "%s" failed with error: %s',

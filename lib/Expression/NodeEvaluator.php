@@ -17,5 +17,5 @@ interface NodeEvaluator
      *
      * @return mixed
      */
-    public function evaluate(MainEvaluator $evaluator, Node $node);
+    public function evaluate(MainEvaluator $evaluator, Node $node): Node;
 }

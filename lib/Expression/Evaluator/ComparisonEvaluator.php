@@ -3,6 +3,7 @@
 namespace PhpBench\Expression\Evaluator;
 
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
+use PhpBench\Expression\Ast\BooleanNode;
 use PhpBench\Expression\Evaluator\AbstractEvaluator;
 use PhpBench\Expression\Ast\ComparisonNode;
 use PhpBench\Expression\Ast\Node;
@@ -21,7 +22,7 @@ class ComparisonEvaluator extends AbstractEvaluator
         parent::__construct(ComparisonNode::class);
     }
 
-    public function evaluate(MainEvaluator $evaluator, Node $node)
+    public function evaluate(MainEvaluator $evaluator, Node $node): Node
     {
         $leftNode = $node->left();
         $rightNode = $node->right();
@@ -41,6 +42,12 @@ class ComparisonEvaluator extends AbstractEvaluator
             $rightValue = $rightValue->value;
         }
 
+
+        return new BooleanNode($this->evaluateNode($node, $leftValue, $rightValue));
+    }
+
+    private function evaluateNode(Node $node, $leftValue, $rightValue): Node
+    {
         switch ($node->operator()) {
             case '<':
                 return $leftValue < $rightValue;
@@ -53,7 +60,7 @@ class ComparisonEvaluator extends AbstractEvaluator
             case '>=':
                 return $leftValue >= $rightValue;
         }
-
+        
         throw new ExpressionEvaluatorError(sprintf(
             'Unknown comparison operator "%s"',
             $node->operator()

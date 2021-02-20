@@ -17,8 +17,8 @@ class FloatEvaluator extends AbstractEvaluator
         parent::__construct(FloatNode::class);
     }
 
-    public function evaluate(MainEvaluator $evaluator, Node $node)
+    public function evaluate(MainEvaluator $evaluator, Node $node): Node
     {
-        return (float)$node->value();
+        return $node;
     }
 }

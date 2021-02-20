@@ -29,11 +29,11 @@ class BinaryOperatorParseletTest extends ParseletTestCase
      */
     public function provideEvaluate(): Generator
     {
-        yield ['1 * 2', [], 2];
+        yield ['1 * 2', [], '2'];
 
-        yield ['1 + 2', [], 3];
+        yield ['1 + 2', [], '3'];
 
-        yield ['1 + 2 * 3 / 5 * 6 - 1', [], 1 + 2 * 3 / 5 * 6 - 1];
+        yield ['1 + 2 * 3 / 5 * 6 - 1', [], (string)(1 + 2 * 3 / 5 * 6 - 1)];
 
         yield ['3 > 2 and 4 > 2', [], true];
 

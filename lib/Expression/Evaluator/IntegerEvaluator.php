@@ -17,8 +17,8 @@ class IntegerEvaluator extends AbstractEvaluator
         parent::__construct(IntegerNode::class);
     }
 
-    public function evaluate(MainEvaluator $evaluator, Node $node)
+    public function evaluate(MainEvaluator $evaluator, Node $node): Node
     {
-        return (int)$node->value();
+        return $node;
     }
 }

@@ -46,8 +46,8 @@ class ArgumentListParseletTest extends ParseletTestCase
     {
         yield [
             '12, 12',
-[],
-            [12, 12]
+            [],
+            '12, 12'
         ];
     }
 

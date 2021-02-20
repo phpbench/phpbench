@@ -17,8 +17,8 @@ class BooleanEvaluator extends AbstractEvaluator
         parent::__construct(BooleanNode::class);
     }
 
-    public function evaluate(MainEvaluator $evaluator, Node $node)
+    public function evaluate(MainEvaluator $evaluator, Node $node): Node
     {
-        return (int)$node->value();
+        return $node;
     }
 }

@@ -17,8 +17,8 @@ class ParenthesisEvaluator extends AbstractEvaluator
         parent::__construct(ParenthesisNode::class);
     }
 
-    public function evaluate(MainEvaluator $evaluator, Node $node)
+    public function evaluate(MainEvaluator $evaluator, Node $node): Node
     {
-        return $evaluator->evaluate($node->expression());
+        return $node;
     }
 }

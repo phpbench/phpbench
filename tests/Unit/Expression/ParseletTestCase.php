@@ -18,11 +18,9 @@ abstract class ParseletTestCase extends ParserTestCase
     }
 
     /**
-     * @return mixed
-     *
-     * @param mixed[] $params
+     * @param parameters $params
      */
-    public function evaluate(Node $node, array $params = [])
+    public function evaluate(Node $node, array $params = []): Node
     {
         return $this->container()->get(
             MainEvaluator::class
@@ -41,11 +39,10 @@ abstract class ParseletTestCase extends ParserTestCase
      * @dataProvider provideEvaluate
      *
      * @param parameters $params
-     * @param mixed $expectedValue
      */
-    public function testEvaluate(string $expr, array $params, $expectedValue): void
+    public function testEvaluate(string $expr, array $params, string $expected): void
     {
-        self::assertEquals($expectedValue, $this->evaluate($this->parse($expr), $params));
+        self::assertEquals($expected, $this->print($this->evaluate($this->parse($expr), $params)));
     }
 
     protected function providePrintFromEvaluate(): Generator

@@ -2,7 +2,7 @@
 
 namespace PhpBench\Expression\Value;
 
-class ToleratedValue
+class ToleratedValue implements Node
 {
     /**
      * @var int|float

@@ -17,10 +17,8 @@ class ArgumentListEvaluator extends AbstractEvaluator
         parent::__construct(ArgumentListNode::class);
     }
 
-    public function evaluate(MainEvaluator $evaluator, Node $node)
+    public function evaluate(MainEvaluator $evaluator, Node $node): Node
     {
-        return array_map(function (Node $expression) use ($evaluator) {
-            return $evaluator->evaluate($expression);
-        }, $node->expressions());
+        return new ArgumentListNode($evaluator->evaluate($node->left()), $evaluator->evaluate($node->right()));
     }
 }

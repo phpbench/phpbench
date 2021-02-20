@@ -19,7 +19,7 @@ class TolerableEvaluator extends AbstractEvaluator
         parent::__construct(TolerableNode::class);
     }
 
-    public function evaluate(MainEvaluator $evaluator, Node $node)
+    public function evaluate(MainEvaluator $evaluator, Node $node): Node
     {
         $toleranceNode = $node->tolerance();
         $context = $evaluator->evaluate($node->value());

@@ -17,10 +17,8 @@ class ListEvaluator extends AbstractEvaluator
         parent::__construct(ListNode::class);
     }
 
-    public function evaluate(MainEvaluator $evaluator, Node $node)
+    public function evaluate(MainEvaluator $evaluator, Node $node): Node
     {
-        return array_map(function (Node $expression) use ($evaluator) {
-            return $evaluator->evaluate($expression);
-        }, $node->expressions());
+        return new ListNode($evaluator->evaluate($left), $evaluator->evaluate($right));
     }
 }

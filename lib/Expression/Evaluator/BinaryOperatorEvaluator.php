@@ -3,6 +3,8 @@
 namespace PhpBench\Expression\Evaluator;
 
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
+use PhpBench\Expression\Ast\NumberNode;
+use PhpBench\Expression\Ast\NumberNodeFactory;
 use PhpBench\Expression\Evaluator\AbstractEvaluator;
 use PhpBench\Expression\Ast\BinaryOperatorNode;
 use PhpBench\Expression\Ast\Node;
@@ -18,11 +20,18 @@ class BinaryOperatorEvaluator extends AbstractEvaluator
         parent::__construct(BinaryOperatorNode::class);
     }
 
-    public function evaluate(MainEvaluator $evaluator, Node $node)
+    public function evaluate(MainEvaluator $evaluator, Node $node): Node
     {
-        $leftValue = $evaluator->evaluate($node->left());
-        $rightValue = $evaluator->evaluate($node->right());
+        $leftValue = $evaluator->evaluate($node->left(), NumberNode::class);
+        $rightValue = $evaluator->evaluate($node->right(), NumberNode::class);
 
+        $value = $this->evaluateNode($node, $leftValue->value(), $rightValue->value());
+
+        return NumberNodeFactory::fromNumber($value);
+    }
+
+    private function evaluateNode(Node $node, $leftValue, $rightValue)
+    {
         switch ($node->operator()) {
             case '+':
                 return $leftValue + $rightValue;
@@ -37,7 +46,7 @@ class BinaryOperatorEvaluator extends AbstractEvaluator
             case 'and':
                 return $leftValue && $rightValue;
         }
-
+        
         throw new ExpressionEvaluatorError(sprintf(
             'Unknown operator "%s"',
             $node->operator()
