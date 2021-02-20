@@ -7,6 +7,7 @@ use PhpBench\Expression\Ast\BooleanNode;
 use PhpBench\Expression\Ast\ComparisonNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\NumberNode;
+use PhpBench\Expression\Ast\NumberValue;
 use PhpBench\Expression\Ast\TolerableNode;
 use PhpBench\Expression\Ast\ToleratedTrue;
 use PhpBench\Expression\Evaluator;
@@ -27,7 +28,7 @@ class ComparisonEvaluator extends AbstractEvaluator
         $leftNode = $node->left();
         $rightNode = $node->right();
 
-        $leftValue = $evaluator->evaluateType($node->left(), NumberNode::class);
+        $leftValue = $evaluator->evaluateType($node->left(), NumberValue::class);
         $rightValue = $evaluator->evaluate($node->right());
 
         if ($rightValue instanceof TolerableNode) {

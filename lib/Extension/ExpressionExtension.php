@@ -6,6 +6,7 @@ use PhpBench\Console\Command\EvaluateCommand;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Expression\Ast\ArithmeticOperatorNode;
+use PhpBench\Expression\Ast\DisplayAsNode;
 use PhpBench\Expression\Ast\FunctionNode;
 use PhpBench\Expression\Ast\ParenthesisNode;
 use PhpBench\Expression\Evaluator;
@@ -13,6 +14,7 @@ use PhpBench\Expression\Evaluator\ArgumentListEvaluator;
 use PhpBench\Expression\Evaluator\ArithmeticOperatorEvaluator;
 use PhpBench\Expression\Evaluator\BooleanEvaluator;
 use PhpBench\Expression\Evaluator\ComparisonEvaluator;
+use PhpBench\Expression\Evaluator\DisplayAsEvaluator;
 use PhpBench\Expression\Evaluator\FloatEvaluator;
 use PhpBench\Expression\Evaluator\FunctionEvaluator;
 use PhpBench\Expression\Evaluator\IntegerEvaluator;
@@ -31,6 +33,7 @@ use PhpBench\Expression\NodePrinter\ArgumentListPrinter;
 use PhpBench\Expression\NodePrinter\BinaryOperatorPrinter;
 use PhpBench\Expression\NodePrinter\BooleanPrinter;
 use PhpBench\Expression\NodePrinter\ComparisonPrinter;
+use PhpBench\Expression\NodePrinter\DisplayAsPrinter;
 use PhpBench\Expression\NodePrinter\FunctionPrinter;
 use PhpBench\Expression\NodePrinter\ListPrinter;
 use PhpBench\Expression\NodePrinter\NumberPrinter;
@@ -42,6 +45,7 @@ use PhpBench\Expression\NodePrinters;
 use PhpBench\Expression\Parselet\ArithmeticOperatorParselet;
 use PhpBench\Expression\Parselet\BooleanParselet;
 use PhpBench\Expression\Parselet\ComparisonParselet;
+use PhpBench\Expression\Parselet\DisplayAsParselet;
 use PhpBench\Expression\Parselet\FloatParselet;
 use PhpBench\Expression\Parselet\FunctionParselet;
 use PhpBench\Expression\Parselet\IntegerParselet;
@@ -104,6 +108,7 @@ class ExpressionExtension implements ExtensionInterface
                     new ComparisonParselet(Token::T_GT, Precedence::COMPARISON),
                     new ComparisonParselet(Token::T_GTE, Precedence::COMPARISON),
                     new TolerableParselet(),
+                    new DisplayAsParselet(),
                 ]),
                 Parselets::fromSuffixParselets([
                     new UnitParselet(),
@@ -127,6 +132,7 @@ class ExpressionExtension implements ExtensionInterface
                 new ComparisonEvaluator(),
                 new TolerableEvaluator(),
                 new BooleanEvaluator(),
+                new DisplayAsEvaluator(),
             ]);
         });
 
@@ -143,6 +149,7 @@ class ExpressionExtension implements ExtensionInterface
                 new TolerablePrinter(),
                 new PercentagePrinter(),
                 new UnitPrinter(),
+                new DisplayAsPrinter(),
             ]);
         });
 
@@ -157,8 +164,8 @@ class ExpressionExtension implements ExtensionInterface
                 [
                     FunctionNode::class,
                     ArithmeticOperatorNode::class,
-                    ParenthesisNode::class
-                    
+                    ParenthesisNode::class,
+                    DisplayAsNode::class
                 ]
             );
         });
