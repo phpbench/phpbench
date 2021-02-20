@@ -6,12 +6,12 @@ use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\ParenthesisNode;
 use PhpBench\Expression\Ast\UnitNode;
 use PhpBench\Expression\Ast\TolerableNode;
-use PhpBench\Expression\NormalizingPrinter;
+use PhpBench\Expression\Printer;
 use PhpBench\Expression\NodePrinter;
 
 class UnitPrinter implements NodePrinter
 {
-    public function print(NormalizingPrinter $printer, Node $node, array $params): ?string
+    public function print(Printer $printer, Node $node, array $params): ?string
     {
         if (!$node instanceof UnitNode) {
             return null;

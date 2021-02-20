@@ -7,5 +7,5 @@ use PhpBench\Expression\NormalizingPrinter;
 
 interface NodePrinter
 {
-    public function print(NormalizingPrinter $printer, Node $node, array $params): ?string;
+    public function print(Printer $printer, Node $node, array $params): ?string;
 }
