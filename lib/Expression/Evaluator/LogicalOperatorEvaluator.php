@@ -6,6 +6,7 @@ use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
 use PhpBench\Expression\Ast\BooleanNode;
 use PhpBench\Expression\Ast\LogicalOperatorNode;
 use PhpBench\Expression\Ast\Node;
+use PhpBench\Expression\Ast\PhpValue;
 use PhpBench\Expression\Evaluator;
 
 /**
@@ -20,8 +21,8 @@ class LogicalOperatorEvaluator extends AbstractEvaluator
 
     public function evaluate(Evaluator $evaluator, Node $node): Node
     {
-        $leftValue = $evaluator->evaluateType($node->left(), BooleanNode::class);
-        $rightValue = $evaluator->evaluateType($node->right(), BooleanNode::class);
+        $leftValue = $evaluator->evaluateType($node->left(), PhpValue::class);
+        $rightValue = $evaluator->evaluateType($node->right(), PhpValue::class);
 
         $value = $this->evaluateNode($node, $leftValue->value(), $rightValue->value());
 
