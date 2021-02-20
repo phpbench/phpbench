@@ -48,16 +48,23 @@ abstract class ParseletTestCase extends ParserTestCase
         self::assertEquals($expectedValue, $this->evaluate($this->parse($expr), $params));
     }
 
+    protected function providePrintFromEvaluate(): Generator
+    {
+        foreach ($this->provideEvaluate() as [$expr, $params]) {
+            yield [$expr, $params];
+        }
+    }
+
     /**
      * @dataProvider providePrint
      *
      * @param parameters $params
      * @param mixed $expectedValue
      */
-    public function testPrint(string $expr): void
+    public function testPrint(string $expr, array $params = [], string $expected = null): void
     {
         $result = $this->print($this->parse($expr));
-        self::assertEquals($expr, $result);
+        self::assertEquals($expected ?: $expr, $result);
     }
 
     /**

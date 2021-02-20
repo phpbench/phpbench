@@ -6,12 +6,12 @@ use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\ParenthesisNode;
 use PhpBench\Expression\Ast\PercentageNode;
 use PhpBench\Expression\Ast\TolerableNode;
-use PhpBench\Expression\MainPrinter;
+use PhpBench\Expression\NormalizingPrinter;
 use PhpBench\Expression\NodePrinter;
 
 class PercentagePrinter implements NodePrinter
 {
-    public function print(MainPrinter $printer, Node $node, array $params): ?string
+    public function print(NormalizingPrinter $printer, Node $node, array $params): ?string
     {
         if (!$node instanceof PercentageNode) {
             return null;

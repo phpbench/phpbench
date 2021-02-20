@@ -24,7 +24,7 @@ use PhpBench\Expression\Func\MeanFunction;
 use PhpBench\Expression\Func\MinFunction;
 use PhpBench\Expression\Func\ModeFunction;
 use PhpBench\Expression\Lexer;
-use PhpBench\Expression\MainPrinter;
+use PhpBench\Expression\NormalizingPrinter;
 use PhpBench\Expression\NodePrinter;
 use PhpBench\Expression\Parselet\BinaryOperatorParselet;
 use PhpBench\Expression\Parselet\BooleanParselet;
@@ -125,7 +125,7 @@ class ExpressionExtension implements ExtensionInterface
         });
 
         $container->register(Printer::class, function (Container $container) {
-            return new MainPrinter([
+            return new NormalizingPrinter([
                 new ArgumentListPrinter(),
                 new NumberPrinter(),
                 new BinaryOperatorPrinter(),

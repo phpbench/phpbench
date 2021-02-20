@@ -49,6 +49,6 @@ class ParenthesisParseletTest extends ParseletTestCase
      */
     public function providePrint(): Generator
     {
-        yield from $this->provideEvaluate();
+        yield from $this->providePrintFromEvaluate();
     }
 }

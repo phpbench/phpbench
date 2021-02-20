@@ -5,7 +5,7 @@ namespace PhpBench\Expression;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Exception\PrinterError;
 
-final class MainPrinter implements Printer
+final class NormalizingPrinter implements Printer
 {
     /**
      * @var NodePrinter[]

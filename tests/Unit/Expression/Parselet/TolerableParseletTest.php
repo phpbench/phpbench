@@ -89,6 +89,6 @@ class TolerableParseletTest extends ParseletTestCase
      */
     public function providePrint(): Generator
     {
-        yield from $this->provideEvaluate();
+        yield ['1 +/- 2', [], '1 ± 2'];
     }
 }

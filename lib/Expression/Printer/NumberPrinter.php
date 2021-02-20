@@ -6,12 +6,12 @@ use PhpBench\Expression\Ast\FloatNode;
 use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\NumberNode;
-use PhpBench\Expression\MainPrinter;
+use PhpBench\Expression\NormalizingPrinter;
 use PhpBench\Expression\NodePrinter;
 
 class NumberPrinter implements NodePrinter
 {
-    public function print(MainPrinter $printer, Node $node, array $params): ?string
+    public function print(NormalizingPrinter $printer, Node $node, array $params): ?string
     {
         if (!$node instanceof NumberNode) {
             return null;
