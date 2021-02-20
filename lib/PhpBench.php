@@ -258,7 +258,7 @@ class PhpBench
                 '%s in %s:%s',
                 $message,
                 $file,
-                $line,
+                $line
             ));
 
             exit(255);

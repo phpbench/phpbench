@@ -53,7 +53,7 @@ class TolerableParseletTest extends ParseletTestCase
                         new IntegerNode(10),
                         new PercentageNode(new IntegerNode(10))
                     )
-                ),
+                )
             )
         ];
 

@@ -26,7 +26,7 @@ class ParenthesisParseletTest extends ParseletTestCase
                 new ArithmeticOperatorNode(
                     new IntegerNode(1),
                     '+',
-                    new IntegerNode(1),
+                    new IntegerNode(1)
                 )
             ),
         ];
