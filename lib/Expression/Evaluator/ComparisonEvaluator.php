@@ -4,14 +4,12 @@ namespace PhpBench\Expression\Evaluator;
 
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
 use PhpBench\Expression\Ast\BooleanNode;
-use PhpBench\Expression\Ast\NumberNode;
-use PhpBench\Expression\Ast\TolerableNode;
-use PhpBench\Expression\Evaluator\AbstractEvaluator;
 use PhpBench\Expression\Ast\ComparisonNode;
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Evaluator;
-use PhpBench\Expression\Value\TolerableValue;
+use PhpBench\Expression\Ast\NumberNode;
+use PhpBench\Expression\Ast\TolerableNode;
 use PhpBench\Expression\Ast\ToleratedTrue;
+use PhpBench\Expression\Evaluator;
 use PhpBench\Math\FloatNumber;
 
 /**
@@ -35,6 +33,7 @@ class ComparisonEvaluator extends AbstractEvaluator
         if ($rightValue instanceof TolerableNode) {
             $toleranceValue = $evaluator->evaluate($rightValue->tolerance(), NumberNode::class);
             $rightValue = $evaluator->evaluate($rightValue->value(), NumberNode::class);
+
             if (FloatNumber::isWithin(
                 $leftValue->value(),
                 $rightValue->value() - $toleranceValue->value(),

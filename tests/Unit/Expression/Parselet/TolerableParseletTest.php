@@ -3,14 +3,11 @@
 namespace PhpBench\Tests\Unit\Expression\Parselet;
 
 use Generator;
-use PhpBench\Expression\Ast\ArithmeticOperatorNode;
 use PhpBench\Expression\Ast\ComparisonNode;
 use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\LogicalOperatorNode;
 use PhpBench\Expression\Ast\PercentageNode;
 use PhpBench\Expression\Ast\TolerableNode;
-use PhpBench\Expression\Value\TolerableValue;
-use PhpBench\Expression\Ast\ToleratedTrue;
 use PhpBench\Tests\Unit\Expression\ParseletTestCase;
 
 class TolerableParseletTest extends ParseletTestCase

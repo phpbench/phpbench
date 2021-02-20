@@ -2,7 +2,6 @@
 
 namespace PhpBench\Expression\Evaluator;
 
-use PhpBench\Expression\Evaluator\AbstractEvaluator;
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Evaluator;
@@ -20,6 +19,7 @@ class ListEvaluator extends AbstractEvaluator
     public function evaluate(Evaluator $evaluator, Node $node): Node
     {
         $right = $node->right();
+
         return new ListNode($evaluator->evaluate($node->left()), $right ? $evaluator->evaluate($right) : null);
     }
 }

@@ -3,7 +3,6 @@
 namespace PhpBench\Expression;
 
 use PhpBench\Expression\Exception\ParseletNotFound;
-use RuntimeException;
 
 /**
  * @template T of Parselet

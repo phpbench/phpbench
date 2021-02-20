@@ -3,10 +3,9 @@
 namespace PhpBench\Expression\Evaluator;
 
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
+use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\NumberNode;
 use PhpBench\Expression\Ast\NumberNodeFactory;
-use PhpBench\Expression\Evaluator\AbstractEvaluator;
-use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\UnitNode;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Util\MemoryUnit;

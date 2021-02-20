@@ -15,6 +15,7 @@ class UnitParseletTest extends ParseletTestCase
     public function provideParse(): Generator
     {
         yield ['1 ms', new UnitNode(new IntegerNode(1), 'ms')];
+
         yield ['1ms', new UnitNode(new IntegerNode(1), 'ms')];
     }
 

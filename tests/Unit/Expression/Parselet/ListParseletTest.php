@@ -3,7 +3,6 @@
 namespace PhpBench\Tests\Unit\Expression\Parselet;
 
 use Generator;
-use PhpBench\Expression\Ast\ArgumentListNode;
 use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Tests\Unit\Expression\ParseletTestCase;
@@ -39,6 +38,7 @@ class ListParseletTest extends ParseletTestCase
     public function providePrint(): Generator
     {
         yield ['12, 12'];
+
         yield ['12, 12, 12, 12'];
     }
 }

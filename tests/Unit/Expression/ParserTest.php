@@ -2,7 +2,6 @@
 
 namespace PhpBench\Tests\Unit\Expression;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Expression\Exception\SyntaxError;
 
 class ParserTest extends ParserTestCase

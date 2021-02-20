@@ -2,11 +2,10 @@
 
 namespace PhpBench\Expression\NodePrinter;
 
-use PhpBench\Expression\Ast\ArithmeticOperatorNode;
 use PhpBench\Expression\Ast\BinaryOperatorNode;
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Printer;
 use PhpBench\Expression\NodePrinter;
+use PhpBench\Expression\Printer;
 
 class BinaryOperatorPrinter implements NodePrinter
 {

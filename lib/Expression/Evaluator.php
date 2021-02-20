@@ -23,7 +23,9 @@ final class Evaluator
 
     /**
      * @template T of Node
+     *
      * @param class-string<Node>|null $expectedType
+     *
      * @return T
      */
     public function evaluate(Node $node, string $expectedType = null): Node
@@ -33,6 +35,7 @@ final class Evaluator
                 continue;
             }
             $evaluated = $evaluator->evaluate($this, $node);
+
             if ($expectedType && !$evaluated instanceof $expectedType) {
                 throw new ExpressionError(sprintf(
                     'Expected "%s" but got "%s"', $expectedType, get_class($node)

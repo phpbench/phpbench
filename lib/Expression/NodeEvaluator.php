@@ -3,7 +3,6 @@
 namespace PhpBench\Expression;
 
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Evaluator;
 
 /**
  * @template T of Node

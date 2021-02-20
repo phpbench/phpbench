@@ -3,7 +3,6 @@
 namespace PhpBench\Tests\Unit\Expression\Printer;
 
 use Generator;
-use PHPUnit\Framework\TestCase;
 use PhpBench\Expression\Ast\FunctionNode;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\NodePrinters;
@@ -15,7 +14,7 @@ class EvaluatingPrinterTest extends ParserTestCase
     /**
      * @dataProvider provideEvaluate
      */
-    public function testEvaluate(string $expr, array $params, string $expected)
+    public function testEvaluate(string $expr, array $params, string $expected): void
     {
         $printer = new EvaluatingPrinter(
             $this->container()->get(NodePrinters::class),
@@ -44,7 +43,13 @@ class EvaluatingPrinterTest extends ParserTestCase
         yield [
             'mean([1, 2, 3])',
             [],
-            '       2       ',
+            '2',
+        ];
+
+        yield [
+            'mean([1, 2, 3]) / 2',
+            [],
+            '2 / 2',
         ];
 
         yield [

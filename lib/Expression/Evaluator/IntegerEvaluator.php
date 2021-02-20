@@ -2,7 +2,6 @@
 
 namespace PhpBench\Expression\Evaluator;
 
-use PhpBench\Expression\Evaluator\AbstractEvaluator;
 use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Evaluator;

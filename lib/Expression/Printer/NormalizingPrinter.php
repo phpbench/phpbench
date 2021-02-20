@@ -3,7 +3,6 @@
 namespace PhpBench\Expression\Printer;
 
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Exception\PrinterError;
 use PhpBench\Expression\NodePrinters;
 use PhpBench\Expression\Printer;
 

@@ -5,10 +5,6 @@ namespace PhpBench\Expression\Evaluator;
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
 use PhpBench\Expression\Ast\BooleanNode;
 use PhpBench\Expression\Ast\LogicalOperatorNode;
-use PhpBench\Expression\Ast\NumberNode;
-use PhpBench\Expression\Ast\NumberNodeFactory;
-use PhpBench\Expression\Evaluator\AbstractEvaluator;
-use PhpBench\Expression\Ast\ArithmeticOperatorNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Evaluator;
 

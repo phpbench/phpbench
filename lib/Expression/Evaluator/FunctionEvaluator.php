@@ -3,15 +3,12 @@
 namespace PhpBench\Expression\Evaluator;
 
 use PhpBench\Expression\Ast\ArgumentListNode;
-use PhpBench\Expression\Ast\NumberNode;
-use PhpBench\Expression\Ast\NumberNodeFactory;
-use PhpBench\Expression\Evaluator\AbstractEvaluator;
 use PhpBench\Expression\Ast\FunctionNode;
 use PhpBench\Expression\Ast\Node;
+use PhpBench\Expression\Ast\NumberNodeFactory;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Expression\ExpressionFunctions;
-use PhpBench\Expression\T;
 use Throwable;
 
 /**
@@ -62,6 +59,7 @@ class FunctionEvaluator extends AbstractEvaluator
     private function resolveScalarValues(PhpValue $node)
     {
         $value = $node->value();
+
         if (is_array($value)) {
             return array_map(function (PhpValue $value) {
                 return $this->resolveScalarValues($value);

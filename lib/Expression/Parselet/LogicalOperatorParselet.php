@@ -2,7 +2,6 @@
 
 namespace PhpBench\Expression\Parselet;
 
-use PhpBench\Expression\Ast\ArithmeticOperatorNode;
 use PhpBench\Expression\Ast\LogicalOperatorNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\InfixParselet;

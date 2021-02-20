@@ -2,7 +2,6 @@
 
 namespace PhpBench\Tests\Unit\Expression\Func;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Expression\Func\MeanFunction;
 use PhpBench\Tests\Unit\Expression\FunctionTestCase;
 

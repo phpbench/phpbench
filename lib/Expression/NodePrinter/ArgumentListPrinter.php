@@ -4,8 +4,8 @@ namespace PhpBench\Expression\NodePrinter;
 
 use PhpBench\Expression\Ast\ArgumentListNode;
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Printer;
 use PhpBench\Expression\NodePrinter;
+use PhpBench\Expression\Printer;
 
 class ArgumentListPrinter implements NodePrinter
 {
@@ -16,6 +16,7 @@ class ArgumentListPrinter implements NodePrinter
         }
 
         $out = [];
+
         foreach ($node->value() as $expression) {
             $out[] = $printer->print($expression, $params);
         }

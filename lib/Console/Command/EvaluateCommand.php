@@ -2,19 +2,16 @@
 
 namespace PhpBench\Console\Command;
 
-use PhpBench\Assertion\ExpressionEvaluatorFactory;
-use PhpBench\Expression\Lexer;
-use PhpBench\Assertion\ExpressionParser;
+use function json_last_error_msg;
 use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\Lexer;
 use PhpBench\Expression\Parser;
-use PhpBench\Expression\ParserFactory;
 use PhpBench\Expression\Printer;
 use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use function json_last_error_msg;
 
 class EvaluateCommand extends Command
 {
@@ -78,9 +75,15 @@ class EvaluateCommand extends Command
         assert(is_string($params) || is_null($params));
 
         $node = $this->parser->parse($this->lexer->lex($expr));
-        $output->writeln($this->printer->print($node, $params ?? []));
-        $output->writeln($this->evalPrinter->print($node, $params ?? []));
-        $output->writeln($this->printer->print($this->evaluator->evaluate($node), $params ?: []));
+        $output->writeln(
+            sprintf(
+                "%s <comment>=\n</>%s <comment>=</>\n%s",
+                $this->printer->print($node, $params ?? []),
+                $this->evalPrinter->print($node, $params ?? []),
+                $this->printer->print($this->evaluator->evaluate($node), $params ?: [])
+            )
+        );
+        
 
         return 0;
     }
@@ -100,6 +103,7 @@ class EvaluateCommand extends Command
                 json_last_error_msg()
             ));
         }
+
         return $params;
     }
 }

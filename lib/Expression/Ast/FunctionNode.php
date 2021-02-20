@@ -15,7 +15,6 @@ class FunctionNode implements Node
     private $arguments;
 
     /**
-     * @param mixed[] $args
      */
     public function __construct(string $name, ?ArgumentListNode $arguments = null)
     {

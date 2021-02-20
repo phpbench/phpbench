@@ -22,13 +22,12 @@ use PhpBench\Extensions\XDebug\XDebugExtension;
 use PhpBench\Json\JsonDecoder;
 use Seld\JsonLint\JsonParser;
 use Seld\JsonLint\ParsingException;
+use function set_error_handler;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\ErrorHandler\ErrorHandler;
 use Throwable;
 use Webmozart\PathUtil\Path;
-use function set_error_handler;
 
 class PhpBench
 {
@@ -261,6 +260,7 @@ class PhpBench
                 $file,
                 $line,
             ));
+
             exit(255);
         });
 

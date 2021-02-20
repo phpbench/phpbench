@@ -59,7 +59,6 @@ abstract class ParseletTestCase extends ParserTestCase
      * @dataProvider providePrint
      *
      * @param parameters $params
-     * @param mixed $expectedValue
      */
     public function testPrint(string $expr, array $params = [], string $expected = null): void
     {

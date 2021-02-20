@@ -2,8 +2,8 @@
 
 namespace PhpBench\Expression\Ast;
 
-use RuntimeException;
 use function is_float;
+use RuntimeException;
 
 final class NumberNodeFactory
 {

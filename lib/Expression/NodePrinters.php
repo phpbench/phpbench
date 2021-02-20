@@ -4,8 +4,6 @@ namespace PhpBench\Expression;
 
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Exception\PrinterError;
-use PhpBench\Expression\Exception\PrinterNotFound;
-use RuntimeException;
 
 final class NodePrinters
 {

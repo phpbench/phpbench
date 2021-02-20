@@ -4,7 +4,6 @@ namespace PhpBench\Expression\Printer;
 
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Evaluator;
-use PhpBench\Expression\Exception\PrinterError;
 use PhpBench\Expression\NodePrinters;
 use PhpBench\Expression\Printer;
 
@@ -30,8 +29,7 @@ class EvaluatingPrinter implements Printer
         NodePrinters $printers,
         Evaluator $evaluator,
         array $nodeClasses
-    )
-    {
+    ) {
         $this->printers = $printers;
         $this->nodeClasses = $nodeClasses;
         $this->evaluator = $evaluator;
@@ -39,18 +37,13 @@ class EvaluatingPrinter implements Printer
 
     public function print(Node $node, array $params): string
     {
-        $original = $this->printers->print($this, $node, []);
-
         if (!$this->shouldEvaluate($node)) {
-            return $original;
+            return $this->printers->print($this, $node, []);
         }
 
         $node = $this->evaluator->evaluate($node);
-        $evaluated = $this->printers->print($this, $node, []);
-        $evaluated = $this->pad(mb_strlen($original), mb_strlen($evaluated), $evaluated);
 
-        return $evaluated;
-
+        return $this->printers->print($this, $node, []);
     }
 
     private function shouldEvaluate(Node $node)
@@ -62,17 +55,5 @@ class EvaluatingPrinter implements Printer
         }
 
         return false;
-    }
-
-    private function pad(int $origLen, int $evalLen, string $text): string
-    {
-        $string = str_repeat(' ', $origLen);
-        if ($origLen > $evalLen) {
-            $lpad = floor($origLen / 2) - floor($evalLen / 2);
-            $r = substr_replace($string, $text, $lpad, $evalLen);
-            return $r;
-        }
-
-        return $text;
     }
 }

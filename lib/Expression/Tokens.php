@@ -6,7 +6,6 @@ use ArrayIterator;
 use Countable;
 use IteratorAggregate;
 use PhpBench\Expression\Exception\SyntaxError;
-use RuntimeException;
 
 /**
  * @implements IteratorAggregate<int, Token>

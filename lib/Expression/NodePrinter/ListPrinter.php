@@ -2,11 +2,10 @@
 
 namespace PhpBench\Expression\NodePrinter;
 
-use PhpBench\Expression\Ast\ArgumentListNode;
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Printer;
 use PhpBench\Expression\NodePrinter;
+use PhpBench\Expression\Printer;
 
 class ListPrinter implements NodePrinter
 {
@@ -17,6 +16,7 @@ class ListPrinter implements NodePrinter
         }
 
         $out = [];
+
         foreach ($node->value() as $expression) {
             $out[] = $printer->print($expression, $params);
         }

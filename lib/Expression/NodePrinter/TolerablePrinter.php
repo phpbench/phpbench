@@ -3,12 +3,10 @@
 namespace PhpBench\Expression\NodePrinter;
 
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Ast\ParenthesisNode;
 use PhpBench\Expression\Ast\TolerableNode;
-use PhpBench\Expression\Printer;
-use PhpBench\Expression\NodePrinter;
-use PhpBench\Expression\Value\TolerableValue;
 use PhpBench\Expression\Ast\ToleratedTrue;
+use PhpBench\Expression\NodePrinter;
+use PhpBench\Expression\Printer;
 
 class TolerablePrinter implements NodePrinter
 {
@@ -17,6 +15,7 @@ class TolerablePrinter implements NodePrinter
         if ($node instanceof ToleratedTrue) {
             return '~true';
         }
+
         if (
             !$node instanceof TolerableNode
         ) {

@@ -3,11 +3,9 @@
 namespace PhpBench\Expression\NodePrinter;
 
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Ast\ParenthesisNode;
 use PhpBench\Expression\Ast\UnitNode;
-use PhpBench\Expression\Ast\TolerableNode;
-use PhpBench\Expression\Printer;
 use PhpBench\Expression\NodePrinter;
+use PhpBench\Expression\Printer;
 
 class UnitPrinter implements NodePrinter
 {

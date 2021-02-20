@@ -3,7 +3,6 @@
 namespace PhpBench\Tests\Unit\Expression\Parselet;
 
 use Generator;
-use PhpBench\Expression\Ast\ArithmeticOperatorNode;
 use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\LogicalOperatorNode;
 use PhpBench\Tests\Unit\Expression\ParseletTestCase;

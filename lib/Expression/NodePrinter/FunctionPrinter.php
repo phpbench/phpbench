@@ -2,12 +2,10 @@
 
 namespace PhpBench\Expression\NodePrinter;
 
-use PhpBench\Expression\Ast\ArithmeticOperatorNode;
 use PhpBench\Expression\Ast\FunctionNode;
-use PhpBench\Expression\Ast\ComparisonNode;
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Printer;
 use PhpBench\Expression\NodePrinter;
+use PhpBench\Expression\Printer;
 
 class FunctionPrinter implements NodePrinter
 {
