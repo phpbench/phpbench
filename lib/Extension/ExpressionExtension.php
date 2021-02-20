@@ -5,6 +5,7 @@ namespace PhpBench\Extension;
 use PhpBench\Console\Command\EvaluateCommand;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
+use PhpBench\Expression\Ast\NumberNode;
 use PhpBench\Expression\MainEvaluator;
 use PhpBench\Expression\Evaluator\ArgumentListEvaluator;
 use PhpBench\Expression\Evaluator\BinaryOperatorEvaluator;
@@ -23,6 +24,8 @@ use PhpBench\Expression\Func\MeanFunction;
 use PhpBench\Expression\Func\MinFunction;
 use PhpBench\Expression\Func\ModeFunction;
 use PhpBench\Expression\Lexer;
+use PhpBench\Expression\MainPrinter;
+use PhpBench\Expression\NodePrinter;
 use PhpBench\Expression\Parselet\BinaryOperatorParselet;
 use PhpBench\Expression\Parselet\BooleanParselet;
 use PhpBench\Expression\Parselet\ComparisonParselet;
@@ -37,6 +40,18 @@ use PhpBench\Expression\Parselet\UnitParselet;
 use PhpBench\Expression\Parselets;
 use PhpBench\Expression\Parser;
 use PhpBench\Expression\Precedence;
+use PhpBench\Expression\Printer;
+use PhpBench\Expression\Printer\ArgumentListPrinter;
+use PhpBench\Expression\Printer\BinaryOperatorPrinter;
+use PhpBench\Expression\Printer\BooleanPrinter;
+use PhpBench\Expression\Printer\ComparisonPrinter;
+use PhpBench\Expression\Printer\FunctionPrinter;
+use PhpBench\Expression\Printer\ListPrinter;
+use PhpBench\Expression\Printer\NumberPrinter;
+use PhpBench\Expression\Printer\ParenthesisPrinter;
+use PhpBench\Expression\Printer\PercentagePrinter;
+use PhpBench\Expression\Printer\TolerablePrinter;
+use PhpBench\Expression\Printer\UnitPrinter;
 use PhpBench\Expression\Token;
 use PhpBench\Util\MemoryUnit;
 use PhpBench\Util\TimeUnit;
@@ -104,6 +119,22 @@ class ExpressionExtension implements ExtensionInterface
                 new ComparisonEvaluator(),
                 new TolerableEvaluator(),
                 new BooleanEvaluator(),
+            ]);
+        });
+
+        $container->register(Printer::class, function (Container $container) {
+            return new MainPrinter([
+                new ArgumentListPrinter(),
+                new NumberPrinter(),
+                new BinaryOperatorPrinter(),
+                new ComparisonPrinter(),
+                new BooleanPrinter(),
+                new FunctionPrinter(),
+                new ListPrinter(),
+                new ParenthesisPrinter(),
+                new TolerablePrinter(),
+                new PercentagePrinter(),
+                new UnitPrinter(),
             ]);
         });
 

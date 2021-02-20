@@ -83,4 +83,12 @@ class TolerableParseletTest extends ParseletTestCase
 
         yield ['12 < 10 +/- 10%', [], false];
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function providePrint(): Generator
+    {
+        yield from $this->provideEvaluate();
+    }
 }

@@ -7,12 +7,12 @@ use PhpBench\Expression\Ast\Node;
 final class MainEvaluator
 {
     /**
-     * @var AbstractEvaluator<Node>[]
+     * @var NodeEvaluator<Node>[]
      */
     private $evaluators;
 
     /**
-     * @param AbstractEvaluator<Node>[] $evaluators
+     * @param NodeEvaluator<Node>[] $evaluators
      */
     public function __construct(array $evaluators)
     {

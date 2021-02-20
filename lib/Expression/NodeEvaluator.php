@@ -8,7 +8,7 @@ use PhpBench\Expression\MainEvaluator;
 /**
  * @template T of Node
  */
-interface Evaluator
+interface NodeEvaluator
 {
     public function evaluates(Node $node): bool;
 

@@ -30,4 +30,12 @@ class FloatParseletTest extends ParseletTestCase
             1.2
         ];
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function providePrint(): Generator
+    {
+        yield from $this->provideEvaluate();
+    }
 }

@@ -21,9 +21,8 @@ class FunctionParselet implements PrefixParselet
     {
         $functionToken = $tokens->chomp();
 
-        if ($tokens->current()->type === Token::T_CLOSE_PAREN) {
-            $arguments = [];
-        } else {
+        $arguments = null;
+        if ($tokens->current()->type !== Token::T_CLOSE_PAREN) {
             $arguments = $parser->parseList($tokens);
             $arguments = $this->resolveArguments($arguments);
         }
@@ -36,12 +35,12 @@ class FunctionParselet implements PrefixParselet
     /**
      * @return array<Node>
      */
-    private function resolveArguments(Node $arguments): array
+    private function resolveArguments(Node $arguments): ArgumentListNode
     {
         if ($arguments instanceof ArgumentListNode) {
-            return $arguments->expressions();
+            return $arguments;
         }
 
-        return [$arguments];
+        return new ArgumentListNode($arguments);
     }
 }

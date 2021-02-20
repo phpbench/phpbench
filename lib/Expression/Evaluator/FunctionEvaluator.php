@@ -2,6 +2,7 @@
 
 namespace PhpBench\Expression\Evaluator;
 
+use PhpBench\Expression\Ast\ArgumentListNode;
 use PhpBench\Expression\Evaluator\AbstractEvaluator;
 use PhpBench\Expression\Ast\FunctionNode;
 use PhpBench\Expression\Ast\Node;
@@ -31,7 +32,7 @@ class FunctionEvaluator extends AbstractEvaluator
         try {
             return $this->functions->execute($node->name(), array_map(function (Node $node) use ($evaluator) {
                 return $evaluator->evaluate($node);
-            }, $node->args()));
+            }, $this->args($node->args())));
         } catch (Throwable $throwable) {
             throw new EvaluationError(sprintf(
                 'Call to function "%s" failed with error: %s',
@@ -39,5 +40,14 @@ class FunctionEvaluator extends AbstractEvaluator
                 $throwable->getMessage()
             ));
         }
+    }
+
+    private function args(?ArgumentListNode $args)
+    {
+        if (null === $args) {
+            return [];
+        }
+
+        return $args->expressions();
     }
 }

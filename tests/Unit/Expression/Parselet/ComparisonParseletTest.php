@@ -57,4 +57,12 @@ class ComparisonParseletTest extends ParseletTestCase
 
         yield ['1 >= 2', [], false];
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function providePrint(): Generator
+    {
+        yield from $this->provideEvaluate();
+    }
 }

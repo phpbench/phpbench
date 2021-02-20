@@ -25,6 +25,7 @@ use Seld\JsonLint\ParsingException;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\ErrorHandler\ErrorHandler;
 use Throwable;
 use Webmozart\PathUtil\Path;
 use function set_error_handler;

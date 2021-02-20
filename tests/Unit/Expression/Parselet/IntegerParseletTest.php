@@ -30,4 +30,12 @@ class IntegerParseletTest extends ParseletTestCase
             1
         ];
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function providePrint(): Generator
+    {
+        yield from $this->provideEvaluate();
+    }
 }

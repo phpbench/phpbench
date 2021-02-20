@@ -43,4 +43,12 @@ class ParenthesisParseletTest extends ParseletTestCase
 
         yield ['1 + (2 * 3)', [], 7];
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function providePrint(): Generator
+    {
+        yield from $this->provideEvaluate();
+    }
 }

@@ -50,4 +50,13 @@ class ArgumentListParseletTest extends ParseletTestCase
             [12, 12]
         ];
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function providePrint(): Generator
+    {
+        yield ['12, 12'];
+        yield ['12, 12, 12, 12'];
+    }
 }

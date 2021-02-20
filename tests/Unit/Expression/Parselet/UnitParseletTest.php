@@ -14,10 +14,8 @@ class UnitParseletTest extends ParseletTestCase
      */
     public function provideParse(): Generator
     {
-        yield [
-            '1 ms',
-            new UnitNode(new IntegerNode(1), 'ms')
-        ];
+        yield ['1 ms', new UnitNode(new IntegerNode(1), 'ms')];
+        yield ['1ms', new UnitNode(new IntegerNode(1), 'ms')];
     }
 
     /**
@@ -26,7 +24,13 @@ class UnitParseletTest extends ParseletTestCase
     public function provideEvaluate(): Generator
     {
         yield ['1s', [], 1E6];
+    }
 
-        yield ['1 s', [], 1E6];
+    /**
+     * {@inheritDoc}
+     */
+    public function providePrint(): Generator
+    {
+        yield from $this->provideEvaluate();
     }
 }

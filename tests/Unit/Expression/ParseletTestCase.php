@@ -5,6 +5,7 @@ namespace PhpBench\Tests\Unit\Expression;
 use Generator;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\MainEvaluator;
+use PhpBench\Expression\Printer;
 
 abstract class ParseletTestCase extends ParserTestCase
 {
@@ -29,14 +30,34 @@ abstract class ParseletTestCase extends ParserTestCase
     }
 
     /**
+     * @param parameters $params
+     */
+    public function print(Node $node, array $params = []): string
+    {
+        return $this->container()->get(Printer::class)->print($node, $params);
+    }
+
+    /**
      * @dataProvider provideEvaluate
      *
-     * @param mixed[] $params
+     * @param parameters $params
      * @param mixed $expectedValue
      */
     public function testEvaluate(string $expr, array $params, $expectedValue): void
     {
         self::assertEquals($expectedValue, $this->evaluate($this->parse($expr), $params));
+    }
+
+    /**
+     * @dataProvider providePrint
+     *
+     * @param parameters $params
+     * @param mixed $expectedValue
+     */
+    public function testPrint(string $expr): void
+    {
+        $result = $this->print($this->parse($expr));
+        self::assertEquals($expr, $result);
     }
 
     /**
@@ -48,4 +69,9 @@ abstract class ParseletTestCase extends ParserTestCase
      * @return Generator<mixed>
      */
     abstract public function provideEvaluate(): Generator;
+
+    /**
+     * @return Generator<mixed>
+     */
+    abstract public function providePrint(): Generator;
 }

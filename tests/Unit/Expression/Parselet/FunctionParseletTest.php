@@ -3,6 +3,7 @@
 namespace PhpBench\Tests\Unit\Expression\Parselet;
 
 use Generator;
+use PhpBench\Expression\Ast\ArgumentListNode;
 use PhpBench\Expression\Ast\BinaryOperatorNode;
 use PhpBench\Expression\Ast\FunctionNode;
 use PhpBench\Expression\Ast\IntegerNode;
@@ -18,27 +19,28 @@ class FunctionParseletTest extends ParseletTestCase
     {
         yield [
             'foobar()',
-            new FunctionNode('foobar', []),
+            new FunctionNode('foobar'),
         ];
 
         yield [
             'foobar(12)',
-            new FunctionNode('foobar', [
-                new IntegerNode(12)
-            ]),
+            new FunctionNode('foobar', 
+                new ArgumentListNode(new IntegerNode(12))
+            ),
         ];
 
         yield [
             'foobar(12, 14, 12 + 2)',
-            new FunctionNode('foobar', [
-                new IntegerNode(12),
-                new IntegerNode(14),
-                new BinaryOperatorNode(
+            new FunctionNode(
+                'foobar',
+                new ArgumentListNode(
                     new IntegerNode(12),
-                    '+',
-                    new IntegerNode(2)
+                    new ArgumentListNode(
+                        new IntegerNode(14),
+                        new BinaryOperatorNode(new IntegerNode(12), '+', new IntegerNode(2))
+                    )
                 )
-            ]),
+            ),
         ];
     }
 
@@ -59,5 +61,13 @@ class FunctionParseletTest extends ParseletTestCase
         $this->expectException(EvaluationError::class);
         $this->expectExceptionMessage('Call to function');
         $this->evaluate($this->parse('mode(12)'));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function providePrint(): Generator
+    {
+        yield from $this->provideEvaluate();
     }
 }

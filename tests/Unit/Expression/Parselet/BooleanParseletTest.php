@@ -33,4 +33,12 @@ class BooleanParseletTest extends ParseletTestCase
 
         yield ['false', [], false];
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function providePrint(): Generator
+    {
+        yield from $this->provideEvaluate();
+    }
 }

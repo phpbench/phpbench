@@ -3,14 +3,14 @@
 namespace PhpBench\Expression\Evaluator;
 
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\NodeEvaluator;
 use PhpBench\Expression\MainEvaluator;
 
 /**
  * @template T of Node
  * @implements Evaluator<T>
  */
-abstract class AbstractEvaluator implements Evaluator
+abstract class AbstractEvaluator implements NodeEvaluator
 {
     /**
      * @var class-string<T>

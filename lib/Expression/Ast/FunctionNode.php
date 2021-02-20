@@ -10,25 +10,25 @@ class FunctionNode implements Node
     private $name;
 
     /**
-     * @var mixed[]
+     * @var ArgumentListNode|null
      */
-    private $args;
+    private $arguments;
 
     /**
      * @param mixed[] $args
      */
-    public function __construct(string $name, array $args)
+    public function __construct(string $name, ?ArgumentListNode $arguments = null)
     {
         $this->name = $name;
-        $this->args = $args;
+        $this->arguments = $arguments;
     }
 
     /**
-     * @return array<string, mixed>
+     * @return Arguments
      */
-    public function args(): array
+    public function args(): ?ArgumentListNode
     {
-        return $this->args;
+        return $this->arguments;
     }
 
     public function name(): string

@@ -43,4 +43,12 @@ class BinaryOperatorParseletTest extends ParseletTestCase
 
         yield ['4 < 2 or 2 < 4', [], true];
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function providePrint(): Generator
+    {
+        yield from $this->provideEvaluate();
+    }
 }
