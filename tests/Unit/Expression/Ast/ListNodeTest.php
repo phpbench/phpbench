@@ -18,9 +18,7 @@ class ListNodeTest extends TestCase
     {
         $node = ListNode::fromValues($values);
         self::assertEquals($expected, $node, 'Node');
-        self::assertEquals(array_map(function ($value) {
-            return NumberNodeFactory::fromNumber($value);
-        }, $values), $node->value(), 'To Array');
+        self::assertEquals($values, $node->phpValues(), 'To Array');
     }
 
     /**
@@ -34,31 +32,37 @@ class ListNodeTest extends TestCase
         ];
         yield [
             [1],
-            new ListNode(new IntegerNode(1)),
+            new ListNode([new IntegerNode(1)]),
         ];
         yield [
             [1,2],
-            new ListNode(new IntegerNode(1), new IntegerNode(2))
+            new ListNode([new IntegerNode(1), new IntegerNode(2)])
         ];
         yield [
             [1,2,3],
-            new ListNode(new ListNode(new IntegerNode(1), new IntegerNode(2)), new IntegerNode(3))
+            new ListNode([new IntegerNode(1), new IntegerNode(2), new IntegerNode(3)])
         ];
         yield [
             [1,2,3,4,5],
-            new ListNode(
-                new ListNode(
-                    new ListNode(
-                        new ListNode(
-                            new IntegerNode(1),
-                            new IntegerNode(2)
-                        ),
-                        new IntegerNode(3),
-                    ),
-                    new IntegerNode(4),
-                ),
+            new ListNode([
+                new IntegerNode(1),
+                new IntegerNode(2),
+                new IntegerNode(3),
+                new IntegerNode(4),
                 new IntegerNode(5)
-            )
+            ])
+        ];
+        yield [
+            [1,2,[3,4,5]],
+            new ListNode([
+                new IntegerNode(1),
+                new IntegerNode(2),
+                new ListNode([
+                    new IntegerNode(3),
+                    new IntegerNode(4),
+                    new IntegerNode(5)
+                ])
+            ])
         ];
     }
 }

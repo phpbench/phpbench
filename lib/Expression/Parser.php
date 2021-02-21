@@ -2,6 +2,7 @@
 
 namespace PhpBench\Expression;
 
+use PhpBench\Expression\Ast\ArgumentListNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Exception\ParseletNotFound;
 use PhpBench\Expression\Exception\SyntaxError;
@@ -68,8 +69,14 @@ class Parser
     {
         $expression = $this->parseExpression($tokens);
 
-        if ($tokens->current()->type === Token::T_COMMA) {
-            return $this->listParselet->parse($this, $expression, $tokens);
+        $list = [$expression];
+        while ($tokens->current()->type === Token::T_COMMA) {
+            $tokens->chomp();
+            $list[] = $this->parseExpression($tokens);
+        }
+
+        if (count($list) > 1) {
+            return new ArgumentListNode($list);
         }
 
         return $expression;

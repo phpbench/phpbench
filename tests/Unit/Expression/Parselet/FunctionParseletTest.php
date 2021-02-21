@@ -25,7 +25,7 @@ class FunctionParseletTest extends ParseletTestCase
         yield [
             'foobar(12)',
             new FunctionNode('foobar',
-                new ArgumentListNode(new IntegerNode(12))
+                new ArgumentListNode([new IntegerNode(12)])
             ),
         ];
 
@@ -33,13 +33,11 @@ class FunctionParseletTest extends ParseletTestCase
             'foobar(12, 14, 12 + 2)',
             new FunctionNode(
                 'foobar',
-                new ArgumentListNode(
+                new ArgumentListNode([
                     new IntegerNode(12),
-                    new ArgumentListNode(
-                        new IntegerNode(14),
-                        new ArithmeticOperatorNode(new IntegerNode(12), '+', new IntegerNode(2))
-                    )
-                )
+                    new IntegerNode(14),
+                    new ArithmeticOperatorNode(new IntegerNode(12), '+', new IntegerNode(2))
+                ])
             ),
         ];
     }

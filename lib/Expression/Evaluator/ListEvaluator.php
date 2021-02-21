@@ -21,11 +21,8 @@ class ListEvaluator extends AbstractEvaluator
      */
     public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
     {
-        $right = $node->right();
-
-        return new ListNode($evaluator->evaluate(
-            $node->left(),
-            $params
-        ), $right ? $evaluator->evaluate($right, $params) : null);
+        return new ListNode(array_map(function (Node $node) use ($evaluator, $params) {
+            return $evaluator->evaluate($node, $params);
+        }, $node->value()));
     }
 }

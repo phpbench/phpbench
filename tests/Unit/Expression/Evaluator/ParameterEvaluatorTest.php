@@ -65,7 +65,7 @@ class ParameterEvaluatorTest extends EvaluatorTestCase
             [
                 'foo' => [12, 24]
             ],
-            new ListNode(new IntegerNode(12), new IntegerNode(24)),
+            new ListNode([new IntegerNode(12), new IntegerNode(24)]),
         ];
 
         yield 'value is array 2' => [
@@ -73,7 +73,7 @@ class ParameterEvaluatorTest extends EvaluatorTestCase
             [
                 'foo' => [12, 24, 37]
             ],
-            new ListNode(new ListNode(new IntegerNode(12), new IntegerNode(24)), new IntegerNode(37)),
+            new ListNode([new IntegerNode(12), new IntegerNode(24), new IntegerNode(37)]),
         ];
 
         yield 'array access' => [

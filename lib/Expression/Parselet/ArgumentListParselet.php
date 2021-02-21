@@ -12,7 +12,13 @@ final class ArgumentListParselet
     public function parse(Parser $parser, Node $left, Tokens $tokens): Node
     {
         $tokens->chomp();
+        $args = [];
+        if ($left instanceof ArgumentListNode) {
+            $args[] = array_merge($left->value());
+        } else {
+            $args[] = $left;
+        }
 
-        return new ArgumentListNode($left, $parser->parseList($tokens));
+        return new ArgumentListNode($args);
     }
 }

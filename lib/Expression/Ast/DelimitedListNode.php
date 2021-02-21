@@ -5,29 +5,16 @@ namespace PhpBench\Expression\Ast;
 abstract class DelimitedListNode implements Node, PhpValue
 {
     /**
-     * @var Node|null
+     * @var Node[]
      */
-    private $left;
+    private $nodes;
 
     /**
-     * @var Node|null
+     * @param Node[] $nodes
      */
-    private $right;
-
-    public function __construct(?Node $left = null, ?Node $right = null)
+    public function __construct(array $nodes = [])
     {
-        $this->left = $left;
-        $this->right = $right;
-    }
-
-    public function left(): ?Node
-    {
-        return $this->left;
-    }
-
-    public function right(): ?Node
-    {
-        return $this->right;
+        $this->nodes = $nodes;
     }
 
     /**
@@ -35,27 +22,19 @@ abstract class DelimitedListNode implements Node, PhpValue
      */
     public function value(): array
     {
-        $exprs = [];
-        if (!$this->left) {
-            return [];
-        }
+        return $this->nodes;
+    }
 
-        if ($this->left instanceof DelimitedListNode) {
-            $exprs = array_merge($exprs, $this->left->value());
-        } else {
-            $exprs[] = $this->left;
-        }
-
-        if (!$this->right) {
-            return $exprs;
-        }
-
-        if ($this->right instanceof DelimitedListNode) {
-            $exprs = array_merge($exprs, $this->right->value());
-        } else {
-            $exprs[] = $this->right;
-        }
-
-        return $exprs;
+    /**
+     * @return mixed[]
+     */
+    public function phpValues(): array
+    {
+        return array_map(function (PhpValue $node) {
+            if ($node instanceof DelimitedListNode) {
+                return $node->phpValues();
+            }
+            return $node->value();
+        }, $this->nodes);
     }
 }

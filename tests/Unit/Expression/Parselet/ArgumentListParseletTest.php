@@ -21,21 +21,19 @@ class ArgumentListParseletTest extends ParseletTestCase
 
         yield 'two comma separated values are an argument list' => [
             '12,24',
-            new ArgumentListNode(
+            new ArgumentListNode([
                 new IntegerNode(12),
                 new IntegerNode(24)
-            )
+            ])
         ];
 
         yield 'multiple values' => [
             '12, 12, 12',
-            new ArgumentListNode(
+            new ArgumentListNode([
                 new IntegerNode(12),
-                new ArgumentListNode(
-                    new IntegerNode(12),
-                    new IntegerNode(12)
-                )
-            )
+                new IntegerNode(12),
+                new IntegerNode(12)
+            ])
         ];
     }
 

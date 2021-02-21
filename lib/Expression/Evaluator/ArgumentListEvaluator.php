@@ -23,8 +23,9 @@ class ArgumentListEvaluator extends AbstractEvaluator
     public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
     {
         return new ArgumentListNode(
-            $evaluator->evaluateType($node->left(), PhpValue::class, $params),
-            $evaluator->evaluateType($node->right(), PhpValue::class, $params)
+            array_map(function (Node $node) use ($evaluator, $params) {
+                return $evaluator->evaluateType($node, PhpValue::class, $params);
+            }, $node->value())
         );
     }
 }

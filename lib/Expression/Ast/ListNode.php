@@ -11,21 +11,11 @@ final class ListNode extends DelimitedListNode
      */
     public static function fromValues(array $values): self
     {
-        $node = null;
-        $left = array_shift($values);
-        if (null === $left) {
-            return new ListNode();
-        }
-        $left = NumberNodeFactory::fromNumber($left);
-        while ($values) {
-            $right = array_shift($values);
-            $right = NumberNodeFactory::fromNumber($right);
-            $node = new ListNode($left, $right);
-            $left = $node;
-        }
-        if ($node === null) {
-            return new ListNode($left);
-        }
-        return $left;
+        return new self(array_map(function ($value) {
+            if (is_array($value)) {
+                return ListNode::fromValues($value);
+            }
+            return NumberNodeFactory::fromNumber($value);
+        }, $values));
     }
 }

@@ -2,6 +2,7 @@
 
 namespace PhpBench\Expression\Parselet;
 
+use PhpBench\Expression\Ast\ArgumentListNode;
 use PhpBench\Expression\Ast\DelimitedListNode;
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\Node;
@@ -23,10 +24,12 @@ class ListParselet implements PrefixParselet
         $list = $parser->parseList($tokens);
         $tokens->chomp(Token::T_CLOSE_LIST);
 
-        if ($list instanceof DelimitedListNode) {
-            return new ListNode($list->left(), $list->right());
+        if ($list instanceof ArgumentListNode) {
+            $values = $list->value();
+        } else {
+            $values = [ $list ];
         }
 
-        return new ListNode($list);
+        return new ListNode($values);
     }
 }

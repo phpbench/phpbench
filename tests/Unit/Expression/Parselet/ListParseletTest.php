@@ -16,7 +16,7 @@ class ListParseletTest extends ParseletTestCase
     {
         yield 'single value is not an argument list' => [
             '[12]',
-            new ListNode(new IntegerNode(12))
+            new ListNode([new IntegerNode(12)])
         ];
     }
 
