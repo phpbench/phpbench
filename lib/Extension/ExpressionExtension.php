@@ -29,6 +29,9 @@ use PhpBench\Expression\Func\MaxFunction;
 use PhpBench\Expression\Func\MeanFunction;
 use PhpBench\Expression\Func\MinFunction;
 use PhpBench\Expression\Func\ModeFunction;
+use PhpBench\Expression\Func\PercentDifferenceFunction;
+use PhpBench\Expression\Func\StDevFunction;
+use PhpBench\Expression\Func\VarianceFunction;
 use PhpBench\Expression\Lexer;
 use PhpBench\Expression\NodePrinter\ArgumentListPrinter;
 use PhpBench\Expression\NodePrinter\BinaryOperatorPrinter;
@@ -181,7 +184,10 @@ class ExpressionExtension implements ExtensionInterface
                 'mode' => new ModeFunction(),
                 'mean' => new MeanFunction(),
                 'min' => new MinFunction(),
-                'max' => new MaxFunction()
+                'max' => new MaxFunction(),
+                'stdev' => new StDevFunction(),
+                'variance' => new VarianceFunction(),
+                'percentDiff' => new PercentDifferenceFunction()
             ]);
         });
 
