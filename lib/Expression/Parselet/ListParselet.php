@@ -3,7 +3,6 @@
 namespace PhpBench\Expression\Parselet;
 
 use PhpBench\Expression\Ast\ArgumentListNode;
-use PhpBench\Expression\Ast\DelimitedListNode;
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Parser;

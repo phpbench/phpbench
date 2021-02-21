@@ -3,9 +3,9 @@
 namespace PhpBench\Expression\Evaluator;
 
 use PhpBench\Expression\Ast\ListNode;
+use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\NumberNodeFactory;
 use PhpBench\Expression\Ast\ParameterNode;
-use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
 
@@ -25,16 +25,22 @@ class ParameterEvaluator extends AbstractEvaluator
     public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
     {
         $value = self::resolvePropertyAccess($node->segments(), $params);
+
         if (is_numeric($value)) {
             return NumberNodeFactory::fromNumber($value);
         }
+
         if (is_array($value)) {
             return ListNode::fromValues($value);
         }
+
+        throw new EvaluationError(sprintf(
+            'Do not know how to interpret value "%s"', gettype($value)
+        ));
     }
 
     /**
-     * @return int|float|parameters
+     * @return mixed
      *
      * @param array<string,mixed>|object|scalar $container
      * @param array<string> $segments
@@ -43,10 +49,6 @@ class ParameterEvaluator extends AbstractEvaluator
     {
         $segment = array_shift($segments);
         $value = self::valueFromContainer($container, $segment);
-
-        if (is_scalar($value)) {
-            return $value;
-        }
 
         if (count($segments) === 0) {
             return $value;
@@ -85,4 +87,3 @@ class ParameterEvaluator extends AbstractEvaluator
         ));
     }
 }
-

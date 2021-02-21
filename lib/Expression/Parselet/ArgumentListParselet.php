@@ -13,6 +13,7 @@ final class ArgumentListParselet
     {
         $tokens->chomp();
         $args = [];
+
         if ($left instanceof ArgumentListNode) {
             $args[] = array_merge($left->value());
         } else {

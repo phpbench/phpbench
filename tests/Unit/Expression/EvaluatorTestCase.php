@@ -4,8 +4,6 @@ namespace PhpBench\Tests\Unit\Expression;
 
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Evaluator;
-use PhpBench\Expression\Lexer;
-use PhpBench\Expression\Parser;
 use PhpBench\Tests\IntegrationTestCase;
 
 abstract class EvaluatorTestCase extends IntegrationTestCase

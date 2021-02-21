@@ -2,8 +2,6 @@
 
 namespace PhpBench\Expression\Ast;
 
-use Exception;
-
 final class ListNode extends DelimitedListNode
 {
     /**
@@ -15,6 +13,7 @@ final class ListNode extends DelimitedListNode
             if (is_array($value)) {
                 return ListNode::fromValues($value);
             }
+
             return NumberNodeFactory::fromNumber($value);
         }, $values));
     }

@@ -70,6 +70,7 @@ class Parser
         $expression = $this->parseExpression($tokens);
 
         $list = [$expression];
+
         while ($tokens->current()->type === Token::T_COMMA) {
             $tokens->chomp();
             $list[] = $this->parseExpression($tokens);

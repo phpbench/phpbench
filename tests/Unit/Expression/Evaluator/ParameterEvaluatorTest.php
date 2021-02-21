@@ -3,24 +3,19 @@
 namespace PhpBench\Tests\Unit\Expression\Evaluator;
 
 use Generator;
-use PhpBench\Assertion\Ast\PropertyAccess;
-use PhpBench\Assertion\Exception\PropertyAccessError;
 use PhpBench\Expression\Ast\FloatNode;
 use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\ParameterNode;
-use PhpBench\Expression\Evaluator;
-use PhpBench\Expression\Evaluator\ParameterEvaluator;
 use PhpBench\Expression\Exception\EvaluationError;
-use PhpBench\Tests\Unit\Assertion\ExpressionParserTestCase;
 use PhpBench\Tests\Unit\Expression\EvaluatorTestCase;
-use PhpBench\Tests\Unit\Expression\ParserTestCase;
 
 class ParameterEvaluatorTest extends EvaluatorTestCase
 {
     /**
      * @dataProvider providePropertyAccess
+     *
      * @param string[] $segments
      * @param parameters $params
      */
@@ -152,6 +147,16 @@ class ParameterEvaluatorTest extends EvaluatorTestCase
             ['one', 'two'],
             [
                 'one' => $object
+            ],
+            'Could not access',
+        ];
+
+        yield [
+            ['one', 'two', 'three'],
+            [
+                'one' => [
+                    'two' => 12,
+                ],
             ],
             'Could not access',
         ];

@@ -33,9 +33,6 @@ class FunctionParselet implements PrefixParselet
         return new FunctionNode(rtrim($functionToken->value, '('), $arguments);
     }
 
-    /**
-     * @return array<Node>
-     */
     private function resolveArguments(Node $arguments): ArgumentListNode
     {
         if ($arguments instanceof ArgumentListNode) {

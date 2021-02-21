@@ -6,7 +6,6 @@ use Generator;
 use PhpBench\Expression\Ast\DisplayAsNode;
 use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\UnitNode;
-use PhpBench\Expression\Parselet\DisplayAsParselet;
 use PhpBench\Tests\Unit\Expression\ParseletTestCase;
 
 class DisplayAsParseletTest extends ParseletTestCase
@@ -36,8 +35,11 @@ class DisplayAsParseletTest extends ParseletTestCase
     public function providePrint(): Generator
     {
         yield 'units are interpreted literally' => ['1 s as milliseconds', [], '1 s as milliseconds'];
+
         yield 'int to milliseconds' => ['1000 as milliseconds', [], '1 ms'];
+
         yield 'int to bytes' => ['1000 as k', [], '1 k'];
+
         yield ['100000 as seconds < 1 second', [], '0.1 s < 1 second'];
     }
 }

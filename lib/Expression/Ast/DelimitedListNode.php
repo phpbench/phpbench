@@ -34,6 +34,7 @@ abstract class DelimitedListNode implements Node, PhpValue
             if ($node instanceof DelimitedListNode) {
                 return $node->phpValues();
             }
+
             return $node->value();
         }, $this->nodes);
     }

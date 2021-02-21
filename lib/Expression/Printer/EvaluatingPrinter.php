@@ -9,7 +9,6 @@ use PhpBench\Expression\Printer;
 
 class EvaluatingPrinter implements Printer
 {
-
     /**
      * @var array
      */
