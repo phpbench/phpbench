@@ -18,7 +18,7 @@ abstract class DelimitedListNode implements Node, PhpValue
     }
 
     /**
-     * @return mixed[]
+     * @return Node[]
      */
     public function value(): array
     {

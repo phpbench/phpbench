@@ -6,7 +6,6 @@ use PhpBench\Expression\Ast\ArgumentListNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Exception\ParseletNotFound;
 use PhpBench\Expression\Exception\SyntaxError;
-use PhpBench\Expression\Parselet\ArgumentListParselet;
 
 class Parser
 {
@@ -26,11 +25,6 @@ class Parser
     private $tokens;
 
     /**
-     * @var ArgumentListParselet
-     */
-    private $listParselet;
-
-    /**
      * @var Parselets
      */
     private $suffixParselets;
@@ -46,7 +40,6 @@ class Parser
     ) {
         $this->prefixParselets = $prefixParselets;
         $this->infixParselets = $infixParselets;
-        $this->listParselet = new ArgumentListParselet();
         $this->suffixParselets = $suffixParselets;
     }
 
