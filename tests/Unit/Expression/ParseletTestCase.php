@@ -24,7 +24,7 @@ abstract class ParseletTestCase extends ParserTestCase
     {
         return $this->container()->get(
             Evaluator::class
-        )->evaluate($node);
+        )->evaluate($node, $params);
     }
 
     /**

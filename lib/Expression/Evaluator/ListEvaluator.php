@@ -16,10 +16,16 @@ class ListEvaluator extends AbstractEvaluator
         parent::__construct(ListNode::class);
     }
 
-    public function evaluate(Evaluator $evaluator, Node $node): Node
+    /**
+        * @param parameters $params
+     */
+    public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
     {
         $right = $node->right();
 
-        return new ListNode($evaluator->evaluate($node->left()), $right ? $evaluator->evaluate($right) : null);
+        return new ListNode($evaluator->evaluate(
+            $node->left(),
+            $params
+        ), $right ? $evaluator->evaluate($right, $params) : null);
     }
 }

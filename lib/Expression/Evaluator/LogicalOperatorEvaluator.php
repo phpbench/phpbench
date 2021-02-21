@@ -19,10 +19,21 @@ class LogicalOperatorEvaluator extends AbstractEvaluator
         parent::__construct(LogicalOperatorNode::class);
     }
 
-    public function evaluate(Evaluator $evaluator, Node $node): Node
+    /**
+        * @param parameters $params
+     */
+    public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
     {
-        $leftValue = $evaluator->evaluateType($node->left(), PhpValue::class);
-        $rightValue = $evaluator->evaluateType($node->right(), PhpValue::class);
+        $leftValue = $evaluator->evaluateType(
+            $node->left(),
+            PhpValue::class,
+            $params
+        );
+        $rightValue = $evaluator->evaluateType(
+            $node->right(),
+            PhpValue::class,
+            $params
+        );
 
         $value = $this->evaluateNode($node, $leftValue->value(), $rightValue->value());
 

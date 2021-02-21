@@ -22,9 +22,12 @@ class DisplayAsEvaluator extends AbstractEvaluator
         parent::__construct(DisplayAsNode::class);
     }
 
-    public function evaluate(Evaluator $evaluator, Node $node): Node
+    /**
+        * @param parameters $params
+     */
+    public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
     {
-        $value = $evaluator->evaluateType($node->node(), NumberNode::class);
+        $value = $evaluator->evaluateType($node->node(), NumberNode::class, $params);
         $unit = $node->as();
 
         return new DisplayAsNode($value, $unit);

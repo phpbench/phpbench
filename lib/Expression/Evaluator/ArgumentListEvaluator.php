@@ -17,11 +17,14 @@ class ArgumentListEvaluator extends AbstractEvaluator
         parent::__construct(ArgumentListNode::class);
     }
 
-    public function evaluate(Evaluator $evaluator, Node $node): Node
+    /**
+     * @param parameters $params
+     */
+    public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
     {
         return new ArgumentListNode(
-            $evaluator->evaluateType($node->left(), PhpValue::class),
-            $evaluator->evaluateType($node->right(), PhpValue::class)
+            $evaluator->evaluateType($node->left(), PhpValue::class, $params),
+            $evaluator->evaluateType($node->right(), PhpValue::class, $params)
         );
     }
 }

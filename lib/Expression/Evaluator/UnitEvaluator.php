@@ -21,9 +21,12 @@ class UnitEvaluator extends AbstractEvaluator
         parent::__construct(UnitNode::class);
     }
 
-    public function evaluate(Evaluator $evaluator, Node $node): Node
+    /**
+        * @param parameters $params
+     */
+    public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
     {
-        $value = $evaluator->evaluateType($node->left(), NumberNode::class);
+        $value = $evaluator->evaluateType($node->left(), NumberNode::class, $params);
         $unit = $node->unit();
 
         if (TimeUnit::isTimeUnit($unit)) {

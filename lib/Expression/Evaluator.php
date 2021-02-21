@@ -25,12 +25,13 @@ final class Evaluator
      * @template T of Node
      *
      * @param class-string<T> $expectedType
+     * @param parameters $params
      *
      * @return T
      */
-    public function evaluateType(Node $node, string $expectedType): Node
+    public function evaluateType(Node $node, string $expectedType, array $params): Node
     {
-        $evaluated = $this->evaluate($node);
+        $evaluated = $this->evaluate($node, $params);
 
         if ($evaluated instanceof $expectedType) {
             return $evaluated;
@@ -42,14 +43,15 @@ final class Evaluator
     }
 
     /**
+     * @param parameters $params
      */
-    public function evaluate(Node $node): Node
+    public function evaluate(Node $node, array $params): Node
     {
         foreach ($this->evaluators as $evaluator) {
             if (!$evaluator->evaluates($node)) {
                 continue;
             }
-            $evaluated = $evaluator->evaluate($this, $node);
+            $evaluated = $evaluator->evaluate($this, $node, $params);
 
             return $evaluated;
         }

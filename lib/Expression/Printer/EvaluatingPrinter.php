@@ -38,12 +38,12 @@ class EvaluatingPrinter implements Printer
     public function print(Node $node, array $params): string
     {
         if (!$this->shouldEvaluate($node)) {
-            return $this->printers->print($this, $node, []);
+            return $this->printers->print($this, $node, $params);
         }
 
-        $node = $this->evaluator->evaluate($node);
+        $node = $this->evaluator->evaluate($node, $params);
 
-        return $this->printers->print($this, $node, []);
+        return $this->printers->print($this, $node, $params);
     }
 
     private function shouldEvaluate(Node $node)

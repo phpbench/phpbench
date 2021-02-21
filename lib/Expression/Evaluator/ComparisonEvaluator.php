@@ -23,17 +23,20 @@ class ComparisonEvaluator extends AbstractEvaluator
         parent::__construct(ComparisonNode::class);
     }
 
-    public function evaluate(Evaluator $evaluator, Node $node): Node
+    /**
+        * @param parameters $params
+     */
+    public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
     {
         $leftNode = $node->left();
         $rightNode = $node->right();
 
-        $leftValue = $evaluator->evaluateType($node->left(), NumberValue::class);
-        $rightValue = $evaluator->evaluate($node->right());
+        $leftValue = $evaluator->evaluateType($node->left(), NumberValue::class, $params);
+        $rightValue = $evaluator->evaluate($node->right(), $params);
 
         if ($rightValue instanceof TolerableNode) {
-            $toleranceValue = $evaluator->evaluateType($rightValue->tolerance(), NumberNode::class);
-            $rightValue = $evaluator->evaluateType($rightValue->value(), NumberNode::class);
+            $toleranceValue = $evaluator->evaluateType($rightValue->tolerance(), NumberNode::class, $params);
+            $rightValue = $evaluator->evaluateType($rightValue->value(), NumberNode::class, $params);
 
             if (FloatNumber::isWithin(
                 $leftValue->value(),
@@ -44,7 +47,7 @@ class ComparisonEvaluator extends AbstractEvaluator
             }
         }
 
-        $rightValue = $evaluator->evaluateType($rightValue, NumberNode::class);
+        $rightValue = $evaluator->evaluateType($rightValue, NumberNode::class, $params);
 
         return new BooleanNode($this->evaluateNode($node, $leftValue->value(), $rightValue->value()));
     }

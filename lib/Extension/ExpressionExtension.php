@@ -38,6 +38,7 @@ use PhpBench\Expression\NodePrinter\DisplayAsPrinter;
 use PhpBench\Expression\NodePrinter\FunctionPrinter;
 use PhpBench\Expression\NodePrinter\ListPrinter;
 use PhpBench\Expression\NodePrinter\NumberPrinter;
+use PhpBench\Expression\NodePrinter\ParameterPrinter;
 use PhpBench\Expression\NodePrinter\ParenthesisPrinter;
 use PhpBench\Expression\NodePrinter\PercentagePrinter;
 use PhpBench\Expression\NodePrinter\TolerablePrinter;
@@ -154,6 +155,7 @@ class ExpressionExtension implements ExtensionInterface
                 new PercentagePrinter(),
                 new UnitPrinter(),
                 new DisplayAsPrinter(),
+                new ParameterPrinter(),
             ]);
         });
 

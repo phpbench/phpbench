@@ -5,7 +5,7 @@ namespace PhpBench\Expression\Ast;
 abstract class DelimitedListNode implements Node, PhpValue
 {
     /**
-     * @var Node
+     * @var Node|null
      */
     private $left;
 
@@ -14,13 +14,13 @@ abstract class DelimitedListNode implements Node, PhpValue
      */
     private $right;
 
-    public function __construct(Node $left, ?Node $right = null)
+    public function __construct(?Node $left = null, ?Node $right = null)
     {
         $this->left = $left;
         $this->right = $right;
     }
 
-    public function left(): Node
+    public function left(): ?Node
     {
         return $this->left;
     }
@@ -35,7 +35,16 @@ abstract class DelimitedListNode implements Node, PhpValue
      */
     public function value(): array
     {
-        $exprs = [$this->left];
+        $exprs = [];
+        if (!$this->left) {
+            return [];
+        }
+
+        if ($this->left instanceof DelimitedListNode) {
+            $exprs = array_merge($exprs, $this->left->value());
+        } else {
+            $exprs[] = $this->left;
+        }
 
         if (!$this->right) {
             return $exprs;

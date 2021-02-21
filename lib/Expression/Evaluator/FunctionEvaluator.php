@@ -28,14 +28,19 @@ class FunctionEvaluator extends AbstractEvaluator
         parent::__construct(FunctionNode::class);
     }
 
-    public function evaluate(Evaluator $evaluator, Node $node): Node
+    /**
+        * @param parameters $params
+     */
+    public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
     {
         try {
             return NumberNodeFactory::fromNumber(
                 $this->functions->execute(
                     $node->name(),
-                    array_map(function (Node $node) use ($evaluator) {
-                        return $this->resolveScalarValues($evaluator->evaluateType($node, PhpValue::class));
+                    array_map(function (Node $node) use ($evaluator, $params) {
+                        return $this->resolveScalarValues(
+                            $evaluator->evaluateType($node, PhpValue::class, $params)
+                        );
                     }, $this->args($node->args()))
                 )
             );

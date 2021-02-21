@@ -19,15 +19,18 @@ class TolerableEvaluator extends AbstractEvaluator
         parent::__construct(TolerableNode::class);
     }
 
-    public function evaluate(Evaluator $evaluator, Node $node): Node
+    /**
+        * @param parameters $params
+     */
+    public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
     {
         $toleranceNode = $node->tolerance();
-        $context = $evaluator->evaluateType($node->value(), NumberNode::class);
+        $context = $evaluator->evaluateType($node->value(), NumberNode::class, $params);
 
         if ($toleranceNode instanceof PercentageNode) {
             $tolerance = new FloatNode($context->value() / 100 * $context->value());
         } else {
-            $tolerance = $evaluator->evaluate($toleranceNode);
+            $tolerance = $evaluator->evaluate($toleranceNode, $params);
         }
 
         return new TolerableNode(

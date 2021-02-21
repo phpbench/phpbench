@@ -19,10 +19,13 @@ class ArithmeticOperatorEvaluator extends AbstractEvaluator
         parent::__construct(ArithmeticOperatorNode::class);
     }
 
-    public function evaluate(Evaluator $evaluator, Node $node): Node
+    /**
+        * @param parameters $params
+     */
+    public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
     {
-        $leftValue = $evaluator->evaluateType($node->left(), NumberNode::class);
-        $rightValue = $evaluator->evaluateType($node->right(), NumberNode::class);
+        $leftValue = $evaluator->evaluateType($node->left(), NumberNode::class, $params);
+        $rightValue = $evaluator->evaluateType($node->right(), NumberNode::class, $params);
 
         $value = $this->evaluateNode($node, $leftValue->value(), $rightValue->value());
 

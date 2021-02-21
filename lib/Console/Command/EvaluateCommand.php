@@ -75,7 +75,8 @@ class EvaluateCommand extends Command
         assert(is_string($params) || is_null($params));
 
         $node = $this->parser->parse($this->lexer->lex($expr));
-        $evaluated = $this->evaluator->evaluate($node);
+        $params = $this->resolveParams($params);
+        $evaluated = $this->evaluator->evaluate($node, $params);
         $output->writeln(
             sprintf(
                 "%s <comment>=\n</>%s <comment>=</>\n%s",

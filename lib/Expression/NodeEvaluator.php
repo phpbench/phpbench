@@ -13,6 +13,7 @@ interface NodeEvaluator
 
     /**
      * @param T $node
+     * @param parameters $parameters
      */
-    public function evaluate(Evaluator $evaluator, Node $node): Node;
+    public function evaluate(Evaluator $evaluator, Node $node, array $params): Node;
 }
