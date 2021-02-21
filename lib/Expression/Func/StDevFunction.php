@@ -8,11 +8,9 @@ final class StDevFunction
 {
     /**
      * @param (int|float)[] $values
-     * @return float
      */
     public function __invoke(array $values, bool $sample = false): float
     {
         return Statistics::stdev($values, $sample);
     }
 }
-

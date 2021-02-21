@@ -2,8 +2,6 @@
 
 namespace PhpBench\Tests\Unit\Expression\Func;
 
-use PhpBench\Expression\Func\HistogramFunction;
-use PhpBench\Expression\Func\MaxFunction;
 use PhpBench\Expression\Func\PercentDifferenceFunction;
 use PhpBench\Tests\Unit\Expression\FunctionTestCase;
 
