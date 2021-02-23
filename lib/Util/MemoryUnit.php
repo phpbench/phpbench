@@ -29,6 +29,17 @@ class MemoryUnit
         'gb' => self::GIGABYTES
     ];
 
+    /**
+     * @return string[]
+     */
+    public static function supportedUnitNames(): array
+    {
+        return array_merge(
+            array_keys(self::$aliases),
+            array_keys(self::$multipliers)
+        );
+    }
+
     public static function isMemoryUnit(string $unit): bool
     {
         return isset(self::$multipliers[$unit]) || isset(self::$aliases[$unit]);

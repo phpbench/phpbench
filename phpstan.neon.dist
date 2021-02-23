@@ -3,5 +3,9 @@ parameters:
     paths:
         - lib
         - examples/Extension
+    typeAliases:
+        parameters: 'array<string,mixed>'
+
 includes:
+    - phpstan-baseline.neon
     - vendor/jangregor/phpstan-prophecy/extension.neon

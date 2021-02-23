@@ -17,10 +17,12 @@ use PhpBench\Console\Application;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\Exception\ConfigurationPreProcessingError;
 use PhpBench\Extension\CoreExtension;
+use PhpBench\Extension\ExpressionExtension;
 use PhpBench\Extensions\XDebug\XDebugExtension;
 use PhpBench\Json\JsonDecoder;
 use Seld\JsonLint\JsonParser;
 use Seld\JsonLint\ParsingException;
+use function set_error_handler;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -59,6 +61,7 @@ class PhpBench
 
         $extensions = $config['extensions'];
         $extensions[] = CoreExtension::class;
+        $extensions[] = ExpressionExtension::class;
 
         if (extension_loaded('xdebug')) {
             $extensions[] = XDebugExtension::class;
@@ -240,11 +243,28 @@ class PhpBench
 
     private static function registerErrorHandler(): void
     {
-        set_exception_handler(function (Throwable $throwable): void {
-            $input = new ArgvInput();
-            $output = (new ConsoleOutput())->getErrorOutput();
+        $input = new ArgvInput();
+        $output = (new ConsoleOutput())->getErrorOutput();
 
-            $format = new SymfonyStyle($input, $output);
+        $format = new SymfonyStyle($input, $output);
+        set_error_handler(function (
+            int $code,
+            string $message,
+            string $file,
+            int $line,
+            array $context
+        ) use ($format): ?bool {
+            $format->error(sprintf(
+                '%s in %s:%s',
+                $message,
+                $file,
+                $line
+            ));
+
+            exit(255);
+        });
+
+        set_exception_handler(function (Throwable $throwable) use ($format, $input): void {
             $format->error($throwable->getMessage());
 
             if ($input->hasParameterOption(['-v', '-vv', '-vvv'])) {
