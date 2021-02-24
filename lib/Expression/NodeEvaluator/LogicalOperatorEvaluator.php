@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Expression\Evaluator;
+namespace PhpBench\Expression\NodeEvaluator;
 
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
 use PhpBench\Expression\Ast\BooleanNode;
@@ -8,6 +8,7 @@ use PhpBench\Expression\Ast\LogicalOperatorNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\PhpValue;
 use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\NodeEvaluator\AbstractEvaluator;
 
 /**
  * @extends AbstractEvaluator<LogicalOperatorNode>

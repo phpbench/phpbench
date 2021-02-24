@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Expression\Evaluator;
+namespace PhpBench\Expression\NodeEvaluator;
 
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\NodeEvaluator;

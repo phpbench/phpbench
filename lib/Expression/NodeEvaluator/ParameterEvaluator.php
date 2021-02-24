@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Expression\Evaluator;
+namespace PhpBench\Expression\NodeEvaluator;
 
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\Node;
@@ -8,6 +8,7 @@ use PhpBench\Expression\Ast\NumberNodeFactory;
 use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
+use PhpBench\Expression\NodeEvaluator\AbstractEvaluator;
 
 /**
  * @extends AbstractEvaluator<ParameterNode>

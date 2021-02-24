@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Expression\Evaluator;
+namespace PhpBench\Expression\NodeEvaluator;
 
 use PhpBench\Expression\Ast\DisplayAsNode;
 use PhpBench\Expression\Ast\FloatNode;
@@ -10,6 +10,7 @@ use PhpBench\Expression\Ast\NumberValue;
 use PhpBench\Expression\Ast\PercentageNode;
 use PhpBench\Expression\Ast\TolerableNode;
 use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\NodeEvaluator\AbstractEvaluator;
 
 /**
  * @extends AbstractEvaluator<TolerableNode>

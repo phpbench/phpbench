@@ -1,19 +1,20 @@
 <?php
 
-namespace PhpBench\Expression\Evaluator;
+namespace PhpBench\Expression\NodeEvaluator;
 
-use PhpBench\Expression\Ast\IntegerNode;
+use PhpBench\Expression\Ast\BooleanNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\NodeEvaluator\AbstractEvaluator;
 
 /**
- * @extends AbstractEvaluator<IntegerNode>
+ * @extends AbstractEvaluator<BooleanNode>
  */
-class IntegerEvaluator extends AbstractEvaluator
+class BooleanEvaluator extends AbstractEvaluator
 {
     final public function __construct()
     {
-        parent::__construct(IntegerNode::class);
+        parent::__construct(BooleanNode::class);
     }
 
     /**

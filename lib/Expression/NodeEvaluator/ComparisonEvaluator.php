@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Expression\Evaluator;
+namespace PhpBench\Expression\NodeEvaluator;
 
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
 use PhpBench\Expression\Ast\BooleanNode;
@@ -12,6 +12,7 @@ use PhpBench\Expression\Ast\TolerableNode;
 use PhpBench\Expression\Ast\ToleratedTrue;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Math\FloatNumber;
+use PhpBench\Expression\NodeEvaluator\AbstractEvaluator;
 
 /**
  * @extends AbstractEvaluator<ComparisonNode>

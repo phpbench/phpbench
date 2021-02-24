@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Expression\Evaluator;
+namespace PhpBench\Expression\NodeEvaluator;
 
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
 use PhpBench\Expression\Ast\ArithmeticOperatorNode;
@@ -8,6 +8,7 @@ use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\NumberNode;
 use PhpBench\Expression\Ast\NumberNodeFactory;
 use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\NodeEvaluator\AbstractEvaluator;
 
 /**
  * @extends AbstractEvaluator<ArithmeticOperatorNode>

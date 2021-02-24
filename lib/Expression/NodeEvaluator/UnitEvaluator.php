@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Expression\Evaluator;
+namespace PhpBench\Expression\NodeEvaluator;
 
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
 use PhpBench\Expression\Ast\Node;
@@ -10,6 +10,7 @@ use PhpBench\Expression\Ast\UnitNode;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Util\MemoryUnit;
 use PhpBench\Util\TimeUnit;
+use PhpBench\Expression\NodeEvaluator\AbstractEvaluator;
 
 /**
  * @extends AbstractEvaluator<UnitNode>
