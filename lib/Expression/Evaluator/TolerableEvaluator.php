@@ -2,6 +2,7 @@
 
 namespace PhpBench\Expression\Evaluator;
 
+use PhpBench\Expression\Ast\DisplayAsNode;
 use PhpBench\Expression\Ast\FloatNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\NumberNode;
@@ -35,6 +36,10 @@ class TolerableEvaluator extends AbstractEvaluator
             );
         } else {
             $tolerance = $evaluator->evaluate($toleranceNode, $params);
+        }
+
+        if ($context instanceof DisplayAsNode) {
+            $tolerance = new DisplayAsNode($tolerance, $context->as());
         }
 
         return new TolerableNode(
