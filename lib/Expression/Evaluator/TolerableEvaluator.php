@@ -28,7 +28,10 @@ class TolerableEvaluator extends AbstractEvaluator
         $context = $evaluator->evaluateType($node->value(), NumberNode::class, $params);
 
         if ($toleranceNode instanceof PercentageNode) {
-            $tolerance = new FloatNode($context->value() / 100 * $context->value());
+            $amount = $evaluator->evaluateType($toleranceNode->value(), NumberNode::class, $params);
+            $tolerance = new FloatNode(
+                ($context->value() / 100) * $amount->value()
+            );
         } else {
             $tolerance = $evaluator->evaluate($toleranceNode, $params);
         }
