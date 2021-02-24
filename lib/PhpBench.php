@@ -265,6 +265,7 @@ class PhpBench
         });
 
         set_exception_handler(function (Throwable $throwable) use ($format, $input): void {
+            $format->text($throwable->getFile());
             $format->error($throwable->getMessage());
 
             if ($input->hasParameterOption(['-v', '-vv', '-vvv'])) {
