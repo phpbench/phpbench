@@ -9,6 +9,7 @@ use PhpBench\Expression\Ast\ArithmeticOperatorNode;
 use PhpBench\Expression\Ast\DisplayAsNode;
 use PhpBench\Expression\Ast\FunctionNode;
 use PhpBench\Expression\Ast\ParenthesisNode;
+use PhpBench\Expression\Ast\TolerableNode;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Evaluator\ArgumentListEvaluator;
 use PhpBench\Expression\Evaluator\ArithmeticOperatorEvaluator;
@@ -171,10 +172,11 @@ class ExpressionExtension implements ExtensionInterface
                 $container->get(NodePrinters::class),
                 $container->get(Evaluator::class),
                 [
+                    TolerableNode::class,
                     FunctionNode::class,
                     ArithmeticOperatorNode::class,
                     ParenthesisNode::class,
-                    DisplayAsNode::class
+                    DisplayAsNode::class,
                 ]
             );
         });

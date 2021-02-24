@@ -50,11 +50,17 @@ class AssertionProcessor
      */
     private $provider;
 
+    /**
+     * @var Printer
+     */
+    private $evaluatingPrinter;
+
     public function __construct(
         Lexer $lexer,
         Parser $parser,
         Evaluator $evaluator,
         Printer $printer,
+        Printer $evaluatingPrinter,
         ParameterProvider $provider
     )
     {
@@ -63,6 +69,7 @@ class AssertionProcessor
         $this->evaluator = $evaluator;
         $this->printer = $printer;
         $this->provider = $provider;
+        $this->evaluatingPrinter = $evaluatingPrinter;
     }
 
     public function assert(Variant $variant, string $assertion): AssertionResult
@@ -71,12 +78,12 @@ class AssertionProcessor
         $node = $this->parser->parse($tokens);
         $params = $this->provider->provideFor($variant);
         $evaluated = $this->evaluator->evaluate($node, $params);
-        $expression = $this->printer->print($node, $params);
-        $result = $this->printer->print($evaluated, $params);
+
         $message = sprintf(
-            '%s = %s',
-            $expression,
-            $result
+            '%s <comment>=</> %s <comment>=</> %s',
+            $this->printer->print($node, $params),
+            $this->evaluatingPrinter->print($node, $params),
+            $this->printer->print($evaluated, $params)
         );
 
         if ($evaluated instanceof BooleanNode) {
@@ -91,10 +98,9 @@ class AssertionProcessor
         }
 
         throw new AssertionError(sprintf(
-            'Assertion expression must evaluate to a boolean-like value, got "%s"',
-            get_class($evaluated)
+            'Assertion expression must evaluate to a boolean-like value, got "%s" as "%s"',
+            get_class($evaluated),
+            $this->printer->print($evaluated, $params)
         ));
-
-        return $result;
     }
 }

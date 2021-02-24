@@ -50,6 +50,7 @@ use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Lexer;
 use PhpBench\Expression\Parser;
 use PhpBench\Expression\Printer;
+use PhpBench\Expression\Printer\EvaluatingPrinter;
 use PhpBench\Formatter\Format\BalanceFormat;
 use PhpBench\Formatter\Format\InvertOnThroughputFormat;
 use PhpBench\Formatter\Format\NumberFormat;
@@ -620,6 +621,7 @@ class CoreExtension implements ExtensionInterface
                 $container->get(Parser::class),
                 $container->get(Evaluator::class),
                 $container->get(Printer::class),
+                $container->get(EvaluatingPrinter::class),
                 new ParameterProvider()
             );
         });
