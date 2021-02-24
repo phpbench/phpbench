@@ -58,6 +58,8 @@ class ComparisonParseletTest extends ParseletTestCase
         yield ['1 >= 2', [], 'false'];
         
         yield ['10 < 10 + 10 * 30 ms', [], 'true'];
+
+        yield ['10 as ms <= 10 as ms', [], 'true'];
     }
 
     /**
@@ -65,6 +67,12 @@ class ComparisonParseletTest extends ParseletTestCase
      */
     public function providePrint(): Generator
     {
-        yield from $this->providePrintFromEvaluate();
+        yield ['1 < 2', []];
+        yield ['1 <= 2', []];
+        yield ['2 = 2', []];
+        yield ['2 > 1', []];
+        yield ['2 > 2', []];
+        yield ['3 >= 2', []];
+        yield ['10 as ms <= 10 as ms', [], '0.01 ms <= 0.01 ms'];
     }
 }

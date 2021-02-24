@@ -5,6 +5,7 @@ namespace PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Ast\FloatNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\NumberNode;
+use PhpBench\Expression\Ast\NumberValue;
 use PhpBench\Expression\Ast\PercentageNode;
 use PhpBench\Expression\Ast\TolerableNode;
 use PhpBench\Expression\Evaluator;
@@ -25,10 +26,10 @@ class TolerableEvaluator extends AbstractEvaluator
     public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
     {
         $toleranceNode = $node->tolerance();
-        $context = $evaluator->evaluateType($node->value(), NumberNode::class, $params);
+        $context = $evaluator->evaluateType($node->value(), NumberValue::class, $params);
 
         if ($toleranceNode instanceof PercentageNode) {
-            $amount = $evaluator->evaluateType($toleranceNode->value(), NumberNode::class, $params);
+            $amount = $evaluator->evaluateType($toleranceNode->value(), NumberValue::class, $params);
             $tolerance = new FloatNode(
                 ($context->value() / 100) * $amount->value()
             );

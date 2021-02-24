@@ -35,8 +35,8 @@ class ComparisonEvaluator extends AbstractEvaluator
         $rightValue = $evaluator->evaluate($node->right(), $params);
 
         if ($rightValue instanceof TolerableNode) {
-            $toleranceValue = $evaluator->evaluateType($rightValue->tolerance(), NumberNode::class, $params);
-            $rightValue = $evaluator->evaluateType($rightValue->value(), NumberNode::class, $params);
+            $toleranceValue = $evaluator->evaluateType($rightValue->tolerance(), NumberValue::class, $params);
+            $rightValue = $evaluator->evaluateType($rightValue->value(), NumberValue::class, $params);
 
             if (FloatNumber::isWithin(
                 $leftValue->value(),
@@ -47,7 +47,7 @@ class ComparisonEvaluator extends AbstractEvaluator
             }
         }
 
-        $rightValue = $evaluator->evaluateType($rightValue, NumberNode::class, $params);
+        $rightValue = $evaluator->evaluateType($rightValue, NumberValue::class, $params);
 
         return new BooleanNode($this->evaluateNode($node, $leftValue->value(), $rightValue->value()));
     }
