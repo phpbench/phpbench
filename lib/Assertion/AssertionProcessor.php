@@ -12,6 +12,13 @@
 
 namespace PhpBench\Assertion;
 
+use PhpBench\Assertion\Exception\AssertionError;
+use PhpBench\Expression\Ast\BooleanNode;
+use PhpBench\Expression\Ast\ToleratedTrue;
+use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\Lexer;
+use PhpBench\Expression\Parser;
+use PhpBench\Expression\Printer;
 use PhpBench\Math\Statistics;
 use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Variant;
@@ -19,38 +26,75 @@ use PhpBench\Model\Variant;
 class AssertionProcessor
 {
     /**
-     * @var ExpressionEvaluatorFactory
+     * @var Lexer
+     */
+    private $lexer;
+
+    /**
+     * @var Parser
+     */
+    private $parser;
+
+    /**
+     * @var Evaluator
      */
     private $evaluator;
 
     /**
-     * @var ExpressionParser
+     * @var Printer
      */
-    private $parser;
+    private $printer;
 
-    public function __construct(ExpressionParser $parser, ExpressionEvaluatorFactory $evaluator)
+    /**
+     * @var ParameterProvider
+     */
+    private $provider;
+
+    public function __construct(
+        Lexer $lexer,
+        Parser $parser,
+        Evaluator $evaluator,
+        Printer $printer,
+        ParameterProvider $provider
+    )
     {
-        $this->evaluator = $evaluator;
+        $this->lexer = $lexer;
         $this->parser = $parser;
+        $this->evaluator = $evaluator;
+        $this->printer = $printer;
+        $this->provider = $provider;
     }
 
     public function assert(Variant $variant, string $assertion): AssertionResult
     {
-        $variantData = $this->buildVariantData($variant);
-        $result = $this->evaluator->createWithArgs([
-            'variant' => $variantData,
-            'baseline' => $variant->getBaseline() ? $this->buildVariantData($variant->getBaseline()) : $variantData,
-        ])->evaluate($this->parser->parse($assertion));
+        $tokens = $this->lexer->lex($assertion);
+        $node = $this->parser->parse($tokens);
+        $params = $this->provider->provideFor($variant);
+        $evaluated = $this->evaluator->evaluate($node, $params);
+        $expression = $this->printer->print($node, $params);
+        $result = $this->printer->print($evaluated, $params);
+        $message = sprintf(
+            '%s = %s',
+            $expression,
+            $result
+        );
+
+        if ($evaluated instanceof BooleanNode) {
+            if ($evaluated->value()) {
+                return AssertionResult::ok();
+            }
+            return AssertionResult::fail($message);
+        }
+
+        if ($evaluated instanceof ToleratedTrue) {
+            return AssertionResult::tolerated($message);
+        }
+
+        throw new AssertionError(sprintf(
+            'Assertion expression must evaluate to a boolean-like value, got "%s"',
+            get_class($evaluated)
+        ));
 
         return $result;
-    }
-
-    private function buildVariantData(Variant $variant): array
-    {
-        return array_merge($variant->getStats()->getStats(), [
-            'mem_real' => Statistics::mean($variant->getMetricValues(MemoryResult::class, 'real')),
-            'mem_final' => Statistics::mean($variant->getMetricValues(MemoryResult::class, 'final')),
-            'mem_peak' => Statistics::mean($variant->getMetricValues(MemoryResult::class, 'peak')),
-        ]);
     }
 }

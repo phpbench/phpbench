@@ -16,6 +16,7 @@ use Humbug\SelfUpdate\Updater;
 use PhpBench\Assertion\AssertionProcessor;
 use PhpBench\Assertion\ExpressionEvaluatorFactory;
 use PhpBench\Assertion\ExpressionParser;
+use PhpBench\Assertion\ParameterProvider;
 use PhpBench\Benchmark\BaselineManager;
 use PhpBench\Benchmark\BenchmarkFinder;
 use PhpBench\Benchmark\Metadata\AnnotationReader;
@@ -45,6 +46,10 @@ use PhpBench\Executor\CompositeExecutor;
 use PhpBench\Executor\Method\ErrorHandlingExecutorDecorator;
 use PhpBench\Executor\Method\LocalMethodExecutor;
 use PhpBench\Executor\Method\RemoteMethodExecutor;
+use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\Lexer;
+use PhpBench\Expression\Parser;
+use PhpBench\Expression\Printer;
 use PhpBench\Formatter\Format\BalanceFormat;
 use PhpBench\Formatter\Format\InvertOnThroughputFormat;
 use PhpBench\Formatter\Format\NumberFormat;
@@ -609,10 +614,13 @@ class CoreExtension implements ExtensionInterface
 
     private function registerAsserters(Container $container): void
     {
-        $container->register(AssertionProcessor::class, function () {
+        $container->register(AssertionProcessor::class, function (Container $container) {
             return new AssertionProcessor(
-                new ExpressionParser(),
-                new ExpressionEvaluatorFactory()
+                $container->get(Lexer::class),
+                $container->get(Parser::class),
+                $container->get(Evaluator::class),
+                $container->get(Printer::class),
+                new ParameterProvider()
             );
         });
     }
