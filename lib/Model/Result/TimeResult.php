@@ -26,21 +26,22 @@ class TimeResult implements ResultInterface
     private $netTime;
 
     /**
-     * @param int $time Time taken to execute the iteration in microseconds.
+     * @var int
      */
-    public function __construct(int $time)
-    {
-        Assertion::greaterOrEqualThan($time, 0, 'Time cannot be less than 0, got %s');
+    private $revs;
 
-        $this->netTime = $time;
+
+    public function __construct(int $netTime, int $revs)
+    {
+        Assertion::greaterOrEqualThan($netTime, 0, 'Time cannot be less than 0, got %s');
+
+        $this->netTime = $netTime;
+        $this->revs = $revs;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function fromArray(array $values): ResultInterface
     {
-        return new self((int) $values['net']);
+        return new self((int) $values['net'], (int) $values['revs'] ?? 1);
     }
 
     /**
@@ -73,6 +74,8 @@ class TimeResult implements ResultInterface
     {
         return [
             'net' => $this->netTime,
+            'revs' => $this->revs,
+            'avg' => $this->netTime / $this->revs,
         ];
     }
 
