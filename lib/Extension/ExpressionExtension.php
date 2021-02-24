@@ -11,6 +11,7 @@ use PhpBench\Expression\Ast\FunctionNode;
 use PhpBench\Expression\Ast\ParenthesisNode;
 use PhpBench\Expression\Ast\TolerableNode;
 use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\Evaluator\MainEvaluator;
 use PhpBench\Expression\NodeEvaluator\ArgumentListEvaluator;
 use PhpBench\Expression\NodeEvaluator\ArithmeticOperatorEvaluator;
 use PhpBench\Expression\NodeEvaluator\BooleanEvaluator;
@@ -127,7 +128,7 @@ class ExpressionExtension implements ExtensionInterface
 
         $container->register(Evaluator::class, function (Container $container) {
             /** @phpstan-ignore-next-line */
-            return new Evaluator([
+            return new MainEvaluator([
                 new ArgumentListEvaluator(),
                 new IntegerEvaluator(),
                 new ArithmeticOperatorEvaluator(),
