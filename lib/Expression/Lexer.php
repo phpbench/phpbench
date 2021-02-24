@@ -68,15 +68,12 @@ final class Lexer
 
     /**
      * @param string[] $timeUnits
-     * @param string[] $functionNames
      * @param string[] $memoryUnits
      */
     public function __construct(
-        array $functionNames = [],
         array $timeUnits = [],
         array $memoryUnits = []
     ) {
-        $this->functionNames = $functionNames;
         $this->timeUnits = $timeUnits;
         $this->memoryUnits = $memoryUnits;
         $this->pattern = sprintf(
@@ -131,10 +128,7 @@ final class Lexer
 
                 return Token::T_INTEGER;
 
-            case (in_array($value, $this->functionNames)):
-                return Token::T_FUNCTION;
-
-            case (in_array($value, $this->timeUnits)):
+            case (in_array($value, $this->timeUnits, true)):
                 return Token::T_UNIT;
 
             case (in_array($value, $this->memoryUnits)):

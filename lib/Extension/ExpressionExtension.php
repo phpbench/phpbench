@@ -193,7 +193,6 @@ class ExpressionExtension implements ExtensionInterface
 
         $container->register(Lexer::class, function (Container $container) {
             return new Lexer(
-                $container->get(ExpressionFunctions::class)->names(),
                 TimeUnit::supportedUnitNames(),
                 MemoryUnit::supportedUnitNames()
             );
