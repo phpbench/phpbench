@@ -56,8 +56,9 @@ final class Tokens implements IteratorAggregate, Countable
 
         if (null !== $type && $token->type !== $type) {
             throw SyntaxError::forToken($this, $previous, sprintf(
-                'Expected type "%s" after',
-                $type
+                'Expected type "%s" after, got "%s"',
+                $type,
+                $token->type
             ));
         }
 
