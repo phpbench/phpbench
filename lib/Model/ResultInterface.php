@@ -22,7 +22,7 @@ interface ResultInterface
 {
     /**
      * Return a new instance based using the given array values.
-     *
+     * @param array<string,mixed> $values
      */
     public static function fromArray(array $values): ResultInterface;
 
