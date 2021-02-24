@@ -156,7 +156,7 @@ abstract class PhpBenchLogger extends NullLogger
             $this->output->write(PHP_EOL);
 
             foreach ($variantFailure as $index => $failure) {
-                $this->output->writeln(sprintf('    %s) Failed to assert that %s', $index + 1, $failure->getMessage()));
+                $this->output->writeln(sprintf('    %s) %s', $index + 1, $failure->getMessage()));
             }
             $this->output->write(PHP_EOL);
         }
