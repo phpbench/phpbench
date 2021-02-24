@@ -4,6 +4,8 @@ namespace PhpBench\Expression;
 
 use Error;
 use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
+use PhpBench\Expression\Exception\EvaluationError;
+use RuntimeException;
 
 final class ExpressionFunctions
 {
@@ -43,7 +45,7 @@ final class ExpressionFunctions
     public function execute(string $functionName, array $args)
     {
         if (!isset($this->functionMap[$functionName])) {
-            throw new ExpressionEvaluatorError(sprintf(
+            throw new RuntimeException(sprintf(
                 'Unknown function "%s"',
                 $functionName
             ));
@@ -54,7 +56,7 @@ final class ExpressionFunctions
         try {
             return $function(...$args);
         } catch (Error $err) {
-            throw new ExpressionEvaluatorError($err->getMessage());
+            throw new RuntimeException($err->getMessage());
         }
     }
 }

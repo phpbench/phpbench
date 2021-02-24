@@ -24,7 +24,7 @@ class ParameterEvaluator extends AbstractEvaluator
      */
     public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
     {
-        $value = self::resolvePropertyAccess($node->segments(), $params);
+        $value = self::resolvePropertyAccess($node, $node->segments(), $params);
 
         if (is_numeric($value)) {
             return NumberNodeFactory::fromNumber($value);
@@ -34,7 +34,7 @@ class ParameterEvaluator extends AbstractEvaluator
             return ListNode::fromValues($value);
         }
 
-        throw new EvaluationError(sprintf(
+        throw new EvaluationError($node, sprintf(
             'Do not know how to interpret value "%s"', gettype($value)
         ));
     }
@@ -45,16 +45,16 @@ class ParameterEvaluator extends AbstractEvaluator
      * @param array<string,mixed>|object|scalar $container
      * @param array<string> $segments
      */
-    public static function resolvePropertyAccess(array $segments, $container)
+    private static function resolvePropertyAccess(Node $node, array $segments, $container)
     {
         $segment = array_shift($segments);
-        $value = self::valueFromContainer($container, $segment);
+        $value = self::valueFromContainer($node, $container, $segment);
 
         if (count($segments) === 0) {
             return $value;
         }
 
-        return self::resolvePropertyAccess($segments, $value);
+        return self::resolvePropertyAccess($node, $segments, $value);
     }
 
     /**
@@ -62,11 +62,11 @@ class ParameterEvaluator extends AbstractEvaluator
      *
      * @param array<string,mixed>|object|scalar $container
      */
-    private static function valueFromContainer($container, string $segment)
+    private static function valueFromContainer(Node $node, $container, string $segment)
     {
         if (is_array($container)) {
             if (!array_key_exists($segment, $container)) {
-                throw new EvaluationError(sprintf(
+                throw new EvaluationError($node, sprintf(
                     'Array does not have key "%s", it has keys: "%s"',
                     $segment,
                     implode('", "', array_keys($container))
@@ -80,7 +80,7 @@ class ParameterEvaluator extends AbstractEvaluator
             return $container->$segment();
         }
 
-        throw new EvaluationError(sprintf(
+        throw new EvaluationError($node, sprintf(
             'Could not access "%s" on "%s"',
             $segment,
             is_object($container) ? get_class($container) : gettype($container)

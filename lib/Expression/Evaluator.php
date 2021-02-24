@@ -56,7 +56,7 @@ final class Evaluator
             return $evaluated;
         }
 
-        throw new EvaluationError(sprintf(
+        throw new EvaluationError($node, sprintf(
             'Could not find evaluator for node of type "%s"', get_class($node)
         ));
     }
