@@ -63,4 +63,9 @@ class AssertionResult
     {
         return $this->message ?? '<no message>';
     }
+
+    public function type(): string
+    {
+        return $this->type;
+    }
 }
