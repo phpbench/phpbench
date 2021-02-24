@@ -4,24 +4,40 @@ namespace PhpBench\Tests\Benchmark;
 
 use Generator;
 use PhpBench\Assertion\ExpressionParser;
+use PhpBench\DependencyInjection\Container;
+use PhpBench\Expression\Lexer;
+use PhpBench\Expression\Parser;
+use PhpBench\Extension\CoreExtension;
+use PhpBench\Extension\ExpressionExtension;
 
 /**
  * @Revs(10)
  * @Iterations(3)
  * @BeforeMethods({"setUp"})
  * @OutputTimeUnit("milliseconds")
- * @Assert("variant.mode = baseline.mode +/- 5%")
+ * @Assert("mode(variant.time.avg) < mode(baseline.time.avg) +/- 5%")
  */
 class ExpressionParserBench
 {
     /**
-     * @var ExpressionParser
+     * @var Parser
      */
     private $parser;
 
+    /**
+     * @var Lexer
+     */
+    private $lexer;
+
+
     public function setUp(): void
     {
-        $this->parser = new ExpressionParser();
+        $container = new Container([
+            ExpressionExtension::class
+        ]);
+        $container->init();
+        $this->parser = $container->get(Parser::class);
+        $this->lexer = $container->get(Lexer::class);
     }
 
     /**
@@ -31,7 +47,7 @@ class ExpressionParserBench
      */
     public function benchEvaluate(array $params): void
     {
-        $this->parser->parse($params['expr']);
+        $this->parser->parse($this->lexer->lex($params['expr']));
     }
 
     /**
