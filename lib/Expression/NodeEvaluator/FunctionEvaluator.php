@@ -11,7 +11,6 @@ use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Expression\ExpressionFunctions;
 use Throwable;
-use PhpBench\Expression\NodeEvaluator\AbstractEvaluator;
 
 /**
  * @extends AbstractEvaluator<FunctionNode>
@@ -50,7 +49,7 @@ class FunctionEvaluator extends AbstractEvaluator
                 'Call to function "%s" failed with error: %s',
                 $node->name(),
                 $throwable->getMessage()
-            ), 0, $throwable);
+            ));
         }
     }
 

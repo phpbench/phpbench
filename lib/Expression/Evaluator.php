@@ -3,8 +3,6 @@
 namespace PhpBench\Expression;
 
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Exception\EvaluationError;
-use PhpBench\Expression\Exception\ExpressionError;
 
 interface Evaluator
 {

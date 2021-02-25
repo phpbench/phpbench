@@ -68,11 +68,17 @@ class ComparisonParseletTest extends ParseletTestCase
     public function providePrint(): Generator
     {
         yield ['1 < 2', []];
+
         yield ['1 <= 2', []];
+
         yield ['2 = 2', []];
+
         yield ['2 > 1', []];
+
         yield ['2 > 2', []];
+
         yield ['3 >= 2', []];
+
         yield ['10 as ms <= 10 as ms', [], '0.01 ms <= 0.01 ms'];
     }
 }

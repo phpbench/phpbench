@@ -8,7 +8,6 @@ use PhpBench\Expression\Ast\NumberNodeFactory;
 use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
-use PhpBench\Expression\NodeEvaluator\AbstractEvaluator;
 
 /**
  * @extends AbstractEvaluator<ParameterNode>

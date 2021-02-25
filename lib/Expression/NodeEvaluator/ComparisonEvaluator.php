@@ -2,17 +2,15 @@
 
 namespace PhpBench\Expression\NodeEvaluator;
 
-use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
 use PhpBench\Expression\Ast\BooleanNode;
 use PhpBench\Expression\Ast\ComparisonNode;
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Ast\NumberNode;
 use PhpBench\Expression\Ast\NumberValue;
 use PhpBench\Expression\Ast\TolerableNode;
 use PhpBench\Expression\Ast\ToleratedTrue;
 use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Math\FloatNumber;
-use PhpBench\Expression\NodeEvaluator\AbstractEvaluator;
 
 /**
  * @extends AbstractEvaluator<ComparisonNode>
@@ -72,7 +70,7 @@ class ComparisonEvaluator extends AbstractEvaluator
                 return $leftValue >= $rightValue;
         }
         
-        throw new ExpressionEvaluatorError(sprintf(
+        throw new EvaluationError($node, sprintf(
             'Unknown comparison operator "%s"',
             $node->operator()
         ));

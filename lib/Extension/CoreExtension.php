@@ -14,8 +14,6 @@ namespace PhpBench\Extension;
 
 use Humbug\SelfUpdate\Updater;
 use PhpBench\Assertion\AssertionProcessor;
-use PhpBench\Assertion\ExpressionEvaluatorFactory;
-use PhpBench\Assertion\ExpressionParser;
 use PhpBench\Assertion\ParameterProvider;
 use PhpBench\Benchmark\BaselineManager;
 use PhpBench\Benchmark\BenchmarkFinder;

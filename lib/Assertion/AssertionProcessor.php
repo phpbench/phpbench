@@ -19,8 +19,6 @@ use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Lexer;
 use PhpBench\Expression\Parser;
 use PhpBench\Expression\Printer;
-use PhpBench\Math\Statistics;
-use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Variant;
 
 class AssertionProcessor
@@ -62,8 +60,7 @@ class AssertionProcessor
         Printer $printer,
         Printer $evaluatingPrinter,
         ParameterProvider $provider
-    )
-    {
+    ) {
         $this->lexer = $lexer;
         $this->parser = $parser;
         $this->evaluator = $evaluator;
@@ -90,6 +87,7 @@ class AssertionProcessor
             if ($evaluated->value()) {
                 return AssertionResult::ok();
             }
+
             return AssertionResult::fail($message);
         }
 

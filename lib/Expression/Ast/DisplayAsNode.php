@@ -38,7 +38,7 @@ class DisplayAsNode implements NumberValue
     public function value()
     {
         if (!$this->value instanceof NumberNode) {
-            throw new EvaluationError(sprintf(
+            throw new EvaluationError($this, sprintf(
                 'Expected display at value to have been evaluated to a number node, but its a "%s"',
                 get_class($this->value)
             ));

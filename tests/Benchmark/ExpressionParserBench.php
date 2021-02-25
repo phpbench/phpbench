@@ -3,11 +3,9 @@
 namespace PhpBench\Tests\Benchmark;
 
 use Generator;
-use PhpBench\Assertion\ExpressionParser;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\Expression\Lexer;
 use PhpBench\Expression\Parser;
-use PhpBench\Extension\CoreExtension;
 use PhpBench\Extension\ExpressionExtension;
 
 /**

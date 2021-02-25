@@ -2,10 +2,10 @@
 
 namespace PhpBench\Expression\NodePrinter;
 
-use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
 use PhpBench\Expression\Ast\DisplayAsNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\PhpValue;
+use PhpBench\Expression\Exception\PrinterError;
 use PhpBench\Expression\NodePrinter;
 use PhpBench\Expression\Printer;
 use PhpBench\Util\MemoryUnit;
@@ -37,7 +37,7 @@ class DisplayAsPrinter implements NodePrinter
             return $this->memoryUnit($value->value(), $unit);
         }
 
-        throw new ExpressionEvaluatorError(sprintf(
+        throw new PrinterError(sprintf(
             'Do not know how to display unit "%s"', $unit
         ));
     }

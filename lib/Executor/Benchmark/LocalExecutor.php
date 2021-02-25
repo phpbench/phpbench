@@ -47,7 +47,7 @@ class LocalExecutor implements BenchmarkExecutorInterface
         }
 
         return ExecutionResults::fromResults(
-            new TimeResult((int)(($end - $start) * 1E6))
+            new TimeResult((int)(($end - $start) * 1E6), $context->getRevolutions())
         );
     }
 
