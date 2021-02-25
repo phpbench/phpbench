@@ -35,6 +35,7 @@ use PhpBench\Expression\NodeEvaluator\ParameterEvaluator;
 use PhpBench\Expression\NodeEvaluator\ParenthesisEvaluator;
 use PhpBench\Expression\NodeEvaluator\TolerableEvaluator;
 use PhpBench\Expression\NodeEvaluator\UnitEvaluator;
+use PhpBench\Expression\NodeEvaluators;
 use PhpBench\Expression\NodePrinter\ArgumentListPrinter;
 use PhpBench\Expression\NodePrinter\BinaryOperatorPrinter;
 use PhpBench\Expression\NodePrinter\BooleanPrinter;
@@ -126,9 +127,8 @@ class ExpressionExtension implements ExtensionInterface
             );
         });
 
-        $container->register(Evaluator::class, function (Container $container) {
-            /** @phpstan-ignore-next-line */
-            return new MainEvaluator([
+        $container->register(NodeEvaluators::class, function (Container $container) {
+            return new NodeEvaluators([
                 new ArgumentListEvaluator(),
                 new IntegerEvaluator(),
                 new ArithmeticOperatorEvaluator(),
@@ -144,6 +144,11 @@ class ExpressionExtension implements ExtensionInterface
                 new DisplayAsEvaluator(),
                 new ParameterEvaluator(),
             ]);
+        });
+
+        $container->register(Evaluator::class, function (Container $container) {
+            /** @phpstan-ignore-next-line */
+            return new MainEvaluator($container->get(NodeEvaluators::class));
         });
 
         $container->register(NodePrinters::class, function (Container $container) {

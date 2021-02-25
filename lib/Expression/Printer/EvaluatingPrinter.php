@@ -45,7 +45,7 @@ class EvaluatingPrinter implements Printer
         return $this->printers->print($this, $node, $params);
     }
 
-    private function shouldEvaluate(Node $node)
+    private function shouldEvaluate(Node $node): bool
     {
         foreach ($this->nodeClasses as $nodeClass) {
             if ($node instanceof $nodeClass) {

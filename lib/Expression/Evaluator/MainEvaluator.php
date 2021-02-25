@@ -7,18 +7,16 @@ use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Expression\Exception\ExpressionError;
 use PhpBench\Expression\NodeEvaluator;
+use PhpBench\Expression\NodeEvaluators;
 
 final class MainEvaluator implements Evaluator
 {
     /**
-     * @var NodeEvaluator<Node>[]
+     * @var NodeEvaluators
      */
     private $evaluators;
 
-    /**
-     * @param NodeEvaluator<Node>[] $evaluators
-     */
-    public function __construct(array $evaluators)
+    public function __construct(NodeEvaluators $evaluators)
     {
         $this->evaluators = $evaluators;
     }
@@ -49,17 +47,6 @@ final class MainEvaluator implements Evaluator
      */
     public function evaluate(Node $node, array $params): Node
     {
-        foreach ($this->evaluators as $evaluator) {
-            if (!$evaluator->evaluates($node)) {
-                continue;
-            }
-            $evaluated = $evaluator->evaluate($this, $node, $params);
-
-            return $evaluated;
-        }
-
-        throw new EvaluationError($node, sprintf(
-            'Could not find evaluator for node of type "%s"', get_class($node)
-        ));
+        return $this->evaluators->evaluate($this, $node, $params);
     }
 }
