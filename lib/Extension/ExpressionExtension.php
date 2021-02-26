@@ -161,6 +161,7 @@ class ExpressionExtension implements ExtensionInterface
         $container->register(SyntaxHighlighter::class, function (Container $container) {
             $operator = 'yellow';
             $value = 'cyan';
+
             return new SyntaxHighlighter($container->get(Lexer::class), [
                 Token::T_INTEGER => $value,
                 Token::T_FLOAT => $value,

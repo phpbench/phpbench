@@ -10,6 +10,7 @@ use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Lexer;
 use PhpBench\Expression\Parser;
 use PhpBench\Expression\Printer;
+use PhpBench\Expression\SyntaxHighlighter;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Variant;
 use PhpBench\Tests\IntegrationTestCase;
@@ -75,7 +76,8 @@ class AssertionProcessorTest extends IntegrationTestCase
             $this->container()->get(Evaluator::class),
             $this->container()->get(Printer::class),
             $this->container()->get(Printer::class),
-            new ParameterProvider()
+            new ParameterProvider(),
+            $this->container()->get(SyntaxHighlighter::class)
         );
     }
 }
