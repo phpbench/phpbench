@@ -31,15 +31,7 @@ final class MainEvaluator implements Evaluator
      */
     public function evaluateType(Node $node, string $expectedType, array $params): Node
     {
-        $evaluated = $this->evaluate($node, $params);
-
-        if ($evaluated instanceof $expectedType) {
-            return $evaluated;
-        }
-
-        throw new ExpressionError(sprintf(
-            'Expected "%s" but got "%s"', $expectedType, get_class($node)
-        ));
+        return $this->evaluators->evaluateType($this, $node, $expectedType, $params);
     }
 
     /**

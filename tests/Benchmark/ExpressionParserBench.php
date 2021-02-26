@@ -13,7 +13,7 @@ use PhpBench\Extension\ExpressionExtension;
  * @Iterations(3)
  * @BeforeMethods({"setUp"})
  * @OutputTimeUnit("milliseconds")
- * @Assert("mode(variant.time.avg) as ms < mode(baseline.time.avg) as ms +/- 1%")
+ * @Assert("mode(variant.time.avg) as ms < mode(baseline.time.avg) as ms +/- 5%")
  */
 class ExpressionParserBench
 {
