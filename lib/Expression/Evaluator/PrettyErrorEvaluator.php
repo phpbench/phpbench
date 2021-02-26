@@ -69,6 +69,6 @@ class PrettyErrorEvaluator implements Evaluator
             '',
             '    ' . $this->printer->print($rootNode, $params),
             '    ' . $this->underlineFactory->underline($error->node())->print($rootNode, $params),
-        ]));
+        ]), $error);
     }
 }

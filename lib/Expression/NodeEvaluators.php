@@ -58,7 +58,7 @@ final class NodeEvaluators
         }
 
         throw new EvaluationError($node, sprintf(
-            'Expected "%s" but got "%s"', $expectedType, get_class($node)
+            'Expected "%s" but got "%s"', $expectedType, get_class($evaluated)
         ));
     }
 }
