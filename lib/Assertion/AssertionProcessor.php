@@ -85,7 +85,7 @@ class AssertionProcessor
         $evaluated = $this->evaluator->evaluate($node, $params);
 
         $message = $this->highlighter->highlight(sprintf(
-            '%s = %s = %s',
+            "%s\n= %s\n= %s",
             $this->printer->print($node, $params),
             $this->evaluatingPrinter->print($node, $params),
             $this->printer->print($evaluated, $params)

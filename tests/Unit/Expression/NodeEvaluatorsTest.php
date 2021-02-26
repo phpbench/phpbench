@@ -2,12 +2,9 @@
 
 namespace PhpBench\Tests\Unit\Expression;
 
-use PHPUnit\Framework\TestCase;
-use PhpBench\Expression\Ast\NumberNode;
 use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\PercentageNode;
 use PhpBench\Expression\Evaluator;
-use PhpBench\Expression\Evaluator\MainEvaluator;
 use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Expression\NodeEvaluators;
 use PhpBench\Tests\IntegrationTestCase;
@@ -25,7 +22,7 @@ class NodeEvaluatorsTest extends IntegrationTestCase
     private $evaluator;
 
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->evaluators = $this->container()->get(NodeEvaluators::class);
         $this->evaluator = $this->container()->get(Evaluator::class);

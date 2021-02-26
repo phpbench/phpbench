@@ -2,6 +2,7 @@
 
 namespace PhpBench\Console\Command;
 
+use PhpBench\Expression\SyntaxHighlighter;
 use function json_last_error_msg;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Lexer;
@@ -44,12 +45,18 @@ class EvaluateCommand extends Command
      */
     private $evalPrinter;
 
+    /**
+     * @var SyntaxHighlighter
+     */
+    private $highlighter;
+
     public function __construct(
         Evaluator $evaluator,
         Lexer $lexer,
         Parser $parser,
         Printer $printer,
-        Printer $evalPrinter
+        Printer $evalPrinter,
+        SyntaxHighlighter $highlighter 
     ) {
         parent::__construct();
         $this->lexer = $lexer;
@@ -57,6 +64,7 @@ class EvaluateCommand extends Command
         $this->evaluator = $evaluator;
         $this->printer = $printer;
         $this->evalPrinter = $evalPrinter;
+        $this->highlighter = $highlighter;
     }
 
     public function configure(): void
@@ -78,12 +86,12 @@ class EvaluateCommand extends Command
         $params = $this->resolveParams($params);
         $evaluated = $this->evaluator->evaluate($node, $params);
         $output->writeln(
-            sprintf(
-                "%s <comment>=\n</>%s <comment>=</>\n%s",
+            $this->highlighter->highlight(sprintf(
+                "%s\n= %s\n= %s",
                 $this->printer->print($node, $params ?? []),
                 $this->evalPrinter->print($node, $params ?? []),
                 $this->printer->print($evaluated, $params ?: [])
-            )
+            ))
         );
         
 
