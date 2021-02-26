@@ -45,11 +45,7 @@ class FunctionEvaluator extends AbstractEvaluator
                 )
             );
         } catch (Throwable $throwable) {
-            throw new EvaluationError($node, sprintf(
-                'Call to function "%s" failed with error: %s',
-                $node->name(),
-                $throwable->getMessage()
-            ));
+            throw new EvaluationError($node, $throwable->getMessage(), $throwable);
         }
     }
 

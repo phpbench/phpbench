@@ -17,4 +17,9 @@ class EvaluationError extends RuntimeException
         $this->node = $node;
         parent::__construct($message);
     }
+
+    public function node(): Node
+    {
+        return $this->node;
+    }
 }

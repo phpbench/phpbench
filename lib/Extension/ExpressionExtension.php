@@ -12,6 +12,7 @@ use PhpBench\Expression\Ast\ParenthesisNode;
 use PhpBench\Expression\Ast\TolerableNode;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Evaluator\MainEvaluator;
+use PhpBench\Expression\Evaluator\PrettyErrorEvaluator;
 use PhpBench\Expression\ExpressionFunctions;
 use PhpBench\Expression\Func\MaxFunction;
 use PhpBench\Expression\Func\MeanFunction;
@@ -70,6 +71,7 @@ use PhpBench\Expression\Precedence;
 use PhpBench\Expression\Printer;
 use PhpBench\Expression\Printer\EvaluatingPrinter;
 use PhpBench\Expression\Printer\NormalizingPrinter;
+use PhpBench\Expression\Printer\UnderlinePrinterFactory;
 use PhpBench\Expression\Token;
 use PhpBench\Util\MemoryUnit;
 use PhpBench\Util\TimeUnit;
@@ -148,7 +150,12 @@ class ExpressionExtension implements ExtensionInterface
 
         $container->register(Evaluator::class, function (Container $container) {
             /** @phpstan-ignore-next-line */
-            return new MainEvaluator($container->get(NodeEvaluators::class));
+
+            return new PrettyErrorEvaluator(
+                new MainEvaluator($container->get(NodeEvaluators::class)),
+                $container->get(Printer::class),
+                new UnderlinePrinterFactory($container->get(NodePrinters::class))
+            );
         });
 
         $container->register(NodePrinters::class, function (Container $container) {
