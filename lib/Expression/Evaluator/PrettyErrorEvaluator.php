@@ -5,7 +5,6 @@ namespace PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
-use PhpBench\Expression\Exception\ExpressionError;
 use PhpBench\Expression\Printer;
 use PhpBench\Expression\Printer\UnderlinePrinterFactory;
 
@@ -29,9 +28,8 @@ class PrettyErrorEvaluator implements Evaluator
     public function __construct(
         Evaluator $innerEvaluator,
         Printer $printer,
-        UnderlinePrinterFactory $underlineFactory 
-    )
-    {
+        UnderlinePrinterFactory $underlineFactory
+    ) {
         $this->innerEvaluator = $innerEvaluator;
         $this->printer = $printer;
         $this->underlineFactory = $underlineFactory;

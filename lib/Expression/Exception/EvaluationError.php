@@ -4,6 +4,7 @@ namespace PhpBench\Expression\Exception;
 
 use PhpBench\Expression\Ast\Node;
 use RuntimeException;
+use Throwable;
 
 class EvaluationError extends RuntimeException
 {
@@ -12,10 +13,10 @@ class EvaluationError extends RuntimeException
      */
     private $node;
 
-    public function __construct(Node $node, string $message)
+    public function __construct(Node $node, string $message, ?Throwable $previous = null)
     {
         $this->node = $node;
-        parent::__construct($message);
+        parent::__construct($message, 0, $previous);
     }
 
     public function node(): Node

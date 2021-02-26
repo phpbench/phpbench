@@ -3,21 +3,18 @@
 namespace PhpBench\Expression;
 
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Evaluator\MainEvaluator;
 use PhpBench\Expression\Evaluator\parameters;
 use PhpBench\Expression\Exception\EvaluationError;
-use PhpBench\Expression\Exception\EvaluatorError;
-use PhpBench\Expression\Exception\ExpressionError;
 
 final class NodeEvaluators
 {
     /**
-     * @var NodeEvaluator[]
+     * @var NodeEvaluator<Node>[]
      */
     private $evaluators;
 
     /**
-     * @param NodeEvaluator[] $evaluators
+     * @param NodeEvaluator<Node>[] $evaluators
      */
     public function __construct(array $evaluators)
     {
@@ -65,4 +62,3 @@ final class NodeEvaluators
         ));
     }
 }
-

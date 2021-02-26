@@ -130,6 +130,7 @@ class ExpressionExtension implements ExtensionInterface
         });
 
         $container->register(NodeEvaluators::class, function (Container $container) {
+            /** @phpstan-ignore-next-line */
             return new NodeEvaluators([
                 new ArgumentListEvaluator(),
                 new IntegerEvaluator(),
@@ -149,8 +150,6 @@ class ExpressionExtension implements ExtensionInterface
         });
 
         $container->register(Evaluator::class, function (Container $container) {
-            /** @phpstan-ignore-next-line */
-
             return new PrettyErrorEvaluator(
                 new MainEvaluator($container->get(NodeEvaluators::class)),
                 $container->get(Printer::class),
