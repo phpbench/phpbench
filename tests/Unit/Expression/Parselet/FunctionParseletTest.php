@@ -57,7 +57,7 @@ class FunctionParseletTest extends ParseletTestCase
     public function testEvaluateInvalidArguments(): void
     {
         $this->expectException(EvaluationError::class);
-        $this->expectExceptionMessage('Call to function');
+        $this->expectExceptionMessage('mode');
         $this->evaluate($this->parse('mode(12)'));
     }
 
