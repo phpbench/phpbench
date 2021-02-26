@@ -72,6 +72,7 @@ use PhpBench\Expression\Printer;
 use PhpBench\Expression\Printer\EvaluatingPrinter;
 use PhpBench\Expression\Printer\NormalizingPrinter;
 use PhpBench\Expression\Printer\UnderlinePrinterFactory;
+use PhpBench\Expression\SyntaxHighlighter;
 use PhpBench\Expression\Token;
 use PhpBench\Util\MemoryUnit;
 use PhpBench\Util\TimeUnit;
@@ -155,6 +156,26 @@ class ExpressionExtension implements ExtensionInterface
                 $container->get(Printer::class),
                 new UnderlinePrinterFactory($container->get(NodePrinters::class))
             );
+        });
+
+        $container->register(SyntaxHighlighter::class, function (Container $container) {
+            $operator = 'yellow';
+            $value = 'cyan';
+            return new SyntaxHighlighter($container->get(Lexer::class), [
+                Token::T_INTEGER => $value,
+                Token::T_FLOAT => $value,
+                Token::T_NAME => $value,
+                Token::T_BOOLEAN => $value,
+                Token::T_LTE => $operator,
+                Token::T_LT => $operator,
+                Token::T_GT => $operator,
+                Token::T_GTE => $operator,
+                Token::T_EQUALS => $operator,
+                Token::T_PLUS => $operator,
+                Token::T_MINUS => $operator,
+                Token::T_DIVIDE => $operator,
+                Token::T_MULTIPLY => $operator,
+            ]);
         });
 
         $container->register(NodePrinters::class, function (Container $container) {

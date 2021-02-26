@@ -51,6 +51,7 @@ final class Lexer
         'false' => Token::T_BOOLEAN,
         'or' => Token::T_LOGICAL_AND,
         'ops/' => Token::T_THROUGHPUT,
+        ' ' => Token::T_WHITESPACE,
     ];
 
     const PATTERNS = [
@@ -61,10 +62,8 @@ final class Lexer
     ];
 
     const IGNORE_PATTERNS = [
-        '\s+',
     ];
     const PATTERN_NUMBER = '(?:[0-9]+(?:[\\.][0-9]+)*)(?:e[+-]?[0-9]+)?';
-
 
     /**
      * @param string[] $timeUnits
@@ -86,7 +85,7 @@ final class Lexer
         );
     }
 
-    public function lex(string $expression)
+    public function lex(string $expression): Tokens
     {
         $chunks = (array)preg_split(
             $this->pattern,
