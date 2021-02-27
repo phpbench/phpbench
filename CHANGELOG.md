@@ -1,19 +1,20 @@
 CHANGELOG
 =========
 
-develop
+1.0.0-alpha5
 -------
 
 Backward compatiblity breaks:
 
 - `--uuid` renamed to `--ref` and `tag:` prefix removed #740
 - No warnings - if assertion fails within tolerance zone then it is OK
-- Assertion DSL has been replaced (only applicable vs. previous alpha
+- Assertion DSL has been
+  [replaced](https://phpbench.readthedocs.io/en/latest/assertions.html) (only applicable vs. previous alpha
   versions)
 
 Features:
 
-- New Expression Lanaugage
+- New [Expression Lanaugage](https://phpbench.readthedocs.io/en/latest/expression.html)
 
 Improvements:
 
