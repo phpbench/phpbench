@@ -210,7 +210,9 @@ class CoreExtension implements ExtensionInterface
             }
 
             $output = new ConsoleOutput();
-            $output->setDecorated($container->getParameter(self::PARAM_CONSOLE_ANSI));
+            if (false === $container->getParameter(self::PARAM_CONSOLE_ANSI)) {
+                $output->setDecorated(false);
+            }
 
             $output->getFormatter()->setStyle('success', new OutputFormatterStyle('black', 'green', []));
             $output->getFormatter()->setStyle('baseline', new OutputFormatterStyle('cyan', null, []));
