@@ -8,6 +8,12 @@ Backward compatiblity breaks:
 
 - `--uuid` renamed to `--ref` and `tag:` prefix removed #740
 - No warnings - if assertion fails within tolerance zone then it is OK
+- Assertion DSL has been replaced (only applicable vs. previous alpha
+  versions)
+
+Features:
+
+- New Expression Lanaugage
 
 Improvements:
 
