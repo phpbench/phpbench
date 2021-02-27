@@ -210,6 +210,7 @@ class CoreExtension implements ExtensionInterface
             }
 
             $output = new ConsoleOutput();
+
             if (false === $container->getParameter(self::PARAM_CONSOLE_ANSI)) {
                 $output->setDecorated(false);
             }
