@@ -3,7 +3,6 @@
 namespace PhpBench\Tests\Example;
 
 use Generator;
-use PhpBench\DependencyInjection\Container;
 use PhpBench\Expression\Ast\ComparisonNode;
 use PhpBench\Expression\Ast\PhpValue;
 use PhpBench\Expression\Evaluator;
@@ -23,8 +22,7 @@ class ExpressionLinterTest extends IntegrationTestCase
         $container = $this->container();
 
         foreach ($expressions as $expression) {
-            (function (Lexer $lexer, Parser $parser, Evaluator $evaluator) use ($expression, $filename) {
-
+            (function (Lexer $lexer, Parser $parser, Evaluator $evaluator) use ($expression, $filename): void {
                 $node = $parser->parse($lexer->lex($expression));
                 $result = $evaluator->evaluate($node, []);
 

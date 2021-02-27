@@ -96,7 +96,6 @@ Memory Units:
 For example:
 
 .. literalinclude:: ../examples/Expression/memory_unit_1
-.. literalinclude:: ../examples/Expression/memory_unit_2
 
 .. _expr_display_as:
 
@@ -197,6 +196,6 @@ Return the `variance`_ for a set of values:
 
 .. literalinclude:: ../examples/Expression/func_variance
 
-.. _KDE Mode: https://en.wikipedia.org/wiki/Kernel_density_estimation
+.. _KDE mode: https://en.wikipedia.org/wiki/Kernel_density_estimation
 .. _standard deviation: https://en.wikipedia.org/wiki/Standard_deviation
 .. _variance: https://en.wikipedia.org/wiki/Variance
