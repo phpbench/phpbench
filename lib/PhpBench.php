@@ -110,6 +110,10 @@ class PhpBench
                 $configOverride['bootstrap'] = self::getBootstrapPath(getcwd(), $value);
             }
 
+            if ($arg === '--no-ansi') {
+                $configOverride[CoreExtension::PARAM_CONSOLE_ANSI] = false;
+            }
+
             if ($value = self::parseOption($arg, 'extension')) {
                 $extensions[] = $value;
             }

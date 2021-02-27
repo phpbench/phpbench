@@ -613,4 +613,10 @@ class RunTest extends SystemTestCase
         $process = $this->phpbench('run');
         $this->assertExitCode(0, $process);
     }
+
+    public function testNoAnsi(): void
+    {
+        $process = $this->phpbench('run --assert="2 < 3" benchmarks/set4/NothingBench.php --no-ansi');
+        $this->assertExitCode(0, $process);
+    }
 }

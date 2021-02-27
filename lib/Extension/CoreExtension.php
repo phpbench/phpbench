@@ -124,6 +124,7 @@ class CoreExtension implements ExtensionInterface
     public const PARAM_REMOTE_SCRIPT_PATH = 'remote_script_path';
     public const PARAM_REMOTE_SCRIPT_REMOVE = 'remote_script_remove';
     public const PARAM_DISABLE_OUTPUT = 'console.disable_output';
+    public const PARAM_CONSOLE_ANSI = 'console.ansi';
     public const PARAM_PROGRESS_SUMMARY_FORMAT = 'progress_summary_variant_format';
     public const PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT = 'progress_summary_baseline_format';
 
@@ -169,6 +170,7 @@ class CoreExtension implements ExtensionInterface
             self::PARAM_REMOTE_SCRIPT_PATH => null,
             self::PARAM_REMOTE_SCRIPT_REMOVE => true,
             self::PARAM_DISABLE_OUTPUT => false,
+            self::PARAM_CONSOLE_ANSI => true,
             self::PARAM_PROGRESS_SUMMARY_FORMAT => '%variant.mode% %time_unit% (±%variant.rstdev%%)',
             self::PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT => '%variant.mode%%time_unit% vs %baseline.mode%%time_unit% (±%variant.rstdev%%) <%result_style%>%percent_difference%%</>',
         ]);
@@ -208,6 +210,7 @@ class CoreExtension implements ExtensionInterface
             }
 
             $output = new ConsoleOutput();
+            $output->setDecorated($container->getParameter(self::PARAM_CONSOLE_ANSI));
 
             $output->getFormatter()->setStyle('success', new OutputFormatterStyle('black', 'green', []));
             $output->getFormatter()->setStyle('baseline', new OutputFormatterStyle('cyan', null, []));
