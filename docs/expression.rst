@@ -1,11 +1,16 @@
 Expression Language
 ===================
 
+PHPBench has a general purpose expression language which is used when writing assertions.
+
+.. contents::
+    :depth: 3
+    :local:
+
+.. _expr_comparators:
+
 Comparators
 -----------
-
-All assertions involve a type of comparison, the following comparators are
-supported:
 
 .. csv-table::
     :header: "comparator", "description"
@@ -16,14 +21,50 @@ supported:
     ">", "Greater than"
     ">=", "Greater than or equal"
 
-For example:
+Examples:
 
 .. literalinclude:: ../examples/Expression/comparison_1
+
+.. _expr_logical_operators:
+
+Logical Operators
+-----------------
+
+.. csv-table::
+    :header: "comparator", "description"
+
+    "and", "Logical and"
+    "or", "Logical or"
+
+Examples:
+
+.. literalinclude:: ../examples/Expression/logical_operators_1
+
+.. _expr_arithmetic:
+
+Arithmetic
+----------
+
+.. csv-table::
+    :header: "comparator", "description"
+
+    "``+``", "Addition"
+    "``-``", "Subtraction"
+    "``/``", "Divide"
+    "``*``", "Multiply"
+
+Examples:
+
+.. literalinclude:: ../examples/Expression/arithmetic_1
+
+.. _expr_time_units:
 
 Time Units
 ----------
 
-Values can be expressed in the following ways
+The base unit for time in PHPBench is microseconds. By specifying a timeunit
+you can represent other units - internally the unit will be converted to
+microseconds:
 
 .. csv-table::
     :header: "unit", "description"
@@ -35,11 +76,11 @@ Values can be expressed in the following ways
     "hour", "3,600 seconds"
     "day", "86,400 seconds"
 
-For example:
+Examples:
 
-::
+.. literalinclude:: ../examples/Expression/time_unit_1
 
-    20 seconds < 20 days
+.. _expr_memory_units:
 
 Memory Units:
 -------------
@@ -54,19 +95,23 @@ Memory Units:
 
 For example:
 
-::
+.. literalinclude:: ../examples/Expression/memory_unit_1
+.. literalinclude:: ../examples/Expression/memory_unit_2
 
-    variant.mem_peak < 2 megabytes
+.. _expr_display_as:
 
-Throughput
+Display As
 ----------
 
-You cap specify throughput (operations per time unit) by prefixing a time unit
-with ``ops/``:
+Parameterized values (e.g. `variant.time.avg`) are always provided the base
+unit. You can use ``as`` to display these values in a specified unit:
 
-::
+.. literalinclude:: ../examples/Expression/time_unit_2
 
-    variant.mode > 2 ops/second
+This will force the unit conversion to happen only when displaying the
+evaluated expression.
+
+.. _expr_tolerance:
 
 Tolerance
 ---------
@@ -74,14 +119,84 @@ Tolerance
 In practice two runs will rarely return exactly the same result. To allow a
 tolerable variance you can specify a tolerance as follows:
 
-::
+.. literalinclude:: ../examples/Expression/tolerance_1
 
-    variant.mode <= 10 milliseconds +/- 2 milliseconds
-
-With the above both 11 and 12 milliseconds will be tolerated.
+With the above values within 8 to 12 milliseconds will be tolerated.
 
 You can also specify a percentage value:
 
-::
+.. literalinclude:: ../examples/Expression/tolerance_2
 
-    variant.mode <= 10 milliseconds +/- 10%
+.. _expr_functions:
+
+Functions
+---------
+
+.. _expr_func_max:
+
+max
+~~~
+
+Return the max value in a set of values:
+
+.. literalinclude:: ../examples/Expression/func_max
+
+.. _expr_func_mean:
+
+mean
+~~~~
+
+Return the mean (i.e. average) value in a set of values:
+
+.. literalinclude:: ../examples/Expression/func_mean
+
+.. _expr_func_min:
+
+min
+~~~
+
+Return the min value in a set of values:
+
+.. literalinclude:: ../examples/Expression/func_min
+
+.. _expr_func_mode:
+
+mode
+~~~~
+
+Return the `KDE mode`_ value in a set of values:
+
+.. literalinclude:: ../examples/Expression/func_mode
+
+In PHPBench the mode is generally the best predictor.
+
+.. _expr_percent_diff:
+
+percent_diff
+~~~~~~~~~~~~
+
+Return the percentage difference between two values
+
+.. literalinclude:: ../examples/Expression/func_percent_diff
+
+.. _expr_stddev:
+
+stdev
+~~~~~
+
+Return the `standard deviation`_ for a set of values:
+
+.. literalinclude:: ../examples/Expression/func_stdev
+
+.. _expr_variance:
+
+variance
+~~~~~~~~
+
+Return the `variance`_ for a set of values:
+
+.. literalinclude:: ../examples/Expression/func_variance
+
+.. _KDE Mode: https://en.wikipedia.org/wiki/Kernel_density_estimation
+.. _standard deviation: https://en.wikipedia.org/wiki/Standard_deviation
+.. _variance: https://en.wikipedia.org/wiki/Variance

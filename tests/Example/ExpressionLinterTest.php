@@ -4,6 +4,8 @@ namespace PhpBench\Tests\Example;
 
 use Generator;
 use PhpBench\DependencyInjection\Container;
+use PhpBench\Expression\Ast\ComparisonNode;
+use PhpBench\Expression\Ast\PhpValue;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Lexer;
 use PhpBench\Expression\Parser;
@@ -17,13 +19,32 @@ class ExpressionLinterTest extends IntegrationTestCase
     public function testExpression(string $filename): void
     {
         /** @phpstan-ignore-next-line */
-        $expression = trim(file_get_contents($filename));
-        (function (Container $container) use ($expression) {
-            $lexer= $container->get(Lexer::class);
-            $parser = $container->get(Parser::class);
-            $evaluator = $container->get(Evaluator::class);
-            $evaluator->evaluate($parser->parse($lexer->lex($expression)), []);
-        })($this->container());
+        $expressions = explode("\n", trim(file_get_contents($filename)));
+        $container = $this->container();
+
+        foreach ($expressions as $expression) {
+            (function (Lexer $lexer, Parser $parser, Evaluator $evaluator) use ($expression, $filename) {
+
+                $node = $parser->parse($lexer->lex($expression));
+                $result = $evaluator->evaluate($node, []);
+
+                if (!$node instanceof ComparisonNode) {
+                    return;
+                }
+
+                if (!$result instanceof PhpValue) {
+                    return;
+                }
+
+                self::assertTrue($result->value(), sprintf(
+                    '%s: %s', basename($filename), $expression
+                ));
+            })(
+                $container->get(Lexer::class),
+                $container->get(Parser::class),
+                $container->get(Evaluator::class)
+            );
+        }
         $this->addToAssertionCount(1);
     }
 

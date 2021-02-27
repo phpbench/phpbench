@@ -224,7 +224,7 @@ class ExpressionExtension implements ExtensionInterface
                 'max' => new MaxFunction(),
                 'stdev' => new StDevFunction(),
                 'variance' => new VarianceFunction(),
-                'percentDiff' => new PercentDifferenceFunction()
+                'percent_diff' => new PercentDifferenceFunction()
             ]);
         });
 

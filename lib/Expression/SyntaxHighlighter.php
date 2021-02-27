@@ -26,7 +26,6 @@ final class SyntaxHighlighter
     public function highlight(string $expression): string
     {
         $tokens = $this->lexer->lex($expression);
-
         return implode('', array_map(function (Token $token) {
             if (array_key_exists($token->type, $this->tokenColorMap)) {
                 return sprintf(
@@ -35,7 +34,6 @@ final class SyntaxHighlighter
                     $token->value
                 );
             }
-
             return $token->value;
         }, $tokens->toArray()));
     }
