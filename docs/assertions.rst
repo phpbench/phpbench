@@ -31,3 +31,9 @@ Each metric (e.g. `variant.time.net`) is provided as a list of numbers
 corresponding to each iteration. You will need to use an aggregation function
 (e.g. :ref:`expr_func_mode` or :ref:`expr_func_mean`) to get a comparable
 value.
+
+Assertion Language
+------------------
+
+Assertions are created using the :doc:`PHPBench Expression
+Language<expression>`. Each assertion must be a comparison.
