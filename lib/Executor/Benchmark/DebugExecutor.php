@@ -41,7 +41,7 @@ class DebugExecutor implements BenchmarkExecutorInterface
         $results->add(new MemoryResult($memory, $memory, $memory));
 
         if (!$config['times']) {
-            $results->add(new TimeResult(0));
+            $results->add(new TimeResult(0, $context->getRevolutions()));
 
             return $results;
         }
@@ -65,7 +65,7 @@ class DebugExecutor implements BenchmarkExecutorInterface
             $time = $time + $spreadDiff;
         }
 
-        $results->add(new TimeResult($time));
+        $results->add(new TimeResult($time, $context->getRevolutions()));
 
         return $results;
     }

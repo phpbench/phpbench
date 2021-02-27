@@ -15,7 +15,7 @@ namespace PhpBench\Tests\System\benchmarks\set5;
 class AssertFailBench
 {
     /**
-     * @Assert("variant.mean < 1 microseconds")
+     * @Assert("1 > 2")
      */
     public function benchFail(): void
     {

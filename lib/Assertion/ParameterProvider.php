@@ -32,6 +32,7 @@ class ParameterProvider
 
                 foreach ($metrics as $name => $value) {
                     $name = (string)$name;
+
                     if (!isset($data[(string)$result->getKey()][$name])) {
                         $data[(string)$result->getKey()][$name] = [];
                     }

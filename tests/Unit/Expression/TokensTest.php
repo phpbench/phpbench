@@ -2,10 +2,10 @@
 
 namespace PhpBench\Tests\Unit\Expression;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Expression\Exception\SyntaxError;
 use PhpBench\Expression\Token;
 use PhpBench\Expression\Tokens;
+use PHPUnit\Framework\TestCase;
 
 class TokensTest extends TestCase
 {

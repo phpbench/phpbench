@@ -25,6 +25,8 @@ Run your benchmark on the code to which you want to compare:
 
     $ phpbench run tests/Benchmark/MyBenchmark.php --tag=original --retry-threshold=5 --iterations=10
 
+.. _ref:
+
 Compare against the baseline
 ----------------------------
 

@@ -5,7 +5,6 @@ namespace PhpBench\Expression\NodeEvaluator;
 use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Evaluator;
-use PhpBench\Expression\NodeEvaluator\AbstractEvaluator;
 
 /**
  * @extends AbstractEvaluator<IntegerNode>

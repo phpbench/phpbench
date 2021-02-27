@@ -511,35 +511,17 @@ Assertions
 You can annotate your benchmarks with *assertions* which will cause PHPBench
 to report failures and exit with a non-zero exit code if they fail.
 
-For example, assert that the mode is less than 100 microseconds:
+For example, assert that the :ref:`KDE mode<expr_func_mode>` is less than 200 microseconds:
 
-.. code-block:: php
-
-    /**
-     * @Assert("variant.mode < 100 microseconds")
-     */
-    public function benchFoobar()
-    {
-        // ...
-    }
-
-Assert a throughput greater than 0.25ops/µs:
-
-.. code-block:: php
-
-    /**
-     * @Assert("variant.mode > 0.25 ops/microsecond")
-     */
-    public function benchFoobar()
-    {
-        // ...
-    }
+.. codeimport:: ../examples/Assertion/ExampleAssertionsBench.php
+  :language: php
+  :sections: all,bench_time
 
 You can also specify assertions from the command line:
 
 .. code-block:: bash
 
-    $ phpbench run --assert='variant.mode > 0.25 ops/microsecond'
+    $ phpbench run --assert='mode(variant.time.avg) < 10 hours'
 
 See :doc:`assertions` for more information.
 

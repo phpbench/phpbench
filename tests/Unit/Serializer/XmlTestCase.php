@@ -128,7 +128,7 @@ class XmlTestCase extends TestCase
             $this->iteration1->reveal(),
         ]));
         $this->iteration1->getResults()->willReturn([
-            new TimeResult(10),
+            new TimeResult(10, 1),
             new MemoryResult(100, 110, 109),
             new ComputedResult(0, 0, 5),
         ]);
@@ -170,7 +170,7 @@ class XmlTestCase extends TestCase
             </parameter>
             <parameter name="baz" xsi:nil="true"/>
           </parameter-set>
-          <iteration time-net="10" mem-peak="100" mem-real="110" mem-final="109" comp-z-value="0" comp-deviation="0"/>
+          <iteration time-net="10" time-revs="1" time-avg="10" mem-peak="100" mem-real="110" mem-final="109" comp-z-value="0" comp-deviation="0"/>
           <stats max="0.1" mean="0.1" min="0.1" mode="0.1" rstdev="0" stdev="0" sum="0.1" variance="0"/>
         </variant>
       </subject>
@@ -225,7 +225,7 @@ EOT
           <failures>
             <failure>Fail!</failure>
           </failures>
-          <iteration time-net="10" mem-peak="100" mem-real="110" mem-final="109" comp-z-value="0" comp-deviation="0"/>
+          <iteration time-net="10" time-revs="1" time-avg="10" mem-peak="100" mem-real="110" mem-final="109" comp-z-value="0" comp-deviation="0"/>
           <stats max="0.1" mean="0.1" min="0.1" mode="0.1" rstdev="0" stdev="0" sum="0.1" variance="0"/>
         </variant>
       </subject>

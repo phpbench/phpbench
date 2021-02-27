@@ -12,6 +12,16 @@ use PhpBench\Expression\Ast\ParenthesisNode;
 use PhpBench\Expression\Ast\TolerableNode;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Evaluator\MainEvaluator;
+use PhpBench\Expression\Evaluator\PrettyErrorEvaluator;
+use PhpBench\Expression\ExpressionFunctions;
+use PhpBench\Expression\Func\MaxFunction;
+use PhpBench\Expression\Func\MeanFunction;
+use PhpBench\Expression\Func\MinFunction;
+use PhpBench\Expression\Func\ModeFunction;
+use PhpBench\Expression\Func\PercentDifferenceFunction;
+use PhpBench\Expression\Func\StDevFunction;
+use PhpBench\Expression\Func\VarianceFunction;
+use PhpBench\Expression\Lexer;
 use PhpBench\Expression\NodeEvaluator\ArgumentListEvaluator;
 use PhpBench\Expression\NodeEvaluator\ArithmeticOperatorEvaluator;
 use PhpBench\Expression\NodeEvaluator\BooleanEvaluator;
@@ -26,15 +36,7 @@ use PhpBench\Expression\NodeEvaluator\ParameterEvaluator;
 use PhpBench\Expression\NodeEvaluator\ParenthesisEvaluator;
 use PhpBench\Expression\NodeEvaluator\TolerableEvaluator;
 use PhpBench\Expression\NodeEvaluator\UnitEvaluator;
-use PhpBench\Expression\ExpressionFunctions;
-use PhpBench\Expression\Func\MaxFunction;
-use PhpBench\Expression\Func\MeanFunction;
-use PhpBench\Expression\Func\MinFunction;
-use PhpBench\Expression\Func\ModeFunction;
-use PhpBench\Expression\Func\PercentDifferenceFunction;
-use PhpBench\Expression\Func\StDevFunction;
-use PhpBench\Expression\Func\VarianceFunction;
-use PhpBench\Expression\Lexer;
+use PhpBench\Expression\NodeEvaluators;
 use PhpBench\Expression\NodePrinter\ArgumentListPrinter;
 use PhpBench\Expression\NodePrinter\BinaryOperatorPrinter;
 use PhpBench\Expression\NodePrinter\BooleanPrinter;
@@ -69,6 +71,8 @@ use PhpBench\Expression\Precedence;
 use PhpBench\Expression\Printer;
 use PhpBench\Expression\Printer\EvaluatingPrinter;
 use PhpBench\Expression\Printer\NormalizingPrinter;
+use PhpBench\Expression\Printer\UnderlinePrinterFactory;
+use PhpBench\Expression\SyntaxHighlighter;
 use PhpBench\Expression\Token;
 use PhpBench\Util\MemoryUnit;
 use PhpBench\Util\TimeUnit;
@@ -87,7 +91,8 @@ class ExpressionExtension implements ExtensionInterface
                 $container->get(Lexer::class),
                 $container->get(Parser::class),
                 $container->get(Printer::class),
-                $container->get(EvaluatingPrinter::class)
+                $container->get(EvaluatingPrinter::class),
+                $container->get(SyntaxHighlighter::class)
             );
         }, [
             CoreExtension::TAG_CONSOLE_COMMAND => []
@@ -126,9 +131,9 @@ class ExpressionExtension implements ExtensionInterface
             );
         });
 
-        $container->register(Evaluator::class, function (Container $container) {
+        $container->register(NodeEvaluators::class, function (Container $container) {
             /** @phpstan-ignore-next-line */
-            return new MainEvaluator([
+            return new NodeEvaluators([
                 new ArgumentListEvaluator(),
                 new IntegerEvaluator(),
                 new ArithmeticOperatorEvaluator(),
@@ -143,6 +148,35 @@ class ExpressionExtension implements ExtensionInterface
                 new BooleanEvaluator(),
                 new DisplayAsEvaluator(),
                 new ParameterEvaluator(),
+            ]);
+        });
+
+        $container->register(Evaluator::class, function (Container $container) {
+            return new PrettyErrorEvaluator(
+                new MainEvaluator($container->get(NodeEvaluators::class)),
+                $container->get(Printer::class),
+                new UnderlinePrinterFactory($container->get(NodePrinters::class))
+            );
+        });
+
+        $container->register(SyntaxHighlighter::class, function (Container $container) {
+            $operator = 'yellow';
+            $value = 'cyan';
+
+            return new SyntaxHighlighter($container->get(Lexer::class), [
+                Token::T_INTEGER => $value,
+                Token::T_FLOAT => $value,
+                Token::T_NAME => $value,
+                Token::T_BOOLEAN => $value,
+                Token::T_LTE => $operator,
+                Token::T_LT => $operator,
+                Token::T_GT => $operator,
+                Token::T_GTE => $operator,
+                Token::T_EQUALS => $operator,
+                Token::T_PLUS => $operator,
+                Token::T_MINUS => $operator,
+                Token::T_DIVIDE => $operator,
+                Token::T_MULTIPLY => $operator,
             ]);
         });
 
@@ -190,7 +224,7 @@ class ExpressionExtension implements ExtensionInterface
                 'max' => new MaxFunction(),
                 'stdev' => new StDevFunction(),
                 'variance' => new VarianceFunction(),
-                'percentDiff' => new PercentDifferenceFunction()
+                'percent_diff' => new PercentDifferenceFunction()
             ]);
         });
 

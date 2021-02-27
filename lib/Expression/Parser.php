@@ -45,6 +45,7 @@ class Parser
 
     public function parse(Tokens $tokens): Node
     {
+        $tokens = $tokens->withoutWhitespace();
         $node = $this->parseList($tokens);
 
         if ($tokens->hasMore()) {

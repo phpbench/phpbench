@@ -3,8 +3,6 @@
 namespace PhpBench\Expression;
 
 use Error;
-use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
-use PhpBench\Expression\Exception\EvaluationError;
 use RuntimeException;
 
 final class ExpressionFunctions

@@ -110,4 +110,11 @@ final class Tokens implements IteratorAggregate, Countable
     {
         return $this->position < count($this->tokens);
     }
+
+    public function withoutWhitespace(): self
+    {
+        return new self(array_values(array_filter($this->tokens, function (Token $token) {
+            return $token->type !== Token::T_WHITESPACE;
+        })));
+    }
 }

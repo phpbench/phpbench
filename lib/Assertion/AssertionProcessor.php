@@ -19,8 +19,7 @@ use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Lexer;
 use PhpBench\Expression\Parser;
 use PhpBench\Expression\Printer;
-use PhpBench\Math\Statistics;
-use PhpBench\Model\Result\MemoryResult;
+use PhpBench\Expression\SyntaxHighlighter;
 use PhpBench\Model\Variant;
 
 class AssertionProcessor
@@ -55,21 +54,27 @@ class AssertionProcessor
      */
     private $evaluatingPrinter;
 
+    /**
+     * @var SyntaxHighlighter
+     */
+    private $highlighter;
+
     public function __construct(
         Lexer $lexer,
         Parser $parser,
         Evaluator $evaluator,
         Printer $printer,
         Printer $evaluatingPrinter,
-        ParameterProvider $provider
-    )
-    {
+        ParameterProvider $provider,
+        SyntaxHighlighter $highlighter
+    ) {
         $this->lexer = $lexer;
         $this->parser = $parser;
         $this->evaluator = $evaluator;
         $this->printer = $printer;
         $this->provider = $provider;
         $this->evaluatingPrinter = $evaluatingPrinter;
+        $this->highlighter = $highlighter;
     }
 
     public function assert(Variant $variant, string $assertion): AssertionResult
@@ -79,17 +84,18 @@ class AssertionProcessor
         $params = $this->provider->provideFor($variant);
         $evaluated = $this->evaluator->evaluate($node, $params);
 
-        $message = sprintf(
-            '%s <comment>=</> %s <comment>=</> %s',
+        $message = $this->highlighter->highlight(sprintf(
+            "%s\n= %s\n= %s",
             $this->printer->print($node, $params),
             $this->evaluatingPrinter->print($node, $params),
             $this->printer->print($evaluated, $params)
-        );
+        ));
 
         if ($evaluated instanceof BooleanNode) {
             if ($evaluated->value()) {
                 return AssertionResult::ok();
             }
+
             return AssertionResult::fail($message);
         }
 

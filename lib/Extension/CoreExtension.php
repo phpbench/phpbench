@@ -14,8 +14,6 @@ namespace PhpBench\Extension;
 
 use Humbug\SelfUpdate\Updater;
 use PhpBench\Assertion\AssertionProcessor;
-use PhpBench\Assertion\ExpressionEvaluatorFactory;
-use PhpBench\Assertion\ExpressionParser;
 use PhpBench\Assertion\ParameterProvider;
 use PhpBench\Benchmark\BaselineManager;
 use PhpBench\Benchmark\BenchmarkFinder;
@@ -51,6 +49,7 @@ use PhpBench\Expression\Lexer;
 use PhpBench\Expression\Parser;
 use PhpBench\Expression\Printer;
 use PhpBench\Expression\Printer\EvaluatingPrinter;
+use PhpBench\Expression\SyntaxHighlighter;
 use PhpBench\Formatter\Format\BalanceFormat;
 use PhpBench\Formatter\Format\InvertOnThroughputFormat;
 use PhpBench\Formatter\Format\NumberFormat;
@@ -622,7 +621,8 @@ class CoreExtension implements ExtensionInterface
                 $container->get(Evaluator::class),
                 $container->get(Printer::class),
                 $container->get(EvaluatingPrinter::class),
-                new ParameterProvider()
+                new ParameterProvider(),
+                $container->get(SyntaxHighlighter::class)
             );
         });
     }

@@ -31,7 +31,7 @@ class TimeResult implements ResultInterface
     private $revs;
 
 
-    public function __construct(int $netTime, int $revs)
+    public function __construct(int $netTime, int $revs = 1)
     {
         Assertion::greaterOrEqualThan($netTime, 0, 'Time cannot be less than 0, got %s');
 
@@ -41,7 +41,10 @@ class TimeResult implements ResultInterface
 
     public static function fromArray(array $values): ResultInterface
     {
-        return new self((int) $values['net'], (int) $values['revs'] ?? 1);
+        return new self(
+            (int) $values['net'],
+            array_key_exists('revs', $values) ? $values['revs'] :  1
+        );
     }
 
     /**

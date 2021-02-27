@@ -2,15 +2,14 @@
 
 namespace PhpBench\Expression\NodeEvaluator;
 
-use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\NumberNode;
 use PhpBench\Expression\Ast\NumberNodeFactory;
 use PhpBench\Expression\Ast\UnitNode;
 use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Util\MemoryUnit;
 use PhpBench\Util\TimeUnit;
-use PhpBench\Expression\NodeEvaluator\AbstractEvaluator;
 
 /**
  * @extends AbstractEvaluator<UnitNode>
@@ -38,7 +37,7 @@ class UnitEvaluator extends AbstractEvaluator
             return NumberNodeFactory::fromNumber($this->memoryUnit($value->value(), $unit));
         }
 
-        throw new ExpressionEvaluatorError(sprintf(
+        throw new EvaluationError($node, sprintf(
             'Do not know how to evaluate unit "%s"', $unit
         ));
     }

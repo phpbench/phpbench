@@ -26,7 +26,7 @@ function hash_algos()
 class HashingBench
 {
     /**
-     * @Assert("variant.mode < 1ms")
+     * @Assert("mode(variant.time.avg) < 1ms")
      * @ParamProviders({"\PhpBench\Examples\Benchmark\Micro\hash_algos"})
      */
     public function benchAlgos($params)

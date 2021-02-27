@@ -24,7 +24,6 @@ final class Token
     public const T_LOGICAL_AND = 'and';
     public const T_LOGICAL_OR = 'or';
 
-    public const T_OPERATOR = 'operator';
     public const T_PLUS = 'plus';
     public const T_MINUS = 'minus';
     public const T_MULTIPLY = 'multiply';
@@ -36,6 +35,7 @@ final class Token
     public const T_GT = 'gt';
     public const T_EOF = 'eof';
     public const T_THROUGHPUT = 'throughput';
+    public const T_WHITESPACE = 'whitespace';
 
     /**
      * @var string

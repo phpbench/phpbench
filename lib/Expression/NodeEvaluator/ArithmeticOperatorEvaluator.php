@@ -2,13 +2,12 @@
 
 namespace PhpBench\Expression\NodeEvaluator;
 
-use PhpBench\Assertion\Exception\ExpressionEvaluatorError;
 use PhpBench\Expression\Ast\ArithmeticOperatorNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\NumberNode;
 use PhpBench\Expression\Ast\NumberNodeFactory;
 use PhpBench\Expression\Evaluator;
-use PhpBench\Expression\NodeEvaluator\AbstractEvaluator;
+use PhpBench\Expression\Exception\EvaluationError;
 
 /**
  * @extends AbstractEvaluator<ArithmeticOperatorNode>
@@ -52,7 +51,7 @@ class ArithmeticOperatorEvaluator extends AbstractEvaluator
                 return $leftValue - $rightValue;
         }
         
-        throw new ExpressionEvaluatorError(sprintf(
+        throw new EvaluationError($node, sprintf(
             'Unknown operator "%s"',
             $node->operator()
         ));
