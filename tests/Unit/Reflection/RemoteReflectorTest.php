@@ -15,14 +15,12 @@ namespace PhpBench\Tests\Unit\Reflection;
 use Generator;
 use PhpBench\Benchmark\Metadata\Attributes\Iterations;
 use PhpBench\Benchmark\Metadata\Attributes\Revs;
-use PhpBench\Reflection\ReflectionAttribute;
 use PhpBench\Reflection\ReflectionClass;
 use PhpBench\Reflection\ReflectionHierarchy;
 use PhpBench\Reflection\ReflectionMethod;
 use PhpBench\Reflection\RemoteReflector;
 use PhpBench\Remote\Launcher;
 use PhpBench\Tests\IntegrationTestCase;
-use PhpBench\Tests\TestCase;
 use PhpBench\Tests\Unit\Reflection\reflector\Class1;
 use PhpBench\Tests\Unit\Reflection\reflector\Class2;
 use PhpBench\Tests\Unit\Reflection\reflector\Class3;
@@ -81,7 +79,7 @@ class RemoteReflectorTest extends IntegrationTestCase
      */
     public function provideReflectAttributes(): Generator
     {
-        yield [ 
+        yield [
             <<<'EOT'
             <?php
 
@@ -93,14 +91,14 @@ class RemoteReflectorTest extends IntegrationTestCase
                 }
             }
             EOT
-            , function (ReflectionClass $class) {
+            , function (ReflectionClass $class): void {
                 self::assertCount(1, $class->attributes);
                 $first = reset($class->attributes);
                 self::assertInstanceof(Iterations::class, $first);
             }
         ];
 
-        yield [ 
+        yield [
             <<<'EOT'
             <?php
 
@@ -112,7 +110,7 @@ class RemoteReflectorTest extends IntegrationTestCase
                 }
             }
             EOT
-            , function (ReflectionClass $class) {
+            , function (ReflectionClass $class): void {
                 $first = reset($class->attributes);
                 self::assertInstanceof(Revs::class, $first);
                 assert($first instanceof Revs);
@@ -120,7 +118,7 @@ class RemoteReflectorTest extends IntegrationTestCase
             }
         ];
 
-        yield [ 
+        yield [
             <<<'EOT'
             <?php
 
@@ -132,7 +130,7 @@ class RemoteReflectorTest extends IntegrationTestCase
                 }
             }
             EOT
-            , function (ReflectionClass $class) {
+            , function (ReflectionClass $class): void {
                 $method = reset($class->methods);
                 assert($method instanceof ReflectionMethod);
                 self::assertCount(1, $method->attributes);
@@ -155,7 +153,7 @@ class RemoteReflectorTest extends IntegrationTestCase
                 }
             }
             EOT
-            , function (ReflectionClass $class) {
+            , function (ReflectionClass $class): void {
                 $method = reset($class->methods);
                 assert($method instanceof ReflectionMethod);
                 self::assertCount(0, $method->attributes);

@@ -82,6 +82,5 @@ class BenchmarkMetadataTest extends TestCase
 
         self::assertEquals(['one', 'two', 'three', 'four'], $benchmark1->getBeforeClassMethods());
         self::assertEquals(['1', '3', '2', '4'], $benchmark1->getAfterClassMethods());
-
     }
 }

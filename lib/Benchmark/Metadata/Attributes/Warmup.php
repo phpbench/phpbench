@@ -4,7 +4,7 @@ namespace PhpBench\Benchmark\Metadata\Attributes;
 
 use Attribute;
 
-#[Attribute(Attribute::TARGET_CLASS|Attribute::TARGET_METHOD)]
+#[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
 class Warmup
 {
     /**
@@ -15,7 +15,7 @@ class Warmup
     /**
      * @param int|int[] $revs
      */
-    public function __construct(int|array $revs)
+    public function __construct(int | array $revs)
     {
         $this->revs = (array) $revs;
     }

@@ -14,7 +14,7 @@ namespace PhpBench\Benchmark\Metadata\Attributes;
 
 use Attribute;
 
-#[Attribute(Attribute::TARGET_CLASS|Attribute::TARGET_METHOD)]
+#[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
 class Iterations
 {
     /**
@@ -22,7 +22,7 @@ class Iterations
      */
     public $iterations;
 
-    public function __construct(int|array $iterations)
+    public function __construct(int | array $iterations)
     {
         $this->iterations = (array)$iterations;
     }

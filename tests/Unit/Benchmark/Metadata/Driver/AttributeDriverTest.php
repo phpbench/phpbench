@@ -3,8 +3,6 @@
 namespace PhpBench\Tests\Unit\Benchmark\Metadata\Driver;
 
 use Generator;
-use PHPUnit\Framework\TestCase;
-use PhpBench\Assertion\ParameterProvider;
 use PhpBench\Benchmark\Metadata\Attributes\AfterClassMethods;
 use PhpBench\Benchmark\Metadata\Attributes\AfterMethods;
 use PhpBench\Benchmark\Metadata\Attributes\Assert;
@@ -27,6 +25,7 @@ use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Reflection\ReflectionClass;
 use PhpBench\Reflection\ReflectionHierarchy;
 use PhpBench\Reflection\ReflectionMethod;
+use PHPUnit\Framework\TestCase;
 
 class AttributeDriverTest extends TestCase
 {
@@ -56,31 +55,34 @@ class AttributeDriverTest extends TestCase
             [
                 new Executor('foobar'),
             ],
-            function (BenchmarkMetadata $metadata) {
+            function (BenchmarkMetadata $metadata): void {
                 self::assertEquals('foobar', $metadata->getExecutor()->getName());
             }
         ];
+
         yield [
             [
                 new Executor('foobar', ['foo' => 'bar']),
             ],
-            function (BenchmarkMetadata $metadata) {
+            function (BenchmarkMetadata $metadata): void {
                 self::assertEquals(['foo' => 'bar'], $metadata->getExecutor()->getConfig());
             }
         ];
+
         yield [
             [
                 new BeforeClassMethods(['foo','bar']),
             ],
-            function (BenchmarkMetadata $metadata) {
+            function (BenchmarkMetadata $metadata): void {
                 self::assertEquals(['foo', 'bar'], $metadata->getBeforeClassMethods());
             }
         ];
+
         yield [
             [
                 new AfterClassMethods(['foo','bar']),
             ],
-            function (BenchmarkMetadata $metadata) {
+            function (BenchmarkMetadata $metadata): void {
                 self::assertEquals(['foo', 'bar'], $metadata->getAfterClassMethods());
             }
         ];
@@ -122,144 +124,161 @@ class AttributeDriverTest extends TestCase
             [
                 new BeforeMethods(['foobar', 'barfoo']),
             ],
-            function (SubjectMetadata $metadata) {
+            function (SubjectMetadata $metadata): void {
                 self::assertEquals(['foobar', 'barfoo'], $metadata->getBeforeMethods());
             }
         ];
+
         yield [
             [
                 new BeforeMethods('foobar'),
             ],
-            function (SubjectMetadata $metadata) {
+            function (SubjectMetadata $metadata): void {
                 self::assertEquals(['foobar'], $metadata->getBeforeMethods());
             }
         ];
+
         yield [
             [
                 new AfterMethods(['foobar', 'barfoo']),
             ],
-            function (SubjectMetadata $metadata) {
+            function (SubjectMetadata $metadata): void {
                 self::assertEquals(['foobar', 'barfoo'], $metadata->getAfterMethods());
             }
         ];
+
         yield [
             [
                 new Groups(['foobar', 'barfoo']),
             ],
-            function (SubjectMetadata $metadata) {
+            function (SubjectMetadata $metadata): void {
                 self::assertEquals(['foobar', 'barfoo'], $metadata->getGroups());
             }
         ];
+
         yield [
             [
                 new Iterations(12),
             ],
-            function (SubjectMetadata $metadata) {
+            function (SubjectMetadata $metadata): void {
                 self::assertEquals([12], $metadata->getIterations());
             }
         ];
+
         yield [
             [
                 new ParamProviders('one'),
             ],
-            function (SubjectMetadata $metadata) {
+            function (SubjectMetadata $metadata): void {
                 self::assertEquals(['one'], $metadata->getParamProviders());
             }
         ];
+
         yield [
             [
                 new ParamProviders(['one', 'two']),
             ],
-            function (SubjectMetadata $metadata) {
+            function (SubjectMetadata $metadata): void {
                 self::assertEquals(['one','two'], $metadata->getParamProviders());
             }
         ];
+
         yield [
             [
                 new Revs(12),
             ],
-            function (SubjectMetadata $metadata) {
+            function (SubjectMetadata $metadata): void {
                 self::assertEquals([12], $metadata->getRevs());
             }
         ];
+
         yield [
             [
                 new Skip(),
             ],
-            function (SubjectMetadata $metadata) {
+            function (SubjectMetadata $metadata): void {
                 self::assertTrue($metadata->getSkip());
             }
         ];
+
         yield [
             [
                 new Sleep(500),
             ],
-            function (SubjectMetadata $metadata) {
+            function (SubjectMetadata $metadata): void {
                 self::assertEquals(500, $metadata->getSleep());
             }
         ];
+
         yield [
             [
                 new OutputTimeUnit('seconds'),
             ],
-            function (SubjectMetadata $metadata) {
+            function (SubjectMetadata $metadata): void {
                 self::assertEquals('seconds', $metadata->getOutputTimeUnit());
             }
         ];
+
         yield [
             [
                 new OutputTimeUnit('seconds', 12),
             ],
-            function (SubjectMetadata $metadata) {
+            function (SubjectMetadata $metadata): void {
                 self::assertEquals('seconds', $metadata->getOutputTimeUnit());
                 self::assertEquals(12, $metadata->getOutputTimePrecision());
             }
         ];
+
         yield [
             [
                 new OutputMode('throughput'),
             ],
-            function (SubjectMetadata $metadata) {
+            function (SubjectMetadata $metadata): void {
                 self::assertEquals('throughput', $metadata->getOutputMode());
             }
         ];
+
         yield [
             [
                 new Warmup(12),
             ],
-            function (SubjectMetadata $metadata) {
+            function (SubjectMetadata $metadata): void {
                 self::assertEquals([12], $metadata->getWarmup());
             }
         ];
+
         yield [
             [
                 new Assert('12 < 12'),
             ],
-            function (SubjectMetadata $metadata) {
+            function (SubjectMetadata $metadata): void {
                 self::assertEquals(['12 < 12'], $metadata->getAssertions());
             }
         ];
+
         yield [
             [
                 new Executor('foobar'),
             ],
-            function (SubjectMetadata $metadata) {
+            function (SubjectMetadata $metadata): void {
                 self::assertEquals('foobar', $metadata->getExecutor()->getName());
             }
         ];
+
         yield [
             [
                 new Executor('foobar', ['foo' => 'bar']),
             ],
-            function (SubjectMetadata $metadata) {
+            function (SubjectMetadata $metadata): void {
                 self::assertEquals(['foo' => 'bar'], $metadata->getExecutor()->getConfig());
             }
         ];
+
         yield [
             [
                 new Timeout(12.1),
             ],
-            function (SubjectMetadata $metadata) {
+            function (SubjectMetadata $metadata): void {
                 self::assertEquals(12.1, $metadata->getTimeout());
             }
         ];

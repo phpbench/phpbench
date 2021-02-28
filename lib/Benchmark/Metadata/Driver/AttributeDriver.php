@@ -2,9 +2,7 @@
 
 namespace PhpBench\Benchmark\Metadata\Driver;
 
-use PhpBench\Benchmark\Metadata\AttributeReader;
 use PhpBench\Benchmark\Metadata\Attributes;
-use PhpBench\Benchmark\Metadata\Attributes\AbstractArrayAttribute;
 use PhpBench\Benchmark\Metadata\Attributes\AfterClassMethods;
 use PhpBench\Benchmark\Metadata\Attributes\BeforeClassMethods;
 use PhpBench\Benchmark\Metadata\Attributes\Subject;
@@ -15,7 +13,6 @@ use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Reflection\ReflectionClass;
 use PhpBench\Reflection\ReflectionHierarchy;
 use PhpBench\Reflection\ReflectionMethod;
-use PhpBench\Reflection\ReflectorInterface;
 
 class AttributeDriver implements DriverInterface
 {
@@ -210,4 +207,3 @@ class AttributeDriver implements DriverInterface
         }
     }
 }
-

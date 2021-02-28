@@ -14,7 +14,7 @@ namespace PhpBench\Benchmark\Metadata\Attributes;
 
 use Attribute;
 
-#[Attribute(Attribute::TARGET_CLASS|Attribute::TARGET_METHOD)]
+#[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
 final class Revs
 {
     /**
@@ -25,7 +25,7 @@ final class Revs
     /**
      * @param int|int[] $revs
      */
-    public function __construct(int|array $revs)
+    public function __construct(int | array $revs)
     {
         $this->revs = (array)$revs;
     }

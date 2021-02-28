@@ -12,8 +12,8 @@
 
 namespace PhpBench\Reflection;
 
-use PhpBench\Remote\Launcher;
 use function array_filter;
+use PhpBench\Remote\Launcher;
 
 /**
  * Reflector for remote classes.
@@ -171,6 +171,7 @@ class RemoteReflector implements ReflectorInterface
 
     /**
      * @param array<string, mixed> $attributes
+     *
      * @return object[]
      */
     private function resolveAttributes(array $attributes): array

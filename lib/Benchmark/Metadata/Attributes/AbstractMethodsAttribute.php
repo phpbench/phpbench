@@ -2,9 +2,6 @@
 
 namespace PhpBench\Benchmark\Metadata\Attributes;
 
-use Attribute;
-
-#[Attribute(Attribute::TARGET_CLASS|Attribute::TARGET_METHOD)]
 abstract class AbstractMethodsAttribute
 {
     /**
@@ -15,7 +12,7 @@ abstract class AbstractMethodsAttribute
     /**
      * @param string|string[] $methods
      */
-    public function __construct(string|array $methods)
+    public function __construct(string | array $methods)
     {
         $this->methods = (array)$methods;
     }

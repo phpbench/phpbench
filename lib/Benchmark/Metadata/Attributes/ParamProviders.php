@@ -4,7 +4,7 @@ namespace PhpBench\Benchmark\Metadata\Attributes;
 
 use Attribute;
 
-#[Attribute(Attribute::TARGET_CLASS|Attribute::TARGET_METHOD)]
+#[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
 final class ParamProviders
 {
     /**
@@ -15,7 +15,7 @@ final class ParamProviders
     /**
      * @param string|string[] $providers
      */
-    public function __construct(array|string $providers)
+    public function __construct(array | string $providers)
     {
         $this->providers = (array)$providers;
     }

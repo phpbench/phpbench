@@ -64,5 +64,4 @@ class SubjectTest extends TestCase
         $this->assertEquals(10, $variant->getRevolutions());
         $this->assertEquals(20, $variant->getWarmup());
     }
-
 }
