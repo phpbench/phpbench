@@ -4,7 +4,7 @@ namespace PhpBench\Examples\Attributes;
 
 use Generator;
 // section: all
-use PhpBench\Benchmark\Metadata\Attributes as Bench;
+use PhpBench\Attributes as Bench;
 
 // endsection: all
 // section: beforeClassMethods

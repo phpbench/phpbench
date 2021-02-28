@@ -1,10 +1,10 @@
 <?php
 
-namespace PhpBench\Benchmark\Metadata\Attributes;
+namespace PhpBench\Attributes;
 
 use Attribute;
 
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
-final class Skip
+class AfterMethods extends AbstractMethodsAttribute
 {
 }

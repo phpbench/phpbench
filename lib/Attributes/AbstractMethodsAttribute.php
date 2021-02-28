@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Benchmark\Metadata\Attributes;
+namespace PhpBench\Attributes;
 
 abstract class AbstractMethodsAttribute
 {

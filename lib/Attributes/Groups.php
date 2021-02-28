@@ -10,23 +10,23 @@
  *
  */
 
-namespace PhpBench\Benchmark\Metadata\Attributes;
+namespace PhpBench\Attributes;
 
 use Attribute;
 
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
-final class Revs
+final class Groups
 {
     /**
-     * @var int[]
+     * @var string[]
      */
-    public $revs;
+    public $groups;
 
     /**
-     * @param int|int[] $revs
+     * @param string[] $groups
      */
-    public function __construct(int | array $revs)
+    public function __construct(array $groups)
     {
-        $this->revs = (array)$revs;
+        $this->groups = $groups;
     }
 }

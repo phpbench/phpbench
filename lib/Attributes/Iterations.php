@@ -10,25 +10,20 @@
  *
  */
 
-namespace PhpBench\Benchmark\Metadata\Attributes;
+namespace PhpBench\Attributes;
 
 use Attribute;
 
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
-class OutputMode
+class Iterations
 {
     /**
-     * @var string
+     * @var int[]
      */
-    private $mode;
+    public $iterations;
 
-    public function __construct(string $mode)
+    public function __construct(int | array $iterations)
     {
-        $this->mode = $mode;
-    }
-
-    public function getMode()
-    {
-        return $this->mode;
+        $this->iterations = (array)$iterations;
     }
 }

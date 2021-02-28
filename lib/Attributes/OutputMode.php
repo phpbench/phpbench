@@ -10,23 +10,25 @@
  *
  */
 
-namespace PhpBench\Benchmark\Metadata\Attributes;
+namespace PhpBench\Attributes;
 
 use Attribute;
 
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
-final class Groups
+class OutputMode
 {
     /**
-     * @var string[]
+     * @var string
      */
-    public $groups;
+    private $mode;
 
-    /**
-     * @param string[] $groups
-     */
-    public function __construct(array $groups)
+    public function __construct(string $mode)
     {
-        $this->groups = $groups;
+        $this->mode = $mode;
+    }
+
+    public function getMode()
+    {
+        return $this->mode;
     }
 }

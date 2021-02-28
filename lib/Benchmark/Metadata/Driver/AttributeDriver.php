@@ -2,10 +2,10 @@
 
 namespace PhpBench\Benchmark\Metadata\Driver;
 
-use PhpBench\Benchmark\Metadata\Attributes;
-use PhpBench\Benchmark\Metadata\Attributes\AfterClassMethods;
-use PhpBench\Benchmark\Metadata\Attributes\BeforeClassMethods;
-use PhpBench\Benchmark\Metadata\Attributes\Subject;
+use PhpBench\Attributes;
+use PhpBench\Attributes\AfterClassMethods;
+use PhpBench\Attributes\BeforeClassMethods;
+use PhpBench\Attributes\Subject;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\DriverInterface;
 use PhpBench\Benchmark\Metadata\ExecutorMetadata;

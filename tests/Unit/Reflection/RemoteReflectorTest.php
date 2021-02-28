@@ -13,8 +13,8 @@
 namespace PhpBench\Tests\Unit\Reflection;
 
 use Generator;
-use PhpBench\Benchmark\Metadata\Attributes\Iterations;
-use PhpBench\Benchmark\Metadata\Attributes\Revs;
+use PhpBench\Attributes\Iterations;
+use PhpBench\Attributes\Revs;
 use PhpBench\Reflection\ReflectionClass;
 use PhpBench\Reflection\ReflectionHierarchy;
 use PhpBench\Reflection\ReflectionMethod;
@@ -87,7 +87,7 @@ class RemoteReflectorTest extends IntegrationTestCase
             <<<'EOT'
 <?php
 
-#[PhpBench\Benchmark\Metadata\Attributes\Iterations(1)]
+#[PhpBench\Attributes\Iterations(1)]
 class FooBench
 {
 public function bar(): void
@@ -106,7 +106,7 @@ EOT
             <<<'EOT'
 <?php
 
-#[PhpBench\Benchmark\Metadata\Attributes\Revs(12)]
+#[PhpBench\Attributes\Revs(12)]
 class FooBench
 {
     public function bar(): void
@@ -128,7 +128,7 @@ EOT
 
 class FooBench
 {
-    #[PhpBench\Benchmark\Metadata\Attributes\Iterations(12)]
+    #[PhpBench\Attributes\Iterations(12)]
     public function bar(): void
     {
     }

@@ -10,20 +10,23 @@
  *
  */
 
-namespace PhpBench\Benchmark\Metadata\Attributes;
+namespace PhpBench\Attributes;
 
 use Attribute;
 
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
-class Iterations
+final class Revs
 {
     /**
      * @var int[]
      */
-    public $iterations;
+    public $revs;
 
-    public function __construct(int | array $iterations)
+    /**
+     * @param int|int[] $revs
+     */
+    public function __construct(int | array $revs)
     {
-        $this->iterations = (array)$iterations;
+        $this->revs = (array)$revs;
     }
 }
