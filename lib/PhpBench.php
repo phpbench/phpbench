@@ -258,7 +258,6 @@ class PhpBench
             int $line,
             ?array $context = null
         ) use ($format): ?bool {
-            dump($context);
             $format->error(sprintf(
                 '%s in %s:%s',
                 $message,
