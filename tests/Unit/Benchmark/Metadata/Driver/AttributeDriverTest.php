@@ -51,6 +51,10 @@ class AttributeDriverTest extends TestCase
      */
     public function provideLoadBenchmark(): Generator
     {
+        if ($this->shouldSkip()) {
+            return;
+        }
+
         yield [
             [
                 new Executor('foobar'),
@@ -120,6 +124,10 @@ class AttributeDriverTest extends TestCase
      */
     public function provideLoadSubject(): Generator
     {
+        if ($this->shouldSkip()) {
+            return;
+        }
+
         yield [
             [
                 new BeforeMethods(['foobar', 'barfoo']),
@@ -287,5 +295,10 @@ class AttributeDriverTest extends TestCase
     private function createDriver(): AttributeDriver
     {
         return new AttributeDriver();
+    }
+
+    private function shouldSkip(): bool
+    {
+        return PHP_VERSION_ID < 80000;
     }
 }

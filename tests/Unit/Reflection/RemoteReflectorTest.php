@@ -79,6 +79,10 @@ class RemoteReflectorTest extends IntegrationTestCase
      */
     public function provideReflectAttributes(): Generator
     {
+        if (PHP_VERSION_ID < 80000) {
+            return;
+        }
+
         yield [
             <<<'EOT'
             <?php
