@@ -160,10 +160,10 @@ final class Runner
         foreach ($subjectMetadatas as $subjectMetadata) {
 
             // override parameters
-            $subjectMetadata->setIterations($config->getIterations($subjectMetadata->getIterations() ?: []));
-            $subjectMetadata->setRevs($config->getRevolutions($subjectMetadata->getRevs() ?: []));
-            $subjectMetadata->setWarmup($config->getWarmup($subjectMetadata->getWarmup() ?: []));
-            $subjectMetadata->setSleep($config->getSleep($subjectMetadata->getSleep() ?: 0));
+            $subjectMetadata->setIterations($config->getIterations($subjectMetadata->getIterations()));
+            $subjectMetadata->setRevs($config->getRevolutions($subjectMetadata->getRevs()));
+            $subjectMetadata->setWarmup($config->getWarmup($subjectMetadata->getWarmup()));
+            $subjectMetadata->setSleep($config->getSleep($subjectMetadata->getSleep()));
             $subjectMetadata->setRetryThreshold($config->getRetryThreshold($this->retryThreshold));
 
             if ($config->getAssertions()) {
