@@ -13,10 +13,10 @@ final class ParamProviders
     public $providers;
 
     /**
-     * @param string[] $providers
+     * @param string|string[] $providers
      */
-    public function __construct(array $providers)
+    public function __construct(array|string $providers)
     {
-        $this->providers = $providers;
+        $this->providers = (array)$providers;
     }
 }

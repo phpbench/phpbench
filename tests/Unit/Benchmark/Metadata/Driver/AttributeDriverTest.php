@@ -160,6 +160,14 @@ class AttributeDriverTest extends TestCase
         ];
         yield [
             [
+                new ParamProviders('one'),
+            ],
+            function (SubjectMetadata $metadata) {
+                self::assertEquals(['one'], $metadata->getParamProviders());
+            }
+        ];
+        yield [
+            [
                 new ParamProviders(['one', 'two']),
             ],
             function (SubjectMetadata $metadata) {

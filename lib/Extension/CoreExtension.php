@@ -19,6 +19,7 @@ use PhpBench\Benchmark\BaselineManager;
 use PhpBench\Benchmark\BenchmarkFinder;
 use PhpBench\Benchmark\Metadata\AnnotationReader;
 use PhpBench\Benchmark\Metadata\Driver\AnnotationDriver;
+use PhpBench\Benchmark\Metadata\Driver\AttributeDriver;
 use PhpBench\Benchmark\Metadata\MetadataFactory;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Console\Application;
@@ -351,6 +352,12 @@ class CoreExtension implements ExtensionInterface
                 $container->get(RemoteReflector::class),
                 $container->getParameter(self::PARAM_SUBJECT_PATTERN),
                 $container->get(AnnotationReader::class)
+            );
+        });
+
+        $container->register(AttributeDriver::class, function (Container $container) {
+            return new AttributeDriver(
+                $container->getParameter(self::PARAM_SUBJECT_PATTERN),
             );
         });
 

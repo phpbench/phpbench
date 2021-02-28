@@ -2,6 +2,8 @@
 
 namespace PhpBench\Reflection;
 
+use RuntimeException;
+
 final class ReflectionAttribute
 {
     /**
@@ -21,5 +23,18 @@ final class ReflectionAttribute
     {
         $this->name = $name;
         $this->args = $args;
+    }
+
+    /**
+     * @return ?object
+     */
+    public function instantiate()
+    {
+        return (function (string $name) {
+            if (!class_exists($name)) {
+                return null;
+            }
+            return new $name(...$this->args);
+        })($this->name);
     }
 }
