@@ -12,6 +12,9 @@
 
 namespace PhpBench\Benchmark\Metadata;
 
+use PhpBench\Model\Benchmark;
+
+
 /**
  * Benchmark metadata class.
  */
@@ -192,5 +195,14 @@ class BenchmarkMetadata
     public function setExecutor(ExecutorMetadata $serviceMetadata): void
     {
         $this->executorMetadata = $serviceMetadata;
+    }
+
+    public function merge(self $benchmarkMetadata): void
+    {
+        $this->beforeClassMethods = array_merge($this->beforeClassMethods, $benchmarkMetadata->beforeClassMethods);
+        $this->afterClassMethods = array_merge($this->afterClassMethods, $benchmarkMetadata->afterClassMethods);
+        foreach ($benchmarkMetadata->getSubjects() as $subject) {
+            $this->getOrCreateSubject($subject->getName())->merge($subject);
+        }
     }
 }
