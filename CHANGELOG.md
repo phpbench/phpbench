@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+master
+------
+
+- Support for PHP 8 Attributes
+
 1.0.0-alpha5
 -------
 

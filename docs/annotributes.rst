@@ -1,7 +1,7 @@
 Annotributes
 ============
 
-Configure your benchmarks with Annotations or, if you have PHP 8, attributes.
+Configure your benchmarks with **Annotations** or, if you have PHP 8, **Attributes**.
 
 .. contents::
     :depth: 1
