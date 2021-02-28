@@ -226,8 +226,15 @@ class AnnotationDriver implements DriverInterface
         }
     }
 
-    private function resolveValue(AbstractArrayAnnotation $annotation, array $currentValues, array $annotationValues): array
+    private function resolveValue(AbstractArrayAnnotation $annotation, ?array $currentValues, ?array $annotationValues): ?array
     {
+        if ($currentValues === null) {
+            return $annotationValues;
+        }
+
+        if ($annotationValues === null) {
+            return $currentValues;
+        }
         $values = $annotation->getExtend() === true ? $currentValues : [];
         $values = array_merge($values, $annotationValues);
 

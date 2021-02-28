@@ -1,6 +1,12 @@
 Annotributes
 ============
 
+Configure your benchmarks with Annotations or, if you have PHP 8, attributes.
+
+.. contents::
+    :depth: 1
+    :local:
+
 .. _revolutions:
 
 Revolutions
@@ -295,7 +301,7 @@ the system recover. Use the ``@Sleep`` annotation, specifying the number of
           :language: php
           :sections: all,benchTime,sleep
 
-The above example will pause (sleep) for 1 second *after* each iteration.
+The above example will pause (sleep) for 1 millisecond *after* each iteration.
 
 .. note::
 

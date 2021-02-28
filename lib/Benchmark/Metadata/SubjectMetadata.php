@@ -28,24 +28,24 @@ class SubjectMetadata
     private $parameterSets = [];
 
     /**
-     * @var string[]
+     * @var string[]|null
      */
-    private $groups = [];
+    private $groups;
 
     /**
-     * @var string[]
+     * @var string[]|null
      */
-    private $beforeMethods = [];
+    private $beforeMethods;
 
     /**
-     * @var string[]
+     * @var string[]|null
      */
-    private $afterMethods = [];
+    private $afterMethods;
 
     /**
-     * @var string[]
+     * @var string[]|null
      */
-    private $paramProviders = [];
+    private $paramProviders;
 
     /**
      * @var float|null
@@ -53,29 +53,29 @@ class SubjectMetadata
     private $retryThreshold;
 
     /**
-     * @var int[]
+     * @var null|int[]
      */
-    private $iterations = [1];
+    private $iterations = null;
 
     /**
-     * @var int[]
+     * @var null|int[]
      */
-    private $revs = [1];
+    private $revs = null;
 
     /**
-     * @var int[]
+     * @var null|int[]
      */
-    private $warmup = [0];
+    private $warmup;
 
     /**
-     * @var bool
+     * @var bool|null
      */
-    private $skip = false;
+    private $skip;
 
     /**
-     * @var int
+     * @var int|null
      */
-    private $sleep = 0;
+    private $sleep;
 
     /**
      * @var string|null
@@ -98,9 +98,9 @@ class SubjectMetadata
     private $benchmarkMetadata;
 
     /**
-     * @var array<string>
+     * @var null|array<string>
      */
-    private $assertions = [];
+    private $assertions;
 
     /**
      * @var ExecutorMetadata|null
@@ -110,7 +110,7 @@ class SubjectMetadata
     /**
      * @var float|null
      */
-    private $timeout = 0;
+    private $timeout;
 
     /**
      * @var int|null
@@ -161,9 +161,12 @@ class SubjectMetadata
         return $this->benchmarkMetadata;
     }
 
+    /**
+     * @return string[]
+     */
     public function getGroups(): array
     {
-        return $this->groups;
+        return $this->groups ?: [];
     }
 
     public function inGroups(array $groups): bool
@@ -178,7 +181,7 @@ class SubjectMetadata
 
     public function getBeforeMethods(): array
     {
-        return $this->beforeMethods;
+        return $this->beforeMethods ?: [];
     }
 
     public function setBeforeMethods(array $beforeMethods): void
@@ -188,7 +191,7 @@ class SubjectMetadata
 
     public function getAfterMethods(): array
     {
-        return $this->afterMethods;
+        return $this->afterMethods ?: [];
     }
 
     public function setAfterMethods(array $afterMethods): void
@@ -198,7 +201,7 @@ class SubjectMetadata
 
     public function getParamProviders(): array
     {
-        return $this->paramProviders;
+        return $this->paramProviders ?: [];
     }
 
     public function setParamProviders(array $paramProviders): self
@@ -210,7 +213,7 @@ class SubjectMetadata
 
     public function getIterations(): array
     {
-        return $this->iterations;
+        return $this->iterations ?: [1];
     }
 
     public function setIterations(array $iterations): void
@@ -220,7 +223,7 @@ class SubjectMetadata
 
     public function getRevs(): array
     {
-        return $this->revs;
+        return $this->revs ?: [1];
     }
 
     public function setRevs(array $revs): void
@@ -230,7 +233,7 @@ class SubjectMetadata
 
     public function getSkip(): bool
     {
-        return $this->skip;
+        return $this->skip ?: false;
     }
 
     public function setSkip(bool $skip): void
@@ -240,7 +243,7 @@ class SubjectMetadata
 
     public function getSleep(): int
     {
-        return $this->sleep;
+        return $this->sleep ?: 0;
     }
 
     public function setSleep(int $sleep): void
@@ -278,11 +281,17 @@ class SubjectMetadata
         $this->outputMode = $outputMode;
     }
 
+    /**
+     * @return int[]
+     */
     public function getWarmup(): array
     {
-        return $this->warmup;
+        return $this->warmup ?: [0];
     }
 
+    /**
+     * @param int[] $warmup
+     */
     public function setWarmup(array $warmup): void
     {
         $this->warmup = $warmup;
@@ -320,7 +329,7 @@ class SubjectMetadata
      */
     public function getAssertions(): array
     {
-        return $this->assertions;
+        return $this->assertions ?: [];
     }
 
     public function getExecutor(): ?ExecutorMetadata
@@ -366,6 +375,13 @@ class SubjectMetadata
             'assertions',
             'warmup',
         ] as $toMerge) {
+            if ($subject->$toMerge === null) {
+                continue;
+            }
+
+            if ($this->$toMerge === null) {
+                $this->$toMerge = $subject->$toMerge;
+            }
             $this->$toMerge = array_merge($this->$toMerge, $subject->$toMerge);
         }
 

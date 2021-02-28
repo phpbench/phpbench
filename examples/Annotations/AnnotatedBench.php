@@ -7,12 +7,14 @@ use Generator;
 
 // section: all
 /**
+// endsection: all
 // section: beforeClassMethods
-     * @BeforeClassMethods("setUpBeforeClass")
+ * @BeforeClassMethods("setUpBeforeClass")
 // endsection: beforeClassMethods
 // section: afterClassMethods
-     * @AfterClassMethods("tearDownAfterClass")
+ * @AfterClassMethods("tearDownAfterClass")
 // endsection: afterClassMethods
+// section: all
  */
 class AnnotatedBench
 {
@@ -36,7 +38,7 @@ class AnnotatedBench
      * @Revs(10)
 // endsection: revs
 // section: sleep
-     * @Sleep(1000000)
+     * @Sleep(1000)
 // endsection: sleep
 // section: outputTimeUnit
      * @OutputTimeUnit("milliseconds")

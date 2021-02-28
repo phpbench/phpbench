@@ -372,7 +372,7 @@ class CoreExtension implements ExtensionInterface
         $container->register(MetadataFactory::class, function (Container $container) {
             return new MetadataFactory(
                 $container->get(RemoteReflector::class),
-                $container->get(AnnotationDriver::class)
+                $container->get(ChainDriver::class)
             );
         });
 
