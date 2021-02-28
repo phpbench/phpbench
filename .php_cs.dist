@@ -7,7 +7,7 @@ $finder = PhpCsFixer\Finder::create()
         __DIR__ . '/extensions',
     ])
     ->exclude([
-        'Benchmark/Metadata/Attributes'
+        'Attributes'
     ])
 ;
 
