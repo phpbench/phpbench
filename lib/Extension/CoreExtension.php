@@ -358,14 +358,14 @@ class CoreExtension implements ExtensionInterface
 
         $container->register(AttributeDriver::class, function (Container $container) {
             return new AttributeDriver(
-                $container->getParameter(self::PARAM_SUBJECT_PATTERN),
+                $container->getParameter(self::PARAM_SUBJECT_PATTERN)
             );
         });
 
         $container->register(ChainDriver::class, function (Container $container) {
             return new ChainDriver([
                 $container->get(AnnotationDriver::class),
-                $container->get(AttributeDriver::class),
+                $container->get(AttributeDriver::class)
             ]);
         });
 

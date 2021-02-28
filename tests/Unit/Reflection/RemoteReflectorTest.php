@@ -85,16 +85,16 @@ class RemoteReflectorTest extends IntegrationTestCase
 
         yield [
             <<<'EOT'
-            <?php
+<?php
 
-            #[PhpBench\Benchmark\Metadata\Attributes\Iterations(1)]
-            class FooBench
-            {
-                public function bar(): void
-                {
-                }
-            }
-            EOT
+#[PhpBench\Benchmark\Metadata\Attributes\Iterations(1)]
+class FooBench
+{
+public function bar(): void
+{
+}
+}
+EOT
             , function (ReflectionClass $class): void {
                 self::assertCount(1, $class->attributes);
                 $first = reset($class->attributes);
@@ -104,16 +104,16 @@ class RemoteReflectorTest extends IntegrationTestCase
 
         yield [
             <<<'EOT'
-            <?php
+<?php
 
-            #[PhpBench\Benchmark\Metadata\Attributes\Revs(12)]
-            class FooBench
-            {
-                public function bar(): void
-                {
-                }
-            }
-            EOT
+#[PhpBench\Benchmark\Metadata\Attributes\Revs(12)]
+class FooBench
+{
+    public function bar(): void
+    {
+    }
+}
+EOT
             , function (ReflectionClass $class): void {
                 $first = reset($class->attributes);
                 self::assertInstanceof(Revs::class, $first);
@@ -124,16 +124,16 @@ class RemoteReflectorTest extends IntegrationTestCase
 
         yield [
             <<<'EOT'
-            <?php
+<?php
 
-            class FooBench
-            {
-                #[PhpBench\Benchmark\Metadata\Attributes\Iterations(12)]
-                public function bar(): void
-                {
-                }
-            }
-            EOT
+class FooBench
+{
+    #[PhpBench\Benchmark\Metadata\Attributes\Iterations(12)]
+    public function bar(): void
+    {
+    }
+}
+EOT
             , function (ReflectionClass $class): void {
                 $method = reset($class->methods);
                 assert($method instanceof ReflectionMethod);
@@ -147,16 +147,16 @@ class RemoteReflectorTest extends IntegrationTestCase
 
         yield 'ignores non-existing attributes' => [
             <<<'EOT'
-            <?php
+<?php
 
-            class FooBench
-            {
-                #[Barzoo(12)]
-                public function bar(): void
-                {
-                }
-            }
-            EOT
+class FooBench
+{
+    #[Barzoo(12)]
+    public function bar(): void
+    {
+    }
+}
+EOT
             , function (ReflectionClass $class): void {
                 $method = reset($class->methods);
                 assert($method instanceof ReflectionMethod);
@@ -253,10 +253,6 @@ class RemoteReflectorTest extends IntegrationTestCase
      */
     public function testMultipleClassKeywords(): void
     {
-        if (version_compare(phpversion(), '5.5', '<')) {
-            $this->markTestSkipped();
-        }
-
         $fname = __DIR__ . '/reflector/ClassWithClassKeywords.php';
         $classHierarchy = $this->reflector->reflect($fname);
         $reflection = $classHierarchy->getTop();
