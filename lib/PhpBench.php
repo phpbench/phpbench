@@ -256,8 +256,9 @@ class PhpBench
             string $message,
             string $file,
             int $line,
-            array $context
+            ?array $context = null
         ) use ($format): ?bool {
+            dump($context);
             $format->error(sprintf(
                 '%s in %s:%s',
                 $message,
@@ -266,10 +267,10 @@ class PhpBench
             ));
 
             exit(255);
-        });
+        }, E_USER_ERROR);
 
         set_exception_handler(function (Throwable $throwable) use ($format, $input): void {
-            $format->text($throwable->getFile());
+            $format->text(sprintf('%s:%s', $throwable->getFile(), $throwable->getLine()));
             $format->error($throwable->getMessage());
 
             if ($input->hasParameterOption(['-v', '-vv', '-vvv'])) {
