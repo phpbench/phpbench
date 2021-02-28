@@ -24,7 +24,15 @@ class ReflectionHierarchy implements IteratorAggregate
     /**
      * @var ReflectionClass[]
      */
-    private $reflectionClasses = [];
+    private $reflectionClasses;
+
+    /**
+     * @param ReflectionClass[] $reflectionClasses
+     */
+    public function __construct(array $reflectionClasses = [])
+    {
+        $this->reflectionClasses = $reflectionClasses;
+    }
 
     /**
      * Add a reflection class.

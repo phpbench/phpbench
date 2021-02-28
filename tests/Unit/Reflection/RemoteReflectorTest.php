@@ -12,16 +12,20 @@
 
 namespace PhpBench\Tests\Unit\Reflection;
 
+use Generator;
+use PhpBench\Attributes\Iterations;
+use PhpBench\Attributes\Revs;
 use PhpBench\Reflection\ReflectionClass;
 use PhpBench\Reflection\ReflectionHierarchy;
+use PhpBench\Reflection\ReflectionMethod;
 use PhpBench\Reflection\RemoteReflector;
 use PhpBench\Remote\Launcher;
-use PhpBench\Tests\TestCase;
+use PhpBench\Tests\IntegrationTestCase;
 use PhpBench\Tests\Unit\Reflection\reflector\Class1;
 use PhpBench\Tests\Unit\Reflection\reflector\Class2;
 use PhpBench\Tests\Unit\Reflection\reflector\Class3;
 
-class RemoteReflectorTest extends TestCase
+class RemoteReflectorTest extends IntegrationTestCase
 {
     private $reflector;
 
@@ -53,6 +57,112 @@ class RemoteReflectorTest extends TestCase
             'provideParamsNull',
         ], array_keys($reflection->methods));
         $this->assertStringContainsString('Method One Comment', $reflection->methods['methodOne']->comment);
+    }
+
+    /**
+     * @dataProvider provideReflectAttributes
+     */
+    public function testReflectAttributes(string $source, callable $assertion): void
+    {
+        $this->workspace()->put('test.php', $source);
+
+        $classHierarchy = $this->reflector->reflect($this->workspace()->path('test.php'));
+        $this->assertInstanceOf(ReflectionHierarchy::class, $classHierarchy);
+        $reflection = $classHierarchy->getTop();
+        $this->assertInstanceOf(ReflectionClass::class, $reflection);
+        assert($reflection instanceof ReflectionClass);
+        $assertion($reflection);
+    }
+
+    /**
+     * @return Generator<mixed>
+     */
+    public function provideReflectAttributes(): Generator
+    {
+        if (PHP_VERSION_ID < 80000) {
+            return;
+        }
+
+        yield [
+            <<<'EOT'
+<?php
+
+#[PhpBench\Attributes\Iterations(1)]
+class FooBench
+{
+public function bar(): void
+{
+}
+}
+EOT
+            , function (ReflectionClass $class): void {
+                self::assertCount(1, $class->attributes);
+                $first = reset($class->attributes);
+                self::assertInstanceof(Iterations::class, $first);
+            }
+        ];
+
+        yield [
+            <<<'EOT'
+<?php
+
+#[PhpBench\Attributes\Revs(12)]
+class FooBench
+{
+    public function bar(): void
+    {
+    }
+}
+EOT
+            , function (ReflectionClass $class): void {
+                $first = reset($class->attributes);
+                self::assertInstanceof(Revs::class, $first);
+                assert($first instanceof Revs);
+                self::assertEquals([12], $first->revs);
+            }
+        ];
+
+        yield [
+            <<<'EOT'
+<?php
+
+class FooBench
+{
+    #[PhpBench\Attributes\Iterations(12)]
+    public function bar(): void
+    {
+    }
+}
+EOT
+            , function (ReflectionClass $class): void {
+                $method = reset($class->methods);
+                assert($method instanceof ReflectionMethod);
+                self::assertCount(1, $method->attributes);
+                $first = reset($method->attributes);
+                self::assertInstanceof(Iterations::class, $first);
+                assert($first instanceof Iterations);
+                self::assertEquals([12], $first->iterations);
+            }
+        ];
+
+        yield 'ignores non-existing attributes' => [
+            <<<'EOT'
+<?php
+
+class FooBench
+{
+    #[Barzoo(12)]
+    public function bar(): void
+    {
+    }
+}
+EOT
+            , function (ReflectionClass $class): void {
+                $method = reset($class->methods);
+                assert($method instanceof ReflectionMethod);
+                self::assertCount(0, $method->attributes);
+            }
+        ];
     }
 
     /**
@@ -143,10 +253,6 @@ class RemoteReflectorTest extends TestCase
      */
     public function testMultipleClassKeywords(): void
     {
-        if (version_compare(phpversion(), '5.5', '<')) {
-            $this->markTestSkipped();
-        }
-
         $fname = __DIR__ . '/reflector/ClassWithClassKeywords.php';
         $classHierarchy = $this->reflector->reflect($fname);
         $reflection = $classHierarchy->getTop();

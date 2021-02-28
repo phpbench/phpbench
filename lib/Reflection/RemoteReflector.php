@@ -12,6 +12,7 @@
 
 namespace PhpBench\Reflection;
 
+use function array_filter;
 use PhpBench\Remote\Launcher;
 
 /**
@@ -61,6 +62,7 @@ class RemoteReflector implements ReflectorInterface
             $reflectionClass->interfaces = $classInfo['interfaces'];
             $reflectionClass->path = $file;
             $reflectionClass->namespace = $classInfo['namespace'];
+            $reflectionClass->attributes = $this->resolveAttributes($classInfo['attributes']);
 
             foreach ($classInfo['methods'] as $methodInfo) {
                 $reflectionMethod = new ReflectionMethod();
@@ -69,6 +71,8 @@ class RemoteReflector implements ReflectorInterface
                 $reflectionMethod->name = $methodInfo['name'];
                 $reflectionMethod->isStatic = $methodInfo['static'];
                 $reflectionMethod->comment = $methodInfo['comment'];
+                $attributes = $methodInfo['attributes'];
+                $reflectionMethod->attributes = $this->resolveAttributes($attributes);
                 $reflectionClass->methods[$reflectionMethod->name] = $reflectionMethod;
             }
             $hierarchy->addReflectionClass($reflectionClass);
@@ -163,5 +167,19 @@ class RemoteReflector implements ReflectorInterface
         }
 
         return $namespace . '\\' . $class;
+    }
+
+    /**
+     * @param array<string, mixed> $attributes
+     *
+     * @return object[]
+     */
+    private function resolveAttributes(array $attributes): array
+    {
+        return array_filter(array_map(function (array $attr) {
+            return (
+                new ReflectionAttribute($attr['name'], $attr['args'])
+            )->instantiate() ?: false;
+        }, $attributes));
     }
 }

@@ -90,7 +90,7 @@ final class Lexer
         $chunks = (array)preg_split(
             $this->pattern,
             $expression,
-            null,
+            -1,
             PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE
         );
         $tokens = [];

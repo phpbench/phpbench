@@ -257,6 +257,7 @@ class Payload
     private function decodeResults(Process $process): array
     {
         $output = $process->getOutput();
+        
         $result = @unserialize($output);
 
         if (is_array($result)) {

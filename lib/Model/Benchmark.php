@@ -48,8 +48,8 @@ class Benchmark implements \IteratorAggregate
     public function createSubjectFromMetadataAndExecutor(SubjectMetadata $metadata, ResolvedExecutor $executor): Subject
     {
         $subject = new Subject($this, $metadata->getName());
-        $subject->setGroups($metadata->getGroups());
-        $subject->setSleep($metadata->getSleep());
+        $subject->setGroups($metadata->getGroups() ?: []);
+        $subject->setSleep($metadata->getSleep() ?: 0);
         $subject->setRetryThreshold($metadata->getRetryThreshold());
         $subject->setOutputTimeUnit($metadata->getOutputTimeUnit());
         $subject->setOutputTimePrecision($metadata->getOutputTimePrecision());

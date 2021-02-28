@@ -14,6 +14,7 @@ namespace PhpBench\Reflection;
 
 class ReflectionClass
 {
+    public $attributes = [];
     public $path;
     public $interfaces = [];
     public $class;
@@ -21,4 +22,10 @@ class ReflectionClass
     public $abstract = false;
     public $comment;
     public $methods = [];
+
+    public function __construct(?string $path = null, ?string $class = null)
+    {
+        $this->path = $path;
+        $this->class = $class;
+    }
 }

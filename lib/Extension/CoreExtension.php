@@ -19,6 +19,8 @@ use PhpBench\Benchmark\BaselineManager;
 use PhpBench\Benchmark\BenchmarkFinder;
 use PhpBench\Benchmark\Metadata\AnnotationReader;
 use PhpBench\Benchmark\Metadata\Driver\AnnotationDriver;
+use PhpBench\Benchmark\Metadata\Driver\AttributeDriver;
+use PhpBench\Benchmark\Metadata\Driver\ChainDriver;
 use PhpBench\Benchmark\Metadata\MetadataFactory;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Console\Application;
@@ -127,6 +129,8 @@ class CoreExtension implements ExtensionInterface
     public const PARAM_CONSOLE_ANSI = 'console.ansi';
     public const PARAM_PROGRESS_SUMMARY_FORMAT = 'progress_summary_variant_format';
     public const PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT = 'progress_summary_baseline_format';
+    public const PARAM_ANNOTATIONS = 'annotations';
+    public const PARAM_ATTRIBUTES = 'attributes';
 
     public const TAG_EXECUTOR = 'benchmark_executor';
     public const TAG_CONSOLE_COMMAND = 'console.command';
@@ -173,7 +177,11 @@ class CoreExtension implements ExtensionInterface
             self::PARAM_CONSOLE_ANSI => true,
             self::PARAM_PROGRESS_SUMMARY_FORMAT => '%variant.mode% %time_unit% (±%variant.rstdev%%)',
             self::PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT => '%variant.mode%%time_unit% vs %baseline.mode%%time_unit% (±%variant.rstdev%%) <%result_style%>%percent_difference%%</>',
+            self::PARAM_ANNOTATIONS => true,
+            self::PARAM_ATTRIBUTES => true,
         ]);
+        $resolver->setAllowedTypes(self::PARAM_ANNOTATIONS, ['bool']);
+        $resolver->setAllowedTypes(self::PARAM_ATTRIBUTES, ['bool']);
         $resolver->setAllowedTypes(self::PARAM_BOOTSTRAP, ['string', 'null']);
         $resolver->setAllowedTypes(self::PARAM_PATH, ['string', 'array', 'null']);
         $resolver->setAllowedTypes(self::PARAM_REPORTS, ['array']);
@@ -354,10 +362,30 @@ class CoreExtension implements ExtensionInterface
             );
         });
 
+        $container->register(AttributeDriver::class, function (Container $container) {
+            return new AttributeDriver(
+                $container->getParameter(self::PARAM_SUBJECT_PATTERN)
+            );
+        });
+
+        $container->register(ChainDriver::class, function (Container $container) {
+            $drivers = [];
+
+            if ($container->getParameter(self::PARAM_ANNOTATIONS)) {
+                $drivers[] = $container->get(AnnotationDriver::class);
+            }
+
+            if ($container->getParameter(self::PARAM_ATTRIBUTES)) {
+                $drivers[] = $container->get(AttributeDriver::class);
+            }
+
+            return new ChainDriver($drivers);
+        });
+
         $container->register(MetadataFactory::class, function (Container $container) {
             return new MetadataFactory(
                 $container->get(RemoteReflector::class),
-                $container->get(AnnotationDriver::class)
+                $container->get(ChainDriver::class)
             );
         });
 

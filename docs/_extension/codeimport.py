@@ -76,7 +76,7 @@ class CodeImportDirective(SphinxDirective):
         return sectionLines;
 
     def parseSections(self, sectionType: str, line: str) -> List[str]:
-        p = re.compile(".* %s: ([a-z_,]+)" % (sectionType))
+        p = re.compile(".* %s: ([a-zA-Z_,]+)" % (sectionType))
         match = p.match(line)
         if None == match:
             return []

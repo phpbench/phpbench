@@ -67,4 +67,20 @@ class BenchmarkMetadataTest extends TestCase
         $this->metadata->filterSubjectNames(['subjectSeventySeven']);
         $this->assertFalse($this->metadata->hasSubjects());
     }
+
+    public function testMerge(): void
+    {
+        $benchmark1 = new BenchmarkMetadata(__FILE__, __CLASS__);
+        $benchmark2 = new BenchmarkMetadata(__FILE__, __CLASS__);
+
+        $benchmark1->setBeforeClassMethods(['one', 'two']);
+        $benchmark2->setBeforeClassMethods(['three', 'four']);
+        $benchmark1->setAfterClassMethods(['1', '3']);
+        $benchmark2->setAfterClassMethods(['2', '4']);
+
+        $benchmark1->merge($benchmark2);
+
+        self::assertEquals(['one', 'two', 'three', 'four'], $benchmark1->getBeforeClassMethods());
+        self::assertEquals(['1', '3', '2', '4'], $benchmark1->getAfterClassMethods());
+    }
 }

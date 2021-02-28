@@ -10,7 +10,7 @@
  *
  */
 
-namespace PhpBench\Examples\Benchmark\benchmarks;
+namespace PhpBench\Examples\Benchmark\Macro\benchmarks;
 
 class NothingBench
 {
