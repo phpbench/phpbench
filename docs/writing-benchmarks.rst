@@ -53,3 +53,9 @@ placed in the class docblock, or on individual methods docblocks.
 
     Instead of prefixing a method with ``bench`` you can use the
     ``@Subject`` annotation or specify a :ref:`custom pattern <configuration_subject_pattern>`.
+
+Benchmark Configuration
+-----------------------
+
+See the :doc:`Annotations and Attributes<annotributes>` reference to see how
+you can configure your benchmarks.
