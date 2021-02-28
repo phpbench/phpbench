@@ -352,4 +352,37 @@ class SubjectMetadata
     {
         return $this->retryLimit;
     }
+
+    public function merge(SubjectMetadata $subject): void
+    {
+        // merge
+        foreach ([
+            'groups',
+            'beforeMethods',
+            'afterMethods',
+            'paramProviders',
+            'iterations',
+            'revs',
+            'assertions',
+            'warmup',
+        ] as $toMerge) {
+            $this->$toMerge = array_merge($this->$toMerge, $subject->$toMerge);
+        }
+
+        // replace
+        foreach ([
+            'skip',
+            'sleep',
+            'outputTimeUnit',
+            'outputTimePrecision',
+            'outputMode',
+            'executorMetadata',
+            'timeout',
+        ] as $toReplace) {
+            if ($subject->$toReplace === null) {
+                continue;
+            }
+            $this->$toReplace = $subject->$toReplace;
+        }
+    }
 }
