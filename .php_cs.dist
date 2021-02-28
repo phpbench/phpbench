@@ -6,6 +6,9 @@ $finder = PhpCsFixer\Finder::create()
         __DIR__ . '/tests',
         __DIR__ . '/extensions',
     ])
+    ->exclude([
+        'Benchmark/Metadata/Attributes'
+    ])
 ;
 
 return PhpCsFixer\Config::create()

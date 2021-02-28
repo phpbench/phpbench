@@ -3,6 +3,9 @@ parameters:
     paths:
         - lib
         - examples/Extension
+    excludePaths:
+        - lib/Benchmark/Metadata/Attributes
+        - lib/Benchmark/Metadata/Driver/AttributeDriver.php
     typeAliases:
         parameters: 'array<string,mixed>'
 
