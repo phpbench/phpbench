@@ -15,7 +15,7 @@ namespace PhpBench\Benchmark\Metadata\Attributes;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_CLASS|Attribute::TARGET_METHOD)]
-ginal class Revs
+final class Revs
 {
     /**
      * @var int[]

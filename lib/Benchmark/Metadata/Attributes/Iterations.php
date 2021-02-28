@@ -17,7 +17,10 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS|Attribute::TARGET_METHOD)]
 class Iterations
 {
-    private $iterations;
+    /**
+     * @var int[]
+     */
+    public $iterations;
 
     public function __construct(int|array $iterations)
     {

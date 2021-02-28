@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Benchmark\Metadata\Annotations;
+namespace PhpBench\Benchmark\Metadata\Attributes;
 
 use Attribute;
 
@@ -20,7 +20,7 @@ class Executor
     /**
      * @param array<string,mixed> $config
      */
-    public function __construct(string $name, array $config)
+    public function __construct(string $name, array $config = [])
     {
         $this->name = $name;
         $this->config = $config;

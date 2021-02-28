@@ -316,7 +316,7 @@ class SubjectMetadata
     }
 
     /**
-     * @return array<string>
+     * @return string[]
      */
     public function getAssertions(): array
     {

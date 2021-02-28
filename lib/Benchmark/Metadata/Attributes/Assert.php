@@ -14,6 +14,6 @@ class Assert
 
     public function __construct(string $expression)
     {
-        $this->expression;
+        $this->expression = $expression;
     }
 }

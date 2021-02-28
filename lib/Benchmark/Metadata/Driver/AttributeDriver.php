@@ -2,9 +2,9 @@
 
 namespace PhpBench\Benchmark\Metadata\Driver;
 
-use PhpBench\Benchmark\Metadata\AnnotationReader;
+use PhpBench\Benchmark\Metadata\AttributeReader;
 use PhpBench\Benchmark\Metadata\Attributes;
-use PhpBench\Benchmark\Metadata\Attributes\AbstractArrayAnnotation;
+use PhpBench\Benchmark\Metadata\Attributes\AbstractArrayAttribute;
 use PhpBench\Benchmark\Metadata\Attributes\AfterClassMethods;
 use PhpBench\Benchmark\Metadata\Attributes\BeforeClassMethods;
 use PhpBench\Benchmark\Metadata\Attributes\Subject;
@@ -12,19 +12,20 @@ use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\DriverInterface;
 use PhpBench\Benchmark\Metadata\ExecutorMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
+use PhpBench\Reflection\ReflectionClass;
 use PhpBench\Reflection\ReflectionHierarchy;
+use PhpBench\Reflection\ReflectionMethod;
 use PhpBench\Reflection\ReflectorInterface;
 
 class AttributeDriver implements DriverInterface
 {
-    private $reflector;
-    private $reader;
+    /**
+     * @var string
+     */
     private $subjectPattern;
 
-    public function __construct(ReflectorInterface $reflector, $subjectPattern = '^bench', AnnotationReader $reader = null)
+    public function __construct(string $subjectPattern = '^bench')
     {
-        $this->reflector = $reflector;
-        $this->reader = $reader ?: new AnnotationReader();
         $this->subjectPattern = $subjectPattern;
     }
 
@@ -40,55 +41,51 @@ class AttributeDriver implements DriverInterface
 
     private function buildBenchmark(BenchmarkMetadata $benchmark, ReflectionHierarchy $hierarchy): void
     {
-        $annotations = [];
+        $attributes = [];
         $reflectionHierarchy = array_reverse(iterator_to_array($hierarchy));
 
         foreach ($reflectionHierarchy as $reflection) {
-            $benchAttributes = $this->reader->getClassAnnotations(
-                $reflection
-            );
+            assert($reflection instanceof ReflectionClass);
+            $benchAttributes = $reflection->attributes;
 
-            $annotations = array_merge($annotations, $benchAttributes);
+            $attributes = array_merge($attributes, $benchAttributes);
 
-            foreach ($annotations as $annotation) {
-                $this->processBenchmark($benchmark, $annotation);
+            foreach ($attributes as $attribute) {
+                $this->processBenchmark($benchmark, $attribute);
             }
         }
 
         foreach ($reflectionHierarchy as $reflection) {
             foreach ($reflection->methods as $reflectionMethod) {
+                assert($reflectionMethod instanceof ReflectionMethod);
                 $hasPrefix = (bool) preg_match('{' . $this->subjectPattern . '}', $reflectionMethod->name);
-                $hasAnnotation = false;
+                $hasAttribute = false;
                 $subjectAttributes = null;
 
-                // if the prefix is false check to see if it has a `@Subject` annotation
+                // if the prefix is false check to see if it has a `@Subject` attribute
                 if (false === $hasPrefix) {
-                    $subjectAttributes = $this->reader->getMethodAnnotations(
-                        $reflectionMethod
-                    );
+                    $subjectAttributes = $reflectionMethod->attributes;
 
-                    foreach ($subjectAttributes as $annotation) {
-                        if ($annotation instanceof Subject) {
-                            $hasAnnotation = true;
+                    foreach ($subjectAttributes as $attribute) {
+                        if ($attribute instanceof Subject) {
+                            $hasAttribute = true;
                         }
                     }
                 }
 
-                if (false === $hasPrefix && false === $hasAnnotation) {
+                if (false === $hasPrefix && false === $hasAttribute) {
                     continue;
                 }
 
                 if (null === $subjectAttributes) {
-                    $subjectAttributes = $this->reader->getMethodAnnotations(
-                        $reflectionMethod
-                    );
+                    $subjectAttributes = $reflectionMethod->attributes;
                 }
 
                 $subject = $benchmark->getOrCreateSubject($reflectionMethod->name);
 
-                // apply the benchmark annotations to the subject
-                foreach ($annotations as $annotation) {
-                    $this->processSubject($subject, $annotation);
+                // apply the benchmark attributes to the subject
+                foreach ($attributes as $attribute) {
+                    $this->processSubject($subject, $attribute);
                 }
 
                 $this->buildSubject($subject, $subjectAttributes);
@@ -96,132 +93,121 @@ class AttributeDriver implements DriverInterface
         }
     }
 
-    private function buildSubject(SubjectMetadata $subject, $annotations): void
+    /**
+     * @param object[] $attributes
+     */
+    private function buildSubject(SubjectMetadata $subject, $attributes): void
     {
-        foreach ($annotations as $annotation) {
-            if ($annotation instanceof BeforeClassMethods) {
+        foreach ($attributes as $attribute) {
+            if ($attribute instanceof BeforeClassMethods) {
                 throw new \InvalidArgumentException(sprintf(
-                    '@BeforeClassMethods annotation can only be applied at the class level (%s)',
+                    '@BeforeClassMethods attribute can only be applied at the class level (%s)',
                     $subject->getBenchmark()->getClass() . '::' . $subject->getName()
                 ));
             }
 
-            if ($annotation instanceof AfterClassMethods) {
+            if ($attribute instanceof AfterClassMethods) {
                 throw new \InvalidArgumentException(sprintf(
-                    '@AfterClassMethods annotation can only be applied at the class level (%s)',
+                    '@AfterClassMethods attribute can only be applied at the class level (%s)',
                     $subject->getBenchmark()->getClass() . '::' . $subject->getName()
                 ));
             }
 
-            $this->processSubject($subject, $annotation);
+            $this->processSubject($subject, $attribute);
         }
     }
 
-    private function processSubject(SubjectMetadata $subject, $annotation): void
+    /**
+     * @param object $attribute
+     */
+    private function processSubject(SubjectMetadata $subject, $attribute): void
     {
-        if ($annotation instanceof Attributes\BeforeMethods) {
-            $subject->setBeforeMethods(
-                $this->resolveValue(
-                    $annotation,
+        if ($attribute instanceof Attributes\BeforeMethods) {
+            $subject->setBeforeMethods(array_merge(
                     $subject->getBeforeMethods(),
-                    $annotation->getMethods()
-                )
-            );
+                    $attribute->methods
+            ));
         }
 
-        if ($annotation instanceof Attributes\AfterMethods) {
-            $subject->setAfterMethods(
-                $this->resolveValue(
-                    $annotation,
-                    $subject->getAfterMethods(),
-                    $annotation->getMethods()
-                )
-            );
+        if ($attribute instanceof Attributes\AfterMethods) {
+            $subject->setAfterMethods(array_merge(
+                $subject->getAfterMethods(),
+                $attribute->methods
+            ));
         }
 
-        if ($annotation instanceof Attributes\ParamProviders) {
-            $subject->setParamProviders(
-                $this->resolveValue(
-                    $annotation,
+        if ($attribute instanceof Attributes\ParamProviders) {
+            $subject->setParamProviders(array_merge(
                     $subject->getParamProviders(),
-                    $annotation->getProviders()
-                )
-            );
+                    $attribute->providers
+            ));
         }
 
-        if ($annotation instanceof Attributes\Iterations) {
-            $subject->setIterations($annotation->getIterations());
+        if ($attribute instanceof Attributes\Iterations) {
+            $subject->setIterations($attribute->iterations);
         }
 
-        if ($annotation instanceof Attributes\Sleep) {
-            $subject->setSleep($annotation->getSleep());
+        if ($attribute instanceof Attributes\Sleep) {
+            $subject->setSleep($attribute->sleep);
         }
 
-        if ($annotation instanceof Attributes\Groups) {
-            $subject->setGroups(
-                $this->resolveValue(
-                    $annotation,
+        if ($attribute instanceof Attributes\Groups) {
+            $subject->setGroups(array_merge(
                     $subject->getGroups(),
-                    $annotation->getGroups()
-                )
-            );
+                    $attribute->groups
+            ));
         }
 
-        if ($annotation instanceof Attributes\Revs) {
-            $subject->setRevs($annotation->getRevs());
+        if ($attribute instanceof Attributes\Revs) {
+            $subject->setRevs($attribute->revs);
         }
 
-        if ($annotation instanceof Attributes\Warmup) {
-            $subject->setWarmup($annotation->getRevs());
+        if ($attribute instanceof Attributes\Warmup) {
+            $subject->setWarmup($attribute->revs);
         }
 
-        if ($annotation instanceof Attributes\Skip) {
+        if ($attribute instanceof Attributes\Skip) {
             $subject->setSkip(true);
         }
 
-        if ($annotation instanceof Attributes\OutputTimeUnit) {
-            $subject->setOutputTimeUnit($annotation->getTimeUnit());
-            $subject->setOutputTimePrecision($annotation->getPrecision());
+        if ($attribute instanceof Attributes\OutputTimeUnit) {
+            $subject->setOutputTimeUnit($attribute->timeUnit);
+            $subject->setOutputTimePrecision($attribute->precision);
         }
 
-        if ($annotation instanceof Attributes\OutputMode) {
-            $subject->setOutputMode($annotation->getMode());
+        if ($attribute instanceof Attributes\OutputMode) {
+            $subject->setOutputMode($attribute->getMode());
         }
 
-        if ($annotation instanceof Attributes\Assert) {
-            $subject->addAssertion($annotation->getExpression());
+        if ($attribute instanceof Attributes\Assert) {
+            $subject->addAssertion($attribute->expression);
         }
 
-        if ($annotation instanceof Attributes\Executor) {
-            $subject->setExecutor(new ExecutorMetadata($annotation->getName(), $annotation->getConfig()));
+        if ($attribute instanceof Attributes\Executor) {
+            $subject->setExecutor(new ExecutorMetadata($attribute->name, $attribute->config));
         }
 
-        if ($annotation instanceof Attributes\Timeout) {
-            $subject->setTimeout($annotation->getTimeout());
-        }
-    }
-
-    public function processBenchmark(BenchmarkMetadata $benchmark, $annotation): void
-    {
-        if ($annotation instanceof Attributes\Executor) {
-            $benchmark->setExecutor(new ExecutorMetadata($annotation->getName(), $annotation->getConfig()));
-        }
-
-        if ($annotation instanceof BeforeClassMethods) {
-            $benchmark->setBeforeClassMethods($annotation->getMethods());
-        }
-
-        if ($annotation instanceof AfterClassMethods) {
-            $benchmark->setAfterClassMethods($annotation->getMethods());
+        if ($attribute instanceof Attributes\Timeout) {
+            $subject->setTimeout($attribute->timeout);
         }
     }
 
-    private function resolveValue(AbstractArrayAnnotation $annotation, array $currentValues, array $annotationValues): array
+    /**
+     * @param object $attribute
+     */
+    public function processBenchmark(BenchmarkMetadata $benchmark, $attribute): void
     {
-        $values = $annotation->getExtend() === true ? $currentValues : [];
-        $values = array_merge($values, $annotationValues);
+        if ($attribute instanceof Attributes\Executor) {
+            $benchmark->setExecutor(new ExecutorMetadata($attribute->name, $attribute->config));
+        }
 
-        return $values;
+        if ($attribute instanceof BeforeClassMethods) {
+            $benchmark->setBeforeClassMethods($attribute->methods);
+        }
+
+        if ($attribute instanceof AfterClassMethods) {
+            $benchmark->setAfterClassMethods($attribute->methods);
+        }
     }
 }
 
