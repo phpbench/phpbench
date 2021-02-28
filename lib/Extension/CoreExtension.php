@@ -20,6 +20,7 @@ use PhpBench\Benchmark\BenchmarkFinder;
 use PhpBench\Benchmark\Metadata\AnnotationReader;
 use PhpBench\Benchmark\Metadata\Driver\AnnotationDriver;
 use PhpBench\Benchmark\Metadata\Driver\AttributeDriver;
+use PhpBench\Benchmark\Metadata\Driver\ChainDriver;
 use PhpBench\Benchmark\Metadata\MetadataFactory;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Console\Application;
@@ -359,6 +360,13 @@ class CoreExtension implements ExtensionInterface
             return new AttributeDriver(
                 $container->getParameter(self::PARAM_SUBJECT_PATTERN),
             );
+        });
+
+        $container->register(ChainDriver::class, function (Container $container) {
+            return new ChainDriver([
+                $container->get(AnnotationDriver::class),
+                $container->get(AttributeDriver::class),
+            ]);
         });
 
         $container->register(MetadataFactory::class, function (Container $container) {
