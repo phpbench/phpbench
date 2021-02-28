@@ -1,13 +1,13 @@
 CHANGELOG
 =========
 
-master
-------
+1.0.0-alpha6
+------------
 
 - Support for PHP 8 Attributes
 
 1.0.0-alpha5
--------
+------------
 
 Backward compatiblity breaks:
 
