@@ -13,9 +13,9 @@ correctness.
 
 Features include:
 
-- [Revolutions](https://phpbench.readthedocs.io/en/latest/writing-benchmarks.html#revolutions): Repeat your code many times to determine average execution
+- [Revolutions](https://phpbench.readthedocs.io/en/latest/annotributes.html#revolutions): Repeat your code many times to determine average execution
   *time*.
-- [Iterations](https://phpbench.readthedocs.io/en/latest/writing-benchmarks.html#iterations): Sample your revolutions many times and review aggregated
+- [Iterations](https://phpbench.readthedocs.io/en/latest/annotributes.html#iterations): Sample your revolutions many times and review aggregated
   statistical data.
 - **Process Isolation**: Each iteration is executed in a separate process.
 - [Reporting](https://phpbench.readthedocs.io/en/latest/reports.html): Customizable reports and various output formats (e.g.
@@ -24,7 +24,7 @@ Features include:
   baseline reference, or to reference them later.
 - **Memory Usage**: Keep an eye on the amount of memory used by benchmarking
   subjects.
-- [Assertions](https://phpbench.readthedocs.io/en/latest/writing-benchmarks.html#assertions): Assert that code is performing within acceptable limits, or
+- [Assertions](https://phpbench.readthedocs.io/en/latest/annotributes.html#assertions): Assert that code is performing within acceptable limits, or
   that it has not regressed from a previously recorded baseline.
 
 See the [documentation](https://phpbench.readthedocs.io/en/latest/index.html)
