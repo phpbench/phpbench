@@ -19,8 +19,10 @@ use PhpBench\Benchmark\Metadata\Attributes\Subject;
 use PhpBench\Benchmark\Metadata\Attributes\Timeout;
 use PhpBench\Benchmark\Metadata\Attributes\Warmup;
 
+// section: all
 class AttriutedBench
 {
+    // endsection: all
     #[ForeignAttribute]
     #[BeforeMethods("setUp")]
     #[AfterMethods("tearDown")]
@@ -35,13 +37,17 @@ class AttriutedBench
     #[Assert('12 < 13')]
     #[Executor('local', [])]
     #[Timeout(1E6)]
-    public function benchFoo(): void
+    // section: all
+    public function benchTimeItself(): void
     {
+        usleep(50);
     }
+    // endsection: all
 
     #[Skip]
     public function benchSkipped(): void
     {
+        usleep(50);
     }
 
     public function provideParams(): array
@@ -55,8 +61,9 @@ class AttriutedBench
     public function tearDown(): void
     {
     }
-
+// section: all
 }
+// endsection: all
 
 #[Attribute]
 class ForeignAttribute
