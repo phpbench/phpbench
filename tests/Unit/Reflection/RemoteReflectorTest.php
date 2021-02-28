@@ -12,16 +12,20 @@
 
 namespace PhpBench\Tests\Unit\Reflection;
 
+use Generator;
+use PhpBench\Reflection\ReflectionAttribute;
 use PhpBench\Reflection\ReflectionClass;
 use PhpBench\Reflection\ReflectionHierarchy;
+use PhpBench\Reflection\ReflectionMethod;
 use PhpBench\Reflection\RemoteReflector;
 use PhpBench\Remote\Launcher;
+use PhpBench\Tests\IntegrationTestCase;
 use PhpBench\Tests\TestCase;
 use PhpBench\Tests\Unit\Reflection\reflector\Class1;
 use PhpBench\Tests\Unit\Reflection\reflector\Class2;
 use PhpBench\Tests\Unit\Reflection\reflector\Class3;
 
-class RemoteReflectorTest extends TestCase
+class RemoteReflectorTest extends IntegrationTestCase
 {
     private $reflector;
 
@@ -53,6 +57,90 @@ class RemoteReflectorTest extends TestCase
             'provideParamsNull',
         ], array_keys($reflection->methods));
         $this->assertStringContainsString('Method One Comment', $reflection->methods['methodOne']->comment);
+    }
+
+    /**
+     * @dataProvider provideReflectAttributes
+     */
+    public function testReflectAttributes(string $source, callable $assertion): void
+    {
+        $this->workspace()->put('test.php', $source);
+
+        $classHierarchy = $this->reflector->reflect($this->workspace()->path('test.php'));
+        $this->assertInstanceOf(ReflectionHierarchy::class, $classHierarchy);
+        $reflection = $classHierarchy->getTop();
+        $this->assertInstanceOf(ReflectionClass::class, $reflection);
+        assert($reflection instanceof ReflectionClass);
+        $assertion($reflection);
+    }
+
+    /**
+     * @return Generator<mixed>
+     */
+    public function provideReflectAttributes(): Generator
+    {
+        yield [ 
+            <<<'EOT'
+            <?php
+
+            #[\Barfoo\Foobar]
+            class FooBench
+            {
+                #[\Baz\Bong]
+                public function bar(): void
+                {
+                }
+            }
+            EOT
+            , function (ReflectionClass $class) {
+                self::assertCount(1, $class->attributes);
+                $first = reset($class->attributes);
+                self::assertInstanceof(ReflectionAttribute::class, $first);
+            }
+        ];
+
+        yield [ 
+            <<<'EOT'
+            <?php
+
+            #[\Barfoo\Foobar(12)]
+            class FooBench
+            {
+                public function bar(): void
+                {
+                }
+            }
+            EOT
+            , function (ReflectionClass $class) {
+                $first = reset($class->attributes);
+                self::assertInstanceof(ReflectionAttribute::class, $first);
+                assert($first instanceof ReflectionAttribute);
+                self::assertEquals([12], $first->args);
+            }
+        ];
+
+        yield [ 
+            <<<'EOT'
+            <?php
+
+            class FooBench
+            {
+                #[\Barfoo\Foobar(12)]
+                public function bar(): void
+                {
+                }
+            }
+            EOT
+            , function (ReflectionClass $class) {
+                $method = reset($class->methods);
+                assert($method instanceof ReflectionMethod);
+                self::assertCount(1, $method->attributes);
+                $first = reset($method->attributes);
+                self::assertInstanceof(ReflectionAttribute::class, $first);
+                assert($first instanceof ReflectionAttribute);
+                self::assertEquals([12], $first->args);
+            }
+        ];
     }
 
     /**

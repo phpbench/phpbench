@@ -38,4 +38,6 @@ class ReflectionMethod
      * @var ReflectionClass
      */
     public $reflectionClass;
+
+    public $attributes = [];
 }

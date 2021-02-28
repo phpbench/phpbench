@@ -61,6 +61,9 @@ class RemoteReflector implements ReflectorInterface
             $reflectionClass->interfaces = $classInfo['interfaces'];
             $reflectionClass->path = $file;
             $reflectionClass->namespace = $classInfo['namespace'];
+            $reflectionClass->attributes = array_map(function (array $attr) {
+                return new ReflectionAttribute($attr['name'], $attr['args']);
+            }, $classInfo['attributes']);
 
             foreach ($classInfo['methods'] as $methodInfo) {
                 $reflectionMethod = new ReflectionMethod();
@@ -69,6 +72,9 @@ class RemoteReflector implements ReflectorInterface
                 $reflectionMethod->name = $methodInfo['name'];
                 $reflectionMethod->isStatic = $methodInfo['static'];
                 $reflectionMethod->comment = $methodInfo['comment'];
+                $reflectionMethod->attributes = array_map(function (array $attr) {
+                    return new ReflectionAttribute($attr['name'], $attr['args']);
+                }, $methodInfo['attributes']);
                 $reflectionClass->methods[$reflectionMethod->name] = $reflectionMethod;
             }
             $hierarchy->addReflectionClass($reflectionClass);

@@ -14,6 +14,7 @@ namespace PhpBench\Reflection;
 
 class ReflectionClass
 {
+    public $attributes = [];
     public $path;
     public $interfaces = [];
     public $class;
