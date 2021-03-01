@@ -20,7 +20,6 @@
         "ext-tokenizer": "*",
         "beberlei/assert": "^2.4 || ^3.0",
         "doctrine/annotations": "^1.2.7",
-        "doctrine/lexer": "^1.2",
         "phpbench/container": "^2.0",
         "phpbench/dom": "~0.3.0",
         "seld/jsonlint": "^1.1",
