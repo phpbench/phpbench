@@ -9,7 +9,7 @@ on:
 env:
     fail-fast: true
     TZ: "Europe/Paris"
-    REQUIRED_PHP_EXTENSIONS: "dom, iconv, json, pcre, reflection, spl, tokenizer"
+    REQUIRED_PHP_EXTENSIONS: "dom, iconv, json, pcre, reflection, spl, tokenizer, xdebug"
 
 jobs:
     composer-validate:
