@@ -20,7 +20,7 @@ class ProfileCommandTest extends XDebugTestCase
      */
     public function testCommand(): void
     {
-        $process = $this->phpbench('xdebug:profile benchmarks/set1/BenchmarkBench.php --filter=benchDoNothing');
+        $process = $this->phpbench('xdebug:profile benchmarks/set1/BenchmarkBench.php --filter=benchDoNothing -vvv');
         $this->assertExitCode(0, $process);
         $this->assertStringContainsString('profile(s) generated', $process->getOutput());
         $lines = explode("\n", $process->getOutput());

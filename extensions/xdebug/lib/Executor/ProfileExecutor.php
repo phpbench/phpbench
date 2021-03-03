@@ -79,7 +79,7 @@ class ProfileExecutor implements BenchmarkExecutorInterface
             return [
                 'xdebug.mode' => 'profile',
                 'xdebug.output_dir' => PhpBench::normalizePath($outputDir),
-                'xdebug.output_name' => $name,
+                'xdebug.profiler_output_name' => $name,
             ];
         }
 
