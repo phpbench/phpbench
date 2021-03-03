@@ -5,6 +5,7 @@ master
 ------
 
 - Show debug details (process spawning) with `-vvv`
+- Support Xdebug 3
 
 1.0.0-alpha6
 ------------

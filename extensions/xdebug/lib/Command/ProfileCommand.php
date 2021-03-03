@@ -99,7 +99,7 @@ EOT
         foreach ($generatedFiles as $generatedFile) {
             if (!file_exists($generatedFile)) {
                 throw new \InvalidArgumentException(sprintf(
-                    'Profile "%s" was not generated. Maybe you do not have Xdebug installed?',
+                    'Profile "%s" was not generated. Perhaps you do not have Xdebug installed or the extension is not enabled for your benchmark?',
                     $generatedFile
                 ));
             }

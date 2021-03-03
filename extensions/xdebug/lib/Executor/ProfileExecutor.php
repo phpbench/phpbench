@@ -19,6 +19,7 @@ use PhpBench\Executor\ExecutionResults;
 use PhpBench\Extensions\XDebug\XDebugUtil;
 use PhpBench\PhpBench;
 use PhpBench\Registry\Config;
+use RuntimeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProfileExecutor implements BenchmarkExecutorInterface
@@ -53,16 +54,39 @@ class ProfileExecutor implements BenchmarkExecutorInterface
         $callback = $config['callback'];
         $name = XDebugUtil::filenameFromContext($context, '.cachegrind');
 
-        $config[TemplateExecutor::OPTION_PHP_CONFIG] = [
-            'xdebug.profiler_enable' => 1,
-            'xdebug.profiler_output_dir' => PhpBench::normalizePath($outputDir),
-            'xdebug.profiler_output_name' => $name,
-        ];
-
+        $config[TemplateExecutor::OPTION_PHP_CONFIG] = $this->resolveXdebugIniSettings($outputDir, $name);
         $results = $this->innerExecutor->execute($context, $config);
 
         $callback($context);
 
         return $results;
+    }
+
+    /**
+     * @return array<string,mixed>
+     */
+    private function resolveXdebugIniSettings(string $outputDir, string $name): array
+    {
+        $xdebugVersion = phpversion('xdebug');
+
+        if (false === $xdebugVersion) {
+            throw new RuntimeException(
+                'Xdebug is not installed'
+            );
+        }
+
+        if (substr($xdebugVersion, 0, 1) === '3') {
+            return [
+                'xdebug.mode' => 'profile',
+                'xdebug.output_dir' => PhpBench::normalizePath($outputDir),
+                'xdebug.profiler_output_name' => $name,
+            ];
+        }
+
+        return [
+            'xdebug.profiler_enable' => 1,
+            'xdebug.profiler_output_dir' => PhpBench::normalizePath($outputDir),
+            'xdebug.profiler_output_name' => $name,
+        ];
     }
 }
