@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+master
+------
+
+- Show debug details (process spawning) with `-vvv`
+
 1.0.0-alpha6
 ------------
 

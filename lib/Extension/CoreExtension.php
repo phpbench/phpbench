@@ -61,6 +61,7 @@ use PhpBench\Formatter\Format\TruncateFormat;
 use PhpBench\Formatter\FormatRegistry;
 use PhpBench\Formatter\Formatter;
 use PhpBench\Json\JsonDecoder;
+use PhpBench\Logger\ConsoleLogger;
 use PhpBench\Progress\Logger\BlinkenLogger;
 use PhpBench\Progress\Logger\DotsLogger;
 use PhpBench\Progress\Logger\HistogramLogger;
@@ -73,6 +74,7 @@ use PhpBench\Reflection\RemoteReflector;
 use PhpBench\Registry\ConfigurableRegistry;
 use PhpBench\Remote\Launcher;
 use PhpBench\Remote\PayloadFactory;
+use PhpBench\Remote\ProcessFactory;
 use PhpBench\Report\Generator\CompositeGenerator;
 use PhpBench\Report\Generator\EnvGenerator;
 use PhpBench\Report\Generator\TableGenerator;
@@ -90,6 +92,7 @@ use PhpBench\Storage\UuidResolver\ChainResolver;
 use PhpBench\Storage\UuidResolver\LatestResolver;
 use PhpBench\Storage\UuidResolver\TagResolver;
 use PhpBench\Util\TimeUnit;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputInterface;
@@ -131,6 +134,7 @@ class CoreExtension implements ExtensionInterface
     public const PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT = 'progress_summary_baseline_format';
     public const PARAM_ANNOTATIONS = 'annotations';
     public const PARAM_ATTRIBUTES = 'attributes';
+    public const PARAM_DEBUG = 'debug';
 
     public const TAG_EXECUTOR = 'benchmark_executor';
     public const TAG_CONSOLE_COMMAND = 'console.command';
@@ -179,7 +183,10 @@ class CoreExtension implements ExtensionInterface
             self::PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT => '%variant.mode%%time_unit% vs %baseline.mode%%time_unit% (±%variant.rstdev%%) <%result_style%>%percent_difference%%</>',
             self::PARAM_ANNOTATIONS => true,
             self::PARAM_ATTRIBUTES => true,
+            self::PARAM_DEBUG => false,
         ]);
+
+        $resolver->setAllowedTypes(self::PARAM_DEBUG, ['bool']);
         $resolver->setAllowedTypes(self::PARAM_ANNOTATIONS, ['bool']);
         $resolver->setAllowedTypes(self::PARAM_ATTRIBUTES, ['bool']);
         $resolver->setAllowedTypes(self::PARAM_BOOTSTRAP, ['string', 'null']);
@@ -254,6 +261,12 @@ class CoreExtension implements ExtensionInterface
             );
         });
 
+        $container->register(LoggerInterface::class, function (Container $container) {
+            return new ConsoleLogger(
+                $container->getParameter(self::PARAM_DEBUG)
+            );
+        });
+
         $this->registerBenchmark($container);
         $this->registerJson($container);
         $this->registerCommands($container);
@@ -324,16 +337,21 @@ class CoreExtension implements ExtensionInterface
         $container->register(DebugExecutor::class, function (Container $container) {
             return new DebugExecutor();
         }, [
-            self::TAG_EXECUTOR => ['name' => 'debug']
+            self::TAG_EXECUTOR => ['name' => self::PARAM_DEBUG]
         ]);
 
         $container->register(Finder::class, function (Container $container) {
             return new Finder();
         });
 
+        $container->register(ProcessFactory::class, function (Container $container) {
+            return new ProcessFactory($container->get(LoggerInterface::class));
+        });
+
         $container->register(Launcher::class, function (Container $container) {
             return new Launcher(
                 new PayloadFactory(
+                    $container->get(ProcessFactory::class),
                     $container->getParameter(self::PARAM_REMOTE_SCRIPT_PATH),
                     $container->getParameter(self::PARAM_REMOTE_SCRIPT_REMOVE)
                 ),
@@ -618,7 +636,7 @@ class CoreExtension implements ExtensionInterface
         }, [self::TAG_REPORT_RENDERER => ['name' => 'xslt']]);
         $container->register(DebugRenderer::class, function (Container $container) {
             return new DebugRenderer($container->get(OutputInterface::class));
-        }, [self::TAG_REPORT_RENDERER => ['name' => 'debug']]);
+        }, [self::TAG_REPORT_RENDERER => ['name' => self::PARAM_DEBUG]]);
         $container->register(DelimitedRenderer::class, function (Container $container) {
             return new DelimitedRenderer($container->get(OutputInterface::class));
         }, [self::TAG_REPORT_RENDERER => ['name' => 'delimited']]);
