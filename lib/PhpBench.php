@@ -139,6 +139,10 @@ class PhpBench
             if ($value = self::parseOption($arg, 'profile')) {
                 $profile = $value;
             }
+
+            if ($arg == '-vvv') {
+                $configOverride['debug'] = true;
+            }
         }
 
         if (empty($configPaths)) {

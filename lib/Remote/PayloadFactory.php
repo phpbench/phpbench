@@ -24,10 +24,16 @@ class PayloadFactory
      */
     private $remoteScriptRemove;
 
-    public function __construct(?string $remoteScriptPath = null, bool $remoteScriptRemove = false)
+    /**
+     * @var ProcessFactory
+     */
+    private $processFactory;
+
+    public function __construct(?ProcessFactory $processFactory = null, ?string $remoteScriptPath = null, bool $remoteScriptRemove = false)
     {
         $this->remoteScriptPath = $remoteScriptPath;
         $this->remoteScriptRemove = $remoteScriptRemove;
+        $this->processFactory = $processFactory ?: new ProcessFactory();
     }
 
     /**
@@ -40,7 +46,7 @@ class PayloadFactory
             $tokens,
             $phpBinary,
             $timeout,
-            null,
+            $this->processFactory,
             $this->remoteScriptPath,
             $this->remoteScriptRemove
         );
