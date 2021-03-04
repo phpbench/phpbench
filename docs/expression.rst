@@ -187,6 +187,15 @@ Return the `standard deviation`_ for a set of values:
 
 .. literalinclude:: ../examples/Expression/func_stdev
 
+.. _expr_rstddev:
+
+rstdev
+~~~~~~
+
+Return the `relative standard deviation`_ for a set of values:
+
+.. literalinclude:: ../examples/Expression/func_rstdev
+
 .. _expr_variance:
 
 variance
@@ -196,6 +205,16 @@ Return the `variance`_ for a set of values:
 
 .. literalinclude:: ../examples/Expression/func_variance
 
+format
+------
+
+Format values as a string - uses `sprintf`_:
+
+.. literalinclude:: ../examples/Expression/func_format
+
 .. _KDE mode: https://en.wikipedia.org/wiki/Kernel_density_estimation
 .. _standard deviation: https://en.wikipedia.org/wiki/Standard_deviation
 .. _variance: https://en.wikipedia.org/wiki/Variance
+.. _relative standard deviation: https://en.wikipedia.org/wiki/Coefficient_of_variation
+.. _sprintf: https://www.php.net/manual/en/function.sprintf.php
+

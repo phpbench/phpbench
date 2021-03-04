@@ -38,7 +38,7 @@ class AnnotatedBench
      * @Revs(10)
 // endsection: revs
 // section: sleep
-     * @Sleep(1000)
+     * @Sleep(1000t )
 // endsection: sleep
 // section: outputTimeUnit
      * @OutputTimeUnit("milliseconds")
