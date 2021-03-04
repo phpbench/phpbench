@@ -206,7 +206,7 @@ Return the `variance`_ for a set of values:
 .. literalinclude:: ../examples/Expression/func_variance
 
 format
-------
+~~~~~~
 
 Format values as a string - uses `sprintf`_:
 
