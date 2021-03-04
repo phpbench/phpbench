@@ -60,6 +60,8 @@ class ComparisonParseletTest extends ParseletTestCase
         yield ['10 < 10 + 10 * 30 ms', [], 'true'];
 
         yield ['10 as ms <= 10 as ms', [], 'true'];
+
+        yield ['"10" = "10"', [], 'true'];
     }
 
     /**

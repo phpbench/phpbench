@@ -20,6 +20,7 @@ use PhpBench\Expression\Func\MeanFunction;
 use PhpBench\Expression\Func\MinFunction;
 use PhpBench\Expression\Func\ModeFunction;
 use PhpBench\Expression\Func\PercentDifferenceFunction;
+use PhpBench\Expression\Func\RStDevFunction;
 use PhpBench\Expression\Func\StDevFunction;
 use PhpBench\Expression\Func\VarianceFunction;
 use PhpBench\Expression\Lexer;
@@ -230,6 +231,7 @@ class ExpressionExtension implements ExtensionInterface
                 'min' => new MinFunction(),
                 'max' => new MaxFunction(),
                 'stdev' => new StDevFunction(),
+                'rstdev' => new RStDevFunction(),
                 'variance' => new VarianceFunction(),
                 'percent_diff' => new PercentDifferenceFunction(),
                 'format' => new FormatFunction()

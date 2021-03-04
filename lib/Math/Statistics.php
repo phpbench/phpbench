@@ -210,4 +210,14 @@ class Statistics
 
         return (($value2 / $value1) - 1) * 100;
     }
+
+    /**
+     * @param (int|float)[] $values
+     */
+    public static function rstdev(array $values, bool $sample = false): float
+    {
+        $mean = self::mean($values);
+
+        return $mean ? self::stdev($values, $sample) / $mean * 100 : 0;
+    }
 }

@@ -31,6 +31,13 @@ class StatisticsTest extends TestCase
         $this->assertEquals(2.47, round(Statistics::stdev([2, 6, 4, 1, 7, 3, 6, 1, 7, 1, 6, 5, 1, 1], true), 2));
     }
 
+    public function testRStdev(): void
+    {
+        $this->assertEquals(47.1405, round(Statistics::rstdev([1, 2, 3, 4, 5]), 4));
+        $this->assertEquals(33.3333, round(Statistics::rstdev([1, 2]), 4));
+        $this->assertEquals(47.1405, round(Statistics::rstdev([1, 2], true), 4));
+    }
+
     /**
      * It should return the average.
      */

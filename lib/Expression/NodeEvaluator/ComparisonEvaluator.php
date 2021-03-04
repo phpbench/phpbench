@@ -6,6 +6,7 @@ use PhpBench\Expression\Ast\BooleanNode;
 use PhpBench\Expression\Ast\ComparisonNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\NumberValue;
+use PhpBench\Expression\Ast\PhpValue;
 use PhpBench\Expression\Ast\TolerableNode;
 use PhpBench\Expression\Ast\ToleratedTrue;
 use PhpBench\Expression\Evaluator;
@@ -30,7 +31,7 @@ class ComparisonEvaluator extends AbstractEvaluator
         $leftNode = $node->left();
         $rightNode = $node->right();
 
-        $leftValue = $evaluator->evaluateType($node->left(), NumberValue::class, $params);
+        $leftValue = $evaluator->evaluateType($node->left(), PhpValue::class, $params);
         $rightValue = $evaluator->evaluate($node->right(), $params);
 
         if ($rightValue instanceof TolerableNode) {
@@ -46,30 +47,40 @@ class ComparisonEvaluator extends AbstractEvaluator
             }
         }
 
-        $rightValue = $evaluator->evaluateType($rightValue, NumberValue::class, $params);
+        $rightValue = $evaluator->evaluateType($rightValue, PhpValue::class, $params);
 
         return new BooleanNode($this->evaluateNode($node, $leftValue->value(), $rightValue->value()));
     }
 
     /**
-     * @param int|float $leftValue
-     * @param int|float $rightValue
+     * @param string|int|float $leftValue
+     * @param string|int|float $rightValue
      */
     private function evaluateNode(ComparisonNode $node, $leftValue, $rightValue): bool
     {
-        switch ($node->operator()) {
-            case '<':
-                return $leftValue < $rightValue;
-            case '<=':
-                return $leftValue <= $rightValue;
-            case '=':
-                return $leftValue == $rightValue;
-            case '>':
-                return $leftValue > $rightValue;
-            case '>=':
-                return $leftValue >= $rightValue;
+        if ($node->operator() == '=') {
+            return $leftValue == $rightValue;
         }
-        
+
+        if (!is_numeric($leftValue) || !is_numeric($rightValue)) {
+            throw new EvaluationError($node, sprintf(
+                'Unsupported operator "%s" on "%s" type',
+                $node->operator(),
+                gettype($rightValue)
+            ));
+        }
+
+        switch ($node->operator()) {
+        case '<':
+            return $leftValue < $rightValue;
+        case '<=':
+            return $leftValue <= $rightValue;
+        case '>':
+            return $leftValue > $rightValue;
+        case '>=':
+            return $leftValue >= $rightValue;
+        }
+
         throw new EvaluationError($node, sprintf(
             'Unknown comparison operator "%s"',
             $node->operator()
