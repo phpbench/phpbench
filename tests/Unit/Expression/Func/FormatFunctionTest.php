@@ -6,7 +6,6 @@ use ArgumentCountError;
 use PhpBench\Expression\Func\FormatFunction;
 use PhpBench\Tests\Unit\Expression\FunctionTestCase;
 use RuntimeException;
-use function phpversion;
 
 class FormatFunctionTest extends FunctionTestCase
 {
