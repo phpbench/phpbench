@@ -5,6 +5,7 @@ namespace PhpBench\Tests\Unit\Expression\Parselet;
 use Generator;
 use PhpBench\Expression\Ast\ComparisonNode;
 use PhpBench\Expression\Ast\IntegerNode;
+use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Tests\Unit\Expression\ParseletTestCase;
 
 class ComparisonParseletTest extends ParseletTestCase
@@ -62,6 +63,12 @@ class ComparisonParseletTest extends ParseletTestCase
         yield ['10 as ms <= 10 as ms', [], 'true'];
 
         yield ['"10" = "10"', [], 'true'];
+    }
+
+    public function testErrorOnUnsupportedOperator(): void
+    {
+        $this->expectException(EvaluationError::class);
+        $this->evaluate($this->parse('"foo" < 2'));
     }
 
     /**

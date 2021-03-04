@@ -64,8 +64,9 @@ class ComparisonEvaluator extends AbstractEvaluator
 
         if (!is_numeric($leftValue) || !is_numeric($rightValue)) {
             throw new EvaluationError($node, sprintf(
-                'Unsupported operator "%s" on "%s" type',
+                'Unsupported operator "%s" when comparing "%s" and "%s"',
                 $node->operator(),
+                gettype($leftValue),
                 gettype($rightValue)
             ));
         }
