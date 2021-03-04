@@ -82,7 +82,8 @@ class EvaluateCommand extends Command
         $params = $input->getArgument(self::ARG_PARAMS);
         assert(is_string($params) || is_null($params));
 
-        $node = $this->parser->parse($this->lexer->lex($expr));
+        $tokens = $this->lexer->lex($expr);
+        $node = $this->parser->parse($tokens);
         $params = $this->resolveParams($params);
         $evaluated = $this->evaluator->evaluate($node, $params);
         $output->writeln(

@@ -26,6 +26,8 @@ final class Lexer
 
     private const PATTERN_NAME = '(?:[a-z_\/]+)';
     private const PATTERN_FUNCTION = '(?:[a-z_\/]+\()';
+    private const PATTERN_STRING = '"(?:[^"]|"")*"';
+    private const PATTERN_NUMBER = '(?:[0-9]+(?:[\\.][0-9]+)*)(?:e[+-]?[0-9]+)?';
 
     private const TOKEN_VALUE_MAP = [
         '+/-' => Token::T_TOLERANCE,
@@ -58,12 +60,9 @@ final class Lexer
         self::PATTERN_NUMBER, // numbers
         self::PATTERN_FUNCTION,
         self::PATTERN_NAME,
+        self::PATTERN_STRING,
         '\.',
     ];
-
-    const IGNORE_PATTERNS = [
-    ];
-    const PATTERN_NUMBER = '(?:[0-9]+(?:[\\.][0-9]+)*)(?:e[+-]?[0-9]+)?';
 
     /**
      * @param string[] $timeUnits
@@ -76,12 +75,11 @@ final class Lexer
         $this->timeUnits = $timeUnits;
         $this->memoryUnits = $memoryUnits;
         $this->pattern = sprintf(
-            '{(%s)|(%s)|%s}iu',
+            '{(%s)|(%s)}iu',
             implode(')|(', array_map(function (string $value) {
                 return preg_quote($value);
             }, array_keys(self::TOKEN_VALUE_MAP))),
-            implode(')|(', self::PATTERNS),
-            implode('|', self::IGNORE_PATTERNS)
+            implode(')|(', self::PATTERNS)
         );
     }
 
@@ -126,6 +124,8 @@ final class Lexer
                 }
 
                 return Token::T_INTEGER;
+            case ($value[0] === '"'):
+                return Token::T_STRING;
 
             case (in_array($value, $this->timeUnits, true)):
                 return Token::T_UNIT;

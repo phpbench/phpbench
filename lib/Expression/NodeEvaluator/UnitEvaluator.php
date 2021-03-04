@@ -4,7 +4,7 @@ namespace PhpBench\Expression\NodeEvaluator;
 
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\NumberNode;
-use PhpBench\Expression\Ast\NumberNodeFactory;
+use PhpBench\Expression\Ast\PhpValueFactory;
 use PhpBench\Expression\Ast\UnitNode;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
@@ -30,11 +30,11 @@ class UnitEvaluator extends AbstractEvaluator
         $unit = $node->unit();
 
         if (TimeUnit::isTimeUnit($unit)) {
-            return NumberNodeFactory::fromNumber($this->timeUnit($value->value(), $unit));
+            return PhpValueFactory::fromNumber($this->timeUnit($value->value(), $unit));
         }
 
         if (MemoryUnit::isMemoryUnit($unit)) {
-            return NumberNodeFactory::fromNumber($this->memoryUnit($value->value(), $unit));
+            return PhpValueFactory::fromNumber($this->memoryUnit($value->value(), $unit));
         }
 
         throw new EvaluationError($node, sprintf(
