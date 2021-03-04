@@ -5,7 +5,7 @@ namespace PhpBench\Expression\NodeEvaluator;
 use PhpBench\Expression\Ast\ArithmeticOperatorNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\NumberNode;
-use PhpBench\Expression\Ast\NumberNodeFactory;
+use PhpBench\Expression\Ast\PhpValueFactory;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
 
@@ -29,7 +29,7 @@ class ArithmeticOperatorEvaluator extends AbstractEvaluator
 
         $value = $this->evaluateNode($node, $leftValue->value(), $rightValue->value());
 
-        return NumberNodeFactory::fromNumber($value);
+        return PhpValueFactory::fromNumber($value);
     }
 
     /**

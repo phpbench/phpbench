@@ -14,6 +14,7 @@ use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Evaluator\MainEvaluator;
 use PhpBench\Expression\Evaluator\PrettyErrorEvaluator;
 use PhpBench\Expression\ExpressionFunctions;
+use PhpBench\Expression\Func\FormatFunction;
 use PhpBench\Expression\Func\MaxFunction;
 use PhpBench\Expression\Func\MeanFunction;
 use PhpBench\Expression\Func\MinFunction;
@@ -34,6 +35,7 @@ use PhpBench\Expression\NodeEvaluator\ListEvaluator;
 use PhpBench\Expression\NodeEvaluator\LogicalOperatorEvaluator;
 use PhpBench\Expression\NodeEvaluator\ParameterEvaluator;
 use PhpBench\Expression\NodeEvaluator\ParenthesisEvaluator;
+use PhpBench\Expression\NodeEvaluator\StringEvaluator;
 use PhpBench\Expression\NodeEvaluator\TolerableEvaluator;
 use PhpBench\Expression\NodeEvaluator\UnitEvaluator;
 use PhpBench\Expression\NodeEvaluators;
@@ -64,6 +66,7 @@ use PhpBench\Expression\Parselet\LogicalOperatorParselet;
 use PhpBench\Expression\Parselet\ParameterParselet;
 use PhpBench\Expression\Parselet\ParenthesisParselet;
 use PhpBench\Expression\Parselet\PercentageParselet;
+use PhpBench\Expression\Parselet\StringParselet;
 use PhpBench\Expression\Parselet\TolerableParselet;
 use PhpBench\Expression\Parselet\UnitParselet;
 use PhpBench\Expression\Parselets;
@@ -108,6 +111,7 @@ class ExpressionExtension implements ExtensionInterface
                     new ParenthesisParselet(),
                     new BooleanParselet(),
                     new ParameterParselet(),
+                    new StringParselet(),
                 ]),
                 Parselets::fromInfixParselets([
                     new LogicalOperatorParselet(Token::T_LOGICAL_OR, Precedence::LOGICAL_OR),
@@ -149,6 +153,7 @@ class ExpressionExtension implements ExtensionInterface
                 new BooleanEvaluator(),
                 new DisplayAsEvaluator(),
                 new ParameterEvaluator(),
+                new StringEvaluator(),
             ]);
         });
 
@@ -226,7 +231,8 @@ class ExpressionExtension implements ExtensionInterface
                 'max' => new MaxFunction(),
                 'stdev' => new StDevFunction(),
                 'variance' => new VarianceFunction(),
-                'percent_diff' => new PercentDifferenceFunction()
+                'percent_diff' => new PercentDifferenceFunction(),
+                'format' => new FormatFunction()
             ]);
         });
 

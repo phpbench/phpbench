@@ -4,7 +4,7 @@ namespace PhpBench\Expression\NodeEvaluator;
 
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Ast\NumberNodeFactory;
+use PhpBench\Expression\Ast\PhpValueFactory;
 use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Evaluator;
@@ -28,7 +28,7 @@ class ParameterEvaluator extends AbstractEvaluator
         $value = self::resolvePropertyAccess($node, $node->segments(), $params);
 
         if (is_numeric($value)) {
-            return NumberNodeFactory::fromNumber($value);
+            return PhpValueFactory::fromNumber($value);
         }
 
         if (is_array($value)) {
