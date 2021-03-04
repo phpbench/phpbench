@@ -6,6 +6,7 @@ use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\NumberNodeFactory;
 use PhpBench\Expression\Ast\ParameterNode;
+use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
 
@@ -32,6 +33,10 @@ class ParameterEvaluator extends AbstractEvaluator
 
         if (is_array($value)) {
             return ListNode::fromValues($value);
+        }
+
+        if (is_string($value)) {
+            return new StringNode($value);
         }
 
         throw new EvaluationError($node, sprintf(
