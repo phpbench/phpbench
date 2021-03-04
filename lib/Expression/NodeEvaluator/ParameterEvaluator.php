@@ -4,8 +4,8 @@ namespace PhpBench\Expression\NodeEvaluator;
 
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Ast\PhpValueFactory;
 use PhpBench\Expression\Ast\ParameterNode;
+use PhpBench\Expression\Ast\PhpValueFactory;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;

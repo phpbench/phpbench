@@ -3,7 +3,6 @@
 namespace PhpBench\Tests\Unit\Expression\Func;
 
 use PhpBench\Expression\Func\FormatFunction;
-use PhpBench\Expression\Func\MaxFunction;
 use PhpBench\Tests\Unit\Expression\FunctionTestCase;
 
 class FormatFunctionTest extends FunctionTestCase

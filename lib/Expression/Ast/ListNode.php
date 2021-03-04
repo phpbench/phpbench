@@ -2,8 +2,6 @@
 
 namespace PhpBench\Expression\Ast;
 
-use PhpBench\Expression\Ast\PhpValueFactory;
-
 final class ListNode extends DelimitedListNode
 {
     /**

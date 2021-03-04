@@ -2,8 +2,6 @@
 
 namespace PhpBench\Expression\Func;
 
-use RuntimeException;
-
 final class FormatFunction
 {
     /**
@@ -13,7 +11,7 @@ final class FormatFunction
      */
     public function __invoke(string $format, ...$values)
     {
+        /** @phpstan-ignore-next-line */
         return sprintf($format, ...$values);
     }
 }
-

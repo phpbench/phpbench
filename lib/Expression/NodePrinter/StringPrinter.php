@@ -3,7 +3,6 @@
 namespace PhpBench\Expression\NodePrinter;
 
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Ast\NumberNode;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\NodePrinter;
 use PhpBench\Expression\Printer;
@@ -19,4 +18,3 @@ class StringPrinter implements NodePrinter
         return '"' . (string)$node->value() . '"';
     }
 }
-

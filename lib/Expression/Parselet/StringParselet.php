@@ -2,7 +2,6 @@
 
 namespace PhpBench\Expression\Parselet;
 
-use PhpBench\Expression\Ast\FloatNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Parser;
