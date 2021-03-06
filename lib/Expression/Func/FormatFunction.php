@@ -2,21 +2,24 @@
 
 namespace PhpBench\Expression\Func;
 
+use PhpBench\Expression\Ast\Node;
+use PhpBench\Expression\Ast\PhpValue;
+use PhpBench\Expression\Ast\StringNode;
 use function error_clear_last;
 use RuntimeException;
 
 final class FormatFunction
 {
     /**
-     * @param mixed[] $values
-     *
      * @return string
      */
-    public function __invoke(string $format, ...$values)
+    public function __invoke(StringNode $format, PhpValue ...$values)
     {
         error_clear_last();
         /** @phpstan-ignore-next-line */
-        $formatted = @sprintf($format, ...$values);
+        $formatted = @sprintf($format->value(), ...array_map(function (PhpValue $value) {
+            return $value->value();
+        }, $values));
 
         if (!is_string($formatted)) {
             $error = error_get_last();

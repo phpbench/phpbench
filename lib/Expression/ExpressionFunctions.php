@@ -3,6 +3,7 @@
 namespace PhpBench\Expression;
 
 use Error;
+use PhpBench\Expression\Ast\ArgumentListNode;
 use RuntimeException;
 
 final class ExpressionFunctions
@@ -36,8 +37,6 @@ final class ExpressionFunctions
     }
 
     /**
-     * @param mixed[] $args
-     *
      * @return mixed
      */
     public function execute(string $functionName, array $args)

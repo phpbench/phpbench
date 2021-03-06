@@ -9,6 +9,9 @@ class MeanFunctionTest extends FunctionTestCase
 {
     public function testEval(): void
     {
-        self::assertEquals(4, $this->eval(new MeanFunction(), [2, 4, 6]));
+        self::assertEquals(4, $this->eval(
+            new MeanFunction(),
+            "[2, 4, 6]"
+        ));
     }
 }

@@ -2,15 +2,14 @@
 
 namespace PhpBench\Expression\Func;
 
+use PhpBench\Expression\Ast\IntegerNode;
+use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Math\Statistics;
 
 final class ModeFunction
 {
-    /**
-     * @param numeric[] $values
-     */
-    public function __invoke(array $values, int $space = 512): float
+    public function __invoke(ListNode $values, ?IntegerNode $space = null): float
     {
-        return Statistics::kdeMode($values, $space);
+        return Statistics::kdeMode($values->phpValues(), $space ? $space->value() : 512);
     }
 }

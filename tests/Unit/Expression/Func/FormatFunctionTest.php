@@ -12,7 +12,8 @@ class FormatFunctionTest extends FunctionTestCase
     public function testFormat(): void
     {
         self::assertEquals('2 foo 6', $this->eval(
-            new FormatFunction(), '%s %s %s', 2, 'foo', 6
+            new FormatFunction(),
+            '"%s %s %s", 2, "foo", 6'
         ));
     }
 
@@ -25,7 +26,7 @@ class FormatFunctionTest extends FunctionTestCase
             $this->expectException(ArgumentCountError::class);
         }
         self::assertEquals('2 foo 6', $this->eval(
-            new FormatFunction(), '%s %s %s %s', 2, 'foo', 6
+            new FormatFunction(), '"%s %s %s %s", 2, "foo", 6'
         ));
     }
 }

@@ -38,9 +38,7 @@ class FunctionEvaluator extends AbstractEvaluator
                 $this->functions->execute(
                     $node->name(),
                     array_map(function (Node $node) use ($evaluator, $params) {
-                        return $this->resolveScalarValues(
-                            $evaluator->evaluateType($node, PhpValue::class, $params)
-                        );
+                       return $evaluator->evaluateType($node, PhpValue::class, $params);
                     }, $this->args($node->args()))
                 )
             );

@@ -2,18 +2,17 @@
 
 namespace PhpBench\Expression\Func;
 
+use PhpBench\Expression\Ast\ListNode;
 use RuntimeException;
 
 final class MinFunction
 {
     /**
-     * @param (int|float)[] $values
-     *
      * @return int|float
      */
-    public function __invoke(array $values)
+    public function __invoke(ListNode $values)
     {
-        $result = min($values);
+        $result = min($values->phpValues());
 
         if (!is_float($result) && !is_int($result)) {
             throw new RuntimeException(
