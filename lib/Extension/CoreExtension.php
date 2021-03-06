@@ -47,6 +47,7 @@ use PhpBench\Executor\Method\ErrorHandlingExecutorDecorator;
 use PhpBench\Executor\Method\LocalMethodExecutor;
 use PhpBench\Executor\Method\RemoteMethodExecutor;
 use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\Lexer;
 use PhpBench\Expression\Parser;
 use PhpBench\Expression\Printer;
@@ -179,8 +180,8 @@ class CoreExtension implements ExtensionInterface
             self::PARAM_REMOTE_SCRIPT_REMOVE => true,
             self::PARAM_DISABLE_OUTPUT => false,
             self::PARAM_CONSOLE_ANSI => true,
-            self::PARAM_PROGRESS_SUMMARY_FORMAT => '%variant.mode% %time_unit% (±%variant.rstdev%%)',
-            self::PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT => '%variant.mode%%time_unit% vs %baseline.mode%%time_unit% (±%variant.rstdev%%) <%result_style%>%percent_difference%%</>',
+            self::PARAM_PROGRESS_SUMMARY_FORMAT => VariantSummaryFormatter::DEFAULT_FORMAT,
+            self::PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT => VariantSummaryFormatter::BASELINE_FORMAT,
             self::PARAM_ANNOTATIONS => true,
             self::PARAM_ATTRIBUTES => true,
             self::PARAM_DEBUG => false,
@@ -537,7 +538,10 @@ class CoreExtension implements ExtensionInterface
     {
         $container->register(VariantSummaryFormatter::class, function (Container $container) {
             return new VariantSummaryFormatter(
-                $container->get(TimeUnit::class),
+                $container->get(ExpressionLanguage::class),
+                $container->get(EvaluatingPrinter::class),
+                $container->get(ParameterProvider::class),
+                $container->get(SyntaxHighlighter::class),
                 $container->getParameter(self::PARAM_PROGRESS_SUMMARY_FORMAT),
                 $container->getParameter(self::PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT)
             );
@@ -673,9 +677,13 @@ class CoreExtension implements ExtensionInterface
                 $container->get(Evaluator::class),
                 $container->get(Printer::class),
                 $container->get(EvaluatingPrinter::class),
-                new ParameterProvider(),
+                $container->get(ParameterProvider::class),
                 $container->get(SyntaxHighlighter::class)
             );
+        });
+
+        $container->register(ParameterProvider::class, function () {
+            return new ParameterProvider();
         });
     }
 

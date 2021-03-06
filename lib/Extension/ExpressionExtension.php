@@ -14,6 +14,8 @@ use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Evaluator\MainEvaluator;
 use PhpBench\Expression\Evaluator\PrettyErrorEvaluator;
 use PhpBench\Expression\ExpressionFunctions;
+use PhpBench\Expression\ExpressionLanguage;
+use PhpBench\Expression\ExpressionParser;
 use PhpBench\Expression\Func\FormatFunction;
 use PhpBench\Expression\Func\MaxFunction;
 use PhpBench\Expression\Func\MeanFunction;
@@ -243,6 +245,10 @@ class ExpressionExtension implements ExtensionInterface
                 TimeUnit::supportedUnitNames(),
                 MemoryUnit::supportedUnitNames()
             );
+        });
+
+        $container->register(ExpressionLanguage::class, function (Container $container) {
+            return new ExpressionLanguage($container->get(Lexer::class), $container->get(Parser::class));
         });
     }
 
