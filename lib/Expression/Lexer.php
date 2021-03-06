@@ -48,6 +48,7 @@ final class Lexer
         '>' => Token::T_GT,
         '=' => Token::T_EQUALS,
         '<' => Token::T_LT,
+        '~' => Token::T_TILDE,
         'and' => Token::T_LOGICAL_OR,
         'true' => Token::T_BOOLEAN,
         'false' => Token::T_BOOLEAN,

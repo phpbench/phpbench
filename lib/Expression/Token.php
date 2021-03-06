@@ -36,6 +36,7 @@ final class Token
     public const T_EOF = 'eof';
     public const T_THROUGHPUT = 'throughput';
     public const T_WHITESPACE = 'whitespace';
+    public const T_TILDE = 'tilde';
     public const T_STRING = 'string';
 
     /**
