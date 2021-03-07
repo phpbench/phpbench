@@ -42,8 +42,9 @@ final class ExpressionFunctions
     {
         if (!isset($this->functionMap[$functionName])) {
             throw new RuntimeException(sprintf(
-                'Unknown function "%s"',
-                $functionName
+                'Unknown function "%s", known functions "%s"',
+                $functionName,
+                implode('", "', array_keys($this->functionMap))
             ));
         }
 

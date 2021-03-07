@@ -21,9 +21,9 @@ final class VariantSummaryFormatter
 "[" ~ 
 mode(variant.time.avg) as ms ~
 " <fg=magenta;bg=black>vs</> " ~ 
-mode(baseline.time.avg) as ms ~ "] ±" ~ 
-rstdev(variant.time.avg) ~ "% " ~ 
-percent_diff(mode(baseline.time.avg), mode(variant.time.avg))
+mode(baseline.time.avg) as ms ~ "] " ~ 
+percent_diff(mode(baseline.time.avg), mode(variant.time.avg)) ~
+" (±" ~ rstdev(variant.time.avg) ~ "%)"
 EOT
     ;
     const NOT_APPLICABLE = 'n/a';
