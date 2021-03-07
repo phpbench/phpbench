@@ -76,7 +76,7 @@ final class Lexer
         $this->timeUnits = $timeUnits;
         $this->memoryUnits = $memoryUnits;
         $this->pattern = sprintf(
-            '{(%s)|(%s)}iu',
+            '{(%s)|(%s)|\n}iu',
             implode(')|(', array_map(function (string $value) {
                 return preg_quote($value);
             }, array_keys(self::TOKEN_VALUE_MAP))),
