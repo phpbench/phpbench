@@ -2,6 +2,7 @@
 
 namespace PhpBench\Expression\NodePrinter;
 
+use PhpBench\Expression\Ast\FloatNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\PercentDifferenceNode;
 use PhpBench\Expression\NodePrinter;
@@ -21,6 +22,6 @@ class PercentageDifferencePrinter implements NodePrinter
 
         $prefix = $node->percentage() > 0 ? '+' : '';
 
-        return sprintf('%s%s%%', $prefix, $node->percentage());
+        return sprintf('%s%s%%', $prefix, $printer->print(new FloatNode($node->percentage()), $params));
     }
 }

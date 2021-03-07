@@ -2,6 +2,8 @@
 
 namespace PhpBench\Tests\Unit\Progress\Logger;
 
+use PhpBench\Model\Variant;
+use PhpBench\Progress\VariantFormatter;
 use PhpBench\Progress\VariantSummaryFormatter;
 use PhpBench\Tests\TestCase;
 use PhpBench\Util\TimeUnit;
@@ -29,6 +31,11 @@ class LoggerTestCase extends TestCase
         $this->output = new BufferedOutput();
 
         $this->timeUnit = new TimeUnit(TimeUnit::MICROSECONDS, TimeUnit::MILLISECONDS);
-        $this->variantFormatter = new VariantSummaryFormatter($this->timeUnit, 'summray', 'baseline summary');
+        $this->variantFormatter = new class implements VariantFormatter {
+            public function formatVariant(Variant $variant): string
+            {
+                return 'summary';
+            }
+        };
     }
 }

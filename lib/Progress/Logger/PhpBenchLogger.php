@@ -18,6 +18,7 @@ use PhpBench\Model\Suite;
 use PhpBench\Model\Summary;
 use PhpBench\Model\Variant;
 use PhpBench\PhpBench;
+use PhpBench\Progress\VariantFormatter;
 use PhpBench\Progress\VariantSummaryFormatter;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -41,7 +42,7 @@ abstract class PhpBenchLogger extends NullLogger
 
     public function __construct(
         OutputInterface $output,
-        VariantSummaryFormatter $formatter,
+        VariantFormatter $formatter,
         TimeUnit $timeUnit = null
     ) {
         $this->timeUnit = $timeUnit;

@@ -5,97 +5,48 @@ namespace PhpBench\Tests\Unit\Progress;
 use Closure;
 use Generator;
 use PhpBench\Assertion\AssertionResult;
+use PhpBench\Assertion\ParameterProvider;
+use PhpBench\Expression\ExpressionLanguage;
+use PhpBench\Expression\Printer;
+use PhpBench\Expression\Printer\EvaluatingPrinter;
+use PhpBench\Expression\SyntaxHighlighter;
 use PhpBench\Model\ParameterSet;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Variant;
 use PhpBench\Progress\VariantSummaryFormatter;
+use PhpBench\Tests\IntegrationTestCase;
 use PhpBench\Tests\Util\TestUtil;
 use PhpBench\Util\TimeUnit;
 use PHPUnit\Framework\TestCase;
 
-class VariantSummaryFormatterTest extends TestCase
+class VariantSummaryFormatterTest extends IntegrationTestCase
 {
-    /**
-     * @dataProvider provideFormat
-     */
-    public function testFormat(Closure $factory, string $format, string $expected): void
+    public function testFormatVariantOnly(): void
     {
-        $variant = $factory(TestUtil::getVariant());
-        $variant->getSubject()->setOutputTimePrecision(2);
-        self::assertEquals($expected, self::createFormatter(
-                $format,
-                $format
+        $variant = TestUtil::getVariant();
+        self::assertEquals('variant: <fg=cyan>15.01</>', $this->createFormatter(
+                '"variant: " ~ mode(variant.time.avg)',
+                '"baseline: " ~ mode(variant.baseline.avg)',
             )->formatVariant($variant));
     }
-        
-    /**
-     * @return Generator<mixed>
-     */
-    public function provideFormat(): Generator
+
+    public function testFormatBaseline(): void
     {
-        yield 'empty' => [
-                function (Variant $variant): Variant {
-                    return $variant;
-                },
-                '',
-                ''
-            ];
-
-        yield 'pre-calculated variant fields' => [
-                function (Variant $variant): Variant {
-                    return $variant;
-                },
-                '%variant.min% %variant.max% %variant.mean% %variant.mode% %variant.stdev%',
-                '2.00 4.00 3.00 3.00 1.00'
-            ];
-
-        yield 'difference to baseline' => [
-                function (Variant $variant): Variant {
-                    $this->createBaseline($variant, 10);
-
-                    return $variant;
-                },
-                '%percent_difference%',
-                '+200.00'
-            ];
-
-        yield 'result with no assertion' => [
-                function (Variant $variant): Variant {
-                    $this->createBaseline($variant);
-
-                    return $variant;
-                },
-                '<%result_style%>',
-                '<result-none>'
-            ];
-
-        yield 'assertion tolerated' => [
-                function (Variant $variant): Variant {
-                    $variant->addAssertionResult(AssertionResult::tolerated('ok'));
-                    $this->createBaseline($variant);
-
-                    return $variant;
-                },
-                '%result_style%',
-                'result-neutral'
-            ];
-
-        yield 'assertion fail' => [
-                function (Variant $variant): Variant {
-                    $variant->addAssertionResult(AssertionResult::fail('fail'));
-                    $this->createBaseline($variant);
-
-                    return $variant;
-                },
-                '%result_style%',
-                'result-failure'
-            ];
+        $variant = TestUtil::getVariant();
+        $this->createBaseline($variant);
+        self::assertEquals('baseline: <fg=cyan>30</>', $this->createFormatter(
+                '"variant: " ~ mode(variant.time.avg)',
+                '"baseline: " ~ mode(baseline.time.avg)',
+            )->formatVariant($variant));
     }
 
-    private static function createFormatter(string $format, string $baselineFormat): VariantSummaryFormatter
+    private function createFormatter(string $format, string $baselineFormat): VariantSummaryFormatter
     {
         return new VariantSummaryFormatter(
-            new TimeUnit(),
+            $this->container()->get(ExpressionLanguage::class),
+            $this->container()->get(EvaluatingPrinter::class),
+            $this->container()->get(ParameterProvider::class),
+            $this->container()->get(SyntaxHighlighter::class),
             $format,
             $baselineFormat
         );

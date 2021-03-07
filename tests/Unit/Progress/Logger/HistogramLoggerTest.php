@@ -119,7 +119,7 @@ class HistogramLoggerTest extends LoggerTestCase
         $this->logger->variantEnd($this->variant);
         $display = $this->output->fetch();
         $this->assertStringContainsString(
-            '1  (σ = 0.000ms ) -2σ [        █        ] +2σ summray',
+            '1  (σ = 0.000ms ) -2σ [        █        ] +2σ summary',
             $display
         );
     }

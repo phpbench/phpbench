@@ -14,10 +14,14 @@ use PhpBench\Math\Statistics;
 use PhpBench\Model\Variant;
 use PhpBench\Util\TimeUnit;
 
-final class VariantSummaryFormatter
+final class VariantSummaryFormatter implements VariantFormatter
 {
-    const DEFAULT_FORMAT = 'mode(variant.time.avg) as time ~ " (±" ~ rstdev(variant.time.avg) ~ "%)"';
-    const BASELINE_FORMAT = <<<'EOT'
+    public const DEFAULT_FORMAT = <<<'EOT'
+mode(variant.time.avg) as time ~ 
+" (±" ~ rstdev(variant.time.avg) ~ "%)"
+EOT
+    ;
+    public const BASELINE_FORMAT = <<<'EOT'
 "[" ~ 
 mode(variant.time.avg) as time ~
 " <fg=magenta;bg=black>vs</> " ~ 
@@ -26,11 +30,6 @@ percent_diff(mode(baseline.time.avg), mode(variant.time.avg)) ~
 " (±" ~ rstdev(variant.time.avg) ~ "%)"
 EOT
     ;
-    const NOT_APPLICABLE = 'n/a';
-    const FORMAT_NEUTRAL = 'result-neutral';
-    const FORMAT_FAILURE = 'result-failure';
-    const FORMAT_GOOD_CHANGE = 'result-good';
-    const FORMAT_NONE = 'result-none';
 
     /**
      * @var string
@@ -81,7 +80,7 @@ EOT
     public function formatVariant(Variant $variant): string
     {
         $data = $this->paramProvider->provideFor($variant);
-        $node = $this->parser->parse($this->baselineFormat);
+        $node = $this->parser->parse($variant->getBaseline() ? $this->baselineFormat : $this->format);
 
         if ($node instanceof ConcatNode) {
             return implode('', array_map(function (Node $node) use ($data) {
@@ -89,5 +88,6 @@ EOT
             }, $node->nodes()));
         }
 
+        return $this->highlighter->highlight($this->printer->print($node, $data));
     }
 }

@@ -16,6 +16,7 @@ use PhpBench\Model\Benchmark;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\Suite;
 use PhpBench\Model\Variant;
+use PhpBench\Progress\VariantFormatter;
 use PhpBench\Progress\VariantSummaryFormatter;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -44,7 +45,7 @@ class DotsLogger extends PhpBenchLogger
 
     public function __construct(
         OutputInterface $output,
-        VariantSummaryFormatter $formatter,
+        VariantFormatter $formatter,
         TimeUnit $timeUnit,
         bool $showBench = false
     ) {
