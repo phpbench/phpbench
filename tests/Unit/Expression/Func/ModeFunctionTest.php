@@ -14,6 +14,6 @@ class ModeFunctionTest extends FunctionTestCase
         self::assertEqualsWithDelta(3.99, $this->eval(
             new ModeFunction(),
             '[2, 4, 6]'
-        ), 0.1);
+        )->value(), 0.1);
     }
 }

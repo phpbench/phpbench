@@ -34,13 +34,11 @@ class FunctionEvaluator extends AbstractEvaluator
     public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
     {
         try {
-            return PhpValueFactory::fromNumber(
-                $this->functions->execute(
-                    $node->name(),
-                    array_map(function (Node $node) use ($evaluator, $params) {
-                       return $evaluator->evaluateType($node, PhpValue::class, $params);
-                    }, $this->args($node->args()))
-                )
+            return $this->functions->execute(
+                $node->name(),
+                array_map(function (Node $node) use ($evaluator, $params) {
+                   return $evaluator->evaluateType($node, PhpValue::class, $params);
+                }, $this->args($node->args()))
             );
         } catch (Throwable $throwable) {
             throw new EvaluationError($node, $throwable->getMessage(), $throwable);

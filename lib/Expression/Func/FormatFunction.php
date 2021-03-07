@@ -29,6 +29,6 @@ final class FormatFunction
             throw new RuntimeException($message);
         }
 
-        return $formatted;
+        return new StringNode($formatted);
     }
 }

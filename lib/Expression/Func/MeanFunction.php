@@ -3,12 +3,14 @@
 namespace PhpBench\Expression\Func;
 
 use PhpBench\Expression\Ast\ListNode;
+use PhpBench\Expression\Ast\Node;
+use PhpBench\Expression\Ast\PhpValueFactory;
 use PhpBench\Math\Statistics;
 
 final class MeanFunction
 {
-    public function __invoke(ListNode $values): float
+    public function __invoke(ListNode $values): Node
     {
-        return Statistics::mean($values->phpValues());
+        return PhpValueFactory::fromNumber(Statistics::mean($values->phpValues()));
     }
 }

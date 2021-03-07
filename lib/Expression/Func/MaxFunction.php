@@ -3,6 +3,7 @@
 namespace PhpBench\Expression\Func;
 
 use PhpBench\Expression\Ast\ListNode;
+use PhpBench\Expression\Ast\PhpValueFactory;
 use RuntimeException;
 
 final class MaxFunction
@@ -22,6 +23,6 @@ final class MaxFunction
             );
         }
 
-        return $result;
+        return PhpValueFactory::fromNumber($result);
     }
 }

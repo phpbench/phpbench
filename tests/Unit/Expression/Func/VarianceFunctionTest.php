@@ -13,6 +13,6 @@ class VarianceFunctionTest extends FunctionTestCase
         self::assertEquals(0.25, $this->eval(
             new VarianceFunction(),
             '[1, 2]'
-        ));
+        )->value());
     }
 }

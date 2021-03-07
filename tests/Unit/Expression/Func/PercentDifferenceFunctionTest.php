@@ -12,6 +12,6 @@ class PercentDifferenceFunctionTest extends FunctionTestCase
         self::assertEquals(-50, $this->eval(
             new PercentDifferenceFunction(),
             "2, 1"
-        ));
+        )->value());
     }
 }

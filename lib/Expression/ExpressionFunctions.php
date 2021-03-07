@@ -4,6 +4,8 @@ namespace PhpBench\Expression;
 
 use Error;
 use PhpBench\Expression\Ast\ArgumentListNode;
+use PhpBench\Expression\Ast\Node;
+use PhpBench\Expression\Ast\PhpValue;
 use RuntimeException;
 
 final class ExpressionFunctions
@@ -36,10 +38,7 @@ final class ExpressionFunctions
         $this->functionMap[$name] = $callable;
     }
 
-    /**
-     * @return mixed
-     */
-    public function execute(string $functionName, array $args)
+    public function execute(string $functionName, array $args): Node
     {
         if (!isset($this->functionMap[$functionName])) {
             throw new RuntimeException(sprintf(
@@ -49,11 +48,15 @@ final class ExpressionFunctions
         }
 
         $function = $this->functionMap[$functionName];
+        $evaluated = $function(...$args);
 
-        try {
-            return $function(...$args);
-        } catch (Error $err) {
-            throw new RuntimeException($err->getMessage());
+        if (!$evaluated instanceof Node) {
+            throw new RuntimeException(sprintf(
+                'Function "%s" must return a Node, got "%s"',
+                $functionName, gettype($evaluated)
+            ));
         }
+
+        return $evaluated;
     }
 }

@@ -12,6 +12,6 @@ class StDevFunctionTest extends FunctionTestCase
         self::assertEquals(0.5, $this->eval(
             new StDevFunction(),
             '[1, 2]'
-        ));
+        )->value());
     }
 }

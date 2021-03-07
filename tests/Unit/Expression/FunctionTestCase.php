@@ -12,11 +12,6 @@ class FunctionTestCase extends ParserTestCase
     {
         return (new ExpressionFunctions([
             'func' => $callable
-        ]))->execute('func', new ArgumentListNode(
-            $this->parse(sprintf(
-                '[%s]',
-                $argString
-            ))->value()
-        ));
+        ]))->execute('func', $this->parse(sprintf('[%s]', $argString))->value());
     }
 }
