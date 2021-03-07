@@ -10,9 +10,9 @@ use PhpBench\Extension\ExpressionExtension;
 
 /**
  * @Revs(10)
- * @Iterations(3)
+ * @Iterations(10)
  * @BeforeMethods({"setUp"})
- * @OutputTimeUnit("milliseconds")
+ * @OutputTimeUnit("microseconds")
  * @Assert("mode(variant.time.avg) as ms < mode(baseline.time.avg) as ms +/- 5%")
  */
 class ExpressionParserBench

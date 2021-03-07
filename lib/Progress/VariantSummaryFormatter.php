@@ -17,15 +17,15 @@ use PhpBench\Util\TimeUnit;
 final class VariantSummaryFormatter implements VariantFormatter
 {
     public const DEFAULT_FORMAT = <<<'EOT'
-mode(variant.time.avg) as time ~ 
+"Mo" ~ mode(variant.time.avg) as time ~ 
 " (±" ~ rstdev(variant.time.avg) ~ "%)"
 EOT
     ;
     public const BASELINE_FORMAT = <<<'EOT'
 "[" ~ 
-mode(variant.time.avg) as time ~
+"Mo" ~ mode(variant.time.avg) as time ~
 " <fg=magenta;bg=black>vs</> " ~ 
-mode(baseline.time.avg) as time ~ "] " ~ 
+"Mo" ~ mode(baseline.time.avg) as time ~ "] " ~ 
 percent_diff(mode(baseline.time.avg), mode(variant.time.avg)) ~
 " (±" ~ rstdev(variant.time.avg) ~ "%)"
 EOT
