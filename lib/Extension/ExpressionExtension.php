@@ -209,7 +209,7 @@ class ExpressionExtension implements ExtensionInterface
                 new TolerablePrinter(),
                 new PercentagePrinter(),
                 new UnitPrinter(),
-                new DisplayAsPrinter(),
+                new DisplayAsPrinter($container->get(TimeUnit::class)),
                 new ParameterPrinter(),
                 new StringPrinter(),
                 new ConcatPrinter(),
@@ -251,10 +251,7 @@ class ExpressionExtension implements ExtensionInterface
         });
 
         $container->register(Lexer::class, function (Container $container) {
-            return new Lexer(
-                TimeUnit::supportedUnitNames(),
-                MemoryUnit::supportedUnitNames()
-            );
+            return new Lexer(DisplayAsPrinter::supportedUnitNames());
         });
 
         $container->register(ExpressionLanguage::class, function (Container $container) {

@@ -16,12 +16,12 @@ use PhpBench\Util\TimeUnit;
 
 final class VariantSummaryFormatter
 {
-    const DEFAULT_FORMAT = 'mode(variant.time.avg) as ms ~ " (±" ~ rstdev(variant.time.avg) ~ "%)"';
+    const DEFAULT_FORMAT = 'mode(variant.time.avg) as time ~ " (±" ~ rstdev(variant.time.avg) ~ "%)"';
     const BASELINE_FORMAT = <<<'EOT'
 "[" ~ 
-mode(variant.time.avg) as ms ~
+mode(variant.time.avg) as time ~
 " <fg=magenta;bg=black>vs</> " ~ 
-mode(baseline.time.avg) as ms ~ "] " ~ 
+mode(baseline.time.avg) as time ~ "] " ~ 
 percent_diff(mode(baseline.time.avg), mode(variant.time.avg)) ~
 " (±" ~ rstdev(variant.time.avg) ~ "%)"
 EOT

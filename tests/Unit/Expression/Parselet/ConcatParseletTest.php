@@ -47,6 +47,6 @@ class ConcatParseletTest extends ParseletTestCase
      */
     public function providePrint(): Generator
     {
-        yield from $this->providePrintFromEvaluate();
+        yield 'does not show quotes' => ['10 ~ "bar"', [], '10bar'];
     }
 }

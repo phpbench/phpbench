@@ -3,6 +3,7 @@
 namespace PhpBench\Tests;
 
 use PhpBench\DependencyInjection\Container;
+use PhpBench\Extension\CoreExtension;
 use PhpBench\Extension\ExpressionExtension;
 use PhpBench\Tests\Util\Workspace;
 
@@ -20,7 +21,9 @@ class IntegrationTestCase extends TestCase
 
             return $container;
         })(new Container([
-            ExpressionExtension::class
+            ExpressionExtension::class,
+            CoreExtension::class
+        ], [
         ]));
     }
 }
