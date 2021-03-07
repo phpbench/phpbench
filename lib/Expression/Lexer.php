@@ -5,24 +5,14 @@ namespace PhpBench\Expression;
 final class Lexer
 {
     /**
-     * @var string[]
-     */
-    private $functionNames;
-
-    /**
-     * @var string[]
-     */
-    private $timeUnits;
-
-    /**
-     * @var string[]
-     */
-    private $memoryUnits;
-
-    /**
      * @var string
      */
     private $pattern;
+
+    /**
+     * @var array
+     */
+    private $unitNames;
 
     private const PATTERN_NAME = '(?:[a-z_\/]+)';
     private const PATTERN_FUNCTION = '(?:[a-z_\/]+\()';
@@ -72,11 +62,8 @@ final class Lexer
      * @param string[] $memoryUnits
      */
     public function __construct(
-        array $timeUnits = [],
-        array $memoryUnits = []
+        array $unitNames = []
     ) {
-        $this->timeUnits = $timeUnits;
-        $this->memoryUnits = $memoryUnits;
         $this->pattern = sprintf(
             '{(%s)|(%s)|\n}iu',
             implode(')|(', array_map(function (string $value) {
@@ -84,6 +71,7 @@ final class Lexer
             }, array_keys(self::TOKEN_VALUE_MAP))),
             implode(')|(', self::PATTERNS)
         );
+        $this->unitNames = $unitNames;
     }
 
     public function lex(string $expression): Tokens
@@ -130,10 +118,7 @@ final class Lexer
             case ($value[0] === '"'):
                 return Token::T_STRING;
 
-            case (in_array($value, $this->timeUnits, true)):
-                return Token::T_UNIT;
-
-            case (in_array($value, $this->memoryUnits)):
+            case (in_array($value, $this->unitNames, true)):
                 return Token::T_UNIT;
 
             case (preg_match('{'. self::PATTERN_PARAMETER . '}', $value)):

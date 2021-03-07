@@ -13,6 +13,18 @@ use PhpBench\Util\TimeUnit;
 
 class DisplayAsPrinter implements NodePrinter
 {
+    private const DEFAULT_TIME_UNIT = 'time';
+
+    /**
+     * @var TimeUnit
+     */
+    private $timeUnit;
+
+    public function __construct(TimeUnit $timeUnit)
+    {
+        $this->timeUnit = $timeUnit;
+    }
+
     /**
      * @param parameters $params
      */
@@ -29,6 +41,10 @@ class DisplayAsPrinter implements NodePrinter
             return sprintf('%s as %s', $printer->print($value, $params), $unit);
         }
 
+        if ($unit === self::DEFAULT_TIME_UNIT) {
+            return $this->timeUnit($value->value(), null);
+        }
+
         if (TimeUnit::isTimeUnit($unit)) {
             return $this->timeUnit($value->value(), $unit);
         }
@@ -43,15 +59,20 @@ class DisplayAsPrinter implements NodePrinter
     }
 
     /**
-     * Return time in microseconds
+     * @return string[]
      */
-    private function timeUnit(float $value, string $unit): string
+    public static function supportedUnitNames(): array
     {
-        return sprintf(
-            '%s %s',
-            TimeUnit::convert($value, TimeUnit::MICROSECONDS, $unit, TimeUnit::MODE_TIME),
-            TimeUnit::getSuffix($unit)
+        return array_merge(
+            [self::DEFAULT_TIME_UNIT],
+            TimeUnit::supportedUnitNames(),
+            MemoryUnit::supportedUnitNames()
         );
+    }
+
+    private function timeUnit(float $value, ?string $unit): string
+    {
+        return $this->timeUnit->format($value, $unit);
     }
 
     /**
