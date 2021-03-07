@@ -28,6 +28,7 @@ final class Lexer
     private const PATTERN_FUNCTION = '(?:[a-z_\/]+\()';
     private const PATTERN_STRING = '"(?:[^"]|"")*"';
     private const PATTERN_NUMBER = '(?:[0-9]+(?:[\\.][0-9]+)*)(?:e[+-]?[0-9]+)?';
+    private const PATTERN_PARAMETER = '(?:(?:[a-z_]+\\.)+(?:[a-z_]+))';
 
     private const TOKEN_VALUE_MAP = [
         '+/-' => Token::T_TOLERANCE,
@@ -60,6 +61,7 @@ final class Lexer
     const PATTERNS = [
         self::PATTERN_NUMBER, // numbers
         self::PATTERN_FUNCTION,
+        self::PATTERN_PARAMETER,
         self::PATTERN_NAME,
         self::PATTERN_STRING,
         '\.',
@@ -133,6 +135,9 @@ final class Lexer
 
             case (in_array($value, $this->memoryUnits)):
                 return Token::T_UNIT;
+
+            case (preg_match('{'. self::PATTERN_PARAMETER . '}', $value)):
+                return Token::T_PARAMETER;
 
             case (preg_match('{'. self::PATTERN_FUNCTION. '}', $value)):
                 return Token::T_FUNCTION;

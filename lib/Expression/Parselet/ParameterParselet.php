@@ -13,17 +13,12 @@ class ParameterParselet implements PrefixParselet
 {
     public function tokenType(): string
     {
-        return Token::T_NAME;
+        return Token::T_PARAMETER;
     }
 
     public function parse(Parser $parser, Tokens $tokens): Node
     {
-        $segments = [$tokens->chomp()->value];
-
-        while ($tokens->current()->type === Token::T_DOT) {
-            $tokens->chomp();
-            $segments[] = $tokens->chomp(Token::T_NAME)->value;
-        }
+        $segments = explode('.', $tokens->chomp()->value);
 
         return new ParameterNode($segments);
     }

@@ -3,7 +3,10 @@
 namespace PhpBench\Tests\Unit\Expression;
 
 use PHPUnit\Framework\TestCase;
+use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Lexer;
+use PhpBench\Expression\Token;
+use PhpBench\Expression\Tokens;
 
 class LexerTest extends TestCase
 {
@@ -18,7 +21,23 @@ EOT
         self::assertCount(3, $tokens);
     }
 
-    private function lex(string $string)
+    public function testLexParameter(): void
+    {
+        $tokens = $this->lex(<<<'EOT'
+foo.asd.asd
+EOT
+        );
+        self::assertEquals('foo.asd.asd', $tokens->chomp(Token::T_PARAMETER)->value);
+
+        $tokens = $this->lex(<<<'EOT'
+foobar(foo.asd.asd)
+EOT
+        );
+        $tokens->chomp(Token::T_FUNCTION);
+        self::assertEquals('foo.asd.asd', $tokens->chomp(Token::T_PARAMETER)->value);
+    }
+
+    private function lex(string $string): Tokens
     {
         return (new Lexer([], []))->lex($string);
     }
