@@ -24,6 +24,7 @@ class IntegrationTestCase extends TestCase
             ExpressionExtension::class,
             CoreExtension::class
         ], [
+            ExpressionExtension::PARAM_SYNTAX_HIGHLIGHTING => false,
         ]));
     }
 }

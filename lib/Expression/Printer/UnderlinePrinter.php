@@ -3,13 +3,13 @@
 namespace PhpBench\Expression\Printer;
 
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\NodePrinters;
+use PhpBench\Expression\NodePrinter;
 use PhpBench\Expression\Printer;
 
 final class UnderlinePrinter implements Printer
 {
     /**
-     * @var NodePrinters
+     * @var NodePrinter
      */
     private $printers;
 
@@ -18,7 +18,7 @@ final class UnderlinePrinter implements Printer
      */
     private $targetNode;
 
-    public function __construct(NodePrinters $printers, Node $targetNode)
+    public function __construct(NodePrinter $printers, Node $targetNode)
     {
         $this->printers = $printers;
         $this->targetNode = $targetNode;

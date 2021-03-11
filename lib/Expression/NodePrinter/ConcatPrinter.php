@@ -19,8 +19,8 @@ class ConcatPrinter implements NodePrinter
         }
 
         return implode('', [
-            trim($printer->print($node->left(), $params), '"'),
-            trim($printer->print($node->right(), $params), '"')
+            $printer->print($node->left(), $params),
+            $printer->print($node->right(), $params)
         ]);
     }
 }

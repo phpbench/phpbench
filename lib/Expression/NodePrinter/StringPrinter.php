@@ -15,6 +15,6 @@ class StringPrinter implements NodePrinter
             return null;
         }
 
-        return '"' . (string)$node->value() . '"';
+        return (string)$node->value();
     }
 }

@@ -7,7 +7,6 @@ use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Lexer;
 use PhpBench\Expression\Parser;
 use PhpBench\Expression\Printer;
-use PhpBench\Expression\SyntaxHighlighter;
 use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -45,18 +44,12 @@ class EvaluateCommand extends Command
      */
     private $evalPrinter;
 
-    /**
-     * @var SyntaxHighlighter
-     */
-    private $highlighter;
-
     public function __construct(
         Evaluator $evaluator,
         Lexer $lexer,
         Parser $parser,
         Printer $printer,
-        Printer $evalPrinter,
-        SyntaxHighlighter $highlighter
+        Printer $evalPrinter
     ) {
         parent::__construct();
         $this->lexer = $lexer;
@@ -64,7 +57,6 @@ class EvaluateCommand extends Command
         $this->evaluator = $evaluator;
         $this->printer = $printer;
         $this->evalPrinter = $evalPrinter;
-        $this->highlighter = $highlighter;
     }
 
     public function configure(): void
@@ -87,14 +79,13 @@ class EvaluateCommand extends Command
         $params = $this->resolveParams($params);
         $evaluated = $this->evaluator->evaluate($node, $params);
         $output->writeln(
-            $this->highlighter->highlight(sprintf(
+            sprintf(
                 "%s\n= %s\n= %s",
                 $this->printer->print($node, $params ?? []),
                 $this->evalPrinter->print($node, $params ?? []),
                 $this->printer->print($evaluated, $params ?: [])
-            ))
+            )
         );
-        
 
         return 0;
     }

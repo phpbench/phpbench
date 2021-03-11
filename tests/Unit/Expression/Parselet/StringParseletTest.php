@@ -27,7 +27,7 @@ class StringParseletTest extends ParseletTestCase
         yield [
             '"1.2"',
             [],
-            '"1.2"'
+            '1.2'
         ];
     }
 
@@ -39,7 +39,7 @@ class StringParseletTest extends ParseletTestCase
         yield [
             '"1.2"',
             [],
-            '"1.2"',
+            '1.2',
         ];
     }
 }

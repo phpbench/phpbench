@@ -5,7 +5,6 @@ namespace PhpBench\Tests\Unit\Progress;
 use PhpBench\Assertion\ParameterProvider;
 use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\Printer\EvaluatingPrinter;
-use PhpBench\Expression\SyntaxHighlighter;
 use PhpBench\Model\ParameterSet;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Variant;
@@ -18,7 +17,7 @@ class VariantSummaryFormatterTest extends IntegrationTestCase
     public function testFormatVariantOnly(): void
     {
         $variant = TestUtil::getVariant();
-        self::assertEquals('variant: <fg=cyan>15.01</>', $this->createFormatter(
+        self::assertEquals('variant: 15.01', $this->createFormatter(
                 '"variant: " ~ mode(variant.time.avg)',
                 '"baseline: " ~ mode(variant.baseline.avg)'
             )->formatVariant($variant));
@@ -28,7 +27,7 @@ class VariantSummaryFormatterTest extends IntegrationTestCase
     {
         $variant = TestUtil::getVariant();
         $this->createBaseline($variant);
-        self::assertEquals('baseline: <fg=cyan>30</>', $this->createFormatter(
+        self::assertEquals('baseline: 30', $this->createFormatter(
                 '"variant: " ~ mode(variant.time.avg)',
                 '"baseline: " ~ mode(baseline.time.avg)'
             )->formatVariant($variant));
@@ -40,7 +39,6 @@ class VariantSummaryFormatterTest extends IntegrationTestCase
             $this->container()->get(ExpressionLanguage::class),
             $this->container()->get(EvaluatingPrinter::class),
             $this->container()->get(ParameterProvider::class),
-            $this->container()->get(SyntaxHighlighter::class),
             $format,
             $baselineFormat
         );
