@@ -20,7 +20,7 @@ class VariantSummaryFormatterTest extends IntegrationTestCase
         $variant = TestUtil::getVariant();
         self::assertEquals('variant: <fg=cyan>15.01</>', $this->createFormatter(
                 '"variant: " ~ mode(variant.time.avg)',
-                '"baseline: " ~ mode(variant.baseline.avg)',
+                '"baseline: " ~ mode(variant.baseline.avg)'
             )->formatVariant($variant));
     }
 
@@ -30,7 +30,7 @@ class VariantSummaryFormatterTest extends IntegrationTestCase
         $this->createBaseline($variant);
         self::assertEquals('baseline: <fg=cyan>30</>', $this->createFormatter(
                 '"variant: " ~ mode(variant.time.avg)',
-                '"baseline: " ~ mode(baseline.time.avg)',
+                '"baseline: " ~ mode(baseline.time.avg)'
             )->formatVariant($variant));
     }
 

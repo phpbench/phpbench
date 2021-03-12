@@ -11,4 +11,5 @@ final class Precedence
     public const COMPARISON_EQUALITY = 70;
     public const LOGICAL_AND = 60;
     public const LOGICAL_OR = 50;
+    public const CONCAT = 50;
 }
