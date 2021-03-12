@@ -2,12 +2,14 @@
 
 namespace PhpBench\Tests\Unit\Expression;
 
-use PHPUnit\Framework\TestCase;
+use PhpBench\Expression\ExpressionFunctions;
 
-class FunctionTestCase extends TestCase
+class FunctionTestCase extends ParserTestCase
 {
-    public function eval(callable $callable, ...$args)
+    public function eval(callable $callable, string $argString)
     {
-        return $callable(...$args);
+        return (new ExpressionFunctions([
+            'func' => $callable
+        ]))->execute('func', $this->parse(sprintf('[%s]', $argString))->value());
     }
 }

@@ -8,12 +8,14 @@ use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Expression\Ast\ArithmeticOperatorNode;
 use PhpBench\Expression\Ast\DisplayAsNode;
 use PhpBench\Expression\Ast\FunctionNode;
+use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\ParenthesisNode;
 use PhpBench\Expression\Ast\TolerableNode;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Evaluator\MainEvaluator;
 use PhpBench\Expression\Evaluator\PrettyErrorEvaluator;
 use PhpBench\Expression\ExpressionFunctions;
+use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\Func\FormatFunction;
 use PhpBench\Expression\Func\MaxFunction;
 use PhpBench\Expression\Func\MeanFunction;
@@ -28,6 +30,7 @@ use PhpBench\Expression\NodeEvaluator\ArgumentListEvaluator;
 use PhpBench\Expression\NodeEvaluator\ArithmeticOperatorEvaluator;
 use PhpBench\Expression\NodeEvaluator\BooleanEvaluator;
 use PhpBench\Expression\NodeEvaluator\ComparisonEvaluator;
+use PhpBench\Expression\NodeEvaluator\ConcatEvaluator;
 use PhpBench\Expression\NodeEvaluator\DisplayAsEvaluator;
 use PhpBench\Expression\NodeEvaluator\FloatEvaluator;
 use PhpBench\Expression\NodeEvaluator\FunctionEvaluator;
@@ -44,12 +47,14 @@ use PhpBench\Expression\NodePrinter\ArgumentListPrinter;
 use PhpBench\Expression\NodePrinter\BinaryOperatorPrinter;
 use PhpBench\Expression\NodePrinter\BooleanPrinter;
 use PhpBench\Expression\NodePrinter\ComparisonPrinter;
+use PhpBench\Expression\NodePrinter\ConcatPrinter;
 use PhpBench\Expression\NodePrinter\DisplayAsPrinter;
 use PhpBench\Expression\NodePrinter\FunctionPrinter;
 use PhpBench\Expression\NodePrinter\ListPrinter;
 use PhpBench\Expression\NodePrinter\NumberPrinter;
 use PhpBench\Expression\NodePrinter\ParameterPrinter;
 use PhpBench\Expression\NodePrinter\ParenthesisPrinter;
+use PhpBench\Expression\NodePrinter\PercentageDifferencePrinter;
 use PhpBench\Expression\NodePrinter\PercentagePrinter;
 use PhpBench\Expression\NodePrinter\StringPrinter;
 use PhpBench\Expression\NodePrinter\TolerablePrinter;
@@ -58,6 +63,7 @@ use PhpBench\Expression\NodePrinters;
 use PhpBench\Expression\Parselet\ArithmeticOperatorParselet;
 use PhpBench\Expression\Parselet\BooleanParselet;
 use PhpBench\Expression\Parselet\ComparisonParselet;
+use PhpBench\Expression\Parselet\ConcatParselet;
 use PhpBench\Expression\Parselet\DisplayAsParselet;
 use PhpBench\Expression\Parselet\FloatParselet;
 use PhpBench\Expression\Parselet\FunctionParselet;
@@ -79,7 +85,6 @@ use PhpBench\Expression\Printer\NormalizingPrinter;
 use PhpBench\Expression\Printer\UnderlinePrinterFactory;
 use PhpBench\Expression\SyntaxHighlighter;
 use PhpBench\Expression\Token;
-use PhpBench\Util\MemoryUnit;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -129,6 +134,7 @@ class ExpressionExtension implements ExtensionInterface
                     new ComparisonParselet(Token::T_GTE, Precedence::COMPARISON),
                     new TolerableParselet(),
                     new DisplayAsParselet(),
+                    new ConcatParselet(),
                 ]),
                 Parselets::fromSuffixParselets([
                     new UnitParselet(),
@@ -155,6 +161,7 @@ class ExpressionExtension implements ExtensionInterface
                 new DisplayAsEvaluator(),
                 new ParameterEvaluator(),
                 new StringEvaluator(),
+                new ConcatEvaluator(),
             ]);
         });
 
@@ -200,9 +207,11 @@ class ExpressionExtension implements ExtensionInterface
                 new TolerablePrinter(),
                 new PercentagePrinter(),
                 new UnitPrinter(),
-                new DisplayAsPrinter(),
+                new DisplayAsPrinter($container->get(TimeUnit::class)),
                 new ParameterPrinter(),
                 new StringPrinter(),
+                new ConcatPrinter(),
+                new PercentageDifferencePrinter(),
             ]);
         });
 
@@ -220,6 +229,7 @@ class ExpressionExtension implements ExtensionInterface
                     ArithmeticOperatorNode::class,
                     ParenthesisNode::class,
                     DisplayAsNode::class,
+                    ParameterNode::class,
                 ]
             );
         });
@@ -239,10 +249,11 @@ class ExpressionExtension implements ExtensionInterface
         });
 
         $container->register(Lexer::class, function (Container $container) {
-            return new Lexer(
-                TimeUnit::supportedUnitNames(),
-                MemoryUnit::supportedUnitNames()
-            );
+            return new Lexer(DisplayAsPrinter::supportedUnitNames());
+        });
+
+        $container->register(ExpressionLanguage::class, function (Container $container) {
+            return new ExpressionLanguage($container->get(Lexer::class), $container->get(Parser::class));
         });
     }
 

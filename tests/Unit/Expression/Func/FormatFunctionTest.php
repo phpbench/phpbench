@@ -12,8 +12,9 @@ class FormatFunctionTest extends FunctionTestCase
     public function testFormat(): void
     {
         self::assertEquals('2 foo 6', $this->eval(
-            new FormatFunction(), '%s %s %s', 2, 'foo', 6
-        ));
+            new FormatFunction(),
+            '"%s %s %s", 2, "foo", 6'
+        )->value());
     }
 
     public function testTooManyPlaceholders(): void
@@ -24,8 +25,8 @@ class FormatFunctionTest extends FunctionTestCase
         } else {
             $this->expectException(ArgumentCountError::class);
         }
-        self::assertEquals('2 foo 6', $this->eval(
-            new FormatFunction(), '%s %s %s %s', 2, 'foo', 6
-        ));
+        $this->eval(
+            new FormatFunction(), '"%s %s %s %s", 2, "foo", 6'
+        );
     }
 }

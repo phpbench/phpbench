@@ -2,7 +2,7 @@
 
 namespace PhpBench\Expression;
 
-use Error;
+use PhpBench\Expression\Ast\Node;
 use RuntimeException;
 
 final class ExpressionFunctions
@@ -35,26 +35,26 @@ final class ExpressionFunctions
         $this->functionMap[$name] = $callable;
     }
 
-    /**
-     * @param mixed[] $args
-     *
-     * @return mixed
-     */
-    public function execute(string $functionName, array $args)
+    public function execute(string $functionName, array $args): Node
     {
         if (!isset($this->functionMap[$functionName])) {
             throw new RuntimeException(sprintf(
-                'Unknown function "%s"',
-                $functionName
+                'Unknown function "%s", known functions "%s"',
+                $functionName,
+                implode('", "', array_keys($this->functionMap))
             ));
         }
 
         $function = $this->functionMap[$functionName];
+        $evaluated = $function(...$args);
 
-        try {
-            return $function(...$args);
-        } catch (Error $err) {
-            throw new RuntimeException($err->getMessage());
+        if (!$evaluated instanceof Node) {
+            throw new RuntimeException(sprintf(
+                'Function "%s" must return a Node, got "%s"',
+                $functionName, gettype($evaluated)
+            ));
         }
+
+        return $evaluated;
     }
 }

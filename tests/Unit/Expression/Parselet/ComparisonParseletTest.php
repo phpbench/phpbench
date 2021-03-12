@@ -88,6 +88,6 @@ class ComparisonParseletTest extends ParseletTestCase
 
         yield ['3 >= 2', []];
 
-        yield ['10 as ms <= 10 as ms', [], '0.01 ms <= 0.01 ms'];
+        yield ['10 as ms <= 10 as ms', [], '0.010ms <= 0.010ms'];
     }
 }

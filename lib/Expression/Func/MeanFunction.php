@@ -2,15 +2,15 @@
 
 namespace PhpBench\Expression\Func;
 
+use PhpBench\Expression\Ast\ListNode;
+use PhpBench\Expression\Ast\PhpValue;
+use PhpBench\Expression\Ast\PhpValueFactory;
 use PhpBench\Math\Statistics;
 
 final class MeanFunction
 {
-    /**
-     * @param numeric[] $values
-     */
-    public function __invoke(array $values): float
+    public function __invoke(ListNode $values): PhpValue
     {
-        return Statistics::mean($values);
+        return PhpValueFactory::fromNumber(Statistics::mean($values->phpValues()));
     }
 }

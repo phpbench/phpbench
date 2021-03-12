@@ -25,12 +25,6 @@ class ParameterParseletTest extends ParseletTestCase
     public function provideEvaluate(): Generator
     {
         yield [
-            'foo',
-            ['foo' => 12],
-            '12'
-        ];
-
-        yield [
             'foo.bar',
             ['foo' => ['bar' => 12]],
             '12'

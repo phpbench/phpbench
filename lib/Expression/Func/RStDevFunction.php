@@ -2,15 +2,15 @@
 
 namespace PhpBench\Expression\Func;
 
+use PhpBench\Expression\Ast\BooleanNode;
+use PhpBench\Expression\Ast\FloatNode;
+use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Math\Statistics;
 
 final class RStDevFunction
 {
-    /**
-     * @param (int|float)[] $values
-     */
-    public function __invoke(array $values, bool $sample = false): float
+    public function __invoke(ListNode $values, ?BooleanNode $sample = null): FloatNode
     {
-        return Statistics::rstdev($values, $sample);
+        return new FloatNode(Statistics::rstdev($values->phpValues(), $sample ? $sample->value() : false));
     }
 }

@@ -2,15 +2,15 @@
 
 namespace PhpBench\Tests\Unit\Expression\Func;
 
-use PhpBench\Expression\Func\StDevFunction;
+use PhpBench\Expression\Func\VarianceFunction;
 use PhpBench\Tests\Unit\Expression\FunctionTestCase;
 
-class StDevFunctionTest extends FunctionTestCase
+class VarianceFunctionTest extends FunctionTestCase
 {
     public function testEval(): void
     {
-        self::assertEquals(0.5, $this->eval(
-            new StDevFunction(),
+        self::assertEquals(0.25, $this->eval(
+            new VarianceFunction(),
             '[1, 2]'
         )->value());
     }
