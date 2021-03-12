@@ -2,8 +2,6 @@
 
 namespace PhpBench\Tests\Unit\Expression;
 
-use PHPUnit\Framework\TestCase;
-use PhpBench\Expression\Ast\ArgumentListNode;
 use PhpBench\Expression\ExpressionFunctions;
 
 class FunctionTestCase extends ParserTestCase

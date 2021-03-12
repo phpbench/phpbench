@@ -5,7 +5,6 @@ namespace PhpBench\Expression\NodeEvaluator;
 use PhpBench\Expression\Ast\ConcatNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\PhpValue;
-use PhpBench\Expression\Ast\PhpValueFactory;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Evaluator;
 

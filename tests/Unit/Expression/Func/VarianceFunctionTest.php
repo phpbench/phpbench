@@ -2,7 +2,6 @@
 
 namespace PhpBench\Tests\Unit\Expression\Func;
 
-use PhpBench\Expression\Func\StDevFunction;
 use PhpBench\Expression\Func\VarianceFunction;
 use PhpBench\Tests\Unit\Expression\FunctionTestCase;
 

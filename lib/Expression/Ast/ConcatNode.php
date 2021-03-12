@@ -32,9 +32,10 @@ class ConcatNode implements Node
     public function nodes()
     {
         $nodes = [$this->left()];
+
         if ($this->right instanceof ConcatNode) {
             $nodes = array_merge($nodes, $this->right->nodes());
-        } else { 
+        } else {
             $nodes[] = $this->right;
         }
 

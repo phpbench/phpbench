@@ -2,17 +2,13 @@
 
 namespace PhpBench\Progress;
 
-use Closure;
 use PhpBench\Assertion\ParameterProvider;
-use PhpBench\Assertion\VariantAssertionResults;
 use PhpBench\Expression\Ast\ConcatNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\Printer;
 use PhpBench\Expression\SyntaxHighlighter;
-use PhpBench\Math\Statistics;
 use PhpBench\Model\Variant;
-use PhpBench\Util\TimeUnit;
 
 final class VariantSummaryFormatter implements VariantFormatter
 {

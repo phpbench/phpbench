@@ -2,11 +2,10 @@
 
 namespace PhpBench\Tests\Unit\Expression;
 
-use PHPUnit\Framework\TestCase;
-use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Lexer;
 use PhpBench\Expression\Token;
 use PhpBench\Expression\Tokens;
+use PHPUnit\Framework\TestCase;
 
 class LexerTest extends TestCase
 {

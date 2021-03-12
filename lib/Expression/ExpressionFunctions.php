@@ -2,10 +2,7 @@
 
 namespace PhpBench\Expression;
 
-use Error;
-use PhpBench\Expression\Ast\ArgumentListNode;
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Ast\PhpValue;
 use RuntimeException;
 
 final class ExpressionFunctions

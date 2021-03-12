@@ -2,8 +2,6 @@
 
 namespace PhpBench\Tests\Unit\Expression\Func;
 
-use PhpBench\Expression\Ast\IntegerNode;
-use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Func\ModeFunction;
 use PhpBench\Tests\Unit\Expression\FunctionTestCase;
 

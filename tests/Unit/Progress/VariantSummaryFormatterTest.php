@@ -2,12 +2,8 @@
 
 namespace PhpBench\Tests\Unit\Progress;
 
-use Closure;
-use Generator;
-use PhpBench\Assertion\AssertionResult;
 use PhpBench\Assertion\ParameterProvider;
 use PhpBench\Expression\ExpressionLanguage;
-use PhpBench\Expression\Printer;
 use PhpBench\Expression\Printer\EvaluatingPrinter;
 use PhpBench\Expression\SyntaxHighlighter;
 use PhpBench\Model\ParameterSet;
@@ -16,8 +12,6 @@ use PhpBench\Model\Variant;
 use PhpBench\Progress\VariantSummaryFormatter;
 use PhpBench\Tests\IntegrationTestCase;
 use PhpBench\Tests\Util\TestUtil;
-use PhpBench\Util\TimeUnit;
-use PHPUnit\Framework\TestCase;
 
 class VariantSummaryFormatterTest extends IntegrationTestCase
 {

@@ -16,7 +16,6 @@ use PhpBench\Expression\Evaluator\MainEvaluator;
 use PhpBench\Expression\Evaluator\PrettyErrorEvaluator;
 use PhpBench\Expression\ExpressionFunctions;
 use PhpBench\Expression\ExpressionLanguage;
-use PhpBench\Expression\ExpressionParser;
 use PhpBench\Expression\Func\FormatFunction;
 use PhpBench\Expression\Func\MaxFunction;
 use PhpBench\Expression\Func\MeanFunction;
@@ -86,7 +85,6 @@ use PhpBench\Expression\Printer\NormalizingPrinter;
 use PhpBench\Expression\Printer\UnderlinePrinterFactory;
 use PhpBench\Expression\SyntaxHighlighter;
 use PhpBench\Expression\Token;
-use PhpBench\Util\MemoryUnit;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

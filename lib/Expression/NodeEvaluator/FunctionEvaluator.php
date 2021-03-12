@@ -6,7 +6,6 @@ use PhpBench\Expression\Ast\ArgumentListNode;
 use PhpBench\Expression\Ast\FunctionNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\PhpValue;
-use PhpBench\Expression\Ast\PhpValueFactory;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Expression\ExpressionFunctions;
@@ -37,7 +36,7 @@ class FunctionEvaluator extends AbstractEvaluator
             return $this->functions->execute(
                 $node->name(),
                 array_map(function (Node $node) use ($evaluator, $params) {
-                   return $evaluator->evaluateType($node, PhpValue::class, $params);
+                    return $evaluator->evaluateType($node, PhpValue::class, $params);
                 }, $this->args($node->args()))
             );
         } catch (Throwable $throwable) {

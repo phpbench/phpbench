@@ -7,7 +7,6 @@ use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\PercentDifferenceNode;
 use PhpBench\Expression\NodePrinter;
 use PhpBench\Expression\Printer;
-use PhpBench\Expression\NodePrinter\PercentageDifferencePrinter;
 
 class PercentageDifferencePrinter implements NodePrinter
 {

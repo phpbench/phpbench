@@ -3,7 +3,6 @@
 namespace PhpBench\Tests\Unit\Expression\Parselet;
 
 use Generator;
-use PhpBench\Expression\Ast\BooleanNode;
 use PhpBench\Expression\Ast\ConcatNode;
 use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\StringNode;
@@ -39,6 +38,7 @@ class ConcatParseletTest extends ParseletTestCase
     public function provideEvaluate(): Generator
     {
         yield ['"foo" ~ "bar"', [], '"foobar"'];
+
         yield ['10 ~ "bar"', [], '"10bar"'];
     }
 
