@@ -29,15 +29,14 @@ class Standard8ColorMap implements ColorMap
         return [
             FunctionNode::class => 'fg=green',
             ParenthesisNode::class => 'fg=red',
-            NumberNode::class => function (Node $node) {
-                assert($node instanceof FloatNode);
-
-                return $node->value() > 0 ? 'fg=red' : 'fg=green';
-            },
             PercentDifferenceNode::class => function (Node $node) {
                 assert($node instanceof PercentDifferenceNode);
 
-                return $node->percentage() > 0 ? 'fg=red' : 'fg=green';
+                if (abs($node->percentage()) <= $node->tolerance()) {
+                    return 'fg=white';
+                }
+
+                return $node->percentage() > 0 ? 'fg=yellow;options=underscore' : 'fg=green;options=underscore';
             },
             DisplayAsNode::class => 'fg=cyan',
             ParameterNode::class => 'fg=white',

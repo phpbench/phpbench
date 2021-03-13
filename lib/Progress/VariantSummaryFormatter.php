@@ -19,7 +19,7 @@ EOT
 "Mo" ~ mode(variant.time.avg) as time ~
 " <fg=magenta;bg=black>vs</> " ~ 
 "Mo" ~ mode(baseline.time.avg) as time ~ "] " ~ 
-percent_diff(mode(baseline.time.avg), mode(variant.time.avg)) ~
+percent_diff(mode(baseline.time.avg), mode(variant.time.avg), 1) ~
 " (±" ~ rstdev(variant.time.avg) ~ "%)"
 EOT
     ;
