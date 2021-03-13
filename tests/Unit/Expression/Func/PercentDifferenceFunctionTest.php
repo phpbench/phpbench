@@ -14,4 +14,12 @@ class PercentDifferenceFunctionTest extends FunctionTestCase
             "2, 1"
         )->value());
     }
+
+    public function testEvalWithTolerance(): void
+    {
+        self::assertEquals(-50, $this->eval(
+            new PercentDifferenceFunction(),
+            "2, 1, 2"
+        )->value());
+    }
 }

@@ -27,6 +27,7 @@ use PhpBench\Expression\Func\RStDevFunction;
 use PhpBench\Expression\Func\StDevFunction;
 use PhpBench\Expression\Func\VarianceFunction;
 use PhpBench\Expression\Lexer;
+use PhpBench\Expression\NodeEvaluator;
 use PhpBench\Expression\NodeEvaluator\ArgumentListEvaluator;
 use PhpBench\Expression\NodeEvaluator\ArithmeticOperatorEvaluator;
 use PhpBench\Expression\NodeEvaluator\BooleanEvaluator;
@@ -38,6 +39,7 @@ use PhpBench\Expression\NodeEvaluator\FunctionEvaluator;
 use PhpBench\Expression\NodeEvaluator\IntegerEvaluator;
 use PhpBench\Expression\NodeEvaluator\ListEvaluator;
 use PhpBench\Expression\NodeEvaluator\LogicalOperatorEvaluator;
+use PhpBench\Expression\NodeEvaluator\MemoisedNodeEvaluator;
 use PhpBench\Expression\NodeEvaluator\ParameterEvaluator;
 use PhpBench\Expression\NodeEvaluator\ParenthesisEvaluator;
 use PhpBench\Expression\NodeEvaluator\StringEvaluator;
@@ -146,9 +148,9 @@ class ExpressionExtension implements ExtensionInterface
             );
         });
 
-        $container->register(NodeEvaluators::class, function (Container $container) {
+        $container->register(NodeEvaluator::class, function (Container $container) {
             /** @phpstan-ignore-next-line */
-            return new NodeEvaluators([
+            $evaluators = new NodeEvaluators([
                 new ArgumentListEvaluator(),
                 new IntegerEvaluator(),
                 new ArithmeticOperatorEvaluator(),
@@ -166,11 +168,13 @@ class ExpressionExtension implements ExtensionInterface
                 new StringEvaluator(),
                 new ConcatEvaluator(),
             ]);
+
+            return $evaluators;
         });
 
         $container->register(Evaluator::class, function (Container $container) {
             return new PrettyErrorEvaluator(
-                new MainEvaluator($container->get(NodeEvaluators::class)),
+                new MainEvaluator(new MemoisedNodeEvaluator($container->get(NodeEvaluator::class))),
                 $container->get(Printer::class),
                 new UnderlinePrinterFactory($container->get(NodePrinter::class))
             );

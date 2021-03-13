@@ -9,9 +9,15 @@ class PercentDifferenceNode implements PhpValue
      */
     private $percentage;
 
-    public function __construct(float $percentage)
+    /**
+     * @var float
+     */
+    private $tolerance;
+
+    public function __construct(float $percentage, float $tolerance = 0)
     {
         $this->percentage = $percentage;
+        $this->tolerance = $tolerance;
     }
 
     public function percentage(): float
@@ -25,5 +31,10 @@ class PercentDifferenceNode implements PhpValue
     public function value()
     {
         return $this->percentage;
+    }
+
+    public function tolerance(): float
+    {
+        return $this->tolerance;
     }
 }

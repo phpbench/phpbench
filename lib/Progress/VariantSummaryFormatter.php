@@ -3,6 +3,7 @@
 namespace PhpBench\Progress;
 
 use PhpBench\Assertion\ParameterProvider;
+use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\Printer;
 use PhpBench\Model\Variant;
@@ -19,7 +20,7 @@ EOT
 "Mo" ~ mode(variant.time.avg) as time ~
 " <fg=magenta;bg=black>vs</> " ~ 
 "Mo" ~ mode(baseline.time.avg) as time ~ "] " ~ 
-percent_diff(mode(baseline.time.avg), mode(variant.time.avg)) ~
+percent_diff(mode(baseline.time.avg), mode(variant.time.avg), 1) ~
 " (±" ~ rstdev(variant.time.avg) ~ "%)"
 EOT
     ;
@@ -49,6 +50,18 @@ EOT
      */
     private $paramProvider;
 
+    private $initialized = false;
+
+    /**
+     * @var Node
+     */
+    private $normalNode;
+
+    /**
+     * @var Node
+     */
+    private $baselineNode;
+
     public function __construct(
         ExpressionLanguage $parser,
         Printer $printer,
@@ -66,8 +79,20 @@ EOT
     public function formatVariant(Variant $variant): string
     {
         $data = $this->paramProvider->provideFor($variant);
-        $node = $this->parser->parse($variant->getBaseline() ? $this->baselineFormat : $this->format);
+
+        if (!$this->initialized) {
+            $this->initialize();
+        }
+
+        $node = $variant->getBaseline() ? $this->baselineNode : $this->normalNode;
 
         return $this->printer->print($node, $data);
+    }
+
+    private function initialize(): void
+    {
+        $this->normalNode = $this->parser->parse($this->format);
+        $this->baselineNode = $this->parser->parse($this->baselineFormat);
+        $this->initialized = true;
     }
 }

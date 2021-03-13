@@ -4,16 +4,20 @@ namespace PhpBench\Expression\Evaluator;
 
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Evaluator;
-use PhpBench\Expression\NodeEvaluators;
+use PhpBench\Expression\Exception\EvaluationError;
+use PhpBench\Expression\NodeEvaluator;
 
 final class MainEvaluator implements Evaluator
 {
     /**
-     * @var NodeEvaluators
+     * @var NodeEvaluator<Node>
      */
     private $evaluators;
 
-    public function __construct(NodeEvaluators $evaluators)
+    /**
+     * @param NodeEvaluator<Node> $evaluators
+     */
+    public function __construct(NodeEvaluator $evaluators)
     {
         $this->evaluators = $evaluators;
     }
@@ -28,7 +32,15 @@ final class MainEvaluator implements Evaluator
      */
     public function evaluateType(Node $node, string $expectedType, array $params): Node
     {
-        return $this->evaluators->evaluateType($this, $node, $expectedType, $params);
+        $evaluated = $this->evaluate($node, $params);
+
+        if ($evaluated instanceof $expectedType) {
+            return $evaluated;
+        }
+
+        throw new EvaluationError($node, sprintf(
+            'Expected "%s" but got "%s"', $expectedType, get_class($evaluated)
+        ));
     }
 
     /**

@@ -7,10 +7,8 @@ use PhpBench\Expression\Ast\ArithmeticOperatorNode;
 use PhpBench\Expression\Ast\BooleanNode;
 use PhpBench\Expression\Ast\ComparisonNode;
 use PhpBench\Expression\Ast\DisplayAsNode;
-use PhpBench\Expression\Ast\FloatNode;
 use PhpBench\Expression\Ast\FunctionNode;
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Ast\NumberNode;
 use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\ParenthesisNode;
 use PhpBench\Expression\Ast\PercentDifferenceNode;
@@ -29,15 +27,14 @@ class Standard8ColorMap implements ColorMap
         return [
             FunctionNode::class => 'fg=green',
             ParenthesisNode::class => 'fg=red',
-            NumberNode::class => function (Node $node) {
-                assert($node instanceof FloatNode);
-
-                return $node->value() > 0 ? 'fg=red' : 'fg=green';
-            },
             PercentDifferenceNode::class => function (Node $node) {
                 assert($node instanceof PercentDifferenceNode);
 
-                return $node->percentage() > 0 ? 'fg=red' : 'fg=green';
+                if (abs($node->percentage()) <= $node->tolerance()) {
+                    return 'fg=white';
+                }
+
+                return $node->percentage() > 0 ? 'fg=yellow;options=underscore' : 'fg=green;options=underscore';
             },
             DisplayAsNode::class => 'fg=cyan',
             ParameterNode::class => 'fg=white',

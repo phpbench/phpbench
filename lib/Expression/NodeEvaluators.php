@@ -6,7 +6,7 @@ use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Evaluator\parameters;
 use PhpBench\Expression\Exception\EvaluationError;
 
-final class NodeEvaluators
+final class NodeEvaluators implements NodeEvaluator
 {
     /**
      * @var NodeEvaluator<Node>[]
@@ -41,24 +41,8 @@ final class NodeEvaluators
         ));
     }
 
-    /**
-     * @template T of Node
-     *
-     * @param class-string<T> $expectedType
-     * @param parameters $params
-     *
-     * @return T
-     */
-    public function evaluateType(Evaluator $evaluator, Node $node, string $expectedType, array $params): Node
+    public function evaluates(Node $node): bool
     {
-        $evaluated = $this->evaluate($evaluator, $node, $params);
-
-        if ($evaluated instanceof $expectedType) {
-            return $evaluated;
-        }
-
-        throw new EvaluationError($node, sprintf(
-            'Expected "%s" but got "%s"', $expectedType, get_class($evaluated)
-        ));
+        return true;
     }
 }
