@@ -39,6 +39,7 @@ use PhpBench\Expression\NodeEvaluator\FunctionEvaluator;
 use PhpBench\Expression\NodeEvaluator\IntegerEvaluator;
 use PhpBench\Expression\NodeEvaluator\ListEvaluator;
 use PhpBench\Expression\NodeEvaluator\LogicalOperatorEvaluator;
+use PhpBench\Expression\NodeEvaluator\MemoisedNodeEvaluator;
 use PhpBench\Expression\NodeEvaluator\ParameterEvaluator;
 use PhpBench\Expression\NodeEvaluator\ParenthesisEvaluator;
 use PhpBench\Expression\NodeEvaluator\StringEvaluator;
@@ -149,7 +150,7 @@ class ExpressionExtension implements ExtensionInterface
 
         $container->register(NodeEvaluator::class, function (Container $container) {
             /** @phpstan-ignore-next-line */
-            return new NodeEvaluators([
+            $evaluators = new NodeEvaluators([
                 new ArgumentListEvaluator(),
                 new IntegerEvaluator(),
                 new ArithmeticOperatorEvaluator(),
@@ -167,6 +168,8 @@ class ExpressionExtension implements ExtensionInterface
                 new StringEvaluator(),
                 new ConcatEvaluator(),
             ]);
+
+            return new MemoisedNodeEvaluator($evaluators);
         });
 
         $container->register(Evaluator::class, function (Container $container) {
