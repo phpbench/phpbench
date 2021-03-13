@@ -12,7 +12,7 @@ final class PercentDifferenceFunction
     {
         return new PercentDifferenceNode(Statistics::percentageDifference(
             $value1->value(),
-            $value2->value(),
+            $value2->value()
         ), $tolerance ? $tolerance->value() : 0);
     }
 }

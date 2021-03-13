@@ -4,9 +4,7 @@ namespace PhpBench\Tests\Unit\Expression;
 
 use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\ParameterNode;
-use PhpBench\Expression\Ast\PercentageNode;
 use PhpBench\Expression\Evaluator;
-use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Expression\NodeEvaluator;
 use PhpBench\Expression\NodeEvaluators;
 use PhpBench\Tests\IntegrationTestCase;

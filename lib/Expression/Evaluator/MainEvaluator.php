@@ -6,7 +6,6 @@ use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Expression\NodeEvaluator;
-use PhpBench\Expression\NodeEvaluators;
 
 final class MainEvaluator implements Evaluator
 {

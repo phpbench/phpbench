@@ -6,7 +6,6 @@ use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Variant;
 use PhpBench\Progress\VariantFormatter;
-use PhpBench\Progress\VariantSummaryFormatter;
 use PhpBench\Tests\Benchmark\IntegrationBenchCase;
 use PhpBench\Tests\Util\VariantBuilder;
 

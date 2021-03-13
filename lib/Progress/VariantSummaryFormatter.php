@@ -3,6 +3,7 @@
 namespace PhpBench\Progress;
 
 use PhpBench\Assertion\ParameterProvider;
+use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\Printer;
 use PhpBench\Model\Variant;

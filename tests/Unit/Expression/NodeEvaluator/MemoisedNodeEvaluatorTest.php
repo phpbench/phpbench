@@ -2,15 +2,14 @@
 
 namespace PhpBench\Tests\Unit\Expression\NodeEvaluator;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\NodeEvaluator;
 use PhpBench\Expression\NodeEvaluator\MemoisedNodeEvaluator;
 use PhpBench\Tests\ProphecyTrait;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
-use Prophecy\Prophecy\ObjectProphecy;
 
 class MemoisedNodeEvaluatorTest extends TestCase
 {
@@ -54,7 +53,7 @@ class MemoisedNodeEvaluatorTest extends TestCase
 
         $this->inner->evaluate($this->evaluator->reveal(), $node, Argument::any())->willReturn(
             new IntegerNode(1),
-            new IntegerNode(1),
+            new IntegerNode(1)
         )->shouldBeCalledTimes(2);
 
         $this->nodeEvaluator->evaluate($this->evaluator->reveal(), $node, []);

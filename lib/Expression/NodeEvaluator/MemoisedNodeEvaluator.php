@@ -5,7 +5,6 @@ namespace PhpBench\Expression\NodeEvaluator;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\NodeEvaluator;
-use function spl_object_hash;
 
 /**
  * @implements NodeEvaluator<Node>
