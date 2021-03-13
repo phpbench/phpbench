@@ -2,6 +2,7 @@
 
 namespace PhpBench\Attributes;
 
+#[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
 class Format
 {
     /**

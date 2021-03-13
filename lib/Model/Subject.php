@@ -78,6 +78,11 @@ class Subject
     private $executor;
 
     /**
+     * @var string
+     */
+    private $format;
+
+    /**
      */
     public function __construct(Benchmark $benchmark, string $name)
     {
@@ -219,5 +224,15 @@ class Subject
     public function getVariant(string $parameterSetName): ?Variant
     {
         return $this->variants[$parameterSetName] ?? null;
+    }
+
+    public function setFormat(?string $format): void
+    {
+        $this->format = $format;
+    }
+
+    public function getFormat(): ?string
+    {
+        return $this->format;
     }
 }

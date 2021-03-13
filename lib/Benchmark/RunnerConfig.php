@@ -81,9 +81,14 @@ class RunnerConfig
     private $stopOnError = true;
 
     /**
-     * @var array<string>
+     * @var array<string>|null
      */
     private $assertions;
+
+    /**
+     * @var string|null
+     */
+    private $format;
 
     /**
      * @var array<string,mixed>
@@ -363,6 +368,19 @@ class RunnerConfig
         $new->assertions = $assertions;
 
         return $new;
+    }
+
+    public function withFormat(?string $format = null): self
+    {
+        $new = clone $this;
+        $new->format = $format;
+
+        return $new;
+    }
+
+    public function getFormat(): ?string
+    {
+        return $this->format ?: null;
     }
 
     public function withBaselines(SuiteCollection $baselines): self

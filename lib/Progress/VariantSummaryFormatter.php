@@ -80,19 +80,11 @@ EOT
     {
         $data = $this->paramProvider->provideFor($variant);
 
-        if (!$this->initialized) {
-            $this->initialize();
-        }
+        $this->normalNode = $this->parser->parse($variant->getSubject()->getFormat() ?? $this->format);
+        $this->baselineNode = $this->parser->parse($variant->getSubject()->getFormat() ?? $this->baselineFormat);
 
         $node = $variant->getBaseline() ? $this->baselineNode : $this->normalNode;
 
         return $this->printer->print($node, $data);
-    }
-
-    private function initialize(): void
-    {
-        $this->normalNode = $this->parser->parse($this->format);
-        $this->baselineNode = $this->parser->parse($this->baselineFormat);
-        $this->initialized = true;
     }
 }

@@ -170,6 +170,10 @@ final class Runner
                 $subjectMetadata->setAssertions($config->getAssertions());
             }
 
+            if (null !== $config->getFormat()) {
+                $subjectMetadata->setFormat($config->getFormat());
+            }
+
             // resolve executor config for this subject
             $executorConfig = $this->executorRegistry->getConfig($config->getExecutor());
 

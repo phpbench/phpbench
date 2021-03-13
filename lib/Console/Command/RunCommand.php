@@ -129,8 +129,7 @@ EOT
             ->withSleep($sleep !== null ? (int) $sleep : null)
             ->withIterations($input->getOption(self::OPT_ITERATIONS))
             ->withWarmup($input->getOption(self::OPT_WARMUP))
-            ->withBaselines($baselines)
-            ->withAssertions($input->getOption('assert'));
+            ->withBaselines($baselines);
 
         $suite = $this->runnerHandler->runFromInput($input, $output, $config);
 

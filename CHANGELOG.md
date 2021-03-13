@@ -4,6 +4,8 @@ CHANGELOG
 master
 ------
 
+- Added `--format` to customize the summary shown in progress loggers
+- String concatenation for expression language
 - Show debug details (process spawning) with `-vvv`
 - Support Xdebug 3
 

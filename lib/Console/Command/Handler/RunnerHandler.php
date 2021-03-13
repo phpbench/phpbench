@@ -40,6 +40,7 @@ class RunnerHandler
     public const OPT_PHP_CONFIG = 'php-config';
     public const OPT_PHP_WRAPPER = 'php-wrapper';
     public const OPT_PHP_DISABLE_INI = 'php-disable-ini';
+    const OPT_FORMAT = 'format';
 
     /**
      * @var LoggerRegistry
@@ -87,6 +88,7 @@ class RunnerHandler
         $command->addOption(self::OPT_GROUP, [], InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Group to run (can be specified multiple times)');
         $command->addOption(self::OPT_PARAMETERS, null, InputOption::VALUE_REQUIRED, 'Override parameters to use in (all) benchmarks');
         $command->addOption(self::OPT_ASSERT, null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Override assertions');
+        $command->addOption(self::OPT_FORMAT, null, InputOption::VALUE_REQUIRED, 'Set progress logger format');
         $command->addOption(self::OPT_REVS, null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Override number of revs (revolutions) on (all) benchmarks');
         $command->addOption(self::OPT_PROGRESS, 'l', InputOption::VALUE_REQUIRED, 'Progress logger to use');
 
@@ -108,7 +110,9 @@ class RunnerHandler
             ->withRevolutions($input->getOption(self::OPT_REVS))
             ->withParameters($this->getParameters($input->getOption(self::OPT_PARAMETERS)))
             ->withExecutor($input->getOption(self::OPT_EXECUTOR))
-            ->withStopOnError($input->getOption(self::OPT_STOP_ON_ERROR));
+            ->withStopOnError($input->getOption(self::OPT_STOP_ON_ERROR))
+            ->withAssertions($input->getOption(self::OPT_ASSERT))
+            ->withFormat($input->getOption(self::OPT_FORMAT));
 
         $config = $default->merge($config);
 
