@@ -381,6 +381,7 @@ class SubjectMetadata
 
             if ($this->$toMerge === null) {
                 $this->$toMerge = $subject->$toMerge;
+                continue;
             }
             $this->$toMerge = array_merge($this->$toMerge, $subject->$toMerge);
         }
