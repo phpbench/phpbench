@@ -29,14 +29,15 @@ class ParameterProvider
         foreach ($variant->getIterations() as $iteration) {
             foreach ($iteration->getResults() as $result) {
                 $metrics = $result->getMetrics();
+                $resultKey = (string)$result->getKey();
 
                 foreach ($metrics as $name => $value) {
                     $name = (string)$name;
 
-                    if (!isset($data[(string)$result->getKey()][$name])) {
-                        $data[(string)$result->getKey()][$name] = [];
+                    if (!isset($data[$resultKey][$name])) {
+                        $data[$resultKey][$name] = [];
                     }
-                    $data[(string)$result->getKey()][(string)$name][] = $value;
+                    $data[$resultKey][(string)$name][] = $value;
                 }
             }
         }
