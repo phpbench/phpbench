@@ -53,11 +53,11 @@ class ParserBench
      */
     public function provideExpressions(): Generator
     {
-        yield '10 seconds < 10 seconds +/- 10 seconds' => [
+        yield 'comp. w/tol' => [
             'expr' => '10 seconds < 10 seconds +/- 10 seconds',
         ];
 
-        yield '10 seconds < 10 seconds' => [
+        yield 'comp.' => [
             'expr' => '10 seconds < 10 seconds',
         ];
     }

@@ -142,16 +142,15 @@ abstract class PhpBenchLogger extends NullLogger
             return;
         }
 
-        $this->output->write(PHP_EOL);
         $this->output->writeln(sprintf('%d variants failed:', count($variantFailures)));
         $this->output->write(PHP_EOL);
 
         foreach ($variantFailures as $variantFailure) {
             $this->output->writeln(sprintf(
-                '<error>%s::%s %s</error>',
+                '  <fg=red>✘</> %s::%s # %s',
                 $variantFailure->getVariant()->getSubject()->getBenchmark()->getClass(),
                 $variantFailure->getVariant()->getSubject()->getName(),
-                json_encode($variantFailure->getVariant()->getParameterSet()->getArrayCopy())
+                $variantFailure->getVariant()->getParameterSet()->getName()
             ));
             $this->output->write(PHP_EOL);
 

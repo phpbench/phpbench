@@ -81,7 +81,11 @@ class VerboseLogger extends PhpBenchLogger
             return;
         }
 
-        $this->output->write(sprintf("%s", $this->formatIterationsFullSummary($variant)));
+        $this->output->write(sprintf(
+            "%s %s",
+            $variant->getAssertionResults()->hasFailures() ? '<fg=red>✘</>' : '<fg=green>✔</>',
+            $this->formatIterationsFullSummary($variant)
+        ));
         $this->output->write(PHP_EOL);
     }
 

@@ -12,6 +12,7 @@ use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\ParenthesisNode;
 use PhpBench\Expression\Ast\PercentDifferenceNode;
+use PhpBench\Expression\Ast\ToleratedTrue;
 use PhpBench\Expression\ColorMap;
 
 class Standard8ColorMap implements ColorMap
@@ -34,7 +35,7 @@ class Standard8ColorMap implements ColorMap
                     return 'fg=white';
                 }
 
-                return $node->percentage() > 0 ? 'fg=yellow;options=underscore' : 'fg=green;options=underscore';
+                return $node->percentage() > 0 ? 'fg=red' : 'fg=green';
             },
             DisplayAsNode::class => 'fg=cyan',
             ParameterNode::class => 'fg=white',
@@ -43,6 +44,7 @@ class Standard8ColorMap implements ColorMap
 
                 return $node->value() ? 'fg=blue' : 'fg=red';
             },
+            ToleratedTrue::class => 'fg=blue',
             ArithmeticOperatorNode::class => 'fg=yellow',
             ComparisonNode::class => 'fg=yellow',
         ];
