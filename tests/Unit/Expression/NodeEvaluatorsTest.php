@@ -2,10 +2,12 @@
 
 namespace PhpBench\Tests\Unit\Expression;
 
+use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\PercentageNode;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
+use PhpBench\Expression\NodeEvaluator;
 use PhpBench\Expression\NodeEvaluators;
 use PhpBench\Tests\IntegrationTestCase;
 
@@ -24,21 +26,18 @@ class NodeEvaluatorsTest extends IntegrationTestCase
 
     protected function setUp(): void
     {
-        $this->evaluators = $this->container()->get(NodeEvaluators::class);
+        $this->evaluators = $this->container()->get(NodeEvaluator::class);
         $this->evaluator = $this->container()->get(Evaluator::class);
     }
 
-    public function testErrorOnUnExpectedType(): void
+    public function testEvaluate(): void
     {
-        $this->expectException(EvaluationError::class);
-        $this->expectExceptionMessage('IntegerNode');
-        $this->evaluators->evaluateType(
+        self::assertEquals(new IntegerNode(1), $this->evaluators->evaluate(
             $this->evaluator,
             new ParameterNode(['one']),
-            PercentageNode::class,
             [
                 'one' => 1,
             ]
-        );
+        ));
     }
 }

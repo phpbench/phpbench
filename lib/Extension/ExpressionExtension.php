@@ -27,6 +27,7 @@ use PhpBench\Expression\Func\RStDevFunction;
 use PhpBench\Expression\Func\StDevFunction;
 use PhpBench\Expression\Func\VarianceFunction;
 use PhpBench\Expression\Lexer;
+use PhpBench\Expression\NodeEvaluator;
 use PhpBench\Expression\NodeEvaluator\ArgumentListEvaluator;
 use PhpBench\Expression\NodeEvaluator\ArithmeticOperatorEvaluator;
 use PhpBench\Expression\NodeEvaluator\BooleanEvaluator;
@@ -146,7 +147,7 @@ class ExpressionExtension implements ExtensionInterface
             );
         });
 
-        $container->register(NodeEvaluators::class, function (Container $container) {
+        $container->register(NodeEvaluator::class, function (Container $container) {
             /** @phpstan-ignore-next-line */
             return new NodeEvaluators([
                 new ArgumentListEvaluator(),
@@ -170,7 +171,7 @@ class ExpressionExtension implements ExtensionInterface
 
         $container->register(Evaluator::class, function (Container $container) {
             return new PrettyErrorEvaluator(
-                new MainEvaluator($container->get(NodeEvaluators::class)),
+                new MainEvaluator($container->get(NodeEvaluator::class)),
                 $container->get(Printer::class),
                 new UnderlinePrinterFactory($container->get(NodePrinter::class))
             );
