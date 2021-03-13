@@ -180,6 +180,10 @@ class AttributeDriver implements DriverInterface
             $subject->addAssertion($attribute->expression);
         }
 
+        if ($attribute instanceof Attributes\Format) {
+            $subject->setFormat($attribute->format);
+        }
+
         if ($attribute instanceof Attributes\Executor) {
             $subject->setExecutor(new ExecutorMetadata($attribute->name, $attribute->config));
         }

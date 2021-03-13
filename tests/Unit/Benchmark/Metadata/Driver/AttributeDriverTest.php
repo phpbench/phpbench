@@ -9,6 +9,7 @@ use PhpBench\Attributes\Assert;
 use PhpBench\Attributes\BeforeClassMethods;
 use PhpBench\Attributes\BeforeMethods;
 use PhpBench\Attributes\Executor;
+use PhpBench\Attributes\Format;
 use PhpBench\Attributes\Groups;
 use PhpBench\Attributes\Iterations;
 use PhpBench\Attributes\OutputMode;
@@ -261,6 +262,15 @@ class AttributeDriverTest extends TestCase
             ],
             function (SubjectMetadata $metadata): void {
                 self::assertEquals(['12 < 12'], $metadata->getAssertions());
+            }
+        ];
+
+        yield [
+            [
+                new Format('mode(foobar) as ms'),
+            ],
+            function (SubjectMetadata $metadata): void {
+                self::assertEquals('mode(foobar) as ms', $metadata->getFormat());
             }
         ];
 
