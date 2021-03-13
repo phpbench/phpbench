@@ -35,7 +35,7 @@ class Standard8ColorMap implements ColorMap
                     return 'fg=white';
                 }
 
-                return $node->percentage() > 0 ? 'fg=yellow;options=underscore' : 'fg=green;options=underscore';
+                return $node->percentage() > 0 ? 'fg=red' : 'fg=green';
             },
             DisplayAsNode::class => 'fg=cyan',
             ParameterNode::class => 'fg=white',
