@@ -37,9 +37,9 @@ class ConcatParseletTest extends ParseletTestCase
      */
     public function provideEvaluate(): Generator
     {
-        yield ['"foo" ~ "bar"', [], '"foobar"'];
+        yield ['"foo" ~ "bar"', [], 'foobar'];
 
-        yield ['10 ~ "bar"', [], '"10bar"'];
+        yield ['10 ~ "bar"', [], '10bar'];
     }
 
     /**

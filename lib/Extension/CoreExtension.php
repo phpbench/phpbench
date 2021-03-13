@@ -52,7 +52,6 @@ use PhpBench\Expression\Lexer;
 use PhpBench\Expression\Parser;
 use PhpBench\Expression\Printer;
 use PhpBench\Expression\Printer\EvaluatingPrinter;
-use PhpBench\Expression\SyntaxHighlighter;
 use PhpBench\Formatter\Format\BalanceFormat;
 use PhpBench\Formatter\Format\InvertOnThroughputFormat;
 use PhpBench\Formatter\Format\NumberFormat;
@@ -542,7 +541,6 @@ class CoreExtension implements ExtensionInterface
                 $container->get(ExpressionLanguage::class),
                 $container->get(EvaluatingPrinter::class),
                 $container->get(ParameterProvider::class),
-                $container->get(SyntaxHighlighter::class),
                 $container->getParameter(self::PARAM_PROGRESS_SUMMARY_FORMAT),
                 $container->getParameter(self::PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT)
             );
@@ -678,8 +676,7 @@ class CoreExtension implements ExtensionInterface
                 $container->get(Evaluator::class),
                 $container->get(Printer::class),
                 $container->get(EvaluatingPrinter::class),
-                $container->get(ParameterProvider::class),
-                $container->get(SyntaxHighlighter::class)
+                $container->get(ParameterProvider::class)
             );
         });
 

@@ -5,7 +5,7 @@ namespace PhpBench\Tests\Unit\Expression\Printer;
 use Generator;
 use PhpBench\Expression\Ast\FunctionNode;
 use PhpBench\Expression\Evaluator;
-use PhpBench\Expression\NodePrinters;
+use PhpBench\Expression\NodePrinter;
 use PhpBench\Expression\Printer\EvaluatingPrinter;
 use PhpBench\Tests\Unit\Expression\ParserTestCase;
 
@@ -17,7 +17,7 @@ class EvaluatingPrinterTest extends ParserTestCase
     public function testEvaluate(string $expr, array $params, string $expected): void
     {
         $printer = new EvaluatingPrinter(
-            $this->container()->get(NodePrinters::class),
+            $this->container()->get(NodePrinter::class),
             $this->container()->get(Evaluator::class),
             [
                 FunctionNode::class
