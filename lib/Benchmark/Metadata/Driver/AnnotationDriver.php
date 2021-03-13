@@ -202,6 +202,10 @@ class AnnotationDriver implements DriverInterface
             $subject->addAssertion($annotation->getExpression());
         }
 
+        if ($annotation instanceof Annotations\Format) {
+            $subject->setFormat($annotation->getFormat());
+        }
+
         if ($annotation instanceof Annotations\Executor) {
             $subject->setExecutor(new ExecutorMetadata($annotation->getName(), $annotation->getConfig()));
         }
