@@ -169,12 +169,12 @@ class ExpressionExtension implements ExtensionInterface
                 new ConcatEvaluator(),
             ]);
 
-            return new MemoisedNodeEvaluator($evaluators);
+            return $evaluators;
         });
 
         $container->register(Evaluator::class, function (Container $container) {
             return new PrettyErrorEvaluator(
-                new MainEvaluator($container->get(NodeEvaluator::class)),
+                new MainEvaluator(new MemoisedNodeEvaluator($container->get(NodeEvaluator::class))),
                 $container->get(Printer::class),
                 new UnderlinePrinterFactory($container->get(NodePrinter::class))
             );

@@ -9,26 +9,21 @@ use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\NodeEvaluator;
 use PhpBench\Expression\NodeEvaluator\MemoisedNodeEvaluator;
 use PhpBench\Tests\ProphecyTrait;
+use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 
 class MemoisedNodeEvaluatorTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @var ObjectProphecy
-     */
     private $inner;
+    private $evaluator;
 
     /**
      * @var MemoisedNodeEvaluator
      */
     private $nodeEvaluator;
 
-    /**
-     * @var Evaluator
-     */
-    private $evaluator;
 
     protected function setUp(): void
     {
@@ -41,9 +36,29 @@ class MemoisedNodeEvaluatorTest extends TestCase
     public function testEvaluateOnce(): void
     {
         $node = new StringNode("fo");
-        $this->inner->evaluate($this->evaluator->reveal(), $node, [])->willReturn(new IntegerNode(1))->shouldBeCalledOnce();
+        $this->inner->evaluate(
+            $this->evaluator->reveal(),
+            $node,
+            []
+        )->willReturn(new IntegerNode(1))->shouldBeCalledOnce();
+
         $this->nodeEvaluator->evaluate($this->evaluator->reveal(), $node, []);
         $this->nodeEvaluator->evaluate($this->evaluator->reveal(), $node, []);
+        $this->nodeEvaluator->evaluate($this->evaluator->reveal(), $node, []);
+        $this->nodeEvaluator->evaluate($this->evaluator->reveal(), $node, []);
+    }
+
+    public function testVariesWithParameters(): void
+    {
+        $node = new StringNode("fo");
+
+        $this->inner->evaluate($this->evaluator->reveal(), $node, Argument::any())->willReturn(
+            new IntegerNode(1),
+            new IntegerNode(1),
+        )->shouldBeCalledTimes(2);
+
+        $this->nodeEvaluator->evaluate($this->evaluator->reveal(), $node, []);
+        $this->nodeEvaluator->evaluate($this->evaluator->reveal(), $node, ['foo' => 'bar']);
         $this->nodeEvaluator->evaluate($this->evaluator->reveal(), $node, []);
         $this->nodeEvaluator->evaluate($this->evaluator->reveal(), $node, []);
     }

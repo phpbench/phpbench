@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Tests\Benchmark;
+namespace PhpBench\Tests\Benchmark\Expression;
 
 use Generator;
 use PhpBench\DependencyInjection\Container;
@@ -15,7 +15,7 @@ use PhpBench\Extension\ExpressionExtension;
  * @OutputTimeUnit("microseconds")
  * @Assert("mode(variant.time.avg) as ms < mode(baseline.time.avg) as ms +/- 5%")
  */
-class ExpressionParserBench
+class ParserBench
 {
     /**
      * @var Parser

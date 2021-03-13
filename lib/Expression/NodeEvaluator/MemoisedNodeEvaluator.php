@@ -40,8 +40,11 @@ class MemoisedNodeEvaluator implements NodeEvaluator
      */
     public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
     {
-        // cache based on the value of the node
-        $hash = serialize($node);
+        try {
+            $hash = serialize($node) . serialize($params);
+        } catch (\Exception $exception) {
+            return $this->innerEvaluator->evaluate($evaluator, $node, $params);
+        }
 
         if (isset($this->cache[$hash])) {
             return $this->cache[$hash];

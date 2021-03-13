@@ -49,6 +49,18 @@ EOT
      */
     private $paramProvider;
 
+    private $initialized = false;
+
+    /**
+     * @var Node
+     */
+    private $normalNode;
+
+    /**
+     * @var Node
+     */
+    private $baselineNode;
+
     public function __construct(
         ExpressionLanguage $parser,
         Printer $printer,
@@ -66,8 +78,20 @@ EOT
     public function formatVariant(Variant $variant): string
     {
         $data = $this->paramProvider->provideFor($variant);
-        $node = $this->parser->parse($variant->getBaseline() ? $this->baselineFormat : $this->format);
+
+        if (!$this->initialized) {
+            $this->initialize();
+        }
+
+        $node = $variant->getBaseline() ? $this->baselineNode : $this->normalNode;
 
         return $this->printer->print($node, $data);
+    }
+
+    private function initialize(): void
+    {
+        $this->normalNode = $this->parser->parse($this->format);
+        $this->baselineNode = $this->parser->parse($this->baselineFormat);
+        $this->initialized = true;
     }
 }
