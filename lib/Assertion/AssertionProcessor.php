@@ -16,23 +16,12 @@ use PhpBench\Assertion\Exception\AssertionError;
 use PhpBench\Expression\Ast\BooleanNode;
 use PhpBench\Expression\Ast\ToleratedTrue;
 use PhpBench\Expression\Evaluator;
-use PhpBench\Expression\Lexer;
-use PhpBench\Expression\Parser;
+use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\Printer;
 use PhpBench\Model\Variant;
 
 class AssertionProcessor
 {
-    /**
-     * @var Lexer
-     */
-    private $lexer;
-
-    /**
-     * @var Parser
-     */
-    private $parser;
-
     /**
      * @var Evaluator
      */
@@ -53,26 +42,28 @@ class AssertionProcessor
      */
     private $evaluatingPrinter;
 
+    /**
+     * @var ExpressionLanguage
+     */
+    private $expressionLanaugage;
+
     public function __construct(
-        Lexer $lexer,
-        Parser $parser,
+        ExpressionLanguage $expressionLanaugage,
         Evaluator $evaluator,
         Printer $printer,
         Printer $evaluatingPrinter,
         ParameterProvider $provider
     ) {
-        $this->lexer = $lexer;
-        $this->parser = $parser;
         $this->evaluator = $evaluator;
         $this->printer = $printer;
         $this->provider = $provider;
         $this->evaluatingPrinter = $evaluatingPrinter;
+        $this->expressionLanaugage = $expressionLanaugage;
     }
 
     public function assert(Variant $variant, string $assertion): AssertionResult
     {
-        $tokens = $this->lexer->lex($assertion);
-        $node = $this->parser->parse($tokens);
+        $node = $this->expressionLanaugage->parse($assertion);
         $params = $this->provider->provideFor($variant);
         $evaluated = $this->evaluator->evaluate($node, $params);
 
