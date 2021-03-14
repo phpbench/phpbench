@@ -450,7 +450,7 @@ See :doc:`assertions` for more information.
 Format
 ------
 
-Ovverride how the variant results are formatted in the progress output.
+Override how the variant results are formatted in the progress output.
 
 .. tabs::
 
