@@ -4,6 +4,9 @@ namespace PhpBench\Report\Generator;
 
 use Generator;
 use PhpBench\Dom\Document;
+use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\ExpressionLanguage;
+use PhpBench\Expression\Printer;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\ResultInterface;
@@ -13,12 +16,40 @@ use PhpBench\Model\SuiteCollection;
 use PhpBench\Model\Variant;
 use PhpBench\Registry\Config;
 use PhpBench\Report\GeneratorInterface;
+use PhpBench\Report\Generator\Table\Cell;
+use PhpBench\Report\Generator\Table\Row;
+use PhpBench\Report\Generator\Table\ValueRole;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use function array_combine;
 use function array_reduce;
+use function iterator_to_array;
 
 class ExpressionGenerator implements GeneratorInterface
 {
+    /**
+     * @var ExpressionLanguage
+     */
+    private $parser;
+    /**
+     * @var Evaluator
+     */
+    private $evaluator;
+    /**
+     * @var Printer
+     */
+    private $printer;
+
+    public function __construct(
+        ExpressionLanguage $parser,
+        Evaluator $evaluator,
+        Printer $printer
+    )
+    {
+        $this->parser = $parser;
+        $this->evaluator = $evaluator;
+        $this->printer = $printer;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -28,21 +59,20 @@ class ExpressionGenerator implements GeneratorInterface
             'title' => null,
             'description' => null,
             'cols' => [
-                'benchmark' => 'benchmark.class',
-                'subject' => 'subject.name',
-                'tag' => 'suite.tag',
-                'groups' => 'join(", ", subject.groups)',
-                'params' => 'json_encode(variant.parameters)',
-                'revs' => 'variant.revs',
-                'its' => 'variant.iterations',
-                'mem_peak' => 'max(variant.mem.peak) as bytes)',
-                'best' => 'min(variant.time.avg) as time)',
-                'mode' => 'mode(variant.time.avg) as time)',
-                'worst' => 'max(variant.time.avg) as time)',
-                'rstdev' => 'rstdev(variant.time.avg) ~ "%"',
+                'benchmark' => 'first(benchmark_class)',
+                'subject' => 'first(subject_name)',
+                'tag' => 'first(suite_tag)',
+                'set' => 'first(variant_name)',
+                'revs' => 'first(variant_revs)',
+                'its' => 'first(variant_iterations)',
+                'mem_peak' => 'max(result_mem_peak) as bytes',
+                'best' => 'min(result_time_avg) as time',
+                'mode' => 'mode(result_time_avg) as time',
+                'worst' => 'max(result_time_avg) as time',
+                'rstdev' => 'format("%d.2%%", rstdev(result_time_avg))',
             ],
-            'aggregate' => ['benchmark.class', 'subject.name', 'variant.name' ],
-            'break' => ['tag', 'suite', 'date', 'stime'],
+            'aggregate' => ['benchmark_class', 'subject_name', 'variant_name' ],
+            'break' => ['tag', 'benchmark'],
         ]);
 
         $options->setAllowedTypes('title', ['null', 'string']);
@@ -58,7 +88,11 @@ class ExpressionGenerator implements GeneratorInterface
     public function generate(SuiteCollection $collection, Config $config): Document
     {
         $data = iterator_to_array($this->reportData($collection));
-        $aggregated = $this->aggregate($data, $config['aggregate']);
+        $data = $this->aggregate($data, $config['aggregate']);
+        $data = iterator_to_array($this->evaluate($data, $config['cols']));
+        $data = $this->partition($data, $config['break']);
+
+        return $this->generateDocument($data, $config);
     }
 
     /**
@@ -72,15 +106,15 @@ class ExpressionGenerator implements GeneratorInterface
                 foreach ($subject->getVariants() as $variant) {
                     foreach ($variant->getIterations() as $iteration) {
                         yield array_merge([
-                            'benchmark.class' => $subject->getBenchmark()->getClass(),
-                            'subject.name' => $subject->getName(),
-                            'groups' => $subject->getGroups(),
-                            'variant.name' => $variant->getParameterSet()->getName(),
-                            'variant.params' => $variant->getParameterSet()->getArrayCopy(),
-                            'variant.revs' => $variant->getRevolutions(),
-                            'variant.iterations' => count($variant->getIterations()),
-                            'suite.tag' => $suite->getTag()->__toString(),
-                            'suite.date' => $suite->getDate()->format('c')
+                            'benchmark_class' => $subject->getBenchmark()->getClass(),
+                            'subject_name' => $subject->getName(),
+                            'subject_groups' => $subject->getGroups(),
+                            'variant_name' => $variant->getParameterSet()->getName(),
+                            'variant_params' => $variant->getParameterSet()->getArrayCopy(),
+                            'variant_revs' => $variant->getRevolutions(),
+                            'variant_iterations' => count($variant->getIterations()),
+                            'suite_tag' => $suite->getTag() ? $suite->getTag()->__toString() : '',
+                            'suite_date' => $suite->getDate()->format('c')
                         ], $this->resultData($iteration));
                     }
                 }
@@ -96,7 +130,7 @@ class ExpressionGenerator implements GeneratorInterface
         $data = [];
         foreach ($iteration->getResults() as $result) {
             foreach ($result->getMetrics() as $key => $value) {
-                $data[sprintf('result.%s.%s', $result->getKey(), $key)] = $value;
+                $data[sprintf('result_%s_%s', $result->getKey(), $key)] = $value;
             }
         }
 
@@ -119,7 +153,13 @@ class ExpressionGenerator implements GeneratorInterface
 
             $aggregated[$hash] = (function () use ($row, $hash, $aggregated) {
                 if (!isset($aggregated[$hash])) {
-                    return $row;
+
+                    return array_map(function ($value) {
+                        if (is_array($value)) {
+                            return $value;
+                        }
+                        return [$value];
+                    }, $row);
                 }
 
                 return array_combine(array_keys($aggregated[$hash]), array_map(function ($aggValue, $value) {
@@ -129,5 +169,113 @@ class ExpressionGenerator implements GeneratorInterface
         }
 
         return $aggregated;
+    }
+
+    /**
+     * @param array<string,mixed> $data
+     * @param array<string,string> $cols
+     * @return Generator<array<string,mixed>>
+     */
+    private function evaluate(array $data, array $cols): Generator
+    {
+        foreach ($data as $row) {
+            $evaledRow = [];
+
+            foreach ($cols as $name => $expr) {
+                $evaledRow[$name] = $this->printer->print($this->evaluator->evaluate(
+                    $this->parser->parse($expr),
+                    $row
+                ), $row);
+            }
+
+            yield $evaledRow;
+        }
+    }
+
+    private function generateDocument(array $tables, Config $config): Document
+    {
+        $document = new Document();
+        $reportsEl = $document->createRoot('reports');
+        $reportsEl->setAttribute('name', 'table');
+        $reportEl = $reportsEl->appendElement('report');
+
+        if (isset($config['title'])) {
+            $reportEl->setAttribute('title', $config['title']);
+        }
+
+        if (isset($config['description'])) {
+            $reportEl->appendElement('description', $config['description']);
+        }
+
+        foreach ($tables as $breakHash => $table) {
+            $tableEl = $reportEl->appendElement('table');
+
+            // Build the col(umn) definitions.
+            foreach ($table as $row) {
+                assert($row instanceof Row);
+                $colsEl = $tableEl->appendElement('cols');
+
+                foreach (array_keys($row) as $colName) {
+                    $colEl = $colsEl->appendElement('col');
+                    $colEl->setAttribute('name', $colName);
+
+                    // column labels are the column names by default.
+                    // the user may override by column name or column index.
+                    $colLabel = $colName;
+
+                    if (isset($config['labels'][$colName])) {
+                        $colLabel = $config['labels'][$colName];
+                    }
+
+                    $colEl->setAttribute('label', $colLabel);
+                }
+
+                break;
+            }
+
+            if ($breakHash) {
+                $tableEl->setAttribute('title', (string)$breakHash);
+            }
+
+            $groupEl = $tableEl->appendElement('group');
+            $groupEl->setAttribute('name', 'body');
+
+            foreach ($table as $row) {
+                assert($row instanceof Row);
+                $rowEl = $groupEl->appendElement('row');
+
+                foreach ($row as $key => $cell) {
+                    assert($cell instanceof Cell);
+                    $cellEl = $rowEl->appendElement('cell');
+                    $cellEl->setAttribute('name', $key);
+
+                    $valueEl = $cellEl->appendElement('value', $cell);
+                    $valueEl->setAttribute('role', 'primary');
+                }
+            }
+        }
+
+        return $document;
+    }
+
+    private function partition(array $data, array $breakCols): array
+    {
+        $partitioned = [];
+        foreach ($data as $key => $row) {
+            $hash = implode('-', array_map(function (string $key) use ($row) {
+                return $row[$key];
+            }, $breakCols));
+            foreach ($breakCols as $col) {
+                unset($row[$col]);
+            }
+
+            if (!isset($partitioned[$hash])) {
+                $partitioned[$hash] = [];
+            }
+
+            $partitioned[$hash][] = $row;
+        }
+
+        return $partitioned;
     }
 }

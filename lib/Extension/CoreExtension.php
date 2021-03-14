@@ -76,6 +76,7 @@ use PhpBench\Remote\PayloadFactory;
 use PhpBench\Remote\ProcessFactory;
 use PhpBench\Report\Generator\CompositeGenerator;
 use PhpBench\Report\Generator\EnvGenerator;
+use PhpBench\Report\Generator\ExpressionGenerator;
 use PhpBench\Report\Generator\TableGenerator;
 use PhpBench\Report\Renderer\ConsoleRenderer;
 use PhpBench\Report\Renderer\DebugRenderer;
@@ -615,6 +616,13 @@ class CoreExtension implements ExtensionInterface
         $container->register(TableGenerator::class, function (Container $container) {
             return new TableGenerator();
         }, [self::TAG_REPORT_GENERATOR => ['name' => 'table']]);
+        $container->register(ExpressionGenerator::class, function (Container $container) {
+            return new ExpressionGenerator(
+                $container->get(ExpressionLanguage::class),
+                $container->get(Evaluator::class),
+                $container->get(Printer::class)
+            );
+        }, [self::TAG_REPORT_GENERATOR => ['name' => 'expression']]);
         $container->register(EnvGenerator::class, function (Container $container) {
             return new EnvGenerator();
         }, [self::TAG_REPORT_GENERATOR => ['name' => 'env']]);

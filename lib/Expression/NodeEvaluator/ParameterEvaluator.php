@@ -25,6 +25,7 @@ class ParameterEvaluator extends AbstractEvaluator
      */
     public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
     {
+        assert($node instanceof ParameterNode);
         $value = self::resolvePropertyAccess($node, $node->segments(), $params);
 
         if (is_numeric($value)) {
