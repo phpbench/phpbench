@@ -3,7 +3,6 @@
 namespace PhpBench\Progress;
 
 use PhpBench\Assertion\ParameterProvider;
-use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\Printer;
 use PhpBench\Model\Variant;
@@ -50,18 +49,6 @@ EOT
      */
     private $paramProvider;
 
-    private $initialized = false;
-
-    /**
-     * @var Node
-     */
-    private $normalNode;
-
-    /**
-     * @var Node
-     */
-    private $baselineNode;
-
     public function __construct(
         ExpressionLanguage $parser,
         Printer $printer,
@@ -79,11 +66,11 @@ EOT
     public function formatVariant(Variant $variant): string
     {
         $data = $this->paramProvider->provideFor($variant);
+        $subjectFormat = $variant->getSubject()->getFormat();
 
-        $this->normalNode = $this->parser->parse($variant->getSubject()->getFormat() ?? $this->format);
-        $this->baselineNode = $this->parser->parse($variant->getSubject()->getFormat() ?? $this->baselineFormat);
-
-        $node = $variant->getBaseline() ? $this->baselineNode : $this->normalNode;
+        $node = $variant->getBaseline() ?
+            $this->parser->parse($subjectFormat ?? $this->baselineFormat) :
+            $this->parser->parse($subjectFormat ?? $this->format);
 
         return $this->printer->print($node, $data);
     }
