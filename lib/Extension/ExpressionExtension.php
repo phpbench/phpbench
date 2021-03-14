@@ -17,6 +17,8 @@ use PhpBench\Expression\Evaluator\MainEvaluator;
 use PhpBench\Expression\Evaluator\PrettyErrorEvaluator;
 use PhpBench\Expression\ExpressionFunctions;
 use PhpBench\Expression\ExpressionLanguage;
+use PhpBench\Expression\ExpressionLanguage\MemoisedExpressionLanguage;
+use PhpBench\Expression\ExpressionLanguage\RealExpressionLanguage;
 use PhpBench\Expression\Func\FormatFunction;
 use PhpBench\Expression\Func\MaxFunction;
 use PhpBench\Expression\Func\MeanFunction;
@@ -254,7 +256,9 @@ class ExpressionExtension implements ExtensionInterface
         });
 
         $container->register(ExpressionLanguage::class, function (Container $container) {
-            return new ExpressionLanguage($container->get(Lexer::class), $container->get(Parser::class));
+            return new MemoisedExpressionLanguage(
+                new RealExpressionLanguage($container->get(Lexer::class), $container->get(Parser::class))
+            );
         });
     }
 
