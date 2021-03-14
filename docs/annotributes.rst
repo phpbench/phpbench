@@ -444,3 +444,34 @@ You can also specify assertions from the command line:
 See :doc:`assertions` for more information.
 
 .. _cartesian product: https://en.wikipedia.org/wiki/Cartesian_product
+
+.. _format:
+
+Format
+------
+
+Ovverride how the variant results are formatted in the progress output.
+
+.. tabs::
+
+    .. tab:: Annotations
+
+        .. codeimport:: ../examples/Annotations/AnnotatedBench.php
+          :language: php
+          :sections: all,benchTime,format
+
+    .. tab:: Attributes
+
+        .. codeimport:: ../examples/Attributes/AttriutedBench.php
+          :language: php
+          :sections: all,benchTime,format
+
+You can also specify assertions from the command line:
+
+.. code-block:: bash
+
+    $ phpbench run --format='"This is my time: " ~ mode(variant.time.avg)'
+
+See :doc:`expression` for details on using the expressio language.
+
+.. _cartesian product: https://en.wikipedia.org/wiki/Cartesian_product

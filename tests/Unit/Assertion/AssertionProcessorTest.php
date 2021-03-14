@@ -7,8 +7,7 @@ use PhpBench\Assertion\AssertionProcessor;
 use PhpBench\Assertion\AssertionResult;
 use PhpBench\Assertion\ParameterProvider;
 use PhpBench\Expression\Evaluator;
-use PhpBench\Expression\Lexer;
-use PhpBench\Expression\Parser;
+use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\Printer;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Variant;
@@ -70,8 +69,7 @@ class AssertionProcessorTest extends IntegrationTestCase
     private function createProcessor(): AssertionProcessor
     {
         return new AssertionProcessor(
-            $this->container()->get(Lexer::class),
-            $this->container()->get(Parser::class),
+            $this->container()->get(ExpressionLanguage::class),
             $this->container()->get(Evaluator::class),
             $this->container()->get(Printer::class),
             $this->container()->get(Printer::class),

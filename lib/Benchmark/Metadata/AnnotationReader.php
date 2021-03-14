@@ -45,6 +45,7 @@ class AnnotationReader
         'Assert' => Annotations\Assert::class,
         'Executor' => Annotations\Executor::class,
         'Timeout' => Annotations\Timeout::class,
+        'Format' => Annotations\Format::class,
     ];
 
     private static $globalIgnoredNames = [

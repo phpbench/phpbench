@@ -109,6 +109,7 @@ EOT;
      * @OutputMode("throughput")
      * @Warmup(501)
      * @Assert("mean < 100")
+     * @Format("mode(variant.time.avg) as ms")
      * @Executor("microtime", revs=100)
      * @Timeout(0.1)
      */
@@ -131,6 +132,7 @@ EOT;
         $this->assertEquals('seconds', $metadata->getOutputTimeUnit());
         $this->assertEquals('throughput', $metadata->getOutputMode());
         $this->assertEquals([501], $metadata->getWarmup());
+        $this->assertEquals('mode(variant.time.avg) as ms', $metadata->getFormat());
         $this->assertEquals('mean < 100', $metadata->getAssertions()[0]);
         $this->assertEquals(new ExecutorMetadata('microtime', ['revs' => 100 ]), $metadata->getExecutor());
         $this->assertTrue($metadata->getSkip());

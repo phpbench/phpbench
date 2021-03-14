@@ -48,8 +48,6 @@ use PhpBench\Executor\Method\LocalMethodExecutor;
 use PhpBench\Executor\Method\RemoteMethodExecutor;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\ExpressionLanguage;
-use PhpBench\Expression\Lexer;
-use PhpBench\Expression\Parser;
 use PhpBench\Expression\Printer;
 use PhpBench\Expression\Printer\EvaluatingPrinter;
 use PhpBench\Formatter\Format\BalanceFormat;
@@ -671,8 +669,7 @@ class CoreExtension implements ExtensionInterface
     {
         $container->register(AssertionProcessor::class, function (Container $container) {
             return new AssertionProcessor(
-                $container->get(Lexer::class),
-                $container->get(Parser::class),
+                $container->get(ExpressionLanguage::class),
                 $container->get(Evaluator::class),
                 $container->get(Printer::class),
                 $container->get(EvaluatingPrinter::class),

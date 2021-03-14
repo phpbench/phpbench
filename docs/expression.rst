@@ -40,6 +40,20 @@ Examples:
 
 .. literalinclude:: ../examples/Expression/logical_operators_1
 
+.. _expr_string:
+
+String Operators
+-----------------
+
+.. csv-table::
+    :header: "comparator", "description"
+
+    "``~``", "Concatenate"
+
+Examples:
+
+.. literalinclude:: ../examples/Expression/string_operators_1
+
 .. _expr_arithmetic:
 
 Arithmetic

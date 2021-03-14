@@ -53,6 +53,9 @@ class AnnotatedBench
 // section: assert
      * @Assert("mode(variant.time.avg) < 200 ms")
 // endsection: assert
+// section: format
+     * @Format("mode(variant.time.avg) as ms ~ \" Hello World\"")
+// endsection: format
 // section: executor
      * @Executor("local")
 // endsection: executor

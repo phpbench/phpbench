@@ -55,6 +55,7 @@ class Benchmark implements \IteratorAggregate
         $subject->setOutputTimePrecision($metadata->getOutputTimePrecision());
         $subject->setOutputMode($metadata->getOutputMode());
         $subject->setExecutor($executor);
+        $subject->setFormat($metadata->getFormat());
 
         $this->subjects[] = $subject;
 

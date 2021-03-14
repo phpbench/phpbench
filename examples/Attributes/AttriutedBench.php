@@ -50,6 +50,9 @@ class AttriutedBench
 // section: assert
     #[Bench\Assert('mode(variant.time.avg) < 200 ms')]
 // endsection: assert
+// section: format
+    #[Bench\Format('mode(variant.time.avg) ~ " Hello World"')]
+// endsection: format
 // section: executor
     #[Bench\Executor('local')]
 // endsection: executor

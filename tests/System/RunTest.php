@@ -158,6 +158,15 @@ class RunTest extends SystemTestCase
         $this->assertExitCode(0, $process);
     }
 
+    public function testFormat(): void
+    {
+        $process = $this->phpbench(
+            'run benchmarks/set4/NothingBench.php --format=\'"HELLO WORLD"\''
+        );
+        $this->assertExitCode(0, $process);
+        $this->assertStringContainsString('HELLO WORLD', $process->getOutput());
+    }
+
     /**
      * It should dump none to an XML file.
      */

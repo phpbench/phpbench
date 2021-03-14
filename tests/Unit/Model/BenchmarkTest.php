@@ -21,6 +21,8 @@ use PhpBench\Tests\TestCase;
 
 class BenchmarkTest extends TestCase
 {
+    const EXAMPLE_FORMAT = 'foobar';
+
     /**
      * @var Benchmark
      */
@@ -50,6 +52,7 @@ class BenchmarkTest extends TestCase
         $metadata->getName()->willReturn('hello');
         $metadata->getGroups()->willReturn(['one', 'two']);
         $metadata->getSleep()->willReturn(30);
+        $metadata->getFormat()->willReturn(self::EXAMPLE_FORMAT);
         $metadata->getRetryThreshold()->willReturn(10);
         $metadata->getOutputTimeUnit()->willReturn(50);
         $metadata->getOutputMode()->willReturn(60);
@@ -62,6 +65,7 @@ class BenchmarkTest extends TestCase
         $this->assertEquals('hello', $subject->getName());
         $this->assertEquals(['one', 'two'], $subject->getGroups());
         $this->assertEquals(30, $subject->getSleep());
+        $this->assertEquals(self::EXAMPLE_FORMAT, $subject->getFormat());
         $this->assertEquals(10, $subject->getRetryThreshold());
         $this->assertEquals(50, $subject->getOutputTimeUnit());
         $this->assertEquals(60, $subject->getOutputMode());

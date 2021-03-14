@@ -118,6 +118,11 @@ class SubjectMetadata
     private $retryLimit = null;
 
     /**
+     * @var string|null
+     */
+    private $format = null;
+
+    /**
      */
     public function __construct(BenchmarkMetadata $benchmarkMetadata, string $name)
     {
@@ -330,6 +335,16 @@ class SubjectMetadata
     public function getAssertions(): array
     {
         return $this->assertions ?: [];
+    }
+
+    public function setFormat(string $format): void
+    {
+        $this->format = $format;
+    }
+
+    public function getFormat(): ?string
+    {
+        return $this->format;
     }
 
     public function getExecutor(): ?ExecutorMetadata
