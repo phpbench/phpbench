@@ -1,0 +1,1 @@
+first(["one", "two"]) = "one"
