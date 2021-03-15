@@ -17,7 +17,7 @@ class VariantSummaryFormatterTest extends IntegrationTestCase
     public function testFormatVariantOnly(): void
     {
         $variant = TestUtil::getVariant();
-        self::assertEquals('variant: 15.01', $this->createFormatter(
+        self::assertEquals('variant: 5', $this->createFormatter(
                 '"variant: " ~ mode(variant.time.avg)',
                 '"baseline: " ~ mode(variant.baseline.avg)'
             )->formatVariant($variant));
