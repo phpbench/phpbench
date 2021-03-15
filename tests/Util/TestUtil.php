@@ -104,7 +104,7 @@ class TestUtil
             'warmup' => 10,
             'sleep' => 1,
             'basetime' => 10,
-            'baseline' => false,
+            'baseline' => null,
             'name' => 'test',
             'benchmarks' => ['TestBench'],
             'groups' => ['one', 'two', 'three'],
@@ -146,7 +146,7 @@ class TestUtil
                 $time = $baseTime;
 
                 foreach ($options['iterations'] as $time) {
-                    $variant->createIteration(self::createResults($baseTime + $time, 200, 0));
+                    $variant->createIteration(self::createResults($time, 200, 0));
                 }
 
                 $variant->computeStats();
@@ -162,8 +162,7 @@ class TestUtil
         $suite->setEnvInformations($informations);
 
         if ($options['baseline']) {
-            unset($options['baseline']);
-            $baselineSuite = self::createSuite($options);
+            $baselineSuite = self::createSuite($options['baseline']);
             $suite->mergeBaselines(new SuiteCollection([$baselineSuite]));
         }
 
