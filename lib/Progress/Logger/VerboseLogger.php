@@ -83,7 +83,7 @@ class VerboseLogger extends PhpBenchLogger
 
         $this->output->write(sprintf(
             "%s %s",
-            $variant->getAssertionResults()->hasFailures() ? '<fg=red>✘</>' : '<fg=green>✔</>',
+            $this->resolveAssertionStatus($variant),
             $this->formatIterationsFullSummary($variant)
         ));
         $this->output->write(PHP_EOL);
@@ -96,5 +96,14 @@ class VerboseLogger extends PhpBenchLogger
     {
         $this->rejectionCount = $rejectionCount;
         $this->output->write("\x1B[1F\x1B[0K");
+    }
+
+    private function resolveAssertionStatus(Variant $variant): string
+    {
+        $results = $variant->getAssertionResults();
+        if (!$results->count()) {
+            return '<fg=yellow>-</>';
+        }
+        return $results->hasFailures() ? '<fg=red>✘</>' : '<fg=green>✔</>';
     }
 }
