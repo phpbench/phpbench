@@ -4,9 +4,7 @@ namespace PhpBench\Expression\Func;
 
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Exception\EvaluationError;
-use RuntimeException;
 
 final class FirstFunction
 {

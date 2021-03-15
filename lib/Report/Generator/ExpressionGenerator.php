@@ -2,31 +2,24 @@
 
 namespace PhpBench\Report\Generator;
 
+use function array_combine;
+use function array_key_exists;
 use Generator;
+use function iterator_to_array;
 use PhpBench\Dom\Document;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\Printer;
-use PhpBench\Model\Benchmark;
 use PhpBench\Model\Iteration;
-use PhpBench\Model\ResultInterface;
-use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Model\Variant;
 use PhpBench\Registry\Config;
 use PhpBench\Report\GeneratorInterface;
-use PhpBench\Report\Generator\Table\Cell;
-use PhpBench\Report\Generator\Table\Row;
-use PhpBench\Report\Generator\Table\ValueRole;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use function array_combine;
-use function array_key_exists;
-use function array_reduce;
-use function iterator_to_array;
 
 class ExpressionGenerator implements GeneratorInterface
 {
@@ -55,8 +48,7 @@ class ExpressionGenerator implements GeneratorInterface
         Evaluator $evaluator,
         Printer $printer,
         LoggerInterface $logger
-    )
-    {
+    ) {
         $this->parser = $parser;
         $this->evaluator = $evaluator;
         $this->printer = $printer;
@@ -121,12 +113,14 @@ class ExpressionGenerator implements GeneratorInterface
     {
         foreach ($collection as $suite) {
             assert($suite instanceof Suite);
+
             foreach ($suite->getSubjects() as $subject) {
                 foreach ($subject->getVariants() as $variant) {
                     $nbIterations = (function (Variant $variant, ?Variant $baseline) {
                         if (null === $baseline) {
                             return count($variant->getIterations());
                         }
+
                         return max(count($variant->getIterations()), count($baseline->getIterations()));
                     })($variant, $variant->getBaseline());
 
@@ -164,6 +158,7 @@ class ExpressionGenerator implements GeneratorInterface
         }
 
         $data = [];
+
         foreach ($iteration->getResults() as $result) {
             foreach ($result->getMetrics() as $key => $value) {
                 $data[sprintf('%s_%s_%s', $prefix, $result->getKey(), $key)] = $value;
@@ -176,11 +171,13 @@ class ExpressionGenerator implements GeneratorInterface
 
     /**
      * @param array<string,mixed> $data
+     *
      * @return array<string,mixed>
      */
     private function normalize(array $data): array
     {
         $cols = [];
+
         foreach ($data as $row) {
             foreach ($row as $key => $value) {
                 if (!isset($cols[$key])) {
@@ -196,7 +193,7 @@ class ExpressionGenerator implements GeneratorInterface
         return $data;
     }
     /**
-     * @param array<string.mixed> $data
+     * @param array<string,mixed> $data
      * @param string[] $aggregateCols
      *
      * @return array<string,mixed>
@@ -204,6 +201,7 @@ class ExpressionGenerator implements GeneratorInterface
     private function aggregate(array $data, array $aggregateCols): array
     {
         $aggregated = [];
+
         foreach ($data as $row) {
             $hash = implode('-', array_map(function (string $key) use ($row) {
                 if (!array_key_exists($key, $row)) {
@@ -212,16 +210,17 @@ class ExpressionGenerator implements GeneratorInterface
                         $key, implode('", "', array_keys($row))
                     ));
                 }
+
                 return $row[$key];
             }, $aggregateCols));
 
             $aggregated[$hash] = (function () use ($row, $hash, $aggregated) {
                 if (!isset($aggregated[$hash])) {
-
                     return array_map(function ($value) {
                         if (is_array($value)) {
                             return $value;
                         }
+
                         return [$value];
                     }, $row);
                 }
@@ -238,6 +237,8 @@ class ExpressionGenerator implements GeneratorInterface
     /**
      * @param array<string,mixed> $data
      * @param array<string,string> $cols
+     * @param array<string,string> $baselineCols
+     *
      * @return Generator<array<string,mixed>>
      */
     private function evaluate(array $data, array $cols, array $baselineCols): Generator
@@ -258,6 +259,9 @@ class ExpressionGenerator implements GeneratorInterface
         }
     }
 
+    /**
+     * @param array<string,array<string,string>> $tables
+     */
     private function generateDocument(array $tables, Config $config): Document
     {
         $document = new Document();
@@ -278,7 +282,6 @@ class ExpressionGenerator implements GeneratorInterface
 
             // Build the col(umn) definitions.
             foreach ($table as $row) {
-                assert($row instanceof Row);
                 $colsEl = $tableEl->appendElement('cols');
 
                 foreach (array_keys($row) as $colName) {
@@ -307,11 +310,9 @@ class ExpressionGenerator implements GeneratorInterface
             $groupEl->setAttribute('name', 'body');
 
             foreach ($table as $row) {
-                assert($row instanceof Row);
                 $rowEl = $groupEl->appendElement('row');
 
                 foreach ($row as $key => $cell) {
-                    assert($cell instanceof Cell);
                     $cellEl = $rowEl->appendElement('cell');
                     $cellEl->setAttribute('name', $key);
 
@@ -327,6 +328,7 @@ class ExpressionGenerator implements GeneratorInterface
     private function partition(array $data, array $breakCols): array
     {
         $partitioned = [];
+
         foreach ($data as $key => $row) {
             $hash = implode('-', array_map(function (string $key) use ($row) {
                 if (!array_key_exists($key, $row)) {
@@ -336,8 +338,10 @@ class ExpressionGenerator implements GeneratorInterface
                         implode('", "', array_keys($row))
                     ));
                 }
+
                 return $row[$key];
             }, $breakCols));
+
             foreach ($breakCols as $col) {
                 unset($row[$col]);
             }

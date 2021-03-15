@@ -58,8 +58,6 @@ final class Lexer
     ];
 
     /**
-     * @param string[] $timeUnits
-     * @param string[] $memoryUnits
      */
     public function __construct(
         array $unitNames = []
