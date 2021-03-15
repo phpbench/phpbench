@@ -51,7 +51,6 @@ final class Lexer
     const PATTERNS = [
         self::PATTERN_NUMBER, // numbers
         self::PATTERN_FUNCTION,
-        self::PATTERN_PARAMETER,
         self::PATTERN_NAME,
         self::PATTERN_STRING,
         '\.',
@@ -82,13 +81,16 @@ final class Lexer
         );
         $tokens = [];
 
+        $prevToken = new Token(Token::T_EOF, '', 0);
+
         foreach ($chunks as $chunk) {
             [ $value, $offset ] = $chunk;
-            $tokens[] = new Token(
-                $this->resolveType($value),
+            $prevToken = new Token(
+                $this->resolveType($value, $prevToken),
                 $value,
                 $offset
             );
+            $tokens[] = $prevToken;
             $prevChunk = $chunk;
         }
 
@@ -98,7 +100,7 @@ final class Lexer
     /**
      * @param mixed $value
      */
-    protected function resolveType($value): string
+    protected function resolveType($value, Token $prevToken): string
     {
         $type = Token::T_NONE;
 
@@ -108,7 +110,7 @@ final class Lexer
 
         switch (true) {
             case (is_numeric($value)):
-                if (strpos($value, '.') !== false || stripos($value, 'e') !== false) {
+                if (strpos((string)$value, '.') !== false || stripos((string)$value, 'e') !== false) {
                     return Token::T_FLOAT;
                 }
 
@@ -116,11 +118,8 @@ final class Lexer
             case ($value[0] === '"'):
                 return Token::T_STRING;
 
-            case (in_array($value, $this->unitNames, true)):
+            case ($prevToken->type !== Token::T_DOT && in_array($value, $this->unitNames, true)):
                 return Token::T_UNIT;
-
-            case (preg_match('{'. self::PATTERN_PARAMETER . '}', $value)):
-                return Token::T_PARAMETER;
 
             case (preg_match('{'. self::PATTERN_FUNCTION. '}', $value)):
                 return Token::T_FUNCTION;

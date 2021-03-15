@@ -19,7 +19,9 @@ use PhpBench\Expression\ExpressionFunctions;
 use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\ExpressionLanguage\MemoisedExpressionLanguage;
 use PhpBench\Expression\ExpressionLanguage\RealExpressionLanguage;
+use PhpBench\Expression\Func\FirstFunction;
 use PhpBench\Expression\Func\FormatFunction;
+use PhpBench\Expression\Func\JoinFunction;
 use PhpBench\Expression\Func\MaxFunction;
 use PhpBench\Expression\Func\MeanFunction;
 use PhpBench\Expression\Func\MinFunction;
@@ -123,8 +125,8 @@ class ExpressionExtension implements ExtensionInterface
                     new FloatParselet(),
                     new ParenthesisParselet(),
                     new BooleanParselet(),
-                    new ParameterParselet(),
                     new StringParselet(),
+                    new ParameterParselet(),
                 ]),
                 Parselets::fromInfixParselets([
                     new LogicalOperatorParselet(Token::T_LOGICAL_OR, Precedence::LOGICAL_OR),
@@ -247,7 +249,9 @@ class ExpressionExtension implements ExtensionInterface
                 'rstdev' => new RStDevFunction(),
                 'variance' => new VarianceFunction(),
                 'percent_diff' => new PercentDifferenceFunction(),
-                'format' => new FormatFunction()
+                'format' => new FormatFunction(),
+                'join' => new JoinFunction(),
+                'first' => new FirstFunction()
             ]);
         });
 

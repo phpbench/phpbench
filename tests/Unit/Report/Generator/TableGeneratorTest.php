@@ -45,6 +45,7 @@ class TableGeneratorTest extends GeneratorTestCase
                 'output_mode' => 'throughput',
                 'groups' => ['one', 'two', 'three'],
                 'break' => [],
+                'iterations' => [10,20]
             ],
         ]);
 
@@ -68,13 +69,13 @@ class TableGeneratorTest extends GeneratorTestCase
         $this->assertXPathEval($report, 200, 'string(//cell[@name="mem_peak"])');
         $this->assertXPathEval($report, 2, 'string(//cell[@name="best"])');
         $this->assertXPathEval($report, 3, 'string(//cell[@name="mean"])');
-        $this->assertXPathEval($report, 3.2, 'string(//row[2]//cell[@name="mean"])');
+        $this->assertXPathEval($report, 3, 'string(//row[2]//cell[@name="mean"])');
         $this->assertXPathEval($report, 4, 'string(//cell[@name="worst"])');
         $this->assertXPathEval($report, 1, 'string(//cell[@name="stdev"])');
         $this->assertXPathEval($report, 33.333333333333, 'string(//cell[@name="rstdev"])');
 
         $this->assertXPathEval($report, '1', 'string(//cell[@name="diff"])');
-        $this->assertXPathEval($report, '1.0666666666667', 'string(//row[2]//cell[@name="diff"])');
+        $this->assertXPathEval($report, '1', 'string(//row[2]//cell[@name="diff"])');
     }
 
     public function testBaseline(): void
@@ -137,6 +138,7 @@ class TableGeneratorTest extends GeneratorTestCase
                 'output_mode' => 'throughput',
                 'groups' => ['one', 'two', 'three'],
                 'break' => [],
+                'iterations' => [ 10, 20 ],
             ],
         ]);
 
@@ -392,6 +394,8 @@ class TableGeneratorTest extends GeneratorTestCase
             [
                 'benchmarks' => ['oneBench', 'twoBench'],
                 'subjects' => ['subjectOne', 'subjectTwo'],
+                'iterations' => [10, 20],
+                'iterations_increase_per_subject' => 10,
             ],
         ]);
         $report = $this->generate($collection, [
@@ -404,7 +408,7 @@ class TableGeneratorTest extends GeneratorTestCase
             $values[] = $cellEl->nodeValue;
         }
         $this->assertEquals([
-            '3', '3', '3.2', '3.2',
+            '3', '3', '5', '5',
         ], $values);
     }
 
@@ -417,6 +421,8 @@ class TableGeneratorTest extends GeneratorTestCase
             [
                 'benchmarks' => ['oneBench', 'twoBench'],
                 'subjects' => ['subjectOne', 'subjectTwo'],
+                'iterations' => [10, 20],
+                'iterations_increase_per_subject' => 10,
             ],
         ]);
         $report = $this->generate($collection, [
@@ -429,7 +435,7 @@ class TableGeneratorTest extends GeneratorTestCase
             $values[] = $cellEl->nodeValue;
         }
         $this->assertEquals([
-            '3.2', '3.2', '3', '3',
+            '5', '5', '3', '3',
         ], $values);
     }
 
@@ -443,11 +449,13 @@ class TableGeneratorTest extends GeneratorTestCase
                 'benchmarks' => ['oneBench', 'twoBench'],
                 'subjects' => ['subjectOne', 'subjectTwo'],
                 'iterations' => [8],
+                'iterations_increase_per_subject' => 10,
             ],
             [
                 'benchmarks' => ['oneBench', 'twoBench'],
                 'subjects' => ['subjectOne'],
                 'iterations' => [3],
+                'iterations_increase_per_subject' => 10,
             ],
         ]);
         $report = $this->generate($collection, [
@@ -465,7 +473,7 @@ class TableGeneratorTest extends GeneratorTestCase
             'subjectOne', 'subjectOne', 'subjectOne', 'subjectOne', 'subjectTwo', 'subjectTwo',
         ], $subjects);
         $this->assertEquals([
-            '3.6', '3.6', '2.6', '2.6', '3.8', '3.8',
+            '1.6', '1.6', '0.6', '0.6', '3.6', '3.6',
         ], $values);
     }
 

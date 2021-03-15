@@ -103,7 +103,7 @@ class TestUtil
             'revs' => 5,
             'warmup' => 10,
             'sleep' => 1,
-            'basetime' => 10,
+            'baseline' => null,
             'name' => 'test',
             'benchmarks' => ['TestBench'],
             'groups' => ['one', 'two', 'three'],
@@ -116,6 +116,7 @@ class TestUtil
             'output_time_precision' => 7,
             'output_mode' => 'time',
             'iterations' => [0, 10],
+            'iterations_increase_per_subject' => 0,
         ], $options);
 
         $dateTime = new \DateTime($options['date']);
@@ -128,10 +129,10 @@ class TestUtil
             $options['uuid']
         );
 
+
         foreach ($options['benchmarks'] as $benchmarkClass) {
             $benchmark = $suite->createBenchmark($benchmarkClass);
-
-            $baseTime = $options['basetime'];
+            $timeOffset = 0;
 
             foreach ($options['subjects'] as $subjectName) {
                 $subject = $benchmark->createSubject($subjectName);
@@ -140,16 +141,15 @@ class TestUtil
                 $subject->setOutputTimeUnit($options['output_time_unit']);
                 $subject->setOutputTimePrecision($options['output_time_precision']);
                 $subject->setOutputMode($options['output_mode']);
-                $variant = $subject->createVariant(new ParameterSet(0, $options['parameters']), $options['revs'], $options['warmup']);
-
-                $time = $baseTime;
+                $variant = $subject->createVariant(new ParameterSet('0', $options['parameters']), $options['revs'], $options['warmup']);
 
                 foreach ($options['iterations'] as $time) {
-                    $variant->createIteration(self::createResults($baseTime + $time, 200, 0));
+                    $variant->createIteration(self::createResults($timeOffset + $time, 200, 0));
                 }
 
+                $timeOffset += $options['iterations_increase_per_subject'];
+
                 $variant->computeStats();
-                $baseTime++;
             }
         }
 
@@ -159,6 +159,11 @@ class TestUtil
             $informations[] = new Information($name, $information);
         }
         $suite->setEnvInformations($informations);
+
+        if ($options['baseline']) {
+            $baselineSuite = self::createSuite($options['baseline']);
+            $suite->mergeBaselines(new SuiteCollection([$baselineSuite]));
+        }
 
         return $suite;
     }

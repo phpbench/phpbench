@@ -122,6 +122,9 @@ class Suite implements IteratorAggregate
         return $iterations;
     }
 
+    /**
+     * @return Subject[]
+     */
     public function getSubjects(): array
     {
         $subjects = [];

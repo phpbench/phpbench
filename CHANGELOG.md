@@ -4,6 +4,8 @@ CHANGELOG
 master
 ------
 
+- Added `expression` report generator - will eventually replace the `table `report used
+  for `aggregate` and `default `reports.
 - Added `--format` to customize the summary shown in progress loggers
 - String concatenation for expression language
 - Show debug details (process spawning) with `-vvv`

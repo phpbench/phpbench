@@ -1,0 +1,19 @@
+{
+    "subjects": [
+        "one",
+        "two"
+    ],
+    "iterations": [
+        10
+    ]
+}
+---
+{
+    "cols": {
+        "subject": "\"hello\"",
+        "benchmark": "\"hello\""
+    }
+}
+---
+hello-hello
+
