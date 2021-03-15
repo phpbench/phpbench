@@ -5,6 +5,7 @@ namespace PhpBench\Report\Generator;
 use Generator;
 use PhpBench\Dom\Document;
 use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\Printer;
 use PhpBench\Model\Benchmark;
@@ -19,8 +20,11 @@ use PhpBench\Report\GeneratorInterface;
 use PhpBench\Report\Generator\Table\Cell;
 use PhpBench\Report\Generator\Table\Row;
 use PhpBench\Report\Generator\Table\ValueRole;
+use Psr\Log\LoggerInterface;
+use RuntimeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use function array_combine;
+use function array_key_exists;
 use function array_reduce;
 use function iterator_to_array;
 
@@ -30,24 +34,33 @@ class ExpressionGenerator implements GeneratorInterface
      * @var ExpressionLanguage
      */
     private $parser;
+
     /**
      * @var Evaluator
      */
     private $evaluator;
+
     /**
      * @var Printer
      */
     private $printer;
 
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
     public function __construct(
         ExpressionLanguage $parser,
         Evaluator $evaluator,
-        Printer $printer
+        Printer $printer,
+        LoggerInterface $logger
     )
     {
         $this->parser = $parser;
         $this->evaluator = $evaluator;
         $this->printer = $printer;
+        $this->logger = $logger;
     }
 
     /**
@@ -61,7 +74,6 @@ class ExpressionGenerator implements GeneratorInterface
             'cols' => [
                 'benchmark' => 'first(benchmark_class)',
                 'subject' => 'first(subject_name)',
-                'tag' => 'first(suite_tag)',
                 'set' => 'first(variant_name)',
                 'revs' => 'first(variant_revs)',
                 'its' => 'first(variant_iterations)',
@@ -72,13 +84,12 @@ class ExpressionGenerator implements GeneratorInterface
                 'rstdev' => 'format("%d.2%%", rstdev(result_time_avg))',
             ],
             'baseline_cols' => [
-                'best' => '(min(baseline_time_avg) as time), percent_diff(min(baseline_time_avg), min(result_time_avg))',
-                'worst' => '(max(baseline_time_avg) as time), percent_diff(max(baseline_time_avg), max(result_time_avg))',
-                'mode' => '(mode(baseline_time_avg) as time), percent_diff(mode(baseline_time_avg), mode(result_time_avg))',
+                'best' => '(min(result_time_avg) as time) ~" Dif"~ percent_diff(min(baseline_time_avg), min(result_time_avg), 100)',
+                'worst' => '(max(result_time_avg) as time) ~" Dif"~ percent_diff(max(baseline_time_avg), max(result_time_avg), 100)',
+                'mode' => '(mode(result_time_avg) as time) ~" Dif"~ percent_diff(mode(baseline_time_avg), mode(result_time_avg), rstdev(result_time_avg))',
                 'mem_peak' => '(first(baseline_mem_peak) as bytes), percent_diff(first(baseline_mem_peak), first(result_mem_peak))',
-                'rstdev' => 'format("%d.2%%", rstdev(baseline_time_avg))',
             ],
-            'aggregate' => ['benchmark_class', 'subject_name', 'variant_name', 'baseline'],
+            'aggregate' => ['benchmark_class', 'subject_name', 'variant_name'],
             'break' => ['subject','benchmark'],
         ]);
 
@@ -95,6 +106,7 @@ class ExpressionGenerator implements GeneratorInterface
     public function generate(SuiteCollection $collection, Config $config): Document
     {
         $data = iterator_to_array($this->reportData($collection));
+        $data = $this->normalize($data);
         $data = $this->aggregate($data, $config['aggregate']);
         $data = iterator_to_array($this->evaluate($data, $config['cols'], $config['baseline_cols']));
         $data = $this->partition($data, $config['break']);
@@ -111,9 +123,20 @@ class ExpressionGenerator implements GeneratorInterface
             assert($suite instanceof Suite);
             foreach ($suite->getSubjects() as $subject) {
                 foreach ($subject->getVariants() as $variant) {
-                    foreach ($variant->getIterations() as $iteration) {
+                    $nbIterations = (function (Variant $variant, ?Variant $baseline) {
+                        if (null === $baseline) {
+                            return count($variant->getIterations());
+                        }
+                        return max(count($variant->getIterations()), count($baseline->getIterations()));
+                    })($variant, $variant->getBaseline());
+
+                    for ($itNum = 0; $itNum < $nbIterations; $itNum++) {
+                        $iteration = $variant->getIteration($itNum);
+                        $baseline = $variant->getBaseline();
+                        $baselineIteration = $baseline ? $baseline->getIteration($itNum) : null;
+
                         yield array_merge([
-                            'baseline' => false,
+                            'baseline' => $baseline ? true : false,
                             'benchmark_class' => $subject->getBenchmark()->getClass(),
                             'subject_name' => $subject->getName(),
                             'subject_groups' => $subject->getGroups(),
@@ -122,31 +145,9 @@ class ExpressionGenerator implements GeneratorInterface
                             'variant_revs' => $variant->getRevolutions(),
                             'variant_iterations' => count($variant->getIterations()),
                             'suite_tag' => $suite->getTag() ? $suite->getTag()->__toString() : '<current>',
-                            'suite_date' => $suite->getDate()->format('c')
-                        ], $this->resultData($iteration));
-                    }
-
-                    $baseline = $variant->getBaseline();
-
-                    if (!$baseline) {
-                        continue;
-                    }
-
-                    foreach ($baseline->getIterations() as $iteration) {
-                        $baselineSuite = $baseline->getSubject()->getBenchmark()->getSuite();
-                        $variantIteration = $variant->getIteration($iteration->getIndex()) ?? $variant->getIteration(0);
-                        yield array_merge([
-                            'baseline' => true,
-                            'benchmark_class' => $subject->getBenchmark()->getClass(),
-                            'subject_name' => $subject->getName(),
-                            'subject_groups' => $subject->getGroups(),
-                            'variant_name' => $baseline->getParameterSet()->getName(),
-                            'variant_params' => $baseline->getParameterSet()->getArrayCopy(),
-                            'variant_revs' => $baseline->getRevolutions(),
-                            'variant_iterations' => count($baseline->getIterations()),
-                            'suite_tag' => $baselineSuite->getTag() ? $baselineSuite->getTag()->__toString() : '',
-                            'suite_date' => $baselineSuite->getDate()->format('c')
-                        ], $this->resultData($variantIteration), $this->resultData($iteration, 'baseline'));
+                            'suite_date' => $suite->getDate()->format('c'),
+                            'iteration_index' => $itNum,
+                        ], $this->resultData($iteration, 'result'), $this->resultData($baselineIteration, 'baseline'));
                     }
                 }
             }
@@ -156,8 +157,12 @@ class ExpressionGenerator implements GeneratorInterface
     /**
      * @return array<string,mixed>
      */
-    private function resultData(Iteration $iteration, string $prefix = 'result'): array
+    private function resultData(?Iteration $iteration, string $prefix = 'result'): array
     {
+        if (null === $iteration) {
+            return [];
+        }
+
         $data = [];
         foreach ($iteration->getResults() as $result) {
             foreach ($result->getMetrics() as $key => $value) {
@@ -168,6 +173,28 @@ class ExpressionGenerator implements GeneratorInterface
         return $data;
     }
 
+
+    /**
+     * @param array<string,mixed> $data
+     * @return array<string,mixed>
+     */
+    private function normalize(array $data): array
+    {
+        $cols = [];
+        foreach ($data as $row) {
+            foreach ($row as $key => $value) {
+                if (!isset($cols[$key])) {
+                    $cols[$key] = null;
+                }
+            }
+        }
+
+        foreach ($data as &$row) {
+            $row = array_merge($cols, $row);
+        }
+
+        return $data;
+    }
     /**
      * @param array<string.mixed> $data
      * @param string[] $aggregateCols
@@ -179,6 +206,12 @@ class ExpressionGenerator implements GeneratorInterface
         $aggregated = [];
         foreach ($data as $row) {
             $hash = implode('-', array_map(function (string $key) use ($row) {
+                if (!array_key_exists($key, $row)) {
+                    throw new RuntimeException(sprintf(
+                        'Cannot aggregate: field "%s" does not exist, know fields: "%s"',
+                        $key, implode('", "', array_keys($row))
+                    ));
+                }
                 return $row[$key];
             }, $aggregateCols));
 
@@ -213,10 +246,12 @@ class ExpressionGenerator implements GeneratorInterface
             $evaledRow = [];
 
             foreach (($row['baseline'][0] ? array_merge($cols, $baselineCols) : $cols) as $name => $expr) {
-                $evaledRow[$name] = $this->printer->print($this->evaluator->evaluate(
-                    $this->parser->parse($expr),
-                    $row
-                ), $row);
+                try {
+                    $evaledRow[$name] = $this->printer->print($this->parser->parse($expr), $row);
+                } catch (EvaluationError $e) {
+                    $evaledRow[$name] = 'error: ' . $expr;
+                    $this->logger->error($e->getMessage());
+                }
             }
 
             yield $evaledRow;
@@ -294,6 +329,13 @@ class ExpressionGenerator implements GeneratorInterface
         $partitioned = [];
         foreach ($data as $key => $row) {
             $hash = implode('-', array_map(function (string $key) use ($row) {
+                if (!array_key_exists($key, $row)) {
+                    throw new RuntimeException(sprintf(
+                        'Cannot partition table: column "%s" does not exist, known columns: "%s"',
+                        $key,
+                        implode('", "', array_keys($row))
+                    ));
+                }
                 return $row[$key];
             }, $breakCols));
             foreach ($breakCols as $col) {

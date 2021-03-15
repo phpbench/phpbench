@@ -620,7 +620,7 @@ class CoreExtension implements ExtensionInterface
             return new ExpressionGenerator(
                 $container->get(ExpressionLanguage::class),
                 $container->get(Evaluator::class),
-                $container->get(Printer::class)
+                $container->get(EvaluatingPrinter::class)
             );
         }, [self::TAG_REPORT_GENERATOR => ['name' => 'expression']]);
         $container->register(EnvGenerator::class, function (Container $container) {

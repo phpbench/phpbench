@@ -104,6 +104,7 @@ class TestUtil
             'warmup' => 10,
             'sleep' => 1,
             'basetime' => 10,
+            'baseline' => false,
             'name' => 'test',
             'benchmarks' => ['TestBench'],
             'groups' => ['one', 'two', 'three'],
@@ -140,7 +141,7 @@ class TestUtil
                 $subject->setOutputTimeUnit($options['output_time_unit']);
                 $subject->setOutputTimePrecision($options['output_time_precision']);
                 $subject->setOutputMode($options['output_mode']);
-                $variant = $subject->createVariant(new ParameterSet(0, $options['parameters']), $options['revs'], $options['warmup']);
+                $variant = $subject->createVariant(new ParameterSet('0', $options['parameters']), $options['revs'], $options['warmup']);
 
                 $time = $baseTime;
 
@@ -159,6 +160,12 @@ class TestUtil
             $informations[] = new Information($name, $information);
         }
         $suite->setEnvInformations($informations);
+
+        if ($options['baseline']) {
+            unset($options['baseline']);
+            $baselineSuite = self::createSuite($options);
+            $suite->mergeBaselines(new SuiteCollection([$baselineSuite]));
+        }
 
         return $suite;
     }

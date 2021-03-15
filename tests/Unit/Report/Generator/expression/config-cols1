@@ -1,0 +1,15 @@
+{
+    "subjects": [
+        "one",
+        "two"
+    ],
+    "iterations": [
+        10
+    ]
+}
+---
+{
+    "cols": []
+}
+---
+Cannot partition table: column "subject" does not exist, known columns: ""

@@ -1,0 +1,26 @@
+{
+    "subjects": [
+        "one",
+        "two"
+    ],
+    "iterations": [
+        10
+    ]
+}
+---
+{
+    "cols": {
+        "subject": "\"hello\"",
+        "benchmark": "\"hello\"",
+        "mode": "mode(result_time_avg)"
+    }
+}
+---
+hello-hello
++------+
+| mode |
++------+
+| 20   |
+| 21   |
++------+
+
