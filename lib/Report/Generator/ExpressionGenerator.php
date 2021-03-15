@@ -97,13 +97,13 @@ class ExpressionGenerator implements GeneratorInterface
      */
     public function generate(SuiteCollection $collection, Config $config): Document
     {
-        $data = iterator_to_array($this->reportData($collection));
-        $data = $this->normalize($data);
-        $data = $this->aggregate($data, $config['aggregate']);
-        $data = iterator_to_array($this->evaluate($data, $config['cols'], $config['baseline_cols']));
-        $data = $this->partition($data, $config['break']);
+        $table = iterator_to_array($this->reportData($collection));
+        $table = $this->normalize($table);
+        $table = $this->aggregate($table, $config['aggregate']);
+        $table = iterator_to_array($this->evaluate($table, $config['cols'], $config['baseline_cols']));
+        $tables = $this->partition($table, $config['break']);
 
-        return $this->generateDocument($data, $config);
+        return $this->generateDocument($tables, $config);
     }
 
     /**
@@ -170,15 +170,15 @@ class ExpressionGenerator implements GeneratorInterface
 
 
     /**
-     * @param array<string,mixed> $data
+     * @param array<string,mixed> $table
      *
      * @return array<string,mixed>
      */
-    private function normalize(array $data): array
+    private function normalize(array $table): array
     {
         $cols = [];
 
-        foreach ($data as $row) {
+        foreach ($table as $row) {
             foreach ($row as $key => $value) {
                 if (!isset($cols[$key])) {
                     $cols[$key] = null;
@@ -186,23 +186,23 @@ class ExpressionGenerator implements GeneratorInterface
             }
         }
 
-        foreach ($data as &$row) {
+        foreach ($table as &$row) {
             $row = array_merge($cols, $row);
         }
 
-        return $data;
+        return $table;
     }
     /**
-     * @param array<string,mixed> $data
+     * @param array<string,mixed> $table
      * @param string[] $aggregateCols
      *
      * @return array<string,mixed>
      */
-    private function aggregate(array $data, array $aggregateCols): array
+    private function aggregate(array $table, array $aggregateCols): array
     {
         $aggregated = [];
 
-        foreach ($data as $row) {
+        foreach ($table as $row) {
             $hash = implode('-', array_map(function (string $key) use ($row) {
                 if (!array_key_exists($key, $row)) {
                     throw new RuntimeException(sprintf(
@@ -235,15 +235,15 @@ class ExpressionGenerator implements GeneratorInterface
     }
 
     /**
-     * @param array<string,mixed> $data
+     * @param array<string,mixed> $table
      * @param array<string,string> $cols
      * @param array<string,string> $baselineCols
      *
      * @return Generator<array<string,mixed>>
      */
-    private function evaluate(array $data, array $cols, array $baselineCols): Generator
+    private function evaluate(array $table, array $cols, array $baselineCols): Generator
     {
-        foreach ($data as $row) {
+        foreach ($table as $row) {
             $evaledRow = [];
 
             foreach (($row['baseline'][0] ? array_merge($cols, $baselineCols) : $cols) as $name => $expr) {
@@ -260,7 +260,7 @@ class ExpressionGenerator implements GeneratorInterface
     }
 
     /**
-     * @param array<string,array<string,string>> $tables
+     * @param array<string,array<int,array<string,string>>> $tables
      */
     private function generateDocument(array $tables, Config $config): Document
     {
@@ -280,7 +280,6 @@ class ExpressionGenerator implements GeneratorInterface
         foreach ($tables as $breakHash => $table) {
             $tableEl = $reportEl->appendElement('table');
 
-            // Build the col(umn) definitions.
             foreach ($table as $row) {
                 $colsEl = $tableEl->appendElement('cols');
 
@@ -325,11 +324,17 @@ class ExpressionGenerator implements GeneratorInterface
         return $document;
     }
 
-    private function partition(array $data, array $breakCols): array
+    /**
+     * @param array<string,array<string,string>> $table
+     * @param string[] $breakCols
+     *
+     * @return array<string,array<int,array<string,string>>>
+     */
+    private function partition(array $table, array $breakCols): array
     {
         $partitioned = [];
 
-        foreach ($data as $key => $row) {
+        foreach ($table as $key => $row) {
             $hash = implode('-', array_map(function (string $key) use ($row) {
                 if (!array_key_exists($key, $row)) {
                     throw new RuntimeException(sprintf(
