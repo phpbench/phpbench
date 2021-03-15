@@ -79,7 +79,6 @@ use PhpBench\Expression\Parselet\FunctionParselet;
 use PhpBench\Expression\Parselet\IntegerParselet;
 use PhpBench\Expression\Parselet\ListParselet;
 use PhpBench\Expression\Parselet\LogicalOperatorParselet;
-use PhpBench\Expression\Parselet\NameParselet;
 use PhpBench\Expression\Parselet\ParameterParselet;
 use PhpBench\Expression\Parselet\ParenthesisParselet;
 use PhpBench\Expression\Parselet\PercentageParselet;
@@ -126,9 +125,8 @@ class ExpressionExtension implements ExtensionInterface
                     new FloatParselet(),
                     new ParenthesisParselet(),
                     new BooleanParselet(),
-                    new ParameterParselet(),
-                    new NameParselet(),
                     new StringParselet(),
+                    new ParameterParselet(),
                 ]),
                 Parselets::fromInfixParselets([
                     new LogicalOperatorParselet(Token::T_LOGICAL_OR, Precedence::LOGICAL_OR),

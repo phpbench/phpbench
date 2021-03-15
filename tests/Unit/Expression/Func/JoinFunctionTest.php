@@ -2,11 +2,8 @@
 
 namespace PhpBench\Tests\Unit\Expression\Func;
 
-use ArgumentCountError;
-use PhpBench\Expression\Func\FormatFunction;
 use PhpBench\Expression\Func\JoinFunction;
 use PhpBench\Tests\Unit\Expression\FunctionTestCase;
-use RuntimeException;
 
 class JoinFunctionTest extends FunctionTestCase
 {

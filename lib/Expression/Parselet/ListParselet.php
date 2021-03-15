@@ -20,8 +20,10 @@ class ListParselet implements PrefixParselet
     public function parse(Parser $parser, Tokens $tokens): Node
     {
         $tokens->chomp();
+
         if ($tokens->current()->type === Token::T_CLOSE_LIST) {
             $tokens->chomp(Token::T_CLOSE_LIST);
+
             return new ListNode([]);
         }
 
