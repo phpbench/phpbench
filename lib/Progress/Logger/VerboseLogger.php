@@ -101,9 +101,11 @@ class VerboseLogger extends PhpBenchLogger
     private function resolveAssertionStatus(Variant $variant): string
     {
         $results = $variant->getAssertionResults();
+
         if (!$results->count()) {
             return '<fg=yellow>-</>';
         }
+
         return $results->hasFailures() ? '<fg=red>✘</>' : '<fg=green>✔</>';
     }
 }
