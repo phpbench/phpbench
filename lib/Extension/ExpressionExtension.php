@@ -11,6 +11,7 @@ use PhpBench\Expression\Ast\FunctionNode;
 use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\ParenthesisNode;
 use PhpBench\Expression\Ast\TolerableNode;
+use PhpBench\Expression\ColorMap\SolarisedColorMap;
 use PhpBench\Expression\ColorMap\Standard8ColorMap;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Evaluator\MainEvaluator;
@@ -46,6 +47,7 @@ use PhpBench\Expression\NodeEvaluator\LogicalOperatorEvaluator;
 use PhpBench\Expression\NodeEvaluator\MemoisedNodeEvaluator;
 use PhpBench\Expression\NodeEvaluator\ParameterEvaluator;
 use PhpBench\Expression\NodeEvaluator\ParenthesisEvaluator;
+use PhpBench\Expression\NodeEvaluator\PercentageEvaluator;
 use PhpBench\Expression\NodeEvaluator\StringEvaluator;
 use PhpBench\Expression\NodeEvaluator\TolerableEvaluator;
 use PhpBench\Expression\NodeEvaluator\UnitEvaluator;
@@ -171,6 +173,7 @@ class ExpressionExtension implements ExtensionInterface
                 new ParameterEvaluator(),
                 new StringEvaluator(),
                 new ConcatEvaluator(),
+                new PercentageEvaluator(),
             ]);
 
             return $evaluators;
@@ -195,7 +198,7 @@ class ExpressionExtension implements ExtensionInterface
         $container->register(HighlightingNodePrinter::class, function (Container $container) {
             return new HighlightingNodePrinter(
                 $container->get(NodePrinters::class),
-                new Standard8ColorMap()
+                new SolarisedColorMap()
             );
         });
 
