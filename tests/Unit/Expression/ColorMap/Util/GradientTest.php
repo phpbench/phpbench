@@ -15,15 +15,12 @@ class GradientTest extends TestCase
      * @dataProvider provideGradient
      * @param string[] $expecteds
      */
-    public function testGradient(string $start, string $end, int $steps, array $expecteds)
+    public function testGradient(string $start, string $end, int $steps, array $expecteds): void
     {
-        self::assertEquals(array_map(function (string $hex) {
-            return Color::fromHex($hex);
-        }, $expecteds), Gradient::create(
-            Color::fromHex($start),
-            Color::fromHex($end),
-            $steps
-        )->toArray());
+        self::assertEquals(array_map(
+            function (string $hex) {return Color::fromHex($hex);},
+            $expecteds
+        ), Gradient::start(Color::fromHex($start), $steps)->to(Color::fromHex($end))->toArray());
     }
 
     /**
@@ -73,7 +70,7 @@ class GradientTest extends TestCase
     {
         $this->expectException(RuntimeException::class);
         $this->expectErrorMessage('more than zero');
-        Gradient::create(Color::fromHex('00000'), Color::fromHex('aa0000'), 0);
+        Gradient::start(Color::fromHex('00000'), 0)->to(Color::fromHex('aa0000'), 0);
     }
 
     public function provideNegativeStep(): Generator
