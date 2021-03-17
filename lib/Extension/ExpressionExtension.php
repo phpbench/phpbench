@@ -199,7 +199,7 @@ class ExpressionExtension implements ExtensionInterface
         $container->register(HighlightingNodePrinter::class, function (Container $container) {
             return new HighlightingNodePrinter(
                 $container->get(NodePrinters::class),
-                new SolarisedColorMap(new Gradient())
+                new SolarisedColorMap()
             );
         });
 

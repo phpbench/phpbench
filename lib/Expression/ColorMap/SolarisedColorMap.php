@@ -42,16 +42,6 @@ class SolarisedColorMap implements ColorMap
     private const GREEN = '#859900';
 
     /**
-     * @var Gradient
-     */
-    private $gradient;
-
-    public function __construct(Gradient $gradient)
-    {
-        $this->gradient = $gradient;
-    }
-
-    /**
      * @template T
      *
      * @return array<class-string<T>, string|Closure(T):string>
@@ -65,10 +55,14 @@ class SolarisedColorMap implements ColorMap
             ParenthesisNode::class => 'fg=' . self::RED,
             PercentDifferenceNode::class => function (Node $node) {
                 assert($node instanceof PercentDifferenceNode);
-                $gradient = array_merge(
-                    $this->gradient->gradient(Color::fromHex(self::GREEN), Color::fromHex(self::BASE2), 100),
-                    $this->gradient->gradient(Color::fromHex(self::GREEN), Color::fromHex(self::RED), 100)
-                );
+
+                $gradient = Gradient::start(
+                    Color::fromHex(self::GREEN)
+                )->to(
+                    Color::fromHex(self::BASE2), 100
+                )->to(
+                    Color::fromHex(self::RED), 100
+                )->toArray();
                 
                 $percent = (int)$node->percentage();
                 $value = $percent < 0 ? max(-100, $percent) : min(100, $percent);

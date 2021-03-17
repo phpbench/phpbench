@@ -16,16 +16,9 @@ final class Gradient
      */
     private $colors;
 
-    /**
-     * @var int
-     */
-    private $steps;
-
-
-    private function __construct(int $steps, Color ...$colors)
+    private function __construct(Color ...$colors)
     {
         $this->colors = $colors;
-        $this->steps = $steps;
     }
 
     /**
@@ -36,15 +29,9 @@ final class Gradient
         return $this->colors;
     }
 
-    public static function start(Color $start, int $steps): self
+    public static function start(Color $start): self
     {
-        if ($steps <= 0) {
-            throw new RuntimeException(sprintf(
-                'Number of steps must be more than zero, got "%s"', $steps
-            ));
-        }
-
-        return new self($steps, $start);
+        return new self($start);
     }
 
     public function end(): Color
@@ -52,8 +39,14 @@ final class Gradient
         return $this->colors[array_key_last($this->colors)];
     }
 
-    public function to(Color $end): self
+    public function to(Color $end, int $steps): self
     {
+        if ($steps <= 0) {
+            throw new RuntimeException(sprintf(
+                'Number of steps must be more than zero, got "%s"', $steps
+            ));
+        }
+
         $gradient = [];
         $start = $this->end()->toTuple();
         $end= $end->toTuple();
@@ -62,10 +55,10 @@ final class Gradient
             $cStart = $start[$i];
             $cEnd = $end[$i];
 
-            $step = abs($cStart - $cEnd) / $this->steps;
+            $step = abs($cStart - $cEnd) / $steps;
 
             if ($step === 0) {
-                $gradient[$i] = array_fill(0, $this->steps + 1, $cStart);
+                $gradient[$i] = array_fill(0, $steps + 1, $cStart);
                 continue;
             }
             $gradient[$i] = range($cStart, $cEnd, $step);
@@ -78,6 +71,6 @@ final class Gradient
         // remove the start color as it's already present
         array_shift($colors);
 
-        return new self($this->steps, ...$colors);
+        return new self(...$colors);
     }
 }

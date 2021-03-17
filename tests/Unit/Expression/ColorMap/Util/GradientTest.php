@@ -20,7 +20,7 @@ class GradientTest extends TestCase
         self::assertEquals(array_map(
             function (string $hex) {return Color::fromHex($hex);},
             $expecteds
-        ), Gradient::start(Color::fromHex($start), $steps)->to(Color::fromHex($end))->toArray());
+        ), Gradient::start(Color::fromHex($start))->to(Color::fromHex($end), $steps)->toArray());
     }
 
     /**
