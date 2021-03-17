@@ -7,12 +7,24 @@ use function array_fill;
 use function dechex;
 use function sscanf;
 
-class Gradient
+final class Gradient
 {
     /**
-     * @return Color[]
+     * @var Color[]
      */
-    public function gradient(Color $start, Color $end, int $steps): array
+    private $colors;
+
+    public function __construct(Color ...$colors)
+    {
+        $this->colors = $colors;
+    }
+
+    public function toArray(): array
+    {
+        return $this->colors;
+    }
+
+    public static function create(Color $start, Color $end, int $steps): self
     {
         if ($steps <= 0) {
             throw new RuntimeException(sprintf(
@@ -37,8 +49,8 @@ class Gradient
             $gradient[$i] = range($cStart, $cEnd, $step);
         }
 
-        return array_map(function (int $r, int $g, int $b) {
+        return new self(...array_map(function (int $r, int $g, int $b) {
             return new Color($r,$g,$b);
-        }, ...$gradient);
+        }, ...$gradient));
     }
 }
