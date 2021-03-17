@@ -4,6 +4,7 @@ namespace PhpBench\Expression\ColorMap\Util;
 
 use RuntimeException;
 use function array_fill;
+use function array_key_first;
 use function array_key_last;
 use function array_unshift;
 use function dechex;
@@ -72,5 +73,17 @@ final class Gradient
         array_shift($colors);
 
         return new self(...$colors);
+    }
+
+    public function colorAtIndex(int $index): Color
+    {
+        if (!isset($this->colors[$index])) {
+            throw new RuntimeException(sprintf(
+                'Color index is out of range "%s" (%s:%s)',
+                $index, array_key_first($this->colors), array_key_last($this->colors)
+            ));
+        }
+
+        return $this->colors[$index];
     }
 }
