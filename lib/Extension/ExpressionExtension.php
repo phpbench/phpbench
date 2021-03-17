@@ -13,6 +13,7 @@ use PhpBench\Expression\Ast\ParenthesisNode;
 use PhpBench\Expression\Ast\TolerableNode;
 use PhpBench\Expression\ColorMap\SolarisedColorMap;
 use PhpBench\Expression\ColorMap\Standard8ColorMap;
+use PhpBench\Expression\ColorMap\Util\Gradient;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Evaluator\MainEvaluator;
 use PhpBench\Expression\Evaluator\PrettyErrorEvaluator;
@@ -198,7 +199,7 @@ class ExpressionExtension implements ExtensionInterface
         $container->register(HighlightingNodePrinter::class, function (Container $container) {
             return new HighlightingNodePrinter(
                 $container->get(NodePrinters::class),
-                new SolarisedColorMap()
+                new SolarisedColorMap(new Gradient())
             );
         });
 

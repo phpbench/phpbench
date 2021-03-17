@@ -16,7 +16,7 @@ use PhpBench\Expression\Ast\PercentDifferenceNode;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Ast\ToleratedTrue;
 use PhpBench\Expression\ColorMap;
-use PhpBench\Util\Gradient;
+use PhpBench\Expression\ColorMap\Util\Gradient;
 
 /**
  * @implements ColorMap<Node>
@@ -41,6 +41,16 @@ class SolarisedColorMap implements ColorMap
     private const GREEN = '#859900';
 
     /**
+     * @var Gradient
+     */
+    private $gradient;
+
+    public function __construct(Gradient $gradient)
+    {
+        $this->gradient = $gradient;
+    }
+
+    /**
      * @template T
      *
      * @return array<class-string<T>, string|Closure(T):string>
@@ -55,8 +65,8 @@ class SolarisedColorMap implements ColorMap
             PercentDifferenceNode::class => function (Node $node) {
                 assert($node instanceof PercentDifferenceNode);
                 $gradient = array_merge(
-                    Gradient::calculateHex(self::GREEN, self::BASE2, 100),
-                    Gradient::calculateHex(self::BASE2, self::RED, 100)
+                    $this->gradient->hexGradient(self::GREEN, self::BASE2, 100),
+                    $this->gradient->hexGradient(self::BASE2, self::RED, 100)
                 );
                 
                 $percent = (int)$node->percentage();
