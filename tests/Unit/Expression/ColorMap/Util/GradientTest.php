@@ -4,6 +4,7 @@ namespace PhpBench\Tests\Unit\Expression\ColorMap\Util;
 
 use Generator;
 use PHPUnit\Framework\TestCase;
+use PhpBench\Expression\ColorMap\Util\Color;
 use PhpBench\Expression\ColorMap\Util\Gradient;
 use RuntimeException;
 use function dechex;
@@ -16,7 +17,13 @@ class GradientTest extends TestCase
      */
     public function testGradient(string $start, string $end, int $steps, array $expecteds)
     {
-        self::assertEquals($expecteds, (new Gradient())->hexGradient($start, $end, $steps));
+        self::assertEquals(array_map(function (string $hex) {
+            return Color::fromHex($hex);
+        }, $expecteds), (new Gradient())->gradient(
+            Color::fromHex($start),
+            Color::fromHex($end),
+            $steps
+        ));
     }
 
     /**
@@ -66,7 +73,7 @@ class GradientTest extends TestCase
     {
         $this->expectException(RuntimeException::class);
         $this->expectErrorMessage('more than zero');
-        $this->gradient()->hexGradient('00000', 'aa0000', 0);
+        $this->gradient()->gradient(Color::fromHex('00000'), Color::fromHex('aa0000'), 0);
     }
 
     public function provideNegativeStep(): Generator
