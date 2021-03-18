@@ -71,11 +71,11 @@ class GradientTest extends TestCase
     }
 
     /**
-     * @dataProvider provideNegativeStep
+     * @dataProvider provideInvalidStep
      *
      * @param int|float $step
      */
-    public function testNegativeStep($step): void
+    public function testInvalidStep($step): void
     {
         $this->expectException(RuntimeException::class);
         $this->expectErrorMessage('more than zero');
@@ -85,7 +85,7 @@ class GradientTest extends TestCase
     /**
      * @return Generator<array<int,int|float>>
      */
-    public function provideNegativeStep(): Generator
+    public function provideInvalidStep(): Generator
     {
         yield [ 0 ];
 
