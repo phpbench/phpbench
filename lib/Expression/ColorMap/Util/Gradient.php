@@ -33,7 +33,7 @@ final class Gradient
 
     public function end(): Color
     {
-        return $this->colors[array_key_last($this->colors)];
+        return $this->colors[count($this->colors) - 1];
     }
 
     public function to(Color $end, int $steps): self

@@ -43,6 +43,11 @@ class TrueColorMap implements ColorMap
     private const GREEN = '#859900';
 
     /**
+     * @var Gradient|null
+     */
+    private $gradient;
+
+    /**
      * @template T
      *
      * @return array<class-string<T>, string|Closure(T):string>
@@ -57,13 +62,7 @@ class TrueColorMap implements ColorMap
             PercentDifferenceNode::class => function (Node $node) {
                 assert($node instanceof PercentDifferenceNode);
 
-                return 'fg=#' . Gradient::start(
-                    Color::fromHex(self::GREEN)
-                )->to(
-                    Color::fromHex(self::BASE2), 100
-                )->to(
-                    Color::fromHex('#ff0000'), 100
-                )->colorAtPercentile(((int)$node->percentage() + 100) / 2)->toHex();
+                return 'fg=#' . $this->gradient()->colorAtPercentile(((int)$node->percentage() + 100) / 2)->toHex();
             },
             DisplayAsNode::class => 'fg=' . self::BASE2,
             StringNode::class => 'fg=' . self::BASE2,
@@ -77,5 +76,20 @@ class TrueColorMap implements ColorMap
             ArithmeticOperatorNode::class => 'fg=' . self::YELLOW,
             ComparisonNode::class => 'fg=' . self::YELLOW,
         ];
+    }
+
+    private function gradient(): Gradient
+    {
+        if (!$this->gradient) {
+            $this->gradient = Gradient::start(
+                Color::fromHex(self::GREEN)
+            )->to(
+                Color::fromHex(self::BASE2), 100
+            )->to(
+                Color::fromHex('#ff0000'), 100
+            );
+        }
+
+        return $this->gradient;
     }
 }
