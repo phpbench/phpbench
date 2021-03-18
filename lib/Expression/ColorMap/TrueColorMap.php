@@ -20,6 +20,8 @@ use PhpBench\Expression\ColorMap\Util\Color;
 use PhpBench\Expression\ColorMap\Util\Gradient;
 
 /**
+ * Colors based on https://github.com/altercation/solarized
+ *
  * @implements ColorMap<Node>
  */
 class TrueColorMap implements ColorMap
