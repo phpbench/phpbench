@@ -3,7 +3,6 @@
 namespace PhpBench\Expression\ColorMap\Util;
 
 use function array_fill;
-use function array_key_last;
 use RuntimeException;
 
 final class Gradient
