@@ -55,17 +55,13 @@ class SolarisedColorMap implements ColorMap
             ParenthesisNode::class => 'fg=' . self::RED,
             PercentDifferenceNode::class => function (Node $node) {
                 assert($node instanceof PercentDifferenceNode);
-
-                $percent = (int)$node->percentage();
-                $value = $percent < 0 ? max(-100, $percent) : min(100, $percent);
-
-                return 'fg=' . Gradient::start(
+                return 'fg=#' . Gradient::start(
                     Color::fromHex(self::GREEN)
                 )->to(
                     Color::fromHex(self::BASE2), 100
                 )->to(
-                    Color::fromHex(self::RED), 100
-                )->colorAtPerctile(($value + 100) / 2)->toHex();
+                    Color::fromHex('#ff0000'), 100
+                )->colorAtPercentile(((int)$node->percentage() + 100) / 2)->toHex();
             },
             DisplayAsNode::class => 'fg=' . self::BASE2,
             StringNode::class => 'fg=' . self::BASE2,
