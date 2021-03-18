@@ -22,7 +22,7 @@ use PhpBench\Expression\ColorMap\Util\Gradient;
 /**
  * @implements ColorMap<Node>
  */
-class SolarisedColorMap implements ColorMap
+class TrueColorMap implements ColorMap
 {
     private const BASE03 = '#002b36';
     private const BASE02 = '#073642';
