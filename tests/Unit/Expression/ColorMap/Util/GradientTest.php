@@ -13,14 +13,21 @@ class GradientTest extends TestCase
 {
     /**
      * @dataProvider provideGradient
-     * @param string[] $expecteds
+     * @param string[] $expectedColors
      */
-    public function testGradient(string $start, string $end, int $steps, array $expecteds): void
+    public function testGradient(string $start, string $end, int $steps, array $expectedColors): void
     {
         self::assertEquals(array_map(
-            function (string $hex) {return Color::fromHex($hex);},
-            $expecteds
-        ), Gradient::start(Color::fromHex($start))->to(Color::fromHex($end), $steps)->toArray());
+            function (string $hex) {
+                return Color::fromHex($hex);
+            },
+            $expectedColors
+        ), Gradient::start(
+            Color::fromHex($start)
+        )->to(
+            Color::fromHex($end),
+            $steps
+        )->toArray());
     }
 
     /**
@@ -65,18 +72,64 @@ class GradientTest extends TestCase
 
     /**
      * @dataProvider provideNegativeStep
+     * @param int|float $step
      */
     public function testNegativeStep($step): void
     {
         $this->expectException(RuntimeException::class);
         $this->expectErrorMessage('more than zero');
-        Gradient::start(Color::fromHex('00000'), 0)->to(Color::fromHex('aa0000'), 0);
+        Gradient::start(Color::fromHex('00000'))->to(Color::fromHex('aa0000'), 0);
     }
 
+    /**
+     * @return Generator<array<int,int|float>>
+     */
     public function provideNegativeStep(): Generator
     {
         yield [ 0 ];
         yield [ 0.00000001 ];
         yield [ -1 ];
+    }
+
+    /**
+     * @dataProvider provideColorAtPercentile
+     */
+    public function testColorAtPercentile(Gradient $gradient, int $percentile, Color $expected): void
+    {
+        self::assertEquals($expected, $gradient->colorAtPercentile($percentile));
+    }
+
+    /**
+     * @return Generator<mixed>
+     */
+    public function provideColorAtPercentile(): Generator
+    {
+        yield [
+            Gradient::start(Color::fromHex('#000000')),
+            1,
+            Color::fromHex('#000000')
+        ];
+        yield [
+            Gradient::start(Color::fromRgb(0, 0, 0))->to(Color::fromRgb(0, 0, 10), 10),
+            10,
+            Color::fromRgb(0, 0, 1)
+        ];
+        yield [
+            Gradient::start(Color::fromRgb(0, 0, 0))->to(Color::fromRgb(0, 0, 10), 9),
+            50,
+            Color::fromRgb(0, 0, 5)
+        ];
+
+        yield 'more than 100' => [
+            Gradient::start(Color::fromRgb(0, 0, 0))->to(Color::fromRgb(0, 0, 10), 9),
+            150,
+            Color::fromRgb(0, 0, 10)
+        ];
+
+        yield 'less than 100' => [
+            Gradient::start(Color::fromRgb(0, 0, 0))->to(Color::fromRgb(0, 0, 10), 9),
+            -150,
+            Color::fromRgb(0, 0, 0)
+        ];
     }
 }

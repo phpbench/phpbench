@@ -21,7 +21,7 @@ final class Color
      */
     private $blue;
 
-    public function __construct(int $red, int $green, int $blue)
+    private function __construct(int $red, int $green, int $blue)
     {
         $this->red = $red;
         $this->green = $green;
@@ -58,5 +58,10 @@ final class Color
         return implode('', array_map(function (int $number) {
             return sprintf('%02s', dechex($number));
         }, $this->toTuple()));
+    }
+
+    public static function fromRgb(int $red, int $green, int $blue): self
+    {
+        return new self($red, $green, $blue);
     }
 }

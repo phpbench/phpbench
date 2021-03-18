@@ -66,7 +66,7 @@ final class Gradient
         }
 
         $colors = array_merge($this->colors, array_map(function (int $r, int $g, int $b) {
-            return new Color($r,$g,$b);
+            return Color::fromRgb($r,$g,$b);
         }, ...$gradient));
 
         // remove the start color as it's already present
@@ -75,15 +75,11 @@ final class Gradient
         return new self(...$colors);
     }
 
-    public function colorAtIndex(int $index): Color
+    public function colorAtPercentile(int $percentile): Color
     {
-        if (!isset($this->colors[$index])) {
-            throw new RuntimeException(sprintf(
-                'Color index is out of range "%s" (%s:%s)',
-                $index, array_key_first($this->colors), array_key_last($this->colors)
-            ));
-        }
+        $percentile = $percentile < 0 ? 0 : min(100, abs($percentile));
 
-        return $this->colors[$index];
+        $offset = round((count($this->colors) -1) / 100 * $percentile);
+        return $this->colors[$offset];
     }
 }
