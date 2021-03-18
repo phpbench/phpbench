@@ -11,6 +11,7 @@ use PhpBench\Expression\Ast\FunctionNode;
 use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\ParenthesisNode;
 use PhpBench\Expression\Ast\TolerableNode;
+use PhpBench\Expression\ColorMap\Standard8ColorMap;
 use PhpBench\Expression\ColorMap\TrueColorMap;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Evaluator\MainEvaluator;
@@ -46,7 +47,6 @@ use PhpBench\Expression\NodeEvaluator\LogicalOperatorEvaluator;
 use PhpBench\Expression\NodeEvaluator\MemoisedNodeEvaluator;
 use PhpBench\Expression\NodeEvaluator\ParameterEvaluator;
 use PhpBench\Expression\NodeEvaluator\ParenthesisEvaluator;
-use PhpBench\Expression\NodeEvaluator\PercentageEvaluator;
 use PhpBench\Expression\NodeEvaluator\StringEvaluator;
 use PhpBench\Expression\NodeEvaluator\TolerableEvaluator;
 use PhpBench\Expression\NodeEvaluator\UnitEvaluator;
@@ -95,6 +95,7 @@ use PhpBench\Expression\Printer\NormalizingPrinter;
 use PhpBench\Expression\Printer\UnderlinePrinterFactory;
 use PhpBench\Expression\Token;
 use PhpBench\Util\TimeUnit;
+use Symfony\Component\Console\Formatter\NullOutputFormatter;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ExpressionExtension implements ExtensionInterface
@@ -172,7 +173,6 @@ class ExpressionExtension implements ExtensionInterface
                 new ParameterEvaluator(),
                 new StringEvaluator(),
                 new ConcatEvaluator(),
-                new PercentageEvaluator(),
             ]);
 
             return $evaluators;
@@ -197,7 +197,7 @@ class ExpressionExtension implements ExtensionInterface
         $container->register(HighlightingNodePrinter::class, function (Container $container) {
             return new HighlightingNodePrinter(
                 $container->get(NodePrinters::class),
-                new TrueColorMap()
+                class_exists(NullOutputFormatter::class) ? new TrueColorMap() : new Standard8ColorMap()
             );
         });
 
