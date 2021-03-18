@@ -9,7 +9,6 @@ use PhpBench\Expression\Ast\ComparisonNode;
 use PhpBench\Expression\Ast\DisplayAsNode;
 use PhpBench\Expression\Ast\FunctionNode;
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Ast\NumberNode;
 use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\ParenthesisNode;
 use PhpBench\Expression\Ast\PercentDifferenceNode;
@@ -57,6 +56,7 @@ class TrueColorMap implements ColorMap
             ParenthesisNode::class => 'fg=' . self::RED,
             PercentDifferenceNode::class => function (Node $node) {
                 assert($node instanceof PercentDifferenceNode);
+
                 return 'fg=#' . Gradient::start(
                     Color::fromHex(self::GREEN)
                 )->to(

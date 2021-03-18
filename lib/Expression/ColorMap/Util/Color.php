@@ -31,14 +31,16 @@ final class Color
     public static function fromHex(string $hex): self
     {
         $hexRgb = sscanf(ltrim($hex, '#'), '%02s%02s%02s');
+
         if (!is_array($hexRgb)) {
             throw new RuntimeException(sprintf(
                 'Could not parse hex color "%s"', $hex
             ));
         }
 
-        /** @phpstan-ignore-next-line */
-        return new self(...array_map('hexdec', $hexRgb));
+        return new self(...array_map(function (string $hex): int {
+            return (int)hexdec($hex);
+        }, $hexRgb));
     }
 
     /**

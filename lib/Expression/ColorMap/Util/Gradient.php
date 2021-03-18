@@ -2,13 +2,9 @@
 
 namespace PhpBench\Expression\ColorMap\Util;
 
-use RuntimeException;
 use function array_fill;
-use function array_key_first;
 use function array_key_last;
-use function array_unshift;
-use function dechex;
-use function sscanf;
+use RuntimeException;
 
 final class Gradient
 {
@@ -50,7 +46,7 @@ final class Gradient
 
         $gradient = [];
         $start = $this->end()->toTuple();
-        $end= $end->toTuple();
+        $end = $end->toTuple();
 
         for ($i = 0; $i <= 2; $i++) {
             $cStart = $start[$i];
@@ -60,6 +56,7 @@ final class Gradient
 
             if ($step === 0) {
                 $gradient[$i] = array_fill(0, $steps + 1, $cStart);
+
                 continue;
             }
             $gradient[$i] = range($cStart, $cEnd, $step);
@@ -79,7 +76,8 @@ final class Gradient
     {
         $percentile = $percentile < 0 ? 0 : min(100, abs($percentile));
 
-        $offset = round((count($this->colors) -1) / 100 * $percentile);
+        $offset = round((count($this->colors) - 1) / 100 * $percentile);
+
         return $this->colors[$offset];
     }
 }

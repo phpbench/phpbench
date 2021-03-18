@@ -12,8 +12,6 @@ use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\ParenthesisNode;
 use PhpBench\Expression\Ast\TolerableNode;
 use PhpBench\Expression\ColorMap\TrueColorMap;
-use PhpBench\Expression\ColorMap\Standard8ColorMap;
-use PhpBench\Expression\ColorMap\Util\Gradient;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Evaluator\MainEvaluator;
 use PhpBench\Expression\Evaluator\PrettyErrorEvaluator;

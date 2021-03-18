@@ -2,8 +2,8 @@
 
 namespace PhpBench\Expression\NodeEvaluator;
 
-use PhpBench\Expression\Ast\PercentageNode;
 use PhpBench\Expression\Ast\Node;
+use PhpBench\Expression\Ast\PercentageNode;
 use PhpBench\Expression\Evaluator;
 
 /**

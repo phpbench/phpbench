@@ -3,16 +3,16 @@
 namespace PhpBench\Tests\Unit\Expression\ColorMap\Util;
 
 use Generator;
-use PHPUnit\Framework\TestCase;
 use PhpBench\Expression\ColorMap\Util\Color;
 use PhpBench\Expression\ColorMap\Util\Gradient;
+use PHPUnit\Framework\TestCase;
 use RuntimeException;
-use function dechex;
 
 class GradientTest extends TestCase
 {
     /**
      * @dataProvider provideGradient
+     *
      * @param string[] $expectedColors
      */
     public function testGradient(string $start, string $end, int $steps, array $expectedColors): void
@@ -36,8 +36,8 @@ class GradientTest extends TestCase
     public function provideGradient(): Generator
     {
         yield [
-            '000000', 
-            '640000', 
+            '000000',
+            '640000',
             4,
             [
                 '000000',
@@ -49,8 +49,8 @@ class GradientTest extends TestCase
         ];
 
         yield [
-            '000000', 
-            '640ff0', 
+            '000000',
+            '640ff0',
             2,
             [
                 '000000',
@@ -60,8 +60,8 @@ class GradientTest extends TestCase
         ];
 
         yield [
-            '000000', 
-            '640ff0', 
+            '000000',
+            '640ff0',
             1,
             [
                 '000000',
@@ -72,6 +72,7 @@ class GradientTest extends TestCase
 
     /**
      * @dataProvider provideNegativeStep
+     *
      * @param int|float $step
      */
     public function testNegativeStep($step): void
@@ -87,7 +88,9 @@ class GradientTest extends TestCase
     public function provideNegativeStep(): Generator
     {
         yield [ 0 ];
+
         yield [ 0.00000001 ];
+
         yield [ -1 ];
     }
 
@@ -109,11 +112,13 @@ class GradientTest extends TestCase
             1,
             Color::fromHex('#000000')
         ];
+
         yield [
             Gradient::start(Color::fromRgb(0, 0, 0))->to(Color::fromRgb(0, 0, 10), 10),
             10,
             Color::fromRgb(0, 0, 1)
         ];
+
         yield [
             Gradient::start(Color::fromRgb(0, 0, 0))->to(Color::fromRgb(0, 0, 10), 9),
             50,
