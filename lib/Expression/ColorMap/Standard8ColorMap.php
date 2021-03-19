@@ -15,6 +15,9 @@ use PhpBench\Expression\Ast\PercentDifferenceNode;
 use PhpBench\Expression\Ast\ToleratedTrue;
 use PhpBench\Expression\ColorMap;
 
+/**
+ * @implements ColorMap<Node>
+ */
 class Standard8ColorMap implements ColorMap
 {
     /**

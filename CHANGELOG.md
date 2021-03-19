@@ -4,6 +4,7 @@ CHANGELOG
 master
 ------
 
+- Support true color expression rendering #767
 - Added `expression` report generator - will eventually replace the `table `report used
   for `aggregate` and `default `reports.
 - Added `--format` to customize the summary shown in progress loggers

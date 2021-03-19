@@ -12,6 +12,7 @@ use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\ParenthesisNode;
 use PhpBench\Expression\Ast\TolerableNode;
 use PhpBench\Expression\ColorMap\Standard8ColorMap;
+use PhpBench\Expression\ColorMap\TrueColorMap;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Evaluator\MainEvaluator;
 use PhpBench\Expression\Evaluator\PrettyErrorEvaluator;
@@ -94,6 +95,7 @@ use PhpBench\Expression\Printer\NormalizingPrinter;
 use PhpBench\Expression\Printer\UnderlinePrinterFactory;
 use PhpBench\Expression\Token;
 use PhpBench\Util\TimeUnit;
+use Symfony\Component\Console\Formatter\NullOutputFormatter;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ExpressionExtension implements ExtensionInterface
@@ -195,7 +197,7 @@ class ExpressionExtension implements ExtensionInterface
         $container->register(HighlightingNodePrinter::class, function (Container $container) {
             return new HighlightingNodePrinter(
                 $container->get(NodePrinters::class),
-                new Standard8ColorMap()
+                class_exists(NullOutputFormatter::class) ? new TrueColorMap() : new Standard8ColorMap()
             );
         });
 
