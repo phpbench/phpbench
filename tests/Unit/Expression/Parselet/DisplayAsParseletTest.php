@@ -6,6 +6,7 @@ use Generator;
 use PhpBench\Expression\Ast\DisplayAsNode;
 use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\UnitNode;
+use PhpBench\Expression\NodePrinter\DisplayAsPrinter;
 use PhpBench\Tests\Unit\Expression\ParseletTestCase;
 
 class DisplayAsParseletTest extends ParseletTestCase
@@ -43,5 +44,14 @@ class DisplayAsParseletTest extends ParseletTestCase
         yield ['100000 as seconds < 1 second', [], '0.100s < 1 second'];
 
         yield 'default unit' => ['100000 as time < 1 second', [], '100,000.000μs < 1 second'];
+
+        yield 'default unit from parameters' => [
+            '100000 as time < 1 second',
+            [
+                DisplayAsPrinter::PARAM_OUTPUT_TIME_UNIT => 'minutes',
+                DisplayAsPrinter::PARAM_OUTPUT_TIME_PRECISION => 6,
+            ],
+            '100,000.000μs < 1 second'
+        ];
     }
 }
