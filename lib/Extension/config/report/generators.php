@@ -12,22 +12,27 @@
 
 return [
     'aggregate' => [
-        'generator' => 'table',
-        'cols' => ['benchmark', 'subject', 'set', 'revs', 'its', 'mem_peak', 'best', 'mean', 'mode', 'worst', 'stdev', 'rstdev', 'diff'],
+        'generator' => 'expression',
     ],
     'default' => [
-        'generator' => 'table',
-        'iterations' => true,
-        'cols' => ['benchmark', 'subject', 'set', 'revs', 'iter', 'mem_peak', 'iter', 'time_rev', 'comp_z_value', 'comp_deviation'],
-        'diff_col' => 'time_rev',
+        'generator' => 'expression',
+        'cols' => [
+            'benchmark' => 'first(subject_name)',
+            'subject' => 'first(subject_name)',
+            'set' => 'first(variant_name)',
+            'revs' => 'first(variant_revs)',
+            'mem_peak' => 'first(result_mem_peak) as bytes',
+            'time_avg' => 'first(result_time_avg) as time',
+        ],
+        'aggregate' => ['benchmark_class', 'subject_name', 'variant_name', 'iteration_index'],
     ],
     'memory' => [
-        'generator' => 'table',
+        'generator' => 'expression',
         'iterations' => true,
         'cols' => ['benchmark', 'subject', 'set', 'revs', 'iter', 'mem_final', 'mem_real', 'mem_peak'],
     ],
     'compare' => [
-        'generator' => 'table',
+        'generator' => 'expression',
         'cols' => ['benchmark', 'subject', 'set', 'revs'],
         'compare' => 'suite',
         'break' => [],
