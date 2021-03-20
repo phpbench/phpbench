@@ -15,10 +15,6 @@ class UnitPrinter implements NodePrinter
             return null;
         }
 
-        return sprintf(
-            '%s %s',
-            $printer->print($node->left(), $params),
-            $node->unit()
-        );
+        return $printer->print($node->unit(), $params);
     }
 }

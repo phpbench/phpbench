@@ -49,7 +49,7 @@ use PhpBench\Expression\NodeEvaluator\ParameterEvaluator;
 use PhpBench\Expression\NodeEvaluator\ParenthesisEvaluator;
 use PhpBench\Expression\NodeEvaluator\StringEvaluator;
 use PhpBench\Expression\NodeEvaluator\TolerableEvaluator;
-use PhpBench\Expression\NodeEvaluator\UnitEvaluator;
+use PhpBench\Expression\NodeEvaluator\ValueWithUnitEvaluator;
 use PhpBench\Expression\NodeEvaluators;
 use PhpBench\Expression\NodePrinter;
 use PhpBench\Expression\NodePrinter\ArgumentListPrinter;
@@ -70,6 +70,7 @@ use PhpBench\Expression\NodePrinter\PercentagePrinter;
 use PhpBench\Expression\NodePrinter\StringPrinter;
 use PhpBench\Expression\NodePrinter\TolerablePrinter;
 use PhpBench\Expression\NodePrinter\UnitPrinter;
+use PhpBench\Expression\NodePrinter\ValueWithUnitPrinter;
 use PhpBench\Expression\NodePrinters;
 use PhpBench\Expression\Parselet\ArithmeticOperatorParselet;
 use PhpBench\Expression\Parselet\BooleanParselet;
@@ -86,7 +87,7 @@ use PhpBench\Expression\Parselet\ParenthesisParselet;
 use PhpBench\Expression\Parselet\PercentageParselet;
 use PhpBench\Expression\Parselet\StringParselet;
 use PhpBench\Expression\Parselet\TolerableParselet;
-use PhpBench\Expression\Parselet\UnitParselet;
+use PhpBench\Expression\Parselet\ValueWithUnitParselet;
 use PhpBench\Expression\Parselets;
 use PhpBench\Expression\Parser;
 use PhpBench\Expression\Precedence;
@@ -152,7 +153,7 @@ class ExpressionExtension implements ExtensionInterface
                     new ConcatParselet(),
                 ]),
                 Parselets::fromSuffixParselets([
-                    new UnitParselet(),
+                    new ValueWithUnitParselet(),
                     new PercentageParselet(),
                 ])
             );
@@ -168,7 +169,7 @@ class ExpressionExtension implements ExtensionInterface
                 new FloatEvaluator(),
                 new FunctionEvaluator($container->get(ExpressionFunctions::class)),
                 new ListEvaluator(),
-                new UnitEvaluator(),
+                new ValueWithUnitEvaluator(),
                 new ParenthesisEvaluator(),
                 new ComparisonEvaluator(),
                 new TolerableEvaluator(),
@@ -209,6 +210,7 @@ class ExpressionExtension implements ExtensionInterface
             return new NodePrinters([
                 new ConcatenatedNodePrinter(),
                 new ArgumentListPrinter(),
+                new UnitPrinter(),
                 new NumberPrinter(),
                 new BinaryOperatorPrinter(),
                 new ComparisonPrinter(),
@@ -218,7 +220,7 @@ class ExpressionExtension implements ExtensionInterface
                 new ParenthesisPrinter(),
                 new TolerablePrinter(),
                 new PercentagePrinter(),
-                new UnitPrinter(),
+                new ValueWithUnitPrinter(),
                 new DisplayAsPrinter($container->get(TimeUnit::class)),
                 new ParameterPrinter(),
                 new StringPrinter(),

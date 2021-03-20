@@ -7,7 +7,7 @@ use PhpBench\Expression\Exception\EvaluationError;
 class DisplayAsNode implements NumberValue
 {
     /**
-     * @var string
+     * @var UnitNode
      */
     private $as;
 
@@ -16,7 +16,7 @@ class DisplayAsNode implements NumberValue
      */
     private $value;
 
-    public function __construct(Node $value, string $as)
+    public function __construct(Node $value, UnitNode $as)
     {
         $this->as = $as;
         $this->value = $value;
@@ -27,7 +27,7 @@ class DisplayAsNode implements NumberValue
         return $this->value;
     }
 
-    public function as(): string
+    public function as(): UnitNode
     {
         return $this->as;
     }
