@@ -2,7 +2,6 @@
 
 namespace PhpBench\Expression\NodePrinter;
 
-use PhpBench\Expression\Ast\ConcatNode;
 use PhpBench\Expression\Ast\ConcatenatedNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\NodePrinter;
@@ -25,4 +24,3 @@ class ConcatenatedNodePrinter implements NodePrinter
         ]);
     }
 }
-

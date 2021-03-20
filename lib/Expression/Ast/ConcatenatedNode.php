@@ -14,7 +14,6 @@ class ConcatenatedNode extends StringNode
     private $right;
 
     /**
-     * @param Node[] $nodes
      */
     public function __construct(string $string, Node $left, Node $right)
     {
