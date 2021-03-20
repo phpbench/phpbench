@@ -5,6 +5,7 @@ namespace PhpBench\Expression\Parselet;
 use PhpBench\Expression\Ast\DisplayAsNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\StringNode;
+use PhpBench\Expression\Ast\UnitNode;
 use PhpBench\Expression\Ast\ValueWithUnitNode;
 use PhpBench\Expression\Exception\SyntaxError;
 use PhpBench\Expression\InfixParselet;
@@ -25,7 +26,7 @@ class DisplayAsParselet implements InfixParselet
         $tokens->chomp();
 
         if ($tokens->current()->type === Token::T_UNIT) {
-            $unit = $tokens->chomp()->value;
+            $unit = new StringNode($tokens->chomp()->value);
         } else {
             $unit = $parser->parseExpression($tokens);
 
@@ -33,10 +34,10 @@ class DisplayAsParselet implements InfixParselet
                 throw SyntaxError::forToken($tokens, $tokens->current(), 'Expected unit expression to evaluate to string');
             }
 
-            $unit = $unit->value();
+            $unit = $unit;
         }
 
-        return new DisplayAsNode($left, $unit);
+        return new DisplayAsNode($left, new UnitNode($unit));
     }
 
     public function precedence(): int

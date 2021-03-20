@@ -5,6 +5,8 @@ namespace PhpBench\Expression\NodePrinter;
 use PhpBench\Expression\Ast\DisplayAsNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\PhpValue;
+use PhpBench\Expression\Ast\StringNode;
+use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Expression\Exception\PrinterError;
 use PhpBench\Expression\NodePrinter;
 use PhpBench\Expression\Printer;
@@ -39,8 +41,14 @@ class DisplayAsPrinter implements NodePrinter
             return null;
         }
 
-        $unit = $node->as();
+        $unit = $node->as()->unit();
         $value = $node->node();
+
+        if (!$unit instanceof StringNode) {
+            throw new EvaluationError($node, 'Unit must evaluate to string');
+        }
+
+        $unit = $unit->value();
 
         if (!$value instanceof PhpValue) {
             return sprintf('%s as %s', $printer->print($value, $params), $unit);

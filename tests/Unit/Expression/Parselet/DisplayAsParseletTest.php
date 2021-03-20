@@ -20,12 +20,18 @@ class DisplayAsParseletTest extends ParseletTestCase
     {
         yield [
             '1 ms as microseconds',
-            new DisplayAsNode(new ValueWithUnitNode(new IntegerNode(1), new UnitNode(new StringNode('ms'))), 'microseconds')
+            new DisplayAsNode(new ValueWithUnitNode(
+                new IntegerNode(1),
+                new UnitNode(new StringNode('ms'))
+            ), new UnitNode(new StringNode('microseconds')))
         ];
 
         yield [
             '1 ms as "microseconds"',
-            new DisplayAsNode(new ValueWithUnitNode(new IntegerNode(1), new UnitNode(new StringNode('ms'))), 'microseconds')
+            new DisplayAsNode(
+                new ValueWithUnitNode(new IntegerNode(1), new UnitNode(new StringNode('ms'))),
+                new UnitNode(new StringNode('microseconds'))
+            )
         ];
     }
 
