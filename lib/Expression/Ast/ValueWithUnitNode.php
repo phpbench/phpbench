@@ -2,7 +2,7 @@
 
 namespace PhpBench\Expression\Ast;
 
-class UnitNode implements Node
+class ValueWithUnitNode implements Node
 {
     /**
      * @var Node

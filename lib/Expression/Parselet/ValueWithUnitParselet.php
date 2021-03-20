@@ -3,12 +3,12 @@
 namespace PhpBench\Expression\Parselet;
 
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Ast\UnitNode;
+use PhpBench\Expression\Ast\ValueWithUnitNode;
 use PhpBench\Expression\SuffixParselet;
 use PhpBench\Expression\Token;
 use PhpBench\Expression\Tokens;
 
-class UnitParselet implements SuffixParselet
+class ValueWithUnitParselet implements SuffixParselet
 {
     public function tokenType(): string
     {
@@ -17,6 +17,6 @@ class UnitParselet implements SuffixParselet
 
     public function parse(Node $left, Tokens $tokens): Node
     {
-        return new UnitNode($left, $tokens->chomp()->value);
+        return new ValueWithUnitNode($left, $tokens->chomp()->value);
     }
 }

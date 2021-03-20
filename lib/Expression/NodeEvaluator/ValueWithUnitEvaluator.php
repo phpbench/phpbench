@@ -5,7 +5,7 @@ namespace PhpBench\Expression\NodeEvaluator;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\NumberNode;
 use PhpBench\Expression\Ast\PhpValueFactory;
-use PhpBench\Expression\Ast\UnitNode;
+use PhpBench\Expression\Ast\ValueWithUnitNode;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Util\MemoryUnit;
@@ -14,11 +14,11 @@ use PhpBench\Util\TimeUnit;
 /**
  * @extends AbstractEvaluator<UnitNode>
  */
-class UnitEvaluator extends AbstractEvaluator
+class ValueWithUnitEvaluator extends AbstractEvaluator
 {
     final public function __construct()
     {
-        parent::__construct(UnitNode::class);
+        parent::__construct(ValueWithUnitNode::class);
     }
 
     /**

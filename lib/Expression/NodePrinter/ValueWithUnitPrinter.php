@@ -3,15 +3,15 @@
 namespace PhpBench\Expression\NodePrinter;
 
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Ast\UnitNode;
+use PhpBench\Expression\Ast\ValueWithUnitNode;
 use PhpBench\Expression\NodePrinter;
 use PhpBench\Expression\Printer;
 
-class UnitPrinter implements NodePrinter
+class ValueWithUnitPrinter implements NodePrinter
 {
     public function print(Printer $printer, Node $node, array $params): ?string
     {
-        if (!$node instanceof UnitNode) {
+        if (!$node instanceof ValueWithUnitNode) {
             return null;
         }
 
