@@ -16,6 +16,6 @@ class UnitPrinter implements NodePrinter
             return null;
         }
 
-        return $node->unit();
+        return $printer->print($node->unit(), $params);
     }
 }

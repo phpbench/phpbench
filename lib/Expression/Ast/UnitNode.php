@@ -5,16 +5,16 @@ namespace PhpBench\Expression\Ast;
 class UnitNode implements Node
 {
     /**
-     * @var string
+     * @var Node
      */
     private $unit;
 
-    public function __construct(string $unit)
+    public function __construct(Node $unit)
     {
         $this->unit = $unit;
     }
 
-    public function unit(): string
+    public function unit(): Node
     {
         return $this->unit;
     }
