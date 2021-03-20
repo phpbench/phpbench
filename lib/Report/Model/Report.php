@@ -28,4 +28,22 @@ final class Report
         $this->title = $title;
         $this->description = $description;
     }
+
+    public function title(): ?string
+    {
+        return $this->title;
+    }
+
+    public function description(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @return Table[]
+     */
+    public function tables(): array
+    {
+        return $this->tables;
+    }
 }

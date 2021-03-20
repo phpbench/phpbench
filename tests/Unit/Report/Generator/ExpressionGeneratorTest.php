@@ -2,6 +2,7 @@
 
 namespace PhpBench\Tests\Unit\Report\Generator;
 
+use PhpBench\Extension\ExpressionExtension;
 use function file_get_contents;
 use Generator;
 use function json_encode;
@@ -55,13 +56,12 @@ class ExpressionGeneratorTest extends IntegrationTestCase
             );
             $output = new BufferedOutput();
             (
-                new ConsoleRenderer($output, new Formatter(new FormatRegistry()))
+                new ConsoleRenderer($output, $container->get(ExpressionExtension::SERVICE_PLAIN_PRINTER))
             )->render($document, new Config('asd', [
                 'table_style' => 'default',
             ]));
             $actual = $output->fetch();
         } catch (Throwable $e) {
-            throw $e;
             $actual = $e->getMessage();
         }
 

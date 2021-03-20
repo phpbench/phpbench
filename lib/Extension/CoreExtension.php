@@ -639,7 +639,10 @@ class CoreExtension implements ExtensionInterface
     private function registerReportRenderers(Container $container): void
     {
         $container->register(ConsoleRenderer::class, function (Container $container) {
-            return new ConsoleRenderer($container->get(OutputInterface::class), $container->get(Formatter::class));
+            return new ConsoleRenderer(
+                $container->get(OutputInterface::class),
+                $container->get(Printer::class)
+            );
         }, [self::TAG_REPORT_RENDERER => ['name' => 'console']]);
         $container->register(XsltRenderer::class, function (Container $container) {
             return new XsltRenderer($container->get(OutputInterface::class), $container->get(Formatter::class));

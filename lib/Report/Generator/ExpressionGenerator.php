@@ -287,9 +287,9 @@ EOT
     private function generateDocument(array $tables, Config $config): Report
     {
         return new Report(
-            array_map(function (array $table) {
-                return Table::fromArray($table);
-            }, $tables),
+            array_map(function (array $table, string $title) {
+                return Table::fromArray($table, $title);
+            }, $tables, array_keys($tables)),
             isset($config['title']) ? $config['title'] : null,
             isset($config['description']) ? $config['description'] : null
         );

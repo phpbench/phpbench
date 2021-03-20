@@ -14,9 +14,14 @@ namespace PhpBench\Report\Renderer;
 
 use PhpBench\Dom\Document;
 use PhpBench\Dom\Element;
+use PhpBench\Expression\Ast\Node;
+use PhpBench\Expression\Printer;
 use PhpBench\Formatter\Formatter;
 use PhpBench\Registry\Config;
 use PhpBench\Report\Generator\Table\ValueRole;
+use PhpBench\Report\Model\Report;
+use PhpBench\Report\Model\Table as PhpBenchTable;
+use PhpBench\Report\Model\TableRow;
 use PhpBench\Report\RendererInterface;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -25,118 +30,55 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ConsoleRenderer implements RendererInterface
 {
     /**
-     * @var Formatter
-     */
-    private $formatter;
-
-    /**
      * @var OutputInterface
      */
     private $output;
 
-    public function __construct(OutputInterface $output, Formatter $formatter)
+    /**
+     * @var Printer
+     */
+    private $printer;
+
+    public function __construct(OutputInterface $output, Printer $printer)
     {
-        $this->formatter = $formatter;
         $this->output = $output;
+        $this->printer = $printer;
     }
 
     /**
      * Render the table.
      *
      */
-    public function render(Document $reportDom, Config $config): void
+    public function render(Report $report, Config $config): void
     {
-        /**
-         * @phpstan-ignore-next-line
-         */
-        foreach ($reportDom->firstChild->query('./report') as $reportEl) {
-            $title = $reportEl->getAttribute('title');
+        if ($title = $report->title()) {
+            $this->output->writeln(sprintf('<title>%s</title>', $title));
+            $this->output->writeln(sprintf('<title>%s</title>', str_repeat('=', strlen($title))));
+            $this->output->write(PHP_EOL);
+        }
 
-            if ($title) {
-                $this->output->writeln(sprintf('<title>%s</title>', $title));
-                $this->output->writeln(sprintf('<title>%s</title>', str_repeat('=', strlen($title))));
-                $this->output->write(PHP_EOL);
-            }
+        if ($description = $report->description()) {
+            $this->output->writeln(sprintf('<title>%s</title>', $title));
+            $this->output->writeln(sprintf('<description>%s</description>', $description));
+            $this->output->writeln('');
+        }
 
-            foreach ($reportEl->query('./description') as $descriptionEl) {
-                $this->output->writeln(sprintf('<description>%s</description>', $descriptionEl->nodeValue));
-                $this->output->writeln('');
-            }
-
-            foreach ($reportEl->query('.//table') as $tableEl) {
-                $this->output->writeln(sprintf('%s', $tableEl->getAttribute('title')));
-                $this->renderTableElement($tableEl, $config);
-            }
+        foreach ($report->tables() as $table) {
+            $this->output->writeln(sprintf('%s', $table->title()));
+            $this->renderTableElement($table, $config);
         }
     }
 
-    protected function renderTableElement(Element $tableEl, $config): void
+    protected function renderTableElement(PhpBenchTable $table, $config): void
     {
         $rows = [];
-        $colNames = [];
 
-        foreach ($tableEl->query('.//col') as $colEl) {
-            $colNames[] = $colEl->getAttribute('label');
-        }
-
-        foreach ($tableEl->query('.//row') as $rowEl) {
-            $row = [];
-            $formatterParams = [];
-
-            foreach ($rowEl->query('./formatter-param') as $paramEl) {
-                $formatterParams[$paramEl->getAttribute('name')] = $paramEl->nodeValue;
-            }
-
-            foreach ($rowEl->query('.//cell') as $cellEl) {
-                $colName = $cellEl->getAttribute('name');
-                $values = [];
-
-                foreach ($cellEl->query('./value') as $valueEl) {
-                    $value = $valueEl->nodeValue;
-                    $classes = array_filter(explode(' ', $valueEl->getAttribute('class')));
-
-                    if ($classes) {
-                        $value = $this->formatter->applyClasses($classes, $value, $formatterParams);
-                    }
-
-                    if ($valueEl->getAttribute('role') !== ValueRole::ROLE_PRIMARY) {
-                        $value = sprintf('<fg=cyan>%s</>', $value);
-                    }
-
-                    $values[] = $value;
-                }
-
-                $row[$colName] = implode(' ', $values);
-            }
-
-            $rows[] = $row;
-        }
-
-        $table = new Table($this->output);
-
-        // style only supported in Symfony > 2.4
-        if (method_exists($table, 'setStyle')) {
-            $table->setStyle($config['table_style']);
-        }
-
-        $table->setHeaders($colNames);
-        $table->setRows($rows);
-        $this->renderTable($table);
+        $consoleTable = new Table($this->output);
+        $consoleTable->setStyle($config['table_style']);
+        $consoleTable->setHeaders($table->columnNames());
+        $consoleTable->setRows($this->buildRows($table));
+        $consoleTable->render();
         $this->output->writeln('');
-    }
-
-    /**
-     * Render the table. For Symfony 2.4 support.
-     *
-     */
-    private function renderTable($table): void
-    {
-        if (class_exists('Symfony\Component\Console\Helper\Table')) {
-            $table->render();
-
-            return;
-        }
-        $table->render($this->output);
     }
 
     /**
@@ -148,5 +90,15 @@ class ConsoleRenderer implements RendererInterface
             'table_style' => 'default',
         ]);
         $options->setAllowedTypes('table_style', ['string']);
+    }
+
+    private function buildRows(PhpBenchTable $table): array
+    {
+        return array_map(function (TableRow $row) {
+            return array_map(function (Node $node) {
+                return $this->printer->print($node, []);
+            }, $row->cells());
+
+        }, $table->rows());
     }
 }

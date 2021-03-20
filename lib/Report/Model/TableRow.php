@@ -2,17 +2,22 @@
 
 namespace PhpBench\Report\Model;
 
+use ArrayIterator;
+use IteratorAggregate;
 use PhpBench\Expression\Ast\Node;
 
-final class TableRow
+/**
+ * @implements IteratorAggregate<Node>
+ */
+final class TableRow implements IteratorAggregate
 {
     /**
-     * @var array
+     * @var array<string,Node>
      */
     private $cells;
 
     /**
-     * @param Node[] $cells
+     * @param array<string,Node> $cells
      */
     private function __construct(array $cells)
     {
@@ -24,5 +29,26 @@ final class TableRow
         return new self(array_map(function (Node $node) {
             return $node;
         }, $row));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getIterator()
+    {
+        return new ArrayIterator($this->cells);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function keys(): array
+    {
+        return array_keys($this->cells);
+    }
+
+    public function cells(): array
+    {
+        return $this->cells;
     }
 }

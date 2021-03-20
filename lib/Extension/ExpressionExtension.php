@@ -109,7 +109,7 @@ class ExpressionExtension implements ExtensionInterface
 {
     public const PARAM_SYNTAX_HIGHLIGHTING = 'expression.syntax_highlighting';
 
-    private const SERVICE_PLAIN_PRINTER = Printer::class . '.plain';
+    public const SERVICE_PLAIN_PRINTER = Printer::class . '.plain';
 
 
     /**
