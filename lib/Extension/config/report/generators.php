@@ -17,24 +17,30 @@ return [
     'default' => [
         'generator' => 'expression',
         'cols' => [
+            'iter' => 'first(iteration_index)',
             'benchmark' => 'first(subject_name)',
             'subject' => 'first(subject_name)',
             'set' => 'first(variant_name)',
             'revs' => 'first(variant_revs)',
             'mem_peak' => 'first(result_mem_peak) as bytes',
             'time_avg' => 'first(result_time_avg) as time',
+            'comp_z_value' => 'first(result_comp_z_value)',
+            'comp_deviation' => 'first(result_comp_deviation)',
         ],
         'aggregate' => ['benchmark_class', 'subject_name', 'variant_name', 'iteration_index'],
     ],
     'memory' => [
         'generator' => 'expression',
-        'iterations' => true,
-        'cols' => ['benchmark', 'subject', 'set', 'revs', 'iter', 'mem_final', 'mem_real', 'mem_peak'],
-    ],
-    'compare' => [
-        'generator' => 'expression',
-        'cols' => ['benchmark', 'subject', 'set', 'revs'],
-        'compare' => 'suite',
-        'break' => [],
+        'aggregate' => ['benchmark_class', 'subject_name', 'variant_name', 'iteration_index'],
+        'cols' => [
+            'iter' => 'first(iteration_index)',
+            'benchmark' => 'first(subject_name)',
+            'subject' => 'first(subject_name)',
+            'set' => 'first(variant_name)',
+            'revs' => 'first(variant_revs)',
+            'mem_final' => 'first(result_mem_final) as memory',
+            'mem_real' => 'first(result_mem_real) as memory',
+            'mem_peak' => 'first(result_mem_peak) as memory',
+        ],
     ]
 ];
