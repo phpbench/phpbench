@@ -64,7 +64,7 @@ class ExpressionGenerator implements GeneratorInterface
             'title' => null,
             'description' => null,
             'cols' => [
-                'benchmark' => 'first(benchmark_class)',
+                'benchmark' => 'first(benchmark_clas)',
                 'subject' => 'first(subject_name)',
                 'set' => 'first(variant_name)',
                 'revs' => 'first(variant_revs)',
