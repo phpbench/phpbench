@@ -48,10 +48,10 @@ class DisplayAsParseletTest extends ParseletTestCase
         yield 'default unit from parameters' => [
             '100000 as time < 1 second',
             [
-                DisplayAsPrinter::PARAM_OUTPUT_TIME_UNIT => 'minutes',
+                DisplayAsPrinter::PARAM_OUTPUT_TIME_UNIT => 'milliseconds',
                 DisplayAsPrinter::PARAM_OUTPUT_TIME_PRECISION => 6,
             ],
-            '100,000.000μs < 1 second'
+            '100.000000ms < 1 second'
         ];
     }
 }

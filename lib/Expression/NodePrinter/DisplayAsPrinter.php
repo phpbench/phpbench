@@ -49,7 +49,7 @@ class DisplayAsPrinter implements NodePrinter
             return $this->timeUnit(
                 $value->value(),
                 isset($params[self::PARAM_OUTPUT_TIME_UNIT]) ? $params[self::PARAM_OUTPUT_TIME_UNIT] : null,
-                isset($params[self::PARAM_OUTPUT_TIME_PRECISION]) ? $params[self::PARAM_OUTPUT_TIME_UNIT] : null
+                isset($params[self::PARAM_OUTPUT_TIME_PRECISION]) ? $params[self::PARAM_OUTPUT_TIME_PRECISION] : null
             );
         }
 
