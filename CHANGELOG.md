@@ -1,8 +1,8 @@
 CHANGELOG
 =========
 
-master
-------
+1.0.0-alpha7
+------------
 
 - Support true color expression rendering #767
 - Added `expression` report generator - will eventually replace the `table `report used
