@@ -12,6 +12,10 @@ master
 - Show debug details (process spawning) with `-vvv`
 - Support Xdebug 3
 
+Bug fixes:
+
+- @OutputTimeUnit doesn't propagate to default expression time unit #766
+
 1.0.0-alpha6
 ------------
 
