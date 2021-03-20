@@ -2,6 +2,11 @@
 
 namespace PhpBench\Report\Generator;
 
+use PhpBench\Expression\Ast\Node;
+use PhpBench\Expression\Ast\PhpValue;
+use PhpBench\Expression\Ast\StringNode;
+use PhpBench\Report\Model\Report;
+use PhpBench\Report\Model\Table;
 use function array_combine;
 use function array_key_exists;
 use Generator;
@@ -109,7 +114,7 @@ EOT
     /**
      * {@inheritDoc}
      */
-    public function generate(SuiteCollection $collection, Config $config): Document
+    public function generate(SuiteCollection $collection, Config $config): Report
     {
         $table = iterator_to_array($this->reportData($collection));
         $table = $this->normalize($table);
@@ -265,7 +270,7 @@ EOT
 
             foreach (($row['baseline'][0] ? array_merge($cols, $baselineCols) : $cols) as $name => $expr) {
                 try {
-                    $evaledRow[$name] = $this->printer->print($this->parser->parse($expr), $row);
+                    $evaledRow[$name] = $this->evaluator->evaluate($this->parser->parse($expr), $row);
                 } catch (EvaluationError $e) {
                     $evaledRow[$name] = 'error: ' . $expr;
                     $this->logger->error($e->getMessage());
@@ -277,75 +282,24 @@ EOT
     }
 
     /**
-     * @param array<string,array<int,array<string,string>>> $tables
+     * @param array<string,array<int,array<string,Node>>> $tables
      */
-    private function generateDocument(array $tables, Config $config): Document
+    private function generateDocument(array $tables, Config $config): Report
     {
-        $document = new Document();
-        $reportsEl = $document->createRoot('reports');
-        $reportsEl->setAttribute('name', 'table');
-        $reportEl = $reportsEl->appendElement('report');
-
-        if (isset($config['title'])) {
-            $reportEl->setAttribute('title', $config['title']);
-        }
-
-        if (isset($config['description'])) {
-            $reportEl->appendElement('description', $config['description']);
-        }
-
-        foreach ($tables as $breakHash => $table) {
-            $tableEl = $reportEl->appendElement('table');
-
-            foreach ($table as $row) {
-                $colsEl = $tableEl->appendElement('cols');
-
-                foreach (array_keys($row) as $colName) {
-                    $colEl = $colsEl->appendElement('col');
-                    $colEl->setAttribute('name', $colName);
-
-                    // column labels are the column names by default.
-                    // the user may override by column name or column index.
-                    $colLabel = $colName;
-
-                    if (isset($config['labels'][$colName])) {
-                        $colLabel = $config['labels'][$colName];
-                    }
-
-                    $colEl->setAttribute('label', $colLabel);
-                }
-
-                break;
-            }
-
-            if ($breakHash) {
-                $tableEl->setAttribute('title', (string)$breakHash);
-            }
-
-            $groupEl = $tableEl->appendElement('group');
-            $groupEl->setAttribute('name', 'body');
-
-            foreach ($table as $row) {
-                $rowEl = $groupEl->appendElement('row');
-
-                foreach ($row as $key => $cell) {
-                    $cellEl = $rowEl->appendElement('cell');
-                    $cellEl->setAttribute('name', $key);
-
-                    $valueEl = $cellEl->appendElement('value', $cell);
-                    $valueEl->setAttribute('role', 'primary');
-                }
-            }
-        }
-
-        return $document;
+        return new Report(
+            array_map(function (array $table) {
+                return Table::fromArray($table);
+            }, $tables),
+            isset($config['title']) ? $config['title'] : null,
+            isset($config['description']) ? $config['description'] : null
+        );
     }
 
     /**
      * @param array<string,array<string,string>> $table
      * @param string[] $breakCols
      *
-     * @return array<string,array<int,array<string,string>>>
+     * @return array<string,array<int,array<string,Node>>>
      */
     private function partition(array $table, array $breakCols): array
     {
@@ -361,7 +315,16 @@ EOT
                     ));
                 }
 
-                return $row[$key];
+                $value = $row[$key];
+
+                if (!$value instanceof StringNode) {
+                    throw new RuntimeException(sprintf(
+                        'Partition value for "%s" must be a string, got "%s"',
+                        $key, get_class($value)
+                    ));
+                }
+
+                return $value->value();
             }, $breakCols));
 
             foreach ($breakCols as $col) {

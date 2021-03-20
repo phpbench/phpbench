@@ -61,6 +61,7 @@ class ExpressionGeneratorTest extends IntegrationTestCase
             ]));
             $actual = $output->fetch();
         } catch (Throwable $e) {
+            throw $e;
             $actual = $e->getMessage();
         }
 

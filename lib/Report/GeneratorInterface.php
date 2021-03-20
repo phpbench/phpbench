@@ -16,6 +16,7 @@ use PhpBench\Dom\Document;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Registry\RegistrableInterface;
+use PhpBench\Report\Model\Report;
 
 interface GeneratorInterface extends RegistrableInterface
 {
@@ -23,5 +24,5 @@ interface GeneratorInterface extends RegistrableInterface
      * Generate the report document from the suite result document.
      *
      */
-    public function generate(SuiteCollection $collection, Config $config): Document;
+    public function generate(SuiteCollection $collection, Config $config): Report;
 }
