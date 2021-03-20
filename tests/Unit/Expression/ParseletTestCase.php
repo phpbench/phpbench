@@ -62,7 +62,7 @@ abstract class ParseletTestCase extends ParserTestCase
      */
     public function testPrint(string $expr, array $params = [], string $expected = null): void
     {
-        $result = $this->print($this->parse($expr));
+        $result = $this->print($this->parse($expr), $params);
         self::assertEquals($expected ?: $expr, $result);
     }
 

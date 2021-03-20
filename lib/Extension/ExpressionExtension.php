@@ -100,7 +100,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ExpressionExtension implements ExtensionInterface
 {
-    const PARAM_SYNTAX_HIGHLIGHTING = 'expression.syntax_highlighting';
+    public const PARAM_SYNTAX_HIGHLIGHTING = 'expression.syntax_highlighting';
+
+    private const SERVICE_PLAIN_PRINTER = Printer::class . '.plain';
+
 
     /**
      * {@inheritDoc}
@@ -181,8 +184,8 @@ class ExpressionExtension implements ExtensionInterface
         $container->register(Evaluator::class, function (Container $container) {
             return new PrettyErrorEvaluator(
                 new MainEvaluator(new MemoisedNodeEvaluator($container->get(NodeEvaluator::class))),
-                $container->get(Printer::class),
-                new UnderlinePrinterFactory($container->get(NodePrinter::class))
+                $container->get(self::SERVICE_PLAIN_PRINTER),
+                new UnderlinePrinterFactory($container->get(NodePrinters::class))
             );
         });
 
@@ -224,6 +227,10 @@ class ExpressionExtension implements ExtensionInterface
 
         $container->register(Printer::class, function (Container $container) {
             return new NormalizingPrinter($container->get(NodePrinter::class));
+        });
+
+        $container->register(self::SERVICE_PLAIN_PRINTER, function (Container $container) {
+            return new NormalizingPrinter($container->get(NodePrinters::class));
         });
 
         $container->register(EvaluatingPrinter::class, function (Container $container) {

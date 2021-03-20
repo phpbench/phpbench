@@ -2,6 +2,7 @@
 
 namespace PhpBench\Assertion;
 
+use PhpBench\Expression\NodePrinter\DisplayAsPrinter;
 use PhpBench\Model\Variant;
 
 class ParameterProvider
@@ -15,6 +16,8 @@ class ParameterProvider
             return [
                 'variant' => $variantData,
                 'baseline' => $variant->getBaseline() ? $this->buildVariantData($variant->getBaseline()) : $variantData,
+                DisplayAsPrinter::PARAM_OUTPUT_TIME_UNIT => $variant->getSubject()->getOutputTimeUnit(),
+                DisplayAsPrinter::PARAM_OUTPUT_TIME_PRECISION => $variant->getSubject()->getOutputTimePrecision(),
             ];
         })($this->buildVariantData($variant));
     }

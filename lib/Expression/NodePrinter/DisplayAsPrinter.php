@@ -13,7 +13,11 @@ use PhpBench\Util\TimeUnit;
 
 class DisplayAsPrinter implements NodePrinter
 {
+    public const PARAM_OUTPUT_TIME_UNIT = 'output_time_unit';
+    public const PARAM_OUTPUT_TIME_PRECISION = 'output_time_precision';
+
     private const DEFAULT_TIME_UNIT = 'time';
+
 
     /**
      * @var TimeUnit
@@ -42,11 +46,15 @@ class DisplayAsPrinter implements NodePrinter
         }
 
         if ($unit === self::DEFAULT_TIME_UNIT) {
-            return $this->timeUnit($value->value(), null);
+            return $this->timeUnit(
+                $value->value(),
+                isset($params[self::PARAM_OUTPUT_TIME_UNIT]) ? $params[self::PARAM_OUTPUT_TIME_UNIT] : null,
+                isset($params[self::PARAM_OUTPUT_TIME_PRECISION]) ? $params[self::PARAM_OUTPUT_TIME_PRECISION] : null
+            );
         }
 
         if (TimeUnit::isTimeUnit($unit)) {
-            return $this->timeUnit($value->value(), $unit);
+            return $this->timeUnit($value->value(), $unit, null);
         }
 
         if (MemoryUnit::isMemoryUnit($unit)) {
@@ -70,9 +78,9 @@ class DisplayAsPrinter implements NodePrinter
         );
     }
 
-    private function timeUnit(float $value, ?string $unit): string
+    private function timeUnit(float $value, ?string $unit, ?int $precision): string
     {
-        return $this->timeUnit->format($value, $unit);
+        return $this->timeUnit->format($value, $unit, null, $precision);
     }
 
     /**
