@@ -3,6 +3,7 @@
 namespace PhpBench\Expression\Parselet;
 
 use PhpBench\Expression\Ast\Node;
+use PhpBench\Expression\Ast\UnitNode;
 use PhpBench\Expression\Ast\ValueWithUnitNode;
 use PhpBench\Expression\SuffixParselet;
 use PhpBench\Expression\Token;
@@ -17,6 +18,6 @@ class ValueWithUnitParselet implements SuffixParselet
 
     public function parse(Node $left, Tokens $tokens): Node
     {
-        return new ValueWithUnitNode($left, $tokens->chomp()->value);
+        return new ValueWithUnitNode($left, new UnitNode($tokens->chomp()->value));
     }
 }

@@ -5,6 +5,7 @@ namespace PhpBench\Tests\Unit\Expression\Parselet;
 use Generator;
 use PhpBench\Expression\Ast\DisplayAsNode;
 use PhpBench\Expression\Ast\IntegerNode;
+use PhpBench\Expression\Ast\UnitNode;
 use PhpBench\Expression\Ast\ValueWithUnitNode;
 use PhpBench\Expression\NodePrinter\DisplayAsPrinter;
 use PhpBench\Tests\Unit\Expression\ParseletTestCase;
@@ -18,12 +19,12 @@ class DisplayAsParseletTest extends ParseletTestCase
     {
         yield [
             '1 ms as microseconds',
-            new DisplayAsNode(new ValueWithUnitNode(new IntegerNode(1), 'ms'), 'microseconds')
+            new DisplayAsNode(new ValueWithUnitNode(new IntegerNode(1), new UnitNode('ms')), 'microseconds')
         ];
 
         yield [
             '1 ms as "microseconds"',
-            new DisplayAsNode(new ValueWithUnitNode(new IntegerNode(1), 'ms'), 'microseconds')
+            new DisplayAsNode(new ValueWithUnitNode(new IntegerNode(1), new UnitNode('ms')), 'microseconds')
         ];
     }
 

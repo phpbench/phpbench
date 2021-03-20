@@ -9,11 +9,11 @@ class ValueWithUnitNode implements Node
      */
     private $left;
     /**
-     * @var string
+     * @var UnitNode
      */
     private $unit;
 
-    public function __construct(Node $left, string $unit)
+    public function __construct(Node $left, UnitNode $unit)
     {
         $this->left = $left;
         $this->unit = $unit;
@@ -24,7 +24,7 @@ class ValueWithUnitNode implements Node
         return $this->left;
     }
 
-    public function unit(): string
+    public function unit(): UnitNode
     {
         return $this->unit;
     }

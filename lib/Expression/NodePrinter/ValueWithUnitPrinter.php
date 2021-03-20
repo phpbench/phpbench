@@ -18,7 +18,7 @@ class ValueWithUnitPrinter implements NodePrinter
         return sprintf(
             '%s %s',
             $printer->print($node->left(), $params),
-            $node->unit()
+            $node->unit()->unit()
         );
     }
 }

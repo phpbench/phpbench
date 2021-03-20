@@ -27,7 +27,7 @@ class ValueWithUnitEvaluator extends AbstractEvaluator
     public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
     {
         $value = $evaluator->evaluateType($node->left(), NumberNode::class, $params);
-        $unit = $node->unit();
+        $unit = $node->unit()->unit();
 
         if (TimeUnit::isTimeUnit($unit)) {
             return PhpValueFactory::fromNumber($this->timeUnit($value->value(), $unit));
