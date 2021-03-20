@@ -13,9 +13,10 @@ use PhpBench\Util\TimeUnit;
 
 class DisplayAsPrinter implements NodePrinter
 {
+    public const PARAM_OUTPUT_TIME_UNIT = 'output_time_unit';
+    public const PARAM_OUTPUT_TIME_PRECISION = 'output_time_precision';
+
     private const DEFAULT_TIME_UNIT = 'time';
-    const PARAM_OUTPUT_TIME_UNIT = 'output_time_unit';
-    const PARAM_OUTPUT_TIME_PRECISION = 'output_time_precision';
 
 
     /**
@@ -79,7 +80,7 @@ class DisplayAsPrinter implements NodePrinter
 
     private function timeUnit(float $value, ?string $unit, ?int $precision): string
     {
-        return $this->timeUnit->format($value, $unit, TimeUnit::MODE_TIME, $precision);
+        return $this->timeUnit->format($value, $unit, null, $precision);
     }
 
     /**
