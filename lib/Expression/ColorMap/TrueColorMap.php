@@ -12,8 +12,8 @@ use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\ParenthesisNode;
 use PhpBench\Expression\Ast\PercentDifferenceNode;
-use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Ast\ToleratedTrue;
+use PhpBench\Expression\Ast\UnitNode;
 use PhpBench\Expression\ColorMap;
 use PhpBench\Expression\ColorMap\Util\Color;
 use PhpBench\Expression\ColorMap\Util\Gradient;
@@ -57,6 +57,7 @@ class TrueColorMap implements ColorMap
 
         /** @phpstan-ignore-next-line */
         return [
+            UnitNode::class => 'fg='.self::BASE1,
             FunctionNode::class => 'fg=' . self::GREEN,
             ParenthesisNode::class => 'fg=' . self::RED,
             PercentDifferenceNode::class => function (Node $node) {
@@ -65,7 +66,6 @@ class TrueColorMap implements ColorMap
                 return 'fg=#' . $this->gradient()->colorAtPercentile(((int)$node->percentage() + 100) / 2)->toHex();
             },
             DisplayAsNode::class => 'fg=' . self::BASE2,
-            StringNode::class => 'fg=' . self::BASE2,
             ParameterNode::class => 'fg='  .self::ORANGE,
             BooleanNode::class => function (Node $node): string {
                 assert($node instanceof BooleanNode);

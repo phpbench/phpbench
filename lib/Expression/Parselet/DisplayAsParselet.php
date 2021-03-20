@@ -6,7 +6,6 @@ use PhpBench\Expression\Ast\DisplayAsNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Ast\UnitNode;
-use PhpBench\Expression\Ast\ValueWithUnitNode;
 use PhpBench\Expression\Exception\SyntaxError;
 use PhpBench\Expression\InfixParselet;
 use PhpBench\Expression\Parser;

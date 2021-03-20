@@ -4,7 +4,6 @@ namespace PhpBench\Expression\NodePrinter;
 
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\UnitNode;
-use PhpBench\Expression\Ast\ValueWithUnitNode;
 use PhpBench\Expression\NodePrinter;
 use PhpBench\Expression\Printer;
 
