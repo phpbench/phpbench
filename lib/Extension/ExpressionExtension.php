@@ -56,6 +56,7 @@ use PhpBench\Expression\NodePrinter\ArgumentListPrinter;
 use PhpBench\Expression\NodePrinter\BinaryOperatorPrinter;
 use PhpBench\Expression\NodePrinter\BooleanPrinter;
 use PhpBench\Expression\NodePrinter\ComparisonPrinter;
+use PhpBench\Expression\NodePrinter\ConcatenatedNodePrinter;
 use PhpBench\Expression\NodePrinter\ConcatPrinter;
 use PhpBench\Expression\NodePrinter\DisplayAsPrinter;
 use PhpBench\Expression\NodePrinter\FunctionPrinter;
@@ -206,6 +207,7 @@ class ExpressionExtension implements ExtensionInterface
 
         $container->register(NodePrinters::class, function (Container $container) {
             return new NodePrinters([
+                new ConcatenatedNodePrinter(),
                 new ArgumentListPrinter(),
                 new NumberPrinter(),
                 new BinaryOperatorPrinter(),

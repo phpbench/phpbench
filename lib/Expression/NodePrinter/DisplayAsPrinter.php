@@ -17,6 +17,7 @@ class DisplayAsPrinter implements NodePrinter
     public const PARAM_OUTPUT_TIME_PRECISION = 'output_time_precision';
 
     private const DEFAULT_TIME_UNIT = 'time';
+    private const DEFAULT_MEMORY_UNIT = 'memory';
 
 
     /**
@@ -53,6 +54,13 @@ class DisplayAsPrinter implements NodePrinter
             );
         }
 
+        if ($unit === self::DEFAULT_MEMORY_UNIT) {
+            return $this->memoryUnit(
+                $value->value(),
+                MemoryUnit::BYTES
+            );
+        }
+
         if (TimeUnit::isTimeUnit($unit)) {
             return $this->timeUnit($value->value(), $unit, null);
         }
@@ -72,7 +80,10 @@ class DisplayAsPrinter implements NodePrinter
     public static function supportedUnitNames(): array
     {
         return array_merge(
-            [self::DEFAULT_TIME_UNIT],
+            [
+                self::DEFAULT_TIME_UNIT,
+                self::DEFAULT_MEMORY_UNIT,
+            ],
             TimeUnit::supportedUnitNames(),
             MemoryUnit::supportedUnitNames()
         );

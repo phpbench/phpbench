@@ -57,7 +57,6 @@ class ReportManager
             $generator = $this->generatorRegistry->getService($generatorName);
 
             $reportDom = $generator->generate($collection, $reportConfig);
-            $reportDom->schemaValidate(__DIR__ . '/schema/report.xsd');
 
             $reportDoms[] = $reportDom;
         }
@@ -83,7 +82,7 @@ class ReportManager
             assert($renderer instanceof RendererInterface);
 
             foreach ($reportDoms as $reportDom) {
-                $renderer->render($reportDom->duplicate(), $outputConfig);
+                $renderer->render($reportDom, $outputConfig);
             }
         }
     }

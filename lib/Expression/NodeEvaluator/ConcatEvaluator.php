@@ -2,10 +2,10 @@
 
 namespace PhpBench\Expression\NodeEvaluator;
 
+use PhpBench\Expression\Ast\ConcatenatedNode;
 use PhpBench\Expression\Ast\ConcatNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\PhpValue;
-use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Evaluator;
 
 /**
@@ -23,9 +23,14 @@ class ConcatEvaluator extends AbstractEvaluator
      */
     public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
     {
-        return new StringNode(implode('', [
-            (string)$evaluator->evaluateType($node->left(), PhpValue::class, $params)->value(),
-            (string)$evaluator->evaluateType($node->right(), PhpValue::class, $params)->value()
-        ]));
+        return (function (PhpValue $left, PhpValue $right) {
+            return new ConcatenatedNode(implode('', [
+                (string)$left->value(),
+                (string)$right->value()
+            ]), $left, $right);
+        })(
+            $evaluator->evaluateType($node->left(), PhpValue::class, $params),
+            $evaluator->evaluateType($node->right(), PhpValue::class, $params)
+        );
     }
 }
