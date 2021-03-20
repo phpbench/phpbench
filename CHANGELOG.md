@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+master
+-----
+
+- Allow the display unit to be evaluated (for dynamically determining the unit based on the subject's preference)
+- Make the display unit a node - allowing it to be pretty printed.
+
 1.0.0-alpha7
 ------------
 
