@@ -48,7 +48,7 @@ class DisplayAsPrinter implements NodePrinter
         $value = $node->node();
 
         if (!$unitNode instanceof StringNode) {
-            throw new EvaluationError($node, 'Unit must evaluate to string');
+            throw new PrinterError(sprintf('Unit must evaluate to string, got "%s"', get_class($unitNode)));
         }
 
         if (!$value instanceof PhpValue) {
@@ -57,16 +57,20 @@ class DisplayAsPrinter implements NodePrinter
 
         $unitValue = $unitNode->value();
         if ($unitValue === self::DEFAULT_TIME_UNIT) {
-            $unitValue = isset($params[self::PARAM_OUTPUT_TIME_UNIT]) ? $params[self::PARAM_OUTPUT_TIME_UNIT] : null;
+            $unitValue = 'us';
         }
 
         if ($unitValue === self::DEFAULT_MEMORY_UNIT) {
-            $unitValue = self::DEFAULT_MEMORY_UNIT;
+            $unitValue = 'b';
         }
 
 
-        return (function (UnitValue $value) use ($printer, $unitNode, $params) {
-            return sprintf('%s %s', round($value->value(), 6), $printer->print($unitNode, $params));
+        return (function (UnitValue $value) use ($printer, $unitValue) {
+            return sprintf(
+                '%s%s',
+                number_format($value->value(), floor($value->value()) === $value->value() ? 0 : 3),
+                UnitConverter::suffix($unitValue)
+            );
         })(UnitConverter::convert(UnitConverter::MICROSECOND, $unitValue, $value->value()));
     }
 

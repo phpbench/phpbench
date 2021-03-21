@@ -49,7 +49,9 @@ class UnitConverter
         'ms' => self::MILLISECOND,
         's' => self::SECOND,
         'm' => self::MINUTE,
+        'b' => self::BYTE,
         'bytes' => self::BYTE,
+        'k' => self::KILOBYTE,
         'kilobytes' => self::KILOBYTE,
         'gigabytes' => self::GIGABYTE,
         'kb' => self::KILOBYTE,
@@ -93,6 +95,19 @@ class UnitConverter
         );
     }
 
+    public static function suffix(string $to): string
+    {
+        $to = self::normalizeUnit($to);
+        if (!isset(self::$suffixes[$to])) {
+            throw new RuntimeException(sprintf(
+                'No suffix available for "%s"',
+                $to
+            ));
+        }
+
+        return self::$suffixes[$to];
+    }
+
     private static function multiplier(string $unit): float
     {
         return self::$map[self::normalizeUnit($unit)];
@@ -113,17 +128,5 @@ class UnitConverter
             $unit,
             implode('", "', self::supportedUnits())
         ));
-    }
-
-    private static function suffix(string $to): string
-    {
-        if (!isset(self::$suffixes[$to])) {
-            throw new RuntimeException(sprintf(
-                'No suffix available for "%s"',
-                $to
-            ));
-        }
-
-        return self::$suffixes[$to];
     }
 }

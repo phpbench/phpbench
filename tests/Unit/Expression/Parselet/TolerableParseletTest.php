@@ -85,7 +85,7 @@ class TolerableParseletTest extends ParseletTestCase
 
         yield ['1000 +/- 10%', [], '1000 ± 100'];
 
-        yield ['1000 as ms +/- 10%', [], '1.000ms ± 0.100ms'];
+        yield ['1000 as ms +/- 10%', [], '1ms ± 0.100ms'];
     }
 
     /**

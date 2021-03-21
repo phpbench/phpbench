@@ -84,7 +84,7 @@ class DisplayAsParseletTest extends ParseletTestCase
      */
     public function provideEvaluate(): Generator
     {
-        yield ['1 s as milliseconds', [], '1,000.000ms'];
+        yield ['1 s as milliseconds', [], '1,000ms'];
     }
 
     /**
@@ -94,23 +94,14 @@ class DisplayAsParseletTest extends ParseletTestCase
     {
         yield 'units are interpreted literally' => ['1 s as milliseconds', [], '1 s as milliseconds'];
 
-        yield 'int to milliseconds' => ['1000 as milliseconds', [], '1.000ms'];
+        yield 'int to milliseconds' => ['1000 as milliseconds', [], '1ms'];
 
-        yield 'int to bytes' => ['1000 as k', [], '1 k'];
+        yield 'int to bytes' => ['1000 as k', [], '1kb'];
 
         yield ['100000 as seconds < 1 second', [], '0.100s < 1 second'];
 
-        yield 'default time unit' => ['100000 as time < 1 second', [], '100,000.000μs < 1 second'];
+        yield 'default time unit' => ['100000 as time < 1 second', [], '100,000μs < 1 second'];
 
-        yield 'default time unit from parameters' => [
-            '100000 as time < 1 second',
-            [
-                DisplayAsPrinter::PARAM_OUTPUT_TIME_UNIT => 'milliseconds',
-                DisplayAsPrinter::PARAM_OUTPUT_TIME_PRECISION => 6,
-            ],
-            '100.000000ms < 1 second'
-        ];
-
-        yield 'default memory unit' => ['100000 as memory < 1 second', [], '100000 bytes < 1 second'];
+        yield 'default memory unit' => ['100000 as memory < 1 second', [], '100,000b < 1 second'];
     }
 }
