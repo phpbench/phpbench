@@ -27,13 +27,7 @@ class DisplayAsParselet implements InfixParselet
         if ($tokens->current()->type === Token::T_UNIT) {
             $unit = new StringNode($tokens->chomp()->value);
         } else {
-            $unit = $parser->parseExpression($tokens);
-
-            if (!$unit instanceof StringNode) {
-                throw SyntaxError::forToken($tokens, $tokens->current(), 'Expected unit expression to evaluate to string');
-            }
-
-            $unit = $unit;
+            $unit = $parser->parseExpression($tokens, Precedence::AS);
         }
 
         return new DisplayAsNode($left, new UnitNode($unit));
@@ -41,6 +35,6 @@ class DisplayAsParselet implements InfixParselet
 
     public function precedence(): int
     {
-        return Precedence::TOLERANCE;
+        return Precedence::AS;
     }
 }

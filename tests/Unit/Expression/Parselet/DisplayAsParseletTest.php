@@ -3,8 +3,10 @@
 namespace PhpBench\Tests\Unit\Expression\Parselet;
 
 use Generator;
+use PhpBench\Expression\Ast\ArithmeticOperatorNode;
 use PhpBench\Expression\Ast\DisplayAsNode;
 use PhpBench\Expression\Ast\IntegerNode;
+use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Ast\UnitNode;
 use PhpBench\Expression\Ast\ValueWithUnitNode;
@@ -31,6 +33,26 @@ class DisplayAsParseletTest extends ParseletTestCase
             new DisplayAsNode(
                 new ValueWithUnitNode(new IntegerNode(1), new UnitNode(new StringNode('ms'))),
                 new UnitNode(new StringNode('microseconds'))
+            )
+        ];
+
+        yield [
+            '1 ms as parameter',
+            new DisplayAsNode(
+                new ValueWithUnitNode(new IntegerNode(1), new UnitNode(new StringNode('ms'))),
+                new UnitNode(new ParameterNode(['parameter']))
+            )
+        ];
+
+        yield [
+            '1 ms as parameter * 2',
+            new ArithmeticOperatorNode(
+                new DisplayAsNode(
+                    new ValueWithUnitNode(new IntegerNode(1), new UnitNode(new StringNode('ms'))),
+                    new UnitNode(new ParameterNode(['parameter']))
+                ),
+                '*',
+                new IntegerNode(2)
             )
         ];
     }
