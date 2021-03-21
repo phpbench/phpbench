@@ -99,9 +99,5 @@ class DisplayAsParseletTest extends ParseletTestCase
         yield 'int to bytes' => ['1000 as k', [], '1kb'];
 
         yield ['100000 as seconds < 1 second', [], '0.100s < 1 second'];
-
-        yield 'default time unit' => ['100000 as time < 1 second', [], '100,000μs < 1 second'];
-
-        yield 'default memory unit' => ['100000 as memory < 1 second', [], '100,000b < 1 second'];
     }
 }
