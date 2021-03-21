@@ -15,6 +15,8 @@ use PhpBench\Expression\Tokens;
 
 class DisplayAsParselet implements InfixParselet
 {
+    const T_VAL_PRECISION = 'precision';
+
     public function tokenType(): string
     {
         return Token::T_AS;
@@ -24,17 +26,39 @@ class DisplayAsParselet implements InfixParselet
     {
         $tokens->chomp();
 
-        if ($tokens->current()->type === Token::T_UNIT) {
-            $unit = new StringNode($tokens->chomp()->value);
-        } else {
-            $unit = $parser->parseExpression($tokens, Precedence::AS);
-        }
-
-        return new DisplayAsNode($left, new UnitNode($unit));
+        return new DisplayAsNode(
+            $left,
+            new UnitNode($this->resolveUnit($tokens, $parser)),
+            $this->resolvePrecision($tokens, $parser)
+        );
     }
 
     public function precedence(): int
     {
         return Precedence::AS;
+    }
+
+    private function resolveUnit(Tokens $tokens, Parser $parser): Node
+    {
+        if ($tokens->current()->type === Token::T_UNIT) {
+            return new StringNode($tokens->chomp()->value);
+        }
+
+        return $parser->parseExpression($tokens, Precedence::AS);
+    }
+
+    private function resolvePrecision(Tokens $tokens, Parser $parser): ?Node
+    {
+        if ($tokens->current()->type !== Token::T_NAME) {
+            return null;
+        }
+
+        if ($tokens->current()->value !== self::T_VAL_PRECISION) {
+            return null;
+        }
+
+        $tokens->chomp();
+
+        return $parser->parseExpression($tokens, Precedence::AS);
     }
 }

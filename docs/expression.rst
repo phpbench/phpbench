@@ -124,6 +124,10 @@ unit. You can use ``as`` to display these values in a specified unit:
 This will force the unit conversion to happen only when displaying the
 evaluated expression.
 
+You can also specify the precision:
+
+.. literalinclude:: ../examples/Expression/time_unit_3
+
 .. _expr_tolerance:
 
 Tolerance

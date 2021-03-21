@@ -16,10 +16,16 @@ class DisplayAsNode implements NumberValue
      */
     private $value;
 
-    public function __construct(Node $value, UnitNode $as)
+    /**
+     * @var Node|null
+     */
+    private $precision;
+
+    public function __construct(Node $value, UnitNode $as, ?Node $precision = null)
     {
         $this->as = $as;
         $this->value = $value;
+        $this->precision = $precision;
     }
 
     public function node(): Node

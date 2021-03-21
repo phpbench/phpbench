@@ -45,15 +45,6 @@ class DisplayAsParseletTest extends ParseletTestCase
         ];
 
         yield [
-            '1 ms as parameter precision 5',
-            new DisplayAsNode(
-                new ValueWithUnitNode(new IntegerNode(1), new UnitNode(new StringNode('ms'))),
-                new UnitNode(new ParameterNode(['parameter'])),
-                new IntegerNode(5)
-            )
-        ];
-
-        yield 'precedence' => [
             '1 ms as parameter * 2',
             new ArithmeticOperatorNode(
                 new DisplayAsNode(
@@ -62,6 +53,28 @@ class DisplayAsParseletTest extends ParseletTestCase
                 ),
                 '*',
                 new IntegerNode(2)
+            )
+        ];
+
+        yield [
+            '1 ms as parameter precision 5',
+            new DisplayAsNode(
+                new ValueWithUnitNode(new IntegerNode(1), new UnitNode(new StringNode('ms'))),
+                new UnitNode(new ParameterNode(['parameter'])),
+                new IntegerNode(5)
+            )
+        ];
+
+        yield [
+            '1 ms as parameter precision 5 * 5',
+            new ArithmeticOperatorNode(
+                new DisplayAsNode(
+                    new ValueWithUnitNode(new IntegerNode(1), new UnitNode(new StringNode('ms'))),
+                    new UnitNode(new ParameterNode(['parameter'])),
+                    new IntegerNode(5)
+                ),
+                '*',
+                new IntegerNode(5)
             )
         ];
     }
@@ -99,5 +112,6 @@ class DisplayAsParseletTest extends ParseletTestCase
         ];
 
         yield 'default memory unit' => ['100000 as memory < 1 second', [], '100000 bytes < 1 second'];
+
     }
 }
