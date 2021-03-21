@@ -112,6 +112,5 @@ class DisplayAsParseletTest extends ParseletTestCase
         ];
 
         yield 'default memory unit' => ['100000 as memory < 1 second', [], '100000 bytes < 1 second'];
-
     }
 }

@@ -128,6 +128,9 @@ You can also specify the precision:
 
 .. literalinclude:: ../examples/Expression/time_unit_3
 
+Will ensure that the result is displayed with the given number of digits
+after the decimal point.
+
 .. _expr_tolerance:
 
 Tolerance
