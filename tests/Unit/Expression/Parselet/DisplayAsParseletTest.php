@@ -45,6 +45,15 @@ class DisplayAsParseletTest extends ParseletTestCase
         ];
 
         yield [
+            '1 ms as parameter precision 5',
+            new DisplayAsNode(
+                new ValueWithUnitNode(new IntegerNode(1), new UnitNode(new StringNode('ms'))),
+                new UnitNode(new ParameterNode(['parameter'])),
+                new IntegerNode(5)
+            )
+        ];
+
+        yield 'precedence' => [
             '1 ms as parameter * 2',
             new ArithmeticOperatorNode(
                 new DisplayAsNode(
