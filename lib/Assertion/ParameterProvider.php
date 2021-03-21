@@ -3,6 +3,7 @@
 namespace PhpBench\Assertion;
 
 use PhpBench\Expression\NodePrinter\DisplayAsPrinter;
+use PhpBench\Model\Subject;
 use PhpBench\Model\Variant;
 
 class ParameterProvider
@@ -14,6 +15,7 @@ class ParameterProvider
     {
         return (function (array $variantData) use ($variant) {
             return [
+                'subject' => $this->subjectData($variant->getSubject()),
                 'variant' => $variantData,
                 'baseline' => $variant->getBaseline() ? $this->buildVariantData($variant->getBaseline()) : $variantData,
                 DisplayAsPrinter::PARAM_OUTPUT_TIME_UNIT => $variant->getSubject()->getOutputTimeUnit(),
@@ -46,5 +48,16 @@ class ParameterProvider
         }
 
         return $data;
+    }
+
+    /**
+     * @return array<string,mixed>
+     */
+    private function subjectData(Subject $subject): array
+    {
+        return [
+            'time_unit' => $subject->getOutputTimeUnit(),
+            'time_precision' => $subject->getOutputTimePrecision(),
+        ];
     }
 }

@@ -20,7 +20,7 @@ class DisplayAsEvaluator extends AbstractEvaluator
     }
 
     /**
-        * @param parameters $params
+     * @param parameters $params
      */
     public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
     {

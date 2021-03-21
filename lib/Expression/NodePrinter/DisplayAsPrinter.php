@@ -65,11 +65,11 @@ class DisplayAsPrinter implements NodePrinter
         }
 
 
-        return (function (UnitValue $value) use ($printer, $unitValue) {
+        return (function (UnitValue $value) use ($printer, $unitValue, $params) {
             return sprintf(
                 '%s%s',
                 number_format($value->value(), floor($value->value()) === $value->value() ? 0 : 3),
-                UnitConverter::suffix($unitValue)
+                $printer->print(new UnitNode(new StringNode(UnitConverter::suffix($unitValue))), $params)
             );
         })(UnitConverter::convert(UnitConverter::MICROSECOND, $unitValue, $value->value()));
     }
