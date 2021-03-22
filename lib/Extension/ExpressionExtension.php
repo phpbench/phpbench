@@ -20,6 +20,7 @@ use PhpBench\Expression\ExpressionFunctions;
 use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\ExpressionLanguage\MemoisedExpressionLanguage;
 use PhpBench\Expression\ExpressionLanguage\RealExpressionLanguage;
+use PhpBench\Expression\Func\CoalesceFunction;
 use PhpBench\Expression\Func\FirstFunction;
 use PhpBench\Expression\Func\FormatFunction;
 use PhpBench\Expression\Func\JoinFunction;
@@ -45,6 +46,7 @@ use PhpBench\Expression\NodeEvaluator\IntegerEvaluator;
 use PhpBench\Expression\NodeEvaluator\ListEvaluator;
 use PhpBench\Expression\NodeEvaluator\LogicalOperatorEvaluator;
 use PhpBench\Expression\NodeEvaluator\MemoisedNodeEvaluator;
+use PhpBench\Expression\NodeEvaluator\NullEvaluator;
 use PhpBench\Expression\NodeEvaluator\ParameterEvaluator;
 use PhpBench\Expression\NodeEvaluator\ParenthesisEvaluator;
 use PhpBench\Expression\NodeEvaluator\StringEvaluator;
@@ -62,6 +64,7 @@ use PhpBench\Expression\NodePrinter\DisplayAsPrinter;
 use PhpBench\Expression\NodePrinter\FunctionPrinter;
 use PhpBench\Expression\NodePrinter\HighlightingNodePrinter;
 use PhpBench\Expression\NodePrinter\ListPrinter;
+use PhpBench\Expression\NodePrinter\NullPrinter;
 use PhpBench\Expression\NodePrinter\NumberPrinter;
 use PhpBench\Expression\NodePrinter\ParameterPrinter;
 use PhpBench\Expression\NodePrinter\ParenthesisPrinter;
@@ -82,6 +85,7 @@ use PhpBench\Expression\Parselet\FunctionParselet;
 use PhpBench\Expression\Parselet\IntegerParselet;
 use PhpBench\Expression\Parselet\ListParselet;
 use PhpBench\Expression\Parselet\LogicalOperatorParselet;
+use PhpBench\Expression\Parselet\NullParselet;
 use PhpBench\Expression\Parselet\ParameterParselet;
 use PhpBench\Expression\Parselet\ParenthesisParselet;
 use PhpBench\Expression\Parselet\PercentageParselet;
@@ -134,6 +138,7 @@ class ExpressionExtension implements ExtensionInterface
                     new BooleanParselet(),
                     new StringParselet(),
                     new ParameterParselet(),
+                    new NullParselet(),
                 ]),
                 Parselets::fromInfixParselets([
                     new LogicalOperatorParselet(Token::T_LOGICAL_OR, Precedence::LOGICAL_OR),
@@ -178,6 +183,7 @@ class ExpressionExtension implements ExtensionInterface
                 new ParameterEvaluator(),
                 new StringEvaluator(),
                 new ConcatEvaluator(),
+                new NullEvaluator(),
             ]);
 
             return $evaluators;
@@ -226,6 +232,7 @@ class ExpressionExtension implements ExtensionInterface
                 new StringPrinter(),
                 new ConcatPrinter(),
                 new PercentageDifferencePrinter(),
+                new NullPrinter(),
             ]);
         });
 
@@ -264,7 +271,8 @@ class ExpressionExtension implements ExtensionInterface
                 'percent_diff' => new PercentDifferenceFunction(),
                 'format' => new FormatFunction(),
                 'join' => new JoinFunction(),
-                'first' => new FirstFunction()
+                'first' => new FirstFunction(),
+                'coalesce' => new CoalesceFunction(),
             ]);
         });
 

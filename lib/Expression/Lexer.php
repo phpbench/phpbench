@@ -46,6 +46,7 @@ final class Lexer
         'or' => Token::T_LOGICAL_AND,
         'ops/' => Token::T_THROUGHPUT,
         ' ' => Token::T_WHITESPACE,
+        'null' => Token::T_NULL,
     ];
 
     const PATTERNS = [

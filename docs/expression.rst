@@ -247,6 +247,13 @@ Return the first element in an array, or throw an evaluation error.
 
 .. literalinclude:: ../examples/Expression/first_1
 
+coalesce
+~~~~~~~~
+
+Return the first non-null element from the given arguments:
+
+.. literalinclude:: ../examples/Expression/coalesce_1
+
 .. _KDE mode: https://en.wikipedia.org/wiki/Kernel_density_estimation
 .. _standard deviation: https://en.wikipedia.org/wiki/Standard_deviation
 .. _variance: https://en.wikipedia.org/wiki/Variance
