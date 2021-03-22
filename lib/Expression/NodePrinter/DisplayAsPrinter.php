@@ -3,6 +3,7 @@
 namespace PhpBench\Expression\NodePrinter;
 
 use PhpBench\Expression\Ast\DisplayAsNode;
+use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\PhpValue;
 use PhpBench\Expression\Ast\StringNode;
@@ -55,10 +56,11 @@ class DisplayAsPrinter implements NodePrinter
         }
 
         if (TimeUnit::isTimeUnit($unit)) {
+
             return $this->timeUnit(
                 $value->value(),
                 $unit,
-                null,
+                $this->resolvePrecision($node->precision()),
                 $printer->print(
                     new UnitNode(new StringNode($this->timeUnit->getDestSuffix($unit))),
                     $params
@@ -100,5 +102,18 @@ class DisplayAsPrinter implements NodePrinter
     private function memoryUnit(float $value, string $unit): string
     {
         return sprintf('%s %s', MemoryUnit::convertTo($value, MemoryUnit::BYTES, $unit), $unit);
+    }
+
+    private function resolvePrecision(?Node $node): ?int
+    {
+        if (null === $node) {
+            return null;
+        }
+
+        if ($node instanceof IntegerNode) {
+            return $node->value();
+        }
+
+        return null;
     }
 }

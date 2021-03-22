@@ -3,6 +3,7 @@
 namespace PhpBench\Expression\NodeEvaluator;
 
 use PhpBench\Expression\Ast\DisplayAsNode;
+use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\NumberNode;
 use PhpBench\Expression\Ast\StringNode;
@@ -27,6 +28,12 @@ class DisplayAsEvaluator extends AbstractEvaluator
         $value = $evaluator->evaluateType($node->node(), NumberNode::class, $params);
         $unit = new UnitNode($evaluator->evaluateType($node->as()->unit(), StringNode::class, $params));
 
-        return new DisplayAsNode($value, $unit);
+        $precision = $node->precision();
+
+        if ($precision) {
+            $precision = $evaluator->evaluateType($node->precision(), IntegerNode::class, $params);
+        }
+
+        return new DisplayAsNode($value, $unit, $precision);
     }
 }

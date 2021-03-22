@@ -83,6 +83,10 @@ class DisplayAsParseletTest extends ParseletTestCase
      */
     public function provideEvaluate(): Generator
     {
+        yield ['1 s as milliseconds precision foobar', [
+            'foobar' => 2
+        ], '1,000.00ms'];
+
         yield ['1 s as milliseconds', [], '1,000.000ms'];
 
         yield ['1 s as foobar', [
@@ -98,6 +102,8 @@ class DisplayAsParseletTest extends ParseletTestCase
         yield 'units are interpreted literally' => ['1 s as milliseconds', [], '1 s as milliseconds'];
 
         yield 'int to milliseconds' => ['1000 as milliseconds', [], '1.000ms'];
+
+        yield 'int to milliseconds precision 2' => ['1000 as milliseconds precision 2', [], '1.00ms'];
 
         yield 'int to bytes' => ['1000 as k', [], '1 k'];
 
