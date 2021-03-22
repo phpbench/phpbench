@@ -20,6 +20,7 @@ use PhpBench\Expression\ExpressionFunctions;
 use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\ExpressionLanguage\MemoisedExpressionLanguage;
 use PhpBench\Expression\ExpressionLanguage\RealExpressionLanguage;
+use PhpBench\Expression\Func\CoalesceFunction;
 use PhpBench\Expression\Func\FirstFunction;
 use PhpBench\Expression\Func\FormatFunction;
 use PhpBench\Expression\Func\JoinFunction;
@@ -270,7 +271,8 @@ class ExpressionExtension implements ExtensionInterface
                 'percent_diff' => new PercentDifferenceFunction(),
                 'format' => new FormatFunction(),
                 'join' => new JoinFunction(),
-                'first' => new FirstFunction()
+                'first' => new FirstFunction(),
+                'coalesce' => new CoalesceFunction(),
             ]);
         });
 
