@@ -3,11 +3,11 @@
 namespace PhpBench\Expression\NodePrinter;
 
 use PhpBench\Expression\Ast\DisplayAsNode;
+use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\PhpValue;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Ast\UnitNode;
-use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Expression\Exception\PrinterError;
 use PhpBench\Expression\NodePrinter;
 use PhpBench\Expression\Printer;
@@ -41,47 +41,25 @@ class DisplayAsPrinter implements NodePrinter
             return null;
         }
 
-        $unitNode = $node->as();
         $value = $node->node();
+        $unitNode = $node->as();
 
         $unit = $unitNode->unit();
 
         if (!$unit instanceof StringNode) {
-            throw new EvaluationError($node, 'Unit must evaluate to string');
+            throw new PrinterError(sprintf('Unit must evaluate to string, got "%s"', get_class($unit)));
         }
         $unit = $unit->value();
 
-
         if (!$value instanceof PhpValue) {
             return sprintf('%s as %s', $printer->print($value, $params), $unit);
-        }
-
-        if ($unit === self::DEFAULT_TIME_UNIT) {
-            $paramUnit = isset($params[self::PARAM_OUTPUT_TIME_UNIT]) ? $params[self::PARAM_OUTPUT_TIME_UNIT] : null;
-
-            return $this->timeUnit(
-                $value->value(),
-                $paramUnit,
-                isset($params[self::PARAM_OUTPUT_TIME_PRECISION]) ? $params[self::PARAM_OUTPUT_TIME_PRECISION] : null,
-                $printer->print(
-                    new UnitNode(new StringNode($this->timeUnit->getDestSuffix($paramUnit))),
-                    $params
-                )
-            );
-        }
-
-        if ($unit === self::DEFAULT_MEMORY_UNIT) {
-            return $this->memoryUnit(
-                $value->value(),
-                MemoryUnit::BYTES
-            );
         }
 
         if (TimeUnit::isTimeUnit($unit)) {
             return $this->timeUnit(
                 $value->value(),
                 $unit,
-                null,
+                $this->resolvePrecision($node->precision()),
                 $printer->print(
                     new UnitNode(new StringNode($this->timeUnit->getDestSuffix($unit))),
                     $params
@@ -104,10 +82,6 @@ class DisplayAsPrinter implements NodePrinter
     public static function supportedUnitNames(): array
     {
         return array_merge(
-            [
-                self::DEFAULT_TIME_UNIT,
-                self::DEFAULT_MEMORY_UNIT,
-            ],
             TimeUnit::supportedUnitNames(),
             MemoryUnit::supportedUnitNames()
         );
@@ -127,5 +101,14 @@ class DisplayAsPrinter implements NodePrinter
     private function memoryUnit(float $value, string $unit): string
     {
         return sprintf('%s %s', MemoryUnit::convertTo($value, MemoryUnit::BYTES, $unit), $unit);
+    }
+
+    private function resolvePrecision(?Node $node): ?int
+    {
+        if ($node instanceof IntegerNode) {
+            return $node->value();
+        }
+
+        return null;
     }
 }

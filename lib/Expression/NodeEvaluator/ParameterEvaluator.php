@@ -4,6 +4,7 @@ namespace PhpBench\Expression\NodeEvaluator;
 
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\Node;
+use PhpBench\Expression\Ast\NullNode;
 use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\PhpValueFactory;
 use PhpBench\Expression\Ast\StringNode;
@@ -38,6 +39,10 @@ class ParameterEvaluator extends AbstractEvaluator
 
         if (is_string($value)) {
             return new StringNode($value);
+        }
+
+        if (is_null($value)) {
+            return new NullNode();
         }
 
         throw new EvaluationError($node, sprintf(

@@ -35,6 +35,12 @@ class ParameterParseletTest extends ParseletTestCase
             ['foo' => ['bar' => 'foo']],
             'foo'
         ];
+
+        yield [
+            'foo.bar',
+            ['foo' => ['bar' => null]],
+            'null'
+        ];
     }
 
     /**

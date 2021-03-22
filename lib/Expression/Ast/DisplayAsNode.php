@@ -52,4 +52,9 @@ class DisplayAsNode implements NumberValue
 
         return $this->value->value();
     }
+
+    public function precision(): ?Node
+    {
+        return $this->precision;
+    }
 }
