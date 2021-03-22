@@ -4,7 +4,6 @@ namespace PhpBench\Expression\Parselet;
 
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\NullNode;
-use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Parser;
 use PhpBench\Expression\PrefixParselet;
 use PhpBench\Expression\Token;
@@ -20,7 +19,7 @@ class NullParselet implements PrefixParselet
     public function parse(Parser $parser, Tokens $tokens): Node
     {
         $tokens->chomp();
+
         return new NullNode();
     }
 }
-

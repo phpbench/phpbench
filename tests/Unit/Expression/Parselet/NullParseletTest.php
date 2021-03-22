@@ -4,7 +4,6 @@ namespace PhpBench\Tests\Unit\Expression\Parselet;
 
 use Generator;
 use PhpBench\Expression\Ast\NullNode;
-use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Tests\Unit\Expression\ParseletTestCase;
 
 class NullParseletTest extends ParseletTestCase

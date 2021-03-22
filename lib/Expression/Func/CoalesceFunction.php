@@ -4,7 +4,6 @@ namespace PhpBench\Expression\Func;
 
 use PhpBench\Expression\Ast\NullNode;
 use PhpBench\Expression\Ast\PhpValue;
-use PhpBench\Expression\Ast\StringNode;
 
 final class CoalesceFunction
 {
@@ -14,6 +13,7 @@ final class CoalesceFunction
             if ($value instanceof NullNode) {
                 continue;
             }
+
             return $value;
         }
 
