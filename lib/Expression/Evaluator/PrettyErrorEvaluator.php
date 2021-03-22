@@ -5,6 +5,7 @@ namespace PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
+use PhpBench\Expression\Exception\PrinterError;
 use PhpBench\Expression\Printer;
 use PhpBench\Expression\Printer\UnderlinePrinterFactory;
 
@@ -64,11 +65,15 @@ class PrettyErrorEvaluator implements Evaluator
      */
     private function prettyError(Node $rootNode, EvaluationError $error, array $params): EvaluationError
     {
-        return new EvaluationError($error->node(), implode(PHP_EOL, [
-            sprintf('%s:', $error->getMessage()),
-            '',
-            '    ' . $this->printer->print($rootNode, $params),
-            '    ' . $this->underlineFactory->underline($error->node())->print($rootNode, $params),
-        ]), $error);
+        try {
+            return new EvaluationError($error->node(), implode(PHP_EOL, [
+                sprintf('%s:', $error->getMessage()),
+                '',
+                '    ' . $this->printer->print($rootNode, $params),
+                '    ' . $this->underlineFactory->underline($error->node())->print($rootNode, $params),
+            ]), $error);
+        } catch (PrinterError $printError) {
+            throw $error;
+        }
     }
 }
