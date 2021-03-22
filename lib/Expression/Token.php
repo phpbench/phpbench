@@ -19,6 +19,7 @@ final class Token
     public const T_COMMA = 'comma';
     public const T_UNIT = 'unit';
     public const T_PERCENTAGE = 'percentage';
+    public const T_NULL = 'null';
     public const T_AS = 'as';
 
     public const T_LOGICAL_AND = 'and';
