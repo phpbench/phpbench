@@ -105,10 +105,6 @@ class DisplayAsPrinter implements NodePrinter
 
     private function resolvePrecision(?Node $node): ?int
     {
-        if (null === $node) {
-            return null;
-        }
-
         if ($node instanceof IntegerNode) {
             return $node->value();
         }
