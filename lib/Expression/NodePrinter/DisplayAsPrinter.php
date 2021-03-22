@@ -56,7 +56,6 @@ class DisplayAsPrinter implements NodePrinter
         }
 
         if (TimeUnit::isTimeUnit($unit)) {
-
             return $this->timeUnit(
                 $value->value(),
                 $unit,

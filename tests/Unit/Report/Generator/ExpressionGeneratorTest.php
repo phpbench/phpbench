@@ -48,7 +48,9 @@ class ExpressionGeneratorTest extends IntegrationTestCase
 
         try {
             $document = $generator->generate(
-                new SuiteCollection([TestUtil::createSuite($suite)]),
+                new SuiteCollection([TestUtil::createSuite(array_merge([
+                    'output_time_precision' => 3,
+                ], $suite))]),
                 new Config('asd', $options->resolve($config))
             );
             $output = new BufferedOutput();

@@ -3,9 +3,9 @@
 namespace PhpBench\Expression\NodeEvaluator;
 
 use PhpBench\Expression\Ast\DisplayAsNode;
-use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\NumberNode;
+use PhpBench\Expression\Ast\PhpValue;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Ast\UnitNode;
 use PhpBench\Expression\Evaluator;
@@ -31,7 +31,7 @@ class DisplayAsEvaluator extends AbstractEvaluator
         $precision = $node->precision();
 
         if ($precision) {
-            $precision = $evaluator->evaluateType($node->precision(), IntegerNode::class, $params);
+            $precision = $evaluator->evaluateType($node->precision(), PhpValue::class, $params);
         }
 
         return new DisplayAsNode($value, $unit, $precision);
