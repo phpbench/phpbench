@@ -10,15 +10,15 @@ use PhpBench\Model\Variant;
 final class VariantSummaryFormatter implements VariantFormatter
 {
     public const DEFAULT_FORMAT = <<<'EOT'
-"Mo" ~ mode(variant.time.avg) as microseconds ~ 
+"Mo" ~ mode(variant.time.avg) as coalesce(subject.time_unit,"microseconds") ~ 
 " (±" ~ rstdev(variant.time.avg) ~ "%)"
 EOT
     ;
     public const BASELINE_FORMAT = <<<'EOT'
 "[" ~ 
-"Mo" ~ mode(variant.time.avg) as microseconds ~
+"Mo" ~ mode(variant.time.avg) as coalesce(subject.time_unit,"microseconds") ~
 " vs " ~ 
-"Mo" ~ mode(baseline.time.avg) as microseconds ~ "] " ~ 
+"Mo" ~ mode(baseline.time.avg) as coalesce(subject.time_unit,"microseconds") ~ "] " ~ 
 percent_diff(mode(baseline.time.avg), mode(variant.time.avg), (rstdev(variant.time.avg) * 2)) ~
 " (±" ~ rstdev(variant.time.avg) ~ "%)"
 EOT
