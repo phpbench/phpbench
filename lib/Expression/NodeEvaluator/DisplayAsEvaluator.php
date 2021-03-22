@@ -5,6 +5,8 @@ namespace PhpBench\Expression\NodeEvaluator;
 use PhpBench\Expression\Ast\DisplayAsNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\NumberNode;
+use PhpBench\Expression\Ast\StringNode;
+use PhpBench\Expression\Ast\UnitNode;
 use PhpBench\Expression\Evaluator;
 
 /**
@@ -23,7 +25,7 @@ class DisplayAsEvaluator extends AbstractEvaluator
     public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
     {
         $value = $evaluator->evaluateType($node->node(), NumberNode::class, $params);
-        $unit = $node->as();
+        $unit = new UnitNode($evaluator->evaluateType($node->as()->unit(), StringNode::class, $params));
 
         return new DisplayAsNode($value, $unit);
     }
