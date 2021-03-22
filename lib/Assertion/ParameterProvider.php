@@ -51,7 +51,7 @@ class ParameterProvider
     }
 
     /**
-     * @return array<string,string>
+     * @return array<string, int|string|null>
      */
     private function subjectData(Subject $subject): array
     {

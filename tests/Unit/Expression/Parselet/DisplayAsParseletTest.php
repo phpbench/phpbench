@@ -84,6 +84,7 @@ class DisplayAsParseletTest extends ParseletTestCase
     public function provideEvaluate(): Generator
     {
         yield ['1 s as milliseconds', [], '1,000.000ms'];
+
         yield ['1 s as foobar', [
             'foobar' => 'milliseconds',
         ], '1,000.000ms'];
