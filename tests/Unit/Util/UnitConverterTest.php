@@ -3,8 +3,8 @@
 namespace PhpBench\Tests\Unit\Util;
 
 use Generator;
-use PHPUnit\Framework\TestCase;
 use PhpBench\Util\UnitConverter;
+use PHPUnit\Framework\TestCase;
 
 class UnitConverterTest extends TestCase
 {
@@ -22,7 +22,9 @@ class UnitConverterTest extends TestCase
     public function provideConvert(): Generator
     {
         yield ['milliseconds', 'microseconds', 10, 10000];
+
         yield ['microseconds', 'milliseconds', 10000, 10];
+
         yield ['bytes', 'microseconds', 1000, 1000];
     }
 
@@ -34,5 +36,4 @@ class UnitConverterTest extends TestCase
             }
         }
     }
-
 }

@@ -10,7 +10,6 @@ use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Ast\UnitNode;
 use PhpBench\Expression\Ast\ValueWithUnitNode;
-use PhpBench\Expression\NodePrinter\DisplayAsPrinter;
 use PhpBench\Tests\Unit\Expression\ParseletTestCase;
 
 class DisplayAsParseletTest extends ParseletTestCase

@@ -98,6 +98,7 @@ class UnitConverter
     public static function suffix(string $to): string
     {
         $to = self::normalizeUnit($to);
+
         if (!isset(self::$suffixes[$to])) {
             throw new RuntimeException(sprintf(
                 'No suffix available for "%s"',
