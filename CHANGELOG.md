@@ -4,6 +4,8 @@ CHANGELOG
 master
 -----
 
+- Null `coalesce` function introduced in expression language
+- Support specificaion of display-as precision in expression language
 - Allow the display unit to be evaluated (for dynamically determining the unit based on the subject's preference)
 - Make the display unit a node - allowing it to be pretty printed.
 
