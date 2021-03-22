@@ -10,7 +10,6 @@ use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Ast\UnitNode;
 use PhpBench\Expression\Ast\ValueWithUnitNode;
-use PhpBench\Expression\NodePrinter\DisplayAsPrinter;
 use PhpBench\Tests\Unit\Expression\ParseletTestCase;
 
 class DisplayAsParseletTest extends ParseletTestCase
@@ -99,18 +98,5 @@ class DisplayAsParseletTest extends ParseletTestCase
         yield 'int to bytes' => ['1000 as k', [], '1 k'];
 
         yield ['100000 as seconds < 1 second', [], '0.100s < 1 second'];
-
-        yield 'default time unit' => ['100000 as time < 1 second', [], '100,000.000μs < 1 second'];
-
-        yield 'default time unit from parameters' => [
-            '100000 as time < 1 second',
-            [
-                DisplayAsPrinter::PARAM_OUTPUT_TIME_UNIT => 'milliseconds',
-                DisplayAsPrinter::PARAM_OUTPUT_TIME_PRECISION => 6,
-            ],
-            '100.000000ms < 1 second'
-        ];
-
-        yield 'default memory unit' => ['100000 as memory < 1 second', [], '100000 bytes < 1 second'];
     }
 }

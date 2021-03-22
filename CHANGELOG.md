@@ -4,6 +4,7 @@ CHANGELOG
 master
 -----
 
+- Temporarily removed default/inherited time units from expression language
 - Null `coalesce` function introduced in expression language
 - Support specificaion of display-as precision in expression language
 - Allow the display unit to be evaluated (for dynamically determining the unit based on the subject's preference)
