@@ -70,7 +70,7 @@ class ExpressionGenerator implements GeneratorInterface
                 'revs' => 'first(variant_revs)',
                 'its' => 'first(variant_iterations)',
                 'mem_peak' => 'max(result_mem_peak) as bytes',
-                'best' => 'min(result_time_avg) as coalesce(first(subject_time_unit), "microseconds") precision first(subject_time_precision)',
+                'best' => 'min(result_time_avg) as coalesce(first(subject_time_unit), "microseconds") precision first(subject_time_precision) first(subject_time_mode)',
                 'mode' => 'mode(result_time_avg) as coalesce(first(subject_time_unit), "microseconds") precision first(subject_time_precision)',
                 'worst' => 'max(result_time_avg) as coalesce(first(subject_time_unit), "microseconds") precision first(subject_time_precision)',
                 'rstdev' => 'format("%d.2%%", rstdev(result_time_avg))',
