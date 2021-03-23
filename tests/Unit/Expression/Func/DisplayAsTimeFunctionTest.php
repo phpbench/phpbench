@@ -28,7 +28,7 @@ class DisplayAsTimeFunctionTest extends FunctionTestCase
     {
         self::assertEquals(new DisplayAsTimeNode(
             new IntegerNode(7),
-            new UnitNode(new StringNode("milliseconds")),
+            new UnitNode(new StringNode("milliseconds"))
         ), $this->eval(
             new DisplayAsTimeFunction(),
             '7, "milliseconds"'
