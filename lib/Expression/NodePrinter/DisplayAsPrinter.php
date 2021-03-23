@@ -6,6 +6,7 @@ use PhpBench\Expression\Ast\DisplayAsNode;
 use PhpBench\Expression\Ast\DisplayAsTimeNode;
 use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\Node;
+use PhpBench\Expression\Ast\NullNode;
 use PhpBench\Expression\Ast\PhpValue;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Ast\UnitNode;
@@ -127,9 +128,12 @@ class DisplayAsPrinter implements NodePrinter
             return null;
         }
 
-        
+        if ($mode instanceof NullNode) {
+            return null;
+        }
+
         if (!$mode instanceof StringNode) {
-            throw new PrinterError(sprintf('Unit must evaluate to string, got "%s"', get_class($unit)));
+            throw new PrinterError(sprintf('Time mode must evaluate to string, got "%s"', get_class($mode)));
         }
         
         return $mode->value();

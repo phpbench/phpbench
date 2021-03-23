@@ -11,7 +11,7 @@ use PhpBench\Expression\Ast\UnitNode;
 
 final class DisplayAsTimeFunction
 {
-    public function __invoke(PhpValue $value, StringNode $as, ?IntegerNode $precision = null, ?StringNode $throughput = null): PhpValue
+    public function __invoke(PhpValue $value, StringNode $as, ?PhpValue $precision = null, ?PhpValue $throughput = null): PhpValue
     {
         return new DisplayAsTimeNode($value, new UnitNode($as), $precision, $throughput);
     }
