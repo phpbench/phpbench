@@ -2,6 +2,7 @@
 namespace PhpBench\Examples\Extension\Report;
 
 use PhpBench\Dom\Document;
+use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Report\GeneratorInterface;
@@ -29,8 +30,8 @@ class AcmeGenerator implements GeneratorInterface
             [ '🐕', 'No' ],
         ] as [$symbol, $isCat]) {
             $rows[] = [
-                'symbol' => $symbol,
-                'is_cat' => $isCat,
+                'symbol' => new StringNode($symbol),
+                'is_cat' => new StringNode($isCat),
             ];
         }
 
