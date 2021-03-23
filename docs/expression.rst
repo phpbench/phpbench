@@ -257,7 +257,7 @@ Return the first non-null element from the given arguments:
 display_as_time
 ~~~~~~~~~~~~~~~
 
-Similar to :ref:`func_display_as` but also allows specification of the "mode"
+Similar to :ref:`expr_display_as` but also allows specification of the "mode"
 
 .. literalinclude:: ../examples/Expression/display_as_time_1
 
