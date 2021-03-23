@@ -60,6 +60,20 @@ class ExpressionGenerator implements GeneratorInterface
      */
     public function configure(OptionsResolver $options): void
     {
+        $formatTime = function (string $expr) {
+            return sprintf(<<<'EOT'
+display_as_time(
+    %s, 
+    coalesce(
+        first(subject_time_unit),
+        "microseconds"
+    ), 
+    first(subject_time_precision), 
+    first(subject_time_mode))
+EOT
+            , $expr);
+        };
+
         $options->setDefaults([
             'title' => null,
             'description' => null,
@@ -70,15 +84,15 @@ class ExpressionGenerator implements GeneratorInterface
                 'revs' => 'first(variant_revs)',
                 'its' => 'first(variant_iterations)',
                 'mem_peak' => 'max(result_mem_peak) as bytes',
-                'best' => 'min(result_time_avg) as coalesce(first(subject_time_unit), "microseconds") precision first(subject_time_precision)',
-                'mode' => 'mode(result_time_avg) as coalesce(first(subject_time_unit), "microseconds") precision first(subject_time_precision)',
-                'worst' => 'max(result_time_avg) as coalesce(first(subject_time_unit), "microseconds") precision first(subject_time_precision)',
+                'best' => $formatTime('min(result_time_avg)'),
+                'mode' => $formatTime('mode(result_time_avg)'),
+                'worst' => $formatTime('max(result_time_avg)'),
                 'rstdev' => 'format("%d.2%%", rstdev(result_time_avg))',
             ],
             'baseline_cols' => [
-                'best' => '(min(result_time_avg) as coalesce(first(subject_time_unit), "microseconds") precision first(subject_time_precision)) ~" Dif"~ percent_diff(min(baseline_time_avg), min(result_time_avg), 100)',
-                'worst' => '(max(result_time_avg) as coalesce(first(subject_time_unit), "microseconds") precision first(subject_time_precision)) ~" Dif"~ percent_diff(max(baseline_time_avg), max(result_time_avg), 100)',
-                'mode' => '(mode(result_time_avg) as coalesce(first(subject_time_unit), "microseconds") precision first(subject_time_precision)) ~" Dif"~ percent_diff(mode(baseline_time_avg), mode(result_time_avg), rstdev(result_time_avg))',
+                'best' => $formatTime('min(result_time_avg)') . ' ~" Dif"~ percent_diff(min(baseline_time_avg), min(result_time_avg), 100)',
+                'worst' => $formatTime('max(result_time_avg)') . ' ~" Dif"~ percent_diff(max(baseline_time_avg), max(result_time_avg), 100)',
+                'mode' => $formatTime('mode(result_time_avg)') . ' ~" Dif"~ percent_diff(mode(baseline_time_avg), mode(result_time_avg), rstdev(result_time_avg))',
                 'mem_peak' => '(first(baseline_mem_peak) as bytes), percent_diff(first(baseline_mem_peak), first(result_mem_peak))',
             ],
             'aggregate' => ['benchmark_class', 'subject_name', 'variant_name'],

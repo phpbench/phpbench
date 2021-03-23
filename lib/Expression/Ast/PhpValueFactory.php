@@ -21,8 +21,12 @@ final class PhpValueFactory
             return new StringNode($value);
         }
 
+        if (is_null($value)) {
+            return new NullNode();
+        }
+
         throw new RuntimeException(sprintf(
-            'Invalid number value "%s"', gettype($value)
+            'Cannot interpret PHP value "%s"', gettype($value)
         ));
     }
 }
