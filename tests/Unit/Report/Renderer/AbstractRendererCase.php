@@ -14,13 +14,21 @@ namespace PhpBench\Tests\Unit\Report\Renderer;
 
 use PhpBench\Dom\Document;
 use PhpBench\Registry\Config;
+use PhpBench\Report\Generator\OutputTestGenerator;
+use PhpBench\Report\Model\Reports;
+use PhpBench\Report\RendererInterface;
+use PhpBench\Tests\IntegrationTestCase;
 use PhpBench\Tests\TestCase;
+use PhpBench\Tests\Util\TestUtil;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-abstract class AbstractRendererCase extends TestCase
+abstract class AbstractRendererCase extends IntegrationTestCase
 {
-    abstract protected function getRenderer();
+    abstract protected function getRenderer(): RendererInterface;
 
+    /**
+     * @param parameters $config
+     */
     protected function renderReport($reports, $config): void
     {
         $renderer = $this->getRenderer();
@@ -30,27 +38,10 @@ abstract class AbstractRendererCase extends TestCase
         $renderer->render($reports, new Config('test', $options->resolve($config)));
     }
 
-    protected function getReportsDocument()
+    public function reports(array $config = []): Reports
     {
-        $document = new Document();
-        $report = <<<'EOT'
-<?xml version="1.0"?>
-<reports name="test_report">
-    <report name="test_report" title="Report Title">
-        <description>Report Description</description>
-        <table>
-            <group name="body">
-                <row>
-                    <cell name="one"><value>Hello</value></cell>
-                    <cell name="two"><value>Goodbye</value></cell>
-                </row>
-            </group>
-        </table>
-    </report>
-</reports>
-EOT;
-        $document->loadXML($report);
-
-        return $document;
+        $collection = TestUtil::createCollection([]);
+        return (new OutputTestGenerator())->generate($collection, new Config('foo', $config));
     }
+
 }

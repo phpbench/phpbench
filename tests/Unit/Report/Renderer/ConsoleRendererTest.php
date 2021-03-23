@@ -12,27 +12,27 @@
 
 namespace PhpBench\Tests\Unit\Report\Renderer;
 
+use PhpBench\Expression\Printer;
 use PhpBench\Formatter\Formatter;
+use PhpBench\Report\RendererInterface;
 use PhpBench\Report\Renderer\ConsoleRenderer;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 class ConsoleRendererTest extends AbstractRendererCase
 {
-    private $renderer;
+    /**
+     * @var BufferedOutput
+     */
     private $output;
-    private $formatter;
 
     protected function setUp(): void
     {
         $this->output = new BufferedOutput();
-        $this->formatter = $this->prophesize(Formatter::class);
     }
 
-    protected function getRenderer()
+    protected function getRenderer(): RendererInterface
     {
-        $renderer = new ConsoleRenderer($this->output, $this->formatter->reveal());
-
-        return $renderer;
+        return new ConsoleRenderer($this->output, $this->container()->get(Printer::class));
     }
 
     /**
@@ -40,13 +40,11 @@ class ConsoleRendererTest extends AbstractRendererCase
      */
     public function testRender(): void
     {
-        $this->renderReport($this->getReportsDocument(), []);
+        $this->renderReport($this->reports(), []);
 
         $output = $this->output->fetch();
-        $this->assertStringContainsString('Report Title', $output);
-        $this->assertStringContainsString('Report Description', $output);
-        $this->assertStringContainsString('Hello', $output);
-        $this->assertStringContainsString('Goodbye', $output);
+        $this->assertStringContainsString('Output Test Report', $output);
+        $this->assertStringContainsString('This report demonstrates', $output);
     }
 
     /**
@@ -54,7 +52,7 @@ class ConsoleRendererTest extends AbstractRendererCase
      */
     public function testTableStyle(): void
     {
-        $this->renderReport($this->getReportsDocument(), [
+        $this->renderReport($this->reports(), [
             'table_style' => 'compact',
         ]);
         $this->addToAssertionCount(1);
