@@ -33,9 +33,14 @@ final class Reports implements IteratorAggregate
         return new self($reports);
     }
 
-    public static function empty()
+    public static function empty(): self
     {
         return new self([]);
+    }
+
+    public function merge(Reports $reports): self
+    {
+        return new self(array_merge($this->reports, $reports->reports));
     }
 
     public function getIterator()

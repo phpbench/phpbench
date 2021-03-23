@@ -13,7 +13,9 @@
 namespace PhpBench\Report;
 
 use PhpBench\Model\SuiteCollection;
+use PhpBench\Registry\Config;
 use PhpBench\Registry\ConfigurableRegistry;
+use PhpBench\Report\Model\Reports;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -21,9 +23,20 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ReportManager
 {
+    /**
+     * @var ConfigurableRegistry<GeneratorInterface>
+     */
     private $generatorRegistry;
+
+    /**
+     * @var ConfigurableRegistry<RendererInterface>
+     */
     private $rendererRegistry;
 
+    /**
+     * @param ConfigurableRegistry<GeneratorInterface> $generatorRegistry
+     * @param ConfigurableRegistry<RendererInterface> $rendererRegistry
+     */
     public function __construct(
         ConfigurableRegistry $generatorRegistry,
         ConfigurableRegistry $rendererRegistry
@@ -32,7 +45,10 @@ class ReportManager
         $this->rendererRegistry = $rendererRegistry;
     }
 
-    public function validateReportNames($reportNames): void
+    /**
+     * @param string[] $reportNames
+     */
+    public function validateReportNames(array $reportNames): void
     {
         foreach ($reportNames as $reportName) {
             $this->generatorRegistry->getConfig($reportName);
@@ -40,50 +56,40 @@ class ReportManager
     }
 
     /**
-     * Generate the named reports.
-     *
+     * @param string[] $reportNames
+     * @param string[] $outputNames
      */
-    public function generateReports(SuiteCollection $collection, array $reportNames): array
-    {
-        $reportDoms = [];
-        $reportConfigs = [];
-
-        foreach ($reportNames as $reportName) {
-            $reportConfigs[$reportName] = $this->generatorRegistry->getConfig($reportName);
-        }
-
-        foreach ($reportConfigs as $reportName => $reportConfig) {
-            $generatorName = $reportConfig['generator'];
-            $generator = $this->generatorRegistry->getService($generatorName);
-
-            $reportDom = $generator->generate($collection, $reportConfig);
-
-            $reportDoms[] = $reportDom;
-        }
-
-        return $reportDoms;
-    }
-
-    /**
-     * Render reports (as opposed to just generating the report XML documents via. generateReports).
-     *
-     */
-    public function renderReports(
-        OutputInterface $output,
-        SuiteCollection $collection,
-        array $reportNames,
-        array $outputNames
-    ): void {
-        $reportDoms = $this->generateReports($collection, $reportNames);
+    public function renderReports(SuiteCollection $collection, array $reportNames, array $outputNames): void {
+        $reports = $this->generateReports($collection, $reportNames);
 
         foreach ($outputNames as $outputName) {
             $outputConfig = $this->rendererRegistry->getConfig($outputName);
             $renderer = $this->rendererRegistry->getService($outputConfig['renderer']);
             assert($renderer instanceof RendererInterface);
 
-            foreach ($reportDoms as $reportDom) {
-                $renderer->render($reportDom, $outputConfig);
-            }
+            $renderer->render($reports, $outputConfig);
         }
+    }
+
+    /**
+     * @param string[] $reportNames
+     */
+    private function generateReports(SuiteCollection $collection, array $reportNames): Reports
+    {
+        $reportConfigs = (array)array_combine($reportNames, array_map(function (string $reportName): Config {
+            return $this->generatorRegistry->getConfig($reportName);
+        }, $reportNames));
+
+        $reports = Reports::empty();
+        foreach ($reportConfigs as $reportName => $reportConfig) {
+            assert($reportConfig instanceof Config);
+
+            $generatorName = $reportConfig['generator'];
+            $generator = $this->generatorRegistry->getService($generatorName);
+
+            $reports = $reports->merge($generator->generate($collection, $reportConfig));
+        }
+
+        return $reports;
     }
 }
