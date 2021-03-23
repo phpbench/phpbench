@@ -52,11 +52,12 @@ class ReportHandler
         $this->reportManager->validateReportNames($reportNames);
     }
 
-    public function reportsFromInput(InputInterface $input, OutputInterface $output, SuiteCollection $collection): void
+    public function reportsFromInput(InputInterface $input, SuiteCollection $collection): void
     {
         $reports = $input->getOption(self::OPT_REPORT);
         $outputs = $input->getOption(self::OPT_OUTPUT);
 
-        $this->reportManager->renderReports($output, $collection, $reports, $outputs);
+        /** @phpstan-ignore-next-line */
+        $this->reportManager->renderReports($collection, $reports, $outputs);
     }
 }
