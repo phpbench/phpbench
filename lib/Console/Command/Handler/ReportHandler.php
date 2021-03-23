@@ -48,16 +48,26 @@ class ReportHandler
 
     public function validateReportsFromInput(InputInterface $input): void
     {
-        $reportNames = $input->getOption(self::OPT_REPORT);
-        $this->reportManager->validateReportNames($reportNames);
+        $this->reportManager->validateReportNames((array)$this->castToStrings((array)$input->getOption(self::OPT_REPORT)));
     }
 
     public function reportsFromInput(InputInterface $input, SuiteCollection $collection): void
     {
-        $reports = $input->getOption(self::OPT_REPORT);
-        $outputs = $input->getOption(self::OPT_OUTPUT);
+        $reports = $this->castToStrings((array)$input->getOption(self::OPT_REPORT));
+        $outputs = $this->castToStrings((array)$input->getOption(self::OPT_OUTPUT));
 
-        /** @phpstan-ignore-next-line */
         $this->reportManager->renderReports($collection, $reports, $outputs);
+    }
+
+    /**
+     * @param mixed[] $values
+     * @return string[]
+     */
+    private function castToStrings(array $values): array
+    {
+        return array_map(function ($value): string {
+            assert(is_string($value));
+            return $value;
+        }, $values);
     }
 }
