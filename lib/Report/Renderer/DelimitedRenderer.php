@@ -14,9 +14,14 @@ namespace PhpBench\Report\Renderer;
 
 use PhpBench\Dom\Document;
 use PhpBench\Dom\Element;
+use PhpBench\Expression\Ast\ListNode;
+use PhpBench\Expression\Ast\PhpValue;
+use PhpBench\Expression\Printer;
 use PhpBench\Registry\Config;
+use PhpBench\Report\Model\Reports;
+use PhpBench\Report\Model\Table;
 use PhpBench\Report\RendererInterface;
-use Symfony\Component\Console\Helper\Table;
+use RuntimeException;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -30,66 +35,75 @@ class DelimitedRenderer implements RendererInterface
      */
     private $output;
 
-    public function __construct(OutputInterface $output)
+    /**
+     * @var Printer
+     */
+    private $printer;
+
+    public function __construct(OutputInterface $output, Printer $printer)
     {
         $this->output = $output;
+        $this->printer = $printer;
     }
 
     /**
      * Render the table.
      *
      */
-    public function render(Document $reportDom, Config $config): void
+    public function render(Reports $reports, Config $config): void
     {
-        /**
-         * @phpstan-ignore-next-line
-         */
-        foreach ($reportDom->firstChild->query('./report') as $reportEl) {
-            foreach ($reportEl->query('.//table') as $tableEl) {
-                $this->renderTableElement($tableEl, $config);
-            }
+        foreach ($reports->tables() as $table) {
+            $this->renderTable($table, $config);
         }
     }
 
-    protected function renderTableElement(Element $tableEl, $config): void
+    protected function renderTable(Table $table, $config): void
     {
         $rows = [];
 
         if (true === $config['header']) {
-            $header = [];
-
-            foreach ($tableEl->query('.//row') as $rowEl) {
-                foreach ($rowEl->query('.//cell') as $cellEl) {
-                    $colName = $cellEl->getAttribute('name');
-                    $header[$colName] = $colName;
-                }
-            }
-            $rows[] = $header;
+            $rows[] = $table->columnNames();
         }
 
-        foreach ($tableEl->query('.//row') as $rowEl) {
+        foreach ($table as $tableRow) {
             $row = [];
 
-            foreach ($rowEl->query('.//cell') as $cellEl) {
-                $colName = $cellEl->getAttribute('name');
-                $row[$colName] = $cellEl->nodeValue;
+            foreach ($tableRow as $name => $node) {
+                $row[$name] = $this->printer->print($node, []);
             }
 
             $rows[] = $row;
         }
 
-        if ($config['file']) {
-            $pointer = fopen($config['file'], 'w+');
-        } else {
-            $pointer = fopen('php://temp', 'w+');
+        $fname = $config['file'] ?: 'php://temp';
+        $pointer = fopen($fname, 'w+');
+
+        if (false === $pointer) {
+            throw new RuntimeException(sprintf(
+                'Could not open file "%s"', $fname
+            ));
         }
 
         foreach ($rows as $row) {
             // use fputcsv to handle escaping
-            fputcsv($pointer, $row, $config['delimiter']);
+            fputcsv(
+                $pointer,
+                $row,
+                $config['delimiter']
+            );
         }
+
         rewind($pointer);
-        $this->output->write(stream_get_contents($pointer));
+
+        $contents = stream_get_contents($pointer);
+
+        if (false === $contents) {
+            throw new RuntimeException(sprintf(
+                'Could not read stream "%s"', $fname
+            ));
+        }
+
+        $this->output->write($contents);
         fclose($pointer);
 
         if ($config['file']) {

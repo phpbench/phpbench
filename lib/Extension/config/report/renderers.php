@@ -11,14 +11,6 @@
  */
 
 return [
-    'html' => [
-        'renderer' => 'xslt',
-        'template' => __DIR__ . '/../../../Report/Renderer/templates/html.xsl',
-    ],
-    'markdown' => [
-        'renderer' => 'xslt',
-        'template' => __DIR__ . '/../../../Report/Renderer/templates/markdown.xsl',
-    ],
     'csv' => [
         'renderer' => 'delimited',
         'delimiter' => ',',

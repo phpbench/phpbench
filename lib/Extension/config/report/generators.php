@@ -23,7 +23,7 @@ return [
             'set' => 'first(variant_name)',
             'revs' => 'first(variant_revs)',
             'mem_peak' => 'first(result_mem_peak) as bytes',
-            'time_avg' => 'first(result_time_avg) as time',
+            'time_avg' => 'display_as_time(first(result_time_avg), first(subject_time_unit))',
             'comp_z_value' => 'first(result_comp_z_value)',
             'comp_deviation' => 'first(result_comp_deviation)',
         ],
@@ -38,9 +38,9 @@ return [
             'subject' => 'first(subject_name)',
             'set' => 'first(variant_name)',
             'revs' => 'first(variant_revs)',
-            'mem_final' => 'first(result_mem_final) as memory',
-            'mem_real' => 'first(result_mem_real) as memory',
-            'mem_peak' => 'first(result_mem_peak) as memory',
+            'mem_final' => 'first(result_mem_final) as bytes',
+            'mem_real' => 'first(result_mem_real) as bytes',
+            'mem_peak' => 'first(result_mem_peak) as bytes',
         ],
     ]
 ];

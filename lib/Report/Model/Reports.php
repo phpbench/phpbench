@@ -47,4 +47,19 @@ final class Reports implements IteratorAggregate
     {
         return new ArrayIterator($this->reports);
     }
+
+    /**
+     * @return Table[]
+     */
+    public function tables(): array
+    {
+        $tables = [];
+        foreach ($this as $report) {
+            foreach ($report->tables() as $table) {
+                $tables[] = $table;
+            }
+        }
+
+        return $tables;
+    }
 }

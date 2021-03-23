@@ -55,7 +55,7 @@ class EvaluatingPrinterTest extends ParserTestCase
         yield [
             'mode([1, 2, 3])',
             [],
-            '1.998',
+            '1.998043052838',
         ];
     }
 }
