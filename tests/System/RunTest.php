@@ -400,8 +400,7 @@ class RunTest extends SystemTestCase
     public function provideOutputs(): array
     {
         return [
-            ['html'],
-            ['markdown'],
+            // @TODO: Reintroduce html/markdown
         ];
     }
 
@@ -564,7 +563,7 @@ class RunTest extends SystemTestCase
             'run benchmarks/set4/NothingBench.php --php-disable-ini --report=env'
         );
         $this->assertExitCode(0, $process);
-        $this->assertMatchesRegularExpression('{ini\s+\| no}', $process->getOutput());
+        $this->assertMatchesRegularExpression('{ini\s+\| false}', $process->getOutput());
     }
 
     public function testErrorWhenTimeoutExceeded(): void

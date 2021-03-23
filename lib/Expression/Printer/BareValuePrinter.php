@@ -19,9 +19,9 @@ class BareValuePrinter implements Printer
         }
 
         if ($node instanceof DelimitedListNode) {
-            return array_map(function (Node $node) use ($params) {
+            return implode(', ', array_map(function (Node $node) use ($params) {
                 return $this->print($node, $params);
-            }, $node->value());
+            }, $node->value()));
         }
 
         return $node->value();

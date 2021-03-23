@@ -12,6 +12,7 @@
 
 namespace PhpBench\Console\Command\Handler;
 
+use PhpBench\Util\Cast;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -39,9 +40,9 @@ class TimeUnitHandler
 
     public function timeUnitFromInput(InputInterface $input): void
     {
-        $timeUnit = $input->getOption('time-unit');
-        $mode = $input->getOption('mode');
-        $precision = $input->getOption('precision');
+        $timeUnit = Cast::toStringOrNull($input->getOption('time-unit'));
+        $mode = Cast::toStringOrNull($input->getOption('mode'));
+        $precision = Cast::toIntOrNull($input->getOption('precision'));
 
         if ($timeUnit) {
             $this->timeUnit->overrideDestUnit($timeUnit);

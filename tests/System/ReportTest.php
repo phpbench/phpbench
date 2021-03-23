@@ -96,8 +96,7 @@ class ReportTest extends SystemTestCase
     public function provideOutputs()
     {
         return [
-            ['html'],
-            ['markdown'],
+            // @TODO: reintroduce HTML / markdown reports
         ];
     }
 
@@ -121,7 +120,7 @@ class ReportTest extends SystemTestCase
      */
     public function provideGenerators(): Generator
     {
-        yield [['generator' => 'table']];
+        yield [['generator' => 'expression']];
 
         yield [['generator' => 'env']];
 
