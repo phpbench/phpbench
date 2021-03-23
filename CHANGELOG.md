@@ -4,6 +4,8 @@ CHANGELOG
 master
 -----
 
+- Introduced `display_as_time` function to handle formatting time with
+  throughput.
 - Dynamically resolve timeunit / precision from expression (progress/report) #775
 - Null `coalesce` function introduced in expression language
 - Support specificaion of display-as precision in expression language
