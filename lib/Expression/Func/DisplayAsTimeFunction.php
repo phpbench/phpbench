@@ -3,8 +3,6 @@
 namespace PhpBench\Expression\Func;
 
 use PhpBench\Expression\Ast\DisplayAsTimeNode;
-use PhpBench\Expression\Ast\IntegerNode;
-use PhpBench\Expression\Ast\NullNode;
 use PhpBench\Expression\Ast\PhpValue;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Ast\UnitNode;

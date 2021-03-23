@@ -254,6 +254,13 @@ Return the first non-null element from the given arguments:
 
 .. literalinclude:: ../examples/Expression/coalesce_1
 
+display_as_time
+~~~~~~~~~~~~~~~
+
+Similar to :ref:`func_display_as` but also allows specification of the "mode"
+
+.. literalinclude:: ../examples/Expression/display_as_time_1
+
 .. _KDE mode: https://en.wikipedia.org/wiki/Kernel_density_estimation
 .. _standard deviation: https://en.wikipedia.org/wiki/Standard_deviation
 .. _variance: https://en.wikipedia.org/wiki/Variance

@@ -52,7 +52,7 @@ class DisplayAsPrinter implements NodePrinter
             throw new PrinterError(sprintf('Unit must evaluate to string, got "%s"', get_class($unit)));
         }
         $unit = $unit->value();
-        $mode = $this->resolveMode($node, $unit);
+        $mode = $this->resolveMode($node);
 
         if (!$value instanceof PhpValue) {
             return sprintf('%s as %s', $printer->print($value, $params), $unit);

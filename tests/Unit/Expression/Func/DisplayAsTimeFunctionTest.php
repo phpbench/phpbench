@@ -2,15 +2,11 @@
 
 namespace PhpBench\Tests\Unit\Expression\Func;
 
-use PhpBench\Expression\Ast\DisplayAsNode;
 use PhpBench\Expression\Ast\DisplayAsTimeNode;
 use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Ast\UnitNode;
-use PhpBench\Expression\Exception\EvaluationError;
-use PhpBench\Expression\Func\DisplayAsFunction;
 use PhpBench\Expression\Func\DisplayAsTimeFunction;
-use PhpBench\Expression\Func\FirstFunction;
 use PhpBench\Tests\Unit\Expression\FunctionTestCase;
 
 class DisplayAsTimeFunctionTest extends FunctionTestCase
