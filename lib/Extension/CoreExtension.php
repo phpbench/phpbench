@@ -77,6 +77,7 @@ use PhpBench\Remote\ProcessFactory;
 use PhpBench\Report\Generator\CompositeGenerator;
 use PhpBench\Report\Generator\EnvGenerator;
 use PhpBench\Report\Generator\ExpressionGenerator;
+use PhpBench\Report\Generator\OutputTestGenerator;
 use PhpBench\Report\Generator\TableGenerator;
 use PhpBench\Report\Renderer\ConsoleRenderer;
 use PhpBench\Report\Renderer\DebugRenderer;

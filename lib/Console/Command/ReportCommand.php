@@ -99,7 +99,7 @@ EOT
         $this->timeUnitHandler->timeUnitFromInput($input);
         $collection = $this->collectionHandler->suiteCollectionFromInput($input);
         $this->dumpHandler->dumpFromInput($input, $output, $collection);
-        $this->reportHandler->reportsFromInput($input, $output, $collection);
+        $this->reportHandler->reportsFromInput($input, $collection);
 
         return 0;
     }

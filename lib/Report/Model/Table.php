@@ -30,7 +30,7 @@ final class Table implements IteratorAggregate
     }
 
     /**
-     * @param array<string,array<string,mixed>> $rows
+     * @param array<int|string,array<string,mixed>> $rows
      */
     public static function fromRowArray(array $rows, string $title): self
     {
