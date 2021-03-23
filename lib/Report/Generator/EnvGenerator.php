@@ -48,8 +48,6 @@ class EnvGenerator implements GeneratorInterface
      */
     public function generate(SuiteCollection $suiteCollection, Config $config): Reports
     {
-        $title = isset($config['title']) ? $config['title'] : null;
-        $description = isset($config['description']) ? $config['description'] : null;
 
         $tables = [];
 
@@ -72,6 +70,12 @@ class EnvGenerator implements GeneratorInterface
             $tables[] = Table::fromRowArray($rows, $title);
         }
 
-        return Reports::fromReport(new Report($tables, $title, $description));
+        return Reports::fromReport(
+            new Report(
+                $tables,
+                isset($config['title']) ? $config['title'] : null,
+                isset($config['description']) ? $config['description'] : null
+            )
+        );
     }
 }

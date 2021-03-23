@@ -29,6 +29,9 @@ final class Table implements IteratorAggregate
         $this->title = $title;
     }
 
+    /**
+     * @param array<string,array<string,mixed>> $rows
+     */
     public static function fromRowArray(array $rows, string $title): self
     {
         return new self(array_map(function (array $row) {
@@ -49,13 +52,21 @@ final class Table implements IteratorAggregate
         return new ArrayIterator($this->rows);
     }
 
-    public function columnNames()
+    /**
+     * @return string[]
+     */
+    public function columnNames(): array
     {
         foreach ($this->rows as $row) {
             return $row->keys();
         }
+
+        return [];
     }
 
+    /**
+     * @return TableRow[]
+     */
     public function rows(): array
     {
         return $this->rows;
