@@ -15,7 +15,7 @@ class DisplayAsTimeNode extends DisplayAsNode
         $this->mode = $mode;
     }
 
-    public function mode(): Node
+    public function mode(): ?Node
     {
         return $this->mode;
     }

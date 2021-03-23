@@ -3,6 +3,7 @@
 namespace PhpBench\Expression\NodePrinter;
 
 use PhpBench\Expression\Ast\DisplayAsNode;
+use PhpBench\Expression\Ast\DisplayAsTimeNode;
 use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\PhpValue;
@@ -50,6 +51,7 @@ class DisplayAsPrinter implements NodePrinter
             throw new PrinterError(sprintf('Unit must evaluate to string, got "%s"', get_class($unit)));
         }
         $unit = $unit->value();
+        $mode = $this->resolveMode($node, $unit);
 
         if (!$value instanceof PhpValue) {
             return sprintf('%s as %s', $printer->print($value, $params), $unit);
@@ -61,9 +63,10 @@ class DisplayAsPrinter implements NodePrinter
                 $unit,
                 $this->resolvePrecision($node->precision()),
                 $printer->print(
-                    new UnitNode(new StringNode($this->timeUnit->getDestSuffix($unit))),
+                    new UnitNode(new StringNode($this->timeUnit->getDestSuffix($unit, $mode))),
                     $params
-                )
+                ),
+                $mode
             );
         }
 
@@ -87,10 +90,10 @@ class DisplayAsPrinter implements NodePrinter
         );
     }
 
-    private function timeUnit(float $value, ?string $unit, ?int $precision, string $prettyUnit): string
+    private function timeUnit(float $value, ?string $unit, ?int $precision, string $prettyUnit, ?string $mode): string
     {
         return sprintf('%s%s', number_format(
-            $this->timeUnit->toDestUnit($value, $unit),
+            $this->timeUnit->toDestUnit($value, $unit, $mode),
             $precision ?: $this->timeUnit->getPrecision()
         ), $prettyUnit);
     }
@@ -110,5 +113,25 @@ class DisplayAsPrinter implements NodePrinter
         }
 
         return null;
+    }
+
+    private function resolveMode(DisplayAsNode $node): ?string
+    {
+        if (!$node instanceof DisplayAsTimeNode) {
+            return null;
+        }
+        
+        $mode = $node->mode();
+
+        if (!$mode) {
+            return null;
+        }
+
+        
+        if (!$mode instanceof StringNode) {
+            throw new PrinterError(sprintf('Unit must evaluate to string, got "%s"', get_class($unit)));
+        }
+        
+        return $mode->value();
     }
 }
