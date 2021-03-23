@@ -74,7 +74,7 @@ class ReportManager
     /**
      * @param string[] $reportNames
      */
-    private function generateReports(SuiteCollection $collection, array $reportNames): Reports
+    public function generateReports(SuiteCollection $collection, array $reportNames): Reports
     {
         $reportConfigs = (array)array_combine($reportNames, array_map(function (string $reportName): Config {
             return $this->generatorRegistry->getConfig($reportName);

@@ -51,15 +51,6 @@ class CompositeGenerator implements GeneratorInterface
      */
     public function generate(SuiteCollection $collection, Config $config): Reports
     {
-        $reports = Reports::empty();
-
-        foreach ($reportDoms as $reportsDom) {
-            foreach ($reportsDom->xpath()->query('./report') as $reportDom) {
-                $reportEl = $compositeDom->importNode($reportDom, true);
-                $compositeEl->appendChild($reportEl);
-            }
-        }
-
-        return $compositeDom;
+        return $this->reportManager->generateReports($collection, $config['reports']);
     }
 }

@@ -16,6 +16,7 @@ use PhpBench\Dom\Document;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Report\Generator\CompositeGenerator;
+use PhpBench\Report\Model\Reports;
 use PhpBench\Report\ReportManager;
 use PhpBench\Tests\TestCase;
 use Prophecy\Argument;
@@ -40,22 +41,14 @@ class CompositeGeneratorTest extends TestCase
         $config = ['reports' => ['one', 'two']];
 
         // for some reason prophecy doesn't like passing the suite document here, so just do a type check
-        $this->manager->generateReports(Argument::type(SuiteCollection::class), ['one', 'two'])->willReturn([
-            $this->getReportsDocument(),
-            $this->getReportsDocument(),
-        ]);
-        $compositeDom = $this->generator->generate($this->collection->reveal(), new Config('test', $config));
-
-        $this->assertEquals(4, $compositeDom->xpath()->evaluate('count(//report)'));
+        $expected = $this->getReportsDocument();
+        $this->manager->generateReports(Argument::type(SuiteCollection::class), ['one', 'two'])->willReturn($expected);
+        $reports = $this->generator->generate($this->collection->reveal(), new Config('test', $config));
+        self::assertSame($expected, $reports);
     }
 
-    public function getReportsDocument()
+    public function getReportsDocument(): Reports
     {
-        $reportsDocument = new Document();
-        $reportsEl = $reportsDocument->createRoot('reports');
-        $reportsEl->appendElement('report');
-        $reportsEl->appendElement('report');
-
-        return $reportsDocument;
+        return Reports::empty();
     }
 }
