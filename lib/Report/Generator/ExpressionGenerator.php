@@ -289,7 +289,7 @@ EOT
     {
         return Reports::fromReport(new Report(
             array_map(function (array $table, string $title) {
-                return Table::fromArray($table, $title);
+                return Table::fromRowArray($table, $title);
             }, $tables, array_keys($tables)),
             isset($config['title']) ? $config['title'] : null,
             isset($config['description']) ? $config['description'] : null

@@ -29,7 +29,7 @@ final class Table implements IteratorAggregate
         $this->title = $title;
     }
 
-    public static function fromArray(array $rows, string $title): self
+    public static function fromRowArray(array $rows, string $title): self
     {
         return new self(array_map(function (array $row) {
             return TableRow::fromArray($row);

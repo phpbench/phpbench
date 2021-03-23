@@ -2,7 +2,9 @@
 
 namespace PhpBench\Tests\Unit\Report\Generator;
 
+use PhpBench\DependencyInjection\Container;
 use PhpBench\Extension\ExpressionExtension;
+use PhpBench\Report\GeneratorInterface;
 use function file_get_contents;
 use Generator;
 use function json_encode;
@@ -23,72 +25,20 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Throwable;
 
-class ExpressionGeneratorTest extends IntegrationTestCase
+class ExpressionGeneratorTest extends GeneratorTestCase
 {
-    private const UPDATE = false;
-
-    /**
-     * @dataProvider provideGenerate
-     */
-    public function testGenerate(string $path): void
+    protected function acceptanceSubPath(): string
     {
-        $parts = array_values(array_filter(explode('---', file_get_contents($path), 3)));
-        $suite = json_decode($parts[0], true);
-        $config = json_decode($parts[1], true);
-        $expected = $parts[2] ?? null;
+        return 'expression';
+    }
 
-        $container = $this->container();
-        $generator = new ExpressionGenerator(
+    protected function createGenerator(Container $container): GeneratorInterface
+    {
+        return new ExpressionGenerator(
             $container->get(ExpressionLanguage::class),
             $container->get(Evaluator::class),
             $container->get(EvaluatingPrinter::class),
             new ConsoleLogger(new ConsoleOutput())
         );
-        $options = new OptionsResolver();
-        $generator->configure($options);
-
-        try {
-            $document = $generator->generate(
-                new SuiteCollection([TestUtil::createSuite(array_merge([
-                    'output_time_precision' => 3,
-                ], $suite))]),
-                new Config('asd', $options->resolve($config))
-            );
-            $output = new BufferedOutput();
-            (
-                new ConsoleRenderer($output, $container->get(ExpressionExtension::SERVICE_PLAIN_PRINTER))
-            )->render($document, new Config('asd', [
-                'table_style' => 'default',
-            ]));
-            $actual = $output->fetch();
-        } catch (Throwable $e) {
-            $actual = $e->getMessage();
-        }
-
-        /** @phpstan-ignore-next-line */
-        if (self::UPDATE || null === $expected) {
-            file_put_contents($path, implode("\n---\n", [
-                json_encode($suite, JSON_PRETTY_PRINT),
-                json_encode($config, JSON_PRETTY_PRINT),
-                $actual
-            ]));
-            $this->markTestSkipped('Generated expectation');
-            /** @phpstan-ignore-next-line */
-            return;
-        }
-
-        self::assertEquals(trim($expected), trim($actual), json_encode($config));
-    }
-
-    /**
-     * @return Generator<mixed>
-     */
-    public function provideGenerate(): Generator
-    {
-        foreach (glob(__DIR__ . '/expression/*') as $path) {
-            yield [
-                $path
-            ];
-        }
     }
 }
