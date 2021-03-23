@@ -19,6 +19,9 @@ use Symfony\Component\Console\Input\InputOption;
 
 class TimeUnitHandler
 {
+    /**
+     * @var TimeUnit
+     */
     private $timeUnit;
 
     public function __construct(
