@@ -23,14 +23,19 @@ final class Reports implements IteratorAggregate
         $this->reports = $reports;
     }
 
-    public static function fromOne(Report $report): self
+    public static function fromReport(Report $report): self
     {
         return new self([$report]);
     }
 
-    public static function fromMany(Report ...$reports): self
+    public static function fromReports(Report ...$reports): self
     {
         return new self($reports);
+    }
+
+    public static function empty()
+    {
+        return new self([]);
     }
 
     public function getIterator()

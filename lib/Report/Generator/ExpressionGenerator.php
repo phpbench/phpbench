@@ -287,7 +287,7 @@ EOT
      */
     private function generateReports(array $tables, Config $config): Reports
     {
-        return Reports::fromOne(new Report(
+        return Reports::fromReport(new Report(
             array_map(function (array $table, string $title) {
                 return Table::fromArray($table, $title);
             }, $tables, array_keys($tables)),
