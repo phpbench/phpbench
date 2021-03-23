@@ -641,7 +641,7 @@ class CoreExtension implements ExtensionInterface
         $container->register(DelimitedRenderer::class, function (Container $container) {
             return new DelimitedRenderer(
                 $container->get(OutputInterface::class),
-                $container->get(Printer::class.'.plain')
+                $container->get(ExpressionExtension::SERVICE_BARE_PRINTER)
             );
         }, [self::TAG_REPORT_RENDERER => ['name' => 'delimited']]);
     }

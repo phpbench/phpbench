@@ -97,6 +97,7 @@ use PhpBench\Expression\Parselets;
 use PhpBench\Expression\Parser;
 use PhpBench\Expression\Precedence;
 use PhpBench\Expression\Printer;
+use PhpBench\Expression\Printer\BareValuePrinter;
 use PhpBench\Expression\Printer\EvaluatingPrinter;
 use PhpBench\Expression\Printer\NormalizingPrinter;
 use PhpBench\Expression\Printer\UnderlinePrinterFactory;
@@ -110,6 +111,7 @@ class ExpressionExtension implements ExtensionInterface
     public const PARAM_SYNTAX_HIGHLIGHTING = 'expression.syntax_highlighting';
 
     public const SERVICE_PLAIN_PRINTER = Printer::class . '.plain';
+    public const SERVICE_BARE_PRINTER = Printer::class . '.bare';
 
 
     /**
@@ -243,6 +245,9 @@ class ExpressionExtension implements ExtensionInterface
 
         $container->register(self::SERVICE_PLAIN_PRINTER, function (Container $container) {
             return new NormalizingPrinter($container->get(NodePrinters::class));
+        });
+        $container->register(self::SERVICE_BARE_PRINTER, function (Container $container) {
+            return new BareValuePrinter();
         });
 
         $container->register(EvaluatingPrinter::class, function (Container $container) {
