@@ -6,6 +6,7 @@ use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\PhpValue;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Report\Model\Report;
+use PhpBench\Report\Model\Reports;
 use PhpBench\Report\Model\Table;
 use function array_combine;
 use function array_key_exists;
@@ -114,7 +115,7 @@ EOT
     /**
      * {@inheritDoc}
      */
-    public function generate(SuiteCollection $collection, Config $config): Report
+    public function generate(SuiteCollection $collection, Config $config): Reports
     {
         $table = iterator_to_array($this->reportData($collection));
         $table = $this->normalize($table);
@@ -122,7 +123,7 @@ EOT
         $table = iterator_to_array($this->evaluate($table, $config['cols'], $config['baseline_cols']));
         $tables = $this->partition($table, $config['break']);
 
-        return $this->generateDocument($tables, $config);
+        return $this->generateReports($tables, $config);
     }
 
     /**
@@ -284,15 +285,15 @@ EOT
     /**
      * @param array<string,array<int,array<string,Node>>> $tables
      */
-    private function generateDocument(array $tables, Config $config): Report
+    private function generateReports(array $tables, Config $config): Reports
     {
-        return new Report(
+        return Reports::fromOne(new Report(
             array_map(function (array $table, string $title) {
                 return Table::fromArray($table, $title);
             }, $tables, array_keys($tables)),
             isset($config['title']) ? $config['title'] : null,
             isset($config['description']) ? $config['description'] : null
-        );
+        ));
     }
 
     /**

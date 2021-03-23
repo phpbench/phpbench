@@ -20,6 +20,7 @@ use PhpBench\Formatter\Formatter;
 use PhpBench\Registry\Config;
 use PhpBench\Report\Generator\Table\ValueRole;
 use PhpBench\Report\Model\Report;
+use PhpBench\Report\Model\Reports;
 use PhpBench\Report\Model\Table as PhpBenchTable;
 use PhpBench\Report\Model\TableRow;
 use PhpBench\Report\RendererInterface;
@@ -49,27 +50,29 @@ class ConsoleRenderer implements RendererInterface
      * Render the table.
      *
      */
-    public function render(Report $report, Config $config): void
+    public function render(Reports $reports, Config $config): void
     {
-        if ($title = $report->title()) {
-            $this->output->writeln(sprintf('<title>%s</title>', $title));
-            $this->output->writeln(sprintf('<title>%s</title>', str_repeat('=', strlen($title))));
-            $this->output->write(PHP_EOL);
-        }
+        foreach ($reports as $report) {
+            if ($title = $report->title()) {
+                $this->output->writeln(sprintf('<title>%s</title>', $title));
+                $this->output->writeln(sprintf('<title>%s</title>', str_repeat('=', strlen($title))));
+                $this->output->write(PHP_EOL);
+            }
 
-        if ($description = $report->description()) {
-            $this->output->writeln(sprintf('<title>%s</title>', $title));
-            $this->output->writeln(sprintf('<description>%s</description>', $description));
-            $this->output->writeln('');
-        }
+            if ($description = $report->description()) {
+                $this->output->writeln(sprintf('<title>%s</title>', $title));
+                $this->output->writeln(sprintf('<description>%s</description>', $description));
+                $this->output->writeln('');
+            }
 
-        foreach ($report->tables() as $table) {
-            $this->output->writeln(sprintf('%s', $table->title()));
-            $this->renderTableElement($table, $config);
+            foreach ($report->tables() as $table) {
+                $this->output->writeln(sprintf('%s', $table->title()));
+                $this->renderTableElement($table, $config);
+            }
         }
     }
 
-    protected function renderTableElement(PhpBenchTable $table, $config): void
+    protected function renderTableElement(PhpBenchTable $table, Config $config): void
     {
         $rows = [];
 
