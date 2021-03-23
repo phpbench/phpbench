@@ -25,6 +25,10 @@ final class PhpValueFactory
             return new NullNode();
         }
 
+        if (is_bool($value)) {
+            return new BooleanNode($value);
+        }
+
         throw new RuntimeException(sprintf(
             'Cannot interpret PHP value "%s"', gettype($value)
         ));
