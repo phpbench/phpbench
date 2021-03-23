@@ -2,11 +2,10 @@
 
 namespace PhpBench\Report\Generator;
 
-use PhpBench\Expression\Ast\ArgumentListNode;
+use function array_combine;
 use PhpBench\Expression\Ast\BooleanNode;
 use PhpBench\Expression\Ast\DisplayAsNode;
 use PhpBench\Expression\Ast\FloatNode;
-use PhpBench\Expression\Ast\FunctionNode;
 use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\NullNode;
@@ -14,7 +13,6 @@ use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\PercentDifferenceNode;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Ast\UnitNode;
-use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Report\GeneratorInterface;
@@ -22,7 +20,6 @@ use PhpBench\Report\Model\Report;
 use PhpBench\Report\Model\Reports;
 use PhpBench\Report\Model\Table;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use function array_combine;
 
 class OutputTestGenerator implements GeneratorInterface
 {

@@ -18,7 +18,6 @@ use PhpBench\Storage\StorageRegistry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class ReportHandler
 {
@@ -61,12 +60,14 @@ class ReportHandler
 
     /**
      * @param mixed[] $values
+     *
      * @return string[]
      */
     private function castToStrings(array $values): array
     {
         return array_map(function ($value): string {
             assert(is_string($value));
+
             return $value;
         }, $values);
     }

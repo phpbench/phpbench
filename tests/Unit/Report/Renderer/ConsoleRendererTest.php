@@ -13,9 +13,8 @@
 namespace PhpBench\Tests\Unit\Report\Renderer;
 
 use PhpBench\Expression\Printer;
-use PhpBench\Formatter\Formatter;
-use PhpBench\Report\RendererInterface;
 use PhpBench\Report\Renderer\ConsoleRenderer;
+use PhpBench\Report\RendererInterface;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 class ConsoleRendererTest extends AbstractRendererCase

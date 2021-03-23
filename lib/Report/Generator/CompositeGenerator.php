@@ -12,7 +12,6 @@
 
 namespace PhpBench\Report\Generator;
 
-use PhpBench\Dom\Document;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Report\GeneratorInterface;

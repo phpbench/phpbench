@@ -12,14 +12,9 @@
 
 namespace PhpBench\Report\Renderer;
 
-use PhpBench\Dom\Document;
-use PhpBench\Dom\Element;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Printer;
-use PhpBench\Formatter\Formatter;
 use PhpBench\Registry\Config;
-use PhpBench\Report\Generator\Table\ValueRole;
-use PhpBench\Report\Model\Report;
 use PhpBench\Report\Model\Reports;
 use PhpBench\Report\Model\Table as PhpBenchTable;
 use PhpBench\Report\Model\TableRow;
@@ -101,7 +96,6 @@ class ConsoleRenderer implements RendererInterface
             return array_map(function (Node $node) {
                 return $this->printer->print($node, []);
             }, $row->cells());
-
         }, $table->rows());
     }
 }

@@ -21,8 +21,6 @@ use PhpBench\Report\RendererInterface;
 use PhpBench\Report\ReportManager;
 use PhpBench\Tests\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
-use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class ReportManagerTest extends TestCase
 {

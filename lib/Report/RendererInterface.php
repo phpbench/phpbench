@@ -15,7 +15,6 @@ namespace PhpBench\Report;
 use PhpBench\Dom\Document;
 use PhpBench\Registry\Config;
 use PhpBench\Registry\RegistrableInterface;
-use PhpBench\Report\Model\Report;
 use PhpBench\Report\Model\Reports;
 
 /**

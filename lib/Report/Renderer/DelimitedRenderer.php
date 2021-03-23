@@ -12,10 +12,6 @@
 
 namespace PhpBench\Report\Renderer;
 
-use PhpBench\Dom\Document;
-use PhpBench\Dom\Element;
-use PhpBench\Expression\Ast\ListNode;
-use PhpBench\Expression\Ast\PhpValue;
 use PhpBench\Expression\Printer;
 use PhpBench\Registry\Config;
 use PhpBench\Report\Model\Reports;

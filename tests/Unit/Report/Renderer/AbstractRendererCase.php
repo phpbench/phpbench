@@ -12,13 +12,11 @@
 
 namespace PhpBench\Tests\Unit\Report\Renderer;
 
-use PhpBench\Dom\Document;
 use PhpBench\Registry\Config;
 use PhpBench\Report\Generator\OutputTestGenerator;
 use PhpBench\Report\Model\Reports;
 use PhpBench\Report\RendererInterface;
 use PhpBench\Tests\IntegrationTestCase;
-use PhpBench\Tests\TestCase;
 use PhpBench\Tests\Util\TestUtil;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -41,7 +39,7 @@ abstract class AbstractRendererCase extends IntegrationTestCase
     public function reports(array $config = []): Reports
     {
         $collection = TestUtil::createCollection([]);
+
         return (new OutputTestGenerator())->generate($collection, new Config('foo', $config));
     }
-
 }

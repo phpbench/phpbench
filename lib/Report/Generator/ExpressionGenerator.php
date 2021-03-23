@@ -2,17 +2,12 @@
 
 namespace PhpBench\Report\Generator;
 
-use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Ast\PhpValue;
-use PhpBench\Expression\Ast\StringNode;
-use PhpBench\Report\Model\Report;
-use PhpBench\Report\Model\Reports;
-use PhpBench\Report\Model\Table;
 use function array_combine;
 use function array_key_exists;
 use Generator;
 use function iterator_to_array;
-use PhpBench\Dom\Document;
+use PhpBench\Expression\Ast\Node;
+use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Expression\ExpressionLanguage;
@@ -23,6 +18,9 @@ use PhpBench\Model\SuiteCollection;
 use PhpBench\Model\Variant;
 use PhpBench\Registry\Config;
 use PhpBench\Report\GeneratorInterface;
+use PhpBench\Report\Model\Report;
+use PhpBench\Report\Model\Reports;
+use PhpBench\Report\Model\Table;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -297,7 +295,7 @@ EOT
     }
 
     /**
-     * @param array<string,array<string,string>> $table
+     * @param array<string,array<string,Node>> $table
      * @param string[] $breakCols
      *
      * @return array<string,array<int,array<string,Node>>>

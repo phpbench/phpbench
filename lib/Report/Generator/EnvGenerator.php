@@ -12,8 +12,6 @@
 
 namespace PhpBench\Report\Generator;
 
-use PhpBench\Dom\Document;
-use PhpBench\Expression\Ast\BooleanNode;
 use PhpBench\Expression\Ast\PhpValueFactory;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Model\SuiteCollection;
@@ -48,16 +46,15 @@ class EnvGenerator implements GeneratorInterface
      */
     public function generate(SuiteCollection $suiteCollection, Config $config): Reports
     {
-
         $tables = [];
 
         foreach ($suiteCollection as $suite) {
-
             $title = sprintf(
                 'Suite #%s %s', $suite->getUuid(), $suite->getDate()->format('Y-m-d H:i:s')
             );
 
             $rows = [];
+
             foreach ($suite->getEnvInformations() as $envInformation) {
                 foreach ($envInformation as $key => $value) {
                     $rows[] = [

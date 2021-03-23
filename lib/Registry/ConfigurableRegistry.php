@@ -26,7 +26,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * ```
  * $config = $reg->getConfig('foobar');
  * ```
- * @template T
+ *
+ * @template T of object
  * @extends Registry<T>
  */
 class ConfigurableRegistry extends Registry

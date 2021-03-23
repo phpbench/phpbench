@@ -77,10 +77,7 @@ use PhpBench\Remote\ProcessFactory;
 use PhpBench\Report\Generator\CompositeGenerator;
 use PhpBench\Report\Generator\EnvGenerator;
 use PhpBench\Report\Generator\ExpressionGenerator;
-use PhpBench\Report\Generator\OutputTestGenerator;
-use PhpBench\Report\Generator\TableGenerator;
 use PhpBench\Report\Renderer\ConsoleRenderer;
-use PhpBench\Report\Renderer\DebugRenderer;
 use PhpBench\Report\Renderer\DelimitedRenderer;
 use PhpBench\Report\ReportManager;
 use PhpBench\Serializer\XmlDecoder;
@@ -613,9 +610,6 @@ class CoreExtension implements ExtensionInterface
 
     private function registerReportGenerators(Container $container): void
     {
-        $container->register(TableGenerator::class, function (Container $container) {
-            return new TableGenerator();
-        }, [self::TAG_REPORT_GENERATOR => ['name' => 'table']]);
         $container->register(ExpressionGenerator::class, function (Container $container) {
             return new ExpressionGenerator(
                 $container->get(ExpressionLanguage::class),
@@ -644,9 +638,6 @@ class CoreExtension implements ExtensionInterface
                 $container->get(Printer::class)
             );
         }, [self::TAG_REPORT_RENDERER => ['name' => 'console']]);
-        $container->register(DebugRenderer::class, function (Container $container) {
-            return new DebugRenderer($container->get(OutputInterface::class));
-        }, [self::TAG_REPORT_RENDERER => ['name' => self::PARAM_DEBUG]]);
         $container->register(DelimitedRenderer::class, function (Container $container) {
             return new DelimitedRenderer(
                 $container->get(OutputInterface::class),

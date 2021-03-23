@@ -13,11 +13,8 @@
 namespace PhpBench\Tests\Unit\Report\Generator;
 
 use PhpBench\DependencyInjection\Container;
-use PhpBench\Registry\Config;
-use PhpBench\Report\GeneratorInterface;
 use PhpBench\Report\Generator\EnvGenerator;
-use PhpBench\Report\Generator\TableGenerator;
-use PhpBench\Tests\Util\TestUtil;
+use PhpBench\Report\GeneratorInterface;
 
 class EnvGeneratorTest extends GeneratorTestCase
 {

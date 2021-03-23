@@ -16,7 +16,6 @@ use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Registry\ConfigurableRegistry;
 use PhpBench\Report\Model\Reports;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Manage report configuration and generation.
@@ -59,7 +58,8 @@ class ReportManager
      * @param string[] $reportNames
      * @param string[] $outputNames
      */
-    public function renderReports(SuiteCollection $collection, array $reportNames, array $outputNames): void {
+    public function renderReports(SuiteCollection $collection, array $reportNames, array $outputNames): void
+    {
         $reports = $this->generateReports($collection, $reportNames);
 
         foreach ($outputNames as $outputName) {
@@ -81,6 +81,7 @@ class ReportManager
         }, $reportNames));
 
         $reports = Reports::empty();
+
         foreach ($reportConfigs as $reportName => $reportConfig) {
             assert($reportConfig instanceof Config);
 

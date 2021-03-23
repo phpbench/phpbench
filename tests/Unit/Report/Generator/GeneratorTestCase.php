@@ -12,28 +12,18 @@
 
 namespace PhpBench\Tests\Unit\Report\Generator;
 
-use PhpBench\DependencyInjection\Container;
-use PhpBench\Dom\Document;
-use PhpBench\Report\GeneratorInterface;
-use PhpBench\Tests\IntegrationTestCase;
-use PhpBench\Tests\TestCase;
-use PhpBench\Extension\ExpressionExtension;
 use function file_get_contents;
 use Generator;
 use function json_encode;
-use PhpBench\Expression\Evaluator;
-use PhpBench\Expression\ExpressionLanguage;
-use PhpBench\Expression\Printer\EvaluatingPrinter;
-use PhpBench\Formatter\FormatRegistry;
-use PhpBench\Formatter\Formatter;
+use PhpBench\DependencyInjection\Container;
+use PhpBench\Extension\ExpressionExtension;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
-use PhpBench\Report\Generator\ExpressionGenerator;
+use PhpBench\Report\GeneratorInterface;
 use PhpBench\Report\Renderer\ConsoleRenderer;
+use PhpBench\Tests\IntegrationTestCase;
 use PhpBench\Tests\Util\TestUtil;
-use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Throwable;
 
@@ -101,7 +91,7 @@ abstract class GeneratorTestCase extends IntegrationTestCase
         }
     }
 
-    protected abstract function acceptanceSubPath(): string;
+    abstract protected function acceptanceSubPath(): string;
 
-    protected abstract function createGenerator(Container $container): GeneratorInterface;
+    abstract protected function createGenerator(Container $container): GeneratorInterface;
 }
