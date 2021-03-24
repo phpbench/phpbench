@@ -15,6 +15,7 @@ namespace PhpBench\Console\Command\Handler;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Report\ReportManager;
 use PhpBench\Storage\StorageRegistry;
+use PhpBench\Util\Cast;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -47,28 +48,14 @@ class ReportHandler
 
     public function validateReportsFromInput(InputInterface $input): void
     {
-        $this->reportManager->validateReportNames((array)$this->castToStrings((array)$input->getOption(self::OPT_REPORT)));
+        $this->reportManager->validateReportNames(Cast::toStrings((array)$input->getOption(self::OPT_REPORT)));
     }
 
     public function reportsFromInput(InputInterface $input, SuiteCollection $collection): void
     {
-        $reports = $this->castToStrings((array)$input->getOption(self::OPT_REPORT));
-        $outputs = $this->castToStrings((array)$input->getOption(self::OPT_OUTPUT));
+        $reports = Cast::toStrings((array)$input->getOption(self::OPT_REPORT));
+        $outputs = Cast::toStrings((array)$input->getOption(self::OPT_OUTPUT));
 
         $this->reportManager->renderReports($collection, $reports, $outputs);
-    }
-
-    /**
-     * @param mixed[] $values
-     *
-     * @return string[]
-     */
-    private function castToStrings(array $values): array
-    {
-        return array_map(function ($value): string {
-            assert(is_string($value));
-
-            return $value;
-        }, $values);
     }
 }

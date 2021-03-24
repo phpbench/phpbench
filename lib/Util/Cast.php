@@ -35,4 +35,17 @@ class Cast
 
         return (string)$value;
     }
+
+    /**
+     * @param mixed[] $values
+     *
+     * @return string[]
+     */
+    public static function toStrings(array $values): array
+    {
+        return array_map(function ($value): string {
+            assert(is_string($value));
+            return $value;
+        }, $values);
+    }
 }
