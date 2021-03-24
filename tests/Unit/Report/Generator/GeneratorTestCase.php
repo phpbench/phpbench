@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Report\Generator;
 
+use PhpBench\Tests\Util\Approval;
 use function file_get_contents;
 use Generator;
 use function json_encode;
@@ -29,13 +30,13 @@ use Throwable;
 
 abstract class GeneratorTestCase extends IntegrationTestCase
 {
-    protected const UPDATE = false;
-
     /**
      * @dataProvider provideGenerate
      */
     public function testGenerate(string $path): void
     {
+        $approval = Approval::create($path,3);
+
         $container = $this->container();
         $generator = $this->createGenerator($container);
         $options = new OptionsResolver();
@@ -45,8 +46,8 @@ abstract class GeneratorTestCase extends IntegrationTestCase
             $document = $generator->generate(
                 new SuiteCollection([TestUtil::createSuite(array_merge([
                     'output_time_precision' => 3,
-                ], $suite))]),
-                new Config('asd', $options->resolve($config))
+                ], $approval->getConfig(0)))]),
+                new Config('asd', $options->resolve($approval->getConfig(1)))
             );
             $output = new BufferedOutput();
             (
@@ -59,25 +60,7 @@ abstract class GeneratorTestCase extends IntegrationTestCase
             $actual = $e->getMessage();
         }
 
-        $parts = array_values(array_filter(explode('---', file_get_contents($path), 3)));
-        $suite = json_decode($parts[0], true);
-        $config = json_decode($parts[1], true);
-        $expected = $parts[2] ?? null;
-
-
-        /** @phpstan-ignore-next-line */
-        if (self::UPDATE || null === $expected) {
-            file_put_contents($path, implode("\n---\n", [
-                json_encode($suite, JSON_PRETTY_PRINT),
-                json_encode($config, JSON_PRETTY_PRINT),
-                $actual
-            ]));
-            $this->markTestSkipped('Generated expectation');
-            /** @phpstan-ignore-next-line */
-            return;
-        }
-
-        self::assertEquals(trim($expected), trim($actual), json_encode($config));
+        $approval->approve($actual);
     }
 
     /**
