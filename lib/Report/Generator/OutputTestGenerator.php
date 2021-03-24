@@ -35,7 +35,7 @@ class OutputTestGenerator implements GeneratorInterface
      */
     public function generate(SuiteCollection $collection, Config $config): Reports
     {
-        return Reports::fromReport(new Report([
+        return Reports::fromReport(Report::fromTables([
                 Table::fromRowArray([
                         [
                             'string' => new StringNode('one'),

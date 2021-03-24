@@ -50,14 +50,6 @@ use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\Printer;
 use PhpBench\Expression\Printer\EvaluatingPrinter;
-use PhpBench\Formatter\Format\BalanceFormat;
-use PhpBench\Formatter\Format\InvertOnThroughputFormat;
-use PhpBench\Formatter\Format\NumberFormat;
-use PhpBench\Formatter\Format\PrintfFormat;
-use PhpBench\Formatter\Format\TimeUnitFormat;
-use PhpBench\Formatter\Format\TruncateFormat;
-use PhpBench\Formatter\FormatRegistry;
-use PhpBench\Formatter\Formatter;
 use PhpBench\Json\JsonDecoder;
 use PhpBench\Logger\ConsoleLogger;
 use PhpBench\Progress\Logger\BlinkenLogger;
@@ -278,7 +270,6 @@ class CoreExtension implements ExtensionInterface
         $this->registerEnvironment($container);
         $this->registerSerializer($container);
         $this->registerStorage($container);
-        $this->registerFormatter($container);
         $this->registerAsserters($container);
     }
 
@@ -651,28 +642,6 @@ class CoreExtension implements ExtensionInterface
                 $container->get(ExpressionExtension::SERVICE_BARE_PRINTER)
             );
         }, [self::TAG_REPORT_RENDERER => ['name' => 'delimited']]);
-    }
-
-    private function registerFormatter(Container $container): void
-    {
-        $container->register(FormatRegistry::class, function (Container $container) {
-            $registry = new FormatRegistry();
-            $registry->register('printf', new PrintfFormat());
-            $registry->register('balance', new BalanceFormat());
-            $registry->register('invert_on_throughput', new InvertOnThroughputFormat($container->get(TimeUnit::class)));
-            $registry->register('number', new NumberFormat());
-            $registry->register('truncate', new TruncateFormat());
-            $registry->register('time', new TimeUnitFormat($container->get(TimeUnit::class)));
-
-            return $registry;
-        });
-
-        $container->register(Formatter::class, function (Container $container) {
-            $formatter = new Formatter($container->get(FormatRegistry::class));
-            $formatter->classesFromFile(__DIR__ . '/config/class/main.json');
-
-            return $formatter;
-        });
     }
 
     private function registerAsserters(Container $container): void

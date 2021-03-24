@@ -22,11 +22,19 @@ final class Report
     /**
      * @param Table[] $tables
      */
-    public function __construct(array $tables, ?string $title, ?string $description)
+    private function __construct(array $tables, ?string $title, ?string $description)
     {
         $this->tables = $tables;
         $this->title = $title;
         $this->description = $description;
+    }
+
+    /**
+     * @param Table[] $tables
+     */
+    public static function fromTables(array $tables, ?string $title, ?string $description): self
+    {
+        return new self($tables, $title, $description);
     }
 
     public function title(): ?string

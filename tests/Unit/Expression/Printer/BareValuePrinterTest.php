@@ -2,12 +2,12 @@
 
 namespace PhpBench\Tests\Unit\Expression\Printer;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Expression\Ast\FunctionNode;
 use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Printer\BareValuePrinter;
+use PHPUnit\Framework\TestCase;
 
 class BareValuePrinterTest extends TestCase
 {

@@ -2,11 +2,10 @@
 
 namespace PhpBench\Tests\Util;
 
+use function json_decode;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\SkippedTestError;
 use RuntimeException;
-use function array_pop;
-use function json_decode;
 
 class Approval
 {
@@ -48,6 +47,7 @@ class Approval
         );
 
         $expected = null;
+
         if (isset($parts[$configCount - 1])) {
             $expected = $parts[$configCount - 1];
             unset($parts[$configCount - 1]);
@@ -55,6 +55,7 @@ class Approval
 
         return new self($path, array_map(function (string $jsonConfig): array {
             $config = json_decode($jsonConfig, true);
+
             if (null === $config) {
                 throw new RuntimeException(sprintf(
                     'Invalid JSON config: "%s"',
