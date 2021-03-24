@@ -71,6 +71,6 @@ HTML report:
 Contributing
 ------------
 
-PHPBench is an open source project. If you find an problem or want to discuss
+PHPBench is an open source project. If you find a problem or want to discuss
 new features or improvements please create an issue, and/or if possible create
 a pull request.
