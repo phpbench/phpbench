@@ -36,7 +36,7 @@ class AcmeGenerator implements GeneratorInterface
         }
 
         return Reports::fromReport(
-            new Report(
+            Report::fromTables(
                 [
                     Table::fromRowArray($rows, 'Cat or dog?'),
                 ],
