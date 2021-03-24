@@ -19,6 +19,6 @@ final class MaxFunction
             );
         }
 
-        return PhpValueFactory::fromNumber($result);
+        return PhpValueFactory::fromValue($result);
     }
 }

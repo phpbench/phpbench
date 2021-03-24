@@ -31,11 +31,11 @@ class ValueWithUnitEvaluator extends AbstractEvaluator
         $unit = $evaluator->evaluateType($node->unit()->unit(), StringNode::class, $params)->value();
 
         if (TimeUnit::isTimeUnit($unit)) {
-            return PhpValueFactory::fromNumber($this->timeUnit($value->value(), $unit));
+            return PhpValueFactory::fromValue($this->timeUnit($value->value(), $unit));
         }
 
         if (MemoryUnit::isMemoryUnit($unit)) {
-            return PhpValueFactory::fromNumber($this->memoryUnit($value->value(), $unit));
+            return PhpValueFactory::fromValue($this->memoryUnit($value->value(), $unit));
         }
 
         throw new EvaluationError($node, sprintf(

@@ -60,7 +60,7 @@ class EnvGenerator implements GeneratorInterface
                     $rows[] = [
                         'provider' => new StringNode($envInformation->getName()),
                         'key' => new StringNode($key),
-                        'value' => PhpValueFactory::fromNumber($value)
+                        'value' => PhpValueFactory::fromValue($value)
                     ];
                 }
             }

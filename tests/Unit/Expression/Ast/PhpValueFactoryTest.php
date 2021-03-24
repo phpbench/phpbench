@@ -20,7 +20,7 @@ class PhpValueFactoryTest extends TestCase
          */
         public function testFrom($value, Node $expected): void
         {
-            self::assertEquals($expected, PhpValueFactory::fromNumber($value));
+            self::assertEquals($expected, PhpValueFactory::fromValue($value));
         }
         
         /**

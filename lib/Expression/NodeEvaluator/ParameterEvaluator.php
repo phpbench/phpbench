@@ -30,7 +30,7 @@ class ParameterEvaluator extends AbstractEvaluator
         $value = self::resolvePropertyAccess($node, $node->segments(), $params);
 
         if (is_numeric($value)) {
-            return PhpValueFactory::fromNumber($value);
+            return PhpValueFactory::fromValue($value);
         }
 
         if (is_array($value)) {
