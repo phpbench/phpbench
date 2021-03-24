@@ -3,6 +3,7 @@
 namespace PhpBench\Tests\Util;
 
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\SkippedTestError;
 use RuntimeException;
 use function array_pop;
 use function json_decode;
@@ -91,7 +92,8 @@ class Approval
                     $actual
                 ]
             )));
-            return;
+
+            throw new SkippedTestError(sprintf('Approval generated'));
         }
 
         Assert::assertEquals(trim($this->expected), trim($actual));

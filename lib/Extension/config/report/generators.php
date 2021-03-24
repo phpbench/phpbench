@@ -33,7 +33,7 @@ return [
         'generator' => 'expression',
         'aggregate' => ['benchmark_class', 'subject_name', 'variant_name', 'iteration_index'],
         'cols' => [
-            'iter' => 'frst(iteration_index)',
+            'iter' => 'first(iteration_index)',
             'benchmark' => 'first(subject_name)',
             'subject' => 'first(subject_name)',
             'set' => 'first(variant_name)',

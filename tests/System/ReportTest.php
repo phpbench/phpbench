@@ -13,6 +13,7 @@
 namespace PhpBench\Tests\System;
 
 use Generator;
+use PhpBench\Tests\Util\Approval;
 
 class ReportTest extends SystemTestCase
 {
@@ -105,14 +106,17 @@ class ReportTest extends SystemTestCase
      *
      * @dataProvider provideGenerators
      */
-    public function testGenerators($config): void
+    public function testGenerators(string $path): void
     {
+        $approval = Approval::create($path, 2);
+
         $this->getResult();
         $process = $this->phpbench(
-            'report --file=' . $this->fname .' --report=\'' . json_encode($config) . '\''
+            'report --file=' . $this->fname .' --report=\'' . json_encode($approval->getConfig(0)) . '\''
         );
 
         $this->assertExitCode(0, $process);
+        $approval->approve($process->getOutput());
     }
 
     /**
@@ -120,11 +124,9 @@ class ReportTest extends SystemTestCase
      */
     public function provideGenerators(): Generator
     {
-        yield [['generator' => 'expression']];
-
-        yield [['generator' => 'env']];
-
-        yield [['generator' => 'composite', 'reports' => ['default']]];
+        foreach (glob(sprintf('%s/report/*', __DIR__)) as $path) {
+            yield [$path];
+        }
     }
 
     /**
