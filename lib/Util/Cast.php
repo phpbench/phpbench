@@ -45,6 +45,7 @@ class Cast
     {
         return array_map(function ($value): string {
             assert(is_string($value));
+
             return $value;
         }, $values);
     }
