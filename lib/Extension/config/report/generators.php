@@ -11,6 +11,9 @@
  */
 
 return [
+    'flat' => [
+        'generator' => 'flat',
+    ],
     'aggregate' => [
         'generator' => 'expression',
     ],

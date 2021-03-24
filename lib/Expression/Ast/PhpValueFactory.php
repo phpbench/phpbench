@@ -7,6 +7,9 @@ use RuntimeException;
 
 final class PhpValueFactory
 {
+    /**
+     * @param mixed $value
+     */
     public static function fromValue($value): PhpValue
     {
         if (is_float($value)) {
@@ -27,6 +30,12 @@ final class PhpValueFactory
 
         if (is_bool($value)) {
             return new BooleanNode($value);
+        }
+
+        if (is_array($value)) {
+            return new ListNode(array_map(function ($value) {
+                return self::fromValue($value);
+            }, $value));
         }
 
         throw new RuntimeException(sprintf(

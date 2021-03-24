@@ -32,9 +32,14 @@ final class Report
     /**
      * @param Table[] $tables
      */
-    public static function fromTables(array $tables, ?string $title, ?string $description): self
+    public static function fromTables(array $tables, ?string $title = null, ?string $description = null): self
     {
         return new self($tables, $title, $description);
+    }
+
+    public static function fromTable(Table $table, ?string $title = null, ?string $description = null): self
+    {
+        return new self([$table], $title, $description);
     }
 
     public function title(): ?string

@@ -16,14 +16,14 @@ final class Table implements IteratorAggregate
     private $rows;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $title;
 
     /**
      * @param TableRow[] $rows
      */
-    private function __construct(array $rows, string $title)
+    private function __construct(array $rows, ?string $title)
     {
         $this->rows = $rows;
         $this->title = $title;
@@ -32,14 +32,14 @@ final class Table implements IteratorAggregate
     /**
      * @param array<int|string,array<string,mixed>> $rows
      */
-    public static function fromRowArray(array $rows, string $title): self
+    public static function fromRowArray(array $rows, ?string $title = null): self
     {
         return new self(array_map(function (array $row) {
             return TableRow::fromArray($row);
         }, $rows), $title);
     }
 
-    public function title(): string
+    public function title(): ?string
     {
         return $this->title;
     }

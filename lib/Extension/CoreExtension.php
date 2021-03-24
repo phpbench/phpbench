@@ -69,10 +69,12 @@ use PhpBench\Remote\ProcessFactory;
 use PhpBench\Report\Generator\CompositeGenerator;
 use PhpBench\Report\Generator\EnvGenerator;
 use PhpBench\Report\Generator\ExpressionGenerator;
+use PhpBench\Report\Generator\FlatGenerator;
 use PhpBench\Report\Generator\OutputTestGenerator;
 use PhpBench\Report\Renderer\ConsoleRenderer;
 use PhpBench\Report\Renderer\DelimitedRenderer;
 use PhpBench\Report\ReportManager;
+use PhpBench\Report\Transform\SuiteCollectionTransformer;
 use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Storage\Driver\Xml\XmlDriver;
@@ -616,12 +618,16 @@ class CoreExtension implements ExtensionInterface
                 $container->get(ExpressionLanguage::class),
                 $container->get(Evaluator::class),
                 $container->get(EvaluatingPrinter::class),
+                new SuiteCollectionTransformer(),
                 $container->get(LoggerInterface::class)
             );
         }, [self::TAG_REPORT_GENERATOR => ['name' => 'expression']]);
         $container->register(EnvGenerator::class, function (Container $container) {
             return new EnvGenerator();
         }, [self::TAG_REPORT_GENERATOR => ['name' => 'env']]);
+        $container->register(FlatGenerator::class, function (Container $container) {
+            return new FlatGenerator();
+        }, [self::TAG_REPORT_GENERATOR => ['name' => 'flat']]);
         $container->register(OutputTestGenerator::class, function (Container $container) {
             return new OutputTestGenerator();
         }, [self::TAG_REPORT_GENERATOR => ['name' => 'output_test']]);
