@@ -77,6 +77,7 @@ use PhpBench\Remote\ProcessFactory;
 use PhpBench\Report\Generator\CompositeGenerator;
 use PhpBench\Report\Generator\EnvGenerator;
 use PhpBench\Report\Generator\ExpressionGenerator;
+use PhpBench\Report\Generator\OutputTestGenerator;
 use PhpBench\Report\Renderer\ConsoleRenderer;
 use PhpBench\Report\Renderer\DelimitedRenderer;
 use PhpBench\Report\ReportManager;
@@ -233,6 +234,9 @@ class CoreExtension implements ExtensionInterface
             $output->getFormatter()->setStyle('result-good', new OutputFormatterStyle('green', null, []));
             $output->getFormatter()->setStyle('result-none', new OutputFormatterStyle(null, null, []));
             $output->getFormatter()->setStyle('result-failure', new OutputFormatterStyle('white', 'red', []));
+            $output->getFormatter()->setStyle('title', new OutputFormatterStyle('white', null, ['bold']));
+            $output->getFormatter()->setStyle('subtitle', new OutputFormatterStyle('white', null, []));
+            $output->getFormatter()->setStyle('description', new OutputFormatterStyle(null, null, []));
 
             return $output;
         });
@@ -621,6 +625,9 @@ class CoreExtension implements ExtensionInterface
         $container->register(EnvGenerator::class, function (Container $container) {
             return new EnvGenerator();
         }, [self::TAG_REPORT_GENERATOR => ['name' => 'env']]);
+        $container->register(OutputTestGenerator::class, function (Container $container) {
+            return new OutputTestGenerator();
+        }, [self::TAG_REPORT_GENERATOR => ['name' => 'output_test']]);
         $container->register(CompositeGenerator::class, function (Container $container) {
             return new CompositeGenerator(
                 $container->get(ReportManager::class)
