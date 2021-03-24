@@ -36,11 +36,6 @@ abstract class GeneratorTestCase extends IntegrationTestCase
      */
     public function testGenerate(string $path): void
     {
-        $parts = array_values(array_filter(explode('---', file_get_contents($path), 3)));
-        $suite = json_decode($parts[0], true);
-        $config = json_decode($parts[1], true);
-        $expected = $parts[2] ?? null;
-
         $container = $this->container();
         $generator = $this->createGenerator($container);
         $options = new OptionsResolver();
@@ -63,6 +58,12 @@ abstract class GeneratorTestCase extends IntegrationTestCase
         } catch (Throwable $e) {
             $actual = $e->getMessage();
         }
+
+        $parts = array_values(array_filter(explode('---', file_get_contents($path), 3)));
+        $suite = json_decode($parts[0], true);
+        $config = json_decode($parts[1], true);
+        $expected = $parts[2] ?? null;
+
 
         /** @phpstan-ignore-next-line */
         if (self::UPDATE || null === $expected) {
