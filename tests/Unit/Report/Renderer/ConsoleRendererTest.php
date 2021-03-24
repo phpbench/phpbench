@@ -12,9 +12,11 @@
 
 namespace PhpBench\Tests\Unit\Report\Renderer;
 
+use Generator;
 use PhpBench\Expression\Printer;
 use PhpBench\Report\Renderer\ConsoleRenderer;
 use PhpBench\Report\RendererInterface;
+use PhpBench\Tests\Util\Approval;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 class ConsoleRendererTest extends AbstractRendererCase
@@ -35,25 +37,21 @@ class ConsoleRendererTest extends AbstractRendererCase
     }
 
     /**
-     * It should render a report.
+     * @dataProvider provideRender
      */
-    public function testRender(): void
+    public function testRender(string $path): void
     {
-        $this->renderReport($this->reports(), []);
+        $approval = Approval::create($path, 2);
 
-        $output = $this->output->fetch();
-        $this->assertStringContainsString('Output Test Report', $output);
-        $this->assertStringContainsString('This report demonstrates', $output);
+        $this->renderReport($this->reports(), $approval->getConfig(0));
+
+        $approval->approve($this->output->fetch());
     }
 
-    /**
-     * It should allow the table style to be set.
-     */
-    public function testTableStyle(): void
+    public function provideRender(): Generator
     {
-        $this->renderReport($this->reports(), [
-            'table_style' => 'compact',
-        ]);
-        $this->addToAssertionCount(1);
+        foreach (glob(sprintf('%s/%s/*', __DIR__, 'console')) as $path) {
+            yield [$path];
+        }
     }
 }
