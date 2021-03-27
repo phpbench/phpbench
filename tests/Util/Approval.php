@@ -36,6 +36,12 @@ class Approval
 
     public static function create(string $path, int $configCount): self
     {
+        if (!file_exists($path)) {
+            if (!file_exists(dirname($path))) {
+                mkdir(dirname($path), 0777, true);
+            }
+            touch($path);
+        }
         $parts = array_values(
             (array)array_filter(
                 explode(
@@ -48,7 +54,12 @@ class Approval
 
         $expected = null;
 
-        if (isset($parts[$configCount - 1])) {
+        if (count($parts) === 1) {
+            $expected = $parts[0];
+            $parts =  [];
+        }
+
+        if ($parts && isset($parts[$configCount - 1])) {
             $expected = $parts[$configCount - 1];
             unset($parts[$configCount - 1]);
         }
@@ -82,9 +93,9 @@ class Approval
         return $this->configs[$offset];
     }
 
-    public function approve(string $actual): void
+    public function approve(string $actual, bool $force = false): void
     {
-        if (null === $this->expected) {
+        if (null === $this->expected || $force) {
             file_put_contents($this->path, implode("\n---\n", array_merge(
                 array_map(function (array $config) {
                     return json_encode($config, JSON_PRETTY_PRINT);
