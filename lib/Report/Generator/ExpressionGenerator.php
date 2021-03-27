@@ -179,7 +179,8 @@ EOT
                             'variant_revs' => $variant->getRevolutions(),
                             'variant_iterations' => count($variant->getIterations()),
                             'suite_tag' => $suite->getTag() ? $suite->getTag()->__toString() : '<current>',
-                            'suite_date' => $suite->getDate()->format('c'),
+                            'suite_date' => $suite->getDate()->format('Y-m-d'),
+                            'suite_time' => $suite->getDate()->format('H:i:s'),
                             'iteration_index' => $itNum,
                         ], $this->resultData($iteration, 'result'), $this->resultData($baselineIteration, 'baseline'));
                     }
