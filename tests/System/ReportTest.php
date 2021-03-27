@@ -12,9 +12,6 @@
 
 namespace PhpBench\Tests\System;
 
-use Generator;
-use PhpBench\Tests\Util\Approval;
-
 class ReportTest extends SystemTestCase
 {
     /**

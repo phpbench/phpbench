@@ -54,6 +54,7 @@ class AttributeDriverTest extends TestCase
     {
         if ($this->shouldSkip()) {
             $this->markTestSkipped('PHP 8 only');
+
             return;
         }
 
