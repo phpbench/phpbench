@@ -130,10 +130,13 @@ EOT
      */
     public function generate(SuiteCollection $collection, Config $config): Reports
     {
+        $expressionMap = $this->resolveExpressionMap($config);
+        $baselineExpressionMap = $this->resolveBaselineExpressionMap($config, array_keys($expressionMap));
+
         $table = iterator_to_array($this->reportData($collection));
         $table = $this->normalize($table);
         $table = $this->aggregate($table, $config['aggregate']);
-        $table = iterator_to_array($this->evaluate($table, $this->resolveExpressionMap($config), $config['baseline_expressions']));
+        $table = iterator_to_array($this->evaluate($table, $expressionMap, $baselineExpressionMap));
         $tables = $this->partition($table, $config['break']);
 
         return $this->generateReports($tables, $config);
@@ -278,12 +281,12 @@ EOT
      *
      * @return Generator<array<string,mixed>>
      */
-    private function evaluate(array $table, array $cols, array $baselineCols): Generator
+    private function evaluate(array $table, array $exprMap, array $baselineExprMap): Generator
     {
         foreach ($table as $row) {
             $evaledRow = [];
 
-            foreach (($row['baseline'][0] ? array_merge($cols, $baselineCols) : $cols) as $name => $expr) {
+            foreach (($row['baseline'][0] ? array_merge($exprMap, $baselineExprMap) : $exprMap) as $name => $expr) {
                 try {
                     $evaledRow[$name] = $this->evaluator->evaluate($this->parser->parse($expr), $row);
                 } catch (EvaluationError $e) {
@@ -356,16 +359,36 @@ EOT
         return $partitioned;
     }
 
-    private function resolveExpressionMap(Config $config)
+    /**
+     * @return array<string,string>
+     */
+    private function resolveExpressionMap(Config $config): array
     {
         $expressions = $config['expressions'];
         $map = [];
         foreach ($config['cols'] as $key => $expr) {
             if (is_int($key)) {
-                $map[$expr] = $expressions[$expr];
+                $map[(string)$expr] = (string)$expressions[$expr];
                 continue;
             }
-            $map[$key] = $expr;
+            $map[(string)$key] = (string)$expr;
+        }
+
+        return $map;
+    }
+
+    /**
+     * @param string[] $visibleCols
+     * @return array<string,string>
+     */
+    private function resolveBaselineExpressionMap(Config $config, array $visibleCols): array
+    {
+        $map = [];
+        foreach ($config['baseline_expressions'] as $name => $baselineExpression) {
+            if (!in_array($name, $visibleCols)) {
+                continue;
+            }
+            $map[(string)$name] = (string)$baselineExpression;
         }
 
         return $map;
