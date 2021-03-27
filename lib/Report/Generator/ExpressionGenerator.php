@@ -87,7 +87,7 @@ EOT
                 'best' => $formatTime('min(result_time_avg)'),
                 'mode' => $formatTime('mode(result_time_avg)'),
                 'worst' => $formatTime('max(result_time_avg)'),
-                'rstdev' => 'format("%d.2%%", rstdev(result_time_avg))',
+                'rstdev' => 'format("%.2f%%", rstdev(result_time_avg))',
             ],
             'baseline_cols' => [
                 'best' => $formatTime('min(result_time_avg)') . ' ~" Dif"~ percent_diff(min(baseline_time_avg), min(result_time_avg), 100)',
