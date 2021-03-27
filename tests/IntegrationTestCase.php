@@ -14,7 +14,7 @@ class IntegrationTestCase extends TestCase
         return Workspace::create(__DIR__ . '/Workspace');
     }
 
-    protected function container(): Container
+    protected function container(array $config = []): Container
     {
         return (function (Container $container) {
             $container->init();
@@ -23,8 +23,8 @@ class IntegrationTestCase extends TestCase
         })(new Container([
             ExpressionExtension::class,
             CoreExtension::class
-        ], [
+        ], array_merge([
             ExpressionExtension::PARAM_SYNTAX_HIGHLIGHTING => false,
-        ]));
+        ], $config)));
     }
 }
