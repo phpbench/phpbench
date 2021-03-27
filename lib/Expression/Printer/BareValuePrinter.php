@@ -27,6 +27,6 @@ class BareValuePrinter implements Printer
             }, $node->value())));
         }
 
-        return $node->value();
+        return (string)$node->value();
     }
 }

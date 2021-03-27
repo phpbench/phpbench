@@ -5,6 +5,7 @@ namespace PhpBench\Tests\Unit\Expression\Printer;
 use PhpBench\Expression\Ast\FunctionNode;
 use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\ListNode;
+use PhpBench\Expression\Ast\NullNode;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Printer\BareValuePrinter;
 use PHPUnit\Framework\TestCase;
@@ -19,6 +20,11 @@ class BareValuePrinterTest extends TestCase
     public function testReturnsDefaultTextIfNotPrintable(): void
     {
         self::assertEquals('??', $this->create()->print(new FunctionNode('hello'), []));
+    }
+
+    public function testCastsToString(): void
+    {
+        self::assertEquals('', $this->create()->print(new NullNode(), []));
     }
 
     public function testPrintsList(): void
