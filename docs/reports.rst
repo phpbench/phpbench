@@ -39,7 +39,7 @@ All reports can be configured either in the :ref:`report configuration
 <configuration_reports>` or directly on the command line using a simplified
 JSON encoded string instead of the report name::
 
-    $ phpbench run --report='generator: "table", cols: [ "suite", "subject", "mean" ], break: ["benchmark"]'
+    $ phpbench run --report='generator: "expression", cols: [ "suite", "subject", "mean" ], break: ["benchmark"]'
 
 In each case it is required to specify the ``generator`` key which corresponds
 to the registered name of the :doc:`report generator <report-generators>`.
@@ -50,10 +50,10 @@ You may also **extend** an existing report configuration::
 
 This will merge the given keys onto the configuration for the `aggregate report`_.
 
-Table Generator
----------------
+Expression Generator
+--------------------
 
-For details about the table generator see the :ref:`generator_table`
+For details about the expression generator see the :ref:`generator_expression`
 reference, this section will simply offer practical examples.
 
 .. note::
@@ -66,7 +66,7 @@ Selecting columns
 ~~~~~~~~~~~~~~~~~
 
 You can select exactly which columns you need using the ``cols`` option. If you make a mistake an exception
-will be thrown showing all the valid possibilities, see the :ref:`columns <generator_table_columns>` reference.
+will be thrown showing all the valid possibilities, see the :ref:`columns <generator_expression_columns>` reference.
 
 The following examples will make use of this option for brevity.
 
@@ -78,7 +78,7 @@ given keys:
 
 .. code-block:: bash
 
-    $ phpbench run --report='generator: "table", break: ["revs"], cols: ["subject", "mean"]'
+    $ phpbench run --report='generator: "expression", break: ["revs"], cols: ["subject", "mean"]'
 
 	revs: 1
 	+-------------+---------+
@@ -108,7 +108,7 @@ Multiple columns may be specified:
 
 .. code-block:: bash
 
-    $ phpbench run --report='generator: "table", break: ["benchmark", "revs"], cols: ["subject", "mean"]'
+    $ phpbench run --report='generator: "expression", break: ["benchmark", "revs"], cols: ["subject", "mean"]'
 
     benchmark: HashingBenchmark, revs: 1
     +-------------+---------+
@@ -127,64 +127,6 @@ Multiple columns may be specified:
     | benchSha1   | 0.970μs |
     | benchSha256 | 1.320μs |
     +-------------+---------+
-
-
-Comparing Values
-~~~~~~~~~~~~~~~~
-
-To compare values by factor horizontally, use the ``compare`` option, for example to compare mean times against revs:
-
-.. code-block:: bash
-
-    $ phpbench run --report='generator: "table", compare: "revs", cols: ["subject", "mean"]'
-
-	+-------------+-------------+--------------+---------------+
-	| subject     | revs:1:mean | revs:10:mean | revs:100:mean |
-	+-------------+-------------+--------------+---------------+
-	| benchMd5    | 3.800μs     | 0.890μs      | 0.535μs       |
-	| benchSha1   | 5.600μs     | 0.930μs      | 0.651μs       |
-	| benchSha256 | 5.500μs     | 1.490μs      | 1.114μs       |
-	+-------------+-------------+--------------+---------------+
-
-By default the mean is used as the comparison value, you may also select different value columns using ``compare_fields``, e.g. to show both ``mean`` and ``mode``:
-
-.. code-block:: bash
-
-    $ phpbench run --report='generator: "table", compare: "revs", cols: ["subject", "mean"], compare_fields: ["mean", "mode"]'
-
-.. note::
-
-    The compare function "squashes" the non-statistical columns which have the same
-    values - sometimes this may result in there being more than one "statstic"
-    for the ``compare`` column. In such cases extra columns are added suffixed
-    with an index, for example: ``revs:10:mean#1``.
-
-
-Difference Between Rows
-~~~~~~~~~~~~~~~~~~~~~~~
-
-You can show the percentage of difference from the lowest column value in the table (:math:`($meanOrMode / $min)  - 1) * 100`) by specifying the ``diff`` column. By
-default this will use the ``mean``, you can specify a different value using the ``diff_col`` option, e.g. ``diff_col: "mode"``.
-
-.. code-block:: bash
-
-    $ phpbench run --report='generator: "table", cols: ["subject", "revs", "mean", "diff"]'
-    +---------------+------+--------+---------+
-    | subject       | revs | mean   | diff    |
-    +---------------+------+--------+---------+
-    | benchVariance | 100  | 6.73μs | 0.00%   |
-    | benchStDev    | 100  | 8.11μs | +20.39% |
-    +---------------+------+--------+---------+
-
-Sorting
-~~~~~~~
-
-Sorting can be achieved on multiple columns in either ascending (``asc``) or descending (``desc``) order.
-
-.. code-block:: bash
-
-    $ phpbench run --report='generator: "table", cols: ["subject", "revs", "mean", "diff"], sort: {subject: "asc", mean: "desc"}'
-
 
 Default Reports
 ---------------
@@ -212,7 +154,7 @@ Shows aggregate details of each set of iterations:
     | HashingBench | benchSha256 |        | []     | 1000 | 10  | 1,255,792b | 1.273μs | 1.413μs | 1.294μs | 1.994μs | 0.242μs | 17.16% | 1.44x |
     +--------------+-------------+--------+--------+------+-----+------------+---------+---------+---------+---------+---------+--------+-------+
 
-It is uses the ``table`` generator, see :ref:`generator_table` for more information.
+It is uses the ``table`` generator, see :ref:`generator_expression` for more information.
 
 .. _report_default:
 
@@ -234,7 +176,7 @@ The default report presents the result of *each iteration*:
     | HashingBench | benchSha256 |        | []     | 1000 | 1    | 1,255,792b | 1.288μs  | -1σ          | -8.68%         |
     +--------------+-------------+--------+--------+------+------+------------+----------+--------------+----------------+
 
-It is uses the ``table`` generator, see :ref:`generator_table` for more information.
+It is uses the ``table`` generator, see :ref:`generator_expression` for more information.
 
 .. _report_env:
 
@@ -263,7 +205,7 @@ executed in.
     | vcs          | version | edde9dc7542cfa8e3ef4da459f0aaa5dfb095109 |
     +--------------+---------+------------------------------------------+
 
-Generator: :ref:`generator_table`.
+Generator: :ref:`generator_expression`.
 
 Columns:
 
