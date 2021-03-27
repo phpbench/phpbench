@@ -11,7 +11,7 @@ final class VariantSummaryFormatter implements VariantFormatter
 {
     public const DEFAULT_FORMAT = <<<'EOT'
 "Mo" ~ display_as_time(mode(variant.time.avg), coalesce(subject.time_unit,"microseconds"), subject.time_precision, subject.time_mode) ~ 
-" (±" ~ rstdev(variant.time.avg) ~ "%)"
+" (±" ~ format("%.2f", rstdev(variant.time.avg)) ~ "%)"
 EOT
     ;
     public const BASELINE_FORMAT = <<<'EOT'

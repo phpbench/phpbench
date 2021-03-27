@@ -94,13 +94,14 @@ EOT
                 'rstdev' => 'format("%.2f%%", rstdev(result_time_avg))',
             ],
             'baseline_cols' => [
-                'best' => $formatTime('min(result_time_avg)') . ' ~" Dif"~ percent_diff(min(baseline_time_avg), min(result_time_avg), 100)',
-                'worst' => $formatTime('max(result_time_avg)') . ' ~" Dif"~ percent_diff(max(baseline_time_avg), max(result_time_avg), 100)',
-                'mode' => $formatTime('mode(result_time_avg)') . ' ~" Dif"~ percent_diff(mode(baseline_time_avg), mode(result_time_avg), rstdev(result_time_avg))',
-                'mem_peak' => '(first(baseline_mem_peak) as bytes), percent_diff(first(baseline_mem_peak), first(result_mem_peak))',
+                'best' => $formatTime('min(result_time_avg)'),
+                'worst' => $formatTime('max(result_time_avg)'),
+                'mode' => $formatTime('mode(result_time_avg)') . ' ~" "~ percent_diff(mode(baseline_time_avg), mode(result_time_avg), rstdev(result_time_avg))',
+                'mem_peak' => '(first(baseline_mem_peak) as bytes) ~ " " ~ percent_diff(first(baseline_mem_peak), first(result_mem_peak))',
+                'rstdev' => 'format("%.2f%%", rstdev(result_time_avg)) ~ " " ~ percent_diff(first(baseline_time_avg), first(result_time_avg)) ',
             ],
             'aggregate' => ['benchmark_class', 'subject_name', 'variant_name'],
-            'break' => ['subject','benchmark'],
+            'break' => [],
         ]);
 
         $options->setAllowedTypes('title', ['null', 'string']);
