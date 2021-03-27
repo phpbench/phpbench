@@ -8,7 +8,8 @@ BC Breaks:
 
 - Removed `table` report generator, it is replaced by the `expression`
   generator which is now used to produce the `default` and `aggregate`
-  reports.
+  reports. The output and configuration is largely the same, but some features
+  have been removed.
 
 Features and Improvements:
 
