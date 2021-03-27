@@ -58,7 +58,7 @@ abstract class GeneratorTestCase extends IntegrationTestCase
             $actual = $e->getMessage();
         }
 
-        $approval->approve($actual;
+        $approval->approve($actual);
     }
 
     /**

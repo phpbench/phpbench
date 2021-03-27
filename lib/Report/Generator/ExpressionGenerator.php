@@ -277,8 +277,6 @@ EOT
 
     /**
      * @param array<string,mixed> $table
-     * @param array<string,string> $cols
-     * @param array<string,string> $baselineCols
      *
      * @return Generator<array<string,mixed>>
      */
@@ -367,9 +365,11 @@ EOT
     {
         $expressions = $config['expressions'];
         $map = [];
+
         foreach ($config['cols'] as $key => $expr) {
             if (is_int($key)) {
                 $map[(string)$expr] = (string)$expressions[$expr];
+
                 continue;
             }
             $map[(string)$key] = (string)$expr;
@@ -380,11 +380,13 @@ EOT
 
     /**
      * @param string[] $visibleCols
+     *
      * @return array<string,string>
      */
     private function resolveBaselineExpressionMap(Config $config, array $visibleCols): array
     {
         $map = [];
+
         foreach ($config['baseline_expressions'] as $name => $baselineExpression) {
             if (!in_array($name, $visibleCols)) {
                 continue;
