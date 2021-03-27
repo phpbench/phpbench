@@ -4,14 +4,10 @@ namespace PhpBench\Tests\Integration;
 
 use Generator;
 use PhpBench\Extension\CoreExtension;
-use PhpBench\Registry\Config;
-use PhpBench\Registry\ConfigurableRegistry;
 use PhpBench\Report\ReportManager;
 use PhpBench\Tests\IntegrationTestCase;
 use PhpBench\Tests\Util\Approval;
 use PhpBench\Tests\Util\TestUtil;
-use function ob_end_clean;
-use function ob_start;
 
 class ConfiguredReportsTest extends IntegrationTestCase
 {
@@ -45,6 +41,7 @@ class ConfiguredReportsTest extends IntegrationTestCase
     {
         $generators = $this->container()->get(CoreExtension::SERVICE_REGISTRY_GENERATOR);
         $renderers = $this->container()->get(CoreExtension::SERVICE_REGISTRY_RENDERER);
+
         foreach ($generators->getConfigNames() as $generator) {
             foreach ($renderers->getConfigNames() as $renderer) {
                 yield [
@@ -59,6 +56,7 @@ class ConfiguredReportsTest extends IntegrationTestCase
             if ($generator === 'composite') {
                 continue;
             }
+
             foreach ($renderers->getServiceNames() as $renderer) {
                 yield [
                     $generator,

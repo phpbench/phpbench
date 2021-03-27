@@ -56,7 +56,7 @@ class Approval
 
         if (count($parts) === 1) {
             $expected = $parts[0];
-            $parts =  [];
+            $parts = [];
         }
 
         if ($parts && isset($parts[$configCount - 1])) {
