@@ -89,6 +89,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\ExecutableFinder;
@@ -120,6 +121,7 @@ class CoreExtension implements ExtensionInterface
     public const PARAM_REMOTE_SCRIPT_REMOVE = 'remote_script_remove';
     public const PARAM_DISABLE_OUTPUT = 'console.disable_output';
     public const PARAM_CONSOLE_ANSI = 'console.ansi';
+    public const PARAM_CONSOLE_OUTPUT_STREAM = 'console.output_stream';
     public const PARAM_PROGRESS_SUMMARY_FORMAT = 'progress_summary_variant_format';
     public const PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT = 'progress_summary_baseline_format';
     public const PARAM_ANNOTATIONS = 'annotations';
@@ -135,12 +137,12 @@ class CoreExtension implements ExtensionInterface
     public const TAG_STORAGE_DRIVER = 'storage_driver';
     public const TAG_UUID_RESOLVER = 'uuid_resolver';
 
-    private const SERVICE_REGISTRY_DRIVER = 'storage.driver_registry';
-    private const SERVICE_REGISTRY_EXECUTOR = 'benchmark.registry.executor';
-    private const SERVICE_REGISTRY_GENERATOR = 'report.registry.generator';
-    private const SERVICE_REGISTRY_LOGGER = 'progress_logger.registry';
-    private const SERVICE_REGISTRY_RENDERER = 'report.registry.renderer';
-    private const SERVICE_VARIANT_SUMMARY_FORMATTER = 'progress_logger.variant_summary_formatter';
+    public const SERVICE_REGISTRY_DRIVER = 'storage.driver_registry';
+    public const SERVICE_REGISTRY_EXECUTOR = 'benchmark.registry.executor';
+    public const SERVICE_REGISTRY_GENERATOR = 'report.registry.generator';
+    public const SERVICE_REGISTRY_LOGGER = 'progress_logger.registry';
+    public const SERVICE_REGISTRY_RENDERER = 'report.registry.renderer';
+    public const SERVICE_VARIANT_SUMMARY_FORMATTER = 'progress_logger.variant_summary_formatter';
 
     public function configure(OptionsResolver $resolver): void
     {
@@ -174,6 +176,7 @@ class CoreExtension implements ExtensionInterface
             self::PARAM_ANNOTATIONS => true,
             self::PARAM_ATTRIBUTES => true,
             self::PARAM_DEBUG => false,
+            self::PARAM_CONSOLE_OUTPUT_STREAM => 'php://stdout',
         ]);
 
         $resolver->setAllowedTypes(self::PARAM_DEBUG, ['bool']);
@@ -203,6 +206,7 @@ class CoreExtension implements ExtensionInterface
         $resolver->setAllowedTypes(self::PARAM_DISABLE_OUTPUT, ['bool']);
         $resolver->setAllowedTypes(self::PARAM_PROGRESS_SUMMARY_FORMAT, ['string']);
         $resolver->setAllowedTypes(self::PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT, ['string']);
+        $resolver->setAllowedTypes(self::PARAM_CONSOLE_OUTPUT_STREAM, ['string']);
     }
 
     public function load(Container $container): void
@@ -214,7 +218,10 @@ class CoreExtension implements ExtensionInterface
                 return new NullOutput();
             }
 
-            $output = new ConsoleOutput();
+            $output = new StreamOutput(fopen(
+                $container->getParameter(self::PARAM_CONSOLE_OUTPUT_STREAM),
+                'w'
+            ));
 
             if (false === $container->getParameter(self::PARAM_CONSOLE_ANSI)) {
                 $output->setDecorated(false);
