@@ -16,7 +16,7 @@
 }
 ---
 {
-    "baseline_cols": {
+    "baseline_expressions": {
         "mode": "\"baseline: \" ~ mode(baseline_time_avg)"
     }
 }

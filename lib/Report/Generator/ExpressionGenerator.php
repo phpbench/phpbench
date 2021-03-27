@@ -82,6 +82,18 @@ EOT
             'title' => null,
             'description' => null,
             'cols' => [
+                'benchmark',
+                'subject',
+                'set',
+                'revs',
+                'its',
+                'mem_peak',
+                'best',
+                'mode',
+                'worst',
+                'rstdev',
+            ],
+            'expressions' => [
                 'benchmark' => 'first(benchmark_name)',
                 'subject' => 'first(subject_name)',
                 'set' => 'first(variant_name)',
@@ -93,7 +105,7 @@ EOT
                 'worst' => $formatTime('max(result_time_avg)'),
                 'rstdev' => 'format("%.2f%%", rstdev(result_time_avg))',
             ],
-            'baseline_cols' => [
+            'baseline_expressions' => [
                 'best' => $formatTime('min(result_time_avg)'),
                 'worst' => $formatTime('max(result_time_avg)'),
                 'mode' => $formatTime('mode(result_time_avg)') . ' ~" "~ percent_diff(mode(baseline_time_avg), mode(result_time_avg), rstdev(result_time_avg))',
@@ -107,6 +119,8 @@ EOT
         $options->setAllowedTypes('title', ['null', 'string']);
         $options->setAllowedTypes('description', ['null', 'string']);
         $options->setAllowedTypes('cols', 'array');
+        $options->setAllowedTypes('expressions', 'array');
+        $options->setAllowedTypes('baseline_expressions', 'array');
         $options->setAllowedTypes('aggregate', 'array');
         $options->setAllowedTypes('break', 'array');
     }
@@ -119,7 +133,7 @@ EOT
         $table = iterator_to_array($this->reportData($collection));
         $table = $this->normalize($table);
         $table = $this->aggregate($table, $config['aggregate']);
-        $table = iterator_to_array($this->evaluate($table, $config['cols'], $config['baseline_cols']));
+        $table = iterator_to_array($this->evaluate($table, $this->resolveExpressionMap($config), $config['baseline_expressions']));
         $tables = $this->partition($table, $config['break']);
 
         return $this->generateReports($tables, $config);
@@ -340,5 +354,20 @@ EOT
         }
 
         return $partitioned;
+    }
+
+    private function resolveExpressionMap(Config $config)
+    {
+        $expressions = $config['expressions'];
+        $map = [];
+        foreach ($config['cols'] as $key => $expr) {
+            if (is_int($key)) {
+                $map[$expr] = $expressions[$expr];
+                continue;
+            }
+            $map[$key] = $expr;
+        }
+
+        return $map;
     }
 }
