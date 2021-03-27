@@ -89,6 +89,14 @@ class ConfigurableRegistry extends Registry
     }
 
     /**
+     * @return string[]
+     */
+    public function getConfigNames(): array
+    {
+        return array_keys($this->configs);
+    }
+
+    /**
      * Set a named configuration.
      *
      * Note that all configurations must be associated with a named service
