@@ -78,11 +78,3 @@ Options:
 
 - **title**: *(string)* Title of the report.
 - **description**: *(string)* Description of the report.
-
-.. _Standard deviation: https://en.wikipedia.org/wiki/Standard_deviation
-.. _variance: https://en.wikipedia.org/wiki/Variance
-.. _relative standard deviation: https://en.wikipedia.org/wiki/Coefficient_of_variation
-.. _number of standard deviations: https://en.wikipedia.org/wiki/Z-score
-.. _Mode: https://en.wikipedia.org/wiki/Mode_(statistics)
-.. _microseconds: https://en.wikipedia.org/wiki/Microseconds
-.. _memory_get_peak_usage: http://php.net/manual/en/function.memory-get-peak-usage.php
