@@ -8,7 +8,7 @@ document which will later be rendered by using a :doc:`renderer
 
 This chapter will describe the default report generators.
 
-.. _generator_table:
+.. _generator_expression:
 
 ``expression``
 --------------
