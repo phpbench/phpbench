@@ -26,16 +26,6 @@ class ShowTest extends SystemTestCase
         );
 
         $this->assertExitCode(0, $process);
-        $output = $process->getOutput();
-        $this->assertStringContainsString(<<<'EOT'
-benchNothing-\PhpBench\Tests\System\benchmarks\set4\NothingBench
-+-----+------+-----+-----------+----------+----------+----------+--------+
-| set | revs | its | mem_peak  | best     | mode     | worst    | rstdev |
-+-----+------+-----+-----------+----------+----------+----------+--------+
-| 0   | 1    | 1   | 100 bytes | 10.000μs | 10.000μs | 10.000μs | 0.00%  |
-+-----+------+-----+-----------+----------+----------+----------+--------+
-EOT
-    , $output);
     }
 
     /**
@@ -50,15 +40,5 @@ EOT
         );
 
         $this->assertExitCode(0, $process);
-        $output = $process->getOutput();
-        $this->assertStringContainsString(<<<'EOT'
-benchNothing-benchNothing
-+------+-----+------+-----------+----------+--------------+----------------+
-| iter | set | revs | mem_peak  | time_avg | comp_z_value | comp_deviation |
-+------+-----+------+-----------+----------+--------------+----------------+
-| 0    | 0   | 1    | 100 bytes | 10.000μs | 0            | 0              |
-+------+-----+------+-----------+----------+--------------+----------------+
-EOT
-    , $output);
     }
 }
