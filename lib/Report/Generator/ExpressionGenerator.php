@@ -2,7 +2,6 @@
 
 namespace PhpBench\Report\Generator;
 
-use PhpBench\Report\Transform\SuiteCollectionTransformer;
 use function array_combine;
 use function array_key_exists;
 use Generator;
@@ -13,15 +12,13 @@ use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\Printer;
-use PhpBench\Model\Iteration;
-use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
-use PhpBench\Model\Variant;
 use PhpBench\Registry\Config;
 use PhpBench\Report\GeneratorInterface;
 use PhpBench\Report\Model\Report;
 use PhpBench\Report\Model\Reports;
 use PhpBench\Report\Model\Table;
+use PhpBench\Report\Transform\SuiteCollectionTransformer;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -138,6 +135,9 @@ EOT
      */
     public function generate(SuiteCollection $collection, Config $config): Reports
     {
+        $expressionMap = $this->resolveExpressionMap($config);
+        $baselineExpressionMap = $this->resolveBaselineExpressionMap($config, array_keys($expressionMap));
+
         $table = $this->transformer->suiteToTable($collection);
         $table = $this->aggregate($table, $config['aggregate']);
         $table = iterator_to_array($this->evaluate($table, $expressionMap, $baselineExpressionMap));
