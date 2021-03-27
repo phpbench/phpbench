@@ -11,6 +11,11 @@ use PhpBench\Tests\Util\TestUtil;
 
 class ConfiguredReportsTest extends IntegrationTestCase
 {
+    protected function setUp(): void
+    {
+        $this->workspace()->reset();
+    }
+
     /**
      * @dataProvider provideReport
      */

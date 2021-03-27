@@ -384,27 +384,6 @@ class RunTest extends SystemTestCase
     }
 
     /**
-     * It should generate in different output formats.
-     *
-     * @dataProvider provideOutputs
-     */
-    public function testOutputs($output): void
-    {
-        $process = $this->phpbench(
-            'run --output=' . $output . ' --report=default benchmarks/set1/BenchmarkBench.php'
-        );
-
-        $this->assertExitCode(0, $process);
-    }
-
-    public function provideOutputs(): array
-    {
-        return [
-            // @TODO: Reintroduce html/markdown
-        ];
-    }
-
-    /**
      * It should set the retry threshold.
      */
     public function testRetryThreshold(): void
