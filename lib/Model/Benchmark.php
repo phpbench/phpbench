@@ -92,6 +92,14 @@ class Benchmark implements \IteratorAggregate
         return $this->class;
     }
 
+    public function getName(): string
+    {
+        $parts = explode('\\', $this->class);
+        end($parts);
+
+        return current($parts);
+    }
+
     /**
      * Return the suite to which this benchmark belongs.
      */
