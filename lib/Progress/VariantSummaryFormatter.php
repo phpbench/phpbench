@@ -20,7 +20,7 @@ EOT
 " vs " ~ 
 "Mo" ~ display_as_time(mode(baseline.time.avg), coalesce(subject.time_unit,"microseconds"), subject.time_precision, subject.time_mode) ~ "] " ~ 
 percent_diff(mode(baseline.time.avg), mode(variant.time.avg), (rstdev(variant.time.avg) * 2)) ~
-" (±" ~ rstdev(variant.time.avg) ~ "%)"
+" (±" ~ format("%.2f", rstdev(variant.time.avg)) ~ "%)"
 EOT
     ;
 

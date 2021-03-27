@@ -22,7 +22,7 @@ class PercentageDifferencePrinter implements NodePrinter
         $prefix = $node->percentage() > 0 ? '+' : '';
 
         return sprintf(
-            '%s%s%%',
+            '%s%.2f%%',
             $prefix,
             $printer->print(new FloatNode($node->percentage()), $params)
         );
