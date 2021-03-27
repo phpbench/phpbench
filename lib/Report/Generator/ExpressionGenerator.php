@@ -82,7 +82,7 @@ EOT
             'title' => null,
             'description' => null,
             'cols' => [
-                'benchmark' => 'first(benchmark_class)',
+                'benchmark' => 'first(benchmark_name)',
                 'subject' => 'first(subject_name)',
                 'set' => 'first(variant_name)',
                 'revs' => 'first(variant_revs)',
@@ -150,6 +150,7 @@ EOT
 
                         yield array_merge([
                             'baseline' => $baseline ? true : false,
+                            'benchmark_name' => $subject->getBenchmark()->getName(),
                             'benchmark_class' => $subject->getBenchmark()->getClass(),
                             'subject_name' => $subject->getName(),
                             'subject_groups' => $subject->getGroups(),
