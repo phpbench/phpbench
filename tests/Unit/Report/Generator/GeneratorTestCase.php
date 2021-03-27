@@ -12,19 +12,68 @@
 
 namespace PhpBench\Tests\Unit\Report\Generator;
 
-use PhpBench\Dom\Document;
-use PhpBench\Tests\TestCase;
+use Generator;
+use PhpBench\DependencyInjection\Container;
+use PhpBench\Extension\ExpressionExtension;
+use PhpBench\Model\SuiteCollection;
+use PhpBench\Registry\Config;
+use PhpBench\Report\GeneratorInterface;
+use PhpBench\Report\Renderer\ConsoleRenderer;
+use PhpBench\Tests\IntegrationTestCase;
+use PhpBench\Tests\Util\Approval;
+use PhpBench\Tests\Util\TestUtil;
+use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Throwable;
 
-abstract class GeneratorTestCase extends TestCase
+abstract class GeneratorTestCase extends IntegrationTestCase
 {
-    protected function assertXPathEval(Document $document, $expected, $expression): void
+    /**
+     * @dataProvider provideGenerate
+     */
+    public function testGenerate(string $path): void
     {
-        $result = $document->evaluate($expression);
-        $this->assertEquals($expected, $result, sprintf('Xpath: %s', $expression));
+        $approval = Approval::create($path,3);
+
+        $container = $this->container();
+        $generator = $this->createGenerator($container);
+        $options = new OptionsResolver();
+        $generator->configure($options);
+
+        try {
+            $document = $generator->generate(
+                new SuiteCollection([TestUtil::createSuite(array_merge([
+                    'output_time_precision' => 3,
+                ], $approval->getConfig(0)))]),
+                new Config('asd', $options->resolve($approval->getConfig(1)))
+            );
+            $output = new BufferedOutput();
+            (
+                new ConsoleRenderer($output, $container->get(ExpressionExtension::SERVICE_PLAIN_PRINTER))
+            )->render($document, new Config('asd', [
+                'table_style' => 'default',
+            ]));
+            $actual = $output->fetch();
+        } catch (Throwable $e) {
+            $actual = $e->getMessage();
+        }
+
+        $approval->approve($actual);
     }
 
-    protected function assertXPathCount(Document $document, $expected, $expression): void
+    /**
+     * @return Generator<mixed>
+     */
+    public function provideGenerate(): Generator
     {
-        $this->assertXPathEval($document, $expected, 'count(' . $expression . ')');
+        foreach (glob(sprintf('%s/%s/*', __DIR__, $this->acceptanceSubPath())) as $path) {
+            yield [
+                $path
+            ];
+        }
     }
+
+    abstract protected function acceptanceSubPath(): string;
+
+    abstract protected function createGenerator(Container $container): GeneratorInterface;
 }

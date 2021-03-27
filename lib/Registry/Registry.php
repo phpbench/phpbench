@@ -131,6 +131,11 @@ class Registry
         return array_key_exists($name, $this->services);
     }
 
+    public function getServiceNames(): array
+    {
+        return array_keys($this->services);
+    }
+
     private function assertServiceExists(string $name): void
     {
         if (!array_key_exists($name, $this->services)) {

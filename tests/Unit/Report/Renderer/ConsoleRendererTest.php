@@ -12,51 +12,46 @@
 
 namespace PhpBench\Tests\Unit\Report\Renderer;
 
-use PhpBench\Formatter\Formatter;
+use Generator;
+use PhpBench\Expression\Printer;
 use PhpBench\Report\Renderer\ConsoleRenderer;
+use PhpBench\Report\RendererInterface;
+use PhpBench\Tests\Util\Approval;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 class ConsoleRendererTest extends AbstractRendererCase
 {
-    private $renderer;
+    /**
+     * @var BufferedOutput
+     */
     private $output;
-    private $formatter;
 
     protected function setUp(): void
     {
         $this->output = new BufferedOutput();
-        $this->formatter = $this->prophesize(Formatter::class);
     }
 
-    protected function getRenderer()
+    protected function getRenderer(): RendererInterface
     {
-        $renderer = new ConsoleRenderer($this->output, $this->formatter->reveal());
-
-        return $renderer;
+        return new ConsoleRenderer($this->output, $this->container()->get(Printer::class));
     }
 
     /**
-     * It should render a report.
+     * @dataProvider provideRender
      */
-    public function testRender(): void
+    public function testRender(string $path): void
     {
-        $this->renderReport($this->getReportsDocument(), []);
+        $approval = Approval::create($path, 2);
 
-        $output = $this->output->fetch();
-        $this->assertStringContainsString('Report Title', $output);
-        $this->assertStringContainsString('Report Description', $output);
-        $this->assertStringContainsString('Hello', $output);
-        $this->assertStringContainsString('Goodbye', $output);
+        $this->renderReport($this->reports(), $approval->getConfig(0));
+
+        $approval->approve($this->output->fetch(), true);
     }
 
-    /**
-     * It should allow the table style to be set.
-     */
-    public function testTableStyle(): void
+    public function provideRender(): Generator
     {
-        $this->renderReport($this->getReportsDocument(), [
-            'table_style' => 'compact',
-        ]);
-        $this->addToAssertionCount(1);
+        foreach (glob(sprintf('%s/%s/*', __DIR__, 'console')) as $path) {
+            yield [$path];
+        }
     }
 }

@@ -12,10 +12,10 @@
 
 namespace PhpBench\Report\Generator;
 
-use PhpBench\Dom\Document;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Report\GeneratorInterface;
+use PhpBench\Report\Model\Reports;
 use PhpBench\Report\ReportManager;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -48,20 +48,8 @@ class CompositeGenerator implements GeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function generate(SuiteCollection $collection, Config $config): Document
+    public function generate(SuiteCollection $collection, Config $config): Reports
     {
-        $reportDoms = $this->reportManager->generateReports($collection, $config['reports']);
-        $compositeDom = new Document();
-        $compositeEl = $compositeDom->createRoot('reports');
-        $compositeEl->setAttribute('name', $config->getName());
-
-        foreach ($reportDoms as $reportsDom) {
-            foreach ($reportsDom->xpath()->query('./report') as $reportDom) {
-                $reportEl = $compositeDom->importNode($reportDom, true);
-                $compositeEl->appendChild($reportEl);
-            }
-        }
-
-        return $compositeDom;
+        return $this->reportManager->generateReports($collection, $config['reports']);
     }
 }

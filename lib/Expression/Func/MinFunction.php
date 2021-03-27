@@ -19,6 +19,6 @@ final class MinFunction
             );
         }
 
-        return PhpValueFactory::fromNumber($result);
+        return PhpValueFactory::fromValue($result);
     }
 }

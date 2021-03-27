@@ -1,26 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Call to an undefined method DOMNode\\:\\:getAttribute\\(\\)\\.$#"
-			count: 1
-			path: lib/Report/Renderer/ConsoleRenderer.php
-
-		-
-			message: "#^Call to an undefined method DOMNode\\:\\:query\\(\\)\\.$#"
-			count: 2
-			path: lib/Report/Renderer/ConsoleRenderer.php
-
-		-
-			message: "#^Call to an undefined method DOMNode\\:\\:query\\(\\)\\.$#"
-			count: 2
-			path: lib/Report/Renderer/DelimitedRenderer.php
-
-		-
-			message: "#^Call to an undefined method DOMNode\\:\\:query\\(\\)\\.$#"
-			count: 2
-			path: lib/Report/Renderer/XsltRenderer.php
-
-		-
 			message: "#^Parameter \\#1 \\$suiteEl of method PhpBench\\\\Serializer\\\\XmlDecoder\\:\\:processSuite\\(\\) expects PhpBench\\\\Dom\\\\Element, DOMNode given\\.$#"
 			count: 1
 			path: lib/Serializer/XmlDecoder.php

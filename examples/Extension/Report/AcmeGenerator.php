@@ -2,9 +2,13 @@
 namespace PhpBench\Examples\Extension\Report;
 
 use PhpBench\Dom\Document;
+use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Report\GeneratorInterface;
+use PhpBench\Report\Model\Report;
+use PhpBench\Report\Model\Reports;
+use PhpBench\Report\Model\Table;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AcmeGenerator implements GeneratorInterface
@@ -17,45 +21,28 @@ class AcmeGenerator implements GeneratorInterface
         ]);
     }
 
-    public function generate(SuiteCollection $suiteCollection, Config $config): Document
+    public function generate(SuiteCollection $suiteCollection, Config $config): Reports
     {
-        $document = new Document();
-        $reportsEl = $document->createRoot('reports');
-        $reportsEl->setAttribute('name', 'table');
-        $reportEl = $reportsEl->appendElement('report');
-
-        $reportEl->setAttribute('title', $config['title']);
-        $reportEl->appendElement('description', $config['description']);
-
-        $tableEl = $reportEl->appendElement('table');
-        $colsEl = $tableEl->appendElement('cols');
-
-        $col = $colsEl->appendElement('col');
-        $col->setAttribute('name', 'candidate');
-        $col->setAttribute('label', 'Candidate Cat');
-        $col = $colsEl->appendElement('col');
-        $col->setAttribute('name', 'is_cat');
-        $col->setAttribute('label', 'Is Cat?');
-
-        $tableEl->setAttribute('title', 'This table will explain');
-
-        $groupEl = $tableEl->appendElement('group');
-        $groupEl->setAttribute('name', 'body');
+        $rows = [];
 
         foreach ([
             [ '🐈', 'Yes' ],
             [ '🐕', 'No' ],
         ] as [$symbol, $isCat]) {
-            $rowEl = $groupEl->appendElement('row');
-
-            $cellEl = $rowEl->appendElement('cell');
-            $cellEl->setAttribute('name', 'symbol');
-            $valueEl = $cellEl->appendElement('value', $symbol);
-            $cellEl = $rowEl->appendElement('cell');
-            $cellEl->setAttribute('name', 'is_cat');
-            $valueEl = $cellEl->appendElement('value', $isCat);
+            $rows[] = [
+                'symbol' => new StringNode($symbol),
+                'is_cat' => new StringNode($isCat),
+            ];
         }
 
-        return $document;
+        return Reports::fromReport(
+            Report::fromTables(
+                [
+                    Table::fromRowArray($rows, 'Cat or dog?'),
+                ],
+                $config['title'],
+                $config['description']
+            )
+        );
     }
 }

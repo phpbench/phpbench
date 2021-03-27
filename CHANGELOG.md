@@ -4,6 +4,15 @@ CHANGELOG
 master
 -----
 
+BC Breaks:
+
+- Removed `table` report generator, it is replaced by the `expression`
+  generator which is now used to produce the `default` and `aggregate`
+  reports. The output and configuration is largely the same, but some features
+  have been removed.
+
+Features and Improvements:
+
 - Introduced `display_as_time` function to handle formatting time with
   throughput.
 - Dynamically resolve timeunit / precision from expression (progress/report) #775

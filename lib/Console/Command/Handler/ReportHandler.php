@@ -15,10 +15,10 @@ namespace PhpBench\Console\Command\Handler;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Report\ReportManager;
 use PhpBench\Storage\StorageRegistry;
+use PhpBench\Util\Cast;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class ReportHandler
 {
@@ -48,15 +48,14 @@ class ReportHandler
 
     public function validateReportsFromInput(InputInterface $input): void
     {
-        $reportNames = $input->getOption(self::OPT_REPORT);
-        $this->reportManager->validateReportNames($reportNames);
+        $this->reportManager->validateReportNames(Cast::toStrings((array)$input->getOption(self::OPT_REPORT)));
     }
 
-    public function reportsFromInput(InputInterface $input, OutputInterface $output, SuiteCollection $collection): void
+    public function reportsFromInput(InputInterface $input, SuiteCollection $collection): void
     {
-        $reports = $input->getOption(self::OPT_REPORT);
-        $outputs = $input->getOption(self::OPT_OUTPUT);
+        $reports = Cast::toStrings((array)$input->getOption(self::OPT_REPORT));
+        $outputs = Cast::toStrings((array)$input->getOption(self::OPT_OUTPUT));
 
-        $this->reportManager->renderReports($output, $collection, $reports, $outputs);
+        $this->reportManager->renderReports($collection, $reports, $outputs);
     }
 }

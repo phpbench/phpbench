@@ -18,7 +18,7 @@ This information is recorded in the XML document:
     </env>
 
 This information can be readily viewed with the :ref:`report_env` report and can also be
-displayed when using the :ref:`table report generator <generator_table>`.
+displayed when using the :ref:`table report generator <generator_expression>`.
 
 GIT
 ---

@@ -1,8 +1,0 @@
-{
-    "foo": [
-        [ "printf", { "option_1": "value_1" } ]
-    ],
-    "bar": [
-        [ "printf", { "option_1": "value_1" } ]
-    ]
-}

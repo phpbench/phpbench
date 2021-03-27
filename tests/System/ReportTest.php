@@ -12,8 +12,6 @@
 
 namespace PhpBench\Tests\System;
 
-use Generator;
-
 class ReportTest extends SystemTestCase
 {
     /**
@@ -76,78 +74,5 @@ class ReportTest extends SystemTestCase
     {
         $process = $this->phpbench('report tests/Systemist.xml');
         $this->assertExitCode(1, $process);
-    }
-
-    /**
-     * It should generate in different output formats.
-     *
-     * @dataProvider provideOutputs
-     */
-    public function testOutputs($output): void
-    {
-        $this->getResult();
-        $process = $this->phpbench(
-            'report --file=' . $this->fname .' --output=' . $output . ' --report=default'
-        );
-
-        $this->assertExitCode(0, $process);
-    }
-
-    public function provideOutputs()
-    {
-        return [
-            ['html'],
-            ['markdown'],
-        ];
-    }
-
-    /**
-     * The core report generators should execute.
-     *
-     * @dataProvider provideGenerators
-     */
-    public function testGenerators($config): void
-    {
-        $this->getResult();
-        $process = $this->phpbench(
-            'report --file=' . $this->fname .' --report=\'' . json_encode($config) . '\''
-        );
-
-        $this->assertExitCode(0, $process);
-    }
-
-    /**
-     * @return Generator<mixed>
-     */
-    public function provideGenerators(): Generator
-    {
-        yield [['generator' => 'table']];
-
-        yield [['generator' => 'env']];
-
-        yield [['generator' => 'composite', 'reports' => ['default']]];
-    }
-
-    /**
-     * The core report generators should execute.
-     *
-     * @dataProvider providePreconfiguredReports
-     */
-    public function testPreConfiguredReports(string $reportName): void
-    {
-        $this->getResult();
-        $process = $this->phpbench(
-            'report --file=' . $this->fname .' --report=\'' . $reportName . '\''
-        );
-
-        $this->assertExitCode(0, $process);
-    }
-
-    /**
-     * @return Generator<mixed>
-     */
-    public function providePreconfiguredReports(): Generator
-    {
-        yield [ 'aggregate' ];
     }
 }

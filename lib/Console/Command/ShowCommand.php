@@ -85,7 +85,7 @@ EOT
         $collection = $storage->fetch($this->refResolver->resolve($input->getArgument('run_id')));
         $this->timeUnitHandler->timeUnitFromInput($input);
         $this->dumpHandler->dumpFromInput($input, $output, $collection);
-        $this->reportHandler->reportsFromInput($input, $output, $collection);
+        $this->reportHandler->reportsFromInput($input, $collection);
 
         return 0;
     }

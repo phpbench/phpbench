@@ -14,7 +14,7 @@ class NumberPrinter implements NodePrinter
      */
     private $precision;
 
-    public function __construct(int $precision = 3)
+    public function __construct(int $precision = 12)
     {
         $this->precision = $precision;
     }

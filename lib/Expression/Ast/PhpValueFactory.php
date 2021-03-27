@@ -7,7 +7,7 @@ use RuntimeException;
 
 final class PhpValueFactory
 {
-    public static function fromNumber($value): PhpValue
+    public static function fromValue($value): PhpValue
     {
         if (is_float($value)) {
             return new FloatNode($value);
@@ -23,6 +23,10 @@ final class PhpValueFactory
 
         if (is_null($value)) {
             return new NullNode();
+        }
+
+        if (is_bool($value)) {
+            return new BooleanNode($value);
         }
 
         throw new RuntimeException(sprintf(

@@ -6,7 +6,8 @@ use function array_combine;
 use function array_key_exists;
 use Generator;
 use function iterator_to_array;
-use PhpBench\Dom\Document;
+use PhpBench\Expression\Ast\Node;
+use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Expression\ExpressionLanguage;
@@ -17,6 +18,9 @@ use PhpBench\Model\SuiteCollection;
 use PhpBench\Model\Variant;
 use PhpBench\Registry\Config;
 use PhpBench\Report\GeneratorInterface;
+use PhpBench\Report\Model\Report;
+use PhpBench\Report\Model\Reports;
+use PhpBench\Report\Model\Table;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -78,7 +82,19 @@ EOT
             'title' => null,
             'description' => null,
             'cols' => [
-                'benchmark' => 'first(benchmark_class)',
+                'benchmark',
+                'subject',
+                'set',
+                'revs',
+                'its',
+                'mem_peak',
+                'best',
+                'mode',
+                'worst',
+                'rstdev',
+            ],
+            'expressions' => [
+                'benchmark' => 'first(benchmark_name)',
                 'subject' => 'first(subject_name)',
                 'set' => 'first(variant_name)',
                 'revs' => 'first(variant_revs)',
@@ -89,19 +105,22 @@ EOT
                 'worst' => $formatTime('max(result_time_avg)'),
                 'rstdev' => 'format("%.2f%%", rstdev(result_time_avg))',
             ],
-            'baseline_cols' => [
-                'best' => $formatTime('min(result_time_avg)') . ' ~" Dif"~ percent_diff(min(baseline_time_avg), min(result_time_avg), 100)',
-                'worst' => $formatTime('max(result_time_avg)') . ' ~" Dif"~ percent_diff(max(baseline_time_avg), max(result_time_avg), 100)',
-                'mode' => $formatTime('mode(result_time_avg)') . ' ~" Dif"~ percent_diff(mode(baseline_time_avg), mode(result_time_avg), rstdev(result_time_avg))',
-                'mem_peak' => '(first(baseline_mem_peak) as bytes), percent_diff(first(baseline_mem_peak), first(result_mem_peak))',
+            'baseline_expressions' => [
+                'best' => $formatTime('min(result_time_avg)'),
+                'worst' => $formatTime('max(result_time_avg)'),
+                'mode' => $formatTime('mode(result_time_avg)') . ' ~" "~ percent_diff(mode(baseline_time_avg), mode(result_time_avg), rstdev(result_time_avg))',
+                'mem_peak' => '(first(baseline_mem_peak) as bytes) ~ " " ~ percent_diff(first(baseline_mem_peak), first(result_mem_peak))',
+                'rstdev' => 'format("%.2f%%", rstdev(result_time_avg)) ~ " " ~ percent_diff(first(baseline_time_avg), first(result_time_avg)) ',
             ],
             'aggregate' => ['benchmark_class', 'subject_name', 'variant_name'],
-            'break' => ['subject','benchmark'],
+            'break' => [],
         ]);
 
         $options->setAllowedTypes('title', ['null', 'string']);
         $options->setAllowedTypes('description', ['null', 'string']);
         $options->setAllowedTypes('cols', 'array');
+        $options->setAllowedTypes('expressions', 'array');
+        $options->setAllowedTypes('baseline_expressions', 'array');
         $options->setAllowedTypes('aggregate', 'array');
         $options->setAllowedTypes('break', 'array');
     }
@@ -109,15 +128,18 @@ EOT
     /**
      * {@inheritDoc}
      */
-    public function generate(SuiteCollection $collection, Config $config): Document
+    public function generate(SuiteCollection $collection, Config $config): Reports
     {
+        $expressionMap = $this->resolveExpressionMap($config);
+        $baselineExpressionMap = $this->resolveBaselineExpressionMap($config, array_keys($expressionMap));
+
         $table = iterator_to_array($this->reportData($collection));
         $table = $this->normalize($table);
         $table = $this->aggregate($table, $config['aggregate']);
-        $table = iterator_to_array($this->evaluate($table, $config['cols'], $config['baseline_cols']));
+        $table = iterator_to_array($this->evaluate($table, $expressionMap, $baselineExpressionMap));
         $tables = $this->partition($table, $config['break']);
 
-        return $this->generateDocument($tables, $config);
+        return $this->generateReports($tables, $config);
     }
 
     /**
@@ -145,6 +167,7 @@ EOT
 
                         yield array_merge([
                             'baseline' => $baseline ? true : false,
+                            'benchmark_name' => $subject->getBenchmark()->getName(),
                             'benchmark_class' => $subject->getBenchmark()->getClass(),
                             'subject_name' => $subject->getName(),
                             'subject_groups' => $subject->getGroups(),
@@ -156,7 +179,8 @@ EOT
                             'variant_revs' => $variant->getRevolutions(),
                             'variant_iterations' => count($variant->getIterations()),
                             'suite_tag' => $suite->getTag() ? $suite->getTag()->__toString() : '<current>',
-                            'suite_date' => $suite->getDate()->format('c'),
+                            'suite_date' => $suite->getDate()->format('Y-m-d'),
+                            'suite_time' => $suite->getDate()->format('H:i:s'),
                             'iteration_index' => $itNum,
                         ], $this->resultData($iteration, 'result'), $this->resultData($baselineIteration, 'baseline'));
                     }
@@ -253,21 +277,19 @@ EOT
 
     /**
      * @param array<string,mixed> $table
-     * @param array<string,string> $cols
-     * @param array<string,string> $baselineCols
      *
      * @return Generator<array<string,mixed>>
      */
-    private function evaluate(array $table, array $cols, array $baselineCols): Generator
+    private function evaluate(array $table, array $exprMap, array $baselineExprMap): Generator
     {
         foreach ($table as $row) {
             $evaledRow = [];
 
-            foreach (($row['baseline'][0] ? array_merge($cols, $baselineCols) : $cols) as $name => $expr) {
+            foreach (($row['baseline'][0] ? array_merge($exprMap, $baselineExprMap) : $exprMap) as $name => $expr) {
                 try {
-                    $evaledRow[$name] = $this->printer->print($this->parser->parse($expr), $row);
+                    $evaledRow[$name] = $this->evaluator->evaluate($this->parser->parse($expr), $row);
                 } catch (EvaluationError $e) {
-                    $evaledRow[$name] = 'error: ' . $expr;
+                    $evaledRow[$name] = new StringNode('error: ' . $expr);
                     $this->logger->error($e->getMessage());
                 }
             }
@@ -277,75 +299,24 @@ EOT
     }
 
     /**
-     * @param array<string,array<int,array<string,string>>> $tables
+     * @param array<string,array<int,array<string,Node>>> $tables
      */
-    private function generateDocument(array $tables, Config $config): Document
+    private function generateReports(array $tables, Config $config): Reports
     {
-        $document = new Document();
-        $reportsEl = $document->createRoot('reports');
-        $reportsEl->setAttribute('name', 'table');
-        $reportEl = $reportsEl->appendElement('report');
-
-        if (isset($config['title'])) {
-            $reportEl->setAttribute('title', $config['title']);
-        }
-
-        if (isset($config['description'])) {
-            $reportEl->appendElement('description', $config['description']);
-        }
-
-        foreach ($tables as $breakHash => $table) {
-            $tableEl = $reportEl->appendElement('table');
-
-            foreach ($table as $row) {
-                $colsEl = $tableEl->appendElement('cols');
-
-                foreach (array_keys($row) as $colName) {
-                    $colEl = $colsEl->appendElement('col');
-                    $colEl->setAttribute('name', $colName);
-
-                    // column labels are the column names by default.
-                    // the user may override by column name or column index.
-                    $colLabel = $colName;
-
-                    if (isset($config['labels'][$colName])) {
-                        $colLabel = $config['labels'][$colName];
-                    }
-
-                    $colEl->setAttribute('label', $colLabel);
-                }
-
-                break;
-            }
-
-            if ($breakHash) {
-                $tableEl->setAttribute('title', (string)$breakHash);
-            }
-
-            $groupEl = $tableEl->appendElement('group');
-            $groupEl->setAttribute('name', 'body');
-
-            foreach ($table as $row) {
-                $rowEl = $groupEl->appendElement('row');
-
-                foreach ($row as $key => $cell) {
-                    $cellEl = $rowEl->appendElement('cell');
-                    $cellEl->setAttribute('name', $key);
-
-                    $valueEl = $cellEl->appendElement('value', $cell);
-                    $valueEl->setAttribute('role', 'primary');
-                }
-            }
-        }
-
-        return $document;
+        return Reports::fromReport(Report::fromTables(
+            array_map(function (array $table, string $title) {
+                return Table::fromRowArray($table, $title);
+            }, $tables, array_keys($tables)),
+            isset($config['title']) ? $config['title'] : null,
+            isset($config['description']) ? $config['description'] : null
+        ));
     }
 
     /**
-     * @param array<string,array<string,string>> $table
+     * @param array<string,array<string,Node>> $table
      * @param string[] $breakCols
      *
-     * @return array<string,array<int,array<string,string>>>
+     * @return array<string,array<int,array<string,Node>>>
      */
     private function partition(array $table, array $breakCols): array
     {
@@ -361,7 +332,16 @@ EOT
                     ));
                 }
 
-                return $row[$key];
+                $value = $row[$key];
+
+                if (!$value instanceof StringNode) {
+                    throw new RuntimeException(sprintf(
+                        'Partition value for "%s" must be a string, got "%s"',
+                        $key, get_class($value)
+                    ));
+                }
+
+                return $value->value();
             }, $breakCols));
 
             foreach ($breakCols as $col) {
@@ -376,5 +356,44 @@ EOT
         }
 
         return $partitioned;
+    }
+
+    /**
+     * @return array<string,string>
+     */
+    private function resolveExpressionMap(Config $config): array
+    {
+        $expressions = $config['expressions'];
+        $map = [];
+
+        foreach ($config['cols'] as $key => $expr) {
+            if (is_int($key)) {
+                $map[(string)$expr] = (string)$expressions[$expr];
+
+                continue;
+            }
+            $map[(string)$key] = (string)$expr;
+        }
+
+        return $map;
+    }
+
+    /**
+     * @param string[] $visibleCols
+     *
+     * @return array<string,string>
+     */
+    private function resolveBaselineExpressionMap(Config $config, array $visibleCols): array
+    {
+        $map = [];
+
+        foreach ($config['baseline_expressions'] as $name => $baselineExpression) {
+            if (!in_array($name, $visibleCols)) {
+                continue;
+            }
+            $map[(string)$name] = (string)$baselineExpression;
+        }
+
+        return $map;
     }
 }

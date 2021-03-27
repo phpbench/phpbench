@@ -32,15 +32,35 @@ class BenchmarkTest extends TestCase
     protected function setUp(): void
     {
         $this->suite = $this->prophesize(Suite::class);
-        $this->benchmark = new Benchmark($this->suite->reveal(), '/path/to', 'Class');
+        $this->benchmark = new Benchmark($this->suite->reveal(), 'Class');
     }
 
-    /**
-     * It should get and set .. things.
-     */
     public function testGetSet(): void
     {
         $this->assertSame($this->suite->reveal(), $this->benchmark->getSuite());
+        $this->assertEquals('Class', $this->benchmark->getClass());
+    }
+
+    /**
+     * @dataProvider provideName
+     */
+    public function testGetName(string $class, string $expected): void
+    {
+        $benchmark = new Benchmark($this->suite->reveal(), $class);
+        self::assertEquals($expected, $benchmark->getName());
+    }
+
+    /**
+     * @return array<array<string>>
+     */
+    public function provideName(): array
+    {
+        return [
+            [ '', '' ],
+            [ 'A', 'A' ],
+            [ 'A\\B', 'B' ],
+            [ 'A\\B\\Code', 'Code' ],
+        ];
     }
 
     /**

@@ -64,7 +64,10 @@ class DisplayAsPrinter implements NodePrinter
                 $unit,
                 $this->resolvePrecision($node->precision()),
                 $printer->print(
-                    new UnitNode(new StringNode($this->timeUnit->getDestSuffix($unit, $mode))),
+                    new UnitNode(new StringNode($this->timeUnit->getDestSuffix(
+                        $this->timeUnit->resolveDestUnit($unit),
+                        $mode
+                    ))),
                     $params
                 ),
                 $mode
@@ -94,7 +97,11 @@ class DisplayAsPrinter implements NodePrinter
     private function timeUnit(float $value, ?string $unit, ?int $precision, string $prettyUnit, ?string $mode): string
     {
         return sprintf('%s%s', number_format(
-            $this->timeUnit->toDestUnit($value, $unit, $mode),
+            $this->timeUnit->toDestUnit(
+                $value,
+                $this->timeUnit->resolveDestUnit($unit),
+                $mode
+            ),
             $precision ?: $this->timeUnit->getPrecision()
         ), $prettyUnit);
     }

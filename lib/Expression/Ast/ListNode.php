@@ -14,7 +14,7 @@ final class ListNode extends DelimitedListNode
                 return ListNode::fromValues($value);
             }
 
-            return PhpValueFactory::fromNumber($value);
+            return PhpValueFactory::fromValue($value);
         }, $values));
     }
 }

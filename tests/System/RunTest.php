@@ -384,28 +384,6 @@ class RunTest extends SystemTestCase
     }
 
     /**
-     * It should generate in different output formats.
-     *
-     * @dataProvider provideOutputs
-     */
-    public function testOutputs($output): void
-    {
-        $process = $this->phpbench(
-            'run --output=' . $output . ' --report=default benchmarks/set1/BenchmarkBench.php'
-        );
-
-        $this->assertExitCode(0, $process);
-    }
-
-    public function provideOutputs(): array
-    {
-        return [
-            ['html'],
-            ['markdown'],
-        ];
-    }
-
-    /**
      * It should set the retry threshold.
      */
     public function testRetryThreshold(): void
@@ -564,7 +542,7 @@ class RunTest extends SystemTestCase
             'run benchmarks/set4/NothingBench.php --php-disable-ini --report=env'
         );
         $this->assertExitCode(0, $process);
-        $this->assertMatchesRegularExpression('{ini\s+\| no}', $process->getOutput());
+        $this->assertMatchesRegularExpression('{ini\s+\| false}', $process->getOutput());
     }
 
     public function testErrorWhenTimeoutExceeded(): void

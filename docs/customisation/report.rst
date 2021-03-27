@@ -4,32 +4,11 @@ Reports
 Report Generator
 ----------------
 
-The report generators are responsible for generating an XML document which can
-subsequently be transformed into various outputs, for example:
+The report generators are responsible for generating an object structure which
+can be rendered to a result.
 
-.. code-block:: xml
-
-    <?xml version="1.0"?>
-    <reports name="table">
-      <report>
-        <table title="suite: 1343e9c58e0ce558616d2b86283a89137be2216c, date: 2020-11-16, stime: 14:17:52">
-          <cols>
-            <col name="benchmark" label="benchmark"/>
-            <col name="subject" label="subject"/>
-          </cols>
-          <group name="body">
-            <row>
-              <cell name="benchmark">
-                <value role="primary" class="">LogBench</value>
-              </cell>
-              <cell name="subject">
-                <value role="primary" class="">benchLog</value>
-              </cell>
-            </row>
-          </group>
-        </table>
-      </report>
-    </reports>
+Reports consist of tables, which consist of rows, which in turn consist of
+cells - which are infact :ref:`Expression Language <expression_language>` Nodes.
 
 Example Generator
 -----------------

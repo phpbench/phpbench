@@ -12,24 +12,35 @@
 
 return [
     'aggregate' => [
-        'generator' => 'table',
-        'cols' => ['benchmark', 'subject', 'set', 'revs', 'its', 'mem_peak', 'best', 'mean', 'mode', 'worst', 'stdev', 'rstdev', 'diff'],
+        'generator' => 'expression',
     ],
     'default' => [
-        'generator' => 'table',
-        'iterations' => true,
-        'cols' => ['benchmark', 'subject', 'set', 'revs', 'iter', 'mem_peak', 'iter', 'time_rev', 'comp_z_value', 'comp_deviation'],
-        'diff_col' => 'time_rev',
+        'generator' => 'expression',
+        'cols' => [
+            'iter' => 'first(iteration_index)',
+            'benchmark' => 'first(subject_name)',
+            'subject' => 'first(subject_name)',
+            'set' => 'first(variant_name)',
+            'revs' => 'first(variant_revs)',
+            'mem_peak' => 'first(result_mem_peak) as bytes',
+            'time_avg' => 'display_as_time(first(result_time_avg), first(subject_time_unit))',
+            'comp_z_value' => 'first(result_comp_z_value)',
+            'comp_deviation' => 'first(result_comp_deviation)',
+        ],
+        'aggregate' => ['benchmark_class', 'subject_name', 'variant_name', 'iteration_index'],
     ],
     'memory' => [
-        'generator' => 'table',
-        'iterations' => true,
-        'cols' => ['benchmark', 'subject', 'set', 'revs', 'iter', 'mem_final', 'mem_real', 'mem_peak'],
-    ],
-    'compare' => [
-        'generator' => 'table',
-        'cols' => ['benchmark', 'subject', 'set', 'revs'],
-        'compare' => 'suite',
-        'break' => [],
+        'generator' => 'expression',
+        'aggregate' => ['benchmark_class', 'subject_name', 'variant_name', 'iteration_index'],
+        'cols' => [
+            'iter' => 'first(iteration_index)',
+            'benchmark' => 'first(subject_name)',
+            'subject' => 'first(subject_name)',
+            'set' => 'first(variant_name)',
+            'revs' => 'first(variant_revs)',
+            'mem_final' => 'first(result_mem_final) as bytes',
+            'mem_real' => 'first(result_mem_real) as bytes',
+            'mem_peak' => 'first(result_mem_peak) as bytes',
+        ],
     ]
 ];

@@ -11,6 +11,6 @@ final class MeanFunction
 {
     public function __invoke(ListNode $values): PhpValue
     {
-        return PhpValueFactory::fromNumber(Statistics::mean($values->phpValues()));
+        return PhpValueFactory::fromValue(Statistics::mean($values->phpValues()));
     }
 }

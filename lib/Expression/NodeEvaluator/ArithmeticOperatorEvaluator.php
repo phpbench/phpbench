@@ -29,7 +29,7 @@ class ArithmeticOperatorEvaluator extends AbstractEvaluator
 
         $value = $this->evaluateNode($node, $leftValue->value(), $rightValue->value());
 
-        return PhpValueFactory::fromNumber($value);
+        return PhpValueFactory::fromValue($value);
     }
 
     /**

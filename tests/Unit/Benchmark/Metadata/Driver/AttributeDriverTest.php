@@ -53,6 +53,8 @@ class AttributeDriverTest extends TestCase
     public function provideLoadBenchmark(): Generator
     {
         if ($this->shouldSkip()) {
+            $this->markTestSkipped('PHP 8 only');
+
             return;
         }
 

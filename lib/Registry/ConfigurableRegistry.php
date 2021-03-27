@@ -26,6 +26,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * ```
  * $config = $reg->getConfig('foobar');
  * ```
+ *
+ * @template T of object
+ * @extends Registry<T>
  */
 class ConfigurableRegistry extends Registry
 {
@@ -83,6 +86,14 @@ class ConfigurableRegistry extends Registry
         }
 
         return $this->resolvedConfigs[$name];
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getConfigNames(): array
+    {
+        return array_keys($this->configs);
     }
 
     /**

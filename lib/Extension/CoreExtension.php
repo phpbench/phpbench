@@ -50,14 +50,6 @@ use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\Printer;
 use PhpBench\Expression\Printer\EvaluatingPrinter;
-use PhpBench\Formatter\Format\BalanceFormat;
-use PhpBench\Formatter\Format\InvertOnThroughputFormat;
-use PhpBench\Formatter\Format\NumberFormat;
-use PhpBench\Formatter\Format\PrintfFormat;
-use PhpBench\Formatter\Format\TimeUnitFormat;
-use PhpBench\Formatter\Format\TruncateFormat;
-use PhpBench\Formatter\FormatRegistry;
-use PhpBench\Formatter\Formatter;
 use PhpBench\Json\JsonDecoder;
 use PhpBench\Logger\ConsoleLogger;
 use PhpBench\Progress\Logger\BlinkenLogger;
@@ -77,11 +69,9 @@ use PhpBench\Remote\ProcessFactory;
 use PhpBench\Report\Generator\CompositeGenerator;
 use PhpBench\Report\Generator\EnvGenerator;
 use PhpBench\Report\Generator\ExpressionGenerator;
-use PhpBench\Report\Generator\TableGenerator;
+use PhpBench\Report\Generator\OutputTestGenerator;
 use PhpBench\Report\Renderer\ConsoleRenderer;
-use PhpBench\Report\Renderer\DebugRenderer;
 use PhpBench\Report\Renderer\DelimitedRenderer;
-use PhpBench\Report\Renderer\XsltRenderer;
 use PhpBench\Report\ReportManager;
 use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Serializer\XmlEncoder;
@@ -96,9 +86,9 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\ExecutableFinder;
@@ -130,6 +120,7 @@ class CoreExtension implements ExtensionInterface
     public const PARAM_REMOTE_SCRIPT_REMOVE = 'remote_script_remove';
     public const PARAM_DISABLE_OUTPUT = 'console.disable_output';
     public const PARAM_CONSOLE_ANSI = 'console.ansi';
+    public const PARAM_CONSOLE_OUTPUT_STREAM = 'console.output_stream';
     public const PARAM_PROGRESS_SUMMARY_FORMAT = 'progress_summary_variant_format';
     public const PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT = 'progress_summary_baseline_format';
     public const PARAM_ANNOTATIONS = 'annotations';
@@ -145,12 +136,12 @@ class CoreExtension implements ExtensionInterface
     public const TAG_STORAGE_DRIVER = 'storage_driver';
     public const TAG_UUID_RESOLVER = 'uuid_resolver';
 
-    private const SERVICE_REGISTRY_DRIVER = 'storage.driver_registry';
-    private const SERVICE_REGISTRY_EXECUTOR = 'benchmark.registry.executor';
-    private const SERVICE_REGISTRY_GENERATOR = 'report.registry.generator';
-    private const SERVICE_REGISTRY_LOGGER = 'progress_logger.registry';
-    private const SERVICE_REGISTRY_RENDERER = 'report.registry.renderer';
-    private const SERVICE_VARIANT_SUMMARY_FORMATTER = 'progress_logger.variant_summary_formatter';
+    public const SERVICE_REGISTRY_DRIVER = 'storage.driver_registry';
+    public const SERVICE_REGISTRY_EXECUTOR = 'benchmark.registry.executor';
+    public const SERVICE_REGISTRY_GENERATOR = 'report.registry.generator';
+    public const SERVICE_REGISTRY_LOGGER = 'progress_logger.registry';
+    public const SERVICE_REGISTRY_RENDERER = 'report.registry.renderer';
+    public const SERVICE_VARIANT_SUMMARY_FORMATTER = 'progress_logger.variant_summary_formatter';
 
     public function configure(OptionsResolver $resolver): void
     {
@@ -184,6 +175,7 @@ class CoreExtension implements ExtensionInterface
             self::PARAM_ANNOTATIONS => true,
             self::PARAM_ATTRIBUTES => true,
             self::PARAM_DEBUG => false,
+            self::PARAM_CONSOLE_OUTPUT_STREAM => 'php://stdout',
         ]);
 
         $resolver->setAllowedTypes(self::PARAM_DEBUG, ['bool']);
@@ -213,6 +205,7 @@ class CoreExtension implements ExtensionInterface
         $resolver->setAllowedTypes(self::PARAM_DISABLE_OUTPUT, ['bool']);
         $resolver->setAllowedTypes(self::PARAM_PROGRESS_SUMMARY_FORMAT, ['string']);
         $resolver->setAllowedTypes(self::PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT, ['string']);
+        $resolver->setAllowedTypes(self::PARAM_CONSOLE_OUTPUT_STREAM, ['string']);
     }
 
     public function load(Container $container): void
@@ -224,7 +217,10 @@ class CoreExtension implements ExtensionInterface
                 return new NullOutput();
             }
 
-            $output = new ConsoleOutput();
+            $output = new StreamOutput(fopen(
+                $container->getParameter(self::PARAM_CONSOLE_OUTPUT_STREAM),
+                'w'
+            ));
 
             if (false === $container->getParameter(self::PARAM_CONSOLE_ANSI)) {
                 $output->setDecorated(false);
@@ -236,6 +232,9 @@ class CoreExtension implements ExtensionInterface
             $output->getFormatter()->setStyle('result-good', new OutputFormatterStyle('green', null, []));
             $output->getFormatter()->setStyle('result-none', new OutputFormatterStyle(null, null, []));
             $output->getFormatter()->setStyle('result-failure', new OutputFormatterStyle('white', 'red', []));
+            $output->getFormatter()->setStyle('title', new OutputFormatterStyle('white', null, ['bold']));
+            $output->getFormatter()->setStyle('subtitle', new OutputFormatterStyle('white', null, []));
+            $output->getFormatter()->setStyle('description', new OutputFormatterStyle(null, null, []));
 
             return $output;
         });
@@ -277,7 +276,6 @@ class CoreExtension implements ExtensionInterface
         $this->registerEnvironment($container);
         $this->registerSerializer($container);
         $this->registerStorage($container);
-        $this->registerFormatter($container);
         $this->registerAsserters($container);
     }
 
@@ -613,9 +611,6 @@ class CoreExtension implements ExtensionInterface
 
     private function registerReportGenerators(Container $container): void
     {
-        $container->register(TableGenerator::class, function (Container $container) {
-            return new TableGenerator();
-        }, [self::TAG_REPORT_GENERATOR => ['name' => 'table']]);
         $container->register(ExpressionGenerator::class, function (Container $container) {
             return new ExpressionGenerator(
                 $container->get(ExpressionLanguage::class),
@@ -627,6 +622,9 @@ class CoreExtension implements ExtensionInterface
         $container->register(EnvGenerator::class, function (Container $container) {
             return new EnvGenerator();
         }, [self::TAG_REPORT_GENERATOR => ['name' => 'env']]);
+        $container->register(OutputTestGenerator::class, function (Container $container) {
+            return new OutputTestGenerator();
+        }, [self::TAG_REPORT_GENERATOR => ['name' => 'output_test']]);
         $container->register(CompositeGenerator::class, function (Container $container) {
             return new CompositeGenerator(
                 $container->get(ReportManager::class)
@@ -639,39 +637,17 @@ class CoreExtension implements ExtensionInterface
     private function registerReportRenderers(Container $container): void
     {
         $container->register(ConsoleRenderer::class, function (Container $container) {
-            return new ConsoleRenderer($container->get(OutputInterface::class), $container->get(Formatter::class));
+            return new ConsoleRenderer(
+                $container->get(OutputInterface::class),
+                $container->get(Printer::class)
+            );
         }, [self::TAG_REPORT_RENDERER => ['name' => 'console']]);
-        $container->register(XsltRenderer::class, function (Container $container) {
-            return new XsltRenderer($container->get(OutputInterface::class), $container->get(Formatter::class));
-        }, [self::TAG_REPORT_RENDERER => ['name' => 'xslt']]);
-        $container->register(DebugRenderer::class, function (Container $container) {
-            return new DebugRenderer($container->get(OutputInterface::class));
-        }, [self::TAG_REPORT_RENDERER => ['name' => self::PARAM_DEBUG]]);
         $container->register(DelimitedRenderer::class, function (Container $container) {
-            return new DelimitedRenderer($container->get(OutputInterface::class));
+            return new DelimitedRenderer(
+                $container->get(OutputInterface::class),
+                $container->get(ExpressionExtension::SERVICE_BARE_PRINTER)
+            );
         }, [self::TAG_REPORT_RENDERER => ['name' => 'delimited']]);
-    }
-
-    private function registerFormatter(Container $container): void
-    {
-        $container->register(FormatRegistry::class, function (Container $container) {
-            $registry = new FormatRegistry();
-            $registry->register('printf', new PrintfFormat());
-            $registry->register('balance', new BalanceFormat());
-            $registry->register('invert_on_throughput', new InvertOnThroughputFormat($container->get(TimeUnit::class)));
-            $registry->register('number', new NumberFormat());
-            $registry->register('truncate', new TruncateFormat());
-            $registry->register('time', new TimeUnitFormat($container->get(TimeUnit::class)));
-
-            return $registry;
-        });
-
-        $container->register(Formatter::class, function (Container $container) {
-            $formatter = new Formatter($container->get(FormatRegistry::class));
-            $formatter->classesFromFile(__DIR__ . '/config/class/main.json');
-
-            return $formatter;
-        });
     }
 
     private function registerAsserters(Container $container): void
