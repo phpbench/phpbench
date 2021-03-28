@@ -281,6 +281,13 @@ EOT
 
         foreach ($config['cols'] as $key => $expr) {
             if (is_int($key)) {
+                if (!isset($expressions[$expr])) {
+                    throw new RuntimeException(sprintf(
+                        'No expression with name "%s" is available, available expressions: "%s"',
+                        $expr,
+                        implode('", "', array_keys($expressions))
+                    ));
+                }
                 $map[(string)$expr] = (string)$expressions[$expr];
 
                 continue;

@@ -13,7 +13,7 @@ This chapter will describe the default report generators.
 ``expression``
 --------------
 
-The table generator is the main report generator - it is the generator that allows you to analyze your
+The expression generator is the main report generator - it is the generator that allows you to analyze your
 benchmarking results.
 
 Class: ``PhpBench\Report\Generator\TableGenerator``.
@@ -37,18 +37,18 @@ Columns
 The visible columns are dicated by the ``cols`` configuration, you can also
 override or set sessions:
 
-.. code-block:: javascript
-
-    {
-        "cols": {
-            "subject",
-            "mode",
-            "foobar": "\"Hello\""
-        }
-    }
+.. phpbench:: ../examples/Command/report-generators-columns
+  :section: config
 
 The above will only show the default columns "subject" and "mode" but will
 also add a new column with an :ref:`expression <expression_language>` which evaluates to the string ``Hello``.
+
+.. phpbench:: ../examples/Command/report-generators-columns
+  :language: bash
+  :section: command
+
+.. phpbench:: ../examples/Command/report-generators-columns
+  :section: output
 
 Data
 ----
