@@ -61,10 +61,10 @@ class CommandsTest extends IntegrationTestCase
     private function createExample(): void
     {
         $this->workspace()->put('NothingBench.php', <<<'EOT'
-        <?php
-        
-        class NothingBench { public function benchNothing(): void {}}
-        EOT
-                );
+<?php
+
+class NothingBench { public function benchNothing(): void {}}
+EOT
+        );
     }
 }
