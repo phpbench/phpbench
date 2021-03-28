@@ -1,8 +1,8 @@
 CHANGELOG
 =========
 
-master
------
+1.0.0-alpha8
+------------
 
 BC Breaks:
 
