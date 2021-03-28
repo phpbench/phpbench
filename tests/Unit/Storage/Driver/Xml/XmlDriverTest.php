@@ -95,7 +95,7 @@ class XmlDriverTest extends TestCase
     public function testFetch(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Cannot find run with UUID');
+        $this->expectExceptionMessage('Cannot find run with reference');
         $uuid = '1339f38b191b77e1185f9729eb25a2aa4e262b01';
         $this->filesystem->exists('/path/to/7e0/3/c/' . $uuid . '.xml')->willReturn(false);
 

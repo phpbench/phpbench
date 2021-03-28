@@ -7,6 +7,9 @@ use PhpBench\Extension\CoreExtension;
 use PhpBench\Extension\ExpressionExtension;
 use Psr\Container\ContainerInterface;
 
+/**
+ * @Iterations(100)
+ */
 abstract class IntegrationBenchCase
 {
     protected function container(): ContainerInterface

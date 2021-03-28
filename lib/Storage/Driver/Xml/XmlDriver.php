@@ -66,7 +66,7 @@ class XmlDriver implements DriverInterface
     {
         if (!$this->has($runId)) {
             throw new \InvalidArgumentException(sprintf(
-                'Cannot find run with UUID "%s"', $runId
+                'Cannot find run with reference "%s"', $runId
             ));
         }
 
