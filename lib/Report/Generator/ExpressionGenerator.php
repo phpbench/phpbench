@@ -2,7 +2,6 @@
 
 namespace PhpBench\Report\Generator;
 
-use Symfony\Component\OptionsResolver\Options;
 use function array_combine;
 use function array_key_exists;
 use Generator;
@@ -22,6 +21,7 @@ use PhpBench\Report\Model\Table;
 use PhpBench\Report\Transform\SuiteCollectionTransformer;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ExpressionGenerator implements GeneratorInterface

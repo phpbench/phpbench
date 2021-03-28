@@ -107,7 +107,9 @@ class Approval
     {
         if (null === $this->expected || $force) {
             file_put_contents($this->path, implode("\n---\n", array_merge(
-                $this->sections,
+                array_map(function (string $section) {
+                    return trim($section);
+                }, $this->sections),
                 [
                     $actual
                 ]
