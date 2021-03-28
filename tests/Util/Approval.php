@@ -93,7 +93,7 @@ class Approval
         return $this->configs[$offset];
     }
 
-    public function approve(string $actual, bool $force = false): void
+    public function approve(string $actual, bool $force = true): void
     {
         if (null === $this->expected || $force) {
             file_put_contents($this->path, implode("\n---\n", array_merge(

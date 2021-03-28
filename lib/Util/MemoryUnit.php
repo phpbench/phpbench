@@ -50,6 +50,7 @@ class MemoryUnit
     public static function suffixFor(string $unit): string
     {
         $unit = self::resolveUnit($unit);
+
         return isset(self::$suffixes[$unit]) ? self::$suffixes[$unit] : $unit;
     }
 

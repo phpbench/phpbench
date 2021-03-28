@@ -61,30 +61,32 @@ class MemoryUnitTest extends TestCase
     }
 
 
-        /**
-         * @dataProvider provideSuffix
-         */
-        public function testSuffix(string $unit, string $expected): void
-        {
-            self::assertEquals($expected, MemoryUnit::suffixFor($unit));
-        }
+    /**
+     * @dataProvider provideSuffix
+     */
+    public function testSuffix(string $unit, string $expected): void
+    {
+        self::assertEquals($expected, MemoryUnit::suffixFor($unit));
+    }
         
-        /**
-         * @return Generator<mixed>
-         */
-        public function provideSuffix(): Generator
-        {
-            yield [
+    /**
+     * @return Generator<mixed>
+     */
+    public function provideSuffix(): Generator
+    {
+        yield [
                 'megabytes',
                 'mb',
             ];
-            yield [
+
+        yield [
                 'mb',
                 'mb',
             ];
-            yield [
+
+        yield [
                 'bytes',
                 'b',
             ];
-        }
+    }
 }
