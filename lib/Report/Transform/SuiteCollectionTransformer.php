@@ -10,6 +10,8 @@ use PhpBench\Model\Variant;
 
 final class SuiteCollectionTransformer
 {
+    public const COL_HAS_BASELINE = 'has_baseline';
+
     /**
      * @return array<string,array<string,mixed>>
      */
@@ -42,7 +44,7 @@ final class SuiteCollectionTransformer
                         $baselineIteration = $baseline ? $baseline->getIteration($itNum) : null;
 
                         yield array_merge([
-                            'baseline' => $baseline ? true : false,
+                            self::COL_HAS_BASELINE => $baseline ? true : false,
                             'benchmark_name' => $subject->getBenchmark()->getName(),
                             'benchmark_class' => $subject->getBenchmark()->getClass(),
                             'subject_name' => $subject->getName(),
