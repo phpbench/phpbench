@@ -75,7 +75,13 @@ class DisplayAsPrinter implements NodePrinter
         }
 
         if (MemoryUnit::isMemoryUnit($unit)) {
-            return $this->memoryUnit($value->value(), $unit);
+            return $this->memoryUnit(
+                $value->value(),
+                $unit,
+                $printer->print(new UnitNode(
+                    new StringNode(MemoryUnit::suffixFor($unit))
+                ), $params)
+            );
         }
 
         throw new PrinterError(sprintf(
@@ -109,9 +115,13 @@ class DisplayAsPrinter implements NodePrinter
     /**
      * Return memory in bytes
      */
-    private function memoryUnit(float $value, string $unit): string
+    private function memoryUnit(float $value, string $unit, string $prettyUnit): string
     {
-        return sprintf('%s %s', MemoryUnit::convertTo($value, MemoryUnit::BYTES, $unit), $unit);
+        return sprintf(
+            '%s%s',
+            number_format(MemoryUnit::convertTo($value, MemoryUnit::BYTES, $unit)),
+            $prettyUnit
+        );
     }
 
     private function resolvePrecision(?Node $node): ?int

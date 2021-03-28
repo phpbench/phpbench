@@ -59,4 +59,32 @@ class MemoryUnitTest extends TestCase
         $this->expectExceptionMessage('Unknown memory unit');
         MemoryUnit::convertTo(5, 'bobobytes', MemoryUnit::BYTES);
     }
+
+
+        /**
+         * @dataProvider provideSuffix
+         */
+        public function testSuffix(string $unit, string $expected): void
+        {
+            self::assertEquals($expected, MemoryUnit::suffixFor($unit));
+        }
+        
+        /**
+         * @return Generator<mixed>
+         */
+        public function provideSuffix(): Generator
+        {
+            yield [
+                'megabytes',
+                'mb',
+            ];
+            yield [
+                'mb',
+                'mb',
+            ];
+            yield [
+                'bytes',
+                'b',
+            ];
+        }
 }
