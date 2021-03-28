@@ -198,7 +198,7 @@ EOT
         foreach ($table as $row) {
             $evaledRow = [];
 
-            foreach (($row['baseline'][0] ? array_merge($exprMap, $baselineExprMap) : $exprMap) as $name => $expr) {
+            foreach (($row[SuiteCollectionTransformer::COL_HAS_BASELINE][0] ? array_merge($exprMap, $baselineExprMap) : $exprMap) as $name => $expr) {
                 try {
                     $evaledRow[$name] = $this->evaluator->evaluate($this->parser->parse($expr), $row);
                 } catch (EvaluationError $e) {
