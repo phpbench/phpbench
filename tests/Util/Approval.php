@@ -10,9 +10,9 @@ use RuntimeException;
 class Approval
 {
     /**
-     * @var array<array<mixed,mixed>>
+     * @var string[]
      */
-    private $configs;
+    private $sections;
 
     /**
      * @var string
@@ -25,16 +25,22 @@ class Approval
     private $path;
 
     /**
-     * @param array<array<mixed,mixed>> $configs
+     * @var string
      */
-    public function __construct(string $path, array $configs, ?string $expected)
+    private $delimiter;
+
+    /**
+     * @param string[] $sections
+     */
+    public function __construct(string $path, array $sections, string $delimiter, ?string $expected)
     {
-        $this->configs = $configs;
+        $this->sections = $sections;
         $this->expected = $expected;
         $this->path = $path;
+        $this->delimiter = $delimiter;
     }
 
-    public static function create(string $path, int $configCount): self
+    public static function create(string $path, int $configCount, string $delimiter = '---'): self
     {
         if (!file_exists($path)) {
             if (!file_exists(dirname($path))) {
@@ -45,7 +51,7 @@ class Approval
         $parts = array_values(
             (array)array_filter(
                 explode(
-                    '---',
+                    $delimiter,
                     (string)file_get_contents($path),
                     $configCount
                 )
@@ -64,18 +70,7 @@ class Approval
             unset($parts[$configCount - 1]);
         }
 
-        return new self($path, array_map(function (string $jsonConfig): array {
-            $config = json_decode($jsonConfig, true);
-
-            if (null === $config) {
-                throw new RuntimeException(sprintf(
-                    'Invalid JSON config: "%s"',
-                    $jsonConfig
-                ));
-            }
-
-            return $config;
-        }, $parts), $expected);
+        return new self($path, array_values($parts), $delimiter, $expected);
     }
 
     /**
@@ -83,23 +78,38 @@ class Approval
      */
     public function getConfig(int $offset): array
     {
-        if (!isset($this->configs[$offset])) {
+        $rawConfig = $this->getSection($offset);
+        $config = json_decode($rawConfig, true);
+
+        if (null === $config) {
             throw new RuntimeException(sprintf(
-                'No config at offset "%s"',
-                $offset
+                'Invalid JSON config: "%s"',
+                $rawConfig
             ));
         }
 
-        return $this->configs[$offset];
+        return $config;
+    }
+
+    public function getSection(int $offset): string
+    {
+        if (!isset($this->sections[$offset])) {
+            throw new RuntimeException(sprintf(
+                'No section at offset "%s", have sections at offsets "%s"',
+                $offset, implode('", "', array_keys($this->sections))
+            ));
+        }
+
+        return $this->sections[$offset];
     }
 
     public function approve(string $actual, bool $force = false): void
     {
         if (null === $this->expected || $force) {
             file_put_contents($this->path, implode("\n---\n", array_merge(
-                array_map(function (array $config) {
-                    return json_encode($config, JSON_PRETTY_PRINT);
-                }, $this->configs),
+                array_map(function (string $section) {
+                    return trim($section);
+                }, $this->sections),
                 [
                     $actual
                 ]

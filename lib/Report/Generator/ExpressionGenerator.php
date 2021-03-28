@@ -21,6 +21,7 @@ use PhpBench\Report\Model\Table;
 use PhpBench\Report\Transform\SuiteCollectionTransformer;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ExpressionGenerator implements GeneratorInterface
@@ -98,25 +99,8 @@ EOT
                 'worst',
                 'rstdev',
             ],
-            'expressions' => [
-                'benchmark' => 'first(benchmark_name)',
-                'subject' => 'first(subject_name)',
-                'set' => 'first(variant_name)',
-                'revs' => 'first(variant_revs)',
-                'its' => 'first(variant_iterations)',
-                'mem_peak' => 'max(result_mem_peak) as bytes',
-                'best' => $formatTime('min(result_time_avg)'),
-                'mode' => $formatTime('mode(result_time_avg)'),
-                'worst' => $formatTime('max(result_time_avg)'),
-                'rstdev' => 'format("%.2f%%", rstdev(result_time_avg))',
-            ],
-            'baseline_expressions' => [
-                'best' => $formatTime('min(result_time_avg)'),
-                'worst' => $formatTime('max(result_time_avg)'),
-                'mode' => $formatTime('mode(result_time_avg)') . ' ~" "~ percent_diff(mode(baseline_time_avg), mode(result_time_avg), rstdev(result_time_avg))',
-                'mem_peak' => '(first(baseline_mem_peak) as bytes) ~ " " ~ percent_diff(first(baseline_mem_peak), first(result_mem_peak))',
-                'rstdev' => 'format("%.2f%%", rstdev(result_time_avg)) ~ " " ~ percent_diff(first(baseline_time_avg), first(result_time_avg)) ',
-            ],
+            'expressions' => [],
+            'baseline_expressions' => [],
             'aggregate' => ['benchmark_class', 'subject_name', 'variant_name'],
             'break' => [],
         ]);
@@ -128,6 +112,29 @@ EOT
         $options->setAllowedTypes('baseline_expressions', 'array');
         $options->setAllowedTypes('aggregate', 'array');
         $options->setAllowedTypes('break', 'array');
+        $options->setNormalizer('expressions', function (Options $options, array $expressions) use ($formatTime) {
+            return array_merge([
+                'benchmark' => 'first(benchmark_name)',
+                'subject' => 'first(subject_name)',
+                'set' => 'first(variant_name)',
+                'revs' => 'first(variant_revs)',
+                'its' => 'first(variant_iterations)',
+                'mem_peak' => 'max(result_mem_peak) as bytes',
+                'best' => $formatTime('min(result_time_avg)'),
+                'mode' => $formatTime('mode(result_time_avg)'),
+                'worst' => $formatTime('max(result_time_avg)'),
+                'rstdev' => 'format("%.2f%%", rstdev(result_time_avg))',
+            ], $expressions);
+        });
+        $options->setNormalizer('baseline_expressions', function (Options $options, array $expressions) use ($formatTime) {
+            return array_merge([
+                'best' => $formatTime('min(result_time_avg)'),
+                'worst' => $formatTime('max(result_time_avg)'),
+                'mode' => $formatTime('mode(result_time_avg)') . ' ~" "~ percent_diff(mode(baseline_time_avg), mode(result_time_avg), rstdev(result_time_avg))',
+                'mem_peak' => '(first(baseline_mem_peak) as bytes) ~ " " ~ percent_diff(first(baseline_mem_peak), first(result_mem_peak))',
+                'rstdev' => 'format("%.2f%%", rstdev(result_time_avg)) ~ " " ~ percent_diff(first(baseline_time_avg), first(result_time_avg)) ',
+            ], $expressions);
+        });
     }
 
     /**
@@ -280,7 +287,16 @@ EOT
         $map = [];
 
         foreach ($config['cols'] as $key => $expr) {
-            if (is_int($key)) {
+            if (is_int($key) || null === $expr) {
+                $expr = null === $expr ? $key : $expr;
+
+                if (!isset($expressions[$expr])) {
+                    throw new RuntimeException(sprintf(
+                        'No expression with name "%s" is available, available expressions: "%s"',
+                        $expr,
+                        implode('", "', array_keys($expressions))
+                    ));
+                }
                 $map[(string)$expr] = (string)$expressions[$expr];
 
                 continue;

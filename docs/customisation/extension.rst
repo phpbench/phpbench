@@ -39,7 +39,7 @@ First, create a dependency injection container extension:
 
 Then it can be registered in ``phpbench.json``:
 
-.. code-block:: json
+.. code-block:: javascript
 
     {
         "extensions": [
@@ -70,7 +70,7 @@ Note that:
 
 You can activate and use your extension as follows ``phpbench.json``:
 
-.. code-block:: json
+.. code-block:: javascript
 
     {
         "extensions": [

@@ -1,22 +1,27 @@
 Report Generators
 =================
 
-PHPBench generates reports using report generators. These are classes which
-implement the ``PhpBench\Report\GeneratorInterface`` and produce a report XML
-document which will later be rendered by using a :doc:`renderer
-<report-renderers>` (the ``console`` renderer by default).
-
-This chapter will describe the default report generators.
+PHPBench reports are generated with report generators. These can subsequently
+be rendered with :doc:`report renderers <report-renderers>`.
 
 .. _generator_expression:
 
 ``expression``
 --------------
 
-The table generator is the main report generator - it is the generator that allows you to analyze your
-benchmarking results.
+The expression generator is the generator that allows you to analyze your
+benchmarking results. It uses the PHPBench :doc:`expression language
+<expression>` to evaluate tabular data:
 
-Class: ``PhpBench\Report\Generator\TableGenerator``.
+.. approved:: ../examples/Command/report-generators-expression
+  :language: javascript
+  :section: 1
+
+Yields something like:
+
+.. approved:: ../examples/Command/report-generators-expression
+  :language: javascript
+  :section: 2
 
 Options:
 
@@ -34,26 +39,86 @@ Options:
 Columns
 ~~~~~~~
 
-The visible columns are dicated by the ``cols`` configuration, you can also
-override or set sessions:
+The visible columns are dicated by the ``cols`` configuration:
 
-.. code-block:: javascript
+.. approved:: ../examples/Command/report-generators-column-visibility
+  :language: javascript
+  :section: 0
 
-    {
-        "cols": {
-            "subject",
-            "mode",
-            "foobar": "\"Hello\""
-        }
-    }
+When using the report:
 
-The above will only show the default columns "subject" and "mode" but will
-also add a new column with an :ref:`expression <expression_language>` which evaluates to the string ``Hello``.
+.. approved:: ../examples/Command/report-generators-column-visibility
+  :language: shell
+  :section: 1
+
+It will only show the selected columns:
+
+.. approved:: ../examples/Command/report-generators-column-visibility
+  :language: bash
+  :section: 2
+
+You can also override expressions by passing a map:
+
+.. approved:: ../examples/Command/report-generators-column-override
+  :language: javascript
+  :section: 0
+
+Which yields:
+
+.. approved:: ../examples/Command/report-generators-column-override
+  :language: bash
+  :section: 2
+
+.. _generator_expression_break:
+
+Break
+~~~~~
+
+You can partition the report into mupltiple tables by using the ``break`` option:
+
+.. approved:: ../examples/Command/report-generators-break
+  :language: javascript
+  :section: 0
+
+Now each benchmark class will get its own table:
+
+.. approved:: ../examples/Command/report-generators-break
+  :language: bash
+  :section: 2
+
+.. _generator_expression_expressions:
+
+Expressions
+-----------
+
+The expressions define the available columns, you can add or override
+expressions:
+
+.. approved:: ../examples/Command/report-generators-expressions
+  :language: javascript
+  :section: 0
+
+Which yields:
+
+.. approved:: ../examples/Command/report-generators-expressions
+  :language: bash
+  :section: 2
 
 Data
 ----
 
-TODO
+The expressions act on table data. You can get a list of all available columns
+with:
+
+.. approved:: ../examples/Command/report-generators-data
+  :language: bash
+  :section: 1
+
+Yielding:
+
+.. approved:: ../examples/Command/report-generators-data
+  :language: bash
+  :section: 2
 
 ``composite``
 -------------

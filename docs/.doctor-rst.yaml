@@ -1,7 +1,7 @@
 rules:
     american_english: ~
     avoid_repetetive_words: ~
-    blank_line_after_directive: ~
+    #blank_line_after_directive: ~
     blank_line_before_directive: ~
     composer_dev_option_at_the_end: ~
     correct_code_block_directive_based_on_the_content: ~
