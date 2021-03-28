@@ -10,16 +10,22 @@ BC Breaks:
   generator which is now used to produce the `default` and `aggregate`
   reports. The output and configuration is largely the same, but some features
   have been removed.
+- `html` and `markdown` output formats have been removed temporarily.
 
-Features and Improvements:
+Features:
 
+- Introduced `bare` report generator - provides all raw available report data
 - Introduced `display_as_time` function to handle formatting time with
   throughput.
-- Dynamically resolve timeunit / precision from expression (progress/report) #775
 - Null `coalesce` function introduced in expression language
+
+Improvements:
+
+- Dynamically resolve timeunit / precision from expression (progress/report) #775
 - Support specificaion of display-as precision in expression language
 - Allow the display unit to be evaluated (for dynamically determining the unit based on the subject's preference)
 - Make the display unit a node - allowing it to be pretty printed.
+- Improved memory formatting (thousands separator, use abbreviated suffix)
 
 1.0.0-alpha7
 ------------
