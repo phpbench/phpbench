@@ -6,13 +6,11 @@ use Generator;
 use PhpBench\Tests\IntegrationTestCase;
 use PhpBench\Tests\Util\Approval;
 use RuntimeException;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
-use function getenv;
 
 class CommandsTest extends IntegrationTestCase
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->workspace()->reset();
     }
@@ -60,9 +58,9 @@ class CommandsTest extends IntegrationTestCase
         }
     }
 
-    private function createExample()
+    private function createExample(): void
     {
-                $this->workspace()->put('NothingBench.php', <<<'EOT'
+        $this->workspace()->put('NothingBench.php', <<<'EOT'
         <?php
         
         class NothingBench { public function benchNothing(): void {}}

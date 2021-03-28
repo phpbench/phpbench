@@ -1,0 +1,26 @@
+{
+    "reports": {
+         "my-report": {
+             "generator": "expression",
+             "expressions": {
+                "benchmark": "first(benchmark_name)",
+                "subject": "first(subject_name)",
+                "set": "first(variant_name)"
+             },
+             "cols": [ "benchmark", "subject", "set" ]
+         }
+    }
+}
+
+---
+
+phpbench run --report=my-report --executor=debug NothingBench.php --progress=none
+
+---
+
++--------------+--------------+-----+
+| benchmark    | subject      | set |
++--------------+--------------+-----+
+| NothingBench | benchNothing | 0   |
++--------------+--------------+-----+
+

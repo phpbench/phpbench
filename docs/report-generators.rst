@@ -69,8 +69,29 @@ You can also override expressions by passing a map:
 Which yields:
 
 .. approved:: ../examples/Command/report-generators-column-override
-  :language: javascript
+  :language: bash
   :section: 2
+
+.. _generator_expression_break:
+
+Break
+~~~~~
+
+You can split the report into mupltiple tables by using the ``break`` option:
+
+.. approved:: ../examples/Command/report-generators-break
+  :language: javascript
+  :section: 0
+
+Now each benchmark class will get its own table:
+
+.. approved:: ../examples/Command/report-generators-break
+  :language: bash
+  :section: 2
+
+Note that this also reduces the length of the table.
+
+You can specify multiple columns.
 
 .. _generator_expression_expressions:
 
@@ -86,7 +107,7 @@ The expressions define the available columns:
 Which yields:
 
 .. approved:: ../examples/Command/report-generators-expressions
-  :language: javascript
+  :language: bash
   :section: 2
 
 In general you will not modify this, but instead use
@@ -100,13 +121,13 @@ The expressions act on table data. You can get a list of all available columns
 with:
 
 .. approved:: ../examples/Command/report-generators-data
-  :language: javascript
+  :language: bash
   :section: 1
 
 Yielding:
 
 .. approved:: ../examples/Command/report-generators-data
-  :language: javascript
+  :language: bash
   :section: 2
 
 ``composite``
