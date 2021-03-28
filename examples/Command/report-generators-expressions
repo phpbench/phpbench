@@ -3,24 +3,25 @@
          "my-report": {
              "generator": "expression",
              "expressions": {
-                "benchmark": "first(benchmark_name)",
-                "subject": "first(subject_name)",
-                "set": "first(variant_name)"
+                "mode": "\"This is the mode: \" ~ mode(result_time_avg)"
              },
-             "cols": [ "benchmark", "subject", "set" ]
+             "cols": [ "benchmark", "subject", "mode" ]
          }
     }
 }
 
+
 ---
+
 
 phpbench run --report=my-report --executor=debug NothingBench.php --progress=none
 
+
 ---
 
-+--------------+--------------+-----+
-| benchmark    | subject      | set |
-+--------------+--------------+-----+
-| NothingBench | benchNothing | 0   |
-+--------------+--------------+-----+
++--------------+--------------+----------------------+
+| benchmark    | subject      | mode                 |
++--------------+--------------+----------------------+
+| NothingBench | benchNothing | This is the mode: 10 |
++--------------+--------------+----------------------+
 

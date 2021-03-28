@@ -74,7 +74,7 @@ Which yields:
 Break
 ~~~~~
 
-You can split the report into mupltiple tables by using the ``break`` option:
+You can partition the report into mupltiple tables by using the ``break`` option:
 
 .. approved:: ../examples/Command/report-generators-break
   :language: javascript
@@ -86,16 +86,13 @@ Now each benchmark class will get its own table:
   :language: bash
   :section: 2
 
-Note that this also reduces the length of the table.
-
-You can specify multiple columns.
-
 .. _generator_expression_expressions:
 
 Expressions
 -----------
 
-The expressions define the available columns:
+The expressions define the available columns, you can add or override
+expressions:
 
 .. approved:: ../examples/Command/report-generators-expressions
   :language: javascript
@@ -106,10 +103,6 @@ Which yields:
 .. approved:: ../examples/Command/report-generators-expressions
   :language: bash
   :section: 2
-
-In general you will not modify this, but instead use
-:ref:`generator_expression_columns` instead to merge new columns into the
-default ones:
 
 Data
 ----

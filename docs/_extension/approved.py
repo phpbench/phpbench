@@ -38,54 +38,6 @@ class CodeImportDirective(SphinxDirective):
         except Exception as exc:
             return [document.reporter.warning(exc, line=self.lineno)]
 
-    def filter(self, lines: List[str], sections: List[str]) -> List[str]:
-        sectionLines = []
-        parsing = None
-        for line in lines:
-            if frozenset(sections) & frozenset(self.parseSections("endsection", line)):
-                parsing = False
-            
-            if frozenset(sections) & frozenset(self.parseSections("section", line)):
-                parsing = True
-                continue
-
-            if parsing:
-                sectionLines.append(line)
-
-        if True == parsing:
-            raise ValueError('No closing section found for %s' % (sections))
-
-        if None == parsing:
-            raise ValueError('Section %s not found' % (sections))
-
-        return sectionLines;
-
-    def parseSections(self, sectionType: str, line: str) -> List[str]:
-        p = re.compile(".* %s: ([a-zA-Z_,]+)" % (sectionType))
-        match = p.match(line)
-        if None == match:
-            return []
-
-        match = match.groups()[0]
-
-        return match.split(',')
-
-    def filterSections(self, lines: List[str]) -> List[str]:
-        sectionLines = []
-        for line in lines:
-            if "section: " in line:
-                continue
-
-            sectionLines.append(line)
-
-        return sectionLines;
-
-    def removeOpeningTag(self, lines: List[str]) -> List[str]:
-        if lines[0].startswith('<?php'):
-            return lines[1:]
-
-        return lines
-
 def setup(app):
     app.add_config_value('approved_include_approveds', False, 'html')
     app.add_directive('approved', CodeImportDirective)
