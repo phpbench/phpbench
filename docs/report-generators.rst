@@ -1,20 +1,17 @@
 Report Generators
 =================
 
-PHPBench generates reports using report generators. These are classes which
-implement the ``PhpBench\Report\GeneratorInterface`` and produce a report XML
-document which will later be rendered by using a :doc:`renderer
-<report-renderers>` (the ``console`` renderer by default).
-
-This chapter will describe the default report generators.
+PHPBench reports are generated with report generators. These can subsequently
+be rendered with :doc:`report renderers <report-renderers>`.
 
 .. _generator_expression:
 
 ``expression``
 --------------
 
-The expression generator is the main report generator - it is the generator that allows you to analyze your
-benchmarking results:
+The expression generator is the generator that allows you to analyze your
+benchmarking results. It uses the PHPBench :doc:`expression language
+<expression>` to evaluate tabular data:
 
 .. approved:: ../examples/Command/report-generators-expression
   :language: javascript
