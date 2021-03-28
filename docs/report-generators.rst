@@ -14,9 +14,17 @@ This chapter will describe the default report generators.
 --------------
 
 The expression generator is the main report generator - it is the generator that allows you to analyze your
-benchmarking results.
+benchmarking results:
 
-Class: ``PhpBench\Report\Generator\TableGenerator``.
+.. approved:: ../examples/Command/report-generators-expression
+  :language: javascript
+  :section: 1
+
+Yields something like:
+
+.. approved:: ../examples/Command/report-generators-expression
+  :language: javascript
+  :section: 2
 
 Options:
 
@@ -34,26 +42,72 @@ Options:
 Columns
 ~~~~~~~
 
-The visible columns are dicated by the ``cols`` configuration, you can also
-override or set sessions:
+The visible columns are dicated by the ``cols`` configuration:
 
-.. phpbench:: ../examples/Command/report-generators-columns
-  :section: config
+.. approved:: ../examples/Command/report-generators-column-visibility
+  :language: javascript
+  :section: 0
 
-The above will only show the default columns "subject" and "mode" but will
-also add a new column with an :ref:`expression <expression_language>` which evaluates to the string ``Hello``.
+When using the report:
 
-.. phpbench:: ../examples/Command/report-generators-columns
+.. approved:: ../examples/Command/report-generators-column-visibility
+  :language: shell
+  :section: 1
+
+It will only show the selected columns:
+
+.. approved:: ../examples/Command/report-generators-column-visibility
   :language: bash
-  :section: command
+  :section: 2
 
-.. phpbench:: ../examples/Command/report-generators-columns
-  :section: output
+You can also override expressions by passing a map:
+
+.. approved:: ../examples/Command/report-generators-column-override
+  :language: javascript
+  :section: 0
+
+Which yields:
+
+.. approved:: ../examples/Command/report-generators-column-override
+  :language: javascript
+  :section: 2
+
+.. _generator_expression_expressions:
+
+Expressions
+-----------
+
+The expressions define the available columns:
+
+.. approved:: ../examples/Command/report-generators-expressions
+  :language: javascript
+  :section: 0
+
+Which yields:
+
+.. approved:: ../examples/Command/report-generators-expressions
+  :language: javascript
+  :section: 2
+
+In general you will not modify this, but instead use
+:ref:`generator_expression_columns` instead to merge new columns into the
+default ones:
 
 Data
 ----
 
-TODO
+The expressions act on table data. You can get a list of all available columns
+with:
+
+.. approved:: ../examples/Command/report-generators-data
+  :language: javascript
+  :section: 1
+
+Yielding:
+
+.. approved:: ../examples/Command/report-generators-data
+  :language: javascript
+  :section: 2
 
 ``composite``
 -------------

@@ -25,16 +25,22 @@ class Approval
     private $path;
 
     /**
+     * @var string
+     */
+    private $delimiter;
+
+    /**
      * @param string[] $sections
      */
-    public function __construct(string $path, array $sections, ?string $expected)
+    public function __construct(string $path, array $sections, string $delimiter, ?string $expected)
     {
         $this->sections = $sections;
         $this->expected = $expected;
         $this->path = $path;
+        $this->delimiter = $delimiter;
     }
 
-    public static function create(string $path, int $configCount): self
+    public static function create(string $path, int $configCount, string $delimiter = '---'): self
     {
         if (!file_exists($path)) {
             if (!file_exists(dirname($path))) {
@@ -45,7 +51,7 @@ class Approval
         $parts = array_values(
             (array)array_filter(
                 explode(
-                    '---',
+                    $delimiter,
                     (string)file_get_contents($path),
                     $configCount
                 )
@@ -64,7 +70,7 @@ class Approval
             unset($parts[$configCount - 1]);
         }
 
-        return new self($path, array_values($parts), $expected);
+        return new self($path, array_values($parts), $delimiter, $expected);
     }
 
     /**

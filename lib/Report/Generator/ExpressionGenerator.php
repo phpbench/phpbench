@@ -280,7 +280,9 @@ EOT
         $map = [];
 
         foreach ($config['cols'] as $key => $expr) {
-            if (is_int($key)) {
+            if (is_int($key) || null === $expr) {
+                $expr = null === $expr ? $key : $expr;
+
                 if (!isset($expressions[$expr])) {
                     throw new RuntimeException(sprintf(
                         'No expression with name "%s" is available, available expressions: "%s"',

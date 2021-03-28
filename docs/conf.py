@@ -31,6 +31,7 @@ from pygments.lexers.web import PhpLexer
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+        'approved',
         'codeimport',
         'sphinx_tabs.tabs',
         ]

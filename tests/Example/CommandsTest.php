@@ -41,7 +41,10 @@ class CommandsTest extends IntegrationTestCase
             $this->workspace()->path()
         );
         $process->mustRun();
-        $approval->approve($process->getOutput());
+        $output = $process->getOutput();
+        $output = preg_replace('{[0-9]{4}-[0-9]{2}-[0-9]{2}}', 'xxxx-xx-xx', $output);
+        $output = preg_replace('{[0-9]{2}:[0-9]{2}:[0-9]{2}}', 'xx-xx-xx', $output);
+        $approval->approve($output);
     }
 
     /**
