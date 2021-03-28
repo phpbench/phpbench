@@ -1,3 +1,3 @@
 iter,benchmark,subject,set,revs,mem_peak,time_avg,comp_z_value,comp_deviation
-0,benchOne,benchOne,0,5,200,0,-1,-100
-1,benchOne,benchOne,0,5,200,10,1,100
+0,benchOne,benchOne,0,5,200,0,-1.00σ,-100.00%
+1,benchOne,benchOne,0,5,200,10,+1.00σ,+100.00%
