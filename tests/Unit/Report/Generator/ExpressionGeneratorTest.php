@@ -8,6 +8,7 @@ use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\Printer\EvaluatingPrinter;
 use PhpBench\Report\Generator\ExpressionGenerator;
 use PhpBench\Report\GeneratorInterface;
+use PhpBench\Report\Transform\SuiteCollectionTransformer;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -24,6 +25,7 @@ class ExpressionGeneratorTest extends GeneratorTestCase
             $container->get(ExpressionLanguage::class),
             $container->get(Evaluator::class),
             $container->get(EvaluatingPrinter::class),
+            new SuiteCollectionTransformer(),
             new ConsoleLogger(new ConsoleOutput())
         );
     }

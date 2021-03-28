@@ -29,6 +29,13 @@ class MemoryUnit
         'gb' => self::GIGABYTES
     ];
 
+    private static $suffixes = [
+        self::BYTES => 'b',
+        self::KILOBYTES => 'kb',
+        self::MEGABYTES => 'mb',
+        self::GIGABYTES => 'gb',
+    ];
+
     /**
      * @return string[]
      */
@@ -38,6 +45,13 @@ class MemoryUnit
             array_keys(self::$aliases),
             array_keys(self::$multipliers)
         );
+    }
+
+    public static function suffixFor(string $unit): string
+    {
+        $unit = self::resolveUnit($unit);
+
+        return isset(self::$suffixes[$unit]) ? self::$suffixes[$unit] : $unit;
     }
 
     public static function isMemoryUnit(string $unit): bool
