@@ -12,16 +12,16 @@ use PhpBench\Report\Model\Table;
 use PhpBench\Report\Transform\SuiteCollectionTransformer;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class FlatGenerator implements GeneratorInterface
+class BareGenerator implements GeneratorInterface
 {
     /**
      * @var SuiteCollectionTransformer
      */
     private $transformer;
 
-    public function __construct()
+    public function __construct(SuiteCollectionTransformer $transformer)
     {
-        $this->transformer = new SuiteCollectionTransformer();
+        $this->transformer = $transformer;
     }
 
     /**
