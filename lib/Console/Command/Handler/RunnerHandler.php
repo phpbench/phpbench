@@ -118,6 +118,10 @@ class RunnerHandler
 
         $progressLoggerName = $input->getOption(self::OPT_PROGRESS) ?: $this->defaultProgress;
 
+        if ($input->hasOption('quiet') && $input->getOption('quiet')) {
+            $progressLoggerName = 'none';
+        }
+
         $progressLogger = $this->loggerRegistry->getProgressLogger($progressLoggerName);
         $this->runner->setProgressLogger($progressLogger);
 
