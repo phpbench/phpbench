@@ -114,7 +114,7 @@ EOT
                 'mean' => $formatTime('mean(result_time_avg)'),
                 'worst' => $formatTime('max(result_time_avg)'),
                 'stdev' => $formatTime('stdev(result_time_avg)'),
-                'rstdev' => 'format("%.2f%%", rstdev(result_time_avg))',
+                'rstdev' => 'rstdev(result_time_avg)',
             ], $expressions);
         });
         $options->setNormalizer('baseline_expressions', function (Options $options, array $expressions) use ($formatTime) {
@@ -123,7 +123,7 @@ EOT
                 'worst' => $formatTime('max(result_time_avg)'),
                 'mode' => $formatTime('mode(result_time_avg)') . ' ~" "~ percent_diff(mode(baseline_time_avg), mode(result_time_avg), rstdev(result_time_avg))',
                 'mem_peak' => '(first(baseline_mem_peak) as bytes) ~ " " ~ percent_diff(first(baseline_mem_peak), first(result_mem_peak))',
-                'rstdev' => 'format("%.2f%%", rstdev(result_time_avg)) ~ " " ~ percent_diff(first(baseline_time_avg), first(result_time_avg)) ',
+                'rstdev' => 'rstdev(result_time_avg) ~ " " ~ percent_diff(first(baseline_time_avg), first(result_time_avg)) ',
             ], $expressions);
         });
         $options->setNormalizer('cols', function (Options $options, ?array $cols) {

@@ -71,6 +71,7 @@ use PhpBench\Expression\NodePrinter\ParameterPrinter;
 use PhpBench\Expression\NodePrinter\ParenthesisPrinter;
 use PhpBench\Expression\NodePrinter\PercentageDifferencePrinter;
 use PhpBench\Expression\NodePrinter\PercentagePrinter;
+use PhpBench\Expression\NodePrinter\RelativeDeviationPrinter;
 use PhpBench\Expression\NodePrinter\StringPrinter;
 use PhpBench\Expression\NodePrinter\TolerablePrinter;
 use PhpBench\Expression\NodePrinter\UnitPrinter;
@@ -219,6 +220,7 @@ class ExpressionExtension implements ExtensionInterface
             return new NodePrinters([
                 new ConcatenatedNodePrinter(),
                 new ArgumentListPrinter(),
+                new RelativeDeviationPrinter(),
                 new UnitPrinter(),
                 new NumberPrinter(),
                 new BinaryOperatorPrinter(),
