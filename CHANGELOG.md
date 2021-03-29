@@ -4,6 +4,10 @@ CHANGELOG
 master
 ------
 
+Features:
+
+- Option to include the baseline rows in the `expression` report.
+
 Improvements:
 
 - Added `vertical` layout to `bare` report (`vertical: true`).
