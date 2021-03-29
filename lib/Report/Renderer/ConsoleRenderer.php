@@ -94,7 +94,7 @@ class ConsoleRenderer implements RendererInterface
     {
         return array_map(function (TableRow $row) {
             return array_map(function (Node $node) {
-                return $this->printer->print($node, []);
+                return $this->printer->print($node);
             }, $row->cells());
         }, $table->rows());
     }

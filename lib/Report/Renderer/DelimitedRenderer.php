@@ -65,7 +65,7 @@ class DelimitedRenderer implements RendererInterface
             $row = [];
 
             foreach ($tableRow as $name => $node) {
-                $row[$name] = $this->printer->print($node, []);
+                $row[$name] = $this->printer->print($node);
             }
 
             $rows[] = $row;

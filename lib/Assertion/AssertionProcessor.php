@@ -18,6 +18,7 @@ use PhpBench\Expression\Ast\ToleratedTrue;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\Printer;
+use PhpBench\Expression\Printer\EvaluatingPrinter;
 use PhpBench\Model\Variant;
 
 class AssertionProcessor
@@ -38,7 +39,7 @@ class AssertionProcessor
     private $provider;
 
     /**
-     * @var Printer
+     * @var EvaluatingPrinter
      */
     private $evaluatingPrinter;
 
@@ -51,7 +52,7 @@ class AssertionProcessor
         ExpressionLanguage $expressionLanaugage,
         Evaluator $evaluator,
         Printer $printer,
-        Printer $evaluatingPrinter,
+        EvaluatingPrinter $evaluatingPrinter,
         ParameterProvider $provider
     ) {
         $this->evaluator = $evaluator;
@@ -69,8 +70,8 @@ class AssertionProcessor
 
         $message = sprintf(
             "%s\n= %s\n= %s",
-            $this->printer->print($node, $params),
-            $this->evaluatingPrinter->print($node),
+            $this->printer->print($node),
+            $this->evaluatingPrinter->withParams($params)->print($node),
             $this->printer->print($evaluated)
         );
 
