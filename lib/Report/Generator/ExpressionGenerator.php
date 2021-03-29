@@ -33,6 +33,7 @@ class ExpressionGenerator implements GeneratorInterface
     const PARAM_BASELINE_EXPRESSIONS = 'baseline_expressions';
     const PARAM_AGGREGATE = 'aggregate';
     const PARAM_BREAK = 'break';
+    const PARAM_INCLUDE_BASELINE = 'include_baseline';
 
 
     /**
@@ -101,6 +102,7 @@ EOT
             self::PARAM_BASELINE_EXPRESSIONS => [],
             self::PARAM_AGGREGATE => ['benchmark_class', 'subject_name', 'variant_name'],
             self::PARAM_BREAK => [],
+            self::PARAM_INCLUDE_BASELINE => false,
         ]);
 
         $options->setAllowedTypes(self::PARAM_TITLE, ['null', 'string']);
@@ -110,6 +112,7 @@ EOT
         $options->setAllowedTypes(self::PARAM_BASELINE_EXPRESSIONS, 'array');
         $options->setAllowedTypes(self::PARAM_AGGREGATE, 'array');
         $options->setAllowedTypes(self::PARAM_BREAK, 'array');
+        $options->setAllowedTypes(self::PARAM_INCLUDE_BASELINE, 'bool');
         $options->setNormalizer(self::PARAM_EXPRESSIONS, function (Options $options, array $expressions) use ($formatTime) {
             return array_merge([
                 'benchmark' => 'first(benchmark_name)',
@@ -152,7 +155,7 @@ EOT
         $expressionMap = $this->resolveExpressionMap($config);
         $baselineExpressionMap = $this->resolveBaselineExpressionMap($config, array_keys($expressionMap));
 
-        $table = $this->transformer->suiteToTable($collection);
+        $table = $this->transformer->suiteToTable($collection, $config[self::PARAM_INCLUDE_BASELINE]);
         $table = $this->aggregate($table, $config[self::PARAM_AGGREGATE]);
         $table = iterator_to_array($this->evaluate($table, $expressionMap, $baselineExpressionMap));
         $tables = $this->partition($table, $config[self::PARAM_BREAK]);

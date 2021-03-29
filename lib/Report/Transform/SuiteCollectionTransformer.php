@@ -4,6 +4,7 @@ namespace PhpBench\Report\Transform;
 
 use Generator;
 use PhpBench\Model\Iteration;
+use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Model\Variant;
@@ -15,15 +16,15 @@ final class SuiteCollectionTransformer
     /**
      * @return array<string,array<string,mixed>>
      */
-    public function suiteToTable(SuiteCollection $collection): array
+    public function suiteToTable(SuiteCollection $collection, bool $includeBaseline = false): array
     {
-        return $this->normalize(iterator_to_array($this->reportData($collection)));
+        return $this->normalize(iterator_to_array($this->reportData($collection, $includeBaseline)));
     }
 
     /**
      * @return Generator<array<string, mixed>>
      */
-    private function reportData(SuiteCollection $collection): Generator
+    private function reportData(SuiteCollection $collection, bool $includeBaseline): Generator
     {
         foreach ($collection as $suite) {
             assert($suite instanceof Suite);
@@ -43,24 +44,14 @@ final class SuiteCollectionTransformer
                         $baseline = $variant->getBaseline();
                         $baselineIteration = $baseline ? $baseline->getIteration($itNum) : null;
 
-                        yield array_merge([
-                            self::COL_HAS_BASELINE => $baseline ? true : false,
-                            'benchmark_name' => $subject->getBenchmark()->getName(),
-                            'benchmark_class' => $subject->getBenchmark()->getClass(),
-                            'subject_name' => $subject->getName(),
-                            'subject_groups' => $subject->getGroups(),
-                            'subject_time_unit' => $subject->getOutputTimeUnit(),
-                            'subject_time_precision' => $subject->getOutputTimePrecision(),
-                            'subject_time_mode' => $subject->getOutputMode(),
-                            'variant_name' => $variant->getParameterSet()->getName(),
-                            'variant_params' => $variant->getParameterSet()->getArrayCopy(),
-                            'variant_revs' => $variant->getRevolutions(),
-                            'variant_iterations' => count($variant->getIterations()),
-                            'suite_tag' => $suite->getTag() ? $suite->getTag()->__toString() : '<current>',
-                            'suite_date' => $suite->getDate()->format('Y-m-d'),
-                            'suite_time' => $suite->getDate()->format('H:i:s'),
-                            'iteration_index' => $itNum,
-                        ], $this->resultData($iteration, 'result'), $this->resultData($baselineIteration, 'baseline'));
+                        yield array_merge(
+                            [
+                                self::COL_HAS_BASELINE => $baseline ? true : false
+                            ],
+                            $this->createRow($subject, $variant, $suite, $itNum),
+                            $this->resultData($iteration, 'result'),
+                            $this->resultData($baselineIteration, 'baseline')
+                        );
                     }
                 }
             }
@@ -110,5 +101,29 @@ final class SuiteCollectionTransformer
         }
 
         return $table;
+    }
+
+    /**
+     * @return array<string,mixed>
+     */
+    private function createRow(Subject $subject, Variant $variant, Suite $suite, int $itNum): array
+    {
+        return [
+            'benchmark_name' => $subject->getBenchmark()->getName(),
+            'benchmark_class' => $subject->getBenchmark()->getClass(),
+            'subject_name' => $subject->getName(),
+            'subject_groups' => $subject->getGroups(),
+            'subject_time_unit' => $subject->getOutputTimeUnit(),
+            'subject_time_precision' => $subject->getOutputTimePrecision(),
+            'subject_time_mode' => $subject->getOutputMode(),
+            'variant_name' => $variant->getParameterSet()->getName(),
+            'variant_params' => $variant->getParameterSet()->getArrayCopy(),
+            'variant_revs' => $variant->getRevolutions(),
+            'variant_iterations' => count($variant->getIterations()),
+            'suite_tag' => $suite->getTag() ? $suite->getTag()->__toString() : '<current>',
+            'suite_date' => $suite->getDate()->format('Y-m-d'),
+            'suite_time' => $suite->getDate()->format('H:i:s'),
+            'iteration_index' => $itNum,
+        ];
     }
 }
