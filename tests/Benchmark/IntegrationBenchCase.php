@@ -8,7 +8,7 @@ use PhpBench\Extension\ExpressionExtension;
 use Psr\Container\ContainerInterface;
 
 /**
- * @Iterations(100)
+ * @Iterations(10)
  */
 abstract class IntegrationBenchCase
 {
