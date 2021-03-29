@@ -2,7 +2,9 @@
 
 namespace PhpBench\Expression\Ast;
 
-class PercentageNode implements Node
+use PhpBench\Expression\Exception\EvaluationError;
+
+class PercentageNode implements Node, NumberNode
 {
     /**
      * @var Node
@@ -14,8 +16,21 @@ class PercentageNode implements Node
         $this->value = $value;
     }
 
-    public function value(): Node
+    public function valueNode(): Node
     {
         return $this->value;
+    }
+
+    public function value(): float
+    {
+        $value = $this->value;
+        if (!$value instanceof FloatNode && !$value instanceof IntegerNode) {
+            throw new EvaluationError($this, sprintf(
+                'Percentage node has not been evaluated, its value is a "%s"',
+                get_class($this->value)
+            ));
+        }
+
+        return (float)$value->value();
     }
 }

@@ -12,6 +12,7 @@ use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\ParenthesisNode;
 use PhpBench\Expression\Ast\PercentDifferenceNode;
+use PhpBench\Expression\Ast\RelativeDeviationNode;
 use PhpBench\Expression\Ast\ToleratedTrue;
 use PhpBench\Expression\Ast\UnitNode;
 use PhpBench\Expression\ColorMap;
@@ -64,6 +65,13 @@ class TrueColorMap implements ColorMap
                 assert($node instanceof PercentDifferenceNode);
 
                 return 'fg=#' . $this->gradient()->colorAtPercentile(((int)$node->percentage() + 100) / 2)->toHex();
+            },
+            RelativeDeviationNode::class => function (Node $node) {
+                assert($node instanceof RelativeDeviationNode);
+
+                return 'fg=#' . $this->gradient()->colorAtPercentile(
+                    50 + (((int)$node->value()))
+                )->toHex();
             },
             DisplayAsNode::class => 'fg=' . self::BASE2,
             ParameterNode::class => 'fg='  .self::ORANGE,
