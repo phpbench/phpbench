@@ -105,7 +105,7 @@ class Approval
 
     public function approve(string $actual, bool $force = false): void
     {
-        if (null === $this->expected || $force) {
+        if (null === $this->expected || $force || getenv('PHPBENCH_APPROVE')) {
             file_put_contents($this->path, implode("\n---\n", array_merge(
                 array_map(function (string $section) {
                     return trim($section);

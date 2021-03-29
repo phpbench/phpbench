@@ -6,7 +6,8 @@ master
 
 Improvements:
 
-- Added `vertical` layout to `bare` report (`vertical: true`)
+- Added `vertical` layout to `bare` report (`vertical: true`).
+- Removed `best` and `worst` columns by default from default report.
 
 1.0.0-alpha8
 ------------

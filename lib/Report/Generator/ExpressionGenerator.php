@@ -94,9 +94,7 @@ EOT
                 'revs',
                 'its',
                 'mem_peak',
-                'best',
                 'mode',
-                'worst',
                 'rstdev',
             ],
             'expressions' => [],
@@ -122,6 +120,7 @@ EOT
                 'mem_peak' => 'max(result_mem_peak) as bytes',
                 'best' => $formatTime('min(result_time_avg)'),
                 'mode' => $formatTime('mode(result_time_avg)'),
+                'mean' => $formatTime('mean(result_time_avg)'),
                 'worst' => $formatTime('max(result_time_avg)'),
                 'rstdev' => 'format("%.2f%%", rstdev(result_time_avg))',
             ], $expressions);
