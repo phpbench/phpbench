@@ -24,25 +24,40 @@ class EvaluatingPrinter implements Printer
      */
     private $printers;
 
+    /**
+     * @var parameters
+     */
+    private $params;
+
     public function __construct(
         NodePrinter $printers,
         Evaluator $evaluator,
-        array $nodeClasses
+        array $nodeClasses,
+        array $params = []
     ) {
         $this->printers = $printers;
         $this->nodeClasses = $nodeClasses;
         $this->evaluator = $evaluator;
+        $this->params = $params;
     }
 
-    public function print(Node $node, array $params): string
+    /**
+     * @param parameters $params
+     */
+    public function withParams(array $params): self
+    {
+        return new self($this->printers, $this->evaluator, $this->nodeClasses, $params);
+    }
+
+    public function print(Node $node): string
     {
         if (!$this->shouldEvaluate($node)) {
-            return $this->printers->print($this, $node, $params);
+            return $this->printers->print($this, $node);
         }
 
-        $node = $this->evaluator->evaluate($node, $params);
+        $node = $this->evaluator->evaluate($node, $this->params);
 
-        return $this->printers->print($this, $node, $params);
+        return $this->printers->print($this, $node);
     }
 
     private function shouldEvaluate(Node $node): bool

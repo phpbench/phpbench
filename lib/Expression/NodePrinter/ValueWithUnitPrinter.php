@@ -9,7 +9,7 @@ use PhpBench\Expression\Printer;
 
 class ValueWithUnitPrinter implements NodePrinter
 {
-    public function print(Printer $printer, Node $node, array $params): ?string
+    public function print(Printer $printer, Node $node): ?string
     {
         if (!$node instanceof ValueWithUnitNode) {
             return null;
@@ -17,8 +17,8 @@ class ValueWithUnitPrinter implements NodePrinter
 
         return sprintf(
             '%s %s',
-            $printer->print($node->left(), $params),
-            $printer->print($node->unit(), $params)
+            $printer->print($node->left()),
+            $printer->print($node->unit())
         );
     }
 }

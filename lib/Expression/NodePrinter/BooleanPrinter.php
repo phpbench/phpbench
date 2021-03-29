@@ -9,7 +9,7 @@ use PhpBench\Expression\Printer;
 
 class BooleanPrinter implements NodePrinter
 {
-    public function print(Printer $printer, Node $node, array $params): ?string
+    public function print(Printer $printer, Node $node): ?string
     {
         if (!$node instanceof BooleanNode) {
             return null;

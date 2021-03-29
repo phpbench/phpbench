@@ -1,2 +1,2 @@
-benchmark,subject,set,revs,its,mem_peak,best,mode,worst,rstdev
-TestBench,benchOne,0,5,2,200,0,5,10,100.00%
+benchmark,subject,set,revs,its,mem_peak,mode,rstdev
+TestBench,benchOne,0,5,2,200,5,100.00%

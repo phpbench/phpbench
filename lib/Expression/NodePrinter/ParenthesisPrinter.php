@@ -9,12 +9,12 @@ use PhpBench\Expression\Printer;
 
 class ParenthesisPrinter implements NodePrinter
 {
-    public function print(Printer $printer, Node $node, array $params): ?string
+    public function print(Printer $printer, Node $node): ?string
     {
         if (!$node instanceof ParenthesisNode) {
             return null;
         }
 
-        return sprintf('(%s)', $printer->print($node->expression(), $params));
+        return sprintf('(%s)', $printer->print($node->expression()));
     }
 }

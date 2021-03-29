@@ -9,6 +9,7 @@ use PhpBench\Assertion\ParameterProvider;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\Printer;
+use PhpBench\Expression\Printer\EvaluatingPrinter;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Variant;
 use PhpBench\Tests\IntegrationTestCase;
@@ -72,7 +73,7 @@ class AssertionProcessorTest extends IntegrationTestCase
             $this->container()->get(ExpressionLanguage::class),
             $this->container()->get(Evaluator::class),
             $this->container()->get(Printer::class),
-            $this->container()->get(Printer::class),
+            $this->container()->get(EvaluatingPrinter::class),
             new ParameterProvider()
         );
     }

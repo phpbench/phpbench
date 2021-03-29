@@ -9,7 +9,7 @@ use PhpBench\Expression\Printer;
 
 class NullPrinter implements NodePrinter
 {
-    public function print(Printer $printer, Node $node, array $params): ?string
+    public function print(Printer $printer, Node $node): ?string
     {
         if (!$node instanceof NullNode) {
             return null;

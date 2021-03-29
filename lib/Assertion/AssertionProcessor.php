@@ -18,6 +18,7 @@ use PhpBench\Expression\Ast\ToleratedTrue;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\Printer;
+use PhpBench\Expression\Printer\EvaluatingPrinter;
 use PhpBench\Model\Variant;
 
 class AssertionProcessor
@@ -38,7 +39,7 @@ class AssertionProcessor
     private $provider;
 
     /**
-     * @var Printer
+     * @var EvaluatingPrinter
      */
     private $evaluatingPrinter;
 
@@ -51,7 +52,7 @@ class AssertionProcessor
         ExpressionLanguage $expressionLanaugage,
         Evaluator $evaluator,
         Printer $printer,
-        Printer $evaluatingPrinter,
+        EvaluatingPrinter $evaluatingPrinter,
         ParameterProvider $provider
     ) {
         $this->evaluator = $evaluator;
@@ -69,9 +70,9 @@ class AssertionProcessor
 
         $message = sprintf(
             "%s\n= %s\n= %s",
-            $this->printer->print($node, $params),
-            $this->evaluatingPrinter->print($node, $params),
-            $this->printer->print($evaluated, $params)
+            $this->printer->print($node),
+            $this->evaluatingPrinter->withParams($params)->print($node),
+            $this->printer->print($evaluated)
         );
 
         if ($evaluated instanceof BooleanNode) {
@@ -89,7 +90,7 @@ class AssertionProcessor
         throw new AssertionError(sprintf(
             'Assertion expression must evaluate to a boolean-like value, got "%s" as "%s"',
             get_class($evaluated),
-            $this->printer->print($evaluated, $params)
+            $this->printer->print($evaluated)
         ));
     }
 }

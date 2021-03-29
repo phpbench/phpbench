@@ -4,7 +4,7 @@ namespace PhpBench\Progress;
 
 use PhpBench\Assertion\ParameterProvider;
 use PhpBench\Expression\ExpressionLanguage;
-use PhpBench\Expression\Printer;
+use PhpBench\Expression\Printer\EvaluatingPrinter;
 use PhpBench\Model\Variant;
 
 final class VariantSummaryFormatter implements VariantFormatter
@@ -40,7 +40,7 @@ EOT
     private $parser;
 
     /**
-     * @var Printer
+     * @var EvaluatingPrinter
      */
     private $printer;
 
@@ -51,7 +51,7 @@ EOT
 
     public function __construct(
         ExpressionLanguage $parser,
-        Printer $printer,
+        EvaluatingPrinter $printer,
         ParameterProvider $paramProvider,
         string $format = self::DEFAULT_FORMAT,
         string $baselineFormat = self::BASELINE_FORMAT
@@ -72,6 +72,6 @@ EOT
             $this->parser->parse($subjectFormat ?? $this->baselineFormat) :
             $this->parser->parse($subjectFormat ?? $this->format);
 
-        return $this->printer->print($node, $data);
+        return $this->printer->withParams($data)->print($node);
     }
 }

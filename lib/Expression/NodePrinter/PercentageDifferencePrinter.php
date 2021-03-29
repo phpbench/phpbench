@@ -13,7 +13,7 @@ class PercentageDifferencePrinter implements NodePrinter
     /**
      * {@inheritDoc}
      */
-    public function print(Printer $printer, Node $node, array $params): ?string
+    public function print(Printer $printer, Node $node): ?string
     {
         if (!$node instanceof PercentDifferenceNode) {
             return null;
@@ -24,7 +24,7 @@ class PercentageDifferencePrinter implements NodePrinter
         return sprintf(
             '%s%.2f%%',
             $prefix,
-            $printer->print(new FloatNode($node->percentage()), $params)
+            $printer->print(new FloatNode($node->percentage()))
         );
     }
 }

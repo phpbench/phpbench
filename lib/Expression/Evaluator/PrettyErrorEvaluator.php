@@ -69,8 +69,8 @@ class PrettyErrorEvaluator implements Evaluator
             return new EvaluationError($error->node(), implode(PHP_EOL, [
                 sprintf('%s:', $error->getMessage()),
                 '',
-                '    ' . $this->printer->print($rootNode, $params),
-                '    ' . $this->underlineFactory->underline($error->node())->print($rootNode, $params),
+                '    ' . $this->printer->print($rootNode),
+                '    ' . $this->underlineFactory->underline($error->node())->print($rootNode),
             ]), $error);
         } catch (PrinterError $printError) {
             throw $error;

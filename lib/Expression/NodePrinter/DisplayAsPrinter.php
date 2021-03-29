@@ -34,10 +34,7 @@ class DisplayAsPrinter implements NodePrinter
         $this->timeUnit = $timeUnit;
     }
 
-    /**
-     * @param parameters $params
-     */
-    public function print(Printer $printer, Node $node, array $params): ?string
+    public function print(Printer $printer, Node $node): ?string
     {
         if (!$node instanceof DisplayAsNode) {
             return null;
@@ -55,7 +52,7 @@ class DisplayAsPrinter implements NodePrinter
         $mode = $this->resolveMode($node);
 
         if (!$value instanceof PhpValue) {
-            return sprintf('%s as %s', $printer->print($value, $params), $unit);
+            return sprintf('%s as %s', $printer->print($value), $unit);
         }
 
         if (TimeUnit::isTimeUnit($unit)) {
@@ -67,8 +64,7 @@ class DisplayAsPrinter implements NodePrinter
                     new UnitNode(new StringNode($this->timeUnit->getDestSuffix(
                         $this->timeUnit->resolveDestUnit($unit),
                         $mode
-                    ))),
-                    $params
+                    )))
                 ),
                 $mode
             );
@@ -80,7 +76,7 @@ class DisplayAsPrinter implements NodePrinter
                 $unit,
                 $printer->print(new UnitNode(
                     new StringNode(MemoryUnit::suffixFor($unit))
-                ), $params)
+                ))
             );
         }
 

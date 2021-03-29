@@ -19,7 +19,7 @@ class NumberPrinter implements NodePrinter
         $this->precision = $precision;
     }
 
-    public function print(Printer $printer, Node $node, array $params): ?string
+    public function print(Printer $printer, Node $node): ?string
     {
         if (!$node instanceof NumberNode) {
             return null;

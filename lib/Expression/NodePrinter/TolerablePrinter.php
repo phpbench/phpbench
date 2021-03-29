@@ -10,7 +10,7 @@ use PhpBench\Expression\Printer;
 
 class TolerablePrinter implements NodePrinter
 {
-    public function print(Printer $printer, Node $node, array $params): ?string
+    public function print(Printer $printer, Node $node): ?string
     {
         if ($node instanceof ToleratedTrue) {
             return '~true';
@@ -24,8 +24,8 @@ class TolerablePrinter implements NodePrinter
 
         return sprintf(
             '%s ± %s',
-            $printer->print($node->value(), $params),
-            $printer->print($node->tolerance(), $params)
+            $printer->print($node->value()),
+            $printer->print($node->tolerance())
         );
     }
 }

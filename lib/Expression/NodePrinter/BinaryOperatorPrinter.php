@@ -9,7 +9,7 @@ use PhpBench\Expression\Printer;
 
 class BinaryOperatorPrinter implements NodePrinter
 {
-    public function print(Printer $printer, Node $node, array $params): ?string
+    public function print(Printer $printer, Node $node): ?string
     {
         if (!$node instanceof BinaryOperatorNode) {
             return null;
@@ -17,9 +17,9 @@ class BinaryOperatorPrinter implements NodePrinter
 
         return sprintf(
             '%s %s %s',
-            $printer->print($node->left(), $params),
+            $printer->print($node->left()),
             $node->operator(),
-            $printer->print($node->right(), $params)
+            $printer->print($node->right())
         );
     }
 }

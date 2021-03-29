@@ -15,15 +15,15 @@ class BareValuePrinter implements Printer
     /**
      * {@inheritDoc}
      */
-    public function print(Node $node, array $params): string
+    public function print(Node $node): string
     {
         if (!$node instanceof PhpValue) {
             return '??';
         }
 
         if ($node instanceof DelimitedListNode) {
-            return sprintf('[%s]', implode(', ', array_map(function (Node $node) use ($params) {
-                return $this->print($node, $params);
+            return sprintf('[%s]', implode(', ', array_map(function (Node $node) {
+                return $this->print($node);
             }, $node->value())));
         }
 

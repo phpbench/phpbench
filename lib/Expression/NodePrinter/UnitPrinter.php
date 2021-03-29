@@ -9,12 +9,12 @@ use PhpBench\Expression\Printer;
 
 class UnitPrinter implements NodePrinter
 {
-    public function print(Printer $printer, Node $node, array $params): ?string
+    public function print(Printer $printer, Node $node): ?string
     {
         if (!$node instanceof UnitNode) {
             return null;
         }
 
-        return $printer->print($node->unit(), $params);
+        return $printer->print($node->unit());
     }
 }
