@@ -1,2 +1,2 @@
 benchmark	subject	set	revs	its	mem_peak	best	mode	mean	worst	stdev	rstdev
-TestBench	benchOne	0	5	2	200	0	5	5	10	5	100.00%
+TestBench	benchOne	0	5	2	200	0	5	5	10	5	100

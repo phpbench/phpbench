@@ -24,6 +24,7 @@ class PercentageNode implements Node, NumberNode
     public function value(): float
     {
         $value = $this->value;
+
         if (!$value instanceof FloatNode && !$value instanceof IntegerNode) {
             throw new EvaluationError($this, sprintf(
                 'Percentage node has not been evaluated, its value is a "%s"',

@@ -18,7 +18,7 @@ class RelativeDeviationPrinter implements NodePrinter
         }
 
         return sprintf(
-            '%s%.2f',
+            '%s%.2f%%',
             $printer->print(new UnitNode(new StringNode('±'))),
             $node->value()
         );
