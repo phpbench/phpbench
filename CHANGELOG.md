@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+master
+------
+
+Improvements:
+
+- Added `vertical` layout to `bare` report (`vertical: true`)
+
 1.0.0-alpha8
 ------------
 
