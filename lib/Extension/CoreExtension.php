@@ -85,6 +85,7 @@ use PhpBench\Storage\UuidResolver\LatestResolver;
 use PhpBench\Storage\UuidResolver\TagResolver;
 use PhpBench\Util\TimeUnit;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputInterface;
@@ -123,6 +124,7 @@ class CoreExtension implements ExtensionInterface
     public const PARAM_DISABLE_OUTPUT = 'console.disable_output';
     public const PARAM_CONSOLE_ANSI = 'console.ansi';
     public const PARAM_CONSOLE_OUTPUT_STREAM = 'console.output_stream';
+    public const PARAM_CONSOLE_ERROR_STREAM = 'console.error_stream';
     public const PARAM_PROGRESS_SUMMARY_FORMAT = 'progress_summary_variant_format';
     public const PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT = 'progress_summary_baseline_format';
     public const PARAM_ANNOTATIONS = 'annotations';
@@ -144,6 +146,8 @@ class CoreExtension implements ExtensionInterface
     public const SERVICE_REGISTRY_LOGGER = 'progress_logger.registry';
     public const SERVICE_REGISTRY_RENDERER = 'report.registry.renderer';
     public const SERVICE_VARIANT_SUMMARY_FORMATTER = 'progress_logger.variant_summary_formatter';
+    public const SERVICE_OUTPUT_STD = 'console.stream.std';
+    public const SERVICE_OUTPUT_ERR = 'console.stream.err';
 
     public function configure(OptionsResolver $resolver): void
     {
@@ -178,6 +182,7 @@ class CoreExtension implements ExtensionInterface
             self::PARAM_ATTRIBUTES => true,
             self::PARAM_DEBUG => false,
             self::PARAM_CONSOLE_OUTPUT_STREAM => 'php://stdout',
+            self::PARAM_CONSOLE_ERROR_STREAM => 'php://stderr',
         ]);
 
         $resolver->setAllowedTypes(self::PARAM_DEBUG, ['bool']);
@@ -214,31 +219,12 @@ class CoreExtension implements ExtensionInterface
     {
         $this->relativizeConfigPath($container);
 
-        $container->register(OutputInterface::class, function (Container $container) {
-            if ($container->getParameter(self::PARAM_DISABLE_OUTPUT)) {
-                return new NullOutput();
-            }
+        $container->register(self::SERVICE_OUTPUT_STD, function (Container $container) {
+            return $this->createOutput($container, self::PARAM_CONSOLE_OUTPUT_STREAM);
+        });
 
-            $output = new StreamOutput(fopen(
-                $container->getParameter(self::PARAM_CONSOLE_OUTPUT_STREAM),
-                'w'
-            ));
-
-            if (false === $container->getParameter(self::PARAM_CONSOLE_ANSI)) {
-                $output->setDecorated(false);
-            }
-
-            $output->getFormatter()->setStyle('success', new OutputFormatterStyle('black', 'green', []));
-            $output->getFormatter()->setStyle('baseline', new OutputFormatterStyle('cyan', null, []));
-            $output->getFormatter()->setStyle('result-neutral', new OutputFormatterStyle('cyan', null, []));
-            $output->getFormatter()->setStyle('result-good', new OutputFormatterStyle('green', null, []));
-            $output->getFormatter()->setStyle('result-none', new OutputFormatterStyle(null, null, []));
-            $output->getFormatter()->setStyle('result-failure', new OutputFormatterStyle('white', 'red', []));
-            $output->getFormatter()->setStyle('title', new OutputFormatterStyle('white', null, ['bold']));
-            $output->getFormatter()->setStyle('subtitle', new OutputFormatterStyle('white', null, []));
-            $output->getFormatter()->setStyle('description', new OutputFormatterStyle(null, null, []));
-
-            return $output;
+        $container->register(self::SERVICE_OUTPUT_ERR, function (Container $container) {
+            return $this->createOutput($container, self::PARAM_CONSOLE_ERROR_STREAM);
         });
 
         $container->register(InputInterface::class, function (Container $container) {
@@ -559,7 +545,7 @@ class CoreExtension implements ExtensionInterface
 
         $container->register(DotsLogger::class, function (Container $container) {
             return new DotsLogger(
-                $container->get(OutputInterface::class),
+                $container->get(self::SERVICE_OUTPUT_ERR),
                 $container->get(VariantFormatter::class),
                 $container->get(TimeUnit::class)
             );
@@ -567,7 +553,7 @@ class CoreExtension implements ExtensionInterface
 
         $container->register(DotsLogger::class .'.show', function (Container $container) {
             return new DotsLogger(
-                $container->get(OutputInterface::class),
+                $container->get(self::SERVICE_OUTPUT_ERR),
                 $container->get(VariantFormatter::class),
                 $container->get(TimeUnit::class),
                 true
@@ -576,7 +562,7 @@ class CoreExtension implements ExtensionInterface
 
         $container->register(VerboseLogger::class, function (Container $container) {
             return new VerboseLogger(
-                $container->get(OutputInterface::class),
+                $container->get(self::SERVICE_OUTPUT_ERR),
                 $container->get(VariantFormatter::class),
                 $container->get(TimeUnit::class)
             );
@@ -584,7 +570,7 @@ class CoreExtension implements ExtensionInterface
 
         $container->register(TravisLogger::class, function (Container $container) {
             return new TravisLogger(
-                $container->get(OutputInterface::class),
+                $container->get(self::SERVICE_OUTPUT_ERR),
                 $container->get(VariantFormatter::class),
                 $container->get(TimeUnit::class)
             );
@@ -596,7 +582,7 @@ class CoreExtension implements ExtensionInterface
 
         $container->register(BlinkenLogger::class, function (Container $container) {
             return new BlinkenLogger(
-                $container->get(OutputInterface::class),
+                $container->get(self::SERVICE_OUTPUT_ERR),
                 $container->get(VariantFormatter::class),
                 $container->get(TimeUnit::class)
             );
@@ -604,7 +590,7 @@ class CoreExtension implements ExtensionInterface
 
         $container->register(HistogramLogger::class, function (Container $container) {
             return new HistogramLogger(
-                $container->get(OutputInterface::class),
+                $container->get(self::SERVICE_OUTPUT_ERR),
                 $container->get(VariantFormatter::class),
                 $container->get(TimeUnit::class)
             );
@@ -644,13 +630,13 @@ class CoreExtension implements ExtensionInterface
     {
         $container->register(ConsoleRenderer::class, function (Container $container) {
             return new ConsoleRenderer(
-                $container->get(OutputInterface::class),
+                $container->get(self::SERVICE_OUTPUT_STD),
                 $container->get(Printer::class)
             );
         }, [self::TAG_REPORT_RENDERER => ['name' => 'console']]);
         $container->register(DelimitedRenderer::class, function (Container $container) {
             return new DelimitedRenderer(
-                $container->get(OutputInterface::class),
+                $container->get(self::SERVICE_OUTPUT_STD),
                 $container->get(ExpressionExtension::SERVICE_BARE_PRINTER)
             );
         }, [self::TAG_REPORT_RENDERER => ['name' => 'delimited']]);
@@ -839,5 +825,39 @@ class CoreExtension implements ExtensionInterface
                 $path
             ]);
         }, $paths));
+    }
+
+    private function createOutput(Container $container, string $type): OutputInterface
+    {
+        if ($container->getParameter(self::PARAM_DISABLE_OUTPUT)) {
+            return new NullOutput();
+        }
+        
+        $output = (function (string $name): OutputInterface {
+            $resource = fopen($name, 'w');
+            if (false === $resource) {
+                throw new RuntimeException(sprintf(
+                    'Could not open stream "%s"',
+                    $name
+                ));
+            }
+            return new StreamOutput($resource);
+        })($container->getParameter($type));
+
+        if (false === $container->getParameter(self::PARAM_CONSOLE_ANSI)) {
+            $output->setDecorated(false);
+        }
+
+        $output->getFormatter()->setStyle('success', new OutputFormatterStyle('black', 'green', []));
+        $output->getFormatter()->setStyle('baseline', new OutputFormatterStyle('cyan', null, []));
+        $output->getFormatter()->setStyle('result-neutral', new OutputFormatterStyle('cyan', null, []));
+        $output->getFormatter()->setStyle('result-good', new OutputFormatterStyle('green', null, []));
+        $output->getFormatter()->setStyle('result-none', new OutputFormatterStyle(null, null, []));
+        $output->getFormatter()->setStyle('result-failure', new OutputFormatterStyle('white', 'red', []));
+        $output->getFormatter()->setStyle('title', new OutputFormatterStyle('white', null, ['bold']));
+        $output->getFormatter()->setStyle('subtitle', new OutputFormatterStyle('white', null, []));
+        $output->getFormatter()->setStyle('description', new OutputFormatterStyle(null, null, []));
+
+        return $output;
     }
 }

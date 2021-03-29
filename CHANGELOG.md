@@ -7,6 +7,8 @@ master
 Features:
 
 - Option to include the baseline rows in the `expression` report.
+- Progress output is sent to STDERR, report output to STDOUT (enable you to
+  pipe the output)
 
 Improvements:
 
