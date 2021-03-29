@@ -2,7 +2,8 @@
     "reports": {
          "my-report": {
              "generator": "expression",
-             "break": ["benchmark"]
+             "break": ["benchmark"],
+             "cols": ["benchmark","subject", "set", "revs", "its", "mem_peak", "mode", "rstdev"]
          }
     }
 }

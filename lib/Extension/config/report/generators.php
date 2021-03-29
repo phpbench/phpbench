@@ -16,6 +16,16 @@ return [
     ],
     'aggregate' => [
         'generator' => 'expression',
+        'cols' => [
+            'benchmark',
+            'subject',
+            'set',
+            'revs',
+            'its',
+            'mem_peak',
+            'mode',
+            'rstdev',
+        ]
     ],
     'default' => [
         'generator' => 'expression',

@@ -87,16 +87,7 @@ EOT
         $options->setDefaults([
             'title' => null,
             'description' => null,
-            'cols' => [
-                'benchmark',
-                'subject',
-                'set',
-                'revs',
-                'its',
-                'mem_peak',
-                'mode',
-                'rstdev',
-            ],
+            'cols' => null,
             'expressions' => [],
             'baseline_expressions' => [],
             'aggregate' => ['benchmark_class', 'subject_name', 'variant_name'],
@@ -105,7 +96,7 @@ EOT
 
         $options->setAllowedTypes('title', ['null', 'string']);
         $options->setAllowedTypes('description', ['null', 'string']);
-        $options->setAllowedTypes('cols', 'array');
+        $options->setAllowedTypes('cols', ['array', 'null']);
         $options->setAllowedTypes('expressions', 'array');
         $options->setAllowedTypes('baseline_expressions', 'array');
         $options->setAllowedTypes('aggregate', 'array');
@@ -134,6 +125,12 @@ EOT
                 'mem_peak' => '(first(baseline_mem_peak) as bytes) ~ " " ~ percent_diff(first(baseline_mem_peak), first(result_mem_peak))',
                 'rstdev' => 'format("%.2f%%", rstdev(result_time_avg)) ~ " " ~ percent_diff(first(baseline_time_avg), first(result_time_avg)) ',
             ], $expressions);
+        });
+        $options->setNormalizer('cols', function (Options $options, ?array $cols) {
+            if (null !== $cols) {
+                return $cols;
+            }
+            return array_keys($options['expressions']);
         });
     }
 
