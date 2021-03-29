@@ -122,6 +122,7 @@ EOT
                 'mode' => $formatTime('mode(result_time_avg)'),
                 'mean' => $formatTime('mean(result_time_avg)'),
                 'worst' => $formatTime('max(result_time_avg)'),
+                'stdev' => $formatTime('stdev(result_time_avg)'),
                 'rstdev' => 'format("%.2f%%", rstdev(result_time_avg))',
             ], $expressions);
         });
