@@ -26,6 +26,15 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ExpressionGenerator implements GeneratorInterface
 {
+    const PARAM_TITLE = 'title';
+    const PARAM_DESCRIPTION = 'description';
+    const PARAM_COLS = 'cols';
+    const PARAM_EXPRESSIONS = 'expressions';
+    const PARAM_BASELINE_EXPRESSIONS = 'baseline_expressions';
+    const PARAM_AGGREGATE = 'aggregate';
+    const PARAM_BREAK = 'break';
+
+
     /**
      * @var ExpressionLanguage
      */
@@ -85,23 +94,23 @@ EOT
         };
 
         $options->setDefaults([
-            'title' => null,
-            'description' => null,
-            'cols' => null,
-            'expressions' => [],
-            'baseline_expressions' => [],
-            'aggregate' => ['benchmark_class', 'subject_name', 'variant_name'],
-            'break' => [],
+            self::PARAM_TITLE => null,
+            self::PARAM_DESCRIPTION => null,
+            self::PARAM_COLS => null,
+            self::PARAM_EXPRESSIONS => [],
+            self::PARAM_BASELINE_EXPRESSIONS => [],
+            self::PARAM_AGGREGATE => ['benchmark_class', 'subject_name', 'variant_name'],
+            self::PARAM_BREAK => [],
         ]);
 
-        $options->setAllowedTypes('title', ['null', 'string']);
-        $options->setAllowedTypes('description', ['null', 'string']);
-        $options->setAllowedTypes('cols', ['array', 'null']);
-        $options->setAllowedTypes('expressions', 'array');
-        $options->setAllowedTypes('baseline_expressions', 'array');
-        $options->setAllowedTypes('aggregate', 'array');
-        $options->setAllowedTypes('break', 'array');
-        $options->setNormalizer('expressions', function (Options $options, array $expressions) use ($formatTime) {
+        $options->setAllowedTypes(self::PARAM_TITLE, ['null', 'string']);
+        $options->setAllowedTypes(self::PARAM_DESCRIPTION, ['null', 'string']);
+        $options->setAllowedTypes(self::PARAM_COLS, ['array', 'null']);
+        $options->setAllowedTypes(self::PARAM_EXPRESSIONS, 'array');
+        $options->setAllowedTypes(self::PARAM_BASELINE_EXPRESSIONS, 'array');
+        $options->setAllowedTypes(self::PARAM_AGGREGATE, 'array');
+        $options->setAllowedTypes(self::PARAM_BREAK, 'array');
+        $options->setNormalizer(self::PARAM_EXPRESSIONS, function (Options $options, array $expressions) use ($formatTime) {
             return array_merge([
                 'benchmark' => 'first(benchmark_name)',
                 'subject' => 'first(subject_name)',
@@ -117,7 +126,7 @@ EOT
                 'rstdev' => 'rstdev(result_time_avg)',
             ], $expressions);
         });
-        $options->setNormalizer('baseline_expressions', function (Options $options, array $expressions) use ($formatTime) {
+        $options->setNormalizer(self::PARAM_BASELINE_EXPRESSIONS, function (Options $options, array $expressions) use ($formatTime) {
             return array_merge([
                 'best' => $formatTime('min(result_time_avg)'),
                 'worst' => $formatTime('max(result_time_avg)'),
@@ -126,12 +135,12 @@ EOT
                 'rstdev' => 'rstdev(result_time_avg) ~ " " ~ percent_diff(first(baseline_time_avg), first(result_time_avg)) ',
             ], $expressions);
         });
-        $options->setNormalizer('cols', function (Options $options, ?array $cols) {
+        $options->setNormalizer(self::PARAM_COLS, function (Options $options, ?array $cols) {
             if (null !== $cols) {
                 return $cols;
             }
 
-            return array_keys($options['expressions']);
+            return array_keys($options[self::PARAM_EXPRESSIONS]);
         });
     }
 
@@ -144,9 +153,9 @@ EOT
         $baselineExpressionMap = $this->resolveBaselineExpressionMap($config, array_keys($expressionMap));
 
         $table = $this->transformer->suiteToTable($collection);
-        $table = $this->aggregate($table, $config['aggregate']);
+        $table = $this->aggregate($table, $config[self::PARAM_AGGREGATE]);
         $table = iterator_to_array($this->evaluate($table, $expressionMap, $baselineExpressionMap));
-        $tables = $this->partition($table, $config['break']);
+        $tables = $this->partition($table, $config[self::PARAM_BREAK]);
 
         return $this->generateReports($tables, $config);
     }
@@ -225,8 +234,8 @@ EOT
             array_map(function (array $table, string $title) {
                 return Table::fromRowArray($table, $title);
             }, $tables, array_keys($tables)),
-            isset($config['title']) ? $config['title'] : null,
-            isset($config['description']) ? $config['description'] : null
+            isset($config[self::PARAM_TITLE]) ? $config[self::PARAM_TITLE] : null,
+            isset($config[self::PARAM_DESCRIPTION]) ? $config[self::PARAM_DESCRIPTION] : null
         ));
     }
 
@@ -281,10 +290,10 @@ EOT
      */
     private function resolveExpressionMap(Config $config): array
     {
-        $expressions = $config['expressions'];
+        $expressions = $config[self::PARAM_EXPRESSIONS];
         $map = [];
 
-        foreach ($config['cols'] as $key => $expr) {
+        foreach ($config[self::PARAM_COLS] as $key => $expr) {
             if (is_int($key) || null === $expr) {
                 $expr = null === $expr ? $key : $expr;
 
@@ -314,7 +323,7 @@ EOT
     {
         $map = [];
 
-        foreach ($config['baseline_expressions'] as $name => $baselineExpression) {
+        foreach ($config[self::PARAM_BASELINE_EXPRESSIONS] as $name => $baselineExpression) {
             if (!in_array($name, $visibleCols)) {
                 continue;
             }
