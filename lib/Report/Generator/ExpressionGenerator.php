@@ -130,6 +130,7 @@ EOT
             if (null !== $cols) {
                 return $cols;
             }
+
             return array_keys($options['expressions']);
         });
     }
