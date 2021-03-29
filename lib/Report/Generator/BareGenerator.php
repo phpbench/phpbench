@@ -2,8 +2,8 @@
 
 namespace PhpBench\Report\Generator;
 
+use function array_map;
 use PhpBench\Expression\Ast\PhpValueFactory;
-use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Report\GeneratorInterface;
@@ -12,7 +12,6 @@ use PhpBench\Report\Model\Reports;
 use PhpBench\Report\Model\Table;
 use PhpBench\Report\Transform\SuiteCollectionTransformer;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use function array_map;
 
 class BareGenerator implements GeneratorInterface
 {
@@ -56,6 +55,7 @@ class BareGenerator implements GeneratorInterface
                 }, $this->transformer->suiteToTable($collection)))
             );
         }
+
         return Reports::fromReport(
             Report::fromTable(
                 Table::fromRowArray(

@@ -3,6 +3,7 @@
 ---
 phpbench run --report=expression --executor=debug NothingBench.php --progress=none
 ---
+
 +--------------+--------------+-----+------+-----+----------+----------+----------+----------+--------+
 | benchmark    | subject      | set | revs | its | mem_peak | best     | mode     | worst    | rstdev |
 +--------------+--------------+-----+------+-----+----------+----------+----------+----------+--------+
