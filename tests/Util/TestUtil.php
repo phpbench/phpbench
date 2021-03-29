@@ -161,7 +161,9 @@ class TestUtil
         $suite->setEnvInformations($informations);
 
         if ($options['baseline']) {
-            $baselineSuite = self::createSuite($options['baseline']);
+            $baselineSuite = self::createSuite(array_merge([
+                'name' => 'baseline',
+            ], $options['baseline']));
             $suite->mergeBaselines(new SuiteCollection([$baselineSuite]));
         }
 
