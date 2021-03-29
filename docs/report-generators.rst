@@ -20,7 +20,7 @@ benchmarking results. It uses the PHPBench :doc:`expression language
 Yields something like:
 
 .. approved:: ../examples/Command/report-generators-expression
-  :language: javascript
+  :language: bash
   :section: 2
 
 Options:
