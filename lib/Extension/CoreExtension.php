@@ -835,12 +835,14 @@ class CoreExtension implements ExtensionInterface
         
         $output = (function (string $name): OutputInterface {
             $resource = fopen($name, 'w');
+
             if (false === $resource) {
                 throw new RuntimeException(sprintf(
                     'Could not open stream "%s"',
                     $name
                 ));
             }
+
             return new StreamOutput($resource);
         })($container->getParameter($type));
 
