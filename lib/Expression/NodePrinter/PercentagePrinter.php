@@ -20,7 +20,7 @@ class PercentagePrinter implements NodePrinter
         return sprintf(
             '%.2f%s',
             $printer->print($node->valueNode()),
-            $printer->print(new UnitNode(new StringNode('%'))),
+            $printer->print(new UnitNode(new StringNode('%')))
         );
     }
 }
