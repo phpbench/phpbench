@@ -413,6 +413,16 @@ class RunTest extends SystemTestCase
         $this->assertExitCode(0, $process);
     }
 
+    public function testQuiet(): void
+    {
+        $process = $this->phpbench(
+            'run benchmarks/set4/NothingBench.php --quiet'
+        );
+
+        $this->assertExitCode(0, $process);
+        $this->assertEmpty($process->getOutput());
+    }
+
     /**
      * It should exit with code "1" if an exception is encountered while running
      * the iterations.
