@@ -81,9 +81,9 @@ class EvaluateCommand extends Command
         $output->writeln(
             sprintf(
                 "%s\n= %s\n= %s",
-                $this->printer->print($node, $params ?? []),
-                $this->evalPrinter->print($node, $params ?? []),
-                $this->printer->print($evaluated, $params ?: [])
+                $this->printer->print($node),
+                $this->evalPrinter->print($node),
+                $this->printer->print($evaluated)
             )
         );
 

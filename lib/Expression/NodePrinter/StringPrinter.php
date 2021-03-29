@@ -9,7 +9,7 @@ use PhpBench\Expression\Printer;
 
 class StringPrinter implements NodePrinter
 {
-    public function print(Printer $printer, Node $node, array $params): ?string
+    public function print(Printer $printer, Node $node): ?string
     {
         if (!$node instanceof StringNode) {
             return null;

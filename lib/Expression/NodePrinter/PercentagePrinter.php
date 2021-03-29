@@ -9,7 +9,7 @@ use PhpBench\Expression\Printer;
 
 class PercentagePrinter implements NodePrinter
 {
-    public function print(Printer $printer, Node $node, array $params): ?string
+    public function print(Printer $printer, Node $node): ?string
     {
         if (!$node instanceof PercentageNode) {
             return null;
@@ -17,7 +17,7 @@ class PercentagePrinter implements NodePrinter
 
         return sprintf(
             '%s%%',
-            $printer->print($node->value(), $params)
+            $printer->print($node->value())
         );
     }
 }

@@ -12,15 +12,15 @@ class ConcatenatedNodePrinter implements NodePrinter
     /**
      * {@inheritDoc}
      */
-    public function print(Printer $printer, Node $node, array $params): ?string
+    public function print(Printer $printer, Node $node): ?string
     {
         if (!$node instanceof ConcatenatedNode) {
             return null;
         }
 
         return implode('', [
-            $printer->print($node->left(), $params),
-            $printer->print($node->right(), $params)
+            $printer->print($node->left()),
+            $printer->print($node->right())
         ]);
     }
 }

@@ -9,5 +9,5 @@ interface Printer
     /**
      * @param parameters $params
      */
-    public function print(Node $node, array $params): string;
+    public function print(Node $node): string;
 }

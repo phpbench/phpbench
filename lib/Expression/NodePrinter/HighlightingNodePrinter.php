@@ -31,9 +31,9 @@ class HighlightingNodePrinter implements NodePrinter
     /**
      * {@inheritDoc}
      */
-    public function print(Printer $printer, Node $node, array $params): ?string
+    public function print(Printer $printer, Node $node): ?string
     {
-        $printed = $this->nodePrinter->print($printer, $node, $params);
+        $printed = $this->nodePrinter->print($printer, $node);
 
         $map = $this->colorMap->colors();
 

@@ -70,8 +70,8 @@ class AssertionProcessor
         $message = sprintf(
             "%s\n= %s\n= %s",
             $this->printer->print($node, $params),
-            $this->evaluatingPrinter->print($node, $params),
-            $this->printer->print($evaluated, $params)
+            $this->evaluatingPrinter->print($node),
+            $this->printer->print($evaluated)
         );
 
         if ($evaluated instanceof BooleanNode) {
@@ -89,7 +89,7 @@ class AssertionProcessor
         throw new AssertionError(sprintf(
             'Assertion expression must evaluate to a boolean-like value, got "%s" as "%s"',
             get_class($evaluated),
-            $this->printer->print($evaluated, $params)
+            $this->printer->print($evaluated)
         ));
     }
 }

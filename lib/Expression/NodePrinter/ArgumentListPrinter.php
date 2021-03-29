@@ -9,7 +9,7 @@ use PhpBench\Expression\Printer;
 
 class ArgumentListPrinter implements NodePrinter
 {
-    public function print(Printer $printer, Node $node, array $params): ?string
+    public function print(Printer $printer, Node $node): ?string
     {
         if (!$node instanceof ArgumentListNode) {
             return null;
@@ -18,7 +18,7 @@ class ArgumentListPrinter implements NodePrinter
         $out = [];
 
         foreach ($node->value() as $expression) {
-            $out[] = $printer->print($expression, $params);
+            $out[] = $printer->print($expression);
         }
 
         return implode(', ', $out);

@@ -18,8 +18,8 @@ final class NormalizingPrinter implements Printer
         $this->printers = $printers;
     }
 
-    public function print(Node $node, array $params): string
+    public function print(Node $node): string
     {
-        return $this->printers->print($this, $node, $params);
+        return $this->printers->print($this, $node);
     }
 }

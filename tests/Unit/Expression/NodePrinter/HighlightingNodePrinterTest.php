@@ -25,12 +25,12 @@ class HighlightingNodePrinterTest extends TestCase
         $printer->print(Argument::type(Node::class));
 
         $nodePrinter = $this->prophesize(NodePrinter::class);
-        $nodePrinter->print($printer, $node, [])->willReturn('test');
+        $nodePrinter->print($printer, $node)->willReturn('test');
 
         self::assertEquals($expected, (new HighlightingNodePrinter(
             $nodePrinter->reveal(),
             new ArrayColorMap($map)
-        ))->print($printer->reveal(), $node, []));
+        ))->print($printer->reveal(), $node));
     }
 
     /**
