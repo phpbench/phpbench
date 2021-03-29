@@ -33,6 +33,7 @@ Options:
   when a baseline is present
 - **break**: *(array)* List of columns; break into multiple tables based on
 - **aggregate**: *(array)* List of fields to aggregate on.
+- **include_baseline**: *(bool)* Include the baseline rows
 
 .. _generator_expression_columns:
 
