@@ -100,7 +100,7 @@ EOT
             self::PARAM_COLS => null,
             self::PARAM_EXPRESSIONS => [],
             self::PARAM_BASELINE_EXPRESSIONS => [],
-            self::PARAM_AGGREGATE => ['benchmark_class', 'subject_name', 'variant_name'],
+            self::PARAM_AGGREGATE => ['suite_tag', 'benchmark_class', 'subject_name', 'variant_name'],
             self::PARAM_BREAK => [],
             self::PARAM_INCLUDE_BASELINE => false,
         ]);
@@ -115,6 +115,7 @@ EOT
         $options->setAllowedTypes(self::PARAM_INCLUDE_BASELINE, 'bool');
         $options->setNormalizer(self::PARAM_EXPRESSIONS, function (Options $options, array $expressions) use ($formatTime) {
             return array_merge([
+                'tag' => 'first(suite_tag)',
                 'benchmark' => 'first(benchmark_name)',
                 'subject' => 'first(subject_name)',
                 'set' => 'first(variant_name)',
@@ -135,7 +136,7 @@ EOT
                 'worst' => $formatTime('max(result_time_avg)'),
                 'mode' => $formatTime('mode(result_time_avg)') . ' ~" "~ percent_diff(mode(baseline_time_avg), mode(result_time_avg), rstdev(result_time_avg))',
                 'mem_peak' => '(first(baseline_mem_peak) as bytes) ~ " " ~ percent_diff(first(baseline_mem_peak), first(result_mem_peak))',
-                'rstdev' => 'rstdev(result_time_avg) ~ " " ~ percent_diff(first(baseline_time_avg), first(result_time_avg)) ',
+                'rstdev' => 'rstdev(result_time_avg) ~ " " ~ percent_diff(rstdev(baseline_time_avg), rstdev(result_time_avg))',
             ], $expressions);
         });
         $options->setNormalizer(self::PARAM_COLS, function (Options $options, ?array $cols) {

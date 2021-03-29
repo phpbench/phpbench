@@ -44,6 +44,16 @@ final class SuiteCollectionTransformer
                         $baseline = $variant->getBaseline();
                         $baselineIteration = $baseline ? $baseline->getIteration($itNum) : null;
 
+                        if ($includeBaseline && $baseline) {
+                            yield array_merge(
+                                [
+                                    self::COL_HAS_BASELINE => false
+                                ],
+                                $this->createRow($baseline->getSubject(), $baseline, $baseline->getSubject()->getBenchmark()->getSuite(), $itNum),
+                                $this->resultData($baselineIteration, 'result')
+                            );
+                        }
+
                         yield array_merge(
                             [
                                 self::COL_HAS_BASELINE => $baseline ? true : false
