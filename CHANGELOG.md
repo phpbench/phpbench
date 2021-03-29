@@ -10,6 +10,7 @@ Improvements:
 - Removed `best` and `worst` columns by default from default report.
 - Default to showing all columns in expression report
 - Standard deviation in `default` report is shown as time
+- Relative SD is color gradiated
 
 1.0.0-alpha8
 ------------
