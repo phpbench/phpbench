@@ -62,6 +62,9 @@ class AnnotatedBench
 // section: timeout
      * @Timeout(1.0)
 // endsection: timeout
+// section: retrythreshold
+     * @RetryThreshold(20.0)
+// endsection: retrythreshold
 // section: benchTime
      */
     public function benchTimeItself(): void

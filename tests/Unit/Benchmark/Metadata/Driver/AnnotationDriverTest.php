@@ -112,6 +112,7 @@ EOT;
      * @Format("mode(variant.time.avg) as ms")
      * @Executor("microtime", revs=100)
      * @Timeout(0.1)
+     * @RetryThreshold(2.1)
      */
 EOT;
         $reflection->methods[$method->name] = $method;
@@ -137,6 +138,7 @@ EOT;
         $this->assertEquals(new ExecutorMetadata('microtime', ['revs' => 100 ]), $metadata->getExecutor());
         $this->assertTrue($metadata->getSkip());
         $this->assertEquals(0.1, $metadata->getTimeout());
+        $this->assertEquals(2.1, $metadata->getRetryThreshold());
     }
 
     /**

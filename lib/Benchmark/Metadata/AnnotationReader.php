@@ -46,6 +46,7 @@ class AnnotationReader
         'Executor' => Annotations\Executor::class,
         'Timeout' => Annotations\Timeout::class,
         'Format' => Annotations\Format::class,
+        'RetryThreshold' => Annotations\RetryThreshold::class,
     ];
 
     private static $globalIgnoredNames = [

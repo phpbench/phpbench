@@ -191,6 +191,10 @@ class AttributeDriver implements DriverInterface
         if ($attribute instanceof Attributes\Timeout) {
             $subject->setTimeout($attribute->timeout);
         }
+
+        if ($attribute instanceof Attributes\RetryThreshold) {
+            $subject->setRetryThreshold($attribute->retryThreshold);
+        }
     }
 
     /**
