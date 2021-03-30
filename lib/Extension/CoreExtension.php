@@ -21,6 +21,7 @@ use PhpBench\Benchmark\Metadata\AnnotationReader;
 use PhpBench\Benchmark\Metadata\Driver\AnnotationDriver;
 use PhpBench\Benchmark\Metadata\Driver\AttributeDriver;
 use PhpBench\Benchmark\Metadata\Driver\ChainDriver;
+use PhpBench\Benchmark\Metadata\Driver\ConfigDriver;
 use PhpBench\Benchmark\Metadata\MetadataFactory;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Console\Application;
@@ -130,6 +131,15 @@ class CoreExtension implements ExtensionInterface
     public const PARAM_ANNOTATIONS = 'annotations';
     public const PARAM_ATTRIBUTES = 'attributes';
     public const PARAM_DEBUG = 'debug';
+    public const PARAM_RUNNER_ASSERT = 'runner.assert';
+    public const PARAM_RUNNER_EXECUTOR = 'runner.executor';
+    public const PARAM_RUNNER_FORMAT = 'runner.format';
+    public const PARAM_RUNNER_ITERATIONS = 'runner.iterations';
+    public const PARAM_RUNNER_OUTPUT_MODE = 'runner.output_mode';
+    public const PARAM_RUNNER_OUTPUT_TIME_UNIT = 'runner.time_unit';
+    public const PARAM_RUNNER_REVS = 'runner.revs';
+    public const PARAM_RUNNER_TIMEOUT = 'runner.timeout';
+    public const PARAM_RUNNER_WARMUP = 'runner.warmup';
 
     public const TAG_EXECUTOR = 'benchmark_executor';
     public const TAG_CONSOLE_COMMAND = 'console.command';
@@ -183,6 +193,17 @@ class CoreExtension implements ExtensionInterface
             self::PARAM_DEBUG => false,
             self::PARAM_CONSOLE_OUTPUT_STREAM => 'php://stdout',
             self::PARAM_CONSOLE_ERROR_STREAM => 'php://stderr',
+
+            self::PARAM_RUNNER_ASSERT => null,
+            self::PARAM_RUNNER_EXECUTOR => null,
+            self::PARAM_RUNNER_FORMAT => null,
+            self::PARAM_RUNNER_ITERATIONS => null,
+            self::PARAM_RUNNER_OUTPUT_MODE => null,
+            self::PARAM_RUNNER_OUTPUT_TIME_UNIT => null,
+            self::PARAM_RUNNER_REVS => null,
+            self::PARAM_RUNNER_TIMEOUT => null,
+            self::PARAM_RUNNER_WARMUP => null,
+
         ]);
 
         $resolver->setAllowedTypes(self::PARAM_DEBUG, ['bool']);
@@ -213,6 +234,15 @@ class CoreExtension implements ExtensionInterface
         $resolver->setAllowedTypes(self::PARAM_PROGRESS_SUMMARY_FORMAT, ['string']);
         $resolver->setAllowedTypes(self::PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT, ['string']);
         $resolver->setAllowedTypes(self::PARAM_CONSOLE_OUTPUT_STREAM, ['string']);
+        $resolver->setAllowedTypes(self::PARAM_RUNNER_ASSERT, ['null', 'string', 'array']);
+        $resolver->setAllowedTypes(self::PARAM_RUNNER_EXECUTOR, ['null', 'string']);
+        $resolver->setAllowedTypes(self::PARAM_RUNNER_FORMAT, ['null', 'string']);
+        $resolver->setAllowedTypes(self::PARAM_RUNNER_ITERATIONS, ['null', 'int', 'array']);
+        $resolver->setAllowedTypes(self::PARAM_RUNNER_OUTPUT_MODE, ['null', 'string']);
+        $resolver->setAllowedTypes(self::PARAM_RUNNER_OUTPUT_TIME_UNIT, ['null', 'string']);
+        $resolver->setAllowedTypes(self::PARAM_RUNNER_REVS, ['null', 'int', 'array']);
+        $resolver->setAllowedTypes(self::PARAM_RUNNER_TIMEOUT, ['null', 'float', 'int']);
+        $resolver->setAllowedTypes(self::PARAM_RUNNER_WARMUP, ['null', 'int', 'array']);
     }
 
     public function load(Container $container): void
@@ -389,7 +419,22 @@ class CoreExtension implements ExtensionInterface
         $container->register(MetadataFactory::class, function (Container $container) {
             return new MetadataFactory(
                 $container->get(RemoteReflector::class),
-                $container->get(ChainDriver::class)
+                $container->get(ConfigDriver::class)
+            );
+        });
+
+        $container->register(ConfigDriver::class, function (Container $container) {
+            return new ConfigDriver(
+                $container->get(ChainDriver::class),
+                (array)$container->getParameter(self::PARAM_RUNNER_ASSERT),
+                $container->getParameter(self::PARAM_RUNNER_EXECUTOR),
+                $container->getParameter(self::PARAM_RUNNER_FORMAT),
+                (array)$container->getParameter(self::PARAM_RUNNER_ITERATIONS),
+                $container->getParameter(self::PARAM_RUNNER_OUTPUT_MODE),
+                $container->getParameter(self::PARAM_RUNNER_OUTPUT_TIME_UNIT),
+                (array)$container->getParameter(self::PARAM_RUNNER_REVS),
+                $container->getParameter(self::PARAM_RUNNER_TIMEOUT),
+                (array)$container->getParameter(self::PARAM_RUNNER_WARMUP)
             );
         });
 

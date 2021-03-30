@@ -12,9 +12,7 @@ use PhpBench\Tests\Util\TestUtil;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @OutputTimeUnit("milliseconds")
  * @Assert("mode(variant.time.avg) as ms <= mode(baseline.time.avg) as ms +/- 5%")
- * @Iterations(10)
  */
 class ExpressionGeneratorBench extends IntegrationBenchCase
 {

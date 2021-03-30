@@ -10,6 +10,7 @@ Features:
 - Progress output is sent to STDERR, report output to STDOUT (enable you to
   pipe the output)
 - Allow `--theme=` selection and configuration.
+- Allow benchmarks to be configued in the config (`runner.{iterations,revs,time_unit,mode,etc}`)
 
 Improvements:
 
