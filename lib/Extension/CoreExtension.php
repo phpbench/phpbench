@@ -460,7 +460,7 @@ class CoreExtension implements ExtensionInterface
                 (array)$container->getParameter(self::PARAM_RUNNER_REVS),
                 $container->getParameter(self::PARAM_RUNNER_TIMEOUT),
                 (array)$container->getParameter(self::PARAM_RUNNER_WARMUP),
-                (float)($container->getParameter(self::PARAM_RUNNER_RETRY_THRESHOLD) ?: $container->getParameter(self::PARAM_RETRY_THRESHOLD)),
+                (float)($container->getParameter(self::PARAM_RUNNER_RETRY_THRESHOLD) ?: $container->getParameter(self::PARAM_RETRY_THRESHOLD))
             );
         });
 
