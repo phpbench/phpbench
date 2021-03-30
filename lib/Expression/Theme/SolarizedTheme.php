@@ -12,6 +12,7 @@ use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\ParenthesisNode;
 use PhpBench\Expression\Ast\PercentDifferenceNode;
+use PhpBench\Expression\Ast\PercentageNode;
 use PhpBench\Expression\Ast\RelativeDeviationNode;
 use PhpBench\Expression\Ast\ToleratedTrue;
 use PhpBench\Expression\Ast\UnitNode;
@@ -24,7 +25,7 @@ use PhpBench\Expression\Theme\Util\Gradient;
  *
  * @implements ColorMap<Node>
  */
-class TrueColorTheme implements ColorMap
+class SolarizedTheme implements ColorMap
 {
     private const BASE03 = '#002b36';
     private const BASE02 = '#073642';
@@ -68,6 +69,11 @@ class TrueColorTheme implements ColorMap
      */
     private $base3;
 
+    /**
+     * @var string
+     */
+    private $neutral;
+
     public function __construct(bool $light = true)
     {
         if ($light) {
@@ -75,9 +81,11 @@ class TrueColorTheme implements ColorMap
             $this->base1 = self::BASE01;
             $this->base2 = self::BASE02;
             $this->base3 = self::BASE03;
+            $this->neutral = '#222222';
             return;
         }
 
+        $this->neutral = '#aaaaaa';
         $this->base0 = self::BASE0;
         $this->base1 = self::BASE1;
         $this->base2 = self::BASE2;
@@ -94,7 +102,7 @@ class TrueColorTheme implements ColorMap
 
         /** @phpstan-ignore-next-line */
         return [
-            UnitNode::class => 'fg='.$this->base1,
+            UnitNode::class => 'fg='. self::BASE1,
             FunctionNode::class => 'fg=' . self::GREEN,
             ParenthesisNode::class => 'fg=' . self::RED,
             PercentDifferenceNode::class => function (Node $node) {
@@ -109,7 +117,7 @@ class TrueColorTheme implements ColorMap
                     50 + (((int)$node->value()))
                 )->toHex();
             },
-            DisplayAsNode::class => 'fg=' . $this->base2,
+            DisplayAsNode::class => 'fg=default',
             ParameterNode::class => 'fg='  .self::ORANGE,
             BooleanNode::class => function (Node $node): string {
                 assert($node instanceof BooleanNode);
@@ -128,7 +136,7 @@ class TrueColorTheme implements ColorMap
             $this->gradient = Gradient::start(
                 Color::fromHex(self::GREEN)
             )->to(
-                Color::fromHex($this->base2), 100
+                Color::fromHex('#aaaaaa'), 100
             )->to(
                 Color::fromHex('#ff0000'), 100
             );

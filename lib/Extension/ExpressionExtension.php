@@ -13,7 +13,7 @@ use PhpBench\Expression\Ast\ParenthesisNode;
 use PhpBench\Expression\Ast\TolerableNode;
 use PhpBench\Expression\ColorMap;
 use PhpBench\Expression\Theme\EightColorTheme;
-use PhpBench\Expression\Theme\TrueColorTheme;
+use PhpBench\Expression\Theme\SolarizedTheme;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Evaluator\MainEvaluator;
 use PhpBench\Expression\Evaluator\PrettyErrorEvaluator;
@@ -119,9 +119,7 @@ class ExpressionExtension implements ExtensionInterface
     public const TAG_THEME = self::PARAM_THEME;
     public const PARAM_THEME = 'expression.theme';
     public const THEME_BASIC = 'basic';
-    public const THEME_DARK = 'dark';
-    public const THEME_LIGHT = 'light';
-
+    public const THEME_SOLARIZED = 'solarized';
 
     /**
      * {@inheritDoc}
@@ -241,21 +239,12 @@ class ExpressionExtension implements ExtensionInterface
             ));
         });
 
-        $container->register(TrueColorTheme::class . 'dark', function (Container $container) {
+        $container->register(SolarizedTheme::class, function (Container $container) {
             // this theme uses true colors which is only supported in SF5
-            return class_exists(NullOutputFormatter::class) ? new TrueColorTheme(false) : new EightColorTheme();
+            return class_exists(NullOutputFormatter::class) ? new SolarizedTheme(false) : new EightColorTheme();
         }, [
             self::TAG_THEME => [
-                'name' => self::THEME_DARK,
-            ],
-        ]);
-
-        $container->register(TrueColorTheme::class . '.light', function (Container $container) {
-            // this theme uses true colors which is only supported in SF5
-            return class_exists(NullOutputFormatter::class) ? new TrueColorTheme(true) : new EightColorTheme();
-        }, [
-            self::TAG_THEME => [
-                'name' => self::THEME_LIGHT,
+                'name' => self::THEME_SOLARIZED,
             ],
         ]);
 
@@ -354,7 +343,7 @@ class ExpressionExtension implements ExtensionInterface
     {
         $resolver->setDefaults([
             self::PARAM_SYNTAX_HIGHLIGHTING => true,
-            self::PARAM_THEME => self::THEME_DARK,
+            self::PARAM_THEME => self::THEME_SOLARIZED,
         ]);
         $resolver->setAllowedTypes(self::PARAM_SYNTAX_HIGHLIGHTING, 'bool');
         $resolver->setAllowedTypes(self::PARAM_THEME, 'string');
