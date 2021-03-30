@@ -9,10 +9,6 @@ use PhpBench\Progress\VariantFormatter;
 use PhpBench\Tests\Benchmark\IntegrationBenchCase;
 use PhpBench\Tests\Util\VariantBuilder;
 
-/**
- * @OutputTimeUnit("milliseconds")
- * @Assert("mode(variant.time.avg) as ms <= mode(baseline.time.avg) as ms +/- 5%")
- */
 class VariantSummaryFormatterBench extends IntegrationBenchCase
 {
     /**

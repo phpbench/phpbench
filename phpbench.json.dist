@@ -4,6 +4,10 @@
     "php_config": {
         "memory_limit": "1G"
     },
+    "runner.iterations": 10,
+    "runner.revs": 10,
+    "runner.time_unit": "milliseconds",
+    "runner.assert": "mode(variant.time.avg) as ms <= mode(baseline.time.avg) as ms +/- 5%",
     "reports": {
         "all": {
             "generator": "composite",

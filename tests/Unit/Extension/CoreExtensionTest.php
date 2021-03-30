@@ -12,10 +12,12 @@
 
 namespace PhpBench\Tests\Unit\Extension;
 
+use PhpBench\Benchmark\Metadata\Driver\ConfigDriver;
 use PhpBench\DependencyInjection\Container;
-use PhpBench\Tests\TestCase;
+use PhpBench\Extension\CoreExtension;
+use PhpBench\Tests\IntegrationTestCase;
 
-class CoreExtensionTest extends TestCase
+class CoreExtensionTest extends IntegrationTestCase
 {
     protected function tearDown(): void
     {
@@ -49,5 +51,22 @@ class CoreExtensionTest extends TestCase
         ]);
         $container->init();
         $this->assertEquals('travis', $container->getParameter('progress'));
+    }
+
+    public function testConfigDriver(): void
+    {
+        $container = $this->container([
+            CoreExtension::PARAM_RUNNER_ASSERT => 'foobar',
+            CoreExtension::PARAM_RUNNER_EXECUTOR => 'foobar',
+            CoreExtension::PARAM_RUNNER_FORMAT => 'foobar',
+            CoreExtension::PARAM_RUNNER_ITERATIONS => 12,
+            CoreExtension::PARAM_RUNNER_OUTPUT_MODE => 'mode',
+            CoreExtension::PARAM_RUNNER_OUTPUT_TIME_UNIT => 'foobar',
+            CoreExtension::PARAM_RUNNER_REVS => 32,
+            CoreExtension::PARAM_RUNNER_TIMEOUT => 12,
+            CoreExtension::PARAM_RUNNER_WARMUP => 12,
+        ]);
+        $container->get(ConfigDriver::class);
+        $this->addToAssertionCount(1);
     }
 }
