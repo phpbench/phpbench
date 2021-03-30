@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Expression\ColorMap\Util;
+namespace PhpBench\Expression\Theme\Util;
 
 use function array_fill;
 use RuntimeException;

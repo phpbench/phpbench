@@ -623,4 +623,17 @@ class RunTest extends SystemTestCase
         $this->assertExitCode(0, $process);
         self::assertStringContainsString('Spawning', $process->getErrorOutput());
     }
+
+    public function testTheme(): void
+    {
+        $process = $this->phpbench('run benchmarks/set4/NothingBench.php -vvv --theme=basic');
+        $this->assertExitCode(0, $process);
+    }
+
+    public function testThemeNotFound(): void
+    {
+        $process = $this->phpbench('run benchmarks/set4/NothingBench.php -vvv --theme=notfound');
+        $this->assertExitCode(255, $process);
+        self::assertStringContainsString('Unknown theme', $process->getErrorOutput());
+    }
 }

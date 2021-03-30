@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Expression\ColorMap;
+namespace PhpBench\Expression\Theme;
 
 use Closure;
 use PhpBench\Expression\ColorMap;
@@ -9,7 +9,7 @@ use PhpBench\Expression\ColorMap;
  * @template T
  * @implements ColorMap<T>
  */
-class ArrayColorMap implements ColorMap
+class ArrayTheme implements ColorMap
 {
     /**
      * @var array<class-string<T>, string|Closure(T):string>

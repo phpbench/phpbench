@@ -11,8 +11,7 @@ use PhpBench\Expression\Ast\FunctionNode;
 use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\ParenthesisNode;
 use PhpBench\Expression\Ast\TolerableNode;
-use PhpBench\Expression\ColorMap\Standard8ColorMap;
-use PhpBench\Expression\ColorMap\TrueColorMap;
+use PhpBench\Expression\ColorMap;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Evaluator\MainEvaluator;
 use PhpBench\Expression\Evaluator\PrettyErrorEvaluator;
@@ -102,8 +101,11 @@ use PhpBench\Expression\Printer\BareValuePrinter;
 use PhpBench\Expression\Printer\EvaluatingPrinter;
 use PhpBench\Expression\Printer\NormalizingPrinter;
 use PhpBench\Expression\Printer\UnderlinePrinterFactory;
+use PhpBench\Expression\Theme\EightColorTheme;
+use PhpBench\Expression\Theme\SolarizedTheme;
 use PhpBench\Expression\Token;
 use PhpBench\Util\TimeUnit;
+use RuntimeException;
 use Symfony\Component\Console\Formatter\NullOutputFormatter;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -113,7 +115,10 @@ class ExpressionExtension implements ExtensionInterface
 
     public const SERVICE_PLAIN_PRINTER = Printer::class . '.plain';
     public const SERVICE_BARE_PRINTER = Printer::class . '.bare';
-
+    public const TAG_THEME = self::PARAM_THEME;
+    public const PARAM_THEME = 'expression.theme';
+    public const THEME_BASIC = 'basic';
+    public const THEME_SOLARIZED = 'solarized';
 
     /**
      * {@inheritDoc}
@@ -212,9 +217,45 @@ class ExpressionExtension implements ExtensionInterface
         $container->register(HighlightingNodePrinter::class, function (Container $container) {
             return new HighlightingNodePrinter(
                 $container->get(NodePrinters::class),
-                class_exists(NullOutputFormatter::class) ? new TrueColorMap() : new Standard8ColorMap()
+                $container->get(ColorMap::class)
             );
         });
+
+        $container->register(ColorMap::class, function (Container $container) {
+            $themes = [];
+            $selected = $container->getParameter(self::PARAM_THEME);
+
+            foreach ($container->getServiceIdsForTag(self::TAG_THEME) as $serviceId => $attrs) {
+                $name = $attrs['name'];
+
+                if ($name === $selected) {
+                    return $container->get($serviceId);
+                }
+                $themes[] = $name;
+            }
+
+            throw new RuntimeException(sprintf(
+                'Unknown theme "%s", known themes: "%s"',
+                $selected, implode('", "', $themes)
+            ));
+        });
+
+        $container->register(SolarizedTheme::class, function (Container $container) {
+            // this theme uses true colors which is only supported in SF5
+            return class_exists(NullOutputFormatter::class) ? new SolarizedTheme(false) : new EightColorTheme();
+        }, [
+            self::TAG_THEME => [
+                'name' => self::THEME_SOLARIZED,
+            ],
+        ]);
+
+        $container->register(EightColorTheme::class, function (Container $container) {
+            return new EightColorTheme();
+        }, [
+            self::TAG_THEME => [
+                'name' => self::THEME_BASIC,
+            ],
+        ]);
 
         $container->register(NodePrinters::class, function (Container $container) {
             return new NodePrinters([
@@ -301,7 +342,11 @@ class ExpressionExtension implements ExtensionInterface
      */
     public function configure(OptionsResolver $resolver): void
     {
-        $resolver->setDefault(self::PARAM_SYNTAX_HIGHLIGHTING, true);
+        $resolver->setDefaults([
+            self::PARAM_SYNTAX_HIGHLIGHTING => true,
+            self::PARAM_THEME => self::THEME_SOLARIZED,
+        ]);
         $resolver->setAllowedTypes(self::PARAM_SYNTAX_HIGHLIGHTING, 'bool');
+        $resolver->setAllowedTypes(self::PARAM_THEME, 'string');
     }
 }

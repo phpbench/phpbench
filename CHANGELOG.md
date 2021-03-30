@@ -9,9 +9,11 @@ Features:
 - Option to include the baseline rows in the `expression` report.
 - Progress output is sent to STDERR, report output to STDOUT (enable you to
   pipe the output)
+- Allow `--theme=` selection and configuration.
 
 Improvements:
 
+- Make default true color theme compatible with light backgrounds.
 - Added `vertical` layout to `bare` report (`vertical: true`).
 - Removed `best` and `worst` columns by default from default report.
 - Default to showing all columns in expression report

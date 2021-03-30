@@ -41,6 +41,7 @@ class Application extends BaseApplication
             new InputOption('--profile', null, InputOption::VALUE_REQUIRED, 'Configuration file'),
             new InputOption('--config', null, InputOption::VALUE_REQUIRED, 'Use the specified configuration profile'),
             new InputOption('--extension', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Enable an extension'),
+            new InputOption('--theme', null, InputOption::VALUE_REQUIRED, 'Theme'),
         ]);
 
         return $default;
