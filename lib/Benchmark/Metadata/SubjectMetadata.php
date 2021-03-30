@@ -409,6 +409,7 @@ class SubjectMetadata
             'outputTimeUnit',
             'outputTimePrecision',
             'outputMode',
+            'retryThreshold',
             'executorMetadata',
             'timeout',
         ] as $toReplace) {

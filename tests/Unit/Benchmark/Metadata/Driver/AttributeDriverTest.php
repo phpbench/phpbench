@@ -15,6 +15,7 @@ use PhpBench\Attributes\Iterations;
 use PhpBench\Attributes\OutputMode;
 use PhpBench\Attributes\OutputTimeUnit;
 use PhpBench\Attributes\ParamProviders;
+use PhpBench\Attributes\RetryThreshold;
 use PhpBench\Attributes\Revs;
 use PhpBench\Attributes\Skip;
 use PhpBench\Attributes\Sleep;
@@ -300,6 +301,15 @@ class AttributeDriverTest extends TestCase
             ],
             function (SubjectMetadata $metadata): void {
                 self::assertEquals(12.1, $metadata->getTimeout());
+            }
+        ];
+
+        yield [
+            [
+                new RetryThreshold(10),
+            ],
+            function (SubjectMetadata $metadata): void {
+                self::assertEquals(10.0, $metadata->getRetryThreshold());
             }
         ];
     }

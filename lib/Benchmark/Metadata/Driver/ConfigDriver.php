@@ -54,6 +54,11 @@ class ConfigDriver implements DriverInterface
     private $innerDriver;
 
     /**
+     * @var float|null
+     */
+    private $retryThreshold;
+
+    /**
      * @param string[] $assert
      * @param int[] $iterations
      * @param int[] $revs
@@ -68,7 +73,8 @@ class ConfigDriver implements DriverInterface
         ?string $timeUnit,
         ?array $revs,
         ?float $timeout,
-        ?array $warmup
+        ?array $warmup,
+        ?float $retryThreshold
     ) {
         $this->assert = $assert;
         $this->executor = $executor;
@@ -80,6 +86,7 @@ class ConfigDriver implements DriverInterface
         $this->timeout = $timeout;
         $this->warmup = $warmup;
         $this->innerDriver = $innerDriver;
+        $this->retryThreshold = $retryThreshold;
     }
 
 
@@ -135,6 +142,10 @@ class ConfigDriver implements DriverInterface
 
         if ($this->warmup && [0] === $subject->getWarmup()) {
             $subject->setWarmup($this->warmup);
+        }
+
+        if ($this->retryThreshold && null === $subject->getRetryThreshold()) {
+            $subject->setRetryThreshold($this->retryThreshold);
         }
     }
 }
