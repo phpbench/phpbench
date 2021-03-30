@@ -105,6 +105,7 @@ class CoreExtension implements ExtensionInterface
     public const PARAM_CONFIG_PATH = 'config_path';
     public const PARAM_ENV_BASELINES = 'env_baselines';
     public const PARAM_ENV_BASELINE_CALLABLES = 'env_baseline_callables';
+    public const PARAM_ENABLED_PROVIDERS = 'env.enabled_providers';
     public const PARAM_EXECUTORS = 'executors';
     public const PARAM_OUTPUTS = 'outputs';
     public const PARAM_OUTPUT_MODE = 'output_mode';
@@ -159,6 +160,14 @@ class CoreExtension implements ExtensionInterface
     public const SERVICE_OUTPUT_STD = 'console.stream.std';
     public const SERVICE_OUTPUT_ERR = 'console.stream.err';
 
+    public const ENV_PROVIDER_UNAME = 'uname';
+    public const ENV_PROVIDER_PHP = 'php';
+    public const ENV_PROVIDER_OPCACHE = 'opcache';
+    public const ENV_PROVIDER_UNIX_SYSLOAD = 'unix_sysload';
+    public const ENV_PROVIDER_GIT = 'git';
+    public const ENV_PROVIDER_BASELINE = 'baseline';
+    const ENV_PROVIDER_TEST = 'test';
+
     public function configure(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
@@ -174,6 +183,14 @@ class CoreExtension implements ExtensionInterface
             self::PARAM_OUTPUT_MODE => TimeUnit::MODE_TIME,
             self::PARAM_STORAGE => 'xml',
             self::PARAM_SUBJECT_PATTERN => '^bench',
+            self::PARAM_ENABLED_PROVIDERS => [
+                self::ENV_PROVIDER_UNAME,
+                self::ENV_PROVIDER_PHP,
+                self::ENV_PROVIDER_OPCACHE,
+                self::ENV_PROVIDER_UNIX_SYSLOAD,
+                self::ENV_PROVIDER_GIT,
+                self::ENV_PROVIDER_BASELINE,
+            ],
             self::PARAM_ENV_BASELINES => ['nothing', 'md5', 'file_rw'],
             self::PARAM_ENV_BASELINE_CALLABLES => [],
             self::PARAM_XML_STORAGE_PATH => getcwd() . '/.phpbench/storage', // use cwd because PHARs
@@ -243,6 +260,7 @@ class CoreExtension implements ExtensionInterface
         $resolver->setAllowedTypes(self::PARAM_RUNNER_REVS, ['null', 'int', 'array']);
         $resolver->setAllowedTypes(self::PARAM_RUNNER_TIMEOUT, ['null', 'float', 'int']);
         $resolver->setAllowedTypes(self::PARAM_RUNNER_WARMUP, ['null', 'int', 'array']);
+        $resolver->setAllowedTypes(self::PARAM_ENABLED_PROVIDERS, ['array']);
     }
 
     public function load(Container $container): void
@@ -759,39 +777,68 @@ class CoreExtension implements ExtensionInterface
     {
         $container->register(Provider\Uname::class, function (Container $container) {
             return new Provider\Uname();
-        }, [self::TAG_ENV_PROVIDER => []]);
+        }, [self::TAG_ENV_PROVIDER => [
+            'name' => self::ENV_PROVIDER_UNAME,
+        ]]);
 
         $container->register(Provider\Php::class, function (Container $container) {
             return new Provider\Php(
                 $container->get(Launcher::class)
             );
-        }, [self::TAG_ENV_PROVIDER => []]);
+        }, [self::TAG_ENV_PROVIDER => [
+            'name' => self::ENV_PROVIDER_PHP,
+        ]]);
 
         $container->register(Provider\Opcache::class, function (Container $container) {
             return new Provider\Opcache(
                 $container->get(Launcher::class)
             );
-        }, [self::TAG_ENV_PROVIDER => []]);
+        }, [self::TAG_ENV_PROVIDER => [
+            'name' => self::ENV_PROVIDER_OPCACHE,
+        ]]);
 
         $container->register(Provider\UnixSysload::class, function (Container $container) {
             return new Provider\UnixSysload();
-        }, [self::TAG_ENV_PROVIDER => []]);
+        }, [self::TAG_ENV_PROVIDER => [
+            'name' => self::ENV_PROVIDER_UNIX_SYSLOAD,
+        ]]);
 
         $container->register(Provider\Git::class, function (Container $container) {
             return new Provider\Git();
-        }, [self::TAG_ENV_PROVIDER => []]);
+        }, [self::TAG_ENV_PROVIDER => [
+            'name' => self::ENV_PROVIDER_GIT,
+        ]]);
 
         $container->register(Provider\Baseline::class, function (Container $container) {
             return new Provider\Baseline(
                 $container->get(BaselineManager::class),
                 $container->getParameter(self::PARAM_ENV_BASELINES)
             );
-        }, [self::TAG_ENV_PROVIDER => []]);
+        }, [self::TAG_ENV_PROVIDER => [
+            'name' => self::ENV_PROVIDER_BASELINE,
+        ]]);
+
+        $container->register(Provider\TestProvider::class, function (Container $container) {
+            return new Provider\TestProvider();
+        }, [self::TAG_ENV_PROVIDER => [
+            'name' => self::ENV_PROVIDER_TEST,
+        ]]);
 
         $container->register(Supplier::class, function (Container $container) {
             $supplier = new Supplier();
+            $enabledProviders = $container->getParameter(self::PARAM_ENABLED_PROVIDERS);
 
             foreach ($container->getServiceIdsForTag(self::TAG_ENV_PROVIDER) as $serviceId => $attributes) {
+                if (!isset($attributes['name'])) {
+                    throw new RuntimeException(sprintf(
+                        'Env provider "%s" has no `name` attribute', $serviceId
+                    ));
+                }
+
+                if (!in_array($attributes['name'], $enabledProviders)) {
+                    continue;
+                }
+
                 $provider = $container->get($serviceId);
                 $supplier->addProvider($provider);
             }
@@ -877,7 +924,7 @@ class CoreExtension implements ExtensionInterface
         if ($container->getParameter(self::PARAM_DISABLE_OUTPUT)) {
             return new NullOutput();
         }
-        
+
         $output = (function (string $name): OutputInterface {
             $resource = fopen($name, 'w');
 
@@ -896,7 +943,7 @@ class CoreExtension implements ExtensionInterface
         }
 
         $output->getFormatter()->setStyle('success', new OutputFormatterStyle('black', 'green', []));
-        $output->getFormatter()->setStyle('baseline', new OutputFormatterStyle('cyan', null, []));
+        $output->getFormatter()->setStyle(self::ENV_PROVIDER_BASELINE, new OutputFormatterStyle('cyan', null, []));
         $output->getFormatter()->setStyle('result-neutral', new OutputFormatterStyle('cyan', null, []));
         $output->getFormatter()->setStyle('result-good', new OutputFormatterStyle('green', null, []));
         $output->getFormatter()->setStyle('result-none', new OutputFormatterStyle(null, null, []));

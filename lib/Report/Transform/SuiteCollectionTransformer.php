@@ -118,7 +118,7 @@ final class SuiteCollectionTransformer
      */
     private function createRow(Subject $subject, Variant $variant, Suite $suite, int $itNum): array
     {
-        return [
+        return array_merge([
             'benchmark_name' => $subject->getBenchmark()->getName(),
             'benchmark_class' => $subject->getBenchmark()->getClass(),
             'subject_name' => $subject->getName(),
@@ -134,6 +134,24 @@ final class SuiteCollectionTransformer
             'suite_date' => $suite->getDate()->format('Y-m-d'),
             'suite_time' => $suite->getDate()->format('H:i:s'),
             'iteration_index' => $itNum,
-        ];
+        ], $this->envData($suite));
+    }
+
+    /**
+     * @return array<string,mixed>
+     */
+    private function envData(Suite $suite): array
+    {
+        $data = [];
+
+        foreach ($suite->getEnvInformations() as $info) {
+            $name = $info->getName();
+
+            foreach ($info as $key => $value) {
+                $data[sprintf('env_%s_%s', $name, $key)] = $value;
+            }
+        }
+
+        return $data;
     }
 }
