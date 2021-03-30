@@ -108,40 +108,54 @@ class PhpBench
 
             if ($value = self::parseOption($arg, 'bootstrap', 'b')) {
                 $configOverride['bootstrap'] = self::getBootstrapPath(getcwd(), $value);
+                continue;
             }
 
             if ($arg === '--no-ansi') {
                 $configOverride[CoreExtension::PARAM_CONSOLE_ANSI] = false;
+                continue;
             }
 
             if ($value = self::parseOption($arg, 'extension')) {
                 $extensions[] = $value;
+                continue;
             }
 
             if ($value = self::parseOption($arg, 'php-binary')) {
                 $configOverride['php_binary'] = $value;
+                continue;
             }
 
             if ($value = self::parseOption($arg, 'php-wrapper')) {
                 $configOverride['php_wrapper'] = $value;
+                continue;
             }
 
             if ($value = self::parseOption($arg, 'php-config')) {
                 $jsonParser = new JsonDecoder();
                 $value = $jsonParser->decode($value);
                 $configOverride['php_config'] = $value;
+                continue;
             }
 
             if ($arg == '--php-disable-ini') {
                 $configOverride['php_disable_ini'] = true;
+                continue;
             }
 
             if ($value = self::parseOption($arg, 'profile')) {
                 $profile = $value;
+                continue;
+            }
+
+            if ($value = self::parseOption($arg, 'theme')) {
+                $configOverride['expression.theme'] = $value;
+                continue;
             }
 
             if ($arg == '-vvv') {
                 $configOverride['debug'] = true;
+                continue;
             }
         }
 
