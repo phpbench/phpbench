@@ -12,8 +12,6 @@ use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\ParenthesisNode;
 use PhpBench\Expression\Ast\TolerableNode;
 use PhpBench\Expression\ColorMap;
-use PhpBench\Expression\Theme\EightColorTheme;
-use PhpBench\Expression\Theme\SolarizedTheme;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Evaluator\MainEvaluator;
 use PhpBench\Expression\Evaluator\PrettyErrorEvaluator;
@@ -103,7 +101,8 @@ use PhpBench\Expression\Printer\BareValuePrinter;
 use PhpBench\Expression\Printer\EvaluatingPrinter;
 use PhpBench\Expression\Printer\NormalizingPrinter;
 use PhpBench\Expression\Printer\UnderlinePrinterFactory;
-use PhpBench\Expression\Theme\LightTheme;
+use PhpBench\Expression\Theme\EightColorTheme;
+use PhpBench\Expression\Theme\SolarizedTheme;
 use PhpBench\Expression\Token;
 use PhpBench\Util\TimeUnit;
 use RuntimeException;
@@ -225,8 +224,10 @@ class ExpressionExtension implements ExtensionInterface
         $container->register(ColorMap::class, function (Container $container) {
             $themes = [];
             $selected = $container->getParameter(self::PARAM_THEME);
+
             foreach ($container->getServiceIdsForTag(self::TAG_THEME) as $serviceId => $attrs) {
                 $name = $attrs['name'];
+
                 if ($name === $selected) {
                     return $container->get($serviceId);
                 }

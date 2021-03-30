@@ -635,6 +635,5 @@ class RunTest extends SystemTestCase
         $process = $this->phpbench('run benchmarks/set4/NothingBench.php -vvv --theme=notfound');
         $this->assertExitCode(255, $process);
         self::assertStringContainsString('Unknown theme', $process->getErrorOutput());
-
     }
 }

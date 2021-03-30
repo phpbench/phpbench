@@ -4,10 +4,10 @@ namespace PhpBench\Tests\Unit\Expression\NodePrinter;
 
 use Generator;
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Theme\ArrayTheme;
 use PhpBench\Expression\NodePrinter;
 use PhpBench\Expression\NodePrinter\HighlightingNodePrinter;
 use PhpBench\Expression\Printer;
+use PhpBench\Expression\Theme\ArrayTheme;
 use PhpBench\Tests\ProphecyTrait;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;

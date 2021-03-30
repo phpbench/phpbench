@@ -4,7 +4,6 @@ namespace PhpBench\Expression\Theme\Util;
 
 use function array_fill;
 use RuntimeException;
-use PhpBench\Expression\Theme\Util\Color;
 
 final class Gradient
 {
