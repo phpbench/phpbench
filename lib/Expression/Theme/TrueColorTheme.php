@@ -24,7 +24,7 @@ use PhpBench\Expression\Theme\Util\Gradient;
  *
  * @implements ColorMap<Node>
  */
-class DarkTheme implements ColorMap
+class TrueColorTheme implements ColorMap
 {
     private const BASE03 = '#002b36';
     private const BASE02 = '#073642';
@@ -49,6 +49,42 @@ class DarkTheme implements ColorMap
     private $gradient;
 
     /**
+     * @var string
+     */
+    private $base0;
+
+    /**
+     * @var string
+     */
+    private $base1;
+
+    /**
+     * @var string
+     */
+    private $base2;
+
+    /**
+     * @var string
+     */
+    private $base3;
+
+    public function __construct(bool $light = true)
+    {
+        if ($light) {
+            $this->base0 = self::BASE00;
+            $this->base1 = self::BASE01;
+            $this->base2 = self::BASE02;
+            $this->base3 = self::BASE03;
+            return;
+        }
+
+        $this->base0 = self::BASE0;
+        $this->base1 = self::BASE1;
+        $this->base2 = self::BASE2;
+        $this->base3 = self::BASE3;
+    }
+
+    /**
      * @template T
      *
      * @return array<class-string<T>, string|Closure(T):string>
@@ -58,7 +94,7 @@ class DarkTheme implements ColorMap
 
         /** @phpstan-ignore-next-line */
         return [
-            UnitNode::class => 'fg='.self::BASE1,
+            UnitNode::class => 'fg='.$this->base1,
             FunctionNode::class => 'fg=' . self::GREEN,
             ParenthesisNode::class => 'fg=' . self::RED,
             PercentDifferenceNode::class => function (Node $node) {
@@ -73,7 +109,7 @@ class DarkTheme implements ColorMap
                     50 + (((int)$node->value()))
                 )->toHex();
             },
-            DisplayAsNode::class => 'fg=' . self::BASE2,
+            DisplayAsNode::class => 'fg=' . $this->base2,
             ParameterNode::class => 'fg='  .self::ORANGE,
             BooleanNode::class => function (Node $node): string {
                 assert($node instanceof BooleanNode);
@@ -92,7 +128,7 @@ class DarkTheme implements ColorMap
             $this->gradient = Gradient::start(
                 Color::fromHex(self::GREEN)
             )->to(
-                Color::fromHex(self::BASE2), 100
+                Color::fromHex($this->base2), 100
             )->to(
                 Color::fromHex('#ff0000'), 100
             );

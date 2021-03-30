@@ -13,7 +13,7 @@ use PhpBench\Expression\Ast\ParenthesisNode;
 use PhpBench\Expression\Ast\TolerableNode;
 use PhpBench\Expression\ColorMap;
 use PhpBench\Expression\Theme\EightColorTheme;
-use PhpBench\Expression\Theme\DarkTheme;
+use PhpBench\Expression\Theme\TrueColorTheme;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Evaluator\MainEvaluator;
 use PhpBench\Expression\Evaluator\PrettyErrorEvaluator;
@@ -103,6 +103,7 @@ use PhpBench\Expression\Printer\BareValuePrinter;
 use PhpBench\Expression\Printer\EvaluatingPrinter;
 use PhpBench\Expression\Printer\NormalizingPrinter;
 use PhpBench\Expression\Printer\UnderlinePrinterFactory;
+use PhpBench\Expression\Theme\LightTheme;
 use PhpBench\Expression\Token;
 use PhpBench\Util\TimeUnit;
 use RuntimeException;
@@ -119,6 +120,7 @@ class ExpressionExtension implements ExtensionInterface
     public const PARAM_THEME = 'expression.theme';
     public const THEME_BASIC = 'basic';
     public const THEME_DARK = 'dark';
+    public const THEME_LIGHT = 'light';
 
 
     /**
@@ -239,12 +241,21 @@ class ExpressionExtension implements ExtensionInterface
             ));
         });
 
-        $container->register(DarkTheme::class, function (Container $container) {
+        $container->register(TrueColorTheme::class . 'dark', function (Container $container) {
             // this theme uses true colors which is only supported in SF5
-            return class_exists(NullOutputFormatter::class) ? new DarkTheme() : new EightColorTheme();
+            return class_exists(NullOutputFormatter::class) ? new TrueColorTheme(false) : new EightColorTheme();
         }, [
             self::TAG_THEME => [
                 'name' => self::THEME_DARK,
+            ],
+        ]);
+
+        $container->register(TrueColorTheme::class . '.light', function (Container $container) {
+            // this theme uses true colors which is only supported in SF5
+            return class_exists(NullOutputFormatter::class) ? new TrueColorTheme(true) : new EightColorTheme();
+        }, [
+            self::TAG_THEME => [
+                'name' => self::THEME_LIGHT,
             ],
         ]);
 
