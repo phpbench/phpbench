@@ -1,10 +1,10 @@
 <?php
 
-namespace PhpBench\Tests\Unit\Expression\ColorMap\Util;
+namespace PhpBench\Tests\Unit\Expression\Theme\Util;
 
 use Generator;
-use PhpBench\Expression\ColorMap\Util\Color;
-use PhpBench\Expression\ColorMap\Util\Gradient;
+use PhpBench\Expression\Theme\Util\Color;
+use PhpBench\Expression\Theme\Util\Gradient;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 

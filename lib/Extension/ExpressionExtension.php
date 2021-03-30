@@ -12,8 +12,8 @@ use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\ParenthesisNode;
 use PhpBench\Expression\Ast\TolerableNode;
 use PhpBench\Expression\ColorMap;
-use PhpBench\Expression\ColorMap\Standard8ColorMap;
-use PhpBench\Expression\ColorMap\TrueColorMap;
+use PhpBench\Expression\Theme\EightColorTheme;
+use PhpBench\Expression\Theme\DarkTheme;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Evaluator\MainEvaluator;
 use PhpBench\Expression\Evaluator\PrettyErrorEvaluator;
@@ -115,8 +115,10 @@ class ExpressionExtension implements ExtensionInterface
 
     public const SERVICE_PLAIN_PRINTER = Printer::class . '.plain';
     public const SERVICE_BARE_PRINTER = Printer::class . '.bare';
-    const TAG_THEME = self::PARAM_THEME;
-    const PARAM_THEME = 'expression.theme';
+    public const TAG_THEME = self::PARAM_THEME;
+    public const PARAM_THEME = 'expression.theme';
+    public const THEME_BASIC = 'basic';
+    public const THEME_DARK = 'dark';
 
 
     /**
@@ -237,20 +239,20 @@ class ExpressionExtension implements ExtensionInterface
             ));
         });
 
-        $container->register(TrueColorMap::class, function (Container $container) {
+        $container->register(DarkTheme::class, function (Container $container) {
             // this theme uses true colors which is only supported in SF5
-            return class_exists(NullOutputFormatter::class) ? new TrueColorMap() : new Standard8ColorMap();
+            return class_exists(NullOutputFormatter::class) ? new DarkTheme() : new EightColorTheme();
         }, [
             self::TAG_THEME => [
-                'name' => 'dark',
+                'name' => self::THEME_DARK,
             ],
         ]);
 
-        $container->register(Standard8ColorMap::class, function (Container $container) {
-            return new Standard8ColorMap();
+        $container->register(EightColorTheme::class, function (Container $container) {
+            return new EightColorTheme();
         }, [
             self::TAG_THEME => [
-                'name' => 'basic',
+                'name' => self::THEME_BASIC,
             ],
         ]);
 
@@ -341,7 +343,7 @@ class ExpressionExtension implements ExtensionInterface
     {
         $resolver->setDefaults([
             self::PARAM_SYNTAX_HIGHLIGHTING => true,
-            self::PARAM_THEME => 'dark',
+            self::PARAM_THEME => self::THEME_DARK,
         ]);
         $resolver->setAllowedTypes(self::PARAM_SYNTAX_HIGHLIGHTING, 'bool');
         $resolver->setAllowedTypes(self::PARAM_THEME, 'string');

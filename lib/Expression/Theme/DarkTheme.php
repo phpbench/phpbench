@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Expression\ColorMap;
+namespace PhpBench\Expression\Theme;
 
 use Closure;
 use PhpBench\Expression\Ast\ArithmeticOperatorNode;
@@ -16,15 +16,15 @@ use PhpBench\Expression\Ast\RelativeDeviationNode;
 use PhpBench\Expression\Ast\ToleratedTrue;
 use PhpBench\Expression\Ast\UnitNode;
 use PhpBench\Expression\ColorMap;
-use PhpBench\Expression\ColorMap\Util\Color;
-use PhpBench\Expression\ColorMap\Util\Gradient;
+use PhpBench\Expression\Theme\Util\Color;
+use PhpBench\Expression\Theme\Util\Gradient;
 
 /**
  * Colors based on https://github.com/altercation/solarized
  *
  * @implements ColorMap<Node>
  */
-class TrueColorMap implements ColorMap
+class DarkTheme implements ColorMap
 {
     private const BASE03 = '#002b36';
     private const BASE02 = '#073642';

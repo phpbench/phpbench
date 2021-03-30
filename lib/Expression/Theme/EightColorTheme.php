@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Expression\ColorMap;
+namespace PhpBench\Expression\Theme;
 
 use Closure;
 use PhpBench\Expression\Ast\ArithmeticOperatorNode;
@@ -18,7 +18,7 @@ use PhpBench\Expression\ColorMap;
 /**
  * @implements ColorMap<Node>
  */
-class Standard8ColorMap implements ColorMap
+class EightColorTheme implements ColorMap
 {
     /**
      * @template T

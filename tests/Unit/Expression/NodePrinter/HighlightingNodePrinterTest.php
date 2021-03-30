@@ -4,7 +4,7 @@ namespace PhpBench\Tests\Unit\Expression\NodePrinter;
 
 use Generator;
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\ColorMap\ArrayColorMap;
+use PhpBench\Expression\Theme\ArrayTheme;
 use PhpBench\Expression\NodePrinter;
 use PhpBench\Expression\NodePrinter\HighlightingNodePrinter;
 use PhpBench\Expression\Printer;
@@ -29,7 +29,7 @@ class HighlightingNodePrinterTest extends TestCase
 
         self::assertEquals($expected, (new HighlightingNodePrinter(
             $nodePrinter->reveal(),
-            new ArrayColorMap($map)
+            new ArrayTheme($map)
         ))->print($printer->reveal(), $node));
     }
 
