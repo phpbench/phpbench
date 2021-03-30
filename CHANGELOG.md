@@ -13,6 +13,8 @@ Features:
 - Allow benchmarks to be configued in the config (`runner.{iterations,revs,time_unit,mode,etc}`)
 - Include collected environmental information in the report data #789
 - Allow providers to be enabled/disabled via. `env.enabled_providers` #789
+- Support `@RetryThreshold` annotation, attribute, and
+  `runner.retry_threshold` configuration.
 
 Improvements:
 

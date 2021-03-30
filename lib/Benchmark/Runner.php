@@ -164,7 +164,7 @@ final class Runner
             $subjectMetadata->setRevs($config->getRevolutions($subjectMetadata->getRevs()));
             $subjectMetadata->setWarmup($config->getWarmup($subjectMetadata->getWarmup()));
             $subjectMetadata->setSleep($config->getSleep($subjectMetadata->getSleep()));
-            $subjectMetadata->setRetryThreshold($config->getRetryThreshold($this->retryThreshold));
+            $subjectMetadata->setRetryThreshold($config->getRetryThreshold($subjectMetadata->getRetryThreshold()));
 
             if ($config->getAssertions()) {
                 $subjectMetadata->setAssertions($config->getAssertions());

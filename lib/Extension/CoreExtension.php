@@ -116,6 +116,10 @@ class CoreExtension implements ExtensionInterface
     public const PARAM_PHP_WRAPPER = 'php_wrapper';
     public const PARAM_PROGRESS = 'progress';
     public const PARAM_REPORTS = 'reports';
+
+    /**
+     * @deprecated Use PARAM_RUNNER_RETRY_THRESHOLD
+     */
     public const PARAM_RETRY_THRESHOLD = 'retry_threshold';
     public const PARAM_STORAGE = 'storage';
     public const PARAM_SUBJECT_PATTERN = 'subject_pattern';
@@ -141,6 +145,7 @@ class CoreExtension implements ExtensionInterface
     public const PARAM_RUNNER_REVS = 'runner.revs';
     public const PARAM_RUNNER_TIMEOUT = 'runner.timeout';
     public const PARAM_RUNNER_WARMUP = 'runner.warmup';
+    public const PARAM_RUNNER_RETRY_THRESHOLD = 'runner.retry_threshold';
 
     public const TAG_EXECUTOR = 'benchmark_executor';
     public const TAG_CONSOLE_COMMAND = 'console.command';
@@ -220,6 +225,7 @@ class CoreExtension implements ExtensionInterface
             self::PARAM_RUNNER_REVS => null,
             self::PARAM_RUNNER_TIMEOUT => null,
             self::PARAM_RUNNER_WARMUP => null,
+            self::PARAM_RUNNER_RETRY_THRESHOLD => null,
 
         ]);
 
@@ -260,6 +266,7 @@ class CoreExtension implements ExtensionInterface
         $resolver->setAllowedTypes(self::PARAM_RUNNER_REVS, ['null', 'int', 'array']);
         $resolver->setAllowedTypes(self::PARAM_RUNNER_TIMEOUT, ['null', 'float', 'int']);
         $resolver->setAllowedTypes(self::PARAM_RUNNER_WARMUP, ['null', 'int', 'array']);
+        $resolver->setAllowedTypes(self::PARAM_RUNNER_RETRY_THRESHOLD, ['null', 'int', 'float']);
         $resolver->setAllowedTypes(self::PARAM_ENABLED_PROVIDERS, ['array']);
     }
 
@@ -452,7 +459,8 @@ class CoreExtension implements ExtensionInterface
                 $container->getParameter(self::PARAM_RUNNER_OUTPUT_TIME_UNIT),
                 (array)$container->getParameter(self::PARAM_RUNNER_REVS),
                 $container->getParameter(self::PARAM_RUNNER_TIMEOUT),
-                (array)$container->getParameter(self::PARAM_RUNNER_WARMUP)
+                (array)$container->getParameter(self::PARAM_RUNNER_WARMUP),
+                (float)($container->getParameter(self::PARAM_RUNNER_RETRY_THRESHOLD) ?: $container->getParameter(self::PARAM_RETRY_THRESHOLD))
             );
         });
 

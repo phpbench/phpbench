@@ -213,6 +213,10 @@ class AnnotationDriver implements DriverInterface
         if ($annotation instanceof Annotations\Timeout) {
             $subject->setTimeout($annotation->getTimeout());
         }
+
+        if ($annotation instanceof Annotations\RetryThreshold) {
+            $subject->setRetryThreshold($annotation->getRetryThreshold());
+        }
     }
 
     public function processBenchmark(BenchmarkMetadata $benchmark, $annotation): void

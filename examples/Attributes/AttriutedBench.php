@@ -59,6 +59,9 @@ class AttriutedBench
 // section: timeout
     #[Bench\Timeout(1.0)]
 // endsection: timeout
+// section: retrythreshold
+    #[Bench\RetryThreshold(20.0)]
+// endsection: retrythreshold
 // section: benchTime
     public function benchTimeItself(): void
     {

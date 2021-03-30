@@ -474,4 +474,32 @@ You can also specify assertions from the command line:
 
 See :doc:`expression` for details on using the expressio language.
 
+.. _annotribute_retry_threshold:
+
+RetryThreshold
+--------------
+
+Set the retry threshold (the deviation beyond which a sample will be
+considered invalid and retried).
+
+Use to create more stable sets of iterations.
+
+.. tabs::
+
+    .. tab:: Annotations
+
+        .. codeimport:: ../examples/Annotations/AnnotatedBench.php
+          :language: php
+          :sections: all,retrythreshold,benchTime
+
+    .. tab:: Attributes
+
+        .. codeimport:: ../examples/Attributes/AttriutedBench.php
+          :language: php
+          :sections: all,retrythreshold,benchTime
+
+Good values are generally 10 or less, the above threshold is 20 because the
+examples are executed in the continuous integration environment and may cause
+delays.
+
 .. _cartesian product: https://en.wikipedia.org/wiki/Cartesian_product

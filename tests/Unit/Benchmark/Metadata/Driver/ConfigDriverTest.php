@@ -64,6 +64,7 @@ class ConfigDriverTest extends TestCase
                 'revs' => [10],
                 'timeout' => 20.1,
                 'warmup' => [30],
+                'retryThreshold' => 5.0,
             ],
             function (SubjectMetadata $subject): void {
                 self::assertEquals(['example_assert'], $subject->getAssertions());
@@ -75,6 +76,7 @@ class ConfigDriverTest extends TestCase
                 self::assertEquals([10], $subject->getRevs());
                 self::assertEquals(20.1, $subject->getTimeout());
                 self::assertEquals([30], $subject->getWarmup());
+                self::assertEquals(5.0, $subject->getRetryThreshold());
             }
         ];
     }
