@@ -2,36 +2,72 @@
 
 namespace PhpBench\Tests\Benchmark\Console\Command;
 
-use PhpBench\Examples\Benchmark\Macro\BaseBenchCase;
-use Symfony\Component\Process\Process;
+use PhpBench\Console\Command\RunCommand;
+use PhpBench\Extension\CoreExtension;
+use PhpBench\Tests\Benchmark\IntegrationBenchCase;
+use PHPUnit\Framework\Assert;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\BufferedOutput;
 
 /**
  * @BeforeMethods("setUp")
- * @Revs(2)
- * @Iterations(2)
+ * @Revs(1.1)
+ * @Iterations(10)
  */
-class RunCommandBench extends BaseBenchCase
+class RunCommandBench extends IntegrationBenchCase
 {
     public function setUp(): void
     {
         $this->createExample();
+        $this->workspace()->reset();
     }
 
-    public function benchEmpyBenchmark(): void
+    public function benchDefault(): void
     {
-        Process::fromShellCommandline(
-            sprintf('../../bin/phpbench run .'),
-            $this->workspace()->path()
-        )->mustRun();
+        $this->runCommand([
+            'path' => '.',
+        ]);
+    }
+
+    public function benchInBand(): void
+    {
+        $this->runCommand([
+            'path' => '.',
+            '--executor' => 'local',
+        ]);
+    }
+
+    public function benchNoEnv(): void
+    {
+        $this->runCommand([
+            'path' => '.',
+            '--executor' => 'local',
+        ], [
+            'env.enabled_providers' => [],
+        ]);
     }
 
     private function createExample(): void
     {
         $this->workspace()->put('NothingBench.php', <<<'EOT'
 <?php
+namespace PhpBench\Tests\Workspace;
 
 class NothingBench { public function benchNothing(): void {}}
 EOT
         );
+    }
+
+    private function runCommand(array $args, array $config = []): void
+    {
+        chdir($this->workspace()->path());
+        $command = $this->container(array_merge([
+            CoreExtension::PARAM_DISABLE_OUTPUT => false,
+        ], $config))->get(RunCommand::class);
+        $cwd = getcwd();
+        $input = new ArrayInput($args);
+        $output = new BufferedOutput();
+        Assert::assertEquals(0, $command->run($input, $output), 'Command exited successfully');
+        chdir($cwd);
     }
 }
