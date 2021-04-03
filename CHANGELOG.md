@@ -18,6 +18,7 @@ Features:
 
 Improvements:
 
+- Preserve types in env information
 - Make default true color theme compatible with light backgrounds.
 - Added `vertical` layout to `bare` report (`vertical: true`).
 - Removed `best` and `worst` columns by default from default report.

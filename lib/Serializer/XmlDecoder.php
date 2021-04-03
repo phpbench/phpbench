@@ -90,11 +90,17 @@ class XmlDecoder
             $name = $envEl->nodeName;
             $info = [];
 
-            foreach ($envEl->childNodes as $value) {
-                if (!$value instanceof Element) {
-                    continue;
+            if ($envEl->childNodes->count()) {
+                foreach ($envEl->childNodes as $value) {
+                    if (!$value instanceof Element) {
+                        continue;
+                    }
+                    $info[$value->getAttribute('name')] = $this->resolveEnvType($value->getAttribute('type'), $value->nodeValue);
                 }
-                $info[$value->getAttribute('name')] = $this->resolveEnvType($value->getAttribute('type'), $value->nodeValue);
+            } else { // legacy format
+                foreach ($envEl->attributes as $iName => $valueAttr) {
+                    $info[$iName] = $valueAttr->nodeValue;
+                }
             }
 
             $informations[$name] = new Information($name, $info);

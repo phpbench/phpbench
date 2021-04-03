@@ -144,6 +144,31 @@ EOT
         self::assertIsBool($env->offsetGet('foo'));
     }
 
+    public function testDecodeLegacyEnv(): void
+    {
+        $dom = new Document(1.0);
+        $dom->loadXML(<<<EOT
+<phpbench>
+  <suite>
+    <env>
+<uname os="Linux" host="x1-debian" release="5.4.0-4-amd64" version="#1 SMP Debian 5.4.19-1 (2020-02-13)" machine="x86_64"/><php xdebug="1" version="7.3.15-3" ini="/etc/php/7.3/cli/php.ini" extensions="Core, date, libxml, openssl, pcre, zlib, filter, hash, pcntl, Reflection, SPL, session, sodium, standard, mysqlnd, PDO, xml, apcu, bcmath, bz2, calendar, ctype, curl, dom, mbstring, fileinfo, ftp, gd, gettext, iconv, igbinary, imagick, intl, json, ldap, exif, mysqli, pdo_mysql, pdo_pgsql, pdo_sqlite, pgsql, apc, posix, readline, redis, shmop, SimpleXML, sockets, sqlite3, sysvmsg, sysvsem, sysvshm, tokenizer, wddx, xmlreader, xmlwriter, xsl, zip, Phar, blackfire, Zend OPcache, xdebug"/><opcache extension_loaded="1" enabled=""/>
+    </env>
+  </suite>
+</phpbench>
+EOT
+        );
+        $decoder = new XmlDecoder();
+        $collection = $decoder->decode($dom);
+        $suite = $collection->getSuites()[0];
+        assert($suite instanceof Suite);
+        $envs = $suite->getEnvInformations();
+        self::assertCount(3, $envs);
+        $env = reset($envs);
+        self::assertInstanceOf(Information::class, $env);
+        assert($env instanceof Information);
+        self::assertCount(5, $env);
+    }
+
     private function encode(SuiteCollection $collection)
     {
         $xmlEncoder = new XmlEncoder();
