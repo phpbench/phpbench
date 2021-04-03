@@ -5,22 +5,19 @@ namespace PhpBench\Expression\NodeEvaluator;
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\NodeEvaluator;
 
-/**
- * @extends AbstractEvaluator<ListNode>
- */
-class ListEvaluator extends AbstractEvaluator
+class ListEvaluator implements NodeEvaluator
 {
-    final public function __construct()
-    {
-        parent::__construct(ListNode::class);
-    }
-
     /**
         * @param parameters $params
      */
-    public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
+    public function evaluate(Evaluator $evaluator, Node $node, array $params): ?Node
     {
+        if (!$node instanceof ListNode) {
+            return null;
+        }
+
         return new ListNode(array_map(function (Node $node) use ($evaluator, $params) {
             return $evaluator->evaluate($node, $params);
         }, $node->value()));

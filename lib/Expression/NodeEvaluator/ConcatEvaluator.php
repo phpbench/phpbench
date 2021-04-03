@@ -7,22 +7,19 @@ use PhpBench\Expression\Ast\ConcatNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\PhpValue;
 use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\NodeEvaluator;
 
-/**
- * @extends AbstractEvaluator<ConcatNode>
- */
-class ConcatEvaluator extends AbstractEvaluator
+class ConcatEvaluator implements NodeEvaluator
 {
-    final public function __construct()
-    {
-        parent::__construct(ConcatNode::class);
-    }
-
     /**
         * @param parameters $params
      */
-    public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
+    public function evaluate(Evaluator $evaluator, Node $node, array $params): ?Node
     {
+        if (!$node instanceof ConcatNode) {
+            return null;
+        }
+
         return (function (PhpValue $left, PhpValue $right) {
             return new ConcatenatedNode(implode('', [
                 (string)$left->value(),

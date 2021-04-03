@@ -29,15 +29,10 @@ class MemoisedNodeEvaluator implements NodeEvaluator
         $this->innerEvaluator = $innerEvaluator;
     }
 
-    public function evaluates(Node $node): bool
-    {
-        return $this->innerEvaluator->evaluates($node);
-    }
-
     /**
      * @param parameters $params
      */
-    public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
+    public function evaluate(Evaluator $evaluator, Node $node, array $params): ?Node
     {
         try {
             $hash = serialize($node) . serialize($params);

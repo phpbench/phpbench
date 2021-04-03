@@ -6,22 +6,19 @@ use PhpBench\Expression\Ast\ArgumentListNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\PhpValue;
 use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\NodeEvaluator;
 
-/**
- * @extends AbstractEvaluator<ArgumentListNode>
- */
-class ArgumentListEvaluator extends AbstractEvaluator
+class ArgumentListEvaluator implements NodeEvaluator
 {
-    final public function __construct()
-    {
-        parent::__construct(ArgumentListNode::class);
-    }
-
     /**
      * @param parameters $params
      */
-    public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
+    public function evaluate(Evaluator $evaluator, Node $node, array $params): ?Node
     {
+        if (!$node instanceof ArgumentListNode) {
+            return null;
+        }
+
         return new ArgumentListNode(
             array_map(function (Node $node) use ($evaluator, $params) {
                 return $evaluator->evaluateType($node, PhpValue::class, $params);

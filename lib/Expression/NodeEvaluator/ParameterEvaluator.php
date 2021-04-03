@@ -10,22 +10,19 @@ use PhpBench\Expression\Ast\PhpValueFactory;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
+use PhpBench\Expression\NodeEvaluator;
 
-/**
- * @extends AbstractEvaluator<ParameterNode>
- */
-class ParameterEvaluator extends AbstractEvaluator
+class ParameterEvaluator implements NodeEvaluator
 {
-    final public function __construct()
-    {
-        parent::__construct(ParameterNode::class);
-    }
-
     /**
         * @param parameters $params
      */
-    public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
+    public function evaluate(Evaluator $evaluator, Node $node, array $params): ?Node
     {
+        if (!$node instanceof ParameterNode) {
+            return null;
+        }
+
         assert($node instanceof ParameterNode);
         $value = self::resolvePropertyAccess($node, $node->segments(), $params);
 

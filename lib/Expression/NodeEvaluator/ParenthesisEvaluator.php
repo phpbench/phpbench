@@ -5,22 +5,19 @@ namespace PhpBench\Expression\NodeEvaluator;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\ParenthesisNode;
 use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\NodeEvaluator;
 
-/**
- * @extends AbstractEvaluator<ParenthesisNode>
- */
-class ParenthesisEvaluator extends AbstractEvaluator
+class ParenthesisEvaluator implements NodeEvaluator
 {
-    final public function __construct()
-    {
-        parent::__construct(ParenthesisNode::class);
-    }
-
     /**
         * @param parameters $params
      */
-    public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
+    public function evaluate(Evaluator $evaluator, Node $node, array $params): ?Node
     {
+        if (!$node instanceof ParenthesisNode) {
+            return null;
+        }
+
         return $evaluator->evaluate($node->expression(), $params);
     }
 }

@@ -9,22 +9,19 @@ use PhpBench\Expression\Ast\NumberValue;
 use PhpBench\Expression\Ast\PercentageNode;
 use PhpBench\Expression\Ast\TolerableNode;
 use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\NodeEvaluator;
 
-/**
- * @extends AbstractEvaluator<TolerableNode>
- */
-class TolerableEvaluator extends AbstractEvaluator
+class TolerableEvaluator implements NodeEvaluator
 {
-    final public function __construct()
-    {
-        parent::__construct(TolerableNode::class);
-    }
-
     /**
         * @param parameters $params
      */
-    public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
+    public function evaluate(Evaluator $evaluator, Node $node, array $params): ?Node
     {
+        if (!$node instanceof TolerableNode) {
+            return null;
+        }
+
         $toleranceNode = $node->tolerance();
         $context = $evaluator->evaluateType($node->value(), NumberValue::class, $params);
 

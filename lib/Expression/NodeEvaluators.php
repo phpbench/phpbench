@@ -27,11 +27,11 @@ final class NodeEvaluators implements NodeEvaluator
     public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
     {
         foreach ($this->evaluators as $nodeEvaluator) {
-            if (!$nodeEvaluator->evaluates($node)) {
+            $evaluated = $nodeEvaluator->evaluate($evaluator, $node, $params);
+
+            if (null === $evaluated) {
                 continue;
             }
-
-            $evaluated = $nodeEvaluator->evaluate($evaluator, $node, $params);
 
             return $evaluated;
         }
@@ -39,10 +39,5 @@ final class NodeEvaluators implements NodeEvaluator
         throw new EvaluationError($node, sprintf(
             'Could not find evaluator for node of type "%s"', get_class($node)
         ));
-    }
-
-    public function evaluates(Node $node): bool
-    {
-        return true;
     }
 }

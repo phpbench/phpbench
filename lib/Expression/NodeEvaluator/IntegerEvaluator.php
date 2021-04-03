@@ -5,22 +5,19 @@ namespace PhpBench\Expression\NodeEvaluator;
 use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\NodeEvaluator;
 
-/**
- * @extends AbstractEvaluator<IntegerNode>
- */
-class IntegerEvaluator extends AbstractEvaluator
+class IntegerEvaluator implements NodeEvaluator
 {
-    final public function __construct()
-    {
-        parent::__construct(IntegerNode::class);
-    }
-
     /**
         * @param parameters $params
      */
-    public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
+    public function evaluate(Evaluator $evaluator, Node $node, array $params): ?Node
     {
+        if (!$node instanceof IntegerNode) {
+            return null;
+        }
+
         return $node;
     }
 }

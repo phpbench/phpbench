@@ -11,22 +11,19 @@ use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Util\MemoryUnit;
 use PhpBench\Util\TimeUnit;
+use PhpBench\Expression\NodeEvaluator;
 
-/**
- * @extends AbstractEvaluator<ValueWithUnitNode>
- */
-class ValueWithUnitEvaluator extends AbstractEvaluator
+class ValueWithUnitEvaluator implements NodeEvaluator
 {
-    final public function __construct()
-    {
-        parent::__construct(ValueWithUnitNode::class);
-    }
-
     /**
         * @param parameters $params
      */
-    public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
+    public function evaluate(Evaluator $evaluator, Node $node, array $params): ?Node
     {
+        if (!$node instanceof ValueWithUnitNode) {
+            return null;
+        }
+
         $value = $evaluator->evaluateType($node->left(), NumberNode::class, $params);
         $unit = $evaluator->evaluateType($node->unit()->unit(), StringNode::class, $params)->value();
 
