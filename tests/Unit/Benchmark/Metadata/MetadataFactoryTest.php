@@ -22,13 +22,44 @@ use PhpBench\Reflection\ReflectionHierarchy;
 use PhpBench\Reflection\ReflectorInterface;
 use PhpBench\Tests\TestCase;
 use PhpBench\Tests\Util\TestUtil;
+use Prophecy\Prophecy\ObjectProphecy;
 
-class FactoryTest extends TestCase
+class MetadataFactoryTest extends TestCase
 {
     const FNAME = 'fname';
     const PATH = '/path/to';
 
     private $factory;
+
+    /**
+     * @var MetadataFactoryTest
+     */
+    private $reflector;
+
+    /**
+     * @var ObjectProphecy<DriverInterface>
+     */
+    private $driver;
+
+    /**
+     * @var ObjectProphecy<ReflectionHierarchy>
+     */
+    private $hierarchy;
+
+    /**
+     * @var ObjectProphecy<ReflectionClass>
+     */
+    private $reflection;
+
+    /**
+     * @var ObjectProphecy<BenchmarkMetdata>
+     */
+    private $metadata;
+
+    /**
+     * @var ObjectProphecy<SubjectMetadata>
+     */
+    private $subjectMetadata;
 
     protected function setUp(): void
     {
@@ -76,8 +107,6 @@ class FactoryTest extends TestCase
             'path' => self::PATH,
         ]);
         TestUtil::configureSubjectMetadata($this->subjectMetadata);
-        $this->reflector->getParameterSets(self::PATH, [])->willReturn([]);
-        $this->subjectMetadata->setParameterSets([])->shouldBeCalled();
 
         $metadata = $this->factory->getMetadataForFile(self::FNAME);
         $this->assertInstanceOf('PhpBench\Benchmark\Metadata\BenchmarkMetadata', $metadata);
@@ -217,8 +246,9 @@ class FactoryTest extends TestCase
         ]);
         TestUtil::configureSubjectMetadata($this->subjectMetadata, [
             'name' => 'benchTest',
+            'paramProviders' => ['param1'],
         ]);
-        $this->reflector->getParameterSets(self::PATH, [])->willReturn(['asd' => 'bar']);
+        $this->reflector->getParameterSets(self::PATH, ['param1'])->willReturn(['asd' => 'bar']);
 
         $this->factory->getMetadataForFile(self::FNAME);
     }
