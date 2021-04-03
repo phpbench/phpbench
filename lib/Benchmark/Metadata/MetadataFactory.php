@@ -67,6 +67,10 @@ class MetadataFactory
         foreach ($metadata->getSubjects() as $subject) {
             $this->validateSubject($hierarchy, $subject);
             $paramProviders = $subject->getParamProviders();
+
+            if (!$paramProviders) {
+                continue;
+            }
             $parameterSets = $this->reflector->getParameterSets($metadata->getPath(), $paramProviders);
 
             foreach ($parameterSets as $parameterSet) {

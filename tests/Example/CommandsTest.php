@@ -32,7 +32,9 @@ class CommandsTest extends IntegrationTestCase
             ));
         }
 
-        $this->workspace()->put('phpbench.json', $approval->getSection(0));
+        $this->workspace()->put('phpbench.json', json_encode(array_merge([
+            'env.enabled_providers' => [],
+        ], json_decode($approval->getSection(0), true))));
 
         $process = Process::fromShellCommandline(
             sprintf('../../bin/%s', $command),
