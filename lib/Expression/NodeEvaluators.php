@@ -9,12 +9,12 @@ use PhpBench\Expression\Exception\EvaluationError;
 final class NodeEvaluators implements NodeEvaluator
 {
     /**
-     * @var NodeEvaluator<Node>[]
+     * @var NodeEvaluator[]
      */
     private $evaluators;
 
     /**
-     * @param NodeEvaluator<Node>[] $evaluators
+     * @param NodeEvaluator[] $evaluators
      */
     public function __construct(array $evaluators)
     {

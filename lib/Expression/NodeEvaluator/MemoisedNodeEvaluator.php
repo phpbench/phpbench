@@ -6,9 +6,6 @@ use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\NodeEvaluator;
 
-/**
- * @implements NodeEvaluator<Node>
- */
 class MemoisedNodeEvaluator implements NodeEvaluator
 {
     /**
@@ -17,12 +14,11 @@ class MemoisedNodeEvaluator implements NodeEvaluator
     private $cache = [];
 
     /**
-     * @var NodeEvaluator<Node>
+     * @var NodeEvaluator
      */
     private $innerEvaluator;
 
     /**
-     * @param NodeEvaluator<Node> $innerEvaluator
      */
     public function __construct(NodeEvaluator $innerEvaluator)
     {

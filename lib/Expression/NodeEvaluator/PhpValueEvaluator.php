@@ -2,7 +2,6 @@
 
 namespace PhpBench\Expression\NodeEvaluator;
 
-use PhpBench\Expression\Ast\BooleanNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\PhpValue;
 use PhpBench\Expression\Evaluator;

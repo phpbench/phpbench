@@ -36,21 +36,16 @@ use PhpBench\Expression\Lexer;
 use PhpBench\Expression\NodeEvaluator;
 use PhpBench\Expression\NodeEvaluator\ArgumentListEvaluator;
 use PhpBench\Expression\NodeEvaluator\ArithmeticOperatorEvaluator;
-use PhpBench\Expression\NodeEvaluator\BooleanEvaluator;
 use PhpBench\Expression\NodeEvaluator\ComparisonEvaluator;
 use PhpBench\Expression\NodeEvaluator\ConcatEvaluator;
 use PhpBench\Expression\NodeEvaluator\DisplayAsEvaluator;
-use PhpBench\Expression\NodeEvaluator\FloatEvaluator;
 use PhpBench\Expression\NodeEvaluator\FunctionEvaluator;
-use PhpBench\Expression\NodeEvaluator\PhpValueEvaluator;
-use PhpBench\Expression\NodeEvaluator\IntegerEvaluator;
 use PhpBench\Expression\NodeEvaluator\ListEvaluator;
 use PhpBench\Expression\NodeEvaluator\LogicalOperatorEvaluator;
 use PhpBench\Expression\NodeEvaluator\MemoisedNodeEvaluator;
-use PhpBench\Expression\NodeEvaluator\NullEvaluator;
 use PhpBench\Expression\NodeEvaluator\ParameterEvaluator;
 use PhpBench\Expression\NodeEvaluator\ParenthesisEvaluator;
-use PhpBench\Expression\NodeEvaluator\StringEvaluator;
+use PhpBench\Expression\NodeEvaluator\PhpValueEvaluator;
 use PhpBench\Expression\NodeEvaluator\TolerableEvaluator;
 use PhpBench\Expression\NodeEvaluator\ValueWithUnitEvaluator;
 use PhpBench\Expression\NodeEvaluators;
@@ -175,7 +170,6 @@ class ExpressionExtension implements ExtensionInterface
         });
 
         $container->register(NodeEvaluator::class, function (Container $container) {
-            /** @phpstan-ignore-next-line */
             $evaluators = new NodeEvaluators([
                 new ArgumentListEvaluator(),
                 new ArithmeticOperatorEvaluator(),

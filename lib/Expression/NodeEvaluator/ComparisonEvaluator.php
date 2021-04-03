@@ -11,8 +11,8 @@ use PhpBench\Expression\Ast\TolerableNode;
 use PhpBench\Expression\Ast\ToleratedTrue;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
-use PhpBench\Math\FloatNumber;
 use PhpBench\Expression\NodeEvaluator;
+use PhpBench\Math\FloatNumber;
 
 class ComparisonEvaluator implements NodeEvaluator
 {

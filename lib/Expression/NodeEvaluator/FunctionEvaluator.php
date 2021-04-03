@@ -9,8 +9,8 @@ use PhpBench\Expression\Ast\PhpValue;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Expression\ExpressionFunctions;
-use Throwable;
 use PhpBench\Expression\NodeEvaluator;
+use Throwable;
 
 class FunctionEvaluator implements NodeEvaluator
 {

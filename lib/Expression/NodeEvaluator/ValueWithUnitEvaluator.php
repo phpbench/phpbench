@@ -9,9 +9,9 @@ use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Ast\ValueWithUnitNode;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
+use PhpBench\Expression\NodeEvaluator;
 use PhpBench\Util\MemoryUnit;
 use PhpBench\Util\TimeUnit;
-use PhpBench\Expression\NodeEvaluator;
 
 class ValueWithUnitEvaluator implements NodeEvaluator
 {
