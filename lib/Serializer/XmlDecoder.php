@@ -86,11 +86,21 @@ class XmlDecoder
         $informations = [];
 
         foreach ($suiteEl->query('./env/*') as $envEl) {
+            assert($envEl instanceof Element);
             $name = $envEl->nodeName;
             $info = [];
 
-            foreach ($envEl->attributes as $iName => $valueAttr) {
-                $info[$iName] = $valueAttr->nodeValue;
+            if ($envEl->childNodes->count()) {
+                foreach ($envEl->childNodes as $value) {
+                    if (!$value instanceof Element) {
+                        continue;
+                    }
+                    $info[$value->getAttribute('name')] = $this->resolveEnvType($value->getAttribute('type'), $value->nodeValue);
+                }
+            } else { // legacy format
+                foreach ($envEl->attributes as $iName => $valueAttr) {
+                    $info[$iName] = $valueAttr->nodeValue;
+                }
             }
 
             $informations[$name] = new Information($name, $info);
@@ -284,5 +294,19 @@ class XmlDecoder
 
         // TODO: Serialize statistics ..
         $variant->computeStats();
+    }
+
+    /**
+     * @return mixed
+     *
+     * @param mixed $value
+     */
+    private function resolveEnvType(string $type, $value)
+    {
+        if ($type === 'boolean') {
+            return (bool)$value;
+        }
+
+        return $value;
     }
 }
