@@ -9,22 +9,19 @@ use PhpBench\Expression\Ast\PhpValue;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Ast\UnitNode;
 use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\NodeEvaluator;
 
-/**
- * @extends AbstractEvaluator<DisplayAsNode>
- */
-class DisplayAsEvaluator extends AbstractEvaluator
+class DisplayAsEvaluator implements NodeEvaluator
 {
-    final public function __construct()
-    {
-        parent::__construct(DisplayAsNode::class);
-    }
-
     /**
         * @param parameters $params
      */
-    public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
+    public function evaluate(Evaluator $evaluator, Node $node, array $params): ?Node
     {
+        if (!$node instanceof DisplayAsNode) {
+            return null;
+        }
+
         $value = $evaluator->evaluateType($node->node(), NumberNode::class, $params);
         $unit = new UnitNode($evaluator->evaluateType($node->as()->unit(), StringNode::class, $params));
 

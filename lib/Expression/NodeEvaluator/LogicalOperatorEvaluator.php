@@ -8,22 +8,19 @@ use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\PhpValue;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
+use PhpBench\Expression\NodeEvaluator;
 
-/**
- * @extends AbstractEvaluator<LogicalOperatorNode>
- */
-class LogicalOperatorEvaluator extends AbstractEvaluator
+class LogicalOperatorEvaluator implements NodeEvaluator
 {
-    final public function __construct()
-    {
-        parent::__construct(LogicalOperatorNode::class);
-    }
-
     /**
         * @param parameters $params
      */
-    public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
+    public function evaluate(Evaluator $evaluator, Node $node, array $params): ?Node
     {
+        if (!$node instanceof LogicalOperatorNode) {
+            return null;
+        }
+
         $leftValue = $evaluator->evaluateType(
             $node->left(),
             PhpValue::class,

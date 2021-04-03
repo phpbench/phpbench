@@ -10,12 +10,11 @@ use PhpBench\Expression\NodeEvaluator;
 final class MainEvaluator implements Evaluator
 {
     /**
-     * @var NodeEvaluator<Node>
+     * @var NodeEvaluator
      */
     private $evaluators;
 
     /**
-     * @param NodeEvaluator<Node> $evaluators
      */
     public function __construct(NodeEvaluator $evaluators)
     {

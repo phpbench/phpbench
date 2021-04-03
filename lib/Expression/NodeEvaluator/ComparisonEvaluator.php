@@ -11,23 +11,20 @@ use PhpBench\Expression\Ast\TolerableNode;
 use PhpBench\Expression\Ast\ToleratedTrue;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
+use PhpBench\Expression\NodeEvaluator;
 use PhpBench\Math\FloatNumber;
 
-/**
- * @extends AbstractEvaluator<ComparisonNode>
- */
-class ComparisonEvaluator extends AbstractEvaluator
+class ComparisonEvaluator implements NodeEvaluator
 {
-    final public function __construct()
-    {
-        parent::__construct(ComparisonNode::class);
-    }
-
     /**
         * @param parameters $params
      */
-    public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
+    public function evaluate(Evaluator $evaluator, Node $node, array $params): ?Node
     {
+        if (!$node instanceof ComparisonNode) {
+            return null;
+        }
+
         $leftNode = $node->left();
         $rightNode = $node->right();
 

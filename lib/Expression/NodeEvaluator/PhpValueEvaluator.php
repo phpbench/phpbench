@@ -3,21 +3,21 @@
 namespace PhpBench\Expression\NodeEvaluator;
 
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Ast\ParenthesisNode;
+use PhpBench\Expression\Ast\PhpValue;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\NodeEvaluator;
 
-class ParenthesisEvaluator implements NodeEvaluator
+class PhpValueEvaluator implements NodeEvaluator
 {
     /**
-        * @param parameters $params
+     * {@inheritDoc}
      */
     public function evaluate(Evaluator $evaluator, Node $node, array $params): ?Node
     {
-        if (!$node instanceof ParenthesisNode) {
-            return null;
+        if ($node instanceof PhpValue) {
+            return $node;
         }
 
-        return $evaluator->evaluate($node->expression(), $params);
+        return null;
     }
 }

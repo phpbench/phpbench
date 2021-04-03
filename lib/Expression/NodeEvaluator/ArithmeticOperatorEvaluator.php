@@ -8,22 +8,19 @@ use PhpBench\Expression\Ast\NumberNode;
 use PhpBench\Expression\Ast\PhpValueFactory;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
+use PhpBench\Expression\NodeEvaluator;
 
-/**
- * @extends AbstractEvaluator<ArithmeticOperatorNode>
- */
-class ArithmeticOperatorEvaluator extends AbstractEvaluator
+class ArithmeticOperatorEvaluator implements NodeEvaluator
 {
-    final public function __construct()
-    {
-        parent::__construct(ArithmeticOperatorNode::class);
-    }
-
     /**
         * @param parameters $params
      */
-    public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
+    public function evaluate(Evaluator $evaluator, Node $node, array $params): ?Node
     {
+        if (!$node instanceof ArithmeticOperatorNode) {
+            return null;
+        }
+
         $leftValue = $evaluator->evaluateType($node->left(), NumberNode::class, $params);
         $rightValue = $evaluator->evaluateType($node->right(), NumberNode::class, $params);
 

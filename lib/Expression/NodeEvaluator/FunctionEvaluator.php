@@ -9,12 +9,10 @@ use PhpBench\Expression\Ast\PhpValue;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Expression\ExpressionFunctions;
+use PhpBench\Expression\NodeEvaluator;
 use Throwable;
 
-/**
- * @extends AbstractEvaluator<FunctionNode>
- */
-class FunctionEvaluator extends AbstractEvaluator
+class FunctionEvaluator implements NodeEvaluator
 {
     /**
      * @var ExpressionFunctions
@@ -24,14 +22,17 @@ class FunctionEvaluator extends AbstractEvaluator
     final public function __construct(ExpressionFunctions $functions)
     {
         $this->functions = $functions;
-        parent::__construct(FunctionNode::class);
     }
 
     /**
         * @param parameters $params
      */
-    public function evaluate(Evaluator $evaluator, Node $node, array $params): Node
+    public function evaluate(Evaluator $evaluator, Node $node, array $params): ?Node
     {
+        if (!$node instanceof FunctionNode) {
+            return null;
+        }
+
         try {
             return $this->functions->execute(
                 $node->name(),
