@@ -13,6 +13,8 @@
 namespace PhpBench\Tests\Unit\Serializer;
 
 use PhpBench\Dom\Document;
+use PhpBench\Environment\Information;
+use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Serializer\XmlEncoder;
@@ -113,6 +115,33 @@ EOT
         );
         $decoder = new XmlDecoder();
         $collection = $decoder->decode($dom);
+    }
+
+    public function testDecodeBoolValue(): void
+    {
+        $dom = new Document(1.0);
+        $dom->loadXML(<<<EOT
+<phpbench>
+  <suite>
+    <env>
+      <info1>
+        <value name="foo" type="boolean">1</value>
+      </info1>
+    </env>
+  </suite>
+</phpbench>
+EOT
+        );
+        $decoder = new XmlDecoder();
+        $collection = $decoder->decode($dom);
+        $suite = $collection->getSuites()[0];
+        assert($suite instanceof Suite);
+        $envs = $suite->getEnvInformations();
+        self::assertCount(1, $envs);
+        $env = reset($envs);
+        self::assertInstanceOf(Information::class, $env);
+        assert($env instanceof Information);
+        self::assertIsBool($env->offsetGet('foo'));
     }
 
     private function encode(SuiteCollection $collection)

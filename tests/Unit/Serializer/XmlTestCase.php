@@ -155,7 +155,9 @@ class XmlTestCase extends TestCase
 <phpbench xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="PHPBENCH_VERSION">
   <suite tag="test" context="test" date="2015-01-01T00:00:00+00:00" config-path="/path/to/config.json" uuid="1234">
     <env>
-      <info1 foo="bar"/>
+      <info1>
+        <value name="foo" type="string">bar</value>
+      </info1>
     </env>
     <benchmark class="Bench1">
       <subject name="subjectName">
@@ -190,7 +192,9 @@ EOT
 <phpbench xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="PHPBENCH_VERSION">
   <suite tag="test" context="test" date="2015-01-01T00:00:00+00:00" config-path="/path/to/config.json" uuid="1234">
     <env>
-      <info1 foo="bar"/>
+      <info1>
+        <value name="foo" type="string">bar</value>
+      </info1>
     </env>
     <benchmark class="Bench1">
       <subject name="subjectName">
@@ -215,7 +219,9 @@ EOT
 <phpbench xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="PHPBENCH_VERSION">
   <suite tag="test" context="test" date="2015-01-01T00:00:00+00:00" config-path="/path/to/config.json" uuid="1234">
     <env>
-      <info1 foo="bar"/>
+      <info1>
+        <value name="foo" type="string">bar</value>
+      </info1>
     </env>
     <benchmark class="Bench1">
       <subject name="subjectName">

@@ -7,6 +7,7 @@ function get_stats()
 {
     $stats = [
         'extension_loaded' => extension_loaded('Zend OPcache'),
+        'enabled' => false,
     ];
 
     if (false === $stats['extension_loaded']) {
