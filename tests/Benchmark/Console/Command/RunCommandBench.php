@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
 
 /**
  * @BeforeMethods("setUp")
- * @Revs(1.1)
+ * @Revs(1)
  * @Iterations(10)
  */
 class RunCommandBench extends IntegrationBenchCase
