@@ -234,7 +234,11 @@ class CoreExtension implements ExtensionInterface
         $resolver->setAllowedTypes(self::PARAM_DEBUG, ['bool']);
         $resolver->setAllowedTypes(self::PARAM_ANNOTATIONS, ['bool']);
         $resolver->setAllowedTypes(self::PARAM_ATTRIBUTES, ['bool']);
+        $resolver->setAllowedTypes(self::PARAM_CONFIG_PATH, ['string', 'null']);
+        $resolver->setAllowedTypes(self::PARAM_CONSOLE_ANSI, ['bool']);
         $resolver->setAllowedTypes(self::PARAM_BOOTSTRAP, ['string', 'null']);
+        $resolver->setAllowedTypes(self::PARAM_CONSOLE_ERROR_STREAM, ['string']);
+        $resolver->setAllowedTypes(self::PARAM_CONSOLE_OUTPUT_STREAM, ['string']);
         $resolver->setAllowedTypes(self::PARAM_PATH, ['string', 'array', 'null']);
         $resolver->setAllowedTypes(self::PARAM_REPORTS, ['array']);
         $resolver->setAllowedTypes(self::PARAM_OUTPUTS, ['array']);

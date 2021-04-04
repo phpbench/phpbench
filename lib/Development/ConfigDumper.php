@@ -70,6 +70,8 @@ class ConfigDumper
             $section[] = $this->underline($option, '~');
             $section[] = '';
             $section[] = sprintf('Default: ``%s``', json_encode($inspector->getDefault($option)));
+            $section[] = '';
+            $section[] = sprintf('Types: ``%s``', json_encode($inspector->getAllowedTypes($option)));
             $section[] = $optionsResolver->getInfo($option);
         }
 
