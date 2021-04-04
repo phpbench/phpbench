@@ -4,6 +4,7 @@ namespace PhpBench\Tests;
 
 use PhpBench\DependencyInjection\Container;
 use PhpBench\Extension\CoreExtension;
+use PhpBench\Extension\DevelopmentExtension;
 use PhpBench\Extension\ExpressionExtension;
 use PhpBench\Tests\Util\Workspace;
 
@@ -22,7 +23,7 @@ class IntegrationTestCase extends TestCase
             return $container;
         })(new Container([
             ExpressionExtension::class,
-            CoreExtension::class
+            CoreExtension::class,
         ], array_merge([
             ExpressionExtension::PARAM_SYNTAX_HIGHLIGHTING => false,
         ], $config)));

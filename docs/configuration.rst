@@ -1,280 +1,327 @@
 Configuration
 =============
 
-Unless overridden with the ``--config`` option, PHPBench will try to load its
-configuration from the current working directory. It will check for the
-existence each of the files ``phpbench.json`` and ``phpbench.json.dist`` in
-that order and use one if it exists.
+PhpBench\Extension\DevelopmentExtension
+---------------------------------------
 
-.. code-block:: json
+PhpBench\Extension\CoreExtension
+--------------------------------
 
-    {
-        "bootstrap": "vendor/autoload.php",
-        "path": "path/to/benchmarks",
-        "outputs": {
-             "my_output": {
-                 "extends": "html",
-                 "file": "my_report.html",
-                 "title": "Hello World"
-             }
-        },
-        "reports": {
-            "my_report": {
-                "extends": "aggregate"
-            }
-        }
-    }
+.. _bootstrap:
 
-.. note::
+bootstrap
+~~~~~~~~~
 
-    Typically you should use ``phpbench.json.dist`` in your projects. This
-    allows the end-user of your library to override your configuration by creating
-    ``phpbench.json``.
+Default: ``null``
 
-.. _configuration_bootstrap:
+.. _path:
 
-Bootstrap
----------
+path
+~~~~
 
-You can include a single file, the bootstrap file, before the benchmarks are
-executed. Typically this will be the class autoloader (e.g.
-``vendor/autoload.php``).
+Default: ``null``
 
-It is specified with the ``bootstrap`` key:
+.. _reports:
 
-.. code-block:: json
+reports
+~~~~~~~
 
-    {
-        "bootstrap": "vendor/autoload.php"
-    }
+Default: ``[]``
 
-.. note::
+.. _outputs:
 
-    You can override (or initially set) the bootstrap using the
-    ``--bootstrap`` CLI option.
+outputs
+~~~~~~~
 
-.. _configuration_subject_pattern:
+Default: ``[]``
 
-Customizing the subject matching pattern
-----------------------------------------
+.. _executors:
 
-By default PHPBench will identify subject methods when they have a ``bench``
-prefix. It is possible to change the regex pattern used to identify subjects
-as follows:
+executors
+~~~~~~~~~
 
-.. code-block:: json
+Default: ``[]``
 
-    {
-        "subject_pattern": "^spin_"
-    }
+.. _config_path:
 
-The above will allow you to have benchmark class such as:
+config_path
+~~~~~~~~~~~
 
-.. code-block:: php
+Default: ``null``
 
-    class Foobar
-    {
-        public function spin_kde()
-        {
-            // ...
-        }
+.. _progress:
 
-        public function spin_lcd()
-        {
-            // ...
-        }
-    }
+progress
+~~~~~~~~
 
-.. note::
+Default: ``"verbose"``
 
-    You can also explicitly declare that methods are benchmark subjects by
-    using the ``@Subject`` annotation.
+.. _retry_threshold:
 
-.. _configuration_disable_php_ini:
+retry_threshold
+~~~~~~~~~~~~~~~
 
-Disable the PHP INI file
-------------------------
+Default: ``null``
 
-PHP extensions, especially Xdebug, can drastically affect the performance of
-your benchmark subjects. You can disable Xdebug and other dynamically loaded
-extensions by setting ``php_disable_ini`` to ``true``.
+.. _time_unit:
 
-.. note::
+time_unit
+~~~~~~~~~
 
-    PHPBench currently makes use of the ``json`` extension in remote
-    processes, so you are required to explicitly enable it as follows.
+Default: ``"microseconds"``
 
-.. code-block:: json
+.. _output_mode:
 
-    {
-        "php_disable_ini": true,
-        "php_config": {
-            "extension": [ "json.so" ]
-        }
-    }
+output_mode
+~~~~~~~~~~~
 
-Outputs
--------
+Default: ``"time"``
 
-Custom output definitions:
+.. _storage:
 
-.. code-block:: json
+storage
+~~~~~~~
 
-    {
-        "outputs": {
-             "my_output": {
-                 "extends": "html",
-                 "file": "my_report.html",
-                 "title": "Hello World"
-             }
-        }
-    }
+Default: ``"xml"``
 
-Note that:
+.. _subject_pattern:
 
-- The key of each definition is the output name.
-- As with reports, each definition *MUST* include either the ``renderer`` or
-  ``extends`` key.
-- All other options are passed to the renderer as options.
+subject_pattern
+~~~~~~~~~~~~~~~
 
-See the :doc:`report-renderers` chapter for more information.
+Default: ``"^bench"``
 
-Path
-----
+.. _env.enabled_providers:
 
-Specify the default path to the benchmarks:
+env.enabled_providers
+~~~~~~~~~~~~~~~~~~~~~
 
-.. code-block:: json
+Default: ``["uname","php","opcache","unix_sysload","git","baseline"]``
 
-    {
-        "path": "tests/Benchmarks"
-    }
+.. _env_baselines:
 
-Progress Logger
----------------
+env_baselines
+~~~~~~~~~~~~~
 
-Specify which progress logger to use:
+Default: ``["nothing","md5","file_rw"]``
 
-.. code-block:: json
+.. _env_baseline_callables:
 
-    {
-        "progress": "dots"
-    }
+env_baseline_callables
+~~~~~~~~~~~~~~~~~~~~~~
 
-.. _configuration_retry_threshold:
+Default: ``[]``
 
-Retry Threshold
----------------
+.. _xml_storage_path:
 
-Set the :ref:`retry_threshold`:
+xml_storage_path
+~~~~~~~~~~~~~~~~
 
-.. code-block:: json
+Default: ``"\/home\/daniel\/www\/phpbench\/phpbench\/.phpbench\/storage"``
 
-    {
-        "retry_threshold": 5
-    }
+.. _php_config:
 
-.. _configuration_reports:
+php_config
+~~~~~~~~~~
 
-Reports
--------
+Default: ``[]``
 
-List of report definitions:
+.. _php_binary:
 
-.. code-block:: json
+php_binary
+~~~~~~~~~~
 
-    {
-        "reports": {
-            "my_report": {
-                "extends": "aggregate",
-                "exclude": ["benchmark"]
-            }
-        }
-    }
+Default: ``null``
 
-The key is the name of the report that you are defining, and the object
-properties are the options for the report. Each report must specify either
-the ``generator`` or ``extends`` key, specifying the :doc:`generator
-<report-generators>` or report to extend respectively.
+.. _php_wrapper:
 
-See the :doc:`report-generators` chapter for more information on report
+php_wrapper
+~~~~~~~~~~~
 
-Prefixing the Benchmarking Process
-----------------------------------
+Default: ``null``
 
-You can prefix the benchmarking command line using the ``php_wrapper`` option:
+.. _php_disable_ini:
 
-.. code-block:: json
+php_disable_ini
+~~~~~~~~~~~~~~~
 
-    {
-        "php_wrapper": "blackfire run -q"
-    }
+Default: ``false``
 
-.. note::
+.. _annotation_import_use:
 
-    This can also be set using the ``--php-wrapper`` CLI option.
-    configuration.
+annotation_import_use
+~~~~~~~~~~~~~~~~~~~~~
 
-.. _config_profiles:
+Default: ``false``
 
-Profiles
---------
+.. _remote_script_path:
 
-Configuration profiles allow you to merge addition configuration.
+remote_script_path
+~~~~~~~~~~~~~~~~~~
 
-You can configure configuration profiles as follows:
+Default: ``null``
 
-.. code-block:: json
+.. _remote_script_remove:
 
-    {
-        "profiles": {
-            "foobar": {
-                "path": "path/to/foobar/Benchmarks",
-                "php_disable_ini": true
-            }
-        }
-    }
+remote_script_remove
+~~~~~~~~~~~~~~~~~~~~
 
-In the above example the benchmark path is overridden, and the PHP INI file is
-disabled.
+Default: ``true``
 
-This profile will be used when specified with the `--profile` option:
+.. _console.disable_output:
 
-.. code-block:: bash
+console.disable_output
+~~~~~~~~~~~~~~~~~~~~~~
 
-    $ phpbench run --profile=foobar
+Default: ``false``
 
-PHP Binary and INI settings
----------------------------
+.. _console.ansi:
 
-You can change the PHP binary and INI settings used to execute the benchmarks:
+console.ansi
+~~~~~~~~~~~~
 
-.. code-block:: json
+Default: ``true``
 
-    {
-        "php_binary": "hhvm",
-        "php_config": {
-            "memory_limit": "10M"
-        }
-    }
+.. _progress_summary_variant_format:
 
-Time Unit and Mode
-------------------
+progress_summary_variant_format
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Specify the *default* :ref:`time unit <time_unit>`. Note that this will be overridden by
-individual benchmark/subjects and when the ``time-unit`` option is passed to
-the CLI.
+Default: ``"\"Mo\" ~ display_as_time(mode(variant.time.avg), coalesce(subject.time_unit,\"microseconds\"), subject.time_precision, subject.time_mode) ~ \n\" (\" ~ rstdev(variant.time.avg) ~ \")\""``
 
-.. code-block:: json
+.. _progress_summary_baseline_format:
 
-    {
-        "time_unit": "milliseconds"
-    }
+progress_summary_baseline_format
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Similarly the :ref:`mode` can be set using the `output_mode` key:
+Default: ``"\"[\" ~ \n\"Mo\" ~ display_as_time(mode(variant.time.avg), coalesce(subject.time_unit,\"microseconds\"), subject.time_precision, subject.time_mode) ~\n\" vs \" ~ \n\"Mo\" ~ display_as_time(mode(baseline.time.avg), coalesce(subject.time_unit,\"microseconds\"), subject.time_precision, subject.time_mode) ~ \"] \" ~ \npercent_diff(mode(baseline.time.avg), mode(variant.time.avg), (rstdev(variant.time.avg) * 2)) ~\n\" (\" ~ rstdev(variant.time.avg) ~ \")\""``
 
-.. code-block:: json
+.. _annotations:
 
-    {
-        "output_mode": "throughput"
-    }
+annotations
+~~~~~~~~~~~
+
+Default: ``true``
+
+.. _attributes:
+
+attributes
+~~~~~~~~~~
+
+Default: ``true``
+
+.. _debug:
+
+debug
+~~~~~
+
+Default: ``false``
+
+.. _console.output_stream:
+
+console.output_stream
+~~~~~~~~~~~~~~~~~~~~~
+
+Default: ``"php:\/\/stdout"``
+
+.. _console.error_stream:
+
+console.error_stream
+~~~~~~~~~~~~~~~~~~~~
+
+Default: ``"php:\/\/stderr"``
+
+.. _runner.assert:
+
+runner.assert
+~~~~~~~~~~~~~
+
+Default: ``null``
+
+.. _runner.executor:
+
+runner.executor
+~~~~~~~~~~~~~~~
+
+Default: ``null``
+
+.. _runner.format:
+
+runner.format
+~~~~~~~~~~~~~
+
+Default: ``null``
+
+.. _runner.iterations:
+
+runner.iterations
+~~~~~~~~~~~~~~~~~
+
+Default: ``null``
+
+.. _runner.output_mode:
+
+runner.output_mode
+~~~~~~~~~~~~~~~~~~
+
+Default: ``null``
+
+.. _runner.time_unit:
+
+runner.time_unit
+~~~~~~~~~~~~~~~~
+
+Default: ``null``
+
+.. _runner.revs:
+
+runner.revs
+~~~~~~~~~~~
+
+Default: ``null``
+
+.. _runner.timeout:
+
+runner.timeout
+~~~~~~~~~~~~~~
+
+Default: ``null``
+
+.. _runner.warmup:
+
+runner.warmup
+~~~~~~~~~~~~~
+
+Default: ``null``
+
+.. _runner.retry_threshold:
+
+runner.retry_threshold
+~~~~~~~~~~~~~~~~~~~~~~
+
+Default: ``null``
+
+.. _extensions:
+
+extensions
+~~~~~~~~~~
+
+Default: ``[]``
+
+PhpBench\Extension\ExpressionExtension
+--------------------------------------
+
+.. _expression.syntax_highlighting:
+
+expression.syntax_highlighting
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Default: ``true``
+
+.. _expression.theme:
+
+expression.theme
+~~~~~~~~~~~~~~~~
+
+Default: ``"solarized"``
+
