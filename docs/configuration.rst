@@ -146,7 +146,7 @@ Types: ``["array"]``
 xml_storage_path
 ~~~~~~~~~~~~~~~~
 
-Default: ``"\/home\/daniel\/www\/phpbench\/phpbench\/.phpbench\/storage"``
+Default: ``".phpbench\/storage"``
 
 Types: ``["string"]``
 

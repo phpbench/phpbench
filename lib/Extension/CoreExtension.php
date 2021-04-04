@@ -53,6 +53,7 @@ use PhpBench\Expression\Printer;
 use PhpBench\Expression\Printer\EvaluatingPrinter;
 use PhpBench\Json\JsonDecoder;
 use PhpBench\Logger\ConsoleLogger;
+use PhpBench\PhpBench;
 use PhpBench\Progress\Logger\BlinkenLogger;
 use PhpBench\Progress\Logger\DotsLogger;
 use PhpBench\Progress\Logger\HistogramLogger;
@@ -199,7 +200,7 @@ class CoreExtension implements ExtensionInterface
             ],
             self::PARAM_ENV_BASELINES => ['nothing', 'md5', 'file_rw'],
             self::PARAM_ENV_BASELINE_CALLABLES => [],
-            self::PARAM_XML_STORAGE_PATH => getcwd() . '/.phpbench/storage', // use cwd because PHARs
+            self::PARAM_XML_STORAGE_PATH => '.phpbench/storage',
             self::PARAM_PHP_CONFIG => [],
             self::PARAM_PHP_BINARY => null,
             self::PARAM_PHP_WRAPPER => null,
@@ -885,7 +886,7 @@ class CoreExtension implements ExtensionInterface
         });
         $container->register(XmlDriver::class, function (Container $container) {
             return new XmlDriver(
-                $container->getParameter(self::PARAM_XML_STORAGE_PATH),
+                PhpBench::normalizePath($container->getParameter(self::PARAM_XML_STORAGE_PATH)),
                 $container->get(XmlEncoder::class),
                 $container->get(XmlDecoder::class)
             );
