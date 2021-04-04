@@ -75,7 +75,7 @@ Create a ``phpbench.json`` file in the projects root directory:
 
     Some PHP extensions such as Xdebug will affect the performance of your
     benchmark subjects and you may want to disable them, see :ref:`Disabling
-    the PHP INI file <configuration_disable_php_ini>`.
+    the PHP INI file <configuration_php_disable_ini>`.
 
 Creating and running a benchmark
 --------------------------------

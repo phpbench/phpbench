@@ -66,7 +66,6 @@ class PhpBench
         if (extension_loaded('xdebug')) {
             $extensions[] = XDebugExtension::class;
         }
-        unset($config['extensions']);
         $container = new Container(array_unique($extensions), $config);
         $container->init();
         $container->get(Application::class)->run();

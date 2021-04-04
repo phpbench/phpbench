@@ -29,6 +29,7 @@ Indices and tables
    :hidden:
 
    index
+   configuration-prelude
 
 
 .. _Github: https://github.com/phpbench/phpbench

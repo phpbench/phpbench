@@ -53,6 +53,7 @@ use PhpBench\Expression\Printer;
 use PhpBench\Expression\Printer\EvaluatingPrinter;
 use PhpBench\Json\JsonDecoder;
 use PhpBench\Logger\ConsoleLogger;
+use PhpBench\PhpBench;
 use PhpBench\Progress\Logger\BlinkenLogger;
 use PhpBench\Progress\Logger\DotsLogger;
 use PhpBench\Progress\Logger\HistogramLogger;
@@ -146,6 +147,7 @@ class CoreExtension implements ExtensionInterface
     public const PARAM_RUNNER_TIMEOUT = 'runner.timeout';
     public const PARAM_RUNNER_WARMUP = 'runner.warmup';
     public const PARAM_RUNNER_RETRY_THRESHOLD = 'runner.retry_threshold';
+    public const PARAM_EXTENSIONS = 'extensions';
 
     public const TAG_EXECUTOR = 'benchmark_executor';
     public const TAG_CONSOLE_COMMAND = 'console.command';
@@ -198,7 +200,7 @@ class CoreExtension implements ExtensionInterface
             ],
             self::PARAM_ENV_BASELINES => ['nothing', 'md5', 'file_rw'],
             self::PARAM_ENV_BASELINE_CALLABLES => [],
-            self::PARAM_XML_STORAGE_PATH => getcwd() . '/.phpbench/storage', // use cwd because PHARs
+            self::PARAM_XML_STORAGE_PATH => '.phpbench/storage',
             self::PARAM_PHP_CONFIG => [],
             self::PARAM_PHP_BINARY => null,
             self::PARAM_PHP_WRAPPER => null,
@@ -226,13 +228,18 @@ class CoreExtension implements ExtensionInterface
             self::PARAM_RUNNER_TIMEOUT => null,
             self::PARAM_RUNNER_WARMUP => null,
             self::PARAM_RUNNER_RETRY_THRESHOLD => null,
+            self::PARAM_EXTENSIONS => [],
 
         ]);
 
         $resolver->setAllowedTypes(self::PARAM_DEBUG, ['bool']);
         $resolver->setAllowedTypes(self::PARAM_ANNOTATIONS, ['bool']);
         $resolver->setAllowedTypes(self::PARAM_ATTRIBUTES, ['bool']);
+        $resolver->setAllowedTypes(self::PARAM_CONFIG_PATH, ['string', 'null']);
+        $resolver->setAllowedTypes(self::PARAM_CONSOLE_ANSI, ['bool']);
         $resolver->setAllowedTypes(self::PARAM_BOOTSTRAP, ['string', 'null']);
+        $resolver->setAllowedTypes(self::PARAM_CONSOLE_ERROR_STREAM, ['string']);
+        $resolver->setAllowedTypes(self::PARAM_CONSOLE_OUTPUT_STREAM, ['string']);
         $resolver->setAllowedTypes(self::PARAM_PATH, ['string', 'array', 'null']);
         $resolver->setAllowedTypes(self::PARAM_REPORTS, ['array']);
         $resolver->setAllowedTypes(self::PARAM_OUTPUTS, ['array']);
@@ -268,6 +275,7 @@ class CoreExtension implements ExtensionInterface
         $resolver->setAllowedTypes(self::PARAM_RUNNER_WARMUP, ['null', 'int', 'array']);
         $resolver->setAllowedTypes(self::PARAM_RUNNER_RETRY_THRESHOLD, ['null', 'int', 'float']);
         $resolver->setAllowedTypes(self::PARAM_ENABLED_PROVIDERS, ['array']);
+        $resolver->setAllowedTypes(self::PARAM_EXTENSIONS, ['array']);
     }
 
     public function load(Container $container): void
@@ -878,7 +886,7 @@ class CoreExtension implements ExtensionInterface
         });
         $container->register(XmlDriver::class, function (Container $container) {
             return new XmlDriver(
-                $container->getParameter(self::PARAM_XML_STORAGE_PATH),
+                PhpBench::normalizePath($container->getParameter(self::PARAM_XML_STORAGE_PATH)),
                 $container->get(XmlEncoder::class),
                 $container->get(XmlDecoder::class)
             );

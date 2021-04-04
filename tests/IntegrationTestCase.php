@@ -22,7 +22,7 @@ class IntegrationTestCase extends TestCase
             return $container;
         })(new Container([
             ExpressionExtension::class,
-            CoreExtension::class
+            CoreExtension::class,
         ], array_merge([
             ExpressionExtension::PARAM_SYNTAX_HIGHLIGHTING => false,
         ], $config)));
