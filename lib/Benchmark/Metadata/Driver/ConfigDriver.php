@@ -118,13 +118,11 @@ class ConfigDriver implements DriverInterface
             $subject->setFormat($this->format);
         }
 
-        // TODO: Make this empty and set default in config
-        if ($this->iterations && [1] === $subject->getIterations()) {
+        if ($this->iterations && null === $subject->getIterations()) {
             $subject->setIterations($this->iterations);
         }
 
-        // TODO: Make this empty and set default in config
-        if ($this->revs && [1] === $subject->getRevs()) {
+        if ($this->revs && null === $subject->getRevs()) {
             $subject->setRevs($this->revs);
         }
 

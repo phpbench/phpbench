@@ -216,9 +216,9 @@ class SubjectMetadata
         return $this;
     }
 
-    public function getIterations(): array
+    public function getIterations(): ?array
     {
-        return $this->iterations ?: [1];
+        return $this->iterations;
     }
 
     public function setIterations(array $iterations): void
@@ -226,9 +226,9 @@ class SubjectMetadata
         $this->iterations = $iterations;
     }
 
-    public function getRevs(): array
+    public function getRevs(): ?array
     {
-        return $this->revs ?: [1];
+        return $this->revs;
     }
 
     public function setRevs(array $revs): void
