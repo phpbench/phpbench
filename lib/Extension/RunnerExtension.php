@@ -13,6 +13,7 @@ use PhpBench\Benchmark\Metadata\Driver\ChainDriver;
 use PhpBench\Benchmark\Metadata\Driver\ConfigDriver;
 use PhpBench\Benchmark\Metadata\MetadataFactory;
 use PhpBench\Benchmark\Runner;
+use PhpBench\Compat\SymfonyOptionsResolverCompat;
 use PhpBench\Console\Command\Handler\DumpHandler;
 use PhpBench\Console\Command\Handler\ReportHandler;
 use PhpBench\Console\Command\Handler\RunnerHandler;
@@ -106,6 +107,113 @@ class RunnerExtension implements ExtensionInterface
     public const TAG_EXECUTOR = 'benchmark_executor';
     public const TAG_PROGRESS_LOGGER = 'progress_logger';
 
+    public function configure(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            self::PARAM_ANNOTATIONS => true,
+            self::PARAM_ANNOTATION_IMPORT_USE => false,
+            self::PARAM_ATTRIBUTES => true,
+            self::PARAM_BOOTSTRAP => null,
+            self::PARAM_ENABLED_PROVIDERS => [
+                self::ENV_PROVIDER_BASELINE,
+                self::ENV_PROVIDER_GIT,
+                self::ENV_PROVIDER_OPCACHE,
+                self::ENV_PROVIDER_PHP,
+                self::ENV_PROVIDER_UNAME,
+                self::ENV_PROVIDER_UNIX_SYSLOAD,
+            ],
+            self::PARAM_ENV_BASELINES => ['nothing', 'md5', 'file_rw'],
+            self::PARAM_ENV_BASELINE_CALLABLES => [],
+            self::PARAM_EXECUTORS => [],
+            self::PARAM_PATH => null,
+            self::PARAM_PHP_BINARY => null,
+            self::PARAM_PHP_CONFIG => [],
+            self::PARAM_PHP_DISABLE_INI => false,
+            self::PARAM_PHP_WRAPPER => null,
+            self::PARAM_PROGRESS => getenv('CONTINUOUS_INTEGRATION') ? 'travis' : 'verbose',
+            self::PARAM_PROGRESS_SUMMARY_FORMAT => VariantSummaryFormatter::DEFAULT_FORMAT,
+            self::PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT => VariantSummaryFormatter::BASELINE_FORMAT,
+            self::PARAM_REMOTE_SCRIPT_PATH => null,
+            self::PARAM_REMOTE_SCRIPT_REMOVE => true,
+            self::PARAM_RETRY_THRESHOLD => null,
+            self::PARAM_RUNNER_ASSERT => null,
+            self::PARAM_RUNNER_EXECUTOR => null,
+            self::PARAM_RUNNER_FORMAT => null,
+            self::PARAM_RUNNER_ITERATIONS => null,
+            self::PARAM_RUNNER_OUTPUT_MODE => null,
+            self::PARAM_RUNNER_OUTPUT_TIME_UNIT => null,
+            self::PARAM_RUNNER_RETRY_THRESHOLD => null,
+            self::PARAM_RUNNER_REVS => null,
+            self::PARAM_RUNNER_TIMEOUT => null,
+            self::PARAM_RUNNER_WARMUP => null,
+            self::PARAM_SUBJECT_PATTERN => '^bench',
+        ]);
+
+        $resolver->setAllowedTypes(self::PARAM_ANNOTATIONS, ['bool']);
+        $resolver->setAllowedTypes(self::PARAM_ANNOTATION_IMPORT_USE, ['bool']);
+        $resolver->setAllowedTypes(self::PARAM_ATTRIBUTES, ['bool']);
+        $resolver->setAllowedTypes(self::PARAM_BOOTSTRAP, ['string', 'null']);
+        $resolver->setAllowedTypes(self::PARAM_ENABLED_PROVIDERS, ['array']);
+        $resolver->setAllowedTypes(self::PARAM_ENV_BASELINES, ['array']);
+        $resolver->setAllowedTypes(self::PARAM_ENV_BASELINE_CALLABLES, ['array']);
+        $resolver->setAllowedTypes(self::PARAM_EXECUTORS, ['array']);
+        $resolver->setAllowedTypes(self::PARAM_PATH, ['string', 'array', 'null']);
+        $resolver->setAllowedTypes(self::PARAM_PHP_BINARY, ['string', 'null']);
+        $resolver->setAllowedTypes(self::PARAM_PHP_CONFIG, ['array']);
+        $resolver->setAllowedTypes(self::PARAM_PHP_DISABLE_INI, ['bool']);
+        $resolver->setAllowedTypes(self::PARAM_PHP_WRAPPER, ['string', 'null']);
+        $resolver->setAllowedTypes(self::PARAM_PROGRESS, ['string']);
+        $resolver->setAllowedTypes(self::PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT, ['string']);
+        $resolver->setAllowedTypes(self::PARAM_PROGRESS_SUMMARY_FORMAT, ['string']);
+        $resolver->setAllowedTypes(self::PARAM_REMOTE_SCRIPT_PATH, ['string', 'null']);
+        $resolver->setAllowedTypes(self::PARAM_REMOTE_SCRIPT_REMOVE, ['bool']);
+        $resolver->setAllowedTypes(self::PARAM_RETRY_THRESHOLD, ['null', 'int', 'float']);
+        $resolver->setAllowedTypes(self::PARAM_RUNNER_ASSERT, ['null', 'string', 'array']);
+        $resolver->setAllowedTypes(self::PARAM_RUNNER_EXECUTOR, ['null', 'string']);
+        $resolver->setAllowedTypes(self::PARAM_RUNNER_FORMAT, ['null', 'string']);
+        $resolver->setAllowedTypes(self::PARAM_RUNNER_ITERATIONS, ['null', 'int', 'array']);
+        $resolver->setAllowedTypes(self::PARAM_RUNNER_OUTPUT_MODE, ['null', 'string']);
+        $resolver->setAllowedTypes(self::PARAM_RUNNER_OUTPUT_TIME_UNIT, ['null', 'string']);
+        $resolver->setAllowedTypes(self::PARAM_RUNNER_RETRY_THRESHOLD, ['null', 'int', 'float']);
+        $resolver->setAllowedTypes(self::PARAM_RUNNER_REVS, ['null', 'int', 'array']);
+        $resolver->setAllowedTypes(self::PARAM_RUNNER_TIMEOUT, ['null', 'float', 'int']);
+        $resolver->setAllowedTypes(self::PARAM_RUNNER_WARMUP, ['null', 'int', 'array']);
+        $resolver->setAllowedTypes(self::PARAM_SUBJECT_PATTERN, ['string']);
+        
+        SymfonyOptionsResolverCompat::setInfos($resolver, [
+            self::PARAM_ANNOTATIONS => 'Read metadata from annotations',
+            self::PARAM_ANNOTATION_IMPORT_USE => 'Require that annotations be imported before use',
+            self::PARAM_ATTRIBUTES => 'Read metadata from PHP 8 attributes',
+            self::PARAM_BOOTSTRAP => 'Path to bootstrap (e.g. ``vendor/autoload.php``)',
+            self::PARAM_ENABLED_PROVIDERS => 'Explicitly enable environment samplers, ``null`` enables all',
+            self::PARAM_ENV_BASELINES => 'Environment baselines (not to be confused with baseline comparisons when running benchmarks) are small benchmarks which run to sample the speed of the system (e.g. file I/O, computation etc). This setting enables or disables these baselines',
+            self::PARAM_ENV_BASELINE_CALLABLES => 'Map of baseline callables (adds you to register a new environemntal baseline)',
+            self::PARAM_EXECUTORS => 'Add new executor configurations',
+            self::PARAM_PATH => 'Path or paths to the benchmarks',
+            self::PARAM_PHP_BINARY => 'Specify a PHP binary to use when executing out-of-band benchmarks, e.g. ``/usr/bin/php6``, defaults to the version of PHP used to invoke PHPBench',
+            self::PARAM_PHP_CONFIG => 'Map of PHP ini settings to use when executing out-of-band benchmarks',
+            self::PARAM_PHP_DISABLE_INI => 'Disable reading the default PHP configuration',
+            self::PARAM_PHP_WRAPPER => 'Wrap the PHP binary with this command (e.g. ``blackfire run``)',
+            self::PARAM_PROGRESS => 'Default progress logger to use',
+            self::PARAM_PROGRESS_SUMMARY_FORMAT => 'Expression used to render the summary text default progress loggers',
+            self::PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT => 'When the a comparison benchmark is referenced, alternative expression used to render the summary text default progress loggers',
+            self::PARAM_REMOTE_SCRIPT_PATH => 'PHPBench generates a PHP file for out-of-band benchmarks which is executed, this setting specifies the path to this file. When NULL a file in the systems temporary directory will be used',
+            self::PARAM_REMOTE_SCRIPT_REMOVE => 'If the generated file should be removed after it has been executed (useful for debugging)',
+            self::PARAM_RETRY_THRESHOLD => 'DEPRECATED: use :ref:`configuration_runner_retry_threshold` instead',
+            self::PARAM_RUNNER_ASSERT => 'Default assertion',
+            self::PARAM_RUNNER_EXECUTOR => 'Default executor',
+            self::PARAM_RUNNER_FORMAT => 'Default format',
+            self::PARAM_RUNNER_ITERATIONS => 'Default number of iterations',
+            self::PARAM_RUNNER_OUTPUT_MODE => 'Default output mode (e.g. throughput)',
+            self::PARAM_RUNNER_OUTPUT_TIME_UNIT => 'Default time unit',
+            self::PARAM_RUNNER_RETRY_THRESHOLD => 'Default retry threshold',
+            self::PARAM_RUNNER_REVS => 'Default number of revolutions',
+            self::PARAM_RUNNER_TIMEOUT => 'Default timeout',
+            self::PARAM_RUNNER_WARMUP => 'Default warmup',
+            self::PARAM_SUBJECT_PATTERN => 'Subject prefix to use when finding benchmarks',
+        ]);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -119,23 +227,6 @@ class RunnerExtension implements ExtensionInterface
         $this->registerEnvironment($container);
         $this->registerAsserters($container);
         $this->registerMetadata($container);
-    }
-
-    private function registerAsserters(Container $container): void
-    {
-        $container->register(AssertionProcessor::class, function (Container $container) {
-            return new AssertionProcessor(
-                $container->get(ExpressionLanguage::class),
-                $container->get(Evaluator::class),
-                $container->get(Printer::class),
-                $container->get(EvaluatingPrinter::class),
-                $container->get(ParameterProvider::class)
-            );
-        });
-
-        $container->register(ParameterProvider::class, function () {
-            return new ParameterProvider();
-        });
     }
 
     public function registerEnvironment(Container $container): void
@@ -405,83 +496,6 @@ class RunnerExtension implements ExtensionInterface
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
-    public function configure(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults([
-            self::PARAM_ANNOTATIONS => true,
-            self::PARAM_ANNOTATION_IMPORT_USE => false,
-            self::PARAM_ATTRIBUTES => true,
-            self::PARAM_BOOTSTRAP => null,
-            self::PARAM_ENABLED_PROVIDERS => [
-                self::ENV_PROVIDER_BASELINE,
-                self::ENV_PROVIDER_GIT,
-                self::ENV_PROVIDER_OPCACHE,
-                self::ENV_PROVIDER_PHP,
-                self::ENV_PROVIDER_UNAME,
-                self::ENV_PROVIDER_UNIX_SYSLOAD,
-            ],
-            self::PARAM_ENV_BASELINES => ['nothing', 'md5', 'file_rw'],
-            self::PARAM_ENV_BASELINE_CALLABLES => [],
-            self::PARAM_EXECUTORS => [],
-            self::PARAM_PATH => null,
-            self::PARAM_PHP_BINARY => null,
-            self::PARAM_PHP_CONFIG => [],
-            self::PARAM_PHP_DISABLE_INI => false,
-            self::PARAM_PHP_WRAPPER => null,
-            self::PARAM_PROGRESS => getenv('CONTINUOUS_INTEGRATION') ? 'travis' : 'verbose',
-            self::PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT => VariantSummaryFormatter::BASELINE_FORMAT,
-            self::PARAM_PROGRESS_SUMMARY_FORMAT => VariantSummaryFormatter::DEFAULT_FORMAT,
-            self::PARAM_REMOTE_SCRIPT_PATH => null,
-            self::PARAM_REMOTE_SCRIPT_REMOVE => true,
-            self::PARAM_RETRY_THRESHOLD => null,
-            self::PARAM_RUNNER_ASSERT => null,
-            self::PARAM_RUNNER_EXECUTOR => null,
-            self::PARAM_RUNNER_FORMAT => null,
-            self::PARAM_RUNNER_ITERATIONS => null,
-            self::PARAM_RUNNER_OUTPUT_MODE => null,
-            self::PARAM_RUNNER_OUTPUT_TIME_UNIT => null,
-            self::PARAM_RUNNER_RETRY_THRESHOLD => null,
-            self::PARAM_RUNNER_REVS => null,
-            self::PARAM_RUNNER_TIMEOUT => null,
-            self::PARAM_RUNNER_WARMUP => null,
-            self::PARAM_SUBJECT_PATTERN => '^bench',
-        ]);
-
-        $resolver->setAllowedTypes(self::PARAM_ANNOTATIONS, ['bool']);
-        $resolver->setAllowedTypes(self::PARAM_ANNOTATION_IMPORT_USE, ['bool']);
-        $resolver->setAllowedTypes(self::PARAM_ATTRIBUTES, ['bool']);
-        $resolver->setAllowedTypes(self::PARAM_BOOTSTRAP, ['string', 'null']);
-        $resolver->setAllowedTypes(self::PARAM_ENABLED_PROVIDERS, ['array']);
-        $resolver->setAllowedTypes(self::PARAM_ENV_BASELINES, ['array']);
-        $resolver->setAllowedTypes(self::PARAM_ENV_BASELINE_CALLABLES, ['array']);
-        $resolver->setAllowedTypes(self::PARAM_EXECUTORS, ['array']);
-        $resolver->setAllowedTypes(self::PARAM_PATH, ['string', 'array', 'null']);
-        $resolver->setAllowedTypes(self::PARAM_PHP_BINARY, ['string', 'null']);
-        $resolver->setAllowedTypes(self::PARAM_PHP_CONFIG, ['array']);
-        $resolver->setAllowedTypes(self::PARAM_PHP_DISABLE_INI, ['bool']);
-        $resolver->setAllowedTypes(self::PARAM_PHP_WRAPPER, ['string', 'null']);
-        $resolver->setAllowedTypes(self::PARAM_PROGRESS, ['string']);
-        $resolver->setAllowedTypes(self::PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT, ['string']);
-        $resolver->setAllowedTypes(self::PARAM_PROGRESS_SUMMARY_FORMAT, ['string']);
-        $resolver->setAllowedTypes(self::PARAM_REMOTE_SCRIPT_PATH, ['string', 'null']);
-        $resolver->setAllowedTypes(self::PARAM_REMOTE_SCRIPT_REMOVE, ['bool']);
-        $resolver->setAllowedTypes(self::PARAM_RETRY_THRESHOLD, ['null', 'int', 'float']);
-        $resolver->setAllowedTypes(self::PARAM_RUNNER_ASSERT, ['null', 'string', 'array']);
-        $resolver->setAllowedTypes(self::PARAM_RUNNER_EXECUTOR, ['null', 'string']);
-        $resolver->setAllowedTypes(self::PARAM_RUNNER_FORMAT, ['null', 'string']);
-        $resolver->setAllowedTypes(self::PARAM_RUNNER_ITERATIONS, ['null', 'int', 'array']);
-        $resolver->setAllowedTypes(self::PARAM_RUNNER_OUTPUT_MODE, ['null', 'string']);
-        $resolver->setAllowedTypes(self::PARAM_RUNNER_OUTPUT_TIME_UNIT, ['null', 'string']);
-        $resolver->setAllowedTypes(self::PARAM_RUNNER_RETRY_THRESHOLD, ['null', 'int', 'float']);
-        $resolver->setAllowedTypes(self::PARAM_RUNNER_REVS, ['null', 'int', 'array']);
-        $resolver->setAllowedTypes(self::PARAM_RUNNER_TIMEOUT, ['null', 'float', 'int']);
-        $resolver->setAllowedTypes(self::PARAM_RUNNER_WARMUP, ['null', 'int', 'array']);
-        $resolver->setAllowedTypes(self::PARAM_SUBJECT_PATTERN, ['string']);
-    }
-
     private function relativizeConfigPath(Container $container): void
     {
         $paths = (array)$container->getParameter(self::PARAM_PATH);
@@ -604,6 +618,23 @@ class RunnerExtension implements ExtensionInterface
             }
 
             return $manager;
+        });
+    }
+
+    private function registerAsserters(Container $container): void
+    {
+        $container->register(AssertionProcessor::class, function (Container $container) {
+            return new AssertionProcessor(
+                $container->get(ExpressionLanguage::class),
+                $container->get(Evaluator::class),
+                $container->get(Printer::class),
+                $container->get(EvaluatingPrinter::class),
+                $container->get(ParameterProvider::class)
+            );
+        });
+
+        $container->register(ParameterProvider::class, function () {
+            return new ParameterProvider();
         });
     }
 }

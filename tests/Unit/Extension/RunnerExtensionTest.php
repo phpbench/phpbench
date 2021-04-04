@@ -13,8 +13,6 @@
 namespace PhpBench\Tests\Unit\Extension;
 
 use PhpBench\Benchmark\Metadata\Driver\ConfigDriver;
-use PhpBench\DependencyInjection\Container;
-use PhpBench\Extension\CoreExtension;
 use PhpBench\Extension\RunnerExtension;
 use PhpBench\Tests\IntegrationTestCase;
 

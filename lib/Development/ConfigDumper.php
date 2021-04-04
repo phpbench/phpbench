@@ -28,6 +28,10 @@ class ConfigDumper
 
     public function dump(): string
     {
+        if (!method_exists(OptionsResolver::class, 'getInfo')) {
+            return 'Config reference generation requires Symfony Options Resolver ^5.0';
+        }
+
         $sections = [
             self::TITLE,
             $this->underline(self::TITLE, '='),
@@ -35,10 +39,6 @@ class ConfigDumper
             '.. include:: configuration-prelude.rst',
             '',
         ];
-
-        if (!method_exists(OptionsResolver::class, 'getInfo')) {
-            return 'Config reference generation requires Symfony Options Resolver ^5.0';
-        }
 
         foreach ($this->extensions as $extensionClass) {
             $optionsResolver = new OptionsResolver();
@@ -71,10 +71,12 @@ class ConfigDumper
             $section[] = $option;
             $section[] = $this->underline($option, '~');
             $section[] = '';
+            $section[] = $optionsResolver->getInfo($option);
+            $section[] = '';
             $section[] = sprintf('Default: ``%s``', json_encode($inspector->getDefault($option)));
             $section[] = '';
             $section[] = sprintf('Types: ``%s``', json_encode($inspector->getAllowedTypes($option)));
-            $section[] = $optionsResolver->getInfo($option);
+            $section[] = '';
         }
 
         return implode("\n", $section);

@@ -11,6 +11,8 @@ CoreExtension
 console.ansi
 ~~~~~~~~~~~~
 
+
+
 Default: ``true``
 
 Types: ``["bool"]``
@@ -19,6 +21,8 @@ Types: ``["bool"]``
 
 console.disable_output
 ~~~~~~~~~~~~~~~~~~~~~~
+
+
 
 Default: ``false``
 
@@ -29,6 +33,8 @@ Types: ``["bool"]``
 console.output_stream
 ~~~~~~~~~~~~~~~~~~~~~
 
+
+
 Default: ``"php:\/\/stdout"``
 
 Types: ``["string"]``
@@ -37,6 +43,8 @@ Types: ``["string"]``
 
 console.error_stream
 ~~~~~~~~~~~~~~~~~~~~
+
+
 
 Default: ``"php:\/\/stderr"``
 
@@ -47,6 +55,8 @@ Types: ``["string"]``
 debug
 ~~~~~
 
+
+
 Default: ``false``
 
 Types: ``["bool"]``
@@ -55,6 +65,8 @@ Types: ``["bool"]``
 
 extensions
 ~~~~~~~~~~
+
+
 
 Default: ``[]``
 
@@ -65,6 +77,8 @@ Types: ``["array"]``
 output_mode
 ~~~~~~~~~~~
 
+
+
 Default: ``"time"``
 
 Types: ``["string"]``
@@ -73,6 +87,8 @@ Types: ``["string"]``
 
 time_unit
 ~~~~~~~~~
+
+
 
 Default: ``"microseconds"``
 
@@ -83,6 +99,8 @@ Types: ``["string"]``
 storage
 ~~~~~~~
 
+
+
 Default: ``"xml"``
 
 Types: ``["string"]``
@@ -91,6 +109,8 @@ Types: ``["string"]``
 
 xml_storage_path
 ~~~~~~~~~~~~~~~~
+
+
 
 Default: ``".phpbench\/storage"``
 
@@ -101,6 +121,8 @@ Types: ``["string"]``
 config_path
 ~~~~~~~~~~~
 
+
+
 Default: ``null``
 
 Types: ``["string","null"]``
@@ -110,6 +132,8 @@ Types: ``["string","null"]``
 reports
 ~~~~~~~
 
+
+
 Default: ``[]``
 
 Types: ``["array"]``
@@ -118,6 +142,8 @@ Types: ``["array"]``
 
 outputs
 ~~~~~~~
+
+
 
 Default: ``[]``
 
@@ -131,6 +157,8 @@ RunnerExtension
 annotations
 ~~~~~~~~~~~
 
+Read metadata from annotations
+
 Default: ``true``
 
 Types: ``["bool"]``
@@ -139,6 +167,8 @@ Types: ``["bool"]``
 
 annotation_import_use
 ~~~~~~~~~~~~~~~~~~~~~
+
+Require that annotations be imported before use
 
 Default: ``false``
 
@@ -149,6 +179,8 @@ Types: ``["bool"]``
 attributes
 ~~~~~~~~~~
 
+Read metadata from PHP 8 attributes
+
 Default: ``true``
 
 Types: ``["bool"]``
@@ -157,6 +189,8 @@ Types: ``["bool"]``
 
 bootstrap
 ~~~~~~~~~
+
+Path to bootstrap (e.g. ``vendor/autoload.php``)
 
 Default: ``null``
 
@@ -167,6 +201,8 @@ Types: ``["string","null"]``
 env.enabled_providers
 ~~~~~~~~~~~~~~~~~~~~~
 
+Explicitly enable environment samplers, ``null`` enables all
+
 Default: ``["baseline","git","opcache","php","uname","unix_sysload"]``
 
 Types: ``["array"]``
@@ -175,6 +211,8 @@ Types: ``["array"]``
 
 env_baselines
 ~~~~~~~~~~~~~
+
+Environment baselines (not to be confused with baseline comparisons when running benchmarks) are small benchmarks which run to sample the speed of the system (e.g. file I/O, computation etc). This setting enables or disables these baselines
 
 Default: ``["nothing","md5","file_rw"]``
 
@@ -185,6 +223,8 @@ Types: ``["array"]``
 env_baseline_callables
 ~~~~~~~~~~~~~~~~~~~~~~
 
+Map of baseline callables (adds you to register a new environemntal baseline)
+
 Default: ``[]``
 
 Types: ``["array"]``
@@ -193,6 +233,8 @@ Types: ``["array"]``
 
 executors
 ~~~~~~~~~
+
+Add new executor configurations
 
 Default: ``[]``
 
@@ -203,6 +245,8 @@ Types: ``["array"]``
 path
 ~~~~
 
+Path or paths to the benchmarks
+
 Default: ``null``
 
 Types: ``["string","array","null"]``
@@ -211,6 +255,8 @@ Types: ``["string","array","null"]``
 
 php_binary
 ~~~~~~~~~~
+
+Specify a PHP binary to use when executing out-of-band benchmarks, e.g. ``/usr/bin/php6``, defaults to the version of PHP used to invoke PHPBench
 
 Default: ``null``
 
@@ -221,6 +267,8 @@ Types: ``["string","null"]``
 php_config
 ~~~~~~~~~~
 
+Map of PHP ini settings to use when executing out-of-band benchmarks
+
 Default: ``[]``
 
 Types: ``["array"]``
@@ -229,6 +277,8 @@ Types: ``["array"]``
 
 php_disable_ini
 ~~~~~~~~~~~~~~~
+
+Disable reading the default PHP configuration
 
 Default: ``false``
 
@@ -239,6 +289,8 @@ Types: ``["bool"]``
 php_wrapper
 ~~~~~~~~~~~
 
+Wrap the PHP binary with this command (e.g. ``blackfire run``)
+
 Default: ``null``
 
 Types: ``["string","null"]``
@@ -248,16 +300,9 @@ Types: ``["string","null"]``
 progress
 ~~~~~~~~
 
+Default progress logger to use
+
 Default: ``"verbose"``
-
-Types: ``["string"]``
-
-.. _configuration_progress_summary_baseline_format:
-
-progress_summary_baseline_format
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Default: ``"\"[\" ~ \n\"Mo\" ~ display_as_time(mode(variant.time.avg), coalesce(subject.time_unit,\"microseconds\"), subject.time_precision, subject.time_mode) ~\n\" vs \" ~ \n\"Mo\" ~ display_as_time(mode(baseline.time.avg), coalesce(subject.time_unit,\"microseconds\"), subject.time_precision, subject.time_mode) ~ \"] \" ~ \npercent_diff(mode(baseline.time.avg), mode(variant.time.avg), (rstdev(variant.time.avg) * 2)) ~\n\" (\" ~ rstdev(variant.time.avg) ~ \")\""``
 
 Types: ``["string"]``
 
@@ -266,7 +311,20 @@ Types: ``["string"]``
 progress_summary_variant_format
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Expression used to render the summary text default progress loggers
+
 Default: ``"\"Mo\" ~ display_as_time(mode(variant.time.avg), coalesce(subject.time_unit,\"microseconds\"), subject.time_precision, subject.time_mode) ~ \n\" (\" ~ rstdev(variant.time.avg) ~ \")\""``
+
+Types: ``["string"]``
+
+.. _configuration_progress_summary_baseline_format:
+
+progress_summary_baseline_format
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When the a comparison benchmark is referenced, alternative expression used to render the summary text default progress loggers
+
+Default: ``"\"[\" ~ \n\"Mo\" ~ display_as_time(mode(variant.time.avg), coalesce(subject.time_unit,\"microseconds\"), subject.time_precision, subject.time_mode) ~\n\" vs \" ~ \n\"Mo\" ~ display_as_time(mode(baseline.time.avg), coalesce(subject.time_unit,\"microseconds\"), subject.time_precision, subject.time_mode) ~ \"] \" ~ \npercent_diff(mode(baseline.time.avg), mode(variant.time.avg), (rstdev(variant.time.avg) * 2)) ~\n\" (\" ~ rstdev(variant.time.avg) ~ \")\""``
 
 Types: ``["string"]``
 
@@ -274,6 +332,8 @@ Types: ``["string"]``
 
 remote_script_path
 ~~~~~~~~~~~~~~~~~~
+
+PHPBench generates a PHP file for out-of-band benchmarks which is executed, this setting specifies the path to this file. When NULL a file in the systems temporary directory will be used
 
 Default: ``null``
 
@@ -284,6 +344,8 @@ Types: ``["string","null"]``
 remote_script_remove
 ~~~~~~~~~~~~~~~~~~~~
 
+If the generated file should be removed after it has been executed (useful for debugging)
+
 Default: ``true``
 
 Types: ``["bool"]``
@@ -292,6 +354,8 @@ Types: ``["bool"]``
 
 retry_threshold
 ~~~~~~~~~~~~~~~
+
+DEPRECATED: use :ref:`configuration_runner_retry_threshold` instead
 
 Default: ``null``
 
@@ -302,6 +366,8 @@ Types: ``["null","int","float"]``
 runner.assert
 ~~~~~~~~~~~~~
 
+Default assertion
+
 Default: ``null``
 
 Types: ``["null","string","array"]``
@@ -310,6 +376,8 @@ Types: ``["null","string","array"]``
 
 runner.executor
 ~~~~~~~~~~~~~~~
+
+Default executor
 
 Default: ``null``
 
@@ -320,6 +388,8 @@ Types: ``["null","string"]``
 runner.format
 ~~~~~~~~~~~~~
 
+Default format
+
 Default: ``null``
 
 Types: ``["null","string"]``
@@ -328,6 +398,8 @@ Types: ``["null","string"]``
 
 runner.iterations
 ~~~~~~~~~~~~~~~~~
+
+Default number of iterations
 
 Default: ``null``
 
@@ -338,6 +410,8 @@ Types: ``["null","int","array"]``
 runner.output_mode
 ~~~~~~~~~~~~~~~~~~
 
+Default output mode (e.g. throughput)
+
 Default: ``null``
 
 Types: ``["null","string"]``
@@ -346,6 +420,8 @@ Types: ``["null","string"]``
 
 runner.time_unit
 ~~~~~~~~~~~~~~~~
+
+Default time unit
 
 Default: ``null``
 
@@ -356,6 +432,8 @@ Types: ``["null","string"]``
 runner.retry_threshold
 ~~~~~~~~~~~~~~~~~~~~~~
 
+Default retry threshold
+
 Default: ``null``
 
 Types: ``["null","int","float"]``
@@ -364,6 +442,8 @@ Types: ``["null","int","float"]``
 
 runner.revs
 ~~~~~~~~~~~
+
+Default number of revolutions
 
 Default: ``null``
 
@@ -374,6 +454,8 @@ Types: ``["null","int","array"]``
 runner.timeout
 ~~~~~~~~~~~~~~
 
+Default timeout
+
 Default: ``null``
 
 Types: ``["null","float","int"]``
@@ -383,6 +465,8 @@ Types: ``["null","float","int"]``
 runner.warmup
 ~~~~~~~~~~~~~
 
+Default warmup
+
 Default: ``null``
 
 Types: ``["null","int","array"]``
@@ -391,6 +475,8 @@ Types: ``["null","int","array"]``
 
 subject_pattern
 ~~~~~~~~~~~~~~~
+
+Subject prefix to use when finding benchmarks
 
 Default: ``"^bench"``
 
@@ -404,6 +490,8 @@ ExpressionExtension
 expression.syntax_highlighting
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
+
 Default: ``true``
 
 Types: ``["bool"]``
@@ -412,6 +500,8 @@ Types: ``["bool"]``
 
 expression.theme
 ~~~~~~~~~~~~~~~~
+
+
 
 Default: ``"solarized"``
 

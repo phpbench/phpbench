@@ -208,7 +208,7 @@ Stability can be inferred from `rstdev`, with 0% being the best and anything
 about 2% should be treated as suspicious.
 
 To increase stability you can use the ``--retry-threshold`` to automatically
-:ref:`repeat the iterations <retry_threshold>` until the `diff` (the
+:ref:`repeat the iterations <configuration_runner_retry_threshold>` until the `diff` (the
 percentage difference from the lowest measurement) fits within a given
 threshold:
 
@@ -280,7 +280,7 @@ In this tutorial you learnt to
 - :doc:`Configure <configuration>` PHPBench for a project
 - Create a benchmarking class
 - Use :ref:`revolutions <revolutions>` and :ref:`iterations <iterations>` to more accurately profile your code
-- Increase stability with the :ref:`retry threshold <retry_threshold>`
+- Increase stability with the :ref:`retry threshold <configuration_retry_threshold>`
 - Use :doc:`reports <reports>`
 
 .. _Composer: http://getcomposer.org
