@@ -31,7 +31,9 @@ class ConfigDumper
         $sections = [
             self::TITLE,
             $this->underline(self::TITLE, '='),
-            ''
+            '',
+            '.. include:: configuration-prelude.rst',
+            '',
         ];
 
         if (!method_exists(OptionsResolver::class, 'getInfo')) {

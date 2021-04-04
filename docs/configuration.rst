@@ -1,6 +1,8 @@
 Configuration
 =============
 
+.. include:: configuration-prelude.rst
+
 CoreExtension
 -------------
 
