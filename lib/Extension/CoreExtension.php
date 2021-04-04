@@ -146,6 +146,7 @@ class CoreExtension implements ExtensionInterface
     public const PARAM_RUNNER_TIMEOUT = 'runner.timeout';
     public const PARAM_RUNNER_WARMUP = 'runner.warmup';
     public const PARAM_RUNNER_RETRY_THRESHOLD = 'runner.retry_threshold';
+    public const PARAM_EXTENSIONS = 'extensions';
 
     public const TAG_EXECUTOR = 'benchmark_executor';
     public const TAG_CONSOLE_COMMAND = 'console.command';
@@ -226,6 +227,7 @@ class CoreExtension implements ExtensionInterface
             self::PARAM_RUNNER_TIMEOUT => null,
             self::PARAM_RUNNER_WARMUP => null,
             self::PARAM_RUNNER_RETRY_THRESHOLD => null,
+            self::PARAM_EXTENSIONS => [],
 
         ]);
 
@@ -268,6 +270,7 @@ class CoreExtension implements ExtensionInterface
         $resolver->setAllowedTypes(self::PARAM_RUNNER_WARMUP, ['null', 'int', 'array']);
         $resolver->setAllowedTypes(self::PARAM_RUNNER_RETRY_THRESHOLD, ['null', 'int', 'float']);
         $resolver->setAllowedTypes(self::PARAM_ENABLED_PROVIDERS, ['array']);
+        $resolver->setAllowedTypes(self::PARAM_EXTENSIONS, ['array']);
     }
 
     public function load(Container $container): void

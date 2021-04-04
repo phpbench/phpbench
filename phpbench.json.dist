@@ -1,4 +1,7 @@
 {
+    "extensions": [
+        "PhpBench\\Extension\\DevelopmentExtension"
+    ],
     "bootstrap": "vendor/autoload.php",
     "path": "tests/Benchmark",
     "php_config": {
