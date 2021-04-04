@@ -1,324 +1,321 @@
 Configuration
 =============
 
-PhpBench\Extension\DevelopmentExtension
----------------------------------------
+CoreExtension
+-------------
 
-PhpBench\Extension\CoreExtension
---------------------------------
-
-.. _bootstrap:
+.. _config_bootstrap:
 
 bootstrap
 ~~~~~~~~~
 
 Default: ``null``
 
-.. _path:
+.. _config_path:
 
 path
 ~~~~
 
 Default: ``null``
 
-.. _reports:
+.. _config_reports:
 
 reports
 ~~~~~~~
 
 Default: ``[]``
 
-.. _outputs:
+.. _config_outputs:
 
 outputs
 ~~~~~~~
 
 Default: ``[]``
 
-.. _executors:
+.. _config_executors:
 
 executors
 ~~~~~~~~~
 
 Default: ``[]``
 
-.. _config_path:
+.. _config_config_path:
 
 config_path
 ~~~~~~~~~~~
 
 Default: ``null``
 
-.. _progress:
+.. _config_progress:
 
 progress
 ~~~~~~~~
 
 Default: ``"verbose"``
 
-.. _retry_threshold:
+.. _config_retry_threshold:
 
 retry_threshold
 ~~~~~~~~~~~~~~~
 
 Default: ``null``
 
-.. _time_unit:
+.. _config_time_unit:
 
 time_unit
 ~~~~~~~~~
 
 Default: ``"microseconds"``
 
-.. _output_mode:
+.. _config_output_mode:
 
 output_mode
 ~~~~~~~~~~~
 
 Default: ``"time"``
 
-.. _storage:
+.. _config_storage:
 
 storage
 ~~~~~~~
 
 Default: ``"xml"``
 
-.. _subject_pattern:
+.. _config_subject_pattern:
 
 subject_pattern
 ~~~~~~~~~~~~~~~
 
 Default: ``"^bench"``
 
-.. _env.enabled_providers:
+.. _config_env_enabled_providers:
 
 env.enabled_providers
 ~~~~~~~~~~~~~~~~~~~~~
 
 Default: ``["uname","php","opcache","unix_sysload","git","baseline"]``
 
-.. _env_baselines:
+.. _config_env_baselines:
 
 env_baselines
 ~~~~~~~~~~~~~
 
 Default: ``["nothing","md5","file_rw"]``
 
-.. _env_baseline_callables:
+.. _config_env_baseline_callables:
 
 env_baseline_callables
 ~~~~~~~~~~~~~~~~~~~~~~
 
 Default: ``[]``
 
-.. _xml_storage_path:
+.. _config_xml_storage_path:
 
 xml_storage_path
 ~~~~~~~~~~~~~~~~
 
 Default: ``"\/home\/daniel\/www\/phpbench\/phpbench\/.phpbench\/storage"``
 
-.. _php_config:
+.. _config_php_config:
 
 php_config
 ~~~~~~~~~~
 
 Default: ``[]``
 
-.. _php_binary:
+.. _config_php_binary:
 
 php_binary
 ~~~~~~~~~~
 
 Default: ``null``
 
-.. _php_wrapper:
+.. _config_php_wrapper:
 
 php_wrapper
 ~~~~~~~~~~~
 
 Default: ``null``
 
-.. _php_disable_ini:
+.. _config_php_disable_ini:
 
 php_disable_ini
 ~~~~~~~~~~~~~~~
 
 Default: ``false``
 
-.. _annotation_import_use:
+.. _config_annotation_import_use:
 
 annotation_import_use
 ~~~~~~~~~~~~~~~~~~~~~
 
 Default: ``false``
 
-.. _remote_script_path:
+.. _config_remote_script_path:
 
 remote_script_path
 ~~~~~~~~~~~~~~~~~~
 
 Default: ``null``
 
-.. _remote_script_remove:
+.. _config_remote_script_remove:
 
 remote_script_remove
 ~~~~~~~~~~~~~~~~~~~~
 
 Default: ``true``
 
-.. _console.disable_output:
+.. _config_console_disable_output:
 
 console.disable_output
 ~~~~~~~~~~~~~~~~~~~~~~
 
 Default: ``false``
 
-.. _console.ansi:
+.. _config_console_ansi:
 
 console.ansi
 ~~~~~~~~~~~~
 
 Default: ``true``
 
-.. _progress_summary_variant_format:
+.. _config_progress_summary_variant_format:
 
 progress_summary_variant_format
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Default: ``"\"Mo\" ~ display_as_time(mode(variant.time.avg), coalesce(subject.time_unit,\"microseconds\"), subject.time_precision, subject.time_mode) ~ \n\" (\" ~ rstdev(variant.time.avg) ~ \")\""``
 
-.. _progress_summary_baseline_format:
+.. _config_progress_summary_baseline_format:
 
 progress_summary_baseline_format
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Default: ``"\"[\" ~ \n\"Mo\" ~ display_as_time(mode(variant.time.avg), coalesce(subject.time_unit,\"microseconds\"), subject.time_precision, subject.time_mode) ~\n\" vs \" ~ \n\"Mo\" ~ display_as_time(mode(baseline.time.avg), coalesce(subject.time_unit,\"microseconds\"), subject.time_precision, subject.time_mode) ~ \"] \" ~ \npercent_diff(mode(baseline.time.avg), mode(variant.time.avg), (rstdev(variant.time.avg) * 2)) ~\n\" (\" ~ rstdev(variant.time.avg) ~ \")\""``
 
-.. _annotations:
+.. _config_annotations:
 
 annotations
 ~~~~~~~~~~~
 
 Default: ``true``
 
-.. _attributes:
+.. _config_attributes:
 
 attributes
 ~~~~~~~~~~
 
 Default: ``true``
 
-.. _debug:
+.. _config_debug:
 
 debug
 ~~~~~
 
 Default: ``false``
 
-.. _console.output_stream:
+.. _config_console_output_stream:
 
 console.output_stream
 ~~~~~~~~~~~~~~~~~~~~~
 
 Default: ``"php:\/\/stdout"``
 
-.. _console.error_stream:
+.. _config_console_error_stream:
 
 console.error_stream
 ~~~~~~~~~~~~~~~~~~~~
 
 Default: ``"php:\/\/stderr"``
 
-.. _runner.assert:
+.. _config_runner_assert:
 
 runner.assert
 ~~~~~~~~~~~~~
 
 Default: ``null``
 
-.. _runner.executor:
+.. _config_runner_executor:
 
 runner.executor
 ~~~~~~~~~~~~~~~
 
 Default: ``null``
 
-.. _runner.format:
+.. _config_runner_format:
 
 runner.format
 ~~~~~~~~~~~~~
 
 Default: ``null``
 
-.. _runner.iterations:
+.. _config_runner_iterations:
 
 runner.iterations
 ~~~~~~~~~~~~~~~~~
 
 Default: ``null``
 
-.. _runner.output_mode:
+.. _config_runner_output_mode:
 
 runner.output_mode
 ~~~~~~~~~~~~~~~~~~
 
 Default: ``null``
 
-.. _runner.time_unit:
+.. _config_runner_time_unit:
 
 runner.time_unit
 ~~~~~~~~~~~~~~~~
 
 Default: ``null``
 
-.. _runner.revs:
+.. _config_runner_revs:
 
 runner.revs
 ~~~~~~~~~~~
 
 Default: ``null``
 
-.. _runner.timeout:
+.. _config_runner_timeout:
 
 runner.timeout
 ~~~~~~~~~~~~~~
 
 Default: ``null``
 
-.. _runner.warmup:
+.. _config_runner_warmup:
 
 runner.warmup
 ~~~~~~~~~~~~~
 
 Default: ``null``
 
-.. _runner.retry_threshold:
+.. _config_runner_retry_threshold:
 
 runner.retry_threshold
 ~~~~~~~~~~~~~~~~~~~~~~
 
 Default: ``null``
 
-.. _extensions:
+.. _config_extensions:
 
 extensions
 ~~~~~~~~~~
 
 Default: ``[]``
 
-PhpBench\Extension\ExpressionExtension
---------------------------------------
+ExpressionExtension
+-------------------
 
-.. _expression.syntax_highlighting:
+.. _config_expression_syntax_highlighting:
 
 expression.syntax_highlighting
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Default: ``true``
 
-.. _expression.theme:
+.. _config_expression_theme:
 
 expression.theme
 ~~~~~~~~~~~~~~~~

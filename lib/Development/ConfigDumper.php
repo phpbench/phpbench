@@ -38,6 +38,9 @@ class ConfigDumper
             $extension = new $extensionClass;
             assert($extension instanceof ExtensionInterface);
             $extension->configure($optionsResolver);
+            if (!$optionsResolver->getDefinedOptions()) {
+                continue;
+            }
             $inspector = new OptionsResolverIntrospector($optionsResolver);
             $sections[] = $this->generateSection($extensionClass, $optionsResolver, $inspector);
         }
@@ -47,6 +50,7 @@ class ConfigDumper
 
     private function generateSection(string $extensionClass, OptionsResolver $optionsResolver, OptionsResolverIntrospector $inspector): string
     {
+        $extensionClass = substr($extensionClass, (int)strrpos($extensionClass, '\\') + 1);
         $section = [
             $extensionClass,
             $this->underline($extensionClass, '-'),
