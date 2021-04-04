@@ -15,9 +15,10 @@ namespace PhpBench\Tests\Unit\Extension;
 use PhpBench\Benchmark\Metadata\Driver\ConfigDriver;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\Extension\CoreExtension;
+use PhpBench\Extension\RunnerExtension;
 use PhpBench\Tests\IntegrationTestCase;
 
-class CoreExtensionTest extends IntegrationTestCase
+class RunnerExtensionTest extends IntegrationTestCase
 {
     protected function tearDown(): void
     {
@@ -29,11 +30,10 @@ class CoreExtensionTest extends IntegrationTestCase
      */
     public function testRelativizePath(): void
     {
-        $container = new Container(['PhpBench\Extension\CoreExtension'], [
+        $container = $this->container([
             'path' => 'hello',
             'config_path' => '/path/to/phpbench.json',
         ]);
-        $container->init();
         $this->assertEquals(['/path/to/hello'], $container->getParameter('path'));
     }
 
@@ -45,26 +45,25 @@ class CoreExtensionTest extends IntegrationTestCase
     {
         putenv('CONTINUOUS_INTEGRATION=1');
 
-        $container = new Container(['PhpBench\Extension\CoreExtension'], [
+        $container = $this->container([
             'path' => 'hello',
             'config_path' => '/path/to/phpbench.json',
         ]);
-        $container->init();
         $this->assertEquals('travis', $container->getParameter('progress'));
     }
 
     public function testConfigDriver(): void
     {
         $container = $this->container([
-            CoreExtension::PARAM_RUNNER_ASSERT => 'foobar',
-            CoreExtension::PARAM_RUNNER_EXECUTOR => 'foobar',
-            CoreExtension::PARAM_RUNNER_FORMAT => 'foobar',
-            CoreExtension::PARAM_RUNNER_ITERATIONS => 12,
-            CoreExtension::PARAM_RUNNER_OUTPUT_MODE => 'mode',
-            CoreExtension::PARAM_RUNNER_OUTPUT_TIME_UNIT => 'foobar',
-            CoreExtension::PARAM_RUNNER_REVS => 32,
-            CoreExtension::PARAM_RUNNER_TIMEOUT => 12,
-            CoreExtension::PARAM_RUNNER_WARMUP => 12,
+            RunnerExtension::PARAM_RUNNER_ASSERT => 'foobar',
+            RunnerExtension::PARAM_RUNNER_EXECUTOR => 'foobar',
+            RunnerExtension::PARAM_RUNNER_FORMAT => 'foobar',
+            RunnerExtension::PARAM_RUNNER_ITERATIONS => 12,
+            RunnerExtension::PARAM_RUNNER_OUTPUT_MODE => 'mode',
+            RunnerExtension::PARAM_RUNNER_OUTPUT_TIME_UNIT => 'foobar',
+            RunnerExtension::PARAM_RUNNER_REVS => 32,
+            RunnerExtension::PARAM_RUNNER_TIMEOUT => 12,
+            RunnerExtension::PARAM_RUNNER_WARMUP => 12,
         ]);
         $container->get(ConfigDriver::class);
         $this->addToAssertionCount(1);
