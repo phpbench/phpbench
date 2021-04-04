@@ -20,7 +20,7 @@
         "ext-tokenizer": "*",
         "beberlei/assert": "^2.4 || ^3.0",
         "doctrine/annotations": "^1.2.7",
-        "phpbench/container": "^2.0",
+        "phpbench/container": "^2.1",
         "phpbench/dom": "~0.3.0",
         "psr/log": "^1.1",
         "seld/jsonlint": "^1.1",
@@ -47,7 +47,8 @@
             "vendor/bin/php-cs-fixer fix",
             "vendor/bin/phpstan analyse -c phpstan.neon.dist",
             "vendor/bin/phpunit",
-            "bin/phpbench run"
+            "bin/phpbench run",
+            "bin/phpbench config:dump-reference"
         ]
     },
     "suggest": {

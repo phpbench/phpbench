@@ -2,11 +2,12 @@
 
 namespace PhpBench\Development;
 
+use function mb_strlen;
+use function method_exists;
 use PhpBench\DependencyInjection\ExtensionInterface;
+use function str_repeat;
 use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use function mb_strlen;
-use function str_repeat;
 
 class ConfigDumper
 {
@@ -33,11 +34,16 @@ class ConfigDumper
             ''
         ];
 
+        if (!method_exists(OptionsResolver::class, 'getInfo')) {
+            return 'Config reference generation requires Symfony Options Resolver ^5.0';
+        }
+
         foreach ($this->extensions as $extensionClass) {
             $optionsResolver = new OptionsResolver();
             $extension = new $extensionClass;
             assert($extension instanceof ExtensionInterface);
             $extension->configure($optionsResolver);
+
             if (!$optionsResolver->getDefinedOptions()) {
                 continue;
             }
@@ -58,7 +64,7 @@ class ConfigDumper
         ];
 
         foreach ($optionsResolver->getDefinedOptions() as $option) {
-            $section[] = sprintf('.. _config_%s:', str_replace('.', '_', $option));
+            $section[] = sprintf('.. _configuration_%s:', str_replace('.', '_', $option));
             $section[] = '';
             $section[] = $option;
             $section[] = $this->underline($option, '~');

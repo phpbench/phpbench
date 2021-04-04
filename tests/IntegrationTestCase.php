@@ -4,7 +4,6 @@ namespace PhpBench\Tests;
 
 use PhpBench\DependencyInjection\Container;
 use PhpBench\Extension\CoreExtension;
-use PhpBench\Extension\DevelopmentExtension;
 use PhpBench\Extension\ExpressionExtension;
 use PhpBench\Tests\Util\Workspace;
 

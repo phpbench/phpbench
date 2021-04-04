@@ -28,7 +28,7 @@ class ConfigReferenceCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln($this->dumper->dump(), OutputInterface::OUTPUT_RAW);
+
         return 0;
     }
-
 }
