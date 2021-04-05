@@ -57,7 +57,7 @@ valid:
 Overriding Iterations and Revolutions
 -------------------------------------
 
-The benchmark runner can override the number of :ref:`revolutions
+The benchmark runner can override the number of :ref:`metadata_revolutions
 <revolutions>` and
 :ref:`iterations <iterations>` which will be executed:
 
