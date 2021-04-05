@@ -7,8 +7,10 @@ Configuration
    :depth: 2
    :local:
 
-CoreExtension
--------------
+Core
+----
+
+``PhpBench\Extension\CoreExtension``
 
 .. _configuration_console_ansi:
 
@@ -109,8 +111,10 @@ Default: ``null``
 
 Types: ``["string","null"]``
 
-RunnerExtension
----------------
+Runner
+------
+
+``PhpBench\Extension\RunnerExtension``
 
 .. _configuration_annotations:
 
@@ -161,7 +165,7 @@ Types: ``["string","null"]``
 env.enabled_providers
 ~~~~~~~~~~~~~~~~~~~~~
 
-Explicitly enable environment samplers, ``null`` enables all
+Select which environment samplers to use
 
 Default: ``["baseline","git","opcache","php","uname","unix_sysload"]``
 
@@ -326,7 +330,7 @@ Types: ``["null","int","float"]``
 runner.assert
 ~~~~~~~~~~~~~
 
-Default assertion
+Default :ref:`metadata_assertions`
 
 Default: ``null``
 
@@ -348,7 +352,7 @@ Types: ``["null","string"]``
 runner.format
 ~~~~~~~~~~~~~
 
-Default format
+Default :ref:`metadata_format`
 
 Default: ``null``
 
@@ -359,7 +363,7 @@ Types: ``["null","string"]``
 runner.iterations
 ~~~~~~~~~~~~~~~~~
 
-Default number of iterations
+Default :ref:`metadata_iterations`
 
 Default: ``null``
 
@@ -370,7 +374,7 @@ Types: ``["null","int","array"]``
 runner.output_mode
 ~~~~~~~~~~~~~~~~~~
 
-Default output mode (e.g. throughput)
+Default :ref:`output mode <metadata_mode>`
 
 Default: ``null``
 
@@ -381,7 +385,7 @@ Types: ``["null","string"]``
 runner.time_unit
 ~~~~~~~~~~~~~~~~
 
-Default time unit
+Default :ref:`time unit <metadata_time_unit>`
 
 Default: ``null``
 
@@ -392,7 +396,7 @@ Types: ``["null","string"]``
 runner.retry_threshold
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Default retry threshold
+Default :ref:`metadata_retry_threshold`
 
 Default: ``null``
 
@@ -403,7 +407,7 @@ Types: ``["null","int","float"]``
 runner.revs
 ~~~~~~~~~~~
 
-Default number of revolutions
+Default number of :ref:`metadata_revolutions`
 
 Default: ``null``
 
@@ -414,7 +418,7 @@ Types: ``["null","int","array"]``
 runner.timeout
 ~~~~~~~~~~~~~~
 
-Default timeout
+Default :ref:`metadata_timeout`
 
 Default: ``null``
 
@@ -425,7 +429,7 @@ Types: ``["null","float","int"]``
 runner.warmup
 ~~~~~~~~~~~~~
 
-Default warmup
+Default :ref:`metadata_warmup`
 
 Default: ``null``
 
@@ -442,8 +446,10 @@ Default: ``"^bench"``
 
 Types: ``["string"]``
 
-ReportExtension
----------------
+Report
+------
+
+``PhpBench\Extension\ReportExtension``
 
 .. _configuration_reports:
 
@@ -467,8 +473,10 @@ Default: ``[]``
 
 Types: ``["array"]``
 
-ExpressionExtension
--------------------
+Expression
+----------
+
+``PhpBench\Extension\ExpressionExtension``
 
 .. _configuration_expression_syntax_highlighting:
 
@@ -492,8 +500,10 @@ Default: ``"solarized"``
 
 Types: ``["string"]``
 
-StorageExtension
-----------------
+Storage
+-------
+
+``PhpBench\Extension\StorageExtension``
 
 .. _configuration_storage:
 

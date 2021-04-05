@@ -62,10 +62,13 @@ class ConfigDumper
 
     private function generateSection(string $extensionClass, OptionsResolver $optionsResolver, OptionsResolverIntrospector $inspector): string
     {
-        $extensionClass = substr($extensionClass, (int)strrpos($extensionClass, '\\') + 1);
+        $shortName = substr($extensionClass, (int)strrpos($extensionClass, '\\') + 1);
+        $shortName = substr($shortName, 0, (int)strrpos($shortName, 'Extension'));
         $section = [
-            $extensionClass,
-            $this->underline($extensionClass, '-'),
+            $shortName,
+            $this->underline($shortName, '-'),
+            '',
+            sprintf('``%s``', $extensionClass),
             ''
         ];
 
