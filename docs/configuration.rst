@@ -127,28 +127,6 @@ Default: ``null``
 
 Types: ``["string","null"]``
 
-.. _configuration_reports:
-
-reports
-~~~~~~~
-
-
-
-Default: ``[]``
-
-Types: ``["array"]``
-
-.. _configuration_outputs:
-
-outputs
-~~~~~~~
-
-
-
-Default: ``[]``
-
-Types: ``["array"]``
-
 RunnerExtension
 ---------------
 
@@ -481,6 +459,31 @@ Subject prefix to use when finding benchmarks
 Default: ``"^bench"``
 
 Types: ``["string"]``
+
+ReportExtension
+---------------
+
+.. _configuration_reports:
+
+reports
+~~~~~~~
+
+
+
+Default: ``[]``
+
+Types: ``["array"]``
+
+.. _configuration_outputs:
+
+outputs
+~~~~~~~
+
+
+
+Default: ``[]``
+
+Types: ``["array"]``
 
 ExpressionExtension
 -------------------

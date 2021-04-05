@@ -19,28 +19,13 @@ use PhpBench\Console\Command\Handler\ReportHandler;
 use PhpBench\Console\Command\Handler\SuiteCollectionHandler;
 use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use PhpBench\Console\Command\LogCommand;
-use PhpBench\Console\Command\ReportCommand;
 use PhpBench\Console\Command\SelfUpdateCommand;
 use PhpBench\Console\Command\ShowCommand;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
-use PhpBench\Expression\Evaluator;
-use PhpBench\Expression\ExpressionLanguage;
-use PhpBench\Expression\Printer;
-use PhpBench\Expression\Printer\EvaluatingPrinter;
 use PhpBench\Json\JsonDecoder;
 use PhpBench\Logger\ConsoleLogger;
 use PhpBench\PhpBench;
-use PhpBench\Registry\ConfigurableRegistry;
-use PhpBench\Report\Generator\BareGenerator;
-use PhpBench\Report\Generator\CompositeGenerator;
-use PhpBench\Report\Generator\EnvGenerator;
-use PhpBench\Report\Generator\ExpressionGenerator;
-use PhpBench\Report\Generator\OutputTestGenerator;
-use PhpBench\Report\Renderer\ConsoleRenderer;
-use PhpBench\Report\Renderer\DelimitedRenderer;
-use PhpBench\Report\ReportManager;
-use PhpBench\Report\Transform\SuiteCollectionTransformer;
 use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Storage\Driver\Xml\XmlDriver;
@@ -69,25 +54,18 @@ class CoreExtension implements ExtensionInterface
     public const PARAM_DEBUG = 'debug';
     public const PARAM_DISABLE_OUTPUT = 'console.disable_output';
     public const PARAM_EXTENSIONS = 'extensions';
-    public const PARAM_OUTPUTS = 'outputs';
     public const PARAM_OUTPUT_MODE = 'output_mode';
     public const PARAM_STORAGE = 'storage';
-
-    public const PARAM_REPORTS = 'reports';
 
     public const PARAM_TIME_UNIT = 'time_unit';
     public const PARAM_XML_STORAGE_PATH = 'xml_storage_path';
 
     public const SERVICE_OUTPUT_ERR = 'console.stream.err';
     public const SERVICE_OUTPUT_STD = 'console.stream.std';
-    public const SERVICE_REGISTRY_GENERATOR = 'report.registry.generator';
     public const SERVICE_REGISTRY_LOGGER = 'progress_logger.registry';
-    public const SERVICE_REGISTRY_RENDERER = 'report.registry.renderer';
     public const SERVICE_REGISTRY_DRIVER = 'storage.driver_registry';
     public const TAG_CONSOLE_COMMAND = 'console.command';
     public const TAG_PROGRESS_LOGGER = 'progress_logger';
-    public const TAG_REPORT_GENERATOR = 'report_generator';
-    public const TAG_REPORT_RENDERER = 'report_renderer';
     public const TAG_STORAGE_DRIVER = 'storage_driver';
     public const TAG_UUID_RESOLVER = 'uuid_resolver';
 
@@ -107,10 +85,6 @@ class CoreExtension implements ExtensionInterface
             self::PARAM_XML_STORAGE_PATH => '.phpbench/storage',
 
             self::PARAM_CONFIG_PATH => null,
-            self::PARAM_REPORTS => [],
-            self::PARAM_OUTPUTS => [],
-
-
         ]);
 
         $resolver->setAllowedTypes(self::PARAM_DEBUG, ['bool']);
@@ -118,8 +92,6 @@ class CoreExtension implements ExtensionInterface
         $resolver->setAllowedTypes(self::PARAM_CONSOLE_ANSI, ['bool']);
         $resolver->setAllowedTypes(self::PARAM_CONSOLE_ERROR_STREAM, ['string']);
         $resolver->setAllowedTypes(self::PARAM_CONSOLE_OUTPUT_STREAM, ['string']);
-        $resolver->setAllowedTypes(self::PARAM_REPORTS, ['array']);
-        $resolver->setAllowedTypes(self::PARAM_OUTPUTS, ['array']);
         $resolver->setAllowedTypes(self::PARAM_TIME_UNIT, ['string']);
         $resolver->setAllowedTypes(self::PARAM_OUTPUT_MODE, ['string']);
         $resolver->setAllowedTypes(self::PARAM_STORAGE, ['string']);
@@ -153,12 +125,6 @@ class CoreExtension implements ExtensionInterface
 
             return $application;
         });
-        $container->register(ReportManager::class, function (Container $container) {
-            return new ReportManager(
-                $container->get(self::SERVICE_REGISTRY_GENERATOR),
-                $container->get(self::SERVICE_REGISTRY_RENDERER)
-            );
-        });
 
         $container->register(LoggerInterface::class, function (Container $container) {
             return new ConsoleLogger(
@@ -172,9 +138,6 @@ class CoreExtension implements ExtensionInterface
 
         $this->registerJson($container);
         $this->registerCommands($container);
-        $this->registerRegistries($container);
-        $this->registerReportGenerators($container);
-        $this->registerReportRenderers($container);
         $this->registerSerializer($container);
         $this->registerStorage($container);
     }
@@ -188,12 +151,6 @@ class CoreExtension implements ExtensionInterface
 
     private function registerCommands(Container $container): void
     {
-        $container->register(ReportHandler::class, function (Container $container) {
-            return new ReportHandler(
-                $container->get(ReportManager::class)
-            );
-        });
-
         $container->register(TimeUnitHandler::class, function (Container $container) {
             return new TimeUnitHandler(
                 $container->get(TimeUnit::class)
@@ -213,17 +170,6 @@ class CoreExtension implements ExtensionInterface
                 $container->get(XmlEncoder::class)
             );
         });
-
-        $container->register(ReportCommand::class, function (Container $container) {
-            return new ReportCommand(
-                $container->get(ReportHandler::class),
-                $container->get(TimeUnitHandler::class),
-                $container->get(SuiteCollectionHandler::class),
-                $container->get(DumpHandler::class)
-            );
-        }, [
-            self::TAG_CONSOLE_COMMAND => []
-        ]);
 
         $container->register(LogCommand::class, function (Container $container) {
             return new LogCommand(
@@ -253,78 +199,6 @@ class CoreExtension implements ExtensionInterface
             }, [
                 self::TAG_CONSOLE_COMMAND => []
             ]);
-        }
-    }
-    private function registerReportGenerators(Container $container): void
-    {
-        $container->register(ExpressionGenerator::class, function (Container $container) {
-            return new ExpressionGenerator(
-                $container->get(ExpressionLanguage::class),
-                $container->get(Evaluator::class),
-                $container->get(EvaluatingPrinter::class),
-                new SuiteCollectionTransformer(),
-                $container->get(LoggerInterface::class)
-            );
-        }, [self::TAG_REPORT_GENERATOR => ['name' => 'expression']]);
-        $container->register(EnvGenerator::class, function (Container $container) {
-            return new EnvGenerator();
-        }, [self::TAG_REPORT_GENERATOR => ['name' => 'env']]);
-        $container->register(BareGenerator::class, function (Container $container) {
-            return new BareGenerator(new SuiteCollectionTransformer());
-        }, [self::TAG_REPORT_GENERATOR => ['name' => 'bare']]);
-        $container->register(OutputTestGenerator::class, function (Container $container) {
-            return new OutputTestGenerator();
-        }, [self::TAG_REPORT_GENERATOR => ['name' => 'output_test']]);
-        $container->register(CompositeGenerator::class, function (Container $container) {
-            return new CompositeGenerator(
-                $container->get(ReportManager::class)
-            );
-        }, [
-            self::TAG_REPORT_GENERATOR => ['name' => 'composite']
-        ]);
-    }
-
-    private function registerReportRenderers(Container $container): void
-    {
-        $container->register(ConsoleRenderer::class, function (Container $container) {
-            return new ConsoleRenderer(
-                $container->get(self::SERVICE_OUTPUT_STD),
-                $container->get(Printer::class)
-            );
-        }, [self::TAG_REPORT_RENDERER => ['name' => 'console']]);
-        $container->register(DelimitedRenderer::class, function (Container $container) {
-            return new DelimitedRenderer(
-                $container->get(self::SERVICE_OUTPUT_STD),
-                $container->get(ExpressionExtension::SERVICE_BARE_PRINTER)
-            );
-        }, [self::TAG_REPORT_RENDERER => ['name' => 'delimited']]);
-    }
-
-    private function registerRegistries(Container $container): void
-    {
-        foreach (['generator' => self::PARAM_REPORTS, 'renderer' => self::PARAM_OUTPUTS] as $registryType => $optionName) {
-            $container->register('report.registry.' . $registryType, function (Container $container) use ($registryType, $optionName) {
-                $registry = new ConfigurableRegistry(
-                    $registryType,
-                    $container,
-                    $container->get(JsonDecoder::class)
-                );
-
-                foreach ($container->getServiceIdsForTag('report_' . $registryType) as $serviceId => $attributes) {
-                    $registry->registerService($attributes['name'], $serviceId);
-                }
-
-                $configs = array_merge(
-                    require(__DIR__ . '/config/report/' . $registryType . 's.php'),
-                    $container->getParameter($optionName)
-                );
-
-                foreach ($configs as $name => $config) {
-                    $registry->setConfig($name, $config);
-                }
-
-                return $registry;
-            });
         }
     }
 
