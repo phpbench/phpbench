@@ -28,17 +28,21 @@ class ConfigDumper
 
     public function dump(): string
     {
+        if (!method_exists(OptionsResolver::class, 'getInfo')) {
+            return 'Config reference generation requires Symfony Options Resolver ^5.0';
+        }
+
         $sections = [
             self::TITLE,
             $this->underline(self::TITLE, '='),
             '',
             '.. include:: configuration-prelude.rst',
             '',
+            '.. contents::',
+            '   :depth: 2',
+            '   :local:',
+            '',
         ];
-
-        if (!method_exists(OptionsResolver::class, 'getInfo')) {
-            return 'Config reference generation requires Symfony Options Resolver ^5.0';
-        }
 
         foreach ($this->extensions as $extensionClass) {
             $optionsResolver = new OptionsResolver();
@@ -58,10 +62,13 @@ class ConfigDumper
 
     private function generateSection(string $extensionClass, OptionsResolver $optionsResolver, OptionsResolverIntrospector $inspector): string
     {
-        $extensionClass = substr($extensionClass, (int)strrpos($extensionClass, '\\') + 1);
+        $shortName = substr($extensionClass, (int)strrpos($extensionClass, '\\') + 1);
+        $shortName = substr($shortName, 0, (int)strrpos($shortName, 'Extension'));
         $section = [
-            $extensionClass,
-            $this->underline($extensionClass, '-'),
+            $shortName,
+            $this->underline($shortName, '-'),
+            '',
+            sprintf('Extension class: ``%s``', $extensionClass),
             ''
         ];
 
@@ -71,10 +78,12 @@ class ConfigDumper
             $section[] = $option;
             $section[] = $this->underline($option, '~');
             $section[] = '';
+            $section[] = $optionsResolver->getInfo($option);
+            $section[] = '';
             $section[] = sprintf('Default: ``%s``', json_encode($inspector->getDefault($option)));
             $section[] = '';
             $section[] = sprintf('Types: ``%s``', json_encode($inspector->getAllowedTypes($option)));
-            $section[] = $optionsResolver->getInfo($option);
+            $section[] = '';
         }
 
         return implode("\n", $section);

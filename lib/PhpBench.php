@@ -18,6 +18,9 @@ use PhpBench\DependencyInjection\Container;
 use PhpBench\Exception\ConfigurationPreProcessingError;
 use PhpBench\Extension\CoreExtension;
 use PhpBench\Extension\ExpressionExtension;
+use PhpBench\Extension\ReportExtension;
+use PhpBench\Extension\RunnerExtension;
+use PhpBench\Extension\StorageExtension;
 use PhpBench\Extensions\XDebug\XDebugExtension;
 use PhpBench\Json\JsonDecoder;
 use Seld\JsonLint\JsonParser;
@@ -59,9 +62,13 @@ class PhpBench
             $autoloader->register(true);
         }
 
-        $extensions = $config['extensions'];
-        $extensions[] = CoreExtension::class;
-        $extensions[] = ExpressionExtension::class;
+        $extensions = array_merge([
+            CoreExtension::class,
+            RunnerExtension::class,
+            ReportExtension::class,
+            ExpressionExtension::class,
+            StorageExtension::class,
+        ], $config['extensions']);
 
         if (extension_loaded('xdebug')) {
             $extensions[] = XDebugExtension::class;
@@ -162,7 +169,7 @@ class PhpBench
             }
 
             if ($arg == '-vvv') {
-                $configOverride['debug'] = true;
+                $configOverride[CoreExtension::PARAM_DEBUG] = true;
 
                 continue;
             }

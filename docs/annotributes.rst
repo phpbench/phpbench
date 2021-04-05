@@ -7,7 +7,7 @@ Configure your benchmarks with **Annotations** or, if you have PHP 8, **Attribut
     :depth: 1
     :local:
 
-.. _revolutions:
+.. _metadata_revolutions:
 
 Revolutions
 -----------
@@ -53,13 +53,13 @@ You may also specify an array:
 Revolutions can also be overridden from the :ref:`command line
 <overriding_iterations_and_revolutions>`.
 
-.. _iterations:
+.. _metadata_iterations:
 
 Iterations
 ----------
 
 Iterations specify how many samples should be taken - i.e. how many times we
-run the :ref:`revolutions <revolutions>` and capture time and memory information (for example). 
+run the :ref:`revolutions <metadata_revolutions>` and capture time and memory information (for example). 
 
 By looking at the separate time measurement of each iteration we can determine
 how *stable* the readings are. The less the measurements differ from each
@@ -86,14 +86,14 @@ Iterations can be specified using the ``@Iterations`` annotation:
           :language: php
           :sections: all,iterations,benchTime
 
-As with :ref:`revolutions <revolutions>`, you may also specify an array.
+As with :ref:`revolutions <metadata_revolutions>`, you may also specify an array.
 
 Iterations can also be overridden from the :ref:`command line
 <overriding_iterations_and_revolutions>`.
 
 You can instruct PHPBench to continuously run the iterations until the
 deviation of each iteration fits within a given margin of error by using the
-``--retry-threshold``. See :ref:`retry_threshold` for more information.
+``--retry-threshold``. See :ref:`metadata_retry_threshold` for more information.
 
 Benchmark Hooks
 ---------------
@@ -158,7 +158,7 @@ These methods will be executed by the runner once per benchmark class.
     from that from which your iterations will be executed. Therefore **state
     will not be carried over to your iterations!**.
 
-.. _parameters:
+.. _metadata_parameters:
 
 Parameterized Benchmarks
 ------------------------
@@ -238,7 +238,7 @@ Will result in the following parameter benchmark scenarios:
     // #3
     ['string' => 'Goodbye Cruel World!', 'algorithm' => 'sha1'];
 
-.. _groups:
+.. _metadata_groups:
 
 Groups
 ------
@@ -307,7 +307,7 @@ The above example will pause (sleep) for 1 millisecond *after* each iteration.
 
     This can be overridden using the ``--sleep`` option from the CLI.
 
-.. _time_unit:
+.. _metadata_time_unit:
 
 Time Units
 ----------
@@ -338,15 +338,15 @@ The following time units are available:
 - ``hours``
 - ``days``
 
-.. _throughput:
-.. _mode:
+.. _metadata_throughput:
+.. _metadata_mode:
 
 Throughput Representation
 -------------------------
 
 The output mode determines how the measurements are presented, either `time`
 or `throughput`. `time` mode is the default and shows the average execution
-time of a single :ref:`revolution <revolutions>`. `throughput` shows how many *operations*
+time of a single :ref:`revolution <metadata_revolutions>`. `throughput` shows how many *operations*
 are executed within a single time unit:
 
 .. tabs::
@@ -365,6 +365,8 @@ are executed within a single time unit:
 
 PHPBench will then render all measurements for `benchTimeItself` similar to
 `363,874.536ops/s`.
+
+.. _metadata_warmup:
 
 Warm Up
 -------
@@ -386,9 +388,9 @@ actually measuring the revolutions time.
           :language: php
           :sections: all,benchTime,warmup
 
-As with :ref:`revolutions <revolutions>`, you may also specify an array.
+As with :ref:`revolutions <metadata_revolutions>`, you may also specify an array.
 
-.. _timeouts:
+.. _metadata_timeout:
 
 Timeout
 -------
@@ -411,7 +413,7 @@ before an iteration timesout and fails. The following example will fail after
           :language: php
           :sections: all,benchTime,timeout
 
-.. _assertions:
+.. _metadata_assertions:
 
 Assertions
 ----------
@@ -445,7 +447,7 @@ See :doc:`assertions` for more information.
 
 .. _cartesian product: https://en.wikipedia.org/wiki/Cartesian_product
 
-.. _format:
+.. _metadata_format:
 
 Format
 ------
@@ -474,7 +476,7 @@ You can also specify assertions from the command line:
 
 See :doc:`expression` for details on using the expressio language.
 
-.. _annotribute_retry_threshold:
+.. _metadata_retry_threshold:
 
 RetryThreshold
 --------------

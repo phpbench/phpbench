@@ -4,6 +4,7 @@ namespace PhpBench\Tests\Integration;
 
 use Generator;
 use PhpBench\Extension\CoreExtension;
+use PhpBench\Extension\ReportExtension;
 use PhpBench\Report\ReportManager;
 use PhpBench\Tests\IntegrationTestCase;
 use PhpBench\Tests\Util\Approval;
@@ -44,8 +45,8 @@ class ConfiguredReportsTest extends IntegrationTestCase
      */
     public function provideReport(): Generator
     {
-        $generators = $this->container()->get(CoreExtension::SERVICE_REGISTRY_GENERATOR);
-        $renderers = $this->container()->get(CoreExtension::SERVICE_REGISTRY_RENDERER);
+        $generators = $this->container()->get(ReportExtension::SERVICE_REGISTRY_GENERATOR);
+        $renderers = $this->container()->get(ReportExtension::SERVICE_REGISTRY_RENDERER);
 
         foreach ($generators->getConfigNames() as $generator) {
             foreach ($renderers->getConfigNames() as $renderer) {

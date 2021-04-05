@@ -9,6 +9,8 @@ use PhpBench\Examples\Extension\Executor\AcmeExecutor;
 use PhpBench\Examples\Extension\ProgressLogger\CatLogger;
 use PhpBench\Examples\Extension\Report\AcmeGenerator;
 use PhpBench\Extension\CoreExtension;
+use PhpBench\Extension\ReportExtension;
+use PhpBench\Extension\RunnerExtension;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 // section: all
@@ -60,7 +62,7 @@ class AcmeExtension implements ExtensionInterface
         $container->register(AcmeGenerator::class, function (Container $container) {
             return new AcmeGenerator();
         }, [
-            CoreExtension::TAG_REPORT_GENERATOR => [
+            ReportExtension::TAG_REPORT_GENERATOR => [
                 'name' => 'catordog',
             ]
         ]);
@@ -70,7 +72,7 @@ class AcmeExtension implements ExtensionInterface
         $container->register(AcmeExecutor::class, function (Container $container) {
             return new AcmeExecutor();
         }, [
-            CoreExtension::TAG_EXECUTOR => [
+            RunnerExtension::TAG_EXECUTOR => [
                 'name' => 'acme',
             ]
         ]);

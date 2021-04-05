@@ -159,11 +159,11 @@ achieve a better measurement increase the revolutions:
         }
     }
 
-:ref:`Revolutions <revolutions>` in PHPBench represent the number of times
+:ref:`Revolutions <metadata_revolutions>` in PHPBench represent the number of times
 that the code is executed consecutively within a single measurement.
 
 Currently we only execute the benchmark subject a single time, to build
-confidence in the result increase the number of :ref:`iterations <iterations>`
+confidence in the result increase the number of :ref:`iterations <metadata_iterations>`
 using the ``@Iterations`` annotation:
 
 .. code-block:: php
@@ -208,7 +208,7 @@ Stability can be inferred from `rstdev`, with 0% being the best and anything
 about 2% should be treated as suspicious.
 
 To increase stability you can use the ``--retry-threshold`` to automatically
-:ref:`repeat the iterations <retry_threshold>` until the `diff` (the
+:ref:`repeat the iterations <configuration_runner_retry_threshold>` until the `diff` (the
 percentage difference from the lowest measurement) fits within a given
 threshold:
 
@@ -279,8 +279,8 @@ In this tutorial you learnt to
 
 - :doc:`Configure <configuration>` PHPBench for a project
 - Create a benchmarking class
-- Use :ref:`revolutions <revolutions>` and :ref:`iterations <iterations>` to more accurately profile your code
-- Increase stability with the :ref:`retry threshold <retry_threshold>`
+- Use :ref:`revolutions <metadata_revolutions>` and :ref:`iterations <metadata_iterations>` to more accurately profile your code
+- Increase stability with the :ref:`retry threshold <configuration_retry_threshold>`
 - Use :doc:`reports <reports>`
 
 .. _Composer: http://getcomposer.org

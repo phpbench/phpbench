@@ -4,6 +4,13 @@ CHANGELOG
 master
 ------
 
+B/C Breaks:
+
+- Extensions grouping related functionalities have been extracted from the
+  ``CoreExtension``, this will change the location of some constants used
+  (e.g. ``CoreExtension::TAG_PROGRESS_LOGGER`` is now
+  ``RunnerExtension::PROGRESS_LOGGER``.
+
 Features:
 
 - Option to include the baseline rows in the `expression` report.
@@ -18,6 +25,7 @@ Features:
 
 Improvements:
 
+- Configuation options have generated documentation
 - Preserve types in env information
 - Make default true color theme compatible with light backgrounds.
 - Added `vertical` layout to `bare` report (`vertical: true`).
