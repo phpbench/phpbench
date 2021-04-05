@@ -15,6 +15,9 @@ namespace PhpBench\Examples\Benchmark\Macro;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\Extension\CoreExtension;
 use PhpBench\Extension\ExpressionExtension;
+use PhpBench\Extension\ReportExtension;
+use PhpBench\Extension\RunnerExtension;
+use PhpBench\Extension\StorageExtension;
 use PhpBench\Tests\Util\Workspace;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -36,6 +39,9 @@ class BaseBenchCase
 
     private $extensions = [
         CoreExtension::class,
+        RunnerExtension::class,
+        ReportExtension::class,
+        StorageExtension::class,
         ExpressionExtension::class,
     ];
 

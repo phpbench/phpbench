@@ -47,7 +47,8 @@
             "vendor/bin/php-cs-fixer fix",
             "vendor/bin/phpstan analyse -c phpstan.neon.dist",
             "vendor/bin/phpunit",
-            "bin/phpbench run",
+            "bin/phpbench run --revs=1 --iterations=1",
+            "bin/phpbench run --profile=examples --revs=1 --iterations=1",
             "@docs"
         ],
         "docs": [
