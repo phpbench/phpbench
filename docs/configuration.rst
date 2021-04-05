@@ -3,6 +3,10 @@ Configuration
 
 .. include:: configuration-prelude.rst
 
+.. contents::
+   :depth: 2
+   :local:
+
 CoreExtension
 -------------
 

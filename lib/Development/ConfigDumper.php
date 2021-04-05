@@ -38,6 +38,10 @@ class ConfigDumper
             '',
             '.. include:: configuration-prelude.rst',
             '',
+            '.. contents::',
+            '   :depth: 2',
+            '   :local:',
+            '',
         ];
 
         foreach ($this->extensions as $extensionClass) {
