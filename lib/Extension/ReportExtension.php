@@ -7,6 +7,7 @@ use PhpBench\Console\Command\Handler\ReportHandler;
 use PhpBench\Console\Command\Handler\SuiteCollectionHandler;
 use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use PhpBench\Console\Command\ReportCommand;
+use PhpBench\Console\Command\ShowCommand;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Expression\Evaluator;
@@ -24,6 +25,7 @@ use PhpBench\Report\Renderer\ConsoleRenderer;
 use PhpBench\Report\Renderer\DelimitedRenderer;
 use PhpBench\Report\ReportManager;
 use PhpBench\Report\Transform\SuiteCollectionTransformer;
+use PhpBench\Storage\UuidResolver;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -83,6 +85,18 @@ class ReportExtension implements ExtensionInterface
                 $container->get(TimeUnitHandler::class),
                 $container->get(SuiteCollectionHandler::class),
                 $container->get(DumpHandler::class)
+            );
+        }, [
+            CoreExtension::TAG_CONSOLE_COMMAND => []
+        ]);
+
+        $container->register(ShowCommand::class, function (Container $container) {
+            return new ShowCommand(
+                $container->get(StorageExtension::SERVICE_REGISTRY_DRIVER),
+                $container->get(ReportHandler::class),
+                $container->get(TimeUnitHandler::class),
+                $container->get(DumpHandler::class),
+                $container->get(UuidResolver::class)
             );
         }, [
             CoreExtension::TAG_CONSOLE_COMMAND => []

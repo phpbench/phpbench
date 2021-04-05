@@ -410,7 +410,7 @@ class RunnerExtension implements ExtensionInterface
                 $container->get(SuiteCollectionHandler::class),
                 $container->get(TimeUnitHandler::class),
                 $container->get(DumpHandler::class),
-                $container->get(CoreExtension::SERVICE_REGISTRY_DRIVER)
+                $container->get(StorageExtension::SERVICE_REGISTRY_DRIVER)
             );
         }, [
             CoreExtension::TAG_CONSOLE_COMMAND => []

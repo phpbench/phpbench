@@ -20,6 +20,7 @@ use PhpBench\Extension\CoreExtension;
 use PhpBench\Extension\ExpressionExtension;
 use PhpBench\Extension\ReportExtension;
 use PhpBench\Extension\RunnerExtension;
+use PhpBench\Extension\StorageExtension;
 use PhpBench\Extensions\XDebug\XDebugExtension;
 use PhpBench\Json\JsonDecoder;
 use Seld\JsonLint\JsonParser;
@@ -66,6 +67,7 @@ class PhpBench
             RunnerExtension::class,
             ReportExtension::class,
             ExpressionExtension::class,
+            StorageExtension::class,
         ], $config['extensions']);
 
         if (extension_loaded('xdebug')) {

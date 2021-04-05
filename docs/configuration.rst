@@ -94,28 +94,6 @@ Default: ``"microseconds"``
 
 Types: ``["string"]``
 
-.. _configuration_storage:
-
-storage
-~~~~~~~
-
-
-
-Default: ``"xml"``
-
-Types: ``["string"]``
-
-.. _configuration_xml_storage_path:
-
-xml_storage_path
-~~~~~~~~~~~~~~~~
-
-
-
-Default: ``".phpbench\/storage"``
-
-Types: ``["string"]``
-
 .. _configuration_config_path:
 
 config_path
@@ -507,6 +485,31 @@ expression.theme
 
 
 Default: ``"solarized"``
+
+Types: ``["string"]``
+
+StorageExtension
+----------------
+
+.. _configuration_storage:
+
+storage
+~~~~~~~
+
+
+
+Default: ``"xml"``
+
+Types: ``["string"]``
+
+.. _configuration_xml_storage_path:
+
+xml_storage_path
+~~~~~~~~~~~~~~~~
+
+
+
+Default: ``".phpbench\/storage"``
 
 Types: ``["string"]``
 

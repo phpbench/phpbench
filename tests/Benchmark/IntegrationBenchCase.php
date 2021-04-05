@@ -7,6 +7,7 @@ use PhpBench\Extension\CoreExtension;
 use PhpBench\Extension\ExpressionExtension;
 use PhpBench\Extension\ReportExtension;
 use PhpBench\Extension\RunnerExtension;
+use PhpBench\Extension\StorageExtension;
 use PhpBench\Tests\Util\Workspace;
 use Psr\Container\ContainerInterface;
 
@@ -23,6 +24,7 @@ abstract class IntegrationBenchCase
             CoreExtension::class,
             RunnerExtension::class,
             ReportExtension::class,
+            StorageExtension::class,
             ExpressionExtension::class
         ], $config);
         $container->init();
