@@ -68,7 +68,7 @@ class ConfigDumper
             $shortName,
             $this->underline($shortName, '-'),
             '',
-            sprintf('``%s``', $extensionClass),
+            sprintf('Extension class: ``%s``', $extensionClass),
             ''
         ];
 

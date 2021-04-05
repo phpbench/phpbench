@@ -10,7 +10,7 @@ Configuration
 Core
 ----
 
-``PhpBench\Extension\CoreExtension``
+Extension class: ``PhpBench\Extension\CoreExtension``
 
 .. _configuration_console_ansi:
 
@@ -114,7 +114,7 @@ Types: ``["string","null"]``
 Runner
 ------
 
-``PhpBench\Extension\RunnerExtension``
+Extension class: ``PhpBench\Extension\RunnerExtension``
 
 .. _configuration_annotations:
 
@@ -449,7 +449,7 @@ Types: ``["string"]``
 Report
 ------
 
-``PhpBench\Extension\ReportExtension``
+Extension class: ``PhpBench\Extension\ReportExtension``
 
 .. _configuration_reports:
 
@@ -476,7 +476,7 @@ Types: ``["array"]``
 Expression
 ----------
 
-``PhpBench\Extension\ExpressionExtension``
+Extension class: ``PhpBench\Extension\ExpressionExtension``
 
 .. _configuration_expression_syntax_highlighting:
 
@@ -503,7 +503,7 @@ Types: ``["string"]``
 Storage
 -------
 
-``PhpBench\Extension\StorageExtension``
+Extension class: ``PhpBench\Extension\StorageExtension``
 
 .. _configuration_storage:
 
