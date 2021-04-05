@@ -51,6 +51,7 @@
             "@docs"
         ],
         "docs": [
+            "rm -Rf docs/build",
             "bin/phpbench config:dump-reference > docs/configuration.rst",
             "make -C docs html"
         ]

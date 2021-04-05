@@ -14,9 +14,9 @@ scenarios and code units independently of the application context.
 
 Features include but are not limited to:
 
-- :ref:`Revolutions <revolutions>`: Repeat your code many times to determine average execution
+- :ref:`Revolutions <metadata_revolutions>`: Repeat your code many times to determine average execution
   *time*.
-- :ref:`Iterations <iterations>`: Sample your revolutions many times and review aggregated
+- :ref:`Iterations <metadata_iterations>`: Sample your revolutions many times and review aggregated
   statistical data.
 - **Process Isolation**: Each iteration is executed in a separate process.
 - :doc:`Reporting <reports>`: Customizable reports and various output formats (e.g.
