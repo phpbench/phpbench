@@ -48,7 +48,11 @@
             "vendor/bin/phpstan analyse -c phpstan.neon.dist",
             "vendor/bin/phpunit",
             "bin/phpbench run",
-            "bin/phpbench config:dump-reference"
+            "@docs"
+        ],
+        "docs": [
+            "bin/phpbench config:dump-reference > docs/configuration.rst",
+            "make -C docs html"
         ]
     },
     "suggest": {

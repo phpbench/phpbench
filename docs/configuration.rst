@@ -15,7 +15,7 @@ CoreExtension
 console.ansi
 ~~~~~~~~~~~~
 
-
+Enable or disable ANSI control characters (e.g. console colors)
 
 Default: ``true``
 
@@ -26,7 +26,7 @@ Types: ``["bool"]``
 console.disable_output
 ~~~~~~~~~~~~~~~~~~~~~~
 
-
+Do not output anything
 
 Default: ``false``
 
@@ -37,7 +37,7 @@ Types: ``["bool"]``
 console.output_stream
 ~~~~~~~~~~~~~~~~~~~~~
 
-
+Change the normal output stream - the output stream used for reports
 
 Default: ``"php:\/\/stdout"``
 
@@ -48,7 +48,7 @@ Types: ``["string"]``
 console.error_stream
 ~~~~~~~~~~~~~~~~~~~~
 
-
+Change the error output stream - the output stream used for diagnostics (e.g. progress loggers use this stream)
 
 Default: ``"php:\/\/stderr"``
 
@@ -59,7 +59,7 @@ Types: ``["string"]``
 debug
 ~~~~~
 
-
+If enabled output debug messages (e.g. the commands being executed when running benchamrks). Same as ``-vvv``
 
 Default: ``false``
 
@@ -70,7 +70,7 @@ Types: ``["bool"]``
 extensions
 ~~~~~~~~~~
 
-
+List of additional extensions to enable
 
 Default: ``[]``
 
@@ -81,7 +81,7 @@ Types: ``["array"]``
 output_mode
 ~~~~~~~~~~~
 
-
+Default output mode (e.g. throughput or net time)
 
 Default: ``"time"``
 
@@ -92,7 +92,7 @@ Types: ``["string"]``
 time_unit
 ~~~~~~~~~
 
-
+Default time unit
 
 Default: ``"microseconds"``
 
@@ -103,7 +103,7 @@ Types: ``["string"]``
 config_path
 ~~~~~~~~~~~
 
-
+Alternative path to a PHPBench configuration file (default is ``phpbench.json``
 
 Default: ``null``
 

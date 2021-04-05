@@ -13,6 +13,7 @@
 namespace PhpBench\Extension;
 
 use Humbug\SelfUpdate\Updater;
+use PhpBench\Compat\SymfonyOptionsResolverCompat;
 use PhpBench\Console\Application;
 use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use PhpBench\Console\Command\SelfUpdateCommand;
@@ -76,6 +77,17 @@ class CoreExtension implements ExtensionInterface
         $resolver->setAllowedTypes(self::PARAM_DISABLE_OUTPUT, ['bool']);
         $resolver->setAllowedTypes(self::PARAM_CONSOLE_OUTPUT_STREAM, ['string']);
         $resolver->setAllowedTypes(self::PARAM_EXTENSIONS, ['array']);
+        SymfonyOptionsResolverCompat::setInfos($resolver, [
+            self::PARAM_CONSOLE_ANSI => 'Enable or disable ANSI control characters (e.g. console colors)',
+            self::PARAM_DISABLE_OUTPUT => 'Do not output anything',
+            self::PARAM_CONSOLE_OUTPUT_STREAM => 'Change the normal output stream - the output stream used for reports',
+            self::PARAM_CONSOLE_ERROR_STREAM => 'Change the error output stream - the output stream used for diagnostics (e.g. progress loggers use this stream)',
+            self::PARAM_DEBUG => 'If enabled output debug messages (e.g. the commands being executed when running benchamrks). Same as ``-vvv``',
+            self::PARAM_EXTENSIONS => 'List of additional extensions to enable',
+            self::PARAM_OUTPUT_MODE => 'Default output mode (e.g. throughput or net time)',
+            self::PARAM_TIME_UNIT => 'Default time unit',
+            self::PARAM_CONFIG_PATH => 'Alternative path to a PHPBench configuration file (default is ``phpbench.json``',
+        ]);
     }
 
     public function load(Container $container): void

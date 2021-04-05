@@ -169,7 +169,7 @@ class PhpBench
             }
 
             if ($arg == '-vvv') {
-                $configOverride['debug'] = true;
+                $configOverride[CoreExtension::PARAM_DEBUG] = true;
 
                 continue;
             }
