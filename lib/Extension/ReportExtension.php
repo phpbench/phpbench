@@ -2,6 +2,7 @@
 
 namespace PhpBench\Extension;
 
+use PhpBench\Compat\SymfonyOptionsResolverCompat;
 use PhpBench\Console\Command\Handler\DumpHandler;
 use PhpBench\Console\Command\Handler\ReportHandler;
 use PhpBench\Console\Command\Handler\SuiteCollectionHandler;
@@ -47,6 +48,10 @@ class ReportExtension implements ExtensionInterface
 
         $resolver->setAllowedTypes(self::PARAM_REPORTS, ['array']);
         $resolver->setAllowedTypes(self::PARAM_OUTPUTS, ['array']);
+        SymfonyOptionsResolverCompat::setInfos($resolver, [
+            self::PARAM_REPORTS => 'Report generator configurations, see :doc:`report-generators`',
+            self::PARAM_OUTPUTS => 'Report renderer configurations, see :doc:`report-renderers`',
+        ]);
     }
 
     public function load(Container $container): void

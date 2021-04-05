@@ -450,7 +450,7 @@ ReportExtension
 reports
 ~~~~~~~
 
-
+Report generator configurations, see :doc:`report-generators`
 
 Default: ``[]``
 
@@ -461,7 +461,7 @@ Types: ``["array"]``
 outputs
 ~~~~~~~
 
-
+Report renderer configurations, see :doc:`report-renderers`
 
 Default: ``[]``
 
