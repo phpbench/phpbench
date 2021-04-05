@@ -12,6 +12,7 @@
 
 namespace PhpBench\Extension;
 
+use PhpBench\Compat\SymfonyOptionsResolverCompat;
 use PhpBench\Console\Command\Handler\DumpHandler;
 use PhpBench\Console\Command\Handler\SuiteCollectionHandler;
 use PhpBench\Console\Command\Handler\TimeUnitHandler;
@@ -50,6 +51,10 @@ class StorageExtension implements ExtensionInterface
 
         $resolver->setAllowedTypes(self::PARAM_STORAGE, ['string']);
         $resolver->setAllowedTypes(self::PARAM_XML_STORAGE_PATH, ['string']);
+        SymfonyOptionsResolverCompat::setInfos($resolver, [
+            self::PARAM_STORAGE => 'Storage driver to use',
+            self::PARAM_XML_STORAGE_PATH => 'Path to store benchmark runs when they are stored with ``--store`` or ``--tag=foo``'
+        ]);
     }
 
     public function load(Container $container): void

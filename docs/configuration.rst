@@ -475,7 +475,7 @@ ExpressionExtension
 expression.syntax_highlighting
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
+Enable syntax highlighting
 
 Default: ``true``
 
@@ -486,7 +486,7 @@ Types: ``["bool"]``
 expression.theme
 ~~~~~~~~~~~~~~~~
 
-
+Select a theme to use
 
 Default: ``"solarized"``
 
@@ -500,7 +500,7 @@ StorageExtension
 storage
 ~~~~~~~
 
-
+Storage driver to use
 
 Default: ``"xml"``
 
@@ -511,7 +511,7 @@ Types: ``["string"]``
 xml_storage_path
 ~~~~~~~~~~~~~~~~
 
-
+Path to store benchmark runs when they are stored with ``--store`` or ``--tag=foo``
 
 Default: ``".phpbench\/storage"``
 

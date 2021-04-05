@@ -2,6 +2,7 @@
 
 namespace PhpBench\Extension;
 
+use PhpBench\Compat\SymfonyOptionsResolverCompat;
 use PhpBench\Console\Command\EvaluateCommand;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
@@ -339,5 +340,9 @@ class ExpressionExtension implements ExtensionInterface
         ]);
         $resolver->setAllowedTypes(self::PARAM_SYNTAX_HIGHLIGHTING, 'bool');
         $resolver->setAllowedTypes(self::PARAM_THEME, 'string');
+        SymfonyOptionsResolverCompat::setInfos($resolver, [
+            self::PARAM_SYNTAX_HIGHLIGHTING => 'Enable syntax highlighting',
+            self::PARAM_THEME => 'Select a theme to use',
+        ]);
     }
 }
