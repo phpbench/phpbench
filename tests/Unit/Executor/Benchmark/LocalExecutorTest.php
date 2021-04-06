@@ -41,18 +41,17 @@ class LocalExecutorTest extends AbstractExecutorTestCase
         $this->workspace()->put('bootstrap.php', '<?php class Foobar {}');
 
         $executor = new LocalExecutor($this->workspace()->path('bootstrap.php'));
-        $result = $executor->execute(
-            $this->buildContext([
-                'className' => 'NewFoobarBench',
-                'classPath' => $this->workspace()->path('NewFooBench.php'),
-                'methodName' => 'benchFoo',
-                'timeOut' => 0.0,
-                'parameterSetName' => 'one',
-                'revolutions' => 10,
-                'warmup' => 1,
-            ]),
-            new Config('test', [])
-        );
+        $context = $this->buildContext([
+            'className' => 'NewFoobarBench',
+            'classPath' => $this->workspace()->path('NewFooBench.php'),
+            'methodName' => 'benchFoo',
+            'timeOut' => 0.0,
+            'parameterSetName' => 'one',
+            'revolutions' => 10,
+            'warmup' => 1,
+        ]);
+        $executor->execute($context, new Config('test', []));
+        $executor->execute($context, new Config('test', []));
         $this->addToAssertionCount(1);
     }
 }

@@ -13,6 +13,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class LocalExecutor implements BenchmarkExecutorInterface
 {
     /**
+     * @var ?string
+     */
+    private $bootstrap;
+
+    public function __construct(?string $bootstrap = null)
+    {
+        $this->bootstrap = $bootstrap;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function configure(OptionsResolver $options): void
@@ -21,6 +31,10 @@ class LocalExecutor implements BenchmarkExecutorInterface
 
     public function execute(ExecutionContext $context, Config $config): ExecutionResults
     {
+        if ($this->bootstrap) {
+            require_once($this->bootstrap);
+        }
+
         $benchmark = $this->createBenchmark($context);
 
         $methodName = $context->getMethodName();
