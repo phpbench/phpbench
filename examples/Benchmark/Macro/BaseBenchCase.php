@@ -92,13 +92,12 @@ class BaseBenchCase
 
     public function runCommand($serviceId, $args)
     {
-        $cwd = getcwd();
-        chdir($this->workspace()->path());
         $input = new ArrayInput($args);
         $output = new BufferedOutput();
-        $command = $this->getContainer()->get($serviceId);
+        $command = $this->getContainer([
+            CoreExtension::PARAM_WORKING_DIR => $this->workspace()->path()
+        ])->get($serviceId);
         $exitCode = $command->run($input, $output);
-        chdir($cwd);
 
         if ($exitCode !== 0) {
             throw new \RuntimeException(sprintf(
