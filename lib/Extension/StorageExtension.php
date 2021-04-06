@@ -20,7 +20,6 @@ use PhpBench\Console\Command\LogCommand;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Json\JsonDecoder;
-use PhpBench\PhpBench;
 use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Storage\Driver\Xml\XmlDriver;
@@ -31,6 +30,7 @@ use PhpBench\Storage\UuidResolver\LatestResolver;
 use PhpBench\Storage\UuidResolver\TagResolver;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Webmozart\PathUtil\Path;
 
 class StorageExtension implements ExtensionInterface
 {
@@ -124,7 +124,10 @@ class StorageExtension implements ExtensionInterface
         });
         $container->register(XmlDriver::class, function (Container $container) {
             return new XmlDriver(
-                PhpBench::normalizePath($container->getParameter(self::PARAM_XML_STORAGE_PATH)),
+                Path::makeAbsolute(
+                    $container->getParameter(self::PARAM_XML_STORAGE_PATH),
+                    $container->getParameter(CoreExtension::PARAM_WORKING_DIR)
+                ),
                 $container->get(XmlEncoder::class),
                 $container->get(XmlDecoder::class)
             );

@@ -15,9 +15,9 @@ namespace PhpBench\Benchmark;
 use Generator;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\MetadataFactory;
-use PhpBench\PhpBench;
 use SplFileInfo;
 use Symfony\Component\Finder\Finder;
+use Webmozart\PathUtil\Path;
 
 /**
  * This class finds a benchmark (or benchmarks depending on the path), loads
@@ -30,12 +30,19 @@ class BenchmarkFinder
      */
     private $factory;
 
-    public function __construct(MetadataFactory $factory)
+    /**
+     * @var string
+     */
+    private $cwd;
+
+    public function __construct(MetadataFactory $factory, string $cwd)
     {
         $this->factory = $factory;
+        $this->cwd = $cwd;
     }
 
     /**
+     * @param array<string> $paths
      * @param array<string> $subjectFilter
      * @param array<string> $groupFilter
      *
@@ -79,13 +86,13 @@ class BenchmarkFinder
         $search = false;
 
         foreach ($paths as $path) {
-            $path = PhpBench::normalizePath($path);
+            $path = Path::makeAbsolute($path, $this->cwd);
 
             if (!file_exists($path)) {
                 throw new \InvalidArgumentException(sprintf(
                     'File or directory "%s" does not exist (cwd: %s)',
                     $path,
-                    getcwd()
+                    $this->cwd
                 ));
             }
 

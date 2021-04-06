@@ -22,8 +22,8 @@ class ProfileCommandTest extends XDebugTestCase
     {
         $process = $this->phpbench('xdebug:profile benchmarks/set1/BenchmarkBench.php --filter=benchDoNothing -vvv');
         $this->assertExitCode(0, $process);
-        $this->assertStringContainsString('profile(s) generated', $process->getOutput());
-        $lines = explode("\n", $process->getOutput());
+        $this->assertStringContainsString('profile(s) generated', $process->getErrorOutput());
+        $lines = explode("\n", $process->getErrorOutput());
 
         // get the filename from the output and check it exists.
         $line = trim($lines[count($lines) - 2]);
@@ -61,7 +61,7 @@ class ProfileCommandTest extends XDebugTestCase
     public function testOutputDir(): void
     {
         $process = $this->phpbench('xdebug:profile benchmarks/set1/BenchmarkBench.php --outdir=profilenew --filter=benchDoNothing');
-        $lines = explode("\n", $process->getOutput());
+        $lines = explode("\n", $process->getErrorOutput());
         // get the filename from the output and check it exists.
         $line = trim($lines[count($lines) - 2]);
         $this->assertStringContainsString('profilenew', $line);

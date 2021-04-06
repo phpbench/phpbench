@@ -17,10 +17,10 @@ use PhpBench\Executor\BenchmarkExecutorInterface;
 use PhpBench\Executor\ExecutionContext;
 use PhpBench\Executor\ExecutionResults;
 use PhpBench\Extensions\XDebug\XDebugUtil;
-use PhpBench\PhpBench;
 use PhpBench\Registry\Config;
 use RuntimeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Webmozart\PathUtil\Path;
 
 class ProfileExecutor implements BenchmarkExecutorInterface
 {
@@ -29,9 +29,15 @@ class ProfileExecutor implements BenchmarkExecutorInterface
      */
     private $innerExecutor;
 
-    public function __construct(TemplateExecutor $innerExecutor)
+    /**
+     * @var string
+     */
+    private $cwd;
+
+    public function __construct(TemplateExecutor $innerExecutor, string $cwd)
     {
         $this->innerExecutor = $innerExecutor;
+        $this->cwd = $cwd;
     }
 
     /**
@@ -75,17 +81,19 @@ class ProfileExecutor implements BenchmarkExecutorInterface
             );
         }
 
+        $outputPath = Path::makeAbsolute($outputDir, $this->cwd);
+
         if (substr($xdebugVersion, 0, 1) === '3') {
             return [
                 'xdebug.mode' => 'profile',
-                'xdebug.output_dir' => PhpBench::normalizePath($outputDir),
+                'xdebug.output_dir' => $outputPath,
                 'xdebug.profiler_output_name' => $name,
             ];
         }
 
         return [
             'xdebug.profiler_enable' => 1,
-            'xdebug.profiler_output_dir' => PhpBench::normalizePath($outputDir),
+            'xdebug.profiler_output_dir' => $outputPath,
             'xdebug.profiler_output_name' => $name,
         ];
     }

@@ -76,21 +76,6 @@ class PhpBench
     }
 
     /**
-     * If the path is relative we need to use the current working path
-     * because otherwise it will be the script path, which is wrong in the
-     * context of a PHAR.
-     *
-     */
-    public static function normalizePath(string $path): string
-    {
-        if (Path::isAbsolute($path)) {
-            return $path;
-        }
-
-        return getcwd() . DIRECTORY_SEPARATOR . $path;
-    }
-
-    /**
      * @return array<string,mixed>
      */
     private static function loadConfig(InputInterface $input): array
@@ -99,6 +84,12 @@ class PhpBench
         $extensions = [];
         $configOverride = [];
         $profile = null;
+        $argBootstrap = null;
+        $cwd = getcwd();
+
+        if ($value = $input->getParameterOption(['--working-dir'])) {
+            $cwd = Path::makeAbsolute($value, getcwd());
+        }
 
         if ($configFile = $input->getParameterOption(['--config'])) {
             if (!file_exists($configFile)) {
@@ -106,11 +97,14 @@ class PhpBench
 
                 exit(1);
             }
+
+            $configFile = Path::makeAbsolute($configFile, $cwd);
             $configPaths = [$configFile];
         }
 
         if ($value = $input->getParameterOption(['--bootstrap', '-b='])) {
-            $configOverride['bootstrap'] = self::getBootstrapPath(getcwd(), $value);
+            $argBootstrap = $value;
+            $configOverride['bootstrap'] = $value;
         }
 
         if ($input->getParameterOption(['--no-ansi'])) {
@@ -153,14 +147,15 @@ class PhpBench
 
         if (empty($configPaths)) {
             $configPaths = [
-                getcwd() . '/phpbench.json',
-                getcwd() . '/phpbench.json.dist',
+                $cwd . '/phpbench.json',
+                $cwd . '/phpbench.json.dist',
             ];
         }
 
         $config = [
-            'extensions' => [],
-            'bootstrap' => null,
+            CoreExtension::PARAM_EXTENSIONS => [],
+            RunnerExtension::PARAM_BOOTSTRAP => null,
+            CoreExtension::PARAM_WORKING_DIR => $cwd,
         ];
 
         foreach ($configPaths as $configPath) {
@@ -186,12 +181,6 @@ class PhpBench
             );
             $config['config_path'] = $configPath;
 
-            if ($config['bootstrap']) {
-                $config['bootstrap'] = self::getBootstrapPath(
-                    dirname($configPath), $config['bootstrap']
-                );
-            }
-
             break;
         }
 
@@ -199,6 +188,12 @@ class PhpBench
             $config,
             $configOverride
         );
+
+        if ($configFile && !$argBootstrap && $config['bootstrap']) {
+            $config['bootstrap'] = Path::makeAbsolute($config['bootstrap'], dirname($configFile));
+        } elseif ($config['bootstrap']) {
+            $config['bootstrap'] = Path::makeAbsolute($config['bootstrap'], $cwd);
+        }
 
         if (null !== $profile) {
             $config = self::mergeProfile($config, $profile);
@@ -211,20 +206,6 @@ class PhpBench
         }
 
         return $config;
-    }
-
-    private static function getBootstrapPath($configDir, $bootstrap): ?string
-    {
-        if (!$bootstrap) {
-            return null;
-        }
-
-        // if the path is absolute, return it unmodified
-        if ('/' === substr($bootstrap, 0, 1)) {
-            return $bootstrap;
-        }
-
-        return $configDir . '/' . $bootstrap;
     }
 
     private static function mergeProfile(array $config, string $profile): array

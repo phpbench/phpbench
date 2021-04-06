@@ -260,7 +260,7 @@ class RunnerExtension implements ExtensionInterface
         ]]);
 
         $container->register(Provider\Git::class, function (Container $container) {
-            return new Provider\Git();
+            return new Provider\Git($container->getParameter(CoreExtension::PARAM_WORKING_DIR));
         }, [self::TAG_ENV_PROVIDER => [
             'name' => self::ENV_PROVIDER_GIT,
         ]]);
@@ -378,7 +378,10 @@ class RunnerExtension implements ExtensionInterface
                     $container->getParameter(self::PARAM_REMOTE_SCRIPT_REMOVE)
                 ),
                 new ExecutableFinder(),
-                $container->hasParameter(self::PARAM_BOOTSTRAP) ? $container->getParameter(self::PARAM_BOOTSTRAP) : null,
+                $container->getParameter(self::PARAM_BOOTSTRAP) ? Path::makeAbsolute(
+                    $container->getParameter(self::PARAM_BOOTSTRAP),
+                    $container->getParameter(CoreExtension::PARAM_WORKING_DIR)
+                ) : null,
                 $container->hasParameter(self::PARAM_PHP_BINARY) ? $container->getParameter(self::PARAM_PHP_BINARY) : null,
                 $container->hasParameter(self::PARAM_PHP_CONFIG) ? $container->getParameter(self::PARAM_PHP_CONFIG) : null,
                 $container->hasParameter(self::PARAM_PHP_WRAPPER) ? $container->getParameter(self::PARAM_PHP_WRAPPER) : null,
@@ -601,7 +604,8 @@ class RunnerExtension implements ExtensionInterface
 
         $container->register(BenchmarkFinder::class, function (Container $container) {
             return new BenchmarkFinder(
-                $container->get(MetadataFactory::class)
+                $container->get(MetadataFactory::class),
+                $container->getParameter(CoreExtension::PARAM_WORKING_DIR)
             );
         });
 
