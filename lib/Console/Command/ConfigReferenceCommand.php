@@ -14,10 +14,16 @@ class ConfigReferenceCommand extends Command
      */
     private $dumper;
 
-    public function __construct(ConfigDumper $dumper)
+    /**
+     * @var OutputInterface
+     */
+    private $stdout;
+
+    public function __construct(ConfigDumper $dumper, OutputInterface $stdout)
     {
         parent::__construct();
         $this->dumper = $dumper;
+        $this->stdout = $stdout;
     }
 
     protected function configure(): void
@@ -27,7 +33,7 @@ class ConfigReferenceCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $output->writeln($this->dumper->dump(), OutputInterface::OUTPUT_RAW);
+        $this->stdout->writeln($this->dumper->dump(), OutputInterface::OUTPUT_RAW);
 
         return 0;
     }

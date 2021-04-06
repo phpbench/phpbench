@@ -30,17 +30,24 @@ class LogCommand extends Command
     private $timeUnitHandler;
     private $characterReader;
 
+    /**
+     * @var OutputInterface
+     */
+    private $stdout;
+
     public function __construct(
         Registry $storage,
         TimeUnit $timeUnit,
         TimeUnitHandler $timeUnitHandler,
-        CharacterReader $characterReader = null
+        CharacterReader $characterReader = null,
+        OutputInterface $stdout
     ) {
         parent::__construct();
         $this->storage = $storage;
         $this->timeUnitHandler = $timeUnitHandler;
         $this->timeUnit = $timeUnit;
         $this->characterReader = $characterReader ?: new CharacterReader();
+        $this->stdout = $stdout;
     }
 
     public function configure(): void
@@ -106,7 +113,7 @@ EOT
             );
             $lines[] = '';
 
-            $nbRows = $this->writeLines($output, $nbRows, $height, $lines);
+            $nbRows = $this->writeLines($this->stdout, $nbRows, $height, $lines);
 
             // if pagination is diabled, then just pretend that the console height
             // is always greater than the number of rows.

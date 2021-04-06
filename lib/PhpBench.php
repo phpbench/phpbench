@@ -24,11 +24,11 @@ use PhpBench\Extensions\XDebug\XDebugExtension;
 use PhpBench\Json\JsonDecoder;
 use Seld\JsonLint\JsonParser;
 use Seld\JsonLint\ParsingException;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use function set_error_handler;
 use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Throwable;
 use Webmozart\PathUtil\Path;
@@ -71,6 +71,7 @@ class PhpBench
         }
         $container = new Container(array_unique($extensions), $config);
         $container->init();
+
         return $container;
     }
 
@@ -108,7 +109,7 @@ class PhpBench
             $configPaths = [$configFile];
         }
 
-        if ($value = $input->getParameterOption(['--bootstrap', '-b'])) {
+        if ($value = $input->getParameterOption(['--bootstrap', '-b='])) {
             $configOverride['bootstrap'] = self::getBootstrapPath(getcwd(), $value);
         }
 
@@ -128,25 +129,25 @@ class PhpBench
             $configOverride['php_wrapper'] = $value;
         }
 
-        if ($value = $input->getParameterOption(['php-config'])) {
+        if ($value = $input->getParameterOption(['--php-config'])) {
             $jsonParser = new JsonDecoder();
             $value = $jsonParser->decode($value);
             $configOverride['php_config'] = $value;
         }
 
-        if ($input->getParameterOption(['--php-disable-ini'])) {
+        if ($input->hasParameterOption(['--php-disable-ini'])) {
             $configOverride['php_disable_ini'] = true;
         }
 
-        if ($value = $input->getParameterOption(['profile'])) {
+        if ($value = $input->getParameterOption(['--profile'])) {
             $profile = $value;
         }
 
-        if ($value = $input->getParameterOption(['theme'])) {
+        if ($value = $input->getParameterOption(['--theme'])) {
             $configOverride['expression.theme'] = $value;
         }
 
-        if ($input->getParameterOption(['-vvv'])) {
+        if ($input->hasParameterOption(['-vvv'])) {
             $configOverride[CoreExtension::PARAM_DEBUG] = true;
         }
 

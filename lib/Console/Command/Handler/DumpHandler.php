@@ -29,9 +29,15 @@ class DumpHandler
      */
     private $xmlEncoder;
 
-    public function __construct(XmlEncoder $xmlEncoder)
+    /**
+     * @var OutputInterface
+     */
+    private $stdout;
+
+    public function __construct(XmlEncoder $xmlEncoder, OutputInterface $stdout)
     {
         $this->xmlEncoder = $xmlEncoder;
+        $this->stdout = $stdout;
     }
 
     public static function configure(Command $command): void
@@ -56,7 +62,7 @@ class DumpHandler
 
         if ($input->getOption(self::OPT_DUMP)) {
             $xml = $dom->dump();
-            $output->write($xml);
+            $this->stdout->write($xml);
         }
     }
 }

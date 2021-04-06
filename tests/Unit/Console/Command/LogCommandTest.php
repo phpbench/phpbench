@@ -45,12 +45,14 @@ class LogCommandTest extends TestCase
         $this->timeUnit = $this->prophesize(TimeUnit::class);
         $this->timeUnitHandler = $this->prophesize(TimeUnitHandler::class);
         $this->characterReader = $this->prophesize(CharacterReader::class);
+        $this->output = new BufferedOutput();
 
         $this->command = new LogCommand(
             $this->storage->reveal(),
             $this->timeUnit->reveal(),
             $this->timeUnitHandler->reveal(),
-            $this->characterReader->reveal()
+            $this->characterReader->reveal(),
+            $this->output
         );
 
         $this->application = new Application();
@@ -58,7 +60,6 @@ class LogCommandTest extends TestCase
 
         $this->driver = $this->prophesize(DriverInterface::class);
         $this->storage->getService()->willReturn($this->driver->reveal());
-        $this->output = new BufferedOutput();
 
         $this->history = $this->prophesize(HistoryIteratorInterface::class);
 
