@@ -3,10 +3,13 @@
 namespace PhpBench\Tests\Example;
 
 use Generator;
+use PhpBench\Console\Application;
+use PhpBench\Extension\CoreExtension;
+use PhpBench\PhpBench;
 use PhpBench\Tests\IntegrationTestCase;
 use PhpBench\Tests\Util\Approval;
 use RuntimeException;
-use Symfony\Component\Process\Process;
+use Symfony\Component\Console\Input\StringInput;
 
 class CommandsTest extends IntegrationTestCase
 {
@@ -34,15 +37,22 @@ class CommandsTest extends IntegrationTestCase
 
         $this->workspace()->put('phpbench.json', json_encode(array_merge([
             'env.enabled_providers' => [],
+            CoreExtension::PARAM_CONSOLE_OUTPUT_STREAM => $this->workspace()->path('output'),
+            CoreExtension::PARAM_CONSOLE_ERROR_STREAM => 'php://temp'
         ], json_decode($approval->getSection(0), true))));
 
-        $process = Process::fromShellCommandline(
-            sprintf('../../bin/%s', $command),
-            $this->workspace()->path()
-        );
-        $process->mustRun();
-        $output = $process->getOutput();
+        $command = substr($command, strlen('phpbench '));
+        $input = new StringInput($command);
+        $cwd = getcwd();
+        chdir($this->workspace()->path());
+        $container = PhpBench::loadContainer($input);
+        $application = $container->get(Application::class);
+        assert($application instanceof Application);
+        $application->setAutoExit(false);
+        $application->run($input);
+        chdir($cwd);
         
+        $output = $this->workspace()->getContents('output');
         // hack to ignore the suite dates
         $output = preg_replace('{[0-9]{4}-[0-9]{2}-[0-9]{2}}', 'xxxx-xx-xx', $output);
         $output = preg_replace('{[0-9]{2}:[0-9]{2}:[0-9]{2}}', 'xx-xx-xx', $output);
