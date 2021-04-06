@@ -14,8 +14,6 @@ namespace PhpBench\Tests\Unit\Environment\Provider;
 
 use PhpBench\Environment\Provider;
 use PhpBench\Tests\IntegrationTestCase;
-use PhpBench\Tests\TestCase;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
 use function sys_get_temp_dir;

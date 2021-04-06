@@ -195,6 +195,7 @@ class PhpBench
                 json_decode($configRaw, true)
             );
             $config['config_path'] = $configPath;
+
             break;
         }
 

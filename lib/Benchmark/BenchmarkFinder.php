@@ -15,7 +15,6 @@ namespace PhpBench\Benchmark;
 use Generator;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\MetadataFactory;
-use PhpBench\PhpBench;
 use SplFileInfo;
 use Symfony\Component\Finder\Finder;
 
@@ -86,8 +85,6 @@ class BenchmarkFinder
         $search = false;
 
         foreach ($paths as $path) {
-            $path = PhpBench::normalizePath($path);
-
             if (!file_exists($path)) {
                 throw new \InvalidArgumentException(sprintf(
                     'File or directory "%s" does not exist (cwd: %s)',
