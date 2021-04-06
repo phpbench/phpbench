@@ -19,10 +19,12 @@ use PhpBench\Executor\Benchmark\RemoteExecutor;
 use PhpBench\Executor\CompositeExecutor;
 use PhpBench\Executor\Method\RemoteMethodExecutor;
 use PhpBench\Extension\CoreExtension;
+use PhpBench\Extension\RunnerExtension;
 use PhpBench\Extensions\XDebug\Command\Handler\OutputDirHandler;
 use PhpBench\Extensions\XDebug\Command\ProfileCommand;
 use PhpBench\Extensions\XDebug\Executor\ProfileExecutor;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function array_key_exists;
 
 class XDebugExtension implements ExtensionInterface
 {
@@ -33,6 +35,7 @@ class XDebugExtension implements ExtensionInterface
         $resolver->setDefaults([
             self::PARAM_OUTPUT_DIR => '.phpbench/xdebug-profile',
         ]);
+        $resolver->setAllowedTypes(self::PARAM_OUTPUT_DIR, ['string']);
     }
 
     public function load(Container $container): void
@@ -43,7 +46,9 @@ class XDebugExtension implements ExtensionInterface
                 $container->get(self::PARAM_OUTPUT_DIR)
             );
         }, [
-            CoreExtension::TAG_CONSOLE_COMMAND => []
+            CoreExtension::TAG_CONSOLE_COMMAND => [
+                'name' => 'xdebug:profile'
+            ]
         ]);
 
         $container->register(self::PARAM_OUTPUT_DIR, function (Container $container) {
@@ -55,16 +60,17 @@ class XDebugExtension implements ExtensionInterface
         $container->register(ProfileExecutor::class, function (Container $container) {
             return new CompositeExecutor(
                 new ProfileExecutor(
-                    $container->get(RemoteExecutor::class)
+                    $container->get(RemoteExecutor::class),
+                    $container->getParameter(CoreExtension::PARAM_WORKING_DIR)
                 ),
                 $container->get(RemoteMethodExecutor::class)
             );
         }, [
-            CoreExtension::TAG_EXECUTOR => [
+            RunnerExtension::TAG_EXECUTOR => [
                 'name' => 'xdebug_profile'
             ]
         ]);
 
-        $container->mergeParameter('executors', require_once(__DIR__ . '/config/executors.php'));
+        $container->mergeParameter('executors', require(__DIR__ . '/config/executors.php'));
     }
 }
