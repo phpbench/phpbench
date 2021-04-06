@@ -12,7 +12,6 @@
 
 namespace PhpBench;
 
-use Composer\Autoload\ClassLoader;
 use PhpBench\Console\Application;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\Exception\ConfigurationPreProcessingError;
@@ -41,26 +40,10 @@ class PhpBench
     const PHAR_URL = 'https://phpbench.github.io/phpbench/phpbench.phar';
     const PHAR_VERSION_URL = 'https://phpbench.github.io/phpbench/phpbench.phar.version';
 
-    public static function run(ClassLoader $autoloader): void
+    public static function run(): void
     {
         self::registerErrorHandler();
         $config = self::loadConfig();
-
-        if (isset($config['extension_autoloader']) && $config['extension_autoloader']) {
-            $autoloadFile = $config['extension_autoloader'];
-
-            if (!file_exists($autoloadFile)) {
-                throw new \InvalidArgumentException(sprintf(
-                    'Could not find extension autoload file "%s"',
-                    $autoloadFile
-                ));
-            }
-
-            $autoloader->unregister();
-
-            include $autoloadFile;
-            $autoloader->register(true);
-        }
 
         $extensions = array_merge([
             CoreExtension::class,

@@ -22,4 +22,4 @@ if (is_file(__DIR__ . '/../vendor/autoload.php')) {
     exit(1);
 }
 
-PhpBench\PhpBench::run($autoloader);
+PhpBench\PhpBench::run();
