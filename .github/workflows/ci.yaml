@@ -168,7 +168,7 @@ jobs:
                   dependency-versions: "${{ matrix.dependency }}"
 
             - name: "Run tests with PHPUnit"
-              run: vendor/bin/phpunit
+              run: vendor/bin/phpunit --verbose
 
             - name: "Run benchmarks with PHPBench"
               run: bin/phpbench run --report=env --progress=dots
