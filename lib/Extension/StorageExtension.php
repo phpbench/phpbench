@@ -124,7 +124,10 @@ class StorageExtension implements ExtensionInterface
         });
         $container->register(XmlDriver::class, function (Container $container) {
             return new XmlDriver(
-                Path::makeAbsolute(self::PARAM_XML_STORAGE_PATH, $container->getParameter(CoreExtension::PARAM_WORKING_DIR)),
+                Path::makeAbsolute(
+                    $container->getParameter(self::PARAM_XML_STORAGE_PATH),
+                    $container->getParameter(CoreExtension::PARAM_WORKING_DIR)
+                ),
                 $container->get(XmlEncoder::class),
                 $container->get(XmlDecoder::class)
             );
