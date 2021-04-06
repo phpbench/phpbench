@@ -13,37 +13,28 @@
 namespace PhpBench\Tests\Unit\Environment\Provider;
 
 use PhpBench\Environment\Provider;
+use PhpBench\Tests\IntegrationTestCase;
 use PhpBench\Tests\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
+use function sys_get_temp_dir;
 
-class GitTest extends TestCase
+class GitTest extends IntegrationTestCase
 {
     private $provider;
     private $filesystem;
-    private $testRepoDir;
 
     protected function setUp(): void
     {
-        $this->filesystem = new Filesystem();
-
-        $this->testRepoDir = __DIR__ . '/testRepo';
-        $this->clean();
-        $this->filesystem->mkdir($this->testRepoDir);
-        chdir($this->testRepoDir);
-        file_put_contents(sprintf('%s/foobar', $this->testRepoDir), 'Foobar');
+        $this->workspace()->reset();
+        $this->workspace()->put('foobar', 'Foobar');
         $this->exec('git init');
         $this->exec('git add foobar');
         $this->exec('git config user.email "test@example.com"');
         $this->exec('git config user.name "My Name"');
 
-        $this->provider = new Provider\Git();
-    }
-
-    protected function tearDown(): void
-    {
-        $this->clean();
+        $this->provider = new Provider\Git($this->workspace()->path());
     }
 
     /**
@@ -60,7 +51,7 @@ class GitTest extends TestCase
      */
     public function testIsNotApplicable(): void
     {
-        chdir(sys_get_temp_dir());
+        $this->provider = new Provider\Git(sys_get_temp_dir());
         $result = $this->provider->isApplicable();
         $this->assertFalse($result);
     }
@@ -108,28 +99,14 @@ class GitTest extends TestCase
         $exeFinder = $this->prophesize(ExecutableFinder::class);
         $exeFinder->find('git', null)->willReturn(null);
 
-        $provider = new Provider\Git($exeFinder->reveal());
+        $provider = new Provider\Git(__DIR__, $exeFinder->reveal());
 
         $this->assertFalse($provider->isApplicable());
     }
 
-    private function clean(): void
+    private function exec(string $cmd): void
     {
-        if (file_exists($this->testRepoDir)) {
-            $this->filesystem->remove(__DIR__ . '/testRepo');
-        }
-    }
-
-    private function exec($cmd): void
-    {
-        $proc = Process::fromShellCommandline($cmd);
-        $exitCode = $proc->run();
-
-        if ($exitCode !== 0) {
-            throw new \RuntimeException(sprintf(
-                'Could not execute command: %s',
-                $proc->getErrorOutput()
-            ));
-        }
+        $proc = Process::fromShellCommandline($cmd, $this->workspace()->path());
+        $proc->mustRun();
     }
 }

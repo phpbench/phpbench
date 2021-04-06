@@ -26,10 +26,16 @@ class Git implements ProviderInterface
     private $exeName;
     private $exePath;
 
-    public function __construct(ExecutableFinder $exeFinder = null, $exeName = 'git')
+    /**
+     * @var string
+     */
+    private $cwd;
+
+    public function __construct(string $cwd, ExecutableFinder $exeFinder = null, $exeName = 'git')
     {
         $this->exeFinder = $exeFinder ?: new ExecutableFinder();
         $this->exeName = $exeName;
+        $this->cwd = $cwd;
     }
 
     /**
@@ -41,7 +47,7 @@ class Git implements ProviderInterface
             return false;
         }
 
-        $index = sprintf('%s/.git', getcwd());
+        $index = sprintf('%s/.git', $this->cwd);
 
         if (file_exists($index)) {
             return true;
@@ -72,7 +78,7 @@ class Git implements ProviderInterface
 
         $commitshRef = sprintf(
             '%s/%s/%s',
-            getcwd(),
+            $this->cwd,
             '.git/refs/heads',
             $branchName
         );
@@ -89,7 +95,7 @@ class Git implements ProviderInterface
     private function exec($cmd): Process
     {
         $cmd = sprintf('%s %s', escapeshellarg($this->getGitPath()), $cmd);
-        $process = Process::fromShellCommandline($cmd);
+        $process = Process::fromShellCommandline($cmd, $this->cwd);
         $process->run();
 
         return $process;

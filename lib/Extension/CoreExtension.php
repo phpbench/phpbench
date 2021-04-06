@@ -42,6 +42,7 @@ class CoreExtension implements ExtensionInterface
     public const PARAM_DISABLE_OUTPUT = 'console.disable_output';
     public const PARAM_EXTENSIONS = 'extensions';
     public const PARAM_OUTPUT_MODE = 'output_mode';
+    public const PARAM_WORKING_DIR = 'working_dir';
 
     public const PARAM_TIME_UNIT = 'time_unit';
 
@@ -63,6 +64,7 @@ class CoreExtension implements ExtensionInterface
             self::PARAM_EXTENSIONS => [],
             self::PARAM_OUTPUT_MODE => TimeUnit::MODE_TIME,
             self::PARAM_TIME_UNIT => TimeUnit::MICROSECONDS,
+            self::PARAM_WORKING_DIR => getcwd(),
 
             self::PARAM_CONFIG_PATH => null,
         ]);
@@ -77,6 +79,7 @@ class CoreExtension implements ExtensionInterface
         $resolver->setAllowedTypes(self::PARAM_DISABLE_OUTPUT, ['bool']);
         $resolver->setAllowedTypes(self::PARAM_CONSOLE_OUTPUT_STREAM, ['string']);
         $resolver->setAllowedTypes(self::PARAM_EXTENSIONS, ['array']);
+        $resolver->setAllowedTypes(self::PARAM_WORKING_DIR, ['string']);
         SymfonyOptionsResolverCompat::setInfos($resolver, [
             self::PARAM_CONSOLE_ANSI => 'Enable or disable ANSI control characters (e.g. console colors)',
             self::PARAM_DISABLE_OUTPUT => 'Do not output anything',
@@ -87,6 +90,7 @@ class CoreExtension implements ExtensionInterface
             self::PARAM_OUTPUT_MODE => 'Default output mode (e.g. throughput or net time)',
             self::PARAM_TIME_UNIT => 'Default time unit',
             self::PARAM_CONFIG_PATH => 'Alternative path to a PHPBench configuration file (default is ``phpbench.json``',
+            self::PARAM_WORKING_DIR => 'Working directory to use',
         ]);
     }
 

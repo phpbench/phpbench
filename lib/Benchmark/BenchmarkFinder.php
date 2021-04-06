@@ -30,12 +30,19 @@ class BenchmarkFinder
      */
     private $factory;
 
-    public function __construct(MetadataFactory $factory)
+    /**
+     * @var string
+     */
+    private $cwd;
+
+    public function __construct(MetadataFactory $factory, string $cwd)
     {
         $this->factory = $factory;
+        $this->cwd = $cwd;
     }
 
     /**
+     * @param array<string> $paths
      * @param array<string> $subjectFilter
      * @param array<string> $groupFilter
      *
@@ -85,7 +92,7 @@ class BenchmarkFinder
                 throw new \InvalidArgumentException(sprintf(
                     'File or directory "%s" does not exist (cwd: %s)',
                     $path,
-                    getcwd()
+                    $this->cwd
                 ));
             }
 

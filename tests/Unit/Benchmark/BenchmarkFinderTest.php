@@ -31,7 +31,7 @@ class BenchmarkFinderTest extends TestCase
         $this->benchmark1 = $this->prophesize(BenchmarkMetadata::class);
         $this->benchmark2 = $this->prophesize(BenchmarkMetadata::class);
         $this->subject = $this->prophesize(Subject::class);
-        $this->finder = new BenchmarkFinder($this->factory->reveal());
+        $this->finder = new BenchmarkFinder($this->factory->reveal(), __DIR__ . '/test');
     }
 
     /**
