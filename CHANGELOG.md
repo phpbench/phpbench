@@ -26,6 +26,7 @@ Features:
 
 Improvements:
 
+- "local" executor will include non-existing benchmark classes and bootstrap
 - Configuation options have generated documentation
 - Preserve types in env information
 - Make default true color theme compatible with light backgrounds.
