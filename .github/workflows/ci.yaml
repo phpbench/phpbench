@@ -167,6 +167,9 @@ jobs:
               with:
                   dependency-versions: "${{ matrix.dependency }}"
 
+            - name: PHP Info
+              run: php --version
+
             - name: "Run tests with PHPUnit"
               run: vendor/bin/phpunit --verbose
 
