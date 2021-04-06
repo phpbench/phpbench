@@ -548,7 +548,7 @@ Extension class: ``PhpBench\Extensions\XDebug\XDebugExtension``
 xdebug.command.handler.output_dir
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
+Output directory for generated XDebug profiles
 
 Default: ``".phpbench\/xdebug-profile"``
 

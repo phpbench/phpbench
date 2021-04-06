@@ -12,6 +12,7 @@
 
 namespace PhpBench\Extensions\XDebug;
 
+use PhpBench\Compat\SymfonyOptionsResolverCompat;
 use PhpBench\Console\Command\Handler\RunnerHandler;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
@@ -35,6 +36,9 @@ class XDebugExtension implements ExtensionInterface
             self::PARAM_OUTPUT_DIR => '.phpbench/xdebug-profile',
         ]);
         $resolver->setAllowedTypes(self::PARAM_OUTPUT_DIR, ['string']);
+        SymfonyOptionsResolverCompat::setInfos($resolver, [
+            self::PARAM_OUTPUT_DIR => 'Output directory for generated XDebug profiles',
+        ]);
     }
 
     public function load(Container $container): void
