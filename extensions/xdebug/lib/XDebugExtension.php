@@ -49,9 +49,7 @@ class XDebugExtension implements ExtensionInterface
                 $container->get(self::PARAM_OUTPUT_DIR)
             );
         }, [
-            CoreExtension::TAG_CONSOLE_COMMAND => [
-                'name' => 'xdebug:profile'
-            ]
+            CoreExtension::TAG_CONSOLE_COMMAND => []
         ]);
 
         $container->register(self::PARAM_OUTPUT_DIR, function (Container $container) {
