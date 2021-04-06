@@ -17,6 +17,7 @@ use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\MetadataFactory;
 use SplFileInfo;
 use Symfony\Component\Finder\Finder;
+use Webmozart\PathUtil\Path;
 
 /**
  * This class finds a benchmark (or benchmarks depending on the path), loads
@@ -85,6 +86,8 @@ class BenchmarkFinder
         $search = false;
 
         foreach ($paths as $path) {
+            $path = Path::makeAbsolute($path, $this->cwd);
+
             if (!file_exists($path)) {
                 throw new \InvalidArgumentException(sprintf(
                     'File or directory "%s" does not exist (cwd: %s)',

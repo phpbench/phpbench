@@ -24,7 +24,6 @@ use PhpBench\Extensions\XDebug\Command\Handler\OutputDirHandler;
 use PhpBench\Extensions\XDebug\Command\ProfileCommand;
 use PhpBench\Extensions\XDebug\Executor\ProfileExecutor;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use function array_key_exists;
 
 class XDebugExtension implements ExtensionInterface
 {
@@ -53,7 +52,8 @@ class XDebugExtension implements ExtensionInterface
 
         $container->register(self::PARAM_OUTPUT_DIR, function (Container $container) {
             return new OutputDirHandler(
-                $container->getParameter(self::PARAM_OUTPUT_DIR)
+                $container->getParameter(self::PARAM_OUTPUT_DIR),
+                $container->getParameter(CoreExtension::PARAM_WORKING_DIR)
             );
         });
 
