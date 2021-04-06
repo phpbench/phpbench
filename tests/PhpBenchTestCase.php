@@ -2,28 +2,15 @@
 
 namespace PhpBench\Tests;
 
-use Symfony\Component\Filesystem\Filesystem;
-
-class PhpBenchTestCase extends TestCase
+class PhpBenchTestCase extends IntegrationTestCase
 {
     protected function workspacePath(string $path = null): string
     {
-        $base = __DIR__ . '/Workspace';
-
-        if (empty($path)) {
-            return $base;
-        }
-
-        return $base . DIRECTORY_SEPARATOR . $path;
+        return $this->workspace()->path($path);
     }
 
     protected function initWorkspace(): void
     {
-        if (file_exists($this->workspacePath())) {
-            $filesystem = new Filesystem();
-            $filesystem->remove($this->workspacePath());
-        }
-
-        mkdir($this->workspacePath(), 0777);
+        $this->workspace()->reset();
     }
 }

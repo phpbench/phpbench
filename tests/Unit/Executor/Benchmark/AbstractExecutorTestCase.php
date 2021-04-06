@@ -71,7 +71,7 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
             new Config('test', [])
         );
 
-        $this->assertFileExists($this->workspacePath('before_method.tmp'));
+        $this->assertFileExists($this->workspace()->path('before_method.tmp'));
     }
 
     /**
@@ -107,7 +107,7 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
         );
 
         $this->assertFileExists($this->workspacePath('param.tmp'));
-        $params = json_decode(file_get_contents($this->workspacePath('param.tmp')), true);
+        $params = json_decode(file_get_contents($this->workspace()->path('param.tmp')), true);
         $this->assertEquals([
             'one' => 'two',
             'three' => 'four',
@@ -139,11 +139,11 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
 
 
         $this->assertFileExists($this->workspacePath('parambefore.tmp'));
-        $params = json_decode(file_get_contents($this->workspacePath('parambefore.tmp')), true);
+        $params = json_decode(file_get_contents($this->workspace()->path('parambefore.tmp')), true);
         $this->assertEquals($expected->getArrayCopy(), $params);
 
         $this->assertFileExists($this->workspacePath('paramafter.tmp'));
-        $params = json_decode(file_get_contents($this->workspacePath('paramafter.tmp')), true);
+        $params = json_decode(file_get_contents($this->workspace()->path('paramafter.tmp')), true);
         $this->assertEquals($expected->getArrayCopy(), $params);
     }
 

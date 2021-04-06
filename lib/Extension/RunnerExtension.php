@@ -343,7 +343,9 @@ class RunnerExtension implements ExtensionInterface
         });
 
         $container->register(LocalExecutor::class, function (Container $container) {
-            return new LocalExecutor();
+            return new LocalExecutor(
+                $container->getParameter(self::PARAM_BOOTSTRAP)
+            );
         });
 
         $container->register(RemoteMethodExecutor::class, function (Container $container) {
