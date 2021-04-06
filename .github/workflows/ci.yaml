@@ -139,10 +139,12 @@ jobs:
                       dependency: 'lowest'
                       with-examples: 'no'
                       allow-failures: false
+                      coverage: xdebug
                     - php-version: '8.0'
                       dependency: 'highest'
                       with-examples: 'no'
                       allow-failures: true
+                      coverage: xdebug
 
         steps:
             - name: "Checkout code"
