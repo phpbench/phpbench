@@ -19,19 +19,40 @@ class LocalExecutorTest extends AbstractExecutorTestCase
         self::assertCount(1, $results);
     }
 
-
-    public function testWithBootstrap(): void
+    public function testRequiresFileIfItCantBeAutoloaded(): void
     {
+        $this->workspace()->put('FooBench.php', '<?php class FoobarBench { public function benchFoo(): void {}}');
+
         $executor = new LocalExecutor();
-        $results = $this->executor->execute(
+        $executor->execute(
             $this->buildContext([
+                'className' => 'FoobarBench',
+                'classPath' => $this->workspace()->path('FooBench.php'),
+                'methodName' => 'benchFoo',
+            ]),
+            new Config('test', [])
+        );
+        $this->addToAssertionCount(1);
+    }
+
+    public function testIncludesBootstrapOnce(): void
+    {
+        $this->workspace()->put('NewFooBench.php', '<?php class NewFoobarBench { public function benchFoo(): void { new Foobar(); }}');
+        $this->workspace()->put('bootstrap.php', '<?php class Foobar {}');
+
+        $executor = new LocalExecutor($this->workspace()->path('bootstrap.php'));
+        $result = $executor->execute(
+            $this->buildContext([
+                'className' => 'NewFoobarBench',
+                'classPath' => $this->workspace()->path('NewFooBench.php'),
+                'methodName' => 'benchFoo',
                 'timeOut' => 0.0,
-                'methodName' => 'doSomething',
                 'parameterSetName' => 'one',
                 'revolutions' => 10,
                 'warmup' => 1,
             ]),
             new Config('test', [])
         );
+        $this->addToAssertionCount(1);
     }
 }

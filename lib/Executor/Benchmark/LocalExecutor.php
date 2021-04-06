@@ -57,6 +57,10 @@ class LocalExecutor implements BenchmarkExecutorInterface
     private function createBenchmark(ExecutionContext $context)
     {
         $className = $context->getClassName();
+
+        if (!class_exists($className)) {
+            require_once($context->getClassPath());
+        }
         
         if (!class_exists($className)) {
             throw new ExecutionError(sprintf(
