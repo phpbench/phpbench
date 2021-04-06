@@ -16,7 +16,9 @@ class DevelopmentExtension implements ExtensionInterface
     public function load(Container $container): void
     {
         $container->register(ConfigReferenceCommand::class, function (Container $container) {
-            return new ConfigReferenceCommand(new ConfigDumper($container->getExtensionClasses()));
+            return new ConfigReferenceCommand(new ConfigDumper(
+                $container->getExtensionClasses()
+            ), $container->get(CoreExtension::SERVICE_OUTPUT_STD));
         }, [
             CoreExtension::TAG_CONSOLE_COMMAND => []
         ]);

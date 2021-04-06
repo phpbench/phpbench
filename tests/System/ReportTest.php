@@ -19,7 +19,7 @@ class ReportTest extends SystemTestCase
      */
     public function testGenerateReport(): void
     {
-        $this->getResult();
+        $this->getBenchResult();
         $process = $this->phpbench(
             'report --file=' . $this->fname . ' --report=default'
         );
@@ -33,7 +33,7 @@ class ReportTest extends SystemTestCase
      */
     public function testGenerateReportFromUuid(): void
     {
-        $document = $this->getResult(null, ' --store');
+        $document = $this->getBenchResult(null, ' --store');
         $ref = $document->evaluate('string(./suite/@uuid)');
         $process = $this->phpbench(
             'report --ref=' . $ref . ' --report=default'
@@ -48,7 +48,7 @@ class ReportTest extends SystemTestCase
      */
     public function testTimeUnitOverride(): void
     {
-        $this->getResult();
+        $this->getBenchResult();
         $process = $this->phpbench(
             'report --file=' . $this->fname . ' --report=default --time-unit=seconds --mode=throughput --precision=6'
         );

@@ -176,7 +176,7 @@ class RunTest extends SystemTestCase
             'run --dump-file=' . $this->fname . ' benchmarks/set4/NothingBench.php'
         );
         $this->assertExitCode(0, $process);
-        $output = $process->getOutput();
+        $output = $process->getErrorOutput();
         $this->assertStringContainsString('Dumped', $output);
         $this->assertFileExists($this->fname);
     }

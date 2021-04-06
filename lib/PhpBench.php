@@ -12,7 +12,6 @@
 
 namespace PhpBench;
 
-use Composer\Autoload\ClassLoader;
 use PhpBench\Console\Application;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\Exception\ConfigurationPreProcessingError;
@@ -27,7 +26,9 @@ use Seld\JsonLint\JsonParser;
 use Seld\JsonLint\ParsingException;
 use function set_error_handler;
 use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Throwable;
 use Webmozart\PathUtil\Path;
@@ -41,26 +42,21 @@ class PhpBench
     const PHAR_URL = 'https://phpbench.github.io/phpbench/phpbench.phar';
     const PHAR_VERSION_URL = 'https://phpbench.github.io/phpbench/phpbench.phar.version';
 
-    public static function run(ClassLoader $autoloader): void
+    public static function run(?InputInterface $input = null, ?OutputInterface $output = null): void
     {
+        $input = $input ?: new ArgvInput();
         self::registerErrorHandler();
-        $config = self::loadConfig();
 
-        if (isset($config['extension_autoloader']) && $config['extension_autoloader']) {
-            $autoloadFile = $config['extension_autoloader'];
+        $container = self::loadContainer($input);
+        $container->get(Application::class)->run(
+            $input,
+            $output ?? $container->get(CoreExtension::SERVICE_OUTPUT_ERR)
+        );
+    }
 
-            if (!file_exists($autoloadFile)) {
-                throw new \InvalidArgumentException(sprintf(
-                    'Could not find extension autoload file "%s"',
-                    $autoloadFile
-                ));
-            }
-
-            $autoloader->unregister();
-
-            include $autoloadFile;
-            $autoloader->register(true);
-        }
+    public static function loadContainer(InputInterface $input): Container
+    {
+        $config = self::loadConfig($input);
 
         $extensions = array_merge([
             CoreExtension::class,
@@ -75,7 +71,8 @@ class PhpBench
         }
         $container = new Container(array_unique($extensions), $config);
         $container->init();
-        $container->get(Application::class)->run();
+
+        return $container;
     }
 
     /**
@@ -93,86 +90,65 @@ class PhpBench
         return getcwd() . DIRECTORY_SEPARATOR . $path;
     }
 
-    private static function loadConfig(): array
+    /**
+     * @return array<string,mixed>
+     */
+    private static function loadConfig(InputInterface $input): array
     {
-        global $argv;
-
         $configPaths = [];
         $extensions = [];
         $configOverride = [];
         $profile = null;
 
-        foreach ($argv as $arg) {
-            if ($configFile = self::parseOption($arg, 'config')) {
-                if (!file_exists($configFile)) {
-                    echo sprintf('Config file "%s" does not exist', $configFile) . PHP_EOL;
+        if ($configFile = $input->getParameterOption(['--config'])) {
+            if (!file_exists($configFile)) {
+                echo sprintf('Config file "%s" does not exist', $configFile) . PHP_EOL;
 
-                    exit(1);
-                }
-                $configPaths = [$configFile];
+                exit(1);
             }
+            $configPaths = [$configFile];
+        }
 
-            if ($value = self::parseOption($arg, 'bootstrap', 'b')) {
-                $configOverride['bootstrap'] = self::getBootstrapPath(getcwd(), $value);
+        if ($value = $input->getParameterOption(['--bootstrap', '-b='])) {
+            $configOverride['bootstrap'] = self::getBootstrapPath(getcwd(), $value);
+        }
 
-                continue;
-            }
+        if ($input->getParameterOption(['--no-ansi'])) {
+            $configOverride[CoreExtension::PARAM_CONSOLE_ANSI] = false;
+        }
 
-            if ($arg === '--no-ansi') {
-                $configOverride[CoreExtension::PARAM_CONSOLE_ANSI] = false;
+        if ($value = $input->getParameterOption(['--extension'])) {
+            $extensions[] = $value;
+        }
 
-                continue;
-            }
+        if ($value = $input->getParameterOption(['--php-binary'])) {
+            $configOverride['php_binary'] = $value;
+        }
 
-            if ($value = self::parseOption($arg, 'extension')) {
-                $extensions[] = $value;
+        if ($value = $input->getParameterOption(['--php-wrapper'])) {
+            $configOverride['php_wrapper'] = $value;
+        }
 
-                continue;
-            }
+        if ($value = $input->getParameterOption(['--php-config'])) {
+            $jsonParser = new JsonDecoder();
+            $value = $jsonParser->decode($value);
+            $configOverride['php_config'] = $value;
+        }
 
-            if ($value = self::parseOption($arg, 'php-binary')) {
-                $configOverride['php_binary'] = $value;
+        if ($input->hasParameterOption(['--php-disable-ini'])) {
+            $configOverride['php_disable_ini'] = true;
+        }
 
-                continue;
-            }
+        if ($value = $input->getParameterOption(['--profile'])) {
+            $profile = $value;
+        }
 
-            if ($value = self::parseOption($arg, 'php-wrapper')) {
-                $configOverride['php_wrapper'] = $value;
+        if ($value = $input->getParameterOption(['--theme'])) {
+            $configOverride['expression.theme'] = $value;
+        }
 
-                continue;
-            }
-
-            if ($value = self::parseOption($arg, 'php-config')) {
-                $jsonParser = new JsonDecoder();
-                $value = $jsonParser->decode($value);
-                $configOverride['php_config'] = $value;
-
-                continue;
-            }
-
-            if ($arg == '--php-disable-ini') {
-                $configOverride['php_disable_ini'] = true;
-
-                continue;
-            }
-
-            if ($value = self::parseOption($arg, 'profile')) {
-                $profile = $value;
-
-                continue;
-            }
-
-            if ($value = self::parseOption($arg, 'theme')) {
-                $configOverride['expression.theme'] = $value;
-
-                continue;
-            }
-
-            if ($arg == '-vvv') {
-                $configOverride[CoreExtension::PARAM_DEBUG] = true;
-
-                continue;
-            }
+        if ($input->hasParameterOption(['-vvv'])) {
+            $configOverride[CoreExtension::PARAM_DEBUG] = true;
         }
 
         if (empty($configPaths)) {
@@ -249,22 +225,6 @@ class PhpBench
         }
 
         return $configDir . '/' . $bootstrap;
-    }
-
-    private static function parseOption($arg, $longName, $shortName = null): ?string
-    {
-        $longOption = '--' . $longName . '=';
-        $shortOption = '-' . $shortName .'=';
-
-        foreach ([$longOption, $shortOption] as $option) {
-            if (0 !== strpos($arg, $option)) {
-                continue;
-            }
-
-            return substr($arg, strlen($option));
-        }
-
-        return null;
     }
 
     private static function mergeProfile(array $config, string $profile): array

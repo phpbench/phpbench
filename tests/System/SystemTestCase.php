@@ -36,7 +36,7 @@ class SystemTestCase extends IntegrationTestCase
         $filesystem->mirror(__DIR__ . '/bootstrap', $this->workspace()->path('/bootstrap'));
     }
 
-    public function getResult($benchmark = null, $extraCmd = '')
+    public function getBenchResult($benchmark = null, $extraCmd = '')
     {
         $benchmark = $benchmark ?: 'benchmarks/set4';
 
@@ -54,7 +54,7 @@ class SystemTestCase extends IntegrationTestCase
         return $document;
     }
 
-    public function phpbench($command, $cwd = null): Process
+    public function phpbench(string $command, ?string $cwd = null): Process
     {
         $cwd = $this->workspace()->path($cwd);
 
