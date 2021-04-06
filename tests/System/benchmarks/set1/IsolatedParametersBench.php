@@ -14,7 +14,7 @@ class IsolatedParameterBench
 {
     /**
      * @Groups({"process"})
-     * @Iterations(5)
+     * @Iterations(1)
      * @ParamProviders({"provideParams"})
      */
     public function benchIterationIsolation(): void

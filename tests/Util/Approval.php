@@ -32,8 +32,12 @@ class Approval
     /**
      * @param string[] $sections
      */
-    public function __construct(string $path, array $sections, string $delimiter, ?string $expected)
-    {
+    public function __construct(
+        string $path,
+        array $sections,
+        string $delimiter,
+        ?string $expected
+    ) {
         $this->sections = $sections;
         $this->expected = $expected;
         $this->path = $path;

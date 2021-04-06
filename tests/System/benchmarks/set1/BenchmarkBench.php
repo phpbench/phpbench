@@ -14,12 +14,12 @@ class BenchmarkBench
 {
     public function benchRandom(): void
     {
-        usleep(rand(0, 1000));
+        usleep(rand(0, 100));
     }
 
     /**
-     * @Iterations(10)
-     * @Revs(10000)
+     * @Iterations(1)
+     * @Revs(1000)
      * @Groups({"do_nothing"})
      */
     public function benchDoNothing(): void
