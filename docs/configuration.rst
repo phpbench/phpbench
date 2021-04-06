@@ -100,6 +100,17 @@ Default: ``"microseconds"``
 
 Types: ``["string"]``
 
+.. _configuration_working_dir:
+
+working_dir
+~~~~~~~~~~~
+
+Working directory to use
+
+Default: ``"\/home\/daniel\/www\/phpbench\/phpbench"``
+
+Types: ``["string"]``
+
 .. _configuration_config_path:
 
 config_path
@@ -524,6 +535,22 @@ xml_storage_path
 Path to store benchmark runs when they are stored with ``--store`` or ``--tag=foo``
 
 Default: ``".phpbench\/storage"``
+
+Types: ``["string"]``
+
+XDebug
+------
+
+Extension class: ``PhpBench\Extensions\XDebug\XDebugExtension``
+
+.. _configuration_xdebug_command_handler_output_dir:
+
+xdebug.command.handler.output_dir
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+Default: ``".phpbench\/xdebug-profile"``
 
 Types: ``["string"]``
 
