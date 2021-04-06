@@ -45,7 +45,7 @@ class ConsoleRendererTest extends AbstractRendererCase
 
         $this->renderReport($this->reports(), $approval->getConfig(0));
 
-        $approval->approve($this->output->fetch(), true);
+        $approval->approve($this->output->fetch());
     }
 
     public function provideRender(): Generator

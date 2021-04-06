@@ -119,7 +119,7 @@ class Approval
                 ]
             )));
 
-            throw new SkippedTestError(sprintf('Approval generated'));
+            throw new SkippedTestError(sprintf('Approval generated for "%s"', $this->path));
         }
 
         Assert::assertEquals(trim($this->expected), trim($actual));

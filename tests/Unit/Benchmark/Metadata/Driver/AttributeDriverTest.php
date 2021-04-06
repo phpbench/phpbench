@@ -129,6 +129,8 @@ class AttributeDriverTest extends TestCase
     public function provideLoadSubject(): Generator
     {
         if ($this->shouldSkip()) {
+            $this->markTestSkipped('PHP 8 only');
+
             return;
         }
 
