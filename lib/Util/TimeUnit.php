@@ -33,6 +33,7 @@ class TimeUnit
 
     public const MODE_THROUGHPUT = 'throughput';
     public const MODE_TIME = 'time';
+    const AUTO = 'auto';
 
     /**
      * @var array
@@ -124,6 +125,9 @@ class TimeUnit
     public static function supportedUnitNames(): array
     {
         return array_merge(
+            [
+                self::AUTO
+            ],
             array_keys(self::$aliases),
             array_keys(self::$map)
         );
@@ -196,8 +200,12 @@ class TimeUnit
      *
      * @return string
      */
-    public function resolveDestUnit($unit)
+    public function resolveDestUnit($unit, float $value = null)
     {
+        if ($unit === self::AUTO) {
+            $unit = self::resolveSuitableUnit($value);
+        }
+
         if ($this->overriddenDestUnit) {
             return $this->destUnit;
         }
@@ -350,7 +358,7 @@ class TimeUnit
 
     public static function isTimeUnit(string $unit): bool
     {
-        return isset(self::$map[$unit]) || isset(self::$aliases[$unit]);
+        return in_array($unit, self::supportedUnitNames());
     }
 
     private static function validateMode(string $mode): void
@@ -375,9 +383,34 @@ class TimeUnit
             return $unit;
         }
 
+        if ($unit === self::AUTO) {
+            return $unit;
+        }
+
         throw new \InvalidArgumentException(sprintf(
             'Invalid time unit "%s", available units: "%s"',
             $unit, implode('", "', array_keys(self::$map))
         ));
+    }
+
+    public static function resolveSuitableUnit(?float $value): string
+    {
+        if (null === $value) {
+            return self::MICROSECONDS;
+        }
+
+        if (($value / 60E6) >= 1) {
+            return self::MINUTES;
+        }
+
+        if (($value / 1E6) >= 1) {
+            return self::SECONDS;
+        }
+
+        if (($value / 1E3) >= 1) {
+            return self::MILLISECONDS;
+        }
+
+        return self::MICROSECONDS;
     }
 }

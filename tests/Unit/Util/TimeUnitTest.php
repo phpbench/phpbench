@@ -304,4 +304,32 @@ class TimeUnitTest extends TestCase
         $this->expectExceptionMessage('Invalid time unit "arf"');
         TimeUnit::convertTo(1000, TimeUnit::MICROSECONDS, 'arf');
     }
+
+    /**
+     * @dataProvider provideSuitableUnit
+     */
+    public function testResolveSuitableUnit(float $value, string $expectedUnit): void
+    {
+        self::assertEquals($expectedUnit, TimeUnit::resolveSuitableUnit($value));
+    }
+
+    /**
+     * @return Generator<mixed>
+     */
+    public function provideSuitableUnit(): Generator
+    {
+        yield [1, 'microseconds'];
+
+        yield [100, 'microseconds'];
+
+        yield [1000, 'milliseconds'];
+
+        yield [10000, 'milliseconds'];
+
+        yield [100000, 'milliseconds'];
+
+        yield [1000000, 'seconds'];
+
+        yield [60000000, 'minutes'];
+    }
 }
