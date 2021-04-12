@@ -13,11 +13,19 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+            depth: 0
 
       - name: Set PHP 7.3
         uses: shivammathur/setup-php@v2
         with:
           php-version: '7.3'
+
+      -
+        name: "Composer install"
+        uses: "ramsey/composer-install@v1"
+        with:
+            composer-options: "--no-scripts --no-dev"
 
       - name: Compile phpbench.phar
         run: bin/build-phar.sh
