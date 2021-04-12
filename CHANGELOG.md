@@ -1,8 +1,8 @@
 CHANGELOG
 =========
 
-master
-------
+1.0.0-alpha9
+------------
 
 B/C Breaks:
 
@@ -10,6 +10,8 @@ B/C Breaks:
   ``CoreExtension``, this will change the location of some constants used
   (e.g. ``CoreExtension::TAG_PROGRESS_LOGGER`` is now
   ``RunnerExtension::PROGRESS_LOGGER``.
+- Renamed `travis` progress logger to `plain`
+- Removed awareness of `CONTINUOUS_INTEGRATION` environment variable
 
 Features:
 
@@ -35,6 +37,11 @@ Improvements:
 - Default to showing all columns in expression report
 - Standard deviation in `default` report is shown as time
 - Relative SD is color gradiated
+- Trunacte long syntax error messages
+
+Other:
+
+- Automatically sign PHAR on release
 
 1.0.0-alpha8
 ------------
