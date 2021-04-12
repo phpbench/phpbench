@@ -14,7 +14,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
-            depth: 0
+            fetch-depth: 0
 
       - name: Set PHP 7.3
         uses: shivammathur/setup-php@v2
