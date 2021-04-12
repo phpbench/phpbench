@@ -8,7 +8,6 @@ use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Expression\Exception\PrinterError;
 use PhpBench\Expression\Printer;
 use PhpBench\Expression\Printer\UnderlinePrinterFactory;
-use PhpBench\Util\TextTruncate;
 
 class PrettyErrorEvaluator implements Evaluator
 {
@@ -67,18 +66,11 @@ class PrettyErrorEvaluator implements Evaluator
     private function prettyError(Node $rootNode, EvaluationError $error, array $params): EvaluationError
     {
         try {
-            $expr = $this->printer->print($rootNode);
-            $center = (int)mb_strlen($expr) / 2;
-
             return new EvaluationError($error->node(), implode(PHP_EOL, [
                 sprintf('%s:', $error->getMessage()),
                 '',
-                '    ' . TextTruncate::centered($expr, $center),
-                '    ' . TextTruncate::centered(
-                    $this->underlineFactory->underline($error->node())->print($rootNode),
-                    $center,
-                    ' '
-                )
+                '    ' . $this->printer->print($rootNode),
+                '    ' . $this->underlineFactory->underline($error->node())->print($rootNode),
             ]), $error);
         } catch (PrinterError $printError) {
             throw $error;
