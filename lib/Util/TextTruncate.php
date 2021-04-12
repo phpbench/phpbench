@@ -8,8 +8,9 @@ class TextTruncate
 {
     const TRUNCATE_AT = 40;
 
-    public static function centered(string $input, int $center, string $elipsis = '…', int $length = self::TRUNCATE_AT) {
-
+    public static function centered(string $input, int $center, string $elipsis = '…', ?int $length = self::TRUNCATE_AT)
+    {
+        $length = $length ?: self::TRUNCATE_AT;
         $tStart = max(0, $center - $length);
         $tEnd = $center + $length;
         $inputLn = mb_strlen($input);

@@ -50,30 +50,12 @@ class DotsLoggerTest extends LoggerTestCase
         $this->variant = $this->prophesize(Variant::class);
     }
 
-    protected function tearDown(): void
-    {
-        putenv('CONTINUOUS_INTEGRATION=0');
-    }
-
-    /**
-     * It should output a simple . at the end of a subject in CI mode.
-     */
-    public function testIterationsEndWithCI(): void
-    {
-        $logger = $this->createLogger(true);
-        $this->variant->getRejectCount()->willReturn(0);
-        $this->variant->hasErrorStack()->willReturn(false);
-        $this->variant->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant->reveal(), []));
-        $logger->variantEnd($this->variant->reveal());
-        self::assertEquals('.', $this->output->fetch());
-    }
-
     /**
      * It should reset the line and dump the buffer when NOT in CI mode.
      */
     public function testIterationsEnd(): void
     {
-        $logger = $this->createLogger(false);
+        $logger = $this->createLogger();
         $this->variant->getRejectCount()->willReturn(0);
         $this->variant->hasErrorStack()->willReturn(false);
         $this->variant->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant->reveal(), []));
@@ -86,7 +68,7 @@ class DotsLoggerTest extends LoggerTestCase
      */
     public function testIterationsEndException(): void
     {
-        $logger = $this->createLogger(false);
+        $logger = $this->createLogger();
         $this->variant->hasErrorStack()->willReturn(true);
         $this->variant->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant->reveal(), []));
         $this->variant->getRejectCount()->willReturn(0);
@@ -99,7 +81,7 @@ class DotsLoggerTest extends LoggerTestCase
      */
     public function testIterationsEndFailure(): void
     {
-        $logger = $this->createLogger(false);
+        $logger = $this->createLogger();
         $this->variant->hasErrorStack()->willReturn(false);
         $this->variant->getRejectCount()->willReturn(0);
         $this->variant->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant->reveal(), [AssertionResult::fail()]));
@@ -112,19 +94,9 @@ class DotsLoggerTest extends LoggerTestCase
      */
     public function testIterationsEndRejectionsReturnEarly(): void
     {
-        $logger = $this->createLogger(false);
+        $logger = $this->createLogger();
         $this->variant->getRejectCount()->willReturn(5);
         $logger->variantEnd($this->variant->reveal());
-        self::assertEquals('', $this->output->fetch());
-    }
-
-    /**
-     * It should do nothing in CI mode at the end of an iteration.
-     */
-    public function testDoNothingCiIterations(): void
-    {
-        $logger = $this->createLogger(true);
-        $logger->iterationEnd($this->iteration->reveal());
         self::assertEquals('', $this->output->fetch());
     }
 
@@ -133,7 +105,7 @@ class DotsLoggerTest extends LoggerTestCase
      */
     public function testIteration(): void
     {
-        $logger = $this->createLogger(false);
+        $logger = $this->createLogger();
 
         $this->iteration->getIndex()->willReturn(0, 1, 2, 3, 4);
 
@@ -145,9 +117,8 @@ class DotsLoggerTest extends LoggerTestCase
         self::assertEquals("\r|\r/\r-\r\\\r|", $this->output->fetch());
     }
 
-    private function createLogger(bool $ci = false): DotsLogger
+    private function createLogger(): DotsLogger
     {
-        putenv('CONTINUOUS_INTEGRATION' . ($ci ? '=1' : '=0'));
         $logger = new DotsLogger(
             $this->output,
             $this->variantFormatter,

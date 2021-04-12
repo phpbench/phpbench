@@ -5,10 +5,7 @@ namespace PhpBench\Expression\Exception;
 use PhpBench\Expression\Token;
 use PhpBench\Expression\Tokens;
 use PhpBench\Util\TextTruncate;
-use function str_pad;
 use function str_repeat;
-use function str_replace;
-use function substr_replace;
 
 class SyntaxError extends ExpressionError
 {

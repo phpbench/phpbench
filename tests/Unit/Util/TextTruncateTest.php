@@ -3,8 +3,8 @@
 namespace PhpBench\Tests\Unit\Util;
 
 use Generator;
-use PHPUnit\Framework\TestCase;
 use PhpBench\Util\TextTruncate;
+use PHPUnit\Framework\TestCase;
 
 class TextTruncateTest extends TestCase
 {
@@ -27,8 +27,11 @@ class TextTruncateTest extends TestCase
             2,
             '... 4567 ...'
         ];
+
         yield ['1234567', 5, 2, '... 4567'];
+
         yield ['', 5, 2, ''];
+
         yield ['1234', 2, 2, '1234'];
     }
 }

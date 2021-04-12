@@ -2,12 +2,12 @@
 
 namespace PhpBench\Console\Command;
 
-use PhpBench\Expression\Printer\EvaluatingPrinter;
 use function json_last_error_msg;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Lexer;
 use PhpBench\Expression\Parser;
 use PhpBench\Expression\Printer;
+use PhpBench\Expression\Printer\EvaluatingPrinter;
 use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

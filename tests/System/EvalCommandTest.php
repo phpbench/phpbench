@@ -35,4 +35,3 @@ class EvalCommandTest extends SystemTestCase
         self::assertEquals(0, $process->getExitCode());
     }
 }
-
