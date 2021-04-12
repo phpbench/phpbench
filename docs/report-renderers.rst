@@ -59,5 +59,4 @@ Default outputs:
 
 - ``debug``: Outputs the report document's XML.
 
-.. _GitHub Flavored Markdown: https://help.github.com/articles/github-flavored-markdown
 .. _GNUPlot: http://www.gnuplot.info/
