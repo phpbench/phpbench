@@ -1,4 +1,5 @@
 on:
+  pull_request:
   release:
     types:
       - created
@@ -19,20 +20,31 @@ jobs:
           php-version: '7.3'
 
       - name: Compile phpbench.phar
-        run: |
-          composer install
-          wget https://github.com/box-project/box/releases/download/3.9.1/box.phar
-          php box.phar compile -c box.json.gh-release
+        run: bin/build-phar.sh
+        env:
+          GPG_SIGNING: 1
+          GPG_SECRET_KEY: ${{ secrets.GPG_SECRET_KEY }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
       - name: Check existence of compiled .phar
-        run: test -e phpbench.phar && exit 0 || exit 10
+        run: test -e build/phpbench.phar && exit 0 || exit 10
 
-      - name: Upload to Release
+      - name: "Upload PHAR to Release"
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./phpbench.phar
+          asset_path: ./build/phpbench.phar
           asset_name: phpbench.phar
           asset_content_type: application/octet-stream
+
+      - name: "Attach signature to Release"
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: ./build/phpbench.phar.asc
+          asset_name: phpbench.phar.asc
+          asset_content_type: application/pgp-signature
