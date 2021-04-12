@@ -33,7 +33,7 @@ class TimeUnit
 
     public const MODE_THROUGHPUT = 'throughput';
     public const MODE_TIME = 'time';
-    const AUTO = 'auto';
+    public const AUTO = 'time';
 
     /**
      * @var array
