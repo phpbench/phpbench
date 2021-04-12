@@ -1,15 +1,10 @@
 Reports
 =======
 
-PHPBench includes a primitive reporting framework. It allows for :doc:`report
-generators <report-generators>` which generate *reports* from one or more
-benchmarking suite results.
-
-Reports can be generated for each ``run`` that your perform, or using
-historical data by using the ``report`` command.
-
-The reports are then *renderered* using a :doc:`report renderer
-<report-renderers>` to various outputs (e.g. console, HTML, markdown, CSV).
+PHPBench includes reporting framework. :doc:`Report
+generators <report-generators>` provide report data which can subsequently be
+rendered by :doc:`report renderer
+<report-renderers>`.
 
 This chapter will deal with generating reports and assume that the ``console``
 renderer is used.
@@ -19,11 +14,15 @@ Generating Reports
 
 To report after a benchmarking run::
 
-    $ phpbench run --report=aggregate
+.. approved:: ../examples/Command/report-aggregate
+  :language: bash
+  :section: 2
 
 Multiple reports can be specified::
 
-    $ phpbench run --report=aggregate --report=env
+.. approved:: ../examples/Command/report-aggregate-and-env
+  :language: bash
+  :section: 2
 
 The report command operates in a similar way but requires you to provide some
 data, either from XML dumps or by using a :doc:`storage <storage>` UUID or tag::
