@@ -64,11 +64,9 @@ class PhpBench
             ReportExtension::class,
             ExpressionExtension::class,
             StorageExtension::class,
+            XDebugExtension::class,
         ], $config['extensions']);
 
-        if (extension_loaded('xdebug')) {
-            $extensions[] = XDebugExtension::class;
-        }
         $container = new Container(array_unique($extensions), $config);
         $container->init();
 

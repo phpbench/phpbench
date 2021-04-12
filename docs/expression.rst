@@ -91,6 +91,7 @@ microseconds:
     "minute", "60 seconds"
     "hour", "3,600 seconds"
     "day", "86,400 seconds"
+    "time", "Automatic"
 
 Examples:
 
@@ -108,6 +109,7 @@ Memory Units:
     "kilobyte", "1,000 bytes"
     "megabyte", "1,000,000 bytes"
     "gigabyte", "1,000,000,000 bytes"
+    "memory", "Automatic"
 
 For example:
 

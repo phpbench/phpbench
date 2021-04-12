@@ -89,4 +89,32 @@ class MemoryUnitTest extends TestCase
                 'b',
             ];
     }
+
+    /**
+     * @dataProvider provideSuitableUnit
+     */
+    public function testResolveSuitableUnit(float $value, string $expectedUnit): void
+    {
+        self::assertEquals($expectedUnit, MemoryUnit::resolveSuitableUnit(MemoryUnit::AUTO, $value));
+    }
+
+    /**
+     * @return Generator<mixed>
+     */
+    public function provideSuitableUnit(): Generator
+    {
+        yield [1, MemoryUnit::BYTES];
+
+        yield [100, MemoryUnit::BYTES];
+
+        yield [1000, MemoryUnit::KILOBYTES];
+
+        yield [10000, MemoryUnit::KILOBYTES];
+
+        yield [100000, MemoryUnit::KILOBYTES];
+
+        yield [1000000, MemoryUnit::MEGABYTES];
+
+        yield [1000000000, MemoryUnit::GIGABYTES];
+    }
 }

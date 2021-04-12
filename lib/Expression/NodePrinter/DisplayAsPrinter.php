@@ -62,7 +62,7 @@ class DisplayAsPrinter implements NodePrinter
                 $this->resolvePrecision($node->precision()),
                 $printer->print(
                     new UnitNode(new StringNode($this->timeUnit->getDestSuffix(
-                        $this->timeUnit->resolveDestUnit($unit),
+                        $this->timeUnit->resolveDestUnit($unit, $value->value()),
                         $mode
                     )))
                 ),
@@ -71,6 +71,8 @@ class DisplayAsPrinter implements NodePrinter
         }
 
         if (MemoryUnit::isMemoryUnit($unit)) {
+            $unit = MemoryUnit::resolveSuitableUnit($unit, $value->value());
+
             return $this->memoryUnit(
                 $value->value(),
                 $unit,
@@ -101,7 +103,7 @@ class DisplayAsPrinter implements NodePrinter
         return sprintf('%s%s', number_format(
             $this->timeUnit->toDestUnit(
                 $value,
-                $this->timeUnit->resolveDestUnit($unit),
+                $this->timeUnit->resolveDestUnit($unit, $value),
                 $mode
             ),
             $precision ?: $this->timeUnit->getPrecision()
@@ -115,7 +117,7 @@ class DisplayAsPrinter implements NodePrinter
     {
         return sprintf(
             '%s%s',
-            number_format(MemoryUnit::convertTo($value, MemoryUnit::BYTES, $unit)),
+            number_format(MemoryUnit::convertTo($value, MemoryUnit::BYTES, $unit), $unit === MemoryUnit::BYTES ? 0 : 3),
             $prettyUnit
         );
     }
