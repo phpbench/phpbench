@@ -26,14 +26,15 @@ class CommandsTest extends IntegrationTestCase
         $this->createExample();
 
         $approval = Approval::create($path, 3);
-        $command = trim($approval->getSection(1));
-
-        if (0 !== strpos($command, 'phpbench')) {
-            throw new RuntimeException(sprintf(
-                'Command test command must start with `phpbench`, got "%s"',
-                $command
-            ));
-        }
+        $commands = array_map(function (string $command) {
+            if (0 !== strpos($command, 'phpbench')) {
+                throw new RuntimeException(sprintf(
+                    'Command test command must start with `phpbench`, got "%s"',
+                    $command
+                ));
+            }
+            return substr($command, strlen('phpbench '));
+        }, explode("\n", trim($approval->getSection(1))));
 
         $this->workspace()->put('phpbench.json', json_encode(array_merge([
             'env.enabled_providers' => [],
@@ -41,17 +42,18 @@ class CommandsTest extends IntegrationTestCase
             CoreExtension::PARAM_CONSOLE_ERROR_STREAM => 'php://temp'
         ], json_decode($approval->getSection(0), true))));
 
-        $command = substr($command, strlen('phpbench '));
-        $input = new StringInput($command);
         $cwd = getcwd();
         chdir($this->workspace()->path());
-        $container = PhpBench::loadContainer($input);
-        $application = $container->get(Application::class);
-        assert($application instanceof Application);
-        $application->setAutoExit(false);
-        $application->run($input);
+        foreach ($commands as $command) {
+            $input = new StringInput($command);
+            $container = PhpBench::loadContainer($input);
+            $application = $container->get(Application::class);
+            assert($application instanceof Application);
+            $application->setAutoExit(false);
+            $application->run($input);
+        }
         chdir($cwd);
-        
+
         $output = $this->workspace()->getContents('output');
         // hack to ignore the suite dates
         $output = preg_replace('{[0-9]{4}-[0-9]{2}-[0-9]{2}}', 'xxxx-xx-xx', $output);

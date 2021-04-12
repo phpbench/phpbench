@@ -12,22 +12,24 @@ renderer is used.
 Generating Reports
 ------------------
 
-To report after a benchmarking run::
+To report after a benchmarking run:
 
-.. approved:: ../examples/Command/report-aggregate
+.. approved:: ../examples/Command/run-reports-aggregate
   :language: bash
-  :section: 2
+  :section: 1
 
-Multiple reports can be specified::
+Multiple reports can be specified:
 
-.. approved:: ../examples/Command/report-aggregate-and-env
+.. approved:: ../examples/Command/run-reports-aggregate-and-env
   :language: bash
-  :section: 2
+  :section: 1
 
 The report command operates in a similar way but requires you to provide some
-data, either from XML dumps or by using a :doc:`storage <storage>` UUID or tag::
+data, either from XML dumps or by using a :doc:`storage <storage>` UUID or tag:
 
-    $ phpbench report --ref=latest --report=aggregate
+.. approved:: ../examples/Command/report-ref-latest-and-aggregate
+  :language: bash
+  :section: 1
 
 For more information on storage see :doc:`storage <storage>`.
 
@@ -36,105 +38,40 @@ Configuring Reports
 
 All reports can be configured either in the :ref:`report configuration
 <configuration_reports>` or directly on the command line using a simplified
-JSON encoded string instead of the report name::
+JSON encoded string instead of the report name:
 
-    $ phpbench run --report='generator: "expression", cols: [ "suite", "subject", "mean" ], break: ["benchmark"]'
+To configure a report in ``phpbench.json``:
+
+.. approved:: ../examples/Command/run-configuring-reports-phpbenchjson
+  :language: javascript
+  :section: 0
+
+Then run it with:
+
+.. approved:: ../examples/Command/run-configuring-reports-phpbenchjson
+  :language: bash
+  :section: 1
+
+You can also configure reports directly from the command line using simplified
+JSON:
+
+.. approved:: ../examples/Command/run-configuring-reports
+  :language: bash
+  :section: 1
 
 In each case it is required to specify the ``generator`` key which corresponds
 to the registered name of the :doc:`report generator <report-generators>`.
 
-You may also **extend** an existing report configuration::
+You may also **extend** an existing report configuration:
 
-    $ phpbench run --report='extend: "aggregate", break: ["benchmark", "revs"]'
+.. approved:: ../examples/Command/run-configuring-reports-extend
+  :language: bash
+  :section: 1
 
 This will merge the given keys onto the configuration for the `aggregate report`_.
 
-Expression Generator
---------------------
-
-For details about the expression generator see the :ref:`generator_expression`
-reference, this section will simply offer practical examples.
-
-.. note::
-
-    Here we give the report configuration as an argument on the command line,
-    it is important to note that reports can also be defined in the
-    :doc:`configuration <configuration>`.
-
-Selecting columns
-~~~~~~~~~~~~~~~~~
-
-You can select exactly which columns you need using the ``cols`` option. If you make a mistake an exception
-will be thrown showing all the valid possibilities, see the :ref:`columns <generator_expression_columns>` reference.
-
-The following examples will make use of this option for brevity.
-
-Breaking into multiple tables
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Use the ``break`` option to split tables based on the unique values of the
-given keys:
-
-.. code-block:: bash
-
-    $ phpbench run --report='generator: "expression", break: ["revs"], cols: ["subject", "mean"]'
-
-	revs: 1
-	+-------------+---------+
-	| subject     | mean    |
-	+-------------+---------+
-	| benchMd5    | 3.300μs |
-	| ...         | ...     |
-	+-------------+---------+
-
-	revs: 10
-	+-------------+---------+
-	| subject     | mean    |
-	+-------------+---------+
-	| benchMd5    | 0.700μs |
-	| ...         | ...     |
-	+-------------+---------+
-
-	revs: 100
-	+-------------+---------+
-	| subject     | mean    |
-	+-------------+---------+
-	| benchMd5    | 0.447μs |
-	| ...         | ...     |
-	+-------------+---------+
-
-Multiple columns may be specified:
-
-.. code-block:: bash
-
-    $ phpbench run --report='generator: "expression", break: ["benchmark", "revs"], cols: ["subject", "mean"]'
-
-    benchmark: HashingBenchmark, revs: 1
-    +-------------+---------+
-    | subject     | mean    |
-    +-------------+---------+
-    | benchMd5    | 3.400μs |
-    | benchSha1   | 4.700μs |
-    | benchSha256 | 4.700μs |
-    +-------------+---------+
-
-    benchmark: HashingBenchmark, revs: 10
-    +-------------+---------+
-    | subject     | mean    |
-    +-------------+---------+
-    | benchMd5    | 0.720μs |
-    | benchSha1   | 0.970μs |
-    | benchSha256 | 1.320μs |
-    +-------------+---------+
-
 Default Reports
 ---------------
-
-Configured reports can be executed simply by name as follows::
-
-    $ phpbench run --report=aggregate
-
-The following are reports defined by PHPBench, other reports can be defined in your :doc:`configuration <configuration>`.
 
 .. _report_aggregate:
 
@@ -143,15 +80,9 @@ The following are reports defined by PHPBench, other reports can be defined in y
 
 Shows aggregate details of each set of iterations:
 
-.. code-block:: bash
-
-    +--------------+-------------+--------+--------+------+-----+------------+---------+---------+---------+---------+---------+--------+-------+
-    | benchmark    | subject     | groups | params | revs | its | mem_peak   | best    | mean    | mode    | worst   | stdev   | rstdev | diff  |
-    +--------------+-------------+--------+--------+------+-----+------------+---------+---------+---------+---------+---------+--------+-------+
-    | HashingBench | benchMd5    |        | []     | 1000 | 10  | 1,255,792b | 0.931μs | 0.979μs | 0.957μs | 1.153μs | 0.062μs | 6.37%  | 1.00x |
-    | HashingBench | benchSha1   |        | []     | 1000 | 10  | 1,255,792b | 0.988μs | 1.015μs | 1.004μs | 1.079μs | 0.026μs | 2.57%  | 1.04x |
-    | HashingBench | benchSha256 |        | []     | 1000 | 10  | 1,255,792b | 1.273μs | 1.413μs | 1.294μs | 1.994μs | 0.242μs | 17.16% | 1.44x |
-    +--------------+-------------+--------+--------+------+-----+------------+---------+---------+---------+---------+---------+--------+-------+
+.. approved:: ../examples/Command/run-reports-aggregate
+  :language: bash
+  :section: 2
 
 It is uses the ``table`` generator, see :ref:`generator_expression` for more information.
 
@@ -162,18 +93,9 @@ It is uses the ``table`` generator, see :ref:`generator_expression` for more inf
 
 The default report presents the result of *each iteration*:
 
-.. code-block:: bash
-
-    -------------+-------------+--------+--------+------+------+------------+----------+--------------+----------------+
-    | benchmark    | subject     | groups | params | revs | iter | mem_peak   | time_rev | comp_z_value | comp_deviation |
-    +--------------+-------------+--------+--------+------+------+------------+----------+--------------+----------------+
-    | HashingBench | benchMd5    |        | []     | 1000 | 0    | 1,255,792b | 0.985μs  | +1.00σ       | +0.20%         |
-    | HashingBench | benchMd5    |        | []     | 1000 | 1    | 1,255,792b | 0.981μs  | -1σ          | -0.2%          |
-    | HashingBench | benchSha1   |        | []     | 1000 | 0    | 1,255,792b | 0.992μs  | +1.00σ       | +0.05%         |
-    | HashingBench | benchSha1   |        | []     | 1000 | 1    | 1,255,792b | 0.991μs  | -1σ          | -0.05%         |
-    | HashingBench | benchSha256 |        | []     | 1000 | 0    | 1,255,792b | 1.533μs  | +1.00σ       | +8.68%         |
-    | HashingBench | benchSha256 |        | []     | 1000 | 1    | 1,255,792b | 1.288μs  | -1σ          | -8.68%         |
-    +--------------+-------------+--------+--------+------+------+------------+----------+--------------+----------------+
+.. approved:: ../examples/Command/report-generators-composite
+  :language: javascript
+  :section: 0
 
 It is uses the ``table`` generator, see :ref:`generator_expression` for more information.
 
@@ -185,26 +107,11 @@ It is uses the ``table`` generator, see :ref:`generator_expression` for more inf
 This report shows information about the environment that the benchmarks were
 executed in.
 
-.. code-block:: bash
+.. approved:: ../examples/Command/run-reports-env
+  :language: bash
+  :section: 2
 
-    +--------------+---------+------------------------------------------+
-    | provider     | key     | value                                    |
-    +--------------+---------+------------------------------------------+
-    | uname        | os      | Linux                                    |
-    | uname        | host    | dtlt410                                  |
-    | uname        | release | 4.2.0-1-amd64                            |
-    | uname        | version | #1 SMP Debian 4.2.6-1 (2015-11-10)       |
-    | uname        | machine | x86_64                                   |
-    | php          | version | 5.6.15-1                                 |
-    | unix-sysload | l1      | 0.52                                     |
-    | unix-sysload | l5      | 0.64                                     |
-    | unix-sysload | l15     | 0.57                                     |
-    | vcs          | system  | git                                      |
-    | vcs          | branch  | env_info                                 |
-    | vcs          | version | edde9dc7542cfa8e3ef4da459f0aaa5dfb095109 |
-    +--------------+---------+------------------------------------------+
-
-Generator: :ref:`generator_expression`.
+Generator: :ref:`generator_env`.
 
 Columns:
 
