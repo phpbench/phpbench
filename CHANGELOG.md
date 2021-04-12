@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+master
+------
+
+Improvements:
+
+- Removed "summary" line from default progress output.
+
 1.0.0-alpha9
 ------------
 
