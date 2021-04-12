@@ -105,7 +105,7 @@ class DisplayAsParseletTest extends ParseletTestCase
 
         yield 'int to milliseconds precision 2' => ['1000 as milliseconds precision 2', [], '1.00ms'];
 
-        yield 'int to bytes' => ['1000 as k', [], '1kb'];
+        yield 'int to bytes' => ['1000 as k', [], '1.000kb'];
 
         yield ['100000 as seconds < 1 second', [], '0.100s < 1 second'];
     }

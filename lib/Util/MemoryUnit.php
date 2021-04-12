@@ -10,6 +10,7 @@ class MemoryUnit
     public const KILOBYTES = 'kilobytes';
     public const MEGABYTES = 'megabytes';
     public const GIGABYTES = 'gigabytes';
+    public const AUTO = 'memory';
 
     /**
      * @var array<string, int>
@@ -42,6 +43,9 @@ class MemoryUnit
     public static function supportedUnitNames(): array
     {
         return array_merge(
+            [
+                self::AUTO,
+            ],
             array_keys(self::$aliases),
             array_keys(self::$multipliers)
         );
@@ -56,7 +60,7 @@ class MemoryUnit
 
     public static function isMemoryUnit(string $unit): bool
     {
-        return isset(self::$multipliers[$unit]) || isset(self::$aliases[$unit]);
+        return in_array($unit, self::supportedUnitNames());
     }
 
     public static function convertTo(float $value, string $fromUnit, string $toUnit): float
@@ -66,6 +70,31 @@ class MemoryUnit
         $byteValue = $value * self::$multipliers[$fromUnit];
 
         return $byteValue / self::$multipliers[$toUnit];
+    }
+
+    public static function resolveSuitableUnit(?string $unit, ?float $value): string
+    {
+        if ($unit !== self::AUTO) {
+            return $unit;
+        }
+
+        if (null === $value) {
+            return self::BYTES;
+        }
+
+        if (($value / 1E9) >= 1) {
+            return self::GIGABYTES;
+        }
+
+        if (($value / 1E6) >= 1) {
+            return self::MEGABYTES;
+        }
+
+        if (($value / 1E3) >= 1) {
+            return self::KILOBYTES;
+        }
+
+        return self::BYTES;
     }
 
     private static function resolveUnit(string $unit): string

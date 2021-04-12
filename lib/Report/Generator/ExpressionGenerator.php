@@ -121,7 +121,7 @@ EOT
                 'set' => 'first(variant_name)',
                 'revs' => 'first(variant_revs)',
                 'its' => 'first(variant_iterations)',
-                'mem_peak' => 'max(result_mem_peak) as bytes',
+                'mem_peak' => 'max(result_mem_peak) as memory',
                 'best' => $formatTime('min(result_time_avg)'),
                 'mode' => $formatTime('mode(result_time_avg)'),
                 'mean' => $formatTime('mean(result_time_avg)'),
@@ -135,7 +135,7 @@ EOT
                 'best' => $formatTime('min(result_time_avg)'),
                 'worst' => $formatTime('max(result_time_avg)'),
                 'mode' => $formatTime('mode(result_time_avg)') . ' ~" "~ percent_diff(mode(baseline_time_avg), mode(result_time_avg), rstdev(result_time_avg))',
-                'mem_peak' => '(first(baseline_mem_peak) as bytes) ~ " " ~ percent_diff(first(baseline_mem_peak), first(result_mem_peak))',
+                'mem_peak' => '(first(baseline_mem_peak) as memory) ~ " " ~ percent_diff(first(baseline_mem_peak), first(result_mem_peak))',
                 'rstdev' => 'rstdev(result_time_avg) ~ " " ~ percent_diff(rstdev(baseline_time_avg), rstdev(result_time_avg))',
             ], $expressions);
         });

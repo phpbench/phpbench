@@ -71,6 +71,8 @@ class DisplayAsPrinter implements NodePrinter
         }
 
         if (MemoryUnit::isMemoryUnit($unit)) {
+            $unit = MemoryUnit::resolveSuitableUnit($unit, $value->value());
+
             return $this->memoryUnit(
                 $value->value(),
                 $unit,
@@ -115,7 +117,7 @@ class DisplayAsPrinter implements NodePrinter
     {
         return sprintf(
             '%s%s',
-            number_format(MemoryUnit::convertTo($value, MemoryUnit::BYTES, $unit)),
+            number_format(MemoryUnit::convertTo($value, MemoryUnit::BYTES, $unit), $unit === MemoryUnit::BYTES ? 0 : 3),
             $prettyUnit
         );
     }
