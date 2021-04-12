@@ -1,5 +1,4 @@
 {
-  "chmod": "0755",
   "compression": "GZ",
   "directories": [
     "lib",
@@ -21,6 +20,5 @@
   "git-tag": "git_tag",
   "intercept": true,
   "main": "bin/phpbench.php",
-  "output": "phpbench.phar",
-  "stub": true
+  "output": "build/phpbench.phar"
 }

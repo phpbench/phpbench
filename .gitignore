@@ -1,6 +1,7 @@
 /composer.lock
 /vendor
 /docs/build
+/build
 /.phpbench.sqlite
 /phpunit.xml
 /.travis/phpbench-phar-private.pem
