@@ -1,5 +1,4 @@
 on:
-  pull_request:
   release:
     types:
       - created
