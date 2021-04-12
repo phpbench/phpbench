@@ -12,7 +12,7 @@ use function substr_replace;
 
 class SyntaxError extends ExpressionError
 {
-    public static function forToken(Tokens $tokens, Token $target, string $message): self
+    public static function forToken(Tokens $tokens, Token $target, string $message, int $length = null): self
     {
         $lines = [''];
         $expression = [];
@@ -36,8 +36,8 @@ class SyntaxError extends ExpressionError
                 '',
                 $message . ':',
                 '',
-                '    ' . TextTruncate::centered($expr, $center),
-                '    ' . TextTruncate::centered($underline, $center, ' '),
+                '    ' . TextTruncate::centered($expr, $center, '…', $length),
+                '    ' . TextTruncate::centered($underline, $center, ' ', $length),
             ]
         ));
     }

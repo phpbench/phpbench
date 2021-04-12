@@ -2,17 +2,25 @@
 
 namespace PhpBench\Util;
 
+use function mb_strlen;
+
 class TextTruncate
 {
-    const TRUNCATE_AT = 20;
+    const TRUNCATE_AT = 40;
 
-    public static function centered(string $expr, int $center, string $elipsis = '…', int $length = self::TRUNCATE_AT) {
+    public static function centered(string $input, int $center, string $elipsis = '…', int $length = self::TRUNCATE_AT) {
+
         $tStart = max(0, $center - $length);
         $tEnd = $center + $length;
+        $inputLn = mb_strlen($input);
 
-        $truncated = mb_substr($expr, $tStart, $tEnd - $tStart);
+        if ($tStart > $inputLn) {
+            return '';
+        }
 
-        if ($tEnd < mb_strlen($expr)) {
+        $truncated = mb_substr($input, $tStart, $tEnd - $tStart);
+
+        if ($tEnd < mb_strlen($input)) {
             $truncated = $truncated . ' ' . $elipsis;
         }
 

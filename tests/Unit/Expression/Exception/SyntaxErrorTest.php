@@ -40,7 +40,7 @@ EOT
             new Token(Token::T_NAME, 'BarfooBarfooBarBarfoo', 30),
         ]);
 
-        $error = SyntaxError::forToken($tokens, $token, 'invalid');
+        $error = SyntaxError::forToken($tokens, $token, 'invalid', 20);
         self::assertEquals(<<<'EOT'
 
 invalid:
