@@ -75,15 +75,6 @@ abstract class PhpBenchLogger extends NullLogger
         $this->listErrors($suite);
         $this->listFailures($suite);
 
-        $this->output->writeln(sprintf(
-            '⅀T: %s μSD/r %s μRSD/r: %s%%',
-            $this->timeUnit->format($summary->getTotalTime(), null, TimeUnit::MODE_TIME),
-            $this->timeUnit->format($summary->getMeanStDev(), null, TimeUnit::MODE_TIME),
-            number_format($summary->getMeanRelStDev(), 3)
-        ));
-
-        $this->output->write("\n");
-
         $this->output->writeln((function (Summary $summary, string $message) {
             if ($summary->getNbFailures() || $summary->getNbErrors()) {
                 return sprintf('<error>%s</>', $message);
