@@ -27,29 +27,6 @@ Default outputs:
 - ``console``: Renderers the report directly to the console. This is the
   **default** output method.
 
-.. _renderer_xslt:
-
-``xslt``
---------
-
-The XSLT renderer the path to an XSLT template which will be used to transform
-the report XML document into an output *file*.
-
-Class: ``PhpBench\Report\Renderer\XsltRenderer``.
-
-Options:
-
-- **title**: *(string)*: Title to use for the document (where applicable).
-- **template**: *(string)*: Path to the XSL template.
-- **file**: *(string)*: Path to the output file (existing files will be
-  overwritten). You can use the ``%report_name%`` token, it will be replaced
-  with the name of the report.
-
-Default outputs:
-
-- ``html``: Render the report as a single HTML page.
-- ``markdown``: Render the report as a `GitHub Flavored Markdown`_ document.
-
 ``delimited``
 -------------
 
@@ -82,5 +59,4 @@ Default outputs:
 
 - ``debug``: Outputs the report document's XML.
 
-.. _GitHub Flavored Markdown: https://help.github.com/articles/github-flavored-markdown
 .. _GNUPlot: http://www.gnuplot.info/

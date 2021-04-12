@@ -12,5 +12,4 @@ Reference
    executors
    report-generators
    report-renderers
-   reports
    storage
