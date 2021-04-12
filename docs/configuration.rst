@@ -538,19 +538,3 @@ Default: ``".phpbench\/storage"``
 
 Types: ``["string"]``
 
-XDebug
-------
-
-Extension class: ``PhpBench\Extensions\XDebug\XDebugExtension``
-
-.. _configuration_xdebug_command_handler_output_dir:
-
-xdebug.command.handler.output_dir
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Output directory for generated XDebug profiles
-
-Default: ``".phpbench\/xdebug-profile"``
-
-Types: ``["string"]``
-

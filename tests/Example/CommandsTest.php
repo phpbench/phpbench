@@ -33,6 +33,7 @@ class CommandsTest extends IntegrationTestCase
                     $command
                 ));
             }
+
             return substr($command, strlen('phpbench '));
         }, explode("\n", trim($approval->getSection(1))));
 
@@ -44,6 +45,7 @@ class CommandsTest extends IntegrationTestCase
 
         $cwd = getcwd();
         chdir($this->workspace()->path());
+
         foreach ($commands as $command) {
             $input = new StringInput($command);
             $container = PhpBench::loadContainer($input);

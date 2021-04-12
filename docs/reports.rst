@@ -1,7 +1,7 @@
 Reports
 =======
 
-PHPBench includes reporting framework. :doc:`Report
+PHPBench includes a reporting framework. :doc:`Report
 generators <report-generators>` provide report data which can subsequently be
 rendered by :doc:`report renderer
 <report-renderers>`.
