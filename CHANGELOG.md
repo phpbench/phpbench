@@ -7,6 +7,10 @@ master
 Improvements:
 
 - Removed "summary" line from default progress output.
+- Automatically detect time or memory units by default, added meta-units
+  `time` and `memory`
+- Unconditionally enable `xdebug` extension (previously the entire extension
+  was hidden if Xdebug wasn't installed)
 
 1.0.0-alpha9
 ------------
