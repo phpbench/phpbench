@@ -7,6 +7,7 @@ use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Lexer;
 use PhpBench\Expression\Parser;
 use PhpBench\Expression\Printer;
+use PhpBench\Expression\Printer\EvaluatingPrinter;
 use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -40,16 +41,22 @@ class EvaluateCommand extends Command
     private $printer;
 
     /**
-     * @var Printer
+     * @var EvaluatingPrinter
      */
     private $evalPrinter;
+
+    /**
+     * @var OutputInterface
+     */
+    private $stdout;
 
     public function __construct(
         Evaluator $evaluator,
         Lexer $lexer,
         Parser $parser,
         Printer $printer,
-        Printer $evalPrinter
+        EvaluatingPrinter $evalPrinter,
+        OutputInterface $stdout
     ) {
         parent::__construct();
         $this->lexer = $lexer;
@@ -57,6 +64,7 @@ class EvaluateCommand extends Command
         $this->evaluator = $evaluator;
         $this->printer = $printer;
         $this->evalPrinter = $evalPrinter;
+        $this->stdout = $stdout;
     }
 
     public function configure(): void
@@ -78,11 +86,11 @@ class EvaluateCommand extends Command
         $node = $this->parser->parse($tokens);
         $params = $this->resolveParams($params);
         $evaluated = $this->evaluator->evaluate($node, $params);
-        $output->writeln(
+        $this->stdout->writeln(
             sprintf(
                 "%s\n= %s\n= %s",
                 $this->printer->print($node),
-                $this->evalPrinter->print($node),
+                $this->evalPrinter->withParams($params)->print($node),
                 $this->printer->print($evaluated)
             )
         );

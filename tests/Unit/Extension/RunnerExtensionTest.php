@@ -18,11 +18,6 @@ use PhpBench\Tests\IntegrationTestCase;
 
 class RunnerExtensionTest extends IntegrationTestCase
 {
-    protected function tearDown(): void
-    {
-        putenv('CONTINUOUS_INTEGRATION=0');
-    }
-
     /**
      * It should expand the "path" parameter to an absolute path if it is relative.
      */
@@ -33,21 +28,6 @@ class RunnerExtensionTest extends IntegrationTestCase
             'config_path' => '/path/to/phpbench.json',
         ]);
         $this->assertEquals(['/path/to/hello'], $container->getParameter('path'));
-    }
-
-    /**
-     * It should automatically switch to the travis logger if the
-     * CONTINUOUS_INTEGRATION environment variable is set.
-     */
-    public function testTravisLogger(): void
-    {
-        putenv('CONTINUOUS_INTEGRATION=1');
-
-        $container = $this->container([
-            'path' => 'hello',
-            'config_path' => '/path/to/phpbench.json',
-        ]);
-        $this->assertEquals('travis', $container->getParameter('progress'));
     }
 
     public function testConfigDriver(): void

@@ -14,7 +14,7 @@ PHPBench makes use of ansi escape sequences in most of its progress loggers.
 The default Windows console does not support these sequences, so the output
 can look corrupted.
 
-You can mitigate this by using the `travis` logger, which does not issue any
+You can mitigate this by using the `plain` logger, which does not issue any
 of these escape sequences.
 
 Why do `setUp` and `tearDown` methods not automatically get called?

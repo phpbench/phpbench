@@ -35,11 +35,6 @@ class DotsLogger extends PhpBenchLogger
     /**
      * @var bool
      */
-    private $isCi = false;
-
-    /**
-     * @var bool
-     */
     private $firstTime = true;
 
     public function __construct(
@@ -50,9 +45,6 @@ class DotsLogger extends PhpBenchLogger
     ) {
         parent::__construct($output, $formatter, $timeUnit);
         $this->showBench = $showBench;
-
-        // if we are in travis, don't do any fancy stuff.
-        $this->isCi = getenv('CONTINUOUS_INTEGRATION') ? true : false;
     }
 
     public function benchmarkStart(Benchmark $benchmark): void
@@ -85,12 +77,6 @@ class DotsLogger extends PhpBenchLogger
             $dot = '<error>E</error>';
         }
 
-        if ($this->isCi) {
-            $this->output->write($dot);
-
-            return;
-        }
-
         $this->buffer .= $dot;
         $this->output->write(sprintf(
             "\x0D%s ",
@@ -100,10 +86,6 @@ class DotsLogger extends PhpBenchLogger
 
     public function iterationStart(Iteration $iteration): void
     {
-        if ($this->isCi) {
-            return;
-        }
-
         $state = $iteration->getIndex() % 4;
         $states = [
             0 => '|',

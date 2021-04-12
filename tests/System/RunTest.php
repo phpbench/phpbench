@@ -364,7 +364,7 @@ class RunTest extends SystemTestCase
             ['verbose'],
             ['histogram'],
             ['blinken'],
-            ['travis'],
+            ['plain'],
             ['none'],
         ];
     }

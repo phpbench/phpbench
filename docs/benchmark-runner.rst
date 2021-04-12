@@ -204,19 +204,12 @@ specified using the ``--progress`` option:
 The built-in progress loggers are:
 
 - ``verbose``: The default logger, format: `[R<retry nb.>] I<iter nb.> P<parameter set nb.> <mean|mode per rev.> <standard deviation per rev.> <relative standard deviation per rev.>` ).
-- ``travis``: Similar to verbose, but with no fancy console manipulation. Perfect for travis.
+- ``plain``: Similar to verbose, but without any animation, useful for CI environments.
 - ``dots``: Shows one dot per subject (like PHPUnit).
 - ``classdots``: Shows the benchmark class, and then a dot for each subject.
 - ``blinken``: Highly visual progress logger.
 - ``histogram``: Shows a histogram with 8 vertical levels and 16 bins for each
   iteration set.
-
-.. note::
-
-    PHPBench is aware of the ``CONTINUOUS_INTEGRATION`` environment variable set
-    by travis. If this variable is set then the default logger will
-    automatically be changed to `travis` and the `dots` progress logger will
-    not do any fancy stuff.
 
 All of the progress reports contain the following footer:
 

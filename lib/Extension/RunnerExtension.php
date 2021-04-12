@@ -130,7 +130,7 @@ class RunnerExtension implements ExtensionInterface
             self::PARAM_PHP_CONFIG => [],
             self::PARAM_PHP_DISABLE_INI => false,
             self::PARAM_PHP_WRAPPER => null,
-            self::PARAM_PROGRESS => getenv('CONTINUOUS_INTEGRATION') ? 'travis' : 'verbose',
+            self::PARAM_PROGRESS => 'verbose',
             self::PARAM_PROGRESS_SUMMARY_FORMAT => VariantSummaryFormatter::DEFAULT_FORMAT,
             self::PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT => VariantSummaryFormatter::BASELINE_FORMAT,
             self::PARAM_REMOTE_SCRIPT_PATH => null,
@@ -477,7 +477,7 @@ class RunnerExtension implements ExtensionInterface
                 $container->get(VariantFormatter::class),
                 $container->get(TimeUnit::class)
             );
-        }, [self::TAG_PROGRESS_LOGGER => ['name' => 'travis']]);
+        }, [self::TAG_PROGRESS_LOGGER => ['name' => 'plain']]);
 
         $container->register(NullLogger::class, function (Container $container) {
             return new NullLogger();

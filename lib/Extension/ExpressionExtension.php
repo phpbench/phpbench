@@ -128,7 +128,8 @@ class ExpressionExtension implements ExtensionInterface
                 $container->get(Lexer::class),
                 $container->get(Parser::class),
                 $container->get(Printer::class),
-                $container->get(EvaluatingPrinter::class)
+                $container->get(EvaluatingPrinter::class),
+                $container->get(CoreExtension::SERVICE_OUTPUT_STD)
             );
         }, [
             CoreExtension::TAG_CONSOLE_COMMAND => []

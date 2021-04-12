@@ -19,17 +19,34 @@ class SyntaxErrorTest extends TestCase
             new Token(Token::T_NAME, 'Baz', 17),
         ]);
 
-        $error = SyntaxError::forToken($tokens, $token, 'invalid', [
-            'position' => 5,
-            'type' => Token::T_NONE,
-            'value' => 'is',
-        ]);
+        $error = SyntaxError::forToken($tokens, $token, 'invalid');
         self::assertEquals(<<<'EOT'
 
 invalid:
 
     Foobar  Barfoo   Baz
     --------^^^^^^
+EOT
+        , $error->getMessage());
+    }
+
+    public function testFromTokenTruncatesToMaxLength(): void
+    {
+        $token = new Token(Token::T_NAME, 'Barfoo', 24);
+
+        $tokens = new Tokens([
+            new Token(Token::T_NAME, 'FoobarFoobarFoobarFoobar', 0),
+            $token,
+            new Token(Token::T_NAME, 'BarfooBarfooBarBarfoo', 30),
+        ]);
+
+        $error = SyntaxError::forToken($tokens, $token, 'invalid', 20);
+        self::assertEquals(<<<'EOT'
+
+invalid:
+
+    … oobarFoobarFoobarBarfooBarfooBarfooBarBa …
+      -----------------^^^^^^
 EOT
         , $error->getMessage());
     }
