@@ -4,7 +4,7 @@ namespace PhpBench\Tests\Example;
 
 use Generator;
 use PhpBench\Console\Application;
-use PhpBench\Extension\CoreExtension;
+use PhpBench\Extension\ConsoleExtension;
 use PhpBench\PhpBench;
 use PhpBench\Tests\IntegrationTestCase;
 use PhpBench\Tests\Util\Approval;
@@ -39,8 +39,8 @@ class CommandsTest extends IntegrationTestCase
 
         $this->workspace()->put('phpbench.json', json_encode(array_merge([
             'env.enabled_providers' => [],
-            CoreExtension::PARAM_CONSOLE_OUTPUT_STREAM => $this->workspace()->path('output'),
-            CoreExtension::PARAM_CONSOLE_ERROR_STREAM => 'php://temp',
+            ConsoleExtension::PARAM_CONSOLE_OUTPUT_STREAM => $this->workspace()->path('output'),
+            ConsoleExtension::PARAM_CONSOLE_ERROR_STREAM => 'php://temp',
         ], json_decode($approval->getSection(0), true))));
 
         foreach ($commands as $command) {
@@ -49,7 +49,7 @@ class CommandsTest extends IntegrationTestCase
             $application = $container->get(Application::class);
             assert($application instanceof Application);
             $application->setAutoExit(false);
-            $application->run($input, $container->get(CoreExtension::SERVICE_OUTPUT_STD));
+            $application->run($input, $container->get(ConsoleExtension::SERVICE_OUTPUT_STD));
         }
 
         $output = $this->workspace()->getContents('output');

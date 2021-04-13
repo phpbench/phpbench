@@ -15,6 +15,7 @@ namespace PhpBench;
 use PhpBench\Console\Application;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\Exception\ConfigurationPreProcessingError;
+use PhpBench\Extension\ConsoleExtension;
 use PhpBench\Extension\CoreExtension;
 use PhpBench\Extension\ExpressionExtension;
 use PhpBench\Extension\ReportExtension;
@@ -50,7 +51,7 @@ class PhpBench
         $container = self::loadContainer($input);
         $container->get(Application::class)->run(
             $input,
-            $output ?? $container->get(CoreExtension::SERVICE_OUTPUT_ERR)
+            $output ?? $container->get(ConsoleExtension::SERVICE_OUTPUT_ERR)
         );
     }
 
@@ -65,6 +66,7 @@ class PhpBench
             ExpressionExtension::class,
             StorageExtension::class,
             XDebugExtension::class,
+            ConsoleExtension::class,
         ], $config['extensions']);
 
         $container = new Container(array_unique($extensions), $config);
@@ -105,7 +107,7 @@ class PhpBench
         }
 
         if ($input->getParameterOption(['--no-ansi'])) {
-            $configOverride[CoreExtension::PARAM_CONSOLE_ANSI] = false;
+            $configOverride[ConsoleExtension::PARAM_CONSOLE_ANSI] = false;
         }
 
         if ($value = $input->getParameterOption(['--extension'])) {

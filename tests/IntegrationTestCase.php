@@ -3,6 +3,7 @@
 namespace PhpBench\Tests;
 
 use PhpBench\DependencyInjection\Container;
+use PhpBench\Extension\ConsoleExtension;
 use PhpBench\Extension\CoreExtension;
 use PhpBench\Extension\ExpressionExtension;
 use PhpBench\Extension\ReportExtension;
@@ -29,6 +30,7 @@ class IntegrationTestCase extends TestCase
             ReportExtension::class,
             StorageExtension::class,
             RunnerExtension::class,
+            ConsoleExtension::class,
         ], array_merge([
             ExpressionExtension::PARAM_SYNTAX_HIGHLIGHTING => false,
         ], $config)));

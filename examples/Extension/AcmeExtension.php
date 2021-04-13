@@ -8,6 +8,7 @@ use PhpBench\Examples\Extension\Command\CatsCommand;
 use PhpBench\Examples\Extension\Executor\AcmeExecutor;
 use PhpBench\Examples\Extension\ProgressLogger\CatLogger;
 use PhpBench\Examples\Extension\Report\AcmeGenerator;
+use PhpBench\Extension\ConsoleExtension;
 use PhpBench\Extension\CoreExtension;
 use PhpBench\Extension\ReportExtension;
 use PhpBench\Extension\RunnerExtension;
@@ -42,17 +43,17 @@ class AcmeExtension implements ExtensionInterface
         $container->register(CatsCommand::class, function (Container $container) {
             return new CatsCommand($container->getParameter(self::PARAM_NUMBER_OF_CATS));
         }, [
-            CoreExtension::TAG_CONSOLE_COMMAND => []
+            ConsoleExtension::TAG_CONSOLE_COMMAND => []
         ]);
         // endsection: command_di
         
         // section: progress_logger_di
         $container->register(CatLogger::class, function (Container $container) {
             return new CatLogger(
-                $container->get(CoreExtension::SERVICE_OUTPUT_ERR)
+                $container->get(ConsoleExtension::SERVICE_OUTPUT_ERR)
             );
         }, [
-            CoreExtension::TAG_PROGRESS_LOGGER => [
+            RunnerExtension::TAG_PROGRESS_LOGGER => [
                 'name' => 'cats',
             ]
         ]);

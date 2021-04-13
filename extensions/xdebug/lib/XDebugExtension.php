@@ -19,6 +19,7 @@ use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Executor\Benchmark\RemoteExecutor;
 use PhpBench\Executor\CompositeExecutor;
 use PhpBench\Executor\Method\RemoteMethodExecutor;
+use PhpBench\Extension\ConsoleExtension;
 use PhpBench\Extension\CoreExtension;
 use PhpBench\Extension\RunnerExtension;
 use PhpBench\Extensions\XDebug\Command\Handler\OutputDirHandler;
@@ -49,7 +50,7 @@ class XDebugExtension implements ExtensionInterface
                 $container->get(self::PARAM_OUTPUT_DIR)
             );
         }, [
-            CoreExtension::TAG_CONSOLE_COMMAND => []
+            ConsoleExtension::TAG_CONSOLE_COMMAND => []
         ]);
 
         $container->register(self::PARAM_OUTPUT_DIR, function (Container $container) {

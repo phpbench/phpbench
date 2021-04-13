@@ -84,7 +84,7 @@ class StorageExtension implements ExtensionInterface
         $container->register(DumpHandler::class, function (Container $container) {
             return new DumpHandler(
                 $container->get(XmlEncoder::class),
-                $container->get(CoreExtension::SERVICE_OUTPUT_STD)
+                $container->get(ConsoleExtension::SERVICE_OUTPUT_STD)
             );
         });
 
@@ -94,10 +94,10 @@ class StorageExtension implements ExtensionInterface
                 $container->get(TimeUnit::class),
                 $container->get(TimeUnitHandler::class),
                 null,
-                $container->get(CoreExtension::SERVICE_OUTPUT_STD)
+                $container->get(ConsoleExtension::SERVICE_OUTPUT_STD)
             );
         }, [
-            CoreExtension::TAG_CONSOLE_COMMAND => []
+            ConsoleExtension::TAG_CONSOLE_COMMAND => []
         ]);
     }
 

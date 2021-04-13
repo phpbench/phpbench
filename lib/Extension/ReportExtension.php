@@ -36,8 +36,8 @@ class ReportExtension implements ExtensionInterface
     public const PARAM_REPORTS = 'reports';
     public const TAG_REPORT_GENERATOR = 'report_generator';
     public const TAG_REPORT_RENDERER = 'report_renderer';
-    public const SERVICE_REGISTRY_GENERATOR = 'report.registry.generator';
-    public const SERVICE_REGISTRY_RENDERER = 'report.registry.renderer';
+    public const SERVICE_REGISTRY_GENERATOR = 'report_registry.generator';
+    public const SERVICE_REGISTRY_RENDERER = 'report_registry.renderer';
 
     public function configure(OptionsResolver $resolver): void
     {
@@ -92,7 +92,7 @@ class ReportExtension implements ExtensionInterface
                 $container->get(DumpHandler::class)
             );
         }, [
-            CoreExtension::TAG_CONSOLE_COMMAND => []
+            ConsoleExtension::TAG_CONSOLE_COMMAND => []
         ]);
 
         $container->register(ShowCommand::class, function (Container $container) {
@@ -104,14 +104,14 @@ class ReportExtension implements ExtensionInterface
                 $container->get(UuidResolver::class)
             );
         }, [
-            CoreExtension::TAG_CONSOLE_COMMAND => []
+            ConsoleExtension::TAG_CONSOLE_COMMAND => []
         ]);
     }
 
     private function registerRegistries(Container $container): void
     {
         foreach (['generator' => self::PARAM_REPORTS, 'renderer' => self::PARAM_OUTPUTS] as $registryType => $optionName) {
-            $container->register('report.registry.' . $registryType, function (Container $container) use ($registryType, $optionName) {
+            $container->register('report_registry.' . $registryType, function (Container $container) use ($registryType, $optionName) {
                 $registry = new ConfigurableRegistry(
                     $registryType,
                     $container,
@@ -169,13 +169,13 @@ class ReportExtension implements ExtensionInterface
     {
         $container->register(ConsoleRenderer::class, function (Container $container) {
             return new ConsoleRenderer(
-                $container->get(CoreExtension::SERVICE_OUTPUT_STD),
+                $container->get(ConsoleExtension::SERVICE_OUTPUT_STD),
                 $container->get(Printer::class)
             );
         }, [self::TAG_REPORT_RENDERER => ['name' => 'console']]);
         $container->register(DelimitedRenderer::class, function (Container $container) {
             return new DelimitedRenderer(
-                $container->get(CoreExtension::SERVICE_OUTPUT_STD),
+                $container->get(ConsoleExtension::SERVICE_OUTPUT_STD),
                 $container->get(ExpressionExtension::SERVICE_BARE_PRINTER)
             );
         }, [self::TAG_REPORT_RENDERER => ['name' => 'delimited']]);

@@ -419,7 +419,7 @@ class RunnerExtension implements ExtensionInterface
                 $container->get(StorageExtension::SERVICE_REGISTRY_DRIVER)
             );
         }, [
-            CoreExtension::TAG_CONSOLE_COMMAND => []
+            ConsoleExtension::TAG_CONSOLE_COMMAND => []
         ]);
     }
 
@@ -449,7 +449,7 @@ class RunnerExtension implements ExtensionInterface
 
         $container->register(DotsLogger::class, function (Container $container) {
             return new DotsLogger(
-                $container->get(CoreExtension::SERVICE_OUTPUT_ERR),
+                $container->get(ConsoleExtension::SERVICE_OUTPUT_ERR),
                 $container->get(VariantFormatter::class),
                 $container->get(TimeUnit::class)
             );
@@ -457,7 +457,7 @@ class RunnerExtension implements ExtensionInterface
 
         $container->register(DotsLogger::class .'.show', function (Container $container) {
             return new DotsLogger(
-                $container->get(CoreExtension::SERVICE_OUTPUT_ERR),
+                $container->get(ConsoleExtension::SERVICE_OUTPUT_ERR),
                 $container->get(VariantFormatter::class),
                 $container->get(TimeUnit::class),
                 true
@@ -466,7 +466,7 @@ class RunnerExtension implements ExtensionInterface
 
         $container->register(VerboseLogger::class, function (Container $container) {
             return new VerboseLogger(
-                $container->get(CoreExtension::SERVICE_OUTPUT_ERR),
+                $container->get(ConsoleExtension::SERVICE_OUTPUT_ERR),
                 $container->get(VariantFormatter::class),
                 $container->get(TimeUnit::class)
             );
@@ -474,7 +474,7 @@ class RunnerExtension implements ExtensionInterface
 
         $container->register(TravisLogger::class, function (Container $container) {
             return new TravisLogger(
-                $container->get(CoreExtension::SERVICE_OUTPUT_ERR),
+                $container->get(ConsoleExtension::SERVICE_OUTPUT_ERR),
                 $container->get(VariantFormatter::class),
                 $container->get(TimeUnit::class)
             );
@@ -486,7 +486,7 @@ class RunnerExtension implements ExtensionInterface
 
         $container->register(BlinkenLogger::class, function (Container $container) {
             return new BlinkenLogger(
-                $container->get(CoreExtension::SERVICE_OUTPUT_ERR),
+                $container->get(ConsoleExtension::SERVICE_OUTPUT_ERR),
                 $container->get(VariantFormatter::class),
                 $container->get(TimeUnit::class)
             );
@@ -494,7 +494,7 @@ class RunnerExtension implements ExtensionInterface
 
         $container->register(HistogramLogger::class, function (Container $container) {
             return new HistogramLogger(
-                $container->get(CoreExtension::SERVICE_OUTPUT_ERR),
+                $container->get(ConsoleExtension::SERVICE_OUTPUT_ERR),
                 $container->get(VariantFormatter::class),
                 $container->get(TimeUnit::class)
             );
