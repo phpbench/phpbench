@@ -92,6 +92,7 @@ EOT
 
         $container->register(LoggerInterface::class, function (Container $container) {
             return new ConsoleLogger(
+                $container->get(ConsoleExtension::SERVICE_OUTPUT_ERR),
                 $container->getParameter(self::PARAM_DEBUG)
             );
         });
