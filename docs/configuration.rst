@@ -486,10 +486,10 @@ Storage
 
 Extension class: ``PhpBench\Extension\StorageExtension``
 
-.. _configuration_storage:
+.. _configuration_storage_driver:
 
-storage
-~~~~~~~
+storage.driver
+~~~~~~~~~~~~~~
 
 Storage driver to use
 
@@ -497,10 +497,10 @@ Default: ``"xml"``
 
 Types: ``["string"]``
 
-.. _configuration_xml_storage_path:
+.. _configuration_storage_xml_storage_path:
 
-xml_storage_path
-~~~~~~~~~~~~~~~~
+storage.xml_storage_path
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 Path to store benchmark runs when they are stored with ``--store`` or ``--tag=foo``
 

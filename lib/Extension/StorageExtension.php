@@ -34,13 +34,13 @@ use Webmozart\PathUtil\Path;
 
 class StorageExtension implements ExtensionInterface
 {
-    public const PARAM_STORAGE = 'storage';
-    public const PARAM_XML_STORAGE_PATH = 'xml_storage_path';
+    public const PARAM_STORAGE = 'storage.driver';
+    public const PARAM_XML_STORAGE_PATH = 'storage.xml_storage_path';
 
     public const SERVICE_REGISTRY_DRIVER = 'storage.driver_registry';
 
-    public const TAG_STORAGE_DRIVER = 'storage_driver';
-    public const TAG_UUID_RESOLVER = 'uuid_resolver';
+    public const TAG_STORAGE_DRIVER = 'storage.driver';
+    public const TAG_UUID_RESOLVER = 'storage.uuid_resolver';
 
     public function configure(OptionsResolver $resolver): void
     {
