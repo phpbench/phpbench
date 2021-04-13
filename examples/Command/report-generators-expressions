@@ -1,5 +1,5 @@
 {
-    "reports": {
+    "report.generators": {
          "my-report": {
              "generator": "expression",
              "expressions": {

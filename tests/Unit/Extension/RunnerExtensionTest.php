@@ -13,6 +13,7 @@
 namespace PhpBench\Tests\Unit\Extension;
 
 use PhpBench\Benchmark\Metadata\Driver\ConfigDriver;
+use PhpBench\Extension\CoreExtension;
 use PhpBench\Extension\RunnerExtension;
 use PhpBench\Tests\IntegrationTestCase;
 
@@ -24,10 +25,10 @@ class RunnerExtensionTest extends IntegrationTestCase
     public function testRelativizePath(): void
     {
         $container = $this->container([
-            'path' => 'hello',
-            'config_path' => '/path/to/phpbench.json',
+            RunnerExtension::PARAM_PATH => 'hello',
+            CoreExtension::PARAM_CONFIG_PATH => '/path/to/phpbench.json',
         ]);
-        $this->assertEquals(['/path/to/hello'], $container->getParameter('path'));
+        $this->assertEquals(['/path/to/hello'], $container->getParameter(RunnerExtension::PARAM_PATH));
     }
 
     public function testConfigDriver(): void

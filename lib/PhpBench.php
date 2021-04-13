@@ -15,6 +15,7 @@ namespace PhpBench;
 use PhpBench\Console\Application;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\Exception\ConfigurationPreProcessingError;
+use PhpBench\Extension\ConsoleExtension;
 use PhpBench\Extension\CoreExtension;
 use PhpBench\Extension\ExpressionExtension;
 use PhpBench\Extension\ReportExtension;
@@ -50,13 +51,13 @@ class PhpBench
         $container = self::loadContainer($input);
         $container->get(Application::class)->run(
             $input,
-            $output ?? $container->get(CoreExtension::SERVICE_OUTPUT_ERR)
+            $output ?? $container->get(ConsoleExtension::SERVICE_OUTPUT_ERR)
         );
     }
 
-    public static function loadContainer(InputInterface $input): Container
+    public static function loadContainer(InputInterface $input, ?string $cwd = null): Container
     {
-        $config = self::loadConfig($input);
+        $config = self::loadConfig($input, $cwd ?: getcwd());
 
         $extensions = array_merge([
             CoreExtension::class,
@@ -65,7 +66,8 @@ class PhpBench
             ExpressionExtension::class,
             StorageExtension::class,
             XDebugExtension::class,
-        ], $config['extensions']);
+            ConsoleExtension::class,
+        ], $config[CoreExtension::PARAM_EXTENSIONS]);
 
         $container = new Container(array_unique($extensions), $config);
         $container->init();
@@ -76,14 +78,13 @@ class PhpBench
     /**
      * @return array<string,mixed>
      */
-    private static function loadConfig(InputInterface $input): array
+    private static function loadConfig(InputInterface $input, string $cwd): array
     {
         $configPaths = [];
         $extensions = [];
         $configOverride = [];
         $profile = null;
         $argBootstrap = null;
-        $cwd = getcwd();
 
         if ($value = $input->getParameterOption(['--working-dir'])) {
             $cwd = Path::makeAbsolute($value, getcwd());
@@ -102,11 +103,11 @@ class PhpBench
 
         if ($value = $input->getParameterOption(['--bootstrap', '-b='])) {
             $argBootstrap = $value;
-            $configOverride['bootstrap'] = $value;
+            $configOverride[RunnerExtension::PARAM_BOOTSTRAP] = $value;
         }
 
         if ($input->getParameterOption(['--no-ansi'])) {
-            $configOverride[CoreExtension::PARAM_CONSOLE_ANSI] = false;
+            $configOverride[ConsoleExtension::PARAM_ANSI] = false;
         }
 
         if ($value = $input->getParameterOption(['--extension'])) {
@@ -114,21 +115,21 @@ class PhpBench
         }
 
         if ($value = $input->getParameterOption(['--php-binary'])) {
-            $configOverride['php_binary'] = $value;
+            $configOverride[RunnerExtension::PARAM_PHP_BINARY] = $value;
         }
 
         if ($value = $input->getParameterOption(['--php-wrapper'])) {
-            $configOverride['php_wrapper'] = $value;
+            $configOverride[RunnerExtension::PARAM_PHP_WRAPPER] = $value;
         }
 
         if ($value = $input->getParameterOption(['--php-config'])) {
             $jsonParser = new JsonDecoder();
             $value = $jsonParser->decode($value);
-            $configOverride['php_config'] = $value;
+            $configOverride[RunnerExtension::PARAM_PHP_CONFIG] = $value;
         }
 
         if ($input->hasParameterOption(['--php-disable-ini'])) {
-            $configOverride['php_disable_ini'] = true;
+            $configOverride[RunnerExtension::PARAM_PHP_DISABLE_INI] = true;
         }
 
         if ($value = $input->getParameterOption(['--profile'])) {
@@ -177,7 +178,7 @@ class PhpBench
                 $config,
                 json_decode($configRaw, true)
             );
-            $config['config_path'] = $configPath;
+            $config[CoreExtension::PARAM_CONFIG_PATH] = $configPath;
 
             break;
         }
@@ -187,20 +188,20 @@ class PhpBench
             $configOverride
         );
 
-        if ($configFile && !$argBootstrap && $config['bootstrap']) {
-            $config['bootstrap'] = Path::makeAbsolute($config['bootstrap'], dirname($configFile));
-        } elseif ($config['bootstrap']) {
-            $config['bootstrap'] = Path::makeAbsolute($config['bootstrap'], $cwd);
+        if ($configFile && !$argBootstrap && $config[RunnerExtension::PARAM_BOOTSTRAP]) {
+            $config[RunnerExtension::PARAM_BOOTSTRAP] = Path::makeAbsolute($config[RunnerExtension::PARAM_BOOTSTRAP], dirname($configFile));
+        } elseif ($config[RunnerExtension::PARAM_BOOTSTRAP]) {
+            $config[RunnerExtension::PARAM_BOOTSTRAP] = Path::makeAbsolute($config[RunnerExtension::PARAM_BOOTSTRAP], $cwd);
         }
 
         if (null !== $profile) {
             $config = self::mergeProfile($config, $profile);
         }
-        unset($config['profiles']);
+        unset($config[CoreExtension::PARAM_PROFILES]);
 
         // add any manually specified extensions
         foreach ($extensions as $extension) {
-            $config['extensions'][] = $extension;
+            $config[CoreExtension::PARAM_EXTENSIONS][] = $extension;
         }
 
         return $config;
@@ -208,14 +209,14 @@ class PhpBench
 
     private static function mergeProfile(array $config, string $profile): array
     {
-        if (!isset($config['profiles'][$profile])) {
+        if (!isset($config[CoreExtension::PARAM_PROFILES][$profile])) {
             throw new ConfigurationPreProcessingError(sprintf(
                 'Unknown profile "%s" specified, defined profiles: "%s"',
-                $profile, implode('", "', array_keys($config['profiles'] ?? []))
+                $profile, implode('", "', array_keys($config[CoreExtension::PARAM_PROFILES] ?? []))
             ));
         }
 
-        return array_merge($config, $config['profiles'][$profile]);
+        return array_merge($config, $config[CoreExtension::PARAM_PROFILES][$profile]);
     }
 
     private static function registerErrorHandler(): void

@@ -6,6 +6,13 @@ master
 
 B/C breaks:
 
+- Most configuration option names have changed. All options are now prefixed
+  by their extension name, e.g. `bootstrap` => `runner.bootstrap`, `path` =>
+  `runner.path`, `extensions` => `core.extensions`. See the configuration
+  [documentation(https://phpbench.readthedocs.io/en/latest/configuration.html)
+  for a full reference.
+- Removed `time_unit` and `time_mode` configuration settings, as they are
+  replaced by `runner.time_unit` and `runner.time_mode`.
 - Environment provider `baseline` renamed to `sampler` to avoid
   concept-conflict with the runner baselines.
 

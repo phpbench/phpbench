@@ -6,16 +6,15 @@ that order and use one if it exists.
 .. code-block:: json
 
     {
-        "bootstrap": "vendor/autoload.php",
-        "path": "path/to/benchmarks",
-        "outputs": {
-             "my_output": {
-                 "extends": "html",
-                 "file": "my_report.html",
-                 "title": "Hello World"
+        "runner.bootstrap": "vendor/autoload.php",
+        "runner.path": "path/to/benchmarks",
+        "report.outputs": {
+             "my_csv_output": {
+                 "extends": "delimited",
+                 "delimiter": ",",
              }
         },
-        "reports": {
+        "report.generators": {
             "my_report": {
                 "extends": "aggregate"
             }

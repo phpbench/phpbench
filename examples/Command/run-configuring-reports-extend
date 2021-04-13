@@ -1,5 +1,5 @@
 {
-    "path": "NothingBench.php",
+    "runner.path": "NothingBench.php",
     "runner.executor": "debug"
 }
 ---

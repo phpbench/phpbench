@@ -4,7 +4,8 @@ namespace PhpBench\Tests\Example;
 
 use Generator;
 use PhpBench\Console\Application;
-use PhpBench\Extension\CoreExtension;
+use PhpBench\Extension\ConsoleExtension;
+use PhpBench\Extension\RunnerExtension;
 use PhpBench\PhpBench;
 use PhpBench\Tests\IntegrationTestCase;
 use PhpBench\Tests\Util\Approval;
@@ -38,23 +39,19 @@ class CommandsTest extends IntegrationTestCase
         }, explode("\n", trim($approval->getSection(1))));
 
         $this->workspace()->put('phpbench.json', json_encode(array_merge([
-            'env.enabled_providers' => [],
-            CoreExtension::PARAM_CONSOLE_OUTPUT_STREAM => $this->workspace()->path('output'),
-            CoreExtension::PARAM_CONSOLE_ERROR_STREAM => 'php://temp'
+            RunnerExtension::PARAM_ENABLED_PROVIDERS => [],
+            ConsoleExtension::PARAM_OUTPUT_STREAM => $this->workspace()->path('output'),
+            ConsoleExtension::PARAM_ERROR_STREAM => 'php://temp',
         ], json_decode($approval->getSection(0), true))));
-
-        $cwd = getcwd();
-        chdir($this->workspace()->path());
 
         foreach ($commands as $command) {
             $input = new StringInput($command);
-            $container = PhpBench::loadContainer($input);
+            $container = PhpBench::loadContainer($input, $this->workspace()->path());
             $application = $container->get(Application::class);
             assert($application instanceof Application);
             $application->setAutoExit(false);
-            $application->run($input);
+            $application->run($input, $container->get(ConsoleExtension::SERVICE_OUTPUT_STD));
         }
-        chdir($cwd);
 
         $output = $this->workspace()->getContents('output');
         // hack to ignore the suite dates

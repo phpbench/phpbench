@@ -1,8 +1,8 @@
 {
-    "path": "NothingBench.php",
+    "runner.path": "NothingBench.php",
     "runner.executor": "debug",
-    "env.enabled_providers": ["test"],
-    "reports": {
+    "runner.env_enabled_providers": ["test"],
+    "report.generators": {
         "all": {
             "generator": "composite",
             "reports": [ "default", "aggregate", "env" ]

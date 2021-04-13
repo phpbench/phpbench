@@ -69,25 +69,24 @@ class RunnerExtension implements ExtensionInterface
     public const ENV_PROVIDER_UNAME = 'uname';
     public const ENV_PROVIDER_UNIX_SYSLOAD = 'unix_sysload';
 
-    public const PARAM_ANNOTATIONS = 'annotations';
-    public const PARAM_ANNOTATION_IMPORT_USE = 'annotation_import_use';
-    public const PARAM_ATTRIBUTES = 'attributes';
-    public const PARAM_BOOTSTRAP = 'bootstrap';
-    public const PARAM_ENABLED_PROVIDERS = 'env.enabled_providers';
-    public const PARAM_ENV_BASELINES = 'env_baselines';
-    public const PARAM_ENV_BASELINE_CALLABLES = 'env_baseline_callables';
-    public const PARAM_EXECUTORS = 'executors';
-    public const PARAM_PATH = 'path';
-    public const PARAM_PHP_BINARY = 'php_binary';
-    public const PARAM_PHP_CONFIG = 'php_config';
-    public const PARAM_PHP_DISABLE_INI = 'php_disable_ini';
-    public const PARAM_PHP_WRAPPER = 'php_wrapper';
-    public const PARAM_PROGRESS = 'progress';
-    public const PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT = 'progress_summary_baseline_format';
-    public const PARAM_PROGRESS_SUMMARY_FORMAT = 'progress_summary_variant_format';
-    public const PARAM_REMOTE_SCRIPT_PATH = 'remote_script_path';
-    public const PARAM_REMOTE_SCRIPT_REMOVE = 'remote_script_remove';
-    public const PARAM_RETRY_THRESHOLD = 'retry_threshold';
+    public const PARAM_ANNOTATIONS = 'runner.annotations';
+    public const PARAM_ANNOTATION_IMPORT_USE = 'runner.annotation_import_use';
+    public const PARAM_ATTRIBUTES = 'runner.attributes';
+    public const PARAM_BOOTSTRAP = 'runner.bootstrap';
+    public const PARAM_ENABLED_PROVIDERS = 'runner.env_enabled_providers';
+    public const PARAM_ENV_SAMPLERS = 'runner.env_samplers';
+    public const PARAM_ENV_SAMPLER_CALLABLES = 'runner.env_sampler_callables';
+    public const PARAM_EXECUTORS = 'runner.executors';
+    public const PARAM_PATH = 'runner.path';
+    public const PARAM_PHP_BINARY = 'runner.php_binary';
+    public const PARAM_PHP_CONFIG = 'runner.php_config';
+    public const PARAM_PHP_DISABLE_INI = 'runner.php_disable_ini';
+    public const PARAM_PHP_WRAPPER = 'runner.php_wrapper';
+    public const PARAM_PROGRESS = 'runner.progress';
+    public const PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT = 'runner.progress_summary_baseline_format';
+    public const PARAM_PROGRESS_SUMMARY_FORMAT = 'runner.progress_summary_variant_format';
+    public const PARAM_REMOTE_SCRIPT_PATH = 'runner.remote_script_path';
+    public const PARAM_REMOTE_SCRIPT_REMOVE = 'runner.remote_script_remove';
     public const PARAM_RUNNER_ASSERT = 'runner.assert';
     public const PARAM_RUNNER_EXECUTOR = 'runner.executor';
     public const PARAM_RUNNER_FORMAT = 'runner.format';
@@ -98,14 +97,15 @@ class RunnerExtension implements ExtensionInterface
     public const PARAM_RUNNER_REVS = 'runner.revs';
     public const PARAM_RUNNER_TIMEOUT = 'runner.timeout';
     public const PARAM_RUNNER_WARMUP = 'runner.warmup';
-    public const PARAM_SUBJECT_PATTERN = 'subject_pattern';
+    public const PARAM_SUBJECT_PATTERN = 'runner.subject_pattern';
 
-    public const SERVICE_REGISTRY_EXECUTOR = 'benchmark.registry.executor';
-    public const SERVICE_VARIANT_SUMMARY_FORMATTER = 'progress_logger.variant_summary_formatter';
+    public const SERVICE_REGISTRY_EXECUTOR = 'runner.benchmark_registry.executor';
+    public const SERVICE_VARIANT_SUMMARY_FORMATTER = 'runner.progress_logger_variant_summary_formatter';
+    public const SERVICE_REGISTRY_LOGGER = 'runner.progress_logger_registry';
 
-    public const TAG_ENV_PROVIDER = 'environment_provider';
-    public const TAG_EXECUTOR = 'benchmark_executor';
-    public const TAG_PROGRESS_LOGGER = 'progress_logger';
+    public const TAG_ENV_PROVIDER = 'runner.environment_provider';
+    public const TAG_EXECUTOR = 'runner.benchmark_executor';
+    public const TAG_PROGRESS_LOGGER = 'runner.progress_logger';
 
     public function configure(OptionsResolver $resolver): void
     {
@@ -122,8 +122,8 @@ class RunnerExtension implements ExtensionInterface
                 self::ENV_PROVIDER_UNAME,
                 self::ENV_PROVIDER_UNIX_SYSLOAD,
             ],
-            self::PARAM_ENV_BASELINES => ['nothing', 'md5', 'file_rw'],
-            self::PARAM_ENV_BASELINE_CALLABLES => [],
+            self::PARAM_ENV_SAMPLERS => ['nothing', 'md5', 'file_rw'],
+            self::PARAM_ENV_SAMPLER_CALLABLES => [],
             self::PARAM_EXECUTORS => [],
             self::PARAM_PATH => null,
             self::PARAM_PHP_BINARY => null,
@@ -135,7 +135,6 @@ class RunnerExtension implements ExtensionInterface
             self::PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT => VariantSummaryFormatter::BASELINE_FORMAT,
             self::PARAM_REMOTE_SCRIPT_PATH => null,
             self::PARAM_REMOTE_SCRIPT_REMOVE => true,
-            self::PARAM_RETRY_THRESHOLD => null,
             self::PARAM_RUNNER_ASSERT => null,
             self::PARAM_RUNNER_EXECUTOR => null,
             self::PARAM_RUNNER_FORMAT => null,
@@ -154,8 +153,8 @@ class RunnerExtension implements ExtensionInterface
         $resolver->setAllowedTypes(self::PARAM_ATTRIBUTES, ['bool']);
         $resolver->setAllowedTypes(self::PARAM_BOOTSTRAP, ['string', 'null']);
         $resolver->setAllowedTypes(self::PARAM_ENABLED_PROVIDERS, ['array']);
-        $resolver->setAllowedTypes(self::PARAM_ENV_BASELINES, ['array']);
-        $resolver->setAllowedTypes(self::PARAM_ENV_BASELINE_CALLABLES, ['array']);
+        $resolver->setAllowedTypes(self::PARAM_ENV_SAMPLERS, ['array']);
+        $resolver->setAllowedTypes(self::PARAM_ENV_SAMPLER_CALLABLES, ['array']);
         $resolver->setAllowedTypes(self::PARAM_EXECUTORS, ['array']);
         $resolver->setAllowedTypes(self::PARAM_PATH, ['string', 'array', 'null']);
         $resolver->setAllowedTypes(self::PARAM_PHP_BINARY, ['string', 'null']);
@@ -167,7 +166,6 @@ class RunnerExtension implements ExtensionInterface
         $resolver->setAllowedTypes(self::PARAM_PROGRESS_SUMMARY_FORMAT, ['string']);
         $resolver->setAllowedTypes(self::PARAM_REMOTE_SCRIPT_PATH, ['string', 'null']);
         $resolver->setAllowedTypes(self::PARAM_REMOTE_SCRIPT_REMOVE, ['bool']);
-        $resolver->setAllowedTypes(self::PARAM_RETRY_THRESHOLD, ['null', 'int', 'float']);
         $resolver->setAllowedTypes(self::PARAM_RUNNER_ASSERT, ['null', 'string', 'array']);
         $resolver->setAllowedTypes(self::PARAM_RUNNER_EXECUTOR, ['null', 'string']);
         $resolver->setAllowedTypes(self::PARAM_RUNNER_FORMAT, ['null', 'string']);
@@ -186,8 +184,8 @@ class RunnerExtension implements ExtensionInterface
             self::PARAM_ATTRIBUTES => 'Read metadata from PHP 8 attributes',
             self::PARAM_BOOTSTRAP => 'Path to bootstrap (e.g. ``vendor/autoload.php``)',
             self::PARAM_ENABLED_PROVIDERS => 'Select which environment samplers to use',
-            self::PARAM_ENV_BASELINES => 'Environment baselines (not to be confused with baseline comparisons when running benchmarks) are small benchmarks which run to sample the speed of the system (e.g. file I/O, computation etc). This setting enables or disables these baselines',
-            self::PARAM_ENV_BASELINE_CALLABLES => 'Map of baseline callables (adds you to register a new environemntal baseline)',
+            self::PARAM_ENV_SAMPLERS => 'Environment baselines (not to be confused with baseline comparisons when running benchmarks) are small benchmarks which run to sample the speed of the system (e.g. file I/O, computation etc). This setting enables or disables these baselines',
+            self::PARAM_ENV_SAMPLER_CALLABLES => 'Map of baseline callables (adds you to register a new environemntal baseline)',
             self::PARAM_EXECUTORS => 'Add new executor configurations',
             self::PARAM_PATH => 'Path or paths to the benchmarks',
             self::PARAM_PHP_BINARY => 'Specify a PHP binary to use when executing out-of-band benchmarks, e.g. ``/usr/bin/php6``, defaults to the version of PHP used to invoke PHPBench',
@@ -199,7 +197,6 @@ class RunnerExtension implements ExtensionInterface
             self::PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT => 'When the a comparison benchmark is referenced, alternative expression used to render the summary text default progress loggers',
             self::PARAM_REMOTE_SCRIPT_PATH => 'PHPBench generates a PHP file for out-of-band benchmarks which is executed, this setting specifies the path to this file. When NULL a file in the systems temporary directory will be used',
             self::PARAM_REMOTE_SCRIPT_REMOVE => 'If the generated file should be removed after it has been executed (useful for debugging)',
-            self::PARAM_RETRY_THRESHOLD => 'DEPRECATED: use :ref:`configuration_runner_retry_threshold` instead',
             self::PARAM_RUNNER_ASSERT => 'Default :ref:`metadata_assertions`',
             self::PARAM_RUNNER_EXECUTOR => 'Default executor',
             self::PARAM_RUNNER_FORMAT => 'Default :ref:`metadata_format`',
@@ -268,7 +265,7 @@ class RunnerExtension implements ExtensionInterface
         $container->register(Provider\Sampler::class, function (Container $container) {
             return new Provider\Sampler(
                 $container->get(SamplerManager::class),
-                $container->getParameter(self::PARAM_ENV_BASELINES)
+                $container->getParameter(self::PARAM_ENV_SAMPLERS)
             );
         }, [self::TAG_ENV_PROVIDER => [
             'name' => self::ENV_PROVIDER_SAMPLER,
@@ -310,7 +307,7 @@ class RunnerExtension implements ExtensionInterface
                 $container->get(self::SERVICE_REGISTRY_EXECUTOR),
                 $container->get(Supplier::class),
                 $container->get(AssertionProcessor::class),
-                $container->getParameter(self::PARAM_RETRY_THRESHOLD),
+                $container->getParameter(self::PARAM_RUNNER_RETRY_THRESHOLD),
                 $container->getParameter(CoreExtension::PARAM_CONFIG_PATH)
             );
         });
@@ -401,7 +398,7 @@ class RunnerExtension implements ExtensionInterface
         $container->register(RunnerHandler::class, function (Container $container) {
             return new RunnerHandler(
                 $container->get(Runner::class),
-                $container->get(CoreExtension::SERVICE_REGISTRY_LOGGER),
+                $container->get(self::SERVICE_REGISTRY_LOGGER),
                 $container->get(BenchmarkFinder::class),
                 $container->getParameter(self::PARAM_PROGRESS),
                 $container->getParameter(self::PARAM_PATH)
@@ -418,7 +415,7 @@ class RunnerExtension implements ExtensionInterface
                 $container->get(StorageExtension::SERVICE_REGISTRY_DRIVER)
             );
         }, [
-            CoreExtension::TAG_CONSOLE_COMMAND => []
+            ConsoleExtension::TAG_CONSOLE_COMMAND => []
         ]);
     }
 
@@ -433,7 +430,7 @@ class RunnerExtension implements ExtensionInterface
                 $container->getParameter(self::PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT)
             );
         });
-        $container->register(CoreExtension::SERVICE_REGISTRY_LOGGER, function (Container $container) {
+        $container->register(self::SERVICE_REGISTRY_LOGGER, function (Container $container) {
             $registry = new LoggerRegistry();
 
             foreach ($container->getServiceIdsForTag(self::TAG_PROGRESS_LOGGER) as $serviceId => $attributes) {
@@ -448,7 +445,7 @@ class RunnerExtension implements ExtensionInterface
 
         $container->register(DotsLogger::class, function (Container $container) {
             return new DotsLogger(
-                $container->get(CoreExtension::SERVICE_OUTPUT_ERR),
+                $container->get(ConsoleExtension::SERVICE_OUTPUT_ERR),
                 $container->get(VariantFormatter::class),
                 $container->get(TimeUnit::class)
             );
@@ -456,7 +453,7 @@ class RunnerExtension implements ExtensionInterface
 
         $container->register(DotsLogger::class .'.show', function (Container $container) {
             return new DotsLogger(
-                $container->get(CoreExtension::SERVICE_OUTPUT_ERR),
+                $container->get(ConsoleExtension::SERVICE_OUTPUT_ERR),
                 $container->get(VariantFormatter::class),
                 $container->get(TimeUnit::class),
                 true
@@ -465,7 +462,7 @@ class RunnerExtension implements ExtensionInterface
 
         $container->register(VerboseLogger::class, function (Container $container) {
             return new VerboseLogger(
-                $container->get(CoreExtension::SERVICE_OUTPUT_ERR),
+                $container->get(ConsoleExtension::SERVICE_OUTPUT_ERR),
                 $container->get(VariantFormatter::class),
                 $container->get(TimeUnit::class)
             );
@@ -473,7 +470,7 @@ class RunnerExtension implements ExtensionInterface
 
         $container->register(TravisLogger::class, function (Container $container) {
             return new TravisLogger(
-                $container->get(CoreExtension::SERVICE_OUTPUT_ERR),
+                $container->get(ConsoleExtension::SERVICE_OUTPUT_ERR),
                 $container->get(VariantFormatter::class),
                 $container->get(TimeUnit::class)
             );
@@ -485,7 +482,7 @@ class RunnerExtension implements ExtensionInterface
 
         $container->register(BlinkenLogger::class, function (Container $container) {
             return new BlinkenLogger(
-                $container->get(CoreExtension::SERVICE_OUTPUT_ERR),
+                $container->get(ConsoleExtension::SERVICE_OUTPUT_ERR),
                 $container->get(VariantFormatter::class),
                 $container->get(TimeUnit::class)
             );
@@ -493,7 +490,7 @@ class RunnerExtension implements ExtensionInterface
 
         $container->register(HistogramLogger::class, function (Container $container) {
             return new HistogramLogger(
-                $container->get(CoreExtension::SERVICE_OUTPUT_ERR),
+                $container->get(ConsoleExtension::SERVICE_OUTPUT_ERR),
                 $container->get(VariantFormatter::class),
                 $container->get(TimeUnit::class)
             );
@@ -600,7 +597,7 @@ class RunnerExtension implements ExtensionInterface
                 (array)$container->getParameter(self::PARAM_RUNNER_REVS),
                 $container->getParameter(self::PARAM_RUNNER_TIMEOUT),
                 (array)$container->getParameter(self::PARAM_RUNNER_WARMUP),
-                (float)($container->getParameter(self::PARAM_RUNNER_RETRY_THRESHOLD) ?: $container->getParameter(self::PARAM_RETRY_THRESHOLD))
+                (float)$container->getParameter(self::PARAM_RUNNER_RETRY_THRESHOLD)
             );
         });
 
@@ -617,7 +614,7 @@ class RunnerExtension implements ExtensionInterface
                 'nothing' => '\PhpBench\Benchmark\Baseline\Baselines::nothing',
                 'md5' => '\PhpBench\Benchmark\Baseline\Baselines::md5',
                 'file_rw' => '\PhpBench\Benchmark\Baseline\Baselines::fwriteFread',
-            ], $container->getParameter(self::PARAM_ENV_BASELINE_CALLABLES));
+            ], $container->getParameter(self::PARAM_ENV_SAMPLER_CALLABLES));
 
             foreach ($callables as $name => $callable) {
                 $manager->addSamplerCallable($name, $callable);

@@ -52,7 +52,7 @@ placed in the class docblock, or on individual methods docblocks.
 .. note::
 
     Instead of prefixing a method with ``bench`` you can use the
-    ``@Subject`` annotation or specify a :ref:`custom pattern <configuration_subject_pattern>`.
+    ``@Subject`` annotation or specify a :ref:`custom pattern <configuration_runner_subject_pattern>`.
 
 Benchmark Configuration
 -----------------------

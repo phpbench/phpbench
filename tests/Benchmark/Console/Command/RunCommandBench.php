@@ -3,7 +3,8 @@
 namespace PhpBench\Tests\Benchmark\Console\Command;
 
 use PhpBench\Console\Command\RunCommand;
-use PhpBench\Extension\CoreExtension;
+use PhpBench\Extension\ConsoleExtension;
+use PhpBench\Extension\RunnerExtension;
 use PhpBench\Tests\Benchmark\IntegrationBenchCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -43,7 +44,7 @@ class RunCommandBench extends IntegrationBenchCase
             'path' => '.',
             '--executor' => 'local',
         ], [
-            'env.enabled_providers' => [],
+            RunnerExtension::PARAM_ENABLED_PROVIDERS => [],
         ]);
     }
 
@@ -62,7 +63,7 @@ EOT
     {
         chdir($this->workspace()->path());
         $command = $this->container(array_merge([
-            CoreExtension::PARAM_DISABLE_OUTPUT => false,
+            ConsoleExtension::PARAM_DISABLE_OUTPUT => false,
         ], $config))->get(RunCommand::class);
         $cwd = getcwd();
         $input = new ArrayInput($args);

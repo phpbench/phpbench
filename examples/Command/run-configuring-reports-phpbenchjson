@@ -1,7 +1,7 @@
 {
-    "path": "NothingBench.php",
+    "runner.path": "NothingBench.php",
     "runner.executor": "debug",
-    "reports": {
+    "report.generators": {
         "my-report": {
             "generator": "expression",
             "cols": [ "benchmark", "tag", "subject", "mean" ],

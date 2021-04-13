@@ -1,5 +1,5 @@
 {
-    "env.enabled_providers": ["test"]
+    "runner.env_enabled_providers": ["test"]
 }
 ---
 phpbench run --report='extends:bare,vertical:true' --executor=debug NothingBench.php --progress=none

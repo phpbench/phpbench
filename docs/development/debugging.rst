@@ -17,8 +17,8 @@ render this template in a local directory and ensure that it is not deleted.
 .. code-block:: json
 
     {
-        "remote_script_path": ".phpbench/script",
-        "remote_script_remove": false
+        "runner.remote_script_path": ".phpbench/script",
+        "runner.remote_script_remove": false
     }
 
 Each remove will be rendered in this directory and can be executed with ``php

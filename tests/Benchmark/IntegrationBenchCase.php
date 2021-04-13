@@ -3,6 +3,7 @@
 namespace PhpBench\Tests\Benchmark;
 
 use PhpBench\DependencyInjection\Container;
+use PhpBench\Extension\ConsoleExtension;
 use PhpBench\Extension\CoreExtension;
 use PhpBench\Extension\ExpressionExtension;
 use PhpBench\Extension\ReportExtension;
@@ -22,6 +23,7 @@ abstract class IntegrationBenchCase
     {
         $container = new Container([
             CoreExtension::class,
+            ConsoleExtension::class,
             RunnerExtension::class,
             ReportExtension::class,
             StorageExtension::class,

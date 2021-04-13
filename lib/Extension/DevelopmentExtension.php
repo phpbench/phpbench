@@ -18,9 +18,9 @@ class DevelopmentExtension implements ExtensionInterface
         $container->register(ConfigReferenceCommand::class, function (Container $container) {
             return new ConfigReferenceCommand(new ConfigDumper(
                 $container->getExtensionClasses()
-            ), $container->get(CoreExtension::SERVICE_OUTPUT_STD));
+            ), $container->get(ConsoleExtension::SERVICE_OUTPUT_STD));
         }, [
-            CoreExtension::TAG_CONSOLE_COMMAND => []
+            ConsoleExtension::TAG_CONSOLE_COMMAND => []
         ]);
     }
 

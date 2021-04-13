@@ -19,6 +19,7 @@ use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Executor\Benchmark\RemoteExecutor;
 use PhpBench\Executor\CompositeExecutor;
 use PhpBench\Executor\Method\RemoteMethodExecutor;
+use PhpBench\Extension\ConsoleExtension;
 use PhpBench\Extension\CoreExtension;
 use PhpBench\Extension\RunnerExtension;
 use PhpBench\Extensions\XDebug\Command\Handler\OutputDirHandler;
@@ -28,7 +29,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class XDebugExtension implements ExtensionInterface
 {
-    const PARAM_OUTPUT_DIR = 'xdebug.command.handler.output_dir';
+    const PARAM_OUTPUT_DIR = 'xdebug.command_handler_output_dir';
 
     public function configure(OptionsResolver $resolver): void
     {
@@ -49,7 +50,7 @@ class XDebugExtension implements ExtensionInterface
                 $container->get(self::PARAM_OUTPUT_DIR)
             );
         }, [
-            CoreExtension::TAG_CONSOLE_COMMAND => []
+            ConsoleExtension::TAG_CONSOLE_COMMAND => []
         ]);
 
         $container->register(self::PARAM_OUTPUT_DIR, function (Container $container) {
@@ -73,6 +74,6 @@ class XDebugExtension implements ExtensionInterface
             ]
         ]);
 
-        $container->mergeParameter('executors', require(__DIR__ . '/config/executors.php'));
+        $container->mergeParameter(RunnerExtension::PARAM_EXECUTORS, require(__DIR__ . '/config/executors.php'));
     }
 }

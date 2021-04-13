@@ -34,13 +34,13 @@ use Webmozart\PathUtil\Path;
 
 class StorageExtension implements ExtensionInterface
 {
-    public const PARAM_STORAGE = 'storage';
-    public const PARAM_XML_STORAGE_PATH = 'xml_storage_path';
+    public const PARAM_STORAGE = 'storage.driver';
+    public const PARAM_XML_STORAGE_PATH = 'storage.xml_storage_path';
 
     public const SERVICE_REGISTRY_DRIVER = 'storage.driver_registry';
 
-    public const TAG_STORAGE_DRIVER = 'storage_driver';
-    public const TAG_UUID_RESOLVER = 'uuid_resolver';
+    public const TAG_STORAGE_DRIVER = 'storage.driver';
+    public const TAG_UUID_RESOLVER = 'storage.uuid_resolver';
 
     public function configure(OptionsResolver $resolver): void
     {
@@ -84,7 +84,7 @@ class StorageExtension implements ExtensionInterface
         $container->register(DumpHandler::class, function (Container $container) {
             return new DumpHandler(
                 $container->get(XmlEncoder::class),
-                $container->get(CoreExtension::SERVICE_OUTPUT_STD)
+                $container->get(ConsoleExtension::SERVICE_OUTPUT_STD)
             );
         });
 
@@ -94,10 +94,10 @@ class StorageExtension implements ExtensionInterface
                 $container->get(TimeUnit::class),
                 $container->get(TimeUnitHandler::class),
                 null,
-                $container->get(CoreExtension::SERVICE_OUTPUT_STD)
+                $container->get(ConsoleExtension::SERVICE_OUTPUT_STD)
             );
         }, [
-            CoreExtension::TAG_CONSOLE_COMMAND => []
+            ConsoleExtension::TAG_CONSOLE_COMMAND => []
         ]);
     }
 

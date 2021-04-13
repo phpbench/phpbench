@@ -13,6 +13,7 @@
 namespace PhpBench\Examples\Benchmark\Macro;
 
 use PhpBench\DependencyInjection\Container;
+use PhpBench\Extension\ConsoleExtension;
 use PhpBench\Extension\CoreExtension;
 use PhpBench\Extension\ExpressionExtension;
 use PhpBench\Extension\ReportExtension;
@@ -43,6 +44,7 @@ class BaseBenchCase
         ReportExtension::class,
         StorageExtension::class,
         ExpressionExtension::class,
+        ConsoleExtension::class,
     ];
 
     private $config = [];
@@ -83,7 +85,7 @@ class BaseBenchCase
     protected function getContainer()
     {
         $container = new Container($this->extensions, array_merge([
-            CoreExtension::PARAM_DISABLE_OUTPUT => true,
+            ConsoleExtension::PARAM_DISABLE_OUTPUT => true,
         ], $this->config));
         $container->init();
 

@@ -70,7 +70,7 @@ You may specify these options multiple times.
 Overriding the Bootstrap
 ------------------------
 
-You can override or set the :ref:`configuration_bootstrap` using the
+You can override or set the :ref:`configuration_runner_bootstrap` using the
 ``--bootstrap`` option:
 
 .. code-block:: bash
@@ -140,7 +140,7 @@ but the longer it will take for a set of iterations to be resolved.
 By default the retry threshold is disabled.
 
 You may also set the retry threshold in the
-:ref:`configuration <configuration_retry_threshold>`.
+:ref:`configuration <configuration_runner_retry_threshold>`.
 
 Changing the Output Format
 --------------------------
