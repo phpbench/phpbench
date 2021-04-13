@@ -1,0 +1,33 @@
+language: php
+
+cache:
+  directories:
+    - "$HOME/.composer/cache"
+
+stages:
+  - deploy
+
+jobs:
+  include:
+    - stage: Deploy
+
+      if: (NOT type IN (pull_request)) AND (branch = master)
+
+      php: 7.2
+
+      before_install:
+        - source .travis/xdebug.sh
+        - xdebug-disable
+
+      script: skip
+
+      before_deploy:
+        - ./.travis/before-deploy.sh
+
+      deploy:
+        provider: pages
+        skip-cleanup: true
+        github-token:
+          secure: "cVKcMHHv6MV1HiP78hYPyBx6VIy+DzIv6HS0QM/g3gHnE7EWopu9mQjku2DQtQWAjqVrIPL3ClvZxJH5MjDd4/kB6kWQDGX5O2+CaqzhaJgSpT0htFLbiClqK1uvl2QnHoqwfnhIux230AWDtQfod1g1p60nryo65pLG0HGHqXU="
+        on:
+          branch: master

@@ -1,0 +1,89 @@
+{
+    "name": "phpbench/phpbench",
+    "description": "PHP Benchmarking Framework",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Daniel Leech",
+            "email": "daniel@dantleech.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": "^7.2 || ^8.0",
+        "ext-dom": "*",
+        "ext-json": "*",
+        "ext-pcre": "*",
+        "ext-reflection": "*",
+        "ext-spl": "*",
+        "ext-tokenizer": "*",
+        "beberlei/assert": "^2.4 || ^3.0",
+        "doctrine/annotations": "^1.2.7",
+        "doctrine/dbal": "~2.5",
+        "padraic/phar-updater": "^1.0",
+        "phpbench/container": "^2.1",
+        "phpbench/dom": "~0.3.0",
+        "psr/log": "^1.1",
+        "seld/jsonlint": "^1.1",
+        "symfony/console": "^4.2 || ^5.0",
+        "symfony/filesystem": "^4.2 || ^5.0",
+        "symfony/finder": "^4.2 || ^5.0",
+        "symfony/options-resolver": "^4.2 || ^5.0",
+        "symfony/process": "^4.2 || ^5.0",
+        "webmozart/path-util": "^2.3"
+    },
+    "require-dev": {
+        "dantleech/invoke": "^1.2",
+        "friendsofphp/php-cs-fixer": "^2.13.1",
+        "jangregor/phpstan-prophecy": "^0.8.1",
+        "phpspec/prophecy": "^1.12",
+        "phpstan/phpstan": "^0.12.7",
+        "phpunit/phpunit": "^8.5.8 || ^9.0",
+        "symfony/error-handler": "^5.2",
+        "symfony/var-dumper": "^4.0 || ^5.0"
+    },
+    "scripts": {
+        "integrate": [
+            "vendor/bin/php-cs-fixer fix",
+            "vendor/bin/phpstan analyse -c phpstan.neon.dist",
+            "vendor/bin/phpunit",
+            "bin/phpbench run --revs=1 --iterations=1",
+            "bin/phpbench run --profile=examples --revs=1 --iterations=1",
+            "@docs"
+        ],
+        "docs": [
+            "rm -Rf docs/build",
+            "bin/phpbench config:dump-reference > docs/configuration.rst",
+            "make -C docs html"
+        ]
+    },
+    "suggest": {
+        "ext-xdebug": "For Xdebug profiling extension."
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "PhpBench\\": "lib/",
+            "PhpBench\\Extensions\\XDebug\\": "extensions/xdebug/lib/",
+            "PhpBench\\Extensions\\Reports\\": "extensions/reports/lib/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "PhpBench\\Tests\\": "tests/",
+            "PhpBench\\Examples\\": "examples/",
+            "PhpBench\\Extensions\\XDebug\\Tests\\": "extensions/xdebug/tests/"
+        }
+    },
+    "bin": [
+        "bin/phpbench"
+    ]
+}

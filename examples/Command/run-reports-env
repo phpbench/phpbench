@@ -1,0 +1,16 @@
+{
+    "runner.path": "NothingBench.php",
+    "runner.executor": "debug",
+    "runner.env_enabled_providers": ["test"]
+}
+---
+phpbench run --report=env
+---
+Suite E3X6AeMdP7L9E7E0X0A7McP1L8E1EdXbAbMbP7La xxxx-xx-xx xx-xx-xx
++----------+----------+-------+
+| provider | key      | value |
++----------+----------+-------+
+| test     | example1 | 1     |
+| test     | example2 | 2     |
++----------+----------+-------+
+

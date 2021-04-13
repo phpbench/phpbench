@@ -1,0 +1,54 @@
+<?php
+
+namespace PhpBench;
+
+use Traversable;
+
+function normalize_parameter_set($parameterSet) 
+{
+    if ($parameterSet instanceof Traversable) {
+        return iterator_to_array($parameterSet);
+    }
+
+    return $parameterSet;
+}
+
+$bootstrap = '{{ bootstrap }}';
+$file = '{{ file }}';
+$class = '{{ class }}';
+
+if ($bootstrap) {
+    call_user_func(function () use ($bootstrap) {
+        require_once($bootstrap);
+    });
+}
+
+require_once($file);
+
+$paramProviders = {{ paramProviders }};
+$benchmark = new $class();
+$parameterSets = array();
+
+// don't let the user benchmark output anything
+ob_start();
+
+foreach ($paramProviders as $paramProvider) {
+    if (is_callable([$benchmark, $paramProvider])) {
+        $parameterSets[] = normalize_parameter_set($benchmark->$paramProvider());
+        continue;
+    }
+
+    if (is_callable($paramProvider)) {
+        $parameterSets[] = normalize_parameter_set($paramProvider());
+        continue;
+    }
+
+    throw new \RuntimeException(sprintf(
+        'Class has no method "%s" and it is not a callable', $paramProvider
+    ));
+}
+
+ob_end_clean();
+
+echo serialize($parameterSets);
+exit(0);

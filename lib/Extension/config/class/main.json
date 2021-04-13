@@ -1,0 +1,42 @@
+{
+    "z-value": [
+        [ "number", { "decimal_places": 2 } ],
+        [ "balance", { } ],
+        [ "printf", { "format": "%sσ" } ]
+    ],
+    "integer": [
+        [ "number", { "decimal_places": 0 } ]
+    ],
+    "percentage": [
+        [ "printf", { "format": "%.2f%%" } ]
+    ],
+    "invert_on_throughput": [
+        [ "invert_on_throughput", { "mode": "{{ output_mode }}" } ]
+    ],
+    "deviation": [
+        [ "number", { "decimal_places": 2 }],
+        [ "balance", {} ],
+        [ "printf", { "format": "%s%%" } ]
+    ],
+    "diff": [
+        [ "number", { "decimal_places": 2 }],
+        [ "printf", { "format": "%sx" } ]
+    ],
+    "mem": [
+        [ "number" ],
+        [ "printf", { "format": "%sb" }]
+    ],
+    "time_sd": [
+        [ "time", { "mode": "time", "unit": "{{ output_time_unit }}" }]
+    ],
+    "timeunit": [
+        [ "time", { "precision": "{{ output_time_precision }}", "unit": "{{ output_time_unit }}", "mode": "{{ output_mode }}", "resolve": ["mode", "unit"] }]
+    ],
+    "microseconds": [
+        [ "time", { "precision": "0", "unit": "microseconds" }]
+    ],
+    "seconds": [
+        [ "time", { "precision": "0", "unit": "seconds" }]
+    ]
+}
+

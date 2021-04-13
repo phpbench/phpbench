@@ -1,0 +1,28 @@
+{
+  "algorithm": "OPENSSL",
+  "chmod": "0755",
+  "compression": "GZ",
+  "directories": [
+    "lib",
+    "extensions"
+  ],
+  "files": [
+    "LICENSE"
+  ],
+  "finder": [
+    {
+      "name": "{\\.[php]}",
+      "exclude": [
+        "tests",
+        "test"
+      ],
+      "in": "vendor"
+    }
+  ],
+  "git-commit-short": "git_version",
+  "intercept": true,
+  "key": ".travis/phpbench-phar-private.pem",
+  "main": "bin/phpbench.php",
+  "output": "phpbench.phar",
+  "stub": true
+}

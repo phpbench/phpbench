@@ -1,0 +1,18 @@
+{
+    "report.generators": {
+         "my-report": {
+             "generator": "expression",
+             "cols": ["subject", "mode"]
+         }
+    }
+}
+---
+phpbench run --report=my-report --executor=debug NothingBench.php --progress=none
+---
+
++--------------+----------+
+| subject      | mode     |
++--------------+----------+
+| benchNothing | 10.000μs |
++--------------+----------+
+

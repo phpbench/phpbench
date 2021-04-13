@@ -1,0 +1,22 @@
+{
+    "report.generators": {
+         "my-report": {
+             "generator": "expression",
+             "cols": {
+                 "subject": null,
+                 "mode": null,
+                 "hello": "format(\"Hello World: %s\", \"Foobar\")"
+             }
+         }
+    }
+}
+---
+phpbench run --report=my-report --executor=debug NothingBench.php --progress=none
+---
+
++--------------+----------+---------------------+
+| subject      | mode     | hello               |
++--------------+----------+---------------------+
+| benchNothing | 10.000μs | Hello World: Foobar |
++--------------+----------+---------------------+
+

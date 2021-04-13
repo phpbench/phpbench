@@ -1,0 +1,85 @@
+<?php
+
+namespace PhpBench;
+
+use ReflectionAttribute;
+use ReflectionClass;
+use ReflectionMethod;
+
+$bootstrap = '{{ bootstrap }}';
+$class = '{{ class }}';
+$file = '{{ file }}';
+
+if ($bootstrap) {
+    call_user_func(function () use ($bootstrap) {
+        require_once($bootstrap);
+    });
+}
+
+require_once($file);
+
+$classHierarchy = class_parents($class);
+array_unshift($classHierarchy, $class);
+
+foreach ($classHierarchy as $class) {
+    $refl = new \ReflectionClass($class);
+    $metadata = array(
+        'class' => $class,
+        'namespace' => $refl->getNamespaceName(),
+        'abstract' => $refl->isAbstract(),
+        'methods' => array(),
+        'interfaces' => array(),
+        'comment' => $refl->getDocComment()
+    );
+
+    foreach ($refl->getMethods() as $methodRefl) {
+        $comment = $methodRefl->getDocComment();
+        $metadata['methods'][$methodRefl->getName()] = array(
+            'class' => $class,
+            'name' => $methodRefl->getName(),
+            'comment' => $comment,
+            'static' => $methodRefl->isStatic(),
+            'attributes' => resolve_method_attributes($methodRefl),
+        );
+    }
+
+    foreach ($refl->getInterfaces() as $interfaceRefl) {
+        $metadata['interfaces'][] = $interfaceRefl->getName();
+    }
+
+    $metadata['attributes'] = resolve_class_attributes($refl);
+
+    $metadatas[] = $metadata;
+}
+
+function resolve_class_attributes(ReflectionClass $reflection): array
+{
+    if (PHP_VERSION_ID < 80000) {
+        return [];
+    }
+
+    return array_map(function (ReflectionAttribute $attribute) {
+        return [
+            'name' => $attribute->getName(),
+            'args' => $attribute->getArguments(),
+        ];
+    }, $reflection->getAttributes());
+}
+
+function resolve_method_attributes(ReflectionMethod $reflection): array
+{
+    if (PHP_VERSION_ID < 80000) {
+        return [];
+    }
+
+    return array_map(function (ReflectionAttribute $attribute) {
+        return [
+            'name' => $attribute->getName(),
+            'args' => $attribute->getArguments(),
+        ];
+    }, $reflection->getAttributes());
+}
+
+// in the future we should return also the parent classes
+echo serialize($metadatas);
+exit(0);

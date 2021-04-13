@@ -1,0 +1,27 @@
+<?php
+
+// repress any output from the user scripts
+ob_start();
+
+$class = '{{ class }}';
+$file = '{{ file }}';
+$methods = {{ methods }};
+$bootstrap = '{{ bootstrap }}';
+
+if ($bootstrap) {
+    call_user_func(function () use ($bootstrap) {
+        require_once($bootstrap);
+    });
+}
+
+require_once($file);
+
+foreach ($methods as $method) {
+    $class::$method();
+}
+
+ob_end_clean();
+
+echo serialize(array());
+
+exit(0);

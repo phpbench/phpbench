@@ -1,0 +1,2 @@
+format("hello %s", "daniel") = "hello daniel"
+format("%2.4f%%", rstdev([1,2])) = "33.3333%"

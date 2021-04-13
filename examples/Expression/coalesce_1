@@ -1,0 +1,1 @@
+coalesce(null, null, 10) = 10

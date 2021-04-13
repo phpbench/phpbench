@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- http://www.phpunit.de/manual/current/en/appendixes.configuration.html -->
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd" colors="true" bootstrap="tests/bootstrap.php" failOnWarning="true">
+  <testsuites>
+    <testsuite name="PhpBench">
+      <directory>./tests</directory>
+    </testsuite>
+    <testsuite name="PhpBench Xdebug Extension">
+      <directory>./extensions/xdebug/tests</directory>
+    </testsuite>
+  </testsuites>
+</phpunit>

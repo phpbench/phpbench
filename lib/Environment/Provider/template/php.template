@@ -1,0 +1,10 @@
+<?php
+
+echo serialize([
+    'xdebug' => in_array('xdebug', get_loaded_extensions()),
+    'version' => phpversion(),
+    'ini' => php_ini_loaded_file(),
+    'extensions' => implode(', ', get_loaded_extensions()),
+]);
+
+exit(0);

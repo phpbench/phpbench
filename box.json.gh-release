@@ -1,0 +1,24 @@
+{
+  "compression": "GZ",
+  "directories": [
+    "lib",
+    "extensions"
+  ],
+  "files": [
+    "LICENSE"
+  ],
+  "finder": [
+    {
+      "name": "{\\.[php]}",
+      "exclude": [
+        "tests",
+        "test"
+      ],
+      "in": "vendor"
+    }
+  ],
+  "git-tag": "git_tag",
+  "intercept": true,
+  "main": "bin/phpbench.php",
+  "output": "build/phpbench.phar"
+}

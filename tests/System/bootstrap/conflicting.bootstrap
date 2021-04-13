@@ -1,0 +1,9 @@
+<?php
+
+namespace Test;
+
+$file = 'foobar';
+
+class Foobar
+{
+}

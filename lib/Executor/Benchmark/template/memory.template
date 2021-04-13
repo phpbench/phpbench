@@ -1,0 +1,79 @@
+<?php
+
+// repress any output from the user scripts
+ob_start();
+
+$class = '{{ class }}';
+$file = '{{ file }}';
+$beforeMethods = {{ beforeMethods }};
+$afterMethods = {{ afterMethods }};
+$bootstrap = '{{ bootstrap }}';
+$warmup = {{ warmup }};
+
+if ($bootstrap) {
+    call_user_func(function () use ($bootstrap) {
+        require_once($bootstrap);
+    });
+}
+
+require_once($file);
+
+$benchmark = new $class();
+
+// run before methods
+foreach ($beforeMethods as $beforeMethod) {
+    $benchmark->$beforeMethod({{ parameters }});
+}
+
+// run warmup if required
+if ($warmup) {
+    for ($i = 0; $i < $warmup; $i++) {
+        $benchmark->{{ subject }}({{ parameters }});
+    }
+}
+
+// disable garbage collection
+cleanGarbageCollectionAndDisable();
+
+// run benchmark
+$time = 0.00;
+for ($i = 0; $i < {{ revolutions }}; $i++) {
+    $startTime = microtime(true);
+
+    $benchmark->{{ subject }}({{ parameters }});
+
+    $endTime = microtime(true);
+
+    $time += ($endTime - $startTime) * 1000000;
+
+    cleanGarbageCollectionAndDisable();
+}
+
+// run after methods
+foreach ($afterMethods as $afterMethod) {
+    $benchmark->$afterMethod({{ parameters }});
+}
+
+$buffer = ob_get_contents();
+ob_end_clean();
+
+echo serialize([
+    'mem' => [
+        'peak' => memory_get_peak_usage(),
+        'final' => memory_get_usage(),
+        'real' => memory_get_usage(true),
+    ],
+    'time' => [
+        'net' => (int) $time,
+    ],
+    'buffer' => $buffer,
+]);
+
+function cleanGarbageCollectionAndDisable () : void
+{
+    gc_enable();
+    gc_collect_cycles();
+    gc_disable();
+}
+
+exit(0);

@@ -1,0 +1,16 @@
+{
+    "runner.path": "NothingBench.php",
+    "runner.executor": "debug"
+}
+---
+phpbench run --report=aggregate --report=env
+---
+
++--------------+--------------+-----+------+-----+----------+----------+--------+
+| benchmark    | subject      | set | revs | its | mem_peak | mode     | rstdev |
++--------------+--------------+-----+------+-----+----------+----------+--------+
+| NothingBench | benchNothing | 0   | 1    | 1   | 100b     | 10.000μs | ±0.00% |
++--------------+--------------+-----+------+-----+----------+----------+--------+
+
+Suite E3X6AeMdP7L9E7E0X0A7McP1L8E1EdXbAbMbP7La xxxx-xx-xx xx-xx-xx
+

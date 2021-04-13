@@ -1,0 +1,14 @@
+{
+    "runner.path": "NothingBench.php",
+    "runner.executor": "debug"
+}
+---
+phpbench run --report='extends: aggregate, break: ["benchmark", "set"]'
+---
+NothingBench-0
++--------------+------+-----+----------+----------+--------+
+| subject      | revs | its | mem_peak | mode     | rstdev |
++--------------+------+-----+----------+----------+--------+
+| benchNothing | 1    | 1   | 100b     | 10.000μs | ±0.00% |
++--------------+------+-----+----------+----------+--------+
+

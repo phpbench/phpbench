@@ -1,0 +1,25 @@
+{
+    "env": {
+        "vcs": {
+            "branch": "my_branch",
+            "version": "asdasdasd"
+        },
+        "uname": {
+            "os": "linux",
+            "version": "4.2.0"
+        }
+    }
+}
+---
+[]
+---
+Suite # 2016-02-06 00:00:00
++----------+---------+-----------+
+| provider | key     | value     |
++----------+---------+-----------+
+| vcs      | branch  | my_branch |
+| vcs      | version | asdasdasd |
+| uname    | os      | linux     |
+| uname    | version | 4.2.0     |
++----------+---------+-----------+
+

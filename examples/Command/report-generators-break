@@ -1,0 +1,19 @@
+{
+    "report.generators": {
+         "my-report": {
+             "generator": "expression",
+             "break": ["benchmark"],
+             "cols": ["benchmark","subject", "set", "revs", "its", "mem_peak", "mode", "rstdev"]
+         }
+    }
+}
+---
+phpbench run --report=my-report --executor=debug . --progress=none
+---
+NothingBench
++--------------+-----+------+-----+----------+----------+--------+
+| subject      | set | revs | its | mem_peak | mode     | rstdev |
++--------------+-----+------+-----+----------+----------+--------+
+| benchNothing | 0   | 1    | 1   | 100b     | 10.000μs | ±0.00% |
++--------------+-----+------+-----+----------+----------+--------+
+

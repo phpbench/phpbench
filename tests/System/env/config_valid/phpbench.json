@@ -1,0 +1,6 @@
+{
+    "runner.bootstrap": "../..//bootstrap/foobar.bootstrap",
+    "runner.path": "../../benchmarks/set1",
+    "runner.iterations": 1,
+    "runner.revs": 1
+}

@@ -1,0 +1,5 @@
+docutils==0.13.1
+Pygments==2.7.4
+sphinx==1.8.5
+git+https://github.com/fabpot/sphinx-php.git@v2.0.0#egg_name=sphinx-php
+sphinx-tabs==1.1.13

@@ -1,0 +1,14 @@
+{
+    "runner.path": "NothingBench.php",
+    "runner.executor": "debug"
+}
+---
+phpbench run --report='"generator": "expression", "cols": [ "benchmark", "tag", "subject", "mean" ], "break": ["benchmark"]'
+---
+NothingBench
++-----------+--------------+----------+
+| tag       | subject      | mean     |
++-----------+--------------+----------+
+| <current> | benchNothing | 10.000μs |
++-----------+--------------+----------+
+

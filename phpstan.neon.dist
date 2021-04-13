@@ -1,0 +1,14 @@
+parameters:
+    level: 5
+    paths:
+        - lib
+        - examples/Extension
+    excludePaths:
+        - lib/Attributes
+        - lib/Benchmark/Metadata/Driver/AttributeDriver.php
+    typeAliases:
+        parameters: 'array<string,mixed>'
+
+includes:
+    - phpstan-baseline.neon
+    - vendor/jangregor/phpstan-prophecy/extension.neon

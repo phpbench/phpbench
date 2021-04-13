@@ -1,0 +1,38 @@
+{
+    "runner.env_enabled_providers": ["test"]
+}
+---
+phpbench run --report='extends:bare,vertical:true' --executor=debug NothingBench.php --progress=none
+---
+
++------------------------+---------------+
+| field                  | value         |
++------------------------+---------------+
+| has_baseline           | false         |
+| benchmark_name         | NothingBench  |
+| benchmark_class        | \NothingBench |
+| subject_name           | benchNothing  |
+| subject_groups         | []            |
+| subject_time_unit      | null          |
+| subject_time_precision | null          |
+| subject_time_mode      | null          |
+| variant_name           | 0             |
+| variant_params         | []            |
+| variant_revs           | 1             |
+| variant_iterations     | 1             |
+| suite_tag              | <current>     |
+| suite_date             | xxxx-xx-xx    |
+| suite_time             | xx-xx-xx      |
+| iteration_index        | 0             |
+| env_test_example1      | 1             |
+| env_test_example2      | 2             |
+| result_mem_peak        | 100           |
+| result_mem_real        | 100           |
+| result_mem_final       | 100           |
+| result_time_net        | 10            |
+| result_time_revs       | 1             |
+| result_time_avg        | 10            |
+| result_comp_z_value    | 0             |
+| result_comp_deviation  | 0             |
++------------------------+---------------+
+
