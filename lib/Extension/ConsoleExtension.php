@@ -46,22 +46,22 @@ class ConsoleExtension implements ExtensionInterface
             self::PARAM_ERROR_STREAM => 'php://stderr',
         ]);
 
-        $resolver->setAllowedTypes(self::PARAM_CONSOLE_ANSI, ['bool']);
+        $resolver->setAllowedTypes(self::PARAM_ANSI, ['bool']);
         $resolver->setAllowedTypes(self::PARAM_DISABLE_OUTPUT, ['bool']);
         $resolver->setAllowedTypes(self::PARAM_ERROR_STREAM, ['string']);
         $resolver->setAllowedTypes(self::PARAM_OUTPUT_STREAM, ['string']);
         SymfonyOptionsResolverCompat::setInfos($resolver, [
-            self::PARAM_CONSOLE_ANSI => 'Enable or disable ANSI control characters (e.g. console colors)',
+            self::PARAM_ANSI => 'Enable or disable ANSI control characters (e.g. console colors)',
             self::PARAM_OUTPUT_STREAM => 'Change the normal output stream - the output stream used for reports',
             self::PARAM_ERROR_STREAM => 'Change the error output stream - the output stream used for diagnostics (e.g. progress loggers use this stream)',
-            self::PARAM_DISABLE_OUTPUT=> 'Disable output from both STDOUT and STDERR',
+            self::PARAM_DISABLE_OUTPUT => 'Disable output from both STDOUT and STDERR',
         ]);
     }
 
     public function load(Container $container): void
     {
         $container->register(self::SERVICE_OUTPUT_STD, function (Container $container) {
-            return $this->createOutput($container, self::PARAM_CONSOLE_OUTPUT_STREAM);
+            return $this->createOutput($container, self::PARAM_OUTPUT_STREAM);
         });
 
         $container->register(self::SERVICE_OUTPUT_ERR, function (Container $container) {
@@ -92,7 +92,7 @@ class ConsoleExtension implements ExtensionInterface
             return new StreamOutput($resource);
         })($container->getParameter($type));
 
-        if (false === $container->getParameter(self::PARAM_CONSOLE_ANSI)) {
+        if (false === $container->getParameter(self::PARAM_ANSI)) {
             $output->setDecorated(false);
         }
 

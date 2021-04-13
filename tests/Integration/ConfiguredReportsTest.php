@@ -4,7 +4,6 @@ namespace PhpBench\Tests\Integration;
 
 use Generator;
 use PhpBench\Extension\ConsoleExtension;
-use PhpBench\Extension\CoreExtension;
 use PhpBench\Extension\ReportExtension;
 use PhpBench\Report\ReportManager;
 use PhpBench\Tests\IntegrationTestCase;
@@ -23,8 +22,8 @@ class ConfiguredReportsTest extends IntegrationTestCase
      */
     public function testReport(string $generator, string $renderer): void
     {
-        $manager = $this->PARAM_OUTPUT_STREAM([
-            ConsoleExtension::PARAM_CONSOLE_OUTPUT_STREAM => $this->workspace()->path('test')
+        $manager = $this->container([
+            ConsoleExtension::PARAM_OUTPUT_STREAM => $this->workspace()->path('test')
         ])->get(ReportManager::class);
         assert($manager instanceof ReportManager);
         $manager->renderReports(TestUtil::createCollection([

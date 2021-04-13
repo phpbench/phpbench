@@ -523,7 +523,7 @@ Types: ``["bool"]``
 console.disable_output
 ~~~~~~~~~~~~~~~~~~~~~~
 
-
+Disable output from both STDOUT and STDERR
 
 Default: ``false``
 
