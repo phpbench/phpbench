@@ -67,7 +67,7 @@ class PhpBench
             StorageExtension::class,
             XDebugExtension::class,
             ConsoleExtension::class,
-        ], $config['extensions']);
+        ], $config[CoreExtension::PARAM_EXTENSIONS]);
 
         $container = new Container(array_unique($extensions), $config);
         $container->init();
@@ -178,7 +178,7 @@ class PhpBench
                 $config,
                 json_decode($configRaw, true)
             );
-            $config['config_path'] = $configPath;
+            $config[CoreExtension::PARAM_CONFIG_PATH] = $configPath;
 
             break;
         }
@@ -197,11 +197,11 @@ class PhpBench
         if (null !== $profile) {
             $config = self::mergeProfile($config, $profile);
         }
-        unset($config['profiles']);
+        unset($config[CoreExtension::PARAM_PROFILES]);
 
         // add any manually specified extensions
         foreach ($extensions as $extension) {
-            $config['extensions'][] = $extension;
+            $config[CoreExtension::PARAM_EXTENSIONS][] = $extension;
         }
 
         return $config;
@@ -209,14 +209,14 @@ class PhpBench
 
     private static function mergeProfile(array $config, string $profile): array
     {
-        if (!isset($config['profiles'][$profile])) {
+        if (!isset($config[CoreExtension::PARAM_PROFILES][$profile])) {
             throw new ConfigurationPreProcessingError(sprintf(
                 'Unknown profile "%s" specified, defined profiles: "%s"',
-                $profile, implode('", "', array_keys($config['profiles'] ?? []))
+                $profile, implode('", "', array_keys($config[CoreExtension::PARAM_PROFILES] ?? []))
             ));
         }
 
-        return array_merge($config, $config['profiles'][$profile]);
+        return array_merge($config, $config[CoreExtension::PARAM_PROFILES][$profile]);
     }
 
     private static function registerErrorHandler(): void

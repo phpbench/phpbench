@@ -1,5 +1,5 @@
 {
-    "extensions": [
+    "core.extensions": [
         "PhpBench\\Extension\\DevelopmentExtension"
     ],
     "runner.bootstrap": "vendor/autoload.php",
@@ -21,9 +21,9 @@
             ]
         }
     },
-    "profiles": {
+    "core.profiles": {
         "examples": {
-            "extensions": [
+            "core.extensions": [
                 "PhpBench\\Examples\\Extension\\AcmeExtension"
             ],
             "runner.path": "examples/Benchmark",

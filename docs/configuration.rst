@@ -12,10 +12,10 @@ Core
 
 Extension class: ``PhpBench\Extension\CoreExtension``
 
-.. _configuration_debug:
+.. _configuration_core_debug:
 
-debug
-~~~~~
+core.debug
+~~~~~~~~~~
 
 If enabled output debug messages (e.g. the commands being executed when running benchamrks). Same as ``-vvv``
 
@@ -23,10 +23,10 @@ Default: ``false``
 
 Types: ``["bool"]``
 
-.. _configuration_extensions:
+.. _configuration_core_extensions:
 
-extensions
-~~~~~~~~~~
+core.extensions
+~~~~~~~~~~~~~~~
 
 List of additional extensions to enable
 
@@ -34,10 +34,10 @@ Default: ``[]``
 
 Types: ``["array"]``
 
-.. _configuration_output_mode:
+.. _configuration_core_output_mode:
 
-output_mode
-~~~~~~~~~~~
+core.output_mode
+~~~~~~~~~~~~~~~~
 
 Default output mode (e.g. throughput or net time)
 
@@ -45,10 +45,10 @@ Default: ``"time"``
 
 Types: ``["string"]``
 
-.. _configuration_time_unit:
+.. _configuration_core_time_unit:
 
-time_unit
-~~~~~~~~~
+core.time_unit
+~~~~~~~~~~~~~~
 
 Default time unit
 
@@ -56,10 +56,10 @@ Default: ``"microseconds"``
 
 Types: ``["string"]``
 
-.. _configuration_working_dir:
+.. _configuration_core_working_dir:
 
-working_dir
-~~~~~~~~~~~
+core.working_dir
+~~~~~~~~~~~~~~~~
 
 Working directory to use
 
@@ -67,16 +67,41 @@ Default: ``"\/home\/daniel\/www\/phpbench\/phpbench"``
 
 Types: ``["string"]``
 
-.. _configuration_config_path:
+.. _configuration_core_config_path:
 
-config_path
-~~~~~~~~~~~
+core.config_path
+~~~~~~~~~~~~~~~~
 
 Alternative path to a PHPBench configuration file (default is ``phpbench.json``
 
 Default: ``null``
 
 Types: ``["string","null"]``
+
+.. _configuration_core_profiles:
+
+core.profiles
+~~~~~~~~~~~~~
+
+Alternative configurations::
+
+    {
+        "profiles": {
+            "php8": {
+                "runner.php_bin": "/bin/php8"
+            }
+        }
+    }
+
+The named configuration will be merged with the default configuration, and can be used via::
+
+.. code-block:: bash
+
+    $ phpbench run --profile=php8
+
+Default: ``[]``
+
+Types: ``["array"]``
 
 Runner
 ------
