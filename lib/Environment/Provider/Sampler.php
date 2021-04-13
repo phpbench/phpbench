@@ -55,7 +55,7 @@ class Sampler implements ProviderInterface
         }
 
         return new Information(
-            'sample',
+            'sampler',
             $results
         );
     }

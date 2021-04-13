@@ -61,7 +61,7 @@ use Webmozart\PathUtil\Path;
 
 class RunnerExtension implements ExtensionInterface
 {
-    public const ENV_PROVIDER_BASELINE = 'baseline';
+    public const ENV_PROVIDER_SAMPLER = 'sampler';
     public const ENV_PROVIDER_GIT = 'git';
     public const ENV_PROVIDER_OPCACHE = 'opcache';
     public const ENV_PROVIDER_PHP = 'php';
@@ -115,7 +115,7 @@ class RunnerExtension implements ExtensionInterface
             self::PARAM_ATTRIBUTES => true,
             self::PARAM_BOOTSTRAP => null,
             self::PARAM_ENABLED_PROVIDERS => [
-                self::ENV_PROVIDER_BASELINE,
+                self::ENV_PROVIDER_SAMPLER,
                 self::ENV_PROVIDER_GIT,
                 self::ENV_PROVIDER_OPCACHE,
                 self::ENV_PROVIDER_PHP,
@@ -271,7 +271,7 @@ class RunnerExtension implements ExtensionInterface
                 $container->getParameter(self::PARAM_ENV_BASELINES)
             );
         }, [self::TAG_ENV_PROVIDER => [
-            'name' => self::ENV_PROVIDER_BASELINE,
+            'name' => self::ENV_PROVIDER_SAMPLER,
         ]]);
 
         $container->register(Provider\TestProvider::class, function (Container $container) {

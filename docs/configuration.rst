@@ -178,7 +178,7 @@ env.enabled_providers
 
 Select which environment samplers to use
 
-Default: ``["baseline","git","opcache","php","uname","unix_sysload"]``
+Default: ``["sampler","git","opcache","php","uname","unix_sysload"]``
 
 Types: ``["array"]``
 
