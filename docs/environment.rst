@@ -56,13 +56,13 @@ Unix Sysload
 Provides the `CPU load`_ for the following time periods: 1 minute, 5 minutes and
 15 minutes.
 
-Baseline
---------
+Sample
+------
 
-**Class**: ``PhpBench\Environment\Provider\Baseline``
+**Class**: ``PhpBench\Environment\Provider\Sampler``
 **Available**: Always
 
-Provides baseline measurements, by default it will provide mean times for
+Provides sample measurements, by default it will provide mean times for
 executing the following micro-benchmarks (1000 revolutions):
 
 - ``nothing``: An empty method.
