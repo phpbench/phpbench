@@ -40,8 +40,8 @@ class CommandsTest extends IntegrationTestCase
 
         $this->workspace()->put('phpbench.json', json_encode(array_merge([
             RunnerExtension::PARAM_ENABLED_PROVIDERS => [],
-            ConsoleExtension::PARAM_CONSOLE_OUTPUT_STREAM => $this->workspace()->path('output'),
-            ConsoleExtension::PARAM_CONSOLE_ERROR_STREAM => 'php://temp',
+            ConsoleExtension::PARAM_OUTPUT_STREAM => $this->workspace()->path('output'),
+            ConsoleExtension::PARAM_ERROR_STREAM => 'php://temp',
         ], json_decode($approval->getSection(0), true))));
 
         foreach ($commands as $command) {

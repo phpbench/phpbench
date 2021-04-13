@@ -26,9 +26,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ConsoleExtension implements ExtensionInterface
 {
-    public const PARAM_CONSOLE_ANSI = 'console.ansi';
-    public const PARAM_CONSOLE_ERROR_STREAM = 'console.error_stream';
-    public const PARAM_CONSOLE_OUTPUT_STREAM = 'console.output_stream';
+    public const PARAM_ANSI = 'console.ansi';
+    public const PARAM_ERROR_STREAM = 'console.error_stream';
+    public const PARAM_OUTPUT_STREAM = 'console.output_stream';
     public const PARAM_DISABLE_OUTPUT = 'console.disable_output';
 
     public const TAG_CONSOLE_COMMAND = 'console.command';
@@ -40,20 +40,20 @@ class ConsoleExtension implements ExtensionInterface
     {
         $resolver->setDefaults([
 
-            self::PARAM_CONSOLE_ANSI => true,
+            self::PARAM_ANSI => true,
             self::PARAM_DISABLE_OUTPUT => false,
-            self::PARAM_CONSOLE_OUTPUT_STREAM => 'php://stdout',
-            self::PARAM_CONSOLE_ERROR_STREAM => 'php://stderr',
+            self::PARAM_OUTPUT_STREAM => 'php://stdout',
+            self::PARAM_ERROR_STREAM => 'php://stderr',
         ]);
 
         $resolver->setAllowedTypes(self::PARAM_CONSOLE_ANSI, ['bool']);
         $resolver->setAllowedTypes(self::PARAM_DISABLE_OUTPUT, ['bool']);
-        $resolver->setAllowedTypes(self::PARAM_CONSOLE_ERROR_STREAM, ['string']);
-        $resolver->setAllowedTypes(self::PARAM_CONSOLE_OUTPUT_STREAM, ['string']);
+        $resolver->setAllowedTypes(self::PARAM_ERROR_STREAM, ['string']);
+        $resolver->setAllowedTypes(self::PARAM_OUTPUT_STREAM, ['string']);
         SymfonyOptionsResolverCompat::setInfos($resolver, [
             self::PARAM_CONSOLE_ANSI => 'Enable or disable ANSI control characters (e.g. console colors)',
-            self::PARAM_CONSOLE_OUTPUT_STREAM => 'Change the normal output stream - the output stream used for reports',
-            self::PARAM_CONSOLE_ERROR_STREAM => 'Change the error output stream - the output stream used for diagnostics (e.g. progress loggers use this stream)',
+            self::PARAM_OUTPUT_STREAM => 'Change the normal output stream - the output stream used for reports',
+            self::PARAM_ERROR_STREAM => 'Change the error output stream - the output stream used for diagnostics (e.g. progress loggers use this stream)',
             self::PARAM_DISABLE_OUTPUT=> 'Disable output from both STDOUT and STDERR',
         ]);
     }
@@ -65,7 +65,7 @@ class ConsoleExtension implements ExtensionInterface
         });
 
         $container->register(self::SERVICE_OUTPUT_ERR, function (Container $container) {
-            return $this->createOutput($container, self::PARAM_CONSOLE_ERROR_STREAM);
+            return $this->createOutput($container, self::PARAM_ERROR_STREAM);
         });
 
         $container->register(InputInterface::class, function (Container $container) {
