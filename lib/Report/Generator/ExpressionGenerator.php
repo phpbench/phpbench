@@ -220,8 +220,10 @@ EOT
                 try {
                     $evaledRow[$name] = $this->evaluator->evaluate($this->parser->parse($expr), $row);
                 } catch (EvaluationError $e) {
-                    $evaledRow[$name] = new StringNode('error: ' . $expr);
-                    $this->logger->error($e->getMessage());
+                    $evaledRow[$name] = new StringNode('ERR');
+                    $this->logger->error(sprintf(
+                        'Expression error (column "%s"): %s', $name, $e->getMessage()
+                    ));
                 }
             }
 
