@@ -2,7 +2,6 @@
 
 namespace PhpBench\Logger;
 
-use PhpBench\Progress\LoggerInterface;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LogLevel;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -32,13 +31,14 @@ class ConsoleLogger extends AbstractLogger
     {
         $decoration = 'fg=cyan';
 
-        switch($level) {
+        switch ($level) {
             case LogLevel::DEBUG:
             case LogLevel::INFO:
             case LogLevel::NOTICE:
                 if (!$this->enable) {
                     return;
                 }
+
                 break;
             case LogLevel::ERROR:
             case LogLevel::WARNING:
@@ -46,9 +46,9 @@ class ConsoleLogger extends AbstractLogger
             case LogLevel::EMERGENCY:
             case LogLevel::ALERT:
                 $decoration = 'bg=red;fg=white';
+
                 break;
         }
         $this->output->writeln(sprintf("[<%s>%s</>] %s\n", $decoration, strtoupper($level), $message));
-
     }
 }

@@ -2,8 +2,8 @@
 
 namespace PhpBench\Tests\Unit\Logger;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Logger\ConsoleLogger;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
