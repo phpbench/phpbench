@@ -4,6 +4,11 @@ CHANGELOG
 master
 ------
 
+B/C breaks:
+
+- Environment provider `baseline` renamed to `sampler` to avoid
+  concept-conflict with the runner baselines.
+
 Improvements:
 
 - Removed "summary" line from default progress output.
