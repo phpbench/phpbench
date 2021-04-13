@@ -25,7 +25,7 @@ Types: ``["bool"]``
 
 .. _configuration_console_disable_output:
 
-console.disable_output
+console_disable_output
 ~~~~~~~~~~~~~~~~~~~~~~
 
 Do not output anything
@@ -36,7 +36,7 @@ Types: ``["bool"]``
 
 .. _configuration_console_output_stream:
 
-console.output_stream
+console_output_stream
 ~~~~~~~~~~~~~~~~~~~~~
 
 Change the normal output stream - the output stream used for reports
@@ -47,7 +47,7 @@ Types: ``["string"]``
 
 .. _configuration_console_error_stream:
 
-console.error_stream
+console_error_stream
 ~~~~~~~~~~~~~~~~~~~~
 
 Change the error output stream - the output stream used for diagnostics (e.g. progress loggers use this stream)

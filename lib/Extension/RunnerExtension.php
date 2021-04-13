@@ -102,6 +102,7 @@ class RunnerExtension implements ExtensionInterface
 
     public const SERVICE_REGISTRY_EXECUTOR = 'benchmark.registry.executor';
     public const SERVICE_VARIANT_SUMMARY_FORMATTER = 'progress_logger.variant_summary_formatter';
+    public const SERVICE_REGISTRY_LOGGER = 'progress_logger_registry';
 
     public const TAG_ENV_PROVIDER = 'environment_provider';
     public const TAG_EXECUTOR = 'benchmark_executor';
@@ -401,7 +402,7 @@ class RunnerExtension implements ExtensionInterface
         $container->register(RunnerHandler::class, function (Container $container) {
             return new RunnerHandler(
                 $container->get(Runner::class),
-                $container->get(CoreExtension::SERVICE_REGISTRY_LOGGER),
+                $container->get(self::SERVICE_REGISTRY_LOGGER),
                 $container->get(BenchmarkFinder::class),
                 $container->getParameter(self::PARAM_PROGRESS),
                 $container->getParameter(self::PARAM_PATH)
@@ -433,7 +434,7 @@ class RunnerExtension implements ExtensionInterface
                 $container->getParameter(self::PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT)
             );
         });
-        $container->register(CoreExtension::SERVICE_REGISTRY_LOGGER, function (Container $container) {
+        $container->register(self::SERVICE_REGISTRY_LOGGER, function (Container $container) {
             $registry = new LoggerRegistry();
 
             foreach ($container->getServiceIdsForTag(self::TAG_PROGRESS_LOGGER) as $serviceId => $attributes) {

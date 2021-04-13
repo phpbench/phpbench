@@ -54,9 +54,9 @@ class PhpBench
         );
     }
 
-    public static function loadContainer(InputInterface $input): Container
+    public static function loadContainer(InputInterface $input, ?string $cwd = null): Container
     {
-        $config = self::loadConfig($input);
+        $config = self::loadConfig($input, $cwd ?: getcwd());
 
         $extensions = array_merge([
             CoreExtension::class,
@@ -76,14 +76,13 @@ class PhpBench
     /**
      * @return array<string,mixed>
      */
-    private static function loadConfig(InputInterface $input): array
+    private static function loadConfig(InputInterface $input, string $cwd): array
     {
         $configPaths = [];
         $extensions = [];
         $configOverride = [];
         $profile = null;
         $argBootstrap = null;
-        $cwd = getcwd();
 
         if ($value = $input->getParameterOption(['--working-dir'])) {
             $cwd = Path::makeAbsolute($value, getcwd());
