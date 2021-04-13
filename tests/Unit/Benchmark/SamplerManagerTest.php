@@ -12,13 +12,13 @@
 
 namespace PhpBench\Tests\Unit\Benchmark;
 
-use PhpBench\Benchmark\BaselineManager;
+use PhpBench\Benchmark\SamplerManager;
 use PhpBench\Tests\TestCase;
 
 /**
  * @\PhpBench\Benchmark\Metadata\Annotations\BeforeMethods({"setUp"})
  */
-class BaselineManagerTest extends TestCase
+class SamplerManagerTest extends TestCase
 {
     private $manager;
 
@@ -26,19 +26,19 @@ class BaselineManagerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->manager = new BaselineManager();
+        $this->manager = new SamplerManager();
     }
 
     /**
-     * It should throw an exception if a baseline callable name already exists.
+     * It should throw an exception if a sampler callable name already exists.
      *
      */
     public function testRegisterTwice(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Baseline callable "foo" has already been registered.');
-        $this->manager->addBaselineCallable('foo', __CLASS__ . '::baselineExample');
-        $this->manager->addBaselineCallable('foo', __CLASS__ . '::baselineExample');
+        $this->manager->addSamplerCallable('foo', __CLASS__ . '::samplerExample');
+        $this->manager->addSamplerCallable('foo', __CLASS__ . '::samplerExample');
     }
 
     /**
@@ -50,8 +50,8 @@ class BaselineManagerTest extends TestCase
     public function testCallable(): void
     {
         static::$callCount = 0;
-        $this->manager->addBaselineCallable('foo', __CLASS__ . '::baselineExample');
-        $this->manager->benchmark('foo', 100);
+        $this->manager->addSamplerCallable('foo', __CLASS__ . '::samplerExample');
+        $this->manager->sample('foo', 100);
         $this->assertEquals(100, static::$callCount);
     }
 
@@ -62,9 +62,9 @@ class BaselineManagerTest extends TestCase
     public function testCallableNotCallable(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Given baseline "foo" callable "does_not_exist" is not callable.');
-        $this->manager->addBaselineCallable('foo', 'does_not_exist');
-        $this->manager->benchmark('foo', 100);
+        $this->expectExceptionMessage('Given sampler "foo" callable "does_not_exist" is not callable.');
+        $this->manager->addSamplerCallable('foo', 'does_not_exist');
+        $this->manager->sample('foo', 100);
     }
 
     /**
@@ -74,12 +74,12 @@ class BaselineManagerTest extends TestCase
     public function testCallableNotCallableObject(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Given baseline "foo" callable "object" is not callable.');
-        $this->manager->addBaselineCallable('foo', new \stdClass());
-        $this->manager->benchmark('foo', 100);
+        $this->expectExceptionMessage('Given sampler "foo" callable "object" is not callable.');
+        $this->manager->addSamplerCallable('foo', new \stdClass());
+        $this->manager->sample('foo', 100);
     }
 
-    public static function baselineExample($revs): void
+    public static function samplerExample($revs): void
     {
         self::$callCount = $revs;
     }

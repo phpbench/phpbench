@@ -13,17 +13,17 @@
 namespace PhpBench\Benchmark;
 
 /**
- * The baseline manager is responsible for collecting and executing
- * baseline benchmarks.
+ * The sampler manager is responsible for collecting and executing
+ * sampler benchmarks.
  *
  * Baseline benchmarks are standard microbenchmarks which can be used to
- * determine the "baseline" performance of the test platform.
+ * determine the "sampler" performance of the test platform.
  *
- * These measurements can be used to establish a baseline speed for the system,
+ * These measurements can be used to establish a sampler speed for the system,
  * or to provide counterweights to iteration measurements (and so attempt to
  * cancel out any fluctuations of the test platforms performance).
  */
-class BaselineManager
+class SamplerManager
 {
     /**
      * @var mixed[]
@@ -31,7 +31,7 @@ class BaselineManager
     private $callables;
 
     /**
-     * Add a baseline callable. The callable can be any
+     * Add a sampler callable. The callable can be any
      * callable accepted by call_user_func.
      *
      * Throws an invalid argument exception if the name has
@@ -40,7 +40,7 @@ class BaselineManager
      *
      * @throws \InvalidArgumentException
      */
-    public function addBaselineCallable(string $name, $callable): void
+    public function addSamplerCallable(string $name, $callable): void
     {
         if (isset($this->callables[$name])) {
             throw new \InvalidArgumentException(sprintf(
@@ -51,7 +51,7 @@ class BaselineManager
 
         if (!is_callable($callable)) {
             throw new \InvalidArgumentException(sprintf(
-                'Given baseline "%s" callable "%s" is not callable.',
+                'Given sampler "%s" callable "%s" is not callable.',
                 $name, is_string($callable) ? $callable : gettype($callable)
             ));
         }
@@ -60,14 +60,14 @@ class BaselineManager
     }
 
     /**
-     * Return mean time taken to execute the named baseline
+     * Return mean time taken to execute the named sampler
      * callable in microseconds.
      */
-    public function benchmark($name, $revs): float
+    public function sample($name, $revs): float
     {
         if (!isset($this->callables[$name])) {
             throw new \InvalidArgumentException(sprintf(
-                'Unknown baseline callable "%s", known baseline callables: "%s"',
+                'Unknown sampler callable "%s", known baseline callables: "%s"',
                 $name, implode('", "', array_keys($this->callables))
             ));
         }

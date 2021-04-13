@@ -12,20 +12,20 @@
 
 namespace PhpBench\Tests\Unit\Environment\Provider;
 
-use PhpBench\Benchmark\BaselineManager;
+use PhpBench\Benchmark\SamplerManager;
 use PhpBench\Environment\Information;
-use PhpBench\Environment\Provider\Baseline;
+use PhpBench\Environment\Provider\Sampler;
 use PhpBench\Tests\TestCase;
 
-class BaselineTest extends TestCase
+class SamplerTest extends TestCase
 {
     private $manager;
     private $provider;
 
     protected function setUp(): void
     {
-        $this->manager = $this->prophesize(BaselineManager::class);
-        $this->provider = new Baseline(
+        $this->manager = $this->prophesize(SamplerManager::class);
+        $this->provider = new Sampler(
             $this->manager->reveal(),
             ['one']
         );
@@ -40,11 +40,11 @@ class BaselineTest extends TestCase
     }
 
     /**
-     * It should get the baseline measurements from the baseline manager.
+     * It should get the sampler measurements from the baseline manager.
      */
     public function testBaselineMeasurements(): void
     {
-        $this->manager->benchmark('one', 1000)->willReturn(10);
+        $this->manager->sample('one', 1000)->willReturn(10);
         $info = $this->provider->getInformation();
         $this->assertInstanceOf(Information::class, $info);
         $this->assertEquals(iterator_to_array($info), [

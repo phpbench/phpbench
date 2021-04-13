@@ -4,7 +4,6 @@ namespace PhpBench\Extension;
 
 use PhpBench\Assertion\AssertionProcessor;
 use PhpBench\Assertion\ParameterProvider;
-use PhpBench\Benchmark\BaselineManager;
 use PhpBench\Benchmark\BenchmarkFinder;
 use PhpBench\Benchmark\Metadata\AnnotationReader;
 use PhpBench\Benchmark\Metadata\Driver\AnnotationDriver;
@@ -13,6 +12,7 @@ use PhpBench\Benchmark\Metadata\Driver\ChainDriver;
 use PhpBench\Benchmark\Metadata\Driver\ConfigDriver;
 use PhpBench\Benchmark\Metadata\MetadataFactory;
 use PhpBench\Benchmark\Runner;
+use PhpBench\Benchmark\SamplerManager;
 use PhpBench\Compat\SymfonyOptionsResolverCompat;
 use PhpBench\Console\Command\Handler\DumpHandler;
 use PhpBench\Console\Command\Handler\ReportHandler;
@@ -265,9 +265,9 @@ class RunnerExtension implements ExtensionInterface
             'name' => self::ENV_PROVIDER_GIT,
         ]]);
 
-        $container->register(Provider\Baseline::class, function (Container $container) {
-            return new Provider\Baseline(
-                $container->get(BaselineManager::class),
+        $container->register(Provider\Sampler::class, function (Container $container) {
+            return new Provider\Sampler(
+                $container->get(SamplerManager::class),
                 $container->getParameter(self::PARAM_ENV_BASELINES)
             );
         }, [self::TAG_ENV_PROVIDER => [
@@ -611,8 +611,8 @@ class RunnerExtension implements ExtensionInterface
             );
         });
 
-        $container->register(BaselineManager::class, function (Container $container) {
-            $manager = new BaselineManager();
+        $container->register(SamplerManager::class, function (Container $container) {
+            $manager = new SamplerManager();
             $callables = array_merge([
                 'nothing' => '\PhpBench\Benchmark\Baseline\Baselines::nothing',
                 'md5' => '\PhpBench\Benchmark\Baseline\Baselines::md5',
@@ -620,7 +620,7 @@ class RunnerExtension implements ExtensionInterface
             ], $container->getParameter(self::PARAM_ENV_BASELINE_CALLABLES));
 
             foreach ($callables as $name => $callable) {
-                $manager->addBaselineCallable($name, $callable);
+                $manager->addSamplerCallable($name, $callable);
             }
 
             return $manager;

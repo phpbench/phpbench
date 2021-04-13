@@ -12,7 +12,7 @@
 
 namespace PhpBench\Environment\Provider;
 
-use PhpBench\Benchmark\BaselineManager;
+use PhpBench\Benchmark\SamplerManager;
 use PhpBench\Environment\Information;
 use PhpBench\Environment\ProviderInterface;
 
@@ -20,12 +20,16 @@ use PhpBench\Environment\ProviderInterface;
  * Runs basic micro-benchmarks via. the BaselineManager to determine some baseline
  * characteristics of the underlying system under test.
  */
-class Baseline implements ProviderInterface
+class Sampler implements ProviderInterface
 {
+    /**
+     * @var SamplerManager
+     */
     private $manager;
+
     private $enabled = [];
 
-    public function __construct(BaselineManager $manager, array $enabled)
+    public function __construct(SamplerManager $manager, array $enabled)
     {
         $this->manager = $manager;
         $this->enabled = $enabled;
@@ -47,11 +51,11 @@ class Baseline implements ProviderInterface
         $results = [];
 
         foreach ($this->enabled as $callbackName) {
-            $results[$callbackName] = $this->manager->benchmark($callbackName, 1000);
+            $results[$callbackName] = $this->manager->sample($callbackName, 1000);
         }
 
         return new Information(
-            'baseline',
+            'sample',
             $results
         );
     }
