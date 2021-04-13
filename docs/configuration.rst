@@ -12,50 +12,6 @@ Core
 
 Extension class: ``PhpBench\Extension\CoreExtension``
 
-.. _configuration_console_ansi:
-
-console.ansi
-~~~~~~~~~~~~
-
-Enable or disable ANSI control characters (e.g. console colors)
-
-Default: ``true``
-
-Types: ``["bool"]``
-
-.. _configuration_console_disable_output:
-
-console_disable_output
-~~~~~~~~~~~~~~~~~~~~~~
-
-Do not output anything
-
-Default: ``false``
-
-Types: ``["bool"]``
-
-.. _configuration_console_output_stream:
-
-console_output_stream
-~~~~~~~~~~~~~~~~~~~~~
-
-Change the normal output stream - the output stream used for reports
-
-Default: ``"php:\/\/stdout"``
-
-Types: ``["string"]``
-
-.. _configuration_console_error_stream:
-
-console_error_stream
-~~~~~~~~~~~~~~~~~~~~
-
-Change the error output stream - the output stream used for diagnostics (e.g. progress loggers use this stream)
-
-Default: ``"php:\/\/stderr"``
-
-Types: ``["string"]``
-
 .. _configuration_debug:
 
 debug
@@ -551,6 +507,55 @@ xdebug.command.handler.output_dir
 Output directory for generated XDebug profiles
 
 Default: ``".phpbench\/xdebug-profile"``
+
+Types: ``["string"]``
+
+Console
+-------
+
+Extension class: ``PhpBench\Extension\ConsoleExtension``
+
+.. _configuration_console_ansi:
+
+console.ansi
+~~~~~~~~~~~~
+
+Enable or disable ANSI control characters (e.g. console colors)
+
+Default: ``true``
+
+Types: ``["bool"]``
+
+.. _configuration_console_disable_output:
+
+console.disable_output
+~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+Default: ``false``
+
+Types: ``["bool"]``
+
+.. _configuration_console_output_stream:
+
+console.output_stream
+~~~~~~~~~~~~~~~~~~~~~
+
+Change the normal output stream - the output stream used for reports
+
+Default: ``"php:\/\/stdout"``
+
+Types: ``["string"]``
+
+.. _configuration_console_error_stream:
+
+console.error_stream
+~~~~~~~~~~~~~~~~~~~~
+
+Change the error output stream - the output stream used for diagnostics (e.g. progress loggers use this stream)
+
+Default: ``"php:\/\/stderr"``
 
 Types: ``["string"]``
 

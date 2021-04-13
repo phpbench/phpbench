@@ -62,7 +62,7 @@ Create a ``phpbench.json`` file in the projects root directory:
 .. code-block:: json
 
     {
-        "bootstrap": "vendor/autoload.php"
+        "runner.bootstrap": "vendor/autoload.php"
     }
 
 .. note::
@@ -247,8 +247,8 @@ To finish off, add the path and new report to the configuration file:
 .. code-block:: json
 
     {
-        "path": "tests/Benchmark",
-        "reports": {
+        "runner.path": "tests/Benchmark",
+        "report.generators": {
             "consumation_of_time": {
                 "extends": "default",
                 "title": "The Consumation of Time",

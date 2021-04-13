@@ -103,7 +103,7 @@ class PhpBench
 
         if ($value = $input->getParameterOption(['--bootstrap', '-b='])) {
             $argBootstrap = $value;
-            $configOverride['bootstrap'] = $value;
+            $configOverride[RunnerExtension::PARAM_BOOTSTRAP] = $value;
         }
 
         if ($input->getParameterOption(['--no-ansi'])) {
@@ -115,21 +115,21 @@ class PhpBench
         }
 
         if ($value = $input->getParameterOption(['--php-binary'])) {
-            $configOverride['php_binary'] = $value;
+            $configOverride[RunnerExtension::PARAM_PHP_BINARY] = $value;
         }
 
         if ($value = $input->getParameterOption(['--php-wrapper'])) {
-            $configOverride['php_wrapper'] = $value;
+            $configOverride[RunnerExtension::PARAM_PHP_WRAPPER] = $value;
         }
 
         if ($value = $input->getParameterOption(['--php-config'])) {
             $jsonParser = new JsonDecoder();
             $value = $jsonParser->decode($value);
-            $configOverride['php_config'] = $value;
+            $configOverride[RunnerExtension::PARAM_PHP_CONFIG] = $value;
         }
 
         if ($input->hasParameterOption(['--php-disable-ini'])) {
-            $configOverride['php_disable_ini'] = true;
+            $configOverride[RunnerExtension::PARAM_PHP_DISABLE_INI] = true;
         }
 
         if ($value = $input->getParameterOption(['--profile'])) {
@@ -188,10 +188,10 @@ class PhpBench
             $configOverride
         );
 
-        if ($configFile && !$argBootstrap && $config['bootstrap']) {
-            $config['bootstrap'] = Path::makeAbsolute($config['bootstrap'], dirname($configFile));
-        } elseif ($config['bootstrap']) {
-            $config['bootstrap'] = Path::makeAbsolute($config['bootstrap'], $cwd);
+        if ($configFile && !$argBootstrap && $config[RunnerExtension::PARAM_BOOTSTRAP]) {
+            $config[RunnerExtension::PARAM_BOOTSTRAP] = Path::makeAbsolute($config[RunnerExtension::PARAM_BOOTSTRAP], dirname($configFile));
+        } elseif ($config[RunnerExtension::PARAM_BOOTSTRAP]) {
+            $config[RunnerExtension::PARAM_BOOTSTRAP] = Path::makeAbsolute($config[RunnerExtension::PARAM_BOOTSTRAP], $cwd);
         }
 
         if (null !== $profile) {

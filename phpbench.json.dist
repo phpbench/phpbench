@@ -2,16 +2,16 @@
     "extensions": [
         "PhpBench\\Extension\\DevelopmentExtension"
     ],
-    "bootstrap": "vendor/autoload.php",
-    "path": "tests/Benchmark",
-    "php_config": {
+    "runner.bootstrap": "vendor/autoload.php",
+    "runner.path": "tests/Benchmark",
+    "runner.php_config": {
         "memory_limit": "1G"
     },
     "runner.iterations": 10,
     "runner.revs": 10,
     "runner.time_unit": "milliseconds",
     "runner.assert": "mode(variant.time.avg) as ms <= mode(baseline.time.avg) as ms +/- 5%",
-    "reports": {
+    "report.generators": {
         "all": {
             "generator": "composite",
             "reports": [
@@ -26,7 +26,7 @@
             "extensions": [
                 "PhpBench\\Examples\\Extension\\AcmeExtension"
             ],
-            "path": "examples/Benchmark",
+            "runner.path": "examples/Benchmark",
             "php_disable_ini": true,
             "php_config": {
                 "extension": [

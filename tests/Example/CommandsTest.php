@@ -5,6 +5,7 @@ namespace PhpBench\Tests\Example;
 use Generator;
 use PhpBench\Console\Application;
 use PhpBench\Extension\ConsoleExtension;
+use PhpBench\Extension\RunnerExtension;
 use PhpBench\PhpBench;
 use PhpBench\Tests\IntegrationTestCase;
 use PhpBench\Tests\Util\Approval;
@@ -38,7 +39,7 @@ class CommandsTest extends IntegrationTestCase
         }, explode("\n", trim($approval->getSection(1))));
 
         $this->workspace()->put('phpbench.json', json_encode(array_merge([
-            'env.enabled_providers' => [],
+            RunnerExtension::PARAM_ENABLED_PROVIDERS => [],
             ConsoleExtension::PARAM_CONSOLE_OUTPUT_STREAM => $this->workspace()->path('output'),
             ConsoleExtension::PARAM_CONSOLE_ERROR_STREAM => 'php://temp',
         ], json_decode($approval->getSection(0), true))));

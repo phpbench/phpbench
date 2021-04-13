@@ -69,25 +69,24 @@ class RunnerExtension implements ExtensionInterface
     public const ENV_PROVIDER_UNAME = 'uname';
     public const ENV_PROVIDER_UNIX_SYSLOAD = 'unix_sysload';
 
-    public const PARAM_ANNOTATIONS = 'annotations';
-    public const PARAM_ANNOTATION_IMPORT_USE = 'annotation_import_use';
-    public const PARAM_ATTRIBUTES = 'attributes';
-    public const PARAM_BOOTSTRAP = 'bootstrap';
-    public const PARAM_ENABLED_PROVIDERS = 'env.enabled_providers';
-    public const PARAM_ENV_BASELINES = 'env_baselines';
-    public const PARAM_ENV_BASELINE_CALLABLES = 'env_baseline_callables';
-    public const PARAM_EXECUTORS = 'executors';
-    public const PARAM_PATH = 'path';
-    public const PARAM_PHP_BINARY = 'php_binary';
-    public const PARAM_PHP_CONFIG = 'php_config';
-    public const PARAM_PHP_DISABLE_INI = 'php_disable_ini';
-    public const PARAM_PHP_WRAPPER = 'php_wrapper';
-    public const PARAM_PROGRESS = 'progress';
-    public const PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT = 'progress_summary_baseline_format';
-    public const PARAM_PROGRESS_SUMMARY_FORMAT = 'progress_summary_variant_format';
-    public const PARAM_REMOTE_SCRIPT_PATH = 'remote_script_path';
-    public const PARAM_REMOTE_SCRIPT_REMOVE = 'remote_script_remove';
-    public const PARAM_RETRY_THRESHOLD = 'retry_threshold';
+    public const PARAM_ANNOTATIONS = 'runner.annotations';
+    public const PARAM_ANNOTATION_IMPORT_USE = 'runner.annotation_import_use';
+    public const PARAM_ATTRIBUTES = 'runner.attributes';
+    public const PARAM_BOOTSTRAP = 'runner.bootstrap';
+    public const PARAM_ENABLED_PROVIDERS = 'runner.env_enabled_providers';
+    public const PARAM_ENV_BASELINES = 'runner.env_baselines';
+    public const PARAM_ENV_BASELINE_CALLABLES = 'runner.env_baseline_callables';
+    public const PARAM_EXECUTORS = 'runner.executors';
+    public const PARAM_PATH = 'runner.path';
+    public const PARAM_PHP_BINARY = 'runner.php_binary';
+    public const PARAM_PHP_CONFIG = 'runner.php_config';
+    public const PARAM_PHP_DISABLE_INI = 'runner.php_disable_ini';
+    public const PARAM_PHP_WRAPPER = 'runner.php_wrapper';
+    public const PARAM_PROGRESS = 'runner.progress';
+    public const PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT = 'runner.progress_summary_baseline_format';
+    public const PARAM_PROGRESS_SUMMARY_FORMAT = 'runner.progress_summary_variant_format';
+    public const PARAM_REMOTE_SCRIPT_PATH = 'runner.remote_script_path';
+    public const PARAM_REMOTE_SCRIPT_REMOVE = 'runner.remote_script_remove';
     public const PARAM_RUNNER_ASSERT = 'runner.assert';
     public const PARAM_RUNNER_EXECUTOR = 'runner.executor';
     public const PARAM_RUNNER_FORMAT = 'runner.format';
@@ -98,15 +97,15 @@ class RunnerExtension implements ExtensionInterface
     public const PARAM_RUNNER_REVS = 'runner.revs';
     public const PARAM_RUNNER_TIMEOUT = 'runner.timeout';
     public const PARAM_RUNNER_WARMUP = 'runner.warmup';
-    public const PARAM_SUBJECT_PATTERN = 'subject_pattern';
+    public const PARAM_SUBJECT_PATTERN = 'runner.subject_pattern';
 
-    public const SERVICE_REGISTRY_EXECUTOR = 'benchmark.registry.executor';
-    public const SERVICE_VARIANT_SUMMARY_FORMATTER = 'progress_logger.variant_summary_formatter';
-    public const SERVICE_REGISTRY_LOGGER = 'progress_logger_registry';
+    public const SERVICE_REGISTRY_EXECUTOR = 'runner.benchmark_registry.executor';
+    public const SERVICE_VARIANT_SUMMARY_FORMATTER = 'runner.progress_logger_variant_summary_formatter';
+    public const SERVICE_REGISTRY_LOGGER = 'runner.progress_logger_registry';
 
-    public const TAG_ENV_PROVIDER = 'environment_provider';
-    public const TAG_EXECUTOR = 'benchmark_executor';
-    public const TAG_PROGRESS_LOGGER = 'progress_logger';
+    public const TAG_ENV_PROVIDER = 'runner.environment_provider';
+    public const TAG_EXECUTOR = 'runner.benchmark_executor';
+    public const TAG_PROGRESS_LOGGER = 'runner.progress_logger';
 
     public function configure(OptionsResolver $resolver): void
     {
@@ -136,7 +135,6 @@ class RunnerExtension implements ExtensionInterface
             self::PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT => VariantSummaryFormatter::BASELINE_FORMAT,
             self::PARAM_REMOTE_SCRIPT_PATH => null,
             self::PARAM_REMOTE_SCRIPT_REMOVE => true,
-            self::PARAM_RETRY_THRESHOLD => null,
             self::PARAM_RUNNER_ASSERT => null,
             self::PARAM_RUNNER_EXECUTOR => null,
             self::PARAM_RUNNER_FORMAT => null,
@@ -168,7 +166,6 @@ class RunnerExtension implements ExtensionInterface
         $resolver->setAllowedTypes(self::PARAM_PROGRESS_SUMMARY_FORMAT, ['string']);
         $resolver->setAllowedTypes(self::PARAM_REMOTE_SCRIPT_PATH, ['string', 'null']);
         $resolver->setAllowedTypes(self::PARAM_REMOTE_SCRIPT_REMOVE, ['bool']);
-        $resolver->setAllowedTypes(self::PARAM_RETRY_THRESHOLD, ['null', 'int', 'float']);
         $resolver->setAllowedTypes(self::PARAM_RUNNER_ASSERT, ['null', 'string', 'array']);
         $resolver->setAllowedTypes(self::PARAM_RUNNER_EXECUTOR, ['null', 'string']);
         $resolver->setAllowedTypes(self::PARAM_RUNNER_FORMAT, ['null', 'string']);
@@ -200,7 +197,6 @@ class RunnerExtension implements ExtensionInterface
             self::PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT => 'When the a comparison benchmark is referenced, alternative expression used to render the summary text default progress loggers',
             self::PARAM_REMOTE_SCRIPT_PATH => 'PHPBench generates a PHP file for out-of-band benchmarks which is executed, this setting specifies the path to this file. When NULL a file in the systems temporary directory will be used',
             self::PARAM_REMOTE_SCRIPT_REMOVE => 'If the generated file should be removed after it has been executed (useful for debugging)',
-            self::PARAM_RETRY_THRESHOLD => 'DEPRECATED: use :ref:`configuration_runner_retry_threshold` instead',
             self::PARAM_RUNNER_ASSERT => 'Default :ref:`metadata_assertions`',
             self::PARAM_RUNNER_EXECUTOR => 'Default executor',
             self::PARAM_RUNNER_FORMAT => 'Default :ref:`metadata_format`',
@@ -311,7 +307,7 @@ class RunnerExtension implements ExtensionInterface
                 $container->get(self::SERVICE_REGISTRY_EXECUTOR),
                 $container->get(Supplier::class),
                 $container->get(AssertionProcessor::class),
-                $container->getParameter(self::PARAM_RETRY_THRESHOLD),
+                $container->getParameter(self::PARAM_RUNNER_RETRY_THRESHOLD),
                 $container->getParameter(CoreExtension::PARAM_CONFIG_PATH)
             );
         });
@@ -601,7 +597,7 @@ class RunnerExtension implements ExtensionInterface
                 (array)$container->getParameter(self::PARAM_RUNNER_REVS),
                 $container->getParameter(self::PARAM_RUNNER_TIMEOUT),
                 (array)$container->getParameter(self::PARAM_RUNNER_WARMUP),
-                (float)($container->getParameter(self::PARAM_RUNNER_RETRY_THRESHOLD) ?: $container->getParameter(self::PARAM_RETRY_THRESHOLD))
+                (float)$container->getParameter(self::PARAM_RUNNER_RETRY_THRESHOLD)
             );
         });
 

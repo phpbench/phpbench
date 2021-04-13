@@ -109,11 +109,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ExpressionExtension implements ExtensionInterface
 {
     public const PARAM_SYNTAX_HIGHLIGHTING = 'expression.syntax_highlighting';
-
-    public const SERVICE_PLAIN_PRINTER = Printer::class . '.plain';
-    public const SERVICE_BARE_PRINTER = Printer::class . '.bare';
-    public const TAG_THEME = self::PARAM_THEME;
     public const PARAM_THEME = 'expression.theme';
+
+    public const SERVICE_PLAIN_PRINTER = 'expression.printer.plain';
+    public const SERVICE_BARE_PRINTER = 'expression.printer.bare';
+
+    public const TAG_THEME = 'expression.theme';
+
     public const THEME_BASIC = 'basic';
     public const THEME_SOLARIZED = 'solarized';
 

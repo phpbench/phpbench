@@ -1,4 +1,4 @@
 {
-    "bootstrap": "../../bootstrap/foobar.bootstrap",
-    "path": "../../benchmarks/set2"
+    "runner.bootstrap": "../../bootstrap/foobar.bootstrap",
+    "runner.path": "../../benchmarks/set2"
 }

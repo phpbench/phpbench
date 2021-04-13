@@ -12,6 +12,8 @@
 
 namespace PhpBench\Tests\System;
 
+use PhpBench\Extension\RunnerExtension;
+
 class RunTest extends SystemTestCase
 {
     /**
@@ -565,7 +567,7 @@ class RunTest extends SystemTestCase
 
     public function testWithSpecificProfile(): void
     {
-        $this->workspace()->put('phpbench.json', '{"profiles": {"foobar":{"path": "benchmarks/set4/NothingBench.php"}}}');
+        $this->workspace()->put('phpbench.json', '{"profiles": {"foobar":{"runner.path": "benchmarks/set4/NothingBench.php"}}}');
         $process = $this->phpbench(
             'run --profile=foobar'
         );
@@ -575,7 +577,7 @@ class RunTest extends SystemTestCase
 
     public function testErrorWhenUnknownProfileGiven(): void
     {
-        $this->workspace()->put('phpbench.json', '{"profiles": {"foobar":{"path": "benchmarks/set4/NothingBench.php"}}}');
+        $this->workspace()->put('phpbench.json', '{"profiles": {"foobar":{"runner.path": "benchmarks/set4/NothingBench.php"}}}');
         $process = $this->phpbench(
             'run --profile=barfoo'
         );
@@ -587,8 +589,8 @@ class RunTest extends SystemTestCase
     public function testSpecifyRemoteScriptPath(): void
     {
         $this->workspace()->put('phpbench.json', (string)json_encode([
-            'remote_script_path' => $this->workspace()->path('remote'),
-            'remote_script_remove' => false,
+            RunnerExtension::PARAM_REMOTE_SCRIPT_PATH => $this->workspace()->path('remote'),
+            RunnerExtension::PARAM_REMOTE_SCRIPT_REMOVE => false,
         ]));
 
         $process = $this->phpbench(
@@ -601,7 +603,7 @@ class RunTest extends SystemTestCase
     public function testSpecifyMultiplePaths(): void
     {
         $this->workspace()->put('phpbench.json', (string)json_encode([
-            'path' => [
+            RunnerExtension::PARAM_PATH => [
                 'benchmarks/set4/NothingBench.php',
                 'benchmarks/set4/NothingBench.php',
             ]

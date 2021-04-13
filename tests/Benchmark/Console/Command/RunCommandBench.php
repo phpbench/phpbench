@@ -4,6 +4,8 @@ namespace PhpBench\Tests\Benchmark\Console\Command;
 
 use PhpBench\Console\Command\RunCommand;
 use PhpBench\Extension\ConsoleExtension;
+use PhpBench\Extension\CoreExtension;
+use PhpBench\Extension\RunnerExtension;
 use PhpBench\Tests\Benchmark\IntegrationBenchCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -43,7 +45,7 @@ class RunCommandBench extends IntegrationBenchCase
             'path' => '.',
             '--executor' => 'local',
         ], [
-            'env.enabled_providers' => [],
+            RunnerExtension::PARAM_ENABLED_PROVIDERS => [],
         ]);
     }
 

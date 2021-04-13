@@ -30,8 +30,9 @@ class CoreExtension implements ExtensionInterface
     public const PARAM_CONFIG_PATH = 'config_path';
     public const PARAM_DEBUG = 'debug';
     public const PARAM_EXTENSIONS = 'extensions';
-    public const PARAM_OUTPUT_MODE = 'output_mode';
     public const PARAM_WORKING_DIR = 'working_dir';
+
+    public const PARAM_OUTPUT_MODE = 'output_mode';
     public const PARAM_TIME_UNIT = 'time_unit';
 
     public function configure(OptionsResolver $resolver): void

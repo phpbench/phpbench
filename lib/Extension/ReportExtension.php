@@ -32,12 +32,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ReportExtension implements ExtensionInterface
 {
-    public const PARAM_OUTPUTS = 'outputs';
-    public const PARAM_REPORTS = 'reports';
-    public const TAG_REPORT_GENERATOR = 'report_generator';
-    public const TAG_REPORT_RENDERER = 'report_renderer';
-    public const SERVICE_REGISTRY_GENERATOR = 'report_registry.generator';
-    public const SERVICE_REGISTRY_RENDERER = 'report_registry.renderer';
+    public const PARAM_OUTPUTS = 'report.outputs';
+    public const PARAM_REPORTS = 'report.generators';
+
+    public const SERVICE_REGISTRY_GENERATOR = 'report.registry_generator';
+    public const SERVICE_REGISTRY_RENDERER = 'report.registry_renderer';
+
+    public const TAG_REPORT_GENERATOR = 'report.generator';
+    public const TAG_REPORT_RENDERER = 'report.renderer';
 
     public function configure(OptionsResolver $resolver): void
     {
@@ -111,14 +113,14 @@ class ReportExtension implements ExtensionInterface
     private function registerRegistries(Container $container): void
     {
         foreach (['generator' => self::PARAM_REPORTS, 'renderer' => self::PARAM_OUTPUTS] as $registryType => $optionName) {
-            $container->register('report_registry.' . $registryType, function (Container $container) use ($registryType, $optionName) {
+            $container->register('report.registry_' . $registryType, function (Container $container) use ($registryType, $optionName) {
                 $registry = new ConfigurableRegistry(
                     $registryType,
                     $container,
                     $container->get(JsonDecoder::class)
                 );
 
-                foreach ($container->getServiceIdsForTag('report_' . $registryType) as $serviceId => $attributes) {
+                foreach ($container->getServiceIdsForTag('report.' . $registryType) as $serviceId => $attributes) {
                     $registry->registerService($attributes['name'], $serviceId);
                 }
 
