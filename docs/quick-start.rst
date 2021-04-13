@@ -75,7 +75,7 @@ Create a ``phpbench.json`` file in the projects root directory:
 
     Some PHP extensions such as Xdebug will affect the performance of your
     benchmark subjects and you may want to disable them, see :ref:`Disabling
-    the PHP INI file <configuration_php_disable_ini>`.
+    the PHP INI file <configuration_runner_php_disable_ini>`.
 
 Creating and running a benchmark
 --------------------------------
@@ -280,7 +280,7 @@ In this tutorial you learnt to
 - :doc:`Configure <configuration>` PHPBench for a project
 - Create a benchmarking class
 - Use :ref:`revolutions <metadata_revolutions>` and :ref:`iterations <metadata_iterations>` to more accurately profile your code
-- Increase stability with the :ref:`retry threshold <configuration_retry_threshold>`
+- Increase stability with the :ref:`retry threshold <configuration_runner_retry_threshold>`
 - Use :doc:`reports <reports>`
 
 .. _Composer: http://getcomposer.org

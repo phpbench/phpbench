@@ -74,6 +74,6 @@ class XDebugExtension implements ExtensionInterface
             ]
         ]);
 
-        $container->mergeParameter('executors', require(__DIR__ . '/config/executors.php'));
+        $container->mergeParameter(RunnerExtension::PARAM_EXECUTORS, require(__DIR__ . '/config/executors.php'));
     }
 }

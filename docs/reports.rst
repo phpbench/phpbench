@@ -37,7 +37,7 @@ Configuring Reports
 -------------------
 
 All reports can be configured either in the :ref:`report configuration
-<configuration_reports>` or directly on the command line using a simplified
+<configuration_report_generators>` or directly on the command line using a simplified
 JSON encoded string instead of the report name:
 
 To configure a report in ``phpbench.json``:

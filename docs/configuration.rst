@@ -83,10 +83,10 @@ Runner
 
 Extension class: ``PhpBench\Extension\RunnerExtension``
 
-.. _configuration_annotations:
+.. _configuration_runner_annotations:
 
-annotations
-~~~~~~~~~~~
+runner.annotations
+~~~~~~~~~~~~~~~~~~
 
 Read metadata from annotations
 
@@ -94,10 +94,10 @@ Default: ``true``
 
 Types: ``["bool"]``
 
-.. _configuration_annotation_import_use:
+.. _configuration_runner_annotation_import_use:
 
-annotation_import_use
-~~~~~~~~~~~~~~~~~~~~~
+runner.annotation_import_use
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Require that annotations be imported before use
 
@@ -105,10 +105,10 @@ Default: ``false``
 
 Types: ``["bool"]``
 
-.. _configuration_attributes:
+.. _configuration_runner_attributes:
 
-attributes
-~~~~~~~~~~
+runner.attributes
+~~~~~~~~~~~~~~~~~
 
 Read metadata from PHP 8 attributes
 
@@ -116,10 +116,10 @@ Default: ``true``
 
 Types: ``["bool"]``
 
-.. _configuration_bootstrap:
+.. _configuration_runner_bootstrap:
 
-bootstrap
-~~~~~~~~~
+runner.bootstrap
+~~~~~~~~~~~~~~~~
 
 Path to bootstrap (e.g. ``vendor/autoload.php``)
 
@@ -127,10 +127,10 @@ Default: ``null``
 
 Types: ``["string","null"]``
 
-.. _configuration_env_enabled_providers:
+.. _configuration_runner_env_enabled_providers:
 
-env.enabled_providers
-~~~~~~~~~~~~~~~~~~~~~
+runner.env_enabled_providers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Select which environment samplers to use
 
@@ -138,10 +138,10 @@ Default: ``["sampler","git","opcache","php","uname","unix_sysload"]``
 
 Types: ``["array"]``
 
-.. _configuration_env_baselines:
+.. _configuration_runner_env_baselines:
 
-env_baselines
-~~~~~~~~~~~~~
+runner.env_baselines
+~~~~~~~~~~~~~~~~~~~~
 
 Environment baselines (not to be confused with baseline comparisons when running benchmarks) are small benchmarks which run to sample the speed of the system (e.g. file I/O, computation etc). This setting enables or disables these baselines
 
@@ -149,10 +149,10 @@ Default: ``["nothing","md5","file_rw"]``
 
 Types: ``["array"]``
 
-.. _configuration_env_baseline_callables:
+.. _configuration_runner_env_baseline_callables:
 
-env_baseline_callables
-~~~~~~~~~~~~~~~~~~~~~~
+runner.env_baseline_callables
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Map of baseline callables (adds you to register a new environemntal baseline)
 
@@ -160,10 +160,10 @@ Default: ``[]``
 
 Types: ``["array"]``
 
-.. _configuration_executors:
+.. _configuration_runner_executors:
 
-executors
-~~~~~~~~~
+runner.executors
+~~~~~~~~~~~~~~~~
 
 Add new executor configurations
 
@@ -171,10 +171,10 @@ Default: ``[]``
 
 Types: ``["array"]``
 
-.. _configuration_path:
+.. _configuration_runner_path:
 
-path
-~~~~
+runner.path
+~~~~~~~~~~~
 
 Path or paths to the benchmarks
 
@@ -182,10 +182,10 @@ Default: ``null``
 
 Types: ``["string","array","null"]``
 
-.. _configuration_php_binary:
+.. _configuration_runner_php_binary:
 
-php_binary
-~~~~~~~~~~
+runner.php_binary
+~~~~~~~~~~~~~~~~~
 
 Specify a PHP binary to use when executing out-of-band benchmarks, e.g. ``/usr/bin/php6``, defaults to the version of PHP used to invoke PHPBench
 
@@ -193,10 +193,10 @@ Default: ``null``
 
 Types: ``["string","null"]``
 
-.. _configuration_php_config:
+.. _configuration_runner_php_config:
 
-php_config
-~~~~~~~~~~
+runner.php_config
+~~~~~~~~~~~~~~~~~
 
 Map of PHP ini settings to use when executing out-of-band benchmarks
 
@@ -204,10 +204,10 @@ Default: ``[]``
 
 Types: ``["array"]``
 
-.. _configuration_php_disable_ini:
+.. _configuration_runner_php_disable_ini:
 
-php_disable_ini
-~~~~~~~~~~~~~~~
+runner.php_disable_ini
+~~~~~~~~~~~~~~~~~~~~~~
 
 Disable reading the default PHP configuration
 
@@ -215,10 +215,10 @@ Default: ``false``
 
 Types: ``["bool"]``
 
-.. _configuration_php_wrapper:
+.. _configuration_runner_php_wrapper:
 
-php_wrapper
-~~~~~~~~~~~
+runner.php_wrapper
+~~~~~~~~~~~~~~~~~~
 
 Wrap the PHP binary with this command (e.g. ``blackfire run``)
 
@@ -226,10 +226,10 @@ Default: ``null``
 
 Types: ``["string","null"]``
 
-.. _configuration_progress:
+.. _configuration_runner_progress:
 
-progress
-~~~~~~~~
+runner.progress
+~~~~~~~~~~~~~~~
 
 Default progress logger to use
 
@@ -237,10 +237,10 @@ Default: ``"verbose"``
 
 Types: ``["string"]``
 
-.. _configuration_progress_summary_variant_format:
+.. _configuration_runner_progress_summary_variant_format:
 
-progress_summary_variant_format
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+runner.progress_summary_variant_format
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Expression used to render the summary text default progress loggers
 
@@ -248,10 +248,10 @@ Default: ``"\"Mo\" ~ display_as_time(mode(variant.time.avg), coalesce(subject.ti
 
 Types: ``["string"]``
 
-.. _configuration_progress_summary_baseline_format:
+.. _configuration_runner_progress_summary_baseline_format:
 
-progress_summary_baseline_format
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+runner.progress_summary_baseline_format
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 When the a comparison benchmark is referenced, alternative expression used to render the summary text default progress loggers
 
@@ -259,10 +259,10 @@ Default: ``"\"[\" ~ \n\"Mo\" ~ display_as_time(mode(variant.time.avg), coalesce(
 
 Types: ``["string"]``
 
-.. _configuration_remote_script_path:
+.. _configuration_runner_remote_script_path:
 
-remote_script_path
-~~~~~~~~~~~~~~~~~~
+runner.remote_script_path
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 PHPBench generates a PHP file for out-of-band benchmarks which is executed, this setting specifies the path to this file. When NULL a file in the systems temporary directory will be used
 
@@ -270,27 +270,16 @@ Default: ``null``
 
 Types: ``["string","null"]``
 
-.. _configuration_remote_script_remove:
+.. _configuration_runner_remote_script_remove:
 
-remote_script_remove
-~~~~~~~~~~~~~~~~~~~~
+runner.remote_script_remove
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If the generated file should be removed after it has been executed (useful for debugging)
 
 Default: ``true``
 
 Types: ``["bool"]``
-
-.. _configuration_retry_threshold:
-
-retry_threshold
-~~~~~~~~~~~~~~~
-
-DEPRECATED: use :ref:`configuration_runner_retry_threshold` instead
-
-Default: ``null``
-
-Types: ``["null","int","float"]``
 
 .. _configuration_runner_assert:
 
@@ -402,10 +391,10 @@ Default: ``null``
 
 Types: ``["null","int","array"]``
 
-.. _configuration_subject_pattern:
+.. _configuration_runner_subject_pattern:
 
-subject_pattern
-~~~~~~~~~~~~~~~
+runner.subject_pattern
+~~~~~~~~~~~~~~~~~~~~~~
 
 Subject prefix to use when finding benchmarks
 
@@ -418,10 +407,10 @@ Report
 
 Extension class: ``PhpBench\Extension\ReportExtension``
 
-.. _configuration_reports:
+.. _configuration_report_generators:
 
-reports
-~~~~~~~
+report.generators
+~~~~~~~~~~~~~~~~~
 
 Report generator configurations, see :doc:`report-generators`
 
@@ -429,10 +418,10 @@ Default: ``[]``
 
 Types: ``["array"]``
 
-.. _configuration_outputs:
+.. _configuration_report_outputs:
 
-outputs
-~~~~~~~
+report.outputs
+~~~~~~~~~~~~~~
 
 Report renderer configurations, see :doc:`report-renderers`
 
