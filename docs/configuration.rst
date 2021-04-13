@@ -34,28 +34,6 @@ Default: ``[]``
 
 Types: ``["array"]``
 
-.. _configuration_core_output_mode:
-
-core.output_mode
-~~~~~~~~~~~~~~~~
-
-Default output mode (e.g. throughput or net time)
-
-Default: ``"time"``
-
-Types: ``["string"]``
-
-.. _configuration_core_time_unit:
-
-core.time_unit
-~~~~~~~~~~~~~~
-
-Default time unit
-
-Default: ``"microseconds"``
-
-Types: ``["string"]``
-
 .. _configuration_core_working_dir:
 
 core.working_dir
@@ -86,14 +64,14 @@ core.profiles
 Alternative configurations::
 
     {
-        "profiles": {
+        "core.profiles": {
             "php8": {
                 "runner.php_bin": "/bin/php8"
             }
         }
     }
 
-The named configuration will be merged with the default configuration, and can be used via::
+The named configuration will be merged with the default configuration, and can be used via:
 
 .. code-block:: bash
 
@@ -163,10 +141,10 @@ Default: ``["sampler","git","opcache","php","uname","unix_sysload"]``
 
 Types: ``["array"]``
 
-.. _configuration_runner_env_baselines:
+.. _configuration_runner_env_samplers:
 
-runner.env_baselines
-~~~~~~~~~~~~~~~~~~~~
+runner.env_samplers
+~~~~~~~~~~~~~~~~~~~
 
 Environment baselines (not to be confused with baseline comparisons when running benchmarks) are small benchmarks which run to sample the speed of the system (e.g. file I/O, computation etc). This setting enables or disables these baselines
 
@@ -174,10 +152,10 @@ Default: ``["nothing","md5","file_rw"]``
 
 Types: ``["array"]``
 
-.. _configuration_runner_env_baseline_callables:
+.. _configuration_runner_env_sampler_callables:
 
-runner.env_baseline_callables
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+runner.env_sampler_callables
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Map of baseline callables (adds you to register a new environemntal baseline)
 
@@ -515,7 +493,7 @@ Extension class: ``PhpBench\Extensions\XDebug\XDebugExtension``
 
 .. _configuration_xdebug_command_handler_output_dir:
 
-xdebug.command.handler.output_dir
+xdebug.command_handler_output_dir
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Output directory for generated XDebug profiles

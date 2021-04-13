@@ -74,8 +74,8 @@ class RunnerExtension implements ExtensionInterface
     public const PARAM_ATTRIBUTES = 'runner.attributes';
     public const PARAM_BOOTSTRAP = 'runner.bootstrap';
     public const PARAM_ENABLED_PROVIDERS = 'runner.env_enabled_providers';
-    public const PARAM_ENV_BASELINES = 'runner.env_baselines';
-    public const PARAM_ENV_BASELINE_CALLABLES = 'runner.env_baseline_callables';
+    public const PARAM_ENV_SAMPLERS = 'runner.env_samplers';
+    public const PARAM_ENV_SAMPLER_CALLABLES = 'runner.env_sampler_callables';
     public const PARAM_EXECUTORS = 'runner.executors';
     public const PARAM_PATH = 'runner.path';
     public const PARAM_PHP_BINARY = 'runner.php_binary';
@@ -122,8 +122,8 @@ class RunnerExtension implements ExtensionInterface
                 self::ENV_PROVIDER_UNAME,
                 self::ENV_PROVIDER_UNIX_SYSLOAD,
             ],
-            self::PARAM_ENV_BASELINES => ['nothing', 'md5', 'file_rw'],
-            self::PARAM_ENV_BASELINE_CALLABLES => [],
+            self::PARAM_ENV_SAMPLERS => ['nothing', 'md5', 'file_rw'],
+            self::PARAM_ENV_SAMPLER_CALLABLES => [],
             self::PARAM_EXECUTORS => [],
             self::PARAM_PATH => null,
             self::PARAM_PHP_BINARY => null,
@@ -153,8 +153,8 @@ class RunnerExtension implements ExtensionInterface
         $resolver->setAllowedTypes(self::PARAM_ATTRIBUTES, ['bool']);
         $resolver->setAllowedTypes(self::PARAM_BOOTSTRAP, ['string', 'null']);
         $resolver->setAllowedTypes(self::PARAM_ENABLED_PROVIDERS, ['array']);
-        $resolver->setAllowedTypes(self::PARAM_ENV_BASELINES, ['array']);
-        $resolver->setAllowedTypes(self::PARAM_ENV_BASELINE_CALLABLES, ['array']);
+        $resolver->setAllowedTypes(self::PARAM_ENV_SAMPLERS, ['array']);
+        $resolver->setAllowedTypes(self::PARAM_ENV_SAMPLER_CALLABLES, ['array']);
         $resolver->setAllowedTypes(self::PARAM_EXECUTORS, ['array']);
         $resolver->setAllowedTypes(self::PARAM_PATH, ['string', 'array', 'null']);
         $resolver->setAllowedTypes(self::PARAM_PHP_BINARY, ['string', 'null']);
@@ -184,8 +184,8 @@ class RunnerExtension implements ExtensionInterface
             self::PARAM_ATTRIBUTES => 'Read metadata from PHP 8 attributes',
             self::PARAM_BOOTSTRAP => 'Path to bootstrap (e.g. ``vendor/autoload.php``)',
             self::PARAM_ENABLED_PROVIDERS => 'Select which environment samplers to use',
-            self::PARAM_ENV_BASELINES => 'Environment baselines (not to be confused with baseline comparisons when running benchmarks) are small benchmarks which run to sample the speed of the system (e.g. file I/O, computation etc). This setting enables or disables these baselines',
-            self::PARAM_ENV_BASELINE_CALLABLES => 'Map of baseline callables (adds you to register a new environemntal baseline)',
+            self::PARAM_ENV_SAMPLERS => 'Environment baselines (not to be confused with baseline comparisons when running benchmarks) are small benchmarks which run to sample the speed of the system (e.g. file I/O, computation etc). This setting enables or disables these baselines',
+            self::PARAM_ENV_SAMPLER_CALLABLES => 'Map of baseline callables (adds you to register a new environemntal baseline)',
             self::PARAM_EXECUTORS => 'Add new executor configurations',
             self::PARAM_PATH => 'Path or paths to the benchmarks',
             self::PARAM_PHP_BINARY => 'Specify a PHP binary to use when executing out-of-band benchmarks, e.g. ``/usr/bin/php6``, defaults to the version of PHP used to invoke PHPBench',
@@ -265,7 +265,7 @@ class RunnerExtension implements ExtensionInterface
         $container->register(Provider\Sampler::class, function (Container $container) {
             return new Provider\Sampler(
                 $container->get(SamplerManager::class),
-                $container->getParameter(self::PARAM_ENV_BASELINES)
+                $container->getParameter(self::PARAM_ENV_SAMPLERS)
             );
         }, [self::TAG_ENV_PROVIDER => [
             'name' => self::ENV_PROVIDER_SAMPLER,
@@ -614,7 +614,7 @@ class RunnerExtension implements ExtensionInterface
                 'nothing' => '\PhpBench\Benchmark\Baseline\Baselines::nothing',
                 'md5' => '\PhpBench\Benchmark\Baseline\Baselines::md5',
                 'file_rw' => '\PhpBench\Benchmark\Baseline\Baselines::fwriteFread',
-            ], $container->getParameter(self::PARAM_ENV_BASELINE_CALLABLES));
+            ], $container->getParameter(self::PARAM_ENV_SAMPLER_CALLABLES));
 
             foreach ($callables as $name => $callable) {
                 $manager->addSamplerCallable($name, $callable);

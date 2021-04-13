@@ -34,7 +34,6 @@ class CoreExtension implements ExtensionInterface
     public const PARAM_DEBUG = 'core.debug';
     public const PARAM_WORKING_DIR = 'core.working_dir';
 
-    public const PARAM_OUTPUT_MODE = 'core.output_mode';
     public const PARAM_TIME_UNIT = 'core.time_unit';
 
     public function configure(OptionsResolver $resolver): void
@@ -42,8 +41,6 @@ class CoreExtension implements ExtensionInterface
         $resolver->setDefaults([
             self::PARAM_DEBUG => false,
             self::PARAM_EXTENSIONS => [],
-            self::PARAM_OUTPUT_MODE => TimeUnit::MODE_TIME,
-            self::PARAM_TIME_UNIT => TimeUnit::MICROSECONDS,
             self::PARAM_WORKING_DIR => getcwd(),
             self::PARAM_CONFIG_PATH => null,
             self::PARAM_PROFILES => [],
@@ -52,8 +49,6 @@ class CoreExtension implements ExtensionInterface
         $resolver->setAllowedTypes(self::PARAM_PROFILES, ['array']);
         $resolver->setAllowedTypes(self::PARAM_DEBUG, ['bool']);
         $resolver->setAllowedTypes(self::PARAM_CONFIG_PATH, ['string', 'null']);
-        $resolver->setAllowedTypes(self::PARAM_TIME_UNIT, ['string']);
-        $resolver->setAllowedTypes(self::PARAM_OUTPUT_MODE, ['string']);
         $resolver->setAllowedTypes(self::PARAM_EXTENSIONS, ['array']);
         $resolver->setAllowedTypes(self::PARAM_WORKING_DIR, ['string']);
         SymfonyOptionsResolverCompat::setInfos($resolver, [
@@ -61,14 +56,14 @@ class CoreExtension implements ExtensionInterface
 Alternative configurations::
 
     {
-        "profiles": {
+        "core.profiles": {
             "php8": {
                 "runner.php_bin": "/bin/php8"
             }
         }
     }
 
-The named configuration will be merged with the default configuration, and can be used via::
+The named configuration will be merged with the default configuration, and can be used via:
 
 .. code-block:: bash
 
@@ -77,8 +72,6 @@ EOT
             ,
             self::PARAM_DEBUG => 'If enabled output debug messages (e.g. the commands being executed when running benchamrks). Same as ``-vvv``',
             self::PARAM_EXTENSIONS => 'List of additional extensions to enable',
-            self::PARAM_OUTPUT_MODE => 'Default output mode (e.g. throughput or net time)',
-            self::PARAM_TIME_UNIT => 'Default time unit',
             self::PARAM_CONFIG_PATH => 'Alternative path to a PHPBench configuration file (default is ``phpbench.json``',
             self::PARAM_WORKING_DIR => 'Working directory to use',
         ]);
@@ -104,7 +97,7 @@ EOT
         });
 
         $container->register(TimeUnit::class, function (Container $container) {
-            return new TimeUnit(TimeUnit::MICROSECONDS, $container->getParameter(self::PARAM_TIME_UNIT));
+            return new TimeUnit(TimeUnit::MICROSECONDS, TimeUnit::MICROSECONDS);
         });
 
         $this->registerJson($container);
