@@ -12,11 +12,9 @@
 
 namespace PhpBench\Extension;
 
-use Humbug\SelfUpdate\Updater;
 use PhpBench\Compat\SymfonyOptionsResolverCompat;
 use PhpBench\Console\Application;
 use PhpBench\Console\Command\Handler\TimeUnitHandler;
-use PhpBench\Console\Command\SelfUpdateCommand;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Json\JsonDecoder;
