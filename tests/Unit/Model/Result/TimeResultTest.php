@@ -39,7 +39,7 @@ class TimeResultTest extends TestCase
     public function testLessThanZero(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Time cannot be less than 0, got -10');
+        $this->expectExceptionMessage('Net time cannot be less than zero, got "-10"');
         new TimeResult(-10);
     }
 

@@ -12,7 +12,7 @@
 
 namespace PhpBench\Model\Result;
 
-use Assert\Assertion;
+use InvalidArgumentException;
 use PhpBench\Model\ResultInterface;
 
 class RejectionCountResult implements ResultInterface
@@ -31,7 +31,10 @@ class RejectionCountResult implements ResultInterface
 
     public function __construct(int $rejectCount)
     {
-        Assertion::greaterOrEqualThan($rejectCount, 0, 'Rejection count must be greater or equal to 0');
+        if ($rejectCount < 0) {
+            throw new InvalidArgumentException('Rejection count must be greater or equal to 0,');
+        }
+
         $this->rejectCount = $rejectCount;
     }
 

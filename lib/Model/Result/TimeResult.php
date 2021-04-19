@@ -13,6 +13,7 @@
 namespace PhpBench\Model\Result;
 
 use Assert\Assertion;
+use InvalidArgumentException;
 use PhpBench\Model\ResultInterface;
 
 /**
@@ -33,7 +34,13 @@ class TimeResult implements ResultInterface
 
     public function __construct(int $netTime, int $revs = 1)
     {
-        Assertion::greaterOrEqualThan($netTime, 0, 'Time cannot be less than 0, got %s');
+        if ($netTime < 0) {
+            throw new InvalidArgumentException(sprintf('Net time cannot be less than zero, got "%s"', $netTime));
+        }
+
+        if ($revs < 1) {
+            throw new InvalidArgumentException(sprintf('Revs cannot be less than zero, got "%s"', $revs));
+        }
 
         $this->netTime = $netTime;
         $this->revs = $revs;
