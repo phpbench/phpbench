@@ -35,7 +35,6 @@
         "dantleech/invoke": "^1.2",
         "friendsofphp/php-cs-fixer": "^2.13.1",
         "jangregor/phpstan-prophecy": "^0.8.1",
-        "padraic/phar-updater": "^1.0",
         "phpspec/prophecy": "^1.12",
         "phpstan/phpstan": "^0.12.7",
         "phpunit/phpunit": "^8.5.8 || ^9.0",

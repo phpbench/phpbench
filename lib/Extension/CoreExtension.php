@@ -119,13 +119,5 @@ EOT
                 $container->get(TimeUnit::class)
             );
         });
-
-        if (class_exists(Updater::class) && class_exists(\Phar::class) && \Phar::running()) {
-            $container->register(SelfUpdateCommand::class, function (Container $container) {
-                return new SelfUpdateCommand();
-            }, [
-                ConsoleExtension::TAG_CONSOLE_COMMAND => []
-            ]);
-        }
     }
 }
