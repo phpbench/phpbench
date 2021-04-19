@@ -16,7 +16,7 @@ use PhpBench\Model\Benchmark;
 use PhpBench\Model\Suite;
 use PhpBench\Model\Variant;
 
-class TravisLogger extends PhpBenchLogger
+class PlainLogger extends PhpBenchLogger
 {
     private $firstTime = true;
     /**

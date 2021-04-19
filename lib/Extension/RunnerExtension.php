@@ -41,7 +41,7 @@ use PhpBench\Progress\Logger\BlinkenLogger;
 use PhpBench\Progress\Logger\DotsLogger;
 use PhpBench\Progress\Logger\HistogramLogger;
 use PhpBench\Progress\Logger\NullLogger;
-use PhpBench\Progress\Logger\TravisLogger;
+use PhpBench\Progress\Logger\PlainLogger;
 use PhpBench\Progress\Logger\VerboseLogger;
 use PhpBench\Progress\LoggerRegistry;
 use PhpBench\Progress\VariantFormatter;
@@ -468,8 +468,8 @@ class RunnerExtension implements ExtensionInterface
             );
         }, [self::TAG_PROGRESS_LOGGER => ['name' => 'verbose']]);
 
-        $container->register(TravisLogger::class, function (Container $container) {
-            return new TravisLogger(
+        $container->register(PlainLogger::class, function (Container $container) {
+            return new PlainLogger(
                 $container->get(ConsoleExtension::SERVICE_OUTPUT_ERR),
                 $container->get(VariantFormatter::class),
                 $container->get(TimeUnit::class)
