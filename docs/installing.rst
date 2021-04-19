@@ -20,14 +20,14 @@ You may then run PHPBench from your project's directory as follows:
 
     $ ./vendor/bin/phpbench
 
-Install with Phive
+Install with PHIVE
 ------------------
 
 Install with The PHAR Installation and Verification Environment ([PHIVE](https://phar.io)):
 
 .. code-block:: bash
 
-    $ phive install infection
+    $ phive install phpbench
 
 Install as a PHAR
 -----------------
@@ -45,7 +45,7 @@ as follows:
     $ curl -Lo phpbench.phar https://github.com/phpbench/phpbench/releases/latest/download/phpbench.phar
     $ curl -Lo phpbench.phar.asc https://github.com/phpbench/phpbench/releases/latest/download/phpbench.phar.asc
 
-The PHAR is signed. In order to verify that it was signed by us execute the
+The PHAR is signed. In order to verify that it was signed by the PHPBench team execute the
 following:
 
 .. code-block:: bash
