@@ -13,13 +13,13 @@
 namespace PhpBench\Tests\Unit\Progress\Logger;
 
 use PhpBench\Assertion\VariantAssertionResults;
-use PhpBench\Progress\Logger\TravisLogger;
+use PhpBench\Progress\Logger\PlainLogger;
 
-class TravisLoggerTest extends PhpBenchLoggerTest
+class PlainLoggerTest extends PhpBenchLoggerTest
 {
     public function getLogger()
     {
-        return new TravisLogger($this->output, $this->variantFormatter, $this->timeUnit);
+        return new PlainLogger($this->output, $this->variantFormatter, $this->timeUnit);
     }
 
     /**

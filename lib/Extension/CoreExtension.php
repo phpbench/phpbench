@@ -12,11 +12,9 @@
 
 namespace PhpBench\Extension;
 
-use Humbug\SelfUpdate\Updater;
 use PhpBench\Compat\SymfonyOptionsResolverCompat;
 use PhpBench\Console\Application;
 use PhpBench\Console\Command\Handler\TimeUnitHandler;
-use PhpBench\Console\Command\SelfUpdateCommand;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Json\JsonDecoder;
@@ -119,13 +117,5 @@ EOT
                 $container->get(TimeUnit::class)
             );
         });
-
-        if (class_exists(Updater::class) && class_exists(\Phar::class) && \Phar::running()) {
-            $container->register(SelfUpdateCommand::class, function (Container $container) {
-                return new SelfUpdateCommand();
-            }, [
-                ConsoleExtension::TAG_CONSOLE_COMMAND => []
-            ]);
-        }
     }
 }

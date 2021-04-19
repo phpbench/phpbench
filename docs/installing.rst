@@ -20,38 +20,44 @@ You may then run PHPBench from your project's directory as follows:
 
     $ ./vendor/bin/phpbench
 
-Install as a PHAR package
--------------------------
+Install with PHIVE
+------------------
 
-You can download the phar_ and the `public key`_, this can be done with CURL
+Install with The PHAR Installation and Verification Environment ([PHIVE](https://phar.io)):
+
+.. code-block:: bash
+
+    $ phive install phpbench
+
+Install as a PHAR
+-----------------
+
+.. warning::
+
+    The below will only work after 1.0.0 has been released and there is a
+    non-prelease version available on Github.
+
+You can download `phpbench.phar` and the `phpbench.phar.asc`:
 as follows:
 
 .. code-block:: bash
 
-    $ curl -o phpbench.phar https://phpbench.github.io/phpbench/phpbench.phar
-    $ curl -o phpbench.phar.pubkey https://phpbench.github.io/phpbench/phpbench.phar.pubkey
+    $ curl -Lo phpbench.phar https://github.com/phpbench/phpbench/releases/latest/download/phpbench.phar
+    $ curl -Lo phpbench.phar.asc https://github.com/phpbench/phpbench/releases/latest/download/phpbench.phar.asc
 
-You will probably then want make it executable and put it in your systems
-global path, on Linux systems:
-
-.. code-block:: bash
-
-    $ chmod 0755 phpbench.phar
-    $ sudo mv phpbench.phar /usr/local/bin/phpbench
-    $ sudo mv phpbench.phar.pubkey /usr/local/bin/phpbench.pubkey
-
-You can update the version at any time by using the ``self-update`` command:
+The PHAR is signed. In order to verify that it was signed by the PHPBench team execute the
+following:
 
 .. code-block:: bash
 
-    $ phpbench self-update
+     gpg --recv-keys 29BE1AD59988642ADCDFC86715E1F8E2B149E6F5
+     gpg --with-fingerprint --verify phpbench.phar.asc phpbench.phar
 
-.. warning::
+You should then see something like the following:
 
-    Installing as a PHAR means that you are always updating to the latest
-    version, the latest version may include BC breaks.  Therefore it is
-    recommended to include the package as a project dependency for
-    continuous-integration.
+.. code-block:: bash
 
-.. _phar: https://phpbench.github.io/phpbench/phpbench.phar
-.. _public key: https://phpbench.github.io/phpbench/phpbench.phar.pubkey
+    gpg: Signature made Tue 13 Apr 2021 16:35:57 BST
+    gpg:                using RSA key 29BE1AD59988642ADCDFC86715E1F8E2B149E6F5
+    gpg: Good signature from "Daniel Leech (PHPBench Github Key) <daniel@dantleech.com>" [ultimate]
+    Primary key fingerprint: 29BE 1AD5 9988 642A DCDF  C867 15E1 F8E2 B149 E6F5

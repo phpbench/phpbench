@@ -6,6 +6,7 @@ CHANGELOG
 
 B/C breaks:
 
+- Removed `self-update` functionality (suggest using `phive` instead(.
 - Most configuration option names have changed. All options are now prefixed
   by their extension name, e.g. `bootstrap` => `runner.bootstrap`, `path` =>
   `runner.path`, `extensions` => `core.extensions`. See the configuration
