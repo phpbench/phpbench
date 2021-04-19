@@ -12,7 +12,6 @@
 
 namespace PhpBench\Model\Result;
 
-use Assert\Assertion;
 use InvalidArgumentException;
 use PhpBench\Model\ResultInterface;
 
@@ -72,7 +71,12 @@ class TimeResult implements ResultInterface
      */
     public function getRevTime(int $revs)
     {
-        Assertion::greaterThan($revs, 0, 'Revolutions must be more than 0, got %s');
+        if ($revs <= 0) {
+            throw new InvalidArgumentException(sprintf(
+                'Revolutions must be more than 0, got %s',
+                $revs
+            ));
+        };
 
         return $this->netTime / $revs;
     }
