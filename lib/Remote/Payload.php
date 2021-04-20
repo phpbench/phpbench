@@ -49,11 +49,6 @@ class Payload
     private $tokens = [];
 
     /**
-     * Symfony Process instance.
-     */
-    private $process;
-
-    /**
      * @var bool
      */
     private $disableIni = false;
@@ -208,7 +203,7 @@ class Payload
                 return;
             }
 
-            if (@mkdir($directory, 0744)) {
+            if (@mkdir($directory, 0744, true)) {
                 return;
             }
 
