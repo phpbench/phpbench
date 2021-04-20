@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+dev-master
+----------
+
+Improvements:
+
+- Use package versions to show PHPBench version if not PHAR
+
 1.0.0-beta1
 -----------
 

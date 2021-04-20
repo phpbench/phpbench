@@ -39,7 +39,7 @@ use Webmozart\PathUtil\Path;
 class PhpBench
 {
     // PHPBench version: @git_tag@ will be replaced by box.
-    private const VERSION = '@git_tag@';
+    public const VERSION = '@git_tag@';
 
     public static function run(?InputInterface $input = null, ?OutputInterface $output = null): void
     {
@@ -254,10 +254,12 @@ class PhpBench
 
     public static function version(): string
     {
-        if (self::VERSION === '@git_tag@') {
+        // do not use the literal `@git_tag@` as it would be replaced by box.
+        if (self::VERSION === '@' . 'git_tag' . '@') {
             return InstalledVersions::getPrettyVersion(Versions::rootPackageName());
         }
 
+        /** @phpstan-ignore-next-line */
         return self::VERSION;
     }
 }
