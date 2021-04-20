@@ -15,7 +15,6 @@ namespace PhpBench\Tests\Unit\Remote;
 use PhpBench\Remote\Payload;
 use PhpBench\Remote\ProcessFactory;
 use PhpBench\Tests\TestCase;
-use PHPUnit\Framework\MockObject\Invocation;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 use RuntimeException;
 use Symfony\Component\Process\Process;
