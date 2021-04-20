@@ -59,7 +59,7 @@ class Payload
     private $iniStringBuilder;
 
     /**
-     * @var ProcessFactory
+     * @var ProcessFactoryInterface
      */
     private $processFactory;
 
@@ -89,7 +89,7 @@ class Payload
         array $tokens = [],
         ?string $phpPath = PHP_BINARY,
         ?float $timeout = null,
-        ProcessFactory $processFactory = null,
+        ProcessFactoryInterface $processFactory = null,
         string $scriptPath = null,
         bool $scriptRemove = false
     ) {
