@@ -13,7 +13,6 @@
 namespace PhpBench;
 
 use Composer\InstalledVersions;
-use PackageVersions\Versions;
 use PhpBench\Console\Application;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\Exception\ConfigurationPreProcessingError;
@@ -256,7 +255,7 @@ class PhpBench
     {
         // do not use the literal `@git_tag@` as it would be replaced by box.
         if (self::VERSION === '@' . 'git_tag' . '@') {
-            return InstalledVersions::getPrettyVersion(Versions::rootPackageName());
+            return InstalledVersions::getPrettyVersion('phpbench/phpbench');
         }
 
         /** @phpstan-ignore-next-line */
