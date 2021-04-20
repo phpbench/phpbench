@@ -51,7 +51,7 @@ abstract class PhpBenchLogger extends NullLogger
 
     public function startSuite(Suite $suite): void
     {
-        $this->output->writeln('PHPBench ' . PhpBench::VERSION . ' running benchmarks...');
+        $this->output->writeln('PHPBench (' . PhpBench::version() . ') running benchmarks...');
 
         if ($configPath = $suite->getConfigPath()) {
             $this->output->writeln(sprintf('with configuration file: %s', $configPath));

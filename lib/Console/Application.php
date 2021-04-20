@@ -27,7 +27,7 @@ class Application extends BaseApplication
     {
         parent::__construct(
             'phpbench',
-            PhpBench::VERSION
+            PhpBench::version()
         );
     }
 

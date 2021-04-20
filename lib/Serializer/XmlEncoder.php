@@ -37,7 +37,7 @@ class XmlEncoder
         $dom = new Document();
 
         $rootEl = $dom->createRoot('phpbench');
-        $rootEl->setAttribute('version', PhpBench::VERSION);
+        $rootEl->setAttribute('version', PhpBench::version());
         $rootEl->setAttributeNS(
             'http://www.w3.org/2000/xmlns/',
             'xmlns:xsi',

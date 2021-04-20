@@ -18,6 +18,7 @@
         "ext-reflection": "*",
         "ext-spl": "*",
         "ext-tokenizer": "*",
+        "composer/package-versions-deprecated": "^1.8",
         "doctrine/annotations": "^1.2.7",
         "phpbench/container": "^2.1",
         "phpbench/dom": "~0.3.0",
