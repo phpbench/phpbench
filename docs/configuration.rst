@@ -399,7 +399,7 @@ Types: ``["null","int","array"]``
 runner.subject_pattern
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Subject prefix to use when finding benchmarks
+Subject pattern (regex) to use when finding benchmarks
 
 Default: ``"^bench"``
 

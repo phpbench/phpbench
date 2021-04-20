@@ -207,7 +207,7 @@ class RunnerExtension implements ExtensionInterface
             self::PARAM_RUNNER_REVS => 'Default number of :ref:`metadata_revolutions`',
             self::PARAM_RUNNER_TIMEOUT => 'Default :ref:`metadata_timeout`',
             self::PARAM_RUNNER_WARMUP => 'Default :ref:`metadata_warmup`',
-            self::PARAM_SUBJECT_PATTERN => 'Subject prefix to use when finding benchmarks',
+            self::PARAM_SUBJECT_PATTERN => 'Subject pattern (regex) to use when finding benchmarks',
         ]);
     }
 
