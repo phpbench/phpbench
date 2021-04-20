@@ -13,7 +13,7 @@
 namespace PhpBench\Tests\Unit\Remote;
 
 use PhpBench\Remote\Payload;
-use PhpBench\Remote\ProcessFactory;
+use PhpBench\Remote\ProcessFactoryInterface;
 use PhpBench\Tests\TestCase;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 use RuntimeException;
@@ -27,7 +27,7 @@ class PayloadTest extends TestCase
     protected function setUp(): void
     {
         $this->process = $this->createMock(Process::class);
-        $this->processFactory = $this->createMock(ProcessFactory::class);
+        $this->processFactory = $this->createMock(ProcessFactoryInterface::class);
     }
 
     /**
@@ -137,7 +137,7 @@ class PayloadTest extends TestCase
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Could not find script template');
-        $processFactory = $this->createMock(ProcessFactory::class);
+        $processFactory = $this->createMock(ProcessFactoryInterface::class);
         $payload = new Payload(
             __DIR__ . '/template/not-existing-filename.template',
             [],
