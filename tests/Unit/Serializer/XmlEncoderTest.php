@@ -42,7 +42,7 @@ class XmlEncoderTest extends XmlTestCase
      */
     public function testEncode(array $params, $expected): void
     {
-        $expected = str_replace('PHPBENCH_VERSION', PhpBench::VERSION, $expected);
+        $expected = str_replace('PHPBENCH_VERSION', PhpBench::version(), $expected);
         $collection = $this->getSuiteCollection($params);
         $xmlEncoder = new XmlEncoder();
         $dom = $xmlEncoder->encode($collection);

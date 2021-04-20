@@ -12,6 +12,7 @@
 
 namespace PhpBench;
 
+use Composer\InstalledVersions;
 use PhpBench\Console\Application;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\Exception\ConfigurationPreProcessingError;
@@ -37,11 +38,7 @@ use Webmozart\PathUtil\Path;
 class PhpBench
 {
     // PHPBench version: @git_tag@ will be replaced by box.
-    const VERSION = '@git_tag@';
-
-    // URL to phar and version file for self-updating
-    const PHAR_URL = 'https://phpbench.github.io/phpbench/phpbench.phar';
-    const PHAR_VERSION_URL = 'https://phpbench.github.io/phpbench/phpbench.phar.version';
+    public const VERSION = '@git_tag@';
 
     public static function run(?InputInterface $input = null, ?OutputInterface $output = null): void
     {
@@ -252,5 +249,16 @@ class PhpBench
 
             exit(255);
         });
+    }
+
+    public static function version(): string
+    {
+        // do not use the literal `@git_tag@` as it would be replaced by box.
+        if (self::VERSION === '@' . 'git_tag' . '@') {
+            return InstalledVersions::getPrettyVersion('phpbench/phpbench');
+        }
+
+        /** @phpstan-ignore-next-line */
+        return self::VERSION;
     }
 }
