@@ -14,20 +14,21 @@ namespace PhpBench\Tests\Unit\Remote;
 
 use PhpBench\Remote\Payload;
 use PhpBench\Remote\ProcessFactoryInterface;
-use PhpBench\Tests\TestCase;
-use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
+use PhpBench\Tests\IntegrationTestCase;
+use Prophecy\Argument;
 use RuntimeException;
 use Symfony\Component\Process\Process;
 
-class PayloadTest extends TestCase
+class PayloadTest extends IntegrationTestCase
 {
     private $process;
     private $processFactory;
 
     protected function setUp(): void
     {
-        $this->process = $this->createMock(Process::class);
-        $this->processFactory = $this->createMock(ProcessFactoryInterface::class);
+        $this->workspace()->reset();
+        $this->process = $this->prophesize(Process::class);
+        $this->processFactory = $this->prophesize(ProcessFactoryInterface::class);
     }
 
     /**
@@ -43,7 +44,23 @@ class PayloadTest extends TestCase
             ]
         );
 
-        $result = $payload->launch();
+        $result = $payload->launch($payload);
+
+        $this->assertEquals([
+            'foo' => 'bar',
+        ], $result);
+    }
+
+    public function testAutomaticallyCreatesNonExistingScriptDirectory(): void
+    {
+        $payload = new Payload(
+            __DIR__ . '/template/foo.template',
+            [
+                'foo' => 'bar',
+            ],null, null, null, $this->workspace()->path('/foo/bar/baz')
+        );
+
+        $result = $payload->launch($payload);
 
         $this->assertEquals([
             'foo' => 'bar',
@@ -61,7 +78,7 @@ class PayloadTest extends TestCase
             __DIR__ . '/template/invalid.template'
         );
 
-        $payload->launch();
+        $payload->launch($payload);
     }
 
     /**
@@ -71,23 +88,14 @@ class PayloadTest extends TestCase
     {
         $payload = $this->validPayload();
         $payload->setPhpPath('/foo/bar');
+        $this->processFactory->create(Argument::containingString('/foo/bar'), null)->willReturn($this->process);
+        $this->process->run()->shouldBeCalled();
+        $this->process->isSuccessful()->willReturn(true);
+        $this->process->getOutput()->willReturn(serialize(['foo' => 'bar']));
 
-        $this->mockProcessFactory(self::once(), '/foo/bar');
-        $this->process->expects(self::once())->method('run');
-        $this->process->method('isSuccessful')->willReturn(true);
-        $this->process->method('getOutput')->willReturn(serialize(['foo' => 'bar']));
-
-        $payload->launch();
+        $payload->launch($payload);
     }
 
-    public function mockProcessFactory(InvocationOrder $invocation, string $argument): void
-    {
-        $this->processFactory
-            ->expects($invocation)
-            ->method('create')
-            ->with($this->stringContains($argument), null)
-            ->willReturn($this->process);
-    }
     /**
      * It should pass PHP ini settings to the PHP executable.
      */
@@ -102,14 +110,14 @@ class PayloadTest extends TestCase
             'bar' => 'foo',
         ]);
 
-        $this->mockProcessFactory(self::once(), '-dfoo=bar');
-        $this->mockProcessFactory(self::once(), '-dbar=foo');
-        $this->process->expects(self::once())->method('run');
-        $this->process->expects(self::once())->method('run');
-        $this->process->method('isSuccessful')->willReturn(true);
-        $this->process->method('getOutput')->willReturn(serialize(['foo' => 'bar']));
+        $this->processFactory->create(Argument::containingString('-dfoo=bar'), null)->willReturn($this->process)->shouldBeCalled();
+        $this->processFactory->create(Argument::containingString('-dbar=foo'), null)->willReturn($this->process)->shouldBeCalled();
+        $this->process->run()->shouldBeCalled();
+        $this->process->run()->shouldBeCalled();
+        $this->process->isSuccessful()->willReturn(true);
+        $this->process->getOutput()->willReturn(serialize(['foo' => 'bar']));
 
-        $payload->launch();
+        $payload->launch($payload);
     }
 
     /**
@@ -118,35 +126,34 @@ class PayloadTest extends TestCase
     public function testWrap(): void
     {
         $payload = $this->validPayload();
-        $payload->setWrapper('blackfire');
+        $payload->setWrapper('bockfire');
         $payload->setPhpPath('/boo/bar/php');
+        $this->processFactory->create(Argument::containingString('bockfire \'/boo/bar/php\''), null)->willReturn($this->process)->shouldBeCalled();
+        $this->process->run()->shouldBeCalled();
+        $this->process->isSuccessful()->willReturn(true);
+        $this->process->getOutput()->willReturn(serialize(['foo' => 'bar']));
 
-        $this->mockProcessFactory(self::once(), 'blackfire \'/boo/bar/php\'');
-        $this->process->expects(self::once())->method('run');
-        $this->process->method('run');
-        $this->process->method('isSuccessful')->willReturn(true);
-        $this->process->method('getOutput')->willReturn(serialize(['foo' => 'bar']));
-
-        $payload->launch();
+        $payload->launch($payload);
     }
 
     /**
-     * It should throw an exception if a template is not found.
+     * It should throw an execption if a template is not found.
+     *
      */
     public function testTemplateNotFound(): void
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Could not find script template');
-        $processFactory = $this->createMock(ProcessFactoryInterface::class);
+        $processFactory = $this->prophesize(ProcessFactoryInterface::class);
         $payload = new Payload(
             __DIR__ . '/template/not-existing-filename.template',
             [],
             null,
             null,
-            $processFactory
+            $processFactory->reveal()
         );
 
-        $payload->launch();
+        $payload->launch($payload);
     }
 
     private function validPayload(): Payload
@@ -161,7 +168,7 @@ class PayloadTest extends TestCase
             [],
             null,
             null,
-            $this->processFactory
+            $this->processFactory->reveal()
         );
     }
 }

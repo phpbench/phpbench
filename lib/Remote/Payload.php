@@ -87,7 +87,7 @@ class Payload
     public function __construct(
         string $template,
         array $tokens = [],
-        ?string $phpPath = PHP_BINARY,
+        ?string $phpPath = null,
         ?float $timeout = null,
         ProcessFactoryInterface $processFactory = null,
         string $scriptPath = null,
@@ -99,7 +99,7 @@ class Payload
         $this->processFactory = $processFactory ?: new ProcessFactory();
         $this->iniStringBuilder = new IniStringBuilder();
         $this->timeout = $timeout;
-        $this->phpPath = $phpPath;
+        $this->phpPath = $phpPath ?: PHP_BINARY;
         $this->scriptPath = $scriptPath;
         $this->scriptRemove = $scriptRemove;
     }
