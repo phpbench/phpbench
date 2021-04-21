@@ -21,7 +21,7 @@
         "composer/package-versions-deprecated": "^1.8",
         "doctrine/annotations": "^1.2.7",
         "phpbench/container": "^2.1",
-        "phpbench/dom": "~0.3.0",
+        "phpbench/dom": "~0.3.1",
         "psr/log": "^1.1",
         "seld/jsonlint": "^1.1",
         "symfony/console": "^4.2 || ^5.0",
