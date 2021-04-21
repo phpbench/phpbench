@@ -61,10 +61,9 @@ class XmlEncoder
                 $infoEl = $envEl->appendElement($information->getName());
 
                 foreach ($information as $key => $value) {
-                    $valueEl = $infoEl->appendElement('value');
+                    $valueEl = $infoEl->appendTextNode('value', $value);
                     $valueEl->setAttribute('name', $key);
                     $valueEl->setAttribute('type', gettype($value));
-                    $valueEl->nodeValue = $value;
                 }
             }
 
