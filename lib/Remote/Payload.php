@@ -49,11 +49,6 @@ class Payload
     private $tokens = [];
 
     /**
-     * Symfony Process instance.
-     */
-    private $process;
-
-    /**
      * @var bool
      */
     private $disableIni = false;
@@ -64,7 +59,7 @@ class Payload
     private $iniStringBuilder;
 
     /**
-     * @var ProcessFactory
+     * @var ProcessFactoryInterface
      */
     private $processFactory;
 
@@ -92,9 +87,9 @@ class Payload
     public function __construct(
         string $template,
         array $tokens = [],
-        ?string $phpPath = PHP_BINARY,
+        ?string $phpPath = null,
         ?float $timeout = null,
-        ProcessFactory $processFactory = null,
+        ProcessFactoryInterface $processFactory = null,
         string $scriptPath = null,
         bool $scriptRemove = false
     ) {
@@ -104,7 +99,7 @@ class Payload
         $this->processFactory = $processFactory ?: new ProcessFactory();
         $this->iniStringBuilder = new IniStringBuilder();
         $this->timeout = $timeout;
-        $this->phpPath = $phpPath;
+        $this->phpPath = $phpPath ?: PHP_BINARY;
         $this->scriptPath = $scriptPath;
         $this->scriptRemove = $scriptRemove;
     }
@@ -208,7 +203,7 @@ class Payload
                 return;
             }
 
-            if (@mkdir($directory, 0744)) {
+            if (@mkdir($directory, 0744, true)) {
                 return;
             }
 

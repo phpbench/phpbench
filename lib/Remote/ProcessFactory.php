@@ -6,7 +6,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Process\Process;
 
-class ProcessFactory
+final class ProcessFactory implements ProcessFactoryInterface
 {
     /**
      * @var LoggerInterface

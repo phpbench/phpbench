@@ -13,21 +13,22 @@
 namespace PhpBench\Tests\Unit\Remote;
 
 use PhpBench\Remote\Payload;
-use PhpBench\Remote\ProcessFactory;
-use PhpBench\Tests\TestCase;
+use PhpBench\Remote\ProcessFactoryInterface;
+use PhpBench\Tests\IntegrationTestCase;
 use Prophecy\Argument;
 use RuntimeException;
 use Symfony\Component\Process\Process;
 
-class PayloadTest extends TestCase
+class PayloadTest extends IntegrationTestCase
 {
     private $process;
     private $processFactory;
 
     protected function setUp(): void
     {
+        $this->workspace()->reset();
         $this->process = $this->prophesize(Process::class);
-        $this->processFactory = $this->prophesize(ProcessFactory::class);
+        $this->processFactory = $this->prophesize(ProcessFactoryInterface::class);
     }
 
     /**
@@ -50,9 +51,24 @@ class PayloadTest extends TestCase
         ], $result);
     }
 
+    public function testAutomaticallyCreatesNonExistingScriptDirectory(): void
+    {
+        $payload = new Payload(
+            __DIR__ . '/template/foo.template',
+            [
+                'foo' => 'bar',
+            ],null, null, null, $this->workspace()->path('/foo/bar/baz')
+        );
+
+        $result = $payload->launch($payload);
+
+        $this->assertEquals([
+            'foo' => 'bar',
+        ], $result);
+    }
+
     /**
      * It should throw an exception if the script is invalid.
-     *
      */
     public function testInvalidScript(): void
     {
@@ -128,7 +144,7 @@ class PayloadTest extends TestCase
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Could not find script template');
-        $processFactory = $this->prophesize(ProcessFactory::class);
+        $processFactory = $this->prophesize(ProcessFactoryInterface::class);
         $payload = new Payload(
             __DIR__ . '/template/not-existing-filename.template',
             [],
