@@ -156,7 +156,7 @@ class XmlTestCase extends TestCase
   <suite tag="test" context="test" date="2015-01-01T00:00:00+00:00" config-path="/path/to/config.json" uuid="1234">
     <env>
       <info1>
-        <value name="foo" type="string">fooo & bar</value>
+        <value name="foo" type="string">fooo &amp; bar</value>
       </info1>
     </env>
     <benchmark class="Bench1">
