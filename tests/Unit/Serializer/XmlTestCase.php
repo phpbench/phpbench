@@ -193,7 +193,7 @@ EOT
   <suite tag="test" context="test" date="2015-01-01T00:00:00+00:00" config-path="/path/to/config.json" uuid="1234">
     <env>
       <info1>
-        <value name="foo" type="string">bar</value>
+        <value name="foo" type="string">fooo &amp; bar</value>
       </info1>
     </env>
     <benchmark class="Bench1">
@@ -220,7 +220,7 @@ EOT
   <suite tag="test" context="test" date="2015-01-01T00:00:00+00:00" config-path="/path/to/config.json" uuid="1234">
     <env>
       <info1>
-        <value name="foo" type="string">bar</value>
+        <value name="foo" type="string">fooo &amp; bar</value>
       </info1>
     </env>
     <benchmark class="Bench1">
