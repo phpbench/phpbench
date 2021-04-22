@@ -11,6 +11,7 @@ Improvements:
 Bug fixes:
 
 - Unterminated XML reference #818 - @staabm
+- Parent directory for custom script path not created #739 - @alexandrajulius
 
 1.0.0-beta1
 -----------
