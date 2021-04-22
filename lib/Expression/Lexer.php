@@ -63,7 +63,7 @@ final class Lexer
         array $unitNames = []
     ) {
         $this->pattern = sprintf(
-            '{(%s)|(%s)|\n}iu',
+            '{(%s)|(%s)|\n|\r}iu',
             implode(')|(', array_map(function (string $value) {
                 return preg_quote($value);
             }, array_keys(self::TOKEN_VALUE_MAP))),

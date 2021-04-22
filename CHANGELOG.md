@@ -12,6 +12,7 @@ Bug fixes:
 
 - Unterminated XML reference #818 - @staabm
 - Parent directory for custom script path not created #739 - @alexandrajulius
+- Windows newline is not understood in expression language #817 - @dantleech
 
 1.0.0-beta1
 -----------
