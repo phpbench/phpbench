@@ -8,6 +8,10 @@ Improvements:
 
 - Use package versions to show PHPBench version if not PHAR
 
+Bug fixes:
+
+- Unterminated XML reference #818 - @staabm
+
 1.0.0-beta1
 -----------
 
