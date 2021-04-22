@@ -127,7 +127,7 @@ class XmlEncoder
             $errorsEl = $variantEl->appendElement('errors');
 
             foreach ($variant->getErrorStack() as $error) {
-                $errorEl = $errorsEl->appendElement('error', $error->getMessage());
+                $errorEl = $errorsEl->appendTextNode('error', $error->getMessage());
                 $errorEl->setAttribute('exception-class', $error->getClass());
                 $errorEl->setAttribute('code', $error->getCode());
                 $errorEl->setAttribute('file', $error->getFile());
@@ -141,7 +141,7 @@ class XmlEncoder
             $failuresEl = $variantEl->appendElement('failures');
 
             foreach ($variant->getAssertionResults()->failures() as $failure) {
-                $failureEl = $failuresEl->appendElement('failure', $failure->getMessage());
+                $failureEl = $failuresEl->appendTextNode('failure', $failure->getMessage());
             }
         }
 
