@@ -151,11 +151,7 @@ For example, to render a HTML document:
 
 .. code-block:: bash
 
-    $ phpbench run /path/to/HashBench.php --report=default --output=html
-
-Example of HTML output:
-
-.. image:: images/html.png
+    $ phpbench run /path/to/HashBench.php --report=default --output=delimited
 
 See the :doc:`../report-renderers` reference for more information.
 
@@ -193,7 +189,7 @@ By default PHPBench issues a single ``.`` for each benchmark subject executed.
 This is the ``dots`` progress reporter. Different progress reporters can be
 specified using the ``--progress`` option:
 
-.. figure:: images/blinken.gif
+.. figure:: ../images/blinken.gif
 
    blinken progress logger.
 

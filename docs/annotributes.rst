@@ -443,7 +443,7 @@ You can also specify assertions from the command line:
 
     $ phpbench run --assert='mode(variant.time.avg) < 10 hours'
 
-See :doc:`assertions` for more information.
+See :doc:`guides/assertions` for more information.
 
 .. _cartesian product: https://en.wikipedia.org/wiki/Cartesian_product
 

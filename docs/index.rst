@@ -25,7 +25,7 @@ Features include but are not limited to:
   :ref:`baseline <baseline>` reference, or to reference them later.
 - **Memory Usage**: Keep an eye on the amount of memory used by benchmarking
   subjects.
-- :doc:`Assertions <assertions>`: Assert that code is performing within acceptable limits, or
+- :doc:`Assertions <guides/assertions>`: Assert that code is performing within acceptable limits, or
   that it has not regressed from a previously recorded :ref:`baseline <baseline>`.
 
 .. _wall time: https://en.wikipedia.org/wiki/Elapsed_real_time
