@@ -101,6 +101,7 @@ class ConfigDumper
         if (is_bool($value)) {
             return $value ? 'true' : 'false';
         }
+
         if (is_scalar($value)) {
             return (string)$value;
         }
