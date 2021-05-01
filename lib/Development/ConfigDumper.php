@@ -2,7 +2,6 @@
 
 namespace PhpBench\Development;
 
-use RuntimeException;
 use function json_encode;
 use function mb_strlen;
 use function method_exists;
