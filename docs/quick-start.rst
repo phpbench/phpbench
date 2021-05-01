@@ -57,7 +57,6 @@ You will need some code to benchmark, create the following class:
 
 .. code-block:: php
 
-    <?php
     // src/TimeConsumer.php
 
     namespace Acme;
@@ -109,7 +108,6 @@ Create the following benchmark class:
 
 .. code-block:: php
 
-    <?php
     // tests/Benchmark/TimeConsumerBench.php
 
     namespace Acme\Tests\Benchmark;
@@ -293,6 +291,7 @@ In this tutorial you learnt to
 - Use :ref:`revolutions <metadata_revolutions>` and :ref:`iterations <metadata_iterations>` to more accurately profile your code
 - Increase stability with the :ref:`retry threshold <configuration_runner_retry_threshold>`
 - Use :doc:`reports <guides/reports>`
+- Compare against previous benchmarks with :doc:`guides/regression-testing`
 
 .. _Composer: http://getcomposer.org
 .. _relative standard deviation: https://en.wikipedia.org/wiki/Coefficient_of_variation

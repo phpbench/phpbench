@@ -520,9 +520,9 @@ console.ansi
 
 Enable or disable ANSI control characters (e.g. console colors)
 
-Default: ``true``
+Default: ``NULL``
 
-Types: ``["bool"]``
+Types: ``["bool","null"]``
 
 .. _configuration_console_disable_output:
 
