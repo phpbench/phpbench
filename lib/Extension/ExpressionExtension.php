@@ -25,6 +25,7 @@ use PhpBench\Expression\Func\DisplayAsTimeFunction;
 use PhpBench\Expression\Func\FirstFunction;
 use PhpBench\Expression\Func\FormatFunction;
 use PhpBench\Expression\Func\JoinFunction;
+use PhpBench\Expression\Func\LabelFunction;
 use PhpBench\Expression\Func\MaxFunction;
 use PhpBench\Expression\Func\MeanFunction;
 use PhpBench\Expression\Func\MinFunction;
@@ -60,6 +61,7 @@ use PhpBench\Expression\NodePrinter\ConcatPrinter;
 use PhpBench\Expression\NodePrinter\DisplayAsPrinter;
 use PhpBench\Expression\NodePrinter\FunctionPrinter;
 use PhpBench\Expression\NodePrinter\HighlightingNodePrinter;
+use PhpBench\Expression\NodePrinter\LabelPrinter;
 use PhpBench\Expression\NodePrinter\ListPrinter;
 use PhpBench\Expression\NodePrinter\NullPrinter;
 use PhpBench\Expression\NodePrinter\NumberPrinter;
@@ -271,6 +273,7 @@ class ExpressionExtension implements ExtensionInterface
                 new DisplayAsPrinter($container->get(TimeUnit::class)),
                 new ParameterPrinter(),
                 new StringPrinter(),
+                new LabelPrinter(),
                 new ConcatPrinter(),
                 new PercentageDifferencePrinter(),
                 new NullPrinter(),
@@ -318,6 +321,7 @@ class ExpressionExtension implements ExtensionInterface
                 'first' => new FirstFunction(),
                 'coalesce' => new CoalesceFunction(),
                 'display_as_time' => new DisplayAsTimeFunction(),
+                'label' => new LabelFunction(),
             ]);
         });
 

@@ -8,6 +8,7 @@ use PhpBench\Expression\Ast\BooleanNode;
 use PhpBench\Expression\Ast\ComparisonNode;
 use PhpBench\Expression\Ast\DisplayAsNode;
 use PhpBench\Expression\Ast\FunctionNode;
+use PhpBench\Expression\Ast\LabelNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\ParenthesisNode;
@@ -102,6 +103,7 @@ class SolarizedTheme implements ColorMap
 
         /** @phpstan-ignore-next-line */
         return [
+            LabelNode::class => 'fg='. self::BASE1,
             UnitNode::class => 'fg='. self::BASE1,
             FunctionNode::class => 'fg=' . self::GREEN,
             ParenthesisNode::class => 'fg=' . self::RED,
