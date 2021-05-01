@@ -40,13 +40,13 @@ class ConsoleExtension implements ExtensionInterface
     {
         $resolver->setDefaults([
 
-            self::PARAM_ANSI => true,
+            self::PARAM_ANSI => null,
             self::PARAM_DISABLE_OUTPUT => false,
             self::PARAM_OUTPUT_STREAM => 'php://stdout',
             self::PARAM_ERROR_STREAM => 'php://stderr',
         ]);
 
-        $resolver->setAllowedTypes(self::PARAM_ANSI, ['bool']);
+        $resolver->setAllowedTypes(self::PARAM_ANSI, ['bool', 'null']);
         $resolver->setAllowedTypes(self::PARAM_DISABLE_OUTPUT, ['bool']);
         $resolver->setAllowedTypes(self::PARAM_ERROR_STREAM, ['string']);
         $resolver->setAllowedTypes(self::PARAM_OUTPUT_STREAM, ['string']);
@@ -92,8 +92,8 @@ class ConsoleExtension implements ExtensionInterface
             return new StreamOutput($resource);
         })($container->getParameter($type));
 
-        if (false === $container->getParameter(self::PARAM_ANSI)) {
-            $output->setDecorated(false);
+        if (null !== $ansi = $container->getParameter(self::PARAM_ANSI)) {
+            $output->setDecorated($ansi);
         }
 
         $output->getFormatter()->setStyle('success', new OutputFormatterStyle('black', 'green', []));
