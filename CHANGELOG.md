@@ -1,8 +1,8 @@
 CHANGELOG
 =========
 
-dev-master
-----------
+1.0.0-beta2
+-----------
 
 B/C breaks:
 
