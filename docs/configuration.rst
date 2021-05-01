@@ -41,7 +41,7 @@ core.working_dir
 
 Working directory to use
 
-Default: ``"\/home\/daniel\/www\/phpbench\/phpbench"``
+Default: ``/home/daniel/www/phpbench/phpbench``
 
 Types: ``["string"]``
 
@@ -52,7 +52,7 @@ core.config_path
 
 Alternative path to a PHPBench configuration file (default is ``phpbench.json``
 
-Default: ``null``
+Default: ``NULL``
 
 Types: ``["string","null"]``
 
@@ -126,7 +126,7 @@ runner.bootstrap
 
 Path to bootstrap (e.g. ``vendor/autoload.php``)
 
-Default: ``null``
+Default: ``NULL``
 
 Types: ``["string","null"]``
 
@@ -181,7 +181,7 @@ runner.path
 
 Path or paths to the benchmarks
 
-Default: ``null``
+Default: ``NULL``
 
 Types: ``["string","array","null"]``
 
@@ -192,7 +192,7 @@ runner.php_binary
 
 Specify a PHP binary to use when executing out-of-band benchmarks, e.g. ``/usr/bin/php6``, defaults to the version of PHP used to invoke PHPBench
 
-Default: ``null``
+Default: ``NULL``
 
 Types: ``["string","null"]``
 
@@ -225,7 +225,7 @@ runner.php_wrapper
 
 Wrap the PHP binary with this command (e.g. ``blackfire run``)
 
-Default: ``null``
+Default: ``NULL``
 
 Types: ``["string","null"]``
 
@@ -236,7 +236,7 @@ runner.progress
 
 Default progress logger to use
 
-Default: ``"verbose"``
+Default: ``verbose``
 
 Types: ``["string"]``
 
@@ -247,7 +247,8 @@ runner.progress_summary_variant_format
 
 Expression used to render the summary text default progress loggers
 
-Default: ``"label(\"Mo\") ~ display_as_time(mode(variant.time.avg), coalesce(subject.time_unit,\"time\"), subject.time_precision, subject.time_mode) ~ \n\" (\" ~ rstdev(variant.time.avg) ~ \")\""``
+Default: ``label("Mo") ~ display_as_time(mode(variant.time.avg), coalesce(subject.time_unit,"time"), subject.time_precision, subject.time_mode) ~ 
+" (" ~ rstdev(variant.time.avg) ~ ")"``
 
 Types: ``["string"]``
 
@@ -258,7 +259,12 @@ runner.progress_summary_baseline_format
 
 When the a comparison benchmark is referenced, alternative expression used to render the summary text default progress loggers
 
-Default: ``"\"[\" ~ \nlabel(\"Mo\") ~ display_as_time(mode(variant.time.avg), coalesce(subject.time_unit,\"time\"), subject.time_precision, subject.time_mode) ~\n\" vs. \" ~ \nlabel(\"Mo\") ~ display_as_time(mode(baseline.time.avg), coalesce(subject.time_unit,\"time\"), subject.time_precision, subject.time_mode) ~ \"] \" ~ \npercent_diff(mode(baseline.time.avg), mode(variant.time.avg), (rstdev(variant.time.avg) * 2)) ~\n\" (\" ~ rstdev(variant.time.avg) ~ \")\""``
+Default: ``"[" ~ 
+label("Mo") ~ display_as_time(mode(variant.time.avg), coalesce(subject.time_unit,"time"), subject.time_precision, subject.time_mode) ~
+" vs. " ~ 
+label("Mo") ~ display_as_time(mode(baseline.time.avg), coalesce(subject.time_unit,"time"), subject.time_precision, subject.time_mode) ~ "] " ~ 
+percent_diff(mode(baseline.time.avg), mode(variant.time.avg), (rstdev(variant.time.avg) * 2)) ~
+" (" ~ rstdev(variant.time.avg) ~ ")"``
 
 Types: ``["string"]``
 
@@ -269,7 +275,7 @@ runner.remote_script_path
 
 PHPBench generates a PHP file for out-of-band benchmarks which is executed, this setting specifies the path to this file. When NULL a file in the systems temporary directory will be used
 
-Default: ``null``
+Default: ``NULL``
 
 Types: ``["string","null"]``
 
@@ -291,7 +297,7 @@ runner.assert
 
 Default :ref:`metadata_assertions`
 
-Default: ``null``
+Default: ``NULL``
 
 Types: ``["null","string","array"]``
 
@@ -302,7 +308,7 @@ runner.executor
 
 Default executor
 
-Default: ``null``
+Default: ``NULL``
 
 Types: ``["null","string"]``
 
@@ -313,7 +319,7 @@ runner.format
 
 Default :ref:`metadata_format`
 
-Default: ``null``
+Default: ``NULL``
 
 Types: ``["null","string"]``
 
@@ -324,7 +330,7 @@ runner.iterations
 
 Default :ref:`metadata_iterations`
 
-Default: ``null``
+Default: ``NULL``
 
 Types: ``["null","int","array"]``
 
@@ -335,7 +341,7 @@ runner.output_mode
 
 Default :ref:`output mode <metadata_mode>`
 
-Default: ``null``
+Default: ``NULL``
 
 Types: ``["null","string"]``
 
@@ -346,7 +352,7 @@ runner.time_unit
 
 Default :ref:`time unit <metadata_time_unit>`
 
-Default: ``null``
+Default: ``NULL``
 
 Types: ``["null","string"]``
 
@@ -357,7 +363,7 @@ runner.retry_threshold
 
 Default :ref:`metadata_retry_threshold`
 
-Default: ``null``
+Default: ``NULL``
 
 Types: ``["null","int","float"]``
 
@@ -368,7 +374,7 @@ runner.revs
 
 Default number of :ref:`metadata_revolutions`
 
-Default: ``null``
+Default: ``NULL``
 
 Types: ``["null","int","array"]``
 
@@ -379,7 +385,7 @@ runner.timeout
 
 Default :ref:`metadata_timeout`
 
-Default: ``null``
+Default: ``NULL``
 
 Types: ``["null","float","int"]``
 
@@ -390,7 +396,7 @@ runner.warmup
 
 Default :ref:`metadata_warmup`
 
-Default: ``null``
+Default: ``NULL``
 
 Types: ``["null","int","array"]``
 
@@ -401,7 +407,7 @@ runner.subject_pattern
 
 Subject pattern (regex) to use when finding benchmarks
 
-Default: ``"^bench"``
+Default: ``^bench``
 
 Types: ``["string"]``
 
@@ -455,7 +461,7 @@ expression.theme
 
 Select a theme to use
 
-Default: ``"solarized"``
+Default: ``solarized``
 
 Types: ``["string"]``
 
@@ -471,7 +477,7 @@ storage.driver
 
 Storage driver to use
 
-Default: ``"xml"``
+Default: ``xml``
 
 Types: ``["string"]``
 
@@ -482,7 +488,7 @@ storage.xml_storage_path
 
 Path to store benchmark runs when they are stored with ``--store`` or ``--tag=foo``
 
-Default: ``".phpbench\/storage"``
+Default: ``.phpbench/storage``
 
 Types: ``["string"]``
 
@@ -498,7 +504,7 @@ xdebug.command_handler_output_dir
 
 Output directory for generated XDebug profiles
 
-Default: ``".phpbench\/xdebug-profile"``
+Default: ``.phpbench/xdebug-profile``
 
 Types: ``["string"]``
 
@@ -536,7 +542,7 @@ console.output_stream
 
 Change the normal output stream - the output stream used for reports
 
-Default: ``"php:\/\/stdout"``
+Default: ``php://stdout``
 
 Types: ``["string"]``
 
@@ -547,7 +553,7 @@ console.error_stream
 
 Change the error output stream - the output stream used for diagnostics (e.g. progress loggers use this stream)
 
-Default: ``"php:\/\/stderr"``
+Default: ``php://stderr``
 
 Types: ``["string"]``
 

@@ -2,6 +2,8 @@
 
 namespace PhpBench\Development;
 
+use RuntimeException;
+use function json_encode;
 use function mb_strlen;
 use function method_exists;
 use PhpBench\DependencyInjection\ExtensionInterface;
@@ -80,9 +82,9 @@ class ConfigDumper
             $section[] = '';
             $section[] = $optionsResolver->getInfo($option);
             $section[] = '';
-            $section[] = sprintf('Default: ``%s``', json_encode($inspector->getDefault($option)));
+            $section[] = sprintf('Default: ``%s``', $this->prettyPrint($inspector->getDefault($option)));
             $section[] = '';
-            $section[] = sprintf('Types: ``%s``', json_encode($inspector->getAllowedTypes($option)));
+            $section[] = sprintf('Types: ``%s``', $this->prettyPrint($inspector->getAllowedTypes($option)));
             $section[] = '';
         }
 
@@ -92,5 +94,21 @@ class ConfigDumper
     private function underline(string $string, string $char): string
     {
         return str_repeat($char, mb_strlen($string));
+    }
+
+    private function prettyPrint($value): string
+    {
+        if (is_bool($value)) {
+            return $value ? 'true' : 'false';
+        }
+        if (is_scalar($value)) {
+            return (string)$value;
+        }
+
+        if (is_null($value)) {
+            return 'NULL';
+        }
+
+        return json_encode($value);
     }
 }
