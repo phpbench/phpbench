@@ -58,7 +58,6 @@ You will need some code to benchmark, create the following class:
 .. code-block:: php
 
     // src/TimeConsumer.php
-
     namespace Acme;
 
     class TimeConsumer
@@ -109,7 +108,6 @@ Create the following benchmark class:
 .. code-block:: php
 
     // tests/Benchmark/TimeConsumerBench.php
-
     namespace Acme\Tests\Benchmark;
 
     use Acme\TimeConsumer;
@@ -295,4 +293,3 @@ In this tutorial you learnt to
 
 .. _Composer: http://getcomposer.org
 .. _relative standard deviation: https://en.wikipedia.org/wiki/Coefficient_of_variation
-.. _standard deviation: https://en.wikipedia.org/wiki/Standard_deviation
