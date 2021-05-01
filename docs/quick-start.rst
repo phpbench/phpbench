@@ -50,6 +50,26 @@ PHPBench should now be installed. Please create the following directories:
     $ mkdir -p tests/Benchmark
     $ mkdir src
 
+Before you start
+----------------
+
+You will need some code to benchmark, create the following class:
+
+.. code-block:: php
+
+    <?php
+    // src/TimeConsumer.php
+
+    namespace Acme;
+
+    class TimeConsumer
+    {
+        public function consume()
+        {
+            usleep(100);
+        }
+    }
+
 PHPBench configuration
 ----------------------
 
@@ -77,41 +97,31 @@ Create a ``phpbench.json`` file in the projects root directory:
     benchmark subjects and you may want to disable them, see :ref:`Disabling
     the PHP INI file <configuration_runner_php_disable_ini>`.
 
-Creating and running a benchmark
---------------------------------
-
-You will need some code to benchmark, create a simple class in ``lib`` which
-consumes *time itself*:
-
-.. code-block:: php
-
-    namespace Acme;
-
-    class TimeConsumer
-    {
-        public function consume()
-        {
-            usleep(100);
-        }
-    }
-
+Create a Benchmark
+------------------
 
 In order to benchmark your code you will need to execute that code within
 a method of a benchmarking class. By default the class name **must**
 have the ``Bench`` suffix and each benchmark method must be prefixed
-with ``bench``. Create the following class:
+with ``bench``.
+
+Create the following benchmark class:
 
 .. code-block:: php
 
+    <?php
     // tests/Benchmark/TimeConsumerBench.php
+
+    namespace Acme\Tests\Benchmark;
+
     use Acme\TimeConsumer;
 
     class TimeConsumerBench
     {
         public function benchConsume()
         {
-           $consumer = new TimeConsumer();
-           $consumer->consume();
+            $consumer = new TimeConsumer();
+            $consumer->consume();
         }
     }
 
@@ -119,27 +129,28 @@ Now you can execute the benchmark as follows:
 
 .. code-block:: bash
 
-   $ php vendor/bin/phpbench run tests/Benchmark/TimeConsumerBench.php --report=default
+   $ ./vendor/bin/phpbench run tests/Benchmark --report=default
+
 
 And you should see some output similar to the following:
 
 .. code-block:: bash
 
-    Running benchmarks.
+    PHPBench @git_tag@ running benchmarks...
+    with configuration file: /home/daniel/www/phpbench/phpbench-tutorial/phpbench.json
+    with PHP version 7.4.14, xdebug ❌, opcache ❌
 
-    \TimeConsumerBench
+    \Acme\Tests\Benchmark\TimeConsumerBench
 
-        benchConsume                  I0 P0         [μ Mo]/r: 173.00μs   [μSD μRSD]/r: 0.00μs 0.00%
+        benchConsume............................I0 - Mo185.000μs (±0.00%)
 
-    1 subjects, 1 iterations, 1 revs, 0 rejects
-    ⅀T: 173μs μSD/r 0.00μs μRSD/r: 0.00%
-    min [mean mode] max: 173.00 [173.00 1732.00] 173.00 (μs/r)
+    Subjects: 1, Assertions: 0, Failures: 0, Errors: 0
 
-    +-------------------+---------------+-------+--------+------+------+-----+----------+------------+---------+-------+
-    | benchmark         | subject       | group | params | revs | iter | rej | mem      | time       | z-score | diff  |
-    +-------------------+---------------+-------+--------+------+------+-----+----------+------------+---------+-------+
-    | TimeConsumerBench | benchConsume  |       | []     | 1    | 0    | 0   | 265,936b | 173.0000μs | 0.00σ   | 1.00x |
-    +-------------------+---------------+-------+--------+------+------+-----+----------+------------+---------+-------+
+    +------+--------------+--------------+-----+------+----------+-----------+--------------+----------------+
+    | iter | benchmark    | subject      | set | revs | mem_peak | time_avg  | comp_z_value | comp_deviation |
+    +------+--------------+--------------+-----+------+----------+-----------+--------------+----------------+
+    | 0    | benchConsume | benchConsume | 0   | 1    | 653,528b | 185.000μs | +0.00σ       | +0.00%         |
+    +------+--------------+--------------+-----+------+----------+-----------+--------------+----------------+
 
 The code was only executed once (as indicated by the ``revs`` column). To
 achieve a better measurement increase the revolutions:
@@ -189,7 +200,8 @@ times.
 .. note::
 
     You can override the number of iterations and revolutions on the CLI using
-    the ``--iterations`` and ``--revs`` options.
+    the ``--iterations`` and ``--revs`` options, or set them globally in the
+    :ref:`configuration <configuration_runner_revs>`.
 
 At this point it would be better for you to use the :ref:`aggregate <report_aggregate>`
 report rather than :ref:`default <report_default>`:
@@ -201,16 +213,15 @@ report rather than :ref:`default <report_default>`:
 Increase Stability
 ------------------
 
-You will see the columns `stdev` and `rstdev`. `stdev` is the `standard deviation`_
-of the set of iterations and `rstdev` is `relative standard deviation`_.
-
-Stability can be inferred from `rstdev`, with 0% being the best and anything
+Stability can be inferred from `rstdev` (`relative standard deviation`_) , with 0% being the best and anything
 about 2% should be treated as suspicious.
 
-To increase stability you can use the ``--retry-threshold`` to automatically
-:ref:`repeat the iterations <configuration_runner_retry_threshold>` until the `diff` (the
-percentage difference from the lowest measurement) fits within a given
-threshold:
+.. image:: images/rstdev.png
+
+To increase stability you can use the :ref:`@RetryThreshold
+<metadata_retry_threshold>` to automatically repeat the iterations until the
+`diff` (the percentage difference from the lowest measurement) fits within a
+given threshold:
 
 .. note::
 
