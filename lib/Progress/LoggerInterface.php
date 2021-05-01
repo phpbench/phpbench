@@ -12,6 +12,7 @@
 
 namespace PhpBench\Progress;
 
+use PhpBench\Benchmark\RunnerConfig;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\Subject;
@@ -80,7 +81,7 @@ interface LoggerInterface
      * Called at the start of the suite run.
      *
      */
-    public function startSuite(Suite $suite);
+    public function startSuite(RunnerConfig $config, Suite $suite);
 
     /**
      * Called at the end of the suite run.

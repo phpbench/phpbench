@@ -4,7 +4,6 @@ namespace PhpBench\Expression\NodePrinter;
 
 use PhpBench\Expression\Ast\LabelNode;
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\NodePrinter;
 use PhpBench\Expression\Printer;
 

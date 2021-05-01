@@ -113,7 +113,7 @@ final class Runner
         $suite->setEnvInformations($this->envSupplier->getInformations());
 
         // log the start of the suite run.
-        $this->logger->startSuite($suite);
+        $this->logger->startSuite($config, $suite);
 
         try {
             /* @var BenchmarkMetadata $benchmarkMetadata */

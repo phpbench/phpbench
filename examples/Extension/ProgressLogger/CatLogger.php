@@ -2,6 +2,7 @@
 
 namespace PhpBench\Examples\Extension\ProgressLogger;
 
+use PhpBench\Benchmark\RunnerConfig;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\Subject;
@@ -22,7 +23,7 @@ class CatLogger implements LoggerInterface
         $this->output = $output;
     }
 
-    public function startSuite(Suite $suite)
+    public function startSuite(RunnerConfig $config, Suite $suite)
     {
     }
 

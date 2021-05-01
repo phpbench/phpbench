@@ -17,7 +17,7 @@ EOT
     public const BASELINE_FORMAT = <<<'EOT'
 "[" ~ 
 label("Mo") ~ display_as_time(mode(variant.time.avg), coalesce(subject.time_unit,"time"), subject.time_precision, subject.time_mode) ~
-" vs " ~ 
+" vs. " ~ 
 label("Mo") ~ display_as_time(mode(baseline.time.avg), coalesce(subject.time_unit,"time"), subject.time_precision, subject.time_mode) ~ "] " ~ 
 percent_diff(mode(baseline.time.avg), mode(variant.time.avg), (rstdev(variant.time.avg) * 2)) ~
 " (" ~ rstdev(variant.time.avg) ~ ")"

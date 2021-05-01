@@ -4,6 +4,10 @@ CHANGELOG
 dev-master
 ----------
 
+B/C breaks:
+
+- Progress logger: startSuite now additionally accepts `RunnerConfig`
+
 Improvements:
 
 - Use package versions to show PHPBench version if not PHAR

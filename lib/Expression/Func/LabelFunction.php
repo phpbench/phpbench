@@ -5,7 +5,7 @@ namespace PhpBench\Expression\Func;
 use PhpBench\Expression\Ast\LabelNode;
 use PhpBench\Expression\Ast\PhpValue;
 
-class LabelFunction 
+class LabelFunction
 {
     public function __invoke(PhpValue $value): LabelNode
     {

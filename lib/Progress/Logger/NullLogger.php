@@ -12,6 +12,7 @@
 
 namespace PhpBench\Progress\Logger;
 
+use PhpBench\Benchmark\RunnerConfig;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\Subject;
@@ -87,7 +88,7 @@ class NullLogger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function startSuite(Suite $suite): void
+    public function startSuite(RunnerConfig $config, Suite $suite): void
     {
     }
 

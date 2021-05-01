@@ -12,6 +12,7 @@
 
 namespace PhpBench\Progress\Logger;
 
+use PhpBench\Benchmark\RunnerConfig;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Suite;
@@ -49,9 +50,12 @@ abstract class PhpBenchLogger extends NullLogger
         $this->formatter = $formatter;
     }
 
-    public function startSuite(Suite $suite): void
+    public function startSuite(RunnerConfig $config, Suite $suite): void
     {
-        $this->output->writeln('PHPBench (' . PhpBench::version() . ') running benchmarks...');
+        $this->output->writeln(sprintf(
+            'PHPBench (%s) running benchmarks...',
+            PhpBench::version()
+        ));
 
         if ($configPath = $suite->getConfigPath()) {
             $this->output->writeln(sprintf('with configuration file: %s', $configPath));
@@ -64,6 +68,14 @@ abstract class PhpBenchLogger extends NullLogger
             $summary->getXdebugEnabled() ? '✔' : '❌',
             $summary->getOpcacheEnabled()  ? '✔' : '❌'
         ));
+
+        foreach ($config->getBaselines() as $baseline) {
+            $this->output->writeln(sprintf(
+                'comparing [%s vs. %s]',
+                $suite->getTag() ?: 'actual',
+                $baseline->getTag()
+            ));
+        }
 
         $this->output->writeln('');
     }

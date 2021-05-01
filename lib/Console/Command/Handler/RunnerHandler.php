@@ -40,7 +40,7 @@ class RunnerHandler
     public const OPT_PHP_CONFIG = 'php-config';
     public const OPT_PHP_WRAPPER = 'php-wrapper';
     public const OPT_PHP_DISABLE_INI = 'php-disable-ini';
-    const OPT_FORMAT = 'format';
+    public const OPT_FORMAT = 'format';
 
     /**
      * @var LoggerRegistry
