@@ -109,7 +109,7 @@ be specified directly using the ``--report`` option:
 
     $ phpbench run /path/to/HashBench.php --report=default
 
-See the :doc:`reports` chapter for more information on how you can
+See the :doc:`reports` guide for more information on how you can
 configure reports.
 
 .. note::
@@ -157,7 +157,7 @@ Example of HTML output:
 
 .. image:: images/html.png
 
-See the :doc:`report-renderers` chapter for more information.
+See the :doc:`../report-renderers` reference for more information.
 
 Storing Results
 ---------------
@@ -232,7 +232,7 @@ Configuration File
 ------------------
 
 A custom configuration file can be specified with the ``--config`` option.  See
-the :doc:`configuration` chapter for more information on configuration.
+the :doc:`../configuration` reference for more information on configuration.
 
 Exit codes
 ----------

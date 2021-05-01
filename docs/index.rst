@@ -19,9 +19,9 @@ Features include but are not limited to:
 - :ref:`Iterations <metadata_iterations>`: Sample your revolutions many times and review aggregated
   statistical data.
 - **Process Isolation**: Each iteration is executed in a separate process.
-- :doc:`Reporting <reports>`: Customizable reports and various output formats (e.g.
+- :doc:`Reporting <guides/reports>`: Customizable reports and various output formats (e.g.
   console, CSV, Markdown, HTML).
-- Report :doc:`storage` and :ref:`comparison <comparison>`: Store benchmarks locally to be used as a
+- Report :doc:`guides/storage` and :ref:`comparison <comparison>`: Store benchmarks locally to be used as a
   :ref:`baseline <baseline>` reference, or to reference them later.
 - **Memory Usage**: Keep an eye on the amount of memory used by benchmarking
   subjects.

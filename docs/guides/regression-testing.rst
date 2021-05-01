@@ -45,7 +45,7 @@ Note that:
 
 The final report should look something like:
 
-.. image:: images/baseline.png
+.. image:: ../images/baseline.png
 
 The ``mean``, ``mode`` and ``rstdev`` columns show the percentage difference
 from the previous run.
@@ -62,4 +62,4 @@ You can compare against baselines in assertions, e.g.
 We assert the current run's ``mode`` is less than or equal to the baseline
 ``mode`` and tolerate a variance within 5% of the baseline ``mode``.
 
-See :doc:`assertions` for more information.
+See :doc:`../assertions` for more information.

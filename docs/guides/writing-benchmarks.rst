@@ -57,5 +57,5 @@ placed in the class docblock, or on individual methods docblocks.
 Benchmark Configuration
 -----------------------
 
-See the :doc:`Annotations and Attributes<annotributes>` reference to see how
+See the :doc:`Annotations and Attributes<../annotributes>` reference to see how
 you can configure your benchmarks.

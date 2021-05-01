@@ -248,7 +248,7 @@ PHPBench allows you to customize reports on the command line:
 Above we configure a new report which extends the :ref:`default
 <report_default>` report that we have already used, but we use only the
 ``subject`` and ``mode`` columns.  A full list of all the options for the
-default reports can be found in the :doc:`report-generators` chapter.
+default reports can be found in the :doc:`report-generators` reference.
 
 Configuration
 -------------
@@ -292,7 +292,7 @@ In this tutorial you learnt to
 - Create a benchmarking class
 - Use :ref:`revolutions <metadata_revolutions>` and :ref:`iterations <metadata_iterations>` to more accurately profile your code
 - Increase stability with the :ref:`retry threshold <configuration_runner_retry_threshold>`
-- Use :doc:`reports <reports>`
+- Use :doc:`reports <guides/reports>`
 
 .. _Composer: http://getcomposer.org
 .. _relative standard deviation: https://en.wikipedia.org/wiki/Coefficient_of_variation
