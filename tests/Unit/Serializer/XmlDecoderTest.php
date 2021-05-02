@@ -18,6 +18,7 @@ use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Serializer\XmlEncoder;
+use PhpBench\Tests\Util\Approval;
 
 class XmlDecoderTest extends XmlTestCase
 {
@@ -26,8 +27,11 @@ class XmlDecoderTest extends XmlTestCase
      *
      * @dataProvider provideEncode
      */
-    public function testDecoder(array $params, $expected): void
+    public function testDecoder(string $path): void
     {
+        $approval = Approval::create($path, 2);
+        $params = $approval->getConfig(0);
+
         $collection = $this->getSuiteCollection($params);
         $dom = $this->encode($collection);
 
