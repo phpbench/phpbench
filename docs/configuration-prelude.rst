@@ -20,9 +20,3 @@ that order and use one if it exists.
             }
         }
     }
-
-.. note::
-
-    Typically you should use ``phpbench.json.dist`` in your projects. This
-    allows the end-user of your library to override your configuration by creating
-    ``phpbench.json``.
