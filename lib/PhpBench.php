@@ -255,6 +255,10 @@ class PhpBench
     {
         // do not use the literal `@git_tag@` as it would be replaced by box.
         if (self::VERSION === '@' . 'git_tag' . '@') {
+            if (!class_exists(InstalledVersions::class)) {
+                return 'unknown version';
+            }
+
             return InstalledVersions::getPrettyVersion('phpbench/phpbench');
         }
 
