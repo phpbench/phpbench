@@ -30,6 +30,9 @@ use function base64_encode;
  */
 class XmlEncoder
 {
+    public const PARAM_TYPE_BINARY = 'binary';
+    public const PARAM_TYPE_COLLECTION = 'collection';
+
     /**
      * Encode a Suite object into a XML document.
      *
@@ -198,7 +201,7 @@ class XmlEncoder
         $parameterEl->setAttribute('name', $name);
 
         if (is_array($value)) {
-            $parameterEl->setAttribute('type', 'collection');
+            $parameterEl->setAttribute('type', self::PARAM_TYPE_COLLECTION);
 
             foreach ($value as $key => $element) {
                 $this->createParameter($parameterEl, $key, $element);
@@ -219,7 +222,7 @@ class XmlEncoder
                 $parameterEl->appendChild(
                     $parameterEl->ownerDocument->createCDATASection(base64_encode($value))
                 );
-                $parameterEl->setAttribute('type', 'binary');
+                $parameterEl->setAttribute('type', self::PARAM_TYPE_BINARY);
                 return $parameterEl;
             }
 
