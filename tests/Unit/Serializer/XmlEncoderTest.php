@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Serializer;
 
+use PhpBench\Dom\Document;
 use PhpBench\Environment\Information;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Iteration;
@@ -49,7 +50,7 @@ class XmlEncoderTest extends XmlTestCase
         $collection = $this->getSuiteCollection($params);
         $xmlEncoder = new XmlEncoder();
         $dom = $xmlEncoder->encode($collection);
-        $approval->approve(str_replace(PhpBench::version(), 'PHPBENCH_VERSION', $dom->dump()));
+        $approval->approve($this->dumpNormalized($dom));
     }
 
     public function doTestBinary(SuiteCollection $collection): void
@@ -57,6 +58,19 @@ class XmlEncoderTest extends XmlTestCase
         $approval = Approval::create(__DIR__ . '/examples/binary1.example', 0);
         $xmlEncoder = new XmlEncoder();
         $dom = $xmlEncoder->encode($collection);
-        $approval->approve(str_replace(PhpBench::version(), 'PHPBENCH_VERSION', $dom->dump()));
+        $approval->approve($this->dumpNormalized($dom));
+    }
+
+    public function doTestDate(SuiteCollection $collection): void
+    {
+        $approval = Approval::create(__DIR__ . '/examples/date1.example', 0);
+        $xmlEncoder = new XmlEncoder();
+        $dom = $xmlEncoder->encode($collection);
+        $approval->approve($this->dumpNormalized($dom));
+    }
+
+    private function dumpNormalized(Document $dom)
+    {
+        return str_replace(PhpBench::version(), 'PHPBENCH_VERSION', $dom->dump());
     }
 }

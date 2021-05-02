@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<phpbench xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="PHPBENCH_VERSION">
+  <suite tag="test" context="test" date="2015-01-01T00:00:00+00:00" config-path="/path/to/config.json" uuid="1234">
+    <env>
+      <info1>
+        <value name="foo" type="string">fooo &amp; bar</value>
+      </info1>
+    </env>
+    <benchmark class="Bench1">
+      <subject name="subjectName">
+        <executor name="foo"/>
+        <variant sleep="5" output-time-unit="milliseconds" output-time-precision="7" output-mode="throughput" revs="100" warmup="50" retry-threshold="10">
+          <parameter-set name="some params">
+            <parameter name="foo" type="serialized"><![CDATA[Tzo4OiJEYXRlVGltZSI6Mzp7czo0OiJkYXRlIjtzOjI2OiIyMDIxLTAxLTAxIDAwOjAwOjAwLjAwMDAwMCI7czoxMzoidGltZXpvbmVfdHlwZSI7aToxO3M6ODoidGltZXpvbmUiO3M6NjoiKzAwOjAwIjt9]]></parameter>
+          </parameter-set>
+          <iteration time-net="10" time-revs="1" time-avg="10" mem-peak="100" mem-real="110" mem-final="109" comp-z-value="0" comp-deviation="0"/>
+          <stats max="0.1" mean="0.1" min="0.1" mode="0.1" rstdev="0" stdev="0" sum="0.1" variance="0"/>
+        </variant>
+      </subject>
+    </benchmark>
+    <result key="time" class="PhpBench\Model\Result\TimeResult"/>
+    <result key="mem" class="PhpBench\Model\Result\MemoryResult"/>
+    <result key="comp" class="PhpBench\Model\Result\ComputedResult"/>
+  </suite>
+</phpbench>

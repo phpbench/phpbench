@@ -218,6 +218,12 @@ class XmlDecoder
                 continue;
             }
 
+            if ($parameterEl->getAttribute('type') === XmlEncoder::PARAM_TYPE_SERIALIZED) {
+                $parameters[$name] = unserialize(base64_decode($parameterEl->nodeValue));
+
+                continue;
+            }
+
             if ($parameterEl->getAttribute('xsi:nil') === 'true') {
                 $parameters[$name] = null;
 

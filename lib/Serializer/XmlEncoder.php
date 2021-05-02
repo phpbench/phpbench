@@ -12,6 +12,7 @@
 
 namespace PhpBench\Serializer;
 
+use Error;
 use function base64_encode;
 use DOMElement;
 use PhpBench\Dom\Document;
@@ -32,6 +33,7 @@ class XmlEncoder
 {
     public const PARAM_TYPE_BINARY = 'binary';
     public const PARAM_TYPE_COLLECTION = 'collection';
+    const PARAM_TYPE_SERIALIZED = 'serialized';
 
     /**
      * Encode a Suite object into a XML document.
@@ -232,10 +234,11 @@ class XmlEncoder
             return $parameterEl;
         }
 
-        throw new \InvalidArgumentException(sprintf(
-            'Parameters must be either scalars or arrays, got: %s',
-            is_object($value) ? get_class($value) : gettype($value)
-        ));
+        $serialized = @serialize($value);
+        $parameterEl->setAttribute('type', self::PARAM_TYPE_SERIALIZED);
+        $parameterEl->appendChild(
+            $parameterEl->ownerDocument->createCDATASection(base64_encode($serialized))
+        );
     }
 
     private function appendExecutor(Element $subjectEl, ResolvedExecutor $executor = null): void
