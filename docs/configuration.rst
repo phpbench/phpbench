@@ -492,6 +492,17 @@ Default: ``.phpbench/storage``
 
 Types: ``["string"]``
 
+.. _configuration_storage_store_binary:
+
+storage.store_binary
+~~~~~~~~~~~~~~~~~~~~
+
+If binary and serialized parameter values should be stored
+
+Default: ``false``
+
+Types: ``["boolean"]``
+
 XDebug
 ------
 
