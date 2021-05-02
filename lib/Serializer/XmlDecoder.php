@@ -12,6 +12,7 @@
 
 namespace PhpBench\Serializer;
 
+use function base64_decode;
 use PhpBench\Assertion\AssertionResult;
 use PhpBench\Dom\Document;
 use PhpBench\Dom\Element;
@@ -26,7 +27,6 @@ use PhpBench\Model\SuiteCollection;
 use PhpBench\Model\Variant;
 use PhpBench\PhpBench;
 use PhpBench\Registry\Config;
-use function base64_decode;
 
 /**
  * Encodes the Suite object graph into an XML document.

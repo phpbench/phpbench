@@ -12,6 +12,7 @@
 
 namespace PhpBench\Serializer;
 
+use function base64_encode;
 use DOMElement;
 use PhpBench\Dom\Document;
 use PhpBench\Dom\Element;
@@ -23,7 +24,6 @@ use PhpBench\Model\SuiteCollection;
 use PhpBench\Model\Variant;
 use PhpBench\PhpBench;
 use PhpBench\Util\TimeUnit;
-use function base64_encode;
 
 /**
  * Encodes the Suite object graph into an XML document.
@@ -223,6 +223,7 @@ class XmlEncoder
                     $parameterEl->ownerDocument->createCDATASection(base64_encode($value))
                 );
                 $parameterEl->setAttribute('type', self::PARAM_TYPE_BINARY);
+
                 return $parameterEl;
             }
 

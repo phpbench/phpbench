@@ -59,5 +59,4 @@ class XmlEncoderTest extends XmlTestCase
         $dom = $xmlEncoder->encode($collection);
         $approval->approve(str_replace(PhpBench::version(), 'PHPBENCH_VERSION', $dom->dump()));
     }
-
 }
