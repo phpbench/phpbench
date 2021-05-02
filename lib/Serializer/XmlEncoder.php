@@ -34,7 +34,17 @@ class XmlEncoder
 {
     public const PARAM_TYPE_BINARY = 'binary';
     public const PARAM_TYPE_COLLECTION = 'collection';
-    const PARAM_TYPE_SERIALIZED = 'serialized';
+    public const PARAM_TYPE_SERIALIZED = 'serialized';
+
+    /**
+     * @var bool
+     */
+    private $storeBinary;
+
+    public function __construct(bool $storeBinary = true)
+    {
+        $this->storeBinary = $storeBinary;
+    }
 
     /**
      * Encode a Suite object into a XML document.
@@ -219,18 +229,23 @@ class XmlEncoder
             return $parameterEl;
         }
 
-
-        if (is_scalar($value)) {
-            if ($this->isBinary($value)) {
-                $parameterEl->appendChild(
-                    $parameterEl->ownerDocument->createCDATASection(base64_encode($value))
-                );
-                $parameterEl->setAttribute('type', self::PARAM_TYPE_BINARY);
-
-                return $parameterEl;
-            }
-
+        if (is_scalar($value) && !$this->isBinary($value)) {
             $parameterEl->setAttribute('value', $value);
+
+            return $parameterEl;
+        }
+
+        if (!$this->storeBinary) {
+            $parameterEl->setAttribute('xsi:nil', 'true');
+
+            return $parameterEl;
+        }
+
+        if (is_scalar($value) && $this->isBinary($value)) {
+            $parameterEl->appendChild(
+                $parameterEl->ownerDocument->createCDATASection(base64_encode($value))
+            );
+            $parameterEl->setAttribute('type', self::PARAM_TYPE_BINARY);
 
             return $parameterEl;
         }
