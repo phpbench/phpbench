@@ -19,9 +19,9 @@ Features include:
 - [Iterations](https://phpbench.readthedocs.io/en/latest/annotributes.html#iterations): Sample your revolutions many times and review aggregated
   statistical data.
 - **Process Isolation**: Each iteration is executed in a separate process.
-- [Reporting](https://phpbench.readthedocs.io/en/latest/reports.html): Customizable reports and various output formats (e.g.
+- [Reporting](https://phpbench.readthedocs.io/en/latest/guides/reports.html): Customizable reports and various output formats (e.g.
   console, CSV, Markdown, HTML).
-- Report [storage](https://phpbench.readthedocs.io/en/latest/storage.html) and [comparison](https://phpbench.readthedocs.io/en/latest/regression-testing.html): Store benchmarks locally to be used as a
+- Report [storage](https://phpbench.readthedocs.io/en/latest/storage.html) and [comparison](https://phpbench.readthedocs.io/en/latest/guides/regression-testing.html): Store benchmarks locally to be used as a
   baseline reference, or to reference them later.
 - **Memory Usage**: Keep an eye on the amount of memory used by benchmarking
   subjects.
