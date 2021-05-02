@@ -7,6 +7,7 @@ dev-master
 Improvements:
 
 - Support for binary data in param providers #532
+- Support serializable objects in param providers #823
 
 Bug fix:
 
