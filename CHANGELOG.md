@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+dev-master
+----------
+
+Improvements:
+
+- Support for binary data in param providers #532
+
 1.0.0-beta2
 -----------
 
