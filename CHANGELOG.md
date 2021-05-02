@@ -8,6 +8,10 @@ Improvements:
 
 - Support for binary data in param providers #532
 
+Bug fix:
+
+- Fix regression which requires phpbench to be installed with composer 2 #822
+
 1.0.0-beta2
 -----------
 
