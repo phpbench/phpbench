@@ -1,0 +1,23 @@
+{"error": true}
+---
+<?xml version="1.0"?>
+<phpbench xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="PHPBENCH_VERSION">
+  <suite tag="test" context="test" date="2015-01-01T00:00:00+00:00" config-path="/path/to/config.json" uuid="1234">
+    <env>
+      <info1>
+        <value name="foo" type="string">fooo &amp; bar</value>
+      </info1>
+    </env>
+    <benchmark class="Bench1">
+      <subject name="subjectName">
+        <executor name="foo"/>
+        <variant sleep="5" output-time-unit="milliseconds" output-time-precision="7" output-mode="throughput" revs="100" warmup="50" retry-threshold="10">
+          <parameter-set name="some params"/>
+          <errors>
+            <error exception-class="ErrorClass" code="0" file="1" line="2">This is an error</error>
+          </errors>
+        </variant>
+      </subject>
+    </benchmark>
+  </suite>
+</phpbench>
