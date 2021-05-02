@@ -23,6 +23,7 @@ use PhpBench\Model\Variant;
 use PhpBench\PhpBench;
 use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Tests\Util\Approval;
+use RuntimeException;
 
 class XmlEncoderTest extends XmlTestCase
 {
@@ -48,29 +49,44 @@ class XmlEncoderTest extends XmlTestCase
         $params = $approval->getConfig(0);
 
         $collection = $this->getSuiteCollection($params);
-        $xmlEncoder = new XmlEncoder();
-        $dom = $xmlEncoder->encode($collection);
+        $dom = $this->encode($collection);
         $approval->approve($this->dumpNormalized($dom));
     }
 
     public function doTestBinary(SuiteCollection $collection): void
     {
         $approval = Approval::create(__DIR__ . '/examples/binary1.example', 0);
-        $xmlEncoder = new XmlEncoder();
-        $dom = $xmlEncoder->encode($collection);
+        $dom = $this->encode($collection);
         $approval->approve($this->dumpNormalized($dom));
     }
 
     public function doTestDate(SuiteCollection $collection): void
     {
         $approval = Approval::create(__DIR__ . '/examples/date1.example', 0);
-        $xmlEncoder = new XmlEncoder();
-        $dom = $xmlEncoder->encode($collection);
+        $dom = $this->encode($collection);
         $approval->approve($this->dumpNormalized($dom));
+    }
+
+    public function testUnserizableParameter(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Cannot serialize');
+        $collection = $this->getSuiteCollection([
+            'params' => [
+                'invalid' => function () {}
+            ],
+        ]);
+        $this->encode($collection);
     }
 
     private function dumpNormalized(Document $dom)
     {
         return str_replace(PhpBench::version(), 'PHPBENCH_VERSION', $dom->dump());
+    }
+
+    private function encode(SuiteCollection $collection): Document
+    {
+        $xmlEncoder = new XmlEncoder();
+        return $xmlEncoder->encode($collection);
     }
 }

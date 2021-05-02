@@ -13,6 +13,8 @@
 namespace PhpBench\Serializer;
 
 use Error;
+use Exception;
+use RuntimeException;
 use function base64_encode;
 use DOMElement;
 use PhpBench\Dom\Document;
@@ -234,7 +236,13 @@ class XmlEncoder
             return $parameterEl;
         }
 
-        $serialized = @serialize($value);
+        try {
+            $serialized = @serialize($value);
+        } catch (Exception $e) {
+            throw new RuntimeException(sprintf(
+                'Cannot serialize object of type "%s" for parameter "%s"', gettype($value), $name
+            ));
+        }
         $parameterEl->setAttribute('type', self::PARAM_TYPE_SERIALIZED);
         $parameterEl->appendChild(
             $parameterEl->ownerDocument->createCDATASection(base64_encode($serialized))
