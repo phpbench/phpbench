@@ -229,22 +229,23 @@ class XmlEncoder
             return $parameterEl;
         }
 
-        if (!$this->storeBinary) {
-            $parameterEl->setAttribute('xsi:nil', 'true');
+        if (is_scalar($value)) {
+            $parameterEl->setAttribute('value', $value);
+
             return $parameterEl;
         }
 
-        if (is_scalar($value)) {
-            if ($this->isBinary($value)) {
-                $parameterEl->appendChild(
-                    $parameterEl->ownerDocument->createCDATASection(base64_encode($value))
-                );
-                $parameterEl->setAttribute('type', self::PARAM_TYPE_BINARY);
+        if (!$this->storeBinary) {
+            $parameterEl->setAttribute('xsi:nil', 'true');
 
-                return $parameterEl;
-            }
+            return $parameterEl;
+        }
 
-            $parameterEl->setAttribute('value', $value);
+        if (is_scalar($value) && $this->isBinary($value)) {
+            $parameterEl->appendChild(
+                $parameterEl->ownerDocument->createCDATASection(base64_encode($value))
+            );
+            $parameterEl->setAttribute('type', self::PARAM_TYPE_BINARY);
 
             return $parameterEl;
         }
