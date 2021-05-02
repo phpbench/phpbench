@@ -22,6 +22,7 @@ function hash_algos()
 /**
  * @Revs(1000)
  * @Iterations(10)
+ * @Assert("false")
  */
 class HashingBench
 {
