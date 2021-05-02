@@ -18,6 +18,7 @@ use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Serializer\XmlEncoder;
+use PhpBench\Tests\Util\Approval;
 
 class XmlDecoderTest extends XmlTestCase
 {
@@ -26,8 +27,11 @@ class XmlDecoderTest extends XmlTestCase
      *
      * @dataProvider provideEncode
      */
-    public function testDecoder(array $params, $expected): void
+    public function testDecoder(string $path): void
     {
+        $approval = Approval::create($path, 2);
+        $params = $approval->getConfig(0);
+
         $collection = $this->getSuiteCollection($params);
         $dom = $this->encode($collection);
 
@@ -167,6 +171,21 @@ EOT
         self::assertInstanceOf(Information::class, $env);
         assert($env instanceof Information);
         self::assertCount(5, $env);
+    }
+
+    public function doTestBinary(SuiteCollection $collection): void
+    {
+        $dom = $this->encode($collection);
+
+        $decoder = new XmlDecoder();
+        $collection = $decoder->decode($dom);
+
+        $decodedDom = $this->encode($collection);
+
+        $this->assertEquals(
+            $dom->dump(),
+            $decodedDom->dump()
+        );
     }
 
     private function encode(SuiteCollection $collection)

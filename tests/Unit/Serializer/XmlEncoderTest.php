@@ -21,6 +21,7 @@ use PhpBench\Model\SuiteCollection;
 use PhpBench\Model\Variant;
 use PhpBench\PhpBench;
 use PhpBench\Serializer\XmlEncoder;
+use PhpBench\Tests\Util\Approval;
 
 class XmlEncoderTest extends XmlTestCase
 {
@@ -40,13 +41,22 @@ class XmlEncoderTest extends XmlTestCase
      *
      * @dataProvider provideEncode
      */
-    public function testEncode(array $params, $expected): void
+    public function testEncode(string $path): void
     {
-        $expected = str_replace('PHPBENCH_VERSION', PhpBench::version(), $expected);
+        $approval = Approval::create($path, 2);
+        $params = $approval->getConfig(0);
+
         $collection = $this->getSuiteCollection($params);
         $xmlEncoder = new XmlEncoder();
         $dom = $xmlEncoder->encode($collection);
-        $this->assertInstanceOf('PhpBench\Dom\Document', $dom);
-        $this->assertEquals($expected, $dom->dump());
+        $approval->approve(str_replace(PhpBench::version(), 'PHPBENCH_VERSION', $dom->dump()));
+    }
+
+    public function doTestBinary(SuiteCollection $collection): void
+    {
+        $approval = Approval::create(__DIR__ . '/examples/binary1.example', 0);
+        $xmlEncoder = new XmlEncoder();
+        $dom = $xmlEncoder->encode($collection);
+        $approval->approve(str_replace(PhpBench::version(), 'PHPBENCH_VERSION', $dom->dump()));
     }
 }

@@ -7,7 +7,7 @@ parameters:
 
 		-
 			message: "#^Call to an undefined method DOMNode\\:\\:getAttribute\\(\\)\\.$#"
-			count: 21
+			count: 22
 			path: lib/Serializer/XmlDecoder.php
 
 		-

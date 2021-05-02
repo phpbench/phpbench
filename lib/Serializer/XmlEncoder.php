@@ -12,6 +12,8 @@
 
 namespace PhpBench\Serializer;
 
+use function base64_encode;
+use DOMElement;
 use PhpBench\Dom\Document;
 use PhpBench\Dom\Element;
 use PhpBench\Model\Benchmark;
@@ -28,6 +30,9 @@ use PhpBench\Util\TimeUnit;
  */
 class XmlEncoder
 {
+    public const PARAM_TYPE_BINARY = 'binary';
+    public const PARAM_TYPE_COLLECTION = 'collection';
+
     /**
      * Encode a Suite object into a XML document.
      *
@@ -192,10 +197,11 @@ class XmlEncoder
     private function createParameter($parentEl, $name, $value)
     {
         $parameterEl = $parentEl->appendElement('parameter');
+        assert($parameterEl instanceof DOMElement);
         $parameterEl->setAttribute('name', $name);
 
         if (is_array($value)) {
-            $parameterEl->setAttribute('type', 'collection');
+            $parameterEl->setAttribute('type', self::PARAM_TYPE_COLLECTION);
 
             foreach ($value as $key => $element) {
                 $this->createParameter($parameterEl, $key, $element);
@@ -210,7 +216,17 @@ class XmlEncoder
             return $parameterEl;
         }
 
+
         if (is_scalar($value)) {
+            if ($this->isBinary($value)) {
+                $parameterEl->appendChild(
+                    $parameterEl->ownerDocument->createCDATASection(base64_encode($value))
+                );
+                $parameterEl->setAttribute('type', self::PARAM_TYPE_BINARY);
+
+                return $parameterEl;
+            }
+
             $parameterEl->setAttribute('value', $value);
 
             return $parameterEl;
@@ -247,5 +263,10 @@ class XmlEncoder
         foreach ($stats as $statName => $statValue) {
             $statsEl->setAttribute($statName, $statValue);
         }
+    }
+
+    private function isBinary($value)
+    {
+        return !preg_match('//u', $value);
     }
 }

@@ -12,6 +12,7 @@
 
 namespace PhpBench\Serializer;
 
+use function base64_decode;
 use PhpBench\Assertion\AssertionResult;
 use PhpBench\Dom\Document;
 use PhpBench\Dom\Element;
@@ -205,8 +206,14 @@ class XmlDecoder
         foreach ($element->query('./parameter') as $parameterEl) {
             $name = $parameterEl->getAttribute('name');
 
-            if ($parameterEl->getAttribute('type') === 'collection') {
+            if ($parameterEl->getAttribute('type') === XmlEncoder::PARAM_TYPE_COLLECTION) {
                 $parameters[$name] = $this->getParameters($parameterEl);
+
+                continue;
+            }
+
+            if ($parameterEl->getAttribute('type') === XmlEncoder::PARAM_TYPE_BINARY) {
+                $parameters[$name] = base64_decode($parameterEl->nodeValue);
 
                 continue;
             }
