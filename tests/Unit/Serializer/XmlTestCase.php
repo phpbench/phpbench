@@ -33,7 +33,7 @@ use PhpBench\Model\Variant;
 use PhpBench\Registry\Config;
 use PhpBench\Tests\TestCase;
 
-class XmlTestCase extends TestCase
+abstract class XmlTestCase extends TestCase
 {
     protected function setUp(): void
     {
@@ -144,4 +144,16 @@ class XmlTestCase extends TestCase
             ];
         }
     }
+
+    public function testBinary(): void
+    {
+        $collection = $this->getSuiteCollection([
+            'params' => [
+                'foo' => "\x80",
+            ]
+        ]);
+        $this->doTestBinary($collection);
+    }
+
+    abstract public function doTestBinary(SuiteCollection $collection): void;
 }

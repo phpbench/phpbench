@@ -52,14 +52,9 @@ class XmlEncoderTest extends XmlTestCase
         $approval->approve(str_replace(PhpBench::version(), 'PHPBENCH_VERSION', $dom->dump()));
     }
 
-    public function testBinary(): void
+    public function doTestBinary(SuiteCollection $collection): void
     {
         $approval = Approval::create(__DIR__ . '/examples/binary1.example', 0);
-        $collection = $this->getSuiteCollection([
-            'params' => [
-                'foo' => "\x80",
-            ]
-        ]);
         $xmlEncoder = new XmlEncoder();
         $dom = $xmlEncoder->encode($collection);
         $approval->approve(str_replace(PhpBench::version(), 'PHPBENCH_VERSION', $dom->dump()));
