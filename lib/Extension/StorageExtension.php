@@ -36,6 +36,7 @@ class StorageExtension implements ExtensionInterface
 {
     public const PARAM_STORAGE = 'storage.driver';
     public const PARAM_XML_STORAGE_PATH = 'storage.xml_storage_path';
+    public const PARAM_STORE_BINARY = 'storage.store_binary';
 
     public const SERVICE_REGISTRY_DRIVER = 'storage.driver_registry';
 
@@ -47,13 +48,16 @@ class StorageExtension implements ExtensionInterface
         $resolver->setDefaults([
             self::PARAM_STORAGE => 'xml',
             self::PARAM_XML_STORAGE_PATH => '.phpbench/storage',
+            self::PARAM_STORE_BINARY => false,
         ]);
 
         $resolver->setAllowedTypes(self::PARAM_STORAGE, ['string']);
         $resolver->setAllowedTypes(self::PARAM_XML_STORAGE_PATH, ['string']);
+        $resolver->setAllowedTypes(self::PARAM_STORE_BINARY, ['boolean']);
         SymfonyOptionsResolverCompat::setInfos($resolver, [
             self::PARAM_STORAGE => 'Storage driver to use',
-            self::PARAM_XML_STORAGE_PATH => 'Path to store benchmark runs when they are stored with ``--store`` or ``--tag=foo``'
+            self::PARAM_XML_STORAGE_PATH => 'Path to store benchmark runs when they are stored with ``--store`` or ``--tag=foo``',
+            self::PARAM_STORE_BINARY => 'If binary and serialized parameter values should be stored',
         ]);
     }
 
@@ -104,7 +108,7 @@ class StorageExtension implements ExtensionInterface
     private function registerSerializer(Container $container): void
     {
         $container->register(XmlEncoder::class, function (Container $container) {
-            return new XmlEncoder();
+            return new XmlEncoder($container->getParameter(self::PARAM_STORE_BINARY));
         });
         $container->register(XmlDecoder::class, function (Container $container) {
             return new XmlDecoder();
