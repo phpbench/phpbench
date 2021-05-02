@@ -12,11 +12,9 @@
 
 namespace PhpBench\Serializer;
 
-use Error;
-use Exception;
-use RuntimeException;
 use function base64_encode;
 use DOMElement;
+use Exception;
 use PhpBench\Dom\Document;
 use PhpBench\Dom\Element;
 use PhpBench\Model\Benchmark;
@@ -27,6 +25,7 @@ use PhpBench\Model\SuiteCollection;
 use PhpBench\Model\Variant;
 use PhpBench\PhpBench;
 use PhpBench\Util\TimeUnit;
+use RuntimeException;
 
 /**
  * Encodes the Suite object graph into an XML document.

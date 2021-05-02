@@ -73,7 +73,8 @@ class XmlEncoderTest extends XmlTestCase
         $this->expectExceptionMessage('Cannot serialize');
         $collection = $this->getSuiteCollection([
             'params' => [
-                'invalid' => function () {}
+                'invalid' => function (): void {
+                }
             ],
         ]);
         $this->encode($collection);
@@ -87,6 +88,7 @@ class XmlEncoderTest extends XmlTestCase
     private function encode(SuiteCollection $collection): Document
     {
         $xmlEncoder = new XmlEncoder();
+
         return $xmlEncoder->encode($collection);
     }
 }
