@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Serializer;
 
+use DateTime;
 use PhpBench\Assertion\AssertionResult;
 use PhpBench\Assertion\VariantAssertionResults;
 use PhpBench\Environment\Information;
@@ -155,5 +156,16 @@ abstract class XmlTestCase extends TestCase
         $this->doTestBinary($collection);
     }
 
+    public function testDate(): void
+    {
+        $collection = $this->getSuiteCollection([
+            'params' => [
+                'foo' => new DateTime('2021-01-01 00:00:00+00:00'),
+            ]
+        ]);
+        $this->doTestDate($collection);
+    }
+
     abstract public function doTestBinary(SuiteCollection $collection): void;
+    abstract public function doTestDate(SuiteCollection $collection): void;
 }

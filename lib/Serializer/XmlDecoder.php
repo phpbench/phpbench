@@ -13,6 +13,7 @@
 namespace PhpBench\Serializer;
 
 use function base64_decode;
+use DOMElement;
 use PhpBench\Assertion\AssertionResult;
 use PhpBench\Dom\Document;
 use PhpBench\Dom\Element;
@@ -110,6 +111,7 @@ class XmlDecoder
         $resultClasses = [];
 
         foreach ($suiteEl->query('//result') as $resultEl) {
+            assert($resultEl instanceof DOMElement);
             $class = $resultEl->getAttribute('class');
 
             if (!class_exists($class)) {
@@ -125,6 +127,7 @@ class XmlDecoder
         $suite->setEnvInformations($informations);
 
         foreach ($suiteEl->query('./benchmark') as $benchmarkEl) {
+            assert($benchmarkEl instanceof Element);
             $benchmark = $suite->createBenchmark(
                 $benchmarkEl->getAttribute('class')
             );
@@ -214,6 +217,12 @@ class XmlDecoder
 
             if ($parameterEl->getAttribute('type') === XmlEncoder::PARAM_TYPE_BINARY) {
                 $parameters[$name] = base64_decode($parameterEl->nodeValue);
+
+                continue;
+            }
+
+            if ($parameterEl->getAttribute('type') === XmlEncoder::PARAM_TYPE_SERIALIZED) {
+                $parameters[$name] = unserialize(base64_decode($parameterEl->nodeValue));
 
                 continue;
             }

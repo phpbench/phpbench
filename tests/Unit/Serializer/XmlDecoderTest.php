@@ -188,6 +188,21 @@ EOT
         );
     }
 
+    public function doTestDate(SuiteCollection $collection): void
+    {
+        $dom = $this->encode($collection);
+
+        $decoder = new XmlDecoder();
+        $collection = $decoder->decode($dom);
+
+        $decodedDom = $this->encode($collection);
+
+        $this->assertEquals(
+            $dom->dump(),
+            $decodedDom->dump()
+        );
+    }
+
     private function encode(SuiteCollection $collection)
     {
         $xmlEncoder = new XmlEncoder();

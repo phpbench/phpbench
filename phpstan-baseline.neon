@@ -7,12 +7,7 @@ parameters:
 
 		-
 			message: "#^Call to an undefined method DOMNode\\:\\:getAttribute\\(\\)\\.$#"
-			count: 22
-			path: lib/Serializer/XmlDecoder.php
-
-		-
-			message: "#^Parameter \\#2 \\$benchmarkEl of method PhpBench\\\\Serializer\\\\XmlDecoder\\:\\:processBenchmark\\(\\) expects PhpBench\\\\Dom\\\\Element, DOMNode given\\.$#"
-			count: 1
+			count: 20
 			path: lib/Serializer/XmlDecoder.php
 
 		-
