@@ -54,7 +54,7 @@ class XmlEncoderTest extends XmlTestCase
 
     public function testBinary(): void
     {
-        $approval = Approval::create(__DIR__ . '/examples/binary1.test', 0);
+        $approval = Approval::create(__DIR__ . '/examples/binary1.example', 0);
         $collection = $this->getSuiteCollection([
             'params' => [
                 'foo' => "\x80",

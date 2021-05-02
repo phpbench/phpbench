@@ -12,6 +12,7 @@
 
 namespace PhpBench\Serializer;
 
+use DOMElement;
 use PhpBench\Dom\Document;
 use PhpBench\Dom\Element;
 use PhpBench\Model\Benchmark;
@@ -22,6 +23,7 @@ use PhpBench\Model\SuiteCollection;
 use PhpBench\Model\Variant;
 use PhpBench\PhpBench;
 use PhpBench\Util\TimeUnit;
+use function base64_encode;
 
 /**
  * Encodes the Suite object graph into an XML document.
@@ -192,6 +194,7 @@ class XmlEncoder
     private function createParameter($parentEl, $name, $value)
     {
         $parameterEl = $parentEl->appendElement('parameter');
+        assert($parameterEl instanceof DOMElement);
         $parameterEl->setAttribute('name', $name);
 
         if (is_array($value)) {
@@ -210,7 +213,16 @@ class XmlEncoder
             return $parameterEl;
         }
 
+
         if (is_scalar($value)) {
+            if ($this->isBinary($value)) {
+                $parameterEl->appendChild(
+                    $parameterEl->ownerDocument->createCDATASection(base64_encode($value))
+                );
+                $parameterEl->setAttribute('type', 'binary');
+                return $parameterEl;
+            }
+
             $parameterEl->setAttribute('value', $value);
 
             return $parameterEl;
@@ -247,5 +259,10 @@ class XmlEncoder
         foreach ($stats as $statName => $statValue) {
             $statsEl->setAttribute($statName, $statValue);
         }
+    }
+
+    private function isBinary($value)
+    {
+        return !preg_match('//u', $value);
     }
 }

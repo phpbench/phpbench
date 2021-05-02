@@ -26,6 +26,7 @@ use PhpBench\Model\SuiteCollection;
 use PhpBench\Model\Variant;
 use PhpBench\PhpBench;
 use PhpBench\Registry\Config;
+use function base64_decode;
 
 /**
  * Encodes the Suite object graph into an XML document.
@@ -207,6 +208,12 @@ class XmlDecoder
 
             if ($parameterEl->getAttribute('type') === 'collection') {
                 $parameters[$name] = $this->getParameters($parameterEl);
+
+                continue;
+            }
+
+            if ($parameterEl->getAttribute('type') === 'binary') {
+                $parameters[$name] = base64_decode($parameterEl->nodeValue);
 
                 continue;
             }

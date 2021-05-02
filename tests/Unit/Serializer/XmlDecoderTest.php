@@ -173,6 +173,28 @@ EOT
         self::assertCount(5, $env);
     }
 
+    public function testBinary(): void
+    {
+        $approval = Approval::create(__DIR__ . '/examples/binary1.example', 0);
+        $collection = $this->getSuiteCollection([
+            'params' => [
+                'foo' => "\x80",
+            ]
+        ]);
+
+        $dom = $this->encode($collection);
+
+        $decoder = new XmlDecoder();
+        $collection = $decoder->decode($dom);
+
+        $decodedDom = $this->encode($collection);
+
+        $this->assertEquals(
+            $dom->dump(),
+            $decodedDom->dump()
+        );
+    }
+
     private function encode(SuiteCollection $collection)
     {
         $xmlEncoder = new XmlEncoder();
