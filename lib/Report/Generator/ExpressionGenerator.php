@@ -214,6 +214,7 @@ EOT
     private function evaluate(array $table, array $exprMap, array $baselineExprMap): Generator
     {
         foreach ($table as $row) {
+            $row['_table'] = $table;
             $evaledRow = [];
 
             foreach (($row[SuiteCollectionTransformer::COL_HAS_BASELINE][0] ? array_merge($exprMap, $baselineExprMap) : $exprMap) as $name => $expr) {
