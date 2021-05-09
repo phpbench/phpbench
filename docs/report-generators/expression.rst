@@ -115,6 +115,6 @@ Yielding:
   :language: bash
   :section: 2
 
-Note that any additional result and :doc:`envronment <../environment>` data will
+Note that any additional result and :doc:`environment <../environment>` data will
 also be included in the form `result_<type>_<metric>` and
 `env_<type>_<metric>`.
