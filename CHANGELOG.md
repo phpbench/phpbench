@@ -1,12 +1,12 @@
 CHANGELOG
 =========
 
-dev-master
-----------
+1.0.0 (2021-05-09)
+------------------
 
 Improvements:
 
-- Support for binary data in param providers #532
+- Optionaly support for binary data in param providers #532
 - Support serializable objects in param providers #823
 
 Bug fix:
