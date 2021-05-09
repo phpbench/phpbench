@@ -2,6 +2,7 @@
 
 namespace PhpBench\Report\Generator;
 
+use PhpBench\Report\DataFrame;
 use function array_combine;
 use function array_key_exists;
 use Generator;
@@ -156,9 +157,9 @@ EOT
         $expressionMap = $this->resolveExpressionMap($config);
         $baselineExpressionMap = $this->resolveBaselineExpressionMap($config, array_keys($expressionMap));
 
-        $table = $this->transformer->suiteToTable($collection, $config[self::PARAM_INCLUDE_BASELINE]);
-        $table = $this->aggregate($table, $config[self::PARAM_AGGREGATE]);
-        $table = iterator_to_array($this->evaluate($table, $expressionMap, $baselineExpressionMap));
+        $frame = $this->transformer->suiteToTable($collection, $config[self::PARAM_INCLUDE_BASELINE]);
+        $table = $this->aggregate($frame->toRecords(), $config[self::PARAM_AGGREGATE]);
+        $table = iterator_to_array($this->evaluate($frame, $table, $expressionMap, $baselineExpressionMap));
         $tables = $this->partition($table, $config[self::PARAM_BREAK]);
 
         return $this->generateReports($tables, $config);
@@ -211,7 +212,7 @@ EOT
      *
      * @return Generator<array<string,mixed>>
      */
-    private function evaluate(array $table, array $exprMap, array $baselineExprMap): Generator
+    private function evaluate(DataFrame $frame, array $table, array $exprMap, array $baselineExprMap): Generator
     {
         foreach ($table as $row) {
             $row['_table'] = $table;

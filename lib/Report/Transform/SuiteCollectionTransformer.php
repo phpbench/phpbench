@@ -8,6 +8,7 @@ use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Model\Variant;
+use PhpBench\Report\DataFrame;
 
 final class SuiteCollectionTransformer
 {
@@ -16,9 +17,9 @@ final class SuiteCollectionTransformer
     /**
      * @return array<string,array<string,mixed>>
      */
-    public function suiteToTable(SuiteCollection $collection, bool $includeBaseline = false): array
+    public function suiteToTable(SuiteCollection $collection, bool $includeBaseline = false): DataFrame
     {
-        return $this->normalize(iterator_to_array($this->reportData($collection, $includeBaseline)));
+        return DataFrame::fromRecords($this->normalize(iterator_to_array($this->reportData($collection, $includeBaseline))));
     }
 
     /**

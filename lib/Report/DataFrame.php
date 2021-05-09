@@ -4,9 +4,10 @@ namespace PhpBench\Report;
 
 use Closure;
 use RuntimeException;
+use function array_reduce;
 use function array_search;
 
-class DataFrame
+final class DataFrame
 {
     /**
      * @var Series[]
@@ -74,7 +75,7 @@ class DataFrame
     /**
      * @param int|string $index
      */
-    public function row($index): Series
+    public function row($index): DataFrame
     {
         if (!isset($this->rows[$index])) {
             throw new RuntimeException(sprintf(
@@ -83,6 +84,13 @@ class DataFrame
             ));
         }
 
-        return $this->rows[$index];
+        return new self([$this->rows[$index]], $this->columns);
+    }
+
+    public function toValues(): array
+    {
+        return array_reduce($this->rows, function (array $carry, Series $row) {
+            return array_merge($carry, $row->toValues());
+        }, []);
     }
 }
