@@ -32,11 +32,6 @@ Install with The PHAR Installation and Verification Environment `PHIVE <https://
 Install as a PHAR
 -----------------
 
-.. warning::
-
-    The below will only work after 1.0.0 has been released and there is a
-    non-prelease version available on Github.
-
 You can download `phpbench.phar` and the `phpbench.phar.asc`:
 as follows:
 
