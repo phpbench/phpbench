@@ -2,12 +2,12 @@
 
 namespace PhpBench\Report\Generator;
 
-use PhpBench\Data\DataFrame;
-use PhpBench\Data\DataFrames;
 use function array_combine;
 use function array_key_exists;
 use Generator;
 use function iterator_to_array;
+use PhpBench\Data\DataFrame;
+use PhpBench\Data\DataFrames;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Evaluator;
@@ -209,7 +209,6 @@ EOT
     }
 
     /**
-     * @param array<string,mixed> $table
      *
      * @return Generator<array<string,mixed>>
      */
@@ -219,7 +218,12 @@ EOT
             assert($frame instanceof DataFrame);
             $evaledRow = [];
 
-            foreach ($exprMap as $name => $expr) {
+            $toEvaluate = $frame->row(0)->get(SuiteCollectionTransformer::COL_HAS_BASELINE) ? array_merge(
+                $exprMap,
+                $baselineExprMap
+            ) : $exprMap;
+
+            foreach ($toEvaluate as $name => $expr) {
                 try {
                     $evaledRow[$name] = $this->evaluator->evaluate($this->parser->parse($expr), $frame->columnValues());
                 } catch (EvaluationError $e) {

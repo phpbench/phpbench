@@ -30,6 +30,7 @@ class DataFrames implements IteratorAggregate
     {
         $rows = [];
         $columns = null;
+
         foreach ($this->dataFrames as $dataFrame) {
             if ($columns !== null && $columns !== $dataFrame->columnNames()) {
                 throw new RuntimeException(sprintf(

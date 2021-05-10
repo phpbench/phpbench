@@ -2,22 +2,19 @@
 
 namespace PhpBench\Data;
 
-use ArrayIterator;
-use Closure;
-use IteratorAggregate;
-use PhpBench\Data\DataFrame;
-use PhpBench\Data\Func\Partition;
-use RuntimeException;
 use function array_reduce;
 use function array_search;
-use function iterator_to_array;
+use ArrayIterator;
+use IteratorAggregate;
+use PhpBench\Data\Func\Partition;
+use RuntimeException;
 
 final class DataFrame implements IteratorAggregate
 {
     /**
      * @var Series[]
      */
-    private $rows;
+    private $serieses;
 
     /**
      * @var array
@@ -26,7 +23,7 @@ final class DataFrame implements IteratorAggregate
 
     public function __construct(array $rows, array $columns)
     {
-        $this->rows = $rows;
+        $this->serieses = $rows;
         $this->columns = array_values($columns);
     }
 
@@ -34,11 +31,14 @@ final class DataFrame implements IteratorAggregate
     {
         $rows = [];
         $columns = null;
+
         foreach ($records as $index => $record) {
             $keys = array_keys($record);
+
             if (null === $columns) {
                 $columns = $keys;
             }
+
             if ($keys !== $columns) {
                 throw new RuntimeException(sprintf(
                     'Record "%s" was expected to have columns "%s", but it has "%s"',
@@ -55,7 +55,7 @@ final class DataFrame implements IteratorAggregate
     {
         return array_map(function (Series $series) {
             return array_combine($this->columns, $series->toValues());
-        }, $this->rows);
+        }, $this->serieses);
     }
 
     /**
@@ -74,22 +74,22 @@ final class DataFrame implements IteratorAggregate
 
         return new Series(array_map(function (Series $series) use ($offset) {
             return $series->value($offset);
-        }, $this->rows));
+        }, $this->serieses));
     }
 
     /**
      * @param int|string $index
      */
-    public function row($index): DataFrame
+    public function row($index): Row
     {
-        if (!isset($this->rows[$index])) {
+        if (!isset($this->serieses[$index])) {
             throw new RuntimeException(sprintf(
                 'Could not find row "%s" in data frame with %s row(s)',
-                $index, count($this->rows)
+                $index, count($this->serieses)
             ));
         }
 
-        return new self([$this->rows[$index]], $this->columns);
+        return new Row(array_combine($this->columns, $this->serieses[$index]->toValues()));
     }
 
     /**
@@ -97,15 +97,15 @@ final class DataFrame implements IteratorAggregate
      */
     public function rows(): array
     {
-        return array_map(function (Series $row) {
-            return new Row(array_combine($this->columns, $row->toValues()));
-        }, $this->rows);
+        return array_map(function (Series $series) {
+            return new Row(array_combine($this->columns, $series->toValues()));
+        }, $this->serieses);
     }
 
     public function toValues(): array
     {
-        return array_reduce($this->rows, function (array $carry, Series $row) {
-            return array_merge($carry, $row->toValues());
+        return array_reduce($this->serieses, function (array $carry, Series $series) {
+            return array_merge($carry, $series->toValues());
         }, []);
     }
 
@@ -114,7 +114,7 @@ final class DataFrame implements IteratorAggregate
      */
     public function getIterator()
     {
-        return new ArrayIterator($this->rows);
+        return new ArrayIterator($this->serieses);
     }
 
     /**
@@ -138,7 +138,7 @@ final class DataFrame implements IteratorAggregate
         $values = array_combine($this->columns, array_fill(0, count($this->columns), []));
 
         foreach ($this->columns as $index => $name) {
-            foreach ($this->rows as $row) {
+            foreach ($this->serieses as $row) {
                 $values[$name][] = $row->value($index);
             }
         }
@@ -146,4 +146,3 @@ final class DataFrame implements IteratorAggregate
         return $values;
     }
 }
-

@@ -43,6 +43,11 @@ final class Row implements IteratorAggregate
         return new Series(array_values($this->map));
     }
 
+    public function toRecord(): array
+    {
+        return $this->map;
+    }
+
     public function only(array $resolvedNames): self
     {
         return new self(array_combine($resolvedNames, array_map(function (string $column) {

@@ -3,12 +3,12 @@
 namespace PhpBench\Report\Transform;
 
 use Generator;
+use PhpBench\Data\DataFrame;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Model\Variant;
-use PhpBench\Data\DataFrame;
 
 final class SuiteCollectionTransformer
 {

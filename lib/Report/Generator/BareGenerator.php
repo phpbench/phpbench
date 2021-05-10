@@ -52,7 +52,7 @@ class BareGenerator implements GeneratorInterface
                             'value' => PhpValueFactory::fromValue($value),
                         ];
                     }, array_keys($table), array_values($table)));
-                }, $this->transformer->suiteToTable($collection)))
+                }, $this->transformer->suiteToTable($collection)->toRecords()))
             );
         }
 
@@ -63,7 +63,7 @@ class BareGenerator implements GeneratorInterface
                         return array_map(function ($value) {
                             return PhpValueFactory::fromValue($value);
                         }, $row);
-                    }, $this->transformer->suiteToTable($collection))
+                    }, $this->transformer->suiteToTable($collection)->toRecords())
                 )
             )
         );

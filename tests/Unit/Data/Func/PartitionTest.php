@@ -3,8 +3,8 @@
 namespace PhpBench\Tests\Unit\Data\Func;
 
 use Generator;
-use PHPUnit\Framework\TestCase;
 use PhpBench\Data\DataFrame;
+use PHPUnit\Framework\TestCase;
 
 class PartitionTest extends TestCase
 {
@@ -45,8 +45,8 @@ class PartitionTest extends TestCase
             ['a'],
             [
                 'two' => [
-                    ['a'=> 'two', 'b' => 1],
-                    ['a' =>'two','b' => 2],
+                    ['a' => 'two', 'b' => 1],
+                    ['a' => 'two','b' => 2],
                 ]
             ]
         ];

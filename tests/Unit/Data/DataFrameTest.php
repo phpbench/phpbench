@@ -2,9 +2,9 @@
 
 namespace PhpBench\Tests\Unit\Data;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Data\DataFrame;
 use PhpBench\Data\Row;
+use PHPUnit\Framework\TestCase;
 
 class DataFrameTest extends TestCase
 {
@@ -65,7 +65,7 @@ class DataFrameTest extends TestCase
         self::assertEquals([1, 3], DataFrame::fromRecords($records)->column('three')->toValues());
     }
 
-    public function testReturnRowValues(): void
+    public function testReturnRowRecord(): void
     {
         $records = [
             [
@@ -77,7 +77,10 @@ class DataFrameTest extends TestCase
                 'two' => 4,
             ],
         ];
-        self::assertEquals([1, 4], DataFrame::fromRecords($records)->row(0)->toValues());
+        self::assertEquals([
+            'one' => 1,
+            'two' => 4
+        ], DataFrame::fromRecords($records)->row(0)->toRecord());
     }
 
     public function testExceptionOnInvalidRow(): void
