@@ -8,7 +8,7 @@ use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Model\Variant;
-use PhpBench\Report\DataFrame;
+use PhpBench\Data\DataFrame;
 
 final class SuiteCollectionTransformer
 {

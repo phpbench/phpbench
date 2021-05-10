@@ -1,13 +1,18 @@
 <?php
 
-namespace PhpBench\Report;
+namespace PhpBench\Data;
 
+use ArrayIterator;
 use Closure;
+use IteratorAggregate;
+use PhpBench\Data\DataFrame;
+use PhpBench\Data\Func\Partition;
 use RuntimeException;
 use function array_reduce;
 use function array_search;
+use function iterator_to_array;
 
-final class DataFrame
+final class DataFrame implements IteratorAggregate
 {
     /**
      * @var Series[]
@@ -19,7 +24,7 @@ final class DataFrame
      */
     private $columns;
 
-    private function __construct(array $rows, array $columns)
+    public function __construct(array $rows, array $columns)
     {
         $this->rows = $rows;
         $this->columns = $columns;
@@ -43,7 +48,7 @@ final class DataFrame
             $rows[] = new Series(array_values($record));
         }
 
-        return new self($rows, $columns);
+        return new self($rows, $columns ?? []);
     }
 
     public function toRecords(): array
@@ -87,10 +92,42 @@ final class DataFrame
         return new self([$this->rows[$index]], $this->columns);
     }
 
+    /**
+     * @return Row[]
+     */
+    public function rows(): array
+    {
+        return array_map(function (Series $row) {
+            return new Row(array_combine($this->columns, $row->toValues()));
+        }, $this->rows);
+    }
+
     public function toValues(): array
     {
         return array_reduce($this->rows, function (array $carry, Series $row) {
             return array_merge($carry, $row->toValues());
         }, []);
     }
+
+    /**
+     * @return ArrayIterator<Series>
+     */
+    public function getIterator()
+    {
+        return new ArrayIterator($this->rows);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function columnNames(): array
+    {
+        return $this->columns;
+    }
+
+    public function partition(array $columns): DataFrames
+    {
+        return (new Partition())->__invoke($this, $columns);
+    }
 }
+

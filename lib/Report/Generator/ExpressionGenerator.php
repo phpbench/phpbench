@@ -2,7 +2,7 @@
 
 namespace PhpBench\Report\Generator;
 
-use PhpBench\Report\DataFrame;
+use PhpBench\Data\DataFrame;
 use function array_combine;
 use function array_key_exists;
 use Generator;
@@ -35,7 +35,6 @@ class ExpressionGenerator implements GeneratorInterface
     const PARAM_AGGREGATE = 'aggregate';
     const PARAM_BREAK = 'break';
     const PARAM_INCLUDE_BASELINE = 'include_baseline';
-
 
     /**
      * @var ExpressionLanguage
@@ -158,7 +157,7 @@ EOT
         $baselineExpressionMap = $this->resolveBaselineExpressionMap($config, array_keys($expressionMap));
 
         $frame = $this->transformer->suiteToTable($collection, $config[self::PARAM_INCLUDE_BASELINE]);
-        $table = $this->aggregate($frame->toRecords(), $config[self::PARAM_AGGREGATE]);
+        $frames = $frame->partition($config[self::PARAM_AGGREGATE]);
         $table = iterator_to_array($this->evaluate($frame, $table, $expressionMap, $baselineExpressionMap));
         $tables = $this->partition($table, $config[self::PARAM_BREAK]);
 
@@ -168,6 +167,7 @@ EOT
     /**
      * @param array<string,mixed> $table
      * @param string[] $aggregateCols
+     * dump($table);
      *
      * @return array<string,mixed>
      */

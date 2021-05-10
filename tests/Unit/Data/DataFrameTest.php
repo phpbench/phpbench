@@ -1,9 +1,10 @@
 <?php
 
-namespace PhpBench\Tests\Unit\Report;
+namespace PhpBench\Tests\Unit\Data;
 
 use PHPUnit\Framework\TestCase;
-use PhpBench\Report\DataFrame;
+use PhpBench\Data\DataFrame;
+use PhpBench\Data\Row;
 
 class DataFrameTest extends TestCase
 {
@@ -89,5 +90,23 @@ class DataFrameTest extends TestCase
             ],
         ];
         self::assertEquals([1, 3], DataFrame::fromRecords($records)->row(5)->toValues());
+    }
+
+    public function testReturnRowsAsDataFrames(): void
+    {
+        $records = [
+            [
+                'one' => 1,
+                'two' => 4,
+            ],
+            [
+                'one' => 3,
+                'two' => 4,
+            ],
+        ];
+
+        self::assertEquals(array_map(function (array $record) {
+            return new Row($record);
+        }, $records), DataFrame::fromRecords($records)->rows());
     }
 }

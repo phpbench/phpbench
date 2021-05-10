@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Report;
+namespace PhpBench\Data;
 
 use RuntimeException;
 
