@@ -45,8 +45,8 @@ class PartitionTest extends TestCase
             ['a'],
             [
                 'two' => [
-                    ['b' => 1],
-                    ['b' => 2],
+                    ['a'=> 'two', 'b' => 1],
+                    ['a' =>'two','b' => 2],
                 ]
             ]
         ];
@@ -60,11 +60,11 @@ class PartitionTest extends TestCase
             ['a'],
             [
                 'two' => [
-                    ['b' => 1],
-                    ['b' => 2],
+                    ['a' => 'two', 'b' => 1],
+                    ['a' => 'two', 'b' => 2],
                 ],
                 'three' => [
-                    ['b' => 1],
+                    ['a' => 'three', 'b' => 1],
                 ]
             ]
         ];
@@ -79,14 +79,14 @@ class PartitionTest extends TestCase
             ['a', 'b'],
             [
                 'two-1' => [
-                    []
+                    ['a' => 'two', 'b' => 1],
                 ],
                 'two-2' => [
-                    []
+                    ['a' => 'two', 'b' => 2],
                 ],
                 'three-1' => [
-                    [],
-                    []
+                    ['a' => 'three', 'b' => 1],
+                    ['a' => 'three', 'b' => 1],
                 ]
             ]
         ];
@@ -101,22 +101,14 @@ class PartitionTest extends TestCase
             ['a', 'b'],
             [
                 'two-1' => [
-                    [
-                        'c' => 1,
-                    ]
+                    ['a' => 'two', 'b' => 1, 'c' => 1],
                 ],
                 'two-2' => [
-                    [
-                        'c' => 2,
-                    ]
+                    ['a' => 'two', 'b' => 2, 'c' => 2],
                 ],
                 'three-1' => [
-                    [
-                        'c' => 3,
-                    ],
-                    [
-                        'c' => 4,
-                    ],
+                    ['a' => 'three', 'b' => 1, 'c' => 3],
+                    ['a' => 'three', 'b' => 1, 'c' => 4],
                 ]
             ]
         ];

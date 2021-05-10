@@ -14,9 +14,6 @@ final class SuiteCollectionTransformer
 {
     public const COL_HAS_BASELINE = 'has_baseline';
 
-    /**
-     * @return array<string,array<string,mixed>>
-     */
     public function suiteToTable(SuiteCollection $collection, bool $includeBaseline = false): DataFrame
     {
         return DataFrame::fromRecords($this->normalize(iterator_to_array($this->reportData($collection, $includeBaseline))));

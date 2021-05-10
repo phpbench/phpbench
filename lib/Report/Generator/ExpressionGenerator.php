@@ -3,6 +3,7 @@
 namespace PhpBench\Report\Generator;
 
 use PhpBench\Data\DataFrame;
+use PhpBench\Data\DataFrames;
 use function array_combine;
 use function array_key_exists;
 use Generator;
@@ -158,7 +159,7 @@ EOT
 
         $frame = $this->transformer->suiteToTable($collection, $config[self::PARAM_INCLUDE_BASELINE]);
         $frames = $frame->partition($config[self::PARAM_AGGREGATE]);
-        $table = iterator_to_array($this->evaluate($frame, $table, $expressionMap, $baselineExpressionMap));
+        $table = iterator_to_array($this->evaluate($frames, $expressionMap, $baselineExpressionMap));
         $tables = $this->partition($table, $config[self::PARAM_BREAK]);
 
         return $this->generateReports($tables, $config);
@@ -212,15 +213,15 @@ EOT
      *
      * @return Generator<array<string,mixed>>
      */
-    private function evaluate(DataFrame $frame, array $table, array $exprMap, array $baselineExprMap): Generator
+    private function evaluate(DataFrames $frames, array $exprMap, array $baselineExprMap): Generator
     {
-        foreach ($table as $row) {
-            $row['_table'] = $table;
+        foreach ($frames as $frame) {
+            assert($frame instanceof DataFrame);
             $evaledRow = [];
 
-            foreach (($row[SuiteCollectionTransformer::COL_HAS_BASELINE][0] ? array_merge($exprMap, $baselineExprMap) : $exprMap) as $name => $expr) {
+            foreach ($exprMap as $name => $expr) {
                 try {
-                    $evaledRow[$name] = $this->evaluator->evaluate($this->parser->parse($expr), $row);
+                    $evaledRow[$name] = $this->evaluator->evaluate($this->parser->parse($expr), $frame->columnValues());
                 } catch (EvaluationError $e) {
                     $evaledRow[$name] = new StringNode('ERR');
                     $this->logger->error(sprintf(

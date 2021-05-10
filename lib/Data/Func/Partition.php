@@ -20,11 +20,11 @@ final class Partition
             if (!isset($frames[$hash])) {
                 $frames[$hash] = [];
             }
-            $frames[$hash][] = $row->only($resolvedNames)->toSeries();
+            $frames[$hash][] = $row->toSeries();
         }
 
         return new DataFrames(array_map(function (array $rows) use ($frame, $resolvedNames) {
-            return new DataFrame($rows, $resolvedNames);
+            return new DataFrame($rows, $frame->columnNames());
         }, $frames));
     }
 }

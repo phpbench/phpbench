@@ -20,7 +20,7 @@ final class Row implements IteratorAggregate
 
     public function get(string $column)
     {
-        if (!isset($this->map[$column])) {
+        if (!array_key_exists($column, $this->map)) {
             throw new RuntimeException(sprintf(
                 'Row does not have column "%s", it has columns "%s"',
                 $column, implode('", "', array_keys($this->map))

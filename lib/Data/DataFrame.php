@@ -27,7 +27,7 @@ final class DataFrame implements IteratorAggregate
     public function __construct(array $rows, array $columns)
     {
         $this->rows = $rows;
-        $this->columns = $columns;
+        $this->columns = array_values($columns);
     }
 
     public static function fromRecords(array $records): self
@@ -128,6 +128,22 @@ final class DataFrame implements IteratorAggregate
     public function partition(array $columns): DataFrames
     {
         return (new Partition())->__invoke($this, $columns);
+    }
+
+    /**
+     * @return array<string, array<mixed>>
+     */
+    public function columnValues(): array
+    {
+        $values = array_combine($this->columns, array_fill(0, count($this->columns), []));
+
+        foreach ($this->columns as $index => $name) {
+            foreach ($this->rows as $row) {
+                $values[$name][] = $row->value($index);
+            }
+        }
+
+        return $values;
     }
 }
 
