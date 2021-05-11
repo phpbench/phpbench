@@ -168,7 +168,6 @@ EOT
     /**
      * @param array<string,mixed> $table
      * @param string[] $aggregateCols
-     * dump($table);
      *
      * @return array<string,mixed>
      */
@@ -225,11 +224,11 @@ EOT
 
             foreach ($toEvaluate as $name => $expr) {
                 try {
-                    $evaledRow[$name] = $this->evaluator->evaluate($this->parser->parse($expr), $frame->columnValues());
+                    $evaledRow[$name] = $this->evaluator->evaluate($this->parser->parse($expr), $frame->nonNullColumnValues());
                 } catch (EvaluationError $e) {
                     $evaledRow[$name] = new StringNode('ERR');
                     $this->logger->error(sprintf(
-                        'Expression error (column "%s"): %s', $name, $e->getMessage()
+                        'Expression error (column "%s"): %s %s', $name, $e->getMessage(), $e->getTraceAsString()
                     ));
                 }
             }

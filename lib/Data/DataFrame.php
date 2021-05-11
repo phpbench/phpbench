@@ -139,10 +139,23 @@ final class DataFrame implements IteratorAggregate
 
         foreach ($this->columns as $index => $name) {
             foreach ($this->serieses as $row) {
-                $values[$name][] = $row->value($index);
+                $value = $row->value($index);
+                $values[$name][] = $value;
             }
         }
 
         return $values;
+    }
+
+    /**
+     * @return array<string, array<mixed>>
+     */
+    public function nonNullColumnValues(): array
+    {
+        return array_map(function (array $values) {
+            return array_filter($values, function ($value) {
+                return $value !== null;
+            });
+        }, $this->columnValues());
     }
 }
