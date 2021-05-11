@@ -2,6 +2,7 @@
 
 namespace PhpBench\Expression\Ast;
 
+use DateTime;
 use function is_float;
 use RuntimeException;
 
@@ -36,6 +37,10 @@ final class PhpValueFactory
             return new ListNode(array_map(function ($value) {
                 return self::fromValue($value);
             }, $value));
+        }
+
+        if ($value instanceof DateTime) {
+            return new StringNode($value->format('c'));
         }
 
         throw new RuntimeException(sprintf(

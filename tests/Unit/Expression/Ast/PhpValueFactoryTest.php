@@ -2,6 +2,7 @@
 
 namespace PhpBench\Tests\Unit\Expression\Ast;
 
+use DateTime;
 use Generator;
 use PhpBench\Expression\Ast\BooleanNode;
 use PhpBench\Expression\Ast\FloatNode;
@@ -38,5 +39,10 @@ class PhpValueFactoryTest extends TestCase
         yield [false, new BooleanNode(false)];
 
         yield [null, new NullNode()];
+
+        yield 'converts datetime to string' => [
+            new DateTime('2021-01-01T00:00:00+00:00'),
+            new StringNode('2021-01-01T00:00:00+00:00')
+        ];
     }
 }
