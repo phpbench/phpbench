@@ -3,7 +3,6 @@
 namespace PhpBench\Expression\Ast;
 
 use function is_float;
-use RuntimeException;
 
 final class PhpValueFactory
 {
@@ -38,8 +37,6 @@ final class PhpValueFactory
             }, $value));
         }
 
-        throw new RuntimeException(sprintf(
-            'Cannot interpret PHP value "%s"', gettype($value)
-        ));
+        return new UnrepresentableValueNode($value);
     }
 }

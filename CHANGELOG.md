@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+master
+------
+
+Bug fix:
+
+- Error with bare report when DateTime used as param #832
+
 1.0.0 (2021-05-09)
 ------------------
 

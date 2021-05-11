@@ -2,6 +2,7 @@
 
 namespace PhpBench\Tests\Unit\Expression\Ast;
 
+use DateTime;
 use Generator;
 use PhpBench\Expression\Ast\BooleanNode;
 use PhpBench\Expression\Ast\FloatNode;
@@ -10,6 +11,7 @@ use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\NullNode;
 use PhpBench\Expression\Ast\PhpValueFactory;
 use PhpBench\Expression\Ast\StringNode;
+use PhpBench\Expression\Ast\UnrepresentableValueNode;
 use PHPUnit\Framework\TestCase;
 
 class PhpValueFactoryTest extends TestCase
@@ -38,5 +40,10 @@ class PhpValueFactoryTest extends TestCase
         yield [false, new BooleanNode(false)];
 
         yield [null, new NullNode()];
+
+        yield [
+            new DateTime('2021-01-01T00:00:00+00:00'),
+            new UnrepresentableValueNode(new DateTime('2021-01-01T00:00:00+00:00'))
+        ];
     }
 }
