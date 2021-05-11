@@ -2,9 +2,7 @@
 
 namespace PhpBench\Expression\Ast;
 
-use DateTime;
 use function is_float;
-use RuntimeException;
 
 final class PhpValueFactory
 {
@@ -39,12 +37,6 @@ final class PhpValueFactory
             }, $value));
         }
 
-        if ($value instanceof DateTime) {
-            return new StringNode($value->format('c'));
-        }
-
-        throw new RuntimeException(sprintf(
-            'Cannot interpret PHP value "%s"', gettype($value)
-        ));
+        return new UnrepresentableValueNode($value);
     }
 }

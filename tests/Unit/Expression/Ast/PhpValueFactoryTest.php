@@ -11,6 +11,7 @@ use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\NullNode;
 use PhpBench\Expression\Ast\PhpValueFactory;
 use PhpBench\Expression\Ast\StringNode;
+use PhpBench\Expression\Ast\UnrepresentableValueNode;
 use PHPUnit\Framework\TestCase;
 
 class PhpValueFactoryTest extends TestCase
@@ -40,9 +41,9 @@ class PhpValueFactoryTest extends TestCase
 
         yield [null, new NullNode()];
 
-        yield 'converts datetime to string' => [
+        yield [
             new DateTime('2021-01-01T00:00:00+00:00'),
-            new StringNode('2021-01-01T00:00:00+00:00')
+            new UnrepresentableValueNode(new DateTime('2021-01-01T00:00:00+00:00'))
         ];
     }
 }

@@ -73,6 +73,7 @@ use PhpBench\Expression\NodePrinter\RelativeDeviationPrinter;
 use PhpBench\Expression\NodePrinter\StringPrinter;
 use PhpBench\Expression\NodePrinter\TolerablePrinter;
 use PhpBench\Expression\NodePrinter\UnitPrinter;
+use PhpBench\Expression\NodePrinter\UnrepresentableValuePrinter;
 use PhpBench\Expression\NodePrinter\ValueWithUnitPrinter;
 use PhpBench\Expression\NodePrinters;
 use PhpBench\Expression\Parselet\ArithmeticOperatorParselet;
@@ -277,6 +278,7 @@ class ExpressionExtension implements ExtensionInterface
                 new ConcatPrinter(),
                 new PercentageDifferencePrinter(),
                 new NullPrinter(),
+                new UnrepresentableValuePrinter(),
             ]);
         });
 
