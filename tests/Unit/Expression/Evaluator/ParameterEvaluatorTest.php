@@ -9,6 +9,7 @@ use PhpBench\Expression\Ast\FloatNode;
 use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\Node;
+use PhpBench\Expression\Ast\PhpValueFactory;
 use PhpBench\Expression\Ast\PropertyAccessNode;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Ast\VariableNode;
@@ -120,22 +121,21 @@ class ParameterEvaluatorTest extends EvaluatorTestCase
     public function provideDataFrame(): Generator
     {
         $frame = DataFrame::fromRowArray([
-            [ 'patch', '10', 'rabbit' ],
-            [ 'henry', '5', 'pidgeon' ],
-            [ 'sahra', '5', 'fox' ],
-            [ 'boxer', '7', 'dog' ],
+            [ 'patch', 10, 'rabbit' ],
+            [ 'henry', 5, 'pidgeon' ],
+            [ 'sahra', 5, 'fox' ],
+            [ 'boxer', 7, 'dog' ],
         ], ['name', 'age', 'animal']);
 
-        yield 'access row' => [
+        yield 'access column' => [
             [
                 new VariableNode('foo'),
-                new IntegerNode(0),
-                new VariableNode('name'),
+                new StringNode('age'),
             ],
             [
                 'foo' => $frame
             ],
-            new StringNode('patch')
+            PhpValueFactory::fromValue([10, 5, 5, 7])
         ];
 
         yield '5 year olds' => [
@@ -146,8 +146,8 @@ class ParameterEvaluatorTest extends EvaluatorTestCase
                     '=',
                     new IntegerNode(5)
                 ),
-                new IntegerNode(0),
                 new VariableNode('name'),
+                new IntegerNode(0),
             ],
             [
                 'foo' => $frame

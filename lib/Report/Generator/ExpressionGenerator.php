@@ -213,6 +213,8 @@ EOT
      */
     private function evaluate(DataFrames $frames, array $exprMap, array $baselineExprMap): Generator
     {
+        $allFrame = $frames->combine();
+
         foreach ($frames as $frame) {
             assert($frame instanceof DataFrame);
             $evaledRow = [];
@@ -224,7 +226,12 @@ EOT
 
             foreach ($toEvaluate as $name => $expr) {
                 try {
-                    $evaledRow[$name] = $this->evaluator->evaluate($this->parser->parse($expr), $frame->nonNullColumnValues());
+                    $evaledRow[$name] = $this->evaluator->evaluate(
+                        $this->parser->parse($expr),
+                        array_merge([
+                            'suite' => $allFrame
+                        ], $frame->nonNullColumnValues())
+                    );
                 } catch (EvaluationError $e) {
                     $evaledRow[$name] = new StringNode('ERR');
                     $this->logger->error(sprintf(

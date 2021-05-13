@@ -26,9 +26,11 @@ class PropertyAccessParselet implements PrefixParselet
             $tokens->current()->type === Token::T_OPEN_LIST
         ) {
             $dot = $tokens->chomp();
+
             if ($dot->type === Token::T_DOT) {
                 $segments[] = new VariableNode($tokens->chomp(Token::T_NAME)->value);
             }
+
             if ($dot->type === Token::T_OPEN_LIST) {
                 $segments[] = $parser->parseExpression($tokens);
                 $tokens->chomp(Token::T_CLOSE_LIST);

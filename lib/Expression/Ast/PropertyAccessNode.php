@@ -5,7 +5,7 @@ namespace PhpBench\Expression\Ast;
 class PropertyAccessNode implements Node
 {
     /**
-     * @var Node
+     * @var Node[]
      */
     private $segments;
 

@@ -24,6 +24,7 @@ class PropertyAccessParseletTest extends ParseletTestCase
                 new VariableNode('bar')
             ])
         ];
+
         yield 'field 1' => [
             'foo["bar"]',
             new PropertyAccessNode([
@@ -31,6 +32,7 @@ class PropertyAccessParseletTest extends ParseletTestCase
                 new StringNode('bar')
             ])
         ];
+
         yield 'field 2' => [
             'foo["bar"]["bar"]',
             new PropertyAccessNode([
@@ -39,6 +41,7 @@ class PropertyAccessParseletTest extends ParseletTestCase
                 new StringNode('bar'),
             ])
         ];
+
         yield 'field and property' => [
             'foo["bar"]["bar"].baz',
             new PropertyAccessNode([
@@ -48,6 +51,7 @@ class PropertyAccessParseletTest extends ParseletTestCase
                 new VariableNode('baz')
             ])
         ];
+
         yield 'expression' => [
             'foo[bar <= 10]["bar"].baz',
             new PropertyAccessNode([

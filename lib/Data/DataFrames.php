@@ -48,7 +48,7 @@ class DataFrames implements IteratorAggregate
             }
         }
 
-        return new DataFrame($rows, $columns);
+        return new DataFrame($rows, $columns ?? []);
     }
 
     public function toArray(): array

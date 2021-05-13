@@ -10,14 +10,13 @@ use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\NullNode;
-use PhpBench\Expression\Ast\PropertyAccessNode;
 use PhpBench\Expression\Ast\PhpValueFactory;
+use PhpBench\Expression\Ast\PropertyAccessNode;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Ast\VariableNode;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Expression\NodeEvaluator;
-use RuntimeException;
 
 class ParameterEvaluator implements NodeEvaluator
 {
@@ -83,9 +82,11 @@ class ParameterEvaluator implements NodeEvaluator
             if ($segment instanceof VariableNode) {
                 return $segment->name();
             }
+
             if ($segment instanceof StringNode) {
                 return $segment->value();
             }
+
             if ($segment instanceof IntegerNode) {
                 return $segment->value();
             }
@@ -94,8 +95,9 @@ class ParameterEvaluator implements NodeEvaluator
         })($segment);
 
         if ($segment instanceof Node && $container instanceof DataFrame) {
-            return $container->filter(function (Row $row) use ($evaluator, $segment, $container) {
+            return $container->filter(function (Row $row) use ($evaluator, $segment) {
                 $result = $evaluator->evaluate($segment, $row->toRecord());
+
                 if (!$result instanceof BooleanNode) {
                     return false;
                 }
