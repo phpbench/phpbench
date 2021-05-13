@@ -8,6 +8,7 @@ use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\PropertyAccessNode;
+use PhpBench\Expression\Ast\VariableNode;
 use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Tests\Unit\Expression\EvaluatorTestCase;
 
@@ -40,7 +41,7 @@ class ParameterEvaluatorTest extends EvaluatorTestCase
         };
 
         yield 'object access' => [
-            ['foo', 'bar'],
+            [new VariableNode('foo'), new VariableNode('bar')],
             [
                 'foo' => $object
             ],
@@ -48,7 +49,7 @@ class ParameterEvaluatorTest extends EvaluatorTestCase
         ];
 
         yield 'value access' => [
-            ['foo'],
+            [new VariableNode('foo')],
             [
                 'foo' => 12
             ],
@@ -56,7 +57,7 @@ class ParameterEvaluatorTest extends EvaluatorTestCase
         ];
 
         yield 'value is array' => [
-            ['foo'],
+            [new VariableNode('foo')],
             [
                 'foo' => [12, 24]
             ],
@@ -64,7 +65,7 @@ class ParameterEvaluatorTest extends EvaluatorTestCase
         ];
 
         yield 'value is array 2' => [
-            ['foo'],
+            [new VariableNode('foo')],
             [
                 'foo' => [12, 24, 37]
             ],
@@ -72,7 +73,7 @@ class ParameterEvaluatorTest extends EvaluatorTestCase
         ];
 
         yield 'array access' => [
-            ['foo', 'bar'],
+            [new VariableNode('foo'), new VariableNode('bar')],
             [
                 'foo' => [
                     'bar' => 2.1,
@@ -82,7 +83,11 @@ class ParameterEvaluatorTest extends EvaluatorTestCase
         ];
 
         yield 'nested array access' => [
-            ['foo', 'bar', 'baz'],
+            [
+                new VariableNode('foo'),
+                new VariableNode('bar'),
+                new VariableNode('baz')
+            ],
             [
                 'foo' => [
                     'bar' => [
@@ -94,7 +99,11 @@ class ParameterEvaluatorTest extends EvaluatorTestCase
         ];
 
         yield 'array access with nested object' => [
-            ['foo', 'bar', 'bar'],
+            [
+                new VariableNode('foo'),
+                new VariableNode('bar'),
+                new VariableNode('bar')
+            ],
             [
                 'foo' => [
                     'bar' => $object,
@@ -127,14 +136,14 @@ class ParameterEvaluatorTest extends EvaluatorTestCase
         };
 
         yield [
-            ['one'],
+            [new VariableNode('one')],
             [
             ],
             'Array does not have key',
         ];
 
         yield [
-            ['one', 'two'],
+            [new VariableNode('one'), new VariableNode('two')],
             [
                 'one' => [
                     'three' => 4
@@ -144,7 +153,7 @@ class ParameterEvaluatorTest extends EvaluatorTestCase
         ];
 
         yield [
-            ['one', 'two'],
+            [new VariableNode('one'), new VariableNode('two')],
             [
                 'one' => $object
             ],
@@ -152,7 +161,7 @@ class ParameterEvaluatorTest extends EvaluatorTestCase
         ];
 
         yield [
-            ['one', 'two', 'three'],
+            [new VariableNode('one'), new VariableNode('two'), new VariableNode('three')],
             [
                 'one' => [
                     'two' => 12,
