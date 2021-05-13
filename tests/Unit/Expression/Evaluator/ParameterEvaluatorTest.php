@@ -143,7 +143,7 @@ class ParameterEvaluatorTest extends EvaluatorTestCase
                 new VariableNode('foo'),
                 new ComparisonNode(
                     new PropertyAccessNode([new VariableNode('age')]),
-                    '===',
+                    '=',
                     new IntegerNode(5)
                 ),
                 new IntegerNode(0),
@@ -211,6 +211,23 @@ class ParameterEvaluatorTest extends EvaluatorTestCase
                 ],
             ],
             'Could not access',
+        ];
+
+        yield 'invalid expression' => [
+            [
+                new VariableNode('foo'),
+                new ComparisonNode(
+                    new PropertyAccessNode([new VariableNode('age')]),
+                    '=',
+                    new IntegerNode(5)
+                ),
+                new IntegerNode(0),
+                new VariableNode('name'),
+            ],
+            [
+                'foo' => []
+            ],
+            'Expression provided',
         ];
     }
 }

@@ -3,6 +3,9 @@
 namespace PhpBench\Expression\NodeEvaluator;
 
 use ArrayAccess;
+use PhpBench\Data\DataFrame;
+use PhpBench\Data\Row;
+use PhpBench\Expression\Ast\BooleanNode;
 use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\Node;
@@ -28,7 +31,7 @@ class ParameterEvaluator implements NodeEvaluator
         }
 
         assert($node instanceof PropertyAccessNode);
-        $value = self::resolvePropertyAccess($node, $node->segments(), $params);
+        $value = self::resolvePropertyAccess($evaluator, $node, $node->segments(), $params);
 
         if (is_numeric($value)) {
             return PhpValueFactory::fromValue($value);
@@ -57,16 +60,16 @@ class ParameterEvaluator implements NodeEvaluator
      * @param array<string,mixed>|object|scalar $container
      * @param array<Node> $segments
      */
-    private static function resolvePropertyAccess(Node $node, array $segments, $container)
+    private static function resolvePropertyAccess(Evaluator $evaluator, Node $node, array $segments, $container)
     {
         $segment = array_shift($segments);
-        $value = self::valueFromContainer($node, $container, $segment);
+        $value = self::valueFromContainer($evaluator, $node, $container, $segment);
 
         if (count($segments) === 0) {
             return $value;
         }
 
-        return self::resolvePropertyAccess($node, $segments, $value);
+        return self::resolvePropertyAccess($evaluator, $node, $segments, $value);
     }
 
     /**
@@ -74,7 +77,7 @@ class ParameterEvaluator implements NodeEvaluator
      *
      * @param array<string,mixed>|object|scalar $container
      */
-    private static function valueFromContainer(Node $node, $container, Node $segment)
+    private static function valueFromContainer(Evaluator $evaluator, Node $node, $container, Node $segment)
     {
         $segment = (function (Node $segment) {
             if ($segment instanceof VariableNode) {
@@ -87,21 +90,29 @@ class ParameterEvaluator implements NodeEvaluator
                 return $segment->value();
             }
 
-            throw new RuntimeException(sprintf(
-                'Do not know how to interpret property access with "%s"', get_class($segment)
-            ));
-                
+            return $segment;
         })($segment);
 
-        if (is_array($container)) {
-            if (
-                !array_key_exists($segment, $container) ||
-                (
-                    $container instanceof ArrayAccess &&
-                    !$container->offsetExists($segment)
-                )
+        if ($segment instanceof Node && $container instanceof DataFrame) {
+            return $container->filter(function (Row $row) use ($evaluator, $segment, $container) {
+                $result = $evaluator->evaluate($segment, $row->toRecord());
+                if (!$result instanceof BooleanNode) {
+                    return false;
+                }
 
-            ) {
+                return $result->value();
+            });
+        }
+
+        if ($segment instanceof Node) {
+            throw new EvaluationError($node, sprintf(
+                'Expression provided but container is not a data frame, it is "%s"',
+                gettype($container)
+            ));
+        }
+
+        if (is_array($container)) {
+            if (!array_key_exists($segment, $container)) {
                 throw new EvaluationError($node, sprintf(
                     'Array does not have key "%s", it has keys: "%s"',
                     $segment,

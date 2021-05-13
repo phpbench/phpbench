@@ -3,6 +3,7 @@
 namespace PhpBench\Data;
 
 use ArrayAccess;
+use Closure;
 use PHPUnit\Framework\MockObject\BadMethodCallException;
 use function array_map;
 use function array_reduce;
@@ -203,5 +204,12 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     public function offsetUnset($offset)
     {
         throw new BadMethodCallException('Not implemented');
+    }
+
+    public function filter(Closure $closure): self
+    {
+        return new self(array_values(array_map(function (Row $row) {
+            return $row->toSeries();
+        }, array_filter($this->rows(), $closure))), $this->columns);
     }
 }
