@@ -2,11 +2,13 @@
 
 namespace PhpBench\Data;
 
+use ArrayAccess;
 use ArrayIterator;
 use IteratorAggregate;
+use PHPUnit\Framework\MockObject\BadMethodCallException;
 use RuntimeException;
 
-final class Row implements IteratorAggregate
+final class Row implements IteratorAggregate, ArrayAccess
 {
     /**
      * @var array
@@ -53,5 +55,37 @@ final class Row implements IteratorAggregate
         return new self(array_combine($resolvedNames, array_map(function (string $column) {
             return $this->get($column);
         }, $resolvedNames)));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->map[$offset]);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function offsetGet($offset)
+    {
+        return $this->get($offset);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function offsetSet($offset, $value)
+    {
+        throw new BadMethodCallException('Not implemented');
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function offsetUnset($offset)
+    {
+        throw new BadMethodCallException('Not implemented');
     }
 }

@@ -2,6 +2,8 @@
 
 namespace PhpBench\Expression\NodeEvaluator;
 
+use ArrayAccess;
+use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\NullNode;
@@ -81,6 +83,9 @@ class ParameterEvaluator implements NodeEvaluator
             if ($segment instanceof StringNode) {
                 return $segment->value();
             }
+            if ($segment instanceof IntegerNode) {
+                return $segment->value();
+            }
 
             throw new RuntimeException(sprintf(
                 'Do not know how to interpret property access with "%s"', get_class($segment)
@@ -89,7 +94,14 @@ class ParameterEvaluator implements NodeEvaluator
         })($segment);
 
         if (is_array($container)) {
-            if (!array_key_exists($segment, $container)) {
+            if (
+                !array_key_exists($segment, $container) ||
+                (
+                    $container instanceof ArrayAccess &&
+                    !$container->offsetExists($segment)
+                )
+
+            ) {
                 throw new EvaluationError($node, sprintf(
                     'Array does not have key "%s", it has keys: "%s"',
                     $segment,
@@ -102,6 +114,10 @@ class ParameterEvaluator implements NodeEvaluator
         
         if (is_object($container) && method_exists($container, $segment)) {
             return $container->$segment();
+        }
+
+        if ($container instanceof ArrayAccess) {
+            return $container[$segment];
         }
 
         throw new EvaluationError($node, sprintf(

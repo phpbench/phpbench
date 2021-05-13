@@ -2,6 +2,9 @@
 
 namespace PhpBench\Data;
 
+use ArrayAccess;
+use PHPUnit\Framework\MockObject\BadMethodCallException;
+use function array_map;
 use function array_reduce;
 use function array_search;
 use ArrayIterator;
@@ -9,7 +12,7 @@ use IteratorAggregate;
 use PhpBench\Data\Func\Partition;
 use RuntimeException;
 
-final class DataFrame implements IteratorAggregate
+final class DataFrame implements IteratorAggregate, ArrayAccess
 {
     /**
      * @var Series[]
@@ -25,6 +28,17 @@ final class DataFrame implements IteratorAggregate
     {
         $this->serieses = $rows;
         $this->columns = array_values($columns);
+    }
+
+    /**
+     * @param Series[] $rows
+     * @param string[] $columns
+     */
+    public static function fromRowArray(array $rows, array $columns): self
+    {
+        return new self(array_map(function (array $row) {
+            return new Series($row);
+        }, $rows), $columns);
     }
 
     public static function fromRecords(array $records): self
@@ -157,5 +171,37 @@ final class DataFrame implements IteratorAggregate
                 return $value !== null;
             });
         }, $this->columnValues());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->rows[$offset]);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function offsetGet($offset)
+    {
+        return $this->row($offset);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function offsetSet($offset, $value)
+    {
+        throw new BadMethodCallException('Not implemented');
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function offsetUnset($offset)
+    {
+        throw new BadMethodCallException('Not implemented');
     }
 }
