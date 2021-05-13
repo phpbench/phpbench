@@ -214,6 +214,7 @@ EOT
     private function evaluate(DataFrame $allFrame, DataFrames $frames, array $exprMap, array $baselineExprMap): Generator
     {
         $hash = 0;
+
         foreach ($frames as $frame) {
             assert($frame instanceof DataFrame);
             $evaledRow = [];
