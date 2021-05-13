@@ -93,7 +93,6 @@ class ParameterEvaluator implements NodeEvaluator
         return $this->filterContainerByExpression($container, $evaluator, $segment, $node);
     }
 
-
     /**
      * @param int|string $segment
      *

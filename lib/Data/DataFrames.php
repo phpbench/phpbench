@@ -4,7 +4,6 @@ namespace PhpBench\Data;
 
 use ArrayIterator;
 use IteratorAggregate;
-use RuntimeException;
 
 class DataFrames implements IteratorAggregate
 {
