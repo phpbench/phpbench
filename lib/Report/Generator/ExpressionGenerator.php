@@ -159,7 +159,7 @@ EOT
 
         $frame = $this->transformer->suiteToTable($collection, $config[self::PARAM_INCLUDE_BASELINE]);
         $frames = $frame->partition($config[self::PARAM_AGGREGATE]);
-        $table = iterator_to_array($this->evaluate($frames, $expressionMap, $baselineExpressionMap));
+        $table = iterator_to_array($this->evaluate($frame, $frames, $expressionMap, $baselineExpressionMap));
         $tables = $this->partition($table, $config[self::PARAM_BREAK]);
 
         return $this->generateReports($tables, $config);
@@ -211,26 +211,31 @@ EOT
      *
      * @return Generator<array<string,mixed>>
      */
-    private function evaluate(DataFrames $frames, array $exprMap, array $baselineExprMap): Generator
+    private function evaluate(DataFrame $allFrame, DataFrames $frames, array $exprMap, array $baselineExprMap): Generator
     {
-        $allFrame = $frames->combine();
-
+        $hash = 0;
         foreach ($frames as $frame) {
             assert($frame instanceof DataFrame);
             $evaledRow = [];
 
-            $toEvaluate = $frame->row(0)->get(SuiteCollectionTransformer::COL_HAS_BASELINE) ? array_merge(
+            $exprMap = $frame->row(0)->get(SuiteCollectionTransformer::COL_HAS_BASELINE) ? array_merge(
                 $exprMap,
                 $baselineExprMap
             ) : $exprMap;
 
-            foreach ($toEvaluate as $name => $expr) {
+            $columnValues = array_merge(
+                [
+                    '_hash' => $hash++,
+                    'suite' => $allFrame
+                ],
+                $frame->nonNullColumnValues()
+            );
+
+            foreach ($exprMap as $name => $expr) {
                 try {
                     $evaledRow[$name] = $this->evaluator->evaluate(
                         $this->parser->parse($expr),
-                        array_merge([
-                            'suite' => $allFrame
-                        ], $frame->nonNullColumnValues())
+                        $columnValues
                     );
                 } catch (EvaluationError $e) {
                     $evaledRow[$name] = new StringNode('ERR');

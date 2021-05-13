@@ -2,9 +2,11 @@
 
 namespace PhpBench\Expression\NodeEvaluator;
 
+use PhpBench\Data\DataFrame;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\NodeEvaluator;
+use function spl_object_id;
 
 class MemoisedNodeEvaluator implements NodeEvaluator
 {
@@ -31,7 +33,7 @@ class MemoisedNodeEvaluator implements NodeEvaluator
     public function evaluate(Evaluator $evaluator, Node $node, array $params): ?Node
     {
         try {
-            $hash = serialize($node) . serialize($params);
+            $hash = serialize($node).($params['_hash']??serialize($params));
         } catch (\Exception $exception) {
             return $this->innerEvaluator->evaluate($evaluator, $node, $params);
         }
