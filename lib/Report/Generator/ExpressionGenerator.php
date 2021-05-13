@@ -226,7 +226,6 @@ EOT
 
             $columnValues = array_merge(
                 [
-                    '_hash' => $hash++,
                     'suite' => $allFrame
                 ],
                 $frame->nonNullColumnValues()

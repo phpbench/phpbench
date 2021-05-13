@@ -44,7 +44,6 @@ use PhpBench\Expression\NodeEvaluator\DisplayAsEvaluator;
 use PhpBench\Expression\NodeEvaluator\FunctionEvaluator;
 use PhpBench\Expression\NodeEvaluator\ListEvaluator;
 use PhpBench\Expression\NodeEvaluator\LogicalOperatorEvaluator;
-use PhpBench\Expression\NodeEvaluator\MemoisedNodeEvaluator;
 use PhpBench\Expression\NodeEvaluator\ParameterEvaluator;
 use PhpBench\Expression\NodeEvaluator\ParenthesisEvaluator;
 use PhpBench\Expression\NodeEvaluator\PhpValueEvaluator;
@@ -199,7 +198,7 @@ class ExpressionExtension implements ExtensionInterface
 
         $container->register(Evaluator::class, function (Container $container) {
             return new PrettyErrorEvaluator(
-                new MainEvaluator(new MemoisedNodeEvaluator($container->get(NodeEvaluator::class))),
+                new MainEvaluator($container->get(NodeEvaluator::class)),
                 $container->get(self::SERVICE_PLAIN_PRINTER),
                 new UnderlinePrinterFactory($container->get(NodePrinters::class))
             );

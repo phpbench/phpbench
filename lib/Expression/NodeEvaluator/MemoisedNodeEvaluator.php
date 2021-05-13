@@ -31,11 +31,7 @@ class MemoisedNodeEvaluator implements NodeEvaluator
     public function evaluate(Evaluator $evaluator, Node $node, array $params): ?Node
     {
         try {
-            // TODO: We pass the entire report data frame now - and serializing
-            //       becomes very expensive (assume) Need to provide another way to
-            //       either - avoid serializing the data frame, or avoid serialize at
-            //       all.
-            $hash = serialize($node).($params['_hash'] ?? serialize($params));
+            $hash = serialize($node) . serialize($params);
         } catch (\Exception $exception) {
             return $this->innerEvaluator->evaluate($evaluator, $node, $params);
         }
