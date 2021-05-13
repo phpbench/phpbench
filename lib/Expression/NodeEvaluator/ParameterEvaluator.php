@@ -30,7 +30,7 @@ class ParameterEvaluator implements NodeEvaluator
         }
 
         assert($node instanceof PropertyAccessNode);
-        $value = self::resolvePropertyAccess($evaluator, $node, $node->segments(), $params);
+        $value = $this->resolvePropertyAccess($evaluator, $node, $node->segments(), $params);
 
         if (is_numeric($value)) {
             return PhpValueFactory::fromValue($value);
@@ -59,16 +59,16 @@ class ParameterEvaluator implements NodeEvaluator
      * @param array<string,mixed>|object|scalar $container
      * @param array<Node> $segments
      */
-    private static function resolvePropertyAccess(Evaluator $evaluator, Node $node, array $segments, $container)
+    private function resolvePropertyAccess(Evaluator $evaluator, Node $node, array $segments, $container)
     {
         $segment = array_shift($segments);
-        $value = self::valueFromContainer($evaluator, $node, $container, $segment);
+        $value = $this->valueFromContainer($evaluator, $node, $container, $segment);
 
         if (count($segments) === 0) {
             return $value;
         }
 
-        return self::resolvePropertyAccess($evaluator, $node, $segments, $value);
+        return $this->resolvePropertyAccess($evaluator, $node, $segments, $value);
     }
 
     /**
@@ -76,61 +76,41 @@ class ParameterEvaluator implements NodeEvaluator
      *
      * @param array<string,mixed>|object|scalar $container
      */
-    private static function valueFromContainer(Evaluator $evaluator, Node $node, $container, Node $segment)
+    private function valueFromContainer(Evaluator $evaluator, Node $node, $container, Node $segment)
     {
-        $segment = (function (Node $segment) {
-            if ($segment instanceof VariableNode) {
-                return $segment->name();
-            }
-
-            if ($segment instanceof StringNode) {
-                return $segment->value();
-            }
-
-            if ($segment instanceof IntegerNode) {
-                return $segment->value();
-            }
-
-            return $segment;
-        })($segment);
-
-        if ($segment instanceof Node && $container instanceof DataFrame) {
-            return $container->filter(function (Row $row) use ($evaluator, $segment) {
-                $result = $evaluator->evaluate($segment, $row->toRecord());
-
-                if (!$result instanceof BooleanNode) {
-                    return false;
-                }
-
-                return $result->value();
-            });
+        if ($segment instanceof VariableNode) {
+            return $this->containerValue($node, $container, $segment->name());
         }
 
-        if ($segment instanceof Node) {
-            throw new EvaluationError($node, sprintf(
-                'Expression provided but container is not a data frame, it is "%s"',
-                gettype($container)
-            ));
+        if ($segment instanceof StringNode) {
+            return $this->containerValue($node, $container, $segment->value());
         }
 
+        if ($segment instanceof IntegerNode) {
+            return $this->containerValue($node, $container, $segment->value());
+        }
+
+        return $this->filterContainerByExpression($container, $evaluator, $segment, $node);
+    }
+
+
+    /**
+     * @param int|string $segment
+     *
+     * @return mixed
+     */
+    private function containerValue(Node $node, $container, $segment)
+    {
         if (is_array($container)) {
-            if (!array_key_exists($segment, $container)) {
-                throw new EvaluationError($node, sprintf(
-                    'Array does not have key "%s", it has keys: "%s"',
-                    $segment,
-                    implode('", "', array_keys($container))
-                ));
-            }
-
-            return $container[$segment];
+            return $this->valueFromArray($segment, $container, $node);
         }
-        
+
         if (is_object($container) && method_exists($container, $segment)) {
-            return $container->$segment();
+            return $this->valueFromMethod($container, $segment);
         }
 
         if ($container instanceof ArrayAccess) {
-            return $container[$segment];
+            return $this->valueFromArrayAccess($container, $segment, $node);
         }
 
         throw new EvaluationError($node, sprintf(
@@ -138,5 +118,58 @@ class ParameterEvaluator implements NodeEvaluator
             $segment,
             is_object($container) ? get_class($container) : gettype($container)
         ));
+    }
+
+    private function filterContainerByExpression($container, Evaluator $evaluator, Node $segment, Node $node): DataFrame
+    {
+        if (!$container instanceof DataFrame) {
+            throw new EvaluationError($node, sprintf(
+                'Expression provided but container is not a data frame, it is "%s"',
+                gettype($container)
+            ));
+        }
+
+        return $container->filter(function (Row $row) use ($evaluator, $segment) {
+            $result = $evaluator->evaluate($segment, $row->toRecord());
+
+            if (!$result instanceof BooleanNode) {
+                return false;
+            }
+
+            return $result->value();
+        });
+    }
+
+    private function valueFromArray($segment, array $container, Node $node)
+    {
+        if (!array_key_exists($segment, $container)) {
+            throw new EvaluationError($node, sprintf(
+                'Array does not have key "%s", it has keys: "%s"',
+                $segment,
+                implode('", "', array_keys($container))
+            ));
+        }
+
+        return $container[$segment];
+    }
+
+    private function valueFromMethod(object $container, $segment)
+    {
+        return $container->$segment();
+    }
+
+    /**
+     * @return mixed
+     */
+    private function valueFromArrayAccess(ArrayAccess $container, $segment, Node $node)
+    {
+        if (!$container->offsetExists($segment)) {
+            throw new EvaluationError($node, sprintf(
+                'Array-access object does not have key "%s"',
+                $segment
+            ));
+        }
+
+        return $container[$segment];
     }
 }
