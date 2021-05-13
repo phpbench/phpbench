@@ -3,7 +3,7 @@
 namespace PhpBench\Tests\Unit\Expression;
 
 use PhpBench\Expression\Ast\IntegerNode;
-use PhpBench\Expression\Ast\ParameterNode;
+use PhpBench\Expression\Ast\PropertyAccessNode;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\NodeEvaluator;
 use PhpBench\Expression\NodeEvaluators;
@@ -32,7 +32,7 @@ class NodeEvaluatorsTest extends IntegrationTestCase
     {
         self::assertEquals(new IntegerNode(1), $this->evaluators->evaluate(
             $this->evaluator,
-            new ParameterNode(['one']),
+            new PropertyAccessNode(['one']),
             [
                 'one' => 1,
             ]

@@ -7,7 +7,7 @@ use PhpBench\Expression\Ast\FloatNode;
 use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Ast\ParameterNode;
+use PhpBench\Expression\Ast\PropertyAccessNode;
 use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Tests\Unit\Expression\EvaluatorTestCase;
 
@@ -22,7 +22,7 @@ class ParameterEvaluatorTest extends EvaluatorTestCase
     public function testPropertyAccess(array $segments, array $params, Node $expected): void
     {
         self::assertEquals($expected, $this->evaluateNode(
-            new ParameterNode($segments),
+            new PropertyAccessNode($segments),
             $params
         ));
     }
@@ -111,7 +111,7 @@ class ParameterEvaluatorTest extends EvaluatorTestCase
     {
         $this->expectException(EvaluationError::class);
         $this->expectExceptionMessage($expectedMessage);
-        $this->evaluateNode(new ParameterNode($segments), $params);
+        $this->evaluateNode(new PropertyAccessNode($segments), $params);
     }
     
     /**

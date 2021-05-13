@@ -9,7 +9,7 @@ use PhpBench\Expression\Ast\FloatNode;
 use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\NullNode;
-use PhpBench\Expression\Ast\ParameterNode;
+use PhpBench\Expression\Ast\PropertyAccessNode;
 use PhpBench\Expression\Ast\PercentDifferenceNode;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Ast\UnitNode;
@@ -43,7 +43,7 @@ class OutputTestGenerator implements GeneratorInterface
                             'float' => new FloatNode(12.2),
                             'bool' => new ListNode([new BooleanNode(true), new BooleanNode(false)]),
                             'null' => new NullNode(),
-                            'parameter' => new ParameterNode(['foo', 'bar']),
+                            'parameter' => new PropertyAccessNode(['foo', 'bar']),
                         ]
                 ], 'Values'),
                 Table::fromRowArray([

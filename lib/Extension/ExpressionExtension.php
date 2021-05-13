@@ -9,7 +9,7 @@ use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Expression\Ast\ArithmeticOperatorNode;
 use PhpBench\Expression\Ast\DisplayAsNode;
 use PhpBench\Expression\Ast\FunctionNode;
-use PhpBench\Expression\Ast\ParameterNode;
+use PhpBench\Expression\Ast\PropertyAccessNode;
 use PhpBench\Expression\Ast\ParenthesisNode;
 use PhpBench\Expression\Ast\TolerableNode;
 use PhpBench\Expression\ColorMap;
@@ -75,6 +75,7 @@ use PhpBench\Expression\NodePrinter\TolerablePrinter;
 use PhpBench\Expression\NodePrinter\UnitPrinter;
 use PhpBench\Expression\NodePrinter\UnrepresentableValuePrinter;
 use PhpBench\Expression\NodePrinter\ValueWithUnitPrinter;
+use PhpBench\Expression\NodePrinter\VariablePrinter;
 use PhpBench\Expression\NodePrinters;
 use PhpBench\Expression\Parselet\ArithmeticOperatorParselet;
 use PhpBench\Expression\Parselet\BooleanParselet;
@@ -87,7 +88,7 @@ use PhpBench\Expression\Parselet\IntegerParselet;
 use PhpBench\Expression\Parselet\ListParselet;
 use PhpBench\Expression\Parselet\LogicalOperatorParselet;
 use PhpBench\Expression\Parselet\NullParselet;
-use PhpBench\Expression\Parselet\ParameterParselet;
+use PhpBench\Expression\Parselet\PropertyAccessParselet;
 use PhpBench\Expression\Parselet\ParenthesisParselet;
 use PhpBench\Expression\Parselet\PercentageParselet;
 use PhpBench\Expression\Parselet\StringParselet;
@@ -149,7 +150,7 @@ class ExpressionExtension implements ExtensionInterface
                     new ParenthesisParselet(),
                     new BooleanParselet(),
                     new StringParselet(),
-                    new ParameterParselet(),
+                    new PropertyAccessParselet(),
                     new NullParselet(),
                 ]),
                 Parselets::fromInfixParselets([
@@ -279,6 +280,7 @@ class ExpressionExtension implements ExtensionInterface
                 new PercentageDifferencePrinter(),
                 new NullPrinter(),
                 new UnrepresentableValuePrinter(),
+                new VariablePrinter(),
             ]);
         });
 
@@ -303,7 +305,7 @@ class ExpressionExtension implements ExtensionInterface
                     ArithmeticOperatorNode::class,
                     ParenthesisNode::class,
                     DisplayAsNode::class,
-                    ParameterNode::class,
+                    PropertyAccessNode::class,
                 ]
             );
         });
