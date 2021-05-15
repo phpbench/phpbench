@@ -224,6 +224,9 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
         throw new BadMethodCallException('Not implemented');
     }
 
+    /**
+     * @param Closure(Row):bool $closure
+     */
     public function filter(Closure $closure): self
     {
         return new self(array_values(array_map(function (Row $row) {

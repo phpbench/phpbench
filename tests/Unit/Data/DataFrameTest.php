@@ -150,4 +150,40 @@ class DataFrameTest extends TestCase
             'two' => 4,
         ]), $row);
     }
+
+    public function testArrayAccess(): void
+    {
+        $records = [
+            [
+                'one' => 1,
+                'two' => 4,
+            ],
+            [
+                'one' => 3,
+                'two' => 4,
+            ],
+        ];
+
+        self::assertEquals([1,3], DataFrame::fromRecords($records)['one']);
+        self::assertTrue(isset(DataFrame::fromRecords($records)['one']));
+        self::assertFalse(isset(DataFrame::fromRecords($records)['seven']));
+    }
+
+    public function testFilter(): void
+    {
+        $records = [
+            [
+                'one' => 1,
+                'two' => 4,
+            ],
+            [
+                'one' => 3,
+                'two' => 4,
+            ],
+        ];
+
+        self::assertEquals([1, 4], DataFrame::fromRecords($records)->filter(function (Row $row) {
+            return $row['one'] === 1;
+        })->toValues());
+    }
 }
