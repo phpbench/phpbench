@@ -18,39 +18,42 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     /**
      * @var Series[]
      */
-    private $series;
+    private $rows;
 
     /**
      * @var array
      */
     private $columns;
 
-    public function __construct(array $series, array $columns)
+    public function __construct(array $rows, array $columns)
     {
-        $this->series = array_map(function (Series $series, int $index) use ($columns) {
-            if (count($series) !== count($columns)) {
+        $this->rows = array_map(function (Series $rows, int $index) use ($columns) {
+            if (count($rows) !== count($columns)) {
                 throw new RuntimeException(sprintf(
                     'Row %s has only %s value(s), but %s column names given',
-                    $index, count($series), count($columns)
+                    $index, count($rows), count($columns)
                 ));
             }
 
-            return $series;
-        }, $series, array_keys($series));
+            return $rows;
+        }, $rows, array_keys($rows));
         $this->columns = array_values($columns);
     }
 
     /**
-     * @param Series[] $rows
+     * @param array<int, array<string,mixed>> $rows
      * @param string[] $columns
      */
-    public static function fromRowArray(array $rows, array $columns): self
+    public static function fromRowArrays(array $rows, array $columns): self
     {
         return new self(array_map(function (array $row) {
             return new Series($row);
         }, $rows), $columns);
     }
 
+    /**
+     * @param array<int, array<string,mixed>> $records
+     */
     public static function fromRecords(array $records): self
     {
         $rows = [];
@@ -75,11 +78,14 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
         return new self($rows, $columns ?? []);
     }
 
+    /**
+     * @return array<int, array<string,mixed>>
+     */
     public function toRecords(): array
     {
         return array_map(function (Series $series) {
             return array_combine($this->columns, $series->toValues());
-        }, $this->series);
+        }, $this->rows);
     }
 
     /**
@@ -98,7 +104,7 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
 
         return new Series(array_map(function (Series $series) use ($offset) {
             return $series->value($offset);
-        }, $this->series));
+        }, $this->rows));
     }
 
     /**
@@ -106,14 +112,14 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
      */
     public function row($index): Row
     {
-        if (!isset($this->series[$index])) {
+        if (!isset($this->rows[$index])) {
             throw new RuntimeException(sprintf(
                 'Could not find row "%s" in data frame with %s row(s)',
-                $index, count($this->series)
+                $index, count($this->rows)
             ));
         }
 
-        return new Row(array_combine($this->columns, $this->series[$index]->toValues()));
+        return new Row(array_combine($this->columns, $this->rows[$index]->toValues()));
     }
 
     /**
@@ -123,22 +129,25 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     {
         return array_map(function (Series $series) {
             return new Row(array_combine($this->columns, $series->toValues()));
-        }, $this->series);
+        }, $this->rows);
     }
 
+    /**
+     * @return mixed[]
+     */
     public function toValues(): array
     {
-        return array_reduce($this->series, function (array $carry, Series $series) {
+        return array_reduce($this->rows, function (array $carry, Series $series) {
             return array_merge($carry, $series->toValues());
         }, []);
     }
 
     /**
-     * @return ArrayIterator<Series>
+     * @return ArrayIterator<Row>
      */
     public function getIterator()
     {
-        return new ArrayIterator($this->series);
+        return new ArrayIterator($this->rows());
     }
 
     /**
@@ -162,7 +171,7 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
         $values = array_combine($this->columns, array_fill(0, count($this->columns), []));
 
         foreach ($this->columns as $index => $name) {
-            foreach ($this->series as $series) {
+            foreach ($this->rows as $series) {
                 $value = $series->value($index);
                 $values[$name][] = $value;
             }

@@ -88,9 +88,9 @@ final class SuiteCollectionTransformer
 
 
     /**
-     * @param array<string,array<string,mixed>> $table
+     * @param array<int,array<string,mixed>> $table
      *
-     * @return array<string,array<string,mixed>>
+     * @return array<int,array<string,mixed>>
      */
     private function normalize(array $table): array
     {

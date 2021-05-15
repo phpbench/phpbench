@@ -120,7 +120,7 @@ class ParameterEvaluatorTest extends EvaluatorTestCase
 
     public function provideDataFrame(): Generator
     {
-        $frame = DataFrame::fromRowArray([
+        $frame = DataFrame::fromRowArrays([
             [ 'patch', 10, 'rabbit' ],
             [ 'henry', 5, 'pidgeon' ],
             [ 'sahra', 5, 'fox' ],

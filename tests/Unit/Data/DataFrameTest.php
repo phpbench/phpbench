@@ -2,6 +2,7 @@
 
 namespace PhpBench\Tests\Unit\Data;
 
+use function iterator_to_array;
 use PhpBench\Data\DataFrame;
 use PhpBench\Data\Row;
 use PHPUnit\Framework\TestCase;
@@ -103,7 +104,7 @@ class DataFrameTest extends TestCase
                 'one' => 1,
             ],
         ];
-        self::assertEquals([1, 3], DataFrame::fromRowArray(
+        self::assertEquals([1, 3], DataFrame::fromRowArrays(
             $records,
             ['one', 'two'],
         )->row(5)->toValues());
@@ -125,5 +126,28 @@ class DataFrameTest extends TestCase
         self::assertEquals(array_map(function (array $record) {
             return new Row($record);
         }, $records), DataFrame::fromRecords($records)->rows());
+    }
+
+    public function testIteratesRows(): void
+    {
+        $records = [
+            [
+                'one' => 1,
+                'two' => 4,
+            ],
+            [
+                'one' => 3,
+                'two' => 4,
+            ],
+        ];
+
+        $rows = iterator_to_array(DataFrame::fromRecords($records));
+        $row = $rows[0];
+
+        self::assertNotNull($row);
+        self::assertEquals(new Row([
+            'one' => 1,
+            'two' => 4,
+        ]), $row);
     }
 }

@@ -2,9 +2,8 @@
 
 namespace PhpBench\Tests\Benchmark\Data;
 
-use PhpBench\Data\DataFrame;
 use function array_fill;
-
+use PhpBench\Data\DataFrame;
 
 /**
  * @BeforeMethods("setUp")
@@ -29,6 +28,6 @@ class DataFrameBench
 
     public function benchCreate(): void
     {
-        DataFrame::fromRowArray($this->series, $this->columns);
+        DataFrame::fromRowArrays($this->series, $this->columns);
     }
 }
