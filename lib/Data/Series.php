@@ -23,7 +23,7 @@ final class Series implements Countable
     }
 
     /**
-     * @return mixed
+     * @return scalarOrNull
      */
     public function value(int $index)
     {

@@ -5,7 +5,7 @@ namespace PhpBench\Data;
 use ArrayIterator;
 use IteratorAggregate;
 
-class DataFrames implements IteratorAggregate
+final class DataFrames implements IteratorAggregate
 {
     /**
      * @var DataFrame[]

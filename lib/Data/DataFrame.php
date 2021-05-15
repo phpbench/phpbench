@@ -133,7 +133,7 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @return mixed[]
+     * @return scalarOrNull[]
      */
     public function toValues(): array
     {
@@ -164,7 +164,7 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @return array<string, array<mixed>>
+     * @return array<string, array<scalarOrNull>>
      */
     public function columnValues(): array
     {

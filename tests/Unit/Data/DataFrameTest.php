@@ -106,7 +106,7 @@ class DataFrameTest extends TestCase
         ];
         self::assertEquals([1, 3], DataFrame::fromRowArrays(
             $records,
-            ['one', 'two'],
+            ['one', 'two']
         )->row(5)->toValues());
     }
 

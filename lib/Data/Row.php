@@ -20,6 +20,9 @@ final class Row implements IteratorAggregate, ArrayAccess
         $this->map = $map;
     }
 
+    /**
+     * @return scalarOrNull
+     */
     public function get(string $column)
     {
         if (!array_key_exists($column, $this->map)) {
