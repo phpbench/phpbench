@@ -16,7 +16,7 @@ use PhpBench\Expression\Ast\VariableNode;
 use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Tests\Unit\Expression\EvaluatorTestCase;
 
-class ParameterAccessEvaluatorTest extends EvaluatorTestCase
+class ParameterEvaluatorTest extends EvaluatorTestCase
 {
     /**
      * @dataProvider provideDataFrame
