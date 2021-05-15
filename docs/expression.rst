@@ -9,6 +9,13 @@ PHPBench has a general purpose expression language which is used when writing as
     :depth: 3
     :local:
 
+Filtering
+---------
+
+PHPBench supports filtering data frames:
+
+.. literalinclude:: ../examples/Expression/filter_1
+
 .. _expr_comparators:
 
 Comparators

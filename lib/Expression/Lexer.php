@@ -14,7 +14,7 @@ final class Lexer
      */
     private $unitNames;
 
-    private const PATTERN_NAME = '(?:[a-z_\/]+)';
+    private const PATTERN_NAME = '(?:[a-z_\/]{1}[a-z0-9_\/]*)';
     private const PATTERN_FUNCTION = '(?:[a-z_\/]+\()';
     private const PATTERN_STRING = '"(?:[^"]|"")*"';
     private const PATTERN_NUMBER = '(?:[0-9]+(?:[\\.][0-9]+)*)(?:e[+-]?[0-9]+)?';
