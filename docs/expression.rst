@@ -12,7 +12,8 @@ PHPBench has a general purpose expression language which is used when writing as
 Filtering
 ---------
 
-PHPBench supports filtering data frames:
+Enter an expression within square brackets to filter the dataset on a data
+frame:
 
 .. literalinclude:: ../examples/Expression/filter_1
 
