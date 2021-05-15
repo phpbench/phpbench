@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+master
+------
+
+Features:
+
+- Allow multiple benchmark paths to be specified from CLI #834
+
 1.0.1 (2021-05-11)
 ------------------
 

@@ -83,7 +83,7 @@ class RunnerHandler
 
     public static function configure(Command $command): void
     {
-        $command->addArgument(self::ARG_PATH, InputArgument::OPTIONAL, 'Path to benchmark(s)');
+        $command->addArgument(self::ARG_PATH, InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 'Path to benchmark(s)');
         $command->addOption(self::OPT_FILTER, [], InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Ignore all benchmarks not matching command filter (can be a regex)');
         $command->addOption(self::OPT_GROUP, [], InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Group to run (can be specified multiple times)');
         $command->addOption(self::OPT_PARAMETERS, null, InputOption::VALUE_REQUIRED, 'Override parameters to use in (all) benchmarks');

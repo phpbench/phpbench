@@ -78,6 +78,14 @@ class RunTest extends SystemTestCase
         $this->assertStringContainsString('You must either specify', $process->getErrorOutput());
     }
 
+    public function testCommandWithMultiplePaths(): void
+    {
+        $process = $this->phpbench('run benchmarks/set4/NothingBench.php benchmarks/set1/BenchmarkBench.php');
+        $this->assertExitCode(0, $process);
+        $this->assertStringContainsString('benchNothing', $process->getErrorOutput());
+        $this->assertStringContainsString('benchRandom', $process->getErrorOutput());
+    }
+
     /**
      * It should run and generate a report configuration.
      */
@@ -600,7 +608,7 @@ class RunTest extends SystemTestCase
         $this->assertFileExists($this->workspace()->path('remote/remote.template'));
     }
 
-    public function testSpecifyMultiplePaths(): void
+    public function testSpecifyuultiplePaths(): void
     {
         $this->workspace()->put('phpbench.json', (string)json_encode([
             RunnerExtension::PARAM_PATH => [
