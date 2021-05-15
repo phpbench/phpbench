@@ -33,7 +33,7 @@ class DataFrameBench
      */
     public function benchCreateFromRowArrays(): void
     {
-        DataFrame::fromRowArrays($this->series, $this->columns);
+        DataFrame::fromRowSeries($this->series, $this->columns);
     }
 
     public function setUpRecords(): void

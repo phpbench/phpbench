@@ -18,7 +18,7 @@ use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Expression\NodeEvaluator;
 
-class ParameterEvaluator implements NodeEvaluator
+class PropertyAccessEvaluator implements NodeEvaluator
 {
     /**
         * @param parameters $params

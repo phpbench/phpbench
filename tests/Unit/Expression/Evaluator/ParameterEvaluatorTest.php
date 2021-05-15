@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Tests\Unit\Expression\NodeEvaluator;
+namespace PhpBench\Tests\Unit\Expression\Evaluator;
 
 use Generator;
 use PhpBench\Data\DataFrame;
@@ -153,37 +153,6 @@ class ParameterEvaluatorTest extends EvaluatorTestCase
                 'foo' => $frame
             ],
             new StringNode('henry')
-        ];
-
-        yield 'access dataframe' => [
-            [
-                new VariableNode('foo'),
-            ],
-            [
-                'foo' => $frame
-            ],
-            new ListNode([
-                new ListNode([
-                    new StringNode('patch'),
-                    new IntegerNode(10),
-                    new StringNode('rabbit')
-                ]),
-                new ListNode([
-                    new StringNode('henry'),
-                    new IntegerNode(5),
-                    new StringNode('pidgeon')
-                ]),
-                new ListNode([
-                    new StringNode('sahra'),
-                    new IntegerNode(5),
-                    new StringNode('fox')
-                ]),
-                new ListNode([
-                    new StringNode('boxer'),
-                    new IntegerNode(7),
-                    new StringNode('dog')
-                ]),
-            ])
         ];
     }
 

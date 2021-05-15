@@ -44,7 +44,7 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
      * @param array<int, array<string,mixed>> $rows
      * @param string[] $columns
      */
-    public static function fromRowArrays(array $rows, array $columns): self
+    public static function fromRowSeries(array $rows, array $columns): self
     {
         return new self(array_map(function (array $row) {
             return new Series($row);
