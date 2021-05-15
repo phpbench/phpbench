@@ -130,7 +130,7 @@ entire result set via. the ``suite`` variable.
 The :ref:`Aggregated <generator_expression_aggregate>` data is provided as an array
 of column names to values:
 
-.. code-block::
+.. code-block:: text
 
     {
         // ...
