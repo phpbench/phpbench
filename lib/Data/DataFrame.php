@@ -181,7 +181,7 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @return array<string, array<mixed>>
+     * @return array<string, scalar[]>
      */
     public function nonNullColumnValues(): array
     {

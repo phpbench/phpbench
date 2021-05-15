@@ -9,6 +9,7 @@ parameters:
     typeAliases:
         parameters: 'array<string,mixed>'
         scalarOrNull: 'int|float|string|bool|null'
+        scalar: 'int|float|string|bool'
 
 includes:
     - phpstan-baseline.neon
