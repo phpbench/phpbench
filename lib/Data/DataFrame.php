@@ -18,16 +18,16 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     /**
      * @var Series[]
      */
-    private $serieses;
+    private $series;
 
     /**
      * @var array
      */
     private $columns;
 
-    public function __construct(array $rows, array $columns)
+    public function __construct(array $series, array $columns)
     {
-        $this->serieses = $rows;
+        $this->series = $series;
         $this->columns = array_values($columns);
     }
 
@@ -70,7 +70,7 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     {
         return array_map(function (Series $series) {
             return array_combine($this->columns, $series->toValues());
-        }, $this->serieses);
+        }, $this->series);
     }
 
     /**
@@ -89,7 +89,7 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
 
         return new Series(array_map(function (Series $series) use ($offset) {
             return $series->value($offset);
-        }, $this->serieses));
+        }, $this->series));
     }
 
     /**
@@ -97,14 +97,14 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
      */
     public function row($index): Row
     {
-        if (!isset($this->serieses[$index])) {
+        if (!isset($this->series[$index])) {
             throw new RuntimeException(sprintf(
                 'Could not find row "%s" in data frame with %s row(s)',
-                $index, count($this->serieses)
+                $index, count($this->series)
             ));
         }
 
-        return new Row(array_combine($this->columns, $this->serieses[$index]->toValues()));
+        return new Row(array_combine($this->columns, $this->series[$index]->toValues()));
     }
 
     /**
@@ -114,12 +114,12 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     {
         return array_map(function (Series $series) {
             return new Row(array_combine($this->columns, $series->toValues()));
-        }, $this->serieses);
+        }, $this->series);
     }
 
     public function toValues(): array
     {
-        return array_reduce($this->serieses, function (array $carry, Series $series) {
+        return array_reduce($this->series, function (array $carry, Series $series) {
             return array_merge($carry, $series->toValues());
         }, []);
     }
@@ -129,7 +129,7 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
      */
     public function getIterator()
     {
-        return new ArrayIterator($this->serieses);
+        return new ArrayIterator($this->series);
     }
 
     /**
@@ -153,8 +153,8 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
         $values = array_combine($this->columns, array_fill(0, count($this->columns), []));
 
         foreach ($this->columns as $index => $name) {
-            foreach ($this->serieses as $row) {
-                $value = $row->value($index);
+            foreach ($this->series as $series) {
+                $value = $series->value($index);
                 $values[$name][] = $value;
             }
         }
