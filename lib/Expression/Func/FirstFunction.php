@@ -4,7 +4,7 @@ namespace PhpBench\Expression\Func;
 
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Exception\EvaluationError;
+use PhpBench\Expression\Ast\NullNode;
 
 final class FirstFunction
 {
@@ -14,7 +14,7 @@ final class FirstFunction
         $first = reset($values);
 
         if (!$first) {
-            throw new EvaluationError($list, 'List is empty, cannot get first');
+            return new NullNode();
         }
 
         return $first;

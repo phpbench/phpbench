@@ -2,7 +2,6 @@
 
 namespace PhpBench\Tests\Unit\Expression\Func;
 
-use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Expression\Func\FirstFunction;
 use PhpBench\Tests\Unit\Expression\FunctionTestCase;
 
@@ -16,10 +15,8 @@ class FirstFunctionTest extends FunctionTestCase
         )->value());
     }
 
-    public function testFirstEmpty(): void
+    public function testReturnsEmptyIfFirstIsNull(): void
     {
-        $this->expectException(EvaluationError::class);
-
-        $this->eval(new FirstFunction(), '[]')->value();
+        self::assertEquals(null, $this->eval(new FirstFunction(), '[]')->value());
     }
 }
