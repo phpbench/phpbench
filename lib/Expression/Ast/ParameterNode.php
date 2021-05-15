@@ -2,7 +2,7 @@
 
 namespace PhpBench\Expression\Ast;
 
-class PropertyAccessNode implements Node
+class ParameterNode implements Node
 {
     /**
      * @var Node[]

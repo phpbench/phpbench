@@ -10,9 +10,9 @@ use PhpBench\Expression\Ast\DisplayAsNode;
 use PhpBench\Expression\Ast\FunctionNode;
 use PhpBench\Expression\Ast\LabelNode;
 use PhpBench\Expression\Ast\Node;
+use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\ParenthesisNode;
 use PhpBench\Expression\Ast\PercentDifferenceNode;
-use PhpBench\Expression\Ast\PropertyAccessNode;
 use PhpBench\Expression\Ast\RelativeDeviationNode;
 use PhpBench\Expression\Ast\ToleratedTrue;
 use PhpBench\Expression\Ast\UnitNode;
@@ -120,7 +120,7 @@ class SolarizedTheme implements ColorMap
                 )->toHex();
             },
             DisplayAsNode::class => 'fg=default',
-            PropertyAccessNode::class => 'fg='  .self::ORANGE,
+            ParameterNode::class => 'fg='  .self::ORANGE,
             BooleanNode::class => function (Node $node): string {
                 assert($node instanceof BooleanNode);
 

@@ -9,8 +9,8 @@ use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Expression\Ast\ArithmeticOperatorNode;
 use PhpBench\Expression\Ast\DisplayAsNode;
 use PhpBench\Expression\Ast\FunctionNode;
+use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\ParenthesisNode;
-use PhpBench\Expression\Ast\PropertyAccessNode;
 use PhpBench\Expression\Ast\TolerableNode;
 use PhpBench\Expression\ColorMap;
 use PhpBench\Expression\Evaluator;
@@ -44,7 +44,7 @@ use PhpBench\Expression\NodeEvaluator\DisplayAsEvaluator;
 use PhpBench\Expression\NodeEvaluator\FunctionEvaluator;
 use PhpBench\Expression\NodeEvaluator\ListEvaluator;
 use PhpBench\Expression\NodeEvaluator\LogicalOperatorEvaluator;
-use PhpBench\Expression\NodeEvaluator\PropertyAccessEvaluator;
+use PhpBench\Expression\NodeEvaluator\ParameterAccessEvaluator;
 use PhpBench\Expression\NodeEvaluator\ParenthesisEvaluator;
 use PhpBench\Expression\NodeEvaluator\PhpValueEvaluator;
 use PhpBench\Expression\NodeEvaluator\TolerableEvaluator;
@@ -87,9 +87,9 @@ use PhpBench\Expression\Parselet\IntegerParselet;
 use PhpBench\Expression\Parselet\ListParselet;
 use PhpBench\Expression\Parselet\LogicalOperatorParselet;
 use PhpBench\Expression\Parselet\NullParselet;
+use PhpBench\Expression\Parselet\ParameterParselet;
 use PhpBench\Expression\Parselet\ParenthesisParselet;
 use PhpBench\Expression\Parselet\PercentageParselet;
-use PhpBench\Expression\Parselet\PropertyAccessParselet;
 use PhpBench\Expression\Parselet\StringParselet;
 use PhpBench\Expression\Parselet\TolerableParselet;
 use PhpBench\Expression\Parselet\ValueWithUnitParselet;
@@ -149,7 +149,7 @@ class ExpressionExtension implements ExtensionInterface
                     new ParenthesisParselet(),
                     new BooleanParselet(),
                     new StringParselet(),
-                    new PropertyAccessParselet(),
+                    new ParameterParselet(),
                     new NullParselet(),
                 ]),
                 Parselets::fromInfixParselets([
@@ -188,7 +188,7 @@ class ExpressionExtension implements ExtensionInterface
                 new ComparisonEvaluator(),
                 new TolerableEvaluator(),
                 new DisplayAsEvaluator(),
-                new PropertyAccessEvaluator(),
+                new ParameterAccessEvaluator(),
                 new ConcatEvaluator(),
                 new PhpValueEvaluator(),
             ]);
@@ -304,7 +304,7 @@ class ExpressionExtension implements ExtensionInterface
                     ArithmeticOperatorNode::class,
                     ParenthesisNode::class,
                     DisplayAsNode::class,
-                    PropertyAccessNode::class,
+                    ParameterNode::class,
                 ]
             );
         });

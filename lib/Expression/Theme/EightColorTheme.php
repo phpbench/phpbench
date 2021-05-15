@@ -9,9 +9,9 @@ use PhpBench\Expression\Ast\ComparisonNode;
 use PhpBench\Expression\Ast\DisplayAsNode;
 use PhpBench\Expression\Ast\FunctionNode;
 use PhpBench\Expression\Ast\Node;
+use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\ParenthesisNode;
 use PhpBench\Expression\Ast\PercentDifferenceNode;
-use PhpBench\Expression\Ast\PropertyAccessNode;
 use PhpBench\Expression\Ast\ToleratedTrue;
 use PhpBench\Expression\ColorMap;
 
@@ -41,7 +41,7 @@ class EightColorTheme implements ColorMap
                 return $node->percentage() > 0 ? 'fg=red' : 'fg=green';
             },
             DisplayAsNode::class => 'fg=cyan',
-            PropertyAccessNode::class => 'fg=white',
+            ParameterNode::class => 'fg=white',
             BooleanNode::class => function (Node $node): string {
                 assert($node instanceof BooleanNode);
 

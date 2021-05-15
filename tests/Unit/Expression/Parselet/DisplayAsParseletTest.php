@@ -6,7 +6,7 @@ use Generator;
 use PhpBench\Expression\Ast\ArithmeticOperatorNode;
 use PhpBench\Expression\Ast\DisplayAsNode;
 use PhpBench\Expression\Ast\IntegerNode;
-use PhpBench\Expression\Ast\PropertyAccessNode;
+use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Ast\UnitNode;
 use PhpBench\Expression\Ast\ValueWithUnitNode;
@@ -40,7 +40,7 @@ class DisplayAsParseletTest extends ParseletTestCase
             '1 ms as parameter',
             new DisplayAsNode(
                 new ValueWithUnitNode(new IntegerNode(1), new UnitNode(new StringNode('ms'))),
-                new UnitNode(new PropertyAccessNode([new VariableNode('parameter')]))
+                new UnitNode(new ParameterNode([new VariableNode('parameter')]))
             )
         ];
 
@@ -49,7 +49,7 @@ class DisplayAsParseletTest extends ParseletTestCase
             new ArithmeticOperatorNode(
                 new DisplayAsNode(
                     new ValueWithUnitNode(new IntegerNode(1), new UnitNode(new StringNode('ms'))),
-                    new UnitNode(new PropertyAccessNode([new VariableNode('parameter')]))
+                    new UnitNode(new ParameterNode([new VariableNode('parameter')]))
                 ),
                 '*',
                 new IntegerNode(2)
@@ -60,7 +60,7 @@ class DisplayAsParseletTest extends ParseletTestCase
             '1 ms as parameter precision 5',
             new DisplayAsNode(
                 new ValueWithUnitNode(new IntegerNode(1), new UnitNode(new StringNode('ms'))),
-                new UnitNode(new PropertyAccessNode([new VariableNode('parameter')])),
+                new UnitNode(new ParameterNode([new VariableNode('parameter')])),
                 new IntegerNode(5)
             )
         ];
@@ -70,7 +70,7 @@ class DisplayAsParseletTest extends ParseletTestCase
             new ArithmeticOperatorNode(
                 new DisplayAsNode(
                     new ValueWithUnitNode(new IntegerNode(1), new UnitNode(new StringNode('ms'))),
-                    new UnitNode(new PropertyAccessNode([new VariableNode('parameter')])),
+                    new UnitNode(new ParameterNode([new VariableNode('parameter')])),
                     new IntegerNode(5)
                 ),
                 '*',

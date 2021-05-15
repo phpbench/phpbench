@@ -10,26 +10,26 @@ use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\NullNode;
+use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\PhpValueFactory;
-use PhpBench\Expression\Ast\PropertyAccessNode;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Ast\VariableNode;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Expression\NodeEvaluator;
 
-class PropertyAccessEvaluator implements NodeEvaluator
+class ParameterAccessEvaluator implements NodeEvaluator
 {
     /**
         * @param parameters $params
      */
     public function evaluate(Evaluator $evaluator, Node $node, array $params): ?Node
     {
-        if (!$node instanceof PropertyAccessNode) {
+        if (!$node instanceof ParameterNode) {
             return null;
         }
 
-        assert($node instanceof PropertyAccessNode);
+        assert($node instanceof ParameterNode);
         $value = $this->resolvePropertyAccess($evaluator, $node, $node->segments(), $params);
 
         if (is_numeric($value)) {

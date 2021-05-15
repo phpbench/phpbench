@@ -3,14 +3,14 @@
 namespace PhpBench\Expression\Parselet;
 
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Ast\PropertyAccessNode;
+use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\VariableNode;
 use PhpBench\Expression\Parser;
 use PhpBench\Expression\PrefixParselet;
 use PhpBench\Expression\Token;
 use PhpBench\Expression\Tokens;
 
-class PropertyAccessParselet implements PrefixParselet
+class ParameterParselet implements PrefixParselet
 {
     public function tokenType(): string
     {
@@ -37,6 +37,6 @@ class PropertyAccessParselet implements PrefixParselet
             }
         }
 
-        return new PropertyAccessNode($segments);
+        return new ParameterNode($segments);
     }
 }
