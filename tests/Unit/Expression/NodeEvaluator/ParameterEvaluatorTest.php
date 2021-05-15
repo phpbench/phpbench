@@ -164,22 +164,22 @@ class ParameterEvaluatorTest extends EvaluatorTestCase
             ],
             new ListNode([
                 new ListNode([
-                    new StringNode('patch'), 
+                    new StringNode('patch'),
                     new IntegerNode(10),
                     new StringNode('rabbit')
                 ]),
                 new ListNode([
-                    new StringNode('henry'), 
+                    new StringNode('henry'),
                     new IntegerNode(5),
                     new StringNode('pidgeon')
                 ]),
                 new ListNode([
-                    new StringNode('sahra'), 
+                    new StringNode('sahra'),
                     new IntegerNode(5),
                     new StringNode('fox')
                 ]),
                 new ListNode([
-                    new StringNode('boxer'), 
+                    new StringNode('boxer'),
                     new IntegerNode(7),
                     new StringNode('dog')
                 ]),

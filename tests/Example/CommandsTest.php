@@ -3,6 +3,7 @@
 namespace PhpBench\Tests\Example;
 
 use Generator;
+use function json_last_error_msg;
 use PhpBench\Console\Application;
 use PhpBench\Extension\ConsoleExtension;
 use PhpBench\Extension\RunnerExtension;
@@ -38,11 +39,17 @@ class CommandsTest extends IntegrationTestCase
             return substr($command, strlen('phpbench '));
         }, explode("\n", trim($approval->getSection(1))));
 
+        $jsonString = $approval->getSection(0);
+        $decoded = json_decode($jsonString, true);
+
+        if (null === $decoded) {
+            throw new RuntimeException(sprintf('Could not decode JSON: %s: %s', $jsonString, json_last_error_msg()));
+        }
         $this->workspace()->put('phpbench.json', json_encode(array_merge([
             RunnerExtension::PARAM_ENABLED_PROVIDERS => [],
             ConsoleExtension::PARAM_OUTPUT_STREAM => $this->workspace()->path('output'),
             ConsoleExtension::PARAM_ERROR_STREAM => 'php://temp',
-        ], json_decode($approval->getSection(0), true))));
+        ], $decoded)));
 
         foreach ($commands as $command) {
             $input = new StringInput($command);

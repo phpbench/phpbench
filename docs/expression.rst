@@ -9,14 +9,6 @@ PHPBench has a general purpose expression language which is used when writing as
     :depth: 3
     :local:
 
-Filtering
----------
-
-Enter an expression within square brackets to filter the dataset on a data
-frame:
-
-.. literalinclude:: ../examples/Expression/filter_1
-
 .. _expr_comparators:
 
 Comparators
@@ -159,6 +151,24 @@ You can also specify a percentage value:
 
 .. literalinclude:: ../examples/Expression/tolerance_2
 
+.. _expr_filtering:
+
+Filtering
+---------
+
+Enter an expression within square brackets to filter the dataset on a data
+frame:
+
+.. literalinclude:: ../examples/Expression/filter_1
+
+Note that this will only work when the underlying variable is a data frame,
+if it is not you will encounter an exception such as:
+
+.. code-block:: text
+
+    Expression provided but container is not a data frame, it is "array"
+
+
 .. _expr_functions:
 
 Functions
@@ -281,4 +291,3 @@ Similar to :ref:`expr_display_as` but also allows specification of the "mode"
 .. _variance: https://en.wikipedia.org/wiki/Variance
 .. _relative standard deviation: https://en.wikipedia.org/wiki/Coefficient_of_variation
 .. _sprintf: https://www.php.net/manual/en/function.sprintf.php
-
