@@ -5,9 +5,6 @@ namespace PhpBench\Tests\Benchmark\Data;
 use function array_fill;
 use PhpBench\Data\DataFrame;
 
-/**
- * @BeforeMethods("setUp")
- */
 class DataFrameBench
 {
     /**
@@ -20,14 +17,35 @@ class DataFrameBench
      */
     private $columns;
 
-    public function setUp(): void
+    /**
+     * @var array
+     */
+    private $records;
+
+    public function setUpRowArrays(): void
     {
         $this->series = array_fill(0, 1000, range(0, 100));
         $this->columns = range(0, 100);
     }
 
-    public function benchCreate(): void
+    /**
+     * @BeforeMethods("setUpRowArrays")
+     */
+    public function benchCreateFromRowArrays(): void
     {
         DataFrame::fromRowArrays($this->series, $this->columns);
+    }
+
+    public function setUpRecords(): void
+    {
+        $this->records = array_fill(0, 1000, range(0, 100));
+    }
+
+    /**
+     * @BeforeMethods("setUpRecords")
+     */
+    public function benchCreateFromRecords(): void
+    {
+        DataFrame::fromRecords($this->records);
     }
 }
