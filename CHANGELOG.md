@@ -7,6 +7,8 @@ master
 Features:
 
 - Allow multiple benchmark paths to be specified from CLI #834
+- Functions which require at least one value return NULL when values are
+  empty #835
 
 1.0.1 (2021-05-11)
 ------------------

@@ -161,7 +161,8 @@ Functions
 max
 ~~~
 
-Return the max value in a set of values:
+Return the max value in a set of values, if values are empty it will return
+NULL:
 
 .. literalinclude:: ../examples/Expression/func_max
 
@@ -179,7 +180,8 @@ Return the mean (i.e. average) value in a set of values:
 min
 ~~~
 
-Return the min value in a set of values:
+Return the min value in a set of values, if values are empty it will return
+NULL:
 
 .. literalinclude:: ../examples/Expression/func_min
 
@@ -247,7 +249,8 @@ Join values with a delimiter
 first
 ~~~~~
 
-Return the first element in an array, or throw an evaluation error.
+Return the first element in an array, if values are empty it will return
+NULL.
 
 .. literalinclude:: ../examples/Expression/first_1
 
