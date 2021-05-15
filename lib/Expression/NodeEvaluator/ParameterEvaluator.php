@@ -48,6 +48,12 @@ class ParameterEvaluator implements NodeEvaluator
             return new NullNode();
         }
 
+        if ($value instanceof DataFrame) {
+            return new ListNode(array_map(function (Row $row) {
+                return PhpValueFactory::fromValue($row->toSeries()->toValues());
+            }, $value->rows()));
+        }
+
         throw new EvaluationError($node, sprintf(
             'Do not know how to interpret value "%s"', is_object($value) ? get_class($value) : gettype($value)
         ));
