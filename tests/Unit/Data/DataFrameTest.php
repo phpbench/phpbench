@@ -95,6 +95,20 @@ class DataFrameTest extends TestCase
         self::assertEquals([1, 3], DataFrame::fromRecords($records)->row(5)->toValues());
     }
 
+    public function testExceptionOnRowWithInsufficientValues(): void
+    {
+        $this->expectExceptionMessage('Row 0 has only 1 value(s), but 2 column names given');
+        $records = [
+            [
+                'one' => 1,
+            ],
+        ];
+        self::assertEquals([1, 3], DataFrame::fromRowArray(
+            $records,
+            ['one', 'two'],
+        )->row(5)->toValues());
+    }
+
     public function testReturnRowsAsDataFrames(): void
     {
         $records = [

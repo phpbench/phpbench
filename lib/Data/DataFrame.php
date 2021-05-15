@@ -27,7 +27,16 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
 
     public function __construct(array $series, array $columns)
     {
-        $this->series = $series;
+        $this->series = array_map(function (Series $series, int $index) use ($columns) {
+            if (count($series) !== count($columns)) {
+                throw new RuntimeException(sprintf(
+                    'Row %s has only %s value(s), but %s column names given',
+                    $index, count($series), count($columns)
+                ));
+            }
+
+            return $series;
+        }, $series, array_keys($series));
         $this->columns = array_values($columns);
     }
 

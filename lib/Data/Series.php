@@ -2,9 +2,10 @@
 
 namespace PhpBench\Data;
 
+use Countable;
 use RuntimeException;
 
-final class Series
+final class Series implements Countable
 {
     /**
      * @var array
@@ -34,5 +35,13 @@ final class Series
         }
 
         return $this->values[$index];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function count(): int
+    {
+        return count($this->values);
     }
 }
