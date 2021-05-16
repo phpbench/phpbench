@@ -14,9 +14,17 @@ final class SuiteCollectionTransformer
 {
     public const COL_HAS_BASELINE = 'has_baseline';
 
-    public function suiteToTable(SuiteCollection $collection, bool $includeBaseline = false): DataFrame
+    public function suiteToFrame(SuiteCollection $collection, bool $includeBaseline = false): DataFrame
     {
-        return DataFrame::fromRecords($this->normalize(iterator_to_array($this->reportData($collection, $includeBaseline))));
+        return DataFrame::fromRecords($this->suiteToTable($collection, $includeBaseline));
+    }
+
+    /**
+     * @deprecated will be removed in 2.0, use `suiteToFrame`.
+     */
+    public function suiteToTable(SuiteCollection $collection, bool $includeBaseline = false): array
+    {
+        return $this->normalize(iterator_to_array($this->reportData($collection, $includeBaseline)));
     }
 
     /**

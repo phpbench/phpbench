@@ -158,7 +158,7 @@ EOT
         $baselineExpressionMap = $this->resolveBaselineExpressionMap($config, array_keys($expressionMap));
 
         // transform the suite into a data frame
-        $frame = $this->transformer->suiteToTable($collection, $config[self::PARAM_INCLUDE_BASELINE]);
+        $frame = $this->transformer->suiteToFrame($collection, $config[self::PARAM_INCLUDE_BASELINE]);
         // parition the data frame into data frames grouped by aggregates
         $frames = $frame->partition($config[self::PARAM_AGGREGATE]);
 
