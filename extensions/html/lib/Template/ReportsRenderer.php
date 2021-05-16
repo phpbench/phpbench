@@ -14,8 +14,8 @@ class ReportsRenderer implements ObjectRenderer
             return null;
         }
         $out = ['<html><body>'];
-        foreach ($object->tables() as $table) {
-            $out[] = $renderer->render($table);
+        foreach ($object as $report) {
+            $out[] = $renderer->render($report);
         }
         $out[] = '</body></html>';
 

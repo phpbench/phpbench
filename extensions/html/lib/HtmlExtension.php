@@ -14,6 +14,7 @@ use PhpBench\Extensions\Html\Expression\NodePrinter\HtmlHighlightingNodePrinter;
 use PhpBench\Extensions\Html\Report\Renderer\HtmlRenderer;
 use PhpBench\Extensions\Html\Template\HtmlLayoutRenderer;
 use PhpBench\Extensions\Html\Template\NodeRenderer;
+use PhpBench\Extensions\Html\Template\ReportRenderer;
 use PhpBench\Extensions\Html\Template\ReportsRenderer;
 use PhpBench\Extensions\Html\Template\TableRenderer;
 use PhpBench\Extensions\Html\Template\TemplateRenderer;
@@ -33,7 +34,7 @@ class HtmlExtension implements ExtensionInterface
                 $container->get(ObjectRenderers::class)
             );
         }, [
-            ReportExtension::TAG_REPORT_GENERATOR => [
+            ReportExtension::TAG_REPORT_RENDERER => [
                 'name' => 'html',
             ],
         ]);
@@ -64,6 +65,11 @@ class HtmlExtension implements ExtensionInterface
 
         $container->register(TableRenderer::class, function (Container $container) {
             return new TableRenderer();
+        }, [
+            self::TAG_TEMPLATE_RENDERER => []
+        ]);
+        $container->register(ReportRenderer::class, function (Container $container) {
+            return new ReportRenderer();
         }, [
             self::TAG_TEMPLATE_RENDERER => []
         ]);

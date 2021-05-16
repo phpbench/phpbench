@@ -57,6 +57,8 @@ class HtmlRendererTest extends IntegrationTestCase
             $compare[] = '// ' . $path;
             $compare[] = file_get_contents($path);
         }
+
+        $approval->approve(implode("\n", $compare));
     }
 
     private function render(Reports $reports, array $config)

@@ -1,2 +1,99 @@
 {}
 ---
+// /home/daniel/www/phpbench/phpbench/tests/Workspace/html/index.html
+<html>
+<head>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/phpbench.css">
+</head>
+<body>
+<div class="container-fluid">
+<html><body>
+<h2>Output Test Report</h2>
+<p>This report demonstrates output</p>
+<table class="table table-striped table-bordered">
+<thead>
+<h3>Values</h3>
+<th>string</th>
+<th>int</th>
+<th>float</th>
+<th>bool</th>
+<th>null</th>
+<th>parameter</th>
+</thead><tbody>
+<tr>
+<td><span class="phpbench string">one</span></td>
+<td>123</td>
+<td>12.2</td>
+<td>[<span class="phpbench bool-true">true</span>, <span class="phpbench bool-false">false</span>]</td>
+<td>null</td>
+<td>foo.bar</td>
+</tr>
+</tbody></table>
+<table class="table table-striped table-bordered">
+<thead>
+<h3>Percent Difference</h3>
+<th>-100</th>
+<th>-90</th>
+<th>-80</th>
+<th>-70</th>
+<th>-60</th>
+<th>-50</th>
+<th>-40</th>
+<th>-30</th>
+<th>-20</th>
+<th>-10</th>
+<th>0</th>
+<th>10</th>
+<th>20</th>
+<th>30</th>
+<th>40</th>
+<th>50</th>
+<th>60</th>
+<th>70</th>
+<th>80</th>
+<th>90</th>
+<th>100</th>
+</thead><tbody>
+<tr>
+<td><span style="color: #00a800">-100.00%</span></td>
+<td><span style="color: #00a800">-90.00%</span></td>
+<td><span style="color: #00a800">-80.00%</span></td>
+<td><span style="color: #00a800">-70.00%</span></td>
+<td><span style="color: #00a800">-60.00%</span></td>
+<td><span style="color: #00a800">-50.00%</span></td>
+<td><span style="color: #008600">-40.00%</span></td>
+<td><span style="color: #006400">-30.00%</span></td>
+<td><span style="color: #004200">-20.00%</span></td>
+<td><span style="color: #002000">-10.00%</span></td>
+<td><span style="color: #000000">0.00%</span></td>
+<td><span style="color: #330000">+10.00%</span></td>
+<td><span style="color: #660000">+20.00%</span></td>
+<td><span style="color: #990000">+30.00%</span></td>
+<td><span style="color: #cc0000">+40.00%</span></td>
+<td><span style="color: #fe0000">+50.00%</span></td>
+<td><span style="color: #fe0000">+60.00%</span></td>
+<td><span style="color: #fe0000">+70.00%</span></td>
+<td><span style="color: #fe0000">+80.00%</span></td>
+<td><span style="color: #fe0000">+90.00%</span></td>
+<td><span style="color: #fe0000">+100.00%</span></td>
+</tr>
+</tbody></table>
+<table class="table table-striped table-bordered">
+<thead>
+<h3>Time</h3>
+<th>time</th>
+</thead><tbody>
+<tr>
+<td>10.0<span class="phpbench unit"><span class="phpbench string">ms</span></span></td>
+</tr>
+</tbody></table>
+</body></html>
+</div>
+<footer>
+<hr/>
+<center>
+Generated with <a href="https://github.com/phpbench/phpbench">PHPBench</a> dev-master
+</center>
+</footer>
+</body></html>

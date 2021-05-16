@@ -22,6 +22,7 @@ use PhpBench\Extension\ExpressionExtension;
 use PhpBench\Extension\ReportExtension;
 use PhpBench\Extension\RunnerExtension;
 use PhpBench\Extension\StorageExtension;
+use PhpBench\Extensions\Html\HtmlExtension;
 use PhpBench\Extensions\XDebug\XDebugExtension;
 use PhpBench\Json\JsonDecoder;
 use Seld\JsonLint\JsonParser;
@@ -64,6 +65,7 @@ class PhpBench
             StorageExtension::class,
             XDebugExtension::class,
             ConsoleExtension::class,
+            HtmlExtension::class,
         ], $config[CoreExtension::PARAM_EXTENSIONS]);
 
         $container = new Container(array_unique($extensions), $config);

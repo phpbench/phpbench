@@ -15,11 +15,12 @@ class TableRenderer implements ObjectRenderer
             return null;
         }
         $out = [];
-        if ($object->title()) {
-            $out[] = sprintf('<h2>%s</h2>', htmlentities($object->title()));
-        }
 
-        $out[] = '<table class="table"><thead>';
+        $out[] = '<table class="table table-striped table-bordered">';
+        $out[] = '<thead>';
+        if ($object->title()) {
+            $out[] = sprintf('<h3>%s</h3>', htmlentities($object->title()));
+        }
         foreach ($object->columnNames() as $name) {
             $out[] = sprintf('<th>%s</th>', $name);
         }
