@@ -8,6 +8,7 @@
         "memory_limit": "1G"
     },
     "runner.iterations": 10,
+    "runner.retry_threshold": 5,
     "runner.revs": 10,
     "runner.assert": "mode(variant.time.avg) as ms <= mode(baseline.time.avg) as ms +/- 5%",
     "report.generators": {
@@ -19,6 +20,9 @@
                 "aggregate"
             ]
         }
+    },
+    "runner.php_config": {
+        "xdebug.mode": "none"
     },
     "core.profiles": {
         "examples": {

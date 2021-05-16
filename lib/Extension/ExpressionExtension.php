@@ -44,7 +44,6 @@ use PhpBench\Expression\NodeEvaluator\DisplayAsEvaluator;
 use PhpBench\Expression\NodeEvaluator\FunctionEvaluator;
 use PhpBench\Expression\NodeEvaluator\ListEvaluator;
 use PhpBench\Expression\NodeEvaluator\LogicalOperatorEvaluator;
-use PhpBench\Expression\NodeEvaluator\MemoisedNodeEvaluator;
 use PhpBench\Expression\NodeEvaluator\ParameterEvaluator;
 use PhpBench\Expression\NodeEvaluator\ParenthesisEvaluator;
 use PhpBench\Expression\NodeEvaluator\PhpValueEvaluator;
@@ -75,6 +74,7 @@ use PhpBench\Expression\NodePrinter\TolerablePrinter;
 use PhpBench\Expression\NodePrinter\UnitPrinter;
 use PhpBench\Expression\NodePrinter\UnrepresentableValuePrinter;
 use PhpBench\Expression\NodePrinter\ValueWithUnitPrinter;
+use PhpBench\Expression\NodePrinter\VariablePrinter;
 use PhpBench\Expression\NodePrinters;
 use PhpBench\Expression\Parselet\ArithmeticOperatorParselet;
 use PhpBench\Expression\Parselet\BooleanParselet;
@@ -198,7 +198,7 @@ class ExpressionExtension implements ExtensionInterface
 
         $container->register(Evaluator::class, function (Container $container) {
             return new PrettyErrorEvaluator(
-                new MainEvaluator(new MemoisedNodeEvaluator($container->get(NodeEvaluator::class))),
+                new MainEvaluator($container->get(NodeEvaluator::class)),
                 $container->get(self::SERVICE_PLAIN_PRINTER),
                 new UnderlinePrinterFactory($container->get(NodePrinters::class))
             );
@@ -279,6 +279,7 @@ class ExpressionExtension implements ExtensionInterface
                 new PercentageDifferencePrinter(),
                 new NullPrinter(),
                 new UnrepresentableValuePrinter(),
+                new VariablePrinter(),
             ]);
         });
 

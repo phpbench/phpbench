@@ -5,7 +5,7 @@ namespace PhpBench\Expression\Ast;
 class ParameterNode implements Node
 {
     /**
-     * @var array
+     * @var Node[]
      */
     private $segments;
 
@@ -14,6 +14,9 @@ class ParameterNode implements Node
         $this->segments = $segments;
     }
 
+    /**
+     * @return Node[]
+     */
     public function segments(): array
     {
         return $this->segments;

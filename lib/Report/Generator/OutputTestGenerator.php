@@ -13,6 +13,7 @@ use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\PercentDifferenceNode;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Ast\UnitNode;
+use PhpBench\Expression\Ast\VariableNode;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Report\GeneratorInterface;
@@ -43,7 +44,7 @@ class OutputTestGenerator implements GeneratorInterface
                             'float' => new FloatNode(12.2),
                             'bool' => new ListNode([new BooleanNode(true), new BooleanNode(false)]),
                             'null' => new NullNode(),
-                            'parameter' => new ParameterNode(['foo', 'bar']),
+                            'parameter' => new ParameterNode([new VariableNode('foo'), new VariableNode('bar')]),
                         ]
                 ], 'Values'),
                 Table::fromRowArray([

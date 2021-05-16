@@ -34,7 +34,7 @@ Options:
 Columns
 -------
 
-The visible columns are dicated by the ``cols`` configuration:
+The visible columns are dictated by the ``cols`` configuration:
 
 .. approved:: ../../examples/Command/report-generators-column-visibility
   :language: javascript
@@ -64,12 +64,33 @@ Which yields:
   :language: bash
   :section: 2
 
+.. _generator_expression_aggregate:
+
+Aggregate
+---------
+
+Aggregation decides which values are included in each row - should each row
+contain only the values for a single iteration? should all values for the
+variant by included? should we include all values for the entire suite? (not
+recommended).
+
+.. approved:: ../../examples/Command/report-generators-aggregate
+  :language: javascript
+  :section: 0
+
+This will aggregate by unique values of the named columns, producing a single
+row per iteration:
+
+.. approved:: ../../examples/Command/report-generators-aggregate
+  :language: bash
+  :section: 2
+
 .. _generator_expression_break:
 
 Break
 -----
 
-You can partition the report into mupltiple tables by using the ``break`` option:
+You can partition the report into multiple tables by using the ``break`` option:
 
 .. approved:: ../../examples/Command/report-generators-break
   :language: javascript
@@ -102,7 +123,42 @@ Which yields:
 Data
 ----
 
-The expressions act on table data. You can get a list of all available columns
+The expressions have access to all :ref:`aggregated
+<generator_expression_aggregate>` data, and in addition, the
+entire result set via. the ``suite`` variable.
+
+The :ref:`Aggregated <generator_expression_aggregate>` data is provided as an array
+of column names to values:
+
+.. code-block:: text
+
+    {
+        // ...
+        "subject_name": ["benchFoobar", "benchFoobar", "benchFoobar"],
+        "result_time_net": [10, 20, 30],
+        // ...
+    }
+
+So the ``mode`` for ``result_time_net`` could be calculated via the expression
+``mode(result_time_net)``.
+
+The ``suite`` variable is data frame that represents the entire result set and
+can be used to access a specific value through :ref:`filtering
+<expr_filtering>`. In the contrived example below we calculate the difference
+between the mode of a referenced subject against that of the current variant:
+
+.. approved:: ../../examples/Command/report-generators-filter-value
+  :language: bash
+  :section: 0
+
+Yielding:
+
+.. approved:: ../../examples/Command/report-generators-filter-value
+  :language: bash
+  :section: 2
+
+
+You can get a list of all available columns
 with:
 
 .. approved:: ../../examples/Command/report-generators-data

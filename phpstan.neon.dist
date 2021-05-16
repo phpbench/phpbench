@@ -8,6 +8,8 @@ parameters:
         - lib/Benchmark/Metadata/Driver/AttributeDriver.php
     typeAliases:
         parameters: 'array<string,mixed>'
+        scalarOrNull: 'int|float|string|bool|null'
+        scalar: 'int|float|string|bool'
 
 includes:
     - phpstan-baseline.neon

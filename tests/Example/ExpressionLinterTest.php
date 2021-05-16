@@ -3,6 +3,7 @@
 namespace PhpBench\Tests\Example;
 
 use Generator;
+use PhpBench\Data\DataFrame;
 use PhpBench\Expression\Ast\ComparisonNode;
 use PhpBench\Expression\Ast\PhpValue;
 use PhpBench\Expression\Evaluator;
@@ -17,14 +18,26 @@ class ExpressionLinterTest extends IntegrationTestCase
      */
     public function testExpression(string $filename): void
     {
+        $frame = DataFrame::fromRecords([
+            [
+                'column1' => 'value1',
+                'column2' => 'value2',
+            ],
+            [
+                'column1' => 'value3',
+                'column2' => 'value4',
+            ],
+        ]);
         /** @phpstan-ignore-next-line */
         $expressions = explode("\n", trim(file_get_contents($filename)));
         $container = $this->container();
 
         foreach ($expressions as $expression) {
-            (function (Lexer $lexer, Parser $parser, Evaluator $evaluator) use ($expression, $filename): void {
+            (function (Lexer $lexer, Parser $parser, Evaluator $evaluator) use ($expression, $filename, $frame): void {
                 $node = $parser->parse($lexer->lex($expression));
-                $result = $evaluator->evaluate($node, []);
+                $result = $evaluator->evaluate($node, [
+                    'data' => $frame
+                ]);
 
                 if (!$node instanceof ComparisonNode) {
                     return;

@@ -1,0 +1,21 @@
+{
+    "report.generators": {
+         "my-report": {
+             "generator": "expression",
+             "cols": {
+                 "subject": null,
+                 "difference": "percent_diff(mode(result_time_avg), mode(suite[subject_name = \"benchNothing\"][\"result_time_avg\"]))"
+             }
+         }
+    }
+}
+---
+phpbench run --report=my-report --executor=debug NothingBench.php --progress=none
+---
+
++--------------+------------+
+| subject      | difference |
++--------------+------------+
+| benchNothing | 0.00%      |
++--------------+------------+
+
