@@ -8,7 +8,7 @@ use PhpBench\Expression\Printer;
 use PhpBench\Extension\CoreExtension;
 use PhpBench\Extension\ExpressionExtension;
 use PhpBench\Extensions\Html\HtmlExtension;
-use PhpBench\Extensions\Html\Renderer\HtmlRenderer;
+use PhpBench\Extensions\Html\Report\Renderer\HtmlRenderer;
 use PhpBench\Extensions\Html\ObjectRenderers;
 use PhpBench\Registry\Config;
 use PhpBench\Report\Generator\OutputTestGenerator;
@@ -57,7 +57,6 @@ class HtmlRendererTest extends IntegrationTestCase
             $compare[] = '// ' . $path;
             $compare[] = file_get_contents($path);
         }
-        dump($compare);
     }
 
     private function render(Reports $reports, array $config)

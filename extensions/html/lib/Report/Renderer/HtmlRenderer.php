@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Extensions\Html\Renderer;
+namespace PhpBench\Extensions\Html\Report\Renderer;
 
 use PhpBench\Data\DataFrame;
 use PhpBench\Extensions\Html\Model\HtmlLayout;
@@ -42,7 +42,8 @@ class HtmlRenderer implements RendererInterface
         $options->setDefaults([
             self::PARAM_OUTPUT_DIR => '.phpbench/html',
             self::PARAM_CSS_FILES => [
-                __DIR__ . '/../../templates/bootstrap.min.css'
+                __DIR__ . '/../../../templates/bootstrap.min.css',
+                __DIR__ . '/../../../templates/phpbench.css',
             ] 
         ]);
     }

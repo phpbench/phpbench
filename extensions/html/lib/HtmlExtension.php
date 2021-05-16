@@ -10,7 +10,8 @@ use PhpBench\Expression\Printer;
 use PhpBench\Expression\Printer\NormalizingPrinter;
 use PhpBench\Extension\ExpressionExtension;
 use PhpBench\Extension\ReportExtension;
-use PhpBench\Extensions\Html\Renderer\HtmlRenderer;
+use PhpBench\Extensions\Html\Expression\NodePrinter\HtmlHighlightingNodePrinter;
+use PhpBench\Extensions\Html\Report\Renderer\HtmlRenderer;
 use PhpBench\Extensions\Html\Template\HtmlLayoutRenderer;
 use PhpBench\Extensions\Html\Template\NodeRenderer;
 use PhpBench\Extensions\Html\Template\ReportsRenderer;
@@ -68,7 +69,9 @@ class HtmlExtension implements ExtensionInterface
         ]);
 
         $container->register(NodeRenderer::class, function (Container $container) {
-            return new NodeRenderer(new NormalizingPrinter($container->get(NodePrinters::class)));
+            return new NodeRenderer(new NormalizingPrinter(
+                new HtmlHighlightingNodePrinter($container->get(NodePrinters::class))
+            ));
         }, [
             self::TAG_TEMPLATE_RENDERER => []
         ]);
