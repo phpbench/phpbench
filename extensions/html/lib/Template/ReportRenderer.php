@@ -2,10 +2,10 @@
 
 namespace PhpBench\Extensions\Html\Template;
 
+use function htmlentities;
 use PhpBench\Extensions\Html\ObjectRenderer;
 use PhpBench\Extensions\Html\ObjectRenderers;
 use PhpBench\Report\Model\Report;
-use function htmlentities;
 
 class ReportRenderer implements ObjectRenderer
 {
@@ -18,6 +18,7 @@ class ReportRenderer implements ObjectRenderer
         if ($object->title()) {
             $out[] = sprintf('<h2>%s</h2>', htmlentities($object->title()));
         }
+
         if ($object->description()) {
             $out[] = sprintf('<p>%s</p>', htmlentities($object->description()));
         }

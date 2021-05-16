@@ -2,29 +2,21 @@
 
 namespace PhpBench\Extensions\Html\Tests\Renderer;
 
+use function file_get_contents;
 use Generator;
 use PhpBench\DependencyInjection\Container;
-use PhpBench\Expression\Printer;
 use PhpBench\Extension\CoreExtension;
 use PhpBench\Extension\ExpressionExtension;
 use PhpBench\Extensions\Html\HtmlExtension;
 use PhpBench\Extensions\Html\Report\Renderer\HtmlRenderer;
-use PhpBench\Extensions\Html\ObjectRenderers;
 use PhpBench\Registry\Config;
 use PhpBench\Report\Generator\OutputTestGenerator;
 use PhpBench\Report\Model\Reports;
-use PhpBench\Report\Renderer\ConsoleRenderer;
 use PhpBench\Report\RendererInterface;
 use PhpBench\Tests\IntegrationTestCase;
-use PhpBench\Tests\TestCase;
-use PhpBench\Tests\Unit\Report\Renderer\AbstractRendererCase;
 use PhpBench\Tests\Util\Approval;
 use PhpBench\Tests\Util\TestUtil;
-use PhpBench\Tests\Util\Workspace;
-use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use function file_get_contents;
 
 class HtmlRendererTest extends IntegrationTestCase
 {
@@ -36,6 +28,7 @@ class HtmlRendererTest extends IntegrationTestCase
             CoreExtension::class
         ], []);
         $container->init();
+
         return $container->get(HtmlRenderer::class);
     }
 
@@ -53,6 +46,7 @@ class HtmlRendererTest extends IntegrationTestCase
         $this->render($reports, $config);
 
         $compare = [];
+
         foreach (glob($this->workspace()->path('html') . '/*.html') as $path) {
             $compare[] = '// ' . $path;
             $compare[] = file_get_contents($path);
@@ -61,7 +55,7 @@ class HtmlRendererTest extends IntegrationTestCase
         $approval->approve(implode("\n", $compare));
     }
 
-    private function render(Reports $reports, array $config)
+    private function render(Reports $reports, array $config): void
     {
         $renderer = $this->getRenderer();
         $options = new OptionsResolver();

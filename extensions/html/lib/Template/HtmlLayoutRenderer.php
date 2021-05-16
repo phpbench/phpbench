@@ -2,12 +2,11 @@
 
 namespace PhpBench\Extensions\Html\Template;
 
+use function htmlentities;
 use PhpBench\Extensions\Html\Model\HtmlLayout;
 use PhpBench\Extensions\Html\ObjectRenderer;
 use PhpBench\Extensions\Html\ObjectRenderers;
 use PhpBench\PhpBench;
-use PhpBench\Report\Model\Reports;
-use function htmlentities;
 
 class HtmlLayoutRenderer implements ObjectRenderer
 {
@@ -18,6 +17,7 @@ class HtmlLayoutRenderer implements ObjectRenderer
         }
         $out = ['<html>'];
         $out[] = '<head>';
+
         foreach ($object->cssPaths() as $cssPath) {
             $out[] = sprintf('<link rel="stylesheet" href="%s">', htmlentities($cssPath));
         }

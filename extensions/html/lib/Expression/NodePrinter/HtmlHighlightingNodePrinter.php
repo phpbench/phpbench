@@ -3,7 +3,6 @@
 namespace PhpBench\Extensions\Html\Expression\NodePrinter;
 
 use PhpBench\Expression\Ast\BooleanNode;
-use PhpBench\Expression\Ast\FloatNode;
 use PhpBench\Expression\Ast\LabelNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\PercentDifferenceNode;
@@ -39,15 +38,19 @@ class HtmlHighlightingNodePrinter implements NodePrinter
         if ($node instanceof UnitNode) {
             return $this->span('phpbench unit', $string);
         }
+
         if ($node instanceof LabelNode) {
             return $this->span('phpbench label', $string);
         }
+
         if ($node instanceof StringNode) {
             return $this->span('phpbench string', $string);
         }
+
         if ($node instanceof BooleanNode) {
             return $this->span(sprintf('phpbench bool-%s', $node->value() ? 'true' : 'false'), $string);
         }
+
         if ($node instanceof PercentDifferenceNode) {
             $gradient = Gradient::start(
                 Color::fromHex('#00aa00')

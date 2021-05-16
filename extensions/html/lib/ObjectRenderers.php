@@ -20,6 +20,7 @@ class ObjectRenderers
     {
         foreach ($this->renderers as $renderer) {
             $rendered = $renderer->render($this, $object);
+
             if (null === $rendered) {
                 continue;
             }

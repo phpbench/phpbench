@@ -2,20 +2,14 @@
 
 namespace PhpBench\Extensions\Html\Report\Renderer;
 
-use PhpBench\Data\DataFrame;
+use function basename;
 use PhpBench\Extensions\Html\Model\HtmlLayout;
-use PhpBench\Extensions\Html\ObjectRenderer;
 use PhpBench\Extensions\Html\ObjectRenderers;
-use PhpBench\Extensions\Html\Template\TemplateRenderer;
-use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
-use PhpBench\Report\GeneratorInterface;
 use PhpBench\Report\Model\Reports;
 use PhpBench\Report\RendererInterface;
-use PhpBench\Report\Transform\SuiteCollectionTransformer;
 use RuntimeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use function basename;
 
 class HtmlRenderer implements RendererInterface
 {
@@ -29,8 +23,7 @@ class HtmlRenderer implements RendererInterface
 
     public function __construct(
         ObjectRenderers $renderer
-    )
-    {
+    ) {
         $this->renderer = $renderer;
     }
 
@@ -44,7 +37,7 @@ class HtmlRenderer implements RendererInterface
             self::PARAM_CSS_FILES => [
                 __DIR__ . '/../../../templates/bootstrap.min.css',
                 __DIR__ . '/../../../templates/phpbench.css',
-            ] 
+            ]
         ]);
     }
 
@@ -65,6 +58,7 @@ class HtmlRenderer implements RendererInterface
         $this->mkdirIfNotExists($cssOutputPath);
 
         $cssLinks = [];
+
         foreach ($cssPaths as $cssPath) {
             if (!file_exists($cssPath)) {
                 throw new RuntimeException(sprintf(
@@ -79,7 +73,7 @@ class HtmlRenderer implements RendererInterface
         file_put_contents($outputDir . '/index.html', $this->renderer->render($layout));
     }
 
-    private function mkdirIfNotExists(string $outputDir)
+    private function mkdirIfNotExists(string $outputDir): void
     {
         if (!file_exists($outputDir)) {
             if (!@mkdir($outputDir, 0777, true)) {

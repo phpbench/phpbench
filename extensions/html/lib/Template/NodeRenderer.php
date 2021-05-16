@@ -3,7 +3,6 @@
 namespace PhpBench\Extensions\Html\Template;
 
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\NodePrinter;
 use PhpBench\Expression\Printer;
 use PhpBench\Extensions\Html\ObjectRenderer;
 use PhpBench\Extensions\Html\ObjectRenderers;

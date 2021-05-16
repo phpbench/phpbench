@@ -2,10 +2,10 @@
 
 namespace PhpBench\Extensions\Html\Template;
 
+use function htmlentities;
 use PhpBench\Extensions\Html\ObjectRenderer;
 use PhpBench\Extensions\Html\ObjectRenderers;
 use PhpBench\Report\Model\Table;
-use function htmlentities;
 
 class TableRenderer implements ObjectRenderer
 {
@@ -18,9 +18,11 @@ class TableRenderer implements ObjectRenderer
 
         $out[] = '<table class="table table-striped table-bordered">';
         $out[] = '<thead>';
+
         if ($object->title()) {
             $out[] = sprintf('<h3>%s</h3>', htmlentities($object->title()));
         }
+
         foreach ($object->columnNames() as $name) {
             $out[] = sprintf('<th>%s</th>', $name);
         }
@@ -28,6 +30,7 @@ class TableRenderer implements ObjectRenderer
 
         foreach ($object->rows() as $row) {
             $out[] = '<tr>';
+
             foreach ($row->cells() as $cell) {
                 $out[] = sprintf('<td>%s</td>', $renderer->render($cell));
             }
