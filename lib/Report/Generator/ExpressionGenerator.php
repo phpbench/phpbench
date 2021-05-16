@@ -86,7 +86,7 @@ display_as_time(
     %s, 
     coalesce(
         first(subject_time_unit),
-        "microseconds"
+        "time"
     ), 
     first(subject_time_precision), 
     first(subject_time_mode))
