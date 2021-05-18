@@ -4,7 +4,7 @@ namespace PhpBench\Extension;
 
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
-use PhpBench\Template\ObjectPathResolver;
+use PhpBench\Template\ObjectPathResolver\ReflectionObjectPathResolver;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TemplateExtension implements ExtensionInterface
@@ -14,8 +14,8 @@ class TemplateExtension implements ExtensionInterface
      */
     public function load(Container $container): void
     {
-        $container->register(ObjectPathResolver::class, function (Container $container) {
-            return new ObjectPathResolver([
+        $container->register(ReflectionObjectPathResolver::class, function (Container $container) {
+            return new ReflectionObjectPathResolver([
                 'PhpBench\\' => __DIR__ . '/../../templates'
             ]);
         });

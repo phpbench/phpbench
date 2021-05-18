@@ -2,6 +2,7 @@
 
 namespace PhpBench\Template;
 
+use PhpBench\Template\ObjectPathResolver\ReflectionObjectPathResolver;
 use function ob_get_clean;
 use function ob_start;
 
@@ -12,7 +13,7 @@ final class ObjectRenderer
      */
     private $resolver;
 
-    public function __construct(ObjectPathResolver $resolver)
+    public function __construct(ReflectionObjectPathResolver $resolver)
     {
         $this->resolver = $resolver;
     }
