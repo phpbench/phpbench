@@ -21,10 +21,10 @@ class ReflectionObjectPathResolverTest extends IntegrationTestCase
         $this->workspace()->put($path, '');
 
         self::assertEquals(
-            $this->workspace()->path($path),
+            [$this->workspace()->path($path)],
             $this->createResolver([
                 'PhpBench\\Tests\\Unit' => $this->workspace()->path('templates')
-            ])->resolvePath($this)
+            ])->resolvePaths($this)
         );
     }
 
@@ -34,25 +34,14 @@ class ReflectionObjectPathResolverTest extends IntegrationTestCase
         $this->workspace()->put($path, '');
 
         self::assertEquals(
-            $this->workspace()->path($path),
+            [
+                $this->workspace()->path('templates/Unit/Template/ObjectPathResolver/ReflectionObjectPathResolverTest.phtml'),
+                $this->workspace()->path($path),
+                $this->workspace()->path('templates/TestCase.phtml')
+            ],
             $this->createResolver([
                 'PhpBench\\Tests' => $this->workspace()->path('templates')
-            ])->resolvePath($this)
-        );
-    }
-
-    public function testResolveInterface(): void
-    {
-        $path = 'templates/Expression/Ast/Node.phtml';
-        $this->workspace()->put($path, '');
-
-        $object = new StringNode('hello');
-
-        self::assertEquals(
-            $this->workspace()->path($path),
-            $this->createResolver([
-                'PhpBench\\' => $this->workspace()->path('templates')
-            ])->resolvePath($object)
+            ])->resolvePaths($this)
         );
     }
 

@@ -14,24 +14,40 @@ final class ObjectRenderer
      */
     private $resolver;
 
-    public function __construct(ObjectPathResolver $resolver)
+    /**
+     * @var array
+     */
+    private $templatePaths;
+
+    public function __construct(ObjectPathResolver $resolver, array $templatePaths)
     {
         $this->resolver = $resolver;
+        $this->templatePaths = $templatePaths;
     }
 
     public function render(object $object): string
     {
-        $path = $this->resolver->resolvePath($object);
+        $paths = $this->resolver->resolvePaths($object);
+        $tried = [];
 
-        if (!file_exists($path)) {
-            throw new RuntimeException(sprintf(
-                'Path resolver returned non-existing path "%s"',
-                $path
-            ));
+        foreach ($paths as $path) {
+            foreach ($this->templatePaths as $templatePath) {
+                $absolutePath = $templatePath . '/' . $path;
+
+                if (!file_exists($absolutePath)) {
+                    $tried[] = $absolutePath;
+                    continue;
+                }
+
+                ob_start();
+                require $absolutePath;
+                return ob_get_clean();
+            }
         }
 
-        ob_start();
-        require $path;
-        return ob_get_clean();
+        throw new RuntimeException(sprintf(
+            'Could not resolve path for object "%s", tried paths "%s"',
+            get_class($object), implode('", "', $tried)
+        ));
     }
 }

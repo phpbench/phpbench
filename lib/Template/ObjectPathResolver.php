@@ -9,5 +9,8 @@ use function class_parents;
 
 interface ObjectPathResolver
 {
-    public function resolvePath(object $object): string;
+    /**
+     * @return string[]
+     */
+    public function resolvePaths(object $object): array;
 }

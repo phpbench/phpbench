@@ -3,9 +3,9 @@
 namespace PhpBench\Tests\Unit\Template;
 
 use PHPUnit\Framework\TestCase;
+use PhpBench\Template\ObjectPathResolver\MappedObjectPathResolver;
 use PhpBench\Template\ObjectRenderer;
 use PhpBench\Tests\IntegrationTestCase;
-use PhpBench\Tests\Unit\Template\ObjectPathResolver\MappedObjectPathResolver;
 
 class ObjectRendererTest extends IntegrationTestCase
 {
@@ -27,9 +27,12 @@ class ObjectRendererTest extends IntegrationTestCase
     {
         return new ObjectRenderer(
             new MappedObjectPathResolver([
-                Foobar::class => $this->workspace()->path('foo.html'),
-                Barfoo::class => $this->workspace()->path('bar.html')
-            ])
+                Foobar::class => 'foo.html',
+                Barfoo::class => 'bar.html'
+            ]),
+            [
+                $this->workspace()->path()
+            ]
         );
     }
 }

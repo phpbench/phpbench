@@ -24,40 +24,24 @@ final class ReflectionObjectPathResolver implements ObjectPathResolver
         $this->prefixMap = $prefixMap;
     }
 
-    public function resolvePath(object $object): string
+    /**
+     * @return string[]
+     */
+    public function resolvePaths(object $object): array
     {
-        $path = $this->tryToResolve(get_class($object));
-
-        if ($path) {
-            return $path;
-        }
+        $paths = [ $this->classToPath(get_class($object)) ];
 
         $reflectionClass = new ReflectionClass($object);
-
-        foreach ($reflectionClass->getInterfaceNames() as $interfaceName) {
-            try {
-                $path = $this->tryToResolve($interfaceName);
-            } catch (CouldNotResolvePath $path) {
-                continue;
-            }
-
-            if ($path) {
-                return $path;
-            }
-        }
 
         $parentClass = $reflectionClass;
         while ($parentClass = $parentClass->getParentClass()) {
             try {
-                return $this->tryToResolve($parentClass->getName());
+                $paths[] = $this->classToPath($parentClass->getName());
             } catch(CouldNotResolvePath $_) {
             }
         }
 
-        throw new CouldNotResolvePath(sprintf(
-            'Could not find template for class "%s" (primary location would be "%s")',
-            get_class($object), $this->classToPath(get_class($object))
-        ));
+        return $paths;
     }
 
     private function tryToResolve(string $classFqn): ?string
