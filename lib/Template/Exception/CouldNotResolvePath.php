@@ -4,6 +4,6 @@ namespace PhpBench\Template\Exception;
 
 use RuntimeException;
 
-class CouldNotResolvePath extends RuntimeException
+final class CouldNotResolvePath extends RuntimeException
 {
 }
