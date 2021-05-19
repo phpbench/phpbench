@@ -23,6 +23,7 @@ class ChainObjectPathResolver implements ObjectPathResolver
     {
         foreach ($this->objectPathResolvers as $resolver) {
             $paths = $resolver->resolvePaths($object);
+
             if ($paths) {
                 return $paths;
             }

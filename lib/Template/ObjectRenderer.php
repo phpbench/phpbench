@@ -2,12 +2,11 @@
 
 namespace PhpBench\Template;
 
-use PhpBench\Template\ObjectPathResolver\ReflectionObjectPathResolver;
-use RuntimeException;
 use function ob_get_clean;
 use function ob_start;
+use RuntimeException;
 
-final class ObjectRenderer 
+final class ObjectRenderer
 {
     /**
      * @var ObjectPathResolver
@@ -36,11 +35,14 @@ final class ObjectRenderer
 
                 if (!file_exists($absolutePath)) {
                     $tried[] = $absolutePath;
+
                     continue;
                 }
 
                 ob_start();
+
                 require $absolutePath;
+
                 return ob_get_clean();
             }
         }

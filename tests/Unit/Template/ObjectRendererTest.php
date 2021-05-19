@@ -2,7 +2,6 @@
 
 namespace PhpBench\Tests\Unit\Template;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Template\ObjectPathResolver\MappedObjectPathResolver;
 use PhpBench\Template\ObjectRenderer;
 use PhpBench\Tests\IntegrationTestCase;

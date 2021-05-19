@@ -13,10 +13,8 @@
 namespace PhpBench\Tests\Unit\Report\Renderer;
 
 use Generator;
-use PhpBench\Expression\Printer;
-use PhpBench\Report\Renderer\ConsoleRenderer;
-use PhpBench\Report\RendererInterface;
 use PhpBench\Report\Renderer\TemplateRenderer;
+use PhpBench\Report\RendererInterface;
 use PhpBench\Template\ObjectRenderer;
 use PhpBench\Tests\Util\Approval;
 use Symfony\Component\Console\Output\BufferedOutput;

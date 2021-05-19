@@ -2,7 +2,6 @@
 
 namespace PhpBench\Template\ObjectPathResolver;
 
-use PhpBench\Template\Exception\CouldNotResolvePath;
 use PhpBench\Template\ObjectPathResolver;
 
 class MappedObjectPathResolver implements ObjectPathResolver
@@ -20,6 +19,7 @@ class MappedObjectPathResolver implements ObjectPathResolver
     public function resolvePaths(object $object): array
     {
         $fqn = get_class($object);
+
         if (isset($this->map[$fqn])) {
             return [$this->map[$fqn]];
         }

@@ -28,7 +28,6 @@ use PhpBench\Report\Renderer\TemplateRenderer;
 use PhpBench\Report\ReportManager;
 use PhpBench\Report\Transform\SuiteCollectionTransformer;
 use PhpBench\Storage\UuidResolver;
-use PhpBench\Template\ObjectPathResolver;
 use PhpBench\Template\ObjectPathResolver\ChainObjectPathResolver;
 use PhpBench\Template\ObjectPathResolver\ReflectionObjectPathResolver;
 use PhpBench\Template\ObjectRenderer;
@@ -219,7 +218,7 @@ class ReportExtension implements ExtensionInterface
         }, [self::TAG_REPORT_RENDERER => ['name' => 'html']]);
     }
 
-    private function registerRenderer(Container $container)
+    private function registerRenderer(Container $container): void
     {
         $container->register(ObjectRenderer::class, function (Container $container) {
             return new ObjectRenderer(

@@ -4,10 +4,7 @@ namespace PhpBench\Template\ObjectPathResolver;
 
 use PhpBench\Template\Exception\CouldNotResolvePath;
 use PhpBench\Template\ObjectPathResolver;
-use PhpBench\Template\ObjectPathResolver\ReflectionObjectPathResolver;
 use ReflectionClass;
-use RuntimeException;
-use function class_parents;
 
 final class ReflectionObjectPathResolver implements ObjectPathResolver
 {
@@ -34,10 +31,11 @@ final class ReflectionObjectPathResolver implements ObjectPathResolver
         $reflectionClass = new ReflectionClass($object);
 
         $parentClass = $reflectionClass;
+
         while ($parentClass = $parentClass->getParentClass()) {
             try {
                 $paths[] = $this->classToPath($parentClass->getName());
-            } catch(CouldNotResolvePath $_) {
+            } catch (CouldNotResolvePath $_) {
             }
         }
 

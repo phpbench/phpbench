@@ -5,7 +5,6 @@ namespace PhpBench\Report\Renderer;
 use PhpBench\Registry\Config;
 use PhpBench\Report\Model\Reports;
 use PhpBench\Report\RendererInterface;
-use PhpBench\Template\ObjectPathResolver;
 use PhpBench\Template\ObjectRenderer;
 use RuntimeException;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -42,14 +41,16 @@ class TemplateRenderer implements RendererInterface
     {
     }
 
-    public function render(Reports $report, Config $config)
+    public function render(Reports $report, Config $config): void
     {
         $rendered = $this->renderer->render($report);
         $dirname = dirname($this->outputDir);
         $outPath = $this->outputDir . '/index.html';
+
         if (!file_exists($dirname)) {
             mkdir($dirname, 0777, true);
         }
+
         if (false === file_put_contents($outPath, $rendered)) {
             throw new RuntimeException(sprintf(
                 'Could not write report to file "%s"', $outPath

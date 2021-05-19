@@ -2,9 +2,6 @@
 
 namespace PhpBench\Tests\Unit\Template\ObjectPathResolver;
 
-use PHPUnit\Framework\TestCase;
-use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Template\ObjectPathResolver\ReflectionObjectPathResolver;
 use PhpBench\Tests\IntegrationTestCase;
 
