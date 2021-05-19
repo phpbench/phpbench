@@ -29,6 +29,7 @@ use PhpBench\Report\ReportManager;
 use PhpBench\Report\Transform\SuiteCollectionTransformer;
 use PhpBench\Storage\UuidResolver;
 use PhpBench\Template\ObjectPathResolver;
+use PhpBench\Template\ObjectPathResolver\ChainObjectPathResolver;
 use PhpBench\Template\ObjectPathResolver\ReflectionObjectPathResolver;
 use PhpBench\Template\ObjectRenderer;
 use Psr\Log\LoggerInterface;
@@ -81,15 +82,7 @@ class ReportExtension implements ExtensionInterface
             );
         });
 
-        $container->register(ObjectRenderer::class, function (Container $container) {
-            return new ObjectRenderer(
-                new ReflectionObjectPathResolver(
-                    $container->getParameter(self::PARAM_TEMPLATE_MAP)
-                ),
-                $container->getParameter(self::PARAM_TEMPLATE_PATHS)
-            );
-        });
-
+        $this->registerRenderer($container);
         $this->registerCommands($container);
         $this->registerRegistries($container);
         $this->registerReportGenerators($container);
@@ -213,5 +206,23 @@ class ReportExtension implements ExtensionInterface
                 $container->get(ObjectRenderer::class)
             );
         }, [self::TAG_REPORT_RENDERER => ['name' => 'delimited']]);
+    }
+
+    private function registerRenderer(Container $container)
+    {
+        $container->register(ObjectRenderer::class, function (Container $container) {
+            return new ObjectRenderer(
+                $container->get(ChainObjectPathResolver::class),
+                $container->getParameter(self::PARAM_TEMPLATE_PATHS)
+            );
+        });
+
+        $container->register(ChainObjectPathResolver::class, function (Container $container) {
+            return new ChainObjectPathResolver([
+                new ReflectionObjectPathResolver(
+                    $container->getParameter(self::PARAM_TEMPLATE_MAP)
+                )
+            ]);
+        });
     }
 }
