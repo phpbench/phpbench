@@ -24,9 +24,13 @@ use PhpBench\Report\Generator\ExpressionGenerator;
 use PhpBench\Report\Generator\OutputTestGenerator;
 use PhpBench\Report\Renderer\ConsoleRenderer;
 use PhpBench\Report\Renderer\DelimitedRenderer;
+use PhpBench\Report\Renderer\TemplateRenderer;
 use PhpBench\Report\ReportManager;
 use PhpBench\Report\Transform\SuiteCollectionTransformer;
 use PhpBench\Storage\UuidResolver;
+use PhpBench\Template\ObjectPathResolver;
+use PhpBench\Template\ObjectPathResolver\ReflectionObjectPathResolver;
+use PhpBench\Template\ObjectRenderer;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -40,19 +44,31 @@ class ReportExtension implements ExtensionInterface
 
     public const TAG_REPORT_GENERATOR = 'report.generator';
     public const TAG_REPORT_RENDERER = 'report.renderer';
+    public const PARAM_TEMPLATE_MAP = 'report.template_map';
+    public const PARAM_TEMPLATE_PATHS = 'report.template_paths';
 
     public function configure(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             self::PARAM_REPORTS => [],
             self::PARAM_OUTPUTS => [],
+            self::PARAM_TEMPLATE_PATHS => [
+                __DIR__ . '/../../templates'
+            ],
+            self::PARAM_TEMPLATE_MAP => [
+                'PhpBench\\Report\\Model' => 'model'
+            ],
         ]);
 
+        $resolver->setAllowedTypes(self::PARAM_TEMPLATE_MAP, ['array']);
+        $resolver->setAllowedTypes(self::PARAM_TEMPLATE_PATHS, ['array']);
         $resolver->setAllowedTypes(self::PARAM_REPORTS, ['array']);
         $resolver->setAllowedTypes(self::PARAM_OUTPUTS, ['array']);
         SymfonyOptionsResolverCompat::setInfos($resolver, [
             self::PARAM_REPORTS => 'Report generator configurations, see :doc:`report-generators`',
             self::PARAM_OUTPUTS => 'Report renderer configurations, see :doc:`report-renderers`',
+            self::PARAM_TEMPLATE_MAP => 'Namespace prefix to template path map for object rendering',
+            self::PARAM_TEMPLATE_PATHS => 'List of paths to load templates from',
         ]);
     }
 
@@ -62,6 +78,15 @@ class ReportExtension implements ExtensionInterface
             return new ReportManager(
                 $container->get(self::SERVICE_REGISTRY_GENERATOR),
                 $container->get(self::SERVICE_REGISTRY_RENDERER)
+            );
+        });
+
+        $container->register(ObjectRenderer::class, function (Container $container) {
+            return new ObjectRenderer(
+                new ReflectionObjectPathResolver(
+                    $container->getParameter(self::PARAM_TEMPLATE_MAP)
+                ),
+                $container->getParameter(self::PARAM_TEMPLATE_PATHS)
             );
         });
 
@@ -175,10 +200,17 @@ class ReportExtension implements ExtensionInterface
                 $container->get(Printer::class)
             );
         }, [self::TAG_REPORT_RENDERER => ['name' => 'console']]);
+
         $container->register(DelimitedRenderer::class, function (Container $container) {
             return new DelimitedRenderer(
                 $container->get(ConsoleExtension::SERVICE_OUTPUT_STD),
                 $container->get(ExpressionExtension::SERVICE_BARE_PRINTER)
+            );
+        }, [self::TAG_REPORT_RENDERER => ['name' => 'delimited']]);
+
+        $container->register(TemplateRenderer::class, function (Container $container) {
+            return new TemplateRenderer(
+                $container->get(ObjectRenderer::class)
             );
         }, [self::TAG_REPORT_RENDERER => ['name' => 'delimited']]);
     }
