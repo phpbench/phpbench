@@ -57,7 +57,8 @@ class ReportExtension implements ExtensionInterface
                 __DIR__ . '/../../templates'
             ],
             self::PARAM_TEMPLATE_MAP => [
-                'PhpBench\\Report\\Model' => 'model'
+                'PhpBench\\Report\\Model' => 'html',
+                'PhpBench\\Expression\\Ast' => 'html/node'
             ],
         ]);
 
