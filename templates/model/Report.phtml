@@ -1,0 +1,11 @@
+<div>
+<?php if ($object->title()): ?>
+    <h2><?php echo $object->title() ?></h2>
+<?php endif ?>
+<?php if ($object->description()): ?>
+    <p><?php echo $object->description() ?></p>
+<?php endif ?>
+<?php foreach ($object->tables() as $table): ?>
+    <?php echo $this->render($table); ?>
+<?php endforeach ?>
+</div>
