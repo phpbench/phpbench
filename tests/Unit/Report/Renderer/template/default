@@ -1,2 +1,87 @@
 []
 ---
+    <div>
+    <h2>Output Test Report</h2>
+    <p>This report demonstrates output</p>
+    <table>
+    <thead>
+                    <th>string</th>
+                    <th>int</th>
+                    <th>float</th>
+                    <th>bool</th>
+                    <th>null</th>
+                    <th>parameter</th>
+            </thead>
+    <tbody>
+                    <tr>
+            <td>"one"</td>
+            <td>123</td>
+            <td>12.2</td>
+            <td>[{},{}]</td>
+            <td>null</td>
+            <td>template not found for "PhpBench\Expression\Ast\ParameterNode"
+</td>
+    </tr>
+            </tbody>
+</table>
+    <table>
+    <thead>
+                    <th>-100</th>
+                    <th>-90</th>
+                    <th>-80</th>
+                    <th>-70</th>
+                    <th>-60</th>
+                    <th>-50</th>
+                    <th>-40</th>
+                    <th>-30</th>
+                    <th>-20</th>
+                    <th>-10</th>
+                    <th>0</th>
+                    <th>10</th>
+                    <th>20</th>
+                    <th>30</th>
+                    <th>40</th>
+                    <th>50</th>
+                    <th>60</th>
+                    <th>70</th>
+                    <th>80</th>
+                    <th>90</th>
+                    <th>100</th>
+            </thead>
+    <tbody>
+                    <tr>
+            <td>-100</td>
+            <td>-90</td>
+            <td>-80</td>
+            <td>-70</td>
+            <td>-60</td>
+            <td>-50</td>
+            <td>-40</td>
+            <td>-30</td>
+            <td>-20</td>
+            <td>-10</td>
+            <td>0</td>
+            <td>10</td>
+            <td>20</td>
+            <td>30</td>
+            <td>40</td>
+            <td>50</td>
+            <td>60</td>
+            <td>70</td>
+            <td>80</td>
+            <td>90</td>
+            <td>100</td>
+    </tr>
+            </tbody>
+</table>
+    <table>
+    <thead>
+                    <th>time</th>
+            </thead>
+    <tbody>
+                    <tr>
+            <td>10000</td>
+    </tr>
+            </tbody>
+</table>
+</div>

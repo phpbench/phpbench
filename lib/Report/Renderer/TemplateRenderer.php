@@ -8,6 +8,7 @@ use PhpBench\Report\RendererInterface;
 use PhpBench\Template\ObjectPathResolver;
 use PhpBench\Template\ObjectRenderer;
 use RuntimeException;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TemplateRenderer implements RendererInterface
@@ -22,8 +23,14 @@ class TemplateRenderer implements RendererInterface
      */
     private $outputDir;
 
-    public function __construct(ObjectRenderer $renderer, string $outputDir)
+    /**
+     * @var OutputInterface
+     */
+    private $output;
+
+    public function __construct(OutputInterface $output, ObjectRenderer $renderer, string $outputDir)
     {
+        $this->output = $output;
         $this->renderer = $renderer;
         $this->outputDir = $outputDir;
     }
@@ -48,5 +55,6 @@ class TemplateRenderer implements RendererInterface
                 'Could not write report to file "%s"', $outPath
             ));
         }
+        $this->output->writeln(sprintf('Written report to: %s', $outPath));
     }
 }

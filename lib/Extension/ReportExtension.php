@@ -34,6 +34,7 @@ use PhpBench\Template\ObjectPathResolver\ReflectionObjectPathResolver;
 use PhpBench\Template\ObjectRenderer;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Webmozart\PathUtil\Path;
 
 class ReportExtension implements ExtensionInterface
 {
@@ -47,6 +48,7 @@ class ReportExtension implements ExtensionInterface
     public const TAG_REPORT_RENDERER = 'report.renderer';
     public const PARAM_TEMPLATE_MAP = 'report.template_map';
     public const PARAM_TEMPLATE_PATHS = 'report.template_paths';
+    public const PARAM_OUTPUT_DIR_HTML = 'report.html_output_dir';
 
     public function configure(OptionsResolver $resolver): void
     {
@@ -56,6 +58,7 @@ class ReportExtension implements ExtensionInterface
             self::PARAM_TEMPLATE_PATHS => [
                 __DIR__ . '/../../templates'
             ],
+            self::PARAM_OUTPUT_DIR_HTML => '.phpbench/html',
             self::PARAM_TEMPLATE_MAP => [
                 'PhpBench\\Report\\Model' => 'html',
                 'PhpBench\\Expression\\Ast' => 'html/node'
@@ -64,6 +67,7 @@ class ReportExtension implements ExtensionInterface
 
         $resolver->setAllowedTypes(self::PARAM_TEMPLATE_MAP, ['array']);
         $resolver->setAllowedTypes(self::PARAM_TEMPLATE_PATHS, ['array']);
+        $resolver->setAllowedTypes(self::PARAM_OUTPUT_DIR_HTML, ['string']);
         $resolver->setAllowedTypes(self::PARAM_REPORTS, ['array']);
         $resolver->setAllowedTypes(self::PARAM_OUTPUTS, ['array']);
         SymfonyOptionsResolverCompat::setInfos($resolver, [
@@ -71,6 +75,7 @@ class ReportExtension implements ExtensionInterface
             self::PARAM_OUTPUTS => 'Report renderer configurations, see :doc:`report-renderers`',
             self::PARAM_TEMPLATE_MAP => 'Namespace prefix to template path map for object rendering',
             self::PARAM_TEMPLATE_PATHS => 'List of paths to load templates from',
+            self::PARAM_OUTPUT_DIR_HTML => 'Path in which to render HTML reports',
         ]);
     }
 
@@ -204,9 +209,14 @@ class ReportExtension implements ExtensionInterface
 
         $container->register(TemplateRenderer::class, function (Container $container) {
             return new TemplateRenderer(
-                $container->get(ObjectRenderer::class)
+                $container->get(ConsoleExtension::SERVICE_OUTPUT_STD),
+                $container->get(ObjectRenderer::class),
+                Path::makeAbsolute(
+                    $container->getParameter(self::PARAM_OUTPUT_DIR_HTML),
+                    $container->getParameter(CoreExtension::PARAM_WORKING_DIR)
+                ),
             );
-        }, [self::TAG_REPORT_RENDERER => ['name' => 'delimited']]);
+        }, [self::TAG_REPORT_RENDERER => ['name' => 'html']]);
     }
 
     private function registerRenderer(Container $container)

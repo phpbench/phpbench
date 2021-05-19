@@ -2,6 +2,6 @@
 
 namespace PhpBench\Expression\Ast;
 
-class RelativeDeviationNode extends PercentageNode
+final class RelativeDeviationNode extends PercentageNode
 {
 }

@@ -31,11 +31,13 @@ class TemplateRendererTest extends AbstractRendererCase
     protected function setUp(): void
     {
         $this->workspace()->reset();
+        $this->output = new BufferedOutput();
     }
 
     protected function getRenderer(): RendererInterface
     {
         return new TemplateRenderer(
+            $this->output,
             $this->container()->get(ObjectRenderer::class),
             $this->workspace()->path()
         );
