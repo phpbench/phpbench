@@ -2,7 +2,7 @@
 
 namespace PhpBench\Expression\Ast;
 
-abstract class BinaryOperatorNode implements Node
+abstract class BinaryOperatorNode extends Node
 {
     /**
      * @var Node

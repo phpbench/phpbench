@@ -2,7 +2,7 @@
 
 namespace PhpBench\Expression\Ast;
 
-class ConcatNode implements Node
+class ConcatNode extends Node
 {
     /**
      * @var Node

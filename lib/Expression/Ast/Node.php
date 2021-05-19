@@ -2,6 +2,6 @@
 
 namespace PhpBench\Expression\Ast;
 
-interface Node
+abstract class Node
 {
 }

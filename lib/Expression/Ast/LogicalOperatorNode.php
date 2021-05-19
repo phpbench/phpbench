@@ -2,6 +2,6 @@
 
 namespace PhpBench\Expression\Ast;
 
-class LogicalOperatorNode extends BinaryOperatorNode
+final class LogicalOperatorNode extends BinaryOperatorNode
 {
 }

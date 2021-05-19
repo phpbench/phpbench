@@ -2,10 +2,10 @@
 
 namespace PhpBench\Expression\Ast;
 
-interface PhpValue extends Node
+abstract class PhpValue extends Node
 {
     /**
      * @return mixed
      */
-    public function value();
+    abstract public function value();
 }

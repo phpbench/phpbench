@@ -2,7 +2,7 @@
 
 namespace PhpBench\Expression\Ast;
 
-class TolerableNode implements Node
+final class TolerableNode extends Node
 {
     /**
      * @var Node

@@ -2,7 +2,7 @@
 
 namespace PhpBench\Expression\Ast;
 
-final class NullNode implements PhpValue
+final class NullNode extends PhpValue
 {
     /**
      * {@inheritDoc}

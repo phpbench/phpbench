@@ -2,7 +2,7 @@
 
 namespace PhpBench\Expression\Ast;
 
-class PercentDifferenceNode implements PhpValue
+class PercentDifferenceNode extends PhpValue
 {
     /**
      * @var float
