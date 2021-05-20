@@ -2,7 +2,6 @@
 
 namespace PhpBench\Template\ObjectPathResolver;
 
-use PhpBench\Template\Exception\CouldNotResolvePath;
 use PhpBench\Template\ObjectPathResolver;
 use ReflectionClass;
 
@@ -33,10 +32,12 @@ final class ReflectionObjectPathResolver implements ObjectPathResolver
         $parentClass = $reflectionClass;
 
         while ($parentClass = $parentClass->getParentClass()) {
-            try {
-                $paths[] = $this->classToPath($parentClass->getName());
-            } catch (CouldNotResolvePath $_) {
+            $path = $this->classToPath($parentClass->getName());
+
+            if (!$path) {
+                continue;
             }
+            $paths[] = $path;
         }
 
         return $paths;
@@ -53,7 +54,7 @@ final class ReflectionObjectPathResolver implements ObjectPathResolver
         return null;
     }
 
-    private function classToPath(string $classFqn): string
+    private function classToPath(string $classFqn): ?string
     {
         foreach ($this->prefixMap as $prefix => $pathPrefix) {
             if (false !== strpos($classFqn, $prefix)) {
@@ -61,10 +62,6 @@ final class ReflectionObjectPathResolver implements ObjectPathResolver
             }
         }
 
-        throw new CouldNotResolvePath(sprintf(
-            'Class "%s" does is not mapped to a template. Only classes starting with the following prefixes are templatable: "%s"',
-            $classFqn,
-            implode('", "', array_keys($this->prefixMap))
-        ));
+        return null;
     }
 }
