@@ -213,7 +213,7 @@ class ReportExtension implements ExtensionInterface
                 Path::makeAbsolute(
                     $container->getParameter(self::PARAM_OUTPUT_DIR_HTML),
                     $container->getParameter(CoreExtension::PARAM_WORKING_DIR)
-                ),
+                )
             );
         }, [self::TAG_REPORT_RENDERER => ['name' => 'html']]);
     }
