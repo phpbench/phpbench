@@ -13,6 +13,7 @@
 namespace PhpBench\Tests\Unit\Report\Renderer;
 
 use Generator;
+use PhpBench\Registry\Config;
 use PhpBench\Report\Renderer\TemplateRenderer;
 use PhpBench\Report\RendererInterface;
 use PhpBench\Template\ObjectRenderer;
@@ -52,6 +53,17 @@ class TemplateRendererTest extends AbstractRendererCase
 
         self::assertFileExists($this->workspace()->path('index.html'));
         $approval->approve($this->workspace()->getContents('index.html'));
+    }
+
+    public function testCreatesNonExistingDirectory(): void
+    {
+        $renderer = new TemplateRenderer(
+            $this->output,
+            $this->container()->get(ObjectRenderer::class),
+            $this->workspace()->path('foo/bar')
+        );
+        $renderer->render($this->reports(), new Config('test', []));
+        self::assertFileExists($this->workspace()->path('foo/bar'));
     }
 
     public function provideRender(): Generator

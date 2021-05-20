@@ -43,19 +43,24 @@ class TemplateRenderer implements RendererInterface
 
     public function render(Reports $report, Config $config): void
     {
-        $rendered = $this->renderer->render($report);
-        $dirname = dirname($this->outputDir);
-        $outPath = $this->outputDir . '/index.html';
-
-        if (!file_exists($dirname)) {
-            mkdir($dirname, 0777, true);
+        if (!file_exists($this->outputDir)) {
+            if (!@mkdir($this->outputDir, 0777, true)) {
+                throw new RuntimeException(sprintf(
+                    'Could not create directory "%s"',
+                    $this->outputDir
+                ));
+            }
         }
+
+        $rendered = $this->renderer->render($report);
+        $outPath = $this->outputDir . '/index.html';
 
         if (false === file_put_contents($outPath, $rendered)) {
             throw new RuntimeException(sprintf(
                 'Could not write report to file "%s"', $outPath
             ));
         }
+
         $this->output->writeln(sprintf('Written report to: %s', $outPath));
     }
 }
