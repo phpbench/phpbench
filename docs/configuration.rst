@@ -438,6 +438,39 @@ Default: ``[]``
 
 Types: ``["array"]``
 
+.. _configuration_report_template_paths:
+
+report.template_paths
+~~~~~~~~~~~~~~~~~~~~~
+
+List of paths to load templates from
+
+Default: ``["\/home\/daniel\/www\/phpbench\/phpbench\/lib\/Extension\/..\/..\/templates"]``
+
+Types: ``["array"]``
+
+.. _configuration_report_html_output_dir:
+
+report.html_output_dir
+~~~~~~~~~~~~~~~~~~~~~~
+
+Path in which to render HTML reports
+
+Default: ``.phpbench/html``
+
+Types: ``["string"]``
+
+.. _configuration_report_template_map:
+
+report.template_map
+~~~~~~~~~~~~~~~~~~~
+
+Namespace prefix to template path map for object rendering
+
+Default: ``{"PhpBench\\Report\\Model":"html","PhpBench\\Expression\\Ast":"html\/node"}``
+
+Types: ``["array"]``
+
 Expression
 ----------
 
