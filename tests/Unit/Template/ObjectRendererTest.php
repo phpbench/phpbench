@@ -21,8 +21,22 @@ class ObjectRendererTest extends IntegrationTestCase
         self::assertEquals('Hello World', $this->createRenderer()->render(new Foobar()));
     }
 
+    public function testExposesServices(): void
+    {
+        $this->workspace()->put('foo.html', 'Hello <?php echo $this->foobar->hello() ?>');
+        self::assertEquals('Hello Hello', $this->createRenderer([
+            'foobar' => new class { public function hello() { return 'Hello'; }}
+        ])->render(new Foobar()));
+    }
 
-    public function createRenderer(): ObjectRenderer
+    public function testThrowsExceptionWhenServiceNotFound(): void
+    {
+        $this->expectExceptionMessage('Unknown template service "barfoo", known template services: ""');
+        $this->workspace()->put('foo.html', 'Hello <?php echo $this->barfoo->barfoo() ?>');
+        $this->createRenderer([])->render(new Foobar());
+    }
+
+    public function createRenderer(array $services = []): ObjectRenderer
     {
         return new ObjectRenderer(
             new MappedObjectPathResolver([
@@ -31,7 +45,8 @@ class ObjectRendererTest extends IntegrationTestCase
             ]),
             [
                 $this->workspace()->path()
-            ]
+            ],
+            $services
         );
     }
 }

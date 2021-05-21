@@ -14,13 +14,12 @@
             </thead>
     <tbody>
                     <tr>
-            <td>"one"</td>
+            <td>one</td>
             <td>123</td>
             <td>12.2</td>
-            <td>[{},{}]</td>
+            <td>[true, false]</td>
             <td>null</td>
-            <td>template not found for "PhpBench\Expression\Ast\ParameterNode"
-</td>
+            <td>foo.bar</td>
     </tr>
             </tbody>
 </table>
@@ -50,27 +49,27 @@
             </thead>
     <tbody>
                     <tr>
-            <td>-100</td>
-            <td>-90</td>
-            <td>-80</td>
-            <td>-70</td>
-            <td>-60</td>
-            <td>-50</td>
-            <td>-40</td>
-            <td>-30</td>
-            <td>-20</td>
-            <td>-10</td>
-            <td>0</td>
-            <td>10</td>
-            <td>20</td>
-            <td>30</td>
-            <td>40</td>
-            <td>50</td>
-            <td>60</td>
-            <td>70</td>
-            <td>80</td>
-            <td>90</td>
-            <td>100</td>
+            <td>-100.00%</td>
+            <td>-90.00%</td>
+            <td>-80.00%</td>
+            <td>-70.00%</td>
+            <td>-60.00%</td>
+            <td>-50.00%</td>
+            <td>-40.00%</td>
+            <td>-30.00%</td>
+            <td>-20.00%</td>
+            <td>-10.00%</td>
+            <td>0.00%</td>
+            <td>+10.00%</td>
+            <td>+20.00%</td>
+            <td>+30.00%</td>
+            <td>+40.00%</td>
+            <td>+50.00%</td>
+            <td>+60.00%</td>
+            <td>+70.00%</td>
+            <td>+80.00%</td>
+            <td>+90.00%</td>
+            <td>+100.00%</td>
     </tr>
             </tbody>
 </table>
@@ -80,7 +79,7 @@
             </thead>
     <tbody>
                     <tr>
-            <td>10000</td>
+            <td>10.0ms</td>
     </tr>
             </tbody>
 </table>

@@ -13,6 +13,7 @@ use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\ExpressionLanguage;
+use PhpBench\Expression\NodePrinter;
 use PhpBench\Expression\Printer;
 use PhpBench\Expression\Printer\EvaluatingPrinter;
 use PhpBench\Json\JsonDecoder;
@@ -223,7 +224,10 @@ class ReportExtension implements ExtensionInterface
         $container->register(ObjectRenderer::class, function (Container $container) {
             return new ObjectRenderer(
                 $container->get(ChainObjectPathResolver::class),
-                $container->getParameter(self::PARAM_TEMPLATE_PATHS)
+                $container->getParameter(self::PARAM_TEMPLATE_PATHS),
+                [
+                    'nodePrinter' => $container->get(Printer::class)
+                ]
             );
         });
 

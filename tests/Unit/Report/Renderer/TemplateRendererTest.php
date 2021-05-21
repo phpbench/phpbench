@@ -55,6 +55,13 @@ class TemplateRendererTest extends AbstractRendererCase
         $approval->approve($this->workspace()->getContents('index.html'));
     }
 
+    public function provideRender(): Generator
+    {
+        foreach (glob(sprintf('%s/%s/*', __DIR__, 'template')) as $path) {
+            yield [$path];
+        }
+    }
+
     public function testCreatesNonExistingDirectory(): void
     {
         $renderer = new TemplateRenderer(
@@ -64,12 +71,5 @@ class TemplateRendererTest extends AbstractRendererCase
         );
         $renderer->render($this->reports(), new Config('test', []));
         self::assertFileExists($this->workspace()->path('foo/bar'));
-    }
-
-    public function provideRender(): Generator
-    {
-        foreach (glob(sprintf('%s/%s/*', __DIR__, 'template')) as $path) {
-            yield [$path];
-        }
     }
 }
