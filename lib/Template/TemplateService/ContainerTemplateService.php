@@ -1,11 +1,12 @@
 <?php
 
-namespace PhpBench\Template;
+namespace PhpBench\Template\TemplateService;
 
+use PhpBench\Template\TemplateService;
 use Psr\Container\ContainerInterface;
 use RuntimeException;
 
-final class TemplateServiceContainer 
+final class ContainerTemplateService implements TemplateService
 {
     /**
      * @var ContainerInterface
@@ -27,7 +28,7 @@ final class TemplateServiceContainer
         if (!isset($this->serviceMap[$serviceName])) {
             throw new RuntimeException(sprintf(
                 'Unknown template service "%s", known template services: "%s"',
-                $serviceFqn, implode('", "', array_keys($this->serviceMap))
+                $serviceName, implode('", "', array_keys($this->serviceMap))
             ));
         }
 

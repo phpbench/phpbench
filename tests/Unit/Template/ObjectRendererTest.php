@@ -4,7 +4,7 @@ namespace PhpBench\Tests\Unit\Template;
 
 use PhpBench\Template\ObjectPathResolver\MappedObjectPathResolver;
 use PhpBench\Template\ObjectRenderer;
-use PhpBench\Template\TemplateServiceContainer;
+use PhpBench\Template\TemplateService\MappedTemplateService;
 use PhpBench\Tests\IntegrationTestCase;
 
 class ObjectRendererTest extends IntegrationTestCase
@@ -26,7 +26,12 @@ class ObjectRendererTest extends IntegrationTestCase
     {
         $this->workspace()->put('foo.html', 'Hello <?php echo $this->foobar->hello() ?>');
         self::assertEquals('Hello Hello', $this->createRenderer([
-            'foobar' => new class { public function hello() { return 'Hello'; }}
+            'foobar' => new class {
+                public function hello()
+                {
+                    return 'Hello';
+                }
+            }
         ])->render(new Foobar()));
     }
 
@@ -46,7 +51,8 @@ class ObjectRendererTest extends IntegrationTestCase
             ]),
             [
                 $this->workspace()->path()
-            ]
+            ],
+            new MappedTemplateService($services)
         );
     }
 }

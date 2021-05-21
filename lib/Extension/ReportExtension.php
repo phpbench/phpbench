@@ -13,7 +13,6 @@ use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\ExpressionLanguage;
-use PhpBench\Expression\NodePrinter;
 use PhpBench\Expression\NodePrinters;
 use PhpBench\Expression\Printer;
 use PhpBench\Expression\Printer\EvaluatingPrinter;
@@ -35,7 +34,7 @@ use PhpBench\Template\Expression\Printer\TemplatePrinter;
 use PhpBench\Template\ObjectPathResolver\ChainObjectPathResolver;
 use PhpBench\Template\ObjectPathResolver\ReflectionObjectPathResolver;
 use PhpBench\Template\ObjectRenderer;
-use PhpBench\Template\TemplateServiceContainer;
+use PhpBench\Template\TemplateService\ContainerTemplateService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Webmozart\PathUtil\Path;
@@ -229,7 +228,7 @@ class ReportExtension implements ExtensionInterface
             return new ObjectRenderer(
                 $container->get(ChainObjectPathResolver::class),
                 $container->getParameter(self::PARAM_TEMPLATE_PATHS),
-                new TemplateServiceContainer($container, [
+                new ContainerTemplateService($container, [
                     'nodePrinter' => TemplatePrinter::class
                 ])
             );

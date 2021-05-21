@@ -3,12 +3,10 @@
 namespace PhpBench\Template;
 
 use Exception;
-use PhpBench\Template\Exception\CouldNotFindTemplateForObject;
-use function ob_clean;
 use function ob_end_clean;
 use function ob_get_clean;
 use function ob_start;
-use RuntimeException;
+use PhpBench\Template\Exception\CouldNotFindTemplateForObject;
 
 final class ObjectRenderer
 {
@@ -28,11 +26,11 @@ final class ObjectRenderer
     private $serviceMap;
 
     /**
-     * @var TemplateServiceContainer
+     * @var TemplateService
      */
     private $container;
 
-    public function __construct(ObjectPathResolver $resolver, array $templatePaths, TemplateServiceContainer $container)
+    public function __construct(ObjectPathResolver $resolver, array $templatePaths, TemplateService $container)
     {
         $this->resolver = $resolver;
         $this->templatePaths = $templatePaths;
@@ -60,6 +58,7 @@ final class ObjectRenderer
                     require $absolutePath;
                 } catch (Exception $e) {
                     ob_end_clean();
+
                     throw $e;
                 }
 

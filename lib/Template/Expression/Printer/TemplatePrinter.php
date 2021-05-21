@@ -3,19 +3,23 @@
 namespace PhpBench\Template\Expression\Printer;
 
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Exception\PrinterError;
 use PhpBench\Expression\NodePrinter;
 use PhpBench\Expression\NodePrinters;
 use PhpBench\Expression\Printer;
 use PhpBench\Template\Exception\CouldNotFindTemplateForObject;
-use PhpBench\Template\ObjectPathResolver;
 use PhpBench\Template\ObjectRenderer;
-use function spl_object_hash;
 
 class TemplatePrinter implements NodePrinter
 {
-
+    /**
+     * @var array<string, bool>
+     */
     private $seen = [];
+
+    /**
+     * @var array<string, string>
+     */
+    private $cached = [];
 
     /**
      * @var NodePrinters
@@ -52,6 +56,7 @@ class TemplatePrinter implements NodePrinter
 
         try {
             $this->cached[$hash] = $this->renderer->render($node);
+
             return $this->cached[$hash];
         } catch (CouldNotFindTemplateForObject $couldNotFind) {
             return $this->nodePrinters->print($printer, $node);
