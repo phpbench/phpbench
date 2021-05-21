@@ -14,8 +14,10 @@ use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\NodePrinter;
+use PhpBench\Expression\NodePrinters;
 use PhpBench\Expression\Printer;
 use PhpBench\Expression\Printer\EvaluatingPrinter;
+use PhpBench\Expression\Printer\NormalizingPrinter;
 use PhpBench\Json\JsonDecoder;
 use PhpBench\Registry\ConfigurableRegistry;
 use PhpBench\Report\Generator\BareGenerator;
@@ -29,9 +31,11 @@ use PhpBench\Report\Renderer\TemplateRenderer;
 use PhpBench\Report\ReportManager;
 use PhpBench\Report\Transform\SuiteCollectionTransformer;
 use PhpBench\Storage\UuidResolver;
+use PhpBench\Template\Expression\Printer\TemplatePrinter;
 use PhpBench\Template\ObjectPathResolver\ChainObjectPathResolver;
 use PhpBench\Template\ObjectPathResolver\ReflectionObjectPathResolver;
 use PhpBench\Template\ObjectRenderer;
+use PhpBench\Template\TemplateServiceContainer;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Webmozart\PathUtil\Path;
@@ -225,9 +229,9 @@ class ReportExtension implements ExtensionInterface
             return new ObjectRenderer(
                 $container->get(ChainObjectPathResolver::class),
                 $container->getParameter(self::PARAM_TEMPLATE_PATHS),
-                [
-                    'nodePrinter' => $container->get(Printer::class)
-                ]
+                new TemplateServiceContainer($container, [
+                    'nodePrinter' => TemplatePrinter::class
+                ])
             );
         });
 
@@ -237,6 +241,15 @@ class ReportExtension implements ExtensionInterface
                     $container->getParameter(self::PARAM_TEMPLATE_MAP)
                 )
             ]);
+        });
+
+        $container->register(TemplatePrinter::class, function (Container $container) {
+            return new NormalizingPrinter(
+                new TemplatePrinter(
+                    $container->get(ObjectRenderer::class),
+                    $container->get(NodePrinters::class)
+                )
+            );
         });
     }
 }

@@ -4,6 +4,7 @@ namespace PhpBench\Tests\Unit\Template;
 
 use PhpBench\Template\ObjectPathResolver\MappedObjectPathResolver;
 use PhpBench\Template\ObjectRenderer;
+use PhpBench\Template\TemplateServiceContainer;
 use PhpBench\Tests\IntegrationTestCase;
 
 class ObjectRendererTest extends IntegrationTestCase
@@ -45,8 +46,7 @@ class ObjectRendererTest extends IntegrationTestCase
             ]),
             [
                 $this->workspace()->path()
-            ],
-            $services
+            ]
         );
     }
 }

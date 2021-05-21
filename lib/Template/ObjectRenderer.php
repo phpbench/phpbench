@@ -3,6 +3,7 @@
 namespace PhpBench\Template;
 
 use Exception;
+use PhpBench\Template\Exception\CouldNotFindTemplateForObject;
 use function ob_clean;
 use function ob_end_clean;
 use function ob_get_clean;
@@ -26,11 +27,16 @@ final class ObjectRenderer
      */
     private $serviceMap;
 
-    public function __construct(ObjectPathResolver $resolver, array $templatePaths, array $serviceMap)
+    /**
+     * @var TemplateServiceContainer
+     */
+    private $container;
+
+    public function __construct(ObjectPathResolver $resolver, array $templatePaths, TemplateServiceContainer $container)
     {
         $this->resolver = $resolver;
         $this->templatePaths = $templatePaths;
-        $this->serviceMap = $serviceMap;
+        $this->container = $container;
     }
 
     public function render(object $object): string
@@ -61,26 +67,14 @@ final class ObjectRenderer
             }
         }
 
-        throw new RuntimeException(sprintf(
+        throw new CouldNotFindTemplateForObject(sprintf(
             'Could not resolve path for object "%s", tried paths "%s"',
             get_class($object), implode('", "', $tried)
         ));
     }
 
-    /**
-     * @template T
-     * @param class-string<T>
-     * @return T
-     */
-    public function __get(string $serviceFqn)
+    public function __get(string $serviceName)
     {
-        if (!isset($this->serviceMap[$serviceFqn])) {
-            throw new RuntimeException(sprintf(
-                'Unknown template service "%s", known template services: "%s"',
-                $serviceFqn, implode('", "', array_keys($this->serviceMap))
-            ));
-        }
-
-        return $this->serviceMap[$serviceFqn];
+        return $this->container->get($serviceName);
     }
 }
