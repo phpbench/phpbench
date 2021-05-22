@@ -1,14 +1,9 @@
-<span style="color: #<?php 
-use PhpBench\Expression\Theme\Util\Color;
-use PhpBench\Expression\Theme\Util\Gradient;
-
-assert($object instanceof \PhpBench\Expression\Ast\PercentDifferenceNode); 
-echo Gradient::start(
-    Color::fromHex('#00ff00')
-)->to(
-    Color::fromHex('#333333'), 100
-)->to(
-    Color::fromHex('#ff0000'), 100
-)->colorAtPercentile(((int)$object->percentage() + 100) / 2)->toHex();
-?>"><?php echo $this->nodePrinter->print($object) ?></span>
+<span style="color: #<?php echo $this->gradientBuilder->create('#00ff00')
+    ->to('#333333', 100)
+    ->to('#ff0000', 100)
+    ->build()
+    ->colorAtPercentile(((int)$object->percentage() + 100) / 2)
+    ->toHex() ?>">
+    <?php echo $this->nodePrinter->print($object) ?>
+</span>
 
