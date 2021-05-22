@@ -2,6 +2,7 @@
 
 namespace PhpBench\Report\Generator;
 
+use PhpBench\Expression\Ast\RelativeDeviationNode;
 use function array_combine;
 use PhpBench\Expression\Ast\BooleanNode;
 use PhpBench\Expression\Ast\DisplayAsNode;
@@ -54,6 +55,13 @@ class OutputTestGenerator implements GeneratorInterface
                         }, $percents));
                     })(range(-100, 100, 10)),
                 ], 'Percent Difference'),
+                Table::fromRowArray([
+                    (function (array $percents): array {
+                        return (array)array_combine($percents, array_map(function (float $percent) {
+                            return new RelativeDeviationNode(new FloatNode($percent));
+                        }, $percents));
+                    })(range(0, 100, 10)),
+                ], 'Relative Deviation'),
                 Table::fromRowArray([
                     [
                         'time' => new DisplayAsNode(new IntegerNode(10000), new UnitNode(new StringNode('ms')), new IntegerNode(1))
