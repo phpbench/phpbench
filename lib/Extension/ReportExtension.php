@@ -2,6 +2,7 @@
 
 namespace PhpBench\Extension;
 
+use PhpBench\Color\GradientBuilder;
 use PhpBench\Compat\SymfonyOptionsResolverCompat;
 use PhpBench\Console\Command\Handler\DumpHandler;
 use PhpBench\Console\Command\Handler\ReportHandler;
@@ -229,9 +230,14 @@ class ReportExtension implements ExtensionInterface
                 $container->get(ChainObjectPathResolver::class),
                 $container->getParameter(self::PARAM_TEMPLATE_PATHS),
                 new ContainerTemplateService($container, [
-                    'nodePrinter' => TemplatePrinter::class
+                    'nodePrinter' => TemplatePrinter::class,
+                    'gradientBuilder' => GradientBuilder::class
                 ])
             );
+        });
+
+        $container->register(GradientBuilder::class, function (Container $container) {
+            return new GradientBuilder();
         });
 
         $container->register(ChainObjectPathResolver::class, function (Container $container) {

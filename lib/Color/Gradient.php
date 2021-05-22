@@ -2,7 +2,7 @@
 
 namespace PhpBench\Color;
 
-use PhpBench\Expression\Theme\Util\Color;
+use PhpBench\Expression\Theme\Util\Color as DeprecatedColor;
 use function array_fill;
 use RuntimeException;
 
@@ -63,7 +63,7 @@ use RuntimeException;
         }
 
         $colors = array_merge($this->colors, array_map(function (int $r, int $g, int $b) {
-            return Color::fromRgb($r,$g,$b);
+            return DeprecatedColor::fromRgb($r,$g,$b);
         }, ...$gradient));
 
         // remove the start color as it's already present
