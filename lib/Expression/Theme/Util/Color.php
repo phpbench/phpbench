@@ -3,7 +3,6 @@
 namespace PhpBench\Expression\Theme\Util;
 
 use PhpBench\Color\Color as PhpBenchColor;
-use RuntimeException;
 
 /**
  * @deprecated to be removed in 2.0

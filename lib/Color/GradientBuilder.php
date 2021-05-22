@@ -10,7 +10,7 @@ final class GradientBuilder
     private $startColor;
 
     /**
-     * @var array<int, array<string, int>>
+     * @var array<int, array{string, int}>
      */
     private $series = [];
 
@@ -45,6 +45,7 @@ final class GradientBuilder
         }
 
         $gradient = Gradient::start(Color::fromHex($this->startColor));
+
         foreach ($this->series as [$color, $steps]) {
             $gradient = $gradient->to(Color::fromHex($color), $steps);
         }

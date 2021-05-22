@@ -2,8 +2,8 @@
 
 namespace PhpBench\Color;
 
-use PhpBench\Expression\Theme\Util\Color as DeprecatedColor;
 use function array_fill;
+use PhpBench\Expression\Theme\Util\Color as DeprecatedColor;
 use RuntimeException;
 
 /** final */ class Gradient
@@ -13,7 +13,7 @@ use RuntimeException;
      */
     private $colors;
 
-    private function __construct(Color ...$colors)
+    final private function __construct(Color ...$colors)
     {
         $this->colors = $colors;
     }
@@ -26,7 +26,10 @@ use RuntimeException;
         return $this->colors;
     }
 
-    public static function start(Color $start): self
+    /**
+     * @return static
+     */
+    public static function start(Color $start)
     {
         return new static($start);
     }
@@ -36,7 +39,10 @@ use RuntimeException;
         return $this->colors[count($this->colors) - 1];
     }
 
-    public function to(Color $end, int $steps): self
+    /**
+     * @return static
+     */
+    public function to(Color $end, int $steps)
     {
         if ($steps <= 0) {
             throw new RuntimeException(sprintf(
@@ -81,4 +87,3 @@ use RuntimeException;
         return $this->colors[$offset];
     }
 }
-

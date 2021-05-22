@@ -21,7 +21,7 @@ use RuntimeException;
      */
     private $blue;
 
-    private function __construct(int $red, int $green, int $blue)
+    final private function __construct(int $red, int $green, int $blue)
     {
         $this->red = $red;
         $this->green = $green;
@@ -67,4 +67,3 @@ use RuntimeException;
         return new static($red, $green, $blue);
     }
 }
-
