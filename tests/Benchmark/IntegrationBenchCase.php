@@ -28,7 +28,9 @@ abstract class IntegrationBenchCase
             ReportExtension::class,
             StorageExtension::class,
             ExpressionExtension::class
-        ], $config);
+        ], array_merge([
+            ConsoleExtension::PARAM_DISABLE_OUTPUT => true,
+        ], $config));
         $container->init();
 
         return $container;
