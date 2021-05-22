@@ -1,8 +1,8 @@
-<table>
+<table class="table table-striped">
     <?php if ($object->title()): ?>
         <caption><?php echo $object->title() ?></caption>
     <?php endif ?>
-    <thead>
+    <thead class="thead-light">
         <?php foreach ($object->columnNames() as $columnName): ?>
             <th><?php echo $columnName ?></th>
         <?php endforeach ?>

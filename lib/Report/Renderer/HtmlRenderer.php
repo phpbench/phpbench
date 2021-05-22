@@ -2,7 +2,9 @@
 
 namespace PhpBench\Report\Renderer;
 
+use PhpBench\Compat\SymfonyOptionsResolverCompat;
 use PhpBench\Registry\Config;
+use PhpBench\Report\Model\HtmlDocument;
 use PhpBench\Report\Model\Reports;
 use PhpBench\Report\RendererInterface;
 use PhpBench\Template\ObjectRenderer;
@@ -10,8 +12,10 @@ use RuntimeException;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TemplateRenderer implements RendererInterface
+class HtmlRenderer implements RendererInterface
 {
+    const PARAM_TITLE = 'title';
+
     /**
      * @var ObjectRenderer
      */
@@ -39,6 +43,13 @@ class TemplateRenderer implements RendererInterface
      */
     public function configure(OptionsResolver $options): void
     {
+        $options->setDefaults([
+            self::PARAM_TITLE => 'PHPBench Report',
+        ]);
+        $options->setAllowedTypes(self::PARAM_TITLE, ['string']);
+        SymfonyOptionsResolverCompat::setInfos($options, [
+            self::PARAM_TITLE => 'Title of document',
+        ]);
     }
 
     public function render(Reports $report, Config $config): void
@@ -52,7 +63,7 @@ class TemplateRenderer implements RendererInterface
             }
         }
 
-        $rendered = $this->renderer->render($report);
+        $rendered = $this->renderer->render(new HtmlDocument($config[self::PARAM_TITLE], $report));
         $outPath = $this->outputDir . '/index.html';
 
         if (false === file_put_contents($outPath, $rendered)) {

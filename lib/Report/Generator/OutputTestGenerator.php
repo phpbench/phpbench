@@ -2,7 +2,6 @@
 
 namespace PhpBench\Report\Generator;
 
-use PhpBench\Expression\Ast\RelativeDeviationNode;
 use function array_combine;
 use PhpBench\Expression\Ast\BooleanNode;
 use PhpBench\Expression\Ast\DisplayAsNode;
@@ -12,6 +11,7 @@ use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\NullNode;
 use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\PercentDifferenceNode;
+use PhpBench\Expression\Ast\RelativeDeviationNode;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Ast\UnitNode;
 use PhpBench\Expression\Ast\VariableNode;

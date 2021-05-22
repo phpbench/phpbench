@@ -14,13 +14,13 @@ namespace PhpBench\Tests\Unit\Report\Renderer;
 
 use Generator;
 use PhpBench\Registry\Config;
-use PhpBench\Report\Renderer\TemplateRenderer;
+use PhpBench\Report\Renderer\HtmlRenderer;
 use PhpBench\Report\RendererInterface;
 use PhpBench\Template\ObjectRenderer;
 use PhpBench\Tests\Util\Approval;
 use Symfony\Component\Console\Output\BufferedOutput;
 
-class TemplateRendererTest extends AbstractRendererCase
+class HtmlRendererTest extends AbstractRendererCase
 {
     /**
      * @var BufferedOutput
@@ -35,7 +35,7 @@ class TemplateRendererTest extends AbstractRendererCase
 
     protected function getRenderer(): RendererInterface
     {
-        return new TemplateRenderer(
+        return new HtmlRenderer(
             $this->output,
             $this->container()->get(ObjectRenderer::class),
             $this->workspace()->path()
@@ -64,12 +64,14 @@ class TemplateRendererTest extends AbstractRendererCase
 
     public function testCreatesNonExistingDirectory(): void
     {
-        $renderer = new TemplateRenderer(
+        $renderer = new HtmlRenderer(
             $this->output,
             $this->container()->get(ObjectRenderer::class),
             $this->workspace()->path('foo/bar')
         );
-        $renderer->render($this->reports(), new Config('test', []));
+        $renderer->render($this->reports(), new Config('test', [
+            'title' => '',
+        ]));
         self::assertFileExists($this->workspace()->path('foo/bar'));
     }
 }
