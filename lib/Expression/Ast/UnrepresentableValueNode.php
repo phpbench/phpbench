@@ -2,7 +2,7 @@
 
 namespace PhpBench\Expression\Ast;
 
-final class UnrepresentableValueNode implements PhpValue
+final class UnrepresentableValueNode extends PhpValue
 {
     /**
      * @var mixed

@@ -2,6 +2,7 @@
 
 namespace PhpBench\Extension;
 
+use PhpBench\Color\GradientBuilder;
 use PhpBench\Compat\SymfonyOptionsResolverCompat;
 use PhpBench\Console\Command\Handler\DumpHandler;
 use PhpBench\Console\Command\Handler\ReportHandler;
@@ -13,8 +14,10 @@ use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\ExpressionLanguage;
+use PhpBench\Expression\NodePrinters;
 use PhpBench\Expression\Printer;
 use PhpBench\Expression\Printer\EvaluatingPrinter;
+use PhpBench\Expression\Printer\NormalizingPrinter;
 use PhpBench\Json\JsonDecoder;
 use PhpBench\Registry\ConfigurableRegistry;
 use PhpBench\Report\Generator\BareGenerator;
@@ -24,11 +27,18 @@ use PhpBench\Report\Generator\ExpressionGenerator;
 use PhpBench\Report\Generator\OutputTestGenerator;
 use PhpBench\Report\Renderer\ConsoleRenderer;
 use PhpBench\Report\Renderer\DelimitedRenderer;
+use PhpBench\Report\Renderer\HtmlRenderer;
 use PhpBench\Report\ReportManager;
 use PhpBench\Report\Transform\SuiteCollectionTransformer;
 use PhpBench\Storage\UuidResolver;
+use PhpBench\Template\Expression\Printer\TemplatePrinter;
+use PhpBench\Template\ObjectPathResolver\ChainObjectPathResolver;
+use PhpBench\Template\ObjectPathResolver\ReflectionObjectPathResolver;
+use PhpBench\Template\ObjectRenderer;
+use PhpBench\Template\TemplateService\ContainerTemplateService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Webmozart\PathUtil\Path;
 
 class ReportExtension implements ExtensionInterface
 {
@@ -40,19 +50,36 @@ class ReportExtension implements ExtensionInterface
 
     public const TAG_REPORT_GENERATOR = 'report.generator';
     public const TAG_REPORT_RENDERER = 'report.renderer';
+    public const PARAM_TEMPLATE_MAP = 'report.template_map';
+    public const PARAM_TEMPLATE_PATHS = 'report.template_paths';
+    public const PARAM_OUTPUT_DIR_HTML = 'report.html_output_dir';
 
     public function configure(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             self::PARAM_REPORTS => [],
             self::PARAM_OUTPUTS => [],
+            self::PARAM_TEMPLATE_PATHS => [
+                __DIR__ . '/../../templates'
+            ],
+            self::PARAM_OUTPUT_DIR_HTML => '.phpbench/html',
+            self::PARAM_TEMPLATE_MAP => [
+                'PhpBench\\Report\\Model' => 'html',
+                'PhpBench\\Expression\\Ast' => 'html/node'
+            ],
         ]);
 
+        $resolver->setAllowedTypes(self::PARAM_TEMPLATE_MAP, ['array']);
+        $resolver->setAllowedTypes(self::PARAM_TEMPLATE_PATHS, ['array']);
+        $resolver->setAllowedTypes(self::PARAM_OUTPUT_DIR_HTML, ['string']);
         $resolver->setAllowedTypes(self::PARAM_REPORTS, ['array']);
         $resolver->setAllowedTypes(self::PARAM_OUTPUTS, ['array']);
         SymfonyOptionsResolverCompat::setInfos($resolver, [
             self::PARAM_REPORTS => 'Report generator configurations, see :doc:`report-generators`',
             self::PARAM_OUTPUTS => 'Report renderer configurations, see :doc:`report-renderers`',
+            self::PARAM_TEMPLATE_MAP => 'Namespace prefix to template path map for object rendering',
+            self::PARAM_TEMPLATE_PATHS => 'List of paths to load templates from',
+            self::PARAM_OUTPUT_DIR_HTML => 'Path in which to render HTML reports',
         ]);
     }
 
@@ -65,6 +92,7 @@ class ReportExtension implements ExtensionInterface
             );
         });
 
+        $this->registerRenderer($container);
         $this->registerCommands($container);
         $this->registerRegistries($container);
         $this->registerReportGenerators($container);
@@ -175,11 +203,58 @@ class ReportExtension implements ExtensionInterface
                 $container->get(Printer::class)
             );
         }, [self::TAG_REPORT_RENDERER => ['name' => 'console']]);
+
         $container->register(DelimitedRenderer::class, function (Container $container) {
             return new DelimitedRenderer(
                 $container->get(ConsoleExtension::SERVICE_OUTPUT_STD),
                 $container->get(ExpressionExtension::SERVICE_BARE_PRINTER)
             );
         }, [self::TAG_REPORT_RENDERER => ['name' => 'delimited']]);
+
+        $container->register(HtmlRenderer::class, function (Container $container) {
+            return new HtmlRenderer(
+                $container->get(ConsoleExtension::SERVICE_OUTPUT_STD),
+                $container->get(ObjectRenderer::class),
+                Path::makeAbsolute(
+                    $container->getParameter(self::PARAM_OUTPUT_DIR_HTML),
+                    $container->getParameter(CoreExtension::PARAM_WORKING_DIR)
+                )
+            );
+        }, [self::TAG_REPORT_RENDERER => ['name' => 'html']]);
+    }
+
+    private function registerRenderer(Container $container): void
+    {
+        $container->register(ObjectRenderer::class, function (Container $container) {
+            return new ObjectRenderer(
+                $container->get(ChainObjectPathResolver::class),
+                $container->getParameter(self::PARAM_TEMPLATE_PATHS),
+                new ContainerTemplateService($container, [
+                    'nodePrinter' => TemplatePrinter::class,
+                    'gradientBuilder' => GradientBuilder::class
+                ])
+            );
+        });
+
+        $container->register(GradientBuilder::class, function (Container $container) {
+            return new GradientBuilder();
+        });
+
+        $container->register(ChainObjectPathResolver::class, function (Container $container) {
+            return new ChainObjectPathResolver([
+                new ReflectionObjectPathResolver(
+                    $container->getParameter(self::PARAM_TEMPLATE_MAP)
+                )
+            ]);
+        });
+
+        $container->register(TemplatePrinter::class, function (Container $container) {
+            return new NormalizingPrinter(
+                new TemplatePrinter(
+                    $container->get(ObjectRenderer::class),
+                    $container->get(NodePrinters::class)
+                )
+            );
+        });
     }
 }

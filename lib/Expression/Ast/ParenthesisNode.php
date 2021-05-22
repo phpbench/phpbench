@@ -2,7 +2,7 @@
 
 namespace PhpBench\Expression\Ast;
 
-class ParenthesisNode implements Node
+final class ParenthesisNode extends Node
 {
     /**
      * @var Node

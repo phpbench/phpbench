@@ -1,0 +1,9 @@
+<span style="color: #<?php echo $this->gradientBuilder->create('#00ff00')
+    ->to('#333333', 100)
+    ->to('#ff0000', 100)
+    ->build()
+    ->colorAtPercentile(((int)$object->percentage() + 100) / 2)
+    ->toHex() ?>">
+    <?php echo $this->nodePrinter->print($object) ?>
+</span>
+

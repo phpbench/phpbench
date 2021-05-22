@@ -11,6 +11,7 @@ use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\NullNode;
 use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\PercentDifferenceNode;
+use PhpBench\Expression\Ast\RelativeDeviationNode;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Ast\UnitNode;
 use PhpBench\Expression\Ast\VariableNode;
@@ -54,6 +55,13 @@ class OutputTestGenerator implements GeneratorInterface
                         }, $percents));
                     })(range(-100, 100, 10)),
                 ], 'Percent Difference'),
+                Table::fromRowArray([
+                    (function (array $percents): array {
+                        return (array)array_combine($percents, array_map(function (float $percent) {
+                            return new RelativeDeviationNode(new FloatNode($percent));
+                        }, $percents));
+                    })(range(0, 100, 10)),
+                ], 'Relative Deviation'),
                 Table::fromRowArray([
                     [
                         'time' => new DisplayAsNode(new IntegerNode(10000), new UnitNode(new StringNode('ms')), new IntegerNode(1))

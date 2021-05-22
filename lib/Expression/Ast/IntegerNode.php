@@ -2,7 +2,7 @@
 
 namespace PhpBench\Expression\Ast;
 
-class IntegerNode implements NumberNode
+class IntegerNode extends NumberNode
 {
     /**
      * @var int

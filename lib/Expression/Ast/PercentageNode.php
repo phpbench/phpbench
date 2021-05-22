@@ -4,7 +4,7 @@ namespace PhpBench\Expression\Ast;
 
 use PhpBench\Expression\Exception\EvaluationError;
 
-class PercentageNode implements Node, NumberNode
+class PercentageNode extends NumberNode
 {
     /**
      * @var Node

@@ -2,7 +2,7 @@
 
 namespace PhpBench\Expression\Ast;
 
-class ToleratedTrue implements Node, PhpValue
+final class ToleratedTrue extends PhpValue
 {
     /**
      * {@inheritDoc}

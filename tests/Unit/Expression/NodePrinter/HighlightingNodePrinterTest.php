@@ -66,10 +66,10 @@ class HighlightingNodePrinterTest extends TestCase
     }
 }
 
-class NotMappedNode implements Node
+class NotMappedNode extends Node
 {
 }
 
-class TestNode implements Node
+class TestNode extends Node
 {
 }

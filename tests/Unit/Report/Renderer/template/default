@@ -1,0 +1,343 @@
+[]
+---
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>PHPBench Report</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    </head>
+    <body class="container">
+                <h1>PHPBench Report</h1>
+        <hr/>
+                    <div>
+    <h2>Output Test Report</h2>
+    <p>This report demonstrates output</p>
+    <table class="table table-striped">
+            <caption>Values</caption>
+        <thead class="thead-light">
+                    <th>string</th>
+                    <th>int</th>
+                    <th>float</th>
+                    <th>bool</th>
+                    <th>null</th>
+                    <th>parameter</th>
+            </thead>
+    <tbody>
+                    <tr>
+            <td>one</td>
+            <td>123</td>
+            <td>12.2</td>
+            <td>[<span style="font-weight: bold; color: blue">true</span>
+, <span style="font-weight: bold; color: red">false</span>
+]</td>
+            <td>null</td>
+            <td>foo.bar</td>
+    </tr>
+            </tbody>
+</table>
+    <table class="table table-striped">
+            <caption>Percent Difference</caption>
+        <thead class="thead-light">
+                    <th>-100</th>
+                    <th>-90</th>
+                    <th>-80</th>
+                    <th>-70</th>
+                    <th>-60</th>
+                    <th>-50</th>
+                    <th>-40</th>
+                    <th>-30</th>
+                    <th>-20</th>
+                    <th>-10</th>
+                    <th>0</th>
+                    <th>10</th>
+                    <th>20</th>
+                    <th>30</th>
+                    <th>40</th>
+                    <th>50</th>
+                    <th>60</th>
+                    <th>70</th>
+                    <th>80</th>
+                    <th>90</th>
+                    <th>100</th>
+            </thead>
+    <tbody>
+                    <tr>
+            <td><span style="color: #00fc00">
+    <span style="color: #00fc00">
+    -100.00%</span>
+
+</span>
+
+</td>
+            <td><span style="color: #05e805">
+    <span style="color: #05e805">
+    -90.00%</span>
+
+</span>
+
+</td>
+            <td><span style="color: #0ad40a">
+    <span style="color: #0ad40a">
+    -80.00%</span>
+
+</span>
+
+</td>
+            <td><span style="color: #0fbf0f">
+    <span style="color: #0fbf0f">
+    -70.00%</span>
+
+</span>
+
+</td>
+            <td><span style="color: #14ab14">
+    <span style="color: #14ab14">
+    -60.00%</span>
+
+</span>
+
+</td>
+            <td><span style="color: #1a961a">
+    <span style="color: #1a961a">
+    -50.00%</span>
+
+</span>
+
+</td>
+            <td><span style="color: #1f821f">
+    <span style="color: #1f821f">
+    -40.00%</span>
+
+</span>
+
+</td>
+            <td><span style="color: #246e24">
+    <span style="color: #246e24">
+    -30.00%</span>
+
+</span>
+
+</td>
+            <td><span style="color: #295929">
+    <span style="color: #295929">
+    -20.00%</span>
+
+</span>
+
+</td>
+            <td><span style="color: #2e452e">
+    <span style="color: #2e452e">
+    -10.00%</span>
+
+</span>
+
+</td>
+            <td><span style="color: #333333">
+    <span style="color: #333333">
+    0.00%</span>
+
+</span>
+
+</td>
+            <td><span style="color: #472d2d">
+    <span style="color: #472d2d">
+    +10.00%</span>
+
+</span>
+
+</td>
+            <td><span style="color: #5b2828">
+    <span style="color: #5b2828">
+    +20.00%</span>
+
+</span>
+
+</td>
+            <td><span style="color: #702323">
+    <span style="color: #702323">
+    +30.00%</span>
+
+</span>
+
+</td>
+            <td><span style="color: #841e1e">
+    <span style="color: #841e1e">
+    +40.00%</span>
+
+</span>
+
+</td>
+            <td><span style="color: #991919">
+    <span style="color: #991919">
+    +50.00%</span>
+
+</span>
+
+</td>
+            <td><span style="color: #ad1414">
+    <span style="color: #ad1414">
+    +60.00%</span>
+
+</span>
+
+</td>
+            <td><span style="color: #c10f0f">
+    <span style="color: #c10f0f">
+    +70.00%</span>
+
+</span>
+
+</td>
+            <td><span style="color: #d60a0a">
+    <span style="color: #d60a0a">
+    +80.00%</span>
+
+</span>
+
+</td>
+            <td><span style="color: #ea0505">
+    <span style="color: #ea0505">
+    +90.00%</span>
+
+</span>
+
+</td>
+            <td><span style="color: #ff0000">
+    <span style="color: #ff0000">
+    +100.00%</span>
+
+</span>
+
+</td>
+    </tr>
+            </tbody>
+</table>
+    <table class="table table-striped">
+            <caption>Relative Deviation</caption>
+        <thead class="thead-light">
+                    <th>0</th>
+                    <th>10</th>
+                    <th>20</th>
+                    <th>30</th>
+                    <th>40</th>
+                    <th>50</th>
+                    <th>60</th>
+                    <th>70</th>
+                    <th>80</th>
+                    <th>90</th>
+                    <th>100</th>
+            </thead>
+    <tbody>
+                    <tr>
+            <td><span style="color: #000000">
+    <span style="color: #000000">
+    <span style="color: #555; font-weight: bold;">±</span>
+0.00%</span>
+
+</span>
+
+</td>
+            <td><span style="color: #190000">
+    <span style="color: #190000">
+    <span style="color: #555; font-weight: bold;">±</span>
+10.00%</span>
+
+</span>
+
+</td>
+            <td><span style="color: #330000">
+    <span style="color: #330000">
+    <span style="color: #555; font-weight: bold;">±</span>
+20.00%</span>
+
+</span>
+
+</td>
+            <td><span style="color: #4c0000">
+    <span style="color: #4c0000">
+    <span style="color: #555; font-weight: bold;">±</span>
+30.00%</span>
+
+</span>
+
+</td>
+            <td><span style="color: #660000">
+    <span style="color: #660000">
+    <span style="color: #555; font-weight: bold;">±</span>
+40.00%</span>
+
+</span>
+
+</td>
+            <td><span style="color: #7f0000">
+    <span style="color: #7f0000">
+    <span style="color: #555; font-weight: bold;">±</span>
+50.00%</span>
+
+</span>
+
+</td>
+            <td><span style="color: #990000">
+    <span style="color: #990000">
+    <span style="color: #555; font-weight: bold;">±</span>
+60.00%</span>
+
+</span>
+
+</td>
+            <td><span style="color: #b20000">
+    <span style="color: #b20000">
+    <span style="color: #555; font-weight: bold;">±</span>
+70.00%</span>
+
+</span>
+
+</td>
+            <td><span style="color: #cc0000">
+    <span style="color: #cc0000">
+    <span style="color: #555; font-weight: bold;">±</span>
+80.00%</span>
+
+</span>
+
+</td>
+            <td><span style="color: #e50000">
+    <span style="color: #e50000">
+    <span style="color: #555; font-weight: bold;">±</span>
+90.00%</span>
+
+</span>
+
+</td>
+            <td><span style="color: #fe0000">
+    <span style="color: #fe0000">
+    <span style="color: #555; font-weight: bold;">±</span>
+100.00%</span>
+
+</span>
+
+</td>
+    </tr>
+            </tbody>
+</table>
+    <table class="table table-striped">
+            <caption>Time</caption>
+        <thead class="thead-light">
+                    <th>time</th>
+            </thead>
+    <tbody>
+                    <tr>
+            <td>10.0<span style="color: #555; font-weight: bold;">ms</span>
+</td>
+    </tr>
+            </tbody>
+</table>
+</div>
+    </body>
+    <footer>
+        <center>
+        Generated by <a href="https://github.com/phpbench/phpbench">PHPBench</a>
+        </center>
+    </footer>
+</html>

@@ -2,7 +2,7 @@
 
 namespace PhpBench\Expression\Ast;
 
-class FunctionNode implements Node
+class FunctionNode extends Node
 {
     /**
      * @var string

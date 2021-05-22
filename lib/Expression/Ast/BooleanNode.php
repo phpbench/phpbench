@@ -2,7 +2,7 @@
 
 namespace PhpBench\Expression\Ast;
 
-class BooleanNode implements Node, PhpValue
+class BooleanNode extends PhpValue
 {
     /**
      * @var bool

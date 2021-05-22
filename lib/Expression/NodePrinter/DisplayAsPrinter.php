@@ -48,6 +48,7 @@ class DisplayAsPrinter implements NodePrinter
         if (!$unit instanceof StringNode) {
             throw new PrinterError(sprintf('Unit must evaluate to string, got "%s"', get_class($unit)));
         }
+
         $unit = $unit->value();
         $mode = $this->resolveMode($node);
 

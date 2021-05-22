@@ -2,7 +2,7 @@
 
 namespace PhpBench\Expression\Ast;
 
-class LabelNode implements PhpValue
+class LabelNode extends PhpValue
 {
     /**
      * @var PhpValue

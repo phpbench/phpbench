@@ -2,7 +2,7 @@
 
 namespace PhpBench\Expression\Ast;
 
-abstract class DelimitedListNode implements Node, PhpValue
+abstract class DelimitedListNode extends PhpValue
 {
     /**
      * @var Node[]

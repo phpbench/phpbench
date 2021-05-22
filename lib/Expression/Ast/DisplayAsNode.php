@@ -4,7 +4,7 @@ namespace PhpBench\Expression\Ast;
 
 use PhpBench\Expression\Exception\EvaluationError;
 
-class DisplayAsNode implements NumberValue
+class DisplayAsNode extends NumberValue
 {
     /**
      * @var UnitNode

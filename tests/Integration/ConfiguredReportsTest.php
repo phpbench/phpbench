@@ -37,7 +37,9 @@ class ConfiguredReportsTest extends IntegrationTestCase
             $generator,
             $renderer
         ), 0);
-        $approval->approve($this->workspace()->getContents('test'));
+        $contents = $this->workspace()->getContents('test');
+        $contents = str_replace(getcwd(), '', $contents);
+        $approval->approve($contents);
     }
 
     /**

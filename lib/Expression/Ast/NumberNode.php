@@ -2,10 +2,10 @@
 
 namespace PhpBench\Expression\Ast;
 
-interface NumberNode extends NumberValue
+abstract class NumberNode extends NumberValue
 {
     /**
      * @return float|integer
      */
-    public function value();
+    abstract public function value();
 }
