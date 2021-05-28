@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+1.0.x
+-----
+
+Bug fix:
+
+- Fix incorrect benchmark column definition in report #840
+
 1.0.1 (2021-05-11)
 ------------------
 
