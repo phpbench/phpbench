@@ -1,7 +1,11 @@
 File Input
 ==========
 
-If your benchmark requires input from a file, or from files.
+If your benchmark subject operates on file contents, or can otherwise be
+parameterized from the contents of files.
+
+Given you have a directory ``file-input`` containing a list of files, and each
+of these files represents a benchmarking scenario:
 
 .. codeimport:: ../../examples/Benchmark/Pattern/FileInputBench.php
   :language: php
