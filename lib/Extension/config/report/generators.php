@@ -31,7 +31,7 @@ return [
         'generator' => 'expression',
         'cols' => [
             'iter' => 'first(iteration_index)',
-            'benchmark' => 'first(subject_name)',
+            'benchmark' => 'first(benchmark_name)',
             'subject' => 'first(subject_name)',
             'set' => 'first(variant_name)',
             'revs' => 'first(variant_revs)',
