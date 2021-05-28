@@ -107,6 +107,10 @@ class PhpBench
             $configOverride[ConsoleExtension::PARAM_ANSI] = false;
         }
 
+        if ($input->hasParameterOption(['--ansi'])) {
+            $configOverride[ConsoleExtension::PARAM_ANSI] = true;
+        }
+
         if ($value = $input->getParameterOption(['--extension'])) {
             $extensions[] = $value;
         }
