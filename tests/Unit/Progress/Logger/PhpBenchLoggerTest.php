@@ -32,6 +32,10 @@ abstract class PhpBenchLoggerTest extends LoggerTestCase
     protected $benchmark;
     protected $variant;
     protected $subject;
+
+    /**
+     * @var ParameterSet
+     */
     protected $parameterSet;
     protected $stats;
 
@@ -43,7 +47,7 @@ abstract class PhpBenchLoggerTest extends LoggerTestCase
         $this->benchmark = $this->prophesize(Benchmark::class);
         $this->variant = $this->prophesize(Variant::class);
         $this->subject = $this->prophesize(Subject::class);
-        $this->parameterSet = $this->prophesize(ParameterSet::class);
+        $this->parameterSet = ParameterSet::fromArray('foo', []);
         $this->stats = $this->prophesize(Distribution::class);
 
         $this->logger = $this->getLogger();

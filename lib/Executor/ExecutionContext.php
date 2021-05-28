@@ -97,7 +97,7 @@ final class ExecutionContext
             $iteration->getVariant()->getRevolutions(),
             $subjectMetadata->getBeforeMethods(),
             $subjectMetadata->getAfterMethods(),
-            $iteration->getVariant()->getParameterSet()->getArrayCopy(),
+            $iteration->getVariant()->getParameterSet()->toArray(),
             $iteration->getVariant()->getWarmup() ?: 0,
             $iteration->getIndex(),
             $subjectMetadata->getTimeout(),

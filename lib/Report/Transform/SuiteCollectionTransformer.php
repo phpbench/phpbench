@@ -133,7 +133,7 @@ final class SuiteCollectionTransformer
             'subject_time_precision' => $subject->getOutputTimePrecision(),
             'subject_time_mode' => $subject->getOutputMode(),
             'variant_name' => $variant->getParameterSet()->getName(),
-            'variant_params' => $variant->getParameterSet()->getArrayCopy(),
+            'variant_params' => $variant->getParameterSet()->toArray(),
             'variant_revs' => $variant->getRevolutions(),
             'variant_iterations' => count($variant->getIterations()),
             'suite_tag' => $suite->getTag() ? $suite->getTag()->__toString() : '<current>',

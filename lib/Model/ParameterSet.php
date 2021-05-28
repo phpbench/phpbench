@@ -12,12 +12,12 @@
 
 namespace PhpBench\Model;
 
-use ArrayObject;
+use Iterator;
 
 /**
- * @extends ArrayObject<string,mixed>
+ * @implements Iterator<string,mixed>
  */
-class ParameterSet extends ArrayObject
+final class ParameterSet implements Iterator
 {
     /**
      * @var string
@@ -25,12 +25,17 @@ class ParameterSet extends ArrayObject
     private $name;
 
     /**
+     * @var array
+     */
+    private $parameters;
+
+    /**
      * @param array<string,mixed> $parameters
      */
     public function __construct(string $name, array $parameters = [])
     {
         $this->name = $name;
-        parent::__construct($parameters);
+        $this->parameters = $parameters;
     }
 
     /**
@@ -52,5 +57,55 @@ class ParameterSet extends ArrayObject
     public function getIndex(): string
     {
         return $this->name;
+    }
+
+    public function toArray()
+    {
+        return $this->parameters;
+    }
+
+    public static function fromArray(string $name, array $parameterSet): ParameterSet
+    {
+        return new self($name, $parameterSet);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function current()
+    {
+        return current($this->parameters);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function next(): void
+    {
+        next($this->parameters);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function key()
+    {
+        return key($this->parameters);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function valid()
+    {
+        return false !== current($this->parameters);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function rewind(): void
+    {
+        reset($this->parameters);
     }
 }

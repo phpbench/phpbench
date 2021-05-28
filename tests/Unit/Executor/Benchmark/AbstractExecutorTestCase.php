@@ -140,11 +140,11 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
 
         $this->assertFileExists($this->workspacePath('parambefore.tmp'));
         $params = json_decode(file_get_contents($this->workspace()->path('parambefore.tmp')), true);
-        $this->assertEquals($expected->getArrayCopy(), $params);
+        $this->assertEquals($expected->toArray(), $params);
 
         $this->assertFileExists($this->workspacePath('paramafter.tmp'));
         $params = json_decode(file_get_contents($this->workspace()->path('paramafter.tmp')), true);
-        $this->assertEquals($expected->getArrayCopy(), $params);
+        $this->assertEquals($expected->toArray(), $params);
     }
 
     protected function buildContext(array $config): ExecutionContext

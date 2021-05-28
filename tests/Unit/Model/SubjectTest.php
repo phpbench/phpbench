@@ -50,16 +50,15 @@ class SubjectTest extends TestCase
      */
     public function testCreateVariant(): void
     {
-        $parameterSet = $this->prophesize(ParameterSet::class);
-        $parameterSet->getName()->willReturn('foo');
+        $parameterSet = ParameterSet::fromArray('foo', []);
         $variant = $this->subject->createVariant(
-            $parameterSet->reveal(),
+            $parameterSet,
             10,
             20
         );
 
         $this->assertEquals($this->subject, $variant->getSubject());
-        $this->assertEquals($parameterSet->reveal(), $variant->getParameterSet());
+        $this->assertEquals($parameterSet, $variant->getParameterSet());
         $this->assertEquals(0, $variant->count());
         $this->assertEquals(10, $variant->getRevolutions());
         $this->assertEquals(20, $variant->getWarmup());

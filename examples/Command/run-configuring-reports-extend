@@ -5,7 +5,7 @@
 ---
 phpbench run --report='extends: aggregate, break: ["benchmark", "set"]'
 ---
-NothingBench-0
+NothingBench-
 +--------------+------+-----+----------+----------+--------+
 | subject      | revs | its | mem_peak | mode     | rstdev |
 +--------------+------+-----+----------+----------+--------+

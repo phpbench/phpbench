@@ -14,6 +14,8 @@ namespace PhpBench\Tests\Unit\Benchmark;
 
 use InvalidArgumentException;
 use PhpBench\Benchmark\RunnerConfig;
+use PhpBench\Model\ParameterSet;
+use PhpBench\Model\ParameterSets;
 use PhpBench\Tests\TestCase;
 
 class RunnerConfigTest extends TestCase
@@ -63,7 +65,7 @@ class RunnerConfigTest extends TestCase
             ->withFilters(self::TEST_FILTERS)
             ->withIterations(self::TEST_ITERATIONS)
             ->withRevolutions(self::TEST_REVOLUTIONS)
-            ->withParameters(self::TEST_PARAMETERS)
+            ->withParameters(ParameterSet::fromArray('foo', [self::TEST_PARAMETERS]))
             ->withSleep(self::TEST_SLEEP)
             ->withWarmup(self::TEST_WARMUP)
             ->withGroups(self::TEST_GROUPS)
@@ -77,7 +79,7 @@ class RunnerConfigTest extends TestCase
         $this->assertEquals(self::TEST_TAG_NAME, $config->getTag());
         $this->assertEquals(self::TEST_ITERATIONS, $config->getIterations());
         $this->assertEquals(self::TEST_REVOLUTIONS, $config->getRevolutions());
-        $this->assertEquals([[self::TEST_PARAMETERS]], $config->getParameterSets());
+        $this->assertEquals([[self::TEST_PARAMETERS]], $config->getParameterSets()->toArray());
         $this->assertEquals(self::TEST_SLEEP, $config->getSleep());
         $this->assertEquals(self::TEST_RETRY_THRESHOLD, $config->getRetryThreshold());
     }
@@ -114,9 +116,9 @@ class RunnerConfigTest extends TestCase
     public function testGetParameterSets(): void
     {
         $config = RunnerConfig::create()
-            ->withParameters([
+            ->withParameters(ParameterSet::fromArray('foo', [[
                 'nb_elements' => 10,
-            ]);
+            ]]));
 
         $this->assertEquals(
             [
@@ -126,13 +128,13 @@ class RunnerConfigTest extends TestCase
                     ],
                 ],
             ],
-            $config->getParameterSets(
+            $config->getParameterSets(ParameterSets::fromArray(
                 [
                     [
                         'nb_elements' => 5,
                     ],
                 ]
-            )
+            ))->toArray()
         );
     }
 }

@@ -13,10 +13,15 @@
 namespace PhpBench\Benchmark;
 
 use PhpBench\Model\ParameterSet;
+use PhpBench\Model\ParameterSets;
 
 class CartesianParameterIterator implements \Iterator
 {
+    /**
+     * @var ParameterSet[]
+     */
     private $sets = [];
+
     private $index = 0;
     private $max;
     private $current = [];
@@ -27,13 +32,13 @@ class CartesianParameterIterator implements \Iterator
      */
     private $key;
 
-    public function __construct(array $parameterSets)
+    public function __construct(ParameterSets $parameterSets)
     {
         foreach ($parameterSets as $parameterSet) {
-            $this->sets[] = new \ArrayIterator($parameterSet);
+            $this->sets[] = $parameterSet;
         }
 
-        if (empty($parameterSets)) {
+        if (0 === $parameterSets->count()) {
             $this->break = true;
         }
 

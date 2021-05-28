@@ -32,7 +32,7 @@ class VariantTest extends TestCase
     protected function setUp(): void
     {
         $this->subject = $this->prophesize(Subject::class);
-        $this->parameterSet = $this->prophesize(ParameterSet::class);
+        $this->parameterSet = ParameterSet::fromArray('foo', []);
     }
 
     /**
@@ -42,7 +42,7 @@ class VariantTest extends TestCase
      */
     public function testIterationSpawn(): void
     {
-        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 10, 20);
+        $variant = new Variant($this->subject->reveal(), $this->parameterSet, 10, 20);
         $variant->spawnIterations(4);
 
         $this->assertCount(4, $variant);
@@ -57,7 +57,7 @@ class VariantTest extends TestCase
      */
     public function testCreateIteration(): void
     {
-        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 10, 20);
+        $variant = new Variant($this->subject->reveal(), $this->parameterSet, 10, 20);
         $iteration = $variant->createIteration(TestUtil::createResults(10, 20));
         $this->assertInstanceOf('PhpBench\Model\Iteration', $iteration);
         $this->assertEquals(10, $iteration->getResult(TimeResult::class)->getNet());
@@ -76,7 +76,7 @@ class VariantTest extends TestCase
      */
     public function testComputeStats(): void
     {
-        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 4, 0);
+        $variant = new Variant($this->subject->reveal(), $this->parameterSet, 4, 0);
         $this->subject->getRetryThreshold()->willReturn(10);
 
         $variant->createIteration(TestUtil::createResults(4));
@@ -104,7 +104,7 @@ class VariantTest extends TestCase
      */
     public function testComputeDeviationZeroIterations(): void
     {
-        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 10, 20);
+        $variant = new Variant($this->subject->reveal(), $this->parameterSet, 10, 20);
         $variant->computeStats();
         $this->addToAssertionCount(1);
     }
@@ -114,7 +114,7 @@ class VariantTest extends TestCase
      */
     public function testReject(): void
     {
-        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 4, 20);
+        $variant = new Variant($this->subject->reveal(), $this->parameterSet, 4, 20);
         $this->subject->getRetryThreshold()->willReturn(10);
 
         $variant->createIteration(TestUtil::createResults(4));
@@ -156,7 +156,7 @@ class VariantTest extends TestCase
      */
     public function testExceptionAwareness(): void
     {
-        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 10, 20);
+        $variant = new Variant($this->subject->reveal(), $this->parameterSet, 10, 20);
         $error = new \Exception('Test');
 
         $this->assertFalse($variant->hasErrorStack());
@@ -170,7 +170,7 @@ class VariantTest extends TestCase
      */
     public function testExceptionNoneGet(): void
     {
-        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 10, 20);
+        $variant = new Variant($this->subject->reveal(), $this->parameterSet, 10, 20);
         $errorStack = $variant->getErrorStack();
         $this->assertInstanceOf('PhpBench\Model\ErrorStack', $errorStack);
     }
@@ -183,7 +183,7 @@ class VariantTest extends TestCase
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('No statistics have yet');
-        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 10, 20);
+        $variant = new Variant($this->subject->reveal(), $this->parameterSet, 10, 20);
         $variant->getStats();
     }
 
@@ -195,7 +195,7 @@ class VariantTest extends TestCase
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Cannot retrieve stats when an exception');
-        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 4, 20);
+        $variant = new Variant($this->subject->reveal(), $this->parameterSet, 4, 20);
         $this->subject->getRetryThreshold()->willReturn(10);
         $variant->createIteration(TestUtil::createResults(4, 10));
         $variant->createIteration(TestUtil::createResults(4, 10));
@@ -211,7 +211,7 @@ class VariantTest extends TestCase
      */
     public function testGetMetricValues(): void
     {
-        $variant = new Variant($this->subject->reveal(), $this->parameterSet->reveal(), 1, 0);
+        $variant = new Variant($this->subject->reveal(), $this->parameterSet, 1, 0);
 
         $variant->createIteration(TestUtil::createResults(4, 100));
         $variant->createIteration(TestUtil::createResults(8, 200));

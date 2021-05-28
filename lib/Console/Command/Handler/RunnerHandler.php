@@ -16,6 +16,7 @@ use InvalidArgumentException;
 use PhpBench\Benchmark\BenchmarkFinder;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Benchmark\RunnerConfig;
+use PhpBench\Model\ParameterSet;
 use PhpBench\Model\Suite;
 use PhpBench\Progress\LoggerRegistry;
 use Symfony\Component\Console\Command\Command;
@@ -108,11 +109,16 @@ class RunnerHandler
     {
         $default = RunnerConfig::create()
             ->withRevolutions($input->getOption(self::OPT_REVS))
-            ->withParameters($this->getParameters($input->getOption(self::OPT_PARAMETERS)))
             ->withExecutor($input->getOption(self::OPT_EXECUTOR))
             ->withStopOnError($input->getOption(self::OPT_STOP_ON_ERROR))
             ->withAssertions($input->getOption(self::OPT_ASSERT))
             ->withFormat($input->getOption(self::OPT_FORMAT));
+
+        $parameters = $this->getParameters($input->getOption(self::OPT_PARAMETERS));
+
+        if (null !== $parameters) {
+            $default = $default->withParameters(ParameterSet::fromArray('cli-provided', [$parameters]));
+        }
 
         $config = $default->merge($config);
 
