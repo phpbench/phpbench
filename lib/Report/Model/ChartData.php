@@ -5,7 +5,7 @@ namespace PhpBench\Report\Model;
 final class ChartData
 {
     /**
-     * @var array
+     * @var ChartSeries[]
      */
     private $data;
 
@@ -14,10 +14,18 @@ final class ChartData
         $this->data = $data;
     }
 
+    /**
+     * @return ChartSeries[]
+     */
+    public function series(): array
+    {
+        return $this->data;
+    }
+
     public function toArray()
     {
         return array_map(function (ChartSeries $chartSeries) {
-            return $chartSeries->toArray();
+            return $chartSeries->values();
         }, $this->data);
     }
 }

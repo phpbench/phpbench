@@ -12,9 +12,15 @@ final class ChartSeries implements IteratorAggregate
      */
     private $values;
 
-    public function __construct(...$values)
+    /**
+     * @var array|null
+     */
+    private $errorMargins;
+
+    public function __construct(array $values, ?array $errorMargins = null)
     {
         $this->values = $values;
+        $this->errorMargins = $errorMargins;
     }
 
     /**
@@ -25,8 +31,13 @@ final class ChartSeries implements IteratorAggregate
         return new IteratorAggregate($this->values);
     }
 
-    public function toArray(): array
+    public function values(): array
     {
         return $this->values;
+    }
+
+    public function errorMargins(): ?array
+    {
+        return $this->errorMargins;
     }
 }

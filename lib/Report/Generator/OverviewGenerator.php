@@ -10,6 +10,7 @@ use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\ExpressionLanguage;
+use PhpBench\Math\Statistics;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Report\GeneratorInterface;
@@ -135,9 +136,9 @@ class OverviewGenerator implements GeneratorInterface
 
         return ReportBuilder::create('Overview')
             ->addObject(new BarChart(
-                new ChartSeries(...$labels),
+                new ChartSeries($labels),
                 new ChartData(array_combine(array_keys($series), array_map(function (array $series) {
-                    return new ChartSeries(...$series);
+                    return new ChartSeries($series);
                 }, $series)))
             ))
             ->build();
@@ -154,19 +155,22 @@ class OverviewGenerator implements GeneratorInterface
     {
         $labels = [];
         $data = [];
+        $series = [];
+        $errorMargins = [];
         foreach ($benchmark->partition(['subject_name', 'variant_name']) as $label => $suite) {
             $labels[] = $label;
             foreach ($suite->partition(['suite_tag']) as $tag => $suiteVariant) {
-                $series[$tag][] = $suiteVariant->column('result_time_net')->sum();
+                $series[$tag][] = Statistics::kdeMode($suiteVariant->column('result_time_avg')->toValues());
+                $errorMargins[$tag][] = Statistics::stdev($suiteVariant->column('result_time_avg')->toValues());
             }
         }
 
         return ReportBuilder::create($benchmarkClass)
             ->addObject(new BarChart(
-                new ChartSeries(...$labels),
-                new ChartData(array_combine(array_keys($series), array_map(function (array $series) {
-                    return new ChartSeries(...$series);
-                }, $series)))
+                new ChartSeries($labels),
+                new ChartData(array_combine(array_keys($series), array_map(function (array $series, $errorMargins) {
+                    return new ChartSeries($series, $errorMargins);
+                }, $series, $errorMargins)))
             ))
             ->build();
     }

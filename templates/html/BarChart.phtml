@@ -1,40 +1,23 @@
 <?php $chartId = uniqid() ?>
-<canvas id="<?php echo $chartId ?>" width="400" height="100"></canvas>
-
-
+<div id="<?php echo $chartId ?>" width="400" height="100"></div>
 <script>
-
-var colors = ['red', 'blue', 'green'];
-var colorIndex = 1;
-var data = {
-    labels: <?php echo json_encode($object->xLabels()->toArray()) ?>,
-    datasets: [
-        <?php foreach ($object->data()->toArray() as $label => $dataSet): ?>
-        {
-            label: <?php echo json_encode($label) ?>,
-            data: <?php echo json_encode($dataSet) ?>,
-            backgroundColor: colors[(colorIndex++) % 3],
+var data = [
+    <?php foreach ($object->data()->series() as $label => $series): ?>
+    {
+        x: <?php echo json_encode($object->xLabels()->values()) ?>,
+        name: <?php echo json_encode($label) ?>,
+        y: <?php echo json_encode($series->values()) ?>,
+        type: 'bar',
+        <?php if ($series->errorMargins()): ?>
+        error_y: {
+            type: 'data',
+            array: <?php echo json_encode($series->errorMargins()) ?>,
+            visible: true,
         },
-        <?php endforeach ?>
-    ]
-};
-var ctx = document.getElementById("<?php echo $chartId ?>").getContext('2d');
-var myChart = new Chart(ctx, {
-  type: 'bar',
-  data: data,
-  options: {
-    indexAxis: 'x',
-    elements: {
-      bar: {
-        borderWidth: 2,
-      }
+        <?php endif ?>
     },
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'right',
-      },
-    }
-  },
-});
+    <?php endforeach ?>
+]
+var layout = {barmode: 'group'};
+Plotly.newPlot(document.getElementById('<?php echo $chartId ?>'), data, layout);
 </script>

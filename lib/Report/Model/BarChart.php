@@ -31,4 +31,9 @@ class BarChart
     {
         return $this->data;
     }
+
+    public function errorMargins(): ChartSeries
+    {
+        return $this->errorMargins;
+    }
 }
