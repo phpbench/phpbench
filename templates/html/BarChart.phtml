@@ -1,0 +1,39 @@
+<canvas id="myChart" width="400" height="100"></canvas>
+
+
+<script>
+
+var colors = ['red', 'blue', 'green'];
+var colorIndex = 1;
+var data = {
+    labels: <?php echo json_encode($object->xLabels()->toArray()) ?>,
+    datasets: [
+        <?php foreach ($object->data()->toArray() as $label => $dataSet): ?>
+        {
+            label: <?php echo json_encode($label) ?>,
+            data: <?php echo json_encode($dataSet) ?>,
+            backgroundColor: colors[(colorIndex++) % 3],
+        },
+        <?php endforeach ?>
+    ]
+};
+var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, {
+  type: 'bar',
+  data: data,
+  options: {
+    indexAxis: 'x',
+    elements: {
+      bar: {
+        borderWidth: 2,
+      }
+    },
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'right',
+      },
+    }
+  },
+});
+</script>

@@ -158,6 +158,9 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
         return $this->columns;
     }
 
+    /**
+     * @return DataFrames<DataFrame>
+     */
     public function partition(array $columns): DataFrames
     {
         return (new Partition())->__invoke($this, $columns);

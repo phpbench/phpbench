@@ -15,31 +15,35 @@ final class Report
     private $description;
 
     /**
-     * @var Table[]
+     * @var object[]
      */
-    private $tables;
+    private $objects;
 
     /**
-     * @param Table[] $tables
+     * @param ojects[] $objects
      */
-    private function __construct(array $tables, ?string $title, ?string $description)
+    public function __construct(array $objects, ?string $title, ?string $description)
     {
-        $this->tables = $tables;
+        $this->objects = $objects;
         $this->title = $title;
         $this->description = $description;
     }
 
     /**
-     * @param Table[] $tables
+     * @deprecated use objects() to be removed in 2.0. Use ReportBuilder
+     * @param Object[] $objects
      */
-    public static function fromTables(array $tables, ?string $title = null, ?string $description = null): self
+    public static function fromTables(array $objects, ?string $title = null, ?string $description = null): self
     {
-        return new self($tables, $title, $description);
+        return new self($objects, $title, $description);
     }
 
-    public static function fromTable(Table $table, ?string $title = null, ?string $description = null): self
+    /**
+     * @deprecated use objects() to be removed in 2.0. Use ReportBuilder
+     */
+    public static function fromTable(object $object, ?string $title = null, ?string $description = null): self
     {
-        return new self([$table], $title, $description);
+        return new self([$object], $title, $description);
     }
 
     public function title(): ?string
@@ -53,10 +57,21 @@ final class Report
     }
 
     /**
+     * @return object[]
+     */
+    public function objects(): array
+    {
+        return $this->objects;
+    }
+
+    /**
+     * @deprecated use objects() to be removed in 2.0
      * @return Table[]
      */
     public function tables(): array
     {
-        return $this->tables;
+        return array_filter($this->objects, function (object $object) {
+            return $object instanceof Table;
+        });
     }
 }
