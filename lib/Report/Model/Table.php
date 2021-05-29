@@ -4,6 +4,7 @@ namespace PhpBench\Report\Model;
 
 use ArrayIterator;
 use IteratorAggregate;
+use PhpBench\Report\Model\Builder\TableBuilder;
 
 /**
  * @implements IteratorAggregate<TableRow>
@@ -21,12 +22,19 @@ final class Table implements IteratorAggregate
     private $title;
 
     /**
+     * @var array
+     */
+    private $headers;
+
+    /**
+     * @param PhpValue[] $headers
      * @param TableRow[] $rows
      */
-    private function __construct(array $rows, ?string $title)
+    public function __construct(array $rows, ?array $headers, ?string $title)
     {
         $this->rows = $rows;
         $this->title = $title;
+        $this->headers = $headers;
     }
 
     /**
@@ -34,9 +42,14 @@ final class Table implements IteratorAggregate
      */
     public static function fromRowArray(array $rows, ?string $title = null): self
     {
-        return new self(array_map(function (array $row) {
-            return TableRow::fromArray($row);
-        }, $rows), $title);
+        $headers = [];
+        foreach ($rows as $row) {
+            $headers = array_keys($row);
+        }
+        return TableBuilder::create()
+            ->addRowsFromArray($rows)
+            ->withTitle($title)
+            ->build();
     }
 
     public function title(): ?string
@@ -70,5 +83,10 @@ final class Table implements IteratorAggregate
     public function rows(): array
     {
         return $this->rows;
+    }
+
+    public function headers(): ?array
+    {
+        return $this->headers;
     }
 }

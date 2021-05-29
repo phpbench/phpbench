@@ -233,4 +233,14 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
             return $row->toSeries();
         }, array_filter($this->rows(), $closure))), $this->columns);
     }
+
+    /**
+     * @template T
+     * @param Closure(Row, int): T $function
+     * @param T $carry
+     */
+    public function reduce(Closure $function, int $carry)
+    {
+        return array_reduce($this->rows(), $function, $carry);
+    }
 }

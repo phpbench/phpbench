@@ -3,9 +3,10 @@
 namespace PhpBench\Data;
 
 use ArrayIterator;
+use Countable;
 use IteratorAggregate;
 
-final class DataFrames implements IteratorAggregate
+final class DataFrames implements IteratorAggregate, Countable
 {
     /**
      * @var DataFrame[]
@@ -30,5 +31,10 @@ final class DataFrames implements IteratorAggregate
         return array_map(function (DataFrame $frame) {
             return $frame->toRecords();
         }, $this->dataFrames);
+    }
+
+    public function count()
+    {
+        return count($this->dataFrames);
     }
 }

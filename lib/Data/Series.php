@@ -44,4 +44,12 @@ final class Series implements Countable
     {
         return count($this->values);
     }
+
+    /**
+     * @return int|float
+     */
+    public function sum()
+    {
+        return array_sum($this->values);
+    }
 }

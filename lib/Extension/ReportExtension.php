@@ -25,6 +25,7 @@ use PhpBench\Report\Generator\CompositeGenerator;
 use PhpBench\Report\Generator\EnvGenerator;
 use PhpBench\Report\Generator\ExpressionGenerator;
 use PhpBench\Report\Generator\OutputTestGenerator;
+use PhpBench\Report\Generator\OverviewGenerator;
 use PhpBench\Report\Renderer\ConsoleRenderer;
 use PhpBench\Report\Renderer\DelimitedRenderer;
 use PhpBench\Report\Renderer\HtmlRenderer;
@@ -193,6 +194,13 @@ class ReportExtension implements ExtensionInterface
         }, [
             self::TAG_REPORT_GENERATOR => ['name' => 'composite']
         ]);
+        $container->register(OverviewGenerator::class, function (Container $container) {
+            return new OverviewGenerator(
+                new SuiteCollectionTransformer(),
+                $container->get(ExpressionLanguage::class),
+                $container->get(Evaluator::class),
+            );
+        }, [self::TAG_REPORT_GENERATOR => ['name' => 'overview']]);
     }
 
     private function registerReportRenderers(Container $container): void
