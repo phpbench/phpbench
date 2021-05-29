@@ -289,6 +289,10 @@ class TimeUnit
     {
         self::validateMode($mode);
 
+        if ($destUnit === self::AUTO) {
+            $destUnit = self::resolveSuitableUnit($time);
+        }
+
         if ($mode === self::MODE_TIME) {
             return self::convertTo($time, $unit, $destUnit);
         }
