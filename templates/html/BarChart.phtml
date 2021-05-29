@@ -1,4 +1,5 @@
-<canvas id="myChart" width="400" height="100"></canvas>
+<?php $chartId = uniqid() ?>
+<canvas id="<?php echo $chartId ?>" width="400" height="100"></canvas>
 
 
 <script>
@@ -17,7 +18,7 @@ var data = {
         <?php endforeach ?>
     ]
 };
-var ctx = document.getElementById('myChart').getContext('2d');
+var ctx = document.getElementById("<?php echo $chartId ?>").getContext('2d');
 var myChart = new Chart(ctx, {
   type: 'bar',
   data: data,

@@ -2,6 +2,7 @@
 
 namespace PhpBench\Report\Generator;
 
+use Generator;
 use PhpBench\Data\DataFrame;
 use PhpBench\Data\Row;
 use PhpBench\Expression\Ast\FloatNode;
@@ -73,6 +74,9 @@ class OverviewGenerator implements GeneratorInterface
         $frame = $this->transformer->suiteToFrame($collection);
         $reports[] = $this->buildSummary($frame);
         $reports[] = $this->comparisonChart($frame);
+        foreach (iterator_to_array($this->benchmarkReports($frame)) as $report) {
+            $reports[] = $report;
+        }
 
         return Reports::fromReports(...$reports);
     }
@@ -130,6 +134,34 @@ class OverviewGenerator implements GeneratorInterface
         }
 
         return ReportBuilder::create('Overview')
+            ->addObject(new BarChart(
+                new ChartSeries(...$labels),
+                new ChartData(array_combine(array_keys($series), array_map(function (array $series) {
+                    return new ChartSeries(...$series);
+                }, $series)))
+            ))
+            ->build();
+    }
+
+    private function benchmarkReports(DataFrame $frame): Generator
+    {
+        foreach ($frame->partition(['benchmark_name']) as $label => $benchmark) {
+            yield $this->benchmarkReport($label, $benchmark);
+        }
+    }
+
+    private function benchmarkReport(string $benchmarkClass, DataFrame $benchmark): Report
+    {
+        $labels = [];
+        $data = [];
+        foreach ($benchmark->partition(['subject_name', 'variant_name']) as $label => $suite) {
+            $labels[] = $label;
+            foreach ($suite->partition(['suite_tag']) as $tag => $suiteVariant) {
+                $series[$tag][] = $suiteVariant->column('result_time_net')->sum();
+            }
+        }
+
+        return ReportBuilder::create($benchmarkClass)
             ->addObject(new BarChart(
                 new ChartSeries(...$labels),
                 new ChartData(array_combine(array_keys($series), array_map(function (array $series) {
