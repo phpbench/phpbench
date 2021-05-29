@@ -13,6 +13,7 @@ use PhpBench\Console\Command\ShowCommand;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\ExpressionEvaluator;
 use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\NodePrinters;
 use PhpBench\Expression\Printer;
@@ -20,7 +21,12 @@ use PhpBench\Expression\Printer\EvaluatingPrinter;
 use PhpBench\Expression\Printer\NormalizingPrinter;
 use PhpBench\Json\JsonDecoder;
 use PhpBench\Registry\ConfigurableRegistry;
+use PhpBench\Report\ComponentGeneratorAgent;
+use PhpBench\Report\ComponentGeneratorInterface;
+use PhpBench\Report\Component\ReportComponent;
+use PhpBench\Report\Component\TableComponent;
 use PhpBench\Report\Generator\BareGenerator;
+use PhpBench\Report\Generator\ComponentGenerator;
 use PhpBench\Report\Generator\CompositeGenerator;
 use PhpBench\Report\Generator\EnvGenerator;
 use PhpBench\Report\Generator\ExpressionGenerator;
@@ -37,8 +43,10 @@ use PhpBench\Template\ObjectPathResolver\ReflectionObjectPathResolver;
 use PhpBench\Template\ObjectRenderer;
 use PhpBench\Template\TemplateService\ContainerTemplateService;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Webmozart\PathUtil\Path;
+use function array_map;
 
 class ReportExtension implements ExtensionInterface
 {
@@ -53,6 +61,7 @@ class ReportExtension implements ExtensionInterface
     public const PARAM_TEMPLATE_MAP = 'report.template_map';
     public const PARAM_TEMPLATE_PATHS = 'report.template_paths';
     public const PARAM_OUTPUT_DIR_HTML = 'report.html_output_dir';
+    const TAG_COMPONENT_GENERATOR = 'report.component_generator';
 
     public function configure(OptionsResolver $resolver): void
     {
@@ -97,6 +106,7 @@ class ReportExtension implements ExtensionInterface
         $this->registerRegistries($container);
         $this->registerReportGenerators($container);
         $this->registerReportRenderers($container);
+        $this->registerComponentGenerators($container);
     }
 
     private function registerJson(Container $container): void
@@ -168,12 +178,15 @@ class ReportExtension implements ExtensionInterface
 
     private function registerReportGenerators(Container $container): void
     {
+        $container->register(SuiteCollectionTransformer::class, function (Container $container) {
+            return new SuiteCollectionTransformer();
+        });
         $container->register(ExpressionGenerator::class, function (Container $container) {
             return new ExpressionGenerator(
                 $container->get(ExpressionLanguage::class),
                 $container->get(Evaluator::class),
                 $container->get(EvaluatingPrinter::class),
-                new SuiteCollectionTransformer(),
+                $container->get(SuiteCollectionTransformer::class),
                 $container->get(LoggerInterface::class)
             );
         }, [self::TAG_REPORT_GENERATOR => ['name' => 'expression']]);
@@ -181,7 +194,7 @@ class ReportExtension implements ExtensionInterface
             return new EnvGenerator();
         }, [self::TAG_REPORT_GENERATOR => ['name' => 'env']]);
         $container->register(BareGenerator::class, function (Container $container) {
-            return new BareGenerator(new SuiteCollectionTransformer());
+            return new BareGenerator($container->get(SuiteCollectionTransformer::class));
         }, [self::TAG_REPORT_GENERATOR => ['name' => 'bare']]);
         $container->register(OutputTestGenerator::class, function (Container $container) {
             return new OutputTestGenerator();
@@ -192,6 +205,14 @@ class ReportExtension implements ExtensionInterface
             );
         }, [
             self::TAG_REPORT_GENERATOR => ['name' => 'composite']
+        ]);
+        $container->register(ComponentGenerator::class, function (Container $container) {
+            return new ComponentGenerator(
+                $container->get(ComponentGeneratorAgent::class),
+                $container->get(SuiteCollectionTransformer::class)
+            );
+        }, [
+            self::TAG_REPORT_GENERATOR => ['name' => 'component']
         ]);
     }
 
@@ -256,5 +277,39 @@ class ReportExtension implements ExtensionInterface
                 )
             );
         });
+    }
+
+    private function registerComponentGenerators(Container $container): void
+    {
+        $container->register(ComponentGeneratorAgent::class, function (Container $container) {
+            $serviceMap = [];
+            foreach ($container->getServiceIdsForTag(self::TAG_COMPONENT_GENERATOR) as $serviceId => $attrs) {
+                if (!isset($attrs['name'])) {
+                    throw new RuntimeException(sprintf(
+                        'Component DI definition "%s" must define the `name` attribute',
+                        $serviceId
+                    ));
+                }
+
+                $serviceMap[$attrs['name']] = $serviceId;
+            }
+
+            return new ComponentGeneratorAgent($container, $serviceMap);
+        });
+
+        $container->register(TableComponent::class, function (Container $container) {
+            return new TableComponent($container->get(ExpressionEvaluator::class));
+        }, [
+            self::TAG_COMPONENT_GENERATOR => [ 'name' => 'table' ]
+        ]);
+
+        $container->register(ReportComponent::class, function (Container $container) {
+            return new ReportComponent(
+                $container->get(ComponentGeneratorAgent::class),
+                $container->get(ExpressionEvaluator::class)
+            );
+        }, [
+            self::TAG_COMPONENT_GENERATOR => [ 'name' => 'report' ]
+        ]);
     }
 }
