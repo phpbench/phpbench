@@ -208,11 +208,13 @@ class ReportExtension implements ExtensionInterface
         ]);
         $container->register(ComponentGenerator::class, function (Container $container) {
             return new ComponentGenerator(
+                $container->get(SuiteCollectionTransformer::class),
                 $container->get(ComponentGeneratorAgent::class),
-                $container->get(SuiteCollectionTransformer::class)
+                $container->get(ExpressionEvaluator::class)
             );
         }, [
-            self::TAG_REPORT_GENERATOR => ['name' => 'component']
+            self::TAG_REPORT_GENERATOR => ['name' => 'component'],
+            self::TAG_COMPONENT_GENERATOR => ['name' => 'report']
         ]);
     }
 
@@ -301,15 +303,6 @@ class ReportExtension implements ExtensionInterface
             return new TableComponent($container->get(ExpressionEvaluator::class));
         }, [
             self::TAG_COMPONENT_GENERATOR => [ 'name' => 'table' ]
-        ]);
-
-        $container->register(ReportComponent::class, function (Container $container) {
-            return new ReportComponent(
-                $container->get(ComponentGeneratorAgent::class),
-                $container->get(ExpressionEvaluator::class)
-            );
-        }, [
-            self::TAG_COMPONENT_GENERATOR => [ 'name' => 'report' ]
         ]);
     }
 }
