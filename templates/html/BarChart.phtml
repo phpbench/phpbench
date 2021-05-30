@@ -1,0 +1,21 @@
+<?php $chartId = uniqid(); assert($object instanceof \PhpBench\Report\Model\BarChart) ?>
+<div id="<?php echo $chartId ?>" width="400" height="100"></div>
+<script>
+var data = [
+    <?php foreach ($object->dataSets as $setName => $dataSet): ?>
+    {
+        x: <?php echo json_encode($dataSet->xSeries) ?>,
+        name: '<?php echo $dataSet->name ?>',
+        y: <?php echo json_encode($dataSet->ySeries) ?>,
+        type: 'bar',
+        error_y: {
+            type: 'data',
+            array: <?php echo json_encode($dataSet->errorMargins) ?>,
+            visible: true,
+        }
+    },
+    <?php endforeach ?>
+]
+var layout = {barmode: 'group'};
+Plotly.newPlot(document.getElementById('<?php echo $chartId ?>'), data, layout);
+</script>
