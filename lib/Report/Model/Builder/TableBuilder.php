@@ -20,7 +20,7 @@ class TableBuilder
     private $rows = [];
 
     /**
-     * @var Node[]|null
+     * @var Node[]|string[]|null
      */
     private $headers;
 
@@ -37,23 +37,26 @@ class TableBuilder
     public function withTitle(?string $title): self
     {
         $this->title = $title;
+
         return $this;
     }
 
     /**
-     * @param string|Node[] $headers
+     * @param (string[]|Node[]) $headers
      */
     public function withHeaders(array $headers): self
     {
         $this->headers = array_map(function (string $header) {
             return PhpValueFactory::fromValue($header);
         }, $headers);
+
         return $this;
     }
 
     public function addRow(TableRow $row): self
     {
         $this->rows[] = $row;
+
         return $this;
     }
 
@@ -72,9 +75,11 @@ class TableBuilder
             if (!$value instanceof Node) {
                 return PhpValueFactory::fromValue($value);
             }
+
             return $value;
         }, $row);
         $this->rows[] = TableRow::fromArray($row);
+
         return $this;
     }
 

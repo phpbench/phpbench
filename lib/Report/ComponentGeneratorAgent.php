@@ -24,7 +24,7 @@ final class ComponentGeneratorAgent
     private $container;
 
     /**
-     * @param array<int|string,ComponentGeneratorInterface> $componentMap
+     * @param array<int|string,string> $componentMap
      */
     public function __construct(ContainerInterface $container, array $componentMap)
     {
@@ -46,6 +46,7 @@ final class ComponentGeneratorAgent
 
     /**
      * @param parameters $config
+     *
      * @return parameters
      */
     public function resolveConfig(ComponentGeneratorInterface $generator, array $config): array
@@ -56,6 +57,7 @@ final class ComponentGeneratorAgent
     private function resolveResolver(ComponentGeneratorInterface $generator): OptionsResolver
     {
         $cacheKey = get_class($generator);
+
         if (isset($this->resolvers[$cacheKey])) {
             return $this->resolvers[$cacheKey];
         }

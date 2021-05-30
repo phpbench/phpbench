@@ -4,6 +4,7 @@ namespace PhpBench\Report\Model;
 
 use ArrayIterator;
 use IteratorAggregate;
+use PhpBench\Expression\Ast\Node;
 use PhpBench\Report\ComponentInterface;
 use PhpBench\Report\Model\Builder\TableBuilder;
 
@@ -28,7 +29,7 @@ final class Table implements IteratorAggregate, ComponentInterface
     private $headers;
 
     /**
-     * @param PhpValue[] $headers
+     * @param Node[]|string[]|null $headers
      * @param TableRow[] $rows
      */
     public function __construct(array $rows, ?array $headers, ?string $title)
@@ -40,14 +41,17 @@ final class Table implements IteratorAggregate, ComponentInterface
 
     /**
      * @deprecated to be removed in 2.0. Use TableBuilder.
+     *
      * @param array<int|string,array<int|string,mixed>> $rows
      */
     public static function fromRowArray(array $rows, ?string $title = null): self
     {
         $headers = [];
+
         foreach ($rows as $row) {
             $headers = array_keys($row);
         }
+
         return TableBuilder::create()
             ->addRowsFromArray($rows)
             ->withTitle($title)

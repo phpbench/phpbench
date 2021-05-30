@@ -4,18 +4,14 @@ namespace PhpBench\Report\Generator;
 
 use PhpBench\Compat\SymfonyOptionsResolverCompat;
 use PhpBench\Data\DataFrame;
-use PhpBench\Expression\Ast\PhpValue;
 use PhpBench\Expression\ExpressionEvaluator;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
-use PhpBench\Registry\ConfigurableRegistry;
-use PhpBench\Registry\Registry;
 use PhpBench\Report\ComponentGeneratorAgent;
 use PhpBench\Report\ComponentGeneratorInterface;
 use PhpBench\Report\ComponentInterface;
 use PhpBench\Report\GeneratorInterface;
 use PhpBench\Report\Model\Builder\ReportBuilder;
-use PhpBench\Report\Model\Builder\TableBuilder;
 use PhpBench\Report\Model\Report;
 use PhpBench\Report\Model\Reports;
 use PhpBench\Report\Transform\SuiteCollectionTransformer;
@@ -83,6 +79,7 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
         $dataFrame = $this->transformer->suiteToFrame($collection);
         $component = $this->generateComponent($dataFrame, $config->getArrayCopy());
         assert($component instanceof Report);
+
         return Reports::fromReport($component);
     }
 
@@ -92,6 +89,7 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
     public function generateComponent(DataFrame $dataFrame, array $config): ComponentInterface
     {
         $builder = ReportBuilder::create($config[self::PARAM_TITLE]);
+
         if ($config[self::PARAM_DESCRIPTION]) {
             $builder->withDescription($config[self::PARAM_DESCRIPTION]);
         }

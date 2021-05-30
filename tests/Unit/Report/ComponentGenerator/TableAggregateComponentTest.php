@@ -2,13 +2,12 @@
 
 namespace PhpBench\Tests\Unit\Report\ComponentGenerator;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Data\DataFrame;
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\ExpressionEvaluator;
-use PhpBench\Report\ComponentGeneratorInterface;
 use PhpBench\Report\ComponentGenerator\TableAggregateComponent;
+use PhpBench\Report\ComponentGeneratorInterface;
 use PhpBench\Report\Model\Builder\TableBuilder;
 use PhpBench\Report\Model\Table;
 

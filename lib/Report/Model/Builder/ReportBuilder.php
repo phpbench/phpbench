@@ -35,12 +35,14 @@ final class ReportBuilder
     public function withDescription(string $description): self
     {
         $this->description = $description;
+
         return $this;
     }
 
     public function addObject(ComponentInterface $object): self
     {
         $this->objects[] = $object;
+
         return $this;
     }
 

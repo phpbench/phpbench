@@ -6,7 +6,6 @@ use PhpBench\Data\DataFrame;
 use PhpBench\Report\ComponentGeneratorInterface;
 use PhpBench\Report\ComponentInterface;
 use PhpBench\Tests\IntegrationTestCase;
-use PhpBench\Tests\TestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class ComponentGeneratorTestCase extends IntegrationTestCase
@@ -21,6 +20,7 @@ abstract class ComponentGeneratorTestCase extends IntegrationTestCase
         $resolver = new OptionsResolver();
         $generator = $this->createGenerator();
         $generator->configure($resolver);
+
         return $generator->generateComponent($dataFrame, $resolver->resolve($config));
     }
 }

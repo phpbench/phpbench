@@ -16,7 +16,6 @@ use PhpBench\DependencyInjection\Container;
 use PhpBench\Expression\ExpressionEvaluator;
 use PhpBench\Report\ComponentGeneratorAgent;
 use PhpBench\Report\Generator\ComponentGenerator;
-use PhpBench\Report\Generator\EnvGenerator;
 use PhpBench\Report\GeneratorInterface;
 use PhpBench\Report\Transform\SuiteCollectionTransformer;
 
@@ -30,6 +29,7 @@ class ComponentGeneratorTest extends GeneratorTestCase
     protected function createGenerator(Container $container): GeneratorInterface
     {
         $container = $this->container();
+
         return new ComponentGenerator(
             $container->get(SuiteCollectionTransformer::class),
             $container->get(ComponentGeneratorAgent::class),

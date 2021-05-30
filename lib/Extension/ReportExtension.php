@@ -21,10 +21,8 @@ use PhpBench\Expression\Printer\EvaluatingPrinter;
 use PhpBench\Expression\Printer\NormalizingPrinter;
 use PhpBench\Json\JsonDecoder;
 use PhpBench\Registry\ConfigurableRegistry;
-use PhpBench\Report\ComponentGeneratorAgent;
-use PhpBench\Report\ComponentGeneratorInterface;
-use PhpBench\Report\Component\ReportComponent;
 use PhpBench\Report\ComponentGenerator\TableAggregateComponent;
+use PhpBench\Report\ComponentGeneratorAgent;
 use PhpBench\Report\Generator\BareGenerator;
 use PhpBench\Report\Generator\ComponentGenerator;
 use PhpBench\Report\Generator\CompositeGenerator;
@@ -46,7 +44,6 @@ use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Webmozart\PathUtil\Path;
-use function array_map;
 
 class ReportExtension implements ExtensionInterface
 {
@@ -285,6 +282,7 @@ class ReportExtension implements ExtensionInterface
     {
         $container->register(ComponentGeneratorAgent::class, function (Container $container) {
             $serviceMap = [];
+
             foreach ($container->getServiceIdsForTag(self::TAG_COMPONENT_GENERATOR) as $serviceId => $attrs) {
                 if (!isset($attrs['name'])) {
                     throw new RuntimeException(sprintf(

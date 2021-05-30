@@ -33,6 +33,7 @@ final class Report implements ComponentInterface
 
     /**
      * @deprecated use objects() to be removed in 2.0. Use ReportBuilder
+     *
      * @param Object[] $objects
      */
     public static function fromTables(array $objects, ?string $title = null, ?string $description = null): self
@@ -68,6 +69,7 @@ final class Report implements ComponentInterface
 
     /**
      * @deprecated use objects() to be removed in 2.0
+     *
      * @return Table[]
      */
     public function tables(): array
