@@ -34,6 +34,7 @@ final class ExpressionEvaluator
 
     /**
      * @return scalar|scalar[]
+     *
      * @param parameters $params
      */
     public function evaluatePhpValue(string $expression, array $params)

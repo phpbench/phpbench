@@ -3,15 +3,10 @@
 namespace PhpBench\Tests\Unit\Report\ComponentGenerator;
 
 use PhpBench\Data\DataFrame;
-use PhpBench\Expression\Ast\ListNode;
-use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\ExpressionEvaluator;
 use PhpBench\Report\ComponentGenerator\BarChartComponentGenerator;
-use PhpBench\Report\ComponentGenerator\TableAggregateComponent;
 use PhpBench\Report\ComponentGeneratorInterface;
 use PhpBench\Report\Model\BarChart;
-use PhpBench\Report\Model\Builder\TableBuilder;
-use PhpBench\Report\Model\Table;
 
 class BarChartComponentGeneratorTest extends ComponentGeneratorTestCase
 {

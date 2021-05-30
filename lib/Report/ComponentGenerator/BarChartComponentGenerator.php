@@ -9,7 +9,6 @@ use PhpBench\Report\ComponentInterface;
 use PhpBench\Report\Model\BarChart;
 use PhpBench\Report\Model\BarChartDataSet;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use function array_fill;
 
 class BarChartComponentGenerator implements ComponentGeneratorInterface
 {
@@ -50,8 +49,10 @@ class BarChartComponentGenerator implements ComponentGeneratorInterface
         $xLabels = [];
         $errorMargins = [];
         $sets = $errorMargins = [];
+
         foreach ($dataFrame->partition($config[self::PARAM_X_PARTITION]) as $xLabel => $partition) {
             $xLabels[] = $xLabel;
+
             foreach ($partition->partition($config[self::PARAM_SET_PARTITION]) as $setLabel => $setPartition) {
                 $sets[$setLabel][] = $this->evaluator->evaluatePhpValue($config[self::PARAM_Y_EXPR], [
                     'frame' => $dataFrame,
