@@ -24,7 +24,7 @@ use PhpBench\Registry\ConfigurableRegistry;
 use PhpBench\Report\ComponentGeneratorAgent;
 use PhpBench\Report\ComponentGeneratorInterface;
 use PhpBench\Report\Component\ReportComponent;
-use PhpBench\Report\Component\TableComponent;
+use PhpBench\Report\Component\TableAggregateComponent;
 use PhpBench\Report\Generator\BareGenerator;
 use PhpBench\Report\Generator\ComponentGenerator;
 use PhpBench\Report\Generator\CompositeGenerator;
@@ -299,8 +299,8 @@ class ReportExtension implements ExtensionInterface
             return new ComponentGeneratorAgent($container, $serviceMap);
         });
 
-        $container->register(TableComponent::class, function (Container $container) {
-            return new TableComponent($container->get(ExpressionEvaluator::class));
+        $container->register(TableAggregateComponent::class, function (Container $container) {
+            return new TableAggregateComponent($container->get(ExpressionEvaluator::class));
         }, [
             self::TAG_COMPONENT_GENERATOR => [ 'name' => 'table' ]
         ]);

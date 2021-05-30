@@ -16,7 +16,7 @@
     "components": [
         {
              "_type": "table",
-             "column_expressions": {
+             "row": {
                  "greeting": "first(partition[\"subject_name\"])"
              }
         }

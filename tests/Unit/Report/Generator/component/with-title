@@ -6,7 +6,7 @@
     "components": [
         {
              "_type": "table",
-             "column_expressions": {
+             "row": {
                  "greeting": "\"Hello\""
              }
         }

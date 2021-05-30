@@ -7,7 +7,7 @@
     "components": [
         {
              "_type": "unknown",
-             "column_expressions": {
+             "row": {
                  "greeting": "\"Hello\""
              }
         }

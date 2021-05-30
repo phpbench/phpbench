@@ -2,6 +2,7 @@
 
 namespace PhpBench\Report\Component;
 
+use PhpBench\Compat\SymfonyOptionsResolverCompat;
 use PhpBench\Data\DataFrame;
 use PhpBench\Expression\Ast\PhpValue;
 use PhpBench\Expression\ExpressionEvaluator;
@@ -10,11 +11,11 @@ use PhpBench\Report\ComponentInterface;
 use PhpBench\Report\Model\Table;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TableComponent implements ComponentGeneratorInterface
+class TableAggregateComponent implements ComponentGeneratorInterface
 {
-    public const PARAM_TITLE = 'title';
+    public const PARAM_CAPTION = 'caption';
     public const PARAM_PARTITION = 'partition';
-    public const PARAM_COLUMN_EXPRESSIONS = 'column_expressions';
+    public const PARAM_ROW = 'row';
 
     /**
      * @var ExpressionEvaluator
@@ -32,10 +33,18 @@ class TableComponent implements ComponentGeneratorInterface
     public function configure(OptionsResolver $options): void
     {
         $options->setDefaults([
-            self::PARAM_TITLE => null,
+            self::PARAM_CAPTION => null,
             self::PARAM_PARTITION => [],
-            self::PARAM_COLUMN_EXPRESSIONS => [
+            self::PARAM_ROW => [
             ],
+        ]);
+        $options->setAllowedTypes(self::PARAM_CAPTION, ['string', 'null']);
+        $options->setAllowedTypes(self::PARAM_PARTITION, 'array');
+        $options->setAllowedTypes(self::PARAM_ROW, 'array');
+        SymfonyOptionsResolverCompat::setInfos($options, [
+            self::PARAM_CAPTION => 'Caption for the table',
+            self::PARAM_PARTITION => 'Partition the data using these columns - the row expressions will to aggregate the data in each partition',
+            self::PARAM_ROW => 'Set of expressions used to evaluate the partitions, the key is the column name, the value is the expression',
         ]);
     }
 
@@ -47,7 +56,7 @@ class TableComponent implements ComponentGeneratorInterface
         $rows = [];
         foreach ($dataFrame->partition($config[self::PARAM_PARTITION]) as $dataFrameRow) {
             $row = [];
-            foreach ($config[self::PARAM_COLUMN_EXPRESSIONS] as $colName => $expression) {
+            foreach ($config[self::PARAM_ROW] as $colName => $expression) {
                 $row[$colName] = $this->evaluator->evaluate($expression, [
                     'partition' => $dataFrameRow,
                     'frame' => $dataFrame,
@@ -57,8 +66,8 @@ class TableComponent implements ComponentGeneratorInterface
         }
 
         $title = null;
-        if ($config[self::PARAM_TITLE]) {
-            $title = $this->evaluator->evaluate($config[self::PARAM_TITLE], [
+        if ($config[self::PARAM_CAPTION]) {
+            $title = $this->evaluator->evaluate($config[self::PARAM_CAPTION], [
                 'frame' => $dataFrame
             ]);
             assert($title instanceof PhpValue);
