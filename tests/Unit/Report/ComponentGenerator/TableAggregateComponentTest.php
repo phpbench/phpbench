@@ -29,10 +29,10 @@ class TableAggregateComponentTest extends ComponentGeneratorTestCase
         self::assertNull($table->headers());
     }
 
-    public function testSetsCaption(): void
+    public function testSetsTitle(): void
     {
         $table = $this->generate(DataFrame::empty(), [
-            TableAggregateComponent::PARAM_CAPTION => 'Hello',
+            TableAggregateComponent::PARAM_TITLE => 'Hello',
         ]);
         assert($table instanceof Table);
         self::assertEquals('Hello', $table->title());

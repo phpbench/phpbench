@@ -14,7 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TableAggregateComponent implements ComponentGeneratorInterface
 {
-    public const PARAM_CAPTION = 'caption';
+    public const PARAM_TITLE = 'title';
     public const PARAM_PARTITION = 'partition';
     public const PARAM_ROW = 'row';
 
@@ -34,16 +34,16 @@ class TableAggregateComponent implements ComponentGeneratorInterface
     public function configure(OptionsResolver $options): void
     {
         $options->setDefaults([
-            self::PARAM_CAPTION => null,
+            self::PARAM_TITLE => null,
             self::PARAM_PARTITION => [],
             self::PARAM_ROW => [
             ],
         ]);
-        $options->setAllowedTypes(self::PARAM_CAPTION, ['string', 'null']);
+        $options->setAllowedTypes(self::PARAM_TITLE, ['string', 'null']);
         $options->setAllowedTypes(self::PARAM_PARTITION, 'array');
         $options->setAllowedTypes(self::PARAM_ROW, 'array');
         SymfonyOptionsResolverCompat::setInfos($options, [
-            self::PARAM_CAPTION => 'Caption for the table',
+            self::PARAM_TITLE => 'Caption for the table',
             self::PARAM_PARTITION => 'Partition the data using these columns - the row expressions will to aggregate the data in each partition',
             self::PARAM_ROW => 'Set of expressions used to evaluate the partitions, the key is the column name, the value is the expression',
         ]);
@@ -67,7 +67,7 @@ class TableAggregateComponent implements ComponentGeneratorInterface
         }
 
         return TableBuilder::create()
-            ->withTitle($config[self::PARAM_CAPTION])
+            ->withTitle($config[self::PARAM_TITLE])
             ->addRowsFromArray($rows)
             ->build();
     }
