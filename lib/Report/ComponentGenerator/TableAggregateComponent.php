@@ -8,6 +8,7 @@ use PhpBench\Expression\Ast\PhpValue;
 use PhpBench\Expression\ExpressionEvaluator;
 use PhpBench\Report\ComponentGeneratorInterface;
 use PhpBench\Report\ComponentInterface;
+use PhpBench\Report\Model\Builder\TableBuilder;
 use PhpBench\Report\Model\Table;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -65,6 +66,9 @@ class TableAggregateComponent implements ComponentGeneratorInterface
             $rows[] = $row;
         }
 
-        return Table::fromRowArray($rows, $config[self::PARAM_CAPTION]);
+        return TableBuilder::create()
+            ->withTitle($config[self::PARAM_CAPTION])
+            ->addRowsFromArray($rows)
+            ->build();
     }
 }
