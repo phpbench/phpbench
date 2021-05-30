@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Report\Component;
+namespace PhpBench\Report\ComponentGenerator;
 
 use PhpBench\Compat\SymfonyOptionsResolverCompat;
 use PhpBench\Data\DataFrame;
@@ -65,15 +65,6 @@ class TableAggregateComponent implements ComponentGeneratorInterface
             $rows[] = $row;
         }
 
-        $title = null;
-        if ($config[self::PARAM_CAPTION]) {
-            $title = $this->evaluator->evaluate($config[self::PARAM_CAPTION], [
-                'frame' => $dataFrame
-            ]);
-            assert($title instanceof PhpValue);
-            $title = $title->value();
-        }
-
-        return Table::fromRowArray($rows, $title);
+        return Table::fromRowArray($rows, $config[self::PARAM_CAPTION]);
     }
 }

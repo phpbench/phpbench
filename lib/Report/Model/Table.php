@@ -39,6 +39,7 @@ final class Table implements IteratorAggregate, ComponentInterface
     }
 
     /**
+     * @deprecated to be removed in 2.0. Use TableBuilder.
      * @param array<int|string,array<int|string,mixed>> $rows
      */
     public static function fromRowArray(array $rows, ?string $title = null): self

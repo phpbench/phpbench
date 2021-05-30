@@ -24,7 +24,7 @@ use PhpBench\Registry\ConfigurableRegistry;
 use PhpBench\Report\ComponentGeneratorAgent;
 use PhpBench\Report\ComponentGeneratorInterface;
 use PhpBench\Report\Component\ReportComponent;
-use PhpBench\Report\Component\TableAggregateComponent;
+use PhpBench\Report\ComponentGenerator\TableAggregateComponent;
 use PhpBench\Report\Generator\BareGenerator;
 use PhpBench\Report\Generator\ComponentGenerator;
 use PhpBench\Report\Generator\CompositeGenerator;
