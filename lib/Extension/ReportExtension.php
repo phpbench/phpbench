@@ -12,9 +12,7 @@ use PhpBench\Console\Command\ReportCommand;
 use PhpBench\Console\Command\ShowCommand;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
-use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\ExpressionEvaluator;
-use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\NodePrinters;
 use PhpBench\Expression\Printer;
 use PhpBench\Expression\Printer\EvaluatingPrinter;
@@ -54,11 +52,11 @@ class ReportExtension implements ExtensionInterface
     public const SERVICE_REGISTRY_RENDERER = 'report.registry_renderer';
 
     public const TAG_REPORT_GENERATOR = 'report.generator';
+    public const TAG_COMPONENT_GENERATOR = 'report.component_generator';
     public const TAG_REPORT_RENDERER = 'report.renderer';
     public const PARAM_TEMPLATE_MAP = 'report.template_map';
     public const PARAM_TEMPLATE_PATHS = 'report.template_paths';
     public const PARAM_OUTPUT_DIR_HTML = 'report.html_output_dir';
-    const TAG_COMPONENT_GENERATOR = 'report.component_generator';
 
     public function configure(OptionsResolver $resolver): void
     {
@@ -180,8 +178,7 @@ class ReportExtension implements ExtensionInterface
         });
         $container->register(ExpressionGenerator::class, function (Container $container) {
             return new ExpressionGenerator(
-                $container->get(ExpressionLanguage::class),
-                $container->get(Evaluator::class),
+                $container->get(ExpressionEvaluator::class),
                 $container->get(EvaluatingPrinter::class),
                 $container->get(SuiteCollectionTransformer::class),
                 $container->get(LoggerInterface::class)
