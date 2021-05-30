@@ -5,6 +5,7 @@ namespace PhpBench\Expression;
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\PhpValue;
+use PhpBench\Expression\MustacheRenderer;
 
 final class ExpressionEvaluator
 {
@@ -18,10 +19,27 @@ final class ExpressionEvaluator
      */
     private $evaluator;
 
-    public function __construct(ExpressionLanguage $language, Evaluator $evaluator)
+    /**
+     * @var MustacheRenderer
+     */
+    private $templateRenderer;
+
+    /**
+     * @var MustacheRenderer
+     */
+    private $mustacheRenderer;
+
+    /**
+     * @var Printer
+     */
+    private $printer;
+
+    public function __construct(ExpressionLanguage $language, Evaluator $evaluator, Printer $printer)
     {
         $this->language = $language;
         $this->evaluator = $evaluator;
+        $this->mustacheRenderer = new MustacheRenderer();
+        $this->printer = $printer;
     }
 
     /**
@@ -47,5 +65,16 @@ final class ExpressionEvaluator
         }
 
         return $node->value();
+    }
+
+    /**
+     * @param parameters $params
+     */
+    public function renderTemplate(?string $template, array $params): string
+    {
+        return $this->mustacheRenderer->render($template, function (string $expression) use ($params) {
+            $v = $this->printer->print($this->evaluate($expression, $params));
+            return $v;
+        });
     }
 }

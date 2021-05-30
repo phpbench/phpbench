@@ -88,10 +88,17 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
      */
     public function generateComponent(DataFrame $dataFrame, array $config): ComponentInterface
     {
-        $builder = ReportBuilder::create($config[self::PARAM_TITLE]);
+        $builder = ReportBuilder::create(
+            $config[self::PARAM_TITLE] ? $this->evaluator->renderTemplate(
+                $config[self::PARAM_TITLE],
+                ['frame' => $dataFrame]
+            ) : null
+        );
 
         if ($config[self::PARAM_DESCRIPTION]) {
-            $builder->withDescription($config[self::PARAM_DESCRIPTION]);
+            $builder->withDescription($this->evaluator->renderTemplate($config[self::PARAM_DESCRIPTION], [
+                'frame' => $dataFrame
+            ]));
         }
 
         foreach ($dataFrame->partition($config[self::PARAM_PARTITION]) as $parition) {

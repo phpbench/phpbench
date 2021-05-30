@@ -341,7 +341,8 @@ class ExpressionExtension implements ExtensionInterface
         $container->register(ExpressionEvaluator::class, function (Container $container) {
             return new ExpressionEvaluator(
                 $container->get(ExpressionLanguage::class),
-                $container->get(Evaluator::class)
+                $container->get(Evaluator::class),
+                $container->get(Printer::class)
             );
         });
     }
