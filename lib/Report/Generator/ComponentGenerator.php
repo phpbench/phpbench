@@ -2,6 +2,7 @@
 
 namespace PhpBench\Report\Generator;
 
+use PhpBench\Compat\SymfonyOptionsResolverCompat;
 use PhpBench\Data\DataFrame;
 use PhpBench\Expression\Ast\PhpValue;
 use PhpBench\Expression\ExpressionEvaluator;
@@ -61,6 +62,16 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
             self::PARAM_DESCRIPTION => null,
             self::PARAM_PARTITION => [],
             self::PARAM_COMPONENTS => [],
+        ]);
+        $options->setAllowedTypes(self::PARAM_TITLE, ['string', 'null']);
+        $options->setAllowedTypes(self::PARAM_DESCRIPTION, ['string', 'null']);
+        $options->setAllowedTypes(self::PARAM_PARTITION, ['array']);
+        $options->setAllowedTypes(self::PARAM_COMPONENTS, ['array']);
+        SymfonyOptionsResolverCompat::setInfos($options, [
+            self::PARAM_TITLE => 'Title for generated report',
+            self::PARAM_DESCRIPTION => 'Description for generated report',
+            self::PARAM_PARTITION => 'Partition the data using these column names - the row expressions will to aggregate the data in each partition',
+            self::PARAM_COMPONENTS => 'List of component configuration objects, each component must feature a `_type` key (e.g. `table_aggregate`)',
         ]);
     }
 

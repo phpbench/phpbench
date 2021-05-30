@@ -44,7 +44,7 @@ class TableAggregateComponent implements ComponentGeneratorInterface
         $options->setAllowedTypes(self::PARAM_ROW, 'array');
         SymfonyOptionsResolverCompat::setInfos($options, [
             self::PARAM_TITLE => 'Caption for the table',
-            self::PARAM_PARTITION => 'Partition the data using these columns - the row expressions will to aggregate the data in each partition',
+            self::PARAM_PARTITION => 'Partition the data using these column names - the row expressions will to aggregate the data in each partition',
             self::PARAM_ROW => 'Set of expressions used to evaluate the partitions, the key is the column name, the value is the expression',
         ]);
     }
