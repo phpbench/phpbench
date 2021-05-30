@@ -302,7 +302,7 @@ class ReportExtension implements ExtensionInterface
         $container->register(TableAggregateComponent::class, function (Container $container) {
             return new TableAggregateComponent($container->get(ExpressionEvaluator::class));
         }, [
-            self::TAG_COMPONENT_GENERATOR => [ 'name' => 'table' ]
+            self::TAG_COMPONENT_GENERATOR => [ 'name' => 'table_aggregate' ]
         ]);
     }
 }

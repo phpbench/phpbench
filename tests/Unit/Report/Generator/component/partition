@@ -15,7 +15,7 @@
     "partition": ["subject_name"],
     "components": [
         {
-             "_type": "table",
+             "_type": "table_aggregate",
              "row": {
                  "greeting": "first(partition[\"subject_name\"])"
              }

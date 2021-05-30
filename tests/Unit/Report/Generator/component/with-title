@@ -5,7 +5,7 @@
     "title": "Good day",
     "components": [
         {
-             "_type": "table",
+             "_type": "table_aggregate",
              "row": {
                  "greeting": "\"Hello\""
              }
