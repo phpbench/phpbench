@@ -60,7 +60,7 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
             self::PARAM_TITLE => null,
             self::PARAM_DESCRIPTION => null,
             self::PARAM_PARTITION => [],
-            self::PARAM_COMPONENTS => null,
+            self::PARAM_COMPONENTS => [],
         ]);
     }
 
@@ -80,7 +80,7 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
      */
     public function generateComponent(DataFrame $dataFrame, array $config): ComponentInterface
     {
-        $builder = ReportBuilder::create($this->resolveTitle($dataFrame, $config));
+        $builder = ReportBuilder::create($config[self::PARAM_TITLE]);
         if ($config[self::PARAM_DESCRIPTION]) {
             $builder->withDescription($config[self::PARAM_DESCRIPTION]);
         }
@@ -102,20 +102,5 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
         }
 
         return $builder->build();
-    }
-
-    /**
-     * @param parameters $config
-     */
-    private function resolveTitle(DataFrame $frame, array $config): ?string
-    {
-        if (!isset($config[self::PARAM_TITLE])) {
-            return null;
-        }
-        $title = $this->evaluator->evaluate($config[self::PARAM_TITLE], [
-            'frame' => $frame
-        ]);
-        assert($title instanceof PhpValue);
-        return $title->value();
     }
 }

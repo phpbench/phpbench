@@ -1,0 +1,21 @@
+{
+}
+---
+{
+    "components": [
+        {
+             "_type": "table",
+             "column_expressions": {
+                 "greeting": "\"Hello\""
+             }
+        }
+    ]
+}
+---
+
++----------+
+| greeting |
++----------+
+| Hello    |
++----------+
+

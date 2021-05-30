@@ -1,0 +1,17 @@
+{
+}
+---
+{
+    "title": "Good day",
+    "description": "This is the description",
+    "components": [
+        {
+             "_type": "unknown",
+             "column_expressions": {
+                 "greeting": "\"Hello\""
+             }
+        }
+    ]
+}
+---
+Component "unknown" not known, known components: "report", "table"
