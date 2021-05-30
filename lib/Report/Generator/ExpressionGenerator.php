@@ -10,9 +10,8 @@ use PhpBench\Data\DataFrame;
 use PhpBench\Data\DataFrames;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\StringNode;
-use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
-use PhpBench\Expression\ExpressionLanguage;
+use PhpBench\Expression\ExpressionEvaluator;
 use PhpBench\Expression\Printer;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
@@ -38,12 +37,7 @@ class ExpressionGenerator implements GeneratorInterface
     const PARAM_INCLUDE_BASELINE = 'include_baseline';
 
     /**
-     * @var ExpressionLanguage
-     */
-    private $parser;
-
-    /**
-     * @var Evaluator
+     * @var ExpressionEvaluator
      */
     private $evaluator;
 
@@ -63,13 +57,11 @@ class ExpressionGenerator implements GeneratorInterface
     private $transformer;
 
     public function __construct(
-        ExpressionLanguage $parser,
-        Evaluator $evaluator,
+        ExpressionEvaluator $evaluator,
         Printer $printer,
         SuiteCollectionTransformer $transformer,
         LoggerInterface $logger
     ) {
-        $this->parser = $parser;
         $this->evaluator = $evaluator;
         $this->printer = $printer;
         $this->logger = $logger;
@@ -243,7 +235,7 @@ EOT
             foreach ($exprMap as $name => $expr) {
                 try {
                     $evaledRow[$name] = $this->evaluator->evaluate(
-                        $this->parser->parse($expr),
+                        $expr,
                         $columnValues
                     );
                 } catch (EvaluationError $e) {

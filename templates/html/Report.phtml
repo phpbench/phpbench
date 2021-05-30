@@ -5,7 +5,7 @@
 <?php if ($object->description()): ?>
     <p><?php echo $object->description() ?></p>
 <?php endif ?>
-<?php foreach ($object->tables() as $table): ?>
+<?php foreach ($object->objects() as $table): ?>
     <?php echo $this->render($table); ?>
 <?php endforeach ?>
 </div>

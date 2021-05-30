@@ -1,0 +1,17 @@
+{
+}
+---
+{
+    "title": "Good day",
+    "description": "This is the description",
+    "components": [
+        {
+             "_type": "unknown",
+             "row": {
+                 "greeting": "\"Hello\""
+             }
+        }
+    ]
+}
+---
+Component "unknown" not known, known components: "report", "table_aggregate"

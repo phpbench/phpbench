@@ -41,7 +41,7 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param array<int, array<string,mixed>> $rows
+     * @param array<int, array<int|string,mixed>> $rows
      * @param string[] $columns
      */
     public static function fromRowSeries(array $rows, array $columns): self
@@ -232,5 +232,10 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
         return new self(array_values(array_map(function (Row $row) {
             return $row->toSeries();
         }, array_filter($this->rows(), $closure))), $this->columns);
+    }
+
+    public static function empty(): self
+    {
+        return new self([], []);
     }
 }

@@ -16,6 +16,7 @@ use PhpBench\Expression\ColorMap;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Evaluator\MainEvaluator;
 use PhpBench\Expression\Evaluator\PrettyErrorEvaluator;
+use PhpBench\Expression\ExpressionEvaluator;
 use PhpBench\Expression\ExpressionFunctions;
 use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\ExpressionLanguage\MemoisedExpressionLanguage;
@@ -335,6 +336,12 @@ class ExpressionExtension implements ExtensionInterface
         $container->register(ExpressionLanguage::class, function (Container $container) {
             return new MemoisedExpressionLanguage(
                 new RealExpressionLanguage($container->get(Lexer::class), $container->get(Parser::class))
+            );
+        });
+        $container->register(ExpressionEvaluator::class, function (Container $container) {
+            return new ExpressionEvaluator(
+                $container->get(ExpressionLanguage::class),
+                $container->get(Evaluator::class)
             );
         });
     }
