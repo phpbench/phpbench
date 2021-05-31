@@ -5,7 +5,8 @@
     "runner.bootstrap": "vendor/autoload.php",
     "runner.path": "tests/Benchmark",
     "runner.php_config": {
-        "memory_limit": "1G"
+        "memory_limit": "1G",
+        "xdebug.mode": "none"
     },
     "runner.iterations": 10,
     "runner.retry_threshold": 5,
@@ -20,9 +21,6 @@
                 "aggregate"
             ]
         }
-    },
-    "runner.php_config": {
-        "xdebug.mode": "none"
     },
     "core.profiles": {
         "examples": {
