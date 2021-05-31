@@ -27,7 +27,7 @@ final class Tag
     {
         if (!preg_match(sprintf('/^%s$/', self::REGEX_PATTERN), $tag)) {
             throw new InvalidTagException(sprintf(
-                'Tag mast be non-empty string of alphanumeric characters and _, got "%s"',
+                'Tag must be non-empty string of alphanumeric characters and _, got "%s"',
                 $tag
             ));
         }
