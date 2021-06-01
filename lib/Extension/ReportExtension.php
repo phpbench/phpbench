@@ -19,7 +19,7 @@ use PhpBench\Expression\Printer\EvaluatingPrinter;
 use PhpBench\Expression\Printer\NormalizingPrinter;
 use PhpBench\Json\JsonDecoder;
 use PhpBench\Registry\ConfigurableRegistry;
-use PhpBench\Report\ComponentGenerator\BarChartComponentGenerator;
+use PhpBench\Report\ComponentGenerator\BarChartAggregateComponentGenerator;
 use PhpBench\Report\ComponentGenerator\TableAggregateComponent;
 use PhpBench\Report\ComponentGeneratorAgent;
 use PhpBench\Report\Generator\BareGenerator;
@@ -301,8 +301,8 @@ class ReportExtension implements ExtensionInterface
             self::TAG_COMPONENT_GENERATOR => [ 'name' => 'table_aggregate' ]
         ]);
 
-        $container->register(BarChartComponentGenerator::class, function (Container $container) {
-            return new BarChartComponentGenerator($container->get(ExpressionEvaluator::class));
+        $container->register(BarChartAggregateComponentGenerator::class, function (Container $container) {
+            return new BarChartAggregateComponentGenerator($container->get(ExpressionEvaluator::class));
         }, [
             self::TAG_COMPONENT_GENERATOR => [ 'name' => 'bar_chart_aggregate' ]
         ]);

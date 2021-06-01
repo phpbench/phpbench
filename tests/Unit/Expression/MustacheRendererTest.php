@@ -4,7 +4,6 @@ namespace PhpBench\Tests\Unit\Expression;
 
 use Closure;
 use Generator;
-use PHPUnit\Framework\TestCase;
 use PhpBench\Expression\MustacheRenderer;
 use PhpBench\Tests\IntegrationTestCase;
 
@@ -25,14 +24,18 @@ class MustacheRendererTest extends IntegrationTestCase
     {
         yield 'empty' => [
             '',
-            function () {},
+            function (): void {
+            },
             ''
         ];
+
         yield 'nothing' => [
             'foobar',
-            function () {},
+            function (): void {
+            },
             'foobar'
         ];
+
         yield 'single' => [
             'foobar {{ hello }}',
             function (string $expression) {
@@ -40,6 +43,7 @@ class MustacheRendererTest extends IntegrationTestCase
             },
             'foobar world hello'
         ];
+
         yield 'multiple' => [
             'foobar {{ hello }} {{ goodbye }} {{ and good }}',
             function (string $expression) {

@@ -5,7 +5,6 @@ namespace PhpBench\Expression;
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\PhpValue;
-use PhpBench\Expression\MustacheRenderer;
 
 final class ExpressionEvaluator
 {
@@ -74,6 +73,7 @@ final class ExpressionEvaluator
     {
         return $this->mustacheRenderer->render($template, function (string $expression) use ($params) {
             $v = $this->printer->print($this->evaluate($expression, $params));
+
             return $v;
         });
     }

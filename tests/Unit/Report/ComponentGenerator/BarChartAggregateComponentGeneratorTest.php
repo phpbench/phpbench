@@ -4,22 +4,22 @@ namespace PhpBench\Tests\Unit\Report\ComponentGenerator;
 
 use PhpBench\Data\DataFrame;
 use PhpBench\Expression\ExpressionEvaluator;
-use PhpBench\Report\ComponentGenerator\BarChartComponentGenerator;
+use PhpBench\Report\ComponentGenerator\BarChartAggregateComponentGenerator;
 use PhpBench\Report\ComponentGeneratorInterface;
 use PhpBench\Report\Model\BarChart;
 
-class BarChartComponentGeneratorTest extends ComponentGeneratorTestCase
+class BarChartAggregateComponentGeneratorTest extends ComponentGeneratorTestCase
 {
     public function createGenerator(): ComponentGeneratorInterface
     {
-        return new BarChartComponentGenerator($this->container()->get(ExpressionEvaluator::class));
+        return new BarChartAggregateComponentGenerator($this->container()->get(ExpressionEvaluator::class));
     }
 
     public function testMinimalConfiguration(): void
     {
         $barChart = $this->generate(DataFrame::empty(), [
-            BarChartComponentGenerator::PARAM_Y_EXPR => '"hello"',
-            BarChartComponentGenerator::PARAM_Y_ERROR_MARGIN => '12',
+            BarChartAggregateComponentGenerator::PARAM_Y_EXPR => '"hello"',
+            BarChartAggregateComponentGenerator::PARAM_Y_ERROR_MARGIN => '12',
         ]);
         assert($barChart instanceof BarChart);
         self::assertInstanceOf(BarChart::class, $barChart);
@@ -34,9 +34,9 @@ class BarChartComponentGeneratorTest extends ComponentGeneratorTestCase
         ], ['name', 'value', 'error']);
 
         $barChart = $this->generate($frame, [
-            BarChartComponentGenerator::PARAM_X_PARTITION => ['name'],
-            BarChartComponentGenerator::PARAM_Y_EXPR => 'first(partition["value"])',
-            BarChartComponentGenerator::PARAM_Y_ERROR_MARGIN => 'first(partition["error"])',
+            BarChartAggregateComponentGenerator::PARAM_X_PARTITION => ['name'],
+            BarChartAggregateComponentGenerator::PARAM_Y_EXPR => 'first(partition["value"])',
+            BarChartAggregateComponentGenerator::PARAM_Y_ERROR_MARGIN => 'first(partition["error"])',
         ]);
         assert($barChart instanceof BarChart);
         self::assertInstanceOf(BarChart::class, $barChart);
@@ -55,10 +55,10 @@ class BarChartComponentGeneratorTest extends ComponentGeneratorTestCase
         ], ['group', 'name', 'value', 'error']);
 
         $barChart = $this->generate($frame, [
-            BarChartComponentGenerator::PARAM_X_PARTITION => ['name'],
-            BarChartComponentGenerator::PARAM_SET_PARTITION => ['group'],
-            BarChartComponentGenerator::PARAM_Y_EXPR => 'first(partition["value"])',
-            BarChartComponentGenerator::PARAM_Y_ERROR_MARGIN => 'first(partition["error"])',
+            BarChartAggregateComponentGenerator::PARAM_X_PARTITION => ['name'],
+            BarChartAggregateComponentGenerator::PARAM_SET_PARTITION => ['group'],
+            BarChartAggregateComponentGenerator::PARAM_Y_EXPR => 'first(partition["value"])',
+            BarChartAggregateComponentGenerator::PARAM_Y_ERROR_MARGIN => 'first(partition["error"])',
         ]);
         assert($barChart instanceof BarChart);
         self::assertInstanceOf(BarChart::class, $barChart);

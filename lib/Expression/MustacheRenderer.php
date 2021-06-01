@@ -11,6 +11,7 @@ final class MustacheRenderer
     {
         return preg_replace_callback('{({{)(.*?)(}})}', function (array $matches) use ($closure) {
             $match = trim($matches[2]);
+
             return $closure($match);
         }, $template);
     }

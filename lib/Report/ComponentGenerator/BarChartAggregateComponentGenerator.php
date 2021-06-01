@@ -10,7 +10,7 @@ use PhpBench\Report\Model\BarChart;
 use PhpBench\Report\Model\BarChartDataSet;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class BarChartComponentGenerator implements ComponentGeneratorInterface
+class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
 {
     public const PARAM_X_PARTITION = 'x_partition';
     public const PARAM_SET_PARTITION = 'set_partition';
