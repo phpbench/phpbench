@@ -12,10 +12,16 @@ class BarChart implements ComponentInterface
     public $dataSets;
 
     /**
+     * @var string|null
+     */
+    public $title;
+
+    /**
      * @param BarChartDataSet[] $dataSets
      */
-    public function __construct(array $dataSets)
+    public function __construct(array $dataSets, ?string $title)
     {
         $this->dataSets = $dataSets;
+        $this->title = $title;
     }
 }

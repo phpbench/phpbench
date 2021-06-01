@@ -17,5 +17,8 @@ var data = [
     <?php endforeach ?>
 ]
 var layout = {barmode: 'group'};
+<?php if ($object->title): ?>
+layout.title = <?php echo json_encode($object->title) ?>;
+<?php endif ?>
 Plotly.newPlot(document.getElementById('<?php echo $chartId ?>'), data, layout);
 </script>

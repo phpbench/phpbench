@@ -16,6 +16,7 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
     public const PARAM_SET_PARTITION = 'set_partition';
     public const PARAM_Y_EXPR = 'y_expr';
     public const PARAM_Y_ERROR_MARGIN = 'y_error_margin';
+    public const PARAM_TITLE = 'title';
 
     /**
      * @var ExpressionEvaluator
@@ -33,6 +34,7 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
     public function configure(OptionsResolver $options): void
     {
         $options->setDefaults([
+            self::PARAM_TITLE => null,
             self::PARAM_X_PARTITION => [],
             self::PARAM_SET_PARTITION => [],
         ]);
@@ -67,6 +69,9 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
 
         return new BarChart(array_map(function (array $ySeries, array $errorMargins, string $setName) use ($xLabels) {
             return new BarChartDataSet($setName, $xLabels, $ySeries, $errorMargins);
-        }, (array)$sets, (array)$errorMargins, array_keys((array)$sets)));
+        }, (array)$sets, (array)$errorMargins, array_keys((array)$sets)), $config[self::PARAM_TITLE] ? $this->evaluator->renderTemplate(
+            $config[self::PARAM_TITLE],
+            ['frame' => $dataFrame]
+        ) : null);
     }
 }
