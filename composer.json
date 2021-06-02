@@ -32,7 +32,7 @@
     },
     "require-dev": {
         "dantleech/invoke": "^2.0",
-        "friendsofphp/php-cs-fixer": "^2.13.1",
+        "friendsofphp/php-cs-fixer": "^3.0",
         "jangregor/phpstan-prophecy": "^0.8.1",
         "phpspec/prophecy": "^1.12",
         "phpstan/phpstan": "^0.12.7",
