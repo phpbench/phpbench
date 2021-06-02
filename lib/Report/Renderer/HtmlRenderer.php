@@ -14,7 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class HtmlRenderer implements RendererInterface
 {
-    const PARAM_TITLE = 'title';
+    private const PARAM_TITLE = 'title';
 
     /**
      * @var ObjectRenderer
@@ -68,7 +68,8 @@ class HtmlRenderer implements RendererInterface
 
         if (false === file_put_contents($outPath, $rendered)) {
             throw new RuntimeException(sprintf(
-                'Could not write report to file "%s"', $outPath
+                'Could not write report to file "%s"',
+                $outPath
             ));
         }
 

@@ -107,7 +107,7 @@ trait ProphecyTrait
     private function getProphet(): Prophet
     {
         if ($this->prophet === null) {
-            $this->prophet = new Prophet;
+            $this->prophet = new Prophet();
         }
 
         return $this->prophet;

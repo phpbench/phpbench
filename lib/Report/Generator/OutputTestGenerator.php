@@ -2,7 +2,6 @@
 
 namespace PhpBench\Report\Generator;
 
-use function array_combine;
 use PhpBench\Expression\Ast\BooleanNode;
 use PhpBench\Expression\Ast\DisplayAsNode;
 use PhpBench\Expression\Ast\FloatNode;
@@ -22,6 +21,7 @@ use PhpBench\Report\Model\Report;
 use PhpBench\Report\Model\Reports;
 use PhpBench\Report\Model\Table;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function array_combine;
 
 class OutputTestGenerator implements GeneratorInterface
 {
@@ -37,7 +37,8 @@ class OutputTestGenerator implements GeneratorInterface
      */
     public function generate(SuiteCollection $collection, Config $config): Reports
     {
-        return Reports::fromReport(Report::fromTables([
+        return Reports::fromReport(Report::fromTables(
+            [
                 Table::fromRowArray([
                         [
                             'string' => new StringNode('one'),

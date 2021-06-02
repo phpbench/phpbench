@@ -2,10 +2,10 @@
 
 namespace PhpBench\Expression\Func;
 
-use function error_clear_last;
 use PhpBench\Expression\Ast\PhpValue;
 use PhpBench\Expression\Ast\StringNode;
 use RuntimeException;
+use function error_clear_last;
 
 final class FormatFunction
 {

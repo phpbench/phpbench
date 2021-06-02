@@ -12,7 +12,7 @@
 
 namespace PhpBench\Model;
 
-use \ArrayIterator;
+use ArrayIterator;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 
 /**

@@ -37,7 +37,8 @@ final class ComponentGeneratorAgent
         if (!isset($this->componentMap[$name])) {
             throw new RuntimeException(sprintf(
                 'Component "%s" not known, known components: "%s"',
-                $name, implode('", "', array_keys($this->componentMap))
+                $name,
+                implode('", "', array_keys($this->componentMap))
             ));
         }
 

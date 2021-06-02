@@ -13,7 +13,7 @@ class LocalMethodExecutorTest extends TestCase
     {
         self::assertFalse(LocalTestClass::$executed);
 
-        
+
         $this->executeMethod(LocalTestClass::class, 'method');
 
         self::assertTrue(LocalTestClass::$executed);
@@ -46,7 +46,7 @@ class LocalMethodExecutorTest extends TestCase
     private function executeMethod($className, string $methodName): void
     {
         $context = new MethodExecutorContext(__FILE__, $className);
-        
+
         (new LocalMethodExecutor())->executeMethods($context, [ $methodName ]);
     }
 

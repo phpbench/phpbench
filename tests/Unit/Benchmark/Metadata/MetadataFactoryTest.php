@@ -26,8 +26,8 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 class MetadataFactoryTest extends TestCase
 {
-    const FNAME = 'fname';
-    const PATH = '/path/to';
+    private const FNAME = 'fname';
+    private const PATH = '/path/to';
 
     private $factory;
 

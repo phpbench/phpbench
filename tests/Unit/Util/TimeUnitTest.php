@@ -233,17 +233,23 @@ class TimeUnitTest extends TestCase
     public function testDestSuffixGivenState(): void
     {
         $unit = new TimeUnit(
-            TimeUnit::SECONDS, TimeUnit::MINUTES, TimeUnit::MODE_THROUGHPUT
+            TimeUnit::SECONDS,
+            TimeUnit::MINUTES,
+            TimeUnit::MODE_THROUGHPUT
         );
         $this->assertEquals('s', $unit->getDestSuffix(
-            TimeUnit::SECONDS, TimeUnit::MODE_TIME
+            TimeUnit::SECONDS,
+            TimeUnit::MODE_TIME
         ));
 
         $unit = new TimeUnit(
-            TimeUnit::SECONDS, TimeUnit::MINUTES, TimeUnit::MODE_TIME
+            TimeUnit::SECONDS,
+            TimeUnit::MINUTES,
+            TimeUnit::MODE_TIME
         );
         $this->assertEquals('ops/ms', $unit->getDestSuffix(
-            TimeUnit::MILLISECONDS, TimeUnit::MODE_THROUGHPUT
+            TimeUnit::MILLISECONDS,
+            TimeUnit::MODE_THROUGHPUT
         ));
     }
 
@@ -253,7 +259,9 @@ class TimeUnitTest extends TestCase
     public function testFormat(): void
     {
         $unit = new TimeUnit(
-            TimeUnit::SECONDS, TimeUnit::MINUTES, TimeUnit::MODE_THROUGHPUT
+            TimeUnit::SECONDS,
+            TimeUnit::MINUTES,
+            TimeUnit::MODE_THROUGHPUT
         );
         $result = $unit->format(30);
         $this->assertEquals(
@@ -280,7 +288,10 @@ class TimeUnitTest extends TestCase
     public function testOverridePrecision(): void
     {
         $unit = new TimeUnit(
-            TimeUnit::SECONDS, TimeUnit::MINUTES, TimeUnit::MODE_THROUGHPUT, 7
+            TimeUnit::SECONDS,
+            TimeUnit::MINUTES,
+            TimeUnit::MODE_THROUGHPUT,
+            7
         );
 
         $unit->overridePrecision(5);

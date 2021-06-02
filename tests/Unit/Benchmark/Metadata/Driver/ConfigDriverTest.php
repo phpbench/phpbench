@@ -14,8 +14,8 @@ use PHPUnit\Framework\TestCase;
 
 class ConfigDriverTest extends TestCase
 {
-    const EXAMPLE_SUBJECT = 'testSubject';
     use ProphecyTrait;
+    private const EXAMPLE_SUBJECT = 'testSubject';
 
     /**
      * @var ObjectProphecy<DriverInterface>

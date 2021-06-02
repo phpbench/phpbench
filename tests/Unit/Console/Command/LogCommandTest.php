@@ -258,7 +258,8 @@ EOT;
         return new HistoryEntry(
             $index,
             new \DateTime('2016-01-01'),
-            'foo', 'branch' . $index,
+            'foo',
+            'branch' . $index,
             10,
             20,
             40,

@@ -18,20 +18,20 @@ use PhpBench\Tests\TestCase;
 
 class RunnerConfigTest extends TestCase
 {
-    const TEST_TAG_NAME = 'tag_name';
-    const TEST_FILTERS = ['filter_one', 'filter_two'];
-    const TEST_ITERATIONS = [5];
-    const TEST_REVOLUTIONS = [6];
-    const TEST_PARAMETERS = ['one' => 1];
-    const TEST_SLEEP = 100;
-    const TEST_RETRY_THRESHOLD = 10;
-    const TEST_WARMUP = [10];
-    const TEST_GROUPS = ['group1'];
-    const TEST_OUTPUT_TIME_UNIT = 'milliseconds';
-    const TEST_OUTPUT_TIME_PRECISION = 2;
-    const TEST_EXECUTOR = 'microtimre';
-    const TEST_STOP_ON_ERROR = true;
-    const TEST_ASSERTIONS = ['x > y'];
+    private const TEST_TAG_NAME = 'tag_name';
+    private const TEST_FILTERS = ['filter_one', 'filter_two'];
+    private const TEST_ITERATIONS = [5];
+    private const TEST_REVOLUTIONS = [6];
+    private const TEST_PARAMETERS = ['one' => 1];
+    private const TEST_SLEEP = 100;
+    private const TEST_RETRY_THRESHOLD = 10;
+    private const TEST_WARMUP = [10];
+    private const TEST_GROUPS = ['group1'];
+    private const TEST_OUTPUT_TIME_UNIT = 'milliseconds';
+    private const TEST_OUTPUT_TIME_PRECISION = 2;
+    private const TEST_EXECUTOR = 'microtimre';
+    private const TEST_STOP_ON_ERROR = true;
+    private const TEST_ASSERTIONS = ['x > y'];
 
     /**
      * It should throw an exception if the retry threshold is less than zero.

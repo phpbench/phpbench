@@ -76,7 +76,8 @@ class DelimitedRenderer implements RendererInterface
 
         if (false === $pointer) {
             throw new RuntimeException(sprintf(
-                'Could not open file "%s"', $fname
+                'Could not open file "%s"',
+                $fname
             ));
         }
 
@@ -95,7 +96,8 @@ class DelimitedRenderer implements RendererInterface
 
         if (false === $contents) {
             throw new RuntimeException(sprintf(
-                'Could not read stream "%s"', $fname
+                'Could not read stream "%s"',
+                $fname
             ));
         }
 

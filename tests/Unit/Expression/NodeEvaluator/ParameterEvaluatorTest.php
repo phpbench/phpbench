@@ -38,7 +38,7 @@ class ParameterEvaluatorTest extends EvaluatorTestCase
      */
     public function providePropertyAccess(): Generator
     {
-        $object = new class {
+        $object = new class() {
             public function bar(): int
             {
                 return 2;
@@ -202,7 +202,7 @@ class ParameterEvaluatorTest extends EvaluatorTestCase
      */
     public function provideErrors(): Generator
     {
-        $object = new class {
+        $object = new class() {
             public function bar(): string
             {
                 return 'hello';

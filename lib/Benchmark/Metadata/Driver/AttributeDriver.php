@@ -121,8 +121,8 @@ class AttributeDriver implements DriverInterface
     {
         if ($attribute instanceof Attributes\BeforeMethods) {
             $subject->setBeforeMethods(array_merge(
-                    $subject->getBeforeMethods(),
-                    $attribute->methods
+                $subject->getBeforeMethods(),
+                $attribute->methods
             ));
         }
 
@@ -135,8 +135,8 @@ class AttributeDriver implements DriverInterface
 
         if ($attribute instanceof Attributes\ParamProviders) {
             $subject->setParamProviders(array_merge(
-                    $subject->getParamProviders(),
-                    $attribute->providers
+                $subject->getParamProviders(),
+                $attribute->providers
             ));
         }
 
@@ -150,8 +150,8 @@ class AttributeDriver implements DriverInterface
 
         if ($attribute instanceof Attributes\Groups) {
             $subject->setGroups(array_merge(
-                    $subject->getGroups(),
-                    $attribute->groups
+                $subject->getGroups(),
+                $attribute->groups
             ));
         }
 

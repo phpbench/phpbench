@@ -17,7 +17,7 @@ $finder = Finder::create()
 return (new Config())
     ->setRiskyAllowed(true)
     ->setRules([
-        '@PSR2' => true,
+        '@PSR12' => true,
         'void_return' => true,
         'binary_operator_spaces' => [
             'operators' => [
@@ -48,9 +48,7 @@ return (new Config())
                 'yield',
             ],
         ],
-        'ordered_imports' => true,
         'concat_space' => false,
-        'method_argument_space' => false,
         'no_unused_imports' => true,
         'php_unit_set_up_tear_down_visibility' => true,
         'phpdoc_align' => [],

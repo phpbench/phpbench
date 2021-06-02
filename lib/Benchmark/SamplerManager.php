@@ -52,7 +52,8 @@ class SamplerManager
         if (!is_callable($callable)) {
             throw new \InvalidArgumentException(sprintf(
                 'Given sampler "%s" callable "%s" is not callable.',
-                $name, is_string($callable) ? $callable : gettype($callable)
+                $name,
+                is_string($callable) ? $callable : gettype($callable)
             ));
         }
 
@@ -68,7 +69,8 @@ class SamplerManager
         if (!isset($this->callables[$name])) {
             throw new \InvalidArgumentException(sprintf(
                 'Unknown sampler callable "%s", known baseline callables: "%s"',
-                $name, implode('", "', array_keys($this->callables))
+                $name,
+                implode('", "', array_keys($this->callables))
             ));
         }
 

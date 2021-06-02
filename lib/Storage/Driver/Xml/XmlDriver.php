@@ -27,7 +27,7 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class XmlDriver implements DriverInterface
 {
-    const UUID_LENGTH = 40;
+    private const UUID_LENGTH = 40;
 
     private $path;
     private $xmlEncoder;
@@ -66,7 +66,8 @@ class XmlDriver implements DriverInterface
     {
         if (!$this->has($runId)) {
             throw new \InvalidArgumentException(sprintf(
-                'Cannot find run with reference "%s"', $runId
+                'Cannot find run with reference "%s"',
+                $runId
             ));
         }
 

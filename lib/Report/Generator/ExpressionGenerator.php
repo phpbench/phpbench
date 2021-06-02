@@ -2,10 +2,7 @@
 
 namespace PhpBench\Report\Generator;
 
-use function array_combine;
-use function array_key_exists;
 use Generator;
-use function iterator_to_array;
 use PhpBench\Data\DataFrame;
 use PhpBench\Data\DataFrames;
 use PhpBench\Expression\Ast\Node;
@@ -24,17 +21,20 @@ use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function array_combine;
+use function array_key_exists;
+use function iterator_to_array;
 
 class ExpressionGenerator implements GeneratorInterface
 {
-    const PARAM_TITLE = 'title';
-    const PARAM_DESCRIPTION = 'description';
-    const PARAM_COLS = 'cols';
-    const PARAM_EXPRESSIONS = 'expressions';
-    const PARAM_BASELINE_EXPRESSIONS = 'baseline_expressions';
-    const PARAM_AGGREGATE = 'aggregate';
-    const PARAM_BREAK = 'break';
-    const PARAM_INCLUDE_BASELINE = 'include_baseline';
+    private const PARAM_TITLE = 'title';
+    private const PARAM_DESCRIPTION = 'description';
+    private const PARAM_COLS = 'cols';
+    private const PARAM_EXPRESSIONS = 'expressions';
+    private const PARAM_BASELINE_EXPRESSIONS = 'baseline_expressions';
+    private const PARAM_AGGREGATE = 'aggregate';
+    private const PARAM_BREAK = 'break';
+    private const PARAM_INCLUDE_BASELINE = 'include_baseline';
 
     /**
      * @var ExpressionEvaluator
@@ -181,7 +181,8 @@ EOT
                 if (!array_key_exists($key, $row)) {
                     throw new RuntimeException(sprintf(
                         'Cannot aggregate: field "%s" does not exist, know fields: "%s"',
-                        $key, implode('", "', array_keys($row))
+                        $key,
+                        implode('", "', array_keys($row))
                     ));
                 }
 
@@ -241,7 +242,10 @@ EOT
                 } catch (EvaluationError $e) {
                     $evaledRow[$name] = new StringNode('ERR');
                     $this->logger->error(sprintf(
-                        'Expression error (column "%s"): %s %s', $name, $e->getMessage(), $e->getTraceAsString()
+                        'Expression error (column "%s"): %s %s',
+                        $name,
+                        $e->getMessage(),
+                        $e->getTraceAsString()
                     ));
                 }
             }
@@ -289,7 +293,8 @@ EOT
                 if (!$value instanceof StringNode) {
                     throw new RuntimeException(sprintf(
                         'Partition value for "%s" must be a string, got "%s"',
-                        $key, get_class($value)
+                        $key,
+                        get_class($value)
                     ));
                 }
 

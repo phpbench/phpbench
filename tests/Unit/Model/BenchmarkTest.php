@@ -21,7 +21,7 @@ use PhpBench\Tests\TestCase;
 
 class BenchmarkTest extends TestCase
 {
-    const EXAMPLE_FORMAT = 'foobar';
+    private const EXAMPLE_FORMAT = 'foobar';
 
     /**
      * @var Benchmark

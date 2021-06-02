@@ -16,7 +16,7 @@ class MemoryUnitTest extends TestCase
     {
         self::assertEquals($expected, MemoryUnit::convertTo($value, $unit, MemoryUnit::BYTES));
     }
-        
+
     /**
      * @return Generator<mixed>
      */
@@ -68,7 +68,7 @@ class MemoryUnitTest extends TestCase
     {
         self::assertEquals($expected, MemoryUnit::suffixFor($unit));
     }
-        
+
     /**
      * @return Generator<mixed>
      */

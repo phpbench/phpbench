@@ -35,12 +35,13 @@ class ConfigTest extends TestCase
         $config = new Config(
             'test',
             [
-            'foo' => 'bar',
-            'bar' => [
-                'one' => 1,
-                'two' => 2,
-            ],
-        ]);
+                'foo' => 'bar',
+                'bar' => [
+                    'one' => 1,
+                    'two' => 2,
+                ],
+            ]
+        );
         $config['offset_not_exist'];
     }
 

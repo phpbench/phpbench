@@ -20,11 +20,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterface
 {
-    const PARAM_TITLE = 'title';
-    const PARAM_DESCRIPTION = 'description';
-    const PARAM_PARTITION = 'partition';
-    const PARAM_COMPONENTS = 'components';
-    const KEY_COMPONENT_TYPE = '_type';
+    private const PARAM_TITLE = 'title';
+    private const PARAM_DESCRIPTION = 'description';
+    private const PARAM_PARTITION = 'partition';
+    private const PARAM_COMPONENTS = 'components';
+    private const KEY_COMPONENT_TYPE = '_type';
 
     /**
      * @var ComponentGeneratorAgent

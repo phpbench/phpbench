@@ -3,10 +3,10 @@
 namespace PhpBench\Template;
 
 use Exception;
+use PhpBench\Template\Exception\CouldNotFindTemplateForObject;
 use function ob_end_clean;
 use function ob_get_clean;
 use function ob_start;
-use PhpBench\Template\Exception\CouldNotFindTemplateForObject;
 
 final class ObjectRenderer
 {
@@ -68,7 +68,8 @@ final class ObjectRenderer
 
         throw new CouldNotFindTemplateForObject(sprintf(
             'Could not resolve path for object "%s", tried paths "%s"',
-            get_class($object), implode('", "', $tried)
+            get_class($object),
+            implode('", "', $tried)
         ));
     }
 

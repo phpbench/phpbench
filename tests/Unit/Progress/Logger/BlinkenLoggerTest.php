@@ -21,7 +21,7 @@ use PhpBench\Util\TimeUnit;
 
 class BlinkenLoggerTest extends LoggerTestCase
 {
-    const ASSERTION_FAILURE_MESSAGE = 'Failure message';
+    private const ASSERTION_FAILURE_MESSAGE = 'Failure message';
     /**
      * @var BlinkenLogger
      */

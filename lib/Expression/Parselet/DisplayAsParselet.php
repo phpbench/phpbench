@@ -14,7 +14,7 @@ use PhpBench\Expression\Tokens;
 
 class DisplayAsParselet implements InfixParselet
 {
-    const T_VAL_PRECISION = 'precision';
+    private const T_VAL_PRECISION = 'precision';
 
     public function tokenType(): string
     {

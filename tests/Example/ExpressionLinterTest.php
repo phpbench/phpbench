@@ -48,7 +48,9 @@ class ExpressionLinterTest extends IntegrationTestCase
                 }
 
                 self::assertTrue($result->value(), sprintf(
-                    '%s: %s', basename($filename), $expression
+                    '%s: %s',
+                    basename($filename),
+                    $expression
                 ));
             })(
                 $container->get(Lexer::class),

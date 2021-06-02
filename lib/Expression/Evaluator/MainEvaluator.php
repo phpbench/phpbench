@@ -38,7 +38,9 @@ final class MainEvaluator implements Evaluator
         }
 
         throw new EvaluationError($node, sprintf(
-            'Expected "%s" but got "%s"', $expectedType, get_class($evaluated)
+            'Expected "%s" but got "%s"',
+            $expectedType,
+            get_class($evaluated)
         ));
     }
 
