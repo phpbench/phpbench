@@ -22,6 +22,11 @@ use PhpBench\Registry\ConfigurableRegistry;
 use PhpBench\Report\ComponentGenerator\BarChartAggregateComponentGenerator;
 use PhpBench\Report\ComponentGenerator\TableAggregateComponent;
 use PhpBench\Report\ComponentGeneratorAgent;
+use PhpBench\Report\Console\ObjectRenderer as ConsoleObjectRenderer;
+use PhpBench\Report\Console\Renderer\BarChartRenderer;
+use PhpBench\Report\Console\Renderer\ReportRenderer;
+use PhpBench\Report\Console\Renderer\ReportsRenderer;
+use PhpBench\Report\Console\Renderer\TableRenderer;
 use PhpBench\Report\Generator\BareGenerator;
 use PhpBench\Report\Generator\ComponentGenerator;
 use PhpBench\Report\Generator\CompositeGenerator;
@@ -98,6 +103,7 @@ class ReportExtension implements ExtensionInterface
         });
 
         $this->registerRenderer($container);
+        $this->registerConsoleRenderer($container);
         $this->registerCommands($container);
         $this->registerRegistries($container);
         $this->registerReportGenerators($container);
@@ -217,8 +223,7 @@ class ReportExtension implements ExtensionInterface
     {
         $container->register(ConsoleRenderer::class, function (Container $container) {
             return new ConsoleRenderer(
-                $container->get(ConsoleExtension::SERVICE_OUTPUT_STD),
-                $container->get(Printer::class)
+                $container->get(ConsoleObjectRenderer::class)
             );
         }, [self::TAG_REPORT_RENDERER => ['name' => 'console']]);
 
@@ -303,6 +308,21 @@ class ReportExtension implements ExtensionInterface
 
         $container->register(BarChartAggregateComponentGenerator::class, function (Container $container) {
             return new BarChartAggregateComponentGenerator($container->get(ExpressionEvaluator::class));
+        }, [
+            self::TAG_COMPONENT_GENERATOR => [ 'name' => 'bar_chart_aggregate' ]
+        ]);
+    }
+
+    private function registerConsoleRenderer(Container $container): void
+    {
+        $container->register(ConsoleObjectRenderer::class, function (Container $container) {
+            return new ConsoleObjectRenderer(
+                $container->get(ConsoleExtension::SERVICE_OUTPUT_STD),
+                new ReportsRenderer(),
+                new BarChartRenderer(),
+                new ReportRenderer(),
+                new TableRenderer($container->get(Printer::class))
+            );
         }, [
             self::TAG_COMPONENT_GENERATOR => [ 'name' => 'bar_chart_aggregate' ]
         ]);

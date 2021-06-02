@@ -4,7 +4,6 @@
 ---
 phpbench run --report='extends:bare,vertical:true' --executor=debug NothingBench.php --progress=none
 ---
-
 +------------------------+---------------+
 | field                  | value         |
 +------------------------+---------------+

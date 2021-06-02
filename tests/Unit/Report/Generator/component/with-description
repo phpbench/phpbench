@@ -14,12 +14,11 @@
     ]
 }
 ---
-<title>Good day</title>
-<title>========</title>
+Good day
+========
 
-<title>Good day</title>
-<description>This is the description</description>
-
+Good day
+This is the description
 
 +----------+
 | greeting |

@@ -9,7 +9,6 @@
 ---
 phpbench run --report=my-report --executor=debug NothingBench.php --progress=none
 ---
-
 +--------------+----------+
 | subject      | mode     |
 +--------------+----------+

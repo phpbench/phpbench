@@ -13,27 +13,18 @@
 namespace PhpBench\Tests\Unit\Report\Renderer;
 
 use Generator;
-use PhpBench\Expression\Printer;
+use PhpBench\Extension\ConsoleExtension;
 use PhpBench\Report\Renderer\ConsoleRenderer;
 use PhpBench\Report\RendererInterface;
 use PhpBench\Tests\Util\Approval;
-use Symfony\Component\Console\Output\BufferedOutput;
 
 class ConsoleRendererTest extends AbstractRendererCase
 {
-    /**
-     * @var BufferedOutput
-     */
-    private $output;
-
-    protected function setUp(): void
-    {
-        $this->output = new BufferedOutput();
-    }
-
     protected function getRenderer(): RendererInterface
     {
-        return new ConsoleRenderer($this->output, $this->container()->get(Printer::class));
+        return $this->container([
+            ConsoleExtension::PARAM_OUTPUT_STREAM => $this->workspace()->path('out')
+        ])->get(ConsoleRenderer::class);
     }
 
     /**
@@ -45,7 +36,7 @@ class ConsoleRendererTest extends AbstractRendererCase
 
         $this->renderReport($this->reports(), $approval->getConfig(0));
 
-        $approval->approve($this->output->fetch());
+        $approval->approve($this->workspace()->getContents('out'));
     }
 
     public function provideRender(): Generator

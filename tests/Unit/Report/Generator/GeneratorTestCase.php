@@ -14,7 +14,7 @@ namespace PhpBench\Tests\Unit\Report\Generator;
 
 use Generator;
 use PhpBench\DependencyInjection\Container;
-use PhpBench\Extension\ExpressionExtension;
+use PhpBench\Extension\ConsoleExtension;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Report\GeneratorInterface;
@@ -22,7 +22,6 @@ use PhpBench\Report\Renderer\ConsoleRenderer;
 use PhpBench\Tests\IntegrationTestCase;
 use PhpBench\Tests\Util\Approval;
 use PhpBench\Tests\Util\TestUtil;
-use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Throwable;
 
@@ -47,13 +46,10 @@ abstract class GeneratorTestCase extends IntegrationTestCase
                 ], $approval->getConfig(0)))]),
                 new Config('asd', $options->resolve($approval->getConfig(1)))
             );
-            $output = new BufferedOutput();
-            (
-                new ConsoleRenderer($output, $container->get(ExpressionExtension::SERVICE_PLAIN_PRINTER))
-            )->render($document, new Config('asd', [
-                'table_style' => 'default',
-            ]));
-            $actual = $output->fetch();
+            $this->container([
+                ConsoleExtension::PARAM_OUTPUT_STREAM => $this->workspace()->path('out')
+            ])->get(ConsoleRenderer::class)->render($document, new Config('test', []));
+            $actual = $this->workspace()->getContents('out');
         } catch (Throwable $e) {
             $actual = $e->getMessage();
         }
