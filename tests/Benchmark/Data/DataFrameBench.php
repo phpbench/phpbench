@@ -2,8 +2,8 @@
 
 namespace PhpBench\Tests\Benchmark\Data;
 
-use function array_fill;
 use PhpBench\Data\DataFrame;
+use function array_fill;
 
 class DataFrameBench
 {

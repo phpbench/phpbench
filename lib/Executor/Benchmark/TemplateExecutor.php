@@ -85,7 +85,7 @@ class TemplateExecutor implements BenchmarkExecutorInterface
         ]);
     }
 
-    protected function createTokens(ExecutionContext $context) : array
+    protected function createTokens(ExecutionContext $context): array
     {
         return [
             'class' => $context->getClassName(),

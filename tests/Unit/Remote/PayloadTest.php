@@ -57,7 +57,11 @@ class PayloadTest extends IntegrationTestCase
             __DIR__ . '/template/foo.template',
             [
                 'foo' => 'bar',
-            ],null, null, null, $this->workspace()->path('/foo/bar/baz')
+            ],
+            null,
+            null,
+            null,
+            $this->workspace()->path('/foo/bar/baz')
         );
 
         $result = $payload->launch($payload);

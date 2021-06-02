@@ -37,7 +37,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 class RunnerTest extends TestCase
 {
-    const TEST_PATH = 'path/to/bench.php';
+    private const TEST_PATH = 'path/to/bench.php';
 
     /**
      * @var ObjectProphecy<Suite>

@@ -36,7 +36,8 @@ class ValueWithUnitEvaluator implements NodeEvaluator
         }
 
         throw new EvaluationError($node, sprintf(
-            'Do not know how to evaluate unit "%s"', $unit
+            'Do not know how to evaluate unit "%s"',
+            $unit
         ));
     }
 

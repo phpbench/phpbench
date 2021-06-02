@@ -134,7 +134,8 @@ class Launcher
 
         if (null === $phpBinary) {
             throw new \InvalidArgumentException(sprintf(
-                'Could not find PHP binary "%s"', $this->phpBinary
+                'Could not find PHP binary "%s"',
+                $this->phpBinary
             ));
         }
 

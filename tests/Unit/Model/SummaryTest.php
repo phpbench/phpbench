@@ -144,7 +144,7 @@ class SummaryTest extends TestCase
             'sum' => 7,
             'stdev' => 8,
             'rstdev' => 9,
-        
+
         ]));
         $this->suite->getBenchmarks()->willReturn([$this->bench1]);
     }

@@ -57,7 +57,8 @@ class TagResolver implements UuidResolverInterface
     {
         if (!preg_match(sprintf('{^(%s)?-?([0-9]+)?$}', Tag::REGEX_PATTERN), $reference, $matches)) {
             throw new InvalidTagException(sprintf(
-                'Could not parse tag "%s"', $reference
+                'Could not parse tag "%s"',
+                $reference
             ));
         }
 

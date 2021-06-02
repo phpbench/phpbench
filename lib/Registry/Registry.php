@@ -70,7 +70,8 @@ class Registry
         if (isset($this->serviceMap[$name])) {
             throw new \InvalidArgumentException(sprintf(
                 '%s service "%s" is already registered',
-                $this->serviceType, $name
+                $this->serviceType,
+                $name
             ));
         }
 
@@ -111,7 +112,8 @@ class Registry
         if (!$name) {
             throw new \RuntimeException(sprintf(
                 'You must configure a default %s service, registered %s services: "%s"',
-                $this->serviceType, $this->serviceType,
+                $this->serviceType,
+                $this->serviceType,
                 implode('", "', array_keys($this->services))
             ));
         }

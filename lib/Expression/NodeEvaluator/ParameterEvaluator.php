@@ -55,7 +55,8 @@ class ParameterEvaluator implements NodeEvaluator
         }
 
         throw new EvaluationError($node, sprintf(
-            'Do not know how to interpret value "%s"', is_object($value) ? get_class($value) : gettype($value)
+            'Do not know how to interpret value "%s"',
+            is_object($value) ? get_class($value) : gettype($value)
         ));
     }
 

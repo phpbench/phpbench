@@ -3,11 +3,11 @@
 namespace PhpBench\Tests\Benchmark\Report\Renderer;
 
 use PhpBench\Model\SuiteCollection;
-use function PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Report\Generator\OutputTestGenerator;
 use PhpBench\Report\Renderer\HtmlRenderer;
 use PhpBench\Tests\Benchmark\IntegrationBenchCase;
+use function PhpBench\Model\SuiteCollection;
 
 final class HtmlRendererBench extends IntegrationBenchCase
 {

@@ -17,16 +17,19 @@ final class LocalMethodExecutor implements MethodExecutorInterface
 
         if (!class_exists($className)) {
             throw new RuntimeException(sprintf(
-                'Class "%s" does not exist', $className
+                'Class "%s" does not exist',
+                $className
             ));
         }
 
-        $class = new $className;
+        $class = new $className();
 
         foreach ($methods as $method) {
             if (!method_exists($class, $method)) {
                 throw new RuntimeException(sprintf(
-                    'Method "%s" on class "%s" does not exist', $method, $className
+                    'Method "%s" on class "%s" does not exist',
+                    $method,
+                    $className
                 ));
             }
 

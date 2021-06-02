@@ -49,7 +49,7 @@ class TimeResult implements ResultInterface
     {
         return new self(
             (int) $values['net'],
-            array_key_exists('revs', $values) ? $values['revs'] :  1
+            array_key_exists('revs', $values) ? $values['revs'] : 1
         );
     }
 

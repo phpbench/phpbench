@@ -50,7 +50,9 @@ class RunCommandBench extends IntegrationBenchCase
 
     private function createExample(): void
     {
-        $this->workspace()->put('NothingBench.php', <<<'EOT'
+        $this->workspace()->put(
+            'NothingBench.php',
+            <<<'EOT'
 <?php
 namespace PhpBench\Tests\Workspace;
 

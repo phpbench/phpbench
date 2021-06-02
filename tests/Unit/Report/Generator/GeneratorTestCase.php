@@ -32,7 +32,7 @@ abstract class GeneratorTestCase extends IntegrationTestCase
      */
     public function testGenerate(string $path): void
     {
-        $approval = Approval::create($path,3);
+        $approval = Approval::create($path, 3);
 
         $container = $this->container();
         $generator = $this->createGenerator($container);

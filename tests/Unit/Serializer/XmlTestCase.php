@@ -108,7 +108,9 @@ abstract class XmlTestCase extends TestCase
                         new Error(
                             'This is an error',
                             'ErrorClass',
-                            0, 1, 2,
+                            0,
+                            1,
+                            2,
                             '-- trace --'
                         ),
                     ]

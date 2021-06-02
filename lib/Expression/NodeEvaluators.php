@@ -37,7 +37,8 @@ final class NodeEvaluators implements NodeEvaluator
         }
 
         throw new EvaluationError($node, sprintf(
-            'Could not find evaluator for node of type "%s"', get_class($node)
+            'Could not find evaluator for node of type "%s"',
+            get_class($node)
         ));
     }
 }

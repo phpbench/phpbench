@@ -59,7 +59,8 @@ class ReportCommand extends Command
     {
         $this->setName('report');
         $this->setDescription('Generate a report from storage or an XML file');
-        $this->setHelp(<<<'EOT'
+        $this->setHelp(
+            <<<'EOT'
 Generate report from the latest stored suite:
 
     $ %command.full_name% --ref=latest --report=aggregate

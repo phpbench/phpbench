@@ -34,7 +34,8 @@ use RuntimeException;
 
         if (!is_array($hexRgb)) {
             throw new RuntimeException(sprintf(
-                'Could not parse hex color "%s"', $hex
+                'Could not parse hex color "%s"',
+                $hex
             ));
         }
 

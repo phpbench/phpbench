@@ -147,7 +147,8 @@ class Distribution implements IteratorAggregate, ArrayAccess
         if (!isset($this->closures[$name])) {
             throw new \InvalidArgumentException(sprintf(
                 'Unknown stat "%s", known stats: "%s"',
-                $name, implode('", "', array_keys($this->closures))
+                $name,
+                implode('", "', array_keys($this->closures))
             ));
         }
 

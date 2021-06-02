@@ -2,10 +2,10 @@
 
 namespace PhpBench\Tests\Util;
 
-use function json_decode;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\SkippedTestError;
 use RuntimeException;
+use function json_decode;
 
 class Approval
 {
@@ -100,7 +100,8 @@ class Approval
         if (!isset($this->sections[$offset])) {
             throw new RuntimeException(sprintf(
                 'No section at offset "%s", have sections at offsets "%s"',
-                $offset, implode('", "', array_keys($this->sections))
+                $offset,
+                implode('", "', array_keys($this->sections))
             ));
         }
 

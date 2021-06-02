@@ -96,7 +96,8 @@ class RunCommand extends Command
 
         $this->setName('run');
         $this->setDescription('Run benchmarks');
-        $this->setHelp(<<<'EOT'
+        $this->setHelp(
+            <<<'EOT'
 Run benchmark files at given <comment>path</comment>
 
     $ %command.full_name% /path/to/bench

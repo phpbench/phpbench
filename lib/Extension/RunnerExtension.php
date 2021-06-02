@@ -177,7 +177,7 @@ class RunnerExtension implements ExtensionInterface
         $resolver->setAllowedTypes(self::PARAM_RUNNER_TIMEOUT, ['null', 'float', 'int']);
         $resolver->setAllowedTypes(self::PARAM_RUNNER_WARMUP, ['null', 'int', 'array']);
         $resolver->setAllowedTypes(self::PARAM_SUBJECT_PATTERN, ['string']);
-        
+
         SymfonyOptionsResolverCompat::setInfos($resolver, [
             self::PARAM_ANNOTATIONS => 'Read metadata from annotations',
             self::PARAM_ANNOTATION_IMPORT_USE => 'Require that annotations be imported before use',
@@ -284,7 +284,8 @@ class RunnerExtension implements ExtensionInterface
             foreach ($container->getServiceIdsForTag(self::TAG_ENV_PROVIDER) as $serviceId => $attributes) {
                 if (!isset($attributes['name'])) {
                     throw new RuntimeException(sprintf(
-                        'Env provider "%s" has no `name` attribute', $serviceId
+                        'Env provider "%s" has no `name` attribute',
+                        $serviceId
                     ));
                 }
 

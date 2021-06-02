@@ -134,7 +134,8 @@ class Statistics
 
         if ($max == $min) {
             throw new \InvalidArgumentException(sprintf(
-                'Min and max cannot be the same number: %s', $max
+                'Min and max cannot be the same number: %s',
+                $max
             ));
         }
 

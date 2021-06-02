@@ -54,14 +54,15 @@ class LogCommand extends Command
     {
         $this->setName('log');
         $this->setDescription('List previously executed and stored benchmark runs.');
-        $this->setHelp(<<<'EOT'
+        $this->setHelp(
+            <<<'EOT'
 Show a list of previously executed benchmark runs.
 
     $ %command.full_name%
 
 NOTE: This is only possible when a storage driver has been configured.
 EOT
-    );
+        );
         // allow common time unit options
         TimeUnitHandler::configure($this);
 
@@ -124,7 +125,8 @@ EOT
             if ($paginate && $nbRows >= $height) {
                 $output->write(sprintf(
                     '<question>lines %s-%s any key to continue, <q> to quit</question>',
-                    $totalRows, $totalRows + $nbRows
+                    $totalRows,
+                    $totalRows + $nbRows
                 ));
                 $character = $this->characterReader->read();
 

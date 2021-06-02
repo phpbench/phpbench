@@ -2,9 +2,6 @@
 
 namespace PhpBench\Data;
 
-use function array_map;
-use function array_reduce;
-use function array_search;
 use ArrayAccess;
 use ArrayIterator;
 use Closure;
@@ -12,6 +9,9 @@ use IteratorAggregate;
 use PhpBench\Data\Func\Partition;
 use PHPUnit\Framework\MockObject\BadMethodCallException;
 use RuntimeException;
+use function array_map;
+use function array_reduce;
+use function array_search;
 
 final class DataFrame implements IteratorAggregate, ArrayAccess
 {
@@ -31,7 +31,9 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
             if (count($rows) !== count($columns)) {
                 throw new RuntimeException(sprintf(
                     'Row %s has only %s value(s), but %s column names given',
-                    $index, count($rows), count($columns)
+                    $index,
+                    count($rows),
+                    count($columns)
                 ));
             }
 
@@ -69,7 +71,9 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
             if ($keys !== $columns) {
                 throw new RuntimeException(sprintf(
                     'Record "%s" was expected to have columns "%s", but it has "%s"',
-                    $index, implode('", "', $columns), implode('", "', $keys)
+                    $index,
+                    implode('", "', $columns),
+                    implode('", "', $keys)
                 ));
             }
             $rows[] = new Series(array_values($record));
@@ -98,7 +102,8 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
         if (false === $offset) {
             throw new RuntimeException(sprintf(
                 'Could not find column "%s", known columns "%s"',
-                $index, implode('", "', $this->columns)
+                $index,
+                implode('", "', $this->columns)
             ));
         }
 
@@ -115,7 +120,8 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
         if (!isset($this->rows[$index])) {
             throw new RuntimeException(sprintf(
                 'Could not find row "%s" in data frame with %s row(s)',
-                $index, count($this->rows)
+                $index,
+                count($this->rows)
             ));
         }
 

@@ -12,7 +12,6 @@
 
 namespace PhpBench\Serializer;
 
-use function base64_decode;
 use DOMElement;
 use PhpBench\Assertion\AssertionResult;
 use PhpBench\Dom\Document;
@@ -28,6 +27,7 @@ use PhpBench\Model\SuiteCollection;
 use PhpBench\Model\Variant;
 use PhpBench\PhpBench;
 use PhpBench\Registry\Config;
+use function base64_decode;
 
 /**
  * Encodes the Suite object graph into an XML document.
@@ -290,7 +290,8 @@ class XmlDecoder
                 if (!isset($resultClasses[$prefix])) {
                     throw new \RuntimeException(sprintf(
                         'No result class was provided with key "%s" for attribute "%s"',
-                        $prefix, $name
+                        $prefix,
+                        $name
                     ));
                 }
 

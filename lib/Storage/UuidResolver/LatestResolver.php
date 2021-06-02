@@ -18,7 +18,7 @@ use RuntimeException;
 
 class LatestResolver implements UuidResolverInterface
 {
-    const LATEST_KEYWORD = 'latest';
+    private const LATEST_KEYWORD = 'latest';
 
     private $driverRegistry;
 
@@ -42,7 +42,8 @@ class LatestResolver implements UuidResolverInterface
         }
 
         throw new RuntimeException(sprintf(
-            'Could not resolve ref "%s"', $ref
+            'Could not resolve ref "%s"',
+            $ref
         ));
     }
 

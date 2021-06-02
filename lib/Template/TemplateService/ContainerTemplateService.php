@@ -28,7 +28,8 @@ final class ContainerTemplateService implements TemplateService
         if (!isset($this->serviceMap[$serviceName])) {
             throw new RuntimeException(sprintf(
                 'Unknown template service "%s", known template services: "%s"',
-                $serviceName, implode('", "', array_keys($this->serviceMap))
+                $serviceName,
+                implode('", "', array_keys($this->serviceMap))
             ));
         }
 

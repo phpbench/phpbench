@@ -32,7 +32,8 @@ class ObjectRenderer
         }
 
         throw new CouldNotRender(sprintf(
-            'Could not render object "%s"', get_class($object)
+            'Could not render object "%s"',
+            get_class($object)
         ));
     }
 }

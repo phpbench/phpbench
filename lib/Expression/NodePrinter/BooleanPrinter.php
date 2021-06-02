@@ -15,6 +15,6 @@ class BooleanPrinter implements NodePrinter
             return null;
         }
 
-        return $node->value() ? 'true':'false';
+        return $node->value() ? 'true' : 'false';
     }
 }

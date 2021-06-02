@@ -26,7 +26,6 @@ use PhpBench\Extensions\XDebug\XDebugExtension;
 use PhpBench\Json\JsonDecoder;
 use Seld\JsonLint\JsonParser;
 use Seld\JsonLint\ParsingException;
-use function set_error_handler;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -34,6 +33,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Throwable;
 use Webmozart\PathUtil\Path;
+use function set_error_handler;
 
 class PhpBench
 {
@@ -209,7 +209,8 @@ class PhpBench
         if (!isset($config[CoreExtension::PARAM_PROFILES][$profile])) {
             throw new ConfigurationPreProcessingError(sprintf(
                 'Unknown profile "%s" specified, defined profiles: "%s"',
-                $profile, implode('", "', array_keys($config[CoreExtension::PARAM_PROFILES] ?? []))
+                $profile,
+                implode('", "', array_keys($config[CoreExtension::PARAM_PROFILES] ?? []))
             ));
         }
 

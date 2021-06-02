@@ -75,13 +75,14 @@ class LocalExecutor implements BenchmarkExecutorInterface
         if (!class_exists($className)) {
             require_once($context->getClassPath());
         }
-        
+
         if (!class_exists($className)) {
             throw new ExecutionError(sprintf(
-                'Benchmark class "%s" does not exist', $className
+                'Benchmark class "%s" does not exist',
+                $className
             ));
         }
-        
-        return new $className;
+
+        return new $className();
     }
 }
