@@ -4,7 +4,8 @@
 /build
 /.phpbench.sqlite
 /phpunit.xml
-/.php_cs.cache
+/phpbench.json
+/.php-cs-fixer.cache
 /.phpunit.result.cache
 /tests/Workspace
 /coverage

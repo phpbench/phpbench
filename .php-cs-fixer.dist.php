@@ -1,6 +1,9 @@
 <?php
 
-$finder = PhpCsFixer\Finder::create()
+use PhpCsFixer\Finder;
+use PhpCsFixer\Config;
+
+$finder = Finder::create()
     ->in([
         __DIR__ . '/lib',
         __DIR__ . '/tests',
@@ -11,12 +14,16 @@ $finder = PhpCsFixer\Finder::create()
     ])
 ;
 
-return PhpCsFixer\Config::create()
+return (new Config())
     ->setRiskyAllowed(true)
     ->setRules([
         '@PSR2' => true,
         'void_return' => true,
-        'binary_operator_spaces' => [ 'align_double_arrow' => false ],
+        'binary_operator_spaces' => [
+            'operators' => [
+                '=>' => null
+            ],
+        ],
         'blank_line_before_statement' => [
             'statements' => [
                 'break',
