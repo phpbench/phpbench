@@ -12,17 +12,11 @@
 
 namespace PhpBench\Report\Renderer;
 
-use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Printer;
 use PhpBench\Registry\Config;
 use PhpBench\Report\Console\ObjectRenderer;
-use PhpBench\Report\Console\ObjectRendererInterface;
 use PhpBench\Report\Model\Reports;
-use PhpBench\Report\Model\Table as PhpBenchTable;
-use PhpBench\Report\Model\TableRow;
 use PhpBench\Report\RendererInterface;
 use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ConsoleRenderer implements RendererInterface

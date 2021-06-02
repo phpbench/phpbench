@@ -13,12 +13,10 @@
 namespace PhpBench\Tests\Unit\Report\Renderer;
 
 use Generator;
-use PhpBench\Expression\Printer;
 use PhpBench\Extension\ConsoleExtension;
 use PhpBench\Report\Renderer\ConsoleRenderer;
 use PhpBench\Report\RendererInterface;
 use PhpBench\Tests\Util\Approval;
-use Symfony\Component\Console\Output\BufferedOutput;
 
 class ConsoleRendererTest extends AbstractRendererCase
 {

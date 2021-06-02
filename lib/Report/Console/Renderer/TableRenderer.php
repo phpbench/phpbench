@@ -6,7 +6,6 @@ use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Printer;
 use PhpBench\Report\Console\ObjectRenderer;
 use PhpBench\Report\Console\ObjectRendererInterface;
-use PhpBench\Report\Console\Renderer;
 use PhpBench\Report\Model\Table;
 use PhpBench\Report\Model\TableRow;
 use Symfony\Component\Console\Helper\Table as SymfonyTable;

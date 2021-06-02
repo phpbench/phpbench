@@ -15,7 +15,6 @@ namespace PhpBench\Tests\Unit\Report\Generator;
 use Generator;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\Extension\ConsoleExtension;
-use PhpBench\Extension\ExpressionExtension;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Report\GeneratorInterface;
@@ -23,7 +22,6 @@ use PhpBench\Report\Renderer\ConsoleRenderer;
 use PhpBench\Tests\IntegrationTestCase;
 use PhpBench\Tests\Util\Approval;
 use PhpBench\Tests\Util\TestUtil;
-use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Throwable;
 
@@ -52,7 +50,6 @@ abstract class GeneratorTestCase extends IntegrationTestCase
                 ConsoleExtension::PARAM_OUTPUT_STREAM => $this->workspace()->path('out')
             ])->get(ConsoleRenderer::class)->render($document, new Config('test', []));
             $actual = $this->workspace()->getContents('out');
-
         } catch (Throwable $e) {
             $actual = $e->getMessage();
         }

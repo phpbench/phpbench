@@ -4,8 +4,6 @@ namespace PhpBench\Report\Console\Renderer;
 
 use PhpBench\Report\Console\ObjectRenderer;
 use PhpBench\Report\Console\ObjectRendererInterface;
-use PhpBench\Report\Console\Renderer;
-use PhpBench\Report\Model\Report;
 use PhpBench\Report\Model\Reports;
 use Symfony\Component\Console\Output\OutputInterface;
 

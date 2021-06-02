@@ -14,6 +14,7 @@ class ReportRenderer implements ObjectRendererInterface
         if (!$object instanceof Report) {
             return false;
         }
+
         if ($title = $object->title()) {
             $output->writeln(sprintf('<title>%s</title>', $title));
             $output->writeln(sprintf('<title>%s</title>', str_repeat('=', strlen($title))));

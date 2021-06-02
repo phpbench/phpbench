@@ -9,7 +9,6 @@
 ---
 phpbench run --report=my-report --executor=debug NothingBench.php --progress=none --iterations=5
 ---
-
 +-----------+--------------+--------------+-----+------+-----+----------+----------+----------+----------+----------+---------+--------+
 | tag       | benchmark    | subject      | set | revs | its | mem_peak | best     | mode     | mean     | worst    | stdev   | rstdev |
 +-----------+--------------+--------------+-----+------+-----+----------+----------+----------+----------+----------+---------+--------+

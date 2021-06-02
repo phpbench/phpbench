@@ -6,7 +6,6 @@
 phpbench run --store
 phpbench report --ref=latest --report=aggregate
 ---
-
 +--------------+--------------+-----+------+-----+----------+----------+--------+
 | benchmark    | subject      | set | revs | its | mem_peak | mode     | rstdev |
 +--------------+--------------+-----+------+-----+----------+----------+--------+

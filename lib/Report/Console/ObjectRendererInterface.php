@@ -2,7 +2,6 @@
 
 namespace PhpBench\Report\Console;
 
-use PhpBench\Report\Console\Exception\CouldNotRender;
 use Symfony\Component\Console\Output\OutputInterface;
 
 interface ObjectRendererInterface

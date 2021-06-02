@@ -12,7 +12,6 @@
 ---
 phpbench run --report=my-report --executor=debug NothingBench.php --progress=none
 ---
-
 +--------------+--------------+----------------------+
 | benchmark    | subject      | mode                 |
 +--------------+--------------+----------------------+
