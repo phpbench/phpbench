@@ -14,6 +14,7 @@ namespace PhpBench\Tests\Unit\Report\Generator;
 
 use Generator;
 use PhpBench\DependencyInjection\Container;
+use PhpBench\Extension\ConsoleExtension;
 use PhpBench\Extension\ExpressionExtension;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
@@ -47,13 +48,11 @@ abstract class GeneratorTestCase extends IntegrationTestCase
                 ], $approval->getConfig(0)))]),
                 new Config('asd', $options->resolve($approval->getConfig(1)))
             );
-            $output = new BufferedOutput();
-            (
-                new ConsoleRenderer($output, $container->get(ExpressionExtension::SERVICE_PLAIN_PRINTER))
-            )->render($document, new Config('asd', [
-                'table_style' => 'default',
-            ]));
-            $actual = $output->fetch();
+            $this->container([
+                ConsoleExtension::PARAM_OUTPUT_STREAM => $this->workspace()->path('out')
+            ])->get(ConsoleRenderer::class)->render($document, new Config('test', []));
+            $actual = $this->workspace()->getContents('out');
+
         } catch (Throwable $e) {
             $actual = $e->getMessage();
         }

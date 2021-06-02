@@ -33,7 +33,7 @@ class ConsoleRendererTest extends AbstractRendererCase
 
     protected function getRenderer(): RendererInterface
     {
-        return new ConsoleRenderer($this->output, $this->container()->get(Printer::class));
+        return $this->container()->get(ConsoleRenderer::class);
     }
 
     /**
