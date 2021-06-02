@@ -66,9 +66,17 @@ class TableAggregateComponent implements ComponentGeneratorInterface
             $rows[] = $row;
         }
 
-        return TableBuilder::create()
-            ->withTitle($config[self::PARAM_TITLE])
-            ->addRowsFromArray($rows)
-            ->build();
+        $builder = TableBuilder::create()
+            ->addRowsFromArray($rows);
+
+        if ($config[self::PARAM_TITLE]) {
+            $builder = $builder->withTitle(
+                $this->evaluator->renderTemplate($config[self::PARAM_TITLE], [
+                    'frame' => $dataFrame
+                ])
+            );
+        }
+
+        return $builder->build();
     }
 }

@@ -14,4 +14,4 @@
     ]
 }
 ---
-Component "unknown" not known, known components: "report", "table_aggregate"
+Component "unknown" not known, known components: "report", "table_aggregate", "bar_chart_aggregate"
