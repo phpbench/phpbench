@@ -52,7 +52,7 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
         $xSeries = [];
         $xLabels = [];
         $errorMargins = [];
-        $sets = $errorMargins = [];
+        $ySeries = [];
 
         foreach ($dataFrame->partition($config[self::PARAM_X_PARTITION]) as $xLabel => $partition) {
             $xLabels[] = $xLabel;
@@ -63,7 +63,7 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
                     'partition' => $setPartition
                 ]);
                 assert(is_int($yValue) || is_float($yValue));
-                $sets[$setLabel][] = $yValue;
+                $ySeries[$setLabel][$xLabel] = $yValue;
                 $errorMargins[$setLabel][] = $this->evaluator->evaluatePhpValue($config[self::PARAM_Y_ERROR_MARGIN], [
                     'frame' => $dataFrame,
                     'partition' => $setPartition
@@ -71,9 +71,13 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
             }
         }
 
+        $ySeries = array_map(function (array $series) use ($xLabels) {
+            return array_values(array_merge(array_combine($xLabels, array_fill(0, count($xLabels), 0)), $series));
+        }, $ySeries);
+
         return new BarChart(array_map(function (array $ySeries, array $errorMargins, string $setName) use ($xLabels) {
             return new BarChartDataSet($setName, $xLabels, $ySeries, $errorMargins);
-        }, (array)$sets, (array)$errorMargins, array_keys((array)$sets)), $config[self::PARAM_TITLE] ? $this->evaluator->renderTemplate(
+        }, (array)$ySeries, (array)$errorMargins, array_keys((array)$ySeries)), $config[self::PARAM_TITLE] ? $this->evaluator->renderTemplate(
             $config[self::PARAM_TITLE],
             ['frame' => $dataFrame]
         ) : null, $config[self::PARAM_Y_AXES_LABEL]);

@@ -29,7 +29,6 @@ class BarChart implements ComponentInterface
         $this->dataSets = $dataSets;
         $this->title = $title;
         $this->yAxesLabel = $yAxesLabel;
-        $this->yLabelExression = $yLabelExression;
     }
 
     /**

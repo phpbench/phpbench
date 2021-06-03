@@ -2,6 +2,8 @@
 
 namespace PhpBench\Report\Model;
 
+use RuntimeException;
+
 class BarChartDataSet
 {
     /**
@@ -28,6 +30,12 @@ class BarChartDataSet
      */
     public function __construct(string $name, array $xSeries, array $ySeries, array $errorMargins)
     {
+        if (count($xSeries) !== count($ySeries)) {
+            throw new RuntimeException(sprintf(
+                'X (%s) and Y (%s) series must have an equal number of elements',
+                count($xSeries), count($ySeries)
+            ));
+        }
         $this->name = $name;
         $this->xSeries = $xSeries;
         $this->ySeries = $ySeries;
