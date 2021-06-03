@@ -336,7 +336,7 @@
     </tr>
             </tbody>
 </table>
-    <div id="60b94e959a023" width="400" height="100"></div>
+    <div id="phpbench-component-119" width="400" height="100"></div>
 <script>
 var data = [
         {
@@ -364,7 +364,7 @@ var data = [
     ]
 var layout = {barmode: 'group'};
 layout.title = "Example Aggregate Barchart";
-Plotly.newPlot(document.getElementById('60b94e959a023'), data, layout);
+Plotly.newPlot(document.getElementById('phpbench-component-119'), data, layout);
 </script>
 </div>
     </body>

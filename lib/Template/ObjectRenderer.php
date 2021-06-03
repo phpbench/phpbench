@@ -10,6 +10,8 @@ use PhpBench\Template\Exception\CouldNotFindTemplateForObject;
 
 final class ObjectRenderer
 {
+    private $idCounter = 0;
+
     /**
      * @var ObjectPathResolver
      */
@@ -39,6 +41,8 @@ final class ObjectRenderer
 
     public function render(object $object): string
     {
+        $this->idCounter++;
+
         $paths = $this->resolver->resolvePaths($object);
         $tried = [];
 
@@ -55,14 +59,14 @@ final class ObjectRenderer
                 ob_start();
 
                 try {
-                    require $absolutePath;
+                    $this->doRequire($object, $absolutePath);
                 } catch (Exception $e) {
                     ob_end_clean();
 
                     throw $e;
                 }
 
-                return ob_get_clean();
+                return (string)ob_get_clean();
             }
         }
 
@@ -72,8 +76,18 @@ final class ObjectRenderer
         ));
     }
 
+    /**
+     * @return mixed
+     */
     public function __get(string $serviceName)
     {
         return $this->container->get($serviceName);
+    }
+
+    private function doRequire(object $object, string $absolutePath): void
+    {
+        $id = sprintf('phpbench-component-%s', $this->idCounter);
+
+        require $absolutePath;
     }
 }
