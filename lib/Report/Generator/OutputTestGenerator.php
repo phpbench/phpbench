@@ -39,7 +39,7 @@ class OutputTestGenerator implements GeneratorInterface
      */
     public function generate(SuiteCollection $collection, Config $config): Reports
     {
-        $range = range(1, 128);
+        $range = range(1, 32);
         $builder = ReportBuilder::create('Output Test')
             ->withDescription('This report demonstrates output')
             ->addObject(
@@ -83,7 +83,7 @@ class OutputTestGenerator implements GeneratorInterface
                     new BarChart([
                         new BarChartDataSet('Set 1', $range, $range, $range),
                         new BarChartDataSet('Set 2', $range, $range, $range),
-                    ],'Example Aggregate Barchart')
+                    ],'Example Aggregate Barchart', 'yValue as time')
                 );
 
         return Reports::fromReport($builder->build());

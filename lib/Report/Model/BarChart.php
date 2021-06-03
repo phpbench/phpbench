@@ -44,12 +44,11 @@ class BarChart implements ComponentInterface
     /**
      * @return scalar[]
      */
-    public function xValues(): array
+    public function xAxes(): array
     {
         return array_unique(array_merge(...array_map(function (BarChartDataSet $dataSet) {
             return $dataSet->xSeries;
         }, $this->dataSets)));
-
     }
 
     public function isEmpty(): bool

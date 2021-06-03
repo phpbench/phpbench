@@ -9,8 +9,6 @@ use PhpBench\Expression\Printer;
 use PhpBench\Report\Console\ObjectRenderer;
 use PhpBench\Report\Console\ObjectRendererInterface;
 use PhpBench\Report\Model\BarChart;
-use PhpBench\Report\Model\BarChartDataSet;
-use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class BarChartRenderer implements ObjectRendererInterface
@@ -50,7 +48,7 @@ class BarChartRenderer implements ObjectRendererInterface
             return true;
         }
 
-        foreach ($this->renderBarChart($object, $object->xValues()) as $chunk) {
+        foreach ($this->renderBarChart($object, $object->xAxes()) as $chunk) {
             $output->write($chunk);
         }
 
@@ -58,10 +56,11 @@ class BarChartRenderer implements ObjectRendererInterface
     }
 
     /**
-     * @param scalar[] $xValues
+     * @param scalar[] $xSeries
+     *
      * @return Generator<string>
      */
-    private function renderBarChart(BarChart $chart, array $xValues): Generator
+    private function renderBarChart(BarChart $chart, array $xSeries): Generator
     {
         $yScale = max($chart->yValues());
         $step = $yScale / self::HEIGHT;
@@ -70,14 +69,8 @@ class BarChartRenderer implements ObjectRendererInterface
         while ($height > 0) {
             yield from $this->printYAxesLabel($step, $height, $chart->yAxesLabel);
 
-            foreach ($xValues as $xIndex => $xValue) {
+            foreach ($xSeries as $xIndex => $xValue) {
                 foreach ($chart->dataSets as $dataSetIndex => $dataSet) {
-                    if (!isset($dataSet->ySeries[$xIndex])) {
-                        yield ' ';
-
-                        continue;
-                    }
-
                     $upper = $step * $height;
                     $yValue = $dataSet->ySeries[$xIndex];
 
@@ -86,6 +79,7 @@ class BarChartRenderer implements ObjectRendererInterface
                         $delta = $upper - $yValue;
                         $percentage = $delta / $step;
                         $block = floor(count(self::BLOCKS) * $percentage);
+
                         yield sprintf(
                             '<fg=%s>%s</>',
                             self::COLORS[$dataSetIndex % count(self::COLORS)],
@@ -104,41 +98,21 @@ class BarChartRenderer implements ObjectRendererInterface
 
                     yield ' ';
                 }
+
                 yield ' ';
             }
 
             $height--;
+
             yield PHP_EOL;
         }
 
-        // footer
-        yield '          └';
+        yield from $this->renderXAxes($xSeries, $chart);
 
-        foreach ($xValues as $xIndex => $xValue) {
-            foreach ($chart->dataSets as $dataSetIndex => $dataSet) {
-                yield '─';
-            }
-            yield '─';
-        }
-        yield PHP_EOL;
-        yield 'Set #       ';
-
-        foreach ($xValues as $xIndex => $xValue) {
-            foreach ($chart->dataSets as $dataSetIndex => $dataSet) {
-                if ($dataSetIndex === 0) {
-                    yield (string)($xIndex + 1);
-
-                    continue;
-                }
-                yield ' ';
-            }
-            yield ' ';
-        }
-
-        yield PHP_EOL;
         yield PHP_EOL;
 
         yield from $this->writeLegend($chart);
+
         yield PHP_EOL;
 
         return true;
@@ -150,8 +124,9 @@ class BarChartRenderer implements ObjectRendererInterface
     private function writeLegend(BarChart $object): Generator
     {
         foreach ($object->dataSets as $index => $dataSet) {
-            yield sprintf('    %s: <fg=%s>█</> ', $dataSet->name, self::COLORS[$index % count(self::COLORS)]);
+            yield sprintf("[<fg=%s>%s</> %s] ", self::COLORS[$index % count(self::COLORS)], self::BLOCKS[7], $dataSet->name, );
         }
+
         yield PHP_EOL;
     }
 
@@ -176,6 +151,49 @@ class BarChartRenderer implements ObjectRendererInterface
             $string .= mb_substr($label, $i, 1);
         }
         $string .= ' │ ';
+
         yield $string;
+    }
+
+    /**
+     * @param scalar[] $xSeries
+     *
+     * @return Generator<string>
+     */
+    private function renderXAxes(array $xSeries, BarChart $chart): Generator
+    {
+        yield '          └';
+        
+        foreach ($xSeries as $xIndex => $xValue) {
+            foreach ($chart->dataSets as $dataSetIndex => $dataSet) {
+                yield '─';
+            }
+
+            yield '─';
+        }
+
+        yield PHP_EOL;
+
+        if (count($chart->xAxes()) < 2) {
+            return;
+        }
+
+        yield 'Set #       ';
+        
+        foreach ($chart->xAxes() as $xIndex => $xValue) {
+            foreach ($chart->dataSets as $dataSetIndex => $dataSet) {
+                if ($dataSetIndex === 0) {
+                    yield (string)(($xIndex + 1) % 10);
+        
+                    continue;
+                }
+
+                yield ' ';
+            }
+
+            yield ' ';
+        }
+        
+        yield PHP_EOL;
     }
 }
