@@ -16,29 +16,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 class BarChartRenderer implements ObjectRendererInterface
 {
     const HEIGHT = 8;
-    const COLORS = [
-        'red',
-        'green',
-        'blue',
-        'cyan',
-        'magenta',
-        'yellow',
-        'white',
-    ];
-
-    /**
-     * @var string[]
-     */
-    const BLOCKS = [
-        '▁',
-        '▂',
-        '▃',
-        '▄',
-        '▅',
-        '▆',
-        '▇',
-        '█'
-    ];
+    const COLORS = ['red', 'green', 'blue', 'cyan', 'magenta', 'yellow', 'white'];
+    const BLOCKS = ['▁', '▂', '▃', '▄', '▅', '▆', '▇', '█'];
 
     /**
      * @var Printer
@@ -89,7 +68,7 @@ class BarChartRenderer implements ObjectRendererInterface
         $height = self::HEIGHT;
 
         while ($height > 0) {
-            yield from $this->printYLabel($step, $height);
+            yield from $this->printYAxesLabel($step, $height, $chart->yAxesLabel);
 
             foreach ($xValues as $xIndex => $xValue) {
                 foreach ($chart->dataSets as $dataSetIndex => $dataSet) {
@@ -179,9 +158,12 @@ class BarChartRenderer implements ObjectRendererInterface
     /**
      * @return Generator<string>
      */
-    private function printYLabel(float $step, int $height): Generator
+    private function printYAxesLabel(float $step, int $height, string $yAxesLabel): Generator
     {
-        $label = $this->printer->print($this->evaluator->evaluate('yValue as time precision 1', ['yValue' => $step * $height]));
+        $label = $this->printer->print($this->evaluator->evaluate(
+            $yAxesLabel,
+            ['yValue' => $step * $height]
+        ));
 
         $string = '';
 

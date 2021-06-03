@@ -17,12 +17,19 @@ class BarChart implements ComponentInterface
     public $title;
 
     /**
+     * @var string
+     */
+    public $yAxesLabel;
+
+    /**
      * @param BarChartDataSet[] $dataSets
      */
-    public function __construct(array $dataSets, ?string $title)
+    public function __construct(array $dataSets, ?string $title, ?string $yAxesLabel)
     {
         $this->dataSets = $dataSets;
         $this->title = $title;
+        $this->yAxesLabel = $yAxesLabel;
+        $this->yLabelExression = $yLabelExression;
     }
 
     /**
