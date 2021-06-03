@@ -91,8 +91,8 @@ class BarChartRenderer implements ObjectRendererInterface
                     $upper = $step * $height;
                     $yValue = $dataSet->ySeries[$xIndex];
 
+                    // render top block (partial)
                     if ($yValue > $upper - $step && $yValue < $upper) {
-
                         $delta = $upper - $yValue;
                         $percentage = $delta / $step;
                         $block = floor(count(self::BLOCKS) * $percentage);
@@ -106,10 +106,12 @@ class BarChartRenderer implements ObjectRendererInterface
                         continue;
                     }
 
+                    // render whole block
                     if ($yValue >= $upper) {
                         $output->write(sprintf('<fg=%s>%s</>', self::COLORS[$dataSetIndex % count(self::COLORS)], self::BLOCKS[7]));
                         continue;
                     }
+
                     $output->write(' ');
                 }
                 $output->write(' ');
@@ -119,6 +121,28 @@ class BarChartRenderer implements ObjectRendererInterface
             $output->write(PHP_EOL);
         }
 
+        // footer
+        $output->write('          └');
+        foreach ($xSeries as $xIndex => $xValue) {
+            foreach ($object->dataSets as $dataSetIndex => $dataSet) {
+                $output->write('─');
+            }
+            $output->write('─');
+        }
+        $output->write(PHP_EOL);
+        $output->write('Set #       ');
+        foreach ($xSeries as $xIndex => $xValue) {
+            foreach ($object->dataSets as $dataSetIndex => $dataSet) {
+                if ($dataSetIndex === 0) {
+                    $output->write($xIndex + 1);
+                    continue;
+                }
+                $output->write(' ');
+            }
+            $output->write(' ');
+        }
+
+        $output->write(PHP_EOL);
         $output->write(PHP_EOL);
 
         $this->writeLegend($object, $output);
@@ -147,7 +171,7 @@ class BarChartRenderer implements ObjectRendererInterface
             }
             $string .= mb_substr($label, $i, 1);
         }
-        $string .= ' | ';
+        $string .= ' │ ';
         $output->write($string);
     }
 }
