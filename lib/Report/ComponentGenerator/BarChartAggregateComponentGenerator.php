@@ -58,10 +58,12 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
             $xLabels[] = $xLabel;
 
             foreach ($partition->partition($config[self::PARAM_SET_PARTITION]) as $setLabel => $setPartition) {
-                $sets[$setLabel][] = $this->evaluator->evaluatePhpValue($config[self::PARAM_Y_EXPR], [
+                $yValue = $this->evaluator->evaluatePhpValue($config[self::PARAM_Y_EXPR], [
                     'frame' => $dataFrame,
                     'partition' => $setPartition
                 ]);
+                assert(is_int($yValue) || is_float($yValue));
+                $sets[$setLabel][] = $yValue;
                 $errorMargins[$setLabel][] = $this->evaluator->evaluatePhpValue($config[self::PARAM_Y_ERROR_MARGIN], [
                     'frame' => $dataFrame,
                     'partition' => $setPartition
