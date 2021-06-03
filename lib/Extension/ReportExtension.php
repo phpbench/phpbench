@@ -13,6 +13,8 @@ use PhpBench\Console\Command\ShowCommand;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Expression\ExpressionEvaluator;
+use PhpBench\Expression\ExpressionLanguage;
+use PhpBench\Expression\NodePrinter\HighlightingNodePrinter;
 use PhpBench\Expression\NodePrinters;
 use PhpBench\Expression\Printer;
 use PhpBench\Expression\Printer\EvaluatingPrinter;
@@ -319,7 +321,10 @@ class ReportExtension implements ExtensionInterface
             return new ConsoleObjectRenderer(
                 $container->get(ConsoleExtension::SERVICE_OUTPUT_STD),
                 new ReportsRenderer(),
-                new BarChartRenderer(),
+                new BarChartRenderer(
+                    $container->get(ExpressionEvaluator::class),
+                    $container->get(Printer::class),
+                ),
                 new ReportRenderer(),
                 new TableRenderer($container->get(Printer::class))
             );
