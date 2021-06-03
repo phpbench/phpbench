@@ -2,19 +2,15 @@
 
 namespace PhpBench\Report\Console\Renderer;
 
+use function mb_substr;
 use PhpBench\Expression\ExpressionEvaluator;
-use PhpBench\Expression\ExpressionLanguage;
-use PhpBench\Expression\NodePrinter\HighlightingNodePrinter;
 use PhpBench\Expression\Printer;
 use PhpBench\Report\Console\ObjectRenderer;
 use PhpBench\Report\Console\ObjectRendererInterface;
 use PhpBench\Report\Model\BarChart;
 use PhpBench\Report\Model\BarChartDataSet;
-use Symfony\Component\Console\Helper\FormatterHelper;
 use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Console\Output\OutputInterface;
-use function mb_chr;
-use function mb_substr;
 
 class BarChartRenderer implements ObjectRendererInterface
 {
@@ -53,7 +49,6 @@ class BarChartRenderer implements ObjectRendererInterface
 
     public function render(OutputInterface $output, ObjectRenderer $renderer, object $object): bool
     {
-
         if (!$object instanceof BarChart) {
             return false;
         }
@@ -80,11 +75,12 @@ class BarChartRenderer implements ObjectRendererInterface
 
         while ($height > 0) {
             $this->printYLabel($output, $step, $height);
+
             foreach ($xSeries as $xIndex => $xValue) {
                 foreach ($object->dataSets as $dataSetIndex => $dataSet) {
-
                     if (!isset($dataSet->ySeries[$xIndex])) {
                         $output->write(' ');
+
                         continue;
                     }
 
@@ -103,12 +99,14 @@ class BarChartRenderer implements ObjectRendererInterface
                                 array_reverse(self::BLOCKS)[$block]
                             )
                         );
+
                         continue;
                     }
 
                     // render whole block
                     if ($yValue >= $upper) {
                         $output->write(sprintf('<fg=%s>%s</>', self::COLORS[$dataSetIndex % count(self::COLORS)], self::BLOCKS[7]));
+
                         continue;
                     }
 
@@ -123,6 +121,7 @@ class BarChartRenderer implements ObjectRendererInterface
 
         // footer
         $output->write('          └');
+
         foreach ($xSeries as $xIndex => $xValue) {
             foreach ($object->dataSets as $dataSetIndex => $dataSet) {
                 $output->write('─');
@@ -131,10 +130,12 @@ class BarChartRenderer implements ObjectRendererInterface
         }
         $output->write(PHP_EOL);
         $output->write('Set #       ');
+
         foreach ($xSeries as $xIndex => $xValue) {
             foreach ($object->dataSets as $dataSetIndex => $dataSet) {
                 if ($dataSetIndex === 0) {
-                    $output->write($xIndex + 1);
+                    $output->write((string)($xIndex + 1));
+
                     continue;
                 }
                 $output->write(' ');
@@ -164,9 +165,11 @@ class BarChartRenderer implements ObjectRendererInterface
         $label = Helper::removeDecoration($output->getFormatter(), $this->printer->print($this->evaluator->evaluate('yValue as time precision 1', ['yValue' => $step * $height])));
 
         $string = '';
+
         for ($i = 0; $i < 10; $i++) {
             if (mb_strlen($label) < $i) {
                 $string .= ' ';
+
                 continue;
             }
             $string .= mb_substr($label, $i, 1);

@@ -13,8 +13,6 @@ use PhpBench\Console\Command\ShowCommand;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Expression\ExpressionEvaluator;
-use PhpBench\Expression\ExpressionLanguage;
-use PhpBench\Expression\NodePrinter\HighlightingNodePrinter;
 use PhpBench\Expression\NodePrinters;
 use PhpBench\Expression\Printer;
 use PhpBench\Expression\Printer\EvaluatingPrinter;

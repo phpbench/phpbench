@@ -81,8 +81,8 @@ class OutputTestGenerator implements GeneratorInterface
             )
                 ->addObject(
                     new BarChart([
-                        new BarChartDataSet('Set 1', $range, $range, $range ),
-                        new BarChartDataSet('Set 2', $range, $range, $range ),
+                        new BarChartDataSet('Set 1', $range, $range, $range),
+                        new BarChartDataSet('Set 2', $range, $range, $range),
                     ],'Example Aggregate Barchart')
                 );
 
