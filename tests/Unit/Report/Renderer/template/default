@@ -12,7 +12,7 @@
                 <h1>PHPBench Report</h1>
         <hr/>
                     <div>
-    <h2>Output Test Report</h2>
+    <h2>Output Test</h2>
     <p>This report demonstrates output</p>
     <table class="table table-striped">
             <caption>Values</caption>
@@ -334,6 +334,36 @@
     </tr>
             </tbody>
 </table>
+    <div id="60b94e9597609" width="400" height="100"></div>
+<script>
+var data = [
+        {
+        x: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32],
+        name: 'Set 1',
+        y: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32],
+        type: 'bar',
+        error_y: {
+            type: 'data',
+            array: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32],
+            visible: true,
+        }
+    },
+        {
+        x: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32],
+        name: 'Set 2',
+        y: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32],
+        type: 'bar',
+        error_y: {
+            type: 'data',
+            array: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32],
+            visible: true,
+        }
+    },
+    ]
+var layout = {barmode: 'group'};
+layout.title = "Example Aggregate Barchart";
+Plotly.newPlot(document.getElementById('60b94e9597609'), data, layout);
+</script>
 </div>
     </body>
     <footer>
