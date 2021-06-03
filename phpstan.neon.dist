@@ -10,6 +10,7 @@ parameters:
         parameters: 'array<string,mixed>'
         scalarOrNull: 'int|float|string|bool|null'
         scalar: 'int|float|string|bool'
+        number: 'int|float'
 
 includes:
     - phpstan-baseline.neon

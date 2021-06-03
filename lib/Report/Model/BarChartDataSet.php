@@ -9,22 +9,22 @@ class BarChartDataSet
      */
     public $name;
     /**
-     * @var mixed[]
+     * @var scalar[]
      */
     public $xSeries;
     /**
-     * @var mixed[]
+     * @var number[]
      */
     public $ySeries;
     /**
-     * @var mixed[]
+     * @var number[]
      */
     public $errorMargins;
 
     /**
-     * @param mixed[] $xSeries
-     * @param mixed[] $ySeries
-     * @param mixed[] $errorMargins
+     * @param scalar[] $xSeries
+     * @param number[] $ySeries
+     * @param number[] $errorMargins
      */
     public function __construct(string $name, array $xSeries, array $ySeries, array $errorMargins)
     {

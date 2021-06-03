@@ -24,4 +24,36 @@ class BarChart implements ComponentInterface
         $this->dataSets = $dataSets;
         $this->title = $title;
     }
+
+    /**
+     * @return number[]
+     */
+    public function yValues(): array
+    {
+        return array_merge(...array_map(function (BarChartDataSet $dataSet) {
+            return $dataSet->ySeries;
+        }, $this->dataSets));
+    }
+
+    /**
+     * @return scalar[]
+     */
+    public function xValues(): array
+    {
+        return array_unique(array_merge(...array_map(function (BarChartDataSet $dataSet) {
+            return $dataSet->xSeries;
+        }, $this->dataSets)));
+
+    }
+
+    public function isEmpty(): bool
+    {
+        foreach ($this->dataSets as $dataSet) {
+            if (empty($dataSet->ySeries)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

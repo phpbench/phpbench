@@ -2,6 +2,7 @@
 
 namespace PhpBench\Report\Console\Renderer;
 
+use Generator;
 use function mb_substr;
 use PhpBench\Expression\ExpressionEvaluator;
 use PhpBench\Expression\Printer;
@@ -15,7 +16,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 class BarChartRenderer implements ObjectRendererInterface
 {
     const HEIGHT = 8;
-    const COLORS = ['red', 'green', 'blue', 'cyan'];
+    const COLORS = [
+        'red',
+        'green',
+        'blue',
+        'cyan',
+        'magenta',
+        'yellow',
+        'white',
+    ];
 
     /**
      * @var string[]
@@ -58,28 +67,34 @@ class BarChartRenderer implements ObjectRendererInterface
             $output->write(PHP_EOL);
         }
 
-        $yValues = array_merge(...array_map(function (BarChartDataSet $dataSet) {
-            return $dataSet->ySeries;
-        }, $object->dataSets));
-        $xSeries = array_unique(array_merge(...array_map(function (BarChartDataSet $dataSet) {
-            return $dataSet->xSeries;
-        }, $object->dataSets)));
-
-        if (empty($yValues)) {
+        if ($object->isEmpty()) {
             return true;
         }
 
-        $yScale = max($yValues);
+        foreach ($this->renderBarChart($object, $object->xValues()) as $chunk) {
+            $output->write($chunk);
+        }
+
+        return true;
+    }
+
+    /**
+     * @param scalar[] $xValues
+     * @return Generator<string>
+     */
+    private function renderBarChart(BarChart $chart, array $xValues): Generator
+    {
+        $yScale = max($chart->yValues());
         $step = $yScale / self::HEIGHT;
         $height = self::HEIGHT;
 
         while ($height > 0) {
-            $this->printYLabel($output, $step, $height);
+            yield from $this->printYLabel($step, $height);
 
-            foreach ($xSeries as $xIndex => $xValue) {
-                foreach ($object->dataSets as $dataSetIndex => $dataSet) {
+            foreach ($xValues as $xIndex => $xValue) {
+                foreach ($chart->dataSets as $dataSetIndex => $dataSet) {
                     if (!isset($dataSet->ySeries[$xIndex])) {
-                        $output->write(' ');
+                        yield ' ';
 
                         continue;
                     }
@@ -92,12 +107,10 @@ class BarChartRenderer implements ObjectRendererInterface
                         $delta = $upper - $yValue;
                         $percentage = $delta / $step;
                         $block = floor(count(self::BLOCKS) * $percentage);
-                        $output->write(
-                            sprintf(
-                                '<fg=%s>%s</>',
-                                self::COLORS[$dataSetIndex % count(self::COLORS)],
-                                array_reverse(self::BLOCKS)[$block]
-                            )
+                        yield sprintf(
+                            '<fg=%s>%s</>',
+                            self::COLORS[$dataSetIndex % count(self::COLORS)],
+                            array_reverse(self::BLOCKS)[$block]
                         );
 
                         continue;
@@ -105,64 +118,70 @@ class BarChartRenderer implements ObjectRendererInterface
 
                     // render whole block
                     if ($yValue >= $upper) {
-                        $output->write(sprintf('<fg=%s>%s</>', self::COLORS[$dataSetIndex % count(self::COLORS)], self::BLOCKS[7]));
+                        yield sprintf('<fg=%s>%s</>', self::COLORS[$dataSetIndex % count(self::COLORS)], self::BLOCKS[7]);
 
                         continue;
                     }
 
-                    $output->write(' ');
+                    yield ' ';
                 }
-                $output->write(' ');
+                yield ' ';
             }
 
             $height--;
-            $output->write(PHP_EOL);
+            yield PHP_EOL;
         }
 
         // footer
-        $output->write('          └');
+        yield '          └';
 
-        foreach ($xSeries as $xIndex => $xValue) {
-            foreach ($object->dataSets as $dataSetIndex => $dataSet) {
-                $output->write('─');
+        foreach ($xValues as $xIndex => $xValue) {
+            foreach ($chart->dataSets as $dataSetIndex => $dataSet) {
+                yield '─';
             }
-            $output->write('─');
+            yield '─';
         }
-        $output->write(PHP_EOL);
-        $output->write('Set #       ');
+        yield PHP_EOL;
+        yield 'Set #       ';
 
-        foreach ($xSeries as $xIndex => $xValue) {
-            foreach ($object->dataSets as $dataSetIndex => $dataSet) {
+        foreach ($xValues as $xIndex => $xValue) {
+            foreach ($chart->dataSets as $dataSetIndex => $dataSet) {
                 if ($dataSetIndex === 0) {
-                    $output->write((string)($xIndex + 1));
+                    yield (string)($xIndex + 1);
 
                     continue;
                 }
-                $output->write(' ');
+                yield ' ';
             }
-            $output->write(' ');
+            yield ' ';
         }
 
-        $output->write(PHP_EOL);
-        $output->write(PHP_EOL);
+        yield PHP_EOL;
+        yield PHP_EOL;
 
-        $this->writeLegend($object, $output);
-        $output->write(PHP_EOL);
+        yield from $this->writeLegend($chart);
+        yield PHP_EOL;
 
         return true;
     }
 
-    private function writeLegend(BarChart $object, OutputInterface $output): void
+    /**
+     * @return Generator<string>
+     */
+    private function writeLegend(BarChart $object): Generator
     {
         foreach ($object->dataSets as $index => $dataSet) {
-            $output->write(sprintf('    %s: <fg=%s>█</> ', $dataSet->name, self::COLORS[$index]));
+            yield sprintf('    %s: <fg=%s>█</> ', $dataSet->name, self::COLORS[$index % count(self::COLORS)]);
         }
-        $output->write(PHP_EOL);
+        yield PHP_EOL;
     }
 
-    private function printYLabel(OutputInterface $output, int $step, int $height): void
+    /**
+     * @return Generator<string>
+     */
+    private function printYLabel(float $step, int $height): Generator
     {
-        $label = Helper::removeDecoration($output->getFormatter(), $this->printer->print($this->evaluator->evaluate('yValue as time precision 1', ['yValue' => $step * $height])));
+        $label = $this->printer->print($this->evaluator->evaluate('yValue as time precision 1', ['yValue' => $step * $height]));
 
         $string = '';
 
@@ -175,6 +194,6 @@ class BarChartRenderer implements ObjectRendererInterface
             $string .= mb_substr($label, $i, 1);
         }
         $string .= ' │ ';
-        $output->write($string);
+        yield $string;
     }
 }
