@@ -8,6 +8,7 @@ Features:
 
 - New component based report generator #851
 - HTML Bar Chart component #853
+- Console Bar Chart component #858
 - Data Frame and Expression Filtering #831
 - Allow multiple benchmark paths to be specified from CLI #834
 - Functions which require at least one value return NULL when values are
