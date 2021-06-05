@@ -36,6 +36,10 @@ class BarChart implements ComponentInterface
      */
     public function yValues(): array
     {
+        if (!$this->dataSets) {
+            return [];
+        }
+
         return array_merge(...array_map(function (BarChartDataSet $dataSet) {
             return $dataSet->ySeries;
         }, $this->dataSets));
@@ -46,6 +50,10 @@ class BarChart implements ComponentInterface
      */
     public function xAxes(): array
     {
+        if (!$this->dataSets) {
+            return [];
+        }
+
         $xAxes = array_unique(array_merge(...array_map(function (BarChartDataSet $dataSet) {
             return $dataSet->xSeries;
         }, $this->dataSets)));
