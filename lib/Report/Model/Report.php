@@ -22,13 +22,20 @@ final class Report implements ComponentInterface
     private $objects;
 
     /**
+     * @var bool
+     */
+    private $tabbed;
+
+    /**
+     * @internal Use the ReportBuilder
      * @param ComponentInterface[] $objects
      */
-    public function __construct(array $objects, ?string $title, ?string $description)
+    public function __construct(array $objects, ?string $title, bool $tabbed = false, ?string $description)
     {
         $this->objects = $objects;
         $this->title = $title;
         $this->description = $description;
+        $this->tabbed = $tabbed;
     }
 
     /**
@@ -77,5 +84,10 @@ final class Report implements ComponentInterface
         return array_filter($this->objects, function (object $object) {
             return $object instanceof Table;
         });
+    }
+
+    public function tabbed(): bool
+    {
+        return $this->tabbed;
     }
 }

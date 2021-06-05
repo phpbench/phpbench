@@ -22,6 +22,11 @@ final class ReportBuilder
      */
     private $description;
 
+    /**
+     * @var bool
+     */
+    private $tabbed = false;
+
     private function __construct(string $title = null)
     {
         $this->title = $title;
@@ -46,8 +51,15 @@ final class ReportBuilder
         return $this;
     }
 
+    public function enableTabs(): self
+    {
+        $this->tabbed = true;
+
+        return $this;
+    }
+
     public function build(): Report
     {
-        return new Report($this->objects, $this->title, $this->description);
+        return new Report($this->objects, $this->title, $this->tabbed, $this->description);
     }
 }
