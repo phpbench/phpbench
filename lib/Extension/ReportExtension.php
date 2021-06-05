@@ -321,7 +321,7 @@ class ReportExtension implements ExtensionInterface
                 new ReportsRenderer(),
                 new BarChartRenderer(
                     $container->get(ExpressionEvaluator::class),
-                    $container->get(ExpressionExtension::SERVICE_PLAIN_PRINTER),
+                    $container->get(ExpressionExtension::SERVICE_PLAIN_PRINTER)
                 ),
                 new ReportRenderer(),
                 new TableRenderer($container->get(Printer::class))

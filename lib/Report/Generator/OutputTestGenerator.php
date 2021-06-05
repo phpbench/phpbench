@@ -70,7 +70,7 @@ class OutputTestGenerator implements GeneratorInterface
                             return new RelativeDeviationNode(new FloatNode($percent));
                         }, $percents));
                     })(range(0, 100, 10)),
-                ], 'Relative Deviation'),
+                ], 'Relative Deviation')
             )
             ->addObject(
                 Table::fromRowArray([

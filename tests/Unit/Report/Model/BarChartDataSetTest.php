@@ -2,8 +2,8 @@
 
 namespace PhpBench\Tests\Unit\Report\Model;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Report\Model\BarChartDataSet;
+use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
 class BarChartDataSetTest extends TestCase
