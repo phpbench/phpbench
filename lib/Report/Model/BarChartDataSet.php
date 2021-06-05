@@ -9,19 +9,19 @@ class BarChartDataSet
     /**
      * @var string
      */
-    public $name;
+    private $name;
     /**
      * @var scalar[]
      */
-    public $xSeries;
+    private $xSeries;
     /**
      * @var number[]
      */
-    public $ySeries;
+    private $ySeries;
     /**
      * @var number[]
      */
-    public $errorMargins;
+    private $errorMargins;
 
     /**
      * @param scalar[] $xSeries
@@ -40,5 +40,49 @@ class BarChartDataSet
         $this->xSeries = $xSeries;
         $this->ySeries = $ySeries;
         $this->errorMargins = $errorMargins;
+    }
+
+    public function name(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return scalar[]
+     */
+    public function xSeries(): array
+    {
+        return $this->xSeries;
+    }
+
+    /**
+     * @return number[]
+     */
+    public function ySeries(): array
+    {
+        return $this->ySeries;
+    }
+
+    /**
+     * @return number[]
+     */
+    public function errorMargins(): array
+    {
+        return $this->errorMargins;
+    }
+
+    /**
+     * @return number
+     */
+    public function yValueAt(int $offset)
+    {
+        if (!isset($this->ySeries[$offset])) {
+            throw new RuntimeException(sprintf(
+                'No Y value exists at offset %s/%s',
+                $offset, count($this->ySeries)
+            ));
+        }
+
+        return $this->ySeries[$offset];
     }
 }

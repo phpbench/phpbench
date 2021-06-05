@@ -3,23 +3,24 @@
 namespace PhpBench\Report\Model;
 
 use PhpBench\Report\ComponentInterface;
+use RuntimeException;
 
 class BarChart implements ComponentInterface
 {
     /**
      * @var BarChartDataSet[]
      */
-    public $dataSets;
+    private $dataSets;
 
     /**
      * @var string|null
      */
-    public $title;
+    private $title;
 
     /**
      * @var string
      */
-    public $yAxesLabel;
+    private $yAxesLabel;
 
     /**
      * @param BarChartDataSet[] $dataSets
@@ -41,7 +42,7 @@ class BarChart implements ComponentInterface
         }
 
         return array_merge(...array_map(function (BarChartDataSet $dataSet) {
-            return $dataSet->ySeries;
+            return $dataSet->ySeries();
         }, $this->dataSets));
     }
 
@@ -55,7 +56,7 @@ class BarChart implements ComponentInterface
         }
 
         $xAxes = array_unique(array_merge(...array_map(function (BarChartDataSet $dataSet) {
-            return $dataSet->xSeries;
+            return $dataSet->xSeries();
         }, $this->dataSets)));
         sort($xAxes);
 
@@ -65,11 +66,41 @@ class BarChart implements ComponentInterface
     public function isEmpty(): bool
     {
         foreach ($this->dataSets as $dataSet) {
-            if (empty($dataSet->ySeries)) {
+            if (empty($dataSet->ySeries())) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    public function yAxesLabel(): string
+    {
+        return $this->yAxesLabel;
+    }
+
+    public function title(): ?string
+    {
+        return $this->title;
+    }
+
+    /**
+     * @return BarChartDataSet[]
+     */
+    public function dataSets(): array
+    {
+        return $this->dataSets;
+    }
+
+    public function dataSet(int $offset): BarChartDataSet
+    {
+        if (!isset($this->dataSets[$offset])) {
+            throw new RuntimeException(sprintf(
+                'No data set exists at offset %s/%s',
+                $offset, count($this->dataSets)
+            ));
+        }
+
+        return $this->dataSets[$offset];
     }
 }

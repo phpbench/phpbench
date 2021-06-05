@@ -39,8 +39,8 @@ class BarChartRenderer implements ObjectRendererInterface
             return false;
         }
 
-        if ($object->title) {
-            $output->writeln($object->title);
+        if ($object->title()) {
+            $output->writeln($object->title());
             $output->write(PHP_EOL);
         }
 
@@ -67,12 +67,12 @@ class BarChartRenderer implements ObjectRendererInterface
         $height = self::HEIGHT;
 
         while ($height > 0) {
-            yield from $this->printYAxesLabel($step, $height, $chart->yAxesLabel);
+            yield from $this->printYAxesLabel($step, $height, $chart->yAxesLabel());
 
             foreach ($xSeries as $xIndex => $xValue) {
-                foreach ($chart->dataSets as $dataSetIndex => $dataSet) {
+                foreach ($chart->dataSets() as $dataSetIndex => $dataSet) {
                     $upper = $step * $height;
-                    $yValue = $dataSet->ySeries[$xIndex];
+                    $yValue = $dataSet->yValueAt($xIndex);
 
                     // render top block (partial)
                     if ($yValue > $upper - $step && $yValue < $upper) {
@@ -123,8 +123,13 @@ class BarChartRenderer implements ObjectRendererInterface
      */
     private function writeLegend(BarChart $object): Generator
     {
-        foreach ($object->dataSets as $index => $dataSet) {
-            yield sprintf("[<fg=%s>%s</> %s] ", self::COLORS[$index % count(self::COLORS)], self::BLOCKS[7], $dataSet->name, );
+        foreach ($object->dataSets() as $index => $dataSet) {
+            yield sprintf(
+                "[<fg=%s>%s</> %s] ",
+                self::COLORS[$index % count(self::COLORS)],
+                self::BLOCKS[7],
+                $dataSet->name()
+            );
         }
 
         yield PHP_EOL;
@@ -165,7 +170,7 @@ class BarChartRenderer implements ObjectRendererInterface
         yield '          └';
         
         foreach ($xSeries as $xIndex => $xValue) {
-            foreach ($chart->dataSets as $dataSetIndex => $dataSet) {
+            foreach ($chart->dataSets() as $dataSetIndex => $dataSet) {
                 yield '─';
             }
 
@@ -181,7 +186,7 @@ class BarChartRenderer implements ObjectRendererInterface
         yield 'Set #       ';
         
         foreach ($chart->xAxes() as $xIndex => $xValue) {
-            foreach ($chart->dataSets as $dataSetIndex => $dataSet) {
+            foreach ($chart->dataSets() as $dataSetIndex => $dataSet) {
                 if ($dataSetIndex === 0) {
                     yield (string)(($xIndex + 1) % 10);
         
