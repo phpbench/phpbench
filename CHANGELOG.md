@@ -18,6 +18,14 @@ Improvement:
 
 - Use automatic time unit for expression report #838
 
+1.0.2 (2021-05-28)
+------------------
+
+Bug fix:
+
+- Fix incorrect benchmark column definition in report #840
+- Fix `--ansi` flag not be propagated to report output #844
+
 1.0.1 (2021-05-11)
 ------------------
 
