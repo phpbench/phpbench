@@ -15,4 +15,9 @@ class Text implements ComponentInterface
     {
         $this->text = $text;
     }
+
+    public function title(): ?string
+    {
+        return null;
+    }
 }

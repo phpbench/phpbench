@@ -28,6 +28,7 @@ final class Report implements ComponentInterface
 
     /**
      * @internal Use the ReportBuilder
+     *
      * @param ComponentInterface[] $objects
      */
     public function __construct(array $objects, ?string $title, bool $tabbed = false, ?string $description)
@@ -39,21 +40,21 @@ final class Report implements ComponentInterface
     }
 
     /**
-     * @deprecated use objects() to be removed in 2.0. Use ReportBuilder
+     * @deprecated to be removed in 2.0. Use ReportBuilder
      *
      * @param Object[] $objects
      */
     public static function fromTables(array $objects, ?string $title = null, ?string $description = null): self
     {
-        return new self($objects, $title, $description);
+        return new self($objects, $title, false, $description);
     }
 
     /**
-     * @deprecated use objects() to be removed in 2.0. Use ReportBuilder
+     * @deprecated to be removed in 2.0. Use ReportBuilder
      */
     public static function fromTable(object $object, ?string $title = null, ?string $description = null): self
     {
-        return new self([$object], $title, $description);
+        return new self([$object], $title, false, $description);
     }
 
     public function title(): ?string
