@@ -17,6 +17,7 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
     public const PARAM_Y_EXPR = 'y_expr';
     public const PARAM_Y_ERROR_MARGIN = 'y_error_margin';
     public const PARAM_TITLE = 'title';
+    const PARAM_Y_AXES_LABEL = 'y_axes_label';
 
     /**
      * @var ExpressionEvaluator
@@ -37,6 +38,7 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
             self::PARAM_TITLE => null,
             self::PARAM_X_PARTITION => [],
             self::PARAM_SET_PARTITION => [],
+            self::PARAM_Y_AXES_LABEL => 'yValue',
         ]);
         $options->setRequired(self::PARAM_Y_EXPR);
         $options->setRequired(self::PARAM_Y_ERROR_MARGIN);
@@ -50,28 +52,40 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
         $xSeries = [];
         $xLabels = [];
         $errorMargins = [];
-        $sets = $errorMargins = [];
+        $ySeries = [];
 
         foreach ($dataFrame->partition($config[self::PARAM_X_PARTITION]) as $xLabel => $partition) {
             $xLabels[] = $xLabel;
 
             foreach ($partition->partition($config[self::PARAM_SET_PARTITION]) as $setLabel => $setPartition) {
-                $sets[$setLabel][] = $this->evaluator->evaluatePhpValue($config[self::PARAM_Y_EXPR], [
+                $yValue = $this->evaluator->evaluatePhpValue($config[self::PARAM_Y_EXPR], [
                     'frame' => $dataFrame,
                     'partition' => $setPartition
                 ]);
-                $errorMargins[$setLabel][] = $this->evaluator->evaluatePhpValue($config[self::PARAM_Y_ERROR_MARGIN], [
+                assert(is_int($yValue) || is_float($yValue));
+                $ySeries[$setLabel][$xLabel] = $yValue;
+                $errorMargins[$setLabel][$xLabel] = $this->evaluator->evaluatePhpValue($config[self::PARAM_Y_ERROR_MARGIN], [
                     'frame' => $dataFrame,
                     'partition' => $setPartition
                 ]);
             }
         }
 
+        $ySeries = $this->normalizeSeries($xLabels, $ySeries);
+        $errorMargins = $this->normalizeSeries($xLabels, $errorMargins);
+
         return new BarChart(array_map(function (array $ySeries, array $errorMargins, string $setName) use ($xLabels) {
             return new BarChartDataSet($setName, $xLabels, $ySeries, $errorMargins);
-        }, (array)$sets, (array)$errorMargins, array_keys((array)$sets)), $config[self::PARAM_TITLE] ? $this->evaluator->renderTemplate(
+        }, (array)$ySeries, (array)$errorMargins, array_keys((array)$ySeries)), $config[self::PARAM_TITLE] ? $this->evaluator->renderTemplate(
             $config[self::PARAM_TITLE],
             ['frame' => $dataFrame]
-        ) : null);
+        ) : null, $config[self::PARAM_Y_AXES_LABEL]);
+    }
+
+    private function normalizeSeries(array $xLabels, array $ySeries): array
+    {
+        return array_map(function (array $series) use ($xLabels) {
+            return array_values(array_merge(array_combine($xLabels, array_fill(0, count($xLabels), 0)), $series));
+        }, $ySeries);
     }
 }

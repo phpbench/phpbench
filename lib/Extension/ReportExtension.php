@@ -319,7 +319,10 @@ class ReportExtension implements ExtensionInterface
             return new ConsoleObjectRenderer(
                 $container->get(ConsoleExtension::SERVICE_OUTPUT_STD),
                 new ReportsRenderer(),
-                new BarChartRenderer(),
+                new BarChartRenderer(
+                    $container->get(ExpressionEvaluator::class),
+                    $container->get(ExpressionExtension::SERVICE_PLAIN_PRINTER)
+                ),
                 new ReportRenderer(),
                 new TableRenderer($container->get(Printer::class))
             );

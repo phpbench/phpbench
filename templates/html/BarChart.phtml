@@ -1,24 +1,24 @@
-<?php $chartId = uniqid(); assert($object instanceof \PhpBench\Report\Model\BarChart) ?>
-<div id="<?php echo $chartId ?>" width="400" height="100"></div>
+<?php assert($object instanceof \PhpBench\Report\Model\BarChart) ?>
+<div id="<?php echo $id ?>" width="400" height="100"></div>
 <script>
 var data = [
-    <?php foreach ($object->dataSets as $setName => $dataSet): ?>
+    <?php foreach ($object->dataSets() as $setName => $dataSet): ?>
     {
-        x: <?php echo json_encode($dataSet->xSeries) ?>,
-        name: '<?php echo $dataSet->name ?>',
-        y: <?php echo json_encode($dataSet->ySeries) ?>,
+        x: <?php echo json_encode($dataSet->xSeries()) ?>,
+        name: '<?php echo $dataSet->name() ?>',
+        y: <?php echo json_encode($dataSet->ySeries()) ?>,
         type: 'bar',
         error_y: {
             type: 'data',
-            array: <?php echo json_encode($dataSet->errorMargins) ?>,
+            array: <?php echo json_encode($dataSet->errorMargins()) ?>,
             visible: true,
         }
     },
     <?php endforeach ?>
 ]
 var layout = {barmode: 'group'};
-<?php if ($object->title): ?>
-layout.title = <?php echo json_encode($object->title) ?>;
+<?php if ($object->title()): ?>
+layout.title = <?php echo json_encode($object->title()) ?>;
 <?php endif ?>
-Plotly.newPlot(document.getElementById('<?php echo $chartId ?>'), data, layout);
+Plotly.newPlot(document.getElementById('<?php echo $id ?>'), data, layout);
 </script>

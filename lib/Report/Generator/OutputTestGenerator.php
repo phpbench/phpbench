@@ -18,7 +18,9 @@ use PhpBench\Expression\Ast\VariableNode;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Report\GeneratorInterface;
-use PhpBench\Report\Model\Report;
+use PhpBench\Report\Model\BarChart;
+use PhpBench\Report\Model\BarChartDataSet;
+use PhpBench\Report\Model\Builder\ReportBuilder;
 use PhpBench\Report\Model\Reports;
 use PhpBench\Report\Model\Table;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -37,7 +39,10 @@ class OutputTestGenerator implements GeneratorInterface
      */
     public function generate(SuiteCollection $collection, Config $config): Reports
     {
-        return Reports::fromReport(Report::fromTables([
+        $range = range(1, 32);
+        $builder = ReportBuilder::create('Output Test')
+            ->withDescription('This report demonstrates output')
+            ->addObject(
                 Table::fromRowArray([
                         [
                             'string' => new StringNode('one'),
@@ -47,29 +52,40 @@ class OutputTestGenerator implements GeneratorInterface
                             'null' => new NullNode(),
                             'parameter' => new ParameterNode([new VariableNode('foo'), new VariableNode('bar')]),
                         ]
-                ], 'Values'),
+                ], 'Values')
+            )
+            ->addObject(
                 Table::fromRowArray([
                     (function (array $percents): array {
                         return (array)array_combine($percents, array_map(function (float $percent) {
                             return new PercentDifferenceNode($percent);
                         }, $percents));
                     })(range(-100, 100, 10)),
-                ], 'Percent Difference'),
+                ], 'Percent Difference')
+            )
+            ->addObject(
                 Table::fromRowArray([
                     (function (array $percents): array {
                         return (array)array_combine($percents, array_map(function (float $percent) {
                             return new RelativeDeviationNode(new FloatNode($percent));
                         }, $percents));
                     })(range(0, 100, 10)),
-                ], 'Relative Deviation'),
+                ], 'Relative Deviation')
+            )
+            ->addObject(
                 Table::fromRowArray([
                     [
                         'time' => new DisplayAsNode(new IntegerNode(10000), new UnitNode(new StringNode('ms')), new IntegerNode(1))
                     ]
-                ], 'Time'),
-            ],
-            'Output Test Report',
-            'This report demonstrates output'
-        ));
+                ], 'Time')
+            )
+                ->addObject(
+                    new BarChart([
+                        new BarChartDataSet('Set 1', $range, $range, $range),
+                        new BarChartDataSet('Set 2', $range, $range, $range),
+                    ],'Example Aggregate Barchart', 'yValue as time')
+                );
+
+        return Reports::fromReport($builder->build());
     }
 }

@@ -23,7 +23,7 @@ class BarChartAggregateComponentGeneratorTest extends ComponentGeneratorTestCase
         ]);
         assert($barChart instanceof BarChart);
         self::assertInstanceOf(BarChart::class, $barChart);
-        self::assertCount(0, $barChart->dataSets);
+        self::assertCount(0, $barChart->dataSets());
     }
 
     public function testGeneratesSeries(): void
@@ -40,9 +40,9 @@ class BarChartAggregateComponentGeneratorTest extends ComponentGeneratorTestCase
         ]);
         assert($barChart instanceof BarChart);
         self::assertInstanceOf(BarChart::class, $barChart);
-        self::assertCount(1, $barChart->dataSets);
-        self::assertEquals([12, 23], $barChart->dataSets[0]->ySeries);
-        self::assertEquals([33, 44], $barChart->dataSets[0]->errorMargins);
+        self::assertCount(1, $barChart->dataSets());
+        self::assertEquals([12, 23], $barChart->dataSet(0)->ySeries());
+        self::assertEquals([33, 44], $barChart->dataSet(0)->errorMargins());
     }
 
     public function testGeneratesMultipleDataSetes(): void
@@ -62,10 +62,10 @@ class BarChartAggregateComponentGeneratorTest extends ComponentGeneratorTestCase
         ]);
         assert($barChart instanceof BarChart);
         self::assertInstanceOf(BarChart::class, $barChart);
-        self::assertCount(2, $barChart->dataSets);
-        self::assertEquals([12, 23], $barChart->dataSets[0]->ySeries);
-        self::assertEquals([33, 44], $barChart->dataSets[0]->errorMargins);
-        self::assertEquals([22, 43], $barChart->dataSets[1]->ySeries);
-        self::assertEquals([33, 54], $barChart->dataSets[1]->errorMargins);
+        self::assertCount(2, $barChart->dataSets());
+        self::assertEquals([12, 23], $barChart->dataSet(0)->ySeries());
+        self::assertEquals([33, 44], $barChart->dataSet(0)->errorMargins());
+        self::assertEquals([22, 43], $barChart->dataSet(1)->ySeries());
+        self::assertEquals([33, 54], $barChart->dataSet(1)->errorMargins());
     }
 }
