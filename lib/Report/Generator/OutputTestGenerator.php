@@ -2,7 +2,6 @@
 
 namespace PhpBench\Report\Generator;
 
-use PhpBench\Report\Model\Text;
 use function array_combine;
 use PhpBench\Expression\Ast\BooleanNode;
 use PhpBench\Expression\Ast\DisplayAsNode;
@@ -24,6 +23,7 @@ use PhpBench\Report\Model\BarChartDataSet;
 use PhpBench\Report\Model\Builder\ReportBuilder;
 use PhpBench\Report\Model\Reports;
 use PhpBench\Report\Model\Table;
+use PhpBench\Report\Model\Text;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OutputTestGenerator implements GeneratorInterface
