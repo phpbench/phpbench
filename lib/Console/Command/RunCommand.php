@@ -152,7 +152,7 @@ EOT
             }
         }
 
-        $this->reportHandler->reportsFromInput($input, $collection);
+        $this->reportHandler->reportsFromInput($input, $collection->mergeCollection($this->resolveBaselines($input)));
 
         if ($suite->getErrorStacks()) {
             return self::EXIT_CODE_ERROR;
