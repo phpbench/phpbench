@@ -4,6 +4,10 @@ CHANGELOG
 master
 ------
 
+Bug fixes:
+
+- Ensure all refs are passed to report in run mode #864
+
 Features:
 
 - New component based report generator #851
