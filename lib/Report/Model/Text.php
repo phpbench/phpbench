@@ -9,15 +9,26 @@ class Text implements ComponentInterface
     /**
      * @var string
      */
-    public $text;
+    private $text;
 
-    public function __construct(string $text)
+    /**
+     * @var string|null
+     */
+    private $title;
+
+    public function __construct(string $text, ?string $title = null)
     {
         $this->text = $text;
+        $this->title = $title;
     }
 
     public function title(): ?string
     {
-        return null;
+        return $this->title;
+    }
+
+    public function text(): string
+    {
+        return $this->text;
     }
 }
