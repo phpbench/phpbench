@@ -4,7 +4,7 @@
     <?php endif ?>
     <thead class="thead-light">
         <?php foreach ($object->columnNames() as $columnName): ?>
-            <th><?php echo $columnName ?></th>
+            <th><?php echo htmlspecialchars($columnName) ?></th>
         <?php endforeach ?>
     </thead>
     <tbody>

@@ -3,63 +3,24 @@
 namespace PhpBench\Template\Expression\Printer;
 
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\NodePrinter;
-use PhpBench\Expression\NodePrinters;
 use PhpBench\Expression\Printer;
-use PhpBench\Template\Exception\CouldNotFindTemplateForObject;
-use PhpBench\Template\ObjectRenderer;
 
-class TemplatePrinter implements NodePrinter
+final class TemplatePrinter implements Printer
 {
     /**
-     * @var array<string, bool>
+     * @var Printer
      */
-    private $seen = [];
+    private $printer;
 
-    /**
-     * @var array<string, string>
-     */
-    private $cached = [];
-
-    /**
-     * @var NodePrinters
-     */
-    private $nodePrinters;
-
-    /**
-     * @var ObjectRenderer
-     */
-    private $renderer;
-
-    public function __construct(ObjectRenderer $renderer, NodePrinters $nodePrinters)
+    public function __construct(Printer $printer)
     {
-        $this->nodePrinters = $nodePrinters;
-        $this->renderer = $renderer;
+        $this->printer = $printer;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function print(Printer $printer, Node $node): string
+    public function print(Node $node): string
     {
-        $hash = serialize($node);
-
-        if (isset($this->cached[$hash])) {
-            return $this->cached[$hash];
-        }
-
-        if (isset($this->seen[$hash])) {
-            return $this->nodePrinters->print($printer, $node);
-        }
-
-        $this->seen[$hash] = true;
-
-        try {
-            $this->cached[$hash] = $this->renderer->render($node);
-
-            return $this->cached[$hash];
-        } catch (CouldNotFindTemplateForObject $couldNotFind) {
-            return $this->nodePrinters->print($printer, $node);
-        }
+        return $this->printer->print(
+            new SkipTemplateNode($node)
+        );
     }
 }

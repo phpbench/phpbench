@@ -23,7 +23,7 @@
                         aria-controls="#tab-content-<?php echo $id . '-' . $index ?>" 
                         aria-current="page" 
                         >
-                        <?php echo $component->title() ?: $index ?>
+                        <?php echo htmlspecialchars($component->title() ?: $index) ?>
                     </button>
                 </li>
                 <?php $first = false ?>
