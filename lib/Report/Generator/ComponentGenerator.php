@@ -24,6 +24,7 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
     const PARAM_DESCRIPTION = 'description';
     const PARAM_PARTITION = 'partition';
     const PARAM_COMPONENTS = 'components';
+    const PARAM_TABBED = 'tabbed';
     const KEY_COMPONENT_TYPE = '_type';
 
     /**
@@ -58,16 +59,19 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
             self::PARAM_DESCRIPTION => null,
             self::PARAM_PARTITION => [],
             self::PARAM_COMPONENTS => [],
+            self::PARAM_TABBED => false,
         ]);
         $options->setAllowedTypes(self::PARAM_TITLE, ['string', 'null']);
         $options->setAllowedTypes(self::PARAM_DESCRIPTION, ['string', 'null']);
         $options->setAllowedTypes(self::PARAM_PARTITION, ['array']);
         $options->setAllowedTypes(self::PARAM_COMPONENTS, ['array']);
+        $options->setAllowedTypes(self::PARAM_TABBED, ['bool']);
         SymfonyOptionsResolverCompat::setInfos($options, [
             self::PARAM_TITLE => 'Title for generated report',
             self::PARAM_DESCRIPTION => 'Description for generated report',
             self::PARAM_PARTITION => 'Partition the data using these column names - the row expressions will to aggregate the data in each partition',
             self::PARAM_COMPONENTS => 'List of component configuration objects, each component must feature a `_type` key (e.g. `table_aggregate`)',
+            self::PARAM_TABBED => 'Render components in tabs where supported',
         ]);
     }
 
@@ -115,6 +119,10 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
                     $this->agent->resolveConfig($componentGenerator, $component)
                 ));
             }
+        }
+
+        if ($config[self::PARAM_TABBED]) {
+            $builder->enableTabs();
         }
 
         return $builder->build();

@@ -23,6 +23,7 @@ use PhpBench\Report\Model\BarChartDataSet;
 use PhpBench\Report\Model\Builder\ReportBuilder;
 use PhpBench\Report\Model\Reports;
 use PhpBench\Report\Model\Table;
+use PhpBench\Report\Model\Text;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OutputTestGenerator implements GeneratorInterface
@@ -79,12 +80,19 @@ class OutputTestGenerator implements GeneratorInterface
                     ]
                 ], 'Time')
             )
-                ->addObject(
-                    new BarChart([
-                        new BarChartDataSet('Set 1', $range, $range, $range),
-                        new BarChartDataSet('Set 2', $range, $range, $range),
-                    ],'Example Aggregate Barchart', 'yValue as time')
-                );
+            ->addObject(
+                new BarChart([
+                    new BarChartDataSet('Set 1', $range, $range, $range),
+                    new BarChartDataSet('Set 2', $range, $range, $range),
+                ],'Example Aggregate Barchart', 'yValue as time')
+            )
+            ->addObject(ReportBuilder::create()
+                ->enableTabs()
+                ->addObject(new Text('This is tab one', 'Tab One'))
+                ->addObject(new Text('This is tab two', 'Tab Two'))
+                ->addObject(new Text('This is tab three', 'Tab Three'))
+                ->build()
+            );
 
         return Reports::fromReport($builder->build());
     }

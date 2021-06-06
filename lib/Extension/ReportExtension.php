@@ -27,6 +27,7 @@ use PhpBench\Report\Console\Renderer\BarChartRenderer;
 use PhpBench\Report\Console\Renderer\ReportRenderer;
 use PhpBench\Report\Console\Renderer\ReportsRenderer;
 use PhpBench\Report\Console\Renderer\TableRenderer;
+use PhpBench\Report\Console\Renderer\TextRenderer;
 use PhpBench\Report\Generator\BareGenerator;
 use PhpBench\Report\Generator\ComponentGenerator;
 use PhpBench\Report\Generator\CompositeGenerator;
@@ -324,7 +325,8 @@ class ReportExtension implements ExtensionInterface
                     $container->get(ExpressionExtension::SERVICE_PLAIN_PRINTER)
                 ),
                 new ReportRenderer(),
-                new TableRenderer($container->get(Printer::class))
+                new TableRenderer($container->get(Printer::class)),
+                new TextRenderer()
             );
         }, [
             self::TAG_COMPONENT_GENERATOR => [ 'name' => 'bar_chart_aggregate' ]

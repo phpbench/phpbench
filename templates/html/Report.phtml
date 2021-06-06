@@ -1,11 +1,48 @@
+<?php assert($object instanceof \PhpBench\Report\Model\Report) ?>
 <div>
-<?php if ($object->title()): ?>
-    <h2><?php echo $object->title() ?></h2>
-<?php endif ?>
-<?php if ($object->description()): ?>
-    <p><?php echo $object->description() ?></p>
-<?php endif ?>
-<?php foreach ($object->objects() as $table): ?>
-    <?php echo $this->render($table); ?>
-<?php endforeach ?>
+    <?php if ($object->title()): ?>
+        <h2><?php echo $object->title() ?></h2>
+    <?php endif ?>
+    <?php if ($object->description()): ?>
+        <p><?php echo $object->description() ?></p>
+    <?php endif ?>
+    <?php if(false === $object->tabbed()): ?>
+        <?php foreach ($object->objects() as $object): ?>
+            <?php echo $this->render($object); ?>
+        <?php endforeach ?>
+    <?php else: ?>
+        <ul class="nav nav-tabs" id="tab-group-<?php echo $id ?>" role="tablist">
+            <?php $first = true ?>
+            <?php foreach ($object->objects() as $index => $component): ?>
+                <li class="nav-item" role="presentation">
+                    <button 
+                        class="nav-link <?php if ($first): ?>active<?php endif ?>" 
+                        id="tab-button-<?php echo $id . '-' . $index ?>" 
+                        data-bs-toggle="tab" 
+                        data-bs-target="#tab-content-<?php echo $id . '-' . $index ?>" 
+                        aria-controls="#tab-content-<?php echo $id . '-' . $index ?>" 
+                        aria-current="page" 
+                        >
+                        <?php echo $component->title() ?: $index ?>
+                    </button>
+                </li>
+                <?php $first = false ?>
+            <?php endforeach ?>
+        </ul>
+        <?php $first = true ?>
+        <div class="tab-content">
+        <?php foreach ($object->objects() as $index => $component): ?>
+          <div
+              class="tab-pane <?php if ($first): ?>show active<?php endif ?>" 
+              id="tab-content-<?php echo $id . '-' . $index ?>" 
+              role="tabpanel" 
+              aria-labelledby="tab-button-<?php echo $id . '-' . $index ?>"
+          >
+<br/>
+              <?php echo $this->render($component); ?>
+          </div>
+          <?php $first = false ?>
+        <?php endforeach ?>
+        </div>
+    <?php endif ?>
 </div>
