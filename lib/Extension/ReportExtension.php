@@ -40,6 +40,7 @@ use PhpBench\Report\Renderer\HtmlRenderer;
 use PhpBench\Report\ReportManager;
 use PhpBench\Report\Transform\SuiteCollectionTransformer;
 use PhpBench\Storage\UuidResolver;
+use PhpBench\Template\Expression\Printer\TemplateNodePrinter;
 use PhpBench\Template\Expression\Printer\TemplatePrinter;
 use PhpBench\Template\ObjectPathResolver\ChainObjectPathResolver;
 use PhpBench\Template\ObjectPathResolver\ReflectionObjectPathResolver;
@@ -273,10 +274,12 @@ class ReportExtension implements ExtensionInterface
         });
 
         $container->register(TemplatePrinter::class, function (Container $container) {
-            return new NormalizingPrinter(
-                new TemplatePrinter(
-                    $container->get(ObjectRenderer::class),
-                    $container->get(NodePrinters::class)
+            return new TemplatePrinter(
+                new NormalizingPrinter(
+                    new TemplateNodePrinter(
+                        $container->get(ObjectRenderer::class),
+                        $container->get(NodePrinters::class)
+                    )
                 )
             );
         });
