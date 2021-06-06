@@ -11,6 +11,6 @@ final class StDevFunction
 {
     public function __invoke(ListNode $values, ?BooleanNode $sample = null): FloatNode
     {
-        return new FloatNode(Statistics::stdev($values->phpValues(), $sample ? $sample->value() : false));
+        return new FloatNode(Statistics::stdev($values->nonNullPhpValues(), $sample ? $sample->value() : false));
     }
 }

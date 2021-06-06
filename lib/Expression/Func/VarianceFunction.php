@@ -11,6 +11,6 @@ final class VarianceFunction
 {
     public function __invoke(ListNode $values, ?BooleanNode $sample = null): FloatNode
     {
-        return new FloatNode(Statistics::variance($values->phpValues(), $sample ? $sample->value() : false));
+        return new FloatNode(Statistics::variance($values->nonNullPhpValues(), $sample ? $sample->value() : false));
     }
 }
