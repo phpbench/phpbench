@@ -80,7 +80,7 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
      */
     public function generate(SuiteCollection $collection, Config $config): Reports
     {
-        $dataFrame = $this->transformer->suiteToFrame($collection);
+        $dataFrame = $this->transformer->suiteToFrame($collection, true);
         $component = $this->generateComponent($dataFrame, $config->getArrayCopy());
         assert($component instanceof Report);
 
