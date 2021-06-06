@@ -10,6 +10,7 @@ Bug fixes:
 
 Features:
 
+- Added `sum` and `count` functions #865
 - New component based report generator #851
 - HTML Bar Chart component #853
 - Console Bar Chart component #858

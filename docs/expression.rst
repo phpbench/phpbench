@@ -286,6 +286,20 @@ Similar to :ref:`expr_display_as` but also allows specification of the "mode"
 
 .. literalinclude:: ../examples/Expression/display_as_time_1
 
+sum
+~~~
+
+Evaluate sum of given numbers
+
+.. literalinclude:: ../examples/Expression/sum_1
+
+count
+~~~~~
+
+Evaluate count of given numbers
+
+.. literalinclude:: ../examples/Expression/count_1
+
 .. _KDE mode: https://en.wikipedia.org/wiki/Kernel_density_estimation
 .. _standard deviation: https://en.wikipedia.org/wiki/Standard_deviation
 .. _variance: https://en.wikipedia.org/wiki/Variance
