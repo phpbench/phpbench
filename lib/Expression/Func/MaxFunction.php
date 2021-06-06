@@ -11,7 +11,7 @@ final class MaxFunction
 {
     public function __invoke(ListNode $values): PhpValue
     {
-        $values = $values->phpValues();
+        $values = $values->nonNullPhpValues();
 
         if (empty($values)) {
             return new NullNode();

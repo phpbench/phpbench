@@ -9,6 +9,14 @@ use PhpBench\Tests\Unit\Expression\FunctionTestCase;
 
 class MinFunctionTest extends FunctionTestCase
 {
+    public function testEvalNullValues(): void
+    {
+        self::assertEquals(2, $this->eval(
+            new MinFunction(),
+            '[2, 6, null, null, null]'
+        )->value());
+    }
+
     public function testEval(): void
     {
         self::assertEquals(

@@ -13,7 +13,10 @@ final class RStDevFunction
     public function __invoke(ListNode $values, ?BooleanNode $sample = null): RelativeDeviationNode
     {
         return new RelativeDeviationNode(
-            new FloatNode(Statistics::rstdev($values->phpValues(), $sample ? $sample->value() : false))
+            new FloatNode(Statistics::rstdev(
+                $values->nonNullPhpValues(),
+                $sample ? $sample->value() : false
+            ))
         );
     }
 }

@@ -38,4 +38,14 @@ abstract class DelimitedListNode extends PhpValue
             return $node->value();
         }, $this->nodes);
     }
+
+    /**
+     * @return mixed[]
+     */
+    public function nonNullPhpValues(): array
+    {
+        return array_values(array_filter($this->phpValues(), function ($value) {
+            return $value !== null;
+        }));
+    }
 }

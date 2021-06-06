@@ -11,6 +11,6 @@ final class ModeFunction
 {
     public function __invoke(ListNode $values, ?IntegerNode $space = null): FloatNode
     {
-        return new FloatNode(Statistics::kdeMode($values->phpValues(), $space ? $space->value() : 512));
+        return new FloatNode(Statistics::kdeMode($values->nonNullPhpValues(), $space ? $space->value() : 512));
     }
 }
