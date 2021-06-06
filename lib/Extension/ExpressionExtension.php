@@ -22,6 +22,7 @@ use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\ExpressionLanguage\MemoisedExpressionLanguage;
 use PhpBench\Expression\ExpressionLanguage\RealExpressionLanguage;
 use PhpBench\Expression\Func\CoalesceFunction;
+use PhpBench\Expression\Func\CountFunction;
 use PhpBench\Expression\Func\DisplayAsTimeFunction;
 use PhpBench\Expression\Func\FirstFunction;
 use PhpBench\Expression\Func\FormatFunction;
@@ -34,6 +35,7 @@ use PhpBench\Expression\Func\ModeFunction;
 use PhpBench\Expression\Func\PercentDifferenceFunction;
 use PhpBench\Expression\Func\RStDevFunction;
 use PhpBench\Expression\Func\StDevFunction;
+use PhpBench\Expression\Func\SumFunction;
 use PhpBench\Expression\Func\VarianceFunction;
 use PhpBench\Expression\Lexer;
 use PhpBench\Expression\NodeEvaluator;
@@ -326,6 +328,8 @@ class ExpressionExtension implements ExtensionInterface
                 'coalesce' => new CoalesceFunction(),
                 'display_as_time' => new DisplayAsTimeFunction(),
                 'label' => new LabelFunction(),
+                'count' => new CountFunction(),
+                'sum' => new SumFunction(),
             ]);
         });
 
