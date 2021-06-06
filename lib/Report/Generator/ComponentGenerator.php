@@ -122,7 +122,7 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
         }
 
         if ($config[self::PARAM_TABBED]) {
-            $builder = $builder->enableTabs();
+            $builder->enableTabs();
         }
 
         return $builder->build();
