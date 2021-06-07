@@ -23,6 +23,7 @@ class ParameterParselet implements PrefixParselet
         $segments = [new VariableNode($tokens->chomp()->value)];
 
         $nullSafe = false;
+
         while (
             $tokens->current()->type === Token::T_DOT ||
             $tokens->current()->type === Token::T_QUESTION ||
@@ -32,6 +33,7 @@ class ParameterParselet implements PrefixParselet
 
             if ($dot->type === Token::T_QUESTION) {
                 $nullSafe = true;
+
                 continue;
             }
 
@@ -61,6 +63,7 @@ class ParameterParselet implements PrefixParselet
         if ($token->type === Token::T_OPEN_LIST) {
             $segment = $parser->parseExpression($tokens);
             $tokens->chomp(Token::T_CLOSE_LIST);
+
             return $segment;
         }
 

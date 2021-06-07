@@ -3,7 +3,6 @@
 namespace PhpBench\Expression\NodePrinter;
 
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Ast\NullNode;
 use PhpBench\Expression\Ast\NullSafeNode;
 use PhpBench\Expression\NodePrinter;
 use PhpBench\Expression\Printer;
@@ -16,6 +15,6 @@ class NullSafePrinter implements NodePrinter
             return null;
         }
 
-        return '.' . $printer->print($node->variable());
+        return '.' . $printer->print($node->node());
     }
 }

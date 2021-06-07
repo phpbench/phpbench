@@ -14,7 +14,7 @@ class NullSafeNode extends Node
         $this->variable = $variable;
     }
 
-    public function variable(): Node
+    public function node(): Node
     {
         return $this->variable;
     }

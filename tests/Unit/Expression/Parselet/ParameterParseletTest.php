@@ -3,7 +3,6 @@
 namespace PhpBench\Tests\Unit\Expression\Parselet;
 
 use Generator;
-use PhpBench\Data\DataFrame;
 use PhpBench\Expression\Ast\ComparisonNode;
 use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\NullSafeNode;

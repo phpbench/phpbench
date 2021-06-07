@@ -80,19 +80,21 @@ class ParameterEvaluator implements NodeEvaluator
     }
 
     /**
-     * @return int|float|object|array<string,mixed>
      *
-     * @param array<string,mixed>|null|object|scalar $container
+     * @param array<string,mixed>|object|scalar $container
+     *
+     * @return int|float|object|array<string,mixed>|null
      */
     private function valueFromContainer(Evaluator $evaluator, Node $node, $container, Node $segment)
     {
         if ($segment instanceof NullSafeNode) {
             try {
-                return $this->valueFromContainer($evaluator, $node, $container, $segment->variable());
+                return $this->valueFromContainer($evaluator, $node, $container, $segment->node());
             } catch (KeyDoesNotExist $notExist) {
                 return null;
             }
         }
+
         if ($segment instanceof VariableNode) {
             return $this->containerValue($node, $container, $segment->name());
         }
