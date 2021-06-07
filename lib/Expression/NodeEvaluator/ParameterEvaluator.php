@@ -16,6 +16,7 @@ use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Ast\VariableNode;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
+use PhpBench\Expression\Exception\KeyDoesNotExist;
 use PhpBench\Expression\NodeEvaluator;
 
 class ParameterEvaluator implements NodeEvaluator
@@ -169,7 +170,7 @@ class ParameterEvaluator implements NodeEvaluator
     private function valueFromArrayAccess(ArrayAccess $container, $segment, Node $node)
     {
         if (!$container->offsetExists($segment)) {
-            throw new EvaluationError($node, sprintf(
+            throw new KeyDoesNotExist($node, sprintf(
                 'Array-access object does not have key "%s"',
                 $segment
             ));

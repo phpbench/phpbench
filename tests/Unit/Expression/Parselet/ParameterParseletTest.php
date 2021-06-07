@@ -5,6 +5,7 @@ namespace PhpBench\Tests\Unit\Expression\Parselet;
 use Generator;
 use PhpBench\Expression\Ast\ComparisonNode;
 use PhpBench\Expression\Ast\IntegerNode;
+use PhpBench\Expression\Ast\NullSafeNode;
 use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Ast\VariableNode;
@@ -63,6 +64,23 @@ class ParameterParseletTest extends ParseletTestCase
                 ),
                 new StringNode('bar'),
                 new VariableNode('baz')
+            ])
+        ];
+
+        yield 'null safe property' => [
+            'foo?.bar',
+            new ParameterNode([
+                new VariableNode('foo'),
+                new NullSafeNode(new VariableNode('bar'))
+            ])
+        ];
+
+        yield 'null safe field 2' => [
+            'foo["bar"]?["bar"]',
+            new ParameterNode([
+                new VariableNode('foo'),
+                new StringNode('bar'),
+                new NullSafeNode(new StringNode('bar')),
             ])
         ];
     }
