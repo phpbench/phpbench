@@ -56,6 +56,16 @@ Examples:
 
 .. literalinclude:: ../examples/Expression/string_operators_1
 
+Null Safe Operator
+------------------
+
+Use the null-safe operator to evaluate absence as `null` rather than throwing
+a runtime exception.
+
+Examples:
+
+.. literalinclude:: ../examples/Expression/null_safe_1
+
 .. _expr_arithmetic:
 
 Arithmetic
