@@ -10,12 +10,14 @@ use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\NullNode;
+use PhpBench\Expression\Ast\NullSafeNode;
 use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\PhpValueFactory;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Ast\VariableNode;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
+use PhpBench\Expression\Exception\KeyDoesNotExist;
 use PhpBench\Expression\NodeEvaluator;
 
 class ParameterEvaluator implements NodeEvaluator
@@ -78,12 +80,21 @@ class ParameterEvaluator implements NodeEvaluator
     }
 
     /**
-     * @return int|float|object|array<string,mixed>
      *
      * @param array<string,mixed>|object|scalar $container
+     *
+     * @return int|float|object|array<string,mixed>|null
      */
     private function valueFromContainer(Evaluator $evaluator, Node $node, $container, Node $segment)
     {
+        if ($segment instanceof NullSafeNode) {
+            try {
+                return $this->valueFromContainer($evaluator, $node, $container, $segment->node());
+            } catch (KeyDoesNotExist $notExist) {
+                return null;
+            }
+        }
+
         if ($segment instanceof VariableNode) {
             return $this->containerValue($node, $container, $segment->name());
         }
@@ -110,7 +121,7 @@ class ParameterEvaluator implements NodeEvaluator
             return $this->valueFromArray($segment, $container, $node);
         }
 
-        if (is_object($container) && method_exists($container, $segment)) {
+        if (is_object($container) && method_exists($container, (string)$segment)) {
             return $this->valueFromMethod($container, $segment);
         }
 
@@ -118,7 +129,7 @@ class ParameterEvaluator implements NodeEvaluator
             return $this->valueFromArrayAccess($container, $segment, $node);
         }
 
-        throw new EvaluationError($node, sprintf(
+        throw new KeyDoesNotExist($node, sprintf(
             'Could not access "%s" on "%s"',
             $segment,
             is_object($container) ? get_class($container) : gettype($container)
@@ -148,7 +159,7 @@ class ParameterEvaluator implements NodeEvaluator
     private function valueFromArray($segment, array $container, Node $node)
     {
         if (!array_key_exists($segment, $container)) {
-            throw new EvaluationError($node, sprintf(
+            throw new KeyDoesNotExist($node, sprintf(
                 'Array does not have key "%s", it has keys: "%s"',
                 $segment,
                 implode('", "', array_keys($container))
@@ -169,7 +180,7 @@ class ParameterEvaluator implements NodeEvaluator
     private function valueFromArrayAccess(ArrayAccess $container, $segment, Node $node)
     {
         if (!$container->offsetExists($segment)) {
-            throw new EvaluationError($node, sprintf(
+            throw new KeyDoesNotExist($node, sprintf(
                 'Array-access object does not have key "%s"',
                 $segment
             ));

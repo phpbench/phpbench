@@ -1,0 +1,3 @@
+parameter12?.foobar["foobar"]
+---
+0:parameter12[name], 11:?[question], 12:.[dot], 13:foobar[name], 19:[[open_list], 20:"foobar"[string], 28:][close_list]

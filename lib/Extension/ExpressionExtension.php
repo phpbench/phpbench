@@ -66,6 +66,7 @@ use PhpBench\Expression\NodePrinter\HighlightingNodePrinter;
 use PhpBench\Expression\NodePrinter\LabelPrinter;
 use PhpBench\Expression\NodePrinter\ListPrinter;
 use PhpBench\Expression\NodePrinter\NullPrinter;
+use PhpBench\Expression\NodePrinter\NullSafePrinter;
 use PhpBench\Expression\NodePrinter\NumberPrinter;
 use PhpBench\Expression\NodePrinter\ParameterPrinter;
 use PhpBench\Expression\NodePrinter\ParenthesisPrinter;
@@ -283,6 +284,7 @@ class ExpressionExtension implements ExtensionInterface
                 new NullPrinter(),
                 new UnrepresentableValuePrinter(),
                 new VariablePrinter(),
+                new NullSafePrinter(),
             ]);
         });
 
