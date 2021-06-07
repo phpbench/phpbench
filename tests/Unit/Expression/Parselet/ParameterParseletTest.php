@@ -3,6 +3,7 @@
 namespace PhpBench\Tests\Unit\Expression\Parselet;
 
 use Generator;
+use PhpBench\Data\DataFrame;
 use PhpBench\Expression\Ast\ComparisonNode;
 use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\NullSafeNode;
@@ -104,6 +105,24 @@ class ParameterParseletTest extends ParseletTestCase
 
         yield [
             'foo.bar',
+            ['foo' => ['bar' => null]],
+            'null'
+        ];
+
+        yield 'null safe 1' => [
+            'foo?.bar',
+            ['foo' => ['baz' => null]],
+            'null'
+        ];
+
+        yield 'null safe 2' => [
+            'foo?.bar?.foo',
+            ['foo' => ['baz' => null]],
+            'null'
+        ];
+
+        yield 'null safe 3' => [
+            'foo?.bar?.foo',
             ['foo' => ['bar' => null]],
             'null'
         ];
