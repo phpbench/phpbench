@@ -240,10 +240,7 @@ class ReportExtension implements ExtensionInterface
             return new HtmlRenderer(
                 $container->get(ConsoleExtension::SERVICE_OUTPUT_STD),
                 $container->get(ObjectRenderer::class),
-                Path::makeAbsolute(
-                    $container->getParameter(self::PARAM_OUTPUT_DIR_HTML),
-                    $container->getParameter(CoreExtension::PARAM_WORKING_DIR)
-                )
+                $container->getParameter(CoreExtension::PARAM_WORKING_DIR)
             );
         }, [self::TAG_REPORT_RENDERER => ['name' => 'html']]);
     }

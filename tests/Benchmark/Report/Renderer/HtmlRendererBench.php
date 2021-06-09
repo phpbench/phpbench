@@ -30,6 +30,7 @@ final class HtmlRendererBench extends IntegrationBenchCase
     {
         $this->renderer->render($this->reports, new Config('a', [
             'title' => '',
+            'path' => '.phpbench/html/bench_test.html'
         ]));
     }
 }
