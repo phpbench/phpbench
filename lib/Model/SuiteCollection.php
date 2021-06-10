@@ -18,7 +18,7 @@ use IteratorAggregate;
 /**
  * @implements IteratorAggregate<Suite>
  */
-class SuiteCollection implements IteratorAggregate
+/** final */class SuiteCollection implements IteratorAggregate
 {
     /**
      * @var Suite[]
@@ -87,5 +87,16 @@ class SuiteCollection implements IteratorAggregate
         }
 
         return null;
+    }
+
+    public function firstOnly(): self
+    {
+        if (!isset($this->suites[0])) {
+            return new SuiteCollection([]);
+        }
+
+        return new self([
+            $this->suites[0]
+        ]);
     }
 }

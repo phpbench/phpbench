@@ -31,7 +31,7 @@ final class Report implements ComponentInterface
      *
      * @param ComponentInterface[] $objects
      */
-    public function __construct(array $objects, ?string $title, bool $tabbed = false, ?string $description)
+    public function __construct(array $objects, ?string $title, bool $tabbed = false, ?string $description = null)
     {
         $this->objects = $objects;
         $this->title = $title;
