@@ -1,6 +1,6 @@
 <table class="table table-striped">
     <?php if ($object->title()): ?>
-        <caption><?php echo $object->title() ?></caption>
+        <caption><?php echo htmlspecialchars($object->title()) ?></caption>
     <?php endif ?>
     <thead class="thead-light">
         <?php foreach ($object->columnNames() as $columnName): ?>
