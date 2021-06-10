@@ -56,6 +56,7 @@ abstract class GeneratorTestCase extends IntegrationTestCase
             $this->container([
                 ConsoleExtension::PARAM_OUTPUT_STREAM => $this->workspace()->path('out')
             ])->get(ConsoleRenderer::class)->render($document, new Config('test', []));
+
             return $this->workspace()->getContents('out');
         } catch (Throwable $e) {
             return $e->getMessage();
