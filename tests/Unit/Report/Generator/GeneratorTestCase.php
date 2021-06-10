@@ -33,7 +33,16 @@ abstract class GeneratorTestCase extends IntegrationTestCase
     public function testGenerate(string $path): void
     {
         $approval = Approval::create($path,3);
+        $config = $approval->getConfig(1);
+        $collection = new SuiteCollection([TestUtil::createSuite(array_merge([
+            'output_time_precision' => 3,
+        ], $approval->getConfig(0)))]);
 
+        $approval->approve($this->generate($collection, $config));
+    }
+
+    protected function generate(SuiteCollection $collection, array $config): string
+    {
         $container = $this->container();
         $generator = $this->createGenerator($container);
         $options = new OptionsResolver();
@@ -41,20 +50,16 @@ abstract class GeneratorTestCase extends IntegrationTestCase
 
         try {
             $document = $generator->generate(
-                new SuiteCollection([TestUtil::createSuite(array_merge([
-                    'output_time_precision' => 3,
-                ], $approval->getConfig(0)))]),
-                new Config('asd', $options->resolve($approval->getConfig(1)))
+                $collection,
+                new Config('asd', $options->resolve($config))
             );
             $this->container([
                 ConsoleExtension::PARAM_OUTPUT_STREAM => $this->workspace()->path('out')
             ])->get(ConsoleRenderer::class)->render($document, new Config('test', []));
-            $actual = $this->workspace()->getContents('out');
+            return $this->workspace()->getContents('out');
         } catch (Throwable $e) {
-            $actual = $e->getMessage();
+            return $e->getMessage();
         }
-
-        $approval->approve($actual);
     }
 
     /**
