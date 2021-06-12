@@ -11,10 +11,13 @@ use PhpBench\Template\ObjectRenderer;
 use RuntimeException;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Webmozart\PathUtil\Path;
 
 class HtmlRenderer implements RendererInterface
 {
-    const PARAM_TITLE = 'title';
+    public const PARAM_TITLE = 'title';
+    public const PARAM_PATH = 'path';
+
 
     /**
      * @var ObjectRenderer
@@ -22,20 +25,20 @@ class HtmlRenderer implements RendererInterface
     private $renderer;
 
     /**
-     * @var string
-     */
-    private $outputDir;
-
-    /**
      * @var OutputInterface
      */
     private $output;
 
-    public function __construct(OutputInterface $output, ObjectRenderer $renderer, string $outputDir)
+    /**
+     * @var string
+     */
+    private $cwd;
+
+    public function __construct(OutputInterface $output, ObjectRenderer $renderer, string $cwd)
     {
         $this->output = $output;
         $this->renderer = $renderer;
-        $this->outputDir = $outputDir;
+        $this->cwd = $cwd;
     }
 
     /**
@@ -45,33 +48,38 @@ class HtmlRenderer implements RendererInterface
     {
         $options->setDefaults([
             self::PARAM_TITLE => 'PHPBench Report',
+            self::PARAM_PATH => '.phpbench/html/index.html'
         ]);
         $options->setAllowedTypes(self::PARAM_TITLE, ['string']);
+        $options->setAllowedTypes(self::PARAM_PATH, ['string']);
         SymfonyOptionsResolverCompat::setInfos($options, [
             self::PARAM_TITLE => 'Title of document',
+            self::PARAM_PATH => 'Path to output document',
         ]);
     }
 
     public function render(Reports $report, Config $config): void
     {
-        if (!file_exists($this->outputDir)) {
-            if (!@mkdir($this->outputDir, 0777, true)) {
+        $outputPath = Path::makeAbsolute($config[self::PARAM_PATH], $this->cwd);
+        $outputDir = dirname($outputPath);
+
+        if (!file_exists($outputDir)) {
+            if (!@mkdir($outputDir, 0777, true)) {
                 throw new RuntimeException(sprintf(
                     'Could not create directory "%s"',
-                    $this->outputDir
+                    $outputDir
                 ));
             }
         }
 
         $rendered = $this->renderer->render(new HtmlDocument($config[self::PARAM_TITLE], $report));
-        $outPath = $this->outputDir . '/index.html';
 
-        if (false === file_put_contents($outPath, $rendered)) {
+        if (false === file_put_contents($outputPath, $rendered)) {
             throw new RuntimeException(sprintf(
-                'Could not write report to file "%s"', $outPath
+                'Could not write report to file "%s"', $outputPath
             ));
         }
 
-        $this->output->writeln(sprintf('Written report to: %s', $outPath));
+        $this->output->writeln(sprintf('Written report to: %s', $outputPath));
     }
 }

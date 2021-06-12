@@ -15,8 +15,13 @@ class FirstFunctionTest extends FunctionTestCase
         )->value());
     }
 
-    public function testReturnsEmptyIfFirstIsNull(): void
+    public function testReturnsEmpty(): void
     {
         self::assertEquals(null, $this->eval(new FirstFunction(), '[]')->value());
+    }
+
+    public function testReturnsEmptyIfFirstIsNull(): void
+    {
+        self::assertEquals(null, $this->eval(new FirstFunction(), 'null')->value());
     }
 }

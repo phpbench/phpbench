@@ -51,8 +51,8 @@ class HtmlRendererTest extends AbstractRendererCase
 
         $this->renderReport($this->reports(), $approval->getConfig(0));
 
-        self::assertFileExists($this->workspace()->path('index.html'));
-        $approval->approve($this->workspace()->getContents('index.html'));
+        self::assertFileExists($this->workspace()->path('.phpbench/html/index.html'));
+        $approval->approve($this->workspace()->getContents('.phpbench/html/index.html'));
     }
 
     public function provideRender(): Generator
@@ -71,6 +71,7 @@ class HtmlRendererTest extends AbstractRendererCase
         );
         $renderer->render($this->reports(), new Config('test', [
             'title' => '',
+            'path' => 'foo/bar/index.html'
         ]));
         self::assertFileExists($this->workspace()->path('foo/bar'));
     }
