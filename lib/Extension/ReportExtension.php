@@ -22,6 +22,7 @@ use PhpBench\Registry\ConfigurableRegistry;
 use PhpBench\Report\ComponentGenerator\BarChartAggregateComponentGenerator;
 use PhpBench\Report\ComponentGenerator\TableAggregateComponent;
 use PhpBench\Report\ComponentGeneratorAgent;
+use PhpBench\Report\ComponentGenerator\TextComponentGenerator;
 use PhpBench\Report\Console\ObjectRenderer as ConsoleObjectRenderer;
 use PhpBench\Report\Console\Renderer\BarChartRenderer;
 use PhpBench\Report\Console\Renderer\ReportRenderer;
@@ -213,7 +214,8 @@ class ReportExtension implements ExtensionInterface
             return new ComponentGenerator(
                 $container->get(SuiteCollectionTransformer::class),
                 $container->get(ComponentGeneratorAgent::class),
-                $container->get(ExpressionEvaluator::class)
+                $container->get(ExpressionEvaluator::class),
+                $container->get(LoggerInterface::class)
             );
         }, [
             self::TAG_REPORT_GENERATOR => ['name' => 'component'],
@@ -311,6 +313,11 @@ class ReportExtension implements ExtensionInterface
             return new BarChartAggregateComponentGenerator($container->get(ExpressionEvaluator::class));
         }, [
             self::TAG_COMPONENT_GENERATOR => [ 'name' => 'bar_chart_aggregate' ]
+        ]);
+        $container->register(TextComponentGenerator::class, function (Container $container) {
+            return new TextComponentGenerator($container->get(ExpressionEvaluator::class));
+        }, [
+            self::TAG_COMPONENT_GENERATOR => [ 'name' => 'text' ]
         ]);
     }
 
