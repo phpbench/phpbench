@@ -62,6 +62,7 @@ class HtmlRenderer implements RendererInterface
     {
         $outputPath = Path::makeAbsolute($config[self::PARAM_PATH], $this->cwd);
         $outputDir = dirname($outputPath);
+
         if (!file_exists($outputDir)) {
             if (!@mkdir($outputDir, 0777, true)) {
                 throw new RuntimeException(sprintf(
