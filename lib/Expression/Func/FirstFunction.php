@@ -8,8 +8,12 @@ use PhpBench\Expression\Ast\NullNode;
 
 final class FirstFunction
 {
-    public function __invoke(ListNode $list): Node
+    public function __invoke(Node $list): Node
     {
+        if (!$list instanceof ListNode) {
+            return new NullNode();
+        }
+
         $values = $list->value();
         $first = reset($values);
 
