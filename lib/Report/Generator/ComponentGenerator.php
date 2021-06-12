@@ -15,6 +15,7 @@ use PhpBench\Report\Model\Builder\ReportBuilder;
 use PhpBench\Report\Model\Report;
 use PhpBench\Report\Model\Reports;
 use PhpBench\Report\Transform\SuiteCollectionTransformer;
+use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -42,11 +43,21 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
      */
     private $transformer;
 
-    public function __construct(SuiteCollectionTransformer $transformer, ComponentGeneratorAgent $agent, ExpressionEvaluator $evaluator)
-    {
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    public function __construct(
+        SuiteCollectionTransformer $transformer,
+        ComponentGeneratorAgent $agent,
+        ExpressionEvaluator $evaluator,
+        LoggerInterface $logger
+    ) {
         $this->agent = $agent;
         $this->evaluator = $evaluator;
         $this->transformer = $transformer;
+        $this->logger = $logger;
     }
 
     /**
@@ -114,7 +125,8 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
                 }
                 $componentGenerator = $this->agent->get($component[self::KEY_COMPONENT_TYPE]);
                 unset($component[self::KEY_COMPONENT_TYPE]);
-                $builder->addObject($componentGenerator->generateComponent(
+                $builder->addObject($this->doGenerateComponent(
+                    $componentGenerator,
                     $parition,
                     $this->agent->resolveConfig($componentGenerator, $component)
                 ));
@@ -126,5 +138,25 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
         }
 
         return $builder->build();
+    }
+
+    private function doGenerateComponent(
+        ComponentGeneratorInterface $componentGenerator,
+        DataFrame $parition,
+        array $config
+    ): ComponentInterface {
+        $start = microtime(true);
+        $component = $componentGenerator->generateComponent(
+            $parition,
+            $config
+        );
+        $this->logger->debug(sprintf('Rendered component "%s" (%s) for "%s" in "%ss"',
+            get_class($component),
+            $component->title(),
+            get_class($componentGenerator),
+            number_format(microtime(true) - $start, 2)
+        ));
+
+        return $component;
     }
 }

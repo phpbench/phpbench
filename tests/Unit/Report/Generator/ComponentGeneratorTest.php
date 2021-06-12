@@ -18,6 +18,7 @@ use PhpBench\Report\ComponentGeneratorAgent;
 use PhpBench\Report\Generator\ComponentGenerator;
 use PhpBench\Report\GeneratorInterface;
 use PhpBench\Report\Transform\SuiteCollectionTransformer;
+use Psr\Log\NullLogger;
 
 class ComponentGeneratorTest extends GeneratorTestCase
 {
@@ -33,7 +34,8 @@ class ComponentGeneratorTest extends GeneratorTestCase
         return new ComponentGenerator(
             $container->get(SuiteCollectionTransformer::class),
             $container->get(ComponentGeneratorAgent::class),
-            $container->get(ExpressionEvaluator::class)
+            $container->get(ExpressionEvaluator::class),
+            new NullLogger()
         );
     }
 }
