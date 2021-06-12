@@ -51,7 +51,7 @@ class ConfiguredReportsTest extends IntegrationTestCase
         $renderers = $this->container()->get(ReportExtension::SERVICE_REGISTRY_RENDERER);
 
         foreach ($generators->getConfigNames() as $generator) {
-            foreach ($renderers->getConfigNames() as $renderer) {
+            foreach (array_unique(array_merge($renderers->getServiceNames(), $renderers->getConfigNames())) as $renderer) {
                 yield [
                     $generator,
                     $renderer
