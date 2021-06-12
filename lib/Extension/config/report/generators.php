@@ -57,9 +57,9 @@ return [
                 "row" => [
                     "suite" => "first(partition[\"suite_tag\"])",
                     "date" => "first(partition[\"suite_date\"]) ~ \" \" ~ first(partition[\"suite_time\"])",
-                    "php" => "first(partition[\"env_php_version\"])",
-                    "vcs branch" => "first(partition[\"env_vcs_branch\"])",
-                    "xdebug" => "first(partition[\"env_php_xdebug\"])",
+                    "php" => "first(partition?[\"env_php_version\"])",
+                    "vcs branch" => "first(partition?[\"env_vcs_branch\"])",
+                    "xdebug" => "first(partition?[\"env_php_xdebug\"])",
                     "iterations" => "count(partition[\"result_time_revs\"])",
                     "revs" => "sum(partition[\"result_time_revs\"])",
                     "mode" => "mode(partition[\"result_time_avg\"]) as time",
@@ -73,7 +73,7 @@ return [
                     [
                         "title" => "Time",
                         "_type" => "bar_chart_aggregate",
-                        "x_partition" => ["benchmark_name", "subject_name", "variant_name"],
+                        "x_partition" => ["benchmark_name"],
                         "set_partition" => ["suite_tag"],
                         "y_expr" => "mode(partition[\"result_time_avg\"])",
                         "y_error_margin" => "stdev(partition[\"result_time_avg\"])",
@@ -82,17 +82,17 @@ return [
                     [
                         "title" => "Memory",
                         "_type" => "bar_chart_aggregate",
-                        "x_partition" => ["benchmark_name", "subject_name", "variant_name"],
+                        "x_partition" => ["benchmark_name"],
                         "set_partition" => ["suite_tag"],
                         "y_expr" => "mode(partition[\"result_mem_peak\"])",
                         "y_error_margin" => "stdev(partition[\"result_mem_peak\"])",
                         "y_axes_label" => "yValue as memory precision 1"
                     ],
                     [
-                        "title" => "By Subject",
+                        "title" => "By Benchmark",
                         "_type" => "bar_chart_aggregate",
                         "x_partition" => ["suite_tag"],
-                        "set_partition" => ["benchmark_name", "subject_name"],
+                        "set_partition" => ["benchmark_name"],
                         "y_expr" => "mode(partition[\"result_time_avg\"])",
                         "y_error_margin" => "stdev(partition[\"result_time_avg\"])",
                         "y_axes_label" => "yValue as time precision 1"
