@@ -76,7 +76,7 @@ class MetadataFactory
             }
 
             try {
-                $parameterSets = ParameterSets::fromArray($this->reflector->getParameterSets($metadata->getPath(), $paramProviders));
+                $parameterSets = $this->reflector->getParameterSets($metadata->getPath(), $paramProviders);
             } catch (InvalidParameterSets $invalid) {
                 throw new InvalidArgumentException(sprintf(
                     '%s for %s::%s',

@@ -17,6 +17,7 @@ use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\DriverInterface;
 use PhpBench\Benchmark\Metadata\MetadataFactory;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
+use PhpBench\Model\ParameterSets;
 use PhpBench\Reflection\ReflectionClass;
 use PhpBench\Reflection\ReflectionHierarchy;
 use PhpBench\Reflection\ReflectorInterface;
@@ -226,30 +227,5 @@ class MetadataFactoryTest extends TestCase
         $this->hierarchy->isEmpty()->willReturn(true);
         $metadata = $this->factory->getMetadataForFile(self::FNAME);
         $this->assertNull($metadata);
-    }
-
-    /**
-     * It should throw an exception if the parameters are not in a valid format.
-     *
-     */
-    public function testInvalidParameters(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Each parameter set must be an array, got "string" for TestBench::benchTest');
-        $this->hierarchy->isEmpty()->willReturn(false);
-        $this->metadata->getSubjects()->willReturn([
-            $this->subjectMetadata->reveal(),
-        ]);
-        TestUtil::configureBenchmarkMetadata($this->metadata, [
-            'class' => 'TestBench',
-            'path' => self::PATH,
-        ]);
-        TestUtil::configureSubjectMetadata($this->subjectMetadata, [
-            'name' => 'benchTest',
-            'paramProviders' => ['param1'],
-        ]);
-        $this->reflector->getParameterSets(self::PATH, ['param1'])->willReturn(['asd' => 'bar']);
-
-        $this->factory->getMetadataForFile(self::FNAME);
     }
 }

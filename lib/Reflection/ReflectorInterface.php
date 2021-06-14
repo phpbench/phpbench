@@ -2,6 +2,8 @@
 
 namespace PhpBench\Reflection;
 
+use PhpBench\Model\ParameterSets;
+
 interface ReflectorInterface
 {
     /**
@@ -16,8 +18,6 @@ interface ReflectorInterface
      * Return the parameter sets for the benchmark container in the given file.
      *
      * @param array<string> $paramProviders
-     *
-     * @return array<array<mixed>>
      */
-    public function getParameterSets(string $file, array $paramProviders): array;
+    public function getParameterSets(string $file, array $paramProviders): ParameterSets;
 }
