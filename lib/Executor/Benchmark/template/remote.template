@@ -12,6 +12,7 @@ $beforeMethods = {{ beforeMethods }};
 $afterMethods = {{ afterMethods }};
 $bootstrap = '{{ bootstrap }}';
 $warmup = {{ warmup }};
+$parameters = unserialize({{ parameters }});
 
 if ($bootstrap) {
     call_user_func(function () use ($bootstrap) {
@@ -31,7 +32,7 @@ foreach ($beforeMethods as $beforeMethod) {
 // run warmup if required
 if ($warmup) {
     for ($i = 0; $i < $warmup; $i++) {
-        $benchmark->{{ subject }}({{ parameters }});
+        $benchmark->{{ subject }}();
     }
 }
 
