@@ -7,10 +7,27 @@ use Traversable;
 function normalize_parameter_set($parameterSet) 
 {
     if ($parameterSet instanceof Traversable) {
-        return iterator_to_array($parameterSet);
+        $parameterSet = iterator_to_array($parameterSet);
     }
 
-    return $parameterSet;
+    if (!is_array($parameterSet)) {
+        throw new \RuntimeException(sprintf(
+            'Parameter set must be an array, got "%s"',
+            gettype($parameterSet)
+        ));
+    }
+
+    return array_map(function ($name, $parameters) {
+        if (!is_array($parameters)) {
+            throw new \RuntimeException(
+                'Parameters in set "%s" must be an array, got "%s"',
+                gettype($parameters)
+            );
+        }
+        return array_map(function ($value) {
+            return serialize($value);
+        }, $parameters);
+    }, array_keys($parameterSet), $parameterSet);
 }
 
 $bootstrap = '{{ bootstrap }}';

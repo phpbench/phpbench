@@ -64,7 +64,7 @@ class ParameterSetExtractorTest extends TestCase
         $result = $payload->launch();
         $this->assertEquals([
             [
-                ['hello' => 'goodbye'],
+                ['hello' => serialize('goodbye')],
             ],
         ], $result);
     }
