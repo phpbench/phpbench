@@ -53,6 +53,9 @@ class ParameterSetExtractorTest extends TestCase
         $this->provideParams(['privateParamProvider']);
     }
 
+    /**
+     * @param string[] $providers
+     */
     private function provideParams(array $providers): void
     {
         $payload = new Payload(__DIR__ . '/../../../lib/Reflection/template/parameter_set_extractor.template', [
@@ -64,7 +67,12 @@ class ParameterSetExtractorTest extends TestCase
         $result = $payload->launch();
         $this->assertEquals([
             [
-                ['hello' => serialize('goodbye')],
+                [
+                    'hello' => [
+                        'type' => 'string',
+                        'value' => serialize('goodbye')
+                    ],
+                ],
             ],
         ], $result);
     }

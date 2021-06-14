@@ -25,25 +25,17 @@ final class ParameterSet implements Iterator
     private $name;
 
     /**
-     * @var array
+     * @var Parameters[]
      */
-    private $parameters;
+    private $parameterSet;
 
     /**
-     * @param array<string,mixed> $parameters
+     * @param Parameters[] $parameters
      */
-    public function __construct(string $name, array $parameters = [])
+    private function __construct(string $name, array $parameters)
     {
         $this->name = $name;
-        $this->parameters = $parameters;
-    }
-
-    /**
-     * @param array<string,mixed> $parameters
-     */
-    public static function create(string $name, array $parameters): self
-    {
-        return new self($name, $parameters);
+        $this->parameterSet = $parameters;
     }
 
     public function getName(): string
@@ -59,14 +51,24 @@ final class ParameterSet implements Iterator
         return $this->name;
     }
 
-    public function toArray()
+    /**
+     * @return array<array<string,mixed>>
+     */
+    public function toArray(): array
     {
-        return $this->parameters;
+        return array_map(function (Parameters $parameters) {
+            return $parameters->toUnserializedArray();
+        }, $this->parameterSet);
     }
 
+    /**
+     * @param array<string, array<array{type:string,value:string}>> $parameterSet
+     */
     public static function fromArray(string $name, array $parameterSet): ParameterSet
     {
-        return new self($name, $parameterSet);
+        return new self($name, array_map(function (array $parameters) {
+            return Parameters::fromArray($parameters);
+        }, $parameterSet));
     }
 
     /**
@@ -74,7 +76,7 @@ final class ParameterSet implements Iterator
      */
     public function current()
     {
-        return current($this->parameters);
+        return current($this->parameterSet);
     }
 
     /**
@@ -82,7 +84,7 @@ final class ParameterSet implements Iterator
      */
     public function next(): void
     {
-        next($this->parameters);
+        next($this->parameterSet);
     }
 
     /**
@@ -90,7 +92,7 @@ final class ParameterSet implements Iterator
      */
     public function key()
     {
-        return key($this->parameters);
+        return key($this->parameterSet);
     }
 
     /**
@@ -98,7 +100,7 @@ final class ParameterSet implements Iterator
      */
     public function valid()
     {
-        return false !== current($this->parameters);
+        return false !== current($this->parameterSet);
     }
 
     /**
@@ -106,11 +108,11 @@ final class ParameterSet implements Iterator
      */
     public function rewind(): void
     {
-        reset($this->parameters);
+        reset($this->parameterSet);
     }
 
     public function serialize(): string
     {
-        return serialize($this->parameters);
+        return serialize($this->parameterSet);
     }
 }

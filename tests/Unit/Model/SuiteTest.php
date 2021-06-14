@@ -126,7 +126,7 @@ class SuiteTest extends TestCase
     {
         $suite = $this->createSuite([]);
         $variant = $suite->createBenchmark('Foobar')->createSubject('barfoo')->createVariant(
-            ParameterSet::create('one', []),
+            ParameterSet::fromArray('one', []),
             1,
             1
         );
