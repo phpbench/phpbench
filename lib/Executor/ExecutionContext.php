@@ -4,6 +4,7 @@ namespace PhpBench\Executor;
 
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Model\Iteration;
+use PhpBench\Model\ParameterSet;
 
 final class ExecutionContext
 {
@@ -13,7 +14,7 @@ final class ExecutionContext
     private $className;
 
     /**
-     * @var array<string,mixed>
+     * @var ParameterSet
      */
     private $parameters;
 
@@ -69,7 +70,7 @@ final class ExecutionContext
         int $revolutions = 1,
         array $beforeMethods = [],
         array $afterMethods = [],
-        array $parameters = [],
+        ?ParameterSet $parameters = null,
         int $warmup = 0,
         int $iterationIndex = 0,
         ?float $timeOut = null,
@@ -81,7 +82,7 @@ final class ExecutionContext
         $this->revolutions = $revolutions;
         $this->beforeMethods = $beforeMethods;
         $this->afterMethods = $afterMethods;
-        $this->parameters = $parameters;
+        $this->parameters = $parameters ?: new ParameterSet('empty', []);
         $this->warmup = $warmup;
         $this->iterationIndex = $iterationIndex;
         $this->timeOut = $timeOut;
@@ -97,7 +98,7 @@ final class ExecutionContext
             $iteration->getVariant()->getRevolutions(),
             $subjectMetadata->getBeforeMethods(),
             $subjectMetadata->getAfterMethods(),
-            $iteration->getVariant()->getParameterSet()->toArray(),
+            $iteration->getVariant()->getParameterSet(),
             $iteration->getVariant()->getWarmup() ?: 0,
             $iteration->getIndex(),
             $subjectMetadata->getTimeout(),
@@ -110,7 +111,7 @@ final class ExecutionContext
         return $this->className;
     }
 
-    public function getParameters(): array
+    public function getParameters(): ParameterSet
     {
         return $this->parameters;
     }

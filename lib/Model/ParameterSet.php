@@ -108,4 +108,9 @@ final class ParameterSet implements Iterator
     {
         reset($this->parameters);
     }
+
+    public function serialize(): string
+    {
+        return serialize($this->parameters);
+    }
 }

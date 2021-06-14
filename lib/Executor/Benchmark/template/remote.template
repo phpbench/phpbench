@@ -26,7 +26,7 @@ $benchmark = new $class();
 
 // run before methods
 foreach ($beforeMethods as $beforeMethod) {
-    $benchmark->$beforeMethod({{ parameters }});
+    $benchmark->$beforeMethod($parameters);
 }
 
 // run warmup if required
@@ -40,7 +40,7 @@ if ($warmup) {
 $startTime = microtime(true);
 
 for ($i = 0; $i < {{ revolutions }}; $i++) {
-    $benchmark->{{ subject }}({{ parameters }});
+    $benchmark->{{ subject }}($parameters);
 }
 
 $endTime = microtime(true);
@@ -49,7 +49,7 @@ $time = ($endTime - $startTime) * 1000000;
 
 // run after methods
 foreach ($afterMethods as $afterMethod) {
-    $benchmark->$afterMethod({{ parameters }});
+    $benchmark->$afterMethod($parameters);
 }
 
 $buffer = ob_get_contents();

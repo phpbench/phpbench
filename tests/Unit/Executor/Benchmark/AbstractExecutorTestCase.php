@@ -147,16 +147,27 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
         $this->assertEquals($expected->toArray(), $params);
     }
 
+    /**
+     * @param parameters $config
+     */
     protected function buildContext(array $config): ExecutionContext
     {
         return Invoke::new(ExecutionContext::class, $this->buildConfig($config));
     }
 
+    /**
+     * @param parameters $config
+     *
+     * @return parameters
+     */
     protected function buildConfig(array $config): array
     {
-        return array_merge([
+        $config = array_merge([
             'className' => 'PhpBench\Tests\Unit\Executor\benchmarks\MicrotimeExecutorBench',
             'classPath' => __DIR__ . '/../benchmarks/MicrotimeExecutorBench.php',
         ], $config);
+        $config['parameters'] = ParameterSet::fromArray('test', $config['parameters'] ?? []);
+
+        return $config;
     }
 }
