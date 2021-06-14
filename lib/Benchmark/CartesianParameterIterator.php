@@ -109,6 +109,6 @@ class CartesianParameterIterator implements \Iterator
 
     private function getParameterSet(): ParameterSet
     {
-        return new ParameterSet($this->key, $this->current);
+        return ParameterSet::fromArray($this->key, $this->current);
     }
 }
