@@ -62,9 +62,19 @@ final class ParameterSet implements Iterator
     }
 
     /**
-     * @param array<string, array<array{type:string,value:string}>> $parameterSet
+     * @param array<string,array{"type":string,"value":string}> $parameterSet
      */
-    public static function fromArray(string $name, array $parameterSet): ParameterSet
+    public static function fromUnsafeArray(string $name, array $parameterSet): ParameterSet
+    {
+        return new self($name, array_map(function (array $parameters) {
+            return Parameters::fromUnsafeArray($parameters);
+        }, $parameterSet));
+    }
+
+    /**
+     * @param array<string, array<string,mixed>> $parameterSet
+     */
+    public static function fromArray(string $name, array $parameterSet): self
     {
         return new self($name, array_map(function (array $parameters) {
             return Parameters::fromArray($parameters);
@@ -72,7 +82,7 @@ final class ParameterSet implements Iterator
     }
 
     /**
-     * {@inheritDoc}
+     * @return Parameters|false
      */
     public function current()
     {
@@ -88,7 +98,7 @@ final class ParameterSet implements Iterator
     }
 
     /**
-     * {@inheritDoc}
+     * @return string
      */
     public function key()
     {

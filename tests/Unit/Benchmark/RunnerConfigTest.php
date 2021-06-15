@@ -65,7 +65,7 @@ class RunnerConfigTest extends TestCase
             ->withFilters(self::TEST_FILTERS)
             ->withIterations(self::TEST_ITERATIONS)
             ->withRevolutions(self::TEST_REVOLUTIONS)
-            ->withParameters(ParameterSet::fromArray('foo', [self::TEST_PARAMETERS]))
+            ->withParameters(ParameterSet::fromUnsafeArray('foo', [self::TEST_PARAMETERS]))
             ->withSleep(self::TEST_SLEEP)
             ->withWarmup(self::TEST_WARMUP)
             ->withGroups(self::TEST_GROUPS)
@@ -116,7 +116,7 @@ class RunnerConfigTest extends TestCase
     public function testGetParameterSets(): void
     {
         $config = RunnerConfig::create()
-            ->withParameters(ParameterSet::fromArray('foo', [[
+            ->withParameters(ParameterSet::fromUnsafeArray('foo', [[
                 'nb_elements' => 10,
             ]]));
 
@@ -128,7 +128,7 @@ class RunnerConfigTest extends TestCase
                     ],
                 ],
             ],
-            $config->getParameterSets(ParameterSets::fromArray(
+            $config->getParameterSets(ParameterSets::fromUnsafeArray(
                 [
                     [
                         'nb_elements' => 5,

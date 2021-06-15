@@ -95,7 +95,7 @@ class RemoteReflector implements ReflectorInterface
             'paramProviders' => var_export($paramProviders, true),
         ])->launch();
 
-        return ParameterSets::fromArray($parameterSets);
+        return ParameterSets::fromUnsafeArray($parameterSets);
     }
 
     /**

@@ -31,6 +31,14 @@ final class ParameterContainer
         return $this->value;
     }
 
+    /**
+     * @param mixed $value
+     */
+    public static function fromValue($value): self
+    {
+        return new self(gettype($value), $value);
+    }
+
     public static function fromTypeValuePair(array $typeValue): self
     {
         if (!isset($typeValue['type'])) {

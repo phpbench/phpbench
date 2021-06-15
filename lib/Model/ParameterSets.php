@@ -7,6 +7,9 @@ use Countable;
 use IteratorAggregate;
 use PhpBench\Model\Exception\InvalidParameterSets;
 
+/**
+ * @implements IteratorAggregate<ParameterSet>
+ */
 final class ParameterSets implements IteratorAggregate, Countable
 {
     /**
@@ -19,16 +22,30 @@ final class ParameterSets implements IteratorAggregate, Countable
         $this->parameterSets = $parameterSets;
     }
 
-    public static function fromArray(array $parameterSets): self
+    /**
+     * @param array<string,array<string,array{"type":string,"value":string}>> $parameterSets
+     */
+    public static function fromUnsafeArray(array $parameterSets): self
     {
         return new self(...array_map(function ($parameterSet, string $name) {
             if (!is_array($parameterSet)) {
                 throw new InvalidParameterSets(sprintf(
                     'Each parameter set must be an array, got "%s"',
+                    /** @phpstan-ignore-next-line */
                     is_object($parameterSet) ? get_class($parameterSet) : gettype($parameterSet)
                 ));
             }
 
+            return ParameterSet::fromUnsafeArray($name, $parameterSet);
+        }, $parameterSets, array_keys($parameterSets)));
+    }
+
+    /**
+     * @param array<string,array<string,mixed>> $parameterSets
+     */
+    public static function fromArray(array $parameterSets): self
+    {
+        return new self(...array_map(function ($parameterSet, string $name) {
             return ParameterSet::fromArray($name, $parameterSet);
         }, $parameterSets, array_keys($parameterSets)));
     }
@@ -51,7 +68,7 @@ final class ParameterSets implements IteratorAggregate, Countable
 
     public static function empty(): self
     {
-        return new self(ParameterSet::fromArray('default',[]));
+        return new self(ParameterSet::fromUnsafeArray('default',[]));
     }
 
     public function toArray(): array

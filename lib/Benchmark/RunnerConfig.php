@@ -171,7 +171,7 @@ class RunnerConfig
     {
         return $this->parameters ? new ParameterSets(
             $this->parameters
-        ): ($default ?: ParameterSets::fromArray([]));
+        ): ($default ?: ParameterSets::fromUnsafeArray([]));
     }
 
     /**

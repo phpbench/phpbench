@@ -166,7 +166,7 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
             'className' => 'PhpBench\Tests\Unit\Executor\benchmarks\MicrotimeExecutorBench',
             'classPath' => __DIR__ . '/../benchmarks/MicrotimeExecutorBench.php',
         ], $config);
-        $config['parameters'] = ParameterSet::fromArray('test', $config['parameters'] ?? []);
+        $config['parameters'] = ParameterSet::fromUnsafeArray('test', $config['parameters'] ?? []);
 
         return $config;
     }

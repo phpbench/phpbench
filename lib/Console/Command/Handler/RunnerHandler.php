@@ -117,7 +117,7 @@ class RunnerHandler
         $parameters = $this->getParameters($input->getOption(self::OPT_PARAMETERS));
 
         if (null !== $parameters) {
-            $default = $default->withParameters(ParameterSet::fromArray('cli-provided', [$parameters]));
+            $default = $default->withParameters(ParameterSet::fromUnsafeArray('cli-provided', [$parameters]));
         }
 
         $config = $default->merge($config);

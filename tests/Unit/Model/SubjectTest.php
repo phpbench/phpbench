@@ -50,7 +50,7 @@ class SubjectTest extends TestCase
      */
     public function testCreateVariant(): void
     {
-        $parameterSet = ParameterSet::fromArray('foo', []);
+        $parameterSet = ParameterSet::fromUnsafeArray('foo', []);
         $variant = $this->subject->createVariant(
             $parameterSet,
             10,

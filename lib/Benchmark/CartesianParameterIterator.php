@@ -32,6 +32,11 @@ class CartesianParameterIterator implements \Iterator
      */
     private $key;
 
+    /**
+     * @var ParameterSets
+     */
+    private $parameterSets;
+
     public function __construct(ParameterSets $parameterSets)
     {
         foreach ($parameterSets as $parameterSet) {
@@ -43,9 +48,10 @@ class CartesianParameterIterator implements \Iterator
         }
 
         $this->max = count($parameterSets) - 1;
+        $this->parameterSets = $parameterSets;
     }
 
-    public function current()
+    public function current(): ParameterSet
     {
         return $this->getParameterSet();
     }
@@ -98,10 +104,8 @@ class CartesianParameterIterator implements \Iterator
         $key = [];
 
         foreach ($this->sets as $set) {
-            $this->current = array_merge(
-                $this->current,
-                $set->current() ?: []
-            );
+            $current = $set->current();
+            $this->current = array_merge($this->current, $current ? $current->toArray() : []);
             $key[] = $set->key();
         }
         $this->key = implode(',', $key);
@@ -109,6 +113,6 @@ class CartesianParameterIterator implements \Iterator
 
     private function getParameterSet(): ParameterSet
     {
-        return ParameterSet::fromArray($this->key, $this->current);
+        return ParameterSet::fromUnsafeArray($this->key, $this->current);
     }
 }

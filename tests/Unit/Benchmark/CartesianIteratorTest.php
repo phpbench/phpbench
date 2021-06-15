@@ -10,10 +10,11 @@
  *
  */
 
-namespace PhpBench\Tests;
+namespace PhpBench\Tests\Unit\Benchmark;
 
 use PhpBench\Benchmark\CartesianParameterIterator;
 use PhpBench\Model\ParameterSets;
+use PhpBench\Tests\TestCase;
 
 class CartesianIteratorTest extends TestCase
 {

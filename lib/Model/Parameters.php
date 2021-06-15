@@ -18,13 +18,31 @@ final class Parameters
     }
 
     /**
-     * @param array<string,array{type:string,value:string}> $parameters
+     * @param array<string,array{"type":string,"value":string}> $parameters
      */
-    public static function fromArray(array $parameters): self 
+    public static function fromUnsafeArray(array $parameters): self 
     {
         return new self(array_map(function (array $typeValuePair) {
             return ParameterContainer::fromTypeValuePair($typeValuePair);
         }, $parameters));
+    }
+
+    /**
+     * @param array<string,mixed>[] $parameters
+     */
+    public static function fromArray(array $parameters): self
+    {
+        return new self(array_map(function ($parameter) {
+            return ParameterContainer::fromValue($parameter);
+        }, $parameters));
+    }
+
+    /**
+     * @return ParameterContainer[]
+     */
+    public function toArray(): array
+    {
+        return $this->parameters;
     }
 
     /**

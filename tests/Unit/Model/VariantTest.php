@@ -32,7 +32,7 @@ class VariantTest extends TestCase
     protected function setUp(): void
     {
         $this->subject = $this->prophesize(Subject::class);
-        $this->parameterSet = ParameterSet::fromArray('foo', []);
+        $this->parameterSet = ParameterSet::fromUnsafeArray('foo', []);
     }
 
     /**

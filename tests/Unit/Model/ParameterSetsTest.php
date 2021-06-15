@@ -17,6 +17,6 @@ class ParameterSetsTest extends TestCase
     {
         $this->expectException(InvalidParameterSets::class);
         $this->expectExceptionMessage('Each parameter set must be an array, got "string"');
-        ParameterSets::fromArray(['asd' => 'bar']);
+        ParameterSets::fromUnsafeArray(['asd' => 'bar']);
     }
 }

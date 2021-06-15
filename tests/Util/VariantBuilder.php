@@ -55,7 +55,7 @@ final class VariantBuilder
         );
         $benchmark = new Benchmark($suite, 'testBenchmark');
         $subject = new Subject($benchmark, 'foo');
-        $variant = new Variant($subject, ParameterSet::fromArray('foo', []), $this->revs, 1, []);
+        $variant = new Variant($subject, ParameterSet::fromUnsafeArray('foo', []), $this->revs, 1, []);
 
         foreach ($this->iterations as $iteration) {
             $iteration->build($variant);
