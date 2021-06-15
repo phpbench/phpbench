@@ -25,14 +25,14 @@ final class ParameterSet implements Iterator
     private $name;
 
     /**
-     * @var Parameters[]
+     * @var Parameters
      */
     private $parameterSet;
 
     /**
-     * @param Parameters[] $parameters
+     * @param Parameters $parameters
      */
-    private function __construct(string $name, array $parameters)
+    private function __construct(string $name, Parameters $parameters)
     {
         $this->name = $name;
         $this->parameterSet = $parameters;
@@ -64,11 +64,9 @@ final class ParameterSet implements Iterator
     /**
      * @param array<string,array{"type":string,"value":string}> $parameterSet
      */
-    public static function fromUnsafeArray(string $name, array $parameterSet): ParameterSet
+    public static function fromUnsafeArray(string $name, array $parameters): ParameterSet
     {
-        return new self($name, array_map(function (array $parameters) {
-            return Parameters::fromUnsafeArray($parameters);
-        }, $parameterSet));
+        return new self($name, Parameters::fromUnsafeArray($parameters));
     }
 
     /**

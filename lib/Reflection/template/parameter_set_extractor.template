@@ -17,7 +17,7 @@ function normalize_parameter_set($parameterSet)
         ));
     }
 
-    return array_map(function ($name, $parameters) {
+    return array_combine(array_keys($parameterSet), array_map(function ($parameters) {
         if (!is_array($parameters)) {
             throw new \RuntimeException(
                 'Parameters in set "%s" must be an array, got "%s"',
@@ -30,7 +30,7 @@ function normalize_parameter_set($parameterSet)
                 'value' => serialize($value),
             ];
         }, $parameters);
-    }, array_keys($parameterSet), $parameterSet);
+    }, $parameterSet));
 }
 
 $bootstrap = '{{ bootstrap }}';

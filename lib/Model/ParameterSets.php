@@ -27,6 +27,7 @@ final class ParameterSets implements IteratorAggregate, Countable
      */
     public static function fromUnsafeArray(array $parameterSets): self
     {
+        dump($parameterSets);
         return new self(...array_map(function ($parameterSet, string $name) {
             if (!is_array($parameterSet)) {
                 throw new InvalidParameterSets(sprintf(
