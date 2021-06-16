@@ -12,10 +12,10 @@ phpbench run --report=my-report --executor=debug NothingBench.php --progress=non
 +-----------+--------------+--------------+-----+------+-----+----------+----------+----------+----------+----------+---------+--------+
 | tag       | benchmark    | subject      | set | revs | its | mem_peak | best     | mode     | mean     | worst    | stdev   | rstdev |
 +-----------+--------------+--------------+-----+------+-----+----------+----------+----------+----------+----------+---------+--------+
-| <current> | NothingBench | benchNothing |     | 1    | 5   | 100b     | 10.000μs | 10.000μs | 10.000μs | 10.000μs | 0.000μs | ±0.00% |
-| <current> | NothingBench | benchNothing |     | 1    | 5   | 100b     | 10.000μs | 10.000μs | 10.000μs | 10.000μs | 0.000μs | ±0.00% |
-| <current> | NothingBench | benchNothing |     | 1    | 5   | 100b     | 10.000μs | 10.000μs | 10.000μs | 10.000μs | 0.000μs | ±0.00% |
-| <current> | NothingBench | benchNothing |     | 1    | 5   | 100b     | 10.000μs | 10.000μs | 10.000μs | 10.000μs | 0.000μs | ±0.00% |
-| <current> | NothingBench | benchNothing |     | 1    | 5   | 100b     | 10.000μs | 10.000μs | 10.000μs | 10.000μs | 0.000μs | ±0.00% |
+| <current> | NothingBench | benchNothing | 0   | 1    | 5   | 100b     | 10.000μs | 10.000μs | 10.000μs | 10.000μs | 0.000μs | ±0.00% |
+| <current> | NothingBench | benchNothing | 0   | 1    | 5   | 100b     | 10.000μs | 10.000μs | 10.000μs | 10.000μs | 0.000μs | ±0.00% |
+| <current> | NothingBench | benchNothing | 0   | 1    | 5   | 100b     | 10.000μs | 10.000μs | 10.000μs | 10.000μs | 0.000μs | ±0.00% |
+| <current> | NothingBench | benchNothing | 0   | 1    | 5   | 100b     | 10.000μs | 10.000μs | 10.000μs | 10.000μs | 0.000μs | ±0.00% |
+| <current> | NothingBench | benchNothing | 0   | 1    | 5   | 100b     | 10.000μs | 10.000μs | 10.000μs | 10.000μs | 0.000μs | ±0.00% |
 +-----------+--------------+--------------+-----+------+-----+----------+----------+----------+----------+----------+---------+--------+
 
