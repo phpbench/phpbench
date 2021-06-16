@@ -3,6 +3,7 @@
 namespace PhpBench\Reflection;
 
 use PhpBench\Model\ParameterSets;
+use PhpBench\Model\ParameterSetsCollection;
 
 interface ReflectorInterface
 {
@@ -19,5 +20,5 @@ interface ReflectorInterface
      *
      * @param array<string> $paramProviders
      */
-    public function getParameterSets(string $file, array $paramProviders): ParameterSets;
+    public function getParameterSets(string $file, array $paramProviders): ParameterSetsCollection;
 }

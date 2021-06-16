@@ -13,8 +13,6 @@
 namespace PhpBench\Benchmark;
 
 use InvalidArgumentException;
-use PhpBench\Model\ParameterSet;
-use PhpBench\Model\ParameterSets;
 use PhpBench\Model\SuiteCollection;
 
 /**
@@ -93,9 +91,9 @@ class RunnerConfig
     private $format;
 
     /**
-     * @var ParameterSet|null
+     * @var array<string,mixed>
      */
-    private $parameters;
+    private $parameters = [];
 
     /**
      * @var SuiteCollection
@@ -166,12 +164,18 @@ class RunnerConfig
 
     /**
      * Override parameters.
+     *
+     * @return mixed[]
      */
-    public function getParameterSets(ParameterSets $default = null): ParameterSets
+    public function getParameterSets($default = null)
     {
-        return $this->parameters ? new ParameterSets(
-            $this->parameters
-        ): ($default ?: ParameterSets::fromUnsafeArray([]));
+        $parameters = $this->parameters ? [[$this->parameters]] : $default;
+
+        if (!$parameters) {
+            return [[[]]];
+        }
+
+        return $parameters;
     }
 
     /**
@@ -296,7 +300,7 @@ class RunnerConfig
         return $new;
     }
 
-    public function withParameters(ParameterSet $parameters): self
+    public function withParameters(array $parameters = null): self
     {
         $new = clone $this;
         $new->parameters = $parameters;

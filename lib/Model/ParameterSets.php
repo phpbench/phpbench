@@ -51,7 +51,7 @@ final class ParameterSets implements IteratorAggregate, Countable
     }
 
     /**
-     * {@inheritDoc}
+     * @return ArrayIterator<int, ParameterSet>
      */
     public function getIterator()
     {

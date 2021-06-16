@@ -12,7 +12,9 @@ $beforeMethods = {{ beforeMethods }};
 $afterMethods = {{ afterMethods }};
 $bootstrap = '{{ bootstrap }}';
 $warmup = {{ warmup }};
-$parameters = unserialize({{ parameters }});
+$parameters = array_map(function (string $value) {
+    return unserialize($value);
+}, {{ parameters }});
 
 if ($bootstrap) {
     call_user_func(function () use ($bootstrap) {

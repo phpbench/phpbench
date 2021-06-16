@@ -13,6 +13,7 @@
 namespace PhpBench\Reflection;
 
 use PhpBench\Model\ParameterSets;
+use PhpBench\Model\ParameterSetsCollection;
 use function array_filter;
 use PhpBench\Remote\Launcher;
 
@@ -87,7 +88,7 @@ class RemoteReflector implements ReflectorInterface
      *
      * @param string[] $paramProviders
      */
-    public function getParameterSets(string $file, array $paramProviders): ParameterSets
+    public function getParameterSets(string $file, array $paramProviders): ParameterSetsCollection
     {
         $parameterSets = $this->launcher->payload(__DIR__ . '/template/parameter_set_extractor.template', [
             'file' => $file,
@@ -95,7 +96,7 @@ class RemoteReflector implements ReflectorInterface
             'paramProviders' => var_export($paramProviders, true),
         ])->launch();
 
-        return ParameterSets::fromUnsafeArray($parameterSets);
+        return ParameterSetsCollection::fromUnsafeArray($parameterSets);
     }
 
     /**

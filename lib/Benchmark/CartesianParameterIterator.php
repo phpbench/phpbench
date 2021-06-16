@@ -12,19 +12,37 @@
 
 namespace PhpBench\Benchmark;
 
+use ArrayIterator;
 use PhpBench\Model\ParameterSet;
 use PhpBench\Model\ParameterSets;
+use PhpBench\Model\ParameterSetsCollection;
+use Traversable;
 
 class CartesianParameterIterator implements \Iterator
 {
     /**
-     * @var ParameterSet[]
+     * @var array<int,ArrayIterator<mixed,ParameterSet>>
      */
-    private $sets = [];
+    private $sets;
 
+    /**
+     * @var int
+     */
     private $index = 0;
+
+    /**
+     * @var int
+     */
     private $max;
+
+    /**
+     * @var array<mixed>
+     */
     private $current = [];
+
+    /**
+     * @var bool
+     */
     private $break = false;
 
     /**
@@ -32,23 +50,17 @@ class CartesianParameterIterator implements \Iterator
      */
     private $key;
 
-    /**
-     * @var ParameterSets
-     */
-    private $parameterSets;
-
-    public function __construct(ParameterSets $parameterSets)
+    public function __construct(ParameterSetsCollection $parameterSetsCollection)
     {
-        foreach ($parameterSets as $parameterSet) {
-            $this->sets[] = $parameterSet;
+        foreach ($parameterSetsCollection as $parameterSets) {
+            $this->sets[] = $parameterSets->getIterator();
         }
 
-        if (0 === $parameterSets->count()) {
+        if (0 === $parameterSetsCollection->count()) {
             $this->break = true;
         }
 
-        $this->max = count($parameterSets) - 1;
-        $this->parameterSets = $parameterSets;
+        $this->max = count($parameterSetsCollection) - 1;
     }
 
     public function current(): ParameterSet
@@ -105,7 +117,7 @@ class CartesianParameterIterator implements \Iterator
 
         foreach ($this->sets as $set) {
             $current = $set->current();
-            $this->current = array_merge($this->current, $current ? $current->toArray() : []);
+            $this->current = array_merge($this->current, $current->toArray());
             $key[] = $set->key();
         }
         $this->key = implode(',', $key);
@@ -113,6 +125,6 @@ class CartesianParameterIterator implements \Iterator
 
     private function getParameterSet(): ParameterSet
     {
-        return ParameterSet::fromUnsafeArray($this->key, $this->current);
+        return ParameterSet::fromContainers($this->key, ...$this->current);
     }
 }

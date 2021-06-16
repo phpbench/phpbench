@@ -27,7 +27,7 @@ final class ParameterSet implements Iterator
     /**
      * @var Parameters
      */
-    private $parameterSet;
+    private $parameters;
 
     /**
      * @param Parameters $parameters
@@ -35,7 +35,7 @@ final class ParameterSet implements Iterator
     private function __construct(string $name, Parameters $parameters)
     {
         $this->name = $name;
-        $this->parameterSet = $parameters;
+        $this->parameters = $parameters;
     }
 
     public function getName(): string
@@ -56,9 +56,12 @@ final class ParameterSet implements Iterator
      */
     public function toArray(): array
     {
-        return array_map(function (Parameters $parameters) {
-            return $parameters->toUnserializedArray();
-        }, $this->parameterSet);
+        return $this->parameters->toArray();
+    }
+
+    public static function fromContainers(string $name, ParameterContainer ...$parameterContainers): self
+    {
+        return new self($name, Parameters::fromContainers($parameterContainers));
     }
 
     /**
@@ -84,7 +87,7 @@ final class ParameterSet implements Iterator
      */
     public function current()
     {
-        return current($this->parameterSet);
+        return current($this->parameters);
     }
 
     /**
@@ -92,7 +95,7 @@ final class ParameterSet implements Iterator
      */
     public function next(): void
     {
-        next($this->parameterSet);
+        next($this->parameters);
     }
 
     /**
@@ -100,7 +103,7 @@ final class ParameterSet implements Iterator
      */
     public function key()
     {
-        return key($this->parameterSet);
+        return key($this->parameters);
     }
 
     /**
@@ -108,7 +111,7 @@ final class ParameterSet implements Iterator
      */
     public function valid()
     {
-        return false !== current($this->parameterSet);
+        return false !== current($this->parameters);
     }
 
     /**
@@ -116,11 +119,11 @@ final class ParameterSet implements Iterator
      */
     public function rewind(): void
     {
-        reset($this->parameterSet);
+        reset($this->parameters);
     }
 
-    public function serialize(): string
+    public function serialize(): array
     {
-        return serialize($this->parameterSet);
+        return $this->parameters->toSerializedArray();
     }
 }

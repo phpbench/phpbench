@@ -25,6 +25,8 @@ use PhpBench\Executor\MethodExecutorContext;
 use PhpBench\Executor\MethodExecutorInterface;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Iteration;
+use PhpBench\Model\ParameterSetsCollection;
+use PhpBench\Model\ParameterSetsCollection as PhpBenchParameterSetsCollection;
 use PhpBench\Model\ResolvedExecutor;
 use PhpBench\Model\Result\RejectionCountResult;
 use PhpBench\Model\Subject;
@@ -239,7 +241,17 @@ final class Runner
             $executor->healthCheck();
         }
 
-        $parameterSets = $config->getParameterSets($subjectMetadata->getParameterSets());
+        $collection = $subjectMetadata->getParameterSetsCollection();
+
+        $parameterSets = (static function (array $configuredParameterSets, ParameterSetsCollection $subjectParameterSets) {
+            if ($configuredParameterSets !== [[[]]]) {
+                return ParameterSetsCollection::fromArray($parameterSets);
+            }
+
+            return $subjectParameterSets;
+        })($config->getParameterSets(), $subjectMetadata->getParameterSetsCollection());
+
+
         $paramsIterator = new CartesianParameterIterator($parameterSets);
 
         // create the variants.

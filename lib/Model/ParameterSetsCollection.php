@@ -10,7 +10,7 @@ use PhpBench\Model\Exception\InvalidParameterSets;
 /**
  * @implements IteratorAggregate<ParameterSets>
  */
-final class ParameterSetsSource implements IteratorAggregate, Countable
+final class ParameterSetsCollection implements IteratorAggregate, Countable
 {
     /**
      * @var ParameterSets[]
