@@ -36,7 +36,7 @@ final class ParameterContainer
      */
     public static function fromValue($value): self
     {
-        return new self(gettype($value), $value);
+        return new self(gettype($value), serialize($value));
     }
 
     public static function fromTypeValuePair(array $typeValue): self

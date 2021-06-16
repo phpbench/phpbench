@@ -75,11 +75,14 @@ final class ParameterSet implements Iterator
     /**
      * @param array<string, array<string,mixed>> $parameterSet
      */
-    public static function fromArray(string $name, array $parameterSet): self
+    public static function fromArray(string $name, array $parameters): self
     {
-        return new self($name, array_map(function (array $parameters) {
-            return Parameters::fromArray($parameters);
-        }, $parameterSet));
+        return new self($name, Parameters::fromArray($parameters));
+    }
+
+    public function toUnserializedArray(): array
+    {
+        return $this->parameters->toUnserializedArray();
     }
 
     /**

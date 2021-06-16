@@ -13,11 +13,11 @@ use PhpBench\Model\Exception\InvalidParameterSets;
 final class ParameterSets implements IteratorAggregate, Countable
 {
     /**
-     * @var ParameterSet[]
+     * @var ParameterSet<string,ParameterSet>
      */
     private $parameterSets;
 
-    public function __construct(ParameterSet ...$parameterSets)
+    public function __construct(array $parameterSets)
     {
         $this->parameterSets = $parameterSets;
     }
@@ -45,9 +45,9 @@ final class ParameterSets implements IteratorAggregate, Countable
      */
     public static function fromArray(array $parameterSets): self
     {
-        return new self(...array_map(function ($parameterSet, string $name) {
+        return new self(array_combine(array_keys($parameterSets), array_map(function ($parameterSet, string $name) {
             return ParameterSet::fromArray($name, $parameterSet);
-        }, $parameterSets, array_keys($parameterSets)));
+        }, $parameterSets, array_keys($parameterSets))));
     }
 
     /**
@@ -73,8 +73,13 @@ final class ParameterSets implements IteratorAggregate, Countable
 
     public function toArray(): array
     {
-        return array_map(function (ParameterSet $parameterSet) {
-            return $parameterSet->toArray();
-        }, $this->parameterSets);
+        return array_combine(
+            array_map(function (ParameterSet $parameterSet) {
+                return $parameterSet->getName();
+            }, $this->parameterSets),
+            array_map(function (ParameterSet $parameterSet) {
+                return $parameterSet->toArray();
+            }, $this->parameterSets)
+        );
     }
 }

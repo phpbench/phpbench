@@ -14,6 +14,7 @@ namespace PhpBench\Tests\Unit\Benchmark;
 
 use PhpBench\Benchmark\CartesianParameterIterator;
 use PhpBench\Model\ParameterSets;
+use PhpBench\Model\ParameterSetsCollection;
 use PhpBench\Tests\TestCase;
 
 class CartesianIteratorTest extends TestCase
@@ -25,11 +26,11 @@ class CartesianIteratorTest extends TestCase
      */
     public function testIterate($parameterSets, $expected): void
     {
-        $iterator = new CartesianParameterIterator(ParameterSets::fromArray($parameterSets));
+        $iterator = new CartesianParameterIterator(ParameterSetsCollection::fromArray($parameterSets));
         $result = [];
 
-        foreach ($iterator as $name => $parameters) {
-            $result[$name] = $parameters->toArray();
+        foreach ($iterator as $parameters) {
+            $result[$parameters->getName()] = $parameters->toUnserializedArray();
         }
 
         $this->assertEquals($expected, $result);

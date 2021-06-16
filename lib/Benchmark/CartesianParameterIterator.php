@@ -23,7 +23,7 @@ class CartesianParameterIterator implements \Iterator
     /**
      * @var array<int,ArrayIterator<mixed,ParameterSet>>
      */
-    private $sets;
+    private $sets = [];
 
     /**
      * @var int
@@ -117,7 +117,8 @@ class CartesianParameterIterator implements \Iterator
 
         foreach ($this->sets as $set) {
             $current = $set->current();
-            $this->current = array_merge($this->current, $current->toArray());
+            /** @phpstan-ignore-next-line */
+            $this->current = array_merge($this->current, $current ? $current->toArray() : []);
             $key[] = $set->key();
         }
         $this->key = implode(',', $key);
