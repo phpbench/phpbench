@@ -27,6 +27,7 @@ use PhpBench\Executor;
 use PhpBench\Executor\Benchmark\TestExecutor;
 use PhpBench\Executor\ExecutionResults;
 use PhpBench\Model\ParameterSets;
+use PhpBench\Model\ParameterSetsCollection;
 use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Suite;
@@ -118,7 +119,7 @@ class RunnerTest extends TestCase
         $subject = new SubjectMetadata($this->benchmark->reveal(), 'name');
         $subject->setIterations($iterations);
         $subject->setBeforeMethods(['beforeFoo']);
-        $subject->setParameterSets(ParameterSets::fromUnsafeArray([[$parameters]]));
+        $subject->setParameterSets(ParameterSetsCollection::fromArray([[$parameters]]));
         $subject->setRevs($revs);
 
         TestUtil::configureBenchmarkMetadata($this->benchmark);
