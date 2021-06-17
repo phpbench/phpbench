@@ -17,7 +17,7 @@ final class ParameterSets implements IteratorAggregate, Countable
      */
     private $parameterSets;
 
-    public function __construct(array $parameterSets)
+    private function __construct(array $parameterSets)
     {
         $this->parameterSets = $parameterSets;
     }
@@ -68,7 +68,7 @@ final class ParameterSets implements IteratorAggregate, Countable
 
     public static function empty(): self
     {
-        return new self(ParameterSet::fromUnsafeArray('default',[]));
+        return new self([]);
     }
 
     public function toArray(): array

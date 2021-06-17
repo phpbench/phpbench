@@ -165,9 +165,10 @@ class RunnerConfig
     /**
      * Override parameters.
      *
+     * @param parameters $default
      * @return mixed[]
      */
-    public function getParameterSets($default = null)
+    public function getParameterSets(?array $default = null)
     {
         $parameters = $this->parameters ? [[$this->parameters]] : $default;
 

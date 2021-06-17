@@ -52,7 +52,7 @@ class TestUtil
         $subject->getName()->willReturn($options['name']);
         $subject->getBeforeMethods()->willReturn($options['beforeMethods']);
         $subject->getAfterMethods()->willReturn($options['afterMethods']);
-        $subject->getParameterSets()->willReturn($options['parameterSets']);
+        $subject->getParameterSetsCollection()->willReturn($options['parameterSets']);
         $subject->getGroups()->willReturn($options['groups']);
         $subject->getRevs()->willReturn($options['revs']);
         $subject->getSkip()->willReturn($options['skip']);
