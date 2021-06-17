@@ -131,7 +131,7 @@ abstract class PhpBenchLoggerTest extends LoggerTestCase
         $this->suite->getFailures()->willReturn([$failures]);
         $this->suite->getErrorStacks()->willReturn([]);
         $this->variant->getSubject()->willReturn($this->subject->reveal());
-        $this->variant->getParameterSet()->willReturn(new ParameterSet('one',[]));
+        $this->variant->getParameterSet()->willReturn(ParameterSet::fromArray('one',[]));
         $this->subject->getBenchmark()->willReturn($this->benchmark->reveal());
         $this->subject->getName()->willReturn('bar');
         $this->benchmark->getClass()->willReturn('Namespace\Foo');

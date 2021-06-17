@@ -141,7 +141,7 @@ class TestUtil
                 $subject->setOutputTimeUnit($options['output_time_unit']);
                 $subject->setOutputTimePrecision($options['output_time_precision']);
                 $subject->setOutputMode($options['output_mode']);
-                $variant = $subject->createVariant(new ParameterSet('0', $options['parameters']), $options['revs'], $options['warmup']);
+                $variant = $subject->createVariant(ParameterSet::fromArray('0', $options['parameters']), $options['revs'], $options['warmup']);
 
                 foreach ($options['iterations'] as $time) {
                     $variant->createIteration(self::createResults($timeOffset + $time, 200, 0));

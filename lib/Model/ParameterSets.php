@@ -27,7 +27,7 @@ final class ParameterSets implements IteratorAggregate, Countable
      */
     public static function fromUnsafeArray(array $parameterSets): self
     {
-        return new self(...array_map(function ($parameterSet, string $name) {
+        return new self(array_map(function ($parameterSet, string $name) {
             if (!is_array($parameterSet)) {
                 throw new InvalidParameterSets(sprintf(
                     'Each parameter set must be an array, got "%s"',
@@ -78,7 +78,7 @@ final class ParameterSets implements IteratorAggregate, Countable
                 return $parameterSet->getName();
             }, $this->parameterSets),
             array_map(function (ParameterSet $parameterSet) {
-                return $parameterSet->toArray();
+                return $parameterSet->toUnserializedArray();
             }, $this->parameterSets)
         );
     }

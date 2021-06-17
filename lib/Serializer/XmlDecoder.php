@@ -174,12 +174,12 @@ class XmlDecoder
         }
 
         foreach ($subjectEl->query('./variant') as $index => $variantEl) {
-            $parameterSet = new ParameterSet('0', []);
+            $parameterSet = ParameterSet::fromArray('0', []);
 
             foreach ($variantEl->query('./parameter-set') as $parameterSetEl) {
                 $name = $parameterSetEl->getAttribute('name');
                 $parameters = $this->getParameters($parameterSetEl);
-                $parameterSet = new ParameterSet($name, $parameters);
+                $parameterSet = ParameterSet::fromArray($name, $parameters);
 
                 break;
             }

@@ -119,7 +119,7 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
      */
     public function testParametersBeforeSubject(): void
     {
-        $expected = new ParameterSet(0, [
+        $expected = ParameterSet::fromArray(0, [
             'one' => 'two',
             'three' => 'four',
         ]);
@@ -140,11 +140,11 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
 
         $this->assertFileExists($this->workspacePath('parambefore.tmp'));
         $params = json_decode(file_get_contents($this->workspace()->path('parambefore.tmp')), true);
-        $this->assertEquals($expected->toArray(), $params);
+        $this->assertEquals($expected->toUnserializedArray(), $params);
 
         $this->assertFileExists($this->workspacePath('paramafter.tmp'));
         $params = json_decode(file_get_contents($this->workspace()->path('paramafter.tmp')), true);
-        $this->assertEquals($expected->toArray(), $params);
+        $this->assertEquals($expected->toUnserializedArray(), $params);
     }
 
     /**
@@ -166,7 +166,7 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
             'className' => 'PhpBench\Tests\Unit\Executor\benchmarks\MicrotimeExecutorBench',
             'classPath' => __DIR__ . '/../benchmarks/MicrotimeExecutorBench.php',
         ], $config);
-        $config['parameters'] = ParameterSet::fromUnsafeArray('test', $config['parameters'] ?? []);
+        $config['parameters'] = ParameterSet::fromArray('test', $config['parameters'] ?? []);
 
         return $config;
     }

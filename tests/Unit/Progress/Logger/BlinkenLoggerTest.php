@@ -49,7 +49,7 @@ class BlinkenLoggerTest extends LoggerTestCase
         $this->subject = $this->prophesize(Subject::class);
         $this->variant = new Variant(
             $this->subject->reveal(),
-            new ParameterSet('one'),
+            ParameterSet::fromArray('one', []),
             10,
             0
         );

@@ -137,7 +137,7 @@ class XmlEncoder
         $parameterSetEl = $variantEl->appendElement('parameter-set');
         $parameterSetEl->setAttribute('name', $variant->getParameterSet()->getName());
 
-        foreach ($variant->getParameterSet() as $name => $value) {
+        foreach ($variant->getParameterSet()->toUnserializedArray() as $name => $value) {
             $this->createParameter($parameterSetEl, $name, $value);
         }
 

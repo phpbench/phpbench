@@ -2,6 +2,8 @@
 
 namespace PhpBench\Model;
 
+use Error;
+use Exception;
 use RuntimeException;
 
 final class ParameterContainer
@@ -36,7 +38,12 @@ final class ParameterContainer
      */
     public static function fromValue($value): self
     {
-        return new self(gettype($value), serialize($value));
+        try {
+            @$serialized = @serialize($value);
+        } catch (Exception $error) {
+            throw new RuntimeException(sprintf('Cannot serialize value: %s', $error->getMessage()));
+        }
+        return new self(gettype($value), $serialized);
     }
 
     public static function fromTypeValuePair(array $typeValue): self

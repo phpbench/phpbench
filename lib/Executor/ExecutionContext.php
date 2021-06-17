@@ -82,7 +82,7 @@ final class ExecutionContext
         $this->revolutions = $revolutions;
         $this->beforeMethods = $beforeMethods;
         $this->afterMethods = $afterMethods;
-        $this->parameters = $parameters ?: new ParameterSet('empty', []);
+        $this->parameters = $parameters ?: ParameterSet::fromArray('empty', []);
         $this->warmup = $warmup;
         $this->iterationIndex = $iterationIndex;
         $this->timeOut = $timeOut;
