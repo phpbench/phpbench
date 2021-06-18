@@ -8,15 +8,18 @@ use IteratorAggregate;
 use PhpBench\Model\Exception\InvalidParameterSets;
 
 /**
- * @implements IteratorAggregate<ParameterSet>
+ * @implements IteratorAggregate<string, ParameterSet>
  */
 final class ParameterSets implements IteratorAggregate, Countable
 {
     /**
-     * @var ParameterSet<string,ParameterSet>
+     * @var array<string, ParameterSet>
      */
     private $parameterSets;
 
+    /**
+     * @param array<string, ParameterSet> $parameterSets
+     */
     private function __construct(array $parameterSets)
     {
         $this->parameterSets = $parameterSets;
@@ -27,7 +30,7 @@ final class ParameterSets implements IteratorAggregate, Countable
      */
     public static function fromUnsafeArray(array $parameterSets): self
     {
-        return new self(array_map(function ($parameterSet, string $name) {
+        return new self(array_combine(array_keys($parameterSets), array_map(function ($parameterSet, string $name) {
             if (!is_array($parameterSet)) {
                 throw new InvalidParameterSets(sprintf(
                     'Each parameter set must be an array, got "%s"',
@@ -37,7 +40,7 @@ final class ParameterSets implements IteratorAggregate, Countable
             }
 
             return ParameterSet::fromUnsafeArray($name, $parameterSet);
-        }, $parameterSets, array_keys($parameterSets)));
+        }, $parameterSets, array_keys($parameterSets))));
     }
 
     /**
@@ -51,7 +54,7 @@ final class ParameterSets implements IteratorAggregate, Countable
     }
 
     /**
-     * @return ArrayIterator<int, ParameterSet>
+     * @return ArrayIterator<string, ParameterSet>
      */
     public function getIterator()
     {
@@ -71,6 +74,9 @@ final class ParameterSets implements IteratorAggregate, Countable
         return new self([]);
     }
 
+    /**
+     * @return array<string, array<string, mixed>>
+     */
     public function toArray(): array
     {
         return array_combine(
