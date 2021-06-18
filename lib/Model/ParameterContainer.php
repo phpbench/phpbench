@@ -2,7 +2,6 @@
 
 namespace PhpBench\Model;
 
-use Error;
 use Exception;
 use RuntimeException;
 
@@ -43,6 +42,7 @@ final class ParameterContainer
         } catch (Exception $error) {
             throw new RuntimeException(sprintf('Cannot serialize value: %s', $error->getMessage()));
         }
+
         return new self(gettype($value), $serialized);
     }
 
@@ -54,6 +54,7 @@ final class ParameterContainer
                 json_encode($typeValue)
             ));
         }
+
         if (!isset($typeValue['value'])) {
             throw new RuntimeException(sprintf(
                 '`value` key not set in type-value pair, got "%s"',

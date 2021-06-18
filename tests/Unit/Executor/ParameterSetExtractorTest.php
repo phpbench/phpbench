@@ -94,6 +94,7 @@ class ParameterSetExtractorTest extends TestCase
             'class' => ParamProviderBench::class,
             'paramProviders' => json_encode($providers),
         ]);
+
         return $payload->launch();
     }
 }

@@ -13,7 +13,6 @@
 namespace PhpBench\Tests\Unit\Benchmark;
 
 use PhpBench\Benchmark\CartesianParameterIterator;
-use PhpBench\Model\ParameterSets;
 use PhpBench\Model\ParameterSetsCollection;
 use PhpBench\Tests\TestCase;
 

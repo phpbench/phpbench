@@ -14,7 +14,6 @@ namespace PhpBench\Benchmark\Metadata;
 
 use InvalidArgumentException;
 use PhpBench\Model\Exception\InvalidParameterSets;
-use PhpBench\Model\ParameterSets;
 use PhpBench\Model\Subject;
 use PhpBench\Reflection\ReflectionHierarchy;
 use PhpBench\Reflection\ReflectorInterface;

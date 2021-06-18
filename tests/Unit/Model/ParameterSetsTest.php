@@ -2,10 +2,9 @@
 
 namespace PhpBench\Tests\Unit\Model;
 
-use InvalidArgumentException;
-use PHPUnit\Framework\TestCase;
 use PhpBench\Model\Exception\InvalidParameterSets;
 use PhpBench\Model\ParameterSets;
+use PHPUnit\Framework\TestCase;
 
 class ParameterSetsTest extends TestCase
 {

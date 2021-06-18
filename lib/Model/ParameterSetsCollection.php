@@ -5,7 +5,6 @@ namespace PhpBench\Model;
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
-use PhpBench\Model\Exception\InvalidParameterSets;
 
 /**
  * @implements IteratorAggregate<ParameterSets>

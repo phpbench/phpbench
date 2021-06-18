@@ -14,8 +14,6 @@ namespace PhpBench\Tests\Unit\Benchmark;
 
 use InvalidArgumentException;
 use PhpBench\Benchmark\RunnerConfig;
-use PhpBench\Model\ParameterSet;
-use PhpBench\Model\ParameterSets;
 use PhpBench\Tests\TestCase;
 
 class RunnerConfigTest extends TestCase

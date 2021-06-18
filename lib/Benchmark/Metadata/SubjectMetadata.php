@@ -12,7 +12,6 @@
 
 namespace PhpBench\Benchmark\Metadata;
 
-use PhpBench\Model\ParameterSets;
 use PhpBench\Model\ParameterSetsCollection;
 
 /**

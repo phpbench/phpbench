@@ -12,9 +12,8 @@
 
 namespace PhpBench\Reflection;
 
-use PhpBench\Model\ParameterSets;
-use PhpBench\Model\ParameterSetsCollection;
 use function array_filter;
+use PhpBench\Model\ParameterSetsCollection;
 use PhpBench\Remote\Launcher;
 
 /**

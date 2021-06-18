@@ -30,7 +30,6 @@ final class ParameterSet implements Iterator
     private $parameters;
 
     /**
-     * @param Parameters $parameters
      */
     private function __construct(string $name, Parameters $parameters)
     {
@@ -73,7 +72,6 @@ final class ParameterSet implements Iterator
     }
 
     /**
-     * @param array<string, array<string,mixed>> $parameterSet
      */
     public static function fromArray(string $name, array $parameters): self
     {

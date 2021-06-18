@@ -16,7 +16,6 @@ use InvalidArgumentException;
 use PhpBench\Benchmark\BenchmarkFinder;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Benchmark\RunnerConfig;
-use PhpBench\Model\ParameterSet;
 use PhpBench\Model\Suite;
 use PhpBench\Progress\LoggerRegistry;
 use Symfony\Component\Console\Command\Command;

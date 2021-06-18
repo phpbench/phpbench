@@ -2,7 +2,6 @@
 
 namespace PhpBench\Reflection;
 
-use PhpBench\Model\ParameterSets;
 use PhpBench\Model\ParameterSetsCollection;
 
 interface ReflectorInterface

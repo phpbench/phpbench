@@ -14,9 +14,7 @@ namespace PhpBench\Benchmark;
 
 use ArrayIterator;
 use PhpBench\Model\ParameterSet;
-use PhpBench\Model\ParameterSets;
 use PhpBench\Model\ParameterSetsCollection;
-use Traversable;
 
 class CartesianParameterIterator implements \Iterator
 {

@@ -26,7 +26,6 @@ use PhpBench\Executor\MethodExecutorInterface;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\ParameterSetsCollection;
-use PhpBench\Model\ParameterSetsCollection as PhpBenchParameterSetsCollection;
 use PhpBench\Model\ResolvedExecutor;
 use PhpBench\Model\Result\RejectionCountResult;
 use PhpBench\Model\Subject;

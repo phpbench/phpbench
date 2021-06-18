@@ -20,7 +20,7 @@ final class Parameters
     /**
      * @param array<string,array{"type":string,"value":string}> $parameters
      */
-    public static function fromUnsafeArray(array $parameters): self 
+    public static function fromUnsafeArray(array $parameters): self
     {
         return new self(array_map(function (array $typeValuePair) {
             return ParameterContainer::fromTypeValuePair($typeValuePair);
