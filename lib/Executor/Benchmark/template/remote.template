@@ -38,14 +38,24 @@ if ($warmup) {
     }
 }
 
-// run benchmark
-$startTime = microtime(true);
 
-for ($i = 0; $i < {{ revolutions }}; $i++) {
-    $benchmark->{{ subject }}($parameters);
+// only pass parameters if they are supplied:passing parameters costs time
+if ($parameters) {
+    $startTime = microtime(true);
+
+    for ($i = 0; $i < {{ revolutions }}; $i++) {
+        $benchmark->{{ subject }}($parameters);
+    }
+    $endTime = microtime(true);
+} else {
+    $startTime = microtime(true);
+
+    for ($i = 0; $i < {{ revolutions }}; $i++) {
+        $benchmark->{{ subject }}();
+    }
+    $endTime = microtime(true);
 }
 
-$endTime = microtime(true);
 
 $time = ($endTime - $startTime) * 1000000;
 
