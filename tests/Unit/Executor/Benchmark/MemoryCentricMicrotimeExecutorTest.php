@@ -13,10 +13,8 @@
 namespace PhpBench\Tests\Unit\Executor\Benchmark;
 
 use PhpBench\Executor\Benchmark\MemoryCentricMicrotimeExecutor;
-use PhpBench\Executor\Benchmark\RemoteExecutor;
 use PhpBench\Executor\BenchmarkExecutorInterface;
 use PhpBench\Executor\ExecutionResults;
-use PhpBench\Registry\Config;
 use PhpBench\Remote\Launcher;
 use RuntimeException;
 
@@ -31,7 +29,7 @@ class MemoryCentricMicrotimeExecutorTest extends AbstractExecutorTestCase
             $this->buildContext([
                 'methodName' => 'benchOutput',
             ]),
-            new Config('test', [])
+            $this->resolveConfig([])
         );
     }
 

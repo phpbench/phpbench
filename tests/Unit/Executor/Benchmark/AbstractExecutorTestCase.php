@@ -20,6 +20,7 @@ use PhpBench\Model\Benchmark;
 use PhpBench\Model\ParameterSet;
 use PhpBench\Registry\Config;
 use PhpBench\Tests\PhpBenchTestCase;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class AbstractExecutorTestCase extends PhpBenchTestCase
 {
@@ -52,7 +53,7 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
                 'revolutions' => 10,
                 'warmup' => 1,
             ]),
-            new Config('test', [])
+            $this->resolveConfig([])
         );
 
         $this->assertExecute($results);
@@ -68,7 +69,7 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
                 'methodName' => 'doSomething',
                 'beforeMethods' => ['beforeMethod'],
             ]),
-            new Config('test', [])
+            $this->resolveConfig([])
         );
 
         $this->assertFileExists($this->workspace()->path('before_method.tmp'));
@@ -84,7 +85,7 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
                 'methodName' => 'doSomething',
                 'beforeMethods' => ['afterMethod'],
             ]),
-            new Config('test', [])
+            $this->resolveConfig([])
         );
 
         $this->assertFileExists($this->workspacePath('after_method.tmp'));
@@ -103,7 +104,7 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
                     'three' => 'four',
                 ],
             ]),
-            new Config('test', [])
+            $this->resolveConfig([])
         );
 
         $this->assertFileExists($this->workspacePath('param.tmp'));
@@ -134,7 +135,7 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
                     'three' => 'four',
                 ],
             ]),
-            new Config('test', [])
+            $this->resolveConfig([])
         );
 
 
@@ -169,5 +170,13 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
         $config['parameters'] = ParameterSet::fromUnwrappedParameters('test', $config['parameters'] ?? []);
 
         return $config;
+    }
+
+    protected function resolveConfig(array $config): Config
+    {
+        $resolver = new OptionsResolver();
+        $this->createExecutor()->configure($resolver);
+
+        return new Config('test', $resolver->resolve($config));
     }
 }

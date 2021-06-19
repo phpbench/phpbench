@@ -2,14 +2,13 @@
 
 namespace PhpBench\Tests\Unit\Executor\Benchmark;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Executor\Benchmark\TemplateExecutor;
 use PhpBench\Executor\ExecutionContext;
 use PhpBench\Model\ParameterSet;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Registry\Config;
-use PhpBench\Remote\Launcher;
 use PhpBench\Remote\Launcher as PhpBenchLauncher;
+use PHPUnit\Framework\TestCase;
 
 class TemplateExecutorTest extends TestCase
 {
@@ -23,7 +22,7 @@ class TemplateExecutorTest extends TestCase
             '/bar',
             'baz',
             1, [], [], ParameterSet::fromUnwrappedParameters('foo', [
-                'time'=> 100
+                'time' => 100
             ])
         ), new Config('test', [
             TemplateExecutor::OPTION_SAFE_PARAMETERS => false,

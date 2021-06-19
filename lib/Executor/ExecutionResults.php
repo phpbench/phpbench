@@ -6,7 +6,6 @@ use ArrayIterator;
 use Countable;
 use IteratorAggregate;
 use PhpBench\Model\ResultInterface;
-use PhpBench\Model\ResultInterface as PhpBenchResultInterface;
 use RuntimeException;
 
 /**
@@ -71,6 +70,7 @@ final class ExecutionResults implements IteratorAggregate, Countable
         }
 
         $first = reset($this->results);
+
         return $first;
     }
 }

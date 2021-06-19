@@ -15,7 +15,6 @@ namespace PhpBench\Tests\Unit\Executor\Benchmark;
 use PhpBench\Executor\Benchmark\RemoteExecutor;
 use PhpBench\Executor\BenchmarkExecutorInterface;
 use PhpBench\Executor\ExecutionResults;
-use PhpBench\Registry\Config;
 use PhpBench\Remote\Launcher;
 use RuntimeException;
 
@@ -30,7 +29,7 @@ class RemoteExecutorTest extends AbstractExecutorTestCase
             $this->buildContext([
                 'methodName' => 'benchOutput',
             ]),
-            new Config('test', [])
+            $this->resolveConfig([])
         );
     }
 
