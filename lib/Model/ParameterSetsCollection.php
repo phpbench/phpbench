@@ -34,7 +34,7 @@ final class ParameterSetsCollection implements IteratorAggregate, Countable
     /**
      * @param array<int,array<string,array<string,mixed>>> $parameterSets
      */
-    public static function fromArray(array $parameterSets): self
+    public static function fromUnwrappedParameterSetsCollection(array $parameterSets): self
     {
         return new self(...array_map(function (array $parameterSets) {
             return ParameterSets::fromUnwrappedParameterSets($parameterSets);
@@ -62,7 +62,10 @@ final class ParameterSetsCollection implements IteratorAggregate, Countable
         return new self(ParameterSets::empty());
     }
 
-    public function toArray(): array
+    /**
+     * @return array<int, array<string, array<string, mixed>>>
+     */
+    public function toUnwrappedParameterSetsCollection(): array
     {
         return array_map(function (ParameterSets $parameterSets) {
             return $parameterSets->toUnwrappedParameterSets();

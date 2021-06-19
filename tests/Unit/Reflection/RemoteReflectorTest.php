@@ -239,7 +239,7 @@ EOT
                     'ten' => null,
                 ],
             ],
-        ], $parameterSets->toArray());
+        ], $parameterSets->toUnwrappedParameterSetsCollection());
     }
 
     /**

@@ -25,7 +25,7 @@ class CartesianIteratorTest extends TestCase
      */
     public function testIterate($parameterSets, $expected): void
     {
-        $iterator = new CartesianParameterIterator(ParameterSetsCollection::fromArray($parameterSets));
+        $iterator = new CartesianParameterIterator(ParameterSetsCollection::fromUnwrappedParameterSetsCollection($parameterSets));
         $result = [];
 
         foreach ($iterator as $parameters) {

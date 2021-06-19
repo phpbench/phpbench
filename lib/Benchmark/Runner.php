@@ -244,7 +244,7 @@ final class Runner
 
         $parameterSets = (static function (array $configuredParameterSets, ParameterSetsCollection $subjectParameterSets) {
             if ($configuredParameterSets !== [[[]]]) {
-                return ParameterSetsCollection::fromArray($configuredParameterSets);
+                return ParameterSetsCollection::fromUnwrappedParameterSetsCollection($configuredParameterSets);
             }
 
             return $subjectParameterSets;
