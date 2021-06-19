@@ -24,10 +24,10 @@ final class ParameterSetsCollection implements IteratorAggregate, Countable
     /**
      * @param array<int,array<string,array<string,array{"type":string,"value":string}>>> $parameterSets
      */
-    public static function fromUnsafeArray(array $parameterSets): self
+    public static function fromWrappedParameterSetsCollection(array $parameterSets): self
     {
         return new self(...array_map(function (array $parameterSets) {
-            return ParameterSets::fromUnsafeArray($parameterSets);
+            return ParameterSets::fromWrappedParameterSets($parameterSets);
         }, $parameterSets));
     }
 
@@ -37,7 +37,7 @@ final class ParameterSetsCollection implements IteratorAggregate, Countable
     public static function fromArray(array $parameterSets): self
     {
         return new self(...array_map(function (array $parameterSets) {
-            return ParameterSets::fromArray($parameterSets);
+            return ParameterSets::fromUnwrappedParameterSets($parameterSets);
         }, $parameterSets));
     }
 
@@ -65,7 +65,7 @@ final class ParameterSetsCollection implements IteratorAggregate, Countable
     public function toArray(): array
     {
         return array_map(function (ParameterSets $parameterSets) {
-            return $parameterSets->toArray();
+            return $parameterSets->toUnwrappedParameterSets();
         }, $this->parameterSetsSources);
     }
 }

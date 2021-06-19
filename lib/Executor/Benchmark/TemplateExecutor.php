@@ -94,7 +94,7 @@ class TemplateExecutor implements BenchmarkExecutorInterface
             'revolutions' => $context->getRevolutions(),
             'beforeMethods' => var_export($context->getBeforeMethods(), true),
             'afterMethods' => var_export($context->getAfterMethods(), true),
-            'parameters' => var_export($context->getParameters()->serialize(), true),
+            'parameters' => var_export($context->getParameters()->toSerializedParameters(), true),
             'warmup' => $context->getWarmup() ?: 0,
         ];
     }

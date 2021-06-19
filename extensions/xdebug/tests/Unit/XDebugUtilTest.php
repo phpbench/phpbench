@@ -36,7 +36,7 @@ class XDebugUtilTest extends TestCase
         $params = [
             'classPath' => '/foobar',
             'parameterSetName' => '7',
-            'parameters' => ParameterSet::fromArray('test', ['asd']),
+            'parameters' => ParameterSet::fromUnwrappedParameters('test', ['asd']),
             'className' => $class,
             'methodName' => $subject,
         ];

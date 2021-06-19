@@ -10,16 +10,25 @@ use PHPUnit\Framework\TestCase;
 
 class ParameterSetsTest extends TestCase
 {
-    public function testInvalidParameters(): void
+    public function testInvalidParametersWrapped(): void
     {
         $this->expectException(InvalidParameterSets::class);
         $this->expectExceptionMessage('Each parameter set must be an array, got "string"');
-        ParameterSets::fromUnsafeArray(['asd' => 'bar']);
+        /** @phpstan-ignore-next-line */
+        ParameterSets::fromWrappedParameterSets(['asd' => 'bar']);
+    }
+
+    public function testInvalidParametersUnwrapped(): void
+    {
+        $this->expectException(InvalidParameterSets::class);
+        $this->expectExceptionMessage('Each parameter set must be an array, got "string"');
+        /** @phpstan-ignore-next-line */
+        ParameterSets::fromUnwrappedParameterSets(['asd' => 'bar']);
     }
 
     public function testIteratesWithUnsafeSetNamesAsKeys(): void
     {
-        $sets = iterator_to_array(ParameterSets::fromUnsafeArray([
+        $sets = iterator_to_array(ParameterSets::fromWrappedParameterSets([
             'one' => [
                 'one' => [
                     'type' => 'string',
@@ -45,7 +54,7 @@ class ParameterSetsTest extends TestCase
 
     public function testIteratesWithSetNamesAsKeys(): void
     {
-        $sets = iterator_to_array(ParameterSets::fromArray([
+        $sets = iterator_to_array(ParameterSets::fromUnwrappedParameterSets([
             'one' => [
                 'one' => 'hello',
             ],

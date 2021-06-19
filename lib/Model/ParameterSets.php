@@ -28,17 +28,10 @@ final class ParameterSets implements IteratorAggregate, Countable
     /**
      * @param array<string,array<string,array{"type":string,"value":string}>> $parameterSets
      */
-    public static function fromUnsafeArray(array $parameterSets): self
+    public static function fromWrappedParameterSets(array $parameterSets): self
     {
         return new self(array_combine(array_keys($parameterSets), array_map(function ($parameterSet, string $name) {
-            if (!is_array($parameterSet)) {
-                throw new InvalidParameterSets(sprintf(
-                    'Each parameter set must be an array, got "%s"',
-                    /** @phpstan-ignore-next-line */
-                    is_object($parameterSet) ? get_class($parameterSet) : gettype($parameterSet)
-                ));
-            }
-
+            self::assertParameterSet($parameterSet);
             return ParameterSet::fromWrappedParameters($name, $parameterSet);
         }, $parameterSets, array_keys($parameterSets))));
     }
@@ -46,9 +39,10 @@ final class ParameterSets implements IteratorAggregate, Countable
     /**
      * @param array<string,array<string,mixed>> $parameterSets
      */
-    public static function fromArray(array $parameterSets): self
+    public static function fromUnwrappedParameterSets(array $parameterSets): self
     {
         return new self(array_combine(array_keys($parameterSets), array_map(function ($parameterSet, string $name) {
+            self::assertParameterSet($parameterSet);
             return ParameterSet::fromUnwrappedParameters($name, $parameterSet);
         }, $parameterSets, array_keys($parameterSets))));
     }
@@ -77,7 +71,7 @@ final class ParameterSets implements IteratorAggregate, Countable
     /**
      * @return array<string, array<string, mixed>>
      */
-    public function toArray(): array
+    public function toUnwrappedParameterSets(): array
     {
         return array_combine(
             array_map(function (ParameterSet $parameterSet) {
@@ -87,5 +81,20 @@ final class ParameterSets implements IteratorAggregate, Countable
                 return $parameterSet->toUnwrappedParameters();
             }, $this->parameterSets)
         );
+    }
+
+    /**
+     * @param mixed $parameterSet
+     */
+    private static function assertParameterSet($parameterSet): void
+    {
+        if (is_array($parameterSet)) {
+            return;
+        }
+
+        throw new InvalidParameterSets(sprintf(
+            'Each parameter set must be an array, got "%s"',
+            is_object($parameterSet) ? get_class($parameterSet) : gettype($parameterSet)
+        ));
     }
 }
