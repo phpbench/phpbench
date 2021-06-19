@@ -23,15 +23,6 @@ class ParameterContainerTest extends TestCase
         self::assertEquals(serialize('hello'), $value->getValue());
     }
 
-    public function testWrapsArrayElements(): void
-    {
-        $value = ParameterContainer::fromValue([
-            'hello' => 'hello',
-        ]);
-        self::assertEquals('string', $value->getType());
-        self::assertEquals(serialize('hello'), $value->getValue());
-    }
-
     public function testTypeValuePair(): void
     {
         $value = ParameterContainer::fromWrappedValue([
