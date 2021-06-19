@@ -38,7 +38,7 @@ class LocalExecutor implements BenchmarkExecutorInterface
         $benchmark = $this->createBenchmark($context);
 
         $methodName = $context->getMethodName();
-        $parameters = $context->getParameters()->toUnserializedArray();
+        $parameters = $context->getParameters()->toUnwrappedParameters();
 
         foreach ($context->getBeforeMethods() as $afterMethod) {
             $benchmark->$afterMethod($parameters);

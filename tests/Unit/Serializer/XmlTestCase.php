@@ -88,7 +88,7 @@ abstract class XmlTestCase extends TestCase
         $this->subject1->getRetryThreshold()->willReturn(10);
         $this->variant1->getWarmup()->willReturn(50);
         $this->variant1->getBaseline()->willReturn(null);
-        $this->variant1->getParameterSet()->willReturn(ParameterSet::fromArray('some params', $params['params']));
+        $this->variant1->getParameterSet()->willReturn(ParameterSet::fromUnwrappedParameters('some params', $params['params']));
         $this->variant1->hasErrorStack()->willReturn($params['error']);
 
         if ($params['failure']) {

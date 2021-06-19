@@ -47,7 +47,7 @@ class VariantSummaryFormatterTest extends IntegrationTestCase
     private function createBaseline(Variant $variant, int $time = 30): void
     {
         $baseline = $variant->getSubject()->createVariant(
-            ParameterSet::fromArray('no',[]), 10, 10, []
+            ParameterSet::fromUnwrappedParameters('no',[]), 10, 10, []
         );
         $baseline->spawnIterations(1);
 

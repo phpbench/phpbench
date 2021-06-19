@@ -29,7 +29,7 @@ class CartesianIteratorTest extends TestCase
         $result = [];
 
         foreach ($iterator as $parameters) {
-            $result[$parameters->getName()] = $parameters->toUnserializedArray();
+            $result[$parameters->getName()] = $parameters->toUnwrappedParameters();
         }
 
         $this->assertEquals($expected, $result);

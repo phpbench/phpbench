@@ -40,7 +40,7 @@ class ParameterSetsTest extends TestCase
         self::assertEquals('one', $first->getName());
         self::assertEquals([
             'one' => 'hello',
-        ], $first->toUnserializedArray());
+        ], $first->toUnwrappedParameters());
     }
 
     public function testIteratesWithSetNamesAsKeys(): void
@@ -60,6 +60,6 @@ class ParameterSetsTest extends TestCase
         self::assertEquals('one', $first->getName());
         self::assertEquals([
             'one' => 'hello',
-        ], $first->toUnserializedArray());
+        ], $first->toUnwrappedParameters());
     }
 }

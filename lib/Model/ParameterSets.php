@@ -39,7 +39,7 @@ final class ParameterSets implements IteratorAggregate, Countable
                 ));
             }
 
-            return ParameterSet::fromUnsafeArray($name, $parameterSet);
+            return ParameterSet::fromWrappedParameters($name, $parameterSet);
         }, $parameterSets, array_keys($parameterSets))));
     }
 
@@ -49,7 +49,7 @@ final class ParameterSets implements IteratorAggregate, Countable
     public static function fromArray(array $parameterSets): self
     {
         return new self(array_combine(array_keys($parameterSets), array_map(function ($parameterSet, string $name) {
-            return ParameterSet::fromArray($name, $parameterSet);
+            return ParameterSet::fromUnwrappedParameters($name, $parameterSet);
         }, $parameterSets, array_keys($parameterSets))));
     }
 
@@ -84,7 +84,7 @@ final class ParameterSets implements IteratorAggregate, Countable
                 return $parameterSet->getName();
             }, $this->parameterSets),
             array_map(function (ParameterSet $parameterSet) {
-                return $parameterSet->toUnserializedArray();
+                return $parameterSet->toUnwrappedParameters();
             }, $this->parameterSets)
         );
     }

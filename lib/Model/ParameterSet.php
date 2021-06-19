@@ -12,6 +12,8 @@
 
 namespace PhpBench\Model;
 
+use Iterator;
+
 final class ParameterSet
 {
     /**
@@ -20,13 +22,14 @@ final class ParameterSet
     private $name;
 
     /**
-     * @var Parameters
+     * @var array<string,ParameterContainer>
      */
     private $parameters;
 
     /**
+     * @param array<string,ParameterContainer> $parameters
      */
-    private function __construct(string $name, Parameters $parameters)
+    private function __construct(string $name, array $parameters)
     {
         $this->name = $name;
         $this->parameters = $parameters;
@@ -50,46 +53,54 @@ final class ParameterSet
      */
     public function toArray(): array
     {
-        return $this->parameters->toArray();
+        return $this->parameters;
     }
 
     /**
      * @param array<string, ParameterContainer> $parameterContainers
      */
-    public static function fromContainers(string $name, array $parameterContainers): self
+    public static function fromParameterContainers(string $name, array $parameterContainers): self
     {
-        return new self($name, Parameters::fromContainers($parameterContainers));
+        return new self($name, $parameterContainers);
     }
 
     /**
      * @param array<string,array{"type":string,"value":string}> $parameters
      */
-    public static function fromUnsafeArray(string $name, array $parameters): ParameterSet
+    public static function fromWrappedParameters(string $name, array $parameters): ParameterSet
     {
-        return new self($name, Parameters::fromUnsafeArray($parameters));
+        return new self($name, array_map(function (array $typeValuePair) {
+            return ParameterContainer::fromTypeValuePair($typeValuePair);
+        }, $parameters));
     }
 
     /**
      * @param array<string,mixed> $parameters
      */
-    public static function fromArray(string $name, array $parameters): self
+    public static function fromUnwrappedParameters(string $name, array $parameters): self
     {
-        return new self($name, Parameters::fromArray($parameters));
+        return new self($name, array_map(function ($parameter) {
+            return ParameterContainer::fromValue($parameter);
+        }, $parameters));
     }
 
     /**
      * @return array<string,mixed>
      */
-    public function toUnserializedArray(): array
+    public function toUnwrappedParameters(): array
     {
-        return $this->parameters->toUnserializedArray();
+        return array_map(function (ParameterContainer $container) {
+            return $container->unwrap();
+        }, $this->parameters);
     }
 
     /**
      * @return array<string, mixed>
      */
-    public function serialize(): array
+    public function toSerializedParameters(): array
     {
-        return $this->parameters->toSerializedArray();
+        return array_map(function (ParameterContainer $container) {
+            return $container->getValue();
+        }, $this->parameters);
     }
 }
