@@ -9,6 +9,9 @@ $beforeMethods = {{ beforeMethods }};
 $afterMethods = {{ afterMethods }};
 $bootstrap = '{{ bootstrap }}';
 $warmup = {{ warmup }};
+$parameters = array_map(function (string $value) {
+    return unserialize($value);
+}, {{ parameters }});
 
 if ($bootstrap) {
     call_user_func(function () use ($bootstrap) {
@@ -22,13 +25,13 @@ $benchmark = new $class();
 
 // run before methods
 foreach ($beforeMethods as $beforeMethod) {
-    $benchmark->$beforeMethod({{ parameters }});
+    $benchmark->$beforeMethod($parameters);
 }
 
 // run warmup if required
 if ($warmup) {
     for ($i = 0; $i < $warmup; $i++) {
-        $benchmark->{{ subject }}({{ parameters }});
+        $benchmark->{{ subject }}($parameters);
     }
 }
 
@@ -40,7 +43,7 @@ $time = 0.00;
 for ($i = 0; $i < {{ revolutions }}; $i++) {
     $startTime = microtime(true);
 
-    $benchmark->{{ subject }}({{ parameters }});
+    $benchmark->{{ subject }}($parameters);
 
     $endTime = microtime(true);
 
@@ -51,7 +54,7 @@ for ($i = 0; $i < {{ revolutions }}; $i++) {
 
 // run after methods
 foreach ($afterMethods as $afterMethod) {
-    $benchmark->$afterMethod({{ parameters }});
+    $benchmark->$afterMethod($parameters);
 }
 
 $buffer = ob_get_contents();
