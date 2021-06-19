@@ -2,9 +2,9 @@
 
 namespace PhpBench\Tests\Unit\Model;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Model\ParameterContainer;
 use PhpBench\Model\ParameterSet;
+use PHPUnit\Framework\TestCase;
 
 class ParameterSetTest extends TestCase
 {

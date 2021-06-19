@@ -2,8 +2,8 @@
 
 namespace PhpBench\Tests\Unit\Model;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Model\ParameterContainer;
+use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
 class ParameterContainerTest extends TestCase
@@ -12,7 +12,8 @@ class ParameterContainerTest extends TestCase
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Cannot serialize');
-        ParameterContainer::fromValue(function () {});
+        ParameterContainer::fromValue(function (): void {
+        });
     }
 
     public function testFromValue(): void

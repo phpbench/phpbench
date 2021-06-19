@@ -12,8 +12,6 @@
 
 namespace PhpBench\Model;
 
-use Iterator;
-
 final class ParameterSet
 {
     /**

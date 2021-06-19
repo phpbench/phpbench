@@ -49,7 +49,7 @@ final class ParameterContainer
     /**
      * Create a value from the (get)type and serialized value returned from a
      * remote process.
-     * 
+     *
      * ```
      * ParameterContainer::fromTypeValuePair(['type' => gettype($value), 'value' => serialize($value)])
      * ```

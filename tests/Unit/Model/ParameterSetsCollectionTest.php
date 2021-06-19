@@ -2,8 +2,8 @@
 
 namespace PhpBench\Tests\Unit\Model;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Model\ParameterSetsCollection;
+use PHPUnit\Framework\TestCase;
 
 class ParameterSetsCollectionTest extends TestCase
 {
