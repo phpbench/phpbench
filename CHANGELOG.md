@@ -22,7 +22,8 @@ Features:
 Improvement:
 
 - Use automatic time unit for expression report #838
-- Internal refactoring of parameters
+- Parameter handling refactored to be "safe": objects will not be unserialized
+  in the PHPBench process #845
 
 Other changes:
 
