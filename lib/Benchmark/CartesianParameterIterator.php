@@ -13,13 +13,17 @@
 namespace PhpBench\Benchmark;
 
 use ArrayIterator;
+use Iterator;
 use PhpBench\Model\ParameterSet;
 use PhpBench\Model\ParameterSetsCollection;
 
-class CartesianParameterIterator implements \Iterator
+/**
+ * @implements Iterator<ParameterSet>
+ */
+class CartesianParameterIterator implements Iterator
 {
     /**
-     * @var array<int,ArrayIterator<mixed,ParameterSet>>
+     * @var array<int,ArrayIterator<string, ParameterSet>>
      */
     private $sets = [];
 

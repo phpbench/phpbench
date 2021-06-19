@@ -7,18 +7,18 @@ use Countable;
 use IteratorAggregate;
 
 /**
- * @implements IteratorAggregate<ParameterSets>
+ * @implements IteratorAggregate<int, ParameterSets>
  */
 final class ParameterSetsCollection implements IteratorAggregate, Countable
 {
     /**
      * @var ParameterSets[]
      */
-    private $parameterSetsSources;
+    private $parameterSets;
 
-    public function __construct(ParameterSets ...$parameterSetsSources)
+    public function __construct(ParameterSets ...$parameterSets)
     {
-        $this->parameterSetsSources = $parameterSetsSources;
+        $this->parameterSets = $parameterSets;
     }
 
     /**
@@ -42,11 +42,11 @@ final class ParameterSetsCollection implements IteratorAggregate, Countable
     }
 
     /**
-     * @return ArrayIterator<mixed, ParameterSets>
+     * @return ArrayIterator<int, ParameterSets>
      */
     public function getIterator()
     {
-        return new ArrayIterator($this->parameterSetsSources);
+        return new ArrayIterator($this->parameterSets);
     }
 
     /**
@@ -54,7 +54,7 @@ final class ParameterSetsCollection implements IteratorAggregate, Countable
      */
     public function count(): int
     {
-        return count($this->parameterSetsSources);
+        return count($this->parameterSets);
     }
 
     public static function empty(): self
@@ -69,6 +69,6 @@ final class ParameterSetsCollection implements IteratorAggregate, Countable
     {
         return array_map(function (ParameterSets $parameterSets) {
             return $parameterSets->toUnwrappedParameterSets();
-        }, $this->parameterSetsSources);
+        }, $this->parameterSets);
     }
 }
