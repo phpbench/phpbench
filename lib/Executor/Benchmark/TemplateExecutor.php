@@ -12,6 +12,7 @@
 
 namespace PhpBench\Executor\Benchmark;
 
+use PhpBench\Compat\SymfonyOptionsResolverCompat;
 use PhpBench\Executor\BenchmarkExecutorInterface;
 use PhpBench\Executor\Exception\ExecutionError;
 use PhpBench\Executor\ExecutionContext;
@@ -26,6 +27,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class TemplateExecutor implements BenchmarkExecutorInterface
 {
     public const OPTION_PHP_CONFIG = 'php_config';
+    public const OPTION_SAFE_PARAMETERS = 'safe_parameters';
+
     private const PHP_OPTION_MAX_EXECUTION_TIME = 'max_execution_time';
 
     /**
@@ -46,7 +49,7 @@ class TemplateExecutor implements BenchmarkExecutorInterface
 
     public function execute(ExecutionContext $context, Config $config): ExecutionResults
     {
-        $tokens = $this->createTokens($context);
+        $tokens = $this->createTokens($context, $config);
         $payload = $this->launcher->payload($this->templatePath, $tokens, $context->getTimeout());
         $payload->mergePhpConfig(array_merge(
             [
@@ -81,11 +84,18 @@ class TemplateExecutor implements BenchmarkExecutorInterface
     {
         $options->setDefaults([
             self::OPTION_PHP_CONFIG => [
-            ]
+            ],
+            self::OPTION_SAFE_PARAMETERS => false,
+        ]);
+        SymfonyOptionsResolverCompat::setInfos($options, [
+            self::OPTION_SAFE_PARAMETERS => 'Use process safe parameters, this is set to `false` for B/C. Will be removed in 2.0'
         ]);
     }
 
-    protected function createTokens(ExecutionContext $context) : array
+    /**
+     * @return array<string,mixed>
+     */
+    protected function createTokens(ExecutionContext $context, Config $config) : array
     {
         return [
             'class' => $context->getClassName(),
@@ -94,8 +104,20 @@ class TemplateExecutor implements BenchmarkExecutorInterface
             'revolutions' => $context->getRevolutions(),
             'beforeMethods' => var_export($context->getBeforeMethods(), true),
             'afterMethods' => var_export($context->getAfterMethods(), true),
-            'parameters' => var_export($context->getParameters()->toSerializedParameters(), true),
+            'parameters' => var_export($this->resolveParameterSet($context, $config), true),
             'warmup' => $context->getWarmup() ?: 0,
         ];
+    }
+
+    /**
+     * @return array<string,mixed>
+     */
+    private function resolveParameterSet(ExecutionContext $context, Config $config): array
+    {
+        if ($config[self::OPTION_SAFE_PARAMETERS]) {
+            return $context->getParameters()->toSerializedParameters();
+        }
+
+        return $context->getParameters()->toUnwrappedParameters();
     }
 }

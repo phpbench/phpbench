@@ -6,6 +6,8 @@ use ArrayIterator;
 use Countable;
 use IteratorAggregate;
 use PhpBench\Model\ResultInterface;
+use PhpBench\Model\ResultInterface as PhpBenchResultInterface;
+use RuntimeException;
 
 /**
  * @implements IteratorAggregate<int, ResultInterface>
@@ -51,5 +53,24 @@ final class ExecutionResults implements IteratorAggregate, Countable
     public function count(): int
     {
         return count($this->results);
+    }
+
+    public function byType(string $target): self
+    {
+        return new self(...array_filter($this->results, function (ResultInterface $result) use ($target) {
+            return $result instanceof $target;
+        }));
+    }
+
+    public function first(): ResultInterface
+    {
+        if (empty($this->results)) {
+            throw new RuntimeException(
+                'Results are empty, cannot get the first one'
+            );
+        }
+
+        $first = reset($this->results);
+        return $first;
     }
 }

@@ -20,7 +20,7 @@ use PhpBench\Registry\Config;
 use PhpBench\Remote\Launcher;
 use RuntimeException;
 
-class MemoryExecutorTest extends AbstractExecutorTestCase
+class MemoryCentricMicrotimeExecutorTest extends AbstractExecutorTestCase
 {
     public function testRepressOutput(): void
     {
