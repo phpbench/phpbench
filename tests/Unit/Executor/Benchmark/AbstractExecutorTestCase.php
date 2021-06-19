@@ -103,6 +103,7 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
                     'one' => 'two',
                     'three' => 'four',
                 ],
+                'warmup' => 1,
             ]),
             $this->resolveConfig([])
         );
@@ -115,10 +116,7 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
         ], $params);
     }
 
-    /**
-     * It should pass parameters to the before metadata and after metadata methods.
-     */
-    public function testParametersBeforeSubject(): void
+    public function testParametersBeforeSubjectAndWarmup(): void
     {
         $expected = ParameterSet::fromUnwrappedParameters(0, [
             'one' => 'two',
@@ -140,11 +138,11 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
 
 
         $this->assertFileExists($this->workspacePath('parambefore.tmp'));
-        $params = json_decode(file_get_contents($this->workspace()->path('parambefore.tmp')), true);
+        $params = json_decode((string)file_get_contents($this->workspace()->path('parambefore.tmp')), true);
         $this->assertEquals($expected->toUnwrappedParameters(), $params);
 
         $this->assertFileExists($this->workspacePath('paramafter.tmp'));
-        $params = json_decode(file_get_contents($this->workspace()->path('paramafter.tmp')), true);
+        $params = json_decode((string)file_get_contents($this->workspace()->path('paramafter.tmp')), true);
         $this->assertEquals($expected->toUnwrappedParameters(), $params);
     }
 
@@ -172,6 +170,9 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
         return $config;
     }
 
+    /**
+     * @param parameters $config
+     */
     protected function resolveConfig(array $config): Config
     {
         $resolver = new OptionsResolver();

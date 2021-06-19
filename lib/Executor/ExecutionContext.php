@@ -87,7 +87,7 @@ final class ExecutionContext
         $this->revolutions = $revolutions;
         $this->beforeMethods = $beforeMethods;
         $this->afterMethods = $afterMethods;
-        $this->parameters = $parameters instanceof ParameterSet ? $parameters : ParameterSet::fromUnwrappedParameters('default', $parameters);
+        $this->parameters = $parameters instanceof ParameterSet ? $parameters : ParameterSet::fromUnwrappedParameters('default', $parameters ?? []);
         $this->warmup = $warmup;
         $this->iterationIndex = $iterationIndex;
         $this->timeOut = $timeOut;
