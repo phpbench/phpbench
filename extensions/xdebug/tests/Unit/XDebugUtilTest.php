@@ -16,7 +16,6 @@ use DTL\Invoke\Invoke;
 use PhpBench\Executor\ExecutionContext;
 use PhpBench\Extensions\XDebug\XDebugUtil;
 use PhpBench\Model\Iteration;
-use PhpBench\Model\ParameterSet;
 use PhpBench\Tests\TestCase;
 
 class XDebugUtilTest extends TestCase
@@ -36,7 +35,7 @@ class XDebugUtilTest extends TestCase
         $params = [
             'classPath' => '/foobar',
             'parameterSetName' => '7',
-            'parameters' => ParameterSet::fromUnwrappedParameters('test', ['asd']),
+            'parameters' => ['asd'],
             'className' => $class,
             'methodName' => $subject,
         ];
