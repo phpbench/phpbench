@@ -12,12 +12,7 @@
 
 namespace PhpBench\Model;
 
-use Iterator;
-
-/**
- * @implements Iterator<string,mixed>
- */
-final class ParameterSet implements Iterator
+final class ParameterSet
 {
     /**
      * @var string
@@ -51,20 +46,23 @@ final class ParameterSet implements Iterator
     }
 
     /**
-     * @return array<array<string,mixed>>
+     * @return array<string,ParameterContainer>
      */
     public function toArray(): array
     {
         return $this->parameters->toArray();
     }
 
-    public static function fromContainers(string $name, ParameterContainer ...$parameterContainers): self
+    /**
+     * @param array<string, ParameterContainer> $parameterContainers
+     */
+    public static function fromContainers(string $name, array $parameterContainers): self
     {
         return new self($name, Parameters::fromContainers($parameterContainers));
     }
 
     /**
-     * @param array<string,array{"type":string,"value":string}> $parameterSet
+     * @param array<string,array{"type":string,"value":string}> $parameters
      */
     public static function fromUnsafeArray(string $name, array $parameters): ParameterSet
     {
@@ -72,57 +70,24 @@ final class ParameterSet implements Iterator
     }
 
     /**
+     * @param array<string,mixed> $parameters
      */
     public static function fromArray(string $name, array $parameters): self
     {
         return new self($name, Parameters::fromArray($parameters));
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     public function toUnserializedArray(): array
     {
         return $this->parameters->toUnserializedArray();
     }
 
     /**
-     * @return Parameters|false
+     * @return array<string, mixed>
      */
-    public function current()
-    {
-        return current($this->parameters);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function next(): void
-    {
-        next($this->parameters);
-    }
-
-    /**
-     * @return string
-     */
-    public function key()
-    {
-        return key($this->parameters);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function valid()
-    {
-        return false !== current($this->parameters);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function rewind(): void
-    {
-        reset($this->parameters);
-    }
-
     public function serialize(): array
     {
         return $this->parameters->toSerializedArray();

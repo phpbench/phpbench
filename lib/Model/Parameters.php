@@ -38,7 +38,7 @@ final class Parameters
     }
 
     /**
-     * @param array<stirng, self> $parameterContainers
+     * @param array<string, ParameterContainer> $parameterContainers
      */
     public static function fromContainers(array $parameterContainers): self
     {
