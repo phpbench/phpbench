@@ -12,6 +12,8 @@
 
 namespace PhpBench\Benchmark\Metadata;
 
+use PhpBench\Model\ParameterSetsCollection;
+
 /**
  * Metadata for benchmarkMetadata subjects.
  */
@@ -23,9 +25,9 @@ class SubjectMetadata
     private $name;
 
     /**
-     * @var array[]
+     * @var ParameterSetsCollection
      */
-    private $parameterSets = [];
+    private $parameterSets;
 
     /**
      * @var string[]|null
@@ -128,6 +130,7 @@ class SubjectMetadata
     {
         $this->name = $name;
         $this->benchmarkMetadata = $benchmarkMetadata;
+        $this->parameterSets = ParameterSetsCollection::empty();
     }
 
     /**
@@ -140,20 +143,16 @@ class SubjectMetadata
 
     /**
      * Set the parameter sets for this subject.
-     *
-     * @param array[] $parameterSets
      */
-    public function setParameterSets(array $parameterSets): void
+    public function setParameterSets(ParameterSetsCollection $parameterSets): void
     {
         $this->parameterSets = $parameterSets;
     }
 
     /**
      * Return the parameter sets for this subject.
-     *
-     * @return array[]
      */
-    public function getParameterSets(): array
+    public function getParameterSetsCollection(): ParameterSetsCollection
     {
         return $this->parameterSets;
     }

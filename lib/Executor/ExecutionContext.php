@@ -4,6 +4,7 @@ namespace PhpBench\Executor;
 
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Model\Iteration;
+use PhpBench\Model\ParameterSet;
 
 final class ExecutionContext
 {
@@ -13,7 +14,7 @@ final class ExecutionContext
     private $className;
 
     /**
-     * @var array<string,mixed>
+     * @var ParameterSet
      */
     private $parameters;
 
@@ -62,6 +63,11 @@ final class ExecutionContext
      */
     private $parameterSetName;
 
+    /**
+     * @param ParameterSet|array<string,mixed>|null $parameters The type array is deprecated and will be removed in 2.0
+     * @param string[] $beforeMethods
+     * @param string[] $afterMethods
+     */
     public function __construct(
         string $className,
         string $classPath,
@@ -69,7 +75,7 @@ final class ExecutionContext
         int $revolutions = 1,
         array $beforeMethods = [],
         array $afterMethods = [],
-        array $parameters = [],
+        $parameters = null,
         int $warmup = 0,
         int $iterationIndex = 0,
         ?float $timeOut = null,
@@ -81,7 +87,7 @@ final class ExecutionContext
         $this->revolutions = $revolutions;
         $this->beforeMethods = $beforeMethods;
         $this->afterMethods = $afterMethods;
-        $this->parameters = $parameters;
+        $this->parameters = $parameters instanceof ParameterSet ? $parameters : ParameterSet::fromUnwrappedParameters('default', $parameters ?? []);
         $this->warmup = $warmup;
         $this->iterationIndex = $iterationIndex;
         $this->timeOut = $timeOut;
@@ -97,7 +103,7 @@ final class ExecutionContext
             $iteration->getVariant()->getRevolutions(),
             $subjectMetadata->getBeforeMethods(),
             $subjectMetadata->getAfterMethods(),
-            $iteration->getVariant()->getParameterSet()->getArrayCopy(),
+            $iteration->getVariant()->getParameterSet(),
             $iteration->getVariant()->getWarmup() ?: 0,
             $iteration->getIndex(),
             $subjectMetadata->getTimeout(),
@@ -110,7 +116,7 @@ final class ExecutionContext
         return $this->className;
     }
 
-    public function getParameters(): array
+    public function getParameters(): ParameterSet
     {
         return $this->parameters;
     }
@@ -130,11 +136,17 @@ final class ExecutionContext
         return $this->warmup;
     }
 
+    /**
+     * @return string[]
+     */
     public function getAfterMethods(): array
     {
         return $this->afterMethods;
     }
 
+    /**
+     * @return string[]
+     */
     public function getBeforeMethods(): array
     {
         return $this->beforeMethods;

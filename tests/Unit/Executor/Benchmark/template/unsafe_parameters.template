@@ -1,0 +1,15 @@
+<?php
+
+$parameters = {{ parameters }};
+echo serialize([
+    'time' => [
+        'net' => $parameters['time'],
+    ],
+    'mem' => [
+        'peak' => 0,
+        'real' => 0,
+        'final' => 0,
+    ],
+]);
+exit(0);
+

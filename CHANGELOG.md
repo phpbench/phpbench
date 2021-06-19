@@ -22,6 +22,13 @@ Features:
 Improvement:
 
 - Use automatic time unit for expression report #838
+- Parameter handling refactored to be "safe": objects will not be unserialized
+  in the PHPBench process #845
+
+Other changes:
+
+- "0" is not longer shown as the "set name" in reports, it is now an empty
+  string.
 
 1.0.2 (2021-05-28)
 ------------------

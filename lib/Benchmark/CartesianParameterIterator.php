@@ -12,14 +12,39 @@
 
 namespace PhpBench\Benchmark;
 
+use ArrayIterator;
+use Iterator;
 use PhpBench\Model\ParameterSet;
+use PhpBench\Model\ParameterSetsCollection;
 
-class CartesianParameterIterator implements \Iterator
+/**
+ * @implements Iterator<ParameterSet>
+ */
+class CartesianParameterIterator implements Iterator
 {
+    /**
+     * @var array<int,ArrayIterator<string, ParameterSet>>
+     */
     private $sets = [];
+
+    /**
+     * @var int
+     */
     private $index = 0;
+
+    /**
+     * @var int
+     */
     private $max;
+
+    /**
+     * @var array<mixed>
+     */
     private $current = [];
+
+    /**
+     * @var bool
+     */
     private $break = false;
 
     /**
@@ -27,20 +52,20 @@ class CartesianParameterIterator implements \Iterator
      */
     private $key;
 
-    public function __construct(array $parameterSets)
+    public function __construct(ParameterSetsCollection $parameterSetsCollection)
     {
-        foreach ($parameterSets as $parameterSet) {
-            $this->sets[] = new \ArrayIterator($parameterSet);
+        foreach ($parameterSetsCollection as $parameterSets) {
+            $this->sets[] = $parameterSets->getIterator();
         }
 
-        if (empty($parameterSets)) {
+        if (0 === $parameterSetsCollection->count()) {
             $this->break = true;
         }
 
-        $this->max = count($parameterSets) - 1;
+        $this->max = count($parameterSetsCollection) - 1;
     }
 
-    public function current()
+    public function current(): ParameterSet
     {
         return $this->getParameterSet();
     }
@@ -93,10 +118,9 @@ class CartesianParameterIterator implements \Iterator
         $key = [];
 
         foreach ($this->sets as $set) {
-            $this->current = array_merge(
-                $this->current,
-                $set->current() ?: []
-            );
+            $current = $set->current();
+            /** @phpstan-ignore-next-line */
+            $this->current = array_merge($this->current, $current ? $current->toArray() : []);
             $key[] = $set->key();
         }
         $this->key = implode(',', $key);
@@ -104,6 +128,6 @@ class CartesianParameterIterator implements \Iterator
 
     private function getParameterSet(): ParameterSet
     {
-        return new ParameterSet($this->key, $this->current);
+        return ParameterSet::fromParameterContainers($this->key, $this->current);
     }
 }

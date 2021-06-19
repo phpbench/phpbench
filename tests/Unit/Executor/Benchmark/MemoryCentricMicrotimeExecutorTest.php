@@ -12,13 +12,13 @@
 
 namespace PhpBench\Tests\Unit\Executor\Benchmark;
 
-use PhpBench\Executor\Benchmark\RemoteExecutor;
+use PhpBench\Executor\Benchmark\MemoryCentricMicrotimeExecutor;
 use PhpBench\Executor\BenchmarkExecutorInterface;
 use PhpBench\Executor\ExecutionResults;
 use PhpBench\Remote\Launcher;
 use RuntimeException;
 
-class RemoteExecutorTest extends AbstractExecutorTestCase
+class MemoryCentricMicrotimeExecutorTest extends AbstractExecutorTestCase
 {
     public function testRepressOutput(): void
     {
@@ -35,7 +35,7 @@ class RemoteExecutorTest extends AbstractExecutorTestCase
 
     protected function createExecutor(): BenchmarkExecutorInterface
     {
-        return new RemoteExecutor(new Launcher(null));
+        return new MemoryCentricMicrotimeExecutor(new Launcher(null));
     }
 
     protected function assertExecute(ExecutionResults $results): void

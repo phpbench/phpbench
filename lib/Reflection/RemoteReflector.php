@@ -13,6 +13,7 @@
 namespace PhpBench\Reflection;
 
 use function array_filter;
+use PhpBench\Model\ParameterSetsCollection;
 use PhpBench\Remote\Launcher;
 
 /**
@@ -86,7 +87,7 @@ class RemoteReflector implements ReflectorInterface
      *
      * @param string[] $paramProviders
      */
-    public function getParameterSets(string $file, array $paramProviders): array
+    public function getParameterSets(string $file, array $paramProviders): ParameterSetsCollection
     {
         $parameterSets = $this->launcher->payload(__DIR__ . '/template/parameter_set_extractor.template', [
             'file' => $file,
@@ -94,20 +95,7 @@ class RemoteReflector implements ReflectorInterface
             'paramProviders' => var_export($paramProviders, true),
         ])->launch();
 
-        // validate parameters
-        $parameters = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($parameterSets));
-        iterator_apply($parameters, function (\Iterator $iterator): void {
-            $parameter = $iterator->current();
-
-            if (!is_scalar($parameter) && isset($parameter)) {
-                throw new \InvalidArgumentException(sprintf(
-                    'Parameter values must be scalar. Got "%s"',
-                    is_object($parameter) ? get_class($parameter) : gettype($parameter)
-                ));
-            }
-        }, [$parameters]);
-
-        return $parameterSets;
+        return ParameterSetsCollection::fromWrappedParameterSetsCollection($parameterSets);
     }
 
     /**

@@ -12,6 +12,8 @@
 
 namespace PhpBench\Benchmark\Metadata;
 
+use InvalidArgumentException;
+use PhpBench\Model\Exception\InvalidParameterSets;
 use PhpBench\Model\Subject;
 use PhpBench\Reflection\ReflectionHierarchy;
 use PhpBench\Reflection\ReflectorInterface;
@@ -71,17 +73,16 @@ class MetadataFactory
             if (!$paramProviders) {
                 continue;
             }
-            $parameterSets = $this->reflector->getParameterSets($metadata->getPath(), $paramProviders);
 
-            foreach ($parameterSets as $parameterSet) {
-                if (!is_array($parameterSet)) {
-                    throw new \InvalidArgumentException(sprintf(
-                        'Each parameter set must be an array, got "%s" for %s::%s',
-                        gettype($parameterSet),
-                        $metadata->getClass(),
-                        $subject->getName()
-                    ));
-                }
+            try {
+                $parameterSets = $this->reflector->getParameterSets($metadata->getPath(), $paramProviders);
+            } catch (InvalidParameterSets $invalid) {
+                throw new InvalidArgumentException(sprintf(
+                    '%s for %s::%s',
+                    $invalid->getMessage(),
+                    $metadata->getClass(),
+                    $subject->getName()
+                ));
             }
             $subject->setParameterSets($parameterSets);
         }

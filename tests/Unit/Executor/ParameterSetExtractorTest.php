@@ -21,22 +21,52 @@ class ParameterSetExtractorTest extends TestCase
 {
     public function testProvideParameterFromCallable(): void
     {
-        $this->provideParams(['PhpBench\Tests\Unit\Executor\benchmarks\hello_world']);
+        $result = $this->provideParams(['PhpBench\Tests\Unit\Executor\benchmarks\hello_world']);
+        $this->assertEquals([
+            [
+                ['hello' => ['type' => 'string', 'value' => serialize('goodbye')]],
+            ],
+        ], $result);
     }
 
     public function testProvideParameterFromBenchmark(): void
     {
-        $this->provideParams(['provideParams']);
+        $result = $this->provideParams(['provideParams']);
+        $this->assertEquals([
+            [
+                ['hello' => ['type' => 'string', 'value' => serialize('goodbye')]],
+            ],
+        ], $result);
     }
 
     public function testProvideParameterFromIterator(): void
     {
-        $this->provideParams(['provideIterator']);
+        $result = $this->provideParams(['provideIterator']);
+        $this->assertEquals([
+            [
+                ['hello' => ['type' => 'string', 'value' => serialize('goodbye')]],
+            ],
+        ], $result);
+    }
+
+    public function testProvideParameterFromIteratorWithKeys(): void
+    {
+        $result = $this->provideParams(['provideIteratorWithKeys']);
+        $this->assertEquals([
+            [
+                'one' => ['hello' => ['type' => 'string', 'value' => serialize('goodbye')]],
+            ],
+        ], $result);
     }
 
     public function testProvideParameterFromGenerator(): void
     {
-        $this->provideParams(['provideGenerator']);
+        $result = $this->provideParams(['provideGenerator']);
+        $this->assertEquals([
+            [
+                ['hello' => ['type' => 'string', 'value' => serialize('goodbye')]],
+            ],
+        ], $result);
     }
 
     public function testThrowsExceptionIfParameterDoesntExist(): void
@@ -53,7 +83,10 @@ class ParameterSetExtractorTest extends TestCase
         $this->provideParams(['privateParamProvider']);
     }
 
-    private function provideParams(array $providers): void
+    /**
+     * @param string[] $providers
+     */
+    private function provideParams(array $providers): array
     {
         $payload = new Payload(__DIR__ . '/../../../lib/Reflection/template/parameter_set_extractor.template', [
             'bootstrap' => __DIR__ . '/benchmarks/ParamProviderBench.php',
@@ -61,11 +94,7 @@ class ParameterSetExtractorTest extends TestCase
             'class' => ParamProviderBench::class,
             'paramProviders' => json_encode($providers),
         ]);
-        $result = $payload->launch();
-        $this->assertEquals([
-            [
-                ['hello' => 'goodbye'],
-            ],
-        ], $result);
+
+        return $payload->launch();
     }
 }

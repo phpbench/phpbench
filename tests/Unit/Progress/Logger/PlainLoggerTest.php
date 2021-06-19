@@ -42,14 +42,13 @@ class PlainLoggerTest extends PhpBenchLoggerTest
         $this->variant->count()->willReturn(10);
         $this->variant->getStats()->willReturn($this->stats->reveal());
         $this->variant->getSubject()->willReturn($this->subject->reveal());
-        $this->variant->getParameterSet()->willReturn($this->parameterSet->reveal());
+        $this->variant->getParameterSet()->willReturn($this->parameterSet);
         $this->variant->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant->reveal(), []));
         $this->subject->getOutputTimeUnit()->willReturn(null);
         $this->subject->getOutputMode()->willReturn(null);
         $this->subject->getName()->willReturn('benchFoo');
         $this->subject->getVariants()->willReturn([$this->variant->reveal()]);
         $this->subject->getOutputTimePrecision()->willReturn(null);
-        $this->parameterSet->getIndex()->willReturn(0);
 
         $this->logger->variantEnd($this->variant->reveal());
         self::assertStringContainsString('summary', $this->output->fetch());

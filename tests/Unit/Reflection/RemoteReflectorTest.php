@@ -18,6 +18,7 @@ use PhpBench\Attributes\Revs;
 use PhpBench\Reflection\ReflectionClass;
 use PhpBench\Reflection\ReflectionHierarchy;
 use PhpBench\Reflection\ReflectionMethod;
+use PhpBench\Reflection\ReflectorInterface;
 use PhpBench\Reflection\RemoteReflector;
 use PhpBench\Remote\Launcher;
 use PhpBench\Tests\IntegrationTestCase;
@@ -27,6 +28,9 @@ use PhpBench\Tests\Unit\Reflection\reflector\Class3;
 
 class RemoteReflectorTest extends IntegrationTestCase
 {
+    /**
+     * @var ReflectorInterface
+     */
     private $reflector;
 
     protected function setUp(): void
@@ -235,7 +239,7 @@ EOT
                     'ten' => null,
                 ],
             ],
-        ], $parameterSets);
+        ], $parameterSets->toUnwrappedParameterSetsCollection());
     }
 
     /**

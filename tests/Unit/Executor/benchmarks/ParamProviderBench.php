@@ -53,4 +53,13 @@ class ParamProviderBench
             ]
         );
     }
+
+    public function provideIteratorWithKeys(): Iterator
+    {
+        return new ArrayIterator(
+            [
+                'one' => [ 'hello' => 'goodbye' ]
+            ]
+        );
+    }
 }

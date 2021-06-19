@@ -20,6 +20,7 @@ use PhpBench\Model\Benchmark;
 use PhpBench\Model\ParameterSet;
 use PhpBench\Registry\Config;
 use PhpBench\Tests\PhpBenchTestCase;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class AbstractExecutorTestCase extends PhpBenchTestCase
 {
@@ -52,7 +53,7 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
                 'revolutions' => 10,
                 'warmup' => 1,
             ]),
-            new Config('test', [])
+            $this->resolveConfig([])
         );
 
         $this->assertExecute($results);
@@ -68,7 +69,7 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
                 'methodName' => 'doSomething',
                 'beforeMethods' => ['beforeMethod'],
             ]),
-            new Config('test', [])
+            $this->resolveConfig([])
         );
 
         $this->assertFileExists($this->workspace()->path('before_method.tmp'));
@@ -84,7 +85,7 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
                 'methodName' => 'doSomething',
                 'beforeMethods' => ['afterMethod'],
             ]),
-            new Config('test', [])
+            $this->resolveConfig([])
         );
 
         $this->assertFileExists($this->workspacePath('after_method.tmp'));
@@ -102,8 +103,9 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
                     'one' => 'two',
                     'three' => 'four',
                 ],
+                'warmup' => 1,
             ]),
-            new Config('test', [])
+            $this->resolveConfig([])
         );
 
         $this->assertFileExists($this->workspacePath('param.tmp'));
@@ -114,12 +116,9 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
         ], $params);
     }
 
-    /**
-     * It should pass parameters to the before metadata and after metadata methods.
-     */
-    public function testParametersBeforeSubject(): void
+    public function testParametersBeforeSubjectAndWarmup(): void
     {
-        $expected = new ParameterSet(0, [
+        $expected = ParameterSet::fromUnwrappedParameters(0, [
             'one' => 'two',
             'three' => 'four',
         ]);
@@ -134,29 +133,51 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
                     'three' => 'four',
                 ],
             ]),
-            new Config('test', [])
+            $this->resolveConfig([])
         );
 
 
         $this->assertFileExists($this->workspacePath('parambefore.tmp'));
-        $params = json_decode(file_get_contents($this->workspace()->path('parambefore.tmp')), true);
-        $this->assertEquals($expected->getArrayCopy(), $params);
+        $params = json_decode((string)file_get_contents($this->workspace()->path('parambefore.tmp')), true);
+        $this->assertEquals($expected->toUnwrappedParameters(), $params);
 
         $this->assertFileExists($this->workspacePath('paramafter.tmp'));
-        $params = json_decode(file_get_contents($this->workspace()->path('paramafter.tmp')), true);
-        $this->assertEquals($expected->getArrayCopy(), $params);
+        $params = json_decode((string)file_get_contents($this->workspace()->path('paramafter.tmp')), true);
+        $this->assertEquals($expected->toUnwrappedParameters(), $params);
     }
 
+    /**
+     * @param parameters $config
+     */
     protected function buildContext(array $config): ExecutionContext
     {
         return Invoke::new(ExecutionContext::class, $this->buildConfig($config));
     }
 
+    /**
+     * @param parameters $config
+     *
+     * @return parameters
+     */
     protected function buildConfig(array $config): array
     {
-        return array_merge([
+        $config = array_merge([
             'className' => 'PhpBench\Tests\Unit\Executor\benchmarks\MicrotimeExecutorBench',
             'classPath' => __DIR__ . '/../benchmarks/MicrotimeExecutorBench.php',
         ], $config);
+        $config['parameters'] = ParameterSet::fromUnwrappedParameters('test', $config['parameters'] ?? []);
+
+        return $config;
+    }
+
+    /**
+     * @param parameters $config
+     */
+    protected function resolveConfig(array $config): Config
+    {
+        $resolver = new OptionsResolver();
+        $this->createExecutor()->configure($resolver);
+
+        return new Config('test', $resolver->resolve($config));
     }
 }

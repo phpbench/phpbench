@@ -12,12 +12,7 @@
 
 namespace PhpBench\Model;
 
-use ArrayObject;
-
-/**
- * @extends ArrayObject<string,mixed>
- */
-class ParameterSet extends ArrayObject
+final class ParameterSet
 {
     /**
      * @var string
@@ -25,20 +20,17 @@ class ParameterSet extends ArrayObject
     private $name;
 
     /**
-     * @param array<string,mixed> $parameters
+     * @var array<string,ParameterContainer>
      */
-    public function __construct(string $name, array $parameters = [])
-    {
-        $this->name = $name;
-        parent::__construct($parameters);
-    }
+    private $parameters;
 
     /**
-     * @param array<string,mixed> $parameters
+     * @param array<string,ParameterContainer> $parameters
      */
-    public static function create(string $name, array $parameters): self
+    private function __construct(string $name, array $parameters)
     {
-        return new self($name, $parameters);
+        $this->name = $name;
+        $this->parameters = $parameters;
     }
 
     public function getName(): string
@@ -52,5 +44,61 @@ class ParameterSet extends ArrayObject
     public function getIndex(): string
     {
         return $this->name;
+    }
+
+    /**
+     * @return array<string,ParameterContainer>
+     */
+    public function toArray(): array
+    {
+        return $this->parameters;
+    }
+
+    /**
+     * @param array<string, ParameterContainer> $parameterContainers
+     */
+    public static function fromParameterContainers(string $name, array $parameterContainers): self
+    {
+        return new self($name, $parameterContainers);
+    }
+
+    /**
+     * @param array<string,array{"type":string,"value":string}> $parameters
+     */
+    public static function fromWrappedParameters(string $name, array $parameters): ParameterSet
+    {
+        return new self($name, array_map(function (array $typeValuePair) {
+            return ParameterContainer::fromWrappedValue($typeValuePair);
+        }, $parameters));
+    }
+
+    /**
+     * @param array<string,mixed> $parameters
+     */
+    public static function fromUnwrappedParameters(string $name, array $parameters): self
+    {
+        return new self($name, array_map(function ($parameter) {
+            return ParameterContainer::fromValue($parameter);
+        }, $parameters));
+    }
+
+    /**
+     * @return array<string,mixed>
+     */
+    public function toUnwrappedParameters(): array
+    {
+        return array_map(function (ParameterContainer $container) {
+            return $container->toUnwrappedValue();
+        }, $this->parameters);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function toSerializedParameters(): array
+    {
+        return array_map(function (ParameterContainer $container) {
+            return $container->getValue();
+        }, $this->parameters);
     }
 }
