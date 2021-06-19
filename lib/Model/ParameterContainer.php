@@ -46,7 +46,17 @@ final class ParameterContainer
         return new self(gettype($value), $serialized);
     }
 
-    public static function fromTypeValuePair(array $typeValue): self
+    /**
+     * Create a value from the (get)type and serialized value returned from a
+     * remote process.
+     * 
+     * ```
+     * ParameterContainer::fromTypeValuePair(['type' => gettype($value), 'value' => serialize($value)])
+     * ```
+     *
+     * @param array{"type":string,"value":string} $typeValue
+     */
+    public static function fromWrappedValue(array $typeValue): self
     {
         if (!isset($typeValue['type'])) {
             throw new RuntimeException(sprintf(
@@ -68,7 +78,7 @@ final class ParameterContainer
     /**
      * @return mixed
      */
-    public function unwrap()
+    public function toUnwrappedValue()
     {
         return unserialize($this->value);
     }

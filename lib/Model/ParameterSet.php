@@ -70,7 +70,7 @@ final class ParameterSet
     public static function fromWrappedParameters(string $name, array $parameters): ParameterSet
     {
         return new self($name, array_map(function (array $typeValuePair) {
-            return ParameterContainer::fromTypeValuePair($typeValuePair);
+            return ParameterContainer::fromWrappedValue($typeValuePair);
         }, $parameters));
     }
 
@@ -90,7 +90,7 @@ final class ParameterSet
     public function toUnwrappedParameters(): array
     {
         return array_map(function (ParameterContainer $container) {
-            return $container->unwrap();
+            return $container->toUnwrappedValue();
         }, $this->parameters);
     }
 
