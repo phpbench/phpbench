@@ -39,8 +39,7 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
             self::PARAM_TITLE => null,
             self::PARAM_X_PARTITION => [],
             self::PARAM_SET_PARTITION => [],
-            self::PARAM_Y_AXES_LABEL => 'yValue',
-            self::PARAM_DESCRIPTION => null,
+            self::PARAM_Y_AXES_LABEL => 'yValue'
         ]);
         $options->setRequired(self::PARAM_Y_EXPR);
         $options->setRequired(self::PARAM_Y_ERROR_MARGIN);
@@ -81,8 +80,7 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
                 return new BarChartDataSet($setName, $xLabels, $ySeries, $errorMargins);
             }, (array)$ySeries, (array)$errorMargins, array_keys((array)$ySeries)),
             $this->evaluator->renderTemplate($config[self::PARAM_TITLE], ['frame' => $dataFrame]),
-            $config[self::PARAM_Y_AXES_LABEL],
-            $this->evaluator->renderTemplate($config[self::PARAM_DESCRIPTION], ['frame' => $dataFrame]),
+            $config[self::PARAM_Y_AXES_LABEL]
         );
     }
 

@@ -71,7 +71,7 @@ return [
                 "tabbed" => true,
                 "components" => [
                     [
-                        "title" => "Time",
+                        "title" => "Average iteration times aggregated by benchmark",
                         "_type" => "bar_chart_aggregate",
                         "x_partition" => ["benchmark_name"],
                         "set_partition" => ["suite_tag"],

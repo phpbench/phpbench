@@ -23,19 +23,13 @@ class BarChart implements ComponentInterface
     private $yAxesLabel;
 
     /**
-     * @var string|null
-     */
-    private $description;
-
-    /**
      * @param BarChartDataSet[] $dataSets
      */
-    public function __construct(array $dataSets, ?string $title, ?string $yAxesLabel, ?string $description = null)
+    public function __construct(array $dataSets, ?string $title, ?string $yAxesLabel)
     {
         $this->dataSets = $dataSets;
         $this->title = $title;
         $this->yAxesLabel = $yAxesLabel;
-        $this->description = $description;
     }
 
     /**
@@ -108,10 +102,5 @@ class BarChart implements ComponentInterface
         }
 
         return $this->dataSets[$offset];
-    }
-
-    public function description(): ?string
-    {
-        return $this->description;
     }
 }
