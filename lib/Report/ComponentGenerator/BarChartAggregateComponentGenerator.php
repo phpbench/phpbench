@@ -77,6 +77,7 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
         }
 
         $ySeries = $this->normalizeSeries($xLabels, $ySeries);
+
         if (null !== $config[self::PARAM_Y_ERROR_MARGIN]) {
             $errorMargins = $this->normalizeSeries($xLabels, $errorMargins);
         }
