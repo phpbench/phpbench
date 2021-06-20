@@ -8,7 +8,7 @@ Suites
 | test  | 2016-02-06 00:00:00 | null | null       | null   | 2          | 2    | 5.000μs | 10.000μs |
 +-------+---------------------+------+------------+--------+------------+------+---------+----------+
 
-Time
+Average iteration times aggregated by benchmark
 
 5.0μs     │ █ 
 4.4μs     │ █ 
@@ -22,7 +22,7 @@ Time
 
 [█ test] 
 
-Memory
+Average peak memory aggregated by benchmark
 
 200b      │ █ 
 175b      │ █ 

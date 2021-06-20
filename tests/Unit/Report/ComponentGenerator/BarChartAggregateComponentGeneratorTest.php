@@ -68,4 +68,23 @@ class BarChartAggregateComponentGeneratorTest extends ComponentGeneratorTestCase
         self::assertEquals([22, 43], $barChart->dataSet(1)->ySeries());
         self::assertEquals([33, 54], $barChart->dataSet(1)->errorMargins());
     }
+
+    public function testTitle(): void
+    {
+        $frame = DataFrame::fromRowSeries([
+            [1, 'hello',   12, 33],
+            [1, 'goodbye', 23, 44],
+            [2, 'hello',   22, 33],
+            [2, 'goodbye', 43, 54],
+        ], ['group', 'name', 'value', 'error']);
+
+        $barChart = $this->generate($frame, [
+            BarChartAggregateComponentGenerator::PARAM_Y_EXPR => 'first(partition["value"])',
+            BarChartAggregateComponentGenerator::PARAM_Y_ERROR_MARGIN => 'first(partition["error"])',
+            BarChartAggregateComponentGenerator::PARAM_TITLE => 'Hello {{ first(frame["value"])}}',
+        ]);
+        assert($barChart instanceof BarChart);
+        self::assertInstanceOf(BarChart::class, $barChart);
+        self::assertEquals('Hello 12', $barChart->title(), 'title');
+    }
 }

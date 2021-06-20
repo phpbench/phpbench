@@ -4,6 +4,7 @@ namespace PhpBench\Report\Model;
 
 use ArrayIterator;
 use IteratorAggregate;
+use RuntimeException;
 
 /**
  * @implements IteratorAggregate<int,Report>
@@ -62,5 +63,14 @@ final class Reports implements IteratorAggregate
         }
 
         return $tables;
+    }
+
+    public function first(): Report
+    {
+        if (empty($this->reports)) {
+            throw new RuntimeException('Reports collection is empty, cannot get first');
+        }
+
+        return reset($this->reports);
     }
 }

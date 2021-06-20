@@ -64,23 +64,24 @@ return [
                     "revs" => "sum(partition[\"result_time_revs\"])",
                     "mode" => "mode(partition[\"result_time_avg\"]) as time",
                     "net_time" => "sum(partition[\"result_time_net\"]) as time"
-                ]
+                ],
             ],
             [
                 "_type" => "report",
                 "tabbed" => true,
+                "tab_labels" => ['Time', 'Memory'],
                 "components" => [
                     [
-                        "title" => "Time",
+                        "title" => "Average iteration times aggregated by benchmark",
                         "_type" => "bar_chart_aggregate",
                         "x_partition" => ["benchmark_name"],
                         "set_partition" => ["suite_tag"],
                         "y_expr" => "mode(partition[\"result_time_avg\"])",
-                        "y_error_margin" => "stdev(partition[\"result_time_avg\"])",
+                        "y_error_margin" => "0",
                         "y_axes_label" => "yValue as time precision 1"
                     ],
                     [
-                        "title" => "Memory",
+                        "title" => "Average peak memory aggregated by benchmark",
                         "_type" => "bar_chart_aggregate",
                         "x_partition" => ["benchmark_name"],
                         "set_partition" => ["suite_tag"],
@@ -134,9 +135,10 @@ return [
                     [
                         "_type" => "report",
                         "tabbed" => true,
+                        "tab_labels" => ["Time", "Memory"],
                         "components" => [
                             [
-                                "title" => "Time",
+                                "title" => "Average iteration times by variant",
                                 "_type" => "bar_chart_aggregate",
                                 "x_partition" => ["subject_name", "variant_name"],
                                 "set_partition" => ["suite_tag"],
@@ -145,7 +147,7 @@ return [
                                 "y_axes_label" => "yValue as time precision 1"
                             ],
                             [
-                                "title" => "Memory",
+                                "title" => "Memory by variant",
                                 "_type" => "bar_chart_aggregate",
                                 "x_partition" => ["subject_name", "variant_name"],
                                 "set_partition" => ["suite_tag"],

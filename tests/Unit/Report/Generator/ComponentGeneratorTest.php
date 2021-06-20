@@ -18,6 +18,7 @@ use PhpBench\Report\ComponentGeneratorAgent;
 use PhpBench\Report\Generator\ComponentGenerator;
 use PhpBench\Report\GeneratorInterface;
 use PhpBench\Report\Transform\SuiteCollectionTransformer;
+use PhpBench\Tests\Util\TestUtil;
 use Psr\Log\NullLogger;
 
 class ComponentGeneratorTest extends GeneratorTestCase
@@ -37,5 +38,60 @@ class ComponentGeneratorTest extends GeneratorTestCase
             $container->get(ExpressionEvaluator::class),
             new NullLogger()
         );
+    }
+
+    public function testTabsAndTabLabels(): void
+    {
+        $generator = $this->createGenerator($this->container());
+        $reports = $generator->generate(TestUtil::createCollection(), $this->resolveConfig($generator, [
+            ComponentGenerator::PARAM_TABBED => true,
+            ComponentGenerator::PARAM_TAB_LABELS => [ 'one', 'two' ]
+        ]));
+        $report = $reports->first();
+        self::assertTrue($report->tabbed());
+        self::assertEquals(['one', 'two'], $report->tabLabels());
+    }
+
+    public function testDefaultTabLabels(): void
+    {
+        $generator = $this->createGenerator($this->container());
+        $reports = $generator->generate(TestUtil::createCollection([[]]), $this->resolveConfig($generator, [
+            ComponentGenerator::PARAM_TABBED => true,
+            ComponentGenerator::PARAM_TAB_LABELS => [ 'one' ],
+            ComponentGenerator::PARAM_COMPONENTS => [
+                [
+                    '_type' => 'table_aggregate',
+                    'title' => 'hello',
+                ],
+                [
+                    '_type' => 'table_aggregate',
+                    'title' => 'goodbye',
+                ]
+            ]
+        ]));
+        $report = $reports->first();
+        self::assertTrue($report->tabbed());
+        self::assertEquals(['one', 'goodbye'], $report->tabLabels());
+    }
+
+    public function testNoConfiguredTabLabels(): void
+    {
+        $generator = $this->createGenerator($this->container());
+        $reports = $generator->generate(TestUtil::createCollection([[]]), $this->resolveConfig($generator, [
+            ComponentGenerator::PARAM_TABBED => true,
+            ComponentGenerator::PARAM_COMPONENTS => [
+                [
+                    '_type' => 'table_aggregate',
+                    'title' => 'hello',
+                ],
+                [
+                    '_type' => 'table_aggregate',
+                    'title' => 'goodbye',
+                ]
+            ]
+        ]));
+        $report = $reports->first();
+        self::assertTrue($report->tabbed());
+        self::assertEquals(['hello', 'goodbye'], $report->tabLabels());
     }
 }

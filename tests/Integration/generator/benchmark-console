@@ -1,7 +1,7 @@
 TestBench
 =========
 
-Time
+Average iteration times by variant
 
 5.0μs     │ █ 
 4.4μs     │ █ 
@@ -15,7 +15,7 @@ Time
 
 [█ test] 
 
-Memory
+Memory by variant
 
 200b      │ █ 
 175b      │ █ 
