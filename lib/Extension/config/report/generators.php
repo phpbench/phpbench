@@ -76,7 +76,7 @@ return [
                         "x_partition" => ["benchmark_name"],
                         "set_partition" => ["suite_tag"],
                         "y_expr" => "mode(partition[\"result_time_avg\"])",
-                        "y_error_margin" => "stdev(partition[\"result_time_avg\"])",
+                        "y_error_margin" => "0",
                         "y_axes_label" => "yValue as time precision 1"
                     ],
                     [

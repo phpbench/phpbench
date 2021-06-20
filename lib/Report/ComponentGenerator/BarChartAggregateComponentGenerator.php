@@ -17,7 +17,8 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
     public const PARAM_Y_EXPR = 'y_expr';
     public const PARAM_Y_ERROR_MARGIN = 'y_error_margin';
     public const PARAM_TITLE = 'title';
-    const PARAM_Y_AXES_LABEL = 'y_axes_label';
+    public const PARAM_DESCRIPTION = 'description';
+    public const PARAM_Y_AXES_LABEL = 'y_axes_label';
 
     /**
      * @var ExpressionEvaluator
@@ -39,6 +40,7 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
             self::PARAM_X_PARTITION => [],
             self::PARAM_SET_PARTITION => [],
             self::PARAM_Y_AXES_LABEL => 'yValue',
+            self::PARAM_DESCRIPTION => null,
         ]);
         $options->setRequired(self::PARAM_Y_EXPR);
         $options->setRequired(self::PARAM_Y_ERROR_MARGIN);
@@ -74,12 +76,14 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
         $ySeries = $this->normalizeSeries($xLabels, $ySeries);
         $errorMargins = $this->normalizeSeries($xLabels, $errorMargins);
 
-        return new BarChart(array_map(function (array $ySeries, array $errorMargins, string $setName) use ($xLabels) {
-            return new BarChartDataSet($setName, $xLabels, $ySeries, $errorMargins);
-        }, (array)$ySeries, (array)$errorMargins, array_keys((array)$ySeries)), $config[self::PARAM_TITLE] ? $this->evaluator->renderTemplate(
-            $config[self::PARAM_TITLE],
-            ['frame' => $dataFrame]
-        ) : null, $config[self::PARAM_Y_AXES_LABEL]);
+        return new BarChart(
+            array_map(function (array $ySeries, array $errorMargins, string $setName) use ($xLabels) {
+                return new BarChartDataSet($setName, $xLabels, $ySeries, $errorMargins);
+            }, (array)$ySeries, (array)$errorMargins, array_keys((array)$ySeries)),
+            $this->evaluator->renderTemplate($config[self::PARAM_TITLE], ['frame' => $dataFrame]),
+            $config[self::PARAM_Y_AXES_LABEL],
+            $this->evaluator->renderTemplate($config[self::PARAM_DESCRIPTION], ['frame' => $dataFrame]),
+        );
     }
 
     private function normalizeSeries(array $xLabels, array $ySeries): array

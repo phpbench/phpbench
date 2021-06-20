@@ -67,14 +67,17 @@ final class ExpressionEvaluator
     }
 
     /**
+     * Render expressions in a string delimtied by `{{` and `}}`
      * @param parameters $params
      */
-    public function renderTemplate(?string $template, array $params): string
+    public function renderTemplate(?string $template, array $params): ?string
     {
-        return $this->mustacheRenderer->render($template, function (string $expression) use ($params) {
-            $v = $this->printer->print($this->evaluate($expression, $params));
+        if (null === $template) {
+            return null;
+        }
 
-            return $v;
+        return $this->mustacheRenderer->render($template, function (string $expression) use ($params) {
+            return $this->printer->print($this->evaluate($expression, $params));
         });
     }
 }
