@@ -27,6 +27,11 @@ final class ReportBuilder
      */
     private $tabbed = false;
 
+    /**
+     * @var string[] $tabLabels
+     */
+    private $tabLabels = [];
+
     private function __construct(string $title = null)
     {
         $this->title = $title;
@@ -36,6 +41,17 @@ final class ReportBuilder
     {
         return new self($title);
     }
+
+    /**
+     * @param string[] $labels
+     */
+    public function withTabLabels(array $labels): self
+    {
+        $this->tabLabels = $labels;
+
+        return $this;
+    }
+
 
     public function withDescription(string $description): self
     {
@@ -60,6 +76,12 @@ final class ReportBuilder
 
     public function build(): Report
     {
-        return new Report($this->objects, $this->title, $this->tabbed, $this->description);
+        return new Report(
+            $this->objects,
+            $this->title,
+            $this->tabbed,
+            $this->description,
+            $this->tabLabels,
+        );
     }
 }

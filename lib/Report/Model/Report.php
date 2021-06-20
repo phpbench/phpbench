@@ -27,22 +27,29 @@ final class Report implements ComponentInterface
     private $tabbed;
 
     /**
+     * @var string[] $tabLabels
+     */
+    private $tabLabels;
+
+    /**
      * @internal Use the ReportBuilder
      *
      * @param ComponentInterface[] $objects
+     * @param string[] $tabLabels
      */
-    public function __construct(array $objects, ?string $title, bool $tabbed = false, ?string $description = null)
+    public function __construct(array $objects, ?string $title, bool $tabbed = false, ?string $description = null, array $tabLabels = [])
     {
         $this->objects = $objects;
         $this->title = $title;
         $this->description = $description;
         $this->tabbed = $tabbed;
+        $this->tabLabels = $tabLabels;
     }
 
     /**
      * @deprecated to be removed in 2.0. Use ReportBuilder
      *
-     * @param Object[] $objects
+     * @param ComponentInterface[] $objects
      */
     public static function fromTables(array $objects, ?string $title = null, ?string $description = null): self
     {
@@ -52,7 +59,7 @@ final class Report implements ComponentInterface
     /**
      * @deprecated to be removed in 2.0. Use ReportBuilder
      */
-    public static function fromTable(object $object, ?string $title = null, ?string $description = null): self
+    public static function fromTable(ComponentInterface $object, ?string $title = null, ?string $description = null): self
     {
         return new self([$object], $title, false, $description);
     }
@@ -90,5 +97,13 @@ final class Report implements ComponentInterface
     public function tabbed(): bool
     {
         return $this->tabbed;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function tabLabels(): array
+    {
+        return $this->tabLabels;
     }
 }

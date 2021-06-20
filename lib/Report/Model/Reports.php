@@ -63,4 +63,13 @@ final class Reports implements IteratorAggregate
 
         return $tables;
     }
+
+    public function first(): Report
+    {
+        if (empty($this->reports)) {
+            throw new RuntimeException('Reports collection is empty, cannot get first');
+        }
+
+        return reset($this->reports);
+    }
 }

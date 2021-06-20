@@ -41,17 +41,27 @@ abstract class GeneratorTestCase extends IntegrationTestCase
         $approval->approve($this->generate($collection, $config));
     }
 
+    /**
+     * @return parameters
+     * @param parameters $config
+     */
+    protected function resolveConfig(GeneratorInterface $generator, array $config): Config
+    {
+        $options = new OptionsResolver();
+        $generator->configure($options);
+        return new Config('test', $options->resolve($config));
+    }
+
     protected function generate(SuiteCollection $collection, array $config): string
     {
         $container = $this->container();
         $generator = $this->createGenerator($container);
-        $options = new OptionsResolver();
-        $generator->configure($options);
+        $config = $this->resolveConfig($generator, $config);
 
         try {
             $document = $generator->generate(
                 $collection,
-                new Config('asd', $options->resolve($config))
+                $config
             );
             $this->container([
                 ConsoleExtension::PARAM_OUTPUT_STREAM => $this->workspace()->path('out')
