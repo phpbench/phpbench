@@ -45,6 +45,24 @@ class BarChartAggregateComponentGeneratorTest extends ComponentGeneratorTestCase
         self::assertEquals([33, 44], $barChart->dataSet(0)->errorMargins());
     }
 
+    public function testWithoutErrorMargin(): void
+    {
+        $frame = DataFrame::fromRowSeries([
+            ['hello',   12, 33],
+            ['goodbye', 23, 44],
+        ], ['name', 'value', 'error']);
+
+        $barChart = $this->generate($frame, [
+            BarChartAggregateComponentGenerator::PARAM_X_PARTITION => ['name'],
+            BarChartAggregateComponentGenerator::PARAM_Y_EXPR => 'first(partition["value"])',
+        ]);
+        assert($barChart instanceof BarChart);
+        self::assertInstanceOf(BarChart::class, $barChart);
+        self::assertCount(1, $barChart->dataSets());
+        self::assertEquals([12, 23], $barChart->dataSet(0)->ySeries());
+        self::assertNull($barChart->dataSet(0)->errorMargins());
+    }
+
     public function testGeneratesMultipleDataSetes(): void
     {
         $frame = DataFrame::fromRowSeries([

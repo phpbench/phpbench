@@ -8,11 +8,13 @@ var data = [
         name: '<?php echo $dataSet->name() ?>',
         y: <?php echo json_encode($dataSet->ySeries()) ?>,
         type: 'bar',
+        <?php if ($dataSet->errorMargins() !== null): ?>
         error_y: {
             type: 'data',
             array: <?php echo json_encode($dataSet->errorMargins()) ?>,
             visible: true,
         }
+        <?php endif ?>
     },
     <?php endforeach ?>
 ]

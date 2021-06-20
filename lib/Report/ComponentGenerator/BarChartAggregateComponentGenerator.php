@@ -39,10 +39,10 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
             self::PARAM_TITLE => null,
             self::PARAM_X_PARTITION => [],
             self::PARAM_SET_PARTITION => [],
-            self::PARAM_Y_AXES_LABEL => 'yValue'
+            self::PARAM_Y_AXES_LABEL => 'yValue',
+            self::PARAM_Y_ERROR_MARGIN => null,
         ]);
         $options->setRequired(self::PARAM_Y_EXPR);
-        $options->setRequired(self::PARAM_Y_ERROR_MARGIN);
     }
 
     /**
@@ -65,6 +65,10 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
                 ]);
                 assert(is_int($yValue) || is_float($yValue));
                 $ySeries[$setLabel][$xLabel] = $yValue;
+
+                if (null === $config[self::PARAM_Y_ERROR_MARGIN]) {
+                    continue;
+                }
                 $errorMargins[$setLabel][$xLabel] = $this->evaluator->evaluatePhpValue($config[self::PARAM_Y_ERROR_MARGIN], [
                     'frame' => $dataFrame,
                     'partition' => $setPartition
@@ -73,11 +77,19 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
         }
 
         $ySeries = $this->normalizeSeries($xLabels, $ySeries);
-        $errorMargins = $this->normalizeSeries($xLabels, $errorMargins);
+
+        if (null !== $config[self::PARAM_Y_ERROR_MARGIN]) {
+            $errorMargins = $this->normalizeSeries($xLabels, $errorMargins);
+        }
 
         return new BarChart(
-            array_map(function (array $ySeries, array $errorMargins, string $setName) use ($xLabels) {
-                return new BarChartDataSet($setName, $xLabels, $ySeries, $errorMargins);
+            array_map(function (array $ySeries, ?array $errorMargins, string $setName) use ($xLabels) {
+                return new BarChartDataSet(
+                    $setName,
+                    $xLabels,
+                    $ySeries,
+                    $errorMargins
+                );
             }, (array)$ySeries, (array)$errorMargins, array_keys((array)$ySeries)),
             $this->evaluator->renderTemplate($config[self::PARAM_TITLE], ['frame' => $dataFrame]),
             $config[self::PARAM_Y_AXES_LABEL]
