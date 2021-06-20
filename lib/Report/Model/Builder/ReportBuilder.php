@@ -81,7 +81,7 @@ final class ReportBuilder
             $this->title,
             $this->tabbed,
             $this->description,
-            $this->tabLabels,
+            $this->tabLabels
         );
     }
 }
