@@ -67,7 +67,7 @@ class BarChartRenderer implements ObjectRendererInterface
         $height = self::HEIGHT;
 
         while ($height > 0) {
-            yield from $this->printYAxesLabel($step, $height, $chart->yAxesLabel());
+            yield from $this->printYAxesLabel($step, $height, $chart->yAxesLabelExpression());
 
             foreach ($xSeries as $xIndex => $xValue) {
                 foreach ($chart->dataSets() as $dataSetIndex => $dataSet) {

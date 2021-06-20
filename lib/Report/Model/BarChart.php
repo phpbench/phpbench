@@ -74,7 +74,7 @@ class BarChart implements ComponentInterface
         return false;
     }
 
-    public function yAxesLabel(): string
+    public function yAxesLabelExpression(): string
     {
         return $this->yAxesLabel;
     }
@@ -107,14 +107,14 @@ class BarChart implements ComponentInterface
     /**
      * @return number[]
      */
-    public function yAxisLabels(int $points): array
+    public function yAxisLabelRange(int $steps): array
     {
         $max = max($this->yValues());
 
         if (false === $max) {
             return [];
         }
-        $step = $max / $points;
+        $step = $max / $steps;
 
         return range(0, $max, $step);
     }
