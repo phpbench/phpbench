@@ -141,9 +141,7 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
             $builder->enableTabs();
         }
 
-        if ($config[self::PARAM_TAB_LABELS]) {
-            $builder->withTabLabels($config[self::PARAM_TAB_LABELS] + $builder->titles());
-        }
+        $builder->withTabLabels($config[self::PARAM_TAB_LABELS] + $builder->titles());
 
         return $builder->build();
     }
