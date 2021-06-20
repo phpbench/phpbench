@@ -1,9 +1,6 @@
 <div class="container">
 <?php assert($object instanceof \PhpBench\Report\Model\BarChart) ?>
 <div id="<?php echo $id ?>" width="400" height="100"></div>
-<?php if ($object->description()): ?>
-<center><p class="muted"><?php echo htmlentities($object->description()) ?></center>
-<?php endif ?>
 </div>
 <script>
 var data = [
