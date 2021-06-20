@@ -34,10 +34,6 @@ class EightColorTheme implements ColorMap
             PercentDifferenceNode::class => function (Node $node) {
                 assert($node instanceof PercentDifferenceNode);
 
-                if (abs($node->percentage()) <= $node->tolerance()) {
-                    return 'fg=white';
-                }
-
                 return $node->percentage() > 0 ? 'fg=red' : 'fg=green';
             },
             DisplayAsNode::class => 'fg=cyan',
