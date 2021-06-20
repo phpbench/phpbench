@@ -68,6 +68,7 @@ final class ExpressionEvaluator
 
     /**
      * Render expressions in a string delimtied by `{{` and `}}`
+     *
      * @param parameters $params
      */
     public function renderTemplate(?string $template, array $params): ?string

@@ -273,40 +273,7 @@ Plotly.newPlot(document.getElementById('phpbench-component-80'), data, layout);
 </script>
                     <div>
                     <ul class="nav nav-tabs" id="tab-group-phpbench-component-81" role="tablist">
-                                        <li class="nav-item" role="presentation">
-                    <button 
-                        class="nav-link active" 
-                        id="tab-button-phpbench-component-81-0" 
-                        data-bs-toggle="tab" 
-                        data-bs-target="#tab-content-phpbench-component-81-0" 
-                        aria-controls="#tab-content-phpbench-component-81-0" 
-                        aria-current="page" 
-                        >
-                        Tab One                    </button>
-                </li>
-                                            <li class="nav-item" role="presentation">
-                    <button 
-                        class="nav-link " 
-                        id="tab-button-phpbench-component-81-1" 
-                        data-bs-toggle="tab" 
-                        data-bs-target="#tab-content-phpbench-component-81-1" 
-                        aria-controls="#tab-content-phpbench-component-81-1" 
-                        aria-current="page" 
-                        >
-                        Tab Two                    </button>
-                </li>
-                                            <li class="nav-item" role="presentation">
-                    <button 
-                        class="nav-link " 
-                        id="tab-button-phpbench-component-81-2" 
-                        data-bs-toggle="tab" 
-                        data-bs-target="#tab-content-phpbench-component-81-2" 
-                        aria-controls="#tab-content-phpbench-component-81-2" 
-                        aria-current="page" 
-                        >
-                        Tab Three                    </button>
-                </li>
-                                    </ul>
+                                </ul>
                 <div class="tab-content">
                   <div
               class="tab-pane show active" 

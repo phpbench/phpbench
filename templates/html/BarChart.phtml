@@ -1,7 +1,5 @@
-<div class="container">
 <?php assert($object instanceof \PhpBench\Report\Model\BarChart) ?>
 <div id="<?php echo $id ?>" width="400" height="100"></div>
-</div>
 <script>
 var data = [
     <?php foreach ($object->dataSets() as $setName => $dataSet): ?>

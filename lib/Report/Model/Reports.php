@@ -4,6 +4,7 @@ namespace PhpBench\Report\Model;
 
 use ArrayIterator;
 use IteratorAggregate;
+use RuntimeException;
 
 /**
  * @implements IteratorAggregate<int,Report>
