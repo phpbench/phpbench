@@ -265,19 +265,25 @@ var data = [
         }
     },
     ]
-var layout = {barmode: 'group'};
+var layout = {
+    barmode: 'group',
+yaxis: {
+tickmode: 'array',
+tickvals: [0,3.2,6.4,9.600000000000001,12.8,16,19.200000000000003,22.400000000000002,25.6,28.8,32],
+ticktext: ["0.000<span style=\"color: #555; font-weight: bold;\">\u03bcs<\/span>\n","3.200<span style=\"color: #555; font-weight: bold;\">\u03bcs<\/span>\n","6.400<span style=\"color: #555; font-weight: bold;\">\u03bcs<\/span>\n","9.600<span style=\"color: #555; font-weight: bold;\">\u03bcs<\/span>\n","12.800<span style=\"color: #555; font-weight: bold;\">\u03bcs<\/span>\n","16.000<span style=\"color: #555; font-weight: bold;\">\u03bcs<\/span>\n","19.200<span style=\"color: #555; font-weight: bold;\">\u03bcs<\/span>\n","22.400<span style=\"color: #555; font-weight: bold;\">\u03bcs<\/span>\n","25.600<span style=\"color: #555; font-weight: bold;\">\u03bcs<\/span>\n","28.800<span style=\"color: #555; font-weight: bold;\">\u03bcs<\/span>\n","32.000<span style=\"color: #555; font-weight: bold;\">\u03bcs<\/span>\n"]}
+};
 layout.title = "Example Aggregate Barchart";
 Plotly.newPlot(document.getElementById('phpbench-component-80'), data, layout);
 </script>
                     <div>
-                    <ul class="nav nav-tabs" id="tab-group-phpbench-component-81" role="tablist">
+                    <ul class="nav nav-tabs" id="tab-group-phpbench-component-83" role="tablist">
                                         <li class="nav-item" role="presentation">
                     <button 
                         class="nav-link active" 
-                        id="tab-button-phpbench-component-81-0" 
+                        id="tab-button-phpbench-component-83-0" 
                         data-bs-toggle="tab" 
-                        data-bs-target="#tab-content-phpbench-component-81-0" 
-                        aria-controls="#tab-content-phpbench-component-81-0" 
+                        data-bs-target="#tab-content-phpbench-component-83-0" 
+                        aria-controls="#tab-content-phpbench-component-83-0" 
                         aria-current="page" 
                         >
                         Tab One                    </button>
@@ -285,10 +291,10 @@ Plotly.newPlot(document.getElementById('phpbench-component-80'), data, layout);
                                             <li class="nav-item" role="presentation">
                     <button 
                         class="nav-link " 
-                        id="tab-button-phpbench-component-81-1" 
+                        id="tab-button-phpbench-component-83-1" 
                         data-bs-toggle="tab" 
-                        data-bs-target="#tab-content-phpbench-component-81-1" 
-                        aria-controls="#tab-content-phpbench-component-81-1" 
+                        data-bs-target="#tab-content-phpbench-component-83-1" 
+                        aria-controls="#tab-content-phpbench-component-83-1" 
                         aria-current="page" 
                         >
                         Tab Two                    </button>
@@ -296,10 +302,10 @@ Plotly.newPlot(document.getElementById('phpbench-component-80'), data, layout);
                                             <li class="nav-item" role="presentation">
                     <button 
                         class="nav-link " 
-                        id="tab-button-phpbench-component-81-2" 
+                        id="tab-button-phpbench-component-83-2" 
                         data-bs-toggle="tab" 
-                        data-bs-target="#tab-content-phpbench-component-81-2" 
-                        aria-controls="#tab-content-phpbench-component-81-2" 
+                        data-bs-target="#tab-content-phpbench-component-83-2" 
+                        aria-controls="#tab-content-phpbench-component-83-2" 
                         aria-current="page" 
                         >
                         Tab Three                    </button>
@@ -308,27 +314,27 @@ Plotly.newPlot(document.getElementById('phpbench-component-80'), data, layout);
                 <div class="tab-content">
                   <div
               class="tab-pane show active" 
-              id="tab-content-phpbench-component-81-0" 
+              id="tab-content-phpbench-component-83-0" 
               role="tabpanel" 
-              aria-labelledby="tab-button-phpbench-component-81-0"
+              aria-labelledby="tab-button-phpbench-component-83-0"
           >
 <br/>
               <p>This is tab one</p>
           </div>
                             <div
               class="tab-pane " 
-              id="tab-content-phpbench-component-81-1" 
+              id="tab-content-phpbench-component-83-1" 
               role="tabpanel" 
-              aria-labelledby="tab-button-phpbench-component-81-1"
+              aria-labelledby="tab-button-phpbench-component-83-1"
           >
 <br/>
               <p>This is tab two</p>
           </div>
                             <div
               class="tab-pane " 
-              id="tab-content-phpbench-component-81-2" 
+              id="tab-content-phpbench-component-83-2" 
               role="tabpanel" 
-              aria-labelledby="tab-button-phpbench-component-81-2"
+              aria-labelledby="tab-button-phpbench-component-83-2"
           >
 <br/>
               <p>This is tab three</p>

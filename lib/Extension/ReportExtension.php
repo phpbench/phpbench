@@ -253,6 +253,7 @@ class ReportExtension implements ExtensionInterface
                 $container->get(ChainObjectPathResolver::class),
                 $container->getParameter(self::PARAM_TEMPLATE_PATHS),
                 new ContainerTemplateService($container, [
+                    'nodeEvaluator' => ExpressionEvaluator::class,
                     'nodePrinter' => TemplatePrinter::class,
                     'gradientBuilder' => GradientBuilder::class
                 ])
