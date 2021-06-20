@@ -64,3 +64,16 @@ class MicrotimeExecutorBench
         file_put_contents(self::$workspaceDir . '/paramafter.tmp', json_encode($params));
     }
 }
+
+class ClassDefinedRemotely
+{
+    /**
+     * @var string
+     */
+    public $test;
+
+    public function __construct(string $test)
+    {
+        $this->test = $test;
+    }
+}

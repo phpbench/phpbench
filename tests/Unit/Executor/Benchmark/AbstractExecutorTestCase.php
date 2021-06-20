@@ -109,7 +109,7 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
         );
 
         $this->assertFileExists($this->workspacePath('param.tmp'));
-        $params = json_decode(file_get_contents($this->workspace()->path('param.tmp')), true);
+        $params = json_decode($this->workspace()->getContents('param.tmp'), true);
         $this->assertEquals([
             'one' => 'two',
             'three' => 'four',
@@ -118,7 +118,7 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
 
     public function testParametersBeforeSubjectAndWarmup(): void
     {
-        $expected = ParameterSet::fromUnwrappedParameters(0, [
+        $expected = ParameterSet::fromUnwrappedParameters('0', [
             'one' => 'two',
             'three' => 'four',
         ]);
@@ -164,8 +164,12 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
         $config = array_merge([
             'className' => 'PhpBench\Tests\Unit\Executor\benchmarks\MicrotimeExecutorBench',
             'classPath' => __DIR__ . '/../benchmarks/MicrotimeExecutorBench.php',
+            'parameters' => [],
         ], $config);
-        $config['parameters'] = ParameterSet::fromUnwrappedParameters('test', $config['parameters'] ?? []);
+
+        if (is_array($config['parameters'])) {
+            $config['parameters'] = ParameterSet::fromUnwrappedParameters('test', $config['parameters'] ?? []);
+        }
 
         return $config;
     }
