@@ -2,7 +2,6 @@
 
 namespace PhpBench\Expression;
 
-use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\PhpValue;
 
@@ -57,11 +56,6 @@ final class ExpressionEvaluator
     public function evaluatePhpValue(string $expression, array $params)
     {
         $node = $this->evaluator->evaluateType($this->language->parse($expression), PhpValue::class, $params);
-
-        // TODO: ListNode does not return the PHP value
-        if ($node instanceof ListNode) {
-            return $node->phpValues();
-        }
 
         return $node->value();
     }

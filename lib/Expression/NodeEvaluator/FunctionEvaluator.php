@@ -46,7 +46,7 @@ class FunctionEvaluator implements NodeEvaluator
     }
 
     /**
-     * @return array<mixed>
+     * @return array<Node>
      */
     private function args(?ArgumentListNode $args)
     {
@@ -54,7 +54,7 @@ class FunctionEvaluator implements NodeEvaluator
             return [];
         }
 
-        return $args->value();
+        return $args->nodes();
     }
 
     /**

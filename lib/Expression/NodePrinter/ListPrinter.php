@@ -17,7 +17,7 @@ class ListPrinter implements NodePrinter
 
         $out = [];
 
-        foreach ($node->value() as $expression) {
+        foreach ($node->nodes() as $expression) {
             $out[] = $printer->print($expression);
         }
 

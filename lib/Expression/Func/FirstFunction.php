@@ -14,7 +14,7 @@ final class FirstFunction
             return new NullNode();
         }
 
-        $values = $list->value();
+        $values = $list->nodes();
         $first = reset($values);
 
         if (!$first) {

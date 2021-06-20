@@ -12,7 +12,7 @@ final class JoinFunction
         return new StringNode(
             implode(
                 $delimiter->value(),
-                $values->phpValues()
+                $values->value()
             )
         );
     }

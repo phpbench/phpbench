@@ -18,7 +18,7 @@ class ListNodeTest extends TestCase
     {
         $node = ListNode::fromValues($values);
         self::assertEquals($expected, $node, 'Node');
-        self::assertEquals($values, $node->phpValues(), 'To Array');
+        self::assertEquals($values, $node->value(), 'To Array');
     }
 
     /**

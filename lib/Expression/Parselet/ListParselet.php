@@ -31,7 +31,7 @@ class ListParselet implements PrefixParselet
         $tokens->chomp(Token::T_CLOSE_LIST);
 
         if ($list instanceof ArgumentListNode) {
-            $values = $list->value();
+            $values = $list->nodes();
         } else {
             $values = [ $list ];
         }

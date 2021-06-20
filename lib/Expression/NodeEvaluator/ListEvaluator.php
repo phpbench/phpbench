@@ -20,6 +20,6 @@ class ListEvaluator implements NodeEvaluator
 
         return new ListNode(array_map(function (Node $node) use ($evaluator, $params) {
             return $evaluator->evaluate($node, $params);
-        }, $node->value()));
+        }, $node->nodes()));
     }
 }

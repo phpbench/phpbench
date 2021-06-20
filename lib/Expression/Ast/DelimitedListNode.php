@@ -20,7 +20,7 @@ abstract class DelimitedListNode extends PhpValue
     /**
      * @return Node[]
      */
-    public function value(): array
+    public function nodes(): array
     {
         return $this->nodes;
     }
@@ -28,13 +28,9 @@ abstract class DelimitedListNode extends PhpValue
     /**
      * @return mixed[]
      */
-    public function phpValues(): array
+    public function value(): array
     {
         return array_map(function (PhpValue $node) {
-            if ($node instanceof DelimitedListNode) {
-                return $node->phpValues();
-            }
-
             return $node->value();
         }, $this->nodes);
     }
@@ -44,7 +40,7 @@ abstract class DelimitedListNode extends PhpValue
      */
     public function nonNullPhpValues(): array
     {
-        return array_values(array_filter($this->phpValues(), function ($value) {
+        return array_values(array_filter($this->value(), function ($value) {
             return $value !== null;
         }));
     }

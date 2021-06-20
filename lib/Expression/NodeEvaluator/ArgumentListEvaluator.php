@@ -22,7 +22,7 @@ class ArgumentListEvaluator implements NodeEvaluator
         return new ArgumentListNode(
             array_map(function (Node $node) use ($evaluator, $params) {
                 return $evaluator->evaluateType($node, PhpValue::class, $params);
-            }, $node->value())
+            }, $node->nodes())
         );
     }
 }
