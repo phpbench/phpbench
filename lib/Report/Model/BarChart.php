@@ -110,10 +110,12 @@ class BarChart implements ComponentInterface
     public function yAxisLabels(int $points): array
     {
         $max = max($this->yValues());
+
         if (false === $max) {
             return [];
         }
         $step = $max / $points;
+
         return range(0, $max, $step);
     }
 }
