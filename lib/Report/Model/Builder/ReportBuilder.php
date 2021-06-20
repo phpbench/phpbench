@@ -81,18 +81,7 @@ final class ReportBuilder
             $this->title,
             $this->tabbed,
             $this->description,
-            $this->resolveTabLabels(),
+            $this->tabLabels,
         );
-    }
-
-    /**
-     * @return string[]
-     */
-    private function resolveTabLabels(): array
-    {
-        $reportTitles = array_map(function (ComponentInterface $component) {
-            return $component->title();
-        }, $this->objects);
-        return $this->tabLabels + $reportTitles;
     }
 }

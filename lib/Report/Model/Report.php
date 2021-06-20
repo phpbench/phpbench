@@ -104,6 +104,10 @@ final class Report implements ComponentInterface
      */
     public function tabLabels(): array
     {
-        return $this->tabLabels;
+        $reportTitles = array_map(function (ComponentInterface $component) {
+            return $component->title();
+        }, $this->objects);
+
+        return $this->tabLabels + $reportTitles;
     }
 }
