@@ -18,13 +18,13 @@ var data = [
 ]
 var layout = {
     barmode: 'group',
-yaxis: {
-tickmode: 'array',
-tickvals: <?php echo json_encode($object->yAxisLabels(10)) ?>,
-ticktext: <?php echo json_encode(array_map(function ($value) use ($object) {
-    return $this->nodePrinter->print($this->nodeEvaluator->evaluate($object->yAxesLabel(), ['yValue' => $value]));
-}, $object->yAxisLabels(10))) ?>
-}
+    yaxis: {
+        tickmode: 'array',
+        tickvals: <?php echo json_encode($object->yAxisLabels(10)) ?>,
+        ticktext: <?php echo json_encode(array_map(function ($value) use ($object) {
+            return $this->nodePrinter->print($this->nodeEvaluator->evaluate($object->yAxesLabel(), ['yValue' => $value]));
+        }, $object->yAxisLabels(10))) ?>
+    }
 };
 <?php if ($object->title()): ?>
 layout.title = <?php echo json_encode($object->title()) ?>;

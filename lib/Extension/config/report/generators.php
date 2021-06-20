@@ -86,7 +86,7 @@ return [
                         "x_partition" => ["benchmark_name"],
                         "set_partition" => ["suite_tag"],
                         "y_expr" => "mode(partition[\"result_mem_peak\"])",
-                        "y_error_margin" => "stdev(partition[\"result_mem_peak\"])",
+                        "y_error_margin" => "0",
                         "y_axes_label" => "yValue as memory precision 1"
                     ],
                     [
@@ -95,7 +95,7 @@ return [
                         "x_partition" => ["suite_tag"],
                         "set_partition" => ["benchmark_name"],
                         "y_expr" => "mode(partition[\"result_time_avg\"])",
-                        "y_error_margin" => "stdev(partition[\"result_time_avg\"])",
+                        "y_error_margin" => "0",
                         "y_axes_label" => "yValue as time precision 1"
                     ],
                     [
