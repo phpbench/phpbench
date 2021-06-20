@@ -84,4 +84,14 @@ final class ReportBuilder
             $this->tabLabels,
         );
     }
+
+    /**
+     * @return string[]
+     */
+    public function titles(): array
+    {
+        return array_map(function (ComponentInterface $component) {
+            return $component->title();
+        }, $this->objects);
+    }
 }
