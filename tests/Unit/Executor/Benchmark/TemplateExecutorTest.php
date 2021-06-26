@@ -30,4 +30,20 @@ class TemplateExecutorTest extends TestCase
         $first = $result->byType(TimeResult::class)->first();
         self::assertEquals(100, $first->getMetrics()['net']);
     }
+
+    public function testBCOmitUnsafeParameters(): void
+    {
+        $result = (new TemplateExecutor(
+            new PhpBenchLauncher(),
+            __DIR__ . '/template/unsafe_parameters.template'
+        ))->execute(new ExecutionContext(
+            'foo',
+            '/bar',
+            'baz',
+            1,
+        ), new Config('test', [
+        ]));
+        $first = $result->byType(TimeResult::class)->first();
+        self::assertEquals(0, $first->getMetrics()['net']);
+    }
 }
