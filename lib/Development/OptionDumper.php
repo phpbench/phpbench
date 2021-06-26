@@ -99,10 +99,6 @@ class OptionDumper
     ): string
     {
         $section = [];
-        $section[] = sprintf('.. _%s_%s_options:', $type, $serviceName);
-        $section[] = '';
-        $section[] = '.. csv-table:: Options';
-        $section[] = '   :header: "Name", "Type", "Default", "Description"';
         $section[] = '';
 
         foreach ($optionsResolver->getDefinedOptions() as $option) {
@@ -114,7 +110,12 @@ class OptionDumper
             } catch (NoConfigurationException $no) {
             }
             $types = $this->prettyPrint($inspector->getAllowedTypes($option));
-            $section[] = sprintf('    "%s", "%s", "%s", "%s"', $name, $types, $default, $description);
+            $section[] = sprintf('.. _%s_%s_option_%s:', $type, $option, $serviceName);
+            $section[] = '';
+            $section[] = sprintf('**%s**', $name);
+            $section[] = sprintf('  Type(s): ``%s``, Default: ``%s``', $types, $default);
+            $section[] = '';
+            $section[] = sprintf('  %s', $description);
         }
 
         return implode("\n", $section);

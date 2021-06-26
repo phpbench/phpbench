@@ -2,6 +2,7 @@
 
 namespace PhpBench\Report\Generator;
 
+use PhpBench\Compat\SymfonyOptionsResolverCompat;
 use function array_combine;
 use function array_key_exists;
 use Generator;
@@ -139,6 +140,16 @@ EOT
 
             return array_keys($options[self::PARAM_EXPRESSIONS]);
         });
+        SymfonyOptionsResolverCompat::setInfos($options, [
+            self::PARAM_TITLE => 'Title to use for report',
+            self::PARAM_DESCRIPTION => 'Description to use for report',
+            self::PARAM_COLS => 'Columns to display',
+            self::PARAM_EXPRESSIONS => 'Map from column names to expressions',
+            self::PARAM_BASELINE_EXPRESSIONS => 'When the baseline is used, expressions here will be merged with the ``expressions``.',
+            self::PARAM_AGGREGATE => 'Group rows by these columns',
+            self::PARAM_BREAK => 'Group tables by these columns',
+            self::PARAM_INCLUDE_BASELINE => 'If the baseline should be included as additional rows, or if it should be inlined',
+        ]);
     }
 
     /**
