@@ -12,6 +12,7 @@
 
 namespace PhpBench\Report\Renderer;
 
+use PhpBench\Compat\SymfonyOptionsResolverCompat;
 use PhpBench\Registry\Config;
 use PhpBench\Report\Console\ObjectRenderer;
 use PhpBench\Report\Model\Reports;
@@ -46,5 +47,9 @@ class ConsoleRenderer implements RendererInterface
     public function configure(OptionsResolver $options): void
     {
         $options->setDefault('table_style', null);
+        $options->setAllowedTypes('table_style', ['null','scalar']);
+        SymfonyOptionsResolverCompat::setInfos($options, [
+            'table_style' => 'This is option does nothing and will be removed in PHPBench 2.0',
+        ]);
     }
 }

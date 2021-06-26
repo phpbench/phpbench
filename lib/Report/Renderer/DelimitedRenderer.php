@@ -26,6 +26,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class DelimitedRenderer implements RendererInterface
 {
+    const OPT_DELIMITER = 'delimiter';
+    const OPT_FILE = 'file';
+    const OPT_HEADER = 'header';
+
+
     /**
      * @var OutputInterface
      */
@@ -57,7 +62,7 @@ class DelimitedRenderer implements RendererInterface
     {
         $rows = [];
 
-        if (true === $config['header']) {
+        if (true === $config[self::OPT_HEADER]) {
             $rows[] = $table->columnNames();
         }
 
@@ -71,7 +76,7 @@ class DelimitedRenderer implements RendererInterface
             $rows[] = $row;
         }
 
-        $fname = $config['file'] ?: 'php://temp';
+        $fname = $config[self::OPT_FILE] ?: 'php://temp';
         $pointer = fopen($fname, 'w+');
 
         if (false === $pointer) {
@@ -85,7 +90,7 @@ class DelimitedRenderer implements RendererInterface
             fputcsv(
                 $pointer,
                 $row,
-                $config['delimiter']
+                $config[self::OPT_DELIMITER]
             );
         }
 
@@ -102,9 +107,9 @@ class DelimitedRenderer implements RendererInterface
         $this->output->write($contents);
         fclose($pointer);
 
-        if ($config['file']) {
+        if ($config[self::OPT_FILE]) {
             $this->output->writeln('Dumped delimited file:');
-            $this->output->writeln($config['file']);
+            $this->output->writeln($config[self::OPT_FILE]);
         }
     }
 
@@ -114,9 +119,12 @@ class DelimitedRenderer implements RendererInterface
     public function configure(OptionsResolver $options): void
     {
         $options->setDefaults([
-            'delimiter' => "\t",
-            'file' => null,
-            'header' => true,
+            self::OPT_DELIMITER => "\t",
+            self::OPT_FILE => null,
+            self::OPT_HEADER => true,
         ]);
+        $options->setAllowedTypes(self::OPT_DELIMITER, ['string']);
+        $options->setAllowedTypes(self::OPT_FILE, ['null', 'string']);
+        $options->setAllowedTypes(self::OPT_HEADER, ['bool']);
     }
 }

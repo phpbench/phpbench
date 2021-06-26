@@ -110,9 +110,10 @@ class OptionDumper
             } catch (NoConfigurationException $no) {
             }
             $types = $this->prettyPrint($inspector->getAllowedTypes($option));
+            $section[] = '';
             $section[] = sprintf('.. _%s_%s_option_%s:', $type, $option, $serviceName);
             $section[] = '';
-            $section[] = sprintf('**%s**', $name);
+            $section[] = sprintf('**%s**:', $name);
             $section[] = sprintf('  Type(s): ``%s``, Default: ``%s``', $types, $default);
             $section[] = '';
             $section[] = sprintf('  %s', $description);

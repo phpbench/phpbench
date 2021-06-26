@@ -7,6 +7,8 @@ be rendered with :doc:`report renderers <report-renderers>`.
 .. toctree::
    :maxdepth: 2
 
-   report-generators/expression
+   report-generators/bare
    report-generators/composite
+   report-generators/component
    report-generators/env
+   report-generators/expression
