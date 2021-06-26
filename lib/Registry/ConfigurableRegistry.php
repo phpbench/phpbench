@@ -58,6 +58,7 @@ class ConfigurableRegistry extends Registry
     ) {
         parent::__construct($serviceType, $container);
         $this->jsonDecoder = $jsonDecoder;
+
         foreach ($nameToServiceIdMap as $name => $serviceId) {
             $this->registerService($name, $serviceId);
         }

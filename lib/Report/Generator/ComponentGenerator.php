@@ -8,8 +8,6 @@ use PhpBench\Expression\ExpressionEvaluator;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Registry\ConfigurableRegistry;
-use PhpBench\Registry\Registry;
-use PhpBench\Report\ComponentGeneratorAgent;
 use PhpBench\Report\ComponentGeneratorInterface;
 use PhpBench\Report\ComponentInterface;
 use PhpBench\Report\GeneratorInterface;

@@ -25,7 +25,7 @@
 **components**:
   Type(s): ``array[]``, Default: ``[]``
 
-  List of component configuration objects, each component must feature a ``_type`` key (e.g. ``table_aggregate``)
+  List of component configuration objects, each component must feature a ``component`` key (e.g. ``table_aggregate``)
 
 .. _generator_component_option_tabbed:
 

@@ -22,7 +22,6 @@ use PhpBench\Registry\ConfigurableRegistry;
 use PhpBench\Report\ComponentGenerator\BarChartAggregateComponentGenerator;
 use PhpBench\Report\ComponentGenerator\TableAggregateComponent;
 use PhpBench\Report\ComponentGenerator\TextComponentGenerator;
-use PhpBench\Report\ComponentGeneratorAgent;
 use PhpBench\Report\Console\ObjectRenderer as ConsoleObjectRenderer;
 use PhpBench\Report\Console\Renderer\BarChartRenderer;
 use PhpBench\Report\Console\Renderer\ReportRenderer;
