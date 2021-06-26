@@ -52,6 +52,8 @@ class ProfileExecutor implements BenchmarkExecutorInterface
             },
             'output_dir' => 'xdebug',
         ]);
+        $options->setAllowedTypes('callback', ['Closure']);
+        $options->setAllowedTypes('output_dir', ['string']);
     }
 
     public function execute(ExecutionContext $context, Config $config): ExecutionResults

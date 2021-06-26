@@ -15,17 +15,9 @@ on the CLI. The renderer may also supply default outputs.
 
 Renders directly to the console.
 
-Class: ``PhpBench\Report\Renderer\ConsoleRenderer``.
-
 Options:
 
-- **table_style**: *(string)* Table style to use, one of: ``default``,
-  ``compact``, ``borderless`` or ``symfony-style-guide``.
-
-Default outputs:
-
-- ``console``: Renderers the report directly to the console. This is the
-  **default** output method.
+.. include:: ./report-renderers/options/_console.rst
 
 ``delimited``
 -------------
@@ -34,29 +26,18 @@ The delimited renderer outputs the report as a delimited value list (for
 example a tab separated list of values). Such data can be easily imported into
 applications such as GNUPlot_.
 
-Class: ``PhpBench\Report\Renderer\DelimitedRenderer``.
 
 Options:
 
-- **delimiter**: *(string)*: Path to the output file (existing files will be
-  overwritten).
-- **header**: *(boolean)*: If a header should be included in the output.
+.. include:: ./report-renderers/options/_delimited.rst
 
-Default outputs:
+``html``
+-----------
 
-- ``delimiter``: The delimiter to use.
-
-``debug``
----------
-
-Output the raw XML of the report document. Useful for debugging.
+Render the report to a HTML document.
 
 Options:
 
-**none**
-
-Default outputs:
-
-- ``debug``: Outputs the report document's XML.
+.. include:: ./report-renderers/options/_html.rst
 
 .. _GNUPlot: http://www.gnuplot.info/

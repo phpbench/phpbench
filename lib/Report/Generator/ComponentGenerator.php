@@ -76,17 +76,17 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
         ]);
         $options->setAllowedTypes(self::PARAM_TITLE, ['string', 'null']);
         $options->setAllowedTypes(self::PARAM_DESCRIPTION, ['string', 'null']);
-        $options->setAllowedTypes(self::PARAM_PARTITION, ['array']);
-        $options->setAllowedTypes(self::PARAM_COMPONENTS, ['array']);
+        $options->setAllowedTypes(self::PARAM_PARTITION, ['string[]']);
+        $options->setAllowedTypes(self::PARAM_COMPONENTS, ['array[]']);
         $options->setAllowedTypes(self::PARAM_TABBED, ['bool']);
-        $options->setAllowedTypes(self::PARAM_TAB_LABELS, ['array']);
+        $options->setAllowedTypes(self::PARAM_TAB_LABELS, ['string[]']);
         SymfonyOptionsResolverCompat::setInfos($options, [
             self::PARAM_TITLE => 'Title for generated report',
             self::PARAM_DESCRIPTION => 'Description for generated report',
             self::PARAM_PARTITION => 'Partition the data using these column names - the row expressions will to aggregate the data in each partition',
-            self::PARAM_COMPONENTS => 'List of component configuration objects, each component must feature a `_type` key (e.g. `table_aggregate`)',
-            self::PARAM_TABBED => 'Render components in tabs where supported',
-            self::PARAM_TAB_LABELS => 'Labels for tabs',
+            self::PARAM_COMPONENTS => 'List of component configuration objects, each component must feature a ``_type`` key (e.g. ``table_aggregate``)',
+            self::PARAM_TABBED => 'Render components in tabs when supported in the output renderer (e.g. HTML)',
+            self::PARAM_TAB_LABELS => 'List of labels for tabs, will replace the default labels from left to right.',
         ]);
     }
 

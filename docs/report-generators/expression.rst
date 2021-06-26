@@ -3,6 +3,10 @@
 Expression Report
 =================
 
+.. note:: 
+
+    For custom reports it is now recommended to use the :doc:`component` generator.
+
 The expression generator is the generator that allows you to analyze your
 benchmarking results. It uses the PHPBench :doc:`expression language
 <expression>` to evaluate tabular data:
@@ -17,17 +21,10 @@ Yields something like:
   :language: bash
   :section: 2
 
-Options:
+Options
+-------
 
-- **title**: *(string)* Title of the report.
-- **description**: *(string)* Description of the report.
-- **cols**: *(array)* List of columns/expressions to show
-- **expressions**: *(array)* Set of available expressions
-- **baseline_expressions**: *(array)* Set of expressions that will be used
-  when a baseline is present
-- **break**: *(array)* List of columns; break into multiple tables based on
-- **aggregate**: *(array)* List of fields to aggregate on.
-- **include_baseline**: *(bool)* Include the baseline rows
+.. include:: options/_expression.rst
 
 .. _generator_expression_columns:
 
