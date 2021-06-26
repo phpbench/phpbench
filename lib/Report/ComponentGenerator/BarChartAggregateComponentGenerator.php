@@ -48,10 +48,10 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
         $options->setAllowedTypes(self::PARAM_SET_PARTITION, ['string[]']);
         $options->setAllowedTypes(self::PARAM_Y_AXES_LABEL, ['string']);
         $options->setAllowedTypes(self::PARAM_Y_EXPR, ['string']);
-        $options->setAllowedTypes(self::PARAM_Y_ERROR_MARGIN, ['string']);
+        $options->setAllowedTypes(self::PARAM_Y_ERROR_MARGIN, ['string', 'null']);
     }
 
-    /**
+    /*
      * {@inheritDoc}
      */
     public function generateComponent(DataFrame $dataFrame, array $config): ComponentInterface
@@ -105,7 +105,10 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
     private function normalizeSeries(array $xLabels, array $ySeries): array
     {
         return array_map(function (array $series) use ($xLabels) {
-            return array_values(array_merge(array_combine($xLabels, array_fill(0, count($xLabels), 0)), $series));
+            return array_values(array_replace(
+                array_combine($xLabels, array_fill(0, count($xLabels), 0)),
+                $series
+            ));
         }, $ySeries);
     }
 }
