@@ -1,5 +1,4 @@
 
-
 .. _generator_component_option_title:
 
 **title**:

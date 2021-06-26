@@ -1,5 +1,4 @@
 
-
 .. _renderer_html_option_title:
 
 **title**:

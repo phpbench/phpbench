@@ -1,5 +1,4 @@
 
-
 .. _executor_remote_option_php_config:
 
 **php_config**:
@@ -12,4 +11,4 @@
 **safe_parameters**:
   Type(s): ``bool``, Default: ``true``
 
-  Use process safe parameters, this option exists for backwards-compatibility and will be removed in PHPBench 2.0
+  INTERNAL: Use process process-safe parameters, this option exists for backwards-compatibility and will be removed in PHPBench 2.0

@@ -98,7 +98,6 @@ class OptionDumper
         string $serviceName
     ): string {
         $section = [];
-        $section[] = '';
 
         foreach ($optionsResolver->getDefinedOptions() as $option) {
             $description = $optionsResolver->getInfo($option);
@@ -110,13 +109,17 @@ class OptionDumper
             } catch (NoConfigurationException $no) {
             }
             $types = $this->prettyPrint($inspector->getAllowedTypes($option));
+
             $section[] = '';
             $section[] = sprintf('.. _%s_%s_option_%s:', $type, $serviceName, $option);
             $section[] = '';
             $section[] = sprintf('**%s**:', $name);
             $section[] = sprintf('  Type(s): ``%s``, Default: ``%s``', $types, $default);
-            $section[] = '';
-            $section[] = sprintf('  %s', $description);
+
+            if ($description) {
+                $section[] = '';
+                $section[] = sprintf('  %s', $description);
+            }
         }
 
         return implode("\n", $section);

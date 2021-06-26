@@ -1,5 +1,4 @@
 
-
 .. _generator_expression_option_title:
 
 **title**:

@@ -1,5 +1,4 @@
 
-
 .. _renderer_console_option_table_style:
 
 **table_style**:

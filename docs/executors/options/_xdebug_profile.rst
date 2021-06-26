@@ -1,5 +1,4 @@
 
-
 .. _executor_xdebug_profile_option_php_config:
 
 **php_config**:
@@ -12,18 +11,14 @@
 **safe_parameters**:
   Type(s): ``bool``, Default: ``true``
 
-  Use process safe parameters, this option exists for backwards-compatibility and will be removed in PHPBench 2.0
+  INTERNAL: Use process process-safe parameters, this option exists for backwards-compatibility and will be removed in PHPBench 2.0
 
 .. _executor_xdebug_profile_option_callback:
 
 **callback**:
   Type(s): ``Closure``, Default: ``{}``
 
-  
-
 .. _executor_xdebug_profile_option_output_dir:
 
 **output_dir**:
   Type(s): ``string``, Default: ``xdebug``
-
-  

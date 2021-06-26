@@ -53,6 +53,7 @@
             "rm -Rf docs/build",
             "bin/phpbench doc:config-reference > docs/configuration.rst",
             "bin/phpbench doc:service-options docs/report-generators/options generator",
+            "bin/phpbench doc:service-options docs/report-renderers/options renderer",
             "bin/phpbench doc:service-options docs/executors/options executor",
             "make -C docs html"
         ]

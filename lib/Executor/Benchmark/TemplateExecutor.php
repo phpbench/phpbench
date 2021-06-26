@@ -91,7 +91,7 @@ class TemplateExecutor implements BenchmarkExecutorInterface
         $options->setAllowedTypes(self::OPTION_SAFE_PARAMETERS, ['bool']);
         SymfonyOptionsResolverCompat::setInfos($options, [
             self::OPTION_PHP_CONFIG => 'Key value array of ini settings, e.g. ``{"max_execution_time":100}``',
-            self::OPTION_SAFE_PARAMETERS => 'Use process safe parameters, this option exists for backwards-compatibility and will be removed in PHPBench 2.0'
+            self::OPTION_SAFE_PARAMETERS => 'INTERNAL: Use process process-safe parameters, this option exists for backwards-compatibility and will be removed in PHPBench 2.0'
         ]);
     }
 
