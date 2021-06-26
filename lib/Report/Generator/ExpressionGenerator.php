@@ -2,11 +2,11 @@
 
 namespace PhpBench\Report\Generator;
 
-use PhpBench\Compat\SymfonyOptionsResolverCompat;
 use function array_combine;
 use function array_key_exists;
 use Generator;
 use function iterator_to_array;
+use PhpBench\Compat\SymfonyOptionsResolverCompat;
 use PhpBench\Data\DataFrame;
 use PhpBench\Data\DataFrames;
 use PhpBench\Expression\Ast\Node;

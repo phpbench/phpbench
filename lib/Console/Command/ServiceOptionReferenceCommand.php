@@ -2,7 +2,6 @@
 
 namespace PhpBench\Console\Command;
 
-use PhpBench\Development\ConfigDumper;
 use PhpBench\Development\OptionDumper;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

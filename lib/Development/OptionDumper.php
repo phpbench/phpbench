@@ -3,17 +3,16 @@
 namespace PhpBench\Development;
 
 use Generator;
+use function json_encode;
+use function mb_strlen;
+use function method_exists;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\Registry\RegistrableInterface;
 use PhpBench\Registry\Registry;
 use RuntimeException;
-use Symfony\Component\OptionsResolver\Exception\NoConfigurationException;
-use function json_encode;
-use function mb_strlen;
-use function method_exists;
-use PhpBench\DependencyInjection\ExtensionInterface;
 use function str_repeat;
 use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
+use Symfony\Component\OptionsResolver\Exception\NoConfigurationException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OptionDumper
@@ -61,12 +60,14 @@ class OptionDumper
 
     /**
      * @param Registry<RegistrableInterface> $registry
+     *
      * @return Generator<string, string>
      */
     private function dumpOptions(Registry $registry, string $type): Generator
     {
         foreach ($registry->getServiceNames() as $serviceName) {
             $service = $registry->getService($serviceName);
+
             if (!$service instanceof RegistrableInterface) {
                 continue;
             }
@@ -78,6 +79,7 @@ class OptionDumper
                 continue;
             }
             $inspector = new OptionsResolverIntrospector($optionsResolver);
+
             try {
                 yield $serviceName => $this->generateSection($optionsResolver, $inspector, $type, $serviceName);
             } catch (NoConfigurationException $noConfig) {
@@ -87,8 +89,6 @@ class OptionDumper
                 ));
             }
         }
-
-
     }
 
     private function generateSection(
@@ -96,8 +96,7 @@ class OptionDumper
         OptionsResolverIntrospector $inspector,
         string $type,
         string $serviceName
-    ): string
-    {
+    ): string {
         $section = [];
         $section[] = '';
 
@@ -105,6 +104,7 @@ class OptionDumper
             $description = $optionsResolver->getInfo($option);
             $name = $option;
             $default = 'n/a';
+
             try {
                 $default = $this->prettyPrint($inspector->getDefault($option));
             } catch (NoConfigurationException $no) {
@@ -146,6 +146,7 @@ class OptionDumper
                     return $this->prettyPrint($value);
                 }, $value));
             }
+
             return sprintf('[%s]', implode(', ', array_map(function ($value) {
                 return $this->prettyPrint($value);
             }, $value)));
