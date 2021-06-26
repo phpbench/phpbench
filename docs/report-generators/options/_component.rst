@@ -17,14 +17,14 @@
 .. _generator_component_option_partition:
 
 **partition**:
-  Type(s): ``array``, Default: ``[]``
+  Type(s): ``string[]``, Default: ``[]``
 
   Partition the data using these column names - the row expressions will to aggregate the data in each partition
 
 .. _generator_component_option_components:
 
 **components**:
-  Type(s): ``array``, Default: ``[]``
+  Type(s): ``array[]``, Default: ``[]``
 
   List of component configuration objects, each component must feature a ``_type`` key (e.g. ``table_aggregate``)
 
@@ -38,6 +38,6 @@
 .. _generator_component_option_tab_labels:
 
 **tab_labels**:
-  Type(s): ``array``, Default: ``[]``
+  Type(s): ``string[]``, Default: ``[]``
 
   List of labels for tabs, will replace the default labels from left to right.

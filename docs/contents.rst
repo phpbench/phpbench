@@ -28,6 +28,6 @@ Indices and tables
 
    index
    configuration-prelude
-
+   executors/options/_memory_centric_microtime.rst
 
 .. _Github: https://github.com/phpbench/phpbench

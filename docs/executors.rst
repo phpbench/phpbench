@@ -17,6 +17,10 @@ This benchmark records:
 - Time in microseconds
 - Memory usage
 
+Options:
+
+.. include:: ./executors/options/_remote.rst
+
 .. _executor_local:
 
 ``local``
@@ -30,6 +34,11 @@ This benchmark records:
 
 - Time in microseconds
 
+Options:
+
+- *none*
+
+
 .. _executor_debug:
 
 ``debug``
@@ -37,3 +46,23 @@ This benchmark records:
 
 The debug executor returns a constant set of results, and is useful for
 debugging.
+
+Options:
+
+.. include:: ./executors/options/_debug.rst
+
+.. _executor_xdebug_profile:
+
+``xdebug_profile``
+------------------
+
+Execute benchmarks and enable XDebug profiling.
+
+.. note::
+
+    You probably want to use the ``xdebug:profile`` command rather than this
+    executor.
+
+Options:
+
+.. include:: ./executors/options/_xdebug_profile.rst
