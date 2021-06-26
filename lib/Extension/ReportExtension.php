@@ -58,6 +58,7 @@ class ReportExtension implements ExtensionInterface
 
     public const SERVICE_REGISTRY_GENERATOR = 'report.registry_generator';
     public const SERVICE_REGISTRY_RENDERER = 'report.registry_renderer';
+    public const SERVICE_REGISTRY_COMPONENT = 'report.registry_component';
 
     public const TAG_REPORT_GENERATOR = 'report.generator';
     public const TAG_COMPONENT_GENERATOR = 'report.component_generator';
@@ -212,7 +213,7 @@ class ReportExtension implements ExtensionInterface
         $container->register(ComponentGenerator::class, function (Container $container) {
             return new ComponentGenerator(
                 $container->get(SuiteCollectionTransformer::class),
-                $container->get(ComponentGeneratorAgent::class),
+                $container->get(self::SERVICE_REGISTRY_COMPONENT),
                 $container->get(ExpressionEvaluator::class),
                 $container->get(LoggerInterface::class)
             );
@@ -286,7 +287,7 @@ class ReportExtension implements ExtensionInterface
 
     private function registerComponentGenerators(Container $container): void
     {
-        $container->register(ComponentGeneratorAgent::class, function (Container $container) {
+        $container->register(self::SERVICE_REGISTRY_COMPONENT, function (Container $container) {
             $serviceMap = [];
 
             foreach ($container->getServiceIdsForTag(self::TAG_COMPONENT_GENERATOR) as $serviceId => $attrs) {
@@ -297,10 +298,15 @@ class ReportExtension implements ExtensionInterface
                     ));
                 }
 
-                $serviceMap[$attrs['name']] = $serviceId;
+                $serviceMap[(string)$attrs['name']] = $serviceId;
             }
 
-            return new ComponentGeneratorAgent($container, $serviceMap);
+            return new ConfigurableRegistry(
+                'component',
+                $container,
+                $container->get(JsonDecoder::class),
+                $serviceMap
+            );
         });
 
         $container->register(TableAggregateComponent::class, function (Container $container) {

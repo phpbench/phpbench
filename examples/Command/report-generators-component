@@ -7,7 +7,7 @@
             "generator": "component",
             "components": [
                 {
-                    "_type": "bar_chart_aggregate",
+                    "component": "bar_chart_aggregate",
                     "title": "Example Bar Chart",
                     "x_partition": ["benchmark_name"],
                     "set_partition": ["suite_tag"],
@@ -15,7 +15,7 @@
                     "y_axes_label": "yValue as time precision 1"
                 },
                 {
-                    "_type": "table_aggregate",
+                    "component": "table_aggregate",
                     "title": "Table",
                     "row": {
                         "benchmark": "first(partition[\"benchmark_name\"])",

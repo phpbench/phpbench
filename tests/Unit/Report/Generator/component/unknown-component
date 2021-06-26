@@ -6,7 +6,7 @@
     "description": "This is the description",
     "components": [
         {
-             "_type": "unknown",
+             "component": "unknown",
              "row": {
                  "greeting": "\"Hello\""
              }
@@ -14,4 +14,4 @@
     ]
 }
 ---
-Component "unknown" not known, known components: "bar_chart_aggregate", "report", "table_aggregate", "text"
+component service "unknown" does not exist. Registered component services: "bar_chart_aggregate", "report", "table_aggregate", "text"

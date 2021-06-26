@@ -32,21 +32,35 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ConfigurableRegistry extends Registry
 {
+    /**
+     * @var array<string,array<string,mixed>>
+     */
     private $configs = [];
+
+    /**
+     * @var JsonDecoder
+     */
     private $jsonDecoder;
 
     /**
-     * @var array
+     * @var array<string,mixed>
      */
     private $resolvedConfigs;
 
+    /**
+     * @param array<string,string> $nameToServiceIdMap
+     */
     public function __construct(
-        $serviceType,
+        string $serviceType,
         Container $container,
-        JsonDecoder $jsonDecoder
+        JsonDecoder $jsonDecoder,
+        array $nameToServiceIdMap = []
     ) {
         parent::__construct($serviceType, $container);
         $this->jsonDecoder = $jsonDecoder;
+        foreach ($nameToServiceIdMap as $name => $serviceId) {
+            $this->registerService($name, $serviceId);
+        }
     }
 
     /**
