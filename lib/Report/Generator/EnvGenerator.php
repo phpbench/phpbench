@@ -39,6 +39,8 @@ class EnvGenerator implements GeneratorInterface
             'title' => null,
             'description' => null,
         ]);
+        $options->setAllowedTypes('title', ['scalar']);
+        $options->setAllowedTypes('description', ['scalar']);
     }
 
     /**

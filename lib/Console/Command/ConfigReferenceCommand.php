@@ -28,7 +28,7 @@ class ConfigReferenceCommand extends Command
 
     protected function configure(): void
     {
-        $this->setName('config:dump-reference');
+        $this->setName('doc:config-reference');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
