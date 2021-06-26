@@ -4,6 +4,10 @@ return [
     'bare' => [
         'generator' => 'bare',
     ],
+    'bare-vertical' => [
+        'generator' => 'bare',
+        'vertical' => true,
+    ],
     'aggregate' => [
         'generator' => 'expression',
         'cols' => [
