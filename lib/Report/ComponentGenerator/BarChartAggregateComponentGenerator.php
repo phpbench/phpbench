@@ -43,6 +43,12 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
             self::PARAM_Y_ERROR_MARGIN => null,
         ]);
         $options->setRequired(self::PARAM_Y_EXPR);
+        $options->setAllowedTypes(self::PARAM_TITLE, ['string', 'null']);
+        $options->setAllowedTypes(self::PARAM_X_PARTITION, ['string[]']);
+        $options->setAllowedTypes(self::PARAM_SET_PARTITION, ['string[]']);
+        $options->setAllowedTypes(self::PARAM_Y_AXES_LABEL, ['string']);
+        $options->setAllowedTypes(self::PARAM_Y_EXPR, ['string']);
+        $options->setAllowedTypes(self::PARAM_Y_ERROR_MARGIN, ['string']);
     }
 
     /**
