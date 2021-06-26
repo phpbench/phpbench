@@ -21,4 +21,11 @@ class BarChartDataSetTest extends TestCase
         $this->expectExceptionMessage('equal number');
         new BarChartDataSet('test', [], [], [12]);
     }
+
+    public function testExceptionWhenErrorMarginsNotSameSizeWithNullErrorMargin(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('equal number');
+        new BarChartDataSet('test', [1], [], null);
+    }
 }
