@@ -28,7 +28,7 @@ class DevelopmentExtension implements ExtensionInterface
             return new ServiceOptionReferenceCommand(new OptionDumper($container, [
                 'generator' => ReportExtension::SERVICE_REGISTRY_GENERATOR,
                 'renderer' => ReportExtension::SERVICE_REGISTRY_RENDERER,
-            ]), $container->get(ConsoleExtension::SERVICE_OUTPUT_STD));
+            ]), $container->get(ConsoleExtension::SERVICE_OUTPUT_ERR));
         }, [
             ConsoleExtension::TAG_CONSOLE_COMMAND => []
         ]);

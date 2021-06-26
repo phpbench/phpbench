@@ -1,6 +1,6 @@
 
 
-.. _generator_vertical_option_bare:
+.. _generator_bare_option_vertical:
 
 **vertical**:
   Type(s): ``bool``, Default: ``false``

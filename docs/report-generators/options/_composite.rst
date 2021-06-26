@@ -1,6 +1,6 @@
 
 
-.. _generator_reports_option_composite:
+.. _generator_composite_option_reports:
 
 **reports**:
   Type(s): ``array``, Default: ``n/a``

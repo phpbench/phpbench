@@ -13,17 +13,17 @@ class ServiceOptionReferenceCommand extends Command
     /**
      * @var OutputInterface
      */
-    private $stdout;
+    private $stderr;
 
     /**
      * @var OptionDumper
      */
     private $dumper;
 
-    public function __construct(OptionDumper $dumper, OutputInterface $stdout)
+    public function __construct(OptionDumper $dumper, OutputInterface $stderr)
     {
         parent::__construct();
-        $this->stdout = $stdout;
+        $this->stderr = $stderr;
         $this->dumper = $dumper;
     }
 
@@ -48,7 +48,7 @@ class ServiceOptionReferenceCommand extends Command
         foreach ($this->dumper->dump($string) as $type => $reference) {
             $path = sprintf('%s/_%s.rst', $basePath, $type);
             file_put_contents($path, $reference);
-            $this->stdout->writeln(sprintf('Written: %s', $path));
+            $this->stderr->writeln(sprintf('Written: %s', $path));
         }
 
         return 0;
