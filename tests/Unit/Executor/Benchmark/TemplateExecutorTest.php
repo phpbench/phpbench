@@ -40,7 +40,7 @@ class TemplateExecutorTest extends TestCase
             'foo',
             '/bar',
             'baz',
-            1,
+            1
         ), new Config('test', [
         ]));
         $first = $result->byType(TimeResult::class)->first();
