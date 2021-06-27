@@ -218,7 +218,7 @@ class ReportExtension implements ExtensionInterface
             );
         }, [
             self::TAG_REPORT_GENERATOR => ['name' => 'component'],
-            self::TAG_COMPONENT_GENERATOR => ['name' => 'report']
+            self::TAG_COMPONENT_GENERATOR => ['name' => 'section']
         ]);
     }
 

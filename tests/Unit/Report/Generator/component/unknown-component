@@ -14,4 +14,4 @@
     ]
 }
 ---
-component service "unknown" does not exist. Registered component services: "bar_chart_aggregate", "report", "table_aggregate", "text"
+component service "unknown" does not exist. Registered component services: "bar_chart_aggregate", "section", "table_aggregate", "text"

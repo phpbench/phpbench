@@ -71,7 +71,7 @@ return [
                 ],
             ],
             [
-                "component" => "report",
+                "component" => "section",
                 "tabbed" => true,
                 "tab_labels" => ['Time', 'Memory'],
                 "components" => [
@@ -100,7 +100,7 @@ return [
                         "y_axes_label" => "yValue as time precision 1"
                     ],
                     [
-                        "component" => "report",
+                        "component" => "section",
                         "title" => "Table",
                         "partition" => ["suite_tag"],
                         "components" => [
@@ -130,11 +130,11 @@ return [
         "partition" => ["benchmark_name"],
         "components" => [
             [
-                "component" => "report",
+                "component" => "section",
                 "title" => "{{ first(frame[\"benchmark_name\"]) }}",
                 "components" => [
                     [
-                        "component" => "report",
+                        "component" => "section",
                         "tabbed" => true,
                         "tab_labels" => ["Time", "Memory"],
                         "components" => [
@@ -159,7 +159,7 @@ return [
                         ]
                     ],
                     [
-                        "component" => "report",
+                        "component" => "section",
                         "partition" => ["suite_tag"],
                         "tabbed" => true,
                         "components" => [
