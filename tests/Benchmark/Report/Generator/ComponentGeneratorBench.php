@@ -70,7 +70,7 @@ class ComponentGeneratorBench extends IntegrationBenchCase
             'config' => [
                 'components' => [
                     [
-                        '_type' => 'text',
+                        'component' => 'text',
                         'text' => 'Helo World'
                     ]
                 ]
@@ -81,7 +81,7 @@ class ComponentGeneratorBench extends IntegrationBenchCase
             'config' => [
                 'components' => [
                     [
-                        '_type' => 'bar_chart_aggregate',
+                        'component' => 'bar_chart_aggregate',
                         "y_expr" => "mode(partition[\"result_time_avg\"])",
                         "y_error_margin" => "stdev(partition[\"result_time_avg\"])",
                         "y_axes_label" => "yValue as time precision 1"
@@ -94,7 +94,7 @@ class ComponentGeneratorBench extends IntegrationBenchCase
             'config' => [
                 'components' => [
                     [
-                        "_type" => "table_aggregate",
+                        "component" => "table_aggregate",
                         "title" => "{{ first(frame.suite_tag) }}",
                         "partition" => ["benchmark_name", "subject_name", "variant_name"],
                         "row" => [

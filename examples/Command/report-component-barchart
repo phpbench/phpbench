@@ -1,0 +1,37 @@
+{
+    "runner.path": "NothingBench.php",
+    "runner.executor": "debug",
+    "runner.env_enabled_providers": ["test"],
+    "report.generators": {
+        "chart": {
+            "generator": "component",
+            "components": [
+                {
+                    "component": "bar_chart_aggregate",
+                    "title": "Example Bar Chart",
+                    "x_partition": ["benchmark_name"],
+                    "set_partition": ["suite_tag"],
+                    "y_expr": "mode(partition[\"result_time_avg\"])",
+                    "y_axes_label": "yValue as time precision 1"
+                }
+            ]
+        }
+    }
+}
+---
+phpbench run --report=chart
+---
+Example Bar Chart
+
+10.0μs    │ █ 
+8.8μs     │ █ 
+7.5μs     │ █ 
+6.3μs     │ █ 
+5.0μs     │ █ 
+3.8μs     │ █ 
+2.5μs     │ █ 
+1.3μs     │ █ 
+          └──
+
+[█ <current>] 
+
