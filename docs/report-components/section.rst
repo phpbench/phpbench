@@ -28,7 +28,7 @@ When we run PHPBench with the configured report above:
   :language: bash
   :section: 1
 
-Which produces the following with the console renderer:
+Then it generates the following with the ``console`` renderer:
 
 .. approved:: ../../examples/Command/report-component-section
   :language: bash

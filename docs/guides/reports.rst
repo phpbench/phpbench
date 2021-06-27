@@ -79,9 +79,13 @@ Default Reports
 
 Shows aggregate details of each set of iterations.
 
+Run:
+
 .. approved:: ../../examples/Command/run-reports-aggregate
   :language: bash
   :section: 1
+
+And get something like:
 
 .. approved:: ../../examples/Command/run-reports-aggregate
   :language: bash
@@ -97,9 +101,14 @@ It is uses the ``table`` generator, see :ref:`generator_expression` for more inf
 Sumarize each benchmark:
 
 
+Run:
+
 .. approved:: ../../examples/Command/run-reports-benchmark
   :language: bash
   :section: 1
+
+And get something like:
+
 .. approved:: ../../examples/Command/run-reports-benchmark
   :language: bash
   :section: 2
@@ -112,9 +121,14 @@ Sumarize each benchmark:
 
 The default report presents the result of *each iteration*:
 
+Run:
+
 .. approved:: ../../examples/Command/run-reports-default
   :language: javascript
   :section: 1
+
+And get something like:
+
 .. approved:: ../../examples/Command/run-reports-default
   :language: javascript
   :section: 2
@@ -129,9 +143,14 @@ It is uses the ``table`` generator, see :ref:`generator_expression` for more inf
 This report shows information about the environment that the benchmarks were
 executed in.
 
+Run:
+
 .. approved:: ../../examples/Command/run-reports-env
   :language: bash
   :section: 1
+
+And get something like:
+
 .. approved:: ../../examples/Command/run-reports-env
   :language: bash
   :section: 2
@@ -163,9 +182,14 @@ See the :doc:`../environment` reference for more information.
 
 Shows overview of a single or mutiple runs:
 
+Run:
+
 .. approved:: ../../examples/Command/run-reports-overview
   :language: bash
   :section: 1
+
+And get something like:
+
 .. approved:: ../../examples/Command/run-reports-overview
   :language: bash
   :section: 2
