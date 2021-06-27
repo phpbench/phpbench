@@ -355,8 +355,8 @@ class RunnerTest extends TestCase
     public function testCallBeforeAndAfterClassWithBenchmarkExecutorWhenCustomSubjectExecutorUsed(): void
     {
         TestUtil::configureBenchmarkMetadata($this->benchmark, [
-            'beforeClassMethods' => ['afterClass'],
-            'afterClassMethods' => ['beforeClass'],
+            'beforeClassMethods' => ['beforeClass'],
+            'afterClassMethods' => ['afterClass'],
         ]);
 
         $subject = new SubjectMetadata($this->benchmark->reveal(), 'name');
@@ -366,14 +366,14 @@ class RunnerTest extends TestCase
         ]);
         $subjectTestExecutor = new TestExecutor();
         $this->executorRegistry->getService('debug')->willReturn($subjectTestExecutor);
-        $this->executorRegistry->getConfig(['executor'=> 'debug'])->willReturn(new Config('test', [
-            'executor' => 'config',
+        $this->executorRegistry->getConfig(['executor'=> 'debug'])->willReturn($this->resolveExecutorConfig([
+            'executor' => 'debug',
         ]));
 
         $this->runner->run([ $this->benchmark->reveal() ], RunnerConfig::create());
         self::assertFalse($this->executor->hasHealthBeenChecked());
-        self::assertTrue($this->executor->hasMethodBeenExecuted('afterClass'));
-        self::assertTrue($this->executor->hasMethodBeenExecuted('beforeClass'));
+        self::assertTrue($this->executor->hasMethodBeenExecuted('beforeClass'), 'before');
+        self::assertTrue($this->executor->hasMethodBeenExecuted('afterClass'), 'after');
     }
 
     /**
@@ -452,13 +452,18 @@ class RunnerTest extends TestCase
      */
     private function setUpExecutorConfig(array $config = []): void
     {
-        $this->executorConfig = new Config('remote', array_merge([
+        $this->executorConfig = $this->resolveExecutorConfig($config);
+        $this->executorRegistry->getConfig($this->executorConfig['executor'])->willReturn(
+            $this->executorConfig
+        );
+    }
+
+    private function resolveExecutorConfig(array $config)
+    {
+        return new Config('remote', array_merge([
             'exception' => null,
             'executor' => 'remote',
             'results' => [TimeResult::fromArray(['net' => 1])]
         ], $config));
-        $this->executorRegistry->getConfig('remote')->willReturn(
-            $this->executorConfig
-        );
     }
 }

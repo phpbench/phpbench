@@ -43,7 +43,7 @@ final class Runner
     const DEFAULT_ASSERTER = 'comparator';
 
     /**
-     * @var ConfigurableRegistry
+     * @var ConfigurableRegistry<BenchmarkExecutorInterface>
      */
     private $executorRegistry;
 
@@ -138,12 +138,12 @@ final class Runner
     ): void {
         // determine the executor
         $executorConfig = $this->executorRegistry->getConfig($config->getExecutor());
-        /** @var BenchmarkExecutorInterface $executor */
-        $executor = $this->executorRegistry->getService(
+        $benchmarkExecutor = $this->executorRegistry->getService(
             $benchmarkMetadata->getExecutor() ? $benchmarkMetadata->getExecutor()->getName() : $executorConfig['executor']
         );
+        $executor = $benchmarkExecutor;
 
-        $this->executeBeforeMethods($benchmarkMetadata, $executor);
+        $this->executeBeforeMethods($benchmarkMetadata, $benchmarkExecutor);
 
         $subjectMetadatas = array_filter($benchmarkMetadata->getSubjects(), function ($subjectMetadata) {
             if ($subjectMetadata->getSkip()) {
@@ -178,7 +178,6 @@ final class Runner
             $executorConfig = $this->executorRegistry->getConfig($config->getExecutor());
 
             if ($executorMetadata = $subjectMetadata->getExecutor()) {
-                /** @var BenchmarkExecutorInterface $executor */
                 $executor = $this->executorRegistry->getService($executorMetadata->getName());
                 $executorConfig = $this->executorRegistry->getConfig($executorMetadata->getRegistryConfig());
             }
@@ -198,7 +197,7 @@ final class Runner
         }
         $this->logger->benchmarkEnd($benchmark);
 
-        $this->executeAfterMethods($benchmarkMetadata, $executor);
+        $this->executeAfterMethods($benchmarkMetadata, $benchmarkExecutor);
     }
 
     private function executeBeforeMethods(BenchmarkMetadata $benchmarkMetadata, BenchmarkExecutorInterface $executor): void
@@ -301,6 +300,7 @@ final class Runner
             $this->logger->variantEnd($variant);
 
             if ($config->getStopOnError()) {
+                dump($e->getMessage());
                 throw new StopOnErrorException();
             }
 
