@@ -7,7 +7,8 @@ The ``section`` component is identical to the
 Use it to nest other components within a report and to partition the data
 frame.
 
-Options:
+Options
+-------
 
 .. include:: options/_section.rst
 
@@ -27,7 +28,7 @@ When we run PHPBench with the configured report above:
   :language: bash
   :section: 1
 
-Then it generates all reports:
+Which produces the following with the console renderer:
 
 .. approved:: ../../examples/Command/report-component-section
   :language: bash

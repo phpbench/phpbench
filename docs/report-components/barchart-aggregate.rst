@@ -3,7 +3,13 @@ Bar Chart Aggregate
 
 Render generate a bar chart from aggregated values
 
-Options:
+.. figure:: ../images/barchart_aggregate.png
+   :alt: HTML output
+
+   HTML output
+
+Options
+-------
 
 .. include:: options/_bar_chart_aggregate.rst
 
@@ -23,7 +29,7 @@ When we run PHPBench with the configured report above:
   :language: bash
   :section: 1
 
-Then it generates all reports:
+Then it generates the following with the ``console`` renderer:
 
 .. approved:: ../../examples/Command/report-component-barchart-aggregate
   :language: bash

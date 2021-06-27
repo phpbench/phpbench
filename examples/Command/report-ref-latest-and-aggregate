@@ -3,8 +3,8 @@
     "runner.executor": "debug"
 }
 ---
-phpbench run --store
-phpbench report --ref=latest --report=aggregate
+phpbench run --tag=main
+phpbench report --ref=main --report=aggregate
 ---
 +--------------+--------------+-----+------+-----+----------+----------+--------+
 | benchmark    | subject      | set | revs | its | mem_peak | mode     | rstdev |

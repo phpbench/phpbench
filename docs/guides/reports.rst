@@ -4,7 +4,7 @@ Reports
 PHPBench includes a reporting framework. :doc:`Report
 generators <../report-generators>` provide report data which can subsequently be
 rendered by :doc:`report renderer
-<../report-renderers>`.
+<../report-renderers>` (e.g. ``console`` or ``html``).
 
 This guide will deal with generating reports and assume that the ``console``
 renderer is used.
@@ -24,8 +24,7 @@ Multiple reports can be specified:
   :language: bash
   :section: 1
 
-The report command operates in a similar way but requires you to provide some
-data, either from XML dumps or by using a :doc:`storage <storage>` UUID or tag:
+You can also tag runs and generate reports afterwards:
 
 .. approved:: ../../examples/Command/report-ref-latest-and-aggregate
   :language: bash
@@ -78,13 +77,33 @@ Default Reports
 ``aggregate``
 ~~~~~~~~~~~~~
 
-Shows aggregate details of each set of iterations:
+Shows aggregate details of each set of iterations.
+
+.. approved:: ../../examples/Command/run-reports-aggregate
+  :language: bash
+  :section: 1
 
 .. approved:: ../../examples/Command/run-reports-aggregate
   :language: bash
   :section: 2
 
 It is uses the ``table`` generator, see :ref:`generator_expression` for more information.
+
+.. _report_benchmark:
+
+``benchmark``
+~~~~~~~~~~~~~
+
+Sumarize each benchmark:
+
+
+.. approved:: ../../examples/Command/run-reports-benchmark
+  :language: bash
+  :section: 1
+.. approved:: ../../examples/Command/run-reports-benchmark
+  :language: bash
+  :section: 2
+
 
 .. _report_default:
 
@@ -93,9 +112,12 @@ It is uses the ``table`` generator, see :ref:`generator_expression` for more inf
 
 The default report presents the result of *each iteration*:
 
-.. approved:: ../../examples/Command/report-generators-composite
+.. approved:: ../../examples/Command/run-reports-default
   :language: javascript
-  :section: 0
+  :section: 1
+.. approved:: ../../examples/Command/run-reports-default
+  :language: javascript
+  :section: 2
 
 It is uses the ``table`` generator, see :ref:`generator_expression` for more information.
 
@@ -107,6 +129,9 @@ It is uses the ``table`` generator, see :ref:`generator_expression` for more inf
 This report shows information about the environment that the benchmarks were
 executed in.
 
+.. approved:: ../../examples/Command/run-reports-env
+  :language: bash
+  :section: 1
 .. approved:: ../../examples/Command/run-reports-env
   :language: bash
   :section: 2
@@ -130,3 +155,17 @@ See the :doc:`../environment` reference for more information.
     used.
 
 .. _aggregate report: https://github.com/phpbench/phpbench/blob/master/lib/Extension/config/report/generators.php
+
+.. _report_overview:
+
+``overview``
+~~~~~~~~~~~~~
+
+Shows overview of a single or mutiple runs:
+
+.. approved:: ../../examples/Command/run-reports-overview
+  :language: bash
+  :section: 1
+.. approved:: ../../examples/Command/run-reports-overview
+  :language: bash
+  :section: 2
