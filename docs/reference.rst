@@ -11,3 +11,4 @@ Reference
    executors
    report-generators
    report-renderers
+   report-components

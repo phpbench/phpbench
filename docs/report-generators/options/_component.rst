@@ -18,7 +18,7 @@
 **partition**:
   Type(s): ``string[]``, Default: ``[]``
 
-  Partition the data using these column names - the row expressions will to aggregate the data in each partition
+  Partition the data using these column names - components will be rendered for each partition
 
 .. _generator_component_option_components:
 

@@ -1,0 +1,34 @@
+{
+    "runner.path": "NothingBench.php",
+    "runner.executor": "debug",
+    "runner.env_enabled_providers": ["test"],
+    "report.generators": {
+        "nested": {
+            "generator": "component",
+            "title": "My Aggregated Table",
+            "components": [
+                {
+                    "component": "table_aggregate",
+                    "title": "Table",
+                    "row": {
+                        "benchmark": "first(partition[\"benchmark_name\"])",
+                        "net_time": "sum(partition[\"result_time_net\"])"
+                    }
+                }
+            ]
+        }
+    }
+}
+---
+phpbench run --report=nested
+---
+My Aggregated Table
+===================
+
+Table
++--------------+----------+
+| benchmark    | net_time |
++--------------+----------+
+| NothingBench | 10       |
++--------------+----------+
+
