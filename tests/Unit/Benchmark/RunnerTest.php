@@ -376,6 +376,36 @@ class RunnerTest extends TestCase
         self::assertTrue($this->executor->hasMethodBeenExecuted('afterClass'), 'after');
     }
 
+    public function testRunSubjectsWithDifferentExecutors(): void
+    {
+        TestUtil::configureBenchmarkMetadata($this->benchmark, []);
+
+        $subject1 = new SubjectMetadata($this->benchmark->reveal(), 'name');
+        $subject1->setExecutor(new ExecutorMetadata('executor_1', []));
+        $subject2 = new SubjectMetadata($this->benchmark->reveal(), 'name');
+        $subject2->setExecutor(new ExecutorMetadata('executor_2', []));
+        $this->benchmark->getSubjects()->willReturn([
+            $subject1,
+            $subject2,
+        ]);
+
+        $executor1 = new TestExecutor();
+        $executor2 = new TestExecutor();
+        $this->executorRegistry->getService('executor_1')->willReturn($executor1);
+        $this->executorRegistry->getService('executor_2')->willReturn($executor2);
+        $this->executorRegistry->getConfig(['executor'=> 'executor_1'])->willReturn($this->resolveExecutorConfig([
+            'executor' => 'executor_1'
+        ]));
+        $this->executorRegistry->getConfig(['executor'=> 'executor_2'])->willReturn($this->resolveExecutorConfig([
+            'executor' => 'executor_2'
+        ]));
+
+        $this->runner->run([ $this->benchmark->reveal() ], RunnerConfig::create());
+
+        self::assertEquals(1, $executor1->getExecutedContextCount());
+        self::assertEquals(1, $executor2->getExecutedContextCount());
+    }
+
     /**
      * It should handle exceptions thrown by the executor.
      * It should handle nested exceptions.

@@ -300,7 +300,6 @@ final class Runner
             $this->logger->variantEnd($variant);
 
             if ($config->getStopOnError()) {
-                dump($e->getMessage());
                 throw new StopOnErrorException();
             }
 
