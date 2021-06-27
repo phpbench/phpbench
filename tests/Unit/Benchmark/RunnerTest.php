@@ -366,7 +366,7 @@ class RunnerTest extends TestCase
         ]);
         $subjectTestExecutor = new TestExecutor();
         $this->executorRegistry->getService('debug')->willReturn($subjectTestExecutor);
-        $this->executorRegistry->getConfig(['executor'=> 'debug'])->willReturn($this->resolveExecutorConfig([
+        $this->executorRegistry->getConfig(['executor' => 'debug'])->willReturn($this->resolveExecutorConfig([
             'executor' => 'debug',
         ]));
 
@@ -393,10 +393,10 @@ class RunnerTest extends TestCase
         $executor2 = new TestExecutor();
         $this->executorRegistry->getService('executor_1')->willReturn($executor1);
         $this->executorRegistry->getService('executor_2')->willReturn($executor2);
-        $this->executorRegistry->getConfig(['executor'=> 'executor_1'])->willReturn($this->resolveExecutorConfig([
+        $this->executorRegistry->getConfig(['executor' => 'executor_1'])->willReturn($this->resolveExecutorConfig([
             'executor' => 'executor_1'
         ]));
-        $this->executorRegistry->getConfig(['executor'=> 'executor_2'])->willReturn($this->resolveExecutorConfig([
+        $this->executorRegistry->getConfig(['executor' => 'executor_2'])->willReturn($this->resolveExecutorConfig([
             'executor' => 'executor_2'
         ]));
 
