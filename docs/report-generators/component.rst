@@ -4,7 +4,7 @@ Component
 =========
 
 The component report renders a report that is comprised of different types of
-*components*.
+:doc:`components <../report-components>`.
 
 Options
 -------

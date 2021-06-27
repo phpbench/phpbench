@@ -26,6 +26,19 @@ class BarChartAggregateComponentGeneratorTest extends ComponentGeneratorTestCase
         self::assertCount(0, $barChart->dataSets());
     }
 
+    public function testXPartitionWithSingleValue(): void
+    {
+        $barChart = $this->generate(DataFrame::fromRowSeries([
+            [ 1 ],
+        ], ['col']), [
+            BarChartAggregateComponentGenerator::PARAM_X_PARTITION => ['col'],
+            BarChartAggregateComponentGenerator::PARAM_Y_EXPR => '[10]',
+        ]);
+        assert($barChart instanceof BarChart);
+        self::assertInstanceOf(BarChart::class, $barChart);
+        self::assertCount(1, $barChart->dataSets());
+    }
+
     public function testGeneratesSeries(): void
     {
         $frame = DataFrame::fromRowSeries([

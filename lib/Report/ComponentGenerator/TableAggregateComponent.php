@@ -38,7 +38,7 @@ class TableAggregateComponent implements ComponentGeneratorInterface
             ],
         ]);
         $options->setAllowedTypes(self::PARAM_TITLE, ['string', 'null']);
-        $options->setAllowedTypes(self::PARAM_PARTITION, 'array');
+        $options->setAllowedTypes(self::PARAM_PARTITION, 'string[]');
         $options->setAllowedTypes(self::PARAM_ROW, 'array');
         SymfonyOptionsResolverCompat::setInfos($options, [
             self::PARAM_TITLE => 'Caption for the table',

@@ -41,11 +41,11 @@
         "symfony/var-dumper": "^4.0 || ^5.0"
     },
     "scripts": {
-        "integrate": [
+        "integrate":[ 
             "vendor/bin/php-cs-fixer fix",
             "vendor/bin/phpstan analyse -c phpstan.neon.dist",
             "vendor/bin/phpunit",
-            "bin/phpbench run --revs=1 --iterations=1",
+            "bin/phpbench run --revs=1 --iterations=2",
             "bin/phpbench run --profile=examples --revs=1 --iterations=1",
             "@docs"
         ],
@@ -54,6 +54,7 @@
             "bin/phpbench doc:config-reference > docs/configuration.rst",
             "bin/phpbench doc:service-options docs/report-generators/options generator",
             "bin/phpbench doc:service-options docs/report-renderers/options renderer",
+            "bin/phpbench doc:service-options docs/report-components/options component",
             "bin/phpbench doc:service-options docs/executors/options executor",
             "make -C docs html"
         ]

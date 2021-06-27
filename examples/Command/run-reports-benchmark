@@ -1,0 +1,45 @@
+{
+    "runner.path": "NothingBench.php",
+    "runner.executor": "debug"
+}
+---
+phpbench run --report=benchmark --iterations=4
+---
+NothingBench
+============
+
+Average iteration times by variant
+
+10.0μs    │ █ 
+8.8μs     │ █ 
+7.5μs     │ █ 
+6.3μs     │ █ 
+5.0μs     │ █ 
+3.8μs     │ █ 
+2.5μs     │ █ 
+1.3μs     │ █ 
+          └──
+
+[█ <current>] 
+
+Memory by variant
+
+100b      │ █ 
+88b       │ █ 
+75b       │ █ 
+63b       │ █ 
+50b       │ █ 
+38b       │ █ 
+25b       │ █ 
+13b       │ █ 
+          └──
+
+[█ <current>] 
+
+<current>
++-----------------+--------+----------+--------+---------+
+| subject         | memory | mode     | rstdev | stdev   |
++-----------------+--------+----------+--------+---------+
+| benchNothing () | 100b   | 10.000μs | ±0.00% | 0.000μs |
++-----------------+--------+----------+--------+---------+
+

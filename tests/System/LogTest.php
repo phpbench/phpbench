@@ -27,4 +27,16 @@ class LogTest extends SystemTestCase
         $this->assertEquals(0, $process->getExitCode());
         $this->assertCount(9, explode("\n", $output));
     }
+
+    public function testLogLimit(): void
+    {
+        $this->getBenchResult(null, ' --store');
+        $this->getBenchResult(null, ' --store');
+        $process = $this->phpbench(
+            'log --limit=1'
+        );
+        $output = $process->getOutput();
+        $this->assertEquals(0, $process->getExitCode());
+        $this->assertCount(9, explode("\n", $output));
+    }
 }

@@ -13,14 +13,6 @@
                     "set_partition": ["suite_tag"],
                     "y_expr": "mode(partition[\"result_time_avg\"])",
                     "y_axes_label": "yValue as time precision 1"
-                },
-                {
-                    "component": "table_aggregate",
-                    "title": "Table",
-                    "row": {
-                        "benchmark": "first(partition[\"benchmark_name\"])",
-                        "net_time": "sum(partition[\"result_time_net\"])"
-                    }
                 }
             ]
         }
@@ -42,11 +34,4 @@ Example Bar Chart
           └──
 
 [█ <current>] 
-
-Table
-+--------------+----------+
-| benchmark    | net_time |
-+--------------+----------+
-| NothingBench | 10       |
-+--------------+----------+
 

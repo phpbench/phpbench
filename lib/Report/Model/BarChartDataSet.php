@@ -33,7 +33,7 @@ class BarChartDataSet
         if (count($xSeries) !== count($ySeries) || $errorMargins !== null && count($xSeries) !== count($errorMargins)) {
             throw new RuntimeException(sprintf(
                 'X (%s) and Y (%s) and Error Margins (%s) series must have an equal number of elements',
-                count($xSeries), count($ySeries), count($errorMargins)
+                count($xSeries), count($ySeries), count($errorMargins ?? [])
             ));
         }
         $this->name = $name;

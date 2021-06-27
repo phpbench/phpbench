@@ -1,0 +1,21 @@
+
+.. _component_table_aggregate_option_title:
+
+**title**:
+  Type(s): ``[string, null]``, Default: ``NULL``
+
+  Caption for the table
+
+.. _component_table_aggregate_option_partition:
+
+**partition**:
+  Type(s): ``string[]``, Default: ``[]``
+
+  Partition the data using these column names - the row expressions will to aggregate the data in each partition
+
+.. _component_table_aggregate_option_row:
+
+**row**:
+  Type(s): ``array``, Default: ``[]``
+
+  Set of expressions used to evaluate the partitions, the key is the column name, the value is the expression

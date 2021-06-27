@@ -6,7 +6,7 @@
     "description": "This is the description",
     "components": [
         {
-             "_type": "table_aggregate",
+             "component": "table_aggregate",
              "row": {
                  "greeting": "\"Hello\""
              }

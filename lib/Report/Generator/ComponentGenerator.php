@@ -7,7 +7,7 @@ use PhpBench\Data\DataFrame;
 use PhpBench\Expression\ExpressionEvaluator;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
-use PhpBench\Report\ComponentGeneratorAgent;
+use PhpBench\Registry\ConfigurableRegistry;
 use PhpBench\Report\ComponentGeneratorInterface;
 use PhpBench\Report\ComponentInterface;
 use PhpBench\Report\GeneratorInterface;
@@ -27,10 +27,10 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
     const PARAM_COMPONENTS = 'components';
     const PARAM_TABBED = 'tabbed';
     const PARAM_TAB_LABELS = 'tab_labels';
-    const KEY_COMPONENT_TYPE = '_type';
+    const KEY_COMPONENT_TYPE = 'component';
 
     /**
-     * @var ComponentGeneratorAgent
+     * @var ConfigurableRegistry
      */
     private $agent;
 
@@ -51,7 +51,7 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
 
     public function __construct(
         SuiteCollectionTransformer $transformer,
-        ComponentGeneratorAgent $agent,
+        ConfigurableRegistry $agent,
         ExpressionEvaluator $evaluator,
         LoggerInterface $logger
     ) {
@@ -83,8 +83,8 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
         SymfonyOptionsResolverCompat::setInfos($options, [
             self::PARAM_TITLE => 'Title for generated report',
             self::PARAM_DESCRIPTION => 'Description for generated report',
-            self::PARAM_PARTITION => 'Partition the data using these column names - the row expressions will to aggregate the data in each partition',
-            self::PARAM_COMPONENTS => 'List of component configuration objects, each component must feature a ``_type`` key (e.g. ``table_aggregate``)',
+            self::PARAM_PARTITION => 'Partition the data using these column names - components will be rendered for each partition',
+            self::PARAM_COMPONENTS => 'List of component configuration objects, each component must feature a ``component`` key (e.g. ``table_aggregate``)',
             self::PARAM_TABBED => 'Render components in tabs when supported in the output renderer (e.g. HTML)',
             self::PARAM_TAB_LABELS => 'List of labels for tabs, will replace the default labels from left to right.',
         ]);
@@ -124,15 +124,15 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
             foreach ($config[self::PARAM_COMPONENTS] as $component) {
                 if (!isset($component[self::KEY_COMPONENT_TYPE])) {
                     throw new RuntimeException(
-                        'Component definition must have `_type` key indicating the component type'
+                        'Component definition must have `component` key indicating the component type'
                     );
                 }
-                $componentGenerator = $this->agent->get($component[self::KEY_COMPONENT_TYPE]);
-                unset($component[self::KEY_COMPONENT_TYPE]);
+                $componentGenerator = $this->agent->getService($component[self::KEY_COMPONENT_TYPE]);
+                assert($componentGenerator instanceof ComponentGeneratorInterface);
                 $builder->addObject($this->doGenerateComponent(
                     $componentGenerator,
                     $parition,
-                    $this->agent->resolveConfig($componentGenerator, $component)
+                    $this->agent->getConfig($component)->getArrayCopy()
                 ));
             }
         }

@@ -4,6 +4,10 @@ return [
     'bare' => [
         'generator' => 'bare',
     ],
+    'bare-vertical' => [
+        'generator' => 'bare',
+        'vertical' => true,
+    ],
     'aggregate' => [
         'generator' => 'expression',
         'cols' => [
@@ -52,7 +56,7 @@ return [
         "components" => [
             [
                 "title" => "Suites",
-                "_type" => "table_aggregate",
+                "component" => "table_aggregate",
                 "partition" => ["suite_tag"],
                 "row" => [
                     "suite" => "first(partition[\"suite_tag\"])",
@@ -67,13 +71,13 @@ return [
                 ],
             ],
             [
-                "_type" => "report",
+                "component" => "section",
                 "tabbed" => true,
                 "tab_labels" => ['Time', 'Memory'],
                 "components" => [
                     [
                         "title" => "Average iteration times aggregated by benchmark",
-                        "_type" => "bar_chart_aggregate",
+                        "component" => "bar_chart_aggregate",
                         "x_partition" => ["benchmark_name"],
                         "set_partition" => ["suite_tag"],
                         "y_expr" => "mode(partition[\"result_time_avg\"])",
@@ -81,7 +85,7 @@ return [
                     ],
                     [
                         "title" => "Average peak memory aggregated by benchmark",
-                        "_type" => "bar_chart_aggregate",
+                        "component" => "bar_chart_aggregate",
                         "x_partition" => ["benchmark_name"],
                         "set_partition" => ["suite_tag"],
                         "y_expr" => "mode(partition[\"result_mem_peak\"])",
@@ -89,19 +93,19 @@ return [
                     ],
                     [
                         "title" => "By Benchmark",
-                        "_type" => "bar_chart_aggregate",
+                        "component" => "bar_chart_aggregate",
                         "x_partition" => ["suite_tag"],
                         "set_partition" => ["benchmark_name"],
                         "y_expr" => "mode(partition[\"result_time_avg\"])",
                         "y_axes_label" => "yValue as time precision 1"
                     ],
                     [
-                        "_type" => "report",
+                        "component" => "section",
                         "title" => "Table",
                         "partition" => ["suite_tag"],
                         "components" => [
                             [
-                                "_type" => "table_aggregate",
+                                "component" => "table_aggregate",
                                 "title" => "{{ first(frame.suite_tag) }}",
                                 "partition" => ["benchmark_name", "subject_name", "variant_name"],
                                 "row" => [
@@ -126,17 +130,17 @@ return [
         "partition" => ["benchmark_name"],
         "components" => [
             [
-                "_type" => "report",
+                "component" => "section",
                 "title" => "{{ first(frame[\"benchmark_name\"]) }}",
                 "components" => [
                     [
-                        "_type" => "report",
+                        "component" => "section",
                         "tabbed" => true,
                         "tab_labels" => ["Time", "Memory"],
                         "components" => [
                             [
                                 "title" => "Average iteration times by variant",
-                                "_type" => "bar_chart_aggregate",
+                                "component" => "bar_chart_aggregate",
                                 "x_partition" => ["subject_name", "variant_name"],
                                 "set_partition" => ["suite_tag"],
                                 "y_expr" => "mode(partition[\"result_time_avg\"])",
@@ -145,7 +149,7 @@ return [
                             ],
                             [
                                 "title" => "Memory by variant",
-                                "_type" => "bar_chart_aggregate",
+                                "component" => "bar_chart_aggregate",
                                 "x_partition" => ["subject_name", "variant_name"],
                                 "set_partition" => ["suite_tag"],
                                 "y_expr" => "mode(partition[\"result_mem_peak\"])",
@@ -155,12 +159,12 @@ return [
                         ]
                     ],
                     [
-                        "_type" => "report",
+                        "component" => "section",
                         "partition" => ["suite_tag"],
                         "tabbed" => true,
                         "components" => [
                             [
-                                "_type" => "table_aggregate",
+                                "component" => "table_aggregate",
                                 "title" => "{{ first(frame.suite_tag) }}",
                                 "partition" => ["subject_name", "variant_name"],
                                 "row" => [

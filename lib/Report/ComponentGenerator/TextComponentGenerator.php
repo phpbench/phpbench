@@ -29,6 +29,7 @@ class TextComponentGenerator implements ComponentGeneratorInterface
     public function configure(OptionsResolver $options): void
     {
         $options->setRequired(self::PARAM_TEXT);
+        $options->setAllowedTypes(self::PARAM_TEXT, ['string']);
     }
 
     /**

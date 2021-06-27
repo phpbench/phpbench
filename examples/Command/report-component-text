@@ -1,0 +1,20 @@
+{
+    "runner.path": "NothingBench.php",
+    "runner.executor": "debug",
+    "runner.env_enabled_providers": ["test"],
+    "report.generators": {
+        "text": {
+            "generator": "component",
+            "components": [
+                {
+                    "component": "text",
+                    "text": "Hello World"
+                }
+            ]
+        }
+    }
+}
+---
+phpbench run --report=text
+---
+Hello World

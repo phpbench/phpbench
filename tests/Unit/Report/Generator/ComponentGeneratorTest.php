@@ -14,7 +14,7 @@ namespace PhpBench\Tests\Unit\Report\Generator;
 
 use PhpBench\DependencyInjection\Container;
 use PhpBench\Expression\ExpressionEvaluator;
-use PhpBench\Report\ComponentGeneratorAgent;
+use PhpBench\Extension\ReportExtension;
 use PhpBench\Report\Generator\ComponentGenerator;
 use PhpBench\Report\GeneratorInterface;
 use PhpBench\Report\Transform\SuiteCollectionTransformer;
@@ -34,7 +34,7 @@ class ComponentGeneratorTest extends GeneratorTestCase
 
         return new ComponentGenerator(
             $container->get(SuiteCollectionTransformer::class),
-            $container->get(ComponentGeneratorAgent::class),
+            $container->get(ReportExtension::SERVICE_REGISTRY_COMPONENT),
             $container->get(ExpressionEvaluator::class),
             new NullLogger()
         );
@@ -60,11 +60,11 @@ class ComponentGeneratorTest extends GeneratorTestCase
             ComponentGenerator::PARAM_TAB_LABELS => [ 'one' ],
             ComponentGenerator::PARAM_COMPONENTS => [
                 [
-                    '_type' => 'table_aggregate',
+                    'component' => 'table_aggregate',
                     'title' => 'hello',
                 ],
                 [
-                    '_type' => 'table_aggregate',
+                    'component' => 'table_aggregate',
                     'title' => 'goodbye',
                 ]
             ]
@@ -81,11 +81,11 @@ class ComponentGeneratorTest extends GeneratorTestCase
             ComponentGenerator::PARAM_TABBED => true,
             ComponentGenerator::PARAM_COMPONENTS => [
                 [
-                    '_type' => 'table_aggregate',
+                    'component' => 'table_aggregate',
                     'title' => 'hello',
                 ],
                 [
-                    '_type' => 'table_aggregate',
+                    'component' => 'table_aggregate',
                     'title' => 'goodbye',
                 ]
             ]
