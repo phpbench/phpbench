@@ -1,0 +1,33 @@
+{
+    "runner.path": "NothingBench.php",
+    "runner.executor": "debug",
+    "runner.env_enabled_providers": ["test"],
+    "report.generators": {
+        "nested": {
+            "generator": "component",
+            "title": "Outer Section",
+            "components": [
+                {
+                    "component": "section",
+                    "title": "Inner Section",
+                    "components": [
+                        {
+                            "component": "text",
+                            "text": "Hello World"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
+---
+phpbench run --report=nested
+---
+Outer Section
+=============
+
+Inner Section
+=============
+
+Hello World
