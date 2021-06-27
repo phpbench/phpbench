@@ -3,7 +3,7 @@
 Component
 =========
 
-The component report renders a report that is comprised of different types of
+The component generator creates a report that is comprised of different types of
 :doc:`components <../report-components>`.
 
 Options

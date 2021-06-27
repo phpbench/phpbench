@@ -2,6 +2,7 @@
 
 namespace PhpBench\Report\ComponentGenerator;
 
+use PhpBench\Compat\SymfonyOptionsResolverCompat;
 use PhpBench\Data\DataFrame;
 use PhpBench\Expression\ExpressionEvaluator;
 use PhpBench\Report\ComponentGeneratorInterface;
@@ -49,6 +50,14 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
         $options->setAllowedTypes(self::PARAM_Y_AXES_LABEL, ['string']);
         $options->setAllowedTypes(self::PARAM_Y_EXPR, ['string']);
         $options->setAllowedTypes(self::PARAM_Y_ERROR_MARGIN, ['string', 'null']);
+        SymfonyOptionsResolverCompat::setInfos($options, [
+            self::PARAM_TITLE => 'Title for the barchart',
+            self::PARAM_X_PARTITION => 'Group by these columns on the X-Axis. The label will be the concatenation of the values of these columns by default',
+            self::PARAM_SET_PARTITION => 'Create separate bars for each step by partitioning the data based on these values.',
+            self::PARAM_Y_AXES_LABEL => 'Expression to evaluate to determine the Y-Axis label',
+            self::PARAM_Y_EXPR => 'Expression to evaluate the Y-Axis value, e.g. ``mode(partition["result_time_avg"])``',
+            self::PARAM_Y_ERROR_MARGIN => 'Expression to evaluate to determine the error margin to show on the chart. Leave as NULL to disable the error margin',
+        ]);
     }
 
     /*

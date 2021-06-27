@@ -1,8 +1,8 @@
 Report Components
 =================
 
-Components are based on data frames and can be combined through the
-:doc:`report-generators/component`.
+Components are based on data frames are used with the 
+:doc:`Component Generator <report-generators/component>`.
 
 .. toctree::
    :maxdepth: 1

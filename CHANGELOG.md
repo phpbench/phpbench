@@ -18,6 +18,8 @@ Features:
 - Allow multiple benchmark paths to be specified from CLI #834
 - Functions which require at least one value return NULL when values are
   empty #835
+- Add `--limit` option to `log` command #879
+- Add `bare-vertical` report configuration (same as `--report='extends: bare,{"vertical": true}`) #879
 
 Improvement:
 
