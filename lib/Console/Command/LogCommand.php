@@ -66,12 +66,15 @@ EOT
         TimeUnitHandler::configure($this);
 
         $this->addOption('no-pagination', 'P', InputOption::VALUE_NONE, 'Do not paginate');
+        $this->addOption('limit', null, InputOption::VALUE_REQUIRED, 'Limit number of entries');
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->timeUnitHandler->timeUnitFromInput($input);
         $paginate = false === $input->getOption('no-pagination');
+        $limit = $input->getOption('limit');
+        assert(is_numeric($limit) || is_bool($limit));
 
         // if we have an application, get the terminal dimensions, if the
         // terminal dimensions are null then set the height to the arbitrary
@@ -89,6 +92,7 @@ EOT
         $height -= 1; // reduce height by one to accommodate the pagination prompt
         $nbRows = 0;
         $totalRows = 0;
+        $count = 0;
 
         foreach ($this->storage->getService()->history() as $entry) {
             $lines = [];
@@ -135,6 +139,12 @@ EOT
 
                 $totalRows += $nbRows;
                 $nbRows = 0;
+            }
+
+            $count++;
+
+            if ($limit !== false && $count === (int)$limit) {
+                break;
             }
         }
 

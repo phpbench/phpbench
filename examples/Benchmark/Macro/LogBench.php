@@ -42,6 +42,7 @@ class LogBench extends BaseBenchCase
     {
         $this->runCommand(LogCommand::class, [
             '--no-pagination' => true,
+            '--limit' => 1
         ]);
     }
 }
