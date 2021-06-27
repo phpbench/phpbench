@@ -178,7 +178,6 @@ final class Runner
             $executorConfig = $this->executorRegistry->getConfig($config->getExecutor());
 
             if ($executorMetadata = $subjectMetadata->getExecutor()) {
-                $executor = $this->executorRegistry->getService($executorMetadata->getName());
                 $executorConfig = $this->executorRegistry->getConfig($executorMetadata->getRegistryConfig());
             }
             $resolvedExecutor = ResolvedExecutor::fromNameAndConfig($executorConfig['executor'], $executorConfig);
@@ -192,6 +191,7 @@ final class Runner
             $subjectMetadata = $subjectMetadatas[$index];
 
             $this->logger->subjectStart($subject);
+            $executor = $this->executorRegistry->getService($subject->getExecutor()->getName());
             $this->runSubject($executor, $config, $subject, $subjectMetadata);
             $this->logger->subjectEnd($subject);
         }
