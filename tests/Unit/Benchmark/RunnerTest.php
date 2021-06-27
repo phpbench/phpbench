@@ -18,6 +18,7 @@ use InvalidArgumentException;
 use PhpBench\Assertion\AssertionProcessor;
 use PhpBench\Benchmark\Exception\RetryLimitReachedException;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
+use PhpBench\Benchmark\Metadata\ExecutorMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Benchmark\RunnerConfig;
@@ -336,10 +337,7 @@ class RunnerTest extends TestCase
         $this->addToAssertionCount(1); // no exception = retry limit not exceeded
     }
 
-    /**
-     * It should call the before and after class methods.
-     */
-    public function testBeforeAndAfterClass(): void
+    public function testCallBeforeAndAfterClass(): void
     {
         TestUtil::configureBenchmarkMetadata($this->benchmark, [
             'beforeClassMethods' => ['afterClass'],
@@ -347,6 +345,30 @@ class RunnerTest extends TestCase
         ]);
 
         $this->benchmark->getSubjects()->willReturn([]);
+
+        $this->runner->run([ $this->benchmark->reveal() ], RunnerConfig::create());
+        self::assertFalse($this->executor->hasHealthBeenChecked());
+        self::assertTrue($this->executor->hasMethodBeenExecuted('afterClass'));
+        self::assertTrue($this->executor->hasMethodBeenExecuted('beforeClass'));
+    }
+
+    public function testCallBeforeAndAfterClassWithBenchmarkExecutorWhenCustomSubjectExecutorUsed(): void
+    {
+        TestUtil::configureBenchmarkMetadata($this->benchmark, [
+            'beforeClassMethods' => ['afterClass'],
+            'afterClassMethods' => ['beforeClass'],
+        ]);
+
+        $subject = new SubjectMetadata($this->benchmark->reveal(), 'name');
+        $subject->setExecutor(new ExecutorMetadata('debug', []));
+        $this->benchmark->getSubjects()->willReturn([
+            $subject
+        ]);
+        $subjectTestExecutor = new TestExecutor();
+        $this->executorRegistry->getService('debug')->willReturn($subjectTestExecutor);
+        $this->executorRegistry->getConfig(['executor'=> 'debug'])->willReturn(new Config('test', [
+            'executor' => 'config',
+        ]));
 
         $this->runner->run([ $this->benchmark->reveal() ], RunnerConfig::create());
         self::assertFalse($this->executor->hasHealthBeenChecked());
