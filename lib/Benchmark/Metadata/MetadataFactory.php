@@ -15,6 +15,8 @@ namespace PhpBench\Benchmark\Metadata;
 use PhpBench\Model\Subject;
 use PhpBench\Reflection\ReflectionHierarchy;
 use PhpBench\Reflection\ReflectorInterface;
+use PhpBench\Tests\Unit\Benchmark\Metadata\Exception\CouldNotLoadMetadataException;
+use Psr\Log\LoggerInterface;
 
 /**
  * Benchmark Metadata Factory.
@@ -31,10 +33,16 @@ class MetadataFactory
      */
     private $driver;
 
-    public function __construct(ReflectorInterface $reflector, DriverInterface $driver)
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    public function __construct(ReflectorInterface $reflector, DriverInterface $driver, LoggerInterface $logger)
     {
         $this->reflector = $reflector;
         $this->driver = $driver;
+        $this->logger = $logger;
     }
 
     /**
@@ -60,7 +68,15 @@ class MetadataFactory
             return null;
         }
 
-        $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
+        try {
+            $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
+        } catch (CouldNotLoadMetadataException $couldNotLoad) {
+            $this->logger->warning(sprintf(
+                'Could not load metadata for file "%s" - is this file intended to be a benchmark? Perhaps setting the `runner.file_pattern` to `*Bench.php` will help: %s',
+                $file, $couldNotLoad->getMessage()
+            ));
+            return null;
+        }
         $this->validateBenchmark($hierarchy, $metadata);
 
         // validate the subject and load the parameter sets

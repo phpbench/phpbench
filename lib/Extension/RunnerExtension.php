@@ -179,7 +179,7 @@ class RunnerExtension implements ExtensionInterface
         $resolver->setAllowedTypes(self::PARAM_RUNNER_TIMEOUT, ['null', 'float', 'int']);
         $resolver->setAllowedTypes(self::PARAM_RUNNER_WARMUP, ['null', 'int', 'array']);
         $resolver->setAllowedTypes(self::PARAM_SUBJECT_PATTERN, ['string']);
-        $resolver->setAllowedTypes(self::PARAM_FILE_PATTERN, ['string']);
+        $resolver->setAllowedTypes(self::PARAM_FILE_PATTERN, ['string', 'null']);
         
         SymfonyOptionsResolverCompat::setInfos($resolver, [
             self::PARAM_ANNOTATIONS => 'Read metadata from annotations',
@@ -585,7 +585,8 @@ class RunnerExtension implements ExtensionInterface
         $container->register(MetadataFactory::class, function (Container $container) {
             return new MetadataFactory(
                 $container->get(RemoteReflector::class),
-                $container->get(ConfigDriver::class)
+                $container->get(ConfigDriver::class),
+                $container->get(LoggerInterface::class)
             );
         });
 
