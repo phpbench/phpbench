@@ -58,6 +58,7 @@ class BenchmarkFinderTest extends TestCase
         $benchmarks = $this->createFinder()->findBenchmarks([__DIR__ . '/findertest']);
 
         $this->assertCount(2, $benchmarks);
+        $this->logger->warning(Argument::containingString('but it does not end with'))->shouldHaveBeenCalledTimes(1);
     }
 
     public function testBuildCollectionByGlob(): void

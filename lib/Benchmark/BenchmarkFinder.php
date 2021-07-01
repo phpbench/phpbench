@@ -128,13 +128,14 @@ class BenchmarkFinder
         }
 
         foreach ($finder as $file) {
-            if ($this->benchPattern === null && substr($file->getPathInfo(), 0, -9) !== 'Bench.php') {
+            assert($file instanceof SplFileInfo);
+
+            if ($this->benchPattern === null && substr($file->getFilename(), -9) !== 'Bench.php') {
                 $this->logger->warning(sprintf(
                     'File "%s" has been identified as a benchmark file but it does not end with ' .
-                    '`Bench.php` and no `runner.file_pattern` has been specified. ' .
-                    'It is recommended to set a file pattern. In PHPBench 2.0 the pattern will be ' .
-                    '`*Bench.php` by default.',
-                    $file->getPathInfo()
+                    '`Bench.php`. This behavior is incorrect and will be fixed in PHPBench 2.0. ' .
+                    'Set a `runner.file_pattern` to `*Bench.php` to avoid this.',
+                    $file->getFilename()
                 ));
             }
 
