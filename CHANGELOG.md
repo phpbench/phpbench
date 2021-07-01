@@ -18,6 +18,10 @@ Bug fix:
   An option `runner.file_pattern` has been added however to enable the
   warnings to be resolved.
 
+Improvement:
+
+- Show warning if metadata could not be loaded for benchmark.
+
 1.0.2 (2021-05-28)
 ------------------
 
