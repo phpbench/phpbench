@@ -609,7 +609,7 @@ class RunnerExtension implements ExtensionInterface
             return new BenchmarkFinder(
                 $container->get(MetadataFactory::class),
                 $container->getParameter(CoreExtension::PARAM_WORKING_DIR),
-                $container->getParameter(RunnerExtension::PARAM_FILE_PATTERN),
+                $container->getParameter(RunnerExtension::PARAM_FILE_PATTERN)
             );
         });
 
