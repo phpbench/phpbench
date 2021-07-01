@@ -411,6 +411,17 @@ Default: ``^bench``
 
 Types: ``["string"]``
 
+.. _configuration_runner_file_pattern:
+
+runner.file_pattern
+~~~~~~~~~~~~~~~~~~~
+
+Consider file names matching this pattern to be benchmarks
+
+Default: ``*Bench.php``
+
+Types: ``["string"]``
+
 Report
 ------
 

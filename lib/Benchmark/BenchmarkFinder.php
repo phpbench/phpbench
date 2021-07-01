@@ -35,10 +35,16 @@ class BenchmarkFinder
      */
     private $cwd;
 
-    public function __construct(MetadataFactory $factory, string $cwd)
+    /**
+     * @var string
+     */
+    private $benchPattern;
+
+    public function __construct(MetadataFactory $factory, string $cwd, string $benchPattern = null)
     {
         $this->factory = $factory;
         $this->cwd = $cwd;
+        $this->benchPattern = $benchPattern ?: '*.php';
     }
 
     /**
@@ -98,7 +104,7 @@ class BenchmarkFinder
 
             if (is_dir($path)) {
                 $search = true;
-                $finder->in($path)->name('*.php');
+                $finder->in($path)->name($this->benchPattern);
 
                 continue;
             }
