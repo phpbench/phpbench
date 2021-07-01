@@ -17,6 +17,8 @@ use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\MetadataFactory;
 use PhpBench\Model\Subject;
 use PhpBench\Tests\TestCase;
+use Prophecy\Argument;
+use Psr\Log\LoggerInterface;
 
 class BenchmarkFinderTest extends TestCase
 {
@@ -24,11 +26,8 @@ class BenchmarkFinderTest extends TestCase
     private $factory;
     private $benchmark1;
     private $benchmark2;
-
-    /**
-     * @var Subject
-     */
     private $subject;
+    private $logger;
 
     protected function setUp(): void
     {
@@ -36,11 +35,12 @@ class BenchmarkFinderTest extends TestCase
         $this->benchmark1 = $this->prophesize(BenchmarkMetadata::class);
         $this->benchmark2 = $this->prophesize(BenchmarkMetadata::class);
         $this->subject = $this->prophesize(Subject::class);
+        $this->logger = $this->prophesize(LoggerInterface::class);
     }
 
     private function createFinder(string $benchPattern = null): BenchmarkFinder
     {
-        return new BenchmarkFinder($this->factory->reveal(), __DIR__ . '/' ,$benchPattern);
+        return new BenchmarkFinder($this->factory->reveal(), __DIR__ . '/' , $this->logger->reveal(), $benchPattern);
     }
 
     /**
@@ -108,6 +108,17 @@ class BenchmarkFinderTest extends TestCase
         $benchmarks = $this->createFinder()->findBenchmarks([__DIR__ . '/findertestnested/MyBench.php']);
 
         $this->assertCount(1, $benchmarks);
+    }
+
+    public function testNoPatternSpecifiedWithNonBenchSuffixedFile(): void
+    {
+        $this->factory->getMetadataForFile(__DIR__ . '/findertestnobenchsuffix/NoBenchSuffix.php')->willReturn($this->benchmark1->reveal());
+        $this->benchmark1->hasSubjects()->willReturn(true);
+
+        $benchmarks = $this->createFinder()->findBenchmarks([__DIR__ . '/findertestnobenchsuffix']);
+
+        $this->assertCount(1, $benchmarks);
+        $this->logger->warning(Argument::containingString('but it does not end with'))->shouldHaveBeenCalled();
     }
 
     /**

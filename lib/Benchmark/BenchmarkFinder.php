@@ -15,6 +15,7 @@ namespace PhpBench\Benchmark;
 use Generator;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\MetadataFactory;
+use Psr\Log\LoggerInterface;
 use SplFileInfo;
 use Symfony\Component\Finder\Finder;
 use Webmozart\PathUtil\Path;
@@ -40,11 +41,17 @@ class BenchmarkFinder
      */
     private $benchPattern;
 
-    public function __construct(MetadataFactory $factory, string $cwd, string $benchPattern = null)
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    public function __construct(MetadataFactory $factory, string $cwd, LoggerInterface $logger, ?string $benchPattern = null)
     {
         $this->factory = $factory;
         $this->cwd = $cwd;
-        $this->benchPattern = $benchPattern ?: '*.php';
+        $this->benchPattern = $benchPattern;
+        $this->logger = $logger;
     }
 
     /**
@@ -104,7 +111,7 @@ class BenchmarkFinder
 
             if (is_dir($path)) {
                 $search = true;
-                $finder->in($path)->name($this->benchPattern);
+                $finder->in($path)->name($this->benchPattern === null ? '*.php' : $this->benchPattern);
 
                 continue;
             }
@@ -121,6 +128,16 @@ class BenchmarkFinder
         }
 
         foreach ($finder as $file) {
+            if ($this->benchPattern === null && substr($file->getPathInfo(), 0, -9) !== 'Bench.php') {
+                $this->logger->warning(sprintf(
+                    'File "%s" has been identified as a benchmark file but it does not end with ' .
+                    '`Bench.php` and no `runner.file_pattern` has been specified. ' .
+                    'It is recommended to set a file pattern. In PHPBench 2.0 the pattern will be ' .
+                    '`*Bench.php` by default.',
+                    $file->getPathInfo()
+                ));
+            }
+
             yield $file;
         }
     }
