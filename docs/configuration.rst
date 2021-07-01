@@ -416,11 +416,11 @@ Types: ``["string"]``
 runner.file_pattern
 ~~~~~~~~~~~~~~~~~~~
 
-Consider file names matching this pattern to be benchmarks
+Consider file names matching this pattern to be benchmarks. NOTE: In 2.0 this will be set to ``*Bench.php``
 
-Default: ``*Bench.php``
+Default: ``NULL``
 
-Types: ``["string"]``
+Types: ``["string","null"]``
 
 Report
 ------
