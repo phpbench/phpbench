@@ -147,7 +147,7 @@ class RunnerExtension implements ExtensionInterface
             self::PARAM_RUNNER_TIMEOUT => null,
             self::PARAM_RUNNER_WARMUP => null,
             self::PARAM_SUBJECT_PATTERN => '^bench',
-            self::PARAM_FILE_PATTERN => '*Bench.php',
+            self::PARAM_FILE_PATTERN => null,
         ]);
 
         $resolver->setAllowedTypes(self::PARAM_ANNOTATIONS, ['bool']);
@@ -211,7 +211,7 @@ class RunnerExtension implements ExtensionInterface
             self::PARAM_RUNNER_TIMEOUT => 'Default :ref:`metadata_timeout`',
             self::PARAM_RUNNER_WARMUP => 'Default :ref:`metadata_warmup`',
             self::PARAM_SUBJECT_PATTERN => 'Subject pattern (regex) to use when finding benchmarks',
-            self::PARAM_FILE_PATTERN => 'Consider file names matching this pattern to be benchmarks',
+            self::PARAM_FILE_PATTERN => 'Consider file names matching this pattern to be benchmarks. NOTE: In 2.0 this will be set to ``*Bench.php``',
         ]);
     }
 

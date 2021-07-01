@@ -23,6 +23,7 @@ use PhpBench\Reflection\ReflectionHierarchy;
 use PhpBench\Reflection\ReflectionMethod;
 use PhpBench\Reflection\ReflectorInterface;
 use PhpBench\Tests\TestCase;
+use PhpBench\Tests\Unit\Benchmark\Metadata\Exception\CouldNotLoadMetadataException;
 
 class AnnotationDriverTest extends TestCase
 {
@@ -78,6 +79,30 @@ EOT;
 
         $this->createDriver()->getMetadataForHierarchy($hierarchy);
         $this->addToAssertionCount(1);
+    }
+
+    public function testExceptionOnUnknownAnnotation(): void
+    {
+        $this->expectException(CouldNotLoadMetadataException::class);
+        $reflection = new ReflectionClass();
+        $reflection->class = 'Test';
+        $reflection->path = 'foo';
+        $hierarchy = new ReflectionHierarchy();
+        $hierarchy->addReflectionClass($reflection);
+
+        $method = new ReflectionMethod();
+        $method->reflectionClass = $reflection;
+        $method->class = 'Test';
+        $method->name = 'benchFoo';
+        $method->comment = <<<'EOT'
+    /**
+     * @unknown
+     */
+EOT;
+        $reflection->methods[$method->name] = $method;
+
+        $metadata = $this->createDriver()->getMetadataForHierarchy($hierarchy);
+        $subjects = $metadata->getSubjects();
     }
 
     /**
