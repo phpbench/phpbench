@@ -98,6 +98,7 @@ class RunnerExtension implements ExtensionInterface
     public const PARAM_RUNNER_TIMEOUT = 'runner.timeout';
     public const PARAM_RUNNER_WARMUP = 'runner.warmup';
     public const PARAM_SUBJECT_PATTERN = 'runner.subject_pattern';
+    public const PARAM_FILE_PATTERN = 'runner.file_pattern';
 
     public const SERVICE_REGISTRY_EXECUTOR = 'runner.benchmark_registry.executor';
     public const SERVICE_VARIANT_SUMMARY_FORMATTER = 'runner.progress_logger_variant_summary_formatter';
@@ -146,6 +147,7 @@ class RunnerExtension implements ExtensionInterface
             self::PARAM_RUNNER_TIMEOUT => null,
             self::PARAM_RUNNER_WARMUP => null,
             self::PARAM_SUBJECT_PATTERN => '^bench',
+            self::PARAM_FILE_PATTERN => null,
         ]);
 
         $resolver->setAllowedTypes(self::PARAM_ANNOTATIONS, ['bool']);
@@ -177,6 +179,7 @@ class RunnerExtension implements ExtensionInterface
         $resolver->setAllowedTypes(self::PARAM_RUNNER_TIMEOUT, ['null', 'float', 'int']);
         $resolver->setAllowedTypes(self::PARAM_RUNNER_WARMUP, ['null', 'int', 'array']);
         $resolver->setAllowedTypes(self::PARAM_SUBJECT_PATTERN, ['string']);
+        $resolver->setAllowedTypes(self::PARAM_FILE_PATTERN, ['string', 'null']);
         
         SymfonyOptionsResolverCompat::setInfos($resolver, [
             self::PARAM_ANNOTATIONS => 'Read metadata from annotations',
@@ -208,6 +211,7 @@ class RunnerExtension implements ExtensionInterface
             self::PARAM_RUNNER_TIMEOUT => 'Default :ref:`metadata_timeout`',
             self::PARAM_RUNNER_WARMUP => 'Default :ref:`metadata_warmup`',
             self::PARAM_SUBJECT_PATTERN => 'Subject pattern (regex) to use when finding benchmarks',
+            self::PARAM_FILE_PATTERN => 'Consider file names matching this pattern to be benchmarks. NOTE: In 2.0 this will be set to ``*Bench.php``',
         ]);
     }
 
@@ -581,7 +585,8 @@ class RunnerExtension implements ExtensionInterface
         $container->register(MetadataFactory::class, function (Container $container) {
             return new MetadataFactory(
                 $container->get(RemoteReflector::class),
-                $container->get(ConfigDriver::class)
+                $container->get(ConfigDriver::class),
+                $container->get(LoggerInterface::class)
             );
         });
 
@@ -604,7 +609,9 @@ class RunnerExtension implements ExtensionInterface
         $container->register(BenchmarkFinder::class, function (Container $container) {
             return new BenchmarkFinder(
                 $container->get(MetadataFactory::class),
-                $container->getParameter(CoreExtension::PARAM_WORKING_DIR)
+                $container->getParameter(CoreExtension::PARAM_WORKING_DIR),
+                $container->get(LoggerInterface::class),
+                $container->getParameter(RunnerExtension::PARAM_FILE_PATTERN)
             );
         });
 

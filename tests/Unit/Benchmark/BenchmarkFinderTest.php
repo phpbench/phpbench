@@ -17,6 +17,8 @@ use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\MetadataFactory;
 use PhpBench\Model\Subject;
 use PhpBench\Tests\TestCase;
+use Prophecy\Argument;
+use Psr\Log\LoggerInterface;
 
 class BenchmarkFinderTest extends TestCase
 {
@@ -24,6 +26,8 @@ class BenchmarkFinderTest extends TestCase
     private $factory;
     private $benchmark1;
     private $benchmark2;
+    private $subject;
+    private $logger;
 
     protected function setUp(): void
     {
@@ -31,7 +35,12 @@ class BenchmarkFinderTest extends TestCase
         $this->benchmark1 = $this->prophesize(BenchmarkMetadata::class);
         $this->benchmark2 = $this->prophesize(BenchmarkMetadata::class);
         $this->subject = $this->prophesize(Subject::class);
-        $this->finder = new BenchmarkFinder($this->factory->reveal(), __DIR__ . '/test');
+        $this->logger = $this->prophesize(LoggerInterface::class);
+    }
+
+    private function createFinder(string $benchPattern = null): BenchmarkFinder
+    {
+        return new BenchmarkFinder($this->factory->reveal(), __DIR__ . '/' , $this->logger->reveal(), $benchPattern);
     }
 
     /**
@@ -43,9 +52,23 @@ class BenchmarkFinderTest extends TestCase
         $this->factory->getMetadataForFile(__DIR__ . '/findertest/FooCaseBench.php')->willReturn($this->benchmark1->reveal());
         $this->factory->getMetadataForFile(__DIR__ . '/findertest/FooCase2Bench.php')->willReturn($this->benchmark2->reveal());
         $this->factory->getMetadataForFile(__DIR__ . '/findertest/AbstractBench.php')->willReturn(null);
+        $this->factory->getMetadataForFile(__DIR__ . '/findertest/ExampleWithNoBenchSuffix.php')->willReturn(null);
         $this->benchmark1->hasSubjects()->willReturn(true);
         $this->benchmark2->hasSubjects()->willReturn(true);
-        $benchmarks = $this->finder->findBenchmarks([__DIR__ . '/findertest']);
+        $benchmarks = $this->createFinder()->findBenchmarks([__DIR__ . '/findertest']);
+
+        $this->assertCount(2, $benchmarks);
+        $this->logger->warning(Argument::containingString('but it does not end with'))->shouldHaveBeenCalledTimes(1);
+    }
+
+    public function testBuildCollectionByGlob(): void
+    {
+        $this->factory->getMetadataForFile(__DIR__ . '/findertest/FooCaseBench.php')->willReturn($this->benchmark1->reveal());
+        $this->factory->getMetadataForFile(__DIR__ . '/findertest/FooCase2Bench.php')->willReturn($this->benchmark2->reveal());
+        $this->factory->getMetadataForFile(__DIR__ . '/findertest/AbstractBench.php')->willReturn(null);
+        $this->benchmark1->hasSubjects()->willReturn(true);
+        $this->benchmark2->hasSubjects()->willReturn(true);
+        $benchmarks = $this->createFinder('*Bench.php')->findBenchmarks([__DIR__ . '/findertest']);
 
         $this->assertCount(2, $benchmarks);
     }
@@ -66,7 +89,7 @@ class BenchmarkFinderTest extends TestCase
         $this->benchmark1->hasSubjects()->willReturn(true);
         $this->benchmark2->hasSubjects()->willReturn(true);
 
-        $benchmarks = $this->finder->findBenchmarks([
+        $benchmarks = $this->createFinder()->findBenchmarks([
             __DIR__ . '/findertest/FooCaseBench.php',
             __DIR__ . '/findertest/FooCase2Bench.php'
         ]);
@@ -83,9 +106,20 @@ class BenchmarkFinderTest extends TestCase
         $this->factory->getMetadataForFile(__DIR__ . '/findertestnested/MyBench.php')->willReturn($this->benchmark1->reveal());
         $this->benchmark1->hasSubjects()->willReturn(true);
 
-        $benchmarks = $this->finder->findBenchmarks([__DIR__ . '/findertestnested/MyBench.php']);
+        $benchmarks = $this->createFinder()->findBenchmarks([__DIR__ . '/findertestnested/MyBench.php']);
 
         $this->assertCount(1, $benchmarks);
+    }
+
+    public function testNoPatternSpecifiedWithNonBenchSuffixedFile(): void
+    {
+        $this->factory->getMetadataForFile(__DIR__ . '/findertestnobenchsuffix/NoBenchSuffix.php')->willReturn($this->benchmark1->reveal());
+        $this->benchmark1->hasSubjects()->willReturn(true);
+
+        $benchmarks = $this->createFinder()->findBenchmarks([__DIR__ . '/findertestnobenchsuffix']);
+
+        $this->assertCount(1, $benchmarks);
+        $this->logger->warning(Argument::containingString('but it does not end with'))->shouldHaveBeenCalled();
     }
 
     /**
@@ -96,7 +130,7 @@ class BenchmarkFinderTest extends TestCase
         $this->factory->getMetadataForFile(__DIR__ . '/findertestnested/MyBench.php')->willReturn($this->benchmark1->reveal());
         $this->benchmark1->hasSubjects()->willReturn(false);
 
-        $benchmarks = $this->finder->findBenchmarks([__DIR__ . '/findertestnested/MyBench.php']);
+        $benchmarks = $this->createFinder()->findBenchmarks([__DIR__ . '/findertestnested/MyBench.php']);
 
         $this->assertCount(0, $benchmarks);
     }

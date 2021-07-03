@@ -40,8 +40,11 @@ class ConsoleLogger extends AbstractLogger
                 }
 
                 break;
-            case LogLevel::ERROR:
             case LogLevel::WARNING:
+                $decoration = 'fg=yellow';
+
+                break;
+            case LogLevel::ERROR:
             case LogLevel::CRITICAL:
             case LogLevel::EMERGENCY:
             case LogLevel::ALERT:
