@@ -133,8 +133,8 @@ class BenchmarkFinder
             if ($this->benchPattern === null && substr($file->getFilename(), -9) !== 'Bench.php') {
                 $this->logger->warning(sprintf(
                     'File "%s" has been identified as a benchmark file but it does not end with ' .
-                    '`Bench.php`. This behavior is incorrect and will be fixed in PHPBench 2.0. ' .
-                    'Set a `runner.file_pattern` to `*Bench.php` to avoid this.',
+                    '`Bench.php`. This behavior is incorrect and will be fixed in a future version. ' .
+                    'Set `runner.file_pattern` to `*Bench.php` in `phpbench.json` to avoid this.',
                     $file->getFilename()
                 ));
             }
