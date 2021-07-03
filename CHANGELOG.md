@@ -1,6 +1,27 @@
 CHANGELOG
 =========
 
+1.0.x
+-----
+
+Bug fix:
+
+- Show warning if file is parsed but it is not a benchmark file.
+
+  Files that are not suffixed with `Bench.php` are are reflected and their
+  docblocks are parsed. Causing unexpected errors if unknown docblock tags are
+  present.
+
+  As this changing this behavior (introduced by error in 2016) is a B/C break,
+  it will not be changed in a bug-fix release.
+
+  An option `runner.file_pattern` has been added however to enable the
+  warnings to be resolved.
+
+Improvement:
+
+- Show warning if metadata could not be loaded for benchmark.
+
 1.0.2 (2021-05-28)
 ------------------
 

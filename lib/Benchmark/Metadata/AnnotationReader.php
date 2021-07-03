@@ -18,6 +18,7 @@ use Doctrine\Common\Annotations\DocParser;
 use Doctrine\Common\Annotations\TokenParser;
 use PhpBench\Reflection\ReflectionClass;
 use PhpBench\Reflection\ReflectionMethod;
+use PhpBench\Tests\Unit\Benchmark\Metadata\Exception\CouldNotLoadMetadataException;
 
 /**
  * Annotation reader.
@@ -211,13 +212,13 @@ class AnnotationReader
     private function parse($input, $context = ''): array
     {
         try {
-            $annotations = $this->docParser->parse($input, $context);
+            $annotations = @$this->docParser->parse($input, $context);
         } catch (AnnotationException $e) {
             if (!preg_match('/The annotation "(.*)" .* was never imported/', $e->getMessage(), $matches)) {
-                throw $e;
+                throw new CouldNotLoadMetadataException($e->getMessage(), 0, $e);
             }
 
-            throw new \InvalidArgumentException(sprintf(
+            throw new CouldNotLoadMetadataException(sprintf(
                 'Unrecognized annotation %s, valid PHPBench annotations: @%s',
                 $matches[1],
                 implode(', @', array_keys(self::$phpBenchImports))
