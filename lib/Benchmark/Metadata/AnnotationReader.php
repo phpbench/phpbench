@@ -212,7 +212,7 @@ class AnnotationReader
     private function parse($input, $context = ''): array
     {
         try {
-            $annotations = $this->docParser->parse($input, $context);
+            $annotations = @$this->docParser->parse($input, $context);
         } catch (AnnotationException $e) {
             if (!preg_match('/The annotation "(.*)" .* was never imported/', $e->getMessage(), $matches)) {
                 throw new CouldNotLoadMetadataException($e->getMessage(), 0, $e);
