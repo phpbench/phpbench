@@ -241,8 +241,8 @@ PHPBench allows you to customize reports on the command line:
 
     $ php vendor/bin/phpbench run tests/Benchmark/TimeConsumerBench.php --report='{"extends": "aggregate", "cols": ["subject", "mode"]}'
 
-Above we configure a new report which extends the :ref:`default
-<report_default>` report that we have already used, but we use only the
+Above we configure a new report which extends the :ref:`aggregate
+<report_aggregate>` report that we have already used, but we use only the
 ``subject`` and ``mode`` columns.  A full list of all the options for the
 default reports can be found in the :doc:`report-generators` reference.
 
