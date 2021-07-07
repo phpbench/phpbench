@@ -16,7 +16,7 @@ Creating a baseline
 
 The baseline is a tagged benchmark result. When creating a baseline we should
 try and ensure it is as accurate as possible, it is therefore recommended to
-use find a low value of :ref:`retry_threshold` and use a appropriate amount of
+use a low value of :ref:`retry_threshold` and use a appropriate amount of
 iterations (e.g. 10):
 
 Run your benchmark on the code to which you want to compare:
