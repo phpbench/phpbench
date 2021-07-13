@@ -55,6 +55,25 @@ class RemoteExecutorTest extends AbstractExecutorTestCase
         self::assertEquals('hello', $foo['test']);
     }
 
+    public function testUnsafeParameters(): void
+    {
+        $this->executor->execute(
+            $this->buildContext([
+                'methodName' => 'parameterized',
+                'parameters' => ParameterSet::fromUnwrappedParameters('ad', [
+                    'foo' => [
+                        'bar'
+                    ],
+                ])
+            ]),
+            $this->resolveConfig([
+                RemoteExecutor::OPTION_SAFE_PARAMETERS => false,
+            ])
+        );
+        $params = json_decode($this->workspace()->getContents('param.tmp'), true);
+        self::assertEquals(['bar'], $params['foo']);
+    }
+
     protected function createExecutor(): BenchmarkExecutorInterface
     {
         return new RemoteExecutor(new Launcher(null));
