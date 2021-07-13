@@ -21,7 +21,11 @@ if ($bootstrap) {
 
 require_once($file);
 
-$parameters = array_map(function (string $value) {
+$parameters = array_map(function ($value) {
+    // b/c for unsafe (non-serialized) parameters
+    if (is_array($value)) {
+        return $value;
+    }
     return unserialize($value);
 }, {{ parameters }});
 
