@@ -7,6 +7,7 @@ use PhpBench\Expression\ExpressionEvaluator;
 use PhpBench\Report\ComponentGenerator\BarChartAggregateComponentGenerator;
 use PhpBench\Report\ComponentGeneratorInterface;
 use PhpBench\Report\Model\BarChart;
+use RuntimeException;
 
 class BarChartAggregateComponentGeneratorTest extends ComponentGeneratorTestCase
 {
@@ -37,6 +38,18 @@ class BarChartAggregateComponentGeneratorTest extends ComponentGeneratorTestCase
         assert($barChart instanceof BarChart);
         self::assertInstanceOf(BarChart::class, $barChart);
         self::assertCount(1, $barChart->dataSets());
+    }
+
+    public function testExceptionIfYExpressionIsNotIntOrFloat(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Y-Expression must evaluate to an int or a float');
+        $this->generate(DataFrame::fromRowSeries([
+            [ 1 ],
+        ], ['col']), [
+            BarChartAggregateComponentGenerator::PARAM_X_PARTITION => ['col'],
+            BarChartAggregateComponentGenerator::PARAM_Y_EXPR => '[10]',
+        ]);
     }
 
     public function testGeneratesSeries(): void

@@ -81,7 +81,7 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
                 ]);
                 if (!is_int($yValue) && !is_float($yValue)) {
                     throw new RuntimeException(sprintf(
-                        'Y-Value must be either an int or a float, got "%s"',
+                        'Y-Expression must evaluate to an int or a float, got "%s"',
                         gettype($yValue)
                     ));
                 }
