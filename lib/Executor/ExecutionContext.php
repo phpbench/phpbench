@@ -116,7 +116,7 @@ final class ExecutionContext
         return $this->className;
     }
 
-    public function getParameters(): ParameterSet
+    public function getParameterSet(): ParameterSet
     {
         return $this->parameters;
     }

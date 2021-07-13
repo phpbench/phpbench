@@ -9,6 +9,7 @@ use PhpBench\Report\ComponentGeneratorInterface;
 use PhpBench\Report\ComponentInterface;
 use PhpBench\Report\Model\BarChart;
 use PhpBench\Report\Model\BarChartDataSet;
+use RuntimeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
@@ -78,7 +79,12 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
                     'frame' => $dataFrame,
                     'partition' => $setPartition
                 ]);
-                assert(is_int($yValue) || is_float($yValue));
+                if (!is_int($yValue) && !is_float($yValue)) {
+                    throw new RuntimeException(sprintf(
+                        'Y-Value must be either an int or a float, got "%s"',
+                        gettype($yValue)
+                    ));
+                }
                 $ySeries[$setLabel][$xLabel] = $yValue;
 
                 if (null === $config[self::PARAM_Y_ERROR_MARGIN]) {
