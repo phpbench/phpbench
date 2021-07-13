@@ -118,9 +118,9 @@ class TemplateExecutor implements BenchmarkExecutorInterface
     private function resolveParameterSet(ExecutionContext $context, Config $config): array
     {
         if (isset($config[self::OPTION_SAFE_PARAMETERS]) && $config[self::OPTION_SAFE_PARAMETERS]) {
-            return $context->getParameters()->toSerializedParameters();
+            return $context->getParameterSet()->toSerializedParameters();
         }
 
-        return $context->getParameters()->toUnwrappedParameters();
+        return $context->getParameterSet()->toUnwrappedParameters();
     }
 }

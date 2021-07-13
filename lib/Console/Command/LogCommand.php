@@ -74,7 +74,7 @@ EOT
         $this->timeUnitHandler->timeUnitFromInput($input);
         $paginate = false === $input->getOption('no-pagination');
         $limit = $input->getOption('limit');
-        assert(is_numeric($limit) || is_bool($limit));
+        assert(is_null($limit) || is_numeric($limit) || is_bool($limit));
 
         // if we have an application, get the terminal dimensions, if the
         // terminal dimensions are null then set the height to the arbitrary

@@ -116,7 +116,17 @@ final class ExecutionContext
         return $this->className;
     }
 
-    public function getParameters(): ParameterSet
+    /**
+     * @deprecated Use getParameterSet will be removed in PHPBench 2.0
+     *
+     * @return parameters
+     */
+    public function getParameters(): array
+    {
+        return $this->parameters->toUnwrappedParameters();
+    }
+
+    public function getParameterSet(): ParameterSet
     {
         return $this->parameters;
     }
