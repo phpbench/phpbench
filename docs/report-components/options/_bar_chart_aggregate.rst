@@ -25,7 +25,14 @@
 **y_axes_label**:
   Type(s): ``string``, Default: ``yValue``
 
-  Expression to evaluate to determine the Y-Axis label
+  Expression to evaluate to determine the Y-Axis label, is passed ``yValue``, ``partition`` (the set partition) and ``frame`` (the entire data frame) 
+
+.. _component_bar_chart_aggregate_option_x_axes_label:
+
+**x_axes_label**:
+  Type(s): ``[null, string]``, Default: ``NULL``
+
+  Expression to evaluate to determine the X-Axis label, is passed `xValue` (value according to the X-partition), ``partition`` (the x-partition), and ``frame`` (the entire data frame)
 
 .. _component_bar_chart_aggregate_option_y_error_margin:
 
