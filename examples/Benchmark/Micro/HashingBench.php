@@ -14,9 +14,9 @@ namespace PhpBench\Examples\Benchmark\Micro;
 
 function hash_algos()
 {
-    yield ['algo' => 'md5'];
+    yield 'md5' => ['algo' => 'md5'];
 
-    yield ['algo' => 'sha256'];
+    yield 'sha256' => ['algo' => 'sha256'];
 }
 
 /**
