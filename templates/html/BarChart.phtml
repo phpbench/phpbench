@@ -26,6 +26,11 @@ var layout = {
         ticktext: <?php echo json_encode(array_map(function ($value) use ($object) {
             return $this->nodePrinter->print($this->nodeEvaluator->evaluate($object->yAxesLabelExpression(), ['yValue' => $value]));
         }, $object->yAxisLabelRange(10))) ?>
+    },
+    xaxis: {
+        tickmode: 'array',
+        tickvals: <?php echo json_encode($object->xAxes()) ?>,
+        ticktext: <?php echo json_encode($object->xLabels()) ?>,
     }
 };
 <?php if ($object->title()): ?>

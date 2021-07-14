@@ -40,6 +40,49 @@ class BarChartAggregateComponentGeneratorTest extends ComponentGeneratorTestCase
         self::assertCount(1, $barChart->dataSets());
     }
 
+    public function testXAxesLabel(): void
+    {
+        $barChart = $this->generate(DataFrame::fromRowSeries([
+            [ 'oneBench', 'md5' ],
+            [ 'twoBench', 'sha256' ],
+        ], ['benchmark', 'variant']), [
+            BarChartAggregateComponentGenerator::PARAM_X_PARTITION => ['benchmark'],
+            BarChartAggregateComponentGenerator::PARAM_Y_EXPR => '10',
+            BarChartAggregateComponentGenerator::PARAM_X_AXES_LABEL => 'first(partition["variant"])',
+        ]);
+        assert($barChart instanceof BarChart);
+        self::assertInstanceOf(BarChart::class, $barChart);
+        self::assertEquals(['md5', 'sha256'], $barChart->xLabels());
+    }
+
+    public function testXAxesLabelExceptionIfNotScalar(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('must evaluate to a scalar');
+
+        $barChart = $this->generate(DataFrame::fromRowSeries([
+            [ 'oneBench', 'md5' ],
+            [ 'twoBench', 'sha256' ],
+        ], ['benchmark', 'variant']), [
+            BarChartAggregateComponentGenerator::PARAM_X_PARTITION => ['benchmark'],
+            BarChartAggregateComponentGenerator::PARAM_Y_EXPR => '10',
+            BarChartAggregateComponentGenerator::PARAM_X_AXES_LABEL => 'partition["variant"]',
+        ]);
+    }
+
+    public function testXAxesLabelUsesXValue(): void
+    {
+        $barChart = $this->generate(DataFrame::fromRowSeries([
+            [ 'oneBench', 'md5' ],
+            [ 'twoBench', 'sha256' ],
+        ], ['benchmark', 'variant']), [
+            BarChartAggregateComponentGenerator::PARAM_X_PARTITION => ['benchmark'],
+            BarChartAggregateComponentGenerator::PARAM_Y_EXPR => '10',
+            BarChartAggregateComponentGenerator::PARAM_X_AXES_LABEL => 'xValue',
+        ]);
+        self::assertEquals(['oneBench', 'twoBench'], $barChart->xLabels());
+    }
+
     public function testExceptionIfYExpressionIsNotIntOrFloat(): void
     {
         $this->expectException(RuntimeException::class);

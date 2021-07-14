@@ -2,6 +2,7 @@
 
 namespace PhpBench\Report\Model;
 
+use function array_replace;
 use PhpBench\Report\ComponentInterface;
 use RuntimeException;
 
@@ -23,13 +24,24 @@ class BarChart implements ComponentInterface
     private $yAxesLabel;
 
     /**
-     * @param BarChartDataSet[] $dataSets
+     * @var array<scalar>|null
      */
-    public function __construct(array $dataSets, ?string $title, ?string $yAxesLabel)
-    {
+    private $xLabels;
+
+    /**
+     * @param BarChartDataSet[] $dataSets
+     * @param scalar[] $xLabels
+     */
+    public function __construct(
+        array $dataSets,
+        ?string $title,
+        ?string $yAxesLabel = null,
+        ?array $xLabels = null
+    ) {
         $this->dataSets = $dataSets;
         $this->title = $title;
         $this->yAxesLabel = $yAxesLabel;
+        $this->xLabels = $xLabels;
     }
 
     /**
@@ -117,5 +129,13 @@ class BarChart implements ComponentInterface
         $step = $max / $steps;
 
         return range(0, $max, $step);
+    }
+
+    /**
+     * @return scalar[]
+     */
+    public function xLabels(): array
+    {
+        return array_replace($this->xAxes(), $this->xLabels ?: []);
     }
 }
