@@ -43,4 +43,20 @@ class BarChartTest extends TestCase
 
         self::assertTrue($chart->isEmpty());
     }
+
+    public function testXLabelReplacement(): void
+    {
+        $chart = new BarChart(
+            [
+                new BarChartDataSet('one', [1,2,3], [1,2,3], [1,2,3]),
+            ],
+            'Bar Chart One',
+            'foo',
+            [
+                'one',
+            ]
+        );
+
+        self::assertEquals(['one', 2, 3], $chart->xLabels());
+    }
 }

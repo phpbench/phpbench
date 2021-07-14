@@ -58,8 +58,8 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
             self::PARAM_TITLE => 'Title for the barchart',
             self::PARAM_X_PARTITION => 'Group by these columns on the X-Axis. The label will be the concatenation of the values of these columns by default',
             self::PARAM_SET_PARTITION => 'Create separate bars for each step by partitioning the data based on these values.',
-            self::PARAM_Y_AXES_LABEL => 'Expression to evaluate to determine the Y-Axis label, is passed ``yValue``, ``partition`` (the set partition) and ``frame`` (the entire data frame) ',
-            self::PARAM_X_AXES_LABEL => 'Expression to evaluate to determine the X-Axis label, is passed `xValue` (value according to the X-partition), ``partition`` (the x-partition), and ``frame`` (the entire data frame)',
+            self::PARAM_Y_AXES_LABEL => 'Expression to evaluate to determine the Y-Axis label, is passed ``yValue`` (actual value of Y), ``partition`` (the set partition) and ``frame`` (the entire data frame) ',
+            self::PARAM_X_AXES_LABEL => 'Expression to evaluate to determine the X-Axis label, is passed ``xValue`` (default X value according to the X-partition), ``partition`` (the x-partition), and ``frame`` (the entire data frame)',
             self::PARAM_Y_EXPR => 'Expression to evaluate the Y-Axis value, e.g. ``mode(partition["result_time_avg"])``',
             self::PARAM_Y_ERROR_MARGIN => 'Expression to evaluate to determine the error margin to show on the chart. Leave as NULL to disable the error margin',
         ]);
@@ -75,11 +75,8 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
         $xLabels = [];
         $errorMargins = [];
         $ySeries = [];
-        $xOffset = -1;
 
         foreach ($dataFrame->partition($config[self::PARAM_X_PARTITION]) as $xLabel => $partition) {
-            $xOffset++;
-
             $xAxes[] = $xLabel;
             $xLabels[] = $this->resolveXLabel($partition, (string)$xLabel, $config);
 
