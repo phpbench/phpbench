@@ -3,9 +3,7 @@
 namespace PhpBench\Tests\Unit\Expression\Parselet;
 
 use Generator;
-use PhpBench\Data\DataFrame;
 use PhpBench\Expression\Ast\ArgumentListNode;
-use PhpBench\Expression\Ast\ArithmeticOperatorNode;
 use PhpBench\Expression\Ast\ArrayAccessNode;
 use PhpBench\Expression\Ast\FunctionNode;
 use PhpBench\Expression\Ast\IntegerNode;
@@ -34,6 +32,7 @@ class ArrayAccessParseletTest extends ParseletTestCase
                 new IntegerNode(0)
             ),
         ];
+
         yield [
             'first(frame)["barfoo"]',
             new ArrayAccessNode(
@@ -56,12 +55,15 @@ class ArrayAccessParseletTest extends ParseletTestCase
     public function provideEvaluate(): Generator
     {
         yield ['([10])[0]', [], '10'];
+
         yield ['first([[10, 20]])[0]', [], '10'];
+
         yield ['first(data)["foobar"]', [
             'data' => [
                 ['foobar' => 10],
             ],
         ], '10'];
+
         yield ['first(data)["foobar"]["barfoo"]', [
             'data' => [
                 ['foobar' => ['barfoo' => 10]],
@@ -75,6 +77,7 @@ class ArrayAccessParseletTest extends ParseletTestCase
     public function providePrint(): Generator
     {
         yield ['first([[10, 20]])[0]'];
+
         yield ['first([[10, 20]])[foobar]'];
     }
 }

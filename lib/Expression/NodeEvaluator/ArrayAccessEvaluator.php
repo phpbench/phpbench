@@ -2,18 +2,15 @@
 
 namespace PhpBench\Expression\NodeEvaluator;
 
+use function array_key_exists;
 use PhpBench\Expression\Ast\ArrayAccessNode;
-use PhpBench\Expression\Ast\ConcatenatedNode;
-use PhpBench\Expression\Ast\ConcatNode;
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Ast\PhpValue;
 use PhpBench\Expression\Ast\PhpValueFactory;
 use PhpBench\Expression\Ast\ScalarValue;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\ExpressionError;
 use PhpBench\Expression\NodeEvaluator;
-use function array_key_exists;
 
 class ArrayAccessEvaluator implements NodeEvaluator
 {
@@ -32,7 +29,7 @@ class ArrayAccessEvaluator implements NodeEvaluator
         if (!array_key_exists($accessValue, $arrayValue)) {
             throw new ExpressionError(sprintf(
                 'Array does not have key "%s", it has keys "%s"',
-                get_class($arrayValue),
+                $accessValue,
                 implode('", "', array_keys($arrayValue))
             ));
         }
@@ -42,6 +39,7 @@ class ArrayAccessEvaluator implements NodeEvaluator
 
     /**
      * @return scalar[]
+     *
      * @param parameters $params
      */
     private function resolveArray(Evaluator $evaluator, ArrayAccessNode $node, array $params): array
@@ -60,6 +58,7 @@ class ArrayAccessEvaluator implements NodeEvaluator
 
     /**
      * @return int|string
+     *
      * @param parameters $params
      */
     private function resolveAccess(Evaluator $evaluator, ArrayAccessNode $node, array $params)
@@ -85,4 +84,3 @@ class ArrayAccessEvaluator implements NodeEvaluator
         return $value;
     }
 }
-

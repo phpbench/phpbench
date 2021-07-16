@@ -22,6 +22,7 @@ class ArrayAccessParselet implements InfixParselet
         $tokens->chomp(Token::T_OPEN_LIST);
         $access = $parser->parseExpression($tokens);
         $tokens->chomp(Token::T_CLOSE_LIST);
+
         return new ArrayAccessNode($left, $access);
     }
 
