@@ -41,6 +41,7 @@ use PhpBench\Expression\Lexer;
 use PhpBench\Expression\NodeEvaluator;
 use PhpBench\Expression\NodeEvaluator\ArgumentListEvaluator;
 use PhpBench\Expression\NodeEvaluator\ArithmeticOperatorEvaluator;
+use PhpBench\Expression\NodeEvaluator\ArrayAccessEvaluator;
 use PhpBench\Expression\NodeEvaluator\ComparisonEvaluator;
 use PhpBench\Expression\NodeEvaluator\ConcatEvaluator;
 use PhpBench\Expression\NodeEvaluator\DisplayAsEvaluator;
@@ -55,6 +56,7 @@ use PhpBench\Expression\NodeEvaluator\ValueWithUnitEvaluator;
 use PhpBench\Expression\NodeEvaluators;
 use PhpBench\Expression\NodePrinter;
 use PhpBench\Expression\NodePrinter\ArgumentListPrinter;
+use PhpBench\Expression\NodePrinter\ArrayAccessPrinter;
 use PhpBench\Expression\NodePrinter\BinaryOperatorPrinter;
 use PhpBench\Expression\NodePrinter\BooleanPrinter;
 use PhpBench\Expression\NodePrinter\ComparisonPrinter;
@@ -81,6 +83,7 @@ use PhpBench\Expression\NodePrinter\ValueWithUnitPrinter;
 use PhpBench\Expression\NodePrinter\VariablePrinter;
 use PhpBench\Expression\NodePrinters;
 use PhpBench\Expression\Parselet\ArithmeticOperatorParselet;
+use PhpBench\Expression\Parselet\ArrayAccessParselet;
 use PhpBench\Expression\Parselet\BooleanParselet;
 use PhpBench\Expression\Parselet\ComparisonParselet;
 use PhpBench\Expression\Parselet\ConcatParselet;
@@ -172,6 +175,7 @@ class ExpressionExtension implements ExtensionInterface
                     new TolerableParselet(),
                     new DisplayAsParselet(),
                     new ConcatParselet(),
+                    new ArrayAccessParselet(),
                 ]),
                 Parselets::fromSuffixParselets([
                     new ValueWithUnitParselet(),
@@ -195,6 +199,7 @@ class ExpressionExtension implements ExtensionInterface
                 new ParameterEvaluator(),
                 new ConcatEvaluator(),
                 new PhpValueEvaluator(),
+                new ArrayAccessEvaluator(),
             ]);
 
             return $evaluators;
@@ -284,6 +289,7 @@ class ExpressionExtension implements ExtensionInterface
                 new NullPrinter(),
                 new UnrepresentableValuePrinter(),
                 new VariablePrinter(),
+                new ArrayAccessPrinter(),
                 new NullSafePrinter(),
             ]);
         });
