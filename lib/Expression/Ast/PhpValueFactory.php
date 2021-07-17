@@ -2,6 +2,7 @@
 
 namespace PhpBench\Expression\Ast;
 
+use PhpBench\Data\DataFrame;
 use function is_float;
 
 final class PhpValueFactory
@@ -35,6 +36,10 @@ final class PhpValueFactory
             return new ListNode(array_map(function ($value) {
                 return self::fromValue($value);
             }, $value));
+        }
+
+        if ($value instanceof DataFrame) {
+            return new DataFrameNode($value);
         }
 
         return new UnrepresentableValueNode($value);
