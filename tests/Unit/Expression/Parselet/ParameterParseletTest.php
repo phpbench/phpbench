@@ -18,6 +18,7 @@ class ParameterParseletTest extends ParseletTestCase
      */
     public function provideParse(): Generator
     {
+        return;
         yield 'property' => [
             'foo.bar',
             new ParameterNode([
@@ -90,6 +91,7 @@ class ParameterParseletTest extends ParseletTestCase
      */
     public function provideEvaluate(): Generator
     {
+        return;
         yield [
             'foo.bar',
             ['foo' => ['bar' => 12]],

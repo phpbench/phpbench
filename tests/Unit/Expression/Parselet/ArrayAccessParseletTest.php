@@ -4,7 +4,7 @@ namespace PhpBench\Tests\Unit\Expression\Parselet;
 
 use Generator;
 use PhpBench\Expression\Ast\ArgumentListNode;
-use PhpBench\Expression\Ast\ArrayAccessNode;
+use PhpBench\Expression\Ast\AccessNode;
 use PhpBench\Expression\Ast\FunctionNode;
 use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\ListNode;
@@ -23,7 +23,7 @@ class ArrayAccessParseletTest extends ParseletTestCase
     {
         yield [
             '([10])[0]',
-            new ArrayAccessNode(
+            new AccessNode(
                 new ParenthesisNode(
                     new ListNode([
                         new IntegerNode(10)
@@ -35,13 +35,11 @@ class ArrayAccessParseletTest extends ParseletTestCase
 
         yield [
             'first(frame)["barfoo"]',
-            new ArrayAccessNode(
+            new AccessNode(
                 new FunctionNode(
                     'first',
                     new ArgumentListNode([
-                        new ParameterNode([
-                            new VariableNode('frame')
-                        ])
+                        new VariableNode('frame')
                     ])
                 ),
                 new StringNode("barfoo")

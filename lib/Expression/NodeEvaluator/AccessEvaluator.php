@@ -4,7 +4,7 @@ namespace PhpBench\Expression\NodeEvaluator;
 
 use PhpBench\Expression\Ast\DataFrameNode;
 use function array_key_exists;
-use PhpBench\Expression\Ast\ArrayAccessNode;
+use PhpBench\Expression\Ast\AccessNode;
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\PhpValueFactory;
@@ -13,7 +13,7 @@ use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\ExpressionError;
 use PhpBench\Expression\NodeEvaluator;
 
-class ArrayAccessEvaluator implements NodeEvaluator
+class AccessEvaluator implements NodeEvaluator
 {
     /**
      * @var DataFrameEvaluator
@@ -30,7 +30,7 @@ class ArrayAccessEvaluator implements NodeEvaluator
      */
     public function evaluate(Evaluator $evaluator, Node $node, array $params): ?Node
     {
-        if (!$node instanceof ArrayAccessNode) {
+        if (!$node instanceof AccessNode) {
             return null;
         }
 
@@ -74,7 +74,7 @@ class ArrayAccessEvaluator implements NodeEvaluator
      *
      * @param parameters $params
      */
-    private function resolveAccess(Evaluator $evaluator, ArrayAccessNode $node, array $params)
+    private function resolveAccess(Evaluator $evaluator, AccessNode $node, array $params)
     {
         $accessValue = $evaluator->evaluate($node->access(), $params);
         
@@ -95,9 +95,5 @@ class ArrayAccessEvaluator implements NodeEvaluator
         }
 
         return $value;
-    }
-
-    private function evaluateDataFrame(DataFrameNode $value, Node $node)
-    {
     }
 }

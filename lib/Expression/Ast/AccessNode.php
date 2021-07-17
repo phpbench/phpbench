@@ -2,7 +2,7 @@
 
 namespace PhpBench\Expression\Ast;
 
-class ArrayAccessNode extends Node
+class AccessNode extends Node
 {
     /**
      * @var Node

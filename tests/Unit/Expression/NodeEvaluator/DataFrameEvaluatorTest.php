@@ -5,7 +5,7 @@ namespace PhpBench\Tests\Unit\Expression\NodeEvaluator;
 use Generator;
 use PHPUnit\Framework\TestCase;
 use PhpBench\Data\DataFrame;
-use PhpBench\Expression\Ast\ArrayAccessNode;
+use PhpBench\Expression\Ast\AccessNode;
 use PhpBench\Expression\Ast\ComparisonNode;
 use PhpBench\Expression\Ast\DataFrameNode;
 use PhpBench\Expression\Ast\IntegerNode;

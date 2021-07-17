@@ -8,12 +8,18 @@ use PhpBench\Tests\IntegrationTestCase;
 
 abstract class EvaluatorTestCase extends IntegrationTestCase
 {
+    /**
+     * @param parameters $params
+     */
     protected function evaluateNode(Node $node, array $params): Node
     {
-        $container = $this->container();
+        return $this->evaluator()->evaluate($node, $params);
+    }
 
-        return $container->get(
+    protected function evaluator(): Evaluator
+    {
+        return $this->container()->get(
             Evaluator::class
-        )->evaluate($node, $params);
+        );
     }
 }

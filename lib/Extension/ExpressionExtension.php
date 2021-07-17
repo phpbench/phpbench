@@ -41,7 +41,7 @@ use PhpBench\Expression\Lexer;
 use PhpBench\Expression\NodeEvaluator;
 use PhpBench\Expression\NodeEvaluator\ArgumentListEvaluator;
 use PhpBench\Expression\NodeEvaluator\ArithmeticOperatorEvaluator;
-use PhpBench\Expression\NodeEvaluator\ArrayAccessEvaluator;
+use PhpBench\Expression\NodeEvaluator\AccessEvaluator;
 use PhpBench\Expression\NodeEvaluator\ComparisonEvaluator;
 use PhpBench\Expression\NodeEvaluator\ConcatEvaluator;
 use PhpBench\Expression\NodeEvaluator\DisplayAsEvaluator;
@@ -53,6 +53,7 @@ use PhpBench\Expression\NodeEvaluator\ParenthesisEvaluator;
 use PhpBench\Expression\NodeEvaluator\PhpValueEvaluator;
 use PhpBench\Expression\NodeEvaluator\TolerableEvaluator;
 use PhpBench\Expression\NodeEvaluator\ValueWithUnitEvaluator;
+use PhpBench\Expression\NodeEvaluator\VariableEvaluator;
 use PhpBench\Expression\NodeEvaluators;
 use PhpBench\Expression\NodePrinter;
 use PhpBench\Expression\NodePrinter\ArgumentListPrinter;
@@ -97,6 +98,7 @@ use PhpBench\Expression\Parselet\NullParselet;
 use PhpBench\Expression\Parselet\ParameterParselet;
 use PhpBench\Expression\Parselet\ParenthesisParselet;
 use PhpBench\Expression\Parselet\PercentageParselet;
+use PhpBench\Expression\Parselet\PropertyAccessParselet;
 use PhpBench\Expression\Parselet\StringParselet;
 use PhpBench\Expression\Parselet\TolerableParselet;
 use PhpBench\Expression\Parselet\ValueWithUnitParselet;
@@ -176,6 +178,7 @@ class ExpressionExtension implements ExtensionInterface
                     new DisplayAsParselet(),
                     new ConcatParselet(),
                     new ArrayAccessParselet(),
+                    new PropertyAccessParselet(),
                 ]),
                 Parselets::fromSuffixParselets([
                     new ValueWithUnitParselet(),
@@ -197,9 +200,10 @@ class ExpressionExtension implements ExtensionInterface
                 new TolerableEvaluator(),
                 new DisplayAsEvaluator(),
                 new ParameterEvaluator(),
+                new VariableEvaluator(),
                 new ConcatEvaluator(),
                 new PhpValueEvaluator(),
-                new ArrayAccessEvaluator(),
+                new AccessEvaluator(),
             ]);
 
             return $evaluators;

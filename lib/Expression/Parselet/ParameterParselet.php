@@ -20,14 +20,13 @@ class ParameterParselet implements PrefixParselet
 
     public function parse(Parser $parser, Tokens $tokens): Node
     {
-        $segments = [new VariableNode($tokens->chomp()->value)];
+        return new VariableNode($tokens->chomp()->value);
 
         $nullSafe = false;
 
         while (
             $tokens->current()->type === Token::T_DOT ||
-            $tokens->current()->type === Token::T_QUESTION ||
-            $tokens->current()->type === Token::T_OPEN_LIST
+            $tokens->current()->type === Token::T_QUESTION
         ) {
             $dot = $tokens->chomp();
 

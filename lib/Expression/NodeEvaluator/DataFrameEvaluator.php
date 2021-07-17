@@ -4,7 +4,7 @@ namespace PhpBench\Expression\NodeEvaluator;
 
 use PhpBench\Data\DataFrame;
 use PhpBench\Data\Row;
-use PhpBench\Expression\Ast\ArrayAccessNode;
+use PhpBench\Expression\Ast\AccessNode;
 use PhpBench\Expression\Ast\BooleanNode;
 use PhpBench\Expression\Ast\DataFrameNode;
 use PhpBench\Expression\Ast\Node;

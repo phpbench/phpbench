@@ -5,7 +5,7 @@ namespace PhpBench\Tests\Unit\Expression\NodeEvaluator;
 use Generator;
 use PHPUnit\Framework\TestCase;
 use PhpBench\Data\DataFrame;
-use PhpBench\Expression\Ast\ArrayAccessNode;
+use PhpBench\Expression\Ast\AccessNode;
 use PhpBench\Expression\Ast\DataFrameNode;
 use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\ListNode;
@@ -13,21 +13,20 @@ use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Tests\Unit\Expression\EvaluatorTestCase;
 
-class ArrayAccessEvaluatorTest extends EvaluatorTestCase
+class AccessEvaluatorTest extends EvaluatorTestCase
 {
     /**
      * @dataProvider provideEvaluate
-     * @param mixed $subject
      */
     public function testEvaluate(Node $container, Node $access, Node $expected): void
     {
-        self::assertEquals($expected, $this->evaluateNode(new ArrayAccessNode(
+        self::assertEquals($expected, $this->evaluateNode(new AccessNode(
             $container, 
             $access
         ), []));
     }
 
-    /**
+    /*
      * @return Generator<mixed>
      */
     public function provideEvaluate(): Generator

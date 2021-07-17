@@ -2,7 +2,7 @@
 
 namespace PhpBench\Expression\NodePrinter;
 
-use PhpBench\Expression\Ast\ArrayAccessNode;
+use PhpBench\Expression\Ast\AccessNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\NodePrinter;
 use PhpBench\Expression\Printer;
@@ -14,7 +14,7 @@ class ArrayAccessPrinter implements NodePrinter
      */
     public function print(Printer $printer, Node $node): ?string
     {
-        if (!$node instanceof ArrayAccessNode) {
+        if (!$node instanceof AccessNode) {
             return null;
         }
 
