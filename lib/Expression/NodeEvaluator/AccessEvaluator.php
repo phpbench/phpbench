@@ -3,6 +3,8 @@
 namespace PhpBench\Expression\NodeEvaluator;
 
 use PhpBench\Expression\Ast\DataFrameNode;
+use PhpBench\Expression\Ast\NullNode;
+use PhpBench\Expression\Ast\NullSafeNode;
 use function array_key_exists;
 use PhpBench\Expression\Ast\AccessNode;
 use PhpBench\Expression\Ast\ListNode;
@@ -34,7 +36,13 @@ class AccessEvaluator implements NodeEvaluator
             return null;
         }
 
-        $value = $evaluator->evaluate($node->expression(), $params);
+        $nullSafe = false;
+        $container = $node->expression();
+        if ($container instanceof NullSafeNode) {
+            $nullSafe = true;
+            $container = $container->node();
+        }
+        $value = $evaluator->evaluate($container, $params);
 
         if ($value instanceof DataFrameNode) {
             return $this->dataFrameEvaluator->evaluate($evaluator, $value, $node->access(), $params);
@@ -44,6 +52,9 @@ class AccessEvaluator implements NodeEvaluator
         $accessValue = $this->resolveAccess($evaluator, $node, $params);
 
         if (!array_key_exists($accessValue, $arrayValue)) {
+            if ($nullSafe === true) {
+                return new NullNode();
+            }
             throw new ExpressionError(sprintf(
                 'Array does not have key "%s", it has keys "%s"',
                 $accessValue,

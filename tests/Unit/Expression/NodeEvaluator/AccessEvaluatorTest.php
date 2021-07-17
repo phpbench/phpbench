@@ -10,6 +10,8 @@ use PhpBench\Expression\Ast\DataFrameNode;
 use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\Node;
+use PhpBench\Expression\Ast\NullNode;
+use PhpBench\Expression\Ast\NullSafeNode;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Tests\Unit\Expression\EvaluatorTestCase;
 
@@ -37,6 +39,16 @@ class AccessEvaluatorTest extends EvaluatorTestCase
             ]),
             new IntegerNode(0),
             new StringNode('hello')
+        ];
+
+        yield [
+            new NullSafeNode(
+                new ListNode([
+                    new StringNode('hello'),
+                ]),
+            ),
+            new IntegerNode(100),
+            new NullNode(),
         ];
 
         yield [

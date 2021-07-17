@@ -15,6 +15,6 @@ class NullSafePrinter implements NodePrinter
             return null;
         }
 
-        return '.' . $printer->print($node->node());
+        return $printer->print($node->node()) . '?';
     }
 }
