@@ -9,7 +9,7 @@ use PhpBench\Expression\PrefixParselet;
 use PhpBench\Expression\Token;
 use PhpBench\Expression\Tokens;
 
-class ParameterParselet implements PrefixParselet
+class VariableParselet implements PrefixParselet
 {
     public function tokenType(): string
     {

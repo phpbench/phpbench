@@ -50,7 +50,6 @@ use PhpBench\Expression\NodeEvaluator\FunctionEvaluator;
 use PhpBench\Expression\NodeEvaluator\ListEvaluator;
 use PhpBench\Expression\NodeEvaluator\LogicalOperatorEvaluator;
 use PhpBench\Expression\NodeEvaluator\NullSafeEvaluator;
-use PhpBench\Expression\NodeEvaluator\ParameterEvaluator;
 use PhpBench\Expression\NodeEvaluator\ParenthesisEvaluator;
 use PhpBench\Expression\NodeEvaluator\PhpValueEvaluator;
 use PhpBench\Expression\NodeEvaluator\TolerableEvaluator;
@@ -98,7 +97,7 @@ use PhpBench\Expression\Parselet\ListParselet;
 use PhpBench\Expression\Parselet\LogicalOperatorParselet;
 use PhpBench\Expression\Parselet\NullParselet;
 use PhpBench\Expression\Parselet\NullSafeParselet;
-use PhpBench\Expression\Parselet\ParameterParselet;
+use PhpBench\Expression\Parselet\VariableParselet;
 use PhpBench\Expression\Parselet\ParenthesisParselet;
 use PhpBench\Expression\Parselet\PercentageParselet;
 use PhpBench\Expression\Parselet\PropertyAccessParselet;
@@ -161,7 +160,7 @@ class ExpressionExtension implements ExtensionInterface
                     new ParenthesisParselet(),
                     new BooleanParselet(),
                     new StringParselet(),
-                    new ParameterParselet(),
+                    new VariableParselet(),
                     new NullParselet(),
                 ]),
                 Parselets::fromInfixParselets([
@@ -203,7 +202,6 @@ class ExpressionExtension implements ExtensionInterface
                 new ComparisonEvaluator(),
                 new TolerableEvaluator(),
                 new DisplayAsEvaluator(),
-                new ParameterEvaluator(),
                 new VariableEvaluator(),
                 new ConcatEvaluator(),
                 new PhpValueEvaluator(),

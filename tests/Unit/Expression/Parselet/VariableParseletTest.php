@@ -11,7 +11,7 @@ use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Ast\VariableNode;
 use PhpBench\Tests\Unit\Expression\ParseletTestCase;
 
-class ParameterParseletTest extends ParseletTestCase
+class VariableParseletTest extends ParseletTestCase
 {
     /**
      * @return Generator<mixed>
