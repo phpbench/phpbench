@@ -2,7 +2,6 @@
 
 namespace PhpBench\Data;
 
-use PhpBench\Data\Exception\ColumnDoesNotExist;
 use function array_map;
 use function array_reduce;
 use function array_search;
@@ -10,6 +9,7 @@ use ArrayAccess;
 use ArrayIterator;
 use Closure;
 use IteratorAggregate;
+use PhpBench\Data\Exception\ColumnDoesNotExist;
 use PhpBench\Data\Func\Partition;
 use PHPUnit\Framework\MockObject\BadMethodCallException;
 use RuntimeException;

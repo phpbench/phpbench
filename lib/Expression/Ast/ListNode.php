@@ -10,12 +10,14 @@ final class ListNode extends DelimitedListNode
     public static function fromValues(array $values): self
     {
         $listValues = [];
+
         foreach ($values as $key => $value) {
             if (is_array($value)) {
                 $listValues[$key] = ListNode::fromValues($value);
             }
             $listValues[$key] = PhpValueFactory::fromValue($value);
         }
+
         return new self($listValues);
     }
 }

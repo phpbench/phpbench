@@ -31,10 +31,12 @@ abstract class DelimitedListNode extends PhpValue
     public function value(): array
     {
         $values = [];
+
         foreach ($this->nodes as $key => $node) {
             assert($node instanceof PhpValue);
             $values[$key] = $node->value();
         }
+
         return $values;
     }
 
