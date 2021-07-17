@@ -44,10 +44,10 @@ class AccessEvaluatorTest extends EvaluatorTestCase
             new NullSafeNode(
                 new ListNode([
                     new StringNode('hello'),
-                ]),
+                ])
             ),
             new IntegerNode(100),
-            new NullNode(),
+            new NullNode()
         ];
 
         yield [
@@ -64,7 +64,7 @@ class AccessEvaluatorTest extends EvaluatorTestCase
                 new DataFrameNode(DataFrame::fromRecords([
                     ['one' => 1],
                     ['one' => 2],
-                ])),
+                ]))
             ),
             new StringNode('foo'),
             new NullNode()
