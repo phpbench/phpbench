@@ -3,7 +3,6 @@
 namespace PhpBench\Tests\Unit\Expression\NodeEvaluator;
 
 use Generator;
-use PHPUnit\Framework\TestCase;
 use PhpBench\Data\DataFrame;
 use PhpBench\Expression\Ast\AccessNode;
 use PhpBench\Expression\Ast\DataFrameNode;
@@ -23,7 +22,7 @@ class AccessEvaluatorTest extends EvaluatorTestCase
     public function testEvaluate(Node $container, Node $access, Node $expected): void
     {
         self::assertEquals($expected, $this->evaluateNode(new AccessNode(
-            $container, 
+            $container,
             $access
         ), []));
     }
@@ -58,6 +57,17 @@ class AccessEvaluatorTest extends EvaluatorTestCase
             ])),
             new StringNode('one'),
             new ListNode([new IntegerNode(1), new IntegerNode(2)])
+        ];
+
+        yield 'null safe data frame' => [
+            new NullSafeNode(
+                new DataFrameNode(DataFrame::fromRecords([
+                    ['one' => 1],
+                    ['one' => 2],
+                ])),
+            ),
+            new StringNode('foo'),
+            new NullNode()
         ];
     }
 }

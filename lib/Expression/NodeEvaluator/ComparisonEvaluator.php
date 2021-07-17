@@ -2,8 +2,10 @@
 
 namespace PhpBench\Expression\NodeEvaluator;
 
+use PhpBench\Data\DataFrame;
 use PhpBench\Expression\Ast\BooleanNode;
 use PhpBench\Expression\Ast\ComparisonNode;
+use PhpBench\Expression\Ast\DataFrameNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\NumberValue;
 use PhpBench\Expression\Ast\PhpValue;

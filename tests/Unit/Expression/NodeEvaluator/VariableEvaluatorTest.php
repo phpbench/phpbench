@@ -3,7 +3,6 @@
 namespace PhpBench\Tests\Unit\Expression\NodeEvaluator;
 
 use Generator;
-use PHPUnit\Framework\TestCase;
 use PhpBench\Data\DataFrame;
 use PhpBench\Expression\Ast\DataFrameNode;
 use PhpBench\Expression\Ast\IntegerNode;
@@ -11,7 +10,6 @@ use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Ast\VariableNode;
 use PhpBench\Expression\Exception\EvaluationError;
-use PhpBench\Expression\NodeEvaluator\VariableEvaluator;
 use PhpBench\Tests\Unit\Expression\EvaluatorTestCase;
 
 class VariableEvaluatorTest extends EvaluatorTestCase
@@ -25,6 +23,7 @@ class VariableEvaluatorTest extends EvaluatorTestCase
 
     /**
      * @dataProvider provideEvaluate
+     *
      * @param parameters $params
      */
     public function testEvaluate(string $name, array $params, Node $expected): void
@@ -38,7 +37,7 @@ class VariableEvaluatorTest extends EvaluatorTestCase
     public function provideEvaluate(): Generator
     {
         yield [
-            'foobar', 
+            'foobar',
             [
                 'foobar' => 10,
             ],
@@ -46,7 +45,7 @@ class VariableEvaluatorTest extends EvaluatorTestCase
         ];
 
         yield [
-            'foobar', 
+            'foobar',
             [
                 'foobar' => '10',
             ],
@@ -54,7 +53,7 @@ class VariableEvaluatorTest extends EvaluatorTestCase
         ];
 
         yield [
-            'foobar', 
+            'foobar',
             [
                 'foobar' => DataFrame::fromRecords([]),
             ],

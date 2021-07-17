@@ -10,6 +10,8 @@ Bug fixes:
 
 Features:
 
+- Added `frame` function to create a new data frame within an expressoin.
+- Data can be accessed on any expression value (not just "parameters")
 - Added `sum` and `count` functions #865
 - New component based report generator #851
 - HTML Bar Chart component #853
@@ -31,6 +33,9 @@ Other changes:
 
 - "0" is not longer shown as the "set name" in reports, it is now an empty
   string.
+- Lists and data frames can no longer be compared. Use the `frame` function to
+  convert a list to a data frame (in the unlikely event you compare a list
+  with a frame in a report).
 
 1.0.3 (2021-07-03)
 ------------------

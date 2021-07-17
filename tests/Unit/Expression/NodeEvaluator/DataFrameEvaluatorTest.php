@@ -3,12 +3,9 @@
 namespace PhpBench\Tests\Unit\Expression\NodeEvaluator;
 
 use Generator;
-use PHPUnit\Framework\TestCase;
 use PhpBench\Data\DataFrame;
-use PhpBench\Expression\Ast\AccessNode;
 use PhpBench\Expression\Ast\ComparisonNode;
 use PhpBench\Expression\Ast\DataFrameNode;
-use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\StringNode;
@@ -26,7 +23,7 @@ class DataFrameEvaluatorTest extends EvaluatorTestCase
         $evaluator = new DataFrameEvaluator();
         self::assertEquals(
             $expected,
-            $evaluator->evaluate($this->evaluator(), new DataFrameNode($frame), $accessNode, [])
+            $evaluator->evaluate($this->evaluator(), new DataFrameNode($frame), $accessNode, [], false)
         );
     }
 

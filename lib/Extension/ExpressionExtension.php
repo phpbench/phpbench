@@ -26,6 +26,7 @@ use PhpBench\Expression\Func\CountFunction;
 use PhpBench\Expression\Func\DisplayAsTimeFunction;
 use PhpBench\Expression\Func\FirstFunction;
 use PhpBench\Expression\Func\FormatFunction;
+use PhpBench\Expression\Func\FrameFunction;
 use PhpBench\Expression\Func\JoinFunction;
 use PhpBench\Expression\Func\LabelFunction;
 use PhpBench\Expression\Func\MaxFunction;
@@ -39,9 +40,9 @@ use PhpBench\Expression\Func\SumFunction;
 use PhpBench\Expression\Func\VarianceFunction;
 use PhpBench\Expression\Lexer;
 use PhpBench\Expression\NodeEvaluator;
+use PhpBench\Expression\NodeEvaluator\AccessEvaluator;
 use PhpBench\Expression\NodeEvaluator\ArgumentListEvaluator;
 use PhpBench\Expression\NodeEvaluator\ArithmeticOperatorEvaluator;
-use PhpBench\Expression\NodeEvaluator\AccessEvaluator;
 use PhpBench\Expression\NodeEvaluator\ComparisonEvaluator;
 use PhpBench\Expression\NodeEvaluator\ConcatEvaluator;
 use PhpBench\Expression\NodeEvaluator\DisplayAsEvaluator;
@@ -346,6 +347,7 @@ class ExpressionExtension implements ExtensionInterface
                 'label' => new LabelFunction(),
                 'count' => new CountFunction(),
                 'sum' => new SumFunction(),
+                'frame' => new FrameFunction(),
             ]);
         });
 

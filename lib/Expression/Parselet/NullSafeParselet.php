@@ -3,12 +3,10 @@
 namespace PhpBench\Expression\Parselet;
 
 use PhpBench\Expression\Ast\Node;
-use PhpBench\Expression\Ast\NullNode;
 use PhpBench\Expression\Ast\NullSafeNode;
 use PhpBench\Expression\InfixParselet;
 use PhpBench\Expression\Parser;
 use PhpBench\Expression\Precedence;
-use PhpBench\Expression\PrefixParselet;
 use PhpBench\Expression\Token;
 use PhpBench\Expression\Tokens;
 
@@ -30,5 +28,4 @@ class NullSafeParselet implements InfixParselet
     {
         return Precedence::COMPARISON_EQUALITY;
     }
-
 }

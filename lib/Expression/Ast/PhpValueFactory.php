@@ -2,8 +2,8 @@
 
 namespace PhpBench\Expression\Ast;
 
-use PhpBench\Data\DataFrame;
 use function is_float;
+use PhpBench\Data\DataFrame;
 
 final class PhpValueFactory
 {
