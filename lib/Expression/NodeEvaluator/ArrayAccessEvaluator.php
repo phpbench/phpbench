@@ -2,6 +2,7 @@
 
 namespace PhpBench\Expression\NodeEvaluator;
 
+use PhpBench\Expression\Ast\DataFrameNode;
 use function array_key_exists;
 use PhpBench\Expression\Ast\ArrayAccessNode;
 use PhpBench\Expression\Ast\ListNode;
@@ -15,6 +16,16 @@ use PhpBench\Expression\NodeEvaluator;
 class ArrayAccessEvaluator implements NodeEvaluator
 {
     /**
+     * @var DataFrameEvaluator
+     */
+    private $dataFrameEvaluator;
+
+    public function __construct()
+    {
+        $this->dataFrameEvaluator = new DataFrameEvaluator();
+    }
+
+    /**
         * @param parameters $params
      */
     public function evaluate(Evaluator $evaluator, Node $node, array $params): ?Node
@@ -23,7 +34,13 @@ class ArrayAccessEvaluator implements NodeEvaluator
             return null;
         }
 
-        $arrayValue = $this->resolveArray($evaluator, $node, $params);
+        $value = $evaluator->evaluate($node->expression(), $params);
+
+        if ($value instanceof DataFrameNode) {
+            return $this->dataFrameEvaluator->evaluate($evaluator, $value, $node->access(), $params);
+        }
+        
+        $arrayValue = $this->resolveArray($evaluator, $value);
         $accessValue = $this->resolveAccess($evaluator, $node, $params);
 
         if (!array_key_exists($accessValue, $arrayValue)) {
@@ -39,13 +56,9 @@ class ArrayAccessEvaluator implements NodeEvaluator
 
     /**
      * @return scalar[]
-     *
-     * @param parameters $params
      */
-    private function resolveArray(Evaluator $evaluator, ArrayAccessNode $node, array $params): array
+    private function resolveArray(Evaluator $evaluator, Node $value): array
     {
-        $value = $evaluator->evaluate($node->expression(), $params);
-        
         if (!$value instanceof ListNode) {
             throw new ExpressionError(sprintf(
                 'Array access expression on non-array, got "%s"',
@@ -82,5 +95,9 @@ class ArrayAccessEvaluator implements NodeEvaluator
         }
 
         return $value;
+    }
+
+    private function evaluateDataFrame(DataFrameNode $value, Node $node)
+    {
     }
 }
