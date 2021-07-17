@@ -43,6 +43,7 @@ class AccessEvaluator implements NodeEvaluator
             $nullSafe = true;
             $container = $container->node();
         }
+
         $value = $evaluator->evaluate($container, $params);
 
         if ($value instanceof DataFrameNode) {

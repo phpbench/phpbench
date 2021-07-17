@@ -9,12 +9,13 @@ final class ListNode extends DelimitedListNode
      */
     public static function fromValues(array $values): self
     {
-        return new self(array_map(function ($value) {
+        $listValues = [];
+        foreach ($values as $key => $value) {
             if (is_array($value)) {
-                return ListNode::fromValues($value);
+                $listValues[$key] = ListNode::fromValues($value);
             }
-
-            return PhpValueFactory::fromValue($value);
-        }, $values));
+            $listValues[$key] = PhpValueFactory::fromValue($value);
+        }
+        return new self($listValues);
     }
 }
