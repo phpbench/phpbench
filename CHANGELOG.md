@@ -11,7 +11,6 @@ Bug fixes:
 Features:
 
 - Added `frame` function to create a new data frame within an expressoin.
-- Data can be accessed on any expression value (not just "parameters")
 - Added `sum` and `count` functions #865
 - New component based report generator #851
 - HTML Bar Chart component #853
@@ -25,6 +24,8 @@ Features:
 
 Improvement:
 
+- Support expressions in parttion specifications
+- Data can be accessed on any expression value (not just "parameters")
 - Use automatic time unit for expression report #838
 - Parameter handling refactored to be "safe": objects will not be unserialized
   in the PHPBench process #845
