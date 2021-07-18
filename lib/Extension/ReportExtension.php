@@ -351,7 +351,7 @@ class ReportExtension implements ExtensionInterface
     {
         $container->register(ExpressionBridge::class, function (Container $container) {
             return new ExpressionBridge(
-                $container->get(ExpressionEvaluator::class),
+                $container->get(ExpressionEvaluator::class)
             );
         });
     }
