@@ -9,14 +9,14 @@
 .. _component_bar_chart_aggregate_option_x_partition:
 
 **x_partition**:
-  Type(s): ``string[]``, Default: ``[]``
+  Type(s): ``[string, string[]]``, Default: ``[]``
 
   Group by these columns on the X-Axis. The label will be the concatenation of the values of these columns by default
 
 .. _component_bar_chart_aggregate_option_set_partition:
 
 **set_partition**:
-  Type(s): ``string[]``, Default: ``[]``
+  Type(s): ``[string, string[]]``, Default: ``[]``
 
   Create separate bars for each step by partitioning the data based on these values.
 

@@ -9,7 +9,7 @@
 .. _component_table_aggregate_option_partition:
 
 **partition**:
-  Type(s): ``string[]``, Default: ``[]``
+  Type(s): ``[string, string[]]``, Default: ``[]``
 
   Partition the data using these column names - the row expressions will to aggregate the data in each partition
 

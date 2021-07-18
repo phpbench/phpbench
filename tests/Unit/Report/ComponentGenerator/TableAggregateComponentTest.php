@@ -69,6 +69,23 @@ class TableAggregateComponentTest extends ComponentGeneratorTestCase
         self::assertCount(2, $table->rows());
     }
 
+    public function testParitionViaEpression(): void
+    {
+        $frame = DataFrame::fromRowSeries([
+            ['hello'],
+            ['goodbye'],
+        ], ['foobar']);
+
+        $table = $this->generate($frame, [
+            TableAggregateComponent::PARAM_ROW => [
+                'hello' => 'partition["foobar"]'
+            ],
+            TableAggregateComponent::PARAM_PARTITION => 'foobar ~ "foo"',
+        ]);
+        assert($table instanceof Table);
+        self::assertCount(2, $table->rows());
+    }
+
     public function testAccessOuterframe(): void
     {
         $frame = DataFrame::fromRowSeries([
