@@ -4,7 +4,6 @@ namespace PhpBench\Report\Generator;
 
 use PhpBench\Compat\SymfonyOptionsResolverCompat;
 use PhpBench\Data\DataFrame;
-use PhpBench\Expression\ExpressionEvaluator;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Registry\ConfigurableRegistry;

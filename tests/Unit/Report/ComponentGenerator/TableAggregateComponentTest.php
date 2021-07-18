@@ -5,7 +5,6 @@ namespace PhpBench\Tests\Unit\Report\ComponentGenerator;
 use PhpBench\Data\DataFrame;
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\StringNode;
-use PhpBench\Expression\ExpressionEvaluator;
 use PhpBench\Report\Bridge\ExpressionBridge;
 use PhpBench\Report\ComponentGenerator\TableAggregateComponent;
 use PhpBench\Report\ComponentGeneratorInterface;

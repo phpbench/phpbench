@@ -2,11 +2,8 @@
 
 namespace PhpBench\Report\ComponentGenerator;
 
-use Closure;
 use PhpBench\Compat\SymfonyOptionsResolverCompat;
 use PhpBench\Data\DataFrame;
-use PhpBench\Data\Row;
-use PhpBench\Expression\ExpressionEvaluator;
 use PhpBench\Report\Bridge\ExpressionBridge;
 use PhpBench\Report\ComponentGeneratorInterface;
 use PhpBench\Report\ComponentInterface;

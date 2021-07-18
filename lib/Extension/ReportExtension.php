@@ -12,9 +12,7 @@ use PhpBench\Console\Command\ReportCommand;
 use PhpBench\Console\Command\ShowCommand;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
-use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\ExpressionEvaluator;
-use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\NodePrinters;
 use PhpBench\Expression\Printer;
 use PhpBench\Expression\Printer\EvaluatingPrinter;
@@ -353,9 +351,7 @@ class ReportExtension implements ExtensionInterface
     {
         $container->register(ExpressionBridge::class, function (Container $container) {
             return new ExpressionBridge(
-                $container->get(ExpressionLanguage::class),
-                $container->get(Evaluator::class),
-                $container->get(Printer::class)
+                $container->get(ExpressionEvaluator::class),
             );
         });
     }

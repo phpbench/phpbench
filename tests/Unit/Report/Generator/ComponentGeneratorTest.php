@@ -13,7 +13,6 @@
 namespace PhpBench\Tests\Unit\Report\Generator;
 
 use PhpBench\DependencyInjection\Container;
-use PhpBench\Expression\ExpressionEvaluator;
 use PhpBench\Extension\ReportExtension;
 use PhpBench\Report\Bridge\ExpressionBridge;
 use PhpBench\Report\Generator\ComponentGenerator;

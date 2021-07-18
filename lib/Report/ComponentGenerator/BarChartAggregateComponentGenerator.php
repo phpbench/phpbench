@@ -6,7 +6,6 @@ use Closure;
 use PhpBench\Compat\SymfonyOptionsResolverCompat;
 use PhpBench\Data\DataFrame;
 use PhpBench\Data\Row;
-use PhpBench\Data\Series;
 use PhpBench\Expression\ExpressionEvaluator;
 use PhpBench\Report\ComponentGeneratorInterface;
 use PhpBench\Report\ComponentInterface;
@@ -176,12 +175,12 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
     {
         return function (Row $row) use ($partitionColumns) {
             $hash = [];
+
             foreach ($partitionColumns as $column) {
                 $hash[] = $this->evaluator->evaluatePhpValue($column, $row->toRecord());
             }
 
             return implode('-', $hash);
         };
-
     }
 }

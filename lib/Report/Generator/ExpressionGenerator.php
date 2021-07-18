@@ -2,7 +2,6 @@
 
 namespace PhpBench\Report\Generator;
 
-use PhpBench\Data\Row;
 use function array_combine;
 use function array_key_exists;
 use Generator;
@@ -10,6 +9,7 @@ use function iterator_to_array;
 use PhpBench\Compat\SymfonyOptionsResolverCompat;
 use PhpBench\Data\DataFrame;
 use PhpBench\Data\DataFrames;
+use PhpBench\Data\Row;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Exception\EvaluationError;

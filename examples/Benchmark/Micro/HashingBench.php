@@ -14,9 +14,15 @@ namespace PhpBench\Examples\Benchmark\Micro;
 
 function hash_algos()
 {
-    yield 'md5' => ['algo' => 'md5'];
+    yield ['algo' => 'md5'];
 
-    yield 'sha256' => ['algo' => 'sha256'];
+    yield ['algo' => 'sha256'];
+}
+
+function hash_strings() {
+    yield ['size' => 1000];
+    yield ['size' => 100];
+    yield ['size' => 10];
 }
 
 /**
@@ -26,11 +32,22 @@ function hash_algos()
 class HashingBench
 {
     /**
-     * @Assert("mode(variant.time.avg) < 1ms")
-     * @ParamProviders({"\PhpBench\Examples\Benchmark\Micro\hash_algos"})
+     * @var string
      */
-    public function benchAlgos($params)
+    private $string = 'x';
+
+    public function setUp(array $params): void
     {
-        return hash($params['algo'], 'Hello World');
+        $this->string = str_repeat('X', $params['size']);
+    }
+
+    /**
+     * @Assert("mode(variant.time.avg) < 1ms")
+     * @ParamProviders({"\PhpBench\Examples\Benchmark\Micro\hash_algos", "\PhpBench\Examples\Benchmark\Micro\hash_strings"})
+     * @BeforeMethods("setUp")
+     */
+    public function benchAlgos($params): void
+    {
+        hash($params['algo'], $this->string);
     }
 }
