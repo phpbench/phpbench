@@ -2,9 +2,12 @@
 
 namespace PhpBench\Report\ComponentGenerator;
 
+use Closure;
 use PhpBench\Compat\SymfonyOptionsResolverCompat;
 use PhpBench\Data\DataFrame;
+use PhpBench\Data\Row;
 use PhpBench\Expression\ExpressionEvaluator;
+use PhpBench\Report\Bridge\ExpressionBridge;
 use PhpBench\Report\ComponentGeneratorInterface;
 use PhpBench\Report\ComponentInterface;
 use PhpBench\Report\Model\Builder\TableBuilder;
@@ -17,11 +20,11 @@ class TableAggregateComponent implements ComponentGeneratorInterface
     public const PARAM_ROW = 'row';
 
     /**
-     * @var ExpressionEvaluator
+     * @var ExpressionBridge
      */
     private $evaluator;
 
-    public function __construct(ExpressionEvaluator $evaluator)
+    public function __construct(ExpressionBridge $evaluator)
     {
         $this->evaluator = $evaluator;
     }
@@ -38,7 +41,7 @@ class TableAggregateComponent implements ComponentGeneratorInterface
             ],
         ]);
         $options->setAllowedTypes(self::PARAM_TITLE, ['string', 'null']);
-        $options->setAllowedTypes(self::PARAM_PARTITION, 'string[]');
+        $options->setAllowedTypes(self::PARAM_PARTITION, ['string', 'string[]']);
         $options->setAllowedTypes(self::PARAM_ROW, 'array');
         SymfonyOptionsResolverCompat::setInfos($options, [
             self::PARAM_TITLE => 'Caption for the table',
@@ -54,7 +57,7 @@ class TableAggregateComponent implements ComponentGeneratorInterface
     {
         $rows = [];
 
-        foreach ($dataFrame->partition($config[self::PARAM_PARTITION]) as $dataFrameRow) {
+        foreach ($this->evaluator->partition($dataFrame, (array)$config[self::PARAM_PARTITION]) as $dataFrameRow) {
             $row = [];
 
             foreach ($config[self::PARAM_ROW] as $colName => $expression) {

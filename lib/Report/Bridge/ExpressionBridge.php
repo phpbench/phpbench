@@ -1,14 +1,19 @@
 <?php
 
-namespace PhpBench\Expression;
+namespace PhpBench\Report\Bridge;
 
+use PhpBench\Data\DataFrame;
+use PhpBench\Data\DataFrames;
+use PhpBench\Data\Row;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\PhpValue;
+use PhpBench\Expression\Evaluator;
+use PhpBench\Expression\ExpressionEvaluator;
+use PhpBench\Expression\ExpressionLanguage;
+use PhpBench\Expression\MustacheRenderer;
+use PhpBench\Expression\Printer;
 
-/**
- * @deprecated Will be removed in PHPBench 2.0. For use in reports use the ExpressionBridge.
- */
-final class ExpressionEvaluator
+class ExpressionBridge
 {
     /**
      * @var ExpressionLanguage
@@ -78,4 +83,20 @@ final class ExpressionEvaluator
             return $this->printer->print($this->evaluate($expression, $params));
         });
     }
+
+    /**
+     * @param string[] $expressions
+     */
+    public function partition(DataFrame $frame, array $expressions): DataFrames
+    {
+        return $frame->partition(function (Row $row) use ($expressions) {
+            $hash = [];
+            foreach ($expressions as $expression) {
+                $hash[] = $this->evaluatePhpValue($expression, $row->toRecord());
+            }
+
+            return implode('-', $hash);
+        });
+    }
+
 }

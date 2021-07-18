@@ -2,8 +2,11 @@
 
 namespace PhpBench\Report\ComponentGenerator;
 
+use Closure;
 use PhpBench\Compat\SymfonyOptionsResolverCompat;
 use PhpBench\Data\DataFrame;
+use PhpBench\Data\Row;
+use PhpBench\Data\Series;
 use PhpBench\Expression\ExpressionEvaluator;
 use PhpBench\Report\ComponentGeneratorInterface;
 use PhpBench\Report\ComponentInterface;
@@ -48,8 +51,8 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
         ]);
         $options->setRequired(self::PARAM_Y_EXPR);
         $options->setAllowedTypes(self::PARAM_TITLE, ['string', 'null']);
-        $options->setAllowedTypes(self::PARAM_X_PARTITION, ['string[]']);
-        $options->setAllowedTypes(self::PARAM_SET_PARTITION, ['string[]']);
+        $options->setAllowedTypes(self::PARAM_X_PARTITION, ['string','string[]']);
+        $options->setAllowedTypes(self::PARAM_SET_PARTITION, ['string','string[]']);
         $options->setAllowedTypes(self::PARAM_Y_AXES_LABEL, ['string']);
         $options->setAllowedTypes(self::PARAM_X_AXES_LABEL, ['null', 'string']);
         $options->setAllowedTypes(self::PARAM_Y_EXPR, ['string']);
@@ -76,11 +79,11 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
         $errorMargins = [];
         $ySeries = [];
 
-        foreach ($dataFrame->partition($config[self::PARAM_X_PARTITION]) as $xLabel => $partition) {
+        foreach ($dataFrame->partition($this->partitionFunction((array)$config[self::PARAM_X_PARTITION])) as $xLabel => $partition) {
             $xAxes[] = $xLabel;
             $xLabels[] = $this->resolveXLabel($partition, (string)$xLabel, $config);
 
-            foreach ($partition->partition($config[self::PARAM_SET_PARTITION]) as $setLabel => $setPartition) {
+            foreach ($partition->partition($this->partitionFunction((array)$config[self::PARAM_SET_PARTITION])) as $setLabel => $setPartition) {
                 $yValue = $this->evaluator->evaluatePhpValue($config[self::PARAM_Y_EXPR], [
                     'frame' => $dataFrame,
                     'partition' => $setPartition
@@ -164,5 +167,21 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
         }
 
         return (string)$xLabel;
+    }
+
+    /**
+     * @param string[] $partitionColumns
+     */
+    private function partitionFunction(array $partitionColumns): Closure
+    {
+        return function (Row $row) use ($partitionColumns) {
+            $hash = [];
+            foreach ($partitionColumns as $column) {
+                $hash[] = $this->evaluator->evaluatePhpValue($column, $row->toRecord());
+            }
+
+            return implode('-', $hash);
+        };
+
     }
 }

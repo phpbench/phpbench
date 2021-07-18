@@ -2,6 +2,7 @@
 
 namespace PhpBench\Report\Generator;
 
+use PhpBench\Data\Row;
 use function array_combine;
 use function array_key_exists;
 use Generator;
@@ -163,7 +164,11 @@ EOT
         // transform the suite into a data frame
         $frame = $this->transformer->suiteToFrame($collection->firstOnly(), $config[self::PARAM_INCLUDE_BASELINE]);
         // parition the data frame into data frames grouped by aggregates
-        $frames = $frame->partition($config[self::PARAM_AGGREGATE]);
+        $frames = $frame->partition(function (Row $row) use ($config) {
+            return implode('-', array_map(function (string $column) use ($row) {
+                return $row[$column];
+            }, $config[self::PARAM_AGGREGATE]));
+        });
 
         // evaluate the aggregated values with the expression language - at
         // this point the data frame is coverted to an array with Node

@@ -8,6 +8,7 @@ use PhpBench\Expression\ExpressionEvaluator;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Registry\ConfigurableRegistry;
+use PhpBench\Report\Bridge\ExpressionBridge;
 use PhpBench\Report\ComponentGeneratorInterface;
 use PhpBench\Report\ComponentInterface;
 use PhpBench\Report\GeneratorInterface;
@@ -35,7 +36,7 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
     private $agent;
 
     /**
-     * @var ExpressionEvaluator
+     * @var ExpressionBridge
      */
     private $evaluator;
 
@@ -52,7 +53,7 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
     public function __construct(
         SuiteCollectionTransformer $transformer,
         ConfigurableRegistry $agent,
-        ExpressionEvaluator $evaluator,
+        ExpressionBridge $evaluator,
         LoggerInterface $logger
     ) {
         $this->agent = $agent;
@@ -120,7 +121,7 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
             ]));
         }
 
-        foreach ($dataFrame->partition($config[self::PARAM_PARTITION]) as $parition) {
+        foreach ($this->evaluator->partition($dataFrame, $config[self::PARAM_PARTITION]) as $parition) {
             foreach ($config[self::PARAM_COMPONENTS] as $component) {
                 if (!isset($component[self::KEY_COMPONENT_TYPE])) {
                     throw new RuntimeException(

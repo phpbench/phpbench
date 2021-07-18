@@ -6,6 +6,7 @@ use PhpBench\Data\DataFrame;
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\ExpressionEvaluator;
+use PhpBench\Report\Bridge\ExpressionBridge;
 use PhpBench\Report\ComponentGenerator\TableAggregateComponent;
 use PhpBench\Report\ComponentGeneratorInterface;
 use PhpBench\Report\Model\Builder\TableBuilder;
@@ -15,7 +16,7 @@ class TableAggregateComponentTest extends ComponentGeneratorTestCase
 {
     public function createGenerator(): ComponentGeneratorInterface
     {
-        return new TableAggregateComponent($this->container()->get(ExpressionEvaluator::class));
+        return new TableAggregateComponent($this->container()->get(ExpressionBridge::class));
     }
 
     public function testNoConfiguration(): void

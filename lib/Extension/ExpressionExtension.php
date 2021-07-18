@@ -358,6 +358,8 @@ class ExpressionExtension implements ExtensionInterface
                 new RealExpressionLanguage($container->get(Lexer::class), $container->get(Parser::class))
             );
         });
+
+        // @deprecated
         $container->register(ExpressionEvaluator::class, function (Container $container) {
             return new ExpressionEvaluator(
                 $container->get(ExpressionLanguage::class),

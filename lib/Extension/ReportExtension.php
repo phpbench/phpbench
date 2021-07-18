@@ -12,13 +12,16 @@ use PhpBench\Console\Command\ReportCommand;
 use PhpBench\Console\Command\ShowCommand;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
+use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\ExpressionEvaluator;
+use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\NodePrinters;
 use PhpBench\Expression\Printer;
 use PhpBench\Expression\Printer\EvaluatingPrinter;
 use PhpBench\Expression\Printer\NormalizingPrinter;
 use PhpBench\Json\JsonDecoder;
 use PhpBench\Registry\ConfigurableRegistry;
+use PhpBench\Report\Bridge\ExpressionBridge;
 use PhpBench\Report\ComponentGenerator\BarChartAggregateComponentGenerator;
 use PhpBench\Report\ComponentGenerator\TableAggregateComponent;
 use PhpBench\Report\ComponentGenerator\TextComponentGenerator;
@@ -111,6 +114,7 @@ class ReportExtension implements ExtensionInterface
         $this->registerReportGenerators($container);
         $this->registerReportRenderers($container);
         $this->registerComponentGenerators($container);
+        $this->registerBridge($container);
     }
 
     private function registerJson(Container $container): void
@@ -213,7 +217,7 @@ class ReportExtension implements ExtensionInterface
             return new ComponentGenerator(
                 $container->get(SuiteCollectionTransformer::class),
                 $container->get(self::SERVICE_REGISTRY_COMPONENT),
-                $container->get(ExpressionEvaluator::class),
+                $container->get(ExpressionBridge::class),
                 $container->get(LoggerInterface::class)
             );
         }, [
@@ -309,7 +313,7 @@ class ReportExtension implements ExtensionInterface
         });
 
         $container->register(TableAggregateComponent::class, function (Container $container) {
-            return new TableAggregateComponent($container->get(ExpressionEvaluator::class));
+            return new TableAggregateComponent($container->get(ExpressionBridge::class));
         }, [
             self::TAG_COMPONENT_GENERATOR => [ 'name' => 'table_aggregate' ]
         ]);
@@ -343,5 +347,16 @@ class ReportExtension implements ExtensionInterface
         }, [
             self::TAG_COMPONENT_GENERATOR => [ 'name' => 'bar_chart_aggregate' ]
         ]);
+    }
+
+    private function registerBridge(Container $container): void
+    {
+        $container->register(ExpressionBridge::class, function (Container $container) {
+            return new ExpressionBridge(
+                $container->get(ExpressionLanguage::class),
+                $container->get(Evaluator::class),
+                $container->get(Printer::class)
+            );
+        });
     }
 }

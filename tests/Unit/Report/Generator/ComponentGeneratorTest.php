@@ -15,6 +15,7 @@ namespace PhpBench\Tests\Unit\Report\Generator;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\Expression\ExpressionEvaluator;
 use PhpBench\Extension\ReportExtension;
+use PhpBench\Report\Bridge\ExpressionBridge;
 use PhpBench\Report\Generator\ComponentGenerator;
 use PhpBench\Report\GeneratorInterface;
 use PhpBench\Report\Transform\SuiteCollectionTransformer;
@@ -35,7 +36,7 @@ class ComponentGeneratorTest extends GeneratorTestCase
         return new ComponentGenerator(
             $container->get(SuiteCollectionTransformer::class),
             $container->get(ReportExtension::SERVICE_REGISTRY_COMPONENT),
-            $container->get(ExpressionEvaluator::class),
+            $container->get(ExpressionBridge::class),
             new NullLogger()
         );
     }
