@@ -18,6 +18,7 @@ use InvalidArgumentException;
 use PhpBench\Assertion\AssertionProcessor;
 use PhpBench\Benchmark\Exception\RetryLimitReachedException;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
+use PhpBench\Benchmark\Metadata\ExecutorMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Benchmark\Runner;
 use PhpBench\Benchmark\RunnerConfig;
@@ -336,10 +337,7 @@ class RunnerTest extends TestCase
         $this->addToAssertionCount(1); // no exception = retry limit not exceeded
     }
 
-    /**
-     * It should call the before and after class methods.
-     */
-    public function testBeforeAndAfterClass(): void
+    public function testCallBeforeAndAfterClass(): void
     {
         TestUtil::configureBenchmarkMetadata($this->benchmark, [
             'beforeClassMethods' => ['afterClass'],
@@ -352,6 +350,60 @@ class RunnerTest extends TestCase
         self::assertFalse($this->executor->hasHealthBeenChecked());
         self::assertTrue($this->executor->hasMethodBeenExecuted('afterClass'));
         self::assertTrue($this->executor->hasMethodBeenExecuted('beforeClass'));
+    }
+
+    public function testCallBeforeAndAfterClassWithBenchmarkExecutorWhenCustomSubjectExecutorUsed(): void
+    {
+        TestUtil::configureBenchmarkMetadata($this->benchmark, [
+            'beforeClassMethods' => ['beforeClass'],
+            'afterClassMethods' => ['afterClass'],
+        ]);
+
+        $subject = new SubjectMetadata($this->benchmark->reveal(), 'name');
+        $subject->setExecutor(new ExecutorMetadata('debug', []));
+        $this->benchmark->getSubjects()->willReturn([
+            $subject
+        ]);
+        $subjectTestExecutor = new TestExecutor();
+        $this->executorRegistry->getService('debug')->willReturn($subjectTestExecutor);
+        $this->executorRegistry->getConfig('debug')->willReturn($this->resolveExecutorConfig([
+            'executor' => 'debug',
+        ]));
+
+        $this->runner->run([ $this->benchmark->reveal() ], RunnerConfig::create());
+        self::assertFalse($this->executor->hasHealthBeenChecked());
+        self::assertTrue($this->executor->hasMethodBeenExecuted('beforeClass'), 'before');
+        self::assertTrue($this->executor->hasMethodBeenExecuted('afterClass'), 'after');
+    }
+
+    public function testRunSubjectsWithDifferentExecutors(): void
+    {
+        TestUtil::configureBenchmarkMetadata($this->benchmark, []);
+
+        $subject1 = new SubjectMetadata($this->benchmark->reveal(), 'name');
+        $subject1->setExecutor(new ExecutorMetadata('executor_1', []));
+        $subject2 = new SubjectMetadata($this->benchmark->reveal(), 'name');
+        $subject2->setExecutor(new ExecutorMetadata('executor_2', []));
+        $this->benchmark->getSubjects()->willReturn([
+            $subject1,
+            $subject2,
+        ]);
+
+        $executor1 = new TestExecutor();
+        $executor2 = new TestExecutor();
+        $this->executorRegistry->getService('executor_1')->willReturn($executor1);
+        $this->executorRegistry->getService('executor_2')->willReturn($executor2);
+        $this->executorRegistry->getConfig('executor_1')->willReturn($this->resolveExecutorConfig([
+            'executor' => 'executor_1'
+        ]));
+        $this->executorRegistry->getConfig('executor_2')->willReturn($this->resolveExecutorConfig([
+            'executor' => 'executor_2'
+        ]));
+
+        $this->runner->run([ $this->benchmark->reveal() ], RunnerConfig::create());
+
+        self::assertEquals(1, $executor1->getExecutedContextCount());
+        self::assertEquals(1, $executor2->getExecutedContextCount());
     }
 
     /**
@@ -430,13 +482,18 @@ class RunnerTest extends TestCase
      */
     private function setUpExecutorConfig(array $config = []): void
     {
-        $this->executorConfig = new Config('remote', array_merge([
+        $this->executorConfig = $this->resolveExecutorConfig($config);
+        $this->executorRegistry->getConfig($this->executorConfig['executor'])->willReturn(
+            $this->executorConfig
+        );
+    }
+
+    private function resolveExecutorConfig(array $config)
+    {
+        return new Config('remote', array_merge([
             'exception' => null,
             'executor' => 'remote',
             'results' => [TimeResult::fromArray(['net' => 1])]
         ], $config));
-        $this->executorRegistry->getConfig('remote')->willReturn(
-            $this->executorConfig
-        );
     }
 }
