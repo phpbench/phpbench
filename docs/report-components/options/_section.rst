@@ -20,6 +20,13 @@
 
   Partition the data using these column names - components will be rendered for each partition
 
+.. _component_section_option_filter:
+
+**filter**:
+  Type(s): ``[string, null]``, Default: ``NULL``
+
+  If provided, filter our rows which do not match this expression
+
 .. _component_section_option_components:
 
 **components**:

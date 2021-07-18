@@ -4,6 +4,7 @@ namespace PhpBench\Report\Generator;
 
 use PhpBench\Compat\SymfonyOptionsResolverCompat;
 use PhpBench\Data\DataFrame;
+use PhpBench\Data\Row;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Registry\ConfigurableRegistry;
@@ -24,6 +25,7 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
     const PARAM_TITLE = 'title';
     const PARAM_DESCRIPTION = 'description';
     const PARAM_PARTITION = 'partition';
+    const PARAM_FILTER = 'filter';
     const PARAM_COMPONENTS = 'components';
     const PARAM_TABBED = 'tabbed';
     const PARAM_TAB_LABELS = 'tab_labels';
@@ -70,12 +72,14 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
             self::PARAM_TITLE => null,
             self::PARAM_DESCRIPTION => null,
             self::PARAM_PARTITION => [],
+            self::PARAM_FILTER => null,
             self::PARAM_COMPONENTS => [],
             self::PARAM_TABBED => false,
             self::PARAM_TAB_LABELS => [],
         ]);
         $options->setAllowedTypes(self::PARAM_TITLE, ['string', 'null']);
         $options->setAllowedTypes(self::PARAM_DESCRIPTION, ['string', 'null']);
+        $options->setAllowedTypes(self::PARAM_FILTER, ['string', 'null']);
         $options->setAllowedTypes(self::PARAM_PARTITION, ['string[]']);
         $options->setAllowedTypes(self::PARAM_COMPONENTS, ['array[]']);
         $options->setAllowedTypes(self::PARAM_TABBED, ['bool']);
@@ -84,6 +88,7 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
             self::PARAM_TITLE => 'Title for generated report',
             self::PARAM_DESCRIPTION => 'Description for generated report',
             self::PARAM_PARTITION => 'Partition the data using these column names - components will be rendered for each partition',
+            self::PARAM_FILTER => 'If provided, filter our rows which do not match this expression',
             self::PARAM_COMPONENTS => 'List of component configuration objects, each component must feature a ``component`` key (e.g. ``table_aggregate``)',
             self::PARAM_TABBED => 'Render components in tabs when supported in the output renderer (e.g. HTML)',
             self::PARAM_TAB_LABELS => 'List of labels for tabs, will replace the default labels from left to right.',
@@ -118,6 +123,12 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
             $builder->withDescription($this->evaluator->renderTemplate($config[self::PARAM_DESCRIPTION], [
                 'frame' => $dataFrame
             ]));
+        }
+
+        if ($config[self::PARAM_FILTER]) {
+            $dataFrame = $dataFrame->filter(function (Row $row) use ($config) {
+                return (bool)$this->evaluator->evaluatePhpValue($config[self::PARAM_FILTER], $row->toRecord());
+            });
         }
 
         foreach ($this->evaluator->partition($dataFrame, $config[self::PARAM_PARTITION]) as $parition) {
