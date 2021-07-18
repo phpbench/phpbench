@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+1.0.4 (2021-07-18)
+------------------
+
+Bug fix:
+
+- `runner.executor` setting is ineffective and related bugs #880
+
 1.0.3 (2021-07-03)
 ------------------
 
