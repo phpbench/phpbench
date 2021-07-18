@@ -531,6 +531,26 @@ class RunTest extends SystemTestCase
         $this->assertExitCode(0, $process);
     }
 
+    public function testRunsWithExecutorSpecifiedInConfig(): void
+    {
+        $this->workspace()->put('phpbench.json', json_encode([
+            'runner.executor' => 'foobar',
+            'runner.executors' => [
+                'foobar' => [
+                    'extends' => 'debug',
+                    'times' => [1, 2, 3, 4, 5],
+                ],
+            ],
+
+        ]));
+        $process = $this->phpbench(
+            'run benchmarks/set4/NothingBench.php --executor=foobar'
+        );
+
+        // because there is no storage driver by default the factory will throw an exception.
+        $this->assertExitCode(0, $process);
+    }
+
     /**
      * It should not crash when zeros are reported as times.
      */
