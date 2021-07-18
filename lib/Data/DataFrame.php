@@ -9,6 +9,7 @@ use ArrayAccess;
 use ArrayIterator;
 use Closure;
 use IteratorAggregate;
+use PhpBench\Data\Exception\ColumnDoesNotExist;
 use PhpBench\Data\Func\Partition;
 use PHPUnit\Framework\MockObject\BadMethodCallException;
 use RuntimeException;
@@ -96,7 +97,7 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
         $offset = array_search($index, $this->columns);
 
         if (false === $offset) {
-            throw new RuntimeException(sprintf(
+            throw new ColumnDoesNotExist(sprintf(
                 'Could not find column "%s", known columns "%s"',
                 $index, implode('", "', $this->columns)
             ));

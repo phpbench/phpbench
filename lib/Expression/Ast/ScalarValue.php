@@ -2,6 +2,6 @@
 
 namespace PhpBench\Expression\Ast;
 
-abstract class NumberValue extends ScalarValue
+abstract class ScalarValue extends PhpValue
 {
 }

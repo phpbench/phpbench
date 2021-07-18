@@ -30,9 +30,14 @@ abstract class DelimitedListNode extends PhpValue
      */
     public function value(): array
     {
-        return array_map(function (PhpValue $node) {
-            return $node->value();
-        }, $this->nodes);
+        $values = [];
+
+        foreach ($this->nodes as $key => $node) {
+            assert($node instanceof PhpValue);
+            $values[$key] = $node->value();
+        }
+
+        return $values;
     }
 
     /**

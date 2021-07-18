@@ -26,6 +26,7 @@ use PhpBench\Expression\Func\CountFunction;
 use PhpBench\Expression\Func\DisplayAsTimeFunction;
 use PhpBench\Expression\Func\FirstFunction;
 use PhpBench\Expression\Func\FormatFunction;
+use PhpBench\Expression\Func\FrameFunction;
 use PhpBench\Expression\Func\JoinFunction;
 use PhpBench\Expression\Func\LabelFunction;
 use PhpBench\Expression\Func\MaxFunction;
@@ -39,6 +40,7 @@ use PhpBench\Expression\Func\SumFunction;
 use PhpBench\Expression\Func\VarianceFunction;
 use PhpBench\Expression\Lexer;
 use PhpBench\Expression\NodeEvaluator;
+use PhpBench\Expression\NodeEvaluator\AccessEvaluator;
 use PhpBench\Expression\NodeEvaluator\ArgumentListEvaluator;
 use PhpBench\Expression\NodeEvaluator\ArithmeticOperatorEvaluator;
 use PhpBench\Expression\NodeEvaluator\ComparisonEvaluator;
@@ -47,14 +49,16 @@ use PhpBench\Expression\NodeEvaluator\DisplayAsEvaluator;
 use PhpBench\Expression\NodeEvaluator\FunctionEvaluator;
 use PhpBench\Expression\NodeEvaluator\ListEvaluator;
 use PhpBench\Expression\NodeEvaluator\LogicalOperatorEvaluator;
-use PhpBench\Expression\NodeEvaluator\ParameterEvaluator;
+use PhpBench\Expression\NodeEvaluator\NullSafeEvaluator;
 use PhpBench\Expression\NodeEvaluator\ParenthesisEvaluator;
 use PhpBench\Expression\NodeEvaluator\PhpValueEvaluator;
 use PhpBench\Expression\NodeEvaluator\TolerableEvaluator;
 use PhpBench\Expression\NodeEvaluator\ValueWithUnitEvaluator;
+use PhpBench\Expression\NodeEvaluator\VariableEvaluator;
 use PhpBench\Expression\NodeEvaluators;
 use PhpBench\Expression\NodePrinter;
 use PhpBench\Expression\NodePrinter\ArgumentListPrinter;
+use PhpBench\Expression\NodePrinter\ArrayAccessPrinter;
 use PhpBench\Expression\NodePrinter\BinaryOperatorPrinter;
 use PhpBench\Expression\NodePrinter\BooleanPrinter;
 use PhpBench\Expression\NodePrinter\ComparisonPrinter;
@@ -81,6 +85,7 @@ use PhpBench\Expression\NodePrinter\ValueWithUnitPrinter;
 use PhpBench\Expression\NodePrinter\VariablePrinter;
 use PhpBench\Expression\NodePrinters;
 use PhpBench\Expression\Parselet\ArithmeticOperatorParselet;
+use PhpBench\Expression\Parselet\ArrayAccessParselet;
 use PhpBench\Expression\Parselet\BooleanParselet;
 use PhpBench\Expression\Parselet\ComparisonParselet;
 use PhpBench\Expression\Parselet\ConcatParselet;
@@ -91,12 +96,14 @@ use PhpBench\Expression\Parselet\IntegerParselet;
 use PhpBench\Expression\Parselet\ListParselet;
 use PhpBench\Expression\Parselet\LogicalOperatorParselet;
 use PhpBench\Expression\Parselet\NullParselet;
-use PhpBench\Expression\Parselet\ParameterParselet;
+use PhpBench\Expression\Parselet\NullSafeParselet;
 use PhpBench\Expression\Parselet\ParenthesisParselet;
 use PhpBench\Expression\Parselet\PercentageParselet;
+use PhpBench\Expression\Parselet\PropertyAccessParselet;
 use PhpBench\Expression\Parselet\StringParselet;
 use PhpBench\Expression\Parselet\TolerableParselet;
 use PhpBench\Expression\Parselet\ValueWithUnitParselet;
+use PhpBench\Expression\Parselet\VariableParselet;
 use PhpBench\Expression\Parselets;
 use PhpBench\Expression\Parser;
 use PhpBench\Expression\Precedence;
@@ -153,7 +160,7 @@ class ExpressionExtension implements ExtensionInterface
                     new ParenthesisParselet(),
                     new BooleanParselet(),
                     new StringParselet(),
-                    new ParameterParselet(),
+                    new VariableParselet(),
                     new NullParselet(),
                 ]),
                 Parselets::fromInfixParselets([
@@ -172,6 +179,9 @@ class ExpressionExtension implements ExtensionInterface
                     new TolerableParselet(),
                     new DisplayAsParselet(),
                     new ConcatParselet(),
+                    new ArrayAccessParselet(),
+                    new PropertyAccessParselet(),
+                    new NullSafeParselet(),
                 ]),
                 Parselets::fromSuffixParselets([
                     new ValueWithUnitParselet(),
@@ -192,9 +202,11 @@ class ExpressionExtension implements ExtensionInterface
                 new ComparisonEvaluator(),
                 new TolerableEvaluator(),
                 new DisplayAsEvaluator(),
-                new ParameterEvaluator(),
+                new VariableEvaluator(),
                 new ConcatEvaluator(),
                 new PhpValueEvaluator(),
+                new AccessEvaluator(),
+                new NullSafeEvaluator(),
             ]);
 
             return $evaluators;
@@ -284,6 +296,7 @@ class ExpressionExtension implements ExtensionInterface
                 new NullPrinter(),
                 new UnrepresentableValuePrinter(),
                 new VariablePrinter(),
+                new ArrayAccessPrinter(),
                 new NullSafePrinter(),
             ]);
         });
@@ -332,6 +345,7 @@ class ExpressionExtension implements ExtensionInterface
                 'label' => new LabelFunction(),
                 'count' => new CountFunction(),
                 'sum' => new SumFunction(),
+                'frame' => new FrameFunction(),
             ]);
         });
 
