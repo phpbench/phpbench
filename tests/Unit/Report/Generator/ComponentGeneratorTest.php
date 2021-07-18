@@ -17,6 +17,7 @@ use PhpBench\Extension\ReportExtension;
 use PhpBench\Report\Bridge\ExpressionBridge;
 use PhpBench\Report\Generator\ComponentGenerator;
 use PhpBench\Report\GeneratorInterface;
+use PhpBench\Report\Model\Table;
 use PhpBench\Report\Transform\SuiteCollectionTransformer;
 use PhpBench\Tests\Util\TestUtil;
 use Psr\Log\NullLogger;
@@ -93,5 +94,29 @@ class ComponentGeneratorTest extends GeneratorTestCase
         $report = $reports->first();
         self::assertTrue($report->tabbed());
         self::assertEquals(['hello', 'goodbye'], $report->tabLabels());
+    }
+
+    public function testFilterDataFrame(): void
+    {
+        $generator = $this->createGenerator($this->container());
+        $reports = $generator->generate(TestUtil::createCollection([[
+            'iterations' => [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        ]]), $this->resolveConfig($generator, [
+            ComponentGenerator::PARAM_FILTER => 'iteration_index < 5',
+            ComponentGenerator::PARAM_COMPONENTS => [
+                [
+                    'component' => 'table_aggregate',
+                    'title' => 'hello',
+                    'partition' => ['iteration_index'],
+                    'row' => [
+'iteration_index' => 'partition["iteration_index"]',
+                    ],
+                ],
+            ]
+        ]));
+        $report = $reports->first();
+        $table = $report->objects()[0];
+        assert($table instanceof Table);
+        self::assertCount(5, $table->rows());
     }
 }

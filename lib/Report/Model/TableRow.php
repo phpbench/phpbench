@@ -3,13 +3,14 @@
 namespace PhpBench\Report\Model;
 
 use ArrayIterator;
+use Countable;
 use IteratorAggregate;
 use PhpBench\Expression\Ast\Node;
 
 /**
  * @implements IteratorAggregate<Node>
  */
-final class TableRow implements IteratorAggregate
+final class TableRow implements IteratorAggregate, Countable
 {
     /**
      * @var array<string,Node>
@@ -50,5 +51,13 @@ final class TableRow implements IteratorAggregate
     public function cells(): array
     {
         return $this->cells;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function count(): int
+    {
+        return count($this->cells);
     }
 }

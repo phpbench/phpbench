@@ -20,6 +20,13 @@
 
   Partition the data using these column names - components will be rendered for each partition
 
+.. _generator_component_option_filter:
+
+**filter**:
+  Type(s): ``[string, null]``, Default: ``NULL``
+
+  If provided, filter our rows which do not match this expression
+
 .. _generator_component_option_components:
 
 **components**:
