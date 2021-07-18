@@ -5,9 +5,13 @@ namespace PhpBench\Data\Func;
 use Closure;
 use PhpBench\Data\DataFrame;
 use PhpBench\Data\DataFrames;
+use PhpBench\Data\Row;
 
 final class Partition
 {
+    /**
+     * @param Closure(Row $row): string $hasher
+     */
     public function __invoke(DataFrame $frame, Closure $hasher): DataFrames
     {
         $frames = [];

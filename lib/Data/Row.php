@@ -8,13 +8,20 @@ use IteratorAggregate;
 use PHPUnit\Framework\MockObject\BadMethodCallException;
 use RuntimeException;
 
+/**
+ * @implements IteratorAggregate<string,mixed>
+ * @implements ArrayAccess<string,mixed>
+ */
 final class Row implements IteratorAggregate, ArrayAccess
 {
     /**
-     * @var array
+     * @var array<string,mixed>
      */
     private $map;
 
+    /**
+     * @param array<string,mixed> $map
+     */
     public function __construct(array $map)
     {
         $this->map = $map;
@@ -53,6 +60,9 @@ final class Row implements IteratorAggregate, ArrayAccess
         return $this->map;
     }
 
+    /**
+     * @param string[] $resolvedNames
+     */
     public function only(array $resolvedNames): self
     {
         return new self(array_combine($resolvedNames, array_map(function (string $column) {

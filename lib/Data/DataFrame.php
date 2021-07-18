@@ -14,6 +14,10 @@ use PhpBench\Data\Func\Partition;
 use PHPUnit\Framework\MockObject\BadMethodCallException;
 use RuntimeException;
 
+/**
+ * @implements IteratorAggregate<Series>
+ * @implements ArrayAccess<string,mixed[]>
+ */
 final class DataFrame implements IteratorAggregate, ArrayAccess
 {
     /**
@@ -22,10 +26,14 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     private $rows;
 
     /**
-     * @var array
+     * @var string[]
      */
     private $columns;
 
+    /**
+     * @param Series[] $rows
+     * @param string[] $columns
+     */
     public function __construct(array $rows, array $columns)
     {
         $this->rows = array_map(function (Series $rows, int $index) use ($columns) {
@@ -80,12 +88,12 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @return array<int, array<string,mixed>>
+     * @return array<array<string|int, array<string,mixed>>>
      */
     public function toRecords(): array
     {
         return array_map(function (Series $series) {
-            return array_combine($this->columns, $series->toValues());
+            return (array)array_combine($this->columns, $series->toValues());
         }, $this->rows);
     }
 
@@ -96,7 +104,7 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     {
         $offset = array_search($index, $this->columns);
 
-        if (false === $offset) {
+        if (!is_int($offset)) {
             throw new ColumnDoesNotExist(sprintf(
                 'Could not find column "%s", known columns "%s"',
                 $index, implode('", "', $this->columns)
@@ -120,7 +128,10 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
             ));
         }
 
-        return new Row(array_combine($this->columns, $this->rows[$index]->toValues()));
+        return new Row((array)array_combine(
+            $this->columns,
+            $this->rows[$index]->toValues()
+        ));
     }
 
     /**
