@@ -2,20 +2,22 @@
 
 namespace PhpBench\Tests\Unit\Data\Func;
 
+use Closure;
 use Generator;
 use PhpBench\Data\DataFrame;
 use PHPUnit\Framework\TestCase;
+use PhpBench\Data\Row;
 
 class PartitionTest extends TestCase
 {
     /**
      * @dataProvider providePartition
      */
-    public function testPartition(array $records, array $columns, array $expected): void
+    public function testPartition(array $records, Closure $paritioner, array $expected): void
     {
         self::assertEquals(
             $expected,
-            DataFrame::fromRecords($records)->partition($columns)->toArray()
+            DataFrame::fromRecords($records)->partition($paritioner)->toArray()
         );
     }
 
@@ -24,7 +26,8 @@ class PartitionTest extends TestCase
         yield [
             [
             ],
-            [],
+            function () {
+            },
             [
             ]
         ];
@@ -32,8 +35,23 @@ class PartitionTest extends TestCase
         yield [
             [
             ],
-            ['a'],
+            function (Row $data) {
+                return $data['a'];
+            },
             [
+            ]
+        ];
+
+        yield [
+            [
+                ['a' => 'two', 'b' => 1],
+            ],
+            function (Row $data) {
+            },
+            [
+                '' => [
+                    ['a' => 'two', 'b' => 1],
+                ]
             ]
         ];
 
@@ -42,7 +60,9 @@ class PartitionTest extends TestCase
                 ['a' => 'two', 'b' => 1],
                 ['a' => 'two', 'b' => 2],
             ],
-            ['a'],
+            function (Row $data) {
+                return $data['a'];
+            },
             [
                 'two' => [
                     ['a' => 'two', 'b' => 1],
@@ -57,7 +77,9 @@ class PartitionTest extends TestCase
                 ['a' => 'two', 'b' => 2],
                 ['a' => 'three', 'b' => 1],
             ],
-            ['a'],
+            function (Row $data) {
+                return $data['a'];
+            },
             [
                 'two' => [
                     ['a' => 'two', 'b' => 1],
@@ -76,7 +98,9 @@ class PartitionTest extends TestCase
                 ['a' => 'three', 'b' => 1],
                 ['a' => 'three', 'b' => 1],
             ],
-            ['a', 'b'],
+            function (Row $data) {
+                return $data['a'].'-'.$data['b'];
+            },
             [
                 'two-1' => [
                     ['a' => 'two', 'b' => 1],
@@ -98,7 +122,9 @@ class PartitionTest extends TestCase
                 ['a' => 'three', 'b' => 1, 'c' => 3],
                 ['a' => 'three', 'b' => 1, 'c' => 4],
             ],
-            ['a', 'b'],
+            function (Row $data) {
+                return $data['a'].'-'.$data['b'];
+            },
             [
                 'two-1' => [
                     ['a' => 'two', 'b' => 1, 'c' => 1],
