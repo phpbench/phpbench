@@ -7,6 +7,7 @@ master
 Bug fixes:
 
 - Ensure all refs are passed to report in run mode #864
+- Memory formatting respects precision directive #892
 
 Features:
 
