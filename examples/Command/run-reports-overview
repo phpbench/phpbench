@@ -30,7 +30,7 @@ Average iteration times aggregated by benchmark
 
 [█ <current>] 
 
-1: NothingBench         
+1: NothingBench 
 
 Average peak memory aggregated by benchmark
 
@@ -47,7 +47,7 @@ Average peak memory aggregated by benchmark
 
 [█ <current>] 
 
-1: NothingBench         
+1: NothingBench 
 
 By Benchmark
 
@@ -64,7 +64,7 @@ By Benchmark
 
 [█ NothingBench] 
 
-1: <current>            
+1: <current> 
 
 Table
 =====

@@ -23,7 +23,7 @@ Average iteration times by variant
 
 [█ <current>] 
 
-1: benchNothing         
+1: benchNothing 
 
 Memory by variant
 
@@ -40,7 +40,7 @@ Memory by variant
 
 [█ <current>] 
 
-1: benchNothing         
+1: benchNothing 
 
 <current>
 +-----------------+--------+----------+--------+---------+

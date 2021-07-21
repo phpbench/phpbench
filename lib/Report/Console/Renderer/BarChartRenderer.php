@@ -131,15 +131,27 @@ class BarChartRenderer implements ObjectRendererInterface
                 $dataSet->name()
             );
         }
+
         yield PHP_EOL;
+
         yield PHP_EOL;
-        foreach ($object->xLabels() as $index => $xLabel) {
+
+        $xLabels = array_map(function (string $label) {
+            return mb_strlen($label) > 20 ? mb_substr($label, 0, 19) . '᠁' : $label;
+        }, $object->xLabels());
+
+        $padding = max(array_map(function (string $xLabel) {
+            return mb_strlen($xLabel);
+        }, $xLabels));
+
+        foreach ($xLabels as $index => $xLabel) {
             yield sprintf(
-                "<fg=cyan>%s:</> %-20s ",
+                "<fg=cyan>%s:</> %-".$padding."s ",
                 $index + 1,
                 $xLabel
             );
-            if ($index > 0 && $index % 2 === 0) {
+
+            if ($index % 4 === 3) {
                 yield PHP_EOL;
             }
         }
