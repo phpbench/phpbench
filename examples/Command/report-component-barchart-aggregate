@@ -1,6 +1,13 @@
 {
     "runner.path": "NothingBench.php",
-    "runner.executor": "debug",
+    "runner.executor": "debug-example",
+    "runner.iterations": 5,
+    "runner.executors": {
+        "debug-example": {
+            "executor": "debug",
+            "times":[10, 20, 30, 40, 50]
+        }
+    },
     "runner.env_enabled_providers": ["test"],
     "report.generators": {
         "chart": {
@@ -9,7 +16,7 @@
                 {
                     "component": "bar_chart_aggregate",
                     "title": "Example Bar Chart",
-                    "x_partition": ["benchmark_name"],
+                    "x_partition": ["iteration_index"],
                     "bar_partition": ["suite_tag"],
                     "y_expr": "mode(partition[\"result_time_avg\"])",
                     "y_axes_label": "yValue as time precision 1"
