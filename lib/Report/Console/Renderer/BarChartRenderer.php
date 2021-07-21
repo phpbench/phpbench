@@ -189,9 +189,11 @@ class BarChartRenderer implements ObjectRendererInterface
             yield '─';
         }
 
+        yield '─';
+
         yield PHP_EOL;
 
-        if (count($chart->xAxes()) < 2) {
+        if (count($chart->xAxes()) < 1) {
             return;
         }
 
