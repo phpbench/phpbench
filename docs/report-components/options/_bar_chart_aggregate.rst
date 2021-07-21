@@ -11,28 +11,28 @@
 **x_partition**:
   Type(s): ``[string, string[]]``, Default: ``[]``
 
-  Group by these columns on the X-Axis. The label will be the concatenation of the values of these columns by default
+  Partition the data for aggregation on the X axes. Partitions are made of rows sharing the same values in the expression or columns (which can be expressions) given here.
 
-.. _component_bar_chart_aggregate_option_set_partition:
+.. _component_bar_chart_aggregate_option_bar_partition:
 
-**set_partition**:
+**bar_partition**:
   Type(s): ``[string, string[]]``, Default: ``[]``
 
-  Create separate bars for each step by partitioning the data based on these values.
+  Partition the individual bars for each X partition.
 
 .. _component_bar_chart_aggregate_option_y_axes_label:
 
 **y_axes_label**:
   Type(s): ``string``, Default: ``yValue``
 
-  Expression to evaluate to determine the Y-Axis label, is passed ``yValue`` (actual value of Y), ``partition`` (the set partition) and ``frame`` (the entire data frame) 
+  Expression to evaluate the Y-Axis label. It is passed ``yValue`` (actual value of Y), ``partition`` (the set partition) and ``frame`` (the entire data frame) 
 
 .. _component_bar_chart_aggregate_option_x_axes_label:
 
 **x_axes_label**:
   Type(s): ``[null, string]``, Default: ``NULL``
 
-  Expression to evaluate to determine the X-Axis label, is passed ``xValue`` (default X value according to the X-partition), ``partition`` (the x-partition), and ``frame`` (the entire data frame)
+  Expression to evaluate the X-Axis label, is passed ``xValue`` (default X value according to the X-partition), ``partition`` (the x-partition), and ``frame`` (the entire data frame)
 
 .. _component_bar_chart_aggregate_option_y_error_margin:
 

@@ -1,6 +1,13 @@
 {
     "runner.path": "NothingBench.php",
-    "runner.executor": "debug",
+    "runner.executor": "debug-example",
+    "runner.iterations": 5,
+    "runner.executors": {
+        "debug-example": {
+            "executor": "debug",
+            "times":[10, 20, 30, 40, 50]
+        }
+    },
     "runner.env_enabled_providers": ["test"],
     "report.generators": {
         "chart": {
@@ -9,8 +16,8 @@
                 {
                     "component": "bar_chart_aggregate",
                     "title": "Example Bar Chart",
-                    "x_partition": ["benchmark_name"],
-                    "set_partition": ["suite_tag"],
+                    "x_partition": ["iteration_index"],
+                    "bar_partition": ["suite_tag"],
                     "y_expr": "mode(partition[\"result_time_avg\"])",
                     "y_axes_label": "yValue as time precision 1"
                 }
@@ -23,15 +30,16 @@ phpbench run --report=chart
 ---
 Example Bar Chart
 
-10.0μs    │ █ 
-8.8μs     │ █ 
-7.5μs     │ █ 
-6.3μs     │ █ 
-5.0μs     │ █ 
-3.8μs     │ █ 
-2.5μs     │ █ 
-1.3μs     │ █ 
-          └──
+50.0μs    │         █ 
+43.8μs    │       ▄ █ 
+37.5μs    │       █ █ 
+31.3μs    │     ▇ █ █ 
+25.0μs    │   ▂ █ █ █ 
+18.8μs    │   █ █ █ █ 
+12.5μs    │ ▅ █ █ █ █ 
+6.3μs     │ █ █ █ █ █ 
+          └──────────
+Set #       1 2 3 4 5 
 
 [█ <current>] 
 

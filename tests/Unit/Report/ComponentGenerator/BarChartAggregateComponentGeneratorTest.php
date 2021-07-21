@@ -46,7 +46,7 @@ class BarChartAggregateComponentGeneratorTest extends ComponentGeneratorTestCase
             [ 1 ],
         ], ['col']), [
             BarChartAggregateComponentGenerator::PARAM_X_PARTITION => 'col',
-            BarChartAggregateComponentGenerator::PARAM_SET_PARTITION => 'col',
+            BarChartAggregateComponentGenerator::PARAM_BAR_PARTITION => 'col',
             BarChartAggregateComponentGenerator::PARAM_Y_EXPR => '10',
         ]);
         assert($barChart instanceof BarChart);
@@ -157,7 +157,7 @@ class BarChartAggregateComponentGeneratorTest extends ComponentGeneratorTestCase
 
         $barChart = $this->generate($frame, [
             BarChartAggregateComponentGenerator::PARAM_X_PARTITION => ['name'],
-            BarChartAggregateComponentGenerator::PARAM_SET_PARTITION => ['group'],
+            BarChartAggregateComponentGenerator::PARAM_BAR_PARTITION => ['group'],
             BarChartAggregateComponentGenerator::PARAM_Y_EXPR => 'first(partition["value"])',
             BarChartAggregateComponentGenerator::PARAM_Y_ERROR_MARGIN => 'first(partition["error"])',
         ]);

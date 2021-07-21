@@ -79,7 +79,7 @@ return [
                         "title" => "Average iteration times aggregated by benchmark",
                         "component" => "bar_chart_aggregate",
                         "x_partition" => ["benchmark_name"],
-                        "set_partition" => ["suite_tag"],
+                        "bar_partition" => ["suite_tag"],
                         "y_expr" => "mode(partition[\"result_time_avg\"])",
                         "y_axes_label" => "yValue as time precision 1"
                     ],
@@ -87,7 +87,7 @@ return [
                         "title" => "Average peak memory aggregated by benchmark",
                         "component" => "bar_chart_aggregate",
                         "x_partition" => ["benchmark_name"],
-                        "set_partition" => ["suite_tag"],
+                        "bar_partition" => ["suite_tag"],
                         "y_expr" => "mode(partition[\"result_mem_peak\"])",
                         "y_axes_label" => "yValue as memory precision 1"
                     ],
@@ -95,7 +95,7 @@ return [
                         "title" => "By Benchmark",
                         "component" => "bar_chart_aggregate",
                         "x_partition" => ["suite_tag"],
-                        "set_partition" => ["benchmark_name"],
+                        "bar_partition" => ["benchmark_name"],
                         "y_expr" => "mode(partition[\"result_time_avg\"])",
                         "y_axes_label" => "yValue as time precision 1"
                     ],
@@ -142,7 +142,7 @@ return [
                                 "title" => "Average iteration times by variant",
                                 "component" => "bar_chart_aggregate",
                                 "x_partition" => ["subject_name", "variant_name"],
-                                "set_partition" => ["suite_tag"],
+                                "bar_partition" => ["suite_tag"],
                                 "y_expr" => "mode(partition[\"result_time_avg\"])",
                                 "y_error_margin" => "stdev(partition[\"result_time_avg\"])",
                                 "y_axes_label" => "yValue as time precision 1"
@@ -151,7 +151,7 @@ return [
                                 "title" => "Memory by variant",
                                 "component" => "bar_chart_aggregate",
                                 "x_partition" => ["subject_name", "variant_name"],
-                                "set_partition" => ["suite_tag"],
+                                "bar_partition" => ["suite_tag"],
                                 "y_expr" => "mode(partition[\"result_mem_peak\"])",
                                 "y_error_margin" => "stdev(partition[\"result_mem_peak\"])",
                                 "y_axes_label" => "yValue as memory precision 1"

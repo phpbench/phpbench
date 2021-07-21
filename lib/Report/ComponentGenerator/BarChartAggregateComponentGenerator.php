@@ -17,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
 {
     public const PARAM_X_PARTITION = 'x_partition';
-    public const PARAM_SET_PARTITION = 'set_partition';
+    public const PARAM_BAR_PARTITION = 'bar_partition';
     public const PARAM_Y_EXPR = 'y_expr';
     public const PARAM_Y_ERROR_MARGIN = 'y_error_margin';
     public const PARAM_TITLE = 'title';
@@ -43,7 +43,7 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
         $options->setDefaults([
             self::PARAM_TITLE => null,
             self::PARAM_X_PARTITION => [],
-            self::PARAM_SET_PARTITION => [],
+            self::PARAM_BAR_PARTITION => [],
             self::PARAM_Y_AXES_LABEL => 'yValue',
             self::PARAM_X_AXES_LABEL => null,
             self::PARAM_Y_ERROR_MARGIN => null,
@@ -51,17 +51,17 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
         $options->setRequired(self::PARAM_Y_EXPR);
         $options->setAllowedTypes(self::PARAM_TITLE, ['string', 'null']);
         $options->setAllowedTypes(self::PARAM_X_PARTITION, ['string','string[]']);
-        $options->setAllowedTypes(self::PARAM_SET_PARTITION, ['string','string[]']);
+        $options->setAllowedTypes(self::PARAM_BAR_PARTITION, ['string','string[]']);
         $options->setAllowedTypes(self::PARAM_Y_AXES_LABEL, ['string']);
         $options->setAllowedTypes(self::PARAM_X_AXES_LABEL, ['null', 'string']);
         $options->setAllowedTypes(self::PARAM_Y_EXPR, ['string']);
         $options->setAllowedTypes(self::PARAM_Y_ERROR_MARGIN, ['string', 'null']);
         SymfonyOptionsResolverCompat::setInfos($options, [
             self::PARAM_TITLE => 'Title for the barchart',
-            self::PARAM_X_PARTITION => 'Group by these columns on the X-Axis. The label will be the concatenation of the values of these columns by default',
-            self::PARAM_SET_PARTITION => 'Create separate bars for each step by partitioning the data based on these values.',
-            self::PARAM_Y_AXES_LABEL => 'Expression to evaluate to determine the Y-Axis label, is passed ``yValue`` (actual value of Y), ``partition`` (the set partition) and ``frame`` (the entire data frame) ',
-            self::PARAM_X_AXES_LABEL => 'Expression to evaluate to determine the X-Axis label, is passed ``xValue`` (default X value according to the X-partition), ``partition`` (the x-partition), and ``frame`` (the entire data frame)',
+            self::PARAM_X_PARTITION => 'Partition the data for aggregation on the X axes. Partitions are made of rows sharing the same values in the expression or columns (which can be expressions) given here.',
+            self::PARAM_BAR_PARTITION => 'Partition the individual bars for each X partition.',
+            self::PARAM_Y_AXES_LABEL => 'Expression to evaluate the Y-Axis label. It is passed ``yValue`` (actual value of Y), ``partition`` (the set partition) and ``frame`` (the entire data frame) ',
+            self::PARAM_X_AXES_LABEL => 'Expression to evaluate the X-Axis label, is passed ``xValue`` (default X value according to the X-partition), ``partition`` (the x-partition), and ``frame`` (the entire data frame)',
             self::PARAM_Y_EXPR => 'Expression to evaluate the Y-Axis value, e.g. ``mode(partition["result_time_avg"])``',
             self::PARAM_Y_ERROR_MARGIN => 'Expression to evaluate to determine the error margin to show on the chart. Leave as NULL to disable the error margin',
         ]);
@@ -82,7 +82,7 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
             $xAxes[] = $xLabel;
             $xLabels[] = $this->resolveXLabel($partition, (string)$xLabel, $config);
 
-            foreach ($partition->partition($this->partitionFunction((array)$config[self::PARAM_SET_PARTITION])) as $setLabel => $setPartition) {
+            foreach ($partition->partition($this->partitionFunction((array)$config[self::PARAM_BAR_PARTITION])) as $setLabel => $setPartition) {
                 $yValue = $this->evaluator->evaluatePhpValue($config[self::PARAM_Y_EXPR], [
                     'frame' => $dataFrame,
                     'partition' => $setPartition
