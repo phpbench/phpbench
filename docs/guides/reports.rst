@@ -169,7 +169,7 @@ See the :doc:`../environment` reference for more information.
 .. note::
 
     The information available will differ depending on platform. For example,
-    ``unit-sysload`` is unsurprisingly only available on UNIX platforms, where
+    ``unix-sysload`` is only available on UNIX platforms, where
     as the VCS field will appear only when a *supported* VCS system is being
     used.
 
