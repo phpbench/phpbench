@@ -131,6 +131,18 @@ class BarChartRenderer implements ObjectRendererInterface
                 $dataSet->name()
             );
         }
+        yield PHP_EOL;
+        yield PHP_EOL;
+        foreach ($object->xLabels() as $index => $xLabel) {
+            yield sprintf(
+                "<fg=cyan>%s:</> %-20s ",
+                $index + 1,
+                $xLabel
+            );
+            if ($index > 0 && $index % 2 === 0) {
+                yield PHP_EOL;
+            }
+        }
 
         yield PHP_EOL;
     }
@@ -183,12 +195,12 @@ class BarChartRenderer implements ObjectRendererInterface
             return;
         }
 
-        yield 'Set #       ';
+        yield '            ';
         
         foreach ($chart->xAxes() as $xIndex => $xValue) {
             foreach ($chart->dataSets() as $dataSetIndex => $dataSet) {
                 if ($dataSetIndex === 0) {
-                    yield (string)(($xIndex + 1) % 10);
+                    yield sprintf('<fg=cyan>%s</>', (string)(($xIndex + 1) % 10));
         
                     continue;
                 }
