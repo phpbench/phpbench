@@ -119,7 +119,7 @@ class DisplayAsPrinter implements NodePrinter
     {
         return sprintf(
             '%s%s',
-            number_format(MemoryUnit::convertTo($value, MemoryUnit::BYTES, $unit), $precision ?: ($unit === MemoryUnit::BYTES ? 0 : 3)),
+            number_format(MemoryUnit::convertTo($value, MemoryUnit::BYTES, $unit), $unit === MemoryUnit::BYTES ? 0 : ($precision ?: 3)),
             $prettyUnit
         );
     }
