@@ -39,9 +39,12 @@ Example Bar Chart
 3.8μs     │ █ 
 2.5μs     │ █ 
 1.3μs     │ █ 
-          └──
+          └───
+            1 
 
 [█ <current>] 
+
+1: NothingBench         
 
 Table
 +--------------+----------+
