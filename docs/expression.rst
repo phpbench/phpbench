@@ -3,7 +3,7 @@
 Expression Language
 ===================
 
-PHPBench has a general purpose expression language which is used when writing assertions.
+PHPBench has a domain-specific expression language which is used when writing assertions.
 
 .. contents::
     :depth: 3
