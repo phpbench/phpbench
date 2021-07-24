@@ -449,6 +449,17 @@ Default: ``[]``
 
 Types: ``["array"]``
 
+.. _configuration_report_components:
+
+report.components
+~~~~~~~~~~~~~~~~~
+
+Component configurations, see :doc:`report-components`
+
+Default: ``[]``
+
+Types: ``["array"]``
+
 .. _configuration_report_template_paths:
 
 report.template_paths
