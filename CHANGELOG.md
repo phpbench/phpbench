@@ -68,7 +68,6 @@ Improvement:
 
 - Show warning if metadata could not be loaded for benchmark instead of
   an exception.
->>>>>>> 1.0.x
 
 1.0.2 (2021-05-28)
 ------------------
