@@ -48,20 +48,20 @@ use PhpBench\Template\ObjectPathResolver\ReflectionObjectPathResolver;
 use PhpBench\Template\ObjectRenderer;
 use PhpBench\Template\TemplateService\ContainerTemplateService;
 use Psr\Log\LoggerInterface;
-use RuntimeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ReportExtension implements ExtensionInterface
 {
     public const PARAM_OUTPUTS = 'report.outputs';
     public const PARAM_REPORTS = 'report.generators';
+    public const PARAM_COMPONENTS = 'report.components';
 
     public const SERVICE_REGISTRY_GENERATOR = 'report.registry_generator';
     public const SERVICE_REGISTRY_RENDERER = 'report.registry_renderer';
     public const SERVICE_REGISTRY_COMPONENT = 'report.registry_component';
 
     public const TAG_REPORT_GENERATOR = 'report.generator';
-    public const TAG_COMPONENT_GENERATOR = 'report.component_generator';
+    public const TAG_COMPONENT_GENERATOR = 'report.component';
     public const TAG_REPORT_RENDERER = 'report.renderer';
     public const PARAM_TEMPLATE_MAP = 'report.template_map';
     public const PARAM_TEMPLATE_PATHS = 'report.template_paths';
@@ -72,6 +72,7 @@ class ReportExtension implements ExtensionInterface
         $resolver->setDefaults([
             self::PARAM_REPORTS => [],
             self::PARAM_OUTPUTS => [],
+            self::PARAM_COMPONENTS => [],
             self::PARAM_TEMPLATE_PATHS => [
                 __DIR__ . '/../../templates'
             ],
@@ -87,8 +88,10 @@ class ReportExtension implements ExtensionInterface
         $resolver->setAllowedTypes(self::PARAM_OUTPUT_DIR_HTML, ['string']);
         $resolver->setAllowedTypes(self::PARAM_REPORTS, ['array']);
         $resolver->setAllowedTypes(self::PARAM_OUTPUTS, ['array']);
+        $resolver->setAllowedTypes(self::PARAM_COMPONENTS, ['array']);
         SymfonyOptionsResolverCompat::setInfos($resolver, [
             self::PARAM_REPORTS => 'Report generator configurations, see :doc:`report-generators`',
+            self::PARAM_COMPONENTS => 'Component configurations, see :doc:`report-components`',
             self::PARAM_OUTPUTS => 'Report renderer configurations, see :doc:`report-renderers`',
             self::PARAM_TEMPLATE_MAP => 'Namespace prefix to template path map for object rendering',
             self::PARAM_TEMPLATE_PATHS => 'List of paths to load templates from',
@@ -156,7 +159,11 @@ class ReportExtension implements ExtensionInterface
 
     private function registerRegistries(Container $container): void
     {
-        foreach (['generator' => self::PARAM_REPORTS, 'renderer' => self::PARAM_OUTPUTS] as $registryType => $optionName) {
+        foreach ([
+            'generator' => self::PARAM_REPORTS,
+            'renderer' => self::PARAM_OUTPUTS,
+            'component' => self::PARAM_COMPONENTS,
+        ] as $registryType => $optionName) {
             $container->register('report.registry_' . $registryType, function (Container $container) use ($registryType, $optionName) {
                 $registry = new ConfigurableRegistry(
                     $registryType,
@@ -288,28 +295,6 @@ class ReportExtension implements ExtensionInterface
 
     private function registerComponentGenerators(Container $container): void
     {
-        $container->register(self::SERVICE_REGISTRY_COMPONENT, function (Container $container) {
-            $serviceMap = [];
-
-            foreach ($container->getServiceIdsForTag(self::TAG_COMPONENT_GENERATOR) as $serviceId => $attrs) {
-                if (!isset($attrs['name'])) {
-                    throw new RuntimeException(sprintf(
-                        'Component DI definition "%s" must define the `name` attribute',
-                        $serviceId
-                    ));
-                }
-
-                $serviceMap[(string)$attrs['name']] = $serviceId;
-            }
-
-            return new ConfigurableRegistry(
-                'component',
-                $container,
-                $container->get(JsonDecoder::class),
-                $serviceMap
-            );
-        });
-
         $container->register(TableAggregateComponent::class, function (Container $container) {
             return new TableAggregateComponent($container->get(ExpressionBridge::class));
         }, [
@@ -343,7 +328,6 @@ class ReportExtension implements ExtensionInterface
                 new TextRenderer()
             );
         }, [
-            self::TAG_COMPONENT_GENERATOR => [ 'name' => 'bar_chart_aggregate' ]
         ]);
     }
 

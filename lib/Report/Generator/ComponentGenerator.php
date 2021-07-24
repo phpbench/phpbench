@@ -32,9 +32,9 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
     const KEY_COMPONENT_TYPE = 'component';
 
     /**
-     * @var ConfigurableRegistry
+     * @var ConfigurableRegistry<ComponentGeneratorInterface>
      */
-    private $agent;
+    private $registry;
 
     /**
      * @var ExpressionBridge
@@ -51,13 +51,16 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
      */
     private $logger;
 
+    /**
+     * @param ConfigurableRegistry<ComponentGeneratorInterface> $registry
+     */
     public function __construct(
         SuiteCollectionTransformer $transformer,
-        ConfigurableRegistry $agent,
+        ConfigurableRegistry $registry,
         ExpressionBridge $evaluator,
         LoggerInterface $logger
     ) {
-        $this->agent = $agent;
+        $this->registry = $registry;
         $this->evaluator = $evaluator;
         $this->transformer = $transformer;
         $this->logger = $logger;
@@ -138,12 +141,12 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
                         'Component definition must have `component` key indicating the component type'
                     );
                 }
-                $componentGenerator = $this->agent->getService($component[self::KEY_COMPONENT_TYPE]);
+                $componentGenerator = $this->registry->getService($component[self::KEY_COMPONENT_TYPE]);
                 assert($componentGenerator instanceof ComponentGeneratorInterface);
                 $builder->addObject($this->doGenerateComponent(
                     $componentGenerator,
                     $parition,
-                    $this->agent->getConfig($component)->getArrayCopy()
+                    $this->registry->getConfig($component)->getArrayCopy()
                 ));
             }
         }
@@ -157,6 +160,9 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
         return $builder->build();
     }
 
+    /**
+     * @param parameters $config
+     */
     private function doGenerateComponent(
         ComponentGeneratorInterface $componentGenerator,
         DataFrame $parition,
