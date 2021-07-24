@@ -18,6 +18,8 @@ class StringParselet implements PrefixParselet
 
     public function parse(Parser $parser, Tokens $tokens): Node
     {
-        return new StringNode(trim((string)$tokens->chomp()->value, '"'));
+        $string = (string)$tokens->chomp()->value;
+
+        return new StringNode(trim($string, $string[0]));
     }
 }

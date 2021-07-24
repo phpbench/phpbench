@@ -11,8 +11,8 @@
                     "component": "table_aggregate",
                     "title": "Table",
                     "row": {
-                        "benchmark": "first(partition[\"benchmark_name\"])",
-                        "net_time": "sum(partition[\"result_time_net\"])"
+                        "benchmark": "first(partition['benchmark_name'])",
+                        "net_time": "sum(partition['result_time_net'])"
                     }
                 }
             ]

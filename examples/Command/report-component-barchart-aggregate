@@ -18,7 +18,7 @@
                     "title": "Example Bar Chart",
                     "x_partition": ["iteration_index"],
                     "bar_partition": ["suite_tag"],
-                    "y_expr": "mode(partition[\"result_time_avg\"])",
+                    "y_expr": "mode(partition['result_time_avg'])",
                     "y_axes_label": "yValue as time precision 1"
                 }
             ]
