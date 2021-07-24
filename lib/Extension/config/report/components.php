@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'bar_chart_by_variant' => [
+    'bar_chart_time' => [
         'title' => 'Average iteration times by variant',
         'component' => 'bar_chart_aggregate',
         "x_partition" => ["subject_name", "variant_name"],

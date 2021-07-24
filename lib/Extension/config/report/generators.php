@@ -21,11 +21,11 @@ return [
             'rstdev',
         ]
     ],
-    'bar_chart_by_variant' => [
+    'bar_chart_time' => [
         'generator' => 'component',
         'components' => [
             [
-                'extends' => 'bar_chart_by_variant',
+                'extends' => 'bar_chart_time',
             ]
         ],
     ],
