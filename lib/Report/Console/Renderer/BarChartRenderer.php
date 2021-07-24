@@ -133,6 +133,30 @@ class BarChartRenderer implements ObjectRendererInterface
         }
 
         yield PHP_EOL;
+
+        yield PHP_EOL;
+
+        $xLabels = array_map(function (string $label) {
+            return mb_strlen($label) > 20 ? mb_substr($label, 0, 19) . '᠁' : $label;
+        }, $object->xLabels());
+
+        $padding = max(array_map(function (string $xLabel) {
+            return mb_strlen($xLabel);
+        }, $xLabels));
+
+        foreach ($xLabels as $index => $xLabel) {
+            yield sprintf(
+                "<fg=cyan>%s:</> %-".$padding."s ",
+                $index + 1,
+                $xLabel
+            );
+
+            if ($index % 4 === 3) {
+                yield PHP_EOL;
+            }
+        }
+
+        yield PHP_EOL;
     }
 
     /**
@@ -177,18 +201,20 @@ class BarChartRenderer implements ObjectRendererInterface
             yield '─';
         }
 
+        yield '─';
+
         yield PHP_EOL;
 
-        if (count($chart->xAxes()) < 2) {
+        if (count($chart->xAxes()) < 1) {
             return;
         }
 
-        yield 'Set #       ';
+        yield '            ';
         
         foreach ($chart->xAxes() as $xIndex => $xValue) {
             foreach ($chart->dataSets() as $dataSetIndex => $dataSet) {
                 if ($dataSetIndex === 0) {
-                    yield (string)(($xIndex + 1) % 10);
+                    yield sprintf('<fg=cyan>%s</>', (string)(($xIndex + 1) % 10));
         
                     continue;
                 }
