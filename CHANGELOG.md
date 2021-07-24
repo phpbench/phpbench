@@ -30,6 +30,7 @@ Improvement:
 - Use automatic time unit for expression report #838
 - Parameter handling refactored to be "safe": objects will not be unserialized
   in the PHPBench process #845
+- Allow single quoted strings in expressions (better with JSON) #895
 
 Other changes:
 

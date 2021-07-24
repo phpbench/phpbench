@@ -17,6 +17,7 @@ final class Lexer
     private const PATTERN_NAME = '(?:[a-z_\/]{1}[a-z0-9_\/]*)';
     private const PATTERN_FUNCTION = '(?:[a-z_\/]+\()';
     private const PATTERN_STRING = '"(?:[^"]|"")*"';
+    private const PATTERN_STRING_SINGLE = '\'(?:[^\']|\'\')*\'';
     private const PATTERN_NUMBER = '(?:[0-9]+(?:[\\.][0-9]+)*)(?:e[+-]?[0-9]+)?';
     private const PATTERN_PARAMETER = '(?:(?:[a-z_]+\\.)+(?:[a-z_\[\]]+))';
 
@@ -55,6 +56,7 @@ final class Lexer
         self::PATTERN_FUNCTION,
         self::PATTERN_NAME,
         self::PATTERN_STRING,
+        self::PATTERN_STRING_SINGLE,
         '\.',
     ];
 
@@ -117,7 +119,7 @@ final class Lexer
                 }
 
                 return Token::T_INTEGER;
-            case ($value[0] === '"'):
+            case ($value[0] === '"' || $value[0] === '\''):
                 return Token::T_STRING;
 
             case ($prevToken->type !== Token::T_DOT && in_array($value, $this->unitNames, true)):
