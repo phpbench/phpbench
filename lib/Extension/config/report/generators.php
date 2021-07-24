@@ -21,6 +21,14 @@ return [
             'rstdev',
         ]
     ],
+    'bar_chart_by_variant' => [
+        'generator' => 'component',
+        'components' => [
+            [
+                'extends' => 'bar_chart_by_variant',
+            ]
+        ],
+    ],
     'default' => [
         'generator' => 'expression',
         'cols' => [

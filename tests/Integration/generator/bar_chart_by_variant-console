@@ -1,0 +1,17 @@
+Average iteration times by variant
+
+5.0μs     │ █ 
+4.4μs     │ █ 
+3.8μs     │ █ 
+3.1μs     │ █ 
+2.5μs     │ █ 
+1.9μs     │ █ 
+1.3μs     │ █ 
+0.6μs     │ █ 
+          └───
+            1 
+
+[█ test] 
+
+1: benchOne-0 
+
