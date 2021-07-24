@@ -136,17 +136,18 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
 
         foreach ($this->evaluator->partition($dataFrame, $config[self::PARAM_PARTITION]) as $parition) {
             foreach ($config[self::PARAM_COMPONENTS] as $component) {
-                if (!isset($component[self::KEY_COMPONENT_TYPE])) {
+                $componentConfig = $this->registry->getConfig($component)->getArrayCopy();
+                if (!isset($componentConfig[self::KEY_COMPONENT_TYPE])) {
                     throw new RuntimeException(
-                        'Component definition must have `component` key indicating the component type'
+                        'Component definition must have `component` key indicating the component type, '
                     );
                 }
-                $componentGenerator = $this->registry->getService($component[self::KEY_COMPONENT_TYPE]);
+                $componentGenerator = $this->registry->getService($componentConfig[self::KEY_COMPONENT_TYPE]);
                 assert($componentGenerator instanceof ComponentGeneratorInterface);
                 $builder->addObject($this->doGenerateComponent(
                     $componentGenerator,
                     $parition,
-                    $this->registry->getConfig($component)->getArrayCopy()
+                    $componentConfig
                 ));
             }
         }
