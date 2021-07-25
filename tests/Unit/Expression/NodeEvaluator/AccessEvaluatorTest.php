@@ -56,7 +56,7 @@ class AccessEvaluatorTest extends EvaluatorTestCase
                 ['one' => 2],
             ])),
             new StringNode('one'),
-            new ListNode([new IntegerNode(1), new IntegerNode(2)])
+            ListNode::fromValues([1, 2])
         ];
 
         yield 'null safe data frame' => [

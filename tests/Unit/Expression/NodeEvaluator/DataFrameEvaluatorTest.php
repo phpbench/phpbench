@@ -37,7 +37,7 @@ class DataFrameEvaluatorTest extends EvaluatorTestCase
                 ['foo' => 'bar']
             ]),
             new StringNode('foo'),
-            new ListNode([new StringNode('bar')])
+            ListNode::fromValues(['bar'])
         ];
 
         yield 'filter expression' => [

@@ -4,7 +4,6 @@ namespace PhpBench\Tests\Unit\Report\ComponentGenerator;
 
 use PhpBench\Data\DataFrame;
 use PhpBench\Expression\Ast\ListNode;
-use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Report\Bridge\ExpressionBridge;
 use PhpBench\Report\ComponentGenerator\TableAggregateComponent;
 use PhpBench\Report\ComponentGeneratorInterface;
@@ -104,12 +103,12 @@ class TableAggregateComponentTest extends ComponentGeneratorTestCase
         self::assertCount(2, $table->rows());
         self::assertEquals(TableBuilder::create()->addRowsFromArray([
             [
-                'hello' => new ListNode([new StringNode('hello')]),
-                'goodbye' => new ListNode([new StringNode('hello'), new StringNode('goodbye')]),
+                'hello' => ListNode::fromValues(['hello']),
+                'goodbye' => ListNode::fromValues(['hello', 'goodbye']),
             ],
             [
-                'hello' => new ListNode([new StringNode('goodbye')]),
-                'goodbye' => new ListNode([new StringNode('hello'), new StringNode('goodbye')]),
+                'hello' => ListNode::fromValues(['goodbye']),
+                'goodbye' => ListNode::fromValues(['hello', 'goodbye']),
             ]
         ])->build(), $table);
     }
