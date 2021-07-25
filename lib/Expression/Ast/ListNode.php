@@ -4,20 +4,53 @@ namespace PhpBench\Expression\Ast;
 
 final class ListNode extends DelimitedListNode
 {
+    private $values;
+
     /**
      * @param array<mixed> $values
      */
     public static function fromValues(array $values): self
     {
-        $listValues = [];
+        $new = new self([]);
+        $new->values = $values;
 
-        foreach ($values as $key => $value) {
-            if (is_array($value)) {
-                $listValues[$key] = ListNode::fromValues($value);
-            }
-            $listValues[$key] = PhpValueFactory::fromValue($value);
+        return $new;
+    }
+
+    /**
+     * @return Node[]
+     */
+    public function nodes(): array
+    {
+        if (null === $this->values) {
+            return parent::nodes();
         }
 
-        return new self($listValues);
+        return array_map(function ($v) {
+            return PhpValueFactory::fromValue($v);
+        }, $this->values);
+    }
+
+    public function value(): array
+    {
+        if (null === $this->values) {
+            return parent::value();
+        }
+
+        return $this->values;
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function nonNullPhpValues(): array
+    {
+        if (null === $this->values) {
+            return parent::nonNullPhpValues();
+        }
+
+        return array_values(array_filter($this->values, function ($value) {
+            return $value !== null;
+        }));
     }
 }

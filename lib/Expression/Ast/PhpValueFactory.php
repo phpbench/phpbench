@@ -33,13 +33,7 @@ final class PhpValueFactory
         }
 
         if (is_array($value)) {
-            $listValues = [];
-
-            foreach ($value as $key => $listValue) {
-                $listValues[$key] = self::fromValue($listValue);
-            }
-
-            return new ListNode($listValues);
+            return ListNode::fromValues($value);
         }
 
         if ($value instanceof DataFrame) {
