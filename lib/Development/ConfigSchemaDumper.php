@@ -2,12 +2,9 @@
 
 namespace PhpBench\Development;
 
-use PhpBench\PhpBench;
 use function json_encode;
-use function mb_strlen;
 use function method_exists;
 use PhpBench\DependencyInjection\ExtensionInterface;
-use function str_repeat;
 use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -39,6 +36,7 @@ class ConfigSchemaDumper
           'properties' => [
           ],
         ];
+
         foreach ($this->extensions as $extensionClass) {
             $optionsResolver = new OptionsResolver();
             $extension = new $extensionClass;
@@ -49,6 +47,7 @@ class ConfigSchemaDumper
                 continue;
             }
             $inspector = new OptionsResolverIntrospector($optionsResolver);
+
             foreach ($optionsResolver->getDefinedOptions() as $option) {
                 $schema['properties'][$option] = [
                     'description' => $optionsResolver->getInfo($option),
@@ -62,6 +61,7 @@ class ConfigSchemaDumper
 
     /**
      * @param string[] $types
+     *
      * @return string[]
      */
     private function mapTypes(array $types): array

@@ -39,6 +39,7 @@ final class ConfigSchemaDumpCommand extends Command
             false,
             OutputInterface::OUTPUT_RAW
         );
+
         return 0;
     }
 }

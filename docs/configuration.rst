@@ -12,6 +12,17 @@ Core
 
 Extension class: ``PhpBench\Extension\CoreExtension``
 
+.. _configuration_$schema:
+
+$schema
+~~~~~~~
+
+JSON schema location, e.g. ``./vendor/phpbench/phpbench//phpbench.schema.json``
+
+Default: ``NULL``
+
+Types: ``["string","null"]``
+
 .. _configuration_core_debug:
 
 core.debug
@@ -32,7 +43,7 @@ List of additional extensions to enable
 
 Default: ``[]``
 
-Types: ``["array"]``
+Types: ``["string[]"]``
 
 .. _configuration_core_working_dir:
 
