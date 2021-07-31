@@ -38,12 +38,12 @@ Installation
 $ composer require phpbench/phpbench --dev
 ```
 
-See the [installation instructions](http://phpbench.readthedocs.org/en/latest/installing.html) for more options.
+See the [installation instructions](http://phpbench.readthedocs.io/en/latest/installing.html) for more options.
 
 Documentation
 -------------
 
-Documentation is hosted on [readthedocs](http://phpbench.readthedocs.org).
+Documentation is hosted on [readthedocs](http://phpbench.readthedocs.io).
 
 Community
 ---------
