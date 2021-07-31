@@ -33,10 +33,12 @@ class CoreExtension implements ExtensionInterface
     public const PARAM_WORKING_DIR = 'core.working_dir';
 
     public const PARAM_TIME_UNIT = 'core.time_unit';
+    const PARAM_SCHEMA = '$schema';
 
     public function configure(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
+            self::PARAM_SCHEMA => null,
             self::PARAM_DEBUG => false,
             self::PARAM_EXTENSIONS => [],
             self::PARAM_WORKING_DIR => getcwd(),
@@ -44,10 +46,11 @@ class CoreExtension implements ExtensionInterface
             self::PARAM_PROFILES => [],
         ]);
 
+        $resolver->setAllowedTypes(self::PARAM_SCHEMA, ['string', 'null']);
         $resolver->setAllowedTypes(self::PARAM_PROFILES, ['array']);
         $resolver->setAllowedTypes(self::PARAM_DEBUG, ['bool']);
         $resolver->setAllowedTypes(self::PARAM_CONFIG_PATH, ['string', 'null']);
-        $resolver->setAllowedTypes(self::PARAM_EXTENSIONS, ['array']);
+        $resolver->setAllowedTypes(self::PARAM_EXTENSIONS, ['string[]']);
         $resolver->setAllowedTypes(self::PARAM_WORKING_DIR, ['string']);
         SymfonyOptionsResolverCompat::setInfos($resolver, [
             self::PARAM_PROFILES => <<<'EOT'
@@ -72,6 +75,7 @@ EOT
             self::PARAM_EXTENSIONS => 'List of additional extensions to enable',
             self::PARAM_CONFIG_PATH => 'Alternative path to a PHPBench configuration file (default is ``phpbench.json``',
             self::PARAM_WORKING_DIR => 'Working directory to use',
+            self::PARAM_SCHEMA => 'JSON schema location, e.g. ./vendor/phpbench/phpbench/tools/phpbench.schema.json',
         ]);
     }
 
