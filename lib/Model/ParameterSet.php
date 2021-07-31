@@ -63,7 +63,7 @@ final class ParameterSet
     }
 
     /**
-     * @param array<string,array<string,string>> $parameters
+     * @param array<string> $parameters
      */
     public static function fromSerializedParameters(string $name, array $parameters): ParameterSet
     {

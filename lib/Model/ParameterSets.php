@@ -26,7 +26,7 @@ final class ParameterSets implements IteratorAggregate, Countable
     }
 
     /**
-     * @param array<string,array<string,string>> $parameterSets
+     * @param array<array<string>> $parameterSets
      */
     public static function fromSerializedParameterSets(array $parameterSets): self
     {
