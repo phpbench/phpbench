@@ -2,7 +2,8 @@
   "compression": "GZ",
   "directories": [
     "lib",
-    "extensions"
+    "extensions",
+    "templates"
   ],
   "files": [
     "LICENSE"
