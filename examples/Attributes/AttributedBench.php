@@ -14,7 +14,7 @@ use PhpBench\Attributes as Bench;
 #[Bench\AfterClassMethodsClassMethods(['tearDownBeforeClass'])]
 // endsection: afterClassMethods
 // section: all
-class AttriutedBench
+class AttributedBench
 {
 // endsection: all
 // section: benchTime
