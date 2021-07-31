@@ -21,7 +21,7 @@ class TemplateExecutorTest extends TestCase
             'foo',
             '/bar',
             'baz',
-            1, [], [], ParameterSet::fromUnwrappedParameters('foo', [
+            1, [], [], ParameterSet::fromUnserializedValues('foo', [
                 'time' => 100
             ])
         ), new Config('test', [

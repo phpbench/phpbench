@@ -28,7 +28,7 @@ class ParameterSetsCollectionTest extends TestCase
 
     public function testFromUnwrappedParameterSetsCollection(): void
     {
-        $set = ParameterSetsCollection::fromUnwrappedParameterSetsCollection([
+        $set = ParameterSetsCollection::fromUnserializedParameterSetsCollection([
             [
                 'one' => [
                     'k1' => 'hello',

@@ -121,6 +121,6 @@ class TemplateExecutor implements BenchmarkExecutorInterface
             return $context->getParameterSet()->toSerializedParameters();
         }
 
-        return $context->getParameterSet()->toUnwrappedParameters();
+        return $context->getParameterSet()->toUnserializedParameters();
     }
 }

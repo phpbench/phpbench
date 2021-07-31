@@ -28,6 +28,6 @@ class ParameterContainerTest extends TestCase
             serialize('hello')
         );
         self::assertEquals(serialize('hello'), $value->getValue());
-        self::assertEquals('hello', $value->toUnwrappedValue());
+        self::assertEquals('hello', $value->toUnserializedValue());
     }
 }

@@ -44,7 +44,7 @@ final class ParameterContainer
     /**
      * @return mixed
      */
-    public function toUnwrappedValue()
+    public function toUnserializedValue()
     {
         return unserialize($this->value);
     }

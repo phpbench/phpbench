@@ -16,7 +16,7 @@ class ParameterSetTest extends TestCase
         ], ParameterSet::fromParameterContainers('test', [
             'foo' => ParameterContainer::fromValue('hello'),
             'bar' => ParameterContainer::fromValue('goodbye'),
-        ])->toUnwrappedParameters());
+        ])->toUnserializedParameters());
     }
 
     public function testFromWrappedParameters(): void
@@ -27,7 +27,7 @@ class ParameterSetTest extends TestCase
         ], ParameterSet::fromSerializedParameters('test', [
             'foo' => serialize('hello'),
             'bar' => serialize('goodbye')
-        ])->toUnwrappedParameters());
+        ])->toUnserializedParameters());
     }
 
     public function testFromUnwrappedParameters(): void
@@ -35,10 +35,10 @@ class ParameterSetTest extends TestCase
         self::assertEquals([
             'foo' => 'hello',
             'bar' => 'goodbye',
-        ], ParameterSet::fromUnwrappedParameters('test', [
+        ], ParameterSet::fromUnserializedValues('test', [
             'foo' => 'hello',
             'bar' => 'goodbye',
-        ])->toUnwrappedParameters());
+        ])->toUnserializedParameters());
     }
 
     public function testToSerializedParameters(): void
@@ -46,7 +46,7 @@ class ParameterSetTest extends TestCase
         self::assertEquals([
             'foo' => serialize('hello'),
             'bar' => serialize('goodbye'),
-        ], ParameterSet::fromUnwrappedParameters('test', [
+        ], ParameterSet::fromUnserializedValues('test', [
             'foo' => 'hello',
             'bar' => 'goodbye',
         ])->toSerializedParameters());

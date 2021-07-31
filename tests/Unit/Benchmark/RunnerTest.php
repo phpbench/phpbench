@@ -119,7 +119,7 @@ class RunnerTest extends TestCase
         $subject = new SubjectMetadata($this->benchmark->reveal(), 'name');
         $subject->setIterations($iterations);
         $subject->setBeforeMethods(['beforeFoo']);
-        $subject->setParameterSets(ParameterSetsCollection::fromUnwrappedParameterSetsCollection([[$parameters]]));
+        $subject->setParameterSets(ParameterSetsCollection::fromUnserializedParameterSetsCollection([[$parameters]]));
         $subject->setRevs($revs);
 
         TestUtil::configureBenchmarkMetadata($this->benchmark);

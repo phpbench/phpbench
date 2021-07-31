@@ -13,10 +13,11 @@
 namespace PhpBench\Tests\Unit\Benchmark;
 
 use PhpBench\Benchmark\CartesianParameterIterator;
+use PhpBench\Model\ParameterSet;
 use PhpBench\Model\ParameterSetsCollection;
 use PhpBench\Tests\TestCase;
 
-class CartesianIteratorTest extends TestCase
+class CartesianParameterIteratorTest extends TestCase
 {
     /**
      * It should generate the cartestian product of all sets for each iteration.
@@ -25,11 +26,12 @@ class CartesianIteratorTest extends TestCase
      */
     public function testIterate($parameterSets, $expected): void
     {
-        $iterator = new CartesianParameterIterator(ParameterSetsCollection::fromUnwrappedParameterSetsCollection($parameterSets));
+        $iterator = new CartesianParameterIterator(ParameterSetsCollection::fromUnserializedParameterSetsCollection($parameterSets));
         $result = [];
 
         foreach ($iterator as $parameters) {
-            $result[$parameters->getName()] = $parameters->toUnwrappedParameters();
+            assert($parameters instanceof ParameterSet);
+            $result[$parameters->getName()] = $parameters->toUnserializedParameters();
         }
 
         $this->assertEquals($expected, $result);

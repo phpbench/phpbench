@@ -57,7 +57,7 @@ class RemoteExecutorTest extends AbstractExecutorTestCase
         $this->executor->execute(
             $this->buildContext([
                 'methodName' => 'parameterized',
-                'parameters' => ParameterSet::fromUnwrappedParameters('ad', [
+                'parameters' => ParameterSet::fromUnserializedValues('ad', [
                     'foo' => [
                         'bar'
                     ],

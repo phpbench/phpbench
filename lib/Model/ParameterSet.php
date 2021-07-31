@@ -75,7 +75,7 @@ final class ParameterSet
     /**
      * @param array<string,mixed> $parameters
      */
-    public static function fromUnwrappedParameters(string $name, array $parameters): self
+    public static function fromUnserializedValues(string $name, array $parameters): self
     {
         return new self($name, array_map(function ($parameter) {
             return ParameterContainer::fromValue($parameter);
@@ -85,10 +85,10 @@ final class ParameterSet
     /**
      * @return array<string,mixed>
      */
-    public function toUnwrappedParameters(): array
+    public function toUnserializedParameters(): array
     {
         return array_map(function (ParameterContainer $container) {
-            return $container->toUnwrappedValue();
+            return $container->toUnserializedValue();
         }, $this->parameters);
     }
 

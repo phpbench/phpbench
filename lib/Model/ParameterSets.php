@@ -40,12 +40,12 @@ final class ParameterSets implements IteratorAggregate, Countable
     /**
      * @param array<string,array<string,mixed>> $parameterSets
      */
-    public static function fromUnwrappedParameterSets(array $parameterSets): self
+    public static function fromUnserializedParameterSets(array $parameterSets): self
     {
         return new self(array_combine(array_keys($parameterSets), array_map(function ($parameterSet, string $name) {
             self::assertParameterSet($parameterSet);
 
-            return ParameterSet::fromUnwrappedParameters($name, $parameterSet);
+            return ParameterSet::fromUnserializedValues($name, $parameterSet);
         }, $parameterSets, array_keys($parameterSets))));
     }
 
@@ -80,7 +80,7 @@ final class ParameterSets implements IteratorAggregate, Countable
                 return $parameterSet->getName();
             }, $this->parameterSets),
             array_map(function (ParameterSet $parameterSet) {
-                return $parameterSet->toUnwrappedParameters();
+                return $parameterSet->toUnserializedParameters();
             }, $this->parameterSets)
         );
     }
