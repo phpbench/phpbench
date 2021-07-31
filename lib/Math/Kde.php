@@ -44,7 +44,7 @@ class Kde
     private $coVarianceFactor;
 
     /**
-     * @var array
+     * @var array<float>
      */
     private $dataset;
 
@@ -68,8 +68,14 @@ class Kde
      */
     private $invCov;
 
+    /**
+     * @var float
+     */
     private $covariance;
 
+    /**
+     * @var float
+     */
     private $normFactor;
 
     /**
@@ -106,11 +112,16 @@ class Kde
      *   .. [2] B.W. Silverman, "Density Estimation for Statistics and Data
      *          Analysis", Vol. 26, Monographs on Statistics and Applied Probability,
      *          Chapman and Hall, London, 1986.
+     *   .. [3] B.A. Turlach, "Bandwidth Selection in Kernel Density Estimation: A
+     *          Review", CORE and Institut de Statistique, Vol. 19, pp. 1-33, 1993.
+     *   .. [4] D.M. Bashtannyk and R.J. Hyndman, "Bandwidth selection for kernel
+     *          conditional density estimation", Computational Statistics & Data
+     *          Analysis, Vol. 36, pp. 279-298, 2001.
      *
-     * @param array $dataset Array of univariate data points.
-     * @param string $bwMethod : Either "scott", "silverman" or an explicit (float) value.
+     * @param array<float> $dataset Array of univariate data points.
+     * @param string|'scott'|'silverman'|float|null $bwMethod
      */
-    public function __construct(array $dataset, string $bwMethod = null)
+    public function __construct(array $dataset, $bwMethod = null)
     {
         $this->dataset = $dataset;
 
@@ -124,7 +135,9 @@ class Kde
     /**
      * Evaluate the estimated pdf on a set of points.
      *
-     * @param array $points 1-D array of points on to which we will map the kde
+     * @param array<float> $points 1-D array of points on to which we will map the kde
+     *
+     * @return array<float>
      */
     public function evaluate(array $points): array
     {
@@ -197,9 +210,9 @@ class Kde
      * The new bandwidth calculated after a call to `setBandwidth` is used
      * for subsequent evaluations of the estimated density.
      *
-     * @param string $bwMethod Either "scott" or "silverman"
+     * @param string|'scott'|'silverman'|float|null $bwMethod
      */
-    public function setBandwidth(string $bwMethod = null): void
+    public function setBandwidth($bwMethod = null): void
     {
         if ($bwMethod == 'scott' || null === $bwMethod) {
             $this->coVarianceFactor = function () {
