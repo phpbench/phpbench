@@ -38,7 +38,7 @@ Revolutions can be specified using the ``@Revs`` annotation:
 
     .. tab:: Attributes
 
-        .. codeimport:: ../examples/Attributes/AttriutedBench.php
+        .. codeimport:: ../examples/Attributes/AttributedBench.php
           :language: php
           :sections: all,revs,benchTime
 
@@ -86,7 +86,7 @@ Iterations can be specified using the ``@Iterations`` annotation:
 
     .. tab:: Attributes
 
-        .. codeimport:: ../examples/Attributes/AttriutedBench.php
+        .. codeimport:: ../examples/Attributes/AttributedBench.php
           :language: php
           :sections: all,iterations,benchTime
 
@@ -120,7 +120,7 @@ your environment:
 
     .. tab:: Attributes
 
-        .. codeimport:: ../examples/Attributes/AttriutedBench.php
+        .. codeimport:: ../examples/Attributes/AttributedBench.php
           :language: php
           :sections: all,beforeMethods,afterMethods,benchTime
 
@@ -152,7 +152,7 @@ These methods will be executed by the runner once per benchmark class.
 
     .. tab:: Attributes
 
-        .. codeimport:: ../examples/Attributes/AttriutedBench.php
+        .. codeimport:: ../examples/Attributes/AttributedBench.php
           :language: php
           :sections: all,beforeClassMethods,afterClassMethods,benchTime
 
@@ -179,7 +179,7 @@ Parameter sets can be provided to benchmark subjects:
 
     .. tab:: Attributes
 
-        .. codeimport:: ../examples/Attributes/AttriutedBench.php
+        .. codeimport:: ../examples/Attributes/AttributedBench.php
           :language: php
           :sections: all,paramProviders
 
@@ -198,7 +198,7 @@ For example the above could also be returned as an array:
 
     .. tab:: Attributes
 
-        .. codeimport:: ../examples/Attributes/AttriutedBench.php
+        .. codeimport:: ../examples/Attributes/AttributedBench.php
           :language: php
           :sections: all,paramIterable
 
@@ -222,7 +222,7 @@ parameters will be generated:
 
     .. tab:: Attributes
 
-        .. codeimport:: ../examples/Attributes/AttriutedBench.php
+        .. codeimport:: ../examples/Attributes/AttributedBench.php
           :language: php
           :sections: all,paramMultiple
 
@@ -259,7 +259,7 @@ You can assign benchmark subjects to groups using the ``@Groups`` annotation.
 
     .. tab:: Attributes
 
-        .. codeimport:: ../examples/Attributes/AttriutedBench.php
+        .. codeimport:: ../examples/Attributes/AttributedBench.php
           :language: php
           :sections: all,benchTime,groups
 
@@ -280,7 +280,7 @@ You can skip subjects by using the ``@Skip`` annotation:
 
     .. tab:: Attributes
 
-        .. codeimport:: ../examples/Attributes/AttriutedBench.php
+        .. codeimport:: ../examples/Attributes/AttributedBench.php
           :language: php
           :sections: all,skip
 
@@ -301,7 +301,7 @@ the system recover. Use the ``@Sleep`` annotation, specifying the number of
 
     .. tab:: Attributes
 
-        .. codeimport:: ../examples/Attributes/AttriutedBench.php
+        .. codeimport:: ../examples/Attributes/AttributedBench.php
           :language: php
           :sections: all,benchTime,sleep
 
@@ -329,7 +329,7 @@ Specify *output* time units using the ``@OutputTimeUnit`` annotation
 
     .. tab:: Attributes
 
-        .. codeimport:: ../examples/Attributes/AttriutedBench.php
+        .. codeimport:: ../examples/Attributes/AttributedBench.php
           :language: php
           :sections: all,benchTime,outputTimeUnit
 
@@ -363,7 +363,7 @@ are executed within a single time unit:
 
     .. tab:: Attributes
 
-        .. codeimport:: ../examples/Attributes/AttriutedBench.php
+        .. codeimport:: ../examples/Attributes/AttributedBench.php
           :language: php
           :sections: all,benchTime,outputMode
 
@@ -388,7 +388,7 @@ actually measuring the revolutions time.
 
     .. tab:: Attributes
 
-        .. codeimport:: ../examples/Attributes/AttriutedBench.php
+        .. codeimport:: ../examples/Attributes/AttributedBench.php
           :language: php
           :sections: all,benchTime,warmup
 
@@ -413,7 +413,7 @@ before an iteration timesout and fails. The following example will fail after
 
     .. tab:: Attributes
 
-        .. codeimport:: ../examples/Attributes/AttriutedBench.php
+        .. codeimport:: ../examples/Attributes/AttributedBench.php
           :language: php
           :sections: all,benchTime,timeout
 
@@ -437,7 +437,7 @@ For example, assert that the :ref:`KDE mode<expr_func_mode>` is less than 200 mi
 
     .. tab:: Attributes
 
-        .. codeimport:: ../examples/Attributes/AttriutedBench.php
+        .. codeimport:: ../examples/Attributes/AttributedBench.php
           :language: php
           :sections: all,benchTime,assert
 
@@ -468,7 +468,7 @@ Override how the variant results are formatted in the progress output.
 
     .. tab:: Attributes
 
-        .. codeimport:: ../examples/Attributes/AttriutedBench.php
+        .. codeimport:: ../examples/Attributes/AttributedBench.php
           :language: php
           :sections: all,benchTime,format
 
@@ -500,7 +500,7 @@ Use to create more stable sets of iterations.
 
     .. tab:: Attributes
 
-        .. codeimport:: ../examples/Attributes/AttriutedBench.php
+        .. codeimport:: ../examples/Attributes/AttributedBench.php
           :language: php
           :sections: all,retrythreshold,benchTime
 
