@@ -42,7 +42,8 @@ Then it can be registered in ``phpbench.json``:
 .. code-block:: javascript
 
     {
-        "extensions": [
+        "$schema":"./vendor/phpbench/phpbench/phpbench.schema.json",
+        "core.extensions": [
             "PhpBench\\Examples\\Extension\\AcmeExtension"
         ]
     }
@@ -73,6 +74,7 @@ You can activate and use your extension as follows ``phpbench.json``:
 .. code-block:: javascript
 
     {
+        "$schema":"./vendor/phpbench/phpbench/phpbench.schema.json",
         "extensions": [
             "PhpBench\Examples\Extension\AcmeExtension"
         ],

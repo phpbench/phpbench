@@ -66,7 +66,10 @@ class ConfigSchemaDumper
         return (string)json_encode($schema);
     }
 
-    private function mapTypes(array $types): string
+    /**
+     * @return string[]
+     */
+    private function mapTypes(array $types): array
     {
         return array_map(function (string $type) {
             if ($type === 'array') {

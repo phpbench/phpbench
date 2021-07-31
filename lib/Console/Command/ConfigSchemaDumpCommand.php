@@ -28,7 +28,8 @@ final class ConfigSchemaDumpCommand extends Command
 
     protected function configure(): void
     {
-        $this->setName('config:schema:dump');
+        $this->setName('doc:config-schema');
+        $this->setDescription('Dump the JSON schema for the configuration');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
