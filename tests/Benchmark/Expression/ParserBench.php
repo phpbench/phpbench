@@ -41,6 +41,7 @@ class ParserBench
      */
     public function benchEvaluate(array $params): void
     {
+        usleep(10000);
         $this->parser->parse($this->lexer->lex($params['expr']));
     }
 

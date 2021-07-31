@@ -25,10 +25,7 @@ function normalize_parameter_set($parameterSet)
             );
         }
         return array_map(function ($value) {
-            return [
-                'type' => gettype($value),
-                'value' => serialize($value),
-            ];
+            return serialize($value);
         }, $parameters);
     }, $parameterSet));
 }

@@ -118,7 +118,7 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
 
     public function testParametersBeforeSubjectAndWarmup(): void
     {
-        $expected = ParameterSet::fromUnwrappedParameters('0', [
+        $expected = ParameterSet::fromUnserializedValues('0', [
             'one' => 'two',
             'three' => 'four',
         ]);
@@ -139,11 +139,11 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
 
         $this->assertFileExists($this->workspacePath('parambefore.tmp'));
         $params = json_decode((string)file_get_contents($this->workspace()->path('parambefore.tmp')), true);
-        $this->assertEquals($expected->toUnwrappedParameters(), $params);
+        $this->assertEquals($expected->toUnserializedParameters(), $params);
 
         $this->assertFileExists($this->workspacePath('paramafter.tmp'));
         $params = json_decode((string)file_get_contents($this->workspace()->path('paramafter.tmp')), true);
-        $this->assertEquals($expected->toUnwrappedParameters(), $params);
+        $this->assertEquals($expected->toUnserializedParameters(), $params);
     }
 
     /**
@@ -168,7 +168,7 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
         ], $config);
 
         if (is_array($config['parameters'])) {
-            $config['parameters'] = ParameterSet::fromUnwrappedParameters('test', $config['parameters'] ?? []);
+            $config['parameters'] = ParameterSet::fromUnserializedValues('test', $config['parameters'] ?? []);
         }
 
         return $config;

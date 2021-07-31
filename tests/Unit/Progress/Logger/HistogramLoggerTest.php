@@ -31,7 +31,7 @@ class HistogramLoggerTest extends LoggerTestCase
         $this->iteration = $this->prophesize(Iteration::class);
         $this->variant = new Variant(
             $this->subject->reveal(),
-            ParameterSet::fromUnwrappedParameters('one', []),
+            ParameterSet::fromUnserializedValues('one', []),
             1,
             0
         );

@@ -63,19 +63,19 @@ final class ParameterSet
     }
 
     /**
-     * @param array<string,array{"type":string,"value":string}> $parameters
+     * @param array<string> $parameters
      */
-    public static function fromWrappedParameters(string $name, array $parameters): ParameterSet
+    public static function fromSerializedParameters(string $name, array $parameters): ParameterSet
     {
-        return new self($name, array_map(function (array $typeValuePair) {
-            return ParameterContainer::fromWrappedValue($typeValuePair);
+        return new self($name, array_map(function (string $serializedValue) {
+            return ParameterContainer::fromSerializedValue($serializedValue);
         }, $parameters));
     }
 
     /**
      * @param array<string,mixed> $parameters
      */
-    public static function fromUnwrappedParameters(string $name, array $parameters): self
+    public static function fromUnserializedValues(string $name, array $parameters): self
     {
         return new self($name, array_map(function ($parameter) {
             return ParameterContainer::fromValue($parameter);
@@ -85,10 +85,10 @@ final class ParameterSet
     /**
      * @return array<string,mixed>
      */
-    public function toUnwrappedParameters(): array
+    public function toUnserializedParameters(): array
     {
         return array_map(function (ParameterContainer $container) {
-            return $container->toUnwrappedValue();
+            return $container->toUnserializedValue();
         }, $this->parameters);
     }
 

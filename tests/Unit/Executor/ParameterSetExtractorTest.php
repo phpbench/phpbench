@@ -24,7 +24,7 @@ class ParameterSetExtractorTest extends TestCase
         $result = $this->provideParams(['PhpBench\Tests\Unit\Executor\benchmarks\hello_world']);
         $this->assertEquals([
             [
-                ['hello' => ['type' => 'string', 'value' => serialize('goodbye')]],
+                ['hello' => serialize('goodbye')],
             ],
         ], $result);
     }
@@ -34,7 +34,7 @@ class ParameterSetExtractorTest extends TestCase
         $result = $this->provideParams(['provideParams']);
         $this->assertEquals([
             [
-                ['hello' => ['type' => 'string', 'value' => serialize('goodbye')]],
+                ['hello' => serialize('goodbye')],
             ],
         ], $result);
     }
@@ -44,7 +44,7 @@ class ParameterSetExtractorTest extends TestCase
         $result = $this->provideParams(['provideIterator']);
         $this->assertEquals([
             [
-                ['hello' => ['type' => 'string', 'value' => serialize('goodbye')]],
+                ['hello' => serialize('goodbye')],
             ],
         ], $result);
     }
@@ -54,7 +54,7 @@ class ParameterSetExtractorTest extends TestCase
         $result = $this->provideParams(['provideIteratorWithKeys']);
         $this->assertEquals([
             [
-                'one' => ['hello' => ['type' => 'string', 'value' => serialize('goodbye')]],
+                'one' => ['hello' => serialize('goodbye')],
             ],
         ], $result);
     }
@@ -64,7 +64,7 @@ class ParameterSetExtractorTest extends TestCase
         $result = $this->provideParams(['provideGenerator']);
         $this->assertEquals([
             [
-                ['hello' => ['type' => 'string', 'value' => serialize('goodbye')]],
+                ['hello' => serialize('goodbye')],
             ],
         ], $result);
     }

@@ -87,7 +87,7 @@ final class ExecutionContext
         $this->revolutions = $revolutions;
         $this->beforeMethods = $beforeMethods;
         $this->afterMethods = $afterMethods;
-        $this->parameters = $parameters instanceof ParameterSet ? $parameters : ParameterSet::fromUnwrappedParameters('default', $parameters ?? []);
+        $this->parameters = $parameters instanceof ParameterSet ? $parameters : ParameterSet::fromUnserializedValues('default', $parameters ?? []);
         $this->warmup = $warmup;
         $this->iterationIndex = $iterationIndex;
         $this->timeOut = $timeOut;
@@ -123,7 +123,7 @@ final class ExecutionContext
      */
     public function getParameters(): array
     {
-        return $this->parameters->toUnwrappedParameters();
+        return $this->parameters->toUnserializedParameters();
     }
 
     public function getParameterSet(): ParameterSet

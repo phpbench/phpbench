@@ -47,7 +47,7 @@ abstract class PhpBenchLoggerTest extends LoggerTestCase
         $this->benchmark = $this->prophesize(Benchmark::class);
         $this->variant = $this->prophesize(Variant::class);
         $this->subject = $this->prophesize(Subject::class);
-        $this->parameterSet = ParameterSet::fromWrappedParameters('foo', []);
+        $this->parameterSet = ParameterSet::fromSerializedParameters('foo', []);
         $this->stats = $this->prophesize(Distribution::class);
 
         $this->logger = $this->getLogger();
@@ -131,7 +131,7 @@ abstract class PhpBenchLoggerTest extends LoggerTestCase
         $this->suite->getFailures()->willReturn([$failures]);
         $this->suite->getErrorStacks()->willReturn([]);
         $this->variant->getSubject()->willReturn($this->subject->reveal());
-        $this->variant->getParameterSet()->willReturn(ParameterSet::fromUnwrappedParameters('one',[]));
+        $this->variant->getParameterSet()->willReturn(ParameterSet::fromUnserializedValues('one',[]));
         $this->subject->getBenchmark()->willReturn($this->benchmark->reveal());
         $this->subject->getName()->willReturn('bar');
         $this->benchmark->getClass()->willReturn('Namespace\Foo');

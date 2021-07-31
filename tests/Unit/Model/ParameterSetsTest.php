@@ -15,7 +15,7 @@ class ParameterSetsTest extends TestCase
         $this->expectException(InvalidParameterSets::class);
         $this->expectExceptionMessage('Each parameter set must be an array, got "string"');
         /** @phpstan-ignore-next-line */
-        ParameterSets::fromWrappedParameterSets(['asd' => 'bar']);
+        ParameterSets::fromSerializedParameterSets(['asd' => 'bar']);
     }
 
     public function testInvalidParametersUnwrapped(): void
@@ -23,23 +23,17 @@ class ParameterSetsTest extends TestCase
         $this->expectException(InvalidParameterSets::class);
         $this->expectExceptionMessage('Each parameter set must be an array, got "string"');
         /** @phpstan-ignore-next-line */
-        ParameterSets::fromUnwrappedParameterSets(['asd' => 'bar']);
+        ParameterSets::fromUnserializedParameterSets(['asd' => 'bar']);
     }
 
     public function testIteratesWithUnsafeSetNamesAsKeys(): void
     {
-        $sets = iterator_to_array(ParameterSets::fromWrappedParameterSets([
+        $sets = iterator_to_array(ParameterSets::fromSerializedParameterSets([
             'one' => [
-                'one' => [
-                    'type' => 'string',
-                    'value' => serialize('hello'),
-                ]
+                'one' => serialize('hello')
             ],
             'two' => [
-                'one' => [
-                    'type' => 'string',
-                    'value' => serialize('hello'),
-                ]
+                'one' => serialize('hello'),
             ],
         ]), true);
         self::assertEquals(['one', 'two'], array_keys($sets));
@@ -49,12 +43,12 @@ class ParameterSetsTest extends TestCase
         self::assertEquals('one', $first->getName());
         self::assertEquals([
             'one' => 'hello',
-        ], $first->toUnwrappedParameters());
+        ], $first->toUnserializedParameters());
     }
 
     public function testIteratesWithSetNamesAsKeys(): void
     {
-        $sets = iterator_to_array(ParameterSets::fromUnwrappedParameterSets([
+        $sets = iterator_to_array(ParameterSets::fromUnserializedParameterSets([
             'one' => [
                 'one' => 'hello',
             ],
@@ -69,6 +63,6 @@ class ParameterSetsTest extends TestCase
         self::assertEquals('one', $first->getName());
         self::assertEquals([
             'one' => 'hello',
-        ], $first->toUnwrappedParameters());
+        ], $first->toUnserializedParameters());
     }
 }

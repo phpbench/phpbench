@@ -9,13 +9,10 @@ class ParameterSetsCollectionTest extends TestCase
 {
     public function testFromWrappedParameterSetsCollection(): void
     {
-        $set = ParameterSetsCollection::fromWrappedParameterSetsCollection([
+        $set = ParameterSetsCollection::fromSerializedParameterSetsCollection([
             [
                 'one' => [
-                    'k1' => [
-                        'type' => 'string',
-                        'value' => serialize('hello'),
-                    ]
+                    'k1' => serialize('hello'),
                 ]
             ]
         ]);
@@ -31,7 +28,7 @@ class ParameterSetsCollectionTest extends TestCase
 
     public function testFromUnwrappedParameterSetsCollection(): void
     {
-        $set = ParameterSetsCollection::fromUnwrappedParameterSetsCollection([
+        $set = ParameterSetsCollection::fromUnserializedParameterSetsCollection([
             [
                 'one' => [
                     'k1' => 'hello',
