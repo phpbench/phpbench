@@ -17,7 +17,7 @@ Extension class: ``PhpBench\Extension\CoreExtension``
 $schema
 ~~~~~~~
 
-JSON schema location, e.g. ``./vendor/phpbench/phpbench//phpbench.schema.json``
+JSON schema location, e.g. ``./vendor/phpbench/phpbench/phpbench.schema.json``
 
 Default: ``NULL``
 
