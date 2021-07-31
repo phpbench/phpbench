@@ -39,11 +39,8 @@ class RemoteExecutorTest extends AbstractExecutorTestCase
         $this->executor->execute(
             $this->buildContext([
                 'methodName' => 'parameterized',
-                'parameters' => ParameterSet::fromWrappedParameters('ad', [
-                    'foo' => [
-                        'type' => 'object',
-                        'value' => 'O:60:"PhpBench\Tests\Unit\Executor\benchmarks\ClassDefinedRemotely":1:{s:4:"test";s:5:"hello";}',
-                    ]
+                'parameters' => ParameterSet::fromSerializedParameters('ad', [
+                    'foo' => 'O:60:"PhpBench\Tests\Unit\Executor\benchmarks\ClassDefinedRemotely":1:{s:4:"test";s:5:"hello";}',
                 ])
             ]),
             $this->resolveConfig([])

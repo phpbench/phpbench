@@ -19,17 +19,14 @@ class ParameterContainerTest extends TestCase
     public function testFromValue(): void
     {
         $value = ParameterContainer::fromValue('hello');
-        self::assertEquals('string', $value->getType());
         self::assertEquals(serialize('hello'), $value->getValue());
     }
 
     public function testTypeValuePair(): void
     {
-        $value = ParameterContainer::fromWrappedValue([
-            'type' => 'string',
-            'value' => serialize('hello'),
-        ]);
-        self::assertEquals('string', $value->getType());
+        $value = ParameterContainer::fromSerializedValue(
+            serialize('hello')
+        );
         self::assertEquals(serialize('hello'), $value->getValue());
         self::assertEquals('hello', $value->toUnwrappedValue());
     }

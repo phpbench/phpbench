@@ -24,15 +24,9 @@ class ParameterSetTest extends TestCase
         self::assertEquals([
             'foo' => 'hello',
             'bar' => 'goodbye',
-        ], ParameterSet::fromWrappedParameters('test', [
-            'foo' => [
-                'type' => 'string',
-                'value' => serialize('hello'),
-            ],
-            'bar' => [
-                'type' => 'string',
-                'value' => serialize('goodbye'),
-            ]
+        ], ParameterSet::fromSerializedParameters('test', [
+            'foo' => serialize('hello'),
+            'bar' => serialize('goodbye')
         ])->toUnwrappedParameters());
     }
 

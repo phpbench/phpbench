@@ -63,12 +63,12 @@ final class ParameterSet
     }
 
     /**
-     * @param array<string,array{"type":string,"value":string}> $parameters
+     * @param array<string,array<string,string>> $parameters
      */
-    public static function fromWrappedParameters(string $name, array $parameters): ParameterSet
+    public static function fromSerializedParameters(string $name, array $parameters): ParameterSet
     {
-        return new self($name, array_map(function (array $typeValuePair) {
-            return ParameterContainer::fromWrappedValue($typeValuePair);
+        return new self($name, array_map(function (string $serializedValue) {
+            return ParameterContainer::fromSerializedValue($serializedValue);
         }, $parameters));
     }
 

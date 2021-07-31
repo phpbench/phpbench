@@ -26,14 +26,14 @@ final class ParameterSets implements IteratorAggregate, Countable
     }
 
     /**
-     * @param array<string,array<string,array{"type":string,"value":string}>> $parameterSets
+     * @param array<string,array<string,string>> $parameterSets
      */
-    public static function fromWrappedParameterSets(array $parameterSets): self
+    public static function fromSerializedParameterSets(array $parameterSets): self
     {
         return new self(array_combine(array_keys($parameterSets), array_map(function ($parameterSet, string $name) {
             self::assertParameterSet($parameterSet);
 
-            return ParameterSet::fromWrappedParameters($name, $parameterSet);
+            return ParameterSet::fromSerializedParameters($name, $parameterSet);
         }, $parameterSets, array_keys($parameterSets))));
     }
 

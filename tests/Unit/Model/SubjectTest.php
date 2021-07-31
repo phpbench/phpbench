@@ -50,7 +50,7 @@ class SubjectTest extends TestCase
      */
     public function testCreateVariant(): void
     {
-        $parameterSet = ParameterSet::fromWrappedParameters('foo', []);
+        $parameterSet = ParameterSet::fromSerializedParameters('foo', []);
         $variant = $this->subject->createVariant(
             $parameterSet,
             10,
