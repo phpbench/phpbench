@@ -73,7 +73,7 @@ final class ParameterSets implements IteratorAggregate, Countable
     /**
      * @return array<string, array<string, mixed>>
      */
-    public function toUnwrappedParameterSets(): array
+    public function toUnserializedParameterSets(): array
     {
         return array_combine(
             array_map(function (ParameterSet $parameterSet) {

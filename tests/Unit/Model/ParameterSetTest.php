@@ -30,7 +30,7 @@ class ParameterSetTest extends TestCase
         ])->toUnserializedParameters());
     }
 
-    public function testFromUnwrappedParameters(): void
+    public function testFromUnserializedParameters(): void
     {
         self::assertEquals([
             'foo' => 'hello',

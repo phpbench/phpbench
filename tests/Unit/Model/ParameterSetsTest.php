@@ -18,7 +18,7 @@ class ParameterSetsTest extends TestCase
         ParameterSets::fromSerializedParameterSets(['asd' => 'bar']);
     }
 
-    public function testInvalidParametersUnwrapped(): void
+    public function testInvalidParametersUnserialized(): void
     {
         $this->expectException(InvalidParameterSets::class);
         $this->expectExceptionMessage('Each parameter set must be an array, got "string"');

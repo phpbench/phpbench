@@ -23,10 +23,10 @@ class ParameterSetsCollectionTest extends TestCase
                     'k1' => 'hello',
                 ],
             ]
-        ], $set->toUnwrappedParameterSetsCollection());
+        ], $set->toUnserializedParameterSetsCollection());
     }
 
-    public function testFromUnwrappedParameterSetsCollection(): void
+    public function testFromUnserializedParameterSetsCollection(): void
     {
         $set = ParameterSetsCollection::fromUnserializedParameterSetsCollection([
             [
@@ -42,6 +42,6 @@ class ParameterSetsCollectionTest extends TestCase
                     'k1' => 'hello',
                 ],
             ]
-        ], $set->toUnwrappedParameterSetsCollection());
+        ], $set->toUnserializedParameterSetsCollection());
     }
 }
