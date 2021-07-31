@@ -75,7 +75,7 @@ EOT
             self::PARAM_EXTENSIONS => 'List of additional extensions to enable',
             self::PARAM_CONFIG_PATH => 'Alternative path to a PHPBench configuration file (default is ``phpbench.json``',
             self::PARAM_WORKING_DIR => 'Working directory to use',
-            self::PARAM_SCHEMA => 'JSON schema location, e.g. ``./vendor/phpbench/phpbench//phpbench.schema.json``',
+            self::PARAM_SCHEMA => 'JSON schema location, e.g. ``./vendor/phpbench/phpbench/phpbench.schema.json``',
         ]);
     }
 
