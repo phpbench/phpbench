@@ -13,8 +13,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ConfigSchemaDumper
 {
-    private const SCHEMA_URL = 'https://github.com/phpbench/phpbench/releases/download/%s/phpbench.schena.json';
-
     /**
      * @var class-string[]
      */
@@ -36,10 +34,6 @@ class ConfigSchemaDumper
 
         $schema = [
           '$schema' => 'https =>//json-schema.org/draft/2020-12/schema',
-          '$id' => sprintf(
-              self::SCHEMA_URL,
-              PhpBench::version()
-          ),
           'title' => 'PHPBench configuration',
           'type' => 'object',
           'properties' => [
@@ -63,10 +57,11 @@ class ConfigSchemaDumper
             }
         }
 
-        return (string)json_encode($schema);
+        return (string)json_encode($schema, JSON_PRETTY_PRINT);
     }
 
     /**
+     * @param string[] $types
      * @return string[]
      */
     private function mapTypes(array $types): array
