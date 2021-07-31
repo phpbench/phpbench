@@ -127,7 +127,7 @@ class Payload
         $this->disableIni = true;
     }
 
-    public function launch(): array
+    public function launchResult(): LaunchResult
     {
         $script = $this->readFile();
         $script = $this->replaceTokens($script);
@@ -147,7 +147,15 @@ class Payload
             ));
         }
 
-        return $this->decodeResults($process);
+        return LaunchResult::fromProcess($process);
+    }
+
+    /**
+     * @return parameters
+     */
+    public function launch(): array
+    {
+        return $this->launchResult()->unserializeResult();
     }
 
     private function getIniString(): string
@@ -244,25 +252,5 @@ class Payload
         }
 
         unlink($scriptPath);
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private function decodeResults(Process $process): array
-    {
-        $output = $process->getOutput();
-        
-        $result = @unserialize($output);
-
-        if (is_array($result)) {
-            return $result;
-        }
-
-        throw new \RuntimeException(sprintf(
-            'Script "%s" did not return an array, got: %s',
-            $this->template,
-            $output
-        ));
     }
 }
