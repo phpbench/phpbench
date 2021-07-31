@@ -80,8 +80,12 @@ Create a ``phpbench.json`` file in the projects root directory:
 .. code-block:: json
 
     {
+        "$schema":"./vendor/phpbench/phpbench/phpbench.schema.json",
         "runner.bootstrap": "vendor/autoload.php"
     }
+
+Above we also added the optional ``$schema`` which should enable auto-completion and
+validation in your IDE.
 
 .. note::
 

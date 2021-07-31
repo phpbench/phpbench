@@ -17,6 +17,7 @@ render this template in a local directory and ensure that it is not deleted.
 .. code-block:: json
 
     {
+        "$schema":"./vendor/phpbench/phpbench/phpbench.schema.json",
         "runner.remote_script_path": ".phpbench/script",
         "runner.remote_script_remove": false
     }

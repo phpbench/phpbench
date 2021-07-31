@@ -47,7 +47,11 @@
             "vendor/bin/phpunit",
             "bin/phpbench run --revs=1 --iterations=2",
             "bin/phpbench run --profile=examples --revs=1 --iterations=1",
-            "@docs"
+            "@docs",
+            "@schema"
+        ],
+        "schema": [
+            "bin/phpbench doc:config-schema > phpbench.schema.json"
         ],
         "docs": [
             "rm -Rf docs/build",

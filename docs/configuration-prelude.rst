@@ -6,6 +6,7 @@ that order and use one if it exists.
 .. code-block:: json
 
     {
+        "$schema":"./vendor/phpbench/phpbench/phpbench.schema.json",
         "runner.bootstrap": "vendor/autoload.php",
         "runner.path": "path/to/benchmarks",
         "report.outputs": {

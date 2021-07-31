@@ -1,0 +1,345 @@
+{
+    "$schema": "https =>\/\/json-schema.org\/draft\/2020-12\/schema",
+    "title": "PHPBench configuration",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "description": "JSON schema location, e.g. ``.\/vendor\/phpbench\/phpbench\/phpbench.schema.json``",
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "core.debug": {
+            "description": "If enabled output debug messages (e.g. the commands being executed when running benchamrks). Same as ``-vvv``",
+            "type": [
+                "boolean"
+            ]
+        },
+        "core.extensions": {
+            "description": "List of additional extensions to enable",
+            "type": [
+                "array"
+            ]
+        },
+        "core.working_dir": {
+            "description": "Working directory to use",
+            "type": [
+                "string"
+            ]
+        },
+        "core.config_path": {
+            "description": "Alternative path to a PHPBench configuration file (default is ``phpbench.json``",
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "core.profiles": {
+            "description": "Alternative configurations::\n\n    {\n        \"core.profiles\": {\n            \"php8\": {\n                \"runner.php_bin\": \"\/bin\/php8\"\n            }\n        }\n    }\n\nThe named configuration will be merged with the default configuration, and can be used via:\n\n.. code-block:: bash\n\n    $ phpbench run --profile=php8",
+            "type": [
+                "object"
+            ]
+        },
+        "runner.annotations": {
+            "description": "Read metadata from annotations",
+            "type": [
+                "boolean"
+            ]
+        },
+        "runner.annotation_import_use": {
+            "description": "Require that annotations be imported before use",
+            "type": [
+                "boolean"
+            ]
+        },
+        "runner.attributes": {
+            "description": "Read metadata from PHP 8 attributes",
+            "type": [
+                "boolean"
+            ]
+        },
+        "runner.bootstrap": {
+            "description": "Path to bootstrap (e.g. ``vendor\/autoload.php``)",
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "runner.env_enabled_providers": {
+            "description": "Select which environment samplers to use",
+            "type": [
+                "object"
+            ]
+        },
+        "runner.env_samplers": {
+            "description": "Environment baselines (not to be confused with baseline comparisons when running benchmarks) are small benchmarks which run to sample the speed of the system (e.g. file I\/O, computation etc). This setting enables or disables these baselines",
+            "type": [
+                "object"
+            ]
+        },
+        "runner.env_sampler_callables": {
+            "description": "Map of baseline callables (adds you to register a new environemntal baseline)",
+            "type": [
+                "object"
+            ]
+        },
+        "runner.executors": {
+            "description": "Add new executor configurations",
+            "type": [
+                "object"
+            ]
+        },
+        "runner.path": {
+            "description": "Path or paths to the benchmarks",
+            "type": [
+                "string",
+                "object",
+                "null"
+            ]
+        },
+        "runner.php_binary": {
+            "description": "Specify a PHP binary to use when executing out-of-band benchmarks, e.g. ``\/usr\/bin\/php6``, defaults to the version of PHP used to invoke PHPBench",
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "runner.php_config": {
+            "description": "Map of PHP ini settings to use when executing out-of-band benchmarks",
+            "type": [
+                "object"
+            ]
+        },
+        "runner.php_disable_ini": {
+            "description": "Disable reading the default PHP configuration",
+            "type": [
+                "boolean"
+            ]
+        },
+        "runner.php_wrapper": {
+            "description": "Wrap the PHP binary with this command (e.g. ``blackfire run``)",
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "runner.progress": {
+            "description": "Default progress logger to use",
+            "type": [
+                "string"
+            ]
+        },
+        "runner.progress_summary_variant_format": {
+            "description": "Expression used to render the summary text default progress loggers",
+            "type": [
+                "string"
+            ]
+        },
+        "runner.progress_summary_baseline_format": {
+            "description": "When the a comparison benchmark is referenced, alternative expression used to render the summary text default progress loggers",
+            "type": [
+                "string"
+            ]
+        },
+        "runner.remote_script_path": {
+            "description": "PHPBench generates a PHP file for out-of-band benchmarks which is executed, this setting specifies the path to this file. When NULL a file in the systems temporary directory will be used",
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "runner.remote_script_remove": {
+            "description": "If the generated file should be removed after it has been executed (useful for debugging)",
+            "type": [
+                "boolean"
+            ]
+        },
+        "runner.assert": {
+            "description": "Default :ref:`metadata_assertions`",
+            "type": [
+                "null",
+                "string",
+                "object"
+            ]
+        },
+        "runner.executor": {
+            "description": "Default executor",
+            "type": [
+                "null",
+                "string"
+            ]
+        },
+        "runner.format": {
+            "description": "Default :ref:`metadata_format`",
+            "type": [
+                "null",
+                "string"
+            ]
+        },
+        "runner.iterations": {
+            "description": "Default :ref:`metadata_iterations`",
+            "type": [
+                "null",
+                "integer",
+                "object"
+            ]
+        },
+        "runner.output_mode": {
+            "description": "Default :ref:`output mode <metadata_mode>`",
+            "type": [
+                "null",
+                "string"
+            ]
+        },
+        "runner.time_unit": {
+            "description": "Default :ref:`time unit <metadata_time_unit>`",
+            "type": [
+                "null",
+                "string"
+            ]
+        },
+        "runner.retry_threshold": {
+            "description": "Default :ref:`metadata_retry_threshold`",
+            "type": [
+                "null",
+                "integer",
+                "number"
+            ]
+        },
+        "runner.revs": {
+            "description": "Default number of :ref:`metadata_revolutions`",
+            "type": [
+                "null",
+                "integer",
+                "object"
+            ]
+        },
+        "runner.timeout": {
+            "description": "Default :ref:`metadata_timeout`",
+            "type": [
+                "null",
+                "number",
+                "integer"
+            ]
+        },
+        "runner.warmup": {
+            "description": "Default :ref:`metadata_warmup`",
+            "type": [
+                "null",
+                "integer",
+                "object"
+            ]
+        },
+        "runner.subject_pattern": {
+            "description": "Subject pattern (regex) to use when finding benchmarks",
+            "type": [
+                "string"
+            ]
+        },
+        "runner.file_pattern": {
+            "description": "Consider file names matching this pattern to be benchmarks. NOTE: In 2.0 this will be set to ``*Bench.php``",
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "report.generators": {
+            "description": "Report generator configurations, see :doc:`report-generators`",
+            "type": [
+                "object"
+            ]
+        },
+        "report.outputs": {
+            "description": "Report renderer configurations, see :doc:`report-renderers`",
+            "type": [
+                "object"
+            ]
+        },
+        "report.components": {
+            "description": "Component configurations, see :doc:`report-components`",
+            "type": [
+                "object"
+            ]
+        },
+        "report.template_paths": {
+            "description": "List of paths to load templates from",
+            "type": [
+                "object"
+            ]
+        },
+        "report.html_output_dir": {
+            "description": "Path in which to render HTML reports",
+            "type": [
+                "string"
+            ]
+        },
+        "report.template_map": {
+            "description": "Namespace prefix to template path map for object rendering",
+            "type": [
+                "object"
+            ]
+        },
+        "expression.syntax_highlighting": {
+            "description": "Enable syntax highlighting",
+            "type": [
+                "boolean"
+            ]
+        },
+        "expression.theme": {
+            "description": "Select a theme to use",
+            "type": [
+                "string"
+            ]
+        },
+        "storage.driver": {
+            "description": "Storage driver to use",
+            "type": [
+                "string"
+            ]
+        },
+        "storage.xml_storage_path": {
+            "description": "Path to store benchmark runs when they are stored with ``--store`` or ``--tag=foo``",
+            "type": [
+                "string"
+            ]
+        },
+        "storage.store_binary": {
+            "description": "If binary and serialized parameter values should be stored",
+            "type": [
+                "boolean"
+            ]
+        },
+        "xdebug.command_handler_output_dir": {
+            "description": "Output directory for generated XDebug profiles",
+            "type": [
+                "string"
+            ]
+        },
+        "console.ansi": {
+            "description": "Enable or disable ANSI control characters (e.g. console colors)",
+            "type": [
+                "boolean",
+                "null"
+            ]
+        },
+        "console.disable_output": {
+            "description": "Disable output from both STDOUT and STDERR",
+            "type": [
+                "boolean"
+            ]
+        },
+        "console.output_stream": {
+            "description": "Change the normal output stream - the output stream used for reports",
+            "type": [
+                "string"
+            ]
+        },
+        "console.error_stream": {
+            "description": "Change the error output stream - the output stream used for diagnostics (e.g. progress loggers use this stream)",
+            "type": [
+                "string"
+            ]
+        }
+    }
+}
