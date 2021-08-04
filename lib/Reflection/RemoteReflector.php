@@ -129,8 +129,9 @@ class RemoteReflector implements ReflectorInterface
                 if ($tokens[$i][0] === T_NAMESPACE) {
                     for ($j = $i + 1; $j < count($tokens); $j++) {
                         $tokenId = $tokens[$j][0];
+                        $namespaceToken = defined('T_NAME_QUALIFIED') ? T_NAME_QUALIFIED : T_STRING;
 
-                        if ($tokenId === T_STRING || $tokenId === 314) {
+                        if ($tokenId === T_STRING || $tokenId === $namespaceToken) {
                             $namespace .= '\\' . $tokens[$j][1];
                         } elseif ($tokens[$j] === '{' || $tokens[$j] === ';') {
                             break;
