@@ -26,6 +26,3 @@ these benchmarks:
 
 .. literalinclude:: ../../examples/Benchmark/ConfigLinters/config_linters_report.json
   :language: json
-
-
-
