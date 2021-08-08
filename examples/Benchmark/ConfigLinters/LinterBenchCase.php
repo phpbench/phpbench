@@ -13,14 +13,14 @@ use PhpBench\Config\ConfigLinter;
 abstract class LinterBenchCase
 {
     /**
-     * @var ?ConfigLinter
+     * @var ConfigLinter
      */
-    protected $linter;
+    private $linter;
 
     /**
-     * @var ?string
+     * @var string
      */
-    protected $json;
+    private $json = '';
 
     public function __construct()
     {
