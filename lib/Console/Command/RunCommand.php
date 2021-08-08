@@ -152,11 +152,11 @@ EOT
             }
         }
 
-        $this->reportHandler->reportsFromInput($input, $collection->mergeCollection($this->resolveBaselines($input)));
-
         if ($suite->getErrorStacks()) {
             return self::EXIT_CODE_ERROR;
         }
+
+        $this->reportHandler->reportsFromInput($input, $collection->mergeCollection($this->resolveBaselines($input)));
 
         if (false === $input->getOption(self::OPT_TOLERATE_FAILURE) && $suite->getFailures()) {
             return self::EXIT_CODE_FAILURE;
