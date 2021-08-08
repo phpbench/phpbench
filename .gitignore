@@ -4,7 +4,6 @@
 /build
 /.phpbench.sqlite
 /phpunit.xml
-/phpbench.json
 /.php_cs.cache
 /.phpunit.result.cache
 /tests/Workspace
