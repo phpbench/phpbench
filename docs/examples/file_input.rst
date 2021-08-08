@@ -7,7 +7,7 @@ parameterized from the contents of files.
 Given you have a directory ``file-input`` containing a list of files, and each
 of these files represents a benchmarking scenario:
 
-.. codeimport:: ../../examples/Benchmark/Pattern/FileInput/FileInputBench.php
+.. codeimport:: ../../examples/Benchmark/FileInput/FileInputBench.php
   :language: php
   :sections: all
 
