@@ -12,6 +12,27 @@
                     "bar_partition": "benchmark_name",
                     "y_expr": "mode(partition['result_time_avg']) as time",
                     "y_axes_label": "yValue as time"
+                },
+                {
+                    "component": "section",
+                    "tabbed": true,
+                    "partition": ["benchmark_name"],
+                    "components": [
+                        {
+                            "title": "{{ first(frame['benchmark_name']) }}",
+                            "component": "table_aggregate",
+                            "partition": ["variant_name"],
+                            "row": {
+                                "variant": "'JSON Scale ' ~ first(partition[\"variant_params\"][0])",
+                                "memory": "first(partition[\"result_mem_peak\"]) as memory",
+                                "min": "min(partition[\"result_time_avg\"]) as time",
+                                "max": "max(partition[\"result_time_avg\"]) as time",
+                                "mode": "mode(partition[\"result_time_avg\"]) as time",
+                                "rstdev": "rstdev(partition[\"result_time_avg\"])",
+                                "stdev": "stdev(partition[\"result_time_avg\"]) as time"
+                            }
+                        }
+                    ]
                 }
             ]
         }

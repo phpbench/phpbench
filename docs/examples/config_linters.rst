@@ -1,6 +1,11 @@
 Config Linters
 ==============
 
+.. figure:: ../images/example_config_linter.png
+   :alt: Configuration Linters
+
+   HTML Output
+
 One approach for comparing classes which implement the same interface is to
 create an abstract `BenchCase` class which sets up the fixtures and delegates
 to a child class to create the concerete instance of the class we want to
