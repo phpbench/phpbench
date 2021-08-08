@@ -13,7 +13,8 @@ Features:
 
 - Allow config files to include other config files via. `$include` and
   `$include-glob` #989
-- Added `frame` function to create a new data frame within an expressoin.
+- Added `contains` function to see if a value exists in a list.
+- Added `frame` function to create a new data frame within an expression.
 - Added `sum` and `count` functions #865
 - New component based report generator #851
 - HTML Bar Chart component #853
