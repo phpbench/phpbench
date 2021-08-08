@@ -21,3 +21,13 @@ that order and use one if it exists.
             }
         }
     }
+
+Note you can include more configuratoin files with the ``$include`` and
+``$include-glob`` directives:
+
+.. code-block:: json
+
+    {
+        "$include": ["path/to/config.json"],
+        "$include-glob": ["path/to/*.json"],
+    }
