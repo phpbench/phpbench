@@ -29,6 +29,7 @@ Features:
 
 Improvement:
 
+- Surpress reports if errors were encountered during the run #912
 - Support expressions in parttion specifications
 - Data can be accessed on any expression value (not just "parameters")
 - Use automatic time unit for expression report #838

@@ -448,6 +448,16 @@ class RunTest extends SystemTestCase
         $this->assertStringContainsString('benchNothingElse', $process->getErrorOutput());
     }
 
+    public function testDoesNotRenderReportsIfThereIsAnError(): void
+    {
+        $process = $this->phpbench(
+            'run benchmarks/set3/ErrorBench.php --report=default'
+        );
+
+        $this->assertExitCode(1, $process);
+        $this->assertStringNotContainsString('Expression error', $process->getErrorOutput());
+    }
+
     /**
      * It should stop on the first exception if an exception is encountered.
      */

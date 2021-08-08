@@ -56,6 +56,10 @@ class DisplayAsPrinter implements NodePrinter
             return sprintf('%s as %s', $printer->print($value), $unit);
         }
 
+        if ($value instanceof NullNode) {
+            return $printer->print($value);
+        }
+
         if (TimeUnit::isTimeUnit($unit)) {
             return $this->timeUnit(
                 $value->value(),
