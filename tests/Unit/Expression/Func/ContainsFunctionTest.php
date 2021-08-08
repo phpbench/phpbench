@@ -11,14 +11,14 @@ class ContainsFunctionTest extends FunctionTestCase
     {
         self::assertEquals(true, $this->eval(
             new ContainsFunction(),
-            '1, [1, 2, null, null]'
+            '[1, 2, null, null], 1'
         )->value());
     }
     public function testTrueIfContainsInt2(): void
     {
         self::assertEquals(true, $this->eval(
             new ContainsFunction(),
-            '1, [2, 1, null, null]'
+            '[2, 1, null, null], 1'
         )->value());
     }
 
@@ -26,7 +26,7 @@ class ContainsFunctionTest extends FunctionTestCase
     {
         self::assertEquals(false, $this->eval(
             new ContainsFunction(),
-            '1, [2, 3, null, null]'
+            '[2, 3, null, null], 1'
         )->value());
     }
 
@@ -34,7 +34,7 @@ class ContainsFunctionTest extends FunctionTestCase
     {
         self::assertEquals(false, $this->eval(
             new ContainsFunction(),
-            '"1", [2, 3, null, null]'
+            '[2, 3, null, null],"1"'
         )->value());
     }
 
@@ -42,7 +42,7 @@ class ContainsFunctionTest extends FunctionTestCase
     {
         self::assertEquals(true, $this->eval(
             new ContainsFunction(),
-            '"1", [2, 3, "1"]'
+            '[2, 3, "1"], "1"'
         )->value());
     }
 }

@@ -8,7 +8,7 @@ use PhpBench\Expression\Ast\ScalarValue;
 
 final class ContainsFunction
 {
-    public function __invoke(ScalarValue $value, ListNode $list): BooleanNode
+    public function __invoke(ListNode $list, ScalarValue $value): BooleanNode
     {
         return new BooleanNode(in_array($value->value(), $list->value(), true));
     }
