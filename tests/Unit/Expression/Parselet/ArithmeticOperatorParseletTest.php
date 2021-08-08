@@ -34,6 +34,14 @@ class ArithmeticOperatorParseletTest extends ParseletTestCase
         yield ['1 + 2', [], '3'];
 
         yield ['1 + 2 * 3 / 5 * 6 - 1', [], (string)(1 + 2 * 3 / 5 * 6 - 1)];
+
+        yield ['foo + foo', [
+            'foo' => 1,
+        ], '2'];
+
+        yield ['foo[0] + foo[0] * foo[0]', [
+            'foo' => [1],
+        ], '2'];
     }
 
     /**
