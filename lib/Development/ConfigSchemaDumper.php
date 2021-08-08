@@ -34,6 +34,14 @@ class ConfigSchemaDumper
           'title' => 'PHPBench configuration',
           'type' => 'object',
           'properties' => [
+              '$include' => [
+                  'description' => 'Include another config file relative to this one',
+                  'type' => ['string', 'array'],
+              ],
+              '$include-glob' => [
+                  'description' => 'Include config files using a glob pattern. Paths are relative to the config file',
+                  'type' => ['string', 'array'],
+              ],
           ],
         ];
 
