@@ -10,7 +10,7 @@ use Seld\JsonLint\ParsingException;
 class ConfigLoader
 {
     /**
-     * @var array
+     * @var ConfigProcessor[]
      */
     private $processors;
 
@@ -42,6 +42,12 @@ class ConfigLoader
         $configRaw = (string)file_get_contents($path);
         $this->linter->lint($path, $configRaw);
 
-        return (array)json_decode($configRaw, true);
+        $config = (array)json_decode($configRaw, true);
+
+        foreach ($this->processors as $processor) {
+            $config = $processor->process($this, $path, $config);
+        }
+
+        return $config;
     }
 }
