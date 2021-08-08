@@ -28,7 +28,7 @@ class SeldLinter implements ConfigLinter
         } catch (ParsingException $e) {
             throw new LintError(sprintf(
                 'Lint failed for "%s": %s',
-                $path, $e->getMessage(),
+                $path, $e->getMessage()
             ), 0, $e);
         }
     }
