@@ -164,7 +164,7 @@ class PhpBench
 
             $config = array_merge(
                 $config,
-                ConfigLoader::create()->load($configPath),
+                ConfigLoader::create()->load($configPath)
             );
 
             $config[CoreExtension::PARAM_CONFIG_PATH] = $configPath;

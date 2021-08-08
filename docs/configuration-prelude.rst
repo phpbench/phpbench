@@ -22,7 +22,7 @@ that order and use one if it exists.
         }
     }
 
-Note you can include more configuratoin files with the ``$include`` and
+You can include more configuratoin files with the ``$include`` and
 ``$include-glob`` directives:
 
 .. code-block:: json
