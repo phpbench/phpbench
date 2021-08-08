@@ -1,10 +1,11 @@
 <?php
 
-namespace PhpBench\Examples\Benchmark\Implementations;
+namespace PhpBench\Examples\Benchmark\ConfigLinters;
 
 // section: all
 use PhpBench\Config\ConfigLinter;
 use PhpBench\Config\Linter\SeldLinter;
+use PhpBench\Examples\Benchmark\ConfigLinters\LinterBenchCase;
 
 class SeldLinterBench extends LinterBenchCase
 {

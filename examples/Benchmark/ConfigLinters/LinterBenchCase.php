@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Examples\Benchmark\Implementations;
+namespace PhpBench\Examples\Benchmark\ConfigLinters;
 
 // section: all
 use Generator;
@@ -8,7 +8,7 @@ use PhpBench\Config\ConfigLinter;
 
 
 /**
- * @Groups("implementations")
+ * @Groups("config_linters")
  */
 abstract class LinterBenchCase
 {
@@ -59,7 +59,7 @@ abstract class LinterBenchCase
                 $data['key-' . $i] = 'test';
                 break;
             }
-            $data['key-' . $i] = self::build($size - 1);
+            $data['key-' . $i] = self::buildData($size - 1);
         }
 
         return $data;

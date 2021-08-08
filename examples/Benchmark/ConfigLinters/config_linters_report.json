@@ -1,10 +1,10 @@
 {
     "report.generators": {
-        "implementations": {
+        "config_linters": {
             "title": "Linter comparison",
             "description": "Compares different implementations of the PHPBench config linter",
             "generator": "component",
-            "filter": "subject_groups=['implementations']",
+            "filter": "subject_groups=['config_linters']",
             "components": [
                 {
                     "component": "bar_chart_aggregate",

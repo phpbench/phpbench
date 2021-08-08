@@ -1,9 +1,10 @@
 <?php
 
-namespace PhpBench\Examples\Benchmark\Implementations;
+namespace PhpBench\Examples\Benchmark\ConfigLinters;
 
 use PhpBench\Config\ConfigLinter;
-use PhpBench\Config\Linter\SeldLinter;
+use PhpBench\Examples\Benchmark\ConfigLinters\LinterBenchCase;
+use PhpBench\Examples\Benchmark\ConfigLinters\NoOpLinter;
 
 class NoOpLinterBench extends LinterBenchCase
 {

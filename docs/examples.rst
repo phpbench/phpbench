@@ -4,8 +4,7 @@ Examples
 This section aims to provide a collection of benchmarking scenarios with examples.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
+   :glob:
 
-   examples/file_input
-   examples/hashing
-   examples/comparing_implementations
+   examples/*

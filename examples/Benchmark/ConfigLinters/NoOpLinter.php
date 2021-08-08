@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Examples\Benchmark\Implementations;
+namespace PhpBench\Examples\Benchmark\ConfigLinters;
 
 use PhpBench\Config\ConfigLinter;
 
