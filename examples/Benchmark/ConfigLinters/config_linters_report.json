@@ -4,7 +4,7 @@
             "title": "Linter comparison",
             "description": "Compares different implementations of the PHPBench config linter",
             "generator": "component",
-            "filter": "subject_groups=['config_linters']",
+            "filter": "contains(subject_groups, 'config_linters')",
             "components": [
                 {
                     "component": "bar_chart_aggregate",
@@ -23,13 +23,13 @@
                             "component": "table_aggregate",
                             "partition": ["variant_name"],
                             "row": {
-                                "variant": "'JSON Scale ' ~ first(partition[\"variant_params\"][0])",
-                                "memory": "first(partition[\"result_mem_peak\"]) as memory",
-                                "min": "min(partition[\"result_time_avg\"]) as time",
-                                "max": "max(partition[\"result_time_avg\"]) as time",
-                                "mode": "mode(partition[\"result_time_avg\"]) as time",
-                                "rstdev": "rstdev(partition[\"result_time_avg\"])",
-                                "stdev": "stdev(partition[\"result_time_avg\"]) as time"
+                                "variant": "'JSON Scale ' ~ first(partition['variant_params'][0])",
+                                "memory": "first(partition['result_mem_peak']) as memory",
+                                "min": "min(partition['result_time_avg']) as time",
+                                "max": "max(partition['result_time_avg']) as time",
+                                "mode": "mode(partition['result_time_avg']) as time",
+                                "rstdev": "rstdev(partition['result_time_avg'])",
+                                "stdev": "stdev(partition['result_time_avg']) as time"
                             }
                         }
                     ]
