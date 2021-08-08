@@ -23,7 +23,6 @@ return PhpCsFixer\Config::create()
                 'continue',
                 'declare',
                 'default',
-                'die',
                 'do',
                 'exit',
                 'for',
