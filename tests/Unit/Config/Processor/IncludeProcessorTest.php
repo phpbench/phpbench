@@ -40,6 +40,27 @@ class IncludeProcessorTest extends IntegrationTestCase
         ], $this->createLoader()->load($this->workspace()->path('test')));
     }
 
+    public function testIncludeFiles(): void
+    {
+        $this->workspace()->put('test', json_encode([
+            'one' => 'two',
+            '$include' => [
+                'three.json',
+                'four.json',
+            ],
+        ]));
+        $this->workspace()->put('three.json', json_encode([
+            'three' => 3,
+        ]));
+        $this->workspace()->put('four.json', json_encode([
+            'four' => 4,
+        ]));
+        self::assertEquals([
+            'one' => 'two',
+            'three' => 3,
+            'four' => 4,
+        ], $this->createLoader()->load($this->workspace()->path('test')));
+    }
     public function testDeepMergeConfigurations(): void
     {
         $this->workspace()->put('test', json_encode([
