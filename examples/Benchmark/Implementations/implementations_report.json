@@ -1,0 +1,19 @@
+{
+    "report.generators": {
+        "implementations": {
+            "title": "Linter comparison",
+            "description": "Compares different implementations of the PHPBench config linter",
+            "generator": "component",
+            "filter": "subject_groups=['implementations']",
+            "components": [
+                {
+                    "component": "bar_chart_aggregate",
+                    "x_partition": "'JSON Scale ' ~ variant_params[0]",
+                    "bar_partition": "benchmark_name",
+                    "y_expr": "mode(partition['result_time_avg']) as time",
+                    "y_axes_label": "yValue as time"
+                }
+            ]
+        }
+    }
+}

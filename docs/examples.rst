@@ -8,3 +8,4 @@ This section aims to provide a collection of benchmarking scenarios with example
 
    examples/file_input
    examples/hashing
+   examples/comparing_implementations
