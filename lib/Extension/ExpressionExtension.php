@@ -22,6 +22,7 @@ use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\ExpressionLanguage\MemoisedExpressionLanguage;
 use PhpBench\Expression\ExpressionLanguage\RealExpressionLanguage;
 use PhpBench\Expression\Func\CoalesceFunction;
+use PhpBench\Expression\Func\ContainsFunction;
 use PhpBench\Expression\Func\CountFunction;
 use PhpBench\Expression\Func\DisplayAsTimeFunction;
 use PhpBench\Expression\Func\FirstFunction;
@@ -346,6 +347,7 @@ class ExpressionExtension implements ExtensionInterface
                 'count' => new CountFunction(),
                 'sum' => new SumFunction(),
                 'frame' => new FrameFunction(),
+                'contains' => new ContainsFunction(),
             ]);
         });
 

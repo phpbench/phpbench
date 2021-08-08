@@ -317,6 +317,13 @@ Create a new data frame with the given column names and row lists.
 
 .. literalinclude:: ../examples/Expression/frame_1
 
+contains
+~~~~~~~~
+
+Return true if value exists in given list
+
+.. literalinclude:: ../examples/Expression/contains_1
+
 .. _KDE mode: https://en.wikipedia.org/wiki/Kernel_density_estimation
 .. _standard deviation: https://en.wikipedia.org/wiki/Standard_deviation
 .. _variance: https://en.wikipedia.org/wiki/Variance
