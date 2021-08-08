@@ -22,6 +22,7 @@ class ArithmeticOperatorEvaluator implements NodeEvaluator
         }
 
         $leftValue = $evaluator->evaluateType($node->left(), NumberNode::class, $params);
+
         $rightValue = $evaluator->evaluateType($node->right(), NumberNode::class, $params);
 
         $value = $this->evaluateNode($node, $leftValue->value(), $rightValue->value());

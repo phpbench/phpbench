@@ -39,7 +39,7 @@ class ArithmeticOperatorParseletTest extends ParseletTestCase
             'foo' => 1,
         ], '2'];
 
-        yield ['foo[0] + foo[0]', [
+        yield ['foo[0] + foo[0] * foo[0]', [
             'foo' => [1],
         ], '2'];
     }
