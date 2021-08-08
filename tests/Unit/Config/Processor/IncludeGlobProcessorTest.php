@@ -5,10 +5,11 @@ namespace PhpBench\Tests\Unit\Config\Processor;
 use PHPUnit\Framework\TestCase;
 use PhpBench\Config\ConfigLoader;
 use PhpBench\Config\Linter\SeldLinter;
+use PhpBench\Config\Processor\IncludeGlobProcessor;
 use PhpBench\Config\Processor\IncludeProcessor;
 use PhpBench\Tests\IntegrationTestCase;
 
-class IncludeProcessorTest extends IntegrationTestCase
+class IncludeGlobProcessorTest extends IntegrationTestCase
 {
     protected function setUp(): void
     {
@@ -25,11 +26,11 @@ class IncludeProcessorTest extends IntegrationTestCase
         ], $this->createLoader()->load($this->workspace()->path('test')));
     }
 
-    public function testIncludeFile(): void
+    public function testIncludeGlob(): void
     {
         $this->workspace()->put('test', json_encode([
             'one' => 'two',
-            '$include' => 'three.json',
+            '$include-glob' => '*.json',
         ]));
         $this->workspace()->put('three.json', json_encode([
             'three' => 3,
@@ -37,28 +38,6 @@ class IncludeProcessorTest extends IntegrationTestCase
         self::assertEquals([
             'one' => 'two',
             'three' => 3,
-        ], $this->createLoader()->load($this->workspace()->path('test')));
-    }
-
-    public function testIncludeFiles(): void
-    {
-        $this->workspace()->put('test', json_encode([
-            'one' => 'two',
-            '$include' => [
-                'three.json',
-                'four.json',
-            ],
-        ]));
-        $this->workspace()->put('three.json', json_encode([
-            'three' => 3,
-        ]));
-        $this->workspace()->put('four.json', json_encode([
-            'four' => 4,
-        ]));
-        self::assertEquals([
-            'one' => 'two',
-            'three' => 3,
-            'four' => 4,
         ], $this->createLoader()->load($this->workspace()->path('test')));
     }
 
@@ -66,25 +45,31 @@ class IncludeProcessorTest extends IntegrationTestCase
     {
         $this->workspace()->put('test', json_encode([
             'generators' => [
-                'foobar' => [],
+                'generatorx' => [],
             ],
-            '$include' => 'more_generators.json',
+            '$include-glob' => 'one/generator*.json',
         ]));
-        $this->workspace()->put('more_generators.json', json_encode([
+        $this->workspace()->put('one/generator1.json', json_encode([
             'generators' => [
-                'barfoo' => [],
+                'generator1' => [],
+            ],
+        ]));
+        $this->workspace()->put('one/generator2.json', json_encode([
+            'generators' => [
+                'generator2' => [],
             ],
         ]));
         self::assertEquals([
             'generators' => [
-                'foobar' => [],
-                'barfoo' => [],
+                'generatorx' => [],
+                'generator1' => [],
+                'generator2' => [],
             ],
         ], $this->createLoader()->load($this->workspace()->path('test')));
     }
 
     private function createLoader(): ConfigLoader
     {
-        return new ConfigLoader(new SeldLinter(), [new IncludeProcessor()]);
+        return new ConfigLoader(new SeldLinter(), [new IncludeGlobProcessor()]);
     }
 }

@@ -4,6 +4,7 @@ namespace PhpBench\Config;
 
 use PhpBench\Config\Exception\ConfigFileNotFound;
 use PhpBench\Config\Linter\SeldLinter;
+use PhpBench\Config\Processor\IncludeProcessor;
 use Seld\JsonLint\JsonParser;
 use Seld\JsonLint\ParsingException;
 
@@ -27,7 +28,9 @@ class ConfigLoader
 
     public static function create(): self
     {
-        return new self(new SeldLinter(), []);
+        return new self(new SeldLinter(), [
+            new IncludeProcessor()
+        ]);
     }
 
     public function load(string $path): array
