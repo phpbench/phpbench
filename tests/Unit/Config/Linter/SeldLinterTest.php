@@ -2,9 +2,9 @@
 
 namespace PhpBench\Tests\Unit\Config\Linter;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Config\Exception\LintError;
 use PhpBench\Config\Linter\SeldLinter;
+use PHPUnit\Framework\TestCase;
 
 class SeldLinterTest extends TestCase
 {

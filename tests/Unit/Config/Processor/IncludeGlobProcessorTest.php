@@ -2,11 +2,9 @@
 
 namespace PhpBench\Tests\Unit\Config\Processor;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Config\ConfigLoader;
 use PhpBench\Config\Linter\SeldLinter;
 use PhpBench\Config\Processor\IncludeGlobProcessor;
-use PhpBench\Config\Processor\IncludeProcessor;
 use PhpBench\Tests\IntegrationTestCase;
 
 class IncludeGlobProcessorTest extends IntegrationTestCase

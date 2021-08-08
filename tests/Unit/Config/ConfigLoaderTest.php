@@ -2,9 +2,7 @@
 
 namespace PhpBench\Tests\Unit\Config;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Config\ConfigLoader;
-use PhpBench\Config\ConfigProcessor;
 use PhpBench\Config\Exception\ConfigFileNotFound;
 use PhpBench\Config\Linter\SeldLinter;
 use PhpBench\Config\Processor\CallbackProcessor;
@@ -45,6 +43,7 @@ class ConfigLoaderTest extends IntegrationTestCase
         $result = $this->createLoader([
             new CallbackProcessor(function (ConfigLoader $loader, string $path, array $config) {
                 $config['barfoo'] = 'foobar';
+
                 return $config;
             }),
         ])->load($this->workspace()->path('test.json'));
@@ -66,6 +65,7 @@ class ConfigLoaderTest extends IntegrationTestCase
                     $config['extra'] = $loader->load(dirname($path) . '/' . $config['include']);
                 }
                 unset($config['include']);
+
                 return $config;
             }),
         ])->load($this->workspace()->path('test.json'));

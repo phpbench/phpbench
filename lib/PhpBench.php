@@ -25,8 +25,6 @@ use PhpBench\Extension\RunnerExtension;
 use PhpBench\Extension\StorageExtension;
 use PhpBench\Extensions\XDebug\XDebugExtension;
 use PhpBench\Json\JsonDecoder;
-use Seld\JsonLint\JsonParser;
-use Seld\JsonLint\ParsingException;
 use function set_error_handler;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputInterface;
