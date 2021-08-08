@@ -34,3 +34,9 @@ Then it generates the following with the ``console`` renderer:
 .. approved:: ../../examples/Command/report-component-barchart-aggregate
   :language: bash
   :section: 2
+
+See Also
+--------
+
+- :doc:`../../examples/hashing`: Example barchart comparing hashing
+  algorithms.

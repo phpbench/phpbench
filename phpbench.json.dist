@@ -1,4 +1,6 @@
 {
+    "$schema": "phpbench.schema.json",
+    "$include-glob": "examples/Benchmark/*/*.json",
     "core.extensions": [
         "PhpBench\\Extension\\DevelopmentExtension"
     ],
