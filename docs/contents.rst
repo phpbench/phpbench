@@ -10,6 +10,7 @@ PHPBench is a benchmarking framework for PHP. Find it on Github_.
    quick-start
    guides
    reference
+   examples
    extensions
    customisation
    development

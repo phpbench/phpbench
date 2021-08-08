@@ -22,7 +22,6 @@ class ReportRenderer implements ObjectRendererInterface
         }
 
         if ($description = $object->description()) {
-            $output->writeln(sprintf('<title>%s</title>', $title));
             $output->writeln(sprintf('<description>%s</description>', $description));
             $output->writeln('');
         }

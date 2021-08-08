@@ -46,7 +46,7 @@
             "vendor/bin/phpstan analyse -c phpstan.neon.dist",
             "vendor/bin/phpunit",
             "bin/phpbench run --revs=1 --iterations=2",
-            "bin/phpbench run --profile=examples --revs=1 --iterations=1",
+            "bin/phpbench run --profile=examples --revs=1 --iterations=1 --report=examples",
             "@docs",
             "@schema"
         ],

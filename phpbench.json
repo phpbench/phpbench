@@ -1,4 +1,7 @@
 {
+    "$schema": "./phpbench.schema.json",
+    "$include-glob": "examples/Benchmark/*/*.json",
+    "runner.file_pattern": "*Bench.php",
     "core.extensions": [
         "PhpBench\\Extension\\DevelopmentExtension"
     ],
@@ -13,12 +16,11 @@
     "runner.revs": 10,
     "runner.assert": "mode(variant.time.avg) as ms <= mode(baseline.time.avg) as ms +/- 5%",
     "report.generators": {
-        "all": {
+        "examples": {
             "generator": "composite",
             "reports": [
-                "env",
-                "default",
-                "aggregate"
+                "hashing",
+                "config_linters"
             ]
         }
     },

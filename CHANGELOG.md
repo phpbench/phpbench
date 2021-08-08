@@ -8,6 +8,7 @@ Bug fixes:
 
 - Ensure all refs are passed to report in run mode #864
 - Memory formatting respects precision directive #892
+- Remove double title output when description used in console reports #848
 
 Features:
 
