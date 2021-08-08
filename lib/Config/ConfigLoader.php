@@ -2,6 +2,7 @@
 
 namespace PhpBench\Config;
 
+use PhpBench\Config\Exception\ConfigFileNotFound;
 use PhpBench\Config\Linter\SeldLinter;
 use Seld\JsonLint\JsonParser;
 use Seld\JsonLint\ParsingException;
@@ -31,6 +32,13 @@ class ConfigLoader
 
     public function load(string $path): array
     {
+        if (!file_exists($path)) {
+            throw new ConfigFileNotFound(sprintf(
+                'Config file "%s" not found',
+                $path
+            ));
+        }
+
         $configRaw = (string)file_get_contents($path);
         $this->linter->lint($path, $configRaw);
 
