@@ -13,6 +13,7 @@
 namespace PhpBench;
 
 use Composer\InstalledVersions;
+use PhpBench\Config\ConfigLoader;
 use PhpBench\Console\Application;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\Exception\ConfigurationPreProcessingError;
@@ -24,8 +25,6 @@ use PhpBench\Extension\RunnerExtension;
 use PhpBench\Extension\StorageExtension;
 use PhpBench\Extensions\XDebug\XDebugExtension;
 use PhpBench\Json\JsonDecoder;
-use Seld\JsonLint\JsonParser;
-use Seld\JsonLint\ParsingException;
 use function set_error_handler;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputInterface;
@@ -163,22 +162,11 @@ class PhpBench
                 continue;
             }
 
-            $configRaw = (string)file_get_contents($configPath);
-
-            try {
-                $parser = new JsonParser();
-                $parser->parse($configRaw);
-            } catch (ParsingException $e) {
-                echo 'Error parsing config file:' . PHP_EOL . PHP_EOL;
-                echo $e->getMessage();
-
-                exit(1);
-            }
-
             $config = array_merge(
                 $config,
-                json_decode($configRaw, true)
+                ConfigLoader::create()->load($configPath)
             );
+
             $config[CoreExtension::PARAM_CONFIG_PATH] = $configPath;
 
             break;
