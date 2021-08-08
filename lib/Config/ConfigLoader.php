@@ -2,6 +2,7 @@
 
 namespace PhpBench\Config;
 
+use PhpBench\Config\Linter\SeldLinter;
 use Seld\JsonLint\JsonParser;
 use Seld\JsonLint\ParsingException;
 
@@ -13,35 +14,26 @@ class ConfigLoader
     private $processors;
 
     /**
-     * @var JsonParser
+     * @var ConfigLinter
      */
-    private $parser;
+    private $linter;
 
-
-    public function __construct(JsonParser $parser, array $processors)
+    public function __construct(ConfigLinter $linter, array $processors)
     {
         $this->processors = $processors;
-        $this->parser = $parser;
+        $this->linter = $linter;
     }
 
     public static function create(): self
     {
-        return new self(new JsonParser(), []);
+        return new self(new SeldLinter(), []);
     }
 
     public function load(string $path): array
     {
         $configRaw = (string)file_get_contents($path);
+        $this->linter->lint($path, $configRaw);
 
-        try {
-            $this->parser->parse($configRaw);
-        } catch (ParsingException $e) {
-            echo 'Error parsing config file:' . PHP_EOL . PHP_EOL;
-            echo $e->getMessage();
-
-            exit(1);
-        }
-
-        return json_decode($configRaw, true);
+        return (array)json_decode($configRaw, true);
     }
 }
