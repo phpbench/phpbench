@@ -102,7 +102,7 @@ class PhpBench
             $configOverride[RunnerExtension::PARAM_BOOTSTRAP] = $value;
         }
 
-        if ($input->getParameterOption(['--no-ansi'])) {
+        if ($input->hasParameterOption(['--no-ansi'])) {
             $configOverride[ConsoleExtension::PARAM_ANSI] = false;
         }
 
