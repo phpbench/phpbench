@@ -44,7 +44,8 @@ class ProfileCommand extends Command
     public function configure(): void
     {
         $this->setName('xdebug:profile');
-        $this->setDescription(<<<'EOT'
+        $this->setDescription(
+            <<<'EOT'
 Generate and optionally visualize profiles with Xdebug
 EOT
         );
@@ -65,7 +66,8 @@ EOT
 
             if (null === $guiBin) {
                 throw new \InvalidArgumentException(sprintf(
-                    'Could not locate GUI bin "%s"', $input->getOption('gui-bin')
+                    'Could not locate GUI bin "%s"',
+                    $input->getOption('gui-bin')
                 ));
             }
         }

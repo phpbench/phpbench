@@ -35,7 +35,8 @@ final class Row implements IteratorAggregate, ArrayAccess
         if (!array_key_exists($column, $this->map)) {
             throw new RuntimeException(sprintf(
                 'Row does not have column "%s", it has columns "%s"',
-                $column, implode('", "', array_keys($this->map))
+                $column,
+                implode('", "', array_keys($this->map))
             ));
         }
 

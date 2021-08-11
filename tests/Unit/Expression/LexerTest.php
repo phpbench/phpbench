@@ -13,7 +13,8 @@ class LexerTest extends TestCase
 {
     public function testIgnoresNewLines(): void
     {
-        $tokens = $this->lex(<<<'EOT'
+        $tokens = $this->lex(
+            <<<'EOT'
 10
 <
 20

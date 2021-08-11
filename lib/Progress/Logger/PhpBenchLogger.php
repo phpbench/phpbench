@@ -66,7 +66,7 @@ abstract class PhpBenchLogger extends NullLogger
             'with PHP version %s, xdebug %s, opcache %s',
             $summary->getPhpVersion() ?? '<unknown>',
             $summary->getXdebugEnabled() ? '✔' : '❌',
-            $summary->getOpcacheEnabled()  ? '✔' : '❌'
+            $summary->getOpcacheEnabled() ? '✔' : '❌'
         ));
 
         foreach ($config->getBaselines() as $baseline) {

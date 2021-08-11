@@ -32,7 +32,7 @@ abstract class GeneratorTestCase extends IntegrationTestCase
      */
     public function testGenerate(string $path): void
     {
-        $approval = Approval::create($path,3);
+        $approval = Approval::create($path, 3);
         $config = $approval->getConfig(1);
         $collection = new SuiteCollection([TestUtil::createSuite(array_merge([
             'output_time_precision' => 3,

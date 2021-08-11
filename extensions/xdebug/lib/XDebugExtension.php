@@ -29,7 +29,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class XDebugExtension implements ExtensionInterface
 {
-    const PARAM_OUTPUT_DIR = 'xdebug.command_handler_output_dir';
+    public const PARAM_OUTPUT_DIR = 'xdebug.command_handler_output_dir';
 
     public function configure(OptionsResolver $resolver): void
     {

@@ -12,7 +12,6 @@
 
 namespace PhpBench\Serializer;
 
-use function base64_encode;
 use DOMElement;
 use Exception;
 use PhpBench\Dom\Document;
@@ -26,6 +25,7 @@ use PhpBench\Model\Variant;
 use PhpBench\PhpBench;
 use PhpBench\Util\TimeUnit;
 use RuntimeException;
+use function base64_encode;
 
 /**
  * Encodes the Suite object graph into an XML document.
@@ -254,7 +254,9 @@ class XmlEncoder
             $serialized = @serialize($value);
         } catch (Exception $e) {
             throw new RuntimeException(sprintf(
-                'Cannot serialize object of type "%s" for parameter "%s"', gettype($value), $name
+                'Cannot serialize object of type "%s" for parameter "%s"',
+                gettype($value),
+                $name
             ));
         }
         $parameterEl->setAttribute('type', self::PARAM_TYPE_SERIALIZED);

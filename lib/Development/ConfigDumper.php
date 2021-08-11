@@ -2,17 +2,17 @@
 
 namespace PhpBench\Development;
 
+use PhpBench\DependencyInjection\ExtensionInterface;
+use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use function json_encode;
 use function mb_strlen;
 use function method_exists;
-use PhpBench\DependencyInjection\ExtensionInterface;
 use function str_repeat;
-use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ConfigDumper
 {
-    const TITLE = 'Configuration';
+    public const TITLE = 'Configuration';
 
     /**
      * @var class-string[]
@@ -47,7 +47,7 @@ class ConfigDumper
 
         foreach ($this->extensions as $extensionClass) {
             $optionsResolver = new OptionsResolver();
-            $extension = new $extensionClass;
+            $extension = new $extensionClass();
             assert($extension instanceof ExtensionInterface);
             $extension->configure($optionsResolver);
 

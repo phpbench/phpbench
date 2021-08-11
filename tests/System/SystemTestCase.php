@@ -95,7 +95,8 @@ class SystemTestCase extends IntegrationTestCase
 
         if (false === $result) {
             throw new \RuntimeException(sprintf(
-                'Could not load XML "%s"', $xmlString
+                'Could not load XML "%s"',
+                $xmlString
             ));
         }
 

@@ -12,9 +12,9 @@
 
 namespace PhpBench\Reflection;
 
-use function array_filter;
 use PhpBench\Model\ParameterSetsCollection;
 use PhpBench\Remote\Launcher;
+use function array_filter;
 
 /**
  * Reflector for remote classes.

@@ -2,7 +2,6 @@
 
 namespace PhpBench\Tests\Benchmark\Report\Generator;
 
-use function array_fill;
 use Generator;
 use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
@@ -13,6 +12,7 @@ use PhpBench\Report\Generator\ExpressionGenerator;
 use PhpBench\Tests\Benchmark\IntegrationBenchCase;
 use PhpBench\Tests\Util\TestUtil;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function array_fill;
 
 /**
  * @Assert("mode(variant.time.avg) as time <= mode(baseline.time.avg) as time +/- 5%")

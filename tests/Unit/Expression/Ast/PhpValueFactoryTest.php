@@ -25,7 +25,7 @@ class PhpValueFactoryTest extends TestCase
     {
         self::assertEquals($expected, PhpValueFactory::fromValue($value));
     }
-        
+
     /**
      * @return Generator<mixed>
      */

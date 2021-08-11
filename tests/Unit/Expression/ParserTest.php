@@ -9,7 +9,8 @@ class ParserTest extends ParserTestCase
     public function testTrailingMatter(): void
     {
         $this->expectException(SyntaxError::class);
-        $this->expectExceptionMessage(<<<'EOT'
+        $this->expectExceptionMessage(
+            <<<'EOT'
 Unexpected "name" at end of expression:
 EOT
         );

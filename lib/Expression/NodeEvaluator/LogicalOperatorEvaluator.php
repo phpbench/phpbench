@@ -45,7 +45,7 @@ class LogicalOperatorEvaluator implements NodeEvaluator
             case 'and':
                 return $leftValue && $rightValue;
         }
-        
+
         throw new EvaluationError($node, sprintf(
             'Unknown operator "%s"',
             $node->operator()

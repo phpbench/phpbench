@@ -2,9 +2,9 @@
 
 namespace PhpBench\Color;
 
-use function array_fill;
 use PhpBench\Expression\Theme\Util\Color as DeprecatedColor;
 use RuntimeException;
+use function array_fill;
 
 /** final */ class Gradient
 {
@@ -46,7 +46,8 @@ use RuntimeException;
     {
         if ($steps <= 0) {
             throw new RuntimeException(sprintf(
-                'Number of steps must be more than zero, got "%s"', $steps
+                'Number of steps must be more than zero, got "%s"',
+                $steps
             ));
         }
 
@@ -69,7 +70,7 @@ use RuntimeException;
         }
 
         $colors = array_merge($this->colors, array_map(function (int $r, int $g, int $b) {
-            return DeprecatedColor::fromRgb($r,$g,$b);
+            return DeprecatedColor::fromRgb($r, $g, $b);
         }, ...$gradient));
 
         // remove the start color as it's already present

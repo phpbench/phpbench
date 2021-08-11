@@ -52,7 +52,9 @@ class EnvGenerator implements GeneratorInterface
 
         foreach ($suiteCollection as $suite) {
             $title = sprintf(
-                'Suite #%s %s', $suite->getUuid(), $suite->getDate()->format('Y-m-d H:i:s')
+                'Suite #%s %s',
+                $suite->getUuid(),
+                $suite->getDate()->format('Y-m-d H:i:s')
             );
 
             $rows = [];

@@ -410,7 +410,8 @@ class RunnerConfig
 
         throw new InvalidArgumentException(sprintf(
             'All values for "%s" must be greater than 0, the following were less than 0 "%s"',
-            $field, implode('", "', $values)
+            $field,
+            implode('", "', $values)
         ));
     }
 
@@ -426,7 +427,8 @@ class RunnerConfig
 
         throw new InvalidArgumentException(sprintf(
             '"%s" must be greater than 0, got "%s"',
-            $field, $value
+            $field,
+            $value
         ));
     }
 }

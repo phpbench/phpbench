@@ -57,7 +57,8 @@ class Information implements \ArrayAccess, \IteratorAggregate
     {
         throw new \BadMethodCallException(sprintf(
             'Environmental information is immutable. Tried to set key "%s" with value "%s"',
-            $offset, $value
+            $offset,
+            $value
         ));
     }
 

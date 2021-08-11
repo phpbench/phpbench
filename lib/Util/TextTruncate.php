@@ -6,7 +6,7 @@ use function mb_strlen;
 
 class TextTruncate
 {
-    const TRUNCATE_AT = 40;
+    public const TRUNCATE_AT = 40;
 
     public static function centered(string $input, int $center, string $elipsis = '…', ?int $length = self::TRUNCATE_AT)
     {

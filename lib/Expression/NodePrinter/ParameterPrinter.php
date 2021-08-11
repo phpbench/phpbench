@@ -2,12 +2,12 @@
 
 namespace PhpBench\Expression\NodePrinter;
 
-use function array_reduce;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\NullSafeNode;
 use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\NodePrinter;
 use PhpBench\Expression\Printer;
+use function array_reduce;
 
 class ParameterPrinter implements NodePrinter
 {

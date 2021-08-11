@@ -21,7 +21,10 @@ class TemplateExecutorTest extends TestCase
             'foo',
             '/bar',
             'baz',
-            1, [], [], ParameterSet::fromUnserializedValues('foo', [
+            1,
+            [],
+            [],
+            ParameterSet::fromUnserializedValues('foo', [
                 'time' => 100
             ])
         ), new Config('test', [
@@ -40,7 +43,10 @@ class TemplateExecutorTest extends TestCase
             'foo',
             '/bar',
             'baz',
-            1,[],[],[
+            1,
+            [],
+            [],
+            [
                 'time' => 10
             ]
         ), new Config('test', [

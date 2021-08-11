@@ -40,7 +40,7 @@ class BenchmarkFinderTest extends TestCase
 
     private function createFinder(string $benchPattern = null): BenchmarkFinder
     {
-        return new BenchmarkFinder($this->factory->reveal(), __DIR__ . '/' , $this->logger->reveal(), $benchPattern);
+        return new BenchmarkFinder($this->factory->reveal(), __DIR__ . '/', $this->logger->reveal(), $benchPattern);
     }
 
     /**

@@ -76,7 +76,8 @@ class MetadataFactory
         } catch (CouldNotLoadMetadataException $couldNotLoad) {
             $this->logger->warning(sprintf(
                 'Could not load metadata for file "%s" - is this file intended to be a benchmark? Perhaps setting the `runner.file_pattern` to `*Bench.php` will help: %s',
-                $file, $couldNotLoad->getMessage()
+                $file,
+                $couldNotLoad->getMessage()
             ));
 
             return null;
@@ -131,14 +132,17 @@ class MetadataFactory
         if (false === $benchmarkReflection->hasMethod($method)) {
             throw new \InvalidArgumentException(sprintf(
                 'Unknown %s method "%s" in benchmark class "%s"',
-                $context, $method, $benchmarkReflection->getTop()->class
+                $context,
+                $method,
+                $benchmarkReflection->getTop()->class
             ));
         }
 
         if ($isStatic !== $benchmarkReflection->hasStaticMethod($method)) {
             throw new \InvalidArgumentException(sprintf(
                 '%s method "%s" must %s static in benchmark class "%s"',
-                $context, $method,
+                $context,
+                $method,
                 $isStatic ? 'be' : 'not be',
                 $benchmarkReflection->getTop()->class
             ));

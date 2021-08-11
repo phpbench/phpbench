@@ -21,7 +21,7 @@ use Symfony\Component\Process\Process;
  */
 class Payload
 {
-    const FLAG_DISABLE_INI = '-n';
+    public const FLAG_DISABLE_INI = '-n';
 
     /**
      * Path to script template.
@@ -208,7 +208,8 @@ class Payload
             }
 
             throw new RuntimeException(sprintf(
-                'Could not create directory "%s"', $directory
+                'Could not create directory "%s"',
+                $directory
             ));
         })(dirname($scriptPath));
 
@@ -252,7 +253,7 @@ class Payload
     private function decodeResults(Process $process): array
     {
         $output = $process->getOutput();
-        
+
         $result = @unserialize($output);
 
         if (is_array($result)) {

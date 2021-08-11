@@ -22,14 +22,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterface
 {
-    const PARAM_TITLE = 'title';
-    const PARAM_DESCRIPTION = 'description';
-    const PARAM_PARTITION = 'partition';
-    const PARAM_FILTER = 'filter';
-    const PARAM_COMPONENTS = 'components';
-    const PARAM_TABBED = 'tabbed';
-    const PARAM_TAB_LABELS = 'tab_labels';
-    const KEY_COMPONENT_TYPE = 'component';
+    public const PARAM_TITLE = 'title';
+    public const PARAM_DESCRIPTION = 'description';
+    public const PARAM_PARTITION = 'partition';
+    public const PARAM_FILTER = 'filter';
+    public const PARAM_COMPONENTS = 'components';
+    public const PARAM_TABBED = 'tabbed';
+    public const PARAM_TAB_LABELS = 'tab_labels';
+    public const KEY_COMPONENT_TYPE = 'component';
 
     /**
      * @var ConfigurableRegistry<ComponentGeneratorInterface>
@@ -175,7 +175,8 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
             $parition,
             $config
         );
-        $this->logger->debug(sprintf('Rendered component "%s" (%s) for "%s" in "%ss"',
+        $this->logger->debug(sprintf(
+            'Rendered component "%s" (%s) for "%s" in "%ss"',
             get_class($component),
             $component->title(),
             get_class($componentGenerator),

@@ -23,11 +23,11 @@ class AssertionProcessorTest extends IntegrationTestCase
     public function testAssert(Variant $variant, string $assertion, AssertionResult $expected): void
     {
         self::assertEquals(
-                $expected->type(),
-                $this->createProcessor()->assert($variant, $assertion)->type()
-            );
+            $expected->type(),
+            $this->createProcessor()->assert($variant, $assertion)->type()
+        );
     }
-        
+
     /**
      * @return Generator<mixed>
      */
