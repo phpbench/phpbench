@@ -240,6 +240,17 @@ Default: ``NULL``
 
 Types: ``["string","null"]``
 
+.. _configuration_runner_php_env:
+
+runner.php_env
+~~~~~~~~~~~~~~
+
+Key-value set of environment variables to pass to the PHP process
+
+Default: ``NULL``
+
+Types: ``["array","null"]``
+
 .. _configuration_runner_progress:
 
 runner.progress
