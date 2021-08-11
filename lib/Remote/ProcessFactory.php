@@ -13,16 +13,28 @@ final class ProcessFactory implements ProcessFactoryInterface
      */
     private $logger;
 
-    public function __construct(?LoggerInterface $logger = null)
+    /**
+     * @var array|null
+     */
+    private $env;
+
+    public function __construct(?LoggerInterface $logger = null, ?array $env = null)
     {
         $this->logger = $logger ?: new NullLogger();
+        $this->env = $env;
     }
 
     public function create(string $commandLine, ?float $timeout = null): Process
     {
         $this->logger->debug(sprintf('Spawning process: %s', $commandLine));
 
-        return Process::fromShellCommandline($commandLine)
+        $process = Process::fromShellCommandline($commandLine)
             ->setTimeout($timeout);
+
+        if (null !== $this->env) {
+            $process->setEnv($this->env);
+        }
+
+        return $process;
     }
 }

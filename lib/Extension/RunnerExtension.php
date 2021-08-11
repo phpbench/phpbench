@@ -82,6 +82,7 @@ class RunnerExtension implements ExtensionInterface
     public const PARAM_PHP_CONFIG = 'runner.php_config';
     public const PARAM_PHP_DISABLE_INI = 'runner.php_disable_ini';
     public const PARAM_PHP_WRAPPER = 'runner.php_wrapper';
+    public const PARAM_PHP_ENV = 'runner.php_env';
     public const PARAM_PROGRESS = 'runner.progress';
     public const PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT = 'runner.progress_summary_baseline_format';
     public const PARAM_PROGRESS_SUMMARY_FORMAT = 'runner.progress_summary_variant_format';
@@ -131,6 +132,7 @@ class RunnerExtension implements ExtensionInterface
             self::PARAM_PHP_CONFIG => [],
             self::PARAM_PHP_DISABLE_INI => false,
             self::PARAM_PHP_WRAPPER => null,
+            self::PARAM_PHP_ENV => null,
             self::PARAM_PROGRESS => 'verbose',
             self::PARAM_PROGRESS_SUMMARY_FORMAT => VariantSummaryFormatter::DEFAULT_FORMAT,
             self::PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT => VariantSummaryFormatter::BASELINE_FORMAT,
@@ -163,6 +165,7 @@ class RunnerExtension implements ExtensionInterface
         $resolver->setAllowedTypes(self::PARAM_PHP_CONFIG, ['array']);
         $resolver->setAllowedTypes(self::PARAM_PHP_DISABLE_INI, ['bool']);
         $resolver->setAllowedTypes(self::PARAM_PHP_WRAPPER, ['string', 'null']);
+        $resolver->setAllowedTypes(self::PARAM_PHP_ENV, ['array', 'null']);
         $resolver->setAllowedTypes(self::PARAM_PROGRESS, ['string']);
         $resolver->setAllowedTypes(self::PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT, ['string']);
         $resolver->setAllowedTypes(self::PARAM_PROGRESS_SUMMARY_FORMAT, ['string']);
@@ -195,6 +198,7 @@ class RunnerExtension implements ExtensionInterface
             self::PARAM_PHP_CONFIG => 'Map of PHP ini settings to use when executing out-of-band benchmarks',
             self::PARAM_PHP_DISABLE_INI => 'Disable reading the default PHP configuration',
             self::PARAM_PHP_WRAPPER => 'Wrap the PHP binary with this command (e.g. ``blackfire run``)',
+            self::PARAM_PHP_ENV => 'Key-value set of environment variables to pass to the PHP process',
             self::PARAM_PROGRESS => 'Default progress logger to use',
             self::PARAM_PROGRESS_SUMMARY_FORMAT => 'Expression used to render the summary text default progress loggers',
             self::PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT => 'When the a comparison benchmark is referenced, alternative expression used to render the summary text default progress loggers',
@@ -370,7 +374,10 @@ class RunnerExtension implements ExtensionInterface
         });
 
         $container->register(ProcessFactory::class, function (Container $container) {
-            return new ProcessFactory($container->get(LoggerInterface::class));
+            return new ProcessFactory(
+                $container->get(LoggerInterface::class),
+                $container->getParameter(self::PARAM_PHP_ENV)
+            );
         });
 
         $container->register(Launcher::class, function (Container $container) {
