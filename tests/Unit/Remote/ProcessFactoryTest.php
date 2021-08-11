@@ -2,8 +2,8 @@
 
 namespace PhpBench\Tests\Unit\Remote;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Remote\ProcessFactory;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 
 class ProcessFactoryTest extends TestCase
@@ -17,10 +17,6 @@ class ProcessFactoryTest extends TestCase
         self::assertStringContainsString('hello', $process->getOutput());
     }
 
-
-    /**
-     * @runInSeparateProcess
-     */
     public function testCreatesProcessInheritsEnv(): void
     {
         $_ENV['FOO'] = 'bar';

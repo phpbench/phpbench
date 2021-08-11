@@ -138,6 +138,13 @@
                 "null"
             ]
         },
+        "runner.php_env": {
+            "description": "Key-value set of environment variables to pass to the PHP process",
+            "type": [
+                "object",
+                "null"
+            ]
+        },
         "runner.progress": {
             "description": "Default progress logger to use",
             "type": [
