@@ -68,6 +68,13 @@ Blinken logger:
 
 ![phpbench-blinken](https://user-images.githubusercontent.com/530801/92305786-4a539500-ef82-11ea-8a2c-db67968113b5.png)
 
+HTML Bar Chart:
+
+![Untitled](https://user-images.githubusercontent.com/530801/129060591-1dd984f1-8d03-4cf5-9601-7e677029e647.png)
+
+Console Bar Chart:
+
+![Untitled](https://user-images.githubusercontent.com/530801/129060527-9cf6c0e0-15f8-4f38-a8e1-39b257ff62fd.png)
 
 Contributing
 ------------
