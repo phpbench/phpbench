@@ -26,9 +26,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class DelimitedRenderer implements RendererInterface
 {
-    const OPT_DELIMITER = 'delimiter';
-    const OPT_FILE = 'file';
-    const OPT_HEADER = 'header';
+    public const OPT_DELIMITER = 'delimiter';
+    public const OPT_FILE = 'file';
+    public const OPT_HEADER = 'header';
 
 
     /**
@@ -81,7 +81,8 @@ class DelimitedRenderer implements RendererInterface
 
         if (false === $pointer) {
             throw new RuntimeException(sprintf(
-                'Could not open file "%s"', $fname
+                'Could not open file "%s"',
+                $fname
             ));
         }
 
@@ -100,7 +101,8 @@ class DelimitedRenderer implements RendererInterface
 
         if (false === $contents) {
             throw new RuntimeException(sprintf(
-                'Could not read stream "%s"', $fname
+                'Could not read stream "%s"',
+                $fname
             ));
         }
 

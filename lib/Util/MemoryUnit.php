@@ -106,7 +106,8 @@ class MemoryUnit
         if (!isset(self::$multipliers[$unit])) {
             throw new RuntimeException(sprintf(
                 'Unknown memory unit "%s", known memory units: "%s"',
-                $unit, implode('", "', array_keys(self::$multipliers))
+                $unit,
+                implode('", "', array_keys(self::$multipliers))
             ));
         }
 

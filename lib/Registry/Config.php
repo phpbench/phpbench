@@ -25,7 +25,7 @@ class Config extends ArrayObject
     /**
      * All names must satisfy this regex.
      */
-    const NAME_REGEX = '{^[0-9a-zA-Z_-]+$}';
+    public const NAME_REGEX = '{^[0-9a-zA-Z_-]+$}';
 
     private $name;
 

@@ -3,7 +3,6 @@
 namespace PhpBench\Tests\Example;
 
 use Generator;
-use function json_last_error_msg;
 use PhpBench\Console\Application;
 use PhpBench\Extension\ConsoleExtension;
 use PhpBench\Extension\RunnerExtension;
@@ -12,6 +11,7 @@ use PhpBench\Tests\IntegrationTestCase;
 use PhpBench\Tests\Util\Approval;
 use RuntimeException;
 use Symfony\Component\Console\Input\StringInput;
+use function json_last_error_msg;
 
 class CommandsTest extends IntegrationTestCase
 {
@@ -83,7 +83,9 @@ class CommandsTest extends IntegrationTestCase
 
     private function createExample(): void
     {
-        $this->workspace()->put('NothingBench.php', <<<'EOT'
+        $this->workspace()->put(
+            'NothingBench.php',
+            <<<'EOT'
 <?php
 
 class NothingBench { public function benchNothing(): void {}}

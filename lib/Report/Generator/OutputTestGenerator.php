@@ -2,7 +2,6 @@
 
 namespace PhpBench\Report\Generator;
 
-use function array_combine;
 use PhpBench\Expression\Ast\BooleanNode;
 use PhpBench\Expression\Ast\DisplayAsNode;
 use PhpBench\Expression\Ast\FloatNode;
@@ -25,6 +24,7 @@ use PhpBench\Report\Model\Reports;
 use PhpBench\Report\Model\Table;
 use PhpBench\Report\Model\Text;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function array_combine;
 
 class OutputTestGenerator implements GeneratorInterface
 {
@@ -84,9 +84,10 @@ class OutputTestGenerator implements GeneratorInterface
                 new BarChart([
                     new BarChartDataSet('Set 1', $range, $range, $range),
                     new BarChartDataSet('Set 2', $range, $range, $range),
-                ],'Example Aggregate Barchart', 'yValue as time')
+                ], 'Example Aggregate Barchart', 'yValue as time')
             )
-            ->addObject(ReportBuilder::create()
+            ->addObject(
+                ReportBuilder::create()
                 ->enableTabs()
                 ->addObject(new Text('This is tab one', 'Tab One'))
                 ->addObject(new Text('This is tab two', 'Tab Two'))

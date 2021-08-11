@@ -158,7 +158,8 @@ class RunnerHandler
 
             if (null === $parameters) {
                 throw new \InvalidArgumentException(sprintf(
-                    'Could not decode parameters JSON string: "%s"', $parametersJson
+                    'Could not decode parameters JSON string: "%s"',
+                    $parametersJson
                 ));
             }
         }

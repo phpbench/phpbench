@@ -251,7 +251,8 @@ class ExpressionExtension implements ExtensionInterface
 
             throw new RuntimeException(sprintf(
                 'Unknown theme "%s", known themes: "%s"',
-                $selected, implode('", "', $themes)
+                $selected,
+                implode('", "', $themes)
             ));
         });
 

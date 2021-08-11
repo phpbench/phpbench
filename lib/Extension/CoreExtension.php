@@ -33,7 +33,7 @@ class CoreExtension implements ExtensionInterface
     public const PARAM_WORKING_DIR = 'core.working_dir';
 
     public const PARAM_TIME_UNIT = 'core.time_unit';
-    const PARAM_SCHEMA = '$schema';
+    public const PARAM_SCHEMA = '$schema';
 
     public function configure(OptionsResolver $resolver): void
     {

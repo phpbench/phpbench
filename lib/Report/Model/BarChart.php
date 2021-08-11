@@ -2,9 +2,9 @@
 
 namespace PhpBench\Report\Model;
 
-use function array_replace;
 use PhpBench\Report\ComponentInterface;
 use RuntimeException;
+use function array_replace;
 
 class BarChart implements ComponentInterface
 {
@@ -109,7 +109,8 @@ class BarChart implements ComponentInterface
         if (!isset($this->dataSets[$offset])) {
             throw new RuntimeException(sprintf(
                 'No data set exists at offset %s/%s',
-                $offset, count($this->dataSets)
+                $offset,
+                count($this->dataSets)
             ));
         }
 

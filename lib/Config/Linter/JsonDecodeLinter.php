@@ -2,10 +2,10 @@
 
 namespace PhpBench\Config\Linter;
 
-use function json_last_error;
-use function json_last_error_msg;
 use PhpBench\Config\ConfigLinter;
 use PhpBench\Config\Exception\LintError;
+use function json_last_error;
+use function json_last_error_msg;
 
 class JsonDecodeLinter implements ConfigLinter
 {
@@ -15,7 +15,8 @@ class JsonDecodeLinter implements ConfigLinter
 
         if (json_last_error()) {
             throw new LintError(sprintf(
-                'Json decode returned an error: "%s"', json_last_error_msg()
+                'Json decode returned an error: "%s"',
+                json_last_error_msg()
             ));
         }
     }

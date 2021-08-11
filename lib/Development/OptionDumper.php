@@ -3,17 +3,17 @@
 namespace PhpBench\Development;
 
 use Generator;
-use function json_encode;
-use function mb_strlen;
-use function method_exists;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\Registry\RegistrableInterface;
 use PhpBench\Registry\Registry;
 use RuntimeException;
-use function str_repeat;
 use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\Exception\NoConfigurationException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function json_encode;
+use function mb_strlen;
+use function method_exists;
+use function str_repeat;
 
 class OptionDumper
 {
@@ -48,7 +48,8 @@ class OptionDumper
         if (!isset($this->typeToRegistryMap[$type])) {
             throw new RuntimeException(sprintf(
                 'Do not know about registry of type "%s", known registries: "%s"',
-                $type, implode('", "', array_keys($this->typeToRegistryMap))
+                $type,
+                implode('", "', array_keys($this->typeToRegistryMap))
             ));
         }
 
@@ -85,7 +86,8 @@ class OptionDumper
             } catch (NoConfigurationException $noConfig) {
                 throw new RuntimeException(sprintf(
                     'Could not generate doc for "%s": %s',
-                    get_class($service), $noConfig->getMessage()
+                    get_class($service),
+                    $noConfig->getMessage()
                 ));
             }
         }

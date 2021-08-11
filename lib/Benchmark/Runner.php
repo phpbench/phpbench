@@ -41,7 +41,7 @@ use PhpBench\Registry\ConfigurableRegistry;
  */
 final class Runner
 {
-    const DEFAULT_ASSERTER = 'comparator';
+    public const DEFAULT_ASSERTER = 'comparator';
 
     /**
      * @var ConfigurableRegistry<BenchmarkExecutorInterface>

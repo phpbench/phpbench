@@ -2,11 +2,11 @@
 
 namespace PhpBench\Tests\Unit\Model;
 
-use function iterator_to_array;
 use PhpBench\Model\Exception\InvalidParameterSets;
 use PhpBench\Model\ParameterSet;
 use PhpBench\Model\ParameterSets;
 use PHPUnit\Framework\TestCase;
+use function iterator_to_array;
 
 class ParameterSetsTest extends TestCase
 {

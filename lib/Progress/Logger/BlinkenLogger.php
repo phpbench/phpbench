@@ -22,9 +22,9 @@ class BlinkenLogger extends AnsiLogger
     /**
      * Number of measurements to show per row.
      */
-    const NUMBER_COLS = 10;
+    public const NUMBER_COLS = 10;
 
-    const INDENT = 4;
+    public const INDENT = 4;
 
     /**
      * Track rejected iterations.

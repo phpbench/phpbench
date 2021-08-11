@@ -18,9 +18,9 @@ class VariantSummaryFormatterTest extends IntegrationTestCase
     {
         $variant = TestUtil::getVariant();
         self::assertEquals('variant: 5', $this->createFormatter(
-                '"variant: " ~ mode(variant.time.avg)',
-                '"baseline: " ~ mode(variant.baseline.avg)'
-            )->formatVariant($variant));
+            '"variant: " ~ mode(variant.time.avg)',
+            '"baseline: " ~ mode(variant.baseline.avg)'
+        )->formatVariant($variant));
     }
 
     public function testFormatBaseline(): void
@@ -28,9 +28,9 @@ class VariantSummaryFormatterTest extends IntegrationTestCase
         $variant = TestUtil::getVariant();
         $this->createBaseline($variant);
         self::assertEquals('baseline: 30', $this->createFormatter(
-                '"variant: " ~ mode(variant.time.avg)',
-                '"baseline: " ~ mode(baseline.time.avg)'
-            )->formatVariant($variant));
+            '"variant: " ~ mode(variant.time.avg)',
+            '"baseline: " ~ mode(baseline.time.avg)'
+        )->formatVariant($variant));
     }
 
     private function createFormatter(string $format, string $baselineFormat): VariantSummaryFormatter
@@ -47,7 +47,10 @@ class VariantSummaryFormatterTest extends IntegrationTestCase
     private function createBaseline(Variant $variant, int $time = 30): void
     {
         $baseline = $variant->getSubject()->createVariant(
-            ParameterSet::fromUnserializedValues('no',[]), 10, 10, []
+            ParameterSet::fromUnserializedValues('no', []),
+            10,
+            10,
+            []
         );
         $baseline->spawnIterations(1);
 

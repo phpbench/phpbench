@@ -3,19 +3,19 @@
 namespace PhpBench\Report\Console\Renderer;
 
 use Generator;
-use function mb_substr;
 use PhpBench\Expression\ExpressionEvaluator;
 use PhpBench\Expression\Printer;
 use PhpBench\Report\Console\ObjectRenderer;
 use PhpBench\Report\Console\ObjectRendererInterface;
 use PhpBench\Report\Model\BarChart;
 use Symfony\Component\Console\Output\OutputInterface;
+use function mb_substr;
 
 class BarChartRenderer implements ObjectRendererInterface
 {
-    const HEIGHT = 8;
-    const COLORS = ['red', 'green', 'blue', 'cyan', 'magenta', 'yellow', 'white'];
-    const BLOCKS = ['▁', '▂', '▃', '▄', '▅', '▆', '▇', '█'];
+    public const HEIGHT = 8;
+    public const COLORS = ['red', 'green', 'blue', 'cyan', 'magenta', 'yellow', 'white'];
+    public const BLOCKS = ['▁', '▂', '▃', '▄', '▅', '▆', '▇', '█'];
 
     /**
      * @var Printer
@@ -192,7 +192,7 @@ class BarChartRenderer implements ObjectRendererInterface
     private function renderXAxes(array $xSeries, BarChart $chart): Generator
     {
         yield '          └';
-        
+
         foreach ($xSeries as $xIndex => $xValue) {
             foreach ($chart->dataSets() as $dataSetIndex => $dataSet) {
                 yield '─';
@@ -210,12 +210,12 @@ class BarChartRenderer implements ObjectRendererInterface
         }
 
         yield '            ';
-        
+
         foreach ($chart->xAxes() as $xIndex => $xValue) {
             foreach ($chart->dataSets() as $dataSetIndex => $dataSet) {
                 if ($dataSetIndex === 0) {
                     yield sprintf('<fg=cyan>%s</>', (string)(($xIndex + 1) % 10));
-        
+
                     continue;
                 }
 
@@ -224,7 +224,7 @@ class BarChartRenderer implements ObjectRendererInterface
 
             yield ' ';
         }
-        
+
         yield PHP_EOL;
     }
 }

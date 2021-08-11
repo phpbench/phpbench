@@ -48,7 +48,7 @@ class ArithmeticOperatorEvaluator implements NodeEvaluator
             case '-':
                 return $leftValue - $rightValue;
         }
-        
+
         throw new EvaluationError($node, sprintf(
             'Unknown operator "%s"',
             $node->operator()

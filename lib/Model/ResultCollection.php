@@ -83,7 +83,9 @@ class ResultCollection
         if (!isset($metrics[$metric])) {
             throw new \InvalidArgumentException(sprintf(
                 'Unknown metric "%s" for result class "%s". Available metrics: "%s"',
-                $metric, $class, implode('", "', array_keys($metrics))
+                $metric,
+                $class,
+                implode('", "', array_keys($metrics))
             ));
         }
 

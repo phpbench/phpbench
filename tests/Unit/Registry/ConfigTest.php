@@ -40,7 +40,8 @@ class ConfigTest extends TestCase
                 'one' => 1,
                 'two' => 2,
             ],
-        ]);
+        ]
+        );
         $config['offset_not_exist'];
     }
 

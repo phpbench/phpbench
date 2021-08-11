@@ -207,7 +207,7 @@ class SubjectMetadataTest extends TestCase
                 self::assertEquals(['1','2'], $merged->getAssertions());
             }
         ];
- 
+
         yield [
             function (SubjectMetadata $subject1, SubjectMetadata $subject2): void {
                 $subject1->setExecutor(new ExecutorMetadata('foobar', ['1']));

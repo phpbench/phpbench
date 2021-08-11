@@ -56,7 +56,8 @@ class ShowCommand extends Command
         $this->setName('show');
         $this->setDescription('Show the details of a specific run.');
         $this->addArgument('run_id', InputArgument::REQUIRED, 'Run ID');
-        $this->setHelp(<<<'EOT'
+        $this->setHelp(
+            <<<'EOT'
 Show the results of a specific run.
 
     $ %command.full_name% <run id>

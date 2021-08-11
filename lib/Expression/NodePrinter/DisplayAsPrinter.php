@@ -89,7 +89,8 @@ class DisplayAsPrinter implements NodePrinter
         }
 
         throw new PrinterError(sprintf(
-            'Do not know how to display unit "%s"', $unit
+            'Do not know how to display unit "%s"',
+            $unit
         ));
     }
 
@@ -142,7 +143,7 @@ class DisplayAsPrinter implements NodePrinter
         if (!$node instanceof DisplayAsTimeNode) {
             return null;
         }
-        
+
         $mode = $node->mode();
 
         if (!$mode) {
@@ -156,7 +157,7 @@ class DisplayAsPrinter implements NodePrinter
         if (!$mode instanceof StringNode) {
             throw new PrinterError(sprintf('Time mode must evaluate to string, got "%s"', get_class($mode)));
         }
-        
+
         return $mode->value();
     }
 }

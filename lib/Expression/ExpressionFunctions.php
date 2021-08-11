@@ -51,7 +51,8 @@ final class ExpressionFunctions
         if (!$evaluated instanceof Node) {
             throw new RuntimeException(sprintf(
                 'Function "%s" must return a Node, got "%s"',
-                $functionName, gettype($evaluated)
+                $functionName,
+                gettype($evaluated)
             ));
         }
 

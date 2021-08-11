@@ -2,11 +2,11 @@
 
 namespace PhpBench\Development;
 
-use function json_encode;
-use function method_exists;
 use PhpBench\DependencyInjection\ExtensionInterface;
 use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function json_encode;
+use function method_exists;
 
 class ConfigSchemaDumper
 {
@@ -47,7 +47,7 @@ class ConfigSchemaDumper
 
         foreach ($this->extensions as $extensionClass) {
             $optionsResolver = new OptionsResolver();
-            $extension = new $extensionClass;
+            $extension = new $extensionClass();
             assert($extension instanceof ExtensionInterface);
             $extension->configure($optionsResolver);
 

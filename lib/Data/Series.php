@@ -30,7 +30,8 @@ final class Series implements Countable
         if (!array_key_exists($index, $this->values)) {
             throw new RuntimeException(sprintf(
                 'No value exists at index "%s" in series with %s values',
-                $index, count($this->values)
+                $index,
+                count($this->values)
             ));
         }
 

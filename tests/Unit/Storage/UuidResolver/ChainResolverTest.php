@@ -19,8 +19,8 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 class ChainResolverTest extends TestCase
 {
-    const TEST_REFERENCE = '1234';
-    const TEST_UUID = 'uuid';
+    public const TEST_REFERENCE = '1234';
+    public const TEST_UUID = 'uuid';
 
     /**
      * @var UuidResolverInterface|ObjectProphecy

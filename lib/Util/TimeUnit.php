@@ -368,7 +368,8 @@ class TimeUnit
         if (!in_array($mode, $validModes)) {
             throw new \InvalidArgumentException(sprintf(
                 'Time mode must be one of "%s", got "%s"',
-                implode('", "', $validModes), $mode
+                implode('", "', $validModes),
+                $mode
             ));
         }
     }
@@ -389,7 +390,8 @@ class TimeUnit
 
         throw new \InvalidArgumentException(sprintf(
             'Invalid time unit "%s", available units: "%s"',
-            $unit, implode('", "', array_keys(self::$map))
+            $unit,
+            implode('", "', array_keys(self::$map))
         ));
     }
 

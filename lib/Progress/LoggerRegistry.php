@@ -26,7 +26,8 @@ class LoggerRegistry
         if (!isset($this->progressLoggers[$name])) {
             throw new \InvalidArgumentException(sprintf(
                 'No progress logger with name "%s" has been registered, known progress loggers: "%s"',
-                $name, implode('", "', array_keys($this->progressLoggers))
+                $name,
+                implode('", "', array_keys($this->progressLoggers))
             ));
         }
 

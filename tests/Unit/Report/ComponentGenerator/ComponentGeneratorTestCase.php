@@ -15,7 +15,7 @@ abstract class ComponentGeneratorTestCase extends IntegrationTestCase
     /**
      * @param parameters $config
      */
-    public function generate(DataFrame $dataFrame , array $config): ComponentInterface
+    public function generate(DataFrame $dataFrame, array $config): ComponentInterface
     {
         $resolver = new OptionsResolver();
         $generator = $this->createGenerator();

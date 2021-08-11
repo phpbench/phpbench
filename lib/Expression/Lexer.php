@@ -51,7 +51,7 @@ final class Lexer
         'null' => Token::T_NULL,
     ];
 
-    const PATTERNS = [
+    public const PATTERNS = [
         self::PATTERN_NUMBER, // numbers
         self::PATTERN_FUNCTION,
         self::PATTERN_NAME,

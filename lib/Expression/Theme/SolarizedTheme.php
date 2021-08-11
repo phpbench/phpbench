@@ -138,9 +138,11 @@ class SolarizedTheme implements ColorMap
             $this->gradient = Gradient::start(
                 Color::fromHex(self::GREEN)
             )->to(
-                Color::fromHex('#aaaaaa'), 100
+                Color::fromHex('#aaaaaa'),
+                100
             )->to(
-                Color::fromHex('#ff0000'), 100
+                Color::fromHex('#ff0000'),
+                100
             );
         }
 

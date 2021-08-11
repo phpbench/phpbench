@@ -76,7 +76,8 @@ class HtmlRenderer implements RendererInterface
 
         if (false === file_put_contents($outputPath, $rendered)) {
             throw new RuntimeException(sprintf(
-                'Could not write report to file "%s"', $outputPath
+                'Could not write report to file "%s"',
+                $outputPath
             ));
         }
 

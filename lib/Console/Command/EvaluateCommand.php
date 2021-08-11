@@ -2,7 +2,6 @@
 
 namespace PhpBench\Console\Command;
 
-use function json_last_error_msg;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Lexer;
 use PhpBench\Expression\Parser;
@@ -13,11 +12,12 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use function json_last_error_msg;
 
 class EvaluateCommand extends Command
 {
-    const ARG_EXPR = 'expr';
-    const ARG_PARAMS = 'params';
+    public const ARG_EXPR = 'expr';
+    public const ARG_PARAMS = 'params';
 
 
     /**
