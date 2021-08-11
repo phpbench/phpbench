@@ -9,6 +9,7 @@ use PhpBench\Data\Row;
 use PhpBench\Expression\ExpressionEvaluator;
 use PhpBench\Report\ComponentGeneratorInterface;
 use PhpBench\Report\ComponentInterface;
+use function PhpBench\Report\Func\fit_to_axis;
 use PhpBench\Report\Model\BarChart;
 use PhpBench\Report\Model\BarChartDataSet;
 use RuntimeException;
@@ -108,10 +109,10 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
             }
         }
 
-        $ySeries = $this->normalizeSeries($xAxes, $ySeries);
+        $ySeries = fit_to_axis($xAxes, $ySeries);
 
         if (null !== $config[self::PARAM_Y_ERROR_MARGIN]) {
-            $errorMargins = $this->normalizeSeries($xAxes, $errorMargins);
+            $errorMargins = fit_to_axis($xAxes, $errorMargins);
         }
 
         return new BarChart(
@@ -127,16 +128,6 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
             $config[self::PARAM_Y_AXES_LABEL],
             $xLabels
         );
-    }
-
-    private function normalizeSeries(array $xLabels, array $ySeries): array
-    {
-        return array_map(function (array $series) use ($xLabels) {
-            return array_values(array_replace(
-                array_combine($xLabels, array_fill(0, count($xLabels), 0)),
-                $series
-            ));
-        }, $ySeries);
     }
 
     /**

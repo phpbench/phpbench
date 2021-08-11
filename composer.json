@@ -75,6 +75,9 @@
         }
     },
     "autoload": {
+        "files": [
+            "lib/Report/Func/functions.php"
+        ],
         "psr-4": {
             "PhpBench\\": "lib/",
             "PhpBench\\Extensions\\XDebug\\": "extensions/xdebug/lib/",
