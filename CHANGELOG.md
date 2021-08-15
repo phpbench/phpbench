@@ -1,8 +1,8 @@
 CHANGELOG
 =========
 
-master
-------
+1.1.0 (2021-08-15)
+------------------
 
 Bug fixes:
 
@@ -12,6 +12,7 @@ Bug fixes:
 
 Features:
 
+- Allow env vars to be passed to the benchmark process.
 - Allow config files to include other config files via. `$include` and
   `$include-glob` #989
 - Added `contains` function to see if a value exists in a list.
