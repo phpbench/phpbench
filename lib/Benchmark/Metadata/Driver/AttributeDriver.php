@@ -13,6 +13,7 @@ use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Reflection\ReflectionClass;
 use PhpBench\Reflection\ReflectionHierarchy;
 use PhpBench\Reflection\ReflectionMethod;
+use function array_key_exists;
 
 class AttributeDriver implements DriverInterface
 {
@@ -39,7 +40,7 @@ class AttributeDriver implements DriverInterface
     private function buildBenchmark(BenchmarkMetadata $benchmark, ReflectionHierarchy $hierarchy): void
     {
         $attributes = [];
-        $reflectionHierarchy = array_reverse(iterator_to_array($hierarchy));
+        $reflectionHierarchy = iterator_to_array($hierarchy);
 
         foreach ($reflectionHierarchy as $reflection) {
             assert($reflection instanceof ReflectionClass);
@@ -76,6 +77,14 @@ class AttributeDriver implements DriverInterface
 
                 if (null === $subjectAttributes) {
                     $subjectAttributes = $reflectionMethod->attributes;
+                }
+
+                $subjects = $benchmark->getSubjects();
+
+                if (array_key_exists($reflectionMethod->name, $subjects)) {
+                    // A subject with the same name has already been processed: skip parent class subjects
+                    // with the same name.
+                    continue;
                 }
 
                 $subject = $benchmark->getOrCreateSubject($reflectionMethod->name);

@@ -21,6 +21,7 @@ class ReflectionClass
     public $namespace;
     public $abstract = false;
     public $comment;
+    /** @var array<string, ReflectionMethod> */
     public $methods = [];
 
     public function __construct(?string $path = null, ?string $class = null)
