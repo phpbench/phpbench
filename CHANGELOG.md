@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+1.1.1 (2021-09-08)
+------------------
+
+Bug fixes:
+
+- Prevent registering #[ParamProviders(...)] multiple times when benchmark methods are inherited #918 - @ocramius
+
 1.1.0 (2021-08-15)
 ------------------
 
