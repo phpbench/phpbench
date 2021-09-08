@@ -325,4 +325,70 @@ class AttributeDriverTest extends TestCase
     {
         return PHP_VERSION_ID < 80000;
     }
+
+    public function testInheritedMethodsWillNotAppearMultipleTimesInTheSubject(): void
+    {
+        $baseClass = new ReflectionClass(__FILE__, 'BaseClassBench');
+        $childClass = new ReflectionClass(__FILE__, 'ChildClassBench');
+
+        $baseClassMethod = new ReflectionMethod();
+        $childClassOverridingBenchMethod = new ReflectionMethod();
+
+        $baseClassMethod->name = 'benchInheritedMethod';
+        $childClassOverridingBenchMethod->name = 'benchInheritedMethod';
+
+        $baseClass->methods[] = $baseClassMethod;
+        $childClass->methods[] = $childClassOverridingBenchMethod;
+
+        $hierarchy = new ReflectionHierarchy([
+            $childClass,
+            $baseClass
+        ]);
+
+        self::assertCount(
+            1,
+            $this->createDriver()
+                ->getMetadataForHierarchy($hierarchy)
+                ->getSubjects()
+        );
+    }
+
+    public function testInheritedMethodsWillNotLeadToRepeatedParameterProviderRegistration(): void
+    {
+        $baseClass = new ReflectionClass(__FILE__, 'BaseClassBench');
+        $childClass = new ReflectionClass(__FILE__, 'ChildClassBench');
+
+        $baseClassProvider = new ReflectionMethod();
+        $baseClassMethod = new ReflectionMethod();
+        $childClassOverridingBenchMethod = new ReflectionMethod();
+
+        $baseClassProvider->name = 'parameterProvider';
+        $baseClassMethod->name = 'benchInheritedMethod';
+        $childClassOverridingBenchMethod->name = 'benchInheritedMethod';
+
+        $baseClassMethod->attributes[] = new ParamProviders(['parameterProvider']);
+        // Attributes are inherited - we're emulating what the PHP engine does
+        $childClassOverridingBenchMethod->attributes[] = new ParamProviders(['parameterProvider']);
+
+        $baseClass->methods[] = $baseClassProvider;
+        $baseClass->methods[] = $baseClassMethod;
+        $childClass->methods[] = $baseClassProvider;
+        $childClass->methods[] = $childClassOverridingBenchMethod;
+
+        $hierarchy = new ReflectionHierarchy([
+            $childClass,
+            $baseClass
+        ]);
+
+        $subjects = $this->createDriver()
+            ->getMetadataForHierarchy($hierarchy)
+            ->getSubjects();
+
+        self::assertCount(1, $subjects);
+        self::assertArrayHasKey('benchInheritedMethod', $subjects);
+
+        $subject = $subjects['benchInheritedMethod'];
+
+        self::assertCount(1, $subject->getParamProviders());
+    }
 }

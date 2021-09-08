@@ -30,7 +30,7 @@ class BenchmarkMetadata
     private $class;
 
     /**
-     * @var SubjectMetadata[]
+     * @var array<string, SubjectMetadata> indexed by subject name
      */
     private $subjects = [];
 
@@ -83,7 +83,7 @@ class BenchmarkMetadata
     /**
      * Get the subject metadata instances for this benchmark metadata.
      *
-     * @return SubjectMetadata[]
+     * @return array<string, SubjectMetadata> indexed by subject name
      */
     public function getSubjects(): array
     {
