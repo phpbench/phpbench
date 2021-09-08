@@ -22,7 +22,7 @@ use IteratorAggregate;
 class ReflectionHierarchy implements IteratorAggregate
 {
     /**
-     * @var ReflectionClass[] sorted by leaf class ("top") first
+     * @var ReflectionClass[] ordered by leaf class ("top") first
      */
     private $reflectionClasses;
 
