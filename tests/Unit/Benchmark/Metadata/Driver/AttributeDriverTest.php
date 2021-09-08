@@ -328,6 +328,12 @@ class AttributeDriverTest extends TestCase
 
     public function testInheritedMethodsWillNotAppearMultipleTimesInTheSubject(): void
     {
+        if ($this->shouldSkip()) {
+            $this->markTestSkipped('PHP 8 only');
+
+            return;
+        }
+
         $baseClass = new ReflectionClass(__FILE__, 'BaseClassBench');
         $childClass = new ReflectionClass(__FILE__, 'ChildClassBench');
 
@@ -355,6 +361,12 @@ class AttributeDriverTest extends TestCase
 
     public function testInheritedMethodsWillNotLeadToRepeatedParameterProviderRegistration(): void
     {
+        if ($this->shouldSkip()) {
+            $this->markTestSkipped('PHP 8 only');
+
+            return;
+        }
+
         $baseClass = new ReflectionClass(__FILE__, 'BaseClassBench');
         $childClass = new ReflectionClass(__FILE__, 'ChildClassBench');
 
