@@ -18,7 +18,7 @@
         "ext-reflection": "*",
         "ext-spl": "*",
         "ext-tokenizer": "*",
-        "doctrine/annotations": "^1.2.7",
+        "doctrine/annotations": "^1.13",
         "phpbench/container": "^2.1",
         "phpbench/dom": "~0.3.1",
         "psr/log": "^1.1",
