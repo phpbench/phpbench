@@ -126,21 +126,21 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - '7.2'
                     - '7.3'
                     - '7.4'
+                    - '8.0'
                 dependency:
                     - 'lowest'
                     - 'highest'
                 with-examples: ['yes']
                 allow-failures: [false]
                 include:
-                    - php-version: '7.2'
+                    - php-version: '7.3'
                       dependency: 'lowest'
                       with-examples: 'no'
                       allow-failures: false
                       coverage: xdebug
-                    - php-version: '8.0'
+                    - php-version: '8.1'
                       dependency: 'highest'
                       with-examples: 'no'
                       allow-failures: true
