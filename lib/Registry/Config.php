@@ -41,6 +41,7 @@ class Config extends ArrayObject
         parent::__construct($config);
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         if (!$this->offsetExists($offset)) {
