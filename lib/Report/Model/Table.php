@@ -66,7 +66,7 @@ final class Table implements IteratorAggregate, ComponentInterface
     /**
      * {@inheritDoc}
      */
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->rows);
     }

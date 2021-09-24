@@ -35,7 +35,7 @@ final class TableRow implements IteratorAggregate, Countable
     /**
      * {@inheritDoc}
      */
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->cells);
     }

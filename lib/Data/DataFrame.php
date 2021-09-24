@@ -163,7 +163,7 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     /**
      * @return ArrayIterator<Row>
      */
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->rows());
     }

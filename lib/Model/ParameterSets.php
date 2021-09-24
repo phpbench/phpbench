@@ -52,7 +52,7 @@ final class ParameterSets implements IteratorAggregate, Countable
     /**
      * @return ArrayIterator<string, ParameterSet>
      */
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->parameterSets);
     }

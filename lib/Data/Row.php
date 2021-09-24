@@ -46,7 +46,7 @@ final class Row implements IteratorAggregate, ArrayAccess
     /**
      * @return ArrayIterator<string,mixed>
      */
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->map);
     }

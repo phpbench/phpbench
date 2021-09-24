@@ -43,7 +43,7 @@ class ReflectionHierarchy implements IteratorAggregate
         $this->reflectionClasses[] = $reflectionClass;
     }
 
-    public function getIterator()
+    public function getIterator(): \ArrayObject
     {
         return new \ArrayObject($this->reflectionClasses);
     }
