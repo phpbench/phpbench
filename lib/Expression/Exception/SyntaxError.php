@@ -17,7 +17,7 @@ class SyntaxError extends ExpressionError
         $found = false;
 
         $expr = $tokens->toString();
-        $center = (int)$target->start() + ($target->length() / 2);
+        $center = floor((int)$target->start() + ($target->length() / 2));
 
         foreach ($tokens as $token) {
             if ($token === $target) {
