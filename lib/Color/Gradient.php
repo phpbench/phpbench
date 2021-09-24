@@ -70,7 +70,7 @@ use function array_fill;
         }
 
         $colors = array_merge($this->colors, array_map(function (float $r, float $g, float $b) {
-            return DeprecatedColor::fromRgb(floor($r), floor($g), floor($b));
+            return DeprecatedColor::fromRgb((int)$r, (int)$g, (int)$b);
         }, ...$gradient));
 
         // remove the start color as it's already present

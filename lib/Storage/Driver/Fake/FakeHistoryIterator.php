@@ -46,7 +46,7 @@ class FakeHistoryIterator implements HistoryIteratorInterface
      */
     public function valid(): bool
     {
-        return current($this->entries);
+        return (bool)current($this->entries);
     }
 
     /**
