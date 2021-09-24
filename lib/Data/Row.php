@@ -74,6 +74,7 @@ final class Row implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritDoc}
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return isset($this->map[$offset]);
@@ -82,6 +83,7 @@ final class Row implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritDoc}
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->get($offset);
@@ -90,6 +92,7 @@ final class Row implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritDoc}
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value): void
     {
         throw new BadMethodCallException('Not implemented');
@@ -98,6 +101,7 @@ final class Row implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritDoc}
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset): void
     {
         throw new BadMethodCallException('Not implemented');

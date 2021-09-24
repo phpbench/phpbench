@@ -45,6 +45,7 @@ class Information implements \ArrayAccess, \IteratorAggregate
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->information[$offset];
@@ -53,6 +54,7 @@ class Information implements \ArrayAccess, \IteratorAggregate
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value): void
     {
         throw new \BadMethodCallException(sprintf(
@@ -65,6 +67,7 @@ class Information implements \ArrayAccess, \IteratorAggregate
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset): bool
     {
         return array_key_exists($offset, $this->information);
@@ -73,6 +76,7 @@ class Information implements \ArrayAccess, \IteratorAggregate
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset): void
     {
         throw new \BadMethodCallException(sprintf(
