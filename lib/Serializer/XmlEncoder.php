@@ -70,7 +70,7 @@ class XmlEncoder
             //             removed in version 1.0
             $suiteEl->setAttribute('context', $suite->getTag() ?? '');
             $suiteEl->setAttribute('date', $suite->getDate()->format('c'));
-            $suiteEl->setAttribute('config-path', $suite->getConfigPath());
+            $suiteEl->setAttribute('config-path', $suite->getConfigPath() ?? '');
             $suiteEl->setAttribute('uuid', $suite->getUuid());
 
             $envEl = $suiteEl->appendElement('env');
