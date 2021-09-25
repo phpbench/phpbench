@@ -122,7 +122,7 @@ class Payload
         $this->disableIni = true;
     }
 
-    public function setPhpPath(?string $phpPath): void
+    public function setPhpPath(string $phpPath): void
     {
         $this->phpPath = $phpPath;
     }
