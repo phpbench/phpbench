@@ -119,7 +119,7 @@ class Payload
 
     public function setPhpPath($phpPath): void
     {
-        $this->phpPath = escapeshellarg($phpPath);
+        $this->phpPath = $phpPath ? escapeshellarg($phpPath) : '';
     }
 
     public function disableIni(): void

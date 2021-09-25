@@ -163,7 +163,7 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     /**
      * @return ArrayIterator<Row>
      */
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->rows());
     }
@@ -216,6 +216,7 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritDoc}
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return in_array($offset, $this->columns);
@@ -224,6 +225,7 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritDoc}
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->column($offset)->toValues();
@@ -232,6 +234,7 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritDoc}
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value): void
     {
         throw new BadMethodCallException('Not implemented');
@@ -240,6 +243,7 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritDoc}
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset): void
     {
         throw new BadMethodCallException('Not implemented');

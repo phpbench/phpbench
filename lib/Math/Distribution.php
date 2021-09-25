@@ -160,6 +160,7 @@ class Distribution implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset): bool
     {
         return isset($this->stats[$offset]);
@@ -168,6 +169,7 @@ class Distribution implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->getStat($offset);
@@ -176,6 +178,7 @@ class Distribution implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value): void
     {
         throw new \BadMethodCallException('Distribution is read-only');
@@ -184,6 +187,7 @@ class Distribution implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset): void
     {
         throw new \BadMethodCallException('Distribution is read-only');

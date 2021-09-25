@@ -409,11 +409,13 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
         return count($this->iterations);
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset): ?Iteration
     {
         return $this->getIteration($offset);
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value): void
     {
         throw new \InvalidArgumentException(
@@ -424,6 +426,7 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset): void
     {
         throw new \InvalidArgumentException(
@@ -431,6 +434,7 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
         );
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset): bool
     {
         return array_key_exists($offset, $this->iterations);

@@ -44,7 +44,7 @@ final class ParameterSetsCollection implements IteratorAggregate, Countable
     /**
      * @return ArrayIterator<int, ParameterSets>
      */
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->parameterSets);
     }

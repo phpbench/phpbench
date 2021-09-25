@@ -45,6 +45,7 @@ class HistoryIterator implements HistoryIteratorInterface
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         $this->init();
@@ -118,7 +119,7 @@ class HistoryIterator implements HistoryIteratorInterface
     /**
      * {@inheritdoc}
      */
-    public function valid()
+    public function valid(): bool
     {
         $this->init();
 

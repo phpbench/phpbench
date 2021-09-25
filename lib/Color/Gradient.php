@@ -69,8 +69,8 @@ use function array_fill;
             $gradient[$i] = range($cStart, $cEnd, $step);
         }
 
-        $colors = array_merge($this->colors, array_map(function (int $r, int $g, int $b) {
-            return DeprecatedColor::fromRgb($r, $g, $b);
+        $colors = array_merge($this->colors, array_map(function (float $r, float $g, float $b) {
+            return DeprecatedColor::fromRgb((int)$r, (int)$g, (int)$b);
         }, ...$gradient));
 
         // remove the start color as it's already present

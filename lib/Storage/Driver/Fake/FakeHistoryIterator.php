@@ -20,7 +20,7 @@ class FakeHistoryIterator implements HistoryIteratorInterface
     /**
      * {@inheritDoc}
      */
-    public function current()
+    public function current(): HistoryEntry
     {
         return current($this->entries);
     }
@@ -36,7 +36,7 @@ class FakeHistoryIterator implements HistoryIteratorInterface
     /**
      * {@inheritDoc}
      */
-    public function key()
+    public function key(): int
     {
         return key($this->entries);
     }
@@ -44,9 +44,9 @@ class FakeHistoryIterator implements HistoryIteratorInterface
     /**
      * {@inheritDoc}
      */
-    public function valid()
+    public function valid(): bool
     {
-        return current($this->entries);
+        return (bool)current($this->entries);
     }
 
     /**
