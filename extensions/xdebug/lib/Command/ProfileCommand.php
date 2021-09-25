@@ -51,6 +51,7 @@ EOT
         );
         RunnerHandler::configure($this);
         OutputDirHandler::configure($this);
+
         $this->addOption('gui', null, InputOption::VALUE_NONE);
         $this->addOption('gui-bin', null, InputOption::VALUE_REQUIRED, 'Bin to use to display cachegrind output', 'kcachegrind');
     }

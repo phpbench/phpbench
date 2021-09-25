@@ -19,6 +19,10 @@ class XDebugTestCase extends SystemTestCase
 {
     protected function setUp(): void
     {
+        if (getenv('SKIP_XDEBUG_TESTS')) {
+            $this->markTestSkipped('Tests disabled by CI.');
+        }
+
         if (!extension_loaded('xdebug')) {
             $this->markTestSkipped('XDebug not enabled.');
         }

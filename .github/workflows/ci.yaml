@@ -20,7 +20,7 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - '7.2'
+                    - '7.3'
 
         steps:
             -
@@ -50,7 +50,7 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - '7.2'
+                    - '7.3'
 
         steps:
             -
@@ -87,7 +87,7 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - '7.2'
+                    - '7.3'
 
         steps:
             -
@@ -126,25 +126,26 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - '7.2'
                     - '7.3'
                     - '7.4'
+                    - '8.0'
                 dependency:
                     - 'lowest'
                     - 'highest'
                 with-examples: ['yes']
                 allow-failures: [false]
                 include:
-                    - php-version: '7.2'
+                    - php-version: '7.3'
                       dependency: 'lowest'
                       with-examples: 'no'
                       allow-failures: false
                       coverage: xdebug
-                    - php-version: '8.0'
+                    - php-version: '8.1'
                       dependency: 'highest'
                       with-examples: 'no'
                       allow-failures: true
                       coverage: xdebug
+                      skip_xdebug_tests: "true"
 
         steps:
             - name: "Checkout code"
@@ -173,6 +174,8 @@ jobs:
 
             - name: "Run tests with PHPUnit"
               run: vendor/bin/phpunit --verbose
+              env:
+                  SKIP_XDEBUG_TESTS: "${{ matrix.skip_xdebug_tests }}"
 
             - name: "Run benchmarks with PHPBench"
               run: bin/phpbench run --report=env --progress=dots
