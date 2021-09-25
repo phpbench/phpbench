@@ -145,6 +145,7 @@ jobs:
                       with-examples: 'no'
                       allow-failures: true
                       coverage: xdebug
+                      skip_xdebug_tests: "true"
 
         steps:
             - name: "Checkout code"
@@ -173,6 +174,8 @@ jobs:
 
             - name: "Run tests with PHPUnit"
               run: vendor/bin/phpunit --verbose
+              env:
+                  SKIP_XDEBUG_TESTS: "${{ matrix.skip_xdebug_tests }}"
 
             - name: "Run benchmarks with PHPBench"
               run: bin/phpbench run --report=env --progress=dots
