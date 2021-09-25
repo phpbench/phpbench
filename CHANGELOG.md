@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+master
+------
+
+- Removing PHP8.1 deprecations - @Crell
+
 1.1.1 (2021-09-08)
 ------------------
 
