@@ -38,7 +38,7 @@ class TagResolver implements UuidResolverInterface
         $count = 0;
         /** @var HistoryEntry $entry */
         foreach ($history as $entry) {
-            if ($tag->__toString() === strtolower($entry->getTag())) {
+            if ($tag->__toString() === strtolower($entry->getTag() ?? '')) {
                 if ($count++ < $offset) {
                     continue;
                 }
