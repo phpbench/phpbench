@@ -15,6 +15,7 @@ namespace PhpBench\Remote;
 use PhpBench\Remote\Exception\ScriptErrorException;
 use RuntimeException;
 use Symfony\Component\Process\Process;
+use function escapeshellarg;
 
 /**
  * Class representing the context from which a script can be generated and executed by a PHP binary.
@@ -93,7 +94,6 @@ class Payload
         string $scriptPath = null,
         bool $scriptRemove = false
     ) {
-        $this->setPhpPath($phpPath);
         $this->template = $template;
         $this->tokens = $tokens;
         $this->processFactory = $processFactory ?: new ProcessFactory();
@@ -117,14 +117,14 @@ class Payload
         );
     }
 
-    public function setPhpPath($phpPath): void
-    {
-        $this->phpPath = $phpPath ? escapeshellarg($phpPath) : '';
-    }
-
     public function disableIni(): void
     {
         $this->disableIni = true;
+    }
+
+    public function setPhpPath(?string $phpPath): void
+    {
+        $this->phpPath = $phpPath;
     }
 
     public function launch(): array
@@ -226,7 +226,7 @@ class Payload
             $arguments[] = $this->wrapper;
         }
 
-        $arguments[] = $this->phpPath;
+        $arguments[] = escapeshellarg($this->phpPath);
 
         if (true === $this->disableIni) {
             $arguments[] = self::FLAG_DISABLE_INI;
