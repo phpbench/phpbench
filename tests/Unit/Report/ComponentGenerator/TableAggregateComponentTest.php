@@ -113,4 +113,26 @@ class TableAggregateComponentTest extends ComponentGeneratorTestCase
             ]
         ])->build(), $table);
     }
+
+    public function testExpandKey(): void
+    {
+        $frame = DataFrame::fromRowSeries([
+            ['bench1', 'subject1', 1],
+            ['bench1', 'subject2', 1],
+            ['bench2', 'subject1', 1],
+            ['bench2', 'subject2', 1],
+        ], ['name', 'subject', 'time']);
+
+        $table = $this->generate($frame, [
+            TableAggregateComponent::PARAM_ROW => [
+                'one' => 'first(partition["subject"])',
+                '@=partition["name"]' => 'mode(partition["time"])',
+            ],
+            TableAggregateComponent::PARAM_PARTITION => ['subject'],
+        ]);
+        assert($table instanceof Table);
+        self::assertCount(2, $table->rows());
+        self::assertCount(3, $table->columnNames());
+        self::assertEquals(['one', 'bench1', 'bench2'], $table->columnNames());
+    }
 }
