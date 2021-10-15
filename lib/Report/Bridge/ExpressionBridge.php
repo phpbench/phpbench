@@ -63,4 +63,22 @@ class ExpressionBridge
             return implode('-', $hash);
         });
     }
+
+    /**
+     * @return scalar[]
+     */
+    public function evaluateColumns(DataFrame $frame, string $colName): array
+    {
+        $colNames = [];
+        if (substr($colName, 0, 2) !== '@=') {
+            return [$colName];
+        }
+
+        $expression = substr($colName, 2);
+        $colNames = (array)$this->evaluator->evaluatePhpValue($expression, [
+            'partition' => $frame,
+        ]);
+
+        return $colNames;
+    }
 }

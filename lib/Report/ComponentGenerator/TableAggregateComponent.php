@@ -58,10 +58,12 @@ class TableAggregateComponent implements ComponentGeneratorInterface
             $row = [];
 
             foreach ($config[self::PARAM_ROW] as $colName => $expression) {
-                $row[$colName] = $this->evaluator->evaluate($expression, [
-                    'partition' => $dataFrameRow,
-                    'frame' => $dataFrame,
-                ]);
+                foreach ($this->evaluator->evaluateColumns($dataFrameRow, $colName) as $colName) {
+                    $row[$colName] = $this->evaluator->evaluate($expression, [
+                        'partition' => $dataFrameRow,
+                        'frame' => $dataFrame,
+                    ]);
+                }
             }
             $rows[] = $row;
         }
