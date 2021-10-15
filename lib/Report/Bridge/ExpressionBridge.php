@@ -66,8 +66,9 @@ class ExpressionBridge
 
     /**
      * @return scalar[]
+     * @param parameters $params
      */
-    public function evaluateColumns(DataFrame $frame, string $colName): array
+    public function evaluateColumns(string $colName, array $params): array
     {
         $colNames = [];
         if (substr($colName, 0, 2) !== '@=') {
@@ -75,9 +76,7 @@ class ExpressionBridge
         }
 
         $expression = substr($colName, 2);
-        $colNames = (array)$this->evaluator->evaluatePhpValue($expression, [
-            'partition' => $frame,
-        ]);
+        $colNames = (array)$this->evaluator->evaluatePhpValue($expression, $params);
 
         return $colNames;
     }
