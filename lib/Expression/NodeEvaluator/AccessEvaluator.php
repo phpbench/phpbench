@@ -50,8 +50,15 @@ class AccessEvaluator implements NodeEvaluator
             return $this->dataFrameEvaluator->evaluate($evaluator, $value, $node->access(), $params, $nullSafe);
         }
 
-        $arrayValue = $this->resolveArray($evaluator, $value);
         $accessValue = $this->resolveAccess($evaluator, $node, $params);
+        try {
+            $arrayValue = $this->resolveArray($evaluator, $value);
+        } catch (\Exception $e) {
+            throw new ExpressionError(sprintf(
+                'Could not get value for key "%s": %s',
+                $accessValue, $e->getMessage()
+            ));
+        }
 
         if (!array_key_exists($accessValue, $arrayValue)) {
             if ($nullSafe === true) {

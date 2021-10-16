@@ -43,7 +43,9 @@ final class DataFrameEvaluator
     private function filterDataFrame(Evaluator $evaluator, DataFrame $dataFrame, Node $accessNode, array $params): DataFrame
     {
         return $dataFrame->filter(function (Row $row) use ($evaluator, $accessNode, $params) {
-            $result = $evaluator->evaluate($accessNode, array_merge($row->toRecord(), $params));
+            $result = $evaluator->evaluate($accessNode, array_merge($row->toRecord(), [
+                '_params' => $params
+            ]));
 
             if (!$result instanceof BooleanNode) {
                 return false;

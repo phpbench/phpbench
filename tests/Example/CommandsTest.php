@@ -97,7 +97,7 @@ EOT
             <<<'EOT'
 <?php
 
-class NothingBench { 
+class MultipleSubjectBench { 
     public function benchSubject1(): void {}
     public function benchSubject2(): void {}
     public function benchSubject3(): void {}

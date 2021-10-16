@@ -27,6 +27,7 @@ class ExpandColumnProcessor implements ColumnProcessorInterface
             'each',
             'cols',
         ]);
+        $options->setDefault('param', 'item');
         $options->setAllowedTypes('each', 'string');
         $options->setAllowedTypes('cols', 'array');
     }
@@ -36,18 +37,21 @@ class ExpandColumnProcessor implements ColumnProcessorInterface
      */
     public function process(array $row, array $definition, array $params): array
     {
+        if (empty($definition['each'])) {
+            return $row;
+        }
         $iterable = $this->evaluator->evaluatePhpValue($definition['each'], $params);
 
         if (!is_iterable($iterable )) {
             throw new RuntimeException(sprintf(
-                'Evaluated value for "expand" column must evaluate to an list got "%s"',
+                'Evaluated value for "expand" column must evaluate to a list got "%s"',
                 gettype($iterable)
             ));
         }
 
         foreach ($iterable as $item) {
             $iterationParams = array_merge($params, [
-                'item' => $item,
+                (string)$definition['param'] => $item,
             ]);
             foreach ($definition['cols'] as $template => $expression) {
                 $row[$this->evaluator->renderTemplate($template, $iterationParams)] = $this->evaluator->evaluate($expression, $iterationParams);
