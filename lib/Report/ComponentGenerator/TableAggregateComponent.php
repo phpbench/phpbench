@@ -6,8 +6,10 @@ use PhpBench\Compat\SymfonyOptionsResolverCompat;
 use PhpBench\Data\DataFrame;
 use PhpBench\Report\Bridge\ExpressionBridge;
 use PhpBench\Report\ComponentGeneratorInterface;
+use PhpBench\Report\ComponentGenerator\TableAggregate\ColumnProcessorInterface;
 use PhpBench\Report\ComponentInterface;
 use PhpBench\Report\Model\Builder\TableBuilder;
+use RuntimeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TableAggregateComponent implements ComponentGeneratorInterface
@@ -21,9 +23,18 @@ class TableAggregateComponent implements ComponentGeneratorInterface
      */
     private $evaluator;
 
-    public function __construct(ExpressionBridge $evaluator)
+    /**
+     * @var array<string, ColumnProcessorInterface>
+     */
+    private $columnProcessors;
+
+    /**
+     * @param array<string, ColumnProcessorInterface> $columnProcessors
+     */
+    public function __construct(ExpressionBridge $evaluator, array $columnProcessors = [])
     {
         $this->evaluator = $evaluator;
+        $this->columnProcessors = $columnProcessors;
     }
 
     /**
@@ -58,15 +69,22 @@ class TableAggregateComponent implements ComponentGeneratorInterface
             $row = [];
 
             foreach ($config[self::PARAM_ROW] as $colName => $expression) {
-                foreach ($this->evaluator->evaluateColumns($colName, [
-                    'partition' => $dataFrameRow,
-                    'frame' => $dataFrame,
-                ]) as $colName) {
-                $row[$colName] = $this->evaluator->evaluate($expression, [
-                    'partition' => $dataFrameRow,
-                    'frame' => $dataFrame,
-                ]);
+                if (is_string($expression)) {
+                    $expression = [
+                        'type' => 'expression',
+                        'expression' => $expression,
+                    ];
                 }
+
+                if (is_array($expression)) {
+                    $row = $this->processColumnDefinition($row, $expression, $dataFrameRow, $dataFrame);
+                    continue;
+                }
+
+                throw new RuntimeException(sprintf(
+                    'Got "%s" as type for expression, but must either be a string or a column defintion',
+                    gettype($expression)
+                ));
             }
             $rows[] = $row;
         }
@@ -83,5 +101,34 @@ class TableAggregateComponent implements ComponentGeneratorInterface
         }
 
         return $builder->build();
+    }
+
+    /**
+     * @param array<string,mixed> $row
+     * @param array<string,mixed> $definition
+     * @return parameters
+     */
+    private function processColumnDefinition(array $row, array $definition, DataFrame $partition, DataFrame $frame): array
+    {
+        if (!isset($definition['type'])) {
+            throw new RuntimeException(sprintf(
+                'Column definition must define a "type" key, known types: "%s"',
+                implode('", "', array_keys($this->columnProcessors))
+            ));
+        }
+
+        $type = $definition['type'];
+
+        if (!isset($this->columnProcessors[$type])) {
+            throw new RuntimeException(sprintf(
+                'Unknown column processor "%s", known column proccessors: "%s"',
+                $type, implode('", "', array_keys($this->columnProcessors))
+            ));
+        }
+
+        return $this->columnProcessors[$type]->process($row, $definition, [
+            'partition' => $partition,
+            'frame' => $frame,
+        ]);
     }
 }

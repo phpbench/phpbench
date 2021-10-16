@@ -92,5 +92,17 @@ class CommandsTest extends IntegrationTestCase
 class NothingBench { public function benchNothing(): void {}}
 EOT
         );
+        $this->workspace()->put(
+            'MultipleSubjects.php',
+            <<<'EOT'
+<?php
+
+class NothingBench { 
+    public function benchSubject1(): void {}
+    public function benchSubject2(): void {}
+    public function benchSubject3(): void {}
+}
+EOT
+        );
     }
 }

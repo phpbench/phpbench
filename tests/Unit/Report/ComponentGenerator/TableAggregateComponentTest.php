@@ -126,7 +126,13 @@ class TableAggregateComponentTest extends ComponentGeneratorTestCase
         $table = $this->generate($frame, [
             TableAggregateComponent::PARAM_ROW => [
                 'one' => 'first(partition["subject"])',
-                '@=partition["name"]' => 'mode(partition["time"])',
+                'by_time' => [
+                    'type' => 'expand',
+                    'each' => 'partition["name"]',
+                    'cols' => [
+                        '{{ key }}' => 'mode(partition["time"])',
+                    ]
+                ]
             ],
             TableAggregateComponent::PARAM_PARTITION => ['subject'],
         ]);
