@@ -3,7 +3,6 @@
 namespace PhpBench\Tests\Unit\Expression\Parselet;
 
 use Generator;
-use PhpBench\Data\DataFrame;
 use PhpBench\Expression\Ast\ComparisonNode;
 use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Exception\EvaluationError;
@@ -70,15 +69,6 @@ class ComparisonParseletTest extends ParseletTestCase
                 'baz' => '10',
             ],
         ], 'true'];
-
-        yield ['foobar[baz=_params.barfoo]["baz"]', [
-            'barfoo' => 10,
-            'foobar' => DataFrame::fromRecords([
-                [
-                    'baz' => '10',
-                ]
-            ]),
-        ], '[10]'];
     }
 
     public function testErrorOnUnsupportedOperator(): void
