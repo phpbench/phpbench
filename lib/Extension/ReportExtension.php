@@ -22,6 +22,7 @@ use PhpBench\Registry\ConfigurableRegistry;
 use PhpBench\Report\Bridge\ExpressionBridge;
 use PhpBench\Report\ComponentGenerator\BarChartAggregateComponentGenerator;
 use PhpBench\Report\ComponentGenerator\TableAggregateComponent;
+use PhpBench\Report\ComponentGenerator\TableAggregate\ExpandColumnProcessor;
 use PhpBench\Report\ComponentGenerator\TableAggregate\ExpressionColumnProcessor;
 use PhpBench\Report\ComponentGenerator\TextComponentGenerator;
 use PhpBench\Report\Console\ObjectRenderer as ConsoleObjectRenderer;
@@ -304,6 +305,7 @@ class ReportExtension implements ExtensionInterface
                 $container->get(ExpressionBridge::class),
                 [
                     'expression' => $container->get(ExpressionColumnProcessor::class),
+                    'expand' => $container->get(ExpandColumnProcessor::class),
                 ]
             );
         }, [
@@ -312,6 +314,9 @@ class ReportExtension implements ExtensionInterface
 
         $container->register(ExpressionColumnProcessor::class, function (Container $container) {
             return new ExpressionColumnProcessor($container->get(ExpressionBridge::class));
+        });
+        $container->register(ExpandColumnProcessor::class, function (Container $container) {
+            return new ExpandColumnProcessor($container->get(ExpressionBridge::class));
         });
 
         $container->register(BarChartAggregateComponentGenerator::class, function (Container $container) {

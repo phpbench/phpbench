@@ -8,6 +8,7 @@ use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Report\Bridge\ExpressionBridge;
 use PhpBench\Report\ComponentGenerator\TableAggregateComponent;
 use PhpBench\Report\ComponentGeneratorInterface;
+use PhpBench\Report\ComponentGenerator\TableAggregate\ExpandColumnProcessor;
 use PhpBench\Report\ComponentGenerator\TableAggregate\ExpressionColumnProcessor;
 use PhpBench\Report\Model\Builder\TableBuilder;
 use PhpBench\Report\Model\Table;
@@ -19,6 +20,7 @@ class TableAggregateComponentTest extends ComponentGeneratorTestCase
         $evaluator = $this->container()->get(ExpressionBridge::class);
         return new TableAggregateComponent($evaluator, [
             'expression' => new ExpressionColumnProcessor($evaluator),
+            'expand' => new ExpandColumnProcessor($evaluator),
         ]);
     }
 
@@ -134,7 +136,7 @@ class TableAggregateComponentTest extends ComponentGeneratorTestCase
                     'type' => 'expand',
                     'each' => 'partition["name"]',
                     'cols' => [
-                        '{{ key }}' => 'mode(partition["time"])',
+                        '{{ item }}' => 'mode(partition["time"])',
                     ]
                 ]
             ],
