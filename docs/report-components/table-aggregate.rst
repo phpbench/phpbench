@@ -44,8 +44,8 @@ of an expression, specifying a "column processor" ``type``.
 ``expand``
 ~~~~~~~~~~
 
-You can "expand" columns dynamically by iterating over an expression using the
-``expand`` processor:
+You can "expand" columns dynamically by further partitioning the data frame
+with the ``expand`` column processor:
 
 .. approved:: ../../examples/Command/report-component-table-aggregate-expand
   :language: bash
@@ -55,21 +55,18 @@ Above we:
 
 - Use an object as the value of the column definition
 - Specified the ``type`` to be ``expand``
-- Specify an expression to iterate over (``parition[iteration_index]``)
+- We group (partition) the data by ``iteration_index``)
 - Specify a set of columns
-- We filter the partition using the value from the iterated value
-
-Note that:
-
-- The ``item`` variable is available in the column label definition and it's
-  expression. The name of this variable can be changed using the ``param``
-  option.
-- The when specifying the ``item`` in a data frame filter (``partition[foo =
-  _params.item]``) we prefix ``item`` with ``_params`` in order to access the
-  params passed to the expression rather than params available to the filter.
 
 Which would produce:
 
 .. approved:: ../../examples/Command/report-component-table-aggregate-expand
   :language: bash
   :section: 2
+
+Note that:
+
+- The ``partition`` parameter is used by default, overwriting the partition
+  from the parent scope. You can rename this using the ``var`` option.
+- The ``key`` variable is made available representing the "key" of the
+  partition, you can rename this variable with the ``key_var`` option.

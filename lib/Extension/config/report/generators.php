@@ -188,5 +188,38 @@ return [
                 ]
             ]
         ]
+    ],
+    'benchmark_horizontal' => [
+        "generator" => "component",
+        "components" => [
+            [
+                "component" => "section",
+                "title" => "{{ first(frame[\"benchmark_name\"]) }}",
+                "components" => [
+                    [
+                        "component" => "section",
+                        "partition" => ["benchmark_name"],
+                        "tabbed" => true,
+                        "components" => [
+                            [
+                                "component" => "table_aggregate",
+                                "title" => "{{ first(frame.benchmark_name) }}",
+                                "partition" => ['subject_name', 'variant_name'],
+                                "row" => [
+                                    "subject" => "first(partition[\"subject_name\"]) ~ \" (\" ~ first(partition[\"variant_name\"]) ~ \")\"",
+                                    "by_subject" => [
+                                        "type" => "expand",
+                                        "partition" => 'suite_tag',
+                                        "cols" => [
+                                            '{{ key }}' => 'mode(partition["result_time_avg"]) as time ~ " " ~ rstdev(partition["result_time_avg"])',
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
     ]
 ];

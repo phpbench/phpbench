@@ -22,9 +22,9 @@
                         "benchmark": "first(partition['subject_name'])",
                         "by_iteration": {
                             "type": "expand",
-                            "each": "partition['iteration_index']",
+                            "partition": ["iteration_index"],
                             "cols": {
-                                "Iteration #{{ item }}": "mode(partition[iteration_index = _params.item]['result_time_avg'])"
+                                "Iteration #{{ key }}": "mode(partition['result_time_avg'])"
                             }
                         }
                     }

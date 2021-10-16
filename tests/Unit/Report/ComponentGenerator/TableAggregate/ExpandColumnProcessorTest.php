@@ -2,28 +2,29 @@
 
 namespace PhpBench\Tests\Unit\Report\ComponentGenerator\TableAggregate;
 
+use PhpBench\Data\DataFrame;
 use PhpBench\Report\Bridge\ExpressionBridge;
 use PhpBench\Report\ComponentGenerator\TableAggregate\ColumnProcessorInterface;
 use PhpBench\Report\ComponentGenerator\TableAggregate\ExpandColumnProcessor;
-use RuntimeException;
 
 class ExpandColumnProcessorTest extends ColumnProcessorTestCase
 {
     public function testExpandColumnsEmpty(): void
     {
-        self::assertEquals([], $this->processRow([], ['cols' => [],'each' => '',], []));
-    }
-
-    public function testExceptionIfEachDoesNotEvaluateToAList(): void
-    {
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('column must evaluate to a list');
-        self::assertEquals([], $this->processRow([], ['cols' => [],'each' => '"string"',], []));
+        self::assertEquals([], $this->processRow(
+            ['cols' => [],'partition' => '',],
+            DataFrame::empty(),
+            []
+        ));
     }
 
     public function testEmptyColsWithValidEach(): void
     {
-        self::assertEquals([], $this->processRow([], ['cols' => [],'each' => '["string"]',], []));
+        self::assertEquals([], $this->processRow(
+            ['cols' => [],'partition' => '["string"]',],
+            DataFrame::empty(),
+            []
+        ));
     }
 
     public function testPopulatesRow(): void
@@ -32,7 +33,13 @@ class ExpandColumnProcessorTest extends ColumnProcessorTestCase
             [
                 'foo' => 'bar',
             ],
-            $this->processRow([], ['cols' => ['foo' => '"bar"'],'each' => '["string"]',], [])
+            $this->processRow(
+                ['cols' => ['foo' => '"bar"'],'partition' => 'c1',],
+                DataFrame::fromRowSeries([
+                    [ 'v1', 'v2' ],
+                ], ['c1', 'c2']),
+                []
+            )
         );
     }
 
@@ -43,10 +50,14 @@ class ExpandColumnProcessorTest extends ColumnProcessorTestCase
                 'Item: apples' => 'apples',
                 'Item: bannanas' => 'bannanas',
             ],
-            $this->processRow([], [
-                'cols' => ['Item: {{ item }}' => 'item'],
-                'each' => '["apples", "bannanas"]'
-            ], [])
+            $this->processRow(
+                ['cols' => ['Item: {{ first(partition["fruit"]) }}' => 'first(partition["fruit"])'], 'partition' => ['fruit']],
+                DataFrame::fromRowSeries([
+                    [ 'apples' ],
+                    [ 'bannanas' ],
+                ], ['fruit']),
+                []
+            )
         );
     }
 
@@ -57,11 +68,67 @@ class ExpandColumnProcessorTest extends ColumnProcessorTestCase
                 'Item: apples' => 'apples',
                 'Item: bannanas' => 'bannanas',
             ],
-            $this->processRow([], [
-                'param' => 'fruit',
-                'cols' => ['Item: {{ fruit }}' => 'fruit'],
-                'each' => '["apples", "bannanas"]'
-            ], [])
+            $this->processRow(
+                [
+                    'var' => 'item',
+                    'cols' => [
+                        'Item: {{ first(item["fruit"]) }}' => 'first(item["fruit"])'
+                    ],
+                    'partition' => ['fruit']
+                ],
+                DataFrame::fromRowSeries([
+                    [ 'apples' ],
+                    [ 'bannanas' ],
+                ], ['fruit']),
+                []
+            )
+        );
+    }
+
+    public function testCanUsePairtionKey(): void
+    {
+        self::assertEquals(
+            [
+                'Item: apples' => 'apples',
+                'Item: bannanas' => 'bannanas',
+            ],
+            $this->processRow(
+                [
+                    'partition' => ['fruit'],
+                    'cols' => [
+                        'Item: {{ key }}' => 'first(partition["fruit"])'
+                    ],
+                ],
+                DataFrame::fromRowSeries([
+                    [ 'apples' ],
+                    [ 'bannanas' ],
+                ], ['fruit']),
+                []
+            )
+        );
+    }
+
+    public function testCanSpecifyPairtionKey(): void
+    {
+        self::assertEquals(
+            [
+                'Item: apples' => 'apples',
+                'Item: bannanas' => 'bannanas',
+            ],
+            $this->processRow(
+                [
+                    'partition' => ['fruit'],
+                    'key_var' => 'foobar',
+                    'cols' => [
+                        'Item: {{ foobar }}' => 'first(partition["fruit"])'
+                    ],
+                ],
+                DataFrame::fromRowSeries([
+                    [ 'apples' ],
+                    [ 'bannanas' ],
+                ], ['fruit']),
+                []
+            )
         );
     }
 

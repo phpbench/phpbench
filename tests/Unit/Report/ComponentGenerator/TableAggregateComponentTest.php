@@ -135,9 +135,9 @@ class TableAggregateComponentTest extends ComponentGeneratorTestCase
                 'one' => 'first(partition["subject"])',
                 'by_time' => [
                     'type' => 'expand',
-                    'each' => 'partition["name"]',
+                    'partition' => 'name',
                     'cols' => [
-                        '{{ item }}' => 'mode(partition["time"])',
+                        '{{ key }}' => 'mode(partition["time"])',
                     ]
                 ]
             ],

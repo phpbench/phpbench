@@ -136,9 +136,9 @@ class TableAggregateComponent implements ComponentGeneratorInterface
         $resolver = new OptionsResolver();
         $processor->configure($resolver);
 
-        return $processor->process($row, $resolver->resolve($definition), [
-            'partition' => $partition,
+        return $processor->process($row, $resolver->resolve($definition), $partition, [
             'frame' => $frame,
+            'partition' => $partition,
         ]);
     }
 }
