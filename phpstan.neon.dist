@@ -11,6 +11,8 @@ parameters:
         scalarOrNull: 'int|float|string|bool|null'
         scalar: 'int|float|string|bool'
         number: 'int|float'
+        tableRow: 'array<string,\PhpBench\Expression\Ast\Node>'
+        tableColumnDefinition: 'array<string,mixed>'
 
 includes:
     - phpstan-baseline.neon

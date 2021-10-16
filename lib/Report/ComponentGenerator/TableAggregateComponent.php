@@ -73,6 +73,7 @@ class TableAggregateComponent implements ComponentGeneratorInterface
                     $expression = [
                         'type' => 'expression',
                         'expression' => $expression,
+                        'name' => $colName,
                     ];
                 }
 
@@ -126,7 +127,13 @@ class TableAggregateComponent implements ComponentGeneratorInterface
             ));
         }
 
-        return $this->columnProcessors[$type]->process($row, $definition, [
+        unset($definition['type']);
+
+        $processor = $this->columnProcessors[$type];
+        $resolver = new OptionsResolver();
+        $processor->configure($resolver);
+
+        return $processor->process($row, $resolver->resolve($definition), [
             'partition' => $partition,
             'frame' => $frame,
         ]);

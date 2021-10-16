@@ -2,13 +2,15 @@
 
 namespace PhpBench\Report\ComponentGenerator\TableAggregate;
 
-interface ColumnProcessorInterface
+use PhpBench\Registry\RegistrableInterface;
+
+interface ColumnProcessorInterface extends RegistrableInterface
 {
     /**
      * @param parameters $params
-     * @param array<string,mixed> $row
-     * @param array<string,mixed> $definition
-     * @Return parameters
+     * @param tableRow $row
+     * @param tableColumnDefinition $definition
+     * @return tableRow $row
      */
     public function process(array $row, array $definition, array $params): array;
 }
