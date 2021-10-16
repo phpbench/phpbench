@@ -53,7 +53,8 @@ with the ``expand`` column processor:
 
 Above we:
 
-- Use an object as the value of the column definition
+- Use an object as the value of the column definition ``by_iteration`` (the name
+  is arbitrary and subsequently not used, it needs only to be unique)
 - Specified the ``type`` to be ``expand``
 - We group (partition) the data by ``iteration_index``)
 - Specify a set of columns
