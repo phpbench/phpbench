@@ -24,7 +24,7 @@
                             "type": "expand",
                             "each": "partition['iteration_index']",
                             "cols": {
-                                "Iteration #{{ item }}": "mode(partition[iteration_index = item]['result_time_avg'])"
+                                "Iteration #{{ item }}": "mode(partition[iteration_index = _params.item]['result_time_avg'])"
                             }
                         }
                     }
